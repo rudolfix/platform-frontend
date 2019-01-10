@@ -13,6 +13,7 @@ const data: TPortfolioLayoutProps = {
   walletAddress: "0x12345678",
   isRetailEto: false,
   downloadDocument: () => {},
+  generateTemplateByEtoId: () => {},
 };
 
 storiesOf("Portfolio/PortfolioLayout", module)

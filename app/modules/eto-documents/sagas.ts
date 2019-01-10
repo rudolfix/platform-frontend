@@ -1,5 +1,5 @@
 import { findKey } from "lodash/fp";
-import { fork, put } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { ETHEREUM_ZERO_ADDRESS, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -13,6 +13,7 @@ import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
 import { downloadLink } from "../immutable-file/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
+import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 
 export function* generateTemplate(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
@@ -41,6 +42,43 @@ export function* generateTemplate(
         placeholders: templates.placeholders,
       },
       asPdf: false,
+    });
+    yield neuCall(downloadLink, generatedDocument, document.name, ".doc");
+  } catch (e) {
+    logger.error("Failed to generate ETO template", e);
+    notificationCenter.error("Failed to download file from IPFS");
+  }
+}
+
+export function* generateTemplateByEtoId(
+  { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== "ETO_DOCUMENTS_GENERATE_TEMPLATE_BY_ETO_ID") return;
+  try {
+    const userEthAddress = yield select(selectEthereumAddressWithChecksum);
+    const document = action.payload.document;
+    const etoId = action.payload.etoId;
+    const templates = yield apiEtoFileService.getSpecificEtoTemplate(
+      etoId,
+      {
+        documentType: document.documentType,
+        name: document.name,
+        form: "template",
+        ipfsHash: document.ipfsHash,
+        mimeType: document.mimeType,
+      },
+      // token holder is required in on-chain state, use non-existing address
+      // to obtain issuer side template
+      { token_holder_ethereum_address: userEthAddress },
+    );
+    const generatedDocument = yield apiImmutableStorage.getFile({
+      ...{
+        ipfsHash: templates.ipfs_hash,
+        mimeType: templates.mime_type,
+        placeholders: templates.placeholders,
+      },
+      asPdf: true,
     });
     yield neuCall(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
@@ -145,6 +183,7 @@ function* uploadEtoFile(
 }
 
 export function* etoDocumentsSagas(): any {
+  yield fork(neuTakeEvery, "ETO_DOCUMENTS_GENERATE_TEMPLATE_BY_ETO_ID", generateTemplateByEtoId);
   yield fork(neuTakeEvery, "ETO_DOCUMENTS_GENERATE_TEMPLATE", generateTemplate);
   yield fork(neuTakeEvery, "ETO_DOCUMENTS_LOAD_FILE_DATA_START", loadEtoFileData);
   yield fork(neuTakeEvery, "ETO_DOCUMENTS_UPLOAD_DOCUMENT_START", uploadEtoFile);

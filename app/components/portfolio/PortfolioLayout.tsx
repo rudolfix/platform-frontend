@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { externalRoutes } from "../../config/externalRoutes";
-import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
 import { getNeuReward } from "../../modules/investor-tickets/utils";
 import { EETOStateOnChain } from "../../modules/public-etos/types";
@@ -15,6 +16,7 @@ import { withParams } from "../../utils/withParams";
 import { getDocumentTitles } from "../documents/utils";
 import { AssetPortfolio } from "../shared/AssetPortfolio";
 import { Button, EButtonLayout } from "../shared/buttons";
+import { ButtonTextPosition } from "../shared/buttons/Button";
 import { ETOState } from "../shared/ETOState";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
 import { NewTable, NewTableRow } from "../shared/NewTable";
@@ -23,8 +25,6 @@ import { ClaimedDividends } from "../wallet/claimed-dividends/ClaimedDividends";
 import { PortfolioAssetAction } from "./PorfolioAssetAction";
 
 import * as neuIcon from "../../assets/img/neu_icon.svg";
-import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
-import { ButtonTextPosition } from "../shared/buttons/Button";
 import * as styles from "./PortfolioLayout.module.scss";
 
 export type TPortfolioLayoutProps = {
@@ -35,6 +35,7 @@ export type TPortfolioLayoutProps = {
   neuPrice: string;
   walletAddress: string;
   isRetailEto: boolean;
+  generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => void;
   downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void;
 };
 
@@ -45,10 +46,11 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
   pendingAssets,
   myNeuBalance,
   myNeuBalanceEuroAmount,
+  generateTemplateByEtoId,
+  downloadDocument,
   neuPrice,
   walletAddress,
   isRetailEto,
-  downloadDocument,
 }) => (
   <section className={styles.portfolio}>
     {process.env.NF_ASSETS_PORTFOLIO_COMPONENT_VISIBLE === "1" && (
@@ -226,7 +228,14 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
           ) : null}
 
           {myAssets.map(
-            ({ equityTokenImage, equityTokenName, investorTicket, etoId, documents }) => {
+            ({
+              equityTokenImage,
+              equityTokenName,
+              investorTicket,
+              etoId,
+              templates,
+              documents,
+            }) => {
               return (
                 <NewTableRow key={etoId}>
                   <>
@@ -246,8 +255,11 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                     currencySymbol={ECurrencySymbol.NONE}
                   />
                   <>
+                    {/* Based on https://github.com/Neufund/platform-frontend/issues/2102#issuecomment-453086304 */}
                     {map((document: IEtoDocument) => {
-                      return (
+                      return [
+                        EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT,
+                      ].includes(document.documentType) ? (
                         <Button
                           key={document.ipfsHash}
                           className={styles.documentLink}
@@ -260,14 +272,31 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                                 mimeType: document.mimeType,
                                 asPdf: true,
                               },
-                              immutableDocumentName[document.documentType],
+
+                              etoId,
                             )
                           }
                         >
                           {getDocumentTitles(isRetailEto)[document.documentType]}
                         </Button>
-                      );
+                      ) : null;
                     }, documents)}
+                    {map((template: IEtoDocument) => {
+                      return [
+                        EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
+                        EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
+                      ].includes(template.documentType) ? (
+                        <Button
+                          key={template.ipfsHash}
+                          className={styles.documentLink}
+                          layout={EButtonLayout.INLINE}
+                          textPosition={ButtonTextPosition.LEFT}
+                          onClick={() => generateTemplateByEtoId(template, etoId)}
+                        >
+                          {getDocumentTitles(isRetailEto)[template.documentType]}
+                        </Button>
+                      ) : null;
+                    }, templates)}
                   </>
                 </NewTableRow>
               );

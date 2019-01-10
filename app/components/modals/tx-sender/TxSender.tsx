@@ -3,6 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
+import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { ITxData } from "../../../lib/web3/types";
 import { actions } from "../../../modules/actions";
@@ -72,6 +73,7 @@ export interface ITxSummaryStateProps {
   txCost: string;
   etoData?: TETOWithInvestorTicket;
   additionalData?: {};
+  etoId?: string;
 }
 
 export interface ITxSummaryDispatchProps {
@@ -79,7 +81,9 @@ export interface ITxSummaryDispatchProps {
   onChange?: () => any;
   downloadICBMAgreement?: () => void;
   downloadDocument?: (immutableFileId: ImmutableFileId, fileName: string) => void;
+  generateTemplateByEtoId?: (immutableFileId: IEtoDocument, etoId: string) => void;
 }
+// TODO: move interface to each component
 export type TSummaryComponentProps = ITXSummaryExternalProps &
   ITxSummaryStateProps &
   ITxSummaryDispatchProps;

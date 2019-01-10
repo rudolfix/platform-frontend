@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import { branch, compose, renderComponent } from "recompose";
 
+import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../modules/actions";
 import { selectMyAssets, selectMyPendingAssets } from "../../modules/investor-tickets/selectors";
@@ -42,6 +43,9 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
     dispatchToProps: dispatch => ({
       downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => {
         dispatch(actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName));
+      },
+      generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => {
+        dispatch(actions.etoDocuments.generateTemplateByEtoId(immutableFileId, etoId));
       },
     }),
   }),

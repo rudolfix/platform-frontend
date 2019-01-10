@@ -33,8 +33,6 @@ import {
 } from "./selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate } from "./utils";
-import {createMessage} from "../../components/translatedMessages/utils";
-import {PublicEtosMessage} from "../../components/translatedMessages/messages";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,

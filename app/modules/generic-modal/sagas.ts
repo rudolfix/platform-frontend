@@ -3,7 +3,6 @@ import { put, take } from "redux-saga/effects";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
-import {TMessage} from "../../components/translatedMessages/utils";
 
 export function* displayInfoModalSaga(
   _: TGlobalDependencies,

@@ -15,7 +15,7 @@ import { downloadLink } from "../immutable-file/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 
-export function* generateTemplate(
+export function* generateDocumentFromTemplate(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
   action: TAction,
 ): any {
@@ -50,7 +50,7 @@ export function* generateTemplate(
   }
 }
 
-export function* generateTemplateByEtoId(
+export function* generateDocumentFromTemplateByEtoId(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
   action: TAction,
 ): any {
@@ -183,8 +183,12 @@ function* uploadEtoFile(
 }
 
 export function* etoDocumentsSagas(): any {
-  yield fork(neuTakeEvery, "ETO_DOCUMENTS_GENERATE_TEMPLATE_BY_ETO_ID", generateTemplateByEtoId);
-  yield fork(neuTakeEvery, "ETO_DOCUMENTS_GENERATE_TEMPLATE", generateTemplate);
+  yield fork(
+    neuTakeEvery,
+    "ETO_DOCUMENTS_GENERATE_TEMPLATE_BY_ETO_ID",
+    generateDocumentFromTemplateByEtoId,
+  );
+  yield fork(neuTakeEvery, "ETO_DOCUMENTS_GENERATE_TEMPLATE", generateDocumentFromTemplate);
   yield fork(neuTakeEvery, "ETO_DOCUMENTS_LOAD_FILE_DATA_START", loadEtoFileData);
   yield fork(neuTakeEvery, "ETO_DOCUMENTS_UPLOAD_DOCUMENT_START", uploadEtoFile);
   yield fork(neuTakeEvery, "ETO_DOCUMENTS_DOWNLOAD_BY_TYPE", downloadDocumentByType);

@@ -893,6 +893,7 @@
   "user-claim-flow.estimated-reward": "ESTIMATED NEU REWARD",
   "user-claim-flow.success.congrats": "Congratulations! You have successfully claimed your {token} Equity Tokens, which you'll find in the 'My Assets' section of your Portfolio",
   "user-claim-flow.success.view-portfolio": "View Portfolio",
+  "user-claim-flow.summary": "CLAIM TOKEN SUMMARY",
   "user-claim-flow.summary.explanation": "When you confirm this transaction, you are taking possession of your Equity Tokens and NEU tokens. This will allow you to claim dividends and platform proceeds. You may access your finalized investment agreements below.",
   "user-claim-flow.token-name": "TOKEN",
   "wallet-selector.browser.approval-rejected": "You need to approve access to you wallet in order to use our platform",

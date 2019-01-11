@@ -43,7 +43,7 @@ export const UserClaimSummaryComponent: React.SFC<TSummaryComponentProps> = ({
       <Row className="mb-4">
         <Col>
           <Heading>
-            <FormattedMessage id="upgrade-flow.summary" />
+            <FormattedMessage id="user-claim-flow.summary" />
           </Heading>
         </Col>
       </Row>

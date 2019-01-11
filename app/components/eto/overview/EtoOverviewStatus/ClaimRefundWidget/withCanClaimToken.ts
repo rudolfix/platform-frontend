@@ -1,5 +1,4 @@
 import { compose, withProps } from "recompose";
-import { IInvestorTicket } from "./../../../../../modules/investor-tickets/types";
 
 import { EUserType } from "../../../../../lib/api/users/interfaces";
 import { actions } from "../../../../../modules/actions";
@@ -11,6 +10,7 @@ import {
 import { EETOStateOnChain } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
 import { Omit } from "../../../../../types";
+import { IInvestorTicket } from "./../../../../../modules/investor-tickets/types";
 
 interface IExternalProps {
   etoId: string;

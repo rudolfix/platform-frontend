@@ -22,7 +22,7 @@ import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money
 import { NewTable, NewTableRow } from "../shared/NewTable";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ClaimedDividends } from "../wallet/claimed-dividends/ClaimedDividends";
-import { PortfolioAssetAction } from "./PorfolioAssetAction";
+import { PortfolioAssetAction } from "./PortfolioAssetAction";
 
 import * as neuIcon from "../../assets/img/neu_icon.svg";
 import * as styles from "./PortfolioLayout.module.scss";

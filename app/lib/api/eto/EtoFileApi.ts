@@ -1,9 +1,9 @@
 import { inject, injectable } from "inversify";
-import { withParams } from "./../../../utils/withParams";
 
 import { Dictionary } from "lodash";
 import { symbols } from "../../../di/symbols";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
+import { withParams } from "./../../../utils/withParams";
 import {
   EEtoDocumentType,
   IEtoDocument,

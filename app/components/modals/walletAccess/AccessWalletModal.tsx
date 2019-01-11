@@ -81,11 +81,11 @@ export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IEx
   stateToProps: (s, external) => ({
     isOpen: s.accessWallet.isModalOpen,
     errorMessage: s.accessWallet.errorMessage
-      ? getMessageTranslation(s.accessWallet.errorMessage as TMessage)
+      ? getMessageTranslation(s.accessWallet.errorMessage)
       : undefined,
     title: external.title
       ? external.title
-      : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalTitle as TMessage),
+      : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalTitle),
     message: external.message
       ? external.message
       : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalMessage as TMessage),

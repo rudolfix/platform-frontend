@@ -1,7 +1,7 @@
 import { delay, END, eventChannel, Task } from "redux-saga";
 import { call, cancel, fork, put, select, take } from "redux-saga/effects";
 
-import { GenericError, Web3Message } from "../../components/translatedMessages/messages";
+import { Web3Message } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -93,7 +93,7 @@ export function* personalWalletConnectionLost({ notificationCenter }: TGlobalDep
       case EWalletType.LEDGER:
         return createMessage(Web3Message.WEB3_ERROR_LEDGER);
       default:
-        return createMessage(GenericError.GENERIC_ERROR);
+        return;
     }
   };
 

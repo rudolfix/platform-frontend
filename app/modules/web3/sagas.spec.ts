@@ -104,7 +104,6 @@ describe("Web3 sagas", () => {
 
       await expectSaga(personalWalletConnectionLost, {
         notificationCenter: dummyNotificationCenter,
-        intlWrapper: { intl: dummyIntl },
       })
         .withState(state)
         .run();

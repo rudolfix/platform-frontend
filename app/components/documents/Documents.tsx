@@ -70,7 +70,7 @@ interface IUploadableDocumentProps {
   documentTitles: TDocumentTitles;
   documentKey: EEtoDocumentType;
   etoDocuments: TEtoDocumentTemplates;
-  stateInfo: TStateInfo;
+  stateInfo: DeepReadonly<TStateInfo>;
   etoState: EEtoState;
   downloadDocumentByType: (documentType: EEtoDocumentType) => void;
 }

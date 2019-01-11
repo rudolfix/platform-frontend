@@ -1,3 +1,4 @@
+import { TMessage } from "../../components/translatedMessages/utils";
 import { createAction, createSimpleAction } from "../actionsUtils";
 import { TIconType } from "./reducer";
 
@@ -6,19 +7,19 @@ export const genericModalActions = {
   showModal: (component: React.ComponentType) => createAction("MODAL_SHOW", { component }),
 
   showGenericModal: (
-    title: string | React.ReactNode,
-    description?: string | React.ReactNode,
+    title: TMessage,
+    description?: TMessage,
     icon?: TIconType,
-    actionLinkText?: string | React.ReactNode,
+    actionLinkText?: TMessage,
     // TODO: find circular dependency in AppActionTypes
     onClickAction?: any,
   ) =>
     createAction("GENERIC_MODAL_SHOW", { title, description, icon, actionLinkText, onClickAction }),
 
   showInfoModal: (
-    title: string | React.ReactNode,
-    description?: string | React.ReactNode,
-    actionLinkText?: string | React.ReactNode,
+    title: TMessage,
+    description?: TMessage,
+    actionLinkText?: TMessage,
     onClickAction?: any,
   ) =>
     genericModalActions.showGenericModal(
@@ -30,9 +31,9 @@ export const genericModalActions = {
     ),
 
   showErrorModal: (
-    title: string | React.ReactNode,
-    description?: string | React.ReactNode,
-    actionLinkText?: string | React.ReactNode,
+    title: TMessage,
+    description?: TMessage,
+    actionLinkText?: TMessage,
     onClickAction?: any,
   ) =>
     genericModalActions.showGenericModal(

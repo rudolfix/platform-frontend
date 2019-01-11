@@ -586,6 +586,7 @@
   "modal.deposit-eth.description": "Please scan the QR code using your mobile device to transfer ETH to your wallet on Neufund. You can also use the address below to transfer ETH to your wallet.",
   "modal.deposit-eth.title": "Transfer ETH to your wallet",
   "modal.generic.button.dismiss": "Ok",
+  "modal.generic.title.error": "Error",
   "modal.ipfs-eto.button.continue": "Continue",
   "modal.ipfs-eto.description": "Ready to go? Once uploaded, your legal document is public and immutable which means you won’t be able to delete it. We use IPFS, a p2p distributed file system, that gives each document a unique hash and timestamp which we link to a smart contract to make them legally binding.",
   "modal.light-wallet.button.accept": "Confirm",

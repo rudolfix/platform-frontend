@@ -10,7 +10,8 @@ interface ITranslationValues {
 }
 
 export type TranslatedMessageType =
-  | GenericError
+  | GenericErrorMessage
+  | GenericModalMessage
   | SignInUserErrorMessage
   | BrowserWalletErrorMessage
   | LedgerErrorMessage
@@ -29,11 +30,16 @@ export type TranslatedMessageType =
   | PublicEtosMessage
   | FileUploadMessage
   | RemoteFileMessage
-  | Web3Message;
+  | Web3Message
+  | TestMessage;
 
-export enum GenericError {
+export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
   USER_ALREADY_EXISTS = "userAlreadyExists",
+}
+
+export enum GenericModalMessage {
+  ERROR_TITLE = "errorTitle",
 }
 
 export enum SignInUserErrorMessage {
@@ -181,8 +187,12 @@ export enum ProfileMessage {
 }
 
 export enum Web3Message {
-  WEB3_ERROR_BROWSER = "web3ErrorBrowser", //"modules.web3.flows.web3-error.browser"
-  WEB3_ERROR_LEDGER = "web3ErrorLedger", //"modules.web3.flows.web3-error.ledger"
+  WEB3_ERROR_BROWSER = "web3ErrorBrowser",
+  WEB3_ERROR_LEDGER = "web3ErrorLedger",
+}
+
+export enum TestMessage {
+  TEST_MESSAGE = "testMessage",
 }
 
 const getMessageTranslation = ({ messageType, messageData }: TMessage): TTranslatedString => {
@@ -194,9 +204,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
         <FormattedMessage id="modules.wallet-selector.light-wizard.sagas.successfully.backed-up" />
       );
 
-    case GenericError.GENERIC_ERROR:
+    case GenericErrorMessage.GENERIC_ERROR:
       return <FormattedMessage id="error-message.generic-error" />;
-    case GenericError.USER_ALREADY_EXISTS:
+    case GenericErrorMessage.USER_ALREADY_EXISTS:
       return <FormattedMessage id="modules.auth.sagas.sign-in-user.email-already-exists" />;
     case SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED:
       return <FormattedMessage id="modules.auth.sagas.sign-in-user.message-signing-was-rejected" />;
@@ -210,6 +220,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
           values={{ url: `${externalRoutes.neufundSupport}/home` }}
         />
       );
+
+    case GenericModalMessage.ERROR_TITLE:
+      return <FormattedMessage id="modal.generic.title.error" />;
 
     case BrowserWalletErrorMessage.WALLET_IS_LOCKED:
       return <FormattedMessage id="error-message.browser-wallet.wallet-locked" />;
@@ -420,6 +433,11 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="modules.web3.flows.web3-error.browser" />;
     case Web3Message.WEB3_ERROR_LEDGER:
       return <FormattedMessage id="modules.web3.flows.web3-error.ledger" />;
+
+    // NEVER DO THIS!
+    // THIS IS a misuse! It's only for tests, so that we don't bloat locales.json with test strings!
+    case TestMessage.TEST_MESSAGE:
+      return (messageData as any).message as TTranslatedString;
   }
 };
 

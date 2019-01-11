@@ -1,4 +1,5 @@
 import { genericModalIcons } from "../../components/modals/GenericModal";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { AppActionTypes, AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
@@ -12,10 +13,10 @@ export interface IGenericModalState {
 export type TIconType = keyof typeof genericModalIcons;
 
 export interface IGenericModal {
-  title: string | React.ReactNode;
-  description?: string | React.ReactNode;
+  title: TMessage;
+  description?: TMessage;
   icon?: TIconType;
-  actionLinkText?: string | React.ReactNode;
+  actionLinkText?: TMessage;
   onClickAction?: AppActionTypes;
 }
 

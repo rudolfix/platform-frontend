@@ -3,7 +3,8 @@ import { call, fork, put, select } from "redux-saga/effects";
 
 import {
   BackupRecoveryMessage,
-  GenericError,
+  GenericErrorMessage,
+  GenericModalMessage,
   getMessageTranslation,
   SignInUserErrorMessage,
 } from "../../../components/translatedMessages/messages";
@@ -172,17 +173,17 @@ export function* lightWalletRegisterWatch(
 
     let error;
     if (e instanceof EmailAlreadyExists) {
-      error = getMessageTranslation(createMessage(GenericError.USER_ALREADY_EXISTS));
+      error = createMessage(GenericErrorMessage.USER_ALREADY_EXISTS);
     } else if (e instanceof LightError) {
       logger.error("Light wallet recovery error", e);
-      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e));
+      error = mapLightWalletErrorToErrorMessage(e);
     } else {
-      error = getMessageTranslation(
-        createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
-      );
+      error = createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE);
     }
 
-    yield put(actions.genericModal.showErrorModal("Error", error)); //TODO refactor errorModal to accept TMessage
+    yield put(
+      actions.genericModal.showErrorModal(createMessage(GenericModalMessage.ERROR_TITLE), error),
+    );
   }
 }
 
@@ -244,17 +245,17 @@ export function* lightWalletRecoverWatch(
 
     let error;
     if (e instanceof EmailAlreadyExists) {
-      error = getMessageTranslation(createMessage(GenericError.USER_ALREADY_EXISTS));
+      error = createMessage(GenericErrorMessage.USER_ALREADY_EXISTS);
     } else if (e instanceof LightError) {
       logger.error("Light wallet recovery error", e);
-      error = getMessageTranslation(mapLightWalletErrorToErrorMessage(e));
+      error = mapLightWalletErrorToErrorMessage(e);
     } else {
-      error = getMessageTranslation(
-        createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
-      );
+      error = createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE);
     }
 
-    yield put(actions.genericModal.showErrorModal("Error", error)); //TODO refactor errorModal to accept TMessage
+    yield put(
+      actions.genericModal.showErrorModal(createMessage(GenericModalMessage.ERROR_TITLE), error),
+    );
   }
 }
 

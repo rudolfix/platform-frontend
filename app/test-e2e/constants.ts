@@ -15,3 +15,5 @@ export const ISSUER_SETUP =
   "rare work reason ladder hurdle junior moment sad lens panic random photo cave essence simple better merit stage road that humor term assist arrange";
 export const ISSUER_SETUP_NO_ST =
   "denial drive symbol magic staff tool across vivid lift crime switch silly loan same company robot aim pluck stereo section team one wheat desert";
+export const INV_ICBM_ETH_M_HAS_KYC =
+  "mimic lumber mother guide coil theory elite fly tiny wink seed issue cupboard limb luggage reflect ladder menu menu still deny basket spring evil";

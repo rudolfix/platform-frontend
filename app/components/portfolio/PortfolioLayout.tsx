@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import { map } from "lodash/fp";
 import * as React from "react";
@@ -7,21 +6,23 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
-import { Q18 } from "../../config/constants";
 import { externalRoutes } from "../../config/externalRoutes";
-import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
+import { getNeuReward } from "../../modules/investor-tickets/utils";
 import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { withParams } from "../../utils/withParams";
 import { getDocumentTitles } from "../documents/utils";
 import { AssetPortfolio } from "../shared/AssetPortfolio";
-import { Document } from "../shared/Document";
+import { Button, EButtonLayout } from "../shared/buttons";
+import { ButtonTextPosition } from "../shared/buttons/Button";
 import { ETOState } from "../shared/ETOState";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
 import { NewTable, NewTableRow } from "../shared/NewTable";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ClaimedDividends } from "../wallet/claimed-dividends/ClaimedDividends";
-import { PortfolioAssetAction } from "./PorfolioAssetAction";
+import { PortfolioAssetAction } from "./PortfolioAssetAction";
 
 import * as neuIcon from "../../assets/img/neu_icon.svg";
 import * as styles from "./PortfolioLayout.module.scss";
@@ -34,15 +35,8 @@ export type TPortfolioLayoutProps = {
   neuPrice: string;
   walletAddress: string;
   isRetailEto: boolean;
-};
-
-const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): string => {
-  if (equivEurUlps.isZero()) {
-    return "0";
-  }
-
-  const equityToken = Q18.mul(equityTokenInt);
-  return equivEurUlps.div(equityToken).toFixed(8);
+  generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => void;
+  downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void;
 };
 
 const transactions: any[] = []; // TODO: Connect source of data
@@ -52,6 +46,8 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
   pendingAssets,
   myNeuBalance,
   myNeuBalanceEuroAmount,
+  generateTemplateByEtoId,
+  downloadDocument,
   neuPrice,
   walletAddress,
   isRetailEto,
@@ -163,7 +159,9 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                       <ETOState previewCode={previewCode} />
                     )}
                   </>
-                  <PortfolioAssetAction state={timedState} etoId={etoId} />
+                  <div className="d-flex justify-content-center">
+                    <PortfolioAssetAction state={timedState} etoId={etoId} />
+                  </div>
                 </NewTableRow>
               );
             },
@@ -230,7 +228,14 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
           ) : null}
 
           {myAssets.map(
-            ({ equityTokenImage, equityTokenName, investorTicket, etoId, documents }) => {
+            ({
+              equityTokenImage,
+              equityTokenName,
+              investorTicket,
+              etoId,
+              templates,
+              documents,
+            }) => {
               return (
                 <NewTableRow key={etoId}>
                   <>
@@ -250,17 +255,48 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                     currencySymbol={ECurrencySymbol.NONE}
                   />
                   <>
-                    {map(
-                      (document: IEtoDocument) => (
-                        <span key={document.ipfsHash} className={styles.documentLink}>
-                          <Document extension="pdf" />
-                          <a href={document.name} download>
-                            {getDocumentTitles(isRetailEto)[document.documentType]}
-                          </a>
-                        </span>
-                      ),
-                      documents,
-                    )}
+                    {/* Based on https://github.com/Neufund/platform-frontend/issues/2102#issuecomment-453086304 */}
+                    {map((document: IEtoDocument) => {
+                      return [
+                        EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT,
+                      ].includes(document.documentType) ? (
+                        <Button
+                          key={document.ipfsHash}
+                          className={styles.documentLink}
+                          layout={EButtonLayout.INLINE}
+                          textPosition={ButtonTextPosition.LEFT}
+                          onClick={() =>
+                            downloadDocument(
+                              {
+                                ipfsHash: document.ipfsHash,
+                                mimeType: document.mimeType,
+                                asPdf: true,
+                              },
+
+                              etoId,
+                            )
+                          }
+                        >
+                          {getDocumentTitles(isRetailEto)[document.documentType]}
+                        </Button>
+                      ) : null;
+                    }, documents)}
+                    {map((template: IEtoDocument) => {
+                      return [
+                        EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
+                        EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
+                      ].includes(template.documentType) ? (
+                        <Button
+                          key={template.ipfsHash}
+                          className={styles.documentLink}
+                          layout={EButtonLayout.INLINE}
+                          textPosition={ButtonTextPosition.LEFT}
+                          onClick={() => generateTemplateByEtoId(template, etoId)}
+                        >
+                          {getDocumentTitles(isRetailEto)[template.documentType]}
+                        </Button>
+                      ) : null;
+                    }, templates)}
                   </>
                 </NewTableRow>
               );

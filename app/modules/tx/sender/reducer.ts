@@ -36,11 +36,12 @@ export enum ETxSenderState {
   ERROR_SIGN = "ERROR_SIGN",
 }
 
+export type TSummaryData = { txData: Partial<ITxData>; additionalData?: any };
 export interface ITxSenderState {
   state: ETxSenderState;
   type?: ETxSenderType;
   txDetails?: ITxData;
-  summaryData?: Partial<ITxData>;
+  summaryData?: TSummaryData;
   blockId?: number;
   txHash?: string;
   error?: ETransactionErrorType;
@@ -132,9 +133,7 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
       return {
         ...state,
         state: ETxSenderState.SUMMARY,
-        summaryData: {
-          ...action.payload.summaryData,
-        },
+        summaryData: action.payload.summaryData,
       };
     //Change Actions
     case "TX_SENDER_CHANGE":

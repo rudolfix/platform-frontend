@@ -12,6 +12,8 @@ interface IExternalProps {
   totalInvestors: number | undefined;
   totalEquivEurUlps: BigNumber;
   canClaimToken: boolean;
+  etoId: string;
+  onClaim: (etoId: string) => void;
 }
 
 const ClaimWidgetLayout: React.SFC<IExternalProps> = ({
@@ -19,6 +21,8 @@ const ClaimWidgetLayout: React.SFC<IExternalProps> = ({
   totalInvestors,
   totalEquivEurUlps,
   canClaimToken,
+  etoId,
+  onClaim,
 }) => (
   <>
     <Message
@@ -55,7 +59,11 @@ const ClaimWidgetLayout: React.SFC<IExternalProps> = ({
       }
     />
     {canClaimToken && (
-      <Button>
+      <Button
+        onClick={() => {
+          onClaim(etoId);
+        }}
+      >
         <FormattedMessage
           id="shared-component.eto-overview.claim-your-token"
           values={{ tokenName }}

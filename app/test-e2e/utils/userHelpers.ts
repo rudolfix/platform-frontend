@@ -20,6 +20,7 @@ export const createAndLoginNewUser = (
     type?: "investor" | "issuer";
     kyc?: "business" | "individual";
     seed?: string;
+    hdPath?: string;
     clearPendingTransactions?: boolean;
     onlyLogin?: boolean;
     permissions?: string[];
@@ -36,7 +37,7 @@ export const createAndLoginNewUser = (
       address,
       privateKey,
       walletKey,
-    } = await createLightWalletWithKeyPair(params.seed);
+    } = await createLightWalletWithKeyPair(params.seed, params.hdPath);
 
     // set wallet data on local storage
     ls.setItem(
@@ -82,7 +83,7 @@ export const createAndLoginNewUser = (
  */
 export const DEFAULT_PASSWORD = "blablabla";
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
-export const createLightWalletWithKeyPair = async (seed?: string) => {
+export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: string) => {
   // promisify some stuff
   const create = promisify<any, any>(LightWalletProvider.keystore.createVault);
 
@@ -93,7 +94,7 @@ export const createLightWalletWithKeyPair = async (seed?: string) => {
   const lightWalletInstance = await create({
     password: DEFAULT_PASSWORD,
     seedPhrase: seed,
-    hdPathString: DEFAULT_HD_PATH,
+    hdPathString: hdPath || DEFAULT_HD_PATH,
     salt,
   });
 

@@ -12,6 +12,8 @@ const data: TPortfolioLayoutProps = {
   neuPrice: "3456",
   walletAddress: "0x12345678",
   isRetailEto: false,
+  downloadDocument: () => {},
+  generateTemplateByEtoId: () => {},
 };
 
 storiesOf("Portfolio/PortfolioLayout", module)

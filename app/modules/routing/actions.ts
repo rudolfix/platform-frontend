@@ -54,5 +54,8 @@ export const routingActions = {
   openInNewWindow: (path: string, target: string = "_blank") =>
     createAction("@@router/OPEN_IN_NEW_WINDOW", { path, target }),
 
+  // Portfolio
+  goToPortfolio: () => createRoutingAction(appRoutes.portfolio),
+
   // other...
 };

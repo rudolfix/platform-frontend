@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
-import { INV_ETH_EUR_ICBM_HAS_KYC } from "../constants";
+import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
 import { assertUserInDashboard, confirmAccessModal, goToDashboard, tid } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
@@ -72,7 +72,7 @@ describe("Wallet Withdraw", () => {
   it("should recover existing user with verified email from saved phrases and change email", () => {
     createAndLoginNewUser({
       type: "investor",
-      seed: INV_ETH_EUR_ICBM_HAS_KYC,
+      seed: INV_EUR_ICBM_HAS_KYC_SEED,
       onlyLogin: true,
     }).then(() => {
       goToDashboard();

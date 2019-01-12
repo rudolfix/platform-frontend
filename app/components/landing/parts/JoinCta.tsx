@@ -77,7 +77,7 @@ export class JoinCta extends React.Component<CommonHtmlProps & TDataTestId, ISta
     return (
       <div id="newsletter">
         <div className={cn(styles.joinCta, className)} style={style}>
-          <ButtonLink theme="brand" to={appRoutes.register} className={styles.registerNow}>
+          <ButtonLink theme="brand" to={appRoutes.register} innerClassName={styles.registerNow}>
             Register NOW
           </ButtonLink>
 

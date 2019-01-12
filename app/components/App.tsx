@@ -1,5 +1,6 @@
-import * as PropTypes from "prop-types";
+import { Container } from "inversify";
 import * as React from "react";
+import { hot } from "react-hot-loader/root";
 import { compose } from "redux";
 
 import { symbols } from "../di/symbols";
@@ -11,7 +12,7 @@ import {
   selectIsInitInProgress,
 } from "../modules/init/selectors";
 import { appConnect } from "../store";
-import { IInversifyProviderContext } from "../utils/InversifyProvider";
+import { ContainerContext } from "../utils/InversifyProvider";
 import { onEnterAction } from "../utils/OnEnterAction";
 import { ScrollToTop } from "../utils/ScrollToTop";
 import { withRootMetaTag } from "../utils/withMetaTags";
@@ -34,18 +35,16 @@ interface IStateProps {
 }
 
 class AppComponent extends React.Component<IStateProps, IState> {
-  static contextTypes = {
-    container: PropTypes.object,
-  };
+  static contextType = ContainerContext;
 
   logger: ILogger;
 
-  constructor(props: any, context: IInversifyProviderContext) {
+  constructor(props: any, container: Container) {
     super(props);
 
     this.state = { renderingError: null };
 
-    this.logger = context.container.get<ILogger>(symbols.logger);
+    this.logger = container.get<ILogger>(symbols.logger);
   }
 
   componentDidCatch(error: Error, errorInfo: object): void {
@@ -72,7 +71,6 @@ class AppComponent extends React.Component<IStateProps, IState> {
         <ScrollToTop>
           <AppRouter />
         </ScrollToTop>
-
         <AccessWalletModal />
         <ToastContainer />
         <GenericModal />
@@ -82,7 +80,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
   }
 }
 
-export const App = compose<React.ComponentClass>(
+const App = compose<React.ComponentClass>(
   withRootMetaTag(),
   onEnterAction({
     actionCreator: d => d(actions.init.start("appInit")),
@@ -96,3 +94,7 @@ export const App = compose<React.ComponentClass>(
     options: { pure: false }, // we need this because of:https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/blocked-updates.md
   }),
 )(AppComponent);
+
+const AppHot = hot(App);
+
+export { AppHot as App };

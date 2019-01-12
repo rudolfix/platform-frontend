@@ -37,7 +37,7 @@ export const personalSteps = [
 interface IStateProps {
   fileUploading: boolean;
   filesLoading: boolean;
-  files: IKycFileInfo[];
+  files: ReadonlyArray<IKycFileInfo>;
 }
 
 interface IDispatchProps {

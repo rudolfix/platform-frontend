@@ -29,7 +29,7 @@ class FormContent extends React.Component {
               data-test-id="models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget.address"
             />
             <Button
-              className={styles.button}
+              innerClassName={styles.button}
               layout={EButtonLayout.SECONDARY}
               iconPosition="icon-after"
               svgIcon={arrowRight}

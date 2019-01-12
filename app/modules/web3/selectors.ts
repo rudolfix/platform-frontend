@@ -1,12 +1,12 @@
+import { RouterState } from "connected-react-router";
 import { isString } from "lodash";
 import * as queryString from "query-string";
-import { RouterState } from "react-router-redux";
 import { createSelector } from "reselect";
 
 import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { IAppState } from "../../store";
 import { EthereumAddress } from "../../types";
-import { IConnectedWeb3State, IWeb3State } from "./reducer";
+import { IConnectedWeb3State, IWalletPrivateData, IWeb3State } from "./reducer";
 import { EWalletSubType, EWalletType } from "./types";
 import { makeEthereumAddressChecksummed } from "./utils";
 
@@ -24,8 +24,15 @@ export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAd
   return makeEthereumAddressChecksummed(address);
 });
 
-export const selectSeed = (state: IWeb3State): string[] | undefined => {
-  return (state.connected && state.seed && state.seed.split(" ")) || undefined;
+export const selectWalletPrivateData = (state: IWeb3State): IWalletPrivateData | undefined => {
+  return (
+    (state.connected &&
+      state.walletPrivateData && {
+        seed: state.walletPrivateData.seed.split(" "),
+        privateKey: state.walletPrivateData.privateKey,
+      }) ||
+    undefined
+  );
 };
 
 export const isLightWalletReadyToLogin = (state: IWeb3State): boolean =>

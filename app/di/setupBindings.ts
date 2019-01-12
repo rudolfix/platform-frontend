@@ -1,5 +1,5 @@
+import { push } from "connected-react-router";
 import { Container } from "inversify";
-import { push } from "react-router-redux";
 import { MiddlewareAPI } from "redux";
 import { IConfig } from "../config/getConfig";
 import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";

@@ -68,7 +68,7 @@ interface IStateProps {
   loadingData: boolean;
   fileUploading: boolean;
   filesLoading: boolean;
-  files: IKycFileInfo[];
+  files: ReadonlyArray<IKycFileInfo>;
   businessData?: IKycBusinessData;
 }
 
@@ -146,8 +146,10 @@ const KYCForm = injectIntlHelpers<FormikProps<IKycLegalRepresentative> & IProps>
         }
         name="isPoliticallyExposed"
         extraMessage={
-          props.values.isPoliticallyExposed === ("true" as any) && (
+          props.values.isPoliticallyExposed === ("true" as any) ? (
             <FormattedMessage id={"kyc.personal.politically-exposed.disclaimer"} />
+          ) : (
+            undefined
           )
         }
       />

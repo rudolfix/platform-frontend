@@ -3,6 +3,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Col, Row } from "reactstrap";
 
+import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { TTranslatedString } from "../../../types";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
@@ -14,12 +15,11 @@ import { BackupSeedVerify } from "./BackupSeedVerify";
 enum EBackupStep {
   INTRO = 1,
   FIRST_HALF = 2,
-  SECOND_HALF = 3,
-  VERIFY = 4,
+  VERIFY = 3,
 }
 
 interface IProps {
-  seed: string[];
+  walletPrivateData: IWalletPrivateData;
   verifyBackupPhrase: () => void;
   onCancel: () => void;
   backupCodesVerified: boolean;
@@ -38,13 +38,7 @@ class BackupSeedFlowContainerLayout extends React.Component<
   };
 
   onBack = () => {
-    if (this.state.backupStep === EBackupStep.INTRO) {
-      this.props.history.goBack();
-    } else {
-      this.setState(s => ({
-        backupStep: s.backupStep - 1,
-      }));
-    }
+    this.props.history.goBack();
   };
 
   onNext = () => {
@@ -63,18 +57,8 @@ class BackupSeedFlowContainerLayout extends React.Component<
         return (
           <BackupSeedDisplay
             onBack={this.onBack}
-            onNext={this.onNext}
-            words={this.props.seed}
-            pageNo={0}
-          />
-        );
-      case EBackupStep.SECOND_HALF:
-        return (
-          <BackupSeedDisplay
-            onBack={this.onBack}
             onNext={() => (backupCodesVerified ? this.props.onCancel() : this.onNext())}
-            words={this.props.seed}
-            pageNo={1}
+            walletPrivateData={this.props.walletPrivateData}
           />
         );
       case EBackupStep.VERIFY:
@@ -82,7 +66,7 @@ class BackupSeedFlowContainerLayout extends React.Component<
           <BackupSeedVerify
             onBack={this.onBack}
             onNext={this.props.verifyBackupPhrase}
-            words={this.props.seed}
+            words={this.props.walletPrivateData.seed}
           />
         );
       default:
@@ -95,8 +79,6 @@ class BackupSeedFlowContainerLayout extends React.Component<
       case EBackupStep.INTRO:
         return <FormattedMessage id="settings.backup-seed-flow-container.follow-instructions" />;
       case EBackupStep.FIRST_HALF:
-        return <FormattedMessage id="settings.backup-seed-flow-container.write-seed-on-paper" />;
-      case EBackupStep.SECOND_HALF:
         return <FormattedMessage id="settings.backup-seed-flow-container.write-seed-on-paper" />;
       case EBackupStep.VERIFY:
         return (

@@ -11,6 +11,7 @@ import {
   selectGenericModalObj,
 } from "../../modules/generic-modal/reducer";
 import { appConnect, AppDispatch } from "../../store";
+import { DeepReadonly } from "../../types";
 import { Button } from "../shared/buttons";
 import { ModalComponentBody } from "./ModalComponentBody";
 
@@ -20,8 +21,8 @@ import * as styles from "./GenericModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
-  genericModalObj?: IGenericModal;
-  component?: React.ReactType;
+  genericModalObj?: DeepReadonly<IGenericModal>;
+  component?: React.ComponentType<any>;
 }
 
 interface IHandlersProps {

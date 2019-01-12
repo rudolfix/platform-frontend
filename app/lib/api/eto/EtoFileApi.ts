@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import { Dictionary } from "lodash";
 import { symbols } from "../../../di/symbols";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
+import { withParams } from "./../../../utils/withParams";
 import {
   EEtoDocumentType,
   IEtoDocument,
@@ -11,9 +12,12 @@ import {
 } from "./EtoFileApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/etos";
+// Issuer endpoints
 const ETO_DOCUMENTS_PATH = "/me/documents";
 const ETO_DOCUMENTS_INFO_PATH = "/me/documents/state_info";
 const ETO_TEMPLATES_PATH = "/me/templates";
+// Public ETO endpoints
+const ETO_BY_ID_TEMPLATES_PATH = "/:etoId/templates/:documentType";
 
 export class EtoFileApiError extends Error {}
 export class FileAlreadyExists extends EtoFileApiError {}
@@ -105,7 +109,7 @@ export class EtoFileApi {
   ): Promise<IHttpResponse<IEtoDocument>> {
     const response = await this.httpClient.get<IHttpResponse<IEtoDocument>>({
       baseUrl: BASE_PATH,
-      url: `${etoId}/${ETO_TEMPLATES_PATH}/${etoDocument.documentType}`,
+      url: withParams(ETO_BY_ID_TEMPLATES_PATH, { etoId, documentType: etoDocument.documentType }),
       queryParams: {
         inputs: JSON.stringify(inputs),
       },

@@ -38,6 +38,16 @@
     }
   }
 
+  &.medium {
+    .header {
+      @include font-label;
+    }
+
+    .description {
+      @include font-button-default;
+    }
+  }
+
   .header {
     @include font-headline-small;
 

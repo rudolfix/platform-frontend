@@ -11,7 +11,7 @@ export type TSlidePersonLayout = "horizontal" | "vertical";
 interface IProps {
   srcSet: ISrcSet;
   name: string;
-  socialChannels: IEtoSocialProfile[];
+  socialChannels: ReadonlyArray<IEtoSocialProfile>;
   role: string;
   layout?: TSlidePersonLayout;
   description: string | React.ReactNode;

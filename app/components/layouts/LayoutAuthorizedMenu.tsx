@@ -139,7 +139,7 @@ const MenuEntryButton: React.SFC<IMenuEntry & IMenuEntryButton> = ({
     <MenuEntryDisabled {...props} />
   ) : (
     <Button
-      className={cn(styles.menuItem, { [styles.menuItemActive]: isActive })}
+      innerClassName={cn(styles.menuItem, { [styles.menuItemActive]: isActive })}
       onClick={onClick}
       layout={EButtonLayout.INLINE}
     >

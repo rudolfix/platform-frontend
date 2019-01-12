@@ -98,7 +98,10 @@ function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecD
   // todo: we should probably enumerate Yup schema and clean up all optional numbers
   // todo: we strip these things on form save now, need to move it there -- at
   if (!data.maxTicketEur) {
-    data.maxTicketEur = undefined;
+    return {
+      ...data,
+      maxTicketEur: undefined,
+    };
   }
   return data;
 }

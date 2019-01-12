@@ -5,7 +5,7 @@ import * as lolex from "lolex";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
-import { ConnectedRouter, routerMiddleware } from "react-router-redux";
+import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware, { delay } from "redux-saga";
 import { SinonSpy } from "sinon";
@@ -29,7 +29,7 @@ import { LedgerWalletConnector } from "../app/lib/web3/LedgerWallet";
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
 import { createInjectMiddleware } from "../app/middlewares/redux-injectify";
 import { rootSaga } from "../app/modules/sagas";
-import { IAppState, reducers } from "../app/store";
+import { IAppState, generateRootReducer } from "../app/store";
 import { DeepPartial } from "../app/types";
 import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
@@ -120,7 +120,9 @@ export function createIntegrationTestsSetup(
     sagaMiddleware,
   );
 
-  const store = createStore(reducers, options.initialState as any, middleware);
+  const rootReducer = generateRootReducer(history);
+
+  const store = createStore(rootReducer, options.initialState as any, middleware);
   context.deps = createGlobalDependencies(container);
 
   sagaMiddleware.run(rootSaga);

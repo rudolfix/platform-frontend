@@ -44,7 +44,7 @@ export class AccountRow extends React.Component<IAccountRow> {
 }
 
 export interface IWalletLedgerChooserTableSimple {
-  accounts: ILedgerAccount[];
+  accounts: ReadonlyArray<ILedgerAccount>;
   handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
 }
 

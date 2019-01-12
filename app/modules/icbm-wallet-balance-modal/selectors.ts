@@ -1,3 +1,4 @@
+import { DeepReadonly } from "../../types";
 import { IAppState } from "./../../store";
 import { IIcbmWalletBalanceModal, IWalletMigrationData, TWalletMigrationSteps } from "./reducer";
 
@@ -17,8 +18,8 @@ export const selectEtherBalanceIcbmModal = (state: IAppState): string =>
 
 // Migration Tool Selectors
 export const selectWalletMigrationData = (
-  state: IIcbmWalletBalanceModal,
-): IWalletMigrationData[] | undefined => state.walletMigrationData;
+  state: DeepReadonly<IIcbmWalletBalanceModal>,
+): ReadonlyArray<IWalletMigrationData> | undefined => state.walletMigrationData;
 
 export const selectWalletMigrationCurrentStep = (state: IAppState): TWalletMigrationSteps =>
   state.icbmWalletBalanceModal && state.icbmWalletBalanceModal.currentMigrationStep;

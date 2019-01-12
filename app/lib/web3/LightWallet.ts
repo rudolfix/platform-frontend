@@ -45,6 +45,7 @@ export interface ILightWallet {
   getSeed: (walletKey: object) => string;
   signTransaction: (txParams: object) => void;
   getAddresses: () => Array<string>;
+  exportPrivateKey: (address: string, walletKey: object) => string;
 }
 
 export class LightError extends Error {}
@@ -136,6 +137,22 @@ export class LightWalletUtil {
   static async testWalletPassword(lightWalletInstance: any, password: string): Promise<boolean> {
     const key = await LightWalletUtil.getWalletKey(lightWalletInstance, password);
     return lightWalletInstance.isDerivedKeyCorrect(key);
+  }
+
+  static async getWalletPrivKey(lightWalletInstance: any, password: string): Promise<string> {
+    try {
+      const keyFromPassword = promisify<ILightWallet, string>(
+        lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
+      );
+
+      // Take first address only
+      return await lightWalletInstance.exportPrivateKey(
+        lightWalletInstance.addresses[0],
+        await keyFromPassword(password),
+      );
+    } catch (e) {
+      throw new LightWrongPasswordSaltError();
+    }
   }
 
   public async getWalletKeyFromSaltAndPassword(
@@ -244,11 +261,16 @@ export class LightWallet implements IPersonalWallet {
     return await this.web3Adapter.sendRawTransaction(addHexPrefix(rawData));
   }
 
-  public async getSeed(): Promise<string> {
+  public async getWalletPrivateData(): Promise<{ seed: string; privateKey: string }> {
     if (!this.password) {
       throw new LightWalletMissingPasswordError();
     }
-    return await LightWalletUtil.getWalletSeed(this.vault.walletInstance, this.password);
+    const seed = await LightWalletUtil.getWalletSeed(this.vault.walletInstance, this.password);
+    const privateKey = await LightWalletUtil.getWalletPrivKey(
+      this.vault.walletInstance,
+      this.password,
+    );
+    return { seed, privateKey };
   }
 
   public async testPassword(newPassword: string): Promise<boolean> {

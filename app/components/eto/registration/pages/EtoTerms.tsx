@@ -261,7 +261,7 @@ const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
     mapPropsToValues: props => props.stateValues,
     handleSubmit: (values, props) => props.props.saveData(values),
     validate: values => {
-      const errors: { [key in keyof (typeof values)]: TTranslatedString } = {};
+      const errors: { -readonly [P in keyof (typeof values)]: TTranslatedString } = {};
 
       if (values.allowRetailInvestors && values.enableTransferOnSuccess) {
         errors.enableTransferOnSuccess = (

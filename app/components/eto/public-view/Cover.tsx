@@ -11,7 +11,7 @@ interface IProps {
   companyName: TTranslatedString;
   companyOneliner: TTranslatedString;
   companyLogo: IResponsiveImage;
-  tags: TTranslatedString[] | undefined;
+  tags: ReadonlyArray<TTranslatedString> | undefined;
 }
 
 export const Cover: React.SFC<IProps> = ({

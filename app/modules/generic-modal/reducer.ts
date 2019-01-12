@@ -5,7 +5,7 @@ import { DeepReadonly } from "../../types";
 export interface IGenericModalState {
   isOpen: boolean;
   genericModalObj?: IGenericModal;
-  component?: React.ReactType;
+  component?: React.ComponentType<any>;
 }
 
 //Add more custom icons here
@@ -47,9 +47,11 @@ export const genericModalReducer: AppReducer<IGenericModalState> = (
   return state;
 };
 
-export const selectGenericModalIsOpen = (state: IGenericModalState): boolean => state.isOpen;
-export const selectGenericModalObj = (state: IGenericModalState): IGenericModal | undefined =>
-  state.genericModalObj;
+export const selectGenericModalIsOpen = (state: DeepReadonly<IGenericModalState>): boolean =>
+  state.isOpen;
+export const selectGenericModalObj = (
+  state: DeepReadonly<IGenericModalState>,
+): DeepReadonly<IGenericModal> | undefined => state.genericModalObj;
 export const selectGenericModalComponent = (
-  state: IGenericModalState,
-): React.ReactType | undefined => state.component;
+  state: DeepReadonly<IGenericModalState>,
+): React.ComponentType<any> | undefined => state.component;

@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
+import { DeepReadonly } from "../../types";
 
 export interface IEtoTotalInvestment {
   totalEquivEurUlps: BigNumber;
@@ -32,8 +33,10 @@ export interface IEtoContractData {
   etoCommitmentAddress: string;
 }
 
-export type TEtoWithCompanyAndContract = TEtoSpecsData & {
-  // contract is undefined when ETO is not on blockchain
-  contract?: IEtoContractData;
-  company: TCompanyEtoData;
-};
+export type TEtoWithCompanyAndContract = DeepReadonly<
+  TEtoSpecsData & {
+    // contract is undefined when ETO is not on blockchain
+    contract?: IEtoContractData;
+    company: TCompanyEtoData;
+  }
+>;

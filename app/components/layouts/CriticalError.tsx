@@ -10,13 +10,13 @@ type TExternalProps = {
 };
 
 const CriticalError: React.SFC<TExternalProps> = ({ message }) => (
-  <section className={styles.section}>
+  <section className={styles.section} data-test-id="critical-error-page">
     <RollingSadFace />
     <h1 className={styles.header}>
       <FormattedMessage id="critical-error.heading" />
     </h1>
     {message && (
-      <p className={styles.errorDetail}>
+      <p className={styles.errorDetail} data-test-id="critical-error-page-error-detail">
         <FormattedMessage id="critical-error.error-detail" values={{ message }} />
       </p>
     )}

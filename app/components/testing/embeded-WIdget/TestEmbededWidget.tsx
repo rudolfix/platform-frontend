@@ -17,7 +17,7 @@ interface IRouterParams {
   etoId: string;
 }
 
-const TestEmbededWidgetComponent: React.SFC<IRouterParams & IStateProps> = ({ eto }) => {
+const TestEmbededWidgetLayout: React.SFC<IRouterParams & IStateProps> = ({ eto }) => {
   return (
     <>
       <h3>Eto widget testing page</h3>
@@ -44,6 +44,6 @@ const TestEmbededWidget = compose<IRouterParams & IStateProps, IRouterParams>(
       dispatch(actions.publicEtos.loadEto(props.etoId));
     },
   }),
-)(TestEmbededWidgetComponent);
+)(TestEmbededWidgetLayout);
 
 export { TestEmbededWidget };

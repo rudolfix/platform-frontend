@@ -256,7 +256,7 @@ function* handleAcceptCurrentAgreement({
     const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
     yield effects.put(actions.auth.setUser(user));
   } catch (e) {
-    notificationCenter.error(createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR)); //"There was a problem with accepting Terms and Conditions"
+    notificationCenter.error(createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR));
     logger.error("Could not accept Terms and Conditions", e);
   }
 }

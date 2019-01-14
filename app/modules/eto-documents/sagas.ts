@@ -1,6 +1,8 @@
 import { findKey } from "lodash/fp";
 import { call, fork, put, select } from "redux-saga/effects";
 
+import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { ETHEREUM_ZERO_ADDRESS, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
@@ -11,11 +13,9 @@ import {
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresent } from "../auth/sagas";
-import { downloadLink } from "../immutable-file/sagas";
+import { downloadLink } from "../immutable-file/utils";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import {createMessage} from "../../components/translatedMessages/utils";
-import {EtoDocumentsMessage, IpfsMessage} from "../../components/translatedMessages/messages";
 
 export function* generateDocumentFromTemplate(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
@@ -82,10 +82,10 @@ export function* generateDocumentFromTemplateByEtoId(
       },
       asPdf: true,
     });
-    yield neuCall(downloadLink, generatedDocument, document.name, ".doc");
+    yield call(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
-    notificationCenter.error(createMessage(EtoDocuments.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_IPFS_FILE)); //"Failed to download file from IPFS"
+    notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE));
   }
 }
 
@@ -129,7 +129,7 @@ export function* loadEtoFileData({
     logger.error("Load ETO data failed", e);
     notificationCenter.error(
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA),
-    ); //"Could not access ETO files data. Make sure you have completed KYC and email verification process."
+    );
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -157,8 +157,8 @@ function* uploadEtoFile(
     yield neuCall(
       ensurePermissionsArePresent,
       [UPLOAD_IMMUTABLE_DOCUMENT],
-      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE), //"eto.modal.confirm-upload-document-title"
-      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION), //"eto.modal.confirm-upload-document-description"
+      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE),
+      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION),
     );
 
     const matchingDocument = yield neuCall(getDocumentOfTypePromise, documentType);
@@ -166,13 +166,13 @@ function* uploadEtoFile(
       yield apiEtoFileService.deleteSpecificEtoDocument(matchingDocument.ipfsHash);
 
     yield apiEtoFileService.uploadEtoDocument(file, documentType);
-    notificationCenter.info(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOADED)); //"eto.modal.file-uploaded"
+    notificationCenter.info(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOADED));
   } catch (e) {
     if (e instanceof FileAlreadyExists) {
-      notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_EXISTS)); //"eto.modal.file-already-exists"
+      notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_EXISTS));
     } else {
       logger.error("Failed to send ETO data", e);
-      notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED)); //"eto.modal.file-upload-failed"
+      notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED));
     }
   } finally {
     yield put(actions.etoDocuments.loadFileDataStart());

@@ -299,7 +299,7 @@ function* download(document: IEtoDocument): any {
           mimeType: document.mimeType,
           asPdf: true,
         },
-        immutableDocumentName[document.documentType], //FIXME
+        immutableDocumentName[document.documentType],
       ),
     );
   }

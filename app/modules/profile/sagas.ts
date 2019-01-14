@@ -29,8 +29,8 @@ export function* addNewEmail(
   const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
 
   const emailModalTitle = isEmailAvailable
-    ? createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE) //("modules.settings.sagas.add-new-email.update-title"
-    : createMessage(ProfileMessage.PROFILE_ADD_EMAIL_TITLE); //"modules.settings.sagas.add-new-email.add-title"
+    ? createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE)
+    : createMessage(ProfileMessage.PROFILE_ADD_EMAIL_TITLE);
 
   try {
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
@@ -38,7 +38,7 @@ export function* addNewEmail(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
       emailModalTitle,
-      createMessage(ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM), //"modules.settings.sagas.add-new-email.confirm-description"
+      createMessage(ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM),
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
     notificationCenter.info(createMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED));
@@ -73,11 +73,11 @@ export function* resendEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE), //"modules.settings.sagas.resend-email.confirmation"
-      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION), //"modules.settings.sagas.resend-email.confirmation-description"
+      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE),
+      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION),
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
-    notificationCenter.info(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT)); //modules.settings.sagas.resend-email.sent
+    notificationCenter.info(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT));
   } catch (e) {
     logger.error("Failed to resend email", e);
     notificationCenter.error(

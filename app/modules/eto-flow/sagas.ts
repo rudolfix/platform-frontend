@@ -1,5 +1,5 @@
-import {effects} from "redux-saga";
-import {fork, put, select} from "redux-saga/effects";
+import { effects } from "redux-saga";
+import { fork, put, select } from "redux-saga/effects";
 
 import { EtoDocumentsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -54,8 +54,8 @@ export function* changeBookBuildingStatus(
   if (action.type !== "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES") return;
   try {
     const message = action.payload.status
-      ? createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING) //"eto.modal.confirm-start-bookbuilding-title"
-      : createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING); //"eto.modal.confirm-stop-bookbuilding-title"
+      ? createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING)
+      : createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING);
 
     yield neuCall(ensurePermissionsArePresent, [DO_BOOK_BUILDING], message);
     yield apiEtoService.changeBookBuildingState(action.payload.status);
@@ -63,7 +63,7 @@ export function* changeBookBuildingStatus(
     logger.error("Failed to change book-building status", e);
     notificationCenter.error(
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
-    ); //"Failed to send ETO data"
+    );
   } finally {
     yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
@@ -131,7 +131,7 @@ export function* saveEtoData(
     logger.error("Failed to send ETO data", e);
     notificationCenter.error(
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
-    ); //"Failed to send ETO data"
+    );
     yield put(actions.etoFlow.loadDataStop());
   }
 }
@@ -156,7 +156,7 @@ export function* submitEtoData(
     logger.error("Failed to Submit ETO data", e);
     notificationCenter.error(
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
-    ); //"Failed to send ETO data"
+    );
   }
 }
 

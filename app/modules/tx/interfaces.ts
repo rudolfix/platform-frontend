@@ -14,6 +14,7 @@ export enum ETxSenderType {
   INVEST = "INVEST",
   UPGRADE = "UPGRADE",
   ETO_SET_DATE = "ETO_SET_DATE",
+  USER_CLAIM = "USER_CLAIM",
 }
 
 export enum ETokenType {

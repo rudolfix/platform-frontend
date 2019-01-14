@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
 import { branch, renderComponent, setDisplayName } from "recompose";
 import { compose } from "redux";
 
@@ -11,6 +10,7 @@ import {
   IEtoDocument,
   IEtoFiles,
   TEtoDocumentTemplates,
+  TStateInfo,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { ignoredTemplates } from "../../lib/api/eto/EtoFileUtils";
 import { actions } from "../../modules/actions";
@@ -26,13 +26,13 @@ import {
   selectIssuerEtoTemplates,
 } from "../../modules/eto-flow/selectors";
 import { appConnect } from "../../store";
-import { TTranslatedString } from "../../types";
+import { DeepReadonly, TTranslatedString } from "../../types";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { withContainer } from "../../utils/withContainer";
 import { withMetaTags } from "../../utils/withMetaTags";
-import { ETOAddDocuments } from "../eto/shared/EtoAddDocument";
 import { EtoFileIpfsModal } from "../eto/shared/EtoFileIpfsModal";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { ClickableDocumentTile, DocumentTile } from "../shared/Document";
+import { ClickableDocumentTile, UploadableDocumentTile } from "../shared/Document";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../shared/loading-indicator";
@@ -40,13 +40,12 @@ import { SectionHeader } from "../shared/SectionHeader";
 import { SingleColDocuments } from "../shared/SingleColDocumentWidget";
 import { getDocumentTitles } from "./utils";
 
-import { withContainer } from "../../utils/withContainer";
 import * as styles from "./Documents.module.scss";
 
 type IProps = IStateProps & IDispatchProps;
 
 interface IStateProps {
-  etoFilesData: IEtoFiles;
+  etoFilesData: DeepReadonly<IEtoFiles>;
   loadingData: boolean;
   etoFileLoading: boolean;
   etoState?: EEtoState;
@@ -61,22 +60,64 @@ interface IDispatchProps {
   downloadDocumentByType: (documentType: EEtoDocumentType) => void;
 }
 
-export type TDocumentTitles = { [key in EEtoDocumentType]: TTranslatedString };
-
-export const GeneratedDocuments: React.SFC<{
+interface IGeneratedDocumentProps {
   document: IEtoDocument;
   generateTemplate: (document: IEtoDocument) => void;
   documentTitle?: TTranslatedString;
-}> = ({ document, generateTemplate, documentTitle }) => {
+}
+
+interface IUploadableDocumentProps {
+  documentTitles: TDocumentTitles;
+  documentKey: EEtoDocumentType;
+  etoDocuments: TEtoDocumentTemplates;
+  stateInfo: DeepReadonly<TStateInfo>;
+  etoState: EEtoState;
+  downloadDocumentByType: (documentType: EEtoDocumentType) => void;
+}
+
+export type TDocumentTitles = { [key in EEtoDocumentType]: TTranslatedString };
+
+export const GeneratedDocument: React.SFC<IGeneratedDocumentProps> = ({
+  document,
+  generateTemplate,
+  documentTitle,
+}) => {
   return (
-    <Col xs={6} lg={3} key={"url"} className="mb-4">
-      <ClickableDocumentTile
-        document={document}
-        generateTemplate={generateTemplate}
-        title={documentTitle}
-        extension={".doc"}
-      />
-    </Col>
+    <ClickableDocumentTile
+      document={document}
+      generateTemplate={generateTemplate}
+      title={documentTitle}
+      extension={".doc"}
+    />
+  );
+};
+
+const UploadableDocument: React.SFC<IUploadableDocumentProps> = ({
+  documentTitles,
+  documentKey,
+  etoDocuments,
+  stateInfo,
+  etoState,
+  downloadDocumentByType,
+}) => {
+  const typedFileName = documentTitles[documentKey];
+  const canUpload =
+    stateInfo &&
+    etoState &&
+    stateInfo.canUploadInStates[EtoStateToCamelcase[etoState]].some(
+      (fileName: string) => fileName === documentKey,
+    );
+  const isFileUploaded = Object.keys(etoDocuments).some(
+    uploadedKey => etoDocuments[uploadedKey].documentType === documentKey,
+  );
+  return (
+    <UploadableDocumentTile
+      documentKey={documentKey}
+      canUpload={canUpload}
+      typedFileName={typedFileName}
+      isFileUploaded={isFileUploaded}
+      downloadDocumentByType={downloadDocumentByType}
+    />
   );
 };
 
@@ -92,94 +133,71 @@ const DocumentsLayout: React.SFC<IProps> = ({
 }) => {
   const { allTemplates, stateInfo } = etoFilesData;
   const generalUploadables = stateInfo ? stateInfo.uploadableDocuments : [];
+  const etoTemplateKeys = Object.keys(etoTemplates);
   return (
-    <Row data-test-id="eto-documents">
-      <EtoFileIpfsModal />
-      <Col xs={12} lg={8}>
-        <SectionHeader className="my-4">
+    <>
+      <div data-test-id="eto-documents" className={styles.layout}>
+        <SectionHeader className={cn(styles.header)}>
           <FormattedMessage id="documents.legal-documents" />
         </SectionHeader>
 
-        <Row>
-          <Col xs={12} className={styles.groupName}>
+        <section className={styles.documentSection}>
+          <h4 className={cn(styles.groupName)}>
             <FormattedMessage id="documents.generated-documents" />
-          </Col>
-          {Object.keys(etoTemplates)
-            .filter(key => !ignoredTemplates.some(template => template === key))
-            .map((key, index) => {
+          </h4>
+          {etoTemplateKeys.length !== 0 ? (
+            etoTemplateKeys
+              .filter(key => !ignoredTemplates.some(template => template === key))
+              .map(key => {
+                return (
+                  <GeneratedDocument
+                    key={key}
+                    document={allTemplates[key]}
+                    generateTemplate={generateTemplate}
+                    documentTitle={documentTitles[allTemplates[key].documentType]}
+                  />
+                );
+              })
+          ) : (
+            <div className={styles.note}>
+              <FormattedMessage id="documents.please-fill-the-eto-forms-in-order-to-generate-templates" />
+            </div>
+          )}
+        </section>
+
+        <section className={styles.documentSection}>
+          <h4 className={styles.groupName}>
+            <FormattedMessage id="documents.approved-prospectus-and-agreements-to-upload" />
+          </h4>
+          {stateInfo &&
+            etoState &&
+            generalUploadables.map((key: EEtoDocumentType) => {
               return (
-                <GeneratedDocuments
-                  key={index}
-                  document={allTemplates[key]}
-                  generateTemplate={generateTemplate}
-                  documentTitle={documentTitles[allTemplates[key].documentType]}
+                <UploadableDocument
+                  key={key}
+                  documentKey={key}
+                  documentTitles={documentTitles}
+                  etoDocuments={etoDocuments}
+                  stateInfo={stateInfo}
+                  etoState={etoState}
+                  downloadDocumentByType={downloadDocumentByType}
                 />
               );
             })}
-          {Object.keys(etoTemplates).length === 0 && (
-            <Col className="mb-2">
-              <div>
-                <FormattedMessage id="documents.please-fill-the-eto-forms-in-order-to-generate-templates" />
-              </div>
-            </Col>
-          )}
-        </Row>
-
-        <Row>
-          <Col xs={12} className={styles.groupName}>
-            <FormattedMessage id="documents.approved-prospectus-and-agreements-to-upload" />
-          </Col>
-          {generalUploadables.map((key: EEtoDocumentType, index: number) => {
-            const typedFileName = documentTitles[key];
-            const canUpload =
-              stateInfo &&
-              etoState &&
-              stateInfo.canUploadInStates[EtoStateToCamelcase[etoState]].some(
-                (fileName: string) => fileName === key,
-              );
-            const isFileUploaded = Object.keys(etoDocuments).some(
-              uploadedKey => etoDocuments[uploadedKey].documentType === key,
-            );
-            return (
-              <Col xs={6} lg={3} key={index} className="mb-2" data-test-id={`form.name.${key}`}>
-                <ETOAddDocuments documentType={key} disabled={!canUpload}>
-                  <DocumentTile
-                    title={typedFileName}
-                    extension={".pdf"}
-                    active={canUpload}
-                    blank={!isFileUploaded}
-                  />
-                </ETOAddDocuments>
-                {isFileUploaded && (
-                  <button
-                    data-test-id="documents-download-document"
-                    onClick={() => downloadDocumentByType(key)}
-                    className={cn(styles.subTitleDownload)}
-                  >
-                    <FormattedMessage id="documents.download-document" />
-                  </button>
-                )}
-              </Col>
-            );
-          })}
-        </Row>
-      </Col>
-      <Col xs={12} lg={4}>
-        <SectionHeader className="my-4" layoutHasDecorator={false} />
-        <Row>
-          {allTemplates && (
-            <SingleColDocuments
-              documents={Object.keys(etoTemplates).map(key => {
-                return allTemplates[key];
-              })}
-              title={<FormattedMessage id="documents.agreement-and-prospectus-templates" />}
-              className={styles.documents}
-              isRetailEto={isRetailEto}
-            />
-          )}
-        </Row>
-      </Col>
-    </Row>
+        </section>
+        {allTemplates && (
+          <SingleColDocuments
+            documents={etoTemplateKeys.map(key => {
+              return allTemplates[key];
+            })}
+            title={<FormattedMessage id="documents.agreement-and-prospectus-templates" />}
+            className={styles.documents}
+            isRetailEto={isRetailEto}
+          />
+        )}
+      </div>
+      <EtoFileIpfsModal />
+    </>
   );
 };
 

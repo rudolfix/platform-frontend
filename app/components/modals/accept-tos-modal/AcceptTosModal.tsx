@@ -1,10 +1,11 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import {
+  selectIsAgreementAccepted,
   selectIsLatestAgreementAccepted,
   selectIsLatestAgreementLoaded,
   selectUserType,
@@ -16,6 +17,7 @@ import { ModalComponentBody } from "../ModalComponentBody";
 interface IStateProps {
   isOpen: boolean;
   userType?: EUserType;
+  agreementChanged: boolean;
 }
 
 interface IDispatchProps {
@@ -41,11 +43,15 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
   };
 
   render(): React.ReactNode {
-    const { userType, onLogout, onAccept } = this.props;
+    const { userType, onLogout, onAccept, agreementChanged } = this.props;
     return (
       <section className="text-center">
         <h1>
-          <FormattedMessage id="settings.modal.accept-tos.title" />
+          {agreementChanged ? (
+            <FormattedHTMLMessage tagName="span" id="settings.modal.accept-updated-tos.title" />
+          ) : (
+            <FormattedMessage id="settings.modal.accept-tos.title" />
+          )}
         </h1>
         <p className="mt-4 mb-2">
           <FormattedMessage id="settings.modal.accept-tos.text" />
@@ -96,6 +102,7 @@ const AcceptTosModalComponent: React.SFC<IStateProps & IDispatchProps> = props =
 
 export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
+    agreementChanged: selectIsAgreementAccepted(s) && !selectIsLatestAgreementAccepted(s),
     isOpen: !selectIsLatestAgreementAccepted(s) && selectIsLatestAgreementLoaded(s),
     userType: selectUserType(s),
   }),

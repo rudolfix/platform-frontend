@@ -15,7 +15,7 @@ const RegisterNowWidget: React.SFC = () => (
           <FormattedMessage id="shared-component.eto-overview.register-cta" />
         </div>
         <ButtonLink
-          className="mt-3"
+          innerClassName="mt-3"
           to={appRoutes.register}
           data-test-id="logged-out-campaigning-register"
           target={previewCode ? "_blank" : ""}

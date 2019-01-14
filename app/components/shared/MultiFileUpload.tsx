@@ -24,7 +24,7 @@ interface IProps {
   fileUploading: boolean;
   onDropFile: (file: File) => void;
   layout?: "horizontal" | "vertical";
-  files?: IKycFileInfo[];
+  files?: ReadonlyArray<IKycFileInfo>;
   "data-test-id"?: string;
 }
 

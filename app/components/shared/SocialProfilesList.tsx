@@ -42,7 +42,7 @@ type TLayoutSize = "small";
 type TLayoutPosition = "center";
 
 interface IProps {
-  profiles: IEtoSocialProfile[];
+  profiles: ReadonlyArray<IEtoSocialProfile>;
   layoutIconSize?: TLayoutSize;
   layoutIconsPosition?: TLayoutPosition;
   showLabels?: boolean;

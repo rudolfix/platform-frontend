@@ -1,4 +1,4 @@
-import { RouterState } from "react-router-redux";
+import { RouterState } from "connected-react-router";
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";

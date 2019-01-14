@@ -11,7 +11,7 @@ import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
 import * as styles from "./WalletLedgerChooserComponent.module.scss";
 
 export interface IWalletLedgerChooserComponent {
-  accounts: ILedgerAccount[];
+  accounts: ReadonlyArray<ILedgerAccount>;
   hasPreviousAddress: boolean;
   loading: boolean;
   advanced: boolean;

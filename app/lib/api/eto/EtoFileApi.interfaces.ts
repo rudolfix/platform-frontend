@@ -53,10 +53,12 @@ type TComplextFileInfo = "canDeleteInStates" | "canUploadInStates";
 
 type TSimpleFileInfo = "requiredTemplates" | "uploadableDocuments";
 
+export type TStateInfo = { [key in TSimpleFileInfo]: EEtoDocumentType[] } &
+  { [key in TComplextFileInfo]: { [key in EtoStateToCamelcase]: EEtoDocumentType[] } };
+
 export interface IEtoFiles {
   allTemplates: TEtoDocumentTemplates;
-  stateInfo?: { [key in TSimpleFileInfo]: EEtoDocumentType[] } &
-    { [key in TComplextFileInfo]: { [key in EtoStateToCamelcase]: EEtoDocumentType[] } };
+  stateInfo?: TStateInfo;
 }
 
 export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };

@@ -40,7 +40,7 @@ interface IStateProps {
   index: number;
   fileUploading: boolean;
   filesLoading: boolean;
-  files: IKycFileInfo[];
+  files: ReadonlyArray<IKycFileInfo>;
   loading: boolean;
   id: string;
 }

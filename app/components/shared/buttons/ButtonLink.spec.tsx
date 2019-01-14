@@ -59,7 +59,7 @@ describe("<ButtonLink />", () => {
   it("should pass props trough to Button", () => {
     const { node } = withMockStore({
       router: {
-        location: null,
+        location: {},
       },
     })(<ButtonLink to={"/login"} disabled={true} layout={EButtonLayout.INLINE} />);
 

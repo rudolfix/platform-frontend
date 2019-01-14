@@ -1,4 +1,5 @@
 import { find } from "lodash/fp";
+
 import { IAppState } from "../../store";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 
@@ -9,6 +10,16 @@ const selectEtoPreviewCode = (state: IAppState, etoId: string) => {
 
   if (eto) {
     return eto.previewCode;
+  }
+
+  return undefined;
+};
+
+export const selectEtoTokenName = (state: IAppState, etoId: string) => {
+  const eto = find(eto => eto!.etoId === etoId, state.publicEtos.publicEtos);
+
+  if (eto) {
+    return eto.equityTokenName;
   }
 
   return undefined;

@@ -277,15 +277,15 @@ export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Iterat
   }
 }
 
-export function* loadSeedFromWallet({ web3Manager }: TGlobalDependencies): Iterator<any> {
+export function* loadPrivateDataFromWallet({ web3Manager }: TGlobalDependencies): Iterator<any> {
   const isUnlocked = yield select((s: IAppState) => selectIsUnlocked(s.web3));
   if (!isUnlocked) {
     throw new LightWalletLocked();
   }
   try {
     const lightWallet = web3Manager.personalWallet as LightWallet;
-    const seed = yield call(lightWallet.getSeed.bind(lightWallet));
-    yield put(actions.web3.loadSeedToState(seed));
+    const { seed, privateKey } = yield call(lightWallet.getWalletPrivateData.bind(lightWallet));
+    yield put(actions.web3.loadWalletPrivateDataToState(seed, privateKey));
   } catch (e) {
     throw new Error("Fetching seed failed");
   }
@@ -293,7 +293,7 @@ export function* loadSeedFromWallet({ web3Manager }: TGlobalDependencies): Itera
 
 export function* loadSeedFromWalletWatch({ logger }: TGlobalDependencies): Iterator<any> {
   try {
-    yield neuCall(loadSeedFromWallet);
+    yield neuCall(loadPrivateDataFromWallet);
   } catch (e) {
     logger.error("Load seed from wallet", e);
     yield put(

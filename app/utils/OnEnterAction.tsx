@@ -1,14 +1,13 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { AppDispatch } from "../store";
-
 interface IOnEnterActionDispatchProps {
   enterAction: Function;
 }
 
 interface IOnEnterActionOptions {
-  actionCreator: (dispatch: AppDispatch, props: any) => void;
+  // TODO revert dispatch type after we remove flows
+  actionCreator: (dispatch: any, props: any) => void;
   pure?: boolean;
 }
 

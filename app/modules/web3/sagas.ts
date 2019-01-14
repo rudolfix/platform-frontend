@@ -24,7 +24,7 @@ export function* autoLockLightWallet({ web3Manager, logger }: TGlobalDependencie
     logger.info("Resetting light wallet password now");
     yield put(actions.web3.walletLocked());
     (web3Manager.personalWallet as LightWallet).password = undefined;
-    yield put(actions.web3.clearSeedFromState()); //Better to clear the seed here as well
+    yield put(actions.web3.clearWalletPrivateDataFromState()); //Better to clear the seed here as well
   }
 }
 

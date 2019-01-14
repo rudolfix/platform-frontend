@@ -7,5 +7,6 @@ export const txTransactionsActions = {
   startUpgrade: (tokenType: ETokenType) => createAction("TRANSACTIONS_START_UPGRADE", tokenType),
   startInvestment: () => createSimpleAction("TRANSACTIONS_START_INVESTMENT"),
   startEtoSetDate: () => createSimpleAction("TRANSACTIONS_START_ETO_SET_DATE"),
+  startUserClaim: (etoId: string) => createAction("TRANSACTIONS_START_CLAIM", etoId),
   // Add here new custom sagas that represent flows
 };

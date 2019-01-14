@@ -1,6 +1,7 @@
 .group-name {
   @include font-label;
 
+  color: $neu-slate-grey;
   margin-bottom: $spacing-vertical-lg-1;
 }
 

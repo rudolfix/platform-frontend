@@ -1,6 +1,6 @@
 import { tid } from "../../../test/testUtils";
 import { appRoutes } from "../../components/appRoutes";
-import { e2eRoutes } from "../../components/e2eRoutes";
+import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { insecureWithParams, withParams } from "../../utils/withParams";
 import { etoFixtureAddressByName, stubWindow } from "../utils";
 

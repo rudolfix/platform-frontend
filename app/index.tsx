@@ -3,15 +3,14 @@ import "reflect-metadata";
 import "./components/translatedMessages/yupLocales";
 import "./styles/bootstrap.scss";
 
-import createHistory from "history/createBrowserHistory";
+import { ConnectedRouter, routerMiddleware } from "connected-react-router";
+import { createBrowserHistory, History } from "history";
 import { Container } from "inversify";
 import { compact } from "lodash";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { hot } from "react-hot-loader";
 import { initializePhraseAppEditor } from "react-intl-phraseapp";
 import { Provider as ReduxProvider } from "react-redux";
-import { ConnectedRouter, routerMiddleware } from "react-router-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
@@ -23,7 +22,7 @@ import { symbols } from "./di/symbols";
 import { ILogger } from "./lib/dependencies/Logger";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { rootSaga } from "./modules/sagas";
-import { IAppState, reducers } from "./store";
+import { generateRootReducer, IAppState } from "./store";
 import * as ga from "./utils/googleAnalitycs.js";
 import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import { InversifyProvider } from "./utils/InversifyProvider";
@@ -33,38 +32,29 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import "./styles/overrides.scss";
 
-// @note: this is done to make HMR work with react router. In production build its gone.
-function forceRerenderInDevMode(): number {
-  if (process.env.NODE_ENV === "development") {
-    return Math.random();
-  } else {
-    return 1;
-  }
-}
-
 function renderApp(
   store: Store<IAppState>,
   history: any,
   container: Container,
-  Component: React.ComponentClass,
+  Component: React.ComponentType,
 ): void {
   const mountNode = document.getElementById("app");
 
   ReactDOM.render(
     <ReduxProvider store={store}>
       <InversifyProvider container={container}>
-        <ConnectedRouter key={forceRerenderInDevMode()} history={history}>
-          <IntlProviderAndInjector>
+        <IntlProviderAndInjector>
+          <ConnectedRouter history={history}>
             <Component />
-          </IntlProviderAndInjector>
-        </ConnectedRouter>
+          </ConnectedRouter>
+        </IntlProviderAndInjector>
       </InversifyProvider>
     </ReduxProvider>,
     mountNode,
   );
 }
 
-function startupApp(history: any): { store: Store<IAppState>; container: Container } {
+function startupApp(history: History): { store: Store<IAppState>; container: Container } {
   const config = getConfig(process.env);
   const container = setupBindings(config);
 
@@ -84,10 +74,12 @@ function startupApp(history: any): { store: Store<IAppState>; container: Contain
     ]),
   );
 
+  const rootReducer = generateRootReducer(history);
+
   const store: Store<IAppState> =
     process.env.NODE_ENV === "production"
-      ? createStore(reducers, middleware)
-      : createStore(reducers, composeWithDevTools(middleware));
+      ? createStore(rootReducer, middleware)
+      : createStore(rootReducer, composeWithDevTools(middleware));
 
   // we have to create the dependencies here, because getState and dispatch get
   // injected in the middleware step above, maybe change this later
@@ -109,6 +101,6 @@ if (process.env.NF_ENABLE_TRANSLATE_OVERLAY) {
 
 ga.installGA();
 
-const history = createHistory();
+const history = createBrowserHistory();
 const { store, container } = startupApp(history);
-renderApp(store, history, container, hot(module)(App));
+renderApp(store, history, container, App);

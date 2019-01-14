@@ -57,14 +57,14 @@ const MigrateFooter: React.SFC<{
                 <ButtonArrowRight
                   onClick={gotoNextStep}
                   data-test-id="modals.icbm-balance-modal.balance-footer.successful-transaction"
-                  className="px-0"
+                  innerClassName="px-0"
                 >
                   <FormattedMessage id="settings.modal.icbm-wallet-balance.button.go-to-next-step" />
                 </ButtonArrowRight>
               ) : (
                 <ButtonArrowRight
                   onClick={onGotoWallet}
-                  className="px-0"
+                  innerClassName="px-0"
                   data-test-id="modals.icbm-balance-modal.balance-footer.successful-transaction"
                 >
                   <FormattedMessage id="settings.modal.icbm-wallet-balance.button.wallet" />

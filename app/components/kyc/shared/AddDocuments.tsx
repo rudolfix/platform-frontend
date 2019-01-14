@@ -10,7 +10,7 @@ import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 interface IStateProps {
   fileUploading: boolean;
-  files: IKycFileInfo[];
+  files: ReadonlyArray<IKycFileInfo>;
 }
 
 interface IDispatchProps {

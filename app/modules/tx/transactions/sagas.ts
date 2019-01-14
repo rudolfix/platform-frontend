@@ -6,6 +6,7 @@ import { onInvestmentTxModalHide } from "../../investment-flow/sagas";
 import { neuTakeLatest } from "../../sagasUtils";
 import { ITxSendParams, txSendSaga } from "../sender/sagas";
 import { ETxSenderType } from "./../interfaces";
+import { startClaimGenerator } from "./claim/saga";
 import { etoSetDateGenerator } from "./eto-flow/saga";
 import { investmentFlowGenerator } from "./investment/sagas";
 import { upgradeTransactionFlow } from "./upgrade/sagas";
@@ -55,6 +56,23 @@ export function* investSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
+export function* userClaimSaga({ logger }: TGlobalDependencies, action: TAction): any {
+  if (action.type !== "TRANSACTIONS_START_CLAIM") return;
+  const etoId = action.payload;
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.USER_CLAIM,
+      transactionFlowGenerator: startClaimGenerator,
+      extraParam: etoId,
+    });
+    logger.info("User claim successful");
+  } catch (e) {
+    logger.info("User claim cancelled", e);
+  } finally {
+    yield put(actions.publicEtos.loadEto(etoId));
+  }
+}
+
 export function* etoSetDateSaga({ logger }: TGlobalDependencies): any {
   try {
     yield txSendSaga({
@@ -74,5 +92,6 @@ export const txTransactionsSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_UPGRADE", upgradeSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_INVESTMENT", investSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_ETO_SET_DATE", etoSetDateSaga);
+  yield fork(neuTakeLatest, "TRANSACTIONS_START_CLAIM", userClaimSaga);
   // Add new transaction types here...
 };

@@ -61,9 +61,21 @@ export const selectMyAssets = (state: IAppState): TETOWithInvestorTicket[] | und
 
 export const selectMyPendingAssets = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
   const etos = selectEtoWithInvestorTickets(state);
-
   if (etos) {
     return etos.filter(eto => !eto.investorTicket.claimedOrRefunded);
+  }
+
+  return undefined;
+};
+
+export const selectMyInvestorTicketByEtoId = (
+  state: IAppState,
+  etoId: string,
+): TETOWithInvestorTicket | undefined => {
+  const etos = selectEtoWithInvestorTickets(state);
+  if (etos) {
+    // Should only return one
+    return etos.filter(eto => eto.etoId === etoId)[0];
   }
 
   return undefined;

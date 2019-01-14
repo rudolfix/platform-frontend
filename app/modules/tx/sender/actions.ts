@@ -1,7 +1,7 @@
 import { ITxData } from "../../../lib/web3/types";
 import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ETxSenderType } from "./../interfaces";
-import { ETransactionErrorType } from "./reducer";
+import { ETransactionErrorType, TSummaryData } from "./reducer";
 
 export const txSenderActions = {
   // Modal related actions
@@ -27,7 +27,7 @@ export const txSenderActions = {
   // Error Actions
   txSenderError: (error: ETransactionErrorType) => createAction("TX_SENDER_ERROR", { error }),
   // Flow Actions
-  txSenderContinueToSummary: (summaryData?: Partial<ITxData>) =>
+  txSenderContinueToSummary: (summaryData?: TSummaryData) =>
     createAction("TX_SENDER_CONTINUE_TO_SUMMARY_WITH_DATA", { summaryData }),
 
   // reducer setters

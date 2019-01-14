@@ -1,5 +1,5 @@
-import { LocationDescriptor } from "history";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
+import { LocationDescriptorObject, Path } from "history";
 
 import { appRoutes } from "../../components/appRoutes";
 import { kycRoutes } from "../../components/kyc/routes";
@@ -7,12 +7,12 @@ import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/r
 import { walletRoutes } from "../../components/wallet/routes";
 import { createAction } from "../actionsUtils";
 
-const createRoutingAction = (location: LocationDescriptor) => push(location);
+const createRoutingAction = (location: Path | LocationDescriptorObject) => push(location as any);
 
 export const routingActions = {
   // navigation primitives
   goBack: () => createAction("GO_BACK", {}),
-  goTo: (location: LocationDescriptor) => createRoutingAction(location),
+  goTo: (location: Path | LocationDescriptorObject) => createRoutingAction(location),
 
   // default routes
   goHome: () => createRoutingAction(appRoutes.root),
@@ -53,6 +53,9 @@ export const routingActions = {
   // external paths
   openInNewWindow: (path: string, target: string = "_blank") =>
     createAction("@@router/OPEN_IN_NEW_WINDOW", { path, target }),
+
+  // Portfolio
+  goToPortfolio: () => createRoutingAction(appRoutes.portfolio),
 
   // other...
 };

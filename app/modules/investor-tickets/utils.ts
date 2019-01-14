@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 
+import { Q18 } from "../../config/constants";
 import { ICalculatedContribution, IInvestorTicket } from "./types";
 
 export const convertToCalculatedContribution = ([
@@ -62,3 +63,12 @@ export const convertToInvestorTicket = ([
   claimedOrRefunded,
   usedLockedAccount,
 });
+
+export const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): string => {
+  if (equivEurUlps.isZero()) {
+    return "0";
+  }
+
+  const equityToken = Q18.mul(equityTokenInt);
+  return equivEurUlps.div(equityToken).toFixed(8);
+};

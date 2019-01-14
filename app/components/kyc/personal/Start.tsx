@@ -154,8 +154,10 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
           }
           name="isPoliticallyExposed"
           extraMessage={
-            props.values.isPoliticallyExposed === ("true" as any) && (
+            props.values.isPoliticallyExposed === ("true" as any) ? (
               <FormattedMessage id={"kyc.personal.politically-exposed.disclaimer"} />
+            ) : (
+              undefined
             )
           }
           data-test-id="kyc-personal-start-is-politically-exposed"

@@ -1,13 +1,13 @@
-import * as PropTypes from "prop-types";
+import { Container } from "inversify";
 import * as React from "react";
-import { connect } from "react-redux";
+
 import { symbols } from "../di/symbols";
-import { AppDispatch } from "../store";
+import { appConnect, AppDispatch } from "../store";
 import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,
 } from "./AsyncIntervalScheduler";
-import { IInversifyProviderContext } from "./InversifyProvider";
+import { ContainerContext } from "./InversifyProvider";
 
 interface IActionWatcherDispatchProps {
   watchAction: Function;
@@ -27,23 +27,23 @@ export const withActionWatcher: (
 ) => (
   WrappedComponent: React.ComponentType,
 ) => React.ComponentClass = options => WrappedComponent =>
-  connect<{}, IActionWatcherDispatchProps>(
-    undefined,
-    dispatch => ({
+  appConnect<{}, IActionWatcherDispatchProps>({
+    dispatchToProps: dispatch => ({
       watchAction: () => options.actionCreator(dispatch),
     }),
-  )(
+  })(
     class ActionWatcher extends React.Component<IActionWatcherDispatchProps> {
-      private asyncIntervalScheduler: AsyncIntervalScheduler;
-      static contextTypes = {
-        container: PropTypes.object,
-      };
+      static contextType = ContainerContext;
 
-      constructor(props: any, context: IInversifyProviderContext) {
-        super(props, context);
-        const asyncIntervalSchedulerFactory = context.container.get<
-          AsyncIntervalSchedulerFactoryType
-        >(symbols.asyncIntervalSchedulerFactory);
+      asyncIntervalScheduler: AsyncIntervalScheduler;
+
+      constructor(props: any, container: Container) {
+        super(props);
+
+        const asyncIntervalSchedulerFactory = container.get<AsyncIntervalSchedulerFactoryType>(
+          symbols.asyncIntervalSchedulerFactory,
+        );
+
         this.asyncIntervalScheduler = asyncIntervalSchedulerFactory(
           this.props.watchAction,
           options.interval,

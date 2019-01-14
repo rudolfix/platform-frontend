@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
 import { appRoutes } from "../../appRoutes";
@@ -43,20 +43,20 @@ const LandingFeatured: React.SFC = () => (
           <FormattedMessage id="platform.landing.list.fifth" />
         </li>
       </ul>
-      <div className="my-5">
-        <span className="mr-5">
-          <ButtonLink
-            theme="neon"
-            layout={EButtonLayout.SECONDARY}
-            size={ButtonSize.HUGE}
-            to={appRoutes.register}
-          >
-            <FormattedMessage id="wallet-selector.register" />
-          </ButtonLink>
-        </span>
+      <div className="mt-5">
+        <ButtonLink
+          theme="neon"
+          className="mr-5 mb-5"
+          layout={EButtonLayout.SECONDARY}
+          size={ButtonSize.HUGE}
+          to={appRoutes.register}
+        >
+          <FormattedMessage id="wallet-selector.register" />
+        </ButtonLink>
         <ButtonLink
           size={ButtonSize.HUGE}
           theme="graphite"
+          className="mb-5"
           layout={EButtonLayout.PRIMARY}
           to={appRoutes.login}
         >

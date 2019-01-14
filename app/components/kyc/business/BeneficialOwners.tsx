@@ -16,7 +16,7 @@ import * as plusIcon from "../../../assets/img/inline_icons/plus.svg";
 import * as styles from "./BeneficialOwners.module.scss";
 
 interface IStateProps {
-  beneficialOwners: IKycBeneficialOwner[];
+  beneficialOwners: ReadonlyArray<IKycBeneficialOwner>;
   loading: boolean;
 }
 

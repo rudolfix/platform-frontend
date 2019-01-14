@@ -66,6 +66,12 @@
 
 .enabled {
   cursor: pointer;
+
+  &:active,
+  &:hover,
+  &:focus {
+    box-shadow: 0 0 px-to-rem(5px) px-to-rem(1px) $gray10;
+  }
 }
 
 .active {
@@ -83,10 +89,21 @@
   background-color: transparent;
   border-radius: px-to-rem(5px);
   border: 0;
+}
+
+.sub-title-download {
+  width: 100%;
+  color: $color-black;
+  display: block;
+  font-size: px-to-rem(8px);
+  padding: 0;
+  background-color: transparent;
+  border: 0;
 
   &:active,
   &:hover,
   &:focus {
-    box-shadow: 0 0 px-to-rem(5px) px-to-rem(1px) $gray10;
+    text-decoration: underline;
+    text-decoration-color: $neu-piss-yellow;
   }
 }

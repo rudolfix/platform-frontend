@@ -169,7 +169,7 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
                 layout={EButtonLayout.SECONDARY}
                 svgIcon={plusIcon}
                 onClick={() => arrayHelpers.push(getBlankMember())}
-                className={localStyles.addButton}
+                innerClassName={localStyles.addButton}
               >
                 <FormattedMessage id="eto.form.key-individuals.add" />
               </Button>

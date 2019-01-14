@@ -307,7 +307,7 @@ const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
     mapPropsToValues: props => convert(props.stateValues, toFormState),
     handleSubmit: (values, props) => props.props.saveData(values),
     validate: values => {
-      const errors: { [key in keyof (typeof values)]: TTranslatedString } = {};
+      const errors: { -readonly [P in keyof (typeof values)]: TTranslatedString } = {};
 
       if ((values.publicDiscountFraction || 0) > (values.whitelistDiscountFraction || 0)) {
         errors.whitelistDiscountFraction = (

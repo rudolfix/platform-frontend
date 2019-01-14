@@ -5,24 +5,25 @@ import {
   getContext,
   race,
   spawn,
+  StringableActionCreator,
   take,
   takeEvery,
   takeLatest,
 } from "redux-saga/effects";
 import { TGlobalDependencies } from "../di/setupBindings";
-import { TAction, TActionType } from "./actions";
+import { TAction, TActionPayload, TActionType } from "./actions";
 
 export function* neuTakeLatest(
-  type: TActionType | Array<string>,
-  saga: (deps: TGlobalDependencies, action: TAction) => any,
+  type: TActionType | TActionType[],
+  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
 ): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
   yield takeLatest(type, saga, deps);
 }
 
 export function* neuTakeEvery(
-  type: TActionType | Array<string>,
-  saga: (deps: TGlobalDependencies, action: TAction) => any,
+  type: TActionType | TActionType[] | StringableActionCreator<TAction>,
+  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
 ): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
   yield takeEvery(type, saga, deps);
@@ -48,8 +49,8 @@ export function* neuCall(
  * Starts saga on `startAction`, cancels on `stopAction`, loops...
  */
 export function* neuTakeUntil(
-  startAction: TActionType | TActionType[],
-  stopAction: TActionType | TActionType[],
+  startAction: TActionType | TActionType[] | StringableActionCreator<TAction>,
+  stopAction: TActionType | TActionType[] | StringableActionCreator<TAction>,
   saga: (deps: TGlobalDependencies, ...args: any[]) => any,
 ): any {
   while (true) {
@@ -65,8 +66,7 @@ export function* neuTakeUntil(
 /**
  *  Awaits an Action with specific payload
  */
-export function* neuTakeOnly(action: TActionType, payload: any): any {
-  // TODO: Remove Any and add correct type similar to "TActionType"
+export function* neuTakeOnly<T extends TActionType>(action: T, payload: TActionPayload<T>): any {
   while (true) {
     const takenAction = yield take(action);
     if (isEqual(takenAction.payload, payload)) return;

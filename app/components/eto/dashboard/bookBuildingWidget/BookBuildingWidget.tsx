@@ -117,7 +117,7 @@ const BookBuildingWidgetLayout: React.SFC<ILayoutProps> = ({
           <ButtonArrowRight
             onClick={onClick}
             data-test-id="eto-flow-start-bookbuilding"
-            className={styles.buttonOverride}
+            innerClassName={styles.buttonOverride}
           >
             {buttonText}
           </ButtonArrowRight>

@@ -17,15 +17,9 @@ import createSagaMiddleware from "redux-saga";
 
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
-import {
-  createGlobalDependencies,
-  customizerContainerWithMiddlewareApi,
-  setupBindings,
-  TGlobalDependencies,
-} from "./di/setupBindings";
+import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "./di/setupBindings";
 import { symbols } from "./di/symbols";
 import { ILogger } from "./lib/dependencies/Logger";
-import { createInjectMiddleware } from "./middlewares/redux-injectify";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { rootSaga } from "./modules/sagas";
 import { generateRootReducer, IAppState } from "./store";
@@ -75,7 +69,6 @@ function startupApp(history: History): { store: Store<IAppState>; container: Con
   const middleware = applyMiddleware(
     ...compact([
       routerMiddleware(history),
-      createInjectMiddleware(container, customizerContainerWithMiddlewareApi),
       sagaMiddleware,
       process.env.NODE_ENV === "production" && reduxLogger(logger),
     ]),

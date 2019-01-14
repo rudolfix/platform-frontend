@@ -34,6 +34,8 @@ import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Adapter } from "../../lib/web3/Web3Adapter";
 import { Web3ManagerMock } from "../../lib/web3/Web3Manager.mock";
 import { actions } from "../../modules/actions";
+import { neuCall } from "../../modules/sagasUtils";
+import { initWeb3ManagerEvents } from "../../modules/web3/sagas";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons";
@@ -96,7 +98,7 @@ describe("Wallet selector integration", () => {
       }),
     });
 
-    const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
+    const { store, container, dispatchSpy, history, sagaMiddleware } = createIntegrationTestsSetup({
       ledgerWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
@@ -118,6 +120,10 @@ describe("Wallet selector integration", () => {
         },
       },
       initialRoute: walletRegisterRoutes.light,
+    });
+    // need to manually initialize, since contract setup is ommitted
+    sagaMiddleware.run(function*(): any {
+      yield neuCall(initWeb3ManagerEvents);
     });
 
     container
@@ -249,7 +255,7 @@ describe("Wallet selector integration", () => {
       }),
     });
 
-    const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
+    const { store, container, dispatchSpy, history, sagaMiddleware } = createIntegrationTestsSetup({
       browserWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
@@ -263,6 +269,12 @@ describe("Wallet selector integration", () => {
         },
       },
     });
+
+    // need to manually initialize, since contract setup is ommitted
+    sagaMiddleware.run(function*(): any {
+      yield neuCall(initWeb3ManagerEvents);
+    });
+
     container
       .get<Web3ManagerMock>(symbols.web3Manager)
       .initializeMock(internalWeb3AdapterMock, dummyNetworkId);

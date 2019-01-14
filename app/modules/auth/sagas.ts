@@ -29,7 +29,7 @@ import {
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { MessageSignCancelledError } from "./errors";
-import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
+import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -202,8 +202,10 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
 
     yield neuCall(obtainJWT, [SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
+
+    const userType: EUserType = yield select(selectUserType);
     // tslint:disable-next-line
-    walletStorage.set(web3Manager.personalWallet!.getMetadata());
+    walletStorage.set(web3Manager.personalWallet!.getMetadata(), userType);
 
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),
@@ -306,10 +308,11 @@ function* verifyUserEmail(): Iterator<any> {
  * Saga & Promise to fetch a new jwt from the authentication server
  */
 export async function obtainJwtPromise(
-  { getState, web3Manager, signatureAuthApi, cryptoRandomString, logger }: TGlobalDependencies,
+  { web3Manager, signatureAuthApi, cryptoRandomString, logger }: TGlobalDependencies,
+  state: IAppState,
   permissions: Array<string> = [],
 ): Promise<string> {
-  const address = selectEthereumAddressWithChecksum(getState());
+  const address = selectEthereumAddressWithChecksum(state);
 
   const salt = cryptoRandomString(64);
 
@@ -340,7 +343,8 @@ export function* obtainJWT(
   { jwtStorage }: TGlobalDependencies,
   permissions: Array<string> = [],
 ): Iterator<any> {
-  const jwt: string = yield neuCall(obtainJwtPromise, permissions);
+  const state: IAppState = yield select();
+  const jwt: string = yield neuCall(obtainJwtPromise, state, permissions);
   yield effects.put(actions.auth.loadJWT(jwt));
   jwtStorage.set(jwt);
 

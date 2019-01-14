@@ -1,11 +1,6 @@
 import { mapValues } from "lodash";
 
 export const symbols = makeDebugSymbols({
-  // redux
-  appDispatch: Symbol(),
-  navigateTo: Symbol(),
-  getState: Symbol(),
-
   // configs
   config: Symbol(),
   ethereumNetworkConfig: Symbol(),

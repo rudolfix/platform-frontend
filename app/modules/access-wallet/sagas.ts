@@ -3,6 +3,7 @@ import { call, put, race, select, take } from "redux-saga/effects";
 
 import { GenericError } from "../../components/translatedMessages/messages";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { EUserType } from "../../lib/api/users/interfaces";
 import {
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
@@ -17,6 +18,7 @@ import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TAction } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
+import { selectUserType } from "../auth/selectors";
 import { neuCall } from "../sagasUtils";
 import { unlockWallet } from "../web3/sagas";
 import { selectIsLightWallet, selectIsUnlocked } from "../web3/selectors";
@@ -24,18 +26,19 @@ import { EWalletType } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
 
-export async function ensureWalletConnection({
+export function* ensureWalletConnection({
   web3Manager,
   walletStorage,
   lightWalletConnector,
   ledgerWalletConnector,
   browserWalletConnector,
-}: TGlobalDependencies): Promise<void> {
+}: TGlobalDependencies): any {
   if (web3Manager.personalWallet) {
     return;
   }
+  const userType: EUserType = yield select(selectUserType);
   /* tslint:disable: no-useless-cast */
-  const metadata = walletStorage.get()!;
+  const metadata = walletStorage.get(userType)!;
   /* tslint:enable: no-useless-cast */
 
   invariant(metadata, "User has JWT but doesn't have wallet metadata!");
@@ -43,13 +46,13 @@ export async function ensureWalletConnection({
   let wallet: IPersonalWallet;
   switch (metadata.walletType) {
     case EWalletType.LEDGER:
-      wallet = await connectLedger(ledgerWalletConnector, web3Manager, metadata);
+      wallet = yield connectLedger(ledgerWalletConnector, web3Manager, metadata);
       break;
     case EWalletType.BROWSER:
-      wallet = await connectBrowser(browserWalletConnector, web3Manager, metadata);
+      wallet = yield connectBrowser(browserWalletConnector, web3Manager, metadata);
       break;
     case EWalletType.LIGHT:
-      wallet = await connectLightWallet(lightWalletConnector, metadata);
+      wallet = yield connectLightWallet(lightWalletConnector, metadata);
       break;
     default:
       return invariant(false, "Wallet type unrecognized");
@@ -63,7 +66,7 @@ export async function ensureWalletConnection({
     throw new MismatchedWalletAddressError(metadata.address, wallet.ethereumAddress);
   }
 
-  await web3Manager.plugPersonalWallet(wallet);
+  yield web3Manager.plugPersonalWallet(wallet);
 }
 
 async function connectLedger(

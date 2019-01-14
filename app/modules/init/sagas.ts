@@ -10,9 +10,11 @@ import { selectUserType } from "../auth/selectors";
 import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
+import { initWeb3ManagerEvents } from "../web3/sagas";
 
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
   try {
+    yield fork(neuCall, initWeb3ManagerEvents);
     yield web3Manager.initialize();
 
     yield neuCall(initializeContracts);

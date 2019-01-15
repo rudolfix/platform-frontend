@@ -11,6 +11,14 @@ export function tid(id: string, rest?: string): string {
   return `[data-test-id="${id}"]` + (rest ? ` ${rest}` : "");
 }
 
+/**
+ * Returns TID for notification
+ * We can't use `tid` method because notification TID is provided as a class
+ * as `react-toastify` doesn't allow custom attributes
+ * @param notificationTid
+ */
+export const notificationTid = (notificationTid: string) => `.${notificationTid}`;
+
 export const ETO_FIXTURES: any = require("../../../git_modules/platform-contracts-artifacts/localhost/eto_fixtures.json");
 
 export const FIXTURE_ACCOUNTS: any = require("../../../git_modules/platform-contracts-artifacts/localhost/fixtures.json");
@@ -142,6 +150,10 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
   }
 
   cy.get(tid("btn-send")).awaitedClick();
+};
+
+export const assertLockedAccessModal = () => {
+  cy.get(tid("access-light-wallet-locked")).should("exist");
 };
 
 export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {

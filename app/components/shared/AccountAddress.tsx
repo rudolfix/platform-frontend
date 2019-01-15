@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps } from "../../types";
 import { Avatar } from "./Avatar";
-import { CopyToClipboard } from "./CopyToClipboard";
+import { CopyToClipboardButton } from "./CopyToClipboardButton";
 import { EtherscanAddressLink } from "./EtherscanLink";
 
 import * as styles from "./AccountAddress.module.scss";
@@ -32,7 +32,7 @@ const AccountAddress: React.SFC<IAccountAddressProps & CommonHtmlProps> = ({
         </div>
       </div>
 
-      <CopyToClipboard value={address} />
+      <CopyToClipboardButton value={address} />
     </div>
   );
 };

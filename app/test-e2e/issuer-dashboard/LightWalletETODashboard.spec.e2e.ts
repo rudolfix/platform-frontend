@@ -8,14 +8,11 @@ import {
   verifyLatestUserEmail,
 } from "../utils";
 import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
-
-const password = "strongpassword";
+import { DEFAULT_PASSWORD, generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Light Wallet ETO Dashboard", () => {
   it("should register verify an email and assert that the dashboard is changing", () => {
-    const testEmail = convertToUniqueEmail("moe@test.com");
-
-    registerWithLightWalletETO(testEmail, password);
+    registerWithLightWalletETO(generateRandomEmailAddress(), DEFAULT_PASSWORD);
 
     assertEtoDashboard();
     assertBackupSeedWidgetVisible();

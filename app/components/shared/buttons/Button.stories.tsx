@@ -50,24 +50,22 @@ storiesOf("buttons/default", module)
   ))
   .add("white theme", () => (
     <>
-      <Button theme="white">primary</Button>
-      <br />
-      <Button theme="neon">neon</Button>
+      <Button theme="white">white primary</Button>
       <br />
       <Button theme="white" disabled>
-        primary disabled
+        white primary disabled
       </Button>
       <br />
       <Button svgIcon={icon} theme="white" iconPosition="icon-before">
-        primary icon before text
+        white primary icon before text
       </Button>
       <br />
       <Button layout={EButtonLayout.SECONDARY} theme="white">
-        secondary
+        white secondary
       </Button>
       <br />
       <Button layout={EButtonLayout.SECONDARY} theme="white" disabled>
-        secondary disabled
+        white secondary disabled
       </Button>
       <br />
       <Button
@@ -76,7 +74,7 @@ storiesOf("buttons/default", module)
         theme="white"
         iconPosition="icon-before"
       >
-        secondary icon before text
+        secondary white icon before text
       </Button>
       <br />
       <Button
@@ -86,8 +84,13 @@ storiesOf("buttons/default", module)
         iconPosition="icon-before"
         disabled
       >
-        secondary icon before text disabled
+        secondary white icon before text disabled
       </Button>
+      <br />
+      <Button theme="neon">neon primary</Button>
+      <br />
+      <Button theme="neon">neon primary disabled</Button>
+      <br />
     </>
   ))
   .add("with size", () => (

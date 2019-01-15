@@ -3,7 +3,7 @@ import * as React from "react";
 import { Col, Container, Row } from "reactstrap";
 
 import { TTranslatedString } from "../../types";
-import { CopyToClipboard } from "./CopyToClipboard";
+import { CopyToClipboardButton } from "./CopyToClipboardButton";
 import { InlineIcon } from "./InlineIcon";
 
 import * as iconDownload from "../../assets/img/inline_icons/download.svg";
@@ -11,7 +11,7 @@ import * as styles from "./HighlightedStripField.module.scss";
 
 interface IProps {
   label?: TTranslatedString;
-  value?: string | React.ReactNode;
+  value?: TTranslatedString;
   icon?: string;
   link?: {
     title: TTranslatedString;
@@ -56,7 +56,7 @@ export const HighlightedStripField: React.SFC<IProps> = ({
         {value && (
           <Col className="d-flex justify-content-end" xs={7}>
             <span>
-              {withCopy && <CopyToClipboard value={value} className={styles.icon} />}
+              {withCopy && <CopyToClipboardButton value={value} className={styles.icon} />}
               <span className={styles.value}>{value}</span>
             </span>
           </Col>

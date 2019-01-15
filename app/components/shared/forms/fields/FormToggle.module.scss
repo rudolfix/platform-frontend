@@ -10,7 +10,7 @@ $track-width: 48px;
 }
 
 .input {
-  @include visually-hidden;
+  @include sr-only;
 
   &:disabled {
     ~ .track {

@@ -15,6 +15,11 @@ const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
 const JWT_KEY = "NF_JWT";
 const CURRENT_AGREEMENT = "QmZP5jN7W7oG7Kh4HsYPNtJ6naGTC3PHGx7vUgbTTGU7kN";
 
+export const generateRandomEmailAddress = () =>
+  `${Math.random()
+    .toString(36)
+    .substring(7)}@e2e.com`;
+
 export const createAndLoginNewUser = (
   params: {
     type?: "investor" | "issuer";
@@ -81,7 +86,7 @@ export const createAndLoginNewUser = (
  * Create a light wallet with a given seed
  * @param seed
  */
-export const DEFAULT_PASSWORD = "blablabla";
+export const DEFAULT_PASSWORD = "strongpassword";
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: string) => {
   // promisify some stuff

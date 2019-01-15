@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { TTranslatedString } from "../../types";
-import { CopyToClipboard } from "./CopyToClipboard";
+import { CopyToClipboardButton } from "./CopyToClipboardButton";
 import { InlineIcon } from "./InlineIcon";
 
 import * as iconDownload from "../../assets/img/inline_icons/download.svg";
@@ -10,7 +10,7 @@ import * as styles from "./HighlightedField.module.scss";
 
 interface IProps {
   label: TTranslatedString;
-  value: string | React.ReactNode;
+  value: TTranslatedString;
   icon?: string;
   link?: {
     title: TTranslatedString;
@@ -48,7 +48,7 @@ export const HighlightedField: React.SFC<IProps> = ({
         className={cn(styles.highlightedField, withCopy && "d-flex justify-content-between")}
         data-test-id={dataTestId}
       >
-        {withCopy && <CopyToClipboard value={value} />}
+        {withCopy && <CopyToClipboardButton value={value} />}
         {value}
       </div>
     </div>

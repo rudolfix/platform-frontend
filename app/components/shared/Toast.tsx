@@ -3,17 +3,20 @@ import "react-toastify/dist/ReactToastify.css";
 import * as React from "react";
 import { toast, ToastContainer as ToastifyContainer } from "react-toastify";
 
-import { TOAST_COMPONENT_DELAY } from "../../config/constants";
-import { TTranslatedString } from "../../types";
+import { IS_CYPRESS, TOAST_COMPONENT_DELAY } from "../../config/constants";
+import { TDataTestId, TTranslatedString } from "../../types";
 
 const ToastContainer = () => <ToastifyContainer autoClose={TOAST_COMPONENT_DELAY} />;
 
-const showErrorToast = (content: TTranslatedString) => {
-  toast.error(content);
+const getOptions = (options?: TDataTestId) =>
+  IS_CYPRESS && options ? { className: options["data-test-id"] } : undefined;
+
+const showErrorToast = (content: TTranslatedString, options?: TDataTestId) => {
+  toast.error(content, getOptions(options));
 };
 
-const showInfoToast = (content: TTranslatedString) => {
-  toast.info(content);
+const showInfoToast = (content: TTranslatedString, options?: TDataTestId) => {
+  toast.info(content, getOptions(options));
 };
 
 export { ToastContainer, showErrorToast, showInfoToast };

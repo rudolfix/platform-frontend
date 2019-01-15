@@ -24,25 +24,15 @@ interface IStateProps {
   backupCodesVerified: boolean;
 }
 
-interface IBackupSeedComponentState {
-  walletPrivateData?: IWalletPrivateData;
-}
-
-class BackupSeedComponent extends React.Component<
-  IDispatchProps & IStateProps,
-  IBackupSeedComponentState
-> {
-  constructor(props: IDispatchProps & IStateProps) {
-    super(props);
-    this.state = {};
-  }
+class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> {
   componentWillMount(): void {
     this.props.getSeed();
   }
 
-  componentDidUpdate(): void {
-    if (this.props.walletPrivateData && !this.state.walletPrivateData)
-      this.setState({ walletPrivateData: this.props.walletPrivateData });
+  componentDidUpdate(prevProps: IStateProps): void {
+    if (prevProps.walletPrivateData && !this.props.walletPrivateData)
+      // request seed phrase and private key again after password cache expire
+      this.props.getSeed();
   }
 
   componentWillUnmount(): void {
@@ -50,13 +40,13 @@ class BackupSeedComponent extends React.Component<
   }
 
   render(): React.ReactNode {
-    if (this.state.walletPrivateData)
+    if (this.props.walletPrivateData)
       return (
         <BackupSeedFlowContainer
           backupCodesVerified={this.props.backupCodesVerified}
           verifyBackupPhrase={this.props.verifyBackupPhrase}
           onCancel={this.props.onCancel}
-          walletPrivateData={this.state.walletPrivateData}
+          walletPrivateData={this.props.walletPrivateData}
         />
       );
     return <LoadingIndicator />;

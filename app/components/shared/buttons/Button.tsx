@@ -6,7 +6,7 @@ import { LoadingIndicator } from "../loading-indicator";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as closeIcon from "../../../assets/img/inline_icons/close.svg";
-import { CommonHtmlProps } from "../../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../../types";
 
 import * as styles from "./Button.module.scss";
 
@@ -44,6 +44,7 @@ export interface IGeneralButton {
 
 interface IButtonIcon extends IGeneralButton, CommonHtmlProps {
   svgIcon: string;
+  alt?: TTranslatedString;
 }
 
 export interface IButtonProps extends IGeneralButton, CommonHtmlProps {

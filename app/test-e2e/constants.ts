@@ -5,6 +5,8 @@ export const INV_ETH_ICBM_NO_KYC =
   "argue resemble sustain tattoo know goat parade idea science okay loan float solution used order dune essay achieve illness keen guitar stumble idea strike";
 export const INV_EMPTY_HAS_KYC =
   "else width refuse blood month clock rib blast adjust surprise gather potato olympic post area creek power student oak inflict memory document when scene";
+export const INV_EUR_ICBM_HAS_KYC_KEY =
+  "b8c9391742bcf13c2efe56aa8d158ff8b50191a11d9fe5021d8b31cd86f96f46";
 export const INV_EUR_ICBM_HAS_KYC_SEED =
   "juice chest position grace weather matter turn delay space abuse winter slice tell flip use between crouch shop open leg elegant bracket lamp day";
 export const INV_ETH_EUR_ICBM_HAS_KYC =

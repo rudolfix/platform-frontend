@@ -48,23 +48,20 @@ type TProps = IStateProps & OmitKeys<IDispatchProps, "onValidate"> & IHandlersPr
 const getWithdrawFormSchema = (maxEther: string) =>
   YupTS.object({
     to: YupTS.string().enhance(v =>
-      v
-        .test(
-          "isRequiredField",
-          (
-            <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.field-is-required" />
-          ) as any,
-          (value: string | undefined) => !!value,
-        )
-        .test(
-          "isEthereumAddress",
-          (
-            <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.not-ethereum-address" />
-          ) as any,
-          (value: string) => {
-            return validateAddress(value);
-          },
-        ),
+      v.test(
+        "isEthereumAddress",
+        (
+          <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.not-ethereum-address" />
+        ) as any,
+        (value: string | undefined) => {
+          // allow empty values as they should be handled by required yup validation
+          if (value === undefined) {
+            return true;
+          }
+
+          return validateAddress(value);
+        },
+      ),
     ),
     value: YupTS.number().enhance((v: NumberSchema) =>
       v
@@ -106,7 +103,6 @@ const WithdrawLayout: React.SFC<TProps & IIntlProps> = ({
                   name="to"
                   label={<FormattedMessage id="modal.sent-eth.to-address" />}
                   placeholder="0x0"
-                  ignoreTouched={true}
                   data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.to-address"
                 />
               </Col>
@@ -118,7 +114,6 @@ const WithdrawLayout: React.SFC<TProps & IIntlProps> = ({
                   label={<FormattedMessage id="modal.sent-eth.amount-to-send" />}
                   placeholder={intl.formatIntlMessage("modal.sent-eth.eth-amount-placeholder")}
                   data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
-                  ignoreTouched={true}
                 />
                 {/* @SEE https://github.com/jaredpalmer/formik/issues/288 */}
                 {validationState !== EValidationState.VALIDATION_OK &&

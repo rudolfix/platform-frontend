@@ -7,7 +7,6 @@ import * as styles from "./SectionHeader.module.scss";
 
 export enum ESectionHeaderSize {
   SMALL = styles.small,
-  MEDIUM = styles.medium,
 }
 
 interface IProps {

@@ -45,6 +45,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
         {onUpgradeClick && (
           <Button
             layout={EButtonLayout.SIMPLE}
+            innerClassName={styles.button}
             iconPosition="icon-after"
             theme="graphite"
             svgIcon={arrowRightIcon}
@@ -58,6 +59,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
         {onWithdrawClick && (
           <Button
             layout={EButtonLayout.SIMPLE}
+            innerClassName={styles.button}
             iconPosition="icon-after"
             theme="graphite"
             svgIcon={arrowRightIcon}
@@ -71,6 +73,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
         {onDepositClick && (
           <Button
             layout={EButtonLayout.SIMPLE}
+            innerClassName={styles.button}
             iconPosition="icon-after"
             theme="graphite"
             disabled={transferDisabled}

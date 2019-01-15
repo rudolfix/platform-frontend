@@ -16,7 +16,7 @@ import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { CopyToClipboard } from "../../../shared/CopyToClipboard";
+import { CopyToClipboardButton } from "../../../shared/CopyToClipboardButton";
 import { CheckboxLayout } from "../../../shared/forms";
 import { Heading } from "../../../shared/modals/Heading";
 import { Tooltip } from "../../../shared/Tooltip";
@@ -49,7 +49,10 @@ type IProps = IStateProps & IDispatchProps & IHandlerProps;
 
 const CopyToClipboardLabel: React.SFC<{ label: string }> = ({ label }) => (
   <>
-    <CopyToClipboard className={cn(styles.copyToClipboard, styles.nonPrintable)} value={label} />
+    <CopyToClipboardButton
+      className={cn(styles.copyToClipboard, styles.nonPrintable)}
+      value={label}
+    />
     &nbsp; {label}
   </>
 );

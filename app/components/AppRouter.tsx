@@ -11,6 +11,7 @@ import { EtoDashboard } from "./eto/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 import { Portfolio } from "./portfolio";
 
+import { IS_CYPRESS } from "../config/constants";
 import { SwitchConnected } from "../utils/connectedRouting";
 import { appRoutes } from "./appRoutes";
 import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
@@ -117,7 +118,7 @@ export const AppRouter: React.SFC = () => (
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} issuerComponent={Kyc} />
 
     {/*Routes used only in E2E tests*/}
-    {(window as any).Cypress && (
+    {IS_CYPRESS && (
       <>
         <Route
           path={e2eRoutes.embededWidget}

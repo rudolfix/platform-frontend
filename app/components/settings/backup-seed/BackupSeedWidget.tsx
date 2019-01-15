@@ -51,6 +51,7 @@ const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupC
               layout={EButtonLayout.SECONDARY}
               iconPosition="icon-after"
               svgIcon={arrowRight}
+              data-test-id="backup-seed-verified-section.view-again"
             >
               <FormattedMessage id="settings.backup-seed-widget.view-again" />
             </ButtonLink>

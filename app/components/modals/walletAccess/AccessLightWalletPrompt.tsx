@@ -59,7 +59,7 @@ export const AccessLightWalletPrompt: React.SFC<IProps> = props =>
       </Button>
     </div>
   ) : (
-    <div>
+    <div data-test-id="access-light-wallet-locked">
       <p>
         <FormattedMessage id="modal.light-wallet.message" />
       </p>

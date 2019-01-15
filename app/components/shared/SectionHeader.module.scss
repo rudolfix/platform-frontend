@@ -38,19 +38,10 @@
     }
   }
 
-  &.medium {
-    .header {
-      @include font-label;
-    }
-
-    .description {
-      @include font-button-default;
-    }
-  }
-
   .header {
-    @include font-headline-small;
+    @include font-default;
 
+    font-weight: bold;
     text-transform: uppercase;
   }
 

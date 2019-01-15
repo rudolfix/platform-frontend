@@ -1,5 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
+
+import { TTranslatedString } from "../../types";
+
 import * as styles from "./InlineIcon.module.scss";
 
 interface IProps {
@@ -8,21 +11,24 @@ interface IProps {
   height?: string;
   className?: string;
   onClick?: () => void;
+  alt?: TTranslatedString;
 }
 
 export const InlineIcon: React.SFC<IProps> = ({
+  className = cn("inline-icon", styles.inlineIcon),
   svgIcon,
   width,
   height,
-  className = cn("inline-icon", styles.inlineIcon),
+  alt,
   ...props
-}) => {
-  return (
+}) => (
+  <>
     <span
       className={className}
       style={{ width, height }}
       dangerouslySetInnerHTML={{ __html: svgIcon }}
       {...props}
     />
-  );
-};
+    {alt && <span className="sr-only">{alt}</span>}
+  </>
+);

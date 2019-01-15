@@ -33,9 +33,8 @@ $_active-color: lighten($_hover-color, 20%);
     justify-content: center;
     padding: px-to-rem(8px) px-to-rem(20px);
     position: relative;
-    text-align: center;
     text-decoration: inherit;
-    transition: 200ms ease-out all; // sass-lint:disable-line no-transition-all
+    transition: 200ms ease-out background-color, color;
 
     // makes button same in height with different content (for e.g. loading indicator)
     &::before {
@@ -134,7 +133,6 @@ $_active-color: lighten($_hover-color, 20%);
 
     .content {
       padding: 0;
-      justify-content: flex-end;
     }
   }
 

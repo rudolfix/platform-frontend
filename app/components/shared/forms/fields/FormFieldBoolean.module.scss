@@ -15,7 +15,7 @@ $indicator-size: 16px;
 
   // only hide checkbox on screen. In print, show the real checkbox, because of print display problems
   @media screen {
-    @include visually-hidden;
+    @include sr-only;
   }
 
   &[type="radio"]+.indicator {

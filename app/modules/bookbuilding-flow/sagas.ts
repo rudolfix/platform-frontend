@@ -1,5 +1,7 @@
 import { fork, put } from "redux-saga/effects";
 
+import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { BOOKBUILDING_WATCHER_DELAY, DO_BOOK_BUILDING } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
@@ -19,7 +21,7 @@ import {
 } from "./actions";
 
 export function* saveMyPledge(
-  { apiEtoPledgeService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== SAVE_PLEDGE) return;
@@ -28,10 +30,8 @@ export function* saveMyPledge(
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      intlWrapper.intl.formatIntlMessage("eto.overview.permission-modal.confirm-pledge"),
-      intlWrapper.intl.formatIntlMessage(
-        "eto.overview.permission-modal.confirm-pledge-description",
-      ),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_DESCRIPTION),
     );
 
     const etoId = action.payload.etoId;
@@ -46,14 +46,14 @@ export function* saveMyPledge(
     yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
-      intlWrapper.intl.formatIntlMessage("eto.overview.error-notification.failed-to-save-pledge"),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE),
     );
     logger.error(`Failed to save pledge`, e);
   }
 }
 
 export function* deleteMyPledge(
-  { apiEtoPledgeService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== DELETE_PLEDGE) return;
@@ -62,10 +62,8 @@ export function* deleteMyPledge(
     yield neuCall(
       ensurePermissionsArePresent,
       [DO_BOOK_BUILDING],
-      intlWrapper.intl.formatIntlMessage("eto.overview.permission-modal.confirm-pledge-removal"),
-      intlWrapper.intl.formatIntlMessage(
-        "eto.overview.permission-modal.confirm-pledge-description-removal",
-      ),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION),
     );
 
     const etoId = action.payload.etoId;
@@ -76,7 +74,7 @@ export function* deleteMyPledge(
     yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
-      intlWrapper.intl.formatIntlMessage("eto.overview.error-notification.failed-to-delete-pledge"),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED),
     );
     logger.error(`Failed to delete pledge`, e);
   }
@@ -95,7 +93,7 @@ export function* watchBookBuildingStats({ logger }: TGlobalDependencies, action:
 }
 
 export function* loadBookBuildingStats(
-  { apiEtoService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== LOAD_BOOKBUILDING_FLOW_STATS) return;
@@ -107,9 +105,7 @@ export function* loadBookBuildingStats(
     yield put(actions.bookBuilding.setBookBuildingStats(etoId, statsResponse.body));
   } catch (e) {
     notificationCenter.error(
-      intlWrapper.intl.formatIntlMessage(
-        "eto.overview.error-notification.failed-to-bookbuilding-stats",
-      ),
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
     );
 
     logger.error(`Failed to load bookbuilding stats pledge`, e);
@@ -117,7 +113,7 @@ export function* loadBookBuildingStats(
 }
 
 export function* loadMyPledge(
-  { apiEtoPledgeService, notificationCenter, logger, intlWrapper }: TGlobalDependencies,
+  { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== LOAD_PLEDGE) return;
@@ -130,9 +126,8 @@ export function* loadMyPledge(
   } catch (e) {
     if (!(e instanceof EtoPledgeNotFound)) {
       notificationCenter.error(
-        intlWrapper.intl.formatIntlMessage("eto.overview.error-notification.failed-to-load-pledge"),
+        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE),
       );
-
       logger.error("Failed to load pledge", e);
     }
   }

@@ -4,6 +4,8 @@ import { compose, keyBy, map, omit } from "lodash/fp";
 import { delay } from "redux-saga";
 import { all, fork, put, race, select } from "redux-saga/effects";
 
+import { PublicEtosMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
@@ -65,7 +67,7 @@ export function* loadEtoPreview(
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
 
-    notificationCenter.error("Could not load ETO preview. Is the preview link correct?");
+    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO_PREVIEW));
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -102,7 +104,7 @@ export function* loadEto(
   } catch (e) {
     logger.error("Could not load eto by id", e);
 
-    notificationCenter.error("Could not load ETO. Is the link correct?");
+    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO));
 
     yield put(actions.routing.goToDashboard());
   }

@@ -1,7 +1,8 @@
 import { delay, Effect, effects } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
-import { GenericError } from "../../components/translatedMessages/messages";
+import { GenericErrorMessage } from "../../components/translatedMessages/messages";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
 import {
@@ -136,7 +137,8 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
       const error = mapSignMessageErrorToErrorMessage(e);
       yield effects.put(actions.signMessageModal.signingError(error));
 
-      if (e instanceof SignerError || error.messageType === GenericError.GENERIC_ERROR) throw e;
+      if (e instanceof SignerError || error.messageType === GenericErrorMessage.GENERIC_ERROR)
+        throw e;
 
       yield delay(500);
     }
@@ -145,8 +147,8 @@ export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): a
 
 export function* accessWalletAndRunEffect(
   effect: Effect | Iterator<Effect>,
-  title: string = "",
-  message: string = "",
+  title: TMessage,
+  message: TMessage,
 ): any {
   // guard against multiple modals
   const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.accessWallet));

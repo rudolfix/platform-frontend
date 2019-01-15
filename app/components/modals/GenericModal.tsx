@@ -17,6 +17,7 @@ import { ModalComponentBody } from "./ModalComponentBody";
 
 import * as successIcon from "../../assets/img/notifications/Success_small.svg";
 import * as warningIcon from "../../assets/img/notifications/warning.svg";
+import { getMessageTranslation } from "../translatedMessages/messages";
 import * as styles from "./GenericModal.module.scss";
 
 interface IStateProps {
@@ -55,21 +56,23 @@ const GenericModalLayout: React.SFC<IStateProps & IHandlersProps> = ({
           <>
             <Row className="mt-5 justify-content-center">
               <h5 data-test-id="components.modals.generic-modal.title">
-                {genericModalObj && genericModalObj.title}
+                {genericModalObj && getMessageTranslation(genericModalObj.title)}
               </h5>
             </Row>
 
             <Row className="mb-5 justify-content-center">
               <div className={styles.content}>
                 {genericModalObj && genericModalObj.icon && genericModalIcons[genericModalObj.icon]}{" "}
-                {genericModalObj && genericModalObj.description}
+                {genericModalObj &&
+                  genericModalObj.description &&
+                  getMessageTranslation(genericModalObj.description)}
               </div>
             </Row>
 
             <Row className="mb-5 justify-content-center">
               <Button onClick={onClick} data-test-id="generic-modal-dismiss-button">
                 {genericModalObj && genericModalObj.actionLinkText ? (
-                  genericModalObj.actionLinkText
+                  getMessageTranslation(genericModalObj.actionLinkText)
                 ) : (
                   <FormattedMessage id="modal.generic.button.dismiss" />
                 )}

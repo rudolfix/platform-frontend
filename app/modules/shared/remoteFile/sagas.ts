@@ -1,4 +1,7 @@
 import { fork } from "redux-saga/effects";
+
+import { RemoteFileMessage } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IHttpResponse } from "../../../lib/api/client/IHttpClient";
 import { TFileDescription } from "../../../lib/api/FileStorage.interfaces";
@@ -18,7 +21,7 @@ function* getRemoteFile(
     onDone(undefined, fileData.body);
   } catch (e) {
     logger.error("get remote file error", e);
-    notificationCenter.error("Error occurred getting remote file details");
+    notificationCenter.error(createMessage(RemoteFileMessage.GET_FILES_DETAILS_ERROR));
     onDone(e, undefined);
   }
 }

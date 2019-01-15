@@ -1,4 +1,7 @@
 import { fork } from "redux-saga/effects";
+
+import { FileUploadMessage } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IHttpResponse } from "../../../lib/api/client/IHttpClient";
 import { TFileDescription } from "../../../lib/api/FileStorage.interfaces";
@@ -21,7 +24,7 @@ function* singleFileUpload(
     onDone(undefined, fileData.body.url);
   } catch (e) {
     logger.error("Error while uploading single file", e);
-    notificationCenter.error("Error occurred while uploading a file.");
+    notificationCenter.error(createMessage(FileUploadMessage.FILE_UPLOAD_ERROR));
     onDone(e, undefined);
   }
 }

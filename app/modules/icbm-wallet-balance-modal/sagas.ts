@@ -1,11 +1,13 @@
 import { BigNumber } from "bignumber.js";
 import { toChecksumAddress } from "ethereumjs-util";
 import { delay } from "redux-saga";
-import { fork, put, select } from "redux-saga/effects";
+import { call, fork, put, select } from "redux-saga/effects";
 
+import { IcbmWalletMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions, TAction } from "../actions";
-import { downloadLink } from "../immutable-file/sagas";
+import { downloadLink } from "../immutable-file/utils";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
@@ -78,7 +80,9 @@ function* loadIcbmWalletMigrationTransactionSaga({
     yield put(actions.icbmWalletBalanceModal.loadIcbmMigrationData(walletMigrationData));
   } catch (e) {
     logger.error("Error: ", e);
-    return notificationCenter.error("Error while running migration tool");
+    return notificationCenter.error(
+      createMessage(IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL),
+    );
   }
 }
 
@@ -109,12 +113,15 @@ function* loadIcbmWalletMigrationSaga(
     logger.error("Load ICBM migration wallet", e);
     // todo: all texts to text resources
     if (e instanceof NoIcbmWalletError)
+      return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS));
+    if (e instanceof SameUserError)
       return notificationCenter.error(
-        "We were unable to find an ICBM wallet for the entered address.",
+        createMessage(IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME),
       );
-    if (e instanceof SameUserError) return notificationCenter.error("This is your current address");
     // Default Error
-    return notificationCenter.error("Error while loading ICBM Wallet data");
+    return notificationCenter.error(
+      createMessage(IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA),
+    );
   }
 }
 
@@ -154,15 +161,7 @@ function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDep
 }
 
 function* downloadICBMWalletAgreement(
-  {
-    contractsService,
-    apiImmutableStorage,
-    logger,
-    notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
-  }: TGlobalDependencies,
+  { contractsService, apiImmutableStorage, logger, notificationCenter }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== "ICBM_WALLET_BALANCE_MODAL_DOWNLOAD_AGREEMENT") return;
@@ -177,15 +176,15 @@ function* downloadICBMWalletAgreement(
       asPdf: true,
     });
 
-    yield neuCall(
+    yield call(
       downloadLink,
       generatedDocument,
-      formatIntlMessage("wallet.icbm.reservation-agreement"),
+      createMessage(IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT),
       ".pdf",
     );
   } catch (e) {
     logger.error("Failed to download ICBM wallet agreement", e);
-    notificationCenter.error("Failed to download ICBM Wallet Agreement");
+    notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_FAILED_TO_DOWNLOAD_AGREEMENT));
   }
 }
 

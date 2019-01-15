@@ -1,11 +1,13 @@
 import { put, take } from "redux-saga/effects";
+
+import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 
 export function* displayInfoModalSaga(
   _: TGlobalDependencies,
-  title: string,
-  description?: string,
+  title: TMessage,
+  description?: TMessage,
 ): any {
   yield put(actions.genericModal.showInfoModal(title, description));
 
@@ -15,8 +17,8 @@ export function* displayInfoModalSaga(
 
 export function* displayErrorModalSaga(
   _: TGlobalDependencies,
-  title: string,
-  description?: string,
+  title: TMessage,
+  description?: TMessage,
 ): any {
   yield put(actions.genericModal.showErrorModal(title, description));
 

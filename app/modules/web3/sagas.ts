@@ -1,6 +1,8 @@
 import { delay, END, eventChannel, Task } from "redux-saga";
 import { call, cancel, fork, put, select, take } from "redux-saga/effects";
 
+import { Web3Message } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -78,10 +80,7 @@ export function* loadPreviousWallet(
   }
 }
 
-export function* personalWalletConnectionLost({
-  notificationCenter,
-  intlWrapper,
-}: TGlobalDependencies): any {
+export function* personalWalletConnectionLost({ notificationCenter }: TGlobalDependencies): any {
   yield put(actions.walletSelector.reset());
   yield put(actions.walletSelector.ledgerReset());
   yield put(actions.web3.personalWalletDisconnected());
@@ -91,9 +90,9 @@ export function* personalWalletConnectionLost({
   const disconnectedWalletErrorMessage = () => {
     switch (selectWalletType(state.web3)) {
       case EWalletType.BROWSER:
-        return intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.browser");
+        return createMessage(Web3Message.WEB3_ERROR_BROWSER);
       case EWalletType.LEDGER:
-        return intlWrapper.intl.formatIntlMessage("modules.web3.flows.web3-error.ledger");
+        return createMessage(Web3Message.WEB3_ERROR_LEDGER);
       default:
         return;
     }

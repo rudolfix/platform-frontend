@@ -3,43 +3,36 @@ import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { NotificationText, NotificationType } from "../../../modules/notifications/reducer";
-import { INotificationProps, Notification } from "./Notification";
+import { ENotificationText, ENotificationType } from "../../../modules/notifications/reducer";
+import { Notification } from "./Notification";
 
 import { tid } from "../../../../test/testUtils";
 
-const defaultProps = (): INotificationProps => ({
-  type: NotificationType.INFO,
-  text: NotificationText.TEST_NOTIFICATION,
-  onClick: spy(),
-  actionLinkText: "link text",
-});
-
 describe("<Notification />", () => {
-  let props: any;
+  it("should call correct click handler for notification content", () => {
+    const props = {
+      type: ENotificationType.WARNING,
+      text: ENotificationText.COMPLETE_REQUEST_NOTIFICATION,
+      onClick: spy(),
+    };
 
-  beforeEach(() => {
-    props = defaultProps();
-  });
-
-  it("should be of correct type", () => {
-    const componentInfo = shallow(<Notification {...props} type={NotificationType.INFO} />);
-
-    expect(componentInfo.render().hasClass(NotificationType.INFO)).to.be.true;
-
-    const componentWarning = shallow(<Notification {...props} type={NotificationType.WARNING} />);
-
-    expect(componentWarning.render().hasClass(NotificationType.WARNING)).to.be.true;
-  });
-
-  it("should call correct click handlers for close button", () => {
     const component = shallow(<Notification {...props} />);
 
-    component
-      .dive()
-      .find(tid("notification-close"))
-      .first()
-      .simulate("click");
+    component.find(tid("notification-button")).simulate("click");
+
+    expect(props.onClick).to.be.calledOnce;
+  });
+
+  it("should call correct click handler for close button", () => {
+    const props = {
+      type: ENotificationType.INFO,
+      text: ENotificationText.COMPLETE_UPDATE_ACCOUNT,
+      onClick: spy(),
+    };
+
+    const component = shallow(<Notification {...props} />);
+
+    component.find(tid("notification-close")).simulate("click");
 
     expect(props.onClick).to.be.calledOnce;
   });

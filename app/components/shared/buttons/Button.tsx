@@ -136,19 +136,21 @@ Button.defaultProps = {
   width: ButtonWidth.NORMAL,
 };
 
-const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
+const ButtonIcon: React.FunctionComponent<IButtonIcon> = ({ onClick, className, ...props }) => (
   <button className={cn(styles.buttonIcon, className)} onClick={onClick}>
     <InlineIcon {...props} />
   </button>
 );
 
-const ButtonIconPlaceholder: React.SFC = () => <div className={styles.buttonIconPlaceholder} />;
+const ButtonIconPlaceholder: React.FunctionComponent = () => (
+  <div className={styles.buttonIconPlaceholder} />
+);
 
-const ButtonClose: React.SFC<IGeneralButton> = props => (
+const ButtonClose: React.FunctionComponent<IGeneralButton & CommonHtmlProps> = props => (
   <ButtonIcon {...props} svgIcon={closeIcon} />
 );
 
-const ButtonArrowRight: React.SFC<IButtonProps> = props => (
+const ButtonArrowRight: React.FunctionComponent<IButtonProps> = props => (
   <Button
     {...props}
     layout={EButtonLayout.SECONDARY}

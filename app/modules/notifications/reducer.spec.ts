@@ -3,19 +3,18 @@ import { expect } from "chai";
 import { actions } from "../actions";
 import { INewNotification } from "./actions";
 import {
+  ENotificationText,
+  ENotificationType,
   notificationsInitState,
   notificationsReducer,
-  NotificationText,
-  NotificationType,
 } from "./reducer";
 
 describe("notifications > reducer", () => {
   it("should act on NOTIFICATIONS_ADD", () => {
     const notification: INewNotification = {
       id: 123,
-      actionLinkText: "actionLinkText",
-      text: NotificationText.TEST_NOTIFICATION,
-      type: NotificationType.WARNING,
+      text: ENotificationText.COMPLETE_UPDATE_ACCOUNT,
+      type: ENotificationType.WARNING,
     };
     const action = actions.notifications.notificationAdd(notification);
 
@@ -28,9 +27,8 @@ describe("notifications > reducer", () => {
   it("should act on NOTIFICATIONS_REMOVE", () => {
     const notification = {
       id: 123,
-      actionLinkText: "actionLinkText",
-      text: NotificationText.TEST_NOTIFICATION,
-      type: NotificationType.WARNING,
+      text: ENotificationText.COMPLETE_REQUEST_NOTIFICATION,
+      type: ENotificationType.WARNING,
     };
     const actionAdd = actions.notifications.notificationAdd(notification);
     const actionRemove = actions.notifications.notificationRemove(notification.id);

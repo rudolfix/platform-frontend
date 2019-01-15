@@ -3,8 +3,11 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
+import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { ITxData } from "../../../lib/web3/types";
 import { actions } from "../../../modules/actions";
+import { TETOWithInvestorTicket } from "../../../modules/investor-tickets/types";
 import { ETxSenderType } from "../../../modules/tx/interfaces";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
@@ -21,6 +24,8 @@ import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
 import { WatchPendingTxs } from "./shared/WatchPeningTxs";
 import { UpgradeSummary } from "./upgrade-flow/Summary";
+import { UserClaimSuccess } from "./user-claim/Success";
+import { UserClaimSummary } from "./user-claim/Summary";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw";
@@ -59,20 +64,22 @@ export interface ITXSummaryExternalProps {
   upgrade?: boolean;
 }
 
-export interface ITxInitDispatchProps {
-  onAccept: (tx: Partial<ITxData>) => any;
-}
-
 export interface ITxSummaryStateProps {
   txData: Partial<ITxData>;
   txCost: string;
+  etoData?: TETOWithInvestorTicket;
+  additionalData?: {};
+  etoId?: string;
 }
 
 export interface ITxSummaryDispatchProps {
   onAccept: () => any;
   onChange?: () => any;
-  downloadICBMAgreement?: () => any;
+  downloadICBMAgreement?: () => void;
+  downloadDocument?: (immutableFileId: ImmutableFileId, fileName: string) => void;
+  generateTemplateByEtoId?: (immutableFileId: IEtoDocument, etoId: string) => void;
 }
+// TODO: move interface to each component
 export type TSummaryComponentProps = ITXSummaryExternalProps &
   ITxSummaryStateProps &
   ITxSummaryDispatchProps;
@@ -96,6 +103,8 @@ const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
       return <SetEtoDateSummary />;
     case ETxSenderType.UPGRADE:
       return <UpgradeSummary />;
+    case ETxSenderType.USER_CLAIM:
+      return <UserClaimSummary />;
     default:
       return <WithdrawSummary />;
   }
@@ -108,6 +117,8 @@ const SuccessComponent: React.SFC<{ type?: ETxSenderType; txHash?: string }> = (
   switch (type) {
     case ETxSenderType.INVEST:
       return <InvestmentSuccess txHash={txHash!} />;
+    case ETxSenderType.USER_CLAIM:
+      return <UserClaimSuccess />;
     default:
       return <WithdrawSuccess txHash={txHash!} />;
   }

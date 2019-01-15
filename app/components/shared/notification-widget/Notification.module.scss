@@ -1,5 +1,5 @@
-.widget {
-  @include responsive-size(margin-top, $authorized-layout-vertical-padding-sm, $authorized-layout-vertical-padding-lg);
+.notification-wrapper {
+  position: relative;
 }
 
 .notification {
@@ -11,11 +11,9 @@
   }
 
   box-shadow: $shadow-bottom-black-light;
-  color: $neu-white-two;
   display: flex;
   flex-direction: column;
   padding: px-to-rem(10px) px-to-rem(12px);
-  position: relative;
 
   &:global {
     &.info {
@@ -28,6 +26,7 @@
       $_color-bg: rgba($neu-bright-orange, .54);
 
       background-color: $_color-bg;
+      color: $neu-white-two;
     }
   }
 
@@ -51,33 +50,14 @@
     margin-right: px-to-rem(12px);
     overflow: hidden;
   }
+}
 
+.close {
+  position: absolute;
+  top: px-to-rem(6px);
+  right: px-to-rem(6px);
 
-  .link,
-  .close {
-    &:hover {
-      opacity: .6;
-    }
+  &:hover {
+    opacity: .6;
   }
-
-
-  .link {
-    flex-shrink: 0;
-    text-decoration: underline;
-    margin-left: auto;
-    cursor: pointer;
-  }
-
-
-  .close {
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-left: auto;
-    width: px-to-rem(20px);
-    height: px-to-rem(20px);
-    position: absolute;
-    top: px-to-rem(6px);
-    right: px-to-rem(6px);
-  }
-
 }

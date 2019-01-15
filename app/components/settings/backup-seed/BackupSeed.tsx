@@ -3,7 +3,8 @@ import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
-import { selectIsUnlocked, selectSeed } from "../../../modules/web3/selectors";
+import { IWalletPrivateData } from "../../../modules/web3/reducer";
+import { selectIsUnlocked, selectWalletPrivateData } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutAuthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
@@ -18,29 +19,20 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  seed?: string[];
+  walletPrivateData?: IWalletPrivateData;
   isUnlocked: boolean;
   backupCodesVerified: boolean;
 }
 
-interface IBackupSeedComponentState {
-  seed?: string[];
-}
-
-class BackupSeedComponent extends React.Component<
-  IDispatchProps & IStateProps,
-  IBackupSeedComponentState
-> {
-  constructor(props: IDispatchProps & IStateProps) {
-    super(props);
-    this.state = {};
-  }
+class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> {
   componentWillMount(): void {
     this.props.getSeed();
   }
 
-  componentDidUpdate(): void {
-    if (this.props.seed && !this.state.seed) this.setState({ seed: this.props.seed });
+  componentDidUpdate(prevProps: IStateProps): void {
+    if (prevProps.walletPrivateData && !this.props.walletPrivateData)
+      // request seed phrase and private key again after password cache expire
+      this.props.getSeed();
   }
 
   componentWillUnmount(): void {
@@ -48,13 +40,13 @@ class BackupSeedComponent extends React.Component<
   }
 
   render(): React.ReactNode {
-    if (this.state.seed)
+    if (this.props.walletPrivateData)
       return (
         <BackupSeedFlowContainer
           backupCodesVerified={this.props.backupCodesVerified}
           verifyBackupPhrase={this.props.verifyBackupPhrase}
           onCancel={this.props.onCancel}
-          seed={this.state.seed}
+          walletPrivateData={this.props.walletPrivateData}
         />
       );
     return <LoadingIndicator />;
@@ -66,14 +58,14 @@ export const BackupSeed = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       isUnlocked: selectIsUnlocked(s.web3),
-      seed: selectSeed(s.web3),
+      walletPrivateData: selectWalletPrivateData(s.web3),
       backupCodesVerified: selectBackupCodesVerified(s),
     }),
     dispatchToProps: dispatch => ({
       verifyBackupPhrase: () => dispatch(actions.walletSelector.lightWalletBackedUp()),
       onCancel: () => dispatch(actions.routing.goToProfile()),
       getSeed: () => dispatch(actions.profile.loadSeedOrReturnToProfile()),
-      clearSeed: () => dispatch(actions.web3.clearSeedFromState()),
+      clearSeed: () => dispatch(actions.web3.clearWalletPrivateDataFromState()),
     }),
   }),
 )(BackupSeedComponent);

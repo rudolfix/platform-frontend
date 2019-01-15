@@ -1,8 +1,11 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { Col } from "reactstrap";
+import { FormattedMessage } from "react-intl-phraseapp";
 
-import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { TTranslatedString } from "../../types";
+import { ETOAddDocuments } from "../eto/shared/EtoAddDocument";
+
 import * as styles from "./Document.module.scss";
 
 interface IDocumentProps {
@@ -16,6 +19,14 @@ interface IDocumentTileProps {
   onlyDownload?: boolean;
   blank?: boolean;
   active?: boolean;
+}
+
+interface IUploadableDocumentTileProps {
+  documentKey: EEtoDocumentType;
+  canUpload: boolean;
+  typedFileName: TTranslatedString;
+  isFileUploaded: boolean;
+  downloadDocumentByType: (documentType: EEtoDocumentType) => void;
 }
 
 interface IClickableDocumentTileProps {
@@ -58,22 +69,23 @@ export const DocumentTile: React.SFC<IDocumentProps & IDocumentTileProps> = ({
   active,
 }) => {
   return (
-    <Col
-      className={cn(
-        styles.tile,
-        styles.container,
-        active && styles.active,
-        blank || styles.enabled,
-        className,
-      )}
-    >
+    <div className={cn(styles.tile, active && styles.active, !blank && styles.enabled, className)}>
       <Document extension={extension} blank={blank} />
-      <p className={cn(styles.title, blank && styles.blankTitle)}>{title}</p>
+      <p
+        className={cn(
+          styles.title,
+          blank && styles.blankTitle,
+          !onlyDownload && !active && styles.disabledTitle,
+        )}
+      >
+        {title}
+      </p>
       {!onlyDownload &&
-        blank && (
+        blank &&
+        active && (
           <p className={cn(styles.subTitle)}>Drag and drop or Click to upload high quality PDF</p>
         )}
-    </Col>
+    </div>
   );
 };
 
@@ -81,13 +93,45 @@ export const ClickableDocumentTile: React.SFC<
   IDocumentProps & IDocumentTileProps & IClickableDocumentTileProps
 > = ({ generateTemplate, title, document, extension }) => {
   return (
-    <button
-      className={styles.clickableArea}
-      onClick={() => {
-        generateTemplate(document);
-      }}
-    >
-      <DocumentTile title={title} extension={extension} blank={false} onlyDownload={true} />
-    </button>
+    <div>
+      <button
+        className={styles.clickableArea}
+        onClick={() => {
+          generateTemplate(document);
+        }}
+      >
+        <DocumentTile title={title} extension={extension} blank={false} onlyDownload={true} />
+      </button>
+    </div>
+  );
+};
+
+export const UploadableDocumentTile: React.SFC<IUploadableDocumentTileProps> = ({
+  documentKey,
+  canUpload,
+  typedFileName,
+  isFileUploaded,
+  downloadDocumentByType,
+}) => {
+  return (
+    <div data-test-id={`form.name.${documentKey}`}>
+      <ETOAddDocuments documentType={documentKey} disabled={!canUpload}>
+        <DocumentTile
+          title={typedFileName}
+          extension={".pdf"}
+          active={canUpload}
+          blank={!isFileUploaded}
+        />
+      </ETOAddDocuments>
+      {isFileUploaded && (
+        <button
+          data-test-id="documents-download-document"
+          onClick={() => downloadDocumentByType(documentKey)}
+          className={cn(styles.subTitleDownload)}
+        >
+          <FormattedMessage id="documents.download-document" />
+        </button>
+      )}
+    </div>
   );
 };

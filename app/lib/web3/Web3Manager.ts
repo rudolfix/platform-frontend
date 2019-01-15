@@ -1,12 +1,10 @@
 import { BigNumber } from "bignumber.js";
-import { inject, injectable } from "inversify";
+import { decorate, inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
+import { EventEmitter } from "events";
 import { symbols } from "../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../modules/tx/utils";
-import { web3Actions } from "../../modules/web3/actions";
-import { web3Flows } from "../../modules/web3/flows";
-import { AppDispatch } from "../../store";
 import { EthereumNetworkId } from "../../types";
 import {
   AsyncIntervalScheduler,
@@ -31,9 +29,21 @@ export class SignerUnknownError extends SignerError {}
 
 export const WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL = 5000;
 
+export enum EWeb3ManagerEvents {
+  NEW_PERSONAL_WALLET_PLUGGED = "web3_manager_new_personal_wallet_plugged",
+  PERSONAL_WALLET_CONNECTION_LOST = "web3_manager_personal_wallet_connection_lost",
+}
+
+try {
+  // this throws if applied multiple times, which happens in tests
+  // that is why the try block is necessary
+  decorate(injectable(), EventEmitter);
+  // this decorate is necessary for injectable class inheritance
+} catch {}
+
 // singleton holding all web3 instances
 @injectable()
-export class Web3Manager {
+export class Web3Manager extends EventEmitter {
   public personalWallet?: IPersonalWallet;
   public networkId!: EthereumNetworkId;
   public internalWeb3Adapter!: Web3Adapter;
@@ -43,11 +53,11 @@ export class Web3Manager {
   constructor(
     @inject(symbols.ethereumNetworkConfig)
     public readonly ethereumNetworkConfig: IEthereumNetworkConfig,
-    @inject(symbols.appDispatch) public readonly dispatch: AppDispatch,
     @inject(symbols.logger) public readonly logger: ILogger,
     @inject(symbols.asyncIntervalSchedulerFactory)
     asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType,
   ) {
+    super();
     this.web3ConnectionWatcher = asyncIntervalSchedulerFactory(
       this.watchConnection,
       WEB3_MANAGER_CONNECTION_WATCHER_INTERVAL,
@@ -71,17 +81,17 @@ export class Web3Manager {
     const isUnlocked =
       this.personalWallet instanceof LightWallet ? !!this.personalWallet.password : true;
 
-    this.dispatch(
-      web3Actions.newPersonalWalletPlugged(this.personalWallet.getMetadata(), isUnlocked),
-    );
+    this.emit(EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, {
+      isUnlocked,
+      metaData: this.personalWallet.getMetadata(),
+    });
 
     this.web3ConnectionWatcher.start();
   }
 
-  public async unplugPersonalWallet(): Promise<void> {
+  public unplugPersonalWallet(): void {
     this.web3ConnectionWatcher.stop();
     this.personalWallet = undefined;
-    this.dispatch(web3Actions.personalWalletDisconnected());
   }
 
   public async sign(message: string): Promise<string> {
@@ -137,8 +147,7 @@ export class Web3Manager {
 
   private onWeb3ConnectionLost = () => {
     this.logger.info("Web3 connection lost");
-    this.dispatch(web3Flows.personalWalletDisconnected);
-
+    this.emit(EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST);
     this.web3ConnectionWatcher.stop();
   };
 }

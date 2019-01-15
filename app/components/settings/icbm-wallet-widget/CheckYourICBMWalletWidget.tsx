@@ -6,7 +6,7 @@ import * as Web3Utils from "web3-utils";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { FormFieldColorful } from "../../shared/forms/form-field/FormFieldColorful";
+import { FormFieldColorful } from "../../shared/forms/fields/FormFieldColorful";
 import { Panel } from "../../shared/Panel";
 import { Tooltip } from "../../shared/Tooltip";
 
@@ -29,7 +29,7 @@ class FormContent extends React.Component {
               data-test-id="models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget.address"
             />
             <Button
-              className={styles.button}
+              innerClassName={styles.button}
               layout={EButtonLayout.SECONDARY}
               iconPosition="icon-after"
               svgIcon={arrowRight}
@@ -62,7 +62,10 @@ export const CheckYourICBMWalletWidgetComponent: React.SFC<IDispatchProps> = ({
       <p>
         <FormattedMessage id="check-your-icbm-wallet-widget.notice" />
       </p>
-      <Formik initialValues={{ address: "" }} onSubmit={values => loadICBMWallet(values.address)}>
+      <Formik<{ address: string }>
+        initialValues={{ address: "" }}
+        onSubmit={values => loadICBMWallet(values.address)}
+      >
         <Form className={styles.section}>
           <FormContent />
         </Form>

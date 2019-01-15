@@ -6,7 +6,7 @@ import { LoadingIndicator } from "../loading-indicator";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as closeIcon from "../../../assets/img/inline_icons/close.svg";
-import { CommonHtmlProps } from "../../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../../types";
 
 import * as styles from "./Button.module.scss";
 
@@ -42,9 +42,9 @@ export interface IGeneralButton {
   onClick?: (event: any) => void;
 }
 
-interface IButtonIcon extends IGeneralButton {
+interface IButtonIcon extends IGeneralButton, CommonHtmlProps {
   svgIcon: string;
-  className?: string;
+  alt?: TTranslatedString;
 }
 
 export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
@@ -58,6 +58,7 @@ export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
   width?: ButtonWidth;
   isLoading?: boolean;
   isActive?: boolean;
+  innerClassName?: string;
   textPosition?: ButtonTextPosition;
 }
 
@@ -70,17 +71,18 @@ const buttonThemeClassNames: Record<TButtonTheme, string> = {
   neon: styles.buttonNeon,
 };
 
-const Button: React.ComponentType<
-  IButtonProps & React.ClassAttributes<HTMLButtonElement>
-> = React.forwardRef(
+const Button: React.ForwardRefExoticComponent<
+  { children?: React.ReactNode } & IButtonProps & React.RefAttributes<HTMLButtonElement>
+> = React.forwardRef<HTMLButtonElement, IButtonProps>(
   (
     {
       children,
+      className,
       layout,
       theme,
       disabled,
       svgIcon,
-      className,
+      innerClassName,
       iconPosition,
       size,
       width,
@@ -96,6 +98,7 @@ const Button: React.ComponentType<
       ref={ref}
       className={cn(
         styles.button,
+        className,
         layout,
         iconPosition,
         {
@@ -109,7 +112,7 @@ const Button: React.ComponentType<
       type={type}
       {...props}
     >
-      <div className={cn(styles.content, className, textPosition)} tabIndex={-1}>
+      <div className={cn(styles.content, innerClassName, textPosition)} tabIndex={-1}>
         {isLoading ? (
           <LoadingIndicator light />
         ) : (
@@ -133,19 +136,21 @@ Button.defaultProps = {
   width: ButtonWidth.NORMAL,
 };
 
-const ButtonIcon: React.SFC<IButtonIcon> = ({ onClick, className, ...props }) => (
+const ButtonIcon: React.FunctionComponent<IButtonIcon> = ({ onClick, className, ...props }) => (
   <button className={cn(styles.buttonIcon, className)} onClick={onClick}>
     <InlineIcon {...props} />
   </button>
 );
 
-const ButtonIconPlaceholder: React.SFC = () => <div className={styles.buttonIconPlaceholder} />;
+const ButtonIconPlaceholder: React.FunctionComponent = () => (
+  <div className={styles.buttonIconPlaceholder} />
+);
 
-const ButtonClose: React.SFC<IGeneralButton> = props => (
+const ButtonClose: React.FunctionComponent<IGeneralButton & CommonHtmlProps> = props => (
   <ButtonIcon {...props} svgIcon={closeIcon} />
 );
 
-const ButtonArrowRight: React.SFC<IButtonProps> = props => (
+const ButtonArrowRight: React.FunctionComponent<IButtonProps> = props => (
   <Button
     {...props}
     layout={EButtonLayout.SECONDARY}

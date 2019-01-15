@@ -5,6 +5,7 @@ import { compose } from "recompose";
 import { actions } from "../../../../../modules/actions";
 import { selectIsInvestor } from "../../../../../modules/auth/selectors";
 import { selectIsAllowedToInvest } from "../../../../../modules/investment-flow/selectors";
+import { selectEtoOnChainNextStateStartDate } from "../../../../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
 import { withParams } from "../../../../../utils/withParams";
@@ -12,6 +13,7 @@ import { appRoutes } from "../../../../appRoutes";
 import { Button, ButtonLink } from "../../../../shared/buttons";
 import { ECurrency, Money } from "../../../../shared/Money";
 import { EtoWidgetContext } from "../../../EtoWidgetView";
+import { EndTimeWidget } from "../EndTimeWidget";
 import { InvestmentProgress } from "./InvestmentProgress";
 
 import * as styles from "./InvestmentWidget.module.scss";
@@ -23,12 +25,12 @@ export interface IInvestmentWidgetProps {
 export interface IInvestmentWidgetStateProps {
   isAllowedToInvest: boolean;
   isInvestor: boolean;
+  nextStateDate: Date | undefined;
 }
 
 export interface IInvestmentWidgetDispatchProps {
   startInvestmentFlow: () => void;
 }
-
 export type TInvestWidgetProps = IInvestmentWidgetProps &
   IInvestmentWidgetStateProps &
   IInvestmentWidgetDispatchProps;
@@ -38,6 +40,7 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
   eto,
   isInvestor,
   isAllowedToInvest,
+  nextStateDate,
 }) => {
   const totalInvestors = eto.contract!.totalInvestment.totalInvestors.toNumber();
 
@@ -95,6 +98,7 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
                   <FormattedMessage id="shared-component.eto-overview.settings-update-required" />
                 </ButtonLink>
               )}
+              <EndTimeWidget endTime={nextStateDate} />
             </div>
           )
         }
@@ -105,9 +109,10 @@ const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
 
 const InvestmentWidget = compose<TInvestWidgetProps, IInvestmentWidgetProps>(
   appConnect<IInvestmentWidgetStateProps, IInvestmentWidgetDispatchProps, IInvestmentWidgetProps>({
-    stateToProps: state => ({
+    stateToProps: (state, props) => ({
       isAllowedToInvest: selectIsAllowedToInvest(state),
       isInvestor: selectIsInvestor(state),
+      nextStateDate: selectEtoOnChainNextStateStartDate(state, props.eto.previewCode),
     }),
     dispatchToProps: (dispatch, props) => ({
       startInvestmentFlow: () => dispatch(actions.investmentFlow.startInvestment(props.eto.etoId)),

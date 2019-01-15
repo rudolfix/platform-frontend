@@ -64,8 +64,10 @@ export function* ethWithdrawFlow(_: TGlobalDependencies): any {
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
   yield put(
     actions.txSender.txSenderContinueToSummary({
-      ...txDataFromUser,
-      value: Q18.mul(txDataFromUser.value!).toString(),
+      txData: {
+        ...txDataFromUser,
+        value: Q18.mul(txDataFromUser.value!).toString(),
+      },
     }),
   );
 }

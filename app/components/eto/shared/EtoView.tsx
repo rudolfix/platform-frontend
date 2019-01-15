@@ -236,10 +236,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
               <Panel>
                 <PeopleSwiperWidget
                   people={(team && (team.members as IPerson[])) || []}
-                  navigation={{
-                    nextEl: "people-swiper-team-next",
-                    prevEl: "people-swiper-team-prev",
-                  }}
+                  key={"team"}
                 />
               </Panel>
             </Col>
@@ -269,14 +266,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
                 {areThereIndividuals(advisors) && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
                     <Panel>
-                      <PeopleSwiperWidget
-                        people={advisors.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-advisors-next",
-                          prevEl: "people-swiper-advisors-prev",
-                        }}
-                        layout="vertical"
-                      />
+                      <PeopleSwiperWidget people={advisors.members as IPerson[]} key={"team"} />
                     </Panel>
                   </TabContent>
                 )}
@@ -287,11 +277,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
                     <Panel>
                       <PeopleSwiperWidget
                         people={notableInvestors.members as IPerson[]}
-                        navigation={{
-                          nextEl: "people-swiper-investors-next",
-                          prevEl: "people-swiper-investors-prev",
-                        }}
-                        layout="vertical"
+                        key="notableInvestors"
                       />
                     </Panel>
                   </TabContent>
@@ -299,14 +285,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
                 {areThereIndividuals(partners) && (
                   <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}>
                     <Panel>
-                      <PeopleSwiperWidget
-                        navigation={{
-                          nextEl: "people-swiper-partners-next",
-                          prevEl: "people-swiper-partners-prev",
-                        }}
-                        people={partners.members as IPerson[]}
-                        layout="vertical"
-                      />
+                      <PeopleSwiperWidget people={partners.members as IPerson[]} key="partners" />
                     </Panel>
                   </TabContent>
                 )}
@@ -316,12 +295,8 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        navigation={{
-                          nextEl: "people-swiper-partners-next",
-                          prevEl: "people-swiper-partners-prev",
-                        }}
+                        key="keyCustomers"
                         people={keyCustomers.members as IPerson[]}
-                        layout="vertical"
                       />
                     </Panel>
                   </TabContent>
@@ -332,12 +307,8 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        navigation={{
-                          nextEl: "people-swiper-board-members-next",
-                          prevEl: "people-swiper-board-members-prev",
-                        }}
+                        key="boardMembers"
                         people={boardMembers.members as IPerson[]}
-                        layout="vertical"
                       />
                     </Panel>
                   </TabContent>
@@ -348,12 +319,8 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
                   >
                     <Panel>
                       <PeopleSwiperWidget
-                        navigation={{
-                          nextEl: "people-swiper-board-members-next",
-                          prevEl: "people-swiper-board-members-prev",
-                        }}
+                        key="keyAlliances"
                         people={keyAlliances.members as IPerson[]}
-                        layout="vertical"
                       />
                     </Panel>
                   </TabContent>

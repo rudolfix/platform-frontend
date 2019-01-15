@@ -1,9 +1,9 @@
 import * as cn from "classnames";
+import { push } from "connected-react-router";
 import { keyBy } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
-import { push } from "react-router-redux";
 import { compose } from "recompose";
 
 import { CounterWidget, TagsWidget } from ".";

@@ -139,7 +139,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
           iconPosition="icon-after"
           theme="dark"
           svgIcon={arrowRight}
-          className={cn(styles.link, "pr-0")}
+          innerClassName={cn(styles.link, "pr-0")}
         >
           <FormattedMessage id="dashboard.my-wallet-widget.main-wallet-redirect-button" />
         </ButtonLink>

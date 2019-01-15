@@ -1,4 +1,4 @@
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -18,9 +18,9 @@ module.exports = merge(configCommon, {
     },
     runtimeChunk: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         parallel: true,
-        uglifyOptions: {
+        terserOptions: {
           ecma: 6,
         },
       }),
@@ -56,7 +56,6 @@ module.exports = merge(configCommon, {
                   modules: true,
                   localIdentName: "[name]__[local]___[hash:base64:5]",
                   camelCase: "dashesOnly",
-                  minimize: true,
                 },
               },
               {
@@ -129,10 +128,11 @@ module.exports = merge(configCommon, {
             loader: "url-loader",
             exclude: paths.inlineIcons,
             options: {
-              limit: 25000,
-              publicPath: "/",
+              limit: 5000,
+              name: "images/[name].[hash:8].[ext]",
             },
           },
+          // raw-loader for svg is used inside `paths.inlineIcons` directory only
           {
             test: /\.(svg)$/,
             loader: "raw-loader",
@@ -142,7 +142,7 @@ module.exports = merge(configCommon, {
             test: /\.(woff2|woff|ttf|eot|otf)$/,
             loader: "file-loader",
             options: {
-              name: "fonts/[hash].[ext]",
+              name: "fonts/[name].[hash:8].[ext]",
             },
           },
         ],

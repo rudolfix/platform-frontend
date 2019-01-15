@@ -13,7 +13,7 @@ export interface IPersonProfileModal {
   role: string;
   description: string | React.ReactNode;
   socialChannels: IEtoSocialProfile[];
-  website: string;
+  website?: string;
 }
 
 const initialState: IPersonProfileModalState = {
@@ -42,7 +42,8 @@ export const personProfileModalReducer: AppReducer<IPersonProfileModalState> = (
   return state;
 };
 
-export const selectIsOpen = (state: IPersonProfileModalState): boolean => state.isOpen;
+export const selectIsOpen = (state: DeepReadonly<IPersonProfileModalState>): boolean =>
+  state.isOpen;
 export const selectPersonProfileModalObj = (
-  state: IPersonProfileModalState,
-): IPersonProfileModal | undefined => state.personProfileModalObj;
+  state: DeepReadonly<IPersonProfileModalState>,
+): DeepReadonly<IPersonProfileModal> | undefined => state.personProfileModalObj;

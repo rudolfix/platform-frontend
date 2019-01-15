@@ -1,10 +1,9 @@
+import BigNumber from "bignumber.js";
 import { FormikContext } from "formik";
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-type Dictionary<T> = Record<string, T>;
-
-type AsInterface<T> = { [K in keyof T]: T[K] };
+export type Dictionary<T> = Record<string, T>;
 
 // opaque types can provide semantic information to simpler types like strings etc
 // read: https://codemix.com/opaque-types-in-javascript/
@@ -24,8 +23,13 @@ type DeepPartial<T> = {
 export type TDictionaryValues<T> = T extends Dictionary<infer U> ? U : never;
 export type TDictionaryArrayValues<T> = T extends Array<Dictionary<infer U>> ? U : never;
 
-export type primitive = string | number | boolean | undefined | null;
-export type DeepReadonly<T> = T extends primitive
+export type Primitive = string | number | boolean | undefined | null;
+
+/**
+ * Types allowed to keep as writable
+ */
+type WhitelistedWritableTypes = Date | BigNumber;
+export type DeepReadonly<T> = T extends Primitive | WhitelistedWritableTypes
   ? T
   : T extends Array<infer U> ? ReadonlyArray<U> : T extends Function ? T : DeepReadonlyObject<T>;
 
@@ -68,7 +72,7 @@ export type CommonHtmlProps = {
   style?: CSSProperties;
 };
 
-export type TTranslatedString = string | React.ReactElement<FormattedMessage>;
+export type TTranslatedString = string | React.ReactElement<FormattedMessage.Props>;
 
 export type TDataTestId = {
   "data-test-id"?: string;

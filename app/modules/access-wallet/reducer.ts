@@ -5,8 +5,8 @@ import { DeepReadonly } from "../../types";
 export interface ISignMessageModalState {
   isModalOpen: boolean;
   errorMessage?: DeepReadonly<TMessage>;
-  modalTitle?: string;
-  modalMessage?: string;
+  modalTitle?: DeepReadonly<TMessage>;
+  modalMessage?: DeepReadonly<TMessage>;
 }
 
 const initialState: ISignMessageModalState = {

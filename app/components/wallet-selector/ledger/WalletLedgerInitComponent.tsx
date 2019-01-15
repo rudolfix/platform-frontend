@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
-import { ledgerWizardFlows } from "../../../modules/wallet-selector/ledger-wizard/flows";
+import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { withActionWatcher } from "../../../utils/withActionWatcher";
@@ -97,7 +97,8 @@ export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProp
 
 export const WalletLedgerInit = compose<IWalletLedgerInitComponentProps & IIntlProps, {}>(
   withActionWatcher({
-    actionCreator: dispatch => dispatch(ledgerWizardFlows.tryEstablishingConnectionWithLedger),
+    actionCreator: dispatch =>
+      dispatch(actions.walletSelector.ledgerTryEstablishingConnectionWithLedger()),
     interval: LEDGER_RECONNECT_INTERVAL,
   }),
   appConnect<IWalletLedgerInitComponentProps>({

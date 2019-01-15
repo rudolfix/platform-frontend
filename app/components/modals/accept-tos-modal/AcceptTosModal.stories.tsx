@@ -3,7 +3,7 @@ import * as React from "react";
 import { withModalBody } from "../../../utils/storybookHelpers";
 import { AcceptTosModalInner } from "./AcceptTosModal";
 
-const props = {
+const data = {
   isOpen: true,
   onAccept: () => {},
   onDownloadTos: () => {},
@@ -12,4 +12,17 @@ const props = {
 
 storiesOf("AcceptTosModal", module)
   .addDecorator(withModalBody())
-  .add("Accept Tos", () => <AcceptTosModalInner {...props} />);
+  .add("Accept Tos", () => {
+    const props = {
+      ...data,
+      agreementChanged: false,
+    };
+    return <AcceptTosModalInner {...props} />;
+  })
+  .add("Accept updated Tos", () => {
+    const props = {
+      ...data,
+      agreementChanged: true,
+    };
+    return <AcceptTosModalInner {...props} />;
+  });

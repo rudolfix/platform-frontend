@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import * as sinon from "sinon";
 
+import { setupFakeClock } from "../../../../test/integrationTestUtils";
 import { IAppState } from "../../../store";
 import { DeepPartial } from "../../../types";
 import * as publicEtoSelectors from "../../public-etos/selectors";
@@ -18,6 +19,8 @@ function createStateWithAddress(address: string, reference: string): IAppState {
 }
 
 describe("investment-flow > selectors", () => {
+  setupFakeClock();
+
   describe("selectBankTransferReferenceCode", () => {
     beforeEach(() => {
       sinon.stub(publicEtoSelectors, "selectEtoOnChainStateById").returns(undefined);
@@ -49,11 +52,18 @@ describe("investment-flow > selectors", () => {
     });
 
     it("adds a gas stipend appendix", () => {
-      const state = createStateWithAddress(
+      let state = createStateWithAddress(
         "0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3",
         "88888888888",
       );
-      state.investmentFlow.bankTransferGasStipend = true;
+
+      state = {
+        ...state,
+        investmentFlow: {
+          ...state.investmentFlow,
+          bankTransferGasStipend: true,
+        },
+      };
 
       const code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(
@@ -62,7 +72,7 @@ describe("investment-flow > selectors", () => {
     });
 
     it("adds a whitelist appendix if eto state is Whitelist", () => {
-      const state = createStateWithAddress(
+      let state = createStateWithAddress(
         "0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3",
         "ddddddddddd",
       );
@@ -85,7 +95,13 @@ describe("investment-flow > selectors", () => {
         "Investment Amount, Reservation and Acquisition Agreement from 01-01-1970 NF 0x0061c60a6477bb64aEc5dc8d3C892cC53C8084a3 REF DDDDDDDDDDD WL",
       );
 
-      state.investmentFlow.bankTransferGasStipend = true;
+      state = {
+        ...state,
+        investmentFlow: {
+          ...state.investmentFlow,
+          bankTransferGasStipend: true,
+        },
+      };
 
       code = selectBankTransferReferenceCode(state);
       expect(code).to.equal(

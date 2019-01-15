@@ -6,6 +6,8 @@ export const etoDocumentsActions = {
   loadEtoFileData: (data: IEtoFiles) => createAction("ETO_DOCUMENTS_LOAD_ETO_FILE_DATA", { data }),
   generateTemplate: (document: IEtoDocument) =>
     createAction("ETO_DOCUMENTS_GENERATE_TEMPLATE", { document }),
+  generateTemplateByEtoId: (document: IEtoDocument, etoId: string) =>
+    createAction("ETO_DOCUMENTS_GENERATE_TEMPLATE_BY_ETO_ID", { document, etoId }),
   etoUploadDocument: (file: File, documentType: EEtoDocumentType) =>
     createAction("ETO_DOCUMENTS_UPLOAD_DOCUMENT_START", { file, documentType }),
   showIpfsModal: (fileUploadAction: () => void) =>

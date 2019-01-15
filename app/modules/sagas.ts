@@ -22,6 +22,8 @@ import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
 import { txMonitorSagas } from "./tx/monitor/sagas";
 import { txTransactionsSagasWatcher } from "./tx/transactions/sagas";
 import { txValidatorSagasWatcher } from "./tx/validator/sagas";
+import { browserWalletSagas } from "./wallet-selector/browser-wizard/sagas";
+import { ledgerSagas } from "./wallet-selector/ledger-wizard/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { walletSagas } from "./wallet/sagas";
@@ -40,6 +42,8 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(authSagas),
     effects.fork(walletSelectorSagas),
     effects.fork(lightWalletSagas),
+    effects.fork(browserWalletSagas),
+    effects.fork(ledgerSagas),
     effects.fork(walletSagas),
     effects.fork(icbmWalletGetDataSagas),
     effects.fork(etoFlowSagas),

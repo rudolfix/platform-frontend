@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { formWrapper } from "./forms/form-field/testingUtils";
+import { formWrapper } from "./forms/fields/testingUtils";
 import { SocialProfilesEditor } from "./SocialProfilesEditor";
 
 import * as githubIcon from "../../assets/img/inline_icons/social_github.svg";

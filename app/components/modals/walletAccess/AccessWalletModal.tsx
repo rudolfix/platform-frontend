@@ -19,7 +19,7 @@ import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
 import * as styles from "./AccessWalletModal.module.scss";
 
 interface IStateProps {
-  errorMessage?: TMessage;
+  errorMessage?: TTranslatedString;
   title?: TTranslatedString;
   message?: TTranslatedString;
   walletType: EWalletType | undefined;
@@ -73,18 +73,22 @@ export const AccessWalletContainerComponent: React.SFC<IStateProps & IDispatchPr
         </div>
       </div>
     )}
-    {errorMessage && (
-      <p className={cn("mt-3", styles.error)}>{getMessageTranslation(errorMessage)}</p>
-    )}
+    {errorMessage && <p className={cn("mt-3", styles.error)}>{errorMessage}</p>}
   </div>
 );
 
 export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IExternalProps>({
   stateToProps: (s, external) => ({
     isOpen: s.accessWallet.isModalOpen,
-    errorMessage: s.accessWallet.errorMessage as TMessage,
-    title: external.title ? external.title : s.accessWallet.modalTitle,
-    message: external.message ? external.message : s.accessWallet.modalMessage,
+    errorMessage: s.accessWallet.errorMessage
+      ? getMessageTranslation(s.accessWallet.errorMessage)
+      : undefined,
+    title: external.title
+      ? external.title
+      : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalTitle),
+    message: external.message
+      ? external.message
+      : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalMessage as TMessage),
     walletType: selectWalletType(s.web3),
     isUnlocked: selectIsUnlocked(s.web3),
   }),

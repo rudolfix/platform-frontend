@@ -26,11 +26,12 @@
 
 import { tid } from "../../test/testUtils";
 
-Cypress.Commands.add("awaitedClick", { prevSubject: "element" }, (subject, waitDuration = 500) => {
-  cy.get(subject.selector)
+Cypress.Commands.add("awaitedClick", { prevSubject: "element" }, (subject, waitDuration = 500) =>
+  cy
+    .get(subject.selector)
     .wait(waitDuration)
-    .click();
-});
+    .click(),
+);
 
 const resolveMediaType = headerContents => {
   const header = new Uint8Array(headerContents)

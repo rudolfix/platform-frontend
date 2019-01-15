@@ -1,6 +1,8 @@
 import { effects } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
+import { ProfileMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
@@ -14,13 +16,7 @@ import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectLightWalletSalt, selectPreviousLightWalletSalt } from "../web3/selectors";
 
 export function* addNewEmail(
-  {
-    notificationCenter,
-    logger,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
-  }: TGlobalDependencies,
+  { notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "PROFILE_ADD_NEW_EMAIL") return;
@@ -33,8 +29,8 @@ export function* addNewEmail(
   const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
 
   const emailModalTitle = isEmailAvailable
-    ? formatIntlMessage("modules.settings.sagas.add-new-email.update-title")
-    : formatIntlMessage("modules.settings.sagas.add-new-email.add-title");
+    ? createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE)
+    : createMessage(ProfileMessage.PROFILE_ADD_EMAIL_TITLE);
 
   try {
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
@@ -42,20 +38,16 @@ export function* addNewEmail(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
       emailModalTitle,
-      formatIntlMessage("modules.settings.sagas.add-new-email.confirm-description"),
+      createMessage(ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM),
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
-    notificationCenter.info(
-      formatIntlMessage("modules.settings.sagas.add-new-email.new-email-added"),
-    );
+    notificationCenter.info(createMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED));
   } catch (e) {
     if (e instanceof EmailAlreadyExists)
-      notificationCenter.error(
-        formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
-      );
+      notificationCenter.error(createMessage(ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS));
     else {
       logger.error("Failed to Add new email", e);
-      notificationCenter.error(formatIntlMessage("modules.settings.sagas.add-new-email.error"));
+      notificationCenter.error(createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR));
     }
   } finally {
     yield loadUser();
@@ -64,13 +56,7 @@ export function* addNewEmail(
 }
 
 export function* resendEmail(
-  {
-    notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
-    logger,
-  }: TGlobalDependencies,
+  { notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "PROFILE_RESEND_EMAIL") return;
@@ -87,35 +73,28 @@ export function* resendEmail(
     yield neuCall(
       ensurePermissionsArePresent,
       [CHANGE_EMAIL_PERMISSION],
-      formatIntlMessage("modules.settings.sagas.resend-email.confirmation"),
-      formatIntlMessage("modules.settings.sagas.resend-email.confirmation-description"),
+      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE),
+      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION),
     );
     yield effects.call(updateUser, { ...user, new_email: email, salt: salt });
-    notificationCenter.info(formatIntlMessage("modules.settings.sagas.resend-email.sent"));
+    notificationCenter.info(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT));
   } catch (e) {
     logger.error("Failed to resend email", e);
-    notificationCenter.error(formatIntlMessage("modules.settings.sagas.resend-email.failed"));
+    notificationCenter.error(
+      createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED),
+    );
   }
 }
 
-export function* loadSeedOrReturnToSettings({
-  intlWrapper: {
-    intl: { formatIntlMessage },
-  },
-  logger,
-}: TGlobalDependencies): Iterator<any> {
+export function* loadSeedOrReturnToSettings({ logger }: TGlobalDependencies): Iterator<any> {
   // unlock wallet
   try {
-    const signEffect = put(actions.web3.fetchSeedFromWallet());
+    const signEffect = put(actions.web3.fetchWalletPrivateDataFromWallet());
     return yield call(
       accessWalletAndRunEffect,
       signEffect,
-      formatIntlMessage(
-        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-title",
-      ),
-      formatIntlMessage(
-        "modules.settings.sagas.load-seed-return-settings.access-recovery-phrase-description",
-      ),
+      createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_TITLE),
+      createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION),
     );
   } catch (error) {
     if (error instanceof MessageSignCancelledError) {
@@ -127,8 +106,8 @@ export function* loadSeedOrReturnToSettings({
   }
 }
 
-export const profileSagas = function*(): Iterator<effects.Effect> {
+export function* profileSagas(): any {
   yield fork(neuTakeEvery, "PROFILE_ADD_NEW_EMAIL", addNewEmail);
   yield fork(neuTakeEvery, "PROFILE_RESEND_EMAIL", resendEmail);
   yield fork(neuTakeEvery, "LOAD_SEED_OR_RETURN_TO_PROFILE", loadSeedOrReturnToSettings);
-};
+}

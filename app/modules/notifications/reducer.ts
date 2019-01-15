@@ -1,26 +1,24 @@
 import { AppActionTypes, AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { actions } from "../actions";
 import { routingActions } from "../routing/actions";
 import { notificationActions } from "./actions";
 
-export enum NotificationType {
+export enum ENotificationType {
   INFO = "info",
   WARNING = "warning",
 }
 
-export enum NotificationText {
+export enum ENotificationText {
   COMPLETE_REQUEST_NOTIFICATION = "completeRequestNotification",
   COMPLETE_UPDATE_ACCOUNT = "completeUpdateAccount",
-  TEST_NOTIFICATION = "testNotification",
 }
 
 export interface INotification {
   id: number;
-  type: NotificationType;
-  text: NotificationText;
+  type: ENotificationType;
+  text: ENotificationText;
   onClickAction: AppActionTypes;
-  actionLinkText?: string;
-  clickable?: boolean;
 }
 
 export interface INotificationsState {
@@ -36,7 +34,7 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
   action,
 ): DeepReadonly<INotificationsState> => {
   switch (action.type) {
-    case "NOTIFICATIONS_ADD": {
+    case actions.notifications.notificationAdd.getType(): {
       const pNotification = action.payload.notification;
 
       const newState = {
@@ -48,7 +46,6 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
       newState.notifications.push({
         id: id,
         type: pNotification.type,
-        actionLinkText: pNotification.actionLinkText,
         text: pNotification.text,
         onClickAction: pNotification.onClickAction
           ? pNotification.onClickAction
@@ -56,7 +53,7 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
       });
       return newState;
     }
-    case "NOTIFICATIONS_REMOVE":
+    case actions.notifications.notificationRemove.getType():
       const notificationsFiltered = state.notifications.filter(
         notification => notification.id !== action.payload.id,
       );
@@ -70,16 +67,16 @@ export const notificationsReducer: AppReducer<INotificationsState> = (
 
 export const settingsNotification = () => ({
   id: Date.now(),
-  type: NotificationType.WARNING,
-  text: NotificationText.COMPLETE_UPDATE_ACCOUNT,
+  type: ENotificationType.WARNING,
+  text: ENotificationText.COMPLETE_UPDATE_ACCOUNT,
   actionLinkText: "Go to profile",
   onClickAction: routingActions.goToProfile(),
 });
 
 export const settingsNotificationInvestor = () => ({
   id: Date.now(),
-  type: NotificationType.WARNING,
-  text: NotificationText.COMPLETE_REQUEST_NOTIFICATION,
+  type: ENotificationType.WARNING,
+  text: ENotificationText.COMPLETE_REQUEST_NOTIFICATION,
   onClickAction: routingActions.goToProfile(),
   clickable: true,
 });

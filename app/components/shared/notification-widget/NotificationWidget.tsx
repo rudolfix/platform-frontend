@@ -30,9 +30,7 @@ const NotificationWidgetComponent: React.SFC<IProps> = ({ notifications, dispatc
           key={notification.text + index.toString(10)}
           type={notification.type}
           text={notification.text}
-          actionLinkText={notification.actionLinkText}
           onClick={() => dispatch(notification.onClickAction)}
-          clickable={notification.clickable}
         />
       ))}
     </div>

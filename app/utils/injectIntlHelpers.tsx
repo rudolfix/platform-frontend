@@ -1,4 +1,6 @@
 import * as React from "react";
+
+// tslint:disable-next-line
 import {
   ComponentConstructor,
   DateSource,
@@ -56,3 +58,5 @@ export const injectIntlHelpers = <OwnProps extends {}>(
     return <Component intl={newIntl} {...props} />;
   }) as any;
 };
+
+// TODO: Delete injectIntlHelpers completely

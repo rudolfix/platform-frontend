@@ -45,7 +45,7 @@ import { formatMoney } from "../../../../utils/Money.utils";
 import { formatThousands } from "../../../../utils/Number.utils";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormFieldRaw } from "../../../shared/forms/form-field/FormFieldRaw";
+import { FormFieldRaw } from "../../../shared/forms/fields/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 import {
@@ -171,6 +171,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
       <Row>
         <Col>
           <FormFieldRaw
+            name="minTicketSizeEur"
             data-test-id="invest-modal-eur-field"
             prefix="€"
             errorMsg={getInputErrorMessage(
@@ -204,6 +205,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
         </Col>
         <Col>
           <FormFieldRaw
+            name="minTicketSizeEth"
             data-test-id="invest-modal-eth-field"
             prefix="ETH"
             placeholder={`${intl.formatIntlMessage(

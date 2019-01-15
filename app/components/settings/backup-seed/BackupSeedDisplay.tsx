@@ -1,101 +1,62 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
+import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { Button, EButtonLayout } from "../../shared/buttons";
+import { SectionHeader } from "../../shared/SectionHeader";
+import { PrivateKeyDisplay } from "./PrivateKeyDisplay";
 
-import * as styles from "./BackupSeedDisplay.module.scss";
-
-import { FormattedMessage } from "react-intl-phraseapp";
 import * as arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";
-
-export const WORDS_PER_PAGE = 12;
+import * as styles from "./BackupSeedDisplay.module.scss";
 
 interface IBackupSeedDisplayProps {
   onNext: () => void;
   onBack: () => void;
-  words: string[];
+  walletPrivateData: IWalletPrivateData;
   isModal?: boolean;
-  pageNo: number;
 }
-export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
-  words,
+const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
+  walletPrivateData,
   isModal,
-  pageNo,
   onNext,
   onBack,
 }) => {
-  const wordsNo = words.length;
-  const startWord = WORDS_PER_PAGE * pageNo;
-  const endWord = startWord + WORDS_PER_PAGE;
-  const showNextButton = endWord >= wordsNo;
-
   return (
     <>
       <Row>
         <Col xs={{ size: 10, offset: 1 }}>
-          <Row className="no-gutters">
-            <Col className={cn("text-right", styles.pageStatus)}>
-              {`${(pageNo + 1) * WORDS_PER_PAGE} / ${wordsNo}`}
-            </Col>
-          </Row>
-
-          <Row className="justify-content-around no-gutters">
-            {words.slice(startWord, endWord).map((word, index) => (
-              <Col
-                className={cn(styles.word, "mt-1 p-2 text-center")}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                xl={2}
-                key={index}
-                data-test-id="seed-display-word"
-              >
-                {`${pageNo * WORDS_PER_PAGE + index + 1}.`}
-                {isModal ? <div>{word}</div> : word}
-              </Col>
-            ))}
-          </Row>
-
-          <Row className="my-4 justify-content-center justify-content-sm-between">
-            <Col className="mt-2" xs="auto">
-              <Button
-                data-test-id="seed-display-prev-words"
-                disabled={pageNo === 0}
-                onClick={onBack}
-              >
-                <FormattedMessage
-                  id="settings.backup-seed-display.previous-words"
-                  values={{ wordNumber: WORDS_PER_PAGE }}
-                />
-              </Button>
-            </Col>
-            <Col className="mt-2" xs="auto">
-              {!isModal && onNext && showNextButton ? (
-                <Button data-test-id="seed-display-next-link" onClick={onNext}>
-                  <FormattedMessage id="form.button.continue" />
-                </Button>
-              ) : (
-                <Button
-                  data-test-id="seed-display-next-words"
-                  disabled={pageNo === 1}
-                  onClick={onNext}
+          <section className="mb-4">
+            <SectionHeader data-test-id="eto-dashboard-application" className="mb-3">
+              <FormattedMessage id="components.settings.backup-seed-display.backup-seed" />
+            </SectionHeader>
+            <Row className="justify-content-around no-gutters">
+              {walletPrivateData.seed.map((word, index) => (
+                <Col
+                  className={cn(styles.word, "mt-1 p-2 text-center")}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  xl={2}
+                  key={index}
+                  data-test-id="seed-display-word"
                 >
-                  <FormattedMessage
-                    id="settings.backup-seed-display.next-words"
-                    values={{ wordNumber: WORDS_PER_PAGE }}
-                  />
-                </Button>
-              )}
-            </Col>
-          </Row>
+                  {`${index + 1}.`}
+                  {isModal ? <div>{word}</div> : word}
+                </Col>
+              ))}
+            </Row>
+          </section>
+
+          <PrivateKeyDisplay privateKey={walletPrivateData.privateKey} />
         </Col>
       </Row>
 
       {!isModal && (
-        <Row>
-          <Col>
+        <Row className="justify-content-around">
+          <Col className="mt-2" xs="auto">
             <Button
               layout={EButtonLayout.SECONDARY}
               iconPosition="icon-before"
@@ -105,8 +66,20 @@ export const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
               <FormattedMessage id="form.button.back" />
             </Button>
           </Col>
+          <Col className="mt-2" xs="auto">
+            <Button
+              layout={EButtonLayout.SECONDARY}
+              iconPosition="icon-before"
+              onClick={onNext}
+              data-test-id="seed-display-next-link"
+            >
+              <FormattedMessage id="form.button.continue" />
+            </Button>
+          </Col>
         </Row>
       )}
     </>
   );
 };
+
+export { BackupSeedDisplay };

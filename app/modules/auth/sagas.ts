@@ -1,8 +1,12 @@
 import { effects } from "redux-saga";
 import { call, Effect, fork, select } from "redux-saga/effects";
 
-import { SignInUserErrorMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import {
+  AuthMessage,
+  SignInUserErrorMessage,
+  ToSMessage,
+} from "../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../components/translatedMessages/utils";
 import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser, IUserInput, IVerifyEmailUser } from "../../lib/api/users/interfaces";
@@ -29,7 +33,7 @@ import {
 } from "../web3/selectors";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { MessageSignCancelledError } from "./errors";
-import { selectCurrentAgreementHash, selectVerifiedUserEmail } from "./selectors";
+import { selectCurrentAgreementHash, selectUserType, selectVerifiedUserEmail } from "./selectors";
 
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
@@ -86,38 +90,23 @@ export async function loadOrCreateUserPromise(
 }
 
 export async function verifyUserEmailPromise(
-  {
-    apiUserService,
-    notificationCenter,
-    intlWrapper: {
-      intl: { formatIntlMessage },
-    },
-  }: TGlobalDependencies,
+  { apiUserService, notificationCenter }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
   verifiedEmail: string,
 ): Promise<void> {
   if (urlEmail === verifiedEmail) {
-    notificationCenter.info(
-      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-already-verified"),
-    );
+    notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED));
     return;
   }
   if (!userCode) return;
   try {
     await apiUserService.verifyUserEmail(userCode);
-    notificationCenter.info(
-      formatIntlMessage("modules.auth.sagas.verify-user-email-promise.email-verified"),
-    );
+    notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_VERIFIED));
   } catch (e) {
     if (e instanceof EmailAlreadyExists)
-      notificationCenter.error(
-        formatIntlMessage("modules.auth.sagas.sign-in-user.email-already-exists"),
-      );
-    else
-      notificationCenter.error(
-        formatIntlMessage("modules.auth.sagas.verify-user-email-promise.failed-email-verify"),
-      );
+      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS));
+    else notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED));
   }
 }
 
@@ -182,6 +171,7 @@ function* logoutWatcher(
   const { userType } = action.payload;
   jwtStorage.clear();
   yield web3Manager.unplugPersonalWallet();
+  yield effects.put(actions.web3.personalWalletDisconnected());
   if (userType === EUserType.INVESTOR || !userType) {
     yield effects.put(actions.routing.goHome());
   } else {
@@ -201,8 +191,10 @@ export function* signInUser({ walletStorage, web3Manager }: TGlobalDependencies)
 
     yield neuCall(obtainJWT, [SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
+
+    const userType: EUserType = yield select(selectUserType);
     // tslint:disable-next-line
-    walletStorage.set(web3Manager.personalWallet!.getMetadata());
+    walletStorage.set(web3Manager.personalWallet!.getMetadata(), userType);
 
     const redirectionUrl = yield effects.select((state: IAppState) =>
       selectRedirectURLFromQueryString(state.router),
@@ -252,33 +244,26 @@ function* handleAcceptCurrentAgreement({
   apiUserService,
   logger,
   notificationCenter,
-  intlWrapper: {
-    intl: { formatIntlMessage },
-  },
 }: TGlobalDependencies): Iterator<any> {
   const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
   yield neuCall(
     ensurePermissionsArePresent,
     [SIGN_TOS],
-    formatIntlMessage("settings.modal.accept-tos.permission.title"),
-    formatIntlMessage("settings.modal.accept-tos.permission.text"),
+    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TITLE),
+    createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT),
   );
   try {
     const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
     yield effects.put(actions.auth.setUser(user));
   } catch (e) {
-    notificationCenter.error("There was a problem with accepting Terms and Conditions");
+    notificationCenter.error(createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR));
     logger.error("Could not accept Terms and Conditions", e);
   }
 }
 
-function* handleDownloadCurrentAgreement({
-  intlWrapper: {
-    intl: { formatIntlMessage },
-  },
-}: TGlobalDependencies): Iterator<any> {
+function* handleDownloadCurrentAgreement(_: TGlobalDependencies): Iterator<any> {
   const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
-  const fileName = formatIntlMessage("settings.modal.accept-tos.filename");
+  const fileName = createMessage(AuthMessage.AUTH_TOC_FILENAME);
   yield effects.put(
     actions.immutableStorage.downloadImmutableFile(
       {
@@ -305,10 +290,11 @@ function* verifyUserEmail(): Iterator<any> {
  * Saga & Promise to fetch a new jwt from the authentication server
  */
 export async function obtainJwtPromise(
-  { getState, web3Manager, signatureAuthApi, cryptoRandomString, logger }: TGlobalDependencies,
+  { web3Manager, signatureAuthApi, cryptoRandomString, logger }: TGlobalDependencies,
+  state: IAppState,
   permissions: Array<string> = [],
 ): Promise<string> {
-  const address = selectEthereumAddressWithChecksum(getState());
+  const address = selectEthereumAddressWithChecksum(state);
 
   const salt = cryptoRandomString(64);
 
@@ -339,7 +325,8 @@ export function* obtainJWT(
   { jwtStorage }: TGlobalDependencies,
   permissions: Array<string> = [],
 ): Iterator<any> {
-  const jwt: string = yield neuCall(obtainJwtPromise, permissions);
+  const state: IAppState = yield select();
+  const jwt: string = yield neuCall(obtainJwtPromise, state, permissions);
   yield effects.put(actions.auth.loadJWT(jwt));
   jwtStorage.set(jwt);
 
@@ -353,8 +340,8 @@ export function* obtainJWT(
 export function* ensurePermissionsArePresent(
   { jwtStorage, logger }: TGlobalDependencies,
   permissions: Array<string> = [],
-  title: string,
-  message: string,
+  title: TMessage,
+  message: TMessage,
 ): Iterator<any> {
   // check wether all permissions are present and still valid
   const jwt = jwtStorage.get();

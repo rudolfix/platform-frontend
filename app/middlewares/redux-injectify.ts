@@ -59,7 +59,7 @@ export function injectableFn<T extends Function>(
 // patch redux dispatch signature to support dispatching functions
 declare module "redux" {
   // tslint:disable-next-line
-  export interface Dispatch<S> {
+  export interface Dispatch<A extends Action = AnyAction> {
     (asyncAction: Function): void;
   }
 }

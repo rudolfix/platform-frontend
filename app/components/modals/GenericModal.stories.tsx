@@ -2,7 +2,17 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { TestMessage } from "../translatedMessages/messages";
+import { createMessage } from "../translatedMessages/utils";
 import { GenericModalLayout } from "./GenericModal";
+
+const title = createMessage(TestMessage.TEST_MESSAGE, {
+  message: "C'mon, salty pants. you won't loot the quarter-deck.",
+});
+const description = createMessage(TestMessage.TEST_MESSAGE, {
+  message:
+    "The plunder stutters urchin like a stormy wench. Wave cowardly like a gutless doubloons. Arrr, wet strength!",
+});
 
 storiesOf("GenericModal", module)
   .add("with title", () => (
@@ -11,7 +21,7 @@ storiesOf("GenericModal", module)
       closeModal={action("close")}
       isOpen={true}
       genericModalObj={{
-        title: "C'mon, salty pants. you won't loot the quarter-deck.",
+        title,
       }}
     />
   ))
@@ -21,9 +31,8 @@ storiesOf("GenericModal", module)
       closeModal={action("close")}
       isOpen={true}
       genericModalObj={{
-        title: "C'mon, salty pants. you won't loot the quarter-deck.",
-        description:
-          "The plunder stutters urchin like a stormy wench. Wave cowardly like a gutless doubloons. Arrr, wet strength!",
+        title,
+        description,
       }}
     />
   ))
@@ -33,10 +42,9 @@ storiesOf("GenericModal", module)
       closeModal={action("close")}
       isOpen={true}
       genericModalObj={{
-        title: "C'mon, salty pants. you won't loot the quarter-deck.",
+        title,
         icon: "check",
-        description:
-          "The plunder stutters urchin like a stormy wench. Wave cowardly like a gutless doubloons. Arrr, wet strength!",
+        description,
       }}
     />
   ))
@@ -46,10 +54,9 @@ storiesOf("GenericModal", module)
       closeModal={action("close")}
       isOpen={true}
       genericModalObj={{
-        title: "C'mon, salty pants. you won't loot the quarter-deck.",
+        title,
         icon: "exclamation",
-        description:
-          "The plunder stutters urchin like a stormy wench. Wave cowardly like a gutless doubloons. Arrr, wet strength!",
+        description,
       }}
     />
   ))

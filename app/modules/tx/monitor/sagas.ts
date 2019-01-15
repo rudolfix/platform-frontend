@@ -25,12 +25,16 @@ async function cleanPendingTransactionsPromise(
     const txHash = apiPendingTx.pendingTransaction.transaction.hash;
     logger.info("Resolving pending transaction with hash", txHash);
     const transactionReceipt = await web3Manager.internalWeb3Adapter.getTransactionReceipt(txHash);
+
     // transactionReceipt should be null if transaction is not mined
     if (transactionReceipt && transactionReceipt.blockNumber) {
       logger.info(`Resolved transaction ${txHash} at block ${transactionReceipt.blockNumber}`);
       await apiUserService.deletePendingTx(txHash);
       // it's resolved so remove
-      apiPendingTx.pendingTransaction = undefined;
+      return {
+        ...apiPendingTx,
+        pendingTransaction: undefined,
+      };
     }
   }
   return apiPendingTx;

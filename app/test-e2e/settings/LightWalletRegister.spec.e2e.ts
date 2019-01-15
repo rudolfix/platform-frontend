@@ -1,18 +1,18 @@
 import {
+  acceptTOS,
+  assertButtonIsActive,
   assertErrorModal,
-  assertWaitForLatestEmailSentWithSalt,
   assertUserInDashboard,
+  assertWaitForLatestEmailSentWithSalt,
   clearEmailServer,
   convertToUniqueEmail,
   loginWithLightWallet,
   logoutViaTopRightButton,
   mockApiUrl,
   registerWithLightWallet,
+  tid,
   typeEmailPassword,
   verifyLatestUserEmail,
-  tid,
-  assertButtonIsActive,
-  acceptTOS,
 } from "../utils";
 
 describe("Light wallet login / register", () => {

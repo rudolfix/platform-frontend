@@ -7,6 +7,7 @@ import { withCanClaimToken } from "./withCanClaimToken";
 
 interface IExternalProps {
   canClaimToken: boolean;
+  onClaim: () => void;
 }
 
 const RefundWidgetLayout: React.SFC<IExternalProps> = ({ canClaimToken }) => {
@@ -25,4 +26,5 @@ const RefundWidgetLayout: React.SFC<IExternalProps> = ({ canClaimToken }) => {
   );
 };
 
+// TODO: Remove binding between withCanClaimToken and RefundWidgetLayout
 export const RefundWidget = withCanClaimToken(RefundWidgetLayout);

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { RouterState } from "react-router-redux";
+import { RouterState } from "connected-react-router";
 import { dummyEthereumAddress } from "../../../test/fixtures";
 import {
   getDummyBrowserWalletMetadata,
@@ -109,9 +109,10 @@ describe("web3 > selectors", () => {
           hash: "",
           search: encodeURI(`?redirect=/&code=${code}`),
         },
+        action: "POP",
       };
 
-      const result: any = { ...selectActivationCodeFromQueryString(state) };
+      const result: any = selectActivationCodeFromQueryString(state);
 
       expect(result.verificationCode === code).to.be.true;
     });
@@ -129,7 +130,7 @@ describe("web3 > selectors", () => {
         ...previousConnectedWallet,
       };
 
-      const result: any = { ...selectLightWalletFromQueryString(state) };
+      const result: any = selectLightWalletFromQueryString(state);
 
       expect(result.email).to.be.eq(email);
 

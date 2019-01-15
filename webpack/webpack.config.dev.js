@@ -30,7 +30,6 @@ module.exports = merge(configCommon, {
     },
     proxy: generateProxyConfig("http://localhost", "http://localhost:8545"),
   },
-  entry: ["react-hot-loader/patch"],
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new ForkTsCheckerWebpackPlugin({ tsconfig: "tsconfig.dev.json" }),
@@ -110,6 +109,7 @@ module.exports = merge(configCommon, {
           {
             test: /\.(tsx?)$/,
             use: [
+              "react-hot-loader/webpack",
               {
                 loader: "ts-loader",
                 options: {
@@ -126,10 +126,11 @@ module.exports = merge(configCommon, {
             loader: "url-loader",
             exclude: paths.inlineIcons,
             options: {
-              limit: 25000,
-              publicPath: "/",
+              limit: 5000,
+              name: "images/[name].[hash:8].[ext]",
             },
           },
+          // raw-loader for svg is used inside `paths.inlineIcons` directory only
           {
             test: /\.(svg)$/,
             loader: "raw-loader",
@@ -139,7 +140,7 @@ module.exports = merge(configCommon, {
             test: /\.(woff2|woff|ttf|eot|otf)$/,
             loader: "file-loader",
             options: {
-              name: "fonts/[hash].[ext]",
+              name: "fonts/[name].[hash:8].[ext]",
             },
           },
         ],

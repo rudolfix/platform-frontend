@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Col } from "reactstrap";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
@@ -11,7 +10,6 @@ import { TTranslatedString } from "../../types";
 import { getDocumentTemplateTitles } from "../documents/utils";
 import { DocumentTemplateButton } from "./DocumentLink";
 import { InlineIcon } from "./InlineIcon";
-import { Panel } from "./Panel";
 
 import * as link from "../../assets/img/inline_icons/social_link.svg";
 import * as styles from "./SingleColDocumentWidget.module.scss";
@@ -37,12 +35,12 @@ const SingleColDocumentsLayout: React.SFC<IProps> = ({
 }) => {
   const documentTemplateTitles = getDocumentTemplateTitles(isRetailEto);
   return (
-    <Panel className={className}>
-      <Col className={styles.groupName}>{title}</Col>
-      <div className={styles.group}>
-        {documents.map(({ ipfsHash, mimeType, documentType }, i) => {
+    <div className={className}>
+      <h3 className={styles.groupName}>{title}</h3>
+      <section className={styles.group}>
+        {documents.map(({ ipfsHash, mimeType, documentType }) => {
           return (
-            <Col xs={12} className={styles.document} key={i}>
+            <div className={styles.document} key={ipfsHash}>
               <DocumentTemplateButton
                 onClick={() =>
                   downloadImmutableFile(
@@ -56,11 +54,11 @@ const SingleColDocumentsLayout: React.SFC<IProps> = ({
                 title={documentTemplateTitles[documentType]}
                 altIcon={<InlineIcon svgIcon={link} />}
               />
-            </Col>
+            </div>
           );
         })}
-      </div>
-    </Panel>
+      </section>
+    </div>
   );
 };
 

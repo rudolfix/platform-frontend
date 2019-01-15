@@ -46,7 +46,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
           <>
             <ButtonLink
               theme="white"
-              className={cn(styles.registerButton, styles.resizableButton)}
+              innerClassName={cn(styles.registerButton, styles.resizableButton)}
               data-test-id="Header-register-eto"
               isActive={false}
               to={appRoutes.registerEto}
@@ -55,7 +55,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
             </ButtonLink>
             <ButtonLink
               theme="white"
-              className={styles.resizableButton}
+              innerClassName={styles.resizableButton}
               data-test-id="Header-login-eto"
               isActive={false}
               to={appRoutes.loginEto}
@@ -67,7 +67,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
           <>
             <ButtonLink
               theme="white"
-              className={cn(styles.registerButton, styles.resizableButton)}
+              innerClassName={cn(styles.registerButton, styles.resizableButton)}
               data-test-id="Header-register"
               isActive={false}
               to={walletRegisterRoutes.light}
@@ -76,7 +76,7 @@ export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props =>
             </ButtonLink>
             <ButtonLink
               theme="white"
-              className={styles.resizableButton}
+              innerClassName={styles.resizableButton}
               data-test-id="Header-login"
               isActive={false}
               to={loginWalletRoutes.light}

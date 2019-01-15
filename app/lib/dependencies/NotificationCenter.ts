@@ -1,12 +1,15 @@
 import { injectable } from "inversify";
-import { toast } from "react-toastify";
+import { showErrorToast, showInfoToast } from "../../components/shared/Toast";
+
+import { getMessageTranslation } from "../../components/translatedMessages/messages";
+import { TMessage } from "../../components/translatedMessages/utils";
 
 @injectable()
 export class NotificationCenter {
-  public error(message: string): void {
-    toast.error(message);
+  public error(message: TMessage): void {
+    showErrorToast(getMessageTranslation(message));
   }
-  public info(message: string): void {
-    toast.info(message);
+  public info(message: TMessage): void {
+    showInfoToast(getMessageTranslation(message));
   }
 }

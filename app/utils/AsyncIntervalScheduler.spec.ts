@@ -1,12 +1,14 @@
 import { expect } from "chai";
 import { spy } from "sinon";
-import { globalFakeClock } from "../../test/setupTestsHooks";
+
+import { setupFakeClock } from "../../test/integrationTestUtils";
 import { noopLogger } from "../lib/dependencies/Logger";
 import { AsyncIntervalScheduler } from "./AsyncIntervalScheduler";
 import { delay } from "./delay";
 
 describe("AsyncIntervalScheduler", () => {
   const expectedInterval = 500;
+  const clock = setupFakeClock();
 
   it("should wait for async callback execution to finish", async () => {
     const expectedFunctionDelay = 2000;
@@ -20,14 +22,14 @@ describe("AsyncIntervalScheduler", () => {
     );
     asyncInterval.start();
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(asyncFunctionMock).to.be.calledOnce;
 
     // no more calls because async task takes time
-    await globalFakeClock.tickAsync(expectedFunctionDelay);
+    await clock.fakeClock.tickAsync(expectedFunctionDelay);
     expect(asyncFunctionMock).to.be.calledOnce;
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(asyncFunctionMock).to.be.calledTwice;
   });
 
@@ -54,9 +56,9 @@ describe("AsyncIntervalScheduler", () => {
     );
     asyncInterval.start();
 
-    globalFakeClock.tick(expectedInterval - 1);
+    clock.fakeClock.tick(expectedInterval - 1);
     asyncInterval.stop();
-    globalFakeClock.tick(1);
+    clock.fakeClock.tick(1);
     expect(asyncFunctionMock).to.be.not.calledOnce;
   });
 
@@ -73,14 +75,14 @@ describe("AsyncIntervalScheduler", () => {
     );
     asyncInterval.start();
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(asyncFunctionMock).to.be.calledOnce;
     asyncInterval.stop();
 
     // wait for function execution to finish
-    await globalFakeClock.tickAsync(expectedFunctionDelay);
+    await clock.fakeClock.tickAsync(expectedFunctionDelay);
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(asyncFunctionMock).to.be.calledOnce;
   });
 
@@ -96,12 +98,12 @@ describe("AsyncIntervalScheduler", () => {
     );
     asyncInterval.start();
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(asyncFunctionMock).to.be.calledOnce;
 
     asyncInterval.start();
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(asyncFunctionMock).to.be.calledOnce;
   });
 
@@ -115,14 +117,14 @@ describe("AsyncIntervalScheduler", () => {
     );
     asyncInterval.start();
 
-    globalFakeClock.tick(expectedInterval - 1);
+    clock.fakeClock.tick(expectedInterval - 1);
     asyncInterval.stop();
-    globalFakeClock.tick(1);
+    clock.fakeClock.tick(1);
     expect(asyncFunctionMock).to.be.not.calledOnce;
 
-    globalFakeClock.tick(expectedInterval - 1);
+    clock.fakeClock.tick(expectedInterval - 1);
     asyncInterval.stop();
-    globalFakeClock.tick(1);
+    clock.fakeClock.tick(1);
     expect(asyncFunctionMock).to.be.not.calledOnce;
   });
 
@@ -135,10 +137,10 @@ describe("AsyncIntervalScheduler", () => {
     );
     asyncInterval.start();
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(syncFunctionMock).to.be.calledOnce;
 
-    globalFakeClock.tick(expectedInterval);
+    clock.fakeClock.tick(expectedInterval);
     expect(syncFunctionMock).to.be.calledTwice;
   });
 });

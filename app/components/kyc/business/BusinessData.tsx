@@ -43,7 +43,7 @@ interface IStateProps {
   loadingData: boolean;
   fileUploading: boolean;
   filesLoading: boolean;
-  files: IKycFileInfo[];
+  files: ReadonlyArray<IKycFileInfo>;
 }
 
 interface IDispatchProps {

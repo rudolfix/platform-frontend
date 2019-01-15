@@ -6,11 +6,18 @@ export interface IDisconnectedWeb3State {
   previousConnectedWallet?: TWalletMetadata;
 }
 
+export interface IWalletPrivateData {
+  seed: string[];
+  privateKey: string;
+}
 export interface IConnectedWeb3State {
   connected: true;
   wallet: TWalletMetadata;
   isUnlocked: boolean; // this is important only for light wallet
-  seed?: string;
+  walletPrivateData?: {
+    seed: string;
+    privateKey: string;
+  };
 }
 
 export type IWeb3State = IDisconnectedWeb3State | IConnectedWeb3State;
@@ -66,7 +73,10 @@ export const web3Reducer: AppReducer<IWeb3State> = (
       if (state.connected) {
         return {
           ...state,
-          seed: action.payload,
+          walletPrivateData: {
+            seed: action.payload.seed,
+            privateKey: action.payload.privateKey,
+          },
         };
       } else {
         return state;
@@ -75,7 +85,7 @@ export const web3Reducer: AppReducer<IWeb3State> = (
       if (state.connected) {
         return {
           ...state,
-          seed: undefined,
+          walletPrivateData: undefined,
         };
       } else {
         return state;

@@ -130,7 +130,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
         {isInvestor &&
           !isVerifiedInvestor && (
             <ButtonLink
-              className="mb-3"
+              innerClassName="mb-3"
               to={appRoutes.profile}
               data-test-id="eto-overview-settings-update-required-to-invest"
             >

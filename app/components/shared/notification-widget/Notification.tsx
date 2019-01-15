@@ -1,10 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl";
-import { branch } from "recompose";
+import { FormattedMessage } from "react-intl-phraseapp";
 
-import { NotificationText, NotificationType } from "../../../modules/notifications/reducer";
-import { withContainer } from "../../../utils/withContainer";
+import { ENotificationText, ENotificationType } from "../../../modules/notifications/reducer";
 import { Button, ButtonClose, ButtonTextPosition, ButtonWidth, EButtonLayout } from "../buttons";
 
 import * as infoIcon from "../../../assets/img/notifications/info.svg";
@@ -12,77 +10,66 @@ import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./Notification.module.scss";
 
 export interface INotificationProps {
-  type: NotificationType;
-  text: NotificationText;
-  actionLinkText?: string;
-  onClick: () => void;
-  clickable?: boolean;
+  type: ENotificationType;
+  text: ENotificationText;
+  onClick?: () => void;
 }
 
-const { INFO, WARNING } = NotificationType;
-
-const {
-  COMPLETE_REQUEST_NOTIFICATION,
-  COMPLETE_UPDATE_ACCOUNT,
-  TEST_NOTIFICATION,
-} = NotificationText;
+export interface INotificationContentProps {
+  type: ENotificationType;
+  text: ENotificationText;
+}
 
 const icons = {
-  [INFO]: infoIcon,
-  [WARNING]: warningIcon,
+  [ENotificationType.INFO]: infoIcon,
+  [ENotificationType.WARNING]: warningIcon,
 };
 
 const notificationTexts = {
-  [COMPLETE_REQUEST_NOTIFICATION]: <FormattedMessage id="notifications.complete-request" />,
-  [COMPLETE_UPDATE_ACCOUNT]: <FormattedMessage id="notifications.update-account" />,
-  [TEST_NOTIFICATION]: "bla",
+  [ENotificationText.COMPLETE_REQUEST_NOTIFICATION]: (
+    <FormattedMessage id="notifications.complete-request" />
+  ),
+  [ENotificationText.COMPLETE_UPDATE_ACCOUNT]: (
+    <FormattedMessage id="notifications.update-account" />
+  ),
 };
 
-const NotificationClickableContainer: React.SFC<INotificationProps> = ({ children, onClick }) => (
-  <Button
-    layout={EButtonLayout.SIMPLE}
-    width={ButtonWidth.BLOCK}
-    textPosition={ButtonTextPosition.LEFT}
-    onClick={onClick}
-  >
-    {children}
-  </Button>
-);
-
-const NotificationComponent: React.SFC<INotificationProps> = ({
-  type,
+const NotificationContent: React.FunctionComponent<INotificationContentProps> = ({
   text,
-  onClick,
-  actionLinkText,
+  type,
 }) => (
-  <div data-test-id="notification" className={cn(styles.notification, type)}>
+  <div className={cn(styles.notification, type)}>
     <i className={`${styles.iconNotificationType}`}>
-      <img src={icons[type]} />
+      <img src={icons[type]} alt="" />
     </i>
     <span data-test-id="notification-text" className={styles.text}>
       {notificationTexts[text]}
     </span>
-    {actionLinkText ? (
-      <Button
-        layout={EButtonLayout.INLINE}
-        theme={"white"}
-        data-test-id="notification-close"
-        className={styles.link}
-        onClick={onClick}
-      >
-        {actionLinkText}
-      </Button>
-    ) : (
-      <i className={styles.close} data-test-id="notification-close" onClick={onClick}>
-        <ButtonClose />
-      </i>
-    )}
   </div>
 );
 
-const Notification = branch<INotificationProps>(
-  ({ clickable }) => clickable === true,
-  withContainer(NotificationClickableContainer),
-)(NotificationComponent);
+const Notification: React.FunctionComponent<INotificationProps> = ({ type, text, onClick }) => {
+  return (
+    <section data-test-id="notification" className={cn(styles.notificationWrapper)}>
+      {onClick ? (
+        <Button
+          data-test-id="notification-button"
+          layout={EButtonLayout.SIMPLE}
+          width={ButtonWidth.BLOCK}
+          textPosition={ButtonTextPosition.LEFT}
+          onClick={onClick}
+        >
+          <NotificationContent text={text} type={type} />
+        </Button>
+      ) : (
+        <NotificationContent text={text} type={type} />
+      )}
 
-export { Notification, NotificationComponent };
+      {onClick && (
+        <ButtonClose className={styles.close} data-test-id="notification-close" onClick={onClick} />
+      )}
+    </section>
+  );
+};
+
+export { Notification, NotificationContent };

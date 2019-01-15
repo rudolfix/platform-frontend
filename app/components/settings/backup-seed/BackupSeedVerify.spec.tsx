@@ -1,13 +1,13 @@
-import * as Mnemonic from "bitcore-mnemonic";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import { difference, noop } from "lodash";
 import * as React from "react";
 
 import { tid } from "../../../../test/testUtils";
+import { englishMnemonics } from "../../../utils/englishMnemonics";
 import { BackupSeedVerify, IBackupSeedVerifyState } from "./BackupSeedVerify";
 
-const words = Mnemonic.Words.ENGLISH.slice(0, 24);
+const words = englishMnemonics.slice(0, 24);
 
 describe("<BackupSeedVerify />", () => {
   it("should render word selectors with correct labels", () => {

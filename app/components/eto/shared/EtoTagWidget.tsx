@@ -5,7 +5,7 @@ import { Creatable as ReactSelectCreatable } from "react-select";
 import Select from "react-virtualized-select";
 
 import { CommonHtmlProps } from "../../../types";
-import { FormError } from "../../shared/forms";
+import { FormFieldError } from "../../shared/forms";
 import { ETagSize, Tag } from "../../shared/Tag";
 
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
@@ -79,7 +79,7 @@ const TagsFormEditor: React.SFC<ICombinedProps & IInternalProps> = ({
         ))}
       </div>
     )}
-    <FormError name={name} />
+    <FormFieldError name={name} />
   </div>
 );
 

@@ -7,6 +7,7 @@ import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfa
 import { actions } from "../../../../modules/actions";
 import { selectBookbuildingStats } from "../../../../modules/bookbuilding-flow/selectors";
 import {
+  selectCanEnableBookBuilding,
   selectEtoId,
   selectIsBookBuilding,
   selectMaxPledges,
@@ -37,6 +38,7 @@ interface IStateProps {
   bookBuildingStats: IBookBuildingStats;
   maxPledges: number | null;
   etoId?: string;
+  canEnableBookbuilding: boolean;
 }
 
 interface IBookBuilding {
@@ -50,6 +52,7 @@ interface ILayoutProps {
   headerText: TTranslatedString;
   text: TTranslatedString;
   buttonText: TTranslatedString;
+  canEnableBookbuilding: boolean;
 }
 
 type IProps = IDispatchProps & IStateProps;
@@ -96,20 +99,30 @@ const BookBuildingWidgetLayout: React.SFC<ILayoutProps> = ({
   headerText,
   text,
   buttonText,
+  canEnableBookbuilding,
 }) => (
   <Panel headerText={headerText}>
     <div className={styles.content}>
-      <p className={cn(styles.text)}>{text}</p>
+      <p className={cn(styles.text)}>
+        {canEnableBookbuilding ? (
+          text
+        ) : (
+          <FormattedMessage id="eto-bookbuilding-widget.button-disabled" />
+        )}
+      </p>
       {children}
-      <div className={styles.widgetButton}>
-        <ButtonArrowRight
-          onClick={onClick}
-          data-test-id="eto-flow-start-bookbuilding"
-          className={styles.buttonOverride}
-        >
-          {buttonText}
-        </ButtonArrowRight>
-      </div>
+
+      {canEnableBookbuilding && (
+        <div className={styles.widgetButton}>
+          <ButtonArrowRight
+            onClick={onClick}
+            data-test-id="eto-flow-start-bookbuilding"
+            innerClassName={styles.buttonOverride}
+          >
+            {buttonText}
+          </ButtonArrowRight>
+        </div>
+      )}
     </div>
   </Panel>
 );
@@ -122,6 +135,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   bookBuildingStats,
   downloadCSV,
   etoId,
+  canEnableBookbuilding,
 }) => {
   if (bookBuildingStats === undefined) {
     //TODO data loading state
@@ -133,6 +147,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
         text={<FormattedMessage id="settings.book-building-widget.proposal-accepted" />}
         buttonText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}
         onClick={() => startBookBuilding(etoId as string)}
+        canEnableBookbuilding={canEnableBookbuilding}
       />
     );
   } else if (!bookBuildingEnabled && bookBuildingStats.investorsCount) {
@@ -144,6 +159,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
           <FormattedMessage id="settings.book-building-widget.reactivate-book-building" />
         }
         onClick={() => startBookBuilding(etoId as string)}
+        canEnableBookbuilding={canEnableBookbuilding}
       >
         <BookBuildingStats
           bookBuildingStats={bookBuildingStats}
@@ -159,6 +175,7 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
         text={<FormattedMessage id="settings.book-building-widget.book-building-enabled-text" />}
         buttonText={<FormattedMessage id="settings.book-building-widget.stop-book-building" />}
         onClick={() => stopBookBuilding(etoId as string)}
+        canEnableBookbuilding={canEnableBookbuilding}
       >
         <BookBuildingStats
           bookBuildingStats={bookBuildingStats}
@@ -178,6 +195,7 @@ export const BookBuildingWidget = compose<React.SFC>(
       bookBuildingStats: selectBookbuildingStats(selectEtoId(state) as string, state),
       maxPledges: selectMaxPledges(state),
       etoId: selectEtoId(state),
+      canEnableBookbuilding: selectCanEnableBookBuilding(state),
     }),
     dispatchToProps: dispatch => ({
       startBookBuilding: etoId => {

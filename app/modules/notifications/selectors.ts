@@ -10,7 +10,7 @@ import {
 import { selectKycRequestStatus, selectWidgetLoading } from "../kyc/selectors";
 import { INotification, settingsNotification, settingsNotificationInvestor } from "./reducer";
 
-export const selectNotifications = (state: IAppState): INotification[] =>
+export const selectNotifications = (state: IAppState): ReadonlyArray<INotification> =>
   state.notifications.notifications;
 
 export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
@@ -32,7 +32,7 @@ export const selectIsVisibleSecurityNotification = (state: IAppState): boolean =
 
   if (
     state.router.location &&
-    some(disallowedViewsPaths, p => state.router.location!.pathname.startsWith(p))
+    some(disallowedViewsPaths, p => state.router.location.pathname.startsWith(p))
   ) {
     return false;
   }

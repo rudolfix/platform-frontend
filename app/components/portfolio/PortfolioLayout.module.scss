@@ -1,5 +1,9 @@
 .portfolio {
-  @include responsive-size(margin-top, $authorized-layout-vertical-padding-sm, $authorized-layout-vertical-padding-lg);
+  @include responsive-size(
+    margin-top,
+    $authorized-layout-vertical-padding-sm,
+    $authorized-layout-vertical-padding-lg
+  );
 }
 
 .token {
@@ -11,8 +15,6 @@
 }
 
 .document-link {
-  display: inline-flex;
-  align-content: center;
-  margin-right: 12px;
-  margin-bottom: 12px;
+  margin-bottom: px-to-rem(16px);
+  text-align: left;
 }

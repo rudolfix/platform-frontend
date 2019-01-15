@@ -1,5 +1,5 @@
 import {
-  GenericError,
+  GenericErrorMessage,
   MismatchedWalletAddressErrorMessage,
 } from "../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../components/translatedMessages/utils";
@@ -44,5 +44,5 @@ export function mapSignMessageErrorToErrorMessage(error: Error): TMessage {
     });
   }
 
-  return createMessage(GenericError.GENERIC_ERROR);
+  return createMessage(GenericErrorMessage.GENERIC_ERROR);
 }

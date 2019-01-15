@@ -1,18 +1,18 @@
 import { AppActionTypes } from "../../store";
-import { createAction } from "../actionsUtils";
-import { NotificationText, NotificationType } from "./reducer";
+import { createActionFactory } from "../actionsUtils";
+import { ENotificationText, ENotificationType } from "./reducer";
 
 export interface INewNotification {
   id?: number;
-  type: NotificationType;
-  text: NotificationText;
-  actionLinkText?: string;
+  type: ENotificationType;
+  text: ENotificationText;
   onClickAction?: AppActionTypes;
 }
 
 export const notificationActions = {
-  notificationAdd: (notification: INewNotification) =>
-    createAction("NOTIFICATIONS_ADD", { notification }),
+  notificationAdd: createActionFactory("NOTIFICATIONS_ADD", (notification: INewNotification) => ({
+    notification,
+  })),
 
-  notificationRemove: (id: number) => createAction("NOTIFICATIONS_REMOVE", { id }),
+  notificationRemove: createActionFactory("NOTIFICATIONS_REMOVE", (id: number) => ({ id })),
 };

@@ -1,21 +1,22 @@
 import { genericModalIcons } from "../../components/modals/GenericModal";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { AppActionTypes, AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 
 export interface IGenericModalState {
   isOpen: boolean;
   genericModalObj?: IGenericModal;
-  component?: React.ReactType;
+  component?: React.ComponentType<any>;
 }
 
 //Add more custom icons here
 export type TIconType = keyof typeof genericModalIcons;
 
 export interface IGenericModal {
-  title: string | React.ReactNode;
-  description?: string | React.ReactNode;
+  title: TMessage;
+  description?: TMessage;
   icon?: TIconType;
-  actionLinkText?: string | React.ReactNode;
+  actionLinkText?: TMessage;
   onClickAction?: AppActionTypes;
 }
 
@@ -47,9 +48,11 @@ export const genericModalReducer: AppReducer<IGenericModalState> = (
   return state;
 };
 
-export const selectGenericModalIsOpen = (state: IGenericModalState): boolean => state.isOpen;
-export const selectGenericModalObj = (state: IGenericModalState): IGenericModal | undefined =>
-  state.genericModalObj;
+export const selectGenericModalIsOpen = (state: DeepReadonly<IGenericModalState>): boolean =>
+  state.isOpen;
+export const selectGenericModalObj = (
+  state: DeepReadonly<IGenericModalState>,
+): DeepReadonly<IGenericModal> | undefined => state.genericModalObj;
 export const selectGenericModalComponent = (
-  state: IGenericModalState,
-): React.ReactType | undefined => state.component;
+  state: DeepReadonly<IGenericModalState>,
+): React.ComponentType<any> | undefined => state.component;

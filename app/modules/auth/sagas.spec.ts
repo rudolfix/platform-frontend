@@ -40,20 +40,21 @@ describe("Jwt actions", () => {
       const web3ManagerMock = createMock(Web3Manager, {
         personalWallet: browserWalletMock,
       });
-      const getStateMock = spy(() => mockedState);
       const signatureAuthApiMock = createMock(SignatureAuthApi, {
         challenge: async () => ({ statusCode: 200, body: { challenge: expectedChallenge } }),
         createJwt: async () => ({ statusCode: 200, body: { jwt: expectedJwt } }),
       });
       const randomStringMock = spy(() => expectedSalt);
 
-      await obtainJwtPromise(({
-        web3Manager: web3ManagerMock,
-        getState: getStateMock,
-        signatureAuthApi: signatureAuthApiMock,
-        cryptoRandomString: randomStringMock,
-        logger: noopLogger,
-      } as any) as TGlobalDependencies);
+      await obtainJwtPromise(
+        ({
+          web3Manager: web3ManagerMock,
+          signatureAuthApi: signatureAuthApiMock,
+          cryptoRandomString: randomStringMock,
+          logger: noopLogger,
+        } as any) as TGlobalDependencies,
+        mockedState as IAppState,
+      );
 
       expect(randomStringMock).to.be.calledWithExactly(64);
       expect(signatureAuthApiMock.challenge).to.be.calledWithExactly(

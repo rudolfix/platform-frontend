@@ -5,11 +5,11 @@ import { createMount } from "../../../test/createMount";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import {
   createIntegrationTestsSetup,
+  setupFakeClock,
   waitForPredicate,
   waitForTid,
   wrapWithProviders,
 } from "../../../test/integrationTestUtils";
-import { globalFakeClock } from "../../../test/setupTestsHooks";
 import { createMock, tid } from "../../../test/testUtils";
 import { BROWSER_WALLET_RECONNECT_INTERVAL } from "../../config/constants";
 import { symbols } from "../../di/symbols";
@@ -34,6 +34,8 @@ import { SignerType } from "../../lib/web3/PersonalWeb3";
 import { Web3Adapter } from "../../lib/web3/Web3Adapter";
 import { Web3ManagerMock } from "../../lib/web3/Web3Manager.mock";
 import { actions } from "../../modules/actions";
+import { neuCall } from "../../modules/sagasUtils";
+import { initWeb3ManagerEvents } from "../../modules/web3/sagas";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons";
@@ -44,6 +46,8 @@ import { walletRegisterRoutes } from "./walletRoutes";
 import { WalletSelector } from "./WalletSelector";
 
 describe("Wallet selector integration", () => {
+  const clock = setupFakeClock();
+
   it("should select ledger wallet", async () => {
     const expectedDerivationPath = "44'/60'/0'/1";
     const expectedAddress = dummyEthereumAddress;
@@ -94,7 +98,7 @@ describe("Wallet selector integration", () => {
       }),
     });
 
-    const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
+    const { store, container, dispatchSpy, history, sagaMiddleware } = createIntegrationTestsSetup({
       ledgerWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
@@ -116,6 +120,10 @@ describe("Wallet selector integration", () => {
         },
       },
       initialRoute: walletRegisterRoutes.light,
+    });
+    // need to manually initialize, since contract setup is ommitted
+    sagaMiddleware.run(function*(): any {
+      yield neuCall(initWeb3ManagerEvents);
     });
 
     container
@@ -160,7 +168,7 @@ describe("Wallet selector integration", () => {
       testConnection: async () => true,
       signMessage: async mess => dummySign(mess),
     });
-    globalFakeClock.tick(LEDGER_RECONNECT_INTERVAL);
+    clock.fakeClock.tick(LEDGER_RECONNECT_INTERVAL);
 
     await waitForTid(mountedComponent, "wallet-ledger-accounts-table-body");
 
@@ -247,7 +255,7 @@ describe("Wallet selector integration", () => {
       }),
     });
 
-    const { store, container, dispatchSpy, history } = createIntegrationTestsSetup({
+    const { store, container, dispatchSpy, history, sagaMiddleware } = createIntegrationTestsSetup({
       browserWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
@@ -261,6 +269,12 @@ describe("Wallet selector integration", () => {
         },
       },
     });
+
+    // need to manually initialize, since contract setup is ommitted
+    sagaMiddleware.run(function*(): any {
+      yield neuCall(initWeb3ManagerEvents);
+    });
+
     container
       .get<Web3ManagerMock>(symbols.web3Manager)
       .initializeMock(internalWeb3AdapterMock, dummyNetworkId);
@@ -291,7 +305,7 @@ describe("Wallet selector integration", () => {
         throw new BrowserWalletLockedError();
       },
     });
-    await globalFakeClock.tickAsync(BROWSER_WALLET_RECONNECT_INTERVAL);
+    await clock.fakeClock.tickAsync(BROWSER_WALLET_RECONNECT_INTERVAL);
     mountedComponent.update();
 
     expect(mountedComponent.find(tid("browser-wallet-error-msg")).text()).to.be.eq(
@@ -306,7 +320,7 @@ describe("Wallet selector integration", () => {
     browserWalletConnectorMock.reMock({
       connect: async () => browserWalletMock,
     });
-    await globalFakeClock.tickAsync(BROWSER_WALLET_RECONNECT_INTERVAL);
+    await clock.fakeClock.tickAsync(BROWSER_WALLET_RECONNECT_INTERVAL);
 
     await waitForPredicate(
       () => dispatchSpy.calledWith(actions.routing.goToDashboard()),

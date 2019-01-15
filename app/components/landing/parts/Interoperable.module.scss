@@ -1,9 +1,6 @@
 // sass-lint:disable-all
 
-.wrapper {
-  padding-top: 70px;
-  padding-bottom: 70px;
-}
+$spd: 1.6s;
 
 :root {
   --page-color: #ffffff;
@@ -14,9 +11,10 @@
   --sphere-size: 60px;
 }
 
-$spd: 1.6s;
-
-* { box-sizing: border-box; }
+.wrapper {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
 
 .loader {
   position: relative;

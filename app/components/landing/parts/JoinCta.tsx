@@ -1,4 +1,5 @@
 import * as cn from "classnames";
+import { isString } from "lodash";
 import * as queryString from "query-string";
 import * as React from "react";
 
@@ -64,9 +65,11 @@ export class JoinCta extends React.Component<CommonHtmlProps & TDataTestId, ISta
     const { className, style, "data-test-id": dataTestId } = this.props;
     const { loading, error, success } = this.state;
 
-    const subscribe: TSubscribeStatus | undefined = (
-      queryString.parse(window.location.search) || {}
-    ).subscribe;
+    const { subscribe: subscribeRaw } = queryString.parse(window.location.search);
+
+    const subscribe: TSubscribeStatus | undefined = isString(subscribeRaw)
+      ? (subscribeRaw as TSubscribeStatus)
+      : undefined;
 
     const subscribeSuccessful = subscribe === "success";
     const subscribeFailed = subscribe && subscribe !== "success";
@@ -74,7 +77,7 @@ export class JoinCta extends React.Component<CommonHtmlProps & TDataTestId, ISta
     return (
       <div id="newsletter">
         <div className={cn(styles.joinCta, className)} style={style}>
-          <ButtonLink theme="brand" to={appRoutes.register} className={styles.registerNow}>
+          <ButtonLink theme="brand" to={appRoutes.register} innerClassName={styles.registerNow}>
             Register NOW
           </ButtonLink>
 

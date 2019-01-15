@@ -16,7 +16,7 @@ import {
   SIGNING_DURATION_DAYS,
   WHITELIST_DURATION_DAYS,
 } from "../../../config/constants";
-import { DeepPartial } from "../../../types";
+import { DeepPartial, DeepReadonly } from "../../../types";
 import * as YupTS from "../../yup-ts";
 import { dateSchema, percentage } from "../util/schemaHelpers";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
@@ -186,13 +186,15 @@ type TEtoCompanyBase = {
   companyId: string;
 };
 
-export type TCompanyEtoData = TEtoCompanyBase &
-  TEtoTeamData &
-  TEtoLegalData &
-  TEtoProductVision &
-  TEtoRiskAssessment &
-  TEtoKeyIndividualsType &
-  TEtoMediaData;
+export type TCompanyEtoData = DeepReadonly<
+  TEtoCompanyBase &
+    TEtoTeamData &
+    TEtoLegalData &
+    TEtoProductVision &
+    TEtoRiskAssessment &
+    TEtoKeyIndividualsType &
+    TEtoMediaData
+>;
 
 /** ETO SPEC RELATED INTERFACES
  *  only deals with "/etos/me"

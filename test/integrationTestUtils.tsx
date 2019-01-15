@@ -1,17 +1,17 @@
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
 import { Container } from "inversify";
+import * as lolex from "lolex";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
-import { ConnectedRouter, routerMiddleware } from "react-router-redux";
+import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware, { delay } from "redux-saga";
+import createSagaMiddleware, { delay, SagaMiddleware } from "redux-saga";
 import { SinonSpy } from "sinon";
 
 import {
   createGlobalDependencies,
-  customizerContainerWithMiddlewareApi,
   setupBindings,
   TGlobalDependencies,
 } from "../app/di/setupBindings";
@@ -28,13 +28,13 @@ import { LedgerWalletConnector } from "../app/lib/web3/LedgerWallet";
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
 import { createInjectMiddleware } from "../app/middlewares/redux-injectify";
 import { rootSaga } from "../app/modules/sagas";
-import { IAppState, reducers } from "../app/store";
+import { IAppState, generateRootReducer } from "../app/store";
 import { DeepPartial } from "../app/types";
 import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
+import { LolexClockAsync } from "../typings/lolex";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
-import { globalFakeClock } from "./setupTestsHooks";
 import { createMock, tid } from "./testUtils";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
@@ -55,7 +55,21 @@ interface ICreateIntegrationTestsSetupOutput {
   container: Container;
   dispatchSpy: SinonSpy;
   history: History;
+  sagaMiddleware: SagaMiddleware<{ container: Container; deps: TGlobalDependencies }>;
 }
+
+export const setupFakeClock = () => {
+  let wrapper: { fakeClock: LolexClockAsync<any> } = {} as any;
+  beforeEach(() => {
+    // note: we use custom fork of lolex providing tickAsync function which should be used to await for any async actions triggered by tick. Read more: https://github.com/sinonjs/lolex/pull/105
+    wrapper.fakeClock = lolex.install();
+  });
+
+  afterEach(() => {
+    wrapper.fakeClock.uninstall();
+  });
+  return wrapper;
+};
 
 export function createIntegrationTestsSetup(
   options: ICreateIntegrationTestsSetupOptions = {},
@@ -100,13 +114,12 @@ export function createIntegrationTestsSetup(
   const middleware = applyMiddleware(
     spyMiddleware.middleware,
     routerMiddleware(history),
-    createInjectMiddleware(container, (container, middlewareApi) => {
-      customizerContainerWithMiddlewareApi(container, middlewareApi);
-    }),
     sagaMiddleware,
   );
 
-  const store = createStore(reducers, options.initialState as any, middleware);
+  const rootReducer = generateRootReducer(history);
+
+  const store = createStore(rootReducer, options.initialState as any, middleware);
   context.deps = createGlobalDependencies(container);
 
   sagaMiddleware.run(rootSaga);
@@ -116,6 +129,7 @@ export function createIntegrationTestsSetup(
     container,
     dispatchSpy: spyMiddleware.dispatchSpy,
     history,
+    sagaMiddleware,
   };
 }
 
@@ -150,7 +164,11 @@ export async function waitForPredicate(predicate: () => boolean, errorMsg: strin
   }
 }
 
-export async function waitUntilDoesntThrow(fn: () => any, errorMsg: string): Promise<void> {
+export async function waitUntilDoesntThrow(
+  globalFakeClock: LolexClockAsync<any>,
+  fn: () => any,
+  errorMsg: string,
+): Promise<void> {
   // wait until event queue is empty :/ currently we don't have a better way to solve it
   let waitTime = 20;
   let lastError: any;

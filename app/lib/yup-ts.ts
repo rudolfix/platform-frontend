@@ -1,7 +1,7 @@
 import { mapValues } from "lodash";
 import * as Yup from "yup";
 
-import { Dictionary, TTranslatedString } from "../types";
+import { DeepReadonly, Dictionary, TTranslatedString } from "../types";
 
 export const object = <T>(objectShape: T) => new ObjectYTS(objectShape);
 export const string = () => new StringYTS();
@@ -18,7 +18,7 @@ export const onlyTrue = (message?: TTranslatedString) =>
     ),
   );
 
-export type TypeOf<T extends YTS<any>> = T["_T"];
+export type TypeOf<T extends YTS<any>> = DeepReadonly<T["_T"]>;
 type TypeOfProps<P extends Dictionary<any>> = { [K in keyof P]: TypeOf<P[K]> };
 
 export type Schema<T> = ObjectYTS<T>;

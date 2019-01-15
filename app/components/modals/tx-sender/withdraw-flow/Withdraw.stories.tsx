@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { dummyIntl } from "../../../../utils/injectIntlHelpers.fixtures";
-import { WithdrawComponent } from "./Withdraw";
+import { WithdrawLayout } from "./Withdraw";
 
 storiesOf("Withdraw", module).add("default", () => (
-  <WithdrawComponent
+  <WithdrawLayout
     onAccept={() => {}}
     maxEther={"100000000000000000000000000000"}
     onValidateHandler={() => {}}

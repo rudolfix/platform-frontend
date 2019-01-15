@@ -1,42 +1,13 @@
 import BigNumber from "bignumber.js";
-import web3Accounts from "web3-eth-accounts";
-import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
+import Web3Accounts from "web3-eth-accounts";
 
-import { assertUserInDashboard, closeModal, goToDashboard, tid } from "../utils";
+import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
+import { assertUserInDashboard, confirmAccessModal, goToDashboard, tid } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
-import { confirmAccessModal } from "../utils/index";
+import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 const Q18 = new BigNumber(10).pow(18);
 const NODE_ADDRESS = "https://localhost:9090/node";
-
-//@see https://github.com/Neufund/platform-backend/tree/master/deploy#dev-fixtures
-const WORDS = [
-  "juice",
-  "chest",
-  "position",
-  "grace",
-  "weather",
-  "matter",
-  "turn",
-  "delay",
-  "space",
-  "abuse",
-  "winter",
-  "slice",
-  "tell",
-  "flip",
-  "use",
-  "between",
-  "crouch",
-  "shop",
-  "open",
-  "leg",
-  "elegant",
-  "bracket",
-  "lamp",
-  "day",
-];
-const SEED = WORDS.join(" ");
 
 const assertWithdrawButtonIsDisabled = () =>
   cy
@@ -99,12 +70,16 @@ const checkTransactionWithRPCNode = (
 
 describe("Wallet Withdraw", () => {
   it("should recover existing user with verified email from saved phrases and change email", () => {
-    createAndLoginNewUser({ type: "investor", seed: SEED, onlyLogin: true }).then(() => {
+    createAndLoginNewUser({
+      type: "investor",
+      seed: INV_EUR_ICBM_HAS_KYC_SEED,
+      onlyLogin: true,
+    }).then(() => {
       goToDashboard();
 
       const testValue = (5).toString();
       const expectedGasLimit = "0x12375";
-      const account = new web3Accounts().create();
+      const account = new Web3Accounts().create();
       const expectedInput = `0x64663ea6000000000000000000000000${account.address
         .slice(2)
         .toLowerCase()}0000000000000000000000000000000000000000000000004563918244f40000`;

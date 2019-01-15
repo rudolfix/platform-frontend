@@ -64,10 +64,6 @@ export interface ITXSummaryExternalProps {
   upgrade?: boolean;
 }
 
-export interface ITxInitDispatchProps {
-  onAccept: (tx: Partial<ITxData>) => any;
-}
-
 export interface ITxSummaryStateProps {
   txData: Partial<ITxData>;
   txCost: string;

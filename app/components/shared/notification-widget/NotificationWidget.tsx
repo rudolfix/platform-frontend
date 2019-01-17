@@ -10,7 +10,7 @@ import {
 import { appConnect, AppDispatch } from "../../../store";
 import { Notification } from "./Notification";
 
-import * as styles from "./Notification.module.scss";
+import * as styles from "./NotificationWidget.module.scss";
 
 interface IStateProps {
   notifications: INotification[];

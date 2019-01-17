@@ -1,5 +1,9 @@
 .notification-wrapper {
   position: relative;
+
+  &:not(:first-child) {
+    margin-top: map-get($spacers, 4);
+  }
 }
 
 .notification {
@@ -28,10 +32,6 @@
       background-color: $_color-bg;
       color: $neu-white-two;
     }
-  }
-
-  &:not(:first-child) {
-    margin-top: map-get($spacers, 4);
   }
 
   .text {

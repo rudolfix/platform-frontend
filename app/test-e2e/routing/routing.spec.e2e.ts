@@ -1,4 +1,4 @@
-import { tid } from "../utils/index";
+import { tid } from "../utils/selectors";
 
 const assertUserInLightWalletLoginPage = () => {
   cy.get(tid("modals.wallet-selector.login-light-wallet.title"));

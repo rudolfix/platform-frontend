@@ -1,4 +1,4 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -12,6 +12,7 @@ import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
   boolify,
+  Form,
   FormField,
   FormFieldDate,
   FormSelectCountryField,

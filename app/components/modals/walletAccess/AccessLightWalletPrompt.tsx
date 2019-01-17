@@ -1,9 +1,9 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { FormField } from "../../shared/forms";
+import { Form, FormField } from "../../shared/forms";
 
 interface IStateProps {
   isUnlocked: boolean;

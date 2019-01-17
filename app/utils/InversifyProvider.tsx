@@ -5,7 +5,7 @@ export interface IInversifyProvider {
   container: Container;
 }
 
-type TContainerContext = Container | undefined;
+export type TContainerContext = Container | undefined;
 
 export const ContainerContext = React.createContext<TContainerContext>(undefined);
 

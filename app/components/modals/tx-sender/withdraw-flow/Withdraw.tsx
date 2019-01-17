@@ -1,4 +1,4 @@
-import { Form, Formik, FormikErrors, yupToFormErrors } from "formik";
+import { Formik, FormikErrors, yupToFormErrors } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
@@ -17,7 +17,7 @@ import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { Button } from "../../../shared/buttons";
-import { FormField } from "../../../shared/forms";
+import { Form, FormField } from "../../../shared/forms";
 import { ValidationErrorMessage } from "../../txSender/shared/ValidationErrorMessage";
 
 import { OmitKeys } from "../../../../types";

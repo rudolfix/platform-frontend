@@ -1,5 +1,5 @@
 import * as cn from "classnames";
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -17,7 +17,7 @@ import { selectIsConnectedButtonLocked } from "../../../modules/verify-email-wid
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { FormField } from "../../shared/forms";
+import { Form, FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";

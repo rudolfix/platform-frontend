@@ -1,4 +1,4 @@
-import { Form, FormikConsumer } from "formik";
+import { FormikConsumer } from "formik";
 import { throttle } from "lodash";
 import * as React from "react";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import {
   IProgressOptions,
   ProgressCalculator,
 } from "../../../modules/eto-flow/utils";
+import { Form } from "../../shared/forms/Form";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
 

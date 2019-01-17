@@ -1,11 +1,11 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
 import * as YupTS from "../../../../lib/yup-ts";
 import { Button } from "../../../shared/buttons";
-import { FormFieldBoolean } from "../../../shared/forms";
+import { Form, FormFieldBoolean } from "../../../shared/forms";
 
 const getSummaryFormSchema = () =>
   YupTS.object({

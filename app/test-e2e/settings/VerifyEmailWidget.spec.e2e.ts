@@ -8,9 +8,9 @@ import {
   convertToUniqueEmail,
   registerWithLightWallet,
   verifyLatestUserEmail,
-  tid,
   confirmAccessModalNoPW,
 } from "../utils";
+import { tid } from "../utils/selectors";
 
 describe("Verify Email Widget", () => {
   beforeEach(() => {

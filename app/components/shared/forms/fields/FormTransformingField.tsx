@@ -1,28 +1,29 @@
 import * as cn from "classnames";
-import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
-import { CommonHtmlProps, InputType } from "../../../../types";
-import { FormFieldError } from "./FormFieldError";
+import { CommonHtmlProps } from "../../../../types";
+import { FormFieldError, generateErrorId } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
-import { isNonValid, isValid } from "./utils";
+import { isNonValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
+  name: string;
+  disabled?: boolean;
   label?: string | React.ReactNode;
-  placeholder?: string | React.ReactNode;
-  type?: InputType;
+  placeholder?: string;
   prefix?: string;
   suffix?: string;
   addonStyle?: string;
-  maxLength?: string;
+  maxLength?: number;
   ratio?: number;
   customValidation?: (value: any) => string | Function | Promise<void> | undefined;
 }
 
-type FieldGroupProps = IFieldGroup & FieldAttributes<{}> & CommonHtmlProps;
+type FieldGroupProps = IFieldGroup & CommonHtmlProps;
 
 const transform = (value: number, ratio?: number) => {
   if (value && !Number.isNaN(value)) {
@@ -45,7 +46,6 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
   render(): React.ReactNode {
     const {
       label,
-      type,
       placeholder,
       name,
       prefix,
@@ -55,16 +55,13 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
       ratio,
       disabled,
       customValidation,
-      ...props
+      maxLength,
     } = this.props;
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldValue, setFieldTouched }) => {
-          //This is done due to the difference between reactstrap and @typings/reactstrap
-          const inputExtraProps = {
-            invalid: isNonValid(touched, errors, name),
-          } as any;
+        {({ touched, errors, setFieldValue, setFieldTouched, submitCount }) => {
+          const invalid = isNonValid(touched, errors, name, submitCount);
 
           return (
             <FormGroup className={styles.keyValueField}>
@@ -80,19 +77,20 @@ export class FormTransformingField extends React.Component<FieldGroupProps> {
                       </InputGroupAddon>
                     )}
                     <Input
-                      className={cn(className, styles.inputField)}
                       {...field}
+                      type="number"
+                      aria-describedby={generateErrorId(name)}
+                      aria-invalid={invalid}
+                      invalid={invalid}
+                      className={cn(className, styles.inputField)}
                       value={transform(field.value, ratio) || ""}
                       onChange={e => {
                         setFieldTouched(name);
                         setFieldValue(name, transformBack(e.target.valueAsNumber, ratio));
                       }}
-                      type="number"
-                      valid={isValid(touched, errors, name)}
-                      placeholder={placeholder || label}
+                      placeholder={placeholder}
                       disabled={disabled}
-                      {...inputExtraProps}
-                      {...props}
+                      maxLength={maxLength}
                     />
                     {suffix && (
                       <InputGroupAddon addonType="append" className={styles.addon}>

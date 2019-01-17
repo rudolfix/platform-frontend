@@ -1,7 +1,7 @@
-import { Q18 } from "./../../config/constants";
-import { getNonceRpc, ETransactionStatus } from "./../utils/ethRpcUtils";
+import { Q18 } from "../../config/constants";
+import { getNonceRpc, ETransactionStatus } from "../utils/ethRpcUtils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-import { tid } from "../utils";
+import { tid } from "../utils/selectors";
 import web3Accounts from "web3-eth-accounts";
 import { getChainIdRpc, sendRawTransactionRpc, getTransactionReceipt } from "../utils/ethRpcUtils";
 import {
@@ -9,9 +9,8 @@ import {
   letterRegExPattern,
   FIXTURE_ACCOUNTS,
   letterKeepDotRegExPattern,
-} from "../utils/index";
+} from "../utils";
 import BigNumber from "bignumber.js";
-import { formatThousands } from "../../utils/Number.utils";
 import { appRoutes } from "../../components/appRoutes";
 
 const NODE_ADDRESS = "https://localhost:9090/node";

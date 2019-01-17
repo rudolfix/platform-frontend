@@ -136,7 +136,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
           placeholder=" "
           name="publicDiscountFraction"
-          type="number"
           prefix="%"
           ratio={100}
           disabled={readonly}
@@ -154,7 +153,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
           placeholder=" "
           name="whitelistDiscountFraction"
-          type="number"
           prefix="%"
           ratio={100}
           disabled={readonly}
@@ -174,7 +172,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           }
           placeholder=" "
           name="fixedSlotsMaximumDiscountFraction"
-          type="number"
           prefix="%"
           ratio={100}
           disabled={readonly}

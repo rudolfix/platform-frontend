@@ -37,7 +37,7 @@ const FormFieldLabel: React.SFC<CommonHtmlProps & FormFieldLabelExternalProps> =
           return (
             <FormLabel for={name} {...rawProps}>
               {children}
-              {isFieldRequired(validationSchema, name) && " *"}
+              {isFieldRequired(validationSchema, name) && <span aria-hidden="true"> *</span>}
             </FormLabel>
           );
         }

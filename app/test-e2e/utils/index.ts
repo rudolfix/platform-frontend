@@ -1,23 +1,13 @@
 import { get } from "lodash";
+
 import { appRoutes } from "../../components/appRoutes";
 import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
+import { tid } from "./selectors";
 import { DEFAULT_PASSWORD } from "./userHelpers";
 
 export const LONG_WAIT_TIME = 60000;
-
-export function tid(id: string, rest?: string): string {
-  return `[data-test-id="${id}"]` + (rest ? ` ${rest}` : "");
-}
-
-/**
- * Returns TID for notification
- * We can't use `tid` method because notification TID is provided as a class
- * as `react-toastify` doesn't allow custom attributes
- * @param notificationTid
- */
-export const notificationTid = (notificationTid: string) => `.${notificationTid}`;
 
 export const ETO_FIXTURES: any = require("../../../git_modules/platform-contracts-artifacts/localhost/eto_fixtures.json");
 

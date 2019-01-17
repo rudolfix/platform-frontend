@@ -1,7 +1,8 @@
 import { storiesOf } from "@storybook/react";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import * as React from "react";
 
+import { Form } from "../Form";
 import { FormField } from "./FormField";
 
 storiesOf("Form/Field", module)

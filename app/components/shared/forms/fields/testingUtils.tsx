@@ -1,5 +1,7 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import * as React from "react";
+
+import { Form } from "../Form";
 
 /**
  * Use only for testing and storybook.

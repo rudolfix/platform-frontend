@@ -2,7 +2,8 @@ import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
-import { assertUserInDashboard, confirmAccessModal, goToDashboard, tid } from "../utils";
+import { assertUserInDashboard, confirmAccessModal, goToDashboard } from "../utils";
+import { tid } from "../utils/selectors";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 

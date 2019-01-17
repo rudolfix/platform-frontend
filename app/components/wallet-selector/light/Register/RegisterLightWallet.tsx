@@ -1,5 +1,5 @@
 import * as cn from "classnames";
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -10,7 +10,7 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { Button } from "../../../shared/buttons";
-import { FormField } from "../../../shared/forms";
+import { Form, FormField } from "../../../shared/forms";
 import { TMessage } from "../../../translatedMessages/utils";
 
 import * as styles from "./RegisterLightWallet.module.scss";

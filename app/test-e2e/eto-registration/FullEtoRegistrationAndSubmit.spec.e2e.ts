@@ -1,4 +1,4 @@
-import { assertEtoDashboard, tid } from "../utils";
+import { assertEtoDashboard } from "../utils";
 import { fillForm, TFormFixture } from "../utils/forms";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
@@ -13,6 +13,7 @@ import {
   riskForm,
   votingRights,
 } from "./fixtures";
+import { tid } from "../utils/selectors";
 
 const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
   cy.get(tid(section, "button")).click();

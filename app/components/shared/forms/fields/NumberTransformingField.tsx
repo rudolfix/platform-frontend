@@ -1,52 +1,51 @@
 import * as cn from "classnames";
-import { FastField, FieldAttributes, FieldProps, FormikConsumer } from "formik";
+import { FastField, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
-import { CommonHtmlProps, InputType } from "../../../../types";
+import { CommonHtmlProps } from "../../../../types";
 import { convertToPrecision } from "../../../eto/utils";
+import { FormFieldError, generateErrorId } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
-import { isNonValid, isValid } from "./utils";
+import { isNonValid } from "./utils";
 
-import { FormFieldError } from "./FormFieldError";
 import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
+  name: string;
+  disabled?: boolean;
   label?: string | React.ReactNode;
-  placeholder?: string | React.ReactNode;
-  type?: InputType;
+  placeholder?: string;
   prefix?: string;
   suffix?: string;
   addonStyle?: string;
-  maxLength?: string;
+  maxLength?: number;
+  min?: number | string;
   ratio?: number;
   customValidation?: (value: any) => string | Function | Promise<void> | undefined;
   customOnBlur?: Function;
 }
 
-type FieldGroupProps = IFieldGroup & FieldAttributes<{}> & CommonHtmlProps;
+type FieldGroupProps = IFieldGroup & CommonHtmlProps;
 
 export const NumberTransformingField = ({
   label,
-  type,
   placeholder,
   name,
   prefix,
   suffix,
   className,
   addonStyle,
-  ratio,
   disabled,
   customValidation,
   customOnBlur,
-  ...props
+  maxLength,
+  min,
 }: FieldGroupProps) => (
   <FormikConsumer>
-    {({ touched, errors, setFieldValue }) => {
-      //This is done due to the difference between reactstrap and @typings/reactstrap
-      const inputExtraProps = {
-        invalid: isNonValid(touched, errors, name),
-      } as any;
+    {({ touched, errors, setFieldValue, submitCount }) => {
+      const invalid = isNonValid(touched, errors, name, submitCount);
+
       return (
         <FormGroup className={styles.keyValueField}>
           {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
@@ -61,8 +60,12 @@ export const NumberTransformingField = ({
                   </InputGroupAddon>
                 )}
                 <Input
-                  className={cn(className, styles.inputField)}
                   {...field}
+                  type="number"
+                  aria-describedby={generateErrorId(name)}
+                  aria-invalid={invalid}
+                  invalid={invalid}
+                  className={cn(className, styles.inputField)}
                   onBlur={e => {
                     if (customOnBlur) {
                       customOnBlur(e);
@@ -72,13 +75,11 @@ export const NumberTransformingField = ({
                   onChange={e =>
                     setFieldValue(name, e.target.value === "" ? undefined : e.target.value)
                   }
-                  type="number"
                   value={field.value !== undefined ? field.value : ""}
-                  valid={isValid(touched, errors, name)}
-                  placeholder={placeholder || label}
+                  placeholder={placeholder}
                   disabled={disabled}
-                  {...inputExtraProps}
-                  {...props}
+                  maxLength={maxLength}
+                  min={min}
                 />
                 {suffix && (
                   <InputGroupAddon addonType="append" className={styles.addon}>

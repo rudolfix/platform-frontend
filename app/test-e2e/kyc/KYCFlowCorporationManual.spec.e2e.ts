@@ -1,5 +1,5 @@
 import { kycRoutes } from "../../components/kyc/routes";
-import { confirmAccessModal, tid } from "../utils";
+import { confirmAccessModal } from "../utils";
 import { fillForm } from "../utils/forms";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
@@ -8,6 +8,7 @@ import {
   kycLegalRepDocsForm,
   kycLegalRepForm,
 } from "./fixtures";
+import { tid } from "../utils/selectors";
 
 describe("KYC Small Business flow with manual verification", () => {
   it("went through KYC Small Business flow", () => {

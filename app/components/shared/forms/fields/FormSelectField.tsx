@@ -5,9 +5,9 @@ import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
 import { Dictionary, TDataTestId, TTranslatedString } from "../../../../types";
-import { FormFieldError } from "./FormFieldError";
+import { FormFieldError, generateErrorId } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
-import { isFieldRequired, isNonValid, isValid } from "./utils";
+import { isFieldRequired, isNonValid } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -82,11 +82,8 @@ export class FormSelectField extends React.Component<IFieldGroup & IOwnProps & T
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldTouched, validationSchema }) => {
-          //This is done due to the difference between reactstrap and @typings/reactstrap
-          const inputExtraProps = {
-            invalid: isNonValid(touched, errors, name),
-          } as any;
+        {({ touched, errors, setFieldTouched, validationSchema, submitCount }) => {
+          const invalid = isNonValid(touched, errors, name, submitCount);
 
           return (
             <FormGroup>
@@ -97,23 +94,26 @@ export class FormSelectField extends React.Component<IFieldGroup & IOwnProps & T
                   render={({ field }: FieldProps) => (
                     <Input
                       {...field}
+                      data-test-id={dataTestId}
+                      aria-describedby={`${generateErrorId(name)} ${name}-extra-message`}
+                      aria-invalid={invalid}
+                      invalid={invalid}
                       disabled={disabled && isFieldRequired(validationSchema, name)}
                       onFocus={() => setFieldTouched(name, true)}
                       type="select"
                       value={field.value}
-                      valid={isValid(touched, errors, name)}
-                      data-test-id={dataTestId}
-                      {...inputExtraProps}
                     >
                       {this.renderOptions()}
                     </Input>
                   )}
                 />
               </div>
-              {extraMessage ? (
-                <div className={styles.noteLabel}>{extraMessage}</div>
-              ) : (
-                <FormFieldError name={name} />
+              <FormFieldError name={name} />
+
+              {extraMessage && (
+                <div id={`${name}-extra-message`} className={styles.noteLabel}>
+                  {extraMessage}
+                </div>
               )}
             </FormGroup>
           );

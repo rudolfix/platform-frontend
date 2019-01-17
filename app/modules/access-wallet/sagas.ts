@@ -37,6 +37,7 @@ export function* ensureWalletConnection({
   if (web3Manager.personalWallet) {
     return;
   }
+
   const userType: EUserType = yield select(selectUserType);
   /* tslint:disable: no-useless-cast */
   const metadata = walletStorage.get(userType)!;

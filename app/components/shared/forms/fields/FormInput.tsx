@@ -4,8 +4,8 @@ import * as React from "react";
 import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { CommonHtmlProps, InputType, TTranslatedString } from "../../../../types";
-import { FormFieldError } from "./FormFieldError";
-import { getComputedValue, isNonValid, isValid, withCountedCharacters } from "./utils";
+import { FormFieldError, generateErrorId } from "./FormFieldError";
+import { getComputedValue, isNonValid, withCountedCharacters } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -76,8 +76,8 @@ export class FormInput extends React.Component<FormInputProps> {
     } = this.props;
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldTouched, setFieldValue }) => {
-          const invalid = isNonValid(touched, errors, name, ignoreTouched);
+        {({ touched, errors, setFieldTouched, setFieldValue, submitCount }) => {
+          const invalid = isNonValid(touched, errors, name, submitCount, ignoreTouched);
 
           return (
             <Field
@@ -86,7 +86,7 @@ export class FormInput extends React.Component<FormInputProps> {
               render={({ field }: FieldProps) => {
                 const val = transform(field.value, charactersLimit);
                 return (
-                  <div>
+                  <>
                     <InputGroup size={size}>
                       {prefix && (
                         <InputGroupAddon
@@ -97,10 +97,13 @@ export class FormInput extends React.Component<FormInputProps> {
                         </InputGroupAddon>
                       )}
                       <Input
+                        {...field}
+                        aria-describedby={generateErrorId(name)}
+                        aria-invalid={invalid}
+                        invalid={invalid}
                         id={name}
                         maxLength={maxLength}
-                        className={cn(className, styles.inputField, { "is-invalid": invalid })}
-                        {...field}
+                        className={cn(className, styles.inputField)}
                         onChange={e => {
                           setFieldTouched(name);
                           setFieldValue(
@@ -119,10 +122,8 @@ export class FormInput extends React.Component<FormInputProps> {
                         }}
                         type={type}
                         value={val}
-                        valid={isValid(touched, errors, name)}
                         placeholder={placeholder}
                         disabled={disabled}
-                        invalid={invalid}
                         {...props}
                       />
                       {suffix && (
@@ -140,7 +141,7 @@ export class FormInput extends React.Component<FormInputProps> {
                       ignoreTouched={ignoreTouched}
                     />
                     {charactersLimit && <div>{withCountedCharacters(val, charactersLimit)}</div>}
-                  </div>
+                  </>
                 );
               }}
             />

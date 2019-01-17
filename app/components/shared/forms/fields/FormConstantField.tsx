@@ -2,9 +2,9 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { TTranslatedString } from "../../../../types";
+import { FormError } from "./FormFieldError";
 
 import * as styles from "./FormConstantField.module.scss";
-import { FormError } from "./FormFieldError";
 
 interface IProps {
   value: string;

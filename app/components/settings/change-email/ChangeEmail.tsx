@@ -1,4 +1,4 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -8,7 +8,7 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { Button } from "../../shared/buttons";
-import { FormField } from "../../shared/forms";
+import { Form, FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 
 interface IDispatchProps {

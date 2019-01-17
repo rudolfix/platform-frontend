@@ -12,8 +12,8 @@ import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.p
 import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
 import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
 import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
-import * as brile24hover from "../assets/img/eto_offers/brille_animation.gif";
-import * as brile24 from "../assets/img/eto_offers/brille_card.jpg";
+import * as brille24hover from "../assets/img/eto_offers/brille_animation.gif";
+import * as brille24 from "../assets/img/eto_offers/brille_card.jpg";
 import * as curf from "../assets/img/eto_offers/curf.jpg";
 import * as curf2 from "../assets/img/eto_offers/curf@2x.jpg";
 import * as curfhover from "../assets/img/eto_offers/curfhover@1x.gif";
@@ -67,7 +67,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       topImage: {
         srcSet: {
-          "1x": brile24,
+          "1x": brille24,
         },
         alt: "",
         height: 50,
@@ -75,7 +75,7 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       quoteImage: {
         srcSet: {
-          "1x": brile24hover,
+          "1x": brille24hover,
         },
         alt: "",
         height: 270,

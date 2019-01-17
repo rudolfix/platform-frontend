@@ -127,7 +127,7 @@ module.exports = merge(configCommon, {
             exclude: paths.inlineIcons,
             options: {
               limit: 5000,
-              name: "images/[name].[hash:8].[ext]",
+              name: "images/[hash:8].[ext]",
             },
           },
           // raw-loader for svg is used inside `paths.inlineIcons` directory only

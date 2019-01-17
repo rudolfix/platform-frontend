@@ -94,6 +94,21 @@ jobs:
       - run: (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} && ./.circleci/vis-reg-run.sh)
       - run: yarn danger ci
 
+  bundlewatcher:
+    docker:
+      - image: krzkaczor/neufund-platform-base
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
+
+      - run: yarn prepare
+      - run: yarn bundlewatcher
+
   deploy-storybook:
     docker:
       - image: krzkaczor/neufund-platform-base
@@ -127,6 +142,9 @@ workflows:
       - danger-ci:
           requires:
             - lint
+      - bundlewatcher:
+          requires:
+            - lint
 
   nightly:
     triggers:
@@ -138,19 +156,19 @@ workflows:
                 - master
                 - production
     jobs:
-     - install
-     - lint:
-         requires:
-           - install
-     - test:
-         requires:
-           - install
-     - test-e2e:
-         requires:
-           - install
-     - danger-ci:
-         requires:
-           - install
+      - install
+      - lint:
+          requires:
+            - install
+      - test:
+          requires:
+            - lint
+      - test-e2e:
+          requires:
+            - lint
+      - danger-ci:
+          requires:
+            - lint
 
 
   deploy-storybook:

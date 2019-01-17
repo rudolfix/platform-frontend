@@ -5,6 +5,7 @@
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
   "scripts": {
+    "bundlewatcher": "./setup-bundlewatcher.sh",
     "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
     "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack-dev-server --config ./webpack/webpack.config.translate.js",
@@ -102,6 +103,7 @@
     "autoprefixer": "^9.4.2",
     "babel-loader": "^8.0.4",
     "babel-plugin-react-intl-krzkaczor": "^2.4.1",
+    "bundlewatch": "^0.2.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-dom": "^1.8.1",

@@ -1,5 +1,6 @@
 import * as QRCode from "qrcode";
 import * as React from "react";
+import { TDataTestId } from "../../types";
 
 interface IProps {
   address: string;
@@ -7,7 +8,7 @@ interface IProps {
   gas?: number;
 }
 
-export class EthereumQRCode extends React.Component<IProps> {
+export class EthereumQRCode extends React.Component<IProps & TDataTestId> {
   state = {
     qrCodeImage: "",
   };
@@ -28,6 +29,13 @@ export class EthereumQRCode extends React.Component<IProps> {
   }
 
   render(): React.ReactNode {
-    return <img src={this.state.qrCodeImage} alt={this.props.address} title={this.props.address} />;
+    return (
+      <img
+        src={this.state.qrCodeImage}
+        alt={this.props.address}
+        title={this.props.address}
+        data-test-id={this.props["data-test-id"]}
+      />
+    );
   }
 }

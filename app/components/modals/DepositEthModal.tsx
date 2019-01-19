@@ -26,7 +26,12 @@ const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props 
       <ModalComponentBody onClose={props.onCancel}>
         <div className={styles.contentWrapper}>
           <div className={styles.qrCodeWrapper}>
-            <EthereumQRCode address={props.address} value={0} gas={0} />
+            <EthereumQRCode
+              address={props.address}
+              value={0}
+              gas={0}
+              data-test-id="wallet-balance.ether.deposit.qr-code"
+            />
           </div>
           <h2 className={styles.title}>
             <FormattedMessage id="modal.deposit-eth.title" />
@@ -34,7 +39,11 @@ const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props 
           <p className={styles.description}>
             <FormattedMessage id="modal.deposit-eth.description" />
           </p>
-          <AccountAddress address={props.address} className={styles.address} />
+          <AccountAddress
+            address={props.address}
+            className={styles.address}
+            data-test-id="wallet-balance.ether.deposit.address"
+          />
         </div>
       </ModalComponentBody>
     </Modal>

@@ -10,7 +10,7 @@ const path = require("path");
 const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
 
-module.exports = merge(configCommon, {
+module.exports = merge.smart(configCommon, {
   mode: "production",
   optimization: {
     splitChunks: {
@@ -42,8 +42,6 @@ module.exports = merge(configCommon, {
   module: {
     rules: [
       {
-        // there is a lof of duplication with dev config but merge.smart fails
-        // when using oneOf so for now we can leave it like this
         oneOf: [
           {
             test: /\.module.scss$/,
@@ -122,28 +120,6 @@ module.exports = merge(configCommon, {
               },
             ],
             include: paths.app,
-          },
-          {
-            test: /\.(jpg|png|svg|gif)$/,
-            loader: "url-loader",
-            exclude: paths.inlineIcons,
-            options: {
-              limit: 5000,
-              name: "images/[hash:8].[ext]",
-            },
-          },
-          // raw-loader for svg is used inside `paths.inlineIcons` directory only
-          {
-            test: /\.(svg)$/,
-            loader: "raw-loader",
-            include: paths.inlineIcons,
-          },
-          {
-            test: /\.(woff2|woff|ttf|eot|otf)$/,
-            loader: "file-loader",
-            options: {
-              name: "fonts/[name].[hash:8].[ext]",
-            },
           },
         ],
       },

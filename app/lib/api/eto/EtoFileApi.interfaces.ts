@@ -47,6 +47,7 @@ export interface IEtoDocument {
   name: string;
   placeholders?: { [key: string]: string };
   language?: EEtoDocumentLanguage;
+  asPdf?: boolean;
 }
 
 type TComplextFileInfo = "canDeleteInStates" | "canUploadInStates";

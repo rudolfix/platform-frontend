@@ -93,7 +93,7 @@ const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
   const hasSocialChannelsAdded = !!(socialChannels && socialChannels.length);
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
-      ? (socialChannels.find(c => c.type === "twitter") as any).url
+      ? socialChannels.find(c => c.type === "twitter").url
       : "";
 
   const isInSetupState = isOnChain(eto) && eto.contract.timedState === EETOStateOnChain.Setup;

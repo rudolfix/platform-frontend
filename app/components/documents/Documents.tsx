@@ -1,6 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Redirect } from "react-router";
 import { branch, renderComponent, setDisplayName } from "recompose";
 import { compose } from "redux";
 
@@ -24,12 +25,14 @@ import {
   selectIssuerEtoLoading,
   selectIssuerEtoState,
   selectIssuerEtoTemplates,
+  selectShouldEtoDataLoad,
 } from "../../modules/eto-flow/selectors";
 import { appConnect } from "../../store";
 import { DeepReadonly, TTranslatedString } from "../../types";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer";
 import { withMetaTags } from "../../utils/withMetaTags";
+import { appRoutes } from "../appRoutes";
 import { EtoFileIpfsModal } from "../eto/shared/EtoFileIpfsModal";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { ClickableDocumentTile, UploadableDocumentTile } from "../shared/Document";
@@ -42,9 +45,9 @@ import { getDocumentTitles } from "./utils";
 
 import * as styles from "./Documents.module.scss";
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IComponentStateProps & IDispatchProps;
 
-interface IStateProps {
+interface IComponentStateProps {
   etoFilesData: DeepReadonly<IEtoFiles>;
   loadingData: boolean;
   etoFileLoading: boolean;
@@ -54,6 +57,10 @@ interface IStateProps {
   documentTitles: TDocumentTitles;
   isRetailEto: boolean;
 }
+
+type IStateProps = IComponentStateProps & {
+  shouldEtoDataLoad: boolean;
+};
 
 interface IDispatchProps {
   generateTemplate: (document: IEtoDocument) => void;
@@ -204,11 +211,11 @@ const DocumentsLayout: React.SFC<IProps> = ({
 const Documents = compose<React.SFC>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   setDisplayName("Documents"),
-  onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const isRetailEto = selectIssuerEtoIsRetail(state);
       return {
+        shouldEtoDataLoad: selectShouldEtoDataLoad(state),
         etoFilesData: selectEtoDocumentData(state.etoDocuments),
         loadingData: selectIssuerEtoLoading(state),
         etoFileLoading: selectEtoDocumentLoading(state.etoDocuments),
@@ -227,6 +234,11 @@ const Documents = compose<React.SFC>(
   }),
   withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.documents-page") })),
   withContainer(LayoutAuthorized),
+  branch(
+    (props: IStateProps) => !props.shouldEtoDataLoad,
+    renderComponent(() => <Redirect to={appRoutes.profile} />),
+  ),
+  onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   branch(
     (props: IProps) => props.loadingData || props.etoFileLoading || !props.etoState,
     renderComponent(LoadingIndicator),

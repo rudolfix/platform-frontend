@@ -1,11 +1,13 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Redirect } from "react-router";
+import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
 import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
-import { selectUserType } from "../../modules/auth/selectors";
+import { selectIsUserEmailVerified, selectUserType } from "../../modules/auth/selectors";
 import {
   selectKycOutSourcedURL,
   selectKycRequestStatus,
@@ -13,6 +15,7 @@ import {
 } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { appRoutes } from "../appRoutes";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Button, EButtonLayout } from "../shared/buttons";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
@@ -68,6 +71,7 @@ interface IStateProps {
   requestStatus?: TRequestStatus;
   redirectUrl: string;
   pendingRequestType: TKycRequestType | undefined;
+  hasVerifiedEmail: boolean;
 }
 
 interface IDispatchProps {
@@ -201,6 +205,7 @@ export const Kyc = compose<React.SFC>(
       redirectUrl: selectKycOutSourcedURL(state.kyc),
       pendingRequestType: selectPendingKycRequestType(state.kyc),
       userType: selectUserType(state)!,
+      hasVerifiedEmail: selectIsUserEmailVerified(state.auth),
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},
@@ -209,6 +214,10 @@ export const Kyc = compose<React.SFC>(
     }),
     options: { pure: false },
   }),
+  branch(
+    (props: IStateProps) => !props.hasVerifiedEmail,
+    renderComponent(() => <Redirect to={appRoutes.profile} />),
+  ),
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.kyc.kycLoadIndividualRequest());

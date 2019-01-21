@@ -101,7 +101,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
                 type="number"
               />
             </div>
-            <div className={styles.value}>
+            <div className={cn(styles.value, styles.backNow)}>
               <Button
                 data-test-id="eto-bookbuilding-back-now"
                 type="submit"

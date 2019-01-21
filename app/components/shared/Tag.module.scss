@@ -30,6 +30,13 @@
     padding-top: px-to-rem(2px);
   }
 
+  &.tiny {
+    @include font-button-small;
+
+    font-weight: normal;
+    padding: px-to-rem(3px);
+  }
+
   &:global(.ghost-bold) {
     @include media-breakpoint-down(xs) {
       font-size: .6rem;

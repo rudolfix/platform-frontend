@@ -13,6 +13,7 @@ type TLayout = "ghost" | "ghost-bold" | "bold";
 
 export enum ETagSize {
   SMALL = styles.small,
+  TINY = styles.tiny,
 }
 
 export interface ITag {
@@ -31,7 +32,7 @@ export interface ITag {
   dataTestId?: string;
 }
 
-export const Tag: React.SFC<ITag> = ({
+export const Tag: React.FunctionComponent<ITag> = ({
   text,
   to,
   layout,

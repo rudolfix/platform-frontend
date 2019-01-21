@@ -291,9 +291,7 @@ const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
                           className={styles.documentLink}
                           layout={EButtonLayout.INLINE}
                           textPosition={ButtonTextPosition.LEFT}
-                          onClick={() =>
-                            generateTemplateByEtoId({ ...template, asPdf: true }, etoId)
-                          }
+                          onClick={() => generateTemplateByEtoId(template, etoId)}
                         >
                           {getDocumentTitles(isRetailEto)[template.documentType]}
                         </Button>

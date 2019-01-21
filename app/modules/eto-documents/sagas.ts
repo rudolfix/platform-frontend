@@ -61,7 +61,6 @@ export function* generateDocumentFromTemplateByEtoId(
     const userEthAddress = yield select(selectEthereumAddressWithChecksum);
     const document = action.payload.document;
     const etoId = action.payload.etoId;
-    const extension = document.asPdf ? ".pdf" : ".doc";
     const templates = yield apiEtoFileService.getSpecificEtoTemplate(
       etoId,
       {
@@ -83,7 +82,7 @@ export function* generateDocumentFromTemplateByEtoId(
       },
       asPdf: true,
     });
-    yield call(downloadLink, generatedDocument, document.name, extension);
+    yield call(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
     notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE));

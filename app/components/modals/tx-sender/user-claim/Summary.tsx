@@ -133,9 +133,7 @@ export const UserClaimSummaryComponent: React.SFC<TSummaryComponentProps> = ({
                       <ButtonIcon
                         className={styles.icon}
                         svgIcon={iconDownload}
-                        onClick={() =>
-                          generateTemplateByEtoId!({ ...template, asPdf: true }, etoId!)
-                        }
+                        onClick={() => generateTemplateByEtoId!(template, etoId!)}
                       />
                     }
                   />

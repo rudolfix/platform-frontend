@@ -2,9 +2,13 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
+import { TETOWithInvestorTicket } from "../../../../modules/investor-tickets/types";
+import { ETokenType } from "../../../../modules/tx/interfaces";
 import {
   selectTxGasCostEthUlps,
+  selectTxSummaryAdditionalData,
   selectTxSummaryData,
 } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
@@ -14,13 +18,26 @@ import { Heading } from "../../../shared/modals/Heading";
 import { ECurrency, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
+import { ITxSummaryDispatchProps, ITXSummaryExternalProps } from "../TxSender";
 
-export const UpgradeSummaryComponent: React.SFC<TSummaryComponentProps> = ({
+export interface ITxUpgradeSummaryStateProps {
+  txData: Partial<ITxData>;
+  txCost: string;
+  etoData?: TETOWithInvestorTicket;
+  additionalData: { tokenType: ETokenType };
+  etoId?: string;
+}
+
+export type TUpgradeSummaryComponentProps = ITXSummaryExternalProps &
+  ITxUpgradeSummaryStateProps &
+  ITxSummaryDispatchProps;
+
+export const UpgradeSummaryComponent: React.FunctionComponent<TUpgradeSummaryComponentProps> = ({
   txData,
   txCost,
   onAccept,
   downloadICBMAgreement,
+  additionalData,
 }) => (
   <Container>
     <Row className="mb-4">
@@ -52,7 +69,7 @@ export const UpgradeSummaryComponent: React.SFC<TSummaryComponentProps> = ({
       <Row>
         <Col className="my-3 text-center">
           <DocumentTemplateButton
-            onClick={() => downloadICBMAgreement()}
+            onClick={() => downloadICBMAgreement(additionalData.tokenType)}
             title={<FormattedMessage id="wallet.icbm.reservation-agreement" />}
           />
         </Col>
@@ -72,13 +89,15 @@ export const UpgradeSummaryComponent: React.SFC<TSummaryComponentProps> = ({
   </Container>
 );
 
-export const UpgradeSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispatchProps>({
+export const UpgradeSummary = appConnect<ITxUpgradeSummaryStateProps, ITxSummaryDispatchProps>({
   stateToProps: state => ({
     txData: selectTxSummaryData(state)!,
     txCost: selectTxGasCostEthUlps(state),
+    additionalData: selectTxSummaryAdditionalData(state),
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
-    downloadICBMAgreement: () => d(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement()),
+    downloadICBMAgreement: (tokenType: ETokenType) =>
+      d(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement(tokenType)),
   }),
 })(UpgradeSummaryComponent);

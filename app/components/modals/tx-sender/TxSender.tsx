@@ -8,7 +8,7 @@ import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { ITxData } from "../../../lib/web3/types";
 import { actions } from "../../../modules/actions";
 import { TETOWithInvestorTicket } from "../../../modules/investor-tickets/types";
-import { ETxSenderType } from "../../../modules/tx/interfaces";
+import { ETokenType, ETxSenderType } from "../../../modules/tx/interfaces";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
@@ -75,7 +75,7 @@ export interface ITxSummaryStateProps {
 export interface ITxSummaryDispatchProps {
   onAccept: () => any;
   onChange?: () => any;
-  downloadICBMAgreement?: () => void;
+  downloadICBMAgreement?: (tokenType: ETokenType) => void;
   downloadDocument?: (immutableFileId: ImmutableFileId, fileName: string) => void;
   generateTemplateByEtoId?: (immutableFileId: IEtoDocument, etoId: string) => void;
 }

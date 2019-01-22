@@ -18,6 +18,7 @@ import {
   selectWalletMigrationData,
 } from "../../../modules/icbm-wallet-balance-modal/selectors";
 import { SelectIsVerificationFullyDone } from "../../../modules/selectors";
+import { ETokenType } from "../../../modules/tx/interfaces";
 import {
   selectIsEtherUpgradeTargetSet,
   selectLockedWalletConnected,
@@ -141,7 +142,7 @@ const IcbmWalletBalanceModal = compose<any, any>(
       startWalletMigration: () => dispatch(actions.icbmWalletBalanceModal.startMigrationFlow()),
       goToNextStep: () => dispatch(actions.icbmWalletBalanceModal.setMigrationStepToNextStep()),
       downloadICBMAgreement: () =>
-        dispatch(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement()),
+        dispatch(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement(ETokenType.ETHER)),
     }),
   }),
 )(IcbmWalletBalanceComponent);

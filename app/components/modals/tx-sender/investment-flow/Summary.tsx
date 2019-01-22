@@ -202,8 +202,8 @@ const InvestmentSummary = compose<IProps, {}>(
         investmentEur: selectInvestmentEurValueUlps(state),
         gasCostEth: selectTxGasCostEthUlps(state),
         // tslint:disable: no-useless-cast
-        equityTokens: selectEquityTokenCountByEtoId(etoId, state)!,
-        estimatedReward: selectNeuRewardUlpsByEtoId(etoId, state)!,
+        equityTokens: selectEquityTokenCountByEtoId(state, etoId)!,
+        estimatedReward: selectNeuRewardUlpsByEtoId(state, etoId)!,
         etherPriceEur: selectEtherPriceEur(state),
         isIcbm: selectIsICBMInvestment(state),
       };

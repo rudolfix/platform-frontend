@@ -164,8 +164,8 @@ const BankTransferSummary = compose<IProps, {}>(
         companyName: eto.company.name,
         investmentEur: selectInvestmentEurValueUlps(state),
         // tslint:disable: no-useless-cast
-        equityTokens: selectEquityTokenCountByEtoId(etoId, state)!,
-        estimatedReward: selectNeuRewardUlpsByEtoId(etoId, state)!,
+        equityTokens: selectEquityTokenCountByEtoId(state, etoId)!,
+        estimatedReward: selectNeuRewardUlpsByEtoId(state, etoId)!,
       };
     },
     dispatchToProps: d => ({

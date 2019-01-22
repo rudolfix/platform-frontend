@@ -2,9 +2,9 @@ import { IAppState } from "../store";
 import { selectBackupCodesVerified, selectIsUserEmailVerified } from "./auth/selectors";
 import { selectKycRequestStatus } from "./kyc/selectors";
 
-export const SelectIsVerificationFullyDone = (s: IAppState) =>
+export const SelectIsVerificationFullyDone = (state: IAppState) =>
   !!(
-    selectIsUserEmailVerified(s.auth) &&
-    selectBackupCodesVerified(s) &&
-    selectKycRequestStatus(s) === "Accepted"
+    selectIsUserEmailVerified(state.auth) &&
+    selectBackupCodesVerified(state) &&
+    selectKycRequestStatus(state) === "Accepted"
   );

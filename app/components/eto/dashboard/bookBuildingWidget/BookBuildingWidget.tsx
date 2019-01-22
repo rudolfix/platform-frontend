@@ -192,7 +192,7 @@ export const BookBuildingWidget = compose<React.SFC>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       bookBuildingEnabled: selectIsBookBuilding(state),
-      bookBuildingStats: selectBookbuildingStats(selectEtoId(state) as string, state),
+      bookBuildingStats: selectBookbuildingStats(state, selectEtoId(state) as string),
       maxPledges: selectMaxPledges(state),
       etoId: selectEtoId(state),
       canEnableBookbuilding: selectCanEnableBookBuilding(state),

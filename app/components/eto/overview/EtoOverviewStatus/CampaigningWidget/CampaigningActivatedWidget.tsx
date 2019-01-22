@@ -181,14 +181,14 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
 const CampaigningActivatedWidget = compose<React.SFC<IExternalProps>>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
-      const stats = selectBookbuildingStats(props.etoId, state);
+      const stats = selectBookbuildingStats(state, props.etoId);
 
       return {
         isInvestor: selectIsInvestor(state),
         isVerifiedInvestor: selectIsVerifiedInvestor(state),
         pledgedAmount: stats ? stats.pledgedAmount : null,
         investorsCount: stats ? stats.investorsCount : 0,
-        pledge: selectMyPledge(props.etoId, state),
+        pledge: selectMyPledge(state, props.etoId),
       };
     },
   }),

@@ -376,9 +376,9 @@ const EtoOverviewStatus = compose<
   appConnect<IStateProps, IDispatchProps, IExternalProps>({
     stateToProps: (state, props) => ({
       isAuthorized: selectIsAuthorized(state.auth),
-      isEligibleToPreEto: selectIsEligibleToPreEto(props.eto.etoId, state),
+      isEligibleToPreEto: selectIsEligibleToPreEto(state, props.eto.etoId),
       isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
-      maxCapExceeded: selectInitialMaxCapExceeded(props.eto.etoId, state),
+      maxCapExceeded: selectInitialMaxCapExceeded(state, props.eto.etoId),
     }),
     dispatchToProps: (dispatch, { eto }) => ({
       navigateToEto: () =>

@@ -136,8 +136,8 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   const euroValue = investmentFlow.euroValueUlps;
   const etherValue = investmentFlow.ethValueUlps;
   const wallet = state.wallet.data;
-  const contribs = selectCalculatedContribution(investmentFlow.etoId, state);
-  const ticketSizes = selectCalculatedEtoTicketSizesUlpsById(investmentFlow.etoId, state);
+  const contribs = selectCalculatedContribution(state, investmentFlow.etoId);
+  const ticketSizes = selectCalculatedEtoTicketSizesUlpsById(state, investmentFlow.etoId);
 
   if (!contribs || !euroValue || !wallet || !ticketSizes) return;
 
@@ -270,7 +270,7 @@ function* getActiveInvestmentTypes(): any {
   }
 
   // no regular investment if not whitelisted in pre eto
-  if (etoState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(etoId, state)) {
+  if (etoState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) {
     activeTypes = [];
   }
 

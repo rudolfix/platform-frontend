@@ -31,6 +31,7 @@ module.exports = {
       swDest: "sw.js",
       clientsClaim: true,
       skipWaiting: true,
+      importWorkboxFrom: "local",
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/fonts\.googleapis\.com/,

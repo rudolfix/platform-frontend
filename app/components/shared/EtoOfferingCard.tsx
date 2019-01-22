@@ -7,6 +7,7 @@ import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
 import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
 import { Proportion } from "./Proportion";
 import { IResponsiveImage, ResponsiveImage } from "./ResponsiveImage";
+import { IResponsiveVideo, ResponsiveVideo } from "./ResponsiveVideo";
 import { ITag, Tag } from "./Tag";
 
 import * as styles from "./EtoOfferingCard.module.scss";
@@ -24,6 +25,7 @@ export interface IEtoOfferingProps {
   logo?: string;
   topImage: IResponsiveImage;
   quoteImage?: IResponsiveImage;
+  quoteVideo?: IResponsiveVideo;
   badge?: IResponsiveImage;
   quoteBackground?: string;
   quoteColor?: string;
@@ -128,7 +130,6 @@ export class EtoOfferingCardComponent extends React.Component<
                   width={props.badge.width}
                   height={props.badge.height}
                   preserveOriginalRatio={props.topImage.preserveOriginalRatio}
-                  forceBg={props.topImage.forceBg}
                 />
               </div>
             )}
@@ -141,7 +142,6 @@ export class EtoOfferingCardComponent extends React.Component<
                 width={props.topImage.width}
                 height={props.topImage.height}
                 preserveOriginalRatio={props.topImage.preserveOriginalRatio}
-                forceBg={props.topImage.forceBg}
               />
             )}
             {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
@@ -175,6 +175,19 @@ export class EtoOfferingCardComponent extends React.Component<
                 </a>
               )}
 
+              {props.quoteVideo && (
+                <div className={styles.imageWrapper}>
+                  <ResponsiveVideo
+                    width={props.quoteVideo.width}
+                    height={props.quoteVideo.height}
+                    sources={props.quoteVideo.sources}
+                    theme={props.quoteVideo.theme}
+                    banner={true}
+                  />
+                  <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
+                </div>
+              )}
+
               {props.quoteImage && (
                 <div className={styles.imageWrapper}>
                   <ResponsiveImage
@@ -185,7 +198,6 @@ export class EtoOfferingCardComponent extends React.Component<
                     width={props.quoteImage.width}
                     height={props.quoteImage.height}
                     preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
-                    forceBg={props.quoteImage.forceBg}
                   />
                   <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
                 </div>
@@ -201,6 +213,15 @@ export class EtoOfferingCardComponent extends React.Component<
                   <i className="fa fa-arrow-right" />
                 </a>
               )}
+              {props.quoteVideo && (
+                <ResponsiveVideo
+                  className={styles.animation}
+                  width={props.quoteVideo.width}
+                  height={props.quoteVideo.height}
+                  sources={props.quoteVideo.sources}
+                  theme={props.quoteVideo.theme}
+                />
+              )}
               {props.quoteImage && (
                 <ResponsiveImage
                   className={styles.image}
@@ -210,7 +231,6 @@ export class EtoOfferingCardComponent extends React.Component<
                   height={props.quoteImage.height}
                   width={props.quoteImage.width}
                   preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
-                  forceBg={props.quoteImage.forceBg}
                 />
               )}
               {!props.teaser && (

@@ -23,10 +23,9 @@ interface IResponsiveImage {
   className?: string;
   onClick?: () => void;
   preserveOriginalRatio?: boolean;
-  forceBg?: string;
 }
 
-const ResponsiveImage: React.SFC<IResponsiveImage> = ({
+const ResponsiveImage: React.FunctionComponent<IResponsiveImage> = ({
   alt,
   className,
   src,
@@ -36,7 +35,6 @@ const ResponsiveImage: React.SFC<IResponsiveImage> = ({
   theme,
   onClick,
   preserveOriginalRatio,
-  forceBg,
 }) => {
   const computedSrcSet = `${srcSet["1x"]} 1x,
     ${srcSet["2x"] && srcSet["2x"] + " 2x"},
@@ -55,7 +53,6 @@ const ResponsiveImage: React.SFC<IResponsiveImage> = ({
           src={src || srcSet["1x"]}
           srcSet={computedSrcSet}
           alt={alt}
-          style={{ backgroundColor: forceBg }}
         />
       )}
     </Proportion>

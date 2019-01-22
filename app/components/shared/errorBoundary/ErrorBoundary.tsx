@@ -2,7 +2,7 @@ import * as React from "react";
 import { ComponentEnhancer, nest, withProps } from "recompose";
 
 import { symbols } from "../../../di/symbols";
-import { ILogger } from "../../../lib/dependencies/Logger";
+import { ILogger } from "../../../lib/dependencies/logger";
 import { ContainerContext } from "../../../utils/InversifyProvider";
 
 interface IErrorBoundaryState {

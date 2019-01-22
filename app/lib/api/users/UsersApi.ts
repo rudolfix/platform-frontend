@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
-import { ILogger } from "../../dependencies/Logger";
+import { ILogger } from "../../dependencies/logger";
 import { IHttpClient } from "../client/IHttpClient";
 import {
   emailStatus,

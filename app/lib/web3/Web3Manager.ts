@@ -11,7 +11,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
 import { promiseTimeout } from "../../utils/promiseTimeout";
-import { ILogger } from "../dependencies/Logger";
+import { ILogger } from "../dependencies/logger";
 import { LightWallet } from "./LightWallet";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./types";

@@ -1,7 +1,7 @@
 import { interfaces } from "inversify";
 
 import { symbols } from "../di/symbols";
-import { ILogger } from "../lib/dependencies/Logger";
+import { ILogger } from "../lib/dependencies/logger";
 import { isPromise } from "./isPromise";
 
 /**

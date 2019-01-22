@@ -4,7 +4,7 @@ import * as React from "react";
 import { compose, fromRenderProps, lifecycle } from "recompose";
 
 import { symbols } from "../../../di/symbols";
-import { ILogger } from "../../../lib/dependencies/Logger";
+import { ILogger } from "../../../lib/dependencies/logger";
 import { TFormikConnect } from "../../../types";
 import { ContainerContext, TContainerContext } from "../../../utils/InversifyProvider";
 

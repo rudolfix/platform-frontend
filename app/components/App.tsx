@@ -4,7 +4,7 @@ import { hot } from "react-hot-loader/root";
 import { compose } from "redux";
 
 import { symbols } from "../di/symbols";
-import { ILogger } from "../lib/dependencies/Logger";
+import { ILogger } from "../lib/dependencies/logger";
 import { actions } from "../modules/actions";
 import {
   selectInitError,

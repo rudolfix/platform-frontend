@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { spy } from "sinon";
 
 import { setupFakeClock } from "../../test/integrationTestUtils";
-import { noopLogger } from "../lib/dependencies/Logger";
+import { noopLogger } from "../lib/dependencies/logger";
 import { AsyncIntervalScheduler } from "./AsyncIntervalScheduler";
 import { delay } from "./delay";
 

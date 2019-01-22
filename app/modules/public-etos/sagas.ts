@@ -67,6 +67,12 @@ export function* loadEtoPreview(
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
 
+    if (action.payload.widgetView) {
+      yield put(actions.publicEtos.setEtoWidgetError());
+
+      return;
+    }
+
     notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO_PREVIEW));
     yield put(actions.routing.goToDashboard());
   }
@@ -103,6 +109,12 @@ export function* loadEto(
     yield put(actions.publicEtos.setPublicEto({ eto, company }));
   } catch (e) {
     logger.error("Could not load eto by id", e);
+
+    if (action.payload.widgetView) {
+      yield put(actions.publicEtos.setEtoWidgetError());
+
+      return;
+    }
 
     notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO));
 

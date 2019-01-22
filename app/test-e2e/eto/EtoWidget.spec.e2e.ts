@@ -89,4 +89,12 @@ describe("Eto widget page", () => {
       "_blank",
     );
   });
+
+  it("ETONotFound", () => {
+    const ETO_ID = "wrong-eto-id";
+
+    cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
+
+    cy.iframe("iframe").find(tid("eto-widget-error"));
+  });
 });

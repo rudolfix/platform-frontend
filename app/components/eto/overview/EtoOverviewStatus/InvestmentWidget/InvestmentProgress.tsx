@@ -26,7 +26,11 @@ type TLabelExternalProps = {
   textAnchor?: "start" | "end" | "middle";
 };
 
-const Label: React.SFC<TLabelExternalProps> = ({ label, width, textAnchor = "middle" }) => {
+const Label: React.FunctionComponent<TLabelExternalProps> = ({
+  label,
+  width,
+  textAnchor = "middle",
+}) => {
   return (
     <text x={`${width}%`} y={30} textAnchor={textAnchor} className={styles.label}>
       {label}
@@ -34,7 +38,7 @@ const Label: React.SFC<TLabelExternalProps> = ({ label, width, textAnchor = "mid
   );
 };
 
-const InvestmentProgress: React.SFC<TProps> = ({ eto }) => {
+const InvestmentProgress: React.FunctionComponent<TProps> = ({ eto }) => {
   const calculatedPercentage = getInvestmentCalculatedPercentage(eto);
   const currentProgressPercentage = getCurrentInvestmentProgressPercentage(eto);
 

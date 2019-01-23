@@ -109,7 +109,7 @@ export const SOCIAL_PROFILES_PERSON = [
   },
 ];
 
-const SocialMediaTags: React.SFC<{
+const SocialMediaTags: React.FunctionComponent<{
   profiles: ISocialProfile[];
   className?: string;
   onClick: (index: number) => void;
@@ -140,7 +140,7 @@ interface ISingleMediaLinkFieldInternalProps {
   profile: ISocialProfile;
 }
 
-const SingleMediaLinkField: React.SFC<
+const SingleMediaLinkField: React.FunctionComponent<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
 > = props => {
   const { profile, name } = props;

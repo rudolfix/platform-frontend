@@ -17,7 +17,7 @@ export interface IEtoProgressStepper {
   onClick: (step: number) => void;
 }
 
-export const EtoProgressStepper: React.SFC<IEtoProgressStepper> = ({
+export const EtoProgressStepper: React.FunctionComponent<IEtoProgressStepper> = ({
   currentStep,
   stepProps,
   onClick,

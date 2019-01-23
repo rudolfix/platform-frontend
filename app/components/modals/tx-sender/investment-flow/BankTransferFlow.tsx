@@ -20,7 +20,7 @@ interface IDispatchProps {
 
 type Props = IStateProps & IDispatchProps;
 
-const BankTransferFlowModalComponent: React.SFC<Props> = props => {
+const BankTransferFlowModalComponent: React.FunctionComponent<Props> = props => {
   const { isOpen, onCancel } = props;
 
   return (

@@ -24,7 +24,7 @@ interface IDispatchProps {
   onDismiss: () => void;
 }
 
-export const EtoFileIpfsModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
+export const EtoFileIpfsModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   onDismiss,
   isOpen,
   onContinue,

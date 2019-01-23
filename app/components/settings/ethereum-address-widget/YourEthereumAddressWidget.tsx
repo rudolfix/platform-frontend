@@ -12,7 +12,9 @@ interface IStateProps {
   address: string;
 }
 
-export const YourEthereumAddressWidgetComponent: React.SFC<IStateProps> = ({ address }) => (
+export const YourEthereumAddressWidgetComponent: React.FunctionComponent<IStateProps> = ({
+  address,
+}) => (
   <Panel
     className="h-100"
     centerContent={false}

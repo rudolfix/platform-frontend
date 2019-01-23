@@ -12,7 +12,7 @@ interface IProps {
   errorMessage?: TTranslatedString;
 }
 
-export const FormConstantField: React.SFC<IProps> = ({
+export const FormConstantField: React.FunctionComponent<IProps> = ({
   value,
   className,
   errorMessage,

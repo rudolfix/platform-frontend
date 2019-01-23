@@ -28,7 +28,7 @@ export interface ICampaigningActivatedInvestorWidgetLayoutProps {
   maxPledge?: number;
 }
 
-const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
+const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
   ICampaigningActivatedInvestorWidgetLayoutProps
 > = ({
   pledgedAmount,

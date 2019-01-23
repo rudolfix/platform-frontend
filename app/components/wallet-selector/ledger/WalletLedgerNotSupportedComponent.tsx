@@ -17,7 +17,7 @@ interface IBrowserCard {
   url: string;
 }
 
-const BrowserCard: React.SFC<IBrowserCard> = ({ name, img, url }) => (
+const BrowserCard: React.FunctionComponent<IBrowserCard> = ({ name, img, url }) => (
   <Col xs="12" sm="4" className={cn("mb-4 mb-md-0 px-4")}>
     <h4 className={styles.browserCardTitle}>{name}</h4>
     <img className={cn("my-2 my-md-4", styles.browserCardImg)} src={img} />
@@ -27,7 +27,7 @@ const BrowserCard: React.SFC<IBrowserCard> = ({ name, img, url }) => (
   </Col>
 );
 
-export const WalletLedgerNotSupported: React.SFC = () => (
+export const WalletLedgerNotSupported: React.FunctionComponent = () => (
   <>
     <Row>
       <Col>

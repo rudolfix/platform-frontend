@@ -7,7 +7,7 @@ import { DashboardLinkWidget } from "../../shared/dashboard-link-widget/Dashboar
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 
-export const UploadProspectusWidgetComponent: React.SFC<{}> = () => (
+export const UploadProspectusWidgetComponent: React.FunctionComponent<{}> = () => (
   <DashboardLinkWidget
     title={<FormattedMessage id={"settings.upload-prospectus.title"} />}
     text={<FormattedMessage id="settings.upload-prospectus-please-upload-prospectus" />}

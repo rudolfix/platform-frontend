@@ -9,7 +9,7 @@ import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutUnauthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
 import { RecoverRouter } from "./router/RecoverRouter";
 
-export const WalletRecoverMainComponent: React.SFC = () => (
+export const WalletRecoverMainComponent: React.FunctionComponent = () => (
   <LayoutRegisterLogin>
     <Row>
       <Col>
@@ -19,7 +19,7 @@ export const WalletRecoverMainComponent: React.SFC = () => (
   </LayoutRegisterLogin>
 );
 
-export const WalletRecoverMain: React.SFC = compose<React.SFC>(
+export const WalletRecoverMain: React.FunctionComponent = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
   withContainer(LayoutUnauthorized),
 )(WalletRecoverMainComponent);

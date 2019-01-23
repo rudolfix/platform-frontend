@@ -26,7 +26,7 @@ interface IDispatchProps {
 
 type IProps = IOwnProps & IDispatchProps;
 
-const SingleColDocumentsLayout: React.SFC<IProps> = ({
+const SingleColDocumentsLayout: React.FunctionComponent<IProps> = ({
   documents,
   className,
   title,
@@ -62,7 +62,7 @@ const SingleColDocumentsLayout: React.SFC<IProps> = ({
   );
 };
 
-const SingleColDocuments = compose<React.SFC<IOwnProps>>(
+const SingleColDocuments = compose<React.FunctionComponent<IOwnProps>>(
   setDisplayName("SingleColDocuments"),
   appConnect<{}, IDispatchProps>({
     dispatchToProps: dispatch => ({

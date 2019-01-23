@@ -41,7 +41,7 @@ export type TPortfolioLayoutProps = {
 
 const transactions: any[] = []; // TODO: Connect source of data
 
-const PortfolioLayout: React.SFC<TPortfolioLayoutProps> = ({
+const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
   myAssets,
   pendingAssets,
   myNeuBalance,

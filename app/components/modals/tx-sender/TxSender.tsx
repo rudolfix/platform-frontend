@@ -50,7 +50,7 @@ function isBigModal(props: Props): boolean {
   return props.state === ETxSenderState.INIT && props.type === ETxSenderType.INVEST;
 }
 
-const TxSenderModalComponent: React.SFC<Props> = props => {
+const TxSenderModalComponent: React.FunctionComponent<Props> = props => {
   const { isOpen, onCancel } = props;
 
   return (
@@ -84,7 +84,7 @@ export type TSummaryComponentProps = ITXSummaryExternalProps &
   ITxSummaryStateProps &
   ITxSummaryDispatchProps;
 
-const InitComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
+const InitComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case ETxSenderType.INVEST:
       return <InvestmentSelection />;
@@ -95,7 +95,7 @@ const InitComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   }
 };
 
-const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
+const SummaryComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {
     case ETxSenderType.INVEST:
       return <InvestmentSummary />;
@@ -110,7 +110,7 @@ const SummaryComponent: React.SFC<{ type?: ETxSenderType }> = ({ type }) => {
   }
 };
 
-const SuccessComponent: React.SFC<{ type?: ETxSenderType; txHash?: string }> = ({
+const SuccessComponent: React.FunctionComponent<{ type?: ETxSenderType; txHash?: string }> = ({
   type,
   txHash,
 }) => {

@@ -33,7 +33,7 @@ import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecove
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
 
-export const AppRouter: React.SFC = () => (
+export const AppRouter: React.FunctionComponent = () => (
   <SwitchConnected>
     <Route
       path={appRoutes.etoPublicView}

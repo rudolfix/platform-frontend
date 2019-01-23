@@ -124,7 +124,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(KYCForm);
 
-const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
+const FileUploadList: React.FunctionComponent<IProps & { dataValid: boolean }> = props => {
   if (!props.dataValid) return <div />;
   return (
     <div>
@@ -177,7 +177,7 @@ export const KycBusinessDataComponent = ({
   );
 };
 
-export const KycBusinessData = compose<React.SFC>(
+export const KycBusinessData = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       currentValues: state.kyc.businessData,

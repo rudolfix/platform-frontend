@@ -24,7 +24,7 @@ interface IIcbmWallet extends IPanelProps {
   data: IIcbmWalletValues;
 }
 
-export const IcbmWallet: React.SFC<IIcbmWallet> = ({
+export const IcbmWallet: React.FunctionComponent<IIcbmWallet> = ({
   data,
   className,
   headerText,

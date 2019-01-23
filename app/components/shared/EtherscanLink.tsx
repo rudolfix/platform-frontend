@@ -6,7 +6,7 @@ interface IEtherscanTxLink {
   txHash: string;
 }
 
-const EtherscanTxLink: React.SFC<IEtherscanTxLink & CommonHtmlProps> = ({
+const EtherscanTxLink: React.FunctionComponent<IEtherscanTxLink & CommonHtmlProps> = ({
   txHash,
   children,
   ...props
@@ -20,7 +20,7 @@ interface IEtherscanAddressLink {
   address: string;
 }
 
-const EtherscanAddressLink: React.SFC<IEtherscanAddressLink & CommonHtmlProps> = ({
+const EtherscanAddressLink: React.FunctionComponent<IEtherscanAddressLink & CommonHtmlProps> = ({
   address,
   children,
   ...props

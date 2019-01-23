@@ -51,7 +51,7 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps;
 
-const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) => (
+const EtoVotingRightsComponent: React.FunctionComponent<IProps> = ({ readonly, savingData }) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-voting-rights.title" />}
     validator={EtoVotingRightsType.toYup()}
@@ -107,7 +107,7 @@ const EtoVotingRightsComponent: React.SFC<IProps> = ({ readonly, savingData }) =
   </EtoFormBase>
 );
 
-const EtoVotingRights = compose<React.SFC<IExternalProps>>(
+const EtoVotingRights = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoVotingRights),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

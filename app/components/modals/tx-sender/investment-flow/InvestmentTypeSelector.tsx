@@ -37,7 +37,7 @@ interface IProps {
   onSelect: (type: EInvestmentType) => void;
 }
 
-const WalletBalance: React.SFC<WalletSelectionData> = wallet => (
+const WalletBalance: React.FunctionComponent<WalletSelectionData> = wallet => (
   <div className={styles.balance}>
     <div className={styles.balanceValues}>
       <WalletBalanceValues {...wallet} />
@@ -45,7 +45,7 @@ const WalletBalance: React.SFC<WalletSelectionData> = wallet => (
   </div>
 );
 
-const WalletBalanceValues: React.SFC<WalletSelectionData> = wallet => {
+const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet => {
   switch (wallet.type) {
     case EInvestmentType.ICBMEth:
     case EInvestmentType.InvestmentWallet:

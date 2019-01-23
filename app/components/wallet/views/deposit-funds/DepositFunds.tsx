@@ -14,7 +14,7 @@ import { walletRoutes } from "../../routes";
 
 import * as styles from "./DepositFunds.module.scss";
 
-const DoneButton = compose<React.SFC>(
+const DoneButton = compose<React.FunctionComponent>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       onClick: () => dispatch(actions.routing.goToWallet()),

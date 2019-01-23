@@ -61,7 +61,10 @@ const MIN_NON_RETAIL_TICKET = 100000;
 
 const currencies = Object.keys(CURRENCIES);
 
-const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData }) => {
+const EtoRegistrationTermsComponent: React.FunctionComponent<IProps> = ({
+  readonly,
+  savingData,
+}) => {
   return (
     <EtoFormBase
       title={<FormattedMessage id="eto.form.eto-terms.title" />}
@@ -235,7 +238,7 @@ const EtoRegistrationTermsComponent: React.SFC<IProps> = ({ readonly, savingData
   );
 };
 
-const EtoRegistrationTerms = compose<React.SFC<IExternalProps>>(
+const EtoRegistrationTerms = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoTerms),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

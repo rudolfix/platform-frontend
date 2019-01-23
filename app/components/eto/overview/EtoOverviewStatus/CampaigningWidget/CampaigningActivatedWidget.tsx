@@ -49,7 +49,7 @@ interface IWithProps {
 
 type IProps = IWithProps & IExternalProps & IStateProps;
 
-const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
+const CampaigningActivatedWidgetComponent: React.FunctionComponent<IProps> = ({
   investorsLimit,
   pledgedAmount,
   investorsCount,
@@ -178,7 +178,7 @@ const CampaigningActivatedWidgetComponent: React.SFC<IProps> = ({
   );
 };
 
-const CampaigningActivatedWidget = compose<React.SFC<IExternalProps>>(
+const CampaigningActivatedWidget = compose<React.FunctionComponent<IExternalProps>>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
       const stats = selectBookbuildingStats(state, props.etoId);

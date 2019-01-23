@@ -38,7 +38,7 @@ interface IDispatchProps {
 
 type TProps = IStateProps & IDispatchProps;
 
-const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
+const ChooseEtoStartDateWidgetComponent: React.FunctionComponent<TProps> = ({
   oldDate,
   newDate,
   setEtoDate,
@@ -108,7 +108,7 @@ const ChooseEtoStartDateWidgetComponent: React.SFC<TProps> = ({
   );
 };
 
-const ChooseEtoStartDateWidget = compose<React.SFC>(
+const ChooseEtoStartDateWidget = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {

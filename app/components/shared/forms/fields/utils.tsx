@@ -14,7 +14,7 @@ export interface IFormField {
 
 export const withFormField = (
   Component: React.ComponentType<any>,
-): React.SFC<Dictionary<any> & IFormField> => ({ label, name, ...inputProps }) => (
+): React.FunctionComponent<Dictionary<any> & IFormField> => ({ label, name, ...inputProps }) => (
   <FormGroup>
     {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
     <Component name={name} {...inputProps} />

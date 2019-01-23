@@ -59,7 +59,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const SubmitDashBoardSection: React.SFC<{ isTermSheetSubmitted?: boolean }> = ({
+const SubmitDashBoardSection: React.FunctionComponent<{ isTermSheetSubmitted?: boolean }> = ({
   isTermSheetSubmitted,
 }) => (
   <>
@@ -80,7 +80,7 @@ const SubmitDashBoardSection: React.SFC<{ isTermSheetSubmitted?: boolean }> = ({
   </>
 );
 
-const EtoProgressDashboardSection: React.SFC = () => (
+const EtoProgressDashboardSection: React.FunctionComponent = () => (
   <>
     <DashboardSection step={2} title="ETO APPLICATION" />
     <Col xs={12}>
@@ -100,7 +100,7 @@ interface IEtoStateRender {
   isRetailEto: boolean;
 }
 
-const EtoDashboardStateViewComponent: React.SFC<IEtoStateRender> = ({
+const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> = ({
   etoState,
   shouldViewSubmissionSection,
   isTermSheetSubmitted,
@@ -256,7 +256,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
   }
 }
 
-const EtoDashboard = compose<React.SFC>(
+const EtoDashboard = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

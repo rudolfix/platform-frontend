@@ -8,7 +8,7 @@ interface ITotalEuroProps {
   totalEurValue: string;
 }
 
-export const TotalEuro: React.SFC<ITotalEuroProps> = ({ totalEurValue }) => (
+export const TotalEuro: React.FunctionComponent<ITotalEuroProps> = ({ totalEurValue }) => (
   <div className={styles.totalEuro}>
     <span className={styles.label}>
       <FormattedMessage id="wallet.total" />

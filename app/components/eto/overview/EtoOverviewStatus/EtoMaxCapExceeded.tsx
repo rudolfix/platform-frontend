@@ -32,13 +32,9 @@ interface IWithProps {
   nextStateStartDate: Date;
 }
 
-const EtoMaxCapExceededComponent: React.SFC<IExternalProps & IStateProps & IWithProps> = ({
-  eto,
-  etherPriceEur,
-  isPreEto,
-  isWaitingForNextStateToStart,
-  nextStateStartDate,
-}) => {
+const EtoMaxCapExceededComponent: React.FunctionComponent<
+  IExternalProps & IStateProps & IWithProps
+> = ({ eto, etherPriceEur, isPreEto, isWaitingForNextStateToStart, nextStateStartDate }) => {
   return isPreEto && isWaitingForNextStateToStart ? (
     <div className={styles.maxCapExceeded}>
       <CounterWidget

@@ -162,7 +162,7 @@ const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => {
   );
 };
 
-const EtoRegistrationLegalInformation = compose<React.SFC<IExternalProps>>(
+const EtoRegistrationLegalInformation = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.LegalInformation),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({

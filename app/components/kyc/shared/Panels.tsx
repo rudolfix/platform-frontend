@@ -13,7 +13,7 @@ interface IProps {
   panels: IKycPanel[];
 }
 
-export const Panels: React.SFC<IProps> = ({ panels }) => (
+export const Panels: React.FunctionComponent<IProps> = ({ panels }) => (
   <div className={styles.panels}>
     {panels.map(({ content, id, onClick, "data-test-id": dataTestId }) => (
       <div key={id} className={styles.panel}>

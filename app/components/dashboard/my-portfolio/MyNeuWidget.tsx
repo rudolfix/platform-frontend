@@ -17,7 +17,7 @@ interface IProps {
   balanceEur: string;
 }
 
-export const MyNeuWidget: React.SFC<IProps> = props => {
+export const MyNeuWidget: React.FunctionComponent<IProps> = props => {
   return (
     <section className={cn(styles.background)}>
       <h5 className={cn(styles.title)}>

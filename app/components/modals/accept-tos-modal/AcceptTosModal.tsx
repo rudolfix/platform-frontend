@@ -92,7 +92,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
   }
 }
 
-const AcceptTosModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
+const AcceptTosModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = props => (
   <Modal isOpen={props.isOpen} centered>
     <ModalComponentBody>
       <AcceptTosModalInner {...props} />

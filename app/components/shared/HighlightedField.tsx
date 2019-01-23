@@ -20,7 +20,7 @@ interface IProps {
   dataTestId?: string;
 }
 
-export const HighlightedField: React.SFC<IProps> = ({
+export const HighlightedField: React.FunctionComponent<IProps> = ({
   label,
   value,
   icon,

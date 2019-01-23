@@ -76,7 +76,7 @@ const getWithdrawFormSchema = (maxEther: string) =>
     ),
   }).toYup();
 
-const WithdrawLayout: React.SFC<TProps & IIntlProps> = ({
+const WithdrawLayout: React.FunctionComponent<TProps & IIntlProps> = ({
   onAccept,
   onValidateHandler,
   validationState,

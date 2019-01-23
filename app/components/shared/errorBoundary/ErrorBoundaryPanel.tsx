@@ -5,7 +5,7 @@ import { PanelBase } from "../PanelBase";
 
 import * as styles from "./ErrorBoundary.module.scss";
 
-export const ErrorBoundaryPanel: React.SFC = () => (
+export const ErrorBoundaryPanel: React.FunctionComponent = () => (
   <PanelBase className={styles.panel}>
     <FormattedMessage id="error-boundary.widget-error-message" />
   </PanelBase>

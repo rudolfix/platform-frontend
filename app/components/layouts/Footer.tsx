@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import * as logo from "../../assets/img/logo_capitalized.svg";
 import * as styles from "./Footer.module.scss";
 
-export const Footer: React.SFC = () => {
+export const Footer: React.FunctionComponent = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.contentWrapper}>

@@ -7,7 +7,7 @@ interface IProps {
   title?: TTranslatedString | string;
 }
 
-export const FormHighlightGroup: React.SFC<IProps> = ({ title, children }) => {
+export const FormHighlightGroup: React.FunctionComponent<IProps> = ({ title, children }) => {
   return (
     <div className={styles.formHighlightGroup}>
       {title && <div className="mb-4 text-uppercase">{title}</div>}

@@ -16,7 +16,7 @@ interface IProps {
   steps: IStepProps[];
 }
 
-export const OffToOnCompany: React.SFC<IProps> = ({ steps }) => {
+export const OffToOnCompany: React.FunctionComponent<IProps> = ({ steps }) => {
   return (
     <div className={styles.offToOnChainCompany}>
       <h3 className={styles.header}>

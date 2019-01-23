@@ -35,7 +35,7 @@ type TButtonWithoutOnClick = Omit<IButtonProps, IGeneralButton>;
 
 type TProps = TButtonLinkComponentProps & TButtonDispatchProps & TButtonWithoutOnClick;
 
-const ButtonLinkLayout: React.SFC<TProps> = ({
+const ButtonLinkLayout: React.FunctionComponent<TProps> = ({
   navigate,
   children,
   isActive,

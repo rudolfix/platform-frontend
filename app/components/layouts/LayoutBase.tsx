@@ -6,7 +6,7 @@ import { Header } from "./Header";
 
 import * as styles from "./LayoutShared.module.scss";
 
-export const LayoutBase: React.SFC = ({ children }) => (
+export const LayoutBase: React.FunctionComponent = ({ children }) => (
   <>
     <Header />
 

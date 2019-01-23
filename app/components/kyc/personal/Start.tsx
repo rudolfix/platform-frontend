@@ -205,7 +205,9 @@ const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualD
   },
 })(KYCForm);
 
-export const KYCPersonalStartComponent: React.SFC<IStateProps & IDispatchProps> = props => {
+export const KYCPersonalStartComponent: React.FunctionComponent<
+  IStateProps & IDispatchProps
+> = props => {
   return (
     <KycPanel
       steps={personalSteps}
@@ -219,7 +221,7 @@ export const KYCPersonalStartComponent: React.SFC<IStateProps & IDispatchProps> 
   );
 };
 
-export const KYCPersonalStart = compose<React.SFC>(
+export const KYCPersonalStart = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       currentValues: state.kyc.individualData,

@@ -16,7 +16,7 @@ interface IExternalProps {
   onSubmit: () => void;
 }
 
-const SummaryForm: React.SFC<IExternalProps> = ({ onSubmit }) => (
+const SummaryForm: React.FunctionComponent<IExternalProps> = ({ onSubmit }) => (
   <Formik<any>
     validationSchema={getSummaryFormSchema()}
     isInitialValid={false}

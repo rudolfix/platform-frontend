@@ -21,7 +21,7 @@ export interface IMoneySuiteWidgetProps {
   size?: TSize;
 }
 
-export const MoneySuiteWidget: React.SFC<IMoneySuiteWidgetProps & TDataTestId> = ({
+export const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTestId> = ({
   icon,
   currency,
   currencyTotal,

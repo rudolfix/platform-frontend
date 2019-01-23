@@ -9,7 +9,7 @@ interface IInfoRowProps {
   dataTestId?: string;
 }
 
-export const InfoRow: React.SFC<IInfoRowProps> = ({ caption, value, dataTestId }) => (
+export const InfoRow: React.FunctionComponent<IInfoRowProps> = ({ caption, value, dataTestId }) => (
   <ListGroupItem className={styles.infoRow}>
     <div className={styles.infoCell}>{caption}</div>
     <div className={styles.infoCell} data-test-id={dataTestId}>

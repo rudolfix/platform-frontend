@@ -61,7 +61,7 @@ const getBlankMember = () => ({
   image: "",
 });
 
-const Individual: React.SFC<IIndividual> = ({
+const Individual: React.FunctionComponent<IIndividual> = ({
   onRemoveClick,
   canRemove,
   index,
@@ -237,7 +237,7 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
   );
 };
 
-const EtoRegistrationKeyIndividuals = compose<React.SFC>(
+const EtoRegistrationKeyIndividuals = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.KeyIndividuals),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

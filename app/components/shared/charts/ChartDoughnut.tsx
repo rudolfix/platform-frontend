@@ -116,7 +116,12 @@ const hasData = (data: IData) => data.datasets[0].data.length > 0;
 
 const labelCallback = (tooltipItem: ITooltipItem, data: IData) => data.labels[tooltipItem.index];
 
-export const ChartDoughnut: React.SFC<IProps> = ({ data, layout, className, defaultLabel }) => {
+export const ChartDoughnut: React.FunctionComponent<IProps> = ({
+  data,
+  layout,
+  className,
+  defaultLabel,
+}) => {
   let chartData = hasData(data)
     ? data
     : {

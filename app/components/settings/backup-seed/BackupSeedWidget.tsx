@@ -23,7 +23,9 @@ interface IOwnProps {
   step: number;
 }
 
-const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupCodesVerified }) => {
+const BackupSeedWidgetComponent: React.FunctionComponent<IStateProps & IOwnProps> = ({
+  backupCodesVerified,
+}) => {
   return (
     <Panel
       className="h-100"
@@ -82,7 +84,7 @@ const BackupSeedWidgetComponent: React.SFC<IStateProps & IOwnProps> = ({ backupC
   );
 };
 
-const BackupSeedWidget = compose<React.SFC<IOwnProps>>(
+const BackupSeedWidget = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<IStateProps, IOwnProps>({
     stateToProps: s => ({
       backupCodesVerified: selectBackupCodesVerified(s),

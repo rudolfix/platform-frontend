@@ -45,7 +45,7 @@ interface IProps {
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-const EtoViewLayout: React.SFC<IProps> = ({ eto }) => {
+const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
   const {
     advisors,
     companyDescription,

@@ -12,7 +12,7 @@ type TProps = {
   image?: React.ReactNode;
 };
 
-const Message: React.SFC<TProps> = ({
+const Message: React.FunctionComponent<TProps> = ({
   "data-test-id": dataTestId,
   image,
   title,

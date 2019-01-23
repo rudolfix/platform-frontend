@@ -15,7 +15,7 @@ import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
 
-export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
+export const WithdrawSummaryComponent: React.FunctionComponent<TSummaryComponentProps> = ({
   txData,
   txCost,
   onAccept,

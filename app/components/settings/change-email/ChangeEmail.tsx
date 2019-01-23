@@ -45,7 +45,7 @@ const SettingsEnhancedChangeEmailForm = withFormik<IDispatchProps, IFormValues>(
   },
 })(ChangeEmailForm);
 
-export const ChangeEmailComponent: React.SFC<IDispatchProps & IIntlProps> = ({
+export const ChangeEmailComponent: React.FunctionComponent<IDispatchProps & IIntlProps> = ({
   intl: { formatIntlMessage },
   ...props
 }) => {
@@ -66,7 +66,7 @@ export const ChangeEmailComponent: React.SFC<IDispatchProps & IIntlProps> = ({
   );
 };
 
-export const ChangeEmail = compose<React.SFC>(
+export const ChangeEmail = compose<React.FunctionComponent>(
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({
       submitForm: (values: IFormValues) => {

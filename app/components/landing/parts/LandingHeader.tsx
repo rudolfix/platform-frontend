@@ -31,7 +31,7 @@ import * as unitiImage from "../../../assets/img/landing/uniti.png";
 import * as unitiImage2x from "../../../assets/img/landing/uniti@2x.png";
 import * as unitiImage3x from "../../../assets/img/landing/uniti@3x.png";
 
-export const LandingHeader: React.SFC = () => (
+export const LandingHeader: React.FunctionComponent = () => (
   <section className={styles.hero}>
     <Container>
       <Row>
@@ -62,7 +62,7 @@ export const LandingHeader: React.SFC = () => (
   </section>
 );
 
-const CompanyImages: React.SFC = () => (
+const CompanyImages: React.FunctionComponent = () => (
   <div className={styles.images}>
     <a href="#eto-card-3" className={styles.companyImage}>
       <ResponsiveImage

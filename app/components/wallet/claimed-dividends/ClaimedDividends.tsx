@@ -32,12 +32,9 @@ const NoPayoutsInfo = () => (
     <FormattedMessage id="components.wallet.claimed-dividends.you-claimed-no-proceeds" />
   </div>
 );
-export const ClaimedDividends: React.SFC<IClaimedDividendsProps & CommonHtmlProps> = ({
-  totalEurValue,
-  recentPayouts,
-  className,
-  ...htmlProps
-}) => (
+export const ClaimedDividends: React.FunctionComponent<
+  IClaimedDividendsProps & CommonHtmlProps
+> = ({ totalEurValue, recentPayouts, className, ...htmlProps }) => (
   <Panel
     rightComponent={<TotalEuro totalEurValue={totalEurValue} />}
     className={cn(styles.claimedDividends, className)}

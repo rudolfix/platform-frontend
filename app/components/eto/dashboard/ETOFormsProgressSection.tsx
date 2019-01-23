@@ -48,7 +48,7 @@ export interface IStateProps {
   etoInvestmentTermsProgress: number;
 }
 
-export const ETOFormsProgressSectionComponent: React.SFC<IStateProps> = ({
+export const ETOFormsProgressSectionComponent: React.FunctionComponent<IStateProps> = ({
   etoStatus,
   loadingData,
   shouldEtoDataLoad,

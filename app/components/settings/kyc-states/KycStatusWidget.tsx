@@ -226,7 +226,7 @@ const ActionButton = ({
   return null;
 };
 
-export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props => {
+export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetProps> = props => {
   const {
     requestStatus,
     requestOutsourcedStatus,

@@ -17,7 +17,7 @@ interface IOwnProps {
   disabled?: boolean;
 }
 //todo dropzone should accept all files dropped, not only the first one, see #2243
-export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = ({
+export const ETOAddDocumentsComponent: React.FunctionComponent<IDispatchProps & IOwnProps> = ({
   onDropFile,
   children,
   documentType,
@@ -41,7 +41,7 @@ export const ETOAddDocumentsComponent: React.SFC<IDispatchProps & IOwnProps> = (
   );
 };
 
-export const ETOAddDocuments = compose<React.SFC<IOwnProps>>(
+export const ETOAddDocuments = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<{}, IDispatchProps, IOwnProps>({
     dispatchToProps: dispatch => ({
       onDropFile: (file: File, documentType: EEtoDocumentType) =>

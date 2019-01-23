@@ -19,7 +19,7 @@ interface IProps {
   isClickable?: boolean;
 }
 
-const SlidePerson: React.SFC<IProps> = ({
+const SlidePerson: React.FunctionComponent<IProps> = ({
   srcSet,
   name,
   role,

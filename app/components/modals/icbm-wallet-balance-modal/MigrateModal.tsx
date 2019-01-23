@@ -29,7 +29,7 @@ enum ETransactionStatus {
   WAITING = "waiting",
 }
 
-const MigrateFooter: React.SFC<{
+const MigrateFooter: React.FunctionComponent<{
   transactionStatus: ETransactionStatus;
   onGotoWallet: () => void;
   step: number;
@@ -78,7 +78,7 @@ const MigrateFooter: React.SFC<{
   );
 };
 
-const MigrateHeader: React.SFC<{ step: number }> = ({ step }) => (
+const MigrateHeader: React.FunctionComponent<{ step: number }> = ({ step }) => (
   <>
     <p className={styles.description}>
       <FormattedHTMLMessage
@@ -117,7 +117,7 @@ const MigrateHeader: React.SFC<{ step: number }> = ({ step }) => (
   </>
 );
 
-const MigrateBody: React.SFC<{
+const MigrateBody: React.FunctionComponent<{
   walletMigrationData: IWalletMigrationData;
 }> = ({ walletMigrationData }) => {
   return (
@@ -172,7 +172,7 @@ const MigrateBody: React.SFC<{
   );
 };
 
-export const MigrateModal: React.SFC<IMigrationModal> = ({
+export const MigrateModal: React.FunctionComponent<IMigrationModal> = ({
   walletMigrationData,
   migrationStep,
   success,

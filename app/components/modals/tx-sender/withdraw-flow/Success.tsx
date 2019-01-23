@@ -9,7 +9,7 @@ interface IProps {
   txHash: string;
 }
 
-export const WithdrawSuccess: React.SFC<IProps> = ({ txHash }) => (
+export const WithdrawSuccess: React.FunctionComponent<IProps> = ({ txHash }) => (
   <div className="text-center" data-test-id="modals.tx-sender.withdraw-flow.success">
     <ConfettiEthereum className="mb-3" />
     <h3 className={styles.title}>

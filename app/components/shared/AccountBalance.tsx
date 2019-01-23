@@ -17,7 +17,7 @@ interface IProps {
   transferDisabled?: boolean;
 }
 
-export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
+export const AccountBalance: React.FunctionComponent<IProps & IMoneySuiteWidgetProps> = ({
   icon,
   currency,
   currencyTotal,

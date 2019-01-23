@@ -8,7 +8,11 @@ interface IProps {
   description: string | React.ReactNode;
 }
 
-export const BulletPointWithDescription: React.SFC<IProps> = ({ index, header, description }) => (
+export const BulletPointWithDescription: React.FunctionComponent<IProps> = ({
+  index,
+  header,
+  description,
+}) => (
   <div className={styles.bulletPointWithDescription}>
     <div className={styles.bullet}>{index}</div>
     <div className={styles.divider} />

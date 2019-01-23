@@ -67,7 +67,7 @@ export const SOCIAL_PROFILE_ICONS: {
   bitcointalk,
 };
 
-const SocialProfilesList: React.SFC<IProps> = ({
+const SocialProfilesList: React.FunctionComponent<IProps> = ({
   profiles,
   layoutIconSize,
   layoutIconsPosition,

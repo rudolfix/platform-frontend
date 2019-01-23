@@ -26,7 +26,7 @@ type DatetimeProps = DateTime.DatetimepickerProps & {
 
 const TypedDatetime = DateTime as React.ComponentType<DatetimeProps>;
 
-const FormFieldDatePicker: React.SFC<IProps> = () => (
+const FormFieldDatePicker: React.FunctionComponent<IProps> = () => (
   <div className={styles.formFieldDatePicker}>
     <TypedDatetime
       closeOnSelect={true}

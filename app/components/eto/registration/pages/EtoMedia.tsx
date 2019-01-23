@@ -100,7 +100,7 @@ const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
   </EtoFormBase>
 );
 
-const EtoRegistrationMedia = compose<React.SFC>(
+const EtoRegistrationMedia = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.EtoMedia),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

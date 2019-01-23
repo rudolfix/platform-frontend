@@ -14,7 +14,7 @@ type TExternalProps = {
 interface IDispatchProps {
   onClaim: (etoId: string) => void;
 }
-const PortfolioAssetActionComponent: React.SFC<TExternalProps & IDispatchProps> = ({
+const PortfolioAssetActionComponent: React.FunctionComponent<TExternalProps & IDispatchProps> = ({
   state,
   etoId,
   onClaim,

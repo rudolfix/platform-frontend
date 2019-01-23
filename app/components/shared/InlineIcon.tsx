@@ -14,7 +14,7 @@ interface IProps {
   alt?: TTranslatedString;
 }
 
-export const InlineIcon: React.SFC<IProps> = ({
+export const InlineIcon: React.FunctionComponent<IProps> = ({
   className = cn("inline-icon", styles.inlineIcon),
   svgIcon,
   width,

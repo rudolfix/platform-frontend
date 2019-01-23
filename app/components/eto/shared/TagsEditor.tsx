@@ -31,7 +31,7 @@ interface IStateWrapper {
   inputValue: string;
 }
 
-const TagsEditor: React.SFC<IProps> = props => {
+const TagsEditor: React.FunctionComponent<IProps> = props => {
   return (
     <div className={styles.tagsEditor}>
       <form className={styles.form} onSubmit={e => props.handleSubmit(e)}>

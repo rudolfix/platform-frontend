@@ -28,7 +28,9 @@ type TDispatchProps = {
   downloadDocument: (document: IEtoDocument) => void;
 };
 
-const DocumentsWidgetLayout: React.SFC<TDispatchProps & TExternalProps & CommonHtmlProps> = ({
+const DocumentsWidgetLayout: React.FunctionComponent<
+  TDispatchProps & TExternalProps & CommonHtmlProps
+> = ({
   downloadDocument,
   companyMarketingLinks,
   etoDocuments,

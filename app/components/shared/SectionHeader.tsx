@@ -16,7 +16,7 @@ interface IProps {
   size?: ESectionHeaderSize;
 }
 
-export const SectionHeader: React.SFC<IProps> = ({
+export const SectionHeader: React.FunctionComponent<IProps> = ({
   children,
   className,
   layoutHasDecorator,

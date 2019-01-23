@@ -19,7 +19,7 @@ interface IDispatchProps {
   onDismiss: () => void;
 }
 
-const VideoModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
+const VideoModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   onDismiss,
   isOpen,
   videoModalObj,

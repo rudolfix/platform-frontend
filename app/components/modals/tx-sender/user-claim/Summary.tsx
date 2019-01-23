@@ -30,7 +30,7 @@ import { SummaryForm } from "./SummaryForm";
 import * as iconDownload from "../../../../assets/img/inline_icons/download.svg";
 import * as styles from "./Summary.module.scss";
 
-export const UserClaimSummaryComponent: React.SFC<TSummaryComponentProps> = ({
+export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponentProps> = ({
   etoData,
   txCost,
   onAccept,

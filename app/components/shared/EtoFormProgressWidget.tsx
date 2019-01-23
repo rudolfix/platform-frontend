@@ -25,7 +25,7 @@ interface IButtonTextProps {
   readonly: boolean;
 }
 
-const ButtonText: React.SFC<IButtonTextProps> = ({ isInProgress, readonly }) => {
+const ButtonText: React.FunctionComponent<IButtonTextProps> = ({ isInProgress, readonly }) => {
   if (readonly) {
     return <FormattedMessage id="shared-component.eto-form-progress-widget.show" />;
   }
@@ -37,7 +37,7 @@ const ButtonText: React.SFC<IButtonTextProps> = ({ isInProgress, readonly }) => 
   return <FormattedMessage id="shared-component.eto-form-progress-widget.edit" />;
 };
 
-export const EtoFormProgressWidgetLayout: React.SFC<IProps & IChartCircleProps> = ({
+export const EtoFormProgressWidgetLayout: React.FunctionComponent<IProps & IChartCircleProps> = ({
   to,
   progress,
   name,
@@ -75,6 +75,6 @@ export const EtoFormProgressWidgetLayout: React.SFC<IProps & IChartCircleProps> 
   </Panel>
 );
 
-export const EtoFormProgressWidget: React.SFC<IProps & IChartCircleProps> = compose<
-  React.SFC<IProps & IChartCircleProps>
+export const EtoFormProgressWidget: React.FunctionComponent<IProps & IChartCircleProps> = compose<
+  React.FunctionComponent<IProps & IChartCircleProps>
 >(createErrorBoundary(ErrorBoundaryPanel))(EtoFormProgressWidgetLayout);

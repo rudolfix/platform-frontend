@@ -16,7 +16,11 @@ interface ILockedWallet extends IPanelProps {
   data: IWalletValues;
 }
 
-export const LockedWallet: React.SFC<ILockedWallet> = ({ data, className, headerText }) => {
+export const LockedWallet: React.FunctionComponent<ILockedWallet> = ({
+  data,
+  className,
+  headerText,
+}) => {
   return (
     <WalletBalanceContainer {...{ className, headerText }}>
       <section className={styles.message}>

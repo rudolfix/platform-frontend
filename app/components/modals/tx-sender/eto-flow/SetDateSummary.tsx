@@ -35,7 +35,7 @@ interface IStateProps {
 
 type IProps = IStateProps & ITxSummaryDispatchProps;
 
-const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
+const SetEtoDateSummaryComponent: React.FunctionComponent<IProps> = ({
   onAccept,
   etoTermsAddress,
   equityTokenAddress,

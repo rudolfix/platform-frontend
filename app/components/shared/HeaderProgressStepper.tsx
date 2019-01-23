@@ -16,7 +16,7 @@ interface IProps {
   headerClassName?: string;
 }
 
-export const HeaderProgressStepper: React.SFC<IProps> = props => (
+export const HeaderProgressStepper: React.FunctionComponent<IProps> = props => (
   <>
     <Row className="mb-2">
       <Col>

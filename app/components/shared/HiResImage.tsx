@@ -8,7 +8,7 @@ interface IHiResImageProps {
   max2x?: boolean;
 }
 
-export const HiResImage: React.SFC<IHiResImageProps> = ({
+export const HiResImage: React.FunctionComponent<IHiResImageProps> = ({
   partialPath,
   className,
   alt,

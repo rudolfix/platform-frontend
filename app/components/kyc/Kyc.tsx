@@ -184,7 +184,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
   }
 }
 
-export const KycComponent: React.SFC<IProps> = props => {
+export const KycComponent: React.FunctionComponent<IProps> = props => {
   const router = props.requestStatus === "Draft" ? <KycRouter /> : null;
 
   return (
@@ -195,7 +195,7 @@ export const KycComponent: React.SFC<IProps> = props => {
   );
 };
 
-export const Kyc = compose<React.SFC>(
+export const Kyc = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({

@@ -44,7 +44,7 @@ type StateProps = {
   };
 };
 
-export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
+export const MyWalletWidgetComponentBody: React.FunctionComponent<StateProps> = props => {
   if (props.isLoading) {
     return <LoadingIndicator />;
   } else if (props.error) {
@@ -122,7 +122,7 @@ export const MyWalletWidgetComponentBody: React.SFC<StateProps> = props => {
   }
 };
 
-export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = ({
+export const MyWalletWidgetComponent: React.FunctionComponent<CommonHtmlProps & StateProps> = ({
   className,
   style,
   ...props
@@ -152,7 +152,7 @@ export const MyWalletWidgetComponent: React.SFC<CommonHtmlProps & StateProps> = 
   );
 };
 
-export const MyWalletWidget = compose<React.SFC<CommonHtmlProps>>(
+export const MyWalletWidget = compose<React.FunctionComponent<CommonHtmlProps>>(
   onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
   appConnect<StateProps>({
     stateToProps: s => {

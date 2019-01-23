@@ -20,7 +20,10 @@ interface IStateProps {
 
 type IProps = IDispatchProps & IStateProps;
 
-export const UserClaimSuccessComponent: React.SFC<IProps> = ({ goToPortfolio, tokenName }) => (
+export const UserClaimSuccessComponent: React.FunctionComponent<IProps> = ({
+  goToPortfolio,
+  tokenName,
+}) => (
   <div className="text-center" data-test-id="modals.tx-sender.withdraw-flow.success">
     <ConfettiEthereum className="mb-3" />
     <h3 className={styles.title}>

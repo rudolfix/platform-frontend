@@ -10,7 +10,11 @@ interface IProps {
   seed: string;
 }
 
-export const Avatar: React.SFC<IProps & CommonHtmlProps> = ({ seed, className, style }) => {
+export const Avatar: React.FunctionComponent<IProps & CommonHtmlProps> = ({
+  seed,
+  className,
+  style,
+}) => {
   return (
     <div className={cn(styles.avatar, className)} style={style}>
       <Blockies seed={seed} />

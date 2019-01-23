@@ -28,7 +28,7 @@ const IntlContainerInjector = injectIntlHelpers<{}>(
 /**
  * Provides intl to children and injects it to inversify container that should be available via context.
  */
-export const IntlProviderAndInjector: React.SFC = ({ children }) => (
+export const IntlProviderAndInjector: React.FunctionComponent = ({ children }) => (
   // change locale to gb to have european date format everywhere
   <IntlProvider locale="en-gb" messages={languageEn} textComponent={React.Fragment}>
     <IntlContainerInjector>{children}</IntlContainerInjector>

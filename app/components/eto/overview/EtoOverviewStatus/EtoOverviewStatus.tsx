@@ -60,7 +60,7 @@ interface IStateProps {
   maxCapExceeded: boolean;
 }
 
-const StatusOfEto: React.SFC<IStatusOfEto> = ({ previewCode }) => {
+const StatusOfEto: React.FunctionComponent<IStatusOfEto> = ({ previewCode }) => {
   return (
     <div className={styles.statusOfEto}>
       <span className={styles.title}>
@@ -179,7 +179,7 @@ function onEtoNavigationClick(
   };
 }
 
-const EtoOverviewStatusLayout: React.SFC<
+const EtoOverviewStatusLayout: React.FunctionComponent<
   IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps
 > = ({
   eto,

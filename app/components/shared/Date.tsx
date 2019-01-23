@@ -6,6 +6,6 @@ interface IProps {
   timestamp: number;
 }
 
-export const Date: React.SFC<IProps> = ({ timestamp }) => (
+export const Date: React.FunctionComponent<IProps> = ({ timestamp }) => (
   <time className={styles.date}>{formatDate(timestamp)}</time>
 );

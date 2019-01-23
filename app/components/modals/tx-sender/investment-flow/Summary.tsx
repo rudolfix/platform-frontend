@@ -61,7 +61,7 @@ type IDispatchProps = ITxSummaryDispatchProps & {
 
 type IProps = IStateProps & IDispatchProps;
 
-const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
+const NeuRewardCaption: React.FunctionComponent<{ isIcbm?: boolean }> = ({ isIcbm }) => {
   const neuMsg = <FormattedMessage id="investment-flow.summary.estimated-reward" />;
   const icbmMsg = (
     <>
@@ -75,7 +75,7 @@ const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
   return isIcbm ? icbmMsg : neuMsg;
 };
 
-const InvestmentSummaryComponent: React.SFC<IProps> = ({
+const InvestmentSummaryComponent: React.FunctionComponent<IProps> = ({
   onAccept,
   onChange,
   downloadAgreement,

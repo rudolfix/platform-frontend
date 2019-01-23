@@ -21,7 +21,7 @@ interface IProps {
   height?: number;
 }
 
-export const ChartBars: React.SFC<IProps> = ({ data, className, width, height }) => {
+export const ChartBars: React.FunctionComponent<IProps> = ({ data, className, width, height }) => {
   return (
     <div className={cn(styles.chartBars, className)}>
       <div className={styles.chartWrapper}>

@@ -52,7 +52,7 @@ class PercentageFormDone extends React.Component<IFormPercentageDoneProps> {
   }
 }
 
-export const EtoFormBase: React.SFC<IProps & IFormPercentageDoneProps> = ({
+export const EtoFormBase: React.FunctionComponent<IProps & IFormPercentageDoneProps> = ({
   children,
   title,
   validator,

@@ -11,7 +11,7 @@ interface IProps {
   files: ReadonlyArray<IKycFileInfo>;
 }
 
-export const UploadedFiles: React.SFC<IProps> = ({ files }) => (
+export const UploadedFiles: React.FunctionComponent<IProps> = ({ files }) => (
   <div className={cn("c-uploaded-files", styles.uploadedFiles)}>
     <h6>
       {" "}

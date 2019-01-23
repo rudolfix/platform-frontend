@@ -20,7 +20,7 @@ interface IDispatchProps {
   onCancel: () => void;
 }
 
-const DepositEthModalComponent: React.SFC<IStateProps & IDispatchProps> = props => {
+const DepositEthModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = props => {
   return (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>

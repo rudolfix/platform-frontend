@@ -7,7 +7,7 @@ interface IProps {
   className?: string;
 }
 
-export const Slides: React.SFC<IProps> = ({ slideShareUrl, className }) => {
+export const Slides: React.FunctionComponent<IProps> = ({ slideShareUrl, className }) => {
   return slideShareUrl ? (
     <Proportion className={className} width={480} height={360}>
       <iframe

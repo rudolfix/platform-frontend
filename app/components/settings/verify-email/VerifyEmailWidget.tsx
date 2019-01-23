@@ -115,7 +115,7 @@ const SetEmailEnhancedForm = withFormik<IEnhancedFormProps, IFormValues>({
   handleSubmit: (values, props) => props.props.handleSubmit(values),
 })(SetEmailForm);
 
-const NoEmailUser: React.SFC<INoEMailUser> = ({
+const NoEmailUser: React.FunctionComponent<INoEMailUser> = ({
   addNewEmail,
   isLocked,
   revertCancelEmail,
@@ -134,7 +134,7 @@ const NoEmailUser: React.SFC<INoEMailUser> = ({
   </div>
 );
 
-const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
+const VerifiedUser: React.FunctionComponent<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
   <section
     className={styles.section}
     data-test-id="profile.verify-email-widget.verified-email-state"
@@ -153,7 +153,7 @@ const VerifiedUser: React.SFC<{ verifiedEmail?: string }> = ({ verifiedEmail }) 
   </section>
 );
 
-const UnVerifiedUser: React.SFC<{
+const UnVerifiedUser: React.FunctionComponent<{
   resendEmail: () => void;
   verifiedEmail?: string;
   unverifiedEmail?: string;
@@ -205,7 +205,7 @@ const UnVerifiedUser: React.SFC<{
   </section>
 );
 
-export const VerifyEmailWidgetComponent: React.SFC<
+export const VerifyEmailWidgetComponent: React.FunctionComponent<
   IStateProps & IDispatchProps & IOwnProps & IIntlProps
 > = ({
   intl: { formatIntlMessage },
@@ -255,7 +255,7 @@ export const VerifyEmailWidgetComponent: React.SFC<
   );
 };
 
-export const VerifyEmailWidget = compose<React.SFC<IOwnProps>>(
+export const VerifyEmailWidget = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: s => ({
       isUserEmailVerified: selectIsUserEmailVerified(s.auth),

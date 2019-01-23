@@ -28,7 +28,7 @@ interface IProps {
   "data-test-id"?: string;
 }
 
-const MultiFileUploadComponent: React.SFC<IProps> = ({
+const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   acceptedFiles,
   fileUploading,
   files,
@@ -82,7 +82,7 @@ MultiFileUploadComponent.defaultProps = {
   layout: "horizontal",
 };
 
-export const MultiFileUpload: React.SFC<IProps> = ({
+export const MultiFileUpload: React.FunctionComponent<IProps> = ({
   fileUploading,
   files,
   onDropFile,

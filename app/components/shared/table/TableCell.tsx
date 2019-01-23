@@ -9,7 +9,7 @@ export interface ITableCell {
   mobileDescription?: string;
 }
 
-export const TableCell: React.SFC<ITableCell> = ({
+export const TableCell: React.FunctionComponent<ITableCell> = ({
   narrow,
   decorate,
   center,

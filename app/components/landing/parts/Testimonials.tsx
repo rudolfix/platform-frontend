@@ -23,7 +23,7 @@ const settings: Settings = {
   arrows: false,
 };
 
-export const Testimonials: React.SFC = () => (
+export const Testimonials: React.FunctionComponent = () => (
   <section>
     <Container>
       <Row>
@@ -91,7 +91,12 @@ interface IMediaQuoteProps {
   author?: string;
 }
 
-const MediaQuote: React.SFC<IMediaQuoteProps> = ({ imageSrc, quote, link, author }) => (
+const MediaQuote: React.FunctionComponent<IMediaQuoteProps> = ({
+  imageSrc,
+  quote,
+  link,
+  author,
+}) => (
   <a href={link} target="_blank" className={styles.mediaQuote}>
     <Row className="justify-content-around">
       <Col className="align-self-center" xs={12} md={4}>

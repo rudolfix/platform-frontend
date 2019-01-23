@@ -13,7 +13,7 @@ interface IHorizontalLineProps {
   theme?: TTheme;
 }
 
-export const HorizontalLine: React.SFC<IHorizontalLineProps & CommonHtmlProps> = ({
+export const HorizontalLine: React.FunctionComponent<IHorizontalLineProps & CommonHtmlProps> = ({
   className,
   size,
   theme,

@@ -34,7 +34,7 @@ interface IRangeLabelProps {
   unit: TUnit;
 }
 
-const RangeLabel: React.SFC<IRangeLabelProps> = ({ label, value, unit }) => (
+const RangeLabel: React.FunctionComponent<IRangeLabelProps> = ({ label, value, unit }) => (
   <div className={styles.label}>
     <div>{label}</div>
     <div className={styles.labelDetails}>
@@ -43,7 +43,7 @@ const RangeLabel: React.SFC<IRangeLabelProps> = ({ label, value, unit }) => (
   </div>
 );
 
-export const RangeComponent: React.SFC<IProps & IInternalProps> = ({
+export const RangeComponent: React.FunctionComponent<IProps & IInternalProps> = ({
   disabled,
   name,
   unit,
@@ -83,7 +83,7 @@ export const RangeComponent: React.SFC<IProps & IInternalProps> = ({
   </div>
 );
 
-const FormRangeBase: React.SFC<IProps & TFormikConnect> = ({
+const FormRangeBase: React.FunctionComponent<IProps & TFormikConnect> = ({
   name,
   formik: { validationSchema },
   ...props

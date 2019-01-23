@@ -15,7 +15,11 @@ export interface ICounterWidgetProps {
   alternativeText?: TTranslatedString;
 }
 
-const CounterWidget: React.SFC<ICounterWidgetProps> = ({ endDate, state, alternativeText }) => {
+const CounterWidget: React.FunctionComponent<ICounterWidgetProps> = ({
+  endDate,
+  state,
+  alternativeText,
+}) => {
   return (
     <div className={styles.counterWidget} data-test-id="eto-whitelist-count-down">
       <div className={styles.title}>

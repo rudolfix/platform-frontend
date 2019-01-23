@@ -6,7 +6,7 @@ import { InlineIcon } from "./InlineIcon";
 import * as iconCalendar from "../../assets/img/inline_icons/calendar.svg";
 import * as styles from "./forms/fields/FormFieldDatePicker.module.scss";
 
-const DatePicker: React.SFC<DatetimeProps> = props => {
+const DatePicker: React.FunctionComponent<DatetimeProps> = props => {
   return (
     <div className={styles.formFieldDatePicker}>
       <TypedDatetime

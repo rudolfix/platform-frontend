@@ -17,7 +17,7 @@ interface IProps {
   title?: TTranslatedString;
 }
 
-export const TransactionState: React.SFC<IProps> = props => {
+export const TransactionState: React.FunctionComponent<IProps> = props => {
   let animation: React.ReactNode;
   let heading: TTranslatedString = "";
   switch (props.state) {

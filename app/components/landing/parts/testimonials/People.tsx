@@ -169,7 +169,7 @@ const people: Array<IPersonInfoProps> = [
   },
 ];
 
-const PersonBox: React.SFC<IPersonInfoProps> = ({
+const PersonBox: React.FunctionComponent<IPersonInfoProps> = ({
   imageSrc,
   fullName,
   description,
@@ -220,7 +220,7 @@ const settings: Settings = {
   ],
 };
 
-export const PeopleSlider: React.SFC = () => (
+export const PeopleSlider: React.FunctionComponent = () => (
   <div className={styles.wrapper}>
     <Slider {...settings}>
       {people.map((p, i) => (

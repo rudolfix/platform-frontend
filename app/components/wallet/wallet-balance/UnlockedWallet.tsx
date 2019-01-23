@@ -19,7 +19,7 @@ interface IUnlockedWallet extends IPanelProps {
   address: string;
 }
 
-export const UnlockedWallet: React.SFC<IUnlockedWallet> = ({
+export const UnlockedWallet: React.FunctionComponent<IUnlockedWallet> = ({
   address,
   data,
   depositEth,

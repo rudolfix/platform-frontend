@@ -21,7 +21,7 @@ const minute = second * 60;
 const hour = minute * 60;
 const day = hour * 24;
 
-const Plate: React.SFC<IPlateProps> = ({ value, label }) => {
+const Plate: React.FunctionComponent<IPlateProps> = ({ value, label }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.plate}>{value}</div>

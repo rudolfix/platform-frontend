@@ -5,7 +5,7 @@ import { Header } from "./Header";
 
 import * as styles from "./LayoutShared.module.scss";
 
-export const LayoutUnauthorized: React.SFC = ({ children }) => (
+export const LayoutUnauthorized: React.FunctionComponent = ({ children }) => (
   <>
     <Header />
 

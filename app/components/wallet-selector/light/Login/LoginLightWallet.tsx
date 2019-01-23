@@ -15,7 +15,7 @@ interface IStateProps {
   email?: string;
 }
 
-export const LoginLightWalletComponent: React.SFC<IStateProps> = ({ email }) => (
+export const LoginLightWalletComponent: React.FunctionComponent<IStateProps> = ({ email }) => (
   <>
     <h2 className={styles.title} data-test-id="modals.wallet-selector.login-light-wallet.title">
       <FormattedMessage id="wallet-selector.neuwallet.welcome" />

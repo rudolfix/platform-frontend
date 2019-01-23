@@ -14,7 +14,7 @@ interface IProps {
   requestStatus?: TRequestStatus;
 }
 
-export const SettingsWidgets: React.SFC<IProps> = ({
+export const SettingsWidgets: React.FunctionComponent<IProps> = ({
   isLightWallet,
   backupCodesVerified,
   verifiedEmail,

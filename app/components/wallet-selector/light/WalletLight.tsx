@@ -11,7 +11,7 @@ interface IStateProps {
   isLoginRoute: boolean;
 }
 
-export const WalletLightComponent: React.SFC<IStateProps> = ({ isLoginRoute }) => (
+export const WalletLightComponent: React.FunctionComponent<IStateProps> = ({ isLoginRoute }) => (
   <section className={styles.section}>
     {isLoginRoute ? <LoginLightWallet /> : <RegisterLightWallet />}
   </section>

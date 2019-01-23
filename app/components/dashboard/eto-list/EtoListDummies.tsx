@@ -5,7 +5,7 @@ import { etoCompaniesCards } from "../../../data/etoCompanies";
 import { EtoCard } from "../../shared/EtoCard";
 import { SectionHeader } from "../../shared/SectionHeader";
 
-export const EtoListDummies: React.SFC = () => (
+export const EtoListDummies: React.FunctionComponent = () => (
   <>
     <Col xs={12}>
       <SectionHeader>ETO Offerings</SectionHeader>

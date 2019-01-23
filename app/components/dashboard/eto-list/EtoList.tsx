@@ -20,7 +20,7 @@ interface IStateProps {
   etos: TEtoWithCompanyAndContract[] | undefined;
 }
 
-const EtoListComponent: React.SFC<IStateProps> = ({ etos }) => (
+const EtoListComponent: React.FunctionComponent<IStateProps> = ({ etos }) => (
   <>
     <Col xs={12}>
       <SectionHeader>

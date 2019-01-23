@@ -26,7 +26,7 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
+export const KYCBeneficialOwnersComponent: React.FunctionComponent<IProps> = props => (
   <div data-test-id="kyc-beneficial-owners">
     <HorizontalLine className={cn("mt-2", "mb-2")} />
     <h4 className={styles.sectionTitle}>
@@ -60,7 +60,7 @@ export const KYCBeneficialOwnersComponent: React.SFC<IProps> = props => (
   </div>
 );
 
-export const KYCBeneficialOwners = compose<React.SFC>(
+export const KYCBeneficialOwners = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       beneficialOwners: state.kyc.beneficialOwners,

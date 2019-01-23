@@ -21,7 +21,10 @@ interface IProps {
   data: IChartPieData;
 }
 
-export const ChartPie: React.SFC<IProps & CommonHtmlProps> = ({ data, className }) => {
+export const ChartPie: React.FunctionComponent<IProps & CommonHtmlProps> = ({
+  data,
+  className,
+}) => {
   return (
     <div className={cn(styles.chartPie, className)}>
       <div className={styles.chartWrapper}>

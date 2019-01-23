@@ -11,7 +11,7 @@ interface IProps {
   dataTestId?: string;
 }
 
-export const Proportion: React.SFC<IProps> = ({
+export const Proportion: React.FunctionComponent<IProps> = ({
   width = 1,
   height = 1,
   children,

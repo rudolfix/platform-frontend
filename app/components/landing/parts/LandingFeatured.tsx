@@ -10,7 +10,7 @@ import { ENeonHeaderSize, NeonHeader } from "../shared/NeonHeader";
 
 import * as styles from "./LandingFeatured.module.scss";
 
-const LandingFeatured: React.SFC = () => (
+const LandingFeatured: React.FunctionComponent = () => (
   <section className={styles.landingFeaturedWrapper}>
     <NeonHeader size={ENeonHeaderSize.BIG}>
       <FormattedHTMLMessage id="platform.landing.featured.header" tagName="span" />

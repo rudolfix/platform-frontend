@@ -15,7 +15,7 @@ import {
   WalletLedgerChooserComponent,
 } from "./WalletLedgerChooserComponent";
 
-export const WalletLedgerChooser = compose<React.SFC>(
+export const WalletLedgerChooser = compose<React.FunctionComponent>(
   appConnect<IWalletLedgerChooserComponent, IWalletLedgerChooserComponentDispatchProps>({
     stateToProps: state => ({
       loading: state.ledgerWizardState.isLoadingAddresses,

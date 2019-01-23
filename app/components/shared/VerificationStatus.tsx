@@ -17,7 +17,10 @@ interface IProps {
   steps: IVerificationProgressStep[];
 }
 
-export const VerificationStatus: React.SFC<IProps & CommonHtmlProps> = ({ steps, ...props }) => {
+export const VerificationStatus: React.FunctionComponent<IProps & CommonHtmlProps> = ({
+  steps,
+  ...props
+}) => {
   return (
     <div {...props} className={cn(styles.verificationStatus, props.className)}>
       {steps.map(({ label, isChecked, onClick }, index) => (

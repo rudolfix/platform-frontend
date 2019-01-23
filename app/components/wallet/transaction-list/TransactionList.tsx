@@ -43,7 +43,7 @@ interface ITransactionList {
 
 const NoTransactionList = () => <div className="py-3">No transactions.</div>;
 
-export const TransactionList: React.SFC<ITransactionList> = ({
+export const TransactionList: React.FunctionComponent<ITransactionList> = ({
   transactions,
   categories,
   tabs,

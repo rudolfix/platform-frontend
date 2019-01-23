@@ -8,7 +8,7 @@ import { ButtonLink } from "../../../shared/buttons";
 import { loginWalletRoutes } from "../../walletRoutes";
 import { recoverRoutes } from "../router/recoverRoutes";
 
-export const LoginHelp: React.SFC<void> = () => (
+export const LoginHelp: React.FunctionComponent<void> = () => (
   <div>
     <Col className="mt-5 mb-5">
       <h2 className="font-weight-bold mx-auto text-center">

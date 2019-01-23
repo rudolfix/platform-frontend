@@ -56,7 +56,7 @@ const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain, string>> = 
   [EETOStateOnChain.Refund]: styles.refund,
 };
 
-const ETOStateLayout: React.SFC<IStateProps & IExternalProps> = ({
+const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
   eto,
   size = EProjectStatusSize.MEDIUM,
   layout = EProjecStatusLayout.NORMAL,

@@ -13,7 +13,7 @@ interface IStateProps {
   walletType: EWalletType;
 }
 
-export const BrowserWalletMessageSignPrompt: React.SFC = () => (
+export const BrowserWalletMessageSignPrompt: React.FunctionComponent = () => (
   <Row className="text-center">
     <Col>
       <h1>
@@ -27,7 +27,7 @@ export const BrowserWalletMessageSignPrompt: React.SFC = () => (
   </Row>
 );
 
-export const LedgerWalletMessageSignPrompt: React.SFC = () => (
+export const LedgerWalletMessageSignPrompt: React.FunctionComponent = () => (
   <Row className="text-center">
     <Col>
       <h1>
@@ -41,7 +41,9 @@ export const LedgerWalletMessageSignPrompt: React.SFC = () => (
   </Row>
 );
 
-export const MessageSignPromptComponent: React.SFC<IStateProps> = ({ walletType }) => {
+export const MessageSignPromptComponent: React.FunctionComponent<IStateProps> = ({
+  walletType,
+}) => {
   return walletType === EWalletType.LEDGER ? (
     <LedgerWalletMessageSignPrompt />
   ) : (

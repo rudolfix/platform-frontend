@@ -43,7 +43,7 @@ const getErrorMessageByType = (type?: ETransactionErrorType) => {
   return <FormattedMessage id="modal.shared.signing-message.transaction-error.hint" />;
 };
 
-const ErrorMessage: React.SFC<IProps> = ({ type }) => {
+const ErrorMessage: React.FunctionComponent<IProps> = ({ type }) => {
   return (
     <Message
       data-test-id="modals.shared.signing-message.modal"

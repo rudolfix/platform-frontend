@@ -19,7 +19,7 @@ interface IPropsKycPanel {
   testId?: string;
 }
 
-export const KycPanel: React.SFC<IPropsKycPanel> = ({
+export const KycPanel: React.FunctionComponent<IPropsKycPanel> = ({
   title,
   steps,
   children,

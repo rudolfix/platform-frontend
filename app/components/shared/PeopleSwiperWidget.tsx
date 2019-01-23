@@ -285,7 +285,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
   }
 }
 
-const PeopleSwiperWidget = compose<React.SFC<IOwnProps>>(
+const PeopleSwiperWidget = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<{}, IDispatchProps, IOwnProps>({
     dispatchToProps: dispatch => {
       return {

@@ -35,7 +35,7 @@ export type TInvestWidgetProps = IInvestmentWidgetProps &
   IInvestmentWidgetStateProps &
   IInvestmentWidgetDispatchProps;
 
-const InvestmentWidgetLayout: React.SFC<TInvestWidgetProps> = ({
+const InvestmentWidgetLayout: React.FunctionComponent<TInvestWidgetProps> = ({
   startInvestmentFlow,
   eto,
   isInvestor,

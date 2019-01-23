@@ -84,7 +84,7 @@ interface IUploadableDocumentProps {
 
 export type TDocumentTitles = { [key in EEtoDocumentType]: TTranslatedString };
 
-export const GeneratedDocument: React.SFC<IGeneratedDocumentProps> = ({
+export const GeneratedDocument: React.FunctionComponent<IGeneratedDocumentProps> = ({
   document,
   generateTemplate,
   documentTitle,
@@ -99,7 +99,7 @@ export const GeneratedDocument: React.SFC<IGeneratedDocumentProps> = ({
   );
 };
 
-const UploadableDocument: React.SFC<IUploadableDocumentProps> = ({
+const UploadableDocument: React.FunctionComponent<IUploadableDocumentProps> = ({
   documentTitles,
   documentKey,
   etoDocuments,
@@ -128,7 +128,7 @@ const UploadableDocument: React.SFC<IUploadableDocumentProps> = ({
   );
 };
 
-const DocumentsLayout: React.SFC<IProps> = ({
+const DocumentsLayout: React.FunctionComponent<IProps> = ({
   etoFilesData,
   generateTemplate,
   etoState,
@@ -208,7 +208,7 @@ const DocumentsLayout: React.SFC<IProps> = ({
   );
 };
 
-const Documents = compose<React.SFC>(
+const Documents = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   setDisplayName("Documents"),
   appConnect<IStateProps, IDispatchProps>({

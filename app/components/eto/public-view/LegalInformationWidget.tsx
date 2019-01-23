@@ -40,7 +40,7 @@ const generateShareholders = (
   }
 };
 
-export const LegalInformationWidget: React.SFC<IProps> = ({ companyData }) => {
+export const LegalInformationWidget: React.FunctionComponent<IProps> = ({ companyData }) => {
   const shareholdersData = generateShareholders(
     companyData.shareholders,
     companyData.companyShares,

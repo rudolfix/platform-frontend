@@ -24,7 +24,7 @@ export const normalizedUrl = (url: string) => {
   return cleanUrl.startsWith("http") ? cleanUrl : `http://${cleanUrl}`;
 };
 
-export const MediaLinksWidget: React.SFC<IProps> = ({ links }) => {
+export const MediaLinksWidget: React.FunctionComponent<IProps> = ({ links }) => {
   if (!links.length) {
     return null;
   }

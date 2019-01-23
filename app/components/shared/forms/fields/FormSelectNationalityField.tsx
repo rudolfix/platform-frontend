@@ -257,7 +257,7 @@ interface IFieldGroup {
 
 type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
 
-const FormSelectNationalityField: React.SFC<FieldGroupProps> = props => (
+const FormSelectNationalityField: React.FunctionComponent<FieldGroupProps> = props => (
   <FormSelectField {...props} values={VALUES} />
 );
 

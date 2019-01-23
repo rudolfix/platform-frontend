@@ -177,7 +177,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
   }
 }
 
-export const KYCBeneficialOwner = compose<React.SFC<IOwnProps>>(
+export const KYCBeneficialOwner = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: (state, ownProps) => ({
       id: ownProps.id,

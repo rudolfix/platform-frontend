@@ -84,7 +84,7 @@ export const KYCUploadComponent = ({
   );
 };
 
-export const KYCPersonalUpload = compose<React.SFC>(
+export const KYCPersonalUpload = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       files: state.kyc.individualFiles,

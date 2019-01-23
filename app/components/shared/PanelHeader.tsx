@@ -11,7 +11,11 @@ export interface IPanelHeaderProps extends CommonHtmlProps {
   icon?: string;
 }
 
-const PanelHeader: React.SFC<IPanelHeaderProps> = ({ headerText, rightComponent, icon }) => {
+const PanelHeader: React.FunctionComponent<IPanelHeaderProps> = ({
+  headerText,
+  rightComponent,
+  icon,
+}) => {
   return (
     <header className={cn(styles.header, { [styles.hasIcon]: !!(icon || !headerText) })}>
       {icon && <img src={icon} className={styles.icon} alt="" />}

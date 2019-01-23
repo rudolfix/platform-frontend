@@ -40,7 +40,7 @@ interface IDispatchProps {
   openICBMModal: () => void;
 }
 
-export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = ({
+export const WalletSelectorComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   isMessageSigning,
   rootPath,
   isLoginRoute,
@@ -163,7 +163,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = 
   );
 };
 
-export const WalletSelector = compose<React.SFC>(
+export const WalletSelector = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.walletSelector.reset()),

@@ -6,7 +6,7 @@ interface IStepCardProps {
   img: string;
   text: string | React.ReactNode;
 }
-export const StepCard: React.SFC<IStepCardProps> = ({ img, text }) => (
+export const StepCard: React.FunctionComponent<IStepCardProps> = ({ img, text }) => (
   <div className={styles.stepCard}>
     <img src={img} className="mb-3" />
     <span>{text}</span>

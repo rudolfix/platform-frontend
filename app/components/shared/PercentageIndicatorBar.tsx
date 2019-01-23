@@ -41,12 +41,9 @@ type TProgressBarProps = TProgressBarExternalProps & CommonHtmlProps;
 const DEFAULT_CURVE = 20;
 const NARROW_CURVE = 5;
 
-const BackgroundBar: React.SFC<TProgressBarBaseProps & TProgressBarBaseProps & CommonHtmlProps> = ({
-  className,
-  style,
-  height,
-  radius,
-}) => (
+const BackgroundBar: React.FunctionComponent<
+  TProgressBarBaseProps & TProgressBarBaseProps & CommonHtmlProps
+> = ({ className, style, height, radius }) => (
   <rect
     width="100%"
     height={height}
@@ -57,7 +54,7 @@ const BackgroundBar: React.SFC<TProgressBarBaseProps & TProgressBarBaseProps & C
   />
 );
 
-const ProgressBar: React.SFC<TProgressBarBaseProps & TProgressBarProps> = ({
+const ProgressBar: React.FunctionComponent<TProgressBarBaseProps & TProgressBarProps> = ({
   theme,
   style,
   progress = 100,
@@ -77,7 +74,7 @@ const ProgressBar: React.SFC<TProgressBarBaseProps & TProgressBarProps> = ({
 /**
  * Takes either percentage value or fraction. Makes sure that % is rounded to the nearest integer.
  */
-const PercentageIndicatorBar: React.SFC<IProps & CommonHtmlProps> = ({
+const PercentageIndicatorBar: React.FunctionComponent<IProps & CommonHtmlProps> = ({
   percent,
   progress,
   theme,

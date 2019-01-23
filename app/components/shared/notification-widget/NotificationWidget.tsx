@@ -22,7 +22,10 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const NotificationWidgetComponent: React.SFC<IProps> = ({ notifications, dispatch }) => {
+const NotificationWidgetComponent: React.FunctionComponent<IProps> = ({
+  notifications,
+  dispatch,
+}) => {
   return (
     <div className={styles.widget}>
       {notifications.map((notification, index) => (

@@ -15,7 +15,7 @@ interface IDispatchProps {
   openModal?: (url: string) => void;
 }
 
-const VideoComponent: React.SFC<IProps & IDispatchProps> = ({
+const VideoComponent: React.FunctionComponent<IProps & IDispatchProps> = ({
   youTubeUrl,
   className,
   hasModal,

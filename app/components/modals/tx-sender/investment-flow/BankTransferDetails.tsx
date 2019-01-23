@@ -47,7 +47,7 @@ interface IHandlerProps {
 
 type IProps = IStateProps & IDispatchProps & IHandlerProps;
 
-const CopyToClipboardLabel: React.SFC<{ label: string }> = ({ label }) => (
+const CopyToClipboardLabel: React.FunctionComponent<{ label: string }> = ({ label }) => (
   <>
     <CopyToClipboardButton
       className={cn(styles.copyToClipboard, styles.nonPrintable)}

@@ -10,7 +10,10 @@ export interface IEtoOfferingSoonProps {
   className?: string;
 }
 
-export const EtoOfferingSoon: React.SFC<IEtoOfferingSoonProps> = ({ description, className }) => {
+export const EtoOfferingSoon: React.FunctionComponent<IEtoOfferingSoonProps> = ({
+  description,
+  className,
+}) => {
   return (
     <Proportion className={className}>
       <div className={styles.card}>

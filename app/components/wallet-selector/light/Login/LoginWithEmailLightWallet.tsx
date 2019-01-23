@@ -46,7 +46,7 @@ interface IOwnProps {
 
 type TProps = IOwnProps & IStateProps & IDispatchProps;
 
-const LoginLightWalletForm: React.SFC<TProps & FormikProps<IFormValues>> = props => (
+const LoginLightWalletForm: React.FunctionComponent<TProps & FormikProps<IFormValues>> = props => (
   <Form>
     <FormField
       type="password"
@@ -72,7 +72,7 @@ const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
   validationSchema: LoginValidator,
 })(LoginLightWalletForm);
 
-export const LoginWithEmailLightWalletComponent: React.SFC<
+export const LoginWithEmailLightWalletComponent: React.FunctionComponent<
   IDispatchProps & IStateProps & IOwnProps
 > = props => (
   <>
@@ -104,7 +104,7 @@ export const LoginWithEmailLightWalletComponent: React.SFC<
   </>
 );
 
-export const LoginWithEmailLightWallet = compose<React.SFC<IOwnProps>>(
+export const LoginWithEmailLightWallet = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: state => ({
       errorMsg: state.lightWalletWizard.errorMsg as TMessage,

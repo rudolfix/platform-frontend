@@ -16,7 +16,7 @@ export interface IWalletValues {
   totalEuroAmount: string;
 }
 
-export const LoadingWallet: React.SFC<IPanelProps> = props => {
+export const LoadingWallet: React.FunctionComponent<IPanelProps> = props => {
   return (
     <WalletBalanceContainer {...props}>
       <LoadingIndicator />
@@ -24,7 +24,7 @@ export const LoadingWallet: React.SFC<IPanelProps> = props => {
   );
 };
 
-export const WalletBalanceContainer: React.SFC<
+export const WalletBalanceContainer: React.FunctionComponent<
   IPanelProps &
     CommonHtmlProps & {
       data?: IWalletValues;

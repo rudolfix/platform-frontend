@@ -8,7 +8,7 @@ interface IStateProps {
   isLoginRoute: boolean;
 }
 
-export const LedgerHeaderComponent: React.SFC<IStateProps> = ({ isLoginRoute }) => (
+export const LedgerHeaderComponent: React.FunctionComponent<IStateProps> = ({ isLoginRoute }) => (
   <h2 className="text-center" data-test-id="modals.wallet-selector.ledger-wallet.title">
     {isLoginRoute ? (
       <FormattedMessage id="wallet-selector.ledger.login" />

@@ -44,7 +44,7 @@ interface IPropsRoundLabel {
   text: string | React.ReactNode;
 }
 
-const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
+const RoundLabel: React.FunctionComponent<IPropsRoundLabel> = ({ text }) => {
   return (
     <div className={styles.roundLabel}>
       <svg viewBox="0 0 170 100">
@@ -82,7 +82,7 @@ export class EtoOfferingCardComponent extends React.Component<
     const props = this.props;
     const { isClicked } = this.state;
 
-    const Wrapper: React.SFC = ({ children }) => {
+    const Wrapper: React.FunctionComponent = ({ children }) => {
       if (props.to && !props.isMobile) {
         return (
           <a
@@ -271,9 +271,9 @@ const mapSizesToProps = ({ width }: any) => ({
   isMobile: width < 992,
 });
 
-export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = withSizes(mapSizesToProps)(
-  EtoOfferingCardComponent,
-);
+export const EtoOfferingCard: React.FunctionComponent<IEtoOfferingProps> = withSizes(
+  mapSizesToProps,
+)(EtoOfferingCardComponent);
 
 const BrilleBanner = () => (
   <>

@@ -8,7 +8,7 @@ interface ISectionProps {
   className?: string;
 }
 
-export const Section: React.SFC<ISectionProps> = ({ line, className, children }) => (
+export const Section: React.FunctionComponent<ISectionProps> = ({ line, className, children }) => (
   <>
     <div className={cn(styles.section, className)}>{children}</div>
     {line && <HorizontalLine className="mb-5" />}

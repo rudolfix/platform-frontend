@@ -47,7 +47,7 @@ const EnhancedForm = withFormik<IProps, IFormValues>({
   handleSubmit: (values, props) => props.props.onAccept(values.password),
 })(AccessLightWalletForm);
 
-export const AccessLightWalletPrompt: React.SFC<IProps> = props =>
+export const AccessLightWalletPrompt: React.FunctionComponent<IProps> = props =>
   props.isUnlocked ? (
     <div className="mt-3">
       <Button

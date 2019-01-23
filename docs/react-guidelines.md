@@ -44,13 +44,13 @@ import * as styles from "./styles.module.scss"
   names in react dev tools.
 
 ```javascript
-export const Component: React.SFC = () => <div />;
+export const Component: React.FunctionComponent = () => <div />;
 ```
 
 becomes:
 
 ```javascript
-const Component: React.SFC = () => <div />;
+const Component: React.FunctionComponent = () => <div />;
 
 // at the end of the file
 export { Component };
@@ -61,7 +61,7 @@ export { Component };
 - you should almost always prefer functional components only valid reason for having class style
   component is when you have internal state or heavily use life cycle methods
 - if you need to do something while components shows up you can use `onEnterAction` HOC
-- functional components should always be of a type `React.SFC<IProps>` not `()=>..`
+- functional components should always be of a type `React.FunctionComponent<IProps>` not `()=>..`
 - prefer destructing props object if there are not so many props (< 5)
   `({ onClick, className }) => ...` instead of `(props) => ...`
 - for complex component behavior, prefer to use `recompose` utils, than class components

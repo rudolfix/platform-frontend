@@ -45,7 +45,7 @@ class FormContent extends React.Component {
   }
 }
 
-export const CheckYourICBMWalletWidgetComponent: React.SFC<IDispatchProps> = ({
+export const CheckYourICBMWalletWidgetComponent: React.FunctionComponent<IDispatchProps> = ({
   loadICBMWallet,
 }) => {
   return (

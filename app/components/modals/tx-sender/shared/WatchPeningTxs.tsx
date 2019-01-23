@@ -11,7 +11,7 @@ export interface IProps {
   blockId?: number;
 }
 
-export const WatchPendingTxs: React.SFC<IProps> = ({ txHash, blockId }) => (
+export const WatchPendingTxs: React.FunctionComponent<IProps> = ({ txHash, blockId }) => (
   <div className="text-center" test-data-id="modals.shared.tx-pending.modal">
     <SpinningEthereum className="mb-3" />
 

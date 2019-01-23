@@ -13,7 +13,9 @@ export interface IAccountAddressProps {
   address: string;
 }
 
-const AccountAddress: React.SFC<IAccountAddressProps & CommonHtmlProps & TDataTestId> = ({
+const AccountAddress: React.FunctionComponent<
+  IAccountAddressProps & CommonHtmlProps & TDataTestId
+> = ({
   address,
   className,
   "data-test-id": dataTestId = "account-address.your.ether-address.from-div",

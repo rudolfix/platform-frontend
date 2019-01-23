@@ -101,7 +101,7 @@ class RegisterLightWalletForm extends React.Component<
   );
 }
 
-const RegisterEnhancedLightWalletForm: React.SFC = compose<any>(
+const RegisterEnhancedLightWalletForm: React.FunctionComponent = compose<any>(
   injectIntlHelpers,
   withFormik<IDispatchProps & IStateProps & { restore: boolean }, IFormValues>({
     validationSchema: validationSchema,
@@ -116,7 +116,7 @@ const RegisterEnhancedLightWalletForm: React.SFC = compose<any>(
   }),
 )(RegisterLightWalletForm);
 
-export const RegisterWalletComponent: React.SFC<
+export const RegisterWalletComponent: React.FunctionComponent<
   IDispatchProps & IStateProps & { restore: boolean }
 > = props => (
   <>
@@ -145,7 +145,7 @@ export const RegisterWalletComponent: React.SFC<
   </>
 );
 
-export const RegisterLightWallet = compose<React.SFC>(
+export const RegisterLightWallet = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps, { restore: boolean }>({
     stateToProps: state => ({
       errorMsg: state.lightWalletWizard.errorMsg as TMessage,

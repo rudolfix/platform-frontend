@@ -61,7 +61,7 @@ type IProps = IStateProps &
     success?: boolean;
   };
 
-export const IcbmWalletBalanceComponentInner: React.SFC<IProps> = ({
+export const IcbmWalletBalanceComponentInner: React.FunctionComponent<IProps> = ({
   onGotoWallet,
   isVerificationFullyDone,
   walletMigrationData,
@@ -106,7 +106,7 @@ export const IcbmWalletBalanceComponentInner: React.SFC<IProps> = ({
   </div>
 );
 
-const IcbmWalletBalanceComponent: React.SFC<IProps> = (props: IProps) => {
+const IcbmWalletBalanceComponent: React.FunctionComponent<IProps> = (props: IProps) => {
   return (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>

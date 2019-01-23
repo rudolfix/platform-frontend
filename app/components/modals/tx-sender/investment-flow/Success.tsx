@@ -14,7 +14,10 @@ interface IDispatchProps {
   txHash: string;
 }
 
-const InvestmentSuccessComponent: React.SFC<IDispatchProps> = ({ goToPortfolio, txHash }) => (
+const InvestmentSuccessComponent: React.FunctionComponent<IDispatchProps> = ({
+  goToPortfolio,
+  txHash,
+}) => (
   <Message
     data-test-id="investment-flow.success.title"
     image={<ConfettiEthereum className="mb-3" />}

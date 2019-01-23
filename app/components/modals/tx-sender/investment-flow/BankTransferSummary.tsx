@@ -44,7 +44,7 @@ interface IStateProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const BankTransferSummaryComponent: React.SFC<IProps> = ({
+const BankTransferSummaryComponent: React.FunctionComponent<IProps> = ({
   eto,
   investmentEur,
   companyName,

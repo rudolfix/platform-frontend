@@ -23,7 +23,7 @@ export interface IProps {
 
 const generateErrorId = (name: string) => `${name}-error-message`;
 
-const FormError: React.SFC<IFormErrorExternalProps & CommonHtmlProps> = ({
+const FormError: React.FunctionComponent<IFormErrorExternalProps & CommonHtmlProps> = ({
   message,
   name,
   className,
@@ -39,7 +39,7 @@ const FormError: React.SFC<IFormErrorExternalProps & CommonHtmlProps> = ({
   </div>
 );
 
-const FormFieldError: React.SFC<IProps> = ({
+const FormFieldError: React.FunctionComponent<IProps> = ({
   name,
   defaultMessage,
   ignoreTouched,

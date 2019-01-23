@@ -9,7 +9,7 @@ type THexBrickExternalProps = {
   r?: string;
 };
 
-const HexBrick: React.SFC<THexBrickExternalProps> = ({ c, r }) => (
+const HexBrick: React.FunctionComponent<THexBrickExternalProps> = ({ c, r }) => (
   <div className={cn(styles.gel, c, r)}>
     <div className={cn(styles.hexBrick, styles.h1)} />
     <div className={cn(styles.hexBrick, styles.h2)} />
@@ -17,7 +17,7 @@ const HexBrick: React.SFC<THexBrickExternalProps> = ({ c, r }) => (
   </div>
 );
 
-const LoadingIndicatorHexagon: React.SFC = () => (
+const LoadingIndicatorHexagon: React.FunctionComponent = () => (
   <div className={styles.socket}>
     <HexBrick c={styles.centerGel} />
 

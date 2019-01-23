@@ -23,7 +23,7 @@ interface IDispatchProps {
   onDismiss: () => void;
 }
 
-const PersonProfileModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
+const PersonProfileModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   onDismiss,
   isOpen,
   personProfileModalObj,

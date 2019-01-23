@@ -119,7 +119,7 @@ const EtoRegistrationCompanyInformationComponent = (
   </EtoFormBase>
 );
 
-const EtoRegistrationCompanyInformation = compose<React.SFC>(
+const EtoRegistrationCompanyInformation = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.CompanyInformation),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

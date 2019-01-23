@@ -21,12 +21,9 @@ interface IOwnProps {
   uploadType: TKycRequestType;
 }
 
-export const KYCAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & IOwnProps> = ({
-  onDropFile,
-  files,
-  fileUploading,
-  uploadType,
-}) => {
+export const KYCAddDocumentsComponent: React.FunctionComponent<
+  IStateProps & IDispatchProps & IOwnProps
+> = ({ onDropFile, files, fileUploading, uploadType }) => {
   return (
     <MultiFileUpload
       acceptedFiles="image/*,application/pdf"
@@ -39,7 +36,7 @@ export const KYCAddDocumentsComponent: React.SFC<IStateProps & IDispatchProps & 
   );
 };
 
-export const KYCAddDocuments = compose<React.SFC<IOwnProps>>(
+export const KYCAddDocuments = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: (state, ownProps) => ({
       files:

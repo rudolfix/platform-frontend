@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
-import { ILogger } from "../../dependencies/Logger";
+import { ILogger } from "../../dependencies/logger";
 import { IHttpClient } from "../client/IHttpClient";
 import { IVault, VaultValidator } from "./interfaces";
 

@@ -6,7 +6,7 @@ import { call } from "redux-saga/effects";
 import { EventEmitter } from "events";
 import { createMock } from "../../../test/testUtils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
-import { noopLogger } from "../../lib/dependencies/Logger";
+import { noopLogger } from "../../lib/dependencies/logger";
 import { NotificationCenter } from "../../lib/dependencies/NotificationCenter";
 import { EWeb3ManagerEvents, Web3Manager } from "../../lib/web3/Web3Manager";
 import { IAppState } from "../../store";

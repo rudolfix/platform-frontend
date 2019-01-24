@@ -5,7 +5,7 @@ import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures"
 import { createMock } from "../../../../test/testUtils";
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
-import { noopLogger } from "../../../lib/dependencies/Logger";
+import { noopLogger } from "../../../lib/dependencies/logger";
 import { IBrowserWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   BrowserWallet,

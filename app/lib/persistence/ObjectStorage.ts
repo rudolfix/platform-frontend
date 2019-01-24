@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { symbols } from "../../di/symbols";
-import { ILogger } from "../dependencies/Logger";
+import { ILogger } from "../dependencies/logger";
 import { Storage } from "./Storage";
 
 @injectable()

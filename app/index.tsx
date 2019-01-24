@@ -19,7 +19,7 @@ import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
 import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "./di/setupBindings";
 import { symbols } from "./di/symbols";
-import { ILogger } from "./lib/dependencies/Logger";
+import { ILogger } from "./lib/dependencies/logger";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { rootSaga } from "./modules/sagas";
 import { generateRootReducer, IAppState } from "./store";

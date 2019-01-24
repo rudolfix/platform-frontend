@@ -10,7 +10,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../../utils/AsyncIntervalScheduler";
 import { delay } from "../../utils/delay";
-import { noopLogger } from "../dependencies/Logger";
+import { noopLogger } from "../dependencies/logger";
 import { ILedgerWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { LedgerWallet } from "./LedgerWallet";
 import {

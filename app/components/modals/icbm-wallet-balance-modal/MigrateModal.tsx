@@ -8,8 +8,9 @@ import {
 import { myEtherWalletUrl } from "../../../utils/myEtherWallet";
 import { ConfettiEthereum } from "../../landing/parts/ConfettiEthereum";
 import { SpinningEthereum } from "../../landing/parts/SpinningEthereum";
-import { ButtonArrowRight } from "../../shared/buttons/Button";
+import { ButtonArrowRight } from "../../shared/buttons";
 import { HighlightedStripField } from "../../shared/HighlightedStripField";
+import { ExternalLink } from "../../shared/links";
 import { SectionHeader } from "../../shared/SectionHeader";
 
 import { Col, Container, Row } from "reactstrap";
@@ -122,8 +123,7 @@ const MigrateBody: React.FunctionComponent<{
 }> = ({ walletMigrationData }) => {
   return (
     <>
-      <a
-        target="_blank"
+      <ExternalLink
         href={myEtherWalletUrl(
           walletMigrationData.smartContractAddress,
           walletMigrationData.value,
@@ -136,7 +136,7 @@ const MigrateBody: React.FunctionComponent<{
           label={<FormattedMessage id="settings.modal.icbm-wallet-balance.body.my-ether-wallet" />}
           whiteBackground={true}
         />
-      </a>
+      </ExternalLink>
       <HighlightedStripField
         label={
           <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.to-smart-contract" />

@@ -21,6 +21,7 @@ import { appRoutes } from "../appRoutes";
 import { IdentityModal } from "../identity/IdentityModal";
 import { Button, EButtonLayout } from "../shared/buttons";
 import { InlineIcon } from "../shared/InlineIcon";
+import { ExternalLink } from "../shared/links";
 
 import * as iconDashboard from "../../assets/img/inline_icons/icon-menu-dashboard.svg";
 import * as iconDocuments from "../../assets/img/inline_icons/icon-menu-documents.svg";
@@ -104,9 +105,9 @@ const MenuEntryLink: React.FunctionComponent<IMenuEntry & IMenuEntryLink> = ({
   const isAbsoluteLink = /^https?:\/\//.test(to);
 
   return isAbsoluteLink ? (
-    <a href={to} target="_blank" className={styles.menuItem}>
+    <ExternalLink href={to} className={styles.menuItem}>
       <MenuEntryContent {...props} />
-    </a>
+    </ExternalLink>
   ) : disabled ? (
     <MenuEntryDisabled {...props} />
   ) : (

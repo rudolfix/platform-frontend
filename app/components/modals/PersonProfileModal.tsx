@@ -9,6 +9,7 @@ import {
 } from "../../modules/person-profile-modal/reducer";
 import { appConnect } from "../../store";
 import { DeepReadonly } from "../../types";
+import { ExternalLink } from "../shared/links";
 import { SlidePerson } from "../shared/SlidePerson";
 import { ModalComponentBody } from "./ModalComponentBody";
 
@@ -44,9 +45,9 @@ const PersonProfileModalComponent: React.FunctionComponent<IStateProps & IDispat
         </p>
         {personProfileModalObj && (
           <div className={styles.linkWrapper}>
-            <a href={personProfileModalObj.website} target="_blank">
+            <ExternalLink href={personProfileModalObj.website}>
               {personProfileModalObj.website}
-            </a>
+            </ExternalLink>
           </div>
         )}
       </ModalComponentBody>

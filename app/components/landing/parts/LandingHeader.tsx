@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
+import { ExternalLink } from "../../shared/links";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 import { JoinCta } from "./JoinCta";
 
@@ -44,9 +45,9 @@ export const LandingHeader: React.FunctionComponent = () => (
               Neufund makes it possible to invest in real world equity on the Ethereum Blockchain.
               Our platform enables primary offerings of investment assets through legally binding
               smart contracts -{" "}
-              <a href="https://neufund.org/fundraise-with-equity-token" target="_blank">
+              <ExternalLink href="https://neufund.org/fundraise-with-equity-token">
                 Equity Token Offerings
-              </a>
+              </ExternalLink>
               .
             </p>
             <p className={styles.heroDescription}>The future of fundraising is launching now.</p>

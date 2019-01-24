@@ -17,7 +17,7 @@ import {
 } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { EtherscanAddressLink } from "../../../shared/EtherscanLink";
+import { EtherscanAddressLink, ExternalLink } from "../../../shared/links";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
@@ -125,17 +125,15 @@ const SetEtoDateSummaryComponent: React.FunctionComponent<IProps> = ({
           <InfoRow
             caption={immutableDocumentName[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]}
             value={
-              <a href={offeringAgreementIPFSLink} target="_blank">
+              <ExternalLink href={offeringAgreementIPFSLink}>
                 {offeringAgreementIPFSLink}
-              </a>
+              </ExternalLink>
             }
           />
           <InfoRow
             caption={immutableDocumentName[EEtoDocumentType.SIGNED_TERMSHEET]}
             value={
-              <a href={termsAgreementIPFSLink} target="_blank">
-                {termsAgreementIPFSLink}
-              </a>
+              <ExternalLink href={termsAgreementIPFSLink}>{termsAgreementIPFSLink}</ExternalLink>
             }
           />
         </InfoList>

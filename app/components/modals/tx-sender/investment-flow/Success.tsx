@@ -6,7 +6,7 @@ import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
 import { ConfettiEthereum } from "../../../landing/parts/ConfettiEthereum";
 import { ButtonArrowRight } from "../../../shared/buttons";
-import { EtherscanTxLink } from "../../../shared/EtherscanLink";
+import { EtherscanTxLink } from "../../../shared/links";
 import { Message } from "../shared/Message";
 
 interface IDispatchProps {

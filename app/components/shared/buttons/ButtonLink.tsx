@@ -58,8 +58,8 @@ const ButtonLink = compose<
     }),
     dispatchToProps: (dispatch, { target, to }) => ({
       navigate: () => {
-        if (typeof to === "string" && (target || isExternalUrl(to))) {
-          return dispatch(routingActions.openInNewWindow(to, target));
+        if (typeof to === "string" && (target === "_blank" || isExternalUrl(to))) {
+          return dispatch(routingActions.openInNewWindow(to));
         }
 
         return dispatch(routingActions.goTo(to));

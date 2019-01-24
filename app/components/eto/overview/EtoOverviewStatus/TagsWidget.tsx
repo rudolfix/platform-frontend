@@ -7,7 +7,7 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
-import { EtherscanAddressLink } from "../../../shared/EtherscanLink";
+import { EtherscanAddressLink } from "../../../shared/links";
 import { ETagSize, Tag } from "../../../shared/Tag";
 import { EtoWidgetContext } from "../../EtoWidgetView";
 

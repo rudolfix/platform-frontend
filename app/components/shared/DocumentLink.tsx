@@ -4,6 +4,7 @@ import * as React from "react";
 import { TTranslatedString } from "../../types";
 import { Button, ButtonTextPosition, EButtonLayout } from "./buttons";
 import { Document } from "./Document";
+import { ExternalLink } from "./links";
 
 import * as styles from "./DocumentLink.module.scss";
 
@@ -25,9 +26,9 @@ const DocumentLink: React.FunctionComponent<IDocumentLinkProps> = ({ url, name, 
     return <span className={styles.documentLink}>{contents}</span>;
   } else {
     return (
-      <a href={url} className={styles.documentLink} target="_blank">
+      <ExternalLink href={url} className={styles.documentLink}>
         {contents}
-      </a>
+      </ExternalLink>
     );
   }
 };

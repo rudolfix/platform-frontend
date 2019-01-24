@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import { CommonHtmlProps } from "../../types";
+import { CommonHtmlProps } from "../../../types";
+import { ExternalLink } from "./ExternalLink";
 
 interface IEtherscanTxLink {
   txHash: string;
@@ -11,9 +12,9 @@ const EtherscanTxLink: React.FunctionComponent<IEtherscanTxLink & CommonHtmlProp
   children,
   ...props
 }) => (
-  <a href={`https://etherscan.io/tx/${txHash}`} target="_blank" {...props}>
+  <ExternalLink href={`https://etherscan.io/tx/${txHash}`} {...props}>
     {children || `etherscan.io`}
-  </a>
+  </ExternalLink>
 );
 
 interface IEtherscanAddressLink {
@@ -25,9 +26,9 @@ const EtherscanAddressLink: React.FunctionComponent<IEtherscanAddressLink & Comm
   children,
   ...props
 }) => (
-  <a href={`https://etherscan.io/address/${address}`} target="_blank" {...props}>
+  <ExternalLink href={`https://etherscan.io/address/${address}`} {...props}>
     {children || `etherscan.io`}
-  </a>
+  </ExternalLink>
 );
 
 export { EtherscanTxLink, EtherscanAddressLink };

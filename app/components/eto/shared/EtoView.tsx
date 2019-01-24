@@ -13,6 +13,7 @@ import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ButtonLink } from "../../shared/buttons";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut";
+import { ExternalLink } from "../../shared/links";
 import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
@@ -160,9 +161,9 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
               <div className={styles.headerWithButton}>
                 {brandName}
                 {companyWebsite && (
-                  <a href={normalizedUrl(companyWebsite)} target="_blank">
+                  <ExternalLink href={normalizedUrl(companyWebsite)}>
                     {companyWebsite.split("//")[1] || DEFAULT_PLACEHOLDER}
-                  </a>
+                  </ExternalLink>
                 )}
               </div>
             </SectionHeader>

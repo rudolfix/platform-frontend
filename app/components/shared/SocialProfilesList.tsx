@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { InlineIcon } from "./InlineIcon";
+import { ExternalLink } from "./links";
 
 import * as bitcointalk from "../../assets/img/inline_icons/icon-menu-help.svg";
 import * as facebook from "../../assets/img/inline_icons/social_facebook.svg";
@@ -77,9 +78,9 @@ const SocialProfilesList: React.FunctionComponent<IProps> = ({
   const icon = (url: string, type: string): React.ReactNode => {
     if (isClickable) {
       return (
-        <a href={url} target="_blank" title={url} className={styles.icon}>
+        <ExternalLink href={url} title={url} className={styles.icon}>
           <InlineIcon svgIcon={SOCIAL_PROFILE_ICONS[type]} />
-        </a>
+        </ExternalLink>
       );
     } else {
       return (

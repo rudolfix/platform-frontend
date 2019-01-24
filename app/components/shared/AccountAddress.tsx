@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { CommonHtmlProps, TDataTestId } from "../../types";
 import { Avatar } from "./Avatar";
 import { CopyToClipboardButton } from "./CopyToClipboardButton";
-import { EtherscanAddressLink } from "./EtherscanLink";
+import { EtherscanAddressLink } from "./links";
 
 import * as styles from "./AccountAddress.module.scss";
 

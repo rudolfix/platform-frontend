@@ -2,6 +2,7 @@ import * as React from "react";
 import Slider, { Settings } from "react-slick";
 import { Col, Container, Row } from "reactstrap";
 
+import { ExternalLink } from "../../shared/links";
 import { JoinCta } from "./JoinCta";
 import { PeopleSlider } from "./testimonials/People";
 
@@ -97,7 +98,7 @@ const MediaQuote: React.FunctionComponent<IMediaQuoteProps> = ({
   link,
   author,
 }) => (
-  <a href={link} target="_blank" className={styles.mediaQuote}>
+  <ExternalLink href={link} className={styles.mediaQuote}>
     <Row className="justify-content-around">
       <Col className="align-self-center" xs={12} md={4}>
         <img src={imageSrc} className={styles.mediaQuoteImage} />
@@ -109,5 +110,5 @@ const MediaQuote: React.FunctionComponent<IMediaQuoteProps> = ({
         </blockquote>
       </Col>
     </Row>
-  </a>
+  </ExternalLink>
 );

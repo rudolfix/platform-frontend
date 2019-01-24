@@ -5,6 +5,7 @@ import { withSizes } from "react-sizes";
 import * as QuestionMark from "!url-loader!../../assets/img/inline_icons/questionmark_huge.svg";
 import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
 import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
+import { ExternalLink } from "./links";
 import { Proportion } from "./Proportion";
 import { IResponsiveImage, ResponsiveImage } from "./ResponsiveImage";
 import { IResponsiveVideo, ResponsiveVideo } from "./ResponsiveVideo";
@@ -85,19 +86,17 @@ export class EtoOfferingCardComponent extends React.Component<
     const Wrapper: React.FunctionComponent = ({ children }) => {
       if (props.to && !props.isMobile) {
         return (
-          <a
+          <ExternalLink
             href={props.to}
-            target="_blank"
             className={cn(
               styles.card,
               props.className,
               props.teaser && styles.teaser,
               props.isMobile && styles.mobile,
             )}
-            rel="noopener"
           >
             {children}
-          </a>
+          </ExternalLink>
         );
       }
 
@@ -170,9 +169,9 @@ export class EtoOfferingCardComponent extends React.Component<
           {props.bannerWithGif ? (
             <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
               {props.isMobile && (
-                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                <ExternalLink className={styles.navigationArrow} href={props.to}>
                   <i className="fa fa-arrow-right" />
-                </a>
+                </ExternalLink>
               )}
 
               {props.quoteVideo && (
@@ -209,9 +208,9 @@ export class EtoOfferingCardComponent extends React.Component<
               style={{ background: props.quoteBackground, color: props.quoteColor }}
             >
               {props.isMobile && (
-                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                <ExternalLink className={styles.navigationArrow} href={props.to}>
                   <i className="fa fa-arrow-right" />
-                </a>
+                </ExternalLink>
               )}
               {props.quoteVideo && (
                 <ResponsiveVideo

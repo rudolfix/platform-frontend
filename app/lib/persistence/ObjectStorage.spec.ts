@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { createMock } from "../../../test/testUtils";
-import { noopLogger } from "../dependencies/Logger";
+import { noopLogger } from "../dependencies/logger";
 import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 

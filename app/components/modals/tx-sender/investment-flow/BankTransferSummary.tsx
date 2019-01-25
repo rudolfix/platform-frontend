@@ -23,14 +23,15 @@ import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps } from "../TxSender";
 import { formatEurTsd, formatSummaryTokenPrice, getActualTokenPriceEur } from "./utils";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./Summary.module.scss";
 
-interface IDispatchProps extends ITxSummaryDispatchProps {
+interface IDispatchProps {
+  onAccept: () => any;
+  onChange: () => any;
   downloadAgreement: (etoId: string) => void;
 }
 
@@ -154,7 +155,7 @@ const BankTransferSummaryComponent: React.FunctionComponent<IProps> = ({
 
 const BankTransferSummary = compose<IProps, {}>(
   setDisplayName("BankTransferSummary"),
-  appConnect<IStateProps, ITxSummaryDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectInvestmentEtoId(state);
       // eto and computed values are guaranteed to be present at investment summary state

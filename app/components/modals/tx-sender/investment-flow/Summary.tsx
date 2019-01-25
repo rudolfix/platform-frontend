@@ -30,7 +30,6 @@ import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps } from "../TxSender";
 import {
   formatEthTsd,
   formatEurTsd,
@@ -55,7 +54,9 @@ interface IStateProps {
   isIcbm?: boolean;
 }
 
-type IDispatchProps = ITxSummaryDispatchProps & {
+type IDispatchProps = {
+  onAccept: () => any;
+  onChange: () => any;
   downloadAgreement: (etoId: string) => void;
 };
 
@@ -189,7 +190,7 @@ const InvestmentSummaryComponent: React.FunctionComponent<IProps> = ({
 
 const InvestmentSummary = compose<IProps, {}>(
   setDisplayName("InvestmentSummary"),
-  appConnect<IStateProps, ITxSummaryDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectInvestmentEtoId(state);
       // eto and computed values are guaranteed to be present at investment summary state

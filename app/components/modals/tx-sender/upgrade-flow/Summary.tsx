@@ -4,7 +4,6 @@ import { Col, Container, Row } from "reactstrap";
 
 import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
-import { TETOWithInvestorTicket } from "../../../../modules/investor-tickets/types";
 import { ETokenType } from "../../../../modules/tx/interfaces";
 import {
   selectTxGasCostEthUlps,
@@ -18,21 +17,21 @@ import { Heading } from "../../../shared/modals/Heading";
 import { ECurrency, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps, ITXSummaryExternalProps } from "../TxSender";
 
-export interface ITxUpgradeSummaryStateProps {
+interface IStateProps {
   txData: Partial<ITxData>;
   txCost: string;
-  etoData?: TETOWithInvestorTicket;
   additionalData: { tokenType: ETokenType };
-  etoId?: string;
 }
 
-export type TUpgradeSummaryComponentProps = ITXSummaryExternalProps &
-  ITxUpgradeSummaryStateProps &
-  ITxSummaryDispatchProps;
+interface IDispatchProps {
+  onAccept: () => any;
+  downloadICBMAgreement?: (tokenType: ETokenType) => void;
+}
 
-export const UpgradeSummaryComponent: React.FunctionComponent<TUpgradeSummaryComponentProps> = ({
+type TComponentProps = IStateProps & IDispatchProps;
+
+export const UpgradeSummaryComponent: React.FunctionComponent<TComponentProps> = ({
   txData,
   txCost,
   onAccept,
@@ -89,7 +88,7 @@ export const UpgradeSummaryComponent: React.FunctionComponent<TUpgradeSummaryCom
   </Container>
 );
 
-export const UpgradeSummary = appConnect<ITxUpgradeSummaryStateProps, ITxSummaryDispatchProps>({
+export const UpgradeSummary = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     txData: selectTxSummaryData(state)!,
     txCost: selectTxGasCostEthUlps(state),

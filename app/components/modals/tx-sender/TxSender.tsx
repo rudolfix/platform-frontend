@@ -3,12 +3,9 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Modal } from "reactstrap";
 
-import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
-import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { ITxData } from "../../../lib/web3/types";
 import { actions } from "../../../modules/actions";
-import { TETOWithInvestorTicket } from "../../../modules/investor-tickets/types";
-import { ETokenType, ETxSenderType } from "../../../modules/tx/interfaces";
+import { ETxSenderType } from "../../../modules/tx/interfaces";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../store";
@@ -59,30 +56,6 @@ const TxSenderModalComponent: React.FunctionComponent<Props> = props => {
     </Modal>
   );
 };
-
-export interface ITXSummaryExternalProps {
-  upgrade?: boolean;
-}
-
-export interface ITxSummaryStateProps {
-  txData: Partial<ITxData>;
-  txCost: string;
-  etoData?: TETOWithInvestorTicket;
-  additionalData?: {};
-  etoId?: string;
-}
-
-export interface ITxSummaryDispatchProps {
-  onAccept: () => any;
-  onChange?: () => any;
-  downloadICBMAgreement?: (tokenType: ETokenType) => void;
-  downloadDocument?: (immutableFileId: ImmutableFileId, fileName: string) => void;
-  generateTemplateByEtoId?: (immutableFileId: IEtoDocument, etoId: string) => void;
-}
-// TODO: move interface to each component
-export type TSummaryComponentProps = ITXSummaryExternalProps &
-  ITxSummaryStateProps &
-  ITxSummaryDispatchProps;
 
 const InitComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ type }) => {
   switch (type) {

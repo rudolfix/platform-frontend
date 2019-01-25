@@ -9,8 +9,10 @@ import {
   immutableDocumentName,
 } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { ImmutableFileId } from "../../../../lib/api/ImmutableStorage.interfaces";
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectMyInvestorTicketByEtoId } from "../../../../modules/investor-tickets/selectors";
+import { TETOWithInvestorTicket } from "../../../../modules/investor-tickets/types";
 import {
   selectTxGasCostEthUlps,
   selectTxSummaryAdditionalData,
@@ -18,19 +20,33 @@ import {
 } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
 import { getDocumentTitles } from "../../../documents/utils";
-import { ButtonIcon } from "../../../shared/buttons/Button";
+import { ButtonIcon } from "../../../shared/buttons";
 import { DocumentTemplateLabel } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { ECurrency, ECurrencySymbol, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
 import { SummaryForm } from "./SummaryForm";
 
 import * as iconDownload from "../../../../assets/img/inline_icons/download.svg";
 import * as styles from "./Summary.module.scss";
 
-export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponentProps> = ({
+interface IStateProps {
+  txData: Partial<ITxData>;
+  txCost: string;
+  etoData: TETOWithInvestorTicket;
+  etoId: string;
+}
+
+interface IDispatchProps {
+  onAccept: () => any;
+  downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void;
+  generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => void;
+}
+
+type TComponentProps = IStateProps & IDispatchProps;
+
+export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps> = ({
   etoData,
   txCost,
   onAccept,
@@ -55,19 +71,19 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponen
           <InfoList>
             <InfoRow
               caption={<FormattedMessage id="user-claim-flow.token-name" />}
-              value={etoData!.equityTokenName}
+              value={etoData.equityTokenName}
             />
 
             <InfoRow
               caption={<FormattedMessage id="user-claim-flow.balance" />}
-              value={etoData!.investorTicket.equityTokenInt.toString()}
+              value={etoData.investorTicket.equityTokenInt.toString()}
             />
 
             <InfoRow
               caption={<FormattedMessage id="user-claim-flow.estimated-reward" />}
               value={
                 <Money
-                  value={etoData!.investorTicket.rewardNmkUlps.toString()}
+                  value={etoData.investorTicket.rewardNmkUlps.toString()}
                   currency={ECurrency.NEU}
                   currencySymbol={ECurrencySymbol.NONE}
                 />
@@ -91,7 +107,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponen
                       <DocumentTemplateLabel
                         onClick={() => {}}
                         title={
-                          getDocumentTitles(etoData!.allowRetailInvestors)[document.documentType]
+                          getDocumentTitles(etoData.allowRetailInvestors)[document.documentType]
                         }
                       />
                     }
@@ -100,7 +116,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponen
                         className={styles.icon}
                         svgIcon={iconDownload}
                         onClick={() =>
-                          downloadDocument!(
+                          downloadDocument(
                             {
                               ipfsHash: document.ipfsHash,
                               mimeType: document.mimeType,
@@ -113,7 +129,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponen
                     }
                   />
                 ) : null;
-              }, etoData!.documents)}
+              }, etoData.documents)}
               {map((template: IEtoDocument) => {
                 return [
                   EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
@@ -125,7 +141,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponen
                       <DocumentTemplateLabel
                         onClick={() => {}}
                         title={
-                          getDocumentTitles(etoData!.allowRetailInvestors)[template.documentType]
+                          getDocumentTitles(etoData.allowRetailInvestors)[template.documentType]
                         }
                       />
                     }
@@ -133,14 +149,12 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponen
                       <ButtonIcon
                         className={styles.icon}
                         svgIcon={iconDownload}
-                        onClick={() =>
-                          generateTemplateByEtoId!({ ...template, asPdf: true }, etoId!)
-                        }
+                        onClick={() => generateTemplateByEtoId({ ...template, asPdf: true }, etoId)}
                       />
                     }
                   />
                 ) : null;
-              }, etoData!.templates)}
+              }, etoData.templates)}
             </>
           </InfoList>
         </Col>
@@ -150,7 +164,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TSummaryComponen
   );
 };
 
-export const UserClaimSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispatchProps, {}>({
+export const UserClaimSummary = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: state => {
     const etoId: string = selectTxSummaryAdditionalData(state);
     return {

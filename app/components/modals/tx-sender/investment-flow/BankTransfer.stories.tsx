@@ -34,6 +34,7 @@ const summaryData = {
   estimatedReward: "3456123412341231234123412344",
   onAccept: () => {},
   downloadAgreement: () => {},
+  onChange: () => {},
 };
 
 storiesOf("Investment/Bank Transfer", module)

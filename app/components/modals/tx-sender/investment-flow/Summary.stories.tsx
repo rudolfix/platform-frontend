@@ -28,6 +28,7 @@ const data = {
   etherPriceEur: "200",
   onAccept: () => {},
   downloadAgreement: () => {},
+  onChange: () => {},
 };
 
 const dataWithPriceDiscount = {

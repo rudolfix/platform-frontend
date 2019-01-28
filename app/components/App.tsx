@@ -6,6 +6,7 @@ import { compose } from "redux";
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/logger";
 import { actions } from "../modules/actions";
+import { EInitType } from "../modules/init/reducer";
 import {
   selectInitError,
   selectIsInitDone,
@@ -83,7 +84,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
 const App = compose<React.ComponentClass>(
   withRootMetaTag(),
   onEnterAction({
-    actionCreator: d => d(actions.init.start("appInit")),
+    actionCreator: d => d(actions.init.start(EInitType.appInit)),
   }),
   appConnect<IStateProps>({
     stateToProps: s => ({

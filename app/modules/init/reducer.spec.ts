@@ -1,11 +1,11 @@
 import { expect } from "chai";
 
 import { actions } from "../actions";
-import { initInitialState, initReducer } from "./reducer";
+import { EInitType, initInitialState, initReducer } from "./reducer";
 
 describe("init > reducer", () => {
   it("should act on INIT_DONE", () => {
-    const action = actions.init.done("appInit");
+    const action = actions.init.done(EInitType.appInit);
     const previousState = initInitialState;
 
     const newState = initReducer(previousState, action);
@@ -21,7 +21,7 @@ describe("init > reducer", () => {
 
   it("should act on INIT_ERROR", () => {
     const expectedError = "SOME ERROR";
-    const action = actions.init.error("appInit", expectedError);
+    const action = actions.init.error(EInitType.appInit, expectedError);
     const previousState = initInitialState;
 
     const newState = initReducer(previousState, action);

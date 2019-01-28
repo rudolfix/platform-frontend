@@ -21,9 +21,10 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
 import { IAppAction, IAppState } from "../../store";
 import { actions, TAction } from "../actions";
-import { ensurePermissionsArePresent } from "../auth/sagas";
+import { ensurePermissionsArePresent } from "../auth/jwt/sagas";
 import { selectUser } from "../auth/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
+import { EInitType } from "../init/reducer";
 import { selectIsSmartContractInitDone } from "../init/selectors";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import {
@@ -577,7 +578,7 @@ export function* loadKycRequestData(): any {
   // Wait for contracts to init
   const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
   if (!isSmartContractsInitialized) {
-    yield neuTakeOnly("INIT_DONE", { initType: "smartcontractsInit" });
+    yield neuTakeOnly("INIT_DONE", { initType: EInitType.smartcontractsInit });
   }
 
   yield put(actions.kyc.kycLoadIndividualRequest());

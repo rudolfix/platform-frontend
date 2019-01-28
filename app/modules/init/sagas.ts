@@ -5,12 +5,14 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TAction } from "../actions";
-import { loadJwt, loadUser } from "../auth/sagas";
+import { loadJwt } from "../auth/jwt/sagas";
 import { selectUserType } from "../auth/selectors";
+import { loadUser } from "../auth/user/sagas";
 import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
 import { initWeb3ManagerEvents } from "../web3/sagas";
+import { EInitType } from "./reducer";
 
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
   try {
@@ -20,10 +22,13 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any 
     yield neuCall(initializeContracts);
     yield neuCall(populatePlatformTermsConstants);
 
-    yield put(actions.init.done("smartcontractsInit"));
+    yield put(actions.init.done(EInitType.smartcontractsInit));
   } catch (e) {
     yield put(
-      actions.init.error("smartcontractsInit", "Error while connecting with Ethereum blockchain"),
+      actions.init.error(
+        EInitType.smartcontractsInit,
+        "Error while connecting with Ethereum blockchain",
+      ),
     );
     logger.error("Smart Contract Init Error", e);
   }
@@ -56,10 +61,10 @@ function* initApp({ logger }: TGlobalDependencies): any {
       }
     }
 
-    yield put(actions.init.done("appInit"));
+    yield put(actions.init.done(EInitType.appInit));
   } catch (e) {
-    yield put(actions.init.error("appInit", e.message || "Unknown error"));
-    logger.fatal("App init error", e);
+    yield put(actions.init.error(EInitType.appInit, e.message || "Unknown error"));
+    logger.error("App init error", e);
   }
 }
 
@@ -69,9 +74,9 @@ export function* initStartSaga(_: TGlobalDependencies, action: TAction): Iterato
   const { initType } = action.payload;
 
   switch (initType) {
-    case "appInit":
+    case EInitType.appInit:
       return yield neuCall(initApp);
-    case "smartcontractsInit":
+    case EInitType.smartcontractsInit:
       return yield neuCall(initSmartcontracts);
     default:
       throw new Error("Unrecognized init type!");
@@ -92,7 +97,7 @@ export function* initSmartcontractsOnce(): any {
     return;
   }
 
-  yield put(actions.init.start("smartcontractsInit"));
+  yield put(actions.init.start(EInitType.smartcontractsInit));
 }
 
 export const initSagas = function*(): Iterator<effects.Effect> {

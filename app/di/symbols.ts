@@ -33,7 +33,7 @@ export const symbols = makeDebugSymbols({
 
   // storages
   walletStorage: Symbol(),
-
+  userStorage: Symbol(),
   jwtStorage: Symbol(),
 
   // utils

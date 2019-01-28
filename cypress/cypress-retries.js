@@ -13,13 +13,15 @@ const MAX_NUM_RUNS = 3;
 
 const DEFAULT_CONFIG = {
   // you can omit 'spec' if you just want all your tests to run
-  // spec: './cypress/integration/retries/**/*',
-  browser: "electron",
+  spec: process.argv.some(arg => arg == "--chrome")
+    ? "**/*.spec.e2e.chrome.ts"
+    : "**/*.spec.e2e.ts",
+  browser: process.argv.some(arg => arg == "--chrome") ? "chrome" : "electron",
   record: true,
   taskTimeout: 240000,
   // parallelization options
-  group: "main",
-  parallel: true,
+  group: process.argv.some(arg => arg == "--chrome") ? "chrome-tests" : "main",
+  parallel: process.argv.some(arg => arg == "--chrome") ? false : true,
 
   // only necessary if recording specs from a local machine
   /* ciBuildId: Math.random()

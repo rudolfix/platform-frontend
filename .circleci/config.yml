@@ -11,9 +11,11 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v13-deps-{{ checksum "package.json" }}
-          - v13-deps-
-      - run: mkdir -p /home/circleci/.cache/Cypress && cp -R /home/circleci/.cache/Cypress ~/.cache/Cypress
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
+      - run:
+          mkdir -p /home/circleci/.cache/Cypress && cp -R /home/circleci/.cache/Cypress
+          ~/.cache/Cypress
 
       - run: yarn --frozen-lockfile
 
@@ -33,8 +35,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v13-deps-{{ checksum "package.json" }}
-          - v13-deps-
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
       - run: yarn prepare
 
       - run: yarn lint
@@ -48,8 +50,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v13-deps-{{ checksum "package.json" }}
-          - v13-deps-
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
       - run: yarn prepare
 
       - run: yarn test:browser-coverage && yarn test:node
@@ -69,12 +71,36 @@ jobs:
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
           keys:
-          - v13-deps-{{ checksum "package.json" }}
-          - v13-deps-
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
       - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
 
       - run:
           command: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
+          no_output_timeout: 30m
+
+  test-e2e-chrome:
+    machine:
+      enabled: true
+      image: circleci/classic:edge
+      docker_layer_caching: true
+
+    parallelism: 1
+
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - run: ./.circleci/install-yarn.sh
+      - run: ./.circleci/install-chrome.sh
+      - restore_cache:
+          keys:
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
+
+      - run:
+          command: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e:chrome
           no_output_timeout: 30m
 
   danger-ci:
@@ -86,12 +112,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v13-deps-{{ checksum "package.json" }}
-          - v13-deps-
+            - v13-deps-{{ checksum "package.json" }}
+            - v13-deps-
       - run: yarn prepare
 
       - run: yarn storybook:screenshots
-      - run: (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} && ./.circleci/vis-reg-run.sh)
+      - run:
+          (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} &&
+          ./.circleci/vis-reg-run.sh)
       - run: yarn danger ci
 
   bundlewatcher:
@@ -139,6 +167,9 @@ workflows:
       - test-e2e:
           requires:
             - lint
+      - test-e2e-chrome:
+          requires:
+            - lint
       - danger-ci:
           requires:
             - lint
@@ -166,10 +197,12 @@ workflows:
       - test-e2e:
           requires:
             - lint
+      - test-e2e-chrome:
+          requires:
+            - lint
       - danger-ci:
           requires:
             - lint
-
 
   deploy-storybook:
     jobs:

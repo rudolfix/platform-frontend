@@ -2,6 +2,7 @@ import * as promiseAll from "promise-all";
 import { delay } from "redux-saga";
 import { fork, put, select, take } from "redux-saga/effects";
 import { selectIsSmartContractInitDone } from "../init/selectors";
+import { EInitType } from "./../init/reducer";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ICBMLockedAccount } from "../../lib/contracts/ICBMLockedAccount";
@@ -79,7 +80,7 @@ function* walletBalanceWatcher(): any {
   const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
 
   if (!isSmartContractsInitialized) {
-    yield neuTakeOnly("INIT_DONE", { initType: "smartcontractsInit" });
+    yield neuTakeOnly("INIT_DONE", { initType: EInitType.smartcontractsInit });
   }
 
   while (true) {

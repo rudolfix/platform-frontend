@@ -45,11 +45,13 @@ export const selectIsVerifiedInvestor = createSelector(
   (isInvestor, isUserVerified) => isInvestor && isUserVerified,
 );
 
-export const selectCurrentAgreementHash = (state: IAppState): string | undefined =>
-  state.auth.currentAgreementHash;
+// TOS Related Selectors
 
 export const selectIsAgreementAccepted = (state: IAppState): boolean =>
   !!(state.auth.user && state.auth.user.latestAcceptedTosIpfs !== undefined);
+
+export const selectCurrentAgreementHash = (state: IAppState): string | undefined =>
+  state.auth.currentAgreementHash;
 
 export const selectIsLatestAgreementAccepted = (state: IAppState): boolean =>
   !!(

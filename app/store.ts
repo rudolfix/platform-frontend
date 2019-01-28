@@ -43,6 +43,8 @@ const staticValues = (state: IAppState | undefined): Partial<IAppState> | undefi
     return {
       router: state.router,
       init: { ...initInitialState, smartcontractsInit: state.init.smartcontractsInit },
+      contracts: { ...state.contracts },
+      // TODO: Think about the state and where smart contracts should be
     };
   }
 

@@ -32,6 +32,7 @@ export function* populatePlatformTermsConstants({ contractsService }: TGlobalDep
     MIN_CLAIM_DURATION: yield contract.MIN_CLAIM_DURATION,
     MAX_CLAIM_DURATION: yield contract.MAX_CLAIM_DURATION,
   };
+  // These are constants from Universe contract no need for pooling
 
   yield put(actions.contracts.setPlatformTermConstants(terms));
 }

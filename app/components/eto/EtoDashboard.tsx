@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
-import { TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
 import {
@@ -43,7 +43,7 @@ interface IStateProps {
   backupCodesVerified?: boolean;
   isLightWallet: boolean;
   shouldEtoDataLoad?: boolean;
-  requestStatus?: TRequestStatus;
+  requestStatus?: ERequestStatus;
   etoState?: EEtoState;
   previewCode?: string;
   canEnableBookbuilding: boolean;
@@ -217,7 +217,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
     const isVerificationSectionDone = !!(
       verifiedEmail &&
       backupCodesVerified &&
-      requestStatus === "Accepted"
+      requestStatus === ERequestStatus.ACCEPTED
     );
     const shouldViewSubmissionSection = !!(
       etoFormProgress && etoFormProgress >= SUBMIT_PROPOSAL_THRESHOLD

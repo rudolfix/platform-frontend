@@ -1,11 +1,11 @@
 import {
+  EKycBusinessType,
   IKycBeneficialOwner,
   IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
   IKycLegalRepresentative,
   IKycRequestState,
-  TKycBusinessType,
 } from "../../lib/api/KycApi.interfaces";
 import { createAction, createSimpleAction } from "../actionsUtils";
 import { TClaims } from "./types";
@@ -80,7 +80,7 @@ export const kycActions = {
   /*
     Business...
    */
-  kycSetBusinessType: (type: TKycBusinessType) => createAction("KYC_SET_BUSINESS_TYPE", { type }),
+  kycSetBusinessType: (type: EKycBusinessType) => createAction("KYC_SET_BUSINESS_TYPE", { type }),
 
   // business data
   kycSubmitBusinessData: (data: IKycBusinessData) =>

@@ -8,7 +8,10 @@ import {
   restrictedCountry,
 } from "./util/schemaHelpers";
 
-export type TKycRequestType = "business" | "individual";
+export enum EKycRequestType {
+  BUSINESS = "business",
+  INDIVIDUAL = "individual",
+}
 
 export interface IKycPerson {
   firstName?: string;
@@ -56,7 +59,7 @@ export interface IKycBusinessData {
   name?: string;
   registrationNumber?: string;
   legalForm?: string;
-  legalFormType?: TKycBusinessType;
+  legalFormType?: EKycBusinessType;
   street?: string;
   city?: string;
   zipCode?: string;
@@ -108,25 +111,28 @@ export const KycFileInfoShape = Yup.object().shape({
 });
 
 // request state
-export type TRequestStatus =
-  | "Draft"
-  | "Pending"
-  | "Outsourced"
-  | "Rejected"
-  | "Accepted"
-  | "Ignored";
-export type TRequestOutsourcedStatus =
-  | "started"
-  | "success"
-  | "success_data_changed"
-  | "review_pending"
-  | "aborted"
-  | "canceled"
-  | "other";
+export enum ERequestStatus {
+  DRAFT = "Draft",
+  PENDING = "Pending",
+  OUTSOURCED = "Outsourced",
+  REJECTED = "Rejected",
+  ACCEPTED = "Accepted",
+  IGNORED = "Ignored",
+}
+
+export enum ERequestOutsourcedStatus {
+  STARTED = "started",
+  SUCCESS = "success",
+  SUCCESS_DATA_CHANGED = "success_data_changed",
+  REVIEW_PENDING = "review_pending",
+  ABORTED = "aborted",
+  CANCELED = "canceled",
+  OTHER = "other",
+}
 
 export interface IKycRequestState {
-  status: TRequestStatus;
-  outsourcedStatus?: TRequestOutsourcedStatus;
+  status: ERequestStatus;
+  outsourcedStatus?: ERequestOutsourcedStatus;
   redirectUrl?: string;
 }
 
@@ -137,4 +143,8 @@ export const KycRequestStateSchema = Yup.object().shape({
   type: Yup.string(),
 });
 
-export type TKycBusinessType = "corporate" | "small" | "partnership";
+export enum EKycBusinessType {
+  CORPORATE = "corporate",
+  SMALL = "small",
+  PARTNERSHIP = "partnership",
+}

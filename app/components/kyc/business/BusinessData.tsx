@@ -5,6 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import {
+  EKycRequestType,
   IKycBusinessData,
   IKycFileInfo,
   KycBusinessDataSchema,
@@ -137,7 +138,7 @@ const FileUploadList: React.FunctionComponent<IProps & { dataValid: boolean }> =
       <br />
       <br />
       <MultiFileUpload
-        uploadType="business"
+        uploadType={EKycRequestType.BUSINESS}
         acceptedFiles="image/*,application/pdf"
         data-test-id="kyc-company-business-supporting-documents"
         onDropFile={props.onDropFile}

@@ -3,7 +3,7 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { IKycFileInfo, TKycRequestType } from "../../lib/api/KycApi.interfaces";
+import { EKycRequestType, IKycFileInfo } from "../../lib/api/KycApi.interfaces";
 
 import { InlineIcon } from "./InlineIcon";
 import { ResponsiveImage } from "./ResponsiveImage";
@@ -19,7 +19,7 @@ import * as addFileIcon from "../../assets/img/inline_icons/add_file.svg";
 import * as styles from "./MultiFileUpload.module.scss";
 
 interface IProps {
-  uploadType: TKycRequestType | TKycRequestType[];
+  uploadType: EKycRequestType | EKycRequestType[];
   acceptedFiles: TAcceptedFileType;
   fileUploading: boolean;
   onDropFile: (file: File) => void;
@@ -90,7 +90,7 @@ export const MultiFileUpload: React.FunctionComponent<IProps> = ({
   layout,
   "data-test-id": dataTestId,
 }) => {
-  const isIndividual = uploadType === "individual";
+  const isIndividual = uploadType === EKycRequestType.INDIVIDUAL;
 
   return (
     <div className={styles.upload}>

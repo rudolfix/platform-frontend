@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { EKycRequestType, ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
@@ -32,8 +32,8 @@ interface IStateProps {
   isIcbmWalletConnected: boolean;
   isLockedWalletConnected: boolean;
   userType?: EUserType;
-  kycRequestType?: TKycRequestType;
-  kycRequestStatus?: TRequestStatus;
+  kycRequestType?: EKycRequestType;
+  kycRequestStatus?: ERequestStatus;
 }
 
 export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
@@ -44,9 +44,10 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
   kycRequestType,
   kycRequestStatus,
 }) => {
-  const isPersonalDataProcessed = kycRequestStatus === "Pending" || kycRequestStatus === "Accepted";
+  const isPersonalDataProcessed =
+    kycRequestStatus === ERequestStatus.PENDING || kycRequestStatus === ERequestStatus.ACCEPTED;
   const isUserInvestor = userType === EUserType.INVESTOR;
-  const isIndividual = kycRequestType === "individual";
+  const isIndividual = kycRequestType === EKycRequestType.INDIVIDUAL;
 
   return (
     <LayoutAuthorized>

@@ -2,9 +2,9 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import {
+  EKycBusinessType,
+  EKycRequestType,
   IKycIndividualData,
-  TKycBusinessType,
-  TKycRequestType,
 } from "../../lib/api/KycApi.interfaces";
 import { dummyIntl } from "../../utils/injectIntlHelpers.fixtures";
 import { KYCBeneficialOwnerComponent } from "./business/BeneficialOwner";
@@ -53,7 +53,7 @@ storiesOf("KYC/process", module).add("personal/documentVerification", () => {
   const props = {
     onStartInstantId: () => {},
     onManualVerification: () => {},
-    layout: "individual" as TKycRequestType,
+    layout: EKycRequestType.INDIVIDUAL,
   };
   return <KycPersonalDocumentVerificationComponent {...props} />;
 });
@@ -63,7 +63,7 @@ storiesOf("KYC/process", module).add("personal/uploads", () => {
     fileUploading: false,
     filesLoading: false,
     files: [],
-    layout: "individual" as TKycRequestType,
+    layout: EKycRequestType.INDIVIDUAL,
     onDone: () => {},
     onDropFile: () => {},
     intl: dummyIntl,
@@ -78,7 +78,7 @@ storiesOf("KYC/process", module).add("business/legalRepresentative", () => {
       name: "Neufund",
       registrationNumber: "12345",
       legalForm: "GmbH",
-      legalFormType: "corporate" as TKycBusinessType,
+      legalFormType: EKycBusinessType.CORPORATE,
       jurisdiction: "DE",
     },
     loadingData: false,
@@ -100,7 +100,7 @@ storiesOf("KYC/process", module).add("business/businessData", () => {
       name: "Neufund",
       registrationNumber: "12345",
       legalForm: "GmbH",
-      legalFormType: "small" as TKycBusinessType,
+      legalFormType: EKycBusinessType.SMALL,
       jurisdiction: "DE",
     },
 

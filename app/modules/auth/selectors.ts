@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 
+import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { selectKycRequestStatus } from "../kyc/selectors";
@@ -34,7 +35,8 @@ export const selectDoesEmailExist = (state: IAuthState): boolean =>
   selectIsThereUnverifiedEmail(state) || selectIsUserEmailVerified(state);
 
 export const selectIsUserVerified = (state: IAppState): boolean =>
-  selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state) === "Accepted";
+  selectIsUserEmailVerified(state.auth) &&
+  selectKycRequestStatus(state) === ERequestStatus.ACCEPTED;
 
 export const selectIsInvestor = (state: IAppState): boolean =>
   selectUserType(state) === EUserType.INVESTOR;

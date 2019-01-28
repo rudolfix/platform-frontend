@@ -1,7 +1,7 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import { EKycRequestType, IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -18,7 +18,7 @@ interface IDispatchProps {
 }
 
 interface IOwnProps {
-  uploadType: TKycRequestType;
+  uploadType: EKycRequestType;
 }
 
 export const KYCAddDocumentsComponent: React.FunctionComponent<
@@ -40,20 +40,22 @@ export const KYCAddDocuments = compose<React.FunctionComponent<IOwnProps>>(
   appConnect<IStateProps, IDispatchProps, IOwnProps>({
     stateToProps: (state, ownProps) => ({
       files:
-        ownProps.uploadType === "individual" ? state.kyc.individualFiles : state.kyc.businessFiles,
+        ownProps.uploadType === EKycRequestType.INDIVIDUAL
+          ? state.kyc.individualFiles
+          : state.kyc.businessFiles,
       filesLoading:
-        ownProps.uploadType === "individual"
+        ownProps.uploadType === EKycRequestType.INDIVIDUAL
           ? !!state.kyc.individualFilesLoading
           : !!state.kyc.businessFilesLoading,
       fileUploading:
-        ownProps.uploadType === "individual"
+        ownProps.uploadType === EKycRequestType.INDIVIDUAL
           ? !!state.kyc.individualFileUploading
           : !!state.kyc.businessFileUploading,
       title: "",
     }),
     dispatchToProps: (dispatch, ownProps) => ({
       onDropFile: (file: File) =>
-        ownProps.uploadType === "individual"
+        ownProps.uploadType === EKycRequestType.INDIVIDUAL
           ? dispatch(actions.kyc.kycUploadIndividualDocument(file))
           : dispatch(actions.kyc.kycUploadBusinessDocument(file)),
     }),

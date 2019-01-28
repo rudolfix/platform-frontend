@@ -5,6 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import {
+  EKycRequestType,
   IKycBeneficialOwner,
   IKycFileInfo,
   KycBeneficialOwnerSchemaRequired,
@@ -156,7 +157,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
       <AccordionElement title={name} isOpened={true}>
         <KYCEnhancedForm {...this.props} />
         <MultiFileUpload
-          uploadType="individual"
+          uploadType={EKycRequestType.INDIVIDUAL}
           acceptedFiles="image/*,application/pdf"
           layout="vertical"
           onDropFile={this.props.onDropFile}

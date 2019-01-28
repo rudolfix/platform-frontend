@@ -25,6 +25,7 @@ import {
 import { KYCBeneficialOwners } from "./BeneficialOwners";
 
 import {
+  EKycRequestType,
   IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
@@ -182,7 +183,7 @@ const FileUploadList: React.FunctionComponent<IProps & { lrDataValid: boolean }>
   return (
     <div>
       <MultiFileUpload
-        uploadType="individual"
+        uploadType={EKycRequestType.INDIVIDUAL}
         layout="vertical"
         acceptedFiles="image/*,application/pdf"
         data-test-id="kyc-company-legal-representative-documents"

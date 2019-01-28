@@ -1,34 +1,34 @@
 import { createSelector } from "reselect";
 
 import {
-  TKycRequestType,
-  TRequestOutsourcedStatus,
-  TRequestStatus,
+  EKycRequestType,
+  ERequestOutsourcedStatus,
+  ERequestStatus,
 } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
 import { IKycState } from "./reducer";
 
-export const selectKycRequestStatus = (state: IAppState): TRequestStatus | undefined => {
+export const selectKycRequestStatus = (state: IAppState): ERequestStatus | undefined => {
   const userKycType = selectKycRequestType(state.kyc);
   switch (userKycType) {
-    case "business":
+    case EKycRequestType.BUSINESS:
       return state.kyc.businessRequestState!.status === "Accepted" && !selectIsClaimsVerified(state)
-        ? "Pending"
+        ? ERequestStatus.PENDING
         : state.kyc.businessRequestState!.status;
-    case "individual":
+    case EKycRequestType.INDIVIDUAL:
       return state.kyc.individualRequestState!.status === "Accepted" &&
         !selectIsClaimsVerified(state)
-        ? "Pending"
+        ? ERequestStatus.PENDING
         : state.kyc.individualRequestState!.status;
     default:
-      return "Draft";
+      return ERequestStatus.DRAFT;
   }
 };
 
 export const selectKycRequestOutsourcedStatus = (
   state: DeepReadonly<IKycState>,
-): TRequestOutsourcedStatus | undefined => {
+): ERequestOutsourcedStatus | undefined => {
   const requestState =
     state.individualRequestState && state.individualRequestState.status === "Draft"
       ? state.businessRequestState
@@ -48,21 +48,21 @@ export const selectExternalKycUrl = (state: DeepReadonly<IKycState>): string | u
 
 export const selectPendingKycRequestType = (
   state: DeepReadonly<IKycState>,
-): TKycRequestType | undefined => {
+): EKycRequestType | undefined => {
   if (state.individualRequestState && state.individualRequestState.status === "Pending")
-    return "individual";
+    return EKycRequestType.INDIVIDUAL;
   if (state.businessRequestState && state.businessRequestState.status === "Pending")
-    return "business";
+    return EKycRequestType.BUSINESS;
   return undefined;
 };
 
 export const selectKycRequestType = (
   state: DeepReadonly<IKycState>,
-): TKycRequestType | undefined => {
+): EKycRequestType | undefined => {
   if (state.individualRequestState && state.individualRequestState.status !== "Draft")
-    return "individual";
+    return EKycRequestType.INDIVIDUAL;
   if (state.businessRequestState && state.businessRequestState.status !== "Draft")
-    return "business";
+    return EKycRequestType.BUSINESS;
   return undefined;
 };
 

@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
-import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { EKycRequestType, ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectIsUserEmailVerified, selectUserType } from "../../modules/auth/selectors";
@@ -68,9 +68,9 @@ export const businessSteps = [
 interface IStateProps {
   requestLoading?: boolean;
   userType: EUserType;
-  requestStatus?: TRequestStatus;
+  requestStatus?: ERequestStatus;
   redirectUrl: string;
-  pendingRequestType: TKycRequestType | undefined;
+  pendingRequestType: EKycRequestType | undefined;
   hasVerifiedEmail: boolean;
 }
 
@@ -92,7 +92,8 @@ class RequestStateInfo extends React.Component<IProps, IState> {
   };
 
   render(): React.ReactNode {
-    const steps = this.props.pendingRequestType === "business" ? businessSteps : personalSteps;
+    const steps =
+      this.props.pendingRequestType === EKycRequestType.BUSINESS ? businessSteps : personalSteps;
     const settingsButton = (
       <div className="p-4 text-center">
         <Button
@@ -115,7 +116,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Pending") {
+    if (this.props.requestStatus === ERequestStatus.PENDING) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.pending.title" />}
@@ -142,7 +143,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Accepted") {
+    if (this.props.requestStatus === ERequestStatus.ACCEPTED) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.accepted.title" />}
@@ -153,7 +154,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Rejected") {
+    if (this.props.requestStatus === ERequestStatus.REJECTED) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.rejected.title" />}
@@ -164,7 +165,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Outsourced") {
+    if (this.props.requestStatus === ERequestStatus.OUTSOURCED) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.outsourced.title" />}
@@ -185,7 +186,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
 }
 
 export const KycComponent: React.FunctionComponent<IProps> = props => {
-  const router = props.requestStatus === "Draft" ? <KycRouter /> : null;
+  const router = props.requestStatus === ERequestStatus.DRAFT ? <KycRouter /> : null;
 
   return (
     <LayoutAuthorized>

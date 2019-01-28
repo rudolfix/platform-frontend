@@ -578,7 +578,7 @@ export function* loadKycRequestData(): any {
   // Wait for contracts to init
   const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
   if (!isSmartContractsInitialized) {
-    yield neuTakeOnly("INIT_DONE", { initType: EInitType.smartcontractsInit });
+    yield neuTakeOnly("INIT_DONE", { initType: EInitType.START_CONTRACTS_INIT });
   }
 
   yield put(actions.kyc.kycLoadIndividualRequest());

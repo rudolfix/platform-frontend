@@ -110,7 +110,7 @@ export function* ensurePermissionsArePresent(
  * Multi browser logout/login feature
  */
 
-const redirectChannel = channel();
+const redirectChannel = channel<{ type: EUserAuthType }>();
 
 /**
  * Saga that starts an Event Channel Emitter that listens to storage
@@ -144,7 +144,7 @@ export function* watchRedirectChannel(): any {
         yield put(actions.auth.logout());
         break;
       case EUserAuthType.LOGIN:
-        yield put(actions.init.start(EInitType.appInit));
+        yield put(actions.init.start(EInitType.APP_INIT));
         break;
     }
   }

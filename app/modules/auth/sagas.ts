@@ -31,7 +31,7 @@ function* logoutWatcher(
   } else {
     yield put(actions.routing.goEtoHome());
   }
-  yield put(actions.init.start(EInitType.appInit));
+  yield put(actions.init.start(EInitType.APP_INIT));
   logger.setUser(null);
 }
 

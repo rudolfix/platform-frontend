@@ -84,7 +84,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
 const App = compose<React.ComponentClass>(
   withRootMetaTag(),
   onEnterAction({
-    actionCreator: d => d(actions.init.start(EInitType.appInit)),
+    actionCreator: d => d(actions.init.start(EInitType.APP_INIT)),
   }),
   appConnect<IStateProps>({
     stateToProps: s => ({

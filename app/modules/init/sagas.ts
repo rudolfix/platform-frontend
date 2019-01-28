@@ -22,11 +22,11 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any 
     yield neuCall(initializeContracts);
     yield neuCall(populatePlatformTermsConstants);
 
-    yield put(actions.init.done(EInitType.smartcontractsInit));
+    yield put(actions.init.done(EInitType.START_CONTRACTS_INIT));
   } catch (e) {
     yield put(
       actions.init.error(
-        EInitType.smartcontractsInit,
+        EInitType.START_CONTRACTS_INIT,
         "Error while connecting with Ethereum blockchain",
       ),
     );
@@ -61,9 +61,9 @@ function* initApp({ logger }: TGlobalDependencies): any {
       }
     }
 
-    yield put(actions.init.done(EInitType.appInit));
+    yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
-    yield put(actions.init.error(EInitType.appInit, e.message || "Unknown error"));
+    yield put(actions.init.error(EInitType.APP_INIT, e.message || "Unknown error"));
     logger.error("App init error", e);
   }
 }
@@ -74,9 +74,9 @@ export function* initStartSaga(_: TGlobalDependencies, action: TAction): Iterato
   const { initType } = action.payload;
 
   switch (initType) {
-    case EInitType.appInit:
+    case EInitType.APP_INIT:
       return yield neuCall(initApp);
-    case EInitType.smartcontractsInit:
+    case EInitType.START_CONTRACTS_INIT:
       return yield neuCall(initSmartcontracts);
     default:
       throw new Error("Unrecognized init type!");
@@ -97,7 +97,7 @@ export function* initSmartcontractsOnce(): any {
     return;
   }
 
-  yield put(actions.init.start(EInitType.smartcontractsInit));
+  yield put(actions.init.start(EInitType.START_CONTRACTS_INIT));
 }
 
 export const initSagas = function*(): Iterator<effects.Effect> {

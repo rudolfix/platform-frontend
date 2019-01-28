@@ -80,7 +80,7 @@ function* walletBalanceWatcher(): any {
   const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
 
   if (!isSmartContractsInitialized) {
-    yield neuTakeOnly("INIT_DONE", { initType: EInitType.smartcontractsInit });
+    yield neuTakeOnly("INIT_DONE", { initType: EInitType.START_CONTRACTS_INIT });
   }
 
   while (true) {

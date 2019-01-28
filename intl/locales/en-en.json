@@ -707,7 +707,7 @@
   "settings.backup-seed-widget.backup-phrase": "Generate recovery phrase",
   "settings.backup-seed-widget.header": "RECOVERY PHRASE",
   "settings.backup-seed-widget.view-again": "View again",
-  "settings.backup-seed-widget.write-down-recovery-phrase": "Your recovery phrase is crucial to ensure the safety of your wallet. In this step, we’ll provide you with a unique, 24 word recovery phrase which you’ll need to copy onto a piece of paper and save in a safe place. You may use the recovery phrase in the event that you ever lose your access link or forget your password.",
+  "settings.backup-seed-widget.write-down-recovery-phrase": "Your recovery phrase is crucial to ensure the safety of your wallet. In this step, we’ll provide you with a unique, 24 word recovery phrase which you’ll need to copy onto a piece of paper and save in a safe place. You may use the recovery phrase in the event that you ever lose your access link or forget your password. You may also view your private key.",
   "settings.book-building-stats-widget.number-of-pledges": "{pledges} out of {maxPledges} slots filled",
   "settings.book-building-widget.book-building-disabled": "Whitelist disabled",
   "settings.book-building-widget.book-building-disabled-text": "You have disabled your whitelist. You can re-activate your whitelist anytime. It will however be automatically disabled 2 weeks before your presale starts.",

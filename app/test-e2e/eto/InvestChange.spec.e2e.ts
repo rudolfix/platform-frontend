@@ -1,7 +1,7 @@
 import { INV_ETH_EUR_ICBM_HAS_KYC } from "../constants";
+import { etoFixtureAddressByName } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-import { etoFixtureAddressByName } from "../utils";
 
 describe("Invest with change", () => {
   it("do", () => {

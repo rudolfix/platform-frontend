@@ -1,9 +1,9 @@
+import { appRoutes } from "../../components/appRoutes";
 import { kycRoutes } from "../../components/kyc/routes";
-import { tid } from "../utils/selectors";
 import { fillForm } from "../utils/forms";
+import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { kycInvidualForm } from "./fixtures";
-import { appRoutes } from "../../components/appRoutes";
 
 const initiateIDNowKyc = () => {
   // go to kyc select and then individual page

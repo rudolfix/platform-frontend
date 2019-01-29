@@ -43,14 +43,6 @@
     "no-use-before-declare": false
   },
   "linterOptions": {
-    "exclude": [
-      "node_modules/**",
-      "**/*.spec.ts?(x)",
-      "**/*.spec.e2e.ts?(x)",
-      "**/*.spec.node.ts?(x)",
-      "**/e2e-test/utils/**",
-      "test/**",
-      "**/*.json"
-    ]
+    "exclude": ["node_modules/**", "**/*.json"]
   }
 }

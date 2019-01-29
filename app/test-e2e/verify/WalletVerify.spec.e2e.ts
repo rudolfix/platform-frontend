@@ -1,6 +1,6 @@
+import { goToDashboard, logoutViaTopRightButton } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-import { logoutViaTopRightButton, goToDashboard } from "../utils";
 
 describe("Invest with change", () => {
   it("do", () => {

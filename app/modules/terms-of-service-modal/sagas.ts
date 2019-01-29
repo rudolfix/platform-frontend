@@ -1,6 +1,6 @@
 import { Effect, fork, put, select } from "redux-saga/effects";
 
-import { ToSMessage } from "../../components/translatedMessages/messages";
+import { getMessageTranslation, ToSMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { SIGN_TOS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -69,7 +69,7 @@ function* handleDownloadCurrentAgreement(_: TGlobalDependencies): Iterator<any> 
         mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         asPdf: true,
       },
-      fileName,
+      getMessageTranslation(fileName) as string,
     ),
   );
 }

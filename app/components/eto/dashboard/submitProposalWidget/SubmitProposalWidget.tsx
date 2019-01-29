@@ -17,7 +17,9 @@ interface IDispatchProps {
   submitProposal: () => void;
 }
 
-export const SubmitProposalWidgetComponent: React.SFC<IDispatchProps> = ({ submitProposal }) => {
+export const SubmitProposalWidgetComponent: React.FunctionComponent<IDispatchProps> = ({
+  submitProposal,
+}) => {
   return (
     <Panel headerText={<FormattedMessage id="settings.submit-your-proposal.header" />}>
       <div className={styles.content}>
@@ -34,7 +36,7 @@ export const SubmitProposalWidgetComponent: React.SFC<IDispatchProps> = ({ submi
   );
 };
 
-export const SubmitProposalWidget = compose<React.SFC>(
+export const SubmitProposalWidget = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({

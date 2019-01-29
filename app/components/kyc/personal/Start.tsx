@@ -1,4 +1,4 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -17,6 +17,7 @@ import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
   boolify,
+  Form,
   FormField,
   FormFieldDate,
   FormSelectCountryField,
@@ -204,7 +205,9 @@ const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualD
   },
 })(KYCForm);
 
-export const KYCPersonalStartComponent: React.SFC<IStateProps & IDispatchProps> = props => {
+export const KYCPersonalStartComponent: React.FunctionComponent<
+  IStateProps & IDispatchProps
+> = props => {
   return (
     <KycPanel
       steps={personalSteps}
@@ -218,7 +221,7 @@ export const KYCPersonalStartComponent: React.SFC<IStateProps & IDispatchProps> 
   );
 };
 
-export const KYCPersonalStart = compose<React.SFC>(
+export const KYCPersonalStart = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       currentValues: state.kyc.individualData,

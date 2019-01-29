@@ -5,6 +5,6 @@ export interface ITableRow {
   children?: React.ReactNode;
 }
 
-export const TableRow: React.SFC<ITableRow> = ({ children }) => (
+export const TableRow: React.FunctionComponent<ITableRow> = ({ children }) => (
   <div className={`table-row ${styles.tableRow}`}>{children}</div>
 );

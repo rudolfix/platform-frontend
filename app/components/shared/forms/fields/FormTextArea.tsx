@@ -1,42 +1,41 @@
-import { Field, FieldAttributes, FieldProps } from "formik";
+import * as cn from "classnames";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
-import { FormGroup, InputGroup, InputGroupAddon } from "reactstrap";
+import { Input, InputGroup, InputGroupAddon } from "reactstrap";
 
-import { CommonHtmlProps, TTranslatedString } from "../../../../types";
-import { FormFieldError } from "./FormFieldError";
-import { FormFieldLabel } from "./FormFieldLabel";
-import { getComputedValue, withCountedCharacters } from "./utils";
+import { CommonHtmlProps } from "../../../../types";
+import { FormFieldError, generateErrorId } from "./FormFieldError";
+import { getComputedValue, isNonValid, withCountedCharacters, withFormField } from "./utils";
+
+import * as styles from "./FormStyles.module.scss";
 
 interface IFieldGroup {
+  name: string;
   disabled?: boolean;
-  label?: TTranslatedString;
   placeholder?: string;
   prefix?: string;
   suffix?: string;
   charactersLimit?: number;
 }
-type FieldGroupProps = IFieldGroup & FieldAttributes<any> & CommonHtmlProps;
-export class FormTextArea extends React.Component<FieldGroupProps> {
-  render(): React.ReactNode {
-    const {
-      label,
-      disabled,
-      placeholder,
-      name,
-      prefix,
-      suffix,
-      className,
-      charactersLimit,
-    } = this.props;
+type FieldGroupProps = IFieldGroup & CommonHtmlProps;
 
-    return (
-      <FormGroup>
-        {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
+const TextArea: React.FunctionComponent<FieldGroupProps> = ({
+  disabled,
+  placeholder,
+  name,
+  prefix,
+  suffix,
+  className,
+  charactersLimit,
+}) => (
+  <FormikConsumer>
+    {({ touched, errors, submitCount }) => {
+      const invalid = isNonValid(touched, errors, name, submitCount);
+
+      return (
         <Field
           name={name}
           render={({ field }: FieldProps) => {
-            const { value } = field;
-
             return (
               <>
                 <InputGroup>
@@ -45,22 +44,28 @@ export class FormTextArea extends React.Component<FieldGroupProps> {
                       {prefix}
                     </InputGroupAddon>
                   )}
-                  <textarea
+                  <Input
                     {...field}
+                    type="textarea"
+                    aria-describedby={generateErrorId(name)}
+                    aria-invalid={invalid}
+                    invalid={invalid}
                     disabled={disabled}
-                    value={getComputedValue(value, charactersLimit)}
+                    value={getComputedValue(field.value, charactersLimit)}
                     placeholder={placeholder}
-                    className={className}
+                    className={cn(className, styles.inputField)}
                   />
                   {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
                 </InputGroup>
                 <FormFieldError name={name} />
-                {charactersLimit && withCountedCharacters(value, charactersLimit)}
+                {charactersLimit && withCountedCharacters(field.value, charactersLimit)}
               </>
             );
           }}
         />
-      </FormGroup>
-    );
-  }
-}
+      );
+    }}
+  </FormikConsumer>
+);
+
+export const FormTextArea = withFormField(TextArea);

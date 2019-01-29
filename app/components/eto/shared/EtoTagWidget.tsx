@@ -41,7 +41,7 @@ export const generateTagOptions = (tags: string[]): { value: string; label: stri
     label: word,
   }));
 
-const TagsFormEditor: React.SFC<ICombinedProps & IInternalProps> = ({
+const TagsFormEditor: React.FunctionComponent<ICombinedProps & IInternalProps> = ({
   name,
   className,
   disabled,

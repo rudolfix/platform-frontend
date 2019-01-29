@@ -53,7 +53,7 @@ class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> 
   }
 }
 
-export const BackupSeed = compose<React.SFC>(
+export const BackupSeed = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

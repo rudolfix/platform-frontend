@@ -109,7 +109,7 @@ interface IHandlersProps {
 
 type IProps = IStateProps & IDispatchProps & IIntlProps & IWithProps & IHandlersProps;
 
-export const InvestmentSelectionComponent: React.SFC<IProps> = ({
+export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
   changeEthValue,
   changeEuroValue,
   changeInvestmentType,
@@ -333,7 +333,7 @@ export const InvestmentSelectionComponent: React.SFC<IProps> = ({
   </>
 );
 
-export const InvestmentSelection: React.SFC = compose<any>(
+export const InvestmentSelection: React.FunctionComponent = compose<any>(
   injectIntlHelpers,
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
@@ -350,11 +350,11 @@ export const InvestmentSelection: React.SFC = compose<any>(
         gasCostEth: selectTxGasCostEthUlps(state),
         investmentType: selectInvestmentType(state),
         wallets: createWallets(state),
-        neuReward: selectNeuRewardUlpsByEtoId(etoId, state),
-        equityTokenCount: selectEquityTokenCountByEtoId(etoId, state),
+        neuReward: selectNeuRewardUlpsByEtoId(state, etoId),
+        equityTokenCount: selectEquityTokenCountByEtoId(state, etoId),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
-        etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(etoId, state),
+        etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(state, etoId),
         hasPreviouslyInvested: selectHasInvestorTicket(state, etoId),
       };
     },

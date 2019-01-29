@@ -21,7 +21,7 @@ interface ISingleMediaLinkFieldInternalProps {
   blankField: any;
 }
 
-const SingleMediaLinkField: React.SFC<
+const SingleMediaLinkField: React.FunctionComponent<
   ISingleMediaLinkFieldInternalProps & CommonHtmlProps
 > = props => {
   const {

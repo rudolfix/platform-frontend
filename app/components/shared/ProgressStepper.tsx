@@ -9,7 +9,10 @@ export interface IProgressStepper {
   currentStep: number;
 }
 
-export const ProgressStepper: React.SFC<IProgressStepper> = ({ steps, currentStep }) => (
+export const ProgressStepper: React.FunctionComponent<IProgressStepper> = ({
+  steps,
+  currentStep,
+}) => (
   <div className={styles.progressStepper}>
     {range(steps).map(number => (
       <div key={number} className={cn(styles.step, number < currentStep && styles.active)} />

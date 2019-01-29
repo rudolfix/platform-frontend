@@ -15,7 +15,7 @@ interface IExternalProps {
   size?: ENeonHeaderSize;
 }
 
-const NeonHeader: React.SFC<IExternalProps> = ({ children, size }) => (
+const NeonHeader: React.FunctionComponent<IExternalProps> = ({ children, size }) => (
   <header className={cn(styles.neonHeaderWrapper, size)}>
     <div className={styles.neon} />
     <h1 className={styles.neonHeader}>{children}</h1>

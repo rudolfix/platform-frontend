@@ -32,7 +32,7 @@ interface IProps {
   handleEmailSend: () => void;
 }
 
-export const InvestmentPreview: React.SFC<IProps> = ({
+export const InvestmentPreview: React.FunctionComponent<IProps> = ({
   company,
   tags,
   preFoundingStatus,

@@ -14,7 +14,7 @@ import { EtoRegistrationLegalInformation } from "./pages/LegalInformation";
 import { EtoRegistrationRiskAssessment } from "./pages/RiskAssessment";
 import { etoRegisterRoutes } from "./routes";
 
-export const EtoRegisterRouter: React.SFC = () => (
+export const EtoRegisterRouter: React.FunctionComponent = () => (
   <SwitchConnected>
     <Route
       path={etoRegisterRoutes.companyInformation}

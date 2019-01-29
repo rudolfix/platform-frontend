@@ -1,4 +1,5 @@
-import { acceptWallet, tid } from "../utils";
+import { acceptWallet } from "../utils";
+import { tid } from "../utils/selectors";
 
 export const submitProposal = () => {
   cy.visit("/dashboard");

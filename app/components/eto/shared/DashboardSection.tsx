@@ -12,7 +12,7 @@ interface IProps {
   size?: ESectionHeaderSize;
 }
 
-const DashboardSection: React.SFC<IProps> = ({
+const DashboardSection: React.FunctionComponent<IProps> = ({
   title,
   step,
   "data-test-id": dataTestId,

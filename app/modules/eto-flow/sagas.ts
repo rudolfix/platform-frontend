@@ -14,7 +14,7 @@ import {
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
-import { ensurePermissionsArePresent } from "../auth/sagas";
+import { ensurePermissionsArePresent } from "../auth/jwt/sagas";
 import { loadEtoContact } from "../public-etos/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto } from "./selectors";

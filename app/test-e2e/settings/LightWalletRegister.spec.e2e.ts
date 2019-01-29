@@ -10,10 +10,10 @@ import {
   logoutViaTopRightButton,
   mockApiUrl,
   registerWithLightWallet,
-  tid,
   typeEmailPassword,
   verifyLatestUserEmail,
 } from "../utils";
+import { tid } from "../utils/selectors";
 
 describe("Light wallet login / register", () => {
   beforeEach(() => {

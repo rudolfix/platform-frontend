@@ -40,7 +40,7 @@ export const genericModalIcons = {
   exclamation: <img src={warningIcon} className={styles.icon} aria-hidden="true" />,
 };
 
-const GenericModalLayout: React.SFC<IStateProps & IHandlersProps> = ({
+const GenericModalLayout: React.FunctionComponent<IStateProps & IHandlersProps> = ({
   onClick,
   closeModal,
   isOpen,

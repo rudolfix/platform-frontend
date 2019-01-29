@@ -40,7 +40,11 @@ function getRange(number: number, divider?: number): TRangeDescriptor | undefine
   return findLast(ranges, range => number / range.divider >= 1);
 }
 
-const ToHumanReadableForm: React.SFC<TExternalProps> = ({ number, children, divider }) => {
+const ToHumanReadableForm: React.FunctionComponent<TExternalProps> = ({
+  number,
+  children,
+  divider,
+}) => {
   const range = getRange(number, divider);
 
   if (range) {

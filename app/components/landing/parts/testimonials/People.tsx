@@ -2,6 +2,8 @@ import * as React from "react";
 import Slider, { Settings } from "react-slick";
 
 import { HiResImage } from "../../../shared/HiResImage";
+import { ExternalLink } from "../../../shared/links";
+
 import * as styles from "./People.module.scss";
 
 interface IPersonInfoProps {
@@ -169,14 +171,14 @@ const people: Array<IPersonInfoProps> = [
   },
 ];
 
-const PersonBox: React.SFC<IPersonInfoProps> = ({
+const PersonBox: React.FunctionComponent<IPersonInfoProps> = ({
   imageSrc,
   fullName,
   description,
   link,
   setDangerouslyDescription,
 }) => (
-  <a href={link} target="_blank" className="text-center">
+  <ExternalLink href={link} className="text-center">
     <HiResImage partialPath={imageSrc} className={styles.personImage} />
     <h3>{fullName}</h3>
     {setDangerouslyDescription ? (
@@ -184,7 +186,7 @@ const PersonBox: React.SFC<IPersonInfoProps> = ({
     ) : (
       <p className={styles.description}>{description}</p>
     )}
-  </a>
+  </ExternalLink>
 );
 
 const settings: Settings = {
@@ -220,7 +222,7 @@ const settings: Settings = {
   ],
 };
 
-export const PeopleSlider: React.SFC = () => (
+export const PeopleSlider: React.FunctionComponent = () => (
   <div className={styles.wrapper}>
     <Slider {...settings}>
       {people.map((p, i) => (

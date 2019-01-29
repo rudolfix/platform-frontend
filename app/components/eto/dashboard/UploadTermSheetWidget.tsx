@@ -7,7 +7,7 @@ import { DashboardLinkWidget } from "../../shared/dashboard-link-widget/Dashboar
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 
-export const UploadTermSheetWidgetComponent: React.SFC<{}> = () => (
+export const UploadTermSheetWidgetComponent: React.FunctionComponent<{}> = () => (
   <DashboardLinkWidget
     title={<FormattedMessage id={"settings.upload-term-sheet.title"} />}
     text={<FormattedMessage id="settings.upload-term-sheet-please-upload-term-sheet" />}

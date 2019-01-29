@@ -35,7 +35,7 @@ type TButtonWithoutOnClick = Omit<IButtonProps, IGeneralButton>;
 
 type TProps = TButtonLinkComponentProps & TButtonDispatchProps & TButtonWithoutOnClick;
 
-const ButtonLinkLayout: React.SFC<TProps> = ({
+const ButtonLinkLayout: React.FunctionComponent<TProps> = ({
   navigate,
   children,
   isActive,
@@ -58,8 +58,8 @@ const ButtonLink = compose<
     }),
     dispatchToProps: (dispatch, { target, to }) => ({
       navigate: () => {
-        if (typeof to === "string" && (target || isExternalUrl(to))) {
-          return dispatch(routingActions.openInNewWindow(to, target));
+        if (typeof to === "string" && (target === "_blank" || isExternalUrl(to))) {
+          return dispatch(routingActions.openInNewWindow(to));
         }
 
         return dispatch(routingActions.goTo(to));

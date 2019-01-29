@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import {
   selectTxGasCostEthUlps,
@@ -13,9 +14,19 @@ import { Heading } from "../../../shared/modals/Heading";
 import { ECurrency, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
 
-export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
+interface IStateProps {
+  txData: Partial<ITxData>;
+  txCost: string;
+}
+
+interface IDispatchProps {
+  onAccept: () => any;
+}
+
+type TComponentProps = IStateProps & IDispatchProps;
+
+export const WithdrawSummaryComponent: React.FunctionComponent<TComponentProps> = ({
   txData,
   txCost,
   onAccept,
@@ -60,7 +71,7 @@ export const WithdrawSummaryComponent: React.SFC<TSummaryComponentProps> = ({
   </Container>
 );
 
-export const WithdrawSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispatchProps>({
+export const WithdrawSummary = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     txData: selectTxSummaryData(state)!,
     txCost: selectTxGasCostEthUlps(state),

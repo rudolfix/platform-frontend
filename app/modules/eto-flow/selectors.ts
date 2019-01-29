@@ -5,6 +5,7 @@ import {
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces";
 import { TEtoDocumentTemplates } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectPlatformTermsConstants } from "../contracts/selectors";
@@ -150,7 +151,8 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
 };
 
 export const selectShouldEtoDataLoad = (state: IAppState) =>
-  selectKycRequestStatus(state) === "Accepted" && selectIsUserEmailVerified(state.auth);
+  selectKycRequestStatus(state) === ERequestStatus.ACCEPTED &&
+  selectIsUserEmailVerified(state.auth);
 
 export const selectIsGeneralEtoLoading = (state: IAppState) =>
   selectIssuerEtoLoading(state) && selectEtoDocumentLoading(state.etoDocuments);

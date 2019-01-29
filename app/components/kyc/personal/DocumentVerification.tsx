@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import { EKycRequestType } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { Button } from "../../shared/buttons";
@@ -41,10 +41,10 @@ interface IDispatchProps {
 }
 
 interface IProps {
-  layout: TKycRequestType;
+  layout: EKycRequestType;
 }
 
-export const KycPersonalDocumentVerificationComponent: React.SFC<
+export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<
   IProps & IStateProps & IDispatchProps
 > = ({ ...props }) => (
   <KycPanel
@@ -88,7 +88,7 @@ export const KycPersonalDocumentVerificationComponent: React.SFC<
   </KycPanel>
 );
 
-export const KycPersonalDocumentVerification = compose<React.SFC>(
+export const KycPersonalDocumentVerification = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: dispatch => ({
       onStartInstantId: () => dispatch(actions.kyc.kycStartInstantId()),

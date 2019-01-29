@@ -10,7 +10,7 @@ interface IExternalProps {
   onClaim: () => void;
 }
 
-const RefundWidgetLayout: React.SFC<IExternalProps> = ({ canClaimToken }) => {
+const RefundWidgetLayout: React.FunctionComponent<IExternalProps> = ({ canClaimToken }) => {
   return (
     <>
       <Message

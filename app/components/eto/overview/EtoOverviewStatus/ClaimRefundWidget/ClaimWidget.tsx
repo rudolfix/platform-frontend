@@ -16,7 +16,7 @@ interface IExternalProps {
   onClaim: (etoId: string) => void;
 }
 
-const ClaimWidgetLayout: React.SFC<IExternalProps> = ({
+const ClaimWidgetLayout: React.FunctionComponent<IExternalProps> = ({
   tokenName,
   totalInvestors,
   totalEquivEurUlps,

@@ -16,7 +16,10 @@ interface IStateProps {
   ethAddress: string;
 }
 
-export const DepositEthComponent: React.SFC<IProps & IStateProps> = ({ path, ethAddress }) => {
+export const DepositEthComponent: React.FunctionComponent<IProps & IStateProps> = ({
+  path,
+  ethAddress,
+}) => {
   return (
     <DepositFunds path={path}>
       <div className={styles.methodEth}>

@@ -2,9 +2,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
+import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
+import { ETokenType } from "../../../../modules/tx/interfaces";
 import {
   selectTxGasCostEthUlps,
+  selectTxSummaryAdditionalData,
   selectTxSummaryData,
 } from "../../../../modules/tx/sender/selectors";
 import { appConnect } from "../../../../store";
@@ -14,13 +17,26 @@ import { Heading } from "../../../shared/modals/Heading";
 import { ECurrency, Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps, ITxSummaryStateProps, TSummaryComponentProps } from "../TxSender";
 
-export const UpgradeSummaryComponent: React.SFC<TSummaryComponentProps> = ({
+interface IStateProps {
+  txData: Partial<ITxData>;
+  txCost: string;
+  additionalData: { tokenType: ETokenType };
+}
+
+interface IDispatchProps {
+  onAccept: () => any;
+  downloadICBMAgreement?: (tokenType: ETokenType) => void;
+}
+
+type TComponentProps = IStateProps & IDispatchProps;
+
+export const UpgradeSummaryComponent: React.FunctionComponent<TComponentProps> = ({
   txData,
   txCost,
   onAccept,
   downloadICBMAgreement,
+  additionalData,
 }) => (
   <Container>
     <Row className="mb-4">
@@ -52,7 +68,7 @@ export const UpgradeSummaryComponent: React.SFC<TSummaryComponentProps> = ({
       <Row>
         <Col className="my-3 text-center">
           <DocumentTemplateButton
-            onClick={() => downloadICBMAgreement()}
+            onClick={() => downloadICBMAgreement(additionalData.tokenType)}
             title={<FormattedMessage id="wallet.icbm.reservation-agreement" />}
           />
         </Col>
@@ -72,13 +88,15 @@ export const UpgradeSummaryComponent: React.SFC<TSummaryComponentProps> = ({
   </Container>
 );
 
-export const UpgradeSummary = appConnect<ITxSummaryStateProps, ITxSummaryDispatchProps>({
+export const UpgradeSummary = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     txData: selectTxSummaryData(state)!,
     txCost: selectTxGasCostEthUlps(state),
+    additionalData: selectTxSummaryAdditionalData(state),
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
-    downloadICBMAgreement: () => d(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement()),
+    downloadICBMAgreement: (tokenType: ETokenType) =>
+      d(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement(tokenType)),
   }),
 })(UpgradeSummaryComponent);

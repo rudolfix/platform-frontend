@@ -9,7 +9,7 @@ import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
 import { IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces";
 import { delay } from "../../utils/delay";
 import { actions, TAction } from "../actions";
-import { ensurePermissionsArePresent } from "../auth/sagas";
+import { ensurePermissionsArePresent } from "../auth/jwt/sagas";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import {
   DELETE_PLEDGE,

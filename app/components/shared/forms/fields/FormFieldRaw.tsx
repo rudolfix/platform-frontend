@@ -20,7 +20,7 @@ export interface IFieldGroupRawExternalProps {
 
 type FieldGroupRawProps = IFormInputExternalProps & IFieldGroupRawExternalProps & InputProps;
 
-const FormFieldRaw: React.SFC<FieldGroupRawProps> = ({
+const FormFieldRaw: React.FunctionComponent<FieldGroupRawProps> = ({
   value,
   name,
   label,

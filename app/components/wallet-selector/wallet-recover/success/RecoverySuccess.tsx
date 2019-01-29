@@ -21,7 +21,7 @@ interface IStateProps {
 interface IDispatchProps {
   goToDashboard: (userType: EUserType) => void;
 }
-export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> = ({
+export const RecoverySuccessComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   goToDashboard,
   userType,
 }) => (
@@ -66,7 +66,7 @@ export const RecoverySuccessComponent: React.SFC<IStateProps & IDispatchProps> =
   </div>
 );
 
-export const RecoverySuccess = compose<React.SFC>(
+export const RecoverySuccess = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       userType: selectUrlUserType(s.router),

@@ -16,7 +16,7 @@ interface IStateProps {
   userType?: EUserType;
 }
 
-export const MigrationFromLinkComponent: React.SFC<IStateProps> = ({ userType }) => {
+export const MigrationFromLinkComponent: React.FunctionComponent<IStateProps> = ({ userType }) => {
   const isUserInvestor = userType === EUserType.INVESTOR;
 
   return (
@@ -38,7 +38,7 @@ export const MigrationFromLinkComponent: React.SFC<IStateProps> = ({ userType })
   );
 };
 
-export const MigrationFromLink = compose<React.SFC>(
+export const MigrationFromLink = compose<React.FunctionComponent>(
   onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
   appConnect<IStateProps>({
     stateToProps: state => ({

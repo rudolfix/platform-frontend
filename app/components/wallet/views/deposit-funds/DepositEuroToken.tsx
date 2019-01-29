@@ -9,7 +9,7 @@ interface IProps {
   path: string;
 }
 
-export const DepositEuroToken: React.SFC<IProps> = ({ path }) => {
+export const DepositEuroToken: React.FunctionComponent<IProps> = ({ path }) => {
   return (
     <DepositFunds path={path}>
       <div className={styles.methodEuroToken}>

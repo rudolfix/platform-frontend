@@ -1,5 +1,5 @@
 import * as cn from "classnames";
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -10,7 +10,7 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { Button } from "../../../shared/buttons";
-import { FormField } from "../../../shared/forms";
+import { Form, FormField } from "../../../shared/forms";
 import { TMessage } from "../../../translatedMessages/utils";
 
 import * as styles from "./RegisterLightWallet.module.scss";
@@ -101,7 +101,7 @@ class RegisterLightWalletForm extends React.Component<
   );
 }
 
-const RegisterEnhancedLightWalletForm: React.SFC = compose<any>(
+const RegisterEnhancedLightWalletForm: React.FunctionComponent = compose<any>(
   injectIntlHelpers,
   withFormik<IDispatchProps & IStateProps & { restore: boolean }, IFormValues>({
     validationSchema: validationSchema,
@@ -116,7 +116,7 @@ const RegisterEnhancedLightWalletForm: React.SFC = compose<any>(
   }),
 )(RegisterLightWalletForm);
 
-export const RegisterWalletComponent: React.SFC<
+export const RegisterWalletComponent: React.FunctionComponent<
   IDispatchProps & IStateProps & { restore: boolean }
 > = props => (
   <>
@@ -145,7 +145,7 @@ export const RegisterWalletComponent: React.SFC<
   </>
 );
 
-export const RegisterLightWallet = compose<React.SFC>(
+export const RegisterLightWallet = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps, { restore: boolean }>({
     stateToProps: state => ({
       errorMsg: state.lightWalletWizard.errorMsg as TMessage,

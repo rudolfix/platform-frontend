@@ -5,8 +5,10 @@ import { withSizes } from "react-sizes";
 import * as QuestionMark from "!url-loader!../../assets/img/inline_icons/questionmark_huge.svg";
 import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
 import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
+import { ExternalLink } from "./links";
 import { Proportion } from "./Proportion";
 import { IResponsiveImage, ResponsiveImage } from "./ResponsiveImage";
+import { IResponsiveVideo, ResponsiveVideo } from "./ResponsiveVideo";
 import { ITag, Tag } from "./Tag";
 
 import * as styles from "./EtoOfferingCard.module.scss";
@@ -24,6 +26,7 @@ export interface IEtoOfferingProps {
   logo?: string;
   topImage: IResponsiveImage;
   quoteImage?: IResponsiveImage;
+  quoteVideo?: IResponsiveVideo;
   badge?: IResponsiveImage;
   quoteBackground?: string;
   quoteColor?: string;
@@ -42,7 +45,7 @@ interface IPropsRoundLabel {
   text: string | React.ReactNode;
 }
 
-const RoundLabel: React.SFC<IPropsRoundLabel> = ({ text }) => {
+const RoundLabel: React.FunctionComponent<IPropsRoundLabel> = ({ text }) => {
   return (
     <div className={styles.roundLabel}>
       <svg viewBox="0 0 170 100">
@@ -80,22 +83,20 @@ export class EtoOfferingCardComponent extends React.Component<
     const props = this.props;
     const { isClicked } = this.state;
 
-    const Wrapper: React.SFC = ({ children }) => {
+    const Wrapper: React.FunctionComponent = ({ children }) => {
       if (props.to && !props.isMobile) {
         return (
-          <a
+          <ExternalLink
             href={props.to}
-            target="_blank"
             className={cn(
               styles.card,
               props.className,
               props.teaser && styles.teaser,
               props.isMobile && styles.mobile,
             )}
-            rel="noopener"
           >
             {children}
-          </a>
+          </ExternalLink>
         );
       }
 
@@ -128,7 +129,6 @@ export class EtoOfferingCardComponent extends React.Component<
                   width={props.badge.width}
                   height={props.badge.height}
                   preserveOriginalRatio={props.topImage.preserveOriginalRatio}
-                  forceBg={props.topImage.forceBg}
                 />
               </div>
             )}
@@ -141,7 +141,6 @@ export class EtoOfferingCardComponent extends React.Component<
                 width={props.topImage.width}
                 height={props.topImage.height}
                 preserveOriginalRatio={props.topImage.preserveOriginalRatio}
-                forceBg={props.topImage.forceBg}
               />
             )}
             {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
@@ -170,9 +169,22 @@ export class EtoOfferingCardComponent extends React.Component<
           {props.bannerWithGif ? (
             <blockquote className={cn(styles.quote, styles.animatedGifWithDescription)}>
               {props.isMobile && (
-                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                <ExternalLink className={styles.navigationArrow} href={props.to}>
                   <i className="fa fa-arrow-right" />
-                </a>
+                </ExternalLink>
+              )}
+
+              {props.quoteVideo && (
+                <div className={styles.imageWrapper}>
+                  <ResponsiveVideo
+                    width={props.quoteVideo.width}
+                    height={props.quoteVideo.height}
+                    sources={props.quoteVideo.sources}
+                    theme={props.quoteVideo.theme}
+                    banner={true}
+                  />
+                  <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
+                </div>
               )}
 
               {props.quoteImage && (
@@ -185,7 +197,6 @@ export class EtoOfferingCardComponent extends React.Component<
                     width={props.quoteImage.width}
                     height={props.quoteImage.height}
                     preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
-                    forceBg={props.quoteImage.forceBg}
                   />
                   <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
                 </div>
@@ -197,9 +208,18 @@ export class EtoOfferingCardComponent extends React.Component<
               style={{ background: props.quoteBackground, color: props.quoteColor }}
             >
               {props.isMobile && (
-                <a className={styles.navigationArrow} href={props.to} target="_blank">
+                <ExternalLink className={styles.navigationArrow} href={props.to}>
                   <i className="fa fa-arrow-right" />
-                </a>
+                </ExternalLink>
+              )}
+              {props.quoteVideo && (
+                <ResponsiveVideo
+                  className={styles.animation}
+                  width={props.quoteVideo.width}
+                  height={props.quoteVideo.height}
+                  sources={props.quoteVideo.sources}
+                  theme={props.quoteVideo.theme}
+                />
               )}
               {props.quoteImage && (
                 <ResponsiveImage
@@ -210,7 +230,6 @@ export class EtoOfferingCardComponent extends React.Component<
                   height={props.quoteImage.height}
                   width={props.quoteImage.width}
                   preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
-                  forceBg={props.quoteImage.forceBg}
                 />
               )}
               {!props.teaser && (
@@ -251,9 +270,9 @@ const mapSizesToProps = ({ width }: any) => ({
   isMobile: width < 992,
 });
 
-export const EtoOfferingCard: React.SFC<IEtoOfferingProps> = withSizes(mapSizesToProps)(
-  EtoOfferingCardComponent,
-);
+export const EtoOfferingCard: React.FunctionComponent<IEtoOfferingProps> = withSizes(
+  mapSizesToProps,
+)(EtoOfferingCardComponent);
 
 const BrilleBanner = () => (
   <>

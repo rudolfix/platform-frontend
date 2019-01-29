@@ -37,7 +37,7 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }) => (
+const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({ readonly, savingData }) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-equity-token-info.title" />}
     validator={EtoEquityTokenInfoType.toYup()}
@@ -86,7 +86,7 @@ const EtoEquityTokenInfoComponent: React.SFC<IProps> = ({ readonly, savingData }
   </EtoFormBase>
 );
 
-const EtoEquityTokenInfo = compose<React.SFC<IExternalProps>>(
+const EtoEquityTokenInfo = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoEquityTokenInfo),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

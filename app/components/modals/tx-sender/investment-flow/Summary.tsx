@@ -30,7 +30,6 @@ import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps } from "../TxSender";
 import {
   formatEthTsd,
   formatEurTsd,
@@ -55,13 +54,15 @@ interface IStateProps {
   isIcbm?: boolean;
 }
 
-type IDispatchProps = ITxSummaryDispatchProps & {
+type IDispatchProps = {
+  onAccept: () => any;
+  onChange: () => any;
   downloadAgreement: (etoId: string) => void;
 };
 
 type IProps = IStateProps & IDispatchProps;
 
-const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
+const NeuRewardCaption: React.FunctionComponent<{ isIcbm?: boolean }> = ({ isIcbm }) => {
   const neuMsg = <FormattedMessage id="investment-flow.summary.estimated-reward" />;
   const icbmMsg = (
     <>
@@ -75,7 +76,7 @@ const NeuRewardCaption: React.SFC<{ isIcbm?: boolean }> = ({ isIcbm }) => {
   return isIcbm ? icbmMsg : neuMsg;
 };
 
-const InvestmentSummaryComponent: React.SFC<IProps> = ({
+const InvestmentSummaryComponent: React.FunctionComponent<IProps> = ({
   onAccept,
   onChange,
   downloadAgreement,
@@ -189,7 +190,7 @@ const InvestmentSummaryComponent: React.SFC<IProps> = ({
 
 const InvestmentSummary = compose<IProps, {}>(
   setDisplayName("InvestmentSummary"),
-  appConnect<IStateProps, ITxSummaryDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectInvestmentEtoId(state);
       // eto and computed values are guaranteed to be present at investment summary state
@@ -202,8 +203,8 @@ const InvestmentSummary = compose<IProps, {}>(
         investmentEur: selectInvestmentEurValueUlps(state),
         gasCostEth: selectTxGasCostEthUlps(state),
         // tslint:disable: no-useless-cast
-        equityTokens: selectEquityTokenCountByEtoId(etoId, state)!,
-        estimatedReward: selectNeuRewardUlpsByEtoId(etoId, state)!,
+        equityTokens: selectEquityTokenCountByEtoId(state, etoId)!,
+        estimatedReward: selectNeuRewardUlpsByEtoId(state, etoId)!,
         etherPriceEur: selectEtherPriceEur(state),
         isIcbm: selectIsICBMInvestment(state),
       };

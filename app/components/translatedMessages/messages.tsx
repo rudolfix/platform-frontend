@@ -383,7 +383,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case AuthMessage.AUTH_TOC_ACCEPT_ERROR:
       return <FormattedMessage id="settings.modal.accept-tos.failure" />;
     case AuthMessage.AUTH_TOC_FILENAME:
-      return <FormattedMessage id="settings.modal.accept-tos.filename" />;
+      return "neufund_terms_of_use";
 
     case IcbmWalletMessage.ICBM_RESERVATION_AGREEMENT:
       //TODO We need a plain string here, but FormattedMessage doesn't work outside of components now.

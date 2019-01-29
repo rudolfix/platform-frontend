@@ -35,7 +35,7 @@ type TEntryExternalProps = {
   value: React.ReactNode;
 };
 
-const Entry: React.SFC<TEntryExternalProps & TDataTestId> = ({
+const Entry: React.FunctionComponent<TEntryExternalProps & TDataTestId> = ({
   label,
   value,
   "data-test-id": dataTestId,
@@ -48,7 +48,7 @@ const Entry: React.SFC<TEntryExternalProps & TDataTestId> = ({
   </div>
 );
 
-const EtoInvestmentTermsWidgetLayout: React.SFC<TExternalProps & TDispatchProps> = ({
+const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & TDispatchProps> = ({
   etoData,
   downloadDocument,
 }) => {

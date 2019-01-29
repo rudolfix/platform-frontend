@@ -7,23 +7,24 @@ import { SUBMIT_KYC_PERMISSION } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
+  EKycRequestType,
+  ERequestOutsourcedStatus,
+  ERequestStatus,
   IKycBeneficialOwner,
   IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
   IKycLegalRepresentative,
   IKycRequestState,
-  TKycRequestType,
-  TRequestOutsourcedStatus,
-  TRequestStatus,
 } from "../../lib/api/KycApi.interfaces";
 import { IUser } from "../../lib/api/users/interfaces";
 import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
 import { IAppAction, IAppState } from "../../store";
 import { actions, TAction } from "../actions";
-import { ensurePermissionsArePresent } from "../auth/sagas";
+import { ensurePermissionsArePresent } from "../auth/jwt/sagas";
 import { selectUser } from "../auth/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
+import { EInitType } from "../init/reducer";
 import { selectIsSmartContractInitDone } from "../init/selectors";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import {
@@ -46,31 +47,35 @@ let kycWidgetWatchDelay: number = 1000;
 function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): any {
   kycWidgetWatchDelay = 1000;
   while (true) {
-    const requestType: TKycRequestType = yield select((s: IAppState) =>
+    const requestType: EKycRequestType = yield select((s: IAppState) =>
       selectKycRequestType(s.kyc),
     );
-    const status: TRequestStatus | undefined = yield select((s: IAppState) =>
+    const status: ERequestStatus | undefined = yield select((s: IAppState) =>
       selectKycRequestStatus(s),
     );
 
-    if (status === "Accepted" || status === "Rejected" || status === "Ignored") {
+    if (
+      status === ERequestStatus.ACCEPTED ||
+      status === ERequestStatus.REJECTED ||
+      status === ERequestStatus.IGNORED
+    ) {
       return;
     }
 
-    const outsourcedStatus: TRequestOutsourcedStatus | undefined = yield select((s: IAppState) =>
+    const outsourcedStatus: ERequestOutsourcedStatus | undefined = yield select((s: IAppState) =>
       selectKycRequestOutsourcedStatus(s.kyc),
     );
 
     if (
-      status === "Pending" ||
-      (status === "Outsourced" &&
+      status === ERequestStatus.PENDING ||
+      (status === ERequestStatus.OUTSOURCED &&
         outsourcedStatus &&
-        (outsourcedStatus === "started" ||
-          outsourcedStatus === "canceled" ||
-          outsourcedStatus === "aborted" ||
-          outsourcedStatus === "review_pending"))
+        (outsourcedStatus === ERequestOutsourcedStatus.STARTED ||
+          outsourcedStatus === ERequestOutsourcedStatus.CANCELED ||
+          outsourcedStatus === ERequestOutsourcedStatus.ABORTED ||
+          outsourcedStatus === ERequestOutsourcedStatus.REVIEW_PENDING))
     ) {
-      requestType === "individual"
+      requestType === EKycRequestType.INDIVIDUAL
         ? yield put(actions.kyc.kycLoadIndividualRequest(true))
         : yield put(actions.kyc.kycLoadBusinessRequest(true));
       logger.info("KYC refreshed", status, requestType);
@@ -252,7 +257,7 @@ function* cancelIndividualInstantId({
 }: TGlobalDependencies): Iterator<any> {
   try {
     yield apiKycService.cancelInstantId();
-    yield put(actions.kyc.kycUpdateIndividualRequestState(false, { status: "Draft" }));
+    yield put(actions.kyc.kycUpdateIndividualRequestState(false, { status: ERequestStatus.DRAFT }));
   } catch (e) {
     logger.warn("KYC instant id failed to stop", e);
     notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED)); //module.kyc.sagas.problem.submitting
@@ -577,7 +582,7 @@ export function* loadKycRequestData(): any {
   // Wait for contracts to init
   const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
   if (!isSmartContractsInitialized) {
-    yield neuTakeOnly("INIT_DONE", { initType: "smartcontractsInit" });
+    yield neuTakeOnly("INIT_DONE", { initType: EInitType.START_CONTRACTS_INIT });
   }
 
   yield put(actions.kyc.kycLoadIndividualRequest());

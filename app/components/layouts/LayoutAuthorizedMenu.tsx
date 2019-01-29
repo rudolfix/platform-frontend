@@ -21,6 +21,7 @@ import { appRoutes } from "../appRoutes";
 import { IdentityModal } from "../identity/IdentityModal";
 import { Button, EButtonLayout } from "../shared/buttons";
 import { InlineIcon } from "../shared/InlineIcon";
+import { ExternalLink } from "../shared/links";
 
 import * as iconDashboard from "../../assets/img/inline_icons/icon-menu-dashboard.svg";
 import * as iconDocuments from "../../assets/img/inline_icons/icon-menu-documents.svg";
@@ -77,7 +78,7 @@ interface IMenuContent {
   disabled?: boolean;
 }
 
-const MenuEntryContent: React.SFC<IMenuContent> = ({
+const MenuEntryContent: React.FunctionComponent<IMenuContent> = ({
   actionRequired,
   menuName,
   svgString,
@@ -95,7 +96,7 @@ const MenuEntryContent: React.SFC<IMenuContent> = ({
   );
 };
 
-const MenuEntryLink: React.SFC<IMenuEntry & IMenuEntryLink> = ({
+const MenuEntryLink: React.FunctionComponent<IMenuEntry & IMenuEntryLink> = ({
   to,
   disabled,
   isActive,
@@ -104,9 +105,9 @@ const MenuEntryLink: React.SFC<IMenuEntry & IMenuEntryLink> = ({
   const isAbsoluteLink = /^https?:\/\//.test(to);
 
   return isAbsoluteLink ? (
-    <a href={to} target="_blank" className={styles.menuItem}>
+    <ExternalLink href={to} className={styles.menuItem}>
       <MenuEntryContent {...props} />
-    </a>
+    </ExternalLink>
   ) : disabled ? (
     <MenuEntryDisabled {...props} />
   ) : (
@@ -121,7 +122,10 @@ const MenuEntryLink: React.SFC<IMenuEntry & IMenuEntryLink> = ({
   );
 };
 
-const MenuEntryDisabled: React.SFC<IMenuEntryDisabled> = ({ svgString, menuName }) => {
+const MenuEntryDisabled: React.FunctionComponent<IMenuEntryDisabled> = ({
+  svgString,
+  menuName,
+}) => {
   return (
     <div className={styles.menuItem}>
       <MenuEntryContent menuName={menuName} svgString={svgString} disabled={true} />
@@ -129,7 +133,7 @@ const MenuEntryDisabled: React.SFC<IMenuEntryDisabled> = ({ svgString, menuName 
   );
 };
 
-const MenuEntryButton: React.SFC<IMenuEntry & IMenuEntryButton> = ({
+const MenuEntryButton: React.FunctionComponent<IMenuEntry & IMenuEntryButton> = ({
   onClick,
   disabled,
   isActive,
@@ -148,7 +152,7 @@ const MenuEntryButton: React.SFC<IMenuEntry & IMenuEntryButton> = ({
   );
 };
 
-const InvestorMenu: React.SFC<IStateProps & IDispatchProps & IWithProps> = ({
+const InvestorMenu: React.FunctionComponent<IStateProps & IDispatchProps & IWithProps> = ({
   actionRequiredSettings,
   openIdentityModal,
   isLinkActive,
@@ -206,10 +210,10 @@ const InvestorMenu: React.SFC<IStateProps & IDispatchProps & IWithProps> = ({
   </div>
 );
 
-const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad: boolean }> = ({
-  actionRequiredSettings,
-  shouldEtoDataLoad,
-}) => (
+const IssuerMenu: React.FunctionComponent<{
+  actionRequiredSettings: boolean;
+  shouldEtoDataLoad: boolean;
+}> = ({ actionRequiredSettings, shouldEtoDataLoad }) => (
   <div className={styles.menu}>
     <div className={styles.menuItems}>
       <MenuEntryLink
@@ -251,10 +255,9 @@ const IssuerMenu: React.SFC<{ actionRequiredSettings: boolean; shouldEtoDataLoad
   </div>
 );
 
-const LayoutAuthorizedMenuComponent: React.SFC<IStateProps & IDispatchProps & IWithProps> = ({
-  userType,
-  ...props
-}) => {
+const LayoutAuthorizedMenuComponent: React.FunctionComponent<
+  IStateProps & IDispatchProps & IWithProps
+> = ({ userType, ...props }) => {
   switch (userType) {
     case EUserType.INVESTOR:
       return <InvestorMenu data-test-id="investor-menu" {...props} />;

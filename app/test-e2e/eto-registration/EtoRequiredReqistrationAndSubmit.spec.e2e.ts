@@ -1,4 +1,4 @@
-import { assertEtoDashboard, assertEtoDocuments, tid } from "../utils";
+import { assertEtoDashboard, assertEtoDocuments } from "../utils";
 import { fillForm, TFormFixture, uploadDocumentToFieldWithTid } from "../utils/forms";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { submitProposal } from "./EtoRegistrationUtils";
@@ -12,6 +12,7 @@ import {
   mediaRequiredForm,
   votingRights,
 } from "./fixtures";
+import { tid } from "../utils/selectors";
 
 const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
   cy.get(tid(section, "button")).click();

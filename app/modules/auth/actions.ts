@@ -6,8 +6,4 @@ export const authActions = {
   setUser: (user: IUser) => createAction("AUTH_SET_USER", { user }),
   logout: (userType?: EUserType) => createAction("AUTH_LOGOUT", { userType }),
   verifyEmail: () => createSimpleAction("AUTH_VERIFY_EMAIL"),
-  setCurrentAgreementHash: (currentAgreementHash: string) =>
-    createAction("SET_CURRENT_AGREEMENT_HASH", { currentAgreementHash }),
-  acceptCurrentAgreement: () => createSimpleAction("ACCEPT_CURRENT_AGREEMENT"),
-  downloadCurrentAgreement: () => createSimpleAction("DOWNLOAD_CURRENT_AGREEMENT"),
 };

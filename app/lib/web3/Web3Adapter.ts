@@ -140,8 +140,8 @@ export class Web3Adapter {
   }
 
   public async waitForTx(options: IWaitForTxOptions): Promise<Web3.Transaction> {
+    // TODO: Refactor Wait for TX
     const getTx = promisify(this.web3.eth.getTransaction);
-
     return new Promise<Web3.Transaction>((resolve, reject) => {
       this.watchNewBlock(async blockId => {
         try {
@@ -151,8 +151,8 @@ export class Web3Adapter {
 
           const tx = await getTx(options.txHash);
           const txReceipt = await this.getTransactionReceipt(options.txHash);
-          const isMined = tx && tx.blockNumber;
-
+          // Both requests `getTx` and `getTransactionReceipt` can end up in two seperate nodes
+          const isMined = tx && tx.blockNumber && txReceipt && txReceipt.blockNumber;
           if (!isMined) {
             return;
           }

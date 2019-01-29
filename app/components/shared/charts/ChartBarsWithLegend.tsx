@@ -17,7 +17,7 @@ interface IProps {
   data: IChartBarsData;
 }
 
-export const ChartBarsWithLegend: React.SFC<IProps> = ({ data }) => {
+export const ChartBarsWithLegend: React.FunctionComponent<IProps> = ({ data }) => {
   return (
     <div className={styles.chartBars}>
       <div className={styles.chartWrapper}>

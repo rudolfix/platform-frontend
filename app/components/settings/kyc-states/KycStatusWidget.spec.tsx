@@ -4,6 +4,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
+import { ERequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { KycStatusWidgetComponent } from "./KycStatusWidget";
@@ -20,7 +21,11 @@ const defaultProps = {
 describe("<KycStatusWidgetComponent />", () => {
   it("should render verified section", () => {
     const component = shallow(
-      <KycStatusWidgetComponent {...defaultProps} requestStatus="Accepted" isLoading={false} />,
+      <KycStatusWidgetComponent
+        {...defaultProps}
+        requestStatus={ERequestStatus.ACCEPTED}
+        isLoading={false}
+      />,
     );
 
     expect(component.contains(<FormattedMessage id="settings.kyc-status-widget.status.accepted" />))
@@ -29,7 +34,11 @@ describe("<KycStatusWidgetComponent />", () => {
 
   it("should render unverified section", () => {
     const component = shallow(
-      <KycStatusWidgetComponent {...defaultProps} requestStatus="Draft" isLoading={false} />,
+      <KycStatusWidgetComponent
+        {...defaultProps}
+        requestStatus={ERequestStatus.DRAFT}
+        isLoading={false}
+      />,
     );
 
     expect(

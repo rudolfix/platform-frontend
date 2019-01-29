@@ -17,7 +17,7 @@ interface IProps {
   transferDisabled?: boolean;
 }
 
-export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
+export const AccountBalance: React.FunctionComponent<IProps & IMoneySuiteWidgetProps> = ({
   icon,
   currency,
   currencyTotal,
@@ -76,6 +76,7 @@ export const AccountBalance: React.SFC<IProps & IMoneySuiteWidgetProps> = ({
             innerClassName={styles.button}
             iconPosition="icon-after"
             theme="graphite"
+            data-test-id={dataTestId && dataTestId + ".shared-component.deposit.button"}
             disabled={transferDisabled}
             svgIcon={arrowRightIcon}
             onClick={onDepositClick}

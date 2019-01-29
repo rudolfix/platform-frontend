@@ -45,6 +45,6 @@ export class AccordionElement extends React.Component<
   }
 }
 
-export const Accordion: React.SFC = ({ children }) => (
+export const Accordion: React.FunctionComponent = ({ children }) => (
   <div className={styles.accordion}>{children}</div>
 );

@@ -162,7 +162,7 @@ const EtoRegistrationPitchComponent = (props: IProps) => {
   );
 };
 
-const EtoRegistrationPitch = compose<React.SFC>(
+const EtoRegistrationPitch = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.ProductVision),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

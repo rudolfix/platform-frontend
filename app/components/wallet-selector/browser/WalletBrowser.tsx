@@ -33,7 +33,7 @@ interface IWalletBrowserDispatchProps {
   handleReset: () => void;
 }
 
-export const WalletBrowserComponent: React.SFC<
+export const WalletBrowserComponent: React.FunctionComponent<
   IWalletBrowserProps & IWalletBrowserDispatchProps
 > = ({ errorMessage, isLoading, isLoginRoute, approvalRejected, handleReset }) => (
   <div>
@@ -105,7 +105,7 @@ export const WalletBrowserComponent: React.SFC<
   </div>
 );
 
-export const WalletBrowser = compose<React.SFC>(
+export const WalletBrowser = compose<React.FunctionComponent>(
   appConnect<IWalletBrowserProps, IWalletBrowserDispatchProps>({
     stateToProps: state => ({
       errorMessage: state.browserWalletWizardState.errorMsg as TMessage,

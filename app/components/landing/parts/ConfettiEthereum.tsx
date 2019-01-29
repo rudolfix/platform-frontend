@@ -6,7 +6,10 @@ import { SpinningEthereum } from "./SpinningEthereum";
 import { CommonHtmlProps } from "../../../types";
 import * as styles from "./ConfettiEthereum.module.scss";
 
-export const ConfettiEthereum: React.SFC<CommonHtmlProps> = ({ className, style }) => {
+export const ConfettiEthereum: React.FunctionComponent<CommonHtmlProps> = ({
+  className,
+  style,
+}) => {
   return (
     <div className={cn([styles.wrapper, className])} style={style}>
       <SpinningEthereum />

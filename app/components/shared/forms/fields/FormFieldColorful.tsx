@@ -9,7 +9,7 @@ import { FormFieldLabel } from "./FormFieldLabel";
 import { isNonValid } from "./utils";
 
 import * as styles from "./FormFieldColorful.module.scss";
-import { FormFieldError } from "./FormFieldError";
+import { FormFieldError, generateErrorId } from "./FormFieldError";
 
 interface IFieldGroup {
   label?: string | React.ReactNode;
@@ -27,10 +27,7 @@ export class FormFieldColorful extends React.Component<FieldGroupProps> {
 
     return (
       <FormikConsumer>
-        {({ touched, errors }) => {
-          //This is done due to the difference between reactstrap and @typings/reactstrap
-          const inputExtraProps = { invalid: isNonValid(touched, errors, name) } as any;
-
+        {({ touched, errors, submitCount }) => {
           return (
             <FormGroup>
               {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
@@ -45,16 +42,20 @@ export class FormFieldColorful extends React.Component<FieldGroupProps> {
                     return "";
                   };
 
+                  const invalid = isNonValid(touched, errors, name, submitCount);
+
                   return (
                     <>
                       <div className={cn(styles.inputWrapper, validClass())}>
                         <Input
-                          className={cn(styles.input, className)}
                           {...field}
+                          aria-describedby={generateErrorId(name)}
+                          aria-invalid={invalid}
+                          invalid={invalid}
+                          className={cn(styles.input, className)}
                           type={type}
                           value={field.value}
                           placeholder={placeholder || label}
-                          {...inputExtraProps}
                           {...props}
                         />
                         {showAvatar && (

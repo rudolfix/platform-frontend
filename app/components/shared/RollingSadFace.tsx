@@ -3,7 +3,7 @@ import * as React from "react";
 
 import * as styles from "./RollingSadFace.module.scss";
 
-const RollingSadFace: React.SFC = () => (
+const RollingSadFace: React.FunctionComponent = () => (
   <div className={styles.container}>
     <div className={styles.face}>
       <div className={styles.leftEye} />

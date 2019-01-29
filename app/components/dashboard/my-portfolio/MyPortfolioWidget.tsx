@@ -29,7 +29,7 @@ interface IStateProps {
 
 type IProps = TOwnProps & IStateProps;
 
-export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
+export const MyPortfolioWidgetComponentBody: React.FunctionComponent<IBodyProps> = ({
   error,
   balanceEur,
   balanceNeu,
@@ -53,7 +53,7 @@ export const MyPortfolioWidgetComponentBody: React.SFC<IBodyProps> = ({
   );
 };
 
-export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
+export const MyPortfolioWidgetComponent: React.FunctionComponent<IProps> = ({
   className,
   style,
   isLoading,
@@ -81,7 +81,7 @@ export const MyPortfolioWidgetComponent: React.SFC<IProps> = ({
   );
 };
 
-export const LoadingComponent: React.SFC<IProps> = ({ className, style }) => (
+export const LoadingComponent: React.FunctionComponent<IProps> = ({ className, style }) => (
   <Panel className={className} style={style}>
     <LoadingIndicator />
   </Panel>

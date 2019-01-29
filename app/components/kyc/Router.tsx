@@ -19,7 +19,7 @@ interface IStateProps {
   userType?: EUserType;
 }
 
-export const NormalKycRouter: React.SFC = () => (
+export const NormalKycRouter: React.FunctionComponent = () => (
   <SwitchConnected>
     <Route path={kycRoutes.start} component={KYCStart} exact />
 
@@ -40,7 +40,7 @@ export const NormalKycRouter: React.SFC = () => (
   </SwitchConnected>
 );
 
-export const EtoKycRouter: React.SFC = () => (
+export const EtoKycRouter: React.FunctionComponent = () => (
   <SwitchConnected>
     <Route path={kycRoutes.start} component={KycBusinessData} exact />
 
@@ -53,7 +53,7 @@ export const EtoKycRouter: React.SFC = () => (
   </SwitchConnected>
 );
 
-export const KycRouterComponent: React.SFC<IStateProps> = ({ userType }) => {
+export const KycRouterComponent: React.FunctionComponent<IStateProps> = ({ userType }) => {
   switch (userType) {
     case EUserType.INVESTOR:
       return <NormalKycRouter />;

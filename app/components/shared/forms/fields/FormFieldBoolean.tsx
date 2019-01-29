@@ -21,7 +21,7 @@ interface IInternalProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const CheckboxLayout: React.SFC<IProps & IInternalProps> = ({
+const CheckboxLayout: React.FunctionComponent<IProps & IInternalProps> = ({
   name,
   label,
   value = "true",
@@ -52,7 +52,7 @@ const CheckboxLayout: React.SFC<IProps & IInternalProps> = ({
   );
 };
 
-const RadioButtonLayout: React.SFC<IProps & IInternalProps> = ({
+const RadioButtonLayout: React.FunctionComponent<IProps & IInternalProps> = ({
   name,
   label,
   value = "true",

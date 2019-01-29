@@ -7,7 +7,7 @@ import { NeonHeader } from "../../../landing/shared/NeonHeader";
 import * as statusWidgetStyles from "./EtoOverviewStatus.module.scss";
 import * as styles from "./EtosComingSoon.module.scss";
 
-export const EtosComingSoon: React.SFC = () => (
+export const EtosComingSoon: React.FunctionComponent = () => (
   <section className={cn(statusWidgetStyles.etoOverviewStatus, styles.etosComingSoon)}>
     <NeonHeader>
       <FormattedMessage id="dashboard.eto.coming-soon-placeholder" />

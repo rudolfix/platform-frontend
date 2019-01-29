@@ -4,6 +4,15 @@ $divider-margin: 3%;
   @include media-breakpoint-down(sm) {
     padding-right: $divider-margin;
     padding-left: $divider-margin;
+    height: 600px;
+  }
+
+  @include media-breakpoint-only(md) {
+    height: 400px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    height: 200px;
   }
 
   background-color: $neu-white-two;
@@ -23,6 +32,9 @@ $divider-margin: 3%;
     margin-left: $divider-margin;
     margin-right: $divider-margin;
   }
+  flex-basis: 25%;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 
 .status-wrapper,
@@ -32,24 +44,35 @@ $divider-margin: 3%;
     margin-bottom: 1.25rem;
     margin-top: 1.25rem;
   }
-
-  margin-bottom: 0;
-  margin-top: 0;
-  flex-basis: 25%;
-  flex-grow: 1;
 }
 
 .status-wrapper {
+  @include media-breakpoint-up(sm) {
+    max-width: 220px;
+  }
+  @include media-breakpoint-only(md) {
+    max-width: none;
+    margin: 0;
+  }
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  max-width: 250px;
 }
 
 .tags-wrapper {
   @include media-breakpoint-down(sm) {
-    padding: 0;
+    padding: 0 50px;
+    max-width: none;
+    margin: auto;
+  }
+
+  @include media-breakpoint-only(md) {
+    position: absolute;
+    top: 70px;
+    width: 170px;
+    max-width: 170px;
   }
 
   @include media-breakpoint-up(xl) {
@@ -59,12 +82,18 @@ $divider-margin: 3%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 0 auto;
   padding: 20px 4px;
-  max-width: 150px;
+  max-width: 130px;
+  text-align: center;
 
   span {
     width: 100%;
+  }
+
+  .tag-item {
+    @include media-breakpoint-down(md) {
+      margin: 3px 0;
+    }
   }
 }
 
@@ -81,25 +110,62 @@ $divider-margin: 3%;
 
   display: flex;
   flex-direction: row;
+  height: 100%;
 }
 
 .stage-content-wrapper {
+  @include media-breakpoint-down(sm) {
+    margin: 0 auto;
+  }
+
+  @include media-breakpoint-only(md) {
+    flex-direction: row;
+  }
+
   display: flex;
   justify-content: center;
   flex-direction: column;
+
+  & > .group-wrapper {
+    max-width: none;
+  }
 }
 
 .group-wrapper {
-  display: table;
+  @include media-breakpoint-up(lg) {
+    max-width: 250px;
+  }
+
+  @include media-breakpoint-only(md) {
+    width: 100%;
+    max-width: none;
+    height: 150px;
+  }
+
   align-self: center;
 
+  .group-table {
+    display: table;
+  }
+
   .group {
+    @include media-breakpoint-only(md) {
+      display: table;
+      width: 100%;
+    }
+
     display: table-row;
 
     .label,
     .value {
+      width: 50%;
       display: table-cell;
       vertical-align: middle;
+    }
+
+    .back-now {
+      vertical-align: bottom;
+      padding-bottom: px-to-rem(5px);
     }
 
     .label {
@@ -111,8 +177,8 @@ $divider-margin: 3%;
         @include font-label-small;
       }
 
-      padding-top: px-to-rem(10px);
-      padding-bottom: px-to-rem(10px);
+      padding-top: px-to-rem(5px);
+      padding-bottom: px-to-rem(5px);
       padding-right: px-to-rem(13.6px);
 
       &-no-uppercase {
@@ -131,6 +197,11 @@ $divider-margin: 3%;
 .divider {
   @include media-breakpoint-down(md) {
     margin: 20px 0;
+    height: 1px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin: 10px 0;
   }
 
   border-left: thin $neu-silver solid;
@@ -182,10 +253,13 @@ $divider-margin: 3%;
   }
 }
 
-.powered-by-neufund {
+.powered-by-neufund,
+.more-details {
   position: absolute;
   bottom: px-to-rem(8px);
+}
 
+.powered-by-neufund {
   .powered {
     font-size: 8px;
   }

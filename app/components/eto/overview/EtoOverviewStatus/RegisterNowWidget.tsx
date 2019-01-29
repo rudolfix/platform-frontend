@@ -7,7 +7,7 @@ import { EtoWidgetContext } from "../../EtoWidgetView";
 
 import * as styles from "./RegisterNowWidget.module.scss";
 
-const RegisterNowWidget: React.SFC = () => (
+const RegisterNowWidget: React.FunctionComponent = () => (
   <EtoWidgetContext.Consumer>
     {previewCode => (
       <div className={styles.registerNow}>

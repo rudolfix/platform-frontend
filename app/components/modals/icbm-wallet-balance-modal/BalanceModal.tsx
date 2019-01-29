@@ -20,7 +20,7 @@ interface IBalanceModal {
   downloadICBMAgreement: () => void;
 }
 
-const BalanceFooter: React.SFC<{
+const BalanceFooter: React.FunctionComponent<{
   startMigration: () => void;
   disabled?: boolean;
   downloadICBMAgreement: () => void;
@@ -52,7 +52,7 @@ const BalanceFooter: React.SFC<{
   );
 };
 
-export const BalanceModal: React.SFC<IBalanceModal> = ({
+export const BalanceModal: React.FunctionComponent<IBalanceModal> = ({
   isVerificationFullyDone,
   startMigration,
   ethAddress = "",

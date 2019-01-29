@@ -5,6 +5,7 @@
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
   "license": "MIT",
   "scripts": {
+    "bundlewatcher": "./setup-bundlewatcher.sh",
     "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
     "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack-dev-server --config ./webpack/webpack.config.translate.js",
@@ -30,9 +31,12 @@
     "test:node": "NODE_ENV=test mocha --require ts-node/register --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",
     "test:node-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",
     "test:e2e": "./e2e/setup-e2e.sh",
+    "test:e2e:chrome": "./e2e/setup-chrome-e2e.sh",
     "test:e2e:cypress": "cypress run",
+    "test:e2e:cypress:chrome": "cypress run --config testFiles=\"**/*.spec.e2e.chrome.ts\" --browser chrome",
     "test:e2e:cypress:record": "node ./cypress/cypress-retries.js --record --parallel",
-    "test:e2e:dev": "cypress open",
+    "test:e2e:cypress:retry:chrome": "node ./cypress/cypress-retries.js --record --parallel --chrome",
+    "test:e2e:dev": "cypress open --config testFiles=\"**/*.spec.e2e.ts\"",
     "test": "yarn lint && yarn test:browser && yarn test:node && yarn test:e2e",
     "test:coverage": "yarn test:coverage-no-e2e && yarn test:e2e",
     "test:coverage-no-e2e": "yarn lint && yarn test:browser-coverage && yarn test:node",
@@ -44,7 +48,7 @@
     "intl:extract": "./scripts/extract-intl-messages.sh",
     "intl:extract:check": "./scripts/extract-intl-messages.sh --check",
     "storybook": "start-storybook -p 9001 -c .storybook -s ./app/assets",
-    "storybook:screenshots": "storybook-chrome-screenshot --debug --inject-files ./.storybook/disable-animations.js -p 9001 -c .storybook --browser-timeout 999999 -s ./app/assets",
+    "storybook:screenshots": "storybook-chrome-screenshot --debug --inject-files ./.storybook/disables.js -p 9001 -c .storybook --browser-timeout 999999 -s ./app/assets",
     "deploy-storybook": "storybook-to-ghpages --out=storybook-static"
   },
   "devDependencies": {
@@ -102,6 +106,7 @@
     "autoprefixer": "^9.4.2",
     "babel-loader": "^8.0.4",
     "babel-plugin-react-intl-krzkaczor": "^2.4.1",
+    "bundlewatch": "^0.2.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-dom": "^1.8.1",
@@ -174,7 +179,8 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
-    "webpack-merge": "^4.1.4"
+    "webpack-merge": "^4.2.1",
+    "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
     "@sentry/browser": "^4.3.0",

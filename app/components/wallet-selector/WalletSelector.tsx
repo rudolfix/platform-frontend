@@ -22,6 +22,7 @@ import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
 import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
+import { ExternalLink } from "../shared/links";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
@@ -40,7 +41,7 @@ interface IDispatchProps {
   openICBMModal: () => void;
 }
 
-export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = ({
+export const WalletSelectorComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   isMessageSigning,
   rootPath,
   isLoginRoute,
@@ -132,11 +133,11 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = 
               ) : (
                 <>
                   <FormattedMessage id="wallet-selector.register.help-link" />{" "}
-                  <a href={`${externalRoutes.neufundSupport}/home`} target="_blank">
+                  <ExternalLink href={`${externalRoutes.neufundSupport}/home`}>
                     <strong>
                       <FormattedMessage id="wallet-selector.help-link.register.label" />
                     </strong>
-                  </a>
+                  </ExternalLink>
                 </>
               )}
             </Col>
@@ -163,7 +164,7 @@ export const WalletSelectorComponent: React.SFC<IStateProps & IDispatchProps> = 
   );
 };
 
-export const WalletSelector = compose<React.SFC>(
+export const WalletSelector = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.walletSelector.reset()),

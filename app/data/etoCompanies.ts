@@ -1,4 +1,5 @@
 import { IEtoOfferingProps } from "../components/shared/EtoOfferingCard";
+import { EVideoTheme } from "../components/shared/ResponsiveVideo";
 
 import * as agora from "../assets/img/eto_offers/agora.jpg";
 import * as agora2 from "../assets/img/eto_offers/agora@2x.jpg";
@@ -12,11 +13,13 @@ import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.p
 import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
 import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
 import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
-import * as brile24hover from "../assets/img/eto_offers/brille_animation.gif";
-import * as brile24 from "../assets/img/eto_offers/brille_card.jpg";
+import * as brille24hoverMp4 from "../assets/img/eto_offers/brille_animation.mp4";
+import * as brille24hoverWebm from "../assets/img/eto_offers/brille_animation.webm";
+import * as brille24 from "../assets/img/eto_offers/brille_card.jpg";
 import * as curf from "../assets/img/eto_offers/curf.jpg";
 import * as curf2 from "../assets/img/eto_offers/curf@2x.jpg";
-import * as curfhover from "../assets/img/eto_offers/curfhover@1x.gif";
+import * as curfhoverMp4 from "../assets/img/eto_offers/curfhover@1x.mp4";
+import * as curfhoverWebm from "../assets/img/eto_offers/curfhover@1x.webm";
 import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
@@ -67,17 +70,17 @@ export const etoCompaniesCards: Array<EtoData> = [
       },
       topImage: {
         srcSet: {
-          "1x": brile24,
+          "1x": brille24,
         },
         alt: "",
         height: 50,
         width: 100,
       },
-      quoteImage: {
-        srcSet: {
-          "1x": brile24hover,
+      quoteVideo: {
+        sources: {
+          webm: brille24hoverWebm,
+          mp4: brille24hoverMp4,
         },
-        alt: "",
         height: 270,
         width: 530,
       },
@@ -446,15 +449,14 @@ export const etoCompaniesCards: Array<EtoData> = [
         height: 50,
         width: 100,
       },
-      quoteImage: {
-        srcSet: {
-          "1x": curfhover,
+      quoteVideo: {
+        sources: {
+          webm: curfhoverWebm,
+          mp4: curfhoverMp4,
         },
-        alt: "",
+        theme: EVideoTheme.black,
         height: 270,
         width: 530,
-        preserveOriginalRatio: true,
-        forceBg: "black",
       },
       to: "http://curf.surf",
     },

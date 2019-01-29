@@ -10,9 +10,9 @@ import { tid } from "../../../test/testUtils";
 Pre-login user for faster tests
 */
 
-const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
+export const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
 const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
-const JWT_KEY = "NF_JWT";
+export const JWT_KEY = "NF_JWT";
 const CURRENT_AGREEMENT = "QmZP5jN7W7oG7Kh4HsYPNtJ6naGTC3PHGx7vUgbTTGU7kN";
 
 export const generateRandomEmailAddress = () =>

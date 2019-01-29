@@ -6,7 +6,7 @@ import { appConnect } from "../../../store";
 
 import { actions } from "../../../modules/actions";
 
-import { IKycFileInfo, TKycRequestType } from "../../../lib/api/KycApi.interfaces";
+import { EKycRequestType, IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/buttons";
@@ -46,7 +46,7 @@ interface IDispatchProps {
 }
 
 interface IProps {
-  layout: TKycRequestType;
+  layout: EKycRequestType;
 }
 
 export const KYCUploadComponent = ({
@@ -62,7 +62,7 @@ export const KYCUploadComponent = ({
     >
       <MultiFileUpload
         acceptedFiles="image/*,application/pdf"
-        uploadType="individual"
+        uploadType={EKycRequestType.INDIVIDUAL}
         onDropFile={props.onDropFile}
         files={props.files}
         fileUploading={props.fileUploading}
@@ -84,7 +84,7 @@ export const KYCUploadComponent = ({
   );
 };
 
-export const KYCPersonalUpload = compose<React.SFC>(
+export const KYCPersonalUpload = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       files: state.kyc.individualFiles,

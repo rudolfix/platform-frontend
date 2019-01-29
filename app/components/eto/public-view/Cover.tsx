@@ -14,7 +14,7 @@ interface IProps {
   tags: ReadonlyArray<TTranslatedString> | undefined;
 }
 
-export const Cover: React.SFC<IProps> = ({
+export const Cover: React.FunctionComponent<IProps> = ({
   companyBanner,
   companyName,
   companyOneliner,

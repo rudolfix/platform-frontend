@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepPartial } from "../../types";
 import { selectKycRequestStatus } from "./selectors";
@@ -8,7 +9,7 @@ describe("selectKycRequestStatus", () => {
     const appState: DeepPartial<IAppState> = {
       kyc: {
         individualRequestStateLoading: true,
-        individualRequestState: { status: "Accepted" },
+        individualRequestState: { status: ERequestStatus.ACCEPTED },
         businessRequestStateLoading: false,
         claims: { isVerified: false },
       },
@@ -23,7 +24,7 @@ describe("selectKycRequestStatus", () => {
     const appState: DeepPartial<IAppState> = {
       kyc: {
         individualRequestStateLoading: true,
-        individualRequestState: { status: "Draft" },
+        individualRequestState: { status: ERequestStatus.DRAFT },
         businessRequestStateLoading: false,
         claims: { isVerified: true },
       },
@@ -38,7 +39,7 @@ describe("selectKycRequestStatus", () => {
     const appState: DeepPartial<IAppState> = {
       kyc: {
         individualRequestStateLoading: true,
-        individualRequestState: { status: "Accepted" },
+        individualRequestState: { status: ERequestStatus.ACCEPTED },
         businessRequestStateLoading: false,
         claims: { isVerified: false },
       },

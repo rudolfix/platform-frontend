@@ -3,7 +3,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { SectionHeader } from "../shared/SectionHeader";
 
-const ICBMWalletHelpTextModal: React.SFC = () => {
+const ICBMWalletHelpTextModal: React.FunctionComponent = () => {
   return (
     <section data-test-id="wallet-selector-icbm-wallet-help-text-modal">
       <SectionHeader className="mb-4">

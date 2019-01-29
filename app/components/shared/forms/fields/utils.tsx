@@ -3,18 +3,18 @@ import { get, isFunction } from "lodash";
 import * as React from "react";
 import { FormGroup, InputProps } from "reactstrap";
 
-import { Dictionary } from "../../../../types";
+import { Dictionary, TTranslatedString } from "../../../../types";
 import { getFieldSchema, isRequired } from "../../../../utils/yupUtils";
 import { FormFieldLabel } from "./FormFieldLabel";
 
 export interface IFormField {
   name: string;
-  label?: string | React.ReactNode;
+  label?: TTranslatedString;
 }
 
 export const withFormField = (
   Component: React.ComponentType<any>,
-): React.SFC<Dictionary<any> & IFormField> => ({ label, name, ...inputProps }) => (
+): React.FunctionComponent<Dictionary<any> & IFormField> => ({ label, name, ...inputProps }) => (
   <FormGroup>
     {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
     <Component name={name} {...inputProps} />
@@ -27,11 +27,12 @@ export const isValid = (
   touched: FormikTouched<any>,
   errors: FormikErrors<any>,
   key: string,
+  submitCount: number,
   ignoreTouched?: boolean,
 ): boolean | undefined => {
   if (ignoreTouched) return !get(errors, key);
 
-  if (get(touched, key)) {
+  if (get(touched, key) || submitCount > 0) {
     return !(errors && get(errors, key));
   }
 
@@ -42,9 +43,10 @@ export const isNonValid = (
   touched: FormikTouched<any>,
   errors: FormikErrors<any>,
   name: string,
+  submitCount: number,
   ignoreTouched?: boolean,
 ): boolean => {
-  const valid = isValid(touched, errors, name, ignoreTouched);
+  const valid = isValid(touched, errors, name, submitCount, ignoreTouched);
 
   return !(valid === undefined || valid === true);
 };

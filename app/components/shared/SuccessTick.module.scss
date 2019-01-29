@@ -1,11 +1,19 @@
 // sass-lint:disable-all
 
+$size: 90px;
+$scale-factor: .54;
+
+.sa-wrapper {
+  @include rect(round($size * $scale-factor));
+  margin-bottom: px-to-rem(5px);
+}
+
 .sa {
-  @include rect(90px);
+  @include rect($size);
 
   background-color: #fff;
-  transform: scale(.54);
-  transform-origin: center;
+  transform: scale($scale-factor);
+  transform-origin: top left;
 
   &-success {
     border-radius: 50%;

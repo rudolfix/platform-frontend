@@ -19,7 +19,7 @@ interface IProps {
   tokenDistribution: any[];
 }
 
-export const EtoTokenDistribution: React.SFC<IProps> = ({
+export const EtoTokenDistribution: React.FunctionComponent<IProps> = ({
   chartData,
   giniIndex,
   tokenDistribution,

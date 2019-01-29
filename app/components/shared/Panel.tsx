@@ -15,7 +15,7 @@ export interface IPanelProps extends CommonHtmlProps {
   centerContent?: boolean;
 }
 
-const Panel: React.SFC<IPanelProps> = ({
+const Panel: React.FunctionComponent<IPanelProps> = ({
   headerText,
   rightComponent,
   icon,

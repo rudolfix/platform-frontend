@@ -18,6 +18,7 @@ import {
   selectWalletMigrationData,
 } from "../../../modules/icbm-wallet-balance-modal/selectors";
 import { SelectIsVerificationFullyDone } from "../../../modules/selectors";
+import { ETokenType } from "../../../modules/tx/interfaces";
 import {
   selectIsEtherUpgradeTargetSet,
   selectLockedWalletConnected,
@@ -60,7 +61,7 @@ type IProps = IStateProps &
     success?: boolean;
   };
 
-export const IcbmWalletBalanceComponentInner: React.SFC<IProps> = ({
+export const IcbmWalletBalanceComponentInner: React.FunctionComponent<IProps> = ({
   onGotoWallet,
   isVerificationFullyDone,
   walletMigrationData,
@@ -105,7 +106,7 @@ export const IcbmWalletBalanceComponentInner: React.SFC<IProps> = ({
   </div>
 );
 
-const IcbmWalletBalanceComponent: React.SFC<IProps> = (props: IProps) => {
+const IcbmWalletBalanceComponent: React.FunctionComponent<IProps> = (props: IProps) => {
   return (
     <Modal isOpen={props.isOpen} toggle={props.onCancel}>
       <ModalComponentBody onClose={props.onCancel}>
@@ -141,7 +142,7 @@ const IcbmWalletBalanceModal = compose<any, any>(
       startWalletMigration: () => dispatch(actions.icbmWalletBalanceModal.startMigrationFlow()),
       goToNextStep: () => dispatch(actions.icbmWalletBalanceModal.setMigrationStepToNextStep()),
       downloadICBMAgreement: () =>
-        dispatch(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement()),
+        dispatch(actions.icbmWalletBalanceModal.downloadICBMWalletAgreement(ETokenType.ETHER)),
     }),
   }),
 )(IcbmWalletBalanceComponent);

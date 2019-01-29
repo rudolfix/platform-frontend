@@ -8,7 +8,7 @@ export interface IModalComponentProps {
   onClose?: () => void;
 }
 
-export const ModalComponentBody: React.SFC<IModalComponentProps> = ({
+export const ModalComponentBody: React.FunctionComponent<IModalComponentProps> = ({
   children,
   onClose,
   ...props

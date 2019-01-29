@@ -19,6 +19,7 @@ import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFil
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
+
 import * as styles from "../Shared.module.scss";
 
 interface IStateProps {
@@ -58,7 +59,6 @@ const EtoRegistrationCompanyInformationComponent = (
       />
 
       <FormTextArea
-        className="mb-2 mt-2"
         label={<FormattedMessage id="eto.form.company-information.company-description" />}
         placeholder="Describe your company 250 Characters"
         name="companyDescription"
@@ -119,7 +119,7 @@ const EtoRegistrationCompanyInformationComponent = (
   </EtoFormBase>
 );
 
-const EtoRegistrationCompanyInformation = compose<React.SFC>(
+const EtoRegistrationCompanyInformation = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.CompanyInformation),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

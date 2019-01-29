@@ -15,7 +15,7 @@ export type FormFieldLabelExternalProps = {
   name: string;
 };
 
-const FormLabel: React.SFC<FormLabelExternalProps & CommonHtmlProps> = ({
+const FormLabel: React.FunctionComponent<FormLabelExternalProps & CommonHtmlProps> = ({
   for: htmlFor,
   children,
   className,
@@ -25,7 +25,7 @@ const FormLabel: React.SFC<FormLabelExternalProps & CommonHtmlProps> = ({
   </label>
 );
 
-const FormFieldLabel: React.SFC<CommonHtmlProps & FormFieldLabelExternalProps> = ({
+const FormFieldLabel: React.FunctionComponent<CommonHtmlProps & FormFieldLabelExternalProps> = ({
   children,
   name,
   ...rawProps
@@ -37,7 +37,7 @@ const FormFieldLabel: React.SFC<CommonHtmlProps & FormFieldLabelExternalProps> =
           return (
             <FormLabel for={name} {...rawProps}>
               {children}
-              {isFieldRequired(validationSchema, name) && " *"}
+              {isFieldRequired(validationSchema, name) && <span aria-hidden="true"> *</span>}
             </FormLabel>
           );
         }

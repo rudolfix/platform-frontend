@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { TTranslatedString } from "../../types";
-
+import { ExternalLink } from "./links";
 import { Panel } from "./Panel";
 
 import * as styles from "./MediaLinksWidget.module.scss";
@@ -24,7 +24,7 @@ export const normalizedUrl = (url: string) => {
   return cleanUrl.startsWith("http") ? cleanUrl : `http://${cleanUrl}`;
 };
 
-export const MediaLinksWidget: React.SFC<IProps> = ({ links }) => {
+export const MediaLinksWidget: React.FunctionComponent<IProps> = ({ links }) => {
   if (!links.length) {
     return null;
   }
@@ -36,9 +36,9 @@ export const MediaLinksWidget: React.SFC<IProps> = ({ links }) => {
           url &&
           title && (
             <div className={styles.link} key={i}>
-              <a href={normalizedUrl(url)} target="_blank">
+              <ExternalLink href={normalizedUrl(url)}>
                 {publication}: {title}
-              </a>
+              </ExternalLink>
             </div>
           )
         );

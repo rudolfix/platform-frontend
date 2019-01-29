@@ -64,7 +64,7 @@ const defaultEtoTimelineContext = {
 
 const EtoTimelineContext = React.createContext(defaultEtoTimelineContext);
 
-const DatePoint: React.SFC<IDatePointProps> = ({ date, type, text }) => {
+const DatePoint: React.FunctionComponent<IDatePointProps> = ({ date, type, text }) => {
   return (
     <g transform="translate(-33 -9)">
       {date && (
@@ -92,7 +92,7 @@ const DatePoint: React.SFC<IDatePointProps> = ({ date, type, text }) => {
   );
 };
 
-const BlockTitle: React.SFC<IBlockTitle> = ({ title, width }) => {
+const BlockTitle: React.FunctionComponent<IBlockTitle> = ({ title, width }) => {
   return (
     <text className={styles.blockText} textAnchor="middle" transform={`translate(${width / 2} 13)`}>
       {title}
@@ -100,7 +100,7 @@ const BlockTitle: React.SFC<IBlockTitle> = ({ title, width }) => {
   );
 };
 
-const StartBlock: React.SFC<IBlockProps> = ({ title, width, theme }) => {
+const StartBlock: React.FunctionComponent<IBlockProps> = ({ title, width, theme }) => {
   return (
     <EtoTimelineContext.Consumer>
       {({ backgroundHeight, blockWidth, borderHeight, blockHeight }) => {
@@ -126,7 +126,7 @@ const StartBlock: React.SFC<IBlockProps> = ({ title, width, theme }) => {
   );
 };
 
-const EndBlock: React.SFC<IBlockProps> = ({ title, width, theme }) => {
+const EndBlock: React.FunctionComponent<IBlockProps> = ({ title, width, theme }) => {
   return (
     <EtoTimelineContext.Consumer>
       {({ backgroundHeight, blockWidth, borderHeight }) => {
@@ -153,7 +153,7 @@ const EndBlock: React.SFC<IBlockProps> = ({ title, width, theme }) => {
   );
 };
 
-const Block: React.SFC<IBlockProps> = ({ title, theme, width }) => {
+const Block: React.FunctionComponent<IBlockProps> = ({ title, theme, width }) => {
   return (
     <EtoTimelineContext.Consumer>
       {({ backgroundHeight, blockWidth, borderHeight }) => {
@@ -176,7 +176,7 @@ const Block: React.SFC<IBlockProps> = ({ title, theme, width }) => {
   );
 };
 
-const Pointer: React.SFC<IPointerProps> = ({ position }) => {
+const Pointer: React.FunctionComponent<IPointerProps> = ({ position }) => {
   const computedPosition = position || 20;
 
   return (
@@ -200,7 +200,7 @@ const getStartOfState = (state: EETOStateOnChain, startOfStates: TEtoStartOfStat
   return startDate ? startDate.getTime() : NaN;
 };
 
-export const EtoTimeline: React.SFC<IProps> = ({ startOfStates }) => {
+export const EtoTimeline: React.FunctionComponent<IProps> = ({ startOfStates }) => {
   // start/end dates of phases
   const preEtoStartDate = getStartOfState(EETOStateOnChain.Whitelist, startOfStates);
   const publicEtoStartDate = getStartOfState(EETOStateOnChain.Public, startOfStates);

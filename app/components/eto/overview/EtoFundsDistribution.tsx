@@ -28,7 +28,7 @@ interface IProps {
   numberOfTransactions: number;
 }
 
-export const EtoFundsDistribution: React.SFC<IProps> = ({
+export const EtoFundsDistribution: React.FunctionComponent<IProps> = ({
   chartDataNumberOfInvestors,
   chartDataNTotalAmountInvested,
   investors,

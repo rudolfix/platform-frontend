@@ -22,7 +22,7 @@ interface IProps {
   size?: TSize;
 }
 
-export const AssetPortfolio: React.SFC<IProps> = props => {
+export const AssetPortfolio: React.FunctionComponent<IProps> = props => {
   return (
     <div className={styles.assetPortfolio}>
       <div className={styles.yourNeumark}>

@@ -9,7 +9,12 @@ export interface IPanelBaseProps extends CommonHtmlProps {
   narrow?: boolean;
 }
 
-const PanelBase: React.SFC<IPanelBaseProps> = ({ className, children, narrow, ...props }) => {
+const PanelBase: React.FunctionComponent<IPanelBaseProps> = ({
+  className,
+  children,
+  narrow,
+  ...props
+}) => {
   return (
     <div {...props} className={cn(styles.panel, className, { [styles.narrow]: narrow })}>
       {children}

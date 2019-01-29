@@ -109,7 +109,7 @@ const EtoRegistrationRiskAssessmentComponent = (props: IProps) => {
   );
 };
 
-const EtoRegistrationRiskAssessment = compose<React.SFC>(
+const EtoRegistrationRiskAssessment = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.EtoRiskAssessment),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

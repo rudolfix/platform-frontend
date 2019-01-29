@@ -60,7 +60,7 @@ interface IStateProps {
   maxCapExceeded: boolean;
 }
 
-const StatusOfEto: React.SFC<IStatusOfEto> = ({ previewCode }) => {
+const StatusOfEto: React.FunctionComponent<IStatusOfEto> = ({ previewCode }) => {
   return (
     <div className={styles.statusOfEto}>
       <span className={styles.title}>
@@ -179,7 +179,7 @@ function onEtoNavigationClick(
   };
 }
 
-const EtoOverviewStatusLayout: React.SFC<
+const EtoOverviewStatusLayout: React.FunctionComponent<
   IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps
 > = ({
   eto,
@@ -221,7 +221,7 @@ const EtoOverviewStatusLayout: React.SFC<
             onClick={onEtoNavigationClick(navigateToEto, previewCode ? openInNewWindow : undefined)}
           >
             <div
-              className={styles.statusWrapper}
+              className={cn(styles.statusWrapper, styles.breakSm)}
               onClick={onEtoNavigationClick(
                 navigateToEto,
                 previewCode ? openInNewWindow : undefined,
@@ -255,6 +255,7 @@ const EtoOverviewStatusLayout: React.SFC<
                   documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]
                 }
                 smartContractOnchain={smartContractOnChain}
+                innerClass={styles.tagItem}
               />
             </div>
 
@@ -269,73 +270,75 @@ const EtoOverviewStatusLayout: React.SFC<
             />
 
             <div className={cn(styles.groupWrapper, styles.breakSm)}>
-              <div className={styles.group}>
-                <span className={styles.label}>
-                  <FormattedMessage id="shared-component.eto-overview-status.key-investment-terms" />
-                  {":"}
-                </span>
-              </div>
-              <div className={styles.group}>
-                <span className={styles.label}>
-                  <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
-                </span>
-                <span className={styles.value}>
-                  <Money
-                    value={eto.preMoneyValuationEur}
-                    currency={ECurrency.EUR}
-                    format={EMoneyFormat.FLOAT}
-                    currencySymbol={ECurrencySymbol.SYMBOL}
-                  />
-                </span>
-              </div>
-              <div className={styles.group}>
-                <span className={styles.label}>
-                  <FormattedMessage id="shared-component.eto-overview-status.investment-amount" />
-                </span>
-                <span className={styles.value}>
-                  <InvestmentAmount etoData={eto} />
-                </span>
-              </div>
-              <div className={styles.group}>
-                <span className={styles.label}>
-                  <FormattedMessage id="shared-component.eto-overview-status.new-shares-generated" />
-                </span>
-                <span className={styles.value}>
-                  <NumberFormat value={eto.newSharesToIssue} />
-                </span>
-              </div>
-              <div className={styles.group}>
-                <span className={styles.label}>
-                  <FormattedMessage id="shared-component.eto-overview-status.equity-token-price" />
-                </span>
-                <span className={styles.value}>
-                  <Money
-                    value={formatFlexiPrecision(tokenPrice, 8)}
-                    currency={ECurrency.EUR}
-                    format={EMoneyFormat.FLOAT}
-                    currencySymbol={ECurrencySymbol.SYMBOL}
-                  />
-                  {showWhitelistDiscount && (
-                    <>
-                      {" ("}
-                      <FormattedMessage
-                        id="shared-component.eto-overview-status.included-discount-percentage"
-                        values={{ percentage: eto.whitelistDiscountFraction! * 100 }}
-                      />
-                      {")"}
-                    </>
-                  )}
-                  {showPublicDiscount && (
-                    <>
-                      {" ("}
-                      <FormattedMessage
-                        id="shared-component.eto-overview-status.included-discount-percentage"
-                        values={{ percentage: eto.publicDiscountFraction! * 100 }}
-                      />
-                      {")"}
-                    </>
-                  )}
-                </span>
+              <div className={styles.groupTable}>
+                <div className={styles.group}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="shared-component.eto-overview-status.key-investment-terms" />
+                    {":"}
+                  </span>
+                </div>
+                <div className={styles.group}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
+                  </span>
+                  <span className={styles.value}>
+                    <Money
+                      value={eto.preMoneyValuationEur}
+                      currency={ECurrency.EUR}
+                      format={EMoneyFormat.FLOAT}
+                      currencySymbol={ECurrencySymbol.SYMBOL}
+                    />
+                  </span>
+                </div>
+                <div className={styles.group}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="shared-component.eto-overview-status.investment-amount" />
+                  </span>
+                  <span className={styles.value}>
+                    <InvestmentAmount etoData={eto} />
+                  </span>
+                </div>
+                <div className={styles.group}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="shared-component.eto-overview-status.new-shares-generated" />
+                  </span>
+                  <span className={styles.value}>
+                    <NumberFormat value={eto.newSharesToIssue} />
+                  </span>
+                </div>
+                <div className={styles.group}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="shared-component.eto-overview-status.equity-token-price" />
+                  </span>
+                  <span className={styles.value}>
+                    <Money
+                      value={formatFlexiPrecision(tokenPrice, 8)}
+                      currency={ECurrency.EUR}
+                      format={EMoneyFormat.FLOAT}
+                      currencySymbol={ECurrencySymbol.SYMBOL}
+                    />
+                    {showWhitelistDiscount && (
+                      <>
+                        {" ("}
+                        <FormattedMessage
+                          id="shared-component.eto-overview-status.included-discount-percentage"
+                          values={{ percentage: eto.whitelistDiscountFraction! * 100 }}
+                        />
+                        {")"}
+                      </>
+                    )}
+                    {showPublicDiscount && (
+                      <>
+                        {" ("}
+                        <FormattedMessage
+                          id="shared-component.eto-overview-status.included-discount-percentage"
+                          values={{ percentage: eto.publicDiscountFraction! * 100 }}
+                        />
+                        {")"}
+                      </>
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -353,7 +356,10 @@ const EtoOverviewStatusLayout: React.SFC<
           {previewCode ? (
             <PoweredByNeufund />
           ) : !publicView ? (
-            <Link to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}>
+            <Link
+              className={styles.moreDetails}
+              to={withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode })}
+            >
               <FormattedMessage id="shared-component.eto-overview.more-details" />
             </Link>
           ) : null}
@@ -370,9 +376,9 @@ const EtoOverviewStatus = compose<
   appConnect<IStateProps, IDispatchProps, IExternalProps>({
     stateToProps: (state, props) => ({
       isAuthorized: selectIsAuthorized(state.auth),
-      isEligibleToPreEto: selectIsEligibleToPreEto(props.eto.etoId, state),
+      isEligibleToPreEto: selectIsEligibleToPreEto(state, props.eto.etoId),
       isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
-      maxCapExceeded: selectInitialMaxCapExceeded(props.eto.etoId, state),
+      maxCapExceeded: selectInitialMaxCapExceeded(state, props.eto.etoId),
     }),
     dispatchToProps: (dispatch, { eto }) => ({
       navigateToEto: () =>

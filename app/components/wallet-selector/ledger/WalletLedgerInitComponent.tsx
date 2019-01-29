@@ -30,7 +30,7 @@ interface IInitStep {
   desc: string;
 }
 
-const InitStep: React.SFC<IInitStep> = ({ header, img, desc }) => (
+const InitStep: React.FunctionComponent<IInitStep> = ({ header, img, desc }) => (
   <Col xs="12" md="4" className={cn("mb-4 mb-md-0 px-4", styles.step)}>
     <div className={styles.header}>{header}</div>
     <img className="my-2 my-md-5" src={img} />
@@ -43,10 +43,9 @@ interface IWalletLedgerInitComponentProps {
   errorMessage?: TMessage;
 }
 
-export const WalletLedgerInitComponent: React.SFC<IWalletLedgerInitComponentProps & IIntlProps> = ({
-  errorMessage,
-  intl,
-}) => (
+export const WalletLedgerInitComponent: React.FunctionComponent<
+  IWalletLedgerInitComponentProps & IIntlProps
+> = ({ errorMessage, intl }) => (
   <>
     <LedgerHeader />
 

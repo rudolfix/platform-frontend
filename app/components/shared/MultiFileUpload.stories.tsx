@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { EKycRequestType } from "../../lib/api/KycApi.interfaces";
 import { MultiFileUpload } from "./MultiFileUpload";
 
 const files = [
@@ -17,7 +18,7 @@ const files = [
 storiesOf("Upload/MultiFileUpload", module)
   .add("individual", () => (
     <MultiFileUpload
-      uploadType="individual"
+      uploadType={EKycRequestType.INDIVIDUAL}
       acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
@@ -27,7 +28,7 @@ storiesOf("Upload/MultiFileUpload", module)
   ))
   .add("business layout: vertical", () => (
     <MultiFileUpload
-      uploadType="business"
+      uploadType={EKycRequestType.BUSINESS}
       acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
@@ -37,7 +38,7 @@ storiesOf("Upload/MultiFileUpload", module)
   ))
   .add("business layout: horizontal", () => (
     <MultiFileUpload
-      uploadType="business"
+      uploadType={EKycRequestType.BUSINESS}
       acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
@@ -47,7 +48,7 @@ storiesOf("Upload/MultiFileUpload", module)
   ))
   .add("business state: uploading", () => (
     <MultiFileUpload
-      uploadType="business"
+      uploadType={EKycRequestType.BUSINESS}
       acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={[]}
@@ -56,7 +57,7 @@ storiesOf("Upload/MultiFileUpload", module)
   ))
   .add("business state: with files", () => (
     <MultiFileUpload
-      uploadType="business"
+      uploadType={EKycRequestType.BUSINESS}
       acceptedFiles="image/*,application/pdf"
       onDropFile={() => {}}
       files={files}

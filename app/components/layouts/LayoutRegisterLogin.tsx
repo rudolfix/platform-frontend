@@ -4,7 +4,7 @@ import { Col, Container, Row } from "reactstrap";
 
 import * as styles from "./LayoutRegisterLogin.module.scss";
 
-const LayoutRegisterLogin: React.SFC = ({ children }) => (
+const LayoutRegisterLogin: React.FunctionComponent = ({ children }) => (
   <Container>
     <Row>
       <Col

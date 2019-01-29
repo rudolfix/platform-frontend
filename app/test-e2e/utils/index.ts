@@ -1,23 +1,13 @@
 import { get } from "lodash";
+
 import { appRoutes } from "../../components/appRoutes";
 import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
+import { tid } from "./selectors";
 import { DEFAULT_PASSWORD } from "./userHelpers";
 
 export const LONG_WAIT_TIME = 60000;
-
-export function tid(id: string, rest?: string): string {
-  return `[data-test-id="${id}"]` + (rest ? ` ${rest}` : "");
-}
-
-/**
- * Returns TID for notification
- * We can't use `tid` method because notification TID is provided as a class
- * as `react-toastify` doesn't allow custom attributes
- * @param notificationTid
- */
-export const notificationTid = (notificationTid: string) => `.${notificationTid}`;
 
 export const ETO_FIXTURES: any = require("../../../git_modules/platform-contracts-artifacts/localhost/eto_fixtures.json");
 
@@ -183,8 +173,14 @@ export const verifyLatestUserEmail = () => {
   });
 };
 
-export const assertUserInDashboard = () => {
-  return cy.url().should("contain", appRoutes.dashboard);
+export const assertUserInDashboard = (isIssuer: boolean = false) => {
+  cy.url().should("contain", appRoutes.dashboard);
+  return isIssuer ? cy.get(tid("eto-dashboard-application")) : cy.get(tid("dashboard-application"));
+};
+
+export const assertUserInLanding = () => {
+  cy.url().should("contain", appRoutes.root);
+  return cy.get(tid("landing-page"));
 };
 
 export const convertToUniqueEmail = (email: string) => {
@@ -199,19 +195,21 @@ export const registerWithLightWallet = (
   email: string,
   password: string,
   uniqueEmail: boolean = false,
+  asIssuer: boolean = false,
 ) => {
   if (uniqueEmail) {
     email = convertToUniqueEmail(email);
   }
 
-  cy.visit(appRoutes.register);
+  cy.visit(asIssuer ? appRoutes.registerEto : appRoutes.register);
 
+  cy.get(tid("wallet-selector-light")).awaitedClick();
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).awaitedClick();
   cy.get(tid("wallet-selector-register-button")).should("be.disabled");
-  assertUserInDashboard();
+  assertUserInDashboard(asIssuer);
   acceptTOS();
 };
 

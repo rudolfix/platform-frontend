@@ -14,11 +14,11 @@ interface IStateProps {
   isLoading: boolean;
 }
 
-export const EtoRegisterComponent: React.SFC<IStateProps> = ({ isLoading }) => (
+export const EtoRegisterComponent: React.FunctionComponent<IStateProps> = ({ isLoading }) => (
   <LayoutAuthorized>{isLoading ? <LoadingIndicator /> : <EtoRegistrationPanel />}</LayoutAuthorized>
 );
 
-export const EtoRegister = compose<React.SFC>(
+export const EtoRegister = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({ actionCreator: d => d(actions.etoFlow.loadIssuerEto()) }),
   appConnect<IStateProps>({

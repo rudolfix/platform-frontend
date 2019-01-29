@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
+import { ExternalLink } from "../../shared/links";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 import { JoinCta } from "./JoinCta";
 
@@ -31,7 +32,7 @@ import * as unitiImage from "../../../assets/img/landing/uniti.png";
 import * as unitiImage2x from "../../../assets/img/landing/uniti@2x.png";
 import * as unitiImage3x from "../../../assets/img/landing/uniti@3x.png";
 
-export const LandingHeader: React.SFC = () => (
+export const LandingHeader: React.FunctionComponent = () => (
   <section className={styles.hero}>
     <Container>
       <Row>
@@ -44,9 +45,9 @@ export const LandingHeader: React.SFC = () => (
               Neufund makes it possible to invest in real world equity on the Ethereum Blockchain.
               Our platform enables primary offerings of investment assets through legally binding
               smart contracts -{" "}
-              <a href="https://neufund.org/fundraise-with-equity-token" target="_blank">
+              <ExternalLink href="https://neufund.org/fundraise-with-equity-token">
                 Equity Token Offerings
-              </a>
+              </ExternalLink>
               .
             </p>
             <p className={styles.heroDescription}>The future of fundraising is launching now.</p>
@@ -62,7 +63,7 @@ export const LandingHeader: React.SFC = () => (
   </section>
 );
 
-const CompanyImages: React.SFC = () => (
+const CompanyImages: React.FunctionComponent = () => (
   <div className={styles.images}>
     <a href="#eto-card-3" className={styles.companyImage}>
       <ResponsiveImage

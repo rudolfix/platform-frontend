@@ -48,10 +48,9 @@ export interface IWalletLedgerChooserTableSimple {
   handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
 }
 
-export const WalletLedgerChooserTableSimple: React.SFC<IWalletLedgerChooserTableSimple> = ({
-  accounts,
-  handleAddressChosen,
-}) => (
+export const WalletLedgerChooserTableSimple: React.FunctionComponent<
+  IWalletLedgerChooserTableSimple
+> = ({ accounts, handleAddressChosen }) => (
   <table className={styles.table}>
     <thead>
       <tr>

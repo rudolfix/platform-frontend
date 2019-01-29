@@ -3,10 +3,10 @@ import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
 import { TTranslatedString } from "../../../../types";
-import { isValid } from "./utils";
+import { FormFieldError, generateErrorId } from "./FormFieldError";
+import { isNonValid } from "./utils";
 
 import * as styles from "./FormFieldDate.module.scss";
-import { FormFieldError } from "./FormFieldError";
 
 interface IProps {
   disabled?: boolean;
@@ -61,8 +61,9 @@ export class FormFieldDate extends React.Component<IProps> {
 
     return (
       <FormikConsumer>
-        {({ touched, errors }: any) => {
-          const valid = isValid(touched, errors, name);
+        {({ touched, errors, submitCount }: any) => {
+          const invalid = isNonValid(touched, errors, name, submitCount, undefined);
+
           return (
             <FormGroup>
               <div className={styles.dateField} data-test-id={dataTestId}>
@@ -75,6 +76,10 @@ export class FormFieldDate extends React.Component<IProps> {
                         <div className={styles.inputWrapper}>
                           <Input
                             {...field}
+                            data-test-id="form-field-date-day"
+                            aria-describedby={generateErrorId(name)}
+                            aria-invalid={invalid}
+                            invalid={invalid}
                             disabled={disabled}
                             onChange={e => {
                               this.onChange("day", e, field.onChange);
@@ -86,9 +91,7 @@ export class FormFieldDate extends React.Component<IProps> {
                             }}
                             value={this.fromValue("day", field.value)}
                             placeholder="DD"
-                            valid={valid}
                             maxLength={2}
-                            data-test-id="form-field-date-day"
                           />
                         </div>
                       );
@@ -101,6 +104,10 @@ export class FormFieldDate extends React.Component<IProps> {
                       <div>
                         <Input
                           {...field}
+                          data-test-id="form-field-date-month"
+                          aria-describedby={generateErrorId(name)}
+                          aria-invalid={invalid}
+                          invalid={invalid}
                           disabled={disabled}
                           onChange={e => {
                             this.onChange("month", e, field.onChange);
@@ -112,9 +119,7 @@ export class FormFieldDate extends React.Component<IProps> {
                           }}
                           value={this.fromValue("month", field.value)}
                           placeholder="MM"
-                          valid={valid}
                           maxLength={2}
-                          data-test-id="form-field-date-month"
                           innerRef={this.saveMonthRef}
                         />
                       </div>
@@ -127,13 +132,15 @@ export class FormFieldDate extends React.Component<IProps> {
                       <div className={styles.dateFieldYear}>
                         <Input
                           {...field}
+                          data-test-id="form-field-date-year"
+                          aria-describedby={generateErrorId(name)}
+                          aria-invalid={invalid}
+                          invalid={invalid}
                           disabled={disabled}
                           onChange={e => this.onChange("year", e, field.onChange)}
                           value={this.fromValue("year", field.value)}
                           placeholder="YYYY"
-                          valid={valid}
                           maxLength={4}
-                          data-test-id="form-field-date-year"
                           innerRef={this.saveYearRef}
                         />
                       </div>

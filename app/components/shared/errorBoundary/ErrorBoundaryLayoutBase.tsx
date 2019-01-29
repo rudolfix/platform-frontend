@@ -5,7 +5,7 @@ import { LayoutBase } from "../../layouts/LayoutBase";
 
 import * as styles from "./ErrorBoundary.module.scss";
 
-export const ErrorBoundaryLayoutBase: React.SFC<{}> = () => {
+export const ErrorBoundaryLayoutBase: React.FunctionComponent<{}> = () => {
   return (
     <LayoutBase>
       <div className={styles.errorLayout}>

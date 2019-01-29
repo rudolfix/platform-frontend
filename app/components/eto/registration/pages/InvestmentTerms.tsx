@@ -52,7 +52,11 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
 
-const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingData, readonly }) => {
+const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
+  stateValues,
+  savingData,
+  readonly,
+}) => {
   const existingCompanyShares = stateValues.existingCompanyShares || 1;
   const newSharesToIssue = stateValues.newSharesToIssue || 1;
   const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
@@ -136,7 +140,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
           placeholder=" "
           name="publicDiscountFraction"
-          type="number"
           prefix="%"
           ratio={100}
           disabled={readonly}
@@ -154,7 +157,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
           placeholder=" "
           name="whitelistDiscountFraction"
-          type="number"
           prefix="%"
           ratio={100}
           disabled={readonly}
@@ -174,7 +176,6 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
           }
           placeholder=" "
           name="fixedSlotsMaximumDiscountFraction"
-          type="number"
           prefix="%"
           ratio={100}
           disabled={readonly}
@@ -281,7 +282,7 @@ const EtoInvestmentTermsComponent: React.SFC<IProps> = ({ stateValues, savingDat
   );
 };
 
-const EtoInvestmentTerms = compose<React.SFC<IExternalProps>>(
+const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoInvestmentTerms),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({

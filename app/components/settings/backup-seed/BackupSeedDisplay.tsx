@@ -17,7 +17,7 @@ interface IBackupSeedDisplayProps {
   walletPrivateData: IWalletPrivateData;
   isModal?: boolean;
 }
-const BackupSeedDisplay: React.SFC<IBackupSeedDisplayProps> = ({
+const BackupSeedDisplay: React.FunctionComponent<IBackupSeedDisplayProps> = ({
   walletPrivateData,
   isModal,
   onNext,

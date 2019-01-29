@@ -6,9 +6,10 @@ import { call, fork, put, select } from "redux-saga/effects";
 import { IcbmWalletMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { actions, TAction } from "../actions";
+import { actions, TAction, TActionFromCreator } from "../actions";
 import { downloadLink } from "../immutable-file/utils";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
+import { ETokenType } from "../tx/interfaces";
 import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
 import { selectLockedWalletConnected } from "../wallet/selectors";
@@ -162,11 +163,14 @@ function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDep
 
 function* downloadICBMWalletAgreement(
   { contractsService, apiImmutableStorage, logger, notificationCenter }: TGlobalDependencies,
-  action: TAction,
+  action: TActionFromCreator<typeof actions.icbmWalletBalanceModal.downloadICBMWalletAgreement>,
 ): any {
-  if (action.type !== "ICBM_WALLET_BALANCE_MODAL_DOWNLOAD_AGREEMENT") return;
+  const lockInstance =
+    action.payload.tokenType === ETokenType.ETHER
+      ? contractsService.etherLock
+      : contractsService.euroLock;
 
-  const [, , agreementUrl] = yield contractsService.euroLock.currentAgreement();
+  const [, , agreementUrl] = yield lockInstance.currentAgreement();
   const fileUri = agreementUrl.replace("ipfs:", "");
 
   try {

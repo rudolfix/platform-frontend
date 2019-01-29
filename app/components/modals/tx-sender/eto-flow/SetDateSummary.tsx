@@ -17,15 +17,14 @@ import {
 } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { EtherscanAddressLink } from "../../../shared/EtherscanLink";
+import { EtherscanAddressLink, ExternalLink } from "../../../shared/links";
 import { Heading } from "../../../shared/modals/Heading";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { ITxSummaryDispatchProps } from "../TxSender";
 
 interface IStateProps {
   newDate: Date;
-  changableTill: moment.Moment;
+  changeableTill: moment.Moment;
   etoTermsAddress: string;
   etoCommitmentAddress: string;
   termsAgreementIPFSLink: string;
@@ -33,9 +32,13 @@ interface IStateProps {
   offeringAgreementIPFSLink: string;
 }
 
-type IProps = IStateProps & ITxSummaryDispatchProps;
+interface IDispatchProps {
+  onAccept: () => any;
+}
 
-const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
+type IProps = IStateProps & IDispatchProps;
+
+const SetEtoDateSummaryComponent: React.FunctionComponent<IProps> = ({
   onAccept,
   etoTermsAddress,
   equityTokenAddress,
@@ -43,7 +46,7 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
   etoCommitmentAddress,
   termsAgreementIPFSLink,
   newDate,
-  changableTill,
+  changeableTill,
 }) => {
   const date = moment(newDate);
   return (
@@ -58,7 +61,7 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
         <FormattedHTMLMessage
           tagName="p"
           id="eto.settings.eto-start-date-summary.dates-description"
-          values={{ timeToChange: changableTill.from(moment().startOf("day"), true) }}
+          values={{ timeToChange: changeableTill.from(moment().startOf("day"), true) }}
         />
       </Row>
 
@@ -125,17 +128,15 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
           <InfoRow
             caption={immutableDocumentName[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]}
             value={
-              <a href={offeringAgreementIPFSLink} target="_blank">
+              <ExternalLink href={offeringAgreementIPFSLink}>
                 {offeringAgreementIPFSLink}
-              </a>
+              </ExternalLink>
             }
           />
           <InfoRow
             caption={immutableDocumentName[EEtoDocumentType.SIGNED_TERMSHEET]}
             value={
-              <a href={termsAgreementIPFSLink} target="_blank">
-                {termsAgreementIPFSLink}
-              </a>
+              <ExternalLink href={termsAgreementIPFSLink}>{termsAgreementIPFSLink}</ExternalLink>
             }
           />
         </InfoList>
@@ -157,7 +158,7 @@ const SetEtoDateSummaryComponent: React.SFC<IProps> = ({
 
 const SetEtoDateSummary = compose<IProps, {}>(
   setDisplayName("SetEtoDateSummary"),
-  appConnect<IStateProps, ITxSummaryDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const newDate = selectNewPreEtoStartDate(state)!;
       const constants = selectPlatformTermsConstants(state);
@@ -186,7 +187,7 @@ const SetEtoDateSummary = compose<IProps, {}>(
         etoCommitmentAddress: eto.contract!.etoCommitmentAddress,
         offeringAgreementIPFSLink,
         termsAgreementIPFSLink,
-        changableTill,
+        changeableTill: changableTill,
       };
     },
     dispatchToProps: d => ({

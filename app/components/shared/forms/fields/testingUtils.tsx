@@ -1,11 +1,13 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import * as React from "react";
+
+import { Form } from "../Form";
 
 /**
  * Use only for testing and storybook.
  */
 export const formWrapper = (formState: any, onSubmit?: (values: any) => any) => (
-  Component: React.SFC,
+  Component: React.FunctionComponent,
 ) => () => (
   <Formik initialValues={formState} onSubmit={onSubmit || (() => {})}>
     {({ submitForm, values, submitCount }) => {

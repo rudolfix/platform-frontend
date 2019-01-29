@@ -1,4 +1,4 @@
-import { connect as formikConnect, Field, FieldProps, FormikContext } from "formik";
+import { connect as formikConnect, Field, FieldProps } from "formik";
 import * as React from "react";
 import { compose } from "recompose";
 
@@ -91,11 +91,7 @@ export class FormSingleFileUploadComponent extends React.Component<
 }
 
 export const FormSingleFileUpload = compose<
-  IOwnProps &
-    IDispatchProps &
-    CommonHtmlProps & {
-      formik: FormikContext<any>;
-    },
+  IOwnProps & IDispatchProps & CommonHtmlProps & TFormikConnect,
   IOwnProps & CommonHtmlProps
 >(
   appConnect<{}, IDispatchProps, IOwnProps>({

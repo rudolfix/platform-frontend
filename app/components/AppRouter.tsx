@@ -28,12 +28,12 @@ import { profileRoutes } from "./settings/routes";
 import { Settings } from "./settings/Settings";
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
-import { TestEmbededWidget } from "./testing/embeded-WIdget/TestEmbededWidget";
+import { TestEmbededWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
 
-export const AppRouter: React.SFC = () => (
+export const AppRouter: React.FunctionComponent = () => (
   <SwitchConnected>
     <Route
       path={appRoutes.etoPublicView}

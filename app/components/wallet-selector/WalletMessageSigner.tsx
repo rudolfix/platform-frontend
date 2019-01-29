@@ -28,7 +28,7 @@ interface IOwnProps {
   rootPath: string;
 }
 
-export const MessageSignerComponent: React.SFC<IStateProps & IDispatchProps> = ({
+export const MessageSignerComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   errorMsg,
   cancelSigning,
   isLightWallet,

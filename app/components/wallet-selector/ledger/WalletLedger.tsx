@@ -11,7 +11,7 @@ interface IWalletLedgerStateProps {
   isSupportingLedger: boolean;
 }
 
-export const WalletLedgerComponent: React.SFC<IWalletLedgerStateProps> = ({
+export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStateProps> = ({
   isConnectionEstablished,
   isSupportingLedger,
 }) => {

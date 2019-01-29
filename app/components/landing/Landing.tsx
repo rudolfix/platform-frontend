@@ -17,7 +17,7 @@ import { Testimonials } from "./parts/Testimonials";
 
 import * as styles from "./Landing.module.scss";
 
-export const LandingComponent: React.SFC = () => (
+export const LandingComponent: React.FunctionComponent = () => (
   <div className={cn(styles.landingWrapper, "pure")} data-test-id="landing-page">
     {process.env.NF_FEATURED_ETO_PREVIEW_CODE ? (
       <LandingFeatured />
@@ -58,7 +58,7 @@ export const LandingComponent: React.SFC = () => (
   </div>
 );
 
-export const Landing: React.SFC = compose<React.SFC>(
+export const Landing: React.FunctionComponent = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
   withContainer(LayoutUnauthorized),
 )(LandingComponent);

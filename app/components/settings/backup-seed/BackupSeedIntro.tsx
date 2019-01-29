@@ -16,7 +16,10 @@ interface IBackupSeedIntroProps {
   onBack: () => void;
 }
 
-export const BackupSeedIntro: React.SFC<IBackupSeedIntroProps> = ({ onBack, onNext }) => (
+export const BackupSeedIntro: React.FunctionComponent<IBackupSeedIntroProps> = ({
+  onBack,
+  onNext,
+}) => (
   <>
     <Row className={styles.stepCardWrapper}>
       <StepCard

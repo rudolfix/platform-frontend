@@ -1,11 +1,13 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Redirect } from "react-router";
+import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
-import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { EKycRequestType, ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
-import { selectUserType } from "../../modules/auth/selectors";
+import { selectIsUserEmailVerified, selectUserType } from "../../modules/auth/selectors";
 import {
   selectKycOutSourcedURL,
   selectKycRequestStatus,
@@ -13,6 +15,7 @@ import {
 } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
+import { appRoutes } from "../appRoutes";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Button, EButtonLayout } from "../shared/buttons";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
@@ -65,9 +68,10 @@ export const businessSteps = [
 interface IStateProps {
   requestLoading?: boolean;
   userType: EUserType;
-  requestStatus?: TRequestStatus;
+  requestStatus?: ERequestStatus;
   redirectUrl: string;
-  pendingRequestType: TKycRequestType | undefined;
+  pendingRequestType: EKycRequestType | undefined;
+  hasVerifiedEmail: boolean;
 }
 
 interface IDispatchProps {
@@ -88,7 +92,8 @@ class RequestStateInfo extends React.Component<IProps, IState> {
   };
 
   render(): React.ReactNode {
-    const steps = this.props.pendingRequestType === "business" ? businessSteps : personalSteps;
+    const steps =
+      this.props.pendingRequestType === EKycRequestType.BUSINESS ? businessSteps : personalSteps;
     const settingsButton = (
       <div className="p-4 text-center">
         <Button
@@ -111,7 +116,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Pending") {
+    if (this.props.requestStatus === ERequestStatus.PENDING) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.pending.title" />}
@@ -138,7 +143,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Accepted") {
+    if (this.props.requestStatus === ERequestStatus.ACCEPTED) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.accepted.title" />}
@@ -149,7 +154,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Rejected") {
+    if (this.props.requestStatus === ERequestStatus.REJECTED) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.rejected.title" />}
@@ -160,7 +165,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         </KycPanel>
       );
     }
-    if (this.props.requestStatus === "Outsourced") {
+    if (this.props.requestStatus === ERequestStatus.OUTSOURCED) {
       return (
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.outsourced.title" />}
@@ -180,8 +185,8 @@ class RequestStateInfo extends React.Component<IProps, IState> {
   }
 }
 
-export const KycComponent: React.SFC<IProps> = props => {
-  const router = props.requestStatus === "Draft" ? <KycRouter /> : null;
+export const KycComponent: React.FunctionComponent<IProps> = props => {
+  const router = props.requestStatus === ERequestStatus.DRAFT ? <KycRouter /> : null;
 
   return (
     <LayoutAuthorized>
@@ -191,7 +196,7 @@ export const KycComponent: React.SFC<IProps> = props => {
   );
 };
 
-export const Kyc = compose<React.SFC>(
+export const Kyc = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
@@ -201,6 +206,7 @@ export const Kyc = compose<React.SFC>(
       redirectUrl: selectKycOutSourcedURL(state.kyc),
       pendingRequestType: selectPendingKycRequestType(state.kyc),
       userType: selectUserType(state)!,
+      hasVerifiedEmail: selectIsUserEmailVerified(state.auth),
     }),
     dispatchToProps: dispatch => ({
       reopenRequest: () => {},
@@ -209,6 +215,10 @@ export const Kyc = compose<React.SFC>(
     }),
     options: { pure: false },
   }),
+  branch(
+    (props: IStateProps) => !props.hasVerifiedEmail,
+    renderComponent(() => <Redirect to={appRoutes.profile} />),
+  ),
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.kyc.kycLoadIndividualRequest());

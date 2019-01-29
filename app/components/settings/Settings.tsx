@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
-import { TKycRequestType, TRequestStatus } from "../../lib/api/KycApi.interfaces";
+import { EKycRequestType, ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
@@ -32,11 +32,11 @@ interface IStateProps {
   isIcbmWalletConnected: boolean;
   isLockedWalletConnected: boolean;
   userType?: EUserType;
-  kycRequestType?: TKycRequestType;
-  kycRequestStatus?: TRequestStatus;
+  kycRequestType?: EKycRequestType;
+  kycRequestStatus?: ERequestStatus;
 }
 
-export const SettingsComponent: React.SFC<IStateProps> = ({
+export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
   isLightWallet,
   isIcbmWalletConnected,
   isLockedWalletConnected,
@@ -44,9 +44,10 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
   kycRequestType,
   kycRequestStatus,
 }) => {
-  const isPersonalDataProcessed = kycRequestStatus === "Pending" || kycRequestStatus === "Accepted";
+  const isPersonalDataProcessed =
+    kycRequestStatus === ERequestStatus.PENDING || kycRequestStatus === ERequestStatus.ACCEPTED;
   const isUserInvestor = userType === EUserType.INVESTOR;
-  const isIndividual = kycRequestType === "individual";
+  const isIndividual = kycRequestType === EKycRequestType.INDIVIDUAL;
 
   return (
     <LayoutAuthorized>
@@ -100,9 +101,8 @@ export const SettingsComponent: React.SFC<IStateProps> = ({
   );
 };
 
-export const Settings = compose<React.SFC>(
+export const Settings = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
-  onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
   appConnect<IStateProps>({
     stateToProps: state => ({
       isLightWallet: selectIsLightWallet(state.web3),
@@ -115,6 +115,7 @@ export const Settings = compose<React.SFC>(
   }),
   onEnterAction({
     actionCreator: dispatch => {
+      dispatch(actions.wallet.loadWalletData());
       dispatch(actions.kyc.kycLoadIndividualData());
     },
   }),

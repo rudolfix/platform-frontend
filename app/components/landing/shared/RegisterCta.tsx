@@ -11,7 +11,7 @@ interface ISelfProps {
   ctaLink: string;
 }
 
-export const RegisterCta: React.SFC<ISelfProps> = ({ text, ctaText, ctaLink }) => {
+export const RegisterCta: React.FunctionComponent<ISelfProps> = ({ text, ctaText, ctaLink }) => {
   return (
     <section className={styles.registerCta}>
       <img className={styles.image} src={logo} alt="Neufund logo" />

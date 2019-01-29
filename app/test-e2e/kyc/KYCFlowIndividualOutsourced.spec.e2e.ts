@@ -1,5 +1,5 @@
 import { kycRoutes } from "../../components/kyc/routes";
-import { tid } from "../utils";
+import { tid } from "../utils/selectors";
 import { fillForm } from "../utils/forms";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { kycInvidualForm } from "./fixtures";

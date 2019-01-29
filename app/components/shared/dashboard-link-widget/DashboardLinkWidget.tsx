@@ -16,7 +16,7 @@ interface IProps {
   buttonTid?: string;
 }
 
-export const DashboardLinkWidget: React.SFC<IProps> = ({
+export const DashboardLinkWidget: React.FunctionComponent<IProps> = ({
   title,
   text,
   to,

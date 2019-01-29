@@ -93,7 +93,7 @@ const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBook
   </>
 );
 
-const BookBuildingWidgetLayout: React.SFC<ILayoutProps> = ({
+const BookBuildingWidgetLayout: React.FunctionComponent<ILayoutProps> = ({
   children,
   onClick,
   headerText,
@@ -127,7 +127,7 @@ const BookBuildingWidgetLayout: React.SFC<ILayoutProps> = ({
   </Panel>
 );
 
-export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
+export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
   startBookBuilding,
   bookBuildingEnabled,
   maxPledges,
@@ -187,12 +187,12 @@ export const BookBuildingWidgetComponent: React.SFC<IProps> = ({
   }
 };
 
-export const BookBuildingWidget = compose<React.SFC>(
+export const BookBuildingWidget = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       bookBuildingEnabled: selectIsBookBuilding(state),
-      bookBuildingStats: selectBookbuildingStats(selectEtoId(state) as string, state),
+      bookBuildingStats: selectBookbuildingStats(state, selectEtoId(state) as string),
       maxPledges: selectMaxPledges(state),
       etoId: selectEtoId(state),
       canEnableBookbuilding: selectCanEnableBookBuilding(state),

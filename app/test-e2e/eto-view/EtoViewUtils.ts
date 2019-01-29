@@ -1,4 +1,4 @@
-import { tid } from "../utils";
+import { tid } from "../utils/selectors";
 
 export const assertEtoView = (title: string) => {
   cy.get(tid("eto.public-view")).should("exist");

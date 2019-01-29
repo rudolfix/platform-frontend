@@ -1,8 +1,9 @@
-import { connect as formikConnect, Field, FieldProps, FormikContext } from "formik";
+import { connect as formikConnect, Field, FieldProps } from "formik";
 import { includes } from "lodash";
 import * as React from "react";
 import { compose } from "recompose";
 
+import { TFormikConnect } from "../../../../types";
 import { CheckboxLayout } from "./FormFieldBoolean";
 import { IFormField, withFormField } from "./utils";
 
@@ -56,9 +57,7 @@ class FormFieldCheckbox extends React.Component<IFormFieldCheckboxProps> {
 }
 
 class FormFieldCheckboxGroupLayout extends React.Component<
-  IFormFieldCheckboxGroupProps & {
-    formik: FormikContext<any>;
-  }
+  IFormFieldCheckboxGroupProps & TFormikConnect
 > {
   componentWillMount(): void {
     this.setDefaultValueIfNeeded();
@@ -85,12 +84,7 @@ class FormFieldCheckboxGroupLayout extends React.Component<
   }
 }
 
-const FormFieldCheckboxGroup = compose<
-  IFormFieldCheckboxGroupProps & {
-    formik: FormikContext<any>;
-  },
-  IFormField
->(
+const FormFieldCheckboxGroup = compose<IFormFieldCheckboxGroupProps & TFormikConnect, IFormField>(
   withFormField,
   formikConnect,
 )(FormFieldCheckboxGroupLayout);

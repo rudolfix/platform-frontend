@@ -5,13 +5,13 @@ import { appRoutes } from "../../components/appRoutes";
 import { kycRoutes } from "../../components/kyc/routes";
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import { walletRoutes } from "../../components/wallet/routes";
-import { createAction } from "../actionsUtils";
+import { createActionFactory } from "../actionsUtils";
 
 const createRoutingAction = (location: Path | LocationDescriptorObject) => push(location as any);
 
 export const routingActions = {
   // navigation primitives
-  goBack: () => createAction("GO_BACK", {}),
+  goBack: createActionFactory("GO_BACK"),
   goTo: (location: Path | LocationDescriptorObject) => createRoutingAction(location),
 
   // default routes
@@ -51,8 +51,7 @@ export const routingActions = {
   goToDepositEth: () => createRoutingAction(walletRoutes.eth),
 
   // external paths
-  openInNewWindow: (path: string, target: string = "_blank") =>
-    createAction("@@router/OPEN_IN_NEW_WINDOW", { path, target }),
+  openInNewWindow: createActionFactory("OPEN_IN_NEW_WINDOW", (path: string) => ({ path })),
 
   // Portfolio
   goToPortfolio: () => createRoutingAction(appRoutes.portfolio),

@@ -9,7 +9,7 @@ type TExternalProps = {
   message?: string;
 };
 
-const CriticalError: React.SFC<TExternalProps> = ({ message }) => (
+const CriticalError: React.FunctionComponent<TExternalProps> = ({ message }) => (
   <section className={styles.section} data-test-id="critical-error-page">
     <RollingSadFace />
     <h1 className={styles.header}>

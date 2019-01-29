@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 
+import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { selectKycRequestStatus } from "../kyc/selectors";
@@ -34,7 +35,8 @@ export const selectDoesEmailExist = (state: IAuthState): boolean =>
   selectIsThereUnverifiedEmail(state) || selectIsUserEmailVerified(state);
 
 export const selectIsUserVerified = (state: IAppState): boolean =>
-  selectIsUserEmailVerified(state.auth) && selectKycRequestStatus(state) === "Accepted";
+  selectIsUserEmailVerified(state.auth) &&
+  selectKycRequestStatus(state) === ERequestStatus.ACCEPTED;
 
 export const selectIsInvestor = (state: IAppState): boolean =>
   selectUserType(state) === EUserType.INVESTOR;
@@ -45,11 +47,13 @@ export const selectIsVerifiedInvestor = createSelector(
   (isInvestor, isUserVerified) => isInvestor && isUserVerified,
 );
 
-export const selectCurrentAgreementHash = (state: IAppState): string | undefined =>
-  state.auth.currentAgreementHash;
+// TOS Related Selectors
 
 export const selectIsAgreementAccepted = (state: IAppState): boolean =>
   !!(state.auth.user && state.auth.user.latestAcceptedTosIpfs !== undefined);
+
+export const selectCurrentAgreementHash = (state: IAppState): string | undefined =>
+  state.auth.currentAgreementHash;
 
 export const selectIsLatestAgreementAccepted = (state: IAppState): boolean =>
   !!(

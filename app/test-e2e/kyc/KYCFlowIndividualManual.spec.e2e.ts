@@ -1,8 +1,9 @@
 import { kycRoutes } from "../../components/kyc/routes";
-import { confirmAccessModal, tid } from "../utils";
+import { confirmAccessModal } from "../utils";
 import { fillForm, uploadMultipleFilesToFieldWithTid } from "../utils/forms";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { kycInvidualForm } from "./fixtures";
+import { tid } from "../utils/selectors";
 
 describe("KYC Personal flow with manual verification", () => {
   it("went through KYC flow with personal data", () => {

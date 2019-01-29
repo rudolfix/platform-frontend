@@ -1,4 +1,4 @@
-import { Form, Formik, FormikConsumer } from "formik";
+import { Formik, FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Web3Utils from "web3-utils";
@@ -6,7 +6,7 @@ import * as Web3Utils from "web3-utils";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { FormFieldColorful } from "../../shared/forms/fields/FormFieldColorful";
+import { Form, FormFieldColorful } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 import { Tooltip } from "../../shared/Tooltip";
 
@@ -45,7 +45,7 @@ class FormContent extends React.Component {
   }
 }
 
-export const CheckYourICBMWalletWidgetComponent: React.SFC<IDispatchProps> = ({
+export const CheckYourICBMWalletWidgetComponent: React.FunctionComponent<IDispatchProps> = ({
   loadICBMWallet,
 }) => {
   return (

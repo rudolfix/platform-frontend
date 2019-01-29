@@ -89,7 +89,11 @@ export type TAcceptedFileType =
 
 export type Omit<T extends K, K> = Pick<T, Exclude<keyof T, keyof K>>;
 
-export type OmitKeys<T, K> = Pick<T, Exclude<keyof T, K>>;
+/**
+ * From T, omit a set of properties whose keys are in the union K
+ * @example OmitKeys<{ foo: boolean, bar: string }, "foo">
+ */
+export type OmitKeys<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export type Overwrite<T1, T2> = { [P in Exclude<keyof T1, keyof T2>]: T1[P] } & T2;
 

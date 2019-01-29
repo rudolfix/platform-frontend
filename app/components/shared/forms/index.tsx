@@ -10,4 +10,6 @@ export * from "./fields/FormSelectCountryField";
 export * from "./fields/FormSelectField";
 export * from "./fields/FormSelectNationalityField";
 export * from "./fields/FormTextArea";
+export * from "./fields/FormFieldColorful";
 export * from "./fields/utils";
+export * from "./Form";

@@ -5,10 +5,11 @@ import { Col, Row } from "reactstrap";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { ButtonLink } from "../../../shared/buttons";
+import { ExternalLink } from "../../../shared/links";
 import { loginWalletRoutes } from "../../walletRoutes";
 import { recoverRoutes } from "../router/recoverRoutes";
 
-export const LoginHelp: React.SFC<void> = () => (
+export const LoginHelp: React.FunctionComponent<void> = () => (
   <div>
     <Col className="mt-5 mb-5">
       <h2 className="font-weight-bold mx-auto text-center">
@@ -60,10 +61,10 @@ export const LoginHelp: React.SFC<void> = () => (
           <i className="fa fa-lg fa-angle-left mr-1" />
           BACK
         </Link>
-        <a href={`${externalRoutes.neufundSupport}/home`} target="_blank">
+        <ExternalLink href={`${externalRoutes.neufundSupport}/home`}>
           <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />
           <i className="fa fa-lg fa-angle-right ml-1" />
-        </a>
+        </ExternalLink>
       </Row>
     </Col>
   </div>

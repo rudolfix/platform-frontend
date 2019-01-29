@@ -60,7 +60,7 @@ export const KYCStartComponent = injectIntlHelpers<IProps>(
   ),
 );
 
-export const KYCStart = compose<React.SFC>(
+export const KYCStart = compose<React.FunctionComponent>(
   appConnect<IProps>({
     dispatchToProps: dispatch => ({
       goToPerson: () => dispatch(actions.routing.goToKYCIndividualStart()),

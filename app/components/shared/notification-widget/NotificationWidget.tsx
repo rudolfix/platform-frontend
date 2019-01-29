@@ -10,7 +10,7 @@ import {
 import { appConnect, AppDispatch } from "../../../store";
 import { Notification } from "./Notification";
 
-import * as styles from "./Notification.module.scss";
+import * as styles from "./NotificationWidget.module.scss";
 
 interface IStateProps {
   notifications: INotification[];
@@ -22,7 +22,10 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const NotificationWidgetComponent: React.SFC<IProps> = ({ notifications, dispatch }) => {
+const NotificationWidgetComponent: React.FunctionComponent<IProps> = ({
+  notifications,
+  dispatch,
+}) => {
   return (
     <div className={styles.widget}>
       {notifications.map((notification, index) => (

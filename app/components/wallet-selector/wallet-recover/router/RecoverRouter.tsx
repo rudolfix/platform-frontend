@@ -7,7 +7,7 @@ import { RecoverWallet } from "../recovery/RecoverWallet";
 import { RecoverySuccess } from "../success/RecoverySuccess";
 import { recoverRoutes } from "./recoverRoutes";
 
-export const RecoverRouter: React.SFC = () => {
+export const RecoverRouter: React.FunctionComponent = () => {
   return (
     <SwitchConnected>
       <Route path={recoverRoutes.help} component={LoginHelp} />

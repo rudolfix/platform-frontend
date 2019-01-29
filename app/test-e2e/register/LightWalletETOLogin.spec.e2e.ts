@@ -1,9 +1,5 @@
-import {
-  assertEtoDashboard,
-  convertToUniqueEmail,
-  registerWithLightWalletETO,
-  tid,
-} from "../utils";
+import { assertEtoDashboard, convertToUniqueEmail, registerWithLightWalletETO } from "../utils";
+import { tid } from "../utils/selectors";
 
 const password = "strongpassword";
 

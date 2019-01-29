@@ -20,7 +20,7 @@ interface IProps {
   lastTransactionTime: string;
 }
 
-export const EtoRaisedAmount: React.SFC<IProps> = ({
+export const EtoRaisedAmount: React.FunctionComponent<IProps> = ({
   chartData,
   firstTransactionTime,
   lastTransactionTime,

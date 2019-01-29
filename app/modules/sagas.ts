@@ -1,5 +1,6 @@
 import { effects } from "redux-saga";
 import { getContext } from "redux-saga/effects";
+import { termsOfServiceSagas } from "./terms-of-service-modal/sagas";
 
 import { TGlobalDependencies } from "../di/setupBindings";
 import { authSagas } from "./auth/sagas";
@@ -34,6 +35,7 @@ import { web3Sagas } from "./web3/sagas";
  */
 function* allSagas(): Iterator<effects.Effect> {
   yield effects.all([
+    effects.fork(termsOfServiceSagas),
     effects.fork(kycSagas),
     effects.fork(investorTicketsSagas),
     effects.fork(initSagas),

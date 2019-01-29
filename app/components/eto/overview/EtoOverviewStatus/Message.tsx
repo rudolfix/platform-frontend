@@ -11,7 +11,7 @@ interface IExternalProps {
   summary?: TTranslatedString;
 }
 
-const Message: React.SFC<IExternalProps> = ({ showTick = true, title, summary }) => (
+const Message: React.FunctionComponent<IExternalProps> = ({ showTick = true, title, summary }) => (
   <section className={styles.widget}>
     {showTick && <SuccessTick />}
     <header className={styles.message}>

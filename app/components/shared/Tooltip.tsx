@@ -17,7 +17,7 @@ interface IProps {
 
 let tooltipCount = 0;
 
-const Tooltip: React.SFC<IProps & CommonHtmlProps> = ({
+const Tooltip: React.FunctionComponent<IProps & CommonHtmlProps> = ({
   content,
   className,
   isOpen,

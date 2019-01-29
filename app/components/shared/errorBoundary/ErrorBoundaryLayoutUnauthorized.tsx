@@ -5,7 +5,7 @@ import { LayoutUnauthorized } from "../../layouts/LayoutUnauthorized";
 
 import * as styles from "./ErrorBoundary.module.scss";
 
-export const ErrorBoundaryLayoutUnauthorized: React.SFC<{}> = () => {
+export const ErrorBoundaryLayoutUnauthorized: React.FunctionComponent<{}> = () => {
   return (
     <LayoutUnauthorized>
       <div className={styles.errorLayout}>

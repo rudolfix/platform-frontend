@@ -9,6 +9,7 @@ import {
 } from "../../modules/person-profile-modal/reducer";
 import { appConnect } from "../../store";
 import { DeepReadonly } from "../../types";
+import { ExternalLink } from "../shared/links";
 import { SlidePerson } from "../shared/SlidePerson";
 import { ModalComponentBody } from "./ModalComponentBody";
 
@@ -23,7 +24,7 @@ interface IDispatchProps {
   onDismiss: () => void;
 }
 
-const PersonProfileModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
+const PersonProfileModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   onDismiss,
   isOpen,
   personProfileModalObj,
@@ -44,9 +45,9 @@ const PersonProfileModalComponent: React.SFC<IStateProps & IDispatchProps> = ({
         </p>
         {personProfileModalObj && (
           <div className={styles.linkWrapper}>
-            <a href={personProfileModalObj.website} target="_blank">
+            <ExternalLink href={personProfileModalObj.website}>
               {personProfileModalObj.website}
-            </a>
+            </ExternalLink>
           </div>
         )}
       </ModalComponentBody>

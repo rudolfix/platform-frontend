@@ -4,9 +4,7 @@ import {
   assertLockedAccessModal,
   confirmAccessModal,
   goToProfile,
-  notificationTid,
   registerWithLightWallet,
-  tid,
 } from "../utils";
 import {
   createAndLoginNewUser,
@@ -14,6 +12,7 @@ import {
   generateRandomEmailAddress,
 } from "../utils/userHelpers";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
+import { tid, notificationTid } from "../utils/selectors";
 
 describe("Backup Seed and Private Key save and view", () => {
   it("should allow to save seed phrase", () => {

@@ -20,6 +20,7 @@ storiesOf("User Claim Summary", module).add("default", () => (
       txData={txData}
       txCost={"123456"}
       onAccept={() => {}}
+      generateTemplateByEtoId={() => {}}
       etoData={
         {
           investorTicket: {
@@ -36,6 +37,7 @@ storiesOf("User Claim Summary", module).add("default", () => (
           },
         } as any
       }
+      etoId={"0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc"}
       downloadDocument={() => {}}
     />
   </Container>

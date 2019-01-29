@@ -1,10 +1,11 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import {
+  EKycRequestType,
   IKycBusinessData,
   IKycFileInfo,
   KycBusinessDataSchema,
@@ -14,7 +15,7 @@ import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/buttons";
-import { FormField, FormSelectCountryField } from "../../shared/forms";
+import { Form, FormField, FormSelectCountryField } from "../../shared/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
@@ -124,7 +125,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
   handleSubmit: (values, props) => props.props.submitForm(values),
 })(KYCForm);
 
-const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
+const FileUploadList: React.FunctionComponent<IProps & { dataValid: boolean }> = props => {
   if (!props.dataValid) return <div />;
   return (
     <div>
@@ -137,7 +138,7 @@ const FileUploadList: React.SFC<IProps & { dataValid: boolean }> = props => {
       <br />
       <br />
       <MultiFileUpload
-        uploadType="business"
+        uploadType={EKycRequestType.BUSINESS}
         acceptedFiles="image/*,application/pdf"
         data-test-id="kyc-company-business-supporting-documents"
         onDropFile={props.onDropFile}
@@ -177,7 +178,7 @@ export const KycBusinessDataComponent = ({
   );
 };
 
-export const KycBusinessData = compose<React.SFC>(
+export const KycBusinessData = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       currentValues: state.kyc.businessData,

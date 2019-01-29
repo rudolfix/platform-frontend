@@ -35,14 +35,9 @@ interface IExternalProps {
   message?: TTranslatedString;
 }
 
-export const AccessWalletContainerComponent: React.SFC<IStateProps & IDispatchProps> = ({
-  title,
-  message,
-  errorMessage,
-  isUnlocked,
-  onAccept,
-  walletType,
-}) => (
+export const AccessWalletContainerComponent: React.FunctionComponent<
+  IStateProps & IDispatchProps
+> = ({ title, message, errorMessage, isUnlocked, onAccept, walletType }) => (
   <div className="text-center">
     {title && <h1>{title}</h1>}
     {message && <p>{message}</p>}
@@ -105,7 +100,9 @@ interface IModalDispatchProps {
   onCancel: () => void;
 }
 
-const AccessWalletModalComponent: React.SFC<IModalStateProps & IModalDispatchProps> = props => (
+const AccessWalletModalComponent: React.FunctionComponent<
+  IModalStateProps & IModalDispatchProps
+> = props => (
   <Modal isOpen={props.isOpen} toggle={props.onCancel} centered>
     <ModalComponentBody onClose={props.onCancel}>
       <AccessWalletContainer />

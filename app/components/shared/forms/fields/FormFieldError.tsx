@@ -1,10 +1,9 @@
 import * as cn from "classnames";
 import { FormikConsumer, getIn } from "formik";
-import { get } from "lodash";
 import * as React from "react";
-import { isNonValid } from "./utils";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
+import { isNonValid } from "./utils";
 
 import * as styles from "./FormFieldError.module.scss";
 
@@ -22,7 +21,9 @@ export interface IProps {
   alignLeft?: boolean;
 }
 
-const FormError: React.SFC<IFormErrorExternalProps & CommonHtmlProps> = ({
+const generateErrorId = (name: string) => `${name}-error-message`;
+
+const FormError: React.FunctionComponent<IFormErrorExternalProps & CommonHtmlProps> = ({
   message,
   name,
   className,
@@ -30,13 +31,15 @@ const FormError: React.SFC<IFormErrorExternalProps & CommonHtmlProps> = ({
 }) => (
   <div
     data-test-id={name && `form.${name}.error-message`}
+    id={name && generateErrorId(name)}
+    role="alert"
     className={cn(styles.errorLabel, { [styles.errorLabelAlignLeft]: alignLeft }, className)}
   >
     {message}
   </div>
 );
 
-const FormFieldError: React.SFC<IProps> = ({
+const FormFieldError: React.FunctionComponent<IProps> = ({
   name,
   defaultMessage,
   ignoreTouched,
@@ -45,12 +48,8 @@ const FormFieldError: React.SFC<IProps> = ({
 }) => (
   <FormikConsumer>
     {({ touched, errors, submitCount }) => {
-      const touchedSubmitCountIncluded = {
-        ...touched,
-        [name]: get(touched, name) || submitCount > 0,
-      };
       return (
-        isNonValid(touchedSubmitCountIncluded, errors, name, ignoreTouched) && (
+        isNonValid(touched, errors, name, submitCount, ignoreTouched) && (
           <FormError
             name={name}
             message={getIn(errors, name) || defaultMessage}
@@ -63,4 +62,4 @@ const FormFieldError: React.SFC<IProps> = ({
   </FormikConsumer>
 );
 
-export { FormFieldError, FormError };
+export { FormFieldError, FormError, generateErrorId };

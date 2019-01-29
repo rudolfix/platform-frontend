@@ -96,7 +96,7 @@ export function getFormattedMoney(
   return formatMoney(value, getFormatDecimals(format), selectDecimalPlaces(currency));
 }
 
-const Money: React.SFC<IProps> = ({
+const Money: React.FunctionComponent<IProps> = ({
   value,
   format = EMoneyFormat.WEI,
   currency,

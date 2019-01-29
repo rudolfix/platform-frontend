@@ -88,8 +88,8 @@ describe("<ButtonLink />", () => {
 
     expect(store.getActions()).to.have.lengthOf(1);
     expect(store.getActions()).to.deep.include({
-      type: "@@router/OPEN_IN_NEW_WINDOW",
-      payload: { path: "https://neufund.org", target: "_blank" },
+      type: "OPEN_IN_NEW_WINDOW",
+      payload: { path: "https://neufund.org" },
     });
   });
 
@@ -108,8 +108,8 @@ describe("<ButtonLink />", () => {
 
     expect(store.getActions()).to.have.lengthOf(1);
     expect(store.getActions()).to.deep.include({
-      type: "@@router/OPEN_IN_NEW_WINDOW",
-      payload: { path: "/register", target: "_blank" },
+      type: "OPEN_IN_NEW_WINDOW",
+      payload: { path: "/register" },
     });
   });
 });

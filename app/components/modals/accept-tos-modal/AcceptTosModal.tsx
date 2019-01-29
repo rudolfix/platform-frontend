@@ -92,7 +92,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
   }
 }
 
-const AcceptTosModalComponent: React.SFC<IStateProps & IDispatchProps> = props => (
+const AcceptTosModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = props => (
   <Modal isOpen={props.isOpen} centered>
     <ModalComponentBody>
       <AcceptTosModalInner {...props} />
@@ -107,8 +107,8 @@ export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
     userType: selectUserType(s),
   }),
   dispatchToProps: dispatch => ({
-    onDownloadTos: () => dispatch(actions.auth.downloadCurrentAgreement()),
-    onAccept: () => dispatch(actions.auth.acceptCurrentAgreement()),
+    onDownloadTos: () => dispatch(actions.tosModal.downloadCurrentAgreement()),
+    onAccept: () => dispatch(actions.tosModal.acceptCurrentAgreement()),
     onLogout: (userType?: EUserType) => dispatch(actions.auth.logout(userType)),
   }),
 })(AcceptTosModalComponent);

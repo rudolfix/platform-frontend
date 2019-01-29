@@ -8,7 +8,7 @@ import { SpinningEthereum } from "./SpinningEthereum";
 
 import * as styles from "./Features.module.scss";
 
-export const Features: React.SFC = () => (
+export const Features: React.FunctionComponent = () => (
   <div className={styles.features}>
     <Container>
       <RainbowSheepTip

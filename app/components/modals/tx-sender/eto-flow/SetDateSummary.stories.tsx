@@ -6,7 +6,7 @@ import { withModalBody } from "../../../../utils/storybookHelpers";
 import { SetEtoDateSummaryComponent } from "./SetDateSummary";
 
 const date = moment(new Date()).add(10, "days");
-const changableTill = date.clone().subtract(3, "days");
+const changeableTill = date.clone().subtract(3, "days");
 
 const data = {
   etoTermsAddress: "0x456456",
@@ -16,7 +16,7 @@ const data = {
   termsAgreementIPFSLink: "https://ipfs.io/789789",
   newDate: date.toDate(),
   onAccept: () => {},
-  changableTill,
+  changeableTill,
 };
 
 storiesOf("ETO-Flow/SetStartDateSummary", module)

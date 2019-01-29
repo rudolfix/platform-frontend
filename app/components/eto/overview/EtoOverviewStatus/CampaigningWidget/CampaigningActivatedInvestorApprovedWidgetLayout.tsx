@@ -1,11 +1,11 @@
 import * as cn from "classnames";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces";
 import { Button, ButtonSize, ButtonWidth } from "../../../../shared/buttons";
-import { CheckboxLayout, FormInput, InputSize } from "../../../../shared/forms";
+import { CheckboxLayout, Form, FormInput, InputSize } from "../../../../shared/forms";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money";
 import { Tooltip } from "../../../../shared/Tooltip";
 
@@ -28,7 +28,7 @@ export interface ICampaigningActivatedInvestorWidgetLayoutProps {
   maxPledge?: number;
 }
 
-const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
+const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
   ICampaigningActivatedInvestorWidgetLayoutProps
 > = ({
   pledgedAmount,
@@ -101,7 +101,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.SFC<
                 type="number"
               />
             </div>
-            <div className={styles.value}>
+            <div className={cn(styles.value, styles.backNow)}>
               <Button
                 data-test-id="eto-bookbuilding-back-now"
                 type="submit"

@@ -6,9 +6,9 @@ import {
   mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
-  tid,
   acceptTOS,
 } from "../utils";
+import { tid } from "../utils/selectors";
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 
 describe("Wallet recover", () => {

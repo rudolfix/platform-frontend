@@ -14,7 +14,7 @@ import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 import * as styles from "./LayoutAuthorized.module.scss";
 import * as sharedStyles from "./LayoutShared.module.scss";
 
-export const LayoutAuthorized: React.SFC = ({ children }) => (
+export const LayoutAuthorized: React.FunctionComponent = ({ children }) => (
   <>
     <Header />
 

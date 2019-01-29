@@ -15,7 +15,7 @@ interface IProps {
   chartDataTransactionsOverTime: IChartBarsData;
 }
 
-export const EtoTokenIssuance: React.SFC<IProps> = ({
+export const EtoTokenIssuance: React.FunctionComponent<IProps> = ({
   chartDataTokensOverTime,
   chartDataTransactionsOverTime,
   tokenCreatedBeforeIco,

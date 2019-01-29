@@ -11,7 +11,7 @@ export interface ITokenSymbolWidgetProps {
   tokenSymbol?: string;
 }
 
-const TokenSymbolWidget: React.SFC<ITokenSymbolWidgetProps> = ({
+const TokenSymbolWidget: React.FunctionComponent<ITokenSymbolWidgetProps> = ({
   tokenSymbol,
   tokenName,
   tokenImage,

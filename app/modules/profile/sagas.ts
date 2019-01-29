@@ -10,8 +10,9 @@ import { IAppState } from "../../store";
 import { accessWalletAndRunEffect } from "../access-wallet/sagas";
 import { actions, TAction } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
-import { ensurePermissionsArePresent, loadUser, updateUser } from "../auth/sagas";
+import { ensurePermissionsArePresent } from "../auth/jwt/sagas";
 import { selectDoesEmailExist, selectUser } from "../auth/selectors";
+import { loadUser, updateUser } from "../auth/user/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectLightWalletSalt, selectPreviousLightWalletSalt } from "../web3/selectors";
 

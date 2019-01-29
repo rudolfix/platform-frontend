@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderType } from "../../../../modules/tx/interfaces";
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
-import { EtherscanTxLink } from "../../../shared/EtherscanLink";
+import { EtherscanTxLink } from "../../../shared/links";
 
 import * as styles from "./TxPending.module.scss";
 
@@ -13,7 +13,7 @@ export interface ITxPendingProps {
   type: ETxSenderType;
 }
 
-export const TxPending: React.SFC<ITxPendingProps> = ({ blockId, txHash }) => (
+export const TxPending: React.FunctionComponent<ITxPendingProps> = ({ blockId, txHash }) => (
   <div className="text-center" test-data-id="modals.shared.tx-pending.modal">
     <SpinningEthereum className="mb-3" />
 

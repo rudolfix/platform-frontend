@@ -8,7 +8,7 @@ interface IExternalProps {
   endTime: Date | undefined;
 }
 
-const EndTimeWidget: React.SFC<IExternalProps> = ({ endTime }) => {
+const EndTimeWidget: React.FunctionComponent<IExternalProps> = ({ endTime }) => {
   return (
     <span className={styles.endTime}>
       {endTime && (

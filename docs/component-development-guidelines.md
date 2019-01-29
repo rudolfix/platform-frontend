@@ -13,7 +13,7 @@
 - prefer enums over string literal union types
 - use type system to express complicated prop types (ex. use union type if component can take a
   little bit different props depending on some flag)
-- functional components should always be of type React.SFC
+- functional components should always be of type React.FunctionComponent
 - use following style:
   - Prefix for types (I for interface, T for type E for enums)
   - have uppercase keys in enums

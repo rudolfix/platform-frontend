@@ -6,10 +6,17 @@ import { IEtoContractData } from "./types";
 
 export const etoActions = {
   // public actions
-  loadEtoPreview: createActionFactory("PUBLIC_ETOS_LOAD_ETO_PREVIEW", (previewCode: string) => ({
-    previewCode,
+  loadEtoPreview: createActionFactory(
+    "PUBLIC_ETOS_LOAD_ETO_PREVIEW",
+    (previewCode: string, widgetView?: boolean) => ({
+      previewCode,
+      widgetView,
+    }),
+  ),
+  loadEto: createActionFactory("PUBLIC_ETOS_LOAD_ETO", (etoId: string, widgetView?: boolean) => ({
+    etoId,
+    widgetView,
   })),
-  loadEto: createActionFactory("PUBLIC_ETOS_LOAD_ETO", (etoId: string) => ({ etoId })),
   loadEtos: createActionFactory("PUBLIC_ETOS_LOAD_ETOS"),
   downloadPublicEtoDocument: createActionFactory(
     "PUBLIC_ETOS_DOWNLOAD_DOCUMENT",
@@ -41,4 +48,5 @@ export const etoActions = {
     "PUBLIC_ETOS_SET_ETO_DATA_FROM_CONTRACT",
     (previewCode: string, data: IEtoContractData) => ({ previewCode, data }),
   ),
+  setEtoWidgetError: createActionFactory("PUBLIC_ETOS_SET_ETO_WIDGET_ERROR"),
 };

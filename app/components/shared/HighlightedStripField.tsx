@@ -22,7 +22,7 @@ interface IProps {
   whiteBackground?: boolean;
 }
 
-export const HighlightedStripField: React.SFC<IProps> = ({
+export const HighlightedStripField: React.FunctionComponent<IProps> = ({
   label,
   value,
   icon,

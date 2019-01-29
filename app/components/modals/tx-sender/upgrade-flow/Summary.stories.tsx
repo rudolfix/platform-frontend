@@ -3,6 +3,7 @@ import * as React from "react";
 import { Container } from "reactstrap";
 
 import { ITxData } from "../../../../lib/web3/types";
+import { ETokenType } from "../../../../modules/tx/interfaces";
 import { UpgradeSummaryComponent } from "./Summary";
 
 const txData: ITxData = {
@@ -20,6 +21,7 @@ storiesOf("Upgrade Summary", module).add("default", () => (
       txCost={"123456"}
       onAccept={() => {}}
       downloadICBMAgreement={() => {}}
+      additionalData={{ tokenType: ETokenType.ETHER }}
     />
   </Container>
 ));

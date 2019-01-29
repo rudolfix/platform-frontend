@@ -10,6 +10,7 @@ export interface IPublicEtoState {
   contracts: { [previewCode: string]: IEtoContractData };
   displayOrder: string[] | undefined;
   maxCapExceeded: { [previewCode: string]: boolean | undefined };
+  etoWidgetError: boolean | undefined;
 }
 
 export const etoFlowInitialState: IPublicEtoState = {
@@ -18,6 +19,7 @@ export const etoFlowInitialState: IPublicEtoState = {
   contracts: {},
   displayOrder: undefined,
   maxCapExceeded: {},
+  etoWidgetError: undefined,
 };
 
 export const publicEtosReducer: AppReducer<IPublicEtoState> = (
@@ -61,6 +63,11 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
           ...state.contracts,
           [action.payload.previewCode]: action.payload.data,
         },
+      };
+    case actions.publicEtos.setEtoWidgetError.getType():
+      return {
+        ...state,
+        etoWidgetError: true,
       };
   }
 

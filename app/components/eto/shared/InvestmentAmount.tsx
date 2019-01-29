@@ -9,7 +9,7 @@ type TExternalProps = {
   etoData: TEtoWithCompanyAndContract;
 };
 
-const InvestmentAmount: React.SFC<TExternalProps> = ({ etoData }) => {
+const InvestmentAmount: React.FunctionComponent<TExternalProps> = ({ etoData }) => {
   const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(etoData);
 
   const value = (

@@ -91,7 +91,7 @@ module.exports = (baseConfig, env, config) => {
           include: [paths.app, path.join(__dirname, "../test")],
         },
         {
-          test: /\.(jpg|png|svg|gif)$/,
+          test: /\.(jpg|png|svg|gif|webm|mp4)$/,
           loader: "url-loader",
           exclude: paths.inlineIcons,
           options: {

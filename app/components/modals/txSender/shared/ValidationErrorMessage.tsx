@@ -16,7 +16,7 @@ const getValidationMessageByType = (type?: EValidationState) => {
   }
 };
 
-const ValidationErrorMessage: React.SFC<IProps> = ({ type }) => {
+const ValidationErrorMessage: React.FunctionComponent<IProps> = ({ type }) => {
   return (
     <Message
       data-test-id="modals.shared.validation-message"

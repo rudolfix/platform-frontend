@@ -25,7 +25,7 @@ interface IDispatchProps {
   logout: (userType?: EUserType) => void;
 }
 
-export const HeaderComponent: React.SFC<IStateProps & IDispatchProps> = props => (
+export const HeaderComponent: React.FunctionComponent<IStateProps & IDispatchProps> = props => (
   <Navbar dark className={cn(styles.bar, "flex-nowrap")}>
     <Link to={appRoutes.root} className={styles.logo}>
       <img src={logo} className={styles.logoImage} />

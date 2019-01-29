@@ -1,4 +1,5 @@
-import { confirmAccessModal, goToProfile, tid } from "../utils";
+import { confirmAccessModal, goToProfile } from "../utils";
+import { tid } from "../utils/selectors";
 
 const extractSeedFromDOM = (seed: string): string[] =>
   seed

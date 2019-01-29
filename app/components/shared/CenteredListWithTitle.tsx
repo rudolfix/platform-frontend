@@ -10,7 +10,7 @@ interface IProps {
   list: string[];
 }
 
-export const CenteredListWithTitle: React.SFC<IProps> = ({ title, list }) => {
+export const CenteredListWithTitle: React.FunctionComponent<IProps> = ({ title, list }) => {
   return (
     <Col xs={12} md={6} className="py-4">
       <h3 className={styles.title}>{title}</h3>

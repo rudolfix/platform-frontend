@@ -7,7 +7,7 @@ import { ResponsiveImage } from "../shared/ResponsiveImage";
 import * as ipfsImage from "../../assets/img/ipfs.png";
 import * as styles from "./IdentityModal.module.scss";
 
-const IdentityModal: React.SFC = () => {
+const IdentityModal: React.FunctionComponent = () => {
   return (
     <>
       <Row className="mb-5 justify-content-center">

@@ -8,7 +8,7 @@ interface IHiResImageProps {
   max2x?: boolean;
 }
 
-export const HiResImage: React.SFC<IHiResImageProps> = ({
+export const HiResImage: React.FunctionComponent<IHiResImageProps> = ({
   partialPath,
   className,
   alt,
@@ -20,19 +20,14 @@ export const HiResImage: React.SFC<IHiResImageProps> = ({
   }
 
   try {
-    // @note: thanks to wonders of static analysis + webpack all images matching these paths will be part of the bundle
-    const image = require("!file-loader?publicPath=/!../../assets/img/" + partialPath + ".png");
-    const image2x = require("!file-loader?publicPath=/!../../assets/img/" +
-      partialPath +
-      "@2x.png");
+    const image = require("../../assets/img/" + partialPath + ".png");
+    const image2x = require("../../assets/img/" + partialPath + "@2x.png");
 
     let srcSet: string;
     if (max2x) {
       srcSet = `${image} 1x, ${image2x} 2x`;
     } else {
-      const image3x = require("!file-loader?publicPath=/!../../assets/img/" +
-        partialPath +
-        "@3x.png");
+      const image3x = require("../../assets/img/" + partialPath + "@3x.png");
 
       srcSet = `${image} 1x, ${image2x} 2x, ${image3x} 3x`;
     }

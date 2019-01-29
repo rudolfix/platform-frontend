@@ -12,7 +12,7 @@ interface ILoadingIndicatorProps {
   type?: TLoadingIndicator;
 }
 
-const LoadingIndicator: React.SFC<ILoadingIndicatorProps> = ({
+const LoadingIndicator: React.FunctionComponent<ILoadingIndicatorProps> = ({
   className,
   light,
   type = "pulse",

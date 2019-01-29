@@ -15,7 +15,7 @@ interface INavigationButton {
   disabled?: boolean;
 }
 
-export const NavigationButton: React.SFC<INavigation & INavigationButton> = ({
+export const NavigationButton: React.FunctionComponent<INavigation & INavigationButton> = ({
   text,
   forward,
   className,
@@ -46,7 +46,7 @@ export const NavigationButton: React.SFC<INavigation & INavigationButton> = ({
   );
 };
 
-export const NavigationLink: React.SFC<INavigation & LinkProps> = ({
+export const NavigationLink: React.FunctionComponent<INavigation & LinkProps> = ({
   text,
   forward,
   className,

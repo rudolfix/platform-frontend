@@ -26,6 +26,7 @@ import { generateRootReducer, IAppState } from "./store";
 import * as ga from "./utils/googleAnalitycs.js";
 import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import { InversifyProvider } from "./utils/InversifyProvider";
+import * as serviceWorker from "./utils/serviceWorker";
 
 import "font-awesome/scss/font-awesome.scss";
 import "slick-carousel/slick/slick-theme.css";
@@ -100,6 +101,7 @@ if (process.env.NF_ENABLE_TRANSLATE_OVERLAY) {
 }
 
 ga.installGA();
+serviceWorker.register();
 
 const history = createBrowserHistory();
 const { store, container } = startupApp(history);

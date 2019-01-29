@@ -34,7 +34,7 @@ interface IClickableDocumentTileProps {
   document: IEtoDocument;
 }
 
-export const Document: React.SFC<IDocumentProps> = ({ extension, blank }) => {
+export const Document: React.FunctionComponent<IDocumentProps> = ({ extension, blank }) => {
   const labelHeight = 24;
   const labelWidth = 50;
 
@@ -60,7 +60,7 @@ export const Document: React.SFC<IDocumentProps> = ({ extension, blank }) => {
   );
 };
 
-export const DocumentTile: React.SFC<IDocumentProps & IDocumentTileProps> = ({
+export const DocumentTile: React.FunctionComponent<IDocumentProps & IDocumentTileProps> = ({
   extension,
   title,
   className,
@@ -89,7 +89,7 @@ export const DocumentTile: React.SFC<IDocumentProps & IDocumentTileProps> = ({
   );
 };
 
-export const ClickableDocumentTile: React.SFC<
+export const ClickableDocumentTile: React.FunctionComponent<
   IDocumentProps & IDocumentTileProps & IClickableDocumentTileProps
 > = ({ generateTemplate, title, document, extension }) => {
   return (
@@ -106,7 +106,7 @@ export const ClickableDocumentTile: React.SFC<
   );
 };
 
-export const UploadableDocumentTile: React.SFC<IUploadableDocumentTileProps> = ({
+export const UploadableDocumentTile: React.FunctionComponent<IUploadableDocumentTileProps> = ({
   documentKey,
   canUpload,
   typedFileName,

@@ -21,7 +21,7 @@ interface IInternalProps {
   onChange: (a: React.ChangeEvent<any>) => any;
 }
 
-export const ToggleComponent: React.SFC<IProps & IInternalProps> = ({
+export const ToggleComponent: React.FunctionComponent<IProps & IInternalProps> = ({
   disabledLabel,
   enabledLabel,
   onChange,

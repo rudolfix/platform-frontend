@@ -34,7 +34,7 @@ interface INewTable {
 
 type TProps = INewTable & INewTableHeader;
 
-const NewTableRow: React.SFC<INewTableRow> = ({ children }) => (
+const NewTableRow: React.FunctionComponent<INewTableRow> = ({ children }) => (
   <tr className={styles.row}>
     {React.Children.toArray(children).map((child, index) => {
       return (
@@ -46,7 +46,10 @@ const NewTableRow: React.SFC<INewTableRow> = ({ children }) => (
   </tr>
 );
 
-const PlaceholderTableRow: React.SFC<IPlaceholderTableRow> = ({ children, numberOfCells }) => (
+const PlaceholderTableRow: React.FunctionComponent<IPlaceholderTableRow> = ({
+  children,
+  numberOfCells,
+}) => (
   <tr className={styles.row}>
     <td className={cn(styles.cell, styles.cellPlaceholder)} colSpan={numberOfCells}>
       {children || <FormattedMessage id="shared-components.table.default-placeholder" />}
@@ -54,7 +57,13 @@ const PlaceholderTableRow: React.SFC<IPlaceholderTableRow> = ({ children, number
   </tr>
 );
 
-const NewTable: React.SFC<TProps> = ({ titles, children, className, placeholder, keepRhythm }) => {
+const NewTable: React.FunctionComponent<TProps> = ({
+  titles,
+  children,
+  className,
+  placeholder,
+  keepRhythm,
+}) => {
   // We have to filter empty nodes in case of any conditional rendering inside table
   const isEmpty = React.Children.toArray(children).filter(React.isValidElement).length === 0;
 

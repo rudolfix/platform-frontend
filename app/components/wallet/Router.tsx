@@ -7,7 +7,7 @@ import { DepositEth } from "./views/deposit-funds/DepositEth";
 import { DepositEuroToken } from "./views/deposit-funds/DepositEuroToken";
 import { WalletStart } from "./views/start/Start";
 
-export const WalletRouter: React.SFC = () => (
+export const WalletRouter: React.FunctionComponent = () => (
   <SwitchConnected>
     <Route path={parentRoutePath} component={WalletStart} exact />
 

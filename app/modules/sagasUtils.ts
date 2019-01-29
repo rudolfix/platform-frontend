@@ -13,9 +13,11 @@ import {
 import { TGlobalDependencies } from "../di/setupBindings";
 import { TAction, TActionPayload, TActionType } from "./actions";
 
+type TSagaWithDeps = (deps: TGlobalDependencies, ...args: any[]) => any;
+
 export function* neuTakeLatest(
   type: TActionType | TActionType[],
-  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
+  saga: TSagaWithDeps,
 ): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
   yield takeLatest(type, saga, deps);
@@ -23,24 +25,18 @@ export function* neuTakeLatest(
 
 export function* neuTakeEvery(
   type: TActionType | TActionType[] | StringableActionCreator<TAction>,
-  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
+  saga: TSagaWithDeps,
 ): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
   yield takeEvery(type, saga, deps);
 }
 
-export function* neuFork(
-  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
-  ...args: any[]
-): Iterator<Effect> {
+export function* neuFork(saga: TSagaWithDeps, ...args: any[]): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
   return yield spawn(saga, deps, args[0], args[1], args[2], args[3], args[4]);
 }
 
-export function* neuCall(
-  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
-  ...args: any[]
-): Iterator<Effect> {
+export function* neuCall(saga: TSagaWithDeps, ...args: any[]): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
   return yield call(saga, deps, args[0], args[1], args[2], args[3], args[4]);
 }
@@ -51,7 +47,7 @@ export function* neuCall(
 export function* neuTakeUntil(
   startAction: TActionType | TActionType[] | StringableActionCreator<TAction>,
   stopAction: TActionType | TActionType[] | StringableActionCreator<TAction>,
-  saga: (deps: TGlobalDependencies, ...args: any[]) => any,
+  saga: TSagaWithDeps,
 ): any {
   while (true) {
     const action = yield take(startAction);
@@ -66,10 +62,10 @@ export function* neuTakeUntil(
 /**
  *  Awaits an Action with specific payload
  */
-export function* neuTakeOnly<T extends TActionType>(action: T, payload: TActionPayload<T>): any {
+export function* neuTakeOnly<T extends TActionType>(type: T, payload: TActionPayload<T>): any {
   while (true) {
-    const takenAction = yield take(action);
-    if (isEqual(takenAction.payload, payload)) return;
+    const takenAction = yield take(type);
+    if (isEqual(takenAction.payload, payload)) return takenAction;
   }
 }
 
@@ -80,11 +76,11 @@ export function* neuTakeOnly<T extends TActionType>(action: T, payload: TActionP
 export function* neuRepeatIf(
   repeatAction: TActionType | TActionType[],
   endAction: TActionType | TActionType[],
-  generator: any,
-  extraParam?: any,
+  generator: TSagaWithDeps,
+  ...args: any[]
 ): any {
   while (true) {
-    yield neuCall(generator, extraParam);
+    yield neuCall(generator, ...args);
 
     const { repeat, end } = yield race({
       repeat: take(repeatAction),

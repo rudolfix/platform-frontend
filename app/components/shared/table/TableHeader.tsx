@@ -7,7 +7,7 @@ interface ITableHeaderProps {
   mobileActionName?: string;
 }
 
-export const TableHeader: React.SFC<ITableHeaderProps> = ({
+export const TableHeader: React.FunctionComponent<ITableHeaderProps> = ({
   children,
   mobileAction,
   mobileActionName,

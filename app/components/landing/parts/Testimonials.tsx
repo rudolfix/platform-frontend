@@ -2,6 +2,7 @@ import * as React from "react";
 import Slider, { Settings } from "react-slick";
 import { Col, Container, Row } from "reactstrap";
 
+import { ExternalLink } from "../../shared/links";
 import { JoinCta } from "./JoinCta";
 import { PeopleSlider } from "./testimonials/People";
 
@@ -23,7 +24,7 @@ const settings: Settings = {
   arrows: false,
 };
 
-export const Testimonials: React.SFC = () => (
+export const Testimonials: React.FunctionComponent = () => (
   <section>
     <Container>
       <Row>
@@ -91,8 +92,13 @@ interface IMediaQuoteProps {
   author?: string;
 }
 
-const MediaQuote: React.SFC<IMediaQuoteProps> = ({ imageSrc, quote, link, author }) => (
-  <a href={link} target="_blank" className={styles.mediaQuote}>
+const MediaQuote: React.FunctionComponent<IMediaQuoteProps> = ({
+  imageSrc,
+  quote,
+  link,
+  author,
+}) => (
+  <ExternalLink href={link} className={styles.mediaQuote}>
     <Row className="justify-content-around">
       <Col className="align-self-center" xs={12} md={4}>
         <img src={imageSrc} className={styles.mediaQuoteImage} />
@@ -104,5 +110,5 @@ const MediaQuote: React.SFC<IMediaQuoteProps> = ({ imageSrc, quote, link, author
         </blockquote>
       </Col>
     </Row>
-  </a>
+  </ExternalLink>
 );

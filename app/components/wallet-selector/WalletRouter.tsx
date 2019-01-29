@@ -11,7 +11,7 @@ interface IProps {
   rootPath: string;
 }
 
-export const WalletRouter: React.SFC<IProps> = ({ rootPath }) => (
+export const WalletRouter: React.FunctionComponent<IProps> = ({ rootPath }) => (
   <SwitchConnected>
     <Route path={`${rootPath}/light`} component={WalletLight} exact />
     <Route path={`${rootPath}/browser`} component={WalletBrowser} exact />

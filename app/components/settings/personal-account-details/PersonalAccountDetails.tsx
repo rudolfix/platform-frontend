@@ -37,7 +37,7 @@ interface IRecordProps {
   value: TTranslatedString;
 }
 
-const Record: React.SFC<IRecordProps> = ({ value, label }) => {
+const Record: React.FunctionComponent<IRecordProps> = ({ value, label }) => {
   return (
     <div className={styles.record}>
       <div className={styles.label}>{label}</div>
@@ -134,7 +134,7 @@ class AccountDetailsComponent extends React.Component<IStateProps, IOwnState> {
   }
 }
 
-export const PersonalAccountDetails = compose<React.SFC>(
+export const PersonalAccountDetails = compose<React.FunctionComponent>(
   appConnect<IStateProps>({
     stateToProps: s => ({
       personalData: s.kyc.individualData || {},

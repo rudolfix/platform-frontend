@@ -16,7 +16,9 @@ import { RegisterCta } from "./shared/RegisterCta";
 
 import * as styles from "./LandingEto.module.scss";
 
-export const LandingEtoComponent: React.SFC<IIntlProps> = ({ intl: { formatIntlMessage } }) => {
+export const LandingEtoComponent: React.FunctionComponent<IIntlProps> = ({
+  intl: { formatIntlMessage },
+}) => {
   return (
     <div className={styles.landingEto} data-test-id="landing-eto-page">
       <RegisterCta
@@ -109,7 +111,9 @@ export const LandingEtoComponent: React.SFC<IIntlProps> = ({ intl: { formatIntlM
   );
 };
 
-export const LandingEto: React.SFC<IIntlProps> = compose<React.SFC<IIntlProps>>(
+export const LandingEto: React.FunctionComponent<IIntlProps> = compose<
+  React.FunctionComponent<IIntlProps>
+>(
   createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
   withContainer(LayoutUnauthorized),
   injectIntlHelpers,

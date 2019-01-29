@@ -1,9 +1,9 @@
-import { Form, FormikProps, withFormik } from "formik";
+import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { FormField } from "../../shared/forms";
+import { Form, FormField } from "../../shared/forms";
 
 interface IStateProps {
   isUnlocked: boolean;
@@ -47,7 +47,7 @@ const EnhancedForm = withFormik<IProps, IFormValues>({
   handleSubmit: (values, props) => props.props.onAccept(values.password),
 })(AccessLightWalletForm);
 
-export const AccessLightWalletPrompt: React.SFC<IProps> = props =>
+export const AccessLightWalletPrompt: React.FunctionComponent<IProps> = props =>
   props.isUnlocked ? (
     <div className="mt-3">
       <Button

@@ -14,7 +14,7 @@ interface IDPChooserComponent {
   errorMessage: string | null;
 }
 
-export const DPChooserComponent: React.SFC<IDPChooserComponent & IIntlProps> = ({
+export const DPChooserComponent: React.FunctionComponent<IDPChooserComponent & IIntlProps> = ({
   derivationPathPrefix,
   onDerivationPathPrefixChange,
   errorMessage,

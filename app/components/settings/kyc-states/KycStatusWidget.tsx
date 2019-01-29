@@ -5,7 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { TRequestOutsourcedStatus, TRequestStatus } from "../../../lib/api/KycApi.interfaces";
+import { ERequestOutsourcedStatus, ERequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import {
@@ -34,8 +34,8 @@ import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./KycStatusWidget.module.scss";
 
 interface IStateProps {
-  requestStatus?: TRequestStatus;
-  requestOutsourcedStatus?: TRequestOutsourcedStatus;
+  requestStatus?: ERequestStatus;
+  requestOutsourcedStatus?: ERequestOutsourcedStatus;
   isUserEmailVerified: boolean;
   isLoading: boolean;
   backupCodesVerified: boolean;
@@ -56,7 +56,7 @@ interface IDispatchProps {
 
 export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
 
-const statusTextMap: Record<TRequestStatus, React.ReactNode> = {
+const statusTextMap: Record<ERequestStatus, React.ReactNode> = {
   Accepted: <FormattedMessage id="settings.kyc-status-widget.status.accepted" />,
   Rejected: (
     <FormattedHTMLMessage
@@ -83,7 +83,7 @@ const statusTextMap: Record<TRequestStatus, React.ReactNode> = {
   Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced" />,
 };
 
-const outsourcedStatusTextMap: Record<TRequestOutsourcedStatus, React.ReactNode> = {
+const outsourcedStatusTextMap: Record<ERequestOutsourcedStatus, React.ReactNode> = {
   review_pending: (
     <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />
   ),
@@ -122,8 +122,8 @@ const outsourcedStatusTextMap: Record<TRequestOutsourcedStatus, React.ReactNode>
 
 const getStatus = (
   selectIsUserEmailVerified: boolean,
-  requestStatus?: TRequestStatus,
-  requestOutsourcedStatus?: TRequestOutsourcedStatus,
+  requestStatus?: ERequestStatus,
+  requestOutsourcedStatus?: ERequestOutsourcedStatus,
 ): React.ReactNode => {
   if (!selectIsUserEmailVerified) {
     return <FormattedMessage id="settings.kyc-status-widget.status.error-verification-email" />;
@@ -133,7 +133,7 @@ const getStatus = (
     return "";
   }
 
-  if (requestStatus === "Outsourced" && requestOutsourcedStatus) {
+  if (requestStatus === ERequestStatus.OUTSOURCED && requestOutsourcedStatus) {
     return outsourcedStatusTextMap[requestOutsourcedStatus];
   }
 
@@ -151,7 +151,7 @@ const ActionButton = ({
   backupCodesVerified,
   cancelInstantId,
 }: IKycStatusWidgetProps) => {
-  if (requestStatus === "Accepted" && userType === EUserType.INVESTOR) {
+  if (requestStatus === ERequestStatus.ACCEPTED && userType === EUserType.INVESTOR) {
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
@@ -165,7 +165,7 @@ const ActionButton = ({
     );
   }
 
-  if (requestStatus === "Draft") {
+  if (requestStatus === ERequestStatus.DRAFT) {
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
@@ -179,7 +179,7 @@ const ActionButton = ({
     );
   }
 
-  if (requestStatus === "Pending") {
+  if (requestStatus === ERequestStatus.PENDING) {
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
@@ -195,10 +195,10 @@ const ActionButton = ({
 
   if (
     externalKycUrl &&
-    requestStatus === "Outsourced" &&
-    (requestOutsourcedStatus === "canceled" ||
-      requestOutsourcedStatus === "aborted" ||
-      requestOutsourcedStatus === "started")
+    requestStatus === ERequestStatus.OUTSOURCED &&
+    (requestOutsourcedStatus === ERequestOutsourcedStatus.CANCELED ||
+      requestOutsourcedStatus === ERequestOutsourcedStatus.ABORTED ||
+      requestOutsourcedStatus === ERequestOutsourcedStatus.STARTED)
   ) {
     return (
       <>
@@ -226,7 +226,7 @@ const ActionButton = ({
   return null;
 };
 
-export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props => {
+export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetProps> = props => {
   const {
     requestStatus,
     requestOutsourcedStatus,
@@ -242,10 +242,10 @@ export const KycStatusWidgetComponent: React.SFC<IKycStatusWidgetProps> = props 
       headerText={<FormattedMessage id="settings.kyc-widget.header" values={{ step }} />}
       rightComponent={
         !isLoading &&
-        (requestStatus === "Accepted" ? (
-          <img src={successIcon} className={styles.icon} aria-hidden="true" />
+        (requestStatus === ERequestStatus.ACCEPTED ? (
+          <img src={successIcon} className={styles.icon} alt="" />
         ) : (
-          <img src={warningIcon} className={styles.icon} aria-hidden="true" />
+          <img src={warningIcon} className={styles.icon} alt="" />
         ))
       }
     >

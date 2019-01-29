@@ -7,7 +7,7 @@ import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware, { delay, SagaMiddleware } from "redux-saga";
+import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { SinonSpy } from "sinon";
 
 import {
@@ -176,7 +176,6 @@ export async function waitUntilDoesntThrow(
       fn();
       break;
     } catch (e) {
-      delay(1);
       await globalFakeClock.tickAsync(1);
       lastError = e;
     }
@@ -213,7 +212,7 @@ export function wrapWithProviders(
 
   return (
     <ReduxProvider store={store}>
-      <ConnectedRouter history={history!}>
+      <ConnectedRouter history={history}>
         <InversifyProvider container={container}>
           {/* if we experience slow dows related to this we can switch to injecting dummy intl impl*/}
           <IntlProvider locale="en-en" messages={defaultTranslations}>

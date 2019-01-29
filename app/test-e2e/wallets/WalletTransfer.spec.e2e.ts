@@ -1,7 +1,7 @@
-import { createAndLoginNewUser } from "../utils/userHelpers";
 import { INV_EUR_ICBM_HAS_KYC_ADDRESS, INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
 import { assertUserInDashboard, goToDashboard } from "../utils";
 import { tid } from "../utils/selectors";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Wallet Transfer", () => {
   it("should generate correct qr-code and address", () => {

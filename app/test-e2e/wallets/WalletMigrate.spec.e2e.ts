@@ -8,8 +8,13 @@ import {
   letterKeepDotRegExPattern,
   letterRegExPattern,
 } from "../utils";
-import { ETransactionStatus, getNonceRpc } from "../utils/ethRpcUtils";
-import { getChainIdRpc, getTransactionReceipt, sendRawTransactionRpc } from "../utils/ethRpcUtils";
+import {
+  ETransactionStatus,
+  getChainIdRpc,
+  getNonceRpc,
+  getTransactionReceipt,
+  sendRawTransactionRpc,
+} from "../utils/ethRpcUtils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -98,7 +103,6 @@ describe("Wallet Migration Flow", () => {
                             chainId: chainId.body.result,
                           })
                           .then((signed: any) => {
-                            console.log(signed);
                             cy.log("Sending First Transaction");
                             sendRawTransactionRpc(NODE_ADDRESS, signed.rawTransaction).then(
                               hash => {

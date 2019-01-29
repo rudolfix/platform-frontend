@@ -5,7 +5,7 @@ import { etoFixtureAddressByName } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
-const ETO_ID = etoFixtureAddressByName("ETOInPublicState")!;
+const ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
 describe("Eto Investor View", () => {
   beforeEach(() => createAndLoginNewUser({ type: "investor" }));

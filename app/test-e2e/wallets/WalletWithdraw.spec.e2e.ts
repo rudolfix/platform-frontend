@@ -3,8 +3,8 @@ import Web3Accounts from "web3-eth-accounts";
 
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
 import { assertUserInDashboard, confirmAccessModal, goToDashboard } from "../utils";
-import { tid } from "../utils/selectors";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
+import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 const Q18 = new BigNumber(10).pow(18);
@@ -31,7 +31,7 @@ const typeWrongValue = () => {
   cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).clear();
 };
 
-const checkTransactionWithRPCNode = (
+export const checkTransactionWithRPCNode = (
   expectedTransaction: {
     expectedFrom: string;
     expectedInput: string;
@@ -79,14 +79,12 @@ describe("Wallet Withdraw", () => {
       goToDashboard();
 
       const testValue = (5).toString();
-      const expectedGasLimit = "0x12375";
       const account = new Web3Accounts().create();
       const expectedInput = `0x64663ea6000000000000000000000000${account.address
         .slice(2)
         .toLowerCase()}0000000000000000000000000000000000000000000000004563918244f40000`;
 
       const expectedAddress = account.address;
-      const expectedInputValue = "0";
 
       assertUserInDashboard();
       cy.get(tid("authorized-layout-wallet-button")).awaitedClick();
@@ -116,7 +114,7 @@ describe("Wallet Withdraw", () => {
 
         cy.get(tid("modals.tx-sender.withdraw-flow.tx-hash")).then(txHashObject => {
           getTransactionByHashRpc(NODE_ADDRESS, txHashObject.text()).then(data => {
-            const { from, gas, input, hash, value } = data.body.result;
+            const { from, input, hash, value } = data.body.result;
 
             const ethValue = new BigNumber(value).toString();
 

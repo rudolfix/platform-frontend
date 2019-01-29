@@ -30,7 +30,6 @@
     "no-switch-case-fall-through": true,
     "no-duplicate-variable": true,
     "no-string-throw": true,
-    "no-unused-expression": true,
     "radix": true,
     "no-var-keyword": true,
     "no-console": true,
@@ -40,7 +39,8 @@
     "ordered-imports": true,
     "no-commented-code": true,
     "no-submodule-imports": false,
-    "no-use-before-declare": false
+    "no-use-before-declare": false,
+    "mocha-avoid-only": true
   },
   "linterOptions": {
     "exclude": ["node_modules/**", "**/*.json"]

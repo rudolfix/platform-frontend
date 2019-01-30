@@ -10,7 +10,6 @@ import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
 import { getMessageTranslation } from "../../translatedMessages/messages";
-import { TMessage } from "../../translatedMessages/utils";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 

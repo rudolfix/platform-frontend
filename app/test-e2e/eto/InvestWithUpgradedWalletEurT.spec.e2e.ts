@@ -1,6 +1,5 @@
 import { INV_ETH_EUR_ICBM_HAS_KYC } from "../constants";
-import { etoFixtureAddressByName } from "../utils";
-import { confirmAccessModal, LONG_WAIT_TIME } from "../utils/index";
+import { confirmAccessModal, etoFixtureAddressByName, LONG_WAIT_TIME } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 

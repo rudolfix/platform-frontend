@@ -37,7 +37,6 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
     <Row>
       <Col>
         <NewTable
-          keepRhythm={true}
           placeholder={
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.placeholder" />
           }
@@ -102,7 +101,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
                   />
                   <>
                     {isWhitelistedOrPublic ? (
-                      <>
+                      <span className={"text-uppercase"}>
                         <FormattedMessage
                           id="shared-component.eto-overview.invest.ends-in"
                           values={{
@@ -114,14 +113,12 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
                             ),
                           }}
                         />
-                      </>
+                      </span>
                     ) : (
                       <ETOState previewCode={previewCode} size={EProjectStatusSize.SMALL} />
                     )}
                   </>
-                  <div className="d-flex justify-content-center">
-                    <PortfolioAssetAction state={timedState} etoId={etoId} />
-                  </div>
+                  <PortfolioAssetAction state={timedState} etoId={etoId} />
                 </NewTableRow>
               );
             },

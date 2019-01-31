@@ -65,7 +65,6 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
     <Row>
       <Col>
         <NewTable
-          keepRhythm={true}
           placeholder={<FormattedMessage id="portfolio.section.your-assets.table.placeholder" />}
           titles={[
             <FormattedMessage id="portfolio.section.my-assets.table.header.token" />,
@@ -95,6 +94,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                 value={neuPrice}
                 currency={ECurrency.EUR}
                 currencySymbol={ECurrencySymbol.SYMBOL}
+                isPrice={true}
               />
               <ExternalLink href={withParams(externalRoutes.commitmentStatus, { walletAddress })}>
                 <Button
@@ -130,6 +130,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                     <Money
                       value={tokenData.tokenPrice}
                       currency={ECurrency.EUR}
+                      isPrice={true}
                       currencySymbol={ECurrencySymbol.SYMBOL}
                     />
                     <Button

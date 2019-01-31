@@ -1,5 +1,5 @@
 import { delay } from "redux-saga";
-import { cancel, fork, put, select, take } from "redux-saga/effects";
+import { call, cancel, fork, put, select, take } from "redux-saga/effects";
 
 import { KycFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -545,7 +545,7 @@ function* submitBusinessRequest(
     // check whether combined value of beneficial owners percentages is less or equal 100%
     const ownerShip = yield select((s: IAppState) => selectCombinedBeneficialOwnerOwnership(s.kyc));
     if (ownerShip > 100) {
-      yield neuCall(
+      yield call(
         displayErrorModalSaga,
         createMessage(KycFlowMessage.KYC_ERROR),
         createMessage(KycFlowMessage.KYC_BENEFICIAL_OWNERS),

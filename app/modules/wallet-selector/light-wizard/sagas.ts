@@ -5,7 +5,6 @@ import {
   BackupRecoveryMessage,
   GenericErrorMessage,
   GenericModalMessage,
-  getMessageTranslation,
   SignInUserErrorMessage,
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
@@ -262,10 +261,10 @@ export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Iterat
   try {
     const user = yield select((state: IAppState) => state.auth.user);
     yield neuCall(updateUserPromise, { ...user, backupCodesVerified: true });
-    yield neuCall(
+    yield call(
       displayInfoModalSaga,
-      getMessageTranslation(createMessage(BackupRecoveryMessage.BACKUP_SUCCESS_TITLE)),
-      getMessageTranslation(createMessage(BackupRecoveryMessage.BACKUP_SUCCESS_DESCRIPTION)),
+      createMessage(BackupRecoveryMessage.BACKUP_SUCCESS_TITLE),
+      createMessage(BackupRecoveryMessage.BACKUP_SUCCESS_DESCRIPTION),
     );
     yield loadUser();
     yield effects.put(actions.routing.goToProfile());

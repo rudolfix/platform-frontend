@@ -10,7 +10,6 @@ import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
 import { getMessageTranslation } from "../../translatedMessages/messages";
-import { TMessage } from "../../translatedMessages/utils";
 import { ModalComponentBody } from "../ModalComponentBody";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 
@@ -83,7 +82,7 @@ export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IEx
       : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalTitle),
     message: external.message
       ? external.message
-      : s.accessWallet.modalTitle && getMessageTranslation(s.accessWallet.modalMessage as TMessage),
+      : s.accessWallet.modalMessage && getMessageTranslation(s.accessWallet.modalMessage),
     walletType: selectWalletType(s.web3),
     isUnlocked: selectIsUnlocked(s.web3),
   }),

@@ -1,16 +1,22 @@
-.document {
-  display: flex;
-  align-items: center;
-  height: 46px;
+.document-button {
+  width: 100%;
   background-color: $neu-pale-blue;
+  height: 46px;
+  padding: 0 15px;
 
   &:nth-of-type(2n) {
     background-color: transparent;
   }
+}
+
+.document {
+  display: flex;
+  align-items: center;
+  flex-basis: 100%;
+  width: 100%;
 
   .download-icon {
     margin-left: auto;
-    margin-right: 15px;
 
     svg {
       width: 18px;

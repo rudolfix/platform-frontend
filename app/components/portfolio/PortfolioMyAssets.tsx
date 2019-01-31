@@ -1,4 +1,5 @@
 import * as cn from "classnames";
+import { isEqual } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -122,12 +123,12 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                     </>
                     <NumberFormat value={tokenData.balance} />
                     <Money
-                      value={tokenData.tokenPrice}
+                      value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
                       currency={ECurrency.EUR}
                       currencySymbol={ECurrencySymbol.SYMBOL}
                     />
                     <Money
-                      value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
+                      value={tokenData.tokenPrice}
                       currency={ECurrency.EUR}
                       currencySymbol={ECurrencySymbol.SYMBOL}
                     />
@@ -172,8 +173,11 @@ const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
     }),
   }),
   lifecycle<TComponentProps, IStateProps>({
-    componentDidUpdate(): void {
-      if (this.props.myAssets.length > 0) {
+    componentDidUpdate(prevProps): void {
+      const prevAssets = prevProps.myAssets.map(v => v.contract!.equityTokenAddress);
+      const actualAssets = this.props.myAssets.map(v => v.contract!.equityTokenAddress);
+
+      if (this.props.myAssets.length > 0 && !isEqual(prevAssets, actualAssets)) {
         this.props.loadTokensData(this.props.walletAddress);
       }
     },

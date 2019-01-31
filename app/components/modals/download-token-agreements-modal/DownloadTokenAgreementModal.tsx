@@ -18,11 +18,11 @@ import {
 } from "../../portfolio/selectors";
 import { EButtonLayout } from "../../shared/buttons";
 import { DocumentTemplateButton } from "../../shared/DocumentLink";
+import { InlineIcon } from "../../shared/InlineIcon";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { ModalComponentBody } from "../ModalComponentBody";
 
 import * as downloadIcon from "../../../assets/img/inline_icons/download.svg";
-import { InlineIcon } from "../../shared/InlineIcon";
 import * as styles from "./DownloadTokenAgreementModal.module.scss";
 
 interface IStateProps {
@@ -59,7 +59,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
               return [EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT].includes(
                 document.documentType,
               ) ? (
-                <div
+                <a
                   key={document.documentType}
                   className={styles.document}
                   onClick={() =>
@@ -78,13 +78,8 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                     layout={EButtonLayout.SECONDARY}
                     title={getDocumentTitles(isRetailEto)[document.documentType]}
                   />
-                  <InlineIcon
-                    className={styles.downloadIcon}
-                    svgIcon={downloadIcon}
-                    height={"18px"}
-                    width={"18px"}
-                  />
-                </div>
+                  <InlineIcon className={styles.downloadIcon} svgIcon={downloadIcon} />
+                </a>
               ) : null;
             }, eto.documents)}
             {map((template: IEtoDocument) => {
@@ -92,7 +87,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                 EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
                 EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
               ].includes(template.documentType) ? (
-                <div
+                <a
                   key={template.documentType}
                   className={styles.document}
                   onClick={() => generateTemplateByEtoId({ ...template, asPdf: true }, eto.etoId)}
@@ -101,16 +96,10 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                     layout={EButtonLayout.SECONDARY}
                     title={getDocumentTitles(isRetailEto)[template.documentType]}
                   />
-                  <InlineIcon
-                    className={styles.downloadIcon}
-                    svgIcon={downloadIcon}
-                    height={"18px"}
-                    width={"18px"}
-                  />
-                </div>
+                  <InlineIcon className={styles.downloadIcon} svgIcon={downloadIcon} />
+                </a>
               ) : null;
             }, eto.templates)}
-            <p className="mb-0" />
           </section>
         )}
       </ModalComponentBody>
@@ -118,7 +107,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
   );
 };
 
-const DownloadTokenAgreementModal = compose<any, any>(
+const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectDownloadAgreementModalEtoId(state);

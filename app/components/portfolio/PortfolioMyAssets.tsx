@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose, lifecycle } from "recompose";
 
-import BigNumber from "bignumber.js";
 import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
 import { selectMyAssetsWithTokenData } from "../../modules/investor-tickets/selectors";
@@ -14,7 +13,8 @@ import { selectNeuBalance } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { withParams } from "../../utils/withParams";
-import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
+import { Button, EButtonLayout } from "../shared/buttons";
+import { ExternalLink } from "../shared/links";
 import { ECurrency, ECurrencySymbol, Money } from "../shared/Money";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/NewTable";
 import { NumberFormat } from "../shared/NumberFormat";
@@ -62,10 +62,9 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
     </SectionHeader>
 
     <Row>
-      <Col className={styles.myAssets}>
+      <Col>
         <NewTable
           keepRhythm={true}
-          panelStyle={styles.panel}
           placeholder={<FormattedMessage id="portfolio.section.your-assets.table.placeholder" />}
           titles={[
             <FormattedMessage id="portfolio.section.my-assets.table.header.token" />,
@@ -96,16 +95,16 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                 currency={ECurrency.EUR}
                 currencySymbol={ECurrencySymbol.SYMBOL}
               />
-              <ButtonLink
-                to={withParams(externalRoutes.commitmentStatus, { walletAddress })}
-                target={"_blank"}
-                layout={EButtonLayout.SIMPLE}
-                iconPosition="icon-after"
-                svgIcon={arrowRight}
-                innerClassName={"text-uppercase"}
-              >
-                <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
-              </ButtonLink>
+              <ExternalLink href={withParams(externalRoutes.commitmentStatus, { walletAddress })}>
+                <Button
+                  layout={EButtonLayout.SECONDARY}
+                  iconPosition="icon-after"
+                  svgIcon={arrowRight}
+                  innerClassName={cn(styles.actionButton, "p-0")}
+                >
+                  <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
+                </Button>
+              </ExternalLink>
             </NewTableRow>
           ) : null}
 
@@ -134,10 +133,10 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                     />
                     <Button
                       onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
-                      layout={EButtonLayout.SIMPLE}
+                      layout={EButtonLayout.SECONDARY}
                       iconPosition="icon-after"
                       svgIcon={arrowRight}
-                      innerClassName={"text-uppercase"}
+                      innerClassName={cn(styles.actionButton, "p-0")}
                     >
                       <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
                     </Button>
@@ -158,7 +157,7 @@ const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
 
       return {
         myNeuBalance,
-        neuPrice: new BigNumber(neuPrice).toFixed(8),
+        neuPrice,
         neuValue: multiplyBigNumbers([myNeuBalance, neuPrice]),
         myAssets: selectMyAssetsWithTokenData(state)!,
       };

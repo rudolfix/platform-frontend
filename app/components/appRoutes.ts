@@ -26,5 +26,5 @@ export const appRoutes = {
 
   etoRegister: "/eto/registration",
 
-  portfolio: "/portfolioActions",
+  portfolio: "/portfolio",
 };

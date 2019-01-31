@@ -35,10 +35,9 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
     </SectionHeader>
 
     <Row>
-      <Col className={styles.reservedAssets}>
+      <Col>
         <NewTable
           keepRhythm={true}
-          panelStyle={styles.panel}
           placeholder={
             <FormattedMessage id="portfolio.section.reserved-assets.table.header.placeholder" />
           }

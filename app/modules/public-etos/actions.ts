@@ -26,6 +26,16 @@ export const etoActions = {
     "PUBLIC_ETOS_DOWNLOAD_TEMPLATE_BY_TYPE",
     (etoId: string, documentType: EEtoDocumentType) => ({ etoId, documentType }),
   ),
+  loadTokensData: createActionFactory("PORTFOLIO_LOAD_TOKENS_DATA", (walletAddress: string) => ({
+    walletAddress,
+  })),
+  setTokenData: createActionFactory(
+    "PORTFOLIO_SET_TOKEN_DATA",
+    (previewCode: string, tokenData: IEtoTokenData) => ({
+      previewCode,
+      tokenData,
+    }),
+  ),
   // state mutations
   setPublicEtos: createActionFactory(
     "PUBLIC_ETOS_SET_PUBLIC_ETOS",
@@ -49,14 +59,4 @@ export const etoActions = {
     (previewCode: string, data: IEtoContractData) => ({ previewCode, data }),
   ),
   setEtoWidgetError: createActionFactory("PUBLIC_ETOS_SET_ETO_WIDGET_ERROR"),
-  loadTokensData: createActionFactory("PORTFOLIO_LOAD_TOKENS_DATA", (walletAddress: string) => ({
-    walletAddress,
-  })),
-  setTokenData: createActionFactory(
-    "PORTFOLIO_SET_TOKEN_DATA",
-    (previewCode: string, tokenData: IEtoTokenData) => ({
-      previewCode,
-      tokenData,
-    }),
-  ),
 };

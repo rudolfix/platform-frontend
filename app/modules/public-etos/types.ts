@@ -42,9 +42,9 @@ export type TEtoWithCompanyAndContract = DeepReadonly<
 >;
 
 export interface IEtoTokenData {
-  balance: BigNumber;
-  tokensPerShare: BigNumber;
-  totalCompanyShares: BigNumber;
-  companyValuationEurUlps: BigNumber;
-  tokenPrice: BigNumber;
+  balance: string;
+  tokensPerShare: string;
+  totalCompanyShares: string;
+  companyValuationEurUlps: string;
+  tokenPrice: string;
 }

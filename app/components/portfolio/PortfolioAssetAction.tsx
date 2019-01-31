@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -9,6 +10,7 @@ import { InvestmentProgress } from "../eto/overview/EtoOverviewStatus/Investment
 import { Button, EButtonLayout } from "../shared/buttons";
 
 import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
+import * as styles from "./PortfolioLayout.module.scss";
 
 type TExternalProps = {
   state: EETOStateOnChain;
@@ -32,11 +34,11 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
       return (
         <Button
           onClick={() => onClaim(etoId)}
-          layout={EButtonLayout.SIMPLE}
+          layout={EButtonLayout.SECONDARY}
           iconPosition="icon-after"
           svgIcon={arrowRight}
           data-test-id={"modals.portfolio.portfolio-asset-action.claim-" + etoId}
-          innerClassName={"text-uppercase"}
+          innerClassName={cn(styles.actionButton, "p-0")}
         >
           <FormattedMessage id="portfolio.section.reserved-assets.claim-tokens" />
         </Button>
@@ -44,17 +46,22 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
     case EETOStateOnChain.Refund:
       return (
         <Button
-          layout={EButtonLayout.SIMPLE}
+          layout={EButtonLayout.SECONDARY}
           iconPosition="icon-after"
           svgIcon={arrowRight}
-          innerClassName={"text-uppercase"}
+          innerClassName={cn(styles.actionButton, "p-0")}
+          disabled
         >
           <FormattedMessage id="portfolio.section.reserved-assets.refund" />
         </Button>
       );
     case EETOStateOnChain.Signing:
       return (
-        <Button layout={EButtonLayout.SIMPLE} disabled innerClassName={"text-uppercase"}>
+        <Button
+          layout={EButtonLayout.SECONDARY}
+          innerClassName={cn(styles.actionButton, "p-0")}
+          disabled
+        >
           <FormattedMessage id="portfolio.section.reserved-assets.wait-for-update" />
         </Button>
       );

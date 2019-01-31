@@ -25,12 +25,8 @@
   text-align: left;
 }
 
-.reserved-assets,
-.my-assets {
+.action-button {
   font-size: px-to-rem(12px);
-  margin-bottom: 1.5rem;
-
-  .panel {
-    padding: 12px;
-  }
+  font-weight: 400;
+  text-transform: uppercase;
 }

@@ -4,7 +4,6 @@ import { compose, keyBy, map, omit } from "lodash/fp";
 import { delay } from "redux-saga";
 import { all, fork, put, race, select } from "redux-saga/effects";
 
-import BigNumber from "bignumber.js";
 import { PublicEtosMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -348,22 +347,24 @@ export function* loadTokensData(
     const equityTokenAddress = eto.contract.equityTokenAddress;
 
     const equityToken = yield contractsService.getEquityToken(equityTokenAddress);
-    const balance = yield equityToken.balanceOf(action.payload.walletAddress);
-    const tokensPerShare = yield equityToken.tokensPerShare;
-    const tokenController = yield equityToken.tokenController;
+
+    const { balance, tokensPerShare, tokenController } = yield all({
+      balance: equityToken.balanceOf(action.payload.walletAddress),
+      tokensPerShare: equityToken.tokensPerShare,
+      tokenController: equityToken.tokenController,
+    });
 
     const controllerGovernance = yield contractsService.getControllerGovernance(tokenController);
+
     const [
       totalCompanyShares,
       companyValuationEurUlps,
       ,
     ] = yield controllerGovernance.shareholderInformation();
 
-    const tokenPrice = new BigNumber(
-      divideBigNumbers(
-        divideBigNumbers(companyValuationEurUlps, totalCompanyShares),
-        tokensPerShare,
-      ),
+    const tokenPrice = divideBigNumbers(
+      divideBigNumbers(companyValuationEurUlps, totalCompanyShares),
+      tokensPerShare,
     );
 
     yield put(

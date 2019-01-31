@@ -29,9 +29,7 @@ export const portfolioDownloadAgreementsModalReducer: AppReducer<
       };
     }
     case actions.portfolio.hideDownloadAgreementModal.getType(): {
-      return {
-        isOpen: false,
-      };
+      return portfolioDownloadAgreementsModalInitialState;
     }
   }
 

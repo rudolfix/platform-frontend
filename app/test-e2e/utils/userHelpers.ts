@@ -13,7 +13,7 @@ Pre-login user for faster tests
 export const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
 const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
 export const JWT_KEY = "NF_JWT";
-const CURRENT_AGREEMENT = "QmZP5jN7W7oG7Kh4HsYPNtJ6naGTC3PHGx7vUgbTTGU7kN";
+const CURRENT_AGREEMENT = "QmS3qGWqvruywjM7Lp82LiyoyqDQbArdXveC5JA5m54Qfv";
 
 export const generateRandomEmailAddress = () =>
   `${Math.random()

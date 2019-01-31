@@ -12,7 +12,7 @@ const CHANGED_AMOUNT = "1500";
 
 describe("Eto campaigning state", () => {
   it("should show Register button when not logged in", () => {
-    const ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
+    const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
 
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
     cy.get(tid("eto.public-view")).should("exist");
@@ -23,7 +23,7 @@ describe("Eto campaigning state", () => {
   });
 
   it("should show founders quote when logged in and campaigning date is not set", () => {
-    const ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
+    const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
 
     createAndLoginNewUser({
       type: "issuer",
@@ -38,7 +38,7 @@ describe("Eto campaigning state", () => {
 
   it("should allow to pledge by investor", () => {
     // eto ID must match issuer SEED below
-    const ETO_ID = etoFixtureAddressByName("ETOInSetupState")!;
+    const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
 
     createAndLoginNewUser({
       type: "issuer",

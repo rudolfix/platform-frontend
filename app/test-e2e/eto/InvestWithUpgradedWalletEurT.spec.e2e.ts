@@ -1,8 +1,7 @@
-import { createAndLoginNewUser } from "../utils/userHelpers";
-import { tid } from "../utils/selectors";
 import { INV_ETH_EUR_ICBM_HAS_KYC } from "../constants";
-import { confirmAccessModal, LONG_WAIT_TIME } from "../utils/index";
-import { etoFixtureAddressByName } from "../utils";
+import { confirmAccessModal, etoFixtureAddressByName, LONG_WAIT_TIME } from "../utils";
+import { tid } from "../utils/selectors";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Invest with euro token", () => {
   const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");

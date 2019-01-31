@@ -6,7 +6,7 @@ import { etoFixtureAddressByName, stubWindow } from "../utils";
 
 describe("Eto widget page", () => {
   it("Basic widget", () => {
-    const ETO_ID = etoFixtureAddressByName("ETOInSetupState")!;
+    const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
 
     stubWindow("windowOpen");
 
@@ -55,7 +55,7 @@ describe("Eto widget page", () => {
   });
 
   it("ETOInSetupState", () => {
-    const ETO_ID = etoFixtureAddressByName("ETOInSetupState")!;
+    const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
@@ -67,7 +67,7 @@ describe("Eto widget page", () => {
   });
 
   it("ETOInWhitelistState", () => {
-    const ETO_ID = etoFixtureAddressByName("ETOInWhitelistState")!;
+    const ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 
@@ -75,7 +75,7 @@ describe("Eto widget page", () => {
   });
 
   it("ETOInPublicState", () => {
-    const ETO_ID = etoFixtureAddressByName("ETOInPublicState")!;
+    const ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
     cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
 

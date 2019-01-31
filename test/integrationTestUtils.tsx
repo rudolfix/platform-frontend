@@ -1,3 +1,4 @@
+import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
 import { Container } from "inversify";
@@ -5,9 +6,8 @@ import * as lolex from "lolex";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
-import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware, { delay, SagaMiddleware } from "redux-saga";
+import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { SinonSpy } from "sinon";
 
 import {
@@ -26,9 +26,8 @@ import { BrowserWalletConnector } from "../app/lib/web3/BrowserWallet";
 import { ContractsService } from "../app/lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../app/lib/web3/LedgerWallet";
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager.mock";
-import { createInjectMiddleware } from "../app/middlewares/redux-injectify";
 import { rootSaga } from "../app/modules/sagas";
-import { IAppState, generateRootReducer } from "../app/store";
+import { generateRootReducer, IAppState } from "../app/store";
 import { DeepPartial } from "../app/types";
 import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
 import { InversifyProvider } from "../app/utils/InversifyProvider";
@@ -177,7 +176,6 @@ export async function waitUntilDoesntThrow(
       fn();
       break;
     } catch (e) {
-      delay(1);
       await globalFakeClock.tickAsync(1);
       lastError = e;
     }
@@ -214,7 +212,7 @@ export function wrapWithProviders(
 
   return (
     <ReduxProvider store={store}>
-      <ConnectedRouter history={history!}>
+      <ConnectedRouter history={history}>
         <InversifyProvider container={container}>
           {/* if we experience slow dows related to this we can switch to injecting dummy intl impl*/}
           <IntlProvider locale="en-en" messages={defaultTranslations}>

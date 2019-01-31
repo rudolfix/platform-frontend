@@ -9,7 +9,7 @@ describe("Eto Investor View", () => {
   let ETO_ID: string;
   beforeEach(() => {
     createAndLoginNewUser({ type: "investor", kyc: "business" });
-    ETO_ID = etoFixtureAddressByName("ETONoStartDate")!;
+    ETO_ID = etoFixtureAddressByName("ETONoStartDate");
   });
 
   it("should load empty Eto", () => {

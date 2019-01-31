@@ -1,17 +1,23 @@
-import { Q18 } from "../../config/constants";
-import { getNonceRpc, ETransactionStatus } from "../utils/ethRpcUtils";
-import { createAndLoginNewUser } from "../utils/userHelpers";
-import { tid } from "../utils/selectors";
+import BigNumber from "bignumber.js";
 import web3Accounts from "web3-eth-accounts";
-import { getChainIdRpc, sendRawTransactionRpc, getTransactionReceipt } from "../utils/ethRpcUtils";
+
+import { appRoutes } from "../../components/appRoutes";
+import { Q18 } from "../../config/constants";
 import {
   charRegExPattern,
-  letterRegExPattern,
   FIXTURE_ACCOUNTS,
   letterKeepDotRegExPattern,
+  letterRegExPattern,
 } from "../utils";
-import BigNumber from "bignumber.js";
-import { appRoutes } from "../../components/appRoutes";
+import {
+  ETransactionStatus,
+  getChainIdRpc,
+  getNonceRpc,
+  getTransactionReceipt,
+  sendRawTransactionRpc,
+} from "../utils/ethRpcUtils";
+import { tid } from "../utils/selectors";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 
 const NODE_ADDRESS = "https://localhost:9090/node";
 
@@ -98,7 +104,6 @@ describe("Wallet Migration Flow", () => {
                             chainId: chainId.body.result,
                           })
                           .then((signed: any) => {
-                            console.log(signed);
                             cy.log("Sending First Transaction");
                             sendRawTransactionRpc(NODE_ADDRESS, signed.rawTransaction).then(
                               hash => {

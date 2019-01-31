@@ -1,3 +1,4 @@
+import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { INV_EUR_ICBM_HAS_KYC_KEY, INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
 import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
 import {
@@ -6,13 +7,12 @@ import {
   goToProfile,
   registerWithLightWallet,
 } from "../utils";
+import { notificationTid, tid } from "../utils/selectors";
 import {
   createAndLoginNewUser,
   DEFAULT_PASSWORD,
   generateRandomEmailAddress,
 } from "../utils/userHelpers";
-import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
-import { tid, notificationTid } from "../utils/selectors";
 
 describe("Backup Seed and Private Key save and view", () => {
   it("should allow to save seed phrase", () => {

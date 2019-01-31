@@ -12,7 +12,9 @@
     "jsx": "react",
     "sourceMap": true,
     "typeRoots": ["./node_modules/@types", "./@types"],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "./node_modules/types-bn/index.d.ts",

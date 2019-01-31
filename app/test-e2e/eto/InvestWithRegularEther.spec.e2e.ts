@@ -1,8 +1,7 @@
-import { confirmAccessModal } from "./../utils/index";
-import { createAndLoginNewUser } from "../utils/userHelpers";
-import { tid } from "../utils/selectors";
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
-import { etoFixtureAddressByName } from "../utils";
+import { confirmAccessModal, etoFixtureAddressByName } from "../utils";
+import { tid } from "../utils/selectors";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Invest with ethereum", () => {
   it("do", () => {

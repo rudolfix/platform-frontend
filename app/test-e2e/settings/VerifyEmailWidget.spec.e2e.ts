@@ -1,14 +1,14 @@
 import {
-  assertWaitForLatestEmailSentWithSalt,
   assertUserInDashboard,
   assertVerifyEmailWidgetIsInNoEmailState,
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
+  assertWaitForLatestEmailSentWithSalt,
   clearEmailServer,
+  confirmAccessModalNoPW,
   convertToUniqueEmail,
   registerWithLightWallet,
   verifyLatestUserEmail,
-  confirmAccessModalNoPW,
 } from "../utils";
 import { tid } from "../utils/selectors";
 

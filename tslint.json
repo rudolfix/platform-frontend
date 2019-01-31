@@ -30,7 +30,6 @@
     "no-switch-case-fall-through": true,
     "no-duplicate-variable": true,
     "no-string-throw": true,
-    "no-unused-expression": true,
     "radix": true,
     "no-var-keyword": true,
     "no-console": true,
@@ -40,17 +39,10 @@
     "ordered-imports": true,
     "no-commented-code": true,
     "no-submodule-imports": false,
-    "no-use-before-declare": false
+    "no-use-before-declare": false,
+    "mocha-avoid-only": true
   },
   "linterOptions": {
-    "exclude": [
-      "node_modules/**",
-      "**/*.spec.ts?(x)",
-      "**/*.spec.e2e.ts?(x)",
-      "**/*.spec.node.ts?(x)",
-      "**/e2e-test/utils/**",
-      "test/**",
-      "**/*.json"
-    ]
+    "exclude": ["node_modules/**", "**/*.json"]
   }
 }

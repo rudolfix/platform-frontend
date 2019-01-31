@@ -1,9 +1,9 @@
 import { Middleware } from "redux";
 import { spy } from "sinon";
 
-export function createSpyMiddleware() {
+export function createSpyMiddleware(): any {
   const dispatchSpy = spy();
-  const middleware: Middleware = middlewareApi => {
+  const middleware: Middleware = () => {
     return next => (action: any) => {
       dispatchSpy(action);
       // pass every action

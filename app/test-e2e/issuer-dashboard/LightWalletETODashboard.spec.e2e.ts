@@ -1,13 +1,12 @@
+import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
 import {
   assertBackupSeedWidgetVisible,
   assertEmailActivationWidgetVisible,
   assertEtoDashboard,
-  convertToUniqueEmail,
   goToDashboard,
   registerWithLightWalletETO,
   verifyLatestUserEmail,
 } from "../utils";
-import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
 import { DEFAULT_PASSWORD, generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Light Wallet ETO Dashboard", () => {

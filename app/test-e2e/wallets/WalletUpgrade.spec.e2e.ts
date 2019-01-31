@@ -1,6 +1,6 @@
 import { extractNumber } from "../../utils/StringUtils";
 import { INV_ETH_ICBM_NO_KYC, INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
-import { closeModal, confirmAccessModal, etoFixtureAddressByName } from "../utils";
+import { closeModal, confirmAccessModal } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 

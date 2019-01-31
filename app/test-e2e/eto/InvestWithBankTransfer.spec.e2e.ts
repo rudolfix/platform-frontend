@@ -1,6 +1,5 @@
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
 import { etoFixtureAddressByName } from "../utils";
-import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 

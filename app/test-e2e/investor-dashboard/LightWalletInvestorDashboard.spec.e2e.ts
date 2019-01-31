@@ -1,6 +1,5 @@
-import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertDashboard } from "../utils";
-import { tid } from "../utils/selectors";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Auto Login", () => {
   it("will auto login", () => {

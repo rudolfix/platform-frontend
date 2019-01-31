@@ -5,3 +5,5 @@ export const ignoredTemplates: string[] = [
   "prospectusTemplate",
   "investmentMemorandumTemplate",
 ];
+// Documents to not be publicly presented
+export const ignoredDocuments: string[] = ["investment_and_shareholder_agreement"];

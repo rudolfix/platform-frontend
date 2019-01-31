@@ -1,5 +1,4 @@
 import { BigNumber } from "bignumber.js";
-import { promisify } from "bluebird";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
@@ -18,6 +17,7 @@ import { IEthereumNetworkConfig, IRawTxData } from "./types";
 import { symbols } from "../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import { EthereumAddress } from "../../types";
+import { promisify } from "../../utils/promisify";
 import { ILightWalletMetadata } from "../persistence/WalletMetadataObjectStorage";
 import { Web3Adapter } from "./Web3Adapter";
 
@@ -87,7 +87,7 @@ export class LightWalletUtil {
     customSalt,
   }: ICreateVault): Promise<IVault> {
     try {
-      const create = promisify<any, object>(LightWalletProvider.keystore.createVault);
+      const create = promisify<any>(LightWalletProvider.keystore.createVault);
       //256bit strength generates a 24 word mnemonic
       const entropyStrength = 256;
       const seed = recoverSeed
@@ -114,7 +114,7 @@ export class LightWalletUtil {
 
   static async getWalletKey(lightWalletInstance: any, password: string): Promise<object> {
     try {
-      const keyFromPassword = promisify<ILightWallet, string>(
+      const keyFromPassword = promisify<ILightWallet>(
         lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
       );
       return await keyFromPassword(password);
@@ -125,7 +125,7 @@ export class LightWalletUtil {
 
   static async getWalletSeed(lightWalletInstance: any, password: string): Promise<string> {
     try {
-      const keyFromPassword = promisify<ILightWallet, string>(
+      const keyFromPassword = promisify<ILightWallet>(
         lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
       );
       return await lightWalletInstance.getSeed(await keyFromPassword(password));
@@ -141,7 +141,7 @@ export class LightWalletUtil {
 
   static async getWalletPrivKey(lightWalletInstance: any, password: string): Promise<string> {
     try {
-      const keyFromPassword = promisify<ILightWallet, string>(
+      const keyFromPassword = promisify<ILightWallet>(
         lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
       );
 
@@ -161,7 +161,7 @@ export class LightWalletUtil {
     keySize: number = 32,
   ): Promise<Uint8Array> {
     try {
-      const keyFromSaltAndPassword = promisify<any, string, string, number>(
+      const keyFromSaltAndPassword = promisify<any>(
         LightWalletProvider.keystore.deriveKeyFromPasswordAndSalt,
       );
       return await keyFromSaltAndPassword(password, salt, keySize);

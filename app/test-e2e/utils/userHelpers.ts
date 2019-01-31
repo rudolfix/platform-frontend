@@ -1,10 +1,10 @@
-import { promisify } from "bluebird";
 import * as Eip55 from "eip55";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 
 import { tid } from "../../../test/testUtils";
+import { promisify } from "../../utils/promisify";
 
 /*
 Pre-login user for faster tests
@@ -90,7 +90,7 @@ export const DEFAULT_PASSWORD = "strongpassword";
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: string) => {
   // promisify some stuff
-  const create = promisify<any, any>(LightWalletProvider.keystore.createVault);
+  const create = promisify<any>(LightWalletProvider.keystore.createVault);
 
   // create a new wallet
   const entropyStrength = 256;
@@ -104,7 +104,7 @@ export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: strin
   });
 
   // create keypair
-  const keyFromPassword = promisify<any, any>(
+  const keyFromPassword = promisify<any>(
     lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
   );
   const walletKey: any = await keyFromPassword(DEFAULT_PASSWORD);

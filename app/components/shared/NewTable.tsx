@@ -35,8 +35,7 @@ interface IPlaceholderTableRow {
 type INewTableChildren =
   | React.ReactElement<INewTableRow | null>
   | React.ReactElement<INewTableRow | null>[]
-  | null
-  | any;
+  | null;
 
 interface INewTable {
   children: INewTableChildren | INewTableChildren[];

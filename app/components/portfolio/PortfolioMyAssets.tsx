@@ -109,42 +109,41 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
             </NewTableRow>
           ) : null}
 
-          {myAssets.map(
-            ({ equityTokenImage, equityTokenName, etoId, tokenData, equityTokenSymbol }) => {
-              if (!tokenData) return null;
-
-              return (
-                <NewTableRow key={etoId} cellLayout={ENewTableCellLayout.MIDDLE}>
-                  <>
-                    <img src={equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
-                    <span className={styles.tokenName}>
-                      {equityTokenName} ({equityTokenSymbol})
-                    </span>
-                  </>
-                  <NumberFormat value={tokenData.balance} />
-                  <Money
-                    value={tokenData.tokenPrice}
-                    currency={ECurrency.EUR}
-                    currencySymbol={ECurrencySymbol.SYMBOL}
-                  />
-                  <Money
-                    value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
-                    currency={ECurrency.EUR}
-                    currencySymbol={ECurrencySymbol.SYMBOL}
-                  />
-                  <Button
-                    onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
-                    layout={EButtonLayout.SIMPLE}
-                    iconPosition="icon-after"
-                    svgIcon={arrowRight}
-                    innerClassName={"text-uppercase"}
-                  >
-                    <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
-                  </Button>
-                </NewTableRow>
-              );
-            },
-          )}
+          {myAssets &&
+            myAssets
+              .filter(v => v.tokenData)
+              .map(({ equityTokenImage, equityTokenName, etoId, tokenData, equityTokenSymbol }) => {
+                return (
+                  <NewTableRow key={etoId} cellLayout={ENewTableCellLayout.MIDDLE}>
+                    <>
+                      <img src={equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
+                      <span className={styles.tokenName}>
+                        {equityTokenName} ({equityTokenSymbol})
+                      </span>
+                    </>
+                    <NumberFormat value={tokenData.balance} />
+                    <Money
+                      value={tokenData.tokenPrice}
+                      currency={ECurrency.EUR}
+                      currencySymbol={ECurrencySymbol.SYMBOL}
+                    />
+                    <Money
+                      value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
+                      currency={ECurrency.EUR}
+                      currencySymbol={ECurrencySymbol.SYMBOL}
+                    />
+                    <Button
+                      onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
+                      layout={EButtonLayout.SIMPLE}
+                      iconPosition="icon-after"
+                      svgIcon={arrowRight}
+                      innerClassName={"text-uppercase"}
+                    >
+                      <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
+                    </Button>
+                  </NewTableRow>
+                );
+              })}
         </NewTable>
       </Col>
     </Row>

@@ -14,8 +14,7 @@ import { selectNeuBalance } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { withParams } from "../../utils/withParams";
-import { Button, EButtonLayout } from "../shared/buttons";
-import { ExternalLink } from "../shared/links";
+import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
 import { ECurrency, ECurrencySymbol, Money } from "../shared/Money";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/NewTable";
 import { NumberFormat } from "../shared/NumberFormat";
@@ -101,16 +100,15 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                 currencySymbol={ECurrencySymbol.SYMBOL}
                 isPrice={true}
               />
-              <ExternalLink href={withParams(externalRoutes.commitmentStatus, { walletAddress })}>
-                <Button
-                  layout={EButtonLayout.SECONDARY}
-                  iconPosition="icon-after"
-                  svgIcon={arrowRight}
-                  innerClassName={cn(styles.actionButton, "p-0")}
-                >
-                  <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
-                </Button>
-              </ExternalLink>
+              <ButtonLink
+                to={withParams(externalRoutes.commitmentStatus, { walletAddress })}
+                layout={EButtonLayout.SECONDARY}
+                iconPosition="icon-after"
+                svgIcon={arrowRight}
+                innerClassName={cn(styles.actionButton, "p-0")}
+              >
+                <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
+              </ButtonLink>
             </NewTableRow>
           ) : null}
 

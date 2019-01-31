@@ -180,8 +180,8 @@ const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
   withState("tokenLoaded", "setTokenLoaded", false),
   lifecycle<TComponentProps, IStateProps>({
     componentDidUpdate(prevProps): void {
-      const prevAssets = prevProps.myAssets.map(v => v.contract!.equityTokenAddress);
-      const actualAssets = this.props.myAssets.map(v => v.contract!.equityTokenAddress);
+      const prevAssets = prevProps.myAssets;
+      const actualAssets = this.props.myAssets;
 
       if (this.props.myAssets.length === 0 && prevProps.myAssets.length > 0) {
         this.props.setTokenLoaded(false);

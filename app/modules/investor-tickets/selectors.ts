@@ -52,7 +52,11 @@ export const selectMyAssets = (state: IAppState): TETOWithInvestorTicket[] | und
   const etos = selectEtoWithInvestorTickets(state);
 
   if (etos) {
-    return etos.filter(eto => eto.investorTicket.claimedOrRefunded);
+    return etos.filter(
+      eto =>
+        eto.contract!.timedState === EETOStateOnChain.Claim ||
+        eto.contract!.timedState === EETOStateOnChain.Payout,
+    );
   }
 
   return undefined;

@@ -1,10 +1,14 @@
 import { map } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Modal } from "reactstrap";
+import { Col, Container, Modal, Row } from "reactstrap";
 import { compose } from "recompose";
 
-import { EEtoDocumentType, IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import {
+  EEtoDocumentType,
+  IEtoDocument,
+  immutableDocumentName,
+} from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectEtoWithCompanyAndContractById } from "../../../modules/public-etos/selectors";
@@ -13,21 +17,20 @@ import { appConnect } from "../../../store";
 import { getDocumentTitles } from "../../documents/utils";
 import {
   selectDownloadAgreementModalEtoId,
-  selectDownloadAgreementModalIsRetailEto,
   selectDownloadAgrementModalIsOpen,
 } from "../../portfolio/selectors";
-import { Button, EButtonLayout } from "../../shared/buttons";
-import { InlineIcon } from "../../shared/InlineIcon";
-import { SectionHeader } from "../../shared/SectionHeader";
+import { ButtonIcon } from "../../shared/buttons";
+import { DocumentTemplateLabel } from "../../shared/DocumentLink";
+import { Heading } from "../../shared/modals/Heading";
 import { ModalComponentBody } from "../ModalComponentBody";
+import { InfoList } from "../tx-sender/shared/InfoList";
+import { InfoRow } from "../tx-sender/shared/InfoRow";
 
-import * as downloadIcon from "../../../assets/img/inline_icons/download.svg";
-import { Document } from "../../shared/Document";
+import * as iconDownload from "../../../assets/img/inline_icons/download.svg";
 import * as styles from "./DownloadTokenAgreementModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
-  isRetailEto: boolean;
   eto: TEtoWithCompanyAndContract | undefined;
 }
 
@@ -45,63 +48,82 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
   generateTemplateByEtoId,
   downloadDocument,
   eto,
-  isRetailEto,
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={onClose}>
       <ModalComponentBody onClose={onClose}>
-        {eto && (
-          <section data-test-id="portfolio-agreements-download-modal">
-            <SectionHeader className="mb-4">
-              <FormattedMessage id="portfolio.section.my-assets.modal.header" />
-            </SectionHeader>
-            {map((document: IEtoDocument) => {
-              return [EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT].includes(
-                document.documentType,
-              ) ? (
-                <Button
-                  className={styles.documentButton}
-                  layout={EButtonLayout.SECONDARY}
-                  key={document.documentType}
-                  innerClassName={styles.document}
-                  onClick={() =>
-                    downloadDocument(
-                      {
-                        ipfsHash: document.ipfsHash,
-                        mimeType: document.mimeType,
-                        asPdf: true,
-                      },
-
-                      eto.etoId,
-                    )
-                  }
-                >
-                  <Document extension="pdf" />
-                  {getDocumentTitles(isRetailEto)[document.documentType]}
-                  <InlineIcon className={styles.downloadIcon} svgIcon={downloadIcon} />
-                </Button>
-              ) : null;
-            }, eto.documents)}
-            {map((template: IEtoDocument) => {
-              return [
-                EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
-                EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
-              ].includes(template.documentType) ? (
-                <Button
-                  className={styles.documentButton}
-                  layout={EButtonLayout.SECONDARY}
-                  key={template.documentType}
-                  innerClassName={styles.document}
-                  onClick={() => generateTemplateByEtoId({ ...template, asPdf: true }, eto.etoId)}
-                >
-                  <Document extension="pdf" />
-                  {getDocumentTitles(isRetailEto)[template.documentType]}
-                  <InlineIcon className={styles.downloadIcon} svgIcon={downloadIcon} />
-                </Button>
-              ) : null;
-            }, eto.templates)}
-          </section>
-        )}
+        <Container>
+          <Row className="mb-4">
+            <Col>
+              <Heading>
+                <FormattedMessage id="portfolio.section.my-assets.modal.header" />
+              </Heading>
+            </Col>
+          </Row>
+          {eto && (
+            <InfoList>
+              <>
+                {/* Based on https://github.com/Neufund/platform-frontend/issues/2102#issuecomment-453086304 */}
+                {map((document: IEtoDocument) => {
+                  return [EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT].includes(
+                    document.documentType,
+                  ) ? (
+                    <InfoRow
+                      key={document.ipfsHash}
+                      caption={
+                        <DocumentTemplateLabel
+                          onClick={() => {}}
+                          title={getDocumentTitles(eto.allowRetailInvestors)[document.documentType]}
+                        />
+                      }
+                      value={
+                        <ButtonIcon
+                          className={styles.icon}
+                          svgIcon={iconDownload}
+                          onClick={() =>
+                            downloadDocument(
+                              {
+                                ipfsHash: document.ipfsHash,
+                                mimeType: document.mimeType,
+                                asPdf: true,
+                              },
+                              immutableDocumentName[document.documentType],
+                            )
+                          }
+                        />
+                      }
+                    />
+                  ) : null;
+                }, eto.documents)}
+                {map((template: IEtoDocument) => {
+                  return [
+                    EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
+                    EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
+                  ].includes(template.documentType) ? (
+                    <InfoRow
+                      key={template.ipfsHash}
+                      caption={
+                        <DocumentTemplateLabel
+                          onClick={() => {}}
+                          title={getDocumentTitles(eto.allowRetailInvestors)[template.documentType]}
+                        />
+                      }
+                      value={
+                        <ButtonIcon
+                          className={styles.icon}
+                          svgIcon={iconDownload}
+                          onClick={() =>
+                            generateTemplateByEtoId({ ...template, asPdf: true }, eto.etoId)
+                          }
+                        />
+                      }
+                    />
+                  ) : null;
+                }, eto.templates)}
+              </>
+            </InfoList>
+          )}
+        </Container>
       </ModalComponentBody>
     </Modal>
   );
@@ -114,7 +136,6 @@ const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
       const eto = etoId ? selectEtoWithCompanyAndContractById(state, etoId) : undefined;
       return {
         isOpen: etoId ? selectDownloadAgrementModalIsOpen(state) : false,
-        isRetailEto: etoId ? selectDownloadAgreementModalIsRetailEto(state)! : false,
         eto: eto,
       };
     },

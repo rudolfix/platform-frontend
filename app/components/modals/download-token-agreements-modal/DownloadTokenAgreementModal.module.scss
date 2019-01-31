@@ -1,40 +1,7 @@
-.document-button {
-  width: 100%;
-  background-color: $neu-pale-blue;
-  height: 46px;
-  padding: 0 15px;
-
-  &:nth-of-type(2n) {
-    background-color: transparent;
-  }
-}
-
-.document {
-  display: flex;
-  align-items: center;
-  flex-basis: 100%;
-  width: 100%;
-
-  :global {
-    .fa-link,
-    .document-icon,
-    .inline-icon {
-      width: 18px;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-  }
-
-  .download-icon {
-    margin-left: auto;
-
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    path {
-      fill: $neu-seaweed;
-    }
-  }
+.icon {
+  margin-right: 6px;
+  width: px-to-rem(20px);
+  height: px-to-rem(20px);
+  vertical-align: middle;
+  color: $neu-seaweed;
 }

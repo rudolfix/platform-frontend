@@ -32,26 +32,6 @@ module.exports = {
       clientsClaim: true,
       skipWaiting: true,
       importWorkboxFrom: "local",
-      runtimeCaching: [
-        {
-          urlPattern: /^https:\/\/fonts\.googleapis\.com/,
-          handler: "staleWhileRevalidate",
-          options: {
-            cacheName: "google-fonts-stylesheets",
-          },
-        },
-        {
-          urlPattern: /^https:\/\/fonts\.gstatic\.com/,
-          handler: "cacheFirst",
-          options: {
-            cacheName: "google-fonts-cache",
-            expiration: {
-              maxEntries: 5,
-              maxAgeSeconds: 600,
-            },
-          },
-        },
-      ],
     }),
   ],
   module: {

@@ -342,7 +342,6 @@ export function* loadTokensData(
   { contractsService }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.publicEtos.loadTokensData>,
 ): any {
-  yield delay(2000);
   const myAssets = yield select(selectMyAssets);
 
   for (const eto of myAssets) {

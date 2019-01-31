@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { compose } from "recompose";
+import { compose, lifecycle } from "recompose";
 
 import BigNumber from "bignumber.js";
 import { externalRoutes } from "../../config/externalRoutes";
@@ -13,7 +13,6 @@ import { selectNeuPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { selectNeuBalance } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
-import { onEnterAction } from "../../utils/OnEnterAction";
 import { withParams } from "../../utils/withParams";
 import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
 import { ECurrency, ECurrencySymbol, Money } from "../shared/Money";
@@ -39,6 +38,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   showDownloadAgreementModal: (etoId: string, isRetailEto: boolean) => void;
+  loadTokensData: (walletAddress: string) => void;
 }
 
 type TComponentProps = IExternalProps & IStateProps & IDispatchProps;
@@ -152,10 +152,6 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
 );
 
 const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
-  onEnterAction({
-    actionCreator: (dispatch, props) =>
-      dispatch(actions.publicEtos.loadTokensData(props.walletAddress)),
-  }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const neuPrice = selectNeuPriceEur(state);
@@ -172,7 +168,17 @@ const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
       showDownloadAgreementModal: (etoId: string, isRetailEto: boolean) => {
         dispatch(actions.portfolio.showDownloadAgreementModal(etoId, isRetailEto));
       },
+      loadTokensData: (walletAddress: string) => {
+        dispatch(actions.publicEtos.loadTokensData(walletAddress));
+      },
     }),
+  }),
+  lifecycle<TComponentProps, IStateProps>({
+    componentDidUpdate(): void {
+      if (this.props.myAssets.length > 0) {
+        this.props.loadTokensData(this.props.walletAddress);
+      }
+    },
   }),
 )(PortfolioMyAssetsComponent);
 

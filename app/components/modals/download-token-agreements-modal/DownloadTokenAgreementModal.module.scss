@@ -1,0 +1,25 @@
+.document {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  background-color: $neu-pale-blue;
+  cursor: pointer;
+
+  &:nth-of-type(2n) {
+    background-color: transparent;
+  }
+
+  .download-icon {
+    margin-left: auto;
+    margin-right: 15px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    path {
+      fill: $neu-seaweed;
+    }
+  }
+}

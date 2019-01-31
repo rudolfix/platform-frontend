@@ -4,6 +4,7 @@ import { compose, keyBy, map, omit } from "lodash/fp";
 import { delay } from "redux-saga";
 import { all, fork, put, race, select } from "redux-saga/effects";
 
+import BigNumber from "bignumber.js";
 import { PublicEtosMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -21,8 +22,10 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
+import { divideBigNumbers } from "../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUserType } from "../auth/selectors";
+import { selectMyAssets } from "../investor-tickets/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
@@ -335,6 +338,47 @@ function* downloadTemplateByType(
   }
 }
 
+export function* loadTokensData(
+  { contractsService }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.publicEtos.loadTokensData>,
+): any {
+  yield delay(2000);
+  const myAssets = yield select(selectMyAssets);
+
+  for (const eto of myAssets) {
+    const equityTokenAddress = eto.contract.equityTokenAddress;
+
+    const equityToken = yield contractsService.getEquityToken(equityTokenAddress);
+    const balance = yield equityToken.balanceOf(action.payload.walletAddress);
+    const tokensPerShare = yield equityToken.tokensPerShare;
+    const tokenController = yield equityToken.tokenController;
+
+    const controllerGovernance = yield contractsService.getControllerGovernance(tokenController);
+    const [
+      totalCompanyShares,
+      companyValuationEurUlps,
+      ,
+    ] = yield controllerGovernance.shareholderInformation();
+
+    const tokenPrice = new BigNumber(
+      divideBigNumbers(
+        divideBigNumbers(companyValuationEurUlps, totalCompanyShares),
+        tokensPerShare,
+      ),
+    );
+
+    yield put(
+      actions.publicEtos.setTokenData(eto.previewCode, {
+        balance,
+        tokensPerShare,
+        totalCompanyShares,
+        companyValuationEurUlps,
+        tokenPrice,
+      }),
+    );
+  }
+}
+
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, actions.publicEtos.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.publicEtos.loadEto, loadEto);
@@ -345,6 +389,8 @@ export function* etoSagas(): any {
     actions.publicEtos.downloadPublicEtoTemplateByType,
     downloadTemplateByType,
   );
+  yield fork(neuTakeEvery, actions.publicEtos.loadTokensData, loadTokensData);
+
   yield fork(neuTakeUntil, actions.publicEtos.setPublicEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.publicEtos.setPublicEtos, LOCATION_CHANGE, watchEtosSetAction);
 }

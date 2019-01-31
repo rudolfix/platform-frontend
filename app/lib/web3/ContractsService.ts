@@ -15,11 +15,15 @@ import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/logger";
 import { Web3Manager } from "./Web3Manager";
 
+import { IControllerGovernance } from "../contracts/IControllerGovernance";
+import { IEquityToken } from "../contracts/IEquityToken";
 import * as knownInterfaces from "../contracts/knownInterfaces.json";
 
 @injectable()
 export class ContractsService {
   private etoCommitmentCache: { [etoId: string]: ETOCommitment } = {};
+  private equityTokensCache: { [equityTokenAddress: string]: IEquityToken } = {};
+  private controllerGovernanceCache: { [tokenController: string]: IControllerGovernance } = {};
 
   public universeContract!: Universe;
   public neumark!: Neumark;
@@ -93,6 +97,26 @@ export class ContractsService {
     const web3 = this.web3Manager.internalWeb3Adapter.web3;
     const contract = await create(ETOCommitment, web3, etoId);
     this.etoCommitmentCache[etoId] = contract;
+    return contract;
+  }
+
+  async getEquityToken(equityTokenAddress: string): Promise<IEquityToken> {
+    if (this.equityTokensCache[equityTokenAddress])
+      return this.equityTokensCache[equityTokenAddress];
+
+    const web3 = this.web3Manager.internalWeb3Adapter.web3;
+    const contract = await create(IEquityToken, web3, equityTokenAddress);
+    this.equityTokensCache[equityTokenAddress] = contract;
+    return contract;
+  }
+
+  async getControllerGovernance(controllerAddress: string): Promise<IControllerGovernance> {
+    if (this.controllerGovernanceCache[controllerAddress])
+      return this.controllerGovernanceCache[controllerAddress];
+
+    const web3 = this.web3Manager.internalWeb3Adapter.web3;
+    const contract = await create(IControllerGovernance, web3, controllerAddress);
+    this.controllerGovernanceCache[controllerAddress] = contract;
     return contract;
   }
 }

@@ -3,7 +3,7 @@ import { find } from "lodash/fp";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
 import { IPublicEtoState } from "./reducer";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
+import { EETOStateOnChain, IEtoTokenData, TEtoWithCompanyAndContract } from "./types";
 
 const selectPublicEtosState = (state: IAppState) => state.publicEtos;
 
@@ -112,4 +112,11 @@ export const selectEtoOnChainStateById = (
 ): EETOStateOnChain | undefined => {
   const code = selectEtoPreviewCode(state, etoId);
   if (code) return selectEtoOnChainState(state, code);
+};
+
+export const selectTokenData = (
+  state: DeepReadonly<IPublicEtoState>,
+  previewCode: string,
+): IEtoTokenData | undefined => {
+  return state.tokenData[previewCode];
 };

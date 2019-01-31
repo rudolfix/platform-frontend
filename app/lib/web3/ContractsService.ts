@@ -16,7 +16,6 @@ import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/logger";
 import { Web3Manager } from "./Web3Manager";
 
-import { throwError } from "redux-saga-test-plan/providers";
 import { IControllerGovernance } from "../contracts/IControllerGovernance";
 import { IEquityToken } from "../contracts/IEquityToken";
 import * as knownInterfaces from "../contracts/knownInterfaces.json";
@@ -53,7 +52,7 @@ export class ContractsService {
     this.web3 = this.web3Manager.internalWeb3Adapter.web3;
 
     if (!this.web3) {
-      throwError(new Error("Could not initialize web3"));
+      throw new Error("Could not initialize web3");
     }
 
     this.universeContract = await create(

@@ -1,3 +1,4 @@
+import { portfolioDownloadAgreementsModalReducer } from "../components/portfolio/reducer";
 import { accessWalletReducer } from "./access-wallet/reducer";
 import { authReducer } from "./auth/reducer";
 import { bookBuildingFlowReducer } from "./bookbuilding-flow/reducer";
@@ -63,4 +64,5 @@ export const appReducers = {
   investmentFlow: investmentFlowReducer,
   videoModal: videoModalReducer,
   personProfileModal: personProfileModalReducer,
+  portfolioDownloadAgreementsModal: portfolioDownloadAgreementsModalReducer,
 };

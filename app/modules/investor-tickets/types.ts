@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { TEtoWithCompanyAndContract } from "../public-etos/types";
+import { IEtoTokenData, TEtoWithCompanyAndContract } from "../public-etos/types";
 
 export interface IInvestorTicket {
   equivEurUlps: BigNumber;
@@ -26,4 +26,8 @@ export interface ICalculatedContribution {
 
 export type TETOWithInvestorTicket = TEtoWithCompanyAndContract & {
   investorTicket: IInvestorTicket;
+};
+
+export type TETOWithTokenData = TETOWithInvestorTicket & {
+  tokenData: IEtoTokenData;
 };

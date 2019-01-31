@@ -1,4 +1,5 @@
 import { inject, injectable } from "inversify";
+import * as Web3 from "web3";
 
 import { IConfig } from "../../config/getConfig";
 import { symbols } from "../../di/symbols";
@@ -15,11 +16,16 @@ import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/logger";
 import { Web3Manager } from "./Web3Manager";
 
+import { IControllerGovernance } from "../contracts/IControllerGovernance";
+import { IEquityToken } from "../contracts/IEquityToken";
 import * as knownInterfaces from "../contracts/knownInterfaces.json";
 
 @injectable()
 export class ContractsService {
   private etoCommitmentCache: { [etoId: string]: ETOCommitment } = {};
+  private equityTokensCache: { [equityTokenAddress: string]: IEquityToken } = {};
+  private controllerGovernanceCache: { [tokenController: string]: IControllerGovernance } = {};
+  private web3: Web3 | undefined;
 
   public universeContract!: Universe;
   public neumark!: Neumark;
@@ -42,11 +48,16 @@ export class ContractsService {
 
   public async init(): Promise<void> {
     this.logger.info("Initializing contracts...");
-    const web3 = this.web3Manager.internalWeb3Adapter.web3;
+
+    this.web3 = this.web3Manager.internalWeb3Adapter.web3;
+
+    if (!this.web3) {
+      throw new Error("Could not initialize web3");
+    }
 
     this.universeContract = await create(
       Universe,
-      web3,
+      this.web3,
       this.config.contractsAddresses.universeContractAddress,
     );
 
@@ -74,25 +85,46 @@ export class ContractsService {
       knownInterfaces.platformTerms,
     ]);
 
-    this.neumark = await create(Neumark, web3, neumarkAddress);
-    this.euroLock = await create(LockedAccount, web3, euroLockAddress);
-    this.etherLock = await create(LockedAccount, web3, etherLockAddress);
-    this.icbmEuroLock = await create(ICBMLockedAccount, web3, icbmEuroLockAddress);
-    this.icbmEtherLock = await create(ICBMLockedAccount, web3, icbmEtherLockAddress);
-    this.rateOracle = await create(ITokenExchangeRateOracle, web3, tokenExchangeRateOracleAddress);
-    this.identityRegistry = await create(IdentityRegistry, web3, identityRegistryAddress);
-    this.platformTerms = await create(PlatformTerms, web3, platformTermsAddress);
-    this.euroToken = await create(EuroToken, web3, euroTokenAddress);
-    this.etherToken = await create(EtherToken, web3, etherTokenAddress);
+    this.neumark = await create(Neumark, this.web3, neumarkAddress);
+    this.euroLock = await create(LockedAccount, this.web3, euroLockAddress);
+    this.etherLock = await create(LockedAccount, this.web3, etherLockAddress);
+    this.icbmEuroLock = await create(ICBMLockedAccount, this.web3, icbmEuroLockAddress);
+    this.icbmEtherLock = await create(ICBMLockedAccount, this.web3, icbmEtherLockAddress);
+    this.rateOracle = await create(
+      ITokenExchangeRateOracle,
+      this.web3,
+      tokenExchangeRateOracleAddress,
+    );
+    this.identityRegistry = await create(IdentityRegistry, this.web3, identityRegistryAddress);
+    this.platformTerms = await create(PlatformTerms, this.web3, platformTermsAddress);
+    this.euroToken = await create(EuroToken, this.web3, euroTokenAddress);
+    this.etherToken = await create(EtherToken, this.web3, etherTokenAddress);
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");
   }
 
   async getETOCommitmentContract(etoId: string): Promise<ETOCommitment> {
     if (this.etoCommitmentCache[etoId]) return this.etoCommitmentCache[etoId];
 
-    const web3 = this.web3Manager.internalWeb3Adapter.web3;
-    const contract = await create(ETOCommitment, web3, etoId);
+    const contract = await create(ETOCommitment, this.web3, etoId);
     this.etoCommitmentCache[etoId] = contract;
+    return contract;
+  }
+
+  async getEquityToken(equityTokenAddress: string): Promise<IEquityToken> {
+    if (this.equityTokensCache[equityTokenAddress])
+      return this.equityTokensCache[equityTokenAddress];
+
+    const contract = await create(IEquityToken, this.web3, equityTokenAddress);
+    this.equityTokensCache[equityTokenAddress] = contract;
+    return contract;
+  }
+
+  async getControllerGovernance(controllerAddress: string): Promise<IControllerGovernance> {
+    if (this.controllerGovernanceCache[controllerAddress])
+      return this.controllerGovernanceCache[controllerAddress];
+
+    const contract = await create(IControllerGovernance, this.web3, controllerAddress);
+    this.controllerGovernanceCache[controllerAddress] = contract;
     return contract;
   }
 }

@@ -18,6 +18,7 @@
 
   min-width: 200%;
   table-layout: fixed;
+  font-size: px-to-rem(12px);
 
   :global(.document-icon),
   :global(.icon) {
@@ -40,7 +41,25 @@
   padding: 10px;
   vertical-align: top;
 
+  &:global(.middle) {
+    vertical-align: middle;
+  }
+
+  &:global(.top) {
+    vertical-align: center;
+  }
+
+  &:global(.bottom) {
+    vertical-align: bottom;
+  }
+
   &-placeholder {
     text-align: center;
   }
+}
+
+.panel {
+  padding: px-to-rem(12px);
+  margin-bottom: 1.5rem;
+
 }

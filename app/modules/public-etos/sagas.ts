@@ -21,8 +21,10 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
+import { divideBigNumbers } from "../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUserType } from "../auth/selectors";
+import { selectMyAssets } from "../investor-tickets/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
@@ -335,6 +337,48 @@ function* downloadTemplateByType(
   }
 }
 
+export function* loadTokensData(
+  { contractsService }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.publicEtos.loadTokensData>,
+): any {
+  const myAssets = yield select(selectMyAssets);
+
+  for (const eto of myAssets) {
+    const equityTokenAddress = eto.contract.equityTokenAddress;
+
+    const equityToken = yield contractsService.getEquityToken(equityTokenAddress);
+
+    const { balance, tokensPerShare, tokenController } = yield all({
+      balance: equityToken.balanceOf(action.payload.walletAddress),
+      tokensPerShare: equityToken.tokensPerShare,
+      tokenController: equityToken.tokenController,
+    });
+
+    const controllerGovernance = yield contractsService.getControllerGovernance(tokenController);
+
+    const [
+      totalCompanyShares,
+      companyValuationEurUlps,
+      ,
+    ] = yield controllerGovernance.shareholderInformation();
+
+    const tokenPrice = divideBigNumbers(
+      divideBigNumbers(companyValuationEurUlps, totalCompanyShares),
+      tokensPerShare,
+    );
+
+    yield put(
+      actions.publicEtos.setTokenData(eto.previewCode, {
+        balance: balance.toString(),
+        tokensPerShare: tokensPerShare.toString(),
+        totalCompanyShares: totalCompanyShares.toString(),
+        companyValuationEurUlps: companyValuationEurUlps.toString(),
+        tokenPrice: tokenPrice.toString(),
+      }),
+    );
+  }
+}
+
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, actions.publicEtos.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.publicEtos.loadEto, loadEto);
@@ -345,6 +389,8 @@ export function* etoSagas(): any {
     actions.publicEtos.downloadPublicEtoTemplateByType,
     downloadTemplateByType,
   );
+  yield fork(neuTakeEvery, actions.publicEtos.loadTokensData, loadTokensData);
+
   yield fork(neuTakeUntil, actions.publicEtos.setPublicEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.publicEtos.setPublicEtos, LOCATION_CHANGE, watchEtosSetAction);
 }

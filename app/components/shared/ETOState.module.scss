@@ -26,6 +26,13 @@
     background-color: $green-light;
   }
 
+  &:global(.small) {
+    &::before {
+      width: px-to-rem(8px);
+      height: px-to-rem(8px);
+    }
+  }
+
   &:global(.large) {
     font-size: 16px;
   }
@@ -37,4 +44,5 @@
   @include _set-indicator-color(refund, $neu-bright-orange);
   @include _set-indicator-color(listed, $blue-light);
   @include _set-indicator-color(pending, $neu-bright-orange);
+  @include _set-indicator-color(signing, $blue-light);
 }

@@ -2,7 +2,7 @@ import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfa
 import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { Dictionary } from "../../types";
 import { createActionFactory } from "../actionsUtils";
-import { IEtoContractData } from "./types";
+import { IEtoContractData, IEtoTokenData } from "./types";
 
 export const etoActions = {
   // public actions
@@ -25,6 +25,16 @@ export const etoActions = {
   downloadPublicEtoTemplateByType: createActionFactory(
     "PUBLIC_ETOS_DOWNLOAD_TEMPLATE_BY_TYPE",
     (etoId: string, documentType: EEtoDocumentType) => ({ etoId, documentType }),
+  ),
+  loadTokensData: createActionFactory("PORTFOLIO_LOAD_TOKENS_DATA", (walletAddress: string) => ({
+    walletAddress,
+  })),
+  setTokenData: createActionFactory(
+    "PORTFOLIO_SET_TOKEN_DATA",
+    (previewCode: string, tokenData: IEtoTokenData) => ({
+      previewCode,
+      tokenData,
+    }),
   ),
   // state mutations
   setPublicEtos: createActionFactory(

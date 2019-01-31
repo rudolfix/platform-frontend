@@ -79,4 +79,17 @@ describe("Money", () => {
 
     expect(componentMount).to.throw("Only EUR can be displayed as a symbol");
   });
+
+  it("should format value with 8 decimal places from wei", () => {
+    const component = shallow(
+      <Money
+        value={"32376189" + "0".repeat(10)}
+        currency={ECurrency.EUR}
+        currencySymbol={ECurrencySymbol.SYMBOL}
+        isPrice={true}
+      />,
+    );
+
+    expect(component.render().text()).to.be.eq("€0.32376189");
+  });
 });

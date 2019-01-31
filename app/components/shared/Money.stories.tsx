@@ -47,4 +47,32 @@ storiesOf("Money", module)
       <p>t-orange</p>
       <Money currency={ECurrency.ETH} value="20000000000000000" theme="t-orange" />
     </>
+  ))
+  .add("price format", () => (
+    <>
+      <Money
+        currency={ECurrency.EUR}
+        value={"32376189" + "0".repeat(10)}
+        currencySymbol={ECurrencySymbol.SYMBOL}
+        isPrice={true}
+      />
+      <br />
+      <Money
+        currency={ECurrency.EUR}
+        value={"32376189" + "0".repeat(10)}
+        currencySymbol={ECurrencySymbol.NONE}
+        isPrice={true}
+      />
+      <br />
+      <Money
+        currency={ECurrency.EUR}
+        value={"32376189" + "0".repeat(10)}
+        currencySymbol={ECurrencySymbol.CODE}
+        isPrice={true}
+      />
+      <br />
+      <Money currency={ECurrency.ETH} value={"4212376189" + "0".repeat(10)} isPrice={true} />
+      <br />
+      <Money currency={ECurrency.NEU} value={"353212376189" + "0".repeat(10)} isPrice={true} />
+    </>
   ));

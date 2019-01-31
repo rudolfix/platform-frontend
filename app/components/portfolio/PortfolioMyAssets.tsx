@@ -115,6 +115,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
           {myAssets &&
             myAssets
               .filter(v => v.tokenData)
+              .filter(v => v.tokenData.balance !== "0")
               .map(({ equityTokenImage, equityTokenName, etoId, tokenData, equityTokenSymbol }) => {
                 return (
                   <NewTableRow key={etoId} cellLayout={ENewTableCellLayout.MIDDLE}>

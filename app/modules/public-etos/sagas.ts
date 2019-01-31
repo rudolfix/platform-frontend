@@ -369,11 +369,11 @@ export function* loadTokensData(
 
     yield put(
       actions.publicEtos.setTokenData(eto.previewCode, {
-        balance,
-        tokensPerShare,
-        totalCompanyShares,
-        companyValuationEurUlps,
-        tokenPrice,
+        balance: balance.toString(),
+        tokensPerShare: tokensPerShare.toString(),
+        totalCompanyShares: totalCompanyShares.toString(),
+        companyValuationEurUlps: companyValuationEurUlps.toString(),
+        tokenPrice: tokenPrice.toString(),
       }),
     );
   }

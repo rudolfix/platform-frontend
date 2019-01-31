@@ -3,7 +3,7 @@ import { isEqual } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { compose, lifecycle } from "recompose";
+import { compose, lifecycle, withState } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
@@ -42,7 +42,12 @@ interface IDispatchProps {
   loadTokensData: (walletAddress: string) => void;
 }
 
-type TComponentProps = IExternalProps & IStateProps & IDispatchProps;
+interface IAdditionalProps {
+  tokenLoaded: boolean;
+  setTokenLoaded: (value: boolean) => void;
+}
+
+type TComponentProps = IExternalProps & IStateProps & IDispatchProps & IAdditionalProps;
 
 const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
   myNeuBalance,
@@ -173,13 +178,25 @@ const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
       },
     }),
   }),
+  withState("tokenLoaded", "setTokenLoaded", false),
   lifecycle<TComponentProps, IStateProps>({
     componentDidUpdate(prevProps): void {
       const prevAssets = prevProps.myAssets.map(v => v.contract!.equityTokenAddress);
       const actualAssets = this.props.myAssets.map(v => v.contract!.equityTokenAddress);
 
-      if (this.props.myAssets.length > 0 && !isEqual(prevAssets, actualAssets)) {
+      if (this.props.myAssets.length === 0 && prevProps.myAssets.length > 0) {
+        this.props.setTokenLoaded(false);
+        return;
+      }
+
+      if (
+        (!this.props.tokenLoaded &&
+          this.props.myAssets.length > 0 &&
+          isEqual(prevAssets, actualAssets)) ||
+        (this.props.myAssets.length > 0 && !isEqual(prevAssets, actualAssets))
+      ) {
         this.props.loadTokensData(this.props.walletAddress);
+        this.props.setTokenLoaded(true);
       }
     },
   }),

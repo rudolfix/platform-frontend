@@ -167,9 +167,6 @@ workflows:
       - test-e2e:
           requires:
             - lint
-      - test-e2e-chrome:
-          requires:
-            - lint
       - danger-ci:
           requires:
             - lint
@@ -195,9 +192,6 @@ workflows:
           requires:
             - lint
       - test-e2e:
-          requires:
-            - lint
-      - test-e2e-chrome:
           requires:
             - lint
       - danger-ci:

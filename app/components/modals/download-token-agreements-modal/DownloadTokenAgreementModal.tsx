@@ -17,12 +17,12 @@ import {
   selectDownloadAgrementModalIsOpen,
 } from "../../portfolio/selectors";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { DocumentTemplateButton } from "../../shared/DocumentLink";
 import { InlineIcon } from "../../shared/InlineIcon";
 import { SectionHeader } from "../../shared/SectionHeader";
 import { ModalComponentBody } from "../ModalComponentBody";
 
 import * as downloadIcon from "../../../assets/img/inline_icons/download.svg";
+import { Document } from "../../shared/Document";
 import * as styles from "./DownloadTokenAgreementModal.module.scss";
 
 interface IStateProps {
@@ -61,7 +61,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
               ) ? (
                 <Button
                   className={styles.documentButton}
-                  layout={EButtonLayout.SIMPLE}
+                  layout={EButtonLayout.SECONDARY}
                   key={document.documentType}
                   innerClassName={styles.document}
                   onClick={() =>
@@ -76,10 +76,8 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                     )
                   }
                 >
-                  <DocumentTemplateButton
-                    layout={EButtonLayout.SECONDARY}
-                    title={getDocumentTitles(isRetailEto)[document.documentType]}
-                  />
+                  <Document extension="pdf" />
+                  {getDocumentTitles(isRetailEto)[document.documentType]}
                   <InlineIcon className={styles.downloadIcon} svgIcon={downloadIcon} />
                 </Button>
               ) : null;
@@ -91,16 +89,13 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
               ].includes(template.documentType) ? (
                 <Button
                   className={styles.documentButton}
-                  layout={EButtonLayout.SIMPLE}
+                  layout={EButtonLayout.SECONDARY}
                   key={template.documentType}
                   innerClassName={styles.document}
                   onClick={() => generateTemplateByEtoId({ ...template, asPdf: true }, eto.etoId)}
                 >
-                  <DocumentTemplateButton
-                    key={template.documentType}
-                    layout={EButtonLayout.SECONDARY}
-                    title={getDocumentTitles(isRetailEto)[template.documentType]}
-                  />
+                  <Document extension="pdf" />
+                  {getDocumentTitles(isRetailEto)[template.documentType]}
                   <InlineIcon className={styles.downloadIcon} svgIcon={downloadIcon} />
                 </Button>
               ) : null;

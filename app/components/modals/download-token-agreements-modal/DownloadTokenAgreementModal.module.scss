@@ -15,6 +15,16 @@
   flex-basis: 100%;
   width: 100%;
 
+  :global {
+    .fa-link,
+    .document-icon,
+    .inline-icon {
+      width: 18px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+  }
+
   .download-icon {
     margin-left: auto;
 

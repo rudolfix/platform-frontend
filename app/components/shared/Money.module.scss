@@ -1,12 +1,12 @@
 .money {
-  &:global(.income),
-  &:global(.outcome) {
+  &.income,
+  &.outcome {
     font-size: px-to-rem(14px);
     font-weight: $font-weight-bold;
     line-height: 1.43;
   }
 
-  &:global(.income) {
+  &.income {
     color: $neu-seaweed;
 
     &::before {
@@ -14,7 +14,7 @@
     }
   }
 
-  &:global(.outcome) {
+  &.outcome {
     color: $neu-red;
 
     &::before {
@@ -22,15 +22,24 @@
     }
   }
 
-  &:global(.t-green) {
+  .currency {
+    text-transform: none;
+  }
+
+  // Themes
+
+  &.t-green {
     color: $neu-seaweed;
   }
 
-  &:global(.t-orange) {
+  &.t-orange {
     color: $neu-bright-orange;
   }
 
-  .currency {
-    text-transform: none;
+  &.t-big-value {
+    .value {
+      font-size: px-to-rem(26px);
+      color: $neu-seaweed;
+    }
   }
 }

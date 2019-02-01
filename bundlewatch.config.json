@@ -6,7 +6,7 @@
     },
     {
       "path": "dist/*.main*.js",
-      "maxSize": "400kB"
+      "maxSize": "420kB"
     },
     {
       "path": "dist/*.main*.css",

@@ -26,9 +26,16 @@ enum EMoneyFormat {
   FLOAT = "float",
 }
 
-type TMoneyTransfer = "income" | "outcome";
+enum EMoneyTransfer {
+  INCOME = styles.income,
+  OUTCOME = styles.outcome,
+}
 
-type TTheme = "t-green" | "t-orange";
+enum ETheme {
+  GREEN = styles.tGreen,
+  ORANGE = styles.tOrange,
+  GREEN_BIG = styles.tBigValue,
+}
 
 interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currency: ECurrency;
@@ -36,8 +43,8 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   format?: EMoneyFormat;
   currencySymbol?: ECurrencySymbol;
   currencyClassName?: string;
-  transfer?: TMoneyTransfer;
-  theme?: TTheme;
+  transfer?: EMoneyTransfer;
+  theme?: ETheme;
   isPrice?: boolean;
 }
 
@@ -50,11 +57,9 @@ const selectDecimalPlaces = (currency: ECurrency, isPrice?: boolean): number => 
 
   switch (currency) {
     case ECurrency.ETH:
-      return 4;
     case ECurrency.NEU:
       return 4;
     case ECurrency.EUR:
-      return 2;
     case ECurrency.EUR_TOKEN:
       return 2;
   }
@@ -134,7 +139,7 @@ const Money: React.FunctionComponent<IProps> = ({
           {selectCurrencySymbol(currency)}
         </span>
       )}
-      {formattedMoney}
+      <span className={cn(styles.value)}>{formattedMoney}</span>
       {currencySymbol === ECurrencySymbol.CODE && (
         <span className={cn(styles.currency, currencyClassName)}>
           {" "}
@@ -150,8 +155,9 @@ export {
   selectCurrencySymbol,
   selectCurrencyCode,
   selectDecimalPlaces,
-  TMoneyTransfer,
+  EMoneyTransfer,
   EMoneyFormat,
   ECurrency,
   ECurrencySymbol,
+  ETheme,
 };

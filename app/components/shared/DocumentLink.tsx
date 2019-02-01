@@ -38,16 +38,18 @@ export interface IDocumentTemplateButtonProps {
   altIcon?: React.ReactNode;
   className?: string;
   onClick?: () => void;
+  layout?: EButtonLayout;
 }
 
 const DocumentTemplateButton: React.FunctionComponent<IDocumentTemplateButtonProps> = ({
   onClick,
   title,
   altIcon,
+  layout,
 }) => {
   return (
     <Button
-      layout={EButtonLayout.INLINE}
+      layout={layout}
       onClick={onClick}
       innerClassName={styles.documentButton}
       textPosition={ButtonTextPosition.LEFT}
@@ -74,6 +76,10 @@ const DocumentTemplateLabel: React.FunctionComponent<IDocumentTemplateButtonProp
       {title}
     </div>
   );
+};
+
+DocumentTemplateButton.defaultProps = {
+  layout: EButtonLayout.INLINE,
 };
 
 export { DocumentLink, DocumentTemplateButton, DocumentTemplateLabel };

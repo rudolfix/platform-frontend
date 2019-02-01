@@ -1,8 +1,8 @@
 import { pick } from "lodash/fp";
 
 import { etoRegisterRoutes } from "../../components/eto/registration/routes";
-import { fillForm, getFieldError, TFormFixture } from "../utils/forms";
-import { formField, tid } from "../utils/selectors";
+import { fillForm, getFieldError } from "../utils/forms";
+import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { aboutFormRequired, aboutFormSubmit } from "./fixtures";
 

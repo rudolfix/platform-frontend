@@ -6,7 +6,6 @@ import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
 import {
-  IBrowserWalletMetadata,
   ILedgerWalletMetadata,
   ILightWalletRetrieveMetadata,
 } from "../../lib/persistence/WalletMetadataObjectStorage";
@@ -51,7 +50,7 @@ export function* ensureWalletConnection({
       wallet = yield connectLedger(ledgerWalletConnector, web3Manager, metadata);
       break;
     case EWalletType.BROWSER:
-      wallet = yield connectBrowser(browserWalletConnector, web3Manager, metadata);
+      wallet = yield connectBrowser(browserWalletConnector, web3Manager);
       break;
     case EWalletType.LIGHT:
       wallet = yield connectLightWallet(lightWalletConnector, metadata);
@@ -83,8 +82,6 @@ async function connectLedger(
 async function connectBrowser(
   browserWalletConnector: BrowserWalletConnector,
   web3Manager: Web3Manager,
-  // tslint:disable-next-line
-  metadata: IBrowserWalletMetadata,
 ): Promise<IPersonalWallet> {
   return await browserWalletConnector.connect(web3Manager.networkId);
 }

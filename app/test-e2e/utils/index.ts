@@ -244,7 +244,7 @@ export const etoFixtureByName = (name: string) => {
   return etoAddress ? ETO_FIXTURES[etoAddress] : undefined;
 };
 
-export const etoFixtureAddressByName = (name: string) => {
+export const etoFixtureAddressByName = (name: string): string => {
   const address = Object.keys(ETO_FIXTURES).find(
     a => ETO_FIXTURES[a].name === name,
   )! as EthereumAddress;

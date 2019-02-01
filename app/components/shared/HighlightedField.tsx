@@ -9,7 +9,7 @@ import * as iconDownload from "../../assets/img/inline_icons/download.svg";
 import * as styles from "./HighlightedField.module.scss";
 
 interface IProps {
-  label: TTranslatedString;
+  label?: TTranslatedString;
   value: TTranslatedString;
   icon?: string;
   link?: {
@@ -31,10 +31,12 @@ export const HighlightedField: React.FunctionComponent<IProps> = ({
   return (
     <div className={styles.wrapper}>
       <div className={styles.highlightedHeader}>
-        <div>
-          {icon && <img className={styles.icon} src={icon} alt="icon" />}
-          <span>{label}</span>
-        </div>
+        {label && (
+          <div>
+            {icon && <img className={styles.icon} src={icon} alt="icon" />}
+            <span>{label}</span>
+          </div>
+        )}
         {link && (
           <div>
             <InlineIcon svgIcon={iconDownload} />

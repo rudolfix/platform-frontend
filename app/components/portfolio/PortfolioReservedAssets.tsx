@@ -1,0 +1,132 @@
+import * as cn from "classnames";
+import * as React from "react";
+import { FormattedRelative } from "react-intl";
+import { FormattedMessage } from "react-intl-phraseapp";
+import { Link } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+
+import { TETOWithInvestorTicket } from "../../modules/investor-tickets/types";
+import { getNeuReward } from "../../modules/investor-tickets/utils";
+import { EETOStateOnChain } from "../../modules/public-etos/types";
+import { withParams } from "../../utils/withParams";
+import { appRoutes } from "../appRoutes";
+import { EProjectStatusSize, ETOState } from "../shared/ETOState";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
+import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/NewTable";
+import { NumberFormat } from "../shared/NumberFormat";
+import { SectionHeader } from "../shared/SectionHeader";
+import { PortfolioAssetAction } from "./PortfolioAssetAction";
+
+import * as neuIcon from "../../assets/img/neu_icon.svg";
+import * as styles from "./PortfolioLayout.module.scss";
+
+interface IExternalProps {
+  pendingAssets: TETOWithInvestorTicket[];
+}
+
+const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pendingAssets }) => (
+  <>
+    <SectionHeader
+      layoutHasDecorator={false}
+      className="mb-4"
+      description={<FormattedMessage id="portfolio.section.reserved-assets.description" />}
+    >
+      <FormattedMessage id="portfolio.section.reserved-assets.title" />
+    </SectionHeader>
+
+    <Row>
+      <Col>
+        <NewTable
+          placeholder={
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.placeholder" />
+          }
+          titles={[
+            { title: "", width: "30px" },
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.token" />,
+            { title: "", width: "100px" },
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.balance" />,
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.value-eur" />,
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.price-eur" />,
+            <>
+              <img src={neuIcon} alt="neu token" className={cn("mr-2", styles.tokenSmall)} />
+              <FormattedMessage id="portfolio.section.reserved-assets.table.header.neu-reward" />
+            </>,
+            <FormattedMessage id="portfolio.section.reserved-assets.table.header.eto-status" />,
+          ]}
+        >
+          {pendingAssets.map(
+            ({
+              equityTokenImage,
+              equityTokenName,
+              equityTokenSymbol,
+              investorTicket,
+              contract,
+              etoId,
+              previewCode,
+            }) => {
+              const timedState = contract!.timedState;
+              const isWhitelistedOrPublic =
+                timedState === EETOStateOnChain.Whitelist || timedState === EETOStateOnChain.Public;
+
+              return (
+                <NewTableRow key={etoId} cellLayout={ENewTableCellLayout.MIDDLE}>
+                  <img src={equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
+                  <span className={"d-inline-block"}>
+                    <span className={styles.tokenName}>
+                      {equityTokenName} ({equityTokenSymbol})
+                    </span>
+                  </span>
+                  <Link
+                    to={withParams(appRoutes.etoPublicView, { previewCode })}
+                    data-test-id="portfolio-reserved-assets-view-profile"
+                  >
+                    <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
+                  </Link>
+                  <NumberFormat value={investorTicket.equityTokenInt} />
+                  <Money
+                    value={investorTicket.equivEurUlps.toString()}
+                    currency={ECurrency.EUR}
+                    currencySymbol={ECurrencySymbol.SYMBOL}
+                  />
+                  <Money
+                    value={getNeuReward(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
+                    currency={ECurrency.EUR}
+                    format={EMoneyFormat.FLOAT}
+                    currencySymbol={ECurrencySymbol.SYMBOL}
+                  />
+                  <Money
+                    value={investorTicket.rewardNmkUlps.toString()}
+                    currency={ECurrency.NEU}
+                    currencySymbol={ECurrencySymbol.NONE}
+                  />
+                  <>
+                    {isWhitelistedOrPublic ? (
+                      <span className={"text-uppercase"}>
+                        <FormattedMessage
+                          id="shared-component.eto-overview.invest.ends-in"
+                          values={{
+                            endsIn: (
+                              <FormattedRelative
+                                value={contract!.startOfStates[EETOStateOnChain.Signing]!}
+                                style="numeric"
+                              />
+                            ),
+                          }}
+                        />
+                      </span>
+                    ) : (
+                      <ETOState previewCode={previewCode} size={EProjectStatusSize.SMALL} />
+                    )}
+                  </>
+                  <PortfolioAssetAction state={timedState} etoId={etoId} />
+                </NewTableRow>
+              );
+            },
+          )}
+        </NewTable>
+      </Col>
+    </Row>
+  </>
+);
+
+export { PortfolioReservedAssets };

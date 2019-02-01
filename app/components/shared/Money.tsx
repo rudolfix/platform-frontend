@@ -38,11 +38,16 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currencyClassName?: string;
   transfer?: TMoneyTransfer;
   theme?: TTheme;
+  isPrice?: boolean;
 }
 
 type IProps = IOwnProps;
 
-const selectDecimalPlaces = (currency: ECurrency): number => {
+const selectDecimalPlaces = (currency: ECurrency, isPrice?: boolean): number => {
+  if (isPrice) {
+    return 8;
+  }
+
   switch (currency) {
     case ECurrency.ETH:
       return 4;
@@ -92,8 +97,9 @@ export function getFormattedMoney(
   value: string | number | BigNumber,
   currency: ECurrency,
   format: EMoneyFormat,
+  isPrice?: boolean,
 ): string {
-  return formatMoney(value, getFormatDecimals(format), selectDecimalPlaces(currency));
+  return formatMoney(value, getFormatDecimals(format), selectDecimalPlaces(currency, isPrice));
 }
 
 const Money: React.FunctionComponent<IProps> = ({
@@ -104,6 +110,7 @@ const Money: React.FunctionComponent<IProps> = ({
   transfer,
   currencySymbol = ECurrencySymbol.CODE,
   theme,
+  isPrice,
   ...props
 }) => {
   if (!value) {
@@ -112,7 +119,7 @@ const Money: React.FunctionComponent<IProps> = ({
 
   const money =
     format === EMoneyFormat.WEI && !React.isValidElement(value)
-      ? getFormattedMoney(value as BigNumber, currency, EMoneyFormat.WEI)
+      ? getFormattedMoney(value as BigNumber, currency, EMoneyFormat.WEI, isPrice)
       : value;
 
   const formattedMoney = !React.isValidElement(money) ? (

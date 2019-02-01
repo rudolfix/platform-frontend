@@ -5,7 +5,7 @@ import { compose } from "recompose";
 
 import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces";
 import { IEtoDocument, TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
-import { ignoredTemplates } from "../../../lib/api/eto/EtoFileUtils";
+import { ignoredDocuments, ignoredTemplates } from "../../../lib/api/eto/EtoFileUtils";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
@@ -75,14 +75,19 @@ const DocumentsWidgetLayout: React.FunctionComponent<
                 />
               </Col>
             ))}
-          {Object.keys(etoDocuments).map((key, i) => (
-            <Col sm="6" md="12" lg="6" key={i} className={styles.document}>
-              <DocumentTemplateButton
-                onClick={() => downloadDocument(etoDocuments[key])}
-                title={documentTitles[etoDocuments[key].documentType]}
-              />
-            </Col>
-          ))}
+          {Object.keys(etoDocuments)
+            .filter(
+              key =>
+                !ignoredDocuments.some(document => document === etoDocuments[key].documentType),
+            )
+            .map((key, i) => (
+              <Col sm="6" md="12" lg="6" key={i} className={styles.document}>
+                <DocumentTemplateButton
+                  onClick={() => downloadDocument(etoDocuments[key])}
+                  title={documentTitles[etoDocuments[key].documentType]}
+                />
+              </Col>
+            ))}
         </Row>
       </section>
     </Panel>

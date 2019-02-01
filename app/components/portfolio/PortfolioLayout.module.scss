@@ -7,14 +7,26 @@
 }
 
 .token {
-  @include rect(18px);
+  @include rect(25px);
+  display: inline-block;
 }
 
 .token-small {
   @include rect(16px);
 }
 
+.token-name {
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .document-link {
   margin-bottom: px-to-rem(16px);
   text-align: left;
+}
+
+.action-button {
+  font-size: px-to-rem(12px);
+  font-weight: 400;
+  text-transform: uppercase;
 }

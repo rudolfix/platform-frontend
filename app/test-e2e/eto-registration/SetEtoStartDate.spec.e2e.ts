@@ -1,10 +1,10 @@
 import * as moment from "moment";
 
 import { appRoutes } from "../../components/appRoutes";
-import { ISSUER_SETUP, ISSUER_SETUP_NO_ST } from "../constants";
+import { ISSUER_SETUP } from "../constants";
 import { closeModal, confirmAccessModal } from "../utils";
-import { createAndLoginNewUser } from "../utils/userHelpers";
 import { tid } from "../utils/selectors";
+import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Eto start date setup", () => {
   it("sets the date", () => {

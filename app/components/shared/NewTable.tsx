@@ -7,12 +7,24 @@ import { Panel } from "./Panel";
 
 import * as styles from "./NewTable.module.scss";
 
+export enum ENewTableCellLayout {
+  TOP = "top",
+  MIDDLE = "middle",
+  BOTTOM = "bottom",
+}
+
+interface INewTableTitle {
+  title: TTranslatedString | React.ReactNode;
+  width: string;
+}
+
 interface INewTableHeader {
-  titles: (TTranslatedString | React.ReactNode)[];
+  titles: (INewTableTitle | TTranslatedString | React.ReactNode)[];
 }
 
 interface INewTableRow {
   children: React.ReactNode[];
+  cellLayout?: ENewTableCellLayout;
 }
 
 interface IPlaceholderTableRow {
@@ -21,8 +33,8 @@ interface IPlaceholderTableRow {
 }
 
 type INewTableChildren =
-  | React.ReactElement<INewTableRow>
-  | React.ReactElement<INewTableRow>[]
+  | React.ReactElement<INewTableRow | null>
+  | React.ReactElement<INewTableRow | null>[]
   | null;
 
 interface INewTable {
@@ -34,11 +46,11 @@ interface INewTable {
 
 type TProps = INewTable & INewTableHeader;
 
-const NewTableRow: React.FunctionComponent<INewTableRow> = ({ children }) => (
+const NewTableRow: React.FunctionComponent<INewTableRow> = ({ children, cellLayout }) => (
   <tr className={styles.row}>
     {React.Children.toArray(children).map((child, index) => {
       return (
-        <td className={styles.cell} key={index}>
+        <td className={cn(styles.cell, cellLayout)} key={index}>
           {child}
         </td>
       );
@@ -68,16 +80,22 @@ const NewTable: React.FunctionComponent<TProps> = ({
   const isEmpty = React.Children.toArray(children).filter(React.isValidElement).length === 0;
 
   return (
-    <Panel>
+    <Panel className={styles.panel}>
       <div className={cn(styles.tableWrapper, className, keepRhythm && "keep-rhythm")}>
         <table className={styles.table}>
           <thead className={styles.header}>
             <tr>
-              {titles.map((title, index) => (
-                <th className={styles.cell} key={index}>
-                  {title}
-                </th>
-              ))}
+              {titles.map((value, index) => {
+                return value && typeof value === "object" && "width" in value ? (
+                  <th className={styles.cell} key={index} style={{ width: value.width }}>
+                    {value.title}
+                  </th>
+                ) : (
+                  <th className={styles.cell} key={index}>
+                    {value}
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>

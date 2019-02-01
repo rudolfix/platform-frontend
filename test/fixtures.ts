@@ -2,14 +2,14 @@ import { BigNumber } from "bignumber.js";
 import { createStore, Store } from "redux";
 
 import { IConfig } from "../app/config/getConfig";
+import { EEtoState, TCompanyEtoData } from "../app/lib/api/eto/EtoApi.interfaces";
 import {
+  EEtoDocumentLanguage,
   EEtoDocumentType,
   IEtoFiles,
-  EEtoDocumentLanguage,
   TEtoDocumentTemplates,
   TEtoFormType,
 } from "../app/lib/api/eto/EtoFileApi.interfaces";
-import { EEtoState, TCompanyEtoData } from "../app/lib/api/eto/EtoApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../app/modules/public-etos/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
 

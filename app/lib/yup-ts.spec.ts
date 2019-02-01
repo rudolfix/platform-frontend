@@ -62,8 +62,8 @@ describe("Yup-ts", () => {
       ? true
       : never;
 
-    // tslint:disable-next-line
     const t: assert<TValidatorType> = true;
+    return t;
   });
 
   describe("onlyTrue", () => {

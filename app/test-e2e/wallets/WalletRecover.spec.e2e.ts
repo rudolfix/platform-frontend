@@ -1,15 +1,15 @@
+import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import {
+  acceptTOS,
   assertErrorModal,
-  assertWaitForLatestEmailSentWithSalt,
   assertUserInDashboard,
+  assertWaitForLatestEmailSentWithSalt,
   clearEmailServer,
   mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
-  acceptTOS,
 } from "../utils";
 import { tid } from "../utils/selectors";
-import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 
 describe("Wallet recover", () => {
   const words = [

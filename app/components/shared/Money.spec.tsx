@@ -92,4 +92,18 @@ describe("Money", () => {
 
     expect(component.render().text()).to.be.eq("€0.32376189");
   });
+
+  it("should format value with 8 decimal places from float", () => {
+    const component = shallow(
+      <Money
+        value={"0.166250351468706841"}
+        format={EMoneyFormat.FLOAT}
+        currency={ECurrency.EUR}
+        currencySymbol={ECurrencySymbol.SYMBOL}
+        isPrice={true}
+      />,
+    );
+
+    expect(component.render().text()).to.be.eq("€0.16625036");
+  });
 });

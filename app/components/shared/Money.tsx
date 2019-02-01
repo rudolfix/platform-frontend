@@ -123,8 +123,8 @@ const Money: React.FunctionComponent<IProps> = ({
   }
 
   const money =
-    format === EMoneyFormat.WEI && !React.isValidElement(value)
-      ? getFormattedMoney(value as BigNumber, currency, EMoneyFormat.WEI, isPrice)
+    (format === EMoneyFormat.WEI && !React.isValidElement(value)) || isPrice
+      ? getFormattedMoney(value as BigNumber, currency, format, isPrice)
       : value;
 
   const formattedMoney = !React.isValidElement(money) ? (

@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { ECurrency, Money, TMoneyTransfer } from "../../shared/Money";
+import { ECurrency, EMoneyTransfer, Money } from "../../shared/Money";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
 import { TableHeader } from "../../shared/table/TableHeader";
@@ -25,7 +25,7 @@ export interface ITransaction {
   type: TransactionType;
   amount: string;
   fromTo: string;
-  transfer: TMoneyTransfer;
+  transfer: EMoneyTransfer;
   id: any;
 }
 

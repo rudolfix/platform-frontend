@@ -4,7 +4,7 @@ import { Col, Row } from "reactstrap";
 
 import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { ECurrency, Money } from "../../shared/Money";
+import { ECurrency, ETheme, Money } from "../../shared/Money";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
@@ -51,7 +51,7 @@ export const EtoRaisedAmount: React.FunctionComponent<IProps> = ({
               <div className={stylesCommon.header}>
                 <FormattedMessage id="eto.overview.raised-amount.total" />{" "}
                 <Money
-                  theme="t-green"
+                  theme={ETheme.GREEN}
                   value={"1234567" + "0".repeat(16)}
                   currency={ECurrency.EUR}
                 />

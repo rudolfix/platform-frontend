@@ -15,7 +15,7 @@ import { appConnect } from "../../store";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { withParams } from "../../utils/withParams";
 import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
-import { ECurrency, ECurrencySymbol, Money } from "../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/NewTable";
 import { NumberFormat } from "../shared/NumberFormat";
 import { SectionHeader } from "../shared/SectionHeader";
@@ -97,6 +97,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
               <Money
                 value={neuPrice}
                 currency={ECurrency.EUR}
+                format={EMoneyFormat.FLOAT}
                 currencySymbol={ECurrencySymbol.SYMBOL}
                 isPrice={true}
               />

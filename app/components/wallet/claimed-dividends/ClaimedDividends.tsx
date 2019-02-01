@@ -1,20 +1,20 @@
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
+import { CommonHtmlProps } from "../../../types";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Date } from "../../shared/Date";
 import { InlineIcon } from "../../shared/InlineIcon";
-import { ECurrency, Money } from "../../shared/Money";
+import { ECurrency, EMoneyTransfer, Money } from "../../shared/Money";
 import { Panel } from "../../shared/Panel";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell";
 import { TableRow } from "../../shared/table/TableRow";
 import { TotalEuro } from "../TotalEuro";
-import * as styles from "./ClaimedDividends.module.scss";
 
-import { FormattedMessage } from "react-intl-phraseapp";
 import * as LinkOutIcon from "../../../assets/img/inline_icons/link_out.svg";
-import { CommonHtmlProps } from "../../../types";
+import * as styles from "./ClaimedDividends.module.scss";
 
 export interface IDividendPayout {
   timestamp: number;
@@ -53,7 +53,11 @@ export const ClaimedDividends: React.FunctionComponent<
               <Date timestamp={timestamp} />
             </TableCell>
             <TableCell narrow>
-              <Money currency={ECurrency.EUR_TOKEN} value={amount} transfer="income" />
+              <Money
+                currency={ECurrency.EUR_TOKEN}
+                value={amount}
+                transfer={EMoneyTransfer.INCOME}
+              />
             </TableCell>
             <TableCell narrow>
               <Button layout={EButtonLayout.SECONDARY}>

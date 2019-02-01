@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "./Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, EMoneyTransfer, ETheme, Money } from "./Money";
 
 const value = "1234567" + "0".repeat(18);
 
@@ -31,9 +31,9 @@ storiesOf("Money", module)
   ))
   .add("transfer", () => (
     <>
-      <Money currency={ECurrency.EUR} value={value} transfer="income" />
+      <Money currency={ECurrency.EUR} value={value} transfer={EMoneyTransfer.INCOME} />
       <br />
-      <Money currency={ECurrency.EUR} value={value} transfer="outcome" />
+      <Money currency={ECurrency.EUR} value={value} transfer={EMoneyTransfer.OUTCOME} />
     </>
   ))
   .add("no currency symbol", () => (
@@ -42,10 +42,15 @@ storiesOf("Money", module)
   .add("themed", () => (
     <>
       <p>t-green</p>
-      <Money currency={ECurrency.EUR} value={value} theme="t-green" />
+      <Money currency={ECurrency.EUR} value={value} theme={ETheme.GREEN} />
+      <br />
       <br />
       <p>t-orange</p>
-      <Money currency={ECurrency.ETH} value="20000000000000000" theme="t-orange" />
+      <Money currency={ECurrency.ETH} value={value} theme={ETheme.ORANGE} />
+      <br />
+      <br />
+      <p>big-value</p>
+      <Money currency={ECurrency.ETH} value={value} theme={ETheme.GREEN_BIG} />
     </>
   ))
   .add("price format", () => (

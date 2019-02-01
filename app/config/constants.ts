@@ -72,4 +72,4 @@ export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 /*
  * General constants
  */
-export const IS_CYPRESS = typeof window === "undefined" ? false : !!(window as any).Cypress;
+export const IS_CYPRESS = typeof window === "undefined" ? false : !!process.env.IS_CYPRESS;

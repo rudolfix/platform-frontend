@@ -1,3 +1,4 @@
+import { assertUserInLanding } from "../utils";
 import { tid } from "../utils/selectors";
 
 const assertUserInLightWalletLoginPage = () => {
@@ -48,5 +49,9 @@ describe("Platform Authentication Routing Tests", () => {
       "/email-verify?code=8ce11ded-e1ff-4bfa-b05a-87ea119474ff&email=0xfcd9b%40neufund.org&user_type=issuer&wallet_type=ledger",
     );
     assertUserInLedgerWalletLoginPage();
+  });
+  it("should redirect to root page if the link is wrong", () => {
+    cy.visit("/haha-im-a-wrong-link");
+    assertUserInLanding();
   });
 });

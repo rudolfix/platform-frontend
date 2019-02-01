@@ -4,16 +4,45 @@ import { injectable } from "inversify";
 @injectable()
 export class Storage {
   constructor(private localStorage: any) {}
+  private inMemoryStorage: { [key: string]: string } = {};
+  private isSupported: boolean | undefined = undefined;
+
+  public checkIsSupported(): boolean {
+    if (this.isSupported === undefined) {
+      try {
+        const testKey = "test value";
+        this.localStorage.setItem(testKey, testKey);
+        this.localStorage.removeItem(testKey);
+        this.isSupported = true;
+      } catch (e) {
+        this.isSupported = false;
+      }
+    }
+    return this.isSupported;
+  }
 
   public setKey(key: string, value: string): void {
-    this.localStorage.setItem(key, value);
+    if (this.checkIsSupported()) {
+      this.localStorage.setItem(key, value);
+    } else {
+      this.inMemoryStorage[name] = value;
+    }
   }
 
   public getKey(key: string): string | undefined {
-    return this.localStorage.getItem(key);
+    if (this.checkIsSupported()) {
+      return this.localStorage.getItem(key);
+    }
+    if (this.inMemoryStorage.hasOwnProperty(name)) {
+      return this.inMemoryStorage[name];
+    }
   }
 
   public removeKey(key: string): void {
-    this.localStorage.removeItem(key);
+    if (this.checkIsSupported()) {
+      this.localStorage.removeItem(key);
+    } else {
+      delete this.inMemoryStorage[name];
+    }
   }
 }

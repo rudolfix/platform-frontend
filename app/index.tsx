@@ -101,7 +101,8 @@ if (process.env.NF_ENABLE_TRANSLATE_OVERLAY) {
 }
 
 ga.installGA();
-serviceWorker.unregister();
+serviceWorker.unregister()
+  .then(() => true);
 
 const history = createBrowserHistory();
 const { store, container } = startupApp(history);

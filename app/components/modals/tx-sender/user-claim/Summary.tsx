@@ -11,6 +11,7 @@ import {
 import { ImmutableFileId } from "../../../../lib/api/ImmutableStorage.interfaces";
 import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
+import { selectIsPendingDownload } from "../../../../modules/immutable-file/selectors";
 import { selectMyInvestorTicketByEtoId } from "../../../../modules/investor-tickets/selectors";
 import { TETOWithInvestorTicket } from "../../../../modules/investor-tickets/types";
 import {
@@ -36,6 +37,7 @@ interface IStateProps {
   txCost: string;
   etoData: TETOWithInvestorTicket;
   etoId: string;
+  isPendingDownload: (ipfsHash: string) => boolean;
 }
 
 interface IDispatchProps {
@@ -53,6 +55,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
   downloadDocument,
   generateTemplateByEtoId,
   etoId,
+  isPendingDownload,
 }) => {
   return (
     <Container>
@@ -115,6 +118,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
                       <ButtonIcon
                         className={styles.icon}
                         svgIcon={iconDownload}
+                        disabled={isPendingDownload(document.ipfsHash)}
                         onClick={() =>
                           downloadDocument(
                             {
@@ -149,6 +153,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
                       <ButtonIcon
                         className={styles.icon}
                         svgIcon={iconDownload}
+                        disabled={isPendingDownload(template.ipfsHash)}
                         onClick={() => generateTemplateByEtoId({ ...template, asPdf: true }, etoId)}
                       />
                     }
@@ -172,6 +177,7 @@ export const UserClaimSummary = appConnect<IStateProps, IDispatchProps, {}>({
       etoData: selectMyInvestorTicketByEtoId(state, etoId)!,
       txCost: selectTxGasCostEthUlps(state),
       etoId,
+      isPendingDownload: selectIsPendingDownload(state),
     };
   },
   dispatchToProps: d => ({

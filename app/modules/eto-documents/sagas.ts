@@ -25,6 +25,8 @@ export function* generateDocumentFromTemplate(
   try {
     const document = action.payload.document;
 
+    yield put(actions.immutableStorage.downloadDocumentStarted(document.ipfsHash));
+
     const templates = yield apiEtoFileService.getEtoTemplate(
       {
         documentType: document.documentType,
@@ -38,14 +40,13 @@ export function* generateDocumentFromTemplate(
       { token_holder_ethereum_address: ETHEREUM_ZERO_ADDRESS },
     );
     const generatedDocument = yield apiImmutableStorage.getFile({
-      ...{
-        ipfsHash: templates.ipfs_hash,
-        mimeType: templates.mime_type,
-        placeholders: templates.placeholders,
-      },
+      ipfsHash: templates.ipfs_hash,
+      mimeType: templates.mime_type,
+      placeholders: templates.placeholders,
       asPdf: false,
     });
     yield call(downloadLink, generatedDocument, document.name, ".doc");
+    yield put(actions.immutableStorage.downloadImmutableFileDone(document.ipfsHash));
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
     notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE));
@@ -62,6 +63,8 @@ export function* generateDocumentFromTemplateByEtoId(
     const document = action.payload.document;
     const etoId = action.payload.etoId;
     const extension = document.asPdf ? ".pdf" : ".doc";
+
+    yield put(actions.immutableStorage.downloadDocumentStarted(document.ipfsHash));
     const templates = yield apiEtoFileService.getSpecificEtoTemplate(
       etoId,
       {
@@ -84,6 +87,7 @@ export function* generateDocumentFromTemplateByEtoId(
       asPdf: true,
     });
     yield call(downloadLink, generatedDocument, document.name, extension);
+    yield put(actions.immutableStorage.downloadImmutableFileDone(document.ipfsHash));
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
     notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE));

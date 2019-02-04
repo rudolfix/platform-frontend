@@ -1,78 +1,132 @@
-import * as cn from "classnames";
 import * as React from "react";
+import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { Col, Row } from "reactstrap";
+import { branch, compose, renderComponent } from "recompose";
 
-import { ECurrency, Money } from "./Money";
-import { MoneySuiteWidget, TSize, TTheme } from "./MoneySuiteWidget";
-
-import * as styles from "./AssetPortfolio.module.scss";
+import { ITokenDisbursal } from "../../modules/investor-portfolio/types";
+import { isZero } from "../../utils/Number.utils";
+import { LoadingIndicator } from "./loading-indicator";
+import { ECurrency, ETheme, Money, selectCurrencyCode } from "./Money";
 import { NewTable, NewTableRow } from "./NewTable";
+import { Panel } from "./Panel";
+import { SectionHeader } from "./SectionHeader";
 
-interface IProps {
-  icon: string;
-  currency: ECurrency;
-  currencyTotal: ECurrency;
-  largeNumber: string;
-  value: string;
-  moneyValue: string;
-  tokenValue: string;
-  tokenChange: number;
-  moneyChange: number;
-  theme?: TTheme;
-  size?: TSize;
+import * as ethIcon from "../../assets/img/eth_icon.svg";
+import * as nEurIcon from "../../assets/img/nEUR_icon.svg";
+
+interface IExternalProps {
+  tokensDisbursal: ReadonlyArray<ITokenDisbursal> | undefined;
 }
 
-export const AssetPortfolio: React.FunctionComponent<IProps> = props => {
-  return (
-    <div className={styles.assetPortfolio}>
-      <div className={styles.yourNeumark}>
-        <h3 className={styles.title}>
-          <FormattedMessage id="shared-components.asset-portfolio.title" />
-        </h3>
-        <MoneySuiteWidget
-          icon={props.icon}
-          currency={props.currency}
-          currencyTotal={props.currencyTotal}
-          largeNumber={props.largeNumber}
-          value={props.value}
-          theme="light"
-          size="large"
-        />
-      </div>
-      <div className={styles.listing}>
-        <div className={styles.eur}>
-          <Money value={props.moneyValue} currency={ECurrency.EUR} />
-          <span className={cn(props.moneyChange < 0 ? styles.red : styles.green, "ml-2")}>
-            ({props.moneyChange}
-            %)
-          </span>
-        </div>
-        <div className={styles.className}>
-          <Money value={props.tokenValue} currency={ECurrency.ETH} />
-          <span className={cn(props.tokenChange < 0 ? styles.red : styles.green, "ml-2")}>
-            ({props.tokenChange}
-            %)
-          </span>
-        </div>
-      </div>
+interface ILayoutProps {
+  tokensDisbursal: ReadonlyArray<ITokenDisbursal>;
+}
+
+// TODO: move as a reusable component
+const CurrencyIcon: React.FunctionComponent<{ currency: ECurrency }> = ({ currency }) => {
+  switch (currency) {
+    case ECurrency.EUR_TOKEN:
+      return <img src={nEurIcon} alt="NEur token" />;
+    case ECurrency.ETH:
+      return <img src={ethIcon} alt="Ether token" />;
+    default:
+      throw new Error(`Icon for currency ${currency} not found`);
+  }
+};
+
+const AssetPortfolioLayoutNoPayouts: React.FunctionComponent = () => (
+  <SectionHeader
+    layoutHasDecorator={false}
+    className="mb-4"
+    description={<FormattedMessage id="portfolio.asset.payouts-from-neu.no-payouts" />}
+  >
+    <FormattedMessage id="portfolio.section.asset-portfolio.title" />
+  </SectionHeader>
+);
+
+const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps> = ({ tokensDisbursal }) => (
+  <Row className="mb-4">
+    <Col md={5} lg={4} sm={12}>
+      <SectionHeader layoutHasDecorator={false} className="mb-4">
+        <FormattedMessage id="portfolio.section.asset-portfolio.title" />
+      </SectionHeader>
+
+      <Panel>
+        <p>
+          <FormattedMessage
+            id="portfolio.asset.amounts-to-claim"
+            values={{
+              amounts: (
+                <>
+                  {tokensDisbursal
+                    .map(t => (
+                      <Money
+                        key={t.currency}
+                        value={t.amountToBeClaimed}
+                        currency={t.currency}
+                        theme={ETheme.GREEN_BIG}
+                      />
+                    ))
+                    // add + between nodes
+                    .reduce<React.ReactNode[]>(
+                      (p, c) => (p.length === 0 ? p.concat(c) : p.concat(" + ", c)),
+                      [],
+                    )}
+                </>
+              ),
+            }}
+          />
+        </p>
+        <p className="mb-0">
+          <FormattedMessage id="portfolio.asset.amounts-to-claim-description" />
+        </p>
+      </Panel>
+    </Col>
+    <Col md={7} lg={8} sm={12} className="mt-4 mt-md-0">
+      <SectionHeader layoutHasDecorator={false} className="mb-4">
+        <FormattedMessage id="portfolio.asset.payouts-from-neu.title" />
+      </SectionHeader>
+
       <NewTable
-        keepRhythm
+        keepRhythm={true}
         titles={[
-          <FormattedMessage id="shared-component.asset-portfolio.market-cap" />,
-          <FormattedMessage id="shared-component.asset-portfolio.circulating-supply" />,
-          <FormattedMessage id="shared-component.asset-portfolio.total-supply" />,
-          <FormattedMessage id="shared-component.asset-portfolio.max-supply" />,
-          <FormattedMessage id="shared-component.asset-portfolio.volume-24h" />,
+          "", // token icon
+          "", // token name
+          <FormattedMessage id="portfolio.asset.payouts-from-neu.your-share" />,
+          <FormattedMessage id="portfolio.asset.payouts-from-neu.total-payout" />,
+          <FormattedMessage id="portfolio.asset.payouts-from-neu.claim-by" />,
+          "", // reject payout
+          "", // accept payout
         ]}
       >
-        <NewTableRow>
-          <span>market cap</span>
-          <span>circulating supply</span>
-          <span>total supply</span>
-          <span>max supply</span>
-          <span>volume supply</span>
-        </NewTableRow>
+        {tokensDisbursal.map(
+          ({ amountToBeClaimed, currency, totalDisbursedAmount, timeToFirstDisbursalRecycle }) => (
+            <NewTableRow key={currency}>
+              <CurrencyIcon currency={currency} />
+              <>{selectCurrencyCode(currency)}</>
+              <Money value={amountToBeClaimed} currency={currency} theme={ETheme.GREEN} />
+              <Money value={totalDisbursedAmount} currency={currency} />
+              <FormattedDate value={timeToFirstDisbursalRecycle} />
+              <></>
+              <></>
+            </NewTableRow>
+          ),
+        )}
       </NewTable>
-    </div>
-  );
-};
+    </Col>
+  </Row>
+);
+
+const AssetPortfolio = compose<ILayoutProps, IExternalProps>(
+  branch<IExternalProps>(
+    ({ tokensDisbursal }) => tokensDisbursal === undefined,
+    renderComponent(LoadingIndicator),
+  ),
+  branch<ILayoutProps>(
+    ({ tokensDisbursal }) => tokensDisbursal.every(d => isZero(d.amountToBeClaimed)),
+    renderComponent(AssetPortfolioLayoutNoPayouts),
+  ),
+)(AssetPortfolioLayout);
+
+export { AssetPortfolio };

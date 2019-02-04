@@ -12,7 +12,7 @@ import { icbmWalletGetDataSagas } from "./icbm-wallet-balance-modal/sagas";
 import { immutableFileSagas } from "./immutable-file/sagas";
 import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investment-flow/sagas";
-import { investorTicketsSagas } from "./investor-tickets/sagas";
+import { investorTicketsSagas } from "./investor-portfolio/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { profileSagas } from "./profile/sagas";
 import { etoSagas } from "./public-etos/sagas";

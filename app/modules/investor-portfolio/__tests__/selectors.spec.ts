@@ -8,7 +8,7 @@ import { IAppState } from "../../../store";
 import * as publicEtoSelectors from "../../public-etos/selectors";
 import * as investorTicketSelectors from "../selectors";
 
-describe("investor-tickets > selectors", () => {
+describe("investor-portfolio > selectors", () => {
   describe("selectCalculatedEtoTicketSizesById", () => {
     beforeEach(() => {
       sinon.stub(publicEtoSelectors, "selectPublicEtoById").returns({

@@ -1,7 +1,8 @@
 import BigNumber from "bignumber.js";
 
+import { ECurrency } from "../../components/shared/Money";
 import { Q18 } from "../../config/constants";
-import { ICalculatedContribution, IInvestorTicket } from "./types";
+import { ICalculatedContribution, IInvestorTicket, ITokenDisbursal } from "./types";
 
 export const convertToCalculatedContribution = ([
   isWhitelisted,
@@ -62,6 +63,22 @@ export const convertToInvestorTicket = ([
   amountEurUlps,
   claimedOrRefunded,
   usedLockedAccount,
+});
+
+export const convertToTokenDisbursal = (
+  currency: ECurrency,
+  [amountToBeClaimed, totalDisbursedAmount, timeToFirstDisbursalRecycle]: [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ],
+): ITokenDisbursal => ({
+  currency,
+  amountToBeClaimed: amountToBeClaimed.toString(),
+  totalDisbursedAmount: totalDisbursedAmount.toString(),
+  // convert seconds timestamp to milliseconds
+  timeToFirstDisbursalRecycle: timeToFirstDisbursalRecycle.mul(1000).toNumber(),
 });
 
 export const getNeuReward = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): string => {

@@ -3,12 +3,12 @@ import * as React from "react";
 import { Container } from "reactstrap";
 
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 
-import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
+import * as ethIcon from "../../../../assets/img/eth_icon.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
-import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
-import { withModalBody } from "../../../../utils/storybookHelpers";
+import * as neuroIcon from "../../../../assets/img/nEUR_icon.svg";
 
 export const wallets: WalletSelectionData[] = [
   {

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { convertToBigInt, formatThousands, normalize } from "./Number.utils";
+import { convertToBigInt, formatThousands, isZero, normalize } from "./Number.utils";
 
 describe("NumberUtils", () => {
   describe("formatThousands", () => {
@@ -33,6 +33,13 @@ describe("NumberUtils", () => {
       expect(normalize({ min: 0, max: 100 }, 0)).to.eq(0);
       expect(normalize({ min: 0, max: 100 }, 25)).to.eq(0.25);
       expect(normalize({ min: 0, max: 100 }, 80)).to.eq(0.8);
+    });
+  });
+
+  describe("isZero", () => {
+    it("should correctly recognize zeros", () => {
+      expect(isZero("000000000000000000")).to.be.true;
+      expect(isZero("364458900000000000")).to.be.false;
     });
   });
 });

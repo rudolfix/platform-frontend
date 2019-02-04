@@ -101,7 +101,8 @@ if (process.env.NF_ENABLE_TRANSLATE_OVERLAY) {
 }
 
 ga.installGA();
-serviceWorker.register();
+/* tslint:disable-next-line:no-floating-promises */
+serviceWorker.unregister();
 
 const history = createBrowserHistory();
 const { store, container } = startupApp(history);

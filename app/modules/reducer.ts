@@ -9,9 +9,10 @@ import { etoFlowReducer } from "./eto-flow/reducer";
 import { gasReducer } from "./gas/reducer";
 import { genericModalReducer } from "./generic-modal/reducer";
 import { icbmWalletBalanceModalReducer } from "./icbm-wallet-balance-modal/reducer";
+import { immutableStorageReducer } from "./immutable-file/reducer";
 import { initReducer } from "./init/reducer";
 import { investmentFlowReducer } from "./investment-flow/reducer";
-import { investorTicketsReducer } from "./investor-tickets/reducer";
+import { investorTicketsReducer } from "./investor-portfolio/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";
@@ -65,4 +66,5 @@ export const appReducers = {
   videoModal: videoModalReducer,
   personProfileModal: personProfileModalReducer,
   portfolioDownloadAgreementsModal: portfolioDownloadAgreementsModalReducer,
+  immutableStorage: immutableStorageReducer,
 };

@@ -1,7 +1,11 @@
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
-import { selectMyAssets, selectMyPendingAssets } from "../../modules/investor-tickets/selectors";
+import {
+  selectMyAssets,
+  selectMyPendingAssets,
+  selectTokensDisbursal,
+} from "../../modules/investor-portfolio/selectors";
 import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -18,13 +22,17 @@ export type TStateProps = Partial<TPortfolioLayoutProps>;
 export const Portfolio = compose<TPortfolioLayoutProps, {}>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({
-    actionCreator: dispatch => dispatch(actions.publicEtos.loadEtos()),
+    actionCreator: dispatch => {
+      dispatch(actions.publicEtos.loadEtos());
+      dispatch(actions.investorEtoTicket.loadClaimables());
+    },
   }),
   appConnect<TStateProps, {}>({
     stateToProps: state => ({
       myAssets: selectMyAssets(state),
       pendingAssets: selectMyPendingAssets(state),
       walletAddress: selectEthereumAddressWithChecksum(state),
+      tokensDisbursal: selectTokensDisbursal(state),
     }),
   }),
   withContainer(LayoutAuthorized),

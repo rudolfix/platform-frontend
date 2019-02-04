@@ -24,9 +24,9 @@ import { formatMoney } from "../../../../utils/Money.utils";
 import { formatThousands } from "../../../../utils/Number.utils";
 import { WalletSelectionData } from "./InvestmentTypeSelector";
 
-import * as ethIcon from "../../../../assets/img/eth_icon2.svg";
+import * as ethIcon from "../../../../assets/img/eth_icon.svg";
 import * as euroIcon from "../../../../assets/img/euro_icon.svg";
-import * as neuroIcon from "../../../../assets/img/neuro_icon.svg";
+import * as neuroIcon from "../../../../assets/img/nEUR_icon.svg";
 
 export function createWallets(state: IAppState): WalletSelectionData[] {
   const w = state.wallet;

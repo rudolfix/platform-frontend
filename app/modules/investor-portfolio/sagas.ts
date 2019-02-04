@@ -1,6 +1,9 @@
 import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
+import { ECurrency } from "../../components/shared/Money";
+import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces";
 import { IUser } from "../../lib/api/users/interfaces";
@@ -12,7 +15,12 @@ import { actions, TAction } from "../actions";
 import { selectUser } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import { convertToCalculatedContribution, convertToInvestorTicket } from "./utils";
+import { ITokenDisbursal } from "./types";
+import {
+  convertToCalculatedContribution,
+  convertToInvestorTicket,
+  convertToTokenDisbursal,
+} from "./utils";
 
 export function* loadInvestorTickets({ logger }: TGlobalDependencies, action: TAction): any {
   if (action.type !== "INVESTOR_TICKET_ETOS_LOAD") return;
@@ -88,7 +96,46 @@ export function* loadComputedContributionFromContract(
   }
 }
 
+export function* loadClaimables({
+  contractsService,
+  logger,
+  notificationCenter,
+}: TGlobalDependencies): any {
+  const user: IUser = yield select((state: IAppState) => selectUser(state.auth));
+
+  const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
+
+  const tokens: [ECurrency, string][] = [
+    [ECurrency.EUR_TOKEN, euroToken.address],
+    [ECurrency.ETH, etherToken.address],
+  ];
+
+  try {
+    const tokensDisbursalRaw = yield feeDisbursal.claimableMutipleByToken(
+      tokens.map(([, address]) => address),
+      neumark.address,
+      user.userId,
+    );
+
+    const tokensDisbursal: ITokenDisbursal[] = tokens.map(([token], i) =>
+      // claimableMultipeByToken preserves tokens order so it's safe to get exact response by index
+      convertToTokenDisbursal(token, tokensDisbursalRaw[i]),
+    );
+
+    yield put(actions.investorEtoTicket.setTokensDisbursal(tokensDisbursal));
+  } catch (error) {
+    yield put(actions.investorEtoTicket.setTokensDisbursal([]));
+
+    logger.error("Failed to load claimables", error);
+
+    notificationCenter.error(
+      createMessage(InvestorPortfolioMessage.INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES),
+    );
+  }
+}
+
 export function* investorTicketsSagas(): any {
   yield fork(neuTakeEvery, "INVESTOR_TICKET_ETOS_LOAD", loadInvestorTickets);
   yield fork(neuTakeEvery, "INVESTOR_TICKET_LOAD", loadInvestorTicket);
+  yield fork(neuTakeEvery, actions.investorEtoTicket.loadClaimables, loadClaimables);
 }

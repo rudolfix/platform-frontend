@@ -11,6 +11,7 @@ import {
 } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
+import { selectIsPendingDownload } from "../../../modules/immutable-file/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
@@ -32,6 +33,7 @@ import * as styles from "./DownloadTokenAgreementModal.module.scss";
 interface IStateProps {
   isOpen: boolean;
   eto: TEtoWithCompanyAndContract | undefined;
+  isPendingDownload: (ipfsHash: string) => boolean;
 }
 
 interface IDispatchProps {
@@ -48,6 +50,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
   generateTemplateByEtoId,
   downloadDocument,
   eto,
+  isPendingDownload,
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={onClose}>
@@ -80,6 +83,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                         <ButtonIcon
                           className={styles.icon}
                           svgIcon={iconDownload}
+                          disabled={isPendingDownload(document.ipfsHash)}
                           onClick={() =>
                             downloadDocument(
                               {
@@ -112,6 +116,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                         <ButtonIcon
                           className={styles.icon}
                           svgIcon={iconDownload}
+                          disabled={isPendingDownload(template.ipfsHash)}
                           onClick={() =>
                             generateTemplateByEtoId({ ...template, asPdf: true }, eto.etoId)
                           }
@@ -137,6 +142,7 @@ const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
       return {
         isOpen: etoId ? selectDownloadAgrementModalIsOpen(state) : false,
         eto: eto,
+        isPendingDownload: selectIsPendingDownload(state),
       };
     },
     dispatchToProps: dispatch => ({

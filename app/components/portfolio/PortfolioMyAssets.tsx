@@ -7,8 +7,8 @@ import { compose, lifecycle, withState } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
-import { selectMyAssetsWithTokenData } from "../../modules/investor-tickets/selectors";
-import { TETOWithTokenData } from "../../modules/investor-tickets/types";
+import { selectMyAssetsWithTokenData } from "../../modules/investor-portfolio/selectors";
+import { TETOWithTokenData } from "../../modules/investor-portfolio/types";
 import { selectNeuPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { selectNeuBalance } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";

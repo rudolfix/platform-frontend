@@ -1,17 +1,20 @@
 import { AppReducer } from "../../store";
 import { DeepReadonly, Dictionary } from "../../types";
-import { ICalculatedContribution, IInvestorTicket } from "./types";
+import { actions } from "../actions";
+import { ICalculatedContribution, IInvestorTicket, ITokenDisbursal } from "./types";
 
 export interface IInvestorTicketsState {
   investorEtoTickets: Dictionary<IInvestorTicket | undefined>;
   calculatedContributions: Dictionary<ICalculatedContribution | undefined>;
   initialCalculatedContributions: Dictionary<ICalculatedContribution | undefined>;
+  tokensDisbursal: ITokenDisbursal[] | undefined;
 }
 
 export const etoFlowInitialState: IInvestorTicketsState = {
   calculatedContributions: {},
   initialCalculatedContributions: {},
   investorEtoTickets: {},
+  tokensDisbursal: undefined,
 };
 
 export const investorTicketsReducer: AppReducer<IInvestorTicketsState> = (
@@ -42,6 +45,11 @@ export const investorTicketsReducer: AppReducer<IInvestorTicketsState> = (
           ...state.initialCalculatedContributions,
           [action.payload.etoId]: action.payload.contribution,
         },
+      };
+    case actions.investorEtoTicket.setTokensDisbursal.getType():
+      return {
+        ...state,
+        tokensDisbursal: action.payload.tokensDisbursal,
       };
   }
 

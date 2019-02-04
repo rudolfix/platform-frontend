@@ -49,8 +49,9 @@ export function* generateDocumentFromTemplate(
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
     notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE));
+  } finally {
+    yield put(actions.immutableStorage.downloadImmutableFileDone(action.payload.document.ipfsHash));
   }
-  yield put(actions.immutableStorage.downloadImmutableFileDone(action.payload.document.ipfsHash));
 }
 
 export function* generateDocumentFromTemplateByEtoId(
@@ -90,8 +91,9 @@ export function* generateDocumentFromTemplateByEtoId(
   } catch (e) {
     logger.error("Failed to generate ETO template", e);
     notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE));
+  } finally {
+    yield put(actions.immutableStorage.downloadImmutableFileDone(action.payload.document.ipfsHash));
   }
-  yield put(actions.immutableStorage.downloadImmutableFileDone(action.payload.document.ipfsHash));
 }
 
 export function* downloadDocumentByType(

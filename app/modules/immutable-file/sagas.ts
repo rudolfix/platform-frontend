@@ -18,15 +18,13 @@ export function* downloadFile(
     const downloadedFile = yield apiImmutableStorage.getFile(immutableFileId);
     const extension = immutableFileId.asPdf ? ".pdf" : ".doc";
     yield call(downloadLink, downloadedFile, action.payload.fileName, extension);
-    yield put(
-      actions.immutableStorage.downloadImmutableFileDone(action.payload.immutableFileId.ipfsHash),
-    );
   } catch (e) {
-    yield put(
-      actions.immutableStorage.downloadImmutableFileDone(action.payload.immutableFileId.ipfsHash),
-    );
     logger.error("Failed to download file from IPFS", e);
     notificationCenter.error(createMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE)); //Failed to download file from IPFS
+  } finally {
+    yield put(
+      actions.immutableStorage.downloadImmutableFileDone(action.payload.immutableFileId.ipfsHash),
+    );
   }
 }
 

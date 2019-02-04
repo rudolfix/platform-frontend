@@ -11,8 +11,8 @@ import {
 import { ImmutableFileId } from "../../../../lib/api/ImmutableStorage.interfaces";
 import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
-import { selectMyInvestorTicketByEtoId } from "../../../../modules/investor-tickets/selectors";
-import { TETOWithInvestorTicket } from "../../../../modules/investor-tickets/types";
+import { selectMyInvestorTicketByEtoId } from "../../../../modules/investor-portfolio/selectors";
+import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
 import {
   selectTxGasCostEthUlps,
   selectTxSummaryAdditionalData,

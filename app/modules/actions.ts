@@ -15,7 +15,7 @@ import { icbmWalletBalanceModalActions } from "./icbm-wallet-balance-modal/actio
 import { immutableStorageActions } from "./immutable-file/actions";
 import { initActions } from "./init/actions";
 import { investmentFlowActions } from "./investment-flow/actions";
-import { investorEtoTicketActions } from "./investor-tickets/actions";
+import { investorEtoTicketActions } from "./investor-portfolio/actions";
 import { kycActions } from "./kyc/actions";
 import { notificationActions } from "./notifications/actions";
 import { personProfileModalActions } from "./person-profile-modal/actions";

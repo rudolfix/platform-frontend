@@ -75,7 +75,6 @@ import * as wallet_confirm_icon from "../../assets/img/wallet_selector/wallet_co
 import * as wallet_icon from "../../assets/img/wallet_selector/wallet_icon.svg";
 
 import * as eth_icon from "../../assets/img/eth_icon.svg";
-import * as eth_icon2 from "../../assets/img/eth_icon2.svg";
 import * as euro_icon from "../../assets/img/euro_icon.svg";
 import * as link_arrow from "../../assets/img/link_arrow.svg";
 import * as logo_square_white from "../../assets/img/logo-square-white.svg";
@@ -86,7 +85,6 @@ import * as logo_yellow from "../../assets/img/logo_yellow.svg";
 import * as mail_link from "../../assets/img/mail_link.svg";
 import * as neu_icon from "../../assets/img/neu_icon.svg";
 import * as nEUR_icon from "../../assets/img/nEUR_icon.svg";
-import * as neuro_icon from "../../assets/img/neuro_icon.svg";
 import * as token_icon from "../../assets/img/token_icon.svg";
 
 import { InlineIcon } from "./InlineIcon";
@@ -195,7 +193,6 @@ storiesOf("Icons", module)
       <h3>Other icons</h3>
       {[
         eth_icon,
-        eth_icon2,
         euro_icon,
         link_arrow,
         logo_capitalized,
@@ -206,7 +203,6 @@ storiesOf("Icons", module)
         mail_link,
         neu_icon,
         nEUR_icon,
-        neuro_icon,
         token_icon,
       ].map(svg => (
         <span style={{ display: "inline-block" }} className="m-1">

@@ -9,7 +9,7 @@ export function formatMoney(
   currencyDecimals: number,
   decimalPlaces?: number,
 ): string {
-  const money = new BigNumber(value.toString());
+  const money = value instanceof BigNumber ? value : new BigNumber(value);
   const moneyInPrimaryBase = money.div(new BigNumber(10).pow(currencyDecimals));
   return decimalPlaces !== undefined
     ? moneyInPrimaryBase.toFixed(decimalPlaces, BigNumber.ROUND_UP)

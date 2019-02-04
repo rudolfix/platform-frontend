@@ -6,11 +6,11 @@ import { selectUserType } from "../../../../../modules/auth/selectors";
 import {
   selectHasInvestorTicket,
   selectInvestorTicket,
-} from "../../../../../modules/investor-tickets/selectors";
+} from "../../../../../modules/investor-portfolio/selectors";
+import { IInvestorTicket } from "../../../../../modules/investor-portfolio/types";
 import { EETOStateOnChain } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
 import { Omit } from "../../../../../types";
-import { IInvestorTicket } from "./../../../../../modules/investor-tickets/types";
 
 interface IExternalProps {
   etoId: string;

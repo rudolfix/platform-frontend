@@ -14,6 +14,7 @@ export type TranslatedMessageType =
   | GenericModalMessage
   | SignInUserErrorMessage
   | BrowserWalletErrorMessage
+  | InvestorPortfolioMessage
   | LedgerErrorMessage
   | LightWalletErrorMessage
   | SignerErrorMessage
@@ -102,6 +103,10 @@ export enum BookbuildingFlowMessage {
   PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED = "pledgeFlowPledgeRemovalFailed",
   PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS = "pledgeFlowFailedToGetBookbuildingStats",
   PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE = "pledgeFlowFailedToLoadPledge",
+}
+
+export enum InvestorPortfolioMessage {
+  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES,
 }
 
 export enum EtoDocumentsMessage {
@@ -274,6 +279,11 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
           id="error-message.mismatched-wallet-address"
           values={messageData as ITranslationValues}
         />
+      );
+
+    case InvestorPortfolioMessage.INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES:
+      return (
+        <FormattedMessage id="portfolio.asset.payouts-from-neu.notification.failed-to-load-payouts" />
       );
 
     case ToSMessage.TOS_ACCEPT_PERMISSION_TITLE:

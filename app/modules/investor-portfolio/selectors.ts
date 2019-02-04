@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { createSelector } from "reselect";
 
 import { Q18 } from "../../config/constants";
 import { getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
@@ -154,6 +155,11 @@ export const selectIsEligibleToPreEto = (state: IAppState, etoId: string) => {
   const isWhitelisted = selectIsWhitelisted(state, etoId);
   return isLockedWalletConnected || isWhitelisted;
 };
+
+export const selectTokensDisbursal = createSelector(
+  selectInvestorTicketsState,
+  investorTickets => investorTickets.tokensDisbursal,
+);
 
 export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData[] | undefined => {
   const myAsssets = selectMyAssets(state);

@@ -13,7 +13,7 @@ import { selectIsAuthorized } from "../../../../modules/auth/selectors";
 import {
   selectInitialMaxCapExceeded,
   selectIsEligibleToPreEto,
-} from "../../../../modules/investor-tickets/selectors";
+} from "../../../../modules/investor-portfolio/selectors";
 import { selectEtoOnChainStateById } from "../../../../modules/public-etos/selectors";
 import {
   EETOStateOnChain,

@@ -1,4 +1,3 @@
-import { addHexPrefix } from "ethereumjs-util";
 import { put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
@@ -31,7 +30,7 @@ export function* generateGetClaimTransaction(
 
   const txDetails: ITxData = {
     ...txInitialDetails,
-    gas: addHexPrefix(estimatedGasWithOverhead),
+    gas: estimatedGasWithOverhead,
   };
 
   return txDetails;

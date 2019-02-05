@@ -41,7 +41,7 @@ jobs:
 
       - run: yarn lint
 
-  build:
+  build-frontend:
     docker:
       - image: krzkaczor/neufund-platform-base
     working_directory: /home/circleci/app
@@ -56,6 +56,25 @@ jobs:
       - run: yarn prepare
       - run:
           command: yarn build:prod
+          no_output_timeout: 30m
+
+      - persist_to_workspace:
+          root: /home/circleci/app
+          paths:
+            - .
+
+  build-backend:
+    machine:
+      enabled: true
+      image: circleci/classic:edge
+      docker_layer_caching: true
+    
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - run:
+          command: ./e2e/setup-backend.sh
           no_output_timeout: 30m
 
       - persist_to_workspace:
@@ -185,7 +204,10 @@ workflows:
       - lint:
           requires:
             - install
-      - build:
+      - build-frontend:
+          requires:
+            - install
+      - build-backend:
           requires:
             - install
       # - test:

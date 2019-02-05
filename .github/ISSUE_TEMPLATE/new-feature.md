@@ -8,10 +8,10 @@ assignees: ""
 
 **Background**
 
-**Zepplin**
+**Designs**
 
-**Component**
+**Acceptance criteria**
 
-**Acceptance criterea**
+**Technical notes**
 
 **Testing notes**

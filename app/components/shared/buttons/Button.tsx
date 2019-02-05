@@ -45,6 +45,7 @@ export interface IGeneralButton {
 interface IButtonIcon extends IGeneralButton, CommonHtmlProps {
   svgIcon: string;
   alt?: TTranslatedString;
+  disabled?: boolean;
 }
 
 export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
@@ -136,8 +137,13 @@ Button.defaultProps = {
   width: ButtonWidth.NORMAL,
 };
 
-const ButtonIcon: React.FunctionComponent<IButtonIcon> = ({ onClick, className, ...props }) => (
-  <button className={cn(styles.buttonIcon, className)} onClick={onClick}>
+const ButtonIcon: React.FunctionComponent<IButtonIcon> = ({
+  onClick,
+  className,
+  disabled,
+  ...props
+}) => (
+  <button className={cn(styles.buttonIcon, className)} onClick={onClick} disabled={disabled}>
     <InlineIcon {...props} />
   </button>
 );

@@ -4,4 +4,8 @@
   height: px-to-rem(20px);
   vertical-align: middle;
   color: $neu-seaweed;
+
+  &:disabled {
+    cursor: wait;
+  }
 }

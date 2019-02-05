@@ -21,6 +21,7 @@ storiesOf("User Claim Summary", module).add("default", () => (
       txCost={"123456"}
       onAccept={() => {}}
       generateTemplateByEtoId={() => {}}
+      isPendingDownload={_ => false}
       etoData={
         {
           investorTicket: {

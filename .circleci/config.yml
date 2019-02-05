@@ -41,6 +41,32 @@ jobs:
 
       - run: yarn lint
 
+  build:
+    machine:
+      enabled: true
+      image: circleci/classic:edge
+      docker_layer_caching: true
+
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - run: ./.circleci/install-yarn.sh
+      - restore_cache:
+          keys:
+            - v14-deps-{{ checksum "package.json" }}
+            - v14-deps-
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
+
+      - run:
+          command: source /opt/circleci/.nvm/nvm.sh && yarn build:prod
+          no_output_timeout: 30m
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
+
   test:
     docker:
       - image: krzkaczor/neufund-platform-base
@@ -67,6 +93,8 @@ jobs:
     working_directory: /home/circleci/app
 
     steps:
+      - attach_workspace:
+          at: ~/repo
       - checkout
       - run: ./.circleci/install-yarn.sh
       - restore_cache:

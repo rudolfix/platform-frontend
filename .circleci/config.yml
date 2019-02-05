@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
-  install:
+  install-lint:
+  # install and lint is taken as one job to remove required time for downloading cache
     docker:
       - image: krzkaczor/neufund-platform-base
     working_directory: /home/circleci/app
@@ -18,28 +19,15 @@ jobs:
           ~/.cache/Cypress
 
       - run: yarn --frozen-lockfile
+      - run: yarn lint
 
       - run: cp -R ~/.cache/Cypress/ /home/circleci/.cache/
+
       - save_cache:
           paths:
             - node_modules
             - /home/circleci/.cache/Cypress
           key: v14-deps-{{ checksum "package.json" }}
-
-  lint:
-    docker:
-      - image: krzkaczor/neufund-platform-base
-    working_directory: /home/circleci/app
-
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v14-deps-{{ checksum "package.json" }}
-            - v14-deps-
-      - run: yarn prepare
-
-      - run: yarn lint
 
   build-frontend:
     docker:
@@ -101,7 +89,7 @@ jobs:
             - v14-deps-
       - run: cat .env
       - run: yarn
-      
+
       - run:
           command: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
           no_output_timeout: 30m
@@ -117,7 +105,7 @@ jobs:
     working_directory: /home/circleci/app
 
     steps:
-      - attach_workspace:
+      - ? attach_workspace
         at: ~/repo
       - run: ./.circleci/install-yarn.sh
       - run: ./.circleci/install-chrome.sh
@@ -142,8 +130,6 @@ jobs:
           keys:
             - v14-deps-{{ checksum "package.json" }}
             - v14-deps-
-      - run: yarn prepare
-
       - run: yarn storybook:screenshots
       - run:
           (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} &&
@@ -185,19 +171,16 @@ workflows:
 
   mainflow:
     jobs:
-      - install
-      # - lint:
-      #     requires:
-      #       - install
+      - install-lint
       - build-frontend:
           requires:
-            - install
+            - install-lint
       # - test:
       #    requires:
       #      - lint
       - test-e2e:
-         requires:
-           - build-frontend
+          requires:
+            - build-frontend
       # - danger-ci:
       #    requires:
       #      - lint

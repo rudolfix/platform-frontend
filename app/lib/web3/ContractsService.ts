@@ -6,8 +6,11 @@ import { symbols } from "../../di/symbols";
 import { EtherToken } from "../contracts/EtherToken";
 import { ETOCommitment } from "../contracts/ETOCommitment";
 import { EuroToken } from "../contracts/EuroToken";
+import { FeeDisbursal } from "../contracts/FeeDisbursal";
 import { ICBMLockedAccount } from "../contracts/ICBMLockedAccount";
+import { IControllerGovernance } from "../contracts/IControllerGovernance";
 import { IdentityRegistry } from "../contracts/IdentityRegistry";
+import { IEquityToken } from "../contracts/IEquityToken";
 import { ITokenExchangeRateOracle } from "../contracts/ITokenExchangeRateOracle";
 import { LockedAccount } from "../contracts/LockedAccount";
 import { Neumark } from "../contracts/Neumark";
@@ -16,8 +19,6 @@ import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/logger";
 import { Web3Manager } from "./Web3Manager";
 
-import { IControllerGovernance } from "../contracts/IControllerGovernance";
-import { IEquityToken } from "../contracts/IEquityToken";
 import * as knownInterfaces from "../contracts/knownInterfaces.json";
 
 @injectable()
@@ -37,6 +38,7 @@ export class ContractsService {
   public icbmEuroLock!: ICBMLockedAccount;
   public icbmEtherLock!: ICBMLockedAccount;
   public identityRegistry!: IdentityRegistry;
+  public feeDisbursal!: FeeDisbursal;
   public platformTerms!: PlatformTerms;
   public rateOracle!: ITokenExchangeRateOracle;
 
@@ -72,6 +74,7 @@ export class ContractsService {
       tokenExchangeRateOracleAddress,
       identityRegistryAddress,
       platformTermsAddress,
+      feeDisbursalAddress,
     ] = await this.universeContract.getManySingletons([
       knownInterfaces.neumark,
       knownInterfaces.euroLock,
@@ -83,6 +86,7 @@ export class ContractsService {
       knownInterfaces.tokenExchangeRateOracle,
       knownInterfaces.identityRegistry,
       knownInterfaces.platformTerms,
+      knownInterfaces.feeDisbursal,
     ]);
 
     this.neumark = await create(Neumark, this.web3, neumarkAddress);
@@ -99,6 +103,8 @@ export class ContractsService {
     this.platformTerms = await create(PlatformTerms, this.web3, platformTermsAddress);
     this.euroToken = await create(EuroToken, this.web3, euroTokenAddress);
     this.etherToken = await create(EtherToken, this.web3, etherTokenAddress);
+    this.feeDisbursal = await create(FeeDisbursal, this.web3, feeDisbursalAddress);
+
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");
   }
 

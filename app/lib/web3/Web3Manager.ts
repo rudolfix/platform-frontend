@@ -17,6 +17,8 @@ import { IPersonalWallet } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 
+const DEFAULT_UPPER_GAS_LIMIT = 2000000;
+const DEFAULT_LOWER_GAS_LIMIT = 21000;
 export class WalletNotConnectedError extends Error {
   constructor(public readonly wallet: IPersonalWallet) {
     super("Wallet not connected");
@@ -124,6 +126,18 @@ export class Web3Manager extends EventEmitter {
 
   public async estimateGasWithOverhead(txData: Partial<Web3.TxData>): Promise<string> {
     const gas = await this.estimateGas(txData);
+    if (gas < DEFAULT_LOWER_GAS_LIMIT || gas > DEFAULT_UPPER_GAS_LIMIT) {
+      this.logger.error(
+        new Error(
+          `Transaction with very hight/low gas limit VALUE: "${gas.toString()} TX DATA: ${JSON.stringify(
+            txData,
+          )}`,
+        ),
+      );
+      // No need for overhead in this case
+      return DEFAULT_UPPER_GAS_LIMIT.toString();
+    }
+
     return calculateGasLimitWithOverhead(gas);
   }
 

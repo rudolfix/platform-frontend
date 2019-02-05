@@ -1,5 +1,14 @@
 import BigNumber from "bignumber.js";
+
+import { ECurrency } from "../../components/shared/Money";
 import { IEtoTokenData, TEtoWithCompanyAndContract } from "../public-etos/types";
+
+export interface ITokenDisbursal {
+  currency: ECurrency;
+  amountToBeClaimed: string;
+  totalDisbursedAmount: string;
+  timeToFirstDisbursalRecycle: number;
+}
 
 export interface IInvestorTicket {
   equivEurUlps: BigNumber;

@@ -5,6 +5,12 @@ import { Q18 } from "../config/constants";
 import { TBigNumberVariant } from "../lib/web3/types";
 import { invariant } from "./invariant";
 
+export function isZero(value: string): boolean {
+  const bigNumberValue = new BigNumber(value);
+
+  return bigNumberValue.isZero();
+}
+
 /**
  * Assumes dot as decimal separator
  */

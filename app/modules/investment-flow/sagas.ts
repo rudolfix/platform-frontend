@@ -11,12 +11,12 @@ import { isLessThanNHours } from "../../utils/Date.utils";
 import { convertToBigInt } from "../../utils/Number.utils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
-import { loadComputedContributionFromContract } from "../investor-tickets/sagas";
+import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
 import {
   selectCalculatedContribution,
   selectCalculatedEtoTicketSizesUlpsById,
   selectIsWhitelisted,
-} from "../investor-tickets/selectors";
+} from "../investor-portfolio/selectors";
 import {
   selectEtoOnChainStateById,
   selectEtoWithCompanyAndContractById,

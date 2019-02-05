@@ -29,7 +29,7 @@ import {
   selectEquityTokenCountByEtoId,
   selectHasInvestorTicket,
   selectNeuRewardUlpsByEtoId,
-} from "../../../../modules/investor-tickets/selectors";
+} from "../../../../modules/investor-portfolio/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../../../modules/public-etos/types";
 import {

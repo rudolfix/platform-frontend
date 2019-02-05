@@ -11,7 +11,7 @@ import { genericModalReducer } from "./generic-modal/reducer";
 import { icbmWalletBalanceModalReducer } from "./icbm-wallet-balance-modal/reducer";
 import { initReducer } from "./init/reducer";
 import { investmentFlowReducer } from "./investment-flow/reducer";
-import { investorTicketsReducer } from "./investor-tickets/reducer";
+import { investorTicketsReducer } from "./investor-portfolio/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { moneyReducer } from "./money/reducer";
 import { notificationsReducer } from "./notifications/reducer";

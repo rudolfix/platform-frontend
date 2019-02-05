@@ -16,7 +16,7 @@ import {
 import {
   selectEquityTokenCountByEtoId,
   selectNeuRewardUlpsByEtoId,
-} from "../../../../modules/investor-tickets/selectors";
+} from "../../../../modules/investor-portfolio/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { ETxSenderType } from "../../../../modules/tx/interfaces";

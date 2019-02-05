@@ -24,7 +24,7 @@ import { Dictionary } from "../../types";
 import { divideBigNumbers } from "../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUserType } from "../auth/selectors";
-import { selectMyAssets } from "../investor-tickets/selectors";
+import { selectMyAssets } from "../investor-portfolio/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";

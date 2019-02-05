@@ -10,6 +10,7 @@
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
     "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack-dev-server --config ./webpack/webpack.config.translate.js",
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
+    "build:prod:e2e": "(cp -n ./app/config/.env.e2e .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
     "build:prod:prerender": "./scripts/prerender.sh",
     "build:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack --config ./webpack/webpack.config.prod.js",
     "bundle-analyzer": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production webpack --config ./webpack/webpack.config.bundle-analyzer.js",

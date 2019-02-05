@@ -54,14 +54,15 @@ jobs:
             - v14-deps-
 
       - run: yarn prepare
+      - run: ls
       - run:
-          command: yarn build:prod
+          command: yarn build:prod:e2e
           no_output_timeout: 30m
-
+      - run: ls
       - persist_to_workspace:
           root: /home/circleci/app
           paths:
-            - .
+            - ./
   test:
     docker:
       - image: krzkaczor/neufund-platform-base
@@ -83,21 +84,24 @@ jobs:
       image: circleci/classic:edge
       docker_layer_caching: true
 
-    parallelism: 4
+    # parallelism: 4
 
     working_directory: /home/circleci/app
 
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: /home/circleci/app
+      - run: ls
       - checkout
+      - run: ls
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
           keys:
             - v14-deps-{{ checksum "package.json" }}
             - v14-deps-
-      - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
-
+      - run: cat .env
+      - run: yarn
+      
       - run:
           command: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
           no_output_timeout: 30m
@@ -113,7 +117,8 @@ jobs:
     working_directory: /home/circleci/app
 
     steps:
-      - checkout
+      - attach_workspace:
+        at: ~/repo
       - run: ./.circleci/install-yarn.sh
       - run: ./.circleci/install-chrome.sh
       - restore_cache:
@@ -181,24 +186,24 @@ workflows:
   mainflow:
     jobs:
       - install
-      - lint:
-          requires:
-            - install
+      # - lint:
+      #     requires:
+      #       - install
       - build-frontend:
           requires:
             - install
       # - test:
-      #     requires:
-      #       - lint
-      # - test-e2e:
-      #     requires:
-      #       - lint
+      #    requires:
+      #      - lint
+      - test-e2e:
+         requires:
+           - build-frontend
       # - danger-ci:
-      #     requires:
-      #       - lint
+      #    requires:
+      #      - lint
       # - bundlewatcher:
-      #     requires:
-      #       - lint
+      #    requires:
+      #      - lint
 
   nightly:
     triggers:

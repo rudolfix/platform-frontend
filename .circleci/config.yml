@@ -62,26 +62,6 @@ jobs:
           root: /home/circleci/app
           paths:
             - .
-
-  build-backend:
-    machine:
-      enabled: true
-      image: circleci/classic:edge
-      docker_layer_caching: true
-    
-    working_directory: /home/circleci/app
-
-    steps:
-      - checkout
-      - run:
-          command: ./e2e/setup-backend.sh
-          no_output_timeout: 30m
-
-      - persist_to_workspace:
-          root: /home/circleci/app
-          paths:
-            - .
-
   test:
     docker:
       - image: krzkaczor/neufund-platform-base
@@ -205,9 +185,6 @@ workflows:
           requires:
             - install
       - build-frontend:
-          requires:
-            - install
-      - build-backend:
           requires:
             - install
       # - test:

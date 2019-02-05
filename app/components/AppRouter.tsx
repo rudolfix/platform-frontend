@@ -118,16 +118,15 @@ export const AppRouter: React.FunctionComponent = () => (
     <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} issuerComponent={Kyc} />
 
     {/*Routes used only in E2E tests*/}
-    {IS_CYPRESS && (
-      <>
-        <Route
-          path={e2eRoutes.embededWidget}
-          render={({ match }) => <TestEmbededWidget etoId={match.params.etoId} />}
-          exact
-        />
-        <Route path={e2eRoutes.criticalError} render={() => <TestCriticalError />} exact />
-      </>
-    )}
+    {IS_CYPRESS && [
+      <Route
+        key={1}
+        path={e2eRoutes.embededWidget}
+        render={({ match }) => <TestEmbededWidget etoId={match.params.etoId} />}
+        exact
+      />,
+      <Route key={2} path={e2eRoutes.criticalError} render={() => <TestCriticalError />} exact />,
+    ]}
     <Redirect to={appRoutes.root} />
   </SwitchConnected>
 );

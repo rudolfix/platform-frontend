@@ -24,7 +24,10 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.publicEtos.loadEtos());
-      dispatch(actions.investorEtoTicket.loadClaimables());
+
+      if (process.env.NF_ASSETS_PORTFOLIO_COMPONENT_VISIBLE === "1") {
+        dispatch(actions.investorEtoTicket.loadClaimables());
+      }
     },
   }),
   appConnect<TStateProps, {}>({

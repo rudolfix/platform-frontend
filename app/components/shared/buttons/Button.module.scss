@@ -222,6 +222,10 @@ $_active-color: lighten($_hover-color, 20%);
     color: $neu-slate-grey;
   }
 
+  &-green {
+    color: $neu-seaweed;
+  }
+
   // elements
   &:global {
 

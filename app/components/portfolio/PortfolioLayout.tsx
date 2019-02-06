@@ -3,9 +3,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { ITokenDisbursal, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { AssetPortfolio } from "../shared/AssetPortfolio";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ClaimedDividends } from "../wallet/claimed-dividends/ClaimedDividends";
+import { AssetPortfolio } from "./AssetPortfolio";
 import { PortfolioReservedAssets } from "./PortfolioReservedAssets";
 
 import * as styles from "./PortfolioLayout.module.scss";

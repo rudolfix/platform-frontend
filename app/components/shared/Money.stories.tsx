@@ -6,7 +6,7 @@ import { ECurrency, ECurrencySymbol, EMoneyFormat, EMoneyTransfer, ETheme, Money
 const value = "1234567" + "0".repeat(18);
 
 storiesOf("Money", module)
-  .add("default (with currency code)", () => (
+  .add("default (with token code)", () => (
     <>
       <Money currency={ECurrency.EUR} value={value} />
       <br />
@@ -17,7 +17,7 @@ storiesOf("Money", module)
       <Money currency={ECurrency.ETH} value={value} />
     </>
   ))
-  .add("with currency symbol", () => (
+  .add("with token symbol", () => (
     <>
       <Money currency={ECurrency.EUR} value={value} currencySymbol={ECurrencySymbol.SYMBOL} />
       <br />
@@ -36,7 +36,7 @@ storiesOf("Money", module)
       <Money currency={ECurrency.EUR} value={value} transfer={EMoneyTransfer.OUTCOME} />
     </>
   ))
-  .add("no currency symbol", () => (
+  .add("no token symbol", () => (
     <Money currency={ECurrency.EUR} value={value} currencySymbol={ECurrencySymbol.NONE} />
   ))
   .add("themed", () => (

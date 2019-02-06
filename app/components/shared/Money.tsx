@@ -45,6 +45,9 @@ interface IOwnProps extends React.HTMLAttributes<HTMLSpanElement> {
   currencyClassName?: string;
   transfer?: EMoneyTransfer;
   theme?: ETheme;
+  /**
+   * Use to represent token price (value is set to 8 decimal places)
+   */
   isPrice?: boolean;
 }
 

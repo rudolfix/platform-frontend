@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import BigNumber from "bignumber.js";
 import * as React from "react";
-import { Container } from "reactstrap";
 
 import { ITxData } from "../../../../lib/web3/types";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 import { UserClaimSummaryComponent } from "./Summary";
 
 const txData: ITxData = {
@@ -14,8 +14,9 @@ const txData: ITxData = {
   from: "0x8e75544b848f0a32a1ab119e3916ec7138f3bed2",
 };
 
-storiesOf("User Claim Summary", module).add("default", () => (
-  <Container>
+storiesOf("User Claim Summary", module)
+  .addDecorator(withModalBody())
+  .add("default", () => (
     <UserClaimSummaryComponent
       txData={txData}
       txCost={"123456"}
@@ -41,5 +42,4 @@ storiesOf("User Claim Summary", module).add("default", () => (
       etoId={"0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc"}
       downloadDocument={() => {}}
     />
-  </Container>
-));
+  ));

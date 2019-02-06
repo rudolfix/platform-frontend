@@ -1,9 +1,11 @@
 import BigNumber from "bignumber.js";
+import { isArray } from "lodash/fp";
 import { createSelector } from "reselect";
 
 import { Q18 } from "../../config/constants";
 import { getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../store";
+import { isZero } from "../../utils/Number.utils";
 import { selectPublicEtoById, selectPublicEtos, selectTokenData } from "../public-etos/selectors";
 import { EETOStateOnChain } from "../public-etos/types";
 import { isOnChain } from "../public-etos/utils";
@@ -156,10 +158,16 @@ export const selectIsEligibleToPreEto = (state: IAppState, etoId: string) => {
   return isLockedWalletConnected || isWhitelisted;
 };
 
-export const selectTokensDisbursal = createSelector(
-  selectInvestorTicketsState,
-  investorTickets => investorTickets.tokensDisbursal,
-);
+/**
+ * Selects tokens disbursal with `amountToBeClaimed` greater than zero
+ */
+export const selectTokensDisbursal = createSelector(selectInvestorTicketsState, investorTickets => {
+  if (isArray(investorTickets.tokensDisbursal)) {
+    return investorTickets.tokensDisbursal.filter(d => !isZero(d.amountToBeClaimed));
+  }
+
+  return investorTickets.tokensDisbursal;
+});
 
 export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData[] | undefined => {
   const myAsssets = selectMyAssets(state);

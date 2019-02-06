@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -7,10 +6,9 @@ import { selectEtoWithCompanyAndContractById } from "../../modules/public-etos/s
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
 import { InvestmentProgress } from "../eto/overview/EtoOverviewStatus/InvestmentWidget/InvestmentProgress";
-import { Button, EButtonLayout } from "../shared/buttons";
+import { Button, ButtonSize, EButtonLayout } from "../shared/buttons";
 
 import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
-import * as styles from "./PortfolioLayout.module.scss";
 
 type TExternalProps = {
   state: EETOStateOnChain;
@@ -38,7 +36,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
           iconPosition="icon-after"
           svgIcon={arrowRight}
           data-test-id={"modals.portfolio.portfolio-asset-action.claim-" + etoId}
-          innerClassName={cn(styles.actionButton, "p-0")}
+          size={ButtonSize.SMALL}
         >
           <FormattedMessage id="portfolio.section.reserved-assets.claim-tokens" />
         </Button>
@@ -49,7 +47,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
           layout={EButtonLayout.SECONDARY}
           iconPosition="icon-after"
           svgIcon={arrowRight}
-          innerClassName={cn(styles.actionButton, "p-0")}
+          size={ButtonSize.SMALL}
           disabled
         >
           <FormattedMessage id="portfolio.section.reserved-assets.refund" />
@@ -57,11 +55,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
       );
     case EETOStateOnChain.Signing:
       return (
-        <Button
-          layout={EButtonLayout.SECONDARY}
-          innerClassName={cn(styles.actionButton, "p-0")}
-          disabled
-        >
+        <Button layout={EButtonLayout.SECONDARY} size={ButtonSize.SMALL} disabled>
           <FormattedMessage id="portfolio.section.reserved-assets.wait-for-update" />
         </Button>
       );

@@ -10,7 +10,7 @@ import { CommonHtmlProps, TTranslatedString } from "../../../types";
 
 import * as styles from "./Button.module.scss";
 
-type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite" | "neon";
+type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite" | "neon" | "green";
 type TIconPosition = "icon-before" | "icon-after";
 
 export enum EButtonLayout {
@@ -70,6 +70,7 @@ const buttonThemeClassNames: Record<TButtonTheme, string> = {
   silver: styles.buttonSilver,
   graphite: styles.buttonGraphite,
   neon: styles.buttonNeon,
+  green: styles.buttonGreen,
 };
 
 const Button: React.ForwardRefExoticComponent<

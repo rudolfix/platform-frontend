@@ -10,6 +10,7 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { promisify } from "../../lib/contracts/typechain-runtime";
 import { IAppState } from "../../store";
+import { EthereumAddress } from "../../types";
 import { convertToBigInt } from "../../utils/Number.utils";
 import { actions, TAction } from "../actions";
 import { selectUser } from "../auth/selectors";
@@ -105,9 +106,9 @@ export function* loadClaimables({
 
   const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
 
-  const tokens: [ECurrency, string][] = [
-    [ECurrency.EUR_TOKEN, euroToken.address],
-    [ECurrency.ETH, etherToken.address],
+  const tokens: [ECurrency, EthereumAddress][] = [
+    [ECurrency.EUR_TOKEN, euroToken.address as EthereumAddress],
+    [ECurrency.ETH, etherToken.address as EthereumAddress],
   ];
 
   try {

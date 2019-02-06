@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { Container } from "reactstrap";
 
 import { ITxData } from "../../../../lib/web3/types";
 import { ETokenType } from "../../../../modules/tx/interfaces";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 import { UpgradeSummaryComponent } from "./Summary";
 
 const txData: ITxData = {
@@ -14,8 +14,9 @@ const txData: ITxData = {
   from: "0x8e75544b848f0a32a1ab119e3916ec7138f3bed2",
 };
 
-storiesOf("Upgrade Summary", module).add("default", () => (
-  <Container>
+storiesOf("Upgrade Summary", module)
+  .addDecorator(withModalBody())
+  .add("default", () => (
     <UpgradeSummaryComponent
       txData={txData}
       txCost={"123456"}
@@ -23,5 +24,4 @@ storiesOf("Upgrade Summary", module).add("default", () => (
       downloadICBMAgreement={() => {}}
       additionalData={{ tokenType: ETokenType.ETHER }}
     />
-  </Container>
-));
+  ));

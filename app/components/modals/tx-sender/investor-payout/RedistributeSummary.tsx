@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
@@ -16,8 +15,6 @@ import { Heading } from "../../../shared/modals/Heading";
 import { Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-
-import * as styles from "./RedistributeSummary.module.scss";
 
 interface IStateProps {
   tokenDisbursal: ITokenDisbursal;
@@ -60,10 +57,10 @@ const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponen
         >
           <FormattedMessage id="investor-payout.summary.neu-tokenholder-agreement" />
         </a>
-        <p className={cn(styles.hint)}>
+        <small className="d-inline-block mb-3 mx-4">
           To process this payout we will need to trigger and ethereum transaction which will incure
           gas costs. This will be deducted from your ETH wallet.
-        </p>
+        </small>
         <Button onClick={onAccept}>
           <FormattedMessage id="investor-payout.redistribute.summary.accept" />
         </Button>

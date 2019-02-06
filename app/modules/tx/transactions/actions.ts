@@ -15,5 +15,11 @@ export const txTransactionsActions = {
       tokensDisbursals,
     }),
   ),
+  startInvestorPayoutRedistribute: createActionFactory(
+    "TRANSACTIONS_START_PAYOUT_REDISTRIBUTE",
+    (tokenDisbursals: ITokenDisbursal) => ({
+      tokenDisbursals,
+    }),
+  ),
   // Add here new custom sagas that represent flows
 };

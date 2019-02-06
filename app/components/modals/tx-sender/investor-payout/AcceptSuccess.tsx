@@ -11,11 +11,7 @@ interface IDispatchProps {
   goToWallet: () => void;
 }
 
-interface IStateProps {
-  tokenName?: string;
-}
-
-type IProps = IDispatchProps & IStateProps;
+type IProps = IDispatchProps;
 
 const InvestorAcceptPayoutSuccessLayout: React.FunctionComponent<IProps> = ({ goToWallet }) => (
   <Message
@@ -23,12 +19,12 @@ const InvestorAcceptPayoutSuccessLayout: React.FunctionComponent<IProps> = ({ go
     text={<FormattedMessage id="investor-payout.accept.success.text" />}
   >
     <ButtonArrowRight onClick={goToWallet}>
-      <FormattedMessage id="investor-payout.accept.success.view-wallet" />
+      <FormattedMessage id="menu.wallet.view" />
     </ButtonArrowRight>
   </Message>
 );
 
-const InvestorAcceptPayoutSuccess = appConnect<IStateProps, IDispatchProps>({
+const InvestorAcceptPayoutSuccess = appConnect<{}, IDispatchProps>({
   dispatchToProps: dispatch => ({
     goToWallet: () => dispatch(actions.routing.goToWallet()),
   }),

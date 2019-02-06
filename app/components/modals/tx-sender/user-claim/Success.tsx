@@ -34,7 +34,7 @@ export const UserClaimSuccessComponent: React.FunctionComponent<IProps> = ({
     </div>
     <div className="mt-4">
       <Button onClick={goToPortfolio} layout={EButtonLayout.SECONDARY}>
-        <FormattedMessage id="user-claim-flow.success.view-portfolio" />
+        <FormattedMessage id="menu.portfolio.view" />
       </Button>
     </div>
   </div>

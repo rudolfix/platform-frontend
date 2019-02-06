@@ -18,6 +18,8 @@ import { InvestmentSuccess } from "./investment-flow/Success";
 import { InvestmentSummary } from "./investment-flow/Summary";
 import { InvestorAcceptPayoutSuccess } from "./investor-payout/AcceptSuccess";
 import { InvestorAcceptPayoutSummary } from "./investor-payout/AcceptSummary";
+import { InvestorRedistributePayoutSuccess } from "./investor-payout/RedistributeSuccess";
+import { InvestorRedistributePayoutSummary } from "./investor-payout/RedistributeSummary";
 import { ErrorMessage } from "./shared/ErrorMessage";
 import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
@@ -84,6 +86,8 @@ const SummaryComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ t
       return <UserClaimSummary />;
     case ETxSenderType.INVESTOR_ACCEPT_PAYOUT:
       return <InvestorAcceptPayoutSummary />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutSummary />;
     default:
       return <WithdrawSummary />;
   }
@@ -100,6 +104,8 @@ const SuccessComponent: React.FunctionComponent<{ type?: ETxSenderType; txHash?:
       return <UserClaimSuccess />;
     case ETxSenderType.INVESTOR_ACCEPT_PAYOUT:
       return <InvestorAcceptPayoutSuccess />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutSuccess />;
     default:
       return <WithdrawSuccess txHash={txHash!} />;
   }

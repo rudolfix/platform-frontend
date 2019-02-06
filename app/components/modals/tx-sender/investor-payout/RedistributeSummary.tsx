@@ -20,7 +20,7 @@ import { InfoRow } from "../shared/InfoRow";
 import * as styles from "./RedistributeSummary.module.scss";
 
 interface IStateProps {
-  tokensDisbursal: ITokenDisbursal[];
+  tokenDisbursal: ITokenDisbursal;
   walletAddress: EthereumAddressWithChecksum;
 }
 
@@ -32,7 +32,7 @@ type TComponentProps = IStateProps & IDispatchProps;
 
 const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
   walletAddress,
-  tokensDisbursal,
+  tokenDisbursal,
   onAccept,
 }) => {
   return (
@@ -45,15 +45,13 @@ const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponen
         <FormattedMessage id="investor-payout.redistribute.summary.description" />
       </p>
       <InfoList className="mb-4">
-        {tokensDisbursal.map(disbursal => (
-          <InfoRow
-            key={disbursal.token}
-            caption={
-              <FormattedMessage id="investor-payout.redistribute.summary.total-redistributed" />
-            }
-            value={<Money value={disbursal.amountToBeClaimed} currency={disbursal.token} />}
-          />
-        ))}
+        <InfoRow
+          key={tokenDisbursal.token}
+          caption={
+            <FormattedMessage id="investor-payout.redistribute.summary.total-redistributed" />
+          }
+          value={<Money value={tokenDisbursal.amountToBeClaimed} currency={tokenDisbursal.token} />}
+        />
       </InfoList>
       <section className="text-center">
         <a
@@ -77,7 +75,7 @@ const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponen
 const InvestorRedistributePayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: state => ({
     walletAddress: selectEthereumAddressWithChecksum(state),
-    tokensDisbursal: selectTxSummaryAdditionalData(state),
+    tokenDisbursal: selectTxSummaryAdditionalData(state),
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),

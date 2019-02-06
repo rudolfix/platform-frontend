@@ -9,8 +9,8 @@ import { ITxSendParams, txSendSaga } from "../sender/sagas";
 import { startClaimGenerator } from "./claim/saga";
 import { etoSetDateGenerator } from "./eto-flow/saga";
 import { investmentFlowGenerator } from "./investment/sagas";
-import { startInvestorPayoutRedistributionGenerator } from "./payout/redistribute/saga";
 import { startInvestorPayoutAcceptGenerator } from "./payout/accept/saga";
+import { startInvestorPayoutRedistributionGenerator } from "./payout/redistribute/saga";
 import { upgradeTransactionFlow } from "./upgrade/sagas";
 import { ethWithdrawFlow } from "./withdraw/sagas";
 

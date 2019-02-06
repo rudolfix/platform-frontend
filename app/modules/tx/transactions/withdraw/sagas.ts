@@ -1,11 +1,10 @@
 import BigNumber from "bignumber.js";
 import { put, select, take } from "redux-saga/effects";
-import { Q18 } from "./../../../../config/constants";
-import { TAction, TActionFromCreator } from "./../../../actions";
 
+import { Q18 } from "../../../../config/constants";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
-import { actions } from "../../../actions";
+import { actions, TActionFromCreator } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall } from "../../../sagasUtils";
 import { selectEtherTokenBalanceAsBigNumber } from "../../../wallet/selectors";

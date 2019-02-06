@@ -10,7 +10,7 @@ import { startClaimGenerator } from "./claim/saga";
 import { etoSetDateGenerator } from "./eto-flow/saga";
 import { investmentFlowGenerator } from "./investment/sagas";
 import { startInvestorPayoutRedistributionGenerator } from "./payout/redistribute/saga";
-import { startInvestorPayoutGenerator } from "./payout/saga";
+import { startInvestorPayoutAcceptGenerator } from "./payout/accept/saga";
 import { upgradeTransactionFlow } from "./upgrade/sagas";
 import { ethWithdrawFlow } from "./withdraw/sagas";
 
@@ -75,22 +75,22 @@ export function* userClaimSaga({ logger }: TGlobalDependencies, action: TAction)
   }
 }
 
-export function* investorPayoutSaga(
+export function* investorPayoutAcceptSaga(
   { logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.txTransactions.startInvestorPayout>,
+  action: TActionFromCreator<typeof actions.txTransactions.startInvestorPayoutAccept>,
 ): any {
   const tokensDisbursals = action.payload.tokensDisbursals;
 
   try {
     yield txSendSaga({
       type: ETxSenderType.INVESTOR_ACCEPT_PAYOUT,
-      transactionFlowGenerator: startInvestorPayoutGenerator,
+      transactionFlowGenerator: startInvestorPayoutAcceptGenerator,
       extraParam: tokensDisbursals,
     });
 
-    logger.info("Investor payout successful");
+    logger.info("Investor payout accept successful");
   } catch (e) {
-    logger.info("Investor payout cancelled", e);
+    logger.info("Investor payout accept cancelled", e);
   } finally {
     yield put(actions.investorEtoTicket.loadClaimables());
   }
@@ -137,7 +137,11 @@ export const txTransactionsSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_INVESTMENT", investSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_ETO_SET_DATE", etoSetDateSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_CLAIM", userClaimSaga);
-  yield fork(neuTakeLatest, actions.txTransactions.startInvestorPayout, investorPayoutSaga);
+  yield fork(
+    neuTakeLatest,
+    actions.txTransactions.startInvestorPayoutAccept,
+    investorPayoutAcceptSaga,
+  );
   yield fork(
     neuTakeLatest,
     actions.txTransactions.startInvestorPayoutRedistribute,

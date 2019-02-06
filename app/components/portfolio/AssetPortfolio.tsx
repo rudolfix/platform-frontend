@@ -175,9 +175,9 @@ const AssetPortfolio = compose<ILayoutProps & IDispatchToProps, IExternalProps>(
       redistributePayout: (tokenDisbursal: ITokenDisbursal) =>
         dispatch(actions.txTransactions.startInvestorPayoutRedistribute(tokenDisbursal)),
       acceptPayout: (tokenDisbursal: ITokenDisbursal) =>
-        dispatch(actions.txTransactions.startInvestorPayout([tokenDisbursal])),
+        dispatch(actions.txTransactions.startInvestorPayoutAccept([tokenDisbursal])),
       acceptCombinedPayout: (tokensDisbursal: ReadonlyArray<ITokenDisbursal>) =>
-        dispatch(actions.txTransactions.startInvestorPayout(tokensDisbursal)),
+        dispatch(actions.txTransactions.startInvestorPayoutAccept(tokensDisbursal)),
     }),
   }),
   // Loading

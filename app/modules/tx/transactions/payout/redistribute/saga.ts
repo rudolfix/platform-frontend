@@ -4,7 +4,9 @@ import { put, select, take } from "redux-saga/effects";
 import { ECurrency } from "../../../../../components/shared/Money";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { ITxData } from "../../../../../lib/web3/types";
+import { invariant } from "../../../../../utils/invariant";
 import { actions } from "../../../../actions";
+import { selectIsVerifiedInvestor } from "../../../../auth/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../../gas/selectors";
 import { ITokenDisbursal } from "../../../../investor-portfolio/types";
 import { neuCall } from "../../../../sagasUtils";
@@ -19,6 +21,13 @@ export function* generatePayoutRedistributeTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   tokenDisbursal: ITokenDisbursal,
 ): any {
+  const isInvestorVerified: boolean = yield select(selectIsVerifiedInvestor);
+
+  invariant(
+    isInvestorVerified,
+    "Generating payout redistribution transactions is not allowed for unverified investor",
+  );
+
   const userAddress = yield select(selectEthereumAddressWithChecksum);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 

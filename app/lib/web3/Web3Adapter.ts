@@ -131,9 +131,8 @@ export class Web3Adapter {
       const getTransactionCount = promisify<number>(
         this.web3.eth.getTransactionCount.bind(this.web3.eth),
       );
-      const nonce = await getTransactionCount(txData.from);
 
-      txData.nonce = nonce;
+      txData.nonce = await getTransactionCount(txData.from);
     }
 
     return await send(txData);

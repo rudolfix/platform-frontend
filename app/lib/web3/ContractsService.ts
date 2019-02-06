@@ -89,21 +89,31 @@ export class ContractsService {
       knownInterfaces.feeDisbursal,
     ]);
 
-    this.neumark = await create(Neumark, this.web3, neumarkAddress);
-    this.euroLock = await create(LockedAccount, this.web3, euroLockAddress);
-    this.etherLock = await create(LockedAccount, this.web3, etherLockAddress);
-    this.icbmEuroLock = await create(ICBMLockedAccount, this.web3, icbmEuroLockAddress);
-    this.icbmEtherLock = await create(ICBMLockedAccount, this.web3, icbmEtherLockAddress);
-    this.rateOracle = await create(
-      ITokenExchangeRateOracle,
-      this.web3,
-      tokenExchangeRateOracleAddress,
-    );
-    this.identityRegistry = await create(IdentityRegistry, this.web3, identityRegistryAddress);
-    this.platformTerms = await create(PlatformTerms, this.web3, platformTermsAddress);
-    this.euroToken = await create(EuroToken, this.web3, euroTokenAddress);
-    this.etherToken = await create(EtherToken, this.web3, etherTokenAddress);
-    this.feeDisbursal = await create(FeeDisbursal, this.web3, feeDisbursalAddress);
+    [
+      this.neumark,
+      this.euroLock,
+      this.etherLock,
+      this.icbmEuroLock,
+      this.icbmEtherLock,
+      this.rateOracle,
+      this.identityRegistry,
+      this.platformTerms,
+      this.euroToken,
+      this.etherToken,
+      this.feeDisbursal,
+    ] = await Promise.all<any>([
+      create(Neumark, this.web3, neumarkAddress),
+      create(LockedAccount, this.web3, euroLockAddress),
+      create(LockedAccount, this.web3, etherLockAddress),
+      create(ICBMLockedAccount, this.web3, icbmEuroLockAddress),
+      create(ICBMLockedAccount, this.web3, icbmEtherLockAddress),
+      create(ITokenExchangeRateOracle, this.web3, tokenExchangeRateOracleAddress),
+      create(IdentityRegistry, this.web3, identityRegistryAddress),
+      create(PlatformTerms, this.web3, platformTermsAddress),
+      create(EuroToken, this.web3, euroTokenAddress),
+      create(EtherToken, this.web3, etherTokenAddress),
+      create(FeeDisbursal, this.web3, feeDisbursalAddress),
+    ]);
 
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");
   }

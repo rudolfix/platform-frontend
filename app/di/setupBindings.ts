@@ -24,6 +24,7 @@ import { IntlWrapper } from "../lib/intl/IntlWrapper";
 import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import { Storage } from "../lib/persistence/Storage";
+import { USER_JWT_KEY } from "../lib/persistence/UserStorage";
 import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
@@ -31,12 +32,17 @@ import { ContractsService } from "../lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../lib/web3/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../lib/web3/LightWallet";
 import { IEthereumNetworkConfig } from "../lib/web3/types";
+import {
+  web3BatchFactory,
+  Web3BatchFactoryType,
+  web3Factory,
+  Web3FactoryType,
+} from "../lib/web3/Web3Batch";
 import { Web3Manager } from "../lib/web3/Web3Manager";
 import {
   AsyncIntervalSchedulerFactory,
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/AsyncIntervalScheduler";
-import { USER_JWT_KEY } from "./../lib/persistence/UserStorage";
 import { symbols } from "./symbols";
 
 export function setupBindings(config: IConfig): Container {
@@ -124,10 +130,12 @@ export function setupBindings(config: IConfig): Container {
     .bind<BrowserWalletConnector>(symbols.browserWalletConnector)
     .to(BrowserWalletConnector)
     .inSingletonScope();
+
   container
     .bind<Web3Manager>(symbols.web3Manager)
     .to(Web3Manager)
     .inSingletonScope();
+
   container
     .bind<KycApi>(symbols.apiKycService)
     .to(KycApi)
@@ -165,6 +173,10 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<AsyncIntervalSchedulerFactoryType>(symbols.asyncIntervalSchedulerFactory)
     .toFactory(AsyncIntervalSchedulerFactory);
+
+  container.bind<Web3FactoryType>(symbols.web3Factory).toFactory(web3Factory);
+
+  container.bind<Web3BatchFactoryType>(symbols.web3BatchFactory).toFactory(web3BatchFactory);
 
   // dynamic bindings (with inSingletonScope this works like lazy binding)
   container

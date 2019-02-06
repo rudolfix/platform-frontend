@@ -3,7 +3,7 @@ export enum ETransactionStatus {
   REVERTED = "0X0",
 }
 
-export const requestFromWeb3Node = (
+const requestFromWeb3Node = (
   nodeAddress: string,
   methodName: string,
   params: string[] | object[],

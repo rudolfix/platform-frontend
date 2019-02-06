@@ -16,6 +16,7 @@ import { LightWallet } from "./LightWallet";
 import { IPersonalWallet } from "./PersonalWeb3";
 import { IEthereumNetworkConfig } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
+import { Web3FactoryType } from "./Web3Batch";
 
 const DEFAULT_UPPER_GAS_LIMIT = 2000000;
 const DEFAULT_LOWER_GAS_LIMIT = 21000;
@@ -50,14 +51,13 @@ export class Web3Manager extends EventEmitter {
   public networkId!: EthereumNetworkId;
   public internalWeb3Adapter!: Web3Adapter;
 
-  private readonly web3ConnectionWatcher: AsyncIntervalScheduler;
-
   constructor(
     @inject(symbols.ethereumNetworkConfig)
     public readonly ethereumNetworkConfig: IEthereumNetworkConfig,
     @inject(symbols.logger) public readonly logger: ILogger,
     @inject(symbols.asyncIntervalSchedulerFactory)
     asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType,
+    @inject(symbols.web3Factory) private web3Factory: Web3FactoryType,
   ) {
     super();
     this.web3ConnectionWatcher = asyncIntervalSchedulerFactory(
@@ -66,9 +66,15 @@ export class Web3Manager extends EventEmitter {
     );
   }
 
+  private readonly web3ConnectionWatcher: AsyncIntervalScheduler;
+
   public async initialize(): Promise<void> {
-    const rawWeb3 = new Web3(new Web3.providers.HttpProvider(this.ethereumNetworkConfig.rpcUrl));
-    this.internalWeb3Adapter = new Web3Adapter(rawWeb3);
+    const web3 = this.web3Factory(
+      new Web3.providers.HttpProvider(this.ethereumNetworkConfig.rpcUrl),
+    );
+
+    this.internalWeb3Adapter = new Web3Adapter(web3);
+
     this.networkId = await this.internalWeb3Adapter.getNetworkId();
   }
 

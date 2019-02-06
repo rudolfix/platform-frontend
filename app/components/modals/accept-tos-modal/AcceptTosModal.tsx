@@ -26,24 +26,8 @@ interface IDispatchProps {
   onLogout: (userType?: EUserType) => void;
 }
 
-interface IState {
-  tosDownloaded: boolean;
-}
-
-export class AcceptTosModalInner extends React.Component<IStateProps & IDispatchProps, IState> {
-  state = {
-    tosDownloaded: false,
-  };
-
-  onDownloadTos = () => {
-    this.setState({
-      tosDownloaded: true,
-    });
-    this.props.onDownloadTos();
-  };
-
-  render(): React.ReactNode {
-    const { userType, onLogout, onAccept, agreementChanged } = this.props;
+export const AcceptTosModalInner:React.ComponentType<IStateProps & IDispatchProps> =
+  ({onDownloadTos, userType, onLogout, onAccept, agreementChanged}) => {
     return (
       <section className="text-center">
         <h1>
@@ -58,7 +42,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
         </p>
         <div className="mt-2 mb-2">
           <Button
-            onClick={this.onDownloadTos}
+            onClick={onDownloadTos}
             layout={EButtonLayout.SECONDARY}
             data-test-id="modals.accept-tos.download-button"
           >
@@ -69,7 +53,6 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
           <Button
             onClick={onAccept}
             layout={EButtonLayout.PRIMARY}
-            disabled={!this.state.tosDownloaded}
             data-test-id="modals.accept-tos.accept-button"
           >
             <FormattedMessage id="settings.modal.accept-tos.accept-button" />
@@ -89,8 +72,7 @@ export class AcceptTosModalInner extends React.Component<IStateProps & IDispatch
         />
       </section>
     );
-  }
-}
+};
 
 const AcceptTosModalComponent: React.FunctionComponent<IStateProps & IDispatchProps> = props => (
   <Modal isOpen={props.isOpen} centered>

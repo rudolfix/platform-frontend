@@ -17,7 +17,7 @@ import { Money, selectCurrencyCode } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 
-import * as styles from "./Summary.module.scss";
+import * as styles from "./AcceptSummary.module.scss";
 
 interface IStateProps {
   tokensDisbursal: ITokenDisbursal[];
@@ -30,7 +30,7 @@ interface IDispatchProps {
 
 type TComponentProps = IStateProps & IDispatchProps;
 
-const InvestorPayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
+const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
   walletAddress,
   tokensDisbursal,
   onAccept,
@@ -38,17 +38,17 @@ const InvestorPayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
   return (
     <Container>
       <Heading className="mb-4">
-        <FormattedMessage id="investor-payout.summary.title" />
+        <FormattedMessage id="investor-payout.accept.summary.title" />
       </Heading>
 
       <p className="mb-3">
         {tokensDisbursal.length === 1 ? (
           <FormattedMessage
-            id="investor-payout.summary.single.description"
+            id="investor-payout.accept.summary.single.description"
             values={{ token: selectCurrencyCode(tokensDisbursal[0].token) }}
           />
         ) : (
-          <FormattedMessage id="investor-payout.summary.combined.description" />
+          <FormattedMessage id="investor-payout.accept.summary.combined.description" />
         )}
       </p>
       <InfoList className="mb-4">
@@ -57,7 +57,7 @@ const InvestorPayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
             key={disbursal.token}
             caption={
               <FormattedMessage
-                id="investor-payout.summary.total-payout"
+                id="investor-payout.accept.summary.total-payout"
                 values={{ token: selectCurrencyCode(disbursal.token) }}
               />
             }
@@ -76,14 +76,14 @@ const InvestorPayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
           <FormattedMessage id="investor-payout.summary.hint" />
         </p>
         <Button onClick={onAccept}>
-          <FormattedMessage id="investor-payout.summary.accept" />
+          <FormattedMessage id="investor-payout.accept.summary.accept" />
         </Button>
       </section>
     </Container>
   );
 };
 
-const InvestorPayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
+const InvestorAcceptPayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: state => ({
     walletAddress: selectEthereumAddressWithChecksum(state),
     tokensDisbursal: selectTxSummaryAdditionalData(state),
@@ -91,6 +91,6 @@ const InvestorPayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
   }),
-})(InvestorPayoutSummaryLayout);
+})(InvestorAcceptPayoutSummaryLayout);
 
-export { InvestorPayoutSummary, InvestorPayoutSummaryLayout };
+export { InvestorAcceptPayoutSummary, InvestorAcceptPayoutSummaryLayout };

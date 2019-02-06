@@ -6,7 +6,7 @@ import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import { EthereumAddressWithChecksum } from "../../../../types";
 import { withModalBody } from "../../../../utils/storybookHelpers";
 import { ECurrency } from "../../../shared/Money";
-import { InvestorPayoutSummaryLayout } from "./Summary";
+import { InvestorAcceptPayoutSummaryLayout } from "./AcceptSummary";
 
 const ethTokenDisbursal: ITokenDisbursal = {
   token: ECurrency.ETH,
@@ -22,24 +22,24 @@ const nEurTokenDisbursal: ITokenDisbursal = {
   timeToFirstDisbursalRecycle: 1675401473000,
 };
 
-storiesOf("InvestorPayout/Summary", module)
+storiesOf("InvestorPayout/AcceptSummary", module)
   .addDecorator(withModalBody())
   .add("ETH", () => (
-    <InvestorPayoutSummaryLayout
+    <InvestorAcceptPayoutSummaryLayout
       walletAddress={"0x00b30CC2cc22c9820d47a4E0C9E1A54455bA0883" as EthereumAddressWithChecksum}
       tokensDisbursal={[ethTokenDisbursal]}
       onAccept={action("onAccept")}
     />
   ))
   .add("nEur", () => (
-    <InvestorPayoutSummaryLayout
+    <InvestorAcceptPayoutSummaryLayout
       walletAddress={"0x00b30CC2cc22c9820d47a4E0C9E1A54455bA0883" as EthereumAddressWithChecksum}
       tokensDisbursal={[nEurTokenDisbursal]}
       onAccept={action("onAccept")}
     />
   ))
   .add("all", () => (
-    <InvestorPayoutSummaryLayout
+    <InvestorAcceptPayoutSummaryLayout
       walletAddress={"0x00b30CC2cc22c9820d47a4E0C9E1A54455bA0883" as EthereumAddressWithChecksum}
       tokensDisbursal={[ethTokenDisbursal, nEurTokenDisbursal]}
       onAccept={action("onAccept")}

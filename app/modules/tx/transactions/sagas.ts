@@ -82,7 +82,7 @@ export function* investorPayoutSaga(
 
   try {
     yield txSendSaga({
-      type: ETxSenderType.INVESTOR_PAYOUT,
+      type: ETxSenderType.INVESTOR_ACCEPT_PAYOUT,
       transactionFlowGenerator: startInvestorPayoutGenerator,
       extraParam: tokensDisbursals,
     });

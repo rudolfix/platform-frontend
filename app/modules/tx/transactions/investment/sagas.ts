@@ -104,6 +104,7 @@ export function* generateInvestmentTransaction({ contractsService }: TGlobalDepe
 }
 
 export function* investmentFlowGenerator(_: TGlobalDependencies): any {
-  yield take("TX_SENDER_ACCEPT_DRAFT");
+  yield take(actions.txSender.txSenderAcceptDraft);
+
   yield put(actions.txSender.txSenderContinueToSummary());
 }

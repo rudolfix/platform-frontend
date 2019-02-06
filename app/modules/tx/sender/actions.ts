@@ -1,6 +1,6 @@
 import { ITxData } from "../../../lib/web3/types";
-import { createAction, createSimpleAction } from "../../actionsUtils";
-import { ETxSenderType } from "./../interfaces";
+import { createAction, createActionFactory, createSimpleAction } from "../../actionsUtils";
+import { ETxSenderType } from "../interfaces";
 import { ETransactionErrorType, TSummaryData } from "./reducer";
 
 export const txSenderActions = {
@@ -8,8 +8,10 @@ export const txSenderActions = {
   txSenderShowModal: (type: ETxSenderType) => createAction("TX_SENDER_SHOW_MODAL", { type }),
   txSenderHideModal: () => createSimpleAction("TX_SENDER_HIDE_MODAL"),
   // User awaiting actions
-  txSenderAcceptDraft: (txDraftData?: Partial<ITxData>) =>
-    createAction("TX_SENDER_ACCEPT_DRAFT", { txDraftData }),
+  txSenderAcceptDraft: createActionFactory(
+    "TX_SENDER_ACCEPT_DRAFT",
+    (txDraftData?: Partial<ITxData>) => ({ txDraftData }),
+  ),
   txSenderAccept: () => createSimpleAction("TX_SENDER_ACCEPT"),
   txSenderChange: (type: ETxSenderType) => createAction("TX_SENDER_CHANGE", { type }),
   // Signer actions

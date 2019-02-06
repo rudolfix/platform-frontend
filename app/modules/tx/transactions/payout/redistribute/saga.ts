@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { put, select } from "redux-saga/effects";
+import { put, select, take } from "redux-saga/effects";
 
 import { ECurrency } from "../../../../../components/shared/Money";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
@@ -52,6 +52,9 @@ export function* startInvestorPayoutRedistributionGenerator(
   _: TGlobalDependencies,
   tokenDisbursals: ITokenDisbursal,
 ): any {
+  // Wait for redistribute confirmation
+  yield take(actions.txSender.txSenderAcceptDraft);
+
   const generatedTxDetails: ITxData = yield neuCall(
     generatePayoutRedistributeTransaction,
     tokenDisbursals,

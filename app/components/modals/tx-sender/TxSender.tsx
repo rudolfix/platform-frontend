@@ -18,6 +18,7 @@ import { InvestmentSuccess } from "./investment-flow/Success";
 import { InvestmentSummary } from "./investment-flow/Summary";
 import { InvestorAcceptPayoutSuccess } from "./investor-payout/AcceptSuccess";
 import { InvestorAcceptPayoutSummary } from "./investor-payout/AcceptSummary";
+import { InvestorRedistributePayoutConfirm } from "./investor-payout/RedistributeConfirm";
 import { InvestorRedistributePayoutSuccess } from "./investor-payout/RedistributeSuccess";
 import { InvestorRedistributePayoutSummary } from "./investor-payout/RedistributeSummary";
 import { ErrorMessage } from "./shared/ErrorMessage";
@@ -69,6 +70,8 @@ const InitComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ type
       return <InvestmentSelection />;
     case ETxSenderType.WITHDRAW:
       return <Withdraw />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutConfirm />;
     default:
       return <LoadingIndicator />;
   }

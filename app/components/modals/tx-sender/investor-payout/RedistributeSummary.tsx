@@ -58,8 +58,7 @@ const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponen
           <FormattedMessage id="investor-payout.summary.neu-tokenholder-agreement" />
         </a>
         <small className="d-inline-block mb-3 mx-4">
-          To process this payout we will need to trigger and ethereum transaction which will incure
-          gas costs. This will be deducted from your ETH wallet.
+          <FormattedMessage id="investor-payout.summary.hint" />
         </small>
         <Button onClick={onAccept}>
           <FormattedMessage id="investor-payout.redistribute.summary.accept" />

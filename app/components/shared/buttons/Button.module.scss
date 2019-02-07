@@ -115,6 +115,10 @@ $_active-color: lighten($_hover-color, 20%);
     font-weight: $font-weight-bold;
     text-transform: uppercase;
 
+    &:global(.small) {
+      @include font-label;
+    }
+
     &:hover,
     &.is-active  {
       color: $_hover-color;

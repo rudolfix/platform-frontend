@@ -16,8 +16,11 @@ import { SetEtoDateSummary } from "./eto-flow/SetDateSummary";
 import { InvestmentSelection } from "./investment-flow/Investment";
 import { InvestmentSuccess } from "./investment-flow/Success";
 import { InvestmentSummary } from "./investment-flow/Summary";
-import { InvestorPayoutSuccess } from "./investor-payout/Success";
-import { InvestorPayoutSummary } from "./investor-payout/Summary";
+import { InvestorAcceptPayoutSuccess } from "./investor-payout/AcceptSuccess";
+import { InvestorAcceptPayoutSummary } from "./investor-payout/AcceptSummary";
+import { InvestorRedistributePayoutConfirm } from "./investor-payout/RedistributeConfirm";
+import { InvestorRedistributePayoutSuccess } from "./investor-payout/RedistributeSuccess";
+import { InvestorRedistributePayoutSummary } from "./investor-payout/RedistributeSummary";
 import { ErrorMessage } from "./shared/ErrorMessage";
 import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
@@ -67,6 +70,8 @@ const InitComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ type
       return <InvestmentSelection />;
     case ETxSenderType.WITHDRAW:
       return <Withdraw />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutConfirm />;
     default:
       return <LoadingIndicator />;
   }
@@ -82,8 +87,10 @@ const SummaryComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ t
       return <UpgradeSummary />;
     case ETxSenderType.USER_CLAIM:
       return <UserClaimSummary />;
-    case ETxSenderType.INVESTOR_PAYOUT:
-      return <InvestorPayoutSummary />;
+    case ETxSenderType.INVESTOR_ACCEPT_PAYOUT:
+      return <InvestorAcceptPayoutSummary />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutSummary />;
     default:
       return <WithdrawSummary />;
   }
@@ -98,8 +105,10 @@ const SuccessComponent: React.FunctionComponent<{ type?: ETxSenderType; txHash?:
       return <InvestmentSuccess txHash={txHash!} />;
     case ETxSenderType.USER_CLAIM:
       return <UserClaimSuccess />;
-    case ETxSenderType.INVESTOR_PAYOUT:
-      return <InvestorPayoutSuccess />;
+    case ETxSenderType.INVESTOR_ACCEPT_PAYOUT:
+      return <InvestorAcceptPayoutSuccess />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutSuccess />;
     default:
       return <WithdrawSuccess txHash={txHash!} />;
   }

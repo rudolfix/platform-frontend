@@ -27,6 +27,7 @@ interface ILayoutProps {
 }
 
 interface IDispatchToProps {
+  redistributePayout: (tokenDisbursal: ITokenDisbursal) => void;
   acceptPayout: (tokenDisbursal: ITokenDisbursal) => void;
   acceptCombinedPayout: (tokensDisbursal: ReadonlyArray<ITokenDisbursal>) => void;
 }
@@ -62,6 +63,7 @@ const AssetPortfolioLayoutNoPayouts: React.FunctionComponent = () => (
 
 const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToProps> = ({
   tokensDisbursal,
+  redistributePayout,
   acceptPayout,
   acceptCombinedPayout,
 }) => (
@@ -130,7 +132,13 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
             />
             <Money value={tokenDisbursal.totalDisbursedAmount} currency={tokenDisbursal.token} />
             <FormattedDate value={tokenDisbursal.timeToFirstDisbursalRecycle} />
-            <></>
+            <Button
+              size={ButtonSize.SMALL}
+              onClick={() => redistributePayout(tokenDisbursal)}
+              layout={EButtonLayout.SECONDARY}
+            >
+              <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />
+            </Button>
             <Button
               theme="green"
               size={ButtonSize.SMALL}
@@ -164,10 +172,12 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
 const AssetPortfolio = compose<ILayoutProps & IDispatchToProps, IExternalProps>(
   appConnect<{}, IDispatchToProps>({
     dispatchToProps: dispatch => ({
+      redistributePayout: (tokenDisbursal: ITokenDisbursal) =>
+        dispatch(actions.txTransactions.startInvestorPayoutRedistribute(tokenDisbursal)),
       acceptPayout: (tokenDisbursal: ITokenDisbursal) =>
-        dispatch(actions.txTransactions.startInvestorPayout([tokenDisbursal])),
+        dispatch(actions.txTransactions.startInvestorPayoutAccept([tokenDisbursal])),
       acceptCombinedPayout: (tokensDisbursal: ReadonlyArray<ITokenDisbursal>) =>
-        dispatch(actions.txTransactions.startInvestorPayout(tokensDisbursal)),
+        dispatch(actions.txTransactions.startInvestorPayoutAccept(tokensDisbursal)),
     }),
   }),
   // Loading

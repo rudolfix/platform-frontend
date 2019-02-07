@@ -1,7 +1,0 @@
-.hint {
-  @include font-button-small;
-
-  @include responsive-size(margin-left, 15px, 40px);
-  @include responsive-size(margin-right, 15px, 40px);
-
-}

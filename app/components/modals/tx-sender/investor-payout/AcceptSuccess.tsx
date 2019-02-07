@@ -11,27 +11,23 @@ interface IDispatchProps {
   goToWallet: () => void;
 }
 
-interface IStateProps {
-  tokenName?: string;
-}
+type IProps = IDispatchProps;
 
-type IProps = IDispatchProps & IStateProps;
-
-const InvestorPayoutSuccessLayout: React.FunctionComponent<IProps> = ({ goToWallet }) => (
+const InvestorAcceptPayoutSuccessLayout: React.FunctionComponent<IProps> = ({ goToWallet }) => (
   <Message
     image={<ConfettiEthereum className="mb-3" />}
-    text={<FormattedMessage id="investor-payout.success.text" />}
+    text={<FormattedMessage id="investor-payout.accept.success.text" />}
   >
     <ButtonArrowRight onClick={goToWallet}>
-      <FormattedMessage id="investor-payout.success.view-wallet" />
+      <FormattedMessage id="menu.wallet.view" />
     </ButtonArrowRight>
   </Message>
 );
 
-const InvestorPayoutSuccess = appConnect<IStateProps, IDispatchProps>({
+const InvestorAcceptPayoutSuccess = appConnect<{}, IDispatchProps>({
   dispatchToProps: dispatch => ({
     goToWallet: () => dispatch(actions.routing.goToWallet()),
   }),
-})(InvestorPayoutSuccessLayout);
+})(InvestorAcceptPayoutSuccessLayout);
 
-export { InvestorPayoutSuccess, InvestorPayoutSuccessLayout };
+export { InvestorAcceptPayoutSuccess, InvestorAcceptPayoutSuccessLayout };

@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
@@ -12,85 +11,72 @@ import { appConnect } from "../../../../store";
 import { EthereumAddressWithChecksum } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { Button } from "../../../shared/buttons";
+import { ExternalLink } from "../../../shared/links";
 import { Heading } from "../../../shared/modals/Heading";
-import { Money, selectCurrencyCode } from "../../../shared/Money";
+import { Money } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 
-import * as styles from "./Summary.module.scss";
-
 interface IStateProps {
-  tokensDisbursal: ITokenDisbursal[];
+  tokenDisbursal: ITokenDisbursal;
   walletAddress: EthereumAddressWithChecksum;
 }
 
 interface IDispatchProps {
-  onAccept: () => any;
+  onAccept: () => void;
 }
 
 type TComponentProps = IStateProps & IDispatchProps;
 
-const InvestorPayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
+const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponentProps> = ({
   walletAddress,
-  tokensDisbursal,
+  tokenDisbursal,
   onAccept,
 }) => {
   return (
     <Container>
       <Heading className="mb-4">
-        <FormattedMessage id="investor-payout.summary.title" />
+        <FormattedMessage id="investor-payout.redistribute.summary.title" />
       </Heading>
 
       <p className="mb-3">
-        {tokensDisbursal.length === 1 ? (
-          <FormattedMessage
-            id="investor-payout.summary.single.description"
-            values={{ token: selectCurrencyCode(tokensDisbursal[0].token) }}
-          />
-        ) : (
-          <FormattedMessage id="investor-payout.summary.combined.description" />
-        )}
+        <FormattedMessage id="investor-payout.redistribute.summary.description" />
       </p>
       <InfoList className="mb-4">
-        {tokensDisbursal.map(disbursal => (
-          <InfoRow
-            key={disbursal.token}
-            caption={
-              <FormattedMessage
-                id="investor-payout.summary.total-payout"
-                values={{ token: selectCurrencyCode(disbursal.token) }}
-              />
-            }
-            value={<Money value={disbursal.amountToBeClaimed} currency={disbursal.token} />}
-          />
-        ))}
+        <InfoRow
+          key={tokenDisbursal.token}
+          caption={
+            <FormattedMessage id="investor-payout.redistribute.summary.total-redistributed" />
+          }
+          value={<Money value={tokenDisbursal.amountToBeClaimed} currency={tokenDisbursal.token} />}
+        />
       </InfoList>
       <section className="text-center">
-        <a
+        <ExternalLink
           className="d-inline-block mb-3"
           href={withParams(externalRoutes.commitmentStatus, { walletAddress })}
         >
           <FormattedMessage id="investor-payout.summary.neu-tokenholder-agreement" />
-        </a>
-        <p className={cn(styles.hint)}>
+        </ExternalLink>
+        <small className="d-inline-block mb-3 mx-4">
           <FormattedMessage id="investor-payout.summary.hint" />
-        </p>
+        </small>
         <Button onClick={onAccept}>
-          <FormattedMessage id="investor-payout.summary.accept" />
+          <FormattedMessage id="investor-payout.redistribute.summary.accept" />
         </Button>
       </section>
     </Container>
   );
 };
 
-const InvestorPayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
+const InvestorRedistributePayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: state => ({
     walletAddress: selectEthereumAddressWithChecksum(state),
-    tokensDisbursal: selectTxSummaryAdditionalData(state),
+    tokenDisbursal: selectTxSummaryAdditionalData(state),
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
   }),
-})(InvestorPayoutSummaryLayout);
+})(InvestorRedistributePayoutSummaryLayout);
 
-export { InvestorPayoutSummary, InvestorPayoutSummaryLayout };
+export { InvestorRedistributePayoutSummary, InvestorRedistributePayoutSummaryLayout };

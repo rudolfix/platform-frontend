@@ -9,10 +9,16 @@ export const txTransactionsActions = {
   startInvestment: () => createSimpleAction("TRANSACTIONS_START_INVESTMENT"),
   startEtoSetDate: () => createSimpleAction("TRANSACTIONS_START_ETO_SET_DATE"),
   startUserClaim: (etoId: string) => createAction("TRANSACTIONS_START_CLAIM", etoId),
-  startInvestorPayout: createActionFactory(
-    "TRANSACTIONS_START_PAYOUT",
+  startInvestorPayoutAccept: createActionFactory(
+    "TRANSACTIONS_START_PAYOUT_ACCEPT",
     (tokensDisbursals: ReadonlyArray<ITokenDisbursal>) => ({
       tokensDisbursals,
+    }),
+  ),
+  startInvestorPayoutRedistribute: createActionFactory(
+    "TRANSACTIONS_START_PAYOUT_REDISTRIBUTE",
+    (tokenDisbursals: ITokenDisbursal) => ({
+      tokenDisbursals,
     }),
   ),
   // Add here new custom sagas that represent flows

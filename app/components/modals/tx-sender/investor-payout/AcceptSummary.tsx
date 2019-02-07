@@ -11,6 +11,7 @@ import { appConnect } from "../../../../store";
 import { EthereumAddressWithChecksum } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
 import { Button } from "../../../shared/buttons";
+import { ExternalLink } from "../../../shared/links";
 import { Heading } from "../../../shared/modals/Heading";
 import { Money, selectCurrencyCode } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
@@ -22,7 +23,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  onAccept: () => any;
+  onAccept: () => void;
 }
 
 type TComponentProps = IStateProps & IDispatchProps;
@@ -63,12 +64,12 @@ const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps
         ))}
       </InfoList>
       <section className="text-center">
-        <a
+        <ExternalLink
           className="d-inline-block mb-3"
           href={withParams(externalRoutes.commitmentStatus, { walletAddress })}
         >
           <FormattedMessage id="investor-payout.summary.neu-tokenholder-agreement" />
-        </a>
+        </ExternalLink>
         <small className="d-inline-block mb-3 mx-4">
           <FormattedMessage id="investor-payout.summary.hint" />
         </small>

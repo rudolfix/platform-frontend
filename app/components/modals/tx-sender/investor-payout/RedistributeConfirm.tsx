@@ -3,9 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { ConfettiEthereum } from "../../../landing/parts/ConfettiEthereum";
-import { Button, ButtonArrowRight, ButtonGroup, EButtonLayout } from "../../../shared/buttons";
+import { Button, ButtonArrowRight, EButtonLayout } from "../../../shared/buttons";
 import { Message } from "../shared/Message";
+
+import * as redistributeIcon from "../../../../assets/img/redistribute.svg";
 
 interface IDispatchProps {
   confirm: () => void;
@@ -19,18 +20,16 @@ const InvestorRedistributePayoutConfirmLayout: React.FunctionComponent<IProps> =
   confirm,
 }) => (
   <Message
-    image={<ConfettiEthereum className="mb-3" />}
+    image={<img src={redistributeIcon} alt="" className="mb-3" />}
     title={<FormattedMessage id="investor-payout.redistribute.confirm.title" />}
     text={<FormattedMessage id="investor-payout.redistribute.confirm.text" />}
   >
-    <ButtonGroup>
-      <Button onClick={deny} layout={EButtonLayout.SECONDARY}>
-        <FormattedMessage id="investor-payout.redistribute.confirm.deny" />
-      </Button>
-      <ButtonArrowRight onClick={confirm}>
-        <FormattedMessage id="investor-payout.redistribute.confirm.confirm" />
-      </ButtonArrowRight>
-    </ButtonGroup>
+    <Button onClick={deny} layout={EButtonLayout.SECONDARY}>
+      <FormattedMessage id="investor-payout.redistribute.confirm.deny" />
+    </Button>
+    <ButtonArrowRight onClick={confirm}>
+      <FormattedMessage id="investor-payout.redistribute.confirm.confirm" />
+    </ButtonArrowRight>
   </Message>
 );
 

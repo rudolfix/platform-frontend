@@ -1,13 +1,11 @@
 import * as cn from "classnames";
 import * as React from "react";
 
+import { CommonHtmlProps } from "../../../types";
 import { InlineIcon } from "../InlineIcon";
 import { LoadingIndicator } from "../loading-indicator";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as closeIcon from "../../../assets/img/inline_icons/close.svg";
-import { CommonHtmlProps, TTranslatedString } from "../../../types";
-
 import * as styles from "./Button.module.scss";
 
 type TButtonTheme = "dark" | "white" | "brand" | "silver" | "graphite" | "neon" | "green";
@@ -40,18 +38,12 @@ export enum ButtonTextPosition {
 
 export interface IGeneralButton {
   onClick?: (event: any) => void;
-}
-
-interface IButtonIcon extends IGeneralButton, CommonHtmlProps {
-  svgIcon: string;
-  alt?: TTranslatedString;
   disabled?: boolean;
 }
 
 export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
   layout?: EButtonLayout;
   theme?: TButtonTheme;
-  disabled?: boolean;
   svgIcon?: string;
   type?: string;
   iconPosition?: TIconPosition;
@@ -138,25 +130,6 @@ Button.defaultProps = {
   width: ButtonWidth.NORMAL,
 };
 
-const ButtonIcon: React.FunctionComponent<IButtonIcon> = ({
-  onClick,
-  className,
-  disabled,
-  ...props
-}) => (
-  <button className={cn(styles.buttonIcon, className)} onClick={onClick} disabled={disabled}>
-    <InlineIcon {...props} />
-  </button>
-);
-
-const ButtonIconPlaceholder: React.FunctionComponent = () => (
-  <div className={styles.buttonIconPlaceholder} />
-);
-
-const ButtonClose: React.FunctionComponent<IGeneralButton & CommonHtmlProps> = props => (
-  <ButtonIcon {...props} svgIcon={closeIcon} />
-);
-
 const ButtonArrowRight: React.FunctionComponent<IButtonProps> = props => (
   <Button
     {...props}
@@ -166,4 +139,4 @@ const ButtonArrowRight: React.FunctionComponent<IButtonProps> = props => (
   />
 );
 
-export { ButtonIcon, ButtonIconPlaceholder, ButtonClose, ButtonArrowRight, Button };
+export { ButtonArrowRight, Button };

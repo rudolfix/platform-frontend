@@ -46,12 +46,13 @@
 .next,
 .prev {
   position: absolute;
-  cursor: pointer;
   z-index: 2;
+  color: $neu-white-two;
+  width: 35px;
+  height: 35px;
 
-  svg {
-    display: block;
-    background-color: $neu-white-two;
+  &:disabled {
+    color: transparent;
   }
 }
 
@@ -63,15 +64,6 @@
 .next {
   margin-left: .3rem;
   right: 1.5rem;
-}
-
-.inactive {
-  cursor: initial;
-
-  svg * {
-    stroke: $neu-silver;
-  }
-
 }
 
 .clickable {

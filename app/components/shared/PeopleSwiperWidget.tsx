@@ -1,11 +1,10 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { compose } from "redux";
 
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
-import { InlineIcon } from "./InlineIcon";
+import { ButtonIcon } from "./buttons";
 import { SlidePerson } from "./SlidePerson";
 import { IEtoSocialProfile } from "./SocialProfilesList";
 
@@ -218,9 +217,10 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
     return (
       <div className={styles.swiperMain}>
         {showArrows && (
-          <InlineIcon
+          <ButtonIcon
             svgIcon={prevIcon}
-            className={this.canGoRight() ? styles.prev : cn(styles.prev, styles.inactive)}
+            disabled={!this.canGoRight()}
+            className={styles.prev}
             onClick={this.canGoRight() ? this.goRight : undefined}
           />
         )}
@@ -274,9 +274,10 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
           )}
         </div>
         {showArrows && (
-          <InlineIcon
+          <ButtonIcon
             svgIcon={nextIcon}
-            className={this.canGoLeft() ? styles.next : cn(styles.next, styles.inactive)}
+            disabled={!this.canGoLeft()}
+            className={styles.next}
             onClick={this.canGoLeft() ? this.goLeft : undefined}
           />
         )}

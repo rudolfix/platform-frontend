@@ -6,6 +6,12 @@
   line-height: 1.64;
 }
 
+@mixin font-thin {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(12px);
+  font-weight: 300;
+}
+
 // Headline
 
 @mixin headline-huge {

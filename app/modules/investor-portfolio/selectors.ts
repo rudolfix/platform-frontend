@@ -180,3 +180,36 @@ export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData
 
   return undefined;
 };
+
+export const selectIsIncomingPayoutLoading = (state: IAppState): boolean => {
+  return state.investorTickets.incomingPayouts.loading;
+};
+
+export const selectEtherTokenIncomingPayout = (state: IAppState): string => {
+  const incomingPayout = state.investorTickets.incomingPayouts.data;
+
+  if (incomingPayout) {
+    return incomingPayout.etherTokenIncomingPayoutValue;
+  }
+  return "0";
+};
+
+export const selectEuroTokenIncomingPayout = (state: IAppState): string => {
+  const incomingPayout = state.investorTickets.incomingPayouts.data;
+
+  if (incomingPayout) {
+    return incomingPayout.euroTokenIncomingPayoutValue;
+  }
+  return "0";
+};
+
+export const selectIsIncomingPayoutAvailable = (state: IAppState): boolean => {
+  const etherToken = selectEtherTokenIncomingPayout(state);
+  const euroToken = selectEuroTokenIncomingPayout(state);
+
+  return etherToken !== "0" || euroToken !== "0";
+};
+
+export const selectIsIncomingPayoutDone = (state: IAppState): boolean => {
+  return state.investorTickets.incomingPayouts.payoutDone;
+};

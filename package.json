@@ -50,7 +50,7 @@
     "storybook": "start-storybook -p 9001 -c .storybook -s ./app/assets",
     "storybook:screenshots": "storybook-chrome-screenshot --debug --inject-files ./.storybook/disables.js -p 9001 -c .storybook --browser-timeout 999999 -s ./app/assets",
     "deploy-storybook": "storybook-to-ghpages --out=storybook-static"
-      },
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.0",

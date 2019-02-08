@@ -123,7 +123,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
         <EtoOverviewStatus eto={eto} className="mb-3" publicView={true} />
         <Row>
           <Col className="mb-4">
-            <SectionHeader layoutHasDecorator={false} className="mb-3">
+            <SectionHeader decorator={false} className="mb-3">
               <div className={styles.headerWithButton}>
                 <FormattedMessage id="eto.public-view.eto-timeline" />
                 {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" &&
@@ -157,7 +157,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
             }
             className="mb-4"
           >
-            <SectionHeader layoutHasDecorator={false} className="mb-4">
+            <SectionHeader decorator={false} className="mb-4">
               <div className={styles.headerWithButton}>
                 {brandName}
                 {companyWebsite && (
@@ -175,7 +175,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
               </Panel>
             )}
 
-            <SectionHeader layoutHasDecorator={false} className="mb-4">
+            <SectionHeader decorator={false} className="mb-4">
               <FormattedMessage id="eto.public-view.legal-information.title" />
             </SectionHeader>
 
@@ -205,7 +205,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
               </div>
               {isTwitterFeedEnabled && (
                 <>
-                  <SectionHeader layoutHasDecorator={false} className="mt-4 mb-4">
+                  <SectionHeader decorator={false} className="mt-4 mb-4">
                     Twitter
                   </SectionHeader>
                   <Panel
@@ -221,7 +221,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
         </Row>
         <Row>
           <Col className="mb-4">
-            <SectionHeader layoutHasDecorator={false} className="mb-4">
+            <SectionHeader decorator={false} className="mb-4">
               <FormattedMessage id="eto.public-view.token-terms.title" />
             </SectionHeader>
 
@@ -231,7 +231,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
         {areThereIndividuals(team) && (
           <Row>
             <Col className="mb-4">
-              <SectionHeader layoutHasDecorator={false} className="mb-4">
+              <SectionHeader decorator={false} className="mb-4">
                 <FormattedMessage id="eto.public-view.carousel.team" />
               </SectionHeader>
               <Panel>
@@ -346,7 +346,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
               targetMarketAndIndustry ||
               keyBenefitsForInvestors) && (
               <>
-                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                <SectionHeader decorator={false} className="mb-4">
                   <FormattedMessage id="eto.public-view.product-vision.title" />
                 </SectionHeader>
                 <Panel>
@@ -491,7 +491,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
           <Col sm={12} md={4}>
             {marketingLinks && (
               <>
-                <SectionHeader layoutHasDecorator={false} className="mb-4">
+                <SectionHeader decorator={false} className="mb-4">
                   <FormattedMessage id="eto.form.documents.title" />
                 </SectionHeader>
 
@@ -508,7 +508,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
             {companyNews &&
               !!companyNews[0].url && (
                 <>
-                  <SectionHeader layoutHasDecorator={false} className="mb-4">
+                  <SectionHeader decorator={false} className="mb-4">
                     <FormattedMessage id="eto.form.media-links.title" />
                   </SectionHeader>
                   <MediaLinksWidget links={[...companyNews].reverse() as ILink[]} />

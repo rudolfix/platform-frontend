@@ -21,7 +21,7 @@ const DashboardSection: React.FunctionComponent<IProps> = ({
   size,
 }) => (
   <Col xs={12} data-test-id={dataTestId}>
-    <SectionHeader className={className} layoutHasDecorator={hasDecorator} size={size}>
+    <SectionHeader className={className} decorator={hasDecorator} size={size}>
       {step && <>STEP {step}:</>} {title}
     </SectionHeader>
   </Col>

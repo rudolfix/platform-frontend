@@ -59,7 +59,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
 }) => (
   <>
     <SectionHeader
-      layoutHasDecorator={false}
+      decorator={false}
       className="mb-4"
       description={<FormattedMessage id="portfolio.section.your-assets.description" />}
     >

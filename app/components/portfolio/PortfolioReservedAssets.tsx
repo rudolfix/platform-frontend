@@ -27,7 +27,7 @@ interface IExternalProps {
 const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pendingAssets }) => (
   <>
     <SectionHeader
-      layoutHasDecorator={false}
+      decorator={false}
       className="mb-4"
       description={<FormattedMessage id="portfolio.section.reserved-assets.description" />}
     >

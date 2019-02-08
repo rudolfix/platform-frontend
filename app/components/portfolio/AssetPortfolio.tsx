@@ -16,6 +16,7 @@ import { Panel } from "../shared/Panel";
 import { SectionHeader } from "../shared/SectionHeader";
 
 import * as ethIcon from "../../assets/img/eth_icon.svg";
+import * as neuIcon from "../../assets/img/neu_icon.svg";
 import * as nEurIcon from "../../assets/img/nEUR_icon.svg";
 
 interface IExternalProps {
@@ -53,7 +54,7 @@ const CurrencyIcon: React.FunctionComponent<{ currency: ECurrency } & CommonHtml
 
 const AssetPortfolioLayoutNoPayouts: React.FunctionComponent = () => (
   <SectionHeader
-    layoutHasDecorator={false}
+    decorator={false}
     className="mb-4"
     description={<FormattedMessage id="portfolio.asset.payouts-from-neu.no-payouts" />}
   >
@@ -69,7 +70,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
 }) => (
   <Row className="mb-4">
     <Col md={5} lg={4} sm={12}>
-      <SectionHeader layoutHasDecorator={false} className="mb-4">
+      <SectionHeader decorator={false} className="mb-4">
         <FormattedMessage id="portfolio.section.asset-portfolio.title" />
       </SectionHeader>
 
@@ -105,7 +106,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
       </Panel>
     </Col>
     <Col md={7} lg={8} sm={12} className="mt-4 mt-md-0">
-      <SectionHeader layoutHasDecorator={false} className="mb-4">
+      <SectionHeader decorator={neuIcon} className="mb-4">
         <FormattedMessage id="portfolio.asset.payouts-from-neu.title" />
       </SectionHeader>
 

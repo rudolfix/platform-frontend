@@ -32,7 +32,7 @@ const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
       <AssetPortfolio tokensDisbursal={tokensDisbursal} />
     )}
 
-    <SectionHeader layoutHasDecorator={false} className="mb-4">
+    <SectionHeader decorator={false} className="mb-4">
       <FormattedMessage id="portfolio.section.my-proceeds.title" />
     </SectionHeader>
 

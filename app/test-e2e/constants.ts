@@ -27,3 +27,6 @@ export const ISSUER_SETUP_NO_ST =
 
 export const INV_ICBM_ETH_M_HAS_KYC =
   "mimic lumber mother guide coil theory elite fly tiny wink seed issue cupboard limb luggage reflect ladder menu menu still deny basket spring evil";
+
+export const INV_ICBM_ETH_M_HAS_KYC_DUP =
+  "subject loan retire wash stairs joke dry boy submit already tuition sponsor focus small giggle tornado smile wheel income pudding palm zone tragic property";

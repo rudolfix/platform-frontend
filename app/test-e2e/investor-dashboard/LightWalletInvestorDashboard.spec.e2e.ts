@@ -37,6 +37,7 @@ describe("Incoming payout", () => {
 
   it("should change view after incoming payout complete", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
+
       const counterTime = moment()
         .utc()
         .endOf("day")
@@ -45,7 +46,7 @@ describe("Incoming payout", () => {
         .getTime();
 
       cy.visit("/dashboard");
-
+      cy.wait(2000);
       cy.get(tid("incoming-payout-counter"));
       cy.clock(counterTime);
       cy.tick(11 * 1000);
@@ -53,6 +54,7 @@ describe("Incoming payout", () => {
       cy.get(tid("incoming-payout-done"));
 
       cy.get(tid("incoming-payout-go-to-portfolio")).click();
+      cy.wait(2000);
       cy.url().should("include", "/portfolio");
     });
   });

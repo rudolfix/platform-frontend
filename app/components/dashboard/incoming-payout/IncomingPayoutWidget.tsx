@@ -46,7 +46,7 @@ const IncomingPayoutDone: React.FunctionComponent<IIncomingPayoutData> = ({
   euroTokenIncomingPayout,
 }) => (
   <>
-    <h3 className={styles.header}>
+    <h3 className={styles.header} data-test-id="incoming-payout-done">
       <FormattedMessage id="dashboard.incoming-payout-widget.incoming-payout-done" />
     </h3>
     <div>
@@ -67,6 +67,7 @@ const IncomingPayoutDone: React.FunctionComponent<IIncomingPayoutData> = ({
       />
     </div>
     <ButtonLink
+      data-test-id="incoming-payout-go-to-portfolio"
       to={appRoutes.portfolio}
       layout={EButtonLayout.SECONDARY}
       iconPosition="icon-after"
@@ -87,12 +88,14 @@ const IncomingPayoutCounter: React.FunctionComponent<IIncomingPayoutData & IDisp
       <FormattedMessage id="dashboard.incoming-payout-widget.incoming-payout" />
     </h3>
     <Counter
+      data-test-id="incoming-payout-counter"
       className={styles.counterWidget}
       endDate={counterDate}
       onFinish={() => incomingPayoutDone()}
     />
     <div>
       <Money
+        data-test-id="incoming-payout-euro-token"
         className={styles.incomingValue}
         theme={ETheme.GREEN}
         value={euroTokenIncomingPayout}
@@ -101,6 +104,7 @@ const IncomingPayoutCounter: React.FunctionComponent<IIncomingPayoutData & IDisp
       />
       <span className={styles.incomingValue}> & </span>
       <Money
+        data-test-id="incoming-payout-ether-token"
         className={styles.incomingValue}
         theme={ETheme.GREEN}
         value={etherTokenIncomingPayout}

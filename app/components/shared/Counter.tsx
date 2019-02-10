@@ -9,6 +9,7 @@ import * as styles from "./Counter.module.scss";
 interface IProps {
   endDate: Date;
   onFinish?: any;
+  ["data-test-id"]?: string;
 }
 
 interface IPlateProps {
@@ -75,7 +76,10 @@ export class Counter extends React.Component<IProps & CommonHtmlProps, IState> {
     const computedSeconds = Math.floor((timeLeft % minute) / second);
 
     return (
-      <div className={cn(styles.counter, this.props.className)}>
+      <div
+        className={cn(styles.counter, this.props.className)}
+        data-test-id={this.props["data-test-id"]}
+      >
         <Plate
           value={computedDays < 0 ? 0 : computedDays}
           label={<FormattedMessage id="counter.label.days" />}

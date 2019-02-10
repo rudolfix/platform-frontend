@@ -37,7 +37,6 @@ describe("Incoming payout", () => {
 
   it("should change view after incoming payout complete", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
-
       const counterTime = moment()
         .utc()
         .endOf("day")

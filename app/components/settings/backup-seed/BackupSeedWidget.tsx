@@ -67,7 +67,6 @@ const BackupSeedWidgetComponent: React.FunctionComponent<IStateProps & IOwnProps
           <p className={cn(styles.text, "pt-2")}>
             <FormattedMessage id="settings.backup-seed-widget.write-down-recovery-phrase" />
           </p>
-          <Col xs={12} className="d-flex justify-content-center">
             <ButtonLink
               to={profileRoutes.seedBackup}
               data-test-id="backup-seed-widget-link-button"
@@ -77,7 +76,6 @@ const BackupSeedWidgetComponent: React.FunctionComponent<IStateProps & IOwnProps
             >
               <FormattedMessage id="settings.backup-seed-widget.backup-phrase" />
             </ButtonLink>
-          </Col>
         </section>
       )}
     </Panel>

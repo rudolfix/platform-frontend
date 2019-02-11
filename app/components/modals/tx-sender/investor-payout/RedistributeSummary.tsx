@@ -61,7 +61,7 @@ const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponen
         <small className="d-inline-block mb-3 mx-4">
           <FormattedMessage id="investor-payout.summary.hint" />
         </small>
-        <Button onClick={onAccept}>
+        <Button onClick={onAccept} data-test-id="investor-payout.redistribute-summary.accept">
           <FormattedMessage id="investor-payout.redistribute.summary.accept" />
         </Button>
       </section>

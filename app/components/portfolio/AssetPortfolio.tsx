@@ -138,6 +138,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
             <Money value={tokenDisbursal.totalDisbursedAmount} currency={tokenDisbursal.token} />
             <FormattedDate value={tokenDisbursal.timeToFirstDisbursalRecycle} />
             <Button
+              data-test-id="asset-portfolio.payout.redistribute-payout"
               size={ButtonSize.SMALL}
               onClick={() => redistributePayout(tokenDisbursal)}
               layout={EButtonLayout.SECONDARY}
@@ -145,7 +146,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
               <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />
             </Button>
             <Button
-              data-test-id={`asset-portfolio.payout.accept-payout`}
+              data-test-id="asset-portfolio.payout.accept-payout"
               theme="green"
               size={ButtonSize.SMALL}
               onClick={() => acceptPayout(tokenDisbursal)}

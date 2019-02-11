@@ -707,7 +707,6 @@
   "portfolio.section.my-assets.table.header.current-value": "Current value",
   "portfolio.section.my-assets.table.header.quantity": "Quantity",
   "portfolio.section.my-assets.table.header.token": "Token",
-  "portfolio.section.my-proceeds.title": "My proceeds",
   "portfolio.section.reserved-assets.claim-tokens": "Claim Tokens",
   "portfolio.section.reserved-assets.description": "These are assets which you have invested in, but which have not yet been settled.",
   "portfolio.section.reserved-assets.refund": "Refund",

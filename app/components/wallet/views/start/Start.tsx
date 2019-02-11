@@ -1,6 +1,6 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
+import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
 import { actions } from "../../../../modules/actions";
@@ -32,7 +32,8 @@ import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends";
 import { IcbmWallet, IIcbmWalletValues } from "../../wallet-balance/IcbmWallet";
 import { LockedWallet } from "../../wallet-balance/LockedWallet";
-import { UnlockedWallet } from "../../wallet-balance/UnlockedWallet";
+import { UnlockedETHWallet } from "../../wallet-balance/UnlockedETHWallet";
+import { UnlockedNEURWallet } from "../../wallet-balance/UnlockedNEURWallet";
 import { IWalletValues } from "../../wallet-balance/WalletBalance";
 
 const transactions: any[] = [];
@@ -60,61 +61,62 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
   liquidWalletData,
   lockedWalletData,
   icbmWalletData,
-  isLoading,
   depositEthUnlockedWallet,
   withdrawEthUnlockedWallet,
   upgradeWalletEuroToken,
   upgradeWalletEtherToken,
-}) => {
-  return isLoading ? (
-    <LoadingIndicator />
-  ) : (
-    <>
-      <Row className="row-gutter-top" data-test-id="wallet-start-container">
+}) => (
+  <>
+    <Row className="row-gutter-top" data-test-id="wallet-start-container">
+      <Col lg={6} xs={12}>
+        <UnlockedETHWallet
+          className="h-100"
+          ethAmount={liquidWalletData.ethAmount}
+          ethEuroAmount={liquidWalletData.ethEuroAmount}
+          totalEuroAmount={liquidWalletData.totalEuroAmount}
+          depositEth={depositEthUnlockedWallet}
+          withdrawEth={withdrawEthUnlockedWallet}
+          address={userAddress}
+        />
+      </Col>
+
+      <Col lg={6} xs={12}>
+        <UnlockedNEURWallet
+          className="h-100"
+          neuroAmount={liquidWalletData.neuroAmount}
+          neuroEuroAmount={liquidWalletData.neuroEuroAmount}
+          onTopUP={() => {}}
+          onRedeem={() => {}}
+        />
+      </Col>
+
+      {lockedWalletData.hasFunds && (
         <Col lg={6} xs={12}>
-          <UnlockedWallet
+          <LockedWallet className="h-100" data={lockedWalletData} />
+        </Col>
+      )}
+
+      {icbmWalletData.hasFunds && (
+        <Col lg={6} xs={12}>
+          <IcbmWallet
             className="h-100"
-            headerText={<FormattedMessage id="components.wallet.start.my-wallet" />}
-            data={liquidWalletData}
-            depositEth={depositEthUnlockedWallet}
-            withdrawEth={withdrawEthUnlockedWallet}
-            address={userAddress}
+            onUpgradeEuroClick={upgradeWalletEuroToken}
+            onUpgradeEtherClick={upgradeWalletEtherToken}
+            data={icbmWalletData}
           />
         </Col>
-
-        {lockedWalletData.hasFunds && (
-          <Col lg={6} xs={12}>
-            <LockedWallet
-              className="h-100"
-              headerText={<FormattedMessage id="components.wallet.start.locked-wallet" />}
-              data={lockedWalletData}
-            />
-          </Col>
-        )}
-
-        {icbmWalletData.hasFunds && (
-          <Col lg={6} xs={12}>
-            <IcbmWallet
-              className="h-100"
-              headerText={<FormattedMessage id="components.wallet.start.icbm-wallet" />}
-              onUpgradeEuroClick={upgradeWalletEuroToken}
-              onUpgradeEtherClick={upgradeWalletEtherToken}
-              data={icbmWalletData}
-            />
-          </Col>
-        )}
-      </Row>
-
-      {process.env.NF_WALLET_MY_PROCEEDS_VISIBLE === "1" && (
-        <Row>
-          <Col className="my-4">
-            <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
-          </Col>
-        </Row>
       )}
-    </>
-  );
-};
+    </Row>
+
+    {process.env.NF_WALLET_MY_PROCEEDS_VISIBLE === "1" && (
+      <Row>
+        <Col className="my-4">
+          <ClaimedDividends className="h-100" totalEurValue="0" recentPayouts={transactions} />
+        </Col>
+      </Row>
+    )}
+  </>
+);
 
 export const WalletStart = compose<React.FunctionComponent>(
   onEnterAction({
@@ -160,4 +162,5 @@ export const WalletStart = compose<React.FunctionComponent>(
         dispatch(actions.txTransactions.startUpgrade(ETokenType.ETHER)),
     }),
   }),
+  branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
 )(WalletStartComponent);

@@ -43,10 +43,12 @@ import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUt
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers";
 import { formatMoney } from "../../../../utils/Money.utils";
 import { formatThousands } from "../../../../utils/Number.utils";
+import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormFieldRaw } from "../../../shared/forms/fields/FormFieldRaw";
 import { Heading } from "../../../shared/modals/Heading";
+import { ECurrency, Money } from "../../../shared/Money";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 import {
   createWallets,
@@ -59,7 +61,6 @@ import {
   getInvestmentTypeMessages,
 } from "./utils";
 
-import { appRoutes } from "../../../appRoutes";
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
@@ -277,8 +278,10 @@ export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
               <Label>
                 <FormattedMessage id="investment-flow.estimated-neu-tokens" />
               </Label>
-              <InfoAlert>
-                {(showTokens && neuReward && `${formatEurTsd(neuReward)} NEU`) || "\xA0"}
+              <InfoAlert data-test-id="invest-modal.est-neu-tokens">
+                {(showTokens &&
+                  neuReward && <Money value={neuReward} currency={ECurrency.NEU} />) ||
+                  "\xA0"}
               </InfoAlert>
             </FormGroup>
           </Col>

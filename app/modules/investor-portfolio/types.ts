@@ -48,6 +48,6 @@ export interface IIncomingPayoutsData {
 
 export interface IIncomingPayouts {
   loading: boolean;
-  data: IIncomingPayoutsData | undefined;
+  data?: IIncomingPayoutsData;
   payoutDone: boolean;
 }

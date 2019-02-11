@@ -8,7 +8,7 @@ import * as styles from "./Counter.module.scss";
 
 interface IProps {
   endDate: Date;
-  onFinish?: any;
+  onFinish?: () => void;
   ["data-test-id"]?: string;
 }
 

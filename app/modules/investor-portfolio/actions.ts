@@ -16,7 +16,6 @@ export const investorEtoTicketActions = {
   claim: (etoId: string) => createAction("INVESTOR_TICKET_CLAIM", { etoId }),
   loadClaimables: createActionFactory("INVESTOR_CLAIMABLES_LOAD"),
   getIncomingPayouts: createActionFactory("INVESTOR_TICKET_GET_INCOMING_PAYOUTS"),
-  setIncomingPayoutDone: createActionFactory("INVESTOR_TICKET_SET_INCOMING_PAYOUTS_DONE"),
 
   // state mutations
   setEtoInvestorTicket: (etoId: string, ticket: IInvestorTicket) =>
@@ -35,4 +34,5 @@ export const investorEtoTicketActions = {
       incomingPayouts,
     }),
   ),
+  setIncomingPayoutDone: createActionFactory("INVESTOR_TICKET_SET_INCOMING_PAYOUTS_DONE"),
 };

@@ -1,8 +1,8 @@
 import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-
 import { compose } from "recompose";
+
 import { externalRoutes } from "../../../config/externalRoutes";
 import { actions } from "../../../modules/actions";
 import {

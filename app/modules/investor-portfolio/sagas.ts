@@ -1,7 +1,7 @@
+import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
-import BigNumber from "bignumber.js";
 import { ECurrency } from "../../components/shared/Money";
 import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";

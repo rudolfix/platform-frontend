@@ -3,10 +3,10 @@ import * as React from "react";
 
 import { mockedStore } from '../../../test/fixtures/mockedStore';
 import { withStore } from "../../utils/storeDecorator";
-import { Dashboard } from "./Dashboard";
+import { Settings } from "./Settings";
 
-storiesOf("Dashboard", module)
+storiesOf("SettingsWidgets", module)
   .addDecorator(
     withStore(mockedStore),
   )
-  .add("Dashboard", () => <Dashboard />);
+  .add("Dashboard", () => <Settings />);

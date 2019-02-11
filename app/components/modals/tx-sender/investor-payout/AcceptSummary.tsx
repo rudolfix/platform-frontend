@@ -52,7 +52,7 @@ const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps
       <InfoList className="mb-4">
         {tokensDisbursal.map(disbursal => (
           <InfoRow
-            data-test-id="investor-payout.accept-summary.total-payout"
+            data-test-id={`investor-payout.accept-summary.${disbursal.token}-total-payout`}
             key={disbursal.token}
             caption={
               <FormattedMessage

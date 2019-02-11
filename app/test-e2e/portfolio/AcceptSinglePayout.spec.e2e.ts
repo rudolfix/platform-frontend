@@ -30,7 +30,7 @@ describe("Investor accept payout", () => {
     });
 
     // save eth amount to be claimed
-    cy.get(tid("investor-payout.accept-summary.total-payout"))
+    cy.get(tid("investor-payout.accept-summary.eth-total-payout"))
       .then($element => parseAmount($element.text()))
       .as("amountToBeClaimed");
 
@@ -67,7 +67,7 @@ describe("Investor accept payout", () => {
     });
 
     // save neur amount to be claimed
-    cy.get(tid("investor-payout.accept-summary.total-payout"))
+    cy.get(tid("investor-payout.accept-summary.eur_t-total-payout"))
       .then($element => parseAmount($element.text()))
       .as("amountToBeClaimed");
 

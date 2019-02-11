@@ -86,9 +86,35 @@ storiesOf("KYC/StatusWidget", module)
       requestOutsourcedStatus={ERequestOutsourcedStatus.REVIEW_PENDING}
     />
   ))
+  .add("outsourced-success", () => (
+    <KycStatusWidgetComponent
+      {...commonProps}
+      userType={EUserType.INVESTOR}
+      requestStatus={ERequestStatus.OUTSOURCED}
+      requestOutsourcedStatus={ERequestOutsourcedStatus.SUCCESS}
+    />
+  ))
+  .add("outsourced-success-data-changed", () => (
+    <KycStatusWidgetComponent
+      {...commonProps}
+      userType={EUserType.INVESTOR}
+      requestStatus={ERequestStatus.OUTSOURCED}
+      requestOutsourcedStatus={ERequestOutsourcedStatus.SUCCESS_DATA_CHANGED}
+    />
+  ))
   .add("error", () => (
     <KycStatusWidgetComponent
-      {...{ ...commonProps, error: "bla bla error", loading: true }}
+      {...commonProps}
+      error="bla bla error"
+      userType={EUserType.INVESTOR}
+      requestStatus={ERequestStatus.OUTSOURCED}
+      requestOutsourcedStatus={ERequestOutsourcedStatus.REVIEW_PENDING}
+    />
+  ))
+  .add("loading", () => (
+    <KycStatusWidgetComponent
+      {...commonProps}
+      isLoading={true}
       userType={EUserType.INVESTOR}
       requestStatus={ERequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.REVIEW_PENDING}

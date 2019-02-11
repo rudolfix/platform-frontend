@@ -15,7 +15,7 @@ import { DeepReadonly } from "../../types";
 import { Button } from "../shared/buttons";
 import { ModalComponentBody } from "./ModalComponentBody";
 
-import * as successIcon from "../../assets/img/notifications/Success_small.svg";
+import * as successIcon from "../../assets/img/notifications/success.svg";
 import * as warningIcon from "../../assets/img/notifications/warning.svg";
 import { getMessageTranslation } from "../translatedMessages/messages";
 import * as styles from "./GenericModal.module.scss";

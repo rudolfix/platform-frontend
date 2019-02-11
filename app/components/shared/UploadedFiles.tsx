@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { IKycFileInfo } from "../../lib/api/KycApi.interfaces";
 import * as styles from "./UploadedFiles.module.scss";
 
-import * as confirmIcon from "../../assets/img/notifications/Success_small.svg";
+import * as confirmIcon from "../../assets/img/notifications/success.svg";
 
 interface IProps {
   files: ReadonlyArray<IKycFileInfo>;

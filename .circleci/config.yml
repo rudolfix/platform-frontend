@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
-  install:
+  install-lint:
+  # install and lint is taken as one job to remove required time for downloading cache
     docker:
       - image: krzkaczor/neufund-platform-base
     working_directory: /home/circleci/app
@@ -17,16 +18,20 @@ jobs:
           mkdir -p /home/circleci/.cache/Cypress && cp -R /home/circleci/.cache/Cypress
           ~/.cache/Cypress
 
+      # Installation
       - run: yarn --frozen-lockfile
+      # Linting
+      - run: yarn lint
 
       - run: cp -R ~/.cache/Cypress/ /home/circleci/.cache/
+
       - save_cache:
           paths:
             - node_modules
             - /home/circleci/.cache/Cypress
           key: v14-deps-{{ checksum "package.json" }}
 
-  lint:
+  build-frontend:
     docker:
       - image: krzkaczor/neufund-platform-base
     working_directory: /home/circleci/app
@@ -37,10 +42,16 @@ jobs:
           keys:
             - v14-deps-{{ checksum "package.json" }}
             - v14-deps-
+
       - run: yarn prepare
-
-      - run: yarn lint
-
+      - run:
+          command: yarn build:prod:e2e
+          no_output_timeout: 10m
+      # If build takes more than 10mins then fail
+      - persist_to_workspace:
+          root: /home/circleci/app
+          paths:
+            - ./
   test:
     docker:
       - image: krzkaczor/neufund-platform-base
@@ -52,7 +63,7 @@ jobs:
           keys:
             - v14-deps-{{ checksum "package.json" }}
             - v14-deps-
-      - run: yarn prepare
+      - run: yarn
 
       - run: yarn test:browser-coverage && yarn test:node
 
@@ -67,6 +78,8 @@ jobs:
     working_directory: /home/circleci/app
 
     steps:
+      - attach_workspace:
+          at: /home/circleci/app
       - checkout
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
@@ -90,7 +103,8 @@ jobs:
     working_directory: /home/circleci/app
 
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci/app
       - run: ./.circleci/install-yarn.sh
       - run: ./.circleci/install-chrome.sh
       - restore_cache:
@@ -114,8 +128,6 @@ jobs:
           keys:
             - v14-deps-{{ checksum "package.json" }}
             - v14-deps-
-      - run: yarn prepare
-
       - run: yarn storybook:screenshots
       - run:
           (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} &&
@@ -134,7 +146,7 @@ jobs:
             - v14-deps-{{ checksum "package.json" }}
             - v14-deps-
 
-      - run: yarn prepare
+      - run: yarn 
       - run: yarn bundlewatcher
 
   deploy-storybook:
@@ -157,22 +169,22 @@ workflows:
 
   mainflow:
     jobs:
-      - install
-      - lint:
+      - install-lint
+      - build-frontend:
           requires:
-            - install
+            - install-lint
       - test:
-          requires:
-            - lint
+         requires:
+           - install-lint
       - test-e2e:
           requires:
-            - lint
+            - build-frontend
       - danger-ci:
-          requires:
-            - lint
+         requires:
+           - install-lint
       - bundlewatcher:
-          requires:
-            - lint
+         requires:
+           - install-lint
 
   nightly:
     triggers:
@@ -184,19 +196,16 @@ workflows:
                 - master
                 - production
     jobs:
-      - install
-      - lint:
-          requires:
-            - install
+      - install-lint
       - test:
           requires:
-            - lint
+            - install-lint
       - test-e2e:
           requires:
-            - lint
+            - install-lint
       - danger-ci:
           requires:
-            - lint
+            - install-lint
 
   deploy-storybook:
     jobs:

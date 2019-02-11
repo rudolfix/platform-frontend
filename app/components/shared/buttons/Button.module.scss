@@ -115,6 +115,10 @@ $_active-color: lighten($_hover-color, 20%);
     font-weight: $font-weight-bold;
     text-transform: uppercase;
 
+    &:global(.small) {
+      @include font-label;
+    }
+
     &:hover,
     &.is-active  {
       color: $_hover-color;
@@ -222,6 +226,10 @@ $_active-color: lighten($_hover-color, 20%);
     color: $neu-slate-grey;
   }
 
+  &-green {
+    color: $neu-seaweed;
+  }
+
   // elements
   &:global {
 
@@ -244,40 +252,4 @@ $_active-color: lighten($_hover-color, 20%);
     width: px-to-rem(20px);
   }
 
-}
-
-
-.button-icon {
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-
-  padding: 0;
-  border: 0;
-  background-color: transparent;
-
-  &:hover,
-  &.is-active {
-    :global(.inline-icon) {
-      color: $neu-piss-yellow;
-    }
-  }
-
-  &:disabled {
-    color: $neu-pale-grey;
-    cursor: not-allowed;
-
-    &:hover,
-    &.is-active {
-      :global(.inline-icon) {
-        color: $neu-pale-grey;
-      }
-    }
-  }
-}
-
-.button-icon-placeholder {
-  width: 20px;
-  height: 20px;
-  background-color: transparent;
 }

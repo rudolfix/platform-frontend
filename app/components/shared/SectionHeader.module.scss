@@ -16,18 +16,6 @@
     }
   }
 
-  :global(.inline-icon) {
-    width: px-to-rem(20px);
-    margin-left: auto;
-    color: $neu-cloudy-blue;
-    cursor: pointer;
-    transition: 150ms ease-out color;
-
-    &:hover {
-      color: darken($neu-cloudy-blue, 20%);
-    }
-  }
-
   &.small {
     .header {
       @include font-label;
@@ -41,8 +29,25 @@
   .header {
     @include font-default;
 
+    position: relative;
+
     font-weight: bold;
     text-transform: uppercase;
+    margin-bottom: 0;
+
+    &.has-icon {
+      padding-left: 2.4em;
+    }
+
+    .icon {
+      // should match header height + 2px
+      // but not change overall header height
+      position: absolute;
+      left: 0;
+      top: -1px;
+      height: calc(100% + 2px);
+    }
+
   }
 
   .description {

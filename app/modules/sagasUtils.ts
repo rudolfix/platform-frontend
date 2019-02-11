@@ -10,13 +10,14 @@ import {
   takeEvery,
   takeLatest,
 } from "redux-saga/effects";
+
 import { TGlobalDependencies } from "../di/setupBindings";
 import { TAction, TActionPayload, TActionType } from "./actions";
 
 type TSagaWithDeps = (deps: TGlobalDependencies, ...args: any[]) => any;
 
 export function* neuTakeLatest(
-  type: TActionType | TActionType[],
+  type: TActionType | TActionType[] | StringableActionCreator<TAction>,
   saga: TSagaWithDeps,
 ): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");

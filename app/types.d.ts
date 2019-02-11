@@ -95,6 +95,20 @@ export type Omit<T extends K, K> = Pick<T, Exclude<keyof T, keyof K>>;
  */
 export type OmitKeys<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
+/**
+ * From T, select a union of property names which values extends R
+ * @example
+ * SelectPropertyNames<{ foo: boolean, bar: string, baz: string }, string> // "bar" | "baz"
+ */
+type SelectPropertyNames<T, R> = { [K in keyof T]: T[K] extends R ? K : never }[keyof T];
+
+/**
+ * From T, pick only properties which values extends R
+ * @example
+ * PickProperties<{ foo: boolean, bar: string, baz: string }, string> // { bar: string, baz: string }
+ */
+type PickProperties<T, R> = Pick<T, SelectPropertyNames<T, R>>;
+
 export type Overwrite<T1, T2> = { [P in Exclude<keyof T1, keyof T2>]: T1[P] } & T2;
 
 export type TFormikConnect = {

@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
@@ -10,6 +11,8 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { promisify } from "../../lib/contracts/typechain-runtime";
 import { IAppState } from "../../store";
+import { EthereumAddress } from "../../types";
+import { addBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../utils/Number.utils";
 import { actions, TAction } from "../actions";
 import { selectUser } from "../auth/selectors";
@@ -105,9 +108,9 @@ export function* loadClaimables({
 
   const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
 
-  const tokens: [ECurrency, string][] = [
-    [ECurrency.EUR_TOKEN, euroToken.address],
-    [ECurrency.ETH, etherToken.address],
+  const tokens: [ECurrency, EthereumAddress][] = [
+    [ECurrency.EUR_TOKEN, euroToken.address as EthereumAddress],
+    [ECurrency.ETH, etherToken.address as EthereumAddress],
   ];
 
   try {
@@ -134,8 +137,50 @@ export function* loadClaimables({
   }
 }
 
+export function* getIncomingPayouts({
+  contractsService,
+  logger,
+  notificationCenter,
+}: TGlobalDependencies): any {
+  const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
+
+  try {
+    const { euroTokenIncomingPayout, etherTokenIncomingPayout } = yield all({
+      euroTokenIncomingPayout: feeDisbursal.getNonClaimableDisbursals(
+        euroToken.address,
+        neumark.address,
+      ),
+      etherTokenIncomingPayout: feeDisbursal.getNonClaimableDisbursals(
+        etherToken.address,
+        neumark.address,
+      ),
+    });
+
+    const euroTokenIncomingPayoutValue = addBigNumbers(
+      euroTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
+    );
+    const etherTokenIncomingPayoutValue = addBigNumbers(
+      etherTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
+    );
+
+    yield put(
+      actions.investorEtoTicket.setIncomingPayouts({
+        euroTokenIncomingPayoutValue,
+        etherTokenIncomingPayoutValue,
+      }),
+    );
+  } catch (error) {
+    logger.error("Failed to load incoming payouts", error);
+
+    notificationCenter.error(
+      createMessage(InvestorPortfolioMessage.INVESTOR_PORTFOLIO_FAILED_TO_LOAD_INCOMING_PAYOUTS),
+    );
+  }
+}
+
 export function* investorTicketsSagas(): any {
   yield fork(neuTakeEvery, "INVESTOR_TICKET_ETOS_LOAD", loadInvestorTickets);
   yield fork(neuTakeEvery, "INVESTOR_TICKET_LOAD", loadInvestorTicket);
   yield fork(neuTakeEvery, actions.investorEtoTicket.loadClaimables, loadClaimables);
+  yield fork(neuTakeEvery, actions.investorEtoTicket.getIncomingPayouts, getIncomingPayouts);
 }

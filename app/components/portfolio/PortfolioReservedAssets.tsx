@@ -27,7 +27,7 @@ interface IExternalProps {
 const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pendingAssets }) => (
   <>
     <SectionHeader
-      layoutHasDecorator={false}
+      decorator={false}
       className="mb-4"
       description={<FormattedMessage id="portfolio.section.reserved-assets.description" />}
     >
@@ -69,10 +69,17 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
                 timedState === EETOStateOnChain.Whitelist || timedState === EETOStateOnChain.Public;
 
               return (
-                <NewTableRow key={etoId} cellLayout={ENewTableCellLayout.MIDDLE}>
+                <NewTableRow
+                  key={etoId}
+                  data-test-id={`portfolio-reserved-asset-${etoId}`}
+                  cellLayout={ENewTableCellLayout.MIDDLE}
+                >
                   <img src={equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
                   <span className={"d-inline-block"}>
-                    <span className={styles.tokenName}>
+                    <span
+                      className={styles.tokenName}
+                      data-test-id="portfolio-reserved-asset-token-name"
+                    >
                       {equityTokenName} ({equityTokenSymbol})
                     </span>
                   </span>
@@ -82,24 +89,25 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
                   >
                     <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
                   </Link>
-                  <NumberFormat value={investorTicket.equityTokenInt} />
-                  <Money
-                    value={investorTicket.equivEurUlps.toString()}
-                    currency={ECurrency.EUR}
-                    currencySymbol={ECurrencySymbol.SYMBOL}
+                  <NumberFormat
+                    data-test-id="portfolio-reserved-asset-token-balance"
+                    value={investorTicket.equityTokenInt}
                   />
+
                   <Money
+                    data-test-id="portfolio-reserved-asset-value"
                     value={getNeuReward(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
                     currency={ECurrency.EUR}
                     format={EMoneyFormat.FLOAT}
                     currencySymbol={ECurrencySymbol.SYMBOL}
                   />
                   <Money
+                    data-test-id="portfolio-reserved-asset-token-price"
                     value={investorTicket.rewardNmkUlps.toString()}
                     currency={ECurrency.NEU}
                     currencySymbol={ECurrencySymbol.NONE}
                   />
-                  <>
+                  <span data-test-id="portfolio-reserved-asset-token-status">
                     {isWhitelistedOrPublic ? (
                       <span className={"text-uppercase"}>
                         <FormattedMessage
@@ -117,7 +125,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
                     ) : (
                       <ETOState previewCode={previewCode} size={EProjectStatusSize.SMALL} />
                     )}
-                  </>
+                  </span>
                   <PortfolioAssetAction state={timedState} etoId={etoId} />
                 </NewTableRow>
               );

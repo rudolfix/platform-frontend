@@ -21,7 +21,7 @@ describe("Money", () => {
     expect(component.render().text()).to.be.eq("2 501 234 EUR");
   });
 
-  it("should use currency symbol for eur", () => {
+  it("should use token symbol for eur", () => {
     const component = shallow(
       <Money
         value={"123456" + "0".repeat(16)}
@@ -33,7 +33,7 @@ describe("Money", () => {
     expect(component.render().text()).to.be.eq("€1 234.56");
   });
 
-  it("should not add either currency symbol or code  ", () => {
+  it("should not add either token symbol or code  ", () => {
     const component = shallow(
       <Money
         value={"123456" + "0".repeat(16)}
@@ -59,7 +59,7 @@ describe("Money", () => {
     expect(component.render().text()).to.be.eq("1234567");
   });
 
-  it("should format eur_token currency", () => {
+  it("should format eur_token token", () => {
     const component = shallow(
       <Money value={"123456" + "0".repeat(16)} currency={ECurrency.EUR_TOKEN} />,
     );
@@ -67,7 +67,7 @@ describe("Money", () => {
     expect(component.render().text()).to.be.eq("1 234.56 nEUR");
   });
 
-  it("should throw error for non existing currency symbol", () => {
+  it("should throw error for non existing token symbol", () => {
     const componentMount = () =>
       shallow(
         <Money

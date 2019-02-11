@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 
 /**
  * Formats number to desired decimals and precision.
- * IMPORTANT: Use only for display in UI, not for currency calculations in business logic!
+ * IMPORTANT: Use only for display in UI, not for token calculations in business logic!
  */
 export function formatMoney(
   value: string | BigNumber | number,

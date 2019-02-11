@@ -18,7 +18,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpe
 import { SpinningEthereum } from "../../../landing/parts/SpinningEthereum";
 import { Button } from "../../../shared/buttons";
 import { Form, FormField } from "../../../shared/forms";
-import { ValidationErrorMessage } from "../../txSender/shared/ValidationErrorMessage";
+import { ValidationErrorMessage } from "../shared/ValidationErrorMessage";
 
 import { OmitKeys } from "../../../../types";
 import * as styles from "./Withdraw.module.scss";

@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { spy } from "sinon";
+import * as Web3 from "web3";
 
 import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import { setupFakeClock } from "../../../test/integrationTestUtils";
@@ -47,10 +48,13 @@ describe("Web3Manager", () => {
     });
     const asyncIntervalSchedulerFactoryMock = () => asyncIntervalSchedulerMock;
 
+    const web3FactoryMock = (...args: any[]) => new Web3(...args);
+
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       noopLogger,
       asyncIntervalSchedulerFactoryMock,
+      web3FactoryMock,
     );
     web3Manager.networkId = expectedNetworkId;
     web3Manager.on(EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, pluggedListener);
@@ -86,10 +90,13 @@ describe("Web3Manager", () => {
     });
     const asyncIntervalSchedulerFactoryMock = () => asyncIntervalSchedulerMock;
 
+    const web3FactoryMock = (...args: any[]) => new Web3(...args);
+
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       noopLogger,
       asyncIntervalSchedulerFactoryMock,
+      web3FactoryMock,
     );
     web3Manager.networkId = expectedNetworkId;
 
@@ -114,10 +121,13 @@ describe("Web3Manager", () => {
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
       new AsyncIntervalScheduler(noopLogger, cb, interval);
 
+    const web3FactoryMock = (...args: any[]) => new Web3(...args);
+
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       noopLogger,
       asyncIntervalSchedulerFactory,
+      web3FactoryMock,
     );
     web3Manager.networkId = expectedNetworkId;
     web3Manager.on(EWeb3ManagerEvents.PERSONAL_WALLET_CONNECTION_LOST, disconnectListener);
@@ -150,10 +160,13 @@ describe("Web3Manager", () => {
     const asyncIntervalSchedulerFactory: AsyncIntervalSchedulerFactoryType = (cb, interval) =>
       new AsyncIntervalScheduler(noopLogger, cb, interval);
 
+    const web3FactoryMock = (...args: any[]) => new Web3(...args);
+
     const web3Manager = new Web3Manager(
       dummyConfig.ethereumNetwork,
       noopLogger,
       asyncIntervalSchedulerFactory,
+      web3FactoryMock,
     );
     web3Manager.networkId = expectedNetworkId;
 

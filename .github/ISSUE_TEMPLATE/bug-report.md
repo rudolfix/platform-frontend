@@ -6,14 +6,16 @@ labels: ""
 assignees: ""
 ---
 
-**Describe the bug**
+**Description**
 
-**To Reproduce**
+**Environment**
+
+**Steps To Reproduce**
+
+**Actual behaviour**
 
 **Expected behavior**
 
+**Comments, context, logs**
+
 **Screenshots**
-
-**Desktop (please complete the following information):**
-
-**Additional context**

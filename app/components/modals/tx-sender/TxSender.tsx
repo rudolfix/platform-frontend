@@ -11,11 +11,16 @@ import { selectTxSenderModalOpened } from "../../../modules/tx/sender/selectors"
 import { appConnect } from "../../../store";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { ModalComponentBody } from "../ModalComponentBody";
-import { AccessWalletContainer } from "../walletAccess/AccessWalletModal";
+import { AccessWalletContainer } from "../wallet-access/AccessWalletModal";
 import { SetEtoDateSummary } from "./eto-flow/SetDateSummary";
 import { InvestmentSelection } from "./investment-flow/Investment";
 import { InvestmentSuccess } from "./investment-flow/Success";
 import { InvestmentSummary } from "./investment-flow/Summary";
+import { InvestorAcceptPayoutSuccess } from "./investor-payout/AcceptSuccess";
+import { InvestorAcceptPayoutSummary } from "./investor-payout/AcceptSummary";
+import { InvestorRedistributePayoutConfirm } from "./investor-payout/RedistributeConfirm";
+import { InvestorRedistributePayoutSuccess } from "./investor-payout/RedistributeSuccess";
+import { InvestorRedistributePayoutSummary } from "./investor-payout/RedistributeSummary";
 import { ErrorMessage } from "./shared/ErrorMessage";
 import { SigningMessage } from "./shared/SigningMessage";
 import { TxPending } from "./shared/TxPending";
@@ -52,7 +57,9 @@ const TxSenderModalComponent: React.FunctionComponent<Props> = props => {
 
   return (
     <Modal isOpen={isOpen} toggle={onCancel} className={cn({ big: isBigModal(props) })}>
-      <ModalComponentBody onClose={onCancel}>{renderBody(props)}</ModalComponentBody>
+      <ModalComponentBody onClose={onCancel}>
+        <TxSenderBody {...props} />
+      </ModalComponentBody>
     </Modal>
   );
 };
@@ -63,6 +70,8 @@ const InitComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ type
       return <InvestmentSelection />;
     case ETxSenderType.WITHDRAW:
       return <Withdraw />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutConfirm />;
     default:
       return <LoadingIndicator />;
   }
@@ -78,6 +87,10 @@ const SummaryComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ t
       return <UpgradeSummary />;
     case ETxSenderType.USER_CLAIM:
       return <UserClaimSummary />;
+    case ETxSenderType.INVESTOR_ACCEPT_PAYOUT:
+      return <InvestorAcceptPayoutSummary />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutSummary />;
     default:
       return <WithdrawSummary />;
   }
@@ -92,12 +105,16 @@ const SuccessComponent: React.FunctionComponent<{ type?: ETxSenderType; txHash?:
       return <InvestmentSuccess txHash={txHash!} />;
     case ETxSenderType.USER_CLAIM:
       return <UserClaimSuccess />;
+    case ETxSenderType.INVESTOR_ACCEPT_PAYOUT:
+      return <InvestorAcceptPayoutSuccess />;
+    case ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT:
+      return <InvestorRedistributePayoutSuccess />;
     default:
       return <WithdrawSuccess txHash={txHash!} />;
   }
 };
 
-function renderBody({ state, blockId, txHash, type, error }: Props): React.ReactNode {
+const TxSenderBody: React.FunctionComponent<Props> = ({ state, blockId, txHash, type, error }) => {
   switch (state) {
     case ETxSenderState.WATCHING_PENDING_TXS:
       return <WatchPendingTxs txHash={txHash} blockId={blockId} />;
@@ -130,8 +147,11 @@ function renderBody({ state, blockId, txHash, type, error }: Props): React.React
 
     case ETxSenderState.ERROR_SIGN:
       return <ErrorMessage type={error} />;
+
+    default:
+      return null;
   }
-}
+};
 
 const TxSenderModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({

@@ -66,9 +66,9 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
           </Heading>
         </Col>
       </Row>
-      <div className="mb-3">
+      <p className="mb-3">
         <FormattedMessage id="user-claim-flow.summary.explanation" />
-      </div>
+      </p>
       <Row className="mb-2">
         <Col>
           <InfoList>

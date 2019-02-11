@@ -1,11 +1,10 @@
 import BigNumber from "bignumber.js";
 import { put, select, take } from "redux-saga/effects";
-import { Q18 } from "./../../../../config/constants";
-import { TAction } from "./../../../actions";
 
+import { Q18 } from "../../../../config/constants";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
-import { actions } from "../../../actions";
+import { actions, TActionFromCreator } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall } from "../../../sagasUtils";
 import { selectEtherTokenBalanceAsBigNumber } from "../../../wallet/selectors";
@@ -57,8 +56,12 @@ export function* generateEthWithdrawTransaction(
 }
 
 export function* ethWithdrawFlow(_: TGlobalDependencies): any {
-  const action: TAction = yield take("TX_SENDER_ACCEPT_DRAFT");
-  if (action.type !== "TX_SENDER_ACCEPT_DRAFT" || !action.payload.txDraftData) return;
+  const action: TActionFromCreator<typeof actions.txSender.txSenderAcceptDraft> = yield take(
+    actions.txSender.txSenderAcceptDraft,
+  );
+
+  if (!action.payload.txDraftData) return;
+
   const txDataFromUser = action.payload.txDraftData;
   const generatedTxDetails = yield neuCall(generateEthWithdrawTransaction, txDataFromUser);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));

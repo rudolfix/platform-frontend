@@ -1,14 +1,16 @@
 import { fork, put } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { actions, TAction } from "../../actions";
+import { actions, TAction, TActionFromCreator } from "../../actions";
 import { onInvestmentTxModalHide } from "../../investment-flow/sagas";
 import { neuTakeLatest } from "../../sagasUtils";
+import { ETxSenderType } from "../interfaces";
 import { ITxSendParams, txSendSaga } from "../sender/sagas";
-import { ETxSenderType } from "./../interfaces";
 import { startClaimGenerator } from "./claim/saga";
 import { etoSetDateGenerator } from "./eto-flow/saga";
 import { investmentFlowGenerator } from "./investment/sagas";
+import { startInvestorPayoutAcceptGenerator } from "./payout/accept/saga";
+import { startInvestorPayoutRedistributionGenerator } from "./payout/redistribute/saga";
 import { upgradeTransactionFlow } from "./upgrade/sagas";
 import { ethWithdrawFlow } from "./withdraw/sagas";
 
@@ -73,6 +75,48 @@ export function* userClaimSaga({ logger }: TGlobalDependencies, action: TAction)
   }
 }
 
+export function* investorPayoutAcceptSaga(
+  { logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.txTransactions.startInvestorPayoutAccept>,
+): any {
+  const tokensDisbursals = action.payload.tokensDisbursals;
+
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.INVESTOR_ACCEPT_PAYOUT,
+      transactionFlowGenerator: startInvestorPayoutAcceptGenerator,
+      extraParam: tokensDisbursals,
+    });
+
+    logger.info("Investor payout accept successful");
+  } catch (e) {
+    logger.info("Investor payout accept cancelled", e);
+  } finally {
+    yield put(actions.investorEtoTicket.loadClaimables());
+  }
+}
+
+export function* investorPayoutRedistributeSaga(
+  { logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.txTransactions.startInvestorPayoutRedistribute>,
+): any {
+  const tokenDisbursals = action.payload.tokenDisbursals;
+
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT,
+      transactionFlowGenerator: startInvestorPayoutRedistributionGenerator,
+      extraParam: tokenDisbursals,
+    });
+
+    logger.info("Investor payout redistribution successful");
+  } catch (e) {
+    logger.info("Investor payout redistribution cancelled", e);
+  } finally {
+    yield put(actions.investorEtoTicket.loadClaimables());
+  }
+}
+
 export function* etoSetDateSaga({ logger }: TGlobalDependencies): any {
   try {
     yield txSendSaga({
@@ -93,5 +137,15 @@ export const txTransactionsSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_INVESTMENT", investSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_ETO_SET_DATE", etoSetDateSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_CLAIM", userClaimSaga);
+  yield fork(
+    neuTakeLatest,
+    actions.txTransactions.startInvestorPayoutAccept,
+    investorPayoutAcceptSaga,
+  );
+  yield fork(
+    neuTakeLatest,
+    actions.txTransactions.startInvestorPayoutRedistribute,
+    investorPayoutRedistributeSaga,
+  );
   // Add new transaction types here...
 };

@@ -35,7 +35,7 @@ export function* generateDocumentFromTemplate(
         ipfsHash: document.ipfsHash,
         mimeType: document.mimeType,
       },
-      // currency holder is required in on-chain state, use non-existing address
+      // token holder is required in on-chain state, use non-existing address
       // to obtain issuer side template
       { token_holder_ethereum_address: ETHEREUM_ZERO_ADDRESS },
     );
@@ -75,7 +75,7 @@ export function* generateDocumentFromTemplateByEtoId(
         ipfsHash: document.ipfsHash,
         mimeType: document.mimeType,
       },
-      // currency holder is required in on-chain state, use non-existing address
+      // token holder is required in on-chain state, use non-existing address
       // to obtain issuer side template
       { token_holder_ethereum_address: userEthAddress },
     );

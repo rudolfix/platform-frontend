@@ -14,7 +14,7 @@ import { selectNeuBalance } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { withParams } from "../../utils/withParams";
-import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
+import { Button, ButtonLink, ButtonSize, EButtonLayout } from "../shared/buttons";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/NewTable";
 import { NumberFormat } from "../shared/NumberFormat";
@@ -59,7 +59,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
 }) => (
   <>
     <SectionHeader
-      layoutHasDecorator={false}
+      decorator={false}
       className="mb-4"
       description={<FormattedMessage id="portfolio.section.your-assets.description" />}
     >
@@ -106,7 +106,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                 layout={EButtonLayout.SECONDARY}
                 iconPosition="icon-after"
                 svgIcon={arrowRight}
-                innerClassName={cn(styles.actionButton, "p-0")}
+                size={ButtonSize.SMALL}
               >
                 <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
               </ButtonLink>
@@ -143,7 +143,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                       layout={EButtonLayout.SECONDARY}
                       iconPosition="icon-after"
                       svgIcon={arrowRight}
-                      innerClassName={cn(styles.actionButton, "p-0")}
+                      size={ButtonSize.SMALL}
                     >
                       <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
                     </Button>

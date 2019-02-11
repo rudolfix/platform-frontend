@@ -3,6 +3,7 @@ export interface IWithdrawDraftType {
   to: string;
   value: string;
 }
+
 export interface IInvestmentDraftType {
   type: ETxSenderType.INVEST;
 }
@@ -15,6 +16,8 @@ export enum ETxSenderType {
   UPGRADE = "UPGRADE",
   ETO_SET_DATE = "ETO_SET_DATE",
   USER_CLAIM = "USER_CLAIM",
+  INVESTOR_ACCEPT_PAYOUT = "INVESTOR_ACCEPT_PAYOUT",
+  INVESTOR_REDISTRIBUTE_PAYOUT = "INVESTOR_REDISTRIBUTE_PAYOUT",
 }
 
 export enum ETokenType {

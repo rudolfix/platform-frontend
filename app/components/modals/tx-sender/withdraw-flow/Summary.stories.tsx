@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { Container } from "reactstrap";
 
 import { ITxData } from "../../../../lib/web3/types";
+import { withModalBody } from "../../../../utils/storybookHelpers";
 import { WithdrawSummaryComponent } from "./Summary";
 
 const txData: ITxData = {
@@ -13,12 +13,12 @@ const txData: ITxData = {
   from: "0x8e75544b848f0a32a1ab119e3916ec7138f3bed2",
 };
 
-storiesOf("Withdraw summary", module).add("default", () => (
-  <Container>
+storiesOf("Withdraw summary", module)
+  .addDecorator(withModalBody())
+  .add("default", () => (
     <WithdrawSummaryComponent
       txData={txData}
       txCost={"123123123123123123123123"}
       onAccept={() => {}}
     />
-  </Container>
-));
+  ));

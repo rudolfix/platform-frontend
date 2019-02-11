@@ -21,7 +21,7 @@ import { AppRouter } from "./AppRouter";
 import { CriticalError } from "./layouts/CriticalError";
 import { GenericModal } from "./modals/GenericModal";
 import { VideoModal } from "./modals/VideoModal";
-import { AccessWalletModal } from "./modals/walletAccess/AccessWalletModal";
+import { AccessWalletModal } from "./modals/wallet-access/AccessWalletModal";
 import { LoadingIndicator } from "./shared/loading-indicator";
 import { ToastContainer } from "./shared/Toast";
 

@@ -3,9 +3,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { ITokenDisbursal, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { AssetPortfolio } from "../shared/AssetPortfolio";
 import { SectionHeader } from "../shared/SectionHeader";
 import { ClaimedDividends } from "../wallet/claimed-dividends/ClaimedDividends";
+import { AssetPortfolio } from "./AssetPortfolio";
 import { PortfolioReservedAssets } from "./PortfolioReservedAssets";
 
 import * as styles from "./PortfolioLayout.module.scss";
@@ -32,7 +32,7 @@ const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
       <AssetPortfolio tokensDisbursal={tokensDisbursal} />
     )}
 
-    <SectionHeader layoutHasDecorator={false} className="mb-4">
+    <SectionHeader decorator={false} className="mb-4">
       <FormattedMessage id="portfolio.section.my-proceeds.title" />
     </SectionHeader>
 

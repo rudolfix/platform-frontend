@@ -4,7 +4,7 @@ import { ECurrency } from "../../components/shared/Money";
 import { IEtoTokenData, TEtoWithCompanyAndContract } from "../public-etos/types";
 
 export interface ITokenDisbursal {
-  currency: ECurrency;
+  token: ECurrency;
   amountToBeClaimed: string;
   totalDisbursedAmount: string;
   timeToFirstDisbursalRecycle: number;
@@ -40,3 +40,14 @@ export type TETOWithInvestorTicket = TEtoWithCompanyAndContract & {
 export type TETOWithTokenData = TETOWithInvestorTicket & {
   tokenData: IEtoTokenData;
 };
+
+export interface IIncomingPayoutsData {
+  euroTokenIncomingPayoutValue: string;
+  etherTokenIncomingPayoutValue: string;
+}
+
+export interface IIncomingPayouts {
+  loading: boolean;
+  data?: IIncomingPayoutsData;
+  payoutDone: boolean;
+}

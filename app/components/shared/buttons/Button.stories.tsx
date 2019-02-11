@@ -1,10 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Button, ButtonArrowRight, ButtonSize, ButtonWidth } from "./Button";
+import { Button, ButtonArrowRight, ButtonSize, ButtonWidth, EButtonLayout } from "./Button";
 
 import * as icon from "../../../assets/img/inline_icons/icon_questionmark.svg";
-import { EButtonLayout } from "./index";
 
 storiesOf("buttons/default", module)
   .add("primary", () => (
@@ -48,7 +47,7 @@ storiesOf("buttons/default", module)
       </Button>
     </>
   ))
-  .add("white theme", () => (
+  .add("with theme", () => (
     <>
       <Button theme="white">white primary</Button>
       <br />
@@ -89,18 +88,42 @@ storiesOf("buttons/default", module)
       <br />
       <Button theme="neon">neon primary</Button>
       <br />
-      <Button theme="neon">neon primary disabled</Button>
+      <Button theme="neon" disabled>
+        neon primary disabled
+      </Button>
+      <br />
+      <Button theme="green" layout={EButtonLayout.SECONDARY}>
+        green secondary
+      </Button>
+      <br />
+      <Button theme="green" layout={EButtonLayout.SECONDARY} disabled>
+        green secondary disabled
+      </Button>
       <br />
     </>
   ))
   .add("with size", () => (
     <>
+      {/* Default button */}
       <Button size={ButtonSize.NORMAL}>normal button</Button>
       <br />
       <Button size={ButtonSize.SMALL}>small button</Button>
       <br />
       <Button size={ButtonSize.HUGE}>huge button</Button>
       <br />
+      <br />
+      {/* Secondary button */}
+      <Button layout={EButtonLayout.SECONDARY} size={ButtonSize.NORMAL}>
+        secondary button
+      </Button>
+      <br />
+      <Button layout={EButtonLayout.SECONDARY} size={ButtonSize.SMALL}>
+        secondary small button
+      </Button>
+      <br />
+      <Button layout={EButtonLayout.SECONDARY} size={ButtonSize.HUGE}>
+        secondary huge button
+      </Button>
     </>
   ))
   .add("with width", () => (

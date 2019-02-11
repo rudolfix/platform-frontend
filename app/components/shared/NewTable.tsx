@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TTranslatedString } from "../../types";
+import { TDataTestId, TTranslatedString } from "../../types";
 import { Panel } from "./Panel";
 
 import * as styles from "./NewTable.module.scss";
@@ -46,8 +46,12 @@ interface INewTable {
 
 type TProps = INewTable & INewTableHeader;
 
-const NewTableRow: React.FunctionComponent<INewTableRow> = ({ children, cellLayout }) => (
-  <tr className={styles.row}>
+const NewTableRow: React.FunctionComponent<INewTableRow & TDataTestId> = ({
+  children,
+  ["data-test-id"]: dataTestId,
+  cellLayout,
+}) => (
+  <tr className={styles.row} data-test-id={dataTestId}>
     {React.Children.toArray(children).map((child, index) => {
       return (
         <td className={cn(styles.cell, cellLayout)} key={index}>

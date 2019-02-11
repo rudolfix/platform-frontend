@@ -1,7 +1,12 @@
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces";
 import { Dictionary } from "../../types";
 import { createAction, createActionFactory } from "../actionsUtils";
-import { ICalculatedContribution, IInvestorTicket, ITokenDisbursal } from "./types";
+import {
+  ICalculatedContribution,
+  IIncomingPayoutsData,
+  IInvestorTicket,
+  ITokenDisbursal,
+} from "./types";
 
 export const investorEtoTicketActions = {
   // public actions
@@ -10,6 +15,7 @@ export const investorEtoTicketActions = {
     createAction("INVESTOR_TICKET_ETOS_LOAD", { etos }),
   claim: (etoId: string) => createAction("INVESTOR_TICKET_CLAIM", { etoId }),
   loadClaimables: createActionFactory("INVESTOR_CLAIMABLES_LOAD"),
+  getIncomingPayouts: createActionFactory("INVESTOR_TICKET_GET_INCOMING_PAYOUTS"),
 
   // state mutations
   setEtoInvestorTicket: (etoId: string, ticket: IInvestorTicket) =>
@@ -22,4 +28,11 @@ export const investorEtoTicketActions = {
     "SET_TOKENS_DISBURSAL",
     (tokensDisbursal: ITokenDisbursal[]) => ({ tokensDisbursal }),
   ),
+  setIncomingPayouts: createActionFactory(
+    "INVESTOR_TICKET_SET_INCOMING_PAYOUTS",
+    (incomingPayouts: IIncomingPayoutsData) => ({
+      incomingPayouts,
+    }),
+  ),
+  setIncomingPayoutDone: createActionFactory("INVESTOR_TICKET_SET_INCOMING_PAYOUTS_DONE"),
 };

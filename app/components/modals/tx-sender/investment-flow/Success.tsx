@@ -29,7 +29,10 @@ const InvestmentSuccessComponent: React.FunctionComponent<IDispatchProps> = ({
       />
     }
   >
-    <ButtonArrowRight onClick={goToPortfolio}>
+    <ButtonArrowRight
+      data-test-id="investment-flow.success.view-your-portfolio"
+      onClick={goToPortfolio}
+    >
       <FormattedMessage id="investment-flow.success.view-portfolio" />
     </ButtonArrowRight>
   </Message>

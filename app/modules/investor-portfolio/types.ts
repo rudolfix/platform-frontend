@@ -40,3 +40,14 @@ export type TETOWithInvestorTicket = TEtoWithCompanyAndContract & {
 export type TETOWithTokenData = TETOWithInvestorTicket & {
   tokenData: IEtoTokenData;
 };
+
+export interface IIncomingPayoutsData {
+  euroTokenIncomingPayoutValue: string;
+  etherTokenIncomingPayoutValue: string;
+}
+
+export interface IIncomingPayouts {
+  loading: boolean;
+  data?: IIncomingPayoutsData;
+  payoutDone: boolean;
+}

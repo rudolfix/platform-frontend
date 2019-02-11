@@ -102,3 +102,11 @@ export const assertUserInLanding = () => {
   cy.url().should("contain", appRoutes.root);
   return cy.get(tid("landing-page"));
 };
+
+export const assertMoneyNotEmpty = (selector: string) => {
+  cy.get(tid(selector)).then($element => {
+    const value = $element.text();
+
+    expect(value).to.not.equal("-");
+  });
+};

@@ -202,11 +202,3 @@ export const getWalletNEurAmount = () => {
 
 // Reexport assertions so they are easy accessed through utils
 export * from "./assertions";
-
-export const assertMoneyNotEmpty = (selector: string) => {
-  cy.get(tid(selector)).then($element => {
-    const value = $element.text();
-
-    expect(value).to.not.equal("-");
-  });
-};

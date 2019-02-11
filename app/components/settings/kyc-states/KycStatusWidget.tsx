@@ -268,9 +268,7 @@ export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetP
           <p className={cn(styles.text, "pt-2")}>
             {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
           </p>
-          <Col xs={12} className="d-flex justify-content-center">
-            <ActionButton {...props} />
-          </Col>
+          <ActionButton {...props} />
         </section>
       )}
     </Panel>

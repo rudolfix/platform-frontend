@@ -1,15 +1,14 @@
-import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
+import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import {
   assertButtonIsActive,
   assertDashboard,
   confirmAccessModal,
   etoFixtureAddressByName,
   goToDashboard,
+  parseAmount,
 } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-
-const parseAmount = (amount: string) => parseFloat(amount.replace(" ", ""));
 
 describe("Invest with ethereum", () => {
   it("do", () => {

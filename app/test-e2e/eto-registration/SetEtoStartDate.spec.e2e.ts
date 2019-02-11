@@ -1,7 +1,7 @@
 import * as moment from "moment";
 
 import { appRoutes } from "../../components/appRoutes";
-import { ISSUER_SETUP } from "../constants";
+import { ISSUER_SETUP } from "../fixtures";
 import { closeModal, confirmAccessModal } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";

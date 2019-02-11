@@ -39,13 +39,16 @@ describe("Incoming payout", () => {
         .subtract(10, "seconds")
         .toDate()
         .getTime();
-      cy.clock(counterTime);
-      cy.tick(11 * 1000);
+      cy.clock(counterTime).then(clock => {
+        cy.tick(11 * 1000);
 
-      cy.get(tid("incoming-payout-done"));
+        cy.get(tid("incoming-payout-done"));
 
-      cy.get(tid("incoming-payout-go-to-portfolio")).click();
-      cy.url().should("include", "/portfolio");
+        cy.get(tid("incoming-payout-go-to-portfolio")).click();
+        // restore clock to have portfolio loaded
+        clock.restore();
+        cy.url().should("include", "/portfolio");
+      });
     });
   });
 });

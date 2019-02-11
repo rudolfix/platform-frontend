@@ -10,6 +10,7 @@ const data: TPortfolioLayoutProps = {
   pendingAssets: [],
   isRetailEto: false,
   walletAddress: "0x00000",
+  isVerifiedInvestor: true,
   tokensDisbursal: [
     {
       token: ECurrency.EUR_TOKEN,

@@ -21,10 +21,12 @@ import * as nEurIcon from "../../assets/img/nEUR_icon.svg";
 
 interface IExternalProps {
   tokensDisbursal: ReadonlyArray<ITokenDisbursal> | undefined;
+  isVerifiedInvestor: boolean;
 }
 
 interface ILayoutProps {
   tokensDisbursal: ReadonlyArray<ITokenDisbursal>;
+  isVerifiedInvestor: boolean;
 }
 
 interface IDispatchToProps {
@@ -68,6 +70,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
   redistributePayout,
   acceptPayout,
   acceptCombinedPayout,
+  isVerifiedInvestor,
 }) => (
   <Row className="mb-4">
     <Col md={5} lg={4} sm={12}>
@@ -139,6 +142,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
             <Money value={tokenDisbursal.totalDisbursedAmount} currency={tokenDisbursal.token} />
             <FormattedDate value={tokenDisbursal.timeToFirstDisbursalRecycle} />
             <Button
+              disabled={!isVerifiedInvestor}
               data-test-id="asset-portfolio.payout.redistribute-payout"
               size={ButtonSize.SMALL}
               onClick={() => redistributePayout(tokenDisbursal)}
@@ -147,6 +151,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
               <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />
             </Button>
             <Button
+              disabled={!isVerifiedInvestor}
               data-test-id="asset-portfolio.payout.accept-payout"
               theme="green"
               size={ButtonSize.SMALL}
@@ -164,6 +169,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
           <></>
           <></>
           <Button
+            disabled={!isVerifiedInvestor}
             data-test-id="asset-portfolio.payout.accept-all-payouts"
             theme="green"
             size={ButtonSize.SMALL}

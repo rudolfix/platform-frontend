@@ -1,12 +1,19 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { mockedStore } from '../../../test/fixtures/mockedStore';
+import { mockedStore } from "../../../test/fixtures/mockedStore";
 import { withStore } from "../../utils/storeDecorator";
 import { Settings } from "./Settings";
 
 storiesOf("SettingsWidgets", module)
+  .addDecorator(withStore(mockedStore))
+  .add("Settings", () => <Settings />);
+
+storiesOf("SettingsWidgetsVerified", module)
   .addDecorator(
-    withStore(mockedStore),
+    withStore({
+      ...mockedStore,
+      auth: { ...mockedStore.auth, user: { ...mockedStore.auth.user, backupCodesVerified: true } },
+    }),
   )
-  .add("Dashboard", () => <Settings />);
+  .add("Settings", () => <Settings />);

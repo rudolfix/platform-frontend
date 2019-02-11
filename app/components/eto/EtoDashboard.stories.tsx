@@ -3,7 +3,7 @@ import * as React from "react";
 import { Row } from "reactstrap";
 
 import { testEto } from "../../../test/fixtures";
-import { mockedStore } from '../../../test/fixtures/mockedStore';
+import { mockedStore } from "../../../test/fixtures/mockedStore";
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
 import { withStore } from "../../utils/storeDecorator";
 import { EtoDashboardStateViewComponent } from "./EtoDashboard";
@@ -19,9 +19,7 @@ const state = {
 };
 
 storiesOf("ETO-Flow/Dashboard/StateView", module)
-  .addDecorator(
-    withStore(mockedStore),
-  )
+  .addDecorator(withStore(mockedStore))
   .add("State OnChain", () => (
     <Row className="row-gutter-top">
       <EtoDashboardStateViewComponent {...state} />

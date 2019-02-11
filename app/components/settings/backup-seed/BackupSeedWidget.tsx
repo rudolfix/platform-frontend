@@ -1,7 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col } from "reactstrap";
 import { compose } from "redux";
 
 import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
@@ -47,17 +46,15 @@ const BackupSeedWidgetComponent: React.FunctionComponent<IStateProps & IOwnProps
           <p className={cn(styles.text, "pt-2")}>
             <FormattedMessage id="settings.backup-seed-widget.backed-up-seed" />
           </p>
-          <Col xs={12} className="d-flex justify-content-center">
-            <ButtonLink
-              to={profileRoutes.seedBackup}
-              layout={EButtonLayout.SECONDARY}
-              iconPosition="icon-after"
-              svgIcon={arrowRight}
-              data-test-id="backup-seed-verified-section.view-again"
-            >
-              <FormattedMessage id="settings.backup-seed-widget.view-again" />
-            </ButtonLink>
-          </Col>
+          <ButtonLink
+            to={profileRoutes.seedBackup}
+            layout={EButtonLayout.SECONDARY}
+            iconPosition="icon-after"
+            svgIcon={arrowRight}
+            data-test-id="backup-seed-verified-section.view-again"
+          >
+            <FormattedMessage id="settings.backup-seed-widget.view-again" />
+          </ButtonLink>
         </section>
       ) : (
         <section
@@ -67,15 +64,15 @@ const BackupSeedWidgetComponent: React.FunctionComponent<IStateProps & IOwnProps
           <p className={cn(styles.text, "pt-2")}>
             <FormattedMessage id="settings.backup-seed-widget.write-down-recovery-phrase" />
           </p>
-            <ButtonLink
-              to={profileRoutes.seedBackup}
-              data-test-id="backup-seed-widget-link-button"
-              layout={EButtonLayout.SECONDARY}
-              iconPosition="icon-after"
-              svgIcon={arrowRight}
-            >
-              <FormattedMessage id="settings.backup-seed-widget.backup-phrase" />
-            </ButtonLink>
+          <ButtonLink
+            to={profileRoutes.seedBackup}
+            data-test-id="backup-seed-widget-link-button"
+            layout={EButtonLayout.SECONDARY}
+            iconPosition="icon-after"
+            svgIcon={arrowRight}
+          >
+            <FormattedMessage id="settings.backup-seed-widget.backup-phrase" />
+          </ButtonLink>
         </section>
       )}
     </Panel>

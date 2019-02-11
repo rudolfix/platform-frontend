@@ -16,7 +16,6 @@ import { Heading } from "../../../shared/modals/Heading";
 import { Money, selectCurrencyCode } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
-import { tid } from "../../../../test-e2e/utils/selectors";
 
 interface IStateProps {
   tokensDisbursal: ITokenDisbursal[];

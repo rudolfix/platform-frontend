@@ -108,7 +108,7 @@ const BankTransferSummaryComponent: React.FunctionComponent<IProps> = ({
                 <FormattedMessage id="investment-flow.bank-transfer-summary.estimated-investment" />
               }
               value={`${formatEurTsd(investmentEur)} €`}
-              dataTestId="invest-modal-bank-transfer-summary-amount"
+              data-test-id="invest-modal-bank-transfer-summary-amount"
             />
             <InfoRow
               caption={

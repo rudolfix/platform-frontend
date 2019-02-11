@@ -1,4 +1,4 @@
-import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
+import { INV_ETH_EUR_ICBM_M_HAS_KYC_DUP } from "../fixtures";
 import { closeModal, confirmAccessModal, goToPortfolio } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
@@ -8,7 +8,8 @@ describe("Investor redistribute payout", () => {
     createAndLoginNewUser({
       type: "investor",
       kyc: "business",
-      seed: INV_EUR_ICBM_HAS_KYC_SEED,
+      seed: INV_ETH_EUR_ICBM_M_HAS_KYC_DUP,
+      hdPath: "m/44'/60'/0'/0",
       clearPendingTransactions: true,
     }));
 
@@ -28,7 +29,7 @@ describe("Investor redistribute payout", () => {
     confirmAccessModal();
 
     // wait for success
-    cy.get(tid("investor-payout.accept-success"));
+    cy.get(tid("investor-payout.redistribute-success"));
     closeModal();
 
     // assert that payout is removed from the list
@@ -51,7 +52,7 @@ describe("Investor redistribute payout", () => {
     confirmAccessModal();
 
     // wait for success
-    cy.get(tid("investor-payout.accept-success"));
+    cy.get(tid("investor-payout.redistribute-success"));
     closeModal();
 
     // assert that payout is removed from the list

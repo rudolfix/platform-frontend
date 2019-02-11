@@ -1,4 +1,4 @@
-import { INV_ICBM_EUR_M_HAS_KYC } from "../fixtures";
+import { INV_ICBM_ETH_M_HAS_KYC_DUP } from "../fixtures";
 import {
   closeModal,
   confirmAccessModal,
@@ -14,7 +14,8 @@ it("should correctly accept all payouts", () => {
   createAndLoginNewUser({
     type: "investor",
     kyc: "business",
-    seed: INV_ICBM_EUR_M_HAS_KYC,
+    seed: INV_ICBM_ETH_M_HAS_KYC_DUP,
+    hdPath: "m/44'/60'/0'/0",
     clearPendingTransactions: true,
   }).then(() => {
     getWalletEthAmount().as("balanceEthBefore");

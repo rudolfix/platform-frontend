@@ -30,3 +30,9 @@ export const INV_ICBM_ETH_M_HAS_KYC =
 
 export const INV_ICBM_EUR_M_HAS_KYC =
   "behind cool coyote edit have demise arena glare early embrace potato tray unit repair shine huge duty hybrid relax cage embrace cinnamon please hip";
+
+export const INV_ICBM_ETH_M_HAS_KYC_DUP =
+  "subject loan retire wash stairs joke dry boy submit already tuition sponsor focus small giggle tornado smile wheel income pudding palm zone tragic property";
+
+export const INV_ETH_EUR_ICBM_M_HAS_KYC_DUP =
+  "escape filter champion bring denial siege cactus vivid used march smile over ocean repeat poet word media fluid fluid quantum faculty tattoo attract crush";

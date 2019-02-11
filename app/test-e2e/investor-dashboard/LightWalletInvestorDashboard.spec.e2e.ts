@@ -29,6 +29,7 @@ describe("Incoming payout", () => {
 
   it("should change view after incoming payout complete", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
+      let clock: any = null;
       cy.visit("/dashboard");
 
       cy.get(tid("incoming-payout-counter"));
@@ -39,16 +40,20 @@ describe("Incoming payout", () => {
         .subtract(10, "seconds")
         .toDate()
         .getTime();
-      cy.clock(counterTime).then(clock => {
-        cy.tick(11 * 1000);
+      // workaround for not working this.clock.restore() outside clock promise
+      cy.clock(counterTime).then(cl => (clock = cl));
+      cy.tick(11 * 1000);
 
-        cy.get(tid("incoming-payout-done"));
+      cy.get(tid("incoming-payout-done"));
 
-        cy.get(tid("incoming-payout-go-to-portfolio")).click();
-        // restore clock to have portfolio loaded
-        clock.restore();
-        cy.url().should("include", "/portfolio");
-      });
+      cy.get(tid("incoming-payout-go-to-portfolio"))
+        .click()
+        .then(() => {
+          // restore clock to have portfolio loaded
+          clock.restore();
+        });
+
+      cy.url().should("include", "/portfolio");
     });
   });
 });

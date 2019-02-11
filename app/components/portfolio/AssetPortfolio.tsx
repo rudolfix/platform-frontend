@@ -54,6 +54,7 @@ const CurrencyIcon: React.FunctionComponent<{ currency: ECurrency } & CommonHtml
 
 const AssetPortfolioLayoutNoPayouts: React.FunctionComponent = () => (
   <SectionHeader
+    data-test-id="asset-portfolio.no-payouts"
     decorator={false}
     className="mb-4"
     description={<FormattedMessage id="portfolio.asset.payouts-from-neu.no-payouts" />}
@@ -163,6 +164,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
           <></>
           <></>
           <Button
+            data-test-id="asset-portfolio.payout.accept-all-payouts"
             theme="green"
             size={ButtonSize.SMALL}
             onClick={() => acceptCombinedPayout(tokensDisbursal)}

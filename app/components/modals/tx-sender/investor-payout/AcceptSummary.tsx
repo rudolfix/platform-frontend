@@ -16,6 +16,7 @@ import { Heading } from "../../../shared/modals/Heading";
 import { Money, selectCurrencyCode } from "../../../shared/Money";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
+import { tid } from "../../../../test-e2e/utils/selectors";
 
 interface IStateProps {
   tokensDisbursal: ITokenDisbursal[];
@@ -52,6 +53,7 @@ const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps
       <InfoList className="mb-4">
         {tokensDisbursal.map(disbursal => (
           <InfoRow
+            data-test-id="investor-payout.accept-summary.total-payout"
             key={disbursal.token}
             caption={
               <FormattedMessage
@@ -73,7 +75,7 @@ const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps
         <small className="d-inline-block mb-3 mx-4">
           <FormattedMessage id="investor-payout.summary.hint" />
         </small>
-        <Button onClick={onAccept}>
+        <Button onClick={onAccept} data-test-id="investor-payout.accept-summary.accept">
           <FormattedMessage id="investor-payout.accept.summary.accept" />
         </Button>
       </section>

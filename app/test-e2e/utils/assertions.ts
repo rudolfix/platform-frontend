@@ -25,6 +25,16 @@ export const assertRegister = () => {
   cy.get(tid("register-layout")).should("exist");
 };
 
+export const assertPortfolio = () => {
+  cy.url().should("contain", "/portfolio");
+  cy.get(tid("portfolio-layout")).should("exist");
+};
+
+export const assertWallet = () => {
+  cy.url().should("contain", "/wallet");
+  cy.get(tid("wallet-start-container")).should("exist");
+};
+
 export const assertWaitForLatestEmailSentWithSalt = (
   userEmail: string,
   timeout: number = 20000,

@@ -27,7 +27,7 @@ const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
   isRetailEto,
   tokensDisbursal,
 }) => (
-  <section className={styles.portfolio}>
+  <section className={styles.portfolio} data-test-id="portfolio-layout">
     {process.env.NF_ASSETS_PORTFOLIO_COMPONENT_VISIBLE === "1" && (
       <AssetPortfolio tokensDisbursal={tokensDisbursal} />
     )}

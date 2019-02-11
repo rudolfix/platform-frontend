@@ -4,7 +4,7 @@ import { appRoutes } from "../../components/appRoutes";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
 import { mockApiUrl } from "../confirm";
-import { assertUserInDashboard } from "./assertions";
+import { assertPortfolio, assertUserInDashboard, assertWallet } from "./assertions";
 import { tid } from "./selectors";
 import { DEFAULT_PASSWORD } from "./userHelpers";
 
@@ -28,6 +28,16 @@ export const goToDashboard = () => {
 
 export const goToProfile = () => {
   cy.visit("/profile");
+};
+
+export const goToPortfolio = () => {
+  cy.visit("/portfolio");
+  assertPortfolio();
+};
+
+export const goToWallet = () => {
+  cy.visit("/wallet");
+  assertWallet();
 };
 
 export const clearEmailServer = () => {
@@ -165,9 +175,30 @@ export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hook
 /**
  * Extract amount from string.
  * @example parseAmount("1 245 352 EUR") // return 1245352
- * @param amount
  */
 export const parseAmount = (amount: string) => parseFloat(amount.replace(" ", ""));
+
+/**
+ * Get eth wallet balance
+ */
+export const getWalletEthAmount = (alias: string) => {
+  goToWallet();
+
+  cy.get(tid("wallet-balance.ether.balance-values-large-value"))
+    .then($element => parseAmount($element.text()))
+    .as(alias);
+};
+
+/**
+ * Get nEur wallet balance
+ */
+export const getWalletNEurAmount = (alias: string) => {
+  goToWallet();
+
+  cy.get(tid("unlockedEuroWallet.balance-values-large-value"))
+    .then($element => parseAmount($element.text()))
+    .as(alias);
+};
 
 // Reexport assertions so they are easy accessed through utils
 export * from "./assertions";

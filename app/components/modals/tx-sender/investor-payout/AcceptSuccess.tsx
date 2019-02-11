@@ -15,6 +15,7 @@ type IProps = IDispatchProps;
 
 const InvestorAcceptPayoutSuccessLayout: React.FunctionComponent<IProps> = ({ goToWallet }) => (
   <Message
+    data-test-id="investor-payout.accept-success"
     image={<ConfettiEthereum className="mb-3" />}
     text={<FormattedMessage id="investor-payout.accept.success.text" />}
   >

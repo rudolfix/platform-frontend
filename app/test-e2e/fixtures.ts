@@ -27,3 +27,6 @@ export const ISSUER_SETUP_NO_ST =
 
 export const INV_ICBM_ETH_M_HAS_KYC =
   "mimic lumber mother guide coil theory elite fly tiny wink seed issue cupboard limb luggage reflect ladder menu menu still deny basket spring evil";
+
+export const INV_ICBM_EUR_M_HAS_KYC =
+  "behind cool coyote edit have demise arena glare early embrace potato tray unit repair shine huge duty hybrid relax cage embrace cinnamon please hip";

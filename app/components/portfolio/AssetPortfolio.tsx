@@ -121,12 +121,16 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
         ]}
       >
         {tokensDisbursal.map(tokenDisbursal => (
-          <NewTableRow key={tokenDisbursal.token}>
+          <NewTableRow
+            key={tokenDisbursal.token}
+            data-test-id={`asset-portfolio.payout-${tokenDisbursal.token}`}
+          >
             <>
               <CurrencyIcon currency={tokenDisbursal.token} className="mr-2" />
               {selectCurrencyCode(tokenDisbursal.token)}
             </>
             <Money
+              data-test-id={`asset-portfolio.payout.amount-to-be-claimed`}
               value={tokenDisbursal.amountToBeClaimed}
               currency={tokenDisbursal.token}
               theme={ETheme.GREEN}
@@ -141,6 +145,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
               <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />
             </Button>
             <Button
+              data-test-id={`asset-portfolio.payout.accept-payout`}
               theme="green"
               size={ButtonSize.SMALL}
               onClick={() => acceptPayout(tokenDisbursal)}

@@ -181,23 +181,23 @@ export const parseAmount = (amount: string) => parseFloat(amount.replace(" ", ""
 /**
  * Get eth wallet balance
  */
-export const getWalletEthAmount = (alias: string) => {
+export const getWalletEthAmount = () => {
   goToWallet();
 
-  cy.get(tid("wallet-balance.ether.balance-values-large-value"))
-    .then($element => parseAmount($element.text()))
-    .as(alias);
+  return cy
+    .get(tid("wallet-balance.ether.balance-values-large-value"))
+    .then($element => parseAmount($element.text()));
 };
 
 /**
  * Get nEur wallet balance
  */
-export const getWalletNEurAmount = (alias: string) => {
+export const getWalletNEurAmount = () => {
   goToWallet();
 
-  cy.get(tid("unlockedEuroWallet.balance-values-large-value"))
-    .then($element => parseAmount($element.text()))
-    .as(alias);
+  return cy
+    .get(tid("unlockedEuroWallet.balance-values-large-value"))
+    .then($element => parseAmount($element.text()));
 };
 
 // Reexport assertions so they are easy accessed through utils

@@ -11,89 +11,83 @@ import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Investor accept payout", () => {
-  it("eth payout", () => {
+  beforeEach(() =>
     createAndLoginNewUser({
       type: "investor",
       kyc: "business",
       seed: INV_ETH_EUR_ICBM_HAS_KYC,
       clearPendingTransactions: true,
-    }).then(() => {
-      getWalletEthAmount("balanceBefore");
+    }));
 
-      goToPortfolio();
+  it("eth payout", () => {
+    getWalletEthAmount().as("balanceBefore");
 
-      cy.get(tid(`asset-portfolio.payout-eth`)).within(() => {
-        // accept eth payout
-        cy.get(tid("asset-portfolio.payout.accept-payout")).click();
-      });
+    goToPortfolio();
 
-      // save eth amount to be claimed
-      cy.get(tid("investor-payout.accept-summary.total-payout"))
-        .then($element => parseAmount($element.text()))
-        .as("amountToBeClaimed");
+    cy.get(tid(`asset-portfolio.payout-eth`)).within(() => {
+      // accept eth payout
+      cy.get(tid("asset-portfolio.payout.accept-payout")).click();
+    });
 
-      // accept summary
-      cy.get(tid("investor-payout.accept-summary.accept")).click();
+    // save eth amount to be claimed
+    cy.get(tid("investor-payout.accept-summary.total-payout"))
+      .then($element => parseAmount($element.text()))
+      .as("amountToBeClaimed");
 
-      confirmAccessModal();
+    // accept summary
+    cy.get(tid("investor-payout.accept-summary.accept")).click();
+    confirmAccessModal();
 
-      cy.get(tid("investor-payout.accept-success"));
+    // wait for success
+    cy.get(tid("investor-payout.accept-success"));
+    closeModal();
 
-      closeModal();
+    // assert that payout is removed from the list
+    cy.get(tid(`asset-portfolio.payout-eth`)).should("not.exist");
 
-      cy.get(tid(`asset-portfolio.payout-eth`)).should("not.exist");
-
-      getWalletEthAmount("balanceAfter");
-
-      cy.get<number>("@amountToBeClaimed").then(amount => {
-        cy.get<number>("@balanceBefore").then(balanceBefore => {
-          cy.get<number>("@balanceAfter").then(balanceAfter => {
-            // balance after payout should be increased by the payout amount
-            expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.01);
-          });
+    cy.get<number>("@amountToBeClaimed").then(amount => {
+      cy.get<number>("@balanceBefore").then(balanceBefore => {
+        getWalletEthAmount().then(balanceAfter => {
+          // balance after payout should be increased by the payout amount
+          // there can be rounding issue and gas price cost so we assert balance with small delta
+          expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.01);
         });
       });
     });
+  });
 
-    it("nEUR payout", () => {
-      createAndLoginNewUser({
-        type: "investor",
-        kyc: "business",
-        seed: INV_ETH_EUR_ICBM_HAS_KYC,
-        clearPendingTransactions: true,
-      }).then(() => {
-        getWalletNEurAmount("balanceBefore");
+  it("nEUR payout", () => {
+    getWalletNEurAmount().as("balanceBefore");
 
-        goToPortfolio();
+    goToPortfolio();
 
-        cy.get(tid(`asset-portfolio.payout-eur_t`)).within(() => {
-          // accept neur payout
-          cy.get(tid("asset-portfolio.payout.accept-payout")).click();
-        });
+    cy.get(tid(`asset-portfolio.payout-eur_t`)).within(() => {
+      // accept neur payout
+      cy.get(tid("asset-portfolio.payout.accept-payout")).click();
+    });
 
-        // save neur amount to be claimed
-        cy.get(tid("investor-payout.accept-summary.total-payout"))
-          .then($element => parseAmount($element.text()))
-          .as("amountToBeClaimed");
+    // save neur amount to be claimed
+    cy.get(tid("investor-payout.accept-summary.total-payout"))
+      .then($element => parseAmount($element.text()))
+      .as("amountToBeClaimed");
 
-        // accept summary
-        cy.get(tid("investor-payout.accept-summary.accept")).click();
-        confirmAccessModal();
-        cy.get(tid("investor-payout.accept-success"));
-        closeModal();
+    // accept summary
+    cy.get(tid("investor-payout.accept-summary.accept")).click();
+    confirmAccessModal();
 
-        // assert that payout is removed from the list
-        cy.get(tid(`asset-portfolio.payout-eur_t`)).should("not.exist");
+    // wait for success
+    cy.get(tid("investor-payout.accept-success"));
+    closeModal();
 
-        getWalletNEurAmount("balanceAfter");
+    // assert that payout is removed from the list
+    cy.get(tid(`asset-portfolio.payout-eur_t`)).should("not.exist");
 
-        cy.get<number>("@amountToBeClaimed").then(amount => {
-          cy.get<number>("@balanceBefore").then(balanceBefore => {
-            cy.get<number>("@balanceAfter").then(balanceAfter => {
-              // balance after payout should be increased by the payout amount
-              expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.1);
-            });
-          });
+    cy.get<number>("@amountToBeClaimed").then(amount => {
+      cy.get<number>("@balanceBefore").then(balanceBefore => {
+        getWalletNEurAmount().then(balanceAfter => {
+          // balance after payout should be increased by the payout amount
+          // there can be rounding issue so we assert balance with small delta
+          expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.01);
         });
       });
     });

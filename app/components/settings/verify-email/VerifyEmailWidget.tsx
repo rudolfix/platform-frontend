@@ -21,7 +21,7 @@ import { Form, FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as successIcon from "../../../assets/img/notifications/success.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import { selectIsCancelEmail } from "../../../modules/profile/reducer";
 import * as styles from "./VerifyEmailWidget.module.scss";

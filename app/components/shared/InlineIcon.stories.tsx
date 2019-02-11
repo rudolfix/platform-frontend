@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import * as info from "../../assets/img/notifications/info.svg";
-import * as Success_small from "../../assets/img/notifications/Success_small.svg";
+import * as success from "../../assets/img/notifications/success.svg";
 import * as warning from "../../assets/img/notifications/warning.svg";
 
 import * as no_computer from "../../assets/img/seed_backup/no_computer.svg";
@@ -53,7 +53,7 @@ storiesOf("Icons", module)
   .add("other icons", () => (
     <>
       <h3>Notification</h3>
-      {[info, Success_small, warning].map(svg => (
+      {[info, success, warning].map(svg => (
         <span style={{ display: "inline-block", height: "2em", width: "3em" }}>
           <img src={svg} />
         </span>

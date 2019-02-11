@@ -107,6 +107,7 @@ export enum BookbuildingFlowMessage {
 
 export enum InvestorPortfolioMessage {
   INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES,
+  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_INCOMING_PAYOUTS,
 }
 
 export enum EtoDocumentsMessage {
@@ -284,6 +285,10 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case InvestorPortfolioMessage.INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES:
       return (
         <FormattedMessage id="portfolio.asset.payouts-from-neu.notification.failed-to-load-payouts" />
+      );
+    case InvestorPortfolioMessage.INVESTOR_PORTFOLIO_FAILED_TO_LOAD_INCOMING_PAYOUTS:
+      return (
+        <FormattedMessage id="portfolio.asset.payouts-from-neu.notification.failed-to-load-incoming-payouts" />
       );
 
     case ToSMessage.TOS_ACCEPT_PERMISSION_TITLE:

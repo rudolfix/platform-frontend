@@ -1,10 +1,15 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+
+import { CommonHtmlProps } from "../../types";
 
 import * as styles from "./Counter.module.scss";
 
 interface IProps {
   endDate: Date;
+  onFinish?: () => void;
+  ["data-test-id"]?: string;
 }
 
 interface IPlateProps {
@@ -30,8 +35,10 @@ const Plate: React.FunctionComponent<IPlateProps> = ({ value, label }) => {
   );
 };
 
-export class Counter extends React.Component<IProps, IState> {
-  getTimeLeft = () => this.props.endDate.getTime() - Date.now();
+export class Counter extends React.Component<IProps & CommonHtmlProps, IState> {
+  getTimeLeft = () => {
+    return this.props.endDate.getTime() - Date.now();
+  };
 
   state = {
     timeLeft: this.getTimeLeft(),
@@ -40,10 +47,13 @@ export class Counter extends React.Component<IProps, IState> {
   timer: any = null;
 
   componentDidMount(): void {
-    const { timeLeft } = this.state;
-
     this.timer = setInterval(() => {
+      const { timeLeft } = this.state;
+
       if (timeLeft < 0) {
+        if (this.props.onFinish) {
+          this.props.onFinish();
+        }
         clearInterval(this.timer);
       }
 
@@ -66,7 +76,10 @@ export class Counter extends React.Component<IProps, IState> {
     const computedSeconds = Math.floor((timeLeft % minute) / second);
 
     return (
-      <div className={styles.counter}>
+      <div
+        className={cn(styles.counter, this.props.className)}
+        data-test-id={this.props["data-test-id"]}
+      >
         <Plate
           value={computedDays < 0 ? 0 : computedDays}
           label={<FormattedMessage id="counter.label.days" />}

@@ -252,3 +252,11 @@ export const etoFixtureAddressByName = (name: string): string => {
 };
 
 export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hookName) as any);
+
+export const assertMoneyNotEmpty = (selector: string) => {
+  cy.get(tid(selector)).then($element => {
+    const value = $element.text();
+
+    expect(value).to.not.equal("-");
+  });
+};

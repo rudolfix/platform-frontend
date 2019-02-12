@@ -70,6 +70,7 @@ export const TOAST_COMPONENT_DELAY = 4000;
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 
 /*
- * General constants
+ * General constants•
  */
 export const IS_CYPRESS = !!process.env.IS_CYPRESS;
+export const IS_DEV = process.env.NODE_ENV === "development";

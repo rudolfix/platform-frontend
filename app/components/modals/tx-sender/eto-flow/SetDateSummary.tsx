@@ -73,7 +73,7 @@ const SetEtoDateSummaryComponent: React.FunctionComponent<IProps> = ({
               <FormattedMessage id="eto.settings.eto-start-date-summary.time-to-start-date" />
             }
             value={<TimeLeft refresh={false} asUtc={false} finalTime={newDate} />}
-            dataTestId="set-eto-date-summary-time-to-eto"
+            data-test-id="set-eto-date-summary-time-to-eto"
           />
           <InfoRow
             caption={

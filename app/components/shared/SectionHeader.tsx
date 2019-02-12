@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import { isString } from "lodash";
 import * as React from "react";
 
-import { TTranslatedString } from "../../types";
+import { TDataTestId, TTranslatedString } from "../../types";
 import { invariant } from "../../utils/invariant";
 
 import * as styles from "./SectionHeader.module.scss";
@@ -18,12 +18,13 @@ interface IProps {
   size?: ESectionHeaderSize;
 }
 
-export const SectionHeader: React.FunctionComponent<IProps> = ({
+export const SectionHeader: React.FunctionComponent<IProps & TDataTestId> = ({
   children,
   className,
   decorator,
   description,
   size,
+  "data-test-id": dataTestId,
 }) => {
   invariant(
     !isString(decorator) || !description,
@@ -32,6 +33,7 @@ export const SectionHeader: React.FunctionComponent<IProps> = ({
 
   return (
     <header
+      data-test-id={dataTestId}
       className={cn(styles.sectionHeader, size, className, {
         [styles.hasDecorator]: decorator === true,
       })}

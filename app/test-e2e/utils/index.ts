@@ -1,9 +1,11 @@
+import BigNumber from "bignumber.js";
 import { get } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
-import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
+import { mockApiUrl } from "../confirm";
+import { assertPortfolio, assertUserInDashboard, assertWallet } from "./assertions";
 import { tid } from "./selectors";
 import { DEFAULT_PASSWORD } from "./userHelpers";
 
@@ -21,26 +23,6 @@ export const letterKeepDotRegExPattern = /[^0-9.]/gi;
 
 export const charRegExPattern = /[^a-z0-9]/gi;
 
-export const assertEtoDashboard = () => {
-  cy.url().should("contain", "/dashboard");
-  cy.get(tid("eto-dashboard-application")).should("exist");
-};
-
-export const assertEtoDocuments = () => {
-  cy.url().should("contain", "/documents");
-  cy.get(tid("eto-documents")).should("exist");
-};
-
-export const assertDashboard = () => {
-  cy.url().should("contain", "/dashboard");
-  cy.get(tid("dashboard-application")).should("exist");
-};
-
-export const assertRegister = () => {
-  cy.url().should("contain", walletRegisterRoutes.light);
-  cy.get(tid("register-layout")).should("exist");
-};
-
 export const goToDashboard = () => {
   cy.visit("/dashboard");
 };
@@ -49,62 +31,18 @@ export const goToProfile = () => {
   cy.visit("/profile");
 };
 
+export const goToPortfolio = () => {
+  cy.visit("/portfolio");
+  assertPortfolio();
+};
+
+export const goToWallet = () => {
+  cy.visit("/wallet");
+  assertWallet();
+};
+
 export const clearEmailServer = () => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
-};
-
-export const assertWaitForLatestEmailSentWithSalt = (
-  userEmail: string,
-  timeout: number = 20000,
-) => {
-  expect(timeout, `Email not received in ${timeout} ms`).to.be.gt(0);
-  cy.wait(1000);
-  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-    if (r.status === 200) {
-      const response = get(r, "body[0].personalizations[0].to[0]");
-      if (response) {
-        const loginLink = get(r, "body[0].personalizations[0].substitutions.-loginLink-");
-        expect(response.email).to.be.eq(userEmail);
-        expect(loginLink).to.contain("salt");
-        return;
-      }
-    }
-    assertWaitForLatestEmailSentWithSalt(userEmail, timeout - 1000);
-  });
-};
-
-export const assertVerifyEmailWidgetIsInUnverifiedEmailState = (shouldNotExist?: boolean) => {
-  cy.get(tid("profile.verify-email-widget.unverified-email-state")).should(
-    shouldNotExist ? "not.exist" : "exist",
-  );
-};
-
-export const assertVerifyEmailWidgetIsInNoEmailState = (shouldNotExist?: boolean) => {
-  cy.get(tid("profile.verify-email-widget.no-email-state")).should(
-    shouldNotExist ? "not.exist" : "exist",
-  );
-};
-
-export const assertVerifyEmailWidgetIsInVerfiedEmailState = (shouldNotExist?: boolean) => {
-  cy.get(tid("profile.verify-email-widget.verified-email-state")).should(
-    shouldNotExist ? "not.exist" : "exist",
-  );
-};
-
-export const assertEmailActivationWidgetVisible = (shouldNotExist?: boolean) => {
-  cy.get(tid("profile.verify-email-widget")).should(shouldNotExist ? "not.exist" : "exist");
-};
-
-export const assertBackupSeedWidgetVisible = (shouldNotExist?: boolean) => {
-  cy.get(tid("profile.backup-seed-widget")).should(shouldNotExist ? "not.exist" : "exist");
-};
-
-export const assertErrorModal = () => {
-  cy.get(tid("components.modals.generic-modal.title")).should("exist");
-};
-
-export const assertButtonIsActive = (id: string) => {
-  return cy.get(tid(id)).should("be.not.disabled");
 };
 
 export const typeEmailPassword = (email: string, password: string) => {
@@ -142,10 +80,6 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
   cy.get(tid("btn-send")).awaitedClick();
 };
 
-export const assertLockedAccessModal = () => {
-  cy.get(tid("access-light-wallet-locked")).should("exist");
-};
-
 export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
   cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
@@ -159,10 +93,6 @@ export const closeModal = () => {
   cy.get(tid("modal-close-button")).click();
 };
 
-// todo: extract it to separate file
-// do it after moving all e2e tests back into cypress directory
-export const mockApiUrl = "https://localhost:9090/api/external-services-mock/";
-
 export const verifyLatestUserEmail = () => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
     const activationLink = get(r, "body[0].personalizations[0].substitutions.-activationLink-");
@@ -171,16 +101,6 @@ export const verifyLatestUserEmail = () => {
     cy.visit(cleanedActivationLink);
     cy.get(tid("email-verified")); // wait for the email verified button to show
   });
-};
-
-export const assertUserInDashboard = (isIssuer: boolean = false) => {
-  cy.url().should("contain", appRoutes.dashboard);
-  return isIssuer ? cy.get(tid("eto-dashboard-application")) : cy.get(tid("dashboard-application"));
-};
-
-export const assertUserInLanding = () => {
-  cy.url().should("contain", appRoutes.root);
-  return cy.get(tid("landing-page"));
 };
 
 export const convertToUniqueEmail = (email: string) => {
@@ -253,10 +173,35 @@ export const etoFixtureAddressByName = (name: string): string => {
 
 export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hookName) as any);
 
-export const assertMoneyNotEmpty = (selector: string) => {
-  cy.get(tid(selector)).then($element => {
-    const value = $element.text();
+/**
+ * Extract amount from string.
+ * @example
+ * parseAmount("1 245 352 EUR") // return BigNumber(1245352)
+ * parseAmount("$1 245 352") // return BigNumber(1245352)
+ */
+export const parseAmount = (amount: string) => new BigNumber(amount.replace(/\s|^\D+|\D+$/g, ""));
 
-    expect(value).to.not.equal("-");
-  });
+/**
+ * Get eth wallet balance
+ */
+export const getWalletEthAmount = () => {
+  goToWallet();
+
+  return cy
+    .get(tid("wallet-balance.ether.balance-values-large-value"))
+    .then($element => parseAmount($element.text()));
 };
+
+/**
+ * Get nEur wallet balance
+ */
+export const getWalletNEurAmount = () => {
+  goToWallet();
+
+  return cy
+    .get(tid("unlockedEuroWallet.balance-values-large-value"))
+    .then($element => parseAmount($element.text()));
+};
+
+// Reexport assertions so they are easy accessed through utils
+export * from "./assertions";

@@ -1,4 +1,4 @@
-import { INV_EMPTY_HAS_KYC } from "../constants";
+import { INV_EMPTY_HAS_KYC } from "../fixtures";
 import { etoFixtureAddressByName } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";

@@ -1,6 +1,7 @@
 import "react-datetime/css/react-datetime.css";
 
 import { Field, FieldProps } from "formik";
+import { Moment } from "moment-timezone";
 import * as React from "react";
 import * as DateTime from "react-datetime";
 
@@ -16,6 +17,8 @@ interface IProps {
 // We need to do this because of missing type for `renderInput`
 // https://github.com/YouCanBookMe/react-datetime/pull/541
 type DatetimeProps = DateTime.DatetimepickerProps & {
+  dataTestId?: string;
+  isValidDate?: (currentDate: Moment, selectedDate?: Moment) => boolean;
   renderInput?: (
     props: any,
     openCalendar: () => void,
@@ -30,7 +33,6 @@ const FormFieldDatePicker: React.FunctionComponent<IProps> = () => (
   <div className={styles.formFieldDatePicker}>
     <TypedDatetime
       closeOnSelect={true}
-      utc={true}
       renderInput={props => {
         return (
           <div className={styles.inputWrapper}>

@@ -15,8 +15,7 @@ const withMetaTags = <T extends {}>(getMetaTags: (props: T, intl: IIntlHelpers) 
 
     return (
       <>
-        <Helmet titleTemplate="%s - Neufund Platform">{title && <title>{title}</title>}</Helmet>
-
+        <Helmet titleTemplate="%s - Neufund Platform" title={title} />
         <Wrapper {...props} />
       </>
     );
@@ -25,9 +24,7 @@ const withMetaTags = <T extends {}>(getMetaTags: (props: T, intl: IIntlHelpers) 
 const withRootMetaTag = () => (Wrapper: React.ComponentType<any>) => (props: any) => {
   return (
     <>
-      <Helmet>
-        <title>Neufund Platform</title>
-      </Helmet>
+      <Helmet title="Neufund Platform" />
 
       <Wrapper {...props} />
     </>

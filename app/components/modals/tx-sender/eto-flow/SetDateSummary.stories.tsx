@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react";
-import * as moment from "moment";
+import * as moment from "moment-timezone";
 import * as React from "react";
 
 import { withModalBody } from "../../../../utils/storybookHelpers";

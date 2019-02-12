@@ -159,7 +159,7 @@ const BankTransferDetailsComponent = injectIntlHelpers(
                   <InfoRow
                     caption={<FormattedMessage id="investment-flow.bank-transfer.amount" />}
                     value={<CopyToClipboardLabel label={formatEurTsd(data.amount)!} />}
-                    dataTestId="invest-modal-bank-transfer-details-amount"
+                    data-test-id="invest-modal-bank-transfer-details-amount"
                   />
                 </InfoList>
               </Col>

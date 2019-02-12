@@ -1,4 +1,4 @@
-import { INV_ETH_EUR_ICBM_HAS_KYC } from "../constants";
+import { INV_ETH_EUR_ICBM_HAS_KYC } from "../fixtures";
 import { confirmAccessModal, etoFixtureAddressByName, LONG_WAIT_TIME } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";

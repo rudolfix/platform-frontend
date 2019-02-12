@@ -88,7 +88,10 @@ export const createAndLoginNewUser = (
  */
 export const DEFAULT_PASSWORD = "strongpassword";
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
-export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: string) => {
+export const createLightWalletWithKeyPair = async (
+  seed?: string,
+  hdPathString: string = DEFAULT_HD_PATH,
+) => {
   // promisify some stuff
   const create = promisify<any>(LightWalletProvider.keystore.createVault);
 
@@ -99,7 +102,7 @@ export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: strin
   const lightWalletInstance = await create({
     password: DEFAULT_PASSWORD,
     seedPhrase: seed,
-    hdPathString: hdPath || DEFAULT_HD_PATH,
+    hdPathString,
     salt,
   });
 

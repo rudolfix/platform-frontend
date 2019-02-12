@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
-import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
+import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import { assertUserInDashboard, confirmAccessModal, goToDashboard } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 import { tid } from "../utils/selectors";

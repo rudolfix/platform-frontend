@@ -130,7 +130,7 @@ const InvestmentSummaryComponent: React.FunctionComponent<IProps> = ({
             value={companyName}
           />
           <InfoRow
-            dataTestId="investment-summary-token-price"
+            data-test-id="investment-summary-token-price"
             caption={<FormattedMessage id="investment-flow.summary.token-price" />}
             value={formattedTokenPrice}
           />
@@ -141,7 +141,7 @@ const InvestmentSummaryComponent: React.FunctionComponent<IProps> = ({
           <InfoRow
             caption={<FormattedMessage id="investment-flow.summary.your-investment" />}
             value={investment}
-            dataTestId="invest-modal-summary-your-investment"
+            data-test-id="invest-modal-summary-your-investment"
           />
           <InfoRow
             caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}

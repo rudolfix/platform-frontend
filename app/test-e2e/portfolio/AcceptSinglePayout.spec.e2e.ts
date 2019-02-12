@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 import { INV_ETH_EUR_ICBM_HAS_KYC } from "../fixtures";
 import {
   closeModal,
@@ -45,12 +47,12 @@ describe("Investor accept payout", () => {
     // assert that payout is removed from the list
     cy.get(tid(`asset-portfolio.payout-eth`)).should("not.exist");
 
-    cy.get<number>("@amountToBeClaimed").then(amount => {
-      cy.get<number>("@balanceBefore").then(balanceBefore => {
+    cy.get<BigNumber>("@amountToBeClaimed").then(amount => {
+      cy.get<BigNumber>("@balanceBefore").then(balanceBefore => {
         getWalletEthAmount().then(balanceAfter => {
           // balance after payout should be increased by the payout amount
           // there can be rounding issue and gas price cost so we assert balance with small delta
-          expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.01);
+          expect(balanceAfter.minus(balanceBefore.plus(amount))).to.be.bignumber.lessThan(0.01);
         });
       });
     });
@@ -82,12 +84,12 @@ describe("Investor accept payout", () => {
     // assert that payout is removed from the list
     cy.get(tid(`asset-portfolio.payout-eur_t`)).should("not.exist");
 
-    cy.get<number>("@amountToBeClaimed").then(amount => {
-      cy.get<number>("@balanceBefore").then(balanceBefore => {
+    cy.get<BigNumber>("@amountToBeClaimed").then(amount => {
+      cy.get<BigNumber>("@balanceBefore").then(balanceBefore => {
         getWalletNEurAmount().then(balanceAfter => {
           // balance after payout should be increased by the payout amount
           // there can be rounding issue so we assert balance with small delta
-          expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.01);
+          expect(balanceAfter.minus(balanceBefore.plus(amount))).to.be.bignumber.lessThan(0.01);
         });
       });
     });

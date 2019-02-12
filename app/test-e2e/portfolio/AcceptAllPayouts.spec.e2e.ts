@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 import { INV_ICBM_ETH_M_HAS_KYC_DUP } from "../fixtures";
 import {
   closeModal,
@@ -57,12 +59,12 @@ it("should correctly accept all payouts", () => {
       });
     });
 
-    cy.get<number>("@nEurAmountToBeClaimed").then(amount => {
-      cy.get<number>("@balanceNEurBefore").then(balanceBefore => {
+    cy.get<BigNumber>("@nEurAmountToBeClaimed").then(amount => {
+      cy.get<BigNumber>("@balanceNEurBefore").then(balanceBefore => {
         getWalletNEurAmount().then(balanceAfter => {
           // balance after payout should be increased by the payout amount
           // there can be rounding issue so we assert balance with small delta
-          expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.01);
+          expect(balanceAfter.minus(balanceBefore.plus(amount))).to.be.bignumber.lessThan(0.01);
         });
       });
     });

@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { get } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
@@ -174,9 +175,11 @@ export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hook
 
 /**
  * Extract amount from string.
- * @example parseAmount("1 245 352 EUR") // return 1245352
+ * @example
+ * parseAmount("1 245 352 EUR") // return BigNumber(1245352)
+ * parseAmount("$1 245 352") // return BigNumber(1245352)
  */
-export const parseAmount = (amount: string) => parseFloat(amount.replace(" ", ""));
+export const parseAmount = (amount: string) => new BigNumber(amount.replace(/\s|^\D+|\D+$/g, ""));
 
 /**
  * Get eth wallet balance

@@ -1,4 +1,4 @@
-import { INV_ICBM_ETH_M_HAS_KYC_DUP } from "../constants";
+import { INV_ICBM_ETH_M_HAS_KYC_DUP } from "../fixtures";
 import { etoFixtureAddressByName } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";

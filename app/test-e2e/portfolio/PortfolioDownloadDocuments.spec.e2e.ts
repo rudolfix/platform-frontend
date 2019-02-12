@@ -26,7 +26,6 @@ describe("Download documents from portfolio", () => {
               .parent()
               .click()
               .then(() => {
-                cy.wait(100);
                 cy.get(downloadSelector)
                   .first()
                   .parent()
@@ -36,7 +35,6 @@ describe("Download documents from portfolio", () => {
             // restore clock to native to have all sagas invoked
             clock.restore();
 
-            cy.wait(100);
             cy.get(downloadSelector)
               .first()
               .parent()

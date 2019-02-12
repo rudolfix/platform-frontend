@@ -1,5 +1,5 @@
 import { TGeneralEtoData } from "../../lib/api/eto/EtoApi.interfaces";
-import { createAction, createSimpleAction } from "../actionsUtils";
+import { createAction, createActionFactory, createSimpleAction } from "../actionsUtils";
 
 export const etoFlowActions = {
   loadIssuerEto: () => createSimpleAction("ETO_FLOW_LOAD_ISSUER_ETO"),
@@ -15,6 +15,10 @@ export const etoFlowActions = {
   changeBookBuildingStatus: (status: boolean) =>
     createAction("ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", { status }),
   downloadBookBuildingStats: () => createSimpleAction("ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS"),
-  setNewStartDate: (newStartDate?: Date) =>
-    createAction("ETO_FLOW_SET_START_DATE", { newStartDate }),
+  setNewStartDate: createActionFactory("ETO_FLOW_SET_START_DATE", (newStartDate: Date) => ({
+    newStartDate,
+  })),
+  clearNewStartDate: createActionFactory("ETO_FLOW_CLEAR_START_DATE", () => ({
+    newStartDate: undefined,
+  })),
 };

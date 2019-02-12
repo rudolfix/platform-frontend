@@ -49,12 +49,12 @@ it("should correctly accept all payouts", () => {
     cy.get(tid(`asset-portfolio.payout-eth`)).should("not.exist");
     cy.get(tid(`asset-portfolio.payout-eur_t`)).should("not.exist");
 
-    cy.get<number>("@ethAmountToBeClaimed").then(amount => {
-      cy.get<number>("@balanceEthBefore").then(balanceBefore => {
+    cy.get<BigNumber>("@ethAmountToBeClaimed").then(amount => {
+      cy.get<BigNumber>("@balanceEthBefore").then(balanceBefore => {
         getWalletEthAmount().then(balanceAfter => {
           // balance after payout should be increased by the payout amount
           // there can be rounding issue and gas price cost so we assert balance with small delta
-          expect(balanceAfter).to.be.closeTo(balanceBefore + amount, 0.01);
+          expect(balanceAfter.minus(balanceBefore.plus(amount))).to.be.bignumber.lessThan(0.01);
         });
       });
     });

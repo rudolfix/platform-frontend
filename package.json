@@ -1,5 +1,10 @@
 {
   "name": "platform-frontend",
+  "sideEffects": [
+    "*.sideEffect.tsx",
+    "*.scss",
+    "*.css"
+  ],
   "version": "0.0.1",
   "repository": "git@github.com:Neufund/platform-frontend.git",
   "author": "Krzysztof Kaczor <chris@kaczor.io>",
@@ -25,11 +30,11 @@
     "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc && yarn intl:extract:check",
     "lint:fix": "concurrently -p \"[{name}]\" -n \"TSLINT/PRETTIER,SASS/TSC/INTL\" -c \"bgYellow.bold,bgMagenta.bold\" \"yarn tslint:fix && yarn format:fix\" \"yarn sasslint && yarn tsc && yarn intl:extract\"",
     "lint:fix:staged": "concurrently -p \"[{name}]\" -n \"TSC,LINT-STAGED\" -c \"bgYellow.bold,bgMagenta.bold\" \"yarn tsc\" \"lint-staged\"",
-    "test:browser": "NODE_ENV=test mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts './test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
-    "test:browser:watch": "NODE_ENV=test mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts --watch --watch-extensions ts,tsx './test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
-    "test:browser-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts 'test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
-    "test:node": "NODE_ENV=test mocha --require ts-node/register --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",
-    "test:node-coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",
+    "test:browser": "TS_NODE_PROJECT=tsconfig.spec.json mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts './test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
+    "test:browser:watch": "TS_NODE_PROJECT=tsconfig.spec.json mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts --watch --watch-extensions ts,tsx './test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
+    "test:browser-coverage": "TS_NODE_PROJECT=tsconfig.spec.json nyc mocha --require ts-node/register --require jsdom-global/register --require ./test/setupBrowserTests.ts 'test/setupTestsHooks.ts' './app/**/*.spec.ts?(x)'",
+    "test:node": "TS_NODE_PROJECT=tsconfig.spec.json mocha --require ts-node/register --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",
+    "test:node-coverage": "TS_NODE_PROJECT=tsconfig.spec.json nyc mocha --require ts-node/register --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",
     "test:e2e": "./e2e/setup-e2e.sh",
     "test:e2e:chrome": "./e2e/setup-chrome-e2e.sh",
     "test:e2e:cypress": "cypress run",

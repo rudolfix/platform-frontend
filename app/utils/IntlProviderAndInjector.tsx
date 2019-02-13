@@ -2,7 +2,7 @@ import { Container } from "inversify";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 
-import * as languageEn from "../../intl/locales/en-en.json";
+import languageEn from "../../intl/locales/en-en.json";
 import { symbols } from "../di/symbols";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
 import { IIntlProps, injectIntlHelpers } from "./injectIntlHelpers";

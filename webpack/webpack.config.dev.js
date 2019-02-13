@@ -32,7 +32,7 @@ module.exports = merge.smart(configCommon, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new ForkTsCheckerWebpackPlugin({ tsconfig: "tsconfig.dev.json" }),
+    new ForkTsCheckerWebpackPlugin({ tsconfig: "tsconfig.json" }),
   ],
   module: {
     rules: [
@@ -111,7 +111,7 @@ module.exports = merge.smart(configCommon, {
               {
                 loader: "ts-loader",
                 options: {
-                  configFile: "tsconfig.dev.json",
+                  configFile: "tsconfig.json",
                   transpileOnly: true,
                   experimentalWatchApi: true,
                 },

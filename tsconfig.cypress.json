@@ -1,12 +1,10 @@
 {
+  "extends": "./tsconfig",
   "compilerOptions": {
-    "target": "es2016",
-    "strict": true,
     "noImplicitAny": false,
-    "importHelpers": true,
-    "moduleResolution": "Node",
     "types": ["cypress"],
     "jsx": "react"
   },
-  "include": ["../**/*.spec.e2e.ts"]
+  "include": ["../**/*.spec.e2e.ts"],
+  "exclude": []
 }

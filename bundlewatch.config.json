@@ -1,16 +1,20 @@
 {
   "files": [
     {
-      "path": "dist/*.vendors*.js"
+      "path": "dist/*.vendors*.js",
+      "maxSize": "1000kB"
     },
     {
-      "path": "dist/*.main*.js"
+      "path": "dist/*.main*.js",
+      "maxSize": "350kB"
     },
     {
-      "path": "dist/*.main*.css"
+      "path": "dist/*.main*.css",
+      "maxSize": "60kB"
     },
     {
-      "path": "dist/*.vendors*.css"
+      "path": "dist/*.vendors*.css",
+      "maxSize": "20kB"
     }
   ]
 }

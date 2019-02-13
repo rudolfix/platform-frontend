@@ -1,6 +1,7 @@
 import "reflect-metadata";
 
-import "./components/translatedMessages/yupLocales";
+import "./components/translatedMessages/yupLocales.sideEffect";
+
 import "./styles/bootstrap.scss";
 
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";

@@ -82,7 +82,7 @@ module.exports = (baseConfig, env, config) => {
             {
               loader: "ts-loader",
               options: {
-                configFile: "tsconfig.dev.json",
+                configFile: "tsconfig.json",
                 transpileOnly: true,
                 experimentalWatchApi: true,
               },

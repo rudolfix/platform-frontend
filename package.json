@@ -1,5 +1,10 @@
 {
   "name": "platform-frontend",
+  "sideEffects": [
+    "*.sideEffect.tsx",
+    "*.scss",
+    "*.css"
+  ],
   "version": "0.0.1",
   "repository": "git@github.com:Neufund/platform-frontend.git",
   "author": "Krzysztof Kaczor <chris@kaczor.io>",

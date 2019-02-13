@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "module": "commonjs",
+    "module": "es6",
     "strict": true,
     "importHelpers": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "sourceMap": true,
     "typeRoots": ["./node_modules/@types", "./@types"],

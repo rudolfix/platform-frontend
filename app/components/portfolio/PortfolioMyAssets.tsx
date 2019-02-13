@@ -107,6 +107,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                 iconPosition="icon-after"
                 svgIcon={arrowRight}
                 size={ButtonSize.SMALL}
+                data-test-id="portfolio-my-assets-neu-agreements"
               >
                 <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
               </ButtonLink>
@@ -144,6 +145,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                       iconPosition="icon-after"
                       svgIcon={arrowRight}
                       size={ButtonSize.SMALL}
+                      data-test-id={`modals.portfolio.portfolio-assets.download-agreements-${etoId}`}
                     >
                       <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
                     </Button>

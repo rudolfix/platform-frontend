@@ -1,5 +1,5 @@
 import { find } from "lodash";
-import * as moment from "moment-timezone";
+import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";

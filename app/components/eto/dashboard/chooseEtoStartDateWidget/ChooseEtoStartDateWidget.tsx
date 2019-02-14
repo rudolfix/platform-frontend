@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import * as cn from "classnames";
-import * as moment from "moment-timezone";
+import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
@@ -50,7 +50,7 @@ interface IChangeDateCountdown {
 interface IDateChooserOpenProps {
   etoDate?: Date;
   newEtoDate: moment.Moment | null;
-  setNewEtoDate: (newEtoDate: moment.Moment) => void;
+  setNewEtoDate: (newEtoDate: moment.Moment | string) => void;
   newDateIsValid: (date: moment.Moment | null) => boolean;
   onTestInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   minOffsetPeriodInMinutes: number;
@@ -100,7 +100,7 @@ const DateChooserOpen = ({
       <FormGroup className="justify-content-center mb-0">
         <DatePicker
           value={newEtoDate || etoDate}
-          onChange={setNewEtoDate as any} //datePicker accepts Moment and we have moment-timezone.Moment
+          onChange={setNewEtoDate}
           onTestInputChange={onTestInputChange}
           dataTestId="eto-settings-start-date-input"
           isValidDate={(currentDate: moment.Moment) =>
@@ -208,7 +208,7 @@ class DateChooser extends React.PureComponent<IDateChooserProps, IDateChooserSta
     }
   };
 
-  setNewEtoDate = (newEtoDate: moment.Moment) =>
+  setNewEtoDate = (newEtoDate: moment.Moment | string) =>
     this.setState({
       newEtoDate: moment.utc(newEtoDate),
     });

@@ -1,10 +1,12 @@
-import * as moment from "moment-timezone";
+import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { IS_CYPRESS } from "../../config/constants";
 import { calculateTimeLeft, calculateTimeLeftUnits } from "./utils";
 
 import * as sheep from "../../assets/img/landing/rainbowsheep.gif";
+import * as test_sheep from "../../assets/img/landing/test_rainbowsheep.png";
 import * as styles from "./TimeLeft.module.scss";
 
 interface ITimeLeftRefresher {
@@ -129,7 +131,11 @@ const FancyRenderTimeLeft: React.ComponentType<ITimeLeftProps> = ({ timeLeft }) 
   } else {
     return (
       <span className={styles.etoTimeLeft}>
-        <img src={sheep} alt="no time left" />
+        {IS_CYPRESS ? (
+          <img src={test_sheep} alt="no time left" />
+        ) : (
+          <img src={sheep} alt="no time left" />
+        )}
       </span>
     );
   }

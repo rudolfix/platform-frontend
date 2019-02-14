@@ -1,4 +1,5 @@
-import * as moment from "moment-timezone";
+import * as jstz from "jstimezonedetect";
+import * as moment from "moment";
 
 const calculateTimeLeftUnits = (timeLeft: number): [number, number, number] => {
   const minute = 60;
@@ -20,7 +21,7 @@ const calculateTimeLeft = (value: moment.Moment | Date, asUtc: boolean) => {
 
 const utcTime = (value: Date) => moment.utc(value).format("MMMM Do YYYY, HH:mm");
 const localTime = (value: Date) => moment(value).format("MMMM Do YYYY, HH:mm");
-const timeZone = () => moment.tz.guess();
+const timeZone = () => jstz.determine().name();
 const weekdayLocal = (date: Date) => moment(date).format("ddd");
 const weekdayUTC = (date: Date) => moment.utc(date).format("ddd");
 

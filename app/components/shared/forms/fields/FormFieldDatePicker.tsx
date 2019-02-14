@@ -1,7 +1,7 @@
 import "react-datetime/css/react-datetime.css";
 
 import { Field, FieldProps } from "formik";
-import { Moment } from "moment-timezone";
+import { Moment } from "moment";
 import * as React from "react";
 import * as DateTime from "react-datetime";
 

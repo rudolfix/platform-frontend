@@ -1,11 +1,11 @@
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
+import { mockApiUrl } from "../confirm";
 import {
   acceptTOS,
   assertErrorModal,
   assertUserInDashboard,
   assertWaitForLatestEmailSentWithSalt,
   clearEmailServer,
-  mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../utils";

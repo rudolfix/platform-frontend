@@ -25,7 +25,7 @@ import { ChangeEmail } from "./change-email/ChangeEmail";
 import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";
 import { CheckYourICBMWalletWidget } from "./icbm-wallet-widget/CheckYourICBMWalletWidget";
 import { PersonalAccountDetails } from "./personal-account-details/PersonalAccountDetails";
-import { SettingsWidgets } from "./SettingsWidgets";
+import { SettingsWidgets } from "./settings-widget/SettingsWidgets";
 
 interface IStateProps {
   isLightWallet: boolean;

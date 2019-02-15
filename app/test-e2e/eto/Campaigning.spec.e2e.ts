@@ -1,7 +1,7 @@
 import { appRoutes } from "../../components/appRoutes";
 import { formatThousands } from "../../utils/Number.utils";
 import { withParams } from "../../utils/withParams";
-import { ISSUER_SETUP } from "../constants";
+import { ISSUER_SETUP } from "../fixtures";
 import { assertRegister, confirmAccessModal, etoFixtureAddressByName } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";

@@ -1,5 +1,5 @@
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
-import { INV_EUR_ICBM_HAS_KYC_KEY, INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
+import { INV_EUR_ICBM_HAS_KYC_KEY, INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
 import {
   assertLockedAccessModal,

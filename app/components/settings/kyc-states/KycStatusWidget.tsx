@@ -29,7 +29,8 @@ import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
-import * as successIcon from "../../../assets/img/notifications/Success_small.svg";
+import * as infoIcon from "../../../assets/img/notifications/info.svg";
+import * as successIcon from "../../../assets/img/notifications/success.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./KycStatusWidget.module.scss";
 
@@ -226,6 +227,40 @@ const ActionButton = ({
   return null;
 };
 
+const StatusIcon = ({
+  requestStatus,
+  isLoading,
+  requestOutsourcedStatus,
+}: IKycStatusWidgetProps) => {
+  if (isLoading) {
+    return null;
+  }
+
+  if (
+    requestStatus === ERequestStatus.ACCEPTED ||
+    (requestStatus === ERequestStatus.OUTSOURCED &&
+      [ERequestOutsourcedStatus.SUCCESS, ERequestOutsourcedStatus.SUCCESS_DATA_CHANGED].includes(
+        requestOutsourcedStatus!,
+      ))
+  ) {
+    return <img src={successIcon} className={styles.icon} alt="" />;
+  }
+
+  if (
+    requestStatus === ERequestStatus.PENDING ||
+    (requestStatus === ERequestStatus.OUTSOURCED &&
+      [
+        ERequestOutsourcedStatus.STARTED,
+        ERequestOutsourcedStatus.REVIEW_PENDING,
+        ERequestOutsourcedStatus.OTHER,
+      ].includes(requestOutsourcedStatus!))
+  ) {
+    return <img src={infoIcon} className={styles.icon} alt="" />;
+  }
+
+  return <img src={warningIcon} className={styles.icon} alt="" />;
+};
+
 export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetProps> = props => {
   const {
     requestStatus,
@@ -240,14 +275,7 @@ export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetP
     <Panel
       className="h-100"
       headerText={<FormattedMessage id="settings.kyc-widget.header" values={{ step }} />}
-      rightComponent={
-        !isLoading &&
-        (requestStatus === ERequestStatus.ACCEPTED ? (
-          <img src={successIcon} className={styles.icon} alt="" />
-        ) : (
-          <img src={warningIcon} className={styles.icon} alt="" />
-        ))
-      }
+      rightComponent={<StatusIcon {...props} />}
     >
       {isLoading ? (
         <div className={styles.panelBody}>
@@ -268,9 +296,7 @@ export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetP
           <p className={cn(styles.text, "pt-2")}>
             {getStatus(isUserEmailVerified, requestStatus, requestOutsourcedStatus)}
           </p>
-          <Col xs={12} className="d-flex justify-content-center">
-            <ActionButton {...props} />
-          </Col>
+          <ActionButton {...props} />
         </section>
       )}
     </Panel>

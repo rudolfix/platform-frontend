@@ -1,3 +1,4 @@
+import { mockApiUrl } from "../confirm";
 import {
   acceptTOS,
   assertButtonIsActive,
@@ -8,7 +9,6 @@ import {
   convertToUniqueEmail,
   loginWithLightWallet,
   logoutViaTopRightButton,
-  mockApiUrl,
   registerWithLightWallet,
   typeEmailPassword,
   verifyLatestUserEmail,

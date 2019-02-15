@@ -1,15 +1,16 @@
-import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
+import BigNumber from "bignumber.js";
+
+import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import {
   assertButtonIsActive,
   assertDashboard,
   confirmAccessModal,
   etoFixtureAddressByName,
   goToDashboard,
+  parseAmount,
 } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-
-const parseAmount = (amount: string) => parseFloat(amount.replace(" ", ""));
 
 describe("Invest with ethereum", () => {
   it("do", () => {
@@ -46,10 +47,10 @@ describe("Invest with ethereum", () => {
       cy.get(tid("portfolio-reserved-asset-token-price")).then($element => {
         const neuReward = parseAmount($element.text());
 
-        cy.get<number>("@estimatedReward").then(estimatedReward => {
+        cy.get<BigNumber>("@estimatedReward").then(estimatedReward => {
           // estimated and actual NEU reward can be a little bit different
           // we allow neu reward to differ from estimated 5%
-          expect(neuReward).to.be.closeTo(estimatedReward, estimatedReward * 0.05);
+          expect(neuReward.minus(estimatedReward)).to.be.bignumber.lessThan(0.05);
         });
       });
     });

@@ -21,10 +21,12 @@ import * as nEurIcon from "../../assets/img/nEUR_icon.svg";
 
 interface IExternalProps {
   tokensDisbursal: ReadonlyArray<ITokenDisbursal> | undefined;
+  isVerifiedInvestor: boolean;
 }
 
 interface ILayoutProps {
   tokensDisbursal: ReadonlyArray<ITokenDisbursal>;
+  isVerifiedInvestor: boolean;
 }
 
 interface IDispatchToProps {
@@ -54,6 +56,7 @@ const CurrencyIcon: React.FunctionComponent<{ currency: ECurrency } & CommonHtml
 
 const AssetPortfolioLayoutNoPayouts: React.FunctionComponent = () => (
   <SectionHeader
+    data-test-id="asset-portfolio.no-payouts"
     decorator={false}
     className="mb-4"
     description={<FormattedMessage id="portfolio.asset.payouts-from-neu.no-payouts" />}
@@ -67,6 +70,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
   redistributePayout,
   acceptPayout,
   acceptCombinedPayout,
+  isVerifiedInvestor,
 }) => (
   <Row className="mb-4">
     <Col md={5} lg={4} sm={12}>
@@ -121,12 +125,16 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
         ]}
       >
         {tokensDisbursal.map(tokenDisbursal => (
-          <NewTableRow key={tokenDisbursal.token}>
+          <NewTableRow
+            key={tokenDisbursal.token}
+            data-test-id={`asset-portfolio.payout-${tokenDisbursal.token}`}
+          >
             <>
               <CurrencyIcon currency={tokenDisbursal.token} className="mr-2" />
               {selectCurrencyCode(tokenDisbursal.token)}
             </>
             <Money
+              data-test-id={`asset-portfolio.payout.amount-to-be-claimed`}
               value={tokenDisbursal.amountToBeClaimed}
               currency={tokenDisbursal.token}
               theme={ETheme.GREEN}
@@ -134,6 +142,8 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
             <Money value={tokenDisbursal.totalDisbursedAmount} currency={tokenDisbursal.token} />
             <FormattedDate value={tokenDisbursal.timeToFirstDisbursalRecycle} />
             <Button
+              disabled={!isVerifiedInvestor}
+              data-test-id="asset-portfolio.payout.redistribute-payout"
               size={ButtonSize.SMALL}
               onClick={() => redistributePayout(tokenDisbursal)}
               layout={EButtonLayout.SECONDARY}
@@ -141,6 +151,8 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
               <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />
             </Button>
             <Button
+              disabled={!isVerifiedInvestor}
+              data-test-id="asset-portfolio.payout.accept-payout"
               theme="green"
               size={ButtonSize.SMALL}
               onClick={() => acceptPayout(tokenDisbursal)}
@@ -157,6 +169,8 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
           <></>
           <></>
           <Button
+            disabled={!isVerifiedInvestor}
+            data-test-id="asset-portfolio.payout.accept-all-payouts"
             theme="green"
             size={ButtonSize.SMALL}
             onClick={() => acceptCombinedPayout(tokensDisbursal)}

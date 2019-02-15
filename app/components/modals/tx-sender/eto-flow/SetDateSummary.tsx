@@ -1,7 +1,7 @@
 import { find } from "lodash";
-import * as moment from "moment";
+import * as moment from "moment-timezone";
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Container, Row } from "reactstrap";
 import { compose, setDisplayName } from "recompose";
 
@@ -19,6 +19,8 @@ import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { EtherscanAddressLink, ExternalLink } from "../../../shared/links";
 import { Heading } from "../../../shared/modals/Heading";
+import { TimeLeft } from "../../../shared/TimeLeft";
+import { localTime, utcTime, weekdayLocal, weekdayUTC } from "../../../shared/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 
@@ -48,7 +50,6 @@ const SetEtoDateSummaryComponent: React.FunctionComponent<IProps> = ({
   newDate,
   changeableTill,
 }) => {
-  const date = moment(newDate);
   return (
     <Container>
       <Row>
@@ -58,25 +59,33 @@ const SetEtoDateSummaryComponent: React.FunctionComponent<IProps> = ({
       </Row>
 
       <Row className="mt-4">
-        <FormattedHTMLMessage
-          tagName="p"
-          id="eto.settings.eto-start-date-summary.dates-description"
-          values={{ timeToChange: changeableTill.from(moment().startOf("day"), true) }}
-        />
+        <p>
+          <FormattedMessage id="eto.status.onchain.change-eto-date-countdown-text" />{" "}
+          <i>
+            <TimeLeft refresh={false} asUtc={true} finalTime={changeableTill.utc().toDate()} />
+          </i>
+        </p>
       </Row>
-
       <Row className="mt-0">
         <InfoList>
           <InfoRow
             caption={
               <FormattedMessage id="eto.settings.eto-start-date-summary.time-to-start-date" />
             }
-            value={date.from(moment().startOf("day"), true)}
-            dataTestId="set-eto-date-summary-time-to-eto"
+            value={<TimeLeft refresh={false} asUtc={false} finalTime={newDate} />}
+            data-test-id="set-eto-date-summary-time-to-eto"
           />
           <InfoRow
-            caption={<FormattedMessage id="eto.settings.eto-start-date-summary.new-start-date" />}
-            value={date.format("dddd, DD MMMM YYYY")}
+            caption={
+              <FormattedMessage id="eto.settings.eto-start-date-summary.new-start-date-utc" />
+            }
+            value={`${weekdayUTC(newDate)}, ${utcTime(newDate)}`}
+          />
+          <InfoRow
+            caption={
+              <FormattedMessage id="eto.settings.eto-start-date-summary.new-start-date-local" />
+            }
+            value={`${weekdayLocal(newDate)}, ${localTime(newDate)}`}
           />
         </InfoList>
       </Row>
@@ -162,7 +171,7 @@ const SetEtoDateSummary = compose<IProps, {}>(
     stateToProps: state => {
       const newDate = selectNewPreEtoStartDate(state)!;
       const constants = selectPlatformTermsConstants(state);
-      const changableTill = moment(newDate).subtract(
+      const changeableTill = moment(newDate).subtract(
         constants.DATE_TO_WHITELIST_MIN_DURATION.toNumber(),
         "seconds",
       );
@@ -187,7 +196,7 @@ const SetEtoDateSummary = compose<IProps, {}>(
         etoCommitmentAddress: eto.contract!.etoCommitmentAddress,
         offeringAgreementIPFSLink,
         termsAgreementIPFSLink,
-        changeableTill: changableTill,
+        changeableTill,
       };
     },
     dispatchToProps: d => ({

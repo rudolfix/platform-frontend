@@ -55,6 +55,7 @@ export const UnlockedETHWallet: React.SFC<IUnlockedETHWallet & CommonHtmlProps> 
           currencyTotal={ECurrency.EUR}
           largeNumber={ethAmount}
           value={ethEuroAmount}
+          data-test-id="wallet-balance.ether"
           actions={[
             {
               name: <FormattedMessage id="shared-component.account-balance.withdraw" />,

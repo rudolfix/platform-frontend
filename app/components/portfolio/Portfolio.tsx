@@ -1,6 +1,7 @@
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
+import { selectIsVerifiedInvestor } from "../../modules/auth/selectors";
 import {
   selectMyAssets,
   selectMyPendingAssets,
@@ -36,6 +37,7 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
       pendingAssets: selectMyPendingAssets(state),
       walletAddress: selectEthereumAddressWithChecksum(state),
       tokensDisbursal: selectTokensDisbursal(state),
+      isVerifiedInvestor: selectIsVerifiedInvestor(state),
     }),
   }),
   withContainer(LayoutAuthorized),

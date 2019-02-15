@@ -18,6 +18,7 @@ const InvestorRedistributePayoutSuccessLayout: React.FunctionComponent<IProps> =
   goToPortfolio,
 }) => (
   <Message
+    data-test-id="investor-payout.redistribute-success"
     image={<img src={redistributeIcon} alt="" className="mb-3" />}
     text={<FormattedMessage id="investor-payout.redistribute.success.text" />}
   >

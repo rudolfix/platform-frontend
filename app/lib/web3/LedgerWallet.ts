@@ -20,7 +20,7 @@ const CHECK_INTERVAL = 1000;
 
 interface ILedgerConfig {
   version: string;
-  arbitraryDataEnabled: boolean;
+  arbitraryDataEnabled: 0 | 1;
 }
 
 export interface IDerivationPathToAddress {
@@ -264,7 +264,9 @@ async function connectToLedger(networkId: string, rpcUrl: string): Promise<ILedg
     if (semver.lt(ledgerConfig.version, "1.0.8")) {
       throw new LedgerNotSupportedVersionError(ledgerConfig.version);
     }
-
+    if (ledgerConfig.arbitraryDataEnabled === 0) {
+      throw new LedgerContractsDisabledError();
+    }
     await testIfUnlocked(ledgerInstance);
 
     return { ledgerInstance, ledgerWeb3 };

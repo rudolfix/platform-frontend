@@ -61,6 +61,7 @@ export enum BrowserWalletErrorMessage {
 export enum LedgerErrorMessage {
   LEDGER_LOCKED = "ledgerLocked",
   GENERIC_ERROR = "ledgerGenericError",
+  CONTRACT_DISABLED = "ledgerContractDataDisabled",
 }
 
 export enum LightWalletErrorMessage {
@@ -247,6 +248,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
 
     case LedgerErrorMessage.LEDGER_LOCKED:
       return <FormattedMessage id="error-message.ledger.ledger-locked" />;
+    case LedgerErrorMessage.CONTRACT_DISABLED:
+      return <FormattedMessage id="error-message.ledger.contract-disabled" />;
     case LedgerErrorMessage.GENERIC_ERROR:
       return <FormattedMessage id="error-message.ledger.generic-error" />;
 

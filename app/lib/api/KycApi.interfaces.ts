@@ -1,4 +1,6 @@
 import * as Yup from "yup";
+
+import * as YupTS from "../yup-ts";
 import {
   countryCode,
   isUsCitizen,
@@ -148,3 +150,9 @@ export enum EKycBusinessType {
   SMALL = "small",
   PARTNERSHIP = "partnership",
 }
+
+export const KycBankAccountSchema = YupTS.object({
+  bankAccountNumberLast4: YupTS.string(),
+});
+
+export type TKycBankAccount = YupTS.TypeOf<typeof KycBankAccountSchema>;

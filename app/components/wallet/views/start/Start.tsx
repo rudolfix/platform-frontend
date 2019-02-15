@@ -120,7 +120,11 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
 
 export const WalletStart = compose<React.FunctionComponent>(
   onEnterAction({
-    actionCreator: dispatch => dispatch(actions.wallet.loadWalletData()),
+    actionCreator: dispatch => {
+      dispatch(actions.wallet.loadWalletData());
+
+      dispatch(actions.kyc.loadBankAccountDetails());
+    },
   }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({

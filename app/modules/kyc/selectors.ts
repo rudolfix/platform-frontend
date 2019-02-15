@@ -8,6 +8,7 @@ import {
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
 import { IKycState } from "./reducer";
+import { TBankAccount } from "./types";
 
 export const selectKycRequestStatus = (state: IAppState): ERequestStatus | undefined => {
   const userKycType = selectKycRequestType(state.kyc);
@@ -117,3 +118,6 @@ export const selectIsAccountFrozen = createSelector(selectClaims, claims => {
 
   return false;
 });
+
+export const selectBankAccount = (state: IAppState): DeepReadonly<TBankAccount> | undefined =>
+  state.kyc.bankAccount;

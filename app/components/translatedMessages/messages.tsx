@@ -156,6 +156,7 @@ export enum KycFlowMessage {
   KYC_SETTINGS_BUTTON = "kycSettingsButton",
   KYC_ERROR = "kycError",
   KYC_BENEFICIAL_OWNERS = "kycBeneficialOwners",
+  KYC_PROBLEM_LOADING_BANK_DETAILS = "kycProblemLoadingBankDetails",
 }
 
 export enum AuthMessage {
@@ -377,6 +378,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="module.kyc.sagas.error" />;
     case KycFlowMessage.KYC_BENEFICIAL_OWNERS:
       return <FormattedMessage id="module.kyc.sagas.beneficial-owners" />;
+    case KycFlowMessage.KYC_PROBLEM_LOADING_BANK_DETAILS:
+      return <FormattedMessage id="module.kyc.sagas.problem-loading-bank-details" />;
 
     case AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED:
       return (

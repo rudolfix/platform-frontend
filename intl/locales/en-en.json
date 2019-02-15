@@ -59,6 +59,7 @@
   "error-message.browser-wallet.wallet-locked": "Your wallet seems to be locked — we can't access any accounts",
   "error-message.browser-wallet.wallet-not-enabled": "Please check if the MetaMask extension is enabled in your browser. We were unable to detect any wallet.",
   "error-message.generic-error": "Sorry, an error occurred",
+  "error-message.ledger.contract-disabled": "Please enable Contract Support on your ledger",
   "error-message.ledger.generic-error": "Ledger Nano S is not available",
   "error-message.ledger.ledger-locked": "Please unlock your Ledger Nano S by entering your PIN code on the device.",
   "error-message.light-wallet.creation-error": "Cannot create new Light Wallet",

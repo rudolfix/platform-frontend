@@ -3,7 +3,7 @@ import { call, fork, put, select } from "redux-saga/effects";
 
 import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { ETHEREUM_ZERO_ADDRESS, UPLOAD_IMMUTABLE_DOCUMENT } from "../../config/constants";
+import { EJwtPermissions, ETHEREUM_ZERO_ADDRESS } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
 import {
@@ -163,7 +163,7 @@ function* uploadEtoFile(
 
     yield neuCall(
       ensurePermissionsArePresent,
-      [UPLOAD_IMMUTABLE_DOCUMENT],
+      [EJwtPermissions.UPLOAD_IMMUTABLE_DOCUMENT],
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE),
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION),
     );

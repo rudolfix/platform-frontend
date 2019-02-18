@@ -2,6 +2,7 @@ import { channel } from "redux-saga";
 import { call, Effect, put, select, take } from "redux-saga/effects";
 
 import { TMessage } from "../../../components/translatedMessages/utils";
+import { EJwtPermissions } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { STORAGE_JWT_KEY } from "../../../lib/persistence/JwtObjectStorage";
 import { IAppState } from "../../../store";
@@ -84,13 +85,14 @@ export function* obtainJWT(
  */
 export function* ensurePermissionsArePresent(
   { jwtStorage, logger }: TGlobalDependencies,
-  permissions: Array<string> = [],
+  permissions: Array<EJwtPermissions> = [],
   title: TMessage,
   message: TMessage,
 ): Iterator<any> {
-  // check wether all permissions are present and still valid
   const jwt = jwtStorage.get();
+  // check wether all permissions are present and still valid
   if (jwt && hasValidPermissions(jwt, permissions)) {
+    // If its an escalated permission then force a new JWT
     return;
   }
   // obtain a freshly signed token with missing permissions

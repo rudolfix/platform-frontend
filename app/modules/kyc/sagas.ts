@@ -3,7 +3,7 @@ import { call, cancel, fork, put, select, take } from "redux-saga/effects";
 
 import { KycFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { SUBMIT_KYC_PERMISSION } from "../../config/constants";
+import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
@@ -213,7 +213,7 @@ function* submitIndividualRequest(
   try {
     yield neuCall(
       ensurePermissionsArePresent,
-      [SUBMIT_KYC_PERMISSION],
+      [EJwtPermissions.SUBMIT_KYC_PERMISSION],
       createMessage(KycFlowMessage.KYC_SUBMIT_TITLE),
       createMessage(KycFlowMessage.KYC_SUBMIT_DESCRIPTION),
     );
@@ -555,7 +555,7 @@ function* submitBusinessRequest(
 
     yield neuCall(
       ensurePermissionsArePresent,
-      [SUBMIT_KYC_PERMISSION],
+      [EJwtPermissions.SUBMIT_KYC_PERMISSION],
       createMessage(KycFlowMessage.KYC_SUBMIT_TITLE),
       createMessage(KycFlowMessage.KYC_SUBMIT_DESCRIPTION),
     );

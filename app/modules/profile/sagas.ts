@@ -3,7 +3,7 @@ import { call, fork, put, select } from "redux-saga/effects";
 
 import { ProfileMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { CHANGE_EMAIL_PERMISSION } from "../../config/constants";
+import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
 import { IAppState } from "../../store";
@@ -37,7 +37,7 @@ export function* addNewEmail(
     yield effects.put(actions.verifyEmail.lockVerifyEmailButton());
     yield neuCall(
       ensurePermissionsArePresent,
-      [CHANGE_EMAIL_PERMISSION],
+      [EJwtPermissions.CHANGE_EMAIL_PERMISSION],
       emailModalTitle,
       createMessage(ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM),
     );
@@ -73,7 +73,7 @@ export function* resendEmail(
 
     yield neuCall(
       ensurePermissionsArePresent,
-      [CHANGE_EMAIL_PERMISSION],
+      [EJwtPermissions.CHANGE_EMAIL_PERMISSION],
       createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE),
       createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION),
     );

@@ -2,7 +2,7 @@ import { Effect, fork, put, select } from "redux-saga/effects";
 
 import { getMessageTranslation, ToSMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { SIGN_TOS } from "../../config/constants";
+import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
@@ -46,7 +46,7 @@ function* handleAcceptCurrentAgreement({
   const currentAgreementHash: string = yield select(selectCurrentAgreementHash);
   yield neuCall(
     ensurePermissionsArePresent,
-    [SIGN_TOS],
+    [EJwtPermissions.SIGN_TOS],
     createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TITLE),
     createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT),
   );

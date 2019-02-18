@@ -3,7 +3,7 @@ import { fork, put, select } from "redux-saga/effects";
 
 import { EtoDocumentsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { DO_BOOK_BUILDING, SUBMIT_ETO_PERMISSION } from "../../config/constants";
+import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
@@ -57,7 +57,7 @@ export function* changeBookBuildingStatus(
       ? createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING)
       : createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING);
 
-    yield neuCall(ensurePermissionsArePresent, [DO_BOOK_BUILDING], message);
+    yield neuCall(ensurePermissionsArePresent, [EJwtPermissions.DO_BOOK_BUILDING], message);
     yield apiEtoService.changeBookBuildingState(action.payload.status);
   } catch (e) {
     logger.error("Failed to change book-building status", e);
@@ -144,7 +144,7 @@ export function* submitEtoData(
   try {
     yield neuCall(
       ensurePermissionsArePresent,
-      [SUBMIT_ETO_PERMISSION],
+      [EJwtPermissions.SUBMIT_ETO_PERMISSION],
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_TITLE), //eto.modal.submit-title
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION), //eto.modal.submit-description
     );

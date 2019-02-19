@@ -9,7 +9,7 @@ import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
 import { IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces";
 import { delay } from "../../utils/delay";
 import { actions, TAction } from "../actions";
-import { ensurePermissionsArePresent } from "../auth/jwt/sagas";
+import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import {
   DELETE_PLEDGE,
@@ -20,30 +20,36 @@ import {
   WATCH_BOOKBUILDING_FLOW_STATS,
 } from "./actions";
 
+export function* saveMyPledgeEffect(
+  { apiEtoPledgeService }: TGlobalDependencies,
+  etoId: string,
+  pledge: IPledge,
+): any {
+  const pledgeResult: IHttpResponse<IPledge> = yield apiEtoPledgeService.saveMyPledge(
+    etoId,
+    pledge,
+  );
+
+  yield put(actions.bookBuilding.setPledge(etoId, pledgeResult.body));
+  yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
+}
+
 export function* saveMyPledge(
-  { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
+  { notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== SAVE_PLEDGE) return;
 
+  const { etoId, pledge } = action.payload;
+
   try {
     yield neuCall(
-      ensurePermissionsArePresent,
+      ensurePermissionsArePresentAndRunEffect,
+      neuCall(saveMyPledgeEffect, etoId, pledge),
       [EJwtPermissions.DO_BOOK_BUILDING],
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE),
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_DESCRIPTION),
     );
-
-    const etoId = action.payload.etoId;
-    const pledge = action.payload.pledge;
-
-    const pledgeResult: IHttpResponse<IPledge> = yield apiEtoPledgeService.saveMyPledge(
-      etoId,
-      pledge,
-    );
-
-    yield put(actions.bookBuilding.setPledge(etoId, pledgeResult.body));
-    yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE),
@@ -52,26 +58,31 @@ export function* saveMyPledge(
   }
 }
 
+export function* deleteMyPledgeEffect(
+  { apiEtoPledgeService }: TGlobalDependencies,
+  etoId: string,
+): any {
+  yield apiEtoPledgeService.deleteMyPledge(etoId);
+
+  yield put(actions.bookBuilding.setPledge(etoId));
+  yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
+}
+
 export function* deleteMyPledge(
-  { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
+  { notificationCenter, logger }: TGlobalDependencies,
   action: TAction,
 ): any {
   if (action.type !== DELETE_PLEDGE) return;
 
+  const { etoId } = action.payload;
   try {
     yield neuCall(
-      ensurePermissionsArePresent,
+      ensurePermissionsArePresentAndRunEffect,
+      neuCall(deleteMyPledgeEffect, etoId),
       [EJwtPermissions.DO_BOOK_BUILDING],
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL),
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION),
     );
-
-    const etoId = action.payload.etoId;
-
-    yield apiEtoPledgeService.deleteMyPledge(etoId);
-
-    yield put(actions.bookBuilding.setPledge(etoId));
-    yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
   } catch (e) {
     notificationCenter.error(
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED),

@@ -2,7 +2,6 @@ import { channel } from "redux-saga";
 import { call, Effect, put, select, take } from "redux-saga/effects";
 
 import { TMessage } from "../../../components/translatedMessages/utils";
-import { EJwtPermissions } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { STORAGE_JWT_KEY } from "../../../lib/persistence/JwtObjectStorage";
 import { IAppState } from "../../../store";
@@ -83,27 +82,29 @@ export function* obtainJWT(
  * Saga to ensure all the needed permissions are present and still valid
  * on the current jwt
  */
-export function* ensurePermissionsArePresent(
+export function* ensurePermissionsArePresentAndRunEffect(
   { jwtStorage, logger }: TGlobalDependencies,
-  permissions: Array<EJwtPermissions> = [],
+  effect: Iterator<any>,
+  permissions: Array<string> = [],
   title: TMessage,
   message: TMessage,
 ): Iterator<any> {
   const jwt = jwtStorage.get();
   // check wether all permissions are present and still valid
   if (jwt && hasValidPermissions(jwt, permissions)) {
-    // If its an escalated permission then force a new JWT
+    yield effect;
     return;
   }
   // obtain a freshly signed token with missing permissions
   try {
     const obtainJwtEffect = neuCall(obtainJWT, permissions);
     yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message);
+    yield effect;
   } catch (error) {
     if (error instanceof MessageSignCancelledError) {
       logger.info("Signing Cancelled");
     } else {
-      throw new Error("Message signing failed");
+      throw new Error(error);
     }
   }
 }

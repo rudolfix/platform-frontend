@@ -6,6 +6,7 @@ import { CommonHtmlProps } from "../../../types";
 import { isZero } from "../../../utils/Number.utils";
 import { AccountBalance } from "../../shared/AccountBalance";
 import { ECurrency } from "../../shared/Money";
+import { VerifiedBankAccount } from "../VerifiedBankAccount";
 import { WalletBalanceContainer } from "./WalletBalance";
 
 import * as neuroIcon from "../../../assets/img/nEUR_icon.svg";
@@ -38,6 +39,8 @@ export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & C
         }}
       />
     </p>
+
+    <VerifiedBankAccount />
 
     <section>
       <h4 className={styles.title}>

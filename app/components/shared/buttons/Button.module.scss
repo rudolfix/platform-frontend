@@ -230,6 +230,10 @@ $_active-color: lighten($_hover-color, 20%);
     color: $neu-seaweed;
   }
 
+  &-blue {
+    color: $neu-blue;
+  }
+
   // elements
   &:global {
 

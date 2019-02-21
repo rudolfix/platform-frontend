@@ -89,7 +89,7 @@ describe("Wallet > selectors", () => {
         .toString(),
     );
 
-    expect(selectNeuBalance(state.wallet)).to.eq(Q18.mul(1000).toString());
+    expect(selectNeuBalance(fullStateMock)).to.eq(Q18.mul(1000).toString());
     expect(selectNeuBalanceEuroAmount(fullStateMock)).to.eq(
       Q18.mul(1000)
         .mul(10000)

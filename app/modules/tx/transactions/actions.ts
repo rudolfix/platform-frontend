@@ -21,5 +21,6 @@ export const txTransactionsActions = {
       tokenDisbursals,
     }),
   ),
+  startUnlockEtherFunds: createActionFactory("TRANSACTIONS_START_UNLOCK_ETHER_FUNDS"),
   // Add here new custom sagas that represent flows
 };

@@ -109,7 +109,7 @@ function* investEntireBalance(): any {
   let balance = "";
   switch (type) {
     case EInvestmentType.ICBMEth:
-      balance = selectLockedEtherBalance(state.wallet);
+      balance = selectLockedEtherBalance(state);
       yield computeAndSetCurrencies(balance, EInvestmentCurrency.Ether);
       break;
 
@@ -161,7 +161,7 @@ function validateInvestment(state: IAppState): EInvestmentErrorState | undefined
   }
 
   if (investmentFlow.investmentType === EInvestmentType.ICBMEth) {
-    if (compareBigNumbers(etherValue, selectLockedEtherBalance(state.wallet)) > 0) {
+    if (compareBigNumbers(etherValue, selectLockedEtherBalance(state)) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
@@ -278,7 +278,7 @@ function* getActiveInvestmentTypes(): any {
   if (compareBigNumbers(selectLockedEuroTokenBalance(state.wallet), 0) > 0) {
     activeTypes.unshift(EInvestmentType.ICBMnEuro);
   }
-  if (compareBigNumbers(selectLockedEtherBalance(state.wallet), 0) > 0) {
+  if (compareBigNumbers(selectLockedEtherBalance(state), 0) > 0) {
     activeTypes.unshift(EInvestmentType.ICBMEth);
   }
 

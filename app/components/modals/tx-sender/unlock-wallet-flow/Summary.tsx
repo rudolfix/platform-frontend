@@ -1,14 +1,15 @@
+import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
 
-import { ITxData } from "../../../../lib/web3/types";
+import { PLATFORM_UNLOCK_FEE } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
+import { selectTxGasCostEthUlps } from "../../../../modules/tx/sender/selectors";
 import {
-  selectTxGasCostEthUlps,
-  selectTxSummaryAdditionalData,
-  selectTxSummaryData,
-} from "../../../../modules/tx/sender/selectors";
+  selectEtherLockedNeumarksDue,
+  selectLockedEtherBalance,
+} from "../../../../modules/wallet/selectors";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { Heading } from "../../../shared/modals/Heading";
@@ -17,9 +18,9 @@ import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 
 interface IStateProps {
-  txData: Partial<ITxData>;
   txCost: string;
-  additionalData: { etherNeumarksDue: string; neuBalance: string };
+  neumarksDue: string;
+  etherLockedBalance: string;
 }
 
 interface IDispatchProps {
@@ -30,57 +31,65 @@ type TComponentProps = IStateProps & IDispatchProps;
 
 export const UnlockFundsSummaryComponent: React.FunctionComponent<TComponentProps> = ({
   txCost,
-  additionalData,
+  neumarksDue,
+  etherLockedBalance,
   onAccept,
-}) => (
-  <Container>
-    <Row className="mb-4">
-      <Col>
-        <Heading>
-          <FormattedMessage id="unlock-funds-flow.summary" />
-        </Heading>
-      </Col>
-    </Row>
+}) => {
+  const etherLockedBalanceBN = new BigNumber(etherLockedBalance);
+  const returnedEther = etherLockedBalanceBN.minus(etherLockedBalanceBN.mul(PLATFORM_UNLOCK_FEE));
+  return (
+    <Container>
+      <Row className="mb-4">
+        <Col>
+          <Heading>
+            <FormattedMessage id="unlock-funds-flow.summary" />
+          </Heading>
+        </Col>
+      </Row>
 
-    <Row>
-      <Col>
-        <InfoList>
-          <InfoRow
-            caption={<FormattedMessage id="unlock-funds-flow.neu-balance" />}
-            value={<Money currency={ECurrency.ETH} value={additionalData.neuBalance} />}
-          />
-          <InfoRow
-            caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
-            value={<Money currency={ECurrency.ETH} value={additionalData.etherNeumarksDue} />}
-          />
-
-          <InfoRow
-            caption={<FormattedMessage id="unlock-funds-flow.transaction-cost" />}
-            value={<Money currency={ECurrency.ETH} value={txCost} />}
-          />
-        </InfoList>
-      </Col>
-    </Row>
-    <Row>
-      <Col className="text-center">
-        <Button
-          onClick={onAccept}
-          innerClassName="mt-4"
-          data-test-id="modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept"
-        >
-          <FormattedMessage id="withdraw-flow.confirm" />
-        </Button>
-      </Col>
-    </Row>
-  </Container>
-);
+      <Row>
+        <Col>
+          <InfoList>
+            <InfoRow
+              caption={<FormattedMessage id="unlock-funds-flow.eth-committed" />}
+              value={<Money currency={ECurrency.ETH} value={etherLockedBalance} />}
+            />
+            <InfoRow
+              caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
+              value={<Money currency={ECurrency.ETH} value={neumarksDue} />}
+            />
+            <InfoRow caption={<FormattedMessage id="unlock-funds-flow.fee" />} value={null} />
+            <InfoRow
+              caption={<FormattedMessage id="unlock-funds-flow.amount-returned" />}
+              value={<Money currency={ECurrency.ETH} value={returnedEther} />}
+            />
+            <InfoRow
+              caption={<FormattedMessage id="unlock-funds-flow.transaction-cost" />}
+              value={<Money currency={ECurrency.ETH} value={txCost} />}
+            />
+          </InfoList>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="text-center">
+          <Button
+            onClick={onAccept}
+            innerClassName="mt-4"
+            data-test-id="modals.tx-sender.withdraw-flow.summery.unlock-funds-summary.accept"
+          >
+            <FormattedMessage id="withdraw-flow.confirm" />
+          </Button>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export const UnlockWalletSummary = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
-    txData: selectTxSummaryData(state)!,
-    // TODO REMOVE TXDATA if not required by design
-    additionalData: selectTxSummaryAdditionalData(state),
     txCost: selectTxGasCostEthUlps(state),
+    neumarksDue: selectEtherLockedNeumarksDue(state),
+    etherLockedBalance: selectLockedEtherBalance(state),
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),

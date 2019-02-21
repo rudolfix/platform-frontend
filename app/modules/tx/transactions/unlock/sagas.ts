@@ -19,7 +19,6 @@ export function* generateUnlockEuroTransaction({
   const canUnlockWallet = yield select(selectCanUnlockWallet);
   if (!canUnlockWallet) {
     throw new UserCannotUnlockFunds();
-    // TODO: No euro balance
   }
 
   const userAddress = yield select(selectEthereumAddressWithChecksum);

@@ -1,7 +1,7 @@
 export const appRoutes = {
   verify: "/email-verify",
   icbmMigration: "/migrate",
-  walletUnlock: "/unlock-with-test",
+  walletUnlock: "/wallet-unlock-etherlock",
 
   root: "/",
 

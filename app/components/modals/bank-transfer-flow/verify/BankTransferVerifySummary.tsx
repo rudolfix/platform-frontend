@@ -4,21 +4,21 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 import { compose, withProps } from "recompose";
 
-import { getConfig } from "../../../config/getConfig";
-import { actions } from "../../../modules/actions";
+import { getConfig } from "../../../../config/getConfig";
+import { actions } from "../../../../modules/actions";
 import {
   selectBankTransferFlowReference,
   selectBankTransferMinAmount,
-} from "../../../modules/bank-transfer-flow/selectors";
-import { appConnect } from "../../../store";
-import { Button, EButtonLayout } from "../../shared/buttons";
-import { CopyToClipboardButton } from "../../shared/CopyToClipboardButton";
-import { Heading } from "../../shared/modals/Heading";
-import { ECurrency, ECurrencySymbol, Money } from "../../shared/Money";
-import { InfoList } from "../tx-sender/shared/InfoList";
-import { InfoRow } from "../tx-sender/shared/InfoRow";
+} from "../../../../modules/bank-transfer-flow/selectors";
+import { appConnect } from "../../../../store";
+import { ButtonArrowRight } from "../../../shared/buttons";
+import { CopyToClipboardButton } from "../../../shared/CopyToClipboardButton";
+import { Heading } from "../../../shared/modals/Heading";
+import { ECurrency, ECurrencySymbol, Money } from "../../../shared/Money";
+import { InfoList } from "../../tx-sender/shared/InfoList";
+import { InfoRow } from "../../tx-sender/shared/InfoRow";
 
-import * as styles from "../tx-sender/investment-flow/Summary.module.scss";
+import * as styles from "../../tx-sender/investment-flow/Summary.module.scss";
 
 interface IStateProps {
   referenceCode: string;
@@ -44,7 +44,7 @@ const CopyToClipboardLabel: React.FunctionComponent<{ label: string }> = ({ labe
   </>
 );
 
-const BankTransferDetailsLayout: React.FunctionComponent<IProps> = ({
+const BankTransferVerifySummaryLayout: React.FunctionComponent<IProps> = ({
   recipient,
   bic,
   iban,
@@ -54,16 +54,16 @@ const BankTransferDetailsLayout: React.FunctionComponent<IProps> = ({
 }) => (
   <Container className={styles.container}>
     <Heading className="mb-4">
-      <FormattedMessage id="bank-transfer.summary.title" />
+      <FormattedMessage id="bank-transfer.verify.summary.title" />
     </Heading>
 
     <p className="mb-3">
-      <FormattedHTMLMessage id="bank-transfer.summary.description" tagName="span" />
+      <FormattedHTMLMessage id="bank-transfer.verify.summary.description" tagName="span" />
     </p>
 
     <InfoList className="mb-4">
       <InfoRow
-        caption={<FormattedMessage id="bank-transfer.summary.min-amount" />}
+        caption={<FormattedMessage id="bank-transfer.verify.summary.min-amount" />}
         value={
           <Money
             value={minAmount}
@@ -90,15 +90,19 @@ const BankTransferDetailsLayout: React.FunctionComponent<IProps> = ({
       />
     </InfoList>
 
+    <p className="text-warning mx-4">
+      <FormattedMessage id="bank-transfer.verify.summary.note" />
+    </p>
+
     <section className="text-center">
-      <Button layout={EButtonLayout.PRIMARY} type="button" onClick={continueToSummary}>
+      <ButtonArrowRight onClick={continueToSummary}>
         <FormattedMessage id="bank-transfer.summary.transfer-completed" />
-      </Button>
+      </ButtonArrowRight>
     </section>
   </Container>
 );
 
-const BankTransferDetails = compose<IProps, {}>(
+const BankTransferVerifySummary = compose<IProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       referenceCode: selectBankTransferFlowReference(state),
@@ -117,6 +121,6 @@ const BankTransferDetails = compose<IProps, {}>(
       bic: bankTransferDetails.bic,
     };
   }),
-)(BankTransferDetailsLayout);
+)(BankTransferVerifySummaryLayout);
 
-export { BankTransferDetailsLayout, BankTransferDetails };
+export { BankTransferVerifySummaryLayout, BankTransferVerifySummary };

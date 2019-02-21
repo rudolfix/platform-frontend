@@ -2,8 +2,8 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { withModalBody } from "../../../utils/storybookHelpers";
-import { BankTransferDetailsLayout } from "./BankTransferDetails";
+import { withModalBody } from "../../../../utils/storybookHelpers";
+import { BankTransferPurchaseLayout } from "./BankTransferPurchaseSummary";
 
 const detailsData = {
   recipient: "Fifth Force GmbH",
@@ -14,6 +14,6 @@ const detailsData = {
   continueToSummary: action("continueToSummary"),
 };
 
-storiesOf("BankTransfer/Details", module)
+storiesOf("BankTransferPurchaseLayout", module)
   .addDecorator(withModalBody())
-  .add("default", () => <BankTransferDetailsLayout {...detailsData} />);
+  .add("default", () => <BankTransferPurchaseLayout {...detailsData} />);

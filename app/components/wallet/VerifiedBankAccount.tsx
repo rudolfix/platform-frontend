@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { selectIsBankAccountVerified } from "../../modules/auth/selectors";
+import { selectIsBankAccountVerified } from "../../modules/bank-transfer-flow/selectors";
 import { selectBankAccount } from "../../modules/kyc/selectors";
 import { TBankAccount } from "../../modules/kyc/types";
 import { appConnect } from "../../store";
@@ -12,16 +12,21 @@ import { BankAccount } from "./BankAccount";
 
 import * as styles from "./VerifiedBankAccount.module.scss";
 
+interface IExternalProps {
+  onVerify: () => void;
+}
+
 interface IStateProps {
   bankAccount?: DeepReadonly<TBankAccount>;
   isVerified: boolean;
 }
 
-type IComponentProps = IStateProps;
+type IComponentProps = IExternalProps & IStateProps;
 
 const VerifiedBankAccountComponent: React.FunctionComponent<IComponentProps> = ({
   isVerified,
   bankAccount,
+  onVerify,
 }) => (
   <section>
     <div className={styles.header}>
@@ -30,7 +35,7 @@ const VerifiedBankAccountComponent: React.FunctionComponent<IComponentProps> = (
       </h4>
       <Button
         className={styles.linkButton}
-        onClick={() => {}}
+        onClick={onVerify}
         data-test-id="wallet-verified-bank-account.link-account"
         layout={EButtonLayout.INLINE}
         size={ButtonSize.SMALL}
@@ -51,7 +56,7 @@ const VerifiedBankAccountComponent: React.FunctionComponent<IComponentProps> = (
   </section>
 );
 
-const VerifiedBankAccount = compose<IComponentProps, {}>(
+const VerifiedBankAccount = compose<IComponentProps, IExternalProps>(
   appConnect<IStateProps, {}, {}>({
     stateToProps: state => ({
       bankAccount: selectBankAccount(state),

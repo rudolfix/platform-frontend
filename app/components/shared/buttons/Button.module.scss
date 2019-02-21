@@ -141,8 +141,6 @@ $_active-color: lighten($_hover-color, 20%);
   }
 
   &-inline {
-    @include font-default;
-
     &:hover,
     &.is-active,
     &:focus {

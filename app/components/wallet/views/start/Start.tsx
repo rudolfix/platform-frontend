@@ -5,6 +5,7 @@ import { compose } from "redux";
 
 import { actions } from "../../../../modules/actions";
 import { EBankTransferType } from "../../../../modules/bank-transfer-flow/reducer";
+import { selectIsBankFlowEnabled } from "../../../../modules/bank-transfer-flow/selectors";
 import { ETokenType } from "../../../../modules/tx/interfaces";
 import {
   selectICBMLockedEtherBalance,
@@ -46,6 +47,7 @@ interface IStateProps {
   icbmWalletData: IIcbmWalletValues;
   userAddress: string;
   isLoading: boolean;
+  isBankFlowEnabled: boolean;
 }
 
 interface IDispatchProps {
@@ -54,6 +56,7 @@ interface IDispatchProps {
   upgradeWalletEtherToken: () => void;
   upgradeWalletEuroToken: () => void;
   purchaseNEur: () => void;
+  verifyBankAccount: () => void;
 }
 
 type TProps = IStateProps & IDispatchProps;
@@ -68,6 +71,8 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
   upgradeWalletEuroToken,
   upgradeWalletEtherToken,
   purchaseNEur,
+  verifyBankAccount,
+  isBankFlowEnabled,
 }) => (
   <>
     <Row className="row-gutter-top" data-test-id="wallet-start-container">
@@ -90,6 +95,8 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
           neuroEuroAmount={liquidWalletData.neuroEuroAmount}
           onTopUP={purchaseNEur}
           onRedeem={() => {}}
+          onVerify={verifyBankAccount}
+          isBankFlowEnabled={isBankFlowEnabled}
         />
       </Col>
 
@@ -135,6 +142,7 @@ export const WalletStart = compose<React.FunctionComponent>(
       // Wallet Related State
       isLoading: selectIsLoading(state.wallet),
       error: selectWalletError(state.wallet),
+      isBankFlowEnabled: selectIsBankFlowEnabled(state),
       liquidWalletData: {
         ethAmount: selectLiquidEtherBalance(state.wallet),
         ethEuroAmount: selectLiquidEtherBalanceEuroAmount(state),
@@ -169,6 +177,8 @@ export const WalletStart = compose<React.FunctionComponent>(
         dispatch(actions.txTransactions.startUpgrade(ETokenType.ETHER)),
       purchaseNEur: () =>
         dispatch(actions.bankTransferFlow.startBankTransfer(EBankTransferType.PURCHASE)),
+      verifyBankAccount: () =>
+        dispatch(actions.bankTransferFlow.startBankTransfer(EBankTransferType.VERIFY)),
     }),
   }),
   branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),

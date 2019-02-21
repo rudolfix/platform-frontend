@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
-import { selectBankAccount, selectClaims, selectKycRequestStatus } from "../kyc/selectors";
+import { selectIsUserVerifiedOnBlockchain, selectKycRequestStatus } from "../kyc/selectors";
 import { selectIsLightWallet } from "../web3/selectors";
 import { IAuthState } from "./reducer";
 
@@ -41,6 +41,12 @@ export const selectIsUserVerified = (state: IAppState): boolean =>
   selectIsUserEmailVerified(state.auth) &&
   selectKycRequestStatus(state) === ERequestStatus.ACCEPTED;
 
+/**
+ * Check if user is verified by API and Contract
+ */
+export const selectIsUserFullyVerified = (state: IAppState): boolean =>
+  selectIsUserVerified(state) && selectIsUserVerifiedOnBlockchain(state);
+
 export const selectIsInvestor = (state: IAppState): boolean =>
   selectUserType(state) === EUserType.INVESTOR;
 
@@ -48,27 +54,6 @@ export const selectIsVerifiedInvestor = createSelector(
   selectIsInvestor,
   selectIsUserVerified,
   (isInvestor, isUserVerified) => isInvestor && isUserVerified,
-);
-
-/**
- * Check whether bank account is verified.
- * Tree conditions must be met:
- * 1. User is verified
- * 2. User has bank account in API
- * 3. User has bank account in contract (IdentityRegistry)
- */
-export const selectIsBankAccountVerified = createSelector(
-  selectBankAccount,
-  selectClaims,
-  selectIsUserVerified,
-  (bankAccount, claims, isVerified) => {
-    // claims and bankAccount can be undefined while loading
-    if (claims && bankAccount) {
-      return isVerified && bankAccount.hasBankAccount && claims.hasBankAccount;
-    }
-
-    return false;
-  },
 );
 
 // TOS Related Selectors

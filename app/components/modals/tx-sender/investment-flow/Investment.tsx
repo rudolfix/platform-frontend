@@ -294,14 +294,14 @@ export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
             gasCostEth !== "0" && (
               <div>
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
-                <span className={styles.orange} data-test-id="invest-modal-gas-cost">
+                <span className="text-warning" data-test-id="invest-modal-gas-cost">
                   {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
                 </span>
               </div>
             )}
           <div>
             <FormattedMessage id="investment-flow.total" />:{" "}
-            <span className={styles.orange} data-test-id="invest-modal-total-cost">
+            <span className="text-warning" data-test-id="invest-modal-total-cost">
               {formatEurTsd(totalCostEur)} € ≈ ETH {formatEthTsd(totalCostEth)}
             </span>
           </div>

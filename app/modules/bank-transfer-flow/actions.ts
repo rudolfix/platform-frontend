@@ -8,7 +8,12 @@ export const bankTransferFLowActions = {
   })),
   stopBankTransfer: createActionFactory("BANK_TRANSFER_FLOW_STOP"),
 
+  downloadNEurTokenAgreement: createActionFactory("BANK_TRANSFER_DOWNLOAD_TOKEN_AGREEMENT"),
+
   // private actions
+  continueProcessing: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_PROCESSING"),
+
+  continueToInit: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_INIT"),
   continueToDetails: createActionFactory(
     "BANK_TRANSFER_FLOW_CONTINUE_TO_DETAILS",
     (values: { minEuroUlps?: string; reference: string }) => values,
@@ -18,4 +23,11 @@ export const bankTransferFLowActions = {
   generateBankTransferReference: createActionFactory("BANK_TRANSFER_FLOW_GENERATE_REFERENCE"),
   showBankTransferDetails: createActionFactory("BANK_TRANSFER_FLOW_DETAILS"),
   showBankTransferSummary: createActionFactory("BANK_TRANSFER_FLOW_SUMMARY"),
+
+  setBankTransferType: createActionFactory(
+    "BANK_TRANSFER_FLOW_SET_TYPE",
+    (type: EBankTransferType) => ({
+      type,
+    }),
+  ),
 };

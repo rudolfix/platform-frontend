@@ -4,9 +4,10 @@ import { actions } from "../actions";
 
 export enum EBankTransferFlowState {
   UNINITIALIZED = "uninitialized",
+  PROCESSING = "processing",
   INIT = "init",
-  DETAILS = "details",
   SUMMARY = "summary",
+  SUCCESS = "success",
 }
 
 /**
@@ -14,6 +15,7 @@ export enum EBankTransferFlowState {
  */
 export enum EBankTransferType {
   PURCHASE = "PU",
+  VERIFY = "VE",
 }
 
 export interface IBankTransferState {
@@ -36,10 +38,22 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
 ): DeepReadonly<IBankTransferState> => {
   switch (action.type) {
     case actions.bankTransferFlow.startBankTransfer.getType():
+    case actions.bankTransferFlow.continueProcessing.getType():
+      return {
+        ...state,
+        state: EBankTransferFlowState.PROCESSING,
+      };
+
+    case actions.bankTransferFlow.setBankTransferType.getType():
+      return {
+        ...state,
+        type: action.payload.type,
+      };
+
+    case actions.bankTransferFlow.continueToInit.getType():
       return {
         ...state,
         state: EBankTransferFlowState.INIT,
-        type: action.payload.type,
       };
 
     case actions.bankTransferFlow.continueToDetails.getType():
@@ -47,12 +61,12 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
         ...state,
         reference: action.payload.reference,
         minEuroUlps: action.payload.minEuroUlps,
-        state: EBankTransferFlowState.DETAILS,
+        state: EBankTransferFlowState.SUMMARY,
       };
     case actions.bankTransferFlow.continueToSummary.getType():
       return {
         ...state,
-        state: EBankTransferFlowState.SUMMARY,
+        state: EBankTransferFlowState.SUCCESS,
       };
 
     case actions.bankTransferFlow.stopBankTransfer.getType():

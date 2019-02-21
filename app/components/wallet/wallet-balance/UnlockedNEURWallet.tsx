@@ -15,8 +15,10 @@ import * as styles from "./WalletBalance.module.scss";
 interface IUnlockedNEURWallet {
   onTopUP: () => void;
   onRedeem: () => void;
+  onVerify: () => void;
   neuroAmount: string;
   neuroEuroAmount: string;
+  isBankFlowEnabled: boolean;
 }
 
 export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & CommonHtmlProps> = ({
@@ -25,6 +27,8 @@ export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & C
   neuroAmount,
   neuroEuroAmount,
   className,
+  isBankFlowEnabled,
+  onVerify,
 }) => (
   <WalletBalanceContainer
     className={className}
@@ -40,7 +44,7 @@ export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & C
       />
     </p>
 
-    <VerifiedBankAccount />
+    <VerifiedBankAccount onVerify={onVerify} />
 
     <section>
       <h4 className={styles.title}>
@@ -60,11 +64,12 @@ export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & C
                 {
                   name: <FormattedMessage id="components.wallet.start.neur-wallet.top-up" />,
                   onClick: onTopUP,
+                  disabled: !isBankFlowEnabled,
                 },
                 {
                   name: <FormattedMessage id="components.wallet.start.neur-wallet.redeem" />,
                   onClick: onRedeem,
-                  disabled: isZero(neuroAmount),
+                  disabled: !isBankFlowEnabled || isZero(neuroAmount),
                 },
               ]
             : undefined

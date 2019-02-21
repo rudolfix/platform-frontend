@@ -1,6 +1,5 @@
 import { IAppState } from "../../store";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
-import { selectIsAccountFrozen, selectIsClaimsVerified } from "../kyc/selectors";
 import { EValidationState } from "../tx/sender/reducer";
 import { selectTxValidationState } from "../tx/sender/selectors";
 import { EInvestmentCurrency, EInvestmentType } from "./reducer";
@@ -49,6 +48,3 @@ export const selectCurrencyByInvestmentType = (state: IAppState) => {
     ? EInvestmentCurrency.Ether
     : EInvestmentCurrency.Euro;
 };
-
-export const selectIsAllowedToInvest = (state: IAppState) =>
-  selectIsClaimsVerified(state) && !selectIsAccountFrozen(state);

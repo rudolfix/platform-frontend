@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import * as moment from "moment";
 import { fork, put, select, take } from "redux-saga/effects";
 
@@ -7,13 +8,11 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { cryptoRandomString } from "../../lib/dependencies/cryptoRandomString";
 import { EthereumAddressWithChecksum } from "../../types";
 import { invariant } from "../../utils/invariant";
-import { convertToBigInt } from "../../utils/Number.utils";
 import { actions, TActionFromCreator } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EBankTransferType } from "./reducer";
 import {
-  selectBankTransferType,
   selectIsBankAccountVerified,
   selectIsBankFlowEnabled,
   selectIsBankTransferModalOpened,
@@ -24,11 +23,10 @@ import {
  * NF <user address> REF <bank transfer type (2 characters)><date with minutes in UTC (format DDMMYYHHmm)><4 random characters>
  * see https://github.com/Neufund/platform-backend/wiki/5.4.-Use-Case-EUR-T-deposit for reference
  */
-function* generateReference(): Iterable<any> {
-  const addressHex: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
-  const type: EBankTransferType = yield select(selectBankTransferType);
-
+function* generateReference(_: TGlobalDependencies, type: EBankTransferType): Iterable<any> {
   invariant(type.length === 2, "Bank transfer type should be the length of 2 characters");
+
+  const addressHex: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
 
   const date = moment.utc().format("DDMMYYHHmm");
   const random = cryptoRandomString(4);
@@ -38,38 +36,40 @@ function* generateReference(): Iterable<any> {
   return `NF ${addressHex} REF ${reference}`;
 }
 
-function* startVerification(_: TGlobalDependencies): any {
-  const isValid: boolean = yield select(selectIsBankAccountVerified);
+function* startVerification({ contractsService }: TGlobalDependencies): any {
+  const reference: string = yield neuCall(generateReference, EBankTransferType.VERIFY);
 
-  invariant(!isValid, "Verification can only be started when bank account is not yet verified");
+  const minEuroUlps: BigNumber = yield contractsService.euroTokenController.minDepositAmountEurUlps;
 
-  yield put(actions.bankTransferFlow.setBankTransferType(EBankTransferType.VERIFY));
+  yield put(
+    actions.bankTransferFlow.setTransferDetails(
+      EBankTransferType.VERIFY,
+      minEuroUlps.toString(),
+      reference,
+    ),
+  );
 
   yield put(actions.bankTransferFlow.continueToInit());
 
   yield take(actions.bankTransferFlow.continueProcessing);
 
-  const reference: string = yield neuCall(generateReference);
-
-  yield put(
-    actions.bankTransferFlow.continueToDetails({
-      minEuroUlps: convertToBigInt(1), // TODO: will be replaced by proper contract call later
-      reference: reference,
-    }),
-  );
+  yield put(actions.bankTransferFlow.continueToDetails());
 }
 
-function* startPurchase(_: TGlobalDependencies): any {
-  yield put(actions.bankTransferFlow.setBankTransferType(EBankTransferType.PURCHASE));
+function* startPurchase({ contractsService }: TGlobalDependencies): any {
+  const reference: string = yield neuCall(generateReference, EBankTransferType.PURCHASE);
 
-  const reference: string = yield neuCall(generateReference);
+  const minEuroUlps: BigNumber = yield contractsService.euroTokenController.minDepositAmountEurUlps;
 
   yield put(
-    actions.bankTransferFlow.continueToDetails({
-      minEuroUlps: convertToBigInt(1), // TODO: will be replaced by proper contract call later
-      reference: reference,
-    }),
+    actions.bankTransferFlow.setTransferDetails(
+      EBankTransferType.PURCHASE,
+      minEuroUlps.toString(),
+      reference,
+    ),
   );
+
+  yield put(actions.bankTransferFlow.continueToDetails());
 }
 
 function* start(

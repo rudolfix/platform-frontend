@@ -14,20 +14,19 @@ export const bankTransferFLowActions = {
   continueProcessing: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_PROCESSING"),
 
   continueToInit: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_INIT"),
-  continueToDetails: createActionFactory(
-    "BANK_TRANSFER_FLOW_CONTINUE_TO_DETAILS",
-    (values: { minEuroUlps?: string; reference: string }) => values,
-  ),
+  continueToDetails: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_DETAILS"),
   continueToSummary: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_SUMMARY"),
 
   generateBankTransferReference: createActionFactory("BANK_TRANSFER_FLOW_GENERATE_REFERENCE"),
   showBankTransferDetails: createActionFactory("BANK_TRANSFER_FLOW_DETAILS"),
   showBankTransferSummary: createActionFactory("BANK_TRANSFER_FLOW_SUMMARY"),
 
-  setBankTransferType: createActionFactory(
-    "BANK_TRANSFER_FLOW_SET_TYPE",
-    (type: EBankTransferType) => ({
+  setTransferDetails: createActionFactory(
+    "BANK_TRANSFER_FLOW_SET_DETAILS",
+    (type: EBankTransferType, minEuroUlps: string, reference: string) => ({
       type,
+      minEuroUlps,
+      reference,
     }),
   ),
 };

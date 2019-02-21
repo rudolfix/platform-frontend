@@ -44,9 +44,11 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
         state: EBankTransferFlowState.PROCESSING,
       };
 
-    case actions.bankTransferFlow.setBankTransferType.getType():
+    case actions.bankTransferFlow.setTransferDetails.getType():
       return {
         ...state,
+        reference: action.payload.reference,
+        minEuroUlps: action.payload.minEuroUlps,
         type: action.payload.type,
       };
 
@@ -59,8 +61,6 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
     case actions.bankTransferFlow.continueToDetails.getType():
       return {
         ...state,
-        reference: action.payload.reference,
-        minEuroUlps: action.payload.minEuroUlps,
         state: EBankTransferFlowState.SUMMARY,
       };
     case actions.bankTransferFlow.continueToSummary.getType():

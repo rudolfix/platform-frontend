@@ -1,18 +1,12 @@
 import { Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import {
-  branch,
-  compose,
-  renderComponent,
-  StateHandler,
-  StateHandlerMap,
-  withStateHandlers,
-} from "recompose";
+import { branch, compose, renderComponent, StateHandler, withStateHandlers } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import * as YupTS from "../../../../lib/yup-ts";
 import { actions } from "../../../../modules/actions";
+import { selectBankTransferMinAmount } from "../../../../modules/bank-transfer-flow/selectors";
 import { appConnect } from "../../../../store";
 import { Button, ButtonArrowRight, EButtonLayout } from "../../../shared/buttons";
 import { ECheckboxLayout, Form, FormFieldBoolean } from "../../../shared/forms";
@@ -21,10 +15,15 @@ import { SectionHeader } from "../../../shared/SectionHeader";
 import { Message } from "../../Message";
 
 import * as bankVaultIcon from "../../../../assets/img/bank-transfer/bankvault.svg";
+import { ECurrency, Money } from "../../../shared/Money";
 
 export enum EBankTransferInitState {
   INFO,
   AGREEMENT,
+}
+
+interface IStateProps {
+  minEuroUlps: string;
 }
 
 interface IDispatchProps {
@@ -36,11 +35,11 @@ interface ILocalState {
   state: EBankTransferInitState;
 }
 
-type ILocalStateUpdater = StateHandlerMap<ILocalState> & {
+type ILocalStateUpdater = {
   goToAgreement: StateHandler<ILocalState>;
 };
 
-type IProps = IDispatchProps & ILocalStateUpdater;
+type IProps = IStateProps & IDispatchProps & ILocalStateUpdater;
 
 const AgreementScheme = YupTS.object({
   quintessenceTosApproved: YupTS.onlyTrue(),
@@ -131,11 +130,19 @@ const BankTransferVerifyAgreementLayout: React.FunctionComponent<IProps> = ({
   </section>
 );
 
-const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({ goToAgreement }) => (
+const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({
+  goToAgreement,
+  minEuroUlps,
+}) => (
   <Message
     image={<img src={bankVaultIcon} alt="" className="mb-3" />}
     title={<FormattedMessage id="bank-verification.info.title" />}
-    text={<FormattedMessage id="bank-verification.info.text" />}
+    text={
+      <FormattedMessage
+        id="bank-verification.info.text"
+        values={{ min: <Money value={minEuroUlps} currency={ECurrency.EUR} /> }}
+      />
+    }
   >
     <ButtonArrowRight onClick={goToAgreement}>
       <FormattedMessage id="bank-verification.info.link-now" />
@@ -144,7 +151,10 @@ const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({ goToAgr
 );
 
 const BankTransferVerifyInit = compose<IProps, {}>(
-  appConnect<{}, IDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => ({
+      minEuroUlps: selectBankTransferMinAmount(state),
+    }),
     dispatchToProps: dispatch => ({
       goToSummary: () => dispatch(actions.bankTransferFlow.continueProcessing()),
       downloadNEurTokenAgreement: () =>

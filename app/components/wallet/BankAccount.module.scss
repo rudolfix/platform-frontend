@@ -1,11 +1,6 @@
-.bank-verified {
-  @include font-button-small;
-
-  vertical-align: text-top;
-  text-transform: uppercase;
-  line-height: 1.6;
-  letter-spacing: -.2px;
-  color: $neu-seaweed;
+.bank-details {
+  display: flex;
+  align-items: center;
 }
 
 .kyc-data {
@@ -16,9 +11,4 @@
   @include rect(30px);
 
   margin-right: 18px;
-}
-
-.bank-details {
-  display: flex;
-  align-items: center;
 }

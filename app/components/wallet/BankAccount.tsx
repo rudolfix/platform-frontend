@@ -1,5 +1,5 @@
+import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TKycBankAccount } from "../../lib/api/KycApi.interfaces";
 
@@ -24,14 +24,9 @@ const BankNumber: React.FunctionComponent<IBankNumber> = ({ last4, bank }) => (
 
 const BankAccount: React.FunctionComponent<IExternalProps> = ({ details }) => (
   <section className={styles.bankDetails}>
-    <img className={styles.icon} src={bankIcon} />
+    <img className={styles.icon} src={bankIcon} alt="" />
     <div>
-      <p className={"m-0"}>
-        <span className={styles.kycData}>{details.holderName}</span>{" "}
-        <span className={styles.bankVerified}>
-          <FormattedMessage id="shared-component.wallet-verified-bank-account.bank-account.verified" />
-        </span>
-      </p>
+      <p className={cn(styles.kycData, "m-0")}>{details.holderName}</p>
       <p className={"m-0"}>
         <BankNumber last4={details.bankAccountNumberLast4} bank={""} />
       </p>

@@ -93,7 +93,7 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
           className="h-100"
           neuroAmount={liquidWalletData.neuroAmount}
           neuroEuroAmount={liquidWalletData.neuroEuroAmount}
-          onTopUP={purchaseNEur}
+          onPurchase={purchaseNEur}
           onRedeem={() => {}}
           onVerify={verifyBankAccount}
           isBankFlowEnabled={isBankFlowEnabled}

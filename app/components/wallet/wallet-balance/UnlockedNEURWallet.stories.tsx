@@ -8,7 +8,7 @@ import { UnlockedNEURWallet } from "./UnlockedNEURWallet";
 storiesOf("Unlocked EUR Wallet", module)
   .add("empty and disabled", () => (
     <UnlockedNEURWallet
-      onTopUP={action("top up")}
+      onPurchase={action("onPurchase")}
       onRedeem={action("redeem")}
       onVerify={action("onVerify")}
       neuroAmount={"0"}
@@ -18,7 +18,7 @@ storiesOf("Unlocked EUR Wallet", module)
   ))
   .add("not empty and enabled", () => (
     <UnlockedNEURWallet
-      onTopUP={action("top up")}
+      onPurchase={action("onPurchase")}
       onRedeem={action("redeem")}
       onVerify={action("onVerify")}
       neuroAmount={Q18.mul(847213).toString()}

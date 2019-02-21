@@ -13,7 +13,7 @@ import * as neuroIcon from "../../../assets/img/nEUR_icon.svg";
 import * as styles from "./WalletBalance.module.scss";
 
 interface IUnlockedNEURWallet {
-  onTopUP: () => void;
+  onPurchase: () => void;
   onRedeem: () => void;
   onVerify: () => void;
   neuroAmount: string;
@@ -22,7 +22,7 @@ interface IUnlockedNEURWallet {
 }
 
 export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & CommonHtmlProps> = ({
-  onTopUP,
+  onPurchase,
   onRedeem,
   neuroAmount,
   neuroEuroAmount,
@@ -62,8 +62,8 @@ export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & C
           process.env.NEURO_WITHDRAW_ENABLED === "1"
             ? [
                 {
-                  name: <FormattedMessage id="components.wallet.start.neur-wallet.top-up" />,
-                  onClick: onTopUP,
+                  name: <FormattedMessage id="components.wallet.start.neur-wallet.purchase" />,
+                  onClick: onPurchase,
                   disabled: !isBankFlowEnabled,
                 },
                 {

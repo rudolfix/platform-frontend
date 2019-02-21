@@ -26,7 +26,7 @@ storiesOf("AccountBalance", module)
       value={Q18.mul(123145.12).toString()}
       actions={[
         {
-          name: "Top up",
+          name: "Purchase",
           onClick: () => {},
         },
         {

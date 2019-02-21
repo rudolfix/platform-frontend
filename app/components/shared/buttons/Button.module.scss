@@ -170,6 +170,7 @@ $_active-color: lighten($_hover-color, 20%);
 
   // sizes
   &:global(.small) {
+    font-size: 80%;
     font-weight: $font-weight-medium;
 
     > .content {

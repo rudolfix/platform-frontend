@@ -11,11 +11,11 @@ import { appConnect } from "../../../../store";
 import { Button, ButtonArrowRight, EButtonLayout } from "../../../shared/buttons";
 import { ECheckboxLayout, Form, FormFieldBoolean } from "../../../shared/forms";
 import { ExternalLink } from "../../../shared/links";
+import { ECurrency, Money } from "../../../shared/Money";
 import { SectionHeader } from "../../../shared/SectionHeader";
 import { Message } from "../../Message";
 
 import * as bankVaultIcon from "../../../../assets/img/bank-transfer/bankvault.svg";
-import { ECurrency, Money } from "../../../shared/Money";
 
 export enum EBankTransferInitState {
   INFO,

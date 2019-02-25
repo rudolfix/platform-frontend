@@ -67,20 +67,6 @@ storiesOf("ICBM Wallet", module)
       }}
     />
   ))
-  .add("With Both Values But no Callback Function", () => (
-    <IcbmWallet
-      data={{
-        hasFunds: true,
-        isEtherUpgradeTargetSet: true,
-        isEuroUpgradeTargetSet: true,
-        ethAmount: "1",
-        ethEuroAmount: "1",
-        neuroAmount: "1",
-        neuroEuroAmount: "1",
-        totalEuroAmount: "0",
-      }}
-    />
-  ))
   .add("With Both Values and Callbacks but target not set", () => (
     <IcbmWallet
       onUpgradeEtherClick={() => {}}

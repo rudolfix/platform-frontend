@@ -1,7 +1,7 @@
-import * as Eip55 from "eip55";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
+import { toChecksumAddress } from "web3-utils";
 
 import { tid } from "../../../test/testUtils";
 import { promisify } from "../../utils/promisify";
@@ -88,7 +88,10 @@ export const createAndLoginNewUser = (
  */
 export const DEFAULT_PASSWORD = "strongpassword";
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
-export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: string) => {
+export const createLightWalletWithKeyPair = async (
+  seed?: string,
+  hdPathString: string = DEFAULT_HD_PATH,
+) => {
   // promisify some stuff
   const create = promisify<any>(LightWalletProvider.keystore.createVault);
 
@@ -99,7 +102,7 @@ export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: strin
   const lightWalletInstance = await create({
     password: DEFAULT_PASSWORD,
     seedPhrase: seed,
-    hdPathString: hdPath || DEFAULT_HD_PATH,
+    hdPathString,
     salt,
   });
 
@@ -110,7 +113,7 @@ export const createLightWalletWithKeyPair = async (seed?: string, hdPath?: strin
   const walletKey: any = await keyFromPassword(DEFAULT_PASSWORD);
   lightWalletInstance.generateNewAddress(walletKey, 1);
   let address = lightWalletInstance.getAddresses()[0];
-  address = Eip55.encode(address);
+  address = toChecksumAddress(address);
   const privateKey = lightWalletInstance.exportPrivateKey(address, walletKey);
 
   return { lightWalletInstance, salt, address, privateKey, walletKey };

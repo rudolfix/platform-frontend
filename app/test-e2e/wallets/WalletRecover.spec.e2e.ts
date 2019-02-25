@@ -1,11 +1,11 @@
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
+import { mockApiUrl } from "../confirm";
 import {
   acceptTOS,
   assertErrorModal,
   assertUserInDashboard,
   assertWaitForLatestEmailSentWithSalt,
   clearEmailServer,
-  mockApiUrl,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../utils";
@@ -57,10 +57,10 @@ describe("Wallet recover", () => {
 
     assertWaitForLatestEmailSentWithSalt(email);
 
-    cy.contains(tid("my-neu-widget-neumark-balance-large-value"), "151 848.6894 NEU");
+    cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "151 848.6894 NEU");
 
-    cy.contains(tid("my-wallet-widget-eur-token-large-value"), "0.00 nEUR");
-    cy.contains(tid("my-wallet-widget-eur-token-value"), "0.00 EUR");
+    cy.contains(tid("my-wallet-widget-eur-token.large-value"), "0.00 nEUR");
+    cy.contains(tid("my-wallet-widget-eur-token.value"), "0.00 EUR");
 
     // remove this for now...
     // cy.contains(tid("my-wallet-widget-eth-token-large-value"), "ETH999 938.8591");

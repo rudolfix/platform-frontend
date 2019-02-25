@@ -5,7 +5,25 @@ $_background-color: #f4f7f9;
 $_font-color: #323c47;
 
 .form-field-date-picker {
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 49px;
+  padding: 0;
+  border: 1px solid $_border-color;
   width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+
+  &,
+  &.is-valid {
+    &,
+    &:focus {
+      border-color: $_border-color;
+    }
+  }
 
   :global {
     .form-group {
@@ -13,9 +31,18 @@ $_font-color: #323c47;
     }
 
     .form-control {
-      font-size: 12px;
-      border: 1px solid $_border-color;
-      padding: 14px;
+
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      padding: 0 14px;
+      margin: 0;
+      border: none;
+
+      font-size: 14px;
+      font-weight: normal;
 
       &,
       &.is-valid {
@@ -100,16 +127,16 @@ $_font-color: #323c47;
     }
   }
 }
-
-.input-wrapper {
-  display: flex;
-
-  input {
-    &:focus {
-      border-color: $_border-color;
-    }
-  }
-}
+//
+//.input-wrapper {
+//  display: flex;
+//
+//  input {
+//    &:focus {
+//      border-color: $_border-color;
+//    }
+//  }
+//}
 
 .icon {
   @include rect(49px);
@@ -125,5 +152,43 @@ $_font-color: #323c47;
 
   :global(.inline-icon) {
     @include rect(22px);
+  }
+}
+
+.chosen-date {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 5px 14px;
+  margin: 0;
+  border: none;
+
+  font-size: 14px;
+  font-weight: normal;
+
+  &,
+  &.is-valid {
+    &,
+    &:focus {
+      border-color: $_border-color;
+    }
+  }
+}
+
+
+@media (min-width: 1400px) {
+  .form-field-date-picker {
+    width: 80%;
+  }
+}
+
+@media (min-width: 1170px) {
+  .chosen-date {
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 0 14px;
   }
 }

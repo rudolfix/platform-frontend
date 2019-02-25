@@ -5,7 +5,7 @@ import * as React from "react";
 import { withModalBody } from "../../../../utils/storybookHelpers";
 import { SetEtoDateSummaryComponent } from "./SetDateSummary";
 
-const date = moment(new Date()).add(10, "days");
+const date = moment(new Date("2020-12-17T03:24:00Z"));
 const changeableTill = date.clone().subtract(3, "days");
 
 const data = {

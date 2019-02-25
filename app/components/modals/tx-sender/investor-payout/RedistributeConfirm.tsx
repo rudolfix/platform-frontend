@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { Button, ButtonArrowRight, EButtonLayout } from "../../../shared/buttons";
-import { Message } from "../shared/Message";
+import { Message } from "../../Message";
 
 import * as redistributeIcon from "../../../../assets/img/redistribute.svg";
 
@@ -27,7 +27,7 @@ const InvestorRedistributePayoutConfirmLayout: React.FunctionComponent<IProps> =
     <Button onClick={deny} layout={EButtonLayout.SECONDARY}>
       <FormattedMessage id="investor-payout.redistribute.confirm.deny" />
     </Button>
-    <ButtonArrowRight onClick={confirm}>
+    <ButtonArrowRight onClick={confirm} data-test-id="investor-payout.redistribute-confirm.confirm">
       <FormattedMessage id="investor-payout.redistribute.confirm.confirm" />
     </ButtonArrowRight>
   </Message>

@@ -10,12 +10,15 @@ export const MONEY_DECIMALS = 18;
 /**
  * Constants for permissions
  */
-export const SUBMIT_KYC_PERMISSION = "submit-kyc";
-export const CHANGE_EMAIL_PERMISSION = "change-email";
-export const SUBMIT_ETO_PERMISSION = "submit-eto-listing";
-export const UPLOAD_IMMUTABLE_DOCUMENT = "upload-issuer-immutable-document";
-export const DO_BOOK_BUILDING = "do-bookbuilding";
-export const SIGN_TOS = "sign-tos";
+
+export enum EJwtPermissions {
+  SUBMIT_KYC_PERMISSION = "submit-kyc",
+  CHANGE_EMAIL_PERMISSION = "change-email",
+  SUBMIT_ETO_PERMISSION = "submit-eto-listing",
+  UPLOAD_IMMUTABLE_DOCUMENT = "upload-issuer-immutable-document",
+  DO_BOOK_BUILDING = "do-bookbuilding",
+  SIGN_TOS = "sign-tos",
+}
 
 /**
  *  Constants for JWT tokens
@@ -70,6 +73,7 @@ export const TOAST_COMPONENT_DELAY = 4000;
 export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 
 /*
- * General constants
+ * General constants•
  */
 export const IS_CYPRESS = !!process.env.IS_CYPRESS;
+export const IS_DEV = process.env.NODE_ENV === "development";

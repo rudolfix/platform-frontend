@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
-import { INV_EUR_ICBM_HAS_KYC_SEED } from "../constants";
+import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import { assertUserInDashboard, confirmAccessModal, goToDashboard } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 import { tid } from "../utils/selectors";
@@ -89,7 +89,7 @@ describe("Wallet Withdraw", () => {
       assertUserInDashboard();
       cy.get(tid("authorized-layout-wallet-button")).awaitedClick();
       cy.get(tid("account-address.your.ether-address.from-div")).then(accountAddress => {
-        cy.get(tid("wallet-balance.ether.shared-component.withdraw.button")).awaitedClick();
+        cy.get(tid("wallet.eth.withdraw.button")).awaitedClick();
         /*Test Address field validation*/
         typeWrongAddress();
         cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(

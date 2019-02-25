@@ -16,9 +16,9 @@ import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { withParams } from "../../utils/withParams";
 import { Button, ButtonLink, ButtonSize, EButtonLayout } from "../shared/buttons";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
-import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/NewTable";
 import { NumberFormat } from "../shared/NumberFormat";
 import { SectionHeader } from "../shared/SectionHeader";
+import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 
 import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
 import * as neuIcon from "../../assets/img/neu_icon.svg";
@@ -107,6 +107,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                 iconPosition="icon-after"
                 svgIcon={arrowRight}
                 size={ButtonSize.SMALL}
+                data-test-id="portfolio-my-assets-neu-agreements"
               >
                 <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
               </ButtonLink>
@@ -144,6 +145,7 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                       iconPosition="icon-after"
                       svgIcon={arrowRight}
                       size={ButtonSize.SMALL}
+                      data-test-id={`modals.portfolio.portfolio-assets.download-agreements-${etoId}`}
                     >
                       <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
                     </Button>

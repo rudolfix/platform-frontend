@@ -1,8 +1,9 @@
 .content {
   display: grid;
-  grid-template: auto / 1fr;
+  grid-template: 1fr auto / 1fr;
   grid-gap: .8rem;
   grid-auto-flow: row;
+  height: 100%;
 
   min-height: px-to-rem(178px);
 
@@ -32,13 +33,42 @@
   grid-gap: .1rem;
 }
 
+.eto-date-wrapper {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.eto-date {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.eto-time-left-start {
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
 .label {
   @include font-label;
 }
 
 .widget-button {
-  margin: 0 auto;
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  margin: 0;
   align-self: end;
+  justify-content: space-between; //more than one button
+
+  // sass-lint:disable force-pseudo-nesting
+  & > *:first-child:nth-last-child(1) {//one button. Linter disabled for readability
+    margin-left:  auto;
+    margin-right: auto;
+  }
 }
 
 //need to override button padding here, because there's too little space

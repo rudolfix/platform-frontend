@@ -1,4 +1,6 @@
-import ledgerWalletProvider from "ledger-wallet-provider";
+import TransportU2F from "@ledgerhq/hw-transport-u2f";
+import createLedgerSubprovider from "@ledgerhq/web3-subprovider/src";
+import Eth from "@ledgerhq/hw-app-eth";
 import * as semver from "semver";
 import * as Web3 from "web3";
 import * as Web3ProviderEngine from "web3-provider-engine";
@@ -197,33 +199,20 @@ async function testConnection(ledgerInstance: any): Promise<boolean> {
 }
 
 async function testIfUnlocked(ledgerInstance: any): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    ledgerInstance.getAccounts((err: Error | undefined, _accounts: string) => {
-      if (!err) {
-        resolve();
-      } else {
-        reject(new LedgerLockedError());
-      }
-    });
-  });
+  const test = ledgerInstance.getAccounts();
+  debugger;
 }
 
 async function getLedgerConfig(ledgerInstance: any): Promise<ILedgerConfig> {
-  return new Promise<ILedgerConfig>(async (resolve, reject) => {
-    noSimultaneousConnectionsGuard(ledgerInstance, () => {
-      ledgerInstance.getAppConfig((error: any, data: ILedgerConfig) => {
-        if (error) {
-          if (error.message === "Timeout") {
-            reject(new LedgerNotAvailableError());
-          } else {
-            reject(error);
-          }
-        } else {
-          resolve(data);
-        }
-      }, CHECK_INTERVAL / 2);
-    }).catch(reject);
-  });
+  try {
+    const Transport = await ledgerInstance.getTransport();
+    const ethInstance = new Eth(Transport);
+    const configration = await ethInstance.getAppConfiguration();
+    Transport.close();
+    return configration;
+  } catch (e) {
+    throw new LedgerNotAvailableError();
+  }
 }
 
 interface ILedgerOutput {
@@ -236,10 +225,11 @@ async function createWeb3WithLedgerProvider(
   rpcUrl: string,
 ): Promise<ILedgerOutput> {
   const engine = new Web3ProviderEngine();
-  const ledgerProvider = await ledgerWalletProvider(async () => networkId);
+  const getTransport = () => TransportU2F.create();
 
-  const ledgerInstance = ledgerProvider.ledger;
-
+  const ledgerProvider = createLedgerSubprovider(getTransport, {
+    accountsLength: 5,
+  });
   engine.addProvider(ledgerProvider);
   engine.addProvider(
     new RpcSubprovider({
@@ -249,7 +239,7 @@ async function createWeb3WithLedgerProvider(
   engine.start();
 
   return {
-    ledgerInstance,
+    ledgerInstance: { ...ledgerProvider, getTransport },
     ledgerWeb3: new Web3(engine),
   };
 }
@@ -259,7 +249,6 @@ async function connectToLedger(networkId: string, rpcUrl: string): Promise<ILedg
   try {
     const { ledgerInstance, ledgerWeb3 } = await createWeb3WithLedgerProvider(networkId, rpcUrl);
     providerEngine = ledgerWeb3.currentProvider;
-
     const ledgerConfig = await getLedgerConfig(ledgerInstance);
     if (semver.lt(ledgerConfig.version, "1.0.8")) {
       throw new LedgerNotSupportedVersionError(ledgerConfig.version);

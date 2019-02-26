@@ -1,12 +1,18 @@
 {
   "plugins": [
     [
+      "@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      }
+    ],
+    [
       "react-intl-krzkaczor",
       {
         "messagesDir": "./intl/messages/"
       }
     ],
-    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }]
   ],
-  "presets": ["@babel/preset-typescript", "@babel/react"]
+  "presets": ["@babel/preset-typescript", "@babel/react", "es2016"]
 }

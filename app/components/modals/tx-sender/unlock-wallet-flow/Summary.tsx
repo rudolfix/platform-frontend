@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
+import { compose, lifecycle, withState } from "recompose";
 
 import { PLATFORM_UNLOCK_FEE } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
@@ -9,8 +10,11 @@ import { selectTxGasCostEthUlps } from "../../../../modules/tx/sender/selectors"
 import {
   selectEtherLockedNeumarksDue,
   selectLockedEtherBalance,
+  selectLockedEtherUnlockDate,
 } from "../../../../modules/wallet/selectors";
+import { getUnlockedWalletEtherAmountAfterFee } from "../../../../modules/wallet/utils";
 import { appConnect } from "../../../../store";
+import { getCurrentUTCTimestamp } from "../../../../utils/Date.utils";
 import { Button } from "../../../shared/buttons";
 import { Heading } from "../../../shared/modals/Heading";
 import { ECurrency, Money } from "../../../shared/Money";
@@ -21,22 +25,27 @@ interface IStateProps {
   txCost: string;
   neumarksDue: string;
   etherLockedBalance: string;
+  unlockDate: string;
 }
 
 interface IDispatchProps {
   onAccept: () => any;
 }
 
-type TComponentProps = IStateProps & IDispatchProps;
+interface IAdditionalProps {
+  returnedEther: BigNumber;
+  updateReturnedFunds: (returnedEther: BigNumber) => void;
+}
+
+type TComponentProps = IStateProps & IDispatchProps & IAdditionalProps;
 
 export const UnlockFundsSummaryComponent: React.FunctionComponent<TComponentProps> = ({
   txCost,
   neumarksDue,
   etherLockedBalance,
   onAccept,
+  returnedEther,
 }) => {
-  const etherLockedBalanceBN = new BigNumber(etherLockedBalance);
-  const returnedEther = etherLockedBalanceBN.minus(etherLockedBalanceBN.mul(PLATFORM_UNLOCK_FEE));
   return (
     <Container>
       <Row className="mb-4">
@@ -56,11 +65,18 @@ export const UnlockFundsSummaryComponent: React.FunctionComponent<TComponentProp
             />
             <InfoRow
               caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
-              value={<Money currency={ECurrency.ETH} value={neumarksDue} />}
+              value={<Money currency={ECurrency.NEU} value={neumarksDue} />}
             />
             <InfoRow caption={<FormattedMessage id="unlock-funds-flow.fee" />} value={null} />
             <InfoRow
-              caption={<FormattedMessage id="unlock-funds-flow.amount-returned" />}
+              caption={
+                <FormattedMessage
+                  id="unlock-funds-flow.amount-returned"
+                  values={{
+                    fee: PLATFORM_UNLOCK_FEE,
+                  }}
+                />
+              }
               value={<Money currency={ECurrency.ETH} value={returnedEther} />}
             />
             <InfoRow
@@ -85,13 +101,32 @@ export const UnlockFundsSummaryComponent: React.FunctionComponent<TComponentProp
   );
 };
 
-export const UnlockWalletSummary = appConnect<IStateProps, IDispatchProps>({
-  stateToProps: state => ({
-    txCost: selectTxGasCostEthUlps(state),
-    neumarksDue: selectEtherLockedNeumarksDue(state),
-    etherLockedBalance: selectLockedEtherBalance(state),
+export const UnlockWalletSummary = compose<TComponentProps, any>(
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => ({
+      txCost: selectTxGasCostEthUlps(state),
+      neumarksDue: selectEtherLockedNeumarksDue(state),
+      etherLockedBalance: selectLockedEtherBalance(state),
+      unlockDate: selectLockedEtherUnlockDate(state),
+    }),
+    dispatchToProps: d => ({
+      onAccept: () => d(actions.txSender.txSenderAccept()),
+    }),
   }),
-  dispatchToProps: d => ({
-    onAccept: () => d(actions.txSender.txSenderAccept()),
+  withState("returnedEther", "updateReturnedFunds", 0),
+  lifecycle<TComponentProps, any>({
+    componentDidUpdate(): void {
+      const { updateReturnedFunds, unlockDate, etherLockedBalance } = this.props;
+      setTimeout(() => {
+        updateReturnedFunds(
+          getUnlockedWalletEtherAmountAfterFee(
+            new BigNumber(etherLockedBalance),
+            // TODO: Remove with https://github.com/Neufund/platform-frontend/issues/2156
+            unlockDate,
+            getCurrentUTCTimestamp(),
+          ),
+        );
+      }, 1000);
+    },
   }),
-})(UnlockFundsSummaryComponent);
+)(UnlockFundsSummaryComponent);

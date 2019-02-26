@@ -53,6 +53,12 @@ export const selectLockedEtherBalance = (state: IAppState) =>
     state.wallet.data.etherTokenLockedWallet.LockedBalance) ||
   "0";
 
+export const selectLockedEtherUnlockDate = (state: IAppState) =>
+  (state.wallet.data &&
+    state.wallet.data.etherTokenLockedWallet &&
+    state.wallet.data.etherTokenLockedWallet.unlockDate) ||
+  "0";
+
 export const selectLockedEtherBalanceEuroAmount = (state: IAppState) =>
   multiplyBigNumbers([selectEtherPriceEur(state), selectLockedEtherBalance(state)]);
 
@@ -70,7 +76,7 @@ export const selectLockedEuroTotalAmount = (state: IAppState) =>
 
 export const selectEtherLockedWalletHasFunds = createSelector(
   selectLockedEtherBalance,
-  etherLockedBalance => !!(etherLockedBalance !== "0"),
+  etherLockedBalance => etherLockedBalance !== "0",
 );
 
 export const selectLockedWalletHasFunds = (state: IAppState): boolean =>

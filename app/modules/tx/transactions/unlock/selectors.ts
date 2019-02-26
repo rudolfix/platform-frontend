@@ -12,8 +12,7 @@ const selectUserHasEnoughNeumarkToUnlock = createSelector(
   selectEtherLockedNeumarksDue,
   (neuBalance, neumarksDue) => {
     const neuCompare = new BigNumber(neuBalance).comparedTo(neumarksDue);
-    if (neuCompare >= 0) return true;
-    return false;
+    return neuCompare >= 0;
   },
 );
 
@@ -21,5 +20,5 @@ export const selectCanUnlockWallet = createSelector(
   selectUserHasEnoughNeumarkToUnlock,
   selectEtherLockedWalletHasFunds,
   (etherWalletHasEnoughNeumark, etherWalletHasFunds) =>
-    !!(etherWalletHasFunds && etherWalletHasEnoughNeumark),
+    etherWalletHasFunds && etherWalletHasEnoughNeumark,
 );

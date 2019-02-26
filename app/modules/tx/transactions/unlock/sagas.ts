@@ -45,8 +45,7 @@ export function* generateUnlockEuroTransaction({
 }
 
 export function* unlockEtherFundsTransactionGenerator(_: TGlobalDependencies): any {
-  const transactionGenerator = generateUnlockEuroTransaction;
-  const generatedTxDetails: ITxData = yield neuCall(transactionGenerator);
+  const generatedTxDetails: ITxData = yield neuCall(generateUnlockEuroTransaction);
   const etherNeumarksDue = yield select(selectEtherLockedNeumarksDue);
   const neuBalance = yield select(selectNeuBalance);
 

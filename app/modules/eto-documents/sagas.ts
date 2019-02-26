@@ -47,8 +47,8 @@ export function* generateDocumentFromTemplate(
     }
 
     const generatedDocument = yield apiImmutableStorage.getFile({
-      ipfsHash: resolvedTemplate ? resolvedTemplate.ipfs_hash : document.ipfsHash,
-      mimeType: resolvedTemplate ? resolvedTemplate.mime_type : document.mimeType,
+      ipfsHash: document.ipfsHash,
+      mimeType: document.mimeType,
       placeholders: resolvedTemplate ? resolvedTemplate.placeholders : undefined,
       asPdf: false,
     });

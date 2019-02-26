@@ -6,6 +6,7 @@ import { createMessage } from "../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
+import { BankAccountNotFound } from "../../lib/api/KycApi";
 import {
   EKycRequestType,
   ERequestOutsourcedStatus,
@@ -16,13 +17,14 @@ import {
   IKycIndividualData,
   IKycLegalRepresentative,
   IKycRequestState,
+  TKycBankAccount,
 } from "../../lib/api/KycApi.interfaces";
 import { IUser } from "../../lib/api/users/interfaces";
 import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
 import { IAppAction, IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
-import { selectUser } from "../auth/selectors";
+import { selectIsUserVerified, selectUser } from "../auth/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
 import { EInitType } from "../init/reducer";
 import { selectIsSmartContractInitDone } from "../init/selectors";
@@ -584,6 +586,46 @@ function* submitBusinessRequest(
   }
 }
 
+function* loadBankAccountDetails({
+  apiKycService,
+  logger,
+  notificationCenter,
+}: TGlobalDependencies): Iterator<any> {
+  try {
+    const isVerified: boolean = yield select(selectIsUserVerified);
+
+    // bank account api can only be called when account is verified
+    if (isVerified) {
+      const result: TKycBankAccount = yield apiKycService.getBankAccount();
+
+      yield put(
+        actions.kyc.setBankAccountDetails({
+          hasBankAccount: true,
+          details: result,
+        }),
+      );
+    } else {
+      yield put(
+        actions.kyc.setBankAccountDetails({
+          hasBankAccount: false,
+        }),
+      );
+    }
+  } catch (e) {
+    if (!(e instanceof BankAccountNotFound)) {
+      notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_LOADING_BANK_DETAILS));
+
+      logger.error("Error while loading kyc bank details", e);
+    }
+
+    yield put(
+      actions.kyc.setBankAccountDetails({
+        hasBankAccount: false,
+      }),
+    );
+  }
+}
+
 export function* loadKycRequestData(): any {
   // Wait for contracts to init
   const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
@@ -647,6 +689,8 @@ export function* kycSagas(): any {
 
   yield fork(neuTakeEvery, "KYC_LOAD_BUSINESS_REQUEST_STATE", loadBusinessRequest);
   yield fork(neuTakeEvery, "KYC_SUBMIT_BUSINESS_REQUEST", submitBusinessRequest);
+
+  yield fork(neuTakeEvery, actions.kyc.loadBankAccountDetails, loadBankAccountDetails);
 
   yield fork(neuTakeEvery, "KYC_LOAD_CLAIMS", loadIdentityClaim);
 

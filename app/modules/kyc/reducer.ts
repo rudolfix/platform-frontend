@@ -10,7 +10,8 @@ import {
 } from "../../lib/api/KycApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
-import { TClaims } from "./types";
+import { actions } from "../actions";
+import { TBankAccount, TClaims } from "./types";
 
 export interface IKycState {
   // individual
@@ -54,6 +55,9 @@ export interface IKycState {
 
   // contract claims
   claims: TClaims | undefined;
+
+  // api bank details
+  bankAccount: TBankAccount | undefined;
 }
 
 const kycInitialState: IKycState = {
@@ -65,6 +69,7 @@ const kycInitialState: IKycState = {
   beneficialOwnerFilesLoading: {},
   beneficialOwnerFileUploading: {},
   claims: undefined,
+  bankAccount: undefined,
 };
 
 function appendIfExists<T>(array: ReadonlyArray<T>, item: T | undefined): ReadonlyArray<T> {
@@ -169,6 +174,11 @@ export const kycReducer: AppReducer<IKycState> = (
     // contract claims
     case "KYC_SET_CLAIMS":
       return { ...state, claims: action.payload.claims };
+    // api bank account
+    case actions.kyc.setBankAccountDetails.getType(): {
+      return { ...state, bankAccount: action.payload.bankAccount };
+    }
+
     default:
       return state;
   }

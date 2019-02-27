@@ -10,7 +10,6 @@ import {
   IKycIndividualData,
   IKycLegalRepresentative,
   IKycRequestState,
-  KycBankAccountSchema,
   KycFileInfoShape,
   KycIndividualDataSchema,
   KycLegalRepresentativeSchema,
@@ -278,13 +277,9 @@ export class KycApi {
     const response = await this.httpClient.get<IKycRequestState>({
       baseUrl: BASE_PATH,
       url: BANK_ACCOUNT_PATH,
-      responseSchema: KycBankAccountSchema,
-      allowedStatusCodes: [404],
+      // TODO test why `optional` is not working
+      // responseSchema: KycBankAccountSchema,
     });
-
-    if (response.statusCode === 404) {
-      throw new BankAccountNotFound();
-    }
 
     return response.body;
   }

@@ -121,7 +121,11 @@ const BankTransferVerifyAgreementLayout: React.FunctionComponent<IProps> = ({
             }
             name="nEurTosApproved"
           />
-          <ButtonArrowRight type="submit" disabled={!isValid}>
+          <ButtonArrowRight
+            data-test-id="bank-verification.agree-with-tos"
+            type="submit"
+            disabled={!isValid}
+          >
             <FormattedMessage id="bank-verification.agreement.continue" />
           </ButtonArrowRight>
         </Form>
@@ -135,6 +139,7 @@ const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({
   minEuroUlps,
 }) => (
   <Message
+    data-test-id="bank-verification.info"
     image={<img src={bankVaultIcon} alt="" className="mb-3" />}
     title={<FormattedMessage id="bank-verification.info.title" />}
     text={
@@ -144,7 +149,7 @@ const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({
       />
     }
   >
-    <ButtonArrowRight onClick={goToAgreement}>
+    <ButtonArrowRight data-test-id="bank-verification.link-now" onClick={goToAgreement}>
       <FormattedMessage id="bank-verification.info.link-now" />
     </ButtonArrowRight>
   </Message>

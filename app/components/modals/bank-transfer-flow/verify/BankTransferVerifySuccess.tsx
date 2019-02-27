@@ -17,6 +17,7 @@ type IProps = IDispatchProps;
 
 const BankTransferVerifySuccessLayout: React.FunctionComponent<IProps> = ({ goToWallet }) => (
   <Message
+    data-test-id="bank-transfer.success"
     image={
       <Confetti theme={EConfettiTheme.PURPLE} className="mb-3">
         <img src={bankIcon} alt="" />

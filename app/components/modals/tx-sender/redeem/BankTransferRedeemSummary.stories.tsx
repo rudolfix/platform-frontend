@@ -15,7 +15,13 @@ storiesOf("BankTransferRedeem/Summary", module)
       bankFee={Q18.mul(0.005).toString()}
       bankAccount={{
         hasBankAccount: true,
-        details: { bankAccountNumberLast4: "1234", holderName: "Lorem Ipsum" },
+        details: {
+          bankAccountNumberLast4: "1234",
+          bankName: "mBank",
+          name: "Lorem Ipsum",
+          isSepa: true,
+          swiftCode: "33212",
+        },
       }}
     />
   ));

@@ -18,7 +18,7 @@ interface IUnlockedNEURWallet {
   onVerify: () => void;
   neuroAmount: string;
   neuroEuroAmount: string;
-  isBankFlowEnabled: boolean;
+  isUserFullyVerified: boolean;
 }
 
 export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & CommonHtmlProps> = ({
@@ -27,7 +27,7 @@ export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & C
   neuroAmount,
   neuroEuroAmount,
   className,
-  isBankFlowEnabled,
+  isUserFullyVerified,
   onVerify,
 }) => (
   <WalletBalanceContainer
@@ -64,12 +64,13 @@ export const UnlockedNEURWallet: React.FunctionComponent<IUnlockedNEURWallet & C
                 {
                   name: <FormattedMessage id="components.wallet.start.neur-wallet.purchase" />,
                   onClick: onPurchase,
-                  disabled: !isBankFlowEnabled,
+                  disabled: !isUserFullyVerified,
+                  "data-test-id": "wallet-balance.neur.purchase-button",
                 },
                 {
                   name: <FormattedMessage id="components.wallet.start.neur-wallet.redeem" />,
                   onClick: onRedeem,
-                  disabled: !isBankFlowEnabled || isZero(neuroAmount),
+                  disabled: !isUserFullyVerified || isZero(neuroAmount),
                 },
               ]
             : undefined

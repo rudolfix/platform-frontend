@@ -4,8 +4,8 @@ import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
 import { actions } from "../../../../modules/actions";
+import { selectIsUserFullyVerified } from "../../../../modules/auth/selectors";
 import { EBankTransferType } from "../../../../modules/bank-transfer-flow/reducer";
-import { selectIsBankFlowEnabled } from "../../../../modules/bank-transfer-flow/selectors";
 import { ETokenType } from "../../../../modules/tx/interfaces";
 import {
   selectICBMLockedEtherBalance,
@@ -47,7 +47,7 @@ interface IStateProps {
   icbmWalletData: IIcbmWalletValues;
   userAddress: string;
   isLoading: boolean;
-  isBankFlowEnabled: boolean;
+  isUserFullyVerified: boolean;
 }
 
 interface IDispatchProps {
@@ -74,7 +74,7 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
   purchaseNEur,
   verifyBankAccount,
   redeemNEur,
-  isBankFlowEnabled,
+  isUserFullyVerified,
 }) => (
   <>
     <Row className="row-gutter-top" data-test-id="wallet-start-container">
@@ -98,7 +98,7 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
           onPurchase={purchaseNEur}
           onRedeem={redeemNEur}
           onVerify={verifyBankAccount}
-          isBankFlowEnabled={isBankFlowEnabled}
+          isUserFullyVerified={isUserFullyVerified}
         />
       </Col>
 
@@ -144,7 +144,7 @@ export const WalletStart = compose<React.FunctionComponent>(
       // Wallet Related State
       isLoading: selectIsLoading(state.wallet),
       error: selectWalletError(state.wallet),
-      isBankFlowEnabled: selectIsBankFlowEnabled(state),
+      isUserFullyVerified: selectIsUserFullyVerified(state),
       liquidWalletData: {
         ethAmount: selectLiquidEtherBalance(state.wallet),
         ethEuroAmount: selectLiquidEtherBalanceEuroAmount(state),

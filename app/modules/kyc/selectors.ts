@@ -124,3 +124,6 @@ export const selectIsUserVerifiedOnBlockchain = (state: IAppState) =>
 
 export const selectBankAccount = (state: IAppState): DeepReadonly<TBankAccount> | undefined =>
   state.kyc.bankAccount;
+
+export const selectIsBankAccountLoading = (state: IAppState): boolean =>
+  state.kyc.bankAccount === undefined;

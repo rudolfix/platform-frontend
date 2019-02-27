@@ -10,14 +10,11 @@ import { cryptoRandomString } from "../../lib/dependencies/cryptoRandomString";
 import { EthereumAddressWithChecksum } from "../../types";
 import { invariant } from "../../utils/invariant";
 import { actions, TActionFromCreator } from "../actions";
+import { selectIsUserFullyVerified } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EBankTransferType } from "./reducer";
-import {
-  selectIsBankAccountVerified,
-  selectIsBankFlowEnabled,
-  selectIsBankTransferModalOpened,
-} from "./selectors";
+import { selectIsBankAccountVerified, selectIsBankTransferModalOpened } from "./selectors";
 
 /**
  * Generates reference code in the following format:
@@ -78,7 +75,7 @@ function* start(
   action: TActionFromCreator<typeof actions.bankTransferFlow.startBankTransfer>,
 ): any {
   try {
-    const isAllowed: boolean = yield select(selectIsBankFlowEnabled);
+    const isAllowed: boolean = yield select(selectIsUserFullyVerified);
 
     invariant(isAllowed, "Bank Flow is not allowed, account is not verified completely");
 

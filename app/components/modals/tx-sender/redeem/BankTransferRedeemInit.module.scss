@@ -19,3 +19,9 @@
   justify-content: space-between;
   margin-bottom: 1rem;
 }
+
+.invest-input {
+  &::placeholder {
+    font-size: .9em;
+  }
+}

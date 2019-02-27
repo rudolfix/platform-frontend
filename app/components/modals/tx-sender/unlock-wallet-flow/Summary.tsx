@@ -67,16 +67,19 @@ export const UnlockFundsSummaryComponent: React.FunctionComponent<TComponentProp
               caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
               value={<Money currency={ECurrency.NEU} value={neumarksDue} />}
             />
-            <InfoRow caption={<FormattedMessage id="unlock-funds-flow.fee" />} value={null} />
             <InfoRow
               caption={
                 <FormattedMessage
-                  id="unlock-funds-flow.amount-returned"
+                  id="unlock-funds-flow.fee"
                   values={{
-                    fee: PLATFORM_UNLOCK_FEE,
+                    fee: PLATFORM_UNLOCK_FEE * 100,
                   }}
                 />
               }
+              value={null}
+            />
+            <InfoRow
+              caption={<FormattedMessage id="unlock-funds-flow.amount-returned" />}
               value={<Money currency={ECurrency.ETH} value={returnedEther} />}
             />
             <InfoRow

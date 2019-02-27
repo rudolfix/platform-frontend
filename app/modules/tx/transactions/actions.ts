@@ -21,5 +21,6 @@ export const txTransactionsActions = {
       tokenDisbursals,
     }),
   ),
+  startWithdrawNEuro: createActionFactory("TRANSACTIONS_START_WITHDRAW_NEUR"),
   // Add here new custom sagas that represent flows
 };

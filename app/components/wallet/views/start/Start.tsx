@@ -57,6 +57,7 @@ interface IDispatchProps {
   upgradeWalletEuroToken: () => void;
   purchaseNEur: () => void;
   verifyBankAccount: () => void;
+  redeemNEur: () => void;
 }
 
 type TProps = IStateProps & IDispatchProps;
@@ -72,6 +73,7 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
   upgradeWalletEtherToken,
   purchaseNEur,
   verifyBankAccount,
+  redeemNEur,
   isBankFlowEnabled,
 }) => (
   <>
@@ -94,7 +96,7 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
           neuroAmount={liquidWalletData.neuroAmount}
           neuroEuroAmount={liquidWalletData.neuroEuroAmount}
           onPurchase={purchaseNEur}
-          onRedeem={() => {}}
+          onRedeem={redeemNEur}
           onVerify={verifyBankAccount}
           isBankFlowEnabled={isBankFlowEnabled}
         />
@@ -179,6 +181,7 @@ export const WalletStart = compose<React.FunctionComponent>(
         dispatch(actions.bankTransferFlow.startBankTransfer(EBankTransferType.PURCHASE)),
       verifyBankAccount: () =>
         dispatch(actions.bankTransferFlow.startBankTransfer(EBankTransferType.VERIFY)),
+      redeemNEur: () => dispatch(actions.txTransactions.startWithdrawNEuro()),
     }),
   }),
   branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),

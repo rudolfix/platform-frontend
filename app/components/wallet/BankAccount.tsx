@@ -8,6 +8,7 @@ import * as styles from "./BankAccount.module.scss";
 
 interface IExternalProps {
   details: TKycBankAccount;
+  withBorder?: boolean;
 }
 
 interface IBankNumber {
@@ -22,8 +23,8 @@ const BankNumber: React.FunctionComponent<IBankNumber> = ({ last4, bank }) => (
   </>
 );
 
-const BankAccount: React.FunctionComponent<IExternalProps> = ({ details }) => (
-  <section className={styles.bankDetails}>
+const BankAccount: React.FunctionComponent<IExternalProps> = ({ details, withBorder }) => (
+  <section className={cn(styles.bankDetails, { [styles.framed]: withBorder })}>
     <img className={styles.icon} src={bankIcon} alt="" />
     <div>
       <p className={cn(styles.kycData, "m-0")}>{details.holderName}</p>
@@ -34,4 +35,4 @@ const BankAccount: React.FunctionComponent<IExternalProps> = ({ details }) => (
   </section>
 );
 
-export { BankAccount };
+export { BankAccount, BankNumber };

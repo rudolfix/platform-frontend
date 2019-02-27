@@ -1,7 +1,9 @@
-import { fork, put } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { actions, TAction, TActionFromCreator } from "../../actions";
+import { EBankTransferType } from "../../bank-transfer-flow/reducer";
+import { selectIsBankAccountVerified } from "../../bank-transfer-flow/selectors";
 import { onInvestmentTxModalHide } from "../../investment-flow/sagas";
 import { neuTakeLatest } from "../../sagasUtils";
 import { ETxSenderType } from "../interfaces";
@@ -11,6 +13,7 @@ import { etoSetDateGenerator } from "./eto-flow/saga";
 import { investmentFlowGenerator } from "./investment/sagas";
 import { startInvestorPayoutAcceptGenerator } from "./payout/accept/saga";
 import { startInvestorPayoutRedistributionGenerator } from "./payout/redistribute/saga";
+import { startNEuroRedeemGenerator } from "./redeem/saga";
 import { upgradeTransactionFlow } from "./upgrade/sagas";
 import { ethWithdrawFlow } from "./withdraw/sagas";
 
@@ -131,6 +134,26 @@ export function* etoSetDateSaga({ logger }: TGlobalDependencies): any {
   }
 }
 
+export function* neurRedeemSaga({ logger }: TGlobalDependencies): any {
+  const isVerified: boolean = yield select(selectIsBankAccountVerified);
+
+  if (!isVerified) {
+    yield put(actions.bankTransferFlow.startBankTransfer(EBankTransferType.VERIFY));
+    return;
+  }
+
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.NEUR_WITHDRAW,
+      transactionFlowGenerator: startNEuroRedeemGenerator,
+    });
+
+    logger.info("Investor nEUR withdrawal successful");
+  } catch (e) {
+    logger.info("Investor nEUR withdrawal cancelled", e);
+  }
+}
+
 export const txTransactionsSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_WITHDRAW_ETH", withdrawSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_UPGRADE", upgradeSaga);
@@ -147,5 +170,6 @@ export const txTransactionsSagasWatcher = function*(): Iterator<any> {
     actions.txTransactions.startInvestorPayoutRedistribute,
     investorPayoutRedistributeSaga,
   );
+  yield fork(neuTakeLatest, actions.txTransactions.startWithdrawNEuro, neurRedeemSaga);
   // Add new transaction types here...
 };

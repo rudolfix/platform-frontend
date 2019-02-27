@@ -12,3 +12,8 @@
 
   margin-right: 18px;
 }
+
+.framed {
+  border: 1px solid $neu-pale-grey;
+  padding: px-to-rem(13px);
+}

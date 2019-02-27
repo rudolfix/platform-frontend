@@ -16,4 +16,15 @@ storiesOf("VerifiedBankAccount", module)
         details: { bankAccountNumberLast4: "1234", holderName: "Lorem Ipsum" },
       }}
     />
+  ))
+  .add("with border", () => (
+    <VerifiedBankAccountComponent
+      onVerify={action("onVerify")}
+      isVerified={true}
+      withBorder={true}
+      bankAccount={{
+        hasBankAccount: true,
+        details: { bankAccountNumberLast4: "1234", holderName: "Lorem Ipsum" },
+      }}
+    />
   ));

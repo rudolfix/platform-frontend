@@ -1,9 +1,10 @@
 import BigNumber from "bignumber.js";
 import * as moment from "moment";
-import { fork, put, select, take } from "redux-saga/effects";
+import { all, fork, put, select, take } from "redux-saga/effects";
 
 import { BankTransferFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
+import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { cryptoRandomString } from "../../lib/dependencies/cryptoRandomString";
 import { EthereumAddressWithChecksum } from "../../types";
@@ -131,6 +132,18 @@ function* downloadNEurTokenAgreement({ contractsService, intlWrapper }: TGlobalD
   );
 }
 
+export function* getRedeemData({ contractsService }: TGlobalDependencies): any {
+  const { bankFeeUlps, minEuroUlps } = yield all({
+    /* TODO: use real method when implemented
+    /*  bankFee: contractsService.euroTokenController.withdrawalFeeFraction
+     */
+    bankFeeUlps: Q18.mul(0.005).toString(),
+    minEuroUlps: contractsService.euroTokenController.minWithdrawAmountEurUlps,
+  });
+
+  yield put(actions.bankTransferFlow.setRedeemData(bankFeeUlps, minEuroUlps));
+}
+
 export function* bankTransferFlowSaga(): any {
   yield fork(neuTakeEvery, actions.bankTransferFlow.startBankTransfer, start);
   yield fork(
@@ -139,4 +152,5 @@ export function* bankTransferFlowSaga(): any {
     downloadNEurTokenAgreement,
   );
   yield fork(neuTakeEvery, "@@router/LOCATION_CHANGE", stop);
+  yield fork(neuTakeEvery, actions.bankTransferFlow.getRedeemData, getRedeemData);
 }

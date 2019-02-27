@@ -32,6 +32,11 @@ export const selectBankTransferMinAmount = createSelector(
   bankTransferFlow => bankTransferFlow.minEuroUlps,
 );
 
+export const selectBankFeeUlps = createSelector(
+  selectBankTransferFlow,
+  bankTransferFlow => bankTransferFlow.bankFeeUlps || "0",
+);
+
 /**
  * Check whether bank account is verified.
  * Tree conditions must be met:

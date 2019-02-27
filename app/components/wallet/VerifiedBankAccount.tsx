@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -6,7 +7,7 @@ import { selectIsBankAccountVerified } from "../../modules/bank-transfer-flow/se
 import { selectBankAccount } from "../../modules/kyc/selectors";
 import { TBankAccount } from "../../modules/kyc/types";
 import { appConnect } from "../../store";
-import { DeepReadonly } from "../../types";
+import { CommonHtmlProps, DeepReadonly } from "../../types";
 import { Button, ButtonSize, EButtonLayout } from "../shared/buttons";
 import { BankAccount } from "./BankAccount";
 
@@ -14,6 +15,7 @@ import * as styles from "./VerifiedBankAccount.module.scss";
 
 interface IExternalProps {
   onVerify: () => void;
+  withBorder?: boolean;
 }
 
 interface IStateProps {
@@ -21,16 +23,18 @@ interface IStateProps {
   isVerified: boolean;
 }
 
-type IComponentProps = IExternalProps & IStateProps;
+type IComponentProps = IExternalProps & IStateProps & CommonHtmlProps;
 
 const VerifiedBankAccountComponent: React.FunctionComponent<IComponentProps> = ({
   isVerified,
   bankAccount,
   onVerify,
+  className,
+  withBorder,
 }) => (
-  <section>
+  <section className={className}>
     <div className={styles.header}>
-      <h4 className={styles.title}>
+      <h4 className={cn(styles.title, { [styles.framed]: withBorder })}>
         <FormattedMessage id="shared-component.wallet-verified-bank-account.title" />
       </h4>
       <Button
@@ -45,7 +49,7 @@ const VerifiedBankAccountComponent: React.FunctionComponent<IComponentProps> = (
     </div>
 
     {isVerified && bankAccount && bankAccount.hasBankAccount ? (
-      <BankAccount details={bankAccount.details} />
+      <BankAccount withBorder={withBorder} details={bankAccount.details} />
     ) : (
       <span className={styles.bankNotVerified}>
         <FormattedMessage id="shared-component.wallet-verified-bank-account.bank-account" />
@@ -56,7 +60,7 @@ const VerifiedBankAccountComponent: React.FunctionComponent<IComponentProps> = (
   </section>
 );
 
-const VerifiedBankAccount = compose<IComponentProps, IExternalProps>(
+const VerifiedBankAccount = compose<IComponentProps, IExternalProps & CommonHtmlProps>(
   appConnect<IStateProps, {}, {}>({
     stateToProps: state => ({
       bankAccount: selectBankAccount(state),

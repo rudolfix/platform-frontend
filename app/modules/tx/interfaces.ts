@@ -4,6 +4,11 @@ export interface IWithdrawDraftType {
   value: string;
 }
 
+export interface INEuroWithdrawDraftType {
+  type: ETxSenderType.WITHDRAW;
+  value: string;
+}
+
 export interface IInvestmentDraftType {
   type: ETxSenderType.INVEST;
 }
@@ -19,6 +24,7 @@ export enum ETxSenderType {
   USER_CLAIM = "USER_CLAIM",
   INVESTOR_ACCEPT_PAYOUT = "INVESTOR_ACCEPT_PAYOUT",
   INVESTOR_REDISTRIBUTE_PAYOUT = "INVESTOR_REDISTRIBUTE_PAYOUT",
+  NEUR_WITHDRAW = "NEUR_WITHDRAW",
 }
 
 export enum ETokenType {

@@ -15,6 +15,7 @@ import { IS_CYPRESS } from "../config/constants";
 import { SwitchConnected } from "../utils/connectedRouting";
 import { appRoutes } from "./appRoutes";
 import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
+import { UnlockWalletFundsFromLink } from "./edge-cases/UnlockWalletFundsFromLink";
 import { EtoIssuerView } from "./eto/EtoIssuerView";
 import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoPublicViewByContractId } from "./eto/EtoPublicViewByContractId";
@@ -81,6 +82,10 @@ export const AppRouter: React.FunctionComponent = () => (
       <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
     )}
     <OnlyAuthorizedRoute path={appRoutes.icbmMigration} investorComponent={MigrationFromLink} />
+    <OnlyAuthorizedRoute
+      path={appRoutes.walletUnlock}
+      investorComponent={UnlockWalletFundsFromLink}
+    />
 
     {/* only issuer routes */}
     <OnlyAuthorizedRoute path={appRoutes.documents} issuerComponent={Documents} />

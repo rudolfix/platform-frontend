@@ -63,6 +63,7 @@ const BankTransferVerifySummaryLayout: React.FunctionComponent<IProps> = ({
 
     <InfoList className="mb-4">
       <InfoRow
+        data-test-id="bank-transfer.summary.amount"
         caption={<FormattedMessage id="bank-transfer.verify.summary.min-amount" />}
         value={
           <Money
@@ -73,18 +74,26 @@ const BankTransferVerifySummaryLayout: React.FunctionComponent<IProps> = ({
         }
       />
       <InfoRow
+        caption={<FormattedMessage id="bank-transfer.summary.purchase-price.caption" />}
+        value={<FormattedMessage id="bank-transfer.summary.purchase-price.value" />}
+      />
+      <InfoRow
+        data-test-id="bank-transfer.summary.recipient"
         caption={<FormattedMessage id="bank-transfer.summary.recipient" />}
         value={<CopyToClipboardLabel label={recipient} />}
       />
       <InfoRow
+        data-test-id="bank-transfer.summary.iban"
         caption={<FormattedMessage id="bank-transfer.summary.iban" />}
         value={<CopyToClipboardLabel label={iban} />}
       />
       <InfoRow
+        data-test-id="bank-transfer.summary.bic"
         caption={<FormattedMessage id="bank-transfer.summary.bic" />}
         value={<CopyToClipboardLabel label={bic} />}
       />
       <InfoRow
+        data-test-id="bank-transfer.summary.reference-number"
         caption={<FormattedMessage id="bank-transfer.summary.reference-number" />}
         value={<CopyToClipboardLabel label={referenceCode} />}
       />
@@ -95,7 +104,10 @@ const BankTransferVerifySummaryLayout: React.FunctionComponent<IProps> = ({
     </p>
 
     <section className="text-center">
-      <ButtonArrowRight onClick={continueToSummary}>
+      <ButtonArrowRight
+        onClick={continueToSummary}
+        data-test-id="bank-transfer.summary.transfer-completed"
+      >
         <FormattedMessage id="bank-transfer.summary.transfer-completed" />
       </ButtonArrowRight>
     </section>

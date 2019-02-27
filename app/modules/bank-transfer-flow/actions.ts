@@ -9,11 +9,12 @@ export const bankTransferFLowActions = {
   stopBankTransfer: createActionFactory("BANK_TRANSFER_FLOW_STOP"),
 
   downloadNEurTokenAgreement: createActionFactory("BANK_TRANSFER_DOWNLOAD_TOKEN_AGREEMENT"),
+  getRedeemData: createActionFactory("BANK_TRANSFER_GET_REDEEM_DATA"),
 
   // private actions
   continueProcessing: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_PROCESSING"),
 
-  continueToInit: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_INIT"),
+  continueToAgreement: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_AGREEMENT"),
   continueToDetails: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_DETAILS"),
   continueToSummary: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_SUMMARY"),
 
@@ -28,5 +29,9 @@ export const bankTransferFLowActions = {
       minEuroUlps,
       reference,
     }),
+  ),
+  setRedeemData: createActionFactory(
+    "BANK_TRANSFER_SET_REDEEM_DATA",
+    (bankFeeUlps: string, minEuroUlps: string) => ({ bankFeeUlps, minEuroUlps }),
   ),
 };

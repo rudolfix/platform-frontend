@@ -73,6 +73,10 @@ const BankTransferPurchaseLayout: React.FunctionComponent<IProps> = ({
         }
       />
       <InfoRow
+        caption={<FormattedMessage id="bank-transfer.summary.purchase-price.caption" />}
+        value={<FormattedMessage id="bank-transfer.summary.purchase-price.value" />}
+      />
+      <InfoRow
         caption={<FormattedMessage id="bank-transfer.summary.recipient" />}
         value={<CopyToClipboardLabel label={recipient} />}
       />

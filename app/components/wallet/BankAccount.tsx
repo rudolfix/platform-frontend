@@ -28,7 +28,7 @@ const BankAccount: React.FunctionComponent<IExternalProps> = ({ details, withBor
     <img className={styles.icon} src={bankIcon} alt="" />
     <div>
       <p className={cn(styles.kycData, "m-0")}>{details.name}</p>
-      <p className={"m-0"}>
+      <p className={cn(styles.bankNumber, "m-0")}>
         <BankNumber last4={details.bankAccountNumberLast4} bank={details.bankName} />
       </p>
     </div>

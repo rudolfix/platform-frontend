@@ -14,7 +14,7 @@ export const bankTransferFLowActions = {
   // private actions
   continueProcessing: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_PROCESSING"),
 
-  continueToInit: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_INIT"),
+  continueToAgreement: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_AGREEMENT"),
   continueToDetails: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_DETAILS"),
   continueToSummary: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_SUMMARY"),
 

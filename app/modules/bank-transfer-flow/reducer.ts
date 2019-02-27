@@ -5,7 +5,7 @@ import { actions } from "../actions";
 export enum EBankTransferFlowState {
   UNINITIALIZED = "uninitialized",
   PROCESSING = "processing",
-  INIT = "init",
+  AGREEMENT = "agreement",
   SUMMARY = "summary",
   SUCCESS = "success",
 }
@@ -54,10 +54,10 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
         type: action.payload.type,
       };
 
-    case actions.bankTransferFlow.continueToInit.getType():
+    case actions.bankTransferFlow.continueToAgreement.getType():
       return {
         ...state,
-        state: EBankTransferFlowState.INIT,
+        state: EBankTransferFlowState.AGREEMENT,
       };
 
     case actions.bankTransferFlow.continueToDetails.getType():

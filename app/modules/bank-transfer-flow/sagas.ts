@@ -34,44 +34,8 @@ function* generateReference(_: TGlobalDependencies, type: EBankTransferType): It
   return `NF ${addressHex} REF ${reference}`;
 }
 
-function* startVerification({ contractsService }: TGlobalDependencies): any {
-  const reference: string = yield neuCall(generateReference, EBankTransferType.VERIFY);
-
-  const minEuroUlps: BigNumber = yield contractsService.euroTokenController.minDepositAmountEurUlps;
-
-  yield put(
-    actions.bankTransferFlow.setTransferDetails(
-      EBankTransferType.VERIFY,
-      minEuroUlps.toString(),
-      reference,
-    ),
-  );
-
-  yield put(actions.bankTransferFlow.continueToInit());
-
-  yield take(actions.bankTransferFlow.continueProcessing);
-
-  yield put(actions.bankTransferFlow.continueToDetails());
-}
-
-function* startPurchase({ contractsService }: TGlobalDependencies): any {
-  const reference: string = yield neuCall(generateReference, EBankTransferType.PURCHASE);
-
-  const minEuroUlps: BigNumber = yield contractsService.euroTokenController.minDepositAmountEurUlps;
-
-  yield put(
-    actions.bankTransferFlow.setTransferDetails(
-      EBankTransferType.PURCHASE,
-      minEuroUlps.toString(),
-      reference,
-    ),
-  );
-
-  yield put(actions.bankTransferFlow.continueToDetails());
-}
-
 function* start(
-  { logger, notificationCenter }: TGlobalDependencies,
+  { logger, notificationCenter, contractsService }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.bankTransferFlow.startBankTransfer>,
 ): any {
   try {
@@ -79,20 +43,26 @@ function* start(
 
     invariant(isAllowed, "Bank Flow is not allowed, account is not verified completely");
 
+    const transferType = action.payload.type;
+
+    const reference: string = yield neuCall(generateReference, transferType);
+
+    const minEuroUlps: BigNumber = yield contractsService.euroTokenController
+      .minDepositAmountEurUlps;
+
+    yield put(
+      actions.bankTransferFlow.setTransferDetails(transferType, minEuroUlps.toString(), reference),
+    );
+
     const isVerified: boolean = yield select(selectIsBankAccountVerified);
 
-    if (action.payload.type !== EBankTransferType.VERIFY && !isVerified) {
-      yield neuCall(startVerification);
-    } else {
-      switch (action.payload.type) {
-        case EBankTransferType.PURCHASE:
-          yield neuCall(startPurchase);
-          break;
-        case EBankTransferType.VERIFY:
-          yield neuCall(startVerification);
-          break;
-      }
+    // Only show agreement when bank account was not yet verified
+    if (!isVerified) {
+      yield put(actions.bankTransferFlow.continueToAgreement());
+      yield take(actions.bankTransferFlow.continueProcessing);
     }
+
+    yield put(actions.bankTransferFlow.continueToDetails());
   } catch (e) {
     yield put(actions.bankTransferFlow.stopBankTransfer());
 

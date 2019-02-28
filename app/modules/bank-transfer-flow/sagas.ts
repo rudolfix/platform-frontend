@@ -4,7 +4,6 @@ import { all, fork, put, select, take } from "redux-saga/effects";
 
 import { BankTransferFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { cryptoRandomString } from "../../lib/dependencies/cryptoRandomString";
 import { EthereumAddressWithChecksum } from "../../types";
@@ -14,7 +13,11 @@ import { selectIsUserFullyVerified } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EBankTransferType } from "./reducer";
-import { selectIsBankAccountVerified, selectIsBankTransferModalOpened } from "./selectors";
+import {
+  selectBankTransferFlowReference,
+  selectIsBankAccountVerified,
+  selectIsBankTransferModalOpened,
+} from "./selectors";
 
 /**
  * Generates reference code in the following format:
@@ -62,7 +65,7 @@ function* start(
       yield take(actions.bankTransferFlow.continueProcessing);
     }
 
-    yield put(actions.bankTransferFlow.continueToDetails());
+    yield put(actions.bankTransferFlow.continueToSummary());
   } catch (e) {
     yield put(actions.bankTransferFlow.stopBankTransfer());
 
@@ -101,18 +104,27 @@ function* downloadNEurTokenAgreement({ contractsService, intlWrapper }: TGlobalD
 
 export function* getRedeemData({ contractsService }: TGlobalDependencies): any {
   const { bankFeeUlps, minEuroUlps } = yield all({
-    /* TODO: use real method when implemented
-    /*  bankFee: contractsService.euroTokenController.withdrawalFeeFraction
-     */
-    bankFeeUlps: Q18.mul(0.005).toString(),
+    bankFeeUlps: contractsService.euroTokenController.withdrawalFeeFraction,
     minEuroUlps: contractsService.euroTokenController.minWithdrawAmountEurUlps,
   });
 
   yield put(actions.bankTransferFlow.setRedeemData(bankFeeUlps, minEuroUlps));
 }
 
+export function* completeBankTransfer({ apiKycService, logger }: TGlobalDependencies): any {
+  try {
+    const reference: string = yield select(selectBankTransferFlowReference);
+
+    // TODO: replace by correct amount when implemented
+    apiKycService.nEurPurchaseRequest("1", reference);
+  } catch (e) {
+    logger.error(`Not able to complete bank transfer`, e);
+  }
+}
+
 export function* bankTransferFlowSaga(): any {
   yield fork(neuTakeEvery, actions.bankTransferFlow.startBankTransfer, start);
+  yield fork(neuTakeEvery, actions.bankTransferFlow.continueToSuccess, completeBankTransfer);
   yield fork(
     neuTakeEvery,
     actions.bankTransferFlow.downloadNEurTokenAgreement,

@@ -60,12 +60,12 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
         state: EBankTransferFlowState.AGREEMENT,
       };
 
-    case actions.bankTransferFlow.continueToDetails.getType():
+    case actions.bankTransferFlow.continueToSummary.getType():
       return {
         ...state,
         state: EBankTransferFlowState.SUMMARY,
       };
-    case actions.bankTransferFlow.continueToSummary.getType():
+    case actions.bankTransferFlow.continueToSuccess.getType():
       return {
         ...state,
         state: EBankTransferFlowState.SUCCESS,

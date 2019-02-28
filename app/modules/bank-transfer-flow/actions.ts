@@ -15,8 +15,8 @@ export const bankTransferFLowActions = {
   continueProcessing: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_PROCESSING"),
 
   continueToAgreement: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_AGREEMENT"),
-  continueToDetails: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_DETAILS"),
   continueToSummary: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_SUMMARY"),
+  continueToSuccess: createActionFactory("BANK_TRANSFER_FLOW_CONTINUE_TO_SUCCESS"),
 
   generateBankTransferReference: createActionFactory("BANK_TRANSFER_FLOW_GENERATE_REFERENCE"),
   showBankTransferDetails: createActionFactory("BANK_TRANSFER_FLOW_DETAILS"),

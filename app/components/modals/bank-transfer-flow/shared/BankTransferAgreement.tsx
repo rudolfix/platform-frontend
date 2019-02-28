@@ -34,7 +34,7 @@ const BankTransferVerifyAgreementLayout: React.FunctionComponent<IProps> = ({
     <SectionHeader
       className="mb-3"
       decorator={false}
-      description={<ExternalLink href={externalRoutes.quintessenseLanding} />}
+      description={<ExternalLink href={externalRoutes.quintessenceLanding} />}
     >
       <FormattedMessage id="bank-verification.agreement.title" />
     </SectionHeader>

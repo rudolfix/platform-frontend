@@ -4,9 +4,11 @@ import * as Web3 from "web3";
 import { EthereumNetworkId } from '../../../types';
 import { IEthereumNetworkConfig } from '../types';
 import { LedgerError, LedgerUnknownError, LedgerLockedError } from './errors';
-import { LedgerWallet, IDerivationPathToAddress } from './LedgerWallet';
+import { LedgerWallet } from './LedgerWallet';
 import { Web3Adapter } from '../Web3Adapter';
 import { symbols } from '../../../di/symbols';
+import { connectToLedger, noSimultaneousConnectionsGuard, testConnection } from './ledgerUtils';
+import { IDerivationPathToAddress } from './types';
 
 @injectable()
 export class LedgerWalletConnector {

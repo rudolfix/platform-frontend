@@ -1,4 +1,4 @@
-
+import { addHexPrefix } from "ethereumjs-util";
 import * as Web3 from "web3";
 
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
@@ -7,12 +7,9 @@ import { ILedgerWalletMetadata } from "../../persistence/WalletMetadataObjectSto
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError, SignerTimeoutError } from "../Web3Manager";
-import {
-  LedgerConfirmationRejectedError,
-  LedgerTimeoutError,
-  parseLedgerError,
-} from "./errors";
-import { testConnection } from './ledgerUtils';
+import { LedgerConfirmationRejectedError, LedgerTimeoutError, parseLedgerError } from "./errors";
+import { testConnection } from "./ledgerUtils";
+import { IHookedWalletSubProvider } from "./types";
 
 const CHECK_INTERVAL = 1000;
 
@@ -24,7 +21,7 @@ export class LedgerWallet implements IPersonalWallet {
   public constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddress,
-    private readonly ledgerInstance: any | undefined,
+    private readonly ledgerInstance: IHookedWalletSubProvider | undefined,
     public readonly derivationPath: string,
   ) {}
 
@@ -43,7 +40,12 @@ export class LedgerWallet implements IPersonalWallet {
     try {
       this.waitingForCommand = true;
       debugger;
-      return this.web3Adapter.ethSign(this.ethereumAddress, data);
+      const message = await this.ledgerInstance!.signPersonalMessage({
+        from: this.ethereumAddress,
+        data: addHexPrefix(data),
+      });
+      debugger;
+      return message;
     } catch (e) {
       const ledgerError = parseLedgerError(e);
       if (ledgerError instanceof LedgerConfirmationRejectedError) {

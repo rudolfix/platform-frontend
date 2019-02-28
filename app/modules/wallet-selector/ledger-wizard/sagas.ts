@@ -3,7 +3,7 @@ import { fork, put, select } from "redux-saga/effects";
 
 import { tripleZip } from "../../../../typings/modifications";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/LedgerWallet";
+import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
 import { IAppState } from "../../../store";
 import { actions, TAction } from "../../actions";
 import { neuTakeEvery } from "../../sagasUtils";

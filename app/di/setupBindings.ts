@@ -29,7 +29,6 @@ import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage"
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { BrowserWalletConnector } from "../lib/web3/BrowserWallet";
 import { ContractsService } from "../lib/web3/ContractsService";
-import { LedgerWalletConnector } from "../lib/web3/ledger-wallet/LedgerWallet";
 import { LightWalletConnector, LightWalletUtil } from "../lib/web3/LightWallet";
 import { IEthereumNetworkConfig } from "../lib/web3/types";
 import {
@@ -44,6 +43,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/AsyncIntervalScheduler";
 import { symbols } from "./symbols";
+import { LedgerWalletConnector } from '../lib/web3/ledger-wallet/LedgerConnector';
 
 export function setupBindings(config: IConfig): Container {
   const container = new Container();

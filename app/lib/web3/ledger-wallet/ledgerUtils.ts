@@ -14,7 +14,8 @@ import {
   LedgerNotSupportedVersionError,
   LedgerContractsDisabledError,
 } from "./errors";
-import { ILedgerConfig } from "./types";
+import { ILedgerConfig, IHookedWalletSubProvider } from "./types";
+import { promisify } from "bluebird";
 
 export const testConnection = async (ledgerInstance: any): Promise<boolean> => {
   try {
@@ -65,7 +66,7 @@ export const createWeb3WithLedgerProvider = async (
   const engine = new Web3ProviderEngine();
   const getTransport = () => TransportU2F.create();
 
-  const ledgerProvider = createLedgerSubprovider(getTransport, {
+  const ledgerProvider: IHookedWalletSubProvider = createLedgerSubprovider(getTransport, {
     networkId,
   });
   engine.addProvider(ledgerProvider);
@@ -75,9 +76,20 @@ export const createWeb3WithLedgerProvider = async (
     }),
   );
   engine.start();
+  const promisifiedLedgerProvider = {
+    approveMessage: promisify<string, string>(ledgerProvider.approveMessage),
+    approvePersonalMessage: promisify(ledgerProvider.approvePersonalMessage),
+    approveTransaction: promisify(ledgerProvider.approveTransaction),
+    approveTypedMessage: promisify(ledgerProvider.approveTypedMessage),
+    getAccounts: promisify<string[]>(ledgerProvider.getAccounts),
+    signPersonalMessage: promisify<string, { from: string; data: string }>(
+      ledgerProvider.signPersonalMessage,
+    ),
+    signTransaction: promisify<string, Web3.TxData>(ledgerProvider.signTransaction),
+  };
 
   return {
-    ledgerInstance: { ...ledgerProvider, getTransport },
+    ledgerInstance: { ...promisifiedLedgerProvider, getTransport },
     ledgerWeb3: new Web3(engine),
   };
 };

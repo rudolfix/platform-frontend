@@ -3,11 +3,12 @@ import { fork, put, select } from "redux-saga/effects";
 
 import { tripleZip } from "../../../../typings/modifications";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { LedgerNotAvailableError } from "../../../lib/web3/LedgerWallet";
+import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/LedgerWallet";
 import { IAppState } from "../../../store";
 import { actions, TAction } from "../../actions";
 import { neuTakeEvery } from "../../sagasUtils";
 import { mapLedgerErrorToErrorMessage } from "./errors";
+import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/0'/0", "44'/60'/0'/0/0"]; // TODO this should be taken from config
 
@@ -38,17 +39,11 @@ export function* loadLedgerAccounts({
     numberOfAccountsPerPage,
     derivationPathPrefix,
   } = state.ledgerWizardState;
-
-  const derivationPathToAddressMap = advanced
-    ? yield ledgerWalletConnector.getMultipleAccountsFromDerivationPrefix(
-        derivationPathPrefix,
-        index,
-        numberOfAccountsPerPage,
-      )
-    : yield ledgerWalletConnector.getMultipleAccounts(LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS);
-
-  const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map(pair => ({
-    derivationPath: pair[0],
+  const derivationPathToAddressMap = yield ledgerWalletConnector.getMultipleAccounts(
+    LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS,
+  );
+  const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map((pair, index) => ({
+    derivationPath: DEFAULT_DERIVATION_PATH_PREFIX + `/${index}`,
     address: pair[1],
   }));
 
@@ -104,7 +99,6 @@ export function* finishSettingUpLedgerConnector(
   if (action.type !== "LEDGER_FINISH_SETTING_UP_LEDGER_CONNECTOR") return;
   const ledgerWallet = yield ledgerWalletConnector.finishConnecting(action.payload.derivationPath);
   yield web3Manager.plugPersonalWallet(ledgerWallet);
-
   yield put(actions.walletSelector.connected());
 }
 

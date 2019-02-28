@@ -15,7 +15,7 @@ import {
   LedgerNotAvailableError,
   LedgerWallet,
   LedgerWalletConnector,
-} from "../../../lib/web3/LedgerWallet";
+} from "../../../lib/web3/ledger-wallet/LedgerWallet";
 import { Web3Adapter } from "../../../lib/web3/Web3Adapter";
 import { Web3Manager } from "../../../lib/web3/Web3Manager";
 import { IAppState } from "../../../store";

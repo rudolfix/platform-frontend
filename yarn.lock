@@ -3943,7 +3943,7 @@ bluebird@3.5.0:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
   integrity sha1-eRQg1/VR7qKJdFOop3ZT+WYG1nw=
 
-bluebird@^3.3.5:
+bluebird@^3.3.5, bluebird@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
   integrity sha512-/qKPUQlaW1OyR51WeCPBvRnAlnZFUJkCSG5HzGnuIqhgyJtF+T94lFnn33eiazjRm2LAHVy2guNnaq48X9SJuw==
@@ -17425,7 +17425,7 @@ web3-provider-engine@^13.3.2:
     xhr "^2.2.0"
     xtend "^4.0.1"
 
-web3-provider-engine@^13.3.3, web3-provider-engine@^13.5.0:
+web3-provider-engine@^13.3.3:
   version "13.5.0"
   resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-13.5.0.tgz#f559e8f1b199b9eeaf606a7d5b28fb4991e1cc58"
   integrity sha512-et2IIAKtJpYayrmxLErSUOqMSNBSnydtFfZ7GrezbGcbVEcKYvxzfCuCccOT78bH7xveOYT4/8R98dPdbncerA==
@@ -17450,7 +17450,7 @@ web3-provider-engine@^13.3.3, web3-provider-engine@^13.5.0:
     xhr "^2.2.0"
     xtend "^4.0.1"
 
-web3-provider-engine@^14.0.2:
+web3-provider-engine@^14.0.2, web3-provider-engine@^14.1.0:
   version "14.1.0"
   resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-14.1.0.tgz#91590020f8b8c1b65846321310cbfdb039090fc6"
   integrity sha512-vGZtqhSUzGTiMGhJXNnB/aRDlrPZLhLnBZ2NPArkZtr8XSrwg9m08tw4+PuWg5za0TJuoE/vuPQc501HddZZWw==

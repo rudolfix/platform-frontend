@@ -42,10 +42,10 @@ export async function obtainJwtPromise(
   const address = selectEthereumAddressWithChecksum(state);
 
   const salt = cryptoRandomString(64);
-
-  /* tslint:disable: no-useless-cast */
-  const signerType = web3Manager.personalWallet!.getSignerType();
-  /* tslint:enable: no-useless-cast */
+  if (!web3Manager.personalWallet) {
+    throw new Error();
+  }
+  const signerType = web3Manager.personalWallet.getSignerType();
 
   logger.info("Obtaining auth challenge from api");
   const {
@@ -53,10 +53,13 @@ export async function obtainJwtPromise(
   } = await signatureAuthApi.challenge(address, salt, signerType, permissions);
 
   logger.info("Signing challenge");
-  /* tslint:disable: no-useless-cast */
-  const signedChallenge = await web3Manager.personalWallet!.signMessage(challenge);
-  /* tslint:enable: no-useless-cast */
-
+  try {
+    debugger;
+    const signedChallenge = await web3Manager.personalWallet.signMessage(challenge);
+    debugger;
+  } catch (e) {
+    debugger;
+  }
   logger.info("Sending signed challenge back to api");
   const {
     body: { jwt },

@@ -959,7 +959,7 @@
   "shared-component.multi-file-upload.requirements.individual.proof-of-identity-note": "If the document contains relevant information on both the front- and rear-facing sides, please ensure that you upload a clear and coloured copy of both sides of the document.",
   "shared-component.multi-file-upload.upload-cta": "Drag and drop your files here or <strong>upload them</strong>",
   "shared-component.multi-file-upload.uploading": "Uploading a file",
-  "shared-component.neur-wallet-balance.explanation": "This is your nEUR balance which you may use to invest in opportunities on the platform. nEUR tokens are stable coins provided by <a href={quintessenseHref} target=\"_blank\">Quintessence PLC</a> that mirror euro investment on the platform. You can purchase nEUR from Quintessence PLC via bank transfer. In order to receive funds you will be asked to return the nEUR token. Go to you dashboard to view available investment opportunities.",
+  "shared-component.neur-wallet-balance.explanation": "This is your nEUR balance. You can use it to invest through Neufund or redeem to your bank account. nEUR represents a Euro equivalent and is issued by <a href={quintessenceHref} target=\"_blank\">Quintessence PLC</a>",
   "shared-component.range.max": "Max",
   "shared-component.range.min": "Min",
   "shared-component.single-file-upload.dropzone-cta": "Drag file or click to upload",

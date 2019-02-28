@@ -4,7 +4,6 @@ import { all, fork, put, select, take } from "redux-saga/effects";
 
 import { BankTransferFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { cryptoRandomString } from "../../lib/dependencies/cryptoRandomString";
 import { EthereumAddressWithChecksum } from "../../types";
@@ -105,10 +104,7 @@ function* downloadNEurTokenAgreement({ contractsService, intlWrapper }: TGlobalD
 
 export function* getRedeemData({ contractsService }: TGlobalDependencies): any {
   const { bankFeeUlps, minEuroUlps } = yield all({
-    /* TODO: use real method when implemented
-    /*  bankFee: contractsService.euroTokenController.withdrawalFeeFraction
-     */
-    bankFeeUlps: Q18.mul(0.005).toString(),
+    bankFeeUlps: contractsService.euroTokenController.withdrawalFeeFraction,
     minEuroUlps: contractsService.euroTokenController.minWithdrawAmountEurUlps,
   });
 

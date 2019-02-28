@@ -59,11 +59,7 @@ const BankTransferPurchaseLayout: React.FunctionComponent<IProps> = ({
       <InfoRow
         caption={<FormattedMessage id="bank-transfer.purchase.summary.min-amount" />}
         value={
-          <Money
-            value={minAmount}
-            currency={ECurrency.EUR}
-            currencySymbol={ECurrencySymbol.SYMBOL}
-          />
+          <Money value={minAmount} currency={ECurrency.EUR} currencySymbol={ECurrencySymbol.CODE} />
         }
       />
       <InfoRow

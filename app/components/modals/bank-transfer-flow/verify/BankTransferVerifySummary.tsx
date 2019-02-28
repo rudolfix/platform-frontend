@@ -69,7 +69,7 @@ const BankTransferVerifySummaryLayout: React.FunctionComponent<IProps> = ({
           <Money
             value={minAmount}
             currency={ECurrency.EUR}
-            currencySymbol={ECurrencySymbol.SYMBOL}
+            currencySymbol={ECurrencySymbol.CODE}
           />
         }
       />

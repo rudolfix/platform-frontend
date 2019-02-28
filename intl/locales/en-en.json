@@ -30,7 +30,7 @@
   "bank-transfer.summary.bic": "SWIFT / BIC",
   "bank-transfer.summary.iban": "Iban",
   "bank-transfer.summary.purchase-price.caption": "Purchase price",
-  "bank-transfer.summary.purchase-price.value": "€1 = 1 nEUR",
+  "bank-transfer.summary.purchase-price.value": "1 EUR = 1 nEUR",
   "bank-transfer.summary.recipient": "Recipient",
   "bank-transfer.summary.reference-number": "Reference number",
   "bank-transfer.summary.transfer-completed": "BANK TRANSFER COMPLETED",

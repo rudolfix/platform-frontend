@@ -15,7 +15,7 @@ import { Button, ButtonSize, EButtonLayout } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { BankAccount } from "../../wallet/BankAccount";
 
-import * as bankIcon from "../../../assets/img/bank-transfer/bank_icon.svg";
+import * as bankIcon from "../../../assets/img/bank-transfer/bank-icon.svg";
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./LinkedBankAccountWidget.module.scss";
 

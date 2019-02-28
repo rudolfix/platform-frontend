@@ -14,7 +14,11 @@ import { selectIsUserFullyVerified } from "../auth/selectors";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { EBankTransferType } from "./reducer";
-import { selectIsBankAccountVerified, selectIsBankTransferModalOpened } from "./selectors";
+import {
+  selectBankTransferFlowReference,
+  selectIsBankAccountVerified,
+  selectIsBankTransferModalOpened,
+} from "./selectors";
 
 /**
  * Generates reference code in the following format:
@@ -62,7 +66,7 @@ function* start(
       yield take(actions.bankTransferFlow.continueProcessing);
     }
 
-    yield put(actions.bankTransferFlow.continueToDetails());
+    yield put(actions.bankTransferFlow.continueToSummary());
   } catch (e) {
     yield put(actions.bankTransferFlow.stopBankTransfer());
 
@@ -111,8 +115,20 @@ export function* getRedeemData({ contractsService }: TGlobalDependencies): any {
   yield put(actions.bankTransferFlow.setRedeemData(bankFeeUlps, minEuroUlps));
 }
 
+export function* completeBankTransfer({ apiKycService, logger }: TGlobalDependencies): any {
+  try {
+    const reference: string = yield select(selectBankTransferFlowReference);
+
+    // TODO: replace by correct amount when implemented
+    apiKycService.nEurPurchaseRequest("1", reference);
+  } catch (e) {
+    logger.error(`Not able to complete bank transfer`, e);
+  }
+}
+
 export function* bankTransferFlowSaga(): any {
   yield fork(neuTakeEvery, actions.bankTransferFlow.startBankTransfer, start);
+  yield fork(neuTakeEvery, actions.bankTransferFlow.continueToSuccess, completeBankTransfer);
   yield fork(
     neuTakeEvery,
     actions.bankTransferFlow.downloadNEurTokenAgreement,

@@ -9,7 +9,7 @@ import { ECurrency, Money } from "../../../shared/Money";
 import { Message } from "../../Message";
 import { BankTransferAgreement } from "../shared/BankTransferAgreement";
 
-import * as bankVaultIcon from "../../../../assets/img/bank-transfer/bankvault.svg";
+import * as bankVaultIcon from "../../../../assets/img/bank-transfer/bank-vault.svg";
 
 export enum EBankTransferInitState {
   INFO,

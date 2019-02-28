@@ -34,6 +34,7 @@ const BENEFICIAL_OWNER_ENTRY_PATH = "/beneficial-owner/";
 const BENEFICIAL_OWNER_DOCUMENT_PATH = "/beneficial-owner/{boid}/document";
 
 const BANK_ACCOUNT_PATH = "/bank-account";
+const NEUR_PURCHASE_REQUEST_PATH = "/neur-purchase-requests";
 
 export class KycApiError extends Error {}
 export class BankAccountNotFound extends KycApiError {}
@@ -279,6 +280,19 @@ export class KycApi {
       url: BANK_ACCOUNT_PATH,
       // TODO test why `optional` is not working
       // responseSchema: KycBankAccountSchema,
+    });
+
+    return response.body;
+  }
+
+  public async nEurPurchaseRequest(amount: string, purpose: string): Promise<{}> {
+    const response = await this.httpClient.post<{}>({
+      baseUrl: BASE_PATH,
+      url: NEUR_PURCHASE_REQUEST_PATH,
+      body: {
+        amount,
+        purpose,
+      },
     });
 
     return response.body;

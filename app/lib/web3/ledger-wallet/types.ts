@@ -9,15 +9,22 @@ export interface IDerivationPathToAddress {
   [derivationPath: string]: string;
 }
 
-export interface IHookedWalletSubProvider {
-  approveMessage: (txParams: any) => string;
-  approvePersonalMessage: (txParams: any, cb: () => any) => void;
-  approveTransaction: (txParams: any, cb: () => any) => void;
-  approveTypedMessage: (txParams: any, cb: () => any) => void;
-  getAccounts: () => string[];
-  signPersonalMessage: (txData: { from: string; data: string }) => string;
-  signTransaction: (txData: Web3.TxData) => string;
-  engine: any; //Skipped
-  nonceLock: any; //Skipped
+type TLedgerWalletTxParams = { from: string; data: string };
+export interface IPromisifiedHookedWalletSubProvider {
+  approveMessage: (txParams: TLedgerWalletTxParams) => Promise<string>;
+  approvePersonalMessage: (txParams: TLedgerWalletTxParams) => Promise<boolean>;
+  approveTransaction: (txParams: TLedgerWalletTxParams) => Promise<boolean>;
+  approveTypedMessage: (txParams: TLedgerWalletTxParams) => Promise<boolean>;
+  getAccounts: () => Promise<string[]>;
+  signPersonalMessage: (txData: { from: string; data: string }) => Promise<string>;
+  signTransaction: (txData: Web3.TxData) => Promise<string>;
 }
-// TODO: Make IHookedWalletSubProvider more rigid
+
+export interface ILedgerCustomProvider extends IPromisifiedHookedWalletSubProvider {
+  getTransport: () => any;
+}
+
+export interface ILedgerOutput {
+  ledgerInstance: ILedgerCustomProvider;
+  ledgerWeb3: Web3;
+}

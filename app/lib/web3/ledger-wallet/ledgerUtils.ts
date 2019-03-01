@@ -6,18 +6,21 @@ import * as Web3 from "web3";
 import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
-import { delay } from "redux-saga";
 
 import {
-  LedgerLockedError,
   LedgerNotAvailableError,
   LedgerNotSupportedVersionError,
   LedgerContractsDisabledError,
 } from "./errors";
-import { ILedgerConfig, IHookedWalletSubProvider } from "./types";
-import { promisify } from "bluebird";
+import {
+  ILedgerConfig,
+  IPromisifiedHookedWalletSubProvider,
+  ILedgerOutput,
+  ILedgerCustomProvider,
+} from "./types";
+import { promisify } from "../../../utils/promisify";
 
-export const testConnection = async (ledgerInstance: any): Promise<boolean> => {
+export const testConnection = async (ledgerInstance: ILedgerCustomProvider): Promise<boolean> => {
   try {
     // this check will successfully detect if ledger is locked or disconnected
     await getLedgerConfig(ledgerInstance);
@@ -27,22 +30,11 @@ export const testConnection = async (ledgerInstance: any): Promise<boolean> => {
   }
 };
 
-export const getAccounts = (ledgerInstance: any): Promise<any> => {
-  return new Promise<void>((resolve, reject) => {
-    ledgerInstance.getAccounts((err: Error | undefined, _accounts: string[]) => {
-      if (!err) {
-        resolve();
-      } else {
-        reject(new LedgerLockedError());
-      }
-    });
-  });
-};
-export const testIfUnlocked = async (ledgerInstance: any): Promise<void> => {
-  await getAccounts(ledgerInstance);
+export const testIfUnlocked = async (ledgerInstance: ILedgerCustomProvider): Promise<void> => {
+  await ledgerInstance;
 };
 
-const getLedgerConfig = async (ledgerInstance: any): Promise<ILedgerConfig> => {
+const getLedgerConfig = async (ledgerInstance: ILedgerCustomProvider): Promise<ILedgerConfig> => {
   try {
     const Transport = await ledgerInstance.getTransport();
     const ethInstance = new Eth(Transport);
@@ -54,11 +46,6 @@ const getLedgerConfig = async (ledgerInstance: any): Promise<ILedgerConfig> => {
   }
 };
 
-interface ILedgerOutput {
-  ledgerInstance: any;
-  ledgerWeb3: any;
-}
-
 export const createWeb3WithLedgerProvider = async (
   networkId: string,
   rpcUrl: string,
@@ -66,7 +53,7 @@ export const createWeb3WithLedgerProvider = async (
   const engine = new Web3ProviderEngine();
   const getTransport = () => TransportU2F.create();
 
-  const ledgerProvider: IHookedWalletSubProvider = createLedgerSubprovider(getTransport, {
+  const ledgerProvider = createLedgerSubprovider(getTransport, {
     networkId,
   });
   engine.addProvider(ledgerProvider);
@@ -76,16 +63,14 @@ export const createWeb3WithLedgerProvider = async (
     }),
   );
   engine.start();
-  const promisifiedLedgerProvider = {
-    approveMessage: promisify<string, string>(ledgerProvider.approveMessage),
-    approvePersonalMessage: promisify(ledgerProvider.approvePersonalMessage),
-    approveTransaction: promisify(ledgerProvider.approveTransaction),
-    approveTypedMessage: promisify(ledgerProvider.approveTypedMessage),
+  const promisifiedLedgerProvider: IPromisifiedHookedWalletSubProvider = {
+    approveMessage: promisify<string>(ledgerProvider.approveMessage),
+    approvePersonalMessage: promisify<boolean>(ledgerProvider.approvePersonalMessage),
+    approveTransaction: promisify<boolean>(ledgerProvider.approveTransaction),
+    approveTypedMessage: promisify<boolean>(ledgerProvider.approveTypedMessage),
     getAccounts: promisify<string[]>(ledgerProvider.getAccounts),
-    signPersonalMessage: promisify<string, { from: string; data: string }>(
-      ledgerProvider.signPersonalMessage,
-    ),
-    signTransaction: promisify<string, Web3.TxData>(ledgerProvider.signTransaction),
+    signPersonalMessage: promisify<string>(ledgerProvider.signPersonalMessage),
+    signTransaction: promisify<string>(ledgerProvider.signTransaction),
   };
 
   return {
@@ -119,15 +104,4 @@ export const connectToLedger = async (
     }
     throw e;
   }
-};
-
-// right after callback needs to be used instead of awaiting for this function because promise resolving is const
-export const noSimultaneousConnectionsGuard = async <T>(
-  ledgerInstance: any,
-  callRightAfter: () => T,
-): Promise<T> => {
-  while (ledgerInstance.connectionOpened) {
-    await delay(0);
-  }
-  return callRightAfter();
 };

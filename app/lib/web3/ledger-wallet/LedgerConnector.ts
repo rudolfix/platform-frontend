@@ -7,7 +7,7 @@ import { LedgerError, LedgerUnknownError, LedgerLockedError } from "./errors";
 import { LedgerWallet } from "./LedgerWallet";
 import { Web3Adapter } from "../Web3Adapter";
 import { symbols } from "../../../di/symbols";
-import { connectToLedger, noSimultaneousConnectionsGuard, testConnection } from "./ledgerUtils";
+import { connectToLedger, testConnection } from "./ledgerUtils";
 import { IDerivationPathToAddress } from "./types";
 
 @injectable()
@@ -21,10 +21,12 @@ export class LedgerWalletConnector {
 
   public async connect(networkId: EthereumNetworkId): Promise<void> {
     try {
-      const ledger = await connectToLedger(networkId, this.web3Config.rpcUrl);
-      this.web3 = ledger.ledgerWeb3;
-
-      this.ledgerInstance = ledger.ledgerInstance;
+      const { ledgerWeb3, ledgerInstance } = await connectToLedger(
+        networkId,
+        this.web3Config.rpcUrl,
+      );
+      this.web3 = ledgerWeb3;
+      this.ledgerInstance = ledgerInstance;
     } catch (e) {
       if (e instanceof LedgerError) {
         throw e;

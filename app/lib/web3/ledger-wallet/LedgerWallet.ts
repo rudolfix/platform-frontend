@@ -1,4 +1,4 @@
-import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
+import { addHexPrefix, toBuffer } from "ethereumjs-util";
 import * as Web3 from "web3";
 
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
@@ -9,9 +9,7 @@ import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError, SignerTimeoutError } from "../Web3Manager";
 import { LedgerConfirmationRejectedError, LedgerTimeoutError, parseLedgerError } from "./errors";
 import { testConnection } from "./ledgerUtils";
-import { IHookedWalletSubProvider } from "./types";
-
-const CHECK_INTERVAL = 1000;
+import { ILedgerCustomProvider } from "./types";
 
 export class LedgerWallet implements IPersonalWallet {
   public readonly walletType = EWalletType.LEDGER;
@@ -21,7 +19,7 @@ export class LedgerWallet implements IPersonalWallet {
   public constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddress,
-    private readonly ledgerInstance: IHookedWalletSubProvider | undefined,
+    private readonly ledgerInstance: ILedgerCustomProvider | undefined,
     public readonly derivationPath: string,
   ) {}
 
@@ -30,6 +28,8 @@ export class LedgerWallet implements IPersonalWallet {
   }
 
   public async testConnection(): Promise<boolean> {
+    if (!this.ledgerInstance) throw new Error();
+    
     if (this.waitingForCommand) {
       return true;
     }
@@ -39,14 +39,17 @@ export class LedgerWallet implements IPersonalWallet {
   public async signMessage(data: string): Promise<string> {
     try {
       this.waitingForCommand = true;
+
       const signedMsg = await this.ledgerInstance!.signPersonalMessage({
         from: this.ethereumAddress,
         data: toBuffer(addHexPrefix(data)).toString("hex"),
       });
+
+      //@see https://github.com/LedgerHQ/ledgerjs/blob/master/packages/web3-subprovider/src/index.js#L123
+      // Backend expects V to have extra 27
       const encodedV = (parseInt(signedMsg.slice(-2), 10) + 27).toString(16);
       return signedMsg.slice(0, -2) + encodedV;
     } catch (e) {
-
       const ledgerError = parseLedgerError(e);
       if (ledgerError instanceof LedgerConfirmationRejectedError) {
         throw new SignerRejectConfirmationError();

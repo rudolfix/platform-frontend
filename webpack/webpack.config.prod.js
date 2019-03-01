@@ -22,6 +22,9 @@ module.exports = merge.smart(configCommon, {
         parallel: true,
         terserOptions: {
           ecma: 6,
+          mangle: {
+            reserved: ["BigNumber"],
+          },
         },
       }),
       new OptimizeCSSAssetsPlugin(),

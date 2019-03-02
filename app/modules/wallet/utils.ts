@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+
 import { PLATFORM_UNLOCK_FEE } from "../../config/constants";
 
 export const getUnlockedWalletEtherAmountAfterFee = (

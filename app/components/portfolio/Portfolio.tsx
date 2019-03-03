@@ -1,4 +1,5 @@
-import { branch, compose, renderComponent } from "recompose";
+import { isEqual } from "lodash/fp";
+import { branch, compose, lifecycle, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { selectIsVerifiedInvestor } from "../../modules/auth/selectors";
@@ -39,6 +40,21 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
       tokensDisbursal: selectTokensDisbursal(state),
       isVerifiedInvestor: selectIsVerifiedInvestor(state),
     }),
+    dispatchToProps: dispatch => ({
+      loadTokensData: (walletAddress: string) => {
+        dispatch(actions.publicEtos.loadTokensData(walletAddress));
+      },
+    }),
+  }),
+  lifecycle<any, any>({
+    componentDidUpdate(prevProps): void {
+      const prevAssets = prevProps.myAssets;
+      const actualAssets = this.props.myAssets;
+
+      if (!isEqual(prevAssets, actualAssets)) {
+        this.props.loadTokensData(this.props.walletAddress);
+      }
+    },
   }),
   withContainer(LayoutAuthorized),
   branch(

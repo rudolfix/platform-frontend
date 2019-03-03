@@ -55,14 +55,7 @@ export const selectMyAssets = (state: IAppState): TEtoWithCompanyAndContract[] |
   const etos = selectPublicEtos(state);
 
   if (etos) {
-    return etos.filter(
-      eto =>(
-        eto.contract && (
-          eto.contract!.timedState === EETOStateOnChain.Claim ||
-          eto.contract!.timedState === EETOStateOnChain.Payout
-        )
-      )
-    );
+    return etos.filter(eto => eto.contract && eto.contract.timedState === EETOStateOnChain.Payout);
   }
 
   return undefined;

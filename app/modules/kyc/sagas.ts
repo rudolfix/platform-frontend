@@ -6,7 +6,6 @@ import { createMessage } from "../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
-import { BankAccountNotFound } from "../../lib/api/KycApi";
 import {
   EKycRequestType,
   ERequestOutsourcedStatus,
@@ -592,18 +591,32 @@ function* loadBankAccountDetails({
   notificationCenter,
 }: TGlobalDependencies): Iterator<any> {
   try {
+    // bank details depend on claims `hasBankAccount` flag
+    // so to have consistent ui we need to reload claims
+    yield put(actions.kyc.kycLoadClaims());
+
     const isVerified: boolean = yield select(selectIsUserVerified);
 
     // bank account api can only be called when account is verified
     if (isVerified) {
       const result: TKycBankAccount = yield apiKycService.getBankAccount();
 
-      yield put(
-        actions.kyc.setBankAccountDetails({
-          hasBankAccount: true,
-          details: result,
-        }),
-      );
+      yield put(actions.kyc.setQuintessenceBankAccountDetails(result.ourAccount));
+
+      if (result.verifiedUserAccount !== undefined) {
+        yield put(
+          actions.kyc.setBankAccountDetails({
+            hasBankAccount: true,
+            details: result.verifiedUserAccount,
+          }),
+        );
+      } else {
+        yield put(
+          actions.kyc.setBankAccountDetails({
+            hasBankAccount: false,
+          }),
+        );
+      }
     } else {
       yield put(
         actions.kyc.setBankAccountDetails({
@@ -612,11 +625,9 @@ function* loadBankAccountDetails({
       );
     }
   } catch (e) {
-    if (!(e instanceof BankAccountNotFound)) {
-      notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_LOADING_BANK_DETAILS));
+    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_LOADING_BANK_DETAILS));
 
-      logger.error("Error while loading kyc bank details", e);
-    }
+    logger.error("Error while loading kyc bank details", e);
 
     yield put(
       actions.kyc.setBankAccountDetails({

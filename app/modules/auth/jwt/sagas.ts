@@ -53,14 +53,11 @@ export async function obtainJwtPromise(
   } = await signatureAuthApi.challenge(address, salt, signerType, permissions);
 
   logger.info("Signing challenge");
-  try {
-    debugger;
-    const signedChallenge = await web3Manager.personalWallet.signMessage(challenge);
-    debugger;
-  } catch (e) {
-    debugger;
-  }
+
+  const signedChallenge = await web3Manager.personalWallet.signMessage(challenge);
+
   logger.info("Sending signed challenge back to api");
+
   const {
     body: { jwt },
   } = await signatureAuthApi.createJwt(challenge, signedChallenge, signerType);

@@ -1,4 +1,4 @@
-import { addHexPrefix } from "ethereumjs-util";
+import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import * as Web3 from "web3";
 
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
@@ -39,14 +39,14 @@ export class LedgerWallet implements IPersonalWallet {
   public async signMessage(data: string): Promise<string> {
     try {
       this.waitingForCommand = true;
-      debugger;
-      const message = await this.ledgerInstance!.signPersonalMessage({
+      const signedMsg = await this.ledgerInstance!.signPersonalMessage({
         from: this.ethereumAddress,
-        data: addHexPrefix(data),
+        data: toBuffer(addHexPrefix(data)).toString("hex"),
       });
-      debugger;
-      return message;
+      const encodedV = (parseInt(signedMsg.slice(-2), 10) + 27).toString(16);
+      return signedMsg.slice(0, -2) + encodedV;
     } catch (e) {
+
       const ledgerError = parseLedgerError(e);
       if (ledgerError instanceof LedgerConfirmationRejectedError) {
         throw new SignerRejectConfirmationError();

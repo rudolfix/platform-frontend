@@ -17,7 +17,6 @@ export function* tryEstablishingConnectionWithLedger({
 }: TGlobalDependencies): any {
   try {
     yield ledgerWalletConnector.connect(web3Manager.networkId);
-
     yield put(actions.walletSelector.ledgerConnectionEstablished());
   } catch (e) {
     yield put(
@@ -39,40 +38,45 @@ export function* loadLedgerAccounts({
     derivationPathPrefix,
   } = state.ledgerWizardState;
 
-  const derivationPathToAddressMap = advanced
-    ? yield ledgerWalletConnector.getMultipleAccountsFromDerivationPrefix(
-        derivationPathPrefix,
-        index,
-        numberOfAccountsPerPage,
-      )
-    : yield ledgerWalletConnector.getMultipleAccounts(LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS);
+  try {
+    const derivationPathToAddressMap = advanced
+      ? yield ledgerWalletConnector.getMultipleAccountsFromDerivationPrefix(
+          derivationPathPrefix,
+          index,
+          numberOfAccountsPerPage,
+        )
+      : yield ledgerWalletConnector.getMultipleAccounts(LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS);
 
-  const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map(pair => ({
-    derivationPath: pair[0],
-    address: pair[1],
-  }));
+    const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map(pair => ({
+      derivationPath: pair[0],
+      address: pair[1],
+    }));
 
-  const balancesETH: string[] = yield Promise.all(
-    derivationPathsArray.map(dp =>
-      web3Manager.internalWeb3Adapter.getBalance(dp.address).then(bn => bn.toString()),
-    ),
-  );
+    const balancesETH: string[] = yield Promise.all(
+      derivationPathsArray.map(dp =>
+        web3Manager.internalWeb3Adapter.getBalance(dp.address).then(bn => bn.toString()),
+      ),
+    );
 
-  const balancesNEU: string[] = yield Promise.all(
-    derivationPathsArray.map(dp =>
-      contractsService.neumark.balanceOf(dp.address).then(bn => bn.toString()),
-    ),
-  );
+    const balancesNEU: string[] = yield Promise.all(
+      derivationPathsArray.map(dp =>
+        contractsService.neumark.balanceOf(dp.address).then(bn => bn.toString()),
+      ),
+    );
 
-  const accounts = (zip as tripleZip)(derivationPathsArray, balancesETH, balancesNEU).map(
-    ([dp, balanceETH, balanceNEU]) => ({
-      ...dp,
-      balanceETH: balanceETH,
-      balanceNEU: balanceNEU,
-    }),
-  );
-
-  yield put(actions.walletSelector.setLedgerAccounts(accounts, derivationPathPrefix));
+    const accounts = (zip as tripleZip)(derivationPathsArray, balancesETH, balancesNEU).map(
+      ([dp, balanceETH, balanceNEU]) => ({
+        ...dp,
+        balanceETH: balanceETH,
+        balanceNEU: balanceNEU,
+      }),
+    );
+    yield put(actions.walletSelector.setLedgerAccounts(accounts, derivationPathPrefix));
+  } catch (e) {
+    yield put(
+      actions.walletSelector.ledgerConnectionEstablishedError(mapLedgerErrorToErrorMessage(e)),
+    );
+  }
 }
 
 export function* setDerivationPathPrefix(_: TGlobalDependencies, action: TAction): any {

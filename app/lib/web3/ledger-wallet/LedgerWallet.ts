@@ -7,7 +7,12 @@ import { ILedgerWalletMetadata } from "../../persistence/WalletMetadataObjectSto
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError, SignerTimeoutError } from "../Web3Manager";
-import { LedgerConfirmationRejectedError, LedgerTimeoutError, parseLedgerError } from "./errors";
+import {
+  LedgerConfirmationRejectedError,
+  LedgerNotAvailableError,
+  LedgerTimeoutError,
+  parseLedgerError,
+} from "./errors";
 import { testConnection } from "./ledgerUtils";
 import { ILedgerCustomProvider } from "./types";
 
@@ -28,7 +33,7 @@ export class LedgerWallet implements IPersonalWallet {
   }
 
   public async testConnection(): Promise<boolean> {
-    if (!this.ledgerInstance) throw new Error();
+    if (!this.ledgerInstance) throw new LedgerNotAvailableError();
 
     if (this.waitingForCommand) {
       return true;

@@ -6,7 +6,7 @@ import { symbols } from "../../../di/symbols";
 import { EthereumNetworkId } from "../../../types";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
-import { LedgerError, LedgerUnknownError } from "./errors";
+import { LedgerError, LedgerNotAvailableError, LedgerUnknownError } from "./errors";
 import {
   connectToLedger,
   obtainPathComponentsFromDerivationPath,
@@ -57,8 +57,10 @@ export class LedgerWalletConnector {
     derivationPaths: string,
     indexOffset: number = 1,
     accountsNo: number = 0,
-  ): Promise<any> {
-    if (!this.ledgerInstance) throw new Error();
+  ): Promise<{
+    [index: string]: string;
+  }> {
+    if (!this.ledgerInstance) throw new LedgerNotAvailableError();
     {
       const Transport = await this.ledgerInstance.getTransport();
       try {
@@ -84,7 +86,7 @@ export class LedgerWalletConnector {
     const accounts: IDerivationPathToAddress = {};
 
     for (const derivationPath of derivationPaths) {
-      if (!this.ledgerInstance) throw new Error();
+      if (!this.ledgerInstance) throw new LedgerNotAvailableError();
 
       const account = await this.getMultipleAccountsFromHdPath(derivationPath, 0, 1);
       Object.assign(accounts, account);
@@ -107,7 +109,7 @@ export class LedgerWalletConnector {
     );
   }
   public async testConnection(): Promise<boolean> {
-    if (!this.ledgerInstance) throw new Error();
+    if (!this.ledgerInstance) throw new LedgerNotAvailableError();
 
     return testConnection(this.ledgerInstance);
   }

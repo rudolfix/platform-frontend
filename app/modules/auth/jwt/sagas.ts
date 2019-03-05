@@ -43,7 +43,7 @@ export async function obtainJwtPromise(
 
   const salt = cryptoRandomString(64);
   if (!web3Manager.personalWallet) {
-    throw new Error();
+    throw new Error("Wallet unavailable Error");
   }
   const signerType = web3Manager.personalWallet.getSignerType();
 

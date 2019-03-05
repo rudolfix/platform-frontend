@@ -60,14 +60,15 @@ export const testIfUnlocked = async (ledgerInstance: ILedgerCustomProvider): Pro
 };
 
 const getLedgerConfig = async (ledgerInstance: ILedgerCustomProvider): Promise<ILedgerConfig> => {
+  const Transport = await ledgerInstance.getTransport();
   try {
-    const Transport = await ledgerInstance.getTransport();
     const ethInstance = new Eth(Transport);
     const configration = await ethInstance.getAppConfiguration();
-    Transport.close();
     return configration;
   } catch (e) {
     throw new LedgerNotAvailableError();
+  } finally {
+    Transport.close();
   }
 };
 

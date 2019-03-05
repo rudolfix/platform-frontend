@@ -111,6 +111,7 @@
     "autoprefixer": "^9.4.2",
     "babel-loader": "^8.0.4",
     "babel-plugin-react-intl-krzkaczor": "^2.4.1",
+    "babel-polyfill": "^6.26.0",
     "bundlewatch": "^0.2.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",

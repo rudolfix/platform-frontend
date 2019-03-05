@@ -9,18 +9,17 @@ export class LedgerTimeoutError extends LedgerError {}
 export class LedgerUnknownError extends LedgerError {}
 
 export function parseLedgerError(error: any): LedgerError {
-    if (error.message !== undefined && error.message === "Invalid status 6985") {
-      return new LedgerConfirmationRejectedError();
-    } else if (error.message !== undefined && error.message === "Invalid status 6a80") {
-      return new LedgerContractsDisabledError();
-    } else if (
-      error.message === "Sign failed" &&
-      error.metaData !== undefined &&
-      error.metaData.type === "TIMEOUT"
-    ) {
-      return new LedgerTimeoutError();
-    } else {
-      return new LedgerUnknownError();
-    }
+  if (error.message !== undefined && error.message === "Invalid status 6985") {
+    return new LedgerConfirmationRejectedError();
+  } else if (error.message !== undefined && error.message === "Invalid status 6a80") {
+    return new LedgerContractsDisabledError();
+  } else if (
+    error.message === "Sign failed" &&
+    error.metaData !== undefined &&
+    error.metaData.type === "TIMEOUT"
+  ) {
+    return new LedgerTimeoutError();
+  } else {
+    return new LedgerUnknownError();
   }
-  
+}

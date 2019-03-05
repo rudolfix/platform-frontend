@@ -1,19 +1,24 @@
+import Eth from "@ledgerhq/hw-app-eth";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
+import { symbols } from "../../../di/symbols";
 import { EthereumNetworkId } from "../../../types";
 import { IEthereumNetworkConfig } from "../types";
-import { LedgerError, LedgerUnknownError, LedgerLockedError } from "./errors";
-import { LedgerWallet } from "./LedgerWallet";
 import { Web3Adapter } from "../Web3Adapter";
-import { symbols } from "../../../di/symbols";
-import { connectToLedger, testConnection } from "./ledgerUtils";
-import { IDerivationPathToAddress } from "./types";
+import { LedgerError, LedgerUnknownError } from "./errors";
+import {
+  connectToLedger,
+  obtainPathComponentsFromDerivationPath,
+  testConnection,
+} from "./ledgerUtils";
+import { LedgerWallet } from "./LedgerWallet";
+import { IDerivationPathToAddress, ILedgerCustomProvider } from "./types";
 
 @injectable()
 export class LedgerWalletConnector {
   private web3?: Web3;
-  private ledgerInstance?: any;
+  private ledgerInstance?: ILedgerCustomProvider;
 
   public constructor(
     @inject(symbols.ethereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
@@ -48,31 +53,62 @@ export class LedgerWalletConnector {
     return new LedgerWallet(web3Adapter, address, this.ledgerInstance, derivationPath);
   }
 
-  public async getMultipleAccounts(derivationPaths: string[]): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this.ledgerInstance.getAccounts((err: Error | undefined, _accounts: string[]) => {
-        if (!err) {
-          return resolve(_accounts);
-        } else {
-          reject(new LedgerLockedError());
+  public async getMultipleAccountsFromHdPath(
+    derivationPaths: string,
+    indexOffset: number = 1,
+    accountsNo: number = 0,
+  ): Promise<any> {
+    if (!this.ledgerInstance) throw new Error();
+    {
+      const Transport = await this.ledgerInstance.getTransport();
+      try {
+        const pathComponents = obtainPathComponentsFromDerivationPath(derivationPaths);
+
+        const chainCode = false; // Include the chain code
+        const ethInstance = new Eth(Transport);
+
+        const addresses: { [index: string]: string } = {};
+        for (let i = indexOffset; i < indexOffset + accountsNo; i += 1) {
+          const path = pathComponents.basePath + (pathComponents.index + i).toString();
+          const address = await ethInstance.getAddress(path, false, chainCode);
+          addresses[path] = address.address;
         }
-      });
-    });
+        return addresses;
+      } finally {
+        Transport.close();
+      }
+    }
   }
 
-  public async getMultipleAccountsFromDerivationPrefix(): Promise<IDerivationPathToAddress> {
-    return new Promise<IDerivationPathToAddress>((resolve, reject) => {
-      return this.ledgerInstance.getAccounts((err: Error | undefined, _accounts: string[]) => {
-        if (!err) {
-          resolve();
-        } else {
-          reject(new LedgerLockedError());
-        }
-      });
-    });
+  public async getMultipleAccounts(derivationPaths: string[]): Promise<IDerivationPathToAddress> {
+    const accounts: IDerivationPathToAddress = {};
+
+    for (const derivationPath of derivationPaths) {
+      if (!this.ledgerInstance) throw new Error();
+
+      const account = await this.getMultipleAccountsFromHdPath(derivationPath, 0, 1);
+      Object.assign(accounts, account);
+    }
+
+    return accounts;
   }
 
+  public async getMultipleAccountsFromDerivationPrefix(
+    derivationPathPrefix: string,
+    page: number,
+    addressesPerPage: number,
+  ): Promise<IDerivationPathToAddress> {
+    const derivationPath = derivationPathPrefix + "0";
+
+    return this.getMultipleAccountsFromHdPath(
+      derivationPath,
+      page * addressesPerPage,
+      addressesPerPage,
+    );
+  }
   public async testConnection(): Promise<boolean> {
+    if (!this.ledgerInstance) throw new Error();
+
     return testConnection(this.ledgerInstance);
   }
 }

@@ -7,18 +7,43 @@ import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
+import { promisify } from "../../../utils/promisify";
 import {
+  LedgerContractsDisabledError,
   LedgerNotAvailableError,
   LedgerNotSupportedVersionError,
-  LedgerContractsDisabledError,
 } from "./errors";
 import {
   ILedgerConfig,
-  IPromisifiedHookedWalletSubProvider,
-  ILedgerOutput,
   ILedgerCustomProvider,
+  ILedgerOutput,
+  IPromisifiedHookedWalletSubProvider,
 } from "./types";
-import { promisify } from "../../../utils/promisify";
+
+/**
+ * PathComponent contains derivation path divided into base path and index.
+ * @typedef {Object} PathComponent
+ * @property {string} basePath - Base path of derivation path.
+ * @property {number} index - index of addresses.
+ */
+
+/**
+ * Returns derivation path components: base path and index
+ * used by getMultipleAccounts.
+ * @param derivationPath
+ * @returns {PathComponent} PathComponent
+ */
+export const obtainPathComponentsFromDerivationPath = (derivationPath: string) => {
+  // check if derivation path follows 44'/60'/x'/n (ledger native)
+  // or 44'/60'/x'/[0|1]/0 (BIP44) pattern
+  const regExp = /^(44'\/6[0|1]'\/\d+'?\/(?:[0|1]\/)?)(\d+)$/;
+  const matchResult = regExp.exec(derivationPath);
+  if (matchResult === null) {
+    throw new Error("Derivation path must follow pattern 44'/60|61'/x'/n or BIP 44");
+  }
+
+  return { basePath: matchResult[1], index: parseInt(matchResult[2], 10) };
+};
 
 export const testConnection = async (ledgerInstance: ILedgerCustomProvider): Promise<boolean> => {
   try {
@@ -31,7 +56,7 @@ export const testConnection = async (ledgerInstance: ILedgerCustomProvider): Pro
 };
 
 export const testIfUnlocked = async (ledgerInstance: ILedgerCustomProvider): Promise<void> => {
-  await ledgerInstance;
+  await ledgerInstance.getAccounts();
 };
 
 const getLedgerConfig = async (ledgerInstance: ILedgerCustomProvider): Promise<ILedgerConfig> => {

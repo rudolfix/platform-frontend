@@ -29,7 +29,7 @@ export class LedgerWallet implements IPersonalWallet {
 
   public async testConnection(): Promise<boolean> {
     if (!this.ledgerInstance) throw new Error();
-    
+
     if (this.waitingForCommand) {
       return true;
     }

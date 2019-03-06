@@ -1666,14 +1666,6 @@
   resolved "https://registry.yarnpkg.com/@types/lolex/-/lolex-2.1.1.tgz#751bbad838366b3e9a0f7a81e30232ff56eb73dd"
   integrity sha512-8BcMiPAg9rRksyq7mH7j23LRiSRyP/EjPXUASx7AdihsEZ7bhOtEJms8sNXv++c4C5nx6pTsjKBmnED8+NI9qQ==
 
-"@types/material-ui@^0.20.3":
-  version "0.20.3"
-  resolved "https://registry.yarnpkg.com/@types/material-ui/-/material-ui-0.20.3.tgz#dd599009be465bb848ebfe40a7ef1153142a571a"
-  integrity sha512-K6mC/VZSLD2kWK1LLU2nrOho6FTzx07kPWqE6Cyxcj2swp+MqgBSgMjEMLFkGe5O+JFgNIvjNfrJ4OOFykV8DQ==
-  dependencies:
-    "@types/react" "*"
-    "@types/react-addons-linked-state-mixin" "*"
-
 "@types/minimatch@3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -1745,13 +1737,6 @@
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-6.1.1.tgz#1cfd9209c8dbd91b940192c8a2b7005d2a743e6f"
   integrity sha512-wRUeF7KN2yxCMw4VoXzPh3GWStbGaiyVjyX22fG7mpSzt6etLvsA2S0g0IuGeXGwVNIlztzVmGP6AxZMmYTQhw==
-
-"@types/react-addons-linked-state-mixin@*":
-  version "0.14.18"
-  resolved "https://registry.yarnpkg.com/@types/react-addons-linked-state-mixin/-/react-addons-linked-state-mixin-0.14.18.tgz#6977ae59e19aa0ce3a5d7a9e057961aaf1afe959"
-  integrity sha512-FbfxxQo1d6OhjKGlvvch/RP7Aj9IUPOptCBOPc5yfkufdVjr6bdAF4eO+KZieZ/vihZDOnXKoSmwHy8u2ZDQ6A==
-  dependencies:
-    "@types/react" "*"
 
 "@types/react-dom@^16.0.11":
   version "16.0.11"

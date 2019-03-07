@@ -17,6 +17,10 @@ export type TPortfolioLayoutProps = {
   isVerifiedInvestor: boolean;
 };
 
+export type IPortfolioDispatchProps = {
+  loadTokensData: (walletAddress: string) => void;
+};
+
 const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
   pendingAssets,
   walletAddress,

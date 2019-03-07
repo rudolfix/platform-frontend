@@ -15,9 +15,9 @@ import { appConnect } from "../../store";
 import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { withParams } from "../../utils/withParams";
 import { Button, ButtonLink, ButtonSize, EButtonLayout } from "../shared/buttons";
+import { Heading } from "../shared/Heading";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
 import { NumberFormat } from "../shared/NumberFormat";
-import { SectionHeader } from "../shared/SectionHeader";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 
 import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
@@ -58,13 +58,14 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
   walletAddress,
 }) => (
   <>
-    <SectionHeader
+    <Heading
+      level={3}
       decorator={false}
       className="mb-4"
       description={<FormattedMessage id="portfolio.section.your-assets.description" />}
     >
       <FormattedMessage id="portfolio.section.your-assets.title" />
-    </SectionHeader>
+    </Heading>
 
     <Row>
       <Col>

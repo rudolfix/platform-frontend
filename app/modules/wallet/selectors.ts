@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import { createSelector } from "reselect";
 import * as Web3Utils from "web3-utils";
+
 import { ETHEREUM_ZERO_ADDRESS } from "../../../app/config/constants";
 import { IAppState } from "../../store";
 import { addBigNumbers, multiplyBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";

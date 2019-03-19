@@ -30,6 +30,7 @@ import { LoadingIndicator } from "../shared/loading-indicator";
 import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
 import { ChooseEtoStartDateWidget } from "./dashboard/chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
+import { UploadInvestmentAgreement } from "./dashboard/signInvestmentAgreementWidget/UploadInvestmentAgreementWidget";
 import { SubmitProposalWidget } from "./dashboard/submitProposalWidget/SubmitProposalWidget";
 import { UploadInvestmentMemorandum } from "./dashboard/UploadInvestmentMemorandum";
 import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
@@ -177,10 +178,13 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
           <Col lg={6} xs={12}>
-            <BookBuildingWidget />
+            <UploadInvestmentAgreement />
           </Col>
           <Col lg={6} xs={12}>
             <ChooseEtoStartDateWidget />
+          </Col>
+          <Col lg={6} xs={12}>
+            <BookBuildingWidget />
           </Col>
           <Col xs={12}>
             <FormattedHTMLMessage tagName="span" id="eto-dashboard-application-description" />

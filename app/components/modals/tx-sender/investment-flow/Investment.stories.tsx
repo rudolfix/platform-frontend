@@ -38,7 +38,6 @@ storiesOf("Investment/Form", module)
         minTicketEur={"1234"}
         maxTicketEur={"123456"}
         readyToInvest={false}
-        investNow={() => {}}
         showTokens={true}
         totalCostEth={"1234141234123412341234"}
         totalCostEur={"123412341234123412341234"}

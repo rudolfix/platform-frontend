@@ -123,7 +123,7 @@ const BankTransferRedeemLayout: React.FunctionComponent<IProps> = ({
                   getFormattedMoney(
                     neuroAmount,
                     ECurrency.EUR,
-                    EMoneyFormat.WEI,
+                    EMoneyFormat.ULPS,
                     false,
                     ERoundingMode.DOWN,
                   ),

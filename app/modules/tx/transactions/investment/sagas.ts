@@ -59,9 +59,13 @@ const getEuroTokenTransaction = (
 ) => {
   const euroValueUlps = state.investmentFlow.euroValueUlps || "0";
 
-  const txData = contractsService.euroToken
-    .transferTx(etoId, new BigNumber(euroValueUlps))
-    .getData();
+  // Call IERC223 compliant transfer function
+  // otherwise ETOCommitment is not aware of any investment
+  // TODO: Fix when TypeChain support overloads
+  const txData = contractsService.euroToken.rawWeb3Contract.transfer[
+    "address,uint256,bytes"
+  ].getData(etoId, euroValueUlps, "");
+
   return createInvestmentTxData(state, txData, contractsService.euroToken.address);
 };
 
@@ -80,8 +84,9 @@ function getEtherTokenTransaction(
   if (compareBigNumbers(etherTokenBalance, etherValue) >= 0) {
     // transaction can be fully covered by etherTokens
 
-    // rawWeb3Contract is called directly due to the need for calling the 3 args version of transfer method.
-    // See the abi in the contract.
+    // Call IERC223 compliant transfer function
+    // otherwise ETOCommitment is not aware of any investment
+    // TODO: Fix when TypeChain support overloads
     const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
       "address,uint256,bytes"
     ].getData(etoId, etherValue, "");

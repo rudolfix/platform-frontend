@@ -697,7 +697,7 @@
   "modal.txsender.error-message.invalid-rlp-tx": "Oops! RLP transaction is invalid.",
   "modal.txsender.error-message.ledger-contracts-disabled": "Please enable Contract Support on your Ledger Nano and try again.",
   "modal.txsender.error-message.nonce-too-low": "Nonce is too low",
-  "modal.txsender.error-message.not-enough-ether-for-gas": "Sorry your wallet does not contain enough Ether to cover the Gas for the transaction",
+  "modal.txsender.error-message.not-enough-ether-for-gas": "Your wallet does not contain enough Ether to cover the Gas for the transaction",
   "modal.txsender.error-message.not-enough-funds": "There is not enough funds",
   "modal.txsender.error-message.out-of-gas": "Your transaction requires more Gas",
   "modal.txsender.error-message.reverted-tx": "Your transaction was reverted",

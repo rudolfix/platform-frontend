@@ -22,7 +22,7 @@ enum ECurrency {
 }
 
 enum EMoneyFormat {
-  WEI = "wei",
+  ULPS = "ulps",
   FLOAT = "float",
 }
 
@@ -93,7 +93,7 @@ const selectCurrencySymbol = (currency: ECurrency): string => {
 
 function getFormatDecimals(format: EMoneyFormat): number {
   switch (format) {
-    case EMoneyFormat.WEI:
+    case EMoneyFormat.ULPS:
       return MONEY_DECIMALS;
     case EMoneyFormat.FLOAT:
       return 0;
@@ -119,7 +119,7 @@ export function getFormattedMoney(
 
 const Money: React.FunctionComponent<IProps> = ({
   value,
-  format = EMoneyFormat.WEI,
+  format = EMoneyFormat.ULPS,
   currency,
   currencyClassName,
   transfer,
@@ -134,7 +134,7 @@ const Money: React.FunctionComponent<IProps> = ({
   }
 
   const money =
-    (format === EMoneyFormat.WEI && !React.isValidElement(value)) || isPrice
+    (format === EMoneyFormat.ULPS && !React.isValidElement(value)) || isPrice
       ? getFormattedMoney(value as BigNumber, currency, format, isPrice, roundingMode)
       : value;
 

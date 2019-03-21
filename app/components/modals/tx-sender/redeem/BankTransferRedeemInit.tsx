@@ -120,7 +120,13 @@ const BankTransferRedeemLayout: React.FunctionComponent<IProps> = ({
               onClick={() => {
                 setFieldValue(
                   "amount",
-                  getFormattedMoney(neuroAmount, ECurrency.EUR, EMoneyFormat.WEI),
+                  getFormattedMoney(
+                    neuroAmount,
+                    ECurrency.EUR,
+                    EMoneyFormat.WEI,
+                    false,
+                    ERoundingMode.DOWN,
+                  ),
                   true,
                 );
                 setFieldTouched("amount", true, true);

@@ -1,8 +1,8 @@
 import { RouterState } from "connected-react-router";
-import { LocationDescriptor } from "history";
 import * as queryString from "query-string";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
+import { branch, compose, renderComponent } from "recompose";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { selectIsAuthorized, selectUserType } from "../../../modules/auth/selectors";
@@ -19,10 +19,6 @@ interface IStateProps {
   routerState: RouterState;
 }
 
-interface IState {
-  redirect: boolean;
-}
-
 interface IOwnProps {
   path: string;
   exact?: boolean;
@@ -32,96 +28,88 @@ interface IOwnProps {
 
 type TProps = IOwnProps & IStateProps;
 
+const selectRouteBasedOnWalletType = (walletType: EWalletType): string => {
+  switch (walletType) {
+    case EWalletType.LEDGER:
+      return loginWalletRoutes.ledger;
+    case EWalletType.BROWSER:
+      return loginWalletRoutes.browser;
+    default:
+      return loginWalletRoutes.light;
+  }
+};
+
+const OnlyAuthorizedRouteRedirectionComponent: React.FunctionComponent<TProps> = ({
+  walletType,
+  routerState,
+  ...rest
+}) => {
+  const redirectionPath = {
+    pathname: selectRouteBasedOnWalletType(walletType),
+    search: queryString.stringify({
+      redirect: routerState.location.pathname + routerState.location.search,
+    }),
+  };
+
+  return <Route {...rest} render={() => <Redirect to={redirectionPath} />} />;
+};
+
 /**
  * This component will only attempt to redirect on entering the route. So when user gets logged in you need to trigger redirection on your own.
  */
-class OnlyAuthorizedRouteComponent extends React.Component<TProps, IState> {
-  state = {
-    redirect: false,
-  };
+const OnlyAuthorizedRouteComponent: React.FunctionComponent<TProps> = ({
+  investorComponent,
+  issuerComponent,
+  userType,
+  ...rest
+}) => {
+  const InvestorComponentAsAny = investorComponent as any;
+  const IssuerComponentAsAny = issuerComponent as any;
 
-  componentWillMount(): void {
-    this.setState({
-      redirect: !this.props.isAuthorized,
-    });
-  }
-
-  private selectRouteBasedOnWalletType = (walletType: EWalletType): string => {
-    switch (walletType) {
-      case EWalletType.LEDGER:
-        return loginWalletRoutes.ledger;
-      case EWalletType.BROWSER:
-        return loginWalletRoutes.browser;
-      default:
-        return loginWalletRoutes.light;
-    }
-  };
-
-  private getRedirectionPath(walletType: EWalletType): LocationDescriptor {
-    return {
-      pathname: this.selectRouteBasedOnWalletType(walletType),
-      search: queryString.stringify({
-        redirect: this.props.routerState.location.pathname + this.props.routerState.location.search,
-      }),
-    };
-  }
-
-  render(): React.ReactNode {
-    const {
-      investorComponent: InvestorComponent,
-      issuerComponent: IssuerComponent,
-      walletType: walletType,
-      ...rest
-    } = this.props;
-    const { redirect } = this.state;
-    const InvestorComponentAsAny = InvestorComponent as any;
-    const IssuerComponentAsAny = IssuerComponent as any;
-
-    if (redirect) {
+  switch (userType) {
+    case EUserType.INVESTOR:
       return (
-        <Route {...rest} render={() => <Redirect to={this.getRedirectionPath(walletType)} />} />
+        <Route
+          {...rest}
+          render={props =>
+            InvestorComponentAsAny ? (
+              <InvestorComponentAsAny {...props} />
+            ) : (
+              <Redirect to={appRoutes.dashboard} />
+            )
+          }
+        />
       );
-    }
 
-    switch (this.props.userType) {
-      case EUserType.INVESTOR:
-        return (
-          <Route
-            {...rest}
-            render={props =>
-              InvestorComponentAsAny ? (
-                <InvestorComponentAsAny {...props} />
-              ) : (
-                <Redirect to={appRoutes.dashboard} />
-              )
-            }
-          />
-        );
-
-      case EUserType.ISSUER:
-        return (
-          <Route
-            {...rest}
-            render={props =>
-              IssuerComponentAsAny ? (
-                <IssuerComponentAsAny {...props} />
-              ) : (
-                <Redirect to={appRoutes.dashboard} />
-              )
-            }
-          />
-        );
-      default:
-        return <div />;
-    }
+    case EUserType.ISSUER:
+      return (
+        <Route
+          {...rest}
+          render={props =>
+            IssuerComponentAsAny ? (
+              <IssuerComponentAsAny {...props} />
+            ) : (
+              <Redirect to={appRoutes.dashboard} />
+            )
+          }
+        />
+      );
+    default:
+      return <div />;
   }
-}
+};
 
-export const OnlyAuthorizedRoute = appConnect<IStateProps, {}, IOwnProps>({
-  stateToProps: state => ({
-    isAuthorized: selectIsAuthorized(state.auth),
-    userType: selectUserType(state),
-    walletType: selectWalletTypeFromQueryString(state.router),
-    routerState: state.router,
+export const OnlyAuthorizedRoute = compose<IStateProps & IOwnProps, IOwnProps>(
+  appConnect<IStateProps, {}, IOwnProps>({
+    stateToProps: state => ({
+      isAuthorized: selectIsAuthorized(state.auth),
+      userType: selectUserType(state),
+      walletType: selectWalletTypeFromQueryString(state.router),
+      routerState: state.router,
+    }),
   }),
-})(OnlyAuthorizedRouteComponent);
+  branch<IStateProps>(
+    (props: IStateProps) => !props.isAuthorized,
+    renderComponent(OnlyAuthorizedRouteRedirectionComponent),
+  ),
+)(OnlyAuthorizedRouteComponent);

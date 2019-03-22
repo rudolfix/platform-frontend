@@ -15,7 +15,7 @@ const IntlContainerInjector = injectIntlHelpers<{}>(
 
     context!: Container;
 
-    componentWillMount(): void {
+    componentDidMount(): void {
       this.context.get<IntlWrapper>(symbols.intlWrapper).intl = this.props.intl;
     }
 

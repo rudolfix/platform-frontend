@@ -58,7 +58,8 @@ class FormToggleLayout extends React.Component<IProps & TFormikConnect> {
     falseValue: false,
   };
 
-  componentWillMount(): void {
+  constructor(props: IProps & TFormikConnect) {
+    super(props);
     this.setDefaultValueIfNeeded();
   }
 

@@ -59,7 +59,8 @@ class FormFieldCheckbox extends React.Component<IFormFieldCheckboxProps> {
 class FormFieldCheckboxGroupLayout extends React.Component<
   IFormFieldCheckboxGroupProps & TFormikConnect
 > {
-  componentWillMount(): void {
+  constructor(props: IFormFieldCheckboxGroupProps & TFormikConnect) {
+    super(props);
     this.setDefaultValueIfNeeded();
   }
 

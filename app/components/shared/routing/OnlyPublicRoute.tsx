@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
+import { branch, compose, renderComponent, renderNothing } from "recompose";
 
 import { selectIsAuthorized } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
@@ -9,42 +10,33 @@ interface IStateProps {
   isAuthorized: boolean;
 }
 
-interface IState {
-  redirect: boolean;
+interface IComponentProps {
+  isAuthorized: boolean;
+  component: React.ComponentType;
 }
 
 type TProps = RouteProps & IStateProps;
 
-/**
- * This component will only attempt to redirect on entering the route. So when user gets logged in you need to trigger redirection on your own.
- */
-class OnlyPublicRouteComponent extends React.Component<TProps, IState> {
-  state = {
-    redirect: false,
-  };
+const OnlyPublicRouteRedirectComponent: React.FunctionComponent<TProps> = props => {
+  return <Route {...props} render={() => <Redirect to={appRoutes.dashboard} />} />;
+};
 
-  componentWillMount(): void {
-    this.setState({
-      redirect: this.props.isAuthorized,
-    });
-  }
+const OnlyPublicRouteComponent: React.FunctionComponent<IComponentProps> = ({
+  component: Component,
+  ...rest
+}) => {
+  return <Component {...rest} />;
+};
 
-  render(): React.ReactNode {
-    const { component: Component, ...rest } = this.props;
-    const { redirect } = this.state;
-    const ComponentAsAny = Component as any;
-
-    return (
-      <Route
-        {...rest}
-        render={() => (!redirect ? <ComponentAsAny /> : <Redirect to={appRoutes.dashboard} />)}
-      />
-    );
-  }
-}
-
-export const OnlyPublicRoute = appConnect<IStateProps, {}, RouteProps>({
-  stateToProps: s => ({
-    isAuthorized: selectIsAuthorized(s.auth),
+export const OnlyPublicRoute = compose<IComponentProps, RouteProps>(
+  appConnect<IStateProps, {}, RouteProps>({
+    stateToProps: s => ({
+      isAuthorized: selectIsAuthorized(s.auth),
+    }),
   }),
-})(OnlyPublicRouteComponent);
+  branch<IStateProps>(
+    state => state.isAuthorized,
+    renderComponent(OnlyPublicRouteRedirectComponent),
+  ),
+  branch<IStateProps & RouteProps>(state => state.component === undefined, renderNothing),
+)(OnlyPublicRouteComponent);

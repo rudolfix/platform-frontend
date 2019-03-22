@@ -25,7 +25,7 @@ interface IStateProps {
 }
 
 class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> {
-  componentWillMount(): void {
+  componentDidMount(): void {
     this.props.getSeed();
   }
 

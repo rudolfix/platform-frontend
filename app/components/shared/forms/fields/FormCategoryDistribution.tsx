@@ -154,10 +154,12 @@ class ArrayOfKeyValueFieldsBase extends React.Component<
     this.props.formik.validationSchema &&
     this.props.formik.validationSchema().fields[this.props.name]._subType;
 
-  componentWillMount(): void {
-    if (!get(this.props.formik.values, this.props.name)) {
+  constructor(props: IProps & IExternalProps & CommonHtmlProps & TFormikConnect) {
+    super(props);
+
+    if (!get(props.formik.values, props.name)) {
       this.suggestions.forEach((_, index) =>
-        this.setFieldValue(`${this.props.name}.${index}`, this.blankField),
+        this.setFieldValue(`${props.name}.${index}`, this.blankField),
       );
     }
   }

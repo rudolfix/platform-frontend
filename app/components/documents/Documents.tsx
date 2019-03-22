@@ -206,7 +206,7 @@ const Documents = compose<React.FunctionComponent>(
           documentTitles: getDocumentTitles(isRetailEto),
           documentsDownloading: selectEtoDocumentsDownloading(state.etoDocuments),
           documentsUploading: selectEtoDocumentsUploading(state.etoDocuments),
-          transactionPending: selectAreTherePendingTxs(state.txMonitor),
+          transactionPending: selectAreTherePendingTxs(state),
           documentsGenerated: selectPendingDownloads(state),
           isRetailEto,
         };

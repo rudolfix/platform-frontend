@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Modal } from "reactstrap";
 import { compose } from "recompose";
 
 import { actions } from "../../../modules/actions";
@@ -18,14 +17,14 @@ import {
   selectWalletMigrationData,
 } from "../../../modules/icbm-wallet-balance-modal/selectors";
 import { SelectIsVerificationFullyDone } from "../../../modules/selectors";
-import { ETokenType } from "../../../modules/tx/interfaces";
+import { ETokenType } from "../../../modules/tx/types";
 import {
   selectIsEtherUpgradeTargetSet,
   selectLockedWalletConnected,
 } from "../../../modules/wallet/selectors";
 import { appConnect } from "../../../store";
 import { LoadingIndicator } from "../../shared/loading-indicator";
-import { ModalComponentBody } from "../ModalComponentBody";
+import { Modal } from "../Modal";
 import { BalanceModal } from "./BalanceModal";
 import { MigrateModal } from "./MigrateModal";
 
@@ -108,10 +107,8 @@ export const IcbmWalletBalanceComponentInner: React.FunctionComponent<IProps> = 
 
 const IcbmWalletBalanceComponent: React.FunctionComponent<IProps> = (props: IProps) => {
   return (
-    <Modal isOpen={props.isOpen} toggle={props.onCancel}>
-      <ModalComponentBody onClose={props.onCancel}>
-        <IcbmWalletBalanceComponentInner {...props} />
-      </ModalComponentBody>
+    <Modal isOpen={props.isOpen} onClose={props.onCancel}>
+      <IcbmWalletBalanceComponentInner {...props} />
     </Modal>
   );
 };

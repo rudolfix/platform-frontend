@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { ITxData } from "../../../../lib/web3/types";
-import { ETokenType } from "../../../../modules/tx/interfaces";
+import { ETokenType } from "../../../../modules/tx/types";
 import { withModalBody } from "../../../../utils/storybookHelpers";
 import { UpgradeSummaryComponent } from "./Summary";
 
@@ -19,7 +19,6 @@ storiesOf("Upgrade Summary", module)
   .add("default", () => (
     <UpgradeSummaryComponent
       txData={txData}
-      txCost={"123456"}
       onAccept={() => {}}
       downloadICBMAgreement={() => {}}
       additionalData={{ tokenType: ETokenType.ETHER }}

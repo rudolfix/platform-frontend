@@ -4,13 +4,18 @@ import { put, select, take } from "redux-saga/effects";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
+import { DeepReadonly } from "../../../../types";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { convertToBigInt } from "../../../../utils/Number.utils";
 import { actions } from "../../../actions";
+import { selectBankFeeUlps } from "../../../bank-transfer-flow/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
+import { selectBankAccount } from "../../../kyc/selectors";
+import { TBankAccount } from "../../../kyc/types";
 import { neuCall } from "../../../sagasUtils";
 import { selectLiquidEuroTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { ETxSenderType } from "../../types";
 
 export function* generateNeuWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
@@ -57,10 +62,24 @@ export function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
   );
 
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
+
+  const bankAccount: DeepReadonly<TBankAccount> = yield select(selectBankAccount);
+  if (!bankAccount.hasBankAccount) {
+    throw new Error("During redeem process user should have bank account");
+  }
+
+  const bankFee: string = yield select(selectBankFeeUlps);
+
+  const additionalDetails = {
+    bankFee,
+    amount: txDataFromUser.value,
+    bankAccount: {
+      bankName: bankAccount.details.bankName,
+      accountNumberLast4: bankAccount.details.bankAccountNumberLast4,
+    },
+  };
+
   yield put(
-    actions.txSender.txSenderContinueToSummary({
-      txData: generatedTxDetails,
-      additionalData: { amount: txDataFromUser.value },
-    }),
+    actions.txSender.txSenderContinueToSummary<ETxSenderType.NEUR_REDEEM>(additionalDetails),
   );
 }

@@ -5,6 +5,7 @@ import {
   fork,
   getContext,
   race,
+  spawn,
   StringableActionCreator,
   take,
   takeEvery,
@@ -35,6 +36,11 @@ export function* neuTakeEvery(
 export function* neuFork(saga: TSagaWithDeps, ...args: any[]): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
   return yield fork(saga, deps, args[0], args[1], args[2], args[3], args[4]);
+}
+
+export function* neuSpawn(saga: TSagaWithDeps, ...args: any[]): Iterator<Effect> {
+  const deps: TGlobalDependencies = yield getContext("deps");
+  return yield spawn(saga, deps, args[0], args[1], args[2], args[3], args[4]);
 }
 
 export function* neuCall(saga: TSagaWithDeps, ...args: any[]): Iterator<Effect> {

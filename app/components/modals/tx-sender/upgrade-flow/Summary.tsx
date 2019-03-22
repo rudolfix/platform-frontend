@@ -4,24 +4,18 @@ import { Col, Container, Row } from "reactstrap";
 
 import { ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
-import { ETokenType } from "../../../../modules/tx/interfaces";
-import {
-  selectTxGasCostEthUlps,
-  selectTxSummaryAdditionalData,
-  selectTxSummaryData,
-} from "../../../../modules/tx/sender/selectors";
+import { selectTxAdditionalData, selectTxDetails } from "../../../../modules/tx/sender/selectors";
+import { TUpgradeAdditionalData } from "../../../../modules/tx/transactions/upgrade/types";
+import { ETokenType, ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { Button } from "../../../shared/buttons";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { ECurrency, Money } from "../../../shared/Money";
-import { InfoList } from "../shared/InfoList";
-import { InfoRow } from "../shared/InfoRow";
+import { UpgradeTransactionDetails } from "./UpgradeTransactionDetails";
 
 interface IStateProps {
-  txData: Partial<ITxData>;
-  txCost: string;
-  additionalData: { tokenType: ETokenType };
+  txData: Readonly<ITxData>;
+  additionalData: TUpgradeAdditionalData;
 }
 
 interface IDispatchProps {
@@ -33,37 +27,17 @@ type TComponentProps = IStateProps & IDispatchProps;
 
 export const UpgradeSummaryComponent: React.FunctionComponent<TComponentProps> = ({
   txData,
-  txCost,
   onAccept,
   downloadICBMAgreement,
   additionalData,
 }) => (
   <Container>
-    <Row className="mb-4">
-      <Col>
-        <Heading size={EHeadingSize.SMALL} level={4}>
-          <FormattedMessage id="upgrade-flow.summary" />
-        </Heading>
-      </Col>
-    </Row>
+    <Heading className="mb-4" size={EHeadingSize.SMALL} level={4}>
+      <FormattedMessage id="upgrade-flow.summary" />
+    </Heading>
 
-    <Row>
-      <Col>
-        <InfoList>
-          <InfoRow caption={<FormattedMessage id="upgrade-flow.to" />} value={txData.to} />
+    <UpgradeTransactionDetails txData={txData} className="mb-4" additionalData={additionalData} />
 
-          <InfoRow
-            caption={<FormattedMessage id="upgrade-flow.value" />}
-            value={<Money currency={ECurrency.ETH} value={txData.value!} />}
-          />
-
-          <InfoRow
-            caption={<FormattedMessage id="upgrade-flow.transaction-cost" />}
-            value={<Money currency={ECurrency.ETH} value={txCost} />}
-          />
-        </InfoList>
-      </Col>
-    </Row>
     {downloadICBMAgreement && (
       <Row>
         <Col className="my-3 text-center">
@@ -90,9 +64,8 @@ export const UpgradeSummaryComponent: React.FunctionComponent<TComponentProps> =
 
 export const UpgradeSummary = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
-    txData: selectTxSummaryData(state)!,
-    txCost: selectTxGasCostEthUlps(state),
-    additionalData: selectTxSummaryAdditionalData(state),
+    txData: selectTxDetails(state)!,
+    additionalData: selectTxAdditionalData<ETxSenderType.UPGRADE>(state)!,
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),

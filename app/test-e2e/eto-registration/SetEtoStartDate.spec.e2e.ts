@@ -45,7 +45,7 @@ describe("Eto start date setup", () => {
       cy.get(tid("eto-settings-display-start-date-utc"))
         .should($e =>
           expect($e.text()).to.be.equal(
-            `UTC: ${weekdayUTC(newStartDate.toDate())}, ${utcTime(newStartDate.toDate())}`,
+            `${weekdayUTC(newStartDate.toDate())}, ${utcTime(newStartDate.toDate())}`,
           ),
         )
         .get(tid("eto-settings-start-date-open-date-picker"))

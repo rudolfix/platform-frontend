@@ -47,6 +47,10 @@
   font-weight: normal;
   width: auto;
   border: 0;
+
+  & td {
+    padding-right: .5rem;
+  }
 }
 
 .eto-date-bold {

@@ -288,16 +288,18 @@ const ChangeDate: React.ComponentType<IChangeDateStateProps & IDispatchProps> = 
           </>
         )}
         <table className={cn(styles.etoDate, { [styles.etoDateBold]: !timeLeft })}>
-          <tr>
-            <td>UTC:</td>
-            <td data-test-id="eto-settings-display-start-date-utc">
-              {`${weekdayUTC(props.etoDate)}, ${utcTime(props.etoDate)}`}
-            </td>
-          </tr>
-          <tr>
-            <td>{`${timeZone()}: `}</td>
-            <td>{`${weekdayLocal(props.etoDate)}, ${localTime(props.etoDate)}`}</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>UTC:</td>
+              <td data-test-id="eto-settings-display-start-date-utc">
+                {`${weekdayUTC(props.etoDate)}, ${utcTime(props.etoDate)}`}
+              </td>
+            </tr>
+            <tr>
+              <td>{`${timeZone()}: `}</td>
+              <td>{`${weekdayLocal(props.etoDate)}, ${localTime(props.etoDate)}`}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <DateChooser {...props} />

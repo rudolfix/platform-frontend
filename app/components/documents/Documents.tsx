@@ -5,7 +5,7 @@ import { Redirect } from "react-router";
 import { branch, renderComponent, renderNothing, setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   EEtoDocumentType,
   IEtoDocument,
@@ -35,14 +35,14 @@ import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { selectAreTherePendingTxs } from "../../modules/tx/monitor/selectors";
 import { appConnect } from "../../store";
 import { DeepReadonly, TTranslatedString } from "../../types";
-import { onEnterAction } from "../../utils/OnEnterAction";
-import { withContainer } from "../../utils/withContainer";
-import { withMetaTags } from "../../utils/withMetaTags";
+import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { withContainer } from "../../utils/withContainer.unsafe";
+import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { appRoutes } from "../appRoutes";
 import { EtoFileIpfsModal } from "../eto/shared/EtoFileIpfsModal";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { ClickableDocumentTile, UploadableDocumentTile } from "../shared/Document";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { Heading } from "../shared/Heading";
 import { LoadingIndicator } from "../shared/loading-indicator";

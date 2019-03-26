@@ -12,7 +12,7 @@ import { ResponsiveImage } from "../../../shared/ResponsiveImage";
 import * as signGraphic from "../../../../assets/img/sign-agreement.svg";
 
 interface IDispatchProps {
-  onAccept: () => any;
+  onAccept: () => void;
 }
 
 const SignInvestmentAgreementComponent: React.FunctionComponent<IDispatchProps> = ({

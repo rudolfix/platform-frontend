@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { Container } from "reactstrap";
 
-import { withModalBody } from "../../../utils/storybookHelpers";
+import { withModalBody } from "../../../utils/storybookHelpers.unsafe";
 import { EtoFileIpfsModalComponent } from "./EtoFileIpfsModal";
 
 const data = {

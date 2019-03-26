@@ -12,17 +12,17 @@ import { LoadingIndicator } from "../../shared/loading-indicator";
 import { QuintessenceModal } from "../bank-transfer-flow/QuintessenceModal";
 import { Modal } from "../Modal";
 import { AccessWalletContainer } from "../wallet-access/AccessWalletModal";
-import { SetEtoDateSummary } from "./eto-flow/SetDateSummary";
+import { SetEtoDateSummary } from "./eto-flow/SetDateSummary.unsafe";
 import { SignInvestmentAgreementSummary } from "./eto-flow/SignInvestmentAgreementSummary";
-import { InvestmentSelection } from "./investment-flow/Investment";
+import { InvestmentSelection } from "./investment-flow/Investment.unsafe";
 import { InvestmentSuccess } from "./investment-flow/Success";
-import { InvestmentSummary } from "./investment-flow/Summary";
+import { InvestmentSummary } from "./investment-flow/Summary.unsafe";
 import { InvestorAcceptPayoutSuccess } from "./investor-payout/AcceptSuccess";
 import { InvestorAcceptPayoutSummary } from "./investor-payout/AcceptSummary";
 import { InvestorRedistributePayoutConfirm } from "./investor-payout/RedistributeConfirm";
 import { InvestorRedistributePayoutSuccess } from "./investor-payout/RedistributeSuccess";
 import { InvestorRedistributePayoutSummary } from "./investor-payout/RedistributeSummary";
-import { BankTransferRedeemInit } from "./redeem/BankTransferRedeemInit";
+import { BankTransferRedeemInit } from "./redeem/BankTransferRedeemInit.unsafe";
 import { BankTransferRedeemSuccess } from "./redeem/BankTransferRedeemSuccess";
 import { BankTransferRedeemSummary } from "./redeem/BankTransferRedeemSummary";
 import { SigningMessage } from "./shared/SigningMessage";
@@ -30,13 +30,13 @@ import { TxError } from "./shared/TxError";
 import { TxExternalPending } from "./shared/TxExternalPending";
 import { TxPending } from "./shared/TxPending";
 import { TxSuccess } from "./shared/TxSuccess";
-import { UnlockWalletSummary } from "./unlock-wallet-flow/Summary";
-import { UpgradeSummary } from "./upgrade-flow/Summary";
+import { UnlockWalletSummary } from "./unlock-wallet-flow/Summary.unsafe";
+import { UpgradeSummary } from "./upgrade-flow/Summary.unsafe";
 import { UserClaimSuccess } from "./user-claim/Success";
-import { UserClaimSummary } from "./user-claim/Summary";
+import { UserClaimSummary } from "./user-claim/Summary.unsafe";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
-import { Withdraw } from "./withdraw-flow/Withdraw";
+import { Withdraw } from "./withdraw-flow/Withdraw.unsafe";
 
 interface IStateProps {
   isOpen: boolean;
@@ -50,7 +50,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  onCancel: () => any;
+  onCancel: () => void;
 }
 
 type Props = IStateProps & IDispatchProps;

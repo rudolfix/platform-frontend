@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import { EthereumAddressWithChecksum } from "../../../../types";
-import { withModalBody } from "../../../../utils/storybookHelpers";
-import { ECurrency } from "../../../shared/Money";
+import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import { ECurrency } from "../../../shared/Money.unsafe";
 import { InvestorRedistributePayoutSummaryLayout } from "./RedistributeSummary";
 
 const ethTokenDisbursal: ITokenDisbursal = {

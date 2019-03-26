@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { TimeLeft } from "../../../shared/TimeLeft";
+import { TimeLeft } from "../../../shared/TimeLeft.unsafe";
 import { localTime, utcTime, weekdayLocal, weekdayUTC } from "../../../shared/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";

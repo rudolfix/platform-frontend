@@ -5,8 +5,8 @@ import { FormGroup, Input, InputGroup, InputGroupAddon, InputProps } from "react
 import { TTranslatedString } from "../../../../types";
 import { FormError } from "./FormFieldError";
 import { FormLabel } from "./FormFieldLabel";
-import { IFormInputRawExternalProps } from "./FormInputRaw";
-import { getComputedValue, withCountedCharacters } from "./utils";
+import { IFormInputRawExternalProps } from "./FormInputRaw.unsafe";
+import { getComputedValue, withCountedCharacters } from "./utils.unsafe";
 
 import * as styles from "./FormStyles.module.scss";
 

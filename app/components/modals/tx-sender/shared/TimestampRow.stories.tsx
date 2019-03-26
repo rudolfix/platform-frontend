@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { withMockedDate } from "../../../../utils/storybookHelpers";
+import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
 import { TimestampRow } from "./TimestampRow";
 
 const dummyNow = new Date(2018, 11, 17);

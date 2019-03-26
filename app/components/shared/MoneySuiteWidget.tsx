@@ -4,7 +4,7 @@ import * as React from "react";
 import { TDataTestId, TTranslatedString } from "../../types";
 import { ERoundingMode } from "../../utils/Money.utils";
 import { makeTid } from "../../utils/tidUtils";
-import { ECurrency, Money } from "./Money";
+import { ECurrency, Money } from "./Money.unsafe";
 
 import * as styles from "./MoneySuiteWidget.module.scss";
 

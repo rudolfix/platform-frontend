@@ -12,7 +12,7 @@ import { TSpecificTransactionState } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { SpinningEthereum } from "../../../shared/ethererum";
 import { Message } from "../../Message";
-import { TxDetails } from "../TxDetails";
+import { TxDetails } from "../TxDetails.unsafe";
 import { TxName } from "../TxName";
 import { TxHashAndBlock } from "./TxHashAndBlock";
 

@@ -3,8 +3,8 @@ import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { withMockedDate, withModalBody } from "../../../../utils/storybookHelpers";
-import { SetEtoDateSummaryComponent } from "./SetDateSummary";
+import { withMockedDate, withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import { SetEtoDateSummaryComponent } from "./SetDateSummary.unsafe";
 
 const dummyNow = new Date("2019-03-10T05:03:56+02:00");
 const date = moment.utc(dummyNow).add(5, "month");

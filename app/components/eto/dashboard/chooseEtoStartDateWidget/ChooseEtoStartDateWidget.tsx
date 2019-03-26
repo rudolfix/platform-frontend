@@ -13,11 +13,11 @@ import { isValidEtoStartDate } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
 import { ButtonArrowRight } from "../../../shared/buttons";
 import { DatePicker } from "../../../shared/DatePicker";
-import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { FormError } from "../../../shared/forms";
 import { Panel } from "../../../shared/Panel";
-import { FancyTimeLeft, TimeLeft } from "../../../shared/TimeLeft";
+import { FancyTimeLeft, TimeLeft } from "../../../shared/TimeLeft.unsafe";
 import {
   calculateTimeLeft,
   localTime,

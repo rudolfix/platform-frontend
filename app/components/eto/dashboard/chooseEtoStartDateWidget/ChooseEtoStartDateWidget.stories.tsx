@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 
-import { withMockedDate } from "../../../../utils/storybookHelpers";
+import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
 import { EtoStartDateWidgetComponent } from "./ChooseEtoStartDateWidget";
 
 const TEST_OFFSET_PERIOD = 604800; //7 days

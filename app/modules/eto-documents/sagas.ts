@@ -1,11 +1,14 @@
 import { findKey } from "lodash/fp";
 import { call, fork, put, select } from "redux-saga/effects";
 
-import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
+import {
+  EtoDocumentsMessage,
+  IpfsMessage,
+} from "../../components/translatedMessages/messages.unsafe";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
 import {
   EEtoDocumentType,

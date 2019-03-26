@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { withMockedDate, withModalBody } from "../../../../utils/storybookHelpers";
+import { withMockedDate, withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { InvestmentSuccessComponent } from "./Success";
 
 const dummyNow = new Date("10/3/2019");

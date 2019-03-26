@@ -8,7 +8,7 @@ import { EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
-import { getMessageTranslation } from "../../translatedMessages/messages";
+import { getMessageTranslation } from "../../translatedMessages/messages.unsafe";
 import { Modal } from "../Modal";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 

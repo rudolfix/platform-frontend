@@ -16,7 +16,7 @@ import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx
 import { appConnect } from "../../../../store";
 import { ExternalLink } from "../../../shared/links/ExternalLink";
 import { Message } from "../../Message";
-import { TxDetails } from "../TxDetails";
+import { TxDetails } from "../TxDetails.unsafe";
 import { TxName } from "../TxName";
 import { TxHashAndBlock } from "./TxHashAndBlock";
 

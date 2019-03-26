@@ -3,7 +3,7 @@ import { spy } from "sinon";
 import * as Web3 from "web3";
 
 import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
-import { setupFakeClock } from "../../../../test/integrationTestUtils";
+import { setupFakeClock } from "../../../../test/integrationTestUtils.unsafe";
 import { createMock, expectToBeRejected } from "../../../../test/testUtils";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import {

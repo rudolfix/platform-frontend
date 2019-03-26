@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { withModalBody } from "../../../../utils/storybookHelpers";
-import { InvestmentSummaryComponent } from "./Summary";
+import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import { InvestmentSummaryComponent } from "./Summary.unsafe";
 
 const data = {
   additionalData: {

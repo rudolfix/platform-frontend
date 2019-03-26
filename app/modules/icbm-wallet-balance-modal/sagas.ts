@@ -3,7 +3,7 @@ import { toChecksumAddress } from "ethereumjs-util";
 import { delay } from "redux-saga";
 import { call, fork, put, select } from "redux-saga/effects";
 
-import { IcbmWalletMessage } from "../../components/translatedMessages/messages";
+import { IcbmWalletMessage } from "../../components/translatedMessages/messages.unsafe";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions, TAction, TActionFromCreator } from "../actions";

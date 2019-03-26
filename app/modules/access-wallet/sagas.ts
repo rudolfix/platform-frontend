@@ -1,7 +1,7 @@
 import { delay, Effect } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
-import { GenericErrorMessage } from "../../components/translatedMessages/messages";
+import { GenericErrorMessage } from "../../components/translatedMessages/messages.unsafe";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";

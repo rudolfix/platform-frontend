@@ -2,10 +2,10 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { emailMask } from "text-mask-addons";
 
-import { ECurrency } from "../../Money";
-import { FormMaskedInput } from "./FormMaskedInput";
-import { formWrapper } from "./testingUtils";
-import { generateMaskFromCurrency } from "./utils";
+import { ECurrency } from "../../Money.unsafe";
+import { FormMaskedInput } from "./FormMaskedInput.unsafe";
+import { formWrapper } from "./testingUtils.unsafe";
+import { generateMaskFromCurrency } from "./utils.unsafe";
 
 storiesOf("Form/MaskedInput", module)
   .add(

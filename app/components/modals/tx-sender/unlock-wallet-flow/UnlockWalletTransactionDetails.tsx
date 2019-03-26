@@ -8,7 +8,7 @@ import { ETxSenderType } from "../../../../modules/tx/types";
 import { getUnlockedWalletEtherAmountAfterFee } from "../../../../modules/wallet/utils";
 import { multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { getCurrentUTCTimestamp } from "../../../../utils/Date.utils";
-import { ECurrency, Money } from "../../../shared/Money";
+import { ECurrency, Money } from "../../../shared/Money.unsafe";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";

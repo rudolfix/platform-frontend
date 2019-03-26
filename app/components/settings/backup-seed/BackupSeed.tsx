@@ -6,10 +6,10 @@ import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
 import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { selectIsUnlocked, selectWalletPrivateData } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutAuthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { LoadingIndicator } from "../../shared/loading-indicator";
-import { BackupSeedFlowContainer } from "./BackupSeedFlowContainer";
+import { BackupSeedFlowContainer } from "./BackupSeedFlowContainer.unsafe";
 
 interface IDispatchProps {
   verifyBackupPhrase: () => void;

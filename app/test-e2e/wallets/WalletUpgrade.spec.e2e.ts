@@ -10,6 +10,7 @@ describe("Upgrade icbm wallet", () => {
       type: "investor",
       kyc: "business",
       seed: INV_EUR_ICBM_HAS_KYC_SEED,
+      signTosAgreement: true,
       clearPendingTransactions: true,
     }).then(() => {
       let icbmBalance: number;

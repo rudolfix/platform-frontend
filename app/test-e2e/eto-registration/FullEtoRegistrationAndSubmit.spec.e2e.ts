@@ -12,7 +12,6 @@ import {
   legalInfoForm,
   mediaForm,
   productVisionForm,
-  riskForm,
   votingRights,
 } from "./fixtures";
 
@@ -55,7 +54,8 @@ describe("Eto Forms", () => {
 
       fillAndAssert("eto-progress-widget-media", mediaForm);
 
-      fillAndAssert("eto-progress-widget-risk-assessment", riskForm);
+      // hidden for now as requested in #2633
+      // fillAndAssert("eto-progress-widget-risk-assessment", riskForm);
 
       fillAndAssert("eto-progress-widget-equity-token-info", equityTokenInfoForm);
 

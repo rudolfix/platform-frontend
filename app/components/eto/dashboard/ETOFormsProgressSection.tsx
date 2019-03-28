@@ -25,11 +25,18 @@ import {
   calculateProductVisionProgress,
 } from "../../../modules/eto-flow/utils";
 import { appConnect } from "../../../store";
+import { TTranslatedString } from "../../../types";
+import { Heading } from "../../shared/Heading";
 import { etoRegisterRoutes } from "../registration/routes";
 import { EtoFormProgressWidget } from "./EtoFormProgressWidget";
 
-interface IEtoRegisteredRoutes {
-  [id: string]: EEtoFormTypes;
+interface IEtoSection {
+  id: EEtoFormTypes;
+  progress: number;
+  name: TTranslatedString;
+  testingId: string;
+  hidden?: boolean;
+  readonly?: boolean;
 }
 
 export interface IStateProps {
@@ -63,83 +70,107 @@ export const ETOFormsProgressSectionComponent: React.FunctionComponent<IStatePro
   etoVotingRightsProgress,
   etoInvestmentTermsProgress,
 }) => {
-  const sections = [
+  const companySections: ReadonlyArray<IEtoSection> = [
     {
       id: EEtoFormTypes.CompanyInformation,
       progress: companyInformationProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.about" />,
+      name: <FormattedMessage id="eto.form-progress-widget.company-information.about" />,
       testingId: "eto-progress-widget-about",
       readonly: false,
     },
     {
       id: EEtoFormTypes.LegalInformation,
       progress: legalInformationProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.legal-info" />,
+      name: <FormattedMessage id="eto.form-progress-widget.company-information.legal-info" />,
       testingId: "eto-progress-widget-legal-info",
-    },
-    {
-      id: EEtoFormTypes.EtoInvestmentTerms,
-      progress: etoInvestmentTermsProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.investment-terms" />,
-      testingId: "eto-progress-widget-investment-terms",
-    },
-    {
-      id: EEtoFormTypes.EtoTerms,
-      progress: etoTermsProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.eto-terms" />,
-      testingId: "eto-progress-widget-eto-terms",
     },
     {
       id: EEtoFormTypes.KeyIndividuals,
       progress: etoKeyIndividualsProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.key-individuals" />,
+      name: <FormattedMessage id="eto.form-progress-widget.company-information.key-individuals" />,
       testingId: "eto-progress-widget-key-individuals",
     },
     {
       id: EEtoFormTypes.ProductVision,
       progress: productVisionProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.product-vision" />,
+      name: <FormattedMessage id="eto.form-progress-widget.company-information.product-vision" />,
       testingId: "eto-progress-widget-product-vision",
     },
     {
       id: EEtoFormTypes.EtoMedia,
       progress: etoMediaProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.media" />,
+      name: <FormattedMessage id="eto.form-progress-widget.company-information.media" />,
       testingId: "eto-progress-widget-media",
     },
-    {
-      id: EEtoFormTypes.EtoRiskAssessment,
-      progress: etoRiskAssessmentProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.risk-assessment" />,
-      testingId: "eto-progress-widget-risk-assessment",
-    },
+  ];
+
+  const etoSections: ReadonlyArray<IEtoSection> = [
     {
       id: EEtoFormTypes.EtoEquityTokenInfo,
       progress: etoEquityTokenInfoProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.equity-token-info" />,
+      name: <FormattedMessage id="eto.form-progress-widget.eto-settings.equity-token-info" />,
       testingId: "eto-progress-widget-equity-token-info",
+    },
+    {
+      id: EEtoFormTypes.EtoTerms,
+      progress: etoTermsProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.eto-settings.eto-terms" />,
+      testingId: "eto-progress-widget-eto-terms",
+    },
+    {
+      id: EEtoFormTypes.EtoInvestmentTerms,
+      progress: etoInvestmentTermsProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.eto-settings.investment-terms" />,
+      testingId: "eto-progress-widget-investment-terms",
     },
     {
       id: EEtoFormTypes.EtoVotingRights,
       progress: etoVotingRightsProgress,
-      name: <FormattedMessage id="eto.form-progress-widget.voting-right" />,
+      name: <FormattedMessage id="eto.form-progress-widget.eto-settings.voting-right" />,
       testingId: "eto-progress-widget-voting-right",
+    },
+    {
+      id: EEtoFormTypes.EtoRiskAssessment,
+      progress: etoRiskAssessmentProgress,
+      name: <FormattedMessage id="eto.form-progress-widget.eto-settings.risk-assessment" />,
+      testingId: "eto-progress-widget-risk-assessment",
+      hidden: true,
+    },
+  ];
+
+  const groups = [
+    {
+      name: <FormattedMessage id="eto.form-progress-widget.company-information" />,
+      sections: companySections,
+    },
+    {
+      name: <FormattedMessage id="eto.form-progress-widget.eto-settings" />,
+      sections: etoSections,
     },
   ];
 
   return (
     <>
-      {sections.map((section, index) => (
-        <Col key={index} lg={4} xs={12} md={6} className="mb-4" data-test-id={section.testingId}>
-          <EtoFormProgressWidget
-            isLoading={loadingData}
-            to={(etoRegisterRoutes as IEtoRegisteredRoutes)[section.id]}
-            progress={shouldEtoDataLoad ? section.progress : 0}
-            disabled={!shouldEtoDataLoad}
-            name={section.name}
-            readonly={etoFormIsReadonly(section.id, etoStatus)}
-          />
-        </Col>
+      {groups.map((group, groupIndex) => (
+        <React.Fragment key={groupIndex}>
+          <Col xs={12}>
+            <Heading level={2} decorator={false}>
+              {group.name}
+            </Heading>
+          </Col>
+          {group.sections.filter(s => !s.hidden).map((section, sectionIndex) => (
+            <Col key={sectionIndex} lg={4} xs={12} md={6} data-test-id={section.testingId}>
+              <EtoFormProgressWidget
+                isLoading={loadingData}
+                to={etoRegisterRoutes[section.id]}
+                progress={shouldEtoDataLoad ? section.progress : 0}
+                disabled={!shouldEtoDataLoad}
+                name={section.name}
+                readonly={etoFormIsReadonly(section.id, etoStatus)}
+              />
+            </Col>
+          ))}
+        </React.Fragment>
       ))}
     </>
   );

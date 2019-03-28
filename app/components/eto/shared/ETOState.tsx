@@ -15,14 +15,14 @@ export enum EProjectStatusSize {
   SMALL = "small",
 }
 
-export enum EProjecStatusLayout {
+export enum EProjectStatusLayout {
   NORMAL = "normal",
   BLACK = "black",
 }
 
 interface IExternalProps {
   size?: EProjectStatusSize;
-  layout?: EProjecStatusLayout;
+  layout?: EProjectStatusLayout;
   previewCode: string;
 }
 
@@ -61,7 +61,7 @@ const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain, string>> = 
 const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
   eto,
   size = EProjectStatusSize.MEDIUM,
-  layout = EProjecStatusLayout.NORMAL,
+  layout = EProjectStatusLayout.NORMAL,
 }) => {
   const status = eto.contract ? eto.contract.timedState : eto.state;
 

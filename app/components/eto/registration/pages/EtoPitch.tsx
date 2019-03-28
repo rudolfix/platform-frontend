@@ -44,7 +44,7 @@ const distributionSuggestions = ["Development", "Other"];
 const EtoRegistrationPitchComponent = (props: IProps) => {
   return (
     <EtoFormBase
-      title={<FormattedMessage id="eto.form-progress-widget.product-vision" />}
+      title={<FormattedMessage id="eto.form-progress-widget.company-information.product-vision" />}
       validator={EtoPitchType.toYup()}
     >
       <Section>

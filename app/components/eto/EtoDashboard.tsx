@@ -36,7 +36,7 @@ import { UploadInvestmentMemorandum } from "./dashboard/UploadInvestmentMemorand
 import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardSection } from "./shared/DashboardSection";
-import { EProjecStatusLayout, EProjectStatusSize, ETOState } from "./shared/ETOState";
+import { EProjectStatusLayout, EProjectStatusSize, ETOState } from "./shared/ETOState";
 
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
 
@@ -118,7 +118,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     <ETOState
       previewCode={previewCode}
       size={EProjectStatusSize.LARGE}
-      layout={EProjecStatusLayout.BLACK}
+      layout={EProjectStatusLayout.BLACK}
     />
   );
   switch (etoState) {

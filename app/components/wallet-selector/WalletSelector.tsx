@@ -133,7 +133,7 @@ export const WalletSelectorComponent: React.FunctionComponent<IStateProps & IDis
               ) : (
                 <>
                   <FormattedMessage id="wallet-selector.register.help-link" />{" "}
-                  <ExternalLink href={`${externalRoutes.neufundSupport}/home`}>
+                  <ExternalLink href={externalRoutes.neufundSupportHome}>
                     <strong>
                       <FormattedMessage id="wallet-selector.help-link.register.label" />
                     </strong>

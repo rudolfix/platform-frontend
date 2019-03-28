@@ -230,7 +230,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
         <FormattedHTMLMessage
           tagName="span"
           id="modules.auth.sagas.sign-in-user.error-our-servers-are-having-problems"
-          values={{ url: `${externalRoutes.neufundSupport}/home` }}
+          values={{ url: externalRoutes.neufundSupportHome }}
         />
       );
 

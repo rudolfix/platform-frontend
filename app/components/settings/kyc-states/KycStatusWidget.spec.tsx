@@ -46,7 +46,7 @@ describe("<KycStatusWidgetComponent />", () => {
         <FormattedHTMLMessage
           tagName="span"
           id="settings.kyc-status-widget.status.draft"
-          values={{ url: `${externalRoutes.neufundSupport}/home` }}
+          values={{ url: externalRoutes.neufundSupportHome }}
         />,
       ),
     ).to.be.true;

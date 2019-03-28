@@ -102,7 +102,7 @@ class PersonalAccountDetailsLayout extends React.Component<IStateProps, IOwnStat
               <FormattedHTMLMessage
                 tagName="span"
                 id="settings.account-details.explanation"
-                values={{ href: `${externalRoutes.neufundSupport}/home` }}
+                values={{ href: externalRoutes.neufundSupportHome }}
               />
             </div>
           </div>

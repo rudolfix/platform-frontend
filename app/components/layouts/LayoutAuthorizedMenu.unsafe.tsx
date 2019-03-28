@@ -193,7 +193,7 @@ const InvestorMenu: React.FunctionComponent<IStateProps & IDispatchProps & IWith
       />
       <MenuEntryLink
         svgString={iconHelp}
-        to={`${externalRoutes.neufundSupport}/home`}
+        to={externalRoutes.neufundSupportHome}
         menuName={<FormattedMessage id="menu.help" />}
         isActive={isLinkActive}
       />
@@ -249,7 +249,7 @@ const IssuerMenu: React.FunctionComponent<{
       />
       <MenuEntryLink
         svgString={iconHelp}
-        to={`${externalRoutes.neufundSupport}/home`}
+        to={externalRoutes.neufundSupportHome}
         menuName={<FormattedMessage id="menu.help" />}
       />
     </div>

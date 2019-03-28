@@ -74,7 +74,7 @@ const getErrorMessageByType = (type?: ETransactionErrorType) => {
           id="modal.shared.signing-message.transaction-error.text"
           values={{
             supportDesk: (
-              <ExternalLink href={externalRoutes.neufundSupport}>
+              <ExternalLink href={externalRoutes.neufundSupportHome}>
                 <FormattedMessage id="support-desk.link.text" />
               </ExternalLink>
             ),

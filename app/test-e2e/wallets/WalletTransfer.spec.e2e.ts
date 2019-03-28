@@ -1,5 +1,5 @@
 import { INV_EUR_ICBM_HAS_KYC_ADDRESS, INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
-import { assertUserInDashboard, goToDashboard } from "../utils";
+import { goToDashboard } from "../utils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -12,7 +12,6 @@ describe("Wallet Transfer", () => {
       onlyLogin: true,
     }).then(() => {
       goToDashboard();
-      assertUserInDashboard();
 
       cy.get(tid("authorized-layout-wallet-button")).awaitedClick();
 

@@ -52,17 +52,11 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
 
   return (
     <LayoutAuthorized>
-      <Row className="row-gutter-top">
-        <DashboardSection
-          title={<FormattedMessage id="settings.security-settings.title" />}
-          data-test-id="eto-dashboard-application"
-        />
+      <Row className="row-gutter-top" data-test-id="eto-profile">
+        <DashboardSection title={<FormattedMessage id="settings.security-settings.title" />} />
         <SettingsWidgets isDynamic={false} isLightWallet={isLightWallet} />
 
-        <DashboardSection
-          title={<FormattedMessage id="settings.account-info.title" />}
-          data-test-id="eto-dashboard-application"
-        />
+        <DashboardSection title={<FormattedMessage id="settings.account-info.title" />} />
 
         <Col lg={4} xs={12}>
           <YourEthereumAddressWidget />

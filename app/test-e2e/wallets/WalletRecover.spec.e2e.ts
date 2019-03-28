@@ -1,8 +1,8 @@
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import {
   acceptTOS,
+  assertDashboard,
   assertErrorModal,
-  assertUserInDashboard,
   assertWaitForLatestEmailSentWithSalt,
   clearEmailServer,
   typeEmailPassword,
@@ -151,7 +151,8 @@ describe("Wallet recover", () => {
     assertWaitForLatestEmailSentWithSalt(email.toLowerCase());
 
     cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
-    assertUserInDashboard();
+
+    assertDashboard();
   });
 
   it("should recover existing user with verified email from saved phrases and change email", () => {
@@ -199,6 +200,6 @@ describe("Wallet recover", () => {
 
     assertWaitForLatestEmailSentWithSalt(email);
 
-    assertUserInDashboard();
+    assertDashboard();
   });
 });

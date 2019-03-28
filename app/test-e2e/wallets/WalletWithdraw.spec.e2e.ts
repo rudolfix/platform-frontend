@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
-import { assertUserInDashboard, confirmAccessModal, goToDashboard, parseAmount } from "../utils";
+import { confirmAccessModal, goToDashboard, parseAmount } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
@@ -78,7 +78,6 @@ describe("Wallet Withdraw", () => {
       onlyLogin: true,
     }).then(() => {
       goToDashboard();
-      assertUserInDashboard();
 
       const testValue = 5;
       const account = new Web3Accounts().create();

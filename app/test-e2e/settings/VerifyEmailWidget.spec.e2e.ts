@@ -1,5 +1,5 @@
 import {
-  assertUserInDashboard,
+  assertDashboard,
   assertVerifyEmailWidgetIsInNoEmailState,
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
@@ -24,7 +24,7 @@ describe("Verify Email Widget", () => {
 
     registerWithLightWallet(firstEmail, password);
     clearEmailServer();
-    assertUserInDashboard();
+    assertDashboard();
 
     cy.get(tid("authorized-layout-profile-button")).awaitedClick();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();
@@ -51,7 +51,7 @@ describe("Verify Email Widget", () => {
     const password = "strongpassword";
 
     registerWithLightWallet(firstEmail, password);
-    assertUserInDashboard();
+    assertDashboard();
 
     cy.get(tid("authorized-layout-profile-button")).awaitedClick();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();

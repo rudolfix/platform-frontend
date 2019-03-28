@@ -1,4 +1,4 @@
-import { assertUserInDashboard, assertUserInLanding, goToDashboard } from "../utils/index";
+import { assertDashboard, assertUserInLanding, goToDashboard } from "../utils";
 import { createAndLoginNewUser, INVESTOR_WALLET_KEY, JWT_KEY } from "../utils/userHelpers";
 
 describe("auto-logout/auto-login", () => {
@@ -8,7 +8,7 @@ describe("auto-logout/auto-login", () => {
       kyc: "business",
     }).then(() => {
       goToDashboard();
-      assertUserInDashboard();
+
       cy.clearLocalStorage(JWT_KEY);
       cy.wait(1000);
       assertUserInLanding();
@@ -30,7 +30,7 @@ describe("auto-logout/auto-login", () => {
           Windows.localStorage.setItem(INVESTOR_WALLET_KEY, walletData!);
           Windows.localStorage.setItem(JWT_KEY, jwt!);
         });
-        assertUserInDashboard();
+        assertDashboard();
       });
     });
   });

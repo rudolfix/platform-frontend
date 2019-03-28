@@ -1,5 +1,6 @@
 import { assertEtoDashboard } from "../utils";
 import { fillForm, TFormFixture } from "../utils/forms";
+import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
@@ -25,8 +26,7 @@ const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
 describe("Eto Forms", () => {
   it("will fill and submit them all", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
-      cy.visit("/dashboard");
-      assertEtoDashboard();
+      goToEtoDashboard();
 
       fillAndAssert("eto-progress-widget-about", aboutForm);
 

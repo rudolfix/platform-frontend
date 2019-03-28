@@ -1,15 +1,14 @@
 import * as moment from "moment";
 
-import { assertDashboard, assertMoneyNotEmpty } from "../utils";
+import { assertMoneyNotEmpty } from "../utils";
+import { goToDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Auto Login", () => {
   it("will auto login", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
-      cy.visit("/dashboard");
-      // just a basic check wether the dashboard is working
-      assertDashboard();
+      goToDashboard();
     });
   });
 });
@@ -17,7 +16,7 @@ describe("Auto Login", () => {
 describe("Incoming payout", () => {
   it("should show counter with incoming payout value", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
-      cy.visit("/dashboard");
+      goToDashboard();
 
       cy.get(tid("incoming-payout-counter"));
 
@@ -30,7 +29,7 @@ describe("Incoming payout", () => {
   it("should change view after incoming payout complete", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       let clock: any = null;
-      cy.visit("/dashboard");
+      goToDashboard();
 
       cy.get(tid("incoming-payout-counter"));
 

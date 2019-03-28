@@ -1,8 +1,9 @@
 import { acceptWallet } from "../utils";
+import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 
 export const submitProposal = () => {
-  cy.visit("/dashboard");
+  goToEtoDashboard();
 
   cy.get(tid("eto-dashboard-submit-proposal")).click();
   acceptWallet();

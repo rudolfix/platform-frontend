@@ -44,7 +44,7 @@ class PrivateKeyDisplay extends React.Component<TProps, TState> {
 
     return (
       <section className="mb-4">
-        <Heading level={3} data-test-id="eto-dashboard-application" className="mb-3">
+        <Heading level={3} className="mb-3">
           <FormattedMessage id="components.settings.private-key-display.header" />
         </Heading>
         <p>

@@ -22,10 +22,7 @@ export const MigrationFromLinkComponent: React.FunctionComponent<IStateProps> = 
   return (
     <LayoutAuthorized>
       <Row className="row-gutter-top">
-        <DashboardSection
-          title={<FormattedMessage id="settings.account-info.title" />}
-          data-test-id="eto-dashboard-application"
-        />
+        <DashboardSection title={<FormattedMessage id="settings.account-info.title" />} />
 
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
           isUserInvestor && (

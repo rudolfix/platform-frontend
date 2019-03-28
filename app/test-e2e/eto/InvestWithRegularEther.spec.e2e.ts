@@ -3,7 +3,6 @@ import BigNumber from "bignumber.js";
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import {
   assertButtonIsActive,
-  assertDashboard,
   confirmAccessModal,
   etoFixtureAddressByName,
   goToDashboard,
@@ -24,7 +23,6 @@ describe("Invest with ethereum", () => {
       clearPendingTransactions: true,
     }).then(() => {
       goToDashboard();
-      assertDashboard();
 
       // click invest now button
       cy.get(tid(`eto-invest-now-button-${PUBLIC_ETO_ID}`)).click();

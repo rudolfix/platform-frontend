@@ -5,7 +5,8 @@ import { appRoutes } from "../../components/appRoutes";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
 import { mockApiUrl } from "../confirm";
-import { assertPortfolio, assertUserInDashboard, assertWallet } from "./assertions";
+import { assertDashboard, assertEtoDashboard } from "./assertions";
+import { goToWallet } from "./navigation";
 import { tid } from "./selectors";
 import { DEFAULT_PASSWORD } from "./userHelpers";
 
@@ -22,24 +23,6 @@ export const letterRegExPattern = /[^0-9]/gi;
 export const letterKeepDotRegExPattern = /[^0-9.]/gi;
 
 export const charRegExPattern = /[^a-z0-9]/gi;
-
-export const goToDashboard = () => {
-  cy.visit("/dashboard");
-};
-
-export const goToProfile = () => {
-  cy.visit("/profile");
-};
-
-export const goToPortfolio = () => {
-  cy.visit("/portfolio");
-  assertPortfolio();
-};
-
-export const goToWallet = () => {
-  cy.visit("/wallet");
-  assertWallet();
-};
 
 export const clearEmailServer = () => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
@@ -137,7 +120,13 @@ export const registerWithLightWallet = (
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).awaitedClick();
   cy.get(tid("wallet-selector-register-button")).should("be.disabled");
-  assertUserInDashboard(asIssuer);
+
+  if (asIssuer) {
+    assertEtoDashboard();
+  } else {
+    assertDashboard();
+  }
+
   acceptTOS();
 };
 
@@ -159,7 +148,7 @@ export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
   cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
 
-  return assertUserInDashboard();
+  assertDashboard();
 };
 
 export const acceptWallet = () => {
@@ -213,3 +202,4 @@ export const getWalletNEurAmount = () => {
 
 // Reexport assertions so they are easy accessed through utils
 export * from "./assertions";
+export * from "./navigation";

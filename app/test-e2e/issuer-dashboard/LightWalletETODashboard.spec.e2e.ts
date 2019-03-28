@@ -3,10 +3,10 @@ import {
   assertBackupSeedWidgetVisible,
   assertEmailActivationWidgetVisible,
   assertEtoDashboard,
-  goToDashboard,
   registerWithLightWalletETO,
   verifyLatestUserEmail,
 } from "../utils";
+import { goToEtoDashboard } from "../utils/navigation";
 import { DEFAULT_PASSWORD, generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Light Wallet ETO Dashboard", () => {
@@ -18,16 +18,14 @@ describe("Light Wallet ETO Dashboard", () => {
     assertEmailActivationWidgetVisible();
 
     backupLightWalletSeed();
-    goToDashboard();
+    goToEtoDashboard();
 
-    assertEtoDashboard();
     assertBackupSeedWidgetVisible(true);
     assertEmailActivationWidgetVisible();
 
     verifyLatestUserEmail();
-    goToDashboard();
+    goToEtoDashboard();
 
-    assertEtoDashboard();
     assertEmailActivationWidgetVisible(true);
     assertBackupSeedWidgetVisible(true);
   });

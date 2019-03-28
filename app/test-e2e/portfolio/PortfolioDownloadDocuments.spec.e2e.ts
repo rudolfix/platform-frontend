@@ -1,5 +1,6 @@
 import { INV_ICBM_ETH_M_HAS_KYC_DUP } from "../fixtures";
 import { etoFixtureAddressByName } from "../utils";
+import { goToPortfolio } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -13,7 +14,8 @@ describe("Download documents from portfolio", () => {
       hdPath: "m/44'/60'/0'/0",
       clearPendingTransactions: true,
     }).then(() => {
-      cy.visit("/portfolio");
+      goToPortfolio();
+
       cy.get(tid(`modals.portfolio.portfolio-assets.download-agreements-${PUBLIC_ETO_ID}`))
         .click()
         .then(() => {

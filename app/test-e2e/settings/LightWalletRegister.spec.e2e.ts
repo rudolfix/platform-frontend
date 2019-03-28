@@ -1,8 +1,8 @@
 import {
   acceptTOS,
   assertButtonIsActive,
+  assertDashboard,
   assertErrorModal,
-  assertUserInDashboard,
   assertWaitForLatestEmailSentWithSalt,
   clearEmailServer,
   convertToUniqueEmail,
@@ -40,7 +40,7 @@ describe("Light wallet login / register", () => {
 
     loginWithLightWallet(email, password);
 
-    assertUserInDashboard();
+    assertDashboard();
   });
 
   it("should recognize correctly ETO user and save metadata correctly", () => {
@@ -53,7 +53,7 @@ describe("Light wallet login / register", () => {
 
     loginWithLightWallet(email, password);
 
-    assertUserInDashboard().then(() => {
+    assertDashboard().then(() => {
       const savedMetadata = (window.localStorage as any).NF_WALLET_METADATA;
       cy.clearLocalStorage().then(() => {
         (window.localStorage as any).NF_WALLET_ISSUER_METADATA = savedMetadata;
@@ -63,7 +63,7 @@ describe("Light wallet login / register", () => {
         cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
         cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
 
-        return assertUserInDashboard().then(() => {
+        assertDashboard().then(() => {
           expect((window.localStorage as any).NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
         });
       });
@@ -77,7 +77,7 @@ describe("Light wallet login / register", () => {
     // register once and then verify email account
     cy.visit("/register");
     typeEmailPassword(email, password);
-    assertUserInDashboard();
+    assertDashboard();
     acceptTOS();
     cy.wait(5000); // wait for the tos to settle
     verifyLatestUserEmail();

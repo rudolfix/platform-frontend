@@ -1,6 +1,7 @@
 import { extractNumber } from "../../utils/StringUtils";
 import { INV_ETH_ICBM_NO_KYC, INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import { closeModal, confirmAccessModal } from "../utils";
+import { goToWallet } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -14,7 +15,9 @@ describe("Upgrade icbm wallet", () => {
       clearPendingTransactions: true,
     }).then(() => {
       let icbmBalance: number;
-      cy.visit("/wallet");
+
+      goToWallet();
+
       cy.get(tid("icbm-wallet.neur.balance-values.large-value")).should($e => {
         icbmBalance = parseFloat(extractNumber($e.text()));
         expect(icbmBalance).to.be.greaterThan(0);
@@ -44,7 +47,9 @@ describe("Upgrade icbm wallet", () => {
       clearPendingTransactions: true,
     }).then(() => {
       let icbmBalance: number;
-      cy.visit("/wallet");
+
+      goToWallet();
+
       cy.get(tid("icbm-wallet.eth.balance-values.large-value")).should($e => {
         icbmBalance = parseFloat(extractNumber($e.text()));
         expect(icbmBalance).to.be.greaterThan(0);

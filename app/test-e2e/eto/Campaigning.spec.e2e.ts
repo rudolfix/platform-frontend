@@ -6,7 +6,7 @@ import {
   assertRegister,
   confirmAccessModal,
   etoFixtureAddressByName,
-  goToDashboard,
+  goToEtoDashboard,
 } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
@@ -58,7 +58,7 @@ describe("Eto campaigning state", () => {
           is_bookbuilding: false,
         }),
       }).then(() => {
-        goToDashboard();
+        goToEtoDashboard();
 
         cy.get(tid("eto-flow-start-bookbuilding")).awaitedClick();
 

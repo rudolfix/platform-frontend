@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Redirect, Route, RouteProps } from "react-router-dom";
-import { branch, compose, renderComponent, renderNothing } from "recompose";
+import { RouteProps } from "react-router-dom";
+import { branch, compose, renderNothing } from "recompose";
 
+import { actions } from "../../../modules/actions";
 import { selectIsAuthorized } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-import { appRoutes } from "../../appRoutes";
+import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -14,12 +15,6 @@ interface IComponentProps {
   isAuthorized: boolean;
   component: any;
 }
-
-type TProps = RouteProps & IStateProps;
-
-const OnlyPublicRouteRedirectComponent: React.FunctionComponent<TProps> = props => {
-  return <Route {...props} render={() => <Redirect to={appRoutes.dashboard} />} />;
-};
 
 const OnlyPublicRouteComponent: React.FunctionComponent<IComponentProps> = ({
   component: Component,
@@ -34,9 +29,13 @@ export const OnlyPublicRoute = compose<IComponentProps, RouteProps>(
       isAuthorized: selectIsAuthorized(s.auth),
     }),
   }),
-  branch<IStateProps>(
-    state => state.isAuthorized,
-    renderComponent(OnlyPublicRouteRedirectComponent),
-  ),
+  onEnterAction({
+    //dispatch is typed as any in the source, sorry
+    actionCreator: (dispatch: any, props: IStateProps) => {
+      if (props.isAuthorized) {
+        dispatch(actions.routing.goToDashboard());
+      }
+    },
+  }),
   branch<IStateProps & RouteProps>(state => state.component === undefined, renderNothing),
 )(OnlyPublicRouteComponent);

@@ -44,7 +44,7 @@ import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "../monit
 import { UserCannotUnlockFunds } from "../transactions/unlock/errors";
 import { ETxSenderType, TAdditionalDataByType } from "../types";
 import { validateGas } from "../validator/sagas";
-import { ETransactionErrorType } from "./reducer";
+import { ETransactionErrorType, ETxSenderState } from "./reducer";
 import { selectTxAdditionalData, selectTxDetails, selectTxType } from "./selectors";
 
 export interface ITxSendParams {
@@ -81,7 +81,10 @@ function* txMonitor(_: TGlobalDependencies): Iterable<any> {
       }),
     );
 
-    yield neuCall(watchTxSubSaga, txHash);
+    // only watch for transaction status when not yet mined
+    if (pendingTransaction.transactionStatus === ETxSenderState.MINING) {
+      yield neuCall(watchTxSubSaga, txHash);
+    }
   }
 }
 

@@ -17,7 +17,7 @@ import { ETxSenderType, TSpecificTransactionState } from "../types";
 import { selectPlatformPendingTransaction } from "./selectors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "./types";
 
-const TX_MONITOR_DELAY = 60000;
+const TX_MONITOR_DELAY = 30000;
 
 export function* deletePendingTransaction({
   apiUserService,

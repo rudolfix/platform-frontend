@@ -8,7 +8,7 @@ import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 const Q18 = new BigNumber(10).pow(18);
-const NODE_ADDRESS = "https://localhost:9090/node";
+const NODE_ADDRESS = process.env.NF_RPC_PROVIDER!;
 
 const assertWithdrawButtonIsDisabled = () =>
   cy

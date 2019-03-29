@@ -4,8 +4,12 @@ import { get } from "lodash";
 import { appRoutes } from "../../components/appRoutes";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
-import { mockApiUrl } from "../confirm";
-import { assertDashboard, assertEtoDashboard } from "./assertions";
+import { mockApiUrl } from "../config";
+import {
+  assertDashboard,
+  assertEtoDashboard,
+  assertWaitForExternalPendingTransactionCount,
+} from "./assertions";
 import { goToWallet } from "./navigation";
 import { tid } from "./selectors";
 import { DEFAULT_PASSWORD } from "./userHelpers";
@@ -65,11 +69,11 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
 
 export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
-  cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
+  cy.get(tid("access-light-wallet-confirm")).click();
 };
 
 export const confirmAccessModalNoPW = () => {
-  cy.get(tid("access-light-wallet-prompt-accept-button")).awaitedClick(1500);
+  cy.get(tid("access-light-wallet-prompt-accept-button")).click();
 };
 
 export const closeModal = () => {
@@ -200,6 +204,20 @@ export const getWalletNEurAmount = () => {
     .then($element => parseAmount($element.text()));
 };
 
+export const addPendingExternalTransaction = (address: string) => {
+  cy.request({ url: mockApiUrl + "parity/additional_addresses/", method: "PUT", body: [address] });
+
+  assertWaitForExternalPendingTransactionCount(1);
+};
+
+export const removePendingExternalTransaction = () => {
+  // to clean external pending tx list send empty array
+  cy.request({ url: mockApiUrl + "parity/additional_addresses/", method: "PUT", body: [] });
+
+  assertWaitForExternalPendingTransactionCount(0);
+};
+
 // Reexport assertions so they are easy accessed through utils
 export * from "./assertions";
+export * from "./selectors";
 export * from "./navigation";

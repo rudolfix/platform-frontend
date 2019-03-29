@@ -2,8 +2,9 @@ import { get } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
 import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
-import { mockApiUrl } from "../confirm";
+import { mockApiUrl } from "../config";
 import { tid } from "./selectors";
+import { getPendingTransactions } from "./userHelpers";
 
 export const assertEtoDashboard = () => {
   cy.get(tid("eto-dashboard-application")).should("exist");
@@ -92,6 +93,23 @@ export const assertErrorModal = () => {
 
 export const assertButtonIsActive = (id: string) => {
   return cy.get(tid(id)).should("be.not.disabled");
+};
+
+export const assertWaitForExternalPendingTransactionCount = (
+  count: number,
+  timeout: number = 60000,
+) => {
+  expect(timeout, `External pending transaction not received in ${timeout} ms`).to.be.gt(0);
+
+  cy.wait(3000);
+
+  getPendingTransactions().then(response => {
+    if (response.filter(t => t.transaction_type === "mempool").length === count) {
+      return;
+    }
+
+    assertWaitForExternalPendingTransactionCount(count, timeout - 3000);
+  });
 };
 
 export const assertLockedAccessModal = () => {

@@ -168,6 +168,9 @@ export class UsersApi {
         transaction: tx.transaction,
         transaction_type: tx.transactionType,
         transaction_additional_data: tx.transactionAdditionalData,
+        transaction_timestamp: tx.transactionTimestamp,
+        transaction_status: tx.transactionStatus,
+        transaction_error: tx.transactionError,
       },
       disableManglingRequestBody: true,
     });

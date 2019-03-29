@@ -39,23 +39,3 @@ export const sendRawTransactionRpc = (nodeAddress: string, data: string) =>
 
 export const getTransactionReceipt = (nodeAddress: string, hash: string) =>
   requestFromWeb3Node(nodeAddress, "eth_getTransactionReceipt", [hash]);
-
-export const sendTransactionRpc = (
-  nodeAddress: string,
-  from: string,
-  to: string,
-  gas: string | undefined = "0x21000",
-  gasPrice: string | undefined = "0x00",
-  value: string | undefined = "0x00",
-  data: string | undefined = "0x00",
-) =>
-  requestFromWeb3Node(nodeAddress, "eth_sendTransaction  ", [
-    {
-      from,
-      to,
-      gas,
-      gasPrice,
-      value,
-      data,
-    },
-  ]);

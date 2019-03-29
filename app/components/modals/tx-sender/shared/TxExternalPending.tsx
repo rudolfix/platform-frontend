@@ -12,7 +12,7 @@ export interface IProps {
 
 export const TxExternalPending: React.FunctionComponent<IProps> = ({ txHash, blockId }) => (
   <Message
-    data-test-id="modals.shared.tx-pending.modal"
+    data-test-id="modals.shared.tx-external-pending.modal"
     image={<EthereumIcon className="mb-3" />}
     title={<FormattedMessage id="tx-sender.tx-pending-watching.title" />}
     text={<FormattedMessage id="tx-sender.tx-pending-watching.description" />}

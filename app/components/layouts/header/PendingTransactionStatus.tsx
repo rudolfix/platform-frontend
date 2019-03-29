@@ -31,6 +31,7 @@ const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternal
       return (
         <>
           <Button
+            data-test-id="pending-transactions-status.mining"
             layout={EButtonLayout.SIMPLE}
             onClick={monitorPendingTransaction}
             className="mr-3"
@@ -43,14 +44,22 @@ const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternal
 
     case ETxSenderState.DONE:
       return (
-        <Button layout={EButtonLayout.SIMPLE} onClick={monitorPendingTransaction}>
+        <Button
+          data-test-id="pending-transactions-status.success"
+          layout={EButtonLayout.SIMPLE}
+          onClick={monitorPendingTransaction}
+        >
           <ConfettiEthereum size={EEthereumIconSize.SMALL} />
         </Button>
       );
 
     case ETxSenderState.ERROR_SIGN:
       return (
-        <Button layout={EButtonLayout.SIMPLE} onClick={monitorPendingTransaction}>
+        <Button
+          data-test-id="pending-transactions-status.error"
+          layout={EButtonLayout.SIMPLE}
+          onClick={monitorPendingTransaction}
+        >
           <ActionRequired active={true} position={EActionRequiredPosition.BOTTOM}>
             <img src={failedImg} width="28px" alt="" />
           </ActionRequired>
@@ -66,7 +75,10 @@ const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternal
 
 const NoPendingTransaction: React.FunctionComponent = () => (
   <>
-    <div id="no-pending-transactions">
+    <div
+      id="no-pending-transactions"
+      data-test-id="pending-transactions-status.no-pending-transactions"
+    >
       <EthereumIcon
         size={EEthereumIconSize.SMALL}
         theme={EEthereumIconTheme.SILVER}

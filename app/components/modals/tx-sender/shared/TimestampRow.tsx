@@ -7,6 +7,7 @@ import { InfoRow } from "./InfoRow";
 const TimestampRow: React.FunctionComponent<{ timestamp: number }> = ({ timestamp }) => (
   <InfoRow
     caption={<FormattedMessage id="tx-monitor.details.timestamp" />}
+    data-test-id="timestamp-row.timestamp"
     value={
       <>
         <FormattedRelative value={timestamp} /> (

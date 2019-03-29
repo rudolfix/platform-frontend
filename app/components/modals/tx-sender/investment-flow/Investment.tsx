@@ -1,13 +1,10 @@
 import { BigNumber } from "bignumber.js";
-import * as cn from "classnames";
+import { withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
-import MaskedInput from "react-text-mask";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
-import { withProps } from "recompose";
-import { compose } from "redux";
-import { createNumberMask } from "text-mask-addons";
+import { compose, withProps } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import {
@@ -48,7 +45,9 @@ import { formatThousands } from "../../../../utils/Number.utils";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { FormFieldRaw } from "../../../shared/forms/fields/FormFieldRaw";
+import { ButtonSize, ButtonTextPosition } from "../../../shared/buttons/Button.unsafe";
+import { FormMaskedInput } from "../../../shared/forms/fields/FormMaskedInput.unsafe";
+import { generateMaskFromCurrency } from "../../../shared/forms/fields/utils.unsafe";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { ECurrency, Money } from "../../../shared/Money.unsafe";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
@@ -166,81 +165,57 @@ export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
         </Row>
         <Row>
           <Col>
-            <p>
+            <p className={styles.amountToInvest}>
               <FormattedMessage id="investment-flow.amount-to-invest" />
             </p>
           </Col>
         </Row>
         <Row>
           <Col>
-            <FormFieldRaw
+            <FormMaskedInput
               name="minTicketSizeEur"
               data-test-id="invest-modal-eur-field"
-              prefix="€"
-              errorMsg={inputErrorMessage}
+              suffix="EUR"
+              mask={generateMaskFromCurrency(ECurrency.EUR)}
               placeholder={`${intl.formatIntlMessage(
                 "investment-flow.min-ticket-size",
               )} ${minTicketEur} €`}
+              errorMsg={inputErrorMessage}
               value={formatVaryingDecimals(euroValue)}
-              className={cn("form-control", styles.investInput)}
-              renderInput={props => (
-                <MaskedInput
-                  {...props}
-                  mask={createNumberMask({
-                    prefix: "",
-                    thousandsSeparatorSymbol: " ",
-                    allowDecimal: true,
-                    decimalLimit: 2,
-                    integerLimit: 20,
-                  })}
-                  onChange={e => changeEuroValue(e.target.value)}
-                />
-              )}
+              invalid={!!inputErrorMessage}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeEuroValue(e.target.value)}
             />
           </Col>
           <Col sm="1">
             <div className={styles.equals}>≈</div>
           </Col>
-          <Col>
-            <FormFieldRaw
+          <Col className={"text-right"}>
+            <FormMaskedInput
               name="minTicketSizeEth"
               data-test-id="invest-modal-eth-field"
-              prefix="ETH"
+              suffix="ETH"
+              mask={generateMaskFromCurrency(ECurrency.ETH)}
               placeholder={`${intl.formatIntlMessage(
                 "investment-flow.min-ticket-size",
               )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
               value={formatVaryingDecimals(ethValue)}
-              className={cn("form-control", styles.investInput)}
-              renderInput={props => (
-                <MaskedInput
-                  {...props}
-                  mask={createNumberMask({
-                    prefix: "",
-                    thousandsSeparatorSymbol: " ",
-                    allowDecimal: true,
-                    decimalLimit: 4,
-                    integerLimit: 15, // integer limit due to weird behavior on large inputs
-                  })}
-                  onChange={e => changeEthValue(e.target.value)}
-                />
-              )}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeEthValue(e.target.value)}
             />
-            <a
+            <Button
               className={styles.investAll}
               data-test-id="invest-modal-full-balance-btn"
-              href="#"
-              onClick={e => {
-                e.preventDefault();
-                investEntireBalance();
-              }}
+              onClick={investEntireBalance}
+              layout={EButtonLayout.INLINE}
+              textPosition={ButtonTextPosition.RIGHT}
+              size={ButtonSize.SMALL}
             >
               <FormattedMessage id="investment-flow.invest-entire-balance" />
-            </a>
+            </Button>
           </Col>
         </Row>
       </Container>
       <section className={styles.green}>
-        <Container className={styles.container} fluid>
+        <Container className={styles.container}>
           <Row>
             <Col>
               <p className="mb-0">
@@ -327,7 +302,7 @@ export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
   );
 };
 
-export const InvestmentSelection: React.FunctionComponent = compose<any>(
+export const InvestmentSelection = compose<IProps, {}>(
   injectIntlHelpers,
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
@@ -381,4 +356,9 @@ export const InvestmentSelection: React.FunctionComponent = compose<any>(
       };
     },
   ),
+  // TODO: Formik is used only to be able to use masked inputs
+  // Requires refactoring to fully use Formik
+  withFormik({
+    handleSubmit: () => null,
+  }),
 )(InvestmentSelectionComponent);

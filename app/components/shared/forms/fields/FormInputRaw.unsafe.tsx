@@ -92,7 +92,12 @@ const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
         </InputGroupAddon>
       )}
     </InputGroup>
-    <FormFieldError name={name} defaultMessage={errorMsg} ignoreTouched={ignoreTouched} />
+    <FormFieldError
+      invalid={invalid}
+      name={name}
+      defaultMessage={errorMsg}
+      ignoreTouched={ignoreTouched}
+    />
     {charactersLimit && <div>{withCountedCharacters(value, charactersLimit)}</div>}
   </>
 );

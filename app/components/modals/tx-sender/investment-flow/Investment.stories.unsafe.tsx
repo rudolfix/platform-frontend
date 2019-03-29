@@ -8,7 +8,7 @@ import {
 } from "../../../../modules/investment-flow/reducer";
 import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
-import { InvestmentSelectionComponent } from "./Investment.unsafe";
+import { InvestmentSelectionComponent } from "./Investment";
 import { wallets } from "./InvestmentTypeSelector.stories";
 
 const Investment = injectIntlHelpers(InvestmentSelectionComponent);

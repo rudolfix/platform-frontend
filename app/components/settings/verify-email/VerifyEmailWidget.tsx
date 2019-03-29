@@ -18,10 +18,10 @@ import { selectIsConnectedButtonLocked } from "../../../modules/verify-email-wid
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
 import { Button, EButtonLayout } from "../../shared/buttons";
+import { ButtonArrowRight } from "../../shared/buttons/Button.unsafe";
 import { Form, FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 
-import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/success.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./VerifyEmailWidget.module.scss";
@@ -43,6 +43,7 @@ interface IEnhancedFormProps {
   isLocked?: boolean;
   revertCancelEmail: () => void;
   isThereUnverifiedEmail?: boolean;
+  verifiedEmail?: string;
 }
 
 interface IDispatchProps {
@@ -61,6 +62,7 @@ interface INoEMailUser {
   isLocked?: boolean;
   isThereUnverifiedEmail?: boolean;
   revertCancelEmail: () => void;
+  verifiedEmail?: string;
 }
 
 /**
@@ -82,7 +84,7 @@ const SetEmailForm = injectIntlHelpers<IEnhancedFormProps & FormikProps<IFormVal
         data-test-id="verify-email-widget-form-email-input"
       />
       <div className={cn("d-flex justify-content-end text-center flex-wrap")}>
-        {props.isThereUnverifiedEmail && (
+        {(props.verifiedEmail || props.isThereUnverifiedEmail) && (
           <Button
             data-test-id="verify-email-widget-form-cancel"
             layout={EButtonLayout.SECONDARY}
@@ -120,12 +122,14 @@ const NoEmailUser: React.FunctionComponent<INoEMailUser> = ({
   isLocked,
   revertCancelEmail,
   isThereUnverifiedEmail,
+  verifiedEmail,
 }) => (
   <div data-test-id="profile.verify-email-widget.no-email-state" className={styles.noEmailUser}>
     <p>
       <FormattedMessage id="settings.verify-email-widget.enter-email" />
     </p>
     <SetEmailEnhancedForm
+      verifiedEmail={verifiedEmail}
       handleSubmit={addNewEmail}
       isLocked={isLocked}
       revertCancelEmail={revertCancelEmail}
@@ -134,7 +138,10 @@ const NoEmailUser: React.FunctionComponent<INoEMailUser> = ({
   </div>
 );
 
-const VerifiedUser: React.FunctionComponent<{ verifiedEmail?: string }> = ({ verifiedEmail }) => (
+const VerifiedUser: React.FunctionComponent<{
+  verifiedEmail?: string;
+  cancelEmail: () => void;
+}> = ({ verifiedEmail, cancelEmail }) => (
   <section
     className={styles.section}
     data-test-id="profile.verify-email-widget.verified-email-state"
@@ -142,14 +149,20 @@ const VerifiedUser: React.FunctionComponent<{ verifiedEmail?: string }> = ({ ver
     <p className={cn(styles.text, "pt-2")}>
       <FormattedMessage id="settings.verify-email-widget.email-is-verified" />
     </p>
-    <Col xs={12} className="d-flex justify-content-center p-2" data-test-id="email-verified">
-      <p className="m-0">
-        <strong>
-          <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
-        </strong>
-        <span data-test-id="profile.verify-email-widget.verified-email">{verifiedEmail}</span>
-      </p>
-    </Col>
+    <p className={styles.emailVerified} data-test-id="email-verified">
+      <strong>
+        <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
+      </strong>
+      <span data-test-id="profile.verify-email-widget.verified-email">{verifiedEmail}</span>
+    </p>
+
+    <ButtonArrowRight
+      className={styles.button}
+      data-test-id="verify-email-widget.change-email.button"
+      onClick={cancelEmail}
+    >
+      <FormattedMessage id="settings.verify-email-widget.change-email" />
+    </ButtonArrowRight>
   </section>
 );
 
@@ -168,38 +181,36 @@ const UnVerifiedUser: React.FunctionComponent<{
         <strong>
           <FormattedMessage id="settings.verify-email-widget.verified-email" />:{" "}
         </strong>
-        {verifiedEmail}
+        <span data-test-id="profile.verify-email-widget.verified-email">{verifiedEmail}</span>
       </p>
     )}
     {unverifiedEmail && (
       <p className={cn(styles.text, "pt-2")}>
         <FormattedMessage id="settings.verify-email-widget.unverified-email" />:{" "}
-        <strong>{unverifiedEmail}</strong>
+        <strong data-test-id="profile.verify-email-widget.unverified-email">
+          {unverifiedEmail}
+        </strong>
       </p>
     )}
 
     <Row className="justify-content-between">
       <Col className="pr-0">
-        <Button
+        <ButtonArrowRight
           layout={EButtonLayout.SECONDARY}
-          iconPosition="icon-after"
-          svgIcon={arrowRight}
           onClick={cancelEmail}
           data-test-id="verify-email-widget.change-email.button"
         >
           <FormattedMessage id="settings.verify-email-widget.change-email" />
-        </Button>
+        </ButtonArrowRight>
       </Col>
       <Col className="text-right pl-0">
-        <Button
+        <ButtonArrowRight
           layout={EButtonLayout.SECONDARY}
-          iconPosition="icon-after"
-          svgIcon={arrowRight}
           onClick={resendEmail}
           data-test-id="resend-link"
         >
           <FormattedMessage id="settings.verify-email-widget.resend-link" />
-        </Button>
+        </ButtonArrowRight>
       </Col>
     </Row>
   </section>
@@ -249,7 +260,9 @@ export const VerifyEmailWidgetComponent: React.FunctionComponent<
         />
       )}
       {shouldViewNoEmail && (
-        <NoEmailUser {...{ addNewEmail, isLocked, revertCancelEmail, isThereUnverifiedEmail }} />
+        <NoEmailUser
+          {...{ addNewEmail, verifiedEmail, isLocked, revertCancelEmail, isThereUnverifiedEmail }}
+        />
       )}
     </Panel>
   );

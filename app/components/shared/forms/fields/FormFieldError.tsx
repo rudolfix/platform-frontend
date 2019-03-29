@@ -19,6 +19,7 @@ export interface IProps {
   ignoreTouched?: boolean;
   className?: string;
   alignLeft?: boolean;
+  invalid?: boolean;
 }
 
 const generateErrorId = (name: string) => `${name}-error-message`;
@@ -45,11 +46,12 @@ const FormFieldError: React.FunctionComponent<IProps> = ({
   ignoreTouched,
   className,
   alignLeft,
+  invalid,
 }) => (
   <FormikConsumer>
     {({ touched, errors, submitCount }) => {
       return (
-        isNonValid(touched, errors, name, submitCount, ignoreTouched) && (
+        (isNonValid(touched, errors, name, submitCount, ignoreTouched) || invalid) && (
           <FormError
             name={name}
             message={getIn(errors, name) || defaultMessage}

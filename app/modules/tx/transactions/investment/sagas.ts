@@ -30,6 +30,7 @@ import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import { ETxSenderType } from "../../types";
 import { calculateGasLimitWithOverhead } from "../../utils";
+import { selectMaximumInvestment } from "./selectors";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
 
@@ -52,8 +53,10 @@ const getEtherLockTransaction = (
   contractsService: ContractsService,
   etoId: string,
 ) => {
+  const investAmountUlps = selectMaximumInvestment(state);
+
   const txData = contractsService.etherLock
-    .transferTx(etoId, new BigNumber(state.investmentFlow.ethValueUlps || "0"), [""])
+    .transferTx(etoId, new BigNumber(investAmountUlps), [""])
     .getData();
   return createInvestmentTxData(state, txData, contractsService.etherLock.address);
 };
@@ -63,8 +66,10 @@ const getEuroLockTransaction = (
   contractsService: ContractsService,
   etoId: string,
 ) => {
+  const investAmountUlps = selectMaximumInvestment(state);
+
   const txData = contractsService.euroLock
-    .transferTx(etoId, new BigNumber(state.investmentFlow.euroValueUlps || "0"), [""])
+    .transferTx(etoId, new BigNumber(investAmountUlps), [""])
     .getData();
   return createInvestmentTxData(state, txData, contractsService.euroLock.address);
 };
@@ -74,14 +79,14 @@ const getEuroTokenTransaction = (
   contractsService: ContractsService,
   etoId: string,
 ) => {
-  const euroValueUlps = state.investmentFlow.euroValueUlps || "0";
+  const investAmountUlps = selectMaximumInvestment(state);
 
   // Call IERC223 compliant transfer function
   // otherwise ETOCommitment is not aware of any investment
   // TODO: Fix when TypeChain support overloads
   const txData = contractsService.euroToken.rawWeb3Contract.transfer[
     "address,uint256,bytes"
-  ].getData(etoId, euroValueUlps, "");
+  ].getData(etoId, investAmountUlps, "");
 
   return createInvestmentTxData(state, txData, contractsService.euroToken.address);
 };
@@ -92,13 +97,15 @@ function getEtherTokenTransaction(
   etoId: string,
 ): ITxData {
   const etherTokenBalance = selectEtherTokenBalance(state);
-  const etherValue = state.investmentFlow.ethValueUlps || "0";
+  const investAmount = state.investmentFlow.ethValueUlps || "0";
+
+  const investAmountUlps = selectMaximumInvestment(state);
 
   if (!etherTokenBalance) {
     throw new Error("No ether Token Balance");
   }
 
-  if (compareBigNumbers(etherTokenBalance, etherValue) >= 0) {
+  if (compareBigNumbers(etherTokenBalance, investAmountUlps) >= 0) {
     // transaction can be fully covered by etherTokens
 
     // Call IERC223 compliant transfer function
@@ -106,11 +113,11 @@ function getEtherTokenTransaction(
     // TODO: Fix when TypeChain support overloads
     const txInput = contractsService.etherToken.rawWeb3Contract.transfer[
       "address,uint256,bytes"
-    ].getData(etoId, etherValue, "");
+    ].getData(etoId, investAmountUlps, "");
     return createInvestmentTxData(state, txInput, contractsService.etherToken.address);
   } else {
     // fill up etherToken with ether from wallet
-    const ethVal = new BigNumber(etherValue);
+    const ethVal = new BigNumber(investAmount);
     const value = ethVal.sub(etherTokenBalance);
     const txCall = contractsService.etherToken.depositAndTransferTx(etoId, ethVal, [""]).getData();
 

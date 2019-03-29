@@ -9,6 +9,7 @@ import { isNonValid } from "./utils.unsafe";
 export interface IMaskedFormInputExternalProps extends IFormInputRawExternalProps {
   mask: maskArray;
   guided?: boolean;
+  onChange?: () => void;
 }
 
 export type FormInputProps = IMaskedFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
@@ -39,6 +40,8 @@ export class FormMaskedInput extends React.Component<FormInputProps> {
       unmask,
       guided,
       maxLength,
+      onChange,
+      value,
       ...mainProps
     } = this.props;
     return (
@@ -51,7 +54,7 @@ export class FormMaskedInput extends React.Component<FormInputProps> {
               name={name}
               validate={customValidation}
               render={({ field }: FieldProps) => {
-                const val = conformToMask(field.value, mask, {}).conformedValue;
+                const val = conformToMask(String(value) || field.value, mask, {}).conformedValue;
 
                 return (
                   <MaskedInput
@@ -59,6 +62,9 @@ export class FormMaskedInput extends React.Component<FormInputProps> {
                     placeholder={placeholder}
                     name={name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      if (onChange) {
+                        onChange(e);
+                      }
                       setFieldTouched(name);
                       setFieldValue(name, unmask ? unmask(e.target.value) : e.target.value);
                     }}

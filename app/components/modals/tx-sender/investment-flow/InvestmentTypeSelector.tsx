@@ -4,6 +4,7 @@ import { Col, FormGroup } from "reactstrap";
 
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { getCurrencyByInvestmentType } from "../../../../modules/investment-flow/utils";
+import { ERoundingMode } from "../../../../utils/Money.utils";
 import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
 import { ECurrency, Money } from "../../../shared/Money.unsafe";
 
@@ -44,9 +45,18 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
     case EInvestmentType.Eth:
       return (
         <>
-          <Money currency={ECurrency.ETH} value={wallet.balanceEth} />
+          <Money
+            currency={ECurrency.ETH}
+            value={wallet.balanceEth}
+            roundingMode={ERoundingMode.DOWN}
+          />
           <div className={styles.balanceEur}>
-            = <Money currency={ECurrency.EUR} value={wallet.balanceEur} />
+            ={" "}
+            <Money
+              currency={ECurrency.EUR}
+              value={wallet.balanceEur}
+              roundingMode={ERoundingMode.DOWN}
+            />
           </div>
         </>
       );
@@ -55,9 +65,18 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
     case EInvestmentType.ICBMnEuro:
       return (
         <>
-          <Money currency={ECurrency.EUR_TOKEN} value={wallet.balanceNEuro} />
+          <Money
+            currency={ECurrency.EUR_TOKEN}
+            value={wallet.balanceNEuro}
+            roundingMode={ERoundingMode.DOWN}
+          />
           <div className={styles.balanceEur}>
-            = <Money currency={ECurrency.EUR} value={wallet.balanceEur} />
+            ={" "}
+            <Money
+              currency={ECurrency.EUR}
+              value={wallet.balanceEur}
+              roundingMode={ERoundingMode.DOWN}
+            />
           </div>
         </>
       );

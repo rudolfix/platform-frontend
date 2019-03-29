@@ -11,16 +11,9 @@
 }
 
 .invest-all {
-  display: block;
   margin-top: .25rem;
   text-align: right;
-  font-size: .85em;
-  font-weight: normal;
   color: $neu-blue;
-
-  &:visited {
-    color: $neu-blue;
-  }
 }
 
 .icon {
@@ -35,8 +28,10 @@
 }
 
 .green {
-  padding: 1px 0 .5em;
+  padding: 1px px-to-rem(25px) .5em;
   background-color: $neu-seaweed-bg;
+  margin-left: px-to-rem(-25px);
+  margin-right: px-to-rem(-25px);
 
   :global(.alert),
   :global(.form-group) {
@@ -50,4 +45,10 @@
 
 .summary {
   text-align: center;
+}
+
+.amount-to-invest {
+  @include font-headline-small;
+
+  margin-top: px-to-rem(40px);
 }

@@ -14,7 +14,7 @@ import { Modal } from "../Modal";
 import { AccessWalletContainer } from "../wallet-access/AccessWalletModal";
 import { SetEtoDateSummary } from "./eto-flow/SetDateSummary.unsafe";
 import { SignInvestmentAgreementSummary } from "./eto-flow/SignInvestmentAgreementSummary";
-import { InvestmentSelection } from "./investment-flow/Investment.unsafe";
+import { InvestmentSelection } from "./investment-flow/Investment";
 import { InvestmentSuccess } from "./investment-flow/Success";
 import { InvestmentSummary } from "./investment-flow/Summary.unsafe";
 import { InvestorAcceptPayoutSuccess } from "./investor-payout/AcceptSuccess";

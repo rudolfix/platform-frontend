@@ -30,7 +30,8 @@ export function ethereumNetworkIdToNetworkName(networkId: EthereumNetworkId): st
   }
 }
 
-export const validateAddress = (value: string) => value && isAddress(value.toUpperCase());
+export const validateAddress = (value: string): boolean =>
+  !!value && isAddress(value.toUpperCase());
 
 export const doesUserHaveEnoughEther = (
   value: TBigNumberVariant,

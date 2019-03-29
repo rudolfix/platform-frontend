@@ -9,15 +9,13 @@ import {
   typeLightwalletRecoveryPhrase,
 } from "../utils";
 import { cyPromise } from "../utils/cyPromise";
-import { generateSeedAndAddress } from "../utils/generateSeedAndAddress";
+import { generateRandomSeedAndAddress } from "../utils/generateRandomSeedAndAddress";
 import { tid } from "../utils/selectors";
 
 describe("Wallet recover", () => {
   it("should recover wallet from saved phrases", () => {
-    cyPromise()
-      .then(async () => await generateSeedAndAddress("m/44'/60'/0'"))
-      .then(({ seed: words, address }) => {
-        const expectedGeneratedAddress = address;
+    cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(
+      ({ seed: words, address: expectedGeneratedAddress }) => {
         const email = "john-smith@example.com";
         clearEmailServer();
 
@@ -47,7 +45,8 @@ describe("Wallet recover", () => {
         cy.get(tid("account-address.your.ether-address.from-div")).then(value => {
           expect(value[0].innerText.toLowerCase()).to.equal(expectedGeneratedAddress);
         });
-      });
+      },
+    );
   });
 
   it("should return an error when recovering seed and using an already verified email", () => {

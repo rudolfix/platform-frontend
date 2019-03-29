@@ -10,10 +10,10 @@ import { selectIsMessageSigning } from "../../../../modules/wallet-selector/sele
 import { appConnect } from "../../../../store";
 import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
 import { ExternalLink } from "../../../shared/links/ExternalLink";
-import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet";
+import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet.unsafe";
 import { WalletMessageSigner } from "../../WalletMessageSigner";
 import { recoverRoutes } from "../router/recoverRoutes";
-import { WalletLightSeedRecoveryComponent } from "./SeedRecovery";
+import { WalletLightSeedRecoveryComponent } from "./SeedRecovery.unsafe";
 
 interface IRecoveryFormValues {
   email: string;
@@ -82,7 +82,7 @@ class RecoveryProcessesComponent extends React.Component<IMainRecoveryProps, IMa
               <i className="fa fa-lg fa-angle-left mr-1" />
               <FormattedMessage id="wallet-selector.recover.help.back" />
             </Link>
-            <ExternalLink href={`${externalRoutes.neufundSupport}/home`}>
+            <ExternalLink href={externalRoutes.neufundSupportHome}>
               <FormattedMessage id="wallet-selector.recover.help.contact-for-help" />{" "}
               <i className="fa fa-lg fa-angle-right ml-1" />
             </ExternalLink>

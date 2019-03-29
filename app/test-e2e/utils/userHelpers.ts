@@ -4,12 +4,13 @@ import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { toChecksumAddress } from "web3-utils";
 
 import { tid } from "../../../test/testUtils";
+import { TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
 
 /*
-Pre-login user for faster tests
-*/
+ * Pre-login user for faster tests
+ */
 const VAULT_API_ROOT = "/api/wallet";
 export const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
 const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
@@ -28,6 +29,7 @@ export const createAndLoginNewUser = (params: {
   hdPath?: string;
   clearPendingTransactions?: boolean;
   onlyLogin?: boolean;
+  signTosAgreement?: boolean;
   permissions?: string[];
 }) => {
   return cy.clearLocalStorage().then(async ls => {
@@ -64,10 +66,11 @@ export const createAndLoginNewUser = (params: {
       // mark backup codes verified
       await markBackupCodesVerified(jwt);
       // set correct agreement
-      await setCorrectAgreement(jwt);
 
       if (params.clearPendingTransactions) {
-        await clearPendingTransactions(jwt, address);
+        // TODO: This should not pass user address but rather pending transaction hash
+        // I hope we can
+        // clearPendingTransactions(address);
       }
 
       cy.log(
@@ -76,6 +79,11 @@ export const createAndLoginNewUser = (params: {
           params.seed
         }`,
       );
+    }
+
+    if (params.signTosAgreement || !params.onlyLogin) {
+      // This was done to maintain introduce `signTosAgreement` without changing the interface of existing tests
+      await setCorrectAgreement(jwt);
     }
   });
 };
@@ -232,17 +240,55 @@ export const setCorrectAgreement = async (jwt: string) => {
   });
 };
 
-const PENDING_TRANSACTIONS_PATH = "/api/user/pending_transactions/me/";
-export const clearPendingTransactions = async (jwt: string, address: string) => {
-  const headers = {
-    "Content-Type": "application/json",
-    authorization: `Bearer ${jwt}`,
-  };
-  await fetch(PENDING_TRANSACTIONS_PATH + address, {
-    headers,
-    method: "DELETE",
-  });
-};
+const PENDING_TRANSACTIONS_PATH = "/api/user/pending_transactions/me";
+
+export const addPendingTransactions = (
+  tx: TxPendingWithMetadata,
+): Cypress.Chainable<ReadonlyArray<{ transaction_type: string }>> =>
+  cy
+    .request({
+      url: PENDING_TRANSACTIONS_PATH,
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+      },
+      body: {
+        transaction: tx.transaction,
+        transaction_type: tx.transactionType,
+        transaction_additional_data: tx.transactionAdditionalData,
+        transaction_timestamp: tx.transactionTimestamp,
+        transaction_status: tx.transactionStatus,
+        transaction_error: tx.transactionError,
+      },
+    })
+    .then(response => response.body);
+
+export const clearPendingTransactions = (address: string) =>
+  cy
+    .request({
+      url: PENDING_TRANSACTIONS_PATH + "/" + address,
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+      },
+    })
+    .then(response => response.body);
+
+export const getPendingTransactions = (): Cypress.Chainable<
+  ReadonlyArray<{ transaction_type: string }>
+> =>
+  cy
+    .request({
+      url: PENDING_TRANSACTIONS_PATH,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+      },
+    })
+    .then(response => response.body);
 
 export const makeAuthenticatedCall = async (path: string, config: RequestInit) =>
   await fetch(path, {
@@ -250,7 +296,7 @@ export const makeAuthenticatedCall = async (path: string, config: RequestInit) =
     headers: {
       ...config.headers,
       "Content-Type": "application/json",
-      authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY) as string)}`,
+      authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
     },
   });
 

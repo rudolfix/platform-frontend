@@ -14,11 +14,11 @@ import {
 } from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction";
-import { withMetaTags } from "../../utils/withMetaTags";
+import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
 import { Heading } from "../shared/Heading";
 import { ChangeEmail } from "./change-email/ChangeEmail";
@@ -52,17 +52,11 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
 
   return (
     <LayoutAuthorized>
-      <Row className="row-gutter-top">
-        <DashboardSection
-          title={<FormattedMessage id="settings.security-settings.title" />}
-          data-test-id="eto-dashboard-application"
-        />
+      <Row className="row-gutter-top" data-test-id="eto-profile">
+        <DashboardSection title={<FormattedMessage id="settings.security-settings.title" />} />
         <SettingsWidgets isDynamic={false} isLightWallet={isLightWallet} />
 
-        <DashboardSection
-          title={<FormattedMessage id="settings.account-info.title" />}
-          data-test-id="eto-dashboard-application"
-        />
+        <DashboardSection title={<FormattedMessage id="settings.account-info.title" />} />
 
         <Col lg={4} xs={12}>
           <YourEthereumAddressWidget />

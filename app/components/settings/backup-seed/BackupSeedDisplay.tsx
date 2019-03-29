@@ -28,7 +28,7 @@ const BackupSeedDisplay: React.FunctionComponent<IBackupSeedDisplayProps> = ({
       <Row>
         <Col xs={{ size: 10, offset: 1 }}>
           <section className="mb-4">
-            <Heading level={3} data-test-id="eto-dashboard-application" className="mb-3">
+            <Heading level={3} className="mb-3">
               <FormattedMessage id="components.settings.backup-seed-display.backup-seed" />
             </Heading>
             <Row className="justify-content-around no-gutters">

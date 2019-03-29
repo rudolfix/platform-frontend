@@ -21,8 +21,8 @@ import {
   selectWidgetLoading,
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { onLeaveAction } from "../../../utils/OnLeaveAction";
+import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
+import { onLeaveAction } from "../../../utils/OnLeaveAction.unsafe";
 import { Button, ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
@@ -63,7 +63,7 @@ const statusTextMap: Record<ERequestStatus, React.ReactNode> = {
     <FormattedHTMLMessage
       tagName="span"
       id="settings.kyc-status-widget.status.rejected"
-      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+      values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
   Ignored: <FormattedMessage id="settings.kyc-status-widget.status.ignored" />,
@@ -71,14 +71,14 @@ const statusTextMap: Record<ERequestStatus, React.ReactNode> = {
     <FormattedHTMLMessage
       tagName="span"
       id="settings.kyc-status-widget.status.pending"
-      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+      values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
   Draft: (
     <FormattedHTMLMessage
       tagName="span"
       id="settings.kyc-status-widget.status.draft"
-      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+      values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
   Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.started" />,
@@ -92,7 +92,7 @@ const outsourcedStatusTextMap: Record<ERequestOutsourcedStatus, React.ReactNode>
     <FormattedHTMLMessage
       id="settings.kyc-status-widget.status.outsourced.abortedOrCancelled"
       tagName="span"
-      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+      values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
   canceled: (
@@ -105,7 +105,7 @@ const outsourcedStatusTextMap: Record<ERequestOutsourcedStatus, React.ReactNode>
     <FormattedHTMLMessage
       tagName="span"
       id="settings.kyc-status-widget.status.outsourced.other-info"
-      values={{ url: `${externalRoutes.neufundSupport}/home` }}
+      values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
   started: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.started" />,

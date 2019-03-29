@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import web3Accounts from "web3-eth-accounts";
+import Web3Accounts from "web3-eth-accounts";
 
 import { appRoutes } from "../../components/appRoutes";
 import { Q18 } from "../../config/constants";
@@ -16,10 +16,11 @@ import {
   getTransactionReceipt,
   sendRawTransactionRpc,
 } from "../utils/ethRpcUtils";
+import { goToProfile } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
-const NODE_ADDRESS = "https://localhost:9090/node";
+const NODE_ADDRESS = process.env.NF_RPC_PROVIDER!;
 
 //this constant is hard coded!
 const FIXTURE_DIV_CONSTANT = 100000000000000;
@@ -43,8 +44,9 @@ describe("Wallet Migration Flow", () => {
       kyc: "individual",
     }).then(() => {
       const privKeyHex = "0x79177f5833b64c8fdcc9862f5a779b8ff0e1853bf6e9e4748898d4b6de7e8c93";
-      const account = new web3Accounts().privateKeyToAccount(privKeyHex);
-      cy.visit("/profile");
+      const account = new Web3Accounts().privateKeyToAccount(privKeyHex);
+
+      goToProfile();
       cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget.address")).type(
         ADDRESS + "{enter}",
       );

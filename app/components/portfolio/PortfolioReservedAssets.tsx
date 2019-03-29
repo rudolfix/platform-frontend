@@ -13,7 +13,7 @@ import { appRoutes } from "../appRoutes";
 import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";
 import { Heading } from "../shared/Heading";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money";
+import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money.unsafe";
 import { NumberFormat } from "../shared/NumberFormat";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 import { PortfolioAssetAction } from "./PortfolioAssetAction";

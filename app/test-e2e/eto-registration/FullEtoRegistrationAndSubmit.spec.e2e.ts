@@ -1,5 +1,6 @@
 import { assertEtoDashboard } from "../utils";
 import { fillForm, TFormFixture } from "../utils/forms";
+import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
@@ -11,7 +12,6 @@ import {
   legalInfoForm,
   mediaForm,
   productVisionForm,
-  riskForm,
   votingRights,
 } from "./fixtures";
 
@@ -25,8 +25,7 @@ const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
 describe("Eto Forms", () => {
   it("will fill and submit them all", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
-      cy.visit("/dashboard");
-      assertEtoDashboard();
+      goToEtoDashboard();
 
       fillAndAssert("eto-progress-widget-about", aboutForm);
 
@@ -55,7 +54,8 @@ describe("Eto Forms", () => {
 
       fillAndAssert("eto-progress-widget-media", mediaForm);
 
-      fillAndAssert("eto-progress-widget-risk-assessment", riskForm);
+      // hidden for now as requested in #2633
+      // fillAndAssert("eto-progress-widget-risk-assessment", riskForm);
 
       fillAndAssert("eto-progress-widget-equity-token-info", equityTokenInfoForm);
 

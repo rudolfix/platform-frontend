@@ -7,7 +7,7 @@ import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction";
+import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { CheckYourICBMWalletWidget } from "../settings/icbm-wallet-widget/CheckYourICBMWalletWidget";
@@ -22,10 +22,7 @@ export const MigrationFromLinkComponent: React.FunctionComponent<IStateProps> = 
   return (
     <LayoutAuthorized>
       <Row className="row-gutter-top">
-        <DashboardSection
-          title={<FormattedMessage id="settings.account-info.title" />}
-          data-test-id="eto-dashboard-application"
-        />
+        <DashboardSection title={<FormattedMessage id="settings.account-info.title" />} />
 
         {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
           isUserInvestor && (

@@ -1,6 +1,6 @@
 import { get } from "lodash";
 
-import { mockApiUrl } from "../confirm";
+import { mockApiUrl } from "../config";
 import { tid } from "../utils/selectors";
 
 export const assertWaitForBankTransferSummary = (reference: string, timeout: number = 10000) => {

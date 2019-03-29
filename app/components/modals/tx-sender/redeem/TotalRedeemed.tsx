@@ -9,7 +9,7 @@ import {
   EMoneyFormat,
   getFormattedMoney,
   Money,
-} from "../../../shared/Money";
+} from "../../../shared/Money.unsafe";
 
 const TotalRedeemed: React.FunctionComponent<{ amount: string; bankFee: string }> = ({
   amount,

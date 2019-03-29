@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces";
+import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { selectEtoWithCompanyAndContract } from "../../../modules/public-etos/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
@@ -15,14 +15,14 @@ export enum EProjectStatusSize {
   SMALL = "small",
 }
 
-export enum EProjecStatusLayout {
+export enum EProjectStatusLayout {
   NORMAL = "normal",
   BLACK = "black",
 }
 
 interface IExternalProps {
   size?: EProjectStatusSize;
-  layout?: EProjecStatusLayout;
+  layout?: EProjectStatusLayout;
   previewCode: string;
 }
 
@@ -61,7 +61,7 @@ const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain, string>> = 
 const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
   eto,
   size = EProjectStatusSize.MEDIUM,
-  layout = EProjecStatusLayout.NORMAL,
+  layout = EProjectStatusLayout.NORMAL,
 }) => {
   const status = eto.contract ? eto.contract.timedState : eto.state;
 

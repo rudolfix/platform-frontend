@@ -8,7 +8,7 @@ import {
   EMoneyFormat,
   getFormattedMoney,
   Money,
-} from "../../../shared/Money";
+} from "../../../shared/Money.unsafe";
 
 const CalculatedFee: React.FunctionComponent<{ amount: string; bankFee: string }> = ({
   amount,

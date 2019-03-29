@@ -37,6 +37,7 @@ import { web3Sagas } from "./web3/sagas";
  */
 function* allSagas(): Iterator<effects.Effect> {
   yield effects.all([
+    // Sagas that should keep running even after logout
     effects.fork(initSagas),
     effects.fork(authSagas),
     effects.fork(walletSelectorSagas),
@@ -44,6 +45,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(browserWalletSagas),
     effects.fork(ledgerSagas),
     effects.fork(routingSagas),
+    effects.fork(tokenPriceSagas),
     // Sagas that should be restarted immediately when logout occurs
     effects.fork(neuRestartIf, "AUTH_LOGOUT", termsOfServiceSagas),
     effects.fork(neuRestartIf, "AUTH_LOGOUT", bankTransferFlowSaga),
@@ -64,7 +66,6 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(neuRestartIf, "AUTH_LOGOUT", gasApiSagas),
     effects.fork(neuRestartIf, "AUTH_LOGOUT", etoDocumentsSagas),
     effects.fork(neuRestartIf, "AUTH_LOGOUT", txMonitorSagas),
-    effects.fork(neuRestartIf, "AUTH_LOGOUT", tokenPriceSagas),
     effects.fork(neuRestartIf, "AUTH_LOGOUT", investmentFlowSagas),
   ]);
 }

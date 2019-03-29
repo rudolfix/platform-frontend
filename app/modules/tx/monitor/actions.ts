@@ -1,6 +1,7 @@
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
-import { createAction } from "../../actionsUtils";
+import { createAction, createActionFactory } from "../../actionsUtils";
 
 export const txMonitorActions = {
-  setPendingTxs: (txs: TPendingTxs) => createAction("TX_MONITOR_LOAD_TXS", { txs }),
+  monitorPendingPlatformTx: createActionFactory("TX_MONITOR_PENDING_PLATFORM_TX"),
+  setPendingTxs: (txs: Partial<TPendingTxs>) => createAction("TX_MONITOR_LOAD_TXS", { txs }),
 };

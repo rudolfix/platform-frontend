@@ -13,9 +13,9 @@ import {
   selectUploadedInvestmentAgreement,
 } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../../utils/OnEnterAction.unsafe";
 import { investmentAgreementNotSigned } from "../../../documents/utils";
-import { ButtonArrowRight } from "../../../shared/buttons/Button";
+import { ButtonArrowRight } from "../../../shared/buttons/Button.unsafe";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { Panel } from "../../../shared/Panel";

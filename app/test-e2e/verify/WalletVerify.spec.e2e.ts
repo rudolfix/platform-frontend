@@ -1,5 +1,5 @@
 import {
-  assertUserInDashboard,
+  assertDashboard,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
   clearEmailServer,
   getLatestVerifyUserEmailLink,
@@ -21,8 +21,11 @@ describe("Verify Wallet", () => {
       kyc: "business",
     }).then(() => {
       goToDashboard();
+
       logoutViaTopRightButton();
-      goToDashboard();
+
+      goToDashboard(false);
+
       cy.get(tid("light-wallet-login-with-email-email-field")).then(registerEmailNode => {
         const registerEmail = registerEmailNode.text();
         cy.log("Email used for registering:", registerEmail);
@@ -43,7 +46,7 @@ describe("Verify Wallet", () => {
     clearEmailServer();
 
     registerWithLightWallet(email, password);
-    assertUserInDashboard();
+    assertDashboard();
 
     getLatestVerifyUserEmailLink().then(activationLink => {
       logoutViaTopRightButton();
@@ -51,9 +54,8 @@ describe("Verify Wallet", () => {
       // register another user
       const newEmail = generateRandomEmailAddress();
       registerWithLightWallet(newEmail, password);
-      assertUserInDashboard();
 
-      assertUserInDashboard();
+      assertDashboard();
 
       // try to activate previous user when second one is logged in
       cy.visit(activationLink);

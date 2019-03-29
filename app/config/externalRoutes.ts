@@ -1,5 +1,8 @@
+const neufundSupport = "https://support.neufund.org/support";
+
 export const externalRoutes = {
-  neufundSupport: "https://support.neufund.org/support",
+  neufundSupport,
+  neufundSupportHome: `${neufundSupport}/home`,
   commitmentStatus: "https://commit.neufund.org/commit/status?address=:walletAddress",
   issueEto: "https://neufund.org/issue",
   icoMonitorEto: "https://icomonitor.io/#/:etoId",

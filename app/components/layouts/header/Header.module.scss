@@ -1,0 +1,62 @@
+.logo {
+  flex-shrink: 0;
+}
+
+.logo-image {
+  @include media-breakpoint-up (lg) {
+    margin-left: px-to-rem(32px);
+  }
+
+  height: px-to-rem(43px);
+  width: px-to-rem(36px);
+}
+
+.logo-text {
+  @include media-breakpoint-down (md) {
+    height: 15px;
+    left: .75rem;
+  }
+
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
+
+  height: 22px;
+  position: relative;
+  left: 1rem;
+}
+
+.bar {
+  height: px-to-rem(60px);
+  background-color: $neu-charcoal-grey;
+  z-index: $z-index-over-content;
+  padding-left: .75rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+
+  > button {
+    margin-left: px-to-rem(20px);
+  }
+
+  .resizable-button {
+    @include media-breakpoint-down(sm) {
+      min-width: auto;
+    }
+  }
+}
+
+.register-button {
+  @include media-breakpoint-up (md) {
+    display: block;
+  }
+
+  display: none;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}

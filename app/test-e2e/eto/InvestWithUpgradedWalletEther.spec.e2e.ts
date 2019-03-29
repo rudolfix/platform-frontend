@@ -1,5 +1,6 @@
 import { INV_ETH_EUR_ICBM_HAS_KYC } from "../fixtures";
 import { confirmAccessModal, etoFixtureAddressByName } from "../utils";
+import { goToDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -12,7 +13,8 @@ describe("Invest with euro token", () => {
       seed: INV_ETH_EUR_ICBM_HAS_KYC,
       clearPendingTransactions: true,
     }).then(() => {
-      cy.visit("/dashboard");
+      goToDashboard();
+
       // click invest now button
       cy.get(tid("eto-invest-now-button-" + PUBLIC_ETO_ID)).click();
       // select euro from icbm wallet

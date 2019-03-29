@@ -2,13 +2,13 @@ import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
 import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
-import { assertUserInDashboard, confirmAccessModal, goToDashboard } from "../utils";
+import { confirmAccessModal, goToDashboard, parseAmount } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, DEFAULT_PASSWORD } from "../utils/userHelpers";
 
 const Q18 = new BigNumber(10).pow(18);
-const NODE_ADDRESS = "https://localhost:9090/node";
+const NODE_ADDRESS = process.env.NF_RPC_PROVIDER!;
 
 const assertWithdrawButtonIsDisabled = () =>
   cy
@@ -74,30 +74,32 @@ describe("Wallet Withdraw", () => {
     createAndLoginNewUser({
       type: "investor",
       seed: INV_EUR_ICBM_HAS_KYC_SEED,
+      signTosAgreement: true,
       onlyLogin: true,
     }).then(() => {
       goToDashboard();
 
-      const testValue = (5).toString();
+      const testValue = 5;
       const account = new Web3Accounts().create();
-      const expectedInput = `0x64663ea6000000000000000000000000${account.address
+      const testAddress = account.address;
+
+      const expectedInput = `0x64663ea6000000000000000000000000${testAddress
         .slice(2)
         .toLowerCase()}0000000000000000000000000000000000000000000000004563918244f40000`;
 
-      const expectedAddress = account.address;
-
-      assertUserInDashboard();
       cy.get(tid("authorized-layout-wallet-button")).awaitedClick();
       cy.get(tid("account-address.your.ether-address.from-div")).then(accountAddress => {
         cy.get(tid("wallet.eth.withdraw.button")).awaitedClick();
         /*Test Address field validation*/
         typeWrongAddress();
         cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(
-          expectedAddress,
+          testAddress,
         );
         /*Test Address field validation*/
         typeWrongValue();
-        cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).type(testValue);
+        cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).type(
+          testValue.toString(),
+        );
         cy.get(
           tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"),
         ).should("be.enabled");
@@ -105,7 +107,19 @@ describe("Wallet Withdraw", () => {
 
         /*Test flow*/
 
-        cy.get(tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept")).awaitedClick();
+        cy.get(tid("modals.tx-sender.withdraw-flow.summary.to")).should("contain", testAddress);
+        cy.get(tid("modals.tx-sender.withdraw-flow.summary.value"))
+          .then(e => parseAmount(e.text()).toNumber())
+          .should("eq", testValue);
+
+        // Disabled Due to the instability of gasPrice node
+        // TODO: Enable after checking stability of gas price service
+        // cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost"))
+        // .then(e => parseAmount(e.text()).toNumber())
+        // .should("be.closeTo", 0.0002, 0.0001);
+        cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost")).contains(/0\.\d{4}/);
+
+        cy.get(tid("modals.tx-sender.withdraw-flow.summary.accept")).awaitedClick();
 
         confirmAccessModal(DEFAULT_PASSWORD);
 
@@ -128,7 +142,7 @@ describe("Wallet Withdraw", () => {
             // TODO: Connect artifacts with tests to get deterministic addresses
             // expect(etherTokenAddress).to.equal(to);
 
-            getBalanceRpc(NODE_ADDRESS, expectedAddress).then(balance => {
+            getBalanceRpc(NODE_ADDRESS, testAddress).then(balance => {
               const receivedEtherValue = new BigNumber(balance.body.result).toString();
               expect(receivedEtherValue).to.equal(Q18.mul(testValue).toString());
             });

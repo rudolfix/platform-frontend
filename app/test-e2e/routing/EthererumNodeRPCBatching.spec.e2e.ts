@@ -1,4 +1,4 @@
-import { assertDashboard, goToDashboard } from "../utils";
+import { goToDashboard } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Ethereum Node RPC requests batching", () => {
@@ -11,7 +11,6 @@ describe("Ethereum Node RPC requests batching", () => {
 
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
-      assertDashboard();
 
       cy.get("@node").should((xhr: any) => {
         expect(xhr.requestBody).to.be.an("array");

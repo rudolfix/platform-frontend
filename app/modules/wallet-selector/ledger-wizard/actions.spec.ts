@@ -5,7 +5,7 @@ import { spy } from "sinon";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
-import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
+import { LedgerErrorMessage } from "../../../components/translatedMessages/messages.unsafe";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { Neumark } from "../../../lib/contracts/Neumark";
 import { ILedgerWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";

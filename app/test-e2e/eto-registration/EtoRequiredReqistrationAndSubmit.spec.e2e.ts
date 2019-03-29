@@ -1,5 +1,6 @@
 import { assertEtoDashboard, assertEtoDocuments } from "../utils/assertions";
 import { fillForm, TFormFixture, uploadDocumentToFieldWithTid } from "../utils/forms";
+import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { submitProposal } from "./EtoRegistrationUtils";
@@ -23,8 +24,7 @@ const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
 describe("Eto Forms", () => {
   it("should fill required fields and submit eto", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
-      cy.visit("/dashboard");
-      assertEtoDashboard();
+      goToEtoDashboard();
 
       fillAndAssert("eto-progress-widget-about", {
         ...aboutFormRequired,

@@ -2,37 +2,43 @@ import { get } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
 import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
-import { mockApiUrl } from "../confirm";
+import { mockApiUrl } from "../config";
 import { tid } from "./selectors";
+import { getPendingTransactions } from "./userHelpers";
 
 export const assertEtoDashboard = () => {
-  cy.url().should("contain", "/dashboard");
   cy.get(tid("eto-dashboard-application")).should("exist");
+  cy.url().should("contain", appRoutes.dashboard);
 };
 
 export const assertEtoDocuments = () => {
-  cy.url().should("contain", "/documents");
   cy.get(tid("eto-documents")).should("exist");
+  cy.url().should("contain", appRoutes.documents);
 };
 
 export const assertDashboard = () => {
-  cy.url().should("contain", "/dashboard");
   cy.get(tid("dashboard-application")).should("exist");
+  return cy.url().should("contain", appRoutes.dashboard);
 };
 
 export const assertRegister = () => {
-  cy.url().should("contain", walletRegisterRoutes.light);
   cy.get(tid("register-layout")).should("exist");
+  cy.url().should("contain", walletRegisterRoutes.light);
 };
 
 export const assertPortfolio = () => {
-  cy.url().should("contain", "/portfolio");
   cy.get(tid("portfolio-layout")).should("exist");
+  cy.url().should("contain", appRoutes.portfolio);
 };
 
 export const assertWallet = () => {
-  cy.url().should("contain", "/wallet");
   cy.get(tid("wallet-start-container")).should("exist");
+  cy.url().should("contain", appRoutes.wallet);
+};
+
+export const assertProfile = () => {
+  cy.url().should("contain", "/profile");
+  cy.get(tid("eto-profile")).should("exist");
 };
 
 export const assertWaitForLatestEmailSentWithSalt = (
@@ -89,13 +95,25 @@ export const assertButtonIsActive = (id: string) => {
   return cy.get(tid(id)).should("be.not.disabled");
 };
 
-export const assertLockedAccessModal = () => {
-  cy.get(tid("access-light-wallet-locked")).should("exist");
+export const assertWaitForExternalPendingTransactionCount = (
+  count: number,
+  timeout: number = 60000,
+) => {
+  expect(timeout, `External pending transaction not received in ${timeout} ms`).to.be.gt(0);
+
+  cy.wait(3000);
+
+  getPendingTransactions().then(response => {
+    if (response.filter(t => t.transaction_type === "mempool").length === count) {
+      return;
+    }
+
+    assertWaitForExternalPendingTransactionCount(count, timeout - 3000);
+  });
 };
 
-export const assertUserInDashboard = (isIssuer: boolean = false) => {
-  cy.url().should("contain", appRoutes.dashboard);
-  return isIssuer ? cy.get(tid("eto-dashboard-application")) : cy.get(tid("dashboard-application"));
+export const assertLockedAccessModal = () => {
+  cy.get(tid("access-light-wallet-locked")).should("exist");
 };
 
 export const assertUserInLanding = () => {

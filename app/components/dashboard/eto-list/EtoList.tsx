@@ -8,11 +8,11 @@ import { actions } from "../../../modules/actions";
 import { selectPublicEtos } from "../../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
 import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
 import { EtosComingSoon } from "../../eto/overview/EtoOverviewStatus/EtosComingSoon";
 import { Heading } from "../../shared/Heading";
-import { LoadingIndicator } from "../../shared/loading-indicator";
+import { ELoadingIndicator, LoadingIndicator } from "../../shared/loading-indicator";
 
 import * as styles from "./EtoList.module.scss";
 
@@ -47,7 +47,7 @@ const EtoListComponent: React.FunctionComponent<IStateProps> = ({ etos }) => (
           )}
         </>
       ) : (
-        <LoadingIndicator type="hexagon" />
+        <LoadingIndicator type={ELoadingIndicator.HEXAGON} />
       )}
     </Col>
   </>

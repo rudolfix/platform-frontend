@@ -1,6 +1,7 @@
 import { extractNumber } from "../../utils/StringUtils";
 import { INV_ETH_ICBM_NO_KYC, INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import { closeModal, confirmAccessModal } from "../utils";
+import { goToWallet } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -10,10 +11,13 @@ describe("Upgrade icbm wallet", () => {
       type: "investor",
       kyc: "business",
       seed: INV_EUR_ICBM_HAS_KYC_SEED,
+      signTosAgreement: true,
       clearPendingTransactions: true,
     }).then(() => {
       let icbmBalance: number;
-      cy.visit("/wallet");
+
+      goToWallet();
+
       cy.get(tid("icbm-wallet.neur.balance-values.large-value")).should($e => {
         icbmBalance = parseFloat(extractNumber($e.text()));
         expect(icbmBalance).to.be.greaterThan(0);
@@ -22,7 +26,7 @@ describe("Upgrade icbm wallet", () => {
       cy.get(tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept")).click();
       confirmAccessModal();
       cy.get(tid("modals.shared.signing-message.modal"));
-      cy.get(tid("modals.tx-sender.withdraw-flow.success"));
+      cy.get(tid("modals.shared.tx-success.modal"));
       closeModal();
       cy.get(tid("locked-wallet.eur.balance-values.large-value")).should($e => {
         const val = parseFloat(extractNumber($e.text()));
@@ -43,7 +47,9 @@ describe("Upgrade icbm wallet", () => {
       clearPendingTransactions: true,
     }).then(() => {
       let icbmBalance: number;
-      cy.visit("/wallet");
+
+      goToWallet();
+
       cy.get(tid("icbm-wallet.eth.balance-values.large-value")).should($e => {
         icbmBalance = parseFloat(extractNumber($e.text()));
         expect(icbmBalance).to.be.greaterThan(0);
@@ -52,7 +58,7 @@ describe("Upgrade icbm wallet", () => {
       cy.get(tid("modals.tx-sender.withdraw-flow.summery.withdrawSummery.accept")).click();
       confirmAccessModal();
       cy.get(tid("modals.shared.signing-message.modal"));
-      cy.get(tid("modals.tx-sender.withdraw-flow.success"));
+      cy.get(tid("modals.shared.tx-success.modal"));
       closeModal();
       cy.get(tid("locked-wallet.eth.balance-values.large-value")).should($e => {
         const val = parseFloat(extractNumber($e.text()));

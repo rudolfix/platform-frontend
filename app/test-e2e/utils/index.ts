@@ -4,8 +4,13 @@ import { get } from "lodash";
 import { appRoutes } from "../../components/appRoutes";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
-import { mockApiUrl } from "../confirm";
-import { assertPortfolio, assertUserInDashboard, assertWallet } from "./assertions";
+import { mockApiUrl } from "../config";
+import {
+  assertDashboard,
+  assertEtoDashboard,
+  assertWaitForExternalPendingTransactionCount,
+} from "./assertions";
+import { goToWallet } from "./navigation";
 import { tid } from "./selectors";
 import { DEFAULT_PASSWORD } from "./userHelpers";
 
@@ -22,24 +27,6 @@ export const letterRegExPattern = /[^0-9]/gi;
 export const letterKeepDotRegExPattern = /[^0-9.]/gi;
 
 export const charRegExPattern = /[^a-z0-9]/gi;
-
-export const goToDashboard = () => {
-  cy.visit("/dashboard");
-};
-
-export const goToProfile = () => {
-  cy.visit("/profile");
-};
-
-export const goToPortfolio = () => {
-  cy.visit("/portfolio");
-  assertPortfolio();
-};
-
-export const goToWallet = () => {
-  cy.visit("/wallet");
-  assertWallet();
-};
 
 export const clearEmailServer = () => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
@@ -82,11 +69,11 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
 
 export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
-  cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
+  cy.get(tid("access-light-wallet-confirm")).click();
 };
 
 export const confirmAccessModalNoPW = () => {
-  cy.get(tid("access-light-wallet-prompt-accept-button")).awaitedClick(1500);
+  cy.get(tid("access-light-wallet-prompt-accept-button")).click();
 };
 
 export const closeModal = () => {
@@ -137,7 +124,13 @@ export const registerWithLightWallet = (
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-button")).awaitedClick();
   cy.get(tid("wallet-selector-register-button")).should("be.disabled");
-  assertUserInDashboard(asIssuer);
+
+  if (asIssuer) {
+    assertEtoDashboard();
+  } else {
+    assertDashboard();
+  }
+
   acceptTOS();
 };
 
@@ -159,7 +152,7 @@ export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
   cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
 
-  return assertUserInDashboard();
+  assertDashboard();
 };
 
 export const acceptWallet = () => {
@@ -211,5 +204,20 @@ export const getWalletNEurAmount = () => {
     .then($element => parseAmount($element.text()));
 };
 
+export const addPendingExternalTransaction = (address: string) => {
+  cy.request({ url: mockApiUrl + "parity/additional_addresses/", method: "PUT", body: [address] });
+
+  assertWaitForExternalPendingTransactionCount(1);
+};
+
+export const removePendingExternalTransaction = () => {
+  // to clean external pending tx list send empty array
+  cy.request({ url: mockApiUrl + "parity/additional_addresses/", method: "PUT", body: [] });
+
+  assertWaitForExternalPendingTransactionCount(0);
+};
+
 // Reexport assertions so they are easy accessed through utils
 export * from "./assertions";
+export * from "./selectors";
+export * from "./navigation";

@@ -14,7 +14,7 @@ import {
 } from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { DashboardSection } from "../eto/shared/DashboardSection";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";

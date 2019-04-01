@@ -12,7 +12,7 @@ import {
 } from "../../../../../modules/bookbuilding-flow/selectors";
 import { EETOStateOnChain } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
-import { onEnterAction } from "../../../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../../../utils/OnEnterAction";
 import { appRoutes } from "../../../../appRoutes";
 import { ButtonLink } from "../../../../shared/buttons";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money.unsafe";
@@ -192,7 +192,7 @@ const CampaigningActivatedWidget = compose<React.FunctionComponent<IExternalProp
       };
     },
   }),
-  onEnterAction({
+  onEnterAction<IExternalProps & IStateProps>({
     actionCreator: (dispatch, props) => {
       dispatch(actions.bookBuilding.loadBookBuildingStats(props.etoId));
 

@@ -15,7 +15,7 @@ import {
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
-import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/buttons";
 import {
   BOOL_FALSE_KEY,

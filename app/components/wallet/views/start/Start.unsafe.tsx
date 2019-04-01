@@ -29,7 +29,7 @@ import {
 } from "../../../../modules/wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { ClaimedDividends } from "../../claimed-dividends/ClaimedDividends.unsafe";
 import { IcbmWallet, IIcbmWalletValues } from "../../wallet-balance/IcbmWallet";

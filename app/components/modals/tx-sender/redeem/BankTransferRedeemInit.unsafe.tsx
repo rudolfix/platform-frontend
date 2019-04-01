@@ -17,7 +17,7 @@ import { selectLiquidEuroTokenBalance } from "../../../../modules/wallet/selecto
 import { doesUserHaveEnoughNEuro, doesUserWithdrawMinimal } from "../../../../modules/web3/utils";
 import { appConnect } from "../../../../store";
 import { ERoundingMode, formatToFixed } from "../../../../utils/Money.utils";
-import { onEnterAction } from "../../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { extractNumber } from "../../../../utils/StringUtils";
 import { Button, ButtonSize, EButtonLayout } from "../../../shared/buttons/Button.unsafe";
 import { ButtonArrowRight } from "../../../shared/buttons/index";

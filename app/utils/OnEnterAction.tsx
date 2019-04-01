@@ -1,41 +1,36 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
+import { AppDispatch } from "../store";
+
 interface IOnEnterActionDispatchProps {
   enterAction: Function;
 }
 
-interface IOnEnterActionOptions {
-  // TODO revert dispatch type after we remove flows
-  actionCreator: (dispatch: any, props: any) => void;
+interface IOnEnterActionOptions<P = {}> {
+  actionCreator: (dispatch: AppDispatch, props: P) => void;
   pure?: boolean;
 }
 
-export const onEnterAction: (
-  options: IOnEnterActionOptions,
-) => (
+export const onEnterAction = <P extends object = {}>(options: IOnEnterActionOptions<P>) => (
   WrappedComponent: React.ComponentType,
-) => React.ComponentClass = options => WrappedComponent =>
-  connect<{}, IOnEnterActionDispatchProps>(
+) =>
+  connect<{}, IOnEnterActionDispatchProps, P>(
     undefined,
     (dispatch, props) => ({
       enterAction: () => options.actionCreator(dispatch, props),
     }),
     undefined,
     {
-      pure: "pure" in options ? options.pure : true,
+      pure: options.pure,
     },
   )(
     class OnEnterAction extends React.Component<IOnEnterActionDispatchProps> {
-      constructor(props: any) {
-        super(props);
-      }
-
-      public componentDidMount(): void {
+      componentDidMount(): void {
         this.props.enterAction();
       }
 
-      public render(): React.ReactNode {
+      render(): React.ReactNode {
         const { enterAction, ...componentProps } = this.props;
         return <WrappedComponent {...componentProps} />;
       }

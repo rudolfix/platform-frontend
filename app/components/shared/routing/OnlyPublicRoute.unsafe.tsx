@@ -5,7 +5,7 @@ import { branch, compose, renderNothing } from "recompose";
 import { actions } from "../../../modules/actions";
 import { selectIsAuthorized } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 
 interface IStateProps {
   isAuthorized: boolean;

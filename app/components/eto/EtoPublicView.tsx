@@ -6,7 +6,7 @@ import { selectUserType } from "../../modules/auth/selectors";
 import { selectEtoWithCompanyAndContract } from "../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
@@ -33,7 +33,7 @@ export const EtoPublicView = compose<TProps, IRouterParams>(
       eto: selectEtoWithCompanyAndContract(state, props.previewCode),
     }),
   }),
-  onEnterAction({
+  onEnterAction<IRouterParams>({
     actionCreator: (dispatch, props) => {
       dispatch(actions.publicEtos.loadEtoPreview(props.previewCode));
     },

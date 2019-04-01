@@ -35,7 +35,7 @@ import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { selectAreTherePendingTxs } from "../../modules/tx/monitor/selectors";
 import { appConnect } from "../../store";
 import { DeepReadonly, TTranslatedString } from "../../types";
-import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { appRoutes } from "../appRoutes";

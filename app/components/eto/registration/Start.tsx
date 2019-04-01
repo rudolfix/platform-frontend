@@ -3,7 +3,7 @@ import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutAuthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";

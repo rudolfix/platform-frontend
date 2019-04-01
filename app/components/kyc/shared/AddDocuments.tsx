@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { EKycRequestType, IKycFileInfo } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 interface IStateProps {

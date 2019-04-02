@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
-import { UserClaimSummaryComponent } from "./Summary.unsafe";
+import { UserClaimSummaryComponent } from "./Summary";
 
 storiesOf("User Claim Summary", module)
   .addDecorator(withModalBody())

@@ -35,7 +35,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  onAccept: () => any;
+  onAccept: () => void;
   downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void;
   generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => void;
 }

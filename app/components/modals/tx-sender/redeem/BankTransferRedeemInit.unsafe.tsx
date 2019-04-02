@@ -68,7 +68,18 @@ const getValidators = (minAmount: string, neuroAmount: string) =>
         .test(
           "isMinimal",
           (
-            <FormattedMessage id="bank-transfer.redeem.init.errors.value-lower-than-minimal" />
+            <FormattedMessage
+              id="bank-transfer.redeem.init.errors.value-lower-than-minimal"
+              values={{
+                minAmount: getFormattedMoney(
+                  minAmount,
+                  ECurrency.EUR,
+                  EMoneyFormat.ULPS,
+                  false,
+                  ERoundingMode.DOWN,
+                ),
+              }}
+            />
           ) as any,
           (value: string) => doesUserWithdrawMinimal(value, minAmount),
         ),

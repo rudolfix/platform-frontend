@@ -9,7 +9,7 @@
   "bank-transfer.redeem.init.description": "To return your nEUR tokens we will use your verified bank account. The nEUR tokens will be returned to Quintessence PLC and you will receive EUR.",
   "bank-transfer.redeem.init.entire-wallet": "Redeem Entire Wallet Balance",
   "bank-transfer.redeem.init.errors.value-higher-than-balance": "The amount exceeds your wallet balance",
-  "bank-transfer.redeem.init.errors.value-lower-than-minimal": "Minimum amount below the fees amount",
+  "bank-transfer.redeem.init.errors.value-lower-than-minimal": "Redeem amount should be {minAmount} EUR or more",
   "bank-transfer.redeem.init.neur-balance": "MY NEUR BALANCE",
   "bank-transfer.redeem.init.note": "It may take between 4-6 business days to complete the transaction. Your bank may charge you additional fees for incoming transfers.",
   "bank-transfer.redeem.init.redeem-amount": "AMOUNT TO REDEEM",

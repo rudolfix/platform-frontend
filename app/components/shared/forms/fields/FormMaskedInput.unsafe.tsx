@@ -54,7 +54,8 @@ export class FormMaskedInput extends React.Component<FormInputProps> {
               name={name}
               validate={customValidation}
               render={({ field }: FieldProps) => {
-                const val = conformToMask(String(value) || field.value, mask, {}).conformedValue;
+                const val = conformToMask(value ? String(value) : field.value, mask, {})
+                  .conformedValue;
 
                 return (
                   <MaskedInput

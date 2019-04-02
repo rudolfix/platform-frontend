@@ -254,7 +254,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
                 prospectusApproved={
                   documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]
                 }
-                smartContractOnchain={smartContractOnChain}
+                smartContractOnChain={smartContractOnChain}
                 innerClass={styles.tagItem}
               />
             </div>

@@ -5,6 +5,7 @@ import * as React from "react";
 import { testEto } from "../../../../../test/fixtures";
 import {
   EETOStateOnChain,
+  IEtoContractData,
   TEtoWithCompanyAndContract,
 } from "../../../../modules/public-etos/types";
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
@@ -113,7 +114,7 @@ storiesOf("ETO/EtoOverviewStatus", module)
         eto={{
           ...eto,
           isBookbuilding: true,
-          contract: { ...eto.contract, timedState: EETOStateOnChain.Claim } as any,
+          contract: { ...eto.contract, timedState: EETOStateOnChain.Claim } as IEtoContractData,
         }}
         isAuthorized={true}
         isEligibleToPreEto={false}
@@ -136,7 +137,7 @@ storiesOf("ETO/EtoOverviewStatus", module)
                 .add(7, "days")
                 .toDate(),
             },
-          } as any,
+          } as IEtoContractData,
         }}
         isAuthorized={true}
         isEligibleToPreEto={true}
@@ -149,15 +150,13 @@ storiesOf("ETO/EtoOverviewStatus", module)
   .add("max cap exceeded public", () => (
     <EtoWidgetContext.Provider value={eto.previewCode}>
       <EtoOverviewStatusLayout
-        eto={
-          {
-            ...eto,
-            contract: {
-              ...eto.contract,
-              timedState: EETOStateOnChain.Public,
-            },
-          } as any
-        }
+        eto={{
+          ...eto,
+          contract: {
+            ...eto.contract,
+            timedState: EETOStateOnChain.Public,
+          } as IEtoContractData,
+        }}
         isAuthorized={true}
         isEligibleToPreEto={true}
         maxCapExceeded={true}

@@ -14,7 +14,7 @@ import { EtoWidgetContext } from "../../EtoWidgetView";
 export interface ITagsWidget {
   termSheet: IEtoDocument;
   prospectusApproved: IEtoDocument;
-  smartContractOnchain: boolean;
+  smartContractOnChain: boolean;
   etoId: string;
   allowRetailEto?: boolean;
   innerClass?: string;
@@ -32,7 +32,7 @@ const hasDocument = (document: IEtoDocument): boolean =>
 const TagsWidgetLayout: React.FunctionComponent<TLayoutProps> = ({
   termSheet,
   prospectusApproved,
-  smartContractOnchain,
+  smartContractOnChain,
   etoId,
   downloadDocument,
   allowRetailEto,
@@ -96,7 +96,7 @@ const TagsWidgetLayout: React.FunctionComponent<TLayoutProps> = ({
               className={innerClass}
             />
           )}
-          {smartContractOnchain ? (
+          {smartContractOnChain ? (
             <Tag
               onClick={e => e.stopPropagation()}
               component={EtherscanAddressLink}

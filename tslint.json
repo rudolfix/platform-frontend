@@ -21,8 +21,8 @@
     "no-any-on-steroid": [
       true,
       {
-        "include": [".*.(tsx)"],
-        "exclude": [".*.(.spec.tsx)", ".*.(.util.tsx)", ".*.(.sideEffect.tsx)", ".*.(.unsafe.tsx)"]
+        "include": [".*.tsx"],
+        "exclude": [".*.spec.tsx", ".*.util.tsx", ".*.sideEffect.tsx", ".*.unsafe.tsx"]
       }
     ],
     "no-regex-spaces": true,

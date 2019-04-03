@@ -171,7 +171,7 @@ export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
               mask={generateMaskFromCurrency(ECurrency.EUR)}
               placeholder={`${intl.formatIntlMessage(
                 "investment-flow.min-ticket-size",
-              )} ${minTicketEur} €`}
+              )} ${minTicketEur} EUR`}
               errorMsg={inputErrorMessage}
               value={formatVaryingDecimals(euroValue)}
               invalid={!!inputErrorMessage}

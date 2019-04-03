@@ -40,7 +40,7 @@ import {
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
-import { formatMoney } from "../../../../utils/Money.utils";
+import { ERoundingMode, formatMoney } from "../../../../utils/Money.utils";
 import { formatThousands } from "../../../../utils/Number.utils";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
@@ -49,17 +49,9 @@ import { ButtonSize, ButtonTextPosition } from "../../../shared/buttons/Button.u
 import { FormMaskedInput } from "../../../shared/forms/fields/FormMaskedInput.unsafe";
 import { generateMaskFromCurrency } from "../../../shared/forms/fields/utils.unsafe";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { ECurrency, Money } from "../../../shared/Money.unsafe";
+import { ECurrency, EMoneyFormat, Money } from "../../../shared/Money.unsafe";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
-import {
-  createWallets,
-  formatEth,
-  formatEthTsd,
-  formatEur,
-  formatEurTsd,
-  formatVaryingDecimals,
-  getInputErrorMessage,
-} from "./utils";
+import { createWallets, formatEur, formatVaryingDecimals, getInputErrorMessage } from "./utils";
 
 import * as styles from "./Investment.module.scss";
 
@@ -274,14 +266,38 @@ export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
                 <div>
                   + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
                   <span className="text-warning" data-test-id="invest-modal-gas-cost">
-                    {formatEur(gasCostEuro)} € ≈ ETH {formatEth(gasCostEth)}
+                    <Money
+                      value={gasCostEuro}
+                      format={EMoneyFormat.ULPS}
+                      currency={ECurrency.EUR}
+                      roundingMode={ERoundingMode.UP}
+                    />
+                    {" ≈ "}
+                    <Money
+                      value={gasCostEth}
+                      format={EMoneyFormat.ULPS}
+                      currency={ECurrency.ETH}
+                      roundingMode={ERoundingMode.UP}
+                    />
                   </span>
                 </div>
               )}
             <div>
               <FormattedMessage id="investment-flow.total" />:{" "}
               <span className="text-warning" data-test-id="invest-modal-total-cost">
-                {formatEurTsd(totalCostEur)} € ≈ ETH {formatEthTsd(totalCostEth)}
+                <Money
+                  value={totalCostEur}
+                  format={EMoneyFormat.ULPS}
+                  currency={ECurrency.EUR}
+                  roundingMode={ERoundingMode.DOWN}
+                />
+                {" ≈ "}
+                <Money
+                  value={totalCostEth}
+                  format={EMoneyFormat.ULPS}
+                  currency={ECurrency.ETH}
+                  roundingMode={ERoundingMode.DOWN}
+                />
               </span>
             </div>
           </Col>

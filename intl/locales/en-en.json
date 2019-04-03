@@ -736,7 +736,7 @@
   "modules.settings.sagas.add-new-email.add-title": "Submit your email",
   "modules.settings.sagas.add-new-email.confirm-description": "Your email address has been successfully added. Activation link was sent to your email.",
   "modules.settings.sagas.add-new-email.error": "Failed to send email",
-  "modules.settings.sagas.add-new-email.new-email-added": "Your email address has been successfully added. Activation link was sent to your email.",
+  "modules.settings.sagas.add-new-email.new-email-added": "Activation link was sent to your email.",
   "modules.settings.sagas.add-new-email.update-title": "Update email address",
   "modules.settings.sagas.change-email.unverified-exists": "The new email you’ve entered is the same as the email currently pending verification. Please use a different email.",
   "modules.settings.sagas.change-email.verified-exists": "The new email you’ve entered is the same as the email currently verified. Please use a different email.",

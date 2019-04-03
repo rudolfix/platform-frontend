@@ -13,7 +13,7 @@ import {
   selectUploadedInvestmentAgreement,
 } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { investmentAgreementNotSigned } from "../../../documents/utils";
 import { ButtonArrowRight } from "../../../shared/buttons/Button.unsafe";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
@@ -27,12 +27,6 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  uploadedAgreement: IEtoDocument | null;
-  signedInvestmentAgreementUrlLoading: boolean;
-  signedInvestmentAgreementUrl: string | null;
-}
-
-interface ISignComponentStateProps {
   etoId: string;
   uploadedAgreement: IEtoDocument;
   signedInvestmentAgreementUrlLoading: boolean;
@@ -88,7 +82,7 @@ export const WaitingToBeSigned = ({
 );
 
 export const SignInvestmentAgreementLayout: React.FunctionComponent<
-  ISignComponentStateProps & IDispatchProps
+  IStateProps & IDispatchProps
 > = ({ etoId, signedInvestmentAgreementUrl, uploadedAgreement, signInvestmentAgreement }) => {
   return investmentAgreementNotSigned(signedInvestmentAgreementUrl, uploadedAgreement.ipfsHash) ? (
     <WaitingToBeSigned
@@ -121,15 +115,13 @@ export const SignInvestmentAgreement = compose<React.FunctionComponent>(
         return null;
       }
     },
-    dispatchToProps: dispatch => {
-      return {
-        signInvestmentAgreement: (etoId: string, agreementHash: string) =>
-          dispatch(actions.etoFlow.signInvestmentAgreement(etoId, agreementHash)),
-      };
-    },
+    dispatchToProps: dispatch => ({
+      signInvestmentAgreement: (etoId: string, agreementHash: string) =>
+        dispatch(actions.etoFlow.signInvestmentAgreement(etoId, agreementHash)),
+    }),
   }),
   branch<IStateProps | null>(props => props === null, renderNothing),
-  onEnterAction({
+  onEnterAction<IStateProps>({
     actionCreator: (dispatch, props) =>
       dispatch(actions.etoFlow.loadSignedInvestmentAgreement(props.etoId)),
   }),

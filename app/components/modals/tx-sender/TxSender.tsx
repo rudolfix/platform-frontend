@@ -33,7 +33,7 @@ import { TxSuccess } from "./shared/TxSuccess";
 import { UnlockWalletSummary } from "./unlock-wallet-flow/Summary.unsafe";
 import { UpgradeSummary } from "./upgrade-flow/Summary.unsafe";
 import { UserClaimSuccess } from "./user-claim/Success";
-import { UserClaimSummary } from "./user-claim/Summary.unsafe";
+import { UserClaimSummary } from "./user-claim/Summary";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
 import { Withdraw } from "./withdraw-flow/Withdraw.unsafe";

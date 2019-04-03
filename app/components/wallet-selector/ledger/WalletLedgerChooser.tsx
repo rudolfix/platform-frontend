@@ -7,7 +7,7 @@ import {
   selectHasPreviousPage,
 } from "../../../modules/wallet-selector/ledger-wizard/reducer";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 import { withActionWatcher } from "../../../utils/withActionWatcher.unsafe";
 import {
   IWalletLedgerChooserComponent,

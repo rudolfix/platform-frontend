@@ -14,8 +14,8 @@ import {
 } from "../../../../modules/eto-flow/selectors";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
-import { onEnterAction } from "../../../../utils/OnEnterAction.unsafe";
-import { onLeaveAction } from "../../../../utils/OnLeaveAction.unsafe";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { onLeaveAction } from "../../../../utils/OnLeaveAction";
 import { ButtonArrowRight } from "../../../shared/buttons";
 import { Document } from "../../../shared/Document";
 import { DocumentTemplateButton } from "../../../shared/DocumentLink";
@@ -37,7 +37,7 @@ interface IStateProps {
   bookBuildingEnabled?: boolean;
   bookBuildingStats: IBookBuildingStats;
   maxPledges: number | null;
-  etoId?: string;
+  etoId: string;
   canEnableBookbuilding: boolean;
 }
 
@@ -146,7 +146,7 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
         headerText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}
         text={<FormattedMessage id="settings.book-building-widget.proposal-accepted" />}
         buttonText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}
-        onClick={() => startBookBuilding(etoId as string)}
+        onClick={() => startBookBuilding(etoId)}
         canEnableBookbuilding={canEnableBookbuilding}
       />
     );
@@ -158,7 +158,7 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
         buttonText={
           <FormattedMessage id="settings.book-building-widget.reactivate-book-building" />
         }
-        onClick={() => startBookBuilding(etoId as string)}
+        onClick={() => startBookBuilding(etoId)}
         canEnableBookbuilding={canEnableBookbuilding}
       >
         <BookBuildingStats
@@ -174,7 +174,7 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
         headerText={<FormattedMessage id="settings.book-building-widget.book-building-enabled" />}
         text={<FormattedMessage id="settings.book-building-widget.book-building-enabled-text" />}
         buttonText={<FormattedMessage id="settings.book-building-widget.stop-book-building" />}
-        onClick={() => stopBookBuilding(etoId as string)}
+        onClick={() => stopBookBuilding(etoId)}
         canEnableBookbuilding={canEnableBookbuilding}
       >
         <BookBuildingStats
@@ -190,13 +190,21 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
 export const BookBuildingWidget = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: state => ({
-      bookBuildingEnabled: selectIsBookBuilding(state),
-      bookBuildingStats: selectBookbuildingStats(state, selectEtoId(state) as string),
-      maxPledges: selectMaxPledges(state),
-      etoId: selectEtoId(state),
-      canEnableBookbuilding: selectCanEnableBookBuilding(state),
-    }),
+    stateToProps: state => {
+      const etoId = selectEtoId(state);
+
+      if (!etoId) {
+        throw new Error("Eto id is required for bookbuilding");
+      }
+
+      return {
+        etoId,
+        bookBuildingEnabled: selectIsBookBuilding(state),
+        bookBuildingStats: selectBookbuildingStats(state, etoId),
+        maxPledges: selectMaxPledges(state),
+        canEnableBookbuilding: selectCanEnableBookBuilding(state),
+      };
+    },
     dispatchToProps: dispatch => ({
       startBookBuilding: etoId => {
         dispatch(actions.etoFlow.changeBookBuildingStatus(true));
@@ -211,7 +219,7 @@ export const BookBuildingWidget = compose<React.FunctionComponent>(
       },
     }),
   }),
-  onEnterAction({
+  onEnterAction<IStateProps>({
     actionCreator: (dispatch, props) => {
       if (props.bookBuildingEnabled) {
         dispatch(actions.bookBuilding.bookBuildingStartWatch(props.etoId));
@@ -220,7 +228,7 @@ export const BookBuildingWidget = compose<React.FunctionComponent>(
       }
     },
   }),
-  onLeaveAction({
+  onLeaveAction<IStateProps>({
     actionCreator: (dispatch, props) => {
       if (props.bookBuildingEnabled) {
         dispatch(actions.bookBuilding.bookBuildingStopWatch(props.etoId));

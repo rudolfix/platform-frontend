@@ -2,8 +2,9 @@ import { storiesOf } from "@storybook/react";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 
+import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
-import { UserClaimSummaryComponent } from "./Summary.unsafe";
+import { UserClaimSummaryComponent } from "./Summary";
 
 storiesOf("User Claim Summary", module)
   .addDecorator(withModalBody())
@@ -34,7 +35,7 @@ storiesOf("User Claim Summary", module)
             claimedOrRefunded: true,
             usedLockedAccount: true,
           },
-        } as any
+        } as TETOWithInvestorTicket
       }
       downloadDocument={() => {}}
     />

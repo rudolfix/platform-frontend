@@ -706,6 +706,29 @@ export const etoDocuments: TEtoDocumentTemplates = {
   },
 };
 
+export const testContract = {
+  timedState: 3,
+  totalInvestment: {
+    totalEquivEurUlps: new BigNumber("3.240447910281246044e+24"),
+    totalTokensInt: new BigNumber("10010705"),
+    totalInvestors: new BigNumber("3"),
+    euroTokenBalance: new BigNumber("3.2374649e+24"),
+    etherTokenBalance: new BigNumber("5432420000000000000"),
+  },
+  startOfStates: {
+    [EETOStateOnChain.Setup]: undefined,
+    [EETOStateOnChain.Whitelist]: new Date("2018-11-16T05:03:56.000Z"),
+    [EETOStateOnChain.Public]: new Date("2018-11-23T05:03:56.000Z"),
+    [EETOStateOnChain.Signing]: new Date("2018-12-07T05:03:56.000Z"),
+    [EETOStateOnChain.Claim]: new Date("2018-12-21T05:03:56.000Z"),
+    [EETOStateOnChain.Payout]: new Date("2018-12-31T05:03:56.000Z"),
+    [EETOStateOnChain.Refund]: undefined,
+  },
+  etoCommitmentAddress: "0x234234234234",
+  equityTokenAddress: "0xbAb1B125ba8b4A3161b7543a4cAA38De7f9c9b2D",
+  etoTermsAddress: "0x948f07847e19E7dBb98DdfFdCA4b2eDF71f3E3B5",
+};
+
 export const testEto: TEtoWithCompanyAndContract = {
   additionalTerms: undefined,
   authorizedCapitalShares: undefined,
@@ -791,28 +814,7 @@ export const testEto: TEtoWithCompanyAndContract = {
   whitelistDiscountFraction: 0.3,
   whitelistDurationDays: 7,
   company: testCompany,
-  contract: {
-    timedState: 3,
-    totalInvestment: {
-      totalEquivEurUlps: new BigNumber("3.240447910281246044e+24"),
-      totalTokensInt: new BigNumber("10010705"),
-      totalInvestors: new BigNumber("3"),
-      euroTokenBalance: new BigNumber("3.2374649e+24"),
-      etherTokenBalance: new BigNumber("5432420000000000000"),
-    },
-    startOfStates: {
-      [EETOStateOnChain.Setup]: undefined,
-      [EETOStateOnChain.Whitelist]: new Date("2018-11-16T05:03:56.000Z"),
-      [EETOStateOnChain.Public]: new Date("2018-11-23T05:03:56.000Z"),
-      [EETOStateOnChain.Signing]: new Date("2018-12-07T05:03:56.000Z"),
-      [EETOStateOnChain.Claim]: new Date("2018-12-21T05:03:56.000Z"),
-      [EETOStateOnChain.Payout]: new Date("2018-12-31T05:03:56.000Z"),
-      [EETOStateOnChain.Refund]: undefined,
-    },
-    etoCommitmentAddress: "0x234234234234",
-    equityTokenAddress: "0xbAb1B125ba8b4A3161b7543a4cAA38De7f9c9b2D",
-    etoTermsAddress: "0x948f07847e19E7dBb98DdfFdCA4b2eDF71f3E3B5",
-  },
+  contract: testContract,
 };
 
 export const etoFilesData: IEtoFiles = {

@@ -14,7 +14,7 @@ import {
   selectPendingKycRequestType,
 } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { appRoutes } from "../appRoutes";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { Button, EButtonLayout } from "../shared/buttons";

@@ -2,7 +2,7 @@ import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { setDisplayName } from "recompose";
+import { branch, renderNothing, setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import {
@@ -303,6 +303,7 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
       },
     }),
   }),
+  branch<IStateProps>(props => props.stateValues === undefined, renderNothing),
   withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
     validationSchema: EtoInvestmentTermsType.toYup(),
     mapPropsToValues: props => convert(props.stateValues, toFormState),

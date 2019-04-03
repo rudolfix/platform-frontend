@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { Container } from "reactstrap";
 
-import { testCompany, testEto } from "../../../../test/fixtures";
+import { testCompany, testContract, testEto } from "../../../../test/fixtures";
 import { withStore } from "../../../utils/storeDecorator.unsafe";
 import { EtoView } from "./EtoView.unsafe";
 
@@ -12,7 +12,7 @@ const testStore = {
       "deabb8a4-d081-4d15-87a7-737a09e6a87c": testEto,
     },
     contracts: {
-      "deabb8a4-d081-4d15-87a7-737a09e6a87c": testEto,
+      "deabb8a4-d081-4d15-87a7-737a09e6a87c": testContract,
     },
     companies: {
       "0xC8f867Cf4Ed30b4fF0Aa4c4c8c6b684397B219B0": testCompany,
@@ -21,7 +21,7 @@ const testStore = {
 };
 
 storiesOf("ETO/EtoView", module)
-  .addDecorator(withStore(testStore as any))
+  .addDecorator(withStore(testStore))
   .add("default", () => (
     <Container>
       <EtoView eto={testEto} />

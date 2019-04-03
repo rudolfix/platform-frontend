@@ -14,7 +14,7 @@ import {
 } from "../modules/init/selectors";
 import { appConnect } from "../store";
 import { ContainerContext } from "../utils/InversifyProvider";
-import { onEnterAction } from "../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../utils/OnEnterAction";
 import { ScrollToTop } from "../utils/ScrollToTop.unsafe";
 import { withRootMetaTag } from "../utils/withMetaTags.unsafe";
 import { AppRouter } from "./AppRouter";

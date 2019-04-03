@@ -7,7 +7,7 @@ import {
   TxWithMetadata,
 } from "../../../lib/api/users/interfaces";
 import { BrowserWalletError } from "../../../lib/web3/browser-wallet/BrowserWallet";
-import { LedgerContractsDisabledError, LedgerError } from "../../../lib/web3/ledger-wallet/errors";
+import { LedgerError } from "../../../lib/web3/ledger-wallet/errors";
 import { LightError } from "../../../lib/web3/light-wallet/LightWallet";
 import { ITxData } from "../../../lib/web3/types";
 import {
@@ -15,14 +15,10 @@ import {
   InvalidRlpDataError,
   LongTransactionQueError,
   LowNonceError,
-  NotEnoughEtherForGasError,
   OutOfGasError,
   UnknownEthNodeError,
 } from "../../../lib/web3/Web3Adapter";
-import {
-  SignerError,
-  SignerRejectConfirmationError,
-} from "../../../lib/web3/Web3Manager/Web3Manager";
+import { SignerError } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
 import { connectWallet } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
@@ -41,11 +37,11 @@ import {
   selectExternalPendingTransaction,
 } from "../monitor/selectors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "../monitor/types";
-import { UserCannotUnlockFunds } from "../transactions/unlock/errors";
 import { ETxSenderType, TAdditionalDataByType } from "../types";
 import { validateGas } from "../validator/sagas";
 import { ETransactionErrorType, ETxSenderState } from "./reducer";
 import { selectTxAdditionalData, selectTxDetails, selectTxType } from "./selectors";
+import { getTxSenderErrorType } from "./utils";
 
 export interface ITxSendParams {
   type: ETxSenderType;
@@ -145,32 +141,11 @@ function* txSendProcess(
 
     yield neuCall(watchTxSubSaga, txHash);
   } catch (error) {
-    logger.error(error);
-    if (error instanceof OutOfGasError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.GAS_TOO_LOW));
-    } else if (error instanceof LowNonceError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.NONCE_TOO_LOW));
-    } else if (error instanceof LongTransactionQueError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.TOO_MANY_TX_IN_QUEUE));
-    } else if (error instanceof InvalidRlpDataError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.INVALID_RLP_TX));
-    } else if (error instanceof InvalidChangeIdError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.INVALID_CHAIN_ID));
-    } else if (error instanceof NotEnoughEtherForGasError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.NOT_ENOUGH_ETHER_FOR_GAS));
-    } else if (error instanceof UnknownEthNodeError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.UNKNOWN_ERROR));
-    } else if (error instanceof SignerRejectConfirmationError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.TX_WAS_REJECTED));
-    } else if (error instanceof LedgerContractsDisabledError) {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.LEDGER_CONTRACTS_DISABLED));
-    } else if (error instanceof UserCannotUnlockFunds) {
-      yield put(
-        actions.txSender.txSenderError(ETransactionErrorType.NOT_ENOUGH_NEUMARKS_TO_UNLOCK),
-      );
-    } else {
-      yield put(actions.txSender.txSenderError(ETransactionErrorType.UNKNOWN_ERROR));
-    }
+    const errorType = getTxSenderErrorType(error);
+
+    logger.error(`Error while processing transaction`, error, { errorType, transactionType });
+
+    yield put(actions.txSender.txSenderError(errorType));
   }
 }
 

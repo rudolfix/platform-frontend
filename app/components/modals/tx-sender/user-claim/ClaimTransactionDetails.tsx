@@ -12,6 +12,7 @@ const ClaimTransactionDetails: TransactionDetailsComponent<ETxSenderType.USER_CL
   txTimestamp,
   additionalData,
   className,
+  children,
 }) => (
   <InfoList className={className}>
     <InfoRow
@@ -39,6 +40,8 @@ const ClaimTransactionDetails: TransactionDetailsComponent<ETxSenderType.USER_CL
       caption={<FormattedMessage id="upgrade-flow.transaction-cost" />}
       value={<Money currency={ECurrency.ETH} value={additionalData.costUlps} />}
     />
+
+    {children}
 
     {txTimestamp && <TimestampRow timestamp={txTimestamp} />}
   </InfoList>

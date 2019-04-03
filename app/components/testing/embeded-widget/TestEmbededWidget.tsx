@@ -8,7 +8,7 @@ import {
 } from "../../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../../utils/OnEnterAction";
 import { withParams } from "../../../utils/withParams";
 import { appRoutes } from "../../appRoutes";
 
@@ -52,7 +52,7 @@ const TestEmbededWidget = compose<IStateProps, IRouterParams>(
       widgetError: selectEtoWidgetError(state.publicEtos),
     }),
   }),
-  onEnterAction({
+  onEnterAction<IRouterParams>({
     actionCreator: (dispatch, props) => {
       dispatch(actions.publicEtos.loadEto(props.etoId, true));
     },

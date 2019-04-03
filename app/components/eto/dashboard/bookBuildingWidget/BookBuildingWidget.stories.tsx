@@ -7,6 +7,7 @@ const data = {
   startBookBuilding: () => {},
   stopBookBuilding: () => {},
   downloadCSV: () => {},
+  etoId: "some-eto-id",
   bookBuildingEnabled: false,
   bookBuildingStats: { investorsCount: 0, pledgedAmount: 0 },
   maxPledges: 500,

@@ -11,7 +11,7 @@ import {
 } from "../../modules/public-etos/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus";
@@ -67,7 +67,7 @@ const EtoWidgetView = compose<TProps, IRouterParams>(
       widgetError: selectEtoWidgetError(state.publicEtos),
     }),
   }),
-  onEnterAction({
+  onEnterAction<IRouterParams>({
     actionCreator: (dispatch, props) => {
       dispatch(actions.publicEtos.loadEtoPreview(props.previewCode, true));
     },

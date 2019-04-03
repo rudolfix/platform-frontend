@@ -10,7 +10,7 @@ import {
 } from "../../modules/investor-portfolio/selectors";
 import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction.unsafe";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { LayoutAuthorized } from "../layouts/LayoutAuthorized";

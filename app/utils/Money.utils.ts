@@ -35,7 +35,8 @@ export function formatMoney(
   decimalPlaces?: number,
   roundingMode?: ERoundingMode,
 ): string {
-  const money = value instanceof BigNumber ? value : new BigNumber(value);
+  //convert value to string to avoid 'more than 15 chars' error
+  const money = value instanceof BigNumber ? value : new BigNumber(value.toString());
   const moneyInPrimaryBase = money.div(new BigNumber(10).pow(currencyDecimals));
   return decimalPlaces !== undefined
     ? formatToFixed(moneyInPrimaryBase, decimalPlaces, roundingMode)

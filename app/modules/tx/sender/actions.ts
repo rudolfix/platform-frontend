@@ -1,25 +1,13 @@
 import { ITxData } from "../../../lib/web3/types";
-import { Overwrite } from "../../../types";
 import { createAction, createActionFactory, createSimpleAction } from "../../actionsUtils";
 import { ETxSenderType, TAdditionalDataByType } from "../types";
 import { ETransactionErrorType, ITxSenderState } from "./reducer";
-
-/**
- * Makes `type` and `additionalData` loosely coupled so it's possible
- * to pass it as a separate entities from pending transactions api
- */
-type TPartialState = Partial<
-  Overwrite<
-    ITxSenderState,
-    { type: ITxSenderState["type"]; additionalData: ITxSenderState["additionalData"] }
-  >
->;
 
 export const txSenderActions = {
   // Modal related actions
   txSenderShowModal: createActionFactory(
     "TX_SENDER_SHOW_MODAL",
-    (initialState: TPartialState = {}) => ({ initialState }),
+    (initialState: Partial<ITxSenderState> = {}) => ({ initialState }),
   ),
   txSenderHideModal: () => createSimpleAction("TX_SENDER_HIDE_MODAL"),
   // User awaiting actions

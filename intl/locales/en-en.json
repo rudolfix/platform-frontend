@@ -52,6 +52,8 @@
   "bank-verification.info.text": "In order to receive your funds, we need to first link your bank account. In the next step, we'll ask you to initiate a SEPA transfer of {min} using a bank account matching your verified identity. Once we've received the transfer, your bank account will be linked to your profile and used for future redeem requests.",
   "bank-verification.info.title": "Link your bank account",
   "bank-verification.success.text": "Thank you for your wire transfer, the bank account verification takes around 1 to 3 business days. For your convenience we have sent you an email once your request was processed and your account verifed.",
+  "button-icon.down": "move down",
+  "button-icon.up": "move up",
   "check-your-icbm-wallet-widget.header": "ICBM Migration Tool",
   "check-your-icbm-wallet-widget.notice": "This tool is solely for those who committed funds during the ICBM using an unsupported wallet. Please enter your ICBM wallet address in the field below to begin the migration process.",
   "check-your-icbm-wallet-widget.submit": "Begin migration process",

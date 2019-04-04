@@ -16,10 +16,7 @@ import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormFieldBoolean } from "../../../shared/forms";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor.unsafe";
-import {
-  SOCIAL_PROFILES_ICONS,
-  SocialProfilesEditor,
-} from "../../../shared/SocialProfilesEditor.unsafe";
+import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { Tooltip } from "../../../shared/Tooltip";
 import { convert, removeEmptyKeyValueField, removeEmptyKeyValueFields } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
@@ -129,7 +126,7 @@ const EtoRegistrationMedia = compose<React.FunctionComponent>(
 )(EtoRegistrationMediaComponent);
 
 //adhoc validation, no need to move it to utils
-const addTitleIfUrlNotEmpty = (data: any) => {
+const addTitleIfUrlNotEmpty = (data: { url?: string; title?: string }) => {
   if (data.url !== undefined) {
     return { ...data, title: "" };
   } else {

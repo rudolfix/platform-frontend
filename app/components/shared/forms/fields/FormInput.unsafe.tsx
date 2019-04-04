@@ -52,6 +52,7 @@ export const FormInput: React.FunctionComponent<FormInputProps> = ({
           validate={customValidation}
           render={({ field }: FieldProps) => {
             const val = transform(field.value, charactersLimit);
+
             return (
               <FormInputRaw
                 name={name}

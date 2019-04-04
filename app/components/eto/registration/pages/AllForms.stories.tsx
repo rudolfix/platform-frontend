@@ -7,7 +7,7 @@ import { createStore } from "redux";
 import { EtoKeyIndividualsType } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EtoRegistrationCompanyInformationComponent } from "./CompanyInformation";
 import { EtoEquityTokenInfoComponent } from "./EtoEquityTokenInfo";
-import { EtoRegistrationMediaComponent } from "./EtoMedia.unsafe";
+import { EtoRegistrationMediaComponent } from "./EtoMedia";
 import { EtoRegistrationPitchComponent } from "./EtoPitch";
 import { EtoRegistrationTermsComponent } from "./EtoTerms";
 import { EtoVotingRightsComponent } from "./EtoVotingRights";

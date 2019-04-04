@@ -1,24 +1,18 @@
 .form-section {
-  @include make-row;
+  display: grid;
+  grid-template: auto auto / auto;
+  grid-column-gap: 2rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 1000px) {
+    & {
+      grid-template: auto / 1fr 6fr;
+    }
+  }
 }
 
 .title {
-  @include make-col-offset(1);
-  @include make-col(2);
   @include font-default;
 
-  @include media-breakpoint-down(md) {
-    @include make-col-offset(0);
-    @include make-col(12);
-  }
-
   text-transform: uppercase;
-}
-
-.content {
-  @include make-col(8);
-
-  @include media-breakpoint-down(md) {
-    @include make-col(12);
-  }
 }

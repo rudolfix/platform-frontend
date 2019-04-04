@@ -11,15 +11,22 @@ import * as styles from "./ButtonIcon.module.scss";
 interface IButtonIcon extends IGeneralButton, CommonHtmlProps {
   svgIcon: string;
   alt?: TTranslatedString;
+  type?: string;
 }
 
 const ButtonIcon: React.FunctionComponent<IButtonIcon> = ({
   onClick,
   className,
   disabled,
+  type = "button",
   ...props
 }) => (
-  <button className={cn(styles.buttonIcon, className)} onClick={onClick} disabled={disabled}>
+  <button
+    className={cn(styles.buttonIcon, className)}
+    onClick={onClick}
+    disabled={disabled}
+    type={type}
+  >
     <InlineIcon {...props} />
   </button>
 );

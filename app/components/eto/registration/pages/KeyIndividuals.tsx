@@ -21,15 +21,21 @@ import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload.unsafe";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
+import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import {
-  SOCIAL_PROFILES_PERSON,
-  SocialProfilesEditor,
-} from "../../../shared/SocialProfilesEditor.unsafe";
+  convert,
+  generateKeys,
+  removeEmptyField,
+  removeKeys,
+  setDefaultValueIfUndefined,
+} from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
 
+import * as downIcon from "../../../../assets/img/inline_icons/down.svg";
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
+import * as upIcon from "../../../../assets/img/inline_icons/up.svg";
 import * as styles from "../Shared.module.scss";
 import * as localStyles from "./KeyIndividuals.module.scss";
 
@@ -50,6 +56,8 @@ interface IIndividual {
   canRemove: boolean;
   index: number;
   groupFieldName: string;
+  swap: (index1: number, index2: number) => void;
+  length: number;
 }
 
 interface IKeyIndividualsGroup {
@@ -57,11 +65,20 @@ interface IKeyIndividualsGroup {
   title: TTranslatedString;
 }
 
+interface IMemberData {
+  name: string;
+  role: string;
+  description: string;
+  image: string;
+  key: string;
+}
+
 const getBlankMember = () => ({
   name: "",
   role: "",
   description: "",
   image: "",
+  key: Math.random().toString(),
 });
 
 const Individual: React.FunctionComponent<IIndividual> = ({
@@ -69,49 +86,72 @@ const Individual: React.FunctionComponent<IIndividual> = ({
   canRemove,
   index,
   groupFieldName,
+  swap,
+  length,
 }) => {
-  const group = `${groupFieldName}.members.${index}`;
-
+  const member = `${groupFieldName}.members.${index}`;
   return (
-    <FormHighlightGroup>
-      {canRemove && (
-        <ButtonIcon
-          svgIcon={closeIcon}
-          onClick={onRemoveClick}
-          className={localStyles.removeButton}
+    <div className={localStyles.wrapper}>
+      <FormHighlightGroup>
+        {canRemove && (
+          <ButtonIcon
+            svgIcon={closeIcon}
+            onClick={onRemoveClick}
+            className={localStyles.removeButton}
+            type="button"
+          />
+        )}
+        <FormField
+          name={`${member}.name`}
+          label={<FormattedMessage id="eto.form.key-individuals.name" />}
+          placeholder="name"
         />
-      )}
-      <FormField
-        name={`${group}.name`}
-        label={<FormattedMessage id="eto.form.key-individuals.name" />}
-        placeholder="name"
-      />
-      <FormField
-        name={`${group}.role`}
-        label={<FormattedMessage id="eto.form.key-individuals.role" />}
-        placeholder="role"
-      />
-      <FormTextArea
-        name={`${group}.description`}
-        label={<FormattedMessage id="eto.form.key-individuals.short-bio" />}
-        placeholder=" "
-        charactersLimit={1200}
-      />
-      <FormSingleFileUpload
-        label={<FormattedMessage id="eto.form.key-individuals.image" />}
-        name={`${group}.image`}
-        acceptedFiles="image/*"
-        fileFormatInformation="*150 x 150px png"
-        data-test-id={`${group}.image`}
-      />
-      <FormField className="mt-4" name={`${group}.website`} placeholder="website" />
-      <fieldset>
-        <legend className={cn(localStyles.individualSocialChannelsLegend, "mt-4 mb-2")}>
-          <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
-        </legend>
-        <SocialProfilesEditor profiles={SOCIAL_PROFILES_PERSON} name={`${group}.socialChannels`} />
-      </fieldset>
-    </FormHighlightGroup>
+        <FormField
+          name={`${member}.role`}
+          label={<FormattedMessage id="eto.form.key-individuals.role" />}
+          placeholder="role"
+        />
+        <FormTextArea
+          name={`${member}.description`}
+          label={<FormattedMessage id="eto.form.key-individuals.short-bio" />}
+          placeholder=" "
+          charactersLimit={1200}
+        />
+        <FormSingleFileUpload
+          label={<FormattedMessage id="eto.form.key-individuals.image" />}
+          name={`${member}.image`}
+          acceptedFiles="image/*"
+          fileFormatInformation="*150 x 150px png"
+          data-test-id={`${member}.image`}
+        />
+        <FormField className="mt-4" name={`${member}.website`} placeholder="website" />
+        <fieldset>
+          <legend className={cn(localStyles.individualSocialChannelsLegend, "mt-4 mb-2")}>
+            <FormattedMessage id="eto.form.key-individuals.add-social-channels" />
+          </legend>
+          <SocialProfilesEditor
+            profiles={SOCIAL_PROFILES_PERSON}
+            name={`${member}.socialChannels`}
+          />
+        </fieldset>
+      </FormHighlightGroup>
+      <div>
+        <ButtonIcon
+          onClick={() => swap(index, index - 1)}
+          type="button"
+          disabled={index === 0}
+          svgIcon={upIcon}
+          alt={<FormattedMessage id="button-icon.up" />}
+        />
+        <ButtonIcon
+          onClick={() => swap(index, index + 1)}
+          type="button"
+          disabled={index === length - 1}
+          svgIcon={downIcon}
+          alt={<FormattedMessage id="button-icon.down" />}
+        />
+      </div>
+    </div>
   );
 };
 
@@ -145,24 +185,26 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
   render(): React.ReactNode {
     const { title, name, formik } = this.props;
     const { values } = formik;
-    const individuals = this.isEmpty() ? [] : values[name].members;
 
+    const individuals = this.isEmpty() ? [] : values[name].members;
     return (
       <FormSection title={title}>
         <FieldArray
           name={`${name}.members`}
           render={arrayHelpers => (
             <>
-              {individuals.map((_: {}, index: number) => {
+              {individuals.map((member: IMemberData, index: number) => {
                 const canRemove = !(index === 0 && this.isRequired());
 
                 return (
                   <Individual
-                    key={index}
+                    key={member.key}
                     onRemoveClick={() => arrayHelpers.remove(index)}
                     index={index}
                     canRemove={canRemove}
                     groupFieldName={name}
+                    swap={arrayHelpers.swap}
+                    length={individuals.length}
                   />
                 );
               })}
@@ -189,14 +231,12 @@ const KeyIndividualsGroup = connect<IKeyIndividualsGroup, TEtoKeyIndividualType>
 );
 
 const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
-  const validator = EtoKeyIndividualsType.toYup();
-
   return (
     <EtoFormBase
       title={<FormattedMessage id="eto.form.key-individuals.title" />}
-      validator={validator}
+      validator={EtoKeyIndividualsType.toYup()}
     >
-      <Section>
+      <Section className={localStyles.sectionWrapper}>
         <KeyIndividualsGroup
           title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
           name="team"
@@ -250,15 +290,36 @@ const EtoRegistrationKeyIndividuals = compose<React.FunctionComponent>(
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialCompanyEtoData) => {
-        dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
+        const convertedData = convert(data, fromFormState);
+        dispatch(actions.etoFlow.saveDataStart({ companyData: convertedData, etoData: {} }));
       },
     }),
   }),
   withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
     validationSchema: EtoKeyIndividualsType.toYup(),
-    mapPropsToValues: props => props.stateValues,
+    mapPropsToValues: props => convert(props.stateValues, toFormState),
     handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationKeyIndividualsComponent);
 
 export { EtoRegistrationKeyIndividualsComponent, EtoRegistrationKeyIndividuals };
+
+const toFormState = {
+  "team.members": [setDefaultValueIfUndefined([]), generateKeys()],
+  "advisors.members": [setDefaultValueIfUndefined([]), generateKeys()],
+  "keyAlliances.members": [setDefaultValueIfUndefined([]), generateKeys()],
+  "boardMembers.members": [setDefaultValueIfUndefined([]), generateKeys()],
+  "notableInvestors.members": [setDefaultValueIfUndefined([]), generateKeys()],
+  "keyCustomers.members": [setDefaultValueIfUndefined([]), generateKeys()],
+  "partners.members": [setDefaultValueIfUndefined([]), generateKeys()],
+};
+
+const fromFormState = {
+  "team.members": [removeKeys(), removeEmptyField()],
+  "advisors.members": [removeKeys(), removeEmptyField()],
+  "keyAlliances.members": [removeKeys(), removeEmptyField()],
+  "boardMembers.members": [removeKeys(), removeEmptyField()],
+  "notableInvestors.members": [removeKeys(), removeEmptyField()],
+  "keyCustomers.members": [removeKeys(), removeEmptyField()],
+  "partners.members": [removeKeys(), removeEmptyField()],
+};

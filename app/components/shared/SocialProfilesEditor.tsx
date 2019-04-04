@@ -1,5 +1,6 @@
 import * as cn from "classnames";
 import { connect, FieldArray, getIn } from "formik";
+import { get, isEqual } from "lodash/fp";
 import * as React from "react";
 
 import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
@@ -113,7 +114,7 @@ const SocialMediaTags: React.FunctionComponent<{
   profiles: ISocialProfile[];
   className?: string;
   onClick: (index: number) => void;
-  selectedFields: boolean[];
+  selectedFields: ReadonlyArray<boolean>;
 }> = props => {
   const { profiles, className, onClick, selectedFields } = props;
   return (
@@ -123,7 +124,7 @@ const SocialMediaTags: React.FunctionComponent<{
           <button
             data-test-id={`social-profiles.profile-button.${name}`}
             onClick={() => onClick(index)}
-            className={cn(Boolean(selectedFields[index]) && "is-selected", styles.tab)}
+            className={cn({ "is-selected": Boolean(selectedFields[index]) }, styles.tab)}
             key={name}
             type="button"
           >
@@ -169,36 +170,70 @@ interface IProps {
 }
 
 interface IState {
-  selectedFields: boolean[];
+  selectedFields: ReadonlyArray<boolean>;
   filteredFields: boolean[];
+}
+
+interface IProfilesWithData {
+  selectedFields: boolean[];
+  userData: { type: string; url: string }[];
 }
 
 class SocialProfilesEditorLayout extends React.Component<IProps & TFormikConnect, IState> {
   state: IState = { selectedFields: [], filteredFields: [] };
 
-  componentDidMount(): void {
-    const { name, profiles, formik } = this.props;
-    const { values, setFieldValue } = formik;
-
+  setSelectedFields = (values: IProps & TFormikConnect, name: string) => {
+    const {
+      profiles,
+      formik: { setFieldValue },
+    } = this.props;
     const socialMediaValues: TSocialChannelsType = getIn(values, name) || [];
-    const selectedFields: boolean[] = [];
 
-    profiles.forEach((profile, index) => {
-      const previousLink = socialMediaValues.find(v => v.type === profile.name);
-      const value: string = previousLink ? previousLink.url || "" : "";
-      setFieldValue(`${name}.${index}`, { type: profile.name, url: value });
-      selectedFields[index] = profile.preSelected ? true : !!value;
-    });
+    const profilesWithData = profiles.reduce(
+      (acc: IProfilesWithData, profile) => {
+        const previousLink = socialMediaValues.find(v => v.type === profile.name);
+        const value: string = previousLink ? previousLink.url || "" : "";
+        return {
+          selectedFields: acc.selectedFields.concat([profile.preSelected ? true : !!value]),
+          userData: acc.userData.concat([{ type: profile.name, url: value }]),
+        };
+      },
+      { selectedFields: [], userData: [] },
+    );
 
-    this.setState({ selectedFields });
+    setFieldValue(name, profilesWithData.userData);
+    this.setState(() => ({ selectedFields: profilesWithData.selectedFields }));
+  };
+
+  componentDidMount(): void {
+    const {
+      formik: { values },
+      name,
+    } = this.props;
+    this.setSelectedFields(values, name);
+  }
+
+  shouldComponentUpdate(nextProps: IProps & TFormikConnect, nextState: IState): boolean {
+    const {
+      formik: { values },
+      name,
+    } = this.props;
+    const {
+      formik: { values: newValues },
+    } = nextProps;
+
+    return !isEqual(get(name, newValues), get(name, values)) || !isEqual(this.state, nextState);
   }
 
   toggleProfileVisibility = (index: number): void => {
-    const { selectedFields } = this.state;
-
-    selectedFields[index] = !this.state.selectedFields[index];
-
-    this.setState({ selectedFields });
+    const {
+      formik: { setFieldValue },
+      name,
+    } = this.props;
+    const newSelectedFields = [...this.state.selectedFields];
+    newSelectedFields[index] = !this.state.selectedFields[index];
+    setFieldValue(`${name}.${index}url`, "");
+    this.setState({ selectedFields: newSelectedFields });
   };
 
   render(): React.ReactNode {
@@ -232,4 +267,6 @@ class SocialProfilesEditorLayout extends React.Component<IProps & TFormikConnect
   }
 }
 
-export const SocialProfilesEditor = connect<IProps, any>(SocialProfilesEditorLayout);
+export const SocialProfilesEditor = connect<IProps, Array<TSocialChannelsType>>(
+  SocialProfilesEditorLayout,
+);

@@ -124,7 +124,7 @@ function* txSendProcess(
   extraParam?: any,
 ): any {
   try {
-    yield put(actions.txSender.txSenderShowModal({ type: transactionType as any }));
+    yield put(actions.txSender.txSenderShowModal({ type: transactionType }));
 
     yield neuRepeatIf("TX_SENDER_CHANGE", "TX_SENDER_ACCEPT", transactionFlowGenerator, extraParam);
     const txData = yield select(selectTxDetails);

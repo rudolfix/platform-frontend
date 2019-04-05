@@ -1,5 +1,5 @@
 import { assertEtoDashboard, assertEtoDocuments } from "../utils/assertions";
-import { fillForm, TFormFixture, uploadDocumentToFieldWithTid } from "../utils/forms";
+import { checkForm, fillForm, TFormFixture, uploadDocumentToFieldWithTid } from "../utils/forms";
 import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
@@ -19,6 +19,12 @@ const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
   cy.get(tid(section, "button")).click();
   fillForm(sectionForm);
   assertEtoDashboard();
+};
+
+const openAndCheckValues = (section: string, sectionForm: TFormFixture) => {
+  cy.get(tid(section, "button")).click();
+  checkForm(sectionForm);
+  goToEtoDashboard();
 };
 
 describe("Eto Forms", () => {
@@ -42,6 +48,10 @@ describe("Eto Forms", () => {
       fillAndAssert("eto-progress-widget-equity-token-info", equityTokenInfoForm);
 
       fillAndAssert("eto-progress-widget-voting-right", votingRights);
+
+      // some checks to make sure the values in already saved forms are displayed correctly
+      openAndCheckValues("eto-progress-widget-investment-terms", investmentTermsRequiredForm);
+      openAndCheckValues("eto-progress-widget-eto-terms", etoTermsRequiredForm);
 
       cy.get(tid("dashboard-upload-termsheet")).click();
       assertEtoDocuments();

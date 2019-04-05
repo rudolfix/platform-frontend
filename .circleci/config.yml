@@ -65,7 +65,7 @@ jobs:
             - v14-deps-
       - run: yarn
 
-      - run: yarn test:browser-coverage && yarn test:node
+      - run: yarn test:browser && yarn test:node
 
   test-e2e:
     machine:

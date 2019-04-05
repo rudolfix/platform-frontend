@@ -1,5 +1,6 @@
 import { ITxData } from "../../../lib/web3/types";
 import { AppReducer } from "../../../store";
+import { Overwrite } from "../../../types";
 import { ITxTypeWithData, TSpecificTransactionState } from "../types";
 
 export enum ETransactionErrorType {
@@ -53,7 +54,11 @@ interface ITxSenderCommonState {
 
 type TTransactionState = TSpecificTransactionState | ITxSenderDefaultState;
 
-export type ITxSenderState = TTransactionState & ITxSenderCommonState;
+export type ITxSenderState = Overwrite<
+  TTransactionState,
+  { type: TTransactionState["type"]; additionalData: TTransactionState["additionalData"] }
+> &
+  ITxSenderCommonState;
 
 const initialState: ITxSenderState = {
   type: undefined,

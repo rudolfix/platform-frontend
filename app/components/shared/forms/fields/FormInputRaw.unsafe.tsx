@@ -84,6 +84,7 @@ const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
         type={type}
         placeholder={placeholder}
         disabled={disabled}
+        value={value}
         {...props}
       />
       {suffix && (

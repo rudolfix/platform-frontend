@@ -17,7 +17,7 @@ export type ActionPayload<T extends IAppAction> = T["payload"];
 
 export type AppDispatch = (a: AppActionTypes | FunctionWithDeps) => void;
 
-export type AppReducer<S> = Reducer<DeepReadonly<S>>;
+export type AppReducer<S> = Reducer<DeepReadonly<S>, AppActionTypes>;
 
 // add new external actions here
 export type AppActionTypes = DeepReadonly<TAction | LocationChangeAction>;

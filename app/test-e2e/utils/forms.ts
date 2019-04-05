@@ -43,6 +43,26 @@ export const fillField = (key: string, value: string, parent: string = "body") =
   });
 };
 
+// workaround for cypress issue with range input
+//@see https://github.com/cypress-io/cypress/issues/1570
+export const changeRangeInputValue = ($range: any) => (value: string) => {
+  /* tslint:disable */
+  const nativeInputValueSetter = (Object as any).getOwnPropertyDescriptor(
+    (window as any).HTMLInputElement.prototype,
+    "value",
+  ).set;
+
+  nativeInputValueSetter.call($range[0], value);
+  $range[0].dispatchEvent(new Event("change", { value, bubbles: true } as EventInit));
+  /* tslint:disable */
+};
+
+export const checkField = (key: string, value: string, parent: string = "body") => {
+  cy.get(parent).within(() => {
+    cy.get(formField(key)).should("have.value", value);
+  });
+};
+
 const isSubmitField = (field: TFormFieldFixture) =>
   typeof field === "object" && field.type === "submit";
 
@@ -76,9 +96,7 @@ export const fillForm = (
     //TODO changes here are not reflected in other parts of UI.
     // Need to investigate this further
     else if (field.type === "range") {
-      cy.get(formField(key))
-        .invoke("val", field.value)
-        .trigger("change");
+      cy.get(formField(key)).then(input => changeRangeInputValue(input)(field.value));
     }
     // check or uncheck a radio
     else if (field.type === "radio") {
@@ -143,6 +161,54 @@ export const fillForm = (
 
     cy.get(tid(submitField)).awaitedClick();
   }
+};
+
+export const checkForm = (fixture: TFormFixture) => {
+  forEach(fixture, (field, key) => {
+    // the default is just typing a string into the input
+    if (typeof field === "string") {
+      checkField(key, field);
+    }
+    // date
+    else if (field.type === "date") {
+      const values = field.value.split("/");
+      cy.get(formField(key)).each((subField, index) => {
+        cy.wrap(subField).should("contain", values[index]);
+      });
+    }
+    // select field
+    else if (field.type === "select") {
+      cy.get(formField(key)).should("have.value", field.value);
+    }
+
+    //TODO changes here are not reflected in other parts of UI.
+    // Need to investigate this further
+    else if (field.type === "range") {
+      cy.get(formField(key)).should("have.value", field.value);
+    }
+    // check or uncheck a radio
+    else if (field.type === "radio") {
+      cy.get(`input[name="${key}"][value="${field.value}"]`).should("be.checked");
+    }
+    //check or uncheck a checkbox
+    else if (field.type === "checkbox") {
+      const element = cy.get(formField(key));
+
+      forEach(field.values, checked => {
+        if (checked) {
+          element.should("be.checked");
+        } else {
+          element.should("be.unchecked");
+        }
+      });
+    }
+    // tags
+    else if (field.type === "tags") {
+      cy.get(formField(key))
+        .then($form => $form.find("input"))
+        .should("have.value", field.value);
+    }
+  });
 };
 
 /**

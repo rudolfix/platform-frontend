@@ -57,7 +57,16 @@ describe("Investor accept payout", () => {
       });
     });
   });
+});
 
+describe("Investor accept payout", () => {
+  beforeEach(() =>
+    createAndLoginNewUser({
+      type: "investor",
+      kyc: "business",
+      seed: INV_ETH_EUR_ICBM_HAS_KYC,
+      clearPendingTransactions: true,
+    }));
   it("nEUR payout", () => {
     getWalletNEurAmount().as("balanceBefore");
 

@@ -51,10 +51,10 @@
 
 .input-field {
   &:disabled {
-    color: $neu-silver;
+    color: $neu-slate-grey;
 
     &::placeholder {
-      color: $color-black;
+      color: $neu-silver;
     }
   }
 }

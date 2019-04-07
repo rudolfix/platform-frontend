@@ -1,5 +1,8 @@
-import { getRequiredEnv, verifyOptionalFlagEnv } from "./configUtils";
+import { getOptionalEnv, getRequiredEnv, verifyOptionalFlagEnv } from "./configUtils";
 
+export interface IBackendRoot {
+  url: string;
+}
 export interface IConfig {
   ethereumNetwork: {
     rpcUrl: string;
@@ -7,6 +10,7 @@ export interface IConfig {
   contractsAddresses: {
     universeContractAddress: string;
   };
+  backendRoot: IBackendRoot;
 }
 
 export function getConfig(env: NodeJS.ProcessEnv): IConfig {
@@ -18,6 +22,9 @@ export function getConfig(env: NodeJS.ProcessEnv): IConfig {
     },
     contractsAddresses: {
       universeContractAddress: getRequiredEnv(env, "NF_UNIVERSE_CONTRACT_ADDRESS"),
+    },
+    backendRoot: {
+      url: getOptionalEnv(env, "NF_BACKEND_ROOT") || "",
     },
   };
 }

@@ -4,6 +4,7 @@ export const symbols = makeDebugSymbols({
   // configs
   config: Symbol(),
   ethereumNetworkConfig: Symbol(),
+  backendRootConfig: Symbol(),
 
   // apis
   apiImmutableStorage: Symbol(),

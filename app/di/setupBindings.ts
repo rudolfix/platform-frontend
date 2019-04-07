@@ -1,6 +1,6 @@
 import { Container } from "inversify";
 
-import { IConfig } from "../config/getConfig";
+import { IBackendRoot, IConfig } from "../config/getConfig";
 import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { BinaryHttpClient } from "../lib/api/client/BinaryHttpClient";
@@ -60,6 +60,8 @@ export function setupBindings(config: IConfig): Container {
     .bind<IEthereumNetworkConfig>(symbols.ethereumNetworkConfig)
     .toConstantValue(config.ethereumNetwork);
   container.bind<IConfig>(symbols.config).toConstantValue(config);
+
+  container.bind<IBackendRoot>(symbols.backendRootConfig).toConstantValue(config.backendRoot);
 
   container
     .bind<ILogger>(symbols.logger)

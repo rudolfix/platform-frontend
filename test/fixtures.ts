@@ -20,6 +20,9 @@ export const dummyConfig: IConfig = {
   contractsAddresses: {
     universeContractAddress: "UNIVERSE_ADDRESS",
   },
+  backendRoot: {
+    url: "",
+  },
 };
 
 export const dummyNetworkId: EthereumNetworkId = "5" as EthereumNetworkId;

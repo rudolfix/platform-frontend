@@ -136,6 +136,7 @@ export enum EtoDocumentsMessage {
 export enum PublicEtosMessage {
   COULD_NOT_LOAD_ETO_PREVIEW = "couldNotLoadEtoPreview",
   COULD_NOT_LOAD_ETO = "couldNotLoadEto",
+  COULD_NOT_LOAD_ETOS = "couldNotLoadEtos",
 }
 
 export enum IpfsMessage {
@@ -362,6 +363,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="eto.public-view.could-not-load-eto-preview" />;
     case PublicEtosMessage.COULD_NOT_LOAD_ETO:
       return <FormattedMessage id="eto.public-view.could-not-load-eto" />;
+    case PublicEtosMessage.COULD_NOT_LOAD_ETOS:
+      return <FormattedMessage id="dashboard.could-not-load-etos" />;
 
     case IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE:
       return <FormattedMessage id="ipfs-failed-to-download-file" />;

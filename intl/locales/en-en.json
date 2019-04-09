@@ -85,6 +85,7 @@
   "critical-error.error-detail": "Error detail: {message}",
   "critical-error.heading": "Oops… it looks like something is broken!",
   "critical-error.paragraph": "Our engineers have been notified and we are working to fix this as soon as possible. In the meantime, <strong>please try refreshing your browser</strong>.",
+  "dashboard.could-not-load-etos": "Could not load ETO's list. Please try again later.",
   "dashboard.eto-opportunities": "Investment opportunities",
   "dashboard.eto-opportunities.description": "Below, you’ll find all available investment opportunities on the platform. Here, you can check on the status and view important information about each offering. Click anywhere within the box and you’ll be redirected to its listing page for more details.",
   "dashboard.eto.coming-soon-placeholder": "FURTHER investment opportunities coming soon!",

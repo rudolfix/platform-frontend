@@ -31,8 +31,8 @@ export const createAndLoginNewUser = (params: {
   onlyLogin?: boolean;
   signTosAgreement?: boolean;
   permissions?: string[];
-}) => {
-  return cy.clearLocalStorage().then(async ls => {
+}) =>
+  cy.clearLocalStorage().then(async ls => {
     cy.log("Logging in...");
 
     const {
@@ -86,7 +86,6 @@ export const createAndLoginNewUser = (params: {
       await setCorrectAgreement(jwt);
     }
   });
-};
 
 /**
  * Create a light wallet with a given seed

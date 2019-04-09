@@ -178,6 +178,9 @@ export function* loadEtoContact(
     );
   } catch (e) {
     logger.error("ETO contract data could not be loaded", e, { etoId: eto.etoId });
+
+    // rethrow original error so it can be handled by caller saga
+    throw e;
   }
 }
 
@@ -264,7 +267,7 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
   yield put(actions.publicEtos.loadEtoPreview(previewCode));
 }
 
-function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
+function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
   try {
     const etosResponse: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
     const etos = etosResponse.body;
@@ -302,6 +305,11 @@ function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
     yield put(actions.publicEtos.setEtosDisplayOrder(order));
   } catch (e) {
     logger.error("ETOs could not be loaded", e);
+
+    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETOS));
+
+    // set empty display order to remove loading indicator
+    yield put(actions.publicEtos.setEtosDisplayOrder([]));
   }
 }
 

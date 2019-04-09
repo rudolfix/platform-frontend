@@ -6,7 +6,7 @@ describe("Ethereum Node RPC requests batching", () => {
     cy.server();
     cy.route({
       method: "POST",
-      url: process.env.NF_RPC_PROVIDER as string,
+      url: process.env.NF_RPC_PROVIDER!,
     }).as("node");
 
     createAndLoginNewUser({ type: "investor" }).then(() => {

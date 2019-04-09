@@ -9,7 +9,7 @@ import { withContainer } from "../../utils/withContainer.unsafe";
 import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
-import { EtoOfferingCard } from "./EtoOfferingCard.unsafe";
+import { EtoOfferingCard } from "./EtoOfferingCard";
 import { Features } from "./parts/Features";
 import { LandingFeatured } from "./parts/LandingFeatured";
 import { LandingHeader } from "./parts/LandingHeader";

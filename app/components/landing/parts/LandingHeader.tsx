@@ -6,11 +6,6 @@ import { ExternalLink } from "../../shared/links";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 import { JoinCta } from "./JoinCta.unsafe";
 
-import * as blockstateImage from "../../../assets/img/landing/blockstate.png";
-import * as blockstateImage2x from "../../../assets/img/landing/blockstate@2x.png";
-import * as blockstateImage3x from "../../../assets/img/landing/blockstate@3x.png";
-import * as brilleImage from "../../../assets/img/landing/brille.png";
-import * as brilleImage2x from "../../../assets/img/landing/brille@2x.png";
 import * as btImage from "../../../assets/img/landing/BT.png";
 import * as btImage2x from "../../../assets/img/landing/BT@2x.png";
 import * as btImage3x from "../../../assets/img/landing/BT@3x.png";
@@ -85,15 +80,6 @@ const CompanyImages: React.FunctionComponent = () => (
         />
       </a>
     )}
-    <a href="#eto-card-6" className={styles.companyImage}>
-      <ResponsiveImage
-        srcSet={{ "1x": blockstateImage, "2x": blockstateImage2x, "3x": blockstateImage3x }}
-        alt="Blockstate"
-      />
-    </a>
-    <a href="#eto-card-1" className={styles.companyImage}>
-      <ResponsiveImage srcSet={{ "1x": brilleImage, "2x": brilleImage2x }} alt="Brille24" />
-    </a>
     <a href="#eto-card-4" className={styles.companyImage}>
       <ResponsiveImage srcSet={{ "1x": btImage, "2x": btImage2x, "3x": btImage3x }} alt="BT" />
     </a>

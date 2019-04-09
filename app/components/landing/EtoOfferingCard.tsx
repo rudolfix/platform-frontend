@@ -9,7 +9,6 @@ import { IResponsiveVideo, ResponsiveVideo } from "../shared/ResponsiveVideo";
 import { ITag, Tag } from "../shared/Tag.unsafe";
 
 import * as QuestionMark from "!url-loader!../../assets/img/inline_icons/questionmark_huge.svg";
-import * as AppStoreIcon from "../../assets/img/eto_offers/appstore.png";
 import * as SiemensLogo from "../../assets/img/eto_offers/Siemens-logo.svg";
 import * as styles from "./EtoOfferingCard.module.scss";
 
@@ -254,10 +253,8 @@ export class EtoOfferingCardComponent extends React.Component<
     );
   }
 
-  private renderBannerComponent(name: string): React.ReactNode {
+  renderBannerComponent(name: string): React.ReactNode {
     switch (name) {
-      case "BRILLE24":
-        return <BrilleBanner />;
       case "UNITI":
         return <UnitiBanner />;
       default:
@@ -266,19 +263,13 @@ export class EtoOfferingCardComponent extends React.Component<
   }
 }
 
-const mapSizesToProps = ({ width }: any) => ({
+const mapSizesToProps = ({ width }: { width: number }) => ({
   isMobile: width < 992,
 });
 
 export const EtoOfferingCard: React.FunctionComponent<IEtoOfferingProps> = withSizes(
   mapSizesToProps,
 )(EtoOfferingCardComponent);
-
-const BrilleBanner = () => (
-  <>
-    <img src={AppStoreIcon} className={styles.appStore} />
-  </>
-);
 
 const UnitiBanner = () => (
   <>

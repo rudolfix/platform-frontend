@@ -1,8 +1,6 @@
-import * as brille24hoverMp4 from "../assets/img/eto_offers/brille_animation.mp4";
-import * as brille24hoverWebm from "../assets/img/eto_offers/brille_animation.webm";
 import * as curfhoverMp4 from "../assets/img/eto_offers/curfhover@1x.mp4";
 import * as curfhoverWebm from "../assets/img/eto_offers/curfhover@1x.webm";
-import { IEtoOfferingProps } from "../components/landing/EtoOfferingCard.unsafe";
+import { IEtoOfferingProps } from "../components/landing/EtoOfferingCard";
 import { EVideoTheme } from "../components/shared/ResponsiveVideo";
 
 import * as agora from "../assets/img/eto_offers/agora.jpg";
@@ -13,11 +11,6 @@ import * as airprofile from "../assets/img/eto_offers/airprofile.jpg";
 import * as airprofile2 from "../assets/img/eto_offers/airprofile@2x.jpg";
 import * as airprofilehover from "../assets/img/eto_offers/airprofilehover@1x.jpg";
 import * as airprofile2hover from "../assets/img/eto_offers/airprofilehover@2x.jpg";
-import * as blockstatehover from "../assets/img/eto_offers/blockstate-hover@1x.png";
-import * as blockstate2hover from "../assets/img/eto_offers/blockstate-hover@2x.png";
-import * as blockstate from "../assets/img/eto_offers/blockstate@1x.jpg";
-import * as blockstate2 from "../assets/img/eto_offers/blockstate@2x.jpg";
-import * as brille24 from "../assets/img/eto_offers/brille_card.jpg";
 import * as curf from "../assets/img/eto_offers/curf.jpg";
 import * as curf2 from "../assets/img/eto_offers/curf@2x.jpg";
 import * as emflux from "../assets/img/eto_offers/emflux.jpg";
@@ -44,46 +37,6 @@ import * as ngravehover from "../assets/img/eto_offers/ngravehover@1x.jpg";
 import * as ngrave2hover from "../assets/img/eto_offers/ngravehover@2x.jpg";
 
 export const etoCompaniesCards: IEtoOfferingProps[] = [
-  {
-    roundName: "series d",
-    tags: [
-      {
-        text: "eyetech",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "germany",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "BRILLE24",
-    description:
-      "Eyewear pioneer aiming to change the way people access eye care with smart AI-applications. Founded 10 years ago, Brille24 has sold more than 2 million glasses and is currently serving millions of customers.",
-    quote: {
-      text: "",
-      credits: "",
-    },
-    topImage: {
-      srcSet: {
-        "1x": brille24,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteVideo: {
-      sources: {
-        webm: brille24hoverWebm,
-        mp4: brille24hoverMp4,
-      },
-      height: 270,
-      width: 530,
-    },
-    to: "https://itunes.apple.com/de/app/brille24/id1262362205?l=en&mt=8",
-    bannerWithGif: true,
-  },
   {
     roundName: "series b",
     tags: [
@@ -217,47 +170,6 @@ export const etoCompaniesCards: IEtoOfferingProps[] = [
       width: 100,
     },
     to: "http://www.emfluxmotors.com/",
-  },
-  {
-    roundName: "seed",
-    tags: [
-      {
-        text: "fintech",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "germany",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "BLOCKSTATE",
-    description:
-      "Creating products for the future of finance. BlockState builds efficient, transparent and compliant products for Asset Management, Debt Issuance and Derivatives based on Blockchain technology.",
-    quote: {
-      text: "",
-      credits: "",
-    },
-    topImage: {
-      srcSet: {
-        "1x": blockstate,
-        "2x": blockstate2,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteImage: {
-      srcSet: {
-        "1x": blockstatehover,
-        "2x": blockstate2hover,
-      },
-      alt: "",
-      height: 35,
-      width: 100,
-    },
-    to: "http://www.blockstate.com",
   },
   {
     tags: [

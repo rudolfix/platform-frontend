@@ -1,5 +1,5 @@
-import { tid } from "../../../test/testUtils";
 import { e2eRoutes } from "../../components/testing/e2eRoutes";
+import { tid } from "../utils";
 
 describe("Critical error page", () => {
   it("should exist when component throws during rendering", () => {

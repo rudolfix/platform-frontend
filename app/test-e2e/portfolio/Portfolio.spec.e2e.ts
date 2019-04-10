@@ -1,6 +1,5 @@
-import { tid } from "../../../test/testUtils";
 import { INV_ICBM_ETH_M_HAS_KYC_DUP } from "../fixtures";
-import { etoFixtureAddressByName, goToPortfolio } from "../utils/index";
+import { etoFixtureAddressByName, goToPortfolio, tid } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
 describe("Portfolio", () => {

@@ -1,7 +1,6 @@
-import { tid } from "../../../test/testUtils";
 import { appRoutes } from "../../components/appRoutes";
 import { withParams } from "../../utils/withParams";
-import { etoFixtureAddressByName } from "../utils";
+import { etoFixtureAddressByName, tid } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 

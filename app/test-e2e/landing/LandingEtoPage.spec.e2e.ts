@@ -1,5 +1,5 @@
-import { tid } from "../../../test/testUtils";
 import { appRoutes } from "../../components/appRoutes";
+import { tid } from "../utils";
 
 describe("Eto Landing", () => {
   it("should work", () => {

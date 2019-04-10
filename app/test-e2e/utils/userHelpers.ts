@@ -3,10 +3,10 @@ import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { toChecksumAddress } from "web3-utils";
 
-import { tid } from "../../../test/testUtils";
 import { TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
+import { tid } from "./selectors";
 
 /*
  * Pre-login user for faster tests

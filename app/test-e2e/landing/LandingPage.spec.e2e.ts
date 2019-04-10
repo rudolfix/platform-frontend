@@ -1,4 +1,4 @@
-import { tid } from "../../../test/testUtils";
+import { tid } from "../utils";
 import { fillForm } from "../utils/forms";
 
 describe("Landing", () => {

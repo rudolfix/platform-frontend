@@ -1,8 +1,14 @@
 import * as cn from "classnames";
+import { Container } from "inversify";
 import * as React from "react";
 import { Tooltip, TooltipProps } from "reactstrap";
 
-import * as styles from "./CustomTooltip.module.scss";
+import { symbols } from "../../../di/symbols";
+import { ILogger } from "../../../lib/dependencies/logger";
+import { noopLogger } from "../../../lib/dependencies/logger/index";
+import { ContainerContext } from "../../../utils/InversifyProvider";
+
+import * as styles from "./TooltipBase.module.scss";
 
 export enum ECustomTooltipTextPosition {
   CENTER = styles.tooltipTextCenter,
@@ -17,14 +23,17 @@ interface IState {
   tooltipOpen: boolean;
 }
 
-export class CustomTooltip extends React.Component<IProps & TooltipProps> {
+export class TooltipBase extends React.Component<
+  IProps & TooltipProps<{ hideArrow?: boolean }>,
+  IState
+> {
+  static contextType = ContainerContext;
+
   static defaultProps = {
     textPosition: ECustomTooltipTextPosition.CENTER,
   };
 
-  state: IState = {
-    tooltipOpen: false,
-  };
+  logger: ILogger;
 
   toggle = () => {
     if (!this.props.isOpen) {
@@ -32,12 +41,14 @@ export class CustomTooltip extends React.Component<IProps & TooltipProps> {
     }
   };
 
-  componentDidMount(): void {
-    if (this.props.isOpen) {
-      this.setState({
-        tooltipOpen: true,
-      });
-    }
+  constructor(props: IProps & TooltipProps, container: Container) {
+    super(props);
+
+    this.state = {
+      tooltipOpen: props.isOpen || false,
+    };
+
+    this.logger = container ? container.get<ILogger>(symbols.logger) : noopLogger;
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
@@ -46,7 +57,7 @@ export class CustomTooltip extends React.Component<IProps & TooltipProps> {
     // prevents a reactstrap tooltip bug where target dom node is not found
 
     // tslint:disable-next-line:no-console
-    console.error(error, info);
+    this.logger.error("Fatal tooltip error", error, info);
     // trigger a rerender to update current dom
     // this prevents errors where the id in the target dom node has changed dynamically
     this.setState({ tooltipOpen: this.state.tooltipOpen });
@@ -61,7 +72,7 @@ export class CustomTooltip extends React.Component<IProps & TooltipProps> {
         target={target}
         autohide={false}
         isOpen={this.state.tooltipOpen}
-        toggle={toggle || this.toggle}
+        toggle={this.toggle}
         {...props}
       >
         {children}

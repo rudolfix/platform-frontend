@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ECustomTooltipTextPosition } from "./CustomTooltip";
 import { Tooltip } from "./Tooltip";
+import { ECustomTooltipTextPosition } from "./TooltipBase";
 
 const lorem =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, consequatur deserunt voluptatibus sapiente ducimus iusto culpa consectetur minus, voluptatum tempora nostrum quasi, rerum non facilis doloribus tempore ea obcaecati reprehenderit!";

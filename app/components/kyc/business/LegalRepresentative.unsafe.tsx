@@ -31,7 +31,7 @@ import {
   unboolify,
 } from "../../shared/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
-import { Tooltip } from "../../shared/Tooltip";
+import { Tooltip } from "../../shared/tooltips";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 import { KYCBeneficialOwners } from "./BeneficialOwners";

@@ -45,7 +45,7 @@ import {
 } from "../../../shared/forms";
 import { List } from "../../../shared/List";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
-import { Tooltip } from "../../../shared/Tooltip";
+import { Tooltip } from "../../../shared/tooltips";
 import { convert, parseStringToInteger } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
@@ -230,7 +230,12 @@ const EtoRegistrationProductType: React.FunctionComponent<IProps> = ({
             disabled={readonly}
             name="productId"
             label={
-              <Tooltip content={<ProductHighlights product={product} />} placement="right">
+              <Tooltip
+                content={<ProductHighlights product={product} />}
+                placement="right"
+                delay={0}
+                preventDefault={false}
+              >
                 {productMeaningfulName || product.name}
               </Tooltip>
             }

@@ -19,12 +19,11 @@ import { CommonHtmlProps } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { appRoutes } from "../../appRoutes";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
-import { ECustomTooltipTextPosition } from "../../shared/CustomTooltip";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { ECurrency, ECurrencySymbol, Money } from "../../shared/Money.unsafe";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
-import { Tooltip } from "../../shared/Tooltip";
+import { ECustomTooltipTextPosition, Tooltip } from "../../shared/tooltips";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";

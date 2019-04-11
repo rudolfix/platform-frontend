@@ -17,7 +17,7 @@ import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormFieldBoolean } from "../../../shared/forms";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor.unsafe";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
-import { Tooltip } from "../../../shared/Tooltip";
+import { Tooltip } from "../../../shared/tooltips";
 import { convert, removeEmptyKeyValueField, removeEmptyKeyValueFields } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";

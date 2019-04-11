@@ -6,7 +6,6 @@ import { TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
 import { ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { ActionRequired, EActionRequiredPosition } from "../../shared/ActionRequired";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { CustomTooltip } from "../../shared/CustomTooltip";
 import {
   ConfettiEthereum,
   EEthereumIconSize,
@@ -14,6 +13,7 @@ import {
   EthereumIcon,
 } from "../../shared/ethereum";
 import { ELoadingIndicator, LoadingIndicator } from "../../shared/loading-indicator";
+import { TooltipBase } from "../../shared/tooltips";
 
 import * as failedImg from "../../../assets/img/ether_fail.svg";
 
@@ -86,11 +86,11 @@ const NoPendingTransaction: React.FunctionComponent = () => (
       />
     </div>
 
-    <CustomTooltip target="no-pending-transactions">
+    <TooltipBase target="no-pending-transactions" hideArrow={true}>
       <p className="mb-0">
         <FormattedMessage id="pending-transaction-status.no-pending-transactions.tooltip" />
       </p>
-    </CustomTooltip>
+    </TooltipBase>
   </>
 );
 

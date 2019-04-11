@@ -10,16 +10,12 @@ import {
   MIN_SHARE_NOMINAL_VALUE_EUR,
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
-  PlatformTerms,
-  PUBLIC_DURATION_DAYS,
-  Q18,
-  SIGNING_DURATION_DAYS,
-  WHITELIST_DURATION_DAYS,
 } from "../../../config/constants";
 import { DeepPartial, DeepReadonly } from "../../../types";
 import * as YupTS from "../../yup-ts";
 import { dateSchema, percentage } from "../util/schemaHelpers.unsafe";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
+import { TEtoProduct } from "./EtoProductsApi.interfaces";
 
 /** COMPANY ETO RELATED INTERFACES
  *  only deals with "/companies/me"
@@ -219,46 +215,87 @@ export enum EtoStateToCamelcase {
 // see@ swagger /api/eto-listing/ui/#!/ETO/api_eto_get_me
 // see@ swagger api/eto-listing/ui/#!/Documents/api_document_documents_state_info
 
-export const EtoTermsType = YupTS.object({
-  currencies: YupTS.array(YupTS.string()),
-  prospectusLanguage: YupTS.string(),
-  minTicketEur: YupTS.number().enhance((v: NumberSchema) => {
-    const minTicketEur = PlatformTerms.MIN_TICKET_EUR_ULPS.div(Q18).toNumber();
-
-    return v.min(minTicketEur, (
-      <FormattedMessage
-        id="eto.form.section.eto-terms.minimum-ticket-size.error.less-than-accepted"
-        values={{ value: minTicketEur }}
-      />
-    ) as any);
-  }),
-  maxTicketEur: YupTS.number()
-    .optional()
-    .enhance(validator =>
-      validator.when("minTicketEur", (value: number) =>
-        validator.moreThan(value, (
-          <FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size.error.less-than-minimum" />
-        ) as any),
-      ),
+export const getEtoTermsSchema = ({
+  minTicketSize,
+  maxTicketSize,
+  maxWhitelistDurationDays,
+  minWhitelistDurationDays,
+  maxSigningDurationDays,
+  minSigningDurationDays,
+  maxPublicDurationDays,
+  minPublicDurationDays,
+}: Partial<TEtoProduct> = {}) =>
+  YupTS.object({
+    currencies: YupTS.array(YupTS.string()),
+    prospectusLanguage: YupTS.string(),
+    minTicketEur: YupTS.number().enhance(
+      (v: NumberSchema) =>
+        minTicketSize !== undefined
+          ? v.min(minTicketSize, (
+              <FormattedMessage
+                id="eto.form.section.eto-terms.minimum-ticket-size.error.less-than-accepted"
+                values={{ value: minTicketSize }}
+              />
+            ) as any)
+          : v,
     ),
-  enableTransferOnSuccess: YupTS.boolean(),
-  notUnderCrowdfundingRegulations: YupTS.onlyTrue(
-    <FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding.error" />,
-  ),
-  allowRetailInvestors: YupTS.boolean(),
-  whitelistDurationDays: YupTS.number().enhance(v =>
-    v.min(WHITELIST_DURATION_DAYS.min).max(WHITELIST_DURATION_DAYS.max),
-  ),
-  publicDurationDays: YupTS.number().enhance(v =>
-    v.min(PUBLIC_DURATION_DAYS.min).max(PUBLIC_DURATION_DAYS.max),
-  ),
-  signingDurationDays: YupTS.number().enhance(v =>
-    v.min(SIGNING_DURATION_DAYS.min).max(SIGNING_DURATION_DAYS.max),
-  ),
-  additionalTerms: YupTS.string().optional(),
-});
+    maxTicketEur: YupTS.number()
+      .optional()
+      .enhance(v => {
+        v = v.when("minTicketEur", (value: number) =>
+          v.min(value, (
+            <FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size.error.less-than-minimum" />
+          ) as any),
+        );
 
-export type TEtoTermsType = YupTS.TypeOf<typeof EtoTermsType>;
+        if (maxTicketSize && maxTicketSize > 0) {
+          v = v.max(maxTicketSize);
+        }
+
+        return v;
+      }),
+    enableTransferOnSuccess: YupTS.boolean(),
+    notUnderCrowdfundingRegulations: YupTS.onlyTrue(
+      <FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding.error" />,
+    ),
+    allowRetailInvestors: YupTS.boolean(),
+    whitelistDurationDays: YupTS.number().enhance(v => {
+      if (minWhitelistDurationDays !== undefined) {
+        v = v.min(minWhitelistDurationDays);
+      }
+
+      if (maxWhitelistDurationDays !== undefined) {
+        v = v.max(maxWhitelistDurationDays);
+      }
+
+      return v;
+    }),
+    publicDurationDays: YupTS.number().enhance(v => {
+      if (minPublicDurationDays !== undefined) {
+        v = v.min(minPublicDurationDays);
+      }
+
+      if (maxPublicDurationDays !== undefined) {
+        v = v.max(maxPublicDurationDays);
+      }
+
+      return v;
+    }),
+    signingDurationDays: YupTS.number().enhance(v => {
+      if (minSigningDurationDays !== undefined) {
+        v = v.min(minSigningDurationDays);
+      }
+
+      if (maxSigningDurationDays !== undefined) {
+        v = v.max(maxSigningDurationDays);
+      }
+
+      return v;
+    }),
+    additionalTerms: YupTS.string().optional(),
+  });
+
+export type TEtoTermsType = YupTS.TypeOf<ReturnType<typeof getEtoTermsSchema>>;
 
 export const EtoEquityTokenInfoType = YupTS.object({
   equityTokenName: YupTS.string(),
@@ -315,6 +352,7 @@ interface IAdditionalEtoType {
   documents: TEtoDocumentTemplates;
   maxPledges: number;
   canEnableBookbuilding: boolean;
+  product: TEtoProduct;
 }
 
 export type TBookbuildingStatsType = {
@@ -347,7 +385,7 @@ export type TGeneralEtoData = {
 export type TPublicEtoData = TEtoSpecsData & { company: TCompanyEtoData };
 
 export const GeneralEtoDataType = YupTS.object({
-  ...EtoTermsType.shape,
+  ...getEtoTermsSchema().shape,
   ...EtoEquityTokenInfoType.shape,
   ...EtoVotingRightsType.shape,
   ...EtoMediaType.shape,

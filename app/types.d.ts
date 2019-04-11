@@ -35,8 +35,6 @@ export type DeepReadonly<T> = T extends Primitive | WhitelistedWritableTypes
 
 export type DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
 
-export type FirstParameterType<T> = T extends (param: infer R) => any ? R : never;
-
 // Taken from @types/reactstrap
 // @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23700
 export type InputType =
@@ -89,7 +87,7 @@ export type TAcceptedFileType =
 
 /**
  * From T, omit a set of properties whose keys are in the union K
- * @example OmitKeys<{ foo: boolean, bar: string }, "foo">
+ * @example OmitKeys<{ foo: boolean, bar: string }, "foo"> // { bar: string }
  */
 export type OmitKeys<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -112,6 +110,14 @@ type SelectPropertyNames<T, R> = { [K in keyof T]: T[K] extends R ? K : never }[
  * PickProperties<{ foo: boolean, bar: string, baz: string }, string> // { bar: string, baz: string }
  */
 type PickProperties<T, R> = Pick<T, SelectPropertyNames<T, R>>;
+
+/**
+ * In T, mark as required properties from K
+ * Useful for types narrowing after recompose `branch` method
+ * @example
+ * RequiredByKeys<{ foo?: boolean, bar?: string }, "foo"> // { foo: boolean, bar?: string }
+ */
+export type RequiredByKeys<T, K extends keyof T> = Required<Pick<T, K>> & OmitKeys<T, K>;
 
 /**
  * Overwrites properties from T1 with one from T2

@@ -1,4 +1,7 @@
+import { isFunction } from "lodash";
+
 import { assertEtoDashboard } from "../utils";
+import { assertNotificationExists } from "../utils/assertions";
 import { fillForm, TFormFixture } from "../utils/forms";
 import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
@@ -15,9 +18,15 @@ import {
   votingRights,
 } from "./fixtures";
 
-const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
+const fillAndAssert = (section: string, sideEffect: TFormFixture | (() => void)) => {
   cy.get(tid(section, "button")).click();
-  fillForm(sectionForm);
+
+  if (isFunction(sideEffect)) {
+    sideEffect();
+  } else {
+    fillForm(sideEffect);
+  }
+
   assertEtoDashboard();
   cy.get(`${tid(section)} ${tid("chart-circle.progress")}`).should("contain", "100%");
 };
@@ -33,7 +42,21 @@ describe("Eto Forms", () => {
 
       fillAndAssert("eto-progress-widget-investment-terms", investmentTermsForm);
 
-      fillAndAssert("eto-progress-widget-eto-terms", etoTermsForm);
+      fillAndAssert("eto-progress-widget-eto-terms", () => {
+        fillForm(
+          {
+            productId: {
+              value: "0x0000000000000000000000000000000000000007",
+              type: "radio",
+            },
+          },
+          { submit: false },
+        );
+
+        assertNotificationExists("eto-flow-product-changed-successfully");
+
+        fillForm(etoTermsForm);
+      });
 
       cy.get(tid("eto-progress-widget-key-individuals", "button")).awaitedClick();
       // first click on all the add buttons to open the fields

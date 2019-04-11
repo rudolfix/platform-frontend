@@ -1,5 +1,4 @@
-import { connect, FieldArray } from "formik";
-import { get } from "lodash";
+import { connect, FieldArray, getIn } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
@@ -54,7 +53,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
   compoundFieldValidation = (fieldName: string, neighborName: string) => {
     const schema = this.props.validationSchema && this.props.validationSchema.fields[fieldName];
     return (value: any) => {
-      const neighborValue = get(this.props.formik.values, neighborName);
+      const neighborValue = getIn(this.props.formik.values, neighborName);
       if (neighborValue !== undefined && value === undefined) {
         return <FormattedMessage id="form.field.error.both-fields-required" />;
       } else {
@@ -157,7 +156,7 @@ class ArrayOfKeyValueFieldsBase extends React.Component<
   constructor(props: IProps & IExternalProps & CommonHtmlProps & TFormikConnect) {
     super(props);
 
-    if (!get(props.formik.values, props.name)) {
+    if (!getIn(props.formik.values, props.name)) {
       this.suggestions.forEach((_, index) =>
         this.setFieldValue(`${props.name}.${index}`, this.blankField),
       );
@@ -167,7 +166,7 @@ class ArrayOfKeyValueFieldsBase extends React.Component<
   render(): React.ReactNode {
     const { prefix, transformRatio, disabled, formik, name, valuePlaceholder } = this.props;
 
-    const categoryDistribution = get(formik.values, name) || [];
+    const categoryDistribution = getIn(formik.values, name) || [];
     const formFieldKeys = this.props.fieldNames;
 
     return (

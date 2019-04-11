@@ -1,7 +1,9 @@
 import { TBookbuildingStatsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 
 export interface IEtoFlowState {
   etoPreviewCode?: string;
+  products?: TEtoProducts;
   loading: boolean;
   saving: boolean;
   bookbuildingStats: TBookbuildingStatsType[];

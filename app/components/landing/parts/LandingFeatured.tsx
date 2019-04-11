@@ -22,11 +22,11 @@ const LandingFeatured: React.FunctionComponent = () => (
         tagName="span"
       />
     </p>
-    <section className={cn(styles.landingFeaturesContainer, "pure")}>
+    <section className={styles.landingFeaturesContainer}>
       <h3 className={cn(styles.landingFeaturesHeader)}>
         <FormattedMessage id="platform.landing.list.header" />
       </h3>
-      <ul className={styles.landingFeatures}>
+      <ul className={cn(styles.landingFeatures, "pure")}>
         <li>
           <FormattedMessage id="platform.landing.list.first" />
         </li>

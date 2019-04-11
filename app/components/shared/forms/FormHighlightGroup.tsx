@@ -8,11 +8,10 @@ interface IProps {
   title?: TTranslatedString | string;
 }
 
-export const FormHighlightGroup: React.FunctionComponent<IProps> = ({ title, children }) => {
-  return (
-    <div className={styles.formHighlightGroup}>
-      {title && <div className="mb-4 text-uppercase">{title}</div>}
-      {children}
-    </div>
-  );
-};
+// TODO: Refactor to fieldset with legend as a title
+export const FormHighlightGroup: React.FunctionComponent<IProps> = ({ title, children }) => (
+  <div className={styles.formHighlightGroup}>
+    {title && <p>{title}</p>}
+    {children}
+  </div>
+);

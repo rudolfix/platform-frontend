@@ -89,10 +89,6 @@ export const investmentTermsForm: TFormFixture = {
 // eto terms
 export const etoTermsRequiredForm: TFormFixture = {
   minTicketEur: "750",
-  prospectusLanguage: {
-    value: "de",
-    type: "radio",
-  },
   whitelistDurationDays: {
     value: "5",
     type: "range",
@@ -106,16 +102,8 @@ export const etoTermsRequiredForm: TFormFixture = {
     type: "range",
   },
   enableTransferOnSuccess: {
-    value: "false",
-    type: "radio",
-  },
-  notUnderCrowdfundingRegulations: {
-    values: { true: true },
-    type: "checkbox",
-  },
-  allowRetailInvestors: {
-    values: { true: true },
-    type: "checkbox",
+    checked: false,
+    type: "toggle",
   },
   "eto-registration-eto-terms-submit": {
     type: "submit",
@@ -124,17 +112,7 @@ export const etoTermsRequiredForm: TFormFixture = {
 
 export const etoTermsForm: TFormFixture = {
   ...etoTermsRequiredForm,
-  currencies: {
-    values: {
-      eth: false,
-    },
-    type: "checkbox",
-  },
-  prospectusLanguage: {
-    value: "de",
-    type: "radio",
-  },
-  maxTicketEur: "10000",
+  maxTicketEur: "100000",
   whitelistDurationDays: {
     value: "5",
     type: "range",

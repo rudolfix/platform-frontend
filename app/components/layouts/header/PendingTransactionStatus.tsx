@@ -6,7 +6,7 @@ import { TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
 import { ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { ActionRequired, EActionRequiredPosition } from "../../shared/ActionRequired";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { CustomTooltip } from "../../shared/CustomTooltip.unsafe";
+import { CustomTooltip } from "../../shared/CustomTooltip";
 import {
   ConfettiEthereum,
   EEthereumIconSize,

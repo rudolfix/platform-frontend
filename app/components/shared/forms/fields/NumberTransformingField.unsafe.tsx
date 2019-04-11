@@ -47,7 +47,7 @@ export const NumberTransformingField = ({
       const invalid = isNonValid(touched, errors, name, submitCount);
 
       return (
-        <FormGroup className={styles.keyValueField}>
+        <FormGroup>
           {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
           <FastField
             name={name}

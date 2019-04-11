@@ -2,54 +2,77 @@ import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { setDisplayName } from "recompose";
-import { compose } from "redux";
+import { branch, compose, fromRenderProps, renderComponent, setDisplayName } from "recompose";
 
-import {
-  EtoTermsType,
-  TPartialEtoSpecData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { symbols } from "../../../../di/symbols";
+import { getEtoTermsSchema, TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
+import {
+  EAssetType,
+  EOfferingDocumentType,
+  EtoProductSchema,
+  TEtoProduct,
+  TEtoProducts,
+} from "../../../../lib/api/eto/EtoProductsApi.interfaces";
+import { ILogger } from "../../../../lib/dependencies/logger";
+import * as YupTS from "../../../../lib/yup-ts";
 import { actions } from "../../../../modules/actions";
-import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
+import {
+  selectAvailableProducts,
+  selectIsSaving,
+  selectIssuerEto,
+  selectIssuerEtoState,
+} from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
-import { TTranslatedString } from "../../../../types";
+import { DeepReadonly, RequiredByKeys } from "../../../../types";
+import { ContainerContext, TContainerContext } from "../../../../utils/InversifyProvider";
+import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
+  ECheckboxLayout,
   FormField,
-  FormFieldBoolean,
-  FormFieldError,
-  FormRadioButton,
-  FormTextArea,
-} from "../../../shared/forms";
-import {
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
-} from "../../../shared/forms/fields/FormFieldCheckboxGroup";
-import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
-import { FormRange } from "../../../shared/forms/fields/FormRange.unsafe";
+  FormFieldLabel,
+  FormFieldRaw,
+  FormHighlightGroup,
+  FormLabel,
+  FormRange,
+  FormTextArea,
+  FormToggle,
+  RadioButtonLayout,
+} from "../../../shared/forms";
+import { List } from "../../../shared/List";
+import { LoadingIndicator } from "../../../shared/loading-indicator";
+import { Tooltip } from "../../../shared/Tooltip";
 import { convert, parseStringToInteger } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
+import { convertAmountToText, getProductMeaningfulName } from "./etoTermsUtils";
 
 import * as styles from "../Shared.module.scss";
 
-interface IExternalProps {
-  readonly: boolean;
-}
-
 interface IStateProps {
-  loadingData: boolean;
+  readonly: boolean;
   savingData: boolean;
-  stateValues: TPartialEtoSpecData;
+  eto: TEtoSpecsData;
+  availableProducts?: DeepReadonly<TEtoProducts>;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialEtoSpecData) => void;
+  saveData: (values: TEtoSpecsData) => void;
+  changeProductType: (productId: string) => void;
 }
 
-type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
+interface IContainerProps {
+  logger: ILogger | undefined;
+}
+
+type IProps = RequiredByKeys<IStateProps, "availableProducts"> &
+  IDispatchProps &
+  IContainerProps &
+  FormikProps<TEtoSpecsData>;
 
 interface ICurrencies {
   [key: string]: string;
@@ -60,198 +83,335 @@ const CURRENCIES: ICurrencies = {
   eur_t: "nEUR",
 };
 
-const MIN_NON_RETAIL_TICKET = 100000;
-
 const currencies = Object.keys(CURRENCIES);
 
-const EtoRegistrationTermsComponent: React.FunctionComponent<IProps> = ({
+const EtoRegistrationTermsAllowedChanges: React.FunctionComponent<IProps> = ({
   readonly,
-  savingData,
-}) => {
-  return (
-    <EtoFormBase
-      title={<FormattedMessage id="eto.form.eto-terms.title" />}
-      validator={EtoTermsType.toYup()}
-    >
-      <Section>
-        <div className="form-group">
-          <FormFieldLabel name="allowRetailInvestors">
-            <FormattedMessage id="eto.form.section.eto-terms.allow-retail-label" />
-          </FormFieldLabel>
-          <div>
-            <FormRadioButton
-              disabled={readonly}
-              name="allowRetailInvestors"
-              label={<FormattedMessage id="eto.form.section.eto-terms.is-hnwi-eto" />}
-              value={false}
-            />
-          </div>
-          <div>
-            <FormRadioButton
-              disabled={readonly}
-              name="allowRetailInvestors"
-              label={<FormattedMessage id="eto.form.section.eto-terms.is-retail-eto" />}
-              value={true}
-            />
-          </div>
-        </div>
+  values,
+}) => (
+  <>
+    <p>
+      <FormattedMessage id="eto.form.section.eto-terms.settings-ready-for-configuration" />
+    </p>
 
-        <div className="form-group">
-          <FormFieldBoolean
-            disabled={readonly}
-            name="notUnderCrowdfundingRegulations"
-            label={<FormattedMessage id="eto.form.section.eto-terms.is-not-crowdfunding" />}
-          />
-        </div>
-
-        <div className="form-group">
-          <FormFieldCheckboxGroup
-            name="currencies"
-            label={<FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />}
-          >
-            {currencies.map(currency => (
-              <FormFieldCheckbox
-                key={currency}
-                label={CURRENCIES[currency]}
-                value={currency}
-                disabled={readonly}
-              />
-            ))}
-          </FormFieldCheckboxGroup>
-        </div>
-
-        <Row>
-          <Col>
-            <FormField
-              label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
-              placeholder="1"
-              prefix="€"
-              name="minTicketEur"
-              type="number"
-              disabled={readonly}
-            />
-          </Col>
-          <Col>
-            <FormField
-              label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
-              placeholder="Unlimited"
-              prefix="€"
-              name="maxTicketEur"
-              type="number"
-              disabled={readonly}
-            />
-          </Col>
-        </Row>
-
-        <div className="form-group">
-          <FormFieldLabel name="prospectusLanguage">
-            <FormattedMessage id="eto.form.section.eto-terms.prospectus-language" />
-          </FormFieldLabel>
-          <div>
-            <FormRadioButton name="prospectusLanguage" label="DE" value="de" disabled={readonly} />
-          </div>
-          <div>
-            <FormRadioButton name="prospectusLanguage" label="EN" value="en" disabled={readonly} />
-          </div>
-          <FormFieldError alignLeft name="prospectusLanguage" />
-        </div>
-
-        <div className="form-group">
-          <FormFieldLabel name="whitelistDurationDays">
-            <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
-          </FormFieldLabel>
-          <FormRange
-            disabled={readonly}
-            name="whitelistDurationDays"
-            unitMin={
-              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />
-            }
-            unitMax={
-              <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />
-            }
-          />
-        </div>
-
-        <div className="form-group">
-          <FormFieldLabel name="publicDurationDays">
-            <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
-          </FormFieldLabel>
-          <FormRange
-            disabled={readonly}
-            name="publicDurationDays"
-            unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
-          />
-        </div>
-
-        <div className="form-group">
-          <FormFieldLabel name="signingDurationDays">
-            <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
-          </FormFieldLabel>
-          <FormRange
-            disabled={readonly}
-            name="signingDurationDays"
-            unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
-          />
-        </div>
-
-        <div className="form-group">
-          <FormFieldLabel name="enableTransferOnSuccess">
-            <FormattedMessage id="eto.form.section.eto-terms.token-tradable" />
-          </FormFieldLabel>
-          <div>
-            <FormRadioButton
-              disabled={readonly}
-              name="enableTransferOnSuccess"
-              label={<FormattedMessage id="form.select.enabled" />}
-              value={true}
-            />
-          </div>
-          <div>
-            <FormRadioButton
-              disabled={readonly}
-              name="enableTransferOnSuccess"
-              label={<FormattedMessage id="form.select.disabled" />}
-              value={false}
-            />
-          </div>
-          <FormFieldError name="enableTransferOnSuccess" alignLeft />
-        </div>
-
-        <FormTextArea
+    {values.product.canSetTransferability && (
+      <div className="form-group">
+        <FormFieldLabel name="enableTransferOnSuccess">
+          <FormattedMessage id="eto.form.section.eto-terms.when-token-tradable.label" />
+        </FormFieldLabel>
+        <FormToggle
+          name="enableTransferOnSuccess"
+          enabledLabel={
+            <FormattedMessage id="eto.form.section.eto-terms.when-token-tradable.value.enabled" />
+          }
+          disabledLabel={
+            <FormattedMessage id="eto.form.section.eto-terms.when-token-tradable.value.disabled" />
+          }
           disabled={readonly}
-          className="mb-2 mt-2"
-          label={<FormattedMessage id="eto.form.additional-terms" />}
-          name="additionalTerms"
         />
-      </Section>
+      </div>
+    )}
 
-      {!readonly && (
-        <Section className={styles.buttonSection}>
-          <Button
-            layout={EButtonLayout.PRIMARY}
-            type="submit"
-            isLoading={savingData}
-            data-test-id="eto-registration-eto-terms-submit"
-          >
-            <FormattedMessage id="form.button.save" />
-          </Button>
-        </Section>
+    <Row>
+      <Col>
+        <FormField
+          label={<FormattedMessage id="eto.form.section.eto-terms.minimum-ticket-size" />}
+          placeholder="1"
+          prefix="€"
+          name="minTicketEur"
+          disabled={readonly}
+        />
+      </Col>
+      <Col>
+        <FormField
+          label={<FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size" />}
+          placeholder="Unlimited"
+          prefix="€"
+          name="maxTicketEur"
+          disabled={readonly}
+        />
+      </Col>
+    </Row>
+
+    <div className="form-group">
+      <FormFieldLabel name="whitelistDurationDays">
+        <FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration" />
+      </FormFieldLabel>
+      <FormRange
+        disabled={readonly}
+        name="whitelistDurationDays"
+        unitMin={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-min" />}
+        unitMax={<FormattedMessage id="eto.form.section.eto-terms.pre-sale-duration.unit-max" />}
+      />
+    </div>
+
+    <div className="form-group">
+      <FormFieldLabel name="publicDurationDays">
+        <FormattedMessage id="eto.form.section.eto-terms.public-offer-duration" />
+      </FormFieldLabel>
+      <FormRange
+        disabled={readonly}
+        name="publicDurationDays"
+        unit={<FormattedMessage id="eto.form.section.eto-terms.public-offer-duration.unit" />}
+      />
+    </div>
+
+    <div className="form-group">
+      <FormFieldLabel name="signingDurationDays">
+        <FormattedMessage id="eto.form.section.eto-terms.signing-duration" />
+      </FormFieldLabel>
+      <FormRange
+        disabled={readonly}
+        name="signingDurationDays"
+        unit={<FormattedMessage id="eto.form.section.eto-terms.signing-duration.unit" />}
+      />
+    </div>
+
+    <FormTextArea
+      disabled={readonly}
+      label={<FormattedMessage id="eto.form.additional-terms" />}
+      name="additionalTerms"
+    />
+  </>
+);
+
+const ProductHighlights: React.FunctionComponent<{ product: TEtoProduct }> = ({ product }) => (
+  <List
+    className="mb-0"
+    items={[
+      <FormattedMessage
+        id="eto.form.section.eto-terms.product.max-investment-amount"
+        values={{ amount: convertAmountToText(product.maxInvestmentAmount) }}
+      />,
+      <FormattedMessage
+        id="eto.form.section.eto-terms.product.min-ticket-size"
+        values={{ amount: convertAmountToText(product.minTicketSize) }}
+      />,
+      <FormattedMessage
+        id="eto.form.section.eto-terms.product.asset-type"
+        values={{ type: product.assetType }}
+      />,
+      <FormattedMessage
+        id="eto.form.section.eto-terms.product.document-type"
+        values={{ type: product.offeringDocumentType }}
+      />,
+      <FormattedMessage
+        id="eto.form.section.eto-terms.product.is-transferable"
+        values={{ isTransferable: product.canSetTransferability }}
+      />,
+    ]}
+  />
+);
+
+const EtoRegistrationProductType: React.FunctionComponent<IProps> = ({
+  readonly,
+  availableProducts,
+  changeProductType,
+  values,
+  logger,
+}) => (
+  <>
+    <div className="form-group">
+      <FormLabel for="productId">
+        <FormattedMessage id="eto.form.section.eto-terms.eto-type" />
+      </FormLabel>
+
+      {availableProducts.map(product => {
+        const productMeaningfulName = getProductMeaningfulName(product.name);
+
+        if (productMeaningfulName === undefined) {
+          logger && logger.warn(`Meaningful name not provided for "${product.name}" product`);
+        }
+
+        return (
+          <RadioButtonLayout
+            key={product.id}
+            layout={ECheckboxLayout.BLOCK}
+            disabled={readonly}
+            name="productId"
+            label={
+              <Tooltip content={<ProductHighlights product={product} />} placement="right">
+                {productMeaningfulName || product.name}
+              </Tooltip>
+            }
+            value={product.id}
+            checked={values.product.id === product.id}
+            onChange={() => changeProductType(product.id)}
+          />
+        );
+      })}
+    </div>
+
+    <FormHighlightGroup
+      title={<FormattedMessage id="eto.form.section.eto-terms.setting-auto-calculated" />}
+    >
+      <div className="form-group">
+        <FormFieldLabel name="product.assetType">
+          <FormattedMessage id="eto.form.section.eto-terms.product.asset-type.label" />
+        </FormFieldLabel>
+        <FormToggle
+          name="product.assetType"
+          trueValue={EAssetType.SECURITY}
+          falseValue={EAssetType.VMA}
+          enabledLabel={
+            <FormattedMessage
+              id="eto.form.section.eto-terms.product.asset-type"
+              values={{ type: EAssetType.SECURITY }}
+            />
+          }
+          disabledLabel={
+            <FormattedMessage
+              id="eto.form.section.eto-terms.product.asset-type"
+              values={{ type: EAssetType.VMA }}
+            />
+          }
+          disabled={true}
+        />
+      </div>
+
+      <div className="form-group">
+        <FormFieldLabel name="product.offeringDocumentType">
+          <FormattedMessage id="eto.form.section.eto-terms.product.document-type.label" />
+        </FormFieldLabel>
+        <FormToggle
+          name="product.offeringDocumentType"
+          trueValue={EOfferingDocumentType.MEMORANDUM}
+          falseValue={EOfferingDocumentType.PROSPECTUS}
+          enabledLabel={
+            <FormattedMessage
+              id="eto.form.section.eto-terms.product.document-type"
+              values={{ type: EOfferingDocumentType.MEMORANDUM }}
+            />
+          }
+          disabledLabel={
+            <FormattedMessage
+              id="eto.form.section.eto-terms.product.document-type"
+              values={{ type: EOfferingDocumentType.PROSPECTUS }}
+            />
+          }
+          disabled={true}
+        />
+      </div>
+
+      <div className="form-group">
+        <FormFieldLabel name="prospectusLanguage">
+          <FormattedMessage id="eto.form.section.eto-terms.product.document-language.label" />
+        </FormFieldLabel>
+        <FormToggle
+          name="prospectusLanguage"
+          trueValue={"de"}
+          falseValue={"en"}
+          enabledLabel={"DE"}
+          disabledLabel={"EN"}
+          disabled={true}
+        />
+      </div>
+
+      <div className="form-group">
+        <FormFieldLabel name="product.jurisdiction">
+          <FormattedMessage id="eto.form.section.eto-terms.product.jurisdiction.label" />
+        </FormFieldLabel>
+        <FormToggle
+          name="product.jurisdiction"
+          trueValue={"de"}
+          falseValue={"li"}
+          enabledLabel={"DE"}
+          disabledLabel={"LI"}
+          disabled={true}
+        />
+      </div>
+
+      <div className="form-group">
+        <FormFieldCheckboxGroup
+          name="currencies"
+          label={<FormattedMessage id="eto.form.section.eto-terms.fundraising-currency" />}
+        >
+          {currencies.map(currency => (
+            <FormFieldCheckbox
+              key={currency}
+              label={CURRENCIES[currency]}
+              value={currency}
+              disabled={true}
+            />
+          ))}
+        </FormFieldCheckboxGroup>
+      </div>
+
+      {values.product.maxInvestmentAmount === 0 ? (
+        <FormFieldRaw
+          name="product.maxInvestmentAmount"
+          disabled={true}
+          label={<FormattedMessage id="eto.form.section.eto-terms.product.max-amount.label" />}
+          prefix="€"
+          value={"Unlimited"}
+        />
+      ) : (
+        <FormField
+          prefix="€"
+          label={<FormattedMessage id="eto.form.section.eto-terms.product.max-amount.label" />}
+          name="product.maxInvestmentAmount"
+          disabled={true}
+        />
       )}
-    </EtoFormBase>
-  );
-};
 
-const EtoRegistrationTerms = compose<React.FunctionComponent<IExternalProps>>(
+      <div className="form-group mb-0">
+        <FormFieldLabel name="product.canSetTransferability">
+          <FormattedMessage id="eto.form.section.eto-terms.product.is-transferable.label" />
+        </FormFieldLabel>
+
+        <FormToggle
+          name="product.canSetTransferability"
+          enabledLabel={<FormattedMessage id="form.select.yes" />}
+          disabledLabel={<FormattedMessage id="form.select.no" />}
+          disabled={true}
+        />
+      </div>
+    </FormHighlightGroup>
+  </>
+);
+
+const EtoRegistrationTermsLayout: React.FunctionComponent<IProps> = props => (
+  <EtoFormBase
+    title={<FormattedMessage id="eto.form.eto-terms.title" />}
+    validator={getEtoTermsSchema().toYup()}
+  >
+    <Section>
+      <EtoRegistrationProductType {...props} />
+
+      <EtoRegistrationTermsAllowedChanges {...props} />
+    </Section>
+
+    {!props.readonly && (
+      <Section className={styles.buttonSection}>
+        <Button
+          layout={EButtonLayout.PRIMARY}
+          type="submit"
+          isLoading={props.savingData}
+          data-test-id="eto-registration-eto-terms-submit"
+        >
+          <FormattedMessage id="form.button.save" />
+        </Button>
+      </Section>
+    )}
+  </EtoFormBase>
+);
+
+const EtoRegistrationTerms = compose<IProps, {}>(
   setDisplayName(EEtoFormTypes.EtoTerms),
+  onEnterAction({
+    actionCreator: dispatch => {
+      dispatch(actions.etoFlow.loadProducts());
+    },
+  }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      loadingData: s.etoFlow.loading,
-      savingData: s.etoFlow.saving,
-      stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
+      savingData: selectIsSaving(s),
+      eto: selectIssuerEto(s)!,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoTerms, selectIssuerEtoState(s)),
+      availableProducts: selectAvailableProducts(s),
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TPartialEtoSpecData) => {
+      saveData: (data: TEtoSpecsData) => {
         const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
@@ -260,39 +420,37 @@ const EtoRegistrationTerms = compose<React.FunctionComponent<IExternalProps>>(
           }),
         );
       },
+      changeProductType: (productId: string) => {
+        dispatch(actions.etoFlow.changeProductType(productId));
+      },
     }),
   }),
-  withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
-    validationSchema: EtoTermsType.toYup(),
-    mapPropsToValues: props => props.stateValues,
-    handleSubmit: (values, props) => props.props.saveData(values),
-    validate: values => {
-      const errors: { -readonly [P in keyof (typeof values)]: TTranslatedString } = {};
+  withFormik<IStateProps & IDispatchProps, TEtoSpecsData>({
+    enableReinitialize: true,
+    validationSchema: (props: IStateProps) => {
+      const EtoTermsSchema = getEtoTermsSchema(props.eto.product);
 
-      if (values.allowRetailInvestors && values.enableTransferOnSuccess) {
-        errors.enableTransferOnSuccess = (
-          <FormattedMessage id="eto.form.eto-terms.errors.transfer-not-allowed-for-retail-eto" />
-        );
-      }
-
-      if (!values.allowRetailInvestors && (values.minTicketEur || 0) < MIN_NON_RETAIL_TICKET) {
-        errors.minTicketEur = (
-          <FormattedMessage
-            id="eto.form.eto-terms.errors.to-low-min-ticket-for-non-retail-eto"
-            values={{ minTicket: MIN_NON_RETAIL_TICKET }}
-          />
-        );
-      }
-
-      return errors;
+      return EtoTermsSchema.toYup().concat(YupTS.object({ product: EtoProductSchema }).toYup());
     },
+    mapPropsToValues: props => props.eto,
+    handleSubmit: (values, { props }) => props.saveData(values),
   }),
-)(EtoRegistrationTermsComponent);
+  branch<IStateProps>(
+    props => props.availableProducts === undefined,
+    renderComponent(LoadingIndicator),
+  ),
+  fromRenderProps<IContainerProps, unknown, TContainerContext>(
+    ContainerContext.Consumer,
+    container => ({ logger: container && container.get<ILogger>(symbols.logger) }),
+  ),
+)(EtoRegistrationTermsLayout);
 
 const fromFormState = {
   publicDurationDays: parseStringToInteger(),
   signingDurationDays: parseStringToInteger(),
   whitelistDurationDays: parseStringToInteger(),
+  maxTicketEur: parseStringToInteger(),
+  minTicketEur: parseStringToInteger(),
 };
 
-export { EtoRegistrationTerms, EtoRegistrationTermsComponent };
+export { EtoRegistrationTerms, EtoRegistrationTermsLayout };

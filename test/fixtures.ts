@@ -10,6 +10,12 @@ import {
   TEtoDocumentTemplates,
   TEtoFormType,
 } from "../app/lib/api/eto/EtoFileApi.interfaces";
+import {
+  EAssetType,
+  EOfferingDocumentSubtype,
+  EOfferingDocumentType,
+  EProductName,
+} from "../app/lib/api/eto/EtoProductsApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../app/modules/public-etos/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
 
@@ -732,6 +738,32 @@ export const testContract = {
   etoTermsAddress: "0x948f07847e19E7dBb98DdfFdCA4b2eDF71f3E3B5",
 };
 
+export const testProduct = {
+  assetType: EAssetType.VMA,
+  available: true,
+  canSetTransferability: false,
+  hasNominee: true,
+  id: "0x0000000000000000000000000000000000000000",
+  jurisdiction: "de",
+  maxClaimDurationDays: 30,
+  maxInvestmentAmount: 0,
+  maxOfferDurationDays: 90,
+  maxPublicDurationDays: 60,
+  maxSigningDurationDays: 60,
+  maxTicketSize: 0,
+  maxWhitelistDurationDays: 30,
+  minClaimDurationDays: 7,
+  minInvestmentAmount: 0,
+  minOfferDurationDays: 1,
+  minPublicDurationDays: 0,
+  minSigningDurationDays: 14,
+  minTicketSize: 200000,
+  minWhitelistDurationDays: 0,
+  name: EProductName.HNWI_ETO_DE,
+  offeringDocumentType: EOfferingDocumentType.MEMORANDUM,
+  offeringDocumentSubtype: EOfferingDocumentSubtype.LEAN,
+};
+
 export const testEto: TEtoWithCompanyAndContract = {
   additionalTerms: undefined,
   authorizedCapitalShares: undefined,
@@ -813,11 +845,11 @@ export const testEto: TEtoWithCompanyAndContract = {
       name: "termsheet_template",
     },
   },
-
   whitelistDiscountFraction: 0.3,
   whitelistDurationDays: 7,
   company: testCompany,
   contract: testContract,
+  product: testProduct,
 };
 
 export const etoFilesData: IEtoFiles = {

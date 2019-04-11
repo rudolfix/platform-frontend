@@ -7,26 +7,32 @@ $icon-size: 18px;
   }
 
   display: inline-block;
-  margin-left: px-to-rem(10px);
 
   position: relative;
   vertical-align: text-bottom;
+
+  &--icon {
+    margin-left: px-to-rem(10px);
+
+    .tooltip {
+      @include media-breakpoint-down (sm) {
+        display: none;
+      }
+
+      :global(.inline-icon) {
+        height: px-to-rem($icon-size);
+        width: px-to-rem($icon-size);
+      }
+    }
+  }
+
+  &--text {
+    .tooltip {
+      border-bottom: 1px dotted $neu-greyish-brown;
+    }
+  }
 }
 
 .tooltip {
-  @include media-breakpoint-down (sm) {
-    display: none;
-  }
-
   cursor: help;
-
-  :global(.inline-icon) {
-    height: px-to-rem($icon-size);
-    width: px-to-rem($icon-size);
-  }
-}
-
-// sass-lint:disable force-element-nesting
-:global(.tooltip).align-left>:global(.tooltip-inner) {
-  text-align: left;
 }

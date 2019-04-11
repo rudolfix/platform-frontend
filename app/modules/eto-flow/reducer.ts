@@ -5,6 +5,7 @@ import { IEtoFlowState } from "./types";
 
 export const etoFlowInitialState: IEtoFlowState = {
   etoPreviewCode: undefined,
+  products: undefined,
   loading: false,
   saving: false,
   bookbuildingStats: [],
@@ -57,6 +58,11 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         ...state,
         signedInvestmentAgreementUrlLoading: false,
         signedInvestmentAgreementUrl: action.payload.signedInvestmentAgreementUrl,
+      };
+    case actions.etoFlow.setProducts.getType():
+      return {
+        ...state,
+        products: action.payload.products,
       };
   }
   return state;

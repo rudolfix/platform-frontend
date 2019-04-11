@@ -4,12 +4,24 @@ import { Tooltip, TooltipProps } from "reactstrap";
 
 import * as styles from "./CustomTooltip.module.scss";
 
-interface IProps {}
+export enum ECustomTooltipTextPosition {
+  CENTER = styles.tooltipTextCenter,
+  LEFT = styles.tooltipTextLeft,
+}
+
+interface IProps {
+  textPosition?: ECustomTooltipTextPosition;
+}
+
 interface IState {
   tooltipOpen: boolean;
 }
 
-export class CustomTooltip extends React.Component<TooltipProps & IProps> {
+export class CustomTooltip extends React.Component<IProps & TooltipProps> {
+  static defaultProps = {
+    textPosition: ECustomTooltipTextPosition.CENTER,
+  };
+
   state: IState = {
     tooltipOpen: false,
   };
@@ -28,7 +40,7 @@ export class CustomTooltip extends React.Component<TooltipProps & IProps> {
     }
   }
 
-  componentDidCatch(error: any, info: any): void {
+  componentDidCatch(error: Error, info: React.ErrorInfo): void {
     // this function should not be called, but just in case
     // if some errors occurs, it will not crash the whole application any more
     // prevents a reactstrap tooltip bug where target dom node is not found
@@ -41,11 +53,11 @@ export class CustomTooltip extends React.Component<TooltipProps & IProps> {
   }
 
   render(): React.ReactChild {
-    const { target, className, isOpen, toggle, children, ...props } = this.props;
+    const { target, className, textPosition, isOpen, toggle, children, ...props } = this.props;
     return (
       <Tooltip
         innerClassName={styles.tooltipInner}
-        className={cn(styles.tooltip, className)}
+        className={cn(styles.tooltip, textPosition, className)}
         target={target}
         autohide={false}
         isOpen={this.state.tooltipOpen}

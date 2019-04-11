@@ -8,13 +8,7 @@ storiesOf("Form/Toggle", module)
   .add(
     "on",
     formWrapper({ toggle: true })(() => (
-      <FormToggle
-        name="toggle"
-        enabledLabel="on"
-        disabledLabel="off"
-        trueValue="TRUE VALUE"
-        falseValue="FALSE VAL"
-      />
+      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" />
     )),
   )
   .add(

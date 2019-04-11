@@ -6,6 +6,7 @@ import * as Web3Utils from "web3-utils";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
+import { ECustomTooltipTextPosition } from "../../shared/CustomTooltip";
 import { Form, FormFieldColorful } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 import { Tooltip } from "../../shared/Tooltip";
@@ -53,7 +54,10 @@ export const CheckYourICBMWalletWidgetComponent: React.FunctionComponent<IDispat
       headerText={
         <>
           <FormattedMessage id="check-your-icbm-wallet-widget.header" />
-          <Tooltip content={<FormattedMessage id="icbm-wallet.tooltip" />} alignLeft={true} />
+          <Tooltip
+            content={<FormattedMessage id="icbm-wallet.tooltip" />}
+            textPosition={ECustomTooltipTextPosition.LEFT}
+          />
         </>
       }
       className="h-100"

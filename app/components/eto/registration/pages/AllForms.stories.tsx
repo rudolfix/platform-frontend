@@ -9,9 +9,7 @@ import { EtoRegistrationCompanyInformationComponent } from "./CompanyInformation
 import { EtoEquityTokenInfoComponent } from "./EtoEquityTokenInfo";
 import { EtoRegistrationMediaComponent } from "./EtoMedia";
 import { EtoRegistrationPitchComponent } from "./EtoPitch";
-import { EtoRegistrationTermsComponent } from "./EtoTerms";
 import { EtoVotingRightsComponent } from "./EtoVotingRights";
-import { EtoInvestmentTermsComponent } from "./InvestmentTerms";
 import { EtoRegistrationKeyIndividualsComponent } from "./KeyIndividuals";
 import { EtoRegistrationLegalInformationComponent } from "./LegalInformation";
 import { EtoRegistrationRiskAssessmentComponent } from "./RiskAssessment";
@@ -56,24 +54,10 @@ storiesOf("ETO-Flow/Registration-forms", module)
       </Formik>
     </Provider>
   ))
-  .add("EtoRegistrationTerms", () => (
-    <Provider store={createStore(() => ({}))}>
-      <Formik initialValues={eto} onSubmit={() => {}}>
-        {props => <EtoRegistrationTermsComponent {...props} {...loadingState} />}
-      </Formik>
-    </Provider>
-  ))
   .add("EtoVotingRights", () => (
     <Provider store={createStore(() => ({}))}>
       <Formik initialValues={eto} onSubmit={() => {}}>
         {props => <EtoVotingRightsComponent {...props} {...loadingState} />}
-      </Formik>
-    </Provider>
-  ))
-  .add("EtoInvestmentTerms", () => (
-    <Provider store={createStore(() => ({}))}>
-      <Formik initialValues={eto} onSubmit={() => {}}>
-        {props => <EtoInvestmentTermsComponent {...props} {...loadingState} />}
       </Formik>
     </Provider>
   ))

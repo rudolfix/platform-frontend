@@ -18,7 +18,7 @@ import { Testimonials } from "./parts/Testimonials";
 import * as styles from "./Landing.module.scss";
 
 export const LandingComponent: React.FunctionComponent = () => (
-  <div className={cn(styles.landingWrapper, "pure")} data-test-id="landing-page">
+  <div className={cn(styles.landingWrapper)} data-test-id="landing-page">
     {process.env.NF_FEATURED_ETO_PREVIEW_CODE ? (
       <LandingFeatured />
     ) : (

@@ -9,6 +9,7 @@ $indicator-size: 16px;
 
   &.layout-block {
     display: flex;
+    padding: px-to-rem(8px) 0;
   }
 
   :global(.form-group) & {

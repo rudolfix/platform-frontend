@@ -1,9 +1,9 @@
-import { connect, Field, FieldProps } from "formik";
+import { connect, Field, FieldProps, isFunction } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { findMax, findMin } from "../../../../lib/api/eto/EtoApiUtils";
 import { TFormikConnect } from "../../../../types";
+import { findMax, findMin, getFieldSchema } from "../../../../utils/yupUtils";
 
 import * as styles from "./FormRange.module.scss";
 
@@ -25,7 +25,7 @@ interface IInternalProps {
   min: number;
   max: number;
   value: number;
-  onChange: (e: React.ChangeEvent<any>) => any;
+  onChange: (e: React.ChangeEvent) => void;
 }
 
 interface IRangeLabelProps {
@@ -88,9 +88,10 @@ const FormRangeBase: React.FunctionComponent<IProps & TFormikConnect> = ({
   formik: { validationSchema },
   ...props
 }) => {
-  const schema = validationSchema && validationSchema().fields[name];
-  const min = props.min !== undefined ? props.min : findMin(schema);
-  const max = props.max !== undefined ? props.max : findMax(schema);
+  const schema = isFunction(validationSchema) ? validationSchema() : validationSchema;
+  const fieldSchema = getFieldSchema(name, schema);
+  const min = props.min !== undefined ? props.min : findMin(fieldSchema);
+  const max = props.max !== undefined ? props.max : findMax(fieldSchema);
 
   return (
     <Field
@@ -102,4 +103,4 @@ const FormRangeBase: React.FunctionComponent<IProps & TFormikConnect> = ({
   );
 };
 
-export const FormRange = connect<IProps, any>(FormRangeBase);
+export const FormRange = connect<IProps, IProps & TFormikConnect>(FormRangeBase);

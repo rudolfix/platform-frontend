@@ -19,6 +19,7 @@ import { CommonHtmlProps } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { appRoutes } from "../../appRoutes";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
+import { ECustomTooltipTextPosition } from "../../shared/CustomTooltip";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { ECurrency, ECurrencySymbol, Money } from "../../shared/Money.unsafe";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
@@ -111,7 +112,7 @@ export const MyWalletWidgetComponentBody: React.FunctionComponent<StateProps> = 
                   </Link>
                   <Tooltip
                     content={<FormattedMessage id="icbm-wallet.tooltip" />}
-                    alignLeft={true}
+                    textPosition={ECustomTooltipTextPosition.LEFT}
                   />
                 </p>
               </Col>

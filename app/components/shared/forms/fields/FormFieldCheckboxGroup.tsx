@@ -1,4 +1,4 @@
-import { connect as formikConnect, Field, FieldProps } from "formik";
+import { connect as formikConnect, Field, FieldProps, getIn } from "formik";
 import { includes } from "lodash";
 import * as React from "react";
 import { compose } from "recompose";
@@ -66,8 +66,8 @@ class FormFieldCheckboxGroupLayout extends React.Component<
 
   private setDefaultValueIfNeeded(): void {
     const { name, formik } = this.props;
-    const { setFieldValue } = formik;
-    const value = formik.values[name];
+    const { setFieldValue, values } = formik;
+    const value = getIn(values, name);
 
     if (value === undefined) {
       setFieldValue(this.props.name, []);

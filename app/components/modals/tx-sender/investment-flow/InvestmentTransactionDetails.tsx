@@ -5,7 +5,7 @@ import { getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatThousands } from "../../../../utils/Number.utils";
-import { CustomTooltip } from "../../../shared/CustomTooltip.unsafe";
+import { CustomTooltip } from "../../../shared/CustomTooltip";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";

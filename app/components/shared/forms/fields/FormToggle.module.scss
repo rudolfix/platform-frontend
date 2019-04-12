@@ -14,9 +14,10 @@ $track-width: 48px;
 
   &:disabled {
     ~ .track {
-      opacity: .5;
       background-color: $neu-silver;
       border: $track-border-width solid $neu-silver;
+      cursor: not-allowed;
+      opacity: .5;
     }
   }
 
@@ -35,18 +36,14 @@ $track-width: 48px;
   margin: 0 20px;
 }
 
-.track,
-.indicator {
-  cursor: pointer;
-}
-
 .track {
   @include rect($track-width, auto);
 
-  border-radius: $track-width / 2;
   background-color: currentColor;
+  border-radius: $track-width / 2;
   border: $track-border-width solid currentColor;
   color: $neu-silver;
+  cursor: pointer;
   transition: 300ms $ease-out-expo background-color;
 
   &:hover {

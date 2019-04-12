@@ -56,6 +56,10 @@ module.exports = (baseConfig, env, config) => {
                 camelCase: "dashesOnly",
               },
             },
+            {
+              loader: "postcss-loader",
+              options: { config: { path: path.join(__dirname, "postcss.config.js") } },
+            },
             { loader: "sass-loader" },
           ],
         },

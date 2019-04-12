@@ -8,10 +8,16 @@ const defaultValues = {
   foo: "Foo",
   bar: "Bar",
 };
-storiesOf("Form/SelectField", module)
+storiesOf("forms/fields/SelectField", module)
   .add(
     "default",
     formWrapper({ name: "foo " })(() => <FormSelectField name="name" values={defaultValues} />),
+  )
+  .add(
+    "disabled",
+    formWrapper({ name: "foo " })(() => (
+      <FormSelectField name="name" values={defaultValues} disabled={true} />
+    )),
   )
   .add(
     "with custom options",

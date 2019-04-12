@@ -4,7 +4,7 @@ import * as React from "react";
 import { ArrayOfKeyValueFields } from "./FormCategoryDistribution.unsafe";
 import { formWrapper } from "./testingUtils.unsafe";
 
-storiesOf("Form/CategoryDistribution", module)
+storiesOf("forms/fields/CategoryDistribution", module)
   .add(
     "default",
     formWrapper({})(() => (

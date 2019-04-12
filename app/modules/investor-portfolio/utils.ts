@@ -1,7 +1,9 @@
 import BigNumber from "bignumber.js";
 
+import { IWindowWithData } from "../../../test/helperTypes";
 import { ECurrency } from "../../components/shared/Money.unsafe";
-import { Q18 } from "../../config/constants";
+import { IS_CYPRESS, Q18 } from "../../config/constants";
+import { convertToBigInt } from "../../utils/Number.utils";
 import { ICalculatedContribution, IInvestorTicket, ITokenDisbursal } from "./types";
 
 export const convertToCalculatedContribution = ([
@@ -88,4 +90,24 @@ export const getTokenPrice = (equityTokenInt: BigNumber, equivEurUlps: BigNumber
 
   const equityToken = Q18.mul(equityTokenInt);
   return equivEurUlps.div(equityToken).toString();
+};
+
+export const getRequiredIncomingAmount = (token: ECurrency) => {
+  // In case of Cypress tests we have to return 0 by default to prevent tests with low amounts from crash
+  // If there is data stored in window use it
+  if (IS_CYPRESS) {
+    const { payoutRequiredAmount } = window as IWindowWithData;
+    return payoutRequiredAmount || "0";
+  }
+
+  switch (token) {
+    case ECurrency.ETH: {
+      return convertToBigInt(1);
+    }
+    case ECurrency.EUR_TOKEN: {
+      return convertToBigInt(100);
+    }
+    default:
+      return "0";
+  }
 };

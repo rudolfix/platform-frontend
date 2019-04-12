@@ -1,3 +1,4 @@
+import { IWindowWithData } from "../../../test/helperTypes";
 import {
   assertDashboard,
   assertEtoDashboard,
@@ -8,6 +9,21 @@ import {
 
 export const goToDashboard = (assert = true) => {
   cy.visit("/dashboard");
+
+  if (assert) {
+    assertDashboard();
+  }
+};
+
+export const goToDashboardWithRequiredPayoutAmountSet = (
+  assert = true,
+  requiredPayoutAmount?: string,
+) => {
+  cy.visit("/dashboard", {
+    onBeforeLoad(win: IWindowWithData): void {
+      win.payoutRequiredAmount = requiredPayoutAmount;
+    },
+  });
 
   if (assert) {
     assertDashboard();
@@ -32,4 +48,13 @@ export const goToPortfolio = () => {
 export const goToWallet = () => {
   cy.visit("/wallet");
   assertWallet();
+};
+
+export const goToPortfolioWithRequiredPayoutAmountSet = (requiredPayoutAmount?: string) => {
+  cy.visit("/portfolio", {
+    onBeforeLoad(win: IWindowWithData): void {
+      win.payoutRequiredAmount = requiredPayoutAmount;
+    },
+  });
+  assertPortfolio();
 };

@@ -1,7 +1,8 @@
 import * as moment from "moment";
 
+import { convertToBigInt } from "../../utils/Number.utils";
 import { assertMoneyNotEmpty } from "../utils";
-import { goToDashboard } from "../utils/navigation";
+import { goToDashboard, goToDashboardWithRequiredPayoutAmountSet } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -53,6 +54,18 @@ describe("Incoming payout", () => {
         });
 
       cy.url().should("include", "/portfolio");
+    });
+  });
+
+  it("Should show counter without ETH", () => {
+    createAndLoginNewUser({ type: "investor" }).then(() => {
+      goToDashboardWithRequiredPayoutAmountSet(false, convertToBigInt("1000"));
+
+      cy.get(tid("incoming-payout-counter"));
+
+      assertMoneyNotEmpty("incoming-payout-euro-token");
+
+      cy.get(tid("incoming-payout-ether-token")).should("not.exist");
     });
   });
 });

@@ -1,11 +1,13 @@
 import * as cn from "classnames";
 import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Creatable as ReactSelectCreatable } from "react-select";
 import Select from "react-virtualized-select";
 
 import { CommonHtmlProps } from "../../../types";
 import { FormFieldError } from "../../shared/forms";
+import { FormFieldLabel } from "../../shared/forms/fields/FormFieldLabel";
 import { ETagSize, Tag } from "../../shared/Tag.unsafe";
 
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
@@ -96,20 +98,28 @@ class EtoTagWidget extends React.Component<IProps & CommonHtmlProps> {
             <Field
               name={name}
               render={({ field }: FieldProps) => (
-                <TagsFormEditor
-                  {...this.props}
-                  {...field}
-                  onChange={newTag => {
-                    const isAlreadyOnTheList = selectedTags.some(tag => tag === newTag);
-                    if (!isAlreadyOnTheList) setFieldValue(name, [...selectedTags, newTag]);
-                  }}
-                  handleSelectedTagClick={(clickedTag: string) => {
-                    const listWithRemovedTag = selectedTags.filter(tag => tag !== clickedTag);
-                    return setFieldValue(name, listWithRemovedTag);
-                  }}
-                  disabled={selectedTags.length === selectedTagsLimit}
-                  values={selectedTags}
-                />
+                <>
+                  <FormFieldLabel name={name}>
+                    <FormattedMessage id="eto.form.company-information.company-categories" />
+                  </FormFieldLabel>
+                  <p>
+                    <FormattedMessage id="eto.form.company-information.company-categories.explanation" />
+                  </p>
+                  <TagsFormEditor
+                    {...this.props}
+                    {...field}
+                    onChange={newTag => {
+                      const isAlreadyOnTheList = selectedTags.some(tag => tag === newTag);
+                      if (!isAlreadyOnTheList) setFieldValue(name, [...selectedTags, newTag]);
+                    }}
+                    handleSelectedTagClick={(clickedTag: string) => {
+                      const listWithRemovedTag = selectedTags.filter(tag => tag !== clickedTag);
+                      return setFieldValue(name, listWithRemovedTag);
+                    }}
+                    disabled={selectedTags.length === selectedTagsLimit}
+                    values={selectedTags}
+                  />
+                </>
               )}
             />
           );

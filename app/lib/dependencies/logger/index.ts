@@ -20,7 +20,7 @@ const resolveLogger = () => {
     return new SentryLogger(process.env.NF_SENTRY_DSN);
   }
 
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production" && process.env.TYPE_OF_DEPLOYMENT !== "commit") {
     // tslint:disable-next-line
     console.info("Error logging is disabled");
 

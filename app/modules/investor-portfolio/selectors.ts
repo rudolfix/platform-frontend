@@ -14,7 +14,7 @@ import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../public-etos/typ
 import { isOnChain } from "../public-etos/utils";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import { ICalculatedContribution, TETOWithInvestorTicket, TETOWithTokenData } from "./types";
-import { getRequiredIncomingAmount } from "./utils";
+import { getRequiredIncomingAmount, isPastInvestment } from "./utils";
 
 const selectInvestorTicketsState = (state: IAppState) => state.investorTickets;
 
@@ -228,4 +228,29 @@ export const selectIsIncomingPayoutAvailable = (state: IAppState): boolean => {
 
 export const selectIsIncomingPayoutDone = (state: IAppState): boolean => {
   return state.investorTickets.incomingPayouts.payoutDone;
+};
+
+export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
+  const etos = selectEtoWithInvestorTickets(state);
+  if (etos) {
+    return etos
+      .filter(eto => eto.investorTicket.claimedOrRefunded)
+      .filter(eto => isPastInvestment(eto.contract!.timedState))
+      .sort((left, right) => {
+        const timedStateLeft = left.contract!.timedState;
+        const timedStateRight = right.contract!.timedState;
+
+        const investmentDateLeft = new Date(
+          left.contract!.startOfStates[timedStateLeft]!,
+        ).getTime();
+        const investmentDateRight = new Date(
+          left.contract!.startOfStates[timedStateRight]!,
+        ).getTime();
+
+        // sort by date DESC
+        return investmentDateRight - investmentDateLeft;
+      });
+  }
+
+  return undefined;
 };

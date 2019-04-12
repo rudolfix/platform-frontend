@@ -6,6 +6,7 @@ import { selectIsVerifiedInvestor } from "../../modules/auth/selectors";
 import {
   selectMyAssets,
   selectMyPendingAssets,
+  selectPastInvestments,
   selectTokensDisbursal,
 } from "../../modules/investor-portfolio/selectors";
 import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors";
@@ -40,6 +41,7 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
       walletAddress: selectEthereumAddressWithChecksum(state),
       tokensDisbursal: selectTokensDisbursal(state),
       isVerifiedInvestor: selectIsVerifiedInvestor(state),
+      pastInvestments: selectPastInvestments(state),
     }),
     dispatchToProps: dispatch => ({
       loadTokensData: () => {

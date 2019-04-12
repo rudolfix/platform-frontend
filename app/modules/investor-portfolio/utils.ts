@@ -1,9 +1,11 @@
 import BigNumber from "bignumber.js";
+import { includes } from "lodash/fp";
 
 import { IWindowWithData } from "../../../test/helperTypes";
 import { ECurrency } from "../../components/shared/Money.unsafe";
 import { IS_CYPRESS, Q18 } from "../../config/constants";
 import { convertToBigInt } from "../../utils/Number.utils";
+import { EETOStateOnChain } from "../public-etos/types";
 import { ICalculatedContribution, IInvestorTicket, ITokenDisbursal } from "./types";
 
 export const convertToCalculatedContribution = ([
@@ -111,3 +113,6 @@ export const getRequiredIncomingAmount = (token: ECurrency) => {
       return "0";
   }
 };
+
+export const isPastInvestment = (etoState: EETOStateOnChain) =>
+  includes(etoState, [EETOStateOnChain.Payout, EETOStateOnChain.Refund, EETOStateOnChain.Claim]);

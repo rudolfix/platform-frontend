@@ -8,6 +8,7 @@ import { PortfolioLayout, TPortfolioLayoutProps } from "./PortfolioLayout";
 const data: TPortfolioLayoutProps = {
   myAssets: [],
   pendingAssets: [],
+  pastInvestments: [],
   isRetailEto: false,
   walletAddress: "0x00000",
   isVerifiedInvestor: true,

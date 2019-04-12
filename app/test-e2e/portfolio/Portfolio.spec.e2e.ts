@@ -57,4 +57,22 @@ describe("Portfolio", () => {
       cy.get(tid(`asset-portfolio.no-payouts`)).should("exist");
     });
   });
+
+  describe("PastInvestments", () => {
+    it("should populate on initial view", () => {
+      createAndLoginNewUser({
+        type: "investor",
+        kyc: "business",
+        seed: INV_ICBM_ETH_M_HAS_KYC_DUP_2,
+        hdPath: "m/44'/60'/0'/0",
+        clearPendingTransactions: true,
+      });
+
+      goToPortfolio();
+
+      const etoId = etoFixtureAddressByName("ETOInPayoutState");
+
+      cy.get(tid(`past-investments-${etoId}`)).should("exist");
+    });
+  });
 });

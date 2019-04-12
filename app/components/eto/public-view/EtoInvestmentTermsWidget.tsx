@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { EAssetType, EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
@@ -242,6 +243,29 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                 data-test-id="eto-public-view-public-eto-duration"
               />
             )}
+            {etoData.product &&
+              !!etoData.product.jurisdiction && (
+                <Entry
+                  label={
+                    <FormattedMessage id="eto.public-view.token-terms.public-eto.product.jurisdiction" />
+                  }
+                  value={
+                    <>
+                      {etoData.product.jurisdiction === EJurisdiction.GERMANY && (
+                        <FormattedMessage
+                          id={`eto.public-view.token-terms.public-eto.product.jurisdiction.de`}
+                        />
+                      )}
+                      {etoData.product.jurisdiction === EJurisdiction.LICHTENSTEIN && (
+                        <FormattedMessage
+                          id={`eto.public-view.token-terms.public-eto.product.jurisdiction.li`}
+                        />
+                      )}
+                    </>
+                  }
+                  data-test-id="eto-public-view-public-eto-duration"
+                />
+              )}
             {!!etoData.templates.reservationAndAcquisitionAgreement && (
               <DocumentTemplateButton
                 title={
@@ -297,25 +321,49 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               data-test-id="eto-public-view-token-tradability"
             />
 
+            {etoData.product && (
+              <Entry
+                label={<FormattedMessage id="eto.public-view.token-transferability" />}
+                value={
+                  etoData.product.assetType === EAssetType.SECURITY ? (
+                    <FormattedMessage id="eto.public-view.token-transferability.yes" />
+                  ) : (
+                    <FormattedMessage id="eto.public-view.token-transferability.no" />
+                  )
+                }
+                data-test-id="eto-public-view-token-transferability"
+              />
+            )}
+
+            {etoData.product && (
+              <Entry
+                label={<FormattedMessage id="eto.public-view.asset-type" />}
+                value={
+                  etoData.product.assetType === EAssetType.SECURITY ? (
+                    <FormattedMessage id={`eto.public-view.asset-type.security`} />
+                  ) : (
+                    <FormattedMessage id={`eto.public-view.asset-type.vma`} />
+                  )
+                }
+                data-test-id="eto-public-view-asset-type"
+              />
+            )}
+
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.voting-rights" />}
               value={
-                <>
-                  {etoData.generalVotingRule === "no_voting_rights" ||
-                  etoData.generalVotingRule === "negative" ? (
-                    <FormattedMessage id="eto.public-view.token-terms.no" />
-                  ) : (
-                    <FormattedMessage id="eto.public-view.token-terms.yes" />
-                  )}
-                </>
+                etoData.generalVotingRule === "negative" ? (
+                  <FormattedMessage id="eto.public-view.token-terms.no" />
+                ) : (
+                  <FormattedMessage id="eto.public-view.token-terms.yes" />
+                )
               }
               data-test-id="eto-public-view-voting-rights"
             />
-
             <Entry
-              label={<FormattedMessage id="eto.public-view.token-terms.liquidation-preference" />}
-              value={<>{etoData.liquidationPreferenceMultiplier}x</>}
-              data-test-id="eto-public-view-liquidation-preference"
+              label={<FormattedMessage id="eto.public-view.dividend-rights" />}
+              value={<FormattedMessage id="eto.public-view.dividend-rights.yes" />}
+              data-test-id="eto-public-view-dividend-rights"
             />
 
             {!!etoData.templates.companyTokenHolderAgreement && (

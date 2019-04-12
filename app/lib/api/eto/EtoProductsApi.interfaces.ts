@@ -15,6 +15,11 @@ export enum EOfferingDocumentType {
   MEMORANDUM = "memorandum",
 }
 
+export enum EJurisdiction {
+  GERMANY = "de",
+  LICHTENSTEIN = "li",
+}
+
 export enum EProductName {
   HNWI_ETO_DE = "hnwi eto de",
   HNWI_ETO_LI = "hnwi eto li",
@@ -33,7 +38,7 @@ export const EtoProductSchema = YupTS.object({
   canSetTransferability: YupTS.boolean(),
   hasNominee: YupTS.boolean(),
   id: YupTS.string(),
-  jurisdiction: YupTS.string(),
+  jurisdiction: YupTS.string<EJurisdiction>(),
   maxClaimDurationDays: YupTS.number(),
   maxInvestmentAmount: YupTS.number(),
   maxOfferDurationDays: YupTS.number(),

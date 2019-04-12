@@ -12,6 +12,7 @@ import {
 } from "../app/lib/api/eto/EtoFileApi.interfaces";
 import {
   EAssetType,
+  EJurisdiction,
   EOfferingDocumentSubtype,
   EOfferingDocumentType,
   EProductName,
@@ -744,7 +745,7 @@ export const testProduct = {
   canSetTransferability: false,
   hasNominee: true,
   id: "0x0000000000000000000000000000000000000000",
-  jurisdiction: "de",
+  jurisdiction: EJurisdiction.GERMANY,
   maxClaimDurationDays: 30,
   maxInvestmentAmount: 0,
   maxOfferDurationDays: 90,

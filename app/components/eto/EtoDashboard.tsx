@@ -19,6 +19,8 @@ import {
 } from "../../modules/eto-flow/selectors";
 import { calculateGeneralEtoData } from "../../modules/eto-flow/utils";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
+import { selectEtoOnChainState } from "../../modules/public-etos/selectors";
+import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -53,6 +55,7 @@ interface IStateProps {
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
   isRetailEto: boolean;
+  stateOnChain: EETOStateOnChain | null;
 }
 
 interface IDispatchProps {
@@ -100,6 +103,7 @@ interface IEtoStateRender {
   canEnableBookbuilding: boolean;
   previewCode?: string;
   isRetailEto: boolean;
+  stateOnChain: EETOStateOnChain | null;
 }
 
 const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> = ({
@@ -110,6 +114,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   canEnableBookbuilding,
   previewCode,
   isRetailEto,
+  stateOnChain,
 }) => {
   if (!previewCode) {
     return <LoadingIndicator />;
@@ -174,12 +179,18 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
         </>
       );
     case EEtoState.ON_CHAIN:
+      // todo conditional rendering of UploadInvestmentAgreement is a quick fix until pr#2561 is merged
       return (
         <>
           <DashboardSection hasDecorator={false} title={dashboardTitle} />
-          <Col lg={6} xs={12}>
-            <UploadInvestmentAgreement />
-          </Col>
+          {stateOnChain &&
+            !(
+              stateOnChain < EETOStateOnChain.Signing || stateOnChain === EETOStateOnChain.Refund
+            ) && (
+              <Col lg={6} xs={12}>
+                <UploadInvestmentAgreement />
+              </Col>
+            )}
           <Col lg={6} xs={12}>
             <ChooseEtoStartDateWidget />
           </Col>
@@ -217,12 +228,10 @@ class EtoDashboardComponent extends React.Component<IProps> {
       isOfferingDocumentSubmitted,
       previewCode,
       isRetailEto,
+      stateOnChain,
     } = this.props;
-
-    const isVerificationSectionDone = !!(
-      verifiedEmail &&
-      backupCodesVerified &&
-      requestStatus === ERequestStatus.ACCEPTED
+    const isVerificationSectionDone = Boolean(
+      verifiedEmail && backupCodesVerified && requestStatus === ERequestStatus.ACCEPTED,
     );
     const shouldViewSubmissionSection = !!(
       etoFormProgress && etoFormProgress >= SUBMIT_PROPOSAL_THRESHOLD
@@ -251,6 +260,7 @@ class EtoDashboardComponent extends React.Component<IProps> {
               canEnableBookbuilding={canEnableBookbuilding}
               previewCode={previewCode}
               isRetailEto={isRetailEto}
+              stateOnChain={stateOnChain}
             />
           ) : (
             <EtoProgressDashboardSection />
@@ -267,20 +277,25 @@ const EtoDashboard = compose<React.FunctionComponent>(
     actionCreator: d => d(actions.etoFlow.loadIssuerEto()),
   }),
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: s => ({
-      verifiedEmail: selectVerifiedUserEmail(s.auth),
-      backupCodesVerified: selectBackupCodesVerified(s),
-      isLightWallet: selectIsLightWallet(s.web3),
-      shouldEtoDataLoad: selectShouldEtoDataLoad(s),
-      requestStatus: selectKycRequestStatus(s),
-      etoState: selectIssuerEtoState(s),
-      previewCode: selectIssuerEtoPreviewCode(s),
-      canEnableBookbuilding: selectCanEnableBookBuilding(s),
-      isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
-      isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),
-      etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s)),
-      isRetailEto: selectIssuerEtoIsRetail(s),
-    }),
+    stateToProps: s => {
+      const previewCode = selectIssuerEtoPreviewCode(s);
+      const stateOnChain = previewCode && selectEtoOnChainState(s, previewCode);
+      return {
+        verifiedEmail: selectVerifiedUserEmail(s.auth),
+        backupCodesVerified: selectBackupCodesVerified(s),
+        isLightWallet: selectIsLightWallet(s.web3),
+        shouldEtoDataLoad: selectShouldEtoDataLoad(s),
+        requestStatus: selectKycRequestStatus(s),
+        etoState: selectIssuerEtoState(s),
+        previewCode,
+        canEnableBookbuilding: selectCanEnableBookBuilding(s),
+        isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
+        isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),
+        etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s)),
+        isRetailEto: selectIssuerEtoIsRetail(s),
+        stateOnChain: stateOnChain ? stateOnChain : null,
+      };
+    },
     dispatchToProps: dispatch => ({
       loadFileDataStart: () => dispatch(actions.etoDocuments.loadFileDataStart()),
     }),

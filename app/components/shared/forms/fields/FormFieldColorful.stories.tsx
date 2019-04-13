@@ -5,7 +5,7 @@ import * as React from "react";
 import { Form } from "../Form";
 import { FormFieldColorful } from "./FormFieldColorful.unsafe";
 
-storiesOf("Form/FormFieldColorful", module)
+storiesOf("forms/fields/FormFieldColorful", module)
   .add("default", () => (
     <Formik initialValues={{}} onSubmit={() => {}}>
       {() => (

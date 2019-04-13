@@ -8,7 +8,7 @@ import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Form, FormFieldColorful } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
-import { Tooltip } from "../../shared/Tooltip";
+import { ECustomTooltipTextPosition, Tooltip } from "../../shared/tooltips";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./CheckYourICBMWalletWidget.module.scss";
@@ -53,7 +53,10 @@ export const CheckYourICBMWalletWidgetComponent: React.FunctionComponent<IDispat
       headerText={
         <>
           <FormattedMessage id="check-your-icbm-wallet-widget.header" />
-          <Tooltip content={<FormattedMessage id="icbm-wallet.tooltip" />} alignLeft={true} />
+          <Tooltip
+            content={<FormattedMessage id="icbm-wallet.tooltip" />}
+            textPosition={ECustomTooltipTextPosition.LEFT}
+          />
         </>
       }
       className="h-100"

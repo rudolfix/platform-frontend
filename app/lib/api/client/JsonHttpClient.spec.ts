@@ -9,6 +9,8 @@ import { JsonHttpClient } from "./JsonHttpClient";
 
 describe("JsonHttpClient", () => {
   const API_URL = "https://some-api.com/";
+  const backendRootMock = { url: "" };
+  const httpClient = new JsonHttpClient(backendRootMock);
 
   afterEach(() => {
     expect(fetchMock.done()).to.be.true;
@@ -23,7 +25,6 @@ describe("JsonHttpClient", () => {
         body: mockedResponse,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.get<IProduct[]>({
         baseUrl: API_URL,
         url: "products",
@@ -43,7 +44,6 @@ describe("JsonHttpClient", () => {
         body: mockedResponse,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.get<Array<IProduct>>({
         baseUrl: API_URL,
         url: "products",
@@ -64,7 +64,6 @@ describe("JsonHttpClient", () => {
         body: mockedResponse,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.get<IProduct[]>({
         url: `${API_URL}products`,
         responseSchema: Yup.array()
@@ -98,7 +97,6 @@ describe("JsonHttpClient", () => {
         body: mockedResponse,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.get<IProduct[]>({
         url: `${API_URL}products`,
         headers: customHeaders,
@@ -114,8 +112,6 @@ describe("JsonHttpClient", () => {
         status: 200,
         body: expectedResponse,
       });
-
-      const httpClient = new JsonHttpClient();
 
       await expectToBeRejected(
         () =>
@@ -137,8 +133,6 @@ describe("JsonHttpClient", () => {
         sendAsJson: false,
       });
 
-      const httpClient = new JsonHttpClient();
-
       await expectToBeRejected(
         () =>
           httpClient.get<Array<IProduct>>({
@@ -158,7 +152,6 @@ describe("JsonHttpClient", () => {
         body: { error: "missing" },
       });
 
-      const httpClient = new JsonHttpClient();
       const actual = await httpClient.get<Array<IProduct>>({
         baseUrl: API_URL,
         url: "products",
@@ -188,8 +181,6 @@ describe("JsonHttpClient", () => {
         },
       });
 
-      const httpClient = new JsonHttpClient();
-
       const res = await httpClient.get<Array<IProduct>>({
         baseUrl: API_URL,
         url: "products",
@@ -217,8 +208,6 @@ describe("JsonHttpClient", () => {
         body: { errorMessage: expectedErrorMessage },
       });
 
-      const httpClient = new JsonHttpClient();
-
       await expectToBeRejected(
         () =>
           httpClient.get<Array<IProduct>>({
@@ -240,8 +229,6 @@ describe("JsonHttpClient", () => {
         body: JSON.stringify(expectedErrorMessage),
       });
 
-      const httpClient = new JsonHttpClient();
-
       const response = await httpClient.get<Array<IProduct>>({
         baseUrl: API_URL,
         url: "products",
@@ -258,8 +245,6 @@ describe("JsonHttpClient", () => {
       fetchMock.mock(`${API_URL}products`, {
         throws: new Error("test"),
       });
-
-      const httpClient = new JsonHttpClient();
 
       await expectToBeRejected(
         () =>
@@ -299,7 +284,6 @@ describe("JsonHttpClient", () => {
         body: mockedResponse,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.post<IProduct[]>({
         baseUrl: API_URL,
         url: "products",
@@ -338,7 +322,6 @@ describe("JsonHttpClient", () => {
         body: mockedResponse,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.put<IProduct[]>({
         baseUrl: API_URL,
         url: "products",
@@ -377,7 +360,6 @@ describe("JsonHttpClient", () => {
         body: mockedResponse,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.patch<IProduct[]>({
         baseUrl: API_URL,
         url: "products",
@@ -407,7 +389,6 @@ describe("JsonHttpClient", () => {
         status: 204,
       });
 
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.delete({
         baseUrl: API_URL,
         url: "products",
@@ -440,7 +421,6 @@ describe("JsonHttpClient", () => {
         status: 201,
         body: expectedTransformedBody,
       });
-      const httpClient = new JsonHttpClient();
       const actualResponse = await httpClient.post<IProduct[]>({
         baseUrl: "/",
         url: "products",
@@ -469,8 +449,6 @@ describe("JsonHttpClient", () => {
         status: 201,
         body: {},
       });
-
-      const httpClient = new JsonHttpClient();
       await httpClient.post<IProduct[]>({
         baseUrl: "/",
         url: "file",

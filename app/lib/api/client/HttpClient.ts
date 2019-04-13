@@ -2,10 +2,12 @@
  * Handel's general requests
  */
 
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 // top-level import is not working correctly for unit tests
 import * as urlJoin from "proper-url-join/lib";
 
+import { IBackendRoot } from "../../../config/getConfig";
+import { symbols } from "../../../di/symbols";
 import { Dictionary } from "../../../types";
 import { invariant } from "../../../utils/invariant";
 import { toSnakeCase } from "../../../utils/transformObjectKeys";
@@ -62,6 +64,7 @@ export class NetworkingError extends HttpClientError {
 
 @injectable()
 export abstract class HttpClient implements IHttpClient {
+  constructor(@inject(symbols.backendRootConfig) private backendRootConfig: IBackendRoot) {}
   protected abstract makeFetchRequest<T>(
     fullUrl: string,
     method: HttpMethod,
@@ -100,7 +103,7 @@ export abstract class HttpClient implements IHttpClient {
         invariant(!headers["Content-Type"], "With form-data you can't set content-type header");
       }
 
-      response = await fetch(fullUrl, {
+      response = await fetch(this.backendRootConfig.url + fullUrl, {
         headers,
         method,
         body,

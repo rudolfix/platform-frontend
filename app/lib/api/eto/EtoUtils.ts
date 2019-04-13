@@ -14,6 +14,28 @@ export const getInvestmentAmount = (eto: TPartialEtoSpecData) => {
   };
 };
 
+export const getNumberOfTokens = ({
+  newSharesToIssue = 1,
+  minimumNewSharesToIssue = 0,
+  equityTokensPerShare = 1,
+}: TPartialEtoSpecData) => {
+  return {
+    computedMaxNumberOfTokens: newSharesToIssue * equityTokensPerShare,
+    computedMinNumberOfTokens: minimumNewSharesToIssue * equityTokensPerShare,
+  };
+};
+
+export const getCapPercent = ({
+  newSharesToIssue = 1,
+  minimumNewSharesToIssue = 0,
+  existingCompanyShares = 1,
+}: TPartialEtoSpecData) => {
+  return {
+    computedMaxCapPercent: (newSharesToIssue / existingCompanyShares) * 100,
+    computedMinCapPercent: (minimumNewSharesToIssue / existingCompanyShares) * 100,
+  };
+};
+
 export const getShareAndTokenPrice = ({
   preMoneyValuationEur = 0,
   existingCompanyShares = 0,

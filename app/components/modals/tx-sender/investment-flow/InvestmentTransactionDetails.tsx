@@ -5,7 +5,7 @@ import { getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatThousands } from "../../../../utils/Number.utils";
-import { CustomTooltip } from "../../../shared/CustomTooltip.unsafe";
+import { TooltipBase } from "../../../shared/tooltips";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -28,9 +28,9 @@ const NeuRewardCaption: React.FunctionComponent<{ isIcbm?: boolean }> = ({ isIcb
     <>
       {neuMsg}
       <img className={styles.infoIcon} id="tooltip-target-neu" src={info} alt="" />
-      <CustomTooltip target="tooltip-target-neu">
+      <TooltipBase target="tooltip-target-neu">
         <FormattedMessage id="investment-flow.message.no-icbm-neu-reward" />
-      </CustomTooltip>
+      </TooltipBase>
     </>
   );
   return isIcbm ? icbmMsg : neuMsg;

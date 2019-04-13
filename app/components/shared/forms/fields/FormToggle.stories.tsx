@@ -4,17 +4,11 @@ import * as React from "react";
 import { FormToggle } from "./FormToggle.unsafe";
 import { formWrapper } from "./testingUtils.unsafe";
 
-storiesOf("Form/Toggle", module)
+storiesOf("forms/fields/Toggle", module)
   .add(
     "on",
     formWrapper({ toggle: true })(() => (
-      <FormToggle
-        name="toggle"
-        enabledLabel="on"
-        disabledLabel="off"
-        trueValue="TRUE VALUE"
-        falseValue="FALSE VAL"
-      />
+      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" />
     )),
   )
   .add(

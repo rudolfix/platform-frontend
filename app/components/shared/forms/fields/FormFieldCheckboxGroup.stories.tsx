@@ -4,7 +4,7 @@ import * as React from "react";
 import { FormFieldCheckbox, FormFieldCheckboxGroup } from "./FormFieldCheckboxGroup";
 import { formWrapper } from "./testingUtils.unsafe";
 
-storiesOf("Form/FieldCheckboxGroup", module).add(
+storiesOf("forms/fields/FieldCheckboxGroup", module).add(
   "default",
   formWrapper({ animals: ["dog"] })(() => (
     <FormFieldCheckboxGroup name="animals">

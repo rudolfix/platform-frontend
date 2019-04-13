@@ -100,7 +100,7 @@ export function* completeBankTransfer({ apiKycService, logger }: TGlobalDependen
     const reference: string = yield select(selectBankTransferFlowReference);
 
     // TODO: replace by correct amount when implemented
-    apiKycService.nEurPurchaseRequest("1", reference);
+    yield apiKycService.nEurPurchaseRequest("1", reference);
   } catch (e) {
     logger.error(`Not able to complete bank transfer`, e);
   }

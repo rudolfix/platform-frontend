@@ -1,7 +1,6 @@
-import { tid } from "../../../test/testUtils";
 import { appRoutes } from "../../components/appRoutes";
 import { withParams } from "../../utils/withParams";
-import { etoFixtureAddressByName } from "../utils";
+import { etoFixtureAddressByName, tid } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
@@ -41,8 +40,14 @@ describe("Eto Investor View", () => {
     // TOKEN HOLDER RIGHTS section
     cy.get(tid("eto-public-view-nominee")).should("contain", "Neumini UG");
     cy.get(tid("eto-public-view-public-offer-duration")).should("contain", "14 Days");
-    cy.get(tid("eto-public-view-token-tradability")).should("contain", "Potentially tradable");
+    cy.get(tid("eto-public-view-token-tradability")).should("contain", "In the future");
+    /** For now /api/eto-listing/etos/{id} endpoint is not providing product details
+     * TODO: Enable when endpoint ready
+     * cy.get(tid("eto-public-view-token-transferability")).should("contain", "Yes");
+     * cy.get(tid("eto-public-view-asset-type")).should("contain", "Security");
+     *
+     */
     cy.get(tid("eto-public-view-voting-rights")).should("contain", "Yes");
-    cy.get(tid("eto-public-view-liquidation-preference")).should("contain", "0.5x");
+    cy.get(tid("eto-public-view-dividend-rights")).should("contain", "Yes");
   });
 });

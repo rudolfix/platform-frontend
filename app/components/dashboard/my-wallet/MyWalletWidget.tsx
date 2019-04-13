@@ -23,7 +23,7 @@ import { LoadingIndicator } from "../../shared/loading-indicator";
 import { ECurrency, ECurrencySymbol, Money } from "../../shared/Money.unsafe";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
-import { Tooltip } from "../../shared/Tooltip";
+import { ECustomTooltipTextPosition, Tooltip } from "../../shared/tooltips";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import * as ethIcon from "../../../assets/img/eth_icon.svg";
@@ -111,7 +111,7 @@ export const MyWalletWidgetComponentBody: React.FunctionComponent<StateProps> = 
                   </Link>
                   <Tooltip
                     content={<FormattedMessage id="icbm-wallet.tooltip" />}
-                    alignLeft={true}
+                    textPosition={ECustomTooltipTextPosition.LEFT}
                   />
                 </p>
               </Col>

@@ -1,3 +1,5 @@
+import { createSelector } from "reselect";
+
 import {
   EEtoState,
   TCompanyEtoData,
@@ -9,6 +11,7 @@ import {
   IEtoDocument,
   TEtoDocumentTemplates,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EProductName } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
@@ -18,7 +21,9 @@ import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { selectEtoWithCompanyAndContract, selectPublicEto } from "../public-etos/selectors";
 import { EETOStateOnChain } from "../public-etos/types";
-import { isValidEtoStartDate } from "./utils";
+import { isValidEtoStartDate, sortProducts } from "./utils";
+
+export const selectIssuerEtoFlow = (state: IAppState) => state.etoFlow;
 
 export const selectIssuerEtoPreviewCode = (state: IAppState) => state.etoFlow.etoPreviewCode;
 
@@ -208,3 +213,18 @@ export const selectIsNewPreEtoStartDateValid = (state: IAppState) => {
   const date = selectNewPreEtoStartDate(state);
   return date && isValidEtoStartDate(date, constants.DATE_TO_WHITELIST_MIN_DURATION);
 };
+
+export const selectAvailableProducts = createSelector(selectIssuerEtoFlow, ({ products }) => {
+  if (products !== undefined) {
+    const availableProducts = products
+      .filter(product => product.available)
+      // TODO: remove after platform-backend/#1550 is done
+      .filter(product => product.name !== EProductName.FIFTH_FORCE_ETO);
+
+    return sortProducts(availableProducts);
+  }
+
+  return undefined;
+});
+
+export const selectIsSaving = createSelector(selectIssuerEtoFlow, state => state.saving);

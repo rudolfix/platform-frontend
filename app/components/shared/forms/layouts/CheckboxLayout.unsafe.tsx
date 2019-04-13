@@ -34,26 +34,24 @@ const CheckboxLayout: React.FunctionComponent<IProps & TDataTestId & CommonHtmlP
   inputId,
   inputRef,
   "data-test-id": dataTestId,
-}) => {
-  return (
-    <label className={cn(styles.checkbox, layout, className)}>
-      <input
-        id={inputId}
-        className={styles.input}
-        onChange={onChange}
-        type="checkbox"
-        name={name}
-        value={value}
-        checked={checked}
-        data-test-id={dataTestId}
-        disabled={disabled}
-        ref={inputRef}
-      />
-      <div className={cn(styles.indicator, disabled && styles.disabled)} />
-      {label && <div className={styles.label}>{label}</div>}
-    </label>
-  );
-};
+}) => (
+  <label className={cn(styles.checkbox, layout, className)}>
+    <input
+      id={inputId}
+      className={styles.input}
+      onChange={onChange}
+      type="checkbox"
+      name={name}
+      value={value}
+      checked={checked}
+      data-test-id={dataTestId}
+      disabled={disabled}
+      ref={inputRef}
+    />
+    <div className={cn(styles.indicator, disabled && styles.disabled)} />
+    {label && <div className={styles.label}>{label}</div>}
+  </label>
+);
 
 CheckboxLayout.defaultProps = {
   layout: ECheckboxLayout.INLINE,
@@ -70,25 +68,23 @@ const RadioButtonLayout: React.FunctionComponent<IProps & TDataTestId & CommonHt
   disabled,
   inputRef,
   "data-test-id": dataTestId,
-}) => {
-  return (
-    <label className={cn(styles.checkbox, layout, className)}>
-      <input
-        className={styles.input}
-        disabled={disabled}
-        onChange={onChange}
-        type="radio"
-        name={name}
-        value={value}
-        defaultChecked={checked}
-        data-test-id={dataTestId}
-        ref={inputRef}
-      />
-      <div className={cn(styles.indicator, disabled && styles.disabled)} />
-      {label && <div className={styles.label}>{label}</div>}
-    </label>
-  );
-};
+}) => (
+  <label className={cn(styles.checkbox, layout, className)}>
+    <input
+      className={styles.input}
+      disabled={disabled}
+      onChange={onChange}
+      type="radio"
+      name={name}
+      value={value}
+      defaultChecked={checked}
+      data-test-id={dataTestId}
+      ref={inputRef}
+    />
+    <div className={cn(styles.indicator, disabled && styles.disabled)} />
+    {label && <div className={styles.label}>{label}</div>}
+  </label>
+);
 
 RadioButtonLayout.defaultProps = {
   layout: ECheckboxLayout.INLINE,

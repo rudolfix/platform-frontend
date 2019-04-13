@@ -1,0 +1,13 @@
+.tooltip {
+  &--text-center {
+    .tooltip-inner {
+      text-align: center;
+    }
+  }
+
+  &--text-left {
+    .tooltip-inner {
+      text-align: left;
+    }
+  }
+}

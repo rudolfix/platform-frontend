@@ -6,6 +6,8 @@
 .title {
   @include font-label;
   @include responsive-size(margin-top, $spacing-vertical-sm-1, $spacing-vertical-lg-1);
+
+  text-transform: none;
 }
 
 .framed {

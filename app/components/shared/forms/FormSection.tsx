@@ -12,7 +12,7 @@ export const FormSection: React.FunctionComponent<IProps> = ({ title, children }
   return (
     <section className={styles.formSection}>
       <h3 className={styles.title}>{title}</h3>
-      <div className={styles.content}>{children}</div>
+      <div>{children}</div>
     </section>
   );
 };

@@ -1,8 +1,7 @@
-import { tid } from "../../../test/testUtils";
 import { appRoutes } from "../../components/appRoutes";
 import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { insecureWithParams, withParams } from "../../utils/withParams";
-import { etoFixtureAddressByName, stubWindow } from "../utils";
+import { etoFixtureAddressByName, stubWindow, tid } from "../utils";
 
 describe("Eto widget page", () => {
   it("Basic widget", () => {

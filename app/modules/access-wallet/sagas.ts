@@ -130,7 +130,6 @@ export function* connectLightWallet(
 export function* connectWalletAndRunEffect(effect: Effect | Iterator<Effect>): any {
   while (true) {
     try {
-      yield put(actions.accessWallet.clearSigningError());
       const walletType: EWalletType | undefined = yield select((state: IAppState) =>
         selectWalletType(state.web3),
       );
@@ -169,7 +168,6 @@ export function* accessWalletAndRunEffect(
     throw new Error("Signing already in progress");
   }
   yield put(actions.accessWallet.showAccessWalletModal(title, message));
-
   // do required operation, or finish in case cancel button was hit
   const { result, cancel } = yield race({
     result: call(connectWalletAndRunEffect, effect),

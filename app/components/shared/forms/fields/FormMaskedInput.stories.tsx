@@ -7,7 +7,7 @@ import { FormMaskedInput } from "./FormMaskedInput.unsafe";
 import { formWrapper } from "./testingUtils.unsafe";
 import { generateMaskFromCurrency } from "./utils.unsafe";
 
-storiesOf("Form/MaskedInput", module)
+storiesOf("forms/fields/MaskedInput", module)
   .add(
     "default",
     formWrapper({ name: "15532.33" })(() => (

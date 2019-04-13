@@ -3,10 +3,10 @@ import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { toChecksumAddress } from "web3-utils";
 
-import { tid } from "../../../test/testUtils";
 import { TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
+import { tid } from "./selectors";
 
 /*
  * Pre-login user for faster tests
@@ -31,8 +31,8 @@ export const createAndLoginNewUser = (params: {
   onlyLogin?: boolean;
   signTosAgreement?: boolean;
   permissions?: string[];
-}) => {
-  return cy.clearLocalStorage().then(async ls => {
+}) =>
+  cy.clearLocalStorage().then(async ls => {
     cy.log("Logging in...");
 
     const {
@@ -86,7 +86,6 @@ export const createAndLoginNewUser = (params: {
       await setCorrectAgreement(jwt);
     }
   });
-};
 
 /**
  * Create a light wallet with a given seed

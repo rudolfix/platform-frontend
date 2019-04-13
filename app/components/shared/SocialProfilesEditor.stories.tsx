@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { formWrapper } from "./forms/fields/testingUtils.unsafe";
-import { SocialProfilesEditor } from "./SocialProfilesEditor.unsafe";
+import { SocialProfilesEditor } from "./SocialProfilesEditor";
 
 import * as githubIcon from "../../assets/img/inline_icons/social_github.svg";
 import * as googlePlusIcon from "../../assets/img/inline_icons/social_google_plus.svg";

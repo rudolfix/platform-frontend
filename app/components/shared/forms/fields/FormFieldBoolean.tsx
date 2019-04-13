@@ -1,4 +1,4 @@
-import { Field, FieldProps } from "formik";
+import { Field, FieldProps, getIn } from "formik";
 import * as React from "react";
 
 import { OmitKeys } from "../../../../types";
@@ -28,8 +28,8 @@ class FormFieldBoolean extends React.Component<TProps> {
                 {...rest}
                 name={name}
                 disabled={disabled}
-                checked={checked || form.values[name]}
-                onChange={() => form.setFieldValue(name, !form.values[name])}
+                checked={checked || getIn(form.values, name)}
+                onChange={() => form.setFieldValue(name, !getIn(form.values, name))}
               />
               <FormFieldError name={name} className="text-left" />
             </div>
@@ -54,7 +54,7 @@ class FormRadioButton extends React.Component<TProps> {
             <RadioButtonLayout
               {...field}
               {...this.props}
-              checked={checked || form.values[name] === value}
+              checked={checked || getIn(form.values, name) === value}
               onChange={() => form.setFieldValue(name, value)}
               disabled={disabled}
             />

@@ -1,7 +1,10 @@
 import { effects } from "redux-saga";
 import { fork, put, select } from "redux-saga/effects";
 
-import { EtoDocumentsMessage } from "../../components/translatedMessages/messages.unsafe";
+import {
+  EtoDocumentsMessage,
+  EtoFlowMessage,
+} from "../../components/translatedMessages/messages.unsafe";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -12,6 +15,7 @@ import {
   TEtoSpecsData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
 import { actions, TAction, TActionFromCreator } from "../actions";
@@ -61,11 +65,14 @@ export function* changeBookBuildingStatus(
   action: TAction,
 ): any {
   if (action.type !== "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES") return;
+
   const { status } = action.payload;
+
   try {
-    const message = action.payload.status
+    const message = status
       ? createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_START_BOOKBUILDING)
       : createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_STOP_BOOKBUILDING);
+
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
       neuCall(changeBookBuildingStatusEffect, status),
@@ -154,7 +161,9 @@ export function* submitEtoDataEffect({
   notificationCenter,
 }: TGlobalDependencies): Iterator<any> {
   yield apiEtoService.submitCompanyAndEto();
+
   notificationCenter.info(createMessage(EtoDocumentsMessage.ETO_SUBMIT_SUCCESS));
+
   yield put(actions.etoFlow.loadIssuerEto());
   yield put(actions.routing.goToDashboard());
 }
@@ -206,6 +215,44 @@ export function* loadInvestmentAgreement(
   yield put(actions.etoFlow.setInvestmentAgreementHash(url !== "" ? url : null));
 }
 
+export function* loadProducts({
+  apiEtoProductService,
+  logger,
+  notificationCenter,
+}: TGlobalDependencies): Iterator<any> {
+  try {
+    const products: TEtoProducts = yield apiEtoProductService.getProducts();
+
+    yield put(actions.etoFlow.setProducts(products));
+  } catch (e) {
+    logger.error("Failed to load eto products", e);
+
+    notificationCenter.error(createMessage(EtoFlowMessage.ETO_PRODUCTS_LOAD_FAILED));
+  }
+}
+
+export function* changeProductType(
+  { apiEtoProductService, logger, notificationCenter }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.etoFlow.changeProductType>,
+): Iterator<any> {
+  try {
+    const eto: TEtoSpecsData = yield apiEtoProductService.changeProductType(
+      action.payload.productId,
+    );
+
+    yield put(actions.publicEtos.setPublicEto({ eto }));
+
+    notificationCenter.info(createMessage(EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL), {
+      autoClose: 10000,
+      "data-test-id": "eto-flow-product-changed-successfully",
+    });
+  } catch (e) {
+    logger.error("Failed to change eto product", e);
+
+    notificationCenter.error(createMessage(EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_FAILED));
+  }
+}
+
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, "ETO_FLOW_LOAD_ISSUER_ETO", loadIssuerEto);
   yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
@@ -215,4 +262,6 @@ export function* etoFlowSagas(): any {
   yield fork(neuTakeLatest, "ETO_FLOW_START_DATE_TX", startSetDateTX);
   yield fork(neuTakeLatest, "ETO_FLOW_CLEANUP_START_DATE_TX", cleanupSetDateTX);
   yield fork(neuTakeLatest, etoFlowActions.loadSignedInvestmentAgreement, loadInvestmentAgreement);
+  yield fork(neuTakeLatest, etoFlowActions.loadProducts, loadProducts);
+  yield fork(neuTakeLatest, etoFlowActions.changeProductType, changeProductType);
 }

@@ -4,6 +4,7 @@ export const symbols = makeDebugSymbols({
   // configs
   config: Symbol(),
   ethereumNetworkConfig: Symbol(),
+  backendRootConfig: Symbol(),
 
   // apis
   apiImmutableStorage: Symbol(),
@@ -17,6 +18,7 @@ export const symbols = makeDebugSymbols({
   apiKycService: Symbol(),
   apiEtoService: Symbol(),
   apiEtoPledgeService: Symbol(),
+  apiEtoProductService: Symbol(),
   apiEtoFileService: Symbol(),
   fileStorageService: Symbol(),
   gasApi: Symbol(),

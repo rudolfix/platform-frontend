@@ -7,10 +7,15 @@ import { compose } from "redux";
 
 import {
   EtoInvestmentTermsType,
-  TPartialEtoSpecData,
+  TEtoSpecsData,
 } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
-import { getInvestmentAmount, getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
+import {
+  getCapPercent,
+  getInvestmentAmount,
+  getNumberOfTokens,
+  getShareAndTokenPrice,
+} from "../../../../lib/api/eto/EtoUtils";
 import { actions } from "../../../../modules/actions";
 import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
@@ -43,32 +48,24 @@ interface IExternalProps {
 interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
-  stateValues: TPartialEtoSpecData;
+  eto: TEtoSpecsData;
 }
 
 interface IDispatchProps {
-  saveData: (values: TPartialEtoSpecData) => void;
+  saveData: (values: TEtoSpecsData) => void;
 }
 
-type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
+type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TEtoSpecsData>;
 
 const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
-  stateValues,
+  eto,
   savingData,
   readonly,
 }) => {
-  const existingCompanyShares = stateValues.existingCompanyShares || 1;
-  const newSharesToIssue = stateValues.newSharesToIssue || 1;
-  const equityTokensPerShare = stateValues.equityTokensPerShare || 1;
-  const minimumNewSharesToIssue = stateValues.minimumNewSharesToIssue || 0;
-
-  const computedMaxNumberOfTokens = newSharesToIssue * equityTokensPerShare;
-  const computedMinNumberOfTokens = minimumNewSharesToIssue * equityTokensPerShare;
-  const computedMaxCapPercent = (newSharesToIssue / existingCompanyShares) * 100;
-  const computedMinCapPercent = (minimumNewSharesToIssue / existingCompanyShares) * 100;
-
-  const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(stateValues);
-  const { sharePrice, tokenPrice } = getShareAndTokenPrice(stateValues);
+  const { computedMaxNumberOfTokens, computedMinNumberOfTokens } = getNumberOfTokens(eto);
+  const { computedMaxCapPercent, computedMinCapPercent } = getCapPercent(eto);
+  const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(eto);
+  const { sharePrice, tokenPrice } = getShareAndTokenPrice(eto);
 
   return (
     <EtoFormBase
@@ -174,7 +171,6 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
           label={
             <FormattedMessage id="eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors" />
           }
-          placeholder=" "
           name="fixedSlotsMaximumDiscountFraction"
           prefix="%"
           ratio={100}
@@ -198,7 +194,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
             readOnly={true}
           />
           <Row>
-            <Col sm={12} md={6} className="mb-4">
+            <Col sm={12} md={6}>
               <FormFieldRaw
                 label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
                 prefix="€"
@@ -208,7 +204,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
                 readOnly={true}
               />
             </Col>
-            <Col sm={12} md={6} className="mb-4">
+            <Col sm={12} md={6}>
               <FormFieldRaw
                 label={<FormattedMessage id="eto.form.section.investment-terms.total-investment" />}
                 prefix="€"
@@ -218,6 +214,14 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
                 readOnly={true}
               />
             </Col>
+            {eto.product.maxInvestmentAmount !== 0 &&
+              eto.product.maxInvestmentAmount < maxInvestmentAmount && (
+                <Col sm={12}>
+                  <p className="text-warning">
+                    Please, note that the maximum investment amount is above the product limit
+                  </p>
+                </Col>
+              )}
             <Col sm={12} md={6}>
               <FormFieldRaw
                 label={
@@ -288,11 +292,11 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
     stateToProps: s => ({
       loadingData: s.etoFlow.loading,
       savingData: s.etoFlow.saving,
-      stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
+      eto: selectIssuerEto(s)!,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoInvestmentTerms, selectIssuerEtoState(s)),
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TPartialEtoSpecData) => {
+      saveData: (data: TEtoSpecsData) => {
         const convertedData = convert(data, fromFormState);
         dispatch(
           actions.etoFlow.saveDataStart({
@@ -303,13 +307,13 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
       },
     }),
   }),
-  branch<IStateProps>(props => props.stateValues === undefined, renderNothing),
-  withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
+  branch<IStateProps>(props => props.eto === undefined, renderNothing),
+  withFormik<IStateProps & IDispatchProps, TEtoSpecsData>({
     validationSchema: EtoInvestmentTermsType.toYup(),
-    mapPropsToValues: props => convert(props.stateValues, toFormState),
+    mapPropsToValues: props => convert(props.eto, toFormState),
     handleSubmit: (values, props) => props.props.saveData(values),
     validate: values => {
-      const errors: { -readonly [P in keyof (typeof values)]: TTranslatedString } = {};
+      const errors: { -readonly [P in keyof (typeof values)]?: TTranslatedString } = {};
 
       if ((values.publicDiscountFraction || 0) > (values.whitelistDiscountFraction || 0)) {
         errors.whitelistDiscountFraction = (

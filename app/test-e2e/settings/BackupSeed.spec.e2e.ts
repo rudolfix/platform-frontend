@@ -7,7 +7,8 @@ import {
   goToProfile,
   registerWithLightWallet,
 } from "../utils";
-import { notificationTid, tid } from "../utils/selectors";
+import { assertNotificationExists } from "../utils/assertions";
+import { tid } from "../utils/selectors";
 import {
   createAndLoginNewUser,
   DEFAULT_PASSWORD,
@@ -56,7 +57,7 @@ describe("Backup Seed and Private Key save and view", () => {
       cy.get(tid("private-key-display.copy-to-clipboard")).awaitedClick();
 
       // it's not possible to check clipboard content in cypress so only check whether notification was shown
-      cy.get(notificationTid("private-key-display-copied-to-clipboard")).should("exist");
+      assertNotificationExists("private-key-display-copied-to-clipboard");
     });
   });
 

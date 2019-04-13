@@ -29,7 +29,7 @@ import {
   unboolify,
 } from "../../shared/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
-import { Tooltip } from "../../shared/Tooltip";
+import { Tooltip } from "../../shared/tooltips";
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,

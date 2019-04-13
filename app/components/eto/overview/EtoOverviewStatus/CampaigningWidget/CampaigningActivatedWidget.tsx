@@ -16,7 +16,7 @@ import { onEnterAction } from "../../../../../utils/OnEnterAction";
 import { appRoutes } from "../../../../appRoutes";
 import { ButtonLink } from "../../../../shared/buttons";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money.unsafe";
-import { Tooltip } from "../../../../shared/Tooltip";
+import { Tooltip } from "../../../../shared/tooltips";
 import { CounterWidget } from "../index";
 import { Message } from "../Message";
 import { CampaigningActivatedInvestorApprovedWidget } from "./CampaigningActivatedInvestorApprovedWidget";

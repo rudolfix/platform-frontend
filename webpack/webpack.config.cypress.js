@@ -17,7 +17,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
-              configFile: "tsconfig.cypress.json",
+              configFile: "tsconfig.e2e.json",
               transpileOnly: true,
             },
           },

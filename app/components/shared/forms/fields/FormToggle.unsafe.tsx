@@ -1,5 +1,5 @@
 import * as cn from "classnames";
-import { connect, Field, FieldProps } from "formik";
+import { connect, Field, FieldProps, getIn } from "formik";
 import * as React from "react";
 
 import { TFormikConnect } from "../../../../types";
@@ -35,9 +35,9 @@ export const ToggleComponent: React.FunctionComponent<IProps & IInternalProps> =
       <div>{disabledLabel}</div>
       <label className={styles.toggleWrapper}>
         <input
-          name={name}
-          className={styles.input}
           type="checkbox"
+          className={styles.input}
+          name={name}
           onChange={onChange}
           checked={value}
           disabled={disabled}
@@ -63,18 +63,18 @@ class FormToggleLayout extends React.Component<IProps & TFormikConnect> {
     this.setDefaultValueIfNeeded();
   }
 
-  private setDefaultValueIfNeeded(): void {
+  setDefaultValueIfNeeded(): void {
     const { name, falseValue, formik } = this.props;
     const { values, setFieldValue } = formik;
 
-    const value = values[name];
+    const value = getIn(values, name);
 
     if (value === undefined) {
       setFieldValue(this.props.name, falseValue);
     }
   }
 
-  private onChange = (e: React.ChangeEvent<any>) => {
+  onChange = (e: React.ChangeEvent<any>) => {
     const { trueValue, falseValue, formik } = this.props;
     const { setFieldValue } = formik;
 

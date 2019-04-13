@@ -5,7 +5,7 @@ import * as React from "react";
 import { Form } from "../Form";
 import { FormFieldDate } from "./FormFieldDate.unsafe";
 
-storiesOf("Form/FieldDate", module).add("default", () => (
+storiesOf("forms/fields/FieldDate", module).add("default", () => (
   <Formik initialValues={{}} onSubmit={() => {}}>
     {() => (
       <Form>

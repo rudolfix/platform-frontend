@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { FormRange } from "./FormRange.unsafe";
+import { FormRange } from "./FormRange";
 import { formWrapper } from "./testingUtils.unsafe";
 
-storiesOf("Form/Range", module)
+storiesOf("forms/fields/Range", module)
   .add(
     "default",
     formWrapper({ name: 15 })(() => <FormRange name="name" min={10} max={20} unit="%" />),

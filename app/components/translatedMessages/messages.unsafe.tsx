@@ -3,6 +3,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { TTranslatedString } from "../../types";
+import { assertNever } from "../../utils/assertNever";
 import { TMessage } from "./utils";
 
 interface ITranslationValues {
@@ -10,6 +11,7 @@ interface ITranslationValues {
 }
 
 export type TranslatedMessageType =
+  | EtoFlowMessage
   | BankTransferFlowMessage
   | GenericErrorMessage
   | GenericModalMessage
@@ -116,6 +118,12 @@ export enum InvestorPortfolioMessage {
   INVESTOR_PORTFOLIO_FAILED_TO_LOAD_INCOMING_PAYOUTS,
 }
 
+export enum EtoFlowMessage {
+  ETO_PRODUCTS_LOAD_FAILED = "etoProductsLoadFailed",
+  ETO_TERMS_PRODUCT_CHANGE_FAILED = "etoTermsProductChangeFailed",
+  ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL = "etoTermsProductChangeSuccessful",
+}
+
 export enum EtoDocumentsMessage {
   ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE = "etoDocumentsConfirmUploadDocumentTitle",
   ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_DESCRIPTION = "etoDocumentsConfirmUploadDocumentDescription",
@@ -136,6 +144,7 @@ export enum EtoDocumentsMessage {
 export enum PublicEtosMessage {
   COULD_NOT_LOAD_ETO_PREVIEW = "couldNotLoadEtoPreview",
   COULD_NOT_LOAD_ETO = "couldNotLoadEto",
+  COULD_NOT_LOAD_ETOS = "couldNotLoadEtos",
 }
 
 export enum IpfsMessage {
@@ -362,6 +371,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="eto.public-view.could-not-load-eto-preview" />;
     case PublicEtosMessage.COULD_NOT_LOAD_ETO:
       return <FormattedMessage id="eto.public-view.could-not-load-eto" />;
+    case PublicEtosMessage.COULD_NOT_LOAD_ETOS:
+      return <FormattedMessage id="dashboard.could-not-load-etos" />;
 
     case IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE:
       return <FormattedMessage id="ipfs-failed-to-download-file" />;
@@ -468,11 +479,20 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="modules.web3.flows.web3-error.browser" />;
     case Web3Message.WEB3_ERROR_LEDGER:
       return <FormattedMessage id="modules.web3.flows.web3-error.ledger" />;
+    case EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_FAILED:
+      return <FormattedMessage id="modules.eto-flow.change-product.failed" />;
+    case EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL:
+      return <FormattedMessage id="modules.eto-flow.change-product.successful" />;
+    case EtoFlowMessage.ETO_PRODUCTS_LOAD_FAILED:
+      return <FormattedMessage id="modules.eto-flow.load-product.failed" />;
 
     // NEVER DO THIS!
     // THIS IS a misuse! It's only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
       return (messageData as any).message as TTranslatedString;
+
+    default:
+      return assertNever(messageType, `Message not provided for ${messageType}`);
   }
 };
 

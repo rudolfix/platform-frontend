@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   install-lint:
-  # install and lint is taken as one job to remove required time for downloading cache
+    # install and lint is taken as one job to remove required time for downloading cache
     docker:
       - image: krzkaczor/neufund-platform-base
     working_directory: /home/circleci/app
@@ -117,7 +117,7 @@ jobs:
           command: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e:chrome
           no_output_timeout: 30m
 
-  danger-ci:
+  codechecks:
     docker:
       - image: krzkaczor/neufund-platform-base
     working_directory: /home/circleci/app
@@ -128,26 +128,24 @@ jobs:
           keys:
             - v14-deps-{{ checksum "package.json" }}
             - v14-deps-
+      - run: yarn
+      - run: yarn build:commit-deployment
+      - run: yarn codechecks
+
+  codechecks-vis-reg:
+    docker:
+      - image: krzkaczor/neufund-platform-base
+    working_directory: /home/circleci/app
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v14-deps-{{ checksum "package.json" }}
+            - v14-deps-
+      - run: yarn
       - run: yarn storybook:screenshots
-      - run:
-          (export BASE_KEY=$(git rev-parse origin/master) && export CURRENT_KEY=${CIRCLE_SHA1} &&
-          ./.circleci/vis-reg-run.sh)
-      - run: yarn danger ci
-
-  bundlewatcher:
-    docker:
-      - image: krzkaczor/neufund-platform-base
-    working_directory: /home/circleci/app
-
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v14-deps-{{ checksum "package.json" }}
-            - v14-deps-
-
-      - run: yarn 
-      - run: yarn bundlewatcher
+      - run: yarn codechecks ./codechecks-vis-reg.ts
 
   deploy-storybook:
     docker:
@@ -174,17 +172,17 @@ workflows:
           requires:
             - install-lint
       - test:
-         requires:
-           - install-lint
+          requires:
+            - install-lint
+      - codechecks:
+          requires:
+            - install-lint
       - test-e2e:
           requires:
             - build-frontend
-      - danger-ci:
-         requires:
-           - build-frontend
-      - bundlewatcher:
-         requires:
-           - build-frontend
+      - codechecks-vis-reg:
+          requires:
+            - build-frontend
 
   nightly:
     triggers:
@@ -203,7 +201,7 @@ workflows:
       - test-e2e:
           requires:
             - install-lint
-      - danger-ci:
+      - codechecks:
           requires:
             - install-lint
 

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as Yup from "yup";
 
-import { getFieldSchema, isRequired } from "./yupUtils";
+import { findMax, findMin, getFieldSchema, isRequired } from "./yupUtils";
 
 describe("yupUtils", () => {
   describe("isRequired", () => {
@@ -23,6 +23,24 @@ describe("yupUtils", () => {
       const nameField = getFieldSchema("name", schema);
 
       expect(isRequired(nameField)).to.be.false;
+    });
+  });
+
+  describe("findMin", () => {
+    it("finds yup.max() value", () => {
+      const min = 1;
+      const schema = Yup.number().min(min);
+
+      expect(findMin(schema)).to.be.equal(min);
+    });
+  });
+
+  describe("findMax", () => {
+    it("finds yup.min() value", () => {
+      const max = 20;
+      const schema = Yup.number().max(max);
+
+      expect(findMax(schema)).to.be.equal(max);
     });
   });
 });

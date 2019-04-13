@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { sortBy } from "lodash/fp";
 import * as Yup from "yup";
 
 import {
@@ -10,11 +11,12 @@ import {
   EtoMediaType,
   EtoPitchType,
   EtoRiskAssessmentType,
-  EtoTermsType,
   EtoVotingRightsType,
   GeneralEtoDataType,
+  getEtoTermsSchema,
   TBookbuildingStatsType,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EProductName, TEtoProduct } from "../../lib/api/eto/EtoProductsApi.interfaces";
 
 function getErrorsNumber(validator: Yup.Schema<any>, data?: any): number {
   try {
@@ -89,7 +91,7 @@ export const etoInvestmentTermsProgressOptions: IProgressOptions = {
 export const calculateCompanyInformationProgress = getFormFractionDoneCalculator(
   EtoCompanyInformationType.toYup(),
 );
-export const calculateEtoTermsProgress = getFormFractionDoneCalculator(EtoTermsType.toYup());
+export const calculateEtoTermsProgress = getFormFractionDoneCalculator(getEtoTermsSchema().toYup());
 export const calculateEtoKeyIndividualsProgress = getFormFractionDoneCalculator(
   EtoKeyIndividualsType.toYup(),
 );
@@ -168,3 +170,22 @@ export const isValidEtoStartDate = (startDate: Date, dateToWhitelistMinDurationS
   const nowSec = Date.now() / 1000;
   return dateToWhitelistMinDurationSec.add(nowSec).lessThan(startTimeSec);
 };
+
+const PRODUCTS_SORT_ORDER: EProductName[] = [
+  EProductName.MINI_ETO_LI,
+  EProductName.HNWI_ETO_LI,
+  EProductName.HNWI_ETO_DE,
+  EProductName.RETAIL_ETO_DE,
+  EProductName.RETAIL_ETO_LI_VMA,
+  EProductName.RETAIL_ETO_LI_SECURITY,
+];
+
+export const sortProducts = sortBy((product: TEtoProduct) => {
+  const index = PRODUCTS_SORT_ORDER.indexOf(product.name);
+
+  if (index === -1) {
+    return PRODUCTS_SORT_ORDER.length;
+  }
+
+  return index;
+});

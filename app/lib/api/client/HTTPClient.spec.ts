@@ -6,13 +6,15 @@ import { HttpMethod, IHttpRequestCommon, IHttpResponse } from "./IHttpClient";
 
 describe("HTTPClient", () => {
   function createCustomHttpClient(spy: SinonSpy): HttpClient {
+    const backendRootMock = { url: "" };
+
     return new class extends HttpClient {
       protected makeFetchRequest: <T>(
         fullUrl: string,
         method: HttpMethod,
         config: IHttpRequestCommon,
       ) => Promise<IHttpResponse<T>> = spy;
-    }();
+    }(backendRootMock);
   }
 
   describe("get", () => {

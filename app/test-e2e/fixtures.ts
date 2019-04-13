@@ -41,3 +41,6 @@ export const INV_ICBM_ETH_M_HAS_KYC_DUP =
 export const INV_ETH_EUR_ICBM_M_HAS_KYC_DUP_ADDRESS = "0x7824e49353BD72E20B61717cf82a06a4EEE209e8";
 export const INV_ETH_EUR_ICBM_M_HAS_KYC_DUP =
   "escape filter champion bring denial siege cactus vivid used march smile over ocean repeat poet word media fluid fluid quantum faculty tattoo attract crush";
+
+export const INV_ICBM_ETH_M_HAS_KYC_DUP_2 =
+  "long ordinary situate fashion crime razor salon impact science powder aisle extra midnight dream hurt plastic bless soon viable abandon insect fabric hope brown";

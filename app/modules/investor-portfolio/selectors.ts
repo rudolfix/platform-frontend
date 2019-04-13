@@ -2,15 +2,19 @@ import BigNumber from "bignumber.js";
 import { isArray } from "lodash/fp";
 import { createSelector } from "reselect";
 
+import { shouldShowToken } from "../../components/portfolio/utils";
+import { ECurrency } from "../../components/shared/Money.unsafe";
 import { Q18 } from "../../config/constants";
 import { getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../store";
+import { compareBigNumbers } from "../../utils/BigNumberUtils";
 import { isZero } from "../../utils/Number.utils";
 import { selectPublicEtoById, selectPublicEtos, selectTokenData } from "../public-etos/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../public-etos/types";
 import { isOnChain } from "../public-etos/utils";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import { ICalculatedContribution, TETOWithInvestorTicket, TETOWithTokenData } from "./types";
+import { getRequiredIncomingAmount, isPastInvestment } from "./utils";
 
 const selectInvestorTicketsState = (state: IAppState) => state.investorTickets;
 
@@ -159,7 +163,9 @@ export const selectIsEligibleToPreEto = (state: IAppState, etoId: string) => {
  */
 export const selectTokensDisbursal = createSelector(selectInvestorTicketsState, investorTickets => {
   if (isArray(investorTickets.tokensDisbursal)) {
-    return investorTickets.tokensDisbursal.filter(d => !isZero(d.amountToBeClaimed));
+    return investorTickets.tokensDisbursal
+      .filter(d => !isZero(d.amountToBeClaimed))
+      .filter(t => shouldShowToken(t.token, t.amountToBeClaimed));
   }
 
   return investorTickets.tokensDisbursal;
@@ -185,7 +191,10 @@ export const selectEtherTokenIncomingPayout = (state: IAppState): string => {
   const incomingPayout = state.investorTickets.incomingPayouts.data;
 
   if (incomingPayout) {
-    return incomingPayout.etherTokenIncomingPayoutValue;
+    const minimumEtherTokenAmount = getRequiredIncomingAmount(ECurrency.ETH);
+    const etherToken = incomingPayout.etherTokenIncomingPayoutValue;
+
+    return compareBigNumbers(etherToken, minimumEtherTokenAmount) >= 0 ? etherToken : "0";
   }
   return "0";
 };
@@ -194,7 +203,10 @@ export const selectEuroTokenIncomingPayout = (state: IAppState): string => {
   const incomingPayout = state.investorTickets.incomingPayouts.data;
 
   if (incomingPayout) {
-    return incomingPayout.euroTokenIncomingPayoutValue;
+    const minimumEuroTokenAmount = getRequiredIncomingAmount(ECurrency.EUR_TOKEN);
+    const euroToken = incomingPayout.euroTokenIncomingPayoutValue;
+
+    return compareBigNumbers(euroToken, minimumEuroTokenAmount) >= 0 ? euroToken : "0";
   }
   return "0";
 };
@@ -203,9 +215,42 @@ export const selectIsIncomingPayoutAvailable = (state: IAppState): boolean => {
   const etherToken = selectEtherTokenIncomingPayout(state);
   const euroToken = selectEuroTokenIncomingPayout(state);
 
-  return etherToken !== "0" || euroToken !== "0";
+  const minimumEtherTokenAmount = getRequiredIncomingAmount(ECurrency.ETH);
+  const minimumEuroTokenAmount = getRequiredIncomingAmount(ECurrency.EUR_TOKEN);
+
+  // Incoming payout is more or equals 1ETH
+  const shouldShowEtherToken = compareBigNumbers(etherToken, minimumEtherTokenAmount) >= 0;
+  // Incoming payout is more or equals 100nEUR
+  const shouldShowEuroToken = compareBigNumbers(euroToken, minimumEuroTokenAmount) >= 0;
+
+  return shouldShowEtherToken || shouldShowEuroToken;
 };
 
 export const selectIsIncomingPayoutDone = (state: IAppState): boolean => {
   return state.investorTickets.incomingPayouts.payoutDone;
+};
+
+export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
+  const etos = selectEtoWithInvestorTickets(state);
+  if (etos) {
+    return etos
+      .filter(eto => eto.investorTicket.claimedOrRefunded)
+      .filter(eto => isPastInvestment(eto.contract!.timedState))
+      .sort((left, right) => {
+        const timedStateLeft = left.contract!.timedState;
+        const timedStateRight = right.contract!.timedState;
+
+        const investmentDateLeft = new Date(
+          left.contract!.startOfStates[timedStateLeft]!,
+        ).getTime();
+        const investmentDateRight = new Date(
+          left.contract!.startOfStates[timedStateRight]!,
+        ).getTime();
+
+        // sort by date DESC
+        return investmentDateRight - investmentDateLeft;
+      });
+  }
+
+  return undefined;
 };

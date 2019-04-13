@@ -9,6 +9,7 @@ $indicator-size: 16px;
 
   &.layout-block {
     display: flex;
+    padding: px-to-rem(8px) 0;
   }
 
   :global(.form-group) & {
@@ -43,6 +44,19 @@ $indicator-size: 16px;
       }
     }
   }
+
+  &:disabled {
+    ~ .indicator,
+    ~ .label {
+      cursor: not-allowed;
+    }
+
+    ~ .indicator {
+      &::after {
+        background-color: $neu-silver;
+      }
+    }
+  }
 }
 
 .indicator {
@@ -67,12 +81,6 @@ $indicator-size: 16px;
   // display raw input in print
   @media print {
     display: none;
-  }
-
-  &.disabled {
-    &::after {
-      background-color: $neu-silver;
-    }
   }
 }
 

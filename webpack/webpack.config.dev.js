@@ -84,6 +84,10 @@ module.exports = merge.smart(configCommon, {
                   camelCase: "dashesOnly",
                 },
               },
+              {
+                loader: "postcss-loader",
+                options: { config: { path: path.join(__dirname, "postcss.config.js") } },
+              },
               { loader: "sass-loader" },
             ],
           },

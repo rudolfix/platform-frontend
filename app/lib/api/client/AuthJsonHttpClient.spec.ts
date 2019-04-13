@@ -14,7 +14,9 @@ describe("AuthorizedHttpClient", () => {
       get: () => TOKEN,
     }) as any;
 
-    const httpClient = new JsonHttpClient();
+    const backendRootMock = { url: "" };
+
+    const httpClient = new JsonHttpClient(backendRootMock);
 
     let receivedHeaders: any;
 

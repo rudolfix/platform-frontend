@@ -26,7 +26,7 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms";
-import { Tooltip } from "../../shared/Tooltip";
+import { Tooltip } from "../../shared/tooltips";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 import { KycDisclaimer } from "../shared/KycDisclaimer";

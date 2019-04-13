@@ -17,50 +17,13 @@
   }
 }
 
-.custom-select {
-  position: relative;
-
-  &::after {
-    @include triangle-down(14px, 9px, $color-green);
-
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-
-    content: "";
-  }
-
-  select {
-    // sass-lint:disable no-vendor-prefixes
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-
-  &.disabled {
-    &::after {
-      @include triangle-down(14px, 9px, $neu-silver);
-    }
-
-    & select {
-      color: $neu-silver;
-    }
-  }
-}
-
 .input-field {
   &:disabled {
     color: $neu-slate-grey;
+    cursor: not-allowed;
 
     &::placeholder {
       color: $neu-silver;
     }
   }
-}
-
-// sass-lint:disable no-important
-// this is needed for backward compatibility of FormGroup
-.key-value-field {
-  margin-bottom: 0 !important;
 }

@@ -59,7 +59,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
       </Heading>
 
       <Panel>
-        <p>
+        <p data-test-id="asset-portfolio.payout-text">
           <FormattedMessage
             id="portfolio.asset.amounts-to-claim"
             values={{

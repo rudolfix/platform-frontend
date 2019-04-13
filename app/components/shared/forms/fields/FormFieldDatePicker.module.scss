@@ -31,7 +31,6 @@ $_font-color: #323c47;
     }
 
     .form-control {
-
       display: flex;
       flex-flow: row nowrap;
       justify-content: space-between;
@@ -93,7 +92,7 @@ $_font-color: #323c47;
 
     .rdtPicker {
       th {
-        border-bottom: 1px solid #f9f9f9;		
+        border-bottom: 1px solid #f9f9f9;
       }
 
       td.rdtOld,

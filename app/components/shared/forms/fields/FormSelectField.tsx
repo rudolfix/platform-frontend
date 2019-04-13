@@ -7,9 +7,10 @@ import { FormGroup, Input } from "reactstrap";
 import { Dictionary, TDataTestId, TTranslatedString } from "../../../../types";
 import { FormFieldError, generateErrorId } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
-import { isFieldRequired, isNonValid } from "./utils.unsafe";
+import { isNonValid } from "./utils.unsafe";
 
-import * as styles from "./FormStyles.module.scss";
+import * as styles from "./FormSelectField.module.scss";
+import * as sharedStyles from "./FormStyles.module.scss";
 
 export const NONE_KEY = "";
 export const BOOL_TRUE_KEY = "true";
@@ -82,13 +83,13 @@ export class FormSelectField extends React.Component<IFieldGroup & IOwnProps & T
 
     return (
       <FormikConsumer>
-        {({ touched, errors, setFieldTouched, validationSchema, submitCount }) => {
+        {({ touched, errors, setFieldTouched, submitCount }) => {
           const invalid = isNonValid(touched, errors, name, submitCount);
 
           return (
             <FormGroup>
               {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
-              <div className={cn(styles.customSelect, disabled && styles.disabled)}>
+              <div className={cn(styles.customSelect, { [styles.disabled]: disabled })}>
                 <Field
                   name={name}
                   render={({ field }: FieldProps) => (
@@ -98,7 +99,7 @@ export class FormSelectField extends React.Component<IFieldGroup & IOwnProps & T
                       aria-describedby={`${generateErrorId(name)} ${name}-extra-message`}
                       aria-invalid={invalid}
                       invalid={invalid}
-                      disabled={disabled && isFieldRequired(validationSchema, name)}
+                      disabled={disabled}
                       onFocus={() => setFieldTouched(name, true)}
                       type="select"
                       value={field.value}
@@ -111,7 +112,7 @@ export class FormSelectField extends React.Component<IFieldGroup & IOwnProps & T
               <FormFieldError name={name} />
 
               {extraMessage && (
-                <div id={`${name}-extra-message`} className={styles.noteLabel}>
+                <div id={`${name}-extra-message`} className={sharedStyles.noteLabel}>
                   {extraMessage}
                 </div>
               )}

@@ -12,6 +12,7 @@ import {
 } from "../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
+import { isZero } from "../../../utils/Number.utils";
 import { appRoutes } from "../../appRoutes";
 import { ButtonLink, EButtonLayout } from "../../shared/buttons";
 import { Counter } from "../../shared/Counter.unsafe";
@@ -95,23 +96,28 @@ const IncomingPayoutCounter: React.FunctionComponent<IIncomingPayoutData & IDisp
       onFinish={() => incomingPayoutDone()}
     />
     <div>
-      <Money
-        data-test-id="incoming-payout-euro-token"
-        className={styles.incomingValue}
-        theme={ETheme.GREEN}
-        value={euroTokenIncomingPayout}
-        currencySymbol={ECurrencySymbol.CODE}
-        currency={ECurrency.EUR_TOKEN}
-      />
-      <span className={styles.incomingValue}> & </span>
-      <Money
-        data-test-id="incoming-payout-ether-token"
-        className={styles.incomingValue}
-        theme={ETheme.GREEN}
-        value={etherTokenIncomingPayout}
-        currencySymbol={ECurrencySymbol.CODE}
-        currency={ECurrency.ETH}
-      />
+      {!isZero(euroTokenIncomingPayout) && (
+        <Money
+          data-test-id="incoming-payout-euro-token"
+          className={styles.incomingValue}
+          theme={ETheme.GREEN}
+          value={euroTokenIncomingPayout}
+          currencySymbol={ECurrencySymbol.CODE}
+          currency={ECurrency.EUR_TOKEN}
+        />
+      )}
+      {!isZero(euroTokenIncomingPayout) &&
+        !isZero(etherTokenIncomingPayout) && <span className={styles.incomingValue}> & </span>}
+      {!isZero(etherTokenIncomingPayout) && (
+        <Money
+          data-test-id="incoming-payout-ether-token"
+          className={styles.incomingValue}
+          theme={ETheme.GREEN}
+          value={etherTokenIncomingPayout}
+          currencySymbol={ECurrencySymbol.CODE}
+          currency={ECurrency.ETH}
+        />
+      )}
     </div>
     <p className={styles.statementText}>
       <FormattedMessage id="dashboard.incoming-payout-widget.wallet-statement" />

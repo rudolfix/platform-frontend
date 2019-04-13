@@ -7,11 +7,15 @@ import { formField, formFieldErrorMessage, tid } from "./selectors";
 type TFormFieldFixture =
   | {
       value: string;
-      type: "submit" | "tags" | "single-file" | "date" | "select" | "range" | "radio";
+      type: "tags" | "single-file" | "date" | "select" | "range" | "radio";
     }
   | {
       values: Dictionary<boolean>;
       type: "checkbox";
+    }
+  | {
+      checked: boolean;
+      type: "toggle";
     }
   | {
       type: "media";
@@ -113,6 +117,16 @@ export const fillForm = (
           element.uncheck(value, { force: true });
         }
       });
+    }
+    //check or uncheck a single checkbox
+    else if (field.type === "toggle") {
+      const element = cy.get(formField(key));
+
+      if (field.checked) {
+        element.check({ force: true });
+      } else {
+        element.uncheck({ force: true });
+      }
     }
     // tags
     else if (field.type === "tags") {

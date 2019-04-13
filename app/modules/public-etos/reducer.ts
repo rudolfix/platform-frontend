@@ -50,7 +50,9 @@ export const publicEtosReducer: AppReducer<IPublicEtoState> = (
         },
         companies: {
           ...state.companies,
-          [action.payload.company.companyId]: action.payload.company,
+          ...(action.payload.company
+            ? { [action.payload.company.companyId]: action.payload.company }
+            : {}),
         },
       };
     case actions.publicEtos.setEtosDisplayOrder.getType():

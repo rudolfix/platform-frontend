@@ -7,7 +7,7 @@ import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPle
 import { Button, ButtonSize, ButtonWidth } from "../../../../shared/buttons";
 import { CheckboxLayout, Form, FormInput, InputSize } from "../../../../shared/forms";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../../shared/Money.unsafe";
-import { Tooltip } from "../../../../shared/Tooltip";
+import { Tooltip } from "../../../../shared/tooltips";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
 

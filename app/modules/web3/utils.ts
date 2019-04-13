@@ -56,5 +56,5 @@ export const doesUserWithdrawMinimal = (
   minNEuro: TBigNumberVariant,
 ): boolean => {
   if (value === "") return false;
-  return compareBigNumbers(convertToBigInt(value || "0"), minNEuro) > 0;
+  return compareBigNumbers(convertToBigInt(value || "0"), minNEuro) >= 0;
 };

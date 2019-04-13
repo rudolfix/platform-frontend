@@ -104,3 +104,38 @@ export const convertToPrecision = (precision: number) => (data: number) => {
     return undefined;
   }
 };
+
+export const setDefaultValueIfUndefined = (defaultValue: any) => (data: any) => {
+  return data === undefined ? defaultValue : data;
+};
+
+export const removeEmptyField = () => (data: any) => {
+  if (data === [] || data === null || Number.isNaN(data)) {
+    data = undefined;
+  }
+  return data;
+};
+
+// this is to generate unique keys
+// that we supply to react elements when mapping over an array of data
+export const generateKeys = () => (data: { key: string }[]) => {
+  return (
+    data &&
+    data.map(arrayElement => {
+      arrayElement.key = Math.random().toString();
+      return arrayElement;
+    })
+  );
+};
+
+// removes unique keys created with generateKeys()
+// if API doesn't accept them
+export const removeKeys = () => (data: { key: string }[]) => {
+  return (
+    data &&
+    data.map(arrayElement => {
+      delete arrayElement.key;
+      return arrayElement;
+    })
+  );
+};

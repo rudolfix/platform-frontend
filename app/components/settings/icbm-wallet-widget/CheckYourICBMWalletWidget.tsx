@@ -62,14 +62,15 @@ export const CheckYourICBMWalletWidgetComponent: React.FunctionComponent<IDispat
       className="h-100"
       data-test-id="models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"
     >
-      <p>
-        <FormattedMessage id="check-your-icbm-wallet-widget.notice" />
-      </p>
       <Formik<{ address: string }>
         initialValues={{ address: "" }}
         onSubmit={values => loadICBMWallet(values.address)}
       >
         <Form className={styles.section}>
+          <p>
+            <FormattedMessage id="check-your-icbm-wallet-widget.notice" />
+          </p>
+
           <FormContent />
         </Form>
       </Formik>

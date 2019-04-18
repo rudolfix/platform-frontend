@@ -1,5 +1,6 @@
 import "reflect-metadata";
 
+import * as React from "react";
 import { configure, addDecorator } from "@storybook/react";
 import { setIntlConfig, withIntl } from "storybook-addon-intl";
 import StoryRouter from "storybook-react-router";
@@ -28,6 +29,7 @@ setIntlConfig({
   locales: ["en"],
   defaultLocale: "en",
   getMessages,
+  textComponent: React.Fragment,
 });
 
 addDecorator(checkA11y);

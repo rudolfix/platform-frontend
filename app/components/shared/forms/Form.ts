@@ -7,6 +7,7 @@ import { symbols } from "../../../di/symbols";
 import { ILogger } from "../../../lib/dependencies/logger";
 import { TFormikConnect } from "../../../types";
 import { ContainerContext, TContainerContext } from "../../../utils/InversifyProvider";
+import { omitProps } from "../../../utils/omitProps";
 
 type TProps = React.ComponentProps<typeof FormikForm>;
 
@@ -36,6 +37,8 @@ const Form = compose<TProps, TProps>(
       }
     },
   }),
+  // Remove logger from props so it's not forwarded to the dom
+  omitProps(["logger"]),
 )(FormikForm);
 
 export { Form };

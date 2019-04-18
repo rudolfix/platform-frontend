@@ -1,7 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { CommonHtmlProps, OmitKeys, TTranslatedString } from "../../../types";
+import { CommonHtmlProps, OmitKeys, TDataTestId, TTranslatedString } from "../../../types";
+import { makeTid } from "../../../utils/tidUtils";
 import { InlineIcon } from "../icons";
 import { TooltipBase } from "./TooltipBase";
 
@@ -19,7 +20,7 @@ type TForwardedProps = OmitKeys<React.ComponentProps<typeof TooltipBase>, "targe
 let tooltipCount = 0;
 
 class Tooltip extends React.Component<
-  IProps & CommonHtmlProps & TForwardedProps,
+  IProps & CommonHtmlProps & TForwardedProps & TDataTestId,
   { targetId: string }
 > {
   static defaultProps = {
@@ -31,7 +32,15 @@ class Tooltip extends React.Component<
   };
 
   render(): React.ReactNode {
-    const { content, className, children, preventDefault, ...tooltipProps } = this.props;
+    const {
+      content,
+      className,
+      children,
+      preventDefault,
+      ["data-test-id"]: dataTestId,
+      ...tooltipProps
+    } = this.props;
+
     return (
       <span
         className={cn(
@@ -41,10 +50,18 @@ class Tooltip extends React.Component<
         )}
         onClick={preventDefault ? e => e.preventDefault() : undefined}
       >
-        <span className={styles.tooltip} id={this.state.targetId}>
+        <span
+          className={styles.tooltip}
+          id={this.state.targetId}
+          data-test-id={makeTid(dataTestId, "trigger")}
+        >
           {children ? children : <InlineIcon svgIcon={icon} />}
         </span>
-        <TooltipBase target={this.state.targetId} {...tooltipProps}>
+        <TooltipBase
+          target={this.state.targetId}
+          data-test-id={makeTid(dataTestId, "popover")}
+          {...tooltipProps}
+        >
           {content}
         </TooltipBase>
       </span>

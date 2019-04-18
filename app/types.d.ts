@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { FormikContext } from "formik";
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { ToastOptions } from "react-toastify";
 
 export type Dictionary<T> = Record<string, T>;
 
@@ -75,6 +76,8 @@ export type TTranslatedString = string | React.ReactElement<FormattedMessage.Pro
 export type TDataTestId = {
   "data-test-id"?: string;
 };
+
+export type ToastWithTestData = ToastOptions & TDataTestId;
 
 export type TAcceptedFileType =
   | string

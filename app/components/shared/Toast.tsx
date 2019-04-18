@@ -1,24 +1,27 @@
 import * as React from "react";
-import { toast, ToastContainer as ToastifyContainer, ToastOptions } from "react-toastify";
+import { toast, ToastContainer as ToastifyContainer } from "react-toastify";
 
 import { IS_CYPRESS, TOAST_COMPONENT_DELAY } from "../../config/constants";
-import { TDataTestId, TTranslatedString } from "../../types";
+import { TDataTestId, ToastWithTestData, TTranslatedString } from "../../types";
 
 import "react-toastify/dist/ReactToastify.css";
 
 const ToastContainer = () => <ToastifyContainer autoClose={TOAST_COMPONENT_DELAY} />;
 
-const getOptions = (options?: TDataTestId & ToastOptions) =>
-  IS_CYPRESS && options && options["data-test-id"]
-    ? { className: options["data-test-id"], ...options }
-    : options;
+const ComponentWithTestId = (children: TTranslatedString, options?: TDataTestId) =>
+  IS_CYPRESS && options && options["data-test-id"] ? (
+    <div data-test-id={options["data-test-id"]}>{children}</div>
+  ) : (
+    children
+  );
+// Options is used in order to keep backwards compatibility
 
-const showErrorToast = (content: TTranslatedString, options?: Parameters<typeof getOptions>[0]) => {
-  toast.error(content, getOptions(options));
+const showErrorToast = (content: TTranslatedString, options?: ToastWithTestData) => {
+  toast.error(ComponentWithTestId(content, options), options);
 };
 
-const showInfoToast = (content: TTranslatedString, options?: Parameters<typeof getOptions>[0]) => {
-  toast.info(content, getOptions(options));
+const showInfoToast = (content: TTranslatedString, options?: ToastWithTestData) => {
+  toast.info(ComponentWithTestId(content, options), options);
 };
 
 export { ToastContainer, showErrorToast, showInfoToast };

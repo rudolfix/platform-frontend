@@ -762,6 +762,7 @@
   "modules.auth.sagas.verify-user-email-promise.email-already-verified": "Your email is already verified",
   "modules.auth.sagas.verify-user-email-promise.email-verified": "Your email address has been successfully verified.",
   "modules.auth.sagas.verify-user-email-promise.failed-email-verify": "We failed to verify your email.",
+  "modules.auth.sagas.verify-user-email-promise.failed-email-verify-same-email": "Your activation code is invalid. Make sure you used the activation link from the most recent e-mail",
   "modules.eto-flow.change-product.failed": "Failed to change product type. Please try again later.",
   "modules.eto-flow.change-product.successful": "ETO product type was changed. Some fields where automatically updated to meet new product type restrictions.",
   "modules.eto-flow.load-product.failed": "",

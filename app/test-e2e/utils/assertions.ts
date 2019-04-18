@@ -3,7 +3,7 @@ import { get } from "lodash";
 import { appRoutes } from "../../components/appRoutes";
 import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
 import { mockApiUrl } from "../config";
-import { notificationTid, tid } from "./selectors";
+import { tid } from "./selectors";
 import { getPendingTransactions } from "./userHelpers";
 
 export const assertEtoDashboard = () => {
@@ -135,12 +135,8 @@ export const assertEmailChangeFlow = (): void => {
   cy.get(tid("verify-email-widget-form-email-input")).should("exist");
 };
 
-export const assertNotificationExists = (selector: string): void => {
-  cy.get(notificationTid(selector)).should("exist");
-};
-
 export const assertEmailPendingChange = (email: string, newEmail: string): void => {
-  assertNotificationExists("profile-email-change-success");
+  cy.get(tid("profile-email-change-success")).should("exist");
   cy.get(tid("profile.verify-email-widget.verified-email")).contains(email);
   cy.get(tid("profile.verify-email-widget.unverified-email")).contains(newEmail);
 };

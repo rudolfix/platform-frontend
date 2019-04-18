@@ -4,7 +4,6 @@ import {
   assertDashboard,
   assertEmailChangeFlow,
   assertEmailPendingChange,
-  assertNotificationExists,
   clearEmailServer,
   goToProfile,
   logoutViaTopRightButton,
@@ -67,8 +66,8 @@ describe("Change Email", () => {
 
     acceptWallet();
 
-    // assert if error message has pooped in
-    assertNotificationExists("profile-email-exists");
+    // assert if error message has popped in
+    cy.get(tid("profile-email-exists")).should("exist");
   });
 
   it("should not allow to change email to the same as verified", () => {
@@ -78,7 +77,7 @@ describe("Change Email", () => {
     });
 
     // assert if error message is present and new email has not been set
-    assertNotificationExists("profile-email-change-verified-exists");
+    cy.get(tid("profile-email-change-verified-exists")).should("exist");
     cy.get(tid("profile.verify-email-widget.unverified-email")).should("not.exist");
   });
 
@@ -103,7 +102,7 @@ describe("Change Email", () => {
       "verify-email-widget-form-submit": { type: "submit" },
     });
 
-    // assert if error message pooped in
-    assertNotificationExists("profile-email-change-unverified-exists");
+    // assert if error message showed up
+    cy.get(tid("profile-email-change-unverified-exists")).should("exist");
   });
 });

@@ -62,6 +62,12 @@ describe("Verify Wallet", () => {
 
       cy.get(tid("light-wallet-login-with-email-email-field")).contains(email);
 
+      // Asserts if error toast shows up
+      // @SEE https://github.com/Neufund/platform-frontend/issues/2709
+      cy.get(tid("modules.auth.sagas.verify-user-email.toast.verification-failed")).should("exist");
+
+      cy.get(tid("light-wallet-login-with-email-email-field")).contains(email);
+
       fillForm({
         password,
         "wallet-selector-nuewallet.login-button": {

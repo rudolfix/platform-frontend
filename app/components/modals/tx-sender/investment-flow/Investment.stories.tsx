@@ -44,8 +44,6 @@ storiesOf("Investment/Form", module)
       maxTicketEur={"123456"}
       readyToInvest={false}
       showTokens={true}
-      totalCostEth={"1234141234123412341234"}
-      totalCostEur={"123412341234123412341234"}
       sendTransaction={() => {}}
       hasPreviouslyInvested={true}
     />

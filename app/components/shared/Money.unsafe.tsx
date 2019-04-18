@@ -137,12 +137,12 @@ const Money: React.FunctionComponent<IProps> = ({
     (format === EMoneyFormat.ULPS && !React.isValidElement(value)) || isPrice
       ? getFormattedMoney(value as BigNumber, currency, format, isPrice, roundingMode)
       : value;
-
   const formattedMoney = !React.isValidElement(money) ? (
     <NumberFormat value={money as string} />
   ) : (
     money
   );
+
   return (
     <span {...props} className={cn(styles.money, transfer, props.className, theme)}>
       {currencySymbol === ECurrencySymbol.SYMBOL && (

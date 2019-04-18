@@ -353,6 +353,7 @@ interface IAdditionalEtoType {
   maxPledges: number;
   canEnableBookbuilding: boolean;
   product: TEtoProduct;
+  nomineeDisplayName?: string;
 }
 
 export type TBookbuildingStatsType = {

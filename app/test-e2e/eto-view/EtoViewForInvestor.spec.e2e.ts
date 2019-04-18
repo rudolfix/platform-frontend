@@ -38,7 +38,7 @@ describe("Eto Investor View", () => {
     cy.get(tid("eto-public-view-public-eto-duration")).should("contain", "14 Days");
 
     // TOKEN HOLDER RIGHTS section
-    cy.get(tid("eto-public-view-nominee")).should("contain", "Neumini UG");
+    cy.get(tid("eto-public-view-nominee")).should("contain", "Neumini NOMINEE_NEUMINI");
     cy.get(tid("eto-public-view-public-offer-duration")).should("contain", "14 Days");
     cy.get(tid("eto-public-view-token-tradability")).should("contain", "In the future");
     /** For now /api/eto-listing/etos/{id} endpoint is not providing product details

@@ -286,11 +286,10 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <FormattedMessage id="eto.public-view.token-terms.group-title.token-holder-rights" />
           </div>
           <div className={styles.groupContent}>
-            {/* TODO: change to {etoData.nominee} when endpoint is avaliable */}
             {!!etoData.nominee && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.nominee" />}
-                value={"Neumini UG"}
+                value={etoData.nomineeDisplayName}
                 data-test-id="eto-public-view-nominee"
               />
             )}

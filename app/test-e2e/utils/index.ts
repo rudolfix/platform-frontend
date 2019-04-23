@@ -196,8 +196,10 @@ export const getWalletEthAmount = () => {
 /**
  * Get nEur wallet balance
  */
-export const getWalletNEurAmount = () => {
-  goToWallet();
+export const getWalletNEurAmount = (navigate: boolean = true) => {
+  if (navigate) {
+    goToWallet();
+  }
 
   return cy
     .get(tid("wallet-balance.neur.balance-values.large-value"))

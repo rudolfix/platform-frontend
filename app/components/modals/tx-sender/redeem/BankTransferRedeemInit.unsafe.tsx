@@ -127,6 +127,7 @@ const BankTransferRedeemLayout: React.FunctionComponent<IProps> = ({
               <FormattedMessage id="bank-transfer.redeem.init.redeem-amount" />
             </FormLabel>
             <Button
+              data-test-id="bank-transfer.reedem-init.redeem-whole-balance"
               className={styles.linkButton}
               onClick={() => {
                 setFieldValue(

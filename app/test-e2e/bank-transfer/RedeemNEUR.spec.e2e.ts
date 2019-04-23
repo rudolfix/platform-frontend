@@ -1,24 +1,68 @@
-import { INV_ICBM_ETH_M_HAS_KYC_DUP } from "../fixtures";
+import BigNumber from "bignumber.js";
+
+import { ERoundingMode, formatMoney } from "../../utils/Money.utils";
+import { formatThousands } from "../../utils/Number.utils";
+import { INV_ETH_EUR_ICBM_M_HAS_KYC_DUP_HAS_NEUR_AND_NO_ETH } from "../fixtures";
 import { fillForm } from "../utils/forms";
-import { assertWallet, goToWallet } from "../utils/index";
+import {
+  acceptWallet,
+  assertWallet,
+  closeModal,
+  confirmAccessModal,
+  getWalletNEurAmount,
+  goToPortfolio,
+  goToWallet,
+  parseAmount,
+} from "../utils/index";
 import { formField, tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertBankAccountDetails } from "./assertions";
 
-// Requires dedicated fixture with NEUR available to redeem
-describe.skip("Redeem NEUR", () => {
+describe("Redeem NEUR", () => {
+  before(() => {
+    createAndLoginNewUser({
+      type: "investor",
+      kyc: "business",
+      seed: INV_ETH_EUR_ICBM_M_HAS_KYC_DUP_HAS_NEUR_AND_NO_ETH,
+      hdPath: "m/44'/60'/0'/0",
+    }).then(() => {
+      // go to portfolio and claim neur before all tests
+      goToPortfolio();
+
+      cy.get(tid(`asset-portfolio.payout-eur_t`)).within(() => {
+        // accept neur payout
+        cy.get(tid("asset-portfolio.payout.accept-payout")).click();
+      });
+
+      // accept summary
+      cy.get(tid("investor-payout.accept-summary.accept")).click();
+      confirmAccessModal();
+
+      // wait for success
+      cy.get(tid("investor-payout.accept-success"));
+      closeModal();
+
+      // assert that payout is removed from the list
+      cy.get(tid(`asset-portfolio.payout-eur_t`)).should("not.exist");
+    });
+  });
+
   beforeEach(() => {
     createAndLoginNewUser({
       type: "investor",
       kyc: "business",
-      seed: INV_ICBM_ETH_M_HAS_KYC_DUP,
+      seed: INV_ETH_EUR_ICBM_M_HAS_KYC_DUP_HAS_NEUR_AND_NO_ETH,
       hdPath: "m/44'/60'/0'/0",
     }).then(() => {
-      goToWallet();
+      // store actual balance
+      getWalletNEurAmount().as("currentAmount");
+
       assertWallet();
 
+      // check if bank account is linked
       assertBankAccountDetails();
 
+      // start redeem flow
       cy.get(tid("wallet-balance.neur.redeem-button")).click();
     });
   });
@@ -46,22 +90,96 @@ describe.skip("Redeem NEUR", () => {
   });
 
   it("should correctly format input", () => {
+    const value = "-3s32aa@fax2.24@#2535%s9sf92";
+
     fillForm(
       {
-        amount: "-3s32aa@fax2.24@#2535%s9sf92",
+        amount: value,
       },
       { submit: false },
     );
 
-    cy.get(formField("amount")).should("have.value", "3 322.24");
+    const expectedValue = formatThousands(
+      formatMoney(value.replace(/[^\d.]/g, ""), 0, 2, ERoundingMode.DOWN),
+    );
+
+    cy.get(formField("amount")).should("have.value", expectedValue);
+
+    const nextValue = "123456789.99";
 
     fillForm(
       {
-        amount: "123456789.99",
+        amount: nextValue,
       },
       { submit: false },
     );
 
-    cy.get(formField("amount")).should("have.value", "123 456 789.99");
+    const nextExpectedValue = formatThousands(formatMoney(nextValue, 0, 2, ERoundingMode.DOWN));
+
+    cy.get(formField("amount")).should("have.value", nextExpectedValue);
+  });
+
+  it("should withdraw 20 nEUR", () => {
+    fillForm({
+      amount: "20",
+      "bank-transfer.reedem-init.continue": { type: "submit" },
+    });
+
+    // check if value is the same in summary
+    cy.get(tid("bank-transfer.redeem-summary.return-amount")).then($el => {
+      const redeemedAmount = parseAmount($el.text());
+
+      expect(redeemedAmount).to.be.bignumber.eq(20);
+    });
+
+    // continue transaction
+    cy.get(tid("bank-transfer.redeem-summary.continue")).click();
+    acceptWallet();
+
+    // go to wallet
+    cy.get(tid("bank-transfer.redeem.success.go-to-wallet")).click();
+
+    // refresh page instead of waiting to have data updated
+    goToWallet();
+
+    // check if balance is subtracted by 20
+    getWalletNEurAmount(false).then(actualAmount => {
+      cy.get<BigNumber>("@currentAmount").then(previousAmount => {
+        expect(previousAmount.minus(actualAmount)).to.bignumber.bignumber.eq(20);
+      });
+    });
+  });
+
+  it("should withdraw whole balance", () => {
+    // click redeem whole balance button
+    cy.get(tid("bank-transfer.reedem-init.redeem-whole-balance")).click();
+
+    fillForm({
+      "bank-transfer.reedem-init.continue": { type: "submit" },
+    });
+
+    // check if value is the same in summary
+    cy.get(tid("bank-transfer.redeem-summary.return-amount")).then($el => {
+      const redeemedAmount = parseAmount($el.text());
+
+      cy.get<BigNumber>("@currentAmount").then(previousAmount => {
+        expect(previousAmount).to.bignumber.bignumber.eq(redeemedAmount);
+      });
+    });
+
+    // continue transaction
+    cy.get(tid("bank-transfer.redeem-summary.continue")).click();
+    acceptWallet();
+
+    // go to wallet
+    cy.get(tid("bank-transfer.redeem.success.go-to-wallet")).click();
+
+    // refresh page instead of waiting to have data updated
+    goToWallet();
+
+    // check if balance is 0
+    getWalletNEurAmount(false).then(actualAmount => {
+      expect(actualAmount).to.bignumber.bignumber.eq(0);
+    });
   });
 });

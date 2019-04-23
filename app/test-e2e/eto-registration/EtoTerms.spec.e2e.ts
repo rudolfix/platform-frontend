@@ -1,4 +1,3 @@
-import { assertNotificationExists } from "../utils/assertions";
 import { fillForm } from "../utils/forms";
 import { goToEtoDashboard } from "../utils/navigation";
 import { formField, tid } from "../utils/selectors";
@@ -49,7 +48,7 @@ describe("Eto Terms", () => {
       { submit: false },
     );
 
-    assertNotificationExists("eto-flow-product-changed-successfully");
+    cy.get(tid("eto-flow-product-changed-successfully")).should("exist");
 
     cy.get(formField("enableTransferOnSuccess")).should("not.exist");
 
@@ -64,7 +63,7 @@ describe("Eto Terms", () => {
       { submit: false },
     );
 
-    assertNotificationExists("eto-flow-product-changed-successfully");
+    cy.get(tid("eto-flow-product-changed-successfully")).should("exist");
 
     cy.get(formField("enableTransferOnSuccess")).should("exist");
   });

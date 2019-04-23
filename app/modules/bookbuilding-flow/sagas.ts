@@ -1,6 +1,6 @@
 import { fork, put } from "redux-saga/effects";
 
-import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages.unsafe";
+import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { BOOKBUILDING_WATCHER_DELAY, EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";

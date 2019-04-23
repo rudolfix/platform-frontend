@@ -13,7 +13,7 @@ import {
 import { appConnect, AppDispatch } from "../../store";
 import { DeepReadonly } from "../../types";
 import { Button } from "../shared/buttons";
-import { getMessageTranslation } from "../translatedMessages/messages.unsafe";
+import { getMessageTranslation } from "../translatedMessages/messages";
 import { Modal } from "./Modal";
 
 import * as successIcon from "../../assets/img/notifications/success.svg";

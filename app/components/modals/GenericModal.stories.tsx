@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { TestMessage } from "../translatedMessages/messages.unsafe";
+import { TestMessage } from "../translatedMessages/messages";
 import { createMessage } from "../translatedMessages/utils";
 import { GenericModalLayout } from "./GenericModal.unsafe";
 

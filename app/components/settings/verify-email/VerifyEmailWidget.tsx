@@ -2,7 +2,6 @@ import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 import * as Yup from "yup";
 
@@ -51,6 +50,7 @@ interface IDispatchProps {
   addNewEmail: (values: { email: string }) => void;
   cancelEmail: () => void;
   revertCancelEmail: () => void;
+  abortEmailUpdate: () => void;
 }
 
 interface IFormValues {
@@ -64,6 +64,13 @@ interface INoEMailUser {
   revertCancelEmail: () => void;
   verifiedEmail?: string;
 }
+
+const showUpdateButton = (verifiedEmail: string | undefined, unverifiedEmail: string | undefined) =>
+  (!verifiedEmail && unverifiedEmail) || (verifiedEmail && !unverifiedEmail);
+const showUpdateCancelButton = (
+  verifiedEmail: string | undefined,
+  unverifiedEmail: string | undefined,
+) => verifiedEmail && unverifiedEmail;
 
 /**
  * Workaround for: https://github.com/jaredpalmer/formik/issues/621
@@ -171,7 +178,8 @@ const UnVerifiedUser: React.FunctionComponent<{
   verifiedEmail?: string;
   unverifiedEmail?: string;
   cancelEmail: () => void;
-}> = ({ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail }) => (
+  abortEmailUpdate: () => void;
+}> = ({ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail, abortEmailUpdate }) => (
   <section
     className={styles.section}
     data-test-id="profile.verify-email-widget.unverified-email-state"
@@ -193,8 +201,8 @@ const UnVerifiedUser: React.FunctionComponent<{
       </p>
     )}
 
-    <Row className="justify-content-between">
-      <Col className="pr-0">
+    <section className={styles.buttonsContainer}>
+      {showUpdateButton(verifiedEmail, unverifiedEmail) && (
         <ButtonArrowRight
           layout={EButtonLayout.SECONDARY}
           onClick={cancelEmail}
@@ -202,17 +210,24 @@ const UnVerifiedUser: React.FunctionComponent<{
         >
           <FormattedMessage id="settings.verify-email-widget.change-email" />
         </ButtonArrowRight>
-      </Col>
-      <Col className="text-right pl-0">
+      )}
+      {showUpdateCancelButton(verifiedEmail, unverifiedEmail) && (
         <ButtonArrowRight
           layout={EButtonLayout.SECONDARY}
-          onClick={resendEmail}
-          data-test-id="resend-link"
+          onClick={abortEmailUpdate}
+          data-test-id="verify-email-widget.abort-change-email.button"
         >
-          <FormattedMessage id="settings.verify-email-widget.resend-link" />
+          <FormattedMessage id="settings.verify-email-widget.abort-change-email" />
         </ButtonArrowRight>
-      </Col>
-    </Row>
+      )}
+      <ButtonArrowRight
+        layout={EButtonLayout.SECONDARY}
+        onClick={resendEmail}
+        data-test-id="resend-link"
+      >
+        <FormattedMessage id="settings.verify-email-widget.resend-link" />
+      </ButtonArrowRight>
+    </section>
   </section>
 );
 
@@ -231,6 +246,7 @@ export const VerifyEmailWidgetComponent: React.FunctionComponent<
   isEmailTemporaryCancelled,
   step,
   revertCancelEmail,
+  abortEmailUpdate,
 }) => {
   const shouldViewVerifiedUser =
     !isThereUnverifiedEmail && !isEmailTemporaryCancelled && isUserEmailVerified;
@@ -255,7 +271,14 @@ export const VerifyEmailWidgetComponent: React.FunctionComponent<
       )}
       {shouldViewUnVerifiedUser && (
         <UnVerifiedUser
-          {...{ resendEmail, verifiedEmail, unverifiedEmail, cancelEmail, revertCancelEmail }}
+          {...{
+            resendEmail,
+            verifiedEmail,
+            unverifiedEmail,
+            cancelEmail,
+            revertCancelEmail,
+            abortEmailUpdate,
+          }}
           data-test-id="unverified-section"
         />
       )}
@@ -289,6 +312,7 @@ export const VerifyEmailWidget = compose<React.FunctionComponent<IOwnProps>>(
         dispatch(actions.profile.cancelEmail());
       },
       revertCancelEmail: () => dispatch(actions.profile.revertCancelEmail()),
+      abortEmailUpdate: () => dispatch(actions.profile.abortEmailUpdate()),
     }),
   }),
   injectIntlHelpers,

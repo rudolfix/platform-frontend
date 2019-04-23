@@ -1,10 +1,7 @@
 import { Effect, fork, put, select } from "redux-saga/effects";
 
 import { calculateTimeLeft } from "../../components/shared/utils";
-import {
-  AuthMessage,
-  SignInUserErrorMessage,
-} from "../../components/translatedMessages/messages.unsafe";
+import { AuthMessage, SignInUserErrorMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";

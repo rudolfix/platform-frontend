@@ -1,7 +1,7 @@
 import { delay, END, eventChannel, Task } from "redux-saga";
 import { call, cancel, fork, put, select, take } from "redux-saga/effects";
 
-import { Web3Message } from "../../components/translatedMessages/messages.unsafe";
+import { Web3Message } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import {
   LIGHT_WALLET_PASSWORD_CACHE_TIME,

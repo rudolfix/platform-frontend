@@ -4,10 +4,7 @@ import * as React from "react";
 
 import { tid } from "../../../../test/testUtils";
 import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
-import {
-  getMessageTranslation,
-  LedgerErrorMessage,
-} from "../../translatedMessages/messages.unsafe";
+import { getMessageTranslation, LedgerErrorMessage } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
 import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
 

@@ -10,7 +10,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.
 import { withActionWatcher } from "../../../utils/withActionWatcher.unsafe";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { WarningAlert } from "../../shared/WarningAlert";
-import { getMessageTranslation } from "../../translatedMessages/messages.unsafe";
+import { getMessageTranslation } from "../../translatedMessages/messages";
 import { TMessage } from "../../translatedMessages/utils";
 import { LedgerHeader } from "./LedgerHeader";
 

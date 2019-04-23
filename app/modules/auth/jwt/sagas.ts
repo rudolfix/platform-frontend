@@ -89,6 +89,7 @@ export function* ensurePermissionsArePresentAndRunEffect(
   permissions: Array<string> = [],
   title: TMessage,
   message: TMessage,
+  inputLabel?: TMessage,
 ): Iterator<any> {
   const jwt = jwtStorage.get();
   // check wether all permissions are present and still valid
@@ -99,7 +100,7 @@ export function* ensurePermissionsArePresentAndRunEffect(
   // obtain a freshly signed token with missing permissions
   try {
     const obtainJwtEffect = neuCall(obtainJWT, permissions);
-    yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message);
+    yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message, inputLabel);
     yield effect;
   } catch (error) {
     if (error instanceof MessageSignCancelledError) {

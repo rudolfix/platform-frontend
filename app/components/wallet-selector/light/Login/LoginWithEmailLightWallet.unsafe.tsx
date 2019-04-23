@@ -11,7 +11,7 @@ import { Button } from "../../../shared/buttons";
 import { Form, FormField } from "../../../shared/forms";
 import { FormConstantField } from "../../../shared/forms/fields/FormConstantField";
 import { WarningAlert } from "../../../shared/WarningAlert";
-import { getMessageTranslation } from "../../../translatedMessages/messages.unsafe";
+import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
 
 import * as styles from "../WalletLight.module.scss";

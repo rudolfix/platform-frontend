@@ -1,3 +1,9 @@
 .info {
   color: $gray6;
 }
+
+.title {
+  & + div {
+    margin-top: px-to-rem(38px);
+  }
+}

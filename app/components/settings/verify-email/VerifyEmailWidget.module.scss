@@ -26,3 +26,9 @@
 .button {
   flex-shrink: 0;
 }
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}

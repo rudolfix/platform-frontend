@@ -1,10 +1,7 @@
 import { effects } from "redux-saga";
 import { fork, put, select } from "redux-saga/effects";
 
-import {
-  EtoDocumentsMessage,
-  EtoFlowMessage,
-} from "../../components/translatedMessages/messages.unsafe";
+import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";

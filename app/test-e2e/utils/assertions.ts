@@ -140,3 +140,9 @@ export const assertEmailPendingChange = (email: string, newEmail: string): void 
   cy.get(tid("profile.verify-email-widget.verified-email")).contains(email);
   cy.get(tid("profile.verify-email-widget.unverified-email")).contains(newEmail);
 };
+
+export const assertEmailChangeAbort = (email: string): void => {
+  cy.get(tid("profile-email-change-aborted")).should("exist");
+  cy.get(tid("profile.verify-email-widget.verified-email")).contains(email);
+  cy.get(tid("profile.verify-email-widget.unverified-email")).should("not.exist");
+};

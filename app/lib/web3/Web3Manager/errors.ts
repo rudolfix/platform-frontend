@@ -1,4 +1,4 @@
-import { SignerErrorMessage } from "../../../components/translatedMessages/messages.unsafe";
+import { SignerErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../../components/translatedMessages/utils";
 import { SignerRejectConfirmationError, SignerTimeoutError } from "./Web3Manager";
 

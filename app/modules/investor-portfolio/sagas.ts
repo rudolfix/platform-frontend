@@ -3,7 +3,7 @@ import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
 import { ECurrency } from "../../components/shared/Money.unsafe";
-import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages.unsafe";
+import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TPublicEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";

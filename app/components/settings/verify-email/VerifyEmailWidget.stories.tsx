@@ -15,6 +15,7 @@ storiesOf("VerifyEmailWidgetComponent", module)
       revertCancelEmail={() => {}}
       cancelEmail={() => {}}
       addNewEmail={() => {}}
+      abortEmailUpdate={() => {}}
       step={1}
       verifiedEmail="email@test.com"
     />
@@ -29,6 +30,7 @@ storiesOf("VerifyEmailWidgetComponent", module)
       resendEmail={() => {}}
       cancelEmail={() => {}}
       addNewEmail={() => {}}
+      abortEmailUpdate={() => {}}
       step={1}
       unverifiedEmail="email@test.com"
       verifiedEmail="verified_email@test.com"
@@ -44,6 +46,7 @@ storiesOf("VerifyEmailWidgetComponent", module)
       isThereUnverifiedEmail={true}
       resendEmail={() => {}}
       addNewEmail={() => {}}
+      abortEmailUpdate={() => {}}
       step={1}
       unverifiedEmail="email@test.com"
     />
@@ -56,6 +59,7 @@ storiesOf("VerifyEmailWidgetComponent", module)
       revertCancelEmail={() => {}}
       isThereUnverifiedEmail={false}
       isEmailTemporaryCancelled={false}
+      abortEmailUpdate={() => {}}
       resendEmail={() => {}}
       addNewEmail={() => {}}
       step={1}
@@ -71,6 +75,7 @@ storiesOf("VerifyEmailWidgetComponent", module)
       isEmailTemporaryCancelled={true}
       resendEmail={() => {}}
       addNewEmail={() => {}}
+      abortEmailUpdate={() => {}}
       step={1}
     />
   ));

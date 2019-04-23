@@ -4,7 +4,7 @@ import { compose, keyBy, map, omit } from "lodash/fp";
 import { delay } from "redux-saga";
 import { all, fork, put, race, select } from "redux-saga/effects";
 
-import { PublicEtosMessage } from "../../components/translatedMessages/messages.unsafe";
+import { PublicEtosMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";

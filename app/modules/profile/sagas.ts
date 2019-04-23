@@ -1,6 +1,6 @@
 import { call, fork, put, select } from "redux-saga/effects";
 
-import { ProfileMessage } from "../../components/translatedMessages/messages.unsafe";
+import { ProfileMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -30,6 +30,17 @@ function* addNewEmailEffect(
   yield call(updateUser, { ...user, new_email: email, salt: salt });
   notificationCenter.info(createMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED), {
     "data-test-id": "profile-email-change-success",
+  });
+}
+
+function* abortEmailUpdateEffect({ notificationCenter, logger }: TGlobalDependencies): any {
+  const user = yield select((s: IAppState) => selectUser(s.auth));
+  const salt = yield select(selectLightWalletSalt);
+  const email = user.verifiedEmail;
+  logger.info("Email change aborted");
+  yield call(updateUser, { ...user, new_email: email, salt: salt });
+  notificationCenter.info(createMessage(ProfileMessage.PROFILE_ABORT_UPDATE_EMAIL_SUCCESS), {
+    "data-test-id": "profile-email-change-aborted",
   });
 }
 
@@ -79,7 +90,8 @@ export function* addNewEmail(
       neuCall(addNewEmailEffect, email),
       [EJwtPermissions.CHANGE_EMAIL_PERMISSION],
       emailModalTitle,
-      createMessage(ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM),
+      undefined,
+      createMessage(ProfileMessage.PROFILE_ADD_EMAIL_INPUT_LABEL),
     );
   } catch (e) {
     if (e instanceof EmailAlreadyExists)
@@ -102,7 +114,8 @@ export function* resendEmail({ notificationCenter, logger }: TGlobalDependencies
       neuCall(resendEmailEffect),
       [EJwtPermissions.CHANGE_EMAIL_PERMISSION],
       createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE),
-      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION),
+      undefined,
+      createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_LABEL),
     );
   } catch (e) {
     logger.error("Failed to resend email", e);
@@ -132,6 +145,28 @@ export function* loadSeedOrReturnToSettings({ logger }: TGlobalDependencies): It
   }
 }
 
+export function* abortEmailUpdate({
+  notificationCenter,
+  logger,
+}: TGlobalDependencies): Iterator<any> {
+  try {
+    yield put(actions.verifyEmail.lockVerifyEmailButton());
+    yield neuCall(
+      ensurePermissionsArePresentAndRunEffect,
+      neuCall(abortEmailUpdateEffect),
+      [EJwtPermissions.CHANGE_EMAIL_PERMISSION],
+      createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE),
+      undefined,
+      createMessage(ProfileMessage.PROFILE_ADD_EMAIL_INPUT_LABEL),
+    );
+  } catch (e) {
+    logger.error("Failed to cancel email change", e);
+    notificationCenter.error(createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR));
+  } finally {
+    yield put(actions.verifyEmail.freeVerifyEmailButton());
+  }
+}
+
 export function* profileSagas(): any {
   yield fork(neuTakeEvery, actions.profile.addNewEmail.getType(), addNewEmail);
   yield fork(neuTakeEvery, actions.profile.resendEmail.getType(), resendEmail);
@@ -140,4 +175,5 @@ export function* profileSagas(): any {
     actions.profile.loadSeedOrReturnToProfile.getType(),
     loadSeedOrReturnToSettings,
   );
+  yield fork(neuTakeEvery, actions.profile.abortEmailUpdate.getType(), abortEmailUpdate);
 }

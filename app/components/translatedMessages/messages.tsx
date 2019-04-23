@@ -197,11 +197,13 @@ export enum IcbmWalletMessage {
 export enum ProfileMessage {
   PROFILE_UPDATE_EMAIL_TITLE = "profileUpdateEmailTitle",
   PROFILE_ADD_EMAIL_TITLE = "profileAddEmailTitle",
-  PROFILE_ADD_EMAIL_CONFIRM = "profileAddEmailConfirm",
+  PROFILE_ADD_EMAIL_INPUT_LABEL = "profileAddEmailInputLabel",
   PROFILE_NEW_EMAIL_ADDED = "profileNewEmailAdded",
+  PROFILE_ABORT_UPDATE_EMAIL_SUCCESS = "profileAbortUpdateEmailSuccess",
   PROFILE_EMAIL_ALREADY_EXISTS = "profileEmailAlreadyExists",
   PROFILE_ADD_EMAIL_ERROR = "profileAddEmailError",
   PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE = "profileResendEmailLinkConfirmationTitle",
+  PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_LABEL = "profileResendEmailLinkConfirmationLabel",
   PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION = "profileResendEmailLinkConfirmationTitle",
   PROFILE_EMAIL_VERIFICATION_SENT = "profileEmailVerificationSent",
   PROFILE_EMAIL_VERIFICATION_SENDING_FAILED = "profileEmailVerificationSendingFailed",
@@ -451,8 +453,10 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="modules.settings.sagas.add-new-email.update-title" />;
     case ProfileMessage.PROFILE_ADD_EMAIL_TITLE:
       return <FormattedMessage id="modules.settings.sagas.add-new-email.add-title" />;
-    case ProfileMessage.PROFILE_ADD_EMAIL_CONFIRM:
-      return <FormattedMessage id="modules.settings.sagas.add-new-email.confirm-description" />;
+    case ProfileMessage.PROFILE_ADD_EMAIL_INPUT_LABEL:
+      return <FormattedMessage id="modules.settings.sagas.add-new-email.input-label" />;
+    case ProfileMessage.PROFILE_ABORT_UPDATE_EMAIL_SUCCESS:
+      return <FormattedMessage id="modules.settings.sagas.add-new-email.abort-update-success" />;
     case ProfileMessage.PROFILE_NEW_EMAIL_ADDED:
       return <FormattedMessage id="modules.settings.sagas.add-new-email.new-email-added" />;
     case ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS:
@@ -461,6 +465,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="modules.settings.sagas.add-new-email.error" />;
     case ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_TITLE:
       return <FormattedMessage id="modules.settings.sagas.resend-email.confirmation" />;
+    case ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_LABEL:
+      return <FormattedMessage id="modules.settings.sagas.resend-email.label" />;
     case ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_DESCRIPTION:
       return <FormattedMessage id="modules.settings.sagas.resend-email.confirmation-description" />;
     case ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT:
@@ -494,7 +500,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     // NEVER DO THIS!
     // THIS IS a misuse! It's only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
-      return (messageData as any).message as TTranslatedString;
+      return messageData!.message as TTranslatedString;
 
     default:
       return assertNever(messageType, `Message not provided for ${messageType}`);

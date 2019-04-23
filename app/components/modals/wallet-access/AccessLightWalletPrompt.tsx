@@ -2,11 +2,13 @@ import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { TTranslatedString } from "../../../types";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Form, FormField } from "../../shared/forms";
 
 interface IStateProps {
   isUnlocked: boolean;
+  inputLabel?: TTranslatedString;
 }
 
 interface IOwnProps {
@@ -21,7 +23,7 @@ export interface IFormValues {
 }
 
 const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => (
-  <Form>
+  <Form className="mb-0">
     <div className="ml-sm-5 mr-sm-5">
       <FormField
         type="password"
@@ -60,9 +62,7 @@ export const AccessLightWalletPrompt: React.FunctionComponent<IProps> = props =>
     </div>
   ) : (
     <div data-test-id="access-light-wallet-locked">
-      <p>
-        <FormattedMessage id="modal.light-wallet.message" />
-      </p>
+      <p>{props.inputLabel || <FormattedMessage id="modal.light-wallet.message" />}</p>
       <EnhancedForm {...props} />
     </div>
   );

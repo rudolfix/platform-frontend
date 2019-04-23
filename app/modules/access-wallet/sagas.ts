@@ -1,7 +1,7 @@
 import { delay, Effect } from "redux-saga";
 import { call, put, race, select, take } from "redux-saga/effects";
 
-import { GenericErrorMessage } from "../../components/translatedMessages/messages.unsafe";
+import { GenericErrorMessage } from "../../components/translatedMessages/messages";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -161,13 +161,14 @@ export function* accessWalletAndRunEffect(
   effect: Effect | Iterator<Effect>,
   title: TMessage,
   message: TMessage,
+  inputLable?: TMessage,
 ): any {
   // guard against multiple modals
   const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.accessWallet));
   if (isSigning) {
     throw new Error("Signing already in progress");
   }
-  yield put(actions.accessWallet.showAccessWalletModal(title, message));
+  yield put(actions.accessWallet.showAccessWalletModal(title, message, inputLable));
   // do required operation, or finish in case cancel button was hit
   const { result, cancel } = yield race({
     result: call(connectWalletAndRunEffect, effect),

@@ -14,7 +14,7 @@ import { HorizontalLine } from "../../shared/HorizontalLine";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { StepCard } from "../../shared/StepCard";
 import { WarningAlert } from "../../shared/WarningAlert";
-import { getMessageTranslation } from "../../translatedMessages/messages.unsafe";
+import { getMessageTranslation } from "../../translatedMessages/messages";
 import { TMessage } from "../../translatedMessages/utils";
 
 import * as check_metamask from "../../../assets/img/wallet_selector/check_metamask.svg";

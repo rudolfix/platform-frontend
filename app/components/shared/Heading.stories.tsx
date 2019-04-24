@@ -55,6 +55,30 @@ storiesOf("Atoms/Heading", module)
       Lorem Ipsum
     </Heading>
   ))
+  .add("size huge, without decorator and with description", () => (
+    <Heading
+      level={3}
+      size={EHeadingSize.HUGE}
+      decorator={false}
+      description={"No causae vocibus dissentiet pro, id sed diceret blandit."}
+    >
+      Lorem Ipsum
+    </Heading>
+  ))
+  .add("size huge, with decorator and description", () => (
+    <Heading
+      level={3}
+      size={EHeadingSize.HUGE}
+      description={"No causae vocibus dissentiet pro, id sed diceret blandit."}
+    >
+      Lorem Ipsum
+    </Heading>
+  ))
+  .add("size huge and with icon", () => (
+    <Heading level={3} size={EHeadingSize.HUGE} decorator={neuIcon}>
+      Lorem Ipsum
+    </Heading>
+  ))
   .add("with all possible levels", () => (
     <>
       <Heading level={1}>Level 1</Heading>

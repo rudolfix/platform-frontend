@@ -180,6 +180,7 @@ type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
 type TEtoCompanyBase = {
   companyId: string;
+  city: string;
 };
 
 export type TCompanyEtoData = DeepReadonly<

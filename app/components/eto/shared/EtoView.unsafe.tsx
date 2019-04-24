@@ -10,7 +10,7 @@ import { isOnChain } from "../../../modules/public-etos/utils";
 import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
 import { withParams } from "../../../utils/withParams";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
-import { Accordion, AccordionElement } from "../../shared/Accordion.unsafe";
+import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ButtonLink } from "../../shared/buttons";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut.unsafe";
 import { Heading } from "../../shared/Heading";

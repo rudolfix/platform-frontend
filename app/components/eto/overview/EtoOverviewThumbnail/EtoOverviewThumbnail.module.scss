@@ -1,0 +1,76 @@
+@import "../../../shared/Panel.module";
+
+.panel {
+  transition: transform .1s ease-in-out;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: $shadow-bottom-black-long;
+  }
+}
+
+.cover {
+  @include remove-panel-padding;
+
+  margin-bottom: auto;
+}
+
+.content {
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.group-wrapper {
+  width: 100%;
+  display: table;
+
+  .group {
+    display: table-row;
+
+    .label,
+    .value {
+      width: 50%;
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .label {
+      @include font-label;
+
+      padding-top: px-to-rem(3px);
+      padding-bottom: px-to-rem(3px);
+      padding-right: px-to-rem(13.6px);
+    }
+
+    .value {
+      @include font-label;
+
+      text-transform: none;
+    }
+  }
+}
+
+
+.quote {
+  @include blockquote;
+
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.status-of-eto-wrapper {
+  @include remove-panel-padding;
+  @include clearfix;
+
+  // clear negative margin added by `remove-panel-padding`
+  margin-top: auto;
+  margin-bottom: auto;
+
+  .status-of-eto {
+    margin: .5em 1em;
+    font-size: 12px;
+    float: right;
+  }
+}

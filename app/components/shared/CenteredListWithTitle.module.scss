@@ -1,6 +1,3 @@
 .title {
-  @include font-headline;
-  text-transform: uppercase;
-  font-weight: $font-weight-bold;
   color: $neu-slate-grey;
 }

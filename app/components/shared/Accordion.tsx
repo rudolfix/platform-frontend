@@ -8,7 +8,6 @@ import * as styles from "./Accordion.module.scss";
 
 interface IAccordionElementProps {
   title: TTranslatedString;
-  children: any;
   isOpened?: boolean;
 }
 

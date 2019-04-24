@@ -6,6 +6,7 @@ import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { selectEtoWithCompanyAndContract } from "../../../modules/public-etos/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
 import { appConnect } from "../../../store";
+import { CommonHtmlProps } from "../../../types";
 
 import * as styles from "./ETOState.module.scss";
 
@@ -58,8 +59,9 @@ const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain, string>> = 
   [EETOStateOnChain.Signing]: styles.signing,
 };
 
-const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
+const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps & CommonHtmlProps> = ({
   eto,
+  className,
   size = EProjectStatusSize.MEDIUM,
   layout = EProjectStatusLayout.NORMAL,
 }) => {
@@ -67,7 +69,7 @@ const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
 
   return (
     <div
-      className={cn(styles.projectStatus, stateToClassName[status], size, layout)}
+      className={cn(styles.projectStatus, stateToClassName[status], size, layout, className)}
       data-test-id={`eto-state-${status}`}
     >
       {statusToName[status]}
@@ -75,7 +77,7 @@ const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
   );
 };
 
-export const ETOState = appConnect<IStateProps, {}, IExternalProps>({
+export const ETOState = appConnect<IStateProps, {}, IExternalProps & CommonHtmlProps>({
   stateToProps: (state, props) => ({
     eto: selectEtoWithCompanyAndContract(state, props.previewCode)!,
   }),

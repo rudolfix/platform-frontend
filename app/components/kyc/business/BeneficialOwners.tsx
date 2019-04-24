@@ -7,7 +7,7 @@ import { IKycBeneficialOwner } from "../../../lib/api/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Accordion } from "../../shared/Accordion.unsafe";
+import { Accordion } from "../../shared/Accordion";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KYCBeneficialOwner } from "./BeneficialOwner.unsafe";

@@ -16,13 +16,23 @@
     }
   }
 
-  &.small {
+  &.size-small {
     .heading {
       @include font-label;
     }
 
     .description {
       @include font-button-small;
+    }
+  }
+
+  &.size-huge {
+    .heading {
+      @include font-headline;
+    }
+
+    .description {
+      @include font-default;
     }
   }
 

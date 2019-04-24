@@ -52,12 +52,11 @@ const InvestmentWidgetLayout: React.FunctionComponent<TInvestWidgetProps> = ({
             <Money
               value={eto.contract!.totalInvestment.etherTokenBalance}
               currency={ECurrency.ETH}
-              className={styles.amount}
             />
+            <br />
             <Money
               value={eto.contract!.totalInvestment.euroTokenBalance}
               currency={ECurrency.EUR_TOKEN}
-              className={styles.amount}
             />
           </div>
           {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (

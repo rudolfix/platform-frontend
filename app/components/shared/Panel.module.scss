@@ -1,10 +1,18 @@
+$narrow-padding: px-to-rem(10px);
+$padding: px-to-rem(25px);
+
+// TODO: Maybe it's possible to somehow provide which margins should be reset
+@mixin remove-panel-padding($narrow: false) {
+  margin: if($narrow, -$narrow-padding, -$padding);
+}
+
 .panel {
   background-color: $neu-white-two;
   box-shadow: $shadow-bottom-black;
-  padding: px-to-rem(30px) px-to-rem(25px) px-to-rem(25px);
+  padding: $padding;
 
   &.narrow {
-    padding: px-to-rem(10px);
+    padding: $narrow-padding;
   }
 }
 

@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import * as mp4 from "../../assets/img/eto_offers/curfhover@1x.mp4";
-import * as webm from "../../assets/img/eto_offers/curfhover@1x.webm";
+import * as mp4 from "../../assets/img/eto_offers/uniti.mp4";
+import * as webm from "../../assets/img/eto_offers/uniti.webm";
 import { ResponsiveVideo } from "./ResponsiveVideo";
 
 storiesOf("ResponsiveVideo", module).add("default", () => (

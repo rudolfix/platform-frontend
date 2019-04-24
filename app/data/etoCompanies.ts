@@ -1,7 +1,4 @@
-import * as curfhoverMp4 from "../assets/img/eto_offers/curfhover@1x.mp4";
-import * as curfhoverWebm from "../assets/img/eto_offers/curfhover@1x.webm";
 import { IEtoOfferingProps } from "../components/landing/EtoOfferingCard";
-import { EVideoTheme } from "../components/shared/ResponsiveVideo";
 
 import * as agora from "../assets/img/eto_offers/agora.jpg";
 import * as agora2 from "../assets/img/eto_offers/agora@2x.jpg";
@@ -11,8 +8,6 @@ import * as airprofile from "../assets/img/eto_offers/airprofile.jpg";
 import * as airprofile2 from "../assets/img/eto_offers/airprofile@2x.jpg";
 import * as airprofilehover from "../assets/img/eto_offers/airprofilehover@1x.jpg";
 import * as airprofile2hover from "../assets/img/eto_offers/airprofilehover@2x.jpg";
-import * as curf from "../assets/img/eto_offers/curf.jpg";
-import * as curf2 from "../assets/img/eto_offers/curf@2x.jpg";
 import * as emflux from "../assets/img/eto_offers/emflux.jpg";
 import * as emfluxhover from "../assets/img/eto_offers/emfluxhover@1x.jpg";
 import * as emflux2hover from "../assets/img/eto_offers/emfluxhover@2x.jpg";
@@ -27,16 +22,53 @@ import * as myswoopbadge from "../assets/img/eto_offers/myswoopbadge@1x.jpg";
 import * as myswoopbadge2 from "../assets/img/eto_offers/myswoopbadge@2x.jpg";
 import * as myswoophover from "../assets/img/eto_offers/myswoophover@1x.jpg";
 import * as myswoop2hover from "../assets/img/eto_offers/myswoophover@2x.jpg";
-import * as nextbigthing from "../assets/img/eto_offers/nextbigthing.jpg";
-import * as nextbigthing2 from "../assets/img/eto_offers/nextbigthing@2x.jpg";
-import * as nextbigthinghover from "../assets/img/eto_offers/nextbigthinghover@1x.jpg";
-import * as nextbigthing2hover from "../assets/img/eto_offers/nextbigthinghover@2x.jpg";
 import * as ngrave from "../assets/img/eto_offers/ngrave.jpg";
 import * as ngrave2 from "../assets/img/eto_offers/ngrave@2x.jpg";
 import * as ngravehover from "../assets/img/eto_offers/ngravehover@1x.jpg";
 import * as ngrave2hover from "../assets/img/eto_offers/ngravehover@2x.jpg";
 
 export const etoCompaniesCards: IEtoOfferingProps[] = [
+  {
+    roundName: "series a",
+    tags: [
+      {
+        text: "mobility",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+      {
+        text: "india",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+    ],
+    name: "EMFLUX MOTORS",
+    description:
+      "Electric superbike changing the landscape of transportation & mobility. India-based venture backed by both crypto and traditional investors with a mission to power 10 million electric bikes in India by 2027.",
+    quote: {
+      text:
+        "The Emflux ETO is a great opportunity to finance a game changing team in the Indian electric vehicles space. The company is deploying the Tesla model of moving from high end to mass market vehicles in the humungous Indian two wheeler segment.",
+      credits: "Meher Roy, co-founder of Chorus One and host at Epicenter.tv",
+    },
+    topImage: {
+      srcSet: {
+        "1x": emflux,
+      },
+      alt: "",
+      height: 50,
+      width: 100,
+    },
+    quoteImage: {
+      srcSet: {
+        "1x": emfluxhover,
+        "2x": emflux2hover,
+      },
+      alt: "",
+      height: 35,
+      width: 100,
+    },
+    to: "http://www.emfluxmotors.com/",
+  },
   {
     roundName: "series b",
     tags: [
@@ -89,89 +121,6 @@ export const etoCompaniesCards: IEtoOfferingProps[] = [
     to: "http://www.myswooop.de/",
   },
   {
-    roundName: "series a",
-    tags: [
-      {
-        text: "iot",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "germany",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "NEXT BIG THING",
-    description:
-      "As Europe’s premier startup incubator for IoT & blockchain and Germany’s chosen Digital Hub for IoT, NBT drives European innovation. NBT leverages its technological and economic ecosystem to enable disruptive business models.",
-    quote: {
-      text:
-        "As IoT will significantly change service and industry structures, NBT offers early participation in this disruptive opportunity. They convinced me with their clear focus, proven track record, and professional attitude. The concept and structure are purposefully goal-oriented.",
-      credits: "Rudi Ludwig, Investor",
-    },
-    topImage: {
-      srcSet: {
-        "1x": nextbigthing,
-        "2x": nextbigthing2,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteImage: {
-      srcSet: {
-        "1x": nextbigthinghover,
-        "2x": nextbigthing2hover,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    to: "http://www.nextbigthing.ag/",
-  },
-  {
-    roundName: "series a",
-    tags: [
-      {
-        text: "mobility",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "india",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "EMFLUX MOTORS",
-    description:
-      "Electric superbike changing the landscape of transportation & mobility. India-based venture backed by both crypto and traditional investors with a mission to power 10 million electric bikes in India by 2027.",
-    quote: {
-      text:
-        "The Emflux ETO is a great opportunity to finance a game changing team in the Indian electric vehicles space. The company is deploying the Tesla model of moving from high end to mass market vehicles in the humungous Indian two wheeler segment.",
-      credits: "Meher Roy, co-founder of Chorus One and host at Epicenter.tv",
-    },
-    topImage: {
-      srcSet: {
-        "1x": emflux,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteImage: {
-      srcSet: {
-        "1x": emfluxhover,
-        "2x": emflux2hover,
-      },
-      alt: "",
-      height: 35,
-      width: 100,
-    },
-    to: "http://www.emfluxmotors.com/",
-  },
-  {
     tags: [
       {
         text: "community",
@@ -211,6 +160,129 @@ export const etoCompaniesCards: IEtoOfferingProps[] = [
     },
     teaser: true,
     replaceSelector: "founders",
+  },
+  {
+    roundName: "seed",
+    tags: [
+      {
+        text: "cleantech",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+      {
+        text: "renewables",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+    ],
+    name: "AIR PROFILE",
+    description:
+      "Based on a new patented technology for detecting precise wind speeds, Air Profile boosts the energy transition all over the world. The device simplifies the wind resource assessment for each and every wind farm project worldwide.",
+    quote: {
+      text: "",
+      credits: "",
+    },
+    topImage: {
+      srcSet: {
+        "1x": airprofile,
+        "2x": airprofile2,
+      },
+      alt: "",
+      height: 50,
+      width: 100,
+    },
+    quoteImage: {
+      srcSet: {
+        "1x": airprofilehover,
+        "2x": airprofile2hover,
+      },
+      alt: "",
+      height: 270,
+      width: 530,
+    },
+    to: "https://www.air-profile.com/",
+  },
+  {
+    roundName: "series a",
+    tags: [
+      {
+        text: "blockchain",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+      {
+        text: "exchange",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+    ],
+    name: "AGORA TRADE",
+    description:
+      "Agora.Trade sets a new security and usability standard for cryptocurrency exchanges. Its decentralized nature gives control over assets back to users. The goal is to establish Agora.Trade as the highest exchange volume.",
+    quote: {
+      text: "",
+      credits: "",
+    },
+    topImage: {
+      srcSet: {
+        "1x": agora,
+        "2x": agora2,
+      },
+      alt: "",
+      height: 50,
+      width: 100,
+    },
+    quoteImage: {
+      srcSet: {
+        "1x": agorahover,
+        "2x": agora2hover,
+      },
+      alt: "",
+      height: 270,
+      width: 530,
+    },
+    to: "https://agora.trade/",
+  },
+  {
+    roundName: "seed",
+    tags: [
+      {
+        text: "blockchain",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+      {
+        text: "wallet",
+        layout: "ghost-bold",
+        theme: "white",
+      },
+    ],
+    name: "NGRAVE",
+    description:
+      "Next gen cryptocurrency hardware wallet developed with one sole focus: no compromise on security. Create, manage, and initiate transactions with your Ngrave wallet fully offline without the need to expose it to a physical or network connection.",
+    quote: {
+      text: "",
+      credits: "",
+    },
+    topImage: {
+      srcSet: {
+        "1x": ngrave,
+        "2x": ngrave2,
+      },
+      alt: "",
+      height: 50,
+      width: 100,
+    },
+    quoteImage: {
+      srcSet: {
+        "1x": ngravehover,
+        "2x": ngrave2hover,
+      },
+      alt: "",
+      height: 270,
+      width: 530,
+    },
+    to: "https://www.ngrave.io",
   },
   {
     tags: [
@@ -310,174 +382,11 @@ export const etoCompaniesCards: IEtoOfferingProps[] = [
     teaser: true,
     hidden: true,
   },
-  {
-    roundName: "series a",
-    tags: [
-      {
-        text: "cleantech",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "e-mobility",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "CURF",
-    description:
-      "CURF Technology brings electric mobility on water. Aiming to become the Tesla on water the German-based pioneer has launched its e-jetboard, probably being the most powerful electric jetboard worldwide to serve yacht and watersport lovers.",
-    quote: {
-      text: "",
-      credits: "",
-    },
-    topImage: {
-      srcSet: {
-        "1x": curf,
-        "2x": curf2,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteVideo: {
-      sources: {
-        webm: curfhoverWebm,
-        mp4: curfhoverMp4,
-      },
-      theme: EVideoTheme.black,
-      height: 270,
-      width: 530,
-    },
-    to: "http://curf.surf",
-  },
-  {
-    roundName: "series a",
-    tags: [
-      {
-        text: "blockchain",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "exchange",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "AGORA TRADE",
-    description:
-      "Agora.Trade sets a new security and usability standard for cryptocurrency exchanges. Its decentralized nature gives control over assets back to users. The goal is to establish Agora.Trade as the highest exchange volume.",
-    quote: {
-      text: "",
-      credits: "",
-    },
-    topImage: {
-      srcSet: {
-        "1x": agora,
-        "2x": agora2,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteImage: {
-      srcSet: {
-        "1x": agorahover,
-        "2x": agora2hover,
-      },
-      alt: "",
-      height: 270,
-      width: 530,
-    },
-    to: "https://agora.trade/",
-  },
-  {
-    roundName: "seed",
-    tags: [
-      {
-        text: "cleantech",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "renewables",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "AIR PROFILE",
-    description:
-      "Based on a new patented technology for detecting precise wind speeds, Air Profile boosts the energy transition all over the world. The device simplifies the wind resource assessment for each and every wind farm project worldwide.",
-    quote: {
-      text: "",
-      credits: "",
-    },
-    topImage: {
-      srcSet: {
-        "1x": airprofile,
-        "2x": airprofile2,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteImage: {
-      srcSet: {
-        "1x": airprofilehover,
-        "2x": airprofile2hover,
-      },
-      alt: "",
-      height: 270,
-      width: 530,
-    },
-    to: "https://www.air-profile.com/",
-  },
-  {
-    roundName: "seed",
-    tags: [
-      {
-        text: "blockchain",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-      {
-        text: "wallet",
-        layout: "ghost-bold",
-        theme: "white",
-      },
-    ],
-    name: "NGRAVE",
-    description:
-      "Next gen cryptocurrency hardware wallet developed with one sole focus: no compromise on security. Create, manage, and initiate transactions with your Ngrave wallet fully offline without the need to expose it to a physical or network connection.",
-    quote: {
-      text: "",
-      credits: "",
-    },
-    topImage: {
-      srcSet: {
-        "1x": ngrave,
-        "2x": ngrave2,
-      },
-      alt: "",
-      height: 50,
-      width: 100,
-    },
-    quoteImage: {
-      srcSet: {
-        "1x": ngravehover,
-        "2x": ngrave2hover,
-      },
-      alt: "",
-      height: 270,
-      width: 530,
-    },
-    to: "https://www.ngrave.io",
-  },
 ];
 
 if (process.env.NF_FOUNDERS_BANK_VISIBLE) {
   const foundersIndex = etoCompaniesCards.findIndex(v => v.replaceSelector === "founders");
+
   etoCompaniesCards[foundersIndex] = {
     tags: [
       {

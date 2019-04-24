@@ -48,7 +48,7 @@ module.exports = merge.smart(configCommon, {
                 loader: "css-loader",
                 options: {
                   sourceMap: true,
-                  importLoaders: 1,
+                  importLoaders: 3,
                   modules: true,
                   localIdentName: "[name]__[local]___[hash:base64:5]",
                   camelCase: "dashesOnly",
@@ -78,10 +78,7 @@ module.exports = merge.smart(configCommon, {
               {
                 loader: "css-loader",
                 options: {
-                  importLoaders: 1,
-                  modules: false,
-                  localIdentName: "[name]__[local]___[hash:base64:5]",
-                  camelCase: "dashesOnly",
+                  importLoaders: 2,
                 },
               },
               {
@@ -99,12 +96,6 @@ module.exports = merge.smart(configCommon, {
               },
               {
                 loader: "css-loader",
-                options: {
-                  importLoaders: 1,
-                  modules: false,
-                  localIdentName: "[name]__[local]___[hash:base64:5]",
-                  camelCase: "dashesOnly",
-                },
               },
             ],
           },

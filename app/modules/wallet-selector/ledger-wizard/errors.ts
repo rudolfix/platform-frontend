@@ -3,6 +3,7 @@ import { createMessage, TMessage } from "../../../components/translatedMessages/
 import {
   LedgerContractsDisabledError,
   LedgerLockedError,
+  LedgerNotSupportedVersionError,
 } from "../../../lib/web3/ledger-wallet/errors";
 
 export function mapLedgerErrorToErrorMessage(error: Error): TMessage {
@@ -12,6 +13,8 @@ export function mapLedgerErrorToErrorMessage(error: Error): TMessage {
     messageType = LedgerErrorMessage.LEDGER_LOCKED;
   } else if (error instanceof LedgerContractsDisabledError) {
     messageType = LedgerErrorMessage.CONTRACT_DISABLED;
+  } else if (error instanceof LedgerNotSupportedVersionError) {
+    messageType = LedgerErrorMessage.NOT_SUPPORTED;
   }
   return createMessage(messageType);
 }

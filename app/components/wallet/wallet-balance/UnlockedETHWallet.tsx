@@ -20,7 +20,7 @@ interface IUnlockedETHWallet {
   totalEuroAmount: string;
 }
 
-export const UnlockedETHWallet: React.SFC<IUnlockedETHWallet & CommonHtmlProps> = ({
+export const UnlockedETHWallet: React.FunctionComponent<IUnlockedETHWallet & CommonHtmlProps> = ({
   address,
   depositEth,
   withdrawEth,

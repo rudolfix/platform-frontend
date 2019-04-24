@@ -15,6 +15,8 @@ import {
 } from "./errors";
 import { ILedgerConfig, ILedgerOutput, IPromisifiedHookedWalletSubProvider } from "./types";
 
+export const minimumLedgerVersion = "1.2.4";
+
 /**
  * PathComponent contains derivation path divided into base path and index.
  * @typedef {Object} PathComponent
@@ -113,7 +115,8 @@ export const createWeb3WithLedgerProvider = async (
 export const connectToLedger = async (): Promise<() => any> => {
   const getTransport = () => TransportU2F.create();
   const ledgerConfig = await getLedgerConfig(getTransport);
-  if (semver.lt(ledgerConfig.version, "1.0.8")) {
+  if (semver.lt(ledgerConfig.version, minimumLedgerVersion)) {
+    // We support versions newer than 1.2.4
     throw new LedgerNotSupportedVersionError(ledgerConfig.version);
   }
   if (ledgerConfig.arbitraryDataEnabled === 0) {

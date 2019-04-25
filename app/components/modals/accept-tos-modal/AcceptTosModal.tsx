@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
@@ -11,7 +11,13 @@ import {
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button, EButtonLayout } from "../../shared/buttons";
+import { ButtonSize } from "../../shared/buttons/Button.unsafe";
+import { Message } from "../Message";
 import { Modal } from "../Modal";
+
+import * as downloadIcon from "../../../assets/img/inline_icons/download.svg";
+import * as tosImg from "../../../assets/img/tos.jpg";
+import * as styles from "./AcceptTosModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
@@ -33,22 +39,33 @@ export const AcceptTosModalInner: React.ComponentType<IStateProps & IDispatchPro
   agreementChanged,
 }) => {
   return (
-    <section className="text-center">
-      <h1>
-        {agreementChanged ? (
-          <FormattedHTMLMessage tagName="span" id="settings.modal.accept-updated-tos.title" />
+    <Message
+      data-test-id="bank-verification.info"
+      image={<img src={tosImg} className={styles.image} />}
+      title={
+        agreementChanged ? (
+          <FormattedMessage id="settings.modal.accept-updated-tos.title" />
         ) : (
           <FormattedMessage id="settings.modal.accept-tos.title" />
-        )}
-      </h1>
-      <p className="mt-4 mb-2">
-        <FormattedMessage id="settings.modal.accept-tos.text" />
-      </p>
+        )
+      }
+      text={
+        agreementChanged ? (
+          <FormattedMessage id="settings.modal.accept-updated-tos.text" />
+        ) : (
+          <FormattedMessage id="settings.modal.accept-tos.text" />
+        )
+      }
+    >
       <div className="mt-2 mb-2">
         <Button
+          innerClassName={styles.download}
           onClick={onDownloadTos}
           layout={EButtonLayout.SECONDARY}
           data-test-id="modals.accept-tos.download-button"
+          svgIcon={downloadIcon}
+          iconPosition="icon-after"
+          size={ButtonSize.SMALL}
         >
           <FormattedMessage id="settings.modal.accept-tos.download-button" />
         </Button>
@@ -63,7 +80,11 @@ export const AcceptTosModalInner: React.ComponentType<IStateProps & IDispatchPro
         </Button>
       </div>
       <div>
-        <Button onClick={() => onLogout(userType)} layout={EButtonLayout.SIMPLE}>
+        <Button
+          className={styles.rejectTos}
+          onClick={() => onLogout(userType)}
+          layout={EButtonLayout.INLINE}
+        >
           <FormattedMessage id="settings.modal.accept-tos.logout-button" />
         </Button>
       </div>
@@ -74,7 +95,7 @@ export const AcceptTosModalInner: React.ComponentType<IStateProps & IDispatchPro
         onClick={onAccept}
         style={{ height: 5 }}
       />
-    </section>
+    </Message>
   );
 };
 

@@ -1,0 +1,23 @@
+.image {
+  width: 270px;
+  margin-bottom: px-to-rem(28px);
+}
+
+.text {
+  @include font-label;
+
+  max-width: 60%;
+  text-transform: none;
+  margin: {
+    top: px-to-rem(10px);
+    bottom: px-to-rem(16px);
+    left: auto;
+    right: auto;
+  }
+}
+
+.reject-tos {
+  @include font-label;
+
+  text-transform: none;
+}

@@ -14,6 +14,7 @@
   "bank-transfer.redeem.init.note": "It may take between 4-6 business days to complete the transaction. Your bank may charge you additional fees for incoming transfers.",
   "bank-transfer.redeem.init.redeem-amount": "AMOUNT TO REDEEM",
   "bank-transfer.redeem.init.redeem-fee": "Bank transaction fee",
+  "bank-transfer.redeem.init.redeem-fee.tooltip": "When you redeem nEUR, a {fee}% transaction fee is charged by our banking partner. This fee will be deducted from the amount you've requested to redeem.",
   "bank-transfer.redeem.init.title": "REDEEM NEUR",
   "bank-transfer.redeem.init.total-redeemed": "Total redeemed",
   "bank-transfer.redeem.init.wallet-name": "nEUR Wallet",

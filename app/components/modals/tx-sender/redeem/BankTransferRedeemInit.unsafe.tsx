@@ -201,11 +201,7 @@ const BankTransferRedeemLayout: React.FunctionComponent<IProps> = ({
                 {isValid ? <TotalRedeemed bankFee={bankFee} amount={values.amount} /> : "-"}
               </span>
             </section>
-            <VerifiedBankAccount
-              className="w-100 mb-3"
-              withBorder={true}
-              onVerify={verifyBankAccount}
-            />
+            <VerifiedBankAccount withBorder={true} onVerify={verifyBankAccount} />
             <p className="text-warning mx-4 text-center">
               <FormattedMessage id="bank-transfer.redeem.init.note" />
             </p>

@@ -25,6 +25,7 @@ import { CommonHtmlProps } from "../../../../types";
 import { formatFlexiPrecision } from "../../../../utils/Number.utils";
 import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
+import { Container, EColumnSpan } from "../../../layouts/Container";
 import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../../../shared/Money.unsafe";
 import { NumberFormat } from "../../../shared/NumberFormat";
 import { EtoWidgetContext } from "../../EtoWidgetView";
@@ -211,9 +212,10 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
   return (
     <EtoWidgetContext.Consumer>
       {previewCode => (
-        <div
+        <Container
           className={cn(styles.etoOverviewStatus, className)}
           data-test-id={`eto-overview-${eto.etoId}`}
+          columnSpan={EColumnSpan.THREE_COL}
         >
           <StatusOfEto previewCode={eto.previewCode} />
           <div
@@ -363,7 +365,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
               <FormattedMessage id="shared-component.eto-overview.more-details" />
             </Link>
           ) : null}
-        </div>
+        </Container>
       )}
     </EtoWidgetContext.Consumer>
   );

@@ -12,6 +12,7 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { LayoutBase } from "../layouts/LayoutBase";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoView } from "./shared/EtoView.unsafe";
+import { withJurisdictionDisclaimer } from "./shared/withJurisdictionDisclaimer";
 
 interface IStateProps {
   eto?: TEtoWithCompanyAndContract;
@@ -44,4 +45,5 @@ export const EtoPublicView = compose<TProps, IRouterParams>(
     withContainer(LayoutBase),
   ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
+  withJurisdictionDisclaimer<TProps>(props => props.eto.previewCode),
 )(EtoView);

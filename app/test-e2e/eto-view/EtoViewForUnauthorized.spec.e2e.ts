@@ -1,19 +1,18 @@
 import { appRoutes } from "../../components/appRoutes";
 import { withParams } from "../../utils/withParams";
-import { assertDashboard, etoFixtureAddressByName, tid } from "../utils";
-import { createAndLoginNewUser } from "../utils/userHelpers";
+import { assertUserInLanding, etoFixtureAddressByName, tid } from "../utils";
 import { assertEtoView } from "./EtoViewUtils";
 
-describe("Eto Unapproved Investor View", () => {
-  beforeEach(() => createAndLoginNewUser({ type: "investor" }));
-
-  it("should show investment notification when kyc is not done", () => {
+describe("Eto Unauthorized View", () => {
+  describe("for ETO with LI jurisdiction", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
-    cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView("Neufund - Quintessence (QTT)");
+    it("should not show jurisdiction disclaimer modal ", () => {
+      cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
+      assertEtoView("Neufund - Quintessence (QTT)");
 
-    cy.get(tid("eto-overview-settings-update-required-to-invest")).should("exist");
+      cy.get(tid("jurisdiction-disclaimer-modal")).should("not.exist");
+    });
   });
 
   describe("for ETO with GE jurisdiction", () => {
@@ -36,7 +35,7 @@ describe("Eto Unapproved Investor View", () => {
 
       cy.get(tid("jurisdiction-disclaimer-modal.deny")).click();
 
-      assertDashboard();
+      assertUserInLanding();
     });
   });
 });

@@ -2,8 +2,9 @@ import { LOCATION_CHANGE } from "connected-react-router";
 import { camelCase } from "lodash";
 import { compose, keyBy, map, omit } from "lodash/fp";
 import { delay } from "redux-saga";
-import { all, fork, put, race, select } from "redux-saga/effects";
+import { all, fork, put, race, select, take } from "redux-saga/effects";
 
+import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
 import { PublicEtosMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -16,6 +17,7 @@ import {
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
+import { ECountries } from "../../lib/api/util/countries.enum";
 import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { EuroToken } from "../../lib/contracts/EuroToken";
@@ -23,9 +25,10 @@ import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
 import { divideBigNumbers } from "../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../actions";
-import { selectUserType } from "../auth/selectors";
+import { selectIsUserVerified, selectUserType } from "../auth/selectors";
 import { selectMyAssets } from "../investor-portfolio/selectors";
-import { neuCall, neuFork, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
+import { selectClientJurisdiction } from "../kyc/selectors";
+import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
@@ -35,7 +38,7 @@ import {
   selectPublicEtoById,
 } from "./selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
-import { convertToEtoTotalInvestment, convertToStateStartDate } from "./utils";
+import { convertToEtoTotalInvestment, convertToStateStartDate, isRestricedEto } from "./utils";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
@@ -390,6 +393,59 @@ export function* loadTokensData({ contractsService }: TGlobalDependencies): any 
   }
 }
 
+function* verifyEtoAccess(
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.publicEtos.verifyEtoAccess>,
+): Iterable<any> {
+  const eto: ReturnType<typeof selectEtoWithCompanyAndContract> = yield select((state: IAppState) =>
+    selectEtoWithCompanyAndContract(state, payload.previewCode),
+  );
+
+  if (eto === undefined) {
+    throw new Error(`Can not find eto by preview code ${payload.previewCode}`);
+  }
+
+  const isUserLoggedInAndVerified: ReturnType<typeof selectIsUserVerified> = yield select(
+    selectIsUserVerified,
+  );
+
+  if (isRestricedEto(eto)) {
+    if (isUserLoggedInAndVerified) {
+      const jurisdiction: ReturnType<typeof selectClientJurisdiction> = yield select(
+        selectClientJurisdiction,
+      );
+
+      if (jurisdiction === undefined) {
+        throw new Error("User jurisdiction is not defined");
+      }
+
+      if (jurisdiction === ECountries.LIECHTENSTEIN) {
+        yield put(actions.routing.goToDashboard());
+        return;
+      }
+    } else {
+      yield put(
+        actions.genericModal.showModal(JurisdictionDisclaimerModal, {
+          restrictedJurisdiction: ECountries.LIECHTENSTEIN,
+        }),
+      );
+
+      const { confirmed, denied } = yield race({
+        confirmed: take(actions.publicEtos.confirmJurisdictionDisclaimer),
+        denied: take("GENERIC_MODAL_HIDE"),
+      });
+
+      if (denied) {
+        yield put(actions.routing.goHome());
+      }
+
+      if (confirmed) {
+        yield put(actions.genericModal.hideGenericModal());
+      }
+    }
+  }
+}
+
 export function* etoSagas(): any {
   yield fork(neuTakeEvery, actions.publicEtos.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.publicEtos.loadEto, loadEto);
@@ -401,6 +457,8 @@ export function* etoSagas(): any {
     downloadTemplateByType,
   );
   yield fork(neuTakeEvery, actions.publicEtos.loadTokensData, loadTokensData);
+
+  yield fork(neuTakeLatest, actions.publicEtos.verifyEtoAccess, verifyEtoAccess);
 
   yield fork(neuTakeUntil, actions.publicEtos.setPublicEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.publicEtos.setPublicEtos, LOCATION_CHANGE, watchEtosSetAction);

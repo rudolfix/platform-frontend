@@ -57,4 +57,9 @@ export const etoActions = {
     (previewCode: string, data: IEtoContractData) => ({ previewCode, data }),
   ),
   setEtoWidgetError: createActionFactory("PUBLIC_ETOS_SET_ETO_WIDGET_ERROR"),
+
+  verifyEtoAccess: createActionFactory("PUBLIC_ETOS_VERIFY_ETO_ACCESS", (previewCode: string) => ({
+    previewCode,
+  })),
+  confirmJurisdictionDisclaimer: createActionFactory("PUBLIC_ETOS_CONFIRM_JURISDICTION_DISCLAIMER"),
 };

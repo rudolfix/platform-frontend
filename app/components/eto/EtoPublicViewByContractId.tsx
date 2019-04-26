@@ -15,6 +15,7 @@ import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoun
 import { ErrorBoundaryLayoutBase } from "../shared/errorBoundary/ErrorBoundaryLayoutBase";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoView } from "./shared/EtoView.unsafe";
+import { withJurisdictionDisclaimer } from "./shared/withJurisdictionDisclaimer";
 
 interface IStateProps {
   eto?: TEtoWithCompanyAndContract;
@@ -56,4 +57,5 @@ export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
     withContainer(LayoutBase),
   ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
+  withJurisdictionDisclaimer<TProps>(props => props.eto.previewCode),
 )(EtoView);

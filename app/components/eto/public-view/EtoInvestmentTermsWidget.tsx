@@ -256,7 +256,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                           id={`eto.public-view.token-terms.public-eto.product.jurisdiction.de`}
                         />
                       )}
-                      {etoData.product.jurisdiction === EJurisdiction.LICHTENSTEIN && (
+                      {etoData.product.jurisdiction === EJurisdiction.LIECHTENSTEIN && (
                         <FormattedMessage
                           id={`eto.public-view.token-terms.public-eto.product.jurisdiction.li`}
                         />

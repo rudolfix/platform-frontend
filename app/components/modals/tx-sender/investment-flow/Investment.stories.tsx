@@ -46,5 +46,6 @@ storiesOf("Investment/Form", module)
       showTokens={true}
       sendTransaction={() => {}}
       hasPreviouslyInvested={true}
+      startUpgradeFlow={() => {}}
     />
   ));

@@ -587,6 +587,7 @@
   "investment-flow.calculate-investment": "Investment Amount",
   "investment-flow.change": "change",
   "investment-flow.confirm": "confirm",
+  "investment-flow.enable-icbm-wallet": "Enable",
   "investment-flow.equity-tokens": "Equity tokens",
   "investment-flow.error-message.above-maximum-ticket-size": "The amount is above the maximum ticket size of {maxAmount}",
   "investment-flow.error-message.below-minimum-ticket-size": "The amount is below the minimum ticket size of {minAmount}",

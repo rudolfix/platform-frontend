@@ -1,7 +1,7 @@
 import * as React from "react";
 
+import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { ITokenDisbursal, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
 import { WidgetGridLayout } from "../layouts/Layout";
 import { AssetPortfolio } from "./AssetPortfolio";
 import { PortfolioMyAssets } from "./PortfolioMyAssets";

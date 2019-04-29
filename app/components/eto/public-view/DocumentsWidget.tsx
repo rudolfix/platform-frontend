@@ -104,7 +104,7 @@ const DocumentsWidget = compose<
   appConnect<{}, TDispatchProps, TExternalProps>({
     dispatchToProps: dispatch => ({
       downloadDocument: (document: IEtoDocument) =>
-        dispatch(actions.publicEtos.downloadPublicEtoDocument(document)),
+        dispatch(actions.eto.downloadEtoDocument(document)),
     }),
   }),
 )(DocumentsWidgetLayout);

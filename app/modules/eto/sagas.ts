@@ -5,15 +5,15 @@ import { delay } from "redux-saga";
 import { all, fork, put, race, select, take } from "redux-saga/effects";
 
 import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
-import { PublicEtosMessage } from "../../components/translatedMessages/messages";
+import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   EEtoState,
   TCompanyEtoData,
+  TEtoData,
   TEtoSpecsData,
-  TPublicEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -33,16 +33,16 @@ import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
 import {
+  selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoWithCompanyAndContract,
-  selectPublicEtoById,
 } from "./selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate, isRestricedEto } from "./utils";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.publicEtos.loadEtoPreview>,
+  action: TActionFromCreator<typeof actions.eto.loadEtoPreview>,
 ): any {
   const previewCode = action.payload.previewCode;
 
@@ -69,24 +69,24 @@ export function* loadEtoPreview(
       yield neuCall(loadEtoContact, eto);
     }
 
-    yield put(actions.publicEtos.setPublicEto({ eto, company }));
+    yield put(actions.eto.setEto({ eto, company }));
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
 
     if (action.payload.widgetView) {
-      yield put(actions.publicEtos.setEtoWidgetError());
+      yield put(actions.eto.setEtoWidgetError());
 
       return;
     }
 
-    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO_PREVIEW));
+    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW));
     yield put(actions.routing.goToDashboard());
   }
 }
 
 export function* loadEto(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.publicEtos.loadEto>,
+  action: TActionFromCreator<typeof actions.eto.loadEto>,
 ): any {
   try {
     const etoId = action.payload.etoId;
@@ -112,17 +112,17 @@ export function* loadEto(
       yield neuCall(loadEtoContact, eto);
     }
 
-    yield put(actions.publicEtos.setPublicEto({ eto, company }));
+    yield put(actions.eto.setEto({ eto, company }));
   } catch (e) {
     logger.error("Could not load eto by id", e);
 
     if (action.payload.widgetView) {
-      yield put(actions.publicEtos.setEtoWidgetError());
+      yield put(actions.eto.setEtoWidgetError());
 
       return;
     }
 
-    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETO));
+    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO));
 
     yield put(actions.routing.goToDashboard());
   }
@@ -130,7 +130,7 @@ export function* loadEto(
 
 export function* loadEtoContact(
   { contractsService, logger }: TGlobalDependencies,
-  eto: TPublicEtoData,
+  eto: TEtoData,
 ): any {
   if (eto.state !== EEtoState.ON_CHAIN) {
     logger.error("Invalid eto state", new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN), {
@@ -166,7 +166,7 @@ export function* loadEtoContact(
     ]);
 
     yield put(
-      actions.publicEtos.setEtoDataFromContract(eto.previewCode, {
+      actions.eto.setEtoDataFromContract(eto.previewCode, {
         equityTokenAddress,
         etoTermsAddress,
         etoCommitmentAddress,
@@ -189,7 +189,7 @@ export function* loadEtoContact(
 
 function* watchEtoSetAction(
   _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.publicEtos.setPublicEto>,
+  action: TActionFromCreator<typeof actions.eto.setEto>,
 ): any {
   const previewCode = action.payload.eto.previewCode;
 
@@ -198,7 +198,7 @@ function* watchEtoSetAction(
 
 function* watchEtosSetAction(
   _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.publicEtos.setPublicEtos>,
+  action: TActionFromCreator<typeof actions.eto.setEtos>,
 ): any {
   yield all(map(eto => neuFork(watchEto, eto.previewCode), action.payload.etos));
 }
@@ -267,17 +267,17 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
 
   yield race(strategies);
 
-  yield put(actions.publicEtos.loadEtoPreview(previewCode));
+  yield put(actions.eto.loadEtoPreview(previewCode));
 }
 
 function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
   try {
-    const etosResponse: IHttpResponse<TPublicEtoData[]> = yield apiEtoService.getEtos();
+    const etosResponse: IHttpResponse<TEtoData[]> = yield apiEtoService.getEtos();
     const etos = etosResponse.body;
 
     const companies = compose(
       keyBy((eto: TCompanyEtoData) => eto.companyId),
-      map((eto: TPublicEtoData) => eto.company),
+      map((eto: TEtoData) => eto.company),
     )(etos);
 
     const etosByPreviewCode = compose(
@@ -304,15 +304,15 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
       yield put(actions.investorEtoTicket.loadInvestorTickets(etosByPreviewCode));
     }
 
-    yield put(actions.publicEtos.setPublicEtos({ etos: etosByPreviewCode, companies }));
-    yield put(actions.publicEtos.setEtosDisplayOrder(order));
+    yield put(actions.eto.setEtos({ etos: etosByPreviewCode, companies }));
+    yield put(actions.eto.setEtosDisplayOrder(order));
   } catch (e) {
     logger.error("ETOs could not be loaded", e);
 
-    notificationCenter.error(createMessage(PublicEtosMessage.COULD_NOT_LOAD_ETOS));
+    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETOS));
 
     // set empty display order to remove loading indicator
-    yield put(actions.publicEtos.setEtosDisplayOrder([]));
+    yield put(actions.eto.setEtosDisplayOrder([]));
   }
 }
 
@@ -333,17 +333,17 @@ function* download(document: IEtoDocument): any {
 
 function* downloadDocument(
   _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.publicEtos.downloadPublicEtoDocument>,
+  action: TActionFromCreator<typeof actions.eto.downloadEtoDocument>,
 ): any {
   yield download(action.payload.document);
 }
 
 function* downloadTemplateByType(
   _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.publicEtos.downloadPublicEtoTemplateByType>,
+  action: TActionFromCreator<typeof actions.eto.downloadEtoTemplateByType>,
 ): any {
   const state: IAppState = yield select();
-  const eto = selectPublicEtoById(state, action.payload.etoId);
+  const eto = selectEtoById(state, action.payload.etoId);
   if (eto) {
     yield download(eto.templates[camelCase(action.payload.documentType)]);
   }
@@ -382,7 +382,7 @@ export function* loadTokensData({ contractsService }: TGlobalDependencies): any 
     );
 
     yield put(
-      actions.publicEtos.setTokenData(eto.previewCode, {
+      actions.eto.setTokenData(eto.previewCode, {
         balance: balance.toString(),
         tokensPerShare: tokensPerShare.toString(),
         totalCompanyShares: totalCompanyShares.toString(),
@@ -395,7 +395,7 @@ export function* loadTokensData({ contractsService }: TGlobalDependencies): any 
 
 function* verifyEtoAccess(
   _: TGlobalDependencies,
-  { payload }: TActionFromCreator<typeof actions.publicEtos.verifyEtoAccess>,
+  { payload }: TActionFromCreator<typeof actions.eto.verifyEtoAccess>,
 ): Iterable<any> {
   const eto: ReturnType<typeof selectEtoWithCompanyAndContract> = yield select((state: IAppState) =>
     selectEtoWithCompanyAndContract(state, payload.previewCode),
@@ -431,7 +431,7 @@ function* verifyEtoAccess(
       );
 
       const { confirmed, denied } = yield race({
-        confirmed: take(actions.publicEtos.confirmJurisdictionDisclaimer),
+        confirmed: take(actions.eto.confirmJurisdictionDisclaimer),
         denied: take("GENERIC_MODAL_HIDE"),
       });
 
@@ -447,19 +447,15 @@ function* verifyEtoAccess(
 }
 
 export function* etoSagas(): any {
-  yield fork(neuTakeEvery, actions.publicEtos.loadEtoPreview, loadEtoPreview);
-  yield fork(neuTakeEvery, actions.publicEtos.loadEto, loadEto);
-  yield fork(neuTakeEvery, actions.publicEtos.loadEtos, loadEtos);
-  yield fork(neuTakeEvery, actions.publicEtos.downloadPublicEtoDocument, downloadDocument);
-  yield fork(
-    neuTakeEvery,
-    actions.publicEtos.downloadPublicEtoTemplateByType,
-    downloadTemplateByType,
-  );
-  yield fork(neuTakeEvery, actions.publicEtos.loadTokensData, loadTokensData);
+  yield fork(neuTakeEvery, actions.eto.loadEtoPreview, loadEtoPreview);
+  yield fork(neuTakeEvery, actions.eto.loadEto, loadEto);
+  yield fork(neuTakeEvery, actions.eto.loadEtos, loadEtos);
+  yield fork(neuTakeEvery, actions.eto.downloadEtoDocument, downloadDocument);
+  yield fork(neuTakeEvery, actions.eto.downloadEtoTemplateByType, downloadTemplateByType);
+  yield fork(neuTakeEvery, actions.eto.loadTokensData, loadTokensData);
 
-  yield fork(neuTakeLatest, actions.publicEtos.verifyEtoAccess, verifyEtoAccess);
+  yield fork(neuTakeLatest, actions.eto.verifyEtoAccess, verifyEtoAccess);
 
-  yield fork(neuTakeUntil, actions.publicEtos.setPublicEto, LOCATION_CHANGE, watchEtoSetAction);
-  yield fork(neuTakeUntil, actions.publicEtos.setPublicEtos, LOCATION_CHANGE, watchEtosSetAction);
+  yield fork(neuTakeUntil, actions.eto.setEto, LOCATION_CHANGE, watchEtoSetAction);
+  yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetAction);
 }

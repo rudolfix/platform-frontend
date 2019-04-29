@@ -11,8 +11,8 @@ import {
   selectEtoId,
   selectUploadedInvestmentAgreement,
 } from "../../../../modules/eto-flow/selectors";
-import { selectEtoOnChainStateById } from "../../../../modules/public-etos/selectors";
-import { EETOStateOnChain } from "../../../../modules/public-etos/types";
+import { selectEtoOnChainStateById } from "../../../../modules/eto/selectors";
+import { EETOStateOnChain } from "../../../../modules/eto/types";
 import { appConnect } from "../../../../store";
 import { EColumnSpan } from "../../../layouts/Container";
 import { ButtonArrowRight } from "../../../shared/buttons/Button.unsafe";

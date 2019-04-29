@@ -6,6 +6,6 @@ export const withJurisdictionDisclaimer = <P extends object>(
 ) =>
   onEnterAction<P>({
     actionCreator: (dispatch, props) => {
-      dispatch(actions.publicEtos.verifyEtoAccess(getPreviewCode(props)));
+      dispatch(actions.eto.verifyEtoAccess(getPreviewCode(props)));
     },
   });

@@ -3,8 +3,8 @@ import { branch, compose, renderComponent } from "recompose";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
-import { selectEtoWithCompanyAndContractById } from "../../modules/public-etos/selectors";
-import { TEtoWithCompanyAndContract } from "../../modules/public-etos/types";
+import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
+import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
@@ -43,7 +43,7 @@ export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
   }),
   onEnterAction<IRouterParams>({
     actionCreator: (dispatch, props) => {
-      dispatch(actions.publicEtos.loadEto(props.etoId));
+      dispatch(actions.eto.loadEto(props.etoId));
     },
   }),
   branch<IStateProps>(

@@ -30,9 +30,9 @@ import {
   selectIssuerEtoTemplates,
   selectShouldEtoDataLoad,
 } from "../../modules/eto-flow/selectors";
+import { selectEtoOnChainStateById } from "../../modules/eto/selectors";
+import { EETOStateOnChain } from "../../modules/eto/types";
 import { selectPendingDownloads } from "../../modules/immutable-file/selectors";
-import { selectEtoOnChainStateById } from "../../modules/public-etos/selectors";
-import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { selectAreTherePendingTxs } from "../../modules/tx/monitor/selectors";
 import { appConnect } from "../../store";
 import { DeepReadonly, TTranslatedString } from "../../types";

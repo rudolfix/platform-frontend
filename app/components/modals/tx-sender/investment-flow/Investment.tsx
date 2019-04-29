@@ -6,6 +6,8 @@ import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { compose, withProps } from "recompose";
 
 import { actions } from "../../../../modules/actions";
+import { selectEtoWithCompanyAndContractById } from "../../../../modules/eto/selectors";
+import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import {
   EInvestmentErrorState,
   EInvestmentType,
@@ -25,8 +27,6 @@ import {
   selectHasInvestorTicket,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-portfolio/selectors";
-import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
-import { TEtoWithCompanyAndContract } from "../../../../modules/public-etos/types";
 import {
   selectEtherPriceEur,
   selectEurPriceEther,

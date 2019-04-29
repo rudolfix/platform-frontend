@@ -4,8 +4,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/public-etos/types";
-import { isOnChain } from "../../../modules/public-etos/utils";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/eto/types";
+import { isOnChain } from "../../../modules/eto/utils";
 import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
 import { withParams } from "../../../utils/withParams";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";

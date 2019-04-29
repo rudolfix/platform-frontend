@@ -4,9 +4,9 @@ import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 
+import { EETOStateOnChain } from "../../modules/eto/types";
 import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
 import { getTokenPrice } from "../../modules/investor-portfolio/utils";
-import { EETOStateOnChain } from "../../modules/public-etos/types";
 import { withParams } from "../../utils/withParams";
 import { appRoutes } from "../appRoutes";
 import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";

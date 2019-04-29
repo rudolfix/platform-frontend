@@ -58,7 +58,7 @@ const JurisdicitonDisclaimerModalLayout: React.FunctionComponent<
 
 const JurisdictionDisclaimerModal = appConnect<{}, IDispatchProps, IExternalProps>({
   dispatchToProps: dispatch => ({
-    confirm: () => dispatch(actions.publicEtos.confirmJurisdictionDisclaimer()),
+    confirm: () => dispatch(actions.eto.confirmJurisdictionDisclaimer()),
   }),
 })(JurisdicitonDisclaimerModalLayout);
 

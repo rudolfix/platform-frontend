@@ -10,15 +10,12 @@ import { CounterWidget, TagsWidget } from ".";
 import { EEtoDocumentType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
 import { selectIsAuthorized } from "../../../../modules/auth/selectors";
+import { selectEtoOnChainStateById } from "../../../../modules/eto/selectors";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import {
   selectInitialMaxCapExceeded,
   selectIsEligibleToPreEto,
 } from "../../../../modules/investor-portfolio/selectors";
-import { selectEtoOnChainStateById } from "../../../../modules/public-etos/selectors";
-import {
-  EETOStateOnChain,
-  TEtoWithCompanyAndContract,
-} from "../../../../modules/public-etos/types";
 import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";

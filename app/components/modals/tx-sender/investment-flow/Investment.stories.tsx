@@ -2,11 +2,11 @@ import { storiesOf } from "@storybook/react";
 import { Formik } from "formik";
 import * as React from "react";
 
+import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import {
   EInvestmentErrorState,
   EInvestmentType,
 } from "../../../../modules/investment-flow/reducer";
-import { TEtoWithCompanyAndContract } from "../../../../modules/public-etos/types";
 import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { InvestmentSelectionComponent } from "./Investment";
@@ -44,9 +44,8 @@ storiesOf("Investment/Form", module)
       maxTicketEur={"123456"}
       readyToInvest={false}
       showTokens={true}
-      totalCostEth={"1234141234123412341234"}
-      totalCostEur={"123412341234123412341234"}
       sendTransaction={() => {}}
       hasPreviouslyInvested={true}
+      startUpgradeFlow={() => {}}
     />
   ));

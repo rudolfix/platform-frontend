@@ -8,6 +8,7 @@ export interface ISignMessageModalState {
   errorMessage?: DeepReadonly<TMessage>;
   modalTitle?: DeepReadonly<TMessage>;
   modalMessage?: DeepReadonly<TMessage>;
+  inputLabel?: DeepReadonly<TMessage>;
 }
 
 const initialState: ISignMessageModalState = {
@@ -26,6 +27,7 @@ export const accessWalletReducer: AppReducer<ISignMessageModalState> = (
         errorMessage: undefined,
         modalTitle: action.payload.title,
         modalMessage: action.payload.message,
+        inputLabel: action.payload.inputLabel,
       };
     case actions.accessWallet.hideAccessWalletModal.getType():
       return {

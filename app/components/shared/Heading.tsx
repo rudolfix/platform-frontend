@@ -8,7 +8,8 @@ import { invariant } from "../../utils/invariant";
 import * as styles from "./Heading.module.scss";
 
 export enum EHeadingSize {
-  SMALL = styles.small,
+  SMALL = styles.sizeSmall,
+  HUGE = styles.sizeHuge,
 }
 
 interface IProps {

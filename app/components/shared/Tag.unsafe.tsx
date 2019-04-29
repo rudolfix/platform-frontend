@@ -47,6 +47,7 @@ export const Tag: React.FunctionComponent<ITag> = ({
   dataTestId,
 }) => {
   const classes = cn(styles.tag, layout, size, theme, className);
+
   const tagContent = (
     <>
       {!placeSvgInEnd && !!svgIcon && <InlineIcon svgIcon={svgIcon} />}

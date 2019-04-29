@@ -40,7 +40,7 @@ import { initWeb3ManagerEvents } from "../../modules/web3/sagas";
 import { EWalletSubType, EWalletType } from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons";
-import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages.unsafe";
+import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";
 import { createMessage } from "../translatedMessages/utils";
 import { LEDGER_RECONNECT_INTERVAL } from "./ledger/WalletLedgerInitComponent";
 import { walletRegisterRoutes } from "./walletRoutes";

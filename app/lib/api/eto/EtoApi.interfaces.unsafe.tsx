@@ -180,6 +180,7 @@ type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
 type TEtoCompanyBase = {
   companyId: string;
+  city: string;
 };
 
 export type TCompanyEtoData = DeepReadonly<
@@ -353,6 +354,7 @@ interface IAdditionalEtoType {
   maxPledges: number;
   canEnableBookbuilding: boolean;
   product: TEtoProduct;
+  nomineeDisplayName?: string;
 }
 
 export type TBookbuildingStatsType = {
@@ -382,7 +384,7 @@ export type TGeneralEtoData = {
 };
 
 // this is coming from the /etos endpoint for investors dashboard
-export type TPublicEtoData = TEtoSpecsData & { company: TCompanyEtoData };
+export type TEtoData = TEtoSpecsData & { company: TCompanyEtoData };
 
 export const GeneralEtoDataType = YupTS.object({
   ...getEtoTermsSchema().shape,

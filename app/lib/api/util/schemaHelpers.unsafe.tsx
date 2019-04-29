@@ -4,6 +4,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
+import { ECountries } from "./countries.enum";
+
 /**
  * Schema helpers
  * semi documented.... :)
@@ -68,30 +70,28 @@ export const isUsCitizen = citizen.test(
 
 export const countryCode = Yup.string();
 export const RESTRICTED_COUNTRIES = [
-  "KP",
-  "ET",
-  "IR",
-  "PK",
-  "RS",
-  "LK",
-  "SY",
-  "TT",
-  "TN",
-  "YE",
-  "US",
-  "BS",
-  "GH",
-  "BW",
-  "AF", //Afghanistan
-  "AS", //American Samoa
-  "GU", //Guam
-  "IQ", //Iraq
-  "LY", //Libya
-  "NG", //Nigeria
-  "PK", //Pakistan
-  "PA", //Panama
-  "PR", //Puerto Rico
-  "VI", //Virgin Islands, U.S.
+  ECountries.AFGHANISTAN,
+  ECountries.BAHAMAS,
+  ECountries.BOTSWANA,
+  ECountries.CAMBODIA,
+  ECountries.ETHIOPIA,
+  ECountries.GHANA,
+  ECountries.GUAM,
+  ECountries.IRAN,
+  ECountries.IRAQ,
+  ECountries.LIBYAN_ARAB_JAMAHIRIYA,
+  ECountries.NIGERIA,
+  ECountries.NORTH_KOREA,
+  ECountries.PAKISTAN,
+  ECountries.PANAMA,
+  ECountries.PUERTO_RICO,
+  ECountries.SERBIA,
+  ECountries.SRI_LANKA,
+  ECountries.SYRIAN_ARAB_REPUBLIC,
+  ECountries.TRINIDAD_AND_TOBAGO,
+  ECountries.TUNISIA,
+  ECountries.UNITED_STATES,
+  ECountries.YEMEN,
 ];
 
 export const restrictedCountry = countryCode.test(

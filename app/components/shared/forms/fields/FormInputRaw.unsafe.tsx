@@ -49,12 +49,15 @@ const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
   size,
   disabled,
   customValidation,
-  customOnBlur,
   ignoreTouched,
   maxLength,
   onChange,
   value,
   invalid,
+  customOnBlur,
+  customOnFocus,
+  onFocus,
+  onBlur,
   ...props
 }) => (
   <>
@@ -79,6 +82,15 @@ const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
         onBlur={(e: React.FocusEvent) => {
           if (customOnBlur) {
             customOnBlur(e);
+          } else {
+            onBlur && onBlur(e);
+          }
+        }}
+        onFocus={(e: React.FocusEvent) => {
+          if (customOnFocus) {
+            customOnFocus(e);
+          } else {
+            onFocus && onFocus(e);
           }
         }}
         type={type}

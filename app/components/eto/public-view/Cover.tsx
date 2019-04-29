@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { TTranslatedString } from "../../../types";
+import { Container, EColumnSpan } from "../../layouts/Container";
 import { IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
 import { Tag } from "../../shared/Tag.unsafe";
 
@@ -19,11 +20,10 @@ export const Cover: React.FunctionComponent<IProps> = ({
   companyName,
   companyOneliner,
   companyLogo,
-  tags,
+  tags = [],
 }) => {
-  const initialTags = tags || [];
   return (
-    <div className={styles.cover}>
+    <Container columnSpan={EColumnSpan.THREE_COL} className={styles.cover}>
       <ResponsiveImage
         width={1250}
         height={400}
@@ -34,7 +34,12 @@ export const Cover: React.FunctionComponent<IProps> = ({
       <div className={styles.companyDetails}>
         <div className={styles.identity}>
           <div className={styles.logo}>
-            <ResponsiveImage srcSet={companyLogo.srcSet} alt={companyLogo.alt} theme="light" />
+            <ResponsiveImage
+              className={styles.logo}
+              srcSet={companyLogo.srcSet}
+              alt={companyLogo.alt}
+              theme="light"
+            />
           </div>
           <div className={styles.details}>
             <h2 className={styles.name}>{companyName}</h2>
@@ -42,11 +47,11 @@ export const Cover: React.FunctionComponent<IProps> = ({
           </div>
         </div>
         <div className={styles.tags}>
-          {initialTags.map((tag, index) => (
+          {tags.map((tag, index) => (
             <Tag text={tag} className="ml-3" layout="bold" theme="dark" key={index} />
           ))}
         </div>
       </div>
-    </div>
+    </Container>
   );
 };

@@ -1,6 +1,6 @@
 import { fork } from "redux-saga/effects";
 
-import { RemoteFileMessage } from "../../../components/translatedMessages/messages.unsafe";
+import { RemoteFileMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IHttpResponse } from "../../../lib/api/client/IHttpClient";

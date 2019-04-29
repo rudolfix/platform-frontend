@@ -34,6 +34,7 @@ const BankTransferRedeemDetails: TransactionDetailsComponent<ETxSenderType.NEUR_
           value={additionalData.amount}
           currencySymbol={ECurrencySymbol.CODE}
           currency={ECurrency.EUR}
+          data-test-id={"bank-transfer.redeem-summary.return-amount"}
         />
       }
     />

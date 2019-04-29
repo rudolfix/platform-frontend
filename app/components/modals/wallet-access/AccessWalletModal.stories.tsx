@@ -8,7 +8,7 @@ import {
   getMessageTranslation,
   MismatchedWalletAddressErrorMessage,
   ProfileMessage,
-} from "../../translatedMessages/messages.unsafe";
+} from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
 import { AccessWalletContainerComponent } from "./AccessWalletModal";
 
@@ -26,6 +26,9 @@ const props = {
 storiesOf("AccessWalletModal", module)
   .addDecorator(withModalBody())
   .add("lightwallet", () => <AccessWalletContainerComponent {...props} />)
+  .add("lightwallet with changed label and empty message", () => (
+    <AccessWalletContainerComponent {...props} inputLabel={"This is changed label"} message={""} />
+  ))
   .add("lightwallet-unlocked", () => (
     <AccessWalletContainerComponent {...props} isUnlocked={true} />
   ))

@@ -119,6 +119,7 @@ $_active-color: lighten($_hover-color, 20%);
 
     &#{$button}-small {
       @include font-label;
+      font-weight: $font-weight-bold;
     }
 
     &:hover,

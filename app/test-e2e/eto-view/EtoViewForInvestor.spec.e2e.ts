@@ -4,12 +4,10 @@ import { etoFixtureAddressByName, tid } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
+const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
+
 describe("Eto Investor View", () => {
-  let ETO_ID: string;
-  beforeEach(() => {
-    createAndLoginNewUser({ type: "investor", kyc: "business" });
-    ETO_ID = etoFixtureAddressByName("ETONoStartDate");
-  });
+  beforeEach(() => createAndLoginNewUser({ type: "investor", kyc: "business" }));
 
   it("should load empty Eto", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
@@ -38,7 +36,7 @@ describe("Eto Investor View", () => {
     cy.get(tid("eto-public-view-public-eto-duration")).should("contain", "14 Days");
 
     // TOKEN HOLDER RIGHTS section
-    cy.get(tid("eto-public-view-nominee")).should("contain", "Neumini UG");
+    cy.get(tid("eto-public-view-nominee")).should("contain", "Neumini NOMINEE_NEUMINI");
     cy.get(tid("eto-public-view-public-offer-duration")).should("contain", "14 Days");
     cy.get(tid("eto-public-view-token-tradability")).should("contain", "In the future");
     /** For now /api/eto-listing/etos/{id} endpoint is not providing product details

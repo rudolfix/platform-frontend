@@ -1,6 +1,6 @@
 # Component development guidelines
 
-## Visual:
+## Visual
 
 - no padding / margin for components — it should be added by parent
   - using bootstrap grid is fine as long as row is not a parent component — it adds negative margin
@@ -27,3 +27,8 @@ enum EMyEnum {
   UPPERCASE_CONSTANT = "uppercase_constant"
 }
 ```
+
+## External Links
+
+When using an external link do not use `<a>` due to security concerns but use directly but
+`<ExternalLink>` instead

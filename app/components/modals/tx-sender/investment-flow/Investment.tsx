@@ -1,5 +1,4 @@
 import { BigNumber } from "bignumber.js";
-import { withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
@@ -7,6 +6,8 @@ import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { compose, withProps } from "recompose";
 
 import { actions } from "../../../../modules/actions";
+import { selectEtoWithCompanyAndContractById } from "../../../../modules/eto/selectors";
+import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import {
   EInvestmentErrorState,
   EInvestmentType,
@@ -26,8 +27,6 @@ import {
   selectHasInvestorTicket,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../modules/investor-portfolio/selectors";
-import { selectEtoWithCompanyAndContractById } from "../../../../modules/public-etos/selectors";
-import { TEtoWithCompanyAndContract } from "../../../../modules/public-etos/types";
 import {
   selectEtherPriceEur,
   selectEurPriceEther,
@@ -37,6 +36,7 @@ import {
   selectTxGasCostEthUlps,
   selectTxValidationState,
 } from "../../../../modules/tx/sender/selectors";
+import { ETokenType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
@@ -46,12 +46,11 @@ import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { ButtonSize, ButtonTextPosition } from "../../../shared/buttons/Button.unsafe";
-import { FormMaskedInput } from "../../../shared/forms/fields/FormMaskedInput.unsafe";
-import { generateMaskFromCurrency } from "../../../shared/forms/fields/utils.unsafe";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
+import { MaskedMoneyInput } from "../../../shared/MaskedMoneyInput";
 import { ECurrency, EMoneyFormat, Money } from "../../../shared/Money.unsafe";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
-import { createWallets, formatEur, formatVaryingDecimals, getInputErrorMessage } from "./utils";
+import { createWallets, formatEur, getInputErrorMessage } from "./utils";
 
 import * as styles from "./Investment.module.scss";
 
@@ -83,6 +82,7 @@ interface IDispatchProps {
   changeEthValue: (value: string) => void;
   changeInvestmentType: (type: EInvestmentType) => void;
   investEntireBalance: () => void;
+  startUpgradeFlow: (token: ETokenType) => void;
 }
 
 interface IWithProps {
@@ -90,233 +90,264 @@ interface IWithProps {
   minTicketEth: string;
   minTicketEur: string;
   maxTicketEur: string;
-  totalCostEth: string;
-  totalCostEur: string;
 }
 
 type IProps = IStateProps & IDispatchProps & IIntlProps & IWithProps;
 
-export const InvestmentSelectionComponent: React.FunctionComponent<IProps> = ({
-  changeEthValue,
-  changeEuroValue,
-  changeInvestmentType,
-  equityTokenCount,
-  errorState,
-  txValidationState,
-  ethValue,
-  eto,
-  euroValue,
-  gasCostEth,
-  gasCostEuro,
-  intl,
-  investEntireBalance,
-  investmentType,
-  minTicketEth,
-  minTicketEur,
-  maxTicketEur,
-  neuReward,
-  readyToInvest,
-  sendTransaction,
-  showTokens,
-  totalCostEth,
-  totalCostEur,
-  wallets,
-  hasPreviouslyInvested,
-}) => {
-  const inputErrorMessage = getInputErrorMessage(
-    errorState,
-    txValidationState,
-    eto.equityTokenName,
-    maxTicketEur,
-    minTicketEur,
-  );
+interface IState {
+  validationError: boolean;
+}
 
-  return (
-    <>
-      <Container className={styles.container} fluid>
-        <Row className="mt-0">
-          <Col>
-            <Heading size={EHeadingSize.SMALL} level={4}>
-              <FormattedMessage id="investment-flow.select-wallet-and-currency" />
-            </Heading>
-          </Col>
-        </Row>
-        <Row>
-          <InvestmentTypeSelector
-            wallets={wallets}
-            currentType={investmentType}
-            onSelect={changeInvestmentType}
-          />
-        </Row>
-        <Row>
-          <Col>
-            <Heading size={EHeadingSize.SMALL} level={4}>
-              <FormattedMessage id="investment-flow.calculate-investment" />
-            </Heading>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <p className={styles.amountToInvest}>
-              <FormattedMessage id="investment-flow.amount-to-invest" />
-            </p>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormMaskedInput
-              name="minTicketSizeEur"
-              data-test-id="invest-modal-eur-field"
-              suffix="EUR"
-              mask={generateMaskFromCurrency(ECurrency.EUR)}
-              placeholder={`${intl.formatIntlMessage(
-                "investment-flow.min-ticket-size",
-              )} ${minTicketEur} EUR`}
-              errorMsg={inputErrorMessage}
-              value={formatVaryingDecimals(euroValue)}
-              invalid={!!inputErrorMessage}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeEuroValue(e.target.value)}
+export class InvestmentSelectionComponent extends React.Component<IProps, IState> {
+  state = { validationError: false };
+
+  calculateTotalCostIfValid = (gasCost: string, value: string): string | null => {
+    return this.getError() ? null : addBigNumbers([gasCost, value || "0"]);
+  };
+
+  setError = (hasError: boolean) => {
+    this.setState({ validationError: hasError });
+  };
+
+  getError = () => {
+    const externalError = getInputErrorMessage(
+      this.props.errorState,
+      this.props.txValidationState,
+      this.props.eto.equityTokenName,
+      this.props.maxTicketEur,
+      this.props.minTicketEur,
+    );
+    const validationError = !this.state.validationError ? (
+      undefined
+    ) : (
+      <FormattedMessage id="investment-flow.validation-error" />
+    );
+
+    return validationError || externalError;
+  };
+
+  investEntireBalance = () => {
+    this.setError(false);
+    this.props.investEntireBalance();
+  };
+
+  render(): React.ReactNode {
+    const {
+      changeInvestmentType,
+      equityTokenCount,
+      ethValue,
+      eto,
+      euroValue,
+      gasCostEth,
+      gasCostEuro,
+      intl,
+      investmentType,
+      minTicketEth,
+      minTicketEur,
+      neuReward,
+      readyToInvest,
+      sendTransaction,
+      showTokens,
+      wallets,
+      hasPreviouslyInvested,
+      startUpgradeFlow,
+    } = this.props;
+    const error = this.getError();
+    return (
+      <>
+        <Container className={styles.container} fluid>
+          <Row className="mt-0">
+            <Col>
+              <Heading size={EHeadingSize.SMALL} level={4}>
+                <FormattedMessage id="investment-flow.select-wallet-and-currency" />
+              </Heading>
+            </Col>
+          </Row>
+          <Row>
+            <InvestmentTypeSelector
+              wallets={wallets}
+              currentType={investmentType}
+              onSelect={changeInvestmentType}
+              startUpgradeFlow={startUpgradeFlow}
             />
-          </Col>
-          <Col sm="1">
-            <div className={styles.equals}>≈</div>
-          </Col>
-          <Col className={"text-right"}>
-            <FormMaskedInput
-              name="minTicketSizeEth"
-              data-test-id="invest-modal-eth-field"
-              suffix="ETH"
-              mask={generateMaskFromCurrency(ECurrency.ETH)}
-              placeholder={`${intl.formatIntlMessage(
-                "investment-flow.min-ticket-size",
-              )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
-              value={formatVaryingDecimals(ethValue)}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeEthValue(e.target.value)}
-            />
-            <Button
-              className={styles.investAll}
-              data-test-id="invest-modal-full-balance-btn"
-              onClick={investEntireBalance}
-              layout={EButtonLayout.INLINE}
-              textPosition={ButtonTextPosition.RIGHT}
-              size={ButtonSize.SMALL}
-            >
-              <FormattedMessage id="investment-flow.invest-entire-balance" />
-            </Button>
-          </Col>
-        </Row>
-      </Container>
-      <section className={styles.green}>
-        <Container className={styles.container}>
+          </Row>
           <Row>
             <Col>
-              <p className="mb-0">
-                <FormattedMessage id="investment-flow.you-will-receive" />
+              <Heading size={EHeadingSize.SMALL} level={4}>
+                <FormattedMessage id="investment-flow.calculate-investment" />
+              </Heading>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <p className={styles.amountToInvest}>
+                <FormattedMessage id="investment-flow.amount-to-invest" />
               </p>
             </Col>
           </Row>
           <Row>
             <Col>
-              <FormGroup>
-                <Label>
-                  <FormattedMessage id="investment-flow.equity-tokens" />
-                </Label>
-                <InfoAlert>
-                  {(showTokens &&
-                    equityTokenCount &&
-                    `${formatThousands(equityTokenCount.toString())} ${eto.equityTokenSymbol}`) ||
-                    "\xA0" /* non breaking space*/}
-                </InfoAlert>
-              </FormGroup>
+              <MaskedMoneyInput
+                name={"euroValue"}
+                value={this.props.euroValue}
+                currency={ECurrency.EUR_TOKEN}
+                dispatchFn={this.props.changeEuroValue}
+                data-test-id="invest-modal-eur-field"
+                placeholder={`${intl.formatIntlMessage(
+                  "investment-flow.min-ticket-size",
+                )} ${minTicketEur} EUR`}
+                suffix="EUR"
+                errorMsg={error}
+                invalid={!!error}
+                setError={this.setError}
+              />
             </Col>
-            <Col sm="1" />
-            <Col>
-              <FormGroup>
-                <Label>
-                  <FormattedMessage id="investment-flow.estimated-neu-tokens" />
-                </Label>
-                <InfoAlert data-test-id="invest-modal.est-neu-tokens">
-                  {(showTokens &&
-                    neuReward && <Money value={neuReward} currency={ECurrency.NEU} />) ||
-                    "\xA0"}
-                </InfoAlert>
-              </FormGroup>
+            <Col sm="1">
+              <div className={styles.equals}>≈</div>
+            </Col>
+            <Col className={"text-right"}>
+              <MaskedMoneyInput
+                name={"ethValue"}
+                currency={ECurrency.ETH}
+                value={this.props.ethValue}
+                dispatchFn={this.props.changeEthValue}
+                placeholder={`${intl.formatIntlMessage(
+                  "investment-flow.min-ticket-size",
+                )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
+                data-test-id="invest-modal-eth-field"
+                suffix="ETH"
+                setError={this.setError}
+              />
+              <Button
+                className={styles.investAll}
+                data-test-id="invest-modal-full-balance-btn"
+                onClick={this.investEntireBalance}
+                layout={EButtonLayout.INLINE}
+                textPosition={ButtonTextPosition.RIGHT}
+                size={ButtonSize.SMALL}
+              >
+                <FormattedMessage id="investment-flow.invest-entire-balance" />
+              </Button>
             </Col>
           </Row>
-          {hasPreviouslyInvested && (
+        </Container>
+        <section className={styles.green}>
+          <Container className={styles.container}>
             <Row>
               <Col>
-                <p className="mb-0 mt-0">
-                  <FormattedMessage id="investment-flow.you-already-invested" />
-                  <br />
-                  <Link to={appRoutes.portfolio}>
-                    <FormattedMessage id="investment-flow.see-your-portfolio-for-details" />
-                  </Link>
+                <p className="mb-0">
+                  <FormattedMessage id="investment-flow.you-will-receive" />
                 </p>
               </Col>
             </Row>
-          )}
+            <Row>
+              <Col>
+                <FormGroup>
+                  <Label>
+                    <FormattedMessage id="investment-flow.equity-tokens" />
+                  </Label>
+                  <InfoAlert>
+                    {(showTokens &&
+                      !error &&
+                      equityTokenCount &&
+                      `${formatThousands(equityTokenCount.toString())} ${eto.equityTokenSymbol}`) ||
+                      "\xA0" /* non breaking space*/}
+                  </InfoAlert>
+                </FormGroup>
+              </Col>
+              <Col sm="1" />
+              <Col>
+                <FormGroup>
+                  <Label>
+                    <FormattedMessage id="investment-flow.estimated-neu-tokens" />
+                  </Label>
+                  <InfoAlert data-test-id="invest-modal.est-neu-tokens">
+                    {(showTokens &&
+                      !error &&
+                      neuReward && <Money value={neuReward} currency={ECurrency.NEU} />) ||
+                      "\xA0"}
+                  </InfoAlert>
+                </FormGroup>
+              </Col>
+            </Row>
+            {hasPreviouslyInvested && (
+              <Row>
+                <Col>
+                  <p className="mb-0 mt-0">
+                    <FormattedMessage id="investment-flow.you-already-invested" />
+                    <br />
+                    <Link to={appRoutes.portfolio}>
+                      <FormattedMessage id="investment-flow.see-your-portfolio-for-details" />
+                    </Link>
+                  </p>
+                </Col>
+              </Row>
+            )}
+          </Container>
+        </section>
+        <Container className={styles.container} fluid>
+          <Row>
+            <Col className={styles.summary}>
+              {gasCostEth &&
+                !error &&
+                gasCostEth !== "0" && (
+                  <div>
+                    + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
+                    <span className="text-warning" data-test-id="invest-modal-gas-cost">
+                      <Money
+                        value={gasCostEuro}
+                        format={EMoneyFormat.ULPS}
+                        currency={ECurrency.EUR}
+                        roundingMode={ERoundingMode.UP}
+                      />
+                      {" ≈ "}
+                      <Money
+                        value={gasCostEth}
+                        format={EMoneyFormat.ULPS}
+                        currency={ECurrency.ETH}
+                        roundingMode={ERoundingMode.UP}
+                      />
+                    </span>
+                  </div>
+                )}
+              <div>
+                <FormattedMessage id="investment-flow.total" />:{" "}
+                <span className="text-warning" data-test-id="invest-modal-total-cost">
+                  <Money
+                    value={this.calculateTotalCostIfValid(gasCostEuro, euroValue)}
+                    format={EMoneyFormat.ULPS}
+                    currency={ECurrency.EUR}
+                    roundingMode={ERoundingMode.DOWN}
+                  />
+                  {" ≈ "}
+                  <Money
+                    value={this.calculateTotalCostIfValid(gasCostEth, ethValue)}
+                    format={EMoneyFormat.ULPS}
+                    currency={ECurrency.ETH}
+                    roundingMode={ERoundingMode.DOWN}
+                  />
+                </span>
+              </div>
+            </Col>
+          </Row>
         </Container>
-      </section>
-      <Container className={styles.container} fluid>
-        <Row>
-          <Col className={styles.summary}>
-            {gasCostEth &&
-              gasCostEth !== "0" && (
-                <div>
-                  + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
-                  <span className="text-warning" data-test-id="invest-modal-gas-cost">
-                    <Money
-                      value={gasCostEuro}
-                      format={EMoneyFormat.ULPS}
-                      currency={ECurrency.EUR}
-                      roundingMode={ERoundingMode.UP}
-                    />
-                    {" ≈ "}
-                    <Money
-                      value={gasCostEth}
-                      format={EMoneyFormat.ULPS}
-                      currency={ECurrency.ETH}
-                      roundingMode={ERoundingMode.UP}
-                    />
-                  </span>
-                </div>
-              )}
-            <div>
-              <FormattedMessage id="investment-flow.total" />:{" "}
-              <span className="text-warning" data-test-id="invest-modal-total-cost">
-                <Money
-                  value={totalCostEur}
-                  format={EMoneyFormat.ULPS}
-                  currency={ECurrency.EUR}
-                  roundingMode={ERoundingMode.DOWN}
-                />
-                {" ≈ "}
-                <Money
-                  value={totalCostEth}
-                  format={EMoneyFormat.ULPS}
-                  currency={ECurrency.ETH}
-                  roundingMode={ERoundingMode.DOWN}
-                />
-              </span>
-            </div>
-          </Col>
-        </Row>
-        <Row className="justify-content-center mb-0">
-          <Button
-            onClick={sendTransaction}
-            layout={EButtonLayout.PRIMARY}
-            type="submit"
-            disabled={!readyToInvest}
-            data-test-id="invest-modal-invest-now-button"
-          >
-            <FormattedMessage id="investment-flow.invest-now" />
-          </Button>
-        </Row>
-      </Container>
-    </>
-  );
-};
+        <Container>
+          <Row className="justify-content-center mb-0">
+            <Button
+              onClick={sendTransaction}
+              layout={EButtonLayout.PRIMARY}
+              type="submit"
+              disabled={!readyToInvest}
+              data-test-id="invest-modal-invest-now-button"
+            >
+              <FormattedMessage id="investment-flow.invest-now" />
+            </Button>
+          </Row>
+        </Container>
+      </>
+    );
+  }
+}
 
 export const InvestmentSelection = compose<IProps, {}>(
   injectIntlHelpers,
@@ -346,17 +377,19 @@ export const InvestmentSelection = compose<IProps, {}>(
     },
     dispatchToProps: dispatch => ({
       sendTransaction: () => dispatch(actions.txSender.txSenderAcceptDraft()),
-      changeEthValue: value =>
-        dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.ETH)),
+      changeEthValue: value => {
+        return dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.ETH));
+      },
       changeEuroValue: value =>
         dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.EUR_TOKEN)),
       changeInvestmentType: (type: EInvestmentType) =>
         dispatch(actions.investmentFlow.selectInvestmentType(type)),
       investEntireBalance: () => dispatch(actions.investmentFlow.investEntireBalance()),
+      startUpgradeFlow: (token: ETokenType) => dispatch(actions.txTransactions.startUpgrade(token)),
     }),
   }),
   withProps<IWithProps, IStateProps>(
-    ({ ethValue, etoTicketSizes, gasCostEth, euroValue, etherPriceEur, eurPriceEther }) => {
+    ({ ethValue, etoTicketSizes, gasCostEth, etherPriceEur, eurPriceEther }) => {
       const gasCostEther = !ethValue ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEther, etherPriceEur]);
       const minTicketEur = formatEur(etoTicketSizes && etoTicketSizes.minTicketEurUlps) || "0";
@@ -367,14 +400,7 @@ export const InvestmentSelection = compose<IProps, {}>(
         minTicketEth: multiplyBigNumbers([minTicketEur, eurPriceEther]),
         gasCostEuro,
         gasCostEth: gasCostEther,
-        totalCostEth: addBigNumbers([gasCostEther, ethValue || "0"]),
-        totalCostEur: addBigNumbers([gasCostEuro, euroValue || "0"]),
       };
     },
   ),
-  // TODO: Formik is used only to be able to use masked inputs
-  // Requires refactoring to fully use Formik
-  withFormik({
-    handleSubmit: () => null,
-  }),
 )(InvestmentSelectionComponent);

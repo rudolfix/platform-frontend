@@ -40,7 +40,7 @@ const BankTransferRedeemSummaryLayout: React.FunctionComponent<IComponentProps> 
     </p>
 
     <section className="text-center">
-      <ButtonArrowRight onClick={confirm}>
+      <ButtonArrowRight onClick={confirm} data-test-id="bank-transfer.redeem-summary.continue">
         <FormattedMessage id="bank-transfer.redeem.summary.continue" />
       </ButtonArrowRight>
     </section>

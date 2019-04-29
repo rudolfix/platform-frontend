@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { GenericErrorMessage } from "../../../components/translatedMessages/messages.unsafe";
+import { GenericErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { actions } from "../../actions";
 import { browserWalletWizardInitialState, browserWalletWizardReducer } from "./reducer";

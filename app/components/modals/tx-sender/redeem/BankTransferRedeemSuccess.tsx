@@ -49,7 +49,11 @@ const BankTransferRedeemSuccessComponent: React.FunctionComponent<IComponentProp
 
     <TxHashAndBlock txHash={txHash} className="mb-4" />
 
-    <ButtonArrowRight onClick={goToWallet} layout={EButtonLayout.SECONDARY}>
+    <ButtonArrowRight
+      onClick={goToWallet}
+      layout={EButtonLayout.SECONDARY}
+      data-test-id="bank-transfer.redeem.success.go-to-wallet"
+    >
       <FormattedMessage id="bank-transfer.redeem.success.go-to-wallet" />
     </ButtonArrowRight>
   </Message>

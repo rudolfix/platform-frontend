@@ -8,7 +8,7 @@ import { EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
-import { getMessageTranslation } from "../../translatedMessages/messages.unsafe";
+import { getMessageTranslation } from "../../translatedMessages/messages";
 import { Modal } from "../Modal";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 
@@ -22,6 +22,7 @@ interface IStateProps {
   message?: TTranslatedString;
   walletType: EWalletType | undefined;
   isUnlocked: boolean;
+  inputLabel?: TTranslatedString;
 }
 
 interface IDispatchProps {
@@ -35,14 +36,18 @@ interface IExternalProps {
 
 export const AccessWalletContainerComponent: React.FunctionComponent<
   IStateProps & IDispatchProps
-> = ({ title, message, errorMessage, isUnlocked, onAccept, walletType }) => (
+> = ({ title, message, errorMessage, isUnlocked, onAccept, walletType, inputLabel }) => (
   <div className="text-center">
-    {title && <h1>{title}</h1>}
+    {title && <h1 className={styles.title}>{title}</h1>}
     {message && <p>{message}</p>}
     {walletType === EWalletType.LIGHT && (
       <div>
         <img src={lockIcon} className="mt-3 mb-3" />
-        <AccessLightWalletPrompt onAccept={onAccept} isUnlocked={isUnlocked} />
+        <AccessLightWalletPrompt
+          onAccept={onAccept}
+          isUnlocked={isUnlocked}
+          inputLabel={inputLabel}
+        />
       </div>
     )}
     {walletType === EWalletType.LEDGER && (
@@ -82,6 +87,7 @@ export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IEx
     message: external.message
       ? external.message
       : s.accessWallet.modalMessage && getMessageTranslation(s.accessWallet.modalMessage),
+    inputLabel: s.accessWallet.inputLabel && getMessageTranslation(s.accessWallet.inputLabel),
     walletType: selectWalletType(s.web3),
     isUnlocked: selectIsUnlocked(s.web3),
   }),

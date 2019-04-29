@@ -1,0 +1,11 @@
+@import "../../../shared/Panel.module";
+
+.info {
+  @include remove-panel-padding;
+  @include font-label;
+
+  border-top: thin $neu-white solid;
+  margin-top: px-to-rem(10px);
+  padding: .5em;
+  text-align: center;
+}

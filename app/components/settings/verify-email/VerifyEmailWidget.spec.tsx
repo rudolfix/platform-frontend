@@ -25,6 +25,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         isUserEmailVerified={true}
         resendEmail={() => {}}
         isEmailTemporaryCancelled={false}
+        abortEmailUpdate={() => {}}
         cancelEmail={() => {}}
         addNewEmail={() => {}}
         intl={dummyIntl}
@@ -45,6 +46,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         isEmailTemporaryCancelled={false}
         resendEmail={() => {}}
         addNewEmail={() => {}}
+        abortEmailUpdate={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -63,6 +65,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
         cancelEmail={() => {}}
         resendEmail={() => {}}
         addNewEmail={() => {}}
+        abortEmailUpdate={() => {}}
         intl={dummyIntl}
       />,
     );
@@ -82,6 +85,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
           cancelEmail={() => {}}
           resendEmail={() => {}}
           addNewEmail={() => {}}
+          abortEmailUpdate={() => {}}
           intl={dummyIntl}
         />,
       ),
@@ -102,6 +106,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
             resendEmail={() => {}}
             revertCancelEmail={() => {}}
             addNewEmail={() => {}}
+            abortEmailUpdate={() => {}}
             intl={dummyIntl}
           />,
         ),
@@ -128,6 +133,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
             cancelEmail={() => {}}
             resendEmail={() => {}}
             addNewEmail={addNewEmailSpy}
+            abortEmailUpdate={() => {}}
             intl={dummyIntl}
           />,
         ),
@@ -173,6 +179,7 @@ describe("<VerifyEmailWidgetComponent />", () => {
             isEmailTemporaryCancelled={false}
             resendEmail={() => {}}
             addNewEmail={() => {}}
+            abortEmailUpdate={() => {}}
             intl={dummyIntl}
           />,
         ),

@@ -1,7 +1,7 @@
 import {
   GenericErrorMessage,
   MismatchedWalletAddressErrorMessage,
-} from "../../components/translatedMessages/messages.unsafe";
+} from "../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../components/translatedMessages/utils";
 import { BrowserWalletError } from "../../lib/web3/browser-wallet/BrowserWallet";
 import { LedgerError } from "../../lib/web3/ledger-wallet/errors";

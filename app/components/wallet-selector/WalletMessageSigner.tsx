@@ -11,7 +11,7 @@ import { Button } from "../shared/buttons";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";
-import { getMessageTranslation } from "../translatedMessages/messages.unsafe";
+import { getMessageTranslation } from "../translatedMessages/messages";
 import { TMessage } from "../translatedMessages/utils";
 
 import * as styles from "./WalletMessageSigner.module.scss";
@@ -74,7 +74,7 @@ export const WalletMessageSigner = compose(
     dispatchToProps: (dispatch, ownProps) => ({
       cancelSigning: () => {
         dispatch(actions.walletSelector.reset());
-        dispatch(actions.routing.goTo(ownProps.rootPath));
+        dispatch(actions.routing.push(ownProps.rootPath));
       },
     }),
   }),

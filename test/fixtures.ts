@@ -17,8 +17,10 @@ import {
   EOfferingDocumentType,
   EProductName,
 } from "../app/lib/api/eto/EtoProductsApi.interfaces";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../app/modules/public-etos/types";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../app/modules/eto/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
+
+import * as companyBanner from "./assets/company-banner.png";
 
 export const dummyConfig: IConfig = {
   ethereumNetwork: {
@@ -42,10 +44,11 @@ export const dummyEthereumAddress = "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359"
 export const dummyEthereumAddressWithChecksum = "0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359" as EthereumAddressWithChecksum;
 
 export const testCompany: TCompanyEtoData = {
+  companyBanner,
+  companyStage: "a_round",
+  city: "Berlin",
   businessModel: undefined,
-  companyBanner: undefined,
   companyMission: undefined,
-  companyStage: undefined,
   customerGroup: undefined,
   inspiration: undefined,
   keyBenefitsForInvestors: undefined,

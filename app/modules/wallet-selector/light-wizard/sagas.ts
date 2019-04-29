@@ -5,7 +5,7 @@ import {
   GenericErrorMessage,
   GenericModalMessage,
   SignInUserErrorMessage,
-} from "../../../components/translatedMessages/messages.unsafe";
+} from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";

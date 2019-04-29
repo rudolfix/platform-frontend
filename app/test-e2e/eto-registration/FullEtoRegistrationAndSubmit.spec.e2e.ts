@@ -1,7 +1,6 @@
 import { isFunction } from "lodash";
 
 import { assertEtoDashboard } from "../utils";
-import { assertNotificationExists } from "../utils/assertions";
 import { fillForm, TFormFixture } from "../utils/forms";
 import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
@@ -53,7 +52,7 @@ describe("Eto Forms", () => {
           { submit: false },
         );
 
-        assertNotificationExists("eto-flow-product-changed-successfully");
+        cy.get(tid("eto-flow-product-changed-successfully"));
 
         fillForm(etoTermsForm);
       });

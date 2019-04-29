@@ -4,9 +4,9 @@ import { compose } from "recompose";
 
 import { actions } from "../../../../../modules/actions";
 import { selectIsInvestor } from "../../../../../modules/auth/selectors";
+import { selectEtoOnChainNextStateStartDate } from "../../../../../modules/eto/selectors";
+import { TEtoWithCompanyAndContract } from "../../../../../modules/eto/types";
 import { selectIsUserVerifiedOnBlockchain } from "../../../../../modules/kyc/selectors";
-import { selectEtoOnChainNextStateStartDate } from "../../../../../modules/public-etos/selectors";
-import { TEtoWithCompanyAndContract } from "../../../../../modules/public-etos/types";
 import { appConnect } from "../../../../../store";
 import { withParams } from "../../../../../utils/withParams";
 import { appRoutes } from "../../../../appRoutes";
@@ -52,12 +52,11 @@ const InvestmentWidgetLayout: React.FunctionComponent<TInvestWidgetProps> = ({
             <Money
               value={eto.contract!.totalInvestment.etherTokenBalance}
               currency={ECurrency.ETH}
-              className={styles.amount}
             />
+            <br />
             <Money
               value={eto.contract!.totalInvestment.euroTokenBalance}
               currency={ECurrency.EUR_TOKEN}
-              className={styles.amount}
             />
           </div>
           {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (

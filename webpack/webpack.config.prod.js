@@ -54,7 +54,7 @@ module.exports = merge.smart(configCommon, {
               {
                 loader: "css-loader",
                 options: {
-                  importLoaders: 1,
+                  importLoaders: 3,
                   modules: true,
                   localIdentName: "[name]__[local]___[hash:base64:5]",
                   camelCase: "dashesOnly",
@@ -67,10 +67,6 @@ module.exports = merge.smart(configCommon, {
                     path: path.join(__dirname, "postcss.config.js"),
                   },
                 },
-              },
-              {
-                loader: "postcss-loader",
-                options: { config: { path: path.join(__dirname, "postcss.config.js") } },
               },
               {
                 loader: "sass-loader",
@@ -90,11 +86,15 @@ module.exports = merge.smart(configCommon, {
               {
                 loader: "css-loader",
                 options: {
-                  importLoaders: 1,
-                  modules: false,
-                  localIdentName: "[name]__[local]___[hash:base64:5]",
-                  camelCase: "dashesOnly",
-                  minimize: true,
+                  importLoaders: 2,
+                },
+              },
+              {
+                loader: "postcss-loader",
+                options: {
+                  config: {
+                    path: path.join(__dirname, "postcss.config.js"),
+                  },
                 },
               },
               {
@@ -108,12 +108,6 @@ module.exports = merge.smart(configCommon, {
               MiniCssExtractPlugin.loader,
               {
                 loader: "css-loader",
-                options: {
-                  importLoaders: 1,
-                  modules: false,
-                  localIdentName: "[name]__[local]___[hash:base64:5]",
-                  camelCase: "dashesOnly",
-                },
               },
             ],
           },

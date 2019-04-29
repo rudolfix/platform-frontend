@@ -1,4 +1,4 @@
-import { AuthMessage } from "../../../components/translatedMessages/messages.unsafe";
+import { AuthMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IVerifyEmailUser } from "../../../lib/api/users/interfaces";

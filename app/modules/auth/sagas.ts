@@ -1,7 +1,7 @@
 import { Effect, fork, put, select } from "redux-saga/effects";
 
 import { calculateTimeLeft } from "../../components/shared/utils";
-import { SignInUserErrorMessage } from "../../components/translatedMessages/messages.unsafe";
+import { AuthMessage, SignInUserErrorMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -83,7 +83,7 @@ function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
 /**
  * Email Verification
  */
-function* verifyUserEmail(): Iterator<any> {
+function* verifyUserEmail({ notificationCenter }: TGlobalDependencies): Iterator<any> {
   const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
   const urlEmail = yield select((s: IAppState) => selectEmailFromQueryString(s.router));
   const userEmail = yield select((s: IAppState) => selectUserEmail(s.auth));
@@ -91,6 +91,12 @@ function* verifyUserEmail(): Iterator<any> {
   if (userEmail && userEmail !== urlEmail) {
     // Logout if there is different user session active
     yield put(actions.auth.logout(undefined, true));
+    yield notificationCenter.error(
+      {
+        messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED_SAME_EMAIL,
+      },
+      { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
+    );
     return;
   }
   const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));

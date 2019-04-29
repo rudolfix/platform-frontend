@@ -13,7 +13,7 @@ import {
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
-import { AccordionElement } from "../../shared/Accordion.unsafe";
+import { AccordionElement } from "../../shared/Accordion";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import {
   BOOL_FALSE_KEY,

@@ -2,9 +2,9 @@ import { fillForm } from "../utils/forms";
 import {
   acceptWallet,
   assertDashboard,
+  assertEmailChangeAbort,
   assertEmailChangeFlow,
   assertEmailPendingChange,
-  assertNotificationExists,
   clearEmailServer,
   goToProfile,
   logoutViaTopRightButton,
@@ -14,96 +14,145 @@ import {
 import { tid } from "../utils/selectors";
 import { DEFAULT_PASSWORD, generateRandomEmailAddress } from "../utils/userHelpers";
 
-let email: string;
-
 describe("Change Email", () => {
-  beforeEach(() => {
-    email = generateRandomEmailAddress();
-    clearEmailServer();
+  let email: string;
 
-    registerWithLightWallet(email, DEFAULT_PASSWORD);
-    assertDashboard();
-    verifyLatestUserEmail();
+  describe("Has verified email", () => {
+    beforeEach(() => {
+      email = generateRandomEmailAddress();
+      clearEmailServer();
 
-    goToProfile();
+      registerWithLightWallet(email, DEFAULT_PASSWORD);
+      assertDashboard();
+      verifyLatestUserEmail();
 
-    assertEmailChangeFlow();
+      goToProfile();
+
+      assertEmailChangeFlow();
+    });
+
+    it("should allow to change email", () => {
+      const newEmail = generateRandomEmailAddress();
+
+      clearEmailServer();
+
+      fillForm({
+        email: newEmail,
+        "verify-email-widget-form-submit": { type: "submit" },
+      });
+
+      acceptWallet();
+
+      // assert if new email is pending for verification
+      assertEmailPendingChange(email, newEmail);
+    });
+
+    it("should not allow to change email if it's already used by different account", () => {
+      const newEmail = generateRandomEmailAddress();
+
+      logoutViaTopRightButton();
+
+      // register another account
+      clearEmailServer();
+
+      registerWithLightWallet(newEmail, DEFAULT_PASSWORD);
+      assertDashboard();
+      verifyLatestUserEmail();
+
+      assertEmailChangeFlow();
+
+      fillForm({
+        email: email,
+        "verify-email-widget-form-submit": { type: "submit" },
+      });
+
+      acceptWallet();
+
+      // assert if error message has popped in
+      cy.get(tid("profile-email-exists")).should("exist");
+    });
+
+    it("should not allow to change email to the same as verified", () => {
+      fillForm({
+        email: email,
+        "verify-email-widget-form-submit": { type: "submit" },
+      });
+
+      // assert if error message is present and new email has not been set
+      cy.get(tid("profile-email-change-verified-exists")).should("exist");
+      cy.get(tid("profile.verify-email-widget.unverified-email")).should("not.exist");
+    });
+
+    it("should allow to abort email change flow", () => {
+      const newEmail = generateRandomEmailAddress();
+
+      fillForm({
+        email: newEmail,
+        "verify-email-widget-form-submit": { type: "submit" },
+      });
+
+      acceptWallet();
+
+      // assert if new email is pending for verification
+      assertEmailPendingChange(email, newEmail);
+
+      cy.get(tid("verify-email-widget.abort-change-email.button")).click();
+
+      assertEmailChangeAbort(email);
+    });
   });
 
-  it("should allow to change email", () => {
-    const newEmail = generateRandomEmailAddress();
+  describe("Has unverified email", () => {
+    let email: string;
 
-    clearEmailServer();
+    beforeEach(() => {
+      email = generateRandomEmailAddress();
 
-    fillForm({
-      email: newEmail,
-      "verify-email-widget-form-submit": { type: "submit" },
+      clearEmailServer();
+      registerWithLightWallet(email, DEFAULT_PASSWORD);
+      assertDashboard();
+
+      goToProfile();
+
+      assertEmailChangeFlow();
     });
 
-    acceptWallet();
+    it("should not allow to change email if it's already used by different account", () => {
+      const newEmail = generateRandomEmailAddress();
 
-    // assert if new email is pending for verification
-    assertEmailPendingChange(email, newEmail);
-  });
+      // verify this user
+      verifyLatestUserEmail();
+      logoutViaTopRightButton();
 
-  it("should not allow to change email if it's already used by different account", () => {
-    const newEmail = generateRandomEmailAddress();
+      // register another account
+      clearEmailServer();
 
-    logoutViaTopRightButton();
+      registerWithLightWallet(newEmail, DEFAULT_PASSWORD);
+      assertDashboard();
 
-    // register another account
-    clearEmailServer();
+      goToProfile();
 
-    registerWithLightWallet(newEmail, DEFAULT_PASSWORD);
-    assertDashboard();
-    verifyLatestUserEmail();
+      assertEmailChangeFlow();
 
-    assertEmailChangeFlow();
+      fillForm({
+        email: email,
+        "verify-email-widget-form-submit": { type: "submit" },
+      });
 
-    fillForm({
-      email: email,
-      "verify-email-widget-form-submit": { type: "submit" },
+      acceptWallet();
+
+      // assert if error message has popped in
+      cy.get(tid("profile-email-exists")).should("exist");
     });
 
-    acceptWallet();
+    it("should not allow to change email to the same as pending unverified", () => {
+      fillForm({
+        email,
+        "verify-email-widget-form-submit": { type: "submit" },
+      });
 
-    // assert if error message has pooped in
-    assertNotificationExists("profile-email-exists");
-  });
-
-  it("should not allow to change email to the same as verified", () => {
-    fillForm({
-      email: email,
-      "verify-email-widget-form-submit": { type: "submit" },
+      // assert if error message showed up
+      cy.get(tid("profile-email-change-unverified-exists")).should("exist");
     });
-
-    // assert if error message is present and new email has not been set
-    assertNotificationExists("profile-email-change-verified-exists");
-    cy.get(tid("profile.verify-email-widget.unverified-email")).should("not.exist");
-  });
-
-  it("should not allow to change email to the same as pending unverified", () => {
-    const newEmail = generateRandomEmailAddress();
-
-    fillForm({
-      email: newEmail,
-      "verify-email-widget-form-submit": { type: "submit" },
-    });
-
-    acceptWallet();
-
-    // assert if new email is pending for verification
-    assertEmailPendingChange(email, newEmail);
-
-    assertEmailChangeFlow();
-
-    // fill again with the same email
-    fillForm({
-      email: newEmail,
-      "verify-email-widget-form-submit": { type: "submit" },
-    });
-
-    // assert if error message pooped in
-    assertNotificationExists("profile-email-change-unverified-exists");
   });
 });

@@ -3,11 +3,7 @@ import { shallow } from "enzyme";
 import * as React from "react";
 
 import { tid } from "../../../../test/testUtils";
-import { dummyIntl } from "../../../utils/injectIntlHelpers.fixtures";
-import {
-  getMessageTranslation,
-  LedgerErrorMessage,
-} from "../../translatedMessages/messages.unsafe";
+import { getMessageTranslation, LedgerErrorMessage } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
 import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
 
@@ -16,11 +12,7 @@ describe("<WalletLedgerInitComponent />", () => {
     const errorMsg = createMessage(LedgerErrorMessage.GENERIC_ERROR);
     const expectedResult = getMessageTranslation(errorMsg);
     const component = shallow(
-      <WalletLedgerInitComponent
-        errorMessage={errorMsg}
-        isInitialConnectionInProgress={false}
-        intl={dummyIntl}
-      />,
+      <WalletLedgerInitComponent errorMessage={errorMsg} isInitialConnectionInProgress={false} />,
     );
 
     expect(

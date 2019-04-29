@@ -1,7 +1,7 @@
 import { delay } from "redux-saga";
 import { all, call, cancel, fork, put, select, take } from "redux-saga/effects";
 
-import { KycFlowMessage } from "../../components/translatedMessages/messages.unsafe";
+import { KycFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -36,7 +36,7 @@ import {
 } from "./selectors";
 import { deserializeClaims } from "./utils";
 
-function* loadClientData(): any {
+export function* loadClientData(): Iterable<any> {
   yield put(actions.kyc.kycLoadIndividualData());
   yield put(actions.kyc.kycLoadBusinessData());
 }
@@ -649,10 +649,16 @@ export function* loadKycRequestData(): any {
 
   yield put(actions.kyc.kycLoadClaims());
 
+  yield put(actions.kyc.kycLoadClientData());
+
   yield all([
     neuTakeOnly("KYC_UPDATE_INDIVIDUAL_REQUEST_STATE", { individualRequestStateLoading: false }),
     neuTakeOnly("KYC_UPDATE_BUSINESS_REQUEST_STATE", { businessRequestStateLoading: false }),
     take("KYC_SET_CLAIMS"),
+    neuTakeOnly("KYC_UPDATE_BUSINESS_DATA", {
+      businessDataLoading: false,
+    }),
+    neuTakeOnly("KYC_UPDATE_INDIVIDUAL_DATA", { individualDataLoading: false }),
   ]);
 }
 

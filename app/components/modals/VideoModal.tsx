@@ -26,12 +26,11 @@ const VideoModalComponent: React.FunctionComponent<IStateProps & IDispatchProps>
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={onDismiss} centered>
-      {videoModalObj &&
-        videoModalObj.youTubeUrl && (
-          <Proportion width={720} height={405}>
-            <iframe src={videoModalObj.youTubeUrl} allowFullScreen />
-          </Proportion>
-        )}
+      {videoModalObj && videoModalObj.youTubeUrl && (
+        <Proportion width={720} height={405}>
+          <iframe src={videoModalObj.youTubeUrl} allowFullScreen />
+        </Proportion>
+      )}
     </Modal>
   );
 };

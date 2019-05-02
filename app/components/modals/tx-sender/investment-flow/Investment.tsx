@@ -262,9 +262,9 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                     <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                   </Label>
                   <InfoAlert data-test-id="invest-modal.est-neu-tokens">
-                    {(showTokens &&
-                      !error &&
-                      neuReward && <Money value={neuReward} currency={ECurrency.NEU} />) ||
+                    {(showTokens && !error && neuReward && (
+                      <Money value={neuReward} currency={ECurrency.NEU} />
+                    )) ||
                       "\xA0"}
                   </InfoAlert>
                 </FormGroup>
@@ -288,28 +288,26 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
         <Container className={styles.container} fluid>
           <Row>
             <Col className={styles.summary}>
-              {gasCostEth &&
-                !error &&
-                gasCostEth !== "0" && (
-                  <div>
-                    + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
-                    <span className="text-warning" data-test-id="invest-modal-gas-cost">
-                      <Money
-                        value={gasCostEuro}
-                        format={EMoneyFormat.ULPS}
-                        currency={ECurrency.EUR}
-                        roundingMode={ERoundingMode.UP}
-                      />
-                      {" ≈ "}
-                      <Money
-                        value={gasCostEth}
-                        format={EMoneyFormat.ULPS}
-                        currency={ECurrency.ETH}
-                        roundingMode={ERoundingMode.UP}
-                      />
-                    </span>
-                  </div>
-                )}
+              {gasCostEth && !error && gasCostEth !== "0" && (
+                <div>
+                  + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
+                  <span className="text-warning" data-test-id="invest-modal-gas-cost">
+                    <Money
+                      value={gasCostEuro}
+                      format={EMoneyFormat.ULPS}
+                      currency={ECurrency.EUR}
+                      roundingMode={ERoundingMode.UP}
+                    />
+                    {" ≈ "}
+                    <Money
+                      value={gasCostEth}
+                      format={EMoneyFormat.ULPS}
+                      currency={ECurrency.ETH}
+                      roundingMode={ERoundingMode.UP}
+                    />
+                  </span>
+                </div>
+              )}
               <div>
                 <FormattedMessage id="investment-flow.total" />:{" "}
                 <span className="text-warning" data-test-id="invest-modal-total-cost">

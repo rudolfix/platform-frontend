@@ -43,8 +43,9 @@ export const LockedWallet: React.FunctionComponent<ILockedWallet & CommonHtmlPro
             data-test-id="locked-wallet.eur"
           />
         )}
-        {isWalletNotEmpty(data.neuroAmount) &&
-          isWalletNotEmpty(data.ethAmount) && <HorizontalLine className="my-3" />}
+        {isWalletNotEmpty(data.neuroAmount) && isWalletNotEmpty(data.ethAmount) && (
+          <HorizontalLine className="my-3" />
+        )}
         {isWalletNotEmpty(data.ethAmount) && (
           <AccountBalance
             icon={ethIcon}

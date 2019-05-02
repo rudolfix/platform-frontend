@@ -48,7 +48,7 @@ interface ITooltipItem {
   index: number;
 }
 
-function createCustomTooltip(style: string): ((this: IChart, tooltipModel: ITooltipModel) => void) {
+function createCustomTooltip(style: string): (this: IChart, tooltipModel: ITooltipModel) => void {
   return function(this: IChart, tooltipModel: ITooltipModel): void {
     const createTooltipElement = (): HTMLElement => {
       const tooltipEl = document.createElement("div");

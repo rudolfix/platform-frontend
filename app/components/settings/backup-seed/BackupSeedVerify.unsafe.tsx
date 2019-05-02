@@ -75,8 +75,8 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
 
     this.setState(
       state => ({
-        verificationWords: state.verificationWords.map(
-          (word, index) => (wordOnPageNumber === index ? verificationWord : word),
+        verificationWords: state.verificationWords.map((word, index) =>
+          wordOnPageNumber === index ? verificationWord : word,
         ),
       }),
       () => this.focusNext(wordOnPageNumber),

@@ -9,7 +9,7 @@ import {
   IEtoDocument,
   immutableDocumentName,
 } from "../../../lib/api/eto/EtoFileApi.interfaces";
-import { ImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
+import { IImmutableFileId } from "../../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectEtoWithCompanyAndContractById } from "../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
@@ -39,7 +39,7 @@ interface IStateProps {
 interface IDispatchProps {
   onClose?: () => void;
   generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => void;
-  downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void;
+  downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => void;
 }
 
 type IComponentProps = IStateProps & IDispatchProps;
@@ -150,7 +150,7 @@ const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
       };
     },
     dispatchToProps: dispatch => ({
-      downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => {
+      downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => {
         dispatch(actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName));
       },
       generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => {

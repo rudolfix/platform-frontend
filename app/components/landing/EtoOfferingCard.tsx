@@ -233,17 +233,16 @@ export class EtoOfferingCardComponent extends React.Component<
               )}
               {!props.teaser && (
                 <>
-                  {props.quote &&
-                    props.quote.text && (
-                      <div className={styles.quoteWrapper}>
-                        <p>
-                          {'"'}
-                          {props.quote.text}
-                          {'"'}
-                        </p>
-                        <p>{props.quote.credits}</p>
-                      </div>
-                    )}
+                  {props.quote && props.quote.text && (
+                    <div className={styles.quoteWrapper}>
+                      <p>
+                        {'"'}
+                        {props.quote.text}
+                        {'"'}
+                      </p>
+                      <p>{props.quote.credits}</p>
+                    </div>
+                  )}
                 </>
               )}
             </blockquote>

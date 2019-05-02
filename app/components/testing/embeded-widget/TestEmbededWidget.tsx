@@ -25,14 +25,13 @@ const TestEmbededWidgetLayout: React.FunctionComponent<IStateProps> = ({ eto, wi
   return (
     <>
       <h3>Eto widget testing page</h3>
-      {eto &&
-        eto.previewCode && (
-          <iframe
-            width="100%"
-            height={215}
-            src={withParams(appRoutes.etoWidgetView, { previewCode: eto.previewCode })}
-          />
-        )}
+      {eto && eto.previewCode && (
+        <iframe
+          width="100%"
+          height={215}
+          src={withParams(appRoutes.etoWidgetView, { previewCode: eto.previewCode })}
+        />
+      )}
 
       {widgetError && (
         <iframe

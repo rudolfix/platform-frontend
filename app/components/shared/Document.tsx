@@ -102,13 +102,11 @@ export const DocumentTile: React.FunctionComponent<IDocumentProps & IDocumentTil
       >
         {title}
       </p>
-      {!onlyDownload &&
-        blank &&
-        active && (
-          <p className={cn(styles.subTitle, { [styles.textBusy]: busy })}>
-            <FormattedMessage id="documents.drag-n-drop" />
-          </p>
-        )}
+      {!onlyDownload && blank && active && (
+        <p className={cn(styles.subTitle, { [styles.textBusy]: busy })}>
+          <FormattedMessage id="documents.drag-n-drop" />
+        </p>
+      )}
     </div>
   );
 };

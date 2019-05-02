@@ -124,18 +124,17 @@ const DateChooserOpen = ({
             currentDate.isAfter(moment.utc().add(minOffsetPeriodInMinutes, "minutes"))
           }
         />
-        {newDateIsSet &&
-          !newDateIsValid(newEtoDate) && (
-            <FormError
-              name="etoStartDate"
-              message={
-                <FormattedMessage
-                  id="eto.settings.error-message.eto-start-date-too-early"
-                  values={{ days: minOffsetPeriodInMinutes / 60 / 24 }}
-                />
-              }
-            />
-          )}
+        {newDateIsSet && !newDateIsValid(newEtoDate) && (
+          <FormError
+            name="etoStartDate"
+            message={
+              <FormattedMessage
+                id="eto.settings.error-message.eto-start-date-too-early"
+                values={{ days: minOffsetPeriodInMinutes / 60 / 24 }}
+              />
+            }
+          />
+        )}
       </FormGroup>
       <div className={styles.widgetButton}>
         <ButtonArrowRight

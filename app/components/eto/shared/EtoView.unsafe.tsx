@@ -95,7 +95,8 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
   const hasSocialChannelsAdded = !!(socialChannels && socialChannels.length);
   const twitterUrl =
     isTwitterFeedEnabled && socialChannels
-      ? socialChannels.find(c => c.type === "twitter").url
+      ? socialChannels.find(c => c.type === "twitter") &&
+        socialChannels.find(c => c.type === "twitter")!.url
       : "";
 
   const isInSetupState = isOnChain(eto) && eto.contract.timedState === EETOStateOnChain.Setup;
@@ -126,15 +127,14 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
           <Heading level={3} decorator={false}>
             <div className={styles.headerWithButton}>
               <FormattedMessage id="eto.public-view.eto-timeline" />
-              {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" &&
-                !isInSetupState && (
-                  <ButtonLink
-                    to={withParams(externalRoutes.icoMonitorEto, { etoId: eto.etoId })}
-                    target="_blank"
-                  >
-                    <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
-                  </ButtonLink>
-                )}
+              {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && !isInSetupState && (
+                <ButtonLink
+                  to={withParams(externalRoutes.icoMonitorEto, { etoId: eto.etoId })}
+                  target="_blank"
+                >
+                  <FormattedMessage id="eto.public-view.fundraising-statistics-button" />
+                </ButtonLink>
+              )}
             </div>
           </Heading>
           <Panel>
@@ -210,7 +210,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
                   Twitter
                 </Heading>
                 <Panel>
-                  <TwitterTimelineEmbed url={twitterUrl} userName={brandName} />
+                  <TwitterTimelineEmbed url={twitterUrl!} userName={brandName} />
                 </Panel>
               </Container>
             )}
@@ -488,18 +488,17 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
             </Container>
           )}
 
-          {companyNews &&
-            !!companyNews[0].url && (
-              <Container columnSpan={EColumnSpan.ONE_COL}>
-                <Heading level={3} decorator={false}>
-                  <FormattedMessage id="eto.form.media-links.title" />
-                </Heading>
-                <MediaLinksWidget
-                  links={[...companyNews].reverse() as ILink[]}
-                  columnSpan={EColumnSpan.THREE_COL}
-                />
-              </Container>
-            )}
+          {companyNews && !!companyNews[0].url && (
+            <Container columnSpan={EColumnSpan.ONE_COL}>
+              <Heading level={3} decorator={false}>
+                <FormattedMessage id="eto.form.media-links.title" />
+              </Heading>
+              <MediaLinksWidget
+                links={[...companyNews].reverse() as ILink[]}
+                columnSpan={EColumnSpan.THREE_COL}
+              />
+            </Container>
+          )}
         </Container>
       </WidgetGridLayout>
     </>

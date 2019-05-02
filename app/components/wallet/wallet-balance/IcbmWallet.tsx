@@ -62,8 +62,9 @@ export const IcbmWallet: React.FunctionComponent<IIcbmWallet & CommonHtmlProps> 
             data-test-id="icbm-wallet.neur"
           />
         )}
-        {isWalletNotEmpty(data.neuroAmount) &&
-          isWalletNotEmpty(data.ethAmount) && <HorizontalLine className="my-3" />}
+        {isWalletNotEmpty(data.neuroAmount) && isWalletNotEmpty(data.ethAmount) && (
+          <HorizontalLine className="my-3" />
+        )}
         {isWalletNotEmpty(data.ethAmount) && (
           <AccountBalance
             icon={ethIcon}

@@ -161,15 +161,18 @@ export const selectIsEligibleToPreEto = (state: IAppState, etoId: string) => {
 /**
  * Selects tokens disbursal with `amountToBeClaimed` greater than zero
  */
-export const selectTokensDisbursal = createSelector(selectInvestorTicketsState, investorTickets => {
-  if (isArray(investorTickets.tokensDisbursal)) {
-    return investorTickets.tokensDisbursal
-      .filter(d => !isZero(d.amountToBeClaimed))
-      .filter(t => shouldShowToken(t.token, t.amountToBeClaimed));
-  }
+export const selectTokensDisbursal = createSelector(
+  selectInvestorTicketsState,
+  investorTickets => {
+    if (isArray(investorTickets.tokensDisbursal)) {
+      return investorTickets.tokensDisbursal
+        .filter(d => !isZero(d.amountToBeClaimed))
+        .filter(t => shouldShowToken(t.token, t.amountToBeClaimed));
+    }
 
-  return investorTickets.tokensDisbursal;
-});
+    return investorTickets.tokensDisbursal;
+  },
+);
 
 export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData[] | undefined => {
   const myAsssets = selectMyAssets(state);

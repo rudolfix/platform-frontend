@@ -151,13 +151,16 @@ class TimeLeftRefresher extends React.PureComponent<ITimeLeftRefresher, { timeLe
   }
 
   doRefresh = (timeLeft: number) => {
-    this.timeout = window.setTimeout(() => {
-      window.clearTimeout(this.timeout);
-      if (timeLeft > 0) {
-        this.doRefresh(timeLeft);
-      }
-      this.setState({ timeLeft: calculateTimeLeft(this.props.finalTime, this.props.asUtc) });
-    }, timeLeft > 3600 ? 60000 : 1000);
+    this.timeout = window.setTimeout(
+      () => {
+        window.clearTimeout(this.timeout);
+        if (timeLeft > 0) {
+          this.doRefresh(timeLeft);
+        }
+        this.setState({ timeLeft: calculateTimeLeft(this.props.finalTime, this.props.asUtc) });
+      },
+      timeLeft > 3600 ? 60000 : 1000,
+    );
   };
 
   componentWillUnmount = (): void => {

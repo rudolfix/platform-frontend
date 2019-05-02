@@ -3,7 +3,7 @@ import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
 import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { ImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
+import { IImmutableFileId } from "../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
@@ -21,7 +21,7 @@ interface IOwnProps {
   className?: string;
 }
 interface IDispatchProps {
-  downloadImmutableFile: (fileId: ImmutableFileId, fileName: string) => void;
+  downloadImmutableFile: (fileId: IImmutableFileId, fileName: string) => void;
 }
 
 type IProps = IOwnProps & IDispatchProps;

@@ -8,7 +8,7 @@ import {
   IEtoDocument,
   immutableDocumentName,
 } from "../../../../lib/api/eto/EtoFileApi.interfaces";
-import { ImmutableFileId } from "../../../../lib/api/ImmutableStorage.interfaces";
+import { IImmutableFileId } from "../../../../lib/api/ImmutableStorage.interfaces";
 import { actions } from "../../../../modules/actions";
 import { selectIsPendingDownload } from "../../../../modules/immutable-file/selectors";
 import { selectMyInvestorTicketByEtoId } from "../../../../modules/investor-portfolio/selectors";
@@ -36,7 +36,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   onAccept: () => void;
-  downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => void;
+  downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => void;
   generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => void;
 }
 
@@ -141,7 +141,7 @@ export const UserClaimSummary = appConnect<IStateProps, IDispatchProps, {}>({
   },
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),
-    downloadDocument: (immutableFileId: ImmutableFileId, fileName: string) => {
+    downloadDocument: (immutableFileId: IImmutableFileId, fileName: string) => {
       d(actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName));
     },
     generateTemplateByEtoId: (immutableFileId: IEtoDocument, etoId: string) => {

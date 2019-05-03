@@ -30,13 +30,11 @@ const BLOCK_HEIGHT = 30;
 const BORDER_HEIGHT = 4;
 const BACKGROUND_HEIGHT = 18;
 
-const BlockTitle: React.FunctionComponent<IBlockTitle> = ({ title, width }) => {
-  return (
-    <text className={styles.blockText} textAnchor="middle" transform={`translate(${width / 2} 13)`}>
-      {title}
-    </text>
-  );
-};
+const BlockTitle: React.FunctionComponent<IBlockTitle> = ({ title, width }) => (
+  <text className={styles.blockText} textAnchor="middle" transform={`translate(${width / 2} 13)`}>
+    {title}
+  </text>
+);
 
 const StartBlock: React.FunctionComponent<IBlockProps> = ({
   title,

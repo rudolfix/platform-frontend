@@ -38,25 +38,23 @@ const SingleColDocumentsLayout: React.FunctionComponent<IProps> = ({
     <div className={className}>
       <h3 className={styles.groupName}>{title}</h3>
       <section className={styles.group}>
-        {documents.map(({ ipfsHash, mimeType, documentType }) => {
-          return (
-            <div className={styles.document} key={ipfsHash}>
-              <DocumentTemplateButton
-                onClick={() =>
-                  downloadImmutableFile(
-                    {
-                      ...{ ipfsHash, mimeType },
-                      asPdf: false,
-                    },
-                    immutableDocumentName[documentType],
-                  )
-                }
-                title={documentTemplateTitles[documentType]}
-                altIcon={<InlineIcon svgIcon={link} />}
-              />
-            </div>
-          );
-        })}
+        {documents.map(({ ipfsHash, mimeType, documentType }) => (
+          <div className={styles.document} key={ipfsHash}>
+            <DocumentTemplateButton
+              onClick={() =>
+                downloadImmutableFile(
+                  {
+                    ...{ ipfsHash, mimeType },
+                    asPdf: false,
+                  },
+                  immutableDocumentName[documentType],
+                )
+              }
+              title={documentTemplateTitles[documentType]}
+              altIcon={<InlineIcon svgIcon={link} />}
+            />
+          </div>
+        ))}
       </section>
     </div>
   );

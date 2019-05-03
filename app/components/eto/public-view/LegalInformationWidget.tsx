@@ -25,9 +25,10 @@ const generateShareholders = (
   if (shareholders === undefined) {
     return [];
   } else {
-    const assignedShares = shareholders.reduce((acc, shareholder) => {
-      return shareholder && shareholder.shares ? (acc += shareholder.shares) : acc;
-    }, 0);
+    const assignedShares = shareholders.reduce(
+      (acc, shareholder) => (shareholder && shareholder.shares ? (acc += shareholder.shares) : acc),
+      0,
+    );
 
     if (assignedShares < companyShares) {
       return [

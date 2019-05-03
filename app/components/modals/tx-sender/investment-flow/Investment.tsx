@@ -101,9 +101,8 @@ interface IState {
 export class InvestmentSelectionComponent extends React.Component<IProps, IState> {
   state = { validationError: false };
 
-  calculateTotalCostIfValid = (gasCost: string, value: string): string | null => {
-    return this.getError() ? null : addBigNumbers([gasCost, value || "0"]);
-  };
+  calculateTotalCostIfValid = (gasCost: string, value: string): string | null =>
+    this.getError() ? null : addBigNumbers([gasCost, value || "0"]);
 
   setError = (hasError: boolean) => {
     this.setState({ validationError: hasError });
@@ -375,9 +374,8 @@ export const InvestmentSelection = compose<IProps, {}>(
     },
     dispatchToProps: dispatch => ({
       sendTransaction: () => dispatch(actions.txSender.txSenderAcceptDraft()),
-      changeEthValue: value => {
-        return dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.ETH));
-      },
+      changeEthValue: value =>
+        dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.ETH)),
       changeEuroValue: value =>
         dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.EUR_TOKEN)),
       changeInvestmentType: (type: EInvestmentType) =>

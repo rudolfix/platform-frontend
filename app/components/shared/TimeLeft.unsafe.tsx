@@ -172,20 +172,18 @@ class TimeLeftRefresher extends React.PureComponent<ITimeLeftRefresher, { timeLe
   }
 }
 
-const FancyTimeLeft = ({ finalTime, asUtc }: any) => {
-  return process.env.STORYBOOK_RUN !== "1" ? (
+const FancyTimeLeft = ({ finalTime, asUtc }: any) =>
+  process.env.STORYBOOK_RUN !== "1" ? (
     <TimeLeftRefresher finalTime={finalTime} asUtc={asUtc} renderComponent={FancyRenderTimeLeft} />
   ) : (
     <FancyRenderTimeLeft timeLeft={calculateTimeLeft(finalTime, true)} />
   );
-};
 
-const TimeLeft = ({ finalTime, asUtc, refresh }: any) => {
-  return refresh && process.env.STORYBOOK_RUN !== "1" ? (
+const TimeLeft = ({ finalTime, asUtc, refresh }: any) =>
+  refresh && process.env.STORYBOOK_RUN !== "1" ? (
     <TimeLeftRefresher finalTime={finalTime} asUtc={asUtc} renderComponent={RenderTimeLeft} />
   ) : (
     <RenderTimeLeft timeLeft={calculateTimeLeft(finalTime, true)} />
   );
-};
 
 export { FancyTimeLeft, TimeLeft, RenderTimeLeft, FancyRenderTimeLeft };

@@ -49,21 +49,21 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
   downloadDocument,
   generateTemplateByEtoId,
   isPendingDownload,
-}) => {
-  return (
-    <Container>
-      <Heading className="mb-4" size={EHeadingSize.SMALL} level={4}>
-        <FormattedMessage id="user-claim-flow.summary" />
-      </Heading>
+}) => (
+  <Container>
+    <Heading className="mb-4" size={EHeadingSize.SMALL} level={4}>
+      <FormattedMessage id="user-claim-flow.summary" />
+    </Heading>
 
-      <p className="mb-3">
-        <FormattedMessage id="user-claim-flow.summary.explanation" />
-      </p>
+    <p className="mb-3">
+      <FormattedMessage id="user-claim-flow.summary.explanation" />
+    </p>
 
-      <ClaimTransactionDetails additionalData={additionalData} className="mb-4">
-        {/* Based on https://github.com/Neufund/platform-frontend/issues/2102#issuecomment-453086304 */}
-        {map((document: IEtoDocument) => {
-          return [EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT].includes(
+    <ClaimTransactionDetails additionalData={additionalData} className="mb-4">
+      {/* Based on https://github.com/Neufund/platform-frontend/issues/2102#issuecomment-453086304 */}
+      {map(
+        (document: IEtoDocument) =>
+          [EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT].includes(
             document.documentType,
           ) ? (
             <InfoRow
@@ -93,10 +93,12 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
                 />
               }
             />
-          ) : null;
-        }, etoData.documents)}
-        {map((template: IEtoDocument) => {
-          return [
+          ) : null,
+        etoData.documents,
+      )}
+      {map(
+        (template: IEtoDocument) =>
+          [
             EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
             EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
           ].includes(template.documentType) ? (
@@ -120,14 +122,14 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
                 />
               }
             />
-          ) : null;
-        }, etoData.templates)}
-      </ClaimTransactionDetails>
+          ) : null,
+        etoData.templates,
+      )}
+    </ClaimTransactionDetails>
 
-      <SummaryForm onSubmit={onAccept} />
-    </Container>
-  );
-};
+    <SummaryForm onSubmit={onAccept} />
+  </Container>
+);
 
 export const UserClaimSummary = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: state => {

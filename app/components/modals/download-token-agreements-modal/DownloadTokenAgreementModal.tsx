@@ -51,23 +51,23 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
   downloadDocument,
   eto,
   isPendingDownload,
-}) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <Container>
-        <Row className="mb-4">
-          <Col>
-            <Heading size={EHeadingSize.SMALL} level={4}>
-              <FormattedMessage id="portfolio.section.my-assets.modal.header" />
-            </Heading>
-          </Col>
-        </Row>
-        {eto && (
-          <InfoList>
-            <>
-              {/* Based on https://github.com/Neufund/platform-frontend/issues/2102#issuecomment-453086304 */}
-              {map((document: IEtoDocument) => {
-                return [EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT].includes(
+}) => (
+  <Modal isOpen={isOpen} onClose={onClose}>
+    <Container>
+      <Row className="mb-4">
+        <Col>
+          <Heading size={EHeadingSize.SMALL} level={4}>
+            <FormattedMessage id="portfolio.section.my-assets.modal.header" />
+          </Heading>
+        </Col>
+      </Row>
+      {eto && (
+        <InfoList>
+          <>
+            {/* Based on https://github.com/Neufund/platform-frontend/issues/2102#issuecomment-453086304 */}
+            {map(
+              (document: IEtoDocument) =>
+                [EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT].includes(
                   document.documentType,
                 ) ? (
                   <InfoRow
@@ -99,10 +99,12 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                       />
                     }
                   />
-                ) : null;
-              }, eto.documents)}
-              {map((template: IEtoDocument) => {
-                return [
+                ) : null,
+              eto.documents,
+            )}
+            {map(
+              (template: IEtoDocument) =>
+                [
                   EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
                   EEtoDocumentType.RESERVATION_AND_ACQUISITION_AGREEMENT,
                 ].includes(template.documentType) ? (
@@ -128,15 +130,15 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                       />
                     }
                   />
-                ) : null;
-              }, eto.templates)}
-            </>
-          </InfoList>
-        )}
-      </Container>
-    </Modal>
-  );
-};
+                ) : null,
+              eto.templates,
+            )}
+          </>
+        </InfoList>
+      )}
+    </Container>
+  </Modal>
+);
 
 const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
   appConnect<IStateProps, IDispatchProps>({

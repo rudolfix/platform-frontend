@@ -73,16 +73,13 @@ function createCustomTooltip(style: string): (this: IChart, tooltipModel: IToolt
       return rootNode;
     };
 
-    const getBodyLines = (body: IBody[]) => {
-      return body
+    const getBodyLines = (body: IBody[]) =>
+      body
         ? body.reduce(
-            (acc, bodyEl) => {
-              return bodyEl.lines.length ? acc.concat(bodyEl.lines) : acc;
-            },
+            (acc, bodyEl) => (bodyEl.lines.length ? acc.concat(bodyEl.lines) : acc),
             [] as string[],
           )
         : [];
-    };
 
     const clearTooltip = (rootElement: HTMLElement) => {
       [...rootElement.childNodes].forEach(el => {

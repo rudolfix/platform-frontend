@@ -169,9 +169,7 @@ describe("Wallet selector integration", () => {
       getMultipleAccounts: async () => ({
         [expectedDerivationPath]: "0x12345123123",
       }),
-      finishConnecting: async () => {
-        return ledgerWalletMock;
-      },
+      finishConnecting: async () => ledgerWalletMock,
     });
     ledgerWalletMock.reMock({
       testConnection: async () => true,

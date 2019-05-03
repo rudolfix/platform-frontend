@@ -186,9 +186,8 @@ export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData
   return undefined;
 };
 
-export const selectIsIncomingPayoutLoading = (state: IAppState): boolean => {
-  return state.investorTickets.incomingPayouts.loading;
-};
+export const selectIsIncomingPayoutLoading = (state: IAppState): boolean =>
+  state.investorTickets.incomingPayouts.loading;
 
 export const selectEtherTokenIncomingPayout = (state: IAppState): string => {
   const incomingPayout = state.investorTickets.incomingPayouts.data;
@@ -229,9 +228,8 @@ export const selectIsIncomingPayoutAvailable = (state: IAppState): boolean => {
   return shouldShowEtherToken || shouldShowEuroToken;
 };
 
-export const selectIsIncomingPayoutDone = (state: IAppState): boolean => {
-  return state.investorTickets.incomingPayouts.payoutDone;
-};
+export const selectIsIncomingPayoutDone = (state: IAppState): boolean =>
+  state.investorTickets.incomingPayouts.payoutDone;
 
 export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
   const etos = selectEtoWithInvestorTickets(state);

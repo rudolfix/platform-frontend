@@ -172,15 +172,11 @@ export const selectUploadedInvestmentAgreement = (
   return key ? etoDocuments[key] : null;
 };
 
-export const selectInvestmentAgreementLoading = (state: DeepReadonly<IAppState>): boolean => {
-  return state.etoFlow.signedInvestmentAgreementUrlLoading;
-};
+export const selectInvestmentAgreementLoading = (state: DeepReadonly<IAppState>): boolean =>
+  state.etoFlow.signedInvestmentAgreementUrlLoading;
 
-export const selectSignedInvestmentAgreementUrl = (
-  state: DeepReadonly<IAppState>,
-): string | null => {
-  return state.etoFlow.signedInvestmentAgreementUrl;
-};
+export const selectSignedInvestmentAgreementUrl = (state: DeepReadonly<IAppState>): string | null =>
+  state.etoFlow.signedInvestmentAgreementUrl;
 
 export const selectShouldEtoDataLoad = (state: IAppState) =>
   selectKycRequestStatus(state) === ERequestStatus.ACCEPTED &&

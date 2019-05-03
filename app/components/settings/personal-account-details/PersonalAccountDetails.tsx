@@ -41,14 +41,12 @@ interface IRecordProps {
   value: TTranslatedString;
 }
 
-const Record: React.FunctionComponent<IRecordProps> = ({ value, label }) => {
-  return (
-    <div className={styles.record}>
-      <div className={styles.label}>{label}</div>
-      <div className={styles.value}>{value}</div>
-    </div>
-  );
-};
+const Record: React.FunctionComponent<IRecordProps> = ({ value, label }) => (
+  <div className={styles.record}>
+    <div className={styles.label}>{label}</div>
+    <div className={styles.value}>{value}</div>
+  </div>
+);
 
 class PersonalAccountDetailsLayout extends React.Component<
   IStateProps & IExternalProps,

@@ -2,7 +2,7 @@
 set -e
 set -u
 
-BACKEND_SHA=237515316741d9a73794f697a59a701978abbe21
+BACKEND_SHA=6fe3098a9e1a7aad324d32f8d280c5b59899170c
 
 # we tag images with shorter SHA
 BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}
@@ -58,7 +58,7 @@ make docker-pull tag=dev_${BACKEND_SHORT_SHA}
 echo "Pulling images done."
 
 make prerequisites-dev
-make run-remote-dev-without-build
+make run-without-build blocks_freq=0.2 request_timeout=60
 
 cd ..
 echo "Backend running"

@@ -470,6 +470,7 @@
   "eto.public-view.token-transferability": "Token transferable",
   "eto.public-view.token-transferability.no": "No",
   "eto.public-view.token-transferability.yes": "Yes",
+  "eto.public-view.twitter-feed": "Twitter",
   "eto.settings.cancel-change-eto-start-date": "Cancel",
   "eto.settings.change-eto-start-date": "Change date",
   "eto.settings.changing-eto-start-date-not-possible": "You cannot change the start time any more.",

@@ -140,6 +140,8 @@ export const selectCalculatedEtoTicketSizesUlpsById = (state: IAppState, etoId: 
       maxTicketEurUlps: max,
     };
   }
+
+  return undefined;
 };
 
 export const selectNeuRewardUlpsByEtoId = (state: IAppState, etoId: string) => {

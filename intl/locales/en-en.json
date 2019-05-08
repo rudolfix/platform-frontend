@@ -233,7 +233,7 @@
   "eto.form.company-information.banner": "Banner",
   "eto.form.company-information.brand-name": "Brand name",
   "eto.form.company-information.company-categories": "Company categories",
-  "eto.form.company-information.company-categories.explanation": "Add up to 6 tags that best describe your company. The first two will appear on your ETO preview card and all tags will be displayed on your ETO detail page.",
+  "eto.form.company-information.company-categories.explanation": "Add up to {limit, plural, one {# tag} other {# tags}} that best describe your company. The first two will appear on your ETO preview card and all tags will be displayed on your ETO detail page.",
   "eto.form.company-information.company-description": "Company description",
   "eto.form.company-information.company-tagline": "Company tagline",
   "eto.form.company-information.founders-quote": "Founders quote",

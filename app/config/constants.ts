@@ -91,3 +91,5 @@ export const IS_DEV = process.env.NODE_ENV === "development";
  */
 
 export const REDIRECT_CHANNEL_WATCH_DELAY = 5000;
+
+export const IPFS_PROTOCOL = "ipfs";

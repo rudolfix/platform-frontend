@@ -13,7 +13,7 @@ import { withParams } from "../../../../utils/withParams";
 import { appRoutes } from "../../../appRoutes";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { Panel } from "../../../shared/Panel";
-import { FUNDING_ROUNDS } from "../../registration/pages/LegalInformation";
+import { FUNDING_ROUNDS } from "../../constants";
 import { ETOState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
 import { EtoStatusManager } from "./EtoStatusManager";

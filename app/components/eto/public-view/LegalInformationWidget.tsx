@@ -9,7 +9,7 @@ import { ECurrency, EMoneyInputFormat } from "../../shared/formatters/utils";
 import { ECurrencySymbol, Money } from "../../shared/Money.unsafe";
 import { NumberFormat } from "../../shared/NumberFormat";
 import { Panel } from "../../shared/Panel";
-import { FUNDING_ROUNDS } from "../registration/pages/LegalInformation";
+import { FUNDING_ROUNDS } from "../constants";
 import { CHART_COLORS } from "../shared/EtoView";
 
 import * as styles from "./LegalInformationWidget.module.scss";

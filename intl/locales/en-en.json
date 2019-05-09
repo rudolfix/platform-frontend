@@ -1096,7 +1096,6 @@
   "wallet-selector.browser.steps.1": "1. Turn on the MetaMask extension in your browser.",
   "wallet-selector.browser.steps.2": "2. Login to your wallet.",
   "wallet-selector.browser.steps.3": "3. Reload this page for changes to take effect.",
-  "wallet-selector.browser.supports": "MetaMask also supports:",
   "wallet-selector.help-link.login.label": "Wallet Recovery",
   "wallet-selector.help-link.register.label": "Help",
   "wallet-selector.ledger-not-supported": "Your browser does not support NeuKey. For security reasons we require a recent version of:",

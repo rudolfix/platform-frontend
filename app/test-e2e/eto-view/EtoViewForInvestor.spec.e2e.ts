@@ -11,12 +11,12 @@ describe("Eto Investor View", () => {
 
   it("should load empty Eto", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView("Neufund - Quintessence (QTT)");
+    assertEtoView("ETONoStartDate retail eto li security - Quintessence (QTT)");
   });
 
   it("should display correct eto investment terms", () => {
     cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView("Neufund - Quintessence (QTT)");
+    assertEtoView("ETONoStartDate retail eto li security - Quintessence (QTT)");
 
     // EQUITY section
     cy.get(tid("eto-public-view-pre-money-valuation")).should("contain", "€132 664 672.0464");
@@ -50,7 +50,7 @@ describe("Eto Investor View", () => {
     cy.visit(
       withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID_WITH_TRANSFERABILITY_ALLOWED }),
     );
-    assertEtoView("Neufund - Rich (RCH)");
+    assertEtoView("ETOInWhitelistState ff eto - Rich (RCH)");
 
     // TOKEN HOLDER RIGHTS section
     cy.get(tid("eto-public-view-token-transferability")).should("contain", "Yes");

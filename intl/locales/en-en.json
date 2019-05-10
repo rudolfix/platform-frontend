@@ -314,7 +314,6 @@
   "eto.form.section.equity-token-information.tokens-per-share": "Tokens per share (token is not divisible)",
   "eto.form.section.eto-terms.eto-type": "ETO type",
   "eto.form.section.eto-terms.fundraising-currency": "Fundraising currency",
-  "eto.form.section.eto-terms.is-not-crowdfunding.error": "Crowdfunding based ETOs are not supported right now",
   "eto.form.section.eto-terms.maximum-ticket-size": "Maximum ticket size",
   "eto.form.section.eto-terms.maximum-ticket-size.error.less-than-minimum": "The maximum ticket size is less than minimum",
   "eto.form.section.eto-terms.minimum-ticket-size": "Minimum ticket size",

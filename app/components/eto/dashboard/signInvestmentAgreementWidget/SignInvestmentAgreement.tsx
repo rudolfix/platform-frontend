@@ -7,8 +7,8 @@ import { compose } from "redux";
 import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import {
-  selectEtoId,
   selectInvestmentAgreementLoading,
+  selectIssuerEtoId,
   selectSignedInvestmentAgreementUrl,
   selectUploadedInvestmentAgreement,
 } from "../../../../modules/eto-flow/selectors";
@@ -113,7 +113,7 @@ export const SignInvestmentAgreement = compose<React.FunctionComponent<IExternal
     stateToProps: state => {
       const uploadedAgreement = selectUploadedInvestmentAgreement(state);
 
-      const etoId = selectEtoId(state);
+      const etoId = selectIssuerEtoId(state);
       // there is another widget showing up if there's no agreement uploaded,
       // so uploadedAgreement=== null is not a valid case
       if (etoId && uploadedAgreement) {

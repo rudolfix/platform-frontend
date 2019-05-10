@@ -8,7 +8,7 @@ import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { selectEtoDocumentData } from "../../../../modules/eto-documents/selectors";
 import {
-  selectEtoId,
+  selectIssuerEtoId,
   selectUploadedInvestmentAgreement,
 } from "../../../../modules/eto-flow/selectors";
 import { selectEtoOnChainStateById } from "../../../../modules/eto/selectors";
@@ -90,7 +90,7 @@ export const UploadInvestmentAgreement = compose<React.FunctionComponent<IExtern
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps | null, IDispatchProps>({
     stateToProps: state => {
-      const etoId = selectEtoId(state);
+      const etoId = selectIssuerEtoId(state);
       if (etoId) {
         return {
           stateOnChain: selectEtoOnChainStateById(state, etoId)!,

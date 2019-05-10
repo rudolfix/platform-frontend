@@ -245,7 +245,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
             <div className={styles.tagsWrapper}>
               <TagsWidget
                 etoId={eto.etoId}
-                allowRetailEto={eto.allowRetailInvestors}
+                offeringDocumentType={eto.product.offeringDocumentType}
                 termSheet={documentsByType[EEtoDocumentType.SIGNED_TERMSHEET]}
                 prospectusApproved={
                   documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT]

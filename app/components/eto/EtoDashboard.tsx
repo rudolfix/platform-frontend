@@ -4,6 +4,7 @@ import { withProps } from "recompose";
 import { compose } from "redux";
 
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
@@ -11,7 +12,7 @@ import {
   selectCanEnableBookBuilding,
   selectCombinedEtoCompanyData,
   selectIsOfferingDocumentSubmitted,
-  selectIssuerEtoIsRetail,
+  selectIssuerEtoOfferingDocumentType,
   selectIssuerEtoPreviewCode,
   selectIssuerEtoState,
   selectIsTermSheetSubmitted,
@@ -55,7 +56,7 @@ interface IStateProps {
   etoFormProgress?: number;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
-  isRetailEto: boolean;
+  offeringDocumentType: EOfferingDocumentType | undefined;
 }
 
 interface IComputedProps {
@@ -104,7 +105,7 @@ interface IEtoStateRender {
   isOfferingDocumentSubmitted?: boolean;
   canEnableBookbuilding: boolean;
   previewCode?: string;
-  isRetailEto: boolean;
+  offeringDocumentType: EOfferingDocumentType | undefined;
 }
 
 const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> = ({
@@ -114,7 +115,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   isOfferingDocumentSubmitted,
   canEnableBookbuilding,
   previewCode,
-  isRetailEto,
+  offeringDocumentType,
 }) => {
   if (!previewCode) {
     return (
@@ -160,7 +161,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
           </Container>
           {canEnableBookbuilding && <BookBuildingWidget columnSpan={EColumnSpan.TWO_COL} />}
           {!isOfferingDocumentSubmitted &&
-            (isRetailEto ? (
+            (offeringDocumentType === EOfferingDocumentType.PROSPECTUS ? (
               <UploadProspectusWidget columnSpan={EColumnSpan.ONE_COL} />
             ) : (
               <UploadInvestmentMemorandum columnSpan={EColumnSpan.ONE_COL} />
@@ -217,7 +218,7 @@ class EtoDashboardComponent extends React.Component<IStateProps & IComputedProps
       isTermSheetSubmitted,
       isOfferingDocumentSubmitted,
       previewCode,
-      isRetailEto,
+      offeringDocumentType,
       isVerificationSectionDone,
     } = this.props;
 
@@ -246,7 +247,7 @@ class EtoDashboardComponent extends React.Component<IStateProps & IComputedProps
           etoState={etoState}
           canEnableBookbuilding={canEnableBookbuilding}
           previewCode={previewCode}
-          isRetailEto={isRetailEto}
+          offeringDocumentType={offeringDocumentType}
         />
       </WidgetGridLayout>
     );
@@ -271,7 +272,7 @@ const EtoDashboard = compose<React.FunctionComponent>(
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
       isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),
       etoFormProgress: calculateGeneralEtoData(selectCombinedEtoCompanyData(s)),
-      isRetailEto: selectIssuerEtoIsRetail(s),
+      offeringDocumentType: selectIssuerEtoOfferingDocumentType(s),
     }),
     dispatchToProps: dispatch => ({
       loadFileDataStart: () => dispatch(actions.etoDocuments.loadFileDataStart()),

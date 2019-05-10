@@ -485,7 +485,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto }) => {
                 companyMarketingLinks={marketingLinks}
                 etoTemplates={eto.templates}
                 etoDocuments={eto.documents}
-                isRetailEto={eto.allowRetailInvestors}
+                offeringDocumentType={eto.product.offeringDocumentType}
               />
             </Container>
           )}

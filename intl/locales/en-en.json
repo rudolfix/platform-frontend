@@ -273,6 +273,7 @@
   "eto.form.key-individuals.title": "Key individuals",
   "eto.form.legal-information.city-country": "City & Country",
   "eto.form.legal-information.company-founding-date": "Company founding date",
+  "eto.form.legal-information.company-legal-description": "Company legal description",
   "eto.form.legal-information.company-state-address": "Company state address",
   "eto.form.legal-information.last-funding-amount": "Last funding amount",
   "eto.form.legal-information.last-funding-round": "Last funding round",

@@ -122,6 +122,7 @@ type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
 export const EtoLegalInformationType = YupTS.object({
   name: YupTS.string(),
   legalForm: YupTS.string(),
+  companyLegalDescription: YupTS.string(),
   street: YupTS.string(),
   country: YupTS.string(),
   vatNumber: YupTS.string().optional(),

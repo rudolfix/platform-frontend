@@ -45,6 +45,7 @@ export const dummyEthereumAddressWithChecksum = "0xfB6916095ca1df60bB79Ce92cE3Ea
 
 export const testCompany: TCompanyEtoData = {
   companyBanner,
+  companyLegalDescription: "Est castus ionicis tormento, cesaris.",
   companyStage: "a_round",
   city: "Berlin",
   businessModel: undefined,

@@ -2,11 +2,10 @@ import * as cn from "classnames";
 import { push } from "connected-react-router";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose, withProps } from "recompose";
+import { compose } from "recompose";
 
-import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
-import { selectIsEligibleToPreEto } from "../../../../modules/investor-portfolio/selectors";
+import { selectEtoSubState } from "../../../../modules/eto/selectors";
+import { EEtoSubState, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { withParams } from "../../../../utils/withParams";
@@ -14,7 +13,7 @@ import { appRoutes } from "../../../appRoutes";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { Panel } from "../../../shared/Panel";
 import { FUNDING_ROUNDS } from "../../constants";
-import { ETOState } from "../../shared/ETOState";
+import { EProjectStatusType, ETOState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
 import { EtoStatusManager } from "./EtoStatusManager";
 
@@ -33,7 +32,7 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  isEligibleToPreEto: boolean;
+  etoSubState: EEtoSubState | undefined;
 }
 
 interface IWithProps {
@@ -43,12 +42,18 @@ interface IWithProps {
 const defaultEmpty = "-";
 
 const StatusOfEto: React.FunctionComponent<IStatusOfEto> = ({ previewCode }) => (
-  <ETOState className={styles.statusOfEto} previewCode={previewCode} />
+  <div className={styles.statusOfEtoWrapper}>
+    <ETOState
+      className={styles.statusOfEto}
+      previewCode={previewCode}
+      type={EProjectStatusType.EXTENDED}
+    />
+  </div>
 );
 
 const EtoOverviewStatusLayout: React.FunctionComponent<
   IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps & IWithProps
-> = ({ eto, isEligibleToPreEto, navigateToEto, showQuote }) => (
+> = ({ eto, etoSubState, navigateToEto }) => (
   // TODO: Refactor to use ButtonLink
   <div onClick={navigateToEto}>
     <Panel data-test-id={`eto-overview-${eto.etoId}`} className={styles.panel}>
@@ -67,14 +72,19 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
       <StatusOfEto previewCode={eto.previewCode} />
 
       <section className={styles.content}>
-        <Heading decorator={false} level={2} size={EHeadingSize.HUGE}>
+        <Heading
+          titleClassName="text-truncate"
+          decorator={false}
+          level={2}
+          size={EHeadingSize.HUGE}
+        >
           {eto.company.brandName}
         </Heading>
 
-        {showQuote ? (
-          <div data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
+        {etoSubState === EEtoSubState.COMING_SOON ? (
+          <p data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
             {eto.company.keyQuoteFounder}
-          </div>
+          </p>
         ) : (
           <>
             <div className={cn(styles.groupWrapper)}>
@@ -106,7 +116,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
               </div>
             </div>
 
-            <EtoStatusManager eto={eto} isEligibleToPreEto={isEligibleToPreEto} />
+            <EtoStatusManager eto={eto} etoSubState={etoSubState} />
           </>
         )}
       </section>
@@ -120,19 +130,12 @@ const EtoOverviewThumbnail = compose<
 >(
   appConnect<IStateProps, IDispatchProps, IExternalProps>({
     stateToProps: (state, props) => ({
-      isEligibleToPreEto: selectIsEligibleToPreEto(state, props.eto.etoId),
+      etoSubState: selectEtoSubState(state, props.eto.previewCode),
     }),
     dispatchToProps: (dispatch, { eto }) => ({
       navigateToEto: () =>
         dispatch(push(withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode }))),
     }),
-  }),
-  withProps<IWithProps, IStateProps & IExternalProps>(({ isEligibleToPreEto, eto }) => {
-    const nextState = isEligibleToPreEto ? EETOStateOnChain.Whitelist : EETOStateOnChain.Public;
-    const showQuote =
-      eto.state !== EEtoState.ON_CHAIN || eto.contract!.startOfStates[nextState] === undefined;
-
-    return { showQuote };
   }),
 )(EtoOverviewStatusLayout);
 

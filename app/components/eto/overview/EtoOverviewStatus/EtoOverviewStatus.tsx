@@ -27,7 +27,7 @@ import { ECurrency, EMoneyInputFormat } from "../../../shared/formatters/utils";
 import { ECurrencySymbol, Money } from "../../../shared/Money.unsafe";
 import { NumberFormat } from "../../../shared/NumberFormat";
 import { EtoWidgetContext } from "../../EtoWidgetView";
-import { ETOState } from "../../shared/ETOState";
+import { EProjectStatusType, ETOState } from "../../shared/ETOState";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { CampaigningActivatedWidget } from "./CampaigningWidget";
 import { ClaimWidget, RefundWidget } from "./ClaimRefundWidget";
@@ -64,7 +64,7 @@ const StatusOfEto: React.FunctionComponent<IStatusOfEto> = ({ previewCode }) => 
     <span className={styles.title}>
       <FormattedMessage id="shared-component.eto-overview.status-of-eto" />
     </span>
-    <ETOState previewCode={previewCode} />
+    <ETOState previewCode={previewCode} type={EProjectStatusType.EXTENDED} />
   </div>
 );
 

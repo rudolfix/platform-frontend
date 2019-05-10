@@ -2,8 +2,11 @@ import { find } from "lodash/fp";
 
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
+import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
 import { IEtoState } from "./reducer";
-import { EETOStateOnChain, IEtoTokenData, TEtoWithCompanyAndContract } from "./types";
+import { EETOStateOnChain, EEtoSubState, IEtoTokenData, TEtoWithCompanyAndContract } from "./types";
+import { isOnChain } from "./utils";
 
 const selectEtoState = (state: IAppState) => state.eto;
 
@@ -116,3 +119,54 @@ export const selectTokenData = (
   state: DeepReadonly<IEtoState>,
   previewCode: string,
 ): IEtoTokenData | undefined => state.tokenData[previewCode];
+
+/**
+ * Returns sub state of eto current `on-chain` state.
+ * If not yet on-chain, returns `COMING_SOON` state
+ * If no sub state is defined returns `undefined`.
+ */
+export const selectEtoSubState = (
+  state: IAppState,
+  previewCode: string,
+): EEtoSubState | undefined => {
+  const eto = selectEtoWithCompanyAndContract(state, previewCode);
+
+  if (eto !== undefined) {
+    if (!isOnChain(eto)) {
+      return EEtoSubState.COMING_SOON;
+    }
+
+    const isEligibleToPreEto = selectIsEligibleToPreEto(state, eto.etoId);
+
+    switch (eto.contract.timedState) {
+      case EETOStateOnChain.Setup:
+        const stats = selectBookbuildingStats(state, eto.etoId);
+        const investorCount = stats ? stats.investorsCount : 0;
+
+        const isInvestorsLimitReached = investorCount >= eto.maxPledges;
+
+        const nextState = isEligibleToPreEto ? EETOStateOnChain.Whitelist : EETOStateOnChain.Public;
+        const nextStateStartDate = eto.contract.startOfStates[nextState];
+
+        if (!nextStateStartDate || nextStateStartDate <= new Date()) {
+          return EEtoSubState.COMING_SOON;
+        }
+
+        if (!eto.isBookbuilding || isInvestorsLimitReached) {
+          return isEligibleToPreEto
+            ? EEtoSubState.COUNTDOWN_TO_PRESALE
+            : EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE;
+        }
+
+        break;
+      case EETOStateOnChain.Whitelist:
+        if (!isEligibleToPreEto) {
+          return EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE;
+        }
+
+        break;
+    }
+  }
+
+  return undefined;
+};

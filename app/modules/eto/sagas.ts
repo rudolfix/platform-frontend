@@ -37,14 +37,11 @@ import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoWithCompanyAndContract,
+  selectFilteredEtosByRestrictedJurisdictions,
+  selectIsEtoAnOffer,
 } from "./selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
-import {
-  convertToEtoTotalInvestment,
-  convertToStateStartDate,
-  filterEtosByRestrictedJurisdictions,
-  isRestrictedEto,
-} from "./utils";
+import { convertToEtoTotalInvestment, convertToStateStartDate, isRestrictedEto } from "./utils";
 
 export function* loadEtoPreview(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
@@ -283,10 +280,18 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
     const etos = etosResponse.body;
 
     const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
-    const filteredEtosByJurisdictionRestrictions = filterEtosByRestrictedJurisdictions(
-      etos,
-      jurisdiction,
+
+    yield all(
+      etos
+        .filter(eto => eto.state === EEtoState.ON_CHAIN)
+        .map(eto => neuCall(loadEtoContract, eto)),
     );
+
+    const filteredEtosByJurisdictionRestrictions: TEtoData[] = yield select((state: IAppState) =>
+      selectFilteredEtosByRestrictedJurisdictions(state, etos, jurisdiction),
+    );
+
+    const order = filteredEtosByJurisdictionRestrictions.map(eto => eto.previewCode);
 
     const companies = compose(
       keyBy((eto: TCompanyEtoData) => eto.companyId),
@@ -300,15 +305,6 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
       map(omit("company")),
     )(filteredEtosByJurisdictionRestrictions);
 
-    const order = filteredEtosByJurisdictionRestrictions.map(eto => eto.previewCode);
-
-    yield all(
-      order
-        .map(id => etosByPreviewCode[id])
-        .filter(eto => eto.state === EEtoState.ON_CHAIN)
-        .map(eto => neuCall(loadEtoContract, eto)),
-    );
-
     // load investor tickets
     const userType: EUserType | undefined = yield select((state: IAppState) =>
       selectUserType(state),
@@ -316,7 +312,6 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
     if (userType === EUserType.INVESTOR) {
       yield put(actions.investorEtoTicket.loadInvestorTickets(etosByPreviewCode));
     }
-
     yield put(actions.eto.setEtos({ etos: etosByPreviewCode, companies }));
     yield put(actions.eto.setEtosDisplayOrder(order));
   } catch (e) {
@@ -422,7 +417,13 @@ function* verifyEtoAccess(
     selectIsUserVerified,
   );
 
-  if (isRestrictedEto(eto)) {
+  // Checks if ETO is an Offer based on
+  // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
+  const isEtoAnOffer: boolean = yield select((state: IAppState) =>
+    selectIsEtoAnOffer(state, payload.previewCode, eto.state),
+  );
+
+  if (isRestrictedEto(eto) && isEtoAnOffer) {
     if (isUserLoggedInAndVerified) {
       const jurisdiction: ReturnType<typeof selectClientJurisdiction> = yield select(
         selectClientJurisdiction,

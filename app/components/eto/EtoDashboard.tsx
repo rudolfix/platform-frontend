@@ -107,7 +107,7 @@ const SubmitDashBoardSection: React.FunctionComponent<{
 const EtoProgressDashboardSection: React.FunctionComponent = () => (
   <>
     <Container columnSpan={EColumnSpan.THREE_COL}>
-      <DashboardHeading step={2} title="ETO APPLICATION" />
+      <DashboardHeading step={2} title="SETUP YOUR ETO" />
       <FormattedHTMLMessage tagName="p" id="eto-dashboard-application-description" />
     </Container>
     <ETOFormsProgressSection />

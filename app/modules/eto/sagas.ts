@@ -43,7 +43,7 @@ import {
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate, isRestrictedEto } from "./utils";
 
-export function* loadEtoPreview(
+function* loadEtoPreview(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadEtoPreview>,
 ): any {
@@ -87,7 +87,7 @@ export function* loadEtoPreview(
   }
 }
 
-export function* loadEto(
+function* loadEto(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadEto>,
 ): any {
@@ -357,7 +357,7 @@ function* downloadTemplateByType(
   }
 }
 
-export function* loadTokensData({ contractsService }: TGlobalDependencies): any {
+function* loadTokensData({ contractsService }: TGlobalDependencies): any {
   const myAssets = yield select(selectMyAssets);
   const walletAddress = yield select(selectEthereumAddressWithChecksum);
 
@@ -398,6 +398,23 @@ export function* loadTokensData({ contractsService }: TGlobalDependencies): any 
         tokenPrice: tokenPrice.toString(),
       }),
     );
+  }
+}
+
+function* ensureEtoJurisdiction(
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.eto.ensureEtoJurisdiction>,
+): Iterable<any> {
+  const eto: ReturnType<typeof selectEtoWithCompanyAndContract> = yield select((state: IAppState) =>
+    selectEtoWithCompanyAndContract(state, payload.previewCode),
+  );
+
+  if (eto === undefined) {
+    throw new Error(`Can not find eto by preview code ${payload.previewCode}`);
+  }
+  if (eto.product.jurisdiction !== payload.jurisdiction) {
+    // TODO: Add 404 page
+    yield put(actions.routing.goTo404());
   }
 }
 
@@ -464,11 +481,13 @@ export function* etoSagas(): any {
   yield fork(neuTakeEvery, actions.eto.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.eto.loadEto, loadEto);
   yield fork(neuTakeEvery, actions.eto.loadEtos, loadEtos);
-  yield fork(neuTakeEvery, actions.eto.downloadEtoDocument, downloadDocument);
-  yield fork(neuTakeEvery, actions.eto.downloadEtoTemplateByType, downloadTemplateByType);
   yield fork(neuTakeEvery, actions.eto.loadTokensData, loadTokensData);
 
+  yield fork(neuTakeEvery, actions.eto.downloadEtoDocument, downloadDocument);
+  yield fork(neuTakeEvery, actions.eto.downloadEtoTemplateByType, downloadTemplateByType);
+
   yield fork(neuTakeLatest, actions.eto.verifyEtoAccess, verifyEtoAccess);
+  yield fork(neuTakeLatest, actions.eto.ensureEtoJurisdiction, ensureEtoJurisdiction);
 
   yield fork(neuTakeUntil, actions.eto.setEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetAction);

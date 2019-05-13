@@ -8,8 +8,7 @@ import { selectEtoSubState } from "../../../../modules/eto/selectors";
 import { EEtoSubState, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
-import { withParams } from "../../../../utils/withParams";
-import { appRoutes } from "../../../appRoutes";
+import { etoPublicViewLink } from "../../../appRouteUtils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { Panel } from "../../../shared/Panel";
 import { FUNDING_ROUNDS } from "../../constants";
@@ -134,7 +133,7 @@ const EtoOverviewThumbnail = compose<
     }),
     dispatchToProps: (dispatch, { eto }) => ({
       navigateToEto: () =>
-        dispatch(push(withParams(appRoutes.etoPublicView, { previewCode: eto.previewCode }))),
+        dispatch(push(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))),
     }),
   }),
 )(EtoOverviewStatusLayout);

@@ -168,12 +168,8 @@ export function* abortEmailUpdate({
 }
 
 export function* profileSagas(): any {
-  yield fork(neuTakeEvery, actions.profile.addNewEmail.getType(), addNewEmail);
-  yield fork(neuTakeEvery, actions.profile.resendEmail.getType(), resendEmail);
-  yield fork(
-    neuTakeEvery,
-    actions.profile.loadSeedOrReturnToProfile.getType(),
-    loadSeedOrReturnToSettings,
-  );
-  yield fork(neuTakeEvery, actions.profile.abortEmailUpdate.getType(), abortEmailUpdate);
+  yield fork(neuTakeEvery, actions.profile.addNewEmail, addNewEmail);
+  yield fork(neuTakeEvery, actions.profile.resendEmail, resendEmail);
+  yield fork(neuTakeEvery, actions.profile.loadSeedOrReturnToProfile, loadSeedOrReturnToSettings);
+  yield fork(neuTakeEvery, actions.profile.abortEmailUpdate, abortEmailUpdate);
 }

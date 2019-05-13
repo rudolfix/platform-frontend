@@ -92,7 +92,7 @@ const SubmitDashBoardSection: React.FunctionComponent<{
     <Container columnSpan={EColumnSpan.THREE_COL}>
       <DashboardHeading
         step={3}
-        title="UPLOAD FILES / SUBMIT PROPOSAL"
+        title="UPLOAD TERM SHEET AND PUBLISH YOUR ETO LISTING PAGE"
         data-test-id="eto-dashboard-verification"
       />
     </Container>

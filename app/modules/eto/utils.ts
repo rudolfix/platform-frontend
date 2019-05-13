@@ -64,5 +64,5 @@ export function isOnChain(
   return eto.state === EEtoState.ON_CHAIN && eto.contract !== undefined;
 }
 
-export const isRestricedEto = (eto: TEtoWithCompanyAndContract): boolean =>
+export const isRestrictedEto = (eto: TEtoWithCompanyAndContract): boolean =>
   eto.product.jurisdiction === EJurisdiction.GERMANY && !isPastInvestment(eto.contract!.timedState);

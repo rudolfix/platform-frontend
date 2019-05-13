@@ -6,7 +6,7 @@ import * as Web3Utils from "web3-utils";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout } from "../../shared/buttons";
+import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { Form, FormFieldColorful } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 import { ECustomTooltipTextPosition, Tooltip } from "../../shared/tooltips";
@@ -36,7 +36,7 @@ class FormContent extends React.Component {
             <Button
               innerClassName={styles.button}
               layout={EButtonLayout.SECONDARY}
-              iconPosition="icon-after"
+              iconPosition={EIconPosition.ICON_AFTER}
               svgIcon={arrowRight}
               type="submit"
               disabled={!Web3Utils.isAddress(values.address.toUpperCase())}
@@ -52,36 +52,34 @@ class FormContent extends React.Component {
 
 export const CheckYourICBMWalletWidgetComponent: React.FunctionComponent<
   IExternalProps & IDispatchProps
-> = ({ loadICBMWallet, columnSpan }) => {
-  return (
-    <Panel
-      headerText={
-        <>
-          <FormattedMessage id="check-your-icbm-wallet-widget.header" />
-          <Tooltip
-            content={<FormattedMessage id="icbm-wallet.tooltip" />}
-            textPosition={ECustomTooltipTextPosition.LEFT}
-          />
-        </>
-      }
-      columnSpan={columnSpan}
-      data-test-id="models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"
+> = ({ loadICBMWallet, columnSpan }) => (
+  <Panel
+    headerText={
+      <>
+        <FormattedMessage id="check-your-icbm-wallet-widget.header" />
+        <Tooltip
+          content={<FormattedMessage id="icbm-wallet.tooltip" />}
+          textPosition={ECustomTooltipTextPosition.LEFT}
+        />
+      </>
+    }
+    columnSpan={columnSpan}
+    data-test-id="models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"
+  >
+    <Formik<{ address: string }>
+      initialValues={{ address: "" }}
+      onSubmit={values => loadICBMWallet(values.address)}
     >
-      <Formik<{ address: string }>
-        initialValues={{ address: "" }}
-        onSubmit={values => loadICBMWallet(values.address)}
-      >
-        <Form className={styles.section}>
-          <p>
-            <FormattedMessage id="check-your-icbm-wallet-widget.notice" />
-          </p>
+      <Form className={styles.section}>
+        <p>
+          <FormattedMessage id="check-your-icbm-wallet-widget.notice" />
+        </p>
 
-          <FormContent />
-        </Form>
-      </Formik>
-    </Panel>
-  );
-};
+        <FormContent />
+      </Form>
+    </Formik>
+  </Panel>
+);
 
 export const CheckYourICBMWalletWidget = appConnect<IDispatchProps>({
   dispatchToProps: dispatch => ({

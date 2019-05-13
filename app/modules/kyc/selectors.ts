@@ -84,7 +84,7 @@ export const selectCombinedBeneficialOwnerOwnership = (state: DeepReadonly<IKycS
   );
 };
 
-export const selectWidgetLoading = (state: DeepReadonly<IKycState>): boolean =>
+export const selectKycLoading = (state: DeepReadonly<IKycState>): boolean =>
   !!state.individualRequestStateLoading || !!state.businessRequestStateLoading;
 
 export const selectWidgetError = (state: DeepReadonly<IKycState>): string | undefined =>
@@ -92,9 +92,8 @@ export const selectWidgetError = (state: DeepReadonly<IKycState>): string | unde
 
 export const selectIndividualClientName = (state: DeepReadonly<IKycState>) => {
   const data = state.individualData;
-  if (data) {
-    return [data.firstName, data.lastName].filter(Boolean).join(" ");
-  }
+
+  return data ? [data.firstName, data.lastName].filter(Boolean).join(" ") : undefined;
 };
 
 export const selectClientName = (state: DeepReadonly<IKycState>) =>
@@ -103,27 +102,34 @@ export const selectClientName = (state: DeepReadonly<IKycState>) =>
 export const selectClientJurisdiction = createSelector(
   selectKyc,
   (state: DeepReadonly<IKycState>) =>
+    // @SEE https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489081031
     (state.businessData && state.businessData.jurisdiction) ||
-    (state.individualData && state.individualData.nationality),
+    (state.individualData && state.individualData.country),
 );
 
 export const selectClaims = (state: IAppState) => state.kyc.claims;
 
-export const selectIsClaimsVerified = createSelector(selectClaims, claims => {
-  if (claims) {
-    return claims.isVerified;
-  }
+export const selectIsClaimsVerified = createSelector(
+  selectClaims,
+  claims => {
+    if (claims) {
+      return claims.isVerified;
+    }
 
-  return false;
-});
+    return false;
+  },
+);
 
-export const selectIsAccountFrozen = createSelector(selectClaims, claims => {
-  if (claims) {
-    return claims.isAccountFrozen;
-  }
+export const selectIsAccountFrozen = createSelector(
+  selectClaims,
+  claims => {
+    if (claims) {
+      return claims.isAccountFrozen;
+    }
 
-  return false;
-});
+    return false;
+  },
+);
 
 export const selectIsUserVerifiedOnBlockchain = (state: IAppState) =>
   selectIsClaimsVerified(state) && !selectIsAccountFrozen(state);

@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 
 import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
 import { getTokenPrice } from "../../modules/investor-portfolio/utils";
-import { withParams } from "../../utils/withParams";
-import { appRoutes } from "../appRoutes";
+import { etoPublicViewLink } from "../appRouteUtils";
+import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";
 import { Container } from "../layouts/Container";
-import { Heading } from "../shared/Heading";
+import { ECurrency, EMoneyInputFormat } from "../shared/formatters/utils";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money.unsafe";
+import { ECurrencySymbol, Money } from "../shared/Money.unsafe";
 import { NumberFormat } from "../shared/NumberFormat";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 
@@ -24,14 +24,10 @@ interface IExternalProps {
 
 const PortfolioPastInvestments: React.FunctionComponent<IExternalProps> = ({ pastInvestments }) => (
   <Container>
-    <Heading
-      level={3}
-      decorator={false}
+    <DashboardHeading
+      title={<FormattedMessage id="portfolio.section.past-investments.title" />}
       description={<FormattedMessage id="portfolio.section.past-investments.description" />}
-    >
-      <FormattedMessage id="portfolio.section.past-investments.title" />
-    </Heading>
-
+    />
     <NewTable
       keepRhythm={true}
       placeholder={
@@ -60,6 +56,7 @@ const PortfolioPastInvestments: React.FunctionComponent<IExternalProps> = ({ pas
           contract,
           etoId,
           previewCode,
+          product,
         }) => {
           const timedState = contract!.timedState;
           const investmentDate = contract!.startOfStates[timedState]!;
@@ -79,7 +76,7 @@ const PortfolioPastInvestments: React.FunctionComponent<IExternalProps> = ({ pas
               </>
 
               <Link
-                to={withParams(appRoutes.etoPublicView, { previewCode })}
+                to={etoPublicViewLink(previewCode, product.jurisdiction)}
                 data-test-id="portfolio-past-investments-view-profile"
               >
                 <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
@@ -102,7 +99,7 @@ const PortfolioPastInvestments: React.FunctionComponent<IExternalProps> = ({ pas
                 value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
                 currency={ECurrency.EUR}
                 currencySymbol={ECurrencySymbol.SYMBOL}
-                format={EMoneyFormat.FLOAT}
+                format={EMoneyInputFormat.FLOAT}
                 isPrice={true}
               />
 

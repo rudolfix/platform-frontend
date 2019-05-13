@@ -12,10 +12,8 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
 import { EtosComingSoon } from "../../eto/overview/EtoOverviewStatus/EtosComingSoon";
 import { EtoOverviewThumbnail } from "../../eto/overview/EtoOverviewThumbnail";
-import { Heading } from "../../shared/Heading";
+import { DashboardHeading } from "../../eto/shared/DashboardHeading";
 import { ELoadingIndicator, LoadingIndicator } from "../../shared/loading-indicator";
-
-import * as styles from "./EtoList.module.scss";
 
 interface IStateProps {
   etos?: TEtoWithCompanyAndContract[];
@@ -26,7 +24,7 @@ type TListProps = RequiredByKeys<IStateProps, "etos">;
 const EtoListThumbnails: React.FunctionComponent<TListProps> = ({ etos }) => (
   <Row>
     {etos.map(eto => (
-      <Col className="mb-4" xs={12} sm={6} lg={4} key={eto.previewCode}>
+      <Col className="mb-4" xs={12} md={6} lg={4} key={eto.previewCode}>
         <EtoOverviewThumbnail eto={eto} />
       </Col>
     ))}
@@ -47,12 +45,8 @@ const EtoListDefault: React.FunctionComponent<TListProps> = ({ etos }) => (
 const EtoListComponent: React.FunctionComponent<IStateProps> = ({ etos }) => (
   <>
     <Col xs={12}>
-      <Heading level={3}>
-        <FormattedMessage id="dashboard.eto-opportunities" />
-      </Heading>
-    </Col>
-    <Col xs={12}>
-      <p className={styles.opportunitiesDescription}>
+      <DashboardHeading title={<FormattedMessage id="dashboard.eto-opportunities" />} />
+      <p>
         <FormattedMessage id="dashboard.eto-opportunities.description" />
       </p>
     </Col>

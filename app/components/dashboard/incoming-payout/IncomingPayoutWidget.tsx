@@ -14,9 +14,10 @@ import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { isZero } from "../../../utils/Number.utils";
 import { appRoutes } from "../../appRoutes";
-import { ButtonLink, EButtonLayout } from "../../shared/buttons";
+import { ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { Counter } from "../../shared/Counter.unsafe";
-import { ECurrency, ECurrencySymbol, ETheme, Money } from "../../shared/Money.unsafe";
+import { ECurrency } from "../../shared/formatters/utils";
+import { ECurrencySymbol, ETheme, Money } from "../../shared/Money.unsafe";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./IncomingPayoutWidget.module.scss";
@@ -72,7 +73,7 @@ const IncomingPayoutDone: React.FunctionComponent<IIncomingPayoutData> = ({
       data-test-id="incoming-payout-go-to-portfolio"
       to={appRoutes.portfolio}
       layout={EButtonLayout.SECONDARY}
-      iconPosition="icon-after"
+      iconPosition={EIconPosition.ICON_AFTER}
       svgIcon={arrowRight}
     >
       <FormattedMessage id="dashboard.incoming-payout-widget.go-to-portfolio" />
@@ -106,8 +107,9 @@ const IncomingPayoutCounter: React.FunctionComponent<IIncomingPayoutData & IDisp
           currency={ECurrency.EUR_TOKEN}
         />
       )}
-      {!isZero(euroTokenIncomingPayout) &&
-        !isZero(etherTokenIncomingPayout) && <span className={styles.incomingValue}> & </span>}
+      {!isZero(euroTokenIncomingPayout) && !isZero(etherTokenIncomingPayout) && (
+        <span className={styles.incomingValue}> & </span>
+      )}
       {!isZero(etherTokenIncomingPayout) && (
         <Money
           data-test-id="incoming-payout-ether-token"

@@ -7,7 +7,7 @@ import { Col, Row } from "reactstrap";
 
 import { TElementRef } from "../../../types";
 import { englishMnemonics } from "../../../utils/englishMnemonics";
-import { Button, EButtonLayout } from "../../shared/buttons";
+import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import "react-select/dist/react-select.css";
@@ -75,8 +75,8 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
 
     this.setState(
       state => ({
-        verificationWords: state.verificationWords.map(
-          (word, index) => (wordOnPageNumber === index ? verificationWord : word),
+        verificationWords: state.verificationWords.map((word, index) =>
+          wordOnPageNumber === index ? verificationWord : word,
         ),
       }),
       () => this.focusNext(wordOnPageNumber),
@@ -104,13 +104,9 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
     }
   };
 
-  isInvalid = (): boolean => {
-    return this.state.verificationWords.some(word => word.isValid === false);
-  };
+  isInvalid = (): boolean => this.state.verificationWords.some(word => word.isValid === false);
 
-  isValid = (): boolean => {
-    return this.state.verificationWords.every(word => !!word.isValid);
-  };
+  isValid = (): boolean => this.state.verificationWords.every(word => !!word.isValid);
 
   generateSelect = (wordOnPageNumber: number): React.ReactNode => (
     <div data-test-id={`backup-seed-verify-word-${wordOnPageNumber}`}>
@@ -171,7 +167,7 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
         <div className={cn(styles.row)}>
           <Button
             layout={EButtonLayout.SECONDARY}
-            iconPosition="icon-before"
+            iconPosition={EIconPosition.ICON_BEFORE}
             svgIcon={arrowLeft}
             onClick={this.props.onBack}
           >

@@ -15,16 +15,16 @@ import {
 } from "../../../modules/auth/selectors";
 import {
   selectExternalKycUrl,
+  selectKycLoading,
   selectKycRequestOutsourcedStatus,
   selectKycRequestStatus,
   selectWidgetError,
-  selectWidgetLoading,
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, ButtonLink, EButtonLayout } from "../../shared/buttons";
+import { Button, ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -152,7 +152,7 @@ const ActionButton = ({
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
-        iconPosition="icon-after"
+        iconPosition={EIconPosition.ICON_AFTER}
         svgIcon={arrowRight}
         onClick={onGoToDashboard}
         disabled={!isUserEmailVerified}
@@ -166,7 +166,7 @@ const ActionButton = ({
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
-        iconPosition="icon-after"
+        iconPosition={EIconPosition.ICON_AFTER}
         svgIcon={arrowRight}
         onClick={onGoToKycHome}
         disabled={!isUserEmailVerified || !backupCodesVerified}
@@ -180,7 +180,7 @@ const ActionButton = ({
     return (
       <Button
         layout={EButtonLayout.SECONDARY}
-        iconPosition="icon-after"
+        iconPosition={EIconPosition.ICON_AFTER}
         svgIcon={arrowRight}
         onClick={onGoToKycHome}
         disabled={!isUserEmailVerified}
@@ -202,14 +202,14 @@ const ActionButton = ({
         <ButtonLink
           to={externalKycUrl}
           layout={EButtonLayout.SECONDARY}
-          iconPosition="icon-after"
+          iconPosition={EIconPosition.ICON_AFTER}
           svgIcon={arrowRight}
         >
           <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
         </ButtonLink>
         <Button
           layout={EButtonLayout.SECONDARY}
-          iconPosition="icon-after"
+          iconPosition={EIconPosition.ICON_AFTER}
           svgIcon={arrowRight}
           onClick={cancelInstantId}
           data-test-id="settings.kyc-status-widget.cancel-external-kyc-button"
@@ -307,7 +307,7 @@ export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
       requestStatus: selectKycRequestStatus(state),
       requestOutsourcedStatus: selectKycRequestOutsourcedStatus(state.kyc),
       externalKycUrl: selectExternalKycUrl(state.kyc),
-      isLoading: selectWidgetLoading(state.kyc),
+      isLoading: selectKycLoading(state.kyc),
       error: selectWidgetError(state.kyc),
     }),
     dispatchToProps: dispatch => ({

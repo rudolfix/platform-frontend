@@ -27,6 +27,7 @@ import { divideBigNumbers } from "../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserVerified, selectUserType } from "../auth/selectors";
 import { selectMyAssets } from "../investor-portfolio/selectors";
+import { waitForKycStatus } from "../kyc/sagas";
 import { selectClientJurisdiction } from "../kyc/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
@@ -36,11 +37,13 @@ import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoWithCompanyAndContract,
+  selectFilteredEtosByRestrictedJurisdictions,
+  selectIsEtoAnOffer,
 } from "./selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
-import { convertToEtoTotalInvestment, convertToStateStartDate, isRestricedEto } from "./utils";
+import { convertToEtoTotalInvestment, convertToStateStartDate, isRestrictedEto } from "./utils";
 
-export function* loadEtoPreview(
+function* loadEtoPreview(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadEtoPreview>,
 ): any {
@@ -66,7 +69,7 @@ export function* loadEtoPreview(
         yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
       }
 
-      yield neuCall(loadEtoContact, eto);
+      yield neuCall(loadEtoContract, eto);
     }
 
     yield put(actions.eto.setEto({ eto, company }));
@@ -84,7 +87,7 @@ export function* loadEtoPreview(
   }
 }
 
-export function* loadEto(
+function* loadEto(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadEto>,
 ): any {
@@ -109,7 +112,7 @@ export function* loadEto(
         yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
       }
 
-      yield neuCall(loadEtoContact, eto);
+      yield neuCall(loadEtoContract, eto);
     }
 
     yield put(actions.eto.setEto({ eto, company }));
@@ -128,7 +131,7 @@ export function* loadEto(
   }
 }
 
-export function* loadEtoContact(
+export function* loadEtoContract(
   { contractsService, logger }: TGlobalDependencies,
   eto: TEtoData,
 ): any {
@@ -272,29 +275,35 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
 
 function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
   try {
+    yield waitForKycStatus();
     const etosResponse: IHttpResponse<TEtoData[]> = yield apiEtoService.getEtos();
     const etos = etosResponse.body;
+
+    const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
+
+    yield all(
+      etos
+        .filter(eto => eto.state === EEtoState.ON_CHAIN)
+        .map(eto => neuCall(loadEtoContract, eto)),
+    );
+
+    const filteredEtosByJurisdictionRestrictions: TEtoData[] = yield select((state: IAppState) =>
+      selectFilteredEtosByRestrictedJurisdictions(state, etos, jurisdiction),
+    );
+
+    const order = filteredEtosByJurisdictionRestrictions.map(eto => eto.previewCode);
 
     const companies = compose(
       keyBy((eto: TCompanyEtoData) => eto.companyId),
       map((eto: TEtoData) => eto.company),
-    )(etos);
+    )(filteredEtosByJurisdictionRestrictions);
 
     const etosByPreviewCode = compose(
       keyBy((eto: TEtoSpecsData) => eto.previewCode),
       // remove company prop from eto
       // it's saved separately for consistency with other endpoints
       map(omit("company")),
-    )(etos);
-
-    const order = etosResponse.body.map(eto => eto.previewCode);
-
-    yield all(
-      order
-        .map(id => etosByPreviewCode[id])
-        .filter(eto => eto.state === EEtoState.ON_CHAIN)
-        .map(eto => neuCall(loadEtoContact, eto)),
-    );
+    )(filteredEtosByJurisdictionRestrictions);
 
     // load investor tickets
     const userType: EUserType | undefined = yield select((state: IAppState) =>
@@ -303,7 +312,6 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
     if (userType === EUserType.INVESTOR) {
       yield put(actions.investorEtoTicket.loadInvestorTickets(etosByPreviewCode));
     }
-
     yield put(actions.eto.setEtos({ etos: etosByPreviewCode, companies }));
     yield put(actions.eto.setEtosDisplayOrder(order));
   } catch (e) {
@@ -349,7 +357,7 @@ function* downloadTemplateByType(
   }
 }
 
-export function* loadTokensData({ contractsService }: TGlobalDependencies): any {
+function* loadTokensData({ contractsService }: TGlobalDependencies): any {
   const myAssets = yield select(selectMyAssets);
   const walletAddress = yield select(selectEthereumAddressWithChecksum);
 
@@ -393,6 +401,23 @@ export function* loadTokensData({ contractsService }: TGlobalDependencies): any 
   }
 }
 
+function* ensureEtoJurisdiction(
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.eto.ensureEtoJurisdiction>,
+): Iterable<any> {
+  const eto: ReturnType<typeof selectEtoWithCompanyAndContract> = yield select((state: IAppState) =>
+    selectEtoWithCompanyAndContract(state, payload.previewCode),
+  );
+
+  if (eto === undefined) {
+    throw new Error(`Can not find eto by preview code ${payload.previewCode}`);
+  }
+  if (eto.product.jurisdiction !== payload.jurisdiction) {
+    // TODO: Add 404 page
+    yield put(actions.routing.goTo404());
+  }
+}
+
 function* verifyEtoAccess(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.verifyEtoAccess>,
@@ -409,7 +434,13 @@ function* verifyEtoAccess(
     selectIsUserVerified,
   );
 
-  if (isRestricedEto(eto)) {
+  // Checks if ETO is an Offer based on
+  // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
+  const isEtoAnOffer: boolean = yield select((state: IAppState) =>
+    selectIsEtoAnOffer(state, payload.previewCode, eto.state),
+  );
+
+  if (isRestrictedEto(eto) && isEtoAnOffer) {
     if (isUserLoggedInAndVerified) {
       const jurisdiction: ReturnType<typeof selectClientJurisdiction> = yield select(
         selectClientJurisdiction,
@@ -450,11 +481,13 @@ export function* etoSagas(): any {
   yield fork(neuTakeEvery, actions.eto.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.eto.loadEto, loadEto);
   yield fork(neuTakeEvery, actions.eto.loadEtos, loadEtos);
-  yield fork(neuTakeEvery, actions.eto.downloadEtoDocument, downloadDocument);
-  yield fork(neuTakeEvery, actions.eto.downloadEtoTemplateByType, downloadTemplateByType);
   yield fork(neuTakeEvery, actions.eto.loadTokensData, loadTokensData);
 
+  yield fork(neuTakeEvery, actions.eto.downloadEtoDocument, downloadDocument);
+  yield fork(neuTakeEvery, actions.eto.downloadEtoTemplateByType, downloadTemplateByType);
+
   yield fork(neuTakeLatest, actions.eto.verifyEtoAccess, verifyEtoAccess);
+  yield fork(neuTakeLatest, actions.eto.ensureEtoJurisdiction, ensureEtoJurisdiction);
 
   yield fork(neuTakeUntil, actions.eto.setEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetAction);

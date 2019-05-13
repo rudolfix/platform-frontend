@@ -1,5 +1,5 @@
-import { appRoutes } from "../../components/appRoutes";
-import { withParams } from "../../utils/withParams";
+import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
+import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { etoFixtureAddressByName, tid } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
@@ -10,13 +10,20 @@ describe("Eto Investor View", () => {
   beforeEach(() => createAndLoginNewUser({ type: "investor", kyc: "business" }));
 
   it("should load empty Eto", () => {
-    cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView("Neufund - Quintessence (QTT)");
+    cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
+
+    assertEtoView(
+      "ETONoStartDate retail eto li security - Quintessence (QTT)",
+      EJurisdiction.LIECHTENSTEIN,
+    );
   });
 
   it("should display correct eto investment terms", () => {
-    cy.visit(withParams(appRoutes.etoPublicViewById, { etoId: ETO_ID }));
-    assertEtoView("Neufund - Quintessence (QTT)");
+    cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
+    assertEtoView(
+      "ETONoStartDate retail eto li security - Quintessence (QTT)",
+      EJurisdiction.LIECHTENSTEIN,
+    );
 
     // EQUITY section
     cy.get(tid("eto-public-view-pre-money-valuation")).should("contain", "€132 664 672.0464");
@@ -30,7 +37,7 @@ describe("Eto Investor View", () => {
     // TOKEN SALE section
     cy.get(tid("eto-public-view-tokens-per-share")).should("contain", "10 000");
     cy.get(tid("eto-public-view-token-price")).should("contain", "€0.32376189");
-    cy.get(tid("eto-public-view-ticket-size")).should("contain", "€100 - 10000000");
+    cy.get(tid("eto-public-view-ticket-size")).should("contain", "€100 - 5000000");
     cy.get(tid("eto-public-view-currencies")).should("contain", "ETH and nEUR");
     cy.get(tid("eto-public-view-pre-eto-duration")).should("contain", "7 Days");
     cy.get(tid("eto-public-view-public-eto-duration")).should("contain", "14 Days");
@@ -38,14 +45,20 @@ describe("Eto Investor View", () => {
     // TOKEN HOLDER RIGHTS section
     cy.get(tid("eto-public-view-nominee")).should("contain", "Neumini NOMINEE_NEUMINI");
     cy.get(tid("eto-public-view-public-offer-duration")).should("contain", "14 Days");
-    cy.get(tid("eto-public-view-token-tradability")).should("contain", "In the future");
-    /** For now /api/eto-listing/etos/{id} endpoint is not providing product details
-     * TODO: Enable when endpoint ready
-     * cy.get(tid("eto-public-view-token-transferability")).should("contain", "Yes");
-     * cy.get(tid("eto-public-view-asset-type")).should("contain", "Security");
-     *
-     */
+    cy.get(tid("eto-public-view-token-transferability")).should("contain", "No");
+    cy.get(tid("eto-public-view-asset-type")).should("contain", "Security");
     cy.get(tid("eto-public-view-voting-rights")).should("contain", "Yes");
     cy.get(tid("eto-public-view-dividend-rights")).should("contain", "Yes");
+  });
+
+  it("should should tradability when transferability is set to true", () => {
+    const ETO_ID_WITH_TRANSFERABILITY_ALLOWED = etoFixtureAddressByName("ETOInWhitelistState");
+
+    cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID_WITH_TRANSFERABILITY_ALLOWED));
+    assertEtoView("ETOInWhitelistState ff eto - Rich (RCH)", EJurisdiction.GERMANY);
+
+    // TOKEN HOLDER RIGHTS section
+    cy.get(tid("eto-public-view-token-transferability")).should("contain", "Yes");
+    cy.get(tid("eto-public-view-token-tradability")).should("contain", "In the future");
   });
 });

@@ -16,7 +16,7 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { TFormikConnect, TTranslatedString } from "../../../../types";
 import { getFieldSchema, isRequired } from "../../../../utils/yupUtils";
-import { Button, ButtonIcon, EButtonLayout } from "../../../shared/buttons";
+import { Button, ButtonIcon, EButtonLayout, EIconPosition } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload.unsafe";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
@@ -210,7 +210,7 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
               })}
               <Button
                 data-test-id={`key-individuals-group-button-${name}`}
-                iconPosition="icon-before"
+                iconPosition={EIconPosition.ICON_BEFORE}
                 layout={EButtonLayout.SECONDARY}
                 svgIcon={plusIcon}
                 onClick={() => arrayHelpers.push(getBlankMember())}
@@ -230,55 +230,53 @@ const KeyIndividualsGroup = connect<IKeyIndividualsGroup, TEtoKeyIndividualType>
   KeyIndividualsGroupLayout,
 );
 
-const EtoRegistrationKeyIndividualsComponent = (props: IProps) => {
-  return (
-    <EtoFormBase
-      title={<FormattedMessage id="eto.form.key-individuals.title" />}
-      validator={EtoKeyIndividualsType.toYup()}
-    >
-      <Section className={localStyles.sectionWrapper}>
-        <KeyIndividualsGroup
-          title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
-          name="team"
-        />
-        <KeyIndividualsGroup
-          title={<FormattedMessage id="eto.form.key-individuals.section.advisors.title" />}
-          name="advisors"
-        />
-        <KeyIndividualsGroup
-          title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
-          name="keyAlliances"
-        />
-        <KeyIndividualsGroup
-          title={<FormattedMessage id="eto.form.key-individuals.section.board-members.title" />}
-          name="boardMembers"
-        />
-        <KeyIndividualsGroup
-          title={<FormattedMessage id="eto.form.key-individuals.section.notable-investors.title" />}
-          name="notableInvestors"
-        />
-        <KeyIndividualsGroup
-          title={<FormattedMessage id="eto.form.key-individuals.section.key-customers.title" />}
-          name="keyCustomers"
-        />
-        <KeyIndividualsGroup
-          title={<FormattedMessage id="eto.form.key-individuals.section.partners.title" />}
-          name="partners"
-        />
-      </Section>
-      <Section className={styles.buttonSection}>
-        <Button
-          layout={EButtonLayout.PRIMARY}
-          type="submit"
-          isLoading={props.savingData}
-          data-test-id="eto-registration-key-individuals-submit"
-        >
-          <FormattedMessage id="form.button.save" />
-        </Button>
-      </Section>
-    </EtoFormBase>
-  );
-};
+const EtoRegistrationKeyIndividualsComponent = (props: IProps) => (
+  <EtoFormBase
+    title={<FormattedMessage id="eto.form.key-individuals.title" />}
+    validator={EtoKeyIndividualsType.toYup()}
+  >
+    <Section className={localStyles.sectionWrapper}>
+      <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.team.title" />}
+        name="team"
+      />
+      <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.advisors.title" />}
+        name="advisors"
+      />
+      <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.key-alliances.title" />}
+        name="keyAlliances"
+      />
+      <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.board-members.title" />}
+        name="boardMembers"
+      />
+      <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.notable-investors.title" />}
+        name="notableInvestors"
+      />
+      <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.key-customers.title" />}
+        name="keyCustomers"
+      />
+      <KeyIndividualsGroup
+        title={<FormattedMessage id="eto.form.key-individuals.section.partners.title" />}
+        name="partners"
+      />
+    </Section>
+    <Section className={styles.buttonSection}>
+      <Button
+        layout={EButtonLayout.PRIMARY}
+        type="submit"
+        isLoading={props.savingData}
+        data-test-id="eto-registration-key-individuals-submit"
+      >
+        <FormattedMessage id="form.button.save" />
+      </Button>
+    </Section>
+  </EtoFormBase>
+);
 
 const EtoRegistrationKeyIndividuals = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.KeyIndividuals),

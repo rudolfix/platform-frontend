@@ -8,7 +8,7 @@ import {
   selectIssuerCompany,
   selectIssuerEto,
   selectIssuerEtoState,
-  selectShouldEtoDataLoad,
+  userHasKycAndEmailVerified,
 } from "../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../modules/eto-flow/types";
 import {
@@ -163,18 +163,20 @@ export const ETOFormsProgressSectionComponent: React.FunctionComponent<IStatePro
             {group.name}
           </Heading>
           <Container type={EContainerType.INHERIT_GRID} className={styles.progressSectionLayout}>
-            {group.sections.filter(s => !s.hidden).map((section, sectionIndex) => (
-              <EtoFormProgressWidget
-                isLoading={loadingData}
-                to={(etoRegisterRoutes as IEtoRegisteredRoutes)[section.id]}
-                progress={shouldEtoDataLoad ? section.progress : 0}
-                disabled={!shouldEtoDataLoad}
-                name={section.name}
-                readonly={etoFormIsReadonly(section.id, etoStatus)}
-                data-test-id={section.testingId}
-                key={sectionIndex}
-              />
-            ))}
+            {group.sections
+              .filter(s => !s.hidden)
+              .map((section, sectionIndex) => (
+                <EtoFormProgressWidget
+                  isLoading={loadingData}
+                  to={(etoRegisterRoutes as IEtoRegisteredRoutes)[section.id]}
+                  progress={shouldEtoDataLoad ? section.progress : 0}
+                  disabled={!shouldEtoDataLoad}
+                  name={section.name}
+                  readonly={etoFormIsReadonly(section.id, etoStatus)}
+                  data-test-id={section.testingId}
+                  key={sectionIndex}
+                />
+              ))}
           </Container>
         </Container>
       ))}
@@ -186,7 +188,7 @@ export const ETOFormsProgressSection = appConnect<IStateProps, {}>({
   stateToProps: state => ({
     etoStatus: selectIssuerEtoState(state),
     loadingData: selectIsGeneralEtoLoading(state),
-    shouldEtoDataLoad: selectShouldEtoDataLoad(state),
+    shouldEtoDataLoad: userHasKycAndEmailVerified(state),
     companyInformationProgress: calculateCompanyInformationProgress(selectIssuerCompany(state)),
     etoTermsProgress: calculateEtoTermsProgress(selectIssuerEto(state)),
     etoKeyIndividualsProgress: calculateEtoKeyIndividualsProgress(selectIssuerCompany(state)),

@@ -7,13 +7,13 @@ import { Link } from "react-router-dom";
 import { EETOStateOnChain } from "../../modules/eto/types";
 import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
 import { getTokenPrice } from "../../modules/investor-portfolio/utils";
-import { withParams } from "../../utils/withParams";
-import { appRoutes } from "../appRoutes";
+import { etoPublicViewLink } from "../appRouteUtils";
+import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";
 import { Container } from "../layouts/Container";
-import { Heading } from "../shared/Heading";
+import { ECurrency, EMoneyInputFormat } from "../shared/formatters/utils";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { ECurrency, ECurrencySymbol, EMoneyFormat, Money } from "../shared/Money.unsafe";
+import { ECurrencySymbol, Money } from "../shared/Money.unsafe";
 import { NumberFormat } from "../shared/NumberFormat";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 import { PortfolioAssetAction } from "./PortfolioAssetAction";
@@ -26,14 +26,10 @@ interface IExternalProps {
 
 const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pendingAssets }) => (
   <Container>
-    <Heading
-      level={3}
-      decorator={false}
+    <DashboardHeading
+      title={<FormattedMessage id="portfolio.section.reserved-assets.title" />}
       description={<FormattedMessage id="portfolio.section.reserved-assets.description" />}
-    >
-      <FormattedMessage id="portfolio.section.reserved-assets.title" />
-    </Heading>
-
+    />
     <NewTable
       placeholder={
         <FormattedMessage id="portfolio.section.reserved-assets.table.header.placeholder" />
@@ -63,6 +59,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
           investorTicket,
           contract,
           etoId,
+          product,
           previewCode,
         }) => {
           const timedState = contract!.timedState;
@@ -88,7 +85,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
               </>
 
               <Link
-                to={withParams(appRoutes.etoPublicView, { previewCode })}
+                to={etoPublicViewLink(previewCode, product.jurisdiction)}
                 data-test-id="portfolio-reserved-assets-view-profile"
               >
                 <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
@@ -111,7 +108,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
                 value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
                 currency={ECurrency.EUR}
                 currencySymbol={ECurrencySymbol.SYMBOL}
-                format={EMoneyFormat.FLOAT}
+                format={EMoneyInputFormat.FLOAT}
                 isPrice={true}
               />
 

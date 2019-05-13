@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { TDataTestId, TTranslatedString } from "../../types";
 import { makeTid } from "../../utils/tidUtils";
-import { Button, EButtonLayout } from "./buttons";
+import { Button, EButtonLayout, EButtonTheme, EIconPosition } from "./buttons";
 import { IMoneySuiteWidgetProps, MoneySuiteWidget } from "./MoneySuiteWidget";
 
 import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
@@ -28,35 +28,33 @@ export const AccountBalance: React.FunctionComponent<
   value,
   actions,
   "data-test-id": dataTestId,
-}) => {
-  return (
-    <div className={styles.accountBalance}>
-      <MoneySuiteWidget
-        icon={icon}
-        currency={currency}
-        currencyTotal={currencyTotal}
-        largeNumber={largeNumber}
-        value={value}
-        data-test-id={makeTid(dataTestId, "balance-values")}
-      />
-      <div className={styles.buttons}>
-        {actions &&
-          actions.map(({ onClick, disabled, name, "data-test-id": dataTestId }, i) => (
-            <Button
-              key={i}
-              layout={EButtonLayout.SECONDARY}
-              innerClassName={styles.button}
-              iconPosition="icon-after"
-              theme="graphite"
-              svgIcon={arrowRightIcon}
-              onClick={onClick}
-              data-test-id={dataTestId}
-              disabled={disabled}
-            >
-              {name}
-            </Button>
-          ))}
-      </div>
+}) => (
+  <div className={styles.accountBalance}>
+    <MoneySuiteWidget
+      icon={icon}
+      currency={currency}
+      currencyTotal={currencyTotal}
+      largeNumber={largeNumber}
+      value={value}
+      data-test-id={makeTid(dataTestId, "balance-values")}
+    />
+    <div className={styles.buttons}>
+      {actions &&
+        actions.map(({ onClick, disabled, name, "data-test-id": dataTestId }, i) => (
+          <Button
+            key={i}
+            layout={EButtonLayout.SECONDARY}
+            innerClassName={styles.button}
+            iconPosition={EIconPosition.ICON_AFTER}
+            theme={EButtonTheme.GRAPHITE}
+            svgIcon={arrowRightIcon}
+            onClick={onClick}
+            data-test-id={dataTestId}
+            disabled={disabled}
+          >
+            {name}
+          </Button>
+        ))}
     </div>
-  );
-};
+  </div>
+);

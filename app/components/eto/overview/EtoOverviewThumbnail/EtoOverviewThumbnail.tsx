@@ -66,7 +66,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
         companyBanner={{
           alt: eto.company.brandName,
           srcSet: {
-            "1x": eto.company.companyBanner!,
+            "1x": eto.company.companyPreviewCardBanner,
           },
         }}
         tags={eto.company.categories}

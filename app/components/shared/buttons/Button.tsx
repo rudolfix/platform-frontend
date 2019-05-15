@@ -44,13 +44,12 @@ export enum ButtonWidth {
 }
 
 export enum ButtonTextPosition {
-  CENTER = "",
   LEFT = "text-left",
   RIGHT = "text-right",
 }
 
 export interface IGeneralButton {
-  onClick?: (event: any) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
 }
 
@@ -87,6 +86,7 @@ const Button: React.ForwardRefExoticComponent<
       type,
       textPosition,
       isActive,
+      onClick,
       ...props
     },
     ref,
@@ -107,6 +107,7 @@ const Button: React.ForwardRefExoticComponent<
       )}
       disabled={disabled || isLoading}
       type={type}
+      onClick={onClick}
       {...props}
     >
       <div className={cn(styles.content, innerClassName, textPosition)} tabIndex={-1}>

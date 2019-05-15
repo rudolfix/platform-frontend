@@ -9,6 +9,7 @@ import { EEtoSubState, TEtoWithCompanyAndContract } from "../../../../modules/et
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
+import { Button, ButtonWidth, EButtonLayout } from "../../../shared/buttons/Button";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { Panel } from "../../../shared/Panel";
 import { FUNDING_ROUNDS } from "../../constants";
@@ -20,10 +21,6 @@ import * as styles from "./EtoOverviewThumbnail.module.scss";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
-}
-
-interface IStatusOfEto {
-  previewCode: string;
 }
 
 interface IDispatchProps {
@@ -40,35 +37,33 @@ interface IWithProps {
 
 const defaultEmpty = "-";
 
-const StatusOfEto: React.FunctionComponent<IStatusOfEto> = ({ previewCode }) => (
-  <div className={styles.statusOfEtoWrapper}>
-    <ETOState
-      className={styles.statusOfEto}
-      previewCode={previewCode}
-      type={EProjectStatusType.EXTENDED}
-    />
-  </div>
-);
-
 const EtoOverviewStatusLayout: React.FunctionComponent<
   IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps & IWithProps
 > = ({ eto, etoSubState, navigateToEto }) => (
-  // TODO: Refactor to use ButtonLink
-  <div onClick={navigateToEto}>
-    <Panel data-test-id={`eto-overview-${eto.etoId}`} className={styles.panel}>
+  <Button
+    className={styles.button}
+    layout={EButtonLayout.SIMPLE}
+    width={ButtonWidth.BLOCK}
+    onClick={navigateToEto}
+  >
+    <Panel data-test-id={`eto-overview-${eto.etoId}`}>
       <Cover
         className={styles.cover}
         companyBanner={{
           alt: eto.company.brandName,
           srcSet: {
-            "1x": eto.company.companyBanner!,
+            "1x": eto.company.companyPreviewCardBanner,
           },
         }}
         tags={eto.company.categories}
         jurisdiction={eto.product.jurisdiction}
       />
 
-      <StatusOfEto previewCode={eto.previewCode} />
+      <ETOState
+        className={styles.statusOfEto}
+        previewCode={eto.previewCode}
+        type={EProjectStatusType.EXTENDED}
+      />
 
       <section className={styles.content}>
         <Heading
@@ -120,7 +115,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
         )}
       </section>
     </Panel>
-  </div>
+  </Button>
 );
 
 const EtoOverviewThumbnail = compose<

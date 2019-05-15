@@ -9,7 +9,7 @@ import {
   EButtonLayout,
   EButtonTheme,
   EIconPosition,
-} from "./Button.unsafe";
+} from "./Button";
 
 import * as icon from "../../../assets/img/inline_icons/icon_questionmark.svg";
 

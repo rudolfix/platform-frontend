@@ -208,6 +208,7 @@ const ActionButton = ({
           <FormattedMessage id="settings.kyc-status-widget.continue-external-kyc" />
         </ButtonLink>
         <Button
+          data-test={true}
           layout={EButtonLayout.SECONDARY}
           iconPosition={EIconPosition.ICON_AFTER}
           svgIcon={arrowRight}

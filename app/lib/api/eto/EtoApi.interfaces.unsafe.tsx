@@ -47,6 +47,7 @@ export const EtoCompanyInformationType = YupTS.object({
   categories: YupTS.array(tagsType).optional(),
   companyLogo: YupTS.string().optional(),
   companyBanner: YupTS.string().optional(),
+  companyPreviewCardBanner: YupTS.string(),
 });
 type TEtoTeamData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
@@ -198,6 +199,12 @@ export type TCompanyEtoData = DeepReadonly<
  *  only deals with "/etos/me"
  */
 
+export enum EEtoMarketingDataVisibleInPreview {
+  NOT_VISIBLE = "not_visible",
+  VISIBLE = "visible",
+  VISIBILITY_PENDING = "visibility_pending",
+}
+
 export enum EEtoState {
   PREVIEW = "preview",
   PENDING = "pending",
@@ -290,7 +297,6 @@ export const getEtoTermsSchema = ({
 
       return v;
     }),
-    additionalTerms: YupTS.string().optional(),
   });
 
 export type TEtoTermsType = YupTS.TypeOf<ReturnType<typeof getEtoTermsSchema>>;
@@ -344,6 +350,7 @@ interface IAdditionalEtoType {
   companyId: string;
   previewCode: string;
   state: EEtoState;
+  isMarketingDataVisibleInPreview: EEtoMarketingDataVisibleInPreview;
   isBookbuilding: boolean;
   templates: TEtoDocumentTemplates;
   startDate: string;
@@ -393,4 +400,19 @@ export const GeneralEtoDataType = YupTS.object({
   ...EtoPitchType.shape,
   ...EtoCompanyInformationType.shape,
   ...EtoRiskAssessmentType.shape,
+});
+
+export const EtoMarketingDataType = YupTS.object({
+  ...EtoEquityTokenInfoType.shape,
+  ...EtoMediaType.shape,
+  ...EtoLegalInformationType.shape,
+  ...EtoPitchType.shape,
+  ...EtoCompanyInformationType.shape,
+  ...EtoRiskAssessmentType.shape,
+});
+
+export const EtoSettingDataType = YupTS.object({
+  ...EtoInvestmentTermsType.shape,
+  ...getEtoTermsSchema().shape,
+  ...EtoVotingRightsType.shape,
 });

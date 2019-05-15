@@ -5,8 +5,7 @@ import * as React from "react";
 
 import { CommonHtmlProps, TDataTestId } from "../../../types";
 import { appRoutes } from "../../appRoutes";
-import { ButtonLink } from "../../shared/buttons";
-import { EButtonTheme } from "../../shared/buttons/Button.unsafe";
+import { ButtonLink, EButtonTheme } from "../../shared/buttons";
 
 import * as styles from "./JoinCta.module.scss";
 

@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
 
+import { CommonHtmlProps } from "../../../types";
 import { FormatNumber } from "./FormatNumber";
 import { FormatShortNumber } from "./FormatShortNumber";
 import {
@@ -32,7 +33,7 @@ enum ETheme {
   GREEN_BIG = styles.tBigValue,
 }
 
-interface IMoneyProps extends React.HTMLAttributes<HTMLSpanElement> {
+interface IMoneyProps {
   value: string | BigNumber | number | null | undefined;
 }
 
@@ -45,7 +46,7 @@ interface IMoneyCommonProps {
   transfer?: EMoneyTransfer;
   theme?: ETheme;
   outputFormat: EHumanReadableFormat;
-  defaultValue?: string;
+  defaultValue?: React.ReactChild;
   className?: string;
 }
 
@@ -69,7 +70,7 @@ export const selectCurrencyCode = (moneyFormat: TMoneyFormat): string => {
 };
 
 //todo will rename it to Money after the old money is gone
-const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps> = ({
+const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & CommonHtmlProps> = ({
   value,
   inputFormat,
   outputFormat,

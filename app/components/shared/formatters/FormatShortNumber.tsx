@@ -22,7 +22,7 @@ interface IProps {
   inputFormat?: EMoneyInputFormat;
   decimalPlaces?: number;
   divider?: number;
-  defaultValue?: string;
+  defaultValue?: React.ReactChild;
   roundingMode?: ERoundingMode;
   className?: string;
   isPrice?: boolean;

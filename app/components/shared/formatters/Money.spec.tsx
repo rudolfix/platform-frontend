@@ -135,7 +135,7 @@ describe("MoneyNew", () => {
         />,
       );
 
-      expect(component.render().text()).to.be.eq("- EUR");
+      expect(component.render().text()).to.be.eq("-");
     });
     it("renders money range with placeholder if one of inputs is not given", () => {
       const component = shallow(
@@ -148,7 +148,7 @@ describe("MoneyNew", () => {
         />,
       );
 
-      expect(component.render().text()).to.be.eq("- EUR");
+      expect(component.render().text()).to.be.eq("-");
     });
     it("renders money range with placeholder if one of inputs is not given", () => {
       const component = shallow(
@@ -161,7 +161,7 @@ describe("MoneyNew", () => {
         />,
       );
 
-      expect(component.render().text()).to.be.eq("- EUR");
+      expect(component.render().text()).to.be.eq("-");
     });
     it("renders money range with custom placeholder", () => {
       const component = shallow(
@@ -175,7 +175,7 @@ describe("MoneyNew", () => {
         />,
       );
 
-      expect(component.render().text()).to.be.eq("* EUR");
+      expect(component.render().text()).to.be.eq("*");
     });
     it("renders money range with custom separator", () => {
       const component = shallow(

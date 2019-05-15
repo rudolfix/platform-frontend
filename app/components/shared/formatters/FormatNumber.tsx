@@ -8,7 +8,7 @@ import * as styles from "./FormatNumber.module.scss";
 
 interface IComponentProps {
   value: string | BigNumber | number | undefined | null;
-  defaultValue?: string;
+  defaultValue?: React.ReactChild;
   roundingMode?: ERoundingMode;
   decimalPlaces?: number;
   inputFormat?: EMoneyInputFormat;
@@ -32,6 +32,6 @@ export const FormatNumber: React.FunctionComponent<IComponentProps> = ({
       </span>
     );
   } else {
-    return <span>{defaultValue}</span>;
+    return <>{defaultValue}</>;
   }
 };

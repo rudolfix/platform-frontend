@@ -137,6 +137,32 @@ describe("MoneyNew", () => {
 
       expect(component.render().text()).to.be.eq("- EUR");
     });
+    it("renders money range with placeholder if one of inputs is not given", () => {
+      const component = shallow(
+        <MoneyRange
+          inputFormat={EMoneyInputFormat.ULPS}
+          valueFrom={undefined}
+          valueUpto={"23"}
+          moneyFormat={ECurrency.EUR}
+          outputFormat={EHumanReadableFormat.FULL}
+        />,
+      );
+
+      expect(component.render().text()).to.be.eq("- EUR");
+    });
+    it("renders money range with placeholder if one of inputs is not given", () => {
+      const component = shallow(
+        <MoneyRange
+          inputFormat={EMoneyInputFormat.ULPS}
+          valueFrom={"23"}
+          valueUpto={undefined}
+          moneyFormat={ECurrency.EUR}
+          outputFormat={EHumanReadableFormat.FULL}
+        />,
+      );
+
+      expect(component.render().text()).to.be.eq("- EUR");
+    });
     it("renders money range with custom placeholder", () => {
       const component = shallow(
         <MoneyRange

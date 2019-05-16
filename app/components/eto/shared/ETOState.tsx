@@ -87,6 +87,7 @@ export const getStateName: (
 };
 
 const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain | EEtoSubState, string>> = {
+  [EEtoState.PREVIEW]: styles.black,
   // eto on chain states
   [EETOStateOnChain.Whitelist]: styles.green,
   [EETOStateOnChain.Public]: styles.green,

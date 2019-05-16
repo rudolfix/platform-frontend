@@ -2,7 +2,7 @@
 set -e
 set -u
 
-BACKEND_SHA=4f5f1eb367c84adfb95283e0e50bd0563f1477cf
+BACKEND_SHA=536f7eea38eedcfc714cb424800434c53681e4ca
 
 # we tag images with shorter SHA
 BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}

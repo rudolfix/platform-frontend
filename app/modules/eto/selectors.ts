@@ -162,9 +162,10 @@ export const selectFilteredEtosByRestrictedJurisdictions = (
         const isEtoAnOffer = selectIsEtoAnOffer(state, eto.previewCode, eto.state);
         return (
           !isEtoAnOffer ||
-          !hiddenJurisdictions[jurisdiction].some(
-            (hiddenJurisdiction: string) => hiddenJurisdiction === eto.product.jurisdiction,
-          )
+          (hiddenJurisdictions[jurisdiction] &&
+            !hiddenJurisdictions[jurisdiction].some(
+              (hiddenJurisdiction: string) => hiddenJurisdiction === eto.product.jurisdiction,
+            ))
         );
       })
     : etos;

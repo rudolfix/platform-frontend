@@ -68,7 +68,7 @@ export const kycCompanyForm: TFormFixture = {
   city: "Berlin",
   zipCode: "10247",
   country: {
-    value: "DE",
+    value: "PL",
     type: "select",
   },
   "kyc-company-business-data-save": {

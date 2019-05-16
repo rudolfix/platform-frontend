@@ -1,5 +1,6 @@
 import { createStore, Store } from "redux";
 
+import { ECurrency } from "../app/components/shared/formatters/utils";
 import { IConfig } from "../app/config/getConfig";
 import {
   EEtoMarketingDataVisibleInPreview,
@@ -779,7 +780,7 @@ export const testEto: TEtoWithCompanyAndContract = {
   newSharesToIssueInFixedSlots: undefined,
   canEnableBookbuilding: false,
   companyId: "0xC8f867Cf4Ed30b4fF0Aa4c4c8c6b684397B219B0",
-  currencies: ["eth", "eur_t"],
+  currencies: [ECurrency.ETH, ECurrency.EUR_TOKEN],
   discountScheme: "40%",
   documents: etoDocuments,
   enableTransferOnSuccess: true,

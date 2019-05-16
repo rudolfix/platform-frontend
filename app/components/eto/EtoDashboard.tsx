@@ -225,7 +225,6 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
           <Container columnSpan={EColumnSpan.THREE_COL}>
             <FormattedHTMLMessage tagName="p" id="eto-dashboard-application-description" />
           </Container>
-          {canEnableBookbuilding && <BookBuildingWidget columnSpan={EColumnSpan.TWO_COL} />}
           <Container columnSpan={EColumnSpan.THREE_COL}>
             <DashboardHeading title={dashboardTitle} />
           </Container>

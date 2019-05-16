@@ -2,7 +2,10 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+} from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { selectIsIssuer } from "../../../modules/auth/selectors";
 import { selectEtoSubState, selectEtoWithCompanyAndContract } from "../../../modules/eto/selectors";
 import {
@@ -109,7 +112,10 @@ const getState = (
   const state = isOnChain(eto) ? eto.contract.timedState : eto.state;
 
   if (subState) {
-    return isIssuer && subState === EEtoSubState.COMING_SOON ? state : subState;
+    return isIssuer &&
+      eto.isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE
+      ? state
+      : subState;
   } else {
     return state;
   }

@@ -261,6 +261,7 @@
   "eto.form.eto-voting-rights.title": "Token Holder Rights",
   "eto.form.investment-terms.errors.fixed-slots-must-be-at-least-as-big-as-public-discount": "Maximum fixed slots discount must be bigger or equal to public discount",
   "eto.form.investment-terms.errors.whitelist-discount-must-at-least-as-big-as-public-discount": "Whitelist discount must be bigger or equal to public discount",
+  "eto.form.investment-terms.investment-amount-warning": "Please note that the maximum investment amount is above the product limit",
   "eto.form.investment-terms.title": "Investment Terms",
   "eto.form.key-individuals.add": "Add",
   "eto.form.key-individuals.add-social-channels": "Add social channels",

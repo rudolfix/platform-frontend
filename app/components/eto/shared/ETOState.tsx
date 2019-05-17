@@ -50,7 +50,7 @@ interface IStateProps {
 
 export const stateToName: Record<EEtoState | EETOStateOnChain | EEtoSubState, TTranslatedString> = {
   [EEtoState.PREVIEW]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
-  [EEtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-review" />,
+  [EEtoState.PENDING]: <FormattedMessage id="shared-component.eto-overview.status-in-preview" />,
   [EEtoState.LISTED]: <FormattedMessage id="shared-component.eto-overview.status-listed" />,
   [EEtoState.PROSPECTUS_APPROVED]: (
     <FormattedMessage id="shared-component.eto-overview.status-prospectus-approved" />
@@ -88,6 +88,7 @@ export const getStateName: (
 
 const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain | EEtoSubState, string>> = {
   [EEtoState.PREVIEW]: styles.black,
+  [EEtoState.PENDING]: styles.black,
   // eto on chain states
   [EETOStateOnChain.Whitelist]: styles.green,
   [EETOStateOnChain.Public]: styles.green,

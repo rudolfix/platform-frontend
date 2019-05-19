@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { NumberSchema, StringSchema } from "yup";
 
+import { ECurrency } from "../../../components/shared/formatters/utils";
 import {
   MIN_COMPANY_SHARES,
   MIN_EXISTING_COMPANY_SHARES,
@@ -235,7 +236,7 @@ export const getEtoTermsSchema = ({
   minPublicDurationDays,
 }: Partial<TEtoProduct> = {}) =>
   YupTS.object({
-    currencies: YupTS.array(YupTS.string()),
+    currencies: YupTS.array(YupTS.string<ECurrency>()),
     prospectusLanguage: YupTS.string(),
     minTicketEur: YupTS.number().enhance((v: NumberSchema) =>
       minTicketSize !== undefined
@@ -359,6 +360,7 @@ interface IAdditionalEtoType {
   canEnableBookbuilding: boolean;
   product: TEtoProduct;
   nomineeDisplayName?: string;
+  hasDividendRights?: boolean;
 }
 
 export type TBookbuildingStatsType = {

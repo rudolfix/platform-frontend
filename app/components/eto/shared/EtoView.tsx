@@ -31,8 +31,9 @@ import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
 import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
-import { EtoTimeline } from "../overview/EtoTimeline";
+import { EtoTimeline } from "../overview/EtoTimeline/EtoTimeline";
 import { Cover } from "../public-view/Cover";
+import { CoverBanner } from "../public-view/CoverBanner";
 import { DocumentsWidget } from "../public-view/DocumentsWidget";
 import { EtoInvestmentTermsWidget } from "../public-view/EtoInvestmentTermsWidget";
 import { LegalInformationWidget } from "../public-view/LegalInformationWidget";
@@ -48,6 +49,7 @@ export const DEFAULT_CHART_COLOR = "#c4c5c6";
 
 interface IProps {
   eto: TEtoWithCompanyAndContract;
+  isInvestorView: boolean;
 }
 
 interface IStateProps {
@@ -58,7 +60,11 @@ interface IStateProps {
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
 
 // TODO: Refactor to smaller components
-const EtoViewLayout: React.FunctionComponent<IProps & IStateProps> = ({ eto, etoSubState }) => {
+const EtoViewLayout: React.FunctionComponent<IProps & IStateProps> = ({
+  eto,
+  etoSubState,
+  isInvestorView,
+}) => {
   const {
     advisors,
     companyDescription,
@@ -118,9 +124,11 @@ const EtoViewLayout: React.FunctionComponent<IProps & IStateProps> = ({ eto, eto
     <>
       <PersonProfileModal />
       <WidgetGridLayout data-test-id="eto.public-view">
+        <CoverBanner eto={eto} isInvestorView={isInvestorView} />
         <Cover
           companyName={brandName}
           companyOneliner={companyOneliner}
+          companyJurisdiction={eto.product.jurisdiction}
           companyLogo={{
             alt: brandName,
             srcSet: {

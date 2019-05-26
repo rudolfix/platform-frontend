@@ -7,16 +7,35 @@ interface IOnEnterActionDispatchProps {
   enterAction: Function;
 }
 
+interface IOnEnterActionStateProps {
+  wrappedComponent: React.ComponentType;
+}
+
 interface IOnEnterActionOptions<P = {}> {
   actionCreator: (dispatch: AppDispatch, props: P) => void;
   pure?: boolean;
 }
 
+class OnEnterAction extends React.Component<
+  IOnEnterActionStateProps & IOnEnterActionDispatchProps
+> {
+  componentDidMount(): void {
+    this.props.enterAction();
+  }
+
+  render(): React.ReactNode {
+    const { enterAction, ...componentProps } = this.props;
+    return <this.props.wrappedComponent {...componentProps} />;
+  }
+}
+
 export const onEnterAction = <P extends object = {}>(options: IOnEnterActionOptions<P>) => (
-  WrappedComponent: React.ComponentType,
+  wrappedComponent: React.ComponentType,
 ) =>
-  connect<{}, IOnEnterActionDispatchProps, P>(
-    undefined,
+  connect<IOnEnterActionStateProps, IOnEnterActionDispatchProps, P>(
+    () => ({
+      wrappedComponent,
+    }),
     (dispatch, props) => ({
       enterAction: () => options.actionCreator(dispatch, props),
     }),
@@ -24,15 +43,4 @@ export const onEnterAction = <P extends object = {}>(options: IOnEnterActionOpti
     {
       pure: options.pure,
     },
-  )(
-    class OnEnterAction extends React.Component<IOnEnterActionDispatchProps> {
-      componentDidMount(): void {
-        this.props.enterAction();
-      }
-
-      render(): React.ReactNode {
-        const { enterAction, ...componentProps } = this.props;
-        return <WrappedComponent {...componentProps} />;
-      }
-    },
-  );
+  )(OnEnterAction);

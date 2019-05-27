@@ -1,5 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { withProps } from "recompose";
+import { compose } from "redux";
 
 import { AppDispatch } from "../store";
 
@@ -32,15 +34,18 @@ class OnEnterAction extends React.Component<
 export const onEnterAction = <P extends object = {}>(options: IOnEnterActionOptions<P>) => (
   wrappedComponent: React.ComponentType,
 ) =>
-  connect<IOnEnterActionStateProps, IOnEnterActionDispatchProps, P>(
-    () => ({
+  compose<React.ComponentClass>(
+    connect<{}, IOnEnterActionDispatchProps, P>(
+      undefined,
+      (dispatch, props) => ({
+        enterAction: () => options.actionCreator(dispatch, props),
+      }),
+      undefined,
+      {
+        pure: options.pure,
+      },
+    ),
+    withProps<IOnEnterActionStateProps, IOnEnterActionStateProps>({
       wrappedComponent,
     }),
-    (dispatch, props) => ({
-      enterAction: () => options.actionCreator(dispatch, props),
-    }),
-    undefined,
-    {
-      pure: options.pure,
-    },
   )(OnEnterAction);

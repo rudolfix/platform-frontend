@@ -8,13 +8,9 @@
   background-color: $neu-white-two;
   box-shadow: $shadow-bottom-black;
   padding: $padding;
-
-  align-content: stretch;
-  justify-items: start;
-
-  & > div {
-    width: 100%;
-  }
+  height: 100%;
+  align-items: stretch;
+  grid-auto-rows: 1fr auto;
 
   &.narrow {
     padding: $narrow-padding;

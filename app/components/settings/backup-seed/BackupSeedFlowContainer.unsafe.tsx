@@ -1,15 +1,18 @@
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { RouteComponentProps, withRouter } from "react-router";
-import { Col, Row } from "reactstrap";
 
 import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { TTranslatedString } from "../../../types";
+import { EColumnSpan } from "../../layouts/Container";
+import { WidgetGridLayout } from "../../layouts/Layout";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { Panel } from "../../shared/Panel";
 import { BackupSeedDisplay } from "./BackupSeedDisplay";
 import { BackupSeedIntro } from "./BackupSeedIntro";
 import { BackupSeedVerify } from "./BackupSeedVerify.unsafe";
+
+import * as styles from "./BackupSeedFlowContainer.module.scss";
 
 enum EBackupStep {
   INTRO = 1,
@@ -94,22 +97,20 @@ class BackupSeedFlowContainerLayout extends React.Component<
   render(): React.ReactNode {
     const steps = this.props.backupCodesVerified ? 3 : 4;
     return (
-      <Row>
-        <Col md={12} lg={{ size: 10, offset: 1 }} xl={{ size: 8, offset: 2 }}>
-          <Panel>
-            <HeaderProgressStepper
-              steps={steps}
-              currentStep={this.state.backupStep}
-              headerText={
-                <FormattedMessage id="settings.backup-seed-flow-container.safety-message" />
-              }
-              descText={this.renderDescriptionText(this.state.backupStep)}
-              warning
-            />
-            {this.renderBackupPage(this.state.backupStep)}
-          </Panel>
-        </Col>
-      </Row>
+      <WidgetGridLayout>
+        <Panel columnSpan={EColumnSpan.THREE_COL} className={styles.panel}>
+          <HeaderProgressStepper
+            steps={steps}
+            currentStep={this.state.backupStep}
+            headerText={
+              <FormattedMessage id="settings.backup-seed-flow-container.safety-message" />
+            }
+            descText={this.renderDescriptionText(this.state.backupStep)}
+            warning
+          />
+          {this.renderBackupPage(this.state.backupStep)}
+        </Panel>
+      </WidgetGridLayout>
     );
   }
 }

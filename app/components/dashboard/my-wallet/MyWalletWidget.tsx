@@ -18,6 +18,7 @@ import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { appRoutes } from "../../appRoutes";
+import { EColumnSpan } from "../../layouts/Container";
 import { ButtonLink, EButtonLayout, EButtonTheme, EIconPosition } from "../../shared/buttons";
 import { ECurrency } from "../../shared/formatters/utils";
 import { LoadingIndicator } from "../../shared/loading-indicator";
@@ -129,11 +130,10 @@ export const MyWalletWidgetComponentBody: React.FunctionComponent<StateProps> = 
 };
 
 export const MyWalletWidgetComponent: React.FunctionComponent<CommonHtmlProps & StateProps> = ({
-  className,
-  style,
   ...props
 }) => (
   <Panel
+    columnSpan={EColumnSpan.ONE_COL}
     headerText={
       <FormattedMessage id="components.dashboard.my-wallet.my-wallet-widget.header-text" />
     }
@@ -149,8 +149,6 @@ export const MyWalletWidgetComponent: React.FunctionComponent<CommonHtmlProps & 
         <FormattedMessage id="dashboard.my-wallet-widget.main-wallet-redirect-button" />
       </ButtonLink>
     }
-    className={className}
-    style={style}
   >
     <MyWalletWidgetComponentBody {...props} />
   </Panel>

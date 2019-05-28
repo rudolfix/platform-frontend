@@ -54,16 +54,20 @@
   &:disabled {
     color: transparent;
   }
+
+  svg {
+    transform: scaleX(.7);
+  }
 }
 
 .prev {
   margin-right: .3rem;
-  left: 1.5rem;
+  left: .9rem;
 }
 
 .next {
   margin-left: .3rem;
-  right: 1.5rem;
+  right: .9rem;
 }
 
 .clickable {
@@ -72,21 +76,36 @@
   background-color: transparent;
 }
 
+
+
 @include media-breakpoint-up(sm) {
   .prev,
   .next {
     svg {
-      transform: scaleX(.7);
+      transform: scaleX(1);
     }
   }
 
   .prev {
     margin-right: .3rem;
-    left: .9rem;
+    left: 1.5rem;
+
   }
 
   .next {
     margin-left: .3rem;
-    right: .9rem;
+    right: 1.5rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .prev {
+    margin-right: .3rem;
+    left: 2rem;
+  }
+
+  .next {
+    margin-left: .3rem;
+    right: 2rem;
   }
 }

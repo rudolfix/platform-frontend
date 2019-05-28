@@ -1,14 +1,31 @@
 .logo {
+  @include media-breakpoint-up (sm) {
+    height: px-to-rem(32px);
+  }
+  height: 100%;
+
   flex-shrink: 0;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
 }
 
 .logo-image {
-  @include media-breakpoint-up (lg) {
-    margin-left: px-to-rem(32px);
+  @include media-breakpoint-up (sm) {
+    margin-left: px-to-rem(6px);
+    height: px-to-rem(32px);
+  }
+  height: 100%;
+}
+
+.logo-title {
+  @include media-breakpoint-up (sm) {
+    display: block;
+    margin-left: px-to-rem(14px);
+    height: px-to-rem(18px);
   }
 
-  height: px-to-rem(43px);
-  width: px-to-rem(36px);
+  display: none;
 }
 
 .logo-text {
@@ -27,10 +44,17 @@
 }
 
 .bar {
+  @include media-breakpoint-up (sm) {
+    position: relative;
+  }
+
+  grid-area: header;
   height: px-to-rem(60px);
   background-color: $neu-charcoal-grey;
   z-index: $z-index-over-content;
   padding-left: .75rem;
+  position: sticky;
+  top: 0;
 }
 
 .buttons {

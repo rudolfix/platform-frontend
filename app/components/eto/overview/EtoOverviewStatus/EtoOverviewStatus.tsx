@@ -33,7 +33,7 @@ import { EtoWidgetContext } from "../../EtoWidgetView";
 import { EProjectStatusType, ETOState } from "../../shared/ETOState";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../shared/ToBeAnnouncedTooltip";
-import { CampaigningActivatedWidget } from "./CampaigningWidget";
+import { CampaigningActivatedWidget } from "./CampaigningWidget/CampaigningActivatedWidget";
 import { ClaimWidget, RefundWidget } from "./ClaimRefundWidget";
 import { EtoMaxCapExceededWidget } from "./EtoMaxCapExceeded";
 import { InvestmentWidget } from "./InvestmentWidget";

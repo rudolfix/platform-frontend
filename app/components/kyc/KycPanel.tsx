@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { TDataTestId } from "../../types";
 import { ButtonLink, EButtonLayout, EIconPosition } from "../shared/buttons";
 import { Panel } from "../shared/Panel";
 import { IVerificationProgressStep, VerificationStatus } from "../shared/VerificationStatus";
@@ -16,10 +17,9 @@ interface IPropsKycPanel {
   description?: string | React.ReactNode;
   steps: IVerificationProgressStep[];
   title?: string | React.ReactNode;
-  testId?: string;
 }
 
-export const KycPanel: React.FunctionComponent<IPropsKycPanel> = ({
+export const KycPanel: React.FunctionComponent<IPropsKycPanel & TDataTestId> = ({
   title,
   steps,
   children,
@@ -27,7 +27,7 @@ export const KycPanel: React.FunctionComponent<IPropsKycPanel> = ({
   backLink,
   isMaxWidth,
   fullHeightContent,
-  testId,
+  "data-test-id": testId,
 }) => (
   <Panel data-test-id={testId} className={cn("mt-4", styles.kycPanel)}>
     <header className={styles.header}>

@@ -101,7 +101,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
           title={<FormattedMessage id="kyc.request-state.pending.title" />}
           steps={steps}
           description={<FormattedMessage id="kyc.request-state.pending.description" />}
-          testId="kyc-panel-pending"
+          data-test-id="kyc-panel-pending"
         >
           {!this.state.showAdditionalFileUpload && (
             <Button
@@ -148,7 +148,7 @@ class RequestStateInfo extends React.Component<IProps, IState> {
         <KycPanel
           title={<FormattedMessage id="kyc.request-state.outsourced.title" />}
           steps={steps}
-          testId="kyc-panel-outsourced"
+          data-test-id="kyc-panel-outsourced"
           description={<FormattedMessage id="kyc.request-state.outsourced.description" />}
         >
           <div className="p-4 text-center">

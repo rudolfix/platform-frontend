@@ -5,7 +5,6 @@ $divider-margin: 3%;
   @include media-breakpoint-down(sm) {
     padding-right: $divider-margin;
     padding-left: $divider-margin;
-    height: 600px;
   }
 
   @include media-breakpoint-only(md) {
@@ -100,10 +99,15 @@ $divider-margin: 3%;
 }
 
 .overview-wrapper {
+
   @include media-breakpoint-down(md) {
     flex-wrap: wrap;
     padding-top: px-to-rem(12px);
     padding-bottom: px-to-rem(30px);
+  }
+
+  @include media-breakpoint-down(sm) {
+    padding-bottom: 0;
   }
 
   @include media-breakpoint-up(xl) {
@@ -257,8 +261,12 @@ $divider-margin: 3%;
 
 .powered-by-neufund,
 .more-details {
-  position: absolute;
-  bottom: px-to-rem(8px);
+  @include media-breakpoint-up(sm) {
+    position: absolute;
+    bottom: px-to-rem(8px);
+  }
+
+  position: relative;
 }
 
 .powered-by-neufund {

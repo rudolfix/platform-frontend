@@ -22,7 +22,7 @@ import { assertBankAccountDetails } from "./assertions";
 
 describe("Redeem NEUR", () => {
   beforeEach(() => {
-    loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC", {
+    loginFixtureAccount("INV_HAS_EUR_HAS_KYC", {
       kyc: "business",
     }).then(() => {
       // store actual balance

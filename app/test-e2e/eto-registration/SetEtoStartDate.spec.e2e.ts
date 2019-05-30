@@ -6,7 +6,8 @@ import { closeModal, confirmAccessModal } from "../utils";
 import { tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 
-describe("Eto start date setup", () => {
+describe.skip("Eto start date setup", () => {
+  // TODO: Enable E2E test
   it("sets the date", () => {
     loginFixtureAccount("ISSUER_SETUP", {
       kyc: "business",

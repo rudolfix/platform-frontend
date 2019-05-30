@@ -71,7 +71,9 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
 
 export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
-  cy.get(tid("access-light-wallet-confirm")).click();
+  cy.get(tid("access-light-wallet-confirm"))
+    .should("be.enabled")
+    .click();
 };
 
 export const confirmAccessModalNoPW = () => {
@@ -82,16 +84,32 @@ export const closeModal = () => {
   cy.get(tid("modal-close-button")).click();
 };
 
-export const getLatestVerifyUserEmailLink = () =>
+export const getLatestVerifyUserEmailLink = (email: string) =>
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-    const activationLink = get(r, "body[0].personalizations[0].substitutions.-activationLink-");
+    const latestEmailByUser = r.body.find(
+      (body: { personalizations: { to: { email: string }[] }[] }) =>
+        body.personalizations[0].to[0].email.toLowerCase() === email.toLowerCase(),
+    );
+    const activationLink = get(
+      latestEmailByUser,
+      "personalizations[0].substitutions.-activationLink-",
+    );
+
     // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
     return activationLink.replace("https://platform.neufund.io", "");
   });
 
-export const verifyLatestUserEmail = () => {
+export const verifyLatestUserEmail = (email: string) => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-    const activationLink = get(r, "body[0].personalizations[0].substitutions.-activationLink-");
+    const latestEmailByUser = r.body.find(
+      (body: { personalizations: { to: { email: string }[] }[] }) =>
+        body.personalizations[0].to[0].email.toLowerCase() === email.toLowerCase(),
+    );
+    const activationLink = get(
+      latestEmailByUser,
+      "personalizations[0].substitutions.-activationLink-",
+    );
+
     // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
     const cleanedActivationLink = activationLink.replace("platform.neufund.io", "localhost:9090");
     cy.visit(cleanedActivationLink);
@@ -123,20 +141,22 @@ export const registerWithLightWallet = (
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
-  cy.get(tid("wallet-selector-register-button")).awaitedClick();
-  cy.get(tid("wallet-selector-register-button")).should("be.disabled");
+  cy.get(tid("wallet-selector-register-button"))
+    .should("be.enabled")
+    .awaitedClick()
+    .should("be.disabled");
+
+  acceptTOS();
 
   if (asIssuer) {
     assertEtoDashboard();
   } else {
     assertDashboard();
   }
-
-  acceptTOS();
 };
 
 export const acceptTOS = () => {
-  cy.get(tid("modals.accept-tos.accept-button-hidden")).awaitedClick();
+  cy.get(tid("modals.accept-tos.accept-button")).awaitedClick();
 };
 
 export const logoutViaTopRightButton = () => {
@@ -159,7 +179,7 @@ export const loginWithLightWallet = (email: string, password: string) => {
 
 export const acceptWallet = () => {
   cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
-  cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
+  cy.get(tid("access-light-wallet-confirm")).awaitedClick();
 };
 
 export const etoFixtureByName = (name: string) => {
@@ -185,12 +205,17 @@ export const accountFixtureByName = (name: string) => {
 
 export const accountFixtureAddress = (name: string) => {
   const fixture = accountFixtureByName(name);
-  return fixture.definition.address;
+  return makeEthereumAddressChecksummed(fixture.definition.address);
+};
+
+export const accountFixtureSeed = (name: string) => {
+  const fixture = accountFixtureByName(name);
+  return fixture.definition.seed.toString();
 };
 
 export const accountFixturePrivateKey = (name: string) => {
   const fixture = accountFixtureByName(name);
-  return fixture.definition.privateKey;
+  return fixture.definition.privateKey as string;
 };
 
 export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hookName) as any);

@@ -17,10 +17,7 @@ describe("Eto LI Investor View", () => {
 
     it("should allow to visit ", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
-      assertEtoView(
-        "ETOInPublicState mini eto li - Quintessence (QTT)",
-        EJurisdiction.LIECHTENSTEIN,
-      );
+      assertEtoView(ETO_ID);
     });
 
     it("should not allow link with wrong Jurisdiction ", () => {

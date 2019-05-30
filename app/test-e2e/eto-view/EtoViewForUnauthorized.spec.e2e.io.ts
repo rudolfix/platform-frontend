@@ -1,6 +1,7 @@
 import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { assertUserInLanding, etoFixtureAddressByName, tid } from "../utils";
+import { getEto } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
 describe("Eto Unauthorized View", () => {
@@ -9,11 +10,8 @@ describe("Eto Unauthorized View", () => {
 
     it("should not show jurisdiction disclaimer modal ", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
-      assertEtoView(
-        "ETOInPublicState mini eto li - Quintessence (QTT)",
-        EJurisdiction.LIECHTENSTEIN,
-      );
 
+      assertEtoView(ETO_ID);
       cy.get(tid("jurisdiction-disclaimer-modal")).should("not.exist");
     });
   });
@@ -27,8 +25,7 @@ describe("Eto Unauthorized View", () => {
       cy.get(tid("jurisdiction-disclaimer-modal")).should("exist");
 
       cy.get(tid("jurisdiction-disclaimer-modal.confirm")).click();
-
-      assertEtoView("ETOInWhitelistState hnwi eto de security - Rich (RCH)", EJurisdiction.GERMANY);
+      assertEtoView(ETO_ID);
     });
 
     it("should show jurisdiction disclaimer modal and navigate to dashboard on deny", () => {

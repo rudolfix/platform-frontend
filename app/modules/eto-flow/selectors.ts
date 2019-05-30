@@ -224,6 +224,16 @@ export const selectIsNewPreEtoStartDateValid = (state: IAppState) => {
   return date && isValidEtoStartDate(date, minDuration);
 };
 
+const recognizedProductTypes = [
+  EProductName.HNWI_ETO_DE,
+  EProductName.HNWI_ETO_LI,
+  EProductName.MINI_ETO_LI,
+  EProductName.RETAIL_ETO_DE,
+  EProductName.RETAIL_ETO_LI_SECURITY,
+  EProductName.RETAIL_ETO_LI_VMA,
+  EProductName.FIFTH_FORCE_ETO,
+];
+
 export const selectAvailableProducts = createSelector(
   selectIssuerEtoFlow,
   ({ products }) => {
@@ -231,7 +241,11 @@ export const selectAvailableProducts = createSelector(
       const availableProducts = products
         .filter(product => product.available)
         // TODO: remove after platform-backend/#1550 is done
-        .filter(product => product.name !== EProductName.FIFTH_FORCE_ETO);
+        .filter(product => product.name !== EProductName.FIFTH_FORCE_ETO)
+        // Remove unrecognized product types
+        .filter(product =>
+          recognizedProductTypes.some(recognizedProd => recognizedProd === product.name),
+        );
 
       return sortProducts(availableProducts);
     }

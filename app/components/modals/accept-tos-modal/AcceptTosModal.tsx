@@ -86,13 +86,6 @@ export const AcceptTosModalInner: React.ComponentType<IStateProps & IDispatchPro
         <FormattedMessage id="settings.modal.accept-tos.logout-button" />
       </Button>
     </div>
-    {/* this is a small div element used by the e2e tests to accept the ToU without having to download them, which does not work on electron */}
-    {/* a cleaner solution would be greatly appreciated, force: click does not work here :( */}
-    <div
-      data-test-id="modals.accept-tos.accept-button-hidden"
-      onClick={onAccept}
-      style={{ height: 5 }}
-    />
   </Message>
 );
 

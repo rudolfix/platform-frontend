@@ -65,7 +65,7 @@ describe("Eto Forms", () => {
           {
             productId: {
               // Value is an id of a product taken from EtoProductApi
-              value: "0x0000000000000000000000000000000000000007",
+              value: "0xfcBFa87AAeB8F2eFF1524c16F5a8d69B53da7f78",
               type: "radio",
             },
           },

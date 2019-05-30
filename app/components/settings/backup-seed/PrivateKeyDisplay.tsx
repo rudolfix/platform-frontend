@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
+import { IS_CYPRESS } from "../../../config/constants";
 import { copyToClipboard } from "../../../utils/copyToClipboard";
 import { Button, ButtonGroup, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { Heading } from "../../shared/Heading";
@@ -77,7 +78,11 @@ class PrivateKeyDisplay extends React.Component<TProps, TState> {
             iconPosition={EIconPosition.ICON_AFTER}
           >
             {showPrivateKey ? (
-              privateKey
+              IS_CYPRESS ? (
+                <div data-test-id="private-key-display.content">{privateKey}</div>
+              ) : (
+                privateKey
+              )
             ) : (
               <FormattedMessage id="components.settings.private-key-display.view-private-key" />
             )}

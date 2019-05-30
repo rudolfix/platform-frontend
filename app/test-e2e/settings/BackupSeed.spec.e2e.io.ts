@@ -1,6 +1,7 @@
 import { LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME } from "../../config/constants";
 import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
 import {
+  acceptTOS,
   accountFixturePrivateKey,
   assertLockedAccessModal,
   confirmAccessModal,
@@ -14,10 +15,10 @@ import {
   loginFixtureAccount,
 } from "../utils/userHelpers";
 
-describe("Backup Seed and Private Key save and view", () => {
-  it("should allow to save seed phrase", () => {
+describe("Backup Seed and Private Key save and view", function(): void {
+  it.skip("should allow to save seed phrase", () => {
     registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD);
-
+    acceptTOS();
     backupLightWalletSeed();
   });
 
@@ -68,9 +69,14 @@ describe("Backup Seed and Private Key save and view", () => {
 
       cy.get(tid("backup-seed-intro-button")).awaitedClick();
 
-      cy.get(tid("private-key-display.view-private-key"))
-        .awaitedClick()
-        .contains(accountFixturePrivateKey("INV_EUR_ICBM_HAS_KYC_KEY"));
+      cy.get(tid("private-key-display.view-private-key")).awaitedClick();
+      cy.get(tid("private-key-display.content")).then(element => {
+        expect(element.text().toUpperCase()).to.be.equal(
+          accountFixturePrivateKey("INV_EUR_ICBM_HAS_KYC_SEED")
+            .substring(2)
+            .toUpperCase(),
+        );
+      });
     });
   });
 });

@@ -49,7 +49,7 @@ function assertBankTransferFlow({
 }
 
 describe("Bank Verification", () => {
-  it("should start verification process from wallet", () => {
+  it.skip("should start verification process from wallet", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED", {
       kyc: "business",
       signTosAgreement: true,

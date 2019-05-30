@@ -18,7 +18,7 @@ import {
 const PLEDGE_AMOUNT = "1000";
 const CHANGED_AMOUNT = "1500";
 
-describe("Eto campaigning state", () => {
+describe.skip("Eto campaigning state", () => {
   it("should show Register button when not logged in", () => {
     const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
 

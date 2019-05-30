@@ -1,7 +1,6 @@
 import {
   assertDashboard,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
-  clearEmailServer,
   getLatestVerifyUserEmailLink,
   goToDashboard,
   logoutViaTopRightButton,
@@ -43,12 +42,10 @@ describe("Verify Wallet", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
-    clearEmailServer();
-
     registerWithLightWallet(email, password);
     assertDashboard();
 
-    getLatestVerifyUserEmailLink().then(activationLink => {
+    getLatestVerifyUserEmailLink(email).then(activationLink => {
       logoutViaTopRightButton();
 
       // register another user

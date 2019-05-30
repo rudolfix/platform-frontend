@@ -2,25 +2,25 @@ import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { etoFixtureAddressByName, tid } from "../utils";
 import { goToEtoPreview } from "../utils/navigation";
-import { createAndLoginNewUser, loginFixtureAccount } from "../utils/userHelpers";
+import { createAndLoginNewUser, loginFixtureAccount, getEto } from "../utils/userHelpers";
 import { assertEtoView, assertIssuerEtoView } from "./EtoViewUtils";
 
 const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
 
 describe("Eto Investor View", () => {
   describe("Default account tests", () => {
-    beforeEach(() => createAndLoginNewUser({ type: "investor", kyc: "business" }));
+    beforeEach(() =>
+      createAndLoginNewUser({ type: "investor", kyc: "business", signTosAgreement: true }),
+    );
 
     it("should load empty Eto", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
-
-      assertEtoView("ETONoStartDate mini eto li - Quintessence (QTT)", EJurisdiction.LIECHTENSTEIN);
+      assertEtoView(ETO_ID);
     });
 
-    it("should display correct eto investment terms", () => {
+    it.skip("should display correct eto investment terms", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
-      assertEtoView("ETONoStartDate mini eto li - Quintessence (QTT)", EJurisdiction.LIECHTENSTEIN);
-
+      assertEtoView(ETO_ID);
       // EQUITY section
       cy.get(tid("eto-public-view-pre-money-valuation")).should("contain", "132 664 672 EUR");
       cy.get(tid("eto-public-view-existing-shares")).should("contain", "40 976");
@@ -59,7 +59,7 @@ describe("Eto Investor View", () => {
       const ETO_ID_WITH_TRANSFERABILITY_ALLOWED = etoFixtureAddressByName("ETOInWhitelistState");
 
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID_WITH_TRANSFERABILITY_ALLOWED));
-      assertEtoView("ETOInWhitelistState hnwi eto de security - Rich (RCH)", EJurisdiction.GERMANY);
+      assertEtoView(ETO_ID_WITH_TRANSFERABILITY_ALLOWED);
 
       // TOKEN HOLDER RIGHTS section
       cy.get(tid("eto-public-view-token-transferability")).should("contain", "Yes");
@@ -71,6 +71,7 @@ describe("Eto Investor View", () => {
     it("coming soon state should have pitch deck", () => {
       loginFixtureAccount("ISSUER_PREVIEW", {
         signTosAgreement: true,
+        kyc: "business",
       }).then(() => {
         goToEtoPreview();
         assertIssuerEtoView();

@@ -32,7 +32,7 @@ describe("Wallet Migration Flow", () => {
   it("It should check icbm migration wallet when user has locked wallet", () => {
     createAndLoginNewUser({
       type: "investor",
-      kyc: "individual",
+      kyc: "business",
       seed:
         "then route cage lyrics arrange car pigeon gas rely canoe turn all weapon pepper lemon festival joy option drama forget tortoise useful canvas viable",
     }).then(() => {

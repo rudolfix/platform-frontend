@@ -4,8 +4,12 @@ import * as React from "react";
 
 import { MONEY_DECIMALS } from "../../config/constants";
 import { formatMoney } from "../../utils/Money.utils";
-import { selectCurrencyCode } from "./formatters/Money";
-import { ECurrency, ENumberInputFormat, ERoundingMode } from "./formatters/utils";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ERoundingMode,
+  selectCurrencyCode,
+} from "./formatters/utils";
 import { NumberFormat } from "./NumberFormat";
 
 import * as styles from "./Money.module.scss";

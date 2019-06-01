@@ -6,11 +6,10 @@ import { CommonHtmlProps } from "../../../types";
 import { FormatNumber } from "./FormatNumber";
 import { FormatShortNumber } from "./FormatShortNumber";
 import {
-  ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
-  EPriceFormat,
   ERoundingMode,
+  selectCurrencyCode,
   selectDecimalPlaces,
   THumanReadableFormat,
   TMoneyFormat,
@@ -51,25 +50,6 @@ interface IMoneyCommonProps {
   className?: string;
   "data-test-id"?: string;
 }
-
-export const selectCurrencyCode = (moneyFormat: TMoneyFormat): string => {
-  switch (moneyFormat) {
-    case ECurrency.ETH:
-    case EPriceFormat.EQUITY_TOKEN_PRICE_ETH:
-      return "ETH";
-    case ECurrency.NEU:
-      return "NEU";
-    case ECurrency.EUR:
-    case EPriceFormat.EQUITY_TOKEN_PRICE_EURO:
-    case EPriceFormat.SHARE_PRICE: //share prices are always in euro
-      return "EUR";
-    case ECurrency.EUR_TOKEN:
-    case EPriceFormat.EQUITY_TOKEN_PRICE_EUR_TOKEN:
-      return "nEUR";
-    default:
-      throw new Error("Unsupported money format");
-  }
-};
 
 //todo will rename it to Money after the old money is gone
 const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & CommonHtmlProps> = ({

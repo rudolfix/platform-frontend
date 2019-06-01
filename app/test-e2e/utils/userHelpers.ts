@@ -25,16 +25,21 @@ export const generateRandomEmailAddress = () =>
     .toString(36)
     .substring(7)}@e2e.com`;
 
-export const createAndLoginNewUser = (params: {
-  type: "investor" | "issuer";
-  kyc?: "business" | "individual";
-  seed?: string;
-  hdPath?: string;
-  clearPendingTransactions?: boolean;
-  onlyLogin?: boolean;
-  signTosAgreement?: boolean;
-  permissions?: string[];
-}) =>
+const NUMBER_OF_ATTEMPTS = 2;
+
+export const createAndLoginNewUser = (
+  params: {
+    type: "investor" | "issuer";
+    kyc?: "business" | "individual";
+    seed?: string;
+    hdPath?: string;
+    clearPendingTransactions?: boolean;
+    onlyLogin?: boolean;
+    signTosAgreement?: boolean;
+    permissions?: string[];
+  },
+  attempts: number = 0,
+) =>
   cy.clearLocalStorage().then(async ls => {
     cy.log("Logging in...");
 
@@ -85,6 +90,19 @@ export const createAndLoginNewUser = (params: {
     if (params.signTosAgreement || !params.onlyLogin) {
       // This was done to maintain introduce `signTosAgreement` without changing the interface of existing tests
       await setCorrectAgreement(jwt);
+    }
+
+    const userData = await getUserData(jwt);
+    const kycData = await getKycData(jwt);
+    cy.log(userData.verified_email as string);
+    cy.log(params.kyc ? (kycData[params.kyc] as string) : "No KYC");
+    if ((params.kyc && kycData[params.kyc] !== "Accepted") || !userData.verified_email) {
+      if (attempts > NUMBER_OF_ATTEMPTS) {
+        throw new Error("Cannot create user something wrong happened in the backend");
+      }
+      cy.log("User was not created correctly repeating");
+      cy.wait(1000);
+      createAndLoginNewUser(params, attempts + 1);
     }
   });
 
@@ -234,16 +252,45 @@ export const getJWT = async (
 const USER_PATH = "/api/user/user/me";
 const USER_TOS_PATH = USER_PATH + "/tos";
 
+const KYC_PATH = "/api/kyc";
+const KYC_INDIVIDUAL = "/individual/request";
+const KYC_COMPANY = "/business/request";
+
+export const getUserData = async (jwt: string) => {
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `Bearer ${jwt}`,
+  };
+  return (await fetch(USER_PATH, {
+    headers,
+    method: "GET",
+  })).json();
+};
+
+export const getKycData = async (jwt: string) => {
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `Bearer ${jwt}`,
+  };
+  return {
+    individual: (await (await fetch(KYC_PATH + KYC_INDIVIDUAL, {
+      headers,
+      method: "GET",
+    })).json()).status,
+    business: (await (await fetch(KYC_PATH + KYC_COMPANY, {
+      headers,
+      method: "GET",
+    })).json()).status,
+  };
+};
+
 export const markBackupCodesVerified = async (jwt: string) => {
   const headers = {
     "Content-Type": "application/json",
     authorization: `Bearer ${jwt}`,
   };
-  const response = await fetch(USER_PATH, {
-    headers,
-    method: "GET",
-  });
-  const userJson = await response.json();
+
+  const userJson = await getUserData(jwt);
 
   userJson.backup_codes_verified = true;
   await fetch(USER_PATH, {

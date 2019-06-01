@@ -5,7 +5,6 @@ import { loginFixtureAccount } from "../utils/userHelpers";
 describe("Investor blocked payout", () => {
   beforeEach(() =>
     loginFixtureAccount("INV_ETH_ICBM_NO_KYC", {
-      kyc: "business",
       clearPendingTransactions: true,
     }),
   );

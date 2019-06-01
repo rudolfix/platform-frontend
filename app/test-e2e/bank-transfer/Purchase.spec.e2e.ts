@@ -1,4 +1,4 @@
-import { assertWallet, clearEmailServer, goToProfile, goToWallet } from "../utils";
+import { assertWallet, goToProfile, goToWallet } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, loginFixtureAccount } from "../utils/userHelpers";
@@ -34,8 +34,6 @@ function assertBankTransferFlow({
     .then($e => $e.text().trim())
     .as("referenceNumber")
     .should("match", /NR[\w\d]{10}NR/);
-
-  clearEmailServer();
 
   cy.get(tid("bank-transfer.purchase.summary.transfer-completed")).click();
 

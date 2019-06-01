@@ -7,7 +7,7 @@ import { MyPortfolioWidget } from "./my-portfolio/MyPortfolioWidget";
 import { MyWalletWidget } from "./my-wallet/MyWalletWidget";
 
 export const Dashboard = () => (
-  <LayoutAuthorized data-test-id="dashboard-application">
+  <LayoutAuthorized dataTestId="dashboard-application">
     <WidgetGridLayout>
       <MyPortfolioWidget />
       <MyWalletWidget />

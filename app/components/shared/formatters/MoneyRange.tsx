@@ -5,12 +5,13 @@ import * as React from "react";
 import { CommonHtmlProps } from "../../../types";
 import { FormatNumberRange } from "./FormatNumberRange";
 import { FormatShortNumberRange } from "./FormatShortNumber";
-import { ECurrencySymbol, IMoneyCommonProps, selectCurrencyCode } from "./Money";
+import { ECurrencySymbol, IMoneyCommonProps } from "./Money";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
   ESpecialNumber,
+  selectCurrencyCode,
   selectDecimalPlaces,
 } from "./utils";
 

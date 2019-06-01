@@ -52,7 +52,7 @@ const ranges: TRangeDescriptor[] = [
   { divider: 1e6, key: ERangeKey.MILLION },
 ];
 
-const translationKeys = {
+export const translationKeys = {
   [ERangeKey.MILLION]: {
     [EAbbreviatedNumberOutputFormat.LONG]: (
       <FormattedMessage id="shared-component.to-human-readable-form.million.long" />
@@ -71,7 +71,7 @@ const translationKeys = {
   },
 };
 
-function getRange(number: number, divider?: number): TRangeDescriptor | undefined {
+export function getRange(number: number, divider?: number): TRangeDescriptor | undefined {
   if (divider) {
     return ranges.find(range => range.divider === divider);
   }

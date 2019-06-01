@@ -20,13 +20,13 @@ import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { Button, ButtonSize, EButtonLayout } from "../../../shared/buttons/Button";
 import { ButtonArrowRight } from "../../../shared/buttons/index";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
-import { selectCurrencyCode } from "../../../shared/formatters/Money";
 import {
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
   formatNumber,
+  selectCurrencyCode,
   selectDecimalPlaces,
   toFixedPrecision,
 } from "../../../shared/formatters/utils";

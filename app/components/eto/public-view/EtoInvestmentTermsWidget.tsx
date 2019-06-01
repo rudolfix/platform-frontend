@@ -12,7 +12,7 @@ import { TDataTestId, TTranslatedString } from "../../../types";
 import { DocumentTemplateButton } from "../../shared/DocumentLink";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";
 import { FormatNumberRange } from "../../shared/formatters/FormatNumberRange";
-import { MoneyNew, selectCurrencyCode } from "../../shared/formatters/Money";
+import { MoneyNew } from "../../shared/formatters/Money";
 import { MoneyRange } from "../../shared/formatters/MoneyRange";
 import {
   ECurrency,
@@ -20,6 +20,7 @@ import {
   ENumberOutputFormat,
   EPriceFormat,
   ESpecialNumber,
+  selectCurrencyCode,
 } from "../../shared/formatters/utils";
 import { Panel } from "../../shared/Panel";
 import { Percentage } from "../../shared/Percentage";

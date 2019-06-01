@@ -67,7 +67,8 @@ describe("Wallet recover", function(): void {
     });
   });
 
-  it("should recover user with same email if its the same user", () => {
+  it("should recover user with same email if its the same user", function(): void {
+    this.retries(2);
     cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",
@@ -81,7 +82,7 @@ describe("Wallet recover", function(): void {
 
         typeLightwalletRecoveryPhrase(seed);
         typeEmailPassword(email, password);
-        cy.wait(1000);
+        cy.wait(4000);
         cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
 
         assertDashboard();

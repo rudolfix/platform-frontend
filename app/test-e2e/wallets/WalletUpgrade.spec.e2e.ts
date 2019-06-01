@@ -38,7 +38,6 @@ describe("Upgrade icbm wallet", () => {
 
   it("do eth upgrade", () => {
     loginFixtureAccount("INV_ETH_ICBM_NO_KYC_2", {
-      kyc: "business",
       clearPendingTransactions: true,
     }).then(() => {
       let icbmBalance: number;

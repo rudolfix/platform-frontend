@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { all, fork, put, select } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -23,18 +23,14 @@ import { etoFlowActions } from "./actions";
 import { selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto } from "./selectors";
 import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
-type TEtoAll = { company: TCompanyEtoData; eto: TEtoSpecsData };
-
 export function* loadIssuerEto({
   apiEtoService,
   notificationCenter,
   logger,
 }: TGlobalDependencies): any {
   try {
-    const { company, eto }: TEtoAll = yield all({
-      company: apiEtoService.getCompany(),
-      eto: apiEtoService.getMyEto(),
-    });
+    const company: TCompanyEtoData = yield apiEtoService.getCompany();
+    const eto: TEtoSpecsData = yield apiEtoService.getMyEto();
 
     if (eto.state === EEtoState.ON_CHAIN) {
       yield neuCall(loadEtoContract, eto);

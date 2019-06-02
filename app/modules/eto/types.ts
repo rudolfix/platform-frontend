@@ -36,6 +36,7 @@ export type TEtoWithCompanyAndContract = DeepReadonly<
     // contract is undefined when ETO is not on blockchain
     contract?: IEtoContractData;
     company: TCompanyEtoData;
+    subState: EEtoSubState | undefined;
   }
 >;
 

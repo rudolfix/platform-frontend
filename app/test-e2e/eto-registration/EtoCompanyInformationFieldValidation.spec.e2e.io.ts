@@ -6,61 +6,63 @@ import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { aboutFormRequired, aboutFormSubmit } from "./fixtures";
 
-describe("Eto Company Information Field Validation", () => {
-  it("should correctly validate required fields", () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
-      cy.visit(etoRegisterRoutes.companyInformation);
-      cy.get(tid("eto.form.company-information")).should("exist");
-
-      const requiredFields = Object.keys(aboutFormRequired);
-
-      requiredFields.forEach(key => {
-        getFieldError(tid("eto.form.company-information"), key).then(
-          error => expect(error).to.be.empty,
-        );
-      });
-
-      fillForm({
-        ...aboutFormSubmit,
-      });
-
-      requiredFields.forEach(key => {
-        getFieldError(tid("eto.form.company-information"), key).then(error =>
-          expect(error).to.equal("This field is required"),
-        );
-      });
-    });
+describe("Eto Company Information Field Validation", function(): void {
+  this.retries(2);
+  before(() => {
+    createAndLoginNewUser({ type: "issuer", kyc: "business" });
+    cy.saveLocalStorage();
   });
-
+  beforeEach(() => {
+    cy.restoreLocalStorage();
+  });
   it("should focus first invalid input field", () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
-      cy.visit(etoRegisterRoutes.companyInformation);
-      cy.get(tid("eto.form.company-information")).should("exist");
+    cy.visit(etoRegisterRoutes.companyInformation);
+    cy.get(tid("eto.form.company-information")).should("exist");
 
-      fillForm({
-        ...aboutFormSubmit,
-      });
-
-      cy.focused().should("have.attr", "name", "brandName");
+    fillForm({
+      ...aboutFormSubmit,
     });
+
+    cy.focused().should("have.attr", "name", "brandName");
   });
 
   it("should focus first invalid textarea field", () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
-      cy.visit(etoRegisterRoutes.companyInformation);
-      cy.get(tid("eto.form.company-information")).should("exist");
+    cy.visit(etoRegisterRoutes.companyInformation);
+    cy.get(tid("eto.form.company-information")).should("exist");
 
-      const requiredInputFields = pick(
-        ["brandName", "companyWebsite", "companyOneliner"],
-        aboutFormRequired,
+    const requiredInputFields = pick(
+      ["brandName", "companyWebsite", "companyOneliner"],
+      aboutFormRequired,
+    );
+
+    fillForm({
+      ...requiredInputFields,
+      ...aboutFormSubmit,
+    });
+
+    cy.focused().should("have.attr", "name", "companyDescription");
+  });
+
+  it("should correctly validate required fields", () => {
+    cy.visit(etoRegisterRoutes.companyInformation);
+    cy.get(tid("eto.form.company-information")).should("exist");
+
+    const requiredFields = Object.keys(aboutFormRequired);
+
+    requiredFields.forEach(key => {
+      getFieldError(tid("eto.form.company-information"), key).then(
+        error => expect(error).to.be.empty,
       );
+    });
 
-      fillForm({
-        ...requiredInputFields,
-        ...aboutFormSubmit,
-      });
+    fillForm({
+      ...aboutFormSubmit,
+    });
 
-      cy.focused().should("have.attr", "name", "companyDescription");
+    requiredFields.forEach(key => {
+      getFieldError(tid("eto.form.company-information"), key).then(error =>
+        expect(error).to.equal("This field is required"),
+      );
     });
   });
 });

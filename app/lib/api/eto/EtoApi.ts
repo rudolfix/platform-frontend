@@ -33,11 +33,13 @@ export class EtoApi {
     });
   }
 
-  public async getMyEto(): Promise<IHttpResponse<TPartialEtoSpecData>> {
-    return await this.authorizedHttpClient.get<TPartialEtoSpecData>({
-      baseUrl: BASE_PATH,
-      url: ETO_DATA_PATH,
-    });
+  public getMyEto(): Promise<TPartialEtoSpecData> {
+    return this.authorizedHttpClient
+      .get<TPartialEtoSpecData>({
+        baseUrl: BASE_PATH,
+        url: ETO_DATA_PATH,
+      })
+      .then(r => r.body);
   }
 
   public async putMyEto(data: TPartialEtoSpecData): Promise<IHttpResponse<TPartialEtoSpecData>> {
@@ -62,11 +64,13 @@ export class EtoApi {
     });
   }
 
-  public async getCompany(): Promise<IHttpResponse<TPartialCompanyEtoData>> {
-    return await this.authorizedHttpClient.get<TPartialCompanyEtoData>({
-      baseUrl: BASE_PATH,
-      url: COMPANIES_ME_DATA_PATH,
-    });
+  public getCompany(): Promise<TPartialCompanyEtoData> {
+    return this.authorizedHttpClient
+      .get<TPartialCompanyEtoData>({
+        baseUrl: BASE_PATH,
+        url: COMPANIES_ME_DATA_PATH,
+      })
+      .then(r => r.body);
   }
 
   public async getCompanyById(companyId: string): Promise<IHttpResponse<TPartialCompanyEtoData>> {

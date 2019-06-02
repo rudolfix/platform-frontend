@@ -37,8 +37,6 @@ function assertBankTransferFlow({
     .as("referenceNumber")
     .should("match", /NR[\w\d]{10}NR/);
 
-  clearEmailServer();
-
   cy.get(tid("bank-transfer.summary.transfer-completed")).click();
 
   cy.get<string>("@referenceNumber").then(assertWaitForBankTransferSummary);
@@ -49,7 +47,10 @@ function assertBankTransferFlow({
 }
 
 describe("Bank Verification", () => {
-  it.skip("should start verification process from wallet", () => {
+  beforeEach(() => {
+    clearEmailServer();
+  });
+  it("should start verification process from wallet", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED", {
       kyc: "business",
       signTosAgreement: true,

@@ -4,11 +4,12 @@ import { EUserType } from "../../app/lib/api/users/interfaces";
 import { EWalletSubType, EWalletType } from "../../app/modules/web3/types";
 import { IAppState } from "../../app/store";
 import { DeepPartial } from "../../app/types";
-import { testEto } from "../fixtures";
+import { testCompany, testEto } from "../fixtures";
 
 export const mockedStore: DeepPartial<IAppState> = {
   etoFlow: {
-    etoPreviewCode: testEto.previewCode,
+    eto: testEto,
+    company: testCompany,
   },
   contracts: {
     platformTermsConstants: {

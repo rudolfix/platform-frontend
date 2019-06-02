@@ -9,12 +9,11 @@ import { hiddenJurisdictions } from "./constants";
 import { IEtoState } from "./reducer";
 import {
   EETOStateOnChain,
-  EEtoSubState,
   IEtoTokenData,
   TEtoStartOfStates,
   TEtoWithCompanyAndContract,
 } from "./types";
-import { isOnChain } from "./utils";
+import { getEtoSubState } from "./utils";
 
 const selectEtoState = (state: IAppState) => state.eto;
 
@@ -40,6 +39,9 @@ export const selectEtoTokenName = (state: IAppState, etoId: string) => {
 
 export const selectEto = (state: IAppState, previewCode: string) => state.eto.etos[previewCode];
 
+export const selectEtoContract = (state: IAppState, previewCode: string) =>
+  state.eto.contracts[previewCode];
+
 export const selectEtoById = (state: IAppState, etoId: string) =>
   state.eto.etos[selectEtoPreviewCode(state, etoId)!];
 
@@ -51,10 +53,17 @@ export const selectEtoWithCompanyAndContract = (
   const eto = etoState.etos[previewCode];
 
   if (eto) {
+    const stats = selectBookbuildingStats(state, eto.etoId);
+    const isEligibleToPreEto = selectIsEligibleToPreEto(state, eto.etoId);
+    const contract = selectEtoContract(state, previewCode);
+
+    const subState = getEtoSubState({ eto, stats, contract, isEligibleToPreEto });
+
     return {
       ...eto,
+      subState,
+      contract,
       company: etoState.companies[eto.companyId]!,
-      contract: etoState.contracts[previewCode],
     };
   }
 
@@ -171,81 +180,3 @@ export const selectFilteredEtosByRestrictedJurisdictions = (
         );
       })
     : etos;
-
-/**
- * TODO: Add unit tests
- * @param state
- * @param previewCode
- */
-export const selectEtoSubState = (
-  state: IAppState,
-  previewCode: string,
-): EEtoSubState | undefined => {
-  const eto = selectEtoWithCompanyAndContract(state, previewCode);
-
-  if (eto !== undefined) {
-    switch (eto.state) {
-      case EEtoState.PREVIEW:
-      case EEtoState.PENDING:
-        return EEtoSubState.COMING_SOON;
-
-      case EEtoState.LISTED:
-      case EEtoState.PROSPECTUS_APPROVED:
-        const stats = selectBookbuildingStats(state, eto.etoId);
-        const investorCount = stats ? stats.investorsCount : 0;
-
-        const isInvestorsLimitReached = investorCount >= eto.maxPledges;
-
-        if (eto.isBookbuilding) {
-          return EEtoSubState.WHITELISTING;
-        }
-
-        if (isInvestorsLimitReached) {
-          return EEtoSubState.WHITELISTING_LIMIT_REACHED;
-        }
-
-        return EEtoSubState.CAMPAIGNING;
-
-      case EEtoState.ON_CHAIN: {
-        if (!isOnChain(eto)) {
-          throw new Error(`Eto ${eto.etoId} is on chain but without contracts deployed`);
-        }
-
-        const isEligibleToPreEto = selectIsEligibleToPreEto(state, eto.etoId);
-
-        switch (eto.contract.timedState) {
-          case EETOStateOnChain.Setup:
-            const stats = selectBookbuildingStats(state, eto.etoId);
-            const investorCount = stats ? stats.investorsCount : 0;
-
-            const isInvestorsLimitReached = investorCount >= eto.maxPledges;
-
-            if (isInvestorsLimitReached) {
-              return EEtoSubState.WHITELISTING_LIMIT_REACHED;
-            }
-
-            if (eto.isBookbuilding) {
-              return EEtoSubState.WHITELISTING;
-            }
-
-            if (!eto.startDate) {
-              return EEtoSubState.CAMPAIGNING;
-            }
-
-            return isEligibleToPreEto
-              ? EEtoSubState.COUNTDOWN_TO_PRESALE
-              : EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE;
-
-          case EETOStateOnChain.Whitelist:
-            if (!isEligibleToPreEto) {
-              return EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE;
-            }
-
-            return undefined;
-        }
-      }
-    }
-  }
-
-  return undefined;
-};

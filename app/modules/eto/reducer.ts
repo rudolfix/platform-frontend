@@ -7,7 +7,7 @@ import { IEtoContractData, IEtoTokenData } from "./types";
 export interface IEtoState {
   etos: { [previewCode: string]: TEtoSpecsData | undefined };
   companies: { [companyId: string]: TCompanyEtoData | undefined };
-  contracts: { [previewCode: string]: IEtoContractData };
+  contracts: { [previewCode: string]: IEtoContractData | undefined };
   displayOrder: string[] | undefined;
   maxCapExceeded: { [previewCode: string]: boolean | undefined };
   etoWidgetError: boolean | undefined;

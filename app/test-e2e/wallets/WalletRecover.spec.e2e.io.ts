@@ -14,6 +14,7 @@ import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Wallet recover", function(): void {
+  this.retries(2);
   it("should recover wallet from saved phrases", () => {
     cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
@@ -68,7 +69,6 @@ describe("Wallet recover", function(): void {
   });
 
   it("should recover user with same email if its the same user", function(): void {
-    this.retries(2);
     cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",
@@ -91,7 +91,6 @@ describe("Wallet recover", function(): void {
   });
 
   it.skip("should recover existing user with verified email from saved phrases and change email", function(): void {
-    this.retries(2);
     cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",

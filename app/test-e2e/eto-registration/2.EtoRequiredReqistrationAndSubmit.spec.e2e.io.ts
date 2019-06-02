@@ -23,7 +23,7 @@ const openAndCheckValues = (section: string, sectionForm: TFormFixture) => {
 
 describe("Eto Forms", () => {
   it("should fill required fields and submit eto", function(): void {
-    this.retries(1);
+    this.retries(2);
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
       goToEtoDashboard();
 

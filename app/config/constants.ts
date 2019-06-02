@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 3;
+export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
 // If running in cypress wait for a short time
 export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME = process.env.IS_CYPRESS
   ? 1000 * 60

@@ -30,7 +30,7 @@ import {
   EPriceFormat,
 } from "../../../shared/formatters/utils";
 import { EtoWidgetContext } from "../../EtoWidgetView";
-import { EProjectStatusType, ETOState } from "../../shared/ETOState";
+import { ETOState } from "../../shared/ETOState";
 import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../shared/ToBeAnnouncedTooltip";
 import { CampaigningActivatedWidget } from "./CampaigningWidget/CampaigningActivatedWidget";
@@ -47,10 +47,6 @@ interface IExternalProps {
   publicView?: boolean;
 }
 
-interface IStatusOfEto {
-  previewCode: string;
-}
-
 interface IDispatchProps {
   navigateToEto: () => void;
   openInNewWindow: () => void;
@@ -63,12 +59,12 @@ interface IStateProps {
   maxCapExceeded: boolean;
 }
 
-const StatusOfEto: React.FunctionComponent<IStatusOfEto> = ({ previewCode }) => (
+const StatusOfEto: React.FunctionComponent<IExternalProps> = ({ eto, publicView }) => (
   <div className={styles.statusOfEto}>
     <span className={styles.title}>
       <FormattedMessage id="shared-component.eto-overview.status-of-eto" />
     </span>
-    <ETOState previewCode={previewCode} type={EProjectStatusType.EXTENDED} />
+    <ETOState eto={eto} isIssuer={!publicView} />
   </div>
 );
 
@@ -217,7 +213,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
           data-test-id={`eto-overview-${eto.etoId}`}
           columnSpan={EColumnSpan.THREE_COL}
         >
-          <StatusOfEto previewCode={eto.previewCode} />
+          <StatusOfEto eto={eto} publicView={publicView} />
           <div
             className={styles.overviewWrapper}
             onClick={onEtoNavigationClick(navigateToEto, previewCode ? openInNewWindow : undefined)}

@@ -51,99 +51,88 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
         },
       ]}
     >
-      {pendingAssets.map(
-        ({
-          equityTokenImage,
-          equityTokenName,
-          equityTokenSymbol,
-          investorTicket,
-          contract,
-          etoId,
-          product,
-          previewCode,
-        }) => {
-          const timedState = contract!.timedState;
-          const isWhitelistedOrPublic =
-            timedState === EETOStateOnChain.Whitelist || timedState === EETOStateOnChain.Public;
+      {pendingAssets.map(({ investorTicket, ...eto }) => {
+        const timedState = eto.contract!.timedState;
+        const isWhitelistedOrPublic =
+          timedState === EETOStateOnChain.Whitelist || timedState === EETOStateOnChain.Public;
 
-          return (
-            <NewTableRow
-              key={etoId}
-              data-test-id={`portfolio-reserved-asset-${etoId}`}
-              cellLayout={ENewTableCellLayout.MIDDLE}
-            >
-              <>
-                <img src={equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
-                <span className={"d-inline-block"}>
-                  <span
-                    className={styles.tokenName}
-                    data-test-id="portfolio-reserved-asset-token-name"
-                  >
-                    {equityTokenName} ({equityTokenSymbol})
-                  </span>
+        return (
+          <NewTableRow
+            key={eto.etoId}
+            data-test-id={`portfolio-reserved-asset-${eto.etoId}`}
+            cellLayout={ENewTableCellLayout.MIDDLE}
+          >
+            <>
+              <img src={eto.equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
+              <span className={"d-inline-block"}>
+                <span
+                  className={styles.tokenName}
+                  data-test-id="portfolio-reserved-asset-token-name"
+                >
+                  {eto.equityTokenName} ({eto.equityTokenSymbol})
                 </span>
-              </>
-
-              <Link
-                to={etoPublicViewLink(previewCode, product.jurisdiction)}
-                data-test-id="portfolio-reserved-assets-view-profile"
-              >
-                <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
-              </Link>
-
-              <NumberFormat
-                data-test-id="portfolio-reserved-asset-token-balance"
-                value={investorTicket.equityTokenInt}
-              />
-
-              <Money
-                data-test-id="portfolio-reserved-asset-invested-amount"
-                value={investorTicket.equivEurUlps}
-                currency={ECurrency.EUR}
-                currencySymbol={ECurrencySymbol.SYMBOL}
-              />
-
-              <Money
-                data-test-id="portfolio-reserved-token-price"
-                value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
-                currency={ECurrency.EUR}
-                currencySymbol={ECurrencySymbol.SYMBOL}
-                format={ENumberInputFormat.FLOAT}
-                isPrice={true}
-              />
-
-              <Money
-                data-test-id="portfolio-reserved-asset-neu-reward"
-                value={investorTicket.rewardNmkUlps.toString()}
-                currency={ECurrency.NEU}
-                currencySymbol={ECurrencySymbol.NONE}
-              />
-
-              <span data-test-id="portfolio-reserved-asset-status">
-                {isWhitelistedOrPublic ? (
-                  <span className={"text-uppercase"}>
-                    <FormattedMessage
-                      id="shared-component.eto-overview.invest.ends-in"
-                      values={{
-                        endsIn: (
-                          <FormattedRelative
-                            value={contract!.startOfStates[EETOStateOnChain.Signing]!}
-                            style="numeric"
-                          />
-                        ),
-                      }}
-                    />
-                  </span>
-                ) : (
-                  <ETOState previewCode={previewCode} size={EProjectStatusSize.SMALL} />
-                )}
               </span>
+            </>
 
-              <PortfolioAssetAction state={timedState} etoId={etoId} />
-            </NewTableRow>
-          );
-        },
-      )}
+            <Link
+              to={etoPublicViewLink(eto.previewCode, eto.product.jurisdiction)}
+              data-test-id="portfolio-reserved-assets-view-profile"
+            >
+              <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
+            </Link>
+
+            <NumberFormat
+              data-test-id="portfolio-reserved-asset-token-balance"
+              value={investorTicket.equityTokenInt}
+            />
+
+            <Money
+              data-test-id="portfolio-reserved-asset-invested-amount"
+              value={investorTicket.equivEurUlps}
+              currency={ECurrency.EUR}
+              currencySymbol={ECurrencySymbol.SYMBOL}
+            />
+
+            <Money
+              data-test-id="portfolio-reserved-token-price"
+              value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
+              currency={ECurrency.EUR}
+              currencySymbol={ECurrencySymbol.SYMBOL}
+              format={ENumberInputFormat.FLOAT}
+              isPrice={true}
+            />
+
+            <Money
+              data-test-id="portfolio-reserved-asset-neu-reward"
+              value={investorTicket.rewardNmkUlps.toString()}
+              currency={ECurrency.NEU}
+              currencySymbol={ECurrencySymbol.NONE}
+            />
+
+            <span data-test-id="portfolio-reserved-asset-status">
+              {isWhitelistedOrPublic ? (
+                <span className={"text-uppercase"}>
+                  <FormattedMessage
+                    id="shared-component.eto-overview.invest.ends-in"
+                    values={{
+                      endsIn: (
+                        <FormattedRelative
+                          value={eto.contract!.startOfStates[EETOStateOnChain.Signing]!}
+                          style="numeric"
+                        />
+                      ),
+                    }}
+                  />
+                </span>
+              ) : (
+                <ETOState eto={eto} size={EProjectStatusSize.SMALL} />
+              )}
+            </span>
+
+            <PortfolioAssetAction state={timedState} etoId={eto.etoId} />
+          </NewTableRow>
+        );
+      })}
     </NewTable>
   </Container>
 );

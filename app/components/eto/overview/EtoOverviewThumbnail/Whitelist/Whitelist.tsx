@@ -19,7 +19,6 @@ import * as styles from "../EtoStatusManager.module.scss";
 
 export interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
-  etoSubState: EEtoSubState | undefined;
 }
 
 interface IStateProps {
@@ -33,9 +32,8 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
   eto,
   pledgedAmount,
   investorsCount,
-  etoSubState,
 }) => {
-  switch (etoSubState) {
+  switch (eto.subState) {
     case EEtoSubState.CAMPAIGNING:
       return (
         <p className={styles.info}>
@@ -54,10 +52,10 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
           />
 
           <p className={styles.info}>
-            {etoSubState === EEtoSubState.WHITELISTING_LIMIT_REACHED && (
+            {eto.subState === EEtoSubState.WHITELISTING_LIMIT_REACHED && (
               <FormattedMessage id="eto-overview-thumbnail.whitelist.is-closed" />
             )}
-            {etoSubState === EEtoSubState.WHITELISTING && (
+            {eto.subState === EEtoSubState.WHITELISTING && (
               <FormattedMessage id="eto-overview-thumbnail.whitelist.is-open" />
             )}
           </p>
@@ -67,7 +65,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
     case EEtoSubState.COUNTDOWN_TO_PRESALE:
     case EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE:
       const nextState =
-        etoSubState === EEtoSubState.COUNTDOWN_TO_PRESALE
+        eto.subState === EEtoSubState.COUNTDOWN_TO_PRESALE
           ? EETOStateOnChain.Whitelist
           : EETOStateOnChain.Public;
       const nextStateStartDate = eto.contract!.startOfStates[nextState];
@@ -79,7 +77,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
       return <CounterWidget endDate={nextStateStartDate} state={nextState} />;
 
     default:
-      throw new Error(`Campaign doesn't implement ${etoSubState} state`);
+      throw new Error(`Campaign doesn't implement ${eto.subState} state`);
   }
 };
 

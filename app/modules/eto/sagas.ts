@@ -245,12 +245,11 @@ function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: 
   return undefined;
 }
 
-function* watchEto(_: TGlobalDependencies, previewCode: string): any {
-  const eto: TEtoWithCompanyAndContract = yield select((state: IAppState) =>
-    selectEtoWithCompanyAndContract(state, previewCode),
-  );
-
-  let strategies: Dictionary<Promise<true>> = {
+export function* delayEtoRefresh(
+  _: TGlobalDependencies,
+  eto: TEtoWithCompanyAndContract,
+): Iterator<any> {
+  const strategies: Dictionary<Promise<true>> = {
     default: delay(etoNormalPoolingDelay),
   };
 
@@ -259,7 +258,7 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
       strategies.inProgress = delay(etoInProgressPoolingDelay);
     }
 
-    const nextStateDelay: number = yield neuCall(calculateNextStateDelay, previewCode);
+    const nextStateDelay: number = yield neuCall(calculateNextStateDelay, eto.previewCode);
     // Do not schedule update if it's later than normal pooling
     // otherwise it's possible to overflow max timeout limit
     // see https://stackoverflow.com/questions/3468607/why-does-settimeout-break-for-large-millisecond-delay-values
@@ -269,8 +268,16 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
   }
 
   yield race(strategies);
+}
 
-  yield put(actions.eto.loadEtoPreview(previewCode));
+function* watchEto(_: TGlobalDependencies, previewCode: string): any {
+  const eto: TEtoWithCompanyAndContract = yield select((state: IAppState) =>
+    selectEtoWithCompanyAndContract(state, previewCode),
+  );
+
+  yield neuCall(delayEtoRefresh, eto);
+
+  yield put(actions.eto.loadEtoPreview(eto.previewCode));
 }
 
 function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {

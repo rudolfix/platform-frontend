@@ -1,4 +1,4 @@
-import { assertWallet, goToProfile, goToWallet } from "../utils";
+import { assertWallet, clearEmailServer, goToProfile, goToWallet } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser, loginFixtureAccount } from "../utils/userHelpers";
@@ -45,6 +45,9 @@ function assertBankTransferFlow({
 }
 
 describe("Purchase", () => {
+  beforeEach(() => {
+    clearEmailServer();
+  });
   it("should start purchase agreement approval when bank account not verified", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED", {
       kyc: "business",

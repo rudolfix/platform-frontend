@@ -2,6 +2,7 @@ import { IWindowWithData } from "../../../test/helperTypes";
 import {
   assertDashboard,
   assertEtoDashboard,
+  assertEtoDocuments,
   assertPortfolio,
   assertProfile,
   assertWallet,
@@ -52,6 +53,11 @@ export const goToPortfolio = () => {
 export const goToWallet = () => {
   cy.visit("/wallet");
   assertWallet();
+};
+
+export const goToEtoDocuments = () => {
+  cy.visit("/documents");
+  assertEtoDocuments();
 };
 
 export const goToPortfolioWithRequiredPayoutAmountSet = (requiredPayoutAmount?: string) => {

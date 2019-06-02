@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { fork, put, select } from "redux-saga/effects";
+import { all, fork, put, select } from "redux-saga/effects";
 
 import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -23,29 +23,27 @@ import { etoFlowActions } from "./actions";
 import { selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto } from "./selectors";
 import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
+type TEtoAll = { company: TCompanyEtoData; eto: TEtoSpecsData };
+
 export function* loadIssuerEto({
   apiEtoService,
   notificationCenter,
   logger,
 }: TGlobalDependencies): any {
   try {
-    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompany();
-    const company = companyResponse.body;
-    const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getMyEto();
-    const eto = etoResponse.body;
+    const { company, eto }: TEtoAll = yield all({
+      company: apiEtoService.getCompany(),
+      eto: apiEtoService.getMyEto(),
+    });
 
     if (eto.state === EEtoState.ON_CHAIN) {
       yield neuCall(loadEtoContract, eto);
     }
 
-    yield put(actions.eto.setEto({ eto, company }));
-
-    yield put(actions.etoFlow.setIssuerEtoPreviewCode(eto.previewCode));
+    yield put(actions.etoFlow.setEto({ eto, company }));
   } catch (e) {
     logger.error("Failed to load Issuer ETO", e);
-    notificationCenter.error(
-      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_ACCESS_ETO_FILES_DATA),
-    );
+    notificationCenter.error(createMessage(EtoFlowMessage.ETO_LOAD_FAILED));
     yield put(actions.routing.goToDashboard());
   }
 }

@@ -1,12 +1,17 @@
 import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
-import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { assertDashboard, etoFixtureAddressByName, tid } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
-describe("Eto Unapproved Investor View", () => {
-  beforeEach(() => createAndLoginNewUser({ type: "investor" }));
-
+describe("Eto Unapproved Investor View", function(): void {
+  this.retries(2);
+  before(() => {
+    createAndLoginNewUser({ type: "investor" });
+    cy.saveLocalStorage();
+  });
+  beforeEach(() => {
+    cy.restoreLocalStorage();
+  });
   it("should show investment notification when kyc is not done", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 

@@ -4065,24 +4065,24 @@ bip66@^1.1.3:
   dependencies:
     safe-buffer "^5.0.1"
 
-bitcore-lib@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/bitcore-lib/-/bitcore-lib-0.16.0.tgz#a2c3ec1108cdb90386f728282ab833e0c77c9533"
-  integrity sha512-CEtcrPAH2gwgaMN+OPMJc18TBEak1+TtzMyafrqrIbK9PIa3kat195qBJhC0liJSHRiRr6IE2eLcXeIFFs+U8w==
+bitcore-lib@^8.3.3:
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/bitcore-lib/-/bitcore-lib-8.3.3.tgz#c3fdee79ad0cc27027d509ded4466732b5e6f0f9"
+  integrity sha512-mDgz1xnBvJfyMW/2Xt7218l9IPhHaHfOqH/M90FIIt6riiKKm2FXhMrxp/ip0Mh0496MI6dXPsBlE0X3+YKIfg==
   dependencies:
     bn.js "=4.11.8"
-    bs58 "=4.0.1"
+    bs58 "^4.0.1"
     buffer-compare "=1.1.1"
     elliptic "=6.4.0"
     inherits "=2.0.1"
     lodash "=4.17.11"
 
-bitcore-mnemonic@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/bitcore-mnemonic/-/bitcore-mnemonic-1.7.0.tgz#253295a773135e1a0b455871de614996afc8f5e1"
-  integrity sha512-1JV1okgz9Vv+Y4fG2m3ToR+BGdKA6tSoqjepIxA95BZjW6YaeopVW4iOe/dY9dnkZH4+LA2AJ4YbDE6H3ih3Yw==
+bitcore-mnemonic@^8.3.3:
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/bitcore-mnemonic/-/bitcore-mnemonic-8.3.3.tgz#f18bb61819795ac40673d83b2cc0fbb3928180b5"
+  integrity sha512-ZrtcOJPWR03UDjjtlvsia2S39LOfv+AdtjsL/vJ+9VkV8zwm7y+8c5+0puehr6sSdXa9e+uhG72u+f5WLre9aw==
   dependencies:
-    bitcore-lib "^0.16.0"
+    bitcore-lib "^8.3.3"
     unorm "^1.4.1"
 
 block-stream@*:
@@ -4382,7 +4382,7 @@ browserslist@^4.5.4:
     electron-to-chromium "^1.3.124"
     node-releases "^1.1.14"
 
-bs58@=4.0.1:
+bs58@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/bs58/-/bs58-4.0.1.tgz#be161e76c354f6f788ae4071f63f34e8c4f0a42a"
   integrity sha1-vhYedsNU9veIrkBx9j806MTwpCo=
@@ -4433,7 +4433,7 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-buffer@^5.0.6, buffer@^5.2.1:
+buffer@^5.0.6:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.2.1.tgz#dd57fa0f109ac59c602479044dca7b8b3d0b71d6"
   integrity sha512-c+Ko0loDaFfuPWiL02ls9Xd3GO3cPVmUobQ6t3rXNUk304u6hGq+8N/kFi+QEIKhzK3uwolVhLzszmfLmMLnqg==
@@ -6390,7 +6390,7 @@ elliptic@=6.4.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-elliptic@^6.0.0, elliptic@^6.2.3, elliptic@^6.4.0, elliptic@^6.4.1:
+elliptic@^6.0.0, elliptic@^6.2.3, elliptic@^6.4.0:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.4.1.tgz#c2d0b7776911b86722c632c3c06c60f2f819939a"
   integrity sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==
@@ -6824,17 +6824,15 @@ eth-lib@0.2.7:
     elliptic "^6.4.0"
     xhr-request-promise "^0.1.2"
 
-"eth-lightwallet@https://github.com/Neufund/eth-lightwallet#fc7a2f43771220ed4e5008d25afdc60559041699":
+"eth-lightwallet@https://github.com/Neufund/eth-lightwallet#eb174e6831d3b62adfde396f26d15c1b7e1ab30f":
   version "3.0.4"
-  resolved "https://github.com/Neufund/eth-lightwallet#fc7a2f43771220ed4e5008d25afdc60559041699"
+  resolved "https://github.com/Neufund/eth-lightwallet#eb174e6831d3b62adfde396f26d15c1b7e1ab30f"
   dependencies:
-    bitcore-lib "^0.16.0"
-    bitcore-mnemonic "^1.7.0"
-    buffer "^5.2.1"
+    bitcore-lib "^8.3.3"
+    bitcore-mnemonic "^8.3.3"
     crypto-js "^3.1.9-1"
-    elliptic "^6.4.1"
     ethereumjs-tx "^1.3.7"
-    ethereumjs-util "^6.0.0"
+    ethereumjs-util "^6.1.0"
     scrypt-async "^2.0.1"
     tweetnacl "^1.0.1"
     tweetnacl-util "^0.15.0"
@@ -6971,6 +6969,19 @@ ethereumjs-util@^6.0.0:
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
+ethereumjs-util@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/ethereumjs-util/-/ethereumjs-util-6.1.0.tgz#e9c51e5549e8ebd757a339cc00f5380507e799c8"
+  integrity sha512-URESKMFbDeJxnAxPppnk2fN6Y3BIatn9fwn76Lm8bQlt+s52TpG8dN9M66MLPuRAiAOIqL3dfwqWJf0sd0fL0Q==
+  dependencies:
+    bn.js "^4.11.0"
+    create-hash "^1.1.2"
+    ethjs-util "0.1.6"
+    keccak "^1.0.2"
+    rlp "^2.0.0"
+    safe-buffer "^5.1.1"
+    secp256k1 "^3.0.1"
+
 ethereumjs-vm@2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/ethereumjs-vm/-/ethereumjs-vm-2.3.4.tgz#f635d7cb047571a1840a6e9a74d29de4488f8ad6"
@@ -7013,7 +7024,7 @@ ethjs-unit@0.1.6:
     bn.js "4.11.6"
     number-to-bn "1.7.0"
 
-ethjs-util@^0.1.3, ethjs-util@^0.1.6:
+ethjs-util@0.1.6, ethjs-util@^0.1.3, ethjs-util@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/ethjs-util/-/ethjs-util-0.1.6.tgz#f308b62f185f9fe6237132fb2a9818866a5cd536"
   integrity sha512-CUnVOQq7gSpDHZVVrQW8ExxUETWrnrvXYvYz55wOU8Uj4VCgw56XC2B/fVqQN+f7gmrnRHSLVnFAwsCuNwji8w==

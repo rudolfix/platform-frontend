@@ -124,7 +124,7 @@ describe("Change Email", function(): void {
       cy.get(tid("profile-email-change-unverified-exists")).should("exist");
     });
 
-    it.only("should not allow to change email if it's already used by different account", () => {
+    it("should not allow to change email if it's already used by different account", () => {
       let email: string;
 
       createAndLoginNewUser({ type: "investor", kyc: "individual" })

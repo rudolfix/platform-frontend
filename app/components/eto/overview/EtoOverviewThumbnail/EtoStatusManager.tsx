@@ -12,8 +12,8 @@ import {
 import { MoneyNew } from "../../../shared/formatters/Money";
 import {
   ECurrency,
-  EHumanReadableFormat,
-  EMoneyInputFormat,
+  ENumberInputFormat,
+  ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
 import { CounterWidget } from "../EtoOverviewStatus/CounterWidget";
 import { InvestmentStatus } from "./InvestmentStatus/InvestmentStatus";
@@ -23,22 +23,21 @@ import * as styles from "./EtoStatusManager.module.scss";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
-  etoSubState: EEtoSubState | undefined;
 }
 
-const EtoStatusManager = ({ eto, etoSubState }: IExternalProps) => {
+const EtoStatusManager = ({ eto }: IExternalProps) => {
   const state = eto.contract ? eto.contract.timedState : eto.state;
 
   switch (state) {
     case EEtoState.LISTED:
     case EEtoState.PROSPECTUS_APPROVED:
     case EETOStateOnChain.Setup: {
-      return <Whitelist eto={eto} etoSubState={etoSubState} />;
+      return <Whitelist eto={eto} />;
     }
     case EETOStateOnChain.Whitelist: {
       const endDate = eto.contract!.startOfStates[EETOStateOnChain.Public]!;
 
-      if (etoSubState === EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE) {
+      if (eto.subState === EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE) {
         return <CounterWidget endDate={endDate} state={EETOStateOnChain.Public} />;
       } else {
         return (
@@ -88,9 +87,9 @@ const EtoStatusManager = ({ eto, etoSubState }: IExternalProps) => {
                 totalAmount: (
                   <MoneyNew
                     value={eto.contract!.totalInvestment.totalEquivEurUlps}
-                    inputFormat={EMoneyInputFormat.ULPS}
+                    inputFormat={ENumberInputFormat.ULPS}
                     moneyFormat={ECurrency.EUR}
-                    outputFormat={EHumanReadableFormat.FULL}
+                    outputFormat={ENumberOutputFormat.FULL}
                   />
                 ),
               }}

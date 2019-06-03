@@ -728,7 +728,7 @@ export const etoDocuments: TEtoDocumentTemplates = {
 };
 
 export const testContract = {
-  timedState: 3,
+  timedState: EETOStateOnChain.Signing,
   totalInvestment: {
     totalEquivEurUlps: "3.240447910281246044e+24",
     totalTokensInt: "10010705",
@@ -774,6 +774,7 @@ export const testProduct = {
   name: EProductName.HNWI_ETO_DE,
   offeringDocumentType: EOfferingDocumentType.MEMORANDUM,
   offeringDocumentSubtype: EOfferingDocumentSubtype.LEAN,
+  dateToWhitelistMinDuration: 7 * 24 * 60 * 60,
 };
 
 export const testEto: TEtoWithCompanyAndContract = {
@@ -812,7 +813,8 @@ export const testEto: TEtoWithCompanyAndContract = {
   shareNominalValueEur: 1,
   signingDurationDays: 14,
   startDate: "2018-11-16T05:03:56+00:00",
-  state: "on_chain" as EEtoState,
+  state: EEtoState.ON_CHAIN,
+  subState: undefined,
   templates: {
     companyTokenHolderAgreement: {
       documentType: "company_token_holder_agreement" as EEtoDocumentType,

@@ -7,7 +7,11 @@ import { testEto } from "../../../../../test/fixtures";
 import { Q18 } from "../../../../config/constants";
 import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
+import {
+  EETOStateOnChain,
+  EEtoSubState,
+  TEtoWithCompanyAndContract,
+} from "../../../../modules/eto/types";
 import { ICalculatedContribution } from "../../../../modules/investor-portfolio/types";
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
 import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
@@ -73,6 +77,7 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
     const eto = {
       ...rootEto,
       state: EEtoState.PREVIEW,
+      subState: EEtoSubState.COMING_SOON,
     };
 
     return withEto({ eto });
@@ -80,6 +85,7 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
   .add("whitelisting", () => {
     const eto = {
       ...rootEto,
+      subState: EEtoSubState.WHITELISTING,
       isBookbuilding: true,
       contract: {
         ...testEto.contract!,
@@ -97,6 +103,7 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
   .add("countdown to presale", () => {
     const eto = {
       ...rootEto,
+      subState: EEtoSubState.COUNTDOWN_TO_PRESALE,
       isBookbuilding: false,
       contract: {
         ...testEto.contract!,
@@ -141,6 +148,7 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
   .add("countdown to public sale", () => {
     const eto = {
       ...rootEto,
+      subState: EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE,
       contract: {
         ...testEto.contract!,
         timedState: EETOStateOnChain.Whitelist,

@@ -6,15 +6,12 @@ import {
   EEtoMarketingDataVisibleInPreview,
   EEtoState,
 } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { selectIsIssuer } from "../../../modules/auth/selectors";
-import { selectEtoSubState, selectEtoWithCompanyAndContract } from "../../../modules/eto/selectors";
 import {
   EETOStateOnChain,
   EEtoSubState,
   TEtoWithCompanyAndContract,
 } from "../../../modules/eto/types";
 import { isOnChain } from "../../../modules/eto/utils";
-import { appConnect } from "../../../store";
 import { CommonHtmlProps, TTranslatedString } from "../../../types";
 
 import * as styles from "./ETOState.module.scss";
@@ -30,22 +27,11 @@ export enum EProjectStatusLayout {
   BLACK = "black",
 }
 
-export enum EProjectStatusType {
-  NORMAL = "normal",
-  EXTENDED = "extended",
-}
-
 interface IExternalProps {
   size?: EProjectStatusSize;
   layout?: EProjectStatusLayout;
-  type?: EProjectStatusType;
-  previewCode: string;
-}
-
-interface IStateProps {
   eto: TEtoWithCompanyAndContract;
-  subState: EEtoSubState | undefined;
-  isIssuer: boolean;
+  isIssuer?: boolean;
 }
 
 export const stateToName: Record<EEtoState | EETOStateOnChain | EEtoSubState, TTranslatedString> = {
@@ -77,7 +63,7 @@ export const stateToName: Record<EEtoState | EETOStateOnChain | EEtoSubState, TT
 
 export const getStateName: (
   state: EEtoState | EETOStateOnChain | EEtoSubState,
-  isIssuer: boolean,
+  isIssuer?: boolean,
 ) => TTranslatedString = (state, isIssuer) => {
   if (isIssuer && (state === EETOStateOnChain.Payout || state === EETOStateOnChain.Claim)) {
     return <FormattedMessage id="eto.status.onchain.issuer-withdraw-funds" />;
@@ -106,32 +92,27 @@ const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain | EEtoSubSta
   [EEtoSubState.COUNTDOWN_TO_PRESALE]: styles.blue,
 };
 
-const getState = (
-  eto: TEtoWithCompanyAndContract,
-  subState: EEtoSubState | undefined,
-  isIssuer: boolean,
-) => {
+const getState = (eto: TEtoWithCompanyAndContract, isIssuer?: boolean) => {
   const state = isOnChain(eto) ? eto.contract.timedState : eto.state;
 
-  if (subState) {
+  if (eto.subState) {
     return isIssuer &&
       eto.isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE
       ? state
-      : subState;
+      : eto.subState;
   } else {
     return state;
   }
 };
 
-const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps & CommonHtmlProps> = ({
+const ETOState: React.FunctionComponent<IExternalProps & CommonHtmlProps> = ({
   eto,
-  subState,
   className,
   size = EProjectStatusSize.MEDIUM,
   layout = EProjectStatusLayout.NORMAL,
   isIssuer,
 }) => {
-  const state = getState(eto, subState, isIssuer);
+  const state = getState(eto, isIssuer);
 
   return (
     <div
@@ -143,10 +124,4 @@ const ETOStateLayout: React.FunctionComponent<IStateProps & IExternalProps & Com
   );
 };
 
-export const ETOState = appConnect<IStateProps, {}, IExternalProps & CommonHtmlProps>({
-  stateToProps: (state, props) => ({
-    eto: selectEtoWithCompanyAndContract(state, props.previewCode)!,
-    subState: selectEtoSubState(state, props.previewCode)!,
-    isIssuer: selectIsIssuer(state),
-  }),
-})(ETOStateLayout);
+export { ETOState };

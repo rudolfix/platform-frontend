@@ -1,4 +1,3 @@
-import { INV_EUR_ICBM_HAS_KYC_SEED } from "../fixtures";
 import {
   assertButtonIsActive,
   confirmAccessModal,
@@ -7,23 +6,21 @@ import {
   parseAmount,
 } from "../utils";
 import { tid } from "../utils/selectors";
-import { createAndLoginNewUser } from "../utils/userHelpers";
+import { loginFixtureAccount } from "../utils/userHelpers";
 
 describe("Invest with nEur", () => {
-  // TODO: Add fixture with nEur
-  it.skip("invest 1000 nEuro", () => {
+  it("invest 1000 nEuro", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
-    createAndLoginNewUser({
-      type: "investor",
+    loginFixtureAccount("INV_HAS_EUR_HAS_KYC", {
       kyc: "business",
-      seed: INV_EUR_ICBM_HAS_KYC_SEED,
       signTosAgreement: true,
       clearPendingTransactions: true,
     }).then(() => {
       goToDashboard();
 
       // click invest now button
+      cy.get(tid(`eto-overview-${PUBLIC_ETO_ID}`)).click();
       cy.get(tid(`eto-invest-now-button-${PUBLIC_ETO_ID}`)).click();
 
       cy.get(tid("investment-type.selector.NEUR")).check({ force: true });

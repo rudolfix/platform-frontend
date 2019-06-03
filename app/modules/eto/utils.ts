@@ -1,11 +1,14 @@
 import BigNumber from "bignumber.js";
 
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { IBookBuildingStats } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { Overwrite } from "../../types";
 import { isPastInvestment } from "../investor-portfolio/utils";
 import {
   EETOStateOnChain,
+  EEtoSubState,
+  IEtoContractData,
   IEtoTotalInvestment,
   TEtoStartOfStates,
   TEtoWithCompanyAndContract,
@@ -66,3 +69,77 @@ export function isOnChain(
 
 export const isRestrictedEto = (eto: TEtoWithCompanyAndContract): boolean =>
   eto.product.jurisdiction === EJurisdiction.GERMANY && !isPastInvestment(eto.contract!.timedState);
+
+type TCalculateSubStateOptions = {
+  eto: TEtoSpecsData;
+  contract: IEtoContractData | undefined;
+  stats: IBookBuildingStats | undefined;
+  isEligibleToPreEto: boolean;
+};
+
+export const getEtoSubState = ({
+  eto,
+  contract,
+  stats,
+  isEligibleToPreEto,
+}: TCalculateSubStateOptions): EEtoSubState | undefined => {
+  switch (eto.state) {
+    case EEtoState.PREVIEW:
+    case EEtoState.PENDING:
+      return EEtoSubState.COMING_SOON;
+
+    case EEtoState.LISTED:
+    case EEtoState.PROSPECTUS_APPROVED:
+      const investorCount = stats ? stats.investorsCount : 0;
+
+      const isInvestorsLimitReached = investorCount >= eto.maxPledges;
+
+      if (eto.isBookbuilding) {
+        return EEtoSubState.WHITELISTING;
+      }
+
+      if (isInvestorsLimitReached) {
+        return EEtoSubState.WHITELISTING_LIMIT_REACHED;
+      }
+
+      return EEtoSubState.CAMPAIGNING;
+
+    case EEtoState.ON_CHAIN: {
+      if (!contract) {
+        throw new Error(`Eto ${eto.etoId} is on chain but without contracts deployed`);
+      }
+
+      switch (contract.timedState) {
+        case EETOStateOnChain.Setup:
+          const investorCount = stats ? stats.investorsCount : 0;
+
+          const isInvestorsLimitReached = investorCount >= eto.maxPledges;
+
+          if (isInvestorsLimitReached) {
+            return EEtoSubState.WHITELISTING_LIMIT_REACHED;
+          }
+
+          if (eto.isBookbuilding) {
+            return EEtoSubState.WHITELISTING;
+          }
+
+          if (!eto.startDate) {
+            return EEtoSubState.CAMPAIGNING;
+          }
+
+          return isEligibleToPreEto
+            ? EEtoSubState.COUNTDOWN_TO_PRESALE
+            : EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE;
+
+        case EETOStateOnChain.Whitelist:
+          if (!isEligibleToPreEto) {
+            return EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE;
+          }
+
+          return undefined;
+      }
+
+      return undefined;
+    }
+  }
+};

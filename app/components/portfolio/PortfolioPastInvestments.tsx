@@ -10,7 +10,7 @@ import { etoPublicViewLink } from "../appRouteUtils";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";
 import { Container } from "../layouts/Container";
-import { ECurrency, EMoneyInputFormat } from "../shared/formatters/utils";
+import { ECurrency, ENumberInputFormat } from "../shared/formatters/utils";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
 import { ECurrencySymbol, Money } from "../shared/Money.unsafe";
 import { NumberFormat } from "../shared/NumberFormat";
@@ -47,73 +47,62 @@ const PortfolioPastInvestments: React.FunctionComponent<IExternalProps> = ({ pas
         <FormattedMessage id="portfolio.section.past-investments.table.header.eto-status" />,
       ]}
     >
-      {pastInvestments.map(
-        ({
-          equityTokenImage,
-          equityTokenName,
-          equityTokenSymbol,
-          investorTicket,
-          contract,
-          etoId,
-          previewCode,
-          product,
-        }) => {
-          const timedState = contract!.timedState;
-          const investmentDate = contract!.startOfStates[timedState]!;
+      {pastInvestments.map(({ investorTicket, ...eto }) => {
+        const timedState = eto.contract!.timedState;
+        const investmentDate = eto.contract!.startOfStates[timedState]!;
 
-          return (
-            <NewTableRow
-              key={etoId}
-              data-test-id={`past-investments-${etoId}`}
-              cellLayout={ENewTableCellLayout.MIDDLE}
+        return (
+          <NewTableRow
+            key={eto.etoId}
+            data-test-id={`past-investments-${eto.etoId}`}
+            cellLayout={ENewTableCellLayout.MIDDLE}
+          >
+            <FormattedDate value={investmentDate} />
+            <>
+              <img src={eto.equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
+              <span className={styles.tokenName} data-test-id="past-investments-token-name">
+                {eto.equityTokenName} ({eto.equityTokenSymbol})
+              </span>
+            </>
+
+            <Link
+              to={etoPublicViewLink(eto.previewCode, eto.product.jurisdiction)}
+              data-test-id="portfolio-past-investments-view-profile"
             >
-              <FormattedDate value={investmentDate} />
-              <>
-                <img src={equityTokenImage} alt="" className={cn("mr-2", styles.token)} />
-                <span className={styles.tokenName} data-test-id="past-investments-token-name">
-                  {equityTokenName} ({equityTokenSymbol})
-                </span>
-              </>
+              <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
+            </Link>
 
-              <Link
-                to={etoPublicViewLink(previewCode, product.jurisdiction)}
-                data-test-id="portfolio-past-investments-view-profile"
-              >
-                <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
-              </Link>
+            <NumberFormat
+              data-test-id="past-investments-token-balance"
+              value={investorTicket.equityTokenInt}
+            />
 
-              <NumberFormat
-                data-test-id="past-investments-token-balance"
-                value={investorTicket.equityTokenInt}
-              />
+            <Money
+              data-test-id="past-investments-invested-amount"
+              value={investorTicket.equivEurUlps}
+              currency={ECurrency.EUR}
+              currencySymbol={ECurrencySymbol.SYMBOL}
+            />
 
-              <Money
-                data-test-id="past-investments-invested-amount"
-                value={investorTicket.equivEurUlps}
-                currency={ECurrency.EUR}
-                currencySymbol={ECurrencySymbol.SYMBOL}
-              />
+            <Money
+              data-test-id="past-investments-token-price"
+              value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
+              currency={ECurrency.EUR}
+              currencySymbol={ECurrencySymbol.SYMBOL}
+              format={ENumberInputFormat.FLOAT}
+              isPrice={true}
+            />
 
-              <Money
-                data-test-id="past-investments-token-price"
-                value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
-                currency={ECurrency.EUR}
-                currencySymbol={ECurrencySymbol.SYMBOL}
-                format={EMoneyInputFormat.FLOAT}
-                isPrice={true}
-              />
-
-              <Money
-                data-test-id="past-investments-asset-neu-reward"
-                value={investorTicket.rewardNmkUlps.toString()}
-                currency={ECurrency.NEU}
-                currencySymbol={ECurrencySymbol.NONE}
-              />
-              <ETOState previewCode={previewCode} size={EProjectStatusSize.SMALL} />
-            </NewTableRow>
-          );
-        },
-      )}
+            <Money
+              data-test-id="past-investments-asset-neu-reward"
+              value={investorTicket.rewardNmkUlps.toString()}
+              currency={ECurrency.NEU}
+              currencySymbol={ECurrencySymbol.NONE}
+            />
+            <ETOState eto={eto} size={EProjectStatusSize.SMALL} />
+          </NewTableRow>
+        );
+      })}
     </NewTable>
   </Container>
 );

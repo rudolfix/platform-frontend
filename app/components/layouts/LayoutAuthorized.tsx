@@ -15,8 +15,11 @@ import { layoutEnhancer } from "./LayoutEnhancer";
 
 import * as styles from "./LayoutAuthorized.module.scss";
 
-export const LayoutAuthorizedComponent: React.FunctionComponent = ({ children }) => (
-  <div className={styles.layout}>
+export const LayoutAuthorizedComponent: React.FunctionComponent<{ dataTestId?: string }> = ({
+  children,
+  dataTestId,
+}) => (
+  <div className={styles.layout} data-test-id={dataTestId}>
     <Header />
     <LayoutAuthorizedMenu />
     <Content>

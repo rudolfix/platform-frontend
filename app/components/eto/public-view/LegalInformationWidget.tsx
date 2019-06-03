@@ -6,7 +6,7 @@ import { EColumnSpan } from "../../layouts/Container";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut.unsafe";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";
 import { MoneyNew } from "../../shared/formatters/Money";
-import { ECurrency, EHumanReadableFormat, EMoneyInputFormat } from "../../shared/formatters/utils";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { Panel } from "../../shared/Panel";
 import { FUNDING_ROUNDS } from "../constants";
 import { CHART_COLORS } from "../shared/EtoView";
@@ -95,8 +95,8 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
             <span className={styles.value}>
               <FormatNumber
                 value={companyData.numberOfFounders}
-                outputFormat={EHumanReadableFormat.INTEGER}
-                inputFormat={EMoneyInputFormat.FLOAT}
+                outputFormat={ENumberOutputFormat.INTEGER}
+                inputFormat={ENumberInputFormat.FLOAT}
               />
             </span>
           </div>
@@ -125,9 +125,9 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
             <span className={styles.value}>
               <MoneyNew
                 value={companyData.lastFundingSizeEur}
-                inputFormat={EMoneyInputFormat.FLOAT}
+                inputFormat={ENumberInputFormat.FLOAT}
                 moneyFormat={ECurrency.EUR}
-                outputFormat={EHumanReadableFormat.INTEGER}
+                outputFormat={ENumberOutputFormat.INTEGER}
               />
             </span>
           </div>
@@ -140,8 +140,8 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
             <span className={styles.value}>
               <FormatNumber
                 value={companyData.companyShares}
-                outputFormat={EHumanReadableFormat.INTEGER}
-                inputFormat={EMoneyInputFormat.FLOAT}
+                outputFormat={ENumberOutputFormat.INTEGER}
+                inputFormat={ENumberInputFormat.FLOAT}
               />
             </span>
           </div>

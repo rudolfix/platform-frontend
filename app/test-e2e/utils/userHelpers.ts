@@ -3,8 +3,9 @@ import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { toChecksumAddress } from "web3-utils";
 
+import { accountFixtureByName, removePendingExternalTransaction } from ".";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TxPendingWithMetadata, TxWithMetadata } from "../../lib/api/users/interfaces";
+import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
 import { toCamelCase } from "../../utils/transformObjectKeys";
@@ -24,16 +25,21 @@ export const generateRandomEmailAddress = () =>
     .toString(36)
     .substring(7)}@e2e.com`;
 
-export const createAndLoginNewUser = (params: {
-  type: "investor" | "issuer";
-  kyc?: "business" | "individual";
-  seed?: string;
-  hdPath?: string;
-  clearPendingTransactions?: boolean;
-  onlyLogin?: boolean;
-  signTosAgreement?: boolean;
-  permissions?: string[];
-}) =>
+const NUMBER_OF_ATTEMPTS = 2;
+
+export const createAndLoginNewUser = (
+  params: {
+    type: "investor" | "issuer";
+    kyc?: "business" | "individual";
+    seed?: string;
+    hdPath?: string;
+    clearPendingTransactions?: boolean;
+    onlyLogin?: boolean;
+    signTosAgreement?: boolean;
+    permissions?: string[];
+  },
+  attempts: number = 0,
+) =>
   cy.clearLocalStorage().then(async ls => {
     cy.log("Logging in...");
 
@@ -50,7 +56,7 @@ export const createAndLoginNewUser = (params: {
       params.type === "investor" ? INVESTOR_WALLET_KEY : ISSUER_WALLET_KEY,
       JSON.stringify({
         address,
-        email: "dave@neufund.org",
+        email: `${address.slice(0, 7).toLowerCase()}@neufund.org`,
         salt: salt,
         walletType: "LIGHT",
       }),
@@ -85,7 +91,48 @@ export const createAndLoginNewUser = (params: {
       // This was done to maintain introduce `signTosAgreement` without changing the interface of existing tests
       await setCorrectAgreement(jwt);
     }
+
+    const userData = await getUserData(jwt);
+    const kycData = await getKycData(jwt);
+    cy.log(userData.verified_email as string);
+    cy.log(params.kyc ? (kycData[params.kyc] as string) : "No KYC");
+    if ((params.kyc && kycData[params.kyc] !== "Accepted") || !userData.verified_email) {
+      if (attempts > NUMBER_OF_ATTEMPTS) {
+        throw new Error("Cannot create user something wrong happened in the backend");
+      }
+      cy.log("User was not created correctly repeating");
+      cy.wait(1000);
+      createAndLoginNewUser(params, attempts + 1);
+    }
   });
+
+/*
+ * Restore fixture account by name
+ */
+
+export const loginFixtureAccount = (
+  accountFixtureName: string,
+  params: {
+    kyc?: "business" | "individual";
+    clearPendingTransactions?: boolean;
+    onlyLogin?: boolean;
+    signTosAgreement?: boolean;
+    permissions?: string[];
+  },
+) => {
+  const fixture = accountFixtureByName(accountFixtureName);
+  let hdPath = fixture.definition.derivationPath;
+  if (hdPath) {
+    // cut last element which corresponds to account, will be added by light wallet
+    hdPath = hdPath.substr(0, hdPath.lastIndexOf("/"));
+  }
+  return createAndLoginNewUser({
+    type: fixture.type,
+    seed: fixture.definition.seed,
+    hdPath: hdPath,
+    ...params,
+  });
+};
 
 /**
  * Create a light wallet with a given seed
@@ -205,16 +252,45 @@ export const getJWT = async (
 const USER_PATH = "/api/user/user/me";
 const USER_TOS_PATH = USER_PATH + "/tos";
 
+const KYC_PATH = "/api/kyc";
+const KYC_INDIVIDUAL = "/individual/request";
+const KYC_COMPANY = "/business/request";
+
+export const getUserData = async (jwt: string) => {
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `Bearer ${jwt}`,
+  };
+  return (await fetch(USER_PATH, {
+    headers,
+    method: "GET",
+  })).json();
+};
+
+export const getKycData = async (jwt: string) => {
+  const headers = {
+    "Content-Type": "application/json",
+    authorization: `Bearer ${jwt}`,
+  };
+  return {
+    individual: (await (await fetch(KYC_PATH + KYC_INDIVIDUAL, {
+      headers,
+      method: "GET",
+    })).json()).status,
+    business: (await (await fetch(KYC_PATH + KYC_COMPANY, {
+      headers,
+      method: "GET",
+    })).json()).status,
+  };
+};
+
 export const markBackupCodesVerified = async (jwt: string) => {
   const headers = {
     "Content-Type": "application/json",
     authorization: `Bearer ${jwt}`,
   };
-  const response = await fetch(USER_PATH, {
-    headers,
-    method: "GET",
-  });
-  const userJson = await response.json();
+
+  const userJson = await getUserData(jwt);
 
   userJson.backup_codes_verified = true;
   await fetch(USER_PATH, {
@@ -275,15 +351,18 @@ export const clearPendingTransactions = () =>
     })
     .then(async response => {
       const pendingTransactions = response.body;
-      await pendingTransactions.map((TxWithMetadataSchema: TxWithMetadata) =>
-        cy.request({
-          url: `${PENDING_TRANSACTIONS_PATH}/${TxWithMetadataSchema.transaction.hash}`,
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
-          },
-        }),
+      await pendingTransactions.map((tx: any) =>
+        // no deserializer used, parse snake case
+        tx.transaction_type === OOO_TRANSACTION_TYPE
+          ? removePendingExternalTransaction()
+          : cy.request({
+              url: `${PENDING_TRANSACTIONS_PATH}/${tx.transaction.hash}`,
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+              },
+            }),
       );
     });
 

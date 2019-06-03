@@ -1,4 +1,8 @@
-import { TGeneralEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  TCompanyEtoData,
+  TEtoSpecsData,
+  TGeneralEtoData,
+} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { createAction, createActionFactory, createSimpleAction } from "../actionsUtils";
 
@@ -17,8 +21,10 @@ export const etoFlowActions = {
   cleanupStartDate: () => createSimpleAction("ETO_FLOW_CLEANUP_START_DATE_TX"),
   submitDataStart: () => createSimpleAction("ETO_FLOW_SUBMIT_DATA_START"),
   publishDataStart: createActionFactory("ETO_FLOW_PUBLISH_DATA_START"),
-  setIssuerEtoPreviewCode: (etoPreviewCode: string) =>
-    createAction("ETO_FLOW_SET_ISSUER_ETO_PREVIEW_CODE", { etoPreviewCode }),
+  setEto: createActionFactory(
+    "ETO_FLOW_SET_ETO",
+    ({ eto, company }: { eto: TEtoSpecsData; company?: TCompanyEtoData }) => ({ eto, company }),
+  ),
   saveDataStart: (data: Partial<TGeneralEtoData>) =>
     createAction("ETO_FLOW_SAVE_DATA_START", { data }),
   changeBookBuildingStatus: (status: boolean) =>

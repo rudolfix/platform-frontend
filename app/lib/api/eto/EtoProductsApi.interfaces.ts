@@ -16,19 +16,18 @@ export enum EOfferingDocumentType {
 }
 
 export enum EJurisdiction {
-  GERMANY = "de",
-  LIECHTENSTEIN = "li",
+  GERMANY = "DE",
+  LIECHTENSTEIN = "LI",
 }
 
 export enum EProductName {
-  HNWI_ETO_DE = "hnwi eto de",
-  HNWI_ETO_LI = "hnwi eto li",
-  PRIVATE_ETO_LI = "private eto li",
+  HNWI_ETO_DE = "hnwi eto de vma",
+  HNWI_ETO_LI = "hnwi eto li security",
   MINI_ETO_LI = "mini eto li",
-  RETAIL_ETO_DE = "retail eto de",
+  RETAIL_ETO_DE = "retail eto de vma",
   RETAIL_ETO_LI_SECURITY = "retail eto li security",
   RETAIL_ETO_LI_VMA = "retail eto li vma",
-  FIFTH_FORCE_ETO = "ff eto",
+  FIFTH_FORCE_ETO = "hnwi eto de security",
 }
 
 export const EtoProductSchema = YupTS.object({
@@ -55,6 +54,7 @@ export const EtoProductSchema = YupTS.object({
   name: YupTS.string<EProductName>(),
   offeringDocumentSubtype: YupTS.string<EOfferingDocumentSubtype>().optional(),
   offeringDocumentType: YupTS.string<EOfferingDocumentType>(),
+  dateToWhitelistMinDuration: YupTS.number(),
 });
 
 export const EtoProductsSchema = YupTS.array(EtoProductSchema);

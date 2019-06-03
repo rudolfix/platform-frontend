@@ -10,7 +10,8 @@ import {
   mediaRequiredForm,
 } from "./fixtures";
 
-describe("Eto Forms submit preview", () => {
+describe("Eto Forms submit preview", function(): void {
+  this.retries(2);
   it("should fill required fields and submit preview", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
       goToEtoDashboard();

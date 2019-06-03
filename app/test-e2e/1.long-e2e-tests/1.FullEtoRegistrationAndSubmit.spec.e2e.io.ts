@@ -15,10 +15,26 @@ import { fillForm } from "../utils/forms";
 import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
+import { generateRandomSeedAndAddress } from "../utils/generateRandomSeedAndAddress";
+import { cyPromise } from "../utils/cyPromise";
 
 describe("Eto Forms", () => {
+  let generatedSeed;
+  it("should login user correcty", function(): void {
+    // TODO: Investigate the case where user sometimes doesn't have KYC this only happens on CI
+    // Having tests that relay on each other is an anti pattern but this is a special case since the test
+    // is very long Its better to retry on a smaller test that has a side effect to login as a real user
+    this.retries(2);
+    cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
+      generatedSeed = seed.join(" ");
+      createAndLoginNewUser({ type: "issuer", kyc: "business", seed: generatedSeed }).then(() => {
+        goToEtoDashboard();
+        cy.get(tid("eto-progress-widget-about")).should("exist");
+      });
+    });
+  });
   it("will fill and submit them all", () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
+    createAndLoginNewUser({ type: "issuer", onlyLogin: true, seed: generatedSeed }).then(() => {
       goToEtoDashboard();
 
       cy.get(tid("eto-progress-widget-eto-terms")).should("not.exist");
@@ -65,7 +81,7 @@ describe("Eto Forms", () => {
           {
             productId: {
               // Value is an id of a product taken from EtoProductApi
-              value: "0x0000000000000000000000000000000000000007",
+              value: "0xfcBFa87AAeB8F2eFF1524c16F5a8d69B53da7f78",
               type: "radio",
             },
           },

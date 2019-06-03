@@ -11,7 +11,7 @@ import { appConnect } from "../../../../store";
 import { EthereumAddressWithChecksum } from "../../../../types";
 import { commitmentStatusLink } from "../../../appRouteUtils";
 import { Button } from "../../../shared/buttons";
-import { selectCurrencyCode } from "../../../shared/formatters/Money";
+import { selectCurrencyCode } from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { ExternalLink } from "../../../shared/links";
 import { AcceptTransactionDetails } from "./AcceptTransactionDetails";

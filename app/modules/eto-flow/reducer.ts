@@ -4,7 +4,8 @@ import { actions } from "../actions";
 import { IEtoFlowState } from "./types";
 
 export const etoFlowInitialState: IEtoFlowState = {
-  etoPreviewCode: undefined,
+  eto: undefined,
+  company: undefined,
   products: undefined,
   loading: false,
   saving: false,
@@ -23,10 +24,11 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         ...state,
         loading: true,
       };
-    case "ETO_FLOW_SET_ISSUER_ETO_PREVIEW_CODE":
+    case actions.etoFlow.setEto.getType():
       return {
         ...state,
-        etoPreviewCode: action.payload.etoPreviewCode,
+        eto: action.payload.eto,
+        company: action.payload.company,
         loading: false,
         saving: false,
       };

@@ -120,6 +120,7 @@ export enum InvestorPortfolioMessage {
 }
 
 export enum EtoFlowMessage {
+  ETO_LOAD_FAILED = "etoLoadFailed",
   ETO_PRODUCTS_LOAD_FAILED = "etoProductsLoadFailed",
   ETO_TERMS_PRODUCT_CHANGE_FAILED = "etoTermsProductChangeFailed",
   ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL = "etoTermsProductChangeSuccessful",
@@ -498,7 +499,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL:
       return <FormattedMessage id="modules.eto-flow.change-product.successful" />;
     case EtoFlowMessage.ETO_PRODUCTS_LOAD_FAILED:
-      return <FormattedMessage id="modules.eto-flow.load-product.failed" />;
+      return <FormattedMessage id="modules.eto-flow.load-products.failed" />;
+    case EtoFlowMessage.ETO_LOAD_FAILED:
+      return <FormattedMessage id="modules.eto-flow.load.failed" />;
 
     // NEVER DO THIS!
     // THIS IS a misuse! It's only for tests, so that we don't bloat locales.json with test strings!

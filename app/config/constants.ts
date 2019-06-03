@@ -1,8 +1,10 @@
 import BigNumber from "bignumber.js";
 
-export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 3;
+export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
 // If running in cypress wait for a short time
-export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME = process.env.IS_CYPRESS ? 1000 : 1000 * 60 * 3;
+export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME = process.env.IS_CYPRESS
+  ? 1000 * 60
+  : 1000 * 60 * 3;
 
 /**
  * Platform Constants
@@ -43,11 +45,6 @@ export const Q18 = new BigNumber(10).pow(MONEY_DECIMALS);
  */
 export const ETHEREUM_ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-// TODO: Replace by loading terms from universe (smart contract)
-export const PlatformTerms = {
-  MIN_TICKET_EUR_ULPS: Q18.mul(100),
-};
-
 /*
  * ETO REGISTRATION CONSTANTS
  */
@@ -61,6 +58,7 @@ export const NEW_SHARES_TO_ISSUE_IN_WHITELIST = 1;
 export const NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS = 1;
 export const BOOKBUILDING_WATCHER_DELAY = 6000;
 export const COMPANY_TAGS_LIMIT = 6;
+export const DEFAULT_DATE_TO_WHITELIST_MIN_DURATION = 7 * 24 * 60 * 60;
 
 /**
  * Constants for react components

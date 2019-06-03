@@ -45,12 +45,12 @@ import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { ButtonSize, ButtonTextPosition } from "../../../shared/buttons/Button";
-import { selectCurrencyCode } from "../../../shared/formatters/Money";
 import {
   ECurrency,
-  EMoneyInputFormat,
+  ENumberInputFormat,
   ERoundingMode,
   formatThousands,
+  selectCurrencyCode,
 } from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedMoneyInput } from "../../../shared/MaskedMoneyInput";
@@ -195,7 +195,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
               <MaskedMoneyInput
                 name={"euroValue"}
                 value={this.props.euroValue}
-                inputFormat={EMoneyInputFormat.ULPS}
+                inputFormat={ENumberInputFormat.ULPS}
                 currency={ECurrency.EUR_TOKEN}
                 onChangeFn={this.props.changeEuroValue}
                 data-test-id="invest-modal-eur-field"
@@ -215,7 +215,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
               <MaskedMoneyInput
                 name={"ethValue"}
                 currency={ECurrency.ETH}
-                inputFormat={EMoneyInputFormat.ULPS}
+                inputFormat={ENumberInputFormat.ULPS}
                 value={this.props.ethValue}
                 onChangeFn={this.props.changeEthValue}
                 placeholder={`${intl.formatIntlMessage(
@@ -301,14 +301,14 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                   <span className="text-warning" data-test-id="invest-modal-gas-cost">
                     <Money
                       value={gasCostEuro}
-                      format={EMoneyInputFormat.ULPS}
+                      format={ENumberInputFormat.ULPS}
                       currency={ECurrency.EUR}
                       roundingMode={ERoundingMode.UP}
                     />
                     {" ≈ "}
                     <Money
                       value={gasCostEth}
-                      format={EMoneyInputFormat.ULPS}
+                      format={ENumberInputFormat.ULPS}
                       currency={ECurrency.ETH}
                       roundingMode={ERoundingMode.UP}
                     />
@@ -320,14 +320,14 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                 <span className="text-warning" data-test-id="invest-modal-total-cost">
                   <Money
                     value={this.calculateTotalCostIfValid(gasCostEuro, euroValue)}
-                    format={EMoneyInputFormat.ULPS}
+                    format={ENumberInputFormat.ULPS}
                     currency={ECurrency.EUR}
                     roundingMode={ERoundingMode.DOWN}
                   />
                   {" ≈ "}
                   <Money
                     value={this.calculateTotalCostIfValid(gasCostEth, ethValue)}
-                    format={EMoneyInputFormat.ULPS}
+                    format={ENumberInputFormat.ULPS}
                     currency={ECurrency.ETH}
                     roundingMode={ERoundingMode.DOWN}
                   />

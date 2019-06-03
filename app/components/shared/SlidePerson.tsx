@@ -28,8 +28,6 @@ const SlidePerson: React.FunctionComponent<IProps> = ({
   socialChannels,
   showLabels,
   isClickable,
-  description,
-  elementWidth,
 }) => (
   <div className={cn(styles.slidePerson, layout)}>
     <div className={styles.profile}>
@@ -48,9 +46,6 @@ const SlidePerson: React.FunctionComponent<IProps> = ({
         />
       )}
     </div>
-    {layout === "horizontal" && (!elementWidth || elementWidth >= 300) && (
-      <p className={styles.bio}>{description}</p>
-    )}
   </div>
 );
 

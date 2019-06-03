@@ -1,14 +1,10 @@
-import { INV_ETH_ICBM_NO_KYC } from "../fixtures";
 import { goToPortfolio } from "../utils";
 import { tid } from "../utils/selectors";
-import { createAndLoginNewUser } from "../utils/userHelpers";
+import { loginFixtureAccount } from "../utils/userHelpers";
 
 describe("Investor blocked payout", () => {
   beforeEach(() =>
-    createAndLoginNewUser({
-      type: "investor",
-      kyc: "business",
-      seed: INV_ETH_ICBM_NO_KYC,
+    loginFixtureAccount("INV_ETH_ICBM_NO_KYC", {
       clearPendingTransactions: true,
     }),
   );

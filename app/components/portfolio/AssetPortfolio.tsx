@@ -9,7 +9,7 @@ import { appConnect } from "../../store";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Button, ButtonSize, EButtonLayout, EButtonTheme } from "../shared/buttons";
-import { selectCurrencyCode } from "../shared/formatters/Money";
+import { selectCurrencyCode } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
 import { LoadingIndicator } from "../shared/loading-indicator";

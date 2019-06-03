@@ -1,8 +1,10 @@
+import BigNumber from "bignumber.js";
 import { createSelector } from "reselect";
 
+import { DEFAULT_DATE_TO_WHITELIST_MIN_DURATION } from "../../config/constants";
 import {
   EEtoState,
-  TCompanyEtoData,
+  TEtoSpecsData,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
@@ -16,31 +18,52 @@ import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
 import { selectIsUserEmailVerified } from "../auth/selectors";
-import { selectPlatformTermsConstants } from "../contracts/selectors";
+import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
-import { selectEto, selectEtoWithCompanyAndContract } from "../eto/selectors";
-import { EETOStateOnChain } from "../eto/types";
+import { selectEtoContract } from "../eto/selectors";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
+import { getEtoSubState } from "../eto/utils";
+import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
+import { IEtoFlowState } from "./types";
 import { isValidEtoStartDate, sortProducts } from "./utils";
 
 export const selectIssuerEtoFlow = (state: IAppState) => state.etoFlow;
 
-export const selectIssuerEtoPreviewCode = (state: IAppState) => state.etoFlow.etoPreviewCode;
+export const selectIssuerEto: (state: IAppState) => TEtoSpecsData | undefined = createSelector(
+  selectIssuerEtoFlow,
+  (state: DeepReadonly<IEtoFlowState>) => state.eto,
+);
 
-export const selectIssuerEto = (state: IAppState) => {
-  const issuerEtoPreviewCode = selectIssuerEtoPreviewCode(state);
-  if (issuerEtoPreviewCode) {
-    return selectEto(state, issuerEtoPreviewCode);
-  }
+export const selectIssuerEtoPreviewCode = createSelector(
+  selectIssuerEto,
+  (eto: TEtoSpecsData | undefined) => (eto ? eto.previewCode : undefined),
+);
 
-  return undefined;
-};
+export const selectIssuerCompany = createSelector(
+  selectIssuerEtoFlow,
+  (state: DeepReadonly<IEtoFlowState>) => state.company,
+);
 
-export const selectIssuerEtoWithCompanyAndContract = (state: IAppState) => {
-  const issuerEtoPreviewCode = selectIssuerEtoPreviewCode(state);
+export const selectIssuerEtoWithCompanyAndContract = (
+  state: IAppState,
+): TEtoWithCompanyAndContract | undefined => {
+  const eto = selectIssuerEto(state);
+  const company = selectIssuerCompany(state);
 
-  if (issuerEtoPreviewCode) {
-    return selectEtoWithCompanyAndContract(state, issuerEtoPreviewCode);
+  if (eto && company) {
+    const stats = selectBookbuildingStats(state, eto.etoId);
+    const isEligibleToPreEto = selectIsEligibleToPreEto(state, eto.etoId);
+
+    const contract = selectEtoContract(state, eto.previewCode);
+    const subState = getEtoSubState({ eto, contract, stats, isEligibleToPreEto });
+
+    return {
+      ...eto,
+      subState,
+      company,
+      contract,
+    };
   }
 
   return undefined;
@@ -102,14 +125,12 @@ export const selectIssuerEtoOfferingDocumentType = (
   return undefined;
 };
 
-export const selectIssuerCompany = (state: IAppState): TCompanyEtoData | undefined => {
-  const eto = selectIssuerEtoWithCompanyAndContract(state);
-
-  if (eto) {
-    return eto.company;
-  }
-
-  return undefined;
+export const selectIssuerEtoDateToWhitelistMinDuration = (state: IAppState): BigNumber => {
+  const eto = selectIssuerEto(state);
+  // in case of undefined return platform default (7 days)
+  return new BigNumber(
+    eto ? eto.product.dateToWhitelistMinDuration : DEFAULT_DATE_TO_WHITELIST_MIN_DURATION,
+  );
 };
 
 export const selectIssuerEtoLoading = (state: IAppState): boolean => state.etoFlow.loading;
@@ -190,11 +211,10 @@ export const selectIsGeneralEtoLoading = (state: IAppState) =>
 export const selectNewPreEtoStartDate = (state: IAppState) => state.etoFlow.newStartDate;
 
 export const selectPreEtoStartDateFromContract = (state: IAppState) => {
-  const code = selectIssuerEtoPreviewCode(state);
+  const eto = selectIssuerEtoWithCompanyAndContract(state);
 
-  if (code) {
-    const eto = selectEtoWithCompanyAndContract(state, code);
-    return eto && eto.contract && eto.contract.startOfStates[EETOStateOnChain.Whitelist];
+  if (eto && eto.contract) {
+    return eto.contract.startOfStates[EETOStateOnChain.Whitelist];
   }
 
   return undefined;
@@ -204,16 +224,26 @@ export const selectPreEtoStartDate = (state: IAppState) =>
   selectNewPreEtoStartDate(state) || selectPreEtoStartDateFromContract(state);
 
 export const selectCanChangePreEtoStartDate = (state: IAppState) => {
-  const constants = selectPlatformTermsConstants(state);
+  const minDuration = selectIssuerEtoDateToWhitelistMinDuration(state);
   const date = selectPreEtoStartDateFromContract(state);
-  return !date || isValidEtoStartDate(date, constants.DATE_TO_WHITELIST_MIN_DURATION);
+  return !date || isValidEtoStartDate(date, minDuration);
 };
 
 export const selectIsNewPreEtoStartDateValid = (state: IAppState) => {
-  const constants = selectPlatformTermsConstants(state);
+  const minDuration = selectIssuerEtoDateToWhitelistMinDuration(state);
   const date = selectNewPreEtoStartDate(state);
-  return date && isValidEtoStartDate(date, constants.DATE_TO_WHITELIST_MIN_DURATION);
+  return date && isValidEtoStartDate(date, minDuration);
 };
+
+const recognizedProductTypes = [
+  EProductName.HNWI_ETO_DE,
+  EProductName.HNWI_ETO_LI,
+  EProductName.MINI_ETO_LI,
+  EProductName.RETAIL_ETO_DE,
+  EProductName.RETAIL_ETO_LI_SECURITY,
+  EProductName.RETAIL_ETO_LI_VMA,
+  EProductName.FIFTH_FORCE_ETO,
+];
 
 export const selectAvailableProducts = createSelector(
   selectIssuerEtoFlow,
@@ -222,7 +252,11 @@ export const selectAvailableProducts = createSelector(
       const availableProducts = products
         .filter(product => product.available)
         // TODO: remove after platform-backend/#1550 is done
-        .filter(product => product.name !== EProductName.FIFTH_FORCE_ETO);
+        .filter(product => product.name !== EProductName.FIFTH_FORCE_ETO)
+        // Remove unrecognized product types
+        .filter(product =>
+          recognizedProductTypes.some(recognizedProd => recognizedProd === product.name),
+        );
 
       return sortProducts(availableProducts);
     }

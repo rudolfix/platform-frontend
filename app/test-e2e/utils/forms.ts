@@ -43,7 +43,8 @@ export const fillField = (key: string, value: string, parent: string = "body") =
   cy.get(parent).within(() => {
     cy.get(formField(key))
       .clear()
-      .type(value);
+      .type(value)
+      .blur();
   });
 };
 
@@ -89,7 +90,7 @@ export const fillForm = (
     else if (field.type === "date") {
       const values = field.value.split("/");
       cy.get(formField(key)).each((subField, index) => {
-        cy.wrap(subField).type(values[index]);
+        cy.wrap(subField).type(values[index], { delay: 0 });
       });
     }
     // select field

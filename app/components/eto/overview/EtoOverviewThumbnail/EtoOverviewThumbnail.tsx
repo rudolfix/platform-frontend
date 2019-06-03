@@ -3,14 +3,13 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { selectEtoSubState } from "../../../../modules/eto/selectors";
 import { EEtoSubState, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { FUNDING_ROUNDS } from "../../constants";
-import { EProjectStatusType, ETOState } from "../../shared/ETOState";
+import { ETOState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
 import { EtoCardPanel } from "./EtoCardPanel";
 import { EtoStatusManager } from "./EtoStatusManager";
@@ -25,10 +24,6 @@ interface IDispatchProps {
   navigateToEto: () => void;
 }
 
-interface IStateProps {
-  etoSubState: EEtoSubState | undefined;
-}
-
 interface IWithProps {
   showQuote: boolean;
 }
@@ -36,8 +31,8 @@ interface IWithProps {
 const defaultEmpty = "-";
 
 const EtoOverviewStatusLayout: React.FunctionComponent<
-  IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps & IWithProps
-> = ({ eto, etoSubState, navigateToEto }) => (
+  IExternalProps & CommonHtmlProps & IDispatchProps & IWithProps
+> = ({ eto, navigateToEto }) => (
   <EtoCardPanel data-test-id={`eto-overview-${eto.etoId}`} onClick={navigateToEto}>
     <Cover
       className={styles.cover}
@@ -51,18 +46,14 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
       jurisdiction={eto.product.jurisdiction}
     />
 
-    <ETOState
-      className={styles.statusOfEto}
-      previewCode={eto.previewCode}
-      type={EProjectStatusType.EXTENDED}
-    />
+    <ETOState className={styles.statusOfEto} eto={eto} />
 
     <section className={styles.content}>
       <Heading titleClassName="text-truncate" decorator={false} level={2} size={EHeadingSize.HUGE}>
         {eto.company.brandName}
       </Heading>
 
-      {etoSubState === EEtoSubState.COMING_SOON ? (
+      {eto.subState === EEtoSubState.COMING_SOON ? (
         <p data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
           {eto.company.keyQuoteFounder}
         </p>
@@ -95,7 +86,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
             </div>
           </div>
 
-          <EtoStatusManager eto={eto} etoSubState={etoSubState} />
+          <EtoStatusManager eto={eto} />
         </>
       )}
     </section>
@@ -103,13 +94,10 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
 );
 
 const EtoOverviewThumbnail = compose<
-  IExternalProps & CommonHtmlProps & IStateProps & IDispatchProps & IWithProps,
+  IExternalProps & CommonHtmlProps & IDispatchProps & IWithProps,
   IExternalProps & CommonHtmlProps
 >(
-  appConnect<IStateProps, IDispatchProps, IExternalProps>({
-    stateToProps: (state, props) => ({
-      etoSubState: selectEtoSubState(state, props.eto.previewCode),
-    }),
+  appConnect<{}, IDispatchProps, IExternalProps>({
     dispatchToProps: (dispatch, { eto }) => ({
       navigateToEto: () =>
         dispatch(push(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))),

@@ -17,12 +17,12 @@ import {
   selectIsMarketingDataVisibleInPreview,
   selectIsOfferingDocumentSubmitted,
   selectIssuerEtoOfferingDocumentType,
-  selectIssuerEtoPreviewCode,
-  selectIssuerEtoState,
+  selectIssuerEtoWithCompanyAndContract,
   selectIsTermSheetSubmitted,
   userHasKycAndEmailVerified,
 } from "../../modules/eto-flow/selectors";
 import { calculateMarketingEtoData, calculateSettingsEtoData } from "../../modules/eto-flow/utils";
+import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -56,7 +56,6 @@ interface IStateProps {
   userHasKycAndEmailVerified: boolean;
   requestStatus?: ERequestStatus;
   etoState?: EEtoState;
-  previewCode?: string;
   canEnableBookbuilding: boolean;
   marketingFormsProgress?: number;
   etoSettingsFormsProgress?: number;
@@ -80,8 +79,7 @@ interface IComponentProps extends ISubmissionProps {
   isLightWallet: boolean;
   userHasKycAndEmailVerified: boolean;
   requestStatus?: ERequestStatus;
-  etoState?: EEtoState;
-  previewCode?: string;
+  eto?: TEtoWithCompanyAndContract;
   canEnableBookbuilding: boolean;
   etoFormProgress?: number;
   isTermSheetSubmitted?: boolean;
@@ -128,29 +126,27 @@ const EtoProgressDashboardSection: React.FunctionComponent<ISubmissionProps> = (
 );
 
 interface IEtoStateRender {
-  etoState?: EEtoState;
+  eto?: TEtoWithCompanyAndContract;
   shouldViewSubmissionSection?: boolean;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
   canEnableBookbuilding: boolean;
-  previewCode?: string;
   offeringDocumentType: EOfferingDocumentType | undefined;
   isMarketingDataVisibleInPreview?: EEtoMarketingDataVisibleInPreview;
   shouldViewEtoSettings?: boolean;
 }
 
 const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> = ({
-  etoState,
+  eto,
   shouldViewSubmissionSection,
   isTermSheetSubmitted,
   isOfferingDocumentSubmitted,
   canEnableBookbuilding,
-  previewCode,
   offeringDocumentType,
   isMarketingDataVisibleInPreview,
   shouldViewEtoSettings,
 }) => {
-  if (!previewCode) {
+  if (!eto) {
     return (
       <Container columnSpan={EColumnSpan.THREE_COL}>
         <LoadingIndicator />
@@ -159,12 +155,14 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   }
   const dashboardTitle = (
     <ETOState
-      previewCode={previewCode}
+      eto={eto}
+      isIssuer={true}
       size={EProjectStatusSize.LARGE}
       layout={EProjectStatusLayout.BLACK}
     />
   );
-  switch (etoState) {
+
+  switch (eto.state) {
     case EEtoState.PREVIEW:
       return (
         <>
@@ -248,12 +246,11 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
 class EtoDashboardComponent extends React.Component<IComponentProps> {
   render(): React.ReactNode {
     const {
-      etoState,
+      eto,
       canEnableBookbuilding,
       shouldViewEtoSettings,
       isTermSheetSubmitted,
       isOfferingDocumentSubmitted,
-      previewCode,
       offeringDocumentType,
       isVerificationSectionDone,
       userHasKycAndEmailVerified,
@@ -285,9 +282,8 @@ class EtoDashboardComponent extends React.Component<IComponentProps> {
             isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
             shouldViewEtoSettings={shouldViewEtoSettings}
             shouldViewSubmissionSection={shouldViewSubmissionSection}
-            etoState={etoState}
+            eto={eto}
             canEnableBookbuilding={canEnableBookbuilding}
-            previewCode={previewCode}
             offeringDocumentType={offeringDocumentType}
             isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
           />
@@ -306,8 +302,7 @@ const EtoDashboard = compose<React.FunctionComponent>(
       isLightWallet: selectIsLightWallet(s.web3),
       userHasKycAndEmailVerified: userHasKycAndEmailVerified(s),
       requestStatus: selectKycRequestStatus(s),
-      etoState: selectIssuerEtoState(s),
-      previewCode: selectIssuerEtoPreviewCode(s),
+      eto: selectIssuerEtoWithCompanyAndContract(s),
       canEnableBookbuilding: selectCanEnableBookBuilding(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
       isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),

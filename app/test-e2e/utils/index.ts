@@ -1,8 +1,18 @@
 import BigNumber from "bignumber.js";
-import { get } from "lodash";
+import { floor, get } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
-import { stripNumberFormatting } from "../../components/shared/formatters/utils";
+import { getRange } from "../../components/shared/formatters/FormatShortNumber";
+import {
+  EAbbreviatedNumberOutputFormat,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  ERoundingMode,
+  formatNumber,
+  stripNumberFormatting,
+  THumanReadableFormat,
+  toFixedPrecision,
+} from "../../components/shared/formatters/utils";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import { EthereumAddress } from "../../types";
 import { mockApiUrl } from "../config";
@@ -71,7 +81,9 @@ export const typeLightwalletRecoveryPhrase = (words: string[]) => {
 
 export const confirmAccessModal = (password: string = DEFAULT_PASSWORD) => {
   cy.get(tid("access-light-wallet-password-input")).type(password);
-  cy.get(tid("access-light-wallet-confirm")).click();
+  cy.get(tid("access-light-wallet-confirm"))
+    .should("be.enabled")
+    .click();
 };
 
 export const confirmAccessModalNoPW = () => {
@@ -82,20 +94,47 @@ export const closeModal = () => {
   cy.get(tid("modal-close-button")).click();
 };
 
-export const getLatestVerifyUserEmailLink = () =>
+export const getLatestVerifyUserEmailLink = (email: string, attempts = 3): any =>
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-    const activationLink = get(r, "body[0].personalizations[0].substitutions.-activationLink-");
-    // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
-    return activationLink.replace("https://platform.neufund.io", "");
+    const latestEmailByUser = r.body.find(
+      (body: { personalizations: { to: { email: string }[] }[] }) =>
+        body.personalizations[0].to[0].email.toLowerCase() === email.toLowerCase(),
+    );
+    const activationLink = get(
+      latestEmailByUser,
+      "personalizations[0].substitutions.-activationLink-",
+    );
+    if (!activationLink) {
+      expect(attempts).to.be.gt(0);
+      cy.wait(1000);
+      return getLatestVerifyUserEmailLink(email, attempts - 1);
+    } else {
+      // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
+      return activationLink.replace("platform.neufund.io", "localhost:9090");
+    }
   });
 
-export const verifyLatestUserEmail = () => {
+export const verifyLatestUserEmail = (email: string, attempts = 3) => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-    const activationLink = get(r, "body[0].personalizations[0].substitutions.-activationLink-");
-    // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
-    const cleanedActivationLink = activationLink.replace("platform.neufund.io", "localhost:9090");
-    cy.visit(cleanedActivationLink);
-    cy.get(tid("email-verified")); // wait for the email verified button to show
+    const latestEmailByUser = r.body.find(
+      (body: { personalizations: { to: { email: string }[] }[] }) =>
+        body.personalizations[0].to[0].email.toLowerCase() === email.toLowerCase(),
+    );
+    const activationLink = get(
+      latestEmailByUser,
+      "personalizations[0].substitutions.-activationLink-",
+    );
+
+    if (!activationLink) {
+      expect(attempts).to.be.gt(0);
+      cy.wait(1000);
+      verifyLatestUserEmail(email, attempts - 1);
+    } else {
+      // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
+      const cleanedActivationLink = activationLink.replace("platform.neufund.io", "localhost:9090");
+      cy.visit(cleanedActivationLink);
+      cy.get(tid("email-verified")); // wait for the email verified button to show
+    }
   });
 };
 
@@ -123,20 +162,24 @@ export const registerWithLightWallet = (
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
-  cy.get(tid("wallet-selector-register-button")).awaitedClick();
-  cy.get(tid("wallet-selector-register-button")).should("be.disabled");
+  cy.get(tid("wallet-selector-register-button"))
+    .should("be.enabled")
+    .awaitedClick()
+    .should("be.disabled");
+
+  acceptTOS();
 
   if (asIssuer) {
     assertEtoDashboard();
   } else {
     assertDashboard();
   }
-
-  acceptTOS();
 };
 
 export const acceptTOS = () => {
-  cy.get(tid("modals.accept-tos.accept-button-hidden")).awaitedClick();
+  cy.get(tid("modals.accept-tos.accept-button"))
+    .should("be.enabled")
+    .click();
 };
 
 export const logoutViaTopRightButton = () => {
@@ -159,7 +202,7 @@ export const loginWithLightWallet = (email: string, password: string) => {
 
 export const acceptWallet = () => {
   cy.get(tid("access-light-wallet-password-input")).type(DEFAULT_PASSWORD);
-  cy.get(tid("access-light-wallet-confirm")).awaitedClick(1500);
+  cy.get(tid("access-light-wallet-confirm")).awaitedClick();
 };
 
 export const etoFixtureByName = (name: string) => {
@@ -176,6 +219,26 @@ export const etoFixtureAddressByName = (name: string): string => {
     a => ETO_FIXTURES[a].name === name,
   )! as EthereumAddress;
   return makeEthereumAddressChecksummed(address);
+};
+
+export const accountFixtureByName = (name: string) => {
+  const address = Object.keys(FIXTURE_ACCOUNTS).find(f => FIXTURE_ACCOUNTS[f].name === name)!;
+  return FIXTURE_ACCOUNTS[address];
+};
+
+export const accountFixtureAddress = (name: string) => {
+  const fixture = accountFixtureByName(name);
+  return makeEthereumAddressChecksummed(fixture.definition.address);
+};
+
+export const accountFixtureSeed = (name: string) => {
+  const fixture = accountFixtureByName(name);
+  return fixture.definition.seed.toString();
+};
+
+export const accountFixturePrivateKey = (name: string) => {
+  const fixture = accountFixtureByName(name);
+  return fixture.definition.privateKey as string;
 };
 
 export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hookName) as any);
@@ -224,6 +287,54 @@ export const removePendingExternalTransaction = () => {
 
   assertWaitForExternalPendingTransactionCount(0);
 };
+
+export const getFormattedNumber = (
+  value: number | undefined,
+  roundingMode = ERoundingMode.UP,
+  decimalPlaces = 4,
+  inputFormat = ENumberInputFormat.FLOAT,
+  outputFormat: THumanReadableFormat = ENumberOutputFormat.FULL,
+  isPrice = false,
+) =>
+  value
+    ? formatNumber({
+        value,
+        roundingMode,
+        decimalPlaces,
+        inputFormat,
+        isPrice,
+        outputFormat,
+      })
+    : "Unlimited";
+
+export const getShortFormattedNumber = (
+  value: number,
+  roundingMode = ERoundingMode.UP,
+  decimalPlaces = 4,
+  outputFormat = EAbbreviatedNumberOutputFormat.LONG,
+  inputFormat = ENumberInputFormat.FLOAT,
+) => {
+  const rangeKeys: { [key: number]: string } = {
+    1000: "K",
+    1000000: "M",
+  };
+
+  const number = parseFloat(
+    toFixedPrecision({ value, roundingMode, inputFormat, decimalPlaces, outputFormat }),
+  );
+  const range = getRange(number);
+
+  const shortVal = floor(number / range!.divider, 1).toString();
+
+  const rangeIndicator = rangeKeys[range!.divider];
+
+  return `${shortVal}${rangeIndicator}`;
+};
+
+export const getPercentage = (value: number) => `${value * 100}%`;
+
+export const getYesOrNo = (value: any | undefined, assertion: any, returnTBAinsteadOfNo = false) =>
+  value ? (value === assertion ? "Yes" : returnTBAinsteadOfNo ? "TBA" : "No") : "TBA";
 
 // Reexport assertions so they are easy accessed through utils
 export * from "./assertions";

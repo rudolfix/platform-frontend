@@ -12,25 +12,24 @@ import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoun
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoView } from "./shared/EtoView";
 
-type TProps = {
+type TStateProps = {
+  eto: TEtoWithCompanyAndContract | undefined;
+  isInvestorView: boolean;
+};
+
+type TViewProps = {
   eto: TEtoWithCompanyAndContract;
   isInvestorView: boolean;
 };
 
-interface IRouterParams {
-  previewCode: string;
-  jurisdiction: string;
-}
-type TStateProps = Partial<TProps>;
-
-export const EtoIssuerView = compose<TProps, {}>(
+export const EtoIssuerView = compose<TViewProps, {}>(
   createErrorBoundary(ErrorBoundaryLayoutAuthorized),
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.etoFlow.loadIssuerEto());
     },
   }),
-  appConnect<TStateProps, {}, IRouterParams>({
+  appConnect<TStateProps>({
     stateToProps: state => ({
       eto: selectIssuerEtoWithCompanyAndContract(state),
       isInvestorView: false,

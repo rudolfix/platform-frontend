@@ -9,8 +9,8 @@ import { FormatNumber } from "../../../../shared/formatters/FormatNumber";
 import { MoneyNew } from "../../../../shared/formatters/Money";
 import {
   ECurrency,
-  EHumanReadableFormat,
-  EMoneyInputFormat,
+  ENumberInputFormat,
+  ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
 import { InvestmentProgress } from "./InvestmentProgress";
 
@@ -36,20 +36,19 @@ const InvestmentLayout: React.FunctionComponent<TInvestWidgetProps> = ({ eto }) 
           <div>
             <MoneyNew
               value={eto.contract!.totalInvestment.etherTokenBalance}
-              inputFormat={EMoneyInputFormat.ULPS}
+              inputFormat={ENumberInputFormat.ULPS}
               moneyFormat={ECurrency.ETH}
-              outputFormat={EHumanReadableFormat.FULL}
+              outputFormat={ENumberOutputFormat.FULL}
             />
             <br />
             <MoneyNew
               value={eto.contract!.totalInvestment.euroTokenBalance}
-              inputFormat={EMoneyInputFormat.ULPS}
+              inputFormat={ENumberInputFormat.ULPS}
               moneyFormat={ECurrency.EUR_TOKEN}
-              outputFormat={EHumanReadableFormat.FULL}
+              outputFormat={ENumberOutputFormat.FULL}
             />
           </div>
         )}
-
         {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (
           <div>
             <FormattedMessage
@@ -58,7 +57,8 @@ const InvestmentLayout: React.FunctionComponent<TInvestWidgetProps> = ({ eto }) 
                 totalInvestors: (
                   <FormatNumber
                     value={totalInvestors}
-                    outputFormat={EHumanReadableFormat.INTEGER}
+                    outputFormat={ENumberOutputFormat.INTEGER}
+                    inputFormat={ENumberInputFormat.FLOAT}
                   />
                 ),
               }}

@@ -1,16 +1,13 @@
-import { INV_ETH_EUR_ICBM_HAS_KYC } from "../fixtures";
 import { confirmAccessModal, etoFixtureAddressByName } from "../utils";
 import { goToDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
-import { createAndLoginNewUser } from "../utils/userHelpers";
+import { loginFixtureAccount } from "../utils/userHelpers";
 
 describe("Invest with euro token", () => {
   it("do", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
-    createAndLoginNewUser({
-      type: "investor",
+    loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC", {
       kyc: "business",
-      seed: INV_ETH_EUR_ICBM_HAS_KYC,
       clearPendingTransactions: true,
     }).then(() => {
       goToDashboard();
@@ -18,7 +15,7 @@ describe("Invest with euro token", () => {
       // click invest now button
       cy.get(tid(`eto-overview-${PUBLIC_ETO_ID}`)).click();
       cy.get(tid("eto-invest-now-button-" + PUBLIC_ETO_ID)).click();
-      // select euro from icbm wallet
+      // select ether from icbm wallet
       cy.wait(1000);
       cy.get(tid("investment-type.selector.ICBM_ETH")).check({ force: true });
       cy.get(tid("invest-modal-eth-field"))

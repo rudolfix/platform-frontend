@@ -2,7 +2,7 @@
 set -e
 set -u
 
-BACKEND_SHA=5eb38c0f1c8ca9ec0c7213ed6c1faceeab58a02e
+BACKEND_SHA=39176711b5ade943e67023d7283789cfba08e9d0
 
 # we tag images with shorter SHA
 BACKEND_SHORT_SHA=${BACKEND_SHA:0:7}
@@ -54,11 +54,11 @@ echo ${REGISTRY_PASS} | docker login ${REGISTRY_HOST} --username ${REGISTRY_USER
 echo "Running backend"
 cd ./platform-backend
 
-make docker-pull tag=dev_${BACKEND_SHORT_SHA}
+make docker-pull tag=dev_fixtures_${BACKEND_SHORT_SHA}
 echo "Pulling images done."
 
 make prerequisites-dev
-make run-without-build blocks_freq=0.5 request_timeout=60
+make run-remote-dev-without-build
 
 cd ..
 echo "Backend running"

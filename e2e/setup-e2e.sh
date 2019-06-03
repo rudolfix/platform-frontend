@@ -30,8 +30,8 @@ else
     set -e
 fi
 
-echo "sleeping for 120 seconds to allow for ETOs to settle"
-sleep 120
+echo "sleeping for 60 to spin up containers"
+sleep 60
 
 if lsof -Pi :9090 -sTCP:LISTEN -t > /dev/null ; then
     echo "Detected already started frontend..."

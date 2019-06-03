@@ -1,6 +1,7 @@
+import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
@@ -9,6 +10,7 @@ import { selectBookbuildingStats } from "../../../../modules/bookbuilding-flow/s
 import {
   selectCanEnableBookBuilding,
   selectIsBookBuilding,
+  selectIssuerEtoDateToWhitelistMinDuration,
   selectIssuerEtoId,
   selectMaxPledges,
 } from "../../../../modules/eto-flow/selectors";
@@ -46,6 +48,7 @@ interface IStateProps {
   etoId: string;
   canEnableBookbuilding: boolean;
   columnSpan?: EColumnSpan;
+  minOffsetPeriod: BigNumber;
 }
 
 interface IExternalProps {
@@ -147,6 +150,7 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
   stopBookBuilding,
   bookBuildingStats,
   downloadCSV,
+  minOffsetPeriod,
   etoId,
   canEnableBookbuilding,
   columnSpan,
@@ -188,7 +192,13 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
     return (
       <BookBuildingWidgetLayout
         headerText={<FormattedMessage id="settings.book-building-widget.book-building-enabled" />}
-        text={<FormattedMessage id="settings.book-building-widget.book-building-enabled-text" />}
+        text={
+          <FormattedHTMLMessage
+            tagName="span"
+            id="settings.book-building-widget.book-building-enabled-text"
+            values={{ minOffsetPeriod: minOffsetPeriod.div(60 * 60 * 24).toNumber() }}
+          />
+        }
         buttonText={<FormattedMessage id="settings.book-building-widget.stop-book-building" />}
         onClick={() => stopBookBuilding(etoId)}
         canEnableBookbuilding={canEnableBookbuilding}
@@ -220,6 +230,7 @@ export const BookBuildingWidget = compose<React.FunctionComponent<IExternalProps
         bookBuildingStats: selectBookbuildingStats(state, etoId),
         maxPledges: selectMaxPledges(state),
         canEnableBookbuilding: selectCanEnableBookBuilding(state),
+        minOffsetPeriod: selectIssuerEtoDateToWhitelistMinDuration(state),
       };
     },
     dispatchToProps: dispatch => ({

@@ -189,8 +189,7 @@ function* startSetDateTX(_: TGlobalDependencies, action: TAction): any {
 }
 
 export function* cleanupSetDateTX(): any {
-  const eto = yield select(selectIssuerEto);
-  yield put(actions.eto.loadEto(eto.etoId));
+  yield put(actions.etoFlow.loadIssuerEto());
   yield put(actions.etoFlow.clearNewStartDate());
 }
 

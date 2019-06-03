@@ -3,7 +3,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { IS_CYPRESS, IS_DEV } from "../../config/constants";
-import { DatetimeProps, TypedDatetime } from "./forms";
+import { TDataTestId } from "../../types";
+import { DatetimeProps, TypedDatetime } from "./forms/fields/FormFieldDatePicker.unsafe";
 import { InlineIcon } from "./icons";
 import { TimeLeft } from "./TimeLeft.unsafe";
 import { utcTime } from "./utils";
@@ -13,56 +14,73 @@ import * as styles from "./forms/fields/FormFieldDatePicker.module.scss";
 
 interface IDatePickerProps {
   isValidDate?: (currentDate: moment.Moment) => boolean;
+}
+
+interface ITestInputProps {
   onTestInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const DatePicker: React.ComponentType<DatetimeProps & IDatePickerProps> = ({
-  dataTestId,
-  value,
-  onChange,
-  isValidDate,
+const TestInput: React.ComponentType<ITestInputProps & TDataTestId> = ({
+  "data-test-id": dataTestId,
   onTestInputChange,
 }) => (
-  <TypedDatetime
-    closeOnSelect={true}
-    utc={true}
-    dateFormat={"L"}
-    timeFormat={"HH:mm z"}
-    open={false}
-    value={value}
-    onChange={onChange}
-    isValidDate={isValidDate}
-    renderInput={(props, openCalendar) => (
-      <>
-        {IS_CYPRESS || IS_DEV ? (
-          <input //hidden input for e2e tests
-            data-test-id={dataTestId}
-            autoComplete="off"
-            type="text"
-            style={{ display: "none" }}
-            onChange={
-              onTestInputChange &&
-              ((e: React.ChangeEvent<HTMLInputElement>) => onTestInputChange(e))
-            }
-          />
-        ) : null}
-
-        <div className={styles.formFieldDatePicker} onClick={openCalendar}>
-          <div className={styles.icon}>
-            <InlineIcon svgIcon={iconCalendar} />
-          </div>
-          <div className={styles.chosenDate}>
-            <span>{utcTime(props.value)}</span>
-            <span>
-              <FormattedMessage id="eto.settings.set-eto-start-date-time-left" />
-              {`: `}
-              <TimeLeft key={props.value} refresh={true} finalTime={props.value} asUtc={true} />
-            </span>
-          </div>
-        </div>
-      </>
-    )}
-  />
+  //hidden input for e2e tests
+  <>
+    {IS_CYPRESS || IS_DEV ? (
+      <input
+        data-test-id={dataTestId}
+        autoComplete="off"
+        type="text"
+        style={{ display: "none" }}
+        onChange={
+          onTestInputChange && ((e: React.ChangeEvent<HTMLInputElement>) => onTestInputChange(e))
+        }
+      />
+    ) : null}
+  </>
 );
+
+class DatePicker extends React.PureComponent<DatetimeProps & IDatePickerProps & ITestInputProps> {
+  shouldComponentUpdate(nextProps: DatetimeProps & IDatePickerProps & ITestInputProps): boolean {
+    return (
+      Boolean(this.props.value) &&
+      Boolean(nextProps.value) &&
+      moment.utc(this.props.value).diff(nextProps.value, undefined, true) !== 0
+    );
+  }
+
+  render(): React.ReactNode {
+    const { dataTestId, value, onChange, isValidDate, onTestInputChange } = this.props;
+    return (
+      <TypedDatetime
+        utc={true}
+        dateFormat={"L"}
+        timeFormat={"HH:mm z"}
+        open={false}
+        value={value}
+        onChange={onChange}
+        isValidDate={isValidDate}
+        renderInput={(props, openCalendar) => (
+          <>
+            <TestInput data-test-id={dataTestId} onTestInputChange={onTestInputChange} />
+            <div className={styles.formFieldDatePicker} onClick={openCalendar}>
+              <div className={styles.icon}>
+                <InlineIcon svgIcon={iconCalendar} />
+              </div>
+              <div className={styles.chosenDate}>
+                <span>{utcTime(props.value)}</span>
+                <span>
+                  <FormattedMessage id="eto.settings.set-eto-start-date-time-left" />
+                  {`: `}
+                  <TimeLeft key={props.value} refresh={true} finalTime={props.value} asUtc={true} />
+                </span>
+              </div>
+            </div>
+          </>
+        )}
+      />
+    );
+  }
+}
 
 export { DatePicker };

@@ -25,7 +25,15 @@ import { IAppState } from "../../../../store";
 import { Dictionary, TTranslatedString } from "../../../../types";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
 import { formatMoney } from "../../../../utils/Money.utils";
-import { formatThousands } from "../../../shared/formatters/utils";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  ERoundingMode,
+  formatThousands,
+  selectDecimalPlaces,
+  toFixedPrecision,
+} from "../../../shared/formatters/utils";
 import { WalletSelectionData } from "./InvestmentTypeSelector";
 
 function isICBMWallet(type: EInvestmentType): boolean {
@@ -131,6 +139,15 @@ export function getInputErrorMessage(
 
   return undefined;
 }
+
+export const formatMinMaxTickets = (value: string | BigNumber, roundingMode: ERoundingMode) =>
+  toFixedPrecision({
+    value,
+    inputFormat: ENumberInputFormat.ULPS,
+    outputFormat: ENumberOutputFormat.FULL,
+    decimalPlaces: selectDecimalPlaces(ECurrency.EUR, ENumberOutputFormat.FULL),
+    roundingMode: roundingMode,
+  });
 
 /**
  * @deprecated Use Money component

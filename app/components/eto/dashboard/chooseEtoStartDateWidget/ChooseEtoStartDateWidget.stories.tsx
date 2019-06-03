@@ -11,6 +11,7 @@ const data = {
   setEtoDate: () => {},
   uploadDate: () => {},
   minOffsetPeriod: new BigNumber(TEST_OFFSET_PERIOD),
+  etoIsLoading: false,
 };
 
 const dummyNow = new Date("2021-12-31T05:03:56.000Z");

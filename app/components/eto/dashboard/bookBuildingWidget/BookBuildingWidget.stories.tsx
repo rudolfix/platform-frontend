@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react";
+import BigNumber from "bignumber.js";
 import * as React from "react";
 
 import { BookBuildingWidgetComponent } from "./BookBuildingWidget";
@@ -12,6 +13,7 @@ const data = {
   bookBuildingStats: { investorsCount: 0, pledgedAmount: 0 },
   maxPledges: 500,
   canEnableBookbuilding: true,
+  minOffsetPeriod: new BigNumber(17345),
 };
 
 storiesOf("BookBuildingWidget", module)

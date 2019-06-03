@@ -10,6 +10,7 @@ import { RequiredByKeys } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
 import { EtosComingSoon } from "../../eto/overview/EtoOverviewStatus/EtosComingSoon";
+import { EtosComingSoonThumbnail } from "../../eto/overview/EtoOverviewStatus/EtosComingSoonThumbnail";
 import { EtoOverviewThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtoOverviewThumbnail";
 import { DashboardHeading } from "../../eto/shared/DashboardHeading";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
@@ -28,6 +29,8 @@ const EtoListThumbnails: React.FunctionComponent<TListProps> = ({ etos }) => (
     {etos.map(eto => (
       <EtoOverviewThumbnail eto={eto} key={eto.previewCode} />
     ))}
+
+    {etos.length < 4 && <EtosComingSoonThumbnail />}
   </Container>
 );
 

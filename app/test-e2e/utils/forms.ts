@@ -44,6 +44,7 @@ export const fillField = (key: string, value: string, parent: string = "body") =
     cy.get(formField(key))
       .clear()
       .type(value)
+      .wait(200)
       .blur();
   });
 };

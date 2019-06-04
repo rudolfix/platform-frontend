@@ -1,4 +1,4 @@
 export const e2eRoutes = {
-  embededWidget: "/test/embed/eto/widget/:etoId",
+  embeddedWidget: "/test/embed/eto/widget/:previewCode",
   criticalError: "/test/critical-error",
 };

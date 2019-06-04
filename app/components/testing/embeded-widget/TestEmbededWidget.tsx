@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { actions } from "../../../modules/actions";
 import {
   selectEtoWidgetError,
-  selectEtoWithCompanyAndContractById,
+  selectEtoWithCompanyAndContract,
 } from "../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
@@ -17,10 +17,10 @@ interface IStateProps {
 }
 
 interface IRouterParams {
-  etoId: string;
+  previewCode: string;
 }
 
-const TestEmbededWidgetLayout: React.FunctionComponent<IStateProps> = ({ eto, widgetError }) => (
+const EmbeddedWidgetLayout: React.FunctionComponent<IStateProps> = ({ eto, widgetError }) => (
   <>
     <h3>Eto widget testing page</h3>
     {eto && eto.previewCode && (
@@ -31,18 +31,18 @@ const TestEmbededWidgetLayout: React.FunctionComponent<IStateProps> = ({ eto, wi
   </>
 );
 
-const TestEmbededWidget = compose<IStateProps, IRouterParams>(
+const EmbeddedWidget = compose<IStateProps, IRouterParams>(
   appConnect<IStateProps, {}, IRouterParams & IRouterParams>({
     stateToProps: (state, props) => ({
-      eto: selectEtoWithCompanyAndContractById(state, props.etoId),
+      eto: selectEtoWithCompanyAndContract(state, props.previewCode),
       widgetError: selectEtoWidgetError(state.eto),
     }),
   }),
   onEnterAction<IRouterParams>({
     actionCreator: (dispatch, props) => {
-      dispatch(actions.eto.loadEto(props.etoId, true));
+      dispatch(actions.eto.loadEtoPreview(props.previewCode, true));
     },
   }),
-)(TestEmbededWidgetLayout);
+)(EmbeddedWidgetLayout);
 
-export { TestEmbededWidget };
+export { EmbeddedWidget };

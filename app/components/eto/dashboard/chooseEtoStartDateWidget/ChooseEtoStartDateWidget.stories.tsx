@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import BigNumber from "bignumber.js";
 import * as React from "react";
@@ -8,10 +9,13 @@ import { EtoStartDateWidgetComponent } from "./ChooseEtoStartDateWidget";
 const TEST_OFFSET_PERIOD = 604800; //7 days
 
 const data = {
-  setEtoDate: () => {},
-  uploadDate: () => {},
+  setEtoDate: action("setEtoDate"),
+  uploadDate: action("uploadDate"),
+  cleanup: action("cleanup"),
   minOffsetPeriod: new BigNumber(TEST_OFFSET_PERIOD),
-  etoIsLoading: false,
+  newDateSaving: false,
+  transactionMining: false,
+  issuerEtoLoading: false,
 };
 
 const dummyNow = new Date("2021-12-31T05:03:56.000Z");

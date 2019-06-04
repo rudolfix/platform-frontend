@@ -12,6 +12,7 @@ export const etoFlowInitialState: IEtoFlowState = {
   bookbuildingStats: [],
   signedInvestmentAgreementUrlLoading: false,
   signedInvestmentAgreementUrl: null,
+  etoDateSaving: false,
 };
 
 export const etoFlowReducer: AppReducer<IEtoFlowState> = (
@@ -65,6 +66,16 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
       return {
         ...state,
         products: action.payload.products,
+      };
+    case actions.etoFlow.setEtoDateStart.getType():
+      return {
+        ...state,
+        etoDateSaving: true,
+      };
+    case actions.etoFlow.setEtoDateStop.getType():
+      return {
+        ...state,
+        etoDateSaving: false,
       };
   }
   return state;

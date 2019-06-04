@@ -15,6 +15,7 @@ export interface IEtoFlowState {
   newStartDate?: Date;
   signedInvestmentAgreementUrlLoading: boolean;
   signedInvestmentAgreementUrl: string | null;
+  etoDateSaving: boolean;
 }
 
 export enum EEtoFormTypes {

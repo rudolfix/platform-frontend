@@ -4,15 +4,20 @@ import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
-import { branch, compose, renderComponent } from "recompose";
+import { branch, compose, lifecycle, renderComponent } from "recompose";
 
+import { DAY } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerEtoDateToWhitelistMinDuration,
   selectIssuerEtoLoading,
+  selectNewEtoDateSaving,
   selectPreEtoStartDateFromContract,
 } from "../../../../modules/eto-flow/selectors";
 import { isValidEtoStartDate } from "../../../../modules/eto-flow/utils";
+import { selectPlatformPendingTransaction } from "../../../../modules/tx/monitor/selectors";
+import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
+import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { EColumnSpan } from "../../../layouts/Container";
 import { ButtonArrowRight } from "../../../shared/buttons";
@@ -37,7 +42,9 @@ import * as styles from "../../EtoContentWidget.module.scss";
 interface IStateProps {
   etoDate?: Date;
   minOffsetPeriod: BigNumber;
-  etoIsLoading: boolean;
+  newDateSaving: boolean;
+  transactionMining: boolean;
+  issuerEtoLoading: boolean;
 }
 
 interface IChangeDateStateProps {
@@ -51,6 +58,7 @@ interface IExternalProps {
 
 interface IDispatchProps {
   uploadDate: (time: moment.Moment) => void;
+  cleanup: () => void;
 }
 
 interface IDateChooserProps {
@@ -116,7 +124,7 @@ const DateChooserOpen = ({
   uploadDate,
   closeDatePicker,
 }: IDateChooserOpenProps) => {
-  const newDateIsSet = newEtoDate !== null;
+  const newDateIsSet = newEtoDate !== null && newEtoDate.diff(etoDate) !== 0;
   return (
     <>
       <FormGroup className="justify-content-center mb-0">
@@ -151,7 +159,7 @@ const DateChooserOpen = ({
         </ButtonArrowRight>
         <ButtonArrowRight
           onClick={uploadDate}
-          disabled={!newDateIsValid(newEtoDate)}
+          disabled={!(newDateIsSet && newDateIsValid(newEtoDate))}
           data-test-id="eto-settings-start-date-confirm"
           innerClassName={styles.buttonOverride}
         >
@@ -332,7 +340,7 @@ const EtoStartDateWidgetComponent: React.ComponentType<
         <FormattedHTMLMessage
           tagName="span"
           id="settings.choose-pre-eto-date.book-building-will-stop"
-          values={{ minOffsetPeriod: props.minOffsetPeriod.div(60 * 60 * 24).toNumber() }}
+          values={{ minOffsetPeriod: props.minOffsetPeriod.div(DAY).toNumber() }}
         />
       </p>
       {etoDate ? (
@@ -362,19 +370,44 @@ const ChooseEtoStartDateWidget = compose<
 >(
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: state => ({
-      etoDate: selectPreEtoStartDateFromContract(state),
-      minOffsetPeriod: selectIssuerEtoDateToWhitelistMinDuration(state),
-      etoIsLoading: selectIssuerEtoLoading(state),
-    }),
+    stateToProps: state => {
+      const pendingTransaction = selectPlatformPendingTransaction(state);
+      const transactionMining =
+        !!pendingTransaction &&
+        pendingTransaction.transactionType === ETxSenderType.ETO_SET_DATE &&
+        pendingTransaction.transactionStatus === ETxSenderState.MINING;
+      return {
+        etoDate: selectPreEtoStartDateFromContract(state),
+        minOffsetPeriod: selectIssuerEtoDateToWhitelistMinDuration(state),
+        issuerEtoLoading: selectIssuerEtoLoading(state),
+        newDateSaving: selectNewEtoDateSaving(state),
+        transactionMining,
+      };
+    },
     dispatchToProps: dispatch => ({
       uploadDate: (etoStartDate: moment.Moment) => {
         dispatch(actions.etoFlow.setNewStartDate(moment.utc(etoStartDate).toDate()));
         dispatch(actions.etoFlow.uploadStartDate());
       },
+      cleanup: () => {
+        dispatch(actions.etoFlow.cleanupStartDate());
+        dispatch(actions.etoFlow.setEtoDateStop());
+      },
     }),
   }),
-  branch<IStateProps>(props => props.etoIsLoading, renderComponent(WidgetLoading)),
+  lifecycle<IStateProps & IDispatchProps, {}>({
+    componentDidUpdate(prevProps: IStateProps & IDispatchProps): void {
+      if (prevProps.newDateSaving && !this.props.newDateSaving) {
+        this.props.cleanup();
+      } else if (prevProps.transactionMining && !this.props.transactionMining) {
+        this.props.cleanup();
+      }
+    },
+  }),
+  branch<IStateProps>(
+    props => props.issuerEtoLoading || props.newDateSaving || props.transactionMining,
+    renderComponent(WidgetLoading),
+  ),
 )(EtoStartDateWidgetComponent);
 
 export { EtoStartDateWidgetComponent, ChooseEtoStartDateWidget };

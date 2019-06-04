@@ -135,6 +135,8 @@ export const selectIssuerEtoDateToWhitelistMinDuration = (state: IAppState): Big
 
 export const selectIssuerEtoLoading = (state: IAppState): boolean => state.etoFlow.loading;
 
+export const selectNewEtoDateSaving = (state: IAppState): boolean => state.etoFlow.etoDateSaving;
+
 export const selectCombinedEtoCompanyData = (
   state: IAppState,
 ): TPartialEtoSpecData & TPartialCompanyEtoData => ({

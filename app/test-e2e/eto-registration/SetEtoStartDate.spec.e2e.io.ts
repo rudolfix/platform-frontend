@@ -6,16 +6,15 @@ import { closeModal, confirmAccessModal } from "../utils";
 import { tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 
-describe.skip("Eto start date setup", () => {
-  // TODO: Enable E2E test
+describe("Eto start date setup", () => {
   it("sets the date", () => {
     loginFixtureAccount("ISSUER_SETUP", {
       kyc: "business",
     }).then(() => {
       const newStartDate = moment
         .utc()
-        .startOf("day")
         .add(20, "days")
+        .add(5, "hours")
         .add(5, "minute");
 
       // Happy path
@@ -50,10 +49,12 @@ describe.skip("Eto start date setup", () => {
         .should("be.enabled");
 
       // should not be allowed to set a date that is too soon
-      const falseDate = newStartDate.clone().subtract(17, "days");
+      const falseDate = newStartDate
+        .clone()
+        .subtract(19, "days")
+        .subtract(8, "hours");
 
       cy.get(tid("eto-settings-start-date-open-date-picker"))
-        .wait(5000)
         .click()
         .get(tid("eto-settings-start-date-input"))
         .clear({ force: true })

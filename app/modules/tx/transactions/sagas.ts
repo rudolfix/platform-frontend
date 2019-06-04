@@ -125,15 +125,16 @@ export function* investorPayoutRedistributeSaga(
 
 export function* etoSetDateSaga({ logger }: TGlobalDependencies): any {
   try {
+    yield put(actions.etoFlow.setEtoDateStart());
+
     yield txSendSaga({
       type: ETxSenderType.ETO_SET_DATE,
       transactionFlowGenerator: etoSetDateGenerator,
     });
     logger.info("Setting ETO date successful");
-    // cleanup & refresh eto data
-    yield put(actions.etoFlow.cleanupStartDate());
   } catch (e) {
     logger.info("Setting ETO date cancelled", e);
+    yield put(actions.etoFlow.setEtoDateStop());
   }
 }
 

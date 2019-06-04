@@ -756,7 +756,8 @@ export const testProduct = {
   canSetTransferability: false,
   hasNominee: true,
   id: "0x0000000000000000000000000000000000000000",
-  jurisdiction: EJurisdiction.GERMANY,
+  jurisdiction: EJurisdiction.GERMANY.toLowerCase() as EJurisdiction,
+  // jurisdiction is left lower case on purpose to handle the instability of the backend
   maxClaimDurationDays: 30,
   maxInvestmentAmount: 0,
   maxOfferDurationDays: 90,

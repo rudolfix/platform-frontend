@@ -50,10 +50,7 @@ function* loadEtoPreview(
   const previewCode = action.payload.previewCode;
 
   try {
-    const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEtoPreview(
-      previewCode,
-    );
-    const eto = etoResponse.body;
+    const eto: TEtoSpecsData = yield apiEtoService.getEtoPreview(previewCode);
     const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(
       eto.companyId,
     );
@@ -94,8 +91,7 @@ function* loadEto(
   try {
     const etoId = action.payload.etoId;
 
-    const etoResponse: IHttpResponse<TEtoSpecsData> = yield apiEtoService.getEto(etoId);
-    const eto = etoResponse.body;
+    const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
 
     const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(
       eto.companyId,
@@ -283,8 +279,7 @@ function* watchEto(_: TGlobalDependencies, previewCode: string): any {
 function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
   try {
     yield waitForKycStatus();
-    const etosResponse: IHttpResponse<TEtoData[]> = yield apiEtoService.getEtos();
-    const etos = etosResponse.body;
+    const etos: TEtoData[] = yield apiEtoService.getEtos();
 
     const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
 

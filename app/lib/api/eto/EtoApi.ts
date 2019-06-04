@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
+import { amendEtoToCompatibleFormat } from "../../../modules/eto/utils";
 import { withParams } from "../../../utils/withParams";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
@@ -26,11 +27,13 @@ export class EtoApi {
     @inject(symbols.jsonHttpClient) private httpClient: IHttpClient,
   ) {}
 
-  public async getEtos(): Promise<IHttpResponse<TPartialEtoSpecData>> {
-    return await this.authorizedHttpClient.get<TPartialEtoSpecData>({
-      baseUrl: BASE_PATH,
-      url: ETOS_PATH,
-    });
+  public async getEtos(): Promise<TPartialEtoSpecData[]> {
+    return await this.authorizedHttpClient
+      .get<TPartialEtoSpecData[]>({
+        baseUrl: BASE_PATH,
+        url: ETOS_PATH,
+      })
+      .then(r => r.body.map(eto => amendEtoToCompatibleFormat(eto)));
   }
 
   public getMyEto(): Promise<TPartialEtoSpecData> {
@@ -39,7 +42,16 @@ export class EtoApi {
         baseUrl: BASE_PATH,
         url: ETO_DATA_PATH,
       })
-      .then(r => r.body);
+      .then(r => amendEtoToCompatibleFormat(r.body));
+  }
+
+  public async getEto(etoId: string): Promise<TPartialEtoSpecData> {
+    return await this.httpClient
+      .get<TPartialEtoSpecData>({
+        baseUrl: BASE_PATH,
+        url: ETOS_PATH + "/" + etoId,
+      })
+      .then(r => amendEtoToCompatibleFormat(r.body));
   }
 
   public async putMyEto(data: TPartialEtoSpecData): Promise<IHttpResponse<TPartialEtoSpecData>> {
@@ -50,18 +62,13 @@ export class EtoApi {
     });
   }
 
-  public async getEtoPreview(previewCode: string): Promise<IHttpResponse<TPartialCompanyEtoData>> {
-    return await this.httpClient.get<TPartialCompanyEtoData>({
-      baseUrl: BASE_PATH,
-      url: withParams(ETO_PREVIEW_PATH, { previewCode }),
-    });
-  }
-
-  public async getEto(etoId: string): Promise<IHttpResponse<TPartialEtoSpecData>> {
-    return await this.httpClient.get<TPartialEtoSpecData>({
-      baseUrl: BASE_PATH,
-      url: ETOS_PATH + "/" + etoId,
-    });
+  public async getEtoPreview(previewCode: string): Promise<TPartialCompanyEtoData> {
+    return await this.httpClient
+      .get<TPartialCompanyEtoData>({
+        baseUrl: BASE_PATH,
+        url: withParams(ETO_PREVIEW_PATH, { previewCode }),
+      })
+      .then(r => r.body);
   }
 
   public getCompany(): Promise<TPartialCompanyEtoData> {

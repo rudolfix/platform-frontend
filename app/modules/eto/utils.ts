@@ -3,7 +3,7 @@ import BigNumber from "bignumber.js";
 import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { Overwrite } from "../../types";
+import { DeepPartial, Overwrite } from "../../types";
 import { isPastInvestment } from "../investor-portfolio/utils";
 import {
   EETOStateOnChain,
@@ -13,6 +13,20 @@ import {
   TEtoStartOfStates,
   TEtoWithCompanyAndContract,
 } from "./types";
+
+export const amendEtoToCompatibleFormat = (
+  eto: DeepPartial<TEtoSpecsData>,
+): DeepPartial<TEtoSpecsData> =>
+  eto && {
+    ...eto,
+    product: {
+      ...eto.product,
+      jurisdiction:
+        eto.product &&
+        eto.product.jurisdiction &&
+        (eto.product.jurisdiction.toUpperCase() as EJurisdiction),
+    },
+  };
 
 export const convertToEtoTotalInvestment = (
   [totalEquivEurUlps, totalTokensInt, totalInvestors]: [BigNumber, BigNumber, BigNumber],

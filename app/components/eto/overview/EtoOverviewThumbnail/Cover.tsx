@@ -19,7 +19,8 @@ interface IProps {
 const Jurisdiction: React.FunctionComponent<{ jurisdiction: EJurisdiction }> = ({
   jurisdiction,
 }) => {
-  switch (jurisdiction) {
+  switch (jurisdiction.toUpperCase()) {
+    //This is done For Storybook
     case EJurisdiction.GERMANY:
       return (
         <FormattedMessage
@@ -39,7 +40,7 @@ const Jurisdiction: React.FunctionComponent<{ jurisdiction: EJurisdiction }> = (
         />
       );
     default:
-      return assertNever(jurisdiction, `${jurisdiction} is not a valid jurisdiction`);
+      return assertNever(jurisdiction as never, `${jurisdiction} is not a valid jurisdiction`);
   }
 };
 

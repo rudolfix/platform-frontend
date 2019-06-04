@@ -4,11 +4,12 @@ import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
-import { compose } from "recompose";
+import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerEtoDateToWhitelistMinDuration,
+  selectIssuerEtoLoading,
   selectPreEtoStartDateFromContract,
 } from "../../../../modules/eto-flow/selectors";
 import { isValidEtoStartDate } from "../../../../modules/eto-flow/utils";
@@ -19,6 +20,7 @@ import { DatePicker } from "../../../shared/DatePicker";
 import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
 import { FormError } from "../../../shared/forms";
+import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { Panel } from "../../../shared/Panel";
 import { FancyTimeLeft, TimeLeft } from "../../../shared/TimeLeft.unsafe";
 import {
@@ -35,6 +37,7 @@ import * as styles from "../../EtoContentWidget.module.scss";
 interface IStateProps {
   etoDate?: Date;
   minOffsetPeriod: BigNumber;
+  etoIsLoading: boolean;
 }
 
 interface IChangeDateStateProps {
@@ -190,11 +193,11 @@ class DateChooser extends React.PureComponent<IDateChooserProps, IDateChooserSta
   state = {
     isOpen: false,
 
-    newEtoDate:
-      moment.utc(this.props.etoDate) ||
-      moment()
-        .utc()
-        .add(this.defaultOffsetInMinutes, "minutes"),
+    newEtoDate: this.props.etoDate
+      ? moment.utc(this.props.etoDate)
+      : moment()
+          .utc()
+          .add(this.defaultOffsetInMinutes, "minutes"),
   };
 
   closeDatePicker = () => {
@@ -323,13 +326,14 @@ const SetNewDate: React.ComponentType<IStateProps & IDispatchProps> = props => (
 const EtoStartDateWidgetComponent: React.ComponentType<
   IStateProps & IDispatchProps & IExternalProps
 > = ({ etoDate, ...props }) => (
-  <Panel
-    headerText={<FormattedMessage id="eto.settings.eto-start-date" />}
-    columnSpan={props.columnSpan}
-  >
+  <WidgetPanel columnSpan={props.columnSpan}>
     <div className={styles.content}>
       <p className={styles.text}>
-        <FormattedMessage id="settings.choose-pre-eto-date.book-building-will-stop" />
+        <FormattedHTMLMessage
+          tagName="span"
+          id="settings.choose-pre-eto-date.book-building-will-stop"
+          values={{ minOffsetPeriod: props.minOffsetPeriod.div(60 * 60 * 24).toNumber() }}
+        />
       </p>
       {etoDate ? (
         <ChangeDate etoDate={etoDate} {...props} />
@@ -337,6 +341,18 @@ const EtoStartDateWidgetComponent: React.ComponentType<
         <SetNewDate etoDate={etoDate} {...props} />
       )}
     </div>
+  </WidgetPanel>
+);
+
+const WidgetLoading: React.ComponentType<IExternalProps> = ({ columnSpan }) => (
+  <WidgetPanel columnSpan={columnSpan}>
+    <LoadingIndicator />
+  </WidgetPanel>
+);
+
+const WidgetPanel: React.ComponentType<IExternalProps> = ({ columnSpan, children }) => (
+  <Panel headerText={<FormattedMessage id="eto.settings.eto-start-date" />} columnSpan={columnSpan}>
+    {children}
   </Panel>
 );
 
@@ -349,6 +365,7 @@ const ChooseEtoStartDateWidget = compose<
     stateToProps: state => ({
       etoDate: selectPreEtoStartDateFromContract(state),
       minOffsetPeriod: selectIssuerEtoDateToWhitelistMinDuration(state),
+      etoIsLoading: selectIssuerEtoLoading(state),
     }),
     dispatchToProps: dispatch => ({
       uploadDate: (etoStartDate: moment.Moment) => {
@@ -357,6 +374,7 @@ const ChooseEtoStartDateWidget = compose<
       },
     }),
   }),
+  branch<IStateProps>(props => props.etoIsLoading, renderComponent(WidgetLoading)),
 )(EtoStartDateWidgetComponent);
 
 export { EtoStartDateWidgetComponent, ChooseEtoStartDateWidget };

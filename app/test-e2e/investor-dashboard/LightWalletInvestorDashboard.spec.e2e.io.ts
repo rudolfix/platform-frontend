@@ -14,7 +14,8 @@ describe("Auto Login", () => {
   });
 });
 
-describe("Incoming payout", () => {
+describe("Incoming payout", function(): void {
+  this.retries(2);
   it("should show counter with incoming payout value", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();

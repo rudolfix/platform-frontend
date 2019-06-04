@@ -7,9 +7,13 @@ import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { getCurrencyByInvestmentType } from "../../../../modules/investment-flow/utils";
 import { ETokenType } from "../../../../modules/tx/types";
 import { Button, ButtonWidth, EButtonLayout, EButtonTheme } from "../../../shared/buttons";
-import { ECurrency, ERoundingMode } from "../../../shared/formatters/utils";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
 import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
-import { Money } from "../../../shared/Money.unsafe";
 
 import * as styles from "./InvestmentTypeSelector.module.scss";
 
@@ -56,17 +60,19 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
     case EInvestmentType.Eth:
       return (
         <>
-          <Money
-            currency={ECurrency.ETH}
+          <MoneyNew
+            moneyFormat={ECurrency.ETH}
+            inputFormat={ENumberInputFormat.ULPS}
+            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
             value={wallet.enabled ? wallet.balanceEth : wallet.icbmBalanceEth}
-            roundingMode={ERoundingMode.DOWN}
           />
           <div className={styles.balanceEur}>
             ={" "}
-            <Money
-              currency={ECurrency.EUR}
+            <MoneyNew
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.EUR}
+              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur}
-              roundingMode={ERoundingMode.DOWN}
             />
           </div>
         </>
@@ -76,17 +82,19 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
     case EInvestmentType.ICBMnEuro:
       return (
         <>
-          <Money
-            currency={ECurrency.EUR_TOKEN}
+          <MoneyNew
+            inputFormat={ENumberInputFormat.ULPS}
+            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+            moneyFormat={ECurrency.EUR_TOKEN}
             value={wallet.enabled ? wallet.balanceNEuro : wallet.icbmBalanceNEuro}
-            roundingMode={ERoundingMode.DOWN}
           />
           <div className={styles.balanceEur}>
             ={" "}
-            <Money
-              currency={ECurrency.EUR}
+            <MoneyNew
+              moneyFormat={ECurrency.EUR}
+              inputFormat={ENumberInputFormat.ULPS}
+              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur}
-              roundingMode={ERoundingMode.DOWN}
             />
           </div>
         </>

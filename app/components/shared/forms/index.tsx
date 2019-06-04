@@ -4,7 +4,6 @@ export * from "./fields/FormFieldBoolean";
 export * from "./fields/FormFieldCheckboxGroup";
 export * from "./fields/FormFieldColorful.unsafe";
 export * from "./fields/FormFieldDate.unsafe";
-export * from "./fields/FormFieldDatePicker.unsafe";
 export * from "./fields/FormFieldError";
 export * from "./fields/FormFieldLabel";
 export * from "./fields/FormFieldRaw";

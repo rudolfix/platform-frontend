@@ -40,23 +40,25 @@ import { ETokenType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
-import { formatMoney } from "../../../../utils/Money.utils";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { ButtonSize, ButtonTextPosition } from "../../../shared/buttons/Button";
+import { MoneyNew } from "../../../shared/formatters/Money";
 import {
   ECurrency,
   ENumberInputFormat,
+  ENumberOutputFormat,
   ERoundingMode,
+  formatNumber,
   formatThousands,
   selectCurrencyCode,
+  selectDecimalPlaces,
 } from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedMoneyInput } from "../../../shared/MaskedMoneyInput";
-import { Money } from "../../../shared/Money.unsafe";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
-import { createWallets, formatEur, getInputErrorMessage } from "./utils";
+import { createWallets, formatMinMaxTickets, getInputErrorMessage } from "./utils";
 
 import * as styles from "./Investment.module.scss";
 
@@ -220,11 +222,17 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                 onChangeFn={this.props.changeEthValue}
                 placeholder={`${intl.formatIntlMessage(
                   "investment-flow.min-ticket-size",
-                )} ${formatMoney(minTicketEth, 0, 4)} ETH`}
+                )} ${formatNumber({
+                  value: minTicketEth,
+                  inputFormat: ENumberInputFormat.FLOAT,
+                  outputFormat: ENumberOutputFormat.FULL,
+                  decimalPlaces: selectDecimalPlaces(ECurrency.ETH, ENumberOutputFormat.FULL),
+                })} ETH`}
                 data-test-id="invest-modal-eth-field"
                 suffix={selectCurrencyCode(ECurrency.ETH)}
                 setError={this.setError}
               />
+              {/*21211.4707*/}
               <Button
                 className={styles.investAll}
                 data-test-id="invest-modal-full-balance-btn"
@@ -270,7 +278,12 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                   </Label>
                   <InfoAlert data-test-id="invest-modal.est-neu-tokens">
                     {(showTokens && !error && neuReward && (
-                      <Money value={neuReward} currency={ECurrency.NEU} />
+                      <MoneyNew
+                        value={neuReward}
+                        inputFormat={ENumberInputFormat.ULPS}
+                        moneyFormat={ECurrency.NEU}
+                        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                      />
                     )) ||
                       "\xA0"}
                   </InfoAlert>
@@ -299,17 +312,19 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                 <div>
                   + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
                   <span className="text-warning" data-test-id="invest-modal-gas-cost">
-                    <Money
+                    <MoneyNew
                       value={gasCostEuro}
-                      format={ENumberInputFormat.ULPS}
-                      currency={ECurrency.EUR}
+                      inputFormat={ENumberInputFormat.ULPS}
+                      outputFormat={ENumberOutputFormat.FULL}
+                      moneyFormat={ECurrency.EUR}
                       roundingMode={ERoundingMode.UP}
                     />
                     {" ≈ "}
-                    <Money
+                    <MoneyNew
                       value={gasCostEth}
-                      format={ENumberInputFormat.ULPS}
-                      currency={ECurrency.ETH}
+                      inputFormat={ENumberInputFormat.ULPS}
+                      outputFormat={ENumberOutputFormat.FULL}
+                      moneyFormat={ECurrency.ETH}
                       roundingMode={ERoundingMode.UP}
                     />
                   </span>
@@ -318,18 +333,18 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
               <div>
                 <FormattedMessage id="investment-flow.total" />:{" "}
                 <span className="text-warning" data-test-id="invest-modal-total-cost">
-                  <Money
+                  <MoneyNew
                     value={this.calculateTotalCostIfValid(gasCostEuro, euroValue)}
-                    format={ENumberInputFormat.ULPS}
-                    currency={ECurrency.EUR}
-                    roundingMode={ERoundingMode.DOWN}
+                    inputFormat={ENumberInputFormat.ULPS}
+                    moneyFormat={ECurrency.EUR}
+                    outputFormat={ENumberOutputFormat.FULL}
                   />
                   {" ≈ "}
-                  <Money
+                  <MoneyNew
                     value={this.calculateTotalCostIfValid(gasCostEth, ethValue)}
-                    format={ENumberInputFormat.ULPS}
-                    currency={ECurrency.ETH}
-                    roundingMode={ERoundingMode.DOWN}
+                    inputFormat={ENumberInputFormat.ULPS}
+                    outputFormat={ENumberOutputFormat.FULL}
+                    moneyFormat={ECurrency.ETH}
                   />
                 </span>
               </div>
@@ -396,8 +411,17 @@ export const InvestmentSelection = compose<IProps, {}>(
     ({ ethValue, etoTicketSizes, gasCostEth, etherPriceEur, eurPriceEther }) => {
       const gasCostEther = !ethValue ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEther, etherPriceEur]);
-      const minTicketEur = formatEur(etoTicketSizes && etoTicketSizes.minTicketEurUlps) || "0";
-      const maxTicketEur = formatEur(etoTicketSizes && etoTicketSizes.maxTicketEurUlps) || "0";
+      const minTicketEur =
+        (etoTicketSizes &&
+          etoTicketSizes.minTicketEurUlps &&
+          formatMinMaxTickets(etoTicketSizes.minTicketEurUlps, ERoundingMode.UP)) ||
+        "0";
+      const maxTicketEur =
+        (etoTicketSizes &&
+          etoTicketSizes.maxTicketEurUlps &&
+          formatMinMaxTickets(etoTicketSizes.maxTicketEurUlps, ERoundingMode.DOWN)) ||
+        "0";
+
       return {
         minTicketEur,
         maxTicketEur,

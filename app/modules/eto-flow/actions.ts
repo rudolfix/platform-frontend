@@ -48,4 +48,6 @@ export const etoFlowActions = {
     "ETO_FLOW_SIGN_INVESTMENT_AGREEMENT",
     (etoId: string, agreementHash: string) => ({ etoId, agreementHash }),
   ),
+  setEtoDateStart: createActionFactory("ETO_FLOW_SET_ETO_DATE_START"),
+  setEtoDateStop: createActionFactory("ETO_FLOW_SET_ETO_DATE_STOP"),
 };

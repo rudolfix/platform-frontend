@@ -20,7 +20,13 @@ import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { loadEtoContract } from "../eto/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { etoFlowActions } from "./actions";
-import { selectIsNewPreEtoStartDateValid, selectIssuerCompany, selectIssuerEto } from "./selectors";
+import {
+  selectIsNewPreEtoStartDateValid,
+  selectIssuerCompany,
+  selectIssuerEto,
+  selectNewPreEtoStartDate,
+  selectPreEtoStartDateFromContract,
+} from "./selectors";
 import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
 export function* loadIssuerEto({
@@ -189,7 +195,12 @@ function* startSetDateTX(_: TGlobalDependencies, action: TAction): any {
 }
 
 export function* cleanupSetDateTX(): any {
-  yield put(actions.etoFlow.loadIssuerEto());
+  const newStartDate: Date | undefined = yield select(selectNewPreEtoStartDate);
+  const oldStartDate: Date | undefined = yield select(selectPreEtoStartDateFromContract);
+
+  if (newStartDate !== oldStartDate) {
+    yield put(actions.etoFlow.loadIssuerEto());
+  }
   yield put(actions.etoFlow.clearNewStartDate());
 }
 

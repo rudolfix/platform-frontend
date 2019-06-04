@@ -1,9 +1,13 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  TCompanyEtoData,
+  TEtoLegalShareholderType,
+} from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EColumnSpan } from "../../layouts/Container";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut.unsafe";
+import { generateColor } from "../../shared/charts/utils";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";
 import { MoneyNew } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
@@ -21,7 +25,7 @@ interface IProps {
 const generateShareholders = (
   shareholders: TCompanyEtoData["shareholders"],
   companyShares: number,
-) => {
+): ReadonlyArray<TEtoLegalShareholderType> => {
   if (shareholders === undefined) {
     return [];
   } else {
@@ -30,16 +34,22 @@ const generateShareholders = (
       0,
     );
 
+    // Filter out any possible empty elements for type safety
+    // This is temporary fix
+    // TODO: rewrite types to get rid of optional
+    // https://github.com/Neufund/platform-frontend/issues/3054
+    const shrholders = shareholders.filter((v): v is TEtoLegalShareholderType => !!v);
+
     if (assignedShares < companyShares) {
       return [
-        ...shareholders,
+        ...shrholders,
         {
           fullName: "Others",
           shares: companyShares - assignedShares,
         },
       ];
     }
-    return shareholders;
+    return shrholders;
   }
 };
 
@@ -154,7 +164,11 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
             datasets: [
               {
                 data: shareholdersData.map(d => d && d.shares),
-                backgroundColor: shareholdersData.map((_, i: number) => CHART_COLORS[i]),
+                backgroundColor: shareholdersData.map(
+                  (shareholder: TEtoLegalShareholderType, i: number) =>
+                    // Use predefined colors first, then use generated colors
+                    CHART_COLORS[i] || generateColor(`${i}${shareholder.fullName}`),
+                ),
               },
             ],
             labels: shareholdersData.map(d => d && d.fullName),

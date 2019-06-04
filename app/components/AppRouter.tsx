@@ -29,7 +29,7 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute.unsafe";
 import { EtoSecretProtectedWalletSelector } from "./shared/routing/SecretProtected";
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
-import { TestEmbededWidget } from "./testing/embeded-widget/TestEmbededWidget";
+import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
@@ -154,8 +154,8 @@ export const AppRouter: React.FunctionComponent = () => (
     {IS_CYPRESS && [
       <Route
         key={1}
-        path={e2eRoutes.embededWidget}
-        render={({ match }) => <TestEmbededWidget etoId={match.params.etoId} />}
+        path={e2eRoutes.embeddedWidget}
+        render={({ match }) => <EmbeddedWidget previewCode={match.params.previewCode} />}
         exact
       />,
       <Route key={2} path={e2eRoutes.criticalError} render={() => <TestCriticalError />} exact />,

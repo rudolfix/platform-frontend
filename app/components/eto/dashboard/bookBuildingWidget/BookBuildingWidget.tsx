@@ -2,8 +2,10 @@ import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
+import { DAY } from "../../../../config/constants";
 import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
 import { selectBookbuildingStats } from "../../../../modules/bookbuilding-flow/selectors";
@@ -52,6 +54,11 @@ interface IStateProps {
 }
 
 interface IExternalProps {
+  columnSpan?: EColumnSpan;
+}
+
+interface IPanelProps {
+  headerText?: TTranslatedString;
   columnSpan?: EColumnSpan;
 }
 
@@ -117,7 +124,7 @@ const BookBuildingWidgetLayout: React.FunctionComponent<ILayoutProps> = ({
   canEnableBookbuilding,
   columnSpan,
 }) => (
-  <Panel headerText={headerText} columnSpan={columnSpan}>
+  <WidgetPanel columnSpan={columnSpan} headerText={headerText}>
     <div className={styles.content}>
       <p className={cn(styles.text)}>
         {canEnableBookbuilding ? (
@@ -140,7 +147,7 @@ const BookBuildingWidgetLayout: React.FunctionComponent<ILayoutProps> = ({
         </div>
       )}
     </div>
-  </Panel>
+  </WidgetPanel>
 );
 
 export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
@@ -155,10 +162,7 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
   canEnableBookbuilding,
   columnSpan,
 }) => {
-  if (bookBuildingStats === undefined) {
-    //TODO add data loading state
-    return <LoadingIndicator className={styles.loading} />;
-  } else if (!bookBuildingEnabled && bookBuildingStats.investorsCount === 0) {
+  if (!bookBuildingEnabled && bookBuildingStats.investorsCount === 0) {
     return (
       <BookBuildingWidgetLayout
         headerText={<FormattedMessage id="settings.book-building-widget.start-book-building" />}
@@ -196,7 +200,7 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
           <FormattedHTMLMessage
             tagName="span"
             id="settings.book-building-widget.book-building-enabled-text"
-            values={{ minOffsetPeriod: minOffsetPeriod.div(60 * 60 * 24).toNumber() }}
+            values={{ minOffsetPeriod: minOffsetPeriod.div(DAY).toNumber() }}
           />
         }
         buttonText={<FormattedMessage id="settings.book-building-widget.stop-book-building" />}
@@ -213,6 +217,18 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
     );
   }
 };
+
+const WidgetLoading: React.ComponentType<IPanelProps> = ({ columnSpan }) => (
+  <WidgetPanel columnSpan={columnSpan}>
+    <LoadingIndicator />
+  </WidgetPanel>
+);
+
+const WidgetPanel: React.ComponentType<IPanelProps> = ({ columnSpan, headerText, children }) => (
+  <Panel headerText={headerText} columnSpan={columnSpan}>
+    {children}
+  </Panel>
+);
 
 export const BookBuildingWidget = compose<React.FunctionComponent<IExternalProps>>(
   createErrorBoundary(ErrorBoundaryPanel),
@@ -263,4 +279,5 @@ export const BookBuildingWidget = compose<React.FunctionComponent<IExternalProps
       }
     },
   }),
+  branch<IStateProps>(props => !props.bookBuildingStats, renderComponent(WidgetLoading)),
 )(BookBuildingWidgetComponent);

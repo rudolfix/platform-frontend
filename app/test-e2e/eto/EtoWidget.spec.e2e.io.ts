@@ -20,7 +20,7 @@ describe("Eto widget page", () => {
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
       stubWindow("windowOpen");
 
-      cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
+      cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));
 
       cy.iframe("iframe").within(($iframe: any) => {
         cy.wrap($iframe)
@@ -68,44 +68,48 @@ describe("Eto widget page", () => {
   it("ETOInSetupState", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
 
-    cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
+    getEto(ETO_ID).then((eto: TEtoSpecsData) => {
+      cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));
 
-    cy.iframe("iframe")
-      .find(tid("logged-out-campaigning-register"))
-      .click();
+      cy.iframe("iframe")
+        .find(tid("logged-out-campaigning-register"))
+        .click();
 
-    cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register, "_blank");
+      cy.get("@windowOpen").should("be.calledWithMatch", appRoutes.register, "_blank");
+    });
   });
 
   it("ETOInWhitelistState", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
+    getEto(ETO_ID).then((eto: TEtoSpecsData) => {
+      cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));
 
-    cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
-
-    cy.iframe("iframe").find(tid("eto-whitelist-count-down"));
+      cy.iframe("iframe").find(tid("eto-whitelist-count-down"));
+    });
   });
 
   it("ETOInPublicState", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInPublicState");
-
-    cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
-      cy.iframe("iframe")
-        .find(tid("eto-widget-invest-now-button"))
-        .click();
+      cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));
+      getEto(ETO_ID).then((eto: TEtoSpecsData) => {
+        cy.iframe("iframe")
+          .find(tid("eto-widget-invest-now-button"))
+          .click();
 
-      cy.get("@windowOpen").should(
-        "be.calledWithMatch",
-        etoPreviewLink(eto.previewCode, eto.product.jurisdiction),
-        "_blank",
-      );
+        cy.get("@windowOpen").should(
+          "be.calledWithMatch",
+          etoPreviewLink(eto.previewCode, eto.product.jurisdiction),
+          "_blank",
+        );
+      });
     });
   });
 
   it("ETONotFound", () => {
-    const ETO_ID = "wrong-eto-id";
+    const previewCode = "wrong-eto-id";
 
-    cy.visit(withParams(e2eRoutes.embededWidget, { etoId: ETO_ID }));
+    cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode }));
 
     cy.iframe("iframe").find(tid("eto-widget-error"));
   });

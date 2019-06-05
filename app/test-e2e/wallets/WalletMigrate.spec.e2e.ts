@@ -58,13 +58,13 @@ describe("Wallet Migration Flow", () => {
           FIXTURE_ACCOUNTS[INV_ETH_ICBM_NO_KYC_ADDRESS].icbmEtherLockBalance[1],
         )
           .div(FIXTURE_DIV_CONSTANT)
-          .round();
+          .round(undefined, BigNumber.ROUND_DOWN);
 
         const ethBalance = new BigNumber(
           FIXTURE_ACCOUNTS[INV_ETH_ICBM_NO_KYC_ADDRESS].icbmEtherLockBalance[0],
         )
           .div(Q18)
-          .round(4);
+          .round(4, BigNumber.ROUND_DOWN);
 
         cy.get(tid("profile.modal.icbm-wallet-balance.eth-balance")).then(ethData => {
           const walletEthBalance = new BigNumber(

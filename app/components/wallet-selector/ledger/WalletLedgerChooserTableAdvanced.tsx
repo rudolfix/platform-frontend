@@ -4,8 +4,8 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Button, EButtonLayout } from "../../shared/buttons";
-import { ECurrency } from "../../shared/formatters/utils";
-import { Money } from "../../shared/Money.unsafe";
+import { MoneyNew } from "../../shared/formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { NavigationButton } from "../../shared/Navigation.unsafe";
 
 import * as styles from "./WalletLedgerChooserTableAdvanced.module.scss";
@@ -34,10 +34,20 @@ export class AccountRow extends React.Component<IAccountRow> {
         </td>
         <td className={cn(styles.balance, styles.pseudoBorderLeft)}>
           <div data-test-id="account-balance-eth" className={styles.eth}>
-            <Money value={this.props.ledgerAccount.balanceETH} currency={ECurrency.ETH} />
+            <MoneyNew
+              value={this.props.ledgerAccount.balanceETH}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.ETH}
+              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+            />
           </div>
           <div data-test-id="account-balance-neu" className={styles.neu}>
-            <Money value={this.props.ledgerAccount.balanceNEU} currency={ECurrency.NEU} />
+            <MoneyNew
+              value={this.props.ledgerAccount.balanceNEU}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.NEU}
+              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+            />
           </div>
         </td>
         <td className={styles.select}>

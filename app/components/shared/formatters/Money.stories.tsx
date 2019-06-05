@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ECurrencySymbol, EMoneyTransfer, EThemeNew, MoneyNew } from "./Money";
+import { ECurrencySymbol, EMoneyTransferNew, EThemeNew, MoneyNew } from "./Money";
 import { MoneyRange } from "./MoneyRange";
 import {
   EAbbreviatedNumberOutputFormat,
@@ -113,7 +113,7 @@ storiesOf("MoneyNew", module)
         outputFormat={ENumberOutputFormat.FULL}
         moneyFormat={ECurrency.EUR}
         value={value}
-        transfer={EMoneyTransfer.INCOME}
+        transfer={EMoneyTransferNew.INCOME}
       />
       <br />
       <MoneyNew
@@ -121,7 +121,7 @@ storiesOf("MoneyNew", module)
         outputFormat={ENumberOutputFormat.FULL}
         moneyFormat={ECurrency.EUR}
         value={value}
-        transfer={EMoneyTransfer.OUTCOME}
+        transfer={EMoneyTransferNew.OUTCOME}
       />
     </>
   ))

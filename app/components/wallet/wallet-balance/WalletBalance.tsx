@@ -4,7 +4,6 @@ import * as React from "react";
 import { CommonHtmlProps } from "../../../types";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { IPanelProps, Panel } from "../../shared/Panel";
-import { TotalEuro } from "../TotalEuro";
 
 import * as styles from "./WalletBalance.module.scss";
 
@@ -27,10 +26,9 @@ export const WalletBalanceContainer: React.FunctionComponent<
     CommonHtmlProps & {
       data?: IWalletValues;
     }
-> = ({ headerText, data, className, children, columnSpan }) => (
+> = ({ headerText, className, children, columnSpan }) => (
   <Panel
     headerText={headerText}
-    rightComponent={data && <TotalEuro totalEurValue={data.totalEuroAmount} />}
     className={cn(className, "d-flex flex-column")}
     columnSpan={columnSpan}
   >

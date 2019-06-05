@@ -21,7 +21,7 @@ const walletMigrationMockData = [
   },
 ];
 
-storiesOf("ICBMWalletModalComponant", module)
+storiesOf("ICBMWalletModalComponent", module)
   .addDecorator(withModalBody())
   .add("Missing Verifications", () => (
     <IcbmWalletBalanceComponentInner

@@ -1206,7 +1206,6 @@
   "wallet.icbm.wallet-and-icbm-addresses-are-the-same": "This is your current address",
   "wallet.icbm.wallet-not-found": "We were unable to find an ICBM wallet for the entered address.",
   "wallet.name": "Wallet",
-  "wallet.total": "Total",
   "withdraw-flow.confirm": "Confirm",
   "withdraw-flow.name": "Withdraw",
   "withdraw-flow.success": "Success! Your transaction is complete",

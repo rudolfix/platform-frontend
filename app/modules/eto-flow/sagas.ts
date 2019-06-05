@@ -241,7 +241,7 @@ export function* changeProductType(
       action.payload.productId,
     );
 
-    yield put(actions.eto.setEto({ eto }));
+    yield put(actions.etoFlow.setEto({ eto }));
 
     notificationCenter.info(createMessage(EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL), {
       autoClose: 10000,

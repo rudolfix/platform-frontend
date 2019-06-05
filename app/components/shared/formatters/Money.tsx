@@ -22,7 +22,7 @@ enum ECurrencySymbol {
   NONE = "none",
 }
 
-enum EMoneyTransfer {
+enum EMoneyTransferNew {
   INCOME = styles.income,
   OUTCOME = styles.outcome,
 }
@@ -44,7 +44,7 @@ interface IMoneyCommonProps {
   roundingMode?: ERoundingMode;
   currencySymbol?: ECurrencySymbol;
   currencyClassName?: string;
-  transfer?: EMoneyTransfer;
+  transfer?: EMoneyTransferNew;
   theme?: EThemeNew;
   defaultValue?: React.ReactChild;
   className?: string;
@@ -102,7 +102,7 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
   );
 };
 
-export { MoneyNew, IMoneyCommonProps, EMoneyTransfer, ECurrencySymbol, EThemeNew };
+export { MoneyNew, IMoneyCommonProps, EMoneyTransferNew, ECurrencySymbol, EThemeNew };
 
 /*
 MONEY

@@ -125,7 +125,6 @@ export class EtoOfferingCardComponent extends React.Component<
                   alt={props.badge.alt}
                   width={props.badge.width}
                   height={props.badge.height}
-                  preserveOriginalRatio={props.topImage.preserveOriginalRatio}
                 />
               </div>
             )}
@@ -137,7 +136,6 @@ export class EtoOfferingCardComponent extends React.Component<
                 alt={props.topImage.alt}
                 width={props.topImage.width}
                 height={props.topImage.height}
-                preserveOriginalRatio={props.topImage.preserveOriginalRatio}
               />
             )}
             {props.roundName ? <RoundLabel text={props.roundName} /> : <div />}
@@ -193,7 +191,6 @@ export class EtoOfferingCardComponent extends React.Component<
                     alt={props.quoteImage.alt}
                     width={props.quoteImage.width}
                     height={props.quoteImage.height}
-                    preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
                   />
                   <div className={styles.banner}>{this.renderBannerComponent(props.name!)}</div>
                 </div>
@@ -226,7 +223,6 @@ export class EtoOfferingCardComponent extends React.Component<
                   alt={props.quoteImage.alt}
                   height={props.quoteImage.height}
                   width={props.quoteImage.width}
-                  preserveOriginalRatio={props.quoteImage.preserveOriginalRatio}
                 />
               )}
               {!props.teaser && (

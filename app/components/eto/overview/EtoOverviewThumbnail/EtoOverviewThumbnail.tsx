@@ -11,7 +11,7 @@ import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { FUNDING_ROUNDS } from "../../constants";
 import { ETOState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
-import { EtoCardPanel } from "./EtoCardPanel";
+import { EtoCardPanelButton } from "./EtoCardPanel";
 import { EtoStatusManager } from "./EtoStatusManager";
 
 import * as styles from "./EtoOverviewThumbnail.module.scss";
@@ -33,7 +33,7 @@ const defaultEmpty = "-";
 const EtoOverviewStatusLayout: React.FunctionComponent<
   IExternalProps & CommonHtmlProps & IDispatchProps & IWithProps
 > = ({ eto, navigateToEto }) => (
-  <EtoCardPanel data-test-id={`eto-overview-${eto.etoId}`} onClick={navigateToEto}>
+  <EtoCardPanelButton data-test-id={`eto-overview-${eto.etoId}`} onClick={navigateToEto}>
     <Cover
       className={styles.cover}
       companyBanner={{
@@ -90,7 +90,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
         </>
       )}
     </section>
-  </EtoCardPanel>
+  </EtoCardPanelButton>
 );
 
 const EtoOverviewThumbnail = compose<

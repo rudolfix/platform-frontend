@@ -3,7 +3,6 @@ import {
   assertVerifyEmailWidgetIsInNoEmailState,
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
-  assertWaitForLatestEmailSentWithSalt,
   closeModal,
   confirmAccessModal,
   convertToUniqueEmail,

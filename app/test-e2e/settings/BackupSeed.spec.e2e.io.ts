@@ -16,7 +16,7 @@ import {
 } from "../utils/userHelpers";
 
 describe("Backup Seed and Private Key save and view", function(): void {
-  it.skip("should allow to save seed phrase", () => {
+  it("should allow to save seed phrase", () => {
     registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD);
     acceptTOS();
     backupLightWalletSeed();

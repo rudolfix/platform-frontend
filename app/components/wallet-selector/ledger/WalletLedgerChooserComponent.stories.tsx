@@ -37,4 +37,12 @@ storiesOf("Wallet selector/Ledger", module)
   .add("single address", () => {
     const data = { ...testData, accounts: [account1] };
     return <WalletLedgerChooserComponent {...data} />;
+  })
+  .add("multiple addresses advanced", () => {
+    const data = { ...testData, accounts: [account1, account2] };
+    return <WalletLedgerChooserComponent {...data} advanced={true} />;
+  })
+  .add("single address advanced", () => {
+    const data = { ...testData, accounts: [account1] };
+    return <WalletLedgerChooserComponent {...data} advanced={true} />;
   });

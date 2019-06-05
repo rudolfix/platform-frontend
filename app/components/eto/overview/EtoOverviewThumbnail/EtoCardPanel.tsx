@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { TDataTestId } from "../../../../types";
@@ -9,12 +10,21 @@ interface IBaseProps {
   onClick: () => void;
 }
 
-export const EtoCardPanel: React.FunctionComponent<IBaseProps & TDataTestId> = ({
+export const EtoCardPanelButton: React.FunctionComponent<IBaseProps & TDataTestId> = ({
   children,
   onClick,
   "data-test-id": dataTestId,
 }) => (
-  <button className={styles.button} onClick={onClick}>
+  <button className={cn(styles.etoCardPanelIsButton, styles.etoCardPanel)} onClick={onClick}>
     <Panel data-test-id={dataTestId}>{children}</Panel>
   </button>
+);
+
+export const EtoCardPanel: React.FunctionComponent<TDataTestId> = ({
+  children,
+  "data-test-id": dataTestId,
+}) => (
+  <Panel className={styles.etoCardPanel} data-test-id={dataTestId}>
+    {children}
+  </Panel>
 );

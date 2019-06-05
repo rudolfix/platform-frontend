@@ -3,10 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { DocumentTemplateButton } from "../../shared/DocumentLink";
-import { ECurrency } from "../../shared/formatters/utils";
+import { MoneyNew } from "../../shared/formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { Heading } from "../../shared/Heading";
 import { HighlightedField } from "../../shared/HighlightedField";
-import { Money } from "../../shared/Money.unsafe";
 
 import * as iconEth from "../../../assets/img/eth_icon.svg";
 import * as iconNeu from "../../../assets/img/neu_icon.svg";
@@ -70,13 +70,27 @@ export const BalanceModal: React.FunctionComponent<IBalanceModal> = ({
     <HighlightedField
       label={<FormattedMessage id="settings.modal.icbm-wallet-balance.neu-balance.label" />}
       dataTestId="profile.modal.icbm-wallet-balance.neu-balance"
-      value={<Money currency={ECurrency.NEU} value={neumarksDue} />}
+      value={
+        <MoneyNew
+          value={neumarksDue}
+          inputFormat={ENumberInputFormat.ULPS}
+          moneyFormat={ECurrency.NEU}
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+        />
+      }
       icon={iconNeu}
     />
     <HighlightedField
       label={<FormattedMessage id="settings.modal.icbm-wallet-balance.eth-balance.label" />}
       dataTestId="profile.modal.icbm-wallet-balance.eth-balance"
-      value={<Money value={etherBalance} currency={ECurrency.ETH} />}
+      value={
+        <MoneyNew
+          value={etherBalance}
+          inputFormat={ENumberInputFormat.ULPS}
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+          moneyFormat={ECurrency.ETH}
+        />
+      }
       icon={iconEth}
     />
     <BalanceFooter

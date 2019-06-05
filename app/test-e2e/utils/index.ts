@@ -94,7 +94,10 @@ export const closeModal = () => {
   cy.get(tid("modal-close-button")).click();
 };
 
-export const getLatestVerifyUserEmailLink = (email: string, attempts = 3): any =>
+export const getLatestVerifyUserEmailLink = (
+  email: string,
+  attempts = 3,
+): Cypress.Chainable<string> =>
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
     const latestEmailByUser = r.body.find(
       (body: { personalizations: { to: { email: string }[] }[] }) =>

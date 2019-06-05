@@ -23,9 +23,12 @@
 
   display: block;
   font-style: italic;
+}
+
+.fit-contain {
   object-fit: contain;
 }
 
-.preserve-ratio {
-  object-fit: contain;
+.fit-cover {
+  object-fit: cover;
 }

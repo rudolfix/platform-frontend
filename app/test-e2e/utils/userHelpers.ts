@@ -4,7 +4,7 @@ import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { toChecksumAddress } from "web3-utils";
 
 import { accountFixtureByName, removePendingExternalTransaction } from ".";
-import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
@@ -421,13 +421,13 @@ export interface IHttpPartialResponse<T> {
   body: T;
 }
 
-export const getEto = (etoID: string): Cypress.Chainable<TEtoSpecsData> => {
+export const getEto = (etoID: string): Cypress.Chainable<TEtoData> => {
   if (!etoID)
     throw new Error("Cannot fetch undefined value please check if the fixtures are in sync");
   return cy
     .request({ url: ETOS_PATH, method: "GET" })
     .then(
-      (etos: IHttpPartialResponse<TEtoSpecsData>) =>
-        etos.body && toCamelCase(etos.body).filter((eto: TEtoSpecsData) => eto.etoId === etoID)[0],
+      (etos: IHttpPartialResponse<TEtoData>) =>
+        etos.body && toCamelCase(etos.body).filter((eto: TEtoData) => eto.etoId === etoID)[0],
     );
 };

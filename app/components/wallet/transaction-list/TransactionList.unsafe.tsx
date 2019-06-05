@@ -3,9 +3,9 @@ import { Col, Row } from "reactstrap";
 
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { Date } from "../../shared/Date";
-import { ECurrency } from "../../shared/formatters/utils";
+import { EMoneyTransferNew, MoneyNew } from "../../shared/formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { InlineIcon } from "../../shared/icons";
-import { EMoneyTransfer, Money } from "../../shared/Money.unsafe";
 import { TableBody } from "../../shared/table/TableBody";
 import { TableCell } from "../../shared/table/TableCell.unsafe";
 import { TableHeader } from "../../shared/table/TableHeader";
@@ -26,7 +26,7 @@ export interface ITransaction {
   type: TransactionType;
   amount: string;
   fromTo: string;
-  transfer: EMoneyTransfer;
+  transfer: EMoneyTransferNew;
   id: any;
 }
 
@@ -105,7 +105,13 @@ export const TransactionList: React.FunctionComponent<ITransactionList> = ({
                   {type}
                 </TableCell>
                 <TableCell decorate mobileDescription="Amount">
-                  <Money currency={ECurrency.EUR_TOKEN} value={amount} transfer={transfer} />
+                  <MoneyNew
+                    moneyFormat={ECurrency.EUR_TOKEN}
+                    inputFormat={ENumberInputFormat.ULPS}
+                    outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                    value={amount}
+                    transfer={transfer}
+                  />
                 </TableCell>
                 <TableCell decorate mobileDescription="From/To">
                   {fromTo}

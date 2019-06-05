@@ -1,7 +1,5 @@
 import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
-import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { assertUserInLanding, etoFixtureAddressByName, tid } from "../utils";
-import { getEto } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
 describe("Eto Unauthorized View", () => {

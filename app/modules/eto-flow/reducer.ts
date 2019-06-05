@@ -29,7 +29,7 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
       return {
         ...state,
         eto: action.payload.eto,
-        company: action.payload.company,
+        company: action.payload.company || state.company,
         loading: false,
         saving: false,
       };

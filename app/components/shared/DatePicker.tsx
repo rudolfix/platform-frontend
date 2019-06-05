@@ -56,7 +56,6 @@ class DatePicker extends React.PureComponent<DatetimeProps & IDatePickerProps & 
         utc={true}
         dateFormat={"L"}
         timeFormat={"HH:mm z"}
-        open={false}
         value={value}
         onChange={onChange}
         isValidDate={isValidDate}

@@ -18,7 +18,7 @@ import {
 const PLEDGE_AMOUNT = "1000";
 const CHANGED_AMOUNT = "1500";
 
-describe.skip("Eto campaigning state", () => {
+describe("Eto campaigning state", () => {
   it("should show Register button when not logged in", () => {
     const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
 
@@ -28,20 +28,6 @@ describe.skip("Eto campaigning state", () => {
     cy.get(tid("logged-out-campaigning-register")).awaitedClick();
 
     assertRegister();
-  });
-
-  it("should show founders quote when logged in and campaigning date is not set", () => {
-    const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
-
-    createAndLoginNewUser({
-      type: "issuer",
-      kyc: "business",
-    }).then(() => {
-      cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
-      cy.get(tid("eto.public-view")).should("exist");
-
-      cy.get(tid("eto-overview-status-founders-quote")).should("exist");
-    });
   });
 
   it("should allow to pledge by investor", () => {

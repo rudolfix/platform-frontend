@@ -11,15 +11,15 @@ import {
   votingRights,
 } from "../eto-registration/fixtures";
 import { assertEtoDashboard } from "../utils";
+import { cyPromise } from "../utils/cyPromise";
 import { fillForm } from "../utils/forms";
+import { generateRandomSeedAndAddress } from "../utils/generateRandomSeedAndAddress";
 import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-import { generateRandomSeedAndAddress } from "../utils/generateRandomSeedAndAddress";
-import { cyPromise } from "../utils/cyPromise";
 
 describe("Eto Forms", () => {
-  let generatedSeed;
+  let generatedSeed: string;
   it("should login user correcty", function(): void {
     // TODO: Investigate the case where user sometimes doesn't have KYC this only happens on CI
     // Having tests that relay on each other is an anti pattern but this is a special case since the test

@@ -22,9 +22,9 @@ describe("Wallet backup e2e recovery phrase", () => {
       type: "investor",
       kyc: "individual",
     }).then(() => {
-      cy.window().then(async window => {
+      cy.window().then(window => {
         // TODO: move into a seperate util method
-        const metaData = JSON.parse(await window.localStorage.getItem("NF_WALLET_METADATA"));
+        const metaData = JSON.parse(window.localStorage.getItem("NF_WALLET_METADATA") as string);
         goToDashboard();
         logoutViaTopRightButton();
         registerWithLightWalletETO(metaData.email, passowrd, false);

@@ -1,21 +1,12 @@
-import BigNumber from "bignumber.js";
-
 import {
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
   formatNumber,
   selectDecimalPlaces,
-  stripNumberFormatting,
 } from "../../components/shared/formatters/utils";
 import { fillForm } from "../utils/forms";
-import {
-  acceptWallet,
-  assertWallet,
-  getWalletNEurAmount,
-  goToWallet,
-  parseAmount,
-} from "../utils/index";
+import { assertWallet, getWalletNEurAmount } from "../utils/index";
 import { formField, tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 import { assertBankAccountDetails } from "./assertions";

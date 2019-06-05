@@ -1,7 +1,6 @@
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import {
   acceptTOS,
-  accountFixtureSeed,
   assertDashboard,
   assertErrorModal,
   assertWaitForLatestEmailSentWithSalt,
@@ -52,9 +51,9 @@ describe("Wallet recover", function(): void {
       type: "investor",
       kyc: "individual",
     }).then(() => {
-      cy.window().then(async window => {
+      cy.window().then(window => {
         // TODO: move into a seperate util method
-        const metaData = JSON.parse(await window.localStorage.getItem("NF_WALLET_METADATA"));
+        const metaData = JSON.parse(window.localStorage.getItem("NF_WALLET_METADATA") as string);
         cy.clearLocalStorage().then(() => {
           cy.visit(`${recoverRoutes.seed}`);
           cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {

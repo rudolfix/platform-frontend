@@ -97,7 +97,7 @@ describe("Eto Investor View", () => {
         );
         cy.get(tid("eto-public-view-whitelist-discount")).should(
           "contain",
-          getPercentage(etoData.whitelistDiscountFraction),
+          getPercentage(etoData.whitelistDiscountFraction!),
         );
 
         const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(etoData);

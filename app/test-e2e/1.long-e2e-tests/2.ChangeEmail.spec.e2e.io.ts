@@ -18,12 +18,12 @@ import {
 
 describe("Change Email", function(): void {
   describe("Has verified email", () => {
-    let email;
+    let email: string;
     beforeEach(() => {
       createAndLoginNewUser({ type: "investor", kyc: "individual" }).then(() => {
-        cy.window().then(async window => {
+        cy.window().then(window => {
           // TODO: move into a seperate util method
-          const metaData = JSON.parse(await window.localStorage.getItem("NF_WALLET_METADATA"));
+          const metaData = JSON.parse(window.localStorage.getItem("NF_WALLET_METADATA") as string);
           email = metaData.email;
         });
       });
@@ -129,9 +129,11 @@ describe("Change Email", function(): void {
 
       createAndLoginNewUser({ type: "investor", kyc: "individual" })
         .then(() => {
-          cy.window().then(async window => {
+          cy.window().then(window => {
             // TODO: move into a seperate util method
-            const metaData = JSON.parse(await window.localStorage.getItem("NF_WALLET_METADATA"));
+            const metaData = JSON.parse(window.localStorage.getItem(
+              "NF_WALLET_METADATA",
+            ) as string);
             email = metaData.email;
           });
         })

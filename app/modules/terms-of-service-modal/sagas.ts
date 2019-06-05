@@ -74,7 +74,7 @@ function* handleDownloadCurrentAgreement(_: TGlobalDependencies): Iterator<any> 
     actions.immutableStorage.downloadImmutableFile(
       {
         ipfsHash: currentAgreementHash,
-        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        mimeType: "application/pdf",
         asPdf: true,
       },
       getMessageTranslation(fileName) as string,

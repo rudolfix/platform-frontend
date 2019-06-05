@@ -222,7 +222,7 @@ describe("Eto Investor View", () => {
   });
 
   describe("Fixtures tests", () => {
-    it("coming soon state should have pitch deck", () => {
+    it.skip("coming soon state should have pitch deck", () => {
       loginFixtureAccount("ISSUER_PREVIEW", {
         signTosAgreement: true,
         kyc: "business",

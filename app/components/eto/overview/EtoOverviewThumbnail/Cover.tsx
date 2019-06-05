@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { EJurisdiction } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
 import { assertNever } from "../../../../utils/assertNever";
-import { IResponsiveImage, ResponsiveImage } from "../../../shared/ResponsiveImage";
+import { EImageFit, IResponsiveImage, ResponsiveImage } from "../../../shared/ResponsiveImage";
 import { Tag } from "../../../shared/Tag.unsafe";
 
 import * as styles from "./Cover.module.scss";
@@ -56,6 +56,7 @@ const Cover: React.FunctionComponent<IProps & CommonHtmlProps> = ({
       height={205}
       srcSet={companyBanner.srcSet}
       alt={companyBanner.alt}
+      fit={EImageFit.COVER}
     />
 
     <div className={cn(styles.jurisdiction, "mb-0")}>

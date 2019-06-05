@@ -13,6 +13,11 @@ export interface ISrcSet {
 
 type TTheme = "light" | "dark" | "transparent";
 
+export enum EImageFit {
+  COVER = styles.fitCover,
+  CONTAIN = styles.fitContain,
+}
+
 interface IResponsiveImage {
   src?: string;
   srcSet: ISrcSet;
@@ -22,7 +27,7 @@ interface IResponsiveImage {
   height?: number;
   className?: string;
   onClick?: () => void;
-  preserveOriginalRatio?: boolean;
+  fit?: EImageFit;
 }
 
 const ResponsiveImage: React.FunctionComponent<IResponsiveImage> = ({
@@ -34,7 +39,7 @@ const ResponsiveImage: React.FunctionComponent<IResponsiveImage> = ({
   width,
   theme,
   onClick,
-  preserveOriginalRatio,
+  fit,
 }) => {
   const computedSrcSet = `${srcSet["1x"]} 1x,
     ${srcSet["2x"] && srcSet["2x"] + " 2x"},
@@ -49,7 +54,7 @@ const ResponsiveImage: React.FunctionComponent<IResponsiveImage> = ({
     >
       {srcSet["1x"] && (
         <img
-          className={cn(styles.image, preserveOriginalRatio ? styles.preserveRatio : null)}
+          className={cn(styles.image, fit)}
           src={src || srcSet["1x"]}
           srcSet={computedSrcSet}
           alt={alt}
@@ -61,6 +66,7 @@ const ResponsiveImage: React.FunctionComponent<IResponsiveImage> = ({
 
 ResponsiveImage.defaultProps = {
   theme: "dark",
+  fit: EImageFit.CONTAIN,
 };
 
 export { ResponsiveImage, IResponsiveImage };

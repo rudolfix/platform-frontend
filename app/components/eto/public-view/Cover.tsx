@@ -4,7 +4,7 @@ import { COMPANY_TAGS_LIMIT } from "../../../config/constants";
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TTranslatedString } from "../../../types";
 import { Container, EColumnSpan } from "../../layouts/Container";
-import { IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
+import { EImageFit, IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
 import { Tag } from "../../shared/Tag.unsafe";
 
 import * as styles from "./Cover.module.scss";
@@ -31,6 +31,7 @@ export const Cover: React.FunctionComponent<IProps> = ({
       height={400}
       srcSet={companyBanner.srcSet}
       alt={companyBanner.alt}
+      fit={EImageFit.COVER}
     />
 
     <div className={styles.companyDetails}>

@@ -11,7 +11,8 @@ import { formField, tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 import { assertBankAccountDetails } from "./assertions";
 
-describe("Redeem NEUR", () => {
+describe("Redeem NEUR", function(): void {
+  this.retries(2);
   beforeEach(() => {
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC", {
       kyc: "business",

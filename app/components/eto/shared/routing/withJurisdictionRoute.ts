@@ -7,6 +7,6 @@ export const withJurisdictionRoute = <P extends object>(
   onEnterAction<P>({
     actionCreator: (dispatch, props) => {
       const { previewCode, jurisdiction } = getProps(props);
-      dispatch(actions.eto.ensureEtoJurisdiction(previewCode, jurisdiction));
+      dispatch(actions.eto.ensureEtoJurisdiction(previewCode, jurisdiction.toUpperCase()));
     },
   });

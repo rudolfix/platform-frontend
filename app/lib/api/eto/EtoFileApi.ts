@@ -2,13 +2,13 @@ import { inject, injectable } from "inversify";
 import { Dictionary } from "lodash";
 
 import { symbols } from "../../../di/symbols";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
-import { withParams } from "./../../../utils/withParams";
+import { withParams } from "../../../utils/withParams";
+import { IHttpClient } from "../client/IHttpClient";
 import {
   EEtoDocumentType,
   IEtoDocument,
-  IEtoFiles,
   TEtoDocumentTemplates,
+  TStateInfo,
 } from "./EtoFileApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/etos";
@@ -59,11 +59,12 @@ export class EtoFileApi {
     if (response.statusCode === 409) {
       throw new FileAlreadyExists();
     }
+
     return response.body;
   }
 
-  public async deleteSpecificEtoDocument(ipfsHash: string): Promise<IHttpResponse<string>> {
-    const response = await this.httpClient.delete<IHttpResponse<string>>({
+  public async deleteSpecificEtoDocument(ipfsHash: string): Promise<string> {
+    const response = await this.httpClient.delete<string>({
       baseUrl: BASE_PATH,
       url: `${ETO_DOCUMENTS_PATH}/${ipfsHash}`,
     });
@@ -71,27 +72,29 @@ export class EtoFileApi {
     return response.body;
   }
 
-  public async getEtoFileStateInfo(): Promise<IHttpResponse<IEtoFiles>> {
-    const response = await this.httpClient.get<IHttpResponse<IEtoFiles>>({
+  public async getEtoFileStateInfo(): Promise<TStateInfo> {
+    const response = await this.httpClient.get<TStateInfo>({
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_INFO_PATH,
     });
+
     return response.body;
   }
 
-  public async getAllEtoTemplates(): Promise<IHttpResponse<TEtoDocumentTemplates>> {
-    const response = await this.httpClient.get<IHttpResponse<TEtoDocumentTemplates>>({
+  public async getAllEtoTemplates(): Promise<TEtoDocumentTemplates> {
+    const response = await this.httpClient.get<TEtoDocumentTemplates>({
       baseUrl: BASE_PATH,
       url: ETO_TEMPLATES_PATH,
     });
+
     return response.body;
   }
 
   public async getEtoTemplate(
     etoDocument: IEtoDocument,
     inputs: Dictionary<string>,
-  ): Promise<IHttpResponse<IEtoDocument>> {
-    const response = await this.httpClient.get<IHttpResponse<IEtoDocument>>({
+  ): Promise<IEtoDocument> {
+    const response = await this.httpClient.get<IEtoDocument>({
       baseUrl: BASE_PATH,
       url: `${ETO_TEMPLATES_PATH}/${etoDocument.documentType}`,
       queryParams: {
@@ -99,6 +102,7 @@ export class EtoFileApi {
       },
       skipResponseParsing: true,
     });
+
     return response.body;
   }
 
@@ -106,8 +110,8 @@ export class EtoFileApi {
     etoId: string,
     etoDocument: IEtoDocument,
     inputs: Dictionary<string>,
-  ): Promise<IHttpResponse<IEtoDocument>> {
-    const response = await this.httpClient.get<IHttpResponse<IEtoDocument>>({
+  ): Promise<IEtoDocument> {
+    const response = await this.httpClient.get<IEtoDocument>({
       baseUrl: BASE_PATH,
       url: withParams(ETO_BY_ID_TEMPLATES_PATH, { etoId, documentType: etoDocument.documentType }),
       queryParams: {

@@ -1,5 +1,5 @@
 import { findKey } from "lodash/fp";
-import { call, fork, put, select } from "redux-saga/effects";
+import { all, call, fork, put, select } from "redux-saga/effects";
 
 import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -11,8 +11,8 @@ import {
   EEtoDocumentType,
   IEtoDocument,
   TEtoDocumentTemplates,
+  TStateInfo,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { IAppState } from "../../store";
 import { actions, TAction, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { loadIssuerEto } from "../eto-flow/sagas";
@@ -28,8 +28,9 @@ export function* generateDocumentFromTemplate(
   if (action.type !== "ETO_DOCUMENTS_GENERATE_TEMPLATE") return;
   try {
     const document = action.payload.document;
-    const appState: IAppState = yield select();
-    const etoState: EEtoState = yield selectIssuerEtoState(appState);
+
+    const etoState: EEtoState = yield select(selectIssuerEtoState);
+
     let resolvedTemplate = null;
 
     yield put(actions.immutableStorage.downloadDocumentStarted(document.ipfsHash));
@@ -131,11 +132,17 @@ export function* loadEtoFileData({
   notificationCenter,
   apiEtoFileService,
   logger,
-}: TGlobalDependencies): any {
+}: TGlobalDependencies): Iterator<any> {
   try {
-    yield neuCall(loadIssuerEto);
-    const stateInfo = yield apiEtoFileService.getEtoFileStateInfo();
-    const allTemplates = yield apiEtoFileService.getAllEtoTemplates();
+    const {
+      stateInfo,
+      allTemplates,
+    }: { stateInfo: TStateInfo; allTemplates: TEtoDocumentTemplates } = yield all({
+      stateInfo: apiEtoFileService.getEtoFileStateInfo(),
+      allTemplates: apiEtoFileService.getAllEtoTemplates(),
+      // under the hood updates state so only call saga
+      eto: neuCall(loadIssuerEto),
+    });
 
     yield put(
       actions.etoDocuments.loadEtoFileData({

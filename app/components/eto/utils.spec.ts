@@ -1,15 +1,21 @@
 import { expect } from "chai";
 
 import {
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
   applyDefaults,
   convert,
   convertFractionToPercentage,
   convertInArray,
   convertPercentageToFraction,
   convertToPrecision,
+  EEtoStep,
   parseStringToFloat,
   removeEmptyKeyValueField,
   removeEmptyKeyValueFields,
+  selectEtoStep,
 } from "./utils";
 
 describe("removeEmptyKeyValueField", () => {
@@ -166,5 +172,236 @@ describe("convertInArray", () => {
     };
 
     expect(convert(data, conversionSpec)).to.be.deep.equal(expectedOutput);
+  });
+});
+
+describe("selectEtoStep", () => {
+  it("should return step 1 if verification is not done", () => {
+    expect(
+      selectEtoStep(
+        false,
+        EEtoState.PREVIEW,
+        false,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        false,
+        false,
+      ),
+    ).to.eq(EEtoStep.ONE);
+
+    // Even for impossible states
+    expect(
+      selectEtoStep(
+        false,
+        EEtoState.LISTED,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.ONE);
+  });
+
+  it("should return step 2 if verification is done and state is PREVIEW", () => {
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        false,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        false,
+        false,
+      ),
+    ).to.eq(EEtoStep.TWO);
+  });
+
+  it("should return step 3 if verification is done, state is PREVIEW and marketing data is filled", () => {
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        false,
+        false,
+      ),
+    ).to.eq(EEtoStep.THREE);
+
+    // If ETO data is filled too, we should still display step 3
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        true,
+        false,
+      ),
+    ).to.eq(EEtoStep.THREE);
+  });
+
+  it("should return step 4 if verification is done, state is PREVIEW, marketing data is filled and marketing data is in PENDING state", () => {
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING,
+        false,
+        false,
+      ),
+    ).to.eq(EEtoStep.FOUR);
+
+    // If ETO data is filled too, we should still display step 4
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING,
+        true,
+        false,
+      ),
+    ).to.eq(EEtoStep.FOUR);
+  });
+
+  it("should return step 5 if verification is done, state is PREVIEW, marketing data is filled and marketing data is in VISIBLE state", () => {
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        false,
+        false,
+      ),
+    ).to.eq(EEtoStep.FIVE);
+
+    // If ETO data is filled too, we should still display step 5
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        true,
+        false,
+      ),
+    ).to.eq(EEtoStep.FIVE);
+  });
+
+  it("should return step 6 if verification is done, state is PREVIEW, marketing data is filled and term sheet has been submitted", () => {
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.SIX);
+
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PREVIEW,
+        true,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.SIX);
+  });
+
+  it("should return step 7 when state is PENDING", () => {
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PENDING,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.SEVEN);
+
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PENDING,
+        true,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.SEVEN);
+  });
+
+  it("should return step 8 for other states", () => {
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.LISTED,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.EIGHT);
+
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.LISTED,
+        true,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.EIGHT);
+
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.ON_CHAIN,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.EIGHT);
+
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.ON_CHAIN,
+        true,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.EIGHT);
+
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PROSPECTUS_APPROVED,
+        true,
+        EEtoMarketingDataVisibleInPreview.VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.EIGHT);
+
+    expect(
+      selectEtoStep(
+        true,
+        EEtoState.PROSPECTUS_APPROVED,
+        true,
+        EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
+        true,
+        true,
+      ),
+    ).to.eq(EEtoStep.EIGHT);
   });
 });

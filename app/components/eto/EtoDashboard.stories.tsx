@@ -4,210 +4,132 @@ import * as React from "react";
 
 import { testEto } from "../../../test/fixtures";
 import { mockedStore } from "../../../test/fixtures/mockedStore";
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { withStore } from "../../utils/storeDecorator.unsafe";
 import { EtoDashboardComponent } from "./EtoDashboard";
+import { EEtoStep } from "./utils";
 
-const statePreview = {
-  etoState: EEtoState.PREVIEW,
-  shouldViewEtoSettings: true,
+// KYC is not filled
+const stateStepOne = {
+  shouldViewEtoSettings: false,
   canEnableBookbuilding: false,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  previewCode: testEto.previewCode,
+  isTermSheetSubmitted: false,
+  isOfferingDocumentSubmitted: false,
+  eto: { ...testEto, state: EEtoState.PREVIEW },
   offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
   isLightWallet: true,
-  isVerificationSectionDone: true,
+  isVerificationSectionDone: false,
   loadFileDataStart: action("loadFileDataStart"),
+  userHasKycAndEmailVerified: false,
+  shouldViewSubmissionSection: false,
+  etoStep: EEtoStep.ONE,
+};
+
+// Fill in information about your company
+const stateStepTwo = {
+  ...stateStepOne,
+  isVerificationSectionDone: true,
   userHasKycAndEmailVerified: true,
+  etoStep: EEtoStep.TWO,
+};
+
+// Publish your listing page
+const stateStepThree = {
+  ...stateStepTwo,
+  shouldViewEtoSettings: true,
+  etoStep: EEtoStep.THREE,
+};
+
+// Publish your listing page
+const stateStepThreeFilled = {
+  ...stateStepThree,
   shouldViewSubmissionSection: true,
 };
 
-const statePreviewNoSubmissionSection = {
-  etoState: EEtoState.PREVIEW,
-  shouldViewEtoSettings: false,
-  canEnableBookbuilding: false,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
+// Listing page in review
+const stateStepFour = {
+  ...stateStepThree,
+  isMarketingDataVisibleInPreview: EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING,
+  etoStep: EEtoStep.FOUR,
 };
 
-const statePreviewWithPreviewSubmissionWithoutMarketingVisible = {
-  ...statePreviewNoSubmissionSection,
-  shouldViewEtoSettings: true,
+const stateStepFourFilled = {
+  ...stateStepThreeFilled,
+  isMarketingDataVisibleInPreview: EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING,
+  etoStep: EEtoStep.FOUR,
 };
 
-const statePending = {
-  etoState: EEtoState.PENDING,
-  shouldViewEtoSettings: false,
-  canEnableBookbuilding: false,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
+// Set up your ETO
+const stateStepFive = {
+  ...stateStepFour,
+  isMarketingDataVisibleInPreview: EEtoMarketingDataVisibleInPreview.VISIBLE,
+  etoStep: EEtoStep.FIVE,
 };
 
-const stateListed_1 = {
-  etoState: EEtoState.LISTED,
-  shouldViewEtoSettings: true,
-  canEnableBookbuilding: true,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
+const stateStepFiveFilled = {
+  ...stateStepFourFilled,
+  isMarketingDataVisibleInPreview: EEtoMarketingDataVisibleInPreview.VISIBLE,
+  etoStep: EEtoStep.FIVE,
 };
 
-const stateListed_2 = {
-  etoState: EEtoState.LISTED,
-  shouldViewEtoSettings: true,
-  canEnableBookbuilding: false,
+const stateStepSix = {
+  ...stateStepFiveFilled,
   isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: false,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
+  etoStep: EEtoStep.SIX,
 };
 
-const stateListed_3 = {
-  etoState: EEtoState.LISTED,
-  shouldViewEtoSettings: true,
-  canEnableBookbuilding: true,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: false,
-  previewCode: testEto.previewCode,
+const stateStepSeven = {
+  ...stateStepSix,
+  eto: { ...stateStepSix.eto, state: EEtoState.PENDING },
+  etoStep: EEtoStep.SEVEN,
+};
+
+const stateStepEight = {
+  ...stateStepSix,
+  eto: { ...stateStepSix.eto, state: EEtoState.LISTED },
+  etoStep: EEtoStep.EIGHT,
+};
+
+const stateStepEightMemorandum = {
+  ...stateStepSix,
+  eto: { ...stateStepSix.eto, state: EEtoState.LISTED },
   offeringDocumentType: EOfferingDocumentType.MEMORANDUM,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
+  etoStep: EEtoStep.EIGHT,
 };
 
-const stateProspectusApproved_1 = {
-  etoState: EEtoState.PROSPECTUS_APPROVED,
-  canEnableBookbuilding: false,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  shouldViewEtoSettings: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
-};
-
-const stateProspectusApproved_2 = {
-  etoState: EEtoState.PROSPECTUS_APPROVED,
-  canEnableBookbuilding: true,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  shouldViewEtoSettings: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
-};
-
-const stateOnChainWhitelist = {
-  etoState: EEtoState.ON_CHAIN,
-  canEnableBookbuilding: true,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  shouldViewEtoSettings: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
-};
-
-const stateOnChainSigning = {
-  etoState: EEtoState.ON_CHAIN,
-  canEnableBookbuilding: true,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  shouldViewEtoSettings: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
-};
-
-const stateOnChainRefund = {
-  etoState: EEtoState.ON_CHAIN,
-  canEnableBookbuilding: true,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  shouldViewEtoSettings: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isLightWallet: true,
-  isVerificationSectionDone: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
-};
-
-const stateOnChainClaim = {
-  etoState: EEtoState.ON_CHAIN,
-  canEnableBookbuilding: true,
-  isTermSheetSubmitted: true,
-  isOfferingDocumentSubmitted: true,
-  shouldViewEtoSettings: true,
-  previewCode: testEto.previewCode,
-  offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
-  isVerificationSectionDone: true,
-  isLightWallet: true,
-  loadFileDataStart: action("loadFileDataStart"),
-  userHasKycAndEmailVerified: true,
+const stateStepEightOnChain = {
+  ...stateStepEight,
+  eto: { ...stateStepEight.eto, state: EEtoState.ON_CHAIN },
 };
 
 storiesOf("ETO-Flow/Dashboard/StateView", module)
   .addDecorator(withStore(mockedStore))
-
-  .add("State PREVIEW with submissionSection", () => <EtoDashboardComponent {...statePreview} />)
-  .add("State PREVIEW with preview submission without marketing data visible", () => (
-    <EtoDashboardComponent {...statePreviewWithPreviewSubmissionWithoutMarketingVisible} />
+  .add("Step 1 - Verification", () => <EtoDashboardComponent {...stateStepOne} />)
+  .add("Step 2 - Company info", () => <EtoDashboardComponent {...stateStepTwo} />)
+  .add("Step 3 - Publish listing (ETO not filled)", () => (
+    <EtoDashboardComponent {...stateStepThree} />
   ))
-  .add("State PREVIEW, no submissionSection", () => (
-    <EtoDashboardComponent {...statePreviewNoSubmissionSection} />
+  .add("Step 3 - Publish listing (ETO filled)", () => (
+    <EtoDashboardComponent {...stateStepThreeFilled} />
   ))
-  .add("State VISIBILITY_PENDING", () => <EtoDashboardComponent {...statePending} />)
-  .add("State LISTED, retail eto, canEnableBookbuilding, eto submitted ", () => (
-    <EtoDashboardComponent {...stateListed_1} />
+  .add("Step 4 - Publish pending (ETO not filled)", () => (
+    <EtoDashboardComponent {...stateStepFour} />
   ))
-  .add("State LISTED, retail eto, eto not submitted", () => (
-    <EtoDashboardComponent {...stateListed_2} />
+  .add("Step 4 - Publish pending (ETO filled)", () => (
+    <EtoDashboardComponent {...stateStepFourFilled} />
   ))
-  .add("State LISTED, canEnableBookbuilding, eto not submitted", () => (
-    <EtoDashboardComponent {...stateListed_3} />
+  .add("Step 5 - Set up ETO (ETO not filled)", () => <EtoDashboardComponent {...stateStepFive} />)
+  .add("Step 5 - Set up ETO (ETO filled)", () => <EtoDashboardComponent {...stateStepFiveFilled} />)
+  .add("Step 6 - Publish your investment offer", () => <EtoDashboardComponent {...stateStepSix} />)
+  .add("Step 7 - Investment offer in review", () => <EtoDashboardComponent {...stateStepSeven} />)
+  .add("Step 8 - Campaign is live", () => <EtoDashboardComponent {...stateStepEight} />)
+  .add("Step 8 - Campaign is live (Memorandum)", () => (
+    <EtoDashboardComponent {...stateStepEightMemorandum} />
   ))
-  .add("State PROSPECTUS_APPROVED", () => <EtoDashboardComponent {...stateProspectusApproved_1} />)
-  .add("State PROSPECTUS_APPROVED, canEnableBookbuilding", () => (
-    <EtoDashboardComponent {...stateProspectusApproved_2} />
-  ))
-  .add("State OnChain whitelist", () => <EtoDashboardComponent {...stateOnChainWhitelist} />)
-  .add("State OnChain Signing", () => <EtoDashboardComponent {...stateOnChainSigning} />)
-  .add("State OnChain claim", () => <EtoDashboardComponent {...stateOnChainClaim} />)
-  .add("State OnChain refund", () => <EtoDashboardComponent {...stateOnChainRefund} />);
+  .add("Step 8 - Campaign is live (On chain)", () => (
+    <EtoDashboardComponent {...stateStepEightOnChain} />
+  ));

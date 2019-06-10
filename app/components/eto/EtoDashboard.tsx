@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedHTMLMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { lifecycle, withProps } from "recompose";
 import { compose } from "redux";
 
@@ -34,7 +34,9 @@ import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
 import { SettingsWidgets } from "../settings/settings-widget/SettingsWidgets";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { Heading } from "../shared/Heading";
 import { LoadingIndicator } from "../shared/loading-indicator";
+import { Tooltip } from "../shared/tooltips/Tooltip";
 import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
 import { ChooseEtoStartDateWidget } from "./dashboard/chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
 import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
@@ -46,8 +48,15 @@ import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardHeading } from "./shared/DashboardHeading";
 import { EProjectStatusLayout, EProjectStatusSize, ETOState } from "./shared/ETOState";
+import { EEtoStep, selectEtoStep } from "./utils";
+
+import * as styles from "./EtoDashboard.module.scss";
 
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
+
+interface IEtoStep {
+  etoStep: EEtoStep;
+}
 
 interface IStateProps {
   verifiedEmail?: string;
@@ -55,7 +64,7 @@ interface IStateProps {
   isLightWallet: boolean;
   userHasKycAndEmailVerified: boolean;
   requestStatus?: ERequestStatus;
-  etoState?: EEtoState;
+  eto?: TEtoWithCompanyAndContract;
   canEnableBookbuilding: boolean;
   marketingFormsProgress?: number;
   etoSettingsFormsProgress?: number;
@@ -74,7 +83,7 @@ interface IComputedProps extends ISubmissionProps {
   isVerificationSectionDone: boolean;
 }
 
-interface IComponentProps extends ISubmissionProps {
+interface IComponentProps extends ISubmissionProps, IEtoStep {
   verifiedEmail?: string;
   isLightWallet: boolean;
   userHasKycAndEmailVerified: boolean;
@@ -93,34 +102,104 @@ interface IDispatchProps {
   initEtoView: () => void;
 }
 
+const selectStepComponent = (etoStep: EEtoStep) => {
+  switch (etoStep) {
+    case EEtoStep.ONE:
+      return (
+        <DashboardHeading
+          step={1}
+          title={<FormattedMessage id="eto-dashboard.verification" />}
+          data-test-id="eto-dashboard-verification"
+        />
+      );
+    case EEtoStep.TWO:
+      return (
+        <DashboardHeading
+          step={2}
+          title={<FormattedMessage id="eto-dashboard.company-informations" />}
+          data-test-id="eto-dashboard-company-informations"
+        />
+      );
+    case EEtoStep.THREE:
+      return (
+        <DashboardHeading
+          step={3}
+          title={<FormattedMessage id="eto-dashboard.publish-listing" />}
+          data-test-id="eto-dashboard-publish-listing"
+        />
+      );
+    case EEtoStep.FOUR:
+      return (
+        <>
+          <DashboardHeading
+            step={4}
+            title={<FormattedMessage id="eto-dashboard.listing-review" />}
+            data-test-id="eto-dashboard-listing-review"
+          />
+          <FormattedMessage id="eto-dashboard.listing-review.description" />
+        </>
+      );
+    case EEtoStep.FIVE:
+      return (
+        <>
+          <DashboardHeading
+            step={5}
+            title={<FormattedMessage id="eto-dashboard.setup-eto" />}
+            data-test-id="eto-dashboard-setup-eto"
+          />
+          <FormattedMessage id="eto-dashboard.setup-eto.description" />
+        </>
+      );
+    case EEtoStep.SIX:
+      return (
+        <DashboardHeading
+          step={6}
+          title={<FormattedMessage id="eto-dashboard.publish" />}
+          data-test-id="eto-dashboard-publish"
+        />
+      );
+    case EEtoStep.SEVEN:
+      return (
+        <>
+          <DashboardHeading
+            step={7}
+            title={<FormattedMessage id="eto-dashboard.review" />}
+            data-test-id="eto-dashboard-review"
+          />
+          <FormattedMessage id="eto-dashboard.review.description" />
+        </>
+      );
+    case EEtoStep.EIGHT:
+      return (
+        <DashboardHeading
+          step={8}
+          title={<FormattedMessage id="eto-dashboard.live" />}
+          data-test-id="eto-dashboard-live"
+        />
+      );
+    default:
+      return null;
+  }
+};
+
+const EtoDashboardStepSelector: React.FunctionComponent<IEtoStep> = ({ etoStep }) => (
+  <Container columnSpan={EColumnSpan.THREE_COL}>{selectStepComponent(etoStep)}</Container>
+);
+
 const SubmitDashBoardSection: React.FunctionComponent<{
   isTermSheetSubmitted?: boolean;
   columnSpan?: EColumnSpan;
-}> = ({ isTermSheetSubmitted, columnSpan }) => (
-  <>
-    <Container columnSpan={EColumnSpan.THREE_COL}>
-      <DashboardHeading
-        step={3}
-        title="UPLOAD TERM SHEET AND PUBLISH YOUR ETO LISTING PAGE"
-        data-test-id="eto-dashboard-verification"
-      />
-    </Container>
-    {isTermSheetSubmitted ? (
-      <SubmitProposalWidget columnSpan={columnSpan} />
-    ) : (
-      <UploadTermSheetWidget columnSpan={columnSpan} />
-    )}
-  </>
-);
+}> = ({ isTermSheetSubmitted, columnSpan }) =>
+  isTermSheetSubmitted ? (
+    <SubmitProposalWidget columnSpan={columnSpan} />
+  ) : (
+    <UploadTermSheetWidget columnSpan={columnSpan} />
+  );
 
 const EtoProgressDashboardSection: React.FunctionComponent<ISubmissionProps> = ({
   shouldViewEtoSettings,
 }) => (
   <>
-    <Container columnSpan={EColumnSpan.THREE_COL}>
-      <FormattedHTMLMessage tagName="p" id="eto-dashboard-application-description" />
-      <DashboardHeading step={2} title="SETUP YOUR ETO" />
-    </Container>
     <ETOFormsProgressSection shouldViewEtoSettings={shouldViewEtoSettings} />
   </>
 );
@@ -166,47 +245,49 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.PREVIEW:
       return (
         <>
+          {/*Show actions header only if actions are available*/}
+          {((shouldViewEtoSettings &&
+            isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE) ||
+            shouldViewSubmissionSection) && (
+            <Container columnSpan={EColumnSpan.THREE_COL}>
+              <DashboardHeading title={<FormattedMessage id="eto-dashboard.available-actions" />} />
+            </Container>
+          )}
+
           {shouldViewEtoSettings &&
+            !(shouldViewSubmissionSection && isTermSheetSubmitted) &&
             isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE && (
               <PublishETOWidget
                 isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
                 columnSpan={EColumnSpan.ONE_AND_HALF_COL}
               />
             )}
+
           {shouldViewSubmissionSection && (
             <SubmitDashBoardSection
               isTermSheetSubmitted={isTermSheetSubmitted}
               columnSpan={EColumnSpan.ONE_AND_HALF_COL}
             />
           )}
+
           <EtoProgressDashboardSection shouldViewEtoSettings={shouldViewEtoSettings} />
         </>
       );
     case EEtoState.PENDING:
       return (
         <>
-          <Container columnSpan={EColumnSpan.THREE_COL}>
-            <DashboardHeading title={dashboardTitle} />
-            <FormattedHTMLMessage
-              tagName="p"
-              id="shared-component.eto-overview.status-in-review.review-message"
-            />
-          </Container>
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
       );
     case EEtoState.LISTED:
       return (
         <>
-          <Container columnSpan={EColumnSpan.THREE_COL}>
-            <DashboardHeading title={dashboardTitle} />
-          </Container>
           {canEnableBookbuilding && <BookBuildingWidget columnSpan={EColumnSpan.TWO_COL} />}
           {!isOfferingDocumentSubmitted &&
             (offeringDocumentType === EOfferingDocumentType.PROSPECTUS ? (
-              <UploadProspectusWidget columnSpan={EColumnSpan.ONE_COL} />
+              <UploadProspectusWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
             ) : (
-              <UploadInvestmentMemorandum columnSpan={EColumnSpan.ONE_COL} />
+              <UploadInvestmentMemorandum columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
             ))}
 
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
@@ -215,9 +296,6 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.PROSPECTUS_APPROVED:
       return (
         <>
-          <Container columnSpan={EColumnSpan.THREE_COL}>
-            <DashboardHeading title={dashboardTitle} />
-          </Container>
           {canEnableBookbuilding && <BookBuildingWidget columnSpan={EColumnSpan.TWO_COL} />}
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
@@ -225,9 +303,6 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.ON_CHAIN:
       return (
         <>
-          <Container columnSpan={EColumnSpan.THREE_COL}>
-            <DashboardHeading title={dashboardTitle} />
-          </Container>
           <UploadInvestmentAgreement columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <ChooseEtoStartDateWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
@@ -256,19 +331,14 @@ class EtoDashboardComponent extends React.Component<IComponentProps> {
       userHasKycAndEmailVerified,
       isMarketingDataVisibleInPreview,
       shouldViewSubmissionSection,
+      etoStep,
     } = this.props;
 
     return (
       <WidgetGridLayout data-test-id="eto-dashboard-application">
         {!isVerificationSectionDone && (
           <>
-            <Container>
-              <DashboardHeading
-                step={1}
-                title="VERIFICATION"
-                data-test-id="eto-dashboard-verification"
-              />
-            </Container>
+            <EtoDashboardStepSelector etoStep={etoStep} />
             <SettingsWidgets
               isDynamic={true}
               {...this.props}
@@ -277,16 +347,41 @@ class EtoDashboardComponent extends React.Component<IComponentProps> {
           </>
         )}
         {userHasKycAndEmailVerified && (
-          <EtoDashboardStateViewComponent
-            isTermSheetSubmitted={isTermSheetSubmitted}
-            isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
-            shouldViewEtoSettings={shouldViewEtoSettings}
-            shouldViewSubmissionSection={shouldViewSubmissionSection}
-            eto={eto}
-            canEnableBookbuilding={canEnableBookbuilding}
-            offeringDocumentType={offeringDocumentType}
-            isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
-          />
+          <>
+            <Container columnSpan={EColumnSpan.THREE_COL} className="mb-5">
+              <div className={styles.header}>
+                <Heading level={2} decorator={false} disableTransform={true} inheritFont={true}>
+                  <FormattedHTMLMessage tagName="span" id="eto-dashboard.header" />
+                </Heading>
+                {eto && (
+                  <ETOState
+                    eto={eto}
+                    size={EProjectStatusSize.HUGE}
+                    layout={EProjectStatusLayout.INHERIT}
+                    className="ml-3"
+                  />
+                )}
+              </div>
+              <Tooltip
+                content={
+                  <FormattedHTMLMessage id="eto-dashboard.tooltip.description" tagName="span" />
+                }
+              >
+                <FormattedMessage id="eto-dashboard.tooltip" />
+              </Tooltip>
+            </Container>
+            <EtoDashboardStepSelector etoStep={etoStep} />
+            <EtoDashboardStateViewComponent
+              isTermSheetSubmitted={isTermSheetSubmitted}
+              isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
+              shouldViewEtoSettings={shouldViewEtoSettings}
+              shouldViewSubmissionSection={shouldViewSubmissionSection}
+              eto={eto}
+              canEnableBookbuilding={canEnableBookbuilding}
+              offeringDocumentType={offeringDocumentType}
+              isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
+            />
+          </>
         )}
       </WidgetGridLayout>
     );
@@ -319,15 +414,32 @@ const EtoDashboard = compose<React.FunctionComponent>(
       },
     }),
   }),
-  withProps<IComputedProps, IStateProps>(props => ({
-    isVerificationSectionDone: props.userHasKycAndEmailVerified && props.backupCodesVerified,
-    shouldViewEtoSettings: Boolean(
+  withProps<IComputedProps, IStateProps>(props => {
+    const shouldViewEtoSettings = Boolean(
       props.marketingFormsProgress && props.marketingFormsProgress >= SUBMIT_PROPOSAL_THRESHOLD,
-    ),
-    shouldViewSubmissionSection: Boolean(
+    );
+    const shouldViewSubmissionSection = Boolean(
       props.etoSettingsFormsProgress && props.etoSettingsFormsProgress >= SUBMIT_PROPOSAL_THRESHOLD,
-    ),
-  })),
+    );
+
+    const isVerificationSectionDone = props.userHasKycAndEmailVerified && props.backupCodesVerified;
+
+    return {
+      isVerificationSectionDone,
+      shouldViewEtoSettings,
+      shouldViewSubmissionSection,
+      etoStep: props.eto
+        ? selectEtoStep(
+            isVerificationSectionDone,
+            props.eto.state,
+            shouldViewEtoSettings,
+            props.isMarketingDataVisibleInPreview,
+            shouldViewSubmissionSection,
+            props.isTermSheetSubmitted,
+          )
+        : EEtoStep.ONE,
+    };
+  }),
   onEnterAction<IStateProps & IDispatchProps>({
     actionCreator: (_, props) => {
       if (props.userHasKycAndEmailVerified) {

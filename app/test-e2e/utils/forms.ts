@@ -1,7 +1,7 @@
 import { findKey, forEach } from "lodash";
 
 import { Dictionary } from "../../types";
-import { acceptWallet } from "./index";
+import { acceptWallet, formFieldValue } from "./index";
 import { formField, formFieldErrorMessage, tid } from "./selectors";
 
 type TFormFieldFixture =
@@ -43,8 +43,8 @@ export const fillField = (key: string, value: string, parent: string = "body") =
   cy.get(parent).within(() => {
     cy.get(formField(key))
       .clear()
-      .type(value)
       .wait(200)
+      .type(value)
       .blur();
   });
 };
@@ -106,7 +106,9 @@ export const fillForm = (
     }
     // check or uncheck a radio
     else if (field.type === "radio") {
-      cy.get(formField(key)).check(field.value, { force: true });
+      cy.get(formField(key))
+        .filter(formFieldValue(key, field.value))
+        .check({ force: true });
     }
     //check or uncheck a checkbox
     else if (field.type === "checkbox") {
@@ -114,9 +116,9 @@ export const fillForm = (
 
       forEach(field.values, (checked, value) => {
         if (checked) {
-          element.check(value, { force: true });
+          element.filter(formFieldValue(key, value)).check({ force: true });
         } else {
-          element.uncheck(value, { force: true });
+          element.filter(formFieldValue(key, value)).uncheck({ force: true });
         }
       });
     }

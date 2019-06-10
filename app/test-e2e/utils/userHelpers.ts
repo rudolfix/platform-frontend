@@ -18,7 +18,7 @@ const VAULT_API_ROOT = "/api/wallet";
 export const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
 const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
 export const JWT_KEY = "NF_JWT";
-const CURRENT_AGREEMENT = "QmS3qGWqvruywjM7Lp82LiyoyqDQbArdXveC5JA5m54Qfv";
+const CURRENT_AGREEMENT = "Qma56HxZ2drE1W3exmbaM9nmEf4gnBe7RR5pX2HiyBUGBK";
 
 export const generateRandomEmailAddress = () =>
   `${Math.random()
@@ -109,7 +109,6 @@ export const createAndLoginNewUser = (
 /*
  * Restore fixture account by name
  */
-
 export const loginFixtureAccount = (
   accountFixtureName: string,
   params: {

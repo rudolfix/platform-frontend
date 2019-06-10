@@ -93,7 +93,7 @@ export const investmentTermsForm: TFormFixture = {
 
 // eto terms
 export const etoTermsRequiredForm: TFormFixture = {
-  minTicketEur: "750",
+  minTicketEur: "1000",
   whitelistDurationDays: {
     value: "5",
     type: "range",

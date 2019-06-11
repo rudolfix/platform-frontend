@@ -6,7 +6,7 @@ import { wrapWithIntl } from "../../../../test/integrationTestUtils.unsafe";
 import { FormatShortNumber } from "./FormatShortNumber";
 import { EAbbreviatedNumberOutputFormat, ENumberInputFormat } from "./utils";
 
-describe("FormatShortNumber component", () => {
+describe("FormatShortNumber component LONG", () => {
   it("should render number in LONG abbreviated form", () => {
     const component = mount(
       wrapWithIntl(
@@ -42,5 +42,44 @@ describe("FormatShortNumber component", () => {
       ),
     );
     expect(component.render().text()).to.be.eq("12.3 million");
+  });
+});
+
+describe("FormatShortNumber component SHORT", () => {
+  it("should render number in SHORT abbreviated form", () => {
+    const component = mount(
+      wrapWithIntl(
+        <FormatShortNumber
+          value={"123"}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+        />,
+      ),
+    );
+    expect(component.render().text()).to.be.eq("123");
+  });
+  it("should render number in SHORT abbreviated form - thousands", () => {
+    const component = mount(
+      wrapWithIntl(
+        <FormatShortNumber
+          value={"12345"}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+        />,
+      ),
+    );
+    expect(component.render().text()).to.be.eq("12.3k");
+  });
+  it("should render number in SHORT abbreviated form - millions", () => {
+    const component = mount(
+      wrapWithIntl(
+        <FormatShortNumber
+          value={"12345678"}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+        />,
+      ),
+    );
+    expect(component.render().text()).to.be.eq("12.3M");
   });
 });

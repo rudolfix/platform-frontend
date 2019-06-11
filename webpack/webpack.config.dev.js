@@ -6,6 +6,22 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const generateProxyConfig = require("./proxy-urls");
 const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
+const loadAppEnv = require("./loadAppEnv");
+
+const applicationEnv = loadAppEnv(process.env);
+
+if (process.env.NF_VM_CONNECT) {
+  console.assert(
+    applicationEnv.NF_VM_ADDRESS && JSON.parse(applicationEnv.NF_VM_ADDRESS) !== "",
+    "Missing or empty NF_VM_ADDRESS env variable. Add it to your .env file",
+  );
+
+  console.log("Remote backend url set to:", JSON.parse(applicationEnv.NF_VM_ADDRESS));
+}
+
+const targetAddress = process.env.NF_VM_CONNECT
+  ? JSON.parse(applicationEnv.NF_VM_ADDRESS)
+  : "localhost";
 
 module.exports = merge.smart(configCommon, {
   mode: "development",
@@ -28,7 +44,11 @@ module.exports = merge.smart(configCommon, {
         "*; " + // this should be only enabled for twitter-iframe.html
         "connect-src 'self' https://*.neufund.io wss://localhost:9090", // needed for hot reload
     },
-    proxy: generateProxyConfig("http://localhost", "http://localhost:8545"),
+    proxy: generateProxyConfig(
+      `http://${targetAddress}`,
+      `http://${targetAddress}:8545`,
+      targetAddress,
+    ),
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

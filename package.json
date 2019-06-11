@@ -33,6 +33,7 @@
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
+    "start:remote:vm": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_VM_CONNECT=1 webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote:serve-on-network": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_SERVE_ON_NETWORK=$(eval network private_ip) webpack-dev-server --config ./webpack/webpack.config.dev-remote-external.js",
     "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack-dev-server --config ./webpack/webpack.config.translate.js",
     "storybook": "STORYBOOK_RUN=1 start-storybook -p 9001 -c .storybook -s ./app/assets",

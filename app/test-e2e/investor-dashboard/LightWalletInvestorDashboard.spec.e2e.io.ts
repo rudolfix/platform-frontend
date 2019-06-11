@@ -1,7 +1,7 @@
 import * as moment from "moment";
 
 import { convertToBigInt } from "../../utils/Number.utils";
-import { assertMoneyNotEmpty } from "../utils";
+import { assertMoneyNotEmpty, etoFixtureByName } from "../utils";
 import { goToDashboard, goToDashboardWithRequiredPayoutAmountSet } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
@@ -67,6 +67,19 @@ describe("Incoming payout", function(): void {
       assertMoneyNotEmpty("incoming-payout-euro-token");
 
       cy.get(tid("incoming-payout-ether-token")).should("not.exist");
+    });
+  });
+
+  it("Should show the number of investors", () => {
+    const eto = etoFixtureByName("ETOInClaimState");
+    const ETO_ID = eto.address;
+    const numberOfInvestors = Object.keys(eto.investors).length;
+
+    createAndLoginNewUser({ type: "investor" }).then(() => {
+      goToDashboard();
+      cy.get(tid(`eto-overview-${ETO_ID}-investors-count`))
+        .get(tid("value"))
+        .contains(numberOfInvestors);
     });
   });
 });

@@ -95,6 +95,14 @@ describe("formatNumber", () => {
       }),
     ).to.throw();
   });
+  it("should accept string in e notation as input", () => {
+    expect(
+      formatNumber({
+        inputFormat: ENumberInputFormat.ULPS,
+        value: "7.907018107633946081196003e+24",
+      }),
+    ).to.eq("7 907 018.107633946081196003");
+  });
   it("should accept number as input", () => {
     expect(
       formatNumber({

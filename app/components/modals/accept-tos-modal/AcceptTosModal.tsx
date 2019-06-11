@@ -38,8 +38,8 @@ export const AcceptTosModalInner: React.ComponentType<IStateProps & IDispatchPro
   agreementChanged,
 }) => (
   <Message
-    data-test-id="bank-verification.info"
-    image={<img src={tosImg} className={styles.image} />}
+    data-test-id="modals.accept-tos"
+    image={<img src={tosImg} className={styles.image} alt="" />}
     title={
       agreementChanged ? (
         <FormattedMessage id="settings.modal.accept-updated-tos.title" />

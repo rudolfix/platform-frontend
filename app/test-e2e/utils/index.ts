@@ -141,24 +141,11 @@ export const verifyLatestUserEmail = (email: string, attempts = 3) => {
   });
 };
 
-export const convertToUniqueEmail = (email: string) => {
-  const splitEmail = email.split("@");
-  const randomString = Math.random()
-    .toString(36)
-    .slice(2);
-  return `${splitEmail[0]}-${randomString}@${splitEmail[1]}`;
-};
-
 export const registerWithLightWallet = (
   email: string,
   password: string,
-  uniqueEmail: boolean = false,
   asIssuer: boolean = false,
 ) => {
-  if (uniqueEmail) {
-    email = convertToUniqueEmail(email);
-  }
-
   cy.visit(asIssuer ? appRoutes.registerEto : appRoutes.register);
 
   cy.get(tid("wallet-selector-light")).awaitedClick();
@@ -183,6 +170,8 @@ export const acceptTOS = () => {
   cy.get(tid("modals.accept-tos.accept-button"))
     .should("be.enabled")
     .click();
+
+  cy.get(tid("modals.accept-tos")).should("not.exist");
 };
 
 export const logoutViaTopRightButton = () => {
@@ -343,3 +332,5 @@ export const getYesOrNo = (value: any | undefined, assertion: any, returnTBAinst
 export * from "./assertions";
 export * from "./selectors";
 export * from "./navigation";
+export * from "./userHelpers";
+export * from "./forms";

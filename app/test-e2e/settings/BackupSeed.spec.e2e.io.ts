@@ -1,24 +1,21 @@
 import { LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME } from "../../config/constants";
 import { backupLightWalletSeed } from "../shared/backupLightWalletSeed";
 import {
-  acceptTOS,
   accountFixturePrivateKey,
   assertLockedAccessModal,
   confirmAccessModal,
-  goToProfile,
-  registerWithLightWallet,
-} from "../utils";
-import { tid } from "../utils/selectors";
-import {
   DEFAULT_PASSWORD,
   generateRandomEmailAddress,
+  goToProfile,
   loginFixtureAccount,
-} from "../utils/userHelpers";
+  registerWithLightWallet,
+  tid,
+} from "../utils";
 
 describe("Backup Seed and Private Key save and view", function(): void {
   it("should allow to save seed phrase", () => {
     registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD);
-    acceptTOS();
+
     backupLightWalletSeed();
   });
 

@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { tid } from "../../../test/testUtils";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { LayoutAuthorizedMenuComponent } from "./LayoutAuthorizedMenu.unsafe";
+import { LayoutAuthorizedMenuComponent } from "./LayoutAuthorizedMenu";
 
 describe("<LayoutAuthorizedMenuComponent />", () => {
   const defaultProps = {

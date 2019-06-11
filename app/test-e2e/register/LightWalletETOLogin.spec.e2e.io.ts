@@ -1,5 +1,9 @@
-import { assertEtoDashboard, convertToUniqueEmail, registerWithLightWalletETO } from "../utils";
-import { tid } from "../utils/selectors";
+import {
+  assertEtoDashboard,
+  generateRandomEmailAddress,
+  registerWithLightWalletETO,
+  tid,
+} from "../utils";
 
 const password = "strongpassword";
 
@@ -27,11 +31,11 @@ describe("Light Wallet ETO Login", () => {
     cy.clearLocalStorage();
   });
   it("should register logout then login as an investor", () => {
-    const testEmail = convertToUniqueEmail("moe@test.com");
+    const testEmail = generateRandomEmailAddress();
     loginWithLightWalletETO(testEmail, password);
   });
   it("should login/logout as investor navigate to ETO then login/logout as issuer", () => {
-    const testEmail = convertToUniqueEmail("moe@test.com");
+    const testEmail = generateRandomEmailAddress();
     loginWithLightWalletETO(testEmail, password);
   });
 });

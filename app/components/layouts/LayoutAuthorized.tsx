@@ -10,7 +10,7 @@ import { NotificationWidget } from "../shared/notification-widget/NotificationWi
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { Header } from "./header/Header";
-import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu.unsafe";
+import { LayoutAuthorizedMenu } from "./LayoutAuthorizedMenu";
 import { layoutEnhancer } from "./LayoutEnhancer";
 
 import * as styles from "./LayoutAuthorized.module.scss";

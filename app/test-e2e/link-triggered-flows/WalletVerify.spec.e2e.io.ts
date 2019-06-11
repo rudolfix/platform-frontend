@@ -1,14 +1,15 @@
 import {
   assertDashboard,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
+  createAndLoginNewUser,
+  fillForm,
+  generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
   goToDashboard,
   logoutViaTopRightButton,
   registerWithLightWallet,
+  tid,
 } from "../utils";
-import { fillForm } from "../utils/forms";
-import { tid } from "../utils/selectors";
-import { createAndLoginNewUser, generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Verify Wallet", () => {
   it("should update login email on activation", () => {

@@ -4,13 +4,14 @@ import {
   assertDashboard,
   assertErrorModal,
   assertWaitForLatestEmailSentWithSalt,
+  createAndLoginNewUser,
+  generateRandomEmailAddress,
+  tid,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
 } from "../utils";
 import { cyPromise } from "../utils/cyPromise";
 import { generateRandomSeedAndAddress } from "../utils/generateRandomSeedAndAddress";
-import { tid } from "../utils/selectors";
-import { createAndLoginNewUser, generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Wallet recover", function(): void {
   this.retries(2);

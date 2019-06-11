@@ -2,8 +2,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { ECurrency } from "../../../shared/formatters/utils";
-import { Money } from "../../../shared/Money.unsafe";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -23,13 +27,27 @@ const WithdrawTransactionDetails: TransactionDetailsComponent<ETxSenderType.WITH
 
     <InfoRow
       caption={<FormattedMessage id="withdraw-flow.value" />}
-      value={<Money currency={ECurrency.ETH} value={additionalData.value} />}
+      value={
+        <MoneyNew
+          inputFormat={ENumberInputFormat.ULPS}
+          outputFormat={ENumberOutputFormat.FULL}
+          moneyFormat={ECurrency.ETH}
+          value={additionalData.value}
+        />
+      }
       data-test-id="modals.tx-sender.withdraw-flow.summary.value"
     />
 
     <InfoRow
       caption={<FormattedMessage id="withdraw-flow.transaction-cost" />}
-      value={<Money currency={ECurrency.ETH} value={additionalData.cost} />}
+      value={
+        <MoneyNew
+          inputFormat={ENumberInputFormat.ULPS}
+          outputFormat={ENumberOutputFormat.FULL}
+          moneyFormat={ECurrency.ETH}
+          value={additionalData.cost}
+        />
+      }
       data-test-id="modals.tx-sender.withdraw-flow.summary.cost"
     />
 

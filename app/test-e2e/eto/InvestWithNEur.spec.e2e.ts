@@ -12,8 +12,8 @@ describe("Invest with nEur", () => {
   it("invest 1000 nEuro", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
-    loginFixtureAccount("INV_HAS_EUR_HAS_KYC", {
-      kyc: "business",
+    loginFixtureAccount("demoinvestor1", {
+      kyc: "individual",
       signTosAgreement: true,
       clearPendingTransactions: true,
     }).then(() => {

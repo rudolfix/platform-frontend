@@ -87,7 +87,7 @@ package.
 If you need to push the contract artifacts to the newest version yourself, then run.
 
 ```
-yarn update-contract-artifacts
+yarn contract-artifacts:update
 ```
 
 then commit the submodules change. It is important to commit before you run yarn, since the yarn
@@ -101,9 +101,13 @@ yarn
 If somebody else committed a new version of the submodules, just run yarn, and everything will be
 updated
 
-Take into account when pushing a PR that contains updated submodules. You will need to add
-#with-artifacts in the title of the pull request. Any pull request that contains contract artifacts
-without `#with-artifacts` as a title will get rejected by Danger in our CI pipeline
+You will most of the time not need this as updating the contracts is included in
+
+```
+yarn lint:fix
+```
+
+job
 
 ### Docs
 

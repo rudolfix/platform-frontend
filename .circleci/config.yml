@@ -143,46 +143,22 @@ workflows:
 
   mainflow:
     jobs:
-      - install-lint-test:
-          filters:
-            branches:
-              ignore:
-                - master
+      - install-lint-test
       - build-docker-test-e2e:
-          filters:
-            branches:
-              ignore:
-                - master
           requires:
             - install-lint-test
       - build-frontend:
-          filters:
-            branches:
-              ignore:
-                - master
           requires:
             - install-lint-test
       - test-e2e:
-          filters:
-            branches:
-              ignore:
-                - master
           requires:
             - build-frontend
             - build-docker-test-e2e
       - codechecks:
-          filters:
-            branches:
-              ignore:
-                - master
           requires:
             - build-frontend
             - build-docker-test-e2e
       - codechecks-vis-reg:
-          filters:
-            branches:
-              ignore:
-                - master
           requires:
             - build-frontend
             - build-docker-test-e2e

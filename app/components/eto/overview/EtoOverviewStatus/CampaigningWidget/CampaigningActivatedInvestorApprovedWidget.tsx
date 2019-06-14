@@ -39,15 +39,15 @@ interface IWithProps {
   pledgedAmount: number | "";
 }
 
-interface ILocalStateProps {
+type TLocalStateProps = {
   consentToRevealEmail: boolean;
   formState: CampaigningFormState;
-}
+};
 
-type ILocalStateHandlersProps = {
-  changeConsentToRevealEmail: StateHandler<ILocalStateProps>;
-  moveToEdit: StateHandler<ILocalStateProps>;
-  moveToView: StateHandler<ILocalStateProps>;
+type TLocalStateHandlersProps = {
+  changeConsentToRevealEmail: StateHandler<TLocalStateProps>;
+  moveToEdit: StateHandler<TLocalStateProps>;
+  moveToView: StateHandler<TLocalStateProps>;
 };
 
 const CampaigningActivatedInvestorApprovedWidget = compose<
@@ -64,7 +64,7 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
       },
     }),
   }),
-  withStateHandlers<ILocalStateProps, ILocalStateHandlersProps>(
+  withStateHandlers<TLocalStateProps, TLocalStateHandlersProps>(
     {
       consentToRevealEmail: false,
       formState: CampaigningFormState.EDIT,
@@ -77,7 +77,7 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
       moveToView: () => () => ({ formState: CampaigningFormState.VIEW }),
     },
   ),
-  lifecycle<ILocalStateHandlersProps & IExternalProps, {}>({
+  lifecycle<TLocalStateHandlersProps & IExternalProps, {}>({
     componentDidUpdate(prevProps): void {
       const pledge = this.props.pledge;
 
@@ -98,9 +98,9 @@ const CampaigningActivatedInvestorApprovedWidget = compose<
   withHandlers<
     IExternalProps &
       IDispatchProps &
-      ILocalStateProps &
-      ILocalStateHandlersProps &
-      ILocalStateProps,
+      TLocalStateProps &
+      TLocalStateHandlersProps &
+      TLocalStateProps,
     IHandlersProps
   >({
     showMyEmail: ({ pledge, savePledge, changeConsentToRevealEmail }) => (

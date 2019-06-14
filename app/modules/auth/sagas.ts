@@ -1,54 +1,73 @@
-import { Effect, fork, put, select } from "redux-saga/effects";
+import { channel, delay } from "redux-saga";
+import { Effect, fork, put, take } from "redux-saga/effects";
 
-import { calculateTimeLeft } from "../../components/shared/utils";
-import { AuthMessage, SignInUserErrorMessage } from "../../components/translatedMessages/messages";
+import { SignInUserErrorMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
+import { REDIRECT_CHANNEL_WATCH_DELAY } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
+import { STORAGE_JWT_KEY } from "../../lib/persistence/JwtObjectStorage";
+import { USER_JWT_KEY as USER_KEY } from "../../lib/persistence/UserStorage";
 import {
   SignerRejectConfirmationError,
   SignerTimeoutError,
 } from "../../lib/web3/Web3Manager/Web3Manager";
-import { IAppState } from "../../store";
-import { delay } from "../../utils/delay";
-import { getJwtExpiryDate } from "../../utils/JWTUtils";
+import { assertNever } from "../../utils/assertNever";
 import { actions, TAction } from "../actions";
 import { EInitType } from "../init/reducer";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
-import { selectActivationCodeFromQueryString, selectEmailFromQueryString } from "../web3/selectors";
-import { verifyUserEmailPromise } from "./email/sagas";
-import { JwtNotAvailable } from "./errors";
-import { watchRedirectChannel } from "./jwt/sagas";
-import { selectJwt, selectUserEmail, selectVerifiedUserEmail } from "./selectors";
-import { loadUser, signInUser } from "./user/sagas";
+import { verifyUserEmail } from "./email/sagas";
+import { handleJwtTimeout } from "./jwt/sagas";
+import { ELogoutReason, EUserAuthType } from "./types";
+import { setUser, signInUser } from "./user/sagas";
 
-function* logoutWatcher(
+function* handleLogOutUser(
   { web3Manager, jwtStorage, logger, userStorage }: TGlobalDependencies,
   action: TAction,
 ): Iterator<any> {
   if (action.type !== "AUTH_LOGOUT") return;
-  const { userType, disableRedirect } = action.payload;
+
+  const { userType, logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
 
   userStorage.clear();
   jwtStorage.clear();
+
   yield web3Manager.unplugPersonalWallet();
+
   yield put(actions.web3.personalWalletDisconnected());
-  if (!disableRedirect) {
-    if (userType === EUserType.INVESTOR || !userType) {
-      yield put(actions.routing.goHome());
-    } else {
-      yield put(actions.routing.goEtoHome());
-    }
+
+  switch (logoutType) {
+    case ELogoutReason.USER_REQUESTED:
+      {
+        if (userType === EUserType.ISSUER) {
+          yield put(actions.routing.goEtoHome());
+        } else {
+          yield put(actions.routing.goHome());
+        }
+      }
+      break;
+    case ELogoutReason.SESSION_TIMEOUT:
+      if (userType === EUserType.ISSUER) {
+        yield put(actions.routing.goToEtoLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
+      } else {
+        yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
+      }
+      break;
+    case ELogoutReason.ALREADY_LOGGED_IN:
+      logger.warn(
+        new Error(
+          "Seems like there is already active session. Please check the reason as this may be a potential bug.",
+        ),
+      );
+      // no action is required
+      break;
+    default:
+      assertNever(logoutType);
   }
+
   yield put(actions.init.start(EInitType.APP_INIT));
+
   logger.setUser(null);
-}
-
-function* setUser({ logger }: TGlobalDependencies, action: TAction): Iterator<any> {
-  if (action.type !== "AUTH_SET_USER") return;
-
-  const user = action.payload.user;
-  logger.setUser({ id: user.userId, type: user.type, walletType: user.walletType });
 }
 
 function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
@@ -70,7 +89,7 @@ function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
         ),
       );
     } else {
-      yield put(actions.auth.logout(undefined, false));
+      yield put(actions.auth.logout());
       yield put(
         actions.walletSelector.messageSigningError(
           createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
@@ -81,53 +100,55 @@ function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
 }
 
 /**
- * Email Verification
+ * Multi browser logout/login feature
  */
-function* verifyUserEmail({ notificationCenter }: TGlobalDependencies): Iterator<any> {
-  const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
-  const urlEmail = yield select((s: IAppState) => selectEmailFromQueryString(s.router));
-  const userEmail = yield select((s: IAppState) => selectUserEmail(s.auth));
+const redirectChannel = channel<{ type: EUserAuthType }>();
 
-  if (userEmail && userEmail !== urlEmail) {
-    // Logout if there is different user session active
-    yield put(actions.auth.logout(undefined, true));
-    yield notificationCenter.error(
-      {
-        messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED_SAME_EMAIL,
-      },
-      { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
-    );
-    return;
-  }
-  const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
-
-  yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
-  yield loadUser();
-  yield put(actions.routing.goToProfile());
+/**
+ * Saga that starts an Event Channel Emitter that listens to storage
+ * events from the browser
+ */
+export function* startRedirectChannel(): any {
+  window.addEventListener("storage", (evt: StorageEvent) => {
+    if (evt.key === STORAGE_JWT_KEY && evt.oldValue && !evt.newValue) {
+      redirectChannel.put({
+        type: EUserAuthType.LOGOUT,
+      });
+    }
+    if (evt.key === USER_KEY && !evt.oldValue && evt.newValue) {
+      redirectChannel.put({
+        type: EUserAuthType.LOGIN,
+      });
+    }
+  });
 }
 
 /**
- * JWT Timeout AutoLogout
+ * Saga that watches events coming from redirectChannel and
+ * dispatches login/logout actions
  */
-function* handleJwtTimeout({ logger }: TGlobalDependencies): Iterator<any> {
-  try {
-    const jwt: string | undefined = yield select(selectJwt);
-    if (!jwt) throw new JwtNotAvailable();
-    const expiryDate = getJwtExpiryDate(jwt);
-    // Automatically logout after ExpiryDate
-    yield delay(calculateTimeLeft(expiryDate, true) * 1000);
-    yield put(actions.auth.logout());
-  } catch (e) {
-    logger.error(new Error("Failed to Auto Handle JWT AutoLogout"));
-    throw e;
+export function* watchRedirectChannel(): any {
+  yield startRedirectChannel();
+  while (true) {
+    const userAction = yield take(redirectChannel);
+    switch (userAction.type) {
+      case EUserAuthType.LOGOUT:
+        yield put(actions.auth.logout());
+        break;
+      case EUserAuthType.LOGIN:
+        yield put(actions.init.start(EInitType.APP_INIT));
+        break;
+    }
+    yield delay(REDIRECT_CHANNEL_WATCH_DELAY);
   }
 }
 
-export const authSagas = function*(): Iterator<Effect> {
+export function* authSagas(): Iterator<Effect> {
   yield fork(watchRedirectChannel);
-  yield fork(neuTakeLatest, "AUTH_LOGOUT", logoutWatcher);
+
+  yield fork(neuTakeLatest, "AUTH_LOGOUT", handleLogOutUser);
   yield fork(neuTakeEvery, "AUTH_SET_USER", setUser);
   yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
   yield fork(neuTakeLatest, "AUTH_LOAD_JWT", handleJwtTimeout);
-};
+}

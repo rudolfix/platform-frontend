@@ -1,6 +1,8 @@
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import * as jsonwebtoken from "jsonwebtoken";
+import * as React from "react";
+import { Route } from "react-router";
 
 import { createMount, remount } from "../../../test/createMount";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
@@ -80,16 +82,13 @@ describe("Wallet selector integration", () => {
         },
       }),
       createJwt: async () => ({
-        statusCode: 200,
-        body: {
-          jwt: jsonwebtoken.sign(
-            {
-              exp: Math.floor(Date.now() / 1000) + 60 * 60,
-              data: "foobar",
-            },
-            "secret",
-          ),
-        },
+        jwt: jsonwebtoken.sign(
+          {
+            exp: Math.floor(Date.now() / 1000) + 60 * 60,
+            data: "foobar",
+          },
+          "secret",
+        ),
       }),
     });
     const usersApiMock = createMock(UsersApi, {
@@ -140,7 +139,7 @@ describe("Wallet selector integration", () => {
       .initializeMock(internalWeb3AdapterMock, dummyNetworkId);
     const error = createMessage(LedgerErrorMessage.GENERIC_ERROR);
     const mountedComponent = createMount(
-      wrapWithProviders(WalletSelector, {
+      wrapWithProviders(() => <Route component={WalletSelector} />, {
         container,
         store,
         history,
@@ -246,16 +245,13 @@ describe("Wallet selector integration", () => {
         },
       }),
       createJwt: async () => ({
-        statusCode: 200,
-        body: {
-          jwt: jsonwebtoken.sign(
-            {
-              exp: Math.floor(Date.now() / 1000) + 60 * 60,
-              data: "foobar",
-            },
-            "secret",
-          ),
-        },
+        jwt: jsonwebtoken.sign(
+          {
+            exp: Math.floor(Date.now() / 1000) + 60 * 60,
+            data: "foobar",
+          },
+          "secret",
+        ),
       }),
     });
     const usersApiMock = createMock(UsersApi, {
@@ -295,7 +291,7 @@ describe("Wallet selector integration", () => {
       .initializeMock(internalWeb3AdapterMock, dummyNetworkId);
 
     const mountedComponent = createMount(
-      wrapWithProviders(WalletSelector, {
+      wrapWithProviders(() => <Route component={WalletSelector} />, {
         container,
         store,
         history,

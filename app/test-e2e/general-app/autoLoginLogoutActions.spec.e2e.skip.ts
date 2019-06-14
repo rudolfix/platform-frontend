@@ -1,5 +1,10 @@
 import { assertDashboard, assertUserInLanding, goToDashboard } from "../utils";
-import { createAndLoginNewUser, INVESTOR_WALLET_KEY, JWT_KEY } from "../utils/userHelpers";
+import {
+  createAndLoginNewUser,
+  getJwtToken,
+  INVESTOR_WALLET_KEY,
+  JWT_KEY,
+} from "../utils/userHelpers";
 
 describe("auto-logout/auto-login", () => {
   it("should logout automatically when a user logs out from another tab", () => {
@@ -22,7 +27,7 @@ describe("auto-logout/auto-login", () => {
         type: "investor",
         kyc: "business",
       }).then(() => {
-        const jwt = window.localStorage.getItem(JWT_KEY);
+        const jwt = getJwtToken();
         const walletData = window.localStorage.getItem(INVESTOR_WALLET_KEY);
         cy.clearLocalStorage();
         cy.wait(5000);

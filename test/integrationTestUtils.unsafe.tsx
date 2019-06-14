@@ -57,16 +57,19 @@ interface ICreateIntegrationTestsSetupOutput {
   sagaMiddleware: SagaMiddleware<{ container: Container; deps: TGlobalDependencies }>;
 }
 
-export const setupFakeClock = () => {
+export const setupFakeClock = (now?: number) => {
   let wrapper: { fakeClock: LolexClockAsync<any> } = {} as any;
+
   beforeEach(() => {
     // note: we use custom fork of lolex providing tickAsync function which should be used to await for any async actions triggered by tick. Read more: https://github.com/sinonjs/lolex/pull/105
-    wrapper.fakeClock = lolex.install();
+    // TODO: check why typings are not accurate here
+    wrapper.fakeClock = lolex.install(now as any);
   });
 
   afterEach(() => {
     wrapper.fakeClock.uninstall();
   });
+
   return wrapper;
 };
 

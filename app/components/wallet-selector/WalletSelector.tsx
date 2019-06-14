@@ -1,12 +1,16 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
+import { StaticContext } from "react-router";
+import { Link, RouteComponentProps } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { compose } from "recompose";
+import { compose, StateHandler, withStateHandlers } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
+import { ELogoutReason } from "../../modules/auth/types";
+import { ENotificationText, ENotificationType } from "../../modules/notifications/reducer";
+import { TLoginRouterState } from "../../modules/routing/types";
 import {
   selectIsLoginRoute,
   selectOppositeRootPath,
@@ -23,15 +27,18 @@ import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
 import { ExternalLink } from "../shared/links";
+import { Notification } from "../shared/notification-widget/Notification";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletRouter } from "./WalletRouter";
 
 import * as styles from "./WalletSelector.module.scss";
 
-interface IExternalProps {
+type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
+
+type TExternalProps = {
   isSecretProtected?: boolean;
-}
+} & TRouteLoginProps;
 
 interface IStateProps {
   isMessageSigning: boolean;
@@ -45,8 +52,21 @@ interface IDispatchProps {
   openICBMModal: () => void;
 }
 
+type TLocalStateProps = {
+  logoutReason: ELogoutReason | undefined;
+};
+
+type TLocalStateHandlersProps = {
+  hideLogoutReason: StateHandler<TLocalStateProps>;
+};
+
 export const WalletSelectorLayout: React.FunctionComponent<
-  IStateProps & IDispatchProps & IExternalProps
+  IStateProps &
+    IDispatchProps &
+    TExternalProps &
+    TRouteLoginProps &
+    TLocalStateProps &
+    TLocalStateHandlersProps
 > = ({
   isMessageSigning,
   rootPath,
@@ -55,6 +75,9 @@ export const WalletSelectorLayout: React.FunctionComponent<
   userType,
   openICBMModal,
   isSecretProtected,
+  logoutReason,
+  hideLogoutReason,
+  location,
 }) => {
   const isIssuerWithOnlyLedgerAllowed =
     userType === "issuer" && process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET !== "1";
@@ -65,6 +88,15 @@ export const WalletSelectorLayout: React.FunctionComponent<
         <WalletMessageSigner rootPath={rootPath} />
       ) : (
         <>
+          {logoutReason === ELogoutReason.SESSION_TIMEOUT && (
+            <Notification
+              data-test-id="wallet-selector-session-timeout-notification"
+              text={ENotificationText.AUTH_SESSION_TIMEOUT}
+              type={ENotificationType.WARNING}
+              onClick={hideLogoutReason}
+            />
+          )}
+
           <Row>
             <Col tag="section" md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
               <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>
@@ -131,7 +163,7 @@ export const WalletSelectorLayout: React.FunctionComponent<
           </Row>
 
           <section className="mt-4">
-            <WalletRouter rootPath={rootPath} />
+            <WalletRouter rootPath={rootPath} locationState={location.state} />
           </section>
 
           <Row className="mt-5">
@@ -182,8 +214,8 @@ export const WalletSelectorLayout: React.FunctionComponent<
 };
 
 export const WalletSelector = compose<
-  IExternalProps & IStateProps & IDispatchProps,
-  IExternalProps
+  TExternalProps & IStateProps & IDispatchProps & TLocalStateHandlersProps & TLocalStateProps,
+  TExternalProps
 >(
   createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
   onEnterAction({
@@ -201,7 +233,17 @@ export const WalletSelector = compose<
       openICBMModal: () => dispatch(actions.genericModal.showModal(ICBMWalletHelpTextModal)),
     }),
   }),
-  withContainer<IExternalProps>(({ isSecretProtected, ...rest }) => (
+  withContainer<TExternalProps>(({ isSecretProtected, ...rest }) => (
     <LayoutUnauthorized hideHeaderCtaButtons={isSecretProtected} {...rest} />
   )),
+  withStateHandlers<TLocalStateProps, TLocalStateHandlersProps, TExternalProps>(
+    ({ location }) => ({
+      logoutReason: location.state && location.state.logoutReason,
+    }),
+    {
+      hideLogoutReason: () => () => ({
+        logoutReason: undefined,
+      }),
+    },
+  ),
 )(WalletSelectorLayout);

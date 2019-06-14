@@ -3,8 +3,8 @@ import { FormattedPlural } from "react-intl";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { Button, ButtonLink, EButtonLayout } from "./buttons";
-import { ECurrency } from "./formatters/utils";
-import { ETheme, Money } from "./Money.unsafe";
+import { EThemeNew, MoneyNew } from "./formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "./formatters/utils";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 import { ITag, Tag } from "./Tag.unsafe";
 
@@ -129,10 +129,12 @@ export const InvestmentPreview: React.FunctionComponent<IProps> = ({
               </div>
               <PercentageIndicatorBar percent={25} className="my-2" />
               <strong>
-                <Money
-                  currency={ECurrency.EUR_TOKEN}
+                <MoneyNew
                   value="123456000000000000000000"
-                  theme={ETheme.GREEN}
+                  inputFormat={ENumberInputFormat.ULPS}
+                  moneyFormat={ECurrency.EUR_TOKEN}
+                  outputFormat={ENumberOutputFormat.FULL}
+                  theme={EThemeNew.GREEN}
                 />
               </strong>
             </div>

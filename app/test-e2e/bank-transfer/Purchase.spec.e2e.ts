@@ -25,7 +25,7 @@ function assertBankTransferFlow({
     });
   }
 
-  cy.get(tid("bank-transfer.purchase.summary.min-amount")).contains("1.00 EUR");
+  cy.get(tid("bank-transfer.purchase.summary.min-amount")).contains("1 EUR");
   cy.get(tid("bank-transfer.purchase.summary.recipient")).contains("Quintessence AG");
   cy.get(tid("bank-transfer.purchase.summary.iban")).contains("LI78088110102905K002E");
   cy.get(tid("bank-transfer.purchase.summary.bic")).contains("BFRILI22XXX");

@@ -31,7 +31,7 @@ export const selectHasInvestorTicket = (state: IAppState, etoId: string) => {
 
   if (investmentTicket) {
     // equivEurUlps is set to zero when investor didn't invest
-    return !investmentTicket.equivEurUlps.isZero();
+    return !new BigNumber(investmentTicket.equivEurUlps).isZero();
   }
 
   return false;
@@ -122,11 +122,14 @@ export const selectCalculatedEtoTicketSizesUlpsById = (state: IAppState, etoId: 
   const eto = selectEtoById(state, etoId);
   const contrib = selectCalculatedContribution(state, etoId);
   const investorTicket = selectInvestorTicket(state, etoId);
+  const zero = new BigNumber(0);
 
-  let min = (contrib && contrib.minTicketEurUlps) || (eto && Q18.mul(eto.minTicketEur || 0));
+  let min =
+    (contrib && new BigNumber(contrib.minTicketEurUlps)) ||
+    (eto && Q18.mul(eto.minTicketEur || zero));
   let max =
-    (contrib && contrib.maxTicketEurUlps) ||
-    (eto && eto.maxTicketEur && Q18.mul(eto.maxTicketEur || 0));
+    (contrib && new BigNumber(contrib.maxTicketEurUlps)) ||
+    (eto && eto.maxTicketEur && Q18.mul(eto.maxTicketEur || zero));
 
   if (min && max) {
     if (eto && investorTicket) {

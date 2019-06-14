@@ -1,5 +1,4 @@
 import { storiesOf } from "@storybook/react";
-import BigNumber from "bignumber.js";
 import * as React from "react";
 
 import { testEto } from "../../../test/fixtures";
@@ -15,14 +14,14 @@ const eto = {
     timedState: EETOStateOnChain.Payout,
   },
   investorTicket: {
-    equivEurUlps: new BigNumber("738464183130318387747"),
-    rewardNmkUlps: new BigNumber("0"),
-    equityTokenInt: new BigNumber("2280"),
-    sharesInt: new BigNumber("228000000000000000"),
-    tokenPrice: new BigNumber("323887799618560696"),
-    neuRate: new BigNumber("0"),
-    amountEth: new BigNumber("4716210000000000000"),
-    amountEurUlps: new BigNumber("0"),
+    equivEurUlps: "738464183130318387747",
+    rewardNmkUlps: "0",
+    equityTokenInt: "2280",
+    sharesInt: "228000000000000000",
+    tokenPrice: "323887799618560696",
+    neuRate: "0",
+    amountEth: "4716210000000000000",
+    amountEurUlps: "0",
     claimedOrRefunded: true,
     usedLockedAccount: true,
   } as IInvestorTicket,

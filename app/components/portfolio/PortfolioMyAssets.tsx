@@ -14,9 +14,9 @@ import { commitmentStatusLink } from "../appRouteUtils";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container } from "../layouts/Container";
 import { Button, ButtonLink, ButtonSize, EButtonLayout, EIconPosition } from "../shared/buttons";
-import { ECurrency, ENumberInputFormat } from "../shared/formatters/utils";
-import { ECurrencySymbol, Money } from "../shared/Money.unsafe";
-import { NumberFormat } from "../shared/NumberFormat";
+import { FormatNumber } from "../shared/formatters/FormatNumber";
+import { MoneyNew } from "../shared/formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 
 import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
@@ -76,22 +76,23 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
             <img src={neuIcon} alt="" className={cn("mr-2", styles.token)} />
             <span>{"NEU"}</span>
           </>
-          <Money
+          <MoneyNew
             value={myNeuBalance}
-            currency={ECurrency.NEU}
-            currencySymbol={ECurrencySymbol.NONE}
+            inputFormat={ENumberInputFormat.ULPS}
+            moneyFormat={ECurrency.NEU}
+            outputFormat={ENumberOutputFormat.FULL}
           />
-          <Money
+          <MoneyNew
             value={neuValue}
-            currency={ECurrency.EUR}
-            currencySymbol={ECurrencySymbol.SYMBOL}
+            inputFormat={ENumberInputFormat.ULPS}
+            moneyFormat={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.FULL}
           />
-          <Money
+          <MoneyNew
             value={neuPrice}
-            currency={ECurrency.EUR}
-            format={ENumberInputFormat.FLOAT}
-            currencySymbol={ECurrencySymbol.SYMBOL}
-            isPrice={true}
+            inputFormat={ENumberInputFormat.FLOAT}
+            moneyFormat={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.FULL}
           />
           <ButtonLink
             to={commitmentStatusLink(walletAddress)}
@@ -123,18 +124,23 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
                 </span>
               </>
               <span data-test-id="portfolio-my-assets-token-balance">
-                <NumberFormat value={tokenData.balance} />
+                <FormatNumber
+                  value={tokenData.balance}
+                  inputFormat={ENumberInputFormat.FLOAT}
+                  outputFormat={ENumberOutputFormat.INTEGER}
+                />
               </span>
-              <Money
+              <MoneyNew
                 value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
-                currency={ECurrency.EUR}
-                currencySymbol={ECurrencySymbol.SYMBOL}
+                inputFormat={ENumberInputFormat.ULPS}
+                moneyFormat={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.FULL}
               />
-              <Money
+              <MoneyNew
                 value={tokenData.tokenPrice}
-                currency={ECurrency.EUR}
-                isPrice={true}
-                currencySymbol={ECurrencySymbol.SYMBOL}
+                inputFormat={ENumberInputFormat.ULPS}
+                moneyFormat={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.FULL}
               />
               <Button
                 onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}

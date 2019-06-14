@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { IEtoTokenData, TEtoWithCompanyAndContract } from "../eto/types";
 
@@ -11,14 +9,14 @@ export interface ITokenDisbursal {
 }
 
 export interface IInvestorTicket {
-  equivEurUlps: BigNumber;
-  rewardNmkUlps: BigNumber;
-  equityTokenInt: BigNumber;
-  sharesInt: BigNumber;
-  tokenPrice: BigNumber;
-  neuRate: BigNumber;
-  amountEth: BigNumber;
-  amountEurUlps: BigNumber;
+  equivEurUlps: string;
+  rewardNmkUlps: string;
+  equityTokenInt: string;
+  sharesInt: string;
+  tokenPrice: string;
+  neuRate: string;
+  amountEth: string;
+  amountEurUlps: string;
   claimedOrRefunded: boolean;
   usedLockedAccount: boolean;
 }
@@ -26,10 +24,10 @@ export interface IInvestorTicket {
 export interface ICalculatedContribution {
   isWhitelisted: boolean;
   isEligible: boolean;
-  minTicketEurUlps: BigNumber;
-  maxTicketEurUlps: BigNumber;
-  equityTokenInt: BigNumber;
-  neuRewardUlps: BigNumber;
+  minTicketEurUlps: string;
+  maxTicketEurUlps: string;
+  equityTokenInt: string;
+  neuRewardUlps: string;
   maxCapExceeded: boolean;
 }
 

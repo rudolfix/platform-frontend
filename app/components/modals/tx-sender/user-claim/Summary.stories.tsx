@@ -1,5 +1,4 @@
 import { storiesOf } from "@storybook/react";
-import BigNumber from "bignumber.js";
 import * as React from "react";
 
 import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
@@ -24,14 +23,14 @@ storiesOf("User Claim Summary", module)
         {
           etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc",
           investorTicket: {
-            equityTokenInt: new BigNumber(100),
-            amountEth: new BigNumber(1),
-            amountEurUlps: new BigNumber(40),
-            equivEurUlps: new BigNumber(1),
-            rewardNmkUlps: new BigNumber(1),
-            sharesInt: new BigNumber(1),
-            tokenPrice: new BigNumber(1),
-            neuRate: new BigNumber(1),
+            equityTokenInt: "100",
+            amountEth: "1",
+            amountEurUlps: "40",
+            equivEurUlps: "1",
+            rewardNmkUlps: "1",
+            sharesInt: "1",
+            tokenPrice: "1",
+            neuRate: "1",
             claimedOrRefunded: true,
             usedLockedAccount: true,
           },

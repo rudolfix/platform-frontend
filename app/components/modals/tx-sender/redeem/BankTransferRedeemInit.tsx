@@ -84,7 +84,7 @@ const getValidators = (minAmount: string, neuroAmount: string) =>
               values={{
                 minAmount: formatNumber({
                   value: minAmount,
-                  roundingMode: ERoundingMode.DOWN,
+                  roundingMode: ERoundingMode.UP,
                   inputFormat: ENumberInputFormat.ULPS,
                   decimalPlaces: selectDecimalPlaces(
                     ECurrency.EUR_TOKEN,

@@ -27,10 +27,10 @@ export const convertToCalculatedContribution = ([
 ]): ICalculatedContribution => ({
   isWhitelisted,
   isEligible,
-  minTicketEurUlps,
-  maxTicketEurUlps,
-  equityTokenInt,
-  neuRewardUlps,
+  minTicketEurUlps: minTicketEurUlps.toString(),
+  maxTicketEurUlps: maxTicketEurUlps.toString(),
+  equityTokenInt: equityTokenInt.toString(),
+  neuRewardUlps: neuRewardUlps.toString(),
   maxCapExceeded,
 });
 
@@ -57,14 +57,14 @@ export const convertToInvestorTicket = ([
   boolean,
   boolean
 ]): IInvestorTicket => ({
-  equivEurUlps,
-  rewardNmkUlps,
-  equityTokenInt,
-  sharesInt,
-  tokenPrice,
-  neuRate,
-  amountEth,
-  amountEurUlps,
+  equivEurUlps: equivEurUlps.toString(),
+  rewardNmkUlps: rewardNmkUlps.toString(),
+  equityTokenInt: equityTokenInt.toString(),
+  sharesInt: sharesInt.toString(),
+  tokenPrice: tokenPrice.toString(),
+  neuRate: neuRate.toString(),
+  amountEth: amountEth.toString(),
+  amountEurUlps: amountEurUlps.toString(),
   claimedOrRefunded,
   usedLockedAccount,
 });
@@ -85,13 +85,14 @@ export const convertToTokenDisbursal = (
   timeToFirstDisbursalRecycle: timeToFirstDisbursalRecycle.mul(1000).toNumber(),
 });
 
-export const getTokenPrice = (equityTokenInt: BigNumber, equivEurUlps: BigNumber): string => {
-  if (equivEurUlps.isZero()) {
+export const getTokenPrice = (equityTokenInt: string, equivEurUlps: string): string => {
+  const equivEurUlpsBn = new BigNumber(equivEurUlps);
+  if (equivEurUlpsBn.isZero()) {
     return "0";
   }
 
   const equityToken = Q18.mul(equityTokenInt);
-  return equivEurUlps.div(equityToken).toString();
+  return equivEurUlpsBn.div(equityToken).toString();
 };
 
 export const getRequiredIncomingAmount = (token: ECurrency) => {

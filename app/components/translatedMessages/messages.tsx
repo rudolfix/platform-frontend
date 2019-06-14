@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
+import { EWalletSubType } from "../../modules/web3/types";
 import { TTranslatedString } from "../../types";
 import { assertNever } from "../../utils/assertNever";
 import { MoneyNew } from "../shared/formatters/Money";
@@ -283,7 +284,12 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
         <FormattedMessage id="error-message.browser-wallet.wallet-connected-to-wrong-network" />
       );
     case BrowserWalletErrorMessage.WALLET_NOT_ENABLED:
-      return <FormattedMessage id="error-message.browser-wallet.wallet-not-enabled" />;
+      switch (messageData as EWalletSubType) {
+        case EWalletSubType.GNOSIS:
+          return <FormattedMessage id="error-message.gnosis-wallet.wallet-not-enabled" />;
+        default:
+          return <FormattedMessage id="error-message.browser-wallet.wallet-not-enabled" />;
+      }
     case BrowserWalletErrorMessage.ACCOUNT_APPROVAL_REJECTED:
       return <FormattedMessage id="error-message.browser-wallet.account-approval-rejected" />;
     case BrowserWalletErrorMessage.ACCOUNT_APPROVAL_PENDING:

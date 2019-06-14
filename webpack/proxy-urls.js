@@ -73,12 +73,8 @@ function generateProxyConfig(backendUrl, nodeUrl, targetAddress = "localhost") {
     const proxyConfig = {
       pathRewrite: value.pathRewrite,
       target: isRemote ? value.targetRemote : value.targetLocal,
+      changeOrigin: isRemote,
     };
-
-    if (isRemote) {
-      proxyConfig.changeOrigin = true;
-    }
-
     return proxyConfig;
   });
 }

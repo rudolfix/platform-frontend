@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EWalletType } from "../../../modules/web3/types";
+import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { withModalBody } from "../../../utils/storybookHelpers.unsafe";
 import {
   BrowserWalletErrorMessage,
@@ -21,6 +21,7 @@ const props = {
   isUnlocked: false,
   onAccept: () => {},
   walletType: EWalletType.LIGHT,
+  walletSubType: EWalletSubType.UNKNOWN,
 };
 
 storiesOf("AccessWalletModal", module)
@@ -33,7 +34,11 @@ storiesOf("AccessWalletModal", module)
     <AccessWalletContainerComponent {...props} isUnlocked={true} />
   ))
   .add("metamask", () => (
-    <AccessWalletContainerComponent {...props} walletType={EWalletType.BROWSER} />
+    <AccessWalletContainerComponent
+      {...props}
+      walletType={EWalletType.BROWSER}
+      walletSubType={EWalletSubType.METAMASK}
+    />
   ))
   .add("metamask with error", () => {
     const data = {
@@ -42,7 +47,13 @@ storiesOf("AccessWalletModal", module)
         createMessage(BrowserWalletErrorMessage.WALLET_CONNECTED_TO_WRONG_NETWORK),
       ),
     };
-    return <AccessWalletContainerComponent {...data} walletType={EWalletType.BROWSER} />;
+    return (
+      <AccessWalletContainerComponent
+        {...data}
+        walletType={EWalletType.BROWSER}
+        walletSubType={EWalletSubType.METAMASK}
+      />
+    );
   })
   .add("ledger", () => (
     <AccessWalletContainerComponent {...props} walletType={EWalletType.LEDGER} />

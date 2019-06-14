@@ -36,10 +36,13 @@ export class BrowserWallet implements IPersonalWallet {
   ) {}
 
   public getSignerType(): SignerType {
-    if (this.walletSubType === EWalletSubType.METAMASK) {
-      return SignerType.ETH_SIGN_TYPED_DATA;
-    } else {
-      return SignerType.ETH_SIGN;
+    switch (this.walletSubType) {
+      case EWalletSubType.METAMASK:
+        return SignerType.ETH_SIGN_TYPED_DATA;
+      case EWalletSubType.GNOSIS:
+        return SignerType.ETH_SIGN_GNOSIS_SAFE;
+      default:
+        return SignerType.ETH_SIGN;
     }
   }
 
@@ -58,6 +61,9 @@ export class BrowserWallet implements IPersonalWallet {
         const typedDataDecoded = JSON.parse(hex2ascii(data));
         // We can await as signTypedData function already awaits inside for result of RPC call.
         return await this.web3Adapter.signTypedData(this.ethereumAddress, typedDataDecoded);
+      } else if (this.walletSubType === EWalletSubType.GNOSIS) {
+        const typedDataDecoded = hex2ascii(data);
+        return await this.web3Adapter.walletSignTypedData(this.ethereumAddress, typedDataDecoded);
       } else {
         return await this.web3Adapter.ethSign(this.ethereumAddress, "0x" + data);
       }
@@ -160,18 +166,20 @@ export class BrowserWalletConnector {
     const nodeIdString = await promisify<string>(web3.version.getNode)();
     const matchNodeIdString = nodeIdString.toLowerCase();
 
+    // safe will yield to metamask so order does not matter
+    if ((web3.currentProvider as any).isSafe === true) {
+      return EWalletSubType.GNOSIS;
+    }
     if (matchNodeIdString.includes("metamask")) {
       return EWalletSubType.METAMASK;
     }
     if (matchNodeIdString.includes("parity")) {
       return EWalletSubType.PARITY;
     }
-    // @todo support for mist
     return EWalletSubType.UNKNOWN;
   }
 }
 
-// At this moment it's only Metamask and Parity
 export function parseBrowserWalletError(error: any): BrowserWalletError {
   // detect Metamask rejection
   if (
@@ -184,6 +192,14 @@ export function parseBrowserWalletError(error: any): BrowserWalletError {
   }
   // detect Parity rejection
   if (error.message !== undefined && error.message.startsWith("Request has been rejected.")) {
+    return new BrowserWalletConfirmationRejectedError();
+  }
+  // detect Gnosis rejection
+  if (
+    error.message !== undefined &&
+    (error.message.startsWith("Transaction rejected") ||
+      error.message.startsWith("Signature rejected"))
+  ) {
     return new BrowserWalletConfirmationRejectedError();
   }
 

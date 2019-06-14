@@ -60,8 +60,15 @@ export class Web3Adapter {
     address: EthereumAddress | EthereumAddressWithChecksum,
     data: string,
   ): Promise<string> {
-    const sign = promisify<string>(this.web3.eth.sign);
-    return sign(address, data);
+    const sign = promisify<any>(this.web3.eth.sign);
+    const resultData = await sign(address, data);
+
+    // as some web3 providers pass error as result, promisify may not throw
+    if (resultData.error !== undefined) {
+      throw resultData.error;
+    }
+
+    return resultData.result;
   }
 
   public async signTypedData(
@@ -78,12 +85,31 @@ export class Web3Adapter {
       from: address as string,
     });
 
+    // as some web3 providers pass error as result, promisify may not throw
     if (resultData.error !== undefined) {
-      /*
-       Sane thing is to throw Error but here result.error contain object with message and code fields.
-       We could create own error but here it's gonna get more complicated when we will support more browser wallets as
-       those have different API's and returned objects may differ
-      */
+      throw resultData.error;
+    }
+
+    return resultData.result;
+  }
+
+  // Gnosis extension uses wallet_signTypedData to sign ERC712 typed data
+  public async walletSignTypedData(
+    address: EthereumAddress | EthereumAddressWithChecksum,
+    data: string,
+  ): Promise<string> {
+    const send = promisify<any>(
+      this.web3.currentProvider.sendAsync.bind(this.web3.currentProvider),
+    ); // web3 typings are not accurate here
+
+    const resultData = await send({
+      method: "wallet_signTypedData",
+      params: [address as string, data],
+      from: address as string,
+    });
+
+    // as some web3 providers pass error as result, promisify may not throw
+    if (resultData.error !== undefined) {
       throw resultData.error;
     }
 

@@ -6,10 +6,17 @@ export enum EDelayTiming {
   DELAYED,
 }
 
+type TSafeSetTimeoutOptions = { threshold: number };
+
 let lastActiveTimerId = 0;
 let activeTimers: number[] = [];
 
-const safeSetTimeoutRec = (fn: (d: EDelayTiming) => void, endTime: number, timerId: number) => {
+const safeSetTimeoutRec = (
+  fn: (d: EDelayTiming) => void,
+  endTime: number,
+  timerId: number,
+  options: TSafeSetTimeoutOptions,
+) => {
   const msToEnd = endTime - Date.now();
 
   setTimeout(
@@ -21,9 +28,9 @@ const safeSetTimeoutRec = (fn: (d: EDelayTiming) => void, endTime: number, timer
       const now = Date.now();
 
       if (now >= endTime) {
-        fn(now - endTime <= TIME_THRESHOLD ? EDelayTiming.EXACT : EDelayTiming.DELAYED);
+        fn(now - endTime <= options.threshold ? EDelayTiming.EXACT : EDelayTiming.DELAYED);
       } else {
-        safeSetTimeoutRec(fn, endTime, timerId);
+        safeSetTimeoutRec(fn, endTime, timerId, options);
       }
     },
     msToEnd <= POLLING_TIME ? msToEnd : POLLING_TIME,
@@ -37,17 +44,22 @@ const safeSetTimeoutRec = (fn: (d: EDelayTiming) => void, endTime: number, timer
  *
  * @param fn callback to be invoked after
  * @param ms milliseconds to wait
+ * @param options timer options
  *
  * Note: `safeSetTimeout` should be only used when really needed
  *        as processor overhead is bigger than with normal `setTimeout`
  * @returns timerId Use `clearSafeTimeout(timerId)` to cancel timeout
  */
-export const safeSetTimeout = (fn: (d: EDelayTiming) => void, ms: number): number => {
+export const safeSetTimeout = (
+  fn: (d: EDelayTiming) => void,
+  ms: number,
+  options: TSafeSetTimeoutOptions = { threshold: TIME_THRESHOLD },
+): number => {
   const timerId = ++lastActiveTimerId;
 
   activeTimers.push(timerId);
 
-  safeSetTimeoutRec(fn, Date.now() + ms, timerId);
+  safeSetTimeoutRec(fn, Date.now() + ms, timerId, options);
 
   return timerId;
 };
@@ -62,8 +74,8 @@ export const clearSafeTimeout = (timerId: number): void => {
 /**
  * Promise wrapper around `safeSetTimeout`.
  */
-export function safeDelay(ms: number): Promise<EDelayTiming> {
+export function safeDelay(ms: number, options?: TSafeSetTimeoutOptions): Promise<EDelayTiming> {
   return new Promise(resolve => {
-    safeSetTimeout(resolve, ms);
+    safeSetTimeout(resolve, ms, options);
   });
 }

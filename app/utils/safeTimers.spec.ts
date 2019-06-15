@@ -25,7 +25,7 @@ describe("safeSetTimeout", () => {
     // simulate hibernation
     clock.fakeClock.setSystemTime(1000);
 
-    clock.fakeClock.tick(1000);
+    clock.fakeClock.tick(500);
 
     expect(callbackSpy).to.have.been.calledWith(EDelayTiming.DELAYED);
   });
@@ -36,9 +36,29 @@ describe("safeSetTimeout", () => {
     safeSetTimeout(callbackSpy, 1900);
 
     // simulate hibernation
-    clock.fakeClock.setSystemTime(1500);
+    clock.fakeClock.setSystemTime(1200);
 
-    clock.fakeClock.tick(2000);
+    clock.fakeClock.tick(500);
+
+    // simulate hibernation
+    clock.fakeClock.setSystemTime(1800);
+
+    clock.fakeClock.tick(200);
+
+    expect(callbackSpy).to.have.been.calledWith(EDelayTiming.EXACT);
+  });
+
+  it("should return exact timing taking into account custom threshold", () => {
+    const callbackSpy = spy();
+
+    const threshold = 1000;
+
+    safeSetTimeout(callbackSpy, 2000, { threshold });
+
+    // simulate hibernation
+    clock.fakeClock.setSystemTime(2500);
+
+    clock.fakeClock.tick(threshold);
 
     expect(callbackSpy).to.have.been.calledWith(EDelayTiming.EXACT);
   });

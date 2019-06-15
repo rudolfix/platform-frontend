@@ -12,7 +12,7 @@ import { accessWalletAndRunEffect } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
 import { neuCall } from "../../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
-import { AUTH_TOKEN_REFRESH_THRESHOLD } from "../constants";
+import { AUTH_JWT_TIMING_THRESHOLD, AUTH_TOKEN_REFRESH_THRESHOLD } from "../constants";
 import { JwtNotAvailable, MessageSignCancelledError } from "../errors";
 import { selectJwt, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
@@ -184,7 +184,9 @@ export function* handleJwtTimeout({ logger }: TGlobalDependencies): Iterator<any
     const jwt: string | undefined = yield select(selectJwt);
     const userType: EUserType | undefined = yield select(selectUserType);
 
-    if (!jwt) throw new JwtNotAvailable();
+    if (!jwt) {
+      throw new JwtNotAvailable();
+    }
 
     const expiryDate = getJwtExpiryDate(jwt);
 
@@ -193,7 +195,13 @@ export function* handleJwtTimeout({ logger }: TGlobalDependencies): Iterator<any
     const timeLeftWithThreshold =
       timeLeft >= AUTH_TOKEN_REFRESH_THRESHOLD ? timeLeft - AUTH_TOKEN_REFRESH_THRESHOLD : timeLeft;
 
-    const timing: EDelayTiming = yield safeDelay(timeLeftWithThreshold);
+    if (AUTH_JWT_TIMING_THRESHOLD > AUTH_TOKEN_REFRESH_THRESHOLD) {
+      throw new Error("Timing threshold should be smaller than token refresh threshold");
+    }
+
+    const timing: EDelayTiming = yield safeDelay(timeLeftWithThreshold, {
+      threshold: AUTH_JWT_TIMING_THRESHOLD,
+    });
 
     // If timing matches exact refresh jwt
     // in case timeout was delayed (for e.g. hibernation), logout with session timeout message

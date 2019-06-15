@@ -111,7 +111,7 @@ const IcbmWalletBalanceComponent: React.FunctionComponent<IProps> = (props: IPro
   </Modal>
 );
 
-const IcbmWalletBalanceModal = compose<any, any>(
+const IcbmWalletBalanceModal = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       isOpen: state.icbmWalletBalanceModal.isOpen,

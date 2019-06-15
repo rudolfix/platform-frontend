@@ -10,8 +10,9 @@ import { myEtherWalletUrl } from "../../../utils/myEtherWallet";
 import { ButtonArrowRight } from "../../shared/buttons";
 import { ConfettiEthereum, EthereumIcon } from "../../shared/ethereum";
 import { Heading } from "../../shared/Heading";
-import { HighlightedStripField } from "../../shared/HighlightedStripField";
 import { ExternalLink } from "../../shared/links";
+import { InfoList } from "../tx-sender/shared/InfoList";
+import { InfoRow } from "../tx-sender/shared/InfoRow";
 
 import * as iconMyEtherWallet from "../../../assets/img/myEtherWallet.svg";
 import * as styles from "./IcbmWalletBalanceModal.module.scss";
@@ -119,51 +120,56 @@ const MigrateBody: React.FunctionComponent<{
   walletMigrationData: IWalletMigrationData;
 }> = ({ walletMigrationData }) => (
   <>
-    <ExternalLink
-      href={myEtherWalletUrl(
-        walletMigrationData.smartContractAddress,
-        walletMigrationData.value,
-        walletMigrationData.gasLimit,
-        walletMigrationData.migrationInputData,
-      )}
-    >
-      <HighlightedStripField
-        icon={iconMyEtherWallet}
-        label={<FormattedMessage id="settings.modal.icbm-wallet-balance.body.my-ether-wallet" />}
-        whiteBackground={true}
+    <p>
+      <ExternalLink
+        href={myEtherWalletUrl(
+          walletMigrationData.smartContractAddress,
+          walletMigrationData.value,
+          walletMigrationData.gasLimit,
+          walletMigrationData.migrationInputData,
+        )}
+      >
+        <img src={iconMyEtherWallet} width={15} height={15} alt="" className="mr-2" />
+        <FormattedMessage id="settings.modal.icbm-wallet-balance.body.my-ether-wallet" />
+      </ExternalLink>
+    </p>
+
+    <InfoList>
+      <InfoRow
+        caption={
+          <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.to-smart-contract" />
+        }
+        value={walletMigrationData.smartContractAddress}
+        data-test-id="modals.icbm-balance-modal.migrate-body.to"
+        allowClipboardCopy={true}
       />
-    </ExternalLink>
-    <HighlightedStripField
-      label={
-        <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.to-smart-contract" />
-      }
-      value={walletMigrationData.smartContractAddress}
-      withCopy
-      dataTestId="modals.icbm-balance-modal.migrate-body.to"
-    />
-    <HighlightedStripField
-      label={
-        <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.amount-to-sent" />
-      }
-      value={walletMigrationData.value}
-      withCopy
-      whiteBackground={true}
-    />
-    <HighlightedStripField
-      label={
-        <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.gas-limit" />
-      }
-      value={walletMigrationData.gasLimit}
-      withCopy
-      dataTestId="modals.icbm-balance-modal.migrate-body.gas-limit"
-    />
-    <HighlightedStripField
-      label={<FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.data" />}
-      value={walletMigrationData.migrationInputData}
-      withCopy
-      whiteBackground={true}
-      dataTestId="modals.icbm-balance-modal.migrate-body.input-data"
-    />
+
+      <InfoRow
+        caption={
+          <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.amount-to-sent" />
+        }
+        value={walletMigrationData.value}
+        allowClipboardCopy={true}
+      />
+
+      <InfoRow
+        caption={
+          <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.gas-limit" />
+        }
+        value={walletMigrationData.gasLimit}
+        allowClipboardCopy={true}
+        data-test-id="modals.icbm-balance-modal.migrate-body.gas-limit"
+      />
+
+      <InfoRow
+        caption={
+          <FormattedMessage id="settings.modal.icbm-wallet-balance.body.migrate.field.data" />
+        }
+        value={walletMigrationData.migrationInputData}
+        allowClipboardCopy={true}
+        data-test-id="modals.icbm-balance-modal.migrate-body.input-data"
+      />
+    </InfoList>
   </>
 );
 

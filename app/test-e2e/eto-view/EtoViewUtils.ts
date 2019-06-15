@@ -1,3 +1,4 @@
+import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
 import { tid } from "../utils/selectors";
 import { getEto } from "../utils/userHelpers";
 
@@ -19,6 +20,12 @@ export const assertEtoView = (etoID: string) => {
       cy.get(tid(`eto.public-view.investor-preview-banner`)).should("exist");
     }
   });
+};
+
+export const goToEtoViewById = (etoId: string) => {
+  cy.visit(etoPublicViewByIdLinkLegacy(etoId));
+
+  assertEtoView(etoId);
 };
 
 export const assertIssuerEtoView = () => {

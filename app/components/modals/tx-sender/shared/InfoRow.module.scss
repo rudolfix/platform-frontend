@@ -38,8 +38,10 @@
   }
 
   &:last-child {
-    text-align: right;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
     padding: 0 .5rem;
+    text-align: right;
   }
 }
 

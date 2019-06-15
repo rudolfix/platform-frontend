@@ -1,9 +1,12 @@
 import { includes, mapValues } from "lodash";
 import * as moment from "moment";
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
+import {
+  getMessageTranslation,
+  ValidationMessage,
+} from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { ECountries } from "./countries.enum";
 
 /**
@@ -31,20 +34,26 @@ export const dateSchema = (v: Yup.StringSchema) =>
       }
       return date.format(DATE_SCHEME);
     })
-    .test("is-valid", <FormattedMessage id="form.field.error.invalid-date" /> as any, s =>
-      parse(s).isValid(),
+    .test(
+      "is-valid",
+      getMessageTranslation(createMessage(ValidationMessage.VALIDATION_INVALID_DATE)) as any,
+      s => parse(s).isValid(),
     );
 
 export const date = dateSchema(Yup.string());
 
 export const personBirthDate = date
-  .test("is-old-enough", <FormattedMessage id="form.field.error.older-than-18" /> as any, s => {
-    const d = parse(s);
-    return d.isValid() && d.isBefore(moment().subtract(18, "years"));
-  })
+  .test(
+    "is-old-enough",
+    getMessageTranslation(createMessage(ValidationMessage.VALIDATION_MIN_AGE)) as any,
+    s => {
+      const d = parse(s);
+      return d.isValid() && d.isBefore(moment().subtract(18, "years"));
+    },
+  )
   .test(
     "is-young-enough",
-    <FormattedMessage id="form.field.error.younger-than" values={{ age: 125 }} /> as any,
+    getMessageTranslation(createMessage(ValidationMessage.VALIDATION_MAX_AGE)) as any,
     s => {
       const d = parse(s);
       return d.isValid() && d.isAfter(moment().subtract(125, "years"));
@@ -53,7 +62,7 @@ export const personBirthDate = date
 
 export const foundingDate = date.test(
   "is-old-enough",
-  <FormattedMessage id="form.field.error.founding-date-in-future" /> as any,
+  getMessageTranslation(createMessage(ValidationMessage.VALIDATION_DATE_IN_THE_FUTURE)) as any,
   s => {
     const d = parse(s);
     return d.isValid() && d.isBefore(moment());
@@ -64,7 +73,7 @@ export const citizen = Yup.bool();
 
 export const isUsCitizen = citizen.test(
   "is-us-citizen",
-  <FormattedMessage id="form.field.error.us-citizen" /> as any,
+  getMessageTranslation(createMessage(ValidationMessage.VALIDATION_US_CITIZEN)) as any,
   response => response === false,
 );
 
@@ -96,14 +105,16 @@ export const RESTRICTED_COUNTRIES = [
 
 export const restrictedCountry = countryCode.test(
   "country",
-  <FormattedMessage id="form.field.error.restricted-country" /> as any,
+  getMessageTranslation(createMessage(ValidationMessage.VALIDATION_RESTRICTED_COUNTRY)) as any,
   response => !includes(RESTRICTED_COUNTRIES, response),
 );
 
 export const percentage = Yup.number()
-  .max(100, ((values: any) => (
-    <FormattedMessage id="form.field.error.percentage.max" values={values} />
-  )) as any)
-  .min(0, ((values: any) => (
-    <FormattedMessage id="form.field.error.percentage.min" values={values} />
-  )) as any);
+  .max(100, ((values: any) =>
+    getMessageTranslation(
+      createMessage(ValidationMessage.VALIDATION_PECENTAGE_MAX, values),
+    )) as any)
+  .min(0, ((values: any) =>
+    getMessageTranslation(
+      createMessage(ValidationMessage.VALIDATION_PERCENTAGE_MIN, values),
+    )) as any);

@@ -2,7 +2,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { Money } from "../../../shared/Money.unsafe";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import { ENumberInputFormat, ENumberOutputFormat } from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -18,7 +19,14 @@ const RedistributeTransactionDetails: TransactionDetailsComponent<
       <InfoRow
         key={tokenDisbursal.token}
         caption={<FormattedMessage id="investor-payout.redistribute.summary.total-redistributed" />}
-        value={<Money value={tokenDisbursal.amountToBeClaimed} currency={tokenDisbursal.token} />}
+        value={
+          <MoneyNew
+            value={tokenDisbursal.amountToBeClaimed}
+            inputFormat={ENumberInputFormat.ULPS}
+            outputFormat={ENumberOutputFormat.FULL}
+            moneyFormat={tokenDisbursal.token}
+          />
+        }
       />
       {txTimestamp && <TimestampRow timestamp={txTimestamp} />}
     </InfoList>

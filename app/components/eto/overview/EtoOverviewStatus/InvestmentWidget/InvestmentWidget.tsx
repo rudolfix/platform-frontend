@@ -11,6 +11,7 @@ import { appConnect } from "../../../../../store";
 import { appRoutes } from "../../../../appRoutes";
 import { etoPublicViewLink } from "../../../../appRouteUtils";
 import { Button, ButtonLink } from "../../../../shared/buttons";
+import { FormatNumber } from "../../../../shared/formatters/FormatNumber";
 import { MoneyNew } from "../../../../shared/formatters/Money";
 import {
   ECurrency,
@@ -72,7 +73,16 @@ const InvestmentWidgetLayout: React.FunctionComponent<TInvestWidgetProps> = ({
             <div>
               <FormattedMessage
                 id="shared-component.eto-overview.investors"
-                values={{ totalInvestors }}
+                values={{
+                  totalInvestors,
+                  totalInvestorsAsString: (
+                    <FormatNumber
+                      value={totalInvestors}
+                      outputFormat={ENumberOutputFormat.INTEGER}
+                      inputFormat={ENumberInputFormat.FLOAT}
+                    />
+                  ),
+                }}
               />
             </div>
           )}

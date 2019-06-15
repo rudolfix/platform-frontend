@@ -1,11 +1,14 @@
 import { fillForm } from "../utils/forms";
 import { goToEtoDashboard } from "../utils/navigation";
 import { formField, tid } from "../utils/selectors";
-import { createAndLoginNewUser } from "../utils/userHelpers";
+import { loginFixtureAccount } from "../utils/userHelpers";
 
 describe("Eto Terms", () => {
-  it.skip("should show 6 available products", () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" });
+  it("should show 6 available products", () => {
+    loginFixtureAccount("ISSUER_PREVIEW", {
+      signTosAgreement: true,
+      kyc: "business",
+    });
 
     goToEtoDashboard();
 
@@ -14,24 +17,26 @@ describe("Eto Terms", () => {
     cy.get(formField("productId")).should("have.length", 6);
   });
 
-  it.skip("should show product details on hover", () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" });
+  it("should show product details on hover", () => {
+    loginFixtureAccount("ISSUER_PREVIEW", {
+      signTosAgreement: true,
+      kyc: "business",
+    });
 
     goToEtoDashboard();
 
     cy.get(tid("eto-progress-widget-eto-terms", "button")).click();
 
-    cy.get(
-      tid("eto-terms.product.0x0000000000000000000000000000000000000004.tooltip.trigger"),
-    ).trigger("mouseover");
+    cy.get(tid("eto-terms.product.hnwi eto de vma.tooltip.trigger")).trigger("mouseover");
 
-    cy.get(
-      tid("eto-terms.product.0x0000000000000000000000000000000000000004.tooltip.popover"),
-    ).should("exist");
+    cy.get(tid("eto-terms.product.hnwi eto de vma.tooltip.popover")).should("exist");
   });
 
-  it.skip("should hide and show transferable toggle", () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" });
+  it("should hide and show transferable toggle", () => {
+    loginFixtureAccount("ISSUER_PREVIEW", {
+      signTosAgreement: true,
+      kyc: "business",
+    });
 
     goToEtoDashboard();
 
@@ -41,7 +46,7 @@ describe("Eto Terms", () => {
     fillForm(
       {
         productId: {
-          value: "0x0000000000000000000000000000000000000000",
+          value: "hnwi eto de vma",
           type: "radio",
         },
       },
@@ -56,7 +61,7 @@ describe("Eto Terms", () => {
     fillForm(
       {
         productId: {
-          value: "0x0000000000000000000000000000000000000001",
+          value: "mini eto li",
           type: "radio",
         },
       },

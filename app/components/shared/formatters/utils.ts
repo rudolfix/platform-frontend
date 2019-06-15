@@ -33,6 +33,8 @@ export enum ENumberOutputFormat {
   INTEGER = "integer",
   ONLY_NONZERO_DECIMALS = "onlyNonzeroDecimals", // see removeZeroDecimals unit test
   FULL = "full",
+  ONLY_NONZERO_DECIMALS_ROUND_UP = "onlyNonzeroDecimalsRoundUp", // see removeZeroDecimals unit test
+  FULL_ROUND_UP = "fullRoundUp",
 }
 
 export enum EAbbreviatedNumberOutputFormat {
@@ -72,23 +74,25 @@ export const selectDecimalPlaces = (
 ): number => {
   if (
     outputFormat !== ENumberOutputFormat.FULL &&
-    outputFormat !== ENumberOutputFormat.ONLY_NONZERO_DECIMALS
+    outputFormat !== ENumberOutputFormat.FULL_ROUND_UP &&
+    outputFormat !== ENumberOutputFormat.ONLY_NONZERO_DECIMALS &&
+    outputFormat !== ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP
   ) {
     return 0;
-  }
-
-  switch (moneyFormat) {
-    case EPriceFormat.SHARE_PRICE:
-    case ECurrency.EUR:
-    case ECurrency.EUR_TOKEN:
-      return 2;
-    case EPriceFormat.EQUITY_TOKEN_PRICE_ETH:
-    case EPriceFormat.EQUITY_TOKEN_PRICE_EURO:
-    case EPriceFormat.EQUITY_TOKEN_PRICE_EUR_TOKEN:
-    case ECurrency.ETH:
-    case ECurrency.NEU:
-    default:
-      return 4;
+  } else {
+    switch (moneyFormat) {
+      case EPriceFormat.SHARE_PRICE:
+      case ECurrency.EUR:
+      case ECurrency.EUR_TOKEN:
+        return 2;
+      case EPriceFormat.EQUITY_TOKEN_PRICE_ETH:
+      case EPriceFormat.EQUITY_TOKEN_PRICE_EURO:
+      case EPriceFormat.EQUITY_TOKEN_PRICE_EUR_TOKEN:
+      case ECurrency.ETH:
+      case ECurrency.NEU:
+      default:
+        return 4;
+    }
   }
 };
 
@@ -187,7 +191,8 @@ export const formatNumber = ({
     decimalPlaces,
   });
 
-  return outputFormat === ENumberOutputFormat.ONLY_NONZERO_DECIMALS
+  return outputFormat === ENumberOutputFormat.ONLY_NONZERO_DECIMALS ||
+    outputFormat === ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP
     ? formatThousands(removeZeroDecimals(asFixedPrecisionNumber))
     : formatThousands(asFixedPrecisionNumber);
 };

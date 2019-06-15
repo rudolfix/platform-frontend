@@ -42,6 +42,14 @@ export type DeepReadonly<T> = T extends Primitive | WhitelistedWritableTypes
 
 export type DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
 
+export type DeepWritable<T> = T extends Primitive | WhitelistedWritableTypes | Function
+  ? T
+  : T extends (any[] | ReadonlyArray<any>)
+  ? WritableArray<T[number]>
+  : DeepWritableObject<T>;
+type DeepWritableObject<T> = { -readonly [P in keyof T]: DeepWritable<T[P]> };
+interface WritableArray<T> extends Array<DeepWritable<T>> {}
+
 // Taken from @types/reactstrap
 // @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23700
 export type InputType =

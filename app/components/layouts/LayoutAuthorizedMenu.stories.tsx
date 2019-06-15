@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { EUserType } from "../../lib/api/users/interfaces";
-import { LayoutAuthorizedMenuComponent } from "./LayoutAuthorizedMenu.unsafe";
+import { LayoutAuthorizedMenuComponent } from "./LayoutAuthorizedMenu";
 
 storiesOf("LayoutAuthorizedMenu", module)
   .add("investor menu with action required settings", () => (

@@ -6,6 +6,7 @@ import { CommonHtmlProps } from "../../../types";
 import { FormatNumber } from "./FormatNumber";
 import { FormatShortNumber } from "./FormatShortNumber";
 import {
+  EAbbreviatedNumberOutputFormat,
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
@@ -69,25 +70,47 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
   if (value) {
     //todo: this should pass through 0 as well. Use isValidNumber from the #2687 PR when it's merged
     const decimalPlaces = selectDecimalPlaces(moneyFormat, outputFormat);
-    formattedValue = Object.values(ENumberOutputFormat).includes(outputFormat) ? (
-      <FormatNumber
-        value={value}
-        defaultValue={defaultValue}
-        roundingMode={ERoundingMode.DOWN}
-        decimalPlaces={decimalPlaces}
-        inputFormat={inputFormat}
-        outputFormat={outputFormat}
-      />
-    ) : (
-      <FormatShortNumber
-        value={value}
-        inputFormat={inputFormat}
-        defaultValue={defaultValue}
-        roundingMode={ERoundingMode.DOWN}
-        decimalPlaces={decimalPlaces}
-        outputFormat={outputFormat}
-      />
-    );
+    if (
+      outputFormat === EAbbreviatedNumberOutputFormat.SHORT ||
+      outputFormat === EAbbreviatedNumberOutputFormat.LONG
+    ) {
+      formattedValue = (
+        <FormatShortNumber
+          value={value}
+          inputFormat={inputFormat}
+          defaultValue={defaultValue}
+          roundingMode={ERoundingMode.DOWN}
+          decimalPlaces={decimalPlaces}
+          outputFormat={outputFormat}
+        />
+      );
+    } else if (
+      Object.values(ENumberOutputFormat).includes(outputFormat) &&
+      (outputFormat === ENumberOutputFormat.FULL_ROUND_UP ||
+        outputFormat === ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP)
+    ) {
+      formattedValue = (
+        <FormatNumber
+          value={value}
+          defaultValue={defaultValue}
+          roundingMode={ERoundingMode.UP}
+          decimalPlaces={decimalPlaces}
+          inputFormat={inputFormat}
+          outputFormat={outputFormat}
+        />
+      );
+    } else {
+      formattedValue = (
+        <FormatNumber
+          value={value}
+          defaultValue={defaultValue}
+          roundingMode={ERoundingMode.DOWN}
+          decimalPlaces={decimalPlaces}
+          inputFormat={inputFormat}
+          outputFormat={outputFormat}
+        />
+      );
+    }
   }
   return (
     <span className={cn(styles.money, transfer, className, theme)} data-test-id={dataTestId}>
@@ -103,29 +126,3 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
 };
 
 export { MoneyNew, IMoneyCommonProps, EMoneyTransferNew, ECurrencySymbol, EThemeNew };
-
-/*
-MONEY
-take parseable string, ulps, bn,number or undefined
-if undefined, show '-' or 0 (should be an option)
-if string, make sure it's valid
-if ulps - convert to float
-
-options: isPrice, currency, class, class for currency
-
-humanReadable
-? call Number(
-convert to string with rounding settings for resp currency
-format thousands
-)
-: call HumanReadable()
-
-
-isPrice ?& add currency code
------------
-
-MONEY RANGE
--//- but for range
-
-
-*/

@@ -2,8 +2,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { ECurrency } from "../../../shared/formatters/utils";
-import { ECurrencySymbol, Money } from "../../../shared/Money.unsafe";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -29,17 +33,25 @@ const ClaimTransactionDetails: TransactionDetailsComponent<ETxSenderType.USER_CL
     <InfoRow
       caption={<FormattedMessage id="user-claim-flow.estimated-reward" />}
       value={
-        <Money
+        <MoneyNew
           value={additionalData.neuRewardUlps}
-          currency={ECurrency.NEU}
-          currencySymbol={ECurrencySymbol.NONE}
+          moneyFormat={ECurrency.NEU}
+          inputFormat={ENumberInputFormat.ULPS}
+          outputFormat={ENumberOutputFormat.FULL}
         />
       }
     />
 
     <InfoRow
       caption={<FormattedMessage id="upgrade-flow.transaction-cost" />}
-      value={<Money currency={ECurrency.ETH} value={additionalData.costUlps} />}
+      value={
+        <MoneyNew
+          value={additionalData.costUlps}
+          moneyFormat={ECurrency.ETH}
+          inputFormat={ENumberInputFormat.ULPS}
+          outputFormat={ENumberOutputFormat.FULL}
+        />
+      }
     />
 
     {children}

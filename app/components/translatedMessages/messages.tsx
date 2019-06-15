@@ -2,8 +2,11 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
+import { EWalletSubType } from "../../modules/web3/types";
 import { TTranslatedString } from "../../types";
 import { assertNever } from "../../utils/assertNever";
+import { MoneyNew } from "../shared/formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { TMessage } from "./utils";
 
 interface ITranslationValues {
@@ -35,6 +38,7 @@ export type TranslatedMessageType =
   | FileUploadMessage
   | RemoteFileMessage
   | Web3Message
+  | ValidationMessage
   | TestMessage;
 
 export enum GenericErrorMessage {
@@ -220,6 +224,23 @@ export enum Web3Message {
   WEB3_ERROR_LEDGER = "web3ErrorLedger",
 }
 
+export enum ValidationMessage {
+  VALIDATION_INTEGER = "validationInteger",
+  VALIDATION_MIN_PLEDGE = "validationMinPledge",
+  VALIDATION_MAX_PLEDGE = "validationMaxPledge",
+  VALIDATION_MAX_NEW_SHARES_LESS_THAN_MINIMUM = "validationMaxNewSharesLessThanMinimum",
+  VALIDATION_TICKET_LESS_THAN_ACCEPTED = "validationTicketLessThanAccepted",
+  VALIDATION_TICKET_LESS_THAN_MINIMUM = "validationTicketLessThanMinimum",
+  VALIDATION_INVALID_DATE = "validationInvalidDate",
+  VALIDATION_MIN_AGE = "validationMinAge",
+  VALIDATION_MAX_AGE = "validationMaxAge",
+  VALIDATION_DATE_IN_THE_FUTURE = "validationDateInTheFuture",
+  VALIDATION_US_CITIZEN = "validationUsCitizen",
+  VALIDATION_RESTRICTED_COUNTRY = "validationRestrictedCountry",
+  VALIDATION_PECENTAGE_MAX = "validationPecentageMax",
+  VALIDATION_PERCENTAGE_MIN = "validationPercentageMin",
+}
+
 export enum TestMessage {
   TEST_MESSAGE = "testMessage",
 }
@@ -263,7 +284,12 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
         <FormattedMessage id="error-message.browser-wallet.wallet-connected-to-wrong-network" />
       );
     case BrowserWalletErrorMessage.WALLET_NOT_ENABLED:
-      return <FormattedMessage id="error-message.browser-wallet.wallet-not-enabled" />;
+      switch (messageData as EWalletSubType) {
+        case EWalletSubType.GNOSIS:
+          return <FormattedMessage id="error-message.gnosis-wallet.wallet-not-enabled" />;
+        default:
+          return <FormattedMessage id="error-message.browser-wallet.wallet-not-enabled" />;
+      }
     case BrowserWalletErrorMessage.ACCOUNT_APPROVAL_REJECTED:
       return <FormattedMessage id="error-message.browser-wallet.account-approval-rejected" />;
     case BrowserWalletErrorMessage.ACCOUNT_APPROVAL_PENDING:
@@ -503,8 +529,73 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case EtoFlowMessage.ETO_LOAD_FAILED:
       return <FormattedMessage id="modules.eto-flow.load.failed" />;
 
-    // NEVER DO THIS!
-    // THIS IS a misuse! It's only for tests, so that we don't bloat locales.json with test strings!
+    case ValidationMessage.VALIDATION_INTEGER:
+      return <FormattedMessage id="form.field.error.number.integer" />;
+    case ValidationMessage.VALIDATION_MIN_PLEDGE:
+      return (
+        <FormattedMessage
+          id="shared-component.eto-overview.error.min-pledge"
+          values={{
+            minPledge: (
+              <MoneyNew
+                value={messageData as number}
+                inputFormat={ENumberInputFormat.FLOAT}
+                moneyFormat={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.FULL_ROUND_UP}
+              />
+            ),
+          }}
+        />
+      );
+    case ValidationMessage.VALIDATION_MAX_PLEDGE:
+      return (
+        <FormattedMessage
+          id="shared-component.eto-overview.error.max-pledge"
+          values={{
+            maxPledge: (
+              <MoneyNew
+                value={messageData as number}
+                inputFormat={ENumberInputFormat.FLOAT}
+                moneyFormat={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.FULL}
+              />
+            ),
+          }}
+        />
+      );
+    case ValidationMessage.VALIDATION_MAX_NEW_SHARES_LESS_THAN_MINIMUM:
+      return (
+        <FormattedMessage id="eto.form.section.investment-terms.error.maximum-new-shares-to-issue-less-than-minimum" />
+      );
+    case ValidationMessage.VALIDATION_TICKET_LESS_THAN_ACCEPTED:
+      return (
+        <FormattedMessage
+          id="eto.form.section.eto-terms.minimum-ticket-size.error.less-than-accepted"
+          values={{ value: messageData as number }}
+        />
+      );
+    case ValidationMessage.VALIDATION_TICKET_LESS_THAN_MINIMUM:
+      return (
+        <FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size.error.less-than-minimum" />
+      );
+    case ValidationMessage.VALIDATION_INVALID_DATE:
+      return <FormattedMessage id="form.field.error.invalid-date" />;
+    case ValidationMessage.VALIDATION_MIN_AGE:
+      return <FormattedMessage id="form.field.error.older-than-18" />;
+    case ValidationMessage.VALIDATION_MAX_AGE:
+      return <FormattedMessage id="form.field.error.younger-than" values={{ age: 125 }} />;
+    case ValidationMessage.VALIDATION_DATE_IN_THE_FUTURE:
+      return <FormattedMessage id="form.field.error.founding-date-in-future" />;
+    case ValidationMessage.VALIDATION_US_CITIZEN:
+      return <FormattedMessage id="form.field.error.us-citizen" />;
+    case ValidationMessage.VALIDATION_RESTRICTED_COUNTRY:
+      return <FormattedMessage id="form.field.error.restricted-country" />;
+    case ValidationMessage.VALIDATION_PECENTAGE_MAX:
+      return <FormattedMessage id="form.field.error.percentage.max" values={{ ...messageData }} />;
+    case ValidationMessage.VALIDATION_PERCENTAGE_MIN:
+      return <FormattedMessage id="form.field.error.percentage.min" values={{ ...messageData }} />;
+
+    // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
       return messageData!.message as TTranslatedString;
 

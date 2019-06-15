@@ -50,11 +50,12 @@ const InvestmentLayout: React.FunctionComponent<TInvestWidgetProps> = ({ eto }) 
           </div>
         )}
         {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (
-          <div>
+          <div data-test-id={`eto-overview-${eto.etoId}-investors-count`}>
             <FormattedMessage
               id="shared-component.eto-overview.investors"
               values={{
-                totalInvestors: (
+                totalInvestors,
+                totalInvestorsAsString: (
                   <FormatNumber
                     value={totalInvestors}
                     outputFormat={ENumberOutputFormat.INTEGER}
@@ -79,4 +80,4 @@ const InvestmentStatus = compose<TInvestWidgetProps, IInvestmentWidgetProps>(
   }),
 )(InvestmentLayout);
 
-export { InvestmentStatus };
+export { InvestmentStatus, InvestmentLayout };

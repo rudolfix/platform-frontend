@@ -153,3 +153,19 @@ export const assertEmailChangeAbort = (email: string): void => {
   cy.get(tid("profile.verify-email-widget.verified-email")).contains(email);
   cy.get(tid("profile.verify-email-widget.unverified-email")).should("not.exist");
 };
+
+export const assertUserInLightWalletLoginPage = () => {
+  cy.get(tid("modals.wallet-selector.login-light-wallet.title"));
+};
+
+export const assertUserInLightWalletRegisterPage = () => {
+  cy.get(tid("modals.wallet-selector.register-restore-light-wallet.title"));
+};
+
+export const assertUserInBrowserWalletLoginPage = () => {
+  cy.get(tid("modals.wallet-selector.wallet-browser.title"));
+};
+
+export const assertUserInLedgerWalletLoginPage = () => {
+  cy.get(tid("modals.wallet-selector.ledger-wallet.title"));
+};

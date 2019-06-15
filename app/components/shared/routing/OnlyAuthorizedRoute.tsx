@@ -22,8 +22,8 @@ interface IStateProps {
 interface IOwnProps {
   path: string;
   exact?: boolean;
-  investorComponent?: React.ComponentType<any>;
-  issuerComponent?: React.ComponentType<any>;
+  investorComponent?: React.ReactType;
+  issuerComponent?: React.ReactType;
 }
 
 type TProps = IOwnProps & IStateProps;
@@ -58,22 +58,19 @@ const OnlyAuthorizedRouteRedirectionComponent: React.FunctionComponent<TProps> =
  * This component will only attempt to redirect on entering the route. So when user gets logged in you need to trigger redirection on your own.
  */
 const OnlyAuthorizedRouteComponent: React.FunctionComponent<TProps> = ({
-  investorComponent,
-  issuerComponent,
+  investorComponent: InvestorComponent,
+  issuerComponent: IssuerComponent,
   userType,
   ...rest
 }) => {
-  const InvestorComponentAsAny = investorComponent as any;
-  const IssuerComponentAsAny = issuerComponent as any;
-
   switch (userType) {
     case EUserType.INVESTOR:
       return (
         <Route
           {...rest}
           render={props =>
-            InvestorComponentAsAny ? (
-              <InvestorComponentAsAny {...props} />
+            InvestorComponent ? (
+              <InvestorComponent {...props} />
             ) : (
               <Redirect to={appRoutes.dashboard} />
             )
@@ -86,11 +83,7 @@ const OnlyAuthorizedRouteComponent: React.FunctionComponent<TProps> = ({
         <Route
           {...rest}
           render={props =>
-            IssuerComponentAsAny ? (
-              <IssuerComponentAsAny {...props} />
-            ) : (
-              <Redirect to={appRoutes.dashboard} />
-            )
+            IssuerComponent ? <IssuerComponent {...props} /> : <Redirect to={appRoutes.dashboard} />
           }
         />
       );

@@ -2,8 +2,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { ECurrency, ENumberInputFormat } from "../../../shared/formatters/utils";
-import { ECurrencySymbol, Money } from "../../../shared/Money.unsafe";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
 import { BankNumber } from "../../../wallet/BankAccount";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
@@ -30,11 +34,11 @@ const BankTransferRedeemDetails: TransactionDetailsComponent<ETxSenderType.NEUR_
     <InfoRow
       caption={<FormattedMessage id="bank-transfer.redeem.summary.return-amount" />}
       value={
-        <Money
-          format={ENumberInputFormat.FLOAT}
+        <MoneyNew
+          inputFormat={ENumberInputFormat.FLOAT}
           value={additionalData.amount}
-          currencySymbol={ECurrencySymbol.CODE}
-          currency={ECurrency.EUR}
+          moneyFormat={ECurrency.EUR}
+          outputFormat={ENumberOutputFormat.FULL}
           data-test-id={"bank-transfer.redeem-summary.return-amount"}
         />
       }

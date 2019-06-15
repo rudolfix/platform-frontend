@@ -1,105 +1,169 @@
-import { channel, delay } from "redux-saga";
-import { call, Effect, put, select, take } from "redux-saga/effects";
+import { call, Effect, put, select } from "redux-saga/effects";
 
+import { calculateTimeLeft } from "../../../components/shared/utils";
 import { TMessage } from "../../../components/translatedMessages/utils";
-import { REDIRECT_CHANNEL_WATCH_DELAY } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { STORAGE_JWT_KEY } from "../../../lib/persistence/JwtObjectStorage";
-import { IAppState } from "../../../store";
-import { hasValidPermissions } from "../../../utils/JWTUtils";
+import { ICreateJwtEndpointResponse } from "../../../lib/api/SignatureAuthApi";
+import { EUserType } from "../../../lib/api/users/interfaces";
+import { EthereumAddressWithChecksum } from "../../../types";
+import { getJwtExpiryDate, hasValidPermissions } from "../../../utils/JWTUtils";
+import { EDelayTiming, safeDelay } from "../../../utils/safeTimers";
 import { accessWalletAndRunEffect } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
-import { EInitType } from "../../init/reducer";
 import { neuCall } from "../../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
-import { MessageSignCancelledError } from "../errors";
-import { USER_JWT_KEY as USER_KEY } from "./../../../lib/persistence/UserStorage";
-
-enum EUserAuthType {
-  LOGOUT = "LOGOUT",
-  LOGIN = "LOGIN",
-}
+import { AUTH_JWT_TIMING_THRESHOLD, AUTH_TOKEN_REFRESH_THRESHOLD } from "../constants";
+import { JwtNotAvailable, MessageSignCancelledError } from "../errors";
+import { selectJwt, selectUserType } from "../selectors";
+import { ELogoutReason } from "../types";
 
 /**
- * Saga & Promise to fetch a new jwt from the authentication server
+ * Load to store jwt from browser storage
  */
-
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
   const jwt = jwtStorage.get();
+
   if (jwt) {
     yield put(actions.auth.loadJWT(jwt));
+
     return jwt;
   }
 }
 
 /**
- * Saga & Promise to fetch a new jwt from the authentication server
+ * Save jwt to the browser storage and update the store
  */
-export async function obtainJwtPromise(
-  { web3Manager, signatureAuthApi, cryptoRandomString, logger }: TGlobalDependencies,
-  state: IAppState,
-  permissions: Array<string> = [],
-): Promise<string> {
-  const address = selectEthereumAddressWithChecksum(state);
-
-  const salt = cryptoRandomString(64);
-  if (!web3Manager.personalWallet) {
-    throw new Error("Wallet unavailable Error");
-  }
-  const signerType = web3Manager.personalWallet.getSignerType();
-
-  logger.info("Obtaining auth challenge from api");
-  const {
-    body: { challenge },
-  } = await signatureAuthApi.challenge(address, salt, signerType, permissions);
-
-  logger.info("Signing challenge");
-
-  const signedChallenge = await web3Manager.personalWallet.signMessage(challenge);
-
-  logger.info("Sending signed challenge back to api");
-
-  const {
-    body: { jwt },
-  } = await signatureAuthApi.createJwt(challenge, signedChallenge, signerType);
-
-  return jwt;
-}
-
-// see above
-export function* obtainJWT(
-  { jwtStorage }: TGlobalDependencies,
-  permissions: Array<string> = [],
-): Iterator<any> {
-  const state: IAppState = yield select();
-  const jwt: string = yield neuCall(obtainJwtPromise, state, permissions);
-  yield put(actions.auth.loadJWT(jwt));
+function* setJwt({ jwtStorage }: TGlobalDependencies, jwt: string): Iterator<Effect> {
   jwtStorage.set(jwt);
 
-  return jwt;
+  yield put(actions.auth.loadJWT(jwt));
 }
 
 /**
- * Saga to ensure all the needed permissions are present and still valid
- * on the current jwt
+ * Generates and invokes a signer to sign a challenge.
+ */
+function* signChallenge(
+  { web3Manager, signatureAuthApi, cryptoRandomString, logger }: TGlobalDependencies,
+  permissions: Array<string> = [],
+): Iterator<any> {
+  const address: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
+
+  const salt = cryptoRandomString(64);
+
+  if (!web3Manager.personalWallet) {
+    throw new Error("Wallet unavailable Error");
+  }
+
+  const signerType = web3Manager.personalWallet.getSignerType();
+
+  logger.info("Obtaining auth challenge from api");
+
+  const {
+    body: { challenge },
+  } = yield signatureAuthApi.challenge(address, salt, signerType, permissions);
+
+  logger.info("Signing challenge");
+
+  const signedChallenge = yield web3Manager.personalWallet.signMessage(challenge);
+
+  logger.info("Challenge signed");
+
+  return {
+    challenge,
+    signedChallenge,
+    signerType,
+  };
+}
+/**
+ * Create new JWT from the authentication server.
+ */
+export function* createJwt(
+  { signatureAuthApi, logger }: TGlobalDependencies,
+  permissions: Array<string> = [],
+): Iterator<any> {
+  logger.info("Creating jwt");
+
+  const { signedChallenge, challenge, signerType } = yield neuCall(signChallenge, permissions);
+
+  logger.info("Sending signed challenge back to api");
+
+  const { jwt }: ICreateJwtEndpointResponse = yield signatureAuthApi.createJwt(
+    challenge,
+    signedChallenge,
+    signerType,
+  );
+
+  yield neuCall(setJwt, jwt);
+
+  logger.info("Jwt escalated successfully");
+}
+
+/**
+ * Escalate JWT with the authentication server.
+ * Used to add additional permissions to existing JWT
+ */
+export function* escalateJwt(
+  { signatureAuthApi, logger }: TGlobalDependencies,
+  permissions: Array<string> = [],
+): Iterator<any> {
+  const currentJwt: string = yield select(selectJwt);
+  if (!currentJwt) {
+    throw new JwtNotAvailable();
+  }
+
+  logger.info("Escalating jwt");
+
+  const { signedChallenge, challenge, signerType } = yield neuCall(signChallenge, permissions);
+
+  logger.info("Sending signed challenge back to api");
+
+  const { jwt }: ICreateJwtEndpointResponse = yield signatureAuthApi.escalateJwt(
+    challenge,
+    signedChallenge,
+    signerType,
+  );
+
+  yield neuCall(setJwt, jwt);
+
+  logger.info("Jwt escalated successfully");
+}
+
+/**
+ * Refresh JWT with new default expire date.
+ * Permissions expire dates left untouched.
+ */
+export function* refreshJWT({ signatureAuthApi, logger }: TGlobalDependencies): Iterator<any> {
+  logger.info("Refreshing jwt");
+
+  const { jwt }: ICreateJwtEndpointResponse = yield signatureAuthApi.refreshJwt();
+
+  yield neuCall(setJwt, jwt);
+}
+
+/**
+ * Saga to ensure all the needed permissions are present and still valid on the current jwt
+ * If needed permissions are not present/valid will escalate permissions with authentication server
  */
 export function* ensurePermissionsArePresentAndRunEffect(
-  { jwtStorage, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   effect: Iterator<any>,
   permissions: Array<string> = [],
   title: TMessage,
   message: TMessage,
   inputLabel?: TMessage,
 ): Iterator<any> {
-  const jwt = jwtStorage.get();
-  // check wether all permissions are present and still valid
+  const jwt: string = yield select(selectJwt);
+
+  // check whether all permissions are present and still valid
   if (jwt && hasValidPermissions(jwt, permissions)) {
     yield effect;
+
     return;
   }
+
   // obtain a freshly signed token with missing permissions
   try {
-    const obtainJwtEffect = neuCall(obtainJWT, permissions);
+    const obtainJwtEffect = neuCall(escalateJwt, permissions);
     yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message, inputLabel);
     yield effect;
   } catch (error) {
@@ -112,46 +176,45 @@ export function* ensurePermissionsArePresentAndRunEffect(
 }
 
 /**
- * Multi browser logout/login feature
+ * Refresh jwt before timing out.
+ * In case it's not possible will log out user.
  */
+export function* handleJwtTimeout({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    const jwt: string | undefined = yield select(selectJwt);
+    const userType: EUserType | undefined = yield select(selectUserType);
 
-const redirectChannel = channel<{ type: EUserAuthType }>();
-
-/**
- * Saga that starts an Event Channel Emitter that listens to storage
- * events from the browser
- */
-export function* startRedirectChannel(): any {
-  window.addEventListener("storage", (evt: StorageEvent) => {
-    if (evt.key === STORAGE_JWT_KEY && evt.oldValue && !evt.newValue) {
-      redirectChannel.put({
-        type: EUserAuthType.LOGOUT,
-      });
+    if (!jwt) {
+      throw new JwtNotAvailable();
     }
-    if (evt.key === USER_KEY && !evt.oldValue && evt.newValue) {
-      redirectChannel.put({
-        type: EUserAuthType.LOGIN,
-      });
-    }
-  });
-}
 
-/**
- * Saga that watches events coming from redirectChannel and
- * dispatches login/logout actions
- */
-export function* watchRedirectChannel(): any {
-  yield startRedirectChannel();
-  while (true) {
-    const userAction = yield take(redirectChannel);
-    switch (userAction.type) {
-      case EUserAuthType.LOGOUT:
-        yield put(actions.auth.logout());
+    const expiryDate = getJwtExpiryDate(jwt);
+
+    const timeLeft = calculateTimeLeft(expiryDate, true, "milliseconds");
+
+    const timeLeftWithThreshold =
+      timeLeft >= AUTH_TOKEN_REFRESH_THRESHOLD ? timeLeft - AUTH_TOKEN_REFRESH_THRESHOLD : timeLeft;
+
+    if (AUTH_JWT_TIMING_THRESHOLD > AUTH_TOKEN_REFRESH_THRESHOLD) {
+      throw new Error("Timing threshold should be smaller than token refresh threshold");
+    }
+
+    const timing: EDelayTiming = yield safeDelay(timeLeftWithThreshold, {
+      threshold: AUTH_JWT_TIMING_THRESHOLD,
+    });
+
+    // If timing matches exact refresh jwt
+    // in case timeout was delayed (for e.g. hibernation), logout with session timeout message
+    switch (timing) {
+      case EDelayTiming.EXACT:
+        yield neuCall(refreshJWT);
         break;
-      case EUserAuthType.LOGIN:
-        yield put(actions.init.start(EInitType.APP_INIT));
+      case EDelayTiming.DELAYED:
+        yield put(actions.auth.logout({ userType, logoutType: ELogoutReason.SESSION_TIMEOUT }));
         break;
     }
-    yield delay(REDIRECT_CHANNEL_WATCH_DELAY);
+  } catch (e) {
+    logger.error("Failed to handle jwt timeout", e);
+    throw e;
   }
 }

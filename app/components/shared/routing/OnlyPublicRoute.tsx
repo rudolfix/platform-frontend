@@ -4,7 +4,7 @@ import { branch, compose, renderNothing } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import { selectIsAuthorized } from "../../../modules/auth/selectors";
-import { appConnect } from "../../../store";
+import { appConnect, AppDispatch } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 
 interface IStateProps {
@@ -13,7 +13,7 @@ interface IStateProps {
 
 interface IComponentProps {
   isAuthorized: boolean;
-  component: any;
+  component: React.ReactType;
 }
 
 const OnlyPublicRouteComponent: React.FunctionComponent<IComponentProps> = ({
@@ -28,8 +28,7 @@ export const OnlyPublicRoute = compose<IComponentProps, RouteProps>(
     }),
   }),
   onEnterAction({
-    //dispatch is typed as any in the source, sorry
-    actionCreator: (dispatch: any, props: IStateProps) => {
+    actionCreator: (dispatch: AppDispatch, props: IStateProps) => {
       if (props.isAuthorized) {
         dispatch(actions.routing.goToDashboard());
       }

@@ -8,5 +8,6 @@ export enum EWalletType {
 export enum EWalletSubType {
   METAMASK = "METAMASK",
   PARITY = "PARITY",
+  GNOSIS = "GNOSIS",
   UNKNOWN = "UNKNOWN",
 }

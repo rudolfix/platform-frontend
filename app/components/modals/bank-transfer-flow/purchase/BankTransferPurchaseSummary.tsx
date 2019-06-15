@@ -12,9 +12,13 @@ import {
 import { selectQuintessenceBankAccount } from "../../../../modules/kyc/selectors";
 import { appConnect } from "../../../../store";
 import { ButtonArrowRight } from "../../../shared/buttons";
-import { ECurrency } from "../../../shared/formatters/utils";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { ECurrencySymbol, Money } from "../../../shared/Money.unsafe";
 import { InfoList } from "../../tx-sender/shared/InfoList";
 import { InfoRow } from "../../tx-sender/shared/InfoRow";
 
@@ -50,7 +54,12 @@ const BankTransferPurchaseLayout: React.FunctionComponent<IProps> = ({
         data-test-id="bank-transfer.purchase.summary.min-amount"
         caption={<FormattedMessage id="bank-transfer.purchase.summary.min-amount" />}
         value={
-          <Money value={minAmount} currency={ECurrency.EUR} currencySymbol={ECurrencySymbol.CODE} />
+          <MoneyNew
+            value={minAmount}
+            inputFormat={ENumberInputFormat.ULPS}
+            moneyFormat={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
+          />
         }
       />
       <InfoRow

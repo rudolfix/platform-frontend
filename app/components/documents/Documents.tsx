@@ -142,6 +142,7 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
               />
             ))}
         </section>
+
         {allTemplates && (
           <SingleColDocuments
             documents={etoTemplateKeys.map(key => allTemplates[key])}

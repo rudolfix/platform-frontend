@@ -9,11 +9,15 @@ import { appConnect } from "../../store";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Button, ButtonSize, EButtonLayout, EButtonTheme } from "../shared/buttons";
-import { selectCurrencyCode } from "../shared/formatters/utils";
+import { EThemeNew, MoneyNew } from "../shared/formatters/Money";
+import {
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  selectCurrencyCode,
+} from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
 import { LoadingIndicator } from "../shared/loading-indicator";
-import { ETheme, Money } from "../shared/Money.unsafe";
 import { Panel } from "../shared/Panel";
 import { NewTable, NewTableRow } from "../shared/table";
 
@@ -68,11 +72,13 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
                 <>
                   {tokensDisbursal
                     .map(t => (
-                      <Money
-                        key={t.token}
+                      <MoneyNew
                         value={t.amountToBeClaimed}
-                        currency={t.token}
-                        theme={ETheme.GREEN_BIG}
+                        inputFormat={ENumberInputFormat.ULPS}
+                        moneyFormat={t.token}
+                        outputFormat={ENumberOutputFormat.FULL}
+                        theme={EThemeNew.GREEN_BIG}
+                        key={t.token}
                       />
                     ))
                     // add + between nodes
@@ -114,13 +120,20 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
               <CurrencyIcon currency={tokenDisbursal.token} className="mr-2" />
               {selectCurrencyCode(tokenDisbursal.token)}
             </>
-            <Money
-              data-test-id={`asset-portfolio.payout.amount-to-be-claimed`}
+            <MoneyNew
               value={tokenDisbursal.amountToBeClaimed}
-              currency={tokenDisbursal.token}
-              theme={ETheme.GREEN}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={tokenDisbursal.token}
+              outputFormat={ENumberOutputFormat.FULL}
+              data-test-id={`asset-portfolio.payout.amount-to-be-claimed`}
+              theme={EThemeNew.GREEN}
             />
-            <Money value={tokenDisbursal.totalDisbursedAmount} currency={tokenDisbursal.token} />
+            <MoneyNew
+              value={tokenDisbursal.totalDisbursedAmount}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={tokenDisbursal.token}
+              outputFormat={ENumberOutputFormat.FULL}
+            />
             <FormattedDate value={tokenDisbursal.timeToFirstDisbursalRecycle} />
             <Button
               disabled={!isVerifiedInvestor}

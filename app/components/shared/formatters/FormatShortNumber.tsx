@@ -24,7 +24,7 @@ type TRangeDescriptor = {
 
 interface IProps {
   value: string | BigNumber | number | undefined | null;
-  outputFormat: THumanReadableFormat;
+  outputFormat: EAbbreviatedNumberOutputFormat;
   inputFormat: ENumberInputFormat;
   decimalPlaces?: number;
   divider?: number;

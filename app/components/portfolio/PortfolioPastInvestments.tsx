@@ -10,10 +10,15 @@ import { etoPublicViewLink } from "../appRouteUtils";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";
 import { Container } from "../layouts/Container";
-import { ECurrency, ENumberInputFormat } from "../shared/formatters/utils";
+import { FormatNumber } from "../shared/formatters/FormatNumber";
+import { MoneyNew } from "../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EPriceFormat,
+} from "../shared/formatters/utils";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { ECurrencySymbol, Money } from "../shared/Money.unsafe";
-import { NumberFormat } from "../shared/NumberFormat";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 
 import * as styles from "./PortfolioLayout.module.scss";
@@ -71,33 +76,32 @@ const PortfolioPastInvestments: React.FunctionComponent<IExternalProps> = ({ pas
             >
               <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
             </Link>
-
-            <NumberFormat
-              data-test-id="past-investments-token-balance"
+            <FormatNumber
               value={investorTicket.equityTokenInt}
+              inputFormat={ENumberInputFormat.FLOAT}
+              outputFormat={ENumberOutputFormat.INTEGER}
+              data-test-id="past-investments-token-balance"
             />
-
-            <Money
-              data-test-id="past-investments-invested-amount"
+            <MoneyNew
               value={investorTicket.equivEurUlps}
-              currency={ECurrency.EUR}
-              currencySymbol={ECurrencySymbol.SYMBOL}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.EUR}
+              outputFormat={ENumberOutputFormat.FULL}
+              data-test-id="past-investments-invested-amount"
             />
-
-            <Money
-              data-test-id="past-investments-token-price"
+            <MoneyNew
               value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
-              currency={ECurrency.EUR}
-              currencySymbol={ECurrencySymbol.SYMBOL}
-              format={ENumberInputFormat.FLOAT}
-              isPrice={true}
+              inputFormat={ENumberInputFormat.FLOAT}
+              moneyFormat={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+              outputFormat={ENumberOutputFormat.FULL}
+              data-test-id="past-investments-token-price"
             />
-
-            <Money
-              data-test-id="past-investments-asset-neu-reward"
+            <MoneyNew
               value={investorTicket.rewardNmkUlps.toString()}
-              currency={ECurrency.NEU}
-              currencySymbol={ECurrencySymbol.NONE}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.NEU}
+              outputFormat={ENumberOutputFormat.FULL}
+              data-test-id="past-investments-asset-neu-reward"
             />
             <ETOState eto={eto} size={EProjectStatusSize.SMALL} />
           </NewTableRow>

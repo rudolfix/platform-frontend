@@ -1,10 +1,8 @@
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
-import BigNumber from "bignumber.js";
 import * as React from "react";
 
 import { testEto } from "../../../../../test/fixtures";
-import { Q18 } from "../../../../config/constants";
 import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import {
@@ -113,10 +111,10 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
 
     const calculatedContributions = {
       isEligible: true,
-      minTicketEurUlps: Q18.mul("10"),
-      maxTicketEurUlps: Q18.mul("10000"),
-      neuRewardUlps: Q18.mul("1000"),
-      equityTokenInt: new BigNumber(1000),
+      minTicketEurUlps: "10" + "0".repeat(18),
+      maxTicketEurUlps: "10000" + "0".repeat(18),
+      neuRewardUlps: "1000" + "0".repeat(18),
+      equityTokenInt: "1000",
       maxCapExceeded: false,
       isWhitelisted: true,
     };
@@ -133,10 +131,10 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
 
     const calculatedContributions = {
       isEligible: true,
-      minTicketEurUlps: Q18.mul("10"),
-      maxTicketEurUlps: Q18.mul("10000"),
-      neuRewardUlps: Q18.mul("1000"),
-      equityTokenInt: new BigNumber(1000),
+      minTicketEurUlps: "10" + "0".repeat(18),
+      maxTicketEurUlps: "10000" + "0".repeat(18),
+      neuRewardUlps: "1000" + "0".repeat(18),
+      equityTokenInt: "1000",
       maxCapExceeded: false,
       isWhitelisted: true,
     };

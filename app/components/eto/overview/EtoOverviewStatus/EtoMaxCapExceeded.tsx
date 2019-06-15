@@ -8,6 +8,7 @@ import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../module
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
+import { FormatNumber } from "../../../shared/formatters/FormatNumber";
 import { MoneyNew } from "../../../shared/formatters/Money";
 import {
   ECurrency,
@@ -66,7 +67,16 @@ const EtoMaxCapExceededComponent: React.FunctionComponent<
         <div>
           <FormattedMessage
             id="shared-component.eto-overview.investors"
-            values={{ totalInvestors: eto.contract!.totalInvestment.totalInvestors }}
+            values={{
+              totalInvestors: eto.contract!.totalInvestment.totalInvestors,
+              totalInvestorsAsString: (
+                <FormatNumber
+                  value={eto.contract!.totalInvestment.totalInvestors}
+                  outputFormat={ENumberOutputFormat.INTEGER}
+                  inputFormat={ENumberInputFormat.FLOAT}
+                />
+              ),
+            }}
           />
         </div>
       </div>

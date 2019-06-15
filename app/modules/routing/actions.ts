@@ -6,6 +6,7 @@ import { kycRoutes } from "../../components/kyc/routes";
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import { walletRoutes } from "../../components/wallet/routes";
 import { createActionFactory } from "../actionsUtils";
+import { TLoginRouterState } from "./types";
 
 export const routingActions = {
   // navigation primitives
@@ -34,8 +35,8 @@ export const routingActions = {
   goToRegister: () => push(appRoutes.register),
 
   // login
-  goToLogin: () => push(appRoutes.login),
-  goToEtoLogin: () => push(appRoutes.loginEto),
+  goToLogin: (state: TLoginRouterState) => push(appRoutes.login, state),
+  goToEtoLogin: (state: TLoginRouterState) => push(appRoutes.loginEto, state),
 
   // Successful password recovery
   goToSuccessfulRecovery: () => push(recoverRoutes.success),

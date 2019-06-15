@@ -1,8 +1,11 @@
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { NumberSchema, StringSchema } from "yup";
 
 import { ECurrency } from "../../../components/shared/formatters/utils";
+import {
+  getMessageTranslation,
+  ValidationMessage,
+} from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import {
   MIN_COMPANY_SHARES,
   MIN_EXISTING_COMPANY_SHARES,
@@ -245,11 +248,8 @@ export const getEtoTermsSchema = ({
     prospectusLanguage: YupTS.string(),
     minTicketEur: YupTS.number().enhance((v: NumberSchema) =>
       minTicketSize !== undefined
-        ? v.min(minTicketSize, (
-            <FormattedMessage
-              id="eto.form.section.eto-terms.minimum-ticket-size.error.less-than-accepted"
-              values={{ value: minTicketSize }}
-            />
+        ? v.min(minTicketSize, getMessageTranslation(
+            createMessage(ValidationMessage.VALIDATION_TICKET_LESS_THAN_ACCEPTED, minTicketSize),
           ) as any)
         : v,
     ),
@@ -257,8 +257,8 @@ export const getEtoTermsSchema = ({
       .optional()
       .enhance(v => {
         v = v.when("minTicketEur", (value: number) =>
-          v.min(value, (
-            <FormattedMessage id="eto.form.section.eto-terms.maximum-ticket-size.error.less-than-minimum" />
+          v.min(value, getMessageTranslation(
+            createMessage(ValidationMessage.VALIDATION_TICKET_LESS_THAN_MINIMUM),
           ) as any),
         );
 
@@ -331,8 +331,8 @@ export const EtoInvestmentTermsType = YupTS.object({
   authorizedCapitalShares: YupTS.number().optional(),
   newSharesToIssue: YupTS.number().enhance(v =>
     v.when("minimumNewSharesToIssue", (value: number) =>
-      v.min(value, (
-        <FormattedMessage id="eto.form.section.investment-terms.error.maximum-new-shares-to-issue-less-than-minimum" />
+      v.min(value, getMessageTranslation(
+        createMessage(ValidationMessage.VALIDATION_MAX_NEW_SHARES_LESS_THAN_MINIMUM),
       ) as any),
     ),
   ),

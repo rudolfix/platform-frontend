@@ -11,10 +11,15 @@ import { etoPublicViewLink } from "../appRouteUtils";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";
 import { Container } from "../layouts/Container";
-import { ECurrency, ENumberInputFormat } from "../shared/formatters/utils";
+import { FormatNumber } from "../shared/formatters/FormatNumber";
+import { MoneyNew } from "../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EPriceFormat,
+} from "../shared/formatters/utils";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { ECurrencySymbol, Money } from "../shared/Money.unsafe";
-import { NumberFormat } from "../shared/NumberFormat";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 import { PortfolioAssetAction } from "./PortfolioAssetAction";
 
@@ -80,35 +85,36 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
             >
               <FormattedMessage id="portfolio.section.reserved-assets.view-profile" />
             </Link>
-
-            <NumberFormat
-              data-test-id="portfolio-reserved-asset-token-balance"
+            <FormatNumber
               value={investorTicket.equityTokenInt}
+              inputFormat={ENumberInputFormat.FLOAT}
+              outputFormat={ENumberOutputFormat.INTEGER}
+              data-test-id="portfolio-reserved-asset-token-balance"
             />
 
-            <Money
-              data-test-id="portfolio-reserved-asset-invested-amount"
+            <MoneyNew
               value={investorTicket.equivEurUlps}
-              currency={ECurrency.EUR}
-              currencySymbol={ECurrencySymbol.SYMBOL}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.EUR}
+              outputFormat={ENumberOutputFormat.FULL}
+              data-test-id="portfolio-reserved-asset-invested-amount"
             />
 
-            <Money
-              data-test-id="portfolio-reserved-token-price"
+            <MoneyNew
               value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
-              currency={ECurrency.EUR}
-              currencySymbol={ECurrencySymbol.SYMBOL}
-              format={ENumberInputFormat.FLOAT}
-              isPrice={true}
+              inputFormat={ENumberInputFormat.FLOAT}
+              moneyFormat={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+              outputFormat={ENumberOutputFormat.FULL}
+              data-test-id="portfolio-reserved-token-price"
             />
 
-            <Money
-              data-test-id="portfolio-reserved-asset-neu-reward"
+            <MoneyNew
               value={investorTicket.rewardNmkUlps.toString()}
-              currency={ECurrency.NEU}
-              currencySymbol={ECurrencySymbol.NONE}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.NEU}
+              outputFormat={ENumberOutputFormat.FULL}
+              data-test-id="portfolio-reserved-asset-neu-reward"
             />
-
             <span data-test-id="portfolio-reserved-asset-status">
               {isWhitelistedOrPublic ? (
                 <span className={"text-uppercase"}>

@@ -1,21 +1,10 @@
-import { assertUserInLanding } from "../utils";
-import { tid } from "../utils/selectors";
-
-const assertUserInLightWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.login-light-wallet.title"));
-};
-
-const assertUserInLightWalletRegisterPage = () => {
-  cy.get(tid("modals.wallet-selector.register-restore-light-wallet.title"));
-};
-
-const assertUserInBrowserWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.wallet-browser.title"));
-};
-
-const assertUserInLedgerWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.ledger-wallet.title"));
-};
+import {
+  assertUserInBrowserWalletLoginPage,
+  assertUserInLanding,
+  assertUserInLedgerWalletLoginPage,
+  assertUserInLightWalletLoginPage,
+  assertUserInLightWalletRegisterPage,
+} from "../utils";
 
 describe("Authentication Routing", () => {
   it("should open login with light wallet", () => {

@@ -1,20 +1,19 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Tx } from "../../../../lib/api/users/interfaces";
-import { ITxData } from "../../../../lib/web3/types";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
-import { ECurrency } from "../../../shared/formatters/utils";
-import { Money } from "../../../shared/Money.unsafe";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
 import { TransactionDetailsComponent } from "../types";
 
-export interface ITxPendingProps {
-  txData: Readonly<ITxData> | Readonly<Tx>;
-}
 const UpgradeTransactionDetails: TransactionDetailsComponent<ETxSenderType.UPGRADE> = ({
   txData,
   className,
@@ -25,15 +24,24 @@ const UpgradeTransactionDetails: TransactionDetailsComponent<ETxSenderType.UPGRA
 
     <InfoRow
       caption={<FormattedMessage id="upgrade-flow.value" />}
-      value={<Money currency={ECurrency.ETH} value={txData!.value} />}
+      value={
+        <MoneyNew
+          value={txData!.value}
+          inputFormat={ENumberInputFormat.ULPS}
+          moneyFormat={ECurrency.ETH}
+          outputFormat={ENumberOutputFormat.FULL}
+        />
+      }
     />
 
     <InfoRow
       caption={<FormattedMessage id="upgrade-flow.transaction-cost" />}
       value={
-        <Money
-          currency={ECurrency.ETH}
+        <MoneyNew
           value={multiplyBigNumbers([txData!.gasPrice, txData!.gas])}
+          inputFormat={ENumberInputFormat.ULPS}
+          moneyFormat={ECurrency.ETH}
+          outputFormat={ENumberOutputFormat.FULL}
         />
       }
     />

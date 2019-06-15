@@ -1,20 +1,17 @@
 import { fillForm } from "../utils/forms";
 import {
   acceptWallet,
-  assertDashboard,
   assertEmailChangeAbort,
   assertEmailChangeFlow,
   assertEmailPendingChange,
-  goToProfile,
-  registerWithLightWallet,
-  verifyLatestUserEmail,
-} from "../utils/index";
-import { tid } from "../utils/selectors";
-import {
   createAndLoginNewUser,
   DEFAULT_PASSWORD,
   generateRandomEmailAddress,
-} from "../utils/userHelpers";
+  goToProfile,
+  registerWithLightWallet,
+  tid,
+  verifyLatestUserEmail,
+} from "../utils/index";
 
 describe("Change Email", function(): void {
   describe("Has verified email", () => {
@@ -34,7 +31,7 @@ describe("Change Email", function(): void {
       cy.clearLocalStorage();
 
       registerWithLightWallet(newEmail, DEFAULT_PASSWORD);
-      assertDashboard();
+
       verifyLatestUserEmail(newEmail);
 
       assertEmailChangeFlow();
@@ -85,6 +82,7 @@ describe("Change Email", function(): void {
       const newEmail = generateRandomEmailAddress();
 
       goToProfile();
+
       assertEmailChangeFlow();
 
       fillForm({
@@ -105,11 +103,9 @@ describe("Change Email", function(): void {
 
   describe("Has unverified email", () => {
     it("should not allow to change email to the same as pending unverified", () => {
-      // TODO: check this flaky test
       const email = generateRandomEmailAddress();
 
       registerWithLightWallet(email, DEFAULT_PASSWORD);
-      assertDashboard();
 
       goToProfile();
 
@@ -142,7 +138,6 @@ describe("Change Email", function(): void {
           cy.clearLocalStorage();
 
           registerWithLightWallet(newEmail, DEFAULT_PASSWORD);
-          assertDashboard();
 
           goToProfile();
 

@@ -29,6 +29,7 @@ import { DEFAULT_PASSWORD } from "./userHelpers";
 export const LONG_WAIT_TIME = 60000;
 
 export const ETO_FIXTURES: any = require("../../../git_modules/platform-contracts-artifacts/localhost/eto_fixtures.json");
+export const ETO_TERMS_FIXTURES: any = require("../../../git_modules/platform-contracts-artifacts/localhost/eto_terms_contraints_fixtures.json");
 
 export const FIXTURE_ACCOUNTS: any = require("../../../git_modules/platform-contracts-artifacts/localhost/fixtures.json");
 
@@ -141,24 +142,11 @@ export const verifyLatestUserEmail = (email: string, attempts = 3) => {
   });
 };
 
-export const convertToUniqueEmail = (email: string) => {
-  const splitEmail = email.split("@");
-  const randomString = Math.random()
-    .toString(36)
-    .slice(2);
-  return `${splitEmail[0]}-${randomString}@${splitEmail[1]}`;
-};
-
 export const registerWithLightWallet = (
   email: string,
   password: string,
-  uniqueEmail: boolean = false,
   asIssuer: boolean = false,
 ) => {
-  if (uniqueEmail) {
-    email = convertToUniqueEmail(email);
-  }
-
   cy.visit(asIssuer ? appRoutes.registerEto : appRoutes.register);
 
   cy.get(tid("wallet-selector-light")).awaitedClick();
@@ -183,6 +171,8 @@ export const acceptTOS = () => {
   cy.get(tid("modals.accept-tos.accept-button"))
     .should("be.enabled")
     .click();
+
+  cy.get(tid("modals.accept-tos")).should("not.exist");
 };
 
 export const logoutViaTopRightButton = () => {
@@ -213,20 +203,47 @@ export const etoFixtureByName = (name: string) => {
   if (etoAddress) {
     return ETO_FIXTURES[etoAddress];
   } else {
-    throw new Error("Cannot fetch undefined value please check if the fixtures are in sync");
+    throw new Error(
+      `Cannot find ${name} in ETO_FIXTURES. Please check if the fixtures are in sync`,
+    );
+  }
+};
+
+export const etoProductFixtureIdByName = (name: string): string => {
+  const productId = Object.keys(ETO_TERMS_FIXTURES).find(
+    fixtureKey => ETO_TERMS_FIXTURES[fixtureKey].name === name,
+  );
+  if (productId) {
+    return productId;
+  } else {
+    throw new Error(
+      `Cannot find ${name} in ETO_TERMS_FIXTURES. Please check if the fixtures are in sync`,
+    );
   }
 };
 
 export const etoFixtureAddressByName = (name: string): string => {
   const address = Object.keys(ETO_FIXTURES).find(
     a => ETO_FIXTURES[a].name === name,
-  )! as EthereumAddress;
-  return makeEthereumAddressChecksummed(address);
+  ) as EthereumAddress;
+  if (address) {
+    return makeEthereumAddressChecksummed(address);
+  } else {
+    throw new Error(
+      `Cannot find ${name} in ETO_FIXTURES. Please check if the fixtures are in sync`,
+    );
+  }
 };
 
 export const accountFixtureByName = (name: string) => {
-  const address = Object.keys(FIXTURE_ACCOUNTS).find(f => FIXTURE_ACCOUNTS[f].name === name)!;
-  return FIXTURE_ACCOUNTS[address];
+  const address = Object.keys(FIXTURE_ACCOUNTS).find(f => FIXTURE_ACCOUNTS[f].name === name);
+  if (address) {
+    return FIXTURE_ACCOUNTS[address];
+  } else {
+    throw new Error(
+      `Cannot find ${name} in FIXTURE_ACCOUNTS. Please check if the fixtures are in sync`,
+    );
+  }
 };
 
 export const accountFixtureAddress = (name: string) => {
@@ -343,3 +360,5 @@ export const getYesOrNo = (value: any | undefined, assertion: any, returnTBAinst
 export * from "./assertions";
 export * from "./selectors";
 export * from "./navigation";
+export * from "./userHelpers";
+export * from "./forms";

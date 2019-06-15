@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
+import { spy } from "sinon";
 
 import { WalletMessageSigner } from "./WalletMessageSigner";
 import { WalletSelectorLayout } from "./WalletSelector";
@@ -14,7 +15,12 @@ describe("<WalletSelector />", () => {
         oppositeRoute="oppositeRoute"
         userType="investor"
         isLoginRoute
-        openICBMModal={() => {}}
+        openICBMModal={spy()}
+        history={{} as any}
+        location={{} as any}
+        match={{} as any}
+        logoutReason={undefined}
+        hideLogoutReason={spy()}
       />,
     );
 

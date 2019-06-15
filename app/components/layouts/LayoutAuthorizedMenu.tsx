@@ -15,7 +15,7 @@ import { selectGenericModalIsOpen } from "../../modules/generic-modal/selectors"
 import { selectIsClaimsVerified } from "../../modules/kyc/selectors";
 import { selectIsActionRequiredSettings } from "../../modules/notifications/selectors";
 import { appConnect } from "../../store";
-import { TTranslatedString } from "../../types";
+import { TDataTestId, TTranslatedString } from "../../types";
 import { invariant } from "../../utils/invariant";
 import { appRoutes } from "../appRoutes";
 import { IdentityModal } from "../identity/IdentityModal";
@@ -41,7 +41,7 @@ interface IMenuEntry {
 }
 
 interface IMenuEntryLink {
-  isActive?: (match: match<any>, location: H.Location) => boolean;
+  isActive?: (match: match<unknown>, location: H.Location) => boolean;
   to: string;
 }
 
@@ -68,7 +68,7 @@ interface IDispatchProps {
 }
 
 interface IWithProps {
-  isLinkActive: (match: match<any>, location: H.Location) => boolean;
+  isLinkActive: (match: match<unknown>, location: H.Location) => boolean;
 }
 
 interface IMenuContent {
@@ -95,16 +95,17 @@ const MenuEntryContent: React.FunctionComponent<IMenuContent> = ({
   </>
 );
 
-const MenuEntryLink: React.FunctionComponent<IMenuEntry & IMenuEntryLink> = ({
+const MenuEntryLink: React.FunctionComponent<IMenuEntry & IMenuEntryLink & TDataTestId> = ({
   to,
   disabled,
   isActive,
+  ["data-test-id"]: dataTestId,
   ...props
 }) => {
   const isAbsoluteLink = /^https?:\/\//.test(to);
 
   return isAbsoluteLink ? (
-    <ExternalLink href={to} className={styles.menuItem}>
+    <ExternalLink href={to} className={styles.menuItem} data-test-id={dataTestId}>
       <MenuEntryContent {...props} />
     </ExternalLink>
   ) : disabled ? (
@@ -112,6 +113,7 @@ const MenuEntryLink: React.FunctionComponent<IMenuEntry & IMenuEntryLink> = ({
   ) : (
     <NavLink
       to={to}
+      data-test-id={dataTestId}
       className={styles.menuItem}
       isActive={isActive}
       activeClassName={styles.menuItemActive}

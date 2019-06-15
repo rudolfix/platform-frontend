@@ -1,6 +1,13 @@
 import { expect } from "chai";
 
-import { formatDate, isLessThanNDays, isLessThanNHours, isLessThanNMinutes } from "./Date.utils";
+import {
+  formatDate,
+  isLessThanNDays,
+  isLessThanNHours,
+  isLessThanNMinutes,
+  minutesToMs,
+  secondsToMs,
+} from "./Date.utils";
 
 describe("date.utils", () => {
   describe("formatDate", () => {
@@ -49,6 +56,20 @@ describe("date.utils", () => {
       expect(isLessThanNMinutes(date3, date1, 3)).to.be.true;
       expect(isLessThanNMinutes(date4, date1, 3)).to.be.false;
       expect(isLessThanNMinutes(date4, date1, 4)).to.be.true;
+    });
+  });
+
+  describe("minutesToMs", () => {
+    it("should convert minutes to ms", () => {
+      expect(minutesToMs(10)).to.equal(600000);
+      expect(minutesToMs(0.0001)).to.equal(6);
+    });
+  });
+
+  describe("secondsToMs", () => {
+    it("should convert seconds to ms", () => {
+      expect(secondsToMs(10)).to.equal(10000);
+      expect(secondsToMs(0.001)).to.equal(1);
     });
   });
 });

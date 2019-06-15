@@ -7,16 +7,12 @@ jobs:
     working_directory: /home/circleci/app
 
     steps:
-      - checkout
-
       # Download and cache dependencies
-      # - restore_cache:
-      # keys:
-      # - v18-deps-{{ checksum "package.json" }}
-      # - v18-deps-
-
+      - checkout
       # Installation
       - run: yarn --frozen-lockfile
+      # Confirm Artifact Version
+      - run: yarn contract-artifacts:check
       # Linting
       - run: yarn lint
       # Unit Tests
@@ -25,21 +21,23 @@ jobs:
       - save_cache:
           paths:
             - node_modules
+            - app/lib/contracts
             - /home/circleci/.cache/Cypress
-          key: v18-deps-{{ checksum "package.json" }}
+          key: v20-deps-{{ checksum "package.json" }}
 
   build-docker-test-e2e:
     docker:
       - image: circleci/node:11.14.0-browsers
     working_directory: /home/circleci/app
+    resource_class: large
     parallelism: 2
 
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v18-deps-{{ checksum "package.json" }}
-            - v18-deps-
+            - v20-deps-{{ checksum "package.json" }}
+            - v20-deps-
 
       - run: yarn --frozen-lockfile
       - run:
@@ -57,8 +55,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v18-deps-{{ checksum "package.json" }}
-            - v18-deps-
+            - v20-deps-{{ checksum "package.json" }}
+            - v20-deps-
 
       - run: yarn --frozen-lockfile
       - run:
@@ -87,10 +85,8 @@ jobs:
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
           keys:
-            - v18-deps-{{ checksum "package.json" }}
-            - v18-deps-
-
-      - run: source /opt/circleci/.nvm/nvm.sh && yarn prepare
+            - v20-deps-{{ checksum "package.json" }}
+            - v20-deps-
 
       - run:
           command: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
@@ -105,8 +101,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v18-deps-{{ checksum "package.json" }}
-            - v18-deps-
+            - v20-deps-{{ checksum "package.json" }}
+            - v20-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn build:commit-deployment
@@ -121,8 +117,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v18-deps-{{ checksum "package.json" }}
-            - v18-deps-
+            - v20-deps-{{ checksum "package.json" }}
+            - v20-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn storybook:screenshots
@@ -137,8 +133,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v18-deps-{{ checksum "package.json" }}
-            - v18-deps-
+            - v20-deps-{{ checksum "package.json" }}
+            - v20-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
@@ -171,7 +167,7 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          cron: "0 0 * * *"
+          cron: "0 5 * * *"
           filters:
             branches:
               only:

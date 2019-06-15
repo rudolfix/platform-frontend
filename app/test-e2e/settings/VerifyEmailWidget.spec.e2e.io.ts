@@ -5,12 +5,11 @@ import {
   assertVerifyEmailWidgetIsInVerfiedEmailState,
   closeModal,
   confirmAccessModal,
-  convertToUniqueEmail,
+  generateRandomEmailAddress,
   registerWithLightWallet,
+  tid,
   verifyLatestUserEmail,
 } from "../utils";
-import { tid } from "../utils/selectors";
-import { generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Verify Email Widget", () => {
   beforeEach(() => {
@@ -44,8 +43,8 @@ describe("Verify Email Widget", () => {
   });
 
   it("should not send a request when access modal is cancelled", () => {
-    const firstEmail = "moe-wallet-backup-e2e+1@test.com";
-    const secondEmail = convertToUniqueEmail(firstEmail);
+    const firstEmail = generateRandomEmailAddress();
+    const secondEmail = generateRandomEmailAddress();
     const password = "strongpassword";
 
     registerWithLightWallet(firstEmail, password);

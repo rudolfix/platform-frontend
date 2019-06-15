@@ -224,7 +224,7 @@ const EtoRegistrationProductType: React.FunctionComponent<IProps> = ({
             name="productId"
             label={
               <Tooltip
-                data-test-id={`eto-terms.product.${product.id}.tooltip`}
+                data-test-id={`eto-terms.product.${product.name}.tooltip`}
                 content={<ProductHighlights product={product} />}
                 placement="right"
                 delay={0}
@@ -234,6 +234,7 @@ const EtoRegistrationProductType: React.FunctionComponent<IProps> = ({
               </Tooltip>
             }
             value={product.id}
+            data-test-id={`form.name.productId.${product.name}`}
             checked={values.product.id === product.id}
             onChange={() => changeProductType(product.id)}
           />

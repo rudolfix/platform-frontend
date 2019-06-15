@@ -8,8 +8,12 @@ import { ETxSenderType } from "../../../../modules/tx/types";
 import { getUnlockedWalletEtherAmountAfterFee } from "../../../../modules/wallet/utils";
 import { multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { getCurrentUTCTimestamp } from "../../../../utils/Date.utils";
-import { ECurrency } from "../../../shared/formatters/utils";
-import { Money } from "../../../shared/Money.unsafe";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -32,11 +36,25 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<
   <InfoList className={className}>
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.eth-committed" />}
-      value={<Money currency={ECurrency.ETH} value={additionalData.lockedEtherBalance} />}
+      value={
+        <MoneyNew
+          value={additionalData.lockedEtherBalance}
+          inputFormat={ENumberInputFormat.ULPS}
+          moneyFormat={ECurrency.ETH}
+          outputFormat={ENumberOutputFormat.FULL}
+        />
+      }
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
-      value={<Money currency={ECurrency.NEU} value={additionalData.etherNeumarksDue} />}
+      value={
+        <MoneyNew
+          value={additionalData.etherNeumarksDue}
+          inputFormat={ENumberInputFormat.ULPS}
+          moneyFormat={ECurrency.NEU}
+          outputFormat={ENumberOutputFormat.FULL}
+        />
+      }
     />
     <InfoRow
       caption={
@@ -51,14 +69,23 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.amount-returned" />}
-      value={<Money currency={ECurrency.ETH} value={returnedEther} />}
+      value={
+        <MoneyNew
+          value={returnedEther}
+          inputFormat={ENumberInputFormat.ULPS}
+          moneyFormat={ECurrency.ETH}
+          outputFormat={ENumberOutputFormat.FULL}
+        />
+      }
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.transaction-cost" />}
       value={
-        <Money
-          currency={ECurrency.ETH}
+        <MoneyNew
           value={multiplyBigNumbers([txData!.gasPrice, txData!.gas])}
+          inputFormat={ENumberInputFormat.ULPS}
+          moneyFormat={ECurrency.ETH}
+          outputFormat={ENumberOutputFormat.FULL}
         />
       }
     />

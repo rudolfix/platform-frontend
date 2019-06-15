@@ -12,6 +12,7 @@ export enum ENotificationType {
 export enum ENotificationText {
   COMPLETE_REQUEST_NOTIFICATION = "completeRequestNotification",
   COMPLETE_UPDATE_ACCOUNT = "completeUpdateAccount",
+  AUTH_SESSION_TIMEOUT = "authSessionTimeout",
 }
 
 export interface INotification {

@@ -11,22 +11,24 @@ import { promisify } from "../../utils/promisify";
 import { toCamelCase } from "../../utils/transformObjectKeys";
 import { tid } from "./selectors";
 
-/*
- * Pre-login user for faster tests
- */
 const VAULT_API_ROOT = "/api/wallet";
 export const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
 const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
 export const JWT_KEY = "NF_JWT";
-const CURRENT_AGREEMENT = "QmS3qGWqvruywjM7Lp82LiyoyqDQbArdXveC5JA5m54Qfv";
+const CURRENT_AGREEMENT = "QmRU84rH63u4BPRpreSMDyq4tbXh4yZ5XsnkcGB7rcmyKP";
+
+const NUMBER_OF_ATTEMPTS = 2;
 
 export const generateRandomEmailAddress = () =>
   `${Math.random()
     .toString(36)
     .substring(7)}@e2e.com`;
 
-const NUMBER_OF_ATTEMPTS = 2;
+export const getJwtToken = () => JSON.parse(localStorage.getItem(JWT_KEY)!);
 
+/*
+ * Pre-login user for faster tests
+ */
 export const createAndLoginNewUser = (
   params: {
     type: "investor" | "issuer";
@@ -109,7 +111,6 @@ export const createAndLoginNewUser = (
 /*
  * Restore fixture account by name
  */
-
 export const loginFixtureAccount = (
   accountFixtureName: string,
   params: {
@@ -326,7 +327,7 @@ export const addPendingTransactions = (
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+        authorization: `Bearer ${getJwtToken()}`,
       },
       body: {
         transaction: tx.transaction,
@@ -346,7 +347,7 @@ export const clearPendingTransactions = () =>
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+        authorization: `Bearer ${getJwtToken()}`,
       },
     })
     .then(async response => {
@@ -360,7 +361,7 @@ export const clearPendingTransactions = () =>
               method: "DELETE",
               headers: {
                 "Content-Type": "application/json",
-                authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+                authorization: `Bearer ${getJwtToken()}`,
               },
             }),
       );
@@ -375,7 +376,7 @@ export const getPendingTransactions = (): Cypress.Chainable<
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+        authorization: `Bearer ${getJwtToken()}`,
       },
     })
     .then(response => response.body);
@@ -386,7 +387,7 @@ export const makeAuthenticatedCall = async (path: string, config: RequestInit) =
     headers: {
       ...config.headers,
       "Content-Type": "application/json",
-      authorization: `Bearer ${JSON.parse(localStorage.getItem(JWT_KEY)!)}`,
+      authorization: `Bearer ${getJwtToken()}`,
     },
   });
 

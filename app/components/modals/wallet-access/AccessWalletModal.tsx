@@ -3,8 +3,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../modules/actions";
-import { selectIsUnlocked, selectWalletType } from "../../../modules/web3/selectors";
-import { EWalletType } from "../../../modules/web3/types";
+import {
+  selectIsUnlocked,
+  selectWalletSubType,
+  selectWalletType,
+} from "../../../modules/web3/selectors";
+import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { HiResImage } from "../../shared/HiResImage";
@@ -21,6 +25,7 @@ interface IStateProps {
   title?: TTranslatedString;
   message?: TTranslatedString;
   walletType: EWalletType | undefined;
+  walletSubType: EWalletSubType | undefined;
   isUnlocked: boolean;
   inputLabel?: TTranslatedString;
 }
@@ -36,7 +41,16 @@ interface IExternalProps {
 
 export const AccessWalletContainerComponent: React.FunctionComponent<
   IStateProps & IDispatchProps
-> = ({ title, message, errorMessage, isUnlocked, onAccept, walletType, inputLabel }) => (
+> = ({
+  title,
+  message,
+  errorMessage,
+  isUnlocked,
+  onAccept,
+  walletType,
+  walletSubType,
+  inputLabel,
+}) => (
   <div className="text-center">
     {title && <h1 className={styles.title}>{title}</h1>}
     {message && <p>{message}</p>}
@@ -61,13 +75,20 @@ export const AccessWalletContainerComponent: React.FunctionComponent<
     {walletType === EWalletType.BROWSER && (
       <div>
         <HiResImage
-          partialPath="wallet_selector/logo_metamask"
-          alt="Parity"
-          title="Parity"
+          partialPath={
+            "wallet_selector/" +
+            (walletSubType === EWalletSubType.GNOSIS ? "logo_gnosis" : "logo_metamask")
+          }
+          alt={walletSubType}
+          title={walletSubType}
           className="mt-3 mb-3"
         />
         <div className={cn("mt-2", styles.info)}>
-          <FormattedMessage id="modal.access-wallet.metamask-info" />
+          {walletSubType === EWalletSubType.GNOSIS ? (
+            <FormattedMessage id="modal.access-wallet.gnosis-info" />
+          ) : (
+            <FormattedMessage id="modal.access-wallet.metamask-info" />
+          )}
         </div>
       </div>
     )}
@@ -89,6 +110,7 @@ export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IEx
       : s.accessWallet.modalMessage && getMessageTranslation(s.accessWallet.modalMessage),
     inputLabel: s.accessWallet.inputLabel && getMessageTranslation(s.accessWallet.inputLabel),
     walletType: selectWalletType(s.web3),
+    walletSubType: selectWalletSubType(s.web3),
     isUnlocked: selectIsUnlocked(s.web3),
   }),
   dispatchToProps: dispatch => ({

@@ -4,15 +4,14 @@ import {
   assertDashboard,
   assertErrorModal,
   assertWaitForLatestEmailSentWithSalt,
-  convertToUniqueEmail,
+  generateRandomEmailAddress,
   loginWithLightWallet,
   logoutViaTopRightButton,
   registerWithLightWallet,
+  tid,
   typeEmailPassword,
   verifyLatestUserEmail,
 } from "../utils";
-import { tid } from "../utils/selectors";
-import { generateRandomEmailAddress } from "../utils/userHelpers";
 
 describe("Light wallet login / register", () => {
   beforeEach(() => {
@@ -69,7 +68,7 @@ describe("Light wallet login / register", () => {
   });
 
   it("should return an error when logging with same email", () => {
-    const email = convertToUniqueEmail("dave@neufund.org");
+    const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
     // register once and then verify email account

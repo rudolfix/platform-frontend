@@ -2,8 +2,12 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { selectCurrencyCode } from "../../../shared/formatters/utils";
-import { Money } from "../../../shared/Money.unsafe";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  selectCurrencyCode,
+} from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -23,7 +27,14 @@ const AcceptTransactionDetails: TransactionDetailsComponent<
             values={{ token: selectCurrencyCode(disbursal.token) }}
           />
         }
-        value={<Money value={disbursal.amountToBeClaimed} currency={disbursal.token} />}
+        value={
+          <MoneyNew
+            value={disbursal.amountToBeClaimed}
+            moneyFormat={disbursal.token}
+            inputFormat={ENumberInputFormat.ULPS}
+            outputFormat={ENumberOutputFormat.FULL}
+          />
+        }
       />
     ))}
     {txTimestamp && <TimestampRow timestamp={txTimestamp} />}

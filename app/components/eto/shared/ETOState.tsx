@@ -129,18 +129,14 @@ const ComingSoonEtoState: React.FunctionComponent<
 
 const SuccessfulEtoState: React.FunctionComponent<
   OmitKeys<IExternalProps, "eto"> & CommonHtmlProps
-> = ({ className, size = EProjectStatusSize.MEDIUM, layout = EProjectStatusLayout.NORMAL }) => {
-  const state = EEtoSubState.COMING_SOON;
-
-  return (
-    <div
-      className={cn(styles.projectStatus, styles.green, size, layout, className)}
-      data-test-id={`eto-state-${state}`}
-    >
-      <FormattedMessage id="eto.status.mock.successful" />
-    </div>
-  );
-};
+> = ({ className, size = EProjectStatusSize.MEDIUM, layout = EProjectStatusLayout.NORMAL }) => (
+  <div
+    className={cn(styles.projectStatus, styles.green, size, layout, className)}
+    data-test-id={`eto-state-mock-successful`}
+  >
+    <FormattedMessage id="eto.status.mock.successful" />
+  </div>
+);
 
 const ETOState: React.FunctionComponent<IExternalProps & CommonHtmlProps> = ({
   eto,

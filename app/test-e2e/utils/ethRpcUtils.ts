@@ -22,6 +22,23 @@ const requestFromWeb3Node = (methodName: string, params: string[] | object[]) =>
     },
   });
 
+// TODO: Move all helper methods to use Fetch instead of cy.request
+export const requestFromWeb3NodeFetch = (methodName: string, params: string[] | object[]) =>
+  fetch(NODE_ADDRESS, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: methodName,
+      params,
+      id: 1,
+    }),
+  });
+
+// TODO: Wrap all node functions into a Web3 instance for testing purposes
 export const getTransactionByHashRpc = (txHash: string) =>
   requestFromWeb3Node("eth_getTransactionByHash", [txHash]);
 

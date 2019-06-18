@@ -43,8 +43,10 @@ const getApiSha = async () => {
         "platform-contracts-artifacts",
       );
 
-      const CI_COMMAND = `git checkout ${response.artifacts_sha} && git status`;
-      const LOCAL_COMMAND = `cd ${contractArtifactsDir} && git checkout ${
+      const CI_COMMAND = `git submodule update --init --recursive && git checkout ${
+        response.artifacts_sha
+      } && git status`;
+      const LOCAL_COMMAND = `git submodule update --init --recursive && cd ${contractArtifactsDir} && git checkout ${
         response.artifacts_sha
       } && git status`;
 

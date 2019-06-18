@@ -188,6 +188,7 @@
     "typescript": "^3.4.1",
     "typestrict": "^1.0.2",
     "url-loader": "^1.1.2",
+    "web3-eth-abi": "^1.0.0-beta.55",
     "web3-eth-accounts": "^1.0.0-beta.36",
     "web3-typescript-typings": "^0.9.3",
     "webpack": "^4.29.6",
@@ -260,7 +261,7 @@
     "tweetnacl-util": "^0.15.0",
     "web3": "0.20.2",
     "web3-provider-engine": "^14.1.0",
-    "web3-utils": "^1.0.0-beta.35",
+    "web3-utils": "^1.0.0-beta.55",
     "yup": "^0.26.7"
   }
 }

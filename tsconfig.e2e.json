@@ -11,7 +11,8 @@
     "./node_modules/types-ethereumjs-util/index.d.ts",
     "./node_modules/web3-typescript-typings/index.d.ts",
     "./app/test-e2e/**/*.spec.e2e.ts",
-    "./app/test-e2e/**/*.spec.e2e.io.ts"
+    "./app/test-e2e/**/*.spec.e2e.io.ts",
+    "./node_modules/web3-eth-abi/node_modules/web3-utils"
   ],
   "exclude": []
 }

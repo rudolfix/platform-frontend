@@ -9,13 +9,13 @@ import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
 import { toCamelCase } from "../../utils/transformObjectKeys";
+import { getAgreementHash } from "./getAgreementHash";
 import { tid } from "./selectors";
 
 const VAULT_API_ROOT = "/api/wallet";
 export const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
 const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
 export const JWT_KEY = "NF_JWT";
-const CURRENT_AGREEMENT = "QmRU84rH63u4BPRpreSMDyq4tbXh4yZ5XsnkcGB7rcmyKP";
 
 const NUMBER_OF_ATTEMPTS = 2;
 
@@ -307,11 +307,13 @@ export const setCorrectAgreement = async (jwt: string) => {
     authorization: `Bearer ${jwt}`,
   };
 
+  const TosAgreementFromUniverse = await getAgreementHash();
+
   await fetch(USER_TOS_PATH, {
     headers,
     method: "PUT",
     body: JSON.stringify({
-      latest_accepted_tos_ipfs: CURRENT_AGREEMENT,
+      latest_accepted_tos_ipfs: TosAgreementFromUniverse,
     }),
   });
 };

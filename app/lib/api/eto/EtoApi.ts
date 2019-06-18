@@ -28,7 +28,7 @@ export class EtoApi {
   ) {}
 
   public async getEtos(): Promise<TPartialEtoSpecData[]> {
-    return await this.authorizedHttpClient
+    return await this.httpClient
       .get<TPartialEtoSpecData[]>({
         baseUrl: BASE_PATH,
         url: ETOS_PATH,

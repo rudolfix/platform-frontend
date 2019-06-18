@@ -3,6 +3,7 @@ import Web3Accounts from "web3-eth-accounts";
 
 import { appRoutes } from "../../components/appRoutes";
 import { Q18 } from "../../config/constants";
+import { NODE_ADDRESS } from "../config";
 import {
   accountFixtureAddress,
   accountFixturePrivateKey,
@@ -11,47 +12,41 @@ import {
   letterKeepDotRegExPattern,
   letterRegExPattern,
 } from "../utils";
-import {
-  ETransactionStatus,
-  getChainIdRpc,
-  getNonceRpc,
-  getTransactionReceipt,
-  sendRawTransactionRpc,
-} from "../utils/ethRpcUtils";
+import { cyPromise } from "../utils/cyPromise";
+import { assertWaitForTransactionSuccess, sendRawTransactionRpc } from "../utils/ethRpcUtils";
 import { goToProfile } from "../utils/navigation";
 import { tid } from "../utils/selectors";
-import { createAndLoginNewUser } from "../utils/userHelpers";
-
-const NODE_ADDRESS = process.env.NF_RPC_PROVIDER!;
+import { createAndLoginNewUser, loginFixtureAccount } from "../utils/userHelpers";
 
 //this constant is hard coded!
 const FIXTURE_DIV_CONSTANT = 100000000000000;
 
-const INV_ETH_ICBM_NO_KYC_ADDRESS = accountFixtureAddress("INV_ETH_ICBM_NO_KYC");
 describe("Wallet Migration Flow", () => {
   it("It should check icbm migration wallet when user has locked wallet", () => {
-    createAndLoginNewUser({
-      type: "investor",
+    loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC", {
       kyc: "business",
-      seed:
-        "then route cage lyrics arrange car pigeon gas rely canoe turn all weapon pepper lemon festival joy option drama forget tortoise useful canvas viable",
     }).then(() => {
       cy.visit(appRoutes.icbmMigration);
       cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"));
     });
   });
+
   it("It will migrate an ICBM wallet into a new user", () => {
+    const INV_ETH_ICBM_NO_KYC_ADDRESS = accountFixtureAddress("INV_ETH_ICBM_NO_KYC");
+
     createAndLoginNewUser({
       type: "investor",
       kyc: "individual",
     }).then(() => {
       const privKeyHex = accountFixturePrivateKey("INV_ETH_ICBM_NO_KYC");
-      const account = new Web3Accounts().privateKeyToAccount(privKeyHex);
+      const account = new Web3Accounts(NODE_ADDRESS).privateKeyToAccount(privKeyHex);
 
       goToProfile();
-      cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget.address")).type(
-        `${INV_ETH_ICBM_NO_KYC_ADDRESS}{enter}`,
-      );
+
+      cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget.address"))
+        .type(INV_ETH_ICBM_NO_KYC_ADDRESS)
+        .type("{enter}");
+
       // Assert that the values of NEU and ETHER are correct
       cy.get(tid("profile.modal.icbm-wallet-balance.neu-balance")).then(data => {
         const neuBalance = new BigNumber(
@@ -75,132 +70,80 @@ describe("Wallet Migration Flow", () => {
           expect(walletNeuBalance.equals(neuBalance)).to.be.true;
           expect(walletEthBalance.equals(ethBalance)).to.be.true;
 
+          // TODO: Refactor callback hell below
           cy.get(tid("modals.icbm-balance-modal.balance-footer.generate-transaction"))
             .wait(2000)
             .click();
+
           cy.get(tid("modals.icbm-balance-modal.migrate-body.to")).then(toField => {
-            const to = toField
-              .text()
-              .replace(charRegExPattern, "")
-              .split("Tosmartcontract")
-              .pop();
+            const to = toField.text();
+
             cy.get(tid("modals.icbm-balance-modal.migrate-body.gas-limit")).then(gasLimitField => {
-              const gas = gasLimitField
-                .text()
-                .replace(charRegExPattern, "")
-                .split("Gaslimit")
-                .pop();
+              const gas = gasLimitField.text();
 
               cy.get(tid("modals.icbm-balance-modal.migrate-body.input-data")).then(
                 inputDataField => {
-                  const data = inputDataField
-                    .text()
-                    .replace(charRegExPattern, "")
-                    .split("Data")
-                    .pop();
-                  getNonceRpc(NODE_ADDRESS, INV_ETH_ICBM_NO_KYC_ADDRESS).then(nonce => {
-                    getChainIdRpc(NODE_ADDRESS).then(chainId => {
-                      account
-                        .signTransaction({
-                          to,
-                          value: "0",
-                          gas,
-                          data,
-                          gasPrice: "1",
-                          nonce: nonce.body.result,
-                          chainId: chainId.body.result,
-                        })
-                        .then((signed: any) => {
-                          cy.log("Sending First Transaction");
-                          sendRawTransactionRpc(NODE_ADDRESS, signed.rawTransaction).then(hash => {
-                            // Wait for transaction to get conducted
-                            cy.wait(1000);
-                            getTransactionReceipt(NODE_ADDRESS, hash.body.result).then(receipt => {
-                              cy.log("Sending First Transaction");
-                              // Check if the conducted transaction was successful
-                              expect(receipt.body.result.status).to.equal(
-                                ETransactionStatus.SUCCESS,
-                              );
-                              // Wait until transaction is success then click
-                              cy.get(
-                                tid(
-                                  "modals.icbm-balance-modal.balance-footer.successful-transaction",
-                                ),
-                              ).awaitedClick();
-                              // Modal Should Detect The transaction and Transition to Step 2
-                              cy.get(tid("modals.icbm-balance-modal.migrate-body.step-2"));
+                  const data = inputDataField.text();
 
-                              cy.get(tid("modals.icbm-balance-modal.migrate-body.to")).then(
-                                toField => {
-                                  const to = toField
-                                    .text()
-                                    .replace(charRegExPattern, "")
-                                    .split("Tosmartcontract")
-                                    .pop();
-                                  cy.get(
-                                    tid("modals.icbm-balance-modal.migrate-body.gas-limit"),
-                                  ).then(gasLimitField => {
-                                    const gas = gasLimitField
-                                      .text()
-                                      .replace(charRegExPattern, "")
-                                      .split("Gaslimit")
-                                      .pop();
+                  cyPromise(() =>
+                    account.signTransaction({
+                      to,
+                      value: "0",
+                      gas,
+                      data,
+                      gasPrice: "1",
+                    }),
+                  ).then((signed: any) => {
+                    cy.log("Sending First Transaction");
+                    sendRawTransactionRpc(signed.rawTransaction).then(hash => {
+                      assertWaitForTransactionSuccess(hash.body.result);
 
+                      cy.get(
+                        tid("modals.icbm-balance-modal.balance-footer.successful-transaction"),
+                      ).awaitedClick();
+                      // Modal Should Detect The transaction and Transition to Step 2
+                      cy.get(tid("modals.icbm-balance-modal.migrate-body.step-2"));
+
+                      cy.get(tid("modals.icbm-balance-modal.migrate-body.to")).then(toField => {
+                        const to = toField.text();
+
+                        cy.get(tid("modals.icbm-balance-modal.migrate-body.gas-limit")).then(
+                          gasLimitField => {
+                            const gas = gasLimitField
+                              .text()
+                              .replace(charRegExPattern, "")
+                              .split("Gaslimit")
+                              .pop();
+
+                            cy.get(tid("modals.icbm-balance-modal.migrate-body.input-data")).then(
+                              inputDataField => {
+                                const data = inputDataField.text();
+
+                                cyPromise(() =>
+                                  account.signTransaction({
+                                    to,
+                                    value: "0",
+                                    gas,
+                                    data,
+                                    gasPrice: "1",
+                                  }),
+                                ).then((signed: any) => {
+                                  sendRawTransactionRpc(signed.rawTransaction).then(hash => {
+                                    assertWaitForTransactionSuccess(hash.body.result);
+
+                                    // Modal Should Detect The transaction and Transition to success flow
                                     cy.get(
-                                      tid("modals.icbm-balance-modal.migrate-body.input-data"),
-                                    ).then(inputDataField => {
-                                      const data = inputDataField
-                                        .text()
-                                        .replace(charRegExPattern, "")
-                                        .split("Data")
-                                        .pop();
-                                      getNonceRpc(NODE_ADDRESS, INV_ETH_ICBM_NO_KYC_ADDRESS).then(
-                                        nonce => {
-                                          getChainIdRpc(NODE_ADDRESS).then(chainId => {
-                                            account
-                                              .signTransaction({
-                                                to,
-                                                value: "0",
-                                                gas,
-                                                data,
-                                                gasPrice: "1",
-                                                nonce: nonce.body.result,
-                                                chainId: chainId.body.result,
-                                              })
-                                              .then((signed: any) => {
-                                                sendRawTransactionRpc(
-                                                  NODE_ADDRESS,
-                                                  signed.rawTransaction,
-                                                ).then(hash => {
-                                                  // Wait for transaction to get conducted
-                                                  cy.wait(1000);
-                                                  getTransactionReceipt(
-                                                    NODE_ADDRESS,
-                                                    hash.body.result,
-                                                  ).then(receipt => {
-                                                    // Check if the conducted transaction was successful
-                                                    expect(receipt.body.result.status).to.equal(
-                                                      ETransactionStatus.SUCCESS,
-                                                    );
-                                                    // Modal Should Detect The transaction and Transition to success flow
-                                                    cy.get(
-                                                      tid(
-                                                        "modals.icbm-balance-modal.balance-footer.successful-transaction",
-                                                      ),
-                                                    );
-                                                  });
-                                                });
-                                              });
-                                          });
-                                        },
-                                      );
-                                    });
+                                      tid(
+                                        "modals.icbm-balance-modal.balance-footer.successful-transaction",
+                                      ),
+                                    );
                                   });
-                                },
-                              );
-                            });
-                          });
-                        });
+                                });
+                              },
+                            );
+                          },
+                        );
+                      });
                     });
                   });
                 },

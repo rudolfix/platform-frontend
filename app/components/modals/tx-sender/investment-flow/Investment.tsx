@@ -195,7 +195,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
           <Row>
             <Col>
               <MaskedMoneyInput
-                name={"euroValue"}
+                name="euroValue"
                 value={this.props.euroValue}
                 inputFormat={ENumberInputFormat.ULPS}
                 currency={ECurrency.EUR_TOKEN}

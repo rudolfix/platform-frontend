@@ -7,7 +7,6 @@ import { tid } from "../utils/selectors";
 import { DEFAULT_PASSWORD, loginFixtureAccount } from "../utils/userHelpers";
 
 const Q18 = new BigNumber(10).pow(18);
-const NODE_ADDRESS = process.env.NF_RPC_PROVIDER!;
 
 const assertWithdrawButtonIsDisabled = () =>
   cy
@@ -40,7 +39,7 @@ export const checkTransactionWithRPCNode = (
   },
   txHash: string,
 ) => {
-  getTransactionByHashRpc(NODE_ADDRESS, txHash).then(data => {
+  getTransactionByHashRpc(txHash).then(data => {
     const { from, gas, input, hash, value } = data.body.result;
     const {
       expectedFrom,
@@ -61,7 +60,7 @@ export const checkTransactionWithRPCNode = (
     // TODO: Connect artifacts with tests to get deterministic addresses
     // expect(etherTokenAddress).to.equal(to);
 
-    getBalanceRpc(NODE_ADDRESS, expectedTo).then(balance => {
+    getBalanceRpc(expectedTo).then(balance => {
       const receivedEtherValue = new BigNumber(balance.body.result).toString();
       expect(receivedEtherValue).to.equal(Q18.mul(writtenValue).toString());
     });
@@ -124,7 +123,7 @@ describe("Wallet Withdraw", () => {
         cy.get(tid("modals.tx-sender.withdraw-flow.success"));
 
         cy.get(tid("modals.tx-sender.withdraw-flow.tx-hash")).then(txHashObject => {
-          getTransactionByHashRpc(NODE_ADDRESS, txHashObject.text()).then(data => {
+          getTransactionByHashRpc(txHashObject.text()).then(data => {
             const { from, input, hash, value } = data.body.result;
 
             const ethValue = new BigNumber(value).toString();
@@ -139,7 +138,7 @@ describe("Wallet Withdraw", () => {
             // TODO: Connect artifacts with tests to get deterministic addresses
             // expect(etherTokenAddress).to.equal(to);
 
-            getBalanceRpc(NODE_ADDRESS, testAddress).then(balance => {
+            getBalanceRpc(testAddress).then(balance => {
               const receivedEtherValue = new BigNumber(balance.body.result).toString();
               expect(receivedEtherValue).to.equal(Q18.mul(testValue).toString());
             });

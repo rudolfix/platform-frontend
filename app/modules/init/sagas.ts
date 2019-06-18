@@ -5,7 +5,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TAction } from "../actions";
-import { loadJwt } from "../auth/jwt/sagas";
+import { loadJwt, setJwt } from "../auth/jwt/sagas";
 import { selectUserType } from "../auth/selectors";
 import { loadUser } from "../auth/user/sagas";
 import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
@@ -44,10 +44,13 @@ function* initApp({ logger }: TGlobalDependencies): any {
     if (jwt) {
       if (isJwtExpiringLateEnough(jwt)) {
         try {
+          yield neuCall(setJwt, jwt);
+
           // we need to initiate smartcontracts anyway to load user properly
           if (yield checkIfSmartcontractsInitNeeded()) {
             yield neuCall(initSmartcontracts);
           }
+
           yield loadUser();
         } catch (e) {
           yield put(actions.auth.logout(userType));

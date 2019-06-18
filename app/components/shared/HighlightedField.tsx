@@ -20,6 +20,9 @@ interface IProps {
   dataTestId?: string;
 }
 
+/**
+ * @deprecated Replace all usages by InfoRow
+ */
 export const HighlightedField: React.FunctionComponent<IProps> = ({
   label,
   value,

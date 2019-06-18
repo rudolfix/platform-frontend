@@ -12,7 +12,7 @@ import {
   TEtoWithCompanyAndContract,
 } from "../../../modules/eto/types";
 import { isOnChain } from "../../../modules/eto/utils";
-import { CommonHtmlProps, TTranslatedString } from "../../../types";
+import { CommonHtmlProps, OmitKeys, TTranslatedString } from "../../../types";
 
 import * as styles from "./ETOState.module.scss";
 
@@ -107,6 +107,41 @@ const getState = (eto: TEtoWithCompanyAndContract, isIssuer?: boolean) => {
   }
 };
 
+const ComingSoonEtoState: React.FunctionComponent<
+  OmitKeys<IExternalProps, "eto"> & CommonHtmlProps
+> = ({
+  className,
+  size = EProjectStatusSize.MEDIUM,
+  layout = EProjectStatusLayout.NORMAL,
+  isIssuer,
+}) => {
+  const state = EEtoSubState.COMING_SOON;
+
+  return (
+    <div
+      className={cn(styles.projectStatus, stateToClassName[state], size, layout, className)}
+      data-test-id={`eto-state-${state}`}
+    >
+      {getStateName(state, isIssuer)}
+    </div>
+  );
+};
+
+const SuccessfulEtoState: React.FunctionComponent<
+  OmitKeys<IExternalProps, "eto"> & CommonHtmlProps
+> = ({ className, size = EProjectStatusSize.MEDIUM, layout = EProjectStatusLayout.NORMAL }) => {
+  const state = EEtoSubState.COMING_SOON;
+
+  return (
+    <div
+      className={cn(styles.projectStatus, styles.green, size, layout, className)}
+      data-test-id={`eto-state-${state}`}
+    >
+      <FormattedMessage id="eto.status.mock.successful" />
+    </div>
+  );
+};
+
 const ETOState: React.FunctionComponent<IExternalProps & CommonHtmlProps> = ({
   eto,
   className,
@@ -126,4 +161,4 @@ const ETOState: React.FunctionComponent<IExternalProps & CommonHtmlProps> = ({
   );
 };
 
-export { ETOState };
+export { ETOState, ComingSoonEtoState, SuccessfulEtoState };

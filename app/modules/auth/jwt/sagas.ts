@@ -21,19 +21,13 @@ import { ELogoutReason } from "../types";
  * Load to store jwt from browser storage
  */
 export function* loadJwt({ jwtStorage }: TGlobalDependencies): Iterator<Effect> {
-  const jwt = jwtStorage.get();
-
-  if (jwt) {
-    yield put(actions.auth.loadJWT(jwt));
-
-    return jwt;
-  }
+  return jwtStorage.get();
 }
 
 /**
  * Save jwt to the browser storage and update the store
  */
-function* setJwt({ jwtStorage }: TGlobalDependencies, jwt: string): Iterator<Effect> {
+export function* setJwt({ jwtStorage }: TGlobalDependencies, jwt: string): Iterator<any> {
   jwtStorage.set(jwt);
 
   yield put(actions.auth.loadJWT(jwt));

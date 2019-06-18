@@ -4,7 +4,7 @@ import { AcceptTosModal } from "../modals/accept-tos-modal/AcceptTosModal";
 import { BankTransferFlowModal } from "../modals/bank-transfer-flow/BankTransferFlow";
 import { DepositEthModal } from "../modals/DepositEthModal";
 import { DownloadTokenAgreementModal } from "../modals/download-token-agreements-modal/DownloadTokenAgreementModal";
-import { IcbmWalletBalanceModal } from "../modals/icbm-wallet-balance-modal/IcbmWalletBalanceModal.unsafe";
+import { IcbmWalletBalanceModal } from "../modals/icbm-wallet-balance-modal/IcbmWalletBalanceModal";
 import { TxSenderModal } from "../modals/tx-sender/TxSender";
 import { NotificationWidget } from "../shared/notification-widget/NotificationWidget";
 import { Content } from "./Content";

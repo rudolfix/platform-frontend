@@ -1,8 +1,9 @@
-import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto } from "../../../../../test/fixtures";
+import { Q18 } from "../../../../config/constants";
+import { TMockEto } from "../../../../data/etoCompanies";
 import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import {
@@ -14,6 +15,8 @@ import { ICalculatedContribution } from "../../../../modules/investor-portfolio/
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
 import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
 import { EtoOverviewThumbnail } from "./EtoOverviewThumbnail";
+
+import * as icbmThumbnail from "../../../../assets/img/eto_offers/investment_thumbnails_icbm_capital_raise.png";
 
 const rootEto: TEtoWithCompanyAndContract = {
   ...testEto,
@@ -27,15 +30,6 @@ const rootEto: TEtoWithCompanyAndContract = {
   minTicketEur: 1,
   equityTokenName: "TokenName",
   equityTokenSymbol: "TKN",
-};
-
-const commonProps = {
-  isAuthorized: true,
-  isEligibleToPreEto: false,
-  maxCapExceeded: false,
-  navigateToEto: action("navigateToEto"),
-  openInNewWindow: action("openInNewWindow"),
-  showQuote: false,
 };
 
 // 2018-11-16T05:03:56.000Z
@@ -67,10 +61,37 @@ const withEto = ({
         [eto.etoId]: calculatedContributions,
       },
     },
-  })(() => <EtoOverviewThumbnail {...commonProps} eto={eto} />);
+  })(() => <EtoOverviewThumbnail eto={eto} />);
 
 storiesOf("ETO/EtoOverviewThumbnail", module)
   .addDecorator(withMockedDate(dummyNow))
+  .add("coming soon (mock)", () => {
+    const mockedEto: TMockEto = {
+      brandName: "ICBM Capital Raise",
+      url: "https://commit.neufund.org",
+      companyPreviewCardBanner: icbmThumbnail,
+      id: "icbm",
+      categories: ["Technology", "Blockchain"],
+      keyQuoteFounder:
+        "More than a thousand investors participated in Neufund’s first fundraise in 2017.",
+    };
+
+    return <EtoOverviewThumbnail mockedEto={mockedEto} />;
+  })
+  .add("successful (mock)", () => {
+    const mockedEto: TMockEto = {
+      brandName: "ICBM Capital Raise",
+      url: "https://commit.neufund.org",
+      companyPreviewCardBanner: icbmThumbnail,
+      totalAmount: Q18.mul(12500000).toString(),
+      id: "icbm",
+      categories: ["Technology", "Blockchain"],
+      keyQuoteFounder:
+        "More than a thousand investors participated in Neufund’s first fundraise in 2017.",
+    };
+
+    return <EtoOverviewThumbnail mockedEto={mockedEto} />;
+  })
   .add("coming soon", () => {
     const eto = {
       ...rootEto,

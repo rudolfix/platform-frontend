@@ -33,13 +33,10 @@ body {
 }
 
 .layout-container {
+  @include container-horizontal-padding;
+
   @include media-breakpoint-up(sm) {
     width: calc(100% - #{$authorized-menu-width-sm});
-  }
-
-  @include media-breakpoint-up (md) {
-    padding-left: $authorized-layout-horizontal-padding-lg;
-    padding-right: $authorized-layout-horizontal-padding-lg;
   }
 
   @include media-breakpoint-up(lg) {
@@ -50,8 +47,6 @@ body {
   max-width: 100%;
   flex: 1;
   padding-bottom: px-to-rem(80px);
-  padding-left: $authorized-layout-horizontal-padding-sm;
-  padding-right: $authorized-layout-horizontal-padding-sm;
   -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-vendor-prefixes
 }
 

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName } from "recompose";
 
 import { actions } from "../../../modules/actions";
@@ -8,11 +7,8 @@ import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { RequiredByKeys } from "../../../types";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { EtoOverviewStatus } from "../../eto/overview/EtoOverviewStatus";
-import { EtosComingSoon } from "../../eto/overview/EtoOverviewStatus/EtosComingSoon";
 import { EtoOverviewThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtoOverviewThumbnail";
 import { EtosComingSoonThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtosComingSoonThumbnail";
-import { DashboardHeading } from "../../eto/shared/DashboardHeading";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { ELoadingIndicator, LoadingIndicator } from "../../shared/loading-indicator";
 
@@ -22,44 +18,52 @@ interface IStateProps {
   etos?: TEtoWithCompanyAndContract[];
 }
 
+type TExternalProps = {
+  mockedEtos?: NonNullable<React.ComponentProps<typeof EtoOverviewThumbnail>["mockedEto"]>[];
+  shouldOpenInNewWindow?: boolean;
+};
+
 type TListProps = RequiredByKeys<IStateProps, "etos">;
 
-const EtoListThumbnails: React.FunctionComponent<TListProps> = ({ etos }) => (
+const EtoListThumbnails: React.FunctionComponent<TListProps & TExternalProps> = ({
+  etos,
+  mockedEtos,
+  shouldOpenInNewWindow,
+}) => (
   <Container type={EContainerType.INHERIT_GRID} className={styles.progressSectionLayout}>
     {etos.map(eto => (
-      <EtoOverviewThumbnail eto={eto} key={eto.previewCode} />
+      <EtoOverviewThumbnail
+        eto={eto}
+        key={eto.previewCode}
+        shouldOpenInNewWindow={shouldOpenInNewWindow}
+      />
     ))}
+
+    {mockedEtos &&
+      mockedEtos.map(eto => (
+        <EtoOverviewThumbnail
+          mockedEto={eto}
+          key={eto.id}
+          shouldOpenInNewWindow={shouldOpenInNewWindow}
+        />
+      ))}
 
     {etos.length < 4 && <EtosComingSoonThumbnail />}
   </Container>
 );
 
-const EtoListDefault: React.FunctionComponent<TListProps> = ({ etos }) => (
+const EtoListLayout: React.FunctionComponent<TExternalProps & IStateProps> = ({
+  etos,
+  mockedEtos,
+  shouldOpenInNewWindow,
+}) => (
   <>
-    {etos.map(eto => (
-      <div className="mb-3" key={eto.previewCode}>
-        <EtoOverviewStatus eto={eto} />
-      </div>
-    ))}
-    {etos.length < 4 && <EtosComingSoon />}
-  </>
-);
-
-const EtoListComponent: React.FunctionComponent<IStateProps> = ({ etos }) => (
-  <>
-    <Container columnSpan={EColumnSpan.THREE_COL}>
-      <DashboardHeading title={<FormattedMessage id="dashboard.eto-opportunities" />} />
-      <p>
-        <FormattedMessage id="dashboard.eto-opportunities.description" />
-      </p>
-    </Container>
-
     {etos ? (
-      process.env.NF_ETO_LIST_GRID === "1" ? (
-        <EtoListThumbnails etos={etos} />
-      ) : (
-        <EtoListDefault etos={etos} />
-      )
+      <EtoListThumbnails
+        etos={etos}
+        mockedEtos={mockedEtos}
+        shouldOpenInNewWindow={shouldOpenInNewWindow}
+      />
     ) : (
       <Container columnSpan={EColumnSpan.THREE_COL}>
         <LoadingIndicator type={ELoadingIndicator.HEXAGON} />
@@ -68,11 +72,10 @@ const EtoListComponent: React.FunctionComponent<IStateProps> = ({ etos }) => (
   </>
 );
 
-export const EtoList = compose<IStateProps, {}>(
+const EtoList = compose<IStateProps & TExternalProps, TExternalProps>(
   setDisplayName("EtoList"),
   onEnterAction({
     actionCreator: d => {
-      d(actions.wallet.loadWalletData());
       d(actions.eto.loadEtos());
     },
   }),
@@ -81,4 +84,6 @@ export const EtoList = compose<IStateProps, {}>(
       etos: selectEtos(state),
     }),
   }),
-)(EtoListComponent);
+)(EtoListLayout);
+
+export { EtoList };

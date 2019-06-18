@@ -1,49 +1,119 @@
+$header-color: #394651;
+$paragraph-color: #556877;
+
+%landing-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+%landing-header {
+  @include headline-big;
+
+  @include media-breakpoint-up(md) {
+    @include headline-huge;
+  }
+
+  color: $header-color;
+  font-weight: bold;
+}
+
 .landing-wrapper {
   background: $neu-white-two;
   flex-grow: 1;
 }
 
 .landing {
-  padding-top: px-to-rem(60px);
-  max-width: 1334px;
-  margin: auto;
+  @extend %landing-container;
+  @include container-horizontal-padding;
+
+  padding-top: px-to-rem(100px);
+  padding-bottom: px-to-rem(100px);
 }
 
-.landing-description,
-.landing-features-container {
-  padding-left: px-to-rem(32px);
-  padding-right: px-to-rem(32px);
+.neon {
+  background-color: $neu-neon-yellow;
+  height: 15px;
+  width: 110px;
 }
 
-.landing-features-header {
+.header {
+  @extend %landing-header;
+}
+
+.description {
   @include headline-bigger;
 
-  text-transform: uppercase;
-  margin-top: px-to-rem(45px);
-  margin-bottom: px-to-rem(45px);
+  color: $paragraph-color;
 }
 
-.landing-description,
-.landing-features {
-  @include headline-bigger;
+.features-container {
+  grid-template-rows: 1fr;
 }
 
-.landing-features {
+.features {
+  @extend %landing-header;
+  @include font-headline;
+
+  @include media-breakpoint-up(lg) {
+    justify-self: right;
+  }
+
   list-style: none;
   padding-left: 0;
 
-  & > li {
+  &-item {
+    padding: .8em 0;
+
     &::before {
       content: "";
       display: inline-block;
-      height: .8em;
-      width: .8em;
+      height: 1.4em;
+      width: 1.4em;
       background-image: url("../../assets/img/tick.svg");
       background-size: contain;
       background-repeat: no-repeat;
-      padding-left: 2em;
+      padding-left: 3.5em;
       position: relative;
       top: 5px;
     }
+
+    &--invest {
+      &::before {
+        background-image: url("../../assets/img/landing/icon-eth-eur.svg");
+      }
+    }
+
+    &--min-ticket {
+      &::before {
+        background-image: url("../../assets/img/landing/icon-wallet.svg");
+      }
+    }
+
+    &--tradable {
+      &::before {
+        background-image: url("../../assets/img/landing/icon-world.svg");
+      }
+    }
   }
 }
+
+.investment-opportunities {
+  @extend %landing-container;
+
+  padding-top: px-to-rem(80px);
+  padding-bottom: px-to-rem(100px);
+
+  &-header {
+    @extend %landing-header;
+
+    text-align: center;
+    margin-bottom: px-to-rem(60px);
+  }
+
+
+  &-call-to-action {
+    text-align: center;
+    padding-top: px-to-rem(120px);
+  }
+}
+

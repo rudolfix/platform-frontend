@@ -1,10 +1,12 @@
-import * as moment from "moment";
-
-import { AUTH_TOKEN_REFRESH_THRESHOLD } from "../../modules/auth/constants";
+import {
+  AUTH_JWT_TIMING_THRESHOLD,
+  AUTH_TOKEN_REFRESH_THRESHOLD,
+} from "../../modules/auth/constants";
 import { getJwtExpiryDate } from "../../utils/JWTUtils";
 import {
   acceptWallet,
   assertEmailChangeFlow,
+  assertUserInLanding,
   assertUserInLightWalletLoginPage,
   goToDashboard,
   goToProfile,
@@ -17,20 +19,43 @@ import {
   getJwtToken,
 } from "../utils/userHelpers";
 
-describe("JWT Refreshing and Escalation", function(): void {
+describe("JWT Refreshing and Escalation", () => {
+  it("should logout to landing when token is initially expired", () => {
+    createAndLoginNewUser({ type: "investor" }).then(() => {
+      const jwtToken = getJwtToken();
+
+      const jwtExpiryDate = getJwtExpiryDate(jwtToken).valueOf();
+      const expectedTokenRefreshTime = jwtExpiryDate - AUTH_TOKEN_REFRESH_THRESHOLD;
+
+      // add one seconds to get to the point after token should not be refreshed
+      cy.clock(expectedTokenRefreshTime + 1, ["Date"]);
+
+      goToDashboard(false);
+
+      assertUserInLanding();
+
+      // Should remove jwt token from localstorage
+      cy.wrap(null).should(() => {
+        expect(getJwtToken()).to.equal(null);
+      });
+    });
+  });
+
   it("should logout with session timeout message when token is already expired", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
-      cy.clock(Date.now());
+      const now = Date.now();
+
+      cy.clock(now, ["Date"]);
 
       const jwtExpiryDate = getJwtExpiryDate(getJwtToken());
 
-      const diff = jwtExpiryDate.diff(moment(), "milliseconds");
-      const expectedTokenRefreshTimeFromNow = diff * AUTH_TOKEN_REFRESH_THRESHOLD;
+      const diff = jwtExpiryDate.diff(now, "milliseconds");
+      const expectedTokenRefreshTimeFromNow = diff - AUTH_TOKEN_REFRESH_THRESHOLD;
 
-      // add ten seconds to simulate inactivity (for e.g. hibernation)
-      cy.tick(expectedTokenRefreshTimeFromNow + 10000);
+      // add one second to simulate inactivity (for e.g. hibernation)
+      cy.tick(expectedTokenRefreshTimeFromNow + AUTH_JWT_TIMING_THRESHOLD + 1000);
 
       assertUserInLightWalletLoginPage();
 
@@ -47,7 +72,7 @@ describe("JWT Refreshing and Escalation", function(): void {
 
       const now = Date.now();
 
-      cy.clock(now);
+      cy.clock(now, ["Date"]);
 
       const jwtToken = getJwtToken();
 

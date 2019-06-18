@@ -25,6 +25,24 @@ interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
 }
 
+const SuccessfulInfo: React.FunctionComponent<{ totalAmount: string }> = ({ totalAmount }) => (
+  <p className={styles.info}>
+    <FormattedMessage
+      id="eto-overview-thumbnail.success.raised-amount"
+      values={{
+        totalAmount: (
+          <MoneyNew
+            value={totalAmount}
+            inputFormat={ENumberInputFormat.ULPS}
+            moneyFormat={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.FULL}
+          />
+        ),
+      }}
+    />
+  </p>
+);
+
 const EtoStatusManager = ({ eto }: IExternalProps) => {
   const state = eto.contract ? eto.contract.timedState : eto.state;
 
@@ -80,21 +98,8 @@ const EtoStatusManager = ({ eto }: IExternalProps) => {
       return (
         <>
           <InvestmentStatus eto={eto} />
-          <p className={styles.info}>
-            <FormattedMessage
-              id="eto-overview-thumbnail.success.raised-amount"
-              values={{
-                totalAmount: (
-                  <MoneyNew
-                    value={eto.contract!.totalInvestment.totalEquivEurUlps}
-                    inputFormat={ENumberInputFormat.ULPS}
-                    moneyFormat={ECurrency.EUR}
-                    outputFormat={ENumberOutputFormat.FULL}
-                  />
-                ),
-              }}
-            />
-          </p>
+
+          <SuccessfulInfo totalAmount={eto.contract!.totalInvestment.totalEquivEurUlps} />
         </>
       );
     }
@@ -115,4 +120,4 @@ const EtoStatusManager = ({ eto }: IExternalProps) => {
   }
 };
 
-export { EtoStatusManager };
+export { EtoStatusManager, SuccessfulInfo };

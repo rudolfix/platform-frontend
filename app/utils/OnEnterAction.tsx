@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { withProps } from "recompose";
-import { compose } from "redux";
+import { compose, withProps } from "recompose";
 
 import { AppDispatch } from "../store";
 
@@ -26,15 +25,15 @@ class OnEnterAction extends React.Component<
   }
 
   render(): React.ReactNode {
-    const { enterAction, ...componentProps } = this.props;
-    return <this.props.wrappedComponent {...componentProps} />;
+    const { enterAction, wrappedComponent: Component, ...componentProps } = this.props;
+    return <Component {...componentProps} />;
   }
 }
 
 export const onEnterAction = <P extends object = {}>(options: IOnEnterActionOptions<P>) => (
   wrappedComponent: React.ComponentType,
 ) =>
-  compose<React.ComponentClass>(
+  compose<IOnEnterActionStateProps & IOnEnterActionDispatchProps, {}>(
     connect<{}, IOnEnterActionDispatchProps, P>(
       undefined,
       (dispatch, props) => ({

@@ -14,6 +14,12 @@ export interface IWithdrawDraftType {
   value: string;
 }
 
+export enum EAdditionalValidationDataWarrning {
+  IS_SMART_CONTRACT = "is_smart_contract",
+  IS_NEW_ADDRESS = "is_new_address",
+  IS_NOT_ACCEPTING_ETHER = "is_not_accepting_ether",
+}
+
 export interface IInvestmentDraftType {
   type: ETxSenderType.INVEST;
 }
@@ -38,7 +44,10 @@ export interface ITxTypeWithData<T extends ETxSenderType | undefined, P> {
   additionalData: P;
 }
 
-type TTxSenderWithdrawState = ITxTypeWithData<ETxSenderType.WITHDRAW, TWithdrawAdditionalData>;
+type TTxSenderWithdrawState = ITxTypeWithData<
+  ETxSenderType.WITHDRAW,
+  TWithdrawAdditionalData & IAdditionalValidationData
+>;
 
 type TTxSenderClaimState = ITxTypeWithData<ETxSenderType.USER_CLAIM, TClaimAdditionalData>;
 
@@ -93,4 +102,10 @@ export type TAdditionalDataByType<T extends ETxSenderType> = Extract<
 export enum ETokenType {
   ETHER = "ETHER",
   EURO = "EURO",
+}
+
+export interface IAdditionalValidationData {
+  warning?: EAdditionalValidationDataWarrning;
+  isAccepted?: boolean;
+  inputValue?: string;
 }

@@ -8,8 +8,6 @@ import { PortfolioMyAssets } from "./PortfolioMyAssets";
 import { PortfolioPastInvestments } from "./PortfolioPastInvestments";
 import { PortfolioReservedAssets } from "./PortfolioReservedAssets";
 
-import * as styles from "./PortfolioLayout.module.scss";
-
 export type TPortfolioLayoutProps = {
   myAssets: TEtoWithCompanyAndContract[];
   walletAddress: string;
@@ -32,7 +30,7 @@ const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
   isVerifiedInvestor,
   pastInvestments,
 }) => (
-  <WidgetGridLayout className={styles.portfolio} data-test-id="portfolio-layout">
+  <WidgetGridLayout data-test-id="portfolio-layout">
     {(process.env.NF_ASSETS_PORTFOLIO_COMPONENT_VISIBLE === "1" ||
       process.env.STORYBOOK_RUN === "1") && (
       <AssetPortfolio tokensDisbursal={tokensDisbursal} isVerifiedInvestor={isVerifiedInvestor} />

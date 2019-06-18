@@ -23,7 +23,7 @@ export const LayoutAuthorizedComponent: React.FunctionComponent<{ dataTestId?: s
     <Header />
     <LayoutAuthorizedMenu />
     <Content>
-      <NotificationWidget />
+      <NotificationWidget className={styles.notification} />
       {children}
     </Content>
     <Footer />

@@ -114,7 +114,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
   return (
     <>
       <PersonProfileModal />
-      <WidgetGridLayout data-test-id="eto.public-view">
+      <WidgetGridLayout className={styles.etoLayout} data-test-id="eto.public-view">
         <CoverBanner eto={eto} isInvestorView={isInvestorView} />
         <Cover
           companyName={brandName}

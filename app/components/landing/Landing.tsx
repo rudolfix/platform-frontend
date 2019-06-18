@@ -1,57 +1,75 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
+import { etoMockCompanies } from "../../data/etoCompanies";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { appRoutes } from "../appRoutes";
+import { EtoList } from "../dashboard/eto-list/EtoList";
+import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
+import { Content } from "../layouts/Content";
+import { WidgetGridLayout } from "../layouts/Layout";
 import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
-import { ButtonLink, ButtonSize, EButtonLayout, EButtonTheme } from "../shared/buttons";
+import {
+  ButtonGroup,
+  ButtonLink,
+  ButtonSize,
+  EButtonLayout,
+  EButtonTheme,
+  EIconPosition,
+} from "../shared/buttons";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
-import { ENeonHeaderSize, NeonHeader } from "./shared/NeonHeader";
 
+import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./Landing.module.scss";
 
 const LandingLayout: React.FunctionComponent = () => (
   <div className={styles.landingWrapper} data-test-id="landing-page">
     <section className={styles.landing}>
-      <NeonHeader size={ENeonHeaderSize.BIG}>
-        <FormattedHTMLMessage id="platform.landing.featured.header" tagName="span" />
-      </NeonHeader>
-      <p className={styles.landingDescription}>
-        <FormattedHTMLMessage
-          values={{ href: externalRoutes.issueEto }}
-          id="platform.landing.featured.description"
-          tagName="span"
-        />
-      </p>
-      <section className={styles.landingFeaturesContainer}>
-        <h3 className={cn(styles.landingFeaturesHeader)}>
-          <FormattedMessage id="platform.landing.list.header" />
-        </h3>
-        <ul className={cn(styles.landingFeatures, "pure")}>
-          <li>
-            <FormattedMessage id="platform.landing.list.first" />
-          </li>
-          <li>
-            <FormattedMessage id="platform.landing.list.second" />
-          </li>
-          <li>
-            <FormattedMessage id="platform.landing.list.third" />
-          </li>
-          <li>
-            <FormattedMessage id="platform.landing.list.fourth" />
-          </li>
-          <li>
-            <FormattedMessage id="platform.landing.list.fifth" />
-          </li>
-        </ul>
-        <div className="mt-5">
+      <div className={styles.neon} />
+
+      <WidgetGridLayout>
+        <Container columnSpan={EColumnSpan.ONE_AND_HALF_COL} type={EContainerType.GRID}>
+          <h1 className={styles.header}>
+            <FormattedMessage id="platform.landing.featured.header" />
+          </h1>
+          <p className={styles.description}>
+            <FormattedMessage id="platform.landing.featured.description" />
+          </p>
+        </Container>
+
+        <Container
+          className={styles.featuresContainer}
+          columnSpan={EColumnSpan.ONE_AND_HALF_COL}
+          type={EContainerType.GRID}
+        >
+          <ul className={cn(styles.features, "pure")}>
+            <li className={cn(styles.featuresItem, styles.featuresItemInvest)}>
+              <FormattedMessage id="platform.landing.list.first" />
+            </li>
+            <li className={cn(styles.featuresItem, styles.featuresItemMinTicket)}>
+              <FormattedMessage id="platform.landing.list.second" />
+            </li>
+            <li className={cn(styles.featuresItem, styles.featuresItemTradable)}>
+              <FormattedMessage id="platform.landing.list.third" />
+            </li>
+          </ul>
+        </Container>
+      </WidgetGridLayout>
+    </section>
+
+    <Content>
+      <section className={styles.investmentOpportunities}>
+        <h2 className={cn(styles.investmentOpportunitiesHeader)}>Investment opportunities</h2>
+
+        <EtoList mockedEtos={etoMockCompanies} shouldOpenInNewWindow={true} />
+
+        <ButtonGroup className={styles.investmentOpportunitiesCallToAction}>
           <ButtonLink
             theme={EButtonTheme.NEON}
-            className="mr-5 mb-5"
             layout={EButtonLayout.SECONDARY}
             size={ButtonSize.HUGE}
             to={appRoutes.register}
@@ -59,17 +77,19 @@ const LandingLayout: React.FunctionComponent = () => (
             <FormattedMessage id="wallet-selector.register" />
           </ButtonLink>
           <ButtonLink
+            iconPosition={EIconPosition.ICON_AFTER}
+            layout={EButtonLayout.SECONDARY}
             size={ButtonSize.HUGE}
-            theme={EButtonTheme.GRAPHITE}
-            className="mb-5"
-            layout={EButtonLayout.PRIMARY}
-            to={appRoutes.login}
+            svgIcon={arrowRight}
+            target={"_blank"}
+            theme={EButtonTheme.SILVER}
+            to={externalRoutes.neufundInvest}
           >
-            <FormattedMessage id="wallet-selector.login" />
+            <FormattedMessage id="common.text.read-more" />
           </ButtonLink>
-        </div>
+        </ButtonGroup>
       </section>
-    </section>
+    </Content>
   </div>
 );
 

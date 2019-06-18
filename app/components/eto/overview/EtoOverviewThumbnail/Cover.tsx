@@ -12,7 +12,7 @@ import * as styles from "./Cover.module.scss";
 
 interface IProps {
   companyBanner: IResponsiveImage;
-  jurisdiction: EJurisdiction;
+  jurisdiction: EJurisdiction | undefined;
   tags: ReadonlyArray<TTranslatedString> | undefined;
 }
 
@@ -59,9 +59,12 @@ const Cover: React.FunctionComponent<IProps & CommonHtmlProps> = ({
       fit={EImageFit.COVER}
     />
 
-    <div className={cn(styles.jurisdiction, "mb-0")}>
-      <Jurisdiction jurisdiction={jurisdiction} />
-    </div>
+    {jurisdiction && (
+      <div className={cn(styles.jurisdiction, "mb-0")}>
+        <Jurisdiction jurisdiction={jurisdiction} />
+      </div>
+    )}
+
     <div className={styles.tags}>
       {/* Only two first tags should be shown */}
       {tags.slice(0, 2).map((tag, index) => (

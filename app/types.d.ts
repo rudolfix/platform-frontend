@@ -45,10 +45,10 @@ export type DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]
 export type DeepWritable<T> = T extends Primitive | WhitelistedWritableTypes | Function
   ? T
   : T extends (any[] | ReadonlyArray<any>)
-  ? WritableArray<T[number]>
+  ? IWritableArray<T[number]>
   : DeepWritableObject<T>;
 type DeepWritableObject<T> = { -readonly [P in keyof T]: DeepWritable<T[P]> };
-interface WritableArray<T> extends Array<DeepWritable<T>> {}
+interface IWritableArray<T> extends Array<DeepWritable<T>> {}
 
 // Taken from @types/reactstrap
 // @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23700
@@ -142,6 +142,20 @@ export type RequiredByKeys<T, K extends keyof T> = Required<Pick<T, K>> & OmitKe
  * Overwrite<{ foo: boolean, bar: string }, { foo: number }> // { foo: number, bar: string }
  */
 export type Overwrite<T1, T2> = { [P in Exclude<keyof T1, keyof T2>]: T1[P] } & T2;
+
+/**
+ * Change the type of all properties from T to `never` and `undefined`
+ * @example
+ * Without<{ foo: boolean, bar: string }, { foo: boolean }> // { foo?: never }
+ */
+export type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+
+/**
+ * Makes union exclusive. Useful in situations when only single prop can be provided at the same time
+ * @example
+ * XOR<{ foo: boolean}, { bar: number }> // { foo: boolean, bar?: never } | { foo?: never, bar: number }
+ */
+export type XOR<T extends object, U extends object> = (Without<T, U> & U) | (Without<U, T> & T);
 
 export type TFormikConnect = {
   formik: FormikContext<any>;

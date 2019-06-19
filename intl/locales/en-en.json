@@ -204,6 +204,7 @@
   "eto-overview-thumbnail.refund.claim-refund": "CLAIM REFUND",
   "eto-overview-thumbnail.signing.raised-amount": "ETO SUCCESSFUL {totalAmount} RAISED",
   "eto-overview-thumbnail.success.raised-amount": "{totalAmount} raised",
+  "eto-overview-thumbnail.success.successful-fundraising": "Successful fundraising",
   "eto-overview-thumbnail.token-name": "Token Name",
   "eto-overview-thumbnail.whitelist.amount-signed-up": "{amount} SIGNED UP",
   "eto-overview-thumbnail.whitelist.is-closed": "WHITELIST CLOSED - LIMIT REACHED",

@@ -29,7 +29,9 @@ interface IExternalProps {
 
 const SuccessfulInfo: React.FunctionComponent<{ totalAmount: string }> = ({ totalAmount }) => (
   <div className={styles.successfulInfo}>
-    <p className={cn(styles.successfulInfoText)}>Successful fundraising</p>
+    <p className={cn(styles.successfulInfoText)}>
+      <FormattedMessage id="eto-overview-thumbnail.success.successful-fundraising" />
+    </p>
     <p className="mb-0">
       <FormattedMessage
         id="eto-overview-thumbnail.success.raised-amount"

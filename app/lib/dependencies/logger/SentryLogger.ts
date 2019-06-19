@@ -9,14 +9,12 @@ import {
 } from "@sentry/browser";
 
 import { ErrorArgs, ILogger, LogArg, TUser } from "./ILogger";
+import { hashBlacklistedQueryParams } from "./utils";
 
 /**
  * Query params that should never be send to sentry for security reasons.
  */
 const BLACKLISTED_QUERY_PARAMS = ["email", "salt"];
-
-const hashQueryParam = (name: string, url: string) =>
-  url.replace(new RegExp(`(${name})=[^&#]*`), "$1=******");
 
 export class SentryLogger implements ILogger {
   constructor(dsn: string) {
@@ -24,8 +22,8 @@ export class SentryLogger implements ILogger {
       dsn,
       beforeSend(event: SentryEvent): SentryEvent {
         if (event.request && event.request.url) {
-          event.request.url = BLACKLISTED_QUERY_PARAMS.reduce(
-            (url, param) => hashQueryParam(param, url),
+          event.request.url = hashBlacklistedQueryParams(
+            BLACKLISTED_QUERY_PARAMS,
             event.request.url,
           );
         }

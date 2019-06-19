@@ -39,7 +39,7 @@
 
   &:last-child {
     overflow-wrap: break-word;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 0 .5rem;
     text-align: right;
   }

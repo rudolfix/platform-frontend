@@ -40,12 +40,12 @@ const EtoListThumbnails: React.FunctionComponent<TListProps & TExternalProps> = 
     ))}
 
     {mockedEtos.map(eto => (
-        <EtoOverviewThumbnail
-          mockedEto={eto}
-          key={eto.id}
-          shouldOpenInNewWindow={shouldOpenInNewWindow}
-        />
-      ))}
+      <EtoOverviewThumbnail
+        mockedEto={eto}
+        key={eto.id}
+        shouldOpenInNewWindow={shouldOpenInNewWindow}
+      />
+    ))}
 
     {etos.length + mockedEtos.length < 4 && <EtosComingSoonThumbnail />}
   </Container>

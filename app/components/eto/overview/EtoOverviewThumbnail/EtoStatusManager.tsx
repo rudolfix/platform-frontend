@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -11,6 +12,7 @@ import {
 } from "../../../../modules/eto/types";
 import { MoneyNew } from "../../../shared/formatters/Money";
 import {
+  EAbbreviatedNumberOutputFormat,
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
@@ -26,21 +28,24 @@ interface IExternalProps {
 }
 
 const SuccessfulInfo: React.FunctionComponent<{ totalAmount: string }> = ({ totalAmount }) => (
-  <p className={styles.info}>
-    <FormattedMessage
-      id="eto-overview-thumbnail.success.raised-amount"
-      values={{
-        totalAmount: (
-          <MoneyNew
-            value={totalAmount}
-            inputFormat={ENumberInputFormat.ULPS}
-            moneyFormat={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.FULL}
-          />
-        ),
-      }}
-    />
-  </p>
+  <div className={styles.successfulInfo}>
+    <p className={cn(styles.successfulInfoText)}>Successful fundraising</p>
+    <p className="mb-0">
+      <FormattedMessage
+        id="eto-overview-thumbnail.success.raised-amount"
+        values={{
+          totalAmount: (
+            <MoneyNew
+              value={totalAmount}
+              inputFormat={ENumberInputFormat.ULPS}
+              moneyFormat={ECurrency.EUR}
+              outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+            />
+          ),
+        }}
+      />
+    </p>
+  </div>
 );
 
 const EtoStatusManager = ({ eto }: IExternalProps) => {
@@ -92,16 +97,33 @@ const EtoStatusManager = ({ eto }: IExternalProps) => {
       );
     }
 
-    case EETOStateOnChain.Claim:
-    case EETOStateOnChain.Signing:
-    case EETOStateOnChain.Payout: {
+    case EETOStateOnChain.Signing: {
       return (
         <>
           <InvestmentStatus eto={eto} />
 
-          <SuccessfulInfo totalAmount={eto.contract!.totalInvestment.totalEquivEurUlps} />
+          <p className={styles.info}>
+            <FormattedMessage
+              id="eto-overview-thumbnail.signing.raised-amount"
+              values={{
+                totalAmount: (
+                  <MoneyNew
+                    value={eto.contract!.totalInvestment.totalEquivEurUlps}
+                    inputFormat={ENumberInputFormat.ULPS}
+                    moneyFormat={ECurrency.EUR}
+                    outputFormat={ENumberOutputFormat.FULL}
+                  />
+                ),
+              }}
+            />
+          </p>
         </>
       );
+    }
+
+    case EETOStateOnChain.Claim:
+    case EETOStateOnChain.Payout: {
+      return <SuccessfulInfo totalAmount={eto.contract!.totalInvestment.totalEquivEurUlps} />;
     }
 
     case EETOStateOnChain.Refund: {

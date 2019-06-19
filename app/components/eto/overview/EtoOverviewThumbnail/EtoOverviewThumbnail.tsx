@@ -10,7 +10,7 @@ import { CommonHtmlProps, XOR } from "../../../../types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { FUNDING_ROUNDS } from "../../constants";
-import { ComingSoonEtoState, ETOState, SuccessfulEtoState } from "../../shared/ETOState";
+import { ComingSoonEtoState, ETOState, SuccessEtoState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
 import { EtoCardPanelButton } from "./EtoCardPanel";
 import { EtoStatusManager, SuccessfulInfo } from "./EtoStatusManager";
@@ -55,7 +55,7 @@ const MockEtoOverviewLayout: React.FunctionComponent<
     />
 
     {mockedEto.totalAmount ? (
-      <SuccessfulEtoState className={styles.statusOfEto} />
+      <SuccessEtoState className={styles.statusOfEto} />
     ) : (
       <ComingSoonEtoState className={styles.statusOfEto} />
     )}

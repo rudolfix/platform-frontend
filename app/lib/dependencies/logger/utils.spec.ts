@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { isLevelAllowed } from "./utils";
+import { hashBlacklistedQueryParams, isLevelAllowed } from "./utils";
 
 describe("isLevelAllowed", () => {
   it("should return correct boolean", () => {
@@ -21,5 +21,27 @@ describe("isLevelAllowed", () => {
 
     expect(isLevelAllowed("fatal")).to.be.true;
     expect(isLevelAllowed("info")).to.be.true;
+  });
+});
+
+describe("hashBlacklistedQueryParams", () => {
+  it("should correctly hash blacklisted query params", () => {
+    const result = hashBlacklistedQueryParams(
+      ["salt"],
+      "https://bit.ly/verify?salt=aeb8797c-2083-4a96&bar=foo",
+    );
+
+    expect(result).to.be.equal("https://bit.ly/verify?salt=******&bar=foo");
+  });
+
+  it("should correctly hash blacklisted nested query params", () => {
+    const result = hashBlacklistedQueryParams(
+      ["salt"],
+      "https://bit.ly/verify?redirect=%2Femail-verify%3Ffoo%3Dbar%26salt%3Daeb8797c-2083-4a96%26wallet_type%3Dbrowser",
+    );
+
+    expect(result).to.be.equal(
+      "https://bit.ly/verify?redirect=%2Femail-verify%3Ffoo%3Dbar%26salt%3D******%26wallet_type%3Dbrowser",
+    );
   });
 });

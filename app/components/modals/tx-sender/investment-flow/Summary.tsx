@@ -21,8 +21,8 @@ interface IStateProps {
 }
 
 type IDispatchProps = {
-  onAccept: () => any;
-  onChange: () => any;
+  onAccept: () => void;
+  onChange: () => void;
   downloadAgreement: (etoId: string) => void;
 };
 

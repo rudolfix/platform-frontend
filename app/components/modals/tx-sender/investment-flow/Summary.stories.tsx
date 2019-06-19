@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
-import { InvestmentSummaryComponent } from "./Summary.unsafe";
+import { InvestmentSummaryComponent } from "./Summary";
 
 const data = {
   additionalData: {

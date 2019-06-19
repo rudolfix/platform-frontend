@@ -25,7 +25,7 @@ import { IEtoSocialProfile, SocialProfilesList } from "../../shared/SocialProfil
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
-import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
+import { EtoOverviewStatus } from "../overview/EtoOverviewStatus/EtoOverviewStatus";
 import { EtoTimeline } from "../overview/EtoTimeline/EtoTimeline";
 import { Cover } from "../public-view/Cover";
 import { CoverBanner } from "../public-view/CoverBanner";

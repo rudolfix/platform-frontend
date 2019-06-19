@@ -640,7 +640,7 @@
   "investment-flow.summary.estimated-reward": "your estimated NEU reward",
   "investment-flow.summary.eto-address": "Eto Address",
   "investment-flow.summary.token-price": "Token price",
-  "investment-flow.summary.transaction-cost": "transaction cost (gas price x gas limit)",
+  "investment-flow.summary.transaction-cost": "transaction cost (gas price × gas limit)",
   "investment-flow.summary.transaction-value": "Total Transaction Value",
   "investment-flow.summary.your-investment": "your investment",
   "investment-flow.title": "Investment",

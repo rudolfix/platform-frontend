@@ -35,7 +35,7 @@ describe("Invest with change", () => {
 
       cy.get(tid("invest-modal-invest-now-button")).click();
 
-      cy.get(tid("invest-modal-summary-your-investment")).contains("€ 800");
+      cy.get(tid("invest-modal-summary-your-investment")).contains("800 EUR");
     });
   });
 });

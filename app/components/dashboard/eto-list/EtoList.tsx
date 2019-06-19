@@ -27,7 +27,7 @@ type TListProps = RequiredByKeys<IStateProps, "etos">;
 
 const EtoListThumbnails: React.FunctionComponent<TListProps & TExternalProps> = ({
   etos,
-  mockedEtos,
+  mockedEtos = [],
   shouldOpenInNewWindow,
 }) => (
   <Container type={EContainerType.INHERIT_GRID} className={styles.progressSectionLayout}>
@@ -39,8 +39,7 @@ const EtoListThumbnails: React.FunctionComponent<TListProps & TExternalProps> = 
       />
     ))}
 
-    {mockedEtos &&
-      mockedEtos.map(eto => (
+    {mockedEtos.map(eto => (
         <EtoOverviewThumbnail
           mockedEto={eto}
           key={eto.id}
@@ -48,7 +47,7 @@ const EtoListThumbnails: React.FunctionComponent<TListProps & TExternalProps> = 
         />
       ))}
 
-    {etos.length < 4 && <EtosComingSoonThumbnail />}
+    {etos.length + mockedEtos.length < 4 && <EtosComingSoonThumbnail />}
   </Container>
 );
 

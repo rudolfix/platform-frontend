@@ -72,7 +72,7 @@ describe("Incoming payout", function(): void {
   });
 
   it("Should show the number of investors", () => {
-    const eto = etoFixtureByName("ETOInClaimState");
+    const eto = etoFixtureByName("ETOInSigningState");
     const ETO_ID = eto.address;
     const numberOfInvestors = Object.keys(eto.investors).length;
 

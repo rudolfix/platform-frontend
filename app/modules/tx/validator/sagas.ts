@@ -1,6 +1,5 @@
 import { fork, put, select } from "redux-saga/effects";
 
-import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
@@ -10,12 +9,12 @@ import {
   subtractBigNumbers,
 } from "../../../utils/BigNumberUtils";
 import { actions, TAction } from "../../actions";
-import { neuCall, neuDebounce } from "../../sagasUtils";
+import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
 import { EValidationState } from "../sender/reducer";
 import { generateInvestmentTransaction } from "../transactions/investment/sagas";
 import { generateEthWithdrawTransaction } from "../transactions/withdraw/sagas";
-import { EAdditionalValidationDataWarrning, ETxSenderType, IDraftType } from "../types";
+import { ETxSenderType } from "../types";
 
 export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction): any {
   if (action.type !== "TX_SENDER_VALIDATE_DRAFT") return;
@@ -33,29 +32,12 @@ export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction
   }
 
   let generatedTxDetails: ITxData | undefined;
-  const additionalVerificationData = yield neuCall(txProcessAdditionalData, action.payload);
 
   try {
     generatedTxDetails = yield neuCall(validationGenerator, action.payload);
-
     yield validateGas(generatedTxDetails as ITxData);
     yield put(actions.txValidator.setValidationState(EValidationState.VALIDATION_OK));
-    yield put(actions.txSender.setTransactionData(generatedTxDetails));
-
-    yield put(actions.txSender.setAdditionalData(additionalVerificationData));
   } catch (error) {
-    if (
-      additionalVerificationData &&
-      additionalVerificationData.warning === EAdditionalValidationDataWarrning.IS_SMART_CONTRACT
-    ) {
-      yield put(
-        actions.txSender.setAdditionalData({
-          warning: EAdditionalValidationDataWarrning.IS_NOT_ACCEPTING_ETHER,
-        }),
-      );
-      return;
-    }
-
     if (error instanceof NotEnoughEtherForGasError) {
       logger.info(error);
       yield put(actions.txValidator.setValidationState(EValidationState.NOT_ENOUGH_ETHER_FOR_GAS));
@@ -83,30 +65,6 @@ export function* validateGas(txDetails: ITxData): any {
   }
 }
 
-export function* txProcessAdditionalData(
-  { web3Manager }: TGlobalDependencies,
-  payload: IDraftType,
-): any {
-  // Process additional data for withdrawal transaction
-
-  if (payload.type === ETxSenderType.WITHDRAW) {
-    const transactionsCount = yield web3Manager.internalWeb3Adapter.getTransactionCount(payload.to);
-    const isSmartContract = yield web3Manager.internalWeb3Adapter.isSmartContract(payload.to);
-
-    const newAddress = transactionsCount === 0;
-
-    return {
-      warning: isSmartContract
-        ? EAdditionalValidationDataWarrning.IS_SMART_CONTRACT
-        : newAddress
-        ? EAdditionalValidationDataWarrning.IS_NEW_ADDRESS
-        : undefined,
-      inputValue: Q18.mul(payload.value).toString(), // use WEI formatted value
-      isAccepted: newAddress || isSmartContract ? false : undefined,
-    };
-  }
-}
-
 export const txValidatorSagasWatcher = function*(): Iterator<any> {
-  yield fork(neuDebounce, 300, "TX_SENDER_VALIDATE_DRAFT", txValidateSaga);
+  yield fork(neuTakeEvery, "TX_SENDER_VALIDATE_DRAFT", txValidateSaga);
 };

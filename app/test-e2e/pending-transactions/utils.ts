@@ -13,11 +13,6 @@ export const doWithdraw = (
   cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(address);
   cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).type(amount);
 
-  cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.accept-warnings")).should(
-    "be.enabled",
-  );
-  cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.accept-warnings")).click();
-
   cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"))
     .should("be.enabled")
     .click();
@@ -53,9 +48,15 @@ export const doWithdraw = (
   }
 };
 
-export const assertPendingWithdrawModal = () => {
+export const assertPendingWithdrawModal = (address: string, amount: string) => {
   // should show pending modal
   cy.get(tid("modals.shared.tx-pending.modal")).should("exist");
+
+  // should propagate correct data to modal
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.to")).contains(address);
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.value")).contains(amount);
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost")).contains(/0\.\d{4}/);
+  cy.get(tid("timestamp-row.timestamp")).should("exist");
 };
 
 export const assertSuccessWithdrawModal = (address: string, amount: string) => {
@@ -64,7 +65,7 @@ export const assertSuccessWithdrawModal = (address: string, amount: string) => {
 
   // should propagate correct data to modal
   cy.get(tid("modals.tx-sender.withdraw-flow.summary.to")).contains(address);
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.value.large-value")).contains(amount);
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost.large-value")).contains(/0\.\d{4}/);
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.value")).contains(amount);
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost")).contains(/0\.\d{4}/);
   cy.get(tid("timestamp-row.timestamp")).should("exist");
 };

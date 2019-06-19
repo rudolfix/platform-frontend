@@ -15,18 +15,6 @@
     padding: px-to-rem(16px) px-to-rem(12px);
   }
 
-  &:global(.green) {
-    .money {
-      color: $neu-seaweed;
-    }
-  }
-
-  &:global(.orange) {
-    .money {
-      color: $neu-bright-orange;
-    }
-  }
-
   &:global(.large) {
     .money {
       font-size: px-to-rem(22px);
@@ -66,9 +54,5 @@
 
   .red {
     color: $neu-red;
-  }
-
-  .black {
-    color: $neu-black;
   }
 }

@@ -4,25 +4,15 @@ import * as React from "react";
 import { TDataTestId, TTranslatedString } from "../../types";
 import { makeTid } from "../../utils/tidUtils";
 import { MoneyNew } from "./formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  ERoundingMode,
-  THumanReadableFormat,
-} from "./formatters/utils";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "./formatters/utils";
 
 import * as styles from "./MoneySuiteWidget.module.scss";
 
-export type TTheme = "light" | "framed" | "green" | "orange" | "black";
+export type TTheme = "light" | "framed";
 export type TSize = "large";
-export enum ETextPosition {
-  LEFT = "text-left",
-  RIGHT = "text-right",
-}
 
 export interface IMoneySuiteWidgetProps {
-  icon?: string;
+  icon: string;
   currency: ECurrency;
   currencyTotal: ECurrency;
   largeNumber: string;
@@ -31,9 +21,6 @@ export interface IMoneySuiteWidgetProps {
   theme?: TTheme;
   size?: TSize;
   walletName?: TTranslatedString;
-  outputFormat?: THumanReadableFormat;
-  roundingMode?: ERoundingMode;
-  textPosition?: ETextPosition;
 }
 
 export const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTestId> = ({
@@ -47,41 +34,28 @@ export const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & 
   theme,
   size,
   walletName,
-  outputFormat = ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
-  roundingMode,
-  textPosition = ETextPosition.LEFT,
 }) => (
   <div className={cn(styles.moneySuiteWidget, theme, size)}>
-    {icon && (
-      <div>
-        <img className={styles.icon} src={icon} alt="" />
-        {walletName}
-      </div>
-    )}
     <div>
-      <div
-        className={cn(styles.money, textPosition)}
-        data-test-id={makeTid(dataTestId, "large-value")}
-      >
+      <img className={styles.icon} src={icon} alt="" />
+      {walletName}
+    </div>
+    <div>
+      <div className={styles.money} data-test-id={makeTid(dataTestId, "large-value")}>
         <MoneyNew
           value={largeNumber}
           inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={outputFormat}
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           moneyFormat={currency}
-          roundingMode={roundingMode}
         />
       </div>
-      <div
-        className={cn(styles.totalMoney, textPosition)}
-        data-test-id={makeTid(dataTestId, "value")}
-      >
+      <div className={styles.totalMoney} data-test-id={makeTid(dataTestId, "value")}>
         ={" "}
         <MoneyNew
           value={value}
           inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={outputFormat}
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           moneyFormat={currencyTotal}
-          roundingMode={roundingMode}
         />
         {percentage && (
           <span className={`${parseInt(percentage, 10) > 0 ? styles.green : styles.red}`}>

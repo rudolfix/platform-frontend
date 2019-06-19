@@ -127,14 +127,14 @@ const ComingSoonEtoState: React.FunctionComponent<
   );
 };
 
-const SuccessfulEtoState: React.FunctionComponent<
+const SuccessEtoState: React.FunctionComponent<
   OmitKeys<IExternalProps, "eto"> & CommonHtmlProps
 > = ({ className, size = EProjectStatusSize.MEDIUM, layout = EProjectStatusLayout.NORMAL }) => (
   <div
     className={cn(styles.projectStatus, styles.green, size, layout, className)}
-    data-test-id={`eto-state-mock-successful`}
+    data-test-id="eto-state-mock-successful"
   >
-    <FormattedMessage id="eto.status.mock.successful" />
+    <FormattedMessage id="eto.status.mock.success" />
   </div>
 );
 
@@ -157,4 +157,4 @@ const ETOState: React.FunctionComponent<IExternalProps & CommonHtmlProps> = ({
   );
 };
 
-export { ETOState, ComingSoonEtoState, SuccessfulEtoState };
+export { ETOState, ComingSoonEtoState, SuccessEtoState };

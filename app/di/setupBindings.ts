@@ -1,3 +1,4 @@
+import * as cryptoRandomString from "crypto-random-string";
 import { Container } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";
@@ -17,7 +18,6 @@ import { KycApi } from "../lib/api/KycApi";
 import { SignatureAuthApi } from "../lib/api/SignatureAuthApi";
 import { UsersApi } from "../lib/api/users/UsersApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
-import { cryptoRandomString, CryptoRandomString } from "../lib/dependencies/cryptoRandomString";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { ILogger, Logger } from "../lib/dependencies/logger";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
@@ -51,7 +51,7 @@ export function setupBindings(config: IConfig): Container {
 
   // functions
   container
-    .bind<CryptoRandomString>(symbols.cryptoRandomString)
+    .bind<typeof cryptoRandomString>(symbols.cryptoRandomString)
     .toConstantValue(cryptoRandomString);
   container.bind<TDetectBrowser>(symbols.detectBrowser).toConstantValue(detectBrowser);
 
@@ -217,7 +217,7 @@ export const createGlobalDependencies = (container: Container) => ({
   logger: container.get<ILogger>(symbols.logger),
   notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
 
-  cryptoRandomString: container.get<CryptoRandomString>(symbols.cryptoRandomString),
+  cryptoRandomString: container.get<typeof cryptoRandomString>(symbols.cryptoRandomString),
   detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
 
   // blockchain & wallets

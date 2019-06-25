@@ -47,7 +47,14 @@ import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoun
 import { Heading } from "../shared/Heading";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { SingleColDocuments } from "../shared/SingleColDocumentWidget";
-import { getDocumentTitles, isBusy, isFileUploaded, renameDocuments, uploadAllowed } from "./utils";
+import {
+  getDocumentTitles,
+  isBusy,
+  isFileUploaded,
+  renameDocuments,
+  sortDocuments,
+  uploadAllowed,
+} from "./utils";
 
 import * as styles from "./Documents.module.scss";
 
@@ -98,6 +105,10 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
           <FormattedMessage id="documents.legal-documents" />
         </Heading>
 
+        <p className={styles.description}>
+          <FormattedMessage id="documents.legal-documents.description" />
+        </p>
+
         <section className={styles.documentSection}>
           <h4 className={cn(styles.groupName)}>
             <FormattedMessage id="documents.generated-documents" />
@@ -145,7 +156,7 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
 
         {allTemplates && (
           <SingleColDocuments
-            documents={etoTemplateKeys.map(key => allTemplates[key])}
+            documents={sortDocuments(etoTemplateKeys).map(key => allTemplates[key])}
             title={<FormattedMessage id="documents.agreement-and-prospectus-templates" />}
             className={styles.documents}
             offeringDocumentType={offeringDocumentType}

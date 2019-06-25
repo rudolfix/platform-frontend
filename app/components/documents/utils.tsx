@@ -13,6 +13,19 @@ import { EETOStateOnChain } from "../../modules/eto/types";
 import { DeepReadonly } from "../../types";
 import { invariant } from "../../utils/invariant";
 
+const documentsOrder = [
+  "termsheetTemplate",
+  "reservationAndAcquisitionAgreement",
+  "companyTokenHolderAgreement",
+  "investmentAndShareholderAgreementTemplate",
+  "investmentMemorandumTemplate",
+];
+
+export const sortDocuments = (documents: string[]) =>
+  [...documents].sort(
+    (a: string, b: string) => documentsOrder.indexOf(a) - documentsOrder.indexOf(b),
+  );
+
 export const getDocumentTitles = (documentType: EOfferingDocumentType) => ({
   company_token_holder_agreement: <FormattedMessage id="eto.documents.tokenholder-agreement" />,
   reservation_and_acquisition_agreement: (
@@ -23,7 +36,7 @@ export const getDocumentTitles = (documentType: EOfferingDocumentType) => ({
   ),
   pamphlet_template: <FormattedMessage id="eto.documents.pamphlet_template" />,
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-template" />,
-  termsheet_template: <FormattedMessage id="eto.documents.termsheet-template" />,
+  termsheet_template: <FormattedMessage id="eto.documents.termsheet" />,
   investment_memorandum_template: (
     <FormattedMessage id="eto.documents.investment-memorandum-template" />
   ),

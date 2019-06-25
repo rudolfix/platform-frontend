@@ -57,8 +57,8 @@ export const Accordion: React.FunctionComponent<IAccordionProps> = ({ children, 
   <div className={styles.accordion}>
     {React.Children.toArray(children)
       // filter all empty children
-      .filter((child: React.ReactChild) => child)
-      .map((child: React.ReactChild, index: number) =>
+      .filter((child: React.ReactNode) => child)
+      .map((child: React.ReactNode, index: number) =>
         openFirst && index === 0
           ? // clone element and add isOpened to it if it's first one
             React.cloneElement<IAccordionElementProps>(

@@ -3,10 +3,10 @@ import * as React from "react";
 import Dropzone from "react-dropzone";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { CommonHtmlProps, TAcceptedFileType } from "../../types";
-import { dontPropagateEvent } from "../../utils/dontPropagate";
+import { ArrayWithAtLeastOneMember, CommonHtmlProps } from "../../types";
 import { Button, EButtonLayout, EIconPosition } from "./buttons";
 import { FormFieldError } from "./forms/fields/FormFieldError";
+import { TAcceptedFileType } from "./forms/fields/utils.unsafe";
 
 import * as uploadIcon from "../../assets/img/inline_icons/upload.svg";
 import * as styles from "./SingleFileUpload.module.scss";
@@ -14,13 +14,12 @@ import * as styles from "./SingleFileUpload.module.scss";
 interface IProps {
   name: string;
   disabled?: boolean;
-  acceptedFiles: TAcceptedFileType;
+  acceptedFiles: ArrayWithAtLeastOneMember<TAcceptedFileType>;
   fileUploading: boolean;
   file?: string;
   fileFormatInformation: string;
   label: string | React.ReactNode;
   onDropFile: (file: File) => void;
-  onDeleteFile: () => void;
   "data-test-id"?: string;
 }
 
@@ -37,10 +36,7 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
       label,
       className,
       style,
-      onDeleteFile,
     } = this.props;
-
-    const hasFile = !!file;
 
     const dropzoneInner = fileUploading ? (
       <div>
@@ -66,30 +62,21 @@ export class SingleFileUpload extends React.Component<IProps & CommonHtmlProps> 
         data-test-id={this.props["data-test-id"]}
       >
         <div className={styles.fakeDropzoneArea}>
-          {hasFile ? <img src={file} alt="File uploaded" /> : dropzoneInner}
+          {file !== undefined ? <img src={file} alt="File uploaded" /> : dropzoneInner}
         </div>
         <div className={styles.sideBox}>
-          {!disabled &&
-            (hasFile ? (
+          {!disabled && (
+            <>
               <Button
-                data-test-id={`single-file-upload-delete-file`}
                 layout={EButtonLayout.SECONDARY}
-                onClick={dontPropagateEvent(onDeleteFile)}
+                iconPosition={EIconPosition.ICON_BEFORE}
+                svgIcon={uploadIcon}
               >
-                Delete {label}
+                {label}
               </Button>
-            ) : (
-              <>
-                <Button
-                  layout={EButtonLayout.SECONDARY}
-                  iconPosition={EIconPosition.ICON_BEFORE}
-                  svgIcon={uploadIcon}
-                >
-                  {label}
-                </Button>
-                <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
-              </>
-            ))}
+              <div className={styles.acceptedFiles}>{fileFormatInformation}</div>
+            </>
+          )}
           <FormFieldError name={this.props.name} />
         </div>
       </Dropzone>

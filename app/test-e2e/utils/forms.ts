@@ -264,7 +264,7 @@ export const uploadDocumentToFieldWithTid = (targetTid: string, fixture: string)
 export const uploadSingleFileToFieldWithTid = (targetTid: string, fixture: string) => {
   cy.get(tid(targetTid)).within(() => {
     cy.root().dropFile(fixture);
-    cy.get(tid("single-file-upload-delete-file")).should("exist");
+    cy.get("img").should("exist");
   });
 };
 

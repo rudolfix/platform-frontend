@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { EMimeType } from "./forms/fields/utils.unsafe";
 import { SingleFileUpload } from "./SingleFileUpload";
 
 import * as image from "!!url-loader!../../assets/img/header/social_logo.png";
@@ -9,24 +10,22 @@ import * as image from "!!url-loader!../../assets/img/header/social_logo.png";
 storiesOf("Upload/SingleFileUpload", module)
   .add("default", () => (
     <SingleFileUpload
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       fileUploading={false}
       fileFormatInformation=".png, .svg"
       label="Some image"
       onDropFile={() => {}}
-      onDeleteFile={() => {}}
       name="someImage"
     />
   ))
   .add("with file", () => (
     <SingleFileUpload
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       fileUploading={false}
       fileFormatInformation=".png, .svg"
       label="Some image"
       file={image}
       onDropFile={() => {}}
-      onDeleteFile={() => {}}
       name="someImage"
     />
   ));

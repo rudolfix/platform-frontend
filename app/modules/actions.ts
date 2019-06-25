@@ -19,6 +19,7 @@ import { initActions } from "./init/actions";
 import { investmentFlowActions } from "./investment-flow/actions";
 import { investorEtoTicketActions } from "./investor-portfolio/actions";
 import { kycActions } from "./kyc/actions";
+import { notificationModalActions } from "./notificationModal/actions";
 import { notificationActions } from "./notifications/actions";
 import { personProfileModalActions } from "./person-profile-modal/actions";
 import { profileActions } from "./profile/actions";
@@ -60,6 +61,7 @@ export const actions = {
   auth: authActions,
   wallet: walletActions,
   notifications: notificationActions,
+  notificationModal: notificationModalActions,
   etoFlow: etoFlowActions,
   etoDocuments: etoDocumentsActions,
   eto: etoActions,

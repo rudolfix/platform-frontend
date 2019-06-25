@@ -4,11 +4,23 @@ import * as React from "react";
 import { FormGroup, InputProps } from "reactstrap";
 import { createNumberMask } from "text-mask-addons/dist/textMaskAddons";
 
-import { Dictionary, TTranslatedString } from "../../../../types";
+import { ArrayWithAtLeastOneMember, Dictionary, TTranslatedString } from "../../../../types";
 import { getFieldSchema, isRequired } from "../../../../utils/yupUtils";
 import { ECurrency } from "../../formatters/utils";
 import { selectDecimalPlaces } from "../../Money.unsafe";
 import { FormFieldLabel } from "./FormFieldLabel";
+import { IImageDimensions } from "./FormSingleFileUpload.unsafe";
+
+export enum EMimeType {
+  PDF = "application/pdf",
+  JPEG = "image/jpeg",
+  JPG = "image/jpg",
+  PNG = "image/png",
+  SVG = "image/svg+xml",
+  ANY_IMAGE_TYPE = "image/*",
+}
+
+export type TAcceptedFileType = EMimeType & string;
 
 export interface IFormField {
   name: string;
@@ -89,5 +101,73 @@ export const generateMaskFromCurrency = (currency: ECurrency, isPrice?: boolean)
     allowDecimal: true,
     decimalLimit,
     integerLimit,
+  });
+};
+
+const mapMimeTypeToExtension = (mimeType: EMimeType): string => {
+  const mime2Extension: { [key: string]: string } = {
+    [EMimeType.PDF]: "pdf",
+    [EMimeType.JPEG]: "jpeg",
+    [EMimeType.JPG]: "jpg",
+    [EMimeType.PNG]: "png",
+    [EMimeType.SVG]: "svg",
+  };
+  return mime2Extension[mimeType];
+};
+
+export const generateFileInformationDescription = (
+  acceptedFiles: ArrayWithAtLeastOneMember<TAcceptedFileType>,
+  dimensions?: IImageDimensions,
+): string => {
+  const chooseDelimiter = (index: number, length: number) => {
+    if (index === 0) {
+      return "";
+    } else if (index !== 0 && index === length - 1) {
+      return " or ";
+    } else {
+      return ", ";
+    }
+  };
+
+  const imageDimensions = dimensions ? `${dimensions.width}px × ${dimensions.height}px, ` : "";
+
+  const fileTypes = acceptedFiles.reduce(
+    (acc: string, mimeType: EMimeType, index: number): string => {
+      // insert 'or' before last one, otherwise ', ': 'pdf, jpg or gif'
+      acc += `${chooseDelimiter(index, acceptedFiles.length)}${mapMimeTypeToExtension(mimeType)}`;
+      return acc;
+    },
+    "",
+  );
+
+  return `${imageDimensions}${fileTypes}`;
+};
+
+// todo write a unit test.
+//  This involves providing URL.createObjectUrl and Image events polyfills
+//  because jsdom doesn't have them
+const onImageLoad = (image: HTMLImageElement): Promise<IImageDimensions> =>
+  new Promise((resolve, reject) => {
+    image.onload = (e: Event) => {
+      if (e.target !== null) {
+        return resolve({
+          width: ((e.target as HTMLImageElement) as IImageDimensions).width,
+          height: ((e.target as HTMLImageElement) as IImageDimensions).height,
+        });
+      } else {
+        return reject(new Error("image upload failed"));
+      }
+    };
+    image.onerror = () => reject(new Error("could not read this image"));
+    image.onabort = () => reject(new Error("image upload has been aborted"));
+  });
+
+export const readImageAndGetDimensions = (file: File): Promise<IImageDimensions> => {
+  const image = new Image();
+  image.src = URL.createObjectURL(file);
+
+  return onImageLoad(image).then(res => {
+    URL.revokeObjectURL(image.src);
+    return res;
   });
 };

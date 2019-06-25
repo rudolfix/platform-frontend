@@ -16,6 +16,7 @@ import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/buttons";
 import { Form, FormField, FormSelectCountryField } from "../../shared/forms";
+import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
@@ -139,7 +140,7 @@ const FileUploadList: React.FunctionComponent<IProps & { dataValid: boolean }> =
       <br />
       <MultiFileUpload
         uploadType={EKycRequestType.BUSINESS}
-        acceptedFiles="image/*,application/pdf"
+        acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
         data-test-id="kyc-company-business-supporting-documents"
         onDropFile={props.onDropFile}
         files={props.files}

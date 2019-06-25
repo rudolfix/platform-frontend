@@ -130,7 +130,6 @@ export function* loadClaimables({
     yield put(actions.investorEtoTicket.setTokensDisbursal([]));
 
     logger.error("Failed to load claimables", error);
-
     notificationCenter.error(
       createMessage(InvestorPortfolioMessage.INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES),
     );

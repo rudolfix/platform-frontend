@@ -1628,10 +1628,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dropzone@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@types/react-dropzone/-/react-dropzone-4.2.0.tgz#c4a290c784456e3c939dff75dba6b66b61f212e5"
-  integrity sha512-Al+MGP68e/ZQ5TA+swaSiBr1taI1aMdEMxlvk8Ofsx+AK8WD9zrtblAXuVZt51dx4rZwiNGXG6vtLduS94rkdQ==
+"@types/react-dropzone@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@types/react-dropzone/-/react-dropzone-4.2.2.tgz#af0a2595169700c8ab1114e9096285499beaff40"
+  integrity sha512-okO6HY+w7V0uHoy6JpLY6BwY/s/oObtXZmUQdX0ycjPeLhK8Af/xf79CFkLA1fM6oVp16n1d962ejdkEXk375Q==
   dependencies:
     "@types/react" "*"
 

@@ -194,6 +194,6 @@ export const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHas
   });
 
 export function* txMonitorSagas(): any {
-  yield fork(neuTakeUntil, "AUTH_SET_USER", "AUTH_LOGOUT", txMonitor);
+  yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, txMonitor);
   yield fork(neuTakeLatest, actions.txMonitor.monitorPendingPlatformTx, txMonitorSaga);
 }

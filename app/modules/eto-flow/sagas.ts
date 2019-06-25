@@ -15,7 +15,7 @@ import {
 import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
-import { actions, TAction, TActionFromCreator } from "../actions";
+import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { loadEtoContract } from "../eto/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
@@ -33,7 +33,7 @@ export function* loadIssuerEto({
   apiEtoService,
   notificationCenter,
   logger,
-}: TGlobalDependencies): any {
+}: TGlobalDependencies): Iterator<any> {
   try {
     const company: TCompanyEtoData = yield apiEtoService.getCompany();
     const eto: TEtoSpecsData = yield apiEtoService.getMyEto();
@@ -59,10 +59,8 @@ function* changeBookBuildingStatusEffect(
 
 export function* changeBookBuildingStatus(
   { notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES") return;
-
+  action: TActionFromCreator<typeof etoFlowActions.changeBookBuildingStatus>,
+): Iterator<any> {
   const { status } = action.payload;
 
   try {
@@ -87,11 +85,11 @@ export function* changeBookBuildingStatus(
   }
 }
 
-export function* downloadBookBuildingStats(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS") return;
+export function* downloadBookBuildingStats({
+  apiEtoService,
+  notificationCenter,
+  logger,
+}: TGlobalDependencies): Iterator<any> {
   try {
     const detailedStatsResponse: IHttpResponse<
       any
@@ -124,9 +122,8 @@ function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecD
 
 export function* saveEtoData(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== "ETO_FLOW_SAVE_DATA_START") return;
+  action: TActionFromCreator<typeof etoFlowActions.saveDataStart>,
+): Iterator<any> {
   try {
     const currentCompanyData: TCompanyEtoData = yield effects.select(selectIssuerCompany);
     const currentEtoData: TEtoSpecsData = yield effects.select(selectIssuerEto);
@@ -165,11 +162,7 @@ export function* submitEtoDataEffect({
   yield put(actions.routing.goToDashboard());
 }
 
-export function* submitEtoData(
-  { notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): Iterator<any> {
-  if (action.type !== "ETO_FLOW_SUBMIT_DATA_START") return;
+export function* submitEtoData({ notificationCenter, logger }: TGlobalDependencies): Iterator<any> {
   try {
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
@@ -186,8 +179,7 @@ export function* submitEtoData(
   }
 }
 
-function* startSetDateTX(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "ETO_FLOW_START_DATE_TX") return;
+function* startSetDateTX(_: TGlobalDependencies): Iterator<any> {
   const state: IAppState = yield select();
   if (selectIsNewPreEtoStartDateValid(state)) {
     yield put(actions.txTransactions.startEtoSetDate());
@@ -287,13 +279,13 @@ export function* publishEtoData({
 }
 
 export function* etoFlowSagas(): any {
-  yield fork(neuTakeEvery, "ETO_FLOW_LOAD_ISSUER_ETO", loadIssuerEto);
-  yield fork(neuTakeEvery, "ETO_FLOW_SAVE_DATA_START", saveEtoData);
-  yield fork(neuTakeEvery, "ETO_FLOW_SUBMIT_DATA_START", submitEtoData);
-  yield fork(neuTakeEvery, "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", changeBookBuildingStatus);
-  yield fork(neuTakeLatest, "ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS", downloadBookBuildingStats);
-  yield fork(neuTakeLatest, "ETO_FLOW_START_DATE_TX", startSetDateTX);
-  yield fork(neuTakeLatest, "ETO_FLOW_CLEANUP_START_DATE_TX", cleanupSetDateTX);
+  yield fork(neuTakeEvery, etoFlowActions.loadIssuerEto, loadIssuerEto);
+  yield fork(neuTakeEvery, etoFlowActions.saveDataStart, saveEtoData);
+  yield fork(neuTakeEvery, etoFlowActions.submitDataStart, submitEtoData);
+  yield fork(neuTakeEvery, etoFlowActions.changeBookBuildingStatus, changeBookBuildingStatus);
+  yield fork(neuTakeLatest, etoFlowActions.downloadBookBuildingStats, downloadBookBuildingStats);
+  yield fork(neuTakeLatest, etoFlowActions.uploadStartDate, startSetDateTX);
+  yield fork(neuTakeLatest, etoFlowActions.cleanupStartDate, cleanupSetDateTX);
   yield fork(neuTakeLatest, etoFlowActions.loadSignedInvestmentAgreement, loadInvestmentAgreement);
   yield fork(neuTakeLatest, etoFlowActions.loadProducts, loadProducts);
   yield fork(neuTakeLatest, etoFlowActions.changeProductType, changeProductType);

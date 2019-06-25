@@ -4,12 +4,12 @@ import {
   TGeneralEtoData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { createAction, createActionFactory, createSimpleAction } from "../actionsUtils";
+import { createActionFactory } from "../actionsUtils";
 
 export const etoFlowActions = {
-  loadIssuerEto: () => createSimpleAction("ETO_FLOW_LOAD_ISSUER_ETO"),
-  loadDataStart: () => createSimpleAction("ETO_FLOW_LOAD_DATA_START"),
-  loadDataStop: () => createSimpleAction("ETO_FLOW_LOAD_DATA_STOP"),
+  loadIssuerEto: createActionFactory("ETO_FLOW_LOAD_ISSUER_ETO"),
+  loadDataStart: createActionFactory("ETO_FLOW_LOAD_DATA_START"),
+  loadDataStop: createActionFactory("ETO_FLOW_LOAD_DATA_STOP"),
   loadProducts: createActionFactory("ETO_FLOW_LOAD_PRODUCTS"),
   setProducts: createActionFactory("ETO_FLOW_SET_PRODUCTS", (products: TEtoProducts) => ({
     products,
@@ -17,19 +17,23 @@ export const etoFlowActions = {
   changeProductType: createActionFactory("ETO_FLOW_CHANGE_PRODUCT", (productId: string) => ({
     productId,
   })),
-  uploadStartDate: () => createSimpleAction("ETO_FLOW_START_DATE_TX"),
-  cleanupStartDate: () => createSimpleAction("ETO_FLOW_CLEANUP_START_DATE_TX"),
-  submitDataStart: () => createSimpleAction("ETO_FLOW_SUBMIT_DATA_START"),
+  uploadStartDate: createActionFactory("ETO_FLOW_START_DATE_TX"),
+  cleanupStartDate: createActionFactory("ETO_FLOW_CLEANUP_START_DATE_TX"),
+  submitDataStart: createActionFactory("ETO_FLOW_SUBMIT_DATA_START"),
   publishDataStart: createActionFactory("ETO_FLOW_PUBLISH_DATA_START"),
   setEto: createActionFactory(
     "ETO_FLOW_SET_ETO",
     ({ eto, company }: { eto: TEtoSpecsData; company?: TCompanyEtoData }) => ({ eto, company }),
   ),
-  saveDataStart: (data: Partial<TGeneralEtoData>) =>
-    createAction("ETO_FLOW_SAVE_DATA_START", { data }),
-  changeBookBuildingStatus: (status: boolean) =>
-    createAction("ETO_FLOW_CHANGE_BOOK_BUILDING_STATES", { status }),
-  downloadBookBuildingStats: () => createSimpleAction("ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS"),
+  saveDataStart: createActionFactory(
+    "ETO_FLOW_SAVE_DATA_START",
+    (data: Partial<TGeneralEtoData>) => ({ data }),
+  ),
+  changeBookBuildingStatus: createActionFactory(
+    "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES",
+    (status: boolean) => ({ status }),
+  ),
+  downloadBookBuildingStats: createActionFactory("ETO_FLOW_DOWNLOAD_BOOK_BUILDING_STATS"),
   setNewStartDate: createActionFactory("ETO_FLOW_SET_START_DATE", (newStartDate: Date) => ({
     newStartDate,
   })),

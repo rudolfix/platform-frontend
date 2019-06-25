@@ -20,7 +20,7 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
   action,
 ): DeepReadonly<IEtoFlowState> => {
   switch (action.type) {
-    case "ETO_FLOW_LOAD_ISSUER_ETO":
+    case actions.etoFlow.loadIssuerEto.getType():
       return {
         ...state,
         loading: true,
@@ -33,14 +33,14 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         loading: false,
         saving: false,
       };
-    case "ETO_FLOW_LOAD_DATA_STOP":
+    case actions.etoFlow.loadDataStop.getType():
       return {
         ...state,
         loading: false,
         saving: false,
       };
-    case "ETO_FLOW_SAVE_DATA_START":
-    case "ETO_FLOW_SUBMIT_DATA_START":
+    case actions.etoFlow.saveDataStart.getType():
+    case actions.etoFlow.submitDataStart.getType():
       return {
         ...state,
         saving: true,

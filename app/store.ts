@@ -3,7 +3,7 @@ import { History } from "history";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
 import { combineReducers, Reducer } from "redux";
 
-import { TAction } from "./modules/actions";
+import { actions, TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
 import { appReducers } from "./modules/reducer";
 import { DeepReadonly, FunctionWithDeps } from "./types";
@@ -56,7 +56,7 @@ export const generateRootReducer = (history: History) => {
 
   return (state: IAppState | undefined, action: TAction) => {
     switch (action.type) {
-      case "AUTH_LOGOUT":
+      case actions.auth.logout.getType():
         return appReducer(staticValues(state) as IAppState, action);
     }
     return appReducer(state, action);

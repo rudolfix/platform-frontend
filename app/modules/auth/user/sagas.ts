@@ -11,7 +11,7 @@ import {
   SignerUnknownError,
 } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
-import { actions, TAction } from "../../actions";
+import { actions, TActionFromCreator } from "../../actions";
 import { loadKycRequestData } from "../../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../../routing/selectors";
 import { neuCall } from "../../sagasUtils";
@@ -151,9 +151,10 @@ export async function loadOrCreateUserPromise(
   }
 }
 
-export function* setUser({ logger }: TGlobalDependencies, action: TAction): Iterator<any> {
-  if (action.type !== "AUTH_SET_USER") return;
-
+export function* setUser(
+  { logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.auth.setUser>,
+): Iterator<any> {
   const user = action.payload.user;
   logger.setUser({ id: user.userId, type: user.type, walletType: user.walletType });
 }

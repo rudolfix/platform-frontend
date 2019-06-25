@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { actions } from "../actions";
 
 /**
  * Constants from Platform Terms.
@@ -30,7 +31,7 @@ export const contractsReducer: AppReducer<IContractState> = (
   action,
 ): DeepReadonly<IContractState> => {
   switch (action.type) {
-    case "CONTRACTS_SET_PLATFORM_TERM_CONSTANTS":
+    case actions.contracts.setPlatformTermConstants.getType():
       return {
         ...state,
         ...action.payload,

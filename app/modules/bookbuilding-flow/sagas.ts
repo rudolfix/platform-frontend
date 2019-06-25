@@ -8,23 +8,15 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
 import { IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { actions, TAction } from "../actions";
+import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
-import {
-  DELETE_PLEDGE,
-  LOAD_BOOKBUILDING_FLOW_STATS,
-  LOAD_PLEDGE,
-  SAVE_PLEDGE,
-  UNWATCH_BOOKBUILDING_FLOW_STATS,
-  WATCH_BOOKBUILDING_FLOW_STATS,
-} from "./actions";
 
 export function* saveMyPledgeEffect(
   { apiEtoPledgeService }: TGlobalDependencies,
   etoId: string,
   pledge: IPledge,
-): any {
+): Iterator<any> {
   const pledgeResult: IHttpResponse<IPledge> = yield apiEtoPledgeService.saveMyPledge(
     etoId,
     pledge,
@@ -36,10 +28,8 @@ export function* saveMyPledgeEffect(
 
 export function* saveMyPledge(
   { notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== SAVE_PLEDGE) return;
-
+  action: TActionFromCreator<typeof actions.bookBuilding.savePledge>,
+): Iterator<any> {
   const { etoId, pledge } = action.payload;
 
   try {
@@ -70,10 +60,8 @@ export function* deleteMyPledgeEffect(
 
 export function* deleteMyPledge(
   { notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== DELETE_PLEDGE) return;
-
+  action: TActionFromCreator<typeof actions.bookBuilding.deletePledge>,
+): Iterator<any> {
   const { etoId } = action.payload;
   try {
     yield neuCall(
@@ -91,11 +79,17 @@ export function* deleteMyPledge(
   }
 }
 
-export function* watchBookBuildingStats({ logger }: TGlobalDependencies, action: TAction): any {
+export function* watchBookBuildingStats(
+  { logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.bookBuilding.bookBuildingStartWatch>,
+): Iterator<any> {
   while (true) {
     logger.info("Querying for bookbuilding stats...");
     try {
-      yield neuCall(loadBookBuildingStats, { ...action, type: LOAD_BOOKBUILDING_FLOW_STATS });
+      yield neuCall(
+        loadBookBuildingStats,
+        actions.bookBuilding.loadBookBuildingStats(action.payload.etoId),
+      );
     } catch (e) {
       logger.error("Error getting bookbuilding stats", e);
     }
@@ -105,10 +99,8 @@ export function* watchBookBuildingStats({ logger }: TGlobalDependencies, action:
 
 export function* loadBookBuildingStats(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== LOAD_BOOKBUILDING_FLOW_STATS) return;
-
+  action: TActionFromCreator<typeof actions.bookBuilding.loadBookBuildingStats>,
+): Iterator<any> {
   try {
     const etoId = action.payload.etoId;
     const statsResponse: IHttpResponse<any> = yield apiEtoService.getBookBuildingStats(etoId);
@@ -125,10 +117,8 @@ export function* loadBookBuildingStats(
 
 export function* loadMyPledge(
   { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== LOAD_PLEDGE) return;
-
+  action: TActionFromCreator<typeof actions.bookBuilding.loadPledge>,
+): Iterator<any> {
   try {
     const etoId = action.payload.etoId;
     const pledgeResponse: IHttpResponse<IPledge> = yield apiEtoPledgeService.getMyPledge(etoId);
@@ -144,15 +134,15 @@ export function* loadMyPledge(
   }
 }
 
-export function* bookBuildingFlowSagas(): any {
-  yield fork(neuTakeEvery, LOAD_BOOKBUILDING_FLOW_STATS, loadBookBuildingStats);
+export function* bookBuildingFlowSagas(): Iterator<any> {
+  yield fork(neuTakeEvery, actions.bookBuilding.loadBookBuildingStats, loadBookBuildingStats);
   yield fork(
     neuTakeUntil,
-    WATCH_BOOKBUILDING_FLOW_STATS,
-    UNWATCH_BOOKBUILDING_FLOW_STATS,
+    actions.bookBuilding.bookBuildingStartWatch,
+    actions.bookBuilding.bookBuildingStopWatch,
     watchBookBuildingStats,
   );
-  yield fork(neuTakeEvery, LOAD_PLEDGE, loadMyPledge);
-  yield fork(neuTakeEvery, SAVE_PLEDGE, saveMyPledge);
-  yield fork(neuTakeEvery, DELETE_PLEDGE, deleteMyPledge);
+  yield fork(neuTakeEvery, actions.bookBuilding.loadPledge, loadMyPledge);
+  yield fork(neuTakeEvery, actions.bookBuilding.savePledge, saveMyPledge);
+  yield fork(neuTakeEvery, actions.bookBuilding.deletePledge, deleteMyPledge);
 }

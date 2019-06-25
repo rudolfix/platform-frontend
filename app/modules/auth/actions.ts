@@ -1,5 +1,5 @@
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
-import { createAction, createSimpleAction } from "../actionsUtils";
+import { createActionFactory } from "../actionsUtils";
 import { ELogoutReason } from "./types";
 
 type TLogoutActionOptions = {
@@ -8,8 +8,8 @@ type TLogoutActionOptions = {
 };
 
 export const authActions = {
-  loadJWT: (jwt: string) => createAction("AUTH_LOAD_JWT", { jwt }),
-  setUser: (user: IUser) => createAction("AUTH_SET_USER", { user }),
-  logout: (options?: TLogoutActionOptions) => createAction("AUTH_LOGOUT", options || {}),
-  verifyEmail: () => createSimpleAction("AUTH_VERIFY_EMAIL"),
+  loadJWT: createActionFactory("AUTH_LOAD_JWT", (jwt: string) => ({ jwt })),
+  setUser: createActionFactory("AUTH_SET_USER", (user: IUser) => ({ user })),
+  logout: createActionFactory("AUTH_LOGOUT", (options: TLogoutActionOptions = {}) => options),
+  verifyEmail: createActionFactory("AUTH_VERIFY_EMAIL"),
 };

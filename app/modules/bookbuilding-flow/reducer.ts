@@ -1,7 +1,7 @@
 import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { AppReducer } from "../../store";
 import { DeepReadonly, Dictionary } from "../../types";
-import { SET_BOOKBUILDING_FLOW_STATS, SET_PLEDGE } from "./actions";
+import { actions } from "../actions";
 
 export interface IBookbuildingFLow {
   bookbuildingStats: Dictionary<IBookBuildingStats>;
@@ -18,7 +18,7 @@ export const bookBuildingFlowReducer: AppReducer<IBookbuildingFLow> = (
   action,
 ): DeepReadonly<IBookbuildingFLow> => {
   switch (action.type) {
-    case SET_BOOKBUILDING_FLOW_STATS:
+    case actions.bookBuilding.setBookBuildingStats.getType():
       return {
         ...state,
         bookbuildingStats: {
@@ -26,7 +26,7 @@ export const bookBuildingFlowReducer: AppReducer<IBookbuildingFLow> = (
           [action.payload.etoId]: action.payload.stats,
         },
       };
-    case SET_PLEDGE:
+    case actions.bookBuilding.setPledge.getType():
       return {
         ...state,
         pledges: {

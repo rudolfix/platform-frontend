@@ -29,12 +29,12 @@ export const etoDocumentReducer: AppReducer<IEtoDocumentState> = (
   action,
 ): DeepReadonly<IEtoDocumentState> => {
   switch (action.type) {
-    case "ETO_DOCUMENTS_LOAD_FILE_DATA_START":
+    case actions.etoDocuments.loadFileDataStart.getType():
       return {
         ...state,
         loading: true,
       };
-    case "ETO_DOCUMENTS_LOAD_ETO_FILE_DATA":
+    case actions.etoDocuments.loadEtoFileData.getType():
       return {
         ...state,
         etoFileData: { ...state.etoFileData, ...action.payload.data },
@@ -62,13 +62,13 @@ export const etoDocumentReducer: AppReducer<IEtoDocumentState> = (
         ...state,
         downloading: { ...state.downloading, [action.payload.documentType]: false },
       };
-    case "ETO_DOCUMENTS_IPFS_MODAL_SHOW":
+    case actions.etoDocuments.showIpfsModal.getType():
       return {
         ...state,
         uploadAction: action.payload.fileUploadAction,
         showIpfsModal: true,
       };
-    case "ETO_DOCUMENTS_IPFS_MODAL_HIDE":
+    case actions.etoDocuments.hideIpfsModal.getType():
       return {
         ...state,
         uploadAction: undefined,

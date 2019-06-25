@@ -5,7 +5,6 @@ $_logo-size-sm: 80px;
   @include get-out-of-container-layout;
 
   position: relative;
-  margin-bottom: -1rem;
 
   img {
     user-select: none;
@@ -13,18 +12,21 @@ $_logo-size-sm: 80px;
 }
 
 .company-details {
-  @include responsive-size(margin-top, $_logo-size-sm *  -1.35, $_logo-size-xl * -1.15);
-
   @include media-breakpoint-up(md) {
     flex-direction: row;
     padding-left: $authorized-layout-horizontal-padding-lg;
     padding-right: $authorized-layout-horizontal-padding-lg;
+    padding-bottom: $authorized-layout-vertical-padding-lg;
   }
+  position: absolute;
+  bottom: 0;
 
-  flex-direction: column;
   display: flex;
+  flex-direction: row;
+  width: 100%;
   padding-left: $authorized-layout-horizontal-padding-sm;
   padding-right: $authorized-layout-horizontal-padding-sm;
+  padding-bottom: $authorized-layout-vertical-padding-sm;
 }
 
 .identity {
@@ -33,14 +35,30 @@ $_logo-size-sm: 80px;
   display: flex;
 }
 
-.logo {
+.banner {
+  position: relative;
+}
+
+.logo-wrapper {
+  @include media-breakpoint-up(md) {
+    //move the logo 13% down so that it sticks out of the cover
+    transform: translateY(calc(#{$authorized-layout-vertical-padding-lg} + 13%));
+  }
   @include circle($_logo-size-xl);
   @include responsive-size(height, $_logo-size-sm, $_logo-size-xl);
   @include responsive-size(width, $_logo-size-sm, $_logo-size-xl);
 
-  flex-shrink: 0;
+  transform: translateY(calc(#{$authorized-layout-vertical-padding-sm} + 13%));
   overflow: hidden;
-  object-fit: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    @include responsive-size(height, $_logo-size-sm, $_logo-size-xl);
+    object-fit: cover;
+    border-radius: 0;
+  }
 }
 
 .details {
@@ -49,7 +67,7 @@ $_logo-size-sm: 80px;
   display: flex;
   flex-direction: column;
   flex-shrink: 1;
-  justify-content: center;
+  justify-content: flex-end;
   margin-right: 10px;
   z-index: $z-index-base;
   overflow: hidden;
@@ -65,6 +83,10 @@ $_logo-size-sm: 80px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .website-link {
@@ -80,10 +102,20 @@ $_logo-size-sm: 80px;
     display: flex;
   }
 
-  align-items: center;
   display: none;
   flex-wrap: wrap;
   justify-content: flex-end;
+  align-content: flex-end;
+  align-items: flex-end;
   margin-left: auto;
   z-index: $z-index-base;
+}
+
+.tag {
+  margin-left: 1rem;
+  margin-top: 1rem;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
 }

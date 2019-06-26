@@ -18,9 +18,9 @@ describe("FormatShortNumberRange component", () => {
         />,
       ),
     );
-    expect(component.render().text()).to.be.eq("123 — 123.4 thousand");
+    expect(component.render().text()).to.be.eq("123 — 123.5 thousand");
   });
-  it("should render numbers in LONG abbreviated form", () => {
+  it("should render numbers in LONG abbreviated form 2", () => {
     const component = mount(
       wrapWithIntl(
         <FormatShortNumberRange
@@ -31,7 +31,7 @@ describe("FormatShortNumberRange component", () => {
         />,
       ),
     );
-    expect(component.render().text()).to.be.eq("123.4 thousand — 3.2 million");
+    expect(component.render().text()).to.be.eq("123.5 thousand — 3.3 million");
   });
 
   it("should render numbers in SHORT abbreviated form", () => {
@@ -45,7 +45,7 @@ describe("FormatShortNumberRange component", () => {
         />,
       ),
     );
-    expect(component.render().text()).to.be.eq("123—123.4k");
+    expect(component.render().text()).to.be.eq("123—123.5k");
   });
   it("should render numbers in SHORT abbreviated form", () => {
     const component = mount(
@@ -58,6 +58,6 @@ describe("FormatShortNumberRange component", () => {
         />,
       ),
     );
-    expect(component.render().text()).to.be.eq("123.4k—3.2M");
+    expect(component.render().text()).to.be.eq("123.5k—3.3M");
   });
 });

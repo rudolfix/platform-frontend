@@ -79,7 +79,7 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
           value={value}
           inputFormat={inputFormat}
           defaultValue={defaultValue}
-          roundingMode={ERoundingMode.DOWN}
+          roundingMode={ERoundingMode.HALF_UP}
           decimalPlaces={decimalPlaces}
           outputFormat={outputFormat}
         />

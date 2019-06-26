@@ -116,7 +116,7 @@ describe("MoneyNew", () => {
     const expectedProps = {
       value: "",
       inputFormat: ENumberInputFormat.FLOAT,
-      roundingMode: ERoundingMode.DOWN,
+      roundingMode: ERoundingMode.HALF_UP,
       defaultValue: "-",
       decimalPlaces: 0,
       outputFormat: EAbbreviatedNumberOutputFormat.LONG,

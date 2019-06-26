@@ -19,6 +19,31 @@ describe("FormatShortNumber component LONG", () => {
     );
     expect(component.render().text()).to.be.eq("123");
   });
+  it("should render number in LONG abbreviated form, rounded half up", () => {
+    const component = mount(
+      wrapWithIntl(
+        <FormatShortNumber
+          value={"123.136"}
+          decimalPlaces={2}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={EAbbreviatedNumberOutputFormat.LONG}
+        />,
+      ),
+    );
+    expect(component.render().text()).to.be.eq("123.14");
+  });
+  it("should render number in LONG abbreviated form, rounded half up", () => {
+    const component = mount(
+      wrapWithIntl(
+        <FormatShortNumber
+          value={"123.18"}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={EAbbreviatedNumberOutputFormat.LONG}
+        />,
+      ),
+    );
+    expect(component.render().text()).to.be.eq("123.18");
+  });
   it("should render number in LONG abbreviated form - thousands", () => {
     const component = mount(
       wrapWithIntl(
@@ -30,6 +55,18 @@ describe("FormatShortNumber component LONG", () => {
       ),
     );
     expect(component.render().text()).to.be.eq("12.3 thousand");
+  });
+  it("should render number in LONG abbreviated form - thousands, rounded half up", () => {
+    const component = mount(
+      wrapWithIntl(
+        <FormatShortNumber
+          value={"12354"}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={EAbbreviatedNumberOutputFormat.LONG}
+        />,
+      ),
+    );
+    expect(component.render().text()).to.be.eq("12.4 thousand");
   });
   it("should render number in LONG abbreviated form - millions", () => {
     const component = mount(
@@ -69,6 +106,19 @@ describe("FormatShortNumber component SHORT", () => {
       ),
     );
     expect(component.render().text()).to.be.eq("12.3k");
+  });
+  it("should render number in SHORT abbreviated form - thousands, rounded half up", () => {
+    const component = mount(
+      wrapWithIntl(
+        <FormatShortNumber
+          value={"12354"}
+          decimalPlaces={2}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+        />,
+      ),
+    );
+    expect(component.render().text()).to.be.eq("12.4k");
   });
   it("should render number in SHORT abbreviated form - millions", () => {
     const component = mount(

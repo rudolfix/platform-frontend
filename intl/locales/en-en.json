@@ -587,7 +587,7 @@
   "form.image-upload-failure-with-details": "There was an error while reading this file: {error}",
   "form.image-upload-wrong-image-dimensions": "Please upload an image with required dimensions",
   "form.label.address": "Address",
-  "form.label.birth-date": "Date of birth *",
+  "form.label.birth-date": "Date of birth",
   "form.label.city": "City",
   "form.label.company-name": "Company name",
   "form.label.company-registration-number": "Company registration number (if applicable)",

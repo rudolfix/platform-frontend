@@ -1,61 +1,41 @@
-.date-field {
+@mixin in-a-row {
   @include media-breakpoint-up(lg) {
+    @content;
+  }
+}
+
+.date-field {
+  @include in-a-row {
+    align-items: center;
     flex-direction: row;
+    justify-content: space-between;
   }
 
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   flex-direction: column;
 
-  input {
-    @include media-breakpoint-up(lg) {
-      width: px-to-rem(80px);
-      margin: 0 px-to-rem(10px);
-    }
-
-    flex: 1;
-    text-align: center;
-  }
-
   .label {
-    @include font-label;
-
-    @include media-breakpoint-up(lg) {
-      align-self: flex-end;
+    @include in-a-row {
       margin-bottom: 0;
     }
-
-    align-self: flex-start;
-    flex-shrink: 0;
-    margin-bottom: px-to-rem(10px);
   }
-}
 
-.date-field-year {
-  input {
-    margin-right: 0;
-  }
-}
+  .inputs-wrapper {
+    display: flex;
+    align-items: center;
 
-.inputs-wrapper {
-  display: flex;
-  align-items: center;
-}
+    .input {
+      @include in-a-row {
+        width: px-to-rem(80px);
+        margin: 0 px-to-rem(10px);
 
-.input-wrapper {
-  &:last-of-type {
-    input {
-      @include media-breakpoint-up(lg) {
-        margin-right: 0;
+        &:last-child {
+          margin-right: 0;
+        }
       }
+
+      flex: 1;
+      text-align: center;
     }
   }
-}
-
-.error-label {
-  color: $neu-red;
-  min-height: px-to-rem(31px);
-  padding-right: px-to-rem(5px);
-  text-align: right;
 }

@@ -16,7 +16,7 @@ import {
   toFixedPrecision,
   TValueFormat,
 } from "./formatters/utils";
-import { FormInputRaw } from "./forms/fields/FormInputRaw.unsafe";
+import { InputLayout } from "./forms";
 
 interface IProps {
   name: string;
@@ -27,7 +27,7 @@ interface IProps {
   onChangeFn: (value: string) => void;
   returnInvalidValues?: boolean;
   setError?: (v: boolean) => void;
-  placeholder?: TTranslatedString;
+  placeholder?: string;
   "data-test-id"?: string;
   showUnits?: boolean;
   errorMsg?: TTranslatedString;
@@ -131,7 +131,7 @@ export class MaskedNumberInput extends React.Component<IProps> {
 
   render(): React.ReactNode {
     return (
-      <FormInputRaw
+      <InputLayout
         value={this.state.value}
         name={this.props.name}
         data-test-id={this.props["data-test-id"]}
@@ -143,7 +143,7 @@ export class MaskedNumberInput extends React.Component<IProps> {
         }
         errorMsg={this.props.errorMsg}
         invalid={this.props.invalid}
-        onBlur={(e: React.ChangeEvent<HTMLInputElement>) => this.onBlur(e.target.value)}
+        onBlur={(e: React.FocusEvent<HTMLInputElement>) => this.onBlur(e.target.value)}
         onFocus={(e: React.FocusEvent<HTMLInputElement>) => this.onFocus(e.target.value)}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.changeValue(e.target.value)}
         onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => this.onPaste(e)}

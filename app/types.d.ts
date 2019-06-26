@@ -97,13 +97,13 @@ export type ToastWithTestData = ToastOptions & TDataTestId;
  * From T, omit a set of properties whose keys are in the union K
  * @example OmitKeys<{ foo: boolean, bar: string }, "foo"> // { bar: string }
  */
-export type OmitKeys<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type OmitKeys<T, K> = Pick<T, Exclude<keyof T, K>>;
 
 /**
  * From T, omit a set of properties from K
  * @example OmitKeys<{ foo: boolean, bar: string }, { foo: boolean, }> // { bar: string }
  */
-export type Omit<T extends K, K> = OmitKeys<T, keyof K>;
+export type Omit<T, K> = OmitKeys<T, keyof K>;
 
 /**
  * From T, select a union of property names which values extends R

@@ -11,7 +11,7 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { CheckboxLayout, Form, FormInput, InputSize } from "../../../../shared/forms";
+import { CheckboxLayout, EInputSize, Form, FormInput } from "../../../../shared/forms";
 import { Tooltip } from "../../../../shared/tooltips";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -95,7 +95,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
         <Form className={styles.group}>
           <div className={cn(styles.label)}>
             <FormattedMessage id="eto-overview.campaigning.indicate-commitment" />
-            <FormInput size={InputSize.SMALL} name="amount" prefix="€" maxLength={8} type="text" />
+            <FormInput size={EInputSize.SMALL} name="amount" prefix="€" maxLength={8} type="text" />
           </div>
           <div className={cn(styles.value, styles.backNow)}>
             <Button

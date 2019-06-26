@@ -10,7 +10,7 @@ import { FormFieldLabel } from "./FormFieldLabel";
 interface ICommonProps {
   name: string;
   label?: TTranslatedString;
-  placeholder?: TTranslatedString;
+  placeholder?: string;
   disabled?: boolean;
 }
 

@@ -1,26 +1,28 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormGroup, Input, InputGroup, InputGroupAddon, InputProps } from "reactstrap";
+import { FormGroup, Input, InputGroup, InputGroupAddon } from "reactstrap";
 
 import { TTranslatedString } from "../../../../types";
-import { FormError } from "./FormFieldError";
-import { FormLabel } from "./FormFieldLabel";
-import { IFormInputRawExternalProps } from "./FormInputRaw.unsafe";
-import { applyCharactersLimit, withCountedCharacters } from "./utils.unsafe";
+import { FormError } from "../fields/FormFieldError";
+import { FormLabel } from "../fields/FormFieldLabel";
+import { applyCharactersLimit, withCountedCharacters } from "../fields/utils.unsafe";
+import { InputLayout } from "./InputLayout";
 
-import * as styles from "./FormStyles.module.scss";
+import * as styles from "../fields/FormStyles.module.scss";
 
-export interface IFieldGroupRawExternalProps {
-  name: string;
+interface IExternalProps {
   label?: TTranslatedString;
-  charactersLimit?: number;
-  invalid?: boolean;
-  renderInput?: (props: FieldGroupRawProps) => React.ReactNode;
+  renderInput?: (props: TProps) => React.ReactNode;
 }
 
-type FieldGroupRawProps = IFormInputRawExternalProps & IFieldGroupRawExternalProps & InputProps;
+type TProps = React.ComponentProps<typeof InputLayout> & IExternalProps;
 
-const FormFieldRaw: React.FunctionComponent<FieldGroupRawProps> = ({
+// Omit `InputLayout` props as they are not supported yet.
+// After migration to `InputLayout` component here should be fixes
+const renderDefaultInputElement = ({ size, prefix, ...props }: TProps) => <Input {...props} />;
+
+// TODO: This component should under the hood render `InputLayout` not reactstrap `Input`
+const FormFieldLayout: React.FunctionComponent<TProps> = ({
   value,
   name,
   label,
@@ -47,9 +49,7 @@ const FormFieldRaw: React.FunctionComponent<FieldGroupRawProps> = ({
     ...props,
   };
 
-  const renderInputElement = renderInput
-    ? renderInput
-    : (props: FieldGroupRawProps) => <Input {...props} />;
+  const renderInputElement = renderInput ? renderInput : renderDefaultInputElement;
 
   return (
     <FormGroup>
@@ -73,4 +73,4 @@ const FormFieldRaw: React.FunctionComponent<FieldGroupRawProps> = ({
   );
 };
 
-export { FormFieldRaw };
+export { FormFieldLayout };

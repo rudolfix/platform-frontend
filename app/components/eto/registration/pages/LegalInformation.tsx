@@ -20,7 +20,7 @@ import {
 } from "../../../shared/formatters/utils";
 import { ArrayOfKeyValueFields } from "../../../shared/forms/fields/FormCategoryDistribution.unsafe";
 import { FormField } from "../../../shared/forms/fields/FormField";
-import { FormFieldDate } from "../../../shared/forms/fields/FormFieldDate.unsafe";
+import { FormFieldDate } from "../../../shared/forms/fields/FormFieldDate";
 import { FormMaskedNumberInput } from "../../../shared/forms/fields/FormMaskedNumberInput";
 import { FormSelectField } from "../../../shared/forms/fields/FormSelectField";
 import { FormTextArea } from "../../../shared/forms/fields/FormTextArea";

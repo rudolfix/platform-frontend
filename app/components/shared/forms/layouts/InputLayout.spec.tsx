@@ -3,12 +3,13 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { FormInputRaw } from "./FormInputRaw.unsafe";
+import { InputLayout } from "./InputLayout";
 
 describe("FormFieldRaw TextInput", () => {
   it("should show value", () => {
     const component = shallow(
-      <FormInputRaw
+      <InputLayout
+        name="foo"
         type="text"
         placeholder="test_placeholder"
         value="test_value"
@@ -22,9 +23,10 @@ describe("FormFieldRaw TextInput", () => {
         .val(),
     ).to.contain("test_value");
   });
+
   it("should show placeholder", () => {
     const component = shallow(
-      <FormInputRaw type="text" placeholder="test_placeholder" onChange={() => {}} />,
+      <InputLayout name="foo" type="text" placeholder="test_placeholder" onChange={() => {}} />,
     );
     expect(
       component
@@ -33,29 +35,26 @@ describe("FormFieldRaw TextInput", () => {
         .attr("placeholder"),
     ).to.contain("test_placeholder");
   });
-  it("should run customOnFocus if it's provided", () => {
-    const customFocusSpy = spy();
+
+  it("should run onFocus", () => {
     const focusSpy = spy();
+
     const input = mount(
-      <FormInputRaw
-        type="text"
-        customOnFocus={customFocusSpy}
-        onFocus={focusSpy}
-        onChange={() => {}}
-      />,
+      <InputLayout name="foo" type="text" onFocus={focusSpy} onChange={() => {}} />,
     ).find("input");
     input.simulate("focus");
 
-    expect(customFocusSpy).to.have.been.called;
-    expect(focusSpy).to.not.have.been.called;
-  });
-  it("should run onFocus if customOnFocus is not provided", () => {
-    const focusSpy = spy();
-    const input = mount(<FormInputRaw type="text" onFocus={focusSpy} onChange={() => {}} />).find(
-      "input",
-    );
-    input.simulate("focus");
-
     expect(focusSpy).to.have.been.called;
+  });
+
+  it("should run onBlur", () => {
+    const blurSpy = spy();
+    const input = mount(
+      <InputLayout name="foo" type="text" onBlur={blurSpy} onChange={() => {}} />,
+    ).find("input");
+
+    input.simulate("blur");
+
+    expect(blurSpy).to.have.been.called;
   });
 });

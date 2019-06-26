@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import * as React from "react";
 
 import { Form } from "../Form";
-import { FormFieldDate } from "./FormFieldDate.unsafe";
+import { FormFieldDate } from "./FormFieldDate";
 
 storiesOf("forms/fields/FieldDate", module).add("default", () => (
   <Formik initialValues={{}} onSubmit={() => {}}>

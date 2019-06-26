@@ -22,7 +22,7 @@ interface IFieldGroup {
   maxLength?: number;
   min?: number | string;
   ratio?: number;
-  customValidation?: (value: any) => string | Function | Promise<void> | undefined;
+  customValidation?: (value: string | undefined) => string | Function | Promise<void> | undefined;
   customOnBlur?: Function;
 }
 

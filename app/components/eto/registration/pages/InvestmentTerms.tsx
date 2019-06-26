@@ -36,9 +36,7 @@ import {
   THumanReadableFormat,
   TValueFormat,
 } from "../../../shared/formatters/utils";
-import { FormFieldRaw } from "../../../shared/forms/fields/FormFieldRaw";
-import { FormMaskedNumberInput } from "../../../shared/forms/fields/FormMaskedNumberInput";
-import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
+import { FormFieldLayout, FormHighlightGroup, FormMaskedNumberInput } from "../../../shared/forms";
 import {
   convert,
   convertFractionToPercentage,
@@ -87,7 +85,7 @@ const CalculatorField: React.FunctionComponent<ICalculatorField> = ({
   valueType,
   outputFormat,
 }) => (
-  <FormFieldRaw
+  <FormFieldLayout
     label={label}
     suffix={selectUnits(valueType)}
     name={name}

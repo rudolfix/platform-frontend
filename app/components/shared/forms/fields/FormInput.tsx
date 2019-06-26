@@ -1,11 +1,14 @@
-import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 
-import { CommonHtmlProps } from "../../../../types";
-import { FormInputRaw, IFormInputRawExternalProps } from "./FormInputRaw.unsafe";
+import { InputLayout } from "../layouts/InputLayout";
 import { applyCharactersLimit, isNonValid } from "./utils.unsafe";
 
-export type FormInputProps = IFormInputRawExternalProps & FieldAttributes<any> & CommonHtmlProps;
+type TExternalProps = {
+  customValidation?: (value: string | undefined) => string | Function | Promise<void> | undefined;
+};
+
+export type FormInputProps = React.ComponentProps<typeof InputLayout>;
 
 const transform = (value: string) => (value !== undefined ? value : "");
 
@@ -22,7 +25,7 @@ const transformBack = (value: number | string, charactersLimit?: number) => {
 /**
  * Formik connected form input without FormGroup and FormFieldLabel.
  */
-export const FormInput: React.FunctionComponent<FormInputProps> = ({
+export const FormInput: React.FunctionComponent<TExternalProps & FormInputProps> = ({
   type,
   placeholder,
   name,
@@ -35,7 +38,7 @@ export const FormInput: React.FunctionComponent<FormInputProps> = ({
   size,
   disabled,
   customValidation,
-  customOnBlur,
+  onBlur,
   ignoreTouched,
   maxLength,
   ...props
@@ -52,7 +55,7 @@ export const FormInput: React.FunctionComponent<FormInputProps> = ({
             const val = transform(field.value);
 
             return (
-              <FormInputRaw
+              <InputLayout
                 name={name}
                 type={type}
                 placeholder={placeholder}
@@ -66,8 +69,7 @@ export const FormInput: React.FunctionComponent<FormInputProps> = ({
                 disabled={disabled}
                 maxLength={maxLength}
                 charactersLimit={charactersLimit}
-                customValidation={customValidation}
-                customOnBlur={customOnBlur}
+                onBlur={onBlur}
                 ignoreTouched={ignoreTouched}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setFieldTouched(name);

@@ -79,7 +79,7 @@ const EstimatedRewardValue: React.FunctionComponent<IEstimatedReward> = ({ estim
     <MoneyNew
       value={estimatedReward}
       inputFormat={ENumberInputFormat.ULPS}
-      moneyFormat={ECurrency.NEU}
+      valueType={ECurrency.NEU}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
   </span>
@@ -91,7 +91,7 @@ const Investment: React.FunctionComponent<IInvestment> = ({ investmentEur, inves
       data-test-id="euro"
       value={investmentEur}
       inputFormat={ENumberInputFormat.ULPS}
-      moneyFormat={ECurrency.EUR}
+      valueType={ECurrency.EUR}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
     {" ≈ "}
@@ -99,7 +99,7 @@ const Investment: React.FunctionComponent<IInvestment> = ({ investmentEur, inves
       data-test-id="eth"
       value={investmentEth}
       inputFormat={ENumberInputFormat.ULPS}
-      moneyFormat={ECurrency.ETH}
+      valueType={ECurrency.ETH}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
   </>
@@ -114,7 +114,7 @@ const TokenPriceAndDiscount: React.FunctionComponent<ITokenPriceAndDiscount> = (
       data-test-id="token-price"
       value={actualTokenPrice}
       inputFormat={ENumberInputFormat.FLOAT}
-      moneyFormat={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+      valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
       outputFormat={ENumberOutputFormat.FULL}
     />
     {discount !== null && (
@@ -138,7 +138,7 @@ const Total: React.FunctionComponent<ITotal> = ({ totalCostEur, totalCostEth }) 
       data-test-id="total-cost-euro"
       value={totalCostEur}
       inputFormat={ENumberInputFormat.ULPS}
-      moneyFormat={ECurrency.EUR}
+      valueType={ECurrency.EUR}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
     {" ≈ "}
@@ -146,7 +146,7 @@ const Total: React.FunctionComponent<ITotal> = ({ totalCostEur, totalCostEth }) 
       data-test-id="total-cost-eth"
       value={totalCostEth}
       inputFormat={ENumberInputFormat.ULPS}
-      moneyFormat={ECurrency.ETH}
+      valueType={ECurrency.ETH}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
   </>
@@ -206,7 +206,7 @@ const InvestmentTransactionDetails: TransactionDetailsComponent<ETxSenderType.IN
           <MoneyNew
             value={additionalData.gasCostEth}
             inputFormat={ENumberInputFormat.ULPS}
-            moneyFormat={ECurrency.ETH}
+            valueType={ECurrency.ETH}
             outputFormat={ENumberOutputFormat.FULL}
           />
         }

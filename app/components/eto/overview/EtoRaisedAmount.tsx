@@ -53,7 +53,7 @@ export const EtoRaisedAmount: React.FunctionComponent<IProps> = ({
                 <FormattedMessage id="eto.overview.raised-amount.total" />{" "}
                 <MoneyNew
                   value={"1234567" + "0".repeat(16)}
-                  moneyFormat={ECurrency.EUR}
+                  valueType={ECurrency.EUR}
                   inputFormat={ENumberInputFormat.ULPS}
                   outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                   theme={EThemeNew.GREEN}
@@ -81,7 +81,7 @@ export const EtoRaisedAmount: React.FunctionComponent<IProps> = ({
                 value={"1234567" + "0".repeat(14)}
                 inputFormat={ENumberInputFormat.ULPS}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 className={styles.total}
               />
             </div>

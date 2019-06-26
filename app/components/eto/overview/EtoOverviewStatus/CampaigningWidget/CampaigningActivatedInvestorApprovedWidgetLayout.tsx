@@ -71,7 +71,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
           <MoneyNew
             value={pledgedAmount}
             inputFormat={ENumberInputFormat.FLOAT}
-            moneyFormat={ECurrency.EUR}
+            valueType={ECurrency.EUR}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           />
         </div>

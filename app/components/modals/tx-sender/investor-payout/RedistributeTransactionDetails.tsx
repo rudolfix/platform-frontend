@@ -24,7 +24,7 @@ const RedistributeTransactionDetails: TransactionDetailsComponent<
             value={tokenDisbursal.amountToBeClaimed}
             inputFormat={ENumberInputFormat.ULPS}
             outputFormat={ENumberOutputFormat.FULL}
-            moneyFormat={tokenDisbursal.token}
+            valueType={tokenDisbursal.token}
           />
         }
       />

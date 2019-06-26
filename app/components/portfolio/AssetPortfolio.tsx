@@ -10,11 +10,7 @@ import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Button, ButtonSize, EButtonLayout, EButtonTheme } from "../shared/buttons";
 import { EThemeNew, MoneyNew } from "../shared/formatters/Money";
-import {
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  selectCurrencyCode,
-} from "../shared/formatters/utils";
+import { ENumberInputFormat, ENumberOutputFormat, selectUnits } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
 import { LoadingIndicator } from "../shared/loading-indicator";
@@ -75,7 +71,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
                       <MoneyNew
                         value={t.amountToBeClaimed}
                         inputFormat={ENumberInputFormat.ULPS}
-                        moneyFormat={t.token}
+                        valueType={t.token}
                         outputFormat={ENumberOutputFormat.FULL}
                         theme={EThemeNew.GREEN_BIG}
                         key={t.token}
@@ -118,12 +114,12 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
           >
             <>
               <CurrencyIcon currency={tokenDisbursal.token} className="mr-2" />
-              {selectCurrencyCode(tokenDisbursal.token)}
+              {selectUnits(tokenDisbursal.token)}
             </>
             <MoneyNew
               value={tokenDisbursal.amountToBeClaimed}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={tokenDisbursal.token}
+              valueType={tokenDisbursal.token}
               outputFormat={ENumberOutputFormat.FULL}
               data-test-id={`asset-portfolio.payout.amount-to-be-claimed`}
               theme={EThemeNew.GREEN}
@@ -131,7 +127,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
             <MoneyNew
               value={tokenDisbursal.totalDisbursedAmount}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={tokenDisbursal.token}
+              valueType={tokenDisbursal.token}
               outputFormat={ENumberOutputFormat.FULL}
             />
             <FormattedDate value={tokenDisbursal.timeToFirstDisbursalRecycle} />

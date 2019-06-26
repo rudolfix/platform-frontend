@@ -136,7 +136,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
               <MoneyNew
                 value={companyData.lastFundingSizeEur}
                 inputFormat={ENumberInputFormat.FLOAT}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.INTEGER}
               />
             </span>

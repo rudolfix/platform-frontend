@@ -60,7 +60,7 @@ const EtoMaxCapExceededComponent: React.FunctionComponent<
           <MoneyNew
             value={divideBigNumbers(eto.contract!.totalInvestment.totalEquivEurUlps, etherPriceEur)}
             inputFormat={ENumberInputFormat.ULPS}
-            moneyFormat={ECurrency.ETH}
+            valueType={ECurrency.ETH}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           />
         </div>
@@ -86,7 +86,7 @@ const EtoMaxCapExceededComponent: React.FunctionComponent<
             value={eto.contract!.totalInvestment.totalTokensInt}
             inputFormat={ENumberInputFormat.FLOAT}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            moneyFormat={ECurrency.EUR_TOKEN}
+            valueType={ECurrency.EUR_TOKEN}
           />
         </div>
         <div className={cn(styles.capReached, "text-uppercase")}>

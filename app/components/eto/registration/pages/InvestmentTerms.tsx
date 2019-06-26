@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { FormikConsumer, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -22,17 +23,26 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
-import { formatMoney } from "../../../../utils/Money.utils";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { ECurrency, ENumberInputFormat } from "../../../shared/formatters/utils";
-import { FormField } from "../../../shared/forms";
+import {
+  ECurrency,
+  ENumberFormat,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EPriceFormat,
+  formatNumber,
+  selectDecimalPlaces,
+  selectUnits,
+  THumanReadableFormat,
+  TValueFormat,
+} from "../../../shared/formatters/utils";
 import { FormFieldRaw } from "../../../shared/forms/fields/FormFieldRaw";
-import { NumberTransformingField } from "../../../shared/forms/fields/NumberTransformingField.unsafe";
+import { FormMaskedNumberInput } from "../../../shared/forms/fields/FormMaskedNumberInput";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import { getFormattedMoney } from "../../../shared/Money.unsafe";
 import {
   convert,
   convertFractionToPercentage,
+  convertNumberToString,
   convertPercentageToFraction,
   parseStringToFloat,
   parseStringToInteger,
@@ -62,64 +72,98 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TEtoSpecsData>;
 
+interface ICalculatorField {
+  value: string | number | BigNumber;
+  name: string;
+  label: TTranslatedString;
+  valueType: TValueFormat;
+  outputFormat: THumanReadableFormat;
+}
+
+const CalculatorField: React.FunctionComponent<ICalculatorField> = ({
+  value,
+  name,
+  label,
+  valueType,
+  outputFormat,
+}) => (
+  <FormFieldRaw
+    label={label}
+    suffix={selectUnits(valueType)}
+    name={name}
+    value={formatNumber({
+      value: value,
+      inputFormat: ENumberInputFormat.FLOAT,
+      outputFormat: outputFormat,
+      decimalPlaces: selectDecimalPlaces(valueType, outputFormat),
+    })}
+    readOnly={true}
+  />
+);
+
 const InvestmentCalculator: React.FunctionComponent<ICalculatorProps> = ({
   etoProductMaxInvestmentAmount,
 }) => (
   <FormikConsumer>
     {({ values }) => {
-      // todo this should be refactored when converting this form to use money formatters
-      const convertedValue = convert(values, fromFormState);
+      const calculatorValues = {
+        newSharesToIssue: parseStringToFloat()(values.newSharesToIssue),
+        minimumNewSharesToIssue: parseStringToFloat()(values.minimumNewSharesToIssue),
+        equityTokensPerShare: parseStringToFloat()(values.equityTokensPerShare),
+        existingCompanyShares: parseStringToFloat()(values.existingCompanyShares),
+        preMoneyValuationEur: parseStringToFloat()(values.preMoneyValuationEur),
+        newSharesToIssueInFixedSlots: parseStringToFloat()(values.newSharesToIssueInFixedSlots),
+        newSharesToIssueInWhitelist: parseStringToFloat()(values.newSharesToIssueInWhitelist),
+        fixedSlotsMaximumDiscountFraction: parseStringToFloat()(
+          values.fixedSlotsMaximumDiscountFraction,
+        ),
+        whitelistDiscountFraction: parseStringToFloat()(values.whitelistDiscountFraction),
+        publicDiscountFraction: parseStringToFloat()(values.publicDiscountFraction),
+      };
+
       const { computedMaxNumberOfTokens, computedMinNumberOfTokens } = getNumberOfTokens(
-        convertedValue,
+        calculatorValues,
       );
-      const { computedMaxCapPercent, computedMinCapPercent } = getCapPercent(convertedValue);
-      const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(convertedValue);
-      const { sharePrice, tokenPrice } = getShareAndTokenPrice(convertedValue);
+      const { computedMaxCapPercent, computedMinCapPercent } = getCapPercent(calculatorValues);
+      const { sharePrice, tokenPrice } = getShareAndTokenPrice(calculatorValues);
+      const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(
+        calculatorValues,
+        sharePrice,
+      );
 
       return (
         <FormHighlightGroup>
-          <FormFieldRaw
-            label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
-            prefix="€"
+          <CalculatorField
+            value={sharePrice}
             name="newSharePrice"
-            value={formatMoney(`${sharePrice}`, 0, 8)}
-            readOnly={true}
+            label={<FormattedMessage id="eto.form.section.investment-terms.new-share-price" />}
+            valueType={EPriceFormat.SHARE_PRICE}
+            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           />
-          <FormFieldRaw
-            label={<FormattedMessage id="eto.form.section.investment-terms.equity-token-price" />}
+          <CalculatorField
+            value={tokenPrice}
             name="equityTokenPrice"
-            prefix="€"
-            placeholder="read only"
-            value={formatMoney(`${tokenPrice}`, 0, 8)}
-            readOnly={true}
+            label={<FormattedMessage id="eto.form.section.investment-terms.equity-token-price" />}
+            valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           />
           <Row>
             <Col sm={12} md={6}>
-              <FormFieldRaw
+              <CalculatorField
+                value={minInvestmentAmount}
+                name="equityTokenPrice"
                 label={<FormattedMessage id="eto.form.section.investment-terms.minimum-amount" />}
-                prefix="€"
-                placeholder="read only"
-                name="minNumberOfTokens"
-                value={getFormattedMoney(
-                  minInvestmentAmount,
-                  ECurrency.EUR,
-                  ENumberInputFormat.FLOAT,
-                )}
-                readOnly={true}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
               />
             </Col>
             <Col sm={12} md={6}>
-              <FormFieldRaw
-                label={<FormattedMessage id="eto.form.section.investment-terms.total-investment" />}
-                prefix="€"
-                placeholder="read only"
+              <CalculatorField
+                value={maxInvestmentAmount}
                 name="totalInvestment"
-                value={getFormattedMoney(
-                  maxInvestmentAmount,
-                  ECurrency.EUR,
-                  ENumberInputFormat.FLOAT,
-                )}
-                readOnly={true}
+                label={<FormattedMessage id="eto.form.section.investment-terms.total-investment" />}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               />
             </Col>
             {etoProductMaxInvestmentAmount !== 0 &&
@@ -131,47 +175,47 @@ const InvestmentCalculator: React.FunctionComponent<ICalculatorProps> = ({
                 </Col>
               )}
             <Col sm={12} md={6}>
-              <FormFieldRaw
+              <CalculatorField
+                value={computedMinNumberOfTokens}
+                name="minCapEur"
                 label={
                   <FormattedMessage id="eto.form.section.investment-terms.minimum-token-cap" />
                 }
-                placeholder="read only"
-                name="minCapEur"
-                value={computedMinNumberOfTokens}
-                readOnly={true}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.INTEGER}
               />
             </Col>
             <Col sm={12} md={6}>
-              <FormFieldRaw
+              <CalculatorField
+                value={computedMaxNumberOfTokens}
+                name="maxCapEur"
                 label={
                   <FormattedMessage id="eto.form.section.investment-terms.maximum-token-cap" />
                 }
-                placeholder="read only"
-                name="maxCapEur"
-                value={computedMaxNumberOfTokens}
-                readOnly={true}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.INTEGER}
               />
             </Col>
             <Col sm={12} md={6}>
-              <FormFieldRaw
+              <CalculatorField
+                value={computedMinCapPercent}
+                name="minSharesGenerated"
                 label={
                   <FormattedMessage id="eto.form.section.investment-terms.minimum-shares-generated" />
                 }
-                prefix="%"
-                name="minSharesGenerated"
-                value={computedMinCapPercent.toFixed(4)}
-                readOnly={true}
+                valueType={ENumberFormat.PERCENTAGE}
+                outputFormat={ENumberOutputFormat.FULL_ROUND_UP}
               />
             </Col>
             <Col sm={12} md={6}>
-              <FormFieldRaw
+              <CalculatorField
+                value={computedMaxCapPercent}
+                name="maxSharesGenerated"
                 label={
                   <FormattedMessage id="eto.form.section.investment-terms.maximum-shares-generated" />
                 }
-                prefix="%"
-                name="maxSharesGenerated"
-                value={computedMaxCapPercent.toFixed(4)}
-                readOnly={true}
+                valueType={ENumberFormat.PERCENTAGE}
+                outputFormat={ENumberOutputFormat.FULL}
               />
             </Col>
           </Row>
@@ -192,104 +236,121 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
     progressOptions={etoInvestmentTermsProgressOptions}
   >
     <Section>
-      <FormField
-        label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
-        placeholder="1000000"
+      <FormMaskedNumberInput
         name="equityTokensPerShare"
-        value={10000}
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
+        placeholder="1000000"
         disabled={true}
+        label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
       />
-      <FormField
-        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
-        placeholder="1"
-        prefix="€"
+      <FormMaskedNumberInput
         name="shareNominalValueEur"
-        type="number"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.FULL}
+        valueType={ECurrency.EUR}
+        showUnits={true}
+        placeholder="1"
         disabled={readonly}
+        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
       />
-      <FormField
+      <FormMaskedNumberInput
+        name="preMoneyValuationEur"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.FULL}
+        valueType={ECurrency.EUR}
+        showUnits={true}
+        disabled={readonly}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.fully-diluted-pre-money-valuation" />
         }
-        placeholder=" "
-        prefix="€"
-        name="preMoneyValuationEur"
-        type="number"
-        disabled={readonly}
       />
-      <FormField
-        label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
-        placeholder="Number of existing shares"
+      <FormMaskedNumberInput
         name="existingCompanyShares"
-        type="number"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
         disabled={readonly}
+        placeholder="Number of existing shares"
+        label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
       />
-      <FormField
-        label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
-        placeholder="Number of shares"
+      <FormMaskedNumberInput
         name="authorizedCapitalShares"
-        type="number"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
         disabled={readonly}
+        placeholder="Number of shares"
+        label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
       />
-      <FormField
+      <FormMaskedNumberInput
+        name="minimumNewSharesToIssue"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.minimum-new-shares-to-issue" />
         }
         placeholder="Number of shares"
-        name="minimumNewSharesToIssue"
-        type="number"
         disabled={readonly}
       />
-      <FormField
+      <FormMaskedNumberInput
+        name="newSharesToIssue"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue" />
         }
         placeholder="Number of shares"
-        name="newSharesToIssue"
-        type="number"
         disabled={readonly}
       />
-      <NumberTransformingField
+      <FormMaskedNumberInput
+        name="publicDiscountFraction"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+        showUnits={true}
+        valueType={ENumberFormat.PERCENTAGE}
         label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
         placeholder=" "
-        name="publicDiscountFraction"
-        prefix="%"
-        ratio={100}
         disabled={readonly}
       />
-      <FormField
+      <FormMaskedNumberInput
+        name="newSharesToIssueInWhitelist"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-new-shares-to-issue-pre-eto" />
         }
         placeholder="Number of shares"
-        name="newSharesToIssueInWhitelist"
-        type="number"
         disabled={readonly}
       />
-      <NumberTransformingField
+      <FormMaskedNumberInput
+        name="whitelistDiscountFraction"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+        showUnits={true}
+        valueType={ENumberFormat.PERCENTAGE}
         label={<FormattedMessage id="eto.form.section.investment-terms.whitelist-discount" />}
         placeholder=" "
-        name="whitelistDiscountFraction"
-        prefix="%"
-        ratio={100}
         disabled={readonly}
       />
-      <FormField
+      <FormMaskedNumberInput
+        name="newSharesToIssueInFixedSlots"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-shares-to-be-issued-in-fixed-slots" />
         }
         placeholder="Number of shares"
-        name="newSharesToIssueInFixedSlots"
-        type="number"
         disabled={readonly}
       />
-      <NumberTransformingField
+      <FormMaskedNumberInput
+        name="fixedSlotsMaximumDiscountFraction"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+        showUnits={true}
+        valueType={ENumberFormat.PERCENTAGE}
         label={
           <FormattedMessage id="eto.form.section.investment-terms.maximum-discount-for-the-fixed-slot-investors" />
         }
-        name="fixedSlotsMaximumDiscountFraction"
-        prefix="%"
-        ratio={100}
+        placeholder=" "
         disabled={readonly}
       />
 
@@ -358,20 +419,33 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
 )(EtoInvestmentTermsComponent);
 
 const toFormState = {
-  whitelistDiscountFraction: convertFractionToPercentage(),
-  publicDiscountFraction: convertFractionToPercentage(),
-  fixedSlotsMaximumDiscountFraction: convertFractionToPercentage(),
+  preMoneyValuationEur: convertNumberToString(),
+  equityTokensPerShare: convertNumberToString(),
+  existingCompanyShares: convertNumberToString(),
+  minimumNewSharesToIssue: convertNumberToString(),
+  newSharesToIssue: convertNumberToString(),
+  shareNominalValueEur: convertNumberToString(),
+  authorizedCapitalShares: convertNumberToString(),
+  newSharesToIssueInWhitelist: convertNumberToString(),
+  newSharesToIssueInFixedSlots: convertNumberToString(),
+  whitelistDiscountFraction: [convertFractionToPercentage(), convertNumberToString()],
+  publicDiscountFraction: [convertFractionToPercentage(), convertNumberToString()],
+  fixedSlotsMaximumDiscountFraction: [convertFractionToPercentage(), convertNumberToString()],
 };
 
 const fromFormState = {
-  whitelistDiscountFraction: convertPercentageToFraction(),
-  publicDiscountFraction: convertPercentageToFraction(),
-  fixedSlotsMaximumDiscountFraction: convertPercentageToFraction(),
+  whitelistDiscountFraction: [parseStringToFloat(), convertPercentageToFraction()],
+  publicDiscountFraction: [parseStringToFloat(), convertPercentageToFraction()],
+  fixedSlotsMaximumDiscountFraction: [parseStringToFloat(), convertPercentageToFraction()],
+  preMoneyValuationEur: parseStringToInteger(),
   equityTokensPerShare: parseStringToInteger(),
   existingCompanyShares: parseStringToInteger(),
   newSharesToIssueInFixedSlots: parseStringToInteger(),
   newSharesToIssueInWhitelist: parseStringToInteger(),
   shareNominalValueEur: parseStringToFloat(),
+  minimumNewSharesToIssue: parseStringToInteger(),
+  newSharesToIssue: parseStringToInteger(),
+  authorizedCapitalShares: parseStringToInteger(),
 };
 
 export { EtoInvestmentTerms, EtoInvestmentTermsComponent };

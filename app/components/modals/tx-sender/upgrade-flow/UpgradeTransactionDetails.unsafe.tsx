@@ -28,7 +28,7 @@ const UpgradeTransactionDetails: TransactionDetailsComponent<ETxSenderType.UPGRA
         <MoneyNew
           value={txData!.value}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           outputFormat={ENumberOutputFormat.FULL}
         />
       }
@@ -40,7 +40,7 @@ const UpgradeTransactionDetails: TransactionDetailsComponent<ETxSenderType.UPGRA
         <MoneyNew
           value={multiplyBigNumbers([txData!.gasPrice, txData!.gas])}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           outputFormat={ENumberOutputFormat.FULL}
         />
       }

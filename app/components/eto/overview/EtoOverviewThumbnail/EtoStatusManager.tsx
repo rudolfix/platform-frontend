@@ -40,7 +40,7 @@ const SuccessfulInfo: React.FunctionComponent<{ totalAmount: string }> = ({ tota
             <MoneyNew
               value={totalAmount}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.EUR}
+              valueType={ECurrency.EUR}
               outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
             />
           ),
@@ -112,7 +112,7 @@ const EtoStatusManager = ({ eto }: IExternalProps) => {
                   <MoneyNew
                     value={eto.contract!.totalInvestment.totalEquivEurUlps}
                     inputFormat={ENumberInputFormat.ULPS}
-                    moneyFormat={ECurrency.EUR}
+                    valueType={ECurrency.EUR}
                     outputFormat={ENumberOutputFormat.FULL}
                   />
                 ),

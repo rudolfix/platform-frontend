@@ -95,7 +95,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
             <MoneyNew
               value={investorTicket.equivEurUlps}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.EUR}
+              valueType={ECurrency.EUR}
               outputFormat={ENumberOutputFormat.FULL}
               data-test-id="portfolio-reserved-asset-invested-amount"
             />
@@ -103,7 +103,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
             <MoneyNew
               value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEurUlps)}
               inputFormat={ENumberInputFormat.FLOAT}
-              moneyFormat={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+              valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
               outputFormat={ENumberOutputFormat.FULL}
               data-test-id="portfolio-reserved-token-price"
             />
@@ -111,7 +111,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
             <MoneyNew
               value={investorTicket.rewardNmkUlps.toString()}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.NEU}
+              valueType={ECurrency.NEU}
               outputFormat={ENumberOutputFormat.FULL}
               data-test-id="portfolio-reserved-asset-neu-reward"
             />

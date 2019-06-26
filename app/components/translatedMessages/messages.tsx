@@ -561,7 +561,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
               <MoneyNew
                 value={messageData as number}
                 inputFormat={ENumberInputFormat.FLOAT}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL_ROUND_UP}
               />
             ),
@@ -577,7 +577,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
               <MoneyNew
                 value={messageData as number}
                 inputFormat={ENumberInputFormat.FLOAT}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL}
               />
             ),

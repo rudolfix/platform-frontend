@@ -104,7 +104,7 @@ const CampaigningActivatedWidgetComponent: React.FunctionComponent<IProps> = ({
             <span className={styles.value} data-test-id="eto-bookbuilding-amount-backed">
               <MoneyNew
                 value={pledgedAmount}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 inputFormat={ENumberInputFormat.FLOAT}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               />
@@ -159,7 +159,7 @@ const CampaigningActivatedWidgetComponent: React.FunctionComponent<IProps> = ({
                     <MoneyNew
                       value={pledgedAmount}
                       inputFormat={ENumberInputFormat.FLOAT}
-                      moneyFormat={ECurrency.EUR}
+                      valueType={ECurrency.EUR}
                       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                     />
                   ),

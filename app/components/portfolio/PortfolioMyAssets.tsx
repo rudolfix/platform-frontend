@@ -79,19 +79,19 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
           <MoneyNew
             value={myNeuBalance}
             inputFormat={ENumberInputFormat.ULPS}
-            moneyFormat={ECurrency.NEU}
+            valueType={ECurrency.NEU}
             outputFormat={ENumberOutputFormat.FULL}
           />
           <MoneyNew
             value={neuValue}
             inputFormat={ENumberInputFormat.ULPS}
-            moneyFormat={ECurrency.EUR}
+            valueType={ECurrency.EUR}
             outputFormat={ENumberOutputFormat.FULL}
           />
           <MoneyNew
             value={neuPrice}
             inputFormat={ENumberInputFormat.FLOAT}
-            moneyFormat={ECurrency.EUR}
+            valueType={ECurrency.EUR}
             outputFormat={ENumberOutputFormat.FULL}
           />
           <ButtonLink
@@ -133,13 +133,13 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
               <MoneyNew
                 value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
                 inputFormat={ENumberInputFormat.ULPS}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL}
               />
               <MoneyNew
                 value={tokenData.tokenPrice}
                 inputFormat={ENumberInputFormat.ULPS}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL}
               />
               <Button

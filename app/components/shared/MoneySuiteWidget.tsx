@@ -46,7 +46,7 @@ export const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & 
           value={largeNumber}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          moneyFormat={currency}
+          valueType={currency}
         />
       </div>
       <div className={styles.totalMoney} data-test-id={makeTid(dataTestId, "value")}>
@@ -55,7 +55,7 @@ export const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & 
           value={value}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          moneyFormat={currencyTotal}
+          valueType={currencyTotal}
         />
         {percentage && (
           <span className={`${parseInt(percentage, 10) > 0 ? styles.green : styles.red}`}>

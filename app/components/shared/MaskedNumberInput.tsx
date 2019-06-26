@@ -1,8 +1,8 @@
 import * as React from "react";
 
+import { DEFAULT_DECIMAL_PLACES } from "../../config/constants";
 import { TTranslatedString } from "../../types";
 import {
-  ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
@@ -11,28 +11,34 @@ import {
   isValidNumber,
   parseInputToNumber,
   selectDecimalPlaces,
+  selectUnits,
   stripNumberFormatting,
   toFixedPrecision,
+  TValueFormat,
 } from "./formatters/utils";
 import { FormInputRaw } from "./forms/fields/FormInputRaw.unsafe";
 
 interface IProps {
   name: string;
-  inputFormat: ENumberInputFormat;
-  currency: ECurrency;
+  storageFormat: ENumberInputFormat; // how is this value stored in the app state (ULPS or FLOAT)
+  outputFormat: ENumberOutputFormat; // how should this value be visualized
+  valueType?: TValueFormat;
   value: string;
   onChangeFn: (value: string) => void;
   returnInvalidValues?: boolean;
   setError?: (v: boolean) => void;
   placeholder?: TTranslatedString;
   "data-test-id"?: string;
-  suffix?: string;
+  showUnits?: boolean;
   errorMsg?: TTranslatedString;
   invalid?: boolean;
+  disabled?: boolean;
 }
 
-export class MaskedMoneyInput extends React.Component<IProps> {
-  decimals = selectDecimalPlaces(this.props.currency);
+export class MaskedNumberInput extends React.Component<IProps> {
+  decimals = this.props.valueType
+    ? selectDecimalPlaces(this.props.valueType)
+    : DEFAULT_DECIMAL_PLACES;
 
   formatValue = (value: string): string => {
     if (isEmptyValue(value)) {
@@ -42,6 +48,7 @@ export class MaskedMoneyInput extends React.Component<IProps> {
         value,
         roundingMode: ERoundingMode.DOWN,
         inputFormat: ENumberInputFormat.FLOAT,
+        outputFormat: this.props.outputFormat,
         decimalPlaces: this.decimals,
       });
     } else {
@@ -56,12 +63,12 @@ export class MaskedMoneyInput extends React.Component<IProps> {
           inputFormat,
           roundingMode: ERoundingMode.DOWN,
           decimalPlaces: this.decimals,
-          outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
+          outputFormat: this.props.outputFormat,
         })
       : "";
 
   state = {
-    value: this.formatForDisplay(this.props.value, this.props.inputFormat),
+    value: this.formatForDisplay(this.props.value, this.props.storageFormat),
   };
 
   formatOnChange = (value: string, stateValue: string | undefined) => {
@@ -99,11 +106,11 @@ export class MaskedMoneyInput extends React.Component<IProps> {
 
   onBlur = (value?: string) => {
     if (isEmptyValue(value) || isValidNumber(value)) {
-      this.setState({ value: this.formatForDisplay(value, this.props.inputFormat) });
+      this.setState({ value: this.formatForDisplay(value, this.props.storageFormat) });
     }
   };
 
-  onFocus = (value?: string) => {
+  onFocus = (value: string | undefined) => {
     if (isEmptyValue(value) || isValidNumber(value)) {
       this.setState({ value: value && stripNumberFormatting(value) });
     } else {
@@ -115,7 +122,7 @@ export class MaskedMoneyInput extends React.Component<IProps> {
 
   componentDidUpdate(): void {
     if (isValidNumber(this.props.value) || isEmptyValue(this.props.value)) {
-      const propsValue = this.formatForDisplay(this.props.value, this.props.inputFormat);
+      const propsValue = this.formatForDisplay(this.props.value, this.props.storageFormat);
       if (!this.hasFocus(this.props.name) && propsValue !== this.state.value) {
         this.setState({ value: propsValue });
       }
@@ -129,13 +136,18 @@ export class MaskedMoneyInput extends React.Component<IProps> {
         name={this.props.name}
         data-test-id={this.props["data-test-id"]}
         placeholder={this.props.placeholder}
-        suffix={this.props.suffix}
+        suffix={
+          this.props.valueType && this.props.showUnits
+            ? selectUnits(this.props.valueType)
+            : undefined
+        }
         errorMsg={this.props.errorMsg}
         invalid={this.props.invalid}
         onBlur={(e: React.ChangeEvent<HTMLInputElement>) => this.onBlur(e.target.value)}
         onFocus={(e: React.FocusEvent<HTMLInputElement>) => this.onFocus(e.target.value)}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.changeValue(e.target.value)}
         onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => this.onPaste(e)}
+        disabled={this.props.disabled}
       />
     );
   }

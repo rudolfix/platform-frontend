@@ -37,7 +37,7 @@ export class AccountRow extends React.Component<IAccountRow> {
             <MoneyNew
               value={this.props.ledgerAccount.balanceETH}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.ETH}
+              valueType={ECurrency.ETH}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
             />
           </div>
@@ -45,7 +45,7 @@ export class AccountRow extends React.Component<IAccountRow> {
             <MoneyNew
               value={this.props.ledgerAccount.balanceNEU}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.NEU}
+              valueType={ECurrency.NEU}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
             />
           </div>

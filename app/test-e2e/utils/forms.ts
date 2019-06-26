@@ -39,6 +39,10 @@ export type TFormFixture = {
   [fieldIdentifier: string]: TFormFieldFixture;
 };
 
+export type TFormFixtureExpectedValues = {
+  [fieldIdentifier: string]: string;
+};
+
 export const fillField = (key: string, value: string, parent: string = "body") => {
   cy.get(parent).within(() => {
     cy.get(formField(key))
@@ -181,11 +185,11 @@ export const fillForm = (
   }
 };
 
-export const checkForm = (fixture: TFormFixture) => {
+export const checkForm = (fixture: TFormFixture, expectedValues?: TFormFixtureExpectedValues) => {
   forEach(fixture, (field, key) => {
     // the default is just typing a string into the input
     if (typeof field === "string") {
-      checkField(key, field);
+      checkField(key, (expectedValues && expectedValues[key]) || field);
     }
     // date
     else if (field.type === "date") {

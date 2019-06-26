@@ -55,7 +55,7 @@ const IncomingPayoutDone: React.FunctionComponent<IIncomingPayoutData> = ({
     <div>
       <MoneyNew
         value={euroTokenIncomingPayout}
-        moneyFormat={ECurrency.EUR_TOKEN}
+        valueType={ECurrency.EUR_TOKEN}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
         className={styles.incomingValue}
@@ -64,7 +64,7 @@ const IncomingPayoutDone: React.FunctionComponent<IIncomingPayoutData> = ({
       <span className={styles.incomingValue}> & </span>
       <MoneyNew
         value={etherTokenIncomingPayout}
-        moneyFormat={ECurrency.ETH}
+        valueType={ECurrency.ETH}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
         className={styles.incomingValue}
@@ -104,7 +104,7 @@ const IncomingPayoutCounter: React.FunctionComponent<IIncomingPayoutData & IDisp
           value={euroTokenIncomingPayout}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          moneyFormat={ECurrency.EUR_TOKEN}
+          valueType={ECurrency.EUR_TOKEN}
           data-test-id="incoming-payout-euro-token"
           className={styles.incomingValue}
           theme={EThemeNew.GREEN}
@@ -117,7 +117,7 @@ const IncomingPayoutCounter: React.FunctionComponent<IIncomingPayoutData & IDisp
         <MoneyNew
           value={etherTokenIncomingPayout}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           data-test-id="incoming-payout-ether-token"
           className={styles.incomingValue}

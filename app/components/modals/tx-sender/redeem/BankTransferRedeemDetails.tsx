@@ -37,7 +37,7 @@ const BankTransferRedeemDetails: TransactionDetailsComponent<ETxSenderType.NEUR_
         <MoneyNew
           inputFormat={ENumberInputFormat.FLOAT}
           value={additionalData.amount}
-          moneyFormat={ECurrency.EUR}
+          valueType={ECurrency.EUR}
           outputFormat={ENumberOutputFormat.FULL}
           data-test-id={"bank-transfer.redeem-summary.return-amount"}
         />

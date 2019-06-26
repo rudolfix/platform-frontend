@@ -20,7 +20,7 @@ import {
   ENumberOutputFormat,
   EPriceFormat,
   ESpecialNumber,
-  selectCurrencyCode,
+  selectUnits,
 } from "../../shared/formatters/utils";
 import { Panel } from "../../shared/Panel";
 import { Percentage } from "../../shared/Percentage";
@@ -76,7 +76,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                 <MoneyNew
                   value={etoData.preMoneyValuationEur}
                   inputFormat={ENumberInputFormat.FLOAT}
-                  moneyFormat={ECurrency.EUR}
+                  valueType={ECurrency.EUR}
                   outputFormat={ENumberOutputFormat.INTEGER}
                   defaultValue={<ToBeAnnouncedTooltip />}
                 />
@@ -143,7 +143,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               value={
                 <MoneyNew
                   value={computedNewSharePrice}
-                  moneyFormat={EPriceFormat.SHARE_PRICE}
+                  valueType={EPriceFormat.SHARE_PRICE}
                   inputFormat={ENumberInputFormat.FLOAT}
                   outputFormat={ENumberOutputFormat.FULL}
                   defaultValue={<ToBeAnnounced />}
@@ -196,7 +196,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                       : undefined
                   }
                   inputFormat={ENumberInputFormat.FLOAT}
-                  moneyFormat={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+                  valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
                   outputFormat={ENumberOutputFormat.FULL}
                   defaultValue={<ToBeAnnounced />}
                 />
@@ -224,7 +224,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                   valueFrom={etoData.minTicketEur}
                   valueUpto={etoData.maxTicketEur ? etoData.maxTicketEur : ESpecialNumber.UNLIMITED}
                   inputFormat={ENumberInputFormat.FLOAT}
-                  moneyFormat={ECurrency.EUR}
+                  valueType={ECurrency.EUR}
                   outputFormat={ENumberOutputFormat.INTEGER}
                   defaultValue={<ToBeAnnounced />}
                 />
@@ -235,7 +235,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.currencies.label" />}
               value={
                 etoData.currencies ? (
-                  etoData.currencies.map(selectCurrencyCode).join(", ")
+                  etoData.currencies.map(selectUnits).join(", ")
                 ) : (
                   <ToBeAnnounced />
                 )

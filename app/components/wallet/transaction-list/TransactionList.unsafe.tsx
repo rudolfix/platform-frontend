@@ -106,7 +106,7 @@ export const TransactionList: React.FunctionComponent<ITransactionList> = ({
                 </TableCell>
                 <TableCell decorate mobileDescription="Amount">
                   <MoneyNew
-                    moneyFormat={ECurrency.EUR_TOKEN}
+                    valueType={ECurrency.EUR_TOKEN}
                     inputFormat={ENumberInputFormat.ULPS}
                     outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                     value={amount}

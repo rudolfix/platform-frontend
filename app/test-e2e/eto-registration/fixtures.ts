@@ -1,4 +1,4 @@
-import { TFormFixture } from "../utils/forms";
+import { TFormFixture, TFormFixtureExpectedValues } from "../utils/forms";
 
 // about form
 export const aboutFormSubmit: TFormFixture = {
@@ -91,6 +91,25 @@ export const investmentTermsForm: TFormFixture = {
   },
 };
 
+// investment terms expected values
+export const investmentTermsRequiredFormExpectedResult: TFormFixtureExpectedValues = {
+  shareNominalValueEur: "321.00",
+  preMoneyValuationEur: "1 000 000.00",
+  existingCompanyShares: "1 253 862",
+  minimumNewSharesToIssue: "10 000",
+  newSharesToIssue: "20 000",
+};
+
+export const investmentTermsFormExpectedResult: TFormFixtureExpectedValues = {
+  ...investmentTermsRequiredFormExpectedResult,
+  authorizedCapitalShares: "100",
+  newSharesToIssueInWhitelist: "5 000",
+  publicDiscountFraction: "40",
+  whitelistDiscountFraction: "50",
+  newSharesToIssueInFixedSlots: "1 000",
+  fixedSlotsMaximumDiscountFraction: "60",
+};
+
 // eto terms
 export const etoTermsRequiredForm: TFormFixture = {
   minTicketEur: "1000",
@@ -130,6 +149,15 @@ export const etoTermsForm: TFormFixture = {
     value: "15",
     type: "range",
   },
+};
+
+export const etoTermsRequiredFormExpectedValues: TFormFixtureExpectedValues = {
+  minTicketEur: "1000",
+};
+
+export const etoTermsFormExpectedValues: TFormFixtureExpectedValues = {
+  ...etoTermsRequiredFormExpectedValues,
+  maxTicketEur: "100000",
 };
 
 // key individuals

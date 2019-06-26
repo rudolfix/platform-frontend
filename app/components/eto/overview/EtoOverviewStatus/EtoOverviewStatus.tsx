@@ -285,7 +285,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
                     <MoneyNew
                       value={eto.preMoneyValuationEur}
                       inputFormat={ENumberInputFormat.FLOAT}
-                      moneyFormat={ECurrency.EUR}
+                      valueType={ECurrency.EUR}
                       outputFormat={ENumberOutputFormat.INTEGER}
                       defaultValue={<ToBeAnnouncedTooltip />}
                     />
@@ -320,7 +320,7 @@ const EtoOverviewStatusLayout: React.FunctionComponent<
                     <MoneyNew
                       value={tokenPrice}
                       inputFormat={ENumberInputFormat.FLOAT}
-                      moneyFormat={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+                      valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
                       outputFormat={ENumberOutputFormat.FULL}
                       defaultValue={<ToBeAnnounced />}
                     />

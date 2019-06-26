@@ -89,7 +89,7 @@ const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBook
         <MoneyNew
           value={bookBuildingStats.pledgedAmount}
           inputFormat={ENumberInputFormat.FLOAT}
-          moneyFormat={ECurrency.EUR}
+          valueType={ECurrency.EUR}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         />
       </span>

@@ -132,7 +132,7 @@ export const InvestmentPreview: React.FunctionComponent<IProps> = ({
                 <MoneyNew
                   value="123456000000000000000000"
                   inputFormat={ENumberInputFormat.ULPS}
-                  moneyFormat={ECurrency.EUR_TOKEN}
+                  valueType={ECurrency.EUR_TOKEN}
                   outputFormat={ENumberOutputFormat.FULL}
                   theme={EThemeNew.GREEN}
                 />

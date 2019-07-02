@@ -112,11 +112,7 @@ const EtoStatusManager = ({ eto }: IExternalProps) => {
                   <MoneyNew
                     value={eto.contract!.totalInvestment.totalEquivEurUlps}
                     inputFormat={ENumberInputFormat.ULPS}
-<<<<<<< HEAD
-                    moneyFormat={ECurrency.EUR}
-=======
                     valueType={ECurrency.EUR}
->>>>>>> master
                     outputFormat={ENumberOutputFormat.FULL}
                   />
                 ),

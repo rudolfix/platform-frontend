@@ -30,7 +30,7 @@ jobs:
       - image: circleci/node:11.14.0-browsers
     working_directory: /home/circleci/app
     resource_class: large
-    parallelism: 2
+    parallelism: 4
 
     steps:
       - checkout
@@ -74,6 +74,8 @@ jobs:
       image: ubuntu-1604:201903-01
       docker_layer_caching: true
 
+    resource_class: xlarge
+
     parallelism: 4
 
     working_directory: /home/circleci/app
@@ -89,7 +91,7 @@ jobs:
             - v20-deps-
 
       - run:
-          command: source /opt/circleci/.nvm/nvm.sh && yarn test:e2e
+          command: source   /opt/circleci/.nvm/nvm.sh && yarn test:e2e
           no_output_timeout: 30m
 
   codechecks:

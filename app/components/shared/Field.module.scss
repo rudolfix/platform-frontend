@@ -1,0 +1,19 @@
+.rich-field {
+  h2 {
+    @include headline-large;
+
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    @include headline-bigger;
+
+    margin-bottom: .5rem;
+  }
+
+  h4 {
+    @include font-headline;
+
+    margin-bottom: .5rem;
+  }
+}

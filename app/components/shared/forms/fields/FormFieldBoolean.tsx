@@ -2,7 +2,7 @@ import { Field, FieldProps, getIn } from "formik";
 import * as React from "react";
 
 import { OmitKeys } from "../../../../types";
-import { CheckboxLayout, RadioButtonLayout } from "../layouts/CheckboxLayout.unsafe";
+import { CheckboxLayout, RadioButtonLayout } from "../layouts/CheckboxLayout";
 import { FormFieldError } from "./FormFieldError";
 
 type LayoutProps = React.ComponentProps<typeof CheckboxLayout>;

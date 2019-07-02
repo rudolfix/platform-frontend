@@ -24,7 +24,9 @@ const Form = compose<TProps, TProps>(
         !this.props.formik.isSubmitting &&
         !this.props.formik.isValid
       ) {
-        const selector = "input[aria-invalid='true'], textarea[aria-invalid='true']";
+        const selector =
+          "input[aria-invalid='true'], textarea[aria-invalid='true'],  .ck-wrapper__invalid .ck-editor__editable";
+
         const invalidInput = document.querySelector<HTMLInputElement | HTMLTextAreaElement>(
           selector,
         );

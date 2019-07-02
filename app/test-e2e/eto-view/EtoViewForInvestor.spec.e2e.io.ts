@@ -17,7 +17,7 @@ import {
 } from "../utils";
 import { goToEtoPreview } from "../utils/navigation";
 import { createAndLoginNewUser, getEto, loginFixtureAccount } from "../utils/userHelpers";
-import { assertEtoView, assertIssuerEtoView } from "./EtoViewUtils";
+import { assertEtoView } from "./EtoViewUtils";
 
 const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
 
@@ -231,7 +231,6 @@ describe("Eto Investor View", () => {
         kyc: "business",
       }).then(() => {
         goToEtoPreview();
-        assertIssuerEtoView();
 
         cy.get(tid("eto-overview-pitch-deck-button"))
           .should("exist")
@@ -246,7 +245,6 @@ describe("Eto Investor View", () => {
         signTosAgreement: true,
       }).then(() => {
         goToEtoPreview();
-        assertIssuerEtoView();
 
         cy.get(tid("eto-overview-pitch-deck-button"))
           .should("exist")

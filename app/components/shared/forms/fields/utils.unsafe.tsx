@@ -3,9 +3,10 @@ import { get, isFunction } from "lodash";
 import * as React from "react";
 import { FormGroup, InputProps } from "reactstrap";
 import { createNumberMask } from "text-mask-addons/dist/textMaskAddons";
+import { Schema } from "yup";
 
 import { ArrayWithAtLeastOneMember, Dictionary, TTranslatedString } from "../../../../types";
-import { getFieldSchema, isRequired } from "../../../../utils/yupUtils";
+import { getFieldSchema, getSchemaMeta, isRequired } from "../../../../utils/yupUtils";
 import { ECurrency } from "../../formatters/utils";
 import { selectDecimalPlaces } from "../../Money.unsafe";
 import { FormFieldLabel } from "./FormFieldLabel";
@@ -87,6 +88,19 @@ export const isFieldRequired = (validationSchema: any, name: string) => {
     const schema = isFunction(validationSchema) ? validationSchema() : validationSchema;
     const fieldSchema = getFieldSchema(name, schema);
     return isRequired(fieldSchema);
+  } else {
+    return false;
+  }
+};
+
+export const isWysiwyg = <T extends any>(validationSchema: Schema<T>, name: string) => {
+  if (validationSchema) {
+    const schema = isFunction(validationSchema) ? validationSchema() : validationSchema;
+    const fieldSchema = getFieldSchema(name, schema);
+
+    const meta = fieldSchema ? getSchemaMeta(fieldSchema) : undefined;
+
+    return meta ? meta.isWysiwyg : false;
   } else {
     return false;
   }

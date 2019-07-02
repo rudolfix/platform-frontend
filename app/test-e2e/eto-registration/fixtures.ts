@@ -8,7 +8,10 @@ export const aboutFormSubmit: TFormFixture = {
 };
 
 export const aboutFormRequired: TFormFixture = {
-  companyDescription: "..also Beer!",
+  companyDescription: {
+    type: "rich-text",
+    value: "..also Beer!",
+  },
   brandName: "Davecoin",
   companyWebsite: "https://neufund.org",
   companyOneliner: "Free icecream for all",
@@ -288,24 +291,63 @@ export const etoKeyIndividualsForm: TFormFixture = {
 
 // product vision form
 export const productVisionForm: TFormFixture = {
-  inspiration: "Something about inspiration",
-  companyMission: "Something about the mission",
-  productVision: "Something about the vision",
-  problemSolved: "Something about the key problem",
-  customerGroup: "Who do we target?",
-  targetMarketAndIndustry: "Market traction",
-  keyCompetitors: "Key competition",
-  sellingProposition: "The selling prop",
-  keyBenefitsForInvestors: "Benefits for our investors",
+  inspiration: {
+    type: "rich-text",
+    value: "Something about inspiration",
+  },
+  companyMission: {
+    type: "rich-text",
+    value: "Something about the mission",
+  },
+  productVision: {
+    type: "rich-text",
+    value: "Something about the vision",
+  },
+  problemSolved: {
+    type: "rich-text",
+    value: "Something about the key problem",
+  },
+  customerGroup: {
+    type: "rich-text",
+    value: "Who do we target?",
+  },
+  targetMarketAndIndustry: {
+    type: "rich-text",
+    value: "Market traction",
+  },
+  keyCompetitors: {
+    type: "rich-text",
+    value: "Key competition",
+  },
+  sellingProposition: {
+    type: "rich-text",
+    value: "The selling prop",
+  },
+  keyBenefitsForInvestors: {
+    type: "rich-text",
+    value: "Benefits for our investors",
+  },
   useOfCapital: "Cash is all around me",
   "useOfCapitalList.0.description": "Food",
   "useOfCapitalList.0.percent": "30",
   "useOfCapitalList.1.description": "Yoga",
   "useOfCapitalList.1.percent": "65",
-  marketTraction: "Something about the market traction",
-  roadmap: "Our roadmap",
-  businessModel: "A great one for sure",
-  marketingApproach: "Our Marketing",
+  marketTraction: {
+    type: "rich-text",
+    value: "Something about the market traction",
+  },
+  roadmap: {
+    type: "rich-text",
+    value: "Our roadmap",
+  },
+  businessModel: {
+    type: "rich-text",
+    value: "A great one for sure",
+  },
+  marketingApproach: {
+    type: "rich-text",
+    value: "Our Marketing",
+  },
 
   "eto-registration-product-vision-submit": {
     type: "submit",

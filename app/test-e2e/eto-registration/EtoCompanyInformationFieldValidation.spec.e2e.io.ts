@@ -2,19 +2,22 @@ import { pick } from "lodash/fp";
 
 import { etoRegisterRoutes } from "../../components/eto/registration/routes";
 import { fillForm, getFieldError } from "../utils/forms";
-import { tid } from "../utils/selectors";
+import { formRichTextField, tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { aboutFormRequired, aboutFormSubmit } from "./fixtures";
 
 describe("Eto Company Information Field Validation", function(): void {
   this.retries(2);
+
   before(() => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" });
     cy.saveLocalStorage();
   });
+
   beforeEach(() => {
     cy.restoreLocalStorage();
   });
+
   it("should focus first invalid input field", () => {
     cy.visit(etoRegisterRoutes.companyInformation);
     cy.get(tid("eto.form.company-information")).should("exist");
@@ -31,6 +34,23 @@ describe("Eto Company Information Field Validation", function(): void {
     cy.get(tid("eto.form.company-information")).should("exist");
 
     const requiredInputFields = pick(
+      ["brandName", "companyWebsite", "companyOneliner", "companyDescription"],
+      aboutFormRequired,
+    );
+
+    fillForm({
+      ...requiredInputFields,
+      ...aboutFormSubmit,
+    });
+
+    cy.focused().should("have.attr", "name", "keyQuoteFounder");
+  });
+
+  it("should focus first invalid rich text field", () => {
+    cy.visit(etoRegisterRoutes.companyInformation);
+    cy.get(tid("eto.form.company-information")).should("exist");
+
+    const requiredInputFields = pick(
       ["brandName", "companyWebsite", "companyOneliner"],
       aboutFormRequired,
     );
@@ -40,7 +60,7 @@ describe("Eto Company Information Field Validation", function(): void {
       ...aboutFormSubmit,
     });
 
-    cy.focused().should("have.attr", "name", "companyDescription");
+    cy.focused().should("match", formRichTextField("companyDescription"));
   });
 
   it("should correctly validate required fields", () => {

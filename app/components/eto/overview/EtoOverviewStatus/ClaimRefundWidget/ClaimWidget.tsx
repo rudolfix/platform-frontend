@@ -40,7 +40,7 @@ const ClaimWidgetLayout: React.FunctionComponent<IExternalProps> = ({
                 <MoneyNew
                   value={totalEquivEurUlps}
                   inputFormat={ENumberInputFormat.ULPS}
-                  moneyFormat={ECurrency.EUR}
+                  valueType={ECurrency.EUR}
                   outputFormat={ENumberOutputFormat.FULL}
                 />
               ),
@@ -55,7 +55,7 @@ const ClaimWidgetLayout: React.FunctionComponent<IExternalProps> = ({
                 <MoneyNew
                   value={totalEquivEurUlps}
                   inputFormat={ENumberInputFormat.ULPS}
-                  moneyFormat={ECurrency.EUR}
+                  valueType={ECurrency.EUR}
                   outputFormat={ENumberOutputFormat.FULL}
                 />
               ),

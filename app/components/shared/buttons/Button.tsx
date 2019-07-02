@@ -48,16 +48,12 @@ export enum ButtonTextPosition {
   RIGHT = "text-right",
 }
 
-export interface IGeneralButton {
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  disabled?: boolean;
-}
+export type TGeneralButton = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export interface IButtonProps extends IGeneralButton, CommonHtmlProps {
+export interface IButtonProps extends TGeneralButton, CommonHtmlProps {
   layout?: EButtonLayout;
   theme?: EButtonTheme;
   svgIcon?: string;
-  type?: string;
   iconPosition?: EIconPosition;
   size?: ButtonSize;
   width?: ButtonWidth;

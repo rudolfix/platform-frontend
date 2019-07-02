@@ -17,6 +17,7 @@ import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload.unsafe";
+import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget.unsafe";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
@@ -89,9 +90,10 @@ const EtoRegistrationCompanyInformationComponent = (
       <Row>
         <Col>
           <FormSingleFileUpload
+            dimensions={{ width: 150, height: 150 }}
             name="companyLogo"
             label={<FormattedMessage id="eto.form.company-information.logo" />}
-            acceptedFiles="image/*"
+            acceptedFiles={[EMimeType.JPEG, EMimeType.PNG]}
             fileFormatInformation="*150 x 150 png"
             className="mb-3"
             data-test-id="eto-registration-company-logo"
@@ -99,9 +101,10 @@ const EtoRegistrationCompanyInformationComponent = (
         </Col>
         <Col>
           <FormSingleFileUpload
+            dimensions={{ width: 1250, height: 400 }}
             name="companyBanner"
             label={<FormattedMessage id="eto.form.company-information.banner" />}
-            acceptedFiles="image/*"
+            acceptedFiles={[EMimeType.JPEG, EMimeType.PNG]}
             fileFormatInformation="*1250 x 400 png"
             className="mb-3"
             data-test-id="eto-registration-company-banner"
@@ -109,9 +112,10 @@ const EtoRegistrationCompanyInformationComponent = (
         </Col>
         <Col>
           <FormSingleFileUpload
+            dimensions={{ width: 768, height: 400 }}
             name="companyPreviewCardBanner"
             label={<FormattedMessage id="eto.form.company-information.preview-image" />}
-            acceptedFiles="image/*"
+            acceptedFiles={[EMimeType.JPEG, EMimeType.PNG]}
             fileFormatInformation="*768 x 400 png"
             className="mb-3"
             data-test-id="companyPreviewCardBanner"

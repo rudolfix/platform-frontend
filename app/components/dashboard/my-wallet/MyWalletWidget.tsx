@@ -97,7 +97,7 @@ export const MyWalletWidgetComponentBody: React.FunctionComponent<StateProps> = 
               </span>
               <MoneyNew
                 value={totalAmount}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 inputFormat={ENumberInputFormat.ULPS}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 className={cn(styles.money, "pl-1 pl-sm-2 m-0")}

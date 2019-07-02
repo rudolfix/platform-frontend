@@ -26,14 +26,13 @@ import {
   ENumberOutputFormat,
   ERoundingMode,
   formatNumber,
-  selectCurrencyCode,
   selectDecimalPlaces,
   toFixedPrecision,
 } from "../../../shared/formatters/utils";
 import { FormLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { Form } from "../../../shared/forms/Form";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { MaskedMoneyInput } from "../../../shared/MaskedMoneyInput";
+import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
 import { Tooltip } from "../../../shared/tooltips/Tooltip";
 import { VerifiedBankAccount } from "../../../wallet/VerifiedBankAccount";
@@ -166,17 +165,18 @@ const BankTransferRedeemLayout: React.FunctionComponent<IProps> = ({
           </section>
 
           <Form>
-            <MaskedMoneyInput
-              inputFormat={ENumberInputFormat.FLOAT}
+            <MaskedNumberInput
+              storageFormat={ENumberInputFormat.FLOAT}
+              valueType={ECurrency.EUR}
+              outputFormat={ENumberOutputFormat.FULL}
               name="amount"
               value={values["amount"]}
-              currency={ECurrency.EUR}
               onChangeFn={value => {
                 setFieldValue("amount", value);
                 setFieldTouched("amount", true);
               }}
               returnInvalidValues={true}
-              suffix={selectCurrencyCode(ECurrency.EUR)}
+              showUnits={true}
             />
             <section className={cn(styles.section, "mt-4")}>
               <Tooltip

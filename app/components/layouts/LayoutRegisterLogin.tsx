@@ -15,12 +15,7 @@ const LayoutRegisterLogin: React.FunctionComponent = ({ children }) => (
         className={cn("p-4", styles.mainContainer)}
         data-test-id="register-layout"
       >
-        {/* TODO: Removed after enzyme adds support for React.Suspense */}
-        {process.env.NF_IS_MOCHA === "1" ? (
-          children
-        ) : (
-          <React.Suspense fallback={<LoadingIndicator />}>{children}</React.Suspense>
-        )}
+        <React.Suspense fallback={<LoadingIndicator />}>{children}</React.Suspense>
       </Col>
     </Row>
   </Container>

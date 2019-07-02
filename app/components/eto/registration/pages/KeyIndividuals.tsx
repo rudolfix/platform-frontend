@@ -19,6 +19,7 @@ import { getFieldSchema, isRequired } from "../../../../utils/yupUtils";
 import { Button, ButtonIcon, EButtonLayout, EIconPosition } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload.unsafe";
+import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
@@ -66,18 +67,18 @@ interface IKeyIndividualsGroup {
 }
 
 interface IMemberData {
-  name: string;
-  role: string;
-  description: string;
-  image: string;
+  name: string | undefined;
+  role: string | undefined;
+  description: string | undefined;
+  image: string | undefined;
   key: string;
 }
 
 const getBlankMember = () => ({
-  name: "",
-  role: "",
-  description: "",
-  image: "",
+  name: undefined,
+  role: undefined,
+  description: undefined,
+  image: undefined,
   key: Math.random().toString(),
 });
 
@@ -120,8 +121,9 @@ const Individual: React.FunctionComponent<IIndividual> = ({
         <FormSingleFileUpload
           label={<FormattedMessage id="eto.form.key-individuals.image" />}
           name={`${member}.image`}
-          acceptedFiles="image/*"
+          acceptedFiles={[EMimeType.PNG, EMimeType.JPG]}
           fileFormatInformation="*150 x 150px png"
+          dimensions={{ width: 150, height: 150 }}
           data-test-id={`${member}.image`}
         />
         <FormField className="mt-4" name={`${member}.website`} placeholder="website" />

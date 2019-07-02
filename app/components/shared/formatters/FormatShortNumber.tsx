@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { findLast, floor } from "lodash";
+import { ceil, findLast, floor, round } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -79,10 +79,23 @@ export function getRange(number: number, divider?: number): TRangeDescriptor | u
   return findLast(ranges, range => number / range.divider >= 1);
 }
 
+export const getShortNumberRoundingFn = (roundingMode: ERoundingMode) => {
+  switch (roundingMode) {
+    case ERoundingMode.DOWN:
+      return floor;
+    case ERoundingMode.UP:
+      return ceil;
+    case ERoundingMode.HALF_UP:
+    case ERoundingMode.HALF_DOWN:
+    default:
+      return round;
+  }
+};
+
 const FormatShortNumber: React.FunctionComponent<IProps> = ({
   value,
   defaultValue = "",
-  roundingMode = ERoundingMode.UP,
+  roundingMode = ERoundingMode.HALF_UP,
   decimalPlaces = 4,
   inputFormat = ENumberInputFormat.FLOAT,
   outputFormat = EAbbreviatedNumberOutputFormat.LONG,
@@ -102,7 +115,8 @@ const FormatShortNumber: React.FunctionComponent<IProps> = ({
   );
   const range = getRange(number, divider);
   if (range) {
-    const shortValue = floor(number / range.divider, 1).toString();
+    const roundingFn = getShortNumberRoundingFn(roundingMode);
+    const shortValue = roundingFn(number / range.divider, 1).toString();
 
     const translation = (translationKeys[range.key] as {
       [key in THumanReadableFormat]: TTranslatedString

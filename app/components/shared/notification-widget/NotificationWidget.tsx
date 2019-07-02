@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import { compact, isEmpty } from "lodash";
 import * as React from "react";
 import { branch, compose, renderNothing } from "recompose";
@@ -12,6 +13,10 @@ import { Notification } from "./Notification";
 
 import * as styles from "./NotificationWidget.module.scss";
 
+interface IExternalProps {
+  className?: string;
+}
+
 interface IStateProps {
   notifications: INotification[];
 }
@@ -22,11 +27,12 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const NotificationWidgetComponent: React.FunctionComponent<IProps> = ({
+const NotificationWidgetComponent: React.FunctionComponent<IProps & IExternalProps> = ({
   notifications,
   dispatch,
+  className,
 }) => (
-  <div className={styles.widget}>
+  <div className={cn(styles.widget, className)}>
     {notifications.map((notification, index) => (
       <Notification
         key={notification.text + index.toString(10)}
@@ -38,7 +44,7 @@ const NotificationWidgetComponent: React.FunctionComponent<IProps> = ({
   </div>
 );
 
-export const NotificationWidget = compose<IProps, {}>(
+export const NotificationWidget = compose<IProps, IExternalProps>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const notifications = selectNotifications(state);

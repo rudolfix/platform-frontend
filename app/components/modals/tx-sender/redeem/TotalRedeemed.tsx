@@ -23,7 +23,7 @@ const TotalRedeemed: React.FunctionComponent<{ amount: string; bankFee: string }
     <MoneyNew
       value={totalRedeemed}
       inputFormat={ENumberInputFormat.ULPS}
-      moneyFormat={ECurrency.EUR}
+      valueType={ECurrency.EUR}
       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
     />
   );

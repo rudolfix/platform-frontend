@@ -40,7 +40,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<
         <MoneyNew
           value={additionalData.lockedEtherBalance}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           outputFormat={ENumberOutputFormat.FULL}
         />
       }
@@ -51,7 +51,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<
         <MoneyNew
           value={additionalData.etherNeumarksDue}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.NEU}
+          valueType={ECurrency.NEU}
           outputFormat={ENumberOutputFormat.FULL}
         />
       }
@@ -73,7 +73,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<
         <MoneyNew
           value={returnedEther}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           outputFormat={ENumberOutputFormat.FULL}
         />
       }
@@ -84,7 +84,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<
         <MoneyNew
           value={multiplyBigNumbers([txData!.gasPrice, txData!.gas])}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           outputFormat={ENumberOutputFormat.FULL}
         />
       }

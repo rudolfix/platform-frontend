@@ -28,6 +28,7 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms";
+import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/tooltips";
 
@@ -156,7 +157,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
         <KYCEnhancedForm {...this.props} />
         <MultiFileUpload
           uploadType={EKycRequestType.INDIVIDUAL}
-          acceptedFiles="image/*,application/pdf"
+          acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
           layout="vertical"
           onDropFile={this.props.onDropFile}
           files={this.props.files}

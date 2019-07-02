@@ -30,7 +30,7 @@ const CalculatedFee: React.FunctionComponent<{ amount: string; bankFee: string }
     <MoneyNew
       value={calculatedFee}
       inputFormat={ENumberInputFormat.ULPS}
-      moneyFormat={ECurrency.EUR}
+      valueType={ECurrency.EUR}
       outputFormat={ENumberOutputFormat.FULL}
     />
   );

@@ -8,6 +8,7 @@ import { appConnect } from "../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/buttons";
+import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
@@ -58,7 +59,7 @@ export const KYCUploadComponent = ({
     backLink={kycRoutes.individualStart}
   >
     <MultiFileUpload
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       uploadType={EKycRequestType.INDIVIDUAL}
       onDropFile={props.onDropFile}
       files={props.files}

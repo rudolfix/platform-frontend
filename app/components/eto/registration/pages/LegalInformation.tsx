@@ -14,17 +14,22 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
-  ArrayOfKeyValueFields,
-  FormField,
-  FormFieldDate,
-  FormSelectField,
-} from "../../../shared/forms";
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../shared/formatters/utils";
+import { ArrayOfKeyValueFields } from "../../../shared/forms/fields/FormCategoryDistribution.unsafe";
+import { FormField } from "../../../shared/forms/fields/FormField";
+import { FormFieldDate } from "../../../shared/forms/fields/FormFieldDate";
+import { FormMaskedNumberInput } from "../../../shared/forms/fields/FormMaskedNumberInput";
+import { FormSelectField } from "../../../shared/forms/fields/FormSelectField";
 import { FormTextArea } from "../../../shared/forms/fields/FormTextArea";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FUNDING_ROUNDS } from "../../constants";
 import {
   convert,
   convertInArray,
+  convertNumberToString,
   parseStringToFloat,
   parseStringToInteger,
   removeEmptyKeyValueFields,
@@ -104,25 +109,31 @@ const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => (
         values={NUMBER_OF_EMPLOYEES}
         name="numberOfEmployees"
       />
-      <FormField
-        label={<FormattedMessage id="eto.form.legal-information.number-of-founders" />}
-        type="number"
+      <FormMaskedNumberInput
         name="numberOfFounders"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
+        label={<FormattedMessage id="eto.form.legal-information.number-of-founders" />}
       />
       <FormSelectField
         label={<FormattedMessage id="eto.form.legal-information.last-funding-round" />}
         values={FUNDING_ROUNDS}
         name="companyStage"
       />
-      <FormField
-        label={<FormattedMessage id="eto.form.legal-information.last-funding-amount" />}
-        type="number"
+      <FormMaskedNumberInput
         name="lastFundingSizeEur"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.FULL}
+        valueType={ECurrency.EUR}
+        showUnits={true}
+        label={<FormattedMessage id="eto.form.legal-information.last-funding-amount" />}
       />
-      <FormField
-        label={<FormattedMessage id="eto.form.legal-information.number-of-existing-shares" />}
-        type="number"
+      <FormMaskedNumberInput
         name="companyShares"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
+        valueType={undefined}
+        label={<FormattedMessage id="eto.form.legal-information.number-of-existing-shares" />}
       />
       <FormHighlightGroup
         title={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
@@ -165,10 +176,16 @@ const EtoRegistrationLegalInformation = compose<React.FunctionComponent<IExterna
   }),
   withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
     validationSchema: EtoLegalInformationType.toYup(),
-    mapPropsToValues: props => props.company,
+    mapPropsToValues: props => convert(props.company, toFormState),
     handleSubmit: (values, { props }) => props.saveData(values),
   }),
 )(EtoRegistrationLegalInformationComponent);
+
+const toFormState = {
+  companyShares: convertNumberToString(),
+  numberOfFounders: convertNumberToString(),
+  lastFundingSizeEur: convertNumberToString(),
+};
 
 const fromFormState = {
   shareholders: [removeEmptyKeyValueFields(), convertInArray({ shares: parseStringToInteger() })],

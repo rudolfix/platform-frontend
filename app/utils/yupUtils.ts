@@ -3,6 +3,8 @@ import { reach, Schema } from "yup";
 
 const getSchemaTests = <T>(schema: Schema<T>): string[] => schema.describe().tests;
 
+export const getSchemaMeta = <T>(schema: Schema<T>): any => schema.describe().meta;
+
 export const getFieldSchema = <T>(name: string, schema: Schema<T> | undefined) =>
   schema && reach(schema, name);
 

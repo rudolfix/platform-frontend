@@ -196,14 +196,6 @@ const SubmitDashBoardSection: React.FunctionComponent<{
     <UploadTermSheetWidget columnSpan={columnSpan} />
   );
 
-const EtoProgressDashboardSection: React.FunctionComponent<ISubmissionProps> = ({
-  shouldViewEtoSettings,
-}) => (
-  <>
-    <ETOFormsProgressSection shouldViewEtoSettings={shouldViewEtoSettings} />
-  </>
-);
-
 interface IEtoStateRender {
   eto?: TEtoWithCompanyAndContract;
   shouldViewSubmissionSection?: boolean;
@@ -270,7 +262,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
             />
           )}
 
-          <EtoProgressDashboardSection shouldViewEtoSettings={shouldViewEtoSettings} />
+          <ETOFormsProgressSection shouldViewEtoSettings={shouldViewEtoSettings} />
         </>
       );
     case EEtoState.PENDING:

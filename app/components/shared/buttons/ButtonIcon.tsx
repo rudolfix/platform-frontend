@@ -3,15 +3,14 @@ import * as React from "react";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../types";
 import { InlineIcon } from "../icons";
-import { IGeneralButton } from "./Button";
+import { TGeneralButton } from "./Button";
 
 import * as closeIcon from "../../../assets/img/inline_icons/close.svg";
 import * as styles from "./ButtonIcon.module.scss";
 
-interface IButtonIcon extends IGeneralButton, CommonHtmlProps {
+interface IButtonIcon extends TGeneralButton, CommonHtmlProps {
   svgIcon: string;
   alt?: TTranslatedString;
-  type?: string;
 }
 
 const ButtonIcon: React.FunctionComponent<IButtonIcon> = ({
@@ -35,7 +34,7 @@ const ButtonIconPlaceholder: React.FunctionComponent = () => (
   <div className={styles.buttonIconPlaceholder} />
 );
 
-const ButtonClose: React.FunctionComponent<IGeneralButton & CommonHtmlProps> = props => (
+const ButtonClose: React.FunctionComponent<TGeneralButton & CommonHtmlProps> = props => (
   <ButtonIcon {...props} svgIcon={closeIcon} />
 );
 

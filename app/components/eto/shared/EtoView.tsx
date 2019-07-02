@@ -5,7 +5,11 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { ETHEREUM_ZERO_ADDRESS } from "../../../config/constants";
-import { TSocialChannelsType } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EtoCompanyInformationType,
+  EtoPitchType,
+  TSocialChannelsType,
+} from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { isOnChain } from "../../../modules/eto/utils";
 import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
@@ -16,6 +20,7 @@ import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ButtonLink } from "../../shared/buttons";
 import { ChartDoughnut } from "../../shared/charts/ChartDoughnut.unsafe";
+import { Field, FieldSchemaProvider } from "../../shared/Field";
 import { ExternalLink } from "../../shared/links";
 import { ILink, MediaLinksWidget, normalizedUrl } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
@@ -25,7 +30,7 @@ import { IEtoSocialProfile, SocialProfilesList } from "../../shared/SocialProfil
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
-import { EtoOverviewStatus } from "../overview/EtoOverviewStatus";
+import { EtoOverviewStatus } from "../overview/EtoOverviewStatus/EtoOverviewStatus";
 import { EtoTimeline } from "../overview/EtoTimeline/EtoTimeline";
 import { Cover } from "../public-view/Cover";
 import { CoverBanner } from "../public-view/CoverBanner";
@@ -49,6 +54,8 @@ interface IProps {
 
 // TODO: There are lots of castings right now in this file, cause formerly the types of IProps was "any"
 // The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
+
+const EtoViewSchema = EtoCompanyInformationType.toYup().concat(EtoPitchType.toYup());
 
 // TODO: Refactor to smaller components
 const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView }) => {
@@ -112,9 +119,9 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
   const isProductSet = eto.product.id !== ETHEREUM_ZERO_ADDRESS;
 
   return (
-    <>
+    <FieldSchemaProvider value={EtoViewSchema}>
       <PersonProfileModal />
-      <WidgetGridLayout data-test-id="eto.public-view">
+      <WidgetGridLayout className={styles.etoLayout} data-test-id="eto.public-view">
         <CoverBanner eto={eto} isInvestorView={isInvestorView} />
         <Cover
           companyName={brandName}
@@ -186,7 +193,11 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
 
             {(companyDescription || keyQuoteInvestor) && (
               <Panel columnSpan={EColumnSpan.TWO_COL}>
-                {companyDescription && <p className="mb-4">{companyDescription}</p>}
+                {companyDescription && (
+                  <p className="mb-4" data-test-id="eto-view-company-description">
+                    <Field name="companyDescription" value={companyDescription} />
+                  </p>
+                )}
                 {keyQuoteInvestor && <p className={cn(styles.quote, "mb-4")}>{keyQuoteInvestor}</p>}
               </Panel>
             )}
@@ -365,49 +376,49 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.inspiration" />}
                       >
-                        <p>{inspiration}</p>
+                        <Field name="inspiration" value={inspiration} />
                       </AccordionElement>
                     ) : null}
                     {companyMission ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.company-mission" />}
                       >
-                        <p>{companyMission}</p>
+                        <Field name="companyMission" value={companyMission} />
                       </AccordionElement>
                     ) : null}
                     {productVision ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.product-vision" />}
                       >
-                        <p>{productVision}</p>
+                        <Field name="productVision" value={productVision} />
                       </AccordionElement>
                     ) : null}
                     {problemSolved ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
                       >
-                        <p>{problemSolved}</p>
+                        <Field name="problemSolved" value={problemSolved} />
                       </AccordionElement>
                     ) : null}
                     {customerGroup ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
                       >
-                        <p>{customerGroup}</p>
+                        <Field name="customerGroup" value={customerGroup} />
                       </AccordionElement>
                     ) : null}
                     {targetMarketAndIndustry ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.target-segment" />}
                       >
-                        <p>{targetMarketAndIndustry}</p>
+                        <Field name="targetMarketAndIndustry" value={targetMarketAndIndustry} />
                       </AccordionElement>
                     ) : null}
                     {keyCompetitors ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
                       >
-                        <p>{keyCompetitors}</p>
+                        <Field name="keyCompetitors" value={keyCompetitors} />
                       </AccordionElement>
                     ) : null}
                     {sellingProposition ? (
@@ -416,7 +427,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
                           <FormattedMessage id="eto.form.product-vision.selling-proposition" />
                         }
                       >
-                        <p>{sellingProposition}</p>
+                        <Field name="sellingProposition" value={sellingProposition} />
                       </AccordionElement>
                     ) : null}
                     {keyBenefitsForInvestors ? (
@@ -425,7 +436,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
                           <FormattedMessage id="eto.form.product-vision.key-benefits-for-investors" />
                         }
                       >
-                        <p>{keyBenefitsForInvestors}</p>
+                        <Field name="keyBenefitsForInvestors" value={keyBenefitsForInvestors} />
                       </AccordionElement>
                     ) : null}
 
@@ -462,28 +473,28 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.market-traction" />}
                       >
-                        <p>{marketTraction}</p>
+                        <Field name="marketTraction" value={marketTraction} />
                       </AccordionElement>
                     ) : null}
                     {roadmap ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.roadmap" />}
                       >
-                        <p>{roadmap}</p>
+                        <Field name="roadmap" value={roadmap} />
                       </AccordionElement>
                     ) : null}
                     {businessModel ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.business-model" />}
                       >
-                        <p>{businessModel}</p>
+                        <Field name="businessModel" value={businessModel} />
                       </AccordionElement>
                     ) : null}
                     {marketingApproach ? (
                       <AccordionElement
                         title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
                       >
-                        <p>{marketingApproach}</p>
+                        <Field name="marketingApproach" value={marketingApproach} />
                       </AccordionElement>
                     ) : null}
                   </Accordion>
@@ -518,7 +529,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
           )}
         </Container>
       </WidgetGridLayout>
-    </>
+    </FieldSchemaProvider>
   );
 };
 

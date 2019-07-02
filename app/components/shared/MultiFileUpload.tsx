@@ -4,7 +4,8 @@ import Dropzone from "react-dropzone";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { EKycRequestType, IKycFileInfo } from "../../lib/api/KycApi.interfaces";
-import { TAcceptedFileType } from "../../types";
+import { ArrayWithAtLeastOneMember } from "../../types";
+import { TAcceptedFileType } from "./forms/fields/utils.unsafe";
 import { InlineIcon } from "./icons";
 import { ResponsiveImage } from "./ResponsiveImage";
 import { UploadedFiles } from "./UploadedFiles";
@@ -18,7 +19,7 @@ import * as styles from "./MultiFileUpload.module.scss";
 
 interface IProps {
   uploadType: EKycRequestType | EKycRequestType[];
-  acceptedFiles: TAcceptedFileType;
+  acceptedFiles: ArrayWithAtLeastOneMember<TAcceptedFileType>;
   fileUploading: boolean;
   onDropFile: (file: File) => void;
   layout?: "horizontal" | "vertical";
@@ -81,6 +82,7 @@ MultiFileUploadComponent.defaultProps = {
 };
 
 export const MultiFileUpload: React.FunctionComponent<IProps> = ({
+  acceptedFiles,
   fileUploading,
   files,
   onDropFile,
@@ -144,7 +146,7 @@ export const MultiFileUpload: React.FunctionComponent<IProps> = ({
         </div>
       )}
       <MultiFileUploadComponent
-        acceptedFiles="image/*,application/pdf"
+        acceptedFiles={acceptedFiles}
         onDropFile={onDropFile}
         files={files}
         fileUploading={fileUploading}

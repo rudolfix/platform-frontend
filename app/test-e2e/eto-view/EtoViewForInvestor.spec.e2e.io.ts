@@ -2,11 +2,11 @@ import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
 import {
   ENumberOutputFormat,
   ERoundingMode,
-  selectCurrencyCode,
+  selectUnits,
 } from "../../components/shared/formatters/utils";
 import { ETHEREUM_ZERO_ADDRESS } from "../../config/constants";
 import { EAssetType } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { getInvestmentAmount } from "../../lib/api/eto/EtoUtils";
+import { getInvestmentAmount, getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import {
   etoFixtureAddressByName,
   getFormattedNumber,
@@ -17,7 +17,7 @@ import {
 } from "../utils";
 import { goToEtoPreview } from "../utils/navigation";
 import { createAndLoginNewUser, getEto, loginFixtureAccount } from "../utils/userHelpers";
-import { assertEtoView, assertIssuerEtoView } from "./EtoViewUtils";
+import { assertEtoView } from "./EtoViewUtils";
 
 const ETO_ID = etoFixtureAddressByName("ETONoStartDate");
 
@@ -99,8 +99,11 @@ describe("Eto Investor View", () => {
           "contain",
           getPercentage(etoData.whitelistDiscountFraction!),
         );
-
-        const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(etoData);
+        const { sharePrice } = getShareAndTokenPrice(etoData);
+        const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(
+          etoData,
+          sharePrice,
+        );
         const minInvestmentAmountFormatted = getShortFormattedNumber(minInvestmentAmount);
         const maxInvestmentAmountFormatted = getShortFormattedNumber(maxInvestmentAmount);
 
@@ -147,7 +150,7 @@ describe("Eto Investor View", () => {
         );
         cy.get(tid("eto-public-view-currencies")).should(
           "contain",
-          etoData.currencies.map(selectCurrencyCode).join(", "),
+          etoData.currencies.map(selectUnits).join(", "),
         );
         cy.get(tid("eto-public-view-pre-eto-duration")).should(
           "contain",
@@ -228,7 +231,6 @@ describe("Eto Investor View", () => {
         kyc: "business",
       }).then(() => {
         goToEtoPreview();
-        assertIssuerEtoView();
 
         cy.get(tid("eto-overview-pitch-deck-button"))
           .should("exist")
@@ -243,7 +245,6 @@ describe("Eto Investor View", () => {
         signTosAgreement: true,
       }).then(() => {
         goToEtoPreview();
-        assertIssuerEtoView();
 
         cy.get(tid("eto-overview-pitch-deck-button"))
           .should("exist")

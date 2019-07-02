@@ -42,7 +42,7 @@ function* signChallenge(
 ): Iterator<any> {
   const address: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
 
-  const salt = cryptoRandomString(64);
+  const salt = cryptoRandomString({ length: 64 });
 
   if (!web3Manager.personalWallet) {
     throw new Error("Wallet unavailable Error");

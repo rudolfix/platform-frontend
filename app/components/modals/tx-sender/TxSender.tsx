@@ -16,7 +16,7 @@ import { SetEtoDateSummary } from "./eto-flow/SetDateSummary.unsafe";
 import { SignInvestmentAgreementSummary } from "./eto-flow/SignInvestmentAgreementSummary";
 import { InvestmentSelection } from "./investment-flow/Investment";
 import { InvestmentSuccess } from "./investment-flow/Success";
-import { InvestmentSummary } from "./investment-flow/Summary.unsafe";
+import { InvestmentSummary } from "./investment-flow/Summary";
 import { InvestorAcceptPayoutSuccess } from "./investor-payout/AcceptSuccess";
 import { InvestorAcceptPayoutSummary } from "./investor-payout/AcceptSummary";
 import { InvestorRedistributePayoutConfirm } from "./investor-payout/RedistributeConfirm";

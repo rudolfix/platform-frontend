@@ -1,5 +1,4 @@
 import * as cn from "classnames";
-import { Container } from "inversify";
 import * as React from "react";
 import { Tooltip, TooltipProps } from "reactstrap";
 
@@ -28,28 +27,23 @@ export class TooltipBase extends React.Component<
   IState
 > {
   static contextType = ContainerContext;
+  context!: React.ContextType<typeof ContainerContext> | undefined;
 
   static defaultProps = {
     textPosition: ECustomTooltipTextPosition.CENTER,
   };
 
-  logger: ILogger;
+  state = {
+    tooltipOpen: this.props.isOpen || false,
+  };
+
+  logger: ILogger = this.context ? this.context.get<ILogger>(symbols.logger) : noopLogger;
 
   toggle = () => {
     if (!this.props.isOpen) {
       this.setState((s: IState) => ({ tooltipOpen: !s.tooltipOpen }));
     }
   };
-
-  constructor(props: IProps & TooltipProps, container: Container) {
-    super(props);
-
-    this.state = {
-      tooltipOpen: props.isOpen || false,
-    };
-
-    this.logger = container ? container.get<ILogger>(symbols.logger) : noopLogger;
-  }
 
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
     // this function should not be called, but just in case

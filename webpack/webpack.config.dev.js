@@ -40,7 +40,7 @@ module.exports = merge.smart(configCommon, {
         "style-src blob: fonts.googleapis.com 'self' 'unsafe-inline' " +
         "*; " + // this should be only enabled for twitter-iframe.html
         "font-src 'self' fonts.gstatic.com; " +
-        "img-src 'self' data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net " +
+        "img-src 'self' blob: data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net " +
         "*; " + // this should be only enabled for twitter-iframe.html
         "connect-src 'self' https://*.neufund.io wss://localhost:9090", // needed for hot reload
     },

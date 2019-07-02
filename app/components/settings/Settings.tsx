@@ -63,7 +63,7 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
       <SettingsWidgets
         isDynamic={false}
         isLightWallet={isLightWallet}
-        columnSpan={EColumnSpan.ONE_AND_HALF_COL}
+        columnSpan={EColumnSpan.ONE_COL}
       />
       <Container columnSpan={EColumnSpan.THREE_COL}>
         <DashboardHeading
@@ -71,16 +71,16 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
           data-test-id="eto-dashboard-application"
         />
       </Container>
-      <YourEthereumAddressWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+      <YourEthereumAddressWidget columnSpan={EColumnSpan.ONE_COL} />
       {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
         !isIcbmWalletConnected &&
         !isLockedWalletConnected &&
-        isUserInvestor && <CheckYourICBMWalletWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />}
+        isUserInvestor && <CheckYourICBMWalletWidget columnSpan={EColumnSpan.ONE_COL} />}
 
       {isUserInvestor && isIndividual && isPersonalDataProcessed && (
-        <PersonalAccountDetails columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+        <PersonalAccountDetails columnSpan={EColumnSpan.ONE_COL} />
       )}
-      <LinkedBankAccountWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+      <LinkedBankAccountWidget columnSpan={EColumnSpan.ONE_COL} />
     </WidgetGridLayout>
   );
 };

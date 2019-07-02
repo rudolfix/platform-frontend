@@ -31,7 +31,7 @@ const WithdrawTransactionDetails: TransactionDetailsComponent<ETxSenderType.WITH
         <MoneyNew
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.FULL}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           value={additionalData.value}
         />
       }
@@ -44,7 +44,7 @@ const WithdrawTransactionDetails: TransactionDetailsComponent<ETxSenderType.WITH
         <MoneyNew
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.FULL}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           value={additionalData.cost}
         />
       }

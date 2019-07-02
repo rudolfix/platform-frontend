@@ -1,4 +1,4 @@
-import { TFormFixture } from "../utils/forms";
+import { TFormFixture, TFormFixtureExpectedValues } from "../utils/forms";
 
 // about form
 export const aboutFormSubmit: TFormFixture = {
@@ -8,13 +8,16 @@ export const aboutFormSubmit: TFormFixture = {
 };
 
 export const aboutFormRequired: TFormFixture = {
-  companyDescription: "..also Beer!",
+  companyDescription: {
+    type: "rich-text",
+    value: "..also Beer!",
+  },
   brandName: "Davecoin",
   companyWebsite: "https://neufund.org",
   companyOneliner: "Free icecream for all",
   keyQuoteFounder: "Let's make it a great day.",
   companyPreviewCardBanner: {
-    value: "example.jpg",
+    value: "cover_768_400.png",
     type: "single-file",
   },
 };
@@ -24,11 +27,11 @@ export const aboutForm: TFormFixture = {
   ...aboutFormSubmit,
   keyQuoteInvestor: "They're making it a great day!",
   "eto-registration-company-logo": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "eto-registration-company-banner": {
-    value: "example.jpg",
+    value: "cover_1250x400.png",
     type: "single-file",
   },
 };
@@ -91,6 +94,25 @@ export const investmentTermsForm: TFormFixture = {
   },
 };
 
+// investment terms expected values
+export const investmentTermsRequiredFormExpectedResult: TFormFixtureExpectedValues = {
+  shareNominalValueEur: "321.00",
+  preMoneyValuationEur: "1 000 000.00",
+  existingCompanyShares: "1 253 862",
+  minimumNewSharesToIssue: "10 000",
+  newSharesToIssue: "20 000",
+};
+
+export const investmentTermsFormExpectedResult: TFormFixtureExpectedValues = {
+  ...investmentTermsRequiredFormExpectedResult,
+  authorizedCapitalShares: "100",
+  newSharesToIssueInWhitelist: "5 000",
+  publicDiscountFraction: "40",
+  whitelistDiscountFraction: "50",
+  newSharesToIssueInFixedSlots: "1 000",
+  fixedSlotsMaximumDiscountFraction: "60",
+};
+
 // eto terms
 export const etoTermsRequiredForm: TFormFixture = {
   minTicketEur: "1000",
@@ -132,6 +154,15 @@ export const etoTermsForm: TFormFixture = {
   },
 };
 
+export const etoTermsRequiredFormExpectedValues: TFormFixtureExpectedValues = {
+  minTicketEur: "1000",
+};
+
+export const etoTermsFormExpectedValues: TFormFixtureExpectedValues = {
+  ...etoTermsRequiredFormExpectedValues,
+  maxTicketEur: "100000",
+};
+
 // key individuals
 export const etoKeyIndividualsForm: TFormFixture = {
   "team.members.0.name": "Zoe",
@@ -139,7 +170,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
   "team.members.0.description": "Yoga 4 life",
   "team.members.0.website": "http://www.zoe.com",
   "team.members.0.image": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "team.members.0.socialChannels": {
@@ -156,7 +187,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
   "advisors.members.0.description": "Yoga 4 life",
   "advisors.members.0.website": "http://www.zoe.com",
   "advisors.members.0.image": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "advisors.members.0.socialChannels": {
@@ -173,7 +204,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
   "keyAlliances.members.0.description": "Yoga 4 life",
   "keyAlliances.members.0.website": "http://www.zoe.com",
   "keyAlliances.members.0.image": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "keyAlliances.members.0.socialChannels": {
@@ -190,7 +221,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
   "boardMembers.members.0.description": "Yoga 4 life",
   "boardMembers.members.0.website": "http://www.zoe.com",
   "boardMembers.members.0.image": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "boardMembers.members.0.socialChannels": {
@@ -207,7 +238,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
   "notableInvestors.members.0.description": "Yoga 4 life",
   "notableInvestors.members.0.website": "http://www.zoe.com",
   "notableInvestors.members.0.image": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "notableInvestors.members.0.socialChannels": {
@@ -224,7 +255,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
   "keyCustomers.members.0.description": "Yoga 4 life",
   "keyCustomers.members.0.website": "http://www.zoe.com",
   "keyCustomers.members.0.image": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "keyCustomers.members.0.socialChannels": {
@@ -241,7 +272,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
   "partners.members.0.description": "Yoga 4 life",
   "partners.members.0.website": "http://www.zoe.com",
   "partners.members.0.image": {
-    value: "example.jpg",
+    value: "example_150x150.png",
     type: "single-file",
   },
   "partners.members.0.socialChannels": {
@@ -260,24 +291,63 @@ export const etoKeyIndividualsForm: TFormFixture = {
 
 // product vision form
 export const productVisionForm: TFormFixture = {
-  inspiration: "Something about inspiration",
-  companyMission: "Something about the mission",
-  productVision: "Something about the vision",
-  problemSolved: "Something about the key problem",
-  customerGroup: "Who do we target?",
-  targetMarketAndIndustry: "Market traction",
-  keyCompetitors: "Key competition",
-  sellingProposition: "The selling prop",
-  keyBenefitsForInvestors: "Benefits for our investors",
+  inspiration: {
+    type: "rich-text",
+    value: "Something about inspiration",
+  },
+  companyMission: {
+    type: "rich-text",
+    value: "Something about the mission",
+  },
+  productVision: {
+    type: "rich-text",
+    value: "Something about the vision",
+  },
+  problemSolved: {
+    type: "rich-text",
+    value: "Something about the key problem",
+  },
+  customerGroup: {
+    type: "rich-text",
+    value: "Who do we target?",
+  },
+  targetMarketAndIndustry: {
+    type: "rich-text",
+    value: "Market traction",
+  },
+  keyCompetitors: {
+    type: "rich-text",
+    value: "Key competition",
+  },
+  sellingProposition: {
+    type: "rich-text",
+    value: "The selling prop",
+  },
+  keyBenefitsForInvestors: {
+    type: "rich-text",
+    value: "Benefits for our investors",
+  },
   useOfCapital: "Cash is all around me",
   "useOfCapitalList.0.description": "Food",
   "useOfCapitalList.0.percent": "30",
   "useOfCapitalList.1.description": "Yoga",
   "useOfCapitalList.1.percent": "65",
-  marketTraction: "Something about the market traction",
-  roadmap: "Our roadmap",
-  businessModel: "A great one for sure",
-  marketingApproach: "Our Marketing",
+  marketTraction: {
+    type: "rich-text",
+    value: "Something about the market traction",
+  },
+  roadmap: {
+    type: "rich-text",
+    value: "Our roadmap",
+  },
+  businessModel: {
+    type: "rich-text",
+    value: "A great one for sure",
+  },
+  marketingApproach: {
+    type: "rich-text",
+    value: "Our Marketing",
+  },
 
   "eto-registration-product-vision-submit": {
     type: "submit",
@@ -342,7 +412,7 @@ export const riskForm: TFormFixture = {
 // token info
 export const equityTokenInfoForm: TFormFixture = {
   "eto-registration-token-logo": {
-    value: "example.png",
+    value: "example_200x200.png",
     type: "single-file",
   },
   equityTokenName: "Sharpcoin",

@@ -51,7 +51,7 @@ const BankTransferVerifyInfoLayout: React.FunctionComponent<IProps> = ({
             <MoneyNew
               value={minEuroUlps}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.EUR}
+              valueType={ECurrency.EUR}
               outputFormat={ENumberOutputFormat.FULL}
             />
           ),

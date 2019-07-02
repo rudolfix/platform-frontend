@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { getInvestmentAmount } from "../../../lib/api/eto/EtoUtils";
+import { getInvestmentAmount, getShareAndTokenPrice } from "../../../lib/api/eto/EtoUtils";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { MoneyRange } from "../../shared/formatters/MoneyRange";
 import {
@@ -15,14 +15,15 @@ type TExternalProps = {
 };
 
 const InvestmentAmount: React.FunctionComponent<TExternalProps> = ({ etoData }) => {
-  const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(etoData);
+  const { sharePrice } = getShareAndTokenPrice(etoData);
+  const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(etoData, sharePrice);
 
   return (
     <MoneyRange
       valueFrom={minInvestmentAmount}
       valueUpto={maxInvestmentAmount}
       inputFormat={ENumberInputFormat.FLOAT}
-      moneyFormat={ECurrency.EUR}
+      valueType={ECurrency.EUR}
       outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
       defaultValue={<ToBeAnnounced />}
     />

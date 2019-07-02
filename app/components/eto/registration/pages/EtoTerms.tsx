@@ -35,7 +35,7 @@ import {
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
   FormFieldLabel,
-  FormFieldRaw,
+  FormFieldLayout,
   FormHighlightGroup,
   FormLabel,
   FormRange,
@@ -338,7 +338,7 @@ const EtoRegistrationProductType: React.FunctionComponent<IProps> = ({
       </div>
 
       {values.product.maxInvestmentAmount === 0 ? (
-        <FormFieldRaw
+        <FormFieldLayout
           name="product.maxInvestmentAmount"
           disabled={true}
           label={<FormattedMessage id="eto.form.section.eto-terms.product.max-amount.label" />}

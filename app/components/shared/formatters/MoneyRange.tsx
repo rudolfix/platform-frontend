@@ -12,8 +12,8 @@ import {
   ENumberOutputFormat,
   ERoundingMode,
   ESpecialNumber,
-  selectCurrencyCode,
   selectDecimalPlaces,
+  selectUnits,
 } from "./utils";
 
 import * as styles from "./MoneyNew.module.scss";
@@ -31,7 +31,7 @@ export const MoneyRange: React.FunctionComponent<
   valueUpto,
   inputFormat = ENumberInputFormat.ULPS,
   outputFormat = ENumberOutputFormat.FULL,
-  moneyFormat,
+  valueType,
   currencySymbol = ECurrencySymbol.CODE,
   defaultValue = "-",
   separator = "–",
@@ -54,7 +54,7 @@ export const MoneyRange: React.FunctionComponent<
           valueUpto={valueUpto}
           inputFormat={inputFormat}
           outputFormat={outputFormat}
-          decimalPlaces={selectDecimalPlaces(moneyFormat, outputFormat)}
+          decimalPlaces={selectDecimalPlaces(valueType, outputFormat)}
           roundingMode={ERoundingMode.DOWN}
           separator={separator}
         />
@@ -70,7 +70,7 @@ export const MoneyRange: React.FunctionComponent<
           valueUpto={valueUpto}
           inputFormat={inputFormat}
           outputFormat={outputFormat}
-          decimalPlaces={selectDecimalPlaces(moneyFormat, outputFormat)}
+          decimalPlaces={selectDecimalPlaces(valueType, outputFormat)}
           roundingMode={ERoundingMode.UP}
           separator={separator}
         />
@@ -82,7 +82,7 @@ export const MoneyRange: React.FunctionComponent<
           valueUpto={valueUpto}
           inputFormat={inputFormat}
           outputFormat={outputFormat}
-          decimalPlaces={selectDecimalPlaces(moneyFormat, outputFormat)}
+          decimalPlaces={selectDecimalPlaces(valueType, outputFormat)}
           roundingMode={ERoundingMode.DOWN}
           separator={separator}
         />
@@ -96,7 +96,7 @@ export const MoneyRange: React.FunctionComponent<
       {formattedValue && currencySymbol === ECurrencySymbol.CODE && (
         <span className={cn(styles.currency, currencyClassName)} data-test-id="units">
           {" "}
-          {selectCurrencyCode(moneyFormat)}
+          {selectUnits(valueType)}
         </span>
       )}
     </span>

@@ -17,6 +17,8 @@ export const PLATFORM_ZERO_FEE = 0;
  */
 export const MONEY_DECIMALS = 18;
 
+export const DEFAULT_DECIMAL_PLACES = 4;
+
 /**
  * Constants for permissions
  */

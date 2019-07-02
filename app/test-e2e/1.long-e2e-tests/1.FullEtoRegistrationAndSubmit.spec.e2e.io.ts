@@ -57,15 +57,15 @@ describe("Eto Forms", () => {
     cy.get(tid("key-individuals-group-button-keyCustomers")).awaitedClick();
     cy.get(tid("key-individuals-group-button-partners")).awaitedClick();
     fillForm(etoKeyIndividualsForm);
-  });
 
-  it("will find eto terms and fill investment terms", () => {
     assertEtoDashboard();
     cy.get(`${tid("eto-progress-widget-key-individuals")} ${tid("chart-circle.progress")}`).should(
       "contain",
       "100%",
     );
+  });
 
+  it("will find eto terms and fill investment terms", () => {
     // hidden for now as requested in #2633
     // fillAndAssertFull("eto-progress-widget-risk-assessment", riskForm);
 

@@ -61,7 +61,7 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
       return (
         <>
           <MoneyNew
-            moneyFormat={ECurrency.ETH}
+            valueType={ECurrency.ETH}
             inputFormat={ENumberInputFormat.ULPS}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
             value={wallet.enabled ? wallet.balanceEth : wallet.icbmBalanceEth}
@@ -70,7 +70,7 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
             ={" "}
             <MoneyNew
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.EUR}
+              valueType={ECurrency.EUR}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur}
             />
@@ -85,13 +85,13 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
           <MoneyNew
             inputFormat={ENumberInputFormat.ULPS}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            moneyFormat={ECurrency.EUR_TOKEN}
+            valueType={ECurrency.EUR_TOKEN}
             value={wallet.enabled ? wallet.balanceNEuro : wallet.icbmBalanceNEuro}
           />
           <div className={styles.balanceEur}>
             ={" "}
             <MoneyNew
-              moneyFormat={ECurrency.EUR}
+              valueType={ECurrency.EUR}
               inputFormat={ENumberInputFormat.ULPS}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur}

@@ -15,7 +15,7 @@ interface IProps {
   inputId?: string;
   name: string;
   label?: string | React.ReactNode;
-  value?: any;
+  value?: string;
   checked?: boolean;
   disabled?: boolean;
   inputRef?: (el: HTMLInputElement | null) => void;

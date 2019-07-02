@@ -6,7 +6,7 @@ import { NavLinkConnected } from "../../utils/connectedRouting";
 
 import * as styles from "./Tabs.module.scss";
 
-type TComponent = React.ReactElement<TabContent>;
+type TComponent = React.ReactElement<ITabContent>;
 
 interface ITabsProps {
   children: (TComponent | boolean | undefined)[];
@@ -70,6 +70,7 @@ class Tabs extends React.Component<ITabsProps & CommonHtmlProps> {
         {tabContent.props.tab}
       </NavLinkConnected>
     ) : (
+      // TODO: Change to buttons
       <div
         {...commonProps}
         className={cn(className, {
@@ -86,20 +87,21 @@ class Tabs extends React.Component<ITabsProps & CommonHtmlProps> {
     const { children, layoutSize, layoutPosition, className } = this.props;
     const { activeIndex } = this.state;
 
-    if (!children) {
-      return;
+    // During props destruction TS loses correct typing cast to TComponent array is required
+    const tabs = React.Children.toArray(children).filter(React.isValidElement) as TComponent[];
+
+    if (!tabs) {
+      return null;
     }
 
     return (
       <>
         <div className={cn(styles.tabsWrapper, layoutSize, className)}>
           <div className={cn(styles.tabsOverflowWrapper, layoutPosition)}>
-            {children.map(
-              (child, index) => child && typeof child !== "boolean" && this.renderTab(index, child),
-            )}
+            {tabs.map((child: TComponent, index: number) => this.renderTab(index, child))}
           </div>
         </div>
-        {children[activeIndex]}
+        {tabs[activeIndex]}
       </>
     );
   }

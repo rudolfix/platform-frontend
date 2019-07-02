@@ -1,5 +1,11 @@
 import { assertEtoDocuments } from "../utils/assertions";
-import { checkForm, fillForm, TFormFixture, uploadDocumentToFieldWithTid } from "../utils/forms";
+import {
+  checkForm,
+  fillForm,
+  TFormFixture,
+  TFormFixtureExpectedValues,
+  uploadDocumentToFieldWithTid,
+} from "../utils/forms";
 import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
@@ -9,15 +15,21 @@ import {
   aboutFormSubmit,
   equityTokenInfoForm,
   etoTermsRequiredForm,
+  etoTermsRequiredFormExpectedValues,
   investmentTermsRequiredForm,
+  investmentTermsRequiredFormExpectedResult,
   legalInfoRequiredForm,
   mediaRequiredForm,
   votingRights,
 } from "./fixtures";
 
-const openAndCheckValues = (section: string, sectionForm: TFormFixture) => {
+const openAndCheckValues = (
+  section: string,
+  sectionForm: TFormFixture,
+  expectedValues?: TFormFixtureExpectedValues,
+) => {
   cy.get(tid(section, "button")).click();
-  checkForm(sectionForm);
+  checkForm(sectionForm, expectedValues);
   goToEtoDashboard();
 };
 
@@ -53,8 +65,16 @@ describe("Eto Forms", () => {
       fillAndAssert("eto-progress-widget-voting-right", votingRights);
 
       // some checks to make sure the values in already saved forms are displayed correctly
-      openAndCheckValues("eto-progress-widget-investment-terms", investmentTermsRequiredForm);
-      openAndCheckValues("eto-progress-widget-eto-terms", etoTermsRequiredForm);
+      openAndCheckValues(
+        "eto-progress-widget-investment-terms",
+        investmentTermsRequiredForm,
+        investmentTermsRequiredFormExpectedResult,
+      );
+      openAndCheckValues(
+        "eto-progress-widget-eto-terms",
+        etoTermsRequiredForm,
+        etoTermsRequiredFormExpectedValues,
+      );
 
       cy.get(tid("dashboard-upload-termsheet")).click();
       assertEtoDocuments();

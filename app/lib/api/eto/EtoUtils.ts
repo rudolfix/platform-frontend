@@ -1,18 +1,14 @@
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { TEtoSpecsData, TPartialEtoSpecData } from "./EtoApi.interfaces.unsafe";
 
-export const getInvestmentAmount = (eto: TPartialEtoSpecData) => {
-  const { sharePrice } = getShareAndTokenPrice(eto);
-
-  return {
-    minInvestmentAmount: getMaxInvestmentAmountWithDiscount(
-      eto,
-      sharePrice,
-      eto.minimumNewSharesToIssue,
-    ),
-    maxInvestmentAmount: getMaxInvestmentAmountWithDiscount(eto, sharePrice, eto.newSharesToIssue),
-  };
-};
+export const getInvestmentAmount = (eto: TPartialEtoSpecData, sharePrice: number | undefined) => ({
+  minInvestmentAmount: getMaxInvestmentAmountWithDiscount(
+    eto,
+    sharePrice,
+    eto.minimumNewSharesToIssue,
+  ),
+  maxInvestmentAmount: getMaxInvestmentAmountWithDiscount(eto, sharePrice, eto.newSharesToIssue),
+});
 
 export const getNumberOfTokens = ({
   newSharesToIssue = 1,

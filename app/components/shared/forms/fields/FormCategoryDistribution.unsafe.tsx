@@ -5,8 +5,8 @@ import * as Yup from "yup";
 
 import { CommonHtmlProps, TFormikConnect, TTranslatedString } from "../../../../types";
 import { ButtonIcon, ButtonIconPlaceholder } from "../../buttons";
-import { FormInput } from "./FormInput.unsafe";
-import { NumberTransformingField } from "./NumberTransformingField.unsafe";
+import { FormInput } from "./FormInput";
+import { NumberTransformingField } from "./NumberTransformingField";
 
 import * as closeIcon from "../../../../assets/img/inline_icons/round_close.svg";
 import * as plusIcon from "../../../../assets/img/inline_icons/round_plus.svg";
@@ -42,10 +42,10 @@ interface IExternalProps {
 class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps & TFormikConnect> {
   name = this.props.name;
 
-  setAllFieldsTouched = (_: Event, isTouched: boolean = true) => {
+  setAllFieldsTouched = () => {
     if (this.props.validationSchema) {
       return Object.keys(this.props.validationSchema.fields).map(key => {
-        this.props.formik.setFieldTouched(`${this.name}.${key}`, isTouched);
+        this.props.formik.setFieldTouched(`${this.name}.${key}`, true);
       });
     }
 
@@ -96,7 +96,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
             disabled={disabled}
             name={`${name}.${formFieldKeys[0]}`}
             placeholder={keyPlaceholder}
-            customOnBlur={this.setAllFieldsTouched}
+            onBlur={this.setAllFieldsTouched}
             customValidation={this.compoundFieldValidation(
               formFieldKeys[0],
               `${name}.${formFieldKeys[1]}`,
@@ -122,7 +122,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
               min="0"
               prefix={prefix}
               name={`${name}.${formFieldKeys[1]}`}
-              customOnBlur={this.setAllFieldsTouched}
+              onBlur={this.setAllFieldsTouched}
               placeholder={valuePlaceholder}
               customValidation={this.compoundFieldValidation(
                 formFieldKeys[1],

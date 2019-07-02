@@ -1,7 +1,13 @@
 import { expect } from "chai";
 import * as Yup from "yup";
 
-import { isFieldRequired, isNonValid, isValid } from "./utils.unsafe";
+import {
+  EMimeType,
+  generateFileInformationDescription,
+  isFieldRequired,
+  isNonValid,
+  isValid,
+} from "./utils.unsafe";
 
 describe("Form utils", () => {
   describe("isValid", () => {
@@ -66,5 +72,38 @@ describe("isFieldRequired", () => {
     const schema = Yup.object({ key1: Yup.string(), key2: Yup.string().notRequired() });
     expect(isFieldRequired(schema, "key1")).to.be.false;
     expect(isFieldRequired(schema, "key2")).to.be.false;
+  });
+});
+
+describe("generateFileInformationDescription", () => {
+  it("should generate file description if fileFormatInformation is not given", () => {
+    const input = generateFileInformationDescription(
+      [EMimeType.JPG, EMimeType.PDF, EMimeType.SVG, EMimeType.PNG],
+      { width: 100, height: 200 },
+    );
+    const expectedOutput = "100px × 200px, jpg, pdf, svg or png";
+
+    expect(input).to.eq(expectedOutput);
+  });
+  it("should not insert any delimiter if there's only one file type", () => {
+    const input = generateFileInformationDescription([EMimeType.JPG], { width: 100, height: 200 });
+    const expectedOutput = "100px × 200px, jpg";
+
+    expect(input).to.eq(expectedOutput);
+  });
+  it("should insert an ' or ' if there are two file types", () => {
+    const input = generateFileInformationDescription([EMimeType.JPG, EMimeType.PNG], {
+      width: 100,
+      height: 200,
+    });
+    const expectedOutput = "100px × 200px, jpg or png";
+
+    expect(input).to.eq(expectedOutput);
+  });
+  it("should work without dimensions too", () => {
+    const input = generateFileInformationDescription([EMimeType.JPG, EMimeType.PNG], undefined);
+    const expectedOutput = "jpg or png";
+
+    expect(input).to.eq(expectedOutput);
   });
 });

@@ -34,6 +34,7 @@ class YTS<T> {
   constructor(protected validator: Yup.Schema<any>, protected isRequired = true) {}
 
   toYup(): Yup.Schema<any> {
+    // TODO: should be moved to constructor as each time creating new object is bad for performance
     return this.isRequired ? this.validator.required() : this.validator;
   }
 

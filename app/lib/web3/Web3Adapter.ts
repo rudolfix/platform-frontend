@@ -60,15 +60,8 @@ export class Web3Adapter {
     address: EthereumAddress | EthereumAddressWithChecksum,
     data: string,
   ): Promise<string> {
-    const sign = promisify<any>(this.web3.eth.sign);
-    const resultData = await sign(address, data);
-
-    // as some web3 providers pass error as result, promisify may not throw
-    if (resultData.error !== undefined) {
-      throw resultData.error;
-    }
-
-    return resultData.result;
+    const sign = promisify<string>(this.web3.eth.sign);
+    return sign(address, data);
   }
 
   public async signTypedData(

@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-import { MONEY_DECIMALS } from "../../../config/constants";
+import { DEFAULT_DECIMAL_PLACES, MONEY_DECIMALS } from "../../../config/constants";
 import { invariant } from "../../../utils/invariant";
 
 export enum ERoundingMode {
@@ -20,6 +20,10 @@ export enum ECurrency {
   EUR = "eur",
   EUR_TOKEN = "eur_t",
   ETH = "eth",
+}
+
+export enum ENumberFormat {
+  PERCENTAGE = "percentage",
 }
 
 export enum EPriceFormat {
@@ -48,7 +52,7 @@ export enum ESpecialNumber {
   UNLIMITED = "unlimited",
 }
 
-export type TMoneyFormat = ECurrency | EPriceFormat;
+export type TValueFormat = ECurrency | EPriceFormat | ENumberFormat;
 
 interface IToFixedPrecision {
   value: string | BigNumber | number;
@@ -69,7 +73,7 @@ interface IFormatNumber {
 }
 
 export const selectDecimalPlaces = (
-  moneyFormat: TMoneyFormat,
+  valueType: TValueFormat,
   outputFormat: THumanReadableFormat = ENumberOutputFormat.FULL,
 ): number => {
   if (
@@ -80,7 +84,7 @@ export const selectDecimalPlaces = (
   ) {
     return 0;
   } else {
-    switch (moneyFormat) {
+    switch (valueType) {
       case EPriceFormat.SHARE_PRICE:
       case ECurrency.EUR:
       case ECurrency.EUR_TOKEN:
@@ -90,8 +94,9 @@ export const selectDecimalPlaces = (
       case EPriceFormat.EQUITY_TOKEN_PRICE_EUR_TOKEN:
       case ECurrency.ETH:
       case ECurrency.NEU:
+      case ENumberFormat.PERCENTAGE:
       default:
-        return 4;
+        return DEFAULT_DECIMAL_PLACES;
     }
   }
 };
@@ -129,18 +134,25 @@ function getBigNumberRoundingMode(
   roundingMode: ERoundingMode,
   outputFormat: THumanReadableFormat = ENumberOutputFormat.FULL,
 ): any {
-  switch (roundingMode) {
-    case ERoundingMode.DOWN:
-      return BigNumber.ROUND_DOWN;
-    case ERoundingMode.HALF_DOWN:
-      return BigNumber.ROUND_HALF_DOWN;
-    case ERoundingMode.HALF_UP:
-      return BigNumber.ROUND_HALF_UP;
-    case ERoundingMode.UP:
-    default:
-      return outputFormat === ENumberOutputFormat.INTEGER
-        ? BigNumber.ROUND_HALF_DOWN
-        : BigNumber.ROUND_UP;
+  if (
+    outputFormat === ENumberOutputFormat.FULL_ROUND_UP ||
+    outputFormat === ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP
+  ) {
+    return BigNumber.ROUND_UP;
+  } else if (outputFormat === ENumberOutputFormat.INTEGER) {
+    return BigNumber.ROUND_HALF_DOWN;
+  } else {
+    switch (roundingMode) {
+      case ERoundingMode.DOWN:
+        return BigNumber.ROUND_DOWN;
+      case ERoundingMode.HALF_DOWN:
+        return BigNumber.ROUND_HALF_DOWN;
+      case ERoundingMode.HALF_UP:
+        return BigNumber.ROUND_HALF_UP;
+      case ERoundingMode.UP:
+      default:
+        return BigNumber.ROUND_UP;
+    }
   }
 }
 
@@ -290,8 +302,8 @@ export const stripNumberFormatting = (value: string) => {
   }
 };
 
-export const selectCurrencyCode = (moneyFormat: TMoneyFormat): string => {
-  switch (moneyFormat) {
+export const selectUnits = (valueType: TValueFormat): string => {
+  switch (valueType) {
     case ECurrency.ETH:
     case EPriceFormat.EQUITY_TOKEN_PRICE_ETH:
       return "ETH";
@@ -304,6 +316,8 @@ export const selectCurrencyCode = (moneyFormat: TMoneyFormat): string => {
     case ECurrency.EUR_TOKEN:
     case EPriceFormat.EQUITY_TOKEN_PRICE_EUR_TOKEN:
       return "nEUR";
+    case ENumberFormat.PERCENTAGE:
+      return "%";
     default:
       throw new Error("Unsupported money format");
   }

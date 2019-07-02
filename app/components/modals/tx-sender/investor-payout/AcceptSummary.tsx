@@ -11,7 +11,7 @@ import { appConnect } from "../../../../store";
 import { EthereumAddressWithChecksum } from "../../../../types";
 import { commitmentStatusLink } from "../../../appRouteUtils";
 import { Button } from "../../../shared/buttons";
-import { selectCurrencyCode } from "../../../shared/formatters/utils";
+import { selectUnits } from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { ExternalLink } from "../../../shared/links";
 import { AcceptTransactionDetails } from "./AcceptTransactionDetails";
@@ -41,7 +41,7 @@ const InvestorAcceptPayoutSummaryLayout: React.FunctionComponent<TComponentProps
       {additionalData.tokensDisbursals.length === 1 ? (
         <FormattedMessage
           id="investor-payout.accept.summary.single.description"
-          values={{ token: selectCurrencyCode(additionalData.tokensDisbursals[0].token) }}
+          values={{ token: selectUnits(additionalData.tokensDisbursals[0].token) }}
         />
       ) : (
         <FormattedMessage id="investor-payout.accept.summary.combined.description" />

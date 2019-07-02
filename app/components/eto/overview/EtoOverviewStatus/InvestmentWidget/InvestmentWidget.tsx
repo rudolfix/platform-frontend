@@ -59,14 +59,14 @@ const InvestmentWidgetLayout: React.FunctionComponent<TInvestWidgetProps> = ({
               value={eto.contract!.totalInvestment.etherTokenBalance}
               inputFormat={ENumberInputFormat.ULPS}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-              moneyFormat={ECurrency.ETH}
+              valueType={ECurrency.ETH}
             />
             <br />
             <MoneyNew
               value={eto.contract!.totalInvestment.euroTokenBalance}
               inputFormat={ENumberInputFormat.ULPS}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-              moneyFormat={ECurrency.EUR_TOKEN}
+              valueType={ECurrency.EUR_TOKEN}
             />
           </div>
           {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (

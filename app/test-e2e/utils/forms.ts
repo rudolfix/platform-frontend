@@ -1,7 +1,7 @@
 import { findKey, forEach } from "lodash";
 
 import { Dictionary } from "../../types";
-import { acceptWallet, formFieldValue } from "./index";
+import { acceptWallet, formFieldValue, formRichTextField } from "./index";
 import { formField, formFieldErrorMessage, tid } from "./selectors";
 
 type TFormFieldFixture =
@@ -29,6 +29,10 @@ type TFormFieldFixture =
       type: "submit";
     }
   | {
+      type: "rich-text";
+      value: string;
+    }
+  | {
       type: "custom";
       method: string;
       value: any;
@@ -39,7 +43,11 @@ export type TFormFixture = {
   [fieldIdentifier: string]: TFormFieldFixture;
 };
 
-export const fillField = (key: string, value: string, parent: string = "body") => {
+export type TFormFixtureExpectedValues = {
+  [fieldIdentifier: string]: string;
+};
+
+export const fillField = (key: string, value: string, parent: string = "body") =>
   cy.get(parent).within(() => {
     cy.get(formField(key))
       .clear()
@@ -47,7 +55,15 @@ export const fillField = (key: string, value: string, parent: string = "body") =
       .type(value)
       .blur();
   });
-};
+
+export const fillRichTextField = (key: string, value: string, parent: string = "body") =>
+  cy.get(parent).within(() => {
+    cy.get(formRichTextField(key))
+      .clear()
+      .wait(200)
+      .type(value)
+      .blur();
+  });
 
 // workaround for cypress issue with range input
 //@see https://github.com/cypress-io/cypress/issues/1570
@@ -86,6 +102,10 @@ export const fillForm = (
     // the default is just typing a string into the input
     if (typeof field === "string") {
       fillField(key, field);
+    }
+    // rich text area
+    else if (field.type === "rich-text") {
+      fillRichTextField(key, field.value);
     }
     // date
     else if (field.type === "date") {
@@ -181,11 +201,11 @@ export const fillForm = (
   }
 };
 
-export const checkForm = (fixture: TFormFixture) => {
+export const checkForm = (fixture: TFormFixture, expectedValues?: TFormFixtureExpectedValues) => {
   forEach(fixture, (field, key) => {
     // the default is just typing a string into the input
     if (typeof field === "string") {
-      checkField(key, field);
+      checkField(key, (expectedValues && expectedValues[key]) || field);
     }
     // date
     else if (field.type === "date") {
@@ -264,7 +284,7 @@ export const uploadDocumentToFieldWithTid = (targetTid: string, fixture: string)
 export const uploadSingleFileToFieldWithTid = (targetTid: string, fixture: string) => {
   cy.get(tid(targetTid)).within(() => {
     cy.root().dropFile(fixture);
-    cy.get(tid("single-file-upload-delete-file")).should("exist");
+    cy.get("img").should("exist");
   });
 };
 

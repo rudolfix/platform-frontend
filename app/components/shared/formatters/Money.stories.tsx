@@ -19,28 +19,28 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={value}
       />
       <br />
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.NEU}
+        valueType={ECurrency.NEU}
         value={value}
       />
       <br />
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR_TOKEN}
+        valueType={ECurrency.EUR_TOKEN}
         value={value}
       />
       <br />
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.ETH}
+        valueType={ECurrency.ETH}
         value={value}
       />
     </>
@@ -50,7 +50,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         outputFormat={ENumberOutputFormat.FULL}
         inputFormat={ENumberInputFormat.FLOAT}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={"1234567"}
       />
     </>
@@ -60,7 +60,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.INTEGER}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={"1234567"}
       />
     </>
@@ -70,7 +70,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={EAbbreviatedNumberOutputFormat.LONG}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={"1234567"}
       />
     </>
@@ -80,7 +80,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={"1234567"}
       />
     </>
@@ -90,7 +90,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={undefined}
       />
     </>
@@ -100,7 +100,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={undefined}
         defaultValue={"-- nothing here :) --"}
       />
@@ -111,7 +111,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={value}
         transfer={EMoneyTransferNew.INCOME}
       />
@@ -119,7 +119,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={value}
         transfer={EMoneyTransferNew.OUTCOME}
       />
@@ -129,7 +129,7 @@ storiesOf("MoneyNew", module)
     <MoneyNew
       inputFormat={ENumberInputFormat.ULPS}
       outputFormat={ENumberOutputFormat.FULL}
-      moneyFormat={ECurrency.EUR}
+      valueType={ECurrency.EUR}
       value={value}
       currencySymbol={ECurrencySymbol.CODE}
     />
@@ -140,7 +140,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={value}
         theme={EThemeNew.GREEN}
       />
@@ -150,7 +150,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.ETH}
+        valueType={ECurrency.ETH}
         value={value}
         theme={EThemeNew.ORANGE}
       />
@@ -160,7 +160,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.ETH}
+        valueType={ECurrency.ETH}
         value={value}
         theme={EThemeNew.GREEN_BIG}
       />
@@ -171,7 +171,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={"32376189" + "0".repeat(10)}
         currencySymbol={ECurrencySymbol.CODE}
       />
@@ -179,7 +179,7 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={"32376189" + "0".repeat(10)}
         currencySymbol={ECurrencySymbol.NONE}
       />
@@ -187,14 +187,14 @@ storiesOf("MoneyNew", module)
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.ETH}
+        valueType={ECurrency.ETH}
         value={"4212376189" + "0".repeat(10)}
       />
       <br />
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.NEU}
+        valueType={ECurrency.NEU}
         value={"353212376189" + "0".repeat(10)}
       />
     </>
@@ -206,7 +206,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={value1}
         valueUpto={value}
       />
@@ -214,7 +214,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.NEU}
+        valueType={ECurrency.NEU}
         valueFrom={value1}
         valueUpto={value}
       />
@@ -222,7 +222,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR_TOKEN}
+        valueType={ECurrency.EUR_TOKEN}
         valueFrom={value1}
         valueUpto={value}
       />
@@ -230,7 +230,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.ETH}
+        valueType={ECurrency.ETH}
         valueFrom={value1}
         valueUpto={value}
       />
@@ -241,7 +241,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={value1}
         valueUpto={value}
         separator=" :: "
@@ -253,7 +253,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={undefined}
         valueUpto={undefined}
       />
@@ -264,7 +264,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={undefined}
         valueUpto={undefined}
         defaultValue={"***"}
@@ -276,7 +276,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         outputFormat={ENumberOutputFormat.FULL}
         inputFormat={ENumberInputFormat.FLOAT}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={"222"}
         valueUpto={"1236525"}
         separator=" :: "
@@ -288,7 +288,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={"12365"}
         valueUpto={"10236525"}
       />
@@ -299,7 +299,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={EAbbreviatedNumberOutputFormat.LONG}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={"123525"}
         valueUpto={"102365325"}
       />
@@ -310,7 +310,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.INTEGER}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={value1}
         valueUpto={value}
       />
@@ -321,7 +321,7 @@ storiesOf("MoneyRange", module)
       <MoneyRange
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={"123525.000"}
         valueUpto={"22123525.000"}
       />

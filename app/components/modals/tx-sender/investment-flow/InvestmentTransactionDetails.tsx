@@ -4,18 +4,20 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
-import { formatThousands } from "../../../shared/formatters/utils";
+import { FormatNumber } from "../../../shared/formatters/FormatNumber";
+import { MoneyNew } from "../../../shared/formatters/Money";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EPriceFormat,
+} from "../../../shared/formatters/utils";
 import { TooltipBase } from "../../../shared/tooltips";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
 import { TransactionDetailsComponent } from "../types";
-import {
-  formatEthTsd,
-  formatEurTsd,
-  formatSummaryTokenPrice,
-  getActualTokenPriceEur,
-} from "./utils";
+import { getActualTokenPriceEur, getTokenPriceDiscount } from "./utils";
 
 import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as info from "../../../../assets/img/notifications/info.svg";
@@ -36,47 +38,141 @@ const NeuRewardCaption: React.FunctionComponent<{ isIcbm?: boolean }> = ({ isIcb
   return isIcbm ? icbmMsg : neuMsg;
 };
 
+interface IEquityTockenValue {
+  equityTokens: string;
+}
+
+interface IEstimatedReward {
+  estimatedReward: string;
+}
+
+interface IInvestment {
+  investmentEur: string;
+  investmentEth: string;
+}
+
+interface ITokenPriceAndDiscount {
+  actualTokenPrice: string;
+  discount: string | null;
+}
+
+interface ITotal {
+  totalCostEur: string;
+  totalCostEth: string;
+}
+
+const EquityTokensValue: React.FunctionComponent<IEquityTockenValue> = ({ equityTokens }) => (
+  <span>
+    {/* TODO: Change to actual custom token icon (eto.equityTokenImage)*/}
+    <img src={tokenIcon} alt="" />{" "}
+    <FormatNumber
+      value={equityTokens}
+      inputFormat={ENumberInputFormat.FLOAT}
+      outputFormat={ENumberOutputFormat.INTEGER}
+    />
+  </span>
+);
+
+const EstimatedRewardValue: React.FunctionComponent<IEstimatedReward> = ({ estimatedReward }) => (
+  <span>
+    <img src={neuIcon} alt="" />{" "}
+    <MoneyNew
+      value={estimatedReward}
+      inputFormat={ENumberInputFormat.ULPS}
+      valueType={ECurrency.NEU}
+      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+    />
+  </span>
+);
+
+const Investment: React.FunctionComponent<IInvestment> = ({ investmentEur, investmentEth }) => (
+  <>
+    <MoneyNew
+      data-test-id="euro"
+      value={investmentEur}
+      inputFormat={ENumberInputFormat.ULPS}
+      valueType={ECurrency.EUR}
+      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+    />
+    {" ≈ "}
+    <MoneyNew
+      data-test-id="eth"
+      value={investmentEth}
+      inputFormat={ENumberInputFormat.ULPS}
+      valueType={ECurrency.ETH}
+      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+    />
+  </>
+);
+
+const TokenPriceAndDiscount: React.FunctionComponent<ITokenPriceAndDiscount> = ({
+  actualTokenPrice,
+  discount,
+}) => (
+  <>
+    <MoneyNew
+      data-test-id="token-price"
+      value={actualTokenPrice}
+      inputFormat={ENumberInputFormat.FLOAT}
+      valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
+      outputFormat={ENumberOutputFormat.FULL}
+    />
+    {discount !== null && (
+      <>
+        {" (-"}
+        <FormatNumber
+          data-test-id="discount"
+          value={discount}
+          inputFormat={ENumberInputFormat.FLOAT}
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+        />
+        {"%)"}
+      </>
+    )}
+  </>
+);
+
+const Total: React.FunctionComponent<ITotal> = ({ totalCostEur, totalCostEth }) => (
+  <>
+    <MoneyNew
+      data-test-id="total-cost-euro"
+      value={totalCostEur}
+      inputFormat={ENumberInputFormat.ULPS}
+      valueType={ECurrency.EUR}
+      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+    />
+    {" ≈ "}
+    <MoneyNew
+      data-test-id="total-cost-eth"
+      value={totalCostEth}
+      inputFormat={ENumberInputFormat.ULPS}
+      valueType={ECurrency.ETH}
+      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+    />
+  </>
+);
+
 const InvestmentTransactionDetails: TransactionDetailsComponent<ETxSenderType.INVEST> = ({
   additionalData,
   className,
   txTimestamp,
 }) => {
-  const equityTokensValue = (
-    <span>
-      {/* TODO: Change to actual custom token icon */}
-      <img src={tokenIcon} alt="" /> {formatThousands(additionalData.equityTokens)}
-    </span>
-  );
-  const estimatedRewardValue = (
-    <span>
-      <img src={neuIcon} alt="" /> {formatEurTsd(additionalData.estimatedReward)} NEU
-    </span>
-  );
-
-  const investment = `€ ${formatEurTsd(additionalData.investmentEur)} ≈ ${formatEthTsd(
-    additionalData.investmentEth,
-  )} ETH`;
-
   const gasCostEuro = multiplyBigNumbers([additionalData.gasCostEth, additionalData.etherPriceEur]);
   const totalCostEth = addBigNumbers([additionalData.gasCostEth, additionalData.investmentEth]);
   const totalCostEur = addBigNumbers([gasCostEuro, additionalData.investmentEur]);
-
-  const total = `€ ${formatEurTsd(totalCostEur)} ≈ ${formatEthTsd(totalCostEth)} ETH`;
 
   const actualTokenPrice = getActualTokenPriceEur(
     additionalData.investmentEur,
     additionalData.equityTokens,
   );
+
   const { tokenPrice: fullTokenPrice } = getShareAndTokenPrice({
     preMoneyValuationEur: additionalData.eto.preMoneyValuationEur,
     existingCompanyShares: additionalData.eto.existingCompanyShares,
     equityTokensPerShare: additionalData.eto.equityTokensPerShare,
   });
-  const formattedTokenPrice = `€ ${formatSummaryTokenPrice(
-    fullTokenPrice.toString(),
-    actualTokenPrice,
-  )}`;
 
+  const discount = getTokenPriceDiscount(fullTokenPrice.toString(), actualTokenPrice);
   return (
     <InfoList className={className}>
       <InfoRow
@@ -86,32 +182,49 @@ const InvestmentTransactionDetails: TransactionDetailsComponent<ETxSenderType.IN
       <InfoRow
         data-test-id="investment-summary-token-price"
         caption={<FormattedMessage id="investment-flow.summary.token-price" />}
-        value={formattedTokenPrice}
+        value={<TokenPriceAndDiscount actualTokenPrice={actualTokenPrice} discount={discount} />}
       />
       <InfoRow
         caption={<FormattedMessage id="investment-flow.summary.eto-address" />}
         value={additionalData.eto.etoId}
+        data-test-id="investment-flow.summary.eto-address"
       />
       <InfoRow
         caption={<FormattedMessage id="investment-flow.summary.your-investment" />}
-        value={investment}
+        value={
+          <Investment
+            investmentEth={additionalData.investmentEth}
+            investmentEur={additionalData.investmentEur}
+          />
+        }
         data-test-id="invest-modal-summary-your-investment"
       />
       <InfoRow
+        data-test-id="investment-flow.summary.transaction-cost"
         caption={<FormattedMessage id="investment-flow.summary.transaction-cost" />}
-        value={`${formatEthTsd(additionalData.gasCostEth)} ETH`}
+        value={
+          <MoneyNew
+            value={additionalData.gasCostEth}
+            inputFormat={ENumberInputFormat.ULPS}
+            valueType={ECurrency.ETH}
+            outputFormat={ENumberOutputFormat.FULL}
+          />
+        }
       />
       <InfoRow
+        data-test-id="investment-flow.summary.equity-tokens"
         caption={<FormattedMessage id="investment-flow.summary.equity-tokens" />}
-        value={equityTokensValue}
+        value={<EquityTokensValue equityTokens={additionalData.equityTokens} />}
       />
       <InfoRow
+        data-test-id="investment-flow.summary.neu-reward"
         caption={<NeuRewardCaption isIcbm={additionalData.isIcbm} />}
-        value={estimatedRewardValue}
+        value={<EstimatedRewardValue estimatedReward={additionalData.estimatedReward} />}
       />
       <InfoRow
+        data-test-id="investment-flow.summary.transaction-value"
         caption={<FormattedMessage id="investment-flow.summary.transaction-value" />}
-        value={total}
+        value={<Total totalCostEth={totalCostEth} totalCostEur={totalCostEur} />}
       />
 
       {txTimestamp && <TimestampRow timestamp={txTimestamp} />}

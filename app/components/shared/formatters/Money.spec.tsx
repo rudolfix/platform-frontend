@@ -17,7 +17,7 @@ describe("MoneyNew", () => {
     const component = shallow(
       <MoneyNew
         value={"1234567" + "0".repeat(16)}
-        moneyFormat={ECurrency.ETH}
+        valueType={ECurrency.ETH}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
       />,
@@ -30,7 +30,7 @@ describe("MoneyNew", () => {
     const component = shallow(
       <MoneyNew
         value={"1234567" + "0".repeat(16)}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
       />,
@@ -43,7 +43,7 @@ describe("MoneyNew", () => {
     const component = shallow(
       <MoneyNew
         value={"2501234.1944"}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.FULL_ROUND_UP}
       />,
@@ -56,7 +56,7 @@ describe("MoneyNew", () => {
     const component = shallow(
       <MoneyNew
         value={"2501234.1"}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.INTEGER}
       />,
@@ -69,7 +69,7 @@ describe("MoneyNew", () => {
     const component1 = shallow(
       <MoneyNew
         value={"2501234.1944"}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
       />,
@@ -77,7 +77,7 @@ describe("MoneyNew", () => {
     const component2 = shallow(
       <MoneyNew
         value={"2501234.00000"}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
       />,
@@ -91,7 +91,7 @@ describe("MoneyNew", () => {
     const component1 = shallow(
       <MoneyNew
         value={"2501234.1944"}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
       />,
@@ -99,7 +99,7 @@ describe("MoneyNew", () => {
     const component2 = shallow(
       <MoneyNew
         value={"2501234.00000"}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
       />,
@@ -116,7 +116,7 @@ describe("MoneyNew", () => {
     const expectedProps = {
       value: "",
       inputFormat: ENumberInputFormat.FLOAT,
-      roundingMode: ERoundingMode.DOWN,
+      roundingMode: ERoundingMode.HALF_UP,
       defaultValue: "-",
       decimalPlaces: 0,
       outputFormat: EAbbreviatedNumberOutputFormat.LONG,
@@ -125,7 +125,7 @@ describe("MoneyNew", () => {
     const component1 = shallow(
       <MoneyNew
         value={value1}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
       />,
@@ -133,7 +133,7 @@ describe("MoneyNew", () => {
     const component2 = shallow(
       <MoneyNew
         value={value2}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={EAbbreviatedNumberOutputFormat.LONG}
       />,
@@ -155,7 +155,7 @@ describe("MoneyNew", () => {
       <MoneyNew
         value={"123456" + "0".repeat(16)}
         inputFormat={ENumberInputFormat.ULPS}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         outputFormat={ENumberOutputFormat.FULL}
         currencySymbol={ECurrencySymbol.NONE}
       />,
@@ -168,7 +168,7 @@ describe("MoneyNew", () => {
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={undefined}
       />,
     );
@@ -181,7 +181,7 @@ describe("MoneyNew", () => {
       <MoneyNew
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         value={undefined}
         defaultValue={"nothing here :))"}
       />,
@@ -196,7 +196,7 @@ describe("MoneyNew", () => {
         value={"123456" + "0".repeat(16)}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR_TOKEN}
+        valueType={ECurrency.EUR_TOKEN}
       />,
     );
 
@@ -209,7 +209,7 @@ describe("MoneyNew", () => {
         value={"123456" + "0".repeat(16)}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR_TOKEN}
+        valueType={ECurrency.EUR_TOKEN}
       />,
     );
     expect(component.find('[data-test-id="units"]').exists()).to.be.true;

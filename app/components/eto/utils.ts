@@ -4,6 +4,7 @@ import {
   EEtoMarketingDataVisibleInPreview,
   EEtoState,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { invariant } from "../../utils/invariant";
 import { formatFlexiPrecision } from "../../utils/Number.utils";
 
 export interface ICompoundField {
@@ -77,19 +78,26 @@ export const removeEmptyKeyValueFields = () => (data: ICompoundField[] | undefin
 export const removeEmptyKeyValueField = () => (data: ICompoundField | undefined) =>
   findNonEmptyKeyValueField(data) ? data : undefined;
 
-export const convertPercentageToFraction = () => (data: number) =>
-  parseFloat((data / 100).toPrecision(4));
+export const convertPercentageToFraction = () => (data: number | undefined) => {
+  invariant(
+    data === undefined || Number.isFinite(data),
+    "convertPercentageToFraction: cannot convert NaN",
+  );
 
-export const convertFractionToPercentage = () => (data: number) =>
-  parseFloat((data * 100).toFixed(2));
+  return data !== undefined ? parseFloat((data / 100).toPrecision(4)) : data;
+};
+
+export const convertFractionToPercentage = () => (data: number | undefined) => {
+  invariant(
+    data === undefined || Number.isFinite(data),
+    "convertFractionToPercentage: cannot convert NaN",
+  );
+  return data !== undefined ? parseFloat((data * 100).toFixed(2)) : data;
+};
 
 export const parseStringToFloat = () => (data: string | number | undefined) => {
-  if (typeof data === "string") {
-    const result = parseFloat(data);
-    return Number.isNaN(result) ? undefined : result;
-  } else {
-    return data;
-  }
+  const result = typeof data === "string" ? parseFloat(data) : data;
+  return !Number.isFinite(result!) ? undefined : result; //need to assert here to be able to test `undefined` too
 };
 
 export const parseStringToInteger = () => (data: string | number | undefined) => {
@@ -99,6 +107,14 @@ export const parseStringToInteger = () => (data: string | number | undefined) =>
   } else {
     return data;
   }
+};
+
+export const convertNumberToString = () => (data: number | undefined) => {
+  invariant(
+    data === undefined || Number.isFinite(data),
+    "convertNumberToString: cannot convert NaN",
+  );
+  return data !== undefined ? data.toString() : data;
 };
 
 export const convertToPrecision = (precision: number) => (data: number) => {

@@ -17,7 +17,7 @@
 @import "./elements/label";
 @import "./elements/table";
 @import "./elements/textarea";
-@import "./elements/ul";
+@import "./elements/ul-ol";
 
 .form-group {
   margin-bottom: $spacing-vertical-lg-1;
@@ -42,11 +42,14 @@ textarea {
 .form-control {
   @include font-default;
 
+  appearance: none;
+  background-color: transparent;
   border: 0;
   border-bottom: 1px solid $neu-greyish-brown;
+  border-radius: 0;
   color: $neu-greyish-brown;
+  font-size: px-to-rem(20px);
   padding: 0 px-to-rem(10px) px-to-rem(4px);
-  background-color: transparent;
 
   &:disabled {
     background-color: transparent;
@@ -90,12 +93,6 @@ textarea {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   border-radius: 0;
   border-top-color: #ccc;
-}
-
-.form-control {
-  appearance: none;
-  border-radius: 0;
-  font-size: px-to-rem(20px);
 }
 
 .modal {

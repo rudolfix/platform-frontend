@@ -33,7 +33,7 @@ describe("EtoUtils", () => {
 
   describe("getInvestmentAmount", () => {
     it("should calculate correctly minInvestmentAmount", () => {
-      const { minInvestmentAmount } = getInvestmentAmount({
+      const eto = {
         preMoneyValuationEur: 1000,
         existingCompanyShares: 10,
         minimumNewSharesToIssue: 100,
@@ -43,13 +43,15 @@ describe("EtoUtils", () => {
         fixedSlotsMaximumDiscountFraction: 0.8,
         whitelistDiscountFraction: 0.5,
         publicDiscountFraction: 0,
-      });
+      };
+      const sharePrice = 100;
+      const { minInvestmentAmount } = getInvestmentAmount(eto, sharePrice);
 
       expect(minInvestmentAmount).to.equal(8950);
     });
 
     it("should return minInvestmentAmount as 0 when minimumNewSharesToIssue is 0", () => {
-      const { minInvestmentAmount } = getInvestmentAmount({
+      const eto = {
         preMoneyValuationEur: 1000,
         existingCompanyShares: 10,
         minimumNewSharesToIssue: 0,
@@ -59,29 +61,15 @@ describe("EtoUtils", () => {
         fixedSlotsMaximumDiscountFraction: 0.8,
         whitelistDiscountFraction: 0.5,
         publicDiscountFraction: 0,
-      });
+      };
+      const sharePrice = 100;
+      const { minInvestmentAmount } = getInvestmentAmount(eto, sharePrice);
 
       expect(minInvestmentAmount).to.equal(0);
     });
 
     it("should calculate correctly investment amount", () => {
-      let { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount({
-        preMoneyValuationEur: 1000,
-        existingCompanyShares: 10,
-        newSharesToIssue: 1000,
-        minimumNewSharesToIssue: undefined,
-        newSharesToIssueInFixedSlots: 10,
-        newSharesToIssueInWhitelist: 5,
-        fixedSlotsMaximumDiscountFraction: 0.8,
-        whitelistDiscountFraction: 0.5,
-        publicDiscountFraction: 0,
-      });
-
-      expect(maxInvestmentAmount).to.equal(98950);
-      expect(minInvestmentAmount).to.equal(0);
-
-      // general test case
-      ({ minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount({
+      const eto = {
         preMoneyValuationEur: 125000000,
         existingCompanyShares: 40859,
         newSharesToIssue: 3652,
@@ -91,13 +79,17 @@ describe("EtoUtils", () => {
         fixedSlotsMaximumDiscountFraction: 0.6,
         whitelistDiscountFraction: 0.4,
         publicDiscountFraction: 0,
-      }));
+      };
+      const sharePrice = 3059.301500281456;
+      const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(eto, sharePrice);
 
       expect(Math.round(maxInvestmentAmount)).to.equal(6182236);
       expect(Math.round(minInvestmentAmount)).to.equal(1223721);
+    });
 
+    it("should calculate correctly investment amount without whitelist", () => {
       // same terms but without whitelist
-      ({ minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount({
+      const eto = {
         preMoneyValuationEur: 125000000,
         existingCompanyShares: 40859,
         newSharesToIssue: 2952,
@@ -107,13 +99,15 @@ describe("EtoUtils", () => {
         fixedSlotsMaximumDiscountFraction: 0.6,
         whitelistDiscountFraction: 0.4,
         publicDiscountFraction: 0,
-      }));
+      };
+      const sharePrice = 3059.301500281456;
+      const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(eto, sharePrice);
 
       expect(Math.round(maxInvestmentAmount)).to.equal(4897330);
       expect(Math.round(minInvestmentAmount)).to.equal(1223721);
-
-      // no discounts
-      ({ minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount({
+    });
+    it("should calculate correctly investment amount with no discounts", () => {
+      const eto = {
         preMoneyValuationEur: 125000000,
         existingCompanyShares: 40859,
         newSharesToIssue: 3652,
@@ -123,13 +117,17 @@ describe("EtoUtils", () => {
         fixedSlotsMaximumDiscountFraction: 0,
         whitelistDiscountFraction: 0,
         publicDiscountFraction: 0,
-      }));
+      };
+      const sharePrice = 3059.301500281456;
+      const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(eto, sharePrice);
 
       expect(Math.round(maxInvestmentAmount)).to.equal(Math.round(3652 * (125000000 / 40859)));
       expect(Math.round(minInvestmentAmount)).to.equal(0);
+    });
 
+    it("should calculate correctly investment amount with with public discount fraction", () => {
       // with public discount fraction
-      ({ minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount({
+      const eto = {
         preMoneyValuationEur: 125000000,
         existingCompanyShares: 40859,
         newSharesToIssue: 3652,
@@ -139,7 +137,9 @@ describe("EtoUtils", () => {
         fixedSlotsMaximumDiscountFraction: 0.6,
         whitelistDiscountFraction: 0.4,
         publicDiscountFraction: 0.2,
-      }));
+      };
+      const sharePrice = 3059.301500281456;
+      const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(eto, sharePrice);
 
       expect(Math.round(maxInvestmentAmount)).to.equal(
         Math.round(2755818.79 + 1284906.63 + 1713208.84),
@@ -148,7 +148,7 @@ describe("EtoUtils", () => {
     });
 
     it("should return maxInvestmentAmount as 0 when newSharesToIssue is 0", () => {
-      const { minInvestmentAmount } = getInvestmentAmount({
+      const eto = {
         preMoneyValuationEur: 1000,
         existingCompanyShares: 10,
         newSharesToIssue: 0,
@@ -158,7 +158,9 @@ describe("EtoUtils", () => {
         fixedSlotsMaximumDiscountFraction: 0.8,
         whitelistDiscountFraction: 0.5,
         publicDiscountFraction: 0,
-      });
+      };
+      const sharePrice = 100;
+      const { minInvestmentAmount } = getInvestmentAmount(eto, sharePrice);
 
       expect(minInvestmentAmount).to.equal(0);
     });

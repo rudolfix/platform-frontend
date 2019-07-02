@@ -6,7 +6,7 @@ import { MoneyNew } from "../../../shared/formatters/Money";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
-  selectCurrencyCode,
+  selectUnits,
 } from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
@@ -24,13 +24,13 @@ const AcceptTransactionDetails: TransactionDetailsComponent<
         caption={
           <FormattedMessage
             id="investor-payout.accept.summary.total-payout"
-            values={{ token: selectCurrencyCode(disbursal.token) }}
+            values={{ token: selectUnits(disbursal.token) }}
           />
         }
         value={
           <MoneyNew
             value={disbursal.amountToBeClaimed}
-            moneyFormat={disbursal.token}
+            valueType={disbursal.token}
             inputFormat={ENumberInputFormat.ULPS}
             outputFormat={ENumberOutputFormat.FULL}
           />

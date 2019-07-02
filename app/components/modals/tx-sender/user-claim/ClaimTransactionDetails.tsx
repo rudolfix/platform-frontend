@@ -35,7 +35,7 @@ const ClaimTransactionDetails: TransactionDetailsComponent<ETxSenderType.USER_CL
       value={
         <MoneyNew
           value={additionalData.neuRewardUlps}
-          moneyFormat={ECurrency.NEU}
+          valueType={ECurrency.NEU}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.FULL}
         />
@@ -47,7 +47,7 @@ const ClaimTransactionDetails: TransactionDetailsComponent<ETxSenderType.USER_CL
       value={
         <MoneyNew
           value={additionalData.costUlps}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.FULL}
         />

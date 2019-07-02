@@ -37,14 +37,14 @@ const InvestmentLayout: React.FunctionComponent<TInvestWidgetProps> = ({ eto }) 
             <MoneyNew
               value={eto.contract!.totalInvestment.etherTokenBalance}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.ETH}
+              valueType={ECurrency.ETH}
               outputFormat={ENumberOutputFormat.FULL}
             />
             <br />
             <MoneyNew
               value={eto.contract!.totalInvestment.euroTokenBalance}
               inputFormat={ENumberInputFormat.ULPS}
-              moneyFormat={ECurrency.EUR_TOKEN}
+              valueType={ECurrency.EUR_TOKEN}
               outputFormat={ENumberOutputFormat.FULL}
             />
           </div>

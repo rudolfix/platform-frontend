@@ -83,7 +83,7 @@ function* handleDownloadCurrentAgreement(_: TGlobalDependencies): Iterator<any> 
 }
 
 export const termsOfServiceSagas = function*(): Iterator<Effect> {
-  yield fork(neuTakeEvery, "AUTH_SET_USER", loadCurrentAgreement);
+  yield fork(neuTakeEvery, actions.auth.setUser, loadCurrentAgreement);
   yield fork(neuTakeEvery, "ACCEPT_CURRENT_AGREEMENT", handleAcceptCurrentAgreement);
   yield fork(neuTakeEvery, "DOWNLOAD_CURRENT_AGREEMENT", handleDownloadCurrentAgreement);
 };

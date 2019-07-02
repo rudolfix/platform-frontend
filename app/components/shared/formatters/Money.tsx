@@ -10,10 +10,10 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
-  selectCurrencyCode,
   selectDecimalPlaces,
+  selectUnits,
   THumanReadableFormat,
-  TMoneyFormat,
+  TValueFormat,
 } from "./utils";
 
 import * as styles from "./MoneyNew.module.scss";
@@ -40,7 +40,7 @@ interface IMoneyProps {
 
 interface IMoneyCommonProps {
   inputFormat: ENumberInputFormat;
-  moneyFormat: TMoneyFormat;
+  valueType: TValueFormat;
   outputFormat: THumanReadableFormat;
   roundingMode?: ERoundingMode;
   currencySymbol?: ECurrencySymbol;
@@ -57,7 +57,7 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
   value,
   inputFormat,
   outputFormat,
-  moneyFormat,
+  valueType,
   currencySymbol = ECurrencySymbol.CODE,
   defaultValue = "-",
   currencyClassName,
@@ -69,7 +69,7 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
   let formattedValue = null;
   if (value) {
     //todo: this should pass through 0 as well. Use isValidNumber from the #2687 PR when it's merged
-    const decimalPlaces = selectDecimalPlaces(moneyFormat, outputFormat);
+    const decimalPlaces = selectDecimalPlaces(valueType, outputFormat);
     if (
       outputFormat === EAbbreviatedNumberOutputFormat.SHORT ||
       outputFormat === EAbbreviatedNumberOutputFormat.LONG
@@ -79,7 +79,7 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
           value={value}
           inputFormat={inputFormat}
           defaultValue={defaultValue}
-          roundingMode={ERoundingMode.DOWN}
+          roundingMode={ERoundingMode.HALF_UP}
           decimalPlaces={decimalPlaces}
           outputFormat={outputFormat}
         />
@@ -118,7 +118,7 @@ const MoneyNew: React.FunctionComponent<IMoneyProps & IMoneyCommonProps & Common
       {currencySymbol === ECurrencySymbol.CODE && formattedValue !== null && (
         <span className={cn(styles.currency, currencyClassName)} data-test-id="units">
           {" "}
-          {selectCurrencyCode(moneyFormat)}
+          {selectUnits(valueType)}
         </span>
       )}
     </span>

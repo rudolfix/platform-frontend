@@ -3,7 +3,6 @@ import { includes } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { MONEY_DECIMALS } from "../../../../config/constants";
 import {
   EInvestmentErrorState,
   EInvestmentType,
@@ -24,13 +23,13 @@ import {
 import { IAppState } from "../../../../store";
 import { Dictionary, TTranslatedString } from "../../../../types";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
-import { formatMoney } from "../../../../utils/Money.utils";
 import {
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
+  EPriceFormat,
   ERoundingMode,
-  formatThousands,
+  formatNumber,
   selectDecimalPlaces,
   toFixedPrecision,
 } from "../../../shared/formatters/utils";
@@ -118,14 +117,28 @@ export function getInputErrorMessage(
       return (
         <FormattedMessage
           id="investment-flow.error-message.above-maximum-ticket-size"
-          values={{ maxAmount: `€${maxTicketEur || 0}` }}
+          values={{
+            maxAmount: formatNumber({
+              value: maxTicketEur || 0,
+              decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
+              inputFormat: ENumberInputFormat.FLOAT,
+              outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
+            }),
+          }}
         />
       );
     case EInvestmentErrorState.BelowMinimumTicketSize:
       return (
         <FormattedMessage
           id="investment-flow.error-message.below-minimum-ticket-size"
-          values={{ minAmount: `€${minTicketEur || 0}` }}
+          values={{
+            minAmount: formatNumber({
+              value: minTicketEur || 0,
+              decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
+              inputFormat: ENumberInputFormat.FLOAT,
+              outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
+            }),
+          }}
         />
       );
     case EInvestmentErrorState.ExceedsWalletBalance:
@@ -149,56 +162,21 @@ export const formatMinMaxTickets = (value: string | BigNumber, roundingMode: ERo
     roundingMode: roundingMode,
   });
 
-/**
- * @deprecated Use Money component
- */
-export function formatEur(val?: string | BigNumber): string | undefined {
-  return val && formatMoney(val, MONEY_DECIMALS, 2);
-}
-
-/**
- * @deprecated Use Money component
- */
-export function formatEurTsd(val?: string | BigNumber): string | undefined {
-  return formatThousands(formatEur(val));
-}
-
-/**
- * @deprecated Use Money component
- */
-export function formatEth(val?: string | BigNumber): string | undefined {
-  return val && formatMoney(val, MONEY_DECIMALS, 4);
-}
-
-/**
- * @deprecated Use Money component
- */
-export function formatEthTsd(val?: string | BigNumber): string | undefined {
-  return formatThousands(formatEth(val));
-}
-
-/**
- * @deprecated Use Money component
- */
-export function formatVaryingDecimals(val?: string | BigNumber): string | undefined {
-  return val && formatMoney(val, MONEY_DECIMALS);
-}
-
 export function getActualTokenPriceEur(
   investmentEurUlps: string,
   equityTokenCount: string | number,
 ): string {
-  return formatMoney(divideBigNumbers(investmentEurUlps, equityTokenCount), MONEY_DECIMALS, 8);
+  return formatNumber({
+    value: divideBigNumbers(investmentEurUlps, equityTokenCount).toString(),
+    decimalPlaces: selectDecimalPlaces(EPriceFormat.EQUITY_TOKEN_PRICE_EUR_TOKEN),
+  });
 }
 
-export const formatSummaryTokenPrice = (fullTokenPrice: string, actualTokenPrice: string) => {
+export const getTokenPriceDiscount = (fullTokenPrice: string, actualTokenPrice: string) => {
   const discount = new BigNumber(1)
     .sub(new BigNumber(actualTokenPrice).div(new BigNumber(fullTokenPrice)))
     .mul(100)
     .round(0, 4);
-  let priceString = formatThousands(actualTokenPrice.toString());
-  if (discount.gte(1)) {
-    priceString += ` (-${discount}%)`;
-  }
-  return priceString;
+
+  return discount.gte(1) ? discount.toString() : null;
 };

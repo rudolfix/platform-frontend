@@ -45,7 +45,7 @@ export const EtoCompanyInformationType = YupTS.object({
   brandName: YupTS.string(),
   companyWebsite: YupTS.url(),
   companyOneliner: YupTS.string(),
-  companyDescription: YupTS.string(),
+  companyDescription: YupTS.string().enhance(v => v.meta({ isWysiwyg: true })),
   keyQuoteFounder: YupTS.string(),
   keyQuoteInvestor: YupTS.string().optional(),
   categories: YupTS.array(tagsType).optional(),
@@ -56,21 +56,47 @@ export const EtoCompanyInformationType = YupTS.object({
 type TEtoTeamData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
 export const EtoPitchType = YupTS.object({
-  problemSolved: YupTS.string().optional(),
-  productVision: YupTS.string().optional(),
-  inspiration: YupTS.string().optional(),
-  roadmap: YupTS.string().optional(),
+  problemSolved: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  productVision: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  inspiration: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  roadmap: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
   useOfCapital: YupTS.string().optional(),
   useOfCapitalList: YupTS.array(EtoCapitalListType).optional(),
-  customerGroup: YupTS.string().optional(),
-  sellingProposition: YupTS.string().optional(),
-  marketingApproach: YupTS.string().optional(),
-  companyMission: YupTS.string().optional(),
-  targetMarketAndIndustry: YupTS.string().optional(),
-  keyBenefitsForInvestors: YupTS.string().optional(),
-  keyCompetitors: YupTS.string().optional(),
-  marketTraction: YupTS.string().optional(),
-  businessModel: YupTS.string().optional(),
+  customerGroup: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  sellingProposition: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  marketingApproach: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  companyMission: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  targetMarketAndIndustry: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  keyBenefitsForInvestors: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  keyCompetitors: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  marketTraction: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
+  businessModel: YupTS.string()
+    .optional()
+    .enhance(v => v.meta({ isWysiwyg: true })),
 });
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoPitchType>;

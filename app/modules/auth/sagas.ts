@@ -13,7 +13,7 @@ import {
   SignerTimeoutError,
 } from "../../lib/web3/Web3Manager/Web3Manager";
 import { assertNever } from "../../utils/assertNever";
-import { actions, TAction } from "../actions";
+import { actions, TActionFromCreator } from "../actions";
 import { EInitType } from "../init/reducer";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { verifyUserEmail } from "./email/sagas";
@@ -23,10 +23,8 @@ import { setUser, signInUser } from "./user/sagas";
 
 function* handleLogOutUser(
   { web3Manager, jwtStorage, logger, userStorage }: TGlobalDependencies,
-  action: TAction,
+  action: TActionFromCreator<typeof actions.auth.logout>,
 ): Iterator<any> {
-  if (action.type !== "AUTH_LOGOUT") return;
-
   const { userType, logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
 
   userStorage.clear();
@@ -145,9 +143,9 @@ export function* watchRedirectChannel(): any {
 export function* authSagas(): Iterator<Effect> {
   yield fork(watchRedirectChannel);
 
-  yield fork(neuTakeLatest, "AUTH_LOGOUT", handleLogOutUser);
-  yield fork(neuTakeEvery, "AUTH_SET_USER", setUser);
-  yield fork(neuTakeEvery, "AUTH_VERIFY_EMAIL", verifyUserEmail);
+  yield fork(neuTakeLatest, actions.auth.logout, handleLogOutUser);
+  yield fork(neuTakeEvery, actions.auth.setUser, setUser);
+  yield fork(neuTakeEvery, actions.auth.verifyEmail, verifyUserEmail);
   yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
-  yield fork(neuTakeLatest, "AUTH_LOAD_JWT", handleJwtTimeout);
+  yield fork(neuTakeLatest, actions.auth.loadJWT, handleJwtTimeout);
 }

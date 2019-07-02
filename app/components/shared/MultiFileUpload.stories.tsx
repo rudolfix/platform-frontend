@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { EKycRequestType } from "../../lib/api/KycApi.interfaces";
+import { EMimeType } from "./forms/fields/utils.unsafe";
 import { MultiFileUpload } from "./MultiFileUpload";
 
 const files = [
@@ -19,7 +20,7 @@ storiesOf("Upload/MultiFileUpload", module)
   .add("individual", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.INDIVIDUAL}
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       onDropFile={() => {}}
       files={[]}
       fileUploading={false}
@@ -29,7 +30,7 @@ storiesOf("Upload/MultiFileUpload", module)
   .add("business layout: vertical", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       onDropFile={() => {}}
       files={[]}
       layout="vertical"
@@ -39,7 +40,7 @@ storiesOf("Upload/MultiFileUpload", module)
   .add("business layout: horizontal", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       onDropFile={() => {}}
       files={[]}
       layout="horizontal"
@@ -49,7 +50,7 @@ storiesOf("Upload/MultiFileUpload", module)
   .add("business state: uploading", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       onDropFile={() => {}}
       files={[]}
       fileUploading={true}
@@ -58,7 +59,7 @@ storiesOf("Upload/MultiFileUpload", module)
   .add("business state: with files", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles="image/*,application/pdf"
+      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
       onDropFile={() => {}}
       files={files}
       fileUploading={false}

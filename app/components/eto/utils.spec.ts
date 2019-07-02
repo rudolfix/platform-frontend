@@ -9,6 +9,7 @@ import {
   convert,
   convertFractionToPercentage,
   convertInArray,
+  convertNumberToString,
   convertPercentageToFraction,
   convertToPrecision,
   EEtoStep,
@@ -106,28 +107,74 @@ describe("convert", () => {
 describe("convertPercentageToFraction", () => {
   it("converts float representing percentage to a fractional representation with max precision of 4 (for our backend)", () => {
     const percentage = 12.345978;
-    const expectedOutput = "0.1235";
+    const expectedOutput = 0.1235;
 
-    expect(convertPercentageToFraction()(percentage).toString()).to.be.equal(expectedOutput);
+    expect(convertPercentageToFraction()(percentage)).to.be.equal(expectedOutput);
+  });
+
+  it("passes through an undefined value", () => {
+    const percentage = undefined;
+    const expectedOutput = undefined;
+
+    expect(convertPercentageToFraction()(percentage)).to.be.equal(expectedOutput);
   });
 });
 
 describe("convertFractionToPercentage", () => {
-  it("converts fractional representation to a float representing percents", () => {
+  it("converts fractional representation to a float representing percentage", () => {
     const data = 0.2343;
-    const expectedOutput = "23.43";
+    const expectedOutput = 23.43;
 
-    expect(convertFractionToPercentage()(data).toString()).to.be.equal(expectedOutput);
+    expect(convertFractionToPercentage()(data)).to.be.equal(expectedOutput);
+  });
+  it("passes through an undefined value", () => {
+    const data = undefined;
+    const expectedOutput = undefined;
+
+    expect(convertFractionToPercentage()(data)).to.be.equal(expectedOutput);
+  });
+  it("throws if there's a NaN", () => {
+    expect(() => convertFractionToPercentage()(NaN)).to.throw;
   });
 });
 
 describe("parseStringToFloat", () => {
-  it("tries to parse string to float and returns a float or an undefined", () => {
+  it("tries to parse string to float and returns a float", () => {
     const goodString = "2.56";
-    const badString = "dateSchema";
 
     expect((parseStringToFloat()(goodString) as number).toString()).to.be.equal(goodString);
-    expect(parseStringToFloat()(badString)).to.be.undefined;
+  });
+
+  it("passes through a number", () => {
+    const val1 = 2222;
+    const val2 = 22.34;
+
+    expect(parseStringToFloat()(val1)).to.be.equal(val1);
+    expect(parseStringToFloat()(val2)).to.be.equal(val2);
+  });
+
+  it("returns undefined on bad input", () => {
+    expect(parseStringToFloat()("")).to.be.undefined;
+    expect(parseStringToFloat()("dateSchema")).to.be.undefined;
+    expect(parseStringToFloat()(NaN)).to.be.undefined;
+    expect(parseStringToFloat()(Infinity)).to.be.undefined;
+    expect(parseStringToFloat()((null as unknown) as number)).to.be.undefined; //just to be sure
+  });
+});
+
+describe("convertNumberToString", () => {
+  it("converts number to string", () => {
+    const input = 123;
+    const output = "123";
+    expect(convertNumberToString()(input)).to.be.equal(output);
+  });
+  it("passes through an undefined value", () => {
+    const input = undefined;
+    const output = undefined;
+    expect(convertNumberToString()(input)).to.be.equal(output);
+  });
+  it("throws if input is NaN", () => {
+    expect(() => convertNumberToString()(NaN)).to.throw;
   });
 });
 

@@ -17,7 +17,7 @@ describe("MoneyRange", () => {
       <MoneyRange
         valueFrom={"323" + "0".repeat(16)}
         valueUpto={"32376189" + "0".repeat(16)}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
       />,
@@ -32,7 +32,7 @@ describe("MoneyRange", () => {
         valueUpto={undefined}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
       />,
     );
 
@@ -45,7 +45,7 @@ describe("MoneyRange", () => {
         valueUpto={undefined}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         defaultValue={"*"}
       />,
     );
@@ -59,7 +59,7 @@ describe("MoneyRange", () => {
         valueUpto={"32376189" + "0".repeat(16)}
         inputFormat={ENumberInputFormat.ULPS}
         outputFormat={ENumberOutputFormat.FULL}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         separator=" :: "
       />,
     );
@@ -71,7 +71,7 @@ describe("MoneyRange", () => {
       <MoneyRange
         outputFormat={ENumberOutputFormat.FULL}
         inputFormat={ENumberInputFormat.FLOAT}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={"222"}
         valueUpto={"1236525"}
       />,
@@ -84,7 +84,7 @@ describe("MoneyRange", () => {
       <MoneyRange
         inputFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.INTEGER}
-        moneyFormat={ECurrency.EUR}
+        valueType={ECurrency.EUR}
         valueFrom={"222"}
         valueUpto={"1236525"}
       />,
@@ -98,7 +98,7 @@ describe("MoneyRange", () => {
         <MoneyRange
           inputFormat={ENumberInputFormat.FLOAT}
           outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-          moneyFormat={ECurrency.EUR}
+          valueType={ECurrency.EUR}
           valueFrom={"22222"}
           valueUpto={"1236525"}
         />,
@@ -113,7 +113,7 @@ describe("MoneyRange", () => {
         <MoneyRange
           inputFormat={ENumberInputFormat.FLOAT}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
-          moneyFormat={ECurrency.EUR}
+          valueType={ECurrency.EUR}
           valueFrom={"22222"}
           valueUpto={"1236525"}
         />,
@@ -128,7 +128,7 @@ describe("MoneyRange", () => {
         <MoneyRange
           inputFormat={ENumberInputFormat.FLOAT}
           outputFormat={EAbbreviatedNumberOutputFormat.LONG}
-          moneyFormat={ECurrency.EUR}
+          valueType={ECurrency.EUR}
           valueFrom={"22222"}
           valueUpto={undefined}
           defaultValue={"nothing here :("}

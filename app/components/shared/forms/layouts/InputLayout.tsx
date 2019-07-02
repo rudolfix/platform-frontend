@@ -1,42 +1,34 @@
 import * as cn from "classnames";
-import { FieldAttributes } from "formik";
 import * as React from "react";
-import { Input, InputGroup, InputGroupAddon } from "reactstrap";
+import { Input, InputGroup, InputGroupAddon, InputProps } from "reactstrap";
 
-import { CommonHtmlProps, InputType, TTranslatedString } from "../../../../types";
-import { FormFieldError, generateErrorId } from "./FormFieldError";
-import { withCountedCharacters } from "./utils.unsafe";
+import { CommonHtmlProps, Omit, TDataTestId, TTranslatedString } from "../../../../types";
+import { FormFieldError, generateErrorId } from "../fields/FormFieldError";
+import { withCountedCharacters } from "../fields/utils.unsafe";
 
-import * as styles from "./FormStyles.module.scss";
+import * as styles from "../fields/FormStyles.module.scss";
 
-export enum InputSize {
+enum EInputSize {
   NORMAL = "",
   SMALL = "sm",
 }
 
-interface IFormInputRawExternalProps {
-  min?: string;
-  max?: string;
-  placeholder?: TTranslatedString;
-  errorMsg?: TTranslatedString;
-  type?: InputType;
-  prefix?: TTranslatedString;
-  suffix?: TTranslatedString;
+interface IExternalProps {
   addonStyle?: string;
-  maxLength?: number;
   charactersLimit?: number;
-  size?: InputSize;
-  customValidation?: (value: any) => string | Function | Promise<void> | undefined;
-  onChange?: Function;
-  customOnBlur?: Function;
+  errorMsg?: TTranslatedString;
   ignoreTouched?: boolean;
+  invalid?: boolean;
+  maxLength?: number;
+  name: string;
+  prefix?: TTranslatedString;
+  size?: EInputSize;
+  suffix?: TTranslatedString;
 }
 
-export type FormInputComponentProps = IFormInputRawExternalProps &
-  FieldAttributes<any> &
-  CommonHtmlProps;
+type TProps = IExternalProps & CommonHtmlProps & TDataTestId & Omit<InputProps, IExternalProps>;
 
-const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
+const InputLayout: React.FunctionComponent<TProps> = ({
   type,
   placeholder,
   name,
@@ -48,16 +40,14 @@ const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
   errorMsg,
   size,
   disabled,
-  customValidation,
   ignoreTouched,
   maxLength,
   onChange,
   value,
   invalid,
-  customOnBlur,
-  customOnFocus,
   onFocus,
   onBlur,
+  ["data-test-id"]: dataTestId,
   ...props
 }) => (
   <>
@@ -79,24 +69,21 @@ const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
         maxLength={maxLength}
         className={cn(className, styles.inputField)}
         onChange={onChange}
-        onBlur={(e: React.FocusEvent) => {
-          if (customOnBlur) {
-            customOnBlur(e);
-          } else {
-            onBlur && onBlur(e);
+        onBlur={e => {
+          if (onBlur) {
+            onBlur(e);
           }
         }}
-        onFocus={(e: React.FocusEvent) => {
-          if (customOnFocus) {
-            customOnFocus(e);
-          } else {
-            onFocus && onFocus(e);
+        onFocus={e => {
+          if (onFocus) {
+            onFocus(e);
           }
         }}
         type={type}
         placeholder={placeholder}
         disabled={disabled}
         value={value}
+        data-test-id={dataTestId}
         {...props}
       />
       {suffix && (
@@ -115,8 +102,8 @@ const FormInputRaw: React.FunctionComponent<FormInputComponentProps> = ({
   </>
 );
 
-FormInputRaw.defaultProps = {
-  size: InputSize.NORMAL,
+InputLayout.defaultProps = {
+  size: EInputSize.NORMAL,
 };
 
-export { FormInputRaw, IFormInputRawExternalProps };
+export { InputLayout, EInputSize };

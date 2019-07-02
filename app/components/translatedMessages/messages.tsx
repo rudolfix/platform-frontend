@@ -36,6 +36,7 @@ export type TranslatedMessageType =
   | ProfileMessage
   | EtoMessage
   | FileUploadMessage
+  | ImageUploadMessage
   | RemoteFileMessage
   | Web3Message
   | ValidationMessage
@@ -119,8 +120,8 @@ export enum BookbuildingFlowMessage {
 }
 
 export enum InvestorPortfolioMessage {
-  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES,
-  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_INCOMING_PAYOUTS,
+  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES = "investorPortfolioFailedToLoadClaimables",
+  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_INCOMING_PAYOUTS = "investorPortfolioFailedToLoadIncomingPayouts",
 }
 
 export enum EtoFlowMessage {
@@ -158,11 +159,17 @@ export enum IpfsMessage {
 }
 
 export enum FileUploadMessage {
-  FILE_UPLOAD_ERROR,
+  FILE_UPLOAD_ERROR = "fileUploadError",
+}
+
+export enum ImageUploadMessage {
+  IMAGE_UPLOAD_WRONG_IMAGE_DIMENSIONS = "imageUploadWrongImageDimensions",
+  IMAGE_UPLOAD_FAILURE = "imageUploadFailure",
+  IMAGE_UPLOAD_FAILURE_WITH_DETAILS = "imageUploadFailureWithDetails",
 }
 
 export enum RemoteFileMessage {
-  GET_FILES_DETAILS_ERROR = "GET_FILES_DETAILS_ERROR",
+  GET_FILES_DETAILS_ERROR = "getFilesDetailsError",
 }
 
 export enum KycFlowMessage {
@@ -413,6 +420,20 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case FileUploadMessage.FILE_UPLOAD_ERROR:
       return <FormattedMessage id="form.single-file-upload-error" />;
 
+    case ImageUploadMessage.IMAGE_UPLOAD_WRONG_IMAGE_DIMENSIONS:
+      return <FormattedMessage id="form.image-upload-wrong-image-dimensions" />;
+    case ImageUploadMessage.IMAGE_UPLOAD_FAILURE:
+      return <FormattedMessage id="form.image-upload-failure" />;
+    case ImageUploadMessage.IMAGE_UPLOAD_FAILURE_WITH_DETAILS:
+      return (
+        <FormattedMessage
+          id="form.image-upload-failure-with-details"
+          values={{
+            error: messageData ? messageData.toString() : "unknown error",
+          }}
+        />
+      );
+
     case RemoteFileMessage.GET_FILES_DETAILS_ERROR:
       return <FormattedMessage id="remote.file.details-error" />;
 
@@ -540,7 +561,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
               <MoneyNew
                 value={messageData as number}
                 inputFormat={ENumberInputFormat.FLOAT}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL_ROUND_UP}
               />
             ),
@@ -556,7 +577,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
               <MoneyNew
                 value={messageData as number}
                 inputFormat={ENumberInputFormat.FLOAT}
-                moneyFormat={ECurrency.EUR}
+                valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL}
               />
             ),

@@ -30,6 +30,7 @@ import {
   NONE_KEY,
   unboolify,
 } from "../../shared/forms";
+import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/tooltips";
 import { KycPanel } from "../KycPanel";
@@ -181,7 +182,7 @@ const FileUploadList: React.FunctionComponent<IProps & { lrDataValid: boolean }>
       <MultiFileUpload
         uploadType={EKycRequestType.INDIVIDUAL}
         layout="vertical"
-        acceptedFiles="image/*,application/pdf"
+        acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
         data-test-id="kyc-company-legal-representative-documents"
         onDropFile={props.onDropFile}
         files={props.files}

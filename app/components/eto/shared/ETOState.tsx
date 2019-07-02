@@ -132,7 +132,7 @@ const SuccessEtoState: React.FunctionComponent<
 > = ({ className, size = EProjectStatusSize.MEDIUM, layout = EProjectStatusLayout.NORMAL }) => (
   <div
     className={cn(styles.projectStatus, styles.green, size, layout, className)}
-    data-test-id="eto-state-mock-success"
+    data-test-id="eto-state-mock-successful"
   >
     <FormattedMessage id="eto.status.mock.success" />
   </div>

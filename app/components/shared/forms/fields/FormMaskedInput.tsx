@@ -1,27 +1,22 @@
-import { Field, FieldAttributes, FieldProps, FormikConsumer } from "formik";
+import { Field, FieldProps, FormikConsumer } from "formik";
 import * as React from "react";
 import MaskedInput, { conformToMask, maskArray } from "react-text-mask";
 
-import { CommonHtmlProps } from "../../../../types";
-import { FormInputRaw, IFormInputRawExternalProps, InputSize } from "./FormInputRaw.unsafe";
+import { InputLayout } from "../layouts/InputLayout";
 import { isNonValid } from "./utils.unsafe";
 
-export interface IMaskedFormInputExternalProps extends IFormInputRawExternalProps {
+type TExternalProps = {
+  customValidation?: (value: string | undefined) => string | Function | Promise<void> | undefined;
   mask: maskArray;
   guided?: boolean;
-  onChange?: () => void;
-}
+};
 
-export type FormInputProps = IMaskedFormInputExternalProps & FieldAttributes<any> & CommonHtmlProps;
+type FormInputProps = TExternalProps & React.ComponentProps<typeof InputLayout>;
 
 /**
  * Formik connected form input without FormGroup and FormFieldLabel.
  */
 export class FormMaskedInput extends React.Component<FormInputProps> {
-  static defaultProps = {
-    size: InputSize.NORMAL,
-  };
-
   render(): React.ReactNode {
     const {
       placeholder,
@@ -34,10 +29,9 @@ export class FormMaskedInput extends React.Component<FormInputProps> {
       size,
       disabled,
       customValidation,
-      customOnBlur,
+      onBlur,
       ignoreTouched,
       mask,
-      unmask,
       guided,
       maxLength,
       onChange,
@@ -67,12 +61,12 @@ export class FormMaskedInput extends React.Component<FormInputProps> {
                         onChange(e);
                       }
                       setFieldTouched(name);
-                      setFieldValue(name, unmask ? unmask(e.target.value) : e.target.value);
+                      setFieldValue(name, e.target.value);
                     }}
                     mask={mask}
                     guide={guided}
                     render={(ref, props) => (
-                      <FormInputRaw
+                      <InputLayout
                         innerRef={ref}
                         name={name}
                         placeholder={placeholder}
@@ -85,7 +79,7 @@ export class FormMaskedInput extends React.Component<FormInputProps> {
                         disabled={disabled}
                         maxLength={maxLength}
                         invalid={invalid}
-                        customOnBlur={customOnBlur}
+                        onBlur={onBlur}
                         {...props}
                         {...mainProps}
                       />

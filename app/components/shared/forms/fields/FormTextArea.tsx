@@ -1,13 +1,16 @@
 import * as cn from "classnames";
-import { Field, FieldProps, FormikConsumer } from "formik";
+import { connect as formikConnect, Field, FieldProps } from "formik";
 import * as React from "react";
-import { Input, InputGroup, InputGroupAddon } from "reactstrap";
+import { Input } from "reactstrap";
+import { branch, compose, renderComponent } from "recompose";
 
-import { CommonHtmlProps } from "../../../../types";
+import { CommonHtmlProps, TFormikConnect } from "../../../../types";
 import { FormFieldError, generateErrorId } from "./FormFieldError";
 import {
   applyCharactersLimit,
+  IFormField,
   isNonValid,
+  isWysiwyg,
   withCountedCharacters,
   withFormField,
 } from "./utils.unsafe";
@@ -18,61 +21,99 @@ interface IFieldGroup {
   name: string;
   disabled?: boolean;
   placeholder?: string;
-  prefix?: string;
-  suffix?: string;
   charactersLimit?: number;
 }
-type FieldGroupProps = IFieldGroup & CommonHtmlProps;
 
-const TextArea: React.FunctionComponent<FieldGroupProps> = ({
+type TFieldGroupProps = IFieldGroup & CommonHtmlProps;
+
+const RichTextAreaLayout = React.lazy(() =>
+  import("../layouts/RichTextAreaLayout").then(imp => ({ default: imp.RichTextAreaLayout })),
+);
+
+const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> = ({
   disabled,
   placeholder,
   name,
-  prefix,
-  suffix,
   className,
   charactersLimit,
-}) => (
-  <FormikConsumer>
-    {({ touched, errors, submitCount, setFieldTouched, setFieldValue }) => {
-      const invalid = isNonValid(touched, errors, name, submitCount);
+  formik,
+}) => {
+  const { touched, errors, submitCount, setFieldTouched, setFieldValue } = formik;
 
-      return (
-        <Field
-          name={name}
-          render={({ field }: FieldProps) => (
-            <>
-              <InputGroup>
-                {prefix && (
-                  <InputGroupAddon addonType="prepend" className={className}>
-                    {prefix}
-                  </InputGroupAddon>
-                )}
-                <Input
-                  {...field}
-                  type="textarea"
-                  aria-describedby={generateErrorId(name)}
-                  aria-invalid={invalid}
-                  invalid={invalid}
-                  disabled={disabled}
-                  value={field.value}
-                  placeholder={placeholder}
-                  className={cn(className, styles.inputField)}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setFieldTouched(name);
-                    setFieldValue(name, applyCharactersLimit(e.target.value, charactersLimit));
-                  }}
-                />
-                {suffix && <InputGroupAddon addonType="append">{suffix}</InputGroupAddon>}
-              </InputGroup>
-              <FormFieldError name={name} />
-              {charactersLimit && withCountedCharacters(field.value, charactersLimit)}
-            </>
-          )}
-        />
-      );
-    }}
-  </FormikConsumer>
-);
+  const invalid = isNonValid(touched, errors, name, submitCount);
 
-export const FormTextArea = withFormField(TextArea);
+  return (
+    <Field
+      name={name}
+      render={({ field }: FieldProps) => (
+        <>
+          <RichTextAreaLayout
+            invalid={invalid}
+            name={name}
+            placeholder={placeholder}
+            className={className}
+            disabled={disabled}
+            value={field.value}
+            onChange={value => {
+              setFieldTouched(name);
+              setFieldValue(name, applyCharactersLimit(value, charactersLimit));
+            }}
+          />
+          <FormFieldError name={name} />
+        </>
+      )}
+    />
+  );
+};
+
+const TextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> = ({
+  disabled,
+  placeholder,
+  name,
+  className,
+  charactersLimit,
+  formik,
+}) => {
+  const { touched, errors, submitCount, setFieldTouched, setFieldValue } = formik;
+
+  const invalid = isNonValid(touched, errors, name, submitCount);
+
+  return (
+    <Field
+      name={name}
+      render={({ field }: FieldProps) => (
+        <>
+          <Input
+            {...field}
+            type="textarea"
+            aria-describedby={generateErrorId(name)}
+            aria-invalid={invalid}
+            invalid={invalid}
+            disabled={disabled}
+            value={field.value}
+            placeholder={placeholder}
+            className={cn(className, styles.inputField)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setFieldTouched(name);
+              setFieldValue(name, applyCharactersLimit(e.target.value, charactersLimit));
+            }}
+          />
+          <FormFieldError name={name} />
+          {charactersLimit && withCountedCharacters(field.value, charactersLimit)}
+        </>
+      )}
+    />
+  );
+};
+
+export const FormTextArea = compose<
+  TFieldGroupProps & TFormikConnect,
+  TFieldGroupProps & IFormField
+>(
+  withFormField,
+  formikConnect,
+  branch<IFieldGroup & TFormikConnect>(
+    props => isWysiwyg(props.formik.validationSchema, props.name),
+    renderComponent(RichTextArea),
+  ),
+)(TextArea);

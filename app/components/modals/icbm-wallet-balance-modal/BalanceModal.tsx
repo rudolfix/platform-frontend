@@ -74,7 +74,7 @@ export const BalanceModal: React.FunctionComponent<IBalanceModal> = ({
         <MoneyNew
           value={neumarksDue}
           inputFormat={ENumberInputFormat.ULPS}
-          moneyFormat={ECurrency.NEU}
+          valueType={ECurrency.NEU}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         />
       }
@@ -88,7 +88,7 @@ export const BalanceModal: React.FunctionComponent<IBalanceModal> = ({
           value={etherBalance}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          moneyFormat={ECurrency.ETH}
+          valueType={ECurrency.ETH}
         />
       }
       icon={iconEth}

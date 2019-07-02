@@ -9,3 +9,7 @@
   grid-template-areas: "header" "content" "footer";
   min-height: 100%;
 }
+
+.notification {
+  @include responsive-size(margin-bottom, $authorized-layout-vertical-padding-sm, $authorized-layout-vertical-padding-lg);
+}

@@ -1,4 +1,5 @@
 import { IWindowWithData } from "../../../test/helperTypes";
+import { assertIssuerEtoView } from "../eto-view/EtoViewUtils";
 import {
   assertDashboard,
   assertEtoDashboard,
@@ -38,6 +39,7 @@ export const goToEtoDashboard = () => {
 
 export const goToEtoPreview = () => {
   cy.visit("/eto/view");
+  assertIssuerEtoView();
 };
 
 export const goToProfile = () => {

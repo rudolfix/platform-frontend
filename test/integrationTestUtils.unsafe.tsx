@@ -86,6 +86,7 @@ export function createIntegrationTestsSetup(
   const contractsMock = options.contractsMock || createMock(ContractsService, {});
 
   const container = setupBindings(dummyConfig);
+
   container.rebind(symbols.ledgerWalletConnector).toConstantValue(ledgerWalletMock);
   container.rebind(symbols.browserWalletConnector).toConstantValue(browserWalletMock);
   container

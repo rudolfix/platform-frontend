@@ -3,7 +3,8 @@ import * as React from "react";
 import { emailMask } from "text-mask-addons";
 
 import { ECurrency } from "../../formatters/utils";
-import { FormMaskedInput } from "./FormMaskedInput.unsafe";
+import { EInputSize } from "../layouts/InputLayout";
+import { FormMaskedInput } from "./FormMaskedInput";
 import { formWrapper } from "./testingUtils.unsafe";
 import { generateMaskFromCurrency } from "./utils.unsafe";
 
@@ -31,7 +32,7 @@ storiesOf("forms/fields/MaskedInput", module)
         name="name"
         mask={generateMaskFromCurrency(ECurrency.EUR)}
         placeholder="Placeholder"
-        size="sm"
+        size={EInputSize.SMALL}
       />
     )),
   )

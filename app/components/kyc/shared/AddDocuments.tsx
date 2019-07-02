@@ -5,6 +5,7 @@ import { EKycRequestType, IKycFileInfo } from "../../../lib/api/KycApi.interface
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
+import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 
 interface IStateProps {
@@ -24,7 +25,7 @@ export const KYCAddDocumentsComponent: React.FunctionComponent<
   IStateProps & IDispatchProps & IOwnProps
 > = ({ onDropFile, files, fileUploading, uploadType }) => (
   <MultiFileUpload
-    acceptedFiles="image/*,application/pdf"
+    acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
     onDropFile={onDropFile}
     files={files}
     fileUploading={fileUploading}

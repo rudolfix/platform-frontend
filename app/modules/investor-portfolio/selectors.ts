@@ -9,7 +9,12 @@ import { getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../store";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
 import { isZero } from "../../utils/Number.utils";
-import { selectEtoById, selectEtos, selectTokenData } from "../eto/selectors";
+import {
+  selectEtoById,
+  selectEtos,
+  selectEtoWithCompanyAndContractById,
+  selectTokenData,
+} from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
 import { isOnChain } from "../eto/utils";
 import { selectLockedWalletConnected } from "../wallet/selectors";
@@ -78,10 +83,11 @@ export const selectMyInvestorTicketByEtoId = (
   state: IAppState,
   etoId: string,
 ): TETOWithInvestorTicket | undefined => {
-  const etos = selectEtoWithInvestorTickets(state);
-  if (etos) {
-    // Should only return one
-    return etos.filter(eto => eto.etoId === etoId)[0];
+  const eto = selectEtoWithCompanyAndContractById(state, etoId);
+  const investorTicket = selectInvestorTicket(state, etoId);
+
+  if (investorTicket && eto) {
+    return { ...eto, investorTicket };
   }
 
   return undefined;

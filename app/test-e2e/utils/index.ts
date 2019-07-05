@@ -283,6 +283,17 @@ export const getWalletEthAmount = () => {
 };
 
 /**
+ * Get locked eth wallet balance
+ */
+export const getLockedWalletEthAmount = () => {
+  goToWallet();
+
+  return cy
+    .get(tid("locked-wallet.eth.balance-values.large-value"))
+    .then($element => parseAmount($element.text()));
+};
+
+/**
  * Get nEur wallet balance
  */
 export const getWalletNEurAmount = (navigate: boolean = true) => {

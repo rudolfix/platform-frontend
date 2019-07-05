@@ -4,9 +4,15 @@ import { includes } from "lodash/fp";
 import { IWindowWithData } from "../../../test/helperTypes";
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { IS_CYPRESS, Q18 } from "../../config/constants";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { convertToBigInt } from "../../utils/Number.utils";
 import { EETOStateOnChain } from "../eto/types";
-import { ICalculatedContribution, IInvestorTicket, ITokenDisbursal } from "./types";
+import {
+  EUserRefundStatus,
+  ICalculatedContribution,
+  IInvestorTicket,
+  ITokenDisbursal,
+} from "./types";
 
 export const convertToCalculatedContribution = ([
   isWhitelisted,
@@ -117,3 +123,25 @@ export const getRequiredIncomingAmount = (token: ECurrency) => {
 
 export const isPastInvestment = (etoState: EETOStateOnChain) =>
   includes(etoState, [EETOStateOnChain.Payout, EETOStateOnChain.Refund, EETOStateOnChain.Claim]);
+
+export const getRefundStatus = (
+  etoState: EETOStateOnChain,
+  userType: EUserType | undefined,
+  doesInvestorInvest: boolean,
+  investorTicket: IInvestorTicket | undefined,
+): EUserRefundStatus => {
+  if (
+    etoState === EETOStateOnChain.Refund &&
+    userType === EUserType.INVESTOR &&
+    doesInvestorInvest &&
+    investorTicket
+  ) {
+    if (investorTicket.claimedOrRefunded) {
+      return EUserRefundStatus.CLAIMED;
+    } else {
+      return EUserRefundStatus.CAN_CLAIM;
+    }
+  } else {
+    return EUserRefundStatus.CANNOT_CLAIM;
+  }
+};

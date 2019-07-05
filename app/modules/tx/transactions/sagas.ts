@@ -16,6 +16,7 @@ import { investmentFlowGenerator } from "./investment/sagas";
 import { startInvestorPayoutAcceptGenerator } from "./payout/accept/saga";
 import { startInvestorPayoutRedistributionGenerator } from "./payout/redistribute/saga";
 import { startNEuroRedeemGenerator } from "./redeem/saga";
+import { startRefundGenerator } from "./refund/saga";
 import { unlockEtherFundsTransactionGenerator } from "./unlock/sagas";
 import { upgradeTransactionFlow } from "./upgrade/sagas";
 import { ethWithdrawFlow } from "./withdraw/sagas";
@@ -203,6 +204,25 @@ export function* removePendingTransaction({ logger }: TGlobalDependencies): any 
   }
 }
 
+export function* etoRefundSaga(
+  { logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.txTransactions.startInvestorRefund>,
+): Iterator<any> {
+  const etoId = action.payload.etoId;
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.INVESTOR_REFUND,
+      transactionFlowGenerator: startRefundGenerator,
+      extraParam: etoId,
+    });
+    logger.info("User refund successful");
+  } catch (e) {
+    logger.info("User refund cancelled", e);
+  } finally {
+    yield put(actions.eto.loadEto(etoId));
+  }
+}
+
 export const txTransactionsSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_WITHDRAW_ETH", withdrawSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_UPGRADE", upgradeSaga);
@@ -227,6 +247,7 @@ export const txTransactionsSagasWatcher = function*(): Iterator<any> {
     actions.txTransactions.deletePendingTransaction,
     removePendingTransaction,
   );
+  yield fork(neuTakeLatest, actions.txTransactions.startInvestorRefund, etoRefundSaga);
 
   // Add new transaction types here...
 };

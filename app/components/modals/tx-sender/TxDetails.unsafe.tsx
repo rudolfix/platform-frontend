@@ -8,6 +8,7 @@ import { SetDateDetails } from "./eto-flow/SetDateDetails";
 import { InvestmentTransactionDetails } from "./investment-flow/InvestmentTransactionDetails";
 import { AcceptTransactionDetails } from "./investor-payout/AcceptTransactionDetails";
 import { RedistributeTransactionDetails } from "./investor-payout/RedistributeTransactionDetails";
+import { RefundTransactionDetails } from "./investor-refund/RefundDetails";
 import { BankTransferRedeemDetails } from "./redeem/BankTransferRedeemDetails";
 import { UnlockWalletTransactionDetails } from "./unlock-wallet-flow/UnlockWalletTransactionDetails";
 import { UpgradeTransactionDetails } from "./upgrade-flow/UpgradeTransactionDetails.unsafe";
@@ -53,6 +54,8 @@ const TxDetails: React.FunctionComponent<IProps & CommonHtmlProps> = props => {
       return <BankTransferRedeemDetails {...propsAsAny} />;
     case ETxSenderType.SIGN_INVESTMENT_AGREEMENT:
       return null;
+    case ETxSenderType.INVESTOR_REFUND:
+      return <RefundTransactionDetails {...propsAsAny} />;
     default:
       return assertNever(type);
   }

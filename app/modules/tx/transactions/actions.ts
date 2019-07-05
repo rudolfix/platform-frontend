@@ -23,6 +23,10 @@ export const txTransactionsActions = {
   ),
   startWithdrawNEuro: createActionFactory("TRANSACTIONS_START_WITHDRAW_NEUR"),
   startUnlockEtherFunds: createActionFactory("TRANSACTIONS_START_UNLOCK_ETHER_FUNDS"),
+  startInvestorRefund: createActionFactory(
+    "TRANSACTION_START_INVESTOR_REFUND",
+    (etoId: string) => ({ etoId }),
+  ),
   // Add here new custom sagas that represent flows
 
   // Delete pending transaction

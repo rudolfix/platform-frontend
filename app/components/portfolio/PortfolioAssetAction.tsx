@@ -17,6 +17,7 @@ type TExternalProps = {
 
 interface IDispatchProps {
   onClaim: (etoId: string) => void;
+  onRefund: (etoId: string) => void;
 }
 
 interface IStateProps {
@@ -25,7 +26,7 @@ interface IStateProps {
 
 const PortfolioAssetActionComponent: React.FunctionComponent<
   TExternalProps & IDispatchProps & IStateProps
-> = ({ state, etoId, onClaim, eto }) => {
+> = ({ state, etoId, onClaim, eto, onRefund }) => {
   switch (state) {
     case EETOStateOnChain.Claim:
     case EETOStateOnChain.Payout:
@@ -44,11 +45,11 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
     case EETOStateOnChain.Refund:
       return (
         <Button
+          onClick={() => onRefund(etoId)}
           layout={EButtonLayout.SECONDARY}
           iconPosition={EIconPosition.ICON_AFTER}
           svgIcon={arrowRight}
           size={ButtonSize.SMALL}
-          disabled
         >
           <FormattedMessage id="portfolio.section.reserved-assets.refund" />
         </Button>
@@ -75,6 +76,7 @@ const PortfolioAssetAction = appConnect<IStateProps, IDispatchProps, TExternalPr
   }),
   dispatchToProps: dispatch => ({
     onClaim: (etoId: string) => dispatch(actions.txTransactions.startUserClaim(etoId)),
+    onRefund: (etoId: string) => dispatch(actions.txTransactions.startInvestorRefund(etoId)),
   }),
 })(PortfolioAssetActionComponent);
 

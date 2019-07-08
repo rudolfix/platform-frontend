@@ -10,8 +10,8 @@ import * as YupTS from "../../../../lib/yup-ts";
 import { actions } from "../../../../modules/actions";
 import { EBankTransferType } from "../../../../modules/bank-transfer-flow/reducer";
 import {
-  selectBankFeeUlps,
-  selectBankTransferMinAmount,
+  selectBankRedeemMinAmount,
+  selectRedeemFeeUlps,
 } from "../../../../modules/bank-transfer-flow/selectors";
 import { selectLiquidEuroTokenBalance } from "../../../../modules/wallet/selectors";
 import { doesUserHaveEnoughNEuro, doesUserWithdrawMinimal } from "../../../../modules/web3/utils";
@@ -246,8 +246,8 @@ const BankTransferRedeemInit = compose<IProps, {}>(
     stateToProps: state => ({
       neuroAmount: selectLiquidEuroTokenBalance(state),
       neuroEuroAmount: selectLiquidEuroTokenBalance(state),
-      bankFee: selectBankFeeUlps(state),
-      minAmount: selectBankTransferMinAmount(state),
+      bankFee: selectRedeemFeeUlps(state),
+      minAmount: selectBankRedeemMinAmount(state),
     }),
     dispatchToProps: dispatch => ({
       verifyBankAccount: () =>

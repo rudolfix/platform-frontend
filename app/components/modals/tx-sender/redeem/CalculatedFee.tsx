@@ -28,6 +28,7 @@ const CalculatedFee: React.FunctionComponent<{ amount: string; bankFee: string }
 
   return (
     <MoneyNew
+      data-test-id="bank-transfer.redeem.init.fee"
       value={calculatedFee}
       inputFormat={ENumberInputFormat.ULPS}
       valueType={ECurrency.EUR}

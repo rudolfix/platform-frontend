@@ -32,6 +32,9 @@ export const bankTransferFLowActions = {
   ),
   setRedeemData: createActionFactory(
     "BANK_TRANSFER_SET_REDEEM_DATA",
-    (bankFeeUlps: string, minEuroUlps: string) => ({ bankFeeUlps, minEuroUlps }),
+    (redeemBankFeeUlps: string, redeemMinEuroUlps: string) => ({
+      redeemBankFeeUlps,
+      redeemMinEuroUlps,
+    }),
   ),
 };

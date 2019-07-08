@@ -9,14 +9,18 @@ import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
 import {
   EEtoDocumentType,
-  IEtoDocument,
   TEtoDocumentTemplates,
   TStateInfo,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { loadIssuerEto } from "../eto-flow/sagas";
-import { selectIssuerEtoId, selectIssuerEtoState } from "../eto-flow/selectors";
+import {
+  selectIssuerEtoDocuments,
+  selectIssuerEtoId,
+  selectIssuerEtoProduct,
+  selectIssuerEtoState,
+} from "../eto-flow/selectors";
 import { downloadLink } from "../immutable-file/utils";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
@@ -109,7 +113,7 @@ export function* downloadDocumentStart(
   action: TActionFromCreator<typeof actions.etoDocuments.downloadDocumentStart>,
 ): any {
   try {
-    const matchingDocument = yield neuCall(getDocumentOfTypePromise, action.payload.documentType);
+    const matchingDocument = yield getDocumentOfType(action.payload.documentType);
     const downloadedDocument = yield apiImmutableStorage.getFile({
       ipfsHash: matchingDocument.ipfsHash,
       mimeType: matchingDocument.mimeType,
@@ -126,26 +130,31 @@ export function* downloadDocumentStart(
   }
 }
 
-export function* loadEtoFileData({
+export function* loadEtoFilesInfo({
   notificationCenter,
   apiEtoFileService,
+  apiEtoProductService,
   logger,
 }: TGlobalDependencies): Iterator<any> {
   try {
+    const etoId = yield select(selectIssuerEtoId);
+    if (!etoId) {
+      // issuer eto must no be loaded so load it now
+      yield neuCall(loadIssuerEto);
+    }
+    const product = yield select(selectIssuerEtoProduct);
     const {
-      stateInfo,
-      allTemplates,
-    }: { stateInfo: TStateInfo; allTemplates: TEtoDocumentTemplates } = yield all({
-      stateInfo: apiEtoFileService.getEtoFileStateInfo(),
-      allTemplates: apiEtoFileService.getAllEtoTemplates(),
-      // under the hood updates state so only call saga
-      eto: neuCall(loadIssuerEto),
+      documentsStateInfo,
+      productTemplates,
+    }: { documentsStateInfo: TStateInfo; productTemplates: TEtoDocumentTemplates } = yield all({
+      documentsStateInfo: apiEtoFileService.getEtoFileStateInfo(),
+      productTemplates: apiEtoProductService.getProductTemplates(product.id),
     });
 
     yield put(
-      actions.etoDocuments.loadEtoFileData({
-        allTemplates,
-        stateInfo,
+      actions.etoDocuments.loadEtoFilesInfo({
+        productTemplates,
+        documentsStateInfo,
       }),
     );
   } catch (e) {
@@ -157,11 +166,8 @@ export function* loadEtoFileData({
   }
 }
 
-async function getDocumentOfTypePromise(
-  { apiEtoFileService }: TGlobalDependencies,
-  documentType: EEtoDocumentType,
-): Promise<IEtoDocument> {
-  const documents: TEtoDocumentTemplates = await apiEtoFileService.getAllEtoDocuments();
+function* getDocumentOfType(documentType: EEtoDocumentType): Iterator<any> {
+  const documents: TEtoDocumentTemplates = yield select(selectIssuerEtoDocuments);
 
   const matchingDocument = findKey(document => document.documentType === documentType, documents);
 
@@ -173,17 +179,12 @@ function* uploadEtoFileEffect(
   file: File,
   documentType: EEtoDocumentType,
 ): Iterator<any> {
-  const matchingDocument = yield neuCall(getDocumentOfTypePromise, documentType);
+  const matchingDocument = yield getDocumentOfType(documentType);
   if (matchingDocument)
     yield apiEtoFileService.deleteSpecificEtoDocument(matchingDocument.ipfsHash);
 
-  const uploadResult: IEtoDocument = yield apiEtoFileService.uploadEtoDocument(file, documentType);
+  yield apiEtoFileService.uploadEtoDocument(file, documentType);
   notificationCenter.info(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOADED));
-  if (documentType === EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT) {
-    const etoId = yield select(selectIssuerEtoId);
-    yield put(actions.etoDocuments.loadFileDataStart());
-    yield put(actions.etoFlow.signInvestmentAgreement(etoId, uploadResult.ipfsHash));
-  }
 }
 
 function* uploadEtoFile(
@@ -209,7 +210,13 @@ function* uploadEtoFile(
       notificationCenter.error(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED));
     }
   } finally {
-    yield put(actions.etoDocuments.loadFileDataStart());
+    yield neuCall(loadIssuerEto);
+    if (documentType === EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT) {
+      const etoId = yield select(selectIssuerEtoId);
+      const etoDocuments: TEtoDocumentTemplates = yield select(selectIssuerEtoDocuments);
+      const uploadResult = Object.values(etoDocuments).find(d => d.documentType === documentType)!;
+      yield put(actions.etoFlow.signInvestmentAgreement(etoId, uploadResult.ipfsHash));
+    }
     yield put(actions.etoDocuments.etoUploadDocumentFinish(documentType));
   }
 }
@@ -221,7 +228,7 @@ export function* etoDocumentsSagas(): any {
     generateDocumentFromTemplateByEtoId,
   );
   yield fork(neuTakeEvery, actions.etoDocuments.generateTemplate, generateDocumentFromTemplate);
-  yield fork(neuTakeEvery, actions.etoDocuments.loadFileDataStart, loadEtoFileData);
+  yield fork(neuTakeEvery, actions.etoDocuments.loadFileDataStart, loadEtoFilesInfo);
   yield fork(neuTakeEvery, actions.etoDocuments.etoUploadDocumentStart, uploadEtoFile);
   yield fork(neuTakeEvery, actions.etoDocuments.downloadDocumentStart, downloadDocumentStart);
 }

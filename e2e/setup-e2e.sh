@@ -19,8 +19,8 @@ else
     node ./run-backend.js;
 fi
 
-echo "sleeping for 60 to spin up containers"
-sleep 60
+echo "sleeping to spin up containers"
+sleep 90
 
 if lsof -Pi :9090 -sTCP:LISTEN -t > /dev/null ; then
     echo "Detected already started frontend..."

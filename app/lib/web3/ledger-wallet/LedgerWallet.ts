@@ -1,9 +1,8 @@
 import { addHexPrefix, toBuffer } from "ethereumjs-util";
 import * as Web3 from "web3";
 
-import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
+import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../../modules/web3/types";
 import { EthereumAddress } from "../../../types";
-import { ILedgerWalletMetadata } from "../../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError, SignerTimeoutError } from "../Web3Manager/Web3Manager";

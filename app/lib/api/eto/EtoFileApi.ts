@@ -4,12 +4,7 @@ import { Dictionary } from "lodash";
 import { symbols } from "../../../di/symbols";
 import { withParams } from "../../../utils/withParams";
 import { IHttpClient } from "../client/IHttpClient";
-import {
-  EEtoDocumentType,
-  IEtoDocument,
-  TEtoDocumentTemplates,
-  TStateInfo,
-} from "./EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoDocument, TStateInfo } from "./EtoFileApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/etos";
 // Issuer endpoints
@@ -25,15 +20,6 @@ export class FileAlreadyExists extends EtoFileApiError {}
 @injectable()
 export class EtoFileApi {
   constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
-
-  public async getAllEtoDocuments(): Promise<TEtoDocumentTemplates> {
-    const response = await this.httpClient.get<TEtoDocumentTemplates>({
-      baseUrl: BASE_PATH,
-      url: ETO_DOCUMENTS_PATH,
-    });
-
-    return response.body;
-  }
 
   public async uploadEtoDocument(
     file: File,
@@ -76,15 +62,6 @@ export class EtoFileApi {
     const response = await this.httpClient.get<TStateInfo>({
       baseUrl: BASE_PATH,
       url: ETO_DOCUMENTS_INFO_PATH,
-    });
-
-    return response.body;
-  }
-
-  public async getAllEtoTemplates(): Promise<TEtoDocumentTemplates> {
-    const response = await this.httpClient.get<TEtoDocumentTemplates>({
-      baseUrl: BASE_PATH,
-      url: ETO_TEMPLATES_PATH,
     });
 
     return response.body;

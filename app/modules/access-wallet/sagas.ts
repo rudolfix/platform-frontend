@@ -4,12 +4,6 @@ import { call, put, race, select, take } from "redux-saga/effects";
 import { GenericErrorMessage } from "../../components/translatedMessages/messages";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EUserType } from "../../lib/api/users/interfaces";
-import {
-  ILedgerWalletMetadata,
-  ILightWalletMetadata,
-  ILightWalletRetrieveMetadata,
-} from "../../lib/persistence/WalletMetadataObjectStorage";
 import { BrowserWalletConnector } from "../../lib/web3/browser-wallet/BrowserWallet";
 import { LedgerWalletConnector } from "../../lib/web3/ledger-wallet/LedgerConnector";
 import {
@@ -27,11 +21,15 @@ import { IAppState } from "../../store";
 import { invariant } from "../../utils/invariant";
 import { actions, TActionFromCreator } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
-import { selectUserType } from "../auth/selectors";
 import { neuCall } from "../sagasUtils";
 import { retrieveMetadataFromVaultAPI } from "../wallet-selector/light-wizard/metadata/sagas";
 import { selectWalletType } from "../web3/selectors";
-import { EWalletType } from "../web3/types";
+import {
+  EWalletType,
+  ILedgerWalletMetadata,
+  ILightWalletMetadata,
+  ILightWalletRetrieveMetadata,
+} from "../web3/types";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
 
@@ -45,8 +43,7 @@ export function* ensureWalletConnection(
   }: TGlobalDependencies,
   password?: string,
 ): any {
-  const userType: EUserType = yield select(selectUserType);
-  const metadata = walletStorage.get(userType);
+  const metadata = walletStorage.get();
 
   if (!metadata) return invariant(metadata, "User has JWT but doesn't have wallet metadata!");
 

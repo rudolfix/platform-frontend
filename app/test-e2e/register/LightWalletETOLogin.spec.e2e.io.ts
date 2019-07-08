@@ -13,7 +13,7 @@ const loginWithLightWalletETO = (testEmail: string, password: string) => {
 
   cy.get(tid("Header-logout")).awaitedClick();
 
-  cy.get(tid("Header-login-eto")).awaitedClick();
+  cy.get(tid("Header-login")).awaitedClick();
 
   cy.get(tid("wallet-selector-light")).awaitedClick();
 

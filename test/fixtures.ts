@@ -10,7 +10,7 @@ import {
 import {
   EEtoDocumentLanguage,
   EEtoDocumentType,
-  IEtoFiles,
+  IEtoFilesInfo,
   TEtoDocumentTemplates,
   TEtoFormType,
 } from "../app/lib/api/eto/EtoFileApi.interfaces";
@@ -866,8 +866,8 @@ export const testEto: TEtoWithCompanyAndContract = {
   isMarketingDataVisibleInPreview: EEtoMarketingDataVisibleInPreview.NOT_VISIBLE,
 };
 
-export const etoFilesData: IEtoFiles = {
-  allTemplates: {
+export const etoFilesData: IEtoFilesInfo = {
+  productTemplates: {
     companyTokenHolderAgreement: {
       documentType: EEtoDocumentType.COMPANY_TOKEN_HOLDER_AGREEMENT,
       form: "template" as TEtoFormType,
@@ -891,14 +891,6 @@ export const etoFilesData: IEtoFiles = {
       language: EEtoDocumentLanguage.EN,
       mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       name: "investment_memorandum_template",
-    },
-    pamphletTemplate: {
-      documentType: EEtoDocumentType.PAMPHLET_TEMPLATE,
-      form: "template" as TEtoFormType,
-      ipfsHash: "QmUbU1jFuJdpArXuPPPQBde2vg3p6LPy6CPK3e3Rw5ACoC",
-      language: EEtoDocumentLanguage.DE,
-      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      name: "pamphlet_template_de",
     },
     prospectusTemplate: {
       documentType: EEtoDocumentType.PROSPECTUS_TEMPLATE,
@@ -925,7 +917,7 @@ export const etoFilesData: IEtoFiles = {
       name: "termsheet_template",
     },
   },
-  stateInfo: {
+  documentsStateInfo: {
     canDeleteInStates: {
       listed: [EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT],
       onChain: [EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT],
@@ -940,12 +932,12 @@ export const etoFilesData: IEtoFiles = {
       preview: [EEtoDocumentType.SIGNED_TERMSHEET],
       prospectusApproved: [],
     },
-    uploadableDocuments: [
+    uploadableTypes: [
       "signed_termsheet",
       "approved_investor_offering_document",
       "investment_and_shareholder_agreement",
     ] as EEtoDocumentType[],
-    requiredTemplates: [],
+    generatedTypes: [],
   },
 };
 

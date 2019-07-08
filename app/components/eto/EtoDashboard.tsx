@@ -402,7 +402,6 @@ const EtoDashboard = compose<React.FunctionComponent>(
       initEtoView: () => {
         dispatch(actions.etoFlow.loadIssuerEto());
         dispatch(actions.kyc.kycLoadIndividualDocumentList());
-        dispatch(actions.etoDocuments.loadFileDataStart());
       },
     }),
   }),

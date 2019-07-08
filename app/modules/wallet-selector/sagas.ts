@@ -9,7 +9,8 @@ import { selectUrlUserType } from "./selectors";
 
 export function* loadWalletFromUrl(): Iterator<any> {
   const userType: EUserType = yield effects.select((s: IAppState) => selectUrlUserType(s.router));
-  yield neuCall(loadPreviousWallet, userType);
+  // when going through default registration/login allow to acquire any previous wallet, otherwise force specific type
+  yield neuCall(loadPreviousWallet, userType === EUserType.INVESTOR ? undefined : userType);
 }
 
 export function* walletSelectorSagas(): Iterator<any> {

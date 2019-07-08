@@ -5,6 +5,7 @@ import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IUser, IUserInput } from "../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../lib/api/users/UsersApi";
 import { REGISTRATION_LOGIN_DONE } from "../../../lib/persistence/UserStorage";
+import { TStoredWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   SignerRejectConfirmationError,
   SignerTimeoutError,
@@ -35,8 +36,12 @@ export function* signInUser({
     yield call(loadOrCreateUser, probableUserType);
 
     const userType: EUserType = yield select(selectUserType);
-    // tslint:disable-next-line
-    walletStorage.set(web3Manager.personalWallet!.getMetadata(), userType);
+    const storedWalletMetadata: TStoredWalletMetadata = {
+      // tslint:disable-next-line
+      ...web3Manager.personalWallet!.getMetadata(),
+      userType: userType,
+    };
+    walletStorage.set(storedWalletMetadata);
 
     const redirectionUrl = yield select(selectRedirectURLFromQueryString);
 

@@ -1,4 +1,4 @@
-import { TWalletMetadata } from "../../persistence/WalletMetadataObjectStorage";
+import { TWalletMetadata } from "../../../modules/web3/types";
 import { EUserType } from "./interfaces";
 
 export const getDummyUser = (walletMetadata: TWalletMetadata) => ({

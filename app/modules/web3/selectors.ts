@@ -3,11 +3,10 @@ import { isString } from "lodash";
 import * as queryString from "query-string";
 import { createSelector } from "reselect";
 
-import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { IAppState } from "../../store";
 import { EthereumAddress } from "../../types";
 import { IConnectedWeb3State, IWalletPrivateData, IWeb3State } from "./reducer";
-import { EWalletSubType, EWalletType } from "./types";
+import { EWalletSubType, EWalletType, TWalletMetadata } from "./types";
 import { makeEthereumAddressChecksummed } from "./utils";
 
 export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {

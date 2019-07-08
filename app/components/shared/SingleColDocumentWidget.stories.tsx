@@ -22,13 +22,6 @@ const documents: IEtoDocument[] = [
     name: "investment_and_shareholder_agreement",
   },
   {
-    documentType: "pamphlet_template" as EEtoDocumentType,
-    form: "template",
-    ipfsHash: "QmUbU1jFuJdpArXuPPPQBde2vg3p6LPy6CPK3e3Rw5ACoC",
-    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    name: "pamphlet_template_de",
-  },
-  {
     documentType: "prospectus_template" as EEtoDocumentType,
     form: "template",
     ipfsHash: "QmQYWyx6WWwCYqBnJ74ruogTTHfKoscQRHU5eJFKDD22mT",

@@ -34,8 +34,8 @@ const openAndCheckValues = (
 };
 
 describe("Eto Forms", () => {
-  it("should fill required fields and submit eto", function(): void {
-    this.retries(2);
+  // todo: enable when ISHA compatible backend is merged
+  it.skip("should fill required fields and submit eto", function(): void {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
       goToEtoDashboard();
 

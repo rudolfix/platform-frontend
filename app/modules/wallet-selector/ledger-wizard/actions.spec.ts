@@ -8,7 +8,6 @@ import { createMock } from "../../../../test/testUtils";
 import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { Neumark } from "../../../lib/contracts/Neumark";
-import { ILedgerWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { ContractsService } from "../../../lib/web3/ContractsService";
 import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
 import { LedgerWalletConnector } from "../../../lib/web3/ledger-wallet/LedgerConnector";
@@ -19,7 +18,7 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
 import { Dictionary } from "../../../types";
 import { actions } from "../../actions";
-import { EWalletSubType, EWalletType } from "../../web3/types";
+import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../web3/types";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
 import {
   finishSettingUpLedgerConnector,

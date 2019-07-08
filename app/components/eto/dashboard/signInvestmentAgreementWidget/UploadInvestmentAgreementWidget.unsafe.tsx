@@ -6,9 +6,9 @@ import { compose } from "redux";
 
 import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../../modules/actions";
-import { selectEtoDocumentData } from "../../../../modules/eto-documents/selectors";
 import {
   selectIssuerEtoId,
+  selectIssuerEtoTemplates,
   selectUploadedInvestmentAgreement,
 } from "../../../../modules/eto-flow/selectors";
 import { selectEtoOnChainStateById } from "../../../../modules/eto/selectors";
@@ -91,11 +91,11 @@ export const UploadInvestmentAgreement = compose<React.FunctionComponent<IExtern
   appConnect<IStateProps | null, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectIssuerEtoId(state);
+      const etoTemplates = selectIssuerEtoTemplates(state)!;
       if (etoId) {
         return {
           stateOnChain: selectEtoOnChainStateById(state, etoId)!,
-          agreementTemplate: selectEtoDocumentData(state.etoDocuments).allTemplates
-            .investmentAndShareholderAgreementTemplate,
+          agreementTemplate: etoTemplates.investmentAndShareholderAgreementTemplate,
           uploadedAgreement: selectUploadedInvestmentAgreement(state),
         };
       } else {

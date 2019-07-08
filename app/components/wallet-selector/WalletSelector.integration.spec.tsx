@@ -22,10 +22,6 @@ import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
 import { Neumark } from "../../lib/contracts/Neumark";
 import { Storage } from "../../lib/persistence/Storage";
 import {
-  IBrowserWalletMetadata,
-  ILedgerWalletMetadata,
-} from "../../lib/persistence/WalletMetadataObjectStorage";
-import {
   BrowserWallet,
   BrowserWalletConnector,
   BrowserWalletLockedError,
@@ -40,7 +36,12 @@ import { Web3ManagerMock } from "../../lib/web3/Web3Manager/Web3Manager.mock";
 import { actions } from "../../modules/actions";
 import { neuCall } from "../../modules/sagasUtils";
 import { initWeb3ManagerEvents } from "../../modules/web3/sagas";
-import { EWalletSubType, EWalletType } from "../../modules/web3/types";
+import {
+  EWalletSubType,
+  EWalletType,
+  IBrowserWalletMetadata,
+  ILedgerWalletMetadata,
+} from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons";
 import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";

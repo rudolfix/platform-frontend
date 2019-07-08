@@ -1,5 +1,5 @@
-import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { createAction, createSimpleAction } from "../actionsUtils";
+import { TWalletMetadata } from "./types";
 
 export const web3Actions = {
   personalWalletDisconnected: () => createSimpleAction("PERSONAL_WALLET_DISCONNECTED"),

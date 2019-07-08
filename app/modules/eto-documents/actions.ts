@@ -1,11 +1,18 @@
-import { EEtoDocumentType, IEtoDocument, IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import {
+  EEtoDocumentType,
+  IEtoDocument,
+  IEtoFilesInfo,
+} from "../../lib/api/eto/EtoFileApi.interfaces";
 import { createActionFactory } from "../actionsUtils";
 
 export const etoDocumentsActions = {
   loadFileDataStart: createActionFactory("ETO_DOCUMENTS_LOAD_FILE_DATA_START"),
-  loadEtoFileData: createActionFactory("ETO_DOCUMENTS_LOAD_ETO_FILE_DATA", (data: IEtoFiles) => ({
-    data,
-  })),
+  loadEtoFilesInfo: createActionFactory(
+    "ETO_DOCUMENTS_LOAD_ETO_FILE_DATA",
+    (data: IEtoFilesInfo) => ({
+      data,
+    }),
+  ),
   generateTemplate: createActionFactory(
     "ETO_DOCUMENTS_GENERATE_TEMPLATE",
     (document: IEtoDocument) => ({ document }),

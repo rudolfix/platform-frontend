@@ -10,7 +10,7 @@ import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   EEtoDocumentType,
   IEtoDocument,
-  IEtoFiles,
+  IEtoFilesInfo,
   TEtoDocumentTemplates,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { ignoredTemplates } from "../../lib/api/eto/EtoFileUtils";
@@ -59,7 +59,7 @@ import {
 import * as styles from "./Documents.module.scss";
 
 type TStateLoadedProps = {
-  etoFilesData: DeepReadonly<IEtoFiles>;
+  etoFilesData: DeepReadonly<IEtoFilesInfo>;
   etoState: EEtoState;
   etoTemplates: TEtoDocumentTemplates;
   etoDocuments: TEtoDocumentTemplates;
@@ -94,8 +94,8 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
   transactionPending,
   documentsGenerated,
 }) => {
-  const { allTemplates, stateInfo } = etoFilesData;
-  const documents = renameDocuments(stateInfo, onChainState);
+  const { productTemplates, documentsStateInfo } = etoFilesData;
+  const documents = renameDocuments(documentsStateInfo, onChainState);
   const etoTemplateKeys = Object.keys(etoTemplates);
 
   return (
@@ -119,11 +119,11 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
               .map(key => (
                 <ClickableDocumentTile
                   key={key}
-                  document={allTemplates[key]}
+                  document={etoTemplates[key]}
                   generateTemplate={generateTemplate}
-                  title={getDocumentTitles(offeringDocumentType)[allTemplates[key].documentType]}
+                  title={getDocumentTitles(offeringDocumentType)[etoTemplates[key].documentType]}
                   extension={".doc"}
-                  busy={documentsGenerated[allTemplates[key].ipfsHash]}
+                  busy={documentsGenerated[etoTemplates[key].ipfsHash]}
                 />
               ))
           ) : (
@@ -137,12 +137,12 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
           <h4 className={styles.groupName}>
             <FormattedMessage id="documents.approved-prospectus-and-agreements-to-upload" />
           </h4>
-          {stateInfo &&
+          {documentsStateInfo &&
             documents.map((key: EEtoDocumentType) => (
               <UploadableDocumentTile
                 key={key}
                 documentKey={key}
-                active={uploadAllowed(stateInfo, etoState, key, onChainState)}
+                active={uploadAllowed(documentsStateInfo, etoState, key, onChainState)}
                 busy={isBusy(key, transactionPending, Boolean(documentsUploading[key]))}
                 typedFileName={getDocumentTitles(offeringDocumentType)[key]}
                 isFileUploaded={isFileUploaded(etoDocuments, key)}
@@ -154,9 +154,11 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
             ))}
         </section>
 
-        {allTemplates && (
+        {productTemplates && (
           <SingleColDocuments
-            documents={sortDocuments(etoTemplateKeys).map(key => allTemplates[key])}
+            documents={sortDocuments(Object.keys(productTemplates)).map(
+              key => productTemplates[key],
+            )}
             title={<FormattedMessage id="documents.agreement-and-prospectus-templates" />}
             className={styles.documents}
             offeringDocumentType={offeringDocumentType}
@@ -177,7 +179,7 @@ const Documents = compose<React.FunctionComponent>(
       const etoId = selectIssuerEtoId(state);
       const etoFilesData = selectEtoDocumentData(state.etoDocuments);
 
-      if (!etoId || isEmpty(etoFilesData.allTemplates)) {
+      if (!etoId || isEmpty(etoFilesData.productTemplates)) {
         return {
           isLoading: true,
         };

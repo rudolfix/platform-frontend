@@ -1,4 +1,4 @@
-import { EEtoDocumentType, IEtoFiles } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoFilesInfo } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
@@ -7,7 +7,7 @@ export interface IEtoDocumentState {
   loading: boolean;
   saving: boolean;
   showIpfsModal: boolean;
-  etoFileData: IEtoFiles;
+  etoFilesInfo: IEtoFilesInfo;
   uploadAction?: () => void;
   uploading: { [key in EEtoDocumentType]?: boolean };
   downloading: { [key in EEtoDocumentType]?: boolean };
@@ -16,8 +16,8 @@ export interface IEtoDocumentState {
 export const etoFlowInitialState: IEtoDocumentState = {
   loading: false,
   saving: false,
-  etoFileData: {
-    allTemplates: {},
+  etoFilesInfo: {
+    productTemplates: {},
   },
   showIpfsModal: false,
   uploading: {},
@@ -34,10 +34,10 @@ export const etoDocumentReducer: AppReducer<IEtoDocumentState> = (
         ...state,
         loading: true,
       };
-    case actions.etoDocuments.loadEtoFileData.getType():
+    case actions.etoDocuments.loadEtoFilesInfo.getType():
       return {
         ...state,
-        etoFileData: { ...state.etoFileData, ...action.payload.data },
+        etoFilesInfo: { ...state.etoFilesInfo, ...action.payload.data },
         loading: false,
         saving: false,
       };

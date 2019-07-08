@@ -26,7 +26,6 @@ import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import { Storage } from "../lib/persistence/Storage";
 import { USER_JWT_KEY } from "../lib/persistence/UserStorage";
-import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { BrowserWalletConnector } from "../lib/web3/browser-wallet/BrowserWallet";
 import { ContractsService } from "../lib/web3/ContractsService";
@@ -154,7 +153,7 @@ export function setupBindings(config: IConfig): Container {
     .to(EtoFileApi)
     .inSingletonScope();
   container
-    .bind<WalletStorage<TWalletMetadata>>(symbols.walletStorage)
+    .bind<WalletStorage>(symbols.walletStorage)
     .to(WalletStorage)
     .inSingletonScope();
   container
@@ -229,7 +228,7 @@ export const createGlobalDependencies = (container: Container) => ({
 
   // storage
   jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
-  walletStorage: container.get<WalletStorage<TWalletMetadata>>(symbols.walletStorage),
+  walletStorage: container.get<WalletStorage>(symbols.walletStorage),
   userStorage: container.get<ObjectStorage<string>>(symbols.userStorage),
 
   // network layer

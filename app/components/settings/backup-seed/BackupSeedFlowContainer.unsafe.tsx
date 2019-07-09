@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { TTranslatedString } from "../../../types";
 import { EColumnSpan } from "../../layouts/Container";
-import { WidgetGridLayout } from "../../layouts/Layout";
+import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { HeaderProgressStepper } from "../../shared/HeaderProgressStepper";
 import { Panel } from "../../shared/Panel";
 import { BackupSeedDisplay } from "./BackupSeedDisplay";
@@ -97,7 +97,7 @@ class BackupSeedFlowContainerLayout extends React.Component<
   render(): React.ReactNode {
     const steps = this.props.backupCodesVerified ? 3 : 4;
     return (
-      <WidgetGridLayout>
+      <WidgetGrid>
         <Panel columnSpan={EColumnSpan.THREE_COL} className={styles.panel}>
           <HeaderProgressStepper
             steps={steps}
@@ -110,7 +110,7 @@ class BackupSeedFlowContainerLayout extends React.Component<
           />
           {this.renderBackupPage(this.state.backupStep)}
         </Panel>
-      </WidgetGridLayout>
+      </WidgetGrid>
     );
   }
 }

@@ -6,12 +6,12 @@ import {
   assertWaitForLatestEmailSentWithSalt,
   generateRandomEmailAddress,
   loginWithLightWallet,
-  logoutViaTopRightButton,
+  logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
   typeEmailPassword,
   verifyLatestUserEmail,
-} from "../utils";
+} from "../utils/index";
 
 describe("Light wallet login / register", () => {
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).awaitedClick();
+    logoutViaAccountMenu();
 
     loginWithLightWallet(email, password);
 
@@ -47,7 +47,7 @@ describe("Light wallet login / register", () => {
     // todo: we should let to register as issuer here so mock is not needed
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).awaitedClick();
+    logoutViaAccountMenu();
 
     loginWithLightWallet(email, password);
 
@@ -80,7 +80,7 @@ describe("Light wallet login / register", () => {
     // todo: we should let to register as issuer here so mock is not needed
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).awaitedClick();
+    logoutViaAccountMenu();
 
     loginWithLightWallet(email, password);
 
@@ -103,7 +103,7 @@ describe("Light wallet login / register", () => {
     assertDashboard();
     acceptTOS();
     verifyLatestUserEmail(email);
-    logoutViaTopRightButton();
+    logoutViaAccountMenu();
     cy.clearLocalStorage();
 
     // register again with the same email, this should show a warning

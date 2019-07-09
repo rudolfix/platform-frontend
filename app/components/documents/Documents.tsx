@@ -40,10 +40,10 @@ import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { appRoutes } from "../appRoutes";
 import { EtoFileIpfsModal } from "../eto/shared/EtoFileIpfsModal";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
 import { ClickableDocumentTile, UploadableDocumentTile } from "../shared/Document";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../shared/Heading";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { SingleColDocuments } from "../shared/SingleColDocumentWidget";
@@ -101,7 +101,7 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
   return (
     <>
       <div data-test-id="eto-documents" className={styles.layout}>
-        <Heading level={3} className={cn(styles.header)}>
+        <Heading level={3} className={styles.header}>
           <FormattedMessage id="documents.legal-documents" />
         </Heading>
 
@@ -171,7 +171,7 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
 };
 
 const Documents = compose<React.FunctionComponent>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   setDisplayName("Documents"),
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<TStateProps, IDispatchProps>({
@@ -207,7 +207,7 @@ const Documents = compose<React.FunctionComponent>(
     }),
   }),
   withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.documents-page") })),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
   branch<TStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
   branch<TStateLoadedProps>(
     props => !props.shouldEtoDataLoad,

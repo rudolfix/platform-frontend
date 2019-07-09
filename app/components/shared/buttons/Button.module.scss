@@ -71,8 +71,11 @@ $_active-color: lighten($_hover-color, 20%);
     text-transform: uppercase;
 
     .content {
+      @include media-breakpoint-up (sm) {
+        min-width: px-to-rem(138px);
+      }
+
       border: px-to-rem(2px) solid currentColor;
-      min-width: px-to-rem(138px);
     }
 
     &:hover,
@@ -211,6 +214,14 @@ $_active-color: lighten($_hover-color, 20%);
 
     :local(.content) {
       border-color: $neu-piss-yellow;
+    }
+  }
+
+  &-dark-no-border {
+    color: $neu-greyish-brown;
+
+    :local(.content) {
+      border-color: transparent;
     }
   }
 

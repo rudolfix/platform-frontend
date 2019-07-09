@@ -8,12 +8,14 @@ import { PendingTransactionStatus } from "./PendingTransactionStatus";
 storiesOf("PendingTransactionStatus", module)
   .add("No pending transactions", () => (
     <PendingTransactionStatus
+      className="className"
       pendingTransaction={undefined}
       monitorPendingTransaction={action("monitorPendingTransaction")}
     />
   ))
   .add("In progress", () => (
     <PendingTransactionStatus
+      className="className"
       pendingTransaction={{
         transactionStatus: ETxSenderState.MINING,
       }}
@@ -22,6 +24,7 @@ storiesOf("PendingTransactionStatus", module)
   ))
   .add("Success", () => (
     <PendingTransactionStatus
+      className="className"
       pendingTransaction={{
         transactionStatus: ETxSenderState.DONE,
       }}
@@ -30,6 +33,7 @@ storiesOf("PendingTransactionStatus", module)
   ))
   .add("Error", () => (
     <PendingTransactionStatus
+      className="className"
       pendingTransaction={{
         transactionStatus: ETxSenderState.ERROR_SIGN,
       }}

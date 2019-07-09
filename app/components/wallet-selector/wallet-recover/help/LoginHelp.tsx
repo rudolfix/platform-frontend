@@ -2,15 +2,18 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
+import { compose } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
+import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { ButtonLink } from "../../../shared/buttons";
 import { ExternalLink } from "../../../shared/links";
 import { loginWalletRoutes } from "../../walletRoutes";
+import { WalletSelectorContainer } from "../../WalletSelectorContainer";
 import { recoverRoutes } from "../router/recoverRoutes";
 
-export const LoginHelp: React.FunctionComponent<void> = () => (
-  <div>
+export const LoginHelpLayout: React.FunctionComponent<{}> = () => (
+  <>
     <Col className="mt-5 mb-5">
       <h2 className="font-weight-bold mx-auto text-center">
         <FormattedMessage id="wallet-selector.recover.help.prompt" />
@@ -67,5 +70,7 @@ export const LoginHelp: React.FunctionComponent<void> = () => (
         </ExternalLink>
       </Row>
     </Col>
-  </div>
+  </>
 );
+
+export const LoginHelp = compose(withContainer(WalletSelectorContainer))(LoginHelpLayout);

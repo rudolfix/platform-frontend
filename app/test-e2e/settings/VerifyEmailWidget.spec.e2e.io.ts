@@ -6,6 +6,7 @@ import {
   closeModal,
   confirmAccessModal,
   generateRandomEmailAddress,
+  goToUserAccountSettings,
   registerWithLightWallet,
   tid,
   verifyLatestUserEmail,
@@ -23,7 +24,7 @@ describe("Verify Email Widget", () => {
     registerWithLightWallet(firstEmail, password);
     assertDashboard();
 
-    cy.get(tid("authorized-layout-profile-button")).awaitedClick();
+    goToUserAccountSettings();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();
     cy.get(tid("verify-email-widget.change-email.button")).awaitedClick();
     assertVerifyEmailWidgetIsInNoEmailState();
@@ -50,7 +51,7 @@ describe("Verify Email Widget", () => {
     registerWithLightWallet(firstEmail, password);
     assertDashboard();
 
-    cy.get(tid("authorized-layout-profile-button")).awaitedClick();
+    goToUserAccountSettings();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();
     cy.get(tid("verify-email-widget.change-email.button")).awaitedClick();
     assertVerifyEmailWidgetIsInNoEmailState();

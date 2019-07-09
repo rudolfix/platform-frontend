@@ -395,7 +395,10 @@ export const makeAuthenticatedCall = async (path: string, config: RequestInit) =
 
 export const logout = () => {
   cy.log("logging out");
-  cy.get(tid("Header-logout")).awaitedClick();
+  cy.get(tid("account-menu-open-button"))
+    .awaitedClick()
+    .get(tid("menu-logout-button"))
+    .awaitedClick();
   cy.wait(2000);
 };
 

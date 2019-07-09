@@ -29,11 +29,11 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { Container, EColumnSpan } from "../layouts/Container";
-import { WidgetGridLayout } from "../layouts/Layout";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
+import { WidgetGrid } from "../layouts/WidgetGrid";
 import { SettingsWidgets } from "../settings/settings-widget/SettingsWidgets";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../shared/Heading";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { Tooltip } from "../shared/tooltips/Tooltip";
@@ -327,7 +327,7 @@ class EtoDashboardComponent extends React.Component<IComponentProps> {
     } = this.props;
 
     return (
-      <WidgetGridLayout data-test-id="eto-dashboard-application">
+      <WidgetGrid data-test-id="eto-dashboard-application">
         {!isVerificationSectionDone && (
           <>
             <EtoDashboardStepSelector etoStep={etoStep} />
@@ -375,13 +375,13 @@ class EtoDashboardComponent extends React.Component<IComponentProps> {
             />
           </>
         )}
-      </WidgetGridLayout>
+      </WidgetGrid>
     );
   }
 }
 
 const EtoDashboard = compose<React.FunctionComponent>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       verifiedEmail: selectVerifiedUserEmail(s.auth),
@@ -445,7 +445,7 @@ const EtoDashboard = compose<React.FunctionComponent>(
       }
     },
   }),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
 )(EtoDashboardComponent);
 
 export { EtoDashboard, EtoDashboardComponent, EtoDashboardStateViewComponent };

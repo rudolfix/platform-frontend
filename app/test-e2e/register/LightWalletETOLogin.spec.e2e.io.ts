@@ -1,9 +1,10 @@
 import {
   assertEtoDashboard,
   generateRandomEmailAddress,
+  logoutViaAccountMenu,
   registerWithLightWalletETO,
   tid,
-} from "../utils";
+} from "../utils/index";
 
 const password = "strongpassword";
 
@@ -11,7 +12,7 @@ const loginWithLightWalletETO = (testEmail: string, password: string) => {
   registerWithLightWalletETO(testEmail, password);
   assertEtoDashboard();
 
-  cy.get(tid("Header-logout")).awaitedClick();
+  logoutViaAccountMenu();
 
   cy.get(tid("Header-login")).awaitedClick();
 

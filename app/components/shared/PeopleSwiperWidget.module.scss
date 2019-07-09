@@ -1,4 +1,5 @@
 .swiper-main {
+  position: relative;
   display: flex;
   flex-flow: row;
   flex: 1 1 100%;
@@ -62,12 +63,12 @@
 
 .prev {
   margin-right: .3rem;
-  left: .9rem;
+  left: -1.2rem;
 }
 
 .next {
   margin-left: .3rem;
-  right: .9rem;
+  right: -1.2rem;
 }
 
 .clickable {
@@ -88,24 +89,25 @@
 
   .prev {
     margin-right: .3rem;
-    left: 1.5rem;
+    left: -1.2rem;
 
   }
 
   .next {
     margin-left: .3rem;
-    right: 1.5rem;
+    right: -1.2rem;
   }
 }
 
 @include media-breakpoint-up(md) {
   .prev {
     margin-right: .3rem;
-    left: 2rem;
+    left: -1rem;
   }
+
 
   .next {
     margin-left: .3rem;
-    right: 2rem;
+    right: -1rem;
   }
 }

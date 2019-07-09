@@ -16,8 +16,8 @@ const SecretProtected = <T extends {}>(Component: React.ComponentType<T>): React
       const params = queryString.parse(window.location.search);
       const isIssuersSecret = process.env.NF_ISSUERS_SECRET;
 
-      if (!isIssuersSecret || params.etoSecret === isIssuersSecret) {
-        return <Component isSecretProtected={isIssuersSecret} {...props} />;
+      if (isIssuersSecret === undefined || params.etoSecret === isIssuersSecret) {
+        return <Component isSecretProtected={Boolean(isIssuersSecret)} {...props} />;
       }
 
       return <Redirect to={appRoutes.root} />;

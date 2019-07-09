@@ -18,7 +18,6 @@ import { EthereumAddress } from "../../types";
 import { mockApiUrl } from "../config";
 import {
   assertDashboard,
-  assertEtoDashboard,
   assertUserInLanding,
   assertWaitForExternalPendingTransactionCount,
 } from "./assertions";
@@ -160,25 +159,32 @@ export const registerWithLightWallet = (
 
   acceptTOS();
 
-  if (asIssuer) {
-    assertEtoDashboard();
-  } else {
-    assertDashboard();
-  }
+  assertDashboard();
 };
 
 export const acceptTOS = () => {
+  // need to force 'click' because of this cypress issue: https://github.com/cypress-io/cypress/issues/695
   cy.get(tid("modals.accept-tos.accept-button"))
     .should("be.enabled")
-    .click();
+    .click({ force: true });
 
   cy.get(tid("modals.accept-tos")).should("not.exist");
 };
 
-export const logoutViaTopRightButton = () => {
-  cy.get(tid("Header-logout")).awaitedClick();
+export const logoutViaAccountMenu = () => {
+  cy.get(tid("account-menu-open-button"))
+    .awaitedClick()
+    .get(tid("menu-logout-button"))
+    .awaitedClick();
 
   assertUserInLanding();
+};
+
+export const goToUserAccountSettings = () => {
+  cy.get(tid("account-menu-open-button"))
+    .awaitedClick()
+    .get(tid("authorized-layout-profile-button"))
+    .awaitedClick();
 };
 
 export const loginWithLightWallet = (email: string, password: string) => {

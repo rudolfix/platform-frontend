@@ -1,24 +1,24 @@
 import * as React from "react";
 import { compose } from "redux";
 
+import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
-import { WidgetGridLayout } from "../layouts/Layout";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
+import { WidgetGrid } from "../layouts/WidgetGrid";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { WalletRouter } from "./Router";
 
-import * as layoutStyles from "../layouts/Layout.module.scss";
+import * as layoutStyles from "../layouts/WidgetGrid.module.scss";
 
 export const WalletComponent: React.FunctionComponent = () => (
-  <LayoutAuthorized>
-    <WidgetGridLayout data-test-id="wallet-start-container" className={layoutStyles.layoutOffset}>
-      <WalletRouter />
-    </WidgetGridLayout>
-  </LayoutAuthorized>
+  <WidgetGrid data-test-id="wallet-start-container" className={layoutStyles.layoutOffset}>
+    <WalletRouter />
+  </WidgetGrid>
 );
 
 export const Wallet = compose<React.FunctionComponent>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
+  withContainer(LayoutNew),
   withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.wallet") })),
 )(WalletComponent);

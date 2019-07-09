@@ -8,8 +8,10 @@ import { EUserType } from "../../../../lib/api/users/interfaces";
 import { actions } from "../../../../modules/actions";
 import { selectUrlUserType } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
+import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { Button } from "../../../shared/buttons";
 import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
+import { WalletSelectorContainer } from "../../WalletSelectorContainer";
 import { recoverRoutes } from "../router/recoverRoutes";
 
 import * as styles from "./RecoverySuccess.module.scss";
@@ -75,4 +77,5 @@ export const RecoverySuccess = compose<React.FunctionComponent>(
       goToDashboard: () => dispatch(actions.walletSelector.connected()),
     }),
   }),
+  withContainer(WalletSelectorContainer),
 )(RecoverySuccessComponent);

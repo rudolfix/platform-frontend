@@ -8,11 +8,9 @@ import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
-import { LayoutBase } from "../layouts/LayoutBase";
+import { LayoutNew } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
-import { ErrorBoundaryLayoutBase } from "../shared/errorBoundary/ErrorBoundaryLayoutBase";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoView } from "./shared/EtoView";
 import { withJurisdictionDisclaimer } from "./shared/routing/withJurisdictionDisclaimer";
@@ -34,6 +32,7 @@ type TProps = {
 };
 
 export const EtoPublicView = compose<TProps, IRouterParams>(
+  createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
       userType: selectUserType(state),
@@ -46,16 +45,7 @@ export const EtoPublicView = compose<TProps, IRouterParams>(
       dispatch(actions.eto.loadEtoPreview(props.previewCode));
     },
   }),
-  branch<IStateProps>(
-    props => props.userType === EUserType.INVESTOR,
-    createErrorBoundary(ErrorBoundaryLayoutAuthorized),
-    createErrorBoundary(ErrorBoundaryLayoutBase),
-  ),
-  branch<IStateProps>(
-    props => props.userType === EUserType.INVESTOR,
-    withContainer(LayoutAuthorized),
-    withContainer(LayoutBase),
-  ),
+  withContainer(LayoutNew),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
   withJurisdictionDisclaimer<TProps>(props => props.eto.previewCode),
   withJurisdictionRoute<TProps & IRouterParams>(props => ({

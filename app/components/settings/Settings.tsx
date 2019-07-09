@@ -18,17 +18,17 @@ import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan } from "../layouts/Container";
-import { WidgetGridLayout } from "../layouts/Layout";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
+import { WidgetGrid } from "../layouts/WidgetGrid";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";
 import { CheckYourICBMWalletWidget } from "./icbm-wallet-widget/CheckYourICBMWalletWidget";
 import { LinkedBankAccountWidget } from "./linked-bank-account/LinkedBankAccountWidget";
 import { PersonalAccountDetails } from "./personal-account-details/PersonalAccountDetails";
 import { SettingsWidgets } from "./settings-widget/SettingsWidgets";
 
-import * as layoutStyles from "../layouts/Layout.module.scss";
+import * as layoutStyles from "../layouts/WidgetGrid.module.scss";
 
 interface IStateProps {
   isLightWallet: boolean;
@@ -53,7 +53,7 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
   const isIndividual = kycRequestType === EKycRequestType.INDIVIDUAL;
 
   return (
-    <WidgetGridLayout className={layoutStyles.layoutOffset} data-test-id="eto-profile">
+    <WidgetGrid className={layoutStyles.layoutOffset} data-test-id="eto-profile">
       <Container columnSpan={EColumnSpan.THREE_COL}>
         <DashboardHeading
           title={<FormattedMessage id="settings.security-settings.title" />}
@@ -63,7 +63,7 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
       <SettingsWidgets
         isDynamic={false}
         isLightWallet={isLightWallet}
-        columnSpan={EColumnSpan.ONE_COL}
+        columnSpan={EColumnSpan.ONE_AND_HALF_COL}
       />
       <Container columnSpan={EColumnSpan.THREE_COL}>
         <DashboardHeading
@@ -71,22 +71,22 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
           data-test-id="eto-dashboard-application"
         />
       </Container>
-      <YourEthereumAddressWidget columnSpan={EColumnSpan.ONE_COL} />
+      <YourEthereumAddressWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
       {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
         !isIcbmWalletConnected &&
         !isLockedWalletConnected &&
-        isUserInvestor && <CheckYourICBMWalletWidget columnSpan={EColumnSpan.ONE_COL} />}
+        isUserInvestor && <CheckYourICBMWalletWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />}
 
       {isUserInvestor && isIndividual && isPersonalDataProcessed && (
-        <PersonalAccountDetails columnSpan={EColumnSpan.ONE_COL} />
+        <PersonalAccountDetails columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
       )}
-      <LinkedBankAccountWidget columnSpan={EColumnSpan.ONE_COL} />
-    </WidgetGridLayout>
+      <LinkedBankAccountWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+    </WidgetGrid>
   );
 };
 
 export const Settings = compose<React.FunctionComponent>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps>({
     stateToProps: state => ({
       isLightWallet: selectIsLightWallet(state.web3),
@@ -103,6 +103,6 @@ export const Settings = compose<React.FunctionComponent>(
       dispatch(actions.kyc.kycLoadIndividualData());
     },
   }),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
   withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.settings") })),
 )(SettingsComponent);

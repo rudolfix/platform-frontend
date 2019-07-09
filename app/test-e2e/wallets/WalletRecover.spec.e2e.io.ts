@@ -6,6 +6,7 @@ import {
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
   generateRandomEmailAddress,
+  goToUserAccountSettings,
   tid,
   typeEmailPassword,
   typeLightwalletRecoveryPhrase,
@@ -39,7 +40,7 @@ describe("Wallet recover", function(): void {
 
         acceptTOS();
 
-        cy.get(tid("authorized-layout-profile-button")).click();
+        goToUserAccountSettings();
         cy.get(tid("account-address.your.ether-address.from-div")).then(value => {
           expect(value[0].innerText.toLowerCase()).to.equal(expectedGeneratedAddress);
         });

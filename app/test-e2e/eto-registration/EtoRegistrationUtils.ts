@@ -37,6 +37,8 @@ export const fillAndAssertFull = (section: string, sideEffect: TFormFixture | ((
 
 export const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
   cy.get(tid(section, "button")).click();
+
   fillForm(sectionForm);
+
   assertEtoDashboard();
 };

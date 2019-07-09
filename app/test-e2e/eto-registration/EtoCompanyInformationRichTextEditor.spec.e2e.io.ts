@@ -1,4 +1,5 @@
 import { etoRegisterRoutes } from "../../components/eto/registration/routes";
+import { assertEtoDashboard } from "../utils/assertions";
 import { fillForm } from "../utils/forms";
 import { goToEtoPreview } from "../utils/navigation";
 import { formRichTextField, tid } from "../utils/selectors";
@@ -21,12 +22,12 @@ describe("Eto Company Information Rich Text Editor", () => {
 
     cy.get(formRichTextField("companyDescription")).clear();
 
-    cy.get(formRichTextField("companyDescription")).clear();
-
     cy.get(".ck.ck-toolbar > :nth-child(3)").click();
     cy.get(formRichTextField("companyDescription")).type("This is a bold text{enter}");
 
     fillForm(aboutFormSubmit);
+
+    assertEtoDashboard();
 
     goToEtoPreview();
 

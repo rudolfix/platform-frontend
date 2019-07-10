@@ -94,6 +94,8 @@ export const createAndLoginNewUser = (
       await setCorrectAgreement(jwt);
     }
 
+    cy.wait(3000);
+
     const userData = await getUserData(jwt);
     const kycData = await getKycData(jwt);
     cy.log(userData.verified_email as string);

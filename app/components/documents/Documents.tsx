@@ -75,6 +75,8 @@ type TStateLoadedProps = {
 
 type TStateProps = { isLoading: true } | TStateLoadedProps;
 
+type TDocumentsRestrictedStateProps = { shouldEtoDataLoad: boolean };
+
 interface IDispatchProps {
   generateTemplate: (document: IEtoDocument) => void;
   startDocumentDownload: (documentType: EEtoDocumentType) => void;
@@ -209,10 +211,19 @@ const Documents = compose<React.FunctionComponent>(
   withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.documents-page") })),
   withContainer(LayoutNew),
   branch<TStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
+)(DocumentsLayout);
+
+const DocumentsRestricted = compose<React.FunctionComponent>(
+  setDisplayName("DocumentsRestricted"),
+  appConnect<TDocumentsRestrictedStateProps>({
+    stateToProps: state => ({
+      shouldEtoDataLoad: userHasKycAndEmailVerified(state),
+    }),
+  }),
   branch<TStateLoadedProps>(
     props => !props.shouldEtoDataLoad,
     renderComponent(() => <Redirect to={appRoutes.profile} />),
   ),
-)(DocumentsLayout);
+)(Documents);
 
-export { Documents, DocumentsLayout };
+export { DocumentsRestricted as Documents, DocumentsLayout };

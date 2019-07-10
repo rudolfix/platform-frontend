@@ -16,7 +16,7 @@ describe("KYC Small Business flow with manual verification", () => {
       // go to partnership page
       cy.visit(kycRoutes.start);
       cy.get(tid("kyc-start-go-to-company")).awaitedClick();
-      cy.url().should("eq", `https://localhost:9090${kycRoutes.businessData}`);
+      cy.url().should("contain", kycRoutes.businessData);
 
       // fill out and submit business form
       fillForm(kycCompanyForm);

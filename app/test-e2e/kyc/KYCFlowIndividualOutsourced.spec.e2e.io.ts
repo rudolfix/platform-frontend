@@ -10,7 +10,7 @@ describe("KYC Personal flow with manual verification", () => {
       // go to kyc select and then individual page
       cy.visit(kycRoutes.start);
       cy.get(tid("kyc-start-go-to-personal")).awaitedClick();
-      cy.url().should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
+      cy.url().should("contain", kycRoutes.individualStart);
 
       // fill and submit the form
       fillForm(kycInvidualForm);
@@ -19,7 +19,7 @@ describe("KYC Personal flow with manual verification", () => {
       cy.get(tid("kyc-go-to-outsourced-verification")).awaitedClick();
 
       // we should now be on the document verification page
-      cy.url().should("eq", `https://localhost:9090${kycRoutes.individualDocumentVerification}`);
+      cy.url().should("contain", kycRoutes.individualDocumentVerification);
     });
   });
 });

@@ -248,7 +248,11 @@ function* startIndividualInstantId({
 }: TGlobalDependencies): Iterator<any> {
   try {
     const result: IHttpResponse<IKycRequestState> = yield apiKycService.startInstantId();
-    if (result.body.redirectUrl) window.location.replace(result.body.redirectUrl);
+
+    if (result.body.redirectUrl) {
+      yield put(actions.routing.openInNewWindow(result.body.redirectUrl));
+    }
+
     yield put(actions.kyc.kycUpdateIndividualRequestState(false, result.body));
   } catch (e) {
     logger.warn("KYC instant id failed to start", e);

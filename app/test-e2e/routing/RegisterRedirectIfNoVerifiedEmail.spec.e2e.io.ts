@@ -2,8 +2,7 @@ import { appRoutes } from "../../components/appRoutes";
 import { kycRoutes } from "../../components/kyc/routes";
 import { DEFAULT_PASSWORD, generateRandomEmailAddress, registerWithLightWallet } from "../utils";
 
-describe.skip("Lock some routes if registration is not complete", () => {
-  // TODO: Enable after https://github.com/Neufund/platform-frontend/pull/2844
+describe("Lock some routes if registration is not complete", () => {
   it("should redirect from locked routes to Profile if user's email is not verified yet", () => {
     registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD, true);
 

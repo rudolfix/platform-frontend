@@ -18,6 +18,7 @@ import { EthereumAddress } from "../../types";
 import { mockApiUrl } from "../config";
 import {
   assertDashboard,
+  assertEtoDashboard,
   assertUserInLanding,
   assertWaitForExternalPendingTransactionCount,
 } from "./assertions";
@@ -159,7 +160,11 @@ export const registerWithLightWallet = (
 
   acceptTOS();
 
-  assertDashboard();
+  if (asIssuer) {
+    assertEtoDashboard();
+  } else {
+    assertDashboard();
+  }
 };
 
 export const acceptTOS = () => {

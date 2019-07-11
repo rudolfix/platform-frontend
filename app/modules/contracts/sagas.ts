@@ -13,7 +13,7 @@ export async function initializeContracts({
 export function* populatePlatformTermsConstants({ contractsService }: TGlobalDependencies): any {
   const contract = contractsService.platformTerms;
 
-  // These are constants from Universe contract no need for pooling
+  // These are constants from Universe contract no need for polling
   const terms: IPlatformTermsConstants = yield all({
     IS_ICBM_INVESTOR_WHITELISTED: contract.IS_ICBM_INVESTOR_WHITELISTED,
     PLATFORM_NEUMARK_SHARE: contract.PLATFORM_NEUMARK_SHARE,

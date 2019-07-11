@@ -80,11 +80,13 @@ export class EtoApi {
       .then(r => r.body);
   }
 
-  public async getCompanyById(companyId: string): Promise<IHttpResponse<TPartialCompanyEtoData>> {
-    return await this.httpClient.get<TPartialCompanyEtoData>({
-      baseUrl: BASE_PATH,
-      url: COMPANIES_DATA_PATH + companyId,
-    });
+  public getCompanyById(companyId: string): Promise<TPartialCompanyEtoData> {
+    return this.httpClient
+      .get<TPartialCompanyEtoData>({
+        baseUrl: BASE_PATH,
+        url: COMPANIES_DATA_PATH + companyId,
+      })
+      .then(r => r.body);
   }
 
   public async putCompany(

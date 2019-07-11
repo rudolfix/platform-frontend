@@ -6,7 +6,7 @@ import { Col, Row } from "reactstrap";
 import { externalRoutes } from "../../../config/externalRoutes";
 import { ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { ECurrency } from "../../shared/formatters/utils";
-import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
+import { ESize, MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as icon from "../../../assets/img/neu_icon.svg";
@@ -32,7 +32,7 @@ export const MyNeuWidget: React.FunctionComponent<IProps> = props => (
             value={props.balanceEur}
             currencyTotal={ECurrency.EUR}
             data-test-id="my-neu-widget-neumark-balance"
-            size="large"
+            size={ESize.LARGE}
           />
         </div>
       </Col>

@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-import { Dictionary } from "../../../types";
+import { Dictionary, Primitive } from "../../../types";
 import { Schema } from "../../yup-ts";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -27,10 +27,10 @@ export interface IHttpClientErrorDocument {
 }
 
 export interface IHttpGetRequest extends IHttpRequestCommon {
-  queryParams?: Dictionary<string>;
+  queryParams?: Dictionary<Primitive>;
 }
 export interface IHttpPostRequest extends IHttpRequestCommon {
-  queryParams?: Dictionary<string>;
+  queryParams?: Dictionary<Primitive>;
 }
 export interface IHttpPutRequest extends IHttpRequestCommon {}
 export interface IHttpPatchRequest extends IHttpRequestCommon {}

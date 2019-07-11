@@ -28,6 +28,7 @@ import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actio
 import { remoteFileActions } from "./shared/remoteFile/actions";
 import { tokenPriceActions } from "./shared/tokenPrice/actions";
 import { tosModalActions } from "./terms-of-service-modal/actions";
+import { txHistoryActions } from "./tx-history/actions";
 import { txMonitorActions } from "./tx/monitor/actions";
 import { txSenderActions } from "./tx/sender/actions";
 import { txTransactionsActions } from "./tx/transactions/actions";
@@ -51,6 +52,7 @@ export const actions = {
   genericModal: genericModalActions,
   accessWallet: accessWalletActions,
   tokenPrice: tokenPriceActions,
+  txHistory: txHistoryActions,
   init: initActions,
   kyc: kycActions,
   routing: routingActions,

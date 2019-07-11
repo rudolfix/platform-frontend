@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import { DEFAULT_DECIMAL_PLACES, MONEY_DECIMALS } from "../../../config/constants";
+import { Opaque } from "../../../types";
 import { invariant } from "../../../utils/invariant";
 
 export enum ERoundingMode {
@@ -52,7 +53,9 @@ export enum ESpecialNumber {
   UNLIMITED = "unlimited",
 }
 
-export type TValueFormat = ECurrency | EPriceFormat | ENumberFormat;
+export type EquityToken = Opaque<"EquityToken", string>;
+
+export type TValueFormat = ECurrency | EPriceFormat | ENumberFormat | EquityToken;
 
 interface IToFixedPrecision {
   value: string | BigNumber | number;
@@ -319,6 +322,6 @@ export const selectUnits = (valueType: TValueFormat): string => {
     case ENumberFormat.PERCENTAGE:
       return "%";
     default:
-      throw new Error("Unsupported money format");
+      return valueType;
   }
 };

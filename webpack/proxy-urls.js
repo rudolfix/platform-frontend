@@ -40,6 +40,11 @@ function generateProxyConfig(backendUrl, nodeUrl, targetAddress = "localhost") {
       targetRemote: backendUrl + "eto-listing",
       pathRewrite: { "^/api/eto-listing": "" },
     },
+    "/api/analytics-api": {
+      targetLocal: `http://${targetAddress}:5018`,
+      targetRemote: backendUrl + "analytics-api",
+      pathRewrite: { "^/api/analytics-api": "" },
+    },
     "/api/document-storage": {
       targetLocal: `http://${targetAddress}:5015`,
       targetRemote: backendUrl + "document-storage",

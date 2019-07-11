@@ -1,18 +1,16 @@
 import * as React from "react";
 
-import { TTranslatedString } from "../../../types";
+import { CommonHtmlProps, TDataTestId, TTranslatedString } from "../../../types";
 import { EHeadingSize, Heading } from "../../shared/Heading";
 
 interface IProps {
   title: string | React.ReactNode;
   step?: number;
   description?: TTranslatedString;
-  "data-test-id"?: string;
-  className?: string;
   size?: EHeadingSize;
 }
 
-const DashboardHeading: React.FunctionComponent<IProps> = ({
+const DashboardHeading: React.FunctionComponent<IProps & TDataTestId & CommonHtmlProps> = ({
   title,
   step,
   "data-test-id": dataTestId,

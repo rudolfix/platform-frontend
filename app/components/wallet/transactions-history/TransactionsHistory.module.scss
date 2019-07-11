@@ -1,0 +1,7 @@
+.amount {
+  @include font-headline-medium;
+
+  &--in {
+    font-weight: bold;
+  }
+}

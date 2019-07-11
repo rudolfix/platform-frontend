@@ -16,7 +16,7 @@ import {
   TValueFormat,
 } from "./utils";
 
-import * as styles from "./MoneyNew.module.scss";
+import * as styles from "./Money.module.scss";
 
 enum ECurrencySymbol {
   CODE = "code",

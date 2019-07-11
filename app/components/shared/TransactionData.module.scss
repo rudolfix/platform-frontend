@@ -1,0 +1,30 @@
+.transaction-data {
+  &.large {
+    .top {
+      @include font-headline;
+    }
+
+    .bottom {
+      @include font-headline-small;
+    }
+  }
+
+  &.medium {
+    .top {
+      @include font-headline-medium;
+
+    }
+  }
+
+  .top {
+    @include font-default;
+
+    color: $neu-slate-grey;
+  }
+
+  .bottom {
+    @include font-tab;
+
+    color: $neu-silver;
+  }
+}

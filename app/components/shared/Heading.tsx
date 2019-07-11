@@ -13,6 +13,7 @@ export enum EHeadingSize {
 }
 
 interface IProps {
+  id?: string;
   level: 1 | 2 | 3 | 4 | 5 | 6;
   titleClassName?: string;
   description?: TTranslatedString;
@@ -23,6 +24,7 @@ interface IProps {
 }
 
 export const Heading: React.FunctionComponent<IProps & TDataTestId & CommonHtmlProps> = ({
+  id,
   level,
   children,
   className,
@@ -40,6 +42,7 @@ export const Heading: React.FunctionComponent<IProps & TDataTestId & CommonHtmlP
   );
   return (
     <header
+      id={id}
       data-test-id={dataTestId}
       className={cn(styles.headingWrapper, size, className, {
         [styles.hasDecorator]: decorator === true,

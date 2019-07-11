@@ -194,7 +194,7 @@ export const fillForm = (
     const submitField = findKey(fixture, isSubmitField);
 
     if (!submitField) {
-      throw new Error("Please provide ' submit' fixture");
+      throw new Error("Please provide 'submit' fixture");
     }
 
     cy.get(tid(submitField)).awaitedClick();

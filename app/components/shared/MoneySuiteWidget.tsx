@@ -2,28 +2,34 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { TDataTestId, TTranslatedString } from "../../types";
-import { makeTid } from "../../utils/tidUtils";
 import { MoneyNew } from "./formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "./formatters/utils";
+import { ESize as ETransactionDataSize, TransactionData } from "./TransactionData";
 
 import * as styles from "./MoneySuiteWidget.module.scss";
 
-export type TTheme = "light" | "framed";
-export type TSize = "large";
+enum ETheme {
+  FRAMED = styles.framed,
+}
 
-export interface IMoneySuiteWidgetProps {
+enum ESize {
+  LARGE = styles.large,
+  NORMAL = styles.normal,
+}
+
+interface IMoneySuiteWidgetProps {
   icon: string;
   currency: ECurrency;
   currencyTotal: ECurrency;
   largeNumber: string;
   value: string;
   percentage?: string;
-  theme?: TTheme;
-  size?: TSize;
+  theme?: ETheme;
+  size?: ESize;
   walletName?: TTranslatedString;
 }
 
-export const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTestId> = ({
+const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTestId> = ({
   icon,
   currency,
   currencyTotal,
@@ -40,31 +46,36 @@ export const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & 
       <img className={styles.icon} src={icon} alt="" />
       {walletName}
     </div>
-    <div>
-      <div className={styles.money} data-test-id={makeTid(dataTestId, "large-value")}>
+    <TransactionData
+      size={size === ESize.LARGE ? ETransactionDataSize.LARGE : undefined}
+      data-test-id={dataTestId}
+      top={
         <MoneyNew
           value={largeNumber}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
           valueType={currency}
         />
-      </div>
-      <div className={styles.totalMoney} data-test-id={makeTid(dataTestId, "value")}>
-        ={" "}
-        <MoneyNew
-          value={value}
-          inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          valueType={currencyTotal}
-        />
-        {percentage && (
-          <span className={`${parseInt(percentage, 10) > 0 ? styles.green : styles.red}`}>
-            {" "}
-            ({percentage}
-            %)
-          </span>
-        )}
-      </div>
-    </div>
+      }
+      bottom={
+        <>
+          ={" "}
+          <MoneyNew
+            value={value}
+            inputFormat={ENumberInputFormat.ULPS}
+            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+            valueType={currencyTotal}
+          />
+          {percentage && (
+            <span className={`${parseInt(percentage, 10) > 0 ? styles.green : styles.red}`}>
+              {" "}
+              ({percentage}%)
+            </span>
+          )}
+        </>
+      }
+    />
   </div>
 );
+
+export { ETheme, ESize, IMoneySuiteWidgetProps, MoneySuiteWidget };

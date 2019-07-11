@@ -2,6 +2,7 @@ import * as cryptoRandomString from "crypto-random-string";
 import { Container } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";
+import { AnalyticsApi } from "../lib/api/analytics-api/AnalyticsApi";
 import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { BinaryHttpClient } from "../lib/api/client/BinaryHttpClient";
@@ -94,6 +95,11 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<VaultApi>(symbols.vaultApi)
     .to(VaultApi)
+    .inSingletonScope();
+
+  container
+    .bind<AnalyticsApi>(symbols.analyticsApi)
+    .to(AnalyticsApi)
     .inSingletonScope();
 
   container
@@ -250,6 +256,7 @@ export const createGlobalDependencies = (container: Container) => ({
   apiEtoFileService: container.get<EtoFileApi>(symbols.apiEtoFileService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
+  analyticsApi: container.get<AnalyticsApi>(symbols.analyticsApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
   gasApi: container.get<GasApi>(symbols.gasApi),
   apiImmutableStorage: container.get<ImmutableStorageApi>(symbols.apiImmutableStorage),

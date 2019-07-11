@@ -40,7 +40,8 @@ export type TranslatedMessageType =
   | RemoteFileMessage
   | Web3Message
   | ValidationMessage
-  | TestMessage;
+  | TestMessage
+  | ETxHistoryMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -166,6 +167,11 @@ export enum ImageUploadMessage {
   IMAGE_UPLOAD_WRONG_IMAGE_DIMENSIONS = "imageUploadWrongImageDimensions",
   IMAGE_UPLOAD_FAILURE = "imageUploadFailure",
   IMAGE_UPLOAD_FAILURE_WITH_DETAILS = "imageUploadFailureWithDetails",
+}
+
+export enum ETxHistoryMessage {
+  TX_HISTORY_FAILED_TO_LOAD = "txHistoryFailedToLoad",
+  TX_HISTORY_FAILED_TO_LOAD_NEXT = "txHistoryFailedToLoadNext",
 }
 
 export enum RemoteFileMessage {
@@ -436,6 +442,11 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
 
     case RemoteFileMessage.GET_FILES_DETAILS_ERROR:
       return <FormattedMessage id="remote.file.details-error" />;
+
+    case ETxHistoryMessage.TX_HISTORY_FAILED_TO_LOAD:
+      return <FormattedMessage id="module.tx-history.tx.failed-to-load" />;
+    case ETxHistoryMessage.TX_HISTORY_FAILED_TO_LOAD_NEXT:
+      return <FormattedMessage id="module.tx-history.tx.failed-to-load-next" />;
 
     case KycFlowMessage.KYC_PROBLEM_SAVING_DATA:
       return <FormattedMessage id="module.kyc.sagas.problem-saving-data" />;

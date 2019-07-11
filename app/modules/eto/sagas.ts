@@ -8,7 +8,6 @@ import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/Ju
 import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   EEtoState,
   TCompanyEtoData,
@@ -31,7 +30,7 @@ import { waitForKycStatus } from "../kyc/sagas";
 import { selectClientJurisdiction } from "../kyc/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import { etoInProgressPoolingDelay, etoNormalPoolingDelay } from "./constants";
+import { etoInProgressPollingDelay, etoNormalPollingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
 import {
   selectEtoById,
@@ -51,10 +50,7 @@ function* loadEtoPreview(
 
   try {
     const eto: TEtoSpecsData = yield apiEtoService.getEtoPreview(previewCode);
-    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(
-      eto.companyId,
-    );
-    const company = companyResponse.body;
+    const company: TCompanyEtoData = yield apiEtoService.getCompanyById(eto.companyId);
 
     // Load contract data if eto is already on blockchain
     if (eto.state === EEtoState.ON_CHAIN) {
@@ -93,10 +89,7 @@ function* loadEto(
 
     const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
 
-    const companyResponse: IHttpResponse<TCompanyEtoData> = yield apiEtoService.getCompanyById(
-      eto.companyId,
-    );
-    const company = companyResponse.body;
+    const company: TCompanyEtoData = yield apiEtoService.getCompanyById(eto.companyId);
 
     // Load contract data if eto is already on blockchain
     if (eto.state === EEtoState.ON_CHAIN) {
@@ -232,7 +225,7 @@ function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: 
     }
 
     logger.warn(
-      "ETO next state pooling failed.",
+      "ETO next state polling failed.",
       new Error("User and ethereum clocks are not in sync"),
       { etoPreviewCode: previewCode },
     );
@@ -246,19 +239,19 @@ export function* delayEtoRefresh(
   eto: TEtoWithCompanyAndContract,
 ): Iterator<any> {
   const strategies: Dictionary<Promise<true>> = {
-    default: delay(etoNormalPoolingDelay),
+    default: delay(etoNormalPollingDelay),
   };
 
   if (eto.state === EEtoState.ON_CHAIN) {
     if ([EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(eto.contract!.timedState)) {
-      strategies.inProgress = delay(etoInProgressPoolingDelay);
+      strategies.inProgress = delay(etoInProgressPollingDelay);
     }
 
     const nextStateDelay: number = yield neuCall(calculateNextStateDelay, eto.previewCode);
     // Do not schedule update if it's later than normal pooling
     // otherwise it's possible to overflow max timeout limit
     // see https://stackoverflow.com/questions/3468607/why-does-settimeout-break-for-large-millisecond-delay-values
-    if (nextStateDelay && nextStateDelay < etoNormalPoolingDelay) {
+    if (nextStateDelay && nextStateDelay < etoNormalPollingDelay) {
       strategies.nextState = delay(nextStateDelay);
     }
   }

@@ -7,5 +7,5 @@ import { CommonHtmlProps } from "../../../../types";
 import * as styles from "./InfoList.module.scss";
 
 export const InfoList: React.FunctionComponent<CommonHtmlProps> = ({ children, className }) => (
-  <ListGroup className={cn(styles.infoList, className)}>{children}</ListGroup>
+  <ListGroup className={cn(styles.infoList, "pure", className)}>{children}</ListGroup>
 );

@@ -30,7 +30,7 @@ import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/sele
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { EColumnSpan } from "../../../layouts/Container";
-import { LoadingIndicator } from "../../../shared/loading-indicator";
+import { LoadingIndicatorContainer } from "../../../shared/loading-indicator";
 import { IcbmWallet, IIcbmWalletValues } from "../../wallet-balance/IcbmWallet";
 import { LockedWallet } from "../../wallet-balance/LockedWallet";
 import { UnlockedETHWallet } from "../../wallet-balance/UnlockedETHWallet";
@@ -161,5 +161,5 @@ export const WalletStart = compose<React.FunctionComponent>(
       redeemNEur: () => dispatch(actions.txTransactions.startWithdrawNEuro()),
     }),
   }),
-  branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
+  branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicatorContainer)),
 )(WalletStartComponent);

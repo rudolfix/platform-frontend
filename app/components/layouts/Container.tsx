@@ -79,8 +79,8 @@ const Container: React.FunctionComponent<IContainerProps & CommonHtmlProps & TDa
     className={cn(
       styles.container,
       resolveContainerType(type, columnSpan),
-      className,
       resolveColumnSpan(columnSpan),
+      className,
     )}
     data-test-id={dataTestId}
   >

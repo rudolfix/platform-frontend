@@ -13,7 +13,7 @@ import { EThemeNew, MoneyNew } from "../shared/formatters/Money";
 import { ENumberInputFormat, ENumberOutputFormat, selectUnits } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { LoadingIndicator } from "../shared/loading-indicator";
+import { LoadingIndicatorContainer } from "../shared/loading-indicator/LoadingIndicator";
 import { Panel } from "../shared/Panel";
 import { NewTable, NewTableRow } from "../shared/table";
 
@@ -188,7 +188,7 @@ const AssetPortfolio = compose<ILayoutProps & IDispatchToProps, IExternalProps>(
   // Loading
   branch<IExternalProps>(
     ({ tokensDisbursal }) => tokensDisbursal === undefined,
-    renderComponent(LoadingIndicator),
+    renderComponent(LoadingIndicatorContainer),
   ),
   // No payouts
   branch<ILayoutProps>(

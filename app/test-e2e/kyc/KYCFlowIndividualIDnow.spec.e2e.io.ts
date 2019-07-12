@@ -19,7 +19,7 @@ const initiateIDNowKyc = () => {
   cy.get(tid("kyc-go-to-outsourced-verification")).awaitedClick();
 
   // There is nothing we can await in the DOM in this case
-  // Without wait request is cancelled because of `cy.visit` called later
+  // Without wait() request is cancelled because of `cy.visit` called later
   cy.wait(1000);
 };
 
@@ -31,6 +31,8 @@ describe("KYC Personal flow with ID Now", () => {
       cy.visit(appRoutes.profile);
       cy.get(tid("settings.kyc-status-widget.cancel-external-kyc-button")).awaitedClick(1500);
 
+      // Without wait() request is cancelled because of `cy.visit` called later
+      cy.wait(1000);
       //Second Time
       initiateIDNowKyc();
 

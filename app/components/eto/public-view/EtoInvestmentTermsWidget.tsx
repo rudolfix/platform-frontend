@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { ETHEREUM_ZERO_ADDRESS } from "../../../config/constants";
-import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { EEtoDocumentType, IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { EAssetType, EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
@@ -42,6 +42,11 @@ type TEntryExternalProps = {
   value: React.ReactNode;
 };
 
+interface IDownloadIsha {
+  etoData: TEtoWithCompanyAndContract;
+  downloadDocument: (document: IEtoDocument) => void;
+}
+
 const Entry: React.FunctionComponent<TEntryExternalProps & TDataTestId> = ({
   label,
   value,
@@ -54,6 +59,46 @@ const Entry: React.FunctionComponent<TEntryExternalProps & TDataTestId> = ({
     </span>
   </div>
 );
+
+const DownloadIshaOrTermsheetLink: React.FunctionComponent<IDownloadIsha> = ({
+  etoData,
+  downloadDocument,
+}) => {
+  const ishaKeyInDocuments = Object.keys(etoData.documents).find(
+    (key: string) =>
+      etoData.documents[key].documentType ===
+      EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT,
+  );
+
+  if (ishaKeyInDocuments) {
+    return (
+      <DocumentTemplateButton
+        title={<FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />}
+        onClick={() => downloadDocument(etoData.documents[ishaKeyInDocuments])}
+      />
+    );
+  } else if (etoData.templates.investmentAndShareholderAgreementTemplate) {
+    return (
+      <DocumentTemplateButton
+        title={
+          <FormattedMessage id="eto.documents.investment-and-shareholder-agreement-template" />
+        }
+        onClick={() =>
+          downloadDocument(etoData.templates.investmentAndShareholderAgreementTemplate)
+        }
+      />
+    );
+  } else if (etoData.templates.termsheetTemplate) {
+    return (
+      <DocumentTemplateButton
+        title={<FormattedMessage id="eto.documents.signed-termsheet" />}
+        onClick={() => downloadDocument(etoData.templates.termsheetTemplate)}
+      />
+    );
+  } else {
+    return null;
+  }
+};
 
 const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & TDispatchProps> = ({
   etoData,
@@ -156,14 +201,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               value={<InvestmentAmount etoData={etoData} />}
               data-test-id="eto-public-view-investment-amount"
             />
-            {etoData.templates && etoData.templates.investmentAndShareholderAgreementTemplate && (
-              <DocumentTemplateButton
-                title={<FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />}
-                onClick={() =>
-                  downloadDocument(etoData.templates.investmentAndShareholderAgreementTemplate)
-                }
-              />
-            )}
+            <DownloadIshaOrTermsheetLink etoData={etoData} downloadDocument={downloadDocument} />
           </div>
         </div>
 

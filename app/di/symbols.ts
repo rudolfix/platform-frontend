@@ -14,6 +14,7 @@ export const symbols = makeDebugSymbols({
   authorizedBinaryHttpClient: Symbol(),
   signatureAuthApi: Symbol(),
   vaultApi: Symbol(),
+  analyticsApi: Symbol(),
   usersApi: Symbol(),
   apiKycService: Symbol(),
   apiEtoService: Symbol(),

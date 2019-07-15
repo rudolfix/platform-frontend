@@ -3,6 +3,7 @@ import * as React from "react";
 
 import { CommonHtmlProps } from "../../../types";
 import { assertNever } from "../../../utils/assertNever";
+import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { InlineIcon } from "../icons/InlineIcon";
 import { LoadingIndicatorHexagon } from "./LoadingIndicatorHexagon";
 
@@ -59,4 +60,16 @@ const LoadingIndicator: React.FunctionComponent<ILoadingIndicatorProps & CommonH
   }
 };
 
-export { LoadingIndicator };
+/**
+ *  Wraps loading indicator in `Container` and set it to span all columns
+ *  Useful to render loading indicator inside `WidgetGrid`.
+ */
+const LoadingIndicatorContainer: React.FunctionComponent<
+  React.ComponentProps<typeof LoadingIndicator>
+> = props => (
+  <Container type={EContainerType.CONTAINER} columnSpan={EColumnSpan.THREE_COL}>
+    <LoadingIndicator {...props} />
+  </Container>
+);
+
+export { LoadingIndicator, LoadingIndicatorContainer };

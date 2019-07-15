@@ -29,8 +29,9 @@ import {
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { EColumnSpan } from "../../../layouts/Container";
-import { LoadingIndicator } from "../../../shared/loading-indicator";
+import { Container, EColumnSpan } from "../../../layouts/Container";
+import { LoadingIndicatorContainer } from "../../../shared/loading-indicator";
+import { TransactionsHistory } from "../../transactions-history/TransactionsHistory";
 import { IcbmWallet, IIcbmWalletValues } from "../../wallet-balance/IcbmWallet";
 import { LockedWallet } from "../../wallet-balance/LockedWallet";
 import { UnlockedETHWallet } from "../../wallet-balance/UnlockedETHWallet";
@@ -60,18 +61,18 @@ interface IDispatchProps {
 type TProps = IStateProps & IDispatchProps;
 
 export const WalletStartComponent: React.FunctionComponent<TProps> = ({
-  userAddress,
+  depositEthUnlockedWallet,
+  icbmWalletData,
+  isUserFullyVerified,
   liquidWalletData,
   lockedWalletData,
-  icbmWalletData,
-  depositEthUnlockedWallet,
-  withdrawEthUnlockedWallet,
-  upgradeWalletEuroToken,
-  upgradeWalletEtherToken,
   purchaseNEur,
-  verifyBankAccount,
   redeemNEur,
-  isUserFullyVerified,
+  upgradeWalletEtherToken,
+  upgradeWalletEuroToken,
+  userAddress,
+  verifyBankAccount,
+  withdrawEthUnlockedWallet,
 }) => (
   <>
     <UnlockedETHWallet
@@ -104,6 +105,10 @@ export const WalletStartComponent: React.FunctionComponent<TProps> = ({
         data={icbmWalletData}
       />
     )}
+
+    <Container columnSpan={EColumnSpan.THREE_COL}>
+      <TransactionsHistory />
+    </Container>
   </>
 );
 
@@ -161,5 +166,5 @@ export const WalletStart = compose<React.FunctionComponent>(
       redeemNEur: () => dispatch(actions.txTransactions.startWithdrawNEuro()),
     }),
   }),
-  branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
+  branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicatorContainer)),
 )(WalletStartComponent);

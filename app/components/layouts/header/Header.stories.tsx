@@ -2,40 +2,56 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { HeaderComponent } from "./Header";
+import { EUserType } from "../../../lib/api/users/interfaces";
+import { IAppState } from "../../../store";
+import { DeepPartial } from "../../../types";
+import { withStore } from "../../../utils/storeDecorator.unsafe";
+import { HeaderAuthComponent, HeaderUnauthComponent } from "./Header";
 
-storiesOf("Layout/Header", module)
-  .add("investor", () => (
+const authStoreInvestor = {
+  auth: {
+    jwt: "asdf",
+    user: {
+      type: EUserType.INVESTOR,
+      verifiedEmail: "asfasdf@asdf.de",
+    },
+  },
+};
+
+const authStoreIssuer = {
+  auth: {
+    jwt: "asdf",
+    user: {
+      type: EUserType.ISSUER,
+      verifiedEmail: "asfasdf@asdf.de",
+    },
+  },
+};
+
+storiesOf("Layout/Header for investor", module)
+  .addDecorator(withStore(authStoreInvestor as DeepPartial<IAppState>))
+  .add("default", () => (
     <>
-      <HeaderComponent
-        monitorPendingTransaction={action("monitorPendingTransaction")}
-        isAuthorized={false}
-        logout={action("logout")}
-        location={"foo"}
-      />
-      <br />
-      <HeaderComponent
-        monitorPendingTransaction={action("monitorPendingTransaction")}
-        isAuthorized={true}
-        logout={action("logout")}
-        location={"foo"}
-      />
+      <HeaderAuthComponent monitorPendingTransaction={action("monitorPendingTransaction")} />
+    </>
+  ));
+
+storiesOf("Layout/Header for issuer", module)
+  .addDecorator(withStore(authStoreIssuer as DeepPartial<IAppState>))
+  .add("default", () => (
+    <>
+      <HeaderAuthComponent monitorPendingTransaction={action("monitorPendingTransaction")} />
+    </>
+  ));
+
+storiesOf("Layout/Header unauthorized", module)
+  .add("with buttons", () => (
+    <>
+      <HeaderUnauthComponent hideHeaderCtaButtons={false} isIssuerLocation={false} />
     </>
   ))
-  .add("issuer", () => (
+  .add("without buttons", () => (
     <>
-      <HeaderComponent
-        monitorPendingTransaction={action("monitorPendingTransaction")}
-        isAuthorized={false}
-        logout={action("logout")}
-        location={"foo"}
-      />
-      <br />
-      <HeaderComponent
-        monitorPendingTransaction={action("monitorPendingTransaction")}
-        isAuthorized={true}
-        logout={action("logout")}
-        location={"foo"}
-      />
+      <HeaderUnauthComponent hideHeaderCtaButtons={true} isIssuerLocation={false} />
     </>
   ));

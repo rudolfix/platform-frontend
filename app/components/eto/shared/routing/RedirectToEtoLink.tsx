@@ -11,8 +11,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { etoPublicViewLink } from "../../../appRouteUtils";
-import { LayoutAuthorized } from "../../../layouts/LayoutAuthorized";
-import { LayoutBase } from "../../../layouts/LayoutBase";
+import { LayoutNew } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
 
 interface IStateProps {
@@ -39,15 +38,11 @@ export const RedirectEtoPublicView = compose<TProps, IRouterParams>(
       eto: selectEtoWithCompanyAndContract(state, props.previewCode),
     }),
   }),
+  withContainer(LayoutNew),
   onEnterAction<IRouterParams>({
     actionCreator: (dispatch, props) => {
       dispatch(actions.eto.loadEtoPreview(props.previewCode));
     },
   }),
-  branch<IStateProps>(
-    props => props.userType === EUserType.INVESTOR,
-    withContainer(LayoutAuthorized),
-    withContainer(LayoutBase),
-  ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
 )(RedirectToEtoLinkComponent);

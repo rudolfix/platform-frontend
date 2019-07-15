@@ -37,11 +37,7 @@ function* handleLogOutUser(
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:
       {
-        if (userType === EUserType.ISSUER) {
-          yield put(actions.routing.goEtoHome());
-        } else {
-          yield put(actions.routing.goHome());
-        }
+        yield put(actions.routing.goHome());
       }
       break;
     case ELogoutReason.SESSION_TIMEOUT:

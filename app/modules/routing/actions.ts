@@ -15,7 +15,6 @@ export const routingActions = {
 
   // default routes
   goHome: () => push(appRoutes.root),
-  goEtoHome: () => push(appRoutes.etoLanding),
 
   //kyc routes
   goToKYCHome: () => push(kycRoutes.start),

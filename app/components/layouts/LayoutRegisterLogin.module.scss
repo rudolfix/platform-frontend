@@ -1,9 +1,0 @@
-.main-container {
-  @include media-breakpoint-up(sm) {
-    box-shadow: $shadow;
-    border-top: px-to-rem(3px) solid $neu-piss-yellow;
-    margin-top: px-to-rem(100px);
-  }
-
-  background-color: $neu-white-two;
-}

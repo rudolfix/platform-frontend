@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { FormikContext } from "formik";
-import { CSSProperties } from "react";
+import { CSSProperties, ReactElement } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { ToastOptions } from "react-toastify";
 
@@ -85,7 +85,7 @@ export type CommonHtmlProps = {
   style?: CSSProperties;
 };
 
-export type TTranslatedString = string | React.ReactElement<FormattedMessage.Props>;
+export type TTranslatedString = string | ReactElement<FormattedMessage.Props>;
 
 export type TDataTestId = {
   "data-test-id"?: string;

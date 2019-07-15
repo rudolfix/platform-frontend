@@ -1,9 +1,28 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { NewTable, NewTableRow } from "./NewTable";
+import { NewTable, NewTableRow, Table } from "./NewTable";
 
 storiesOf("NewTable", module)
+  .add("without panel", () => (
+    <Table titles={["Name", "Surname", "Role"]}>
+      <NewTableRow>
+        <>Pawel</>
+        <>Lula</>
+        <>Developer</>
+      </NewTableRow>
+      <NewTableRow>
+        <>Wiktor</>
+        <>Furman</>
+        <>Developer</>
+      </NewTableRow>
+      <NewTableRow>
+        <>Thomas</>
+        <>Gorny</>
+        <>Developer</>
+      </NewTableRow>
+    </Table>
+  ))
   .add("default", () => (
     <NewTable titles={["Name", "Surname", "Role"]}>
       <NewTableRow>

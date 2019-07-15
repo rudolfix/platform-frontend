@@ -22,7 +22,6 @@ export enum EEtoDocumentType {
   RESERVATION_AND_ACQUISITION_AGREEMENT = "reservation_and_acquisition_agreement",
   INVESTMENT_AND_SHAREHOLDER_AGREEMENT_TEMPLATE = "investment_and_shareholder_agreement_template",
   PROSPECTUS_TEMPLATE = "prospectus_template",
-  PAMPHLET_TEMPLATE = "pamphlet_template",
   TERMSHEET_TEMPLATE = "termsheet_template",
   INVESTMENT_MEMORANDUM_TEMPLATE = "investment_memorandum_template",
   // in documents collection
@@ -52,14 +51,15 @@ export interface IEtoDocument {
 
 type TComplextFileInfo = "canDeleteInStates" | "canUploadInStates";
 
-type TSimpleFileInfo = "requiredTemplates" | "uploadableDocuments";
+type TSimpleFileInfo = "generatedTypes" | "uploadableTypes";
 
 export type TStateInfo = { [key in TSimpleFileInfo]: EEtoDocumentType[] } &
   { [key in TComplextFileInfo]: { [key in EtoStateToCamelcase]: EEtoDocumentType[] } };
 
-export interface IEtoFiles {
-  allTemplates: TEtoDocumentTemplates;
-  stateInfo?: TStateInfo;
+export interface IEtoFilesInfo {
+  productTemplates: TEtoDocumentTemplates;
+  documentsStateInfo?: TStateInfo;
+  // templatesStateInfo?: TStateInfo; // you will need it later to upload templates
 }
 
 export type TEtoDocumentTemplates = { [key: string]: IEtoDocument };
@@ -68,7 +68,6 @@ export const immutableDocumentName: { [key in EEtoDocumentType]: string } = {
   company_token_holder_agreement: "Company Token Holder Agreement",
   reservation_and_acquisition_agreement: "Reservation and Acquisition Agreement",
   investment_and_shareholder_agreement_template: "Investment and Shareholder Agreement Template",
-  pamphlet_template: "Pamphlet Template",
   prospectus_template: "Prospectus Template",
   termsheet_template: "Termsheet Template",
   investment_memorandum_template: "Investment Memorandum Template",

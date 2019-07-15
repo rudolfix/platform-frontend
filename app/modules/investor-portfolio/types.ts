@@ -49,3 +49,9 @@ export interface IIncomingPayouts {
   data?: IIncomingPayoutsData;
   payoutDone: boolean;
 }
+
+export enum EUserRefundStatus {
+  CANNOT_CLAIM = "cannot_claim",
+  CAN_CLAIM = "can_claim",
+  CLAIMED = "claimed",
+}

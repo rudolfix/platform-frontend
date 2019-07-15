@@ -1,33 +1,68 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Panel } from "../shared/Panel";
-import { Container, EColumnSpan, EContainerType } from "./Container";
-import { WidgetGridLayout } from "./Layout";
+import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
+import { EUserType } from "../../lib/api/users/interfaces";
+import { IAppState } from "../../store";
+import { DeepPartial } from "../../types";
+import { withStore } from "../../utils/storeDecorator.unsafe";
+import { LayoutComponent } from "./Layout";
 
-storiesOf("WidgetGridLayout", module)
-  .add("default", () => (
-    <WidgetGridLayout>
-      <Panel>3 columns</Panel>
-      <Panel columnSpan={EColumnSpan.THREE_COL}>3 columns</Panel>
-      <Panel columnSpan={EColumnSpan.ONE_COL}>1 column</Panel>
-      <Panel columnSpan={EColumnSpan.ONE_COL}>1 column</Panel>
-      <Panel columnSpan={EColumnSpan.ONE_COL}>1 column</Panel>
-      <Panel columnSpan={EColumnSpan.ONE_AND_HALF_COL}>1.5 columns</Panel>
-      <Panel columnSpan={EColumnSpan.ONE_AND_HALF_COL}>1.5 columns</Panel>
-      <Panel columnSpan={EColumnSpan.TWO_COL}>2 columns</Panel>
-      <Panel columnSpan={EColumnSpan.ONE_COL}>1 column</Panel>
-    </WidgetGridLayout>
+const FakeContent = () => (
+  <div style={{ height: "20rem", backgroundColor: "gray" }}>dummy content</div>
+);
+
+const authStore = {
+  auth: {
+    jwt: "asdf",
+    user: {
+      type: EUserType.ISSUER,
+      verifiedEmail: "asfasdf@asdf.de",
+    },
+  },
+  kyc: {
+    claims: {
+      isVerified: true,
+    },
+  },
+  web3: {
+    connected: true,
+    wallet: {
+      address: dummyEthereumAddressWithChecksum,
+    },
+  },
+};
+
+const unauthStore = {
+  auth: {
+    user: {
+      type: EUserType.ISSUER,
+      verifiedEmail: "asfasdf@asdf.de",
+    },
+  },
+  kyc: {
+    claims: {
+      isVerified: true,
+    },
+  },
+  web3: {
+    connected: true,
+    wallet: {
+      address: dummyEthereumAddressWithChecksum,
+    },
+  },
+};
+
+storiesOf("Layouts", module)
+  .addDecorator(withStore(authStore as DeepPartial<IAppState>))
+  .add("LayoutAuthorized", () => (
+    <LayoutComponent userIsAuthorized={true}>
+      <FakeContent />
+    </LayoutComponent>
   ))
-  .add("with containers", () => (
-    <WidgetGridLayout>
-      <Container columnSpan={EColumnSpan.TWO_COL} type={EContainerType.INHERIT_GRID}>
-        <Panel columnSpan={EColumnSpan.TWO_COL}>2 columns in a container</Panel>
-        <Panel columnSpan={EColumnSpan.ONE_COL}>1 column in a container</Panel>
-      </Container>
-      <Container columnSpan={EColumnSpan.ONE_COL} type={EContainerType.INHERIT_GRID}>
-        <Panel columnSpan={EColumnSpan.ONE_COL}>1 column in a container</Panel>
-        <Panel columnSpan={EColumnSpan.ONE_COL}>1 column in a container</Panel>
-      </Container>
-    </WidgetGridLayout>
+  .addDecorator(withStore(unauthStore as DeepPartial<IAppState>))
+  .add("LayoutUnauthorized", () => (
+    <LayoutComponent userIsAuthorized={false}>
+      <FakeContent />
+    </LayoutComponent>
   ));

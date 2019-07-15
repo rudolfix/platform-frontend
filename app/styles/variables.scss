@@ -5,6 +5,14 @@
 
 @import "./variables/index";
 
+$header-height-sm: 64px;
+$header-height-md: 64px;
+$header-height-lg: 80px;
+
+$layout-content-padding-sm: px-to-rem(15px);
+$layout-content-padding-md: px-to-rem(20px);
+$layout-content-padding-lg: px-to-rem(32px);
+
 $header-height: 60px;
 $footer-dots-height: 360px;
 
@@ -26,6 +34,7 @@ $dark: $neu-charcoal-grey;
 
 // fonts
 $font-family-base: "Lato", sans-serif;
+$font-family-roboto: Roboto, sans-serif;
 $font-size-base: .875rem;
 $font-size-medium-small: px-to-rem(14px);
 $font-weight-bold: 600;

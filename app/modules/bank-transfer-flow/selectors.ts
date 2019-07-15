@@ -31,9 +31,19 @@ export const selectBankTransferMinAmount = createSelector(
   bankTransferFlow => bankTransferFlow.minEuroUlps,
 );
 
+export const selectBankRedeemMinAmount = createSelector(
+  selectBankTransferFlow,
+  bankTransferFlow => (bankTransferFlow.redeem ? bankTransferFlow.redeem.minEuroUlps : "0"),
+);
+
 export const selectBankFeeUlps = createSelector(
   selectBankTransferFlow,
   bankTransferFlow => bankTransferFlow.bankFeeUlps || "0",
+);
+
+export const selectRedeemFeeUlps = createSelector(
+  selectBankTransferFlow,
+  bankTransferFlow => (bankTransferFlow.redeem ? bankTransferFlow.redeem.bankFeeUlps : "0"),
 );
 
 /**

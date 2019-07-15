@@ -82,4 +82,35 @@ describe("Redeem NEUR", function(): void {
 
     cy.get(formField("amount")).should("have.value", nextExpectedValue);
   });
+
+  it("should work correctly after start of link back account flow start", () => {
+    fillForm(
+      {
+        amount: "124",
+      },
+      { submit: false },
+    );
+
+    // search only for button inside modal
+    cy.get(".modal-content").within(() => {
+      cy.get(tid("locked-wallet.neur.bank-account.link-account")).click();
+    });
+
+    // close bank account link modal
+    cy.get(tid("bank-transfer.summary.transfer-completed"));
+    cy.get(tid("modal-close-button"))
+      .last()
+      .click();
+
+    fillForm(
+      {
+        amount: "532",
+      },
+      { submit: false },
+    );
+
+    cy.get(tid("bank-transfer.redeem.init.fee")).within(() => {
+      cy.get(tid("value")).should("not.contain", "0");
+    });
+  });
 });

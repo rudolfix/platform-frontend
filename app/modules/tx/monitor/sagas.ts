@@ -66,6 +66,8 @@ export function* markTransactionAsPending(
     yield apiUserService.deletePendingTx(currentPending.transaction.hash);
   }
 
+  const transactionTimestamp = Date.now();
+
   const pendingTransaction: TxPendingWithMetadata = {
     transaction: {
       from: addHexPrefix(txData.from),
@@ -86,12 +88,14 @@ export function* markTransactionAsPending(
     transactionAdditionalData: txAdditionalData,
     transactionStatus: ETxSenderState.MINING,
     transactionError: undefined,
-    transactionTimestamp: Date.now(),
+    transactionTimestamp,
   };
 
   yield apiUserService.addPendingTx(pendingTransaction);
 
   yield put(actions.txMonitor.setPendingTxs({ pendingTransaction }));
+
+  return transactionTimestamp;
 }
 
 export function* updatePendingTxs({

@@ -22,6 +22,7 @@ import { InvestorAcceptPayoutSummary } from "./investor-payout/AcceptSummary";
 import { InvestorRedistributePayoutConfirm } from "./investor-payout/RedistributeConfirm";
 import { InvestorRedistributePayoutSuccess } from "./investor-payout/RedistributeSuccess";
 import { InvestorRedistributePayoutSummary } from "./investor-payout/RedistributeSummary";
+import { RefundSummary } from "./investor-refund/RefundSummary";
 import { BankTransferRedeemInit } from "./redeem/BankTransferRedeemInit";
 import { BankTransferRedeemSuccess } from "./redeem/BankTransferRedeemSuccess";
 import { BankTransferRedeemSummary } from "./redeem/BankTransferRedeemSummary";
@@ -125,6 +126,8 @@ const SummaryComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ t
       return <BankTransferRedeemSummary />;
     case ETxSenderType.SIGN_INVESTMENT_AGREEMENT:
       return <SignInvestmentAgreementSummary />;
+    case ETxSenderType.INVESTOR_REFUND:
+      return <RefundSummary />;
     default:
       return <WithdrawSummary />;
   }

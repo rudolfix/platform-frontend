@@ -2,10 +2,9 @@ import * as hex2ascii from "hex2ascii";
 import { injectable } from "inversify";
 import * as Web3 from "web3";
 
-import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
+import { EWalletSubType, EWalletType, IBrowserWalletMetadata } from "../../../modules/web3/types";
 import { EthereumAddress, EthereumNetworkId } from "../../../types";
 import { promisify } from "../../../utils/promisify";
-import { IBrowserWalletMetadata } from "../../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError } from "../Web3Manager/Web3Manager";

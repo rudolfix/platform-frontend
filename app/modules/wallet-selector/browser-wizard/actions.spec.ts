@@ -6,7 +6,6 @@ import { createMock } from "../../../../test/testUtils";
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { noopLogger } from "../../../lib/dependencies/logger";
-import { IBrowserWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   BrowserWallet,
   BrowserWalletConnector,
@@ -15,7 +14,7 @@ import {
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
-import { EWalletSubType, EWalletType } from "../../web3/types";
+import { EWalletSubType, EWalletType, IBrowserWalletMetadata } from "../../web3/types";
 import { tryConnectingWithBrowserWallet } from "./sagas";
 
 // tslint:disable: no-object-literal-type-assertion

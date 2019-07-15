@@ -6,7 +6,7 @@ import {
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
   goToDashboard,
-  logoutViaTopRightButton,
+  logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
 } from "../utils";
@@ -22,7 +22,7 @@ describe("Verify Wallet", () => {
     }).then(() => {
       goToDashboard();
 
-      logoutViaTopRightButton();
+      logoutViaAccountMenu();
 
       goToDashboard(false);
 
@@ -47,7 +47,7 @@ describe("Verify Wallet", () => {
     assertDashboard();
 
     getLatestVerifyUserEmailLink(email).then(activationLink => {
-      logoutViaTopRightButton();
+      logoutViaAccountMenu();
 
       // register another user
       const newEmail = generateRandomEmailAddress();

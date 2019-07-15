@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { ITokenDisbursal, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { WidgetGridLayout } from "../layouts/Layout";
+import { WidgetGrid } from "../layouts/WidgetGrid";
 import { AssetPortfolio } from "./AssetPortfolio";
 import { PortfolioMyAssets } from "./PortfolioMyAssets";
 import { PortfolioPastInvestments } from "./PortfolioPastInvestments";
@@ -30,7 +30,7 @@ const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
   isVerifiedInvestor,
   pastInvestments,
 }) => (
-  <WidgetGridLayout data-test-id="portfolio-layout">
+  <WidgetGrid data-test-id="portfolio-layout">
     {(process.env.NF_ASSETS_PORTFOLIO_COMPONENT_VISIBLE === "1" ||
       process.env.STORYBOOK_RUN === "1") && (
       <AssetPortfolio tokensDisbursal={tokensDisbursal} isVerifiedInvestor={isVerifiedInvestor} />
@@ -39,7 +39,7 @@ const PortfolioLayout: React.FunctionComponent<TPortfolioLayoutProps> = ({
     <PortfolioReservedAssets pendingAssets={pendingAssets} />
     <PortfolioMyAssets isRetailEto={isRetailEto} walletAddress={walletAddress} />
     <PortfolioPastInvestments pastInvestments={pastInvestments} />
-  </WidgetGridLayout>
+  </WidgetGrid>
 );
 
 export { PortfolioLayout };

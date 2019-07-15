@@ -2,127 +2,152 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
-import { Navbar } from "reactstrap";
+import { compose } from "recompose";
 
-import { EUserType, TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
+import { TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
-import { selectIsAuthorized, selectUserType } from "../../../modules/auth/selectors";
 import { selectPlatformPendingTransaction } from "../../../modules/tx/monitor/selectors";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
-import { Button, ButtonLink, EButtonLayout, EButtonTheme } from "../../shared/buttons";
+import { ButtonLink, EButtonTheme } from "../../shared/buttons/index";
 import { loginWalletRoutes, walletRegisterRoutes } from "../../wallet-selector/walletRoutes";
+import { MenuAuthorized } from "../menus/MenuAuthorized";
+import { MobileMenu } from "../menus/MobileMenu";
+import { MyAccountMenu } from "../menus/MyAccountMenu";
 import { PendingTransactionStatus } from "./PendingTransactionStatus";
 
-import * as logoNew from "../../../assets/img/logo_neufund_on_dark.svg";
-import * as logoNewTitle from "../../../assets/img/logo_neufund_on_dark_title.svg";
+import * as logoNew from "../../../assets/img/logo_neufund_on_white.svg";
+import * as logoNewTitle from "../../../assets/img/logo_neufund_on_white_title.svg";
 import * as styles from "./Header.module.scss";
 
-interface IExternalProps {
-  hideCtaButtons?: boolean;
+interface IHeaderButton {
+  className: string;
+  isIssuerLocation: boolean;
 }
 
 interface IStateProps {
-  isAuthorized: boolean;
   location?: string;
-  userType?: EUserType;
   pendingTransaction?: TxPendingWithMetadata;
 }
 
 interface IDispatchProps {
-  logout: (userType?: EUserType) => void;
   monitorPendingTransaction: () => void;
 }
 
-export const HeaderComponent: React.FunctionComponent<
-  IExternalProps & IStateProps & IDispatchProps
-> = props => (
-  <Navbar dark className={styles.bar}>
-    <Link to={appRoutes.root} className={styles.logo}>
-      <img src={logoNew} alt="NEUFUND" className={styles.logoImage} />
-      <img src={logoNewTitle} alt="NEUFUND" className={styles.logoTitle} />
-    </Link>
+interface IAuthHeader {
+  pendingTransaction?: TxPendingWithMetadata;
+}
 
-    {!props.hideCtaButtons &&
-      (props.isAuthorized ? (
-        <section className={cn(styles.right)}>
-          <PendingTransactionStatus
-            monitorPendingTransaction={props.monitorPendingTransaction}
-            pendingTransaction={props.pendingTransaction}
-          />
-          <Button
-            className="ml-2"
-            layout={EButtonLayout.SECONDARY}
-            theme={EButtonTheme.WHITE}
-            onClick={() => props.logout(props.userType)}
-            data-test-id="Header-logout"
-          >
-            <FormattedMessage id="header.logout-button" />
-          </Button>
-        </section>
-      ) : (
-        <div className={styles.buttons}>
-          {props.location && props.location.indexOf("eto") !== -1 ? (
-            <>
-              <ButtonLink
-                theme={EButtonTheme.WHITE}
-                innerClassName={cn(styles.registerButton, styles.resizableButton)}
-                data-test-id="Header-register-eto"
-                isActive={false}
-                to={appRoutes.registerEto}
-              >
-                <FormattedMessage id="header.register-button" />
-              </ButtonLink>
-              <ButtonLink
-                theme={EButtonTheme.WHITE}
-                innerClassName={styles.resizableButton}
-                data-test-id="Header-login-eto"
-                isActive={false}
-                to={appRoutes.loginEto}
-              >
-                <FormattedMessage id="header.login-button" />
-              </ButtonLink>
-            </>
-          ) : (
-            <>
-              <ButtonLink
-                theme={EButtonTheme.WHITE}
-                innerClassName={cn(styles.registerButton, styles.resizableButton)}
-                data-test-id="Header-register"
-                isActive={false}
-                to={walletRegisterRoutes.light}
-              >
-                <FormattedMessage id="header.register-button" />
-              </ButtonLink>
-              <ButtonLink
-                theme={EButtonTheme.WHITE}
-                innerClassName={styles.resizableButton}
-                data-test-id="Header-login"
-                isActive={false}
-                to={loginWalletRoutes.light}
-              >
-                <FormattedMessage id="header.login-button" />
-              </ButtonLink>
-            </>
-          )}
-        </div>
-      ))}
-  </Navbar>
+interface IHeaderUnauthProps {
+  isIssuerLocation: boolean;
+}
+
+interface IHeaderUnauthExternalProps {
+  hideHeaderCtaButtons: boolean;
+}
+
+export const LogoUnauth = () => (
+  <Link to={appRoutes.root} className={styles.logoUnauth}>
+    <img src={logoNew} alt="NEUFUND" className={styles.logoImage} />
+    <img src={logoNewTitle} alt="NEUFUND" className={styles.logoTitle} />
+  </Link>
 );
 
-export const Header = appConnect<IStateProps, IDispatchProps>({
-  stateToProps: s => ({
-    isAuthorized: selectIsAuthorized(s.auth),
-    location: s.router.location && s.router.location.pathname,
-    userType: selectUserType(s),
-    pendingTransaction: selectPlatformPendingTransaction(s),
+export const LogoAuth = () => (
+  <Link to={appRoutes.root} className={styles.logoAuth}>
+    <img src={logoNew} alt="NEUFUND" className={styles.logoImage} />
+    <img src={logoNewTitle} alt="NEUFUND" className={styles.logoTitleAuth} />
+  </Link>
+);
+
+export const LoginButton: React.FunctionComponent<IHeaderButton> = ({
+  className,
+  isIssuerLocation,
+}) => (
+  <ButtonLink
+    className={className}
+    theme={EButtonTheme.DARK_NO_BORDER}
+    innerClassName={cn(styles.buttonInner)}
+    data-test-id={isIssuerLocation ? "Header-login-eto" : "Header-login"}
+    isActive={false}
+    to={isIssuerLocation ? appRoutes.loginEto : loginWalletRoutes.light}
+  >
+    <FormattedMessage id="header.login-button" />
+  </ButtonLink>
+);
+
+export const GetStartedButton: React.FunctionComponent<IHeaderButton> = ({
+  className,
+  isIssuerLocation,
+}) => (
+  <ButtonLink
+    className={className}
+    theme={EButtonTheme.BRAND}
+    innerClassName={styles.buttonInner}
+    data-test-id={isIssuerLocation ? "Header-register-eto" : "Header-register"}
+    isActive={false}
+    to={isIssuerLocation ? appRoutes.registerEto : walletRegisterRoutes.light}
+  >
+    <FormattedMessage id="header.get-started-button" />
+  </ButtonLink>
+);
+
+export const HeaderUnauthComponent: React.FunctionComponent<
+  IHeaderUnauthProps & IHeaderUnauthExternalProps
+> = ({ hideHeaderCtaButtons, isIssuerLocation }) => (
+  <div className={styles.headerUnauth}>
+    <LogoUnauth />
+    {!hideHeaderCtaButtons && (
+      <>
+        <LoginButton className={styles.button} isIssuerLocation={isIssuerLocation} />
+        <GetStartedButton className={styles.button} isIssuerLocation={isIssuerLocation} />
+      </>
+    )}
+  </div>
+);
+
+export const HeaderAuthComponent: React.FunctionComponent<IAuthHeader & IDispatchProps> = ({
+  monitorPendingTransaction,
+  pendingTransaction,
+}) => (
+  <div className={styles.headerAuth}>
+    <MobileMenu />
+    <LogoAuth />
+    <MenuAuthorized />
+    <PendingTransactionStatus
+      className={styles.transactionStatus}
+      monitorPendingTransaction={monitorPendingTransaction}
+      pendingTransaction={pendingTransaction}
+    />
+    <MyAccountMenu />
+  </div>
+);
+
+export const HeaderAuthorized = compose<IStateProps & IDispatchProps, {}>(
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: s => ({
+      location: s.router.location && s.router.location.pathname,
+      pendingTransaction: selectPlatformPendingTransaction(s),
+    }),
+    dispatchToProps: dispatch => ({
+      monitorPendingTransaction: () => {
+        dispatch(actions.txMonitor.monitorPendingPlatformTx());
+      },
+    }),
   }),
-  dispatchToProps: dispatch => ({
-    logout: (userType?: EUserType) => {
-      dispatch(actions.auth.logout({ userType }));
-    },
-    monitorPendingTransaction: () => {
-      dispatch(actions.txMonitor.monitorPendingPlatformTx());
-    },
+)(HeaderAuthComponent);
+
+export const HeaderUnauthorized = compose<
+  IHeaderUnauthProps & IHeaderUnauthExternalProps,
+  IHeaderUnauthExternalProps
+>(
+  appConnect<IHeaderUnauthProps, {}>({
+    stateToProps: s => ({
+      isIssuerLocation: Boolean(
+        s.router.location &&
+          s.router.location.pathname &&
+          s.router.location.pathname.indexOf("eto") !== -1,
+      ),
+    }),
   }),
-})(HeaderComponent);
+)(HeaderUnauthComponent);

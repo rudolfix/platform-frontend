@@ -67,12 +67,6 @@ const InvestmentProgress: React.FunctionComponent<TProps> = ({ eto }) => {
         label={<FormattedMessage id="shared-component.eto-overview.invest.min-amount" />}
         width={successOfEtoNormalized * 100}
       />
-
-      <Label
-        label={<FormattedMessage id="shared-component.eto-overview.invest.max-amount" />}
-        width={100}
-        textAnchor="end"
-      />
     </PercentageIndicatorBar>
   );
 };

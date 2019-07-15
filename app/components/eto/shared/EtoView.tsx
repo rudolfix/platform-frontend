@@ -15,7 +15,7 @@ import { isOnChain } from "../../../modules/eto/utils";
 import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
 import { icoMonitorEtoLink } from "../../appRouteUtils";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
-import { WidgetGridLayout } from "../../layouts/Layout";
+import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { PersonProfileModal } from "../../modals/PersonProfileModal";
 import { Accordion, AccordionElement } from "../../shared/Accordion";
 import { ButtonLink } from "../../shared/buttons";
@@ -121,7 +121,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
   return (
     <FieldSchemaProvider value={EtoViewSchema}>
       <PersonProfileModal />
-      <WidgetGridLayout className={styles.etoLayout} data-test-id="eto.public-view">
+      <WidgetGrid className={styles.etoLayout} data-test-id="eto.public-view">
         <CoverBanner eto={eto} isInvestorView={isInvestorView} />
         <Cover
           companyName={brandName}
@@ -528,7 +528,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, isInvestorView })
             </Container>
           )}
         </Container>
-      </WidgetGridLayout>
+      </WidgetGrid>
     </FieldSchemaProvider>
   );
 };

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 set -u
+set -m
 cd "$(dirname "$0")"
 
 frontend_pid=0
@@ -8,6 +9,7 @@ run_frontend() {
     echo "Starting up local http server"
     ../scripts/prod-like-srv.sh&
     frontend_pid=$!
+    sudo renice -n -19 $frontend_pid
     echo "Frontend running"
 }
 
@@ -17,8 +19,8 @@ else
     node ./run-backend.js;
 fi
 
-echo "sleeping for 60 to spin up containers"
-sleep 60
+echo "sleeping to spin up containers"
+sleep 90
 
 if lsof -Pi :9090 -sTCP:LISTEN -t > /dev/null ; then
     echo "Detected already started frontend..."
@@ -27,7 +29,9 @@ else
     run_frontend
 fi
 
-yarn test:e2e:cypress:record
+yarn test:e2e:cypress:record&
+sudo renice -n -19 $!
+fg
 
 if [[ $frontend_pid -ne 0 ]]; then
     echo "Killing frontend server..."

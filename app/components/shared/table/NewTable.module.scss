@@ -33,9 +33,17 @@
   @include font-label;
 }
 
+.header-row {
+  border-bottom: 1px solid $neu-silver;
+}
+
 .row {
-  border-top: 1px solid $neu-silver;
+  border-bottom: 1px solid $neu-silver;
   padding: 10px 0;
+
+  &:last-child {
+    border: 0;
+  }
 }
 
 .cell {
@@ -60,7 +68,6 @@
 }
 
 .panel {
-  padding: px-to-rem(12px);
   margin-bottom: 1.5rem;
 
 }

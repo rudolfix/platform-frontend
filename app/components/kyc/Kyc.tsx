@@ -15,9 +15,9 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { appRoutes } from "../appRoutes";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 
 const KycLayout = React.lazy(() => import("./KycLayout").then(imp => ({ default: imp.KycLayout })));
 
@@ -37,7 +37,7 @@ interface IDispatchProps {
 }
 
 const Kyc = compose<IStateProps & IDispatchProps, {}>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       requestLoading:
@@ -65,7 +65,7 @@ const Kyc = compose<IStateProps & IDispatchProps, {}>(
       dispatch(actions.kyc.kycLoadBusinessRequest());
     },
   }),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
 )(KycLayout);
 
 export { Kyc };

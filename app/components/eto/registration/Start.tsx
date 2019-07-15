@@ -1,12 +1,14 @@
 import * as React from "react";
+import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
-import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
+import { withContainer } from "../../../utils/withContainer.unsafe";
+import { LayoutNew } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 
 const EtoRegistrationPanel = React.lazy(() =>
@@ -17,16 +19,14 @@ interface IStateProps {
   isLoading: boolean;
 }
 
-export const EtoRegisterComponent: React.FunctionComponent<IStateProps> = ({ isLoading }) => (
-  <LayoutAuthorized>{isLoading ? <LoadingIndicator /> : <EtoRegistrationPanel />}</LayoutAuthorized>
-);
-
 export const EtoRegister = compose<React.FunctionComponent>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   onEnterAction({ actionCreator: d => d(actions.etoFlow.loadIssuerEto()) }),
   appConnect<IStateProps>({
     stateToProps: s => ({
       isLoading: s.etoFlow.loading,
     }),
   }),
-)(EtoRegisterComponent);
+  branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
+  withContainer(LayoutNew),
+)(EtoRegistrationPanel);

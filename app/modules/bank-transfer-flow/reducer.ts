@@ -21,6 +21,10 @@ export interface IBankTransferState {
   minEuroUlps: string;
   reference: string;
   bankFeeUlps: string;
+  redeem?: {
+    minEuroUlps: string;
+    bankFeeUlps: string;
+  };
 }
 
 export const bankTransferInitialState: IBankTransferState = {
@@ -70,12 +74,17 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
     case actions.bankTransferFlow.setRedeemData.getType():
       return {
         ...state,
-        minEuroUlps: action.payload.minEuroUlps,
-        bankFeeUlps: action.payload.bankFeeUlps,
+        redeem: {
+          minEuroUlps: action.payload.redeemMinEuroUlps,
+          bankFeeUlps: action.payload.redeemBankFeeUlps,
+        },
       };
 
     case actions.bankTransferFlow.stopBankTransfer.getType():
-      return bankTransferInitialState;
+      return {
+        redeem: state.redeem,
+        ...bankTransferInitialState,
+      };
   }
 
   return state;

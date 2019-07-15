@@ -8,10 +8,12 @@ import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
 import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
+import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
 import { ExternalLink } from "../../../shared/links/ExternalLink";
 import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet.unsafe";
 import { WalletMessageSigner } from "../../WalletMessageSigner";
+import { WalletSelectorContainer } from "../../WalletSelectorContainer";
 import { recoverRoutes } from "../router/recoverRoutes";
 import { WalletLightSeedRecoveryComponent } from "./SeedRecovery.unsafe";
 
@@ -108,6 +110,7 @@ const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps, {}>(
     props => props.isMessageSigning,
     renderComponent(() => <WalletMessageSigner rootPath={"/"} />),
   ),
+  withContainer(WalletSelectorContainer),
 )(RecoveryProcessesComponent);
 
 export { RecoverWallet, RecoveryProcessesComponent };

@@ -6,13 +6,12 @@ import * as Web3 from "web3";
 import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { setupFakeClock } from "../../../../test/integrationTestUtils.unsafe";
 import { createMock, expectToBeRejected } from "../../../../test/testUtils";
-import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
+import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../../modules/web3/types";
 import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,
 } from "../../../utils/AsyncIntervalScheduler";
 import { noopLogger } from "../../dependencies/logger";
-import { ILedgerWalletMetadata } from "../../persistence/WalletMetadataObjectStorage";
 import { LedgerWallet } from "../ledger-wallet/LedgerWallet";
 import {
   EWeb3ManagerEvents,

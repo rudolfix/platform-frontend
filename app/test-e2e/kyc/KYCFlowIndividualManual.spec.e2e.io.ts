@@ -18,14 +18,14 @@ describe("KYC Personal flow with manual verification", () => {
       // go to kyc select and then individual page
       cy.visit(kycRoutes.start);
       cy.get(tid("kyc-start-go-to-personal")).awaitedClick();
-      cy.url().should("eq", `https://localhost:9090${kycRoutes.individualStart}`);
+      cy.url().should("contain", kycRoutes.individualStart);
 
       // fill and submit the form
       fillForm(kycInvidualForm);
 
       // go to the manual verification with file upload
       cy.get(tid("kyc-go-to-manual-verification")).awaitedClick();
-      cy.url().should("eq", `https://localhost:9090${kycRoutes.individualUpload}`);
+      cy.url().should("contain", kycRoutes.individualUpload);
 
       // upload file
       uploadMultipleFilesToFieldWithTid("kyc-personal-upload-dropzone", ["example.jpg"]);

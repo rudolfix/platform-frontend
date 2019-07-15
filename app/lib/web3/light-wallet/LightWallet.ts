@@ -11,10 +11,9 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { symbols } from "../../../di/symbols";
-import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
+import { EWalletSubType, EWalletType, ILightWalletMetadata } from "../../../modules/web3/types";
 import { EthereumAddress } from "../../../types";
 import { ILogger } from "../../dependencies/logger";
-import { ILightWalletMetadata } from "../../persistence/WalletMetadataObjectStorage";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { IEthereumNetworkConfig, IRawTxData } from "./../types";
 import { Web3Adapter } from "./../Web3Adapter";

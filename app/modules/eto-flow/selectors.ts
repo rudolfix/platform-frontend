@@ -13,7 +13,11 @@ import {
   IEtoDocument,
   TEtoDocumentTemplates,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { EOfferingDocumentType, EProductName } from "../../lib/api/eto/EtoProductsApi.interfaces";
+import {
+  EOfferingDocumentType,
+  EProductName,
+  TEtoProduct,
+} from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
@@ -108,6 +112,16 @@ export const selectIssuerEtoState = (state: IAppState): EEtoState | undefined =>
 
   if (eto) {
     return eto.state;
+  }
+
+  return undefined;
+};
+
+export const selectIssuerEtoProduct = (state: IAppState): TEtoProduct | undefined => {
+  const eto = selectIssuerEto(state);
+
+  if (eto) {
+    return eto.product;
   }
 
   return undefined;

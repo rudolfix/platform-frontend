@@ -1,10 +1,11 @@
 import { dummyEthereumAddress } from "../../../test/fixtures";
 import {
+  EWalletSubType,
+  EWalletType,
   IBrowserWalletMetadata,
   ILedgerWalletMetadata,
   ILightWalletMetadata,
-} from "../../lib/persistence/WalletMetadataObjectStorage";
-import { EWalletSubType, EWalletType } from "./types";
+} from "./types";
 
 export const getDummyLightWalletMetadata = (): ILightWalletMetadata => ({
   walletType: EWalletType.LIGHT,

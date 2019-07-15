@@ -6,9 +6,9 @@ import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoView } from "./shared/EtoView";
 
@@ -23,7 +23,7 @@ type TViewProps = {
 };
 
 export const EtoIssuerView = compose<TViewProps, {}>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.etoFlow.loadIssuerEto());
@@ -35,6 +35,6 @@ export const EtoIssuerView = compose<TViewProps, {}>(
       isInvestorView: false,
     }),
   }),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
   branch<TStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
 )(EtoView);

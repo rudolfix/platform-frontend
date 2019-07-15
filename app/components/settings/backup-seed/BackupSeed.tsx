@@ -7,9 +7,9 @@ import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { selectIsUnlocked, selectWalletPrivateData } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { withContainer } from "../../../utils/withContainer.unsafe";
-import { LayoutAuthorized } from "../../layouts/LayoutAuthorized";
+import { LayoutNew } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 
 const BackupSeedFlowContainer = React.lazy(() =>
@@ -61,7 +61,7 @@ class BackupSeedComponent extends React.Component<IDispatchProps & IStateProps> 
 }
 
 export const BackupSeed = compose<React.FunctionComponent>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       isUnlocked: selectIsUnlocked(s.web3),
@@ -75,5 +75,5 @@ export const BackupSeed = compose<React.FunctionComponent>(
       clearSeed: () => dispatch(actions.web3.clearWalletPrivateDataFromState()),
     }),
   }),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
 )(BackupSeedComponent);

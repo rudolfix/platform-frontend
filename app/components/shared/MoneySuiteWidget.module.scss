@@ -1,29 +1,14 @@
 .money-suite-widget {
   display: flex;
 
-  &:global(.light) {
-    .money,
-    .total-money {
-      color: $neu-white-two;
-    }
-  }
-
-  &:global(.framed) {
+  &.framed {
     width: 100%;
     justify-content: space-between;
     border: 1px solid $neu-pale-grey;
     padding: px-to-rem(16px) px-to-rem(12px);
   }
 
-  &:global(.large) {
-    .money {
-      font-size: px-to-rem(22px);
-    }
-
-    .total-money {
-      font-size: px-to-rem(15px);
-    }
-
+  &.large {
     .icon {
       @include rect(43px);
     }
@@ -34,18 +19,6 @@
 
     margin-right: px-to-rem(10px);
     margin-top: .2em;
-  }
-
-  .money {
-    @include font-default;
-
-    color: $neu-slate-grey;
-  }
-
-  .total-money {
-    @include font-tab;
-
-    color: $neu-silver;
   }
 
   .green {

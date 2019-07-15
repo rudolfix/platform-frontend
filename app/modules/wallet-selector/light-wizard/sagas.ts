@@ -11,7 +11,6 @@ import { EJwtPermissions } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
-import { ILightWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import {
   LightError,
   LightWallet,
@@ -38,7 +37,7 @@ import {
 import { displayInfoModalSaga } from "../../generic-modal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectIsUnlocked } from "../../web3/selectors";
-import { EWalletSubType } from "../../web3/types";
+import { EWalletSubType, ILightWalletMetadata } from "../../web3/types";
 import { selectUrlUserType } from "../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getWalletMetadataByURL } from "./metadata/sagas";

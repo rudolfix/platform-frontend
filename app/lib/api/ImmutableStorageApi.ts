@@ -47,7 +47,7 @@ export class ImmutableStorageApi {
       queryParams: {
         mime_type: mimeType,
         placeholders: placeHolder,
-        as_pdf: asPdf.toString(),
+        as_pdf: asPdf,
       },
     });
     return response.body;

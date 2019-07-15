@@ -13,8 +13,7 @@ import { getAgreementHash } from "./getAgreementHash";
 import { tid } from "./selectors";
 
 const VAULT_API_ROOT = "/api/wallet";
-export const INVESTOR_WALLET_KEY = "NF_WALLET_METADATA";
-const ISSUER_WALLET_KEY = "NF_WALLET_ISSUER_METADATA";
+export const WALLET_STORAGE_KEY = "NF_WALLET_METADATA";
 export const JWT_KEY = "NF_JWT";
 
 const NUMBER_OF_ATTEMPTS = 2;
@@ -55,9 +54,10 @@ export const createAndLoginNewUser = (
 
     // set wallet data on local storage
     ls.setItem(
-      params.type === "investor" ? INVESTOR_WALLET_KEY : ISSUER_WALLET_KEY,
+      WALLET_STORAGE_KEY,
       JSON.stringify({
         address,
+        userType: params.type,
         email: `${address.slice(0, 7).toLowerCase()}@neufund.org`,
         salt: salt,
         walletType: "LIGHT",
@@ -93,6 +93,8 @@ export const createAndLoginNewUser = (
       // This was done to maintain introduce `signTosAgreement` without changing the interface of existing tests
       await setCorrectAgreement(jwt);
     }
+
+    cy.wait(3000);
 
     const userData = await getUserData(jwt);
     const kycData = await getKycData(jwt);
@@ -395,7 +397,10 @@ export const makeAuthenticatedCall = async (path: string, config: RequestInit) =
 
 export const logout = () => {
   cy.log("logging out");
-  cy.get(tid("Header-logout")).awaitedClick();
+  cy.get(tid("account-menu-open-button"))
+    .awaitedClick()
+    .get(tid("menu-logout-button"))
+    .awaitedClick();
   cy.wait(2000);
 };
 

@@ -24,6 +24,7 @@ import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
 import { termsOfServiceSagas } from "./terms-of-service-modal/sagas";
+import { txHistorySaga } from "./tx-history/sagas";
 import { txMonitorSagas } from "./tx/monitor/sagas";
 import { txTransactionsSagasWatcher } from "./tx/transactions/sagas";
 import { txValidatorSagasWatcher } from "./tx/validator/sagas";
@@ -70,6 +71,7 @@ function* allSagas(): Iterator<effects.Effect> {
     effects.fork(neuRestartIf, actions.auth.logout, etoDocumentsSagas),
     effects.fork(neuRestartIf, actions.auth.logout, txMonitorSagas),
     effects.fork(neuRestartIf, actions.auth.logout, investmentFlowSagas),
+    effects.fork(neuRestartIf, actions.auth.logout, txHistorySaga),
   ]);
 }
 

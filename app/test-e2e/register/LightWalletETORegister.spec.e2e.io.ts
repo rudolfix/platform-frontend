@@ -2,7 +2,7 @@ import {
   assertErrorModal,
   assertEtoDashboard,
   goToDashboard,
-  logoutViaTopRightButton,
+  logoutViaAccountMenu,
   registerWithLightWalletETO,
 } from "../utils";
 import { createAndLoginNewUser } from "../utils/userHelpers";
@@ -26,7 +26,7 @@ describe("Wallet backup e2e recovery phrase", () => {
         // TODO: move into a seperate util method
         const metaData = JSON.parse(window.localStorage.getItem("NF_WALLET_METADATA") as string);
         goToDashboard();
-        logoutViaTopRightButton();
+        logoutViaAccountMenu();
         registerWithLightWalletETO(metaData.email, passowrd, false);
 
         assertErrorModal();

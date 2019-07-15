@@ -9,9 +9,9 @@ import { withContainer } from "../../utils/withContainer.unsafe";
 import { appRoutes } from "../appRoutes";
 import { EtoList } from "../dashboard/eto-list/EtoList";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
-import { Content } from "../layouts/Content";
-import { WidgetGridLayout } from "../layouts/Layout";
-import { LayoutUnauthorized } from "../layouts/LayoutUnauthorized";
+import { LandingContent } from "../layouts/Content";
+import { LayoutNew } from "../layouts/Layout";
+import { WidgetGrid } from "../layouts/WidgetGrid";
 import {
   ButtonGroup,
   ButtonLink,
@@ -21,7 +21,7 @@ import {
   EIconPosition,
 } from "../shared/buttons";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutUnauthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutUnauthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 
 import * as arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./Landing.module.scss";
@@ -31,7 +31,7 @@ const LandingLayout: React.FunctionComponent = () => (
     <section className={styles.landing}>
       <div className={styles.neon} />
 
-      <WidgetGridLayout>
+      <WidgetGrid>
         <Container columnSpan={EColumnSpan.ONE_AND_HALF_COL} type={EContainerType.GRID}>
           <h1 className={styles.header}>
             <FormattedMessage id="platform.landing.featured.header" />
@@ -58,10 +58,10 @@ const LandingLayout: React.FunctionComponent = () => (
             </li>
           </ul>
         </Container>
-      </WidgetGridLayout>
+      </WidgetGrid>
     </section>
 
-    <Content>
+    <LandingContent>
       <section className={styles.investmentOpportunities}>
         <h2 className={cn(styles.investmentOpportunitiesHeader)}>Investment opportunities</h2>
 
@@ -89,13 +89,13 @@ const LandingLayout: React.FunctionComponent = () => (
           </ButtonLink>
         </ButtonGroup>
       </section>
-    </Content>
+    </LandingContent>
   </div>
 );
 
 const Landing = compose(
-  createErrorBoundary(ErrorBoundaryLayoutUnauthorized),
-  withContainer(LayoutUnauthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
+  withContainer(LayoutNew),
 )(LandingLayout);
 
 export { Landing };

@@ -10,7 +10,7 @@ import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   EEtoDocumentType,
   IEtoDocument,
-  IEtoFiles,
+  IEtoFilesInfo,
   TEtoDocumentTemplates,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { ignoredTemplates } from "../../lib/api/eto/EtoFileUtils";
@@ -40,10 +40,10 @@ import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { appRoutes } from "../appRoutes";
 import { EtoFileIpfsModal } from "../eto/shared/EtoFileIpfsModal";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
 import { ClickableDocumentTile, UploadableDocumentTile } from "../shared/Document";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../shared/Heading";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { SingleColDocuments } from "../shared/SingleColDocumentWidget";
@@ -59,7 +59,7 @@ import {
 import * as styles from "./Documents.module.scss";
 
 type TStateLoadedProps = {
-  etoFilesData: DeepReadonly<IEtoFiles>;
+  etoFilesData: DeepReadonly<IEtoFilesInfo>;
   etoState: EEtoState;
   etoTemplates: TEtoDocumentTemplates;
   etoDocuments: TEtoDocumentTemplates;
@@ -74,6 +74,8 @@ type TStateLoadedProps = {
 };
 
 type TStateProps = { isLoading: true } | TStateLoadedProps;
+
+type TDocumentsRestrictedStateProps = { shouldEtoDataLoad: boolean };
 
 interface IDispatchProps {
   generateTemplate: (document: IEtoDocument) => void;
@@ -94,14 +96,14 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
   transactionPending,
   documentsGenerated,
 }) => {
-  const { allTemplates, stateInfo } = etoFilesData;
-  const documents = renameDocuments(stateInfo, onChainState);
+  const { productTemplates, documentsStateInfo } = etoFilesData;
+  const documents = renameDocuments(documentsStateInfo, onChainState);
   const etoTemplateKeys = Object.keys(etoTemplates);
 
   return (
     <>
       <div data-test-id="eto-documents" className={styles.layout}>
-        <Heading level={3} className={cn(styles.header)}>
+        <Heading level={3} className={styles.header}>
           <FormattedMessage id="documents.legal-documents" />
         </Heading>
 
@@ -119,11 +121,11 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
               .map(key => (
                 <ClickableDocumentTile
                   key={key}
-                  document={allTemplates[key]}
+                  document={etoTemplates[key]}
                   generateTemplate={generateTemplate}
-                  title={getDocumentTitles(offeringDocumentType)[allTemplates[key].documentType]}
+                  title={getDocumentTitles(offeringDocumentType)[etoTemplates[key].documentType]}
                   extension={".doc"}
-                  busy={documentsGenerated[allTemplates[key].ipfsHash]}
+                  busy={documentsGenerated[etoTemplates[key].ipfsHash]}
                 />
               ))
           ) : (
@@ -137,12 +139,12 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
           <h4 className={styles.groupName}>
             <FormattedMessage id="documents.approved-prospectus-and-agreements-to-upload" />
           </h4>
-          {stateInfo &&
+          {documentsStateInfo &&
             documents.map((key: EEtoDocumentType) => (
               <UploadableDocumentTile
                 key={key}
                 documentKey={key}
-                active={uploadAllowed(stateInfo, etoState, key, onChainState)}
+                active={uploadAllowed(documentsStateInfo, etoState, key, onChainState)}
                 busy={isBusy(key, transactionPending, Boolean(documentsUploading[key]))}
                 typedFileName={getDocumentTitles(offeringDocumentType)[key]}
                 isFileUploaded={isFileUploaded(etoDocuments, key)}
@@ -154,9 +156,11 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
             ))}
         </section>
 
-        {allTemplates && (
+        {productTemplates && (
           <SingleColDocuments
-            documents={sortDocuments(etoTemplateKeys).map(key => allTemplates[key])}
+            documents={sortDocuments(Object.keys(productTemplates)).map(
+              key => productTemplates[key],
+            )}
             title={<FormattedMessage id="documents.agreement-and-prospectus-templates" />}
             className={styles.documents}
             offeringDocumentType={offeringDocumentType}
@@ -169,7 +173,7 @@ const DocumentsLayout: React.FunctionComponent<TStateLoadedProps & IDispatchProp
 };
 
 const Documents = compose<React.FunctionComponent>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   setDisplayName("Documents"),
   onEnterAction({ actionCreator: d => d(actions.etoDocuments.loadFileDataStart()) }),
   appConnect<TStateProps, IDispatchProps>({
@@ -177,7 +181,7 @@ const Documents = compose<React.FunctionComponent>(
       const etoId = selectIssuerEtoId(state);
       const etoFilesData = selectEtoDocumentData(state.etoDocuments);
 
-      if (!etoId || isEmpty(etoFilesData.allTemplates)) {
+      if (!etoId || isEmpty(etoFilesData.productTemplates)) {
         return {
           isLoading: true,
         };
@@ -205,12 +209,21 @@ const Documents = compose<React.FunctionComponent>(
     }),
   }),
   withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.documents-page") })),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
   branch<TStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
+)(DocumentsLayout);
+
+const DocumentsRestricted = compose<React.FunctionComponent>(
+  setDisplayName("DocumentsRestricted"),
+  appConnect<TDocumentsRestrictedStateProps>({
+    stateToProps: state => ({
+      shouldEtoDataLoad: userHasKycAndEmailVerified(state),
+    }),
+  }),
   branch<TStateLoadedProps>(
     props => !props.shouldEtoDataLoad,
     renderComponent(() => <Redirect to={appRoutes.profile} />),
   ),
-)(DocumentsLayout);
+)(Documents);
 
-export { Documents, DocumentsLayout };
+export { DocumentsRestricted as Documents, DocumentsLayout };

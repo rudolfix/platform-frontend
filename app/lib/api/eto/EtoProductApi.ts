@@ -2,11 +2,13 @@ import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
 import { IHttpClient } from "../client/IHttpClient";
+import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 import { TEtoProducts } from "./EtoProductsApi.interfaces";
 
 const BASE_PATH = "/api/eto-listing/";
 const PRODUCTS_PATH = "/products";
 const ETO_PRODUCT_PATH = "/etos/me/product";
+const ETO_PRODUCT_TEMPLATES_PATH = "templates";
 
 @injectable()
 export class EtoProductApi {
@@ -33,5 +35,14 @@ export class EtoProductApi {
     });
 
     return productsResponse.body;
+  }
+
+  public async getProductTemplates(productId: string): Promise<TEtoDocumentTemplates> {
+    const response = await this.authorizedHttpClient.get<TEtoDocumentTemplates>({
+      baseUrl: BASE_PATH,
+      url: `${PRODUCTS_PATH}/${productId}/${ETO_PRODUCT_TEMPLATES_PATH}`,
+    });
+
+    return response.body;
   }
 }

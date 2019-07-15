@@ -14,16 +14,16 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
-import { LayoutAuthorized } from "../layouts/LayoutAuthorized";
+import { LayoutNew } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayoutAuthorized } from "../shared/errorBoundary/ErrorBoundaryLayoutAuthorized";
+import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { IPortfolioDispatchProps, PortfolioLayout, TPortfolioLayoutProps } from "./PortfolioLayout";
 
 export type TStateProps = Partial<TPortfolioLayoutProps>;
 
 export const Portfolio = compose<TPortfolioLayoutProps, {}>(
-  createErrorBoundary(ErrorBoundaryLayoutAuthorized),
+  createErrorBoundary(ErrorBoundaryLayout),
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(actions.eto.loadEtos());
@@ -59,7 +59,7 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
       }
     },
   }),
-  withContainer(LayoutAuthorized),
+  withContainer(LayoutNew),
   branch(
     (props: TStateProps) => !props.myAssets && !props.pendingAssets,
     renderComponent(LoadingIndicator),

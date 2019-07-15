@@ -9,6 +9,7 @@ import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./Button.module.scss";
 
 export enum EButtonTheme {
+  DARK_NO_BORDER = styles.buttonDarkNoBorder,
   DARK = styles.buttonDark,
   WHITE = styles.buttonWhite,
   BRAND = styles.buttonBrand,

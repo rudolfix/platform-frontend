@@ -11,8 +11,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { etoPublicViewByIdLink } from "../../../appRouteUtils";
-import { LayoutAuthorized } from "../../../layouts/LayoutAuthorized";
-import { LayoutBase } from "../../../layouts/LayoutBase";
+import { LayoutNew } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
 
 interface IStateProps {
@@ -31,6 +30,7 @@ type TProps = {
 const RedirectEtoByIdComponent: React.FunctionComponent<TProps> = ({ eto }) => (
   <Redirect to={etoPublicViewByIdLink(eto.etoId, eto.product.jurisdiction)} />
 );
+
 export const RedirectEtoById = compose<TProps, IRouterParams>(
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
@@ -38,15 +38,11 @@ export const RedirectEtoById = compose<TProps, IRouterParams>(
       eto: selectEtoWithCompanyAndContractById(state, props.etoId),
     }),
   }),
+  withContainer(LayoutNew),
   onEnterAction<IRouterParams>({
     actionCreator: (dispatch, props) => {
       dispatch(actions.eto.loadEto(props.etoId));
     },
   }),
-  branch<IStateProps>(
-    props => props.userType === EUserType.INVESTOR,
-    withContainer(LayoutAuthorized),
-    withContainer(LayoutBase),
-  ),
   branch<IStateProps>(props => !props.eto, renderComponent(LoadingIndicator)),
 )(RedirectEtoByIdComponent);

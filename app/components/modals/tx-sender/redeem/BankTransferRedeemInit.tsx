@@ -10,8 +10,8 @@ import * as YupTS from "../../../../lib/yup-ts";
 import { actions } from "../../../../modules/actions";
 import { EBankTransferType } from "../../../../modules/bank-transfer-flow/reducer";
 import {
-  selectBankFeeUlps,
-  selectBankTransferMinAmount,
+  selectBankRedeemMinAmount,
+  selectRedeemFeeUlps,
 } from "../../../../modules/bank-transfer-flow/selectors";
 import { selectLiquidEuroTokenBalance } from "../../../../modules/wallet/selectors";
 import { doesUserHaveEnoughNEuro, doesUserWithdrawMinimal } from "../../../../modules/web3/utils";
@@ -33,7 +33,7 @@ import { FormLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { Form } from "../../../shared/forms/Form";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
-import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
+import { ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
 import { Tooltip } from "../../../shared/tooltips/Tooltip";
 import { VerifiedBankAccount } from "../../../wallet/VerifiedBankAccount";
 import { CalculatedFee } from "./CalculatedFee";
@@ -126,7 +126,7 @@ const BankTransferRedeemLayout: React.FunctionComponent<IProps> = ({
         currencyTotal={ECurrency.EUR}
         largeNumber={neuroAmount}
         value={neuroEuroAmount}
-        theme={"framed"}
+        theme={ETheme.FRAMED}
         walletName={<FormattedMessage id="bank-transfer.redeem.init.wallet-name" />}
       />
     </section>
@@ -246,8 +246,8 @@ const BankTransferRedeemInit = compose<IProps, {}>(
     stateToProps: state => ({
       neuroAmount: selectLiquidEuroTokenBalance(state),
       neuroEuroAmount: selectLiquidEuroTokenBalance(state),
-      bankFee: selectBankFeeUlps(state),
-      minAmount: selectBankTransferMinAmount(state),
+      bankFee: selectRedeemFeeUlps(state),
+      minAmount: selectBankRedeemMinAmount(state),
     }),
     dispatchToProps: dispatch => ({
       verifyBankAccount: () =>

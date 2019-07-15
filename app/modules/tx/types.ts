@@ -4,6 +4,7 @@ import { TInvestmentAdditionalData } from "./transactions/investment/types";
 import { TAcceptPayoutAdditionalData } from "./transactions/payout/accept/types";
 import { TRedistributePayoutAdditionalData } from "./transactions/payout/redistribute/types";
 import { TNEurRedeemAdditionalDetails } from "./transactions/redeem/types";
+import { TRefundAdditionalData } from "./transactions/refund/types";
 import { TUnlockAdditionalData } from "./transactions/unlock/types";
 import { TUpgradeAdditionalData } from "./transactions/upgrade/types";
 import { TWithdrawAdditionalData } from "./transactions/withdraw/types";
@@ -31,6 +32,7 @@ export enum ETxSenderType {
   INVESTOR_ACCEPT_PAYOUT = "INVESTOR_ACCEPT_PAYOUT",
   INVESTOR_REDISTRIBUTE_PAYOUT = "INVESTOR_REDISTRIBUTE_PAYOUT",
   NEUR_REDEEM = "NEUR_REDEEM",
+  INVESTOR_REFUND = "INVESTOR_REFUND",
 }
 
 export interface ITxTypeWithData<T extends ETxSenderType | undefined, P> {
@@ -73,6 +75,8 @@ type TTxSenderSignInvestmentAgreementState = ITxTypeWithData<
   undefined
 >;
 
+type TTxSenderRefundState = ITxTypeWithData<ETxSenderType.INVESTOR_REFUND, TRefundAdditionalData>;
+
 export type TSpecificTransactionState =
   | TTxSenderSignInvestmentAgreementState
   | TTxSenderUpgradeState
@@ -83,7 +87,8 @@ export type TSpecificTransactionState =
   | TTxSenderInvestState
   | TTxSenderEtoSetDateState
   | TTxSenderWithdrawState
-  | TTxSenderClaimState;
+  | TTxSenderClaimState
+  | TTxSenderRefundState;
 
 export type TAdditionalDataByType<T extends ETxSenderType> = Extract<
   TSpecificTransactionState,

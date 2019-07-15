@@ -21,6 +21,7 @@ import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./person-profile-modal/reducer";
 import { profileReducer } from "./profile/reducer";
 import { tokenPriceReducer } from "./shared/tokenPrice/reducer";
+import { txHistoryReducer } from "./tx-history/reducer";
 import { txMonitorReducer } from "./tx/monitor/reducer";
 import { txSenderReducer } from "./tx/sender/reducer";
 import { browserReducer } from "./user-agent/reducer";
@@ -54,6 +55,7 @@ export const appReducers = {
   lightWalletWizard: lightWalletWizardReducer,
   money: moneyReducer,
   wallet: walletReducer,
+  txHistory: txHistoryReducer,
   notifications: notificationsReducer,
   etoFlow: etoFlowReducer,
   bookBuildingFlow: bookBuildingFlowReducer,

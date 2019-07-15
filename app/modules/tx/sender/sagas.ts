@@ -203,9 +203,14 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
 
     const txHash: string = yield web3Manager.sendTransaction(txData);
 
-    yield neuCall(markTransactionAsPending, { txHash, type, txData, txAdditionalData });
+    const txTimestamp = yield neuCall(markTransactionAsPending, {
+      txHash,
+      type,
+      txData,
+      txAdditionalData,
+    });
 
-    yield put(actions.txSender.txSenderSigned(txHash, type));
+    yield put(actions.txSender.txSenderSigned(txHash, type, txTimestamp));
 
     return txHash;
   } catch (error) {

@@ -1,7 +1,6 @@
 import { select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ILightWalletRetrieveMetadata } from "../../../../lib/persistence/WalletMetadataObjectStorage";
 import { LightWalletWrongPassword } from "../../../../lib/web3/light-wallet/LightWallet";
 import { IAppState } from "../../../../store";
 import { neuCall } from "../../../sagasUtils";
@@ -9,7 +8,7 @@ import {
   selectLightWalletFromQueryString,
   selectPreviousConnectedWallet,
 } from "../../../web3/selectors";
-import { EWalletType } from "../../../web3/types";
+import { EWalletType, ILightWalletRetrieveMetadata } from "../../../web3/types";
 import { getVaultKey } from "../utils";
 
 export async function retrieveMetadataFromVaultAPI(

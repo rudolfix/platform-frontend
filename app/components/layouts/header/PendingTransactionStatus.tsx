@@ -5,22 +5,20 @@ import { branch, renderComponent } from "recompose";
 import { TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
 import { ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { ActionRequired, EActionRequiredPosition } from "../../shared/ActionRequired";
-import { Button, EButtonLayout } from "../../shared/buttons";
-import {
-  ConfettiEthereum,
-  EEthereumIconSize,
-  EEthereumIconTheme,
-  EthereumIcon,
-} from "../../shared/ethereum";
-import { ELoadingIndicator, LoadingIndicator } from "../../shared/loading-indicator";
-import { TooltipBase } from "../../shared/tooltips";
+import { Button, EButtonLayout } from "../../shared/buttons/index";
+import { TooltipBase } from "../../shared/tooltips/index";
 
-import * as failedImg from "../../../assets/img/ether_fail.svg";
+import * as bellNotification from "../../../assets/img/bell-notification.svg";
+import * as bell from "../../../assets/img/bell.svg";
 
 interface IExternalProps {
   pendingTransaction?: Pick<TxPendingWithMetadata, "transactionStatus">;
   monitorPendingTransaction: () => void;
+  className: string;
 }
+
+const NoPendingTransactionImage = () => <img src={bell} width="20px" alt="" />;
+const PendingTransactionImage = () => <img src={bellNotification} width="20px" alt="" />;
 
 const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternalProps>> = ({
   pendingTransaction,
@@ -36,9 +34,8 @@ const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternal
             onClick={monitorPendingTransaction}
             className="mr-3"
           >
-            <EthereumIcon size={EEthereumIconSize.SMALL} />
+            <PendingTransactionImage />
           </Button>
-          <LoadingIndicator type={ELoadingIndicator.SPINNER} />
         </>
       );
 
@@ -49,7 +46,7 @@ const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternal
           layout={EButtonLayout.SIMPLE}
           onClick={monitorPendingTransaction}
         >
-          <ConfettiEthereum size={EEthereumIconSize.SMALL} />
+          <NoPendingTransactionImage />
         </Button>
       );
 
@@ -60,8 +57,8 @@ const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternal
           layout={EButtonLayout.SIMPLE}
           onClick={monitorPendingTransaction}
         >
-          <ActionRequired active={true} position={EActionRequiredPosition.BOTTOM}>
-            <img src={failedImg} width="28px" alt="" />
+          <ActionRequired active={true} position={EActionRequiredPosition.TOP}>
+            <NoPendingTransactionImage />
           </ActionRequired>
         </Button>
       );
@@ -73,17 +70,14 @@ const PendingTransactionStatusLayout: React.FunctionComponent<Required<IExternal
   }
 };
 
-const NoPendingTransaction: React.FunctionComponent = () => (
+const NoPendingTransaction: React.FunctionComponent<{ className: string }> = ({ className }) => (
   <>
     <div
+      className={className}
       id="no-pending-transactions"
       data-test-id="pending-transactions-status.no-pending-transactions"
     >
-      <EthereumIcon
-        size={EEthereumIconSize.SMALL}
-        theme={EEthereumIconTheme.SILVER}
-        spinning={false}
-      />
+      <NoPendingTransactionImage />
     </div>
 
     <TooltipBase target="no-pending-transactions" hideArrow={true}>

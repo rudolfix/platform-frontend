@@ -1,5 +1,5 @@
-import { TWalletMetadata } from "../../lib/persistence/WalletMetadataObjectStorage";
 import { AppReducer } from "../../store";
+import { TWalletMetadata } from "./types";
 
 export interface IDisconnectedWeb3State {
   connected: false;

@@ -6,12 +6,12 @@ import {
   assertWaitForLatestEmailSentWithSalt,
   generateRandomEmailAddress,
   loginWithLightWallet,
-  logoutViaTopRightButton,
+  logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
   typeEmailPassword,
   verifyLatestUserEmail,
-} from "../utils";
+} from "../utils/index";
 
 describe("Light wallet login / register", () => {
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe("Light wallet login / register", () => {
 
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).awaitedClick();
+    logoutViaAccountMenu();
 
     loginWithLightWallet(email, password);
 
@@ -44,25 +44,51 @@ describe("Light wallet login / register", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
+    // todo: we should let to register as issuer here so mock is not needed
     registerWithLightWallet(email, password);
 
-    cy.get(tid("Header-logout")).awaitedClick();
+    logoutViaAccountMenu();
 
     loginWithLightWallet(email, password);
 
     assertDashboard().then(() => {
       const savedMetadata = (window.localStorage as any).NF_WALLET_METADATA;
       cy.clearLocalStorage().then(() => {
-        (window.localStorage as any).NF_WALLET_ISSUER_METADATA = savedMetadata;
+        // mock issuer metadata
+        const mockedMetadata = JSON.parse(savedMetadata);
+        mockedMetadata.userType = "issuer";
+        (window.localStorage as any).NF_WALLET_METADATA = JSON.stringify(mockedMetadata);
 
         cy.visit("eto/login/light");
+        // investor metadata woud be cleared here
         cy.contains(tid("light-wallet-login-with-email-email-field"), email);
         cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
         cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
 
         assertDashboard().then(() => {
+          //after login investor metadata are again saved into local storage
           expect((window.localStorage as any).NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
         });
+      });
+    });
+  });
+
+  it("should wipe out saved investor wallet when on issuer login", () => {
+    const email = generateRandomEmailAddress();
+    const password = "strongpassword";
+
+    // todo: we should let to register as issuer here so mock is not needed
+    registerWithLightWallet(email, password);
+
+    logoutViaAccountMenu();
+
+    loginWithLightWallet(email, password);
+
+    assertDashboard().then(() => {
+      cy.clearLocalStorage().then(() => {
+        cy.visit("eto/login/light");
+        // investor metadata woud be cleared here
+        expect((window.localStorage as any).NF_WALLET_METADATA).to.not.exist;
       });
     });
   });
@@ -77,7 +103,7 @@ describe("Light wallet login / register", () => {
     assertDashboard();
     acceptTOS();
     verifyLatestUserEmail(email);
-    logoutViaTopRightButton();
+    logoutViaAccountMenu();
     cy.clearLocalStorage();
 
     // register again with the same email, this should show a warning

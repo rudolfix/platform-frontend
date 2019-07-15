@@ -34,7 +34,6 @@ export const getDocumentTitles = (documentType: EOfferingDocumentType) => ({
   investment_and_shareholder_agreement_template: (
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
   ),
-  pamphlet_template: <FormattedMessage id="eto.documents.pamphlet_template" />,
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-template" />,
   termsheet_template: <FormattedMessage id="eto.documents.termsheet" />,
   investment_memorandum_template: (
@@ -66,7 +65,6 @@ export const getDocumentTemplateTitles = (documentType: EOfferingDocumentType) =
   investment_and_shareholder_agreement_template: (
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement-template" />
   ),
-  pamphlet_template: <FormattedMessage id="eto.documents.pamphlet_template" />,
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-template" />,
   termsheet_template: <FormattedMessage id="eto.documents.termsheet-template" />,
   investment_memorandum_template: (
@@ -89,13 +87,13 @@ export const getDocumentTemplateTitles = (documentType: EOfferingDocumentType) =
 //if onChainState === < Payout | Claim >
 // INVESTMENT_AND_SHAREHOLDER_AGREEMENT changes to SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT
 export const renameDocuments = (
-  stateInfo: DeepReadonly<TStateInfo> | undefined,
+  documentsStateInfo: DeepReadonly<TStateInfo> | undefined,
   onChainState: EETOStateOnChain,
 ) => {
-  const documents = stateInfo ? [...stateInfo.uploadableDocuments] : [];
+  const documents = documentsStateInfo ? [...documentsStateInfo.uploadableTypes] : [];
 
   if (
-    stateInfo &&
+    documentsStateInfo &&
     (onChainState === EETOStateOnChain.Claim || onChainState === EETOStateOnChain.Payout)
   ) {
     const i = documents.findIndex(x => x === EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT);
@@ -143,14 +141,14 @@ export const isFileUploaded = (
 
 //not all documents may be uploaded in all etoStates AND onChain states
 export const uploadAllowed = (
-  stateInfo: DeepReadonly<TStateInfo>,
+  documentsStateInfo: DeepReadonly<TStateInfo>,
   etoState: EEtoState,
   documentKey: EEtoDocumentType,
   onChainState?: EETOStateOnChain,
 ) =>
-  stateInfo &&
+  documentsStateInfo &&
   etoState &&
-  stateInfo.canUploadInStates[EtoStateToCamelcase[etoState]].some(
+  documentsStateInfo.canUploadInStates[EtoStateToCamelcase[etoState]].some(
     (fileName: string) => fileName === documentKey,
   ) &&
   canUploadInOnChainStates(etoState, documentKey, onChainState);

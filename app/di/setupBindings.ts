@@ -2,6 +2,7 @@ import * as cryptoRandomString from "crypto-random-string";
 import { Container } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";
+import { AnalyticsApi } from "../lib/api/analytics-api/AnalyticsApi";
 import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";
 import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
 import { BinaryHttpClient } from "../lib/api/client/BinaryHttpClient";
@@ -26,7 +27,6 @@ import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import { Storage } from "../lib/persistence/Storage";
 import { USER_JWT_KEY } from "../lib/persistence/UserStorage";
-import { TWalletMetadata } from "../lib/persistence/WalletMetadataObjectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { BrowserWalletConnector } from "../lib/web3/browser-wallet/BrowserWallet";
 import { ContractsService } from "../lib/web3/ContractsService";
@@ -98,6 +98,11 @@ export function setupBindings(config: IConfig): Container {
     .inSingletonScope();
 
   container
+    .bind<AnalyticsApi>(symbols.analyticsApi)
+    .to(AnalyticsApi)
+    .inSingletonScope();
+
+  container
     .bind<UsersApi>(symbols.usersApi)
     .to(UsersApi)
     .inSingletonScope();
@@ -154,7 +159,7 @@ export function setupBindings(config: IConfig): Container {
     .to(EtoFileApi)
     .inSingletonScope();
   container
-    .bind<WalletStorage<TWalletMetadata>>(symbols.walletStorage)
+    .bind<WalletStorage>(symbols.walletStorage)
     .to(WalletStorage)
     .inSingletonScope();
   container
@@ -229,7 +234,7 @@ export const createGlobalDependencies = (container: Container) => ({
 
   // storage
   jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
-  walletStorage: container.get<WalletStorage<TWalletMetadata>>(symbols.walletStorage),
+  walletStorage: container.get<WalletStorage>(symbols.walletStorage),
   userStorage: container.get<ObjectStorage<string>>(symbols.userStorage),
 
   // network layer
@@ -251,6 +256,7 @@ export const createGlobalDependencies = (container: Container) => ({
   apiEtoFileService: container.get<EtoFileApi>(symbols.apiEtoFileService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
+  analyticsApi: container.get<AnalyticsApi>(symbols.analyticsApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
   gasApi: container.get<GasApi>(symbols.gasApi),
   apiImmutableStorage: container.get<ImmutableStorageApi>(symbols.apiImmutableStorage),

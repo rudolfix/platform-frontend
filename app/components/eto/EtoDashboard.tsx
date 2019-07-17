@@ -29,7 +29,7 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { Container, EColumnSpan } from "../layouts/Container";
-import { LayoutNew } from "../layouts/Layout";
+import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
 import { SettingsWidgets } from "../settings/settings-widget/SettingsWidgets";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
@@ -100,6 +100,18 @@ interface IComponentProps extends ISubmissionProps, IEtoStep {
 
 interface IDispatchProps {
   initEtoView: () => void;
+}
+
+interface IVerifiedUserSectionProps {
+  isMarketingDataVisibleInPreview?: EEtoMarketingDataVisibleInPreview;
+  shouldViewSubmissionSection?: boolean;
+  canEnableBookbuilding: boolean;
+  shouldViewEtoSettings?: boolean;
+  isTermSheetSubmitted?: boolean;
+  isOfferingDocumentSubmitted?: boolean;
+  offeringDocumentType: EOfferingDocumentType | undefined;
+  eto?: TEtoWithCompanyAndContract;
+  etoStep: EEtoStep;
 }
 
 const selectStepComponent = (etoStep: EEtoStep) => {
@@ -197,7 +209,7 @@ const SubmitDashBoardSection: React.FunctionComponent<{
   );
 
 interface IEtoStateRender {
-  eto?: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContract;
   shouldViewSubmissionSection?: boolean;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
@@ -217,13 +229,6 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   isMarketingDataVisibleInPreview,
   shouldViewEtoSettings,
 }) => {
-  if (!eto) {
-    return (
-      <Container columnSpan={EColumnSpan.THREE_COL}>
-        <LoadingIndicator />
-      </Container>
-    );
-  }
   const dashboardTitle = (
     <ETOState
       eto={eto}
@@ -310,75 +315,79 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   }
 };
 
-class EtoDashboardComponent extends React.Component<IComponentProps> {
-  render(): React.ReactNode {
-    const {
-      eto,
-      canEnableBookbuilding,
-      shouldViewEtoSettings,
-      isTermSheetSubmitted,
-      isOfferingDocumentSubmitted,
-      offeringDocumentType,
-      isVerificationSectionDone,
-      userHasKycAndEmailVerified,
-      isMarketingDataVisibleInPreview,
-      shouldViewSubmissionSection,
-      etoStep,
-    } = this.props;
+const VerificationSection: React.FunctionComponent<IEtoStep> = ({ etoStep, ...props }) => (
+  <>
+    <EtoDashboardStepSelector etoStep={etoStep} />
+    <SettingsWidgets isDynamic={true} {...props} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+  </>
+);
 
+const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = ({
+  isMarketingDataVisibleInPreview,
+  shouldViewSubmissionSection,
+  canEnableBookbuilding,
+  shouldViewEtoSettings,
+  isTermSheetSubmitted,
+  isOfferingDocumentSubmitted,
+  offeringDocumentType,
+  eto,
+  etoStep,
+}) => {
+  if (eto) {
     return (
-      <WidgetGrid data-test-id="eto-dashboard-application">
-        {!isVerificationSectionDone && (
-          <>
-            <EtoDashboardStepSelector etoStep={etoStep} />
-            <SettingsWidgets
-              isDynamic={true}
-              {...this.props}
-              columnSpan={EColumnSpan.ONE_AND_HALF_COL}
-            />
-          </>
-        )}
-        {userHasKycAndEmailVerified && (
-          <>
-            <Container columnSpan={EColumnSpan.THREE_COL} className="mb-5">
-              <div className={styles.header}>
-                <Heading level={2} decorator={false} disableTransform={true} inheritFont={true}>
-                  <FormattedHTMLMessage tagName="span" id="eto-dashboard.header" />
-                </Heading>
-                {eto && (
-                  <ETOState
-                    eto={eto}
-                    size={EProjectStatusSize.HUGE}
-                    layout={EProjectStatusLayout.INHERIT}
-                    className="ml-3"
-                  />
-                )}
-              </div>
-              <Tooltip
-                content={
-                  <FormattedHTMLMessage id="eto-dashboard.tooltip.description" tagName="span" />
-                }
-              >
-                <FormattedMessage id="eto-dashboard.tooltip" />
-              </Tooltip>
-            </Container>
-            <EtoDashboardStepSelector etoStep={etoStep} />
-            <EtoDashboardStateViewComponent
-              isTermSheetSubmitted={isTermSheetSubmitted}
-              isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
-              shouldViewEtoSettings={shouldViewEtoSettings}
-              shouldViewSubmissionSection={shouldViewSubmissionSection}
-              eto={eto}
-              canEnableBookbuilding={canEnableBookbuilding}
-              offeringDocumentType={offeringDocumentType}
-              isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
-            />
-          </>
-        )}
-      </WidgetGrid>
+      <>
+        <Container columnSpan={EColumnSpan.THREE_COL} className="mb-5">
+          <div className={styles.header}>
+            <Heading level={2} decorator={false} disableTransform={true} inheritFont={true}>
+              <FormattedHTMLMessage tagName="span" id="eto-dashboard.header" />
+            </Heading>
+            {eto && (
+              <ETOState
+                eto={eto}
+                size={EProjectStatusSize.HUGE}
+                layout={EProjectStatusLayout.INHERIT}
+                className="ml-3"
+              />
+            )}
+          </div>
+          <Tooltip
+            content={<FormattedHTMLMessage id="eto-dashboard.tooltip.description" tagName="span" />}
+          >
+            <FormattedMessage id="eto-dashboard.tooltip" />
+          </Tooltip>
+        </Container>
+        <EtoDashboardStepSelector etoStep={etoStep} />
+        <EtoDashboardStateViewComponent
+          isTermSheetSubmitted={isTermSheetSubmitted}
+          isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
+          shouldViewEtoSettings={shouldViewEtoSettings}
+          shouldViewSubmissionSection={shouldViewSubmissionSection}
+          eto={eto}
+          canEnableBookbuilding={canEnableBookbuilding}
+          offeringDocumentType={offeringDocumentType}
+          isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
+        />
+      </>
+    );
+  } else {
+    return (
+      <Container columnSpan={EColumnSpan.THREE_COL}>
+        <LoadingIndicator />
+      </Container>
     );
   }
-}
+};
+
+const EtoDashboardComponent: React.FunctionComponent<IComponentProps> = props => {
+  const { isVerificationSectionDone, userHasKycAndEmailVerified, ...rest } = props;
+
+  return (
+    <WidgetGrid data-test-id="eto-dashboard-application">
+      {!isVerificationSectionDone && <VerificationSection {...rest} />}
+      {userHasKycAndEmailVerified && <VerifiedUserSection {...rest} />}
+    </WidgetGrid>
+  );
+};
 
 const EtoDashboard = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayout),
@@ -445,7 +454,7 @@ const EtoDashboard = compose<React.FunctionComponent>(
       }
     },
   }),
-  withContainer(LayoutNew),
+  withContainer(Layout),
 )(EtoDashboardComponent);
 
 export { EtoDashboard, EtoDashboardComponent, EtoDashboardStateViewComponent };

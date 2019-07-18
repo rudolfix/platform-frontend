@@ -1043,6 +1043,7 @@
   "shared-component.eto-overview.status-listed": "Whitelist",
   "shared-component.eto-overview.status-of-eto": "Status",
   "shared-component.eto-overview.status-on-chain": "On chain",
+  "shared-component.eto-overview.status-pending": "In Review",
   "shared-component.eto-overview.status-prospectus-approved": "Whitelist",
   "shared-component.eto-overview.success": "ETO was successful",
   "shared-component.eto-overview.success.summary": "An equivalent of {totalAmount} has been raised by {totalInvestors} investors",

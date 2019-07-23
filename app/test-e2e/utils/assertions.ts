@@ -11,6 +11,11 @@ export const assertEtoDashboard = () => {
   cy.url().should("contain", appRoutes.dashboard);
 };
 
+export const assertNomineeDashboard = () => {
+  cy.get(tid("nominee-dashboard")).should("exist");
+  cy.url().should("contain", appRoutes.dashboard);
+};
+
 export const assertEtoDocuments = () => {
   cy.get(tid("eto-documents")).should("exist");
   cy.url().should("contain", appRoutes.documents);
@@ -160,6 +165,11 @@ export const assertUserInLightWalletLoginPage = () => {
 
 export const assertUserInLightWalletRegisterPage = () => {
   cy.get(tid("modals.wallet-selector.register-restore-light-wallet.title"));
+};
+
+export const assertUserInRecoveryPage = () => {
+  cy.get(tid("recover-layout"));
+  cy.url().should("contain", appRoutes.restore);
 };
 
 export const assertUserInBrowserWalletLoginPage = () => {

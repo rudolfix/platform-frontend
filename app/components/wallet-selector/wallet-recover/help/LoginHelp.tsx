@@ -2,9 +2,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { compose } from "recompose";
+import { compose, withProps } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
+import { TDataTestId } from "../../../../types";
 import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { ButtonLink } from "../../../shared/buttons";
 import { ExternalLink } from "../../../shared/links";
@@ -73,4 +74,8 @@ export const LoginHelpLayout: React.FunctionComponent<{}> = () => (
   </>
 );
 
-export const LoginHelp = compose(withContainer(WalletSelectorContainer))(LoginHelpLayout);
+export const LoginHelp = compose(
+  withContainer(
+    withProps<TDataTestId, {}>({ "data-test-id": "recover-layout" })(WalletSelectorContainer),
+  ),
+)(LoginHelpLayout);

@@ -14,6 +14,7 @@ import {
 } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { ELogoutReason } from "../../modules/auth/types";
 import { ENotificationText, ENotificationType } from "../../modules/notifications/reducer";
@@ -71,6 +72,24 @@ type TLocalStateHandlersProps = {
   hideLogoutReason: StateHandler<TLocalStateProps>;
 };
 
+interface ISelectTitleProps {
+  isLoginRoute: boolean;
+  walletSelectionDisabled: boolean;
+}
+
+const SelectTitle: React.FunctionComponent<ISelectTitleProps> = ({
+  isLoginRoute,
+  walletSelectionDisabled,
+}) => {
+  if (walletSelectionDisabled) {
+    return <FormattedMessage id="wallet-selector.tabs.register.title.no-wallet-selection" />;
+  } else if (isLoginRoute) {
+    return <FormattedMessage id="wallet-selector.tabs.login.title" />;
+  } else {
+    return <FormattedMessage id="wallet-selector.tabs.register.title" />;
+  }
+};
+
 export const WalletSelectorLayout: React.FunctionComponent<
   IStateProps &
     IDispatchProps &
@@ -89,8 +108,9 @@ export const WalletSelectorLayout: React.FunctionComponent<
   hideLogoutReason,
   location,
 }) => {
-  const isIssuerWithOnlyLedgerAllowed =
-    userType === "issuer" && process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET !== "1";
+  const walletSelectionDisabled =
+    userType === EUserType.NOMINEE ||
+    (userType === EUserType.ISSUER && process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET !== "1");
 
   return (
     <WalletSelectorContainer data-test-id="register-layout">
@@ -106,16 +126,13 @@ export const WalletSelectorLayout: React.FunctionComponent<
       <Row>
         <Col tag="section" md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
           <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>
-            {isIssuerWithOnlyLedgerAllowed ? (
-              <FormattedMessage id="wallet-selector.tabs.register.title.issuer-only-ledger" />
-            ) : isLoginRoute ? (
-              <FormattedMessage id="wallet-selector.tabs.login.title" />
-            ) : (
-              <FormattedMessage id="wallet-selector.tabs.register.title" />
-            )}
+            <SelectTitle
+              walletSelectionDisabled={walletSelectionDisabled}
+              isLoginRoute={isLoginRoute}
+            />
           </h1>
 
-          {!isIssuerWithOnlyLedgerAllowed && (
+          {!walletSelectionDisabled && (
             <div className={styles.walletChooserButtons}>
               <div className="m-2">
                 <ButtonLink data-test-id="wallet-selector-light" to={`${rootPath}/light`}>
@@ -149,7 +166,7 @@ export const WalletSelectorLayout: React.FunctionComponent<
             </div>
           )}
 
-          {userType === "investor" && (
+          {userType === EUserType.INVESTOR && (
             <p className="text-center mt-4">
               <FormattedMessage
                 id="wallet-selector.tabs.icbm-help-text"
@@ -238,8 +255,8 @@ export const WalletSelector = compose<
     }),
   }),
   withContainer(
-    withProps<{ hideHeaderCtaButtons?: boolean }, ILayoutProps>(props => ({
-      hideHeaderCtaButtons: props.isSecretProtected,
+    withProps<{ hideHeaderCtaButtons?: boolean }, ILayoutProps>(() => ({
+      hideHeaderCtaButtons: true,
     }))(Layout),
   ),
   branch<IStateProps & IDispatchProps>(

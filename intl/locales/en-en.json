@@ -575,6 +575,7 @@
   "form.field.error.percentage.min": "Value cannot be less than {min}%",
   "form.field.error.required": "This field is required",
   "form.field.error.restricted-country": "Unfortunately we do not accept investors or companies with residency in your country due to regulatory restrictions",
+  "form.field.error.set-to-true": "This field must be set to true",
   "form.field.error.string.email": "Please enter a valid email",
   "form.field.error.string.length": "Please enter exactly {length} characters",
   "form.field.error.string.lowercase": "Please enter a lowercase sequence of characters",

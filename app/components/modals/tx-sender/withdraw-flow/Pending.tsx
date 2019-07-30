@@ -8,8 +8,6 @@ import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { RequiredByKeys } from "../../../../types";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { EtherscanTxLink } from "../../../shared/links/EtherscanLink";
-import { DataRow } from "../shared/DataRow";
 import { ETxStatus } from "../types";
 import { WithdrawTransactionDetails } from "./WithdrawTransactionDetails";
 
@@ -17,6 +15,8 @@ import * as styles from "./Withdraw.module.scss";
 
 interface IExternalProps {
   txHash: string;
+  blockId?: number;
+  txTimestamp?: number;
 }
 
 interface IStateProps {
@@ -28,6 +28,8 @@ type TComponentProps = RequiredByKeys<IStateProps, "additionalData"> & IExternal
 export const WithdrawPendingComponent: React.FunctionComponent<TComponentProps> = ({
   additionalData,
   txHash,
+  blockId,
+  txTimestamp,
 }) => (
   <section className={styles.contentWrapper} data-test-id="modals.shared.tx-pending.modal">
     <Heading
@@ -40,16 +42,12 @@ export const WithdrawPendingComponent: React.FunctionComponent<TComponentProps> 
       <FormattedMessage id="withdraw-flow.summary" />
     </Heading>
 
-    <WithdrawTransactionDetails additionalData={additionalData} status={ETxStatus.PENDING} />
-
-    <DataRow
-      className="mb-4"
-      caption={<FormattedMessage id="tx-monitor.details.hash-label" />}
-      value={
-        <EtherscanTxLink txHash={txHash} className={styles.txHash}>
-          {txHash}
-        </EtherscanTxLink>
-      }
+    <WithdrawTransactionDetails
+      additionalData={additionalData}
+      status={ETxStatus.PENDING}
+      txHash={txHash}
+      blockId={blockId}
+      txTimestamp={txTimestamp}
     />
   </section>
 );

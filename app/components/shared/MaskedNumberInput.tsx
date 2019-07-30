@@ -36,6 +36,7 @@ interface IProps {
   disabled?: boolean;
   className?: string;
   theme?: EInputTheme;
+  icon?: string;
 }
 
 export class MaskedNumberInput extends React.Component<IProps> {
@@ -153,6 +154,7 @@ export class MaskedNumberInput extends React.Component<IProps> {
         onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => this.onPaste(e)}
         disabled={this.props.disabled}
         theme={this.props.theme}
+        icon={this.props.icon}
       />
     );
   }

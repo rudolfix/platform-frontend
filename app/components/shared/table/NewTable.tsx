@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps, TDataTestId, TTranslatedString } from "../../../types";
-import { Panel } from "../Panel";
+import { useButtonRole } from "../hooks/useButtonRole";
 
 import * as styles from "./NewTable.module.scss";
 
@@ -11,6 +11,11 @@ enum ENewTableCellLayout {
   TOP = "top",
   MIDDLE = "middle",
   BOTTOM = "bottom",
+}
+
+enum ENewTableTheme {
+  COMPACT = styles.compactTheme,
+  NORMAL = styles.normalTheme,
 }
 
 interface INewTableTitle {
@@ -26,6 +31,7 @@ interface INewTableHeader {
 interface INewTableRow {
   children: React.ReactNode[];
   cellLayout?: ENewTableCellLayout;
+  onClick?: (event: React.KeyboardEvent<unknown> | React.MouseEvent<unknown>) => void;
 }
 
 interface IPlaceholderTableRow {
@@ -43,6 +49,7 @@ interface INewTable {
   placeholder?: TTranslatedString;
   className?: string;
   keepRhythm?: boolean;
+  theme?: ENewTableTheme;
 }
 
 type TProps = INewTable & INewTableHeader;
@@ -52,15 +59,24 @@ const NewTableRow: React.FunctionComponent<INewTableRow & TDataTestId & CommonHt
   ["data-test-id"]: dataTestId,
   cellLayout,
   className,
-}) => (
-  <tr className={cn(styles.row, className)} data-test-id={dataTestId}>
-    {React.Children.toArray(children).map((child, index) => (
-      <td className={cn(styles.cell, cellLayout)} key={index}>
-        {child}
-      </td>
-    ))}
-  </tr>
-);
+  onClick,
+}) => {
+  const buttonRoleProps = useButtonRole(onClick);
+
+  return (
+    <tr
+      className={cn(styles.row, { [styles.rowClickable]: !!onClick }, className)}
+      data-test-id={dataTestId}
+      {...buttonRoleProps}
+    >
+      {React.Children.toArray(children).map((child, index) => (
+        <td className={cn(styles.cell, cellLayout)} key={index}>
+          {child}
+        </td>
+      ))}
+    </tr>
+  );
+};
 
 const PlaceholderTableRow: React.FunctionComponent<IPlaceholderTableRow> = ({
   children,
@@ -73,52 +89,60 @@ const PlaceholderTableRow: React.FunctionComponent<IPlaceholderTableRow> = ({
   </tr>
 );
 
-const Table: React.FunctionComponent<TProps> = ({
+const TableLayout: React.FunctionComponent<TProps> = ({
   titles,
   children,
   className,
   placeholder,
   keepRhythm,
   titlesVisuallyHidden,
+  theme = ENewTableTheme.COMPACT,
   ...props
 }) => {
   // We have to filter empty nodes in case of any conditional rendering inside table
   const isEmpty = React.Children.toArray(children).filter(React.isValidElement).length === 0;
 
   return (
-    <div className={cn(styles.tableWrapper, className, { "keep-rhythm": keepRhythm })}>
-      <table className={styles.table} {...props}>
-        <thead className={cn(styles.header, { "sr-only": titlesVisuallyHidden })}>
-          <tr className={styles.headerRow}>
-            {titles.map((value, index) =>
-              value && typeof value === "object" && "width" in value ? (
-                <th className={styles.cell} key={index} style={{ width: value.width }}>
-                  {value.title}
-                </th>
-              ) : (
-                <th className={styles.cell} key={index}>
-                  {value}
-                </th>
-              ),
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {isEmpty ? (
-            <PlaceholderTableRow numberOfCells={titles.length}>{placeholder}</PlaceholderTableRow>
-          ) : (
-            children
+    <table
+      className={cn(styles.table, theme, className, { [styles.tableKeepRhythm]: keepRhythm })}
+      {...props}
+    >
+      <thead className={cn(styles.header, { "sr-only": titlesVisuallyHidden })}>
+        <tr className={styles.headerRow}>
+          {titles.map((value, index) =>
+            value && typeof value === "object" && "width" in value ? (
+              <th className={styles.cell} key={index} style={{ width: value.width }}>
+                {value.title}
+              </th>
+            ) : (
+              <th className={styles.cell} key={index}>
+                {value}
+              </th>
+            ),
           )}
-        </tbody>
-      </table>
-    </div>
+        </tr>
+      </thead>
+      <tbody>
+        {isEmpty ? (
+          <PlaceholderTableRow numberOfCells={titles.length}>{placeholder}</PlaceholderTableRow>
+        ) : (
+          children
+        )}
+      </tbody>
+    </table>
   );
 };
 
-const NewTable: React.FunctionComponent<TProps> = props => (
-  <Panel narrow={true} className={styles.panel}>
-    <Table {...props} />
-  </Panel>
+const Table: React.FunctionComponent<TProps> = props => (
+  <div className={styles.wrapper}>
+    <TableLayout {...props} />
+  </div>
 );
 
-export { NewTable, NewTableRow, Table, ENewTableCellLayout };
+const NewTable: React.FunctionComponent<TProps> = props => (
+  <div className={styles.panel}>
+    <Table {...props} />
+  </div>
+);
+
+export { NewTable, NewTableRow, Table, ENewTableCellLayout, ENewTableTheme };

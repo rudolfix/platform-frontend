@@ -13,6 +13,8 @@ export const EMPTY_DATA = "";
 
 export const ETH_ADDRESS_SIZE = 42;
 
+export const MINIMUM_ETH_RESERVE_GAS_UNITS = 1000000;
+
 export const calculateGasPriceWithOverhead = (gasPrice: TBigNumberVariant) =>
   new BigNumber(multiplyBigNumbers([gasPrice, GAS_PRICE_MULTIPLIER])).ceil().toString();
 

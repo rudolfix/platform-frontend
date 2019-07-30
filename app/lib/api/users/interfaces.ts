@@ -3,13 +3,14 @@ import * as Yup from "yup";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../modules/tx/types";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
-import * as YupTS from "../../yup-ts";
+import * as YupTS from "../../yup-ts.unsafe";
 
 export const OOO_TRANSACTION_TYPE = "mempool";
 
 export enum EUserType {
   INVESTOR = "investor",
   ISSUER = "issuer",
+  NOMINEE = "nominee",
 }
 
 export interface IUser {
@@ -50,7 +51,7 @@ export const UserValidator = Yup.object()
     language: Yup.string(),
     unverifiedEmail: Yup.string(),
     verifiedEmail: Yup.string(),
-    type: Yup.string().oneOf(["investor", "issuer"]),
+    type: Yup.string().oneOf(["investor", "issuer", "nominee"]),
     walletType: Yup.string().oneOf(Object.keys(EWalletType).map(type => type.toLowerCase())),
     walletSubtype: Yup.string().oneOf(Object.keys(EWalletSubType).map(type => type.toLowerCase())),
   })

@@ -21,6 +21,7 @@ import {
   assertEtoDashboard,
   assertUserInLanding,
   assertWaitForExternalPendingTransactionCount,
+  getLatestEmailByUser,
 } from "./assertions";
 import { goToWallet } from "./navigation";
 import { tid } from "./selectors";
@@ -64,6 +65,17 @@ export const registerWithLightWalletETO = (
   if (acceptTos) acceptTOS();
 };
 
+export const registerWithLightWalletNominee = (
+  email: string,
+  password: string,
+  acceptTos: boolean = true,
+) => {
+  cy.visit("nominee/register");
+
+  typeEmailPassword(email, password);
+  if (acceptTos) acceptTOS();
+};
+
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {
   for (let batch = 0; batch < words.length / 4; batch++) {
     for (let index = 0; index < 4; index++) {
@@ -100,45 +112,30 @@ export const getLatestVerifyUserEmailLink = (
   attempts = 3,
 ): Cypress.Chainable<string> =>
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-    const latestEmailByUser = r.body.find(
-      (body: { personalizations: { to: { email: string }[] }[] }) =>
-        body.personalizations[0].to[0].email.toLowerCase() === email.toLowerCase(),
-    );
+    const latestEmailByUser = getLatestEmailByUser(r, email);
+
     const activationLink = get(
       latestEmailByUser,
-      "personalizations[0].substitutions.-activationLink-",
+      "personalizations[0].dynamic_template_data.activation_link",
     );
-    if (!activationLink) {
-      expect(attempts).to.be.gt(0);
-      cy.wait(1000);
-      return getLatestVerifyUserEmailLink(email, attempts - 1);
-    } else {
-      // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
+
+    if (activationLink) {
+      // we need to replace the loginlink pointing to a remote destination
+      // with one pointing to our local instance
       return activationLink.replace("platform.neufund.io", "localhost:9090");
+    } else {
+      expect(attempts, `Failed to find activation link for email ${email}`).to.be.gt(0);
+
+      cy.wait(1000);
+
+      return getLatestVerifyUserEmailLink(email, attempts - 1);
     }
   });
 
-export const verifyLatestUserEmail = (email: string, attempts = 3) => {
-  cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-    const latestEmailByUser = r.body.find(
-      (body: { personalizations: { to: { email: string }[] }[] }) =>
-        body.personalizations[0].to[0].email.toLowerCase() === email.toLowerCase(),
-    );
-    const activationLink = get(
-      latestEmailByUser,
-      "personalizations[0].substitutions.-activationLink-",
-    );
-
-    if (!activationLink) {
-      expect(attempts).to.be.gt(0);
-      cy.wait(1000);
-      verifyLatestUserEmail(email, attempts - 1);
-    } else {
-      // we need to replace the loginlink pointing to a remote destination with one pointing to our local instance
-      const cleanedActivationLink = activationLink.replace("platform.neufund.io", "localhost:9090");
-      cy.visit(cleanedActivationLink);
-      cy.get(tid("email-verified")); // wait for the email verified button to show
-    }
+export const verifyLatestUserEmail = (email: string) => {
+  getLatestVerifyUserEmailLink(email).then(activationLink => {
+    cy.visit(activationLink);
+    cy.get(tid("email-verified")); // wait for the email verified button to show
   });
 };
 
@@ -147,7 +144,7 @@ export const registerWithLightWallet = (
   password: string,
   asIssuer: boolean = false,
 ) => {
-  cy.visit(asIssuer ? appRoutes.registerEto : appRoutes.register);
+  cy.visit(asIssuer ? appRoutes.registerIssuer : appRoutes.register);
 
   cy.get(tid("wallet-selector-light")).awaitedClick();
   cy.get(tid("wallet-selector-register-email")).type(email);
@@ -200,8 +197,6 @@ export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
   cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
-
-  assertDashboard();
 };
 
 export const acceptWallet = () => {

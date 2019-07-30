@@ -32,6 +32,16 @@
     }
   }
 
+  &.black-thin {
+    .top {
+      color: $neu-charcoal-grey;
+    }
+
+    .bottom {
+      color: $neu-shuttle-gray;
+    }
+  }
+
   &.silver {
     .top {
       color: $neu-slate-grey;

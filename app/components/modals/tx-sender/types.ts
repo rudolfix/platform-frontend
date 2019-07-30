@@ -17,8 +17,7 @@ export type TransactionDetailsComponent<T extends ETxSenderType> = React.Compone
 >;
 
 export enum ETxStatus {
-  AWAITING_CONFIRMATION = "awaiting_confirmation",
   PENDING = "pending",
-  COMPLETE = "complete",
+  SUCCESS = "success",
   ERROR = "error",
 }

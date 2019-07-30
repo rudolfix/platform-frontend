@@ -88,7 +88,7 @@ function* txControllerSaga(controlledEffect: Iterator<Effect>): any {
   const gasPrice: IGasState = yield select(selectGasPrice);
 
   if (!gasPrice) {
-    yield take("GAS_API_LOADED");
+    yield take(actions.gas.gasApiLoaded);
   }
 
   const { cancel } = yield race({
@@ -214,6 +214,9 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
 
     return txHash;
   } catch (error) {
+    // Set timestamp for failed transaction
+    yield put(actions.txSender.setTimestamp(Date.now()));
+
     if (
       error instanceof LedgerError ||
       error instanceof LightError ||

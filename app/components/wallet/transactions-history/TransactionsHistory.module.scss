@@ -1,6 +1,13 @@
-.amount {
-  @include font-headline-medium;
+@import "../../shared/Panel.module";
 
+.wrapper {
+  @include remove-panel-padding;
+
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.amount {
   &--in {
     font-weight: bold;
   }

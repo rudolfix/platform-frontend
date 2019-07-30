@@ -165,6 +165,11 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
           ...action.payload.additionalData,
         },
       };
+    case actions.txSender.setTimestamp.getType():
+      return {
+        ...state,
+        txTimestamp: action.payload.txTimestamp,
+      };
   }
 
   return state;

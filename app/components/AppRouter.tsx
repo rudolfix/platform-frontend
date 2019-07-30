@@ -18,6 +18,7 @@ import { RedirectEtoPublicView } from "./eto/shared/routing/RedirectToEtoLink";
 import { Kyc } from "./kyc/Kyc";
 import { Landing } from "./landing/Landing";
 import { LandingEto } from "./landing/LandingEto";
+import { NomineeDashboard } from "./nominee-dashboard/NomineeDashboard";
 import { Portfolio } from "./portfolio/Portfolio";
 import { BackupSeed } from "./settings/backup-seed/BackupSeed";
 import { EmailVerify } from "./settings/EmailVerify";
@@ -87,19 +88,36 @@ export const AppRouter: React.FunctionComponent = () => (
         component={LandingEto}
       />,
       <OnlyPublicRoute
-        key={appRoutes.registerEto}
-        path={appRoutes.registerEto}
+        key={appRoutes.registerIssuer}
+        path={appRoutes.registerIssuer}
         component={EtoSecretProtectedWalletSelector}
       />,
       <OnlyPublicRoute
-        key={appRoutes.loginEto}
-        path={appRoutes.loginEto}
-        component={EtoSecretProtectedWalletSelector}
+        key={appRoutes.loginIssuer}
+        path={appRoutes.loginIssuer}
+        component={() => <Redirect to={appRoutes.login} />}
       />,
       <OnlyPublicRoute
-        key={appRoutes.restoreEto}
-        path={appRoutes.restoreEto}
-        component={WalletRecoverMain}
+        key={appRoutes.restoreIssuer}
+        path={appRoutes.restoreIssuer}
+        component={() => <Redirect to={appRoutes.restore} />}
+      />,
+    ]}
+    {process.env.NF_NOMINEE_ENABLED === "1" && [
+      <OnlyPublicRoute
+        key={appRoutes.registerNominee}
+        path={appRoutes.registerNominee}
+        component={WalletSelector}
+      />,
+      <OnlyPublicRoute
+        key={appRoutes.loginNominee}
+        path={appRoutes.loginNominee}
+        component={() => <Redirect to={appRoutes.login} />}
+      />,
+      <OnlyPublicRoute
+        key={appRoutes.restoreNominee}
+        path={appRoutes.restoreNominee}
+        component={() => <Redirect to={appRoutes.restore} />}
       />,
     ]}
 
@@ -123,31 +141,41 @@ export const AppRouter: React.FunctionComponent = () => (
       path={appRoutes.wallet}
       investorComponent={Wallet}
       issuerComponent={Wallet}
+      nomineeComponent={Wallet}
     />
     <OnlyAuthorizedRoute
       path={appRoutes.dashboard}
       investorComponent={Dashboard}
       issuerComponent={EtoDashboard}
+      nomineeComponent={NomineeDashboard}
       exact
     />
     <OnlyAuthorizedRoute
       path={appRoutes.verify}
       investorComponent={EmailVerify}
       issuerComponent={EmailVerify}
+      nomineeComponent={EmailVerify}
     />
     <OnlyAuthorizedRoute
       path={appRoutes.profile}
       investorComponent={Settings}
       issuerComponent={Settings}
+      nomineeComponent={Settings}
       exact
     />
     <OnlyAuthorizedRoute
       path={profileRoutes.seedBackup}
       investorComponent={BackupSeed}
       issuerComponent={BackupSeed}
+      nomineeComponent={BackupSeed}
       exact
     />
-    <OnlyAuthorizedRoute path={appRoutes.kyc} investorComponent={Kyc} issuerComponent={Kyc} />
+    <OnlyAuthorizedRoute
+      path={appRoutes.kyc}
+      investorComponent={Kyc}
+      issuerComponent={Kyc}
+      nomineeComponent={Kyc}
+    />
 
     {/*Routes used only in E2E tests*/}
     {!!process.env.IS_CYPRESS && [

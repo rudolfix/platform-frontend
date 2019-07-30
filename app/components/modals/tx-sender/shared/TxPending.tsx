@@ -73,7 +73,13 @@ const TxDefaultPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = p
 const TxPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props => {
   switch (props.type) {
     case ETxSenderType.WITHDRAW:
-      return <WithdrawPending txHash={props.txHash!} />;
+      return (
+        <WithdrawPending
+          txHash={props.txHash!}
+          blockId={props.blockId}
+          txTimestamp={props.txTimestamp}
+        />
+      );
     default:
       return <TxDefaultPendingLayout {...props} />;
   }

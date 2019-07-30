@@ -7,7 +7,6 @@ import {
   getContext,
   race,
   spawn,
-  StringableActionCreator,
   take,
   takeEvery,
   takeLatest,
@@ -15,12 +14,12 @@ import {
 } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../di/setupBindings";
-import { TAction, TActionPayload, TActionType } from "./actions";
+import { TSingleOrArray } from "../types";
+import { TActionPayload, TPattern } from "./actions";
 
 type TSagaWithDeps = (deps: TGlobalDependencies, ...args: any[]) => any;
 
-type TSingleOrArray<T> = T | T[];
-type TType = TSingleOrArray<TActionType> | TSingleOrArray<StringableActionCreator<TAction>>;
+type TType = TSingleOrArray<TPattern>;
 
 export function* neuTakeLatest(type: TType, saga: TSagaWithDeps): Iterator<Effect> {
   const deps: TGlobalDependencies = yield getContext("deps");
@@ -65,7 +64,7 @@ export function* neuTakeUntil(startAction: TType, stopAction: TType, saga: TSaga
  *  Awaits an Action with specific payload.
  *  You can pass only a part of the payload that you want to match.
  */
-export function* neuTakeOnly<T extends TActionType>(
+export function* neuTakeOnly<T extends TPattern>(
   type: T,
   payload: Partial<TActionPayload<T>>,
 ): any {

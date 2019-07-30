@@ -7,13 +7,20 @@ interface IEtherscanTxLink {
   txHash: string;
 }
 
+const trimEthereumHash = (hash: string) => `${hash.slice(0, 10)}...${hash.slice(-4)}`;
+
 const EtherscanTxLink: React.FunctionComponent<IEtherscanTxLink & CommonHtmlProps> = ({
   txHash,
   children,
   ...props
 }) => (
-  <ExternalLink href={`https://etherscan.io/tx/${txHash}`} {...props}>
-    {children || `etherscan.io`}
+  <ExternalLink
+    data-test-id={`etherscan-link.${txHash}`}
+    data-test-hash={txHash}
+    href={`https://etherscan.io/tx/${txHash}`}
+    {...props}
+  >
+    {children || trimEthereumHash(txHash)}
   </ExternalLink>
 );
 
@@ -27,7 +34,7 @@ const EtherscanAddressLink: React.FunctionComponent<IEtherscanAddressLink & Comm
   ...props
 }) => (
   <ExternalLink href={`https://etherscan.io/address/${address}`} {...props}>
-    {children || `etherscan.io`}
+    {children || trimEthereumHash(address)}
   </ExternalLink>
 );
 

@@ -11,7 +11,6 @@ import { RequiredByKeys } from "../../../../types";
 import { Button } from "../../../shared/buttons";
 import { ButtonArrowLeft, ButtonWidth } from "../../../shared/buttons/Button";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { ETxStatus } from "../types";
 import { WithdrawTransactionDetails } from "./WithdrawTransactionDetails";
 
 import * as styles from "./Withdraw.module.scss";
@@ -40,7 +39,7 @@ export const WithdrawSummaryComponent: React.FunctionComponent<TComponentProps> 
       decorator={false}
       disableTransform={true}
     >
-      <FormattedMessage id="withdraw-flow.summary" />
+      <FormattedMessage id="withdraw-flow.confirm" />
     </Heading>
 
     <ButtonArrowLeft
@@ -51,15 +50,11 @@ export const WithdrawSummaryComponent: React.FunctionComponent<TComponentProps> 
       <FormattedMessage id="modal.sent-eth.change" />
     </ButtonArrowLeft>
 
-    <WithdrawTransactionDetails
-      additionalData={additionalData}
-      className={styles.withSpacing}
-      status={ETxStatus.AWAITING_CONFIRMATION}
-    />
+    <WithdrawTransactionDetails additionalData={additionalData} className={styles.withSpacing} />
 
     <section className="text-center">
       <Button onClick={onAccept} data-test-id="modals.tx-sender.withdraw-flow.summary.accept">
-        <FormattedMessage id="withdraw-flow.confirm" />
+        <FormattedMessage id="withdraw-flow.confirm-button" />
       </Button>
     </section>
   </section>

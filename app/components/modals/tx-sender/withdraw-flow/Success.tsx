@@ -1,5 +1,4 @@
 import * as React from "react";
-import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose } from "recompose";
 
@@ -9,8 +8,6 @@ import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { RequiredByKeys } from "../../../../types";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { EtherscanTxLink } from "../../../shared/links/EtherscanLink";
-import { DataRow } from "../shared/DataRow";
 import { ETxStatus } from "../types";
 import { WithdrawTransactionDetails } from "./WithdrawTransactionDetails";
 
@@ -43,43 +40,11 @@ export const WithdrawSuccessLayout: React.FunctionComponent<TComponentProps> = (
       <FormattedMessage id="withdraw-flow.summary" />
     </Heading>
 
-    <WithdrawTransactionDetails additionalData={additionalData} status={ETxStatus.COMPLETE} />
-
-    <DataRow
-      className="mb-4"
-      caption={<FormattedMessage id="tx-monitor.details.hash-label" />}
-      value={
-        <EtherscanTxLink
-          txHash={txHash}
-          className={styles.txHash}
-          data-test-id="modals.tx-sender.withdraw-flow.tx-hash"
-        >
-          {txHash}
-        </EtherscanTxLink>
-      }
-    />
-
-    <DataRow
-      data-test-id="timestamp-row.timestamp"
-      className="mb-4"
-      caption={
-        <>
-          <FormattedMessage id="tx-monitor.details.timestamp" />
-          {": "}
-        </>
-      }
-      value={
-        <FormattedDate
-          value={txTimestamp}
-          timeZone="UTC"
-          timeZoneName="short"
-          year="numeric"
-          month="short"
-          day="numeric"
-          hour="numeric"
-          minute="numeric"
-        />
-      }
+    <WithdrawTransactionDetails
+      additionalData={additionalData}
+      status={ETxStatus.SUCCESS}
+      txHash={txHash}
+      txTimestamp={txTimestamp}
     />
   </section>
 );

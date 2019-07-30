@@ -8,5 +8,5 @@ export type TWithdrawAdditionalData = {
   amountEur: string;
   total: string;
   totalEur: string;
-  inputValue: string;
+  inputValue?: string;
 };

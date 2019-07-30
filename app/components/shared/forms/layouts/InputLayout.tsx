@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { Input, InputGroup, InputGroupAddon, InputProps } from "reactstrap";
+import { Input, InputGroup, InputGroupAddon, InputGroupText, InputProps } from "reactstrap";
 
 import { CommonHtmlProps, Omit, TDataTestId, TTranslatedString } from "../../../../types";
 import { FormFieldError, generateErrorId } from "../fields/FormFieldError";
@@ -30,6 +30,7 @@ interface IExternalProps {
   size?: EInputSize;
   suffix?: TTranslatedString;
   theme?: EInputTheme;
+  icon?: string;
 }
 
 type TProps = IExternalProps & CommonHtmlProps & TDataTestId & Omit<InputProps, IExternalProps>;
@@ -55,9 +56,10 @@ const InputLayout: React.FunctionComponent<TProps> = ({
   onBlur,
   ["data-test-id"]: dataTestId,
   theme,
+  icon,
   ...props
 }) => (
-  <>
+  <section>
     <InputGroup size={size}>
       {prefix && (
         <InputGroupAddon
@@ -93,9 +95,12 @@ const InputLayout: React.FunctionComponent<TProps> = ({
         data-test-id={dataTestId}
         {...props}
       />
-      {suffix && (
+      {(suffix || icon) && (
         <InputGroupAddon addonType="append" className={cn(styles.addon, { "is-invalid": invalid })}>
-          {suffix}
+          <InputGroupText>
+            {suffix}
+            {icon && <img className={styles.icon} src={icon} alt="" />}
+          </InputGroupText>
         </InputGroupAddon>
       )}
     </InputGroup>
@@ -106,9 +111,10 @@ const InputLayout: React.FunctionComponent<TProps> = ({
         name={name}
         defaultMessage={errorMsg}
         ignoreTouched={ignoreTouched}
+        alignLeft={true}
       />
     </div>
-  </>
+  </section>
 );
 
 InputLayout.defaultProps = {

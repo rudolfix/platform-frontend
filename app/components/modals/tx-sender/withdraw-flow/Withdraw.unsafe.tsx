@@ -6,7 +6,7 @@ import { compose, withHandlers } from "recompose";
 import { NumberSchema } from "yup";
 
 import { ITxData } from "../../../../lib/web3/types";
-import * as YupTS from "../../../../lib/yup-ts";
+import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import { EValidationState } from "../../../../modules/tx/sender/reducer";
 import {
@@ -55,8 +55,10 @@ import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { EtherscanAddressLink } from "../../../shared/links/EtherscanLink";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { ESize, ETextPosition, ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
-import { DataRow } from "../shared/DataRow";
+import { DataRow, DataRowSeparator } from "../shared/DataRow";
 
+import * as ethIcon from "../../../../assets/img/eth_icon.svg";
+import * as txSuccess from "../../../../assets/img/icon_txn_status_success.svg";
 import * as styles from "./Withdraw.module.scss";
 
 type TAdditionalData = IAdditionalValidationData &
@@ -110,9 +112,7 @@ const getWithdrawFormSchema = (maxEther: string) =>
     to: YupTS.string().enhance(v =>
       v.test(
         "isEthereumAddress",
-        (
-          <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.not-ethereum-address" />
-        ) as any,
+        <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.not-ethereum-address" />,
         (value: string | undefined) => {
           // allow empty values as they should be handled by required yup validation
           if (value === undefined) {
@@ -128,9 +128,7 @@ const getWithdrawFormSchema = (maxEther: string) =>
         .moreThan(0)
         .test(
           "isEnoughEther",
-          (
-            <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.value-higher-than-balance" />
-          ) as any,
+          <FormattedMessage id="modals.tx-sender.withdraw-flow.withdraw-component.errors.value-higher-than-balance" />,
           (value: string) => doesUserHaveEnoughEther(value, maxEther),
         ),
     ),
@@ -188,31 +186,53 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
         errors,
       }: FormikProps<IWithdrawData>) => (
         <Form>
-          <section className={styles.withSpacing}>
-            <FormLabel for="to" className={styles.label}>
-              <FormattedMessage id="modal.sent-eth.to-address" />
-            </FormLabel>
+          <DataRow
+            className={styles.noSpacing}
+            caption={
+              <FormLabel for="to" className={styles.label}>
+                <FormattedMessage id="modal.sent-eth.to-address" />
+              </FormLabel>
+            }
+            value={
+              !errors.to &&
+              values.to && (
+                <EtherscanAddressLink className={cn(styles.etherscanLink)} address={values.to}>
+                  <FormattedMessage id="modal.sent-eth.view-on-etherscan" />
+                </EtherscanAddressLink>
+              )
+            }
+          />
+
+          <section>
             <FormInput
               name="to"
               data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.to-address"
               maxLength={ETH_ADDRESS_SIZE}
               charactersLimit={ETH_ADDRESS_SIZE}
+              icon={errors.to || !values.to ? undefined : txSuccess}
               theme={EInputTheme.BOX}
             />
-            {!errors.to && values.to && (
-              <EtherscanAddressLink className={cn(styles.etherscanLink)} address={values.to}>
-                <FormattedMessage id="modal.sent-eth.view-on-etherscan" />
-              </EtherscanAddressLink>
-            )}
           </section>
 
           {additionalData &&
             hasWarning(
-              EAdditionalValidationDataWarning.IS_NEW_ADDRESS,
+              EAdditionalValidationDataWarning.IS_VERIFIED_PLATFORM_USER,
               additionalData.warnings,
-            ) && (
+            ) &&
+            !errors.to && (
+              <div
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.verified-user"
+                className={cn(styles.compensateSpacing, styles.verifiedUser)}
+              >
+                <FormattedMessage id="modal.sent-eth.verified-platform-user" />
+              </div>
+            )}
+
+          {additionalData &&
+            hasWarning(EAdditionalValidationDataWarning.IS_NEW_ADDRESS, additionalData.warnings) &&
+            !errors.to && (
               <FormFieldBoolean
-                className={styles.withSpacing}
+                className={styles.withTopSpacing}
                 data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.new-address"
                 name="allowNewAddress"
                 label={<FormattedMessage id="modal.sent-eth.new-address" />}
@@ -221,11 +241,26 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
 
           {additionalData &&
             hasWarning(
+              EAdditionalValidationDataWarning.IS_NEW_ADDRESS_WITH_BALANCE,
+              additionalData.warnings,
+            ) &&
+            !errors.to && (
+              <FormFieldBoolean
+                className={styles.withTopSpacing}
+                data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.new-address-with-balance"
+                name="allowNewAddress"
+                label={<FormattedMessage id="modal.sent-eth.new-address-with-balance" />}
+              />
+            )}
+
+          {additionalData &&
+            hasWarning(
               EAdditionalValidationDataWarning.IS_SMART_CONTRACT,
               additionalData.warnings,
-            ) && (
+            ) &&
+            !errors.to && (
               <FormFieldBoolean
-                className={styles.withSpacing}
+                className={styles.withTopSpacing}
                 data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.smart-contract"
                 name="allowSmartContract"
                 label={<FormattedMessage id="modal.sent-eth.smart-contract-address" />}
@@ -233,9 +268,11 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
             )}
 
           <DataRow
+            className={cn(styles.noSpacing, styles.withTopSpacing)}
             caption={<FormattedMessage id="modal.sent-eth.available-balance" />}
             value={
               <MoneyNew
+                data-test-id="modals.tx-sender.withdraw-flow.summary.balance"
                 className={styles.money}
                 value={ethAmount}
                 inputFormat={ENumberInputFormat.ULPS}
@@ -294,10 +331,15 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
               returnInvalidValues={true}
               showUnits={true}
               theme={EInputTheme.BOX}
+              icon={ethIcon}
             />
           </section>
 
-          <section className={cn(styles.withSpacing, "text-right")}>
+          <section
+            className={cn(styles.withSpacing, "text-right", {
+              [styles.compensateSpacing]: errors.value && values.value,
+            })}
+          >
             <small>
               {"= "}
               <MoneyNew
@@ -346,11 +388,12 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
                 size={ESize.MEDIUM}
                 textPosition={ETextPosition.RIGHT}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
+                icon={ethIcon}
               />
             }
           />
 
-          <hr className={styles.separator} />
+          <DataRowSeparator />
 
           <DataRow
             className={cn(styles.sectionBig, styles.withSpacing)}
@@ -365,11 +408,12 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
                 }
                 value={isValid ? totalEur : "0"}
                 currencyTotal={ECurrency.EUR}
-                data-test-id="modals.tx-sender.withdraw-flow.summary.cost"
+                data-test-id="modals.tx-sender.withdraw-flow.summary.total"
                 theme={ETheme.BLACK}
                 size={ESize.HUGE}
                 textPosition={ETextPosition.RIGHT}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
+                icon={ethIcon}
               />
             }
           />
@@ -412,7 +456,7 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
               }
               data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"
             >
-              {isValidating || !validationState ? (
+              {isValidating || (!validationState && additionalData) ? (
                 <FormattedMessage id="modal.sent-eth.button-loading" />
               ) : (
                 <FormattedMessage id="modal.sent-eth.button" />

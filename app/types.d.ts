@@ -11,6 +11,7 @@ export type Dictionary<T> = Record<string, T>;
 type Opaque<K, T> = T & { __TYPE__: K };
 
 export type EthereumNetworkId = Opaque<"EthereumNetworkId", string>;
+export type EthereumTxHash = Opaque<"EthereumTxHash", string>;
 export type EthereumAddress = Opaque<"EthereumAddress", string>;
 export type EthereumAddressWithChecksum = Opaque<"EthereumAddressWithChecksum", string>;
 export type FunctionWithDeps = Opaque<"FunctionWithDeps", Function>;
@@ -50,35 +51,6 @@ export type DeepWritable<T> = T extends Primitive | WhitelistedWritableTypes | F
 type DeepWritableObject<T> = { -readonly [P in keyof T]: DeepWritable<T[P]> };
 interface IWritableArray<T> extends Array<DeepWritable<T>> {}
 
-// Taken from @types/reactstrap
-// @see https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23700
-export type InputType =
-  | "text"
-  | "email"
-  | "select"
-  | "file"
-  | "radio"
-  | "checkbox"
-  | "textarea"
-  | "button"
-  | "reset"
-  | "submit"
-  | "date"
-  | "datetime-local"
-  | "hidden"
-  | "image"
-  | "month"
-  | "number"
-  | "range"
-  | "search"
-  | "tel"
-  | "url"
-  | "week"
-  | "password"
-  | "datetime"
-  | "time"
-  | "color";
-
 // we dont use AllHtmlAttributes because they include many more fields which can collide easily with components props (like data)
 export type CommonHtmlProps = {
   className?: string;
@@ -92,6 +64,11 @@ export type TDataTestId = {
 };
 
 export type ToastWithTestData = ToastOptions & TDataTestId;
+
+/**
+ * Allows either T or T[]
+ */
+export type TSingleOrArray<T> = T | T[];
 
 /**
  * From T, omit a set of properties whose keys are in the union K

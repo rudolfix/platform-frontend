@@ -16,8 +16,6 @@
 
 .etherscan-link {
   font-size: 12px;
-  margin-top: -22px;
-  float: right;
 }
 
 .money {
@@ -29,15 +27,33 @@
   }
 }
 
-.separator {
-  margin: 1.5rem 0;
-  border-color: $neu-gull-gray;
-}
-
 .tx-hash {
   font-size: 80%;
 }
 
+.with-top-spacing {
+  margin-top: 1.5rem;
+
+}
+
 .with-spacing {
   margin-bottom: 1.5rem;
+}
+
+.no-spacing {
+  margin-bottom: 0;
+}
+
+.compensate-spacing {
+  margin-top: px-to-rem(-22px);
+}
+
+.block {
+  color: $neu-shuttle-gray;
+  font-size: 80%;
+}
+
+.verified-user {
+  line-height: px-to-rem(24px);
+  font-size: px-to-rem(12px);
 }

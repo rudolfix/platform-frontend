@@ -1,6 +1,11 @@
 import { ITxData } from "../../../lib/web3/types";
 import { createAction, createActionFactory, createSimpleAction } from "../../actionsUtils";
-import { ETxSenderType, IAdditionalValidationData, TAdditionalDataByType } from "../types";
+import {
+  ETxSenderType,
+  IAdditionalValidationData,
+  TAdditionalDataByType,
+  TSpecificTransactionState,
+} from "../types";
 import { ETransactionErrorType, ITxSenderState } from "./reducer";
 
 export const txSenderActions = {
@@ -31,7 +36,10 @@ export const txSenderActions = {
   txSenderError: (error: ETransactionErrorType) => createAction("TX_SENDER_ERROR", { error }),
   // Flow Actions
   txSenderContinueToSummary: <T extends ETxSenderType>(additionalData: TAdditionalDataByType<T>) =>
-    createAction("TX_SENDER_CONTINUE_TO_SUMMARY_WITH_DATA", { additionalData }),
+    createAction<
+      "TX_SENDER_CONTINUE_TO_SUMMARY_WITH_DATA",
+      Pick<TSpecificTransactionState, "additionalData">
+    >("TX_SENDER_CONTINUE_TO_SUMMARY_WITH_DATA", { additionalData }),
 
   // reducer setters
   setTransactionData: (txData?: ITxData) =>
@@ -40,4 +48,7 @@ export const txSenderActions = {
     "TX_SENDER_SET_ADDITIONAL_DATA",
     (additionalData: IAdditionalValidationData) => ({ additionalData }),
   ),
+  setTimestamp: createActionFactory("TX_SENDER_SET_TIMESTAMP", (txTimestamp: number) => ({
+    txTimestamp,
+  })),
 };

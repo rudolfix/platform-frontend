@@ -16,8 +16,8 @@ import { ENumberOutputFormat } from "../../shared/formatters/utils";
 import { Heading } from "../../shared/Heading";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { Panel } from "../../shared/Panel";
-import { NewTableRow, Table } from "../../shared/table";
-import { ESize, TransactionData } from "../../shared/TransactionData";
+import { ENewTableTheme, NewTableRow, Table } from "../../shared/table";
+import { TransactionData } from "../../shared/TransactionData";
 import { TransactionName } from "./TransactionName";
 
 import * as styles from "./TransactionsHistory.module.scss";
@@ -25,54 +25,63 @@ import * as styles from "./TransactionsHistory.module.scss";
 type TStateProps = {
   transactionsHistoryPaginated: ReturnType<typeof selectTxHistoryPaginated>;
 };
+
 type TDispatchProps = {
   loadTxHistoryNext: () => void;
+  showTransactionDetails: (id: string) => void;
 };
 
 const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   transactionsHistoryPaginated,
   loadTxHistoryNext,
+  showTransactionDetails,
 }) => (
   <Panel>
     {transactionsHistoryPaginated.transactions && (
-      <Table
-        aria-describedby="transactions-history-heading"
-        titles={[
-          <FormattedMessage id="wallet.tx-list.transaction" />,
-          <FormattedMessage id="wallet.tx-list.amount" />,
-        ]}
-        titlesVisuallyHidden={true}
-        placeholder={<FormattedMessage id="wallet.tx-list.placeholder" />}
-      >
-        {transactionsHistoryPaginated.transactions.map(transaction => {
-          const isIncomeTransaction = transaction.transactionDirection === ETransactionDirection.IN;
+      <div className={styles.wrapper}>
+        <Table
+          aria-describedby="transactions-history-heading"
+          titles={[
+            <FormattedMessage id="wallet.tx-list.transaction" />,
+            <FormattedMessage id="wallet.tx-list.amount" />,
+          ]}
+          titlesVisuallyHidden={true}
+          placeholder={<FormattedMessage id="wallet.tx-list.placeholder" />}
+          theme={ENewTableTheme.NORMAL}
+        >
+          {transactionsHistoryPaginated.transactions.map(transaction => {
+            const isIncomeTransaction =
+              transaction.transactionDirection === ETransactionDirection.IN;
 
-          return (
-            <NewTableRow key={transaction.id}>
-              <TransactionData
-                top={<TransactionName transaction={transaction} />}
-                bottom={
-                  <FormattedDate
-                    value={transaction.date}
-                    year="numeric"
-                    month="long"
-                    day="2-digit"
-                  />
-                }
-                size={ESize.LARGE}
-              />
-              <MoneyNew
-                className={cn(styles.amount, { [styles.amountIn]: isIncomeTransaction })}
-                inputFormat={transaction.amountFormat}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                theme={isIncomeTransaction ? EThemeNew.GREEN : undefined}
-                value={transaction.amount}
-                valueType={transaction.currency}
-              />
-            </NewTableRow>
-          );
-        })}
-      </Table>
+            return (
+              <NewTableRow
+                key={transaction.id}
+                onClick={() => showTransactionDetails(transaction.id)}
+              >
+                <TransactionData
+                  top={<TransactionName transaction={transaction} />}
+                  bottom={
+                    <FormattedDate
+                      value={transaction.date}
+                      year="numeric"
+                      month="long"
+                      day="2-digit"
+                    />
+                  }
+                />
+                <MoneyNew
+                  className={cn(styles.amount, { [styles.amountIn]: isIncomeTransaction })}
+                  inputFormat={transaction.amountFormat}
+                  outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                  theme={isIncomeTransaction ? EThemeNew.GREEN : undefined}
+                  value={transaction.amount}
+                  valueType={transaction.currency}
+                />
+              </NewTableRow>
+            );
+          })}
+        </Table>
+      </div>
     )}
     {transactionsHistoryPaginated.canLoadMore && (
       <Button
@@ -103,6 +112,8 @@ const TransactionsList = compose<TStateProps & TDispatchProps, {}>(
     }),
     dispatchToProps: dispatch => ({
       loadTxHistoryNext: () => dispatch(actions.txHistory.loadNextTransactions()),
+      showTransactionDetails: (id: string) =>
+        dispatch(actions.txHistory.showTransactionDetails(id)),
     }),
   }),
   branch<TStateProps>(

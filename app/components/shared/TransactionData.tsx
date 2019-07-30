@@ -16,6 +16,7 @@ enum ESize {
 enum ETheme {
   BLACK = styles.black,
   SILVER = styles.silver,
+  BLACK_THIN = styles.blackThin,
 }
 
 type TExternalProps = {

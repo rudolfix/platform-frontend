@@ -1,4 +1,4 @@
-import { fillAndAssertFull } from "../eto-registration/EtoRegistrationUtils";
+import { createAndSetNominee, fillAndAssertFull } from "../eto-registration/EtoRegistrationUtils";
 import {
   aboutForm,
   equityTokenInfoForm,
@@ -96,6 +96,9 @@ describe("Eto Forms", () => {
   });
 
   it("will fill and submit voting rights", () => {
+    // Connect nominee with issuer
+    createAndSetNominee();
+
     fillAndAssertFull("eto-progress-widget-voting-right", votingRights);
   });
 });

@@ -1247,6 +1247,7 @@
   "wallet.name": "Wallet",
   "wallet.tx-list.amount": "Amount",
   "wallet.tx-list.heading": "Platform Transaction history",
+  "wallet.tx-list.load-more": "Load more",
   "wallet.tx-list.modal.common.from-address.caption": "From Address",
   "wallet.tx-list.modal.common.status.caption": "Status",
   "wallet.tx-list.modal.common.status.complete": "Complete",

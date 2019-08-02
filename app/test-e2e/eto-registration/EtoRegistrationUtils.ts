@@ -27,7 +27,7 @@ export const submitPreview = () => {
 };
 
 export const fillAndAssertFull = (section: string, sideEffect: TFormFixture | (() => void)) => {
-  cy.get(tid(section, "button")).click();
+  cy.get(`${tid(section)} button`).click();
 
   if (isFunction(sideEffect)) {
     sideEffect();
@@ -40,7 +40,7 @@ export const fillAndAssertFull = (section: string, sideEffect: TFormFixture | ((
 };
 
 export const fillAndAssert = (section: string, sectionForm: TFormFixture) => {
-  cy.get(tid(section, "button")).click();
+  cy.get(`${tid(section)} button`).click();
 
   fillForm(sectionForm);
 

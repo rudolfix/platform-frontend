@@ -28,7 +28,7 @@ const openAndCheckValues = (
   sectionForm: TFormFixture,
   expectedValues?: TFormFixtureExpectedValues,
 ) => {
-  cy.get(tid(section, "button")).click();
+  cy.get(`${tid(section)} button`).click();
   checkForm(sectionForm, expectedValues);
   goToEtoDashboard();
 };

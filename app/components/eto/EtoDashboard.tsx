@@ -8,7 +8,7 @@ import {
   EEtoState,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
+import { ERequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
 import {

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { ERequestStatus } from "../../lib/api/KycApi.interfaces";
+import { ERequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { DeepPartial } from "../../types";

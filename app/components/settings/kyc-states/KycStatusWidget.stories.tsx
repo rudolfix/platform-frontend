@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ERequestOutsourcedStatus, ERequestStatus } from "../../../lib/api/KycApi.interfaces";
+import { ERequestOutsourcedStatus, ERequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { KycStatusWidgetBase } from "./KycStatusWidget";
 

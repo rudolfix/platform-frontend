@@ -40,8 +40,6 @@ export const FormInput: React.FunctionComponent<TExternalProps & FormInputProps>
   customValidation,
   onBlur,
   ignoreTouched,
-  icon,
-  theme,
   maxLength,
   ...props
 }) => (
@@ -85,9 +83,7 @@ export const FormInput: React.FunctionComponent<TExternalProps & FormInputProps>
                     ),
                   );
                 }}
-                theme={theme}
                 invalid={invalid}
-                icon={icon}
                 {...props}
               />
             );

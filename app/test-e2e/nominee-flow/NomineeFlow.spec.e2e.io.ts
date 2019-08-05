@@ -1,10 +1,14 @@
+import { backupLightWalletSeedFromAccountSetupDashboard } from "../shared/backupLightWalletSeed";
 import {
   assertNomineeDashboard,
   generateRandomEmailAddress,
+  goThroughKycCorporateProcess,
   loginWithLightWallet,
   logoutViaAccountMenu,
   registerWithLightWalletNominee,
+  verifyLatestUserEmailAccountSetup,
 } from "../utils/index";
+import { tid } from "../utils/selectors";
 
 describe("Nominee flow", () => {
   const password = "strongpassword";
@@ -18,5 +22,17 @@ describe("Nominee flow", () => {
     logoutViaAccountMenu();
     loginWithLightWallet(email, password);
     assertNomineeDashboard();
+
+    cy.get(tid("account-setup-email-unverified-section"));
+    verifyLatestUserEmailAccountSetup(email); //;
+
+    cy.get(tid("account-setup-backup-seed-section"));
+    backupLightWalletSeedFromAccountSetupDashboard();
+
+    cy.get(tid("account-setup-start-kyc-section"));
+    cy.get(tid("start-kyc-button")).awaitedClick();
+    goThroughKycCorporateProcess();
+    cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
+    cy.get(tid("nominee-kyc-pending"));
   });
 });

@@ -163,7 +163,6 @@ class RequestStateInfo extends React.Component<IProps, IState> {
 
 const KycLayout: React.FunctionComponent<IProps> = props => {
   const router = props.requestStatus === ERequestStatus.DRAFT ? <KycRouter /> : null;
-
   return (
     <>
       <RequestStateInfo {...props} />

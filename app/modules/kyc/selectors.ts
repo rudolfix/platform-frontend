@@ -14,14 +14,15 @@ import { TBankAccount } from "./types";
 export const selectKyc = (state: IAppState) => state.kyc;
 
 export const selectKycRequestStatus = (state: IAppState): ERequestStatus | undefined => {
-  const userKycType = selectKycRequestType(state.kyc);
+  const userKycType = selectKycRequestType(state);
   switch (userKycType) {
     case EKycRequestType.BUSINESS:
-      return state.kyc.businessRequestState!.status === "Accepted" && !selectIsClaimsVerified(state)
+      return state.kyc.businessRequestState!.status === ERequestStatus.ACCEPTED &&
+        !selectIsClaimsVerified(state)
         ? ERequestStatus.PENDING
         : state.kyc.businessRequestState!.status;
     case EKycRequestType.INDIVIDUAL:
-      return state.kyc.individualRequestState!.status === "Accepted" &&
+      return state.kyc.individualRequestState!.status === ERequestStatus.ACCEPTED &&
         !selectIsClaimsVerified(state)
         ? ERequestStatus.PENDING
         : state.kyc.individualRequestState!.status;
@@ -60,12 +61,10 @@ export const selectPendingKycRequestType = (
   return undefined;
 };
 
-export const selectKycRequestType = (
-  state: DeepReadonly<IKycState>,
-): EKycRequestType | undefined => {
-  if (state.individualRequestState && state.individualRequestState.status !== "Draft")
+export const selectKycRequestType = (state: IAppState): EKycRequestType | undefined => {
+  if (state.kyc.individualRequestState && state.kyc.individualRequestState.status !== "Draft")
     return EKycRequestType.INDIVIDUAL;
-  if (state.businessRequestState && state.businessRequestState.status !== "Draft")
+  if (state.kyc.businessRequestState && state.kyc.businessRequestState.status !== "Draft")
     return EKycRequestType.BUSINESS;
   return undefined;
 };
@@ -90,14 +89,17 @@ export const selectKycLoading = (state: DeepReadonly<IKycState>): boolean =>
 export const selectWidgetError = (state: DeepReadonly<IKycState>): string | undefined =>
   state.individualRequestError || state.businessRequestError;
 
-export const selectIndividualClientName = (state: DeepReadonly<IKycState>) => {
-  const data = state.individualData;
+export const selectIndividualClientName = (state: IAppState) => {
+  const data = state.kyc.individualData;
 
   return data ? [data.firstName, data.lastName].filter(Boolean).join(" ") : undefined;
 };
 
-export const selectClientName = (state: DeepReadonly<IKycState>) =>
-  (state.businessData && state.businessData.name) || selectIndividualClientName(state);
+export const selectBusinessClientName = (state: IAppState) =>
+  state.kyc.businessData && state.kyc.businessData.name;
+
+export const selectClientName = (state: IAppState) =>
+  (state.kyc.businessData && state.kyc.businessData.name) || selectIndividualClientName(state);
 
 export const selectClientJurisdiction = createSelector(
   selectKyc,

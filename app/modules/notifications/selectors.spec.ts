@@ -1,6 +1,7 @@
 import { expect } from "chai";
 
 import { appRoutes } from "../../components/appRoutes";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { DeepPartial } from "../../types";
 import { selectIsVisibleSecurityNotification } from "./selectors";
@@ -11,6 +12,11 @@ describe("selectIsVisibleSecurityNotification", () => {
       kyc: {
         individualRequestStateLoading: false,
         businessRequestStateLoading: true,
+      },
+      auth: {
+        user: {
+          type: EUserType.INVESTOR,
+        },
       },
       router: {},
     };
@@ -23,6 +29,11 @@ describe("selectIsVisibleSecurityNotification", () => {
   it("should return false if route is whitelisted", () => {
     const appState: DeepPartial<IAppState> = {
       kyc: {},
+      auth: {
+        user: {
+          type: EUserType.INVESTOR,
+        },
+      },
       router: {
         location: {
           pathname: appRoutes.kyc,

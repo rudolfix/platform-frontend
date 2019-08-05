@@ -3,18 +3,19 @@ import { put, select } from "redux-saga/effects";
 import { AuthMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IVerifyEmailUser } from "../../../lib/api/users/interfaces";
+import { EUserType, IVerifyEmailUser } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
 import { TStoredWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
+import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { neuCall } from "../../sagasUtils";
 import {
   selectActivationCodeFromQueryString,
   selectEmailFromQueryString,
 } from "../../web3/selectors";
 import { EWalletType } from "../../web3/types";
-import { selectUserEmail, selectVerifiedUserEmail } from "../selectors";
+import { selectUserEmail, selectUserType, selectVerifiedUserEmail } from "../selectors";
 import { ELogoutReason } from "../types";
 import { loadUser } from "../user/sagas";
 
@@ -53,7 +54,14 @@ export function* verifyUserEmail({
     walletStorage.set(updatedMetadata);
   }
 
-  yield put(actions.routing.goToProfile());
+  const userType = yield select((s: IAppState) => selectUserType(s));
+  const kycAndEmailVerified = yield select((s: IAppState) => userHasKycAndEmailVerified(s));
+
+  if (!kycAndEmailVerified && userType === EUserType.NOMINEE) {
+    yield put(actions.routing.goToDashboard());
+  } else {
+    yield put(actions.routing.goToProfile());
+  }
 }
 
 export async function verifyUserEmailPromise(

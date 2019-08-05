@@ -4,7 +4,6 @@ import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
 import { KycPanel } from "../KycPanel";
 import { Panels } from "../shared/Panels";
 
@@ -34,30 +33,32 @@ interface IProps {
   goToCompany: () => void;
 }
 
-export const KYCStartComponent = injectIntlHelpers<IProps>(
-  ({ intl: { formatIntlMessage }, ...props }) => (
-    <KycPanel steps={personalSteps} title={formatIntlMessage("kyc.start.title")} isMaxWidth={true}>
-      <p className={styles.textFieldNarrow}>
-        <FormattedHTMLMessage tagName="span" id="kyc.start.description" />
-      </p>
-      <Panels
-        panels={[
-          {
-            content: <FormattedMessage id="kyc.start.go-to-personal" />,
-            id: 1,
-            onClick: () => props.goToPerson(),
-            "data-test-id": "kyc-start-go-to-personal",
-          },
-          {
-            content: <FormattedMessage id="kyc.start.go-to-company" />,
-            id: 2,
-            onClick: () => props.goToCompany(),
-            "data-test-id": "kyc-start-go-to-company",
-          },
-        ]}
-      />
-    </KycPanel>
-  ),
+export const KYCStartComponent = ({ ...props }) => (
+  <KycPanel
+    steps={personalSteps}
+    title={<FormattedMessage id="kyc.start.title" />}
+    isMaxWidth={true}
+  >
+    <p className={styles.textFieldNarrow}>
+      <FormattedHTMLMessage tagName="span" id="kyc.start.description" />
+    </p>
+    <Panels
+      panels={[
+        {
+          content: <FormattedMessage id="kyc.start.go-to-personal" />,
+          id: 1,
+          onClick: () => props.goToPerson(),
+          "data-test-id": "kyc-start-go-to-personal",
+        },
+        {
+          content: <FormattedMessage id="kyc.start.go-to-company" />,
+          id: 2,
+          onClick: () => props.goToCompany(),
+          "data-test-id": "kyc-start-go-to-company",
+        },
+      ]}
+    />
+  </KycPanel>
 );
 
 export const KYCStart = compose<React.FunctionComponent>(

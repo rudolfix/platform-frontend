@@ -1,11 +1,13 @@
 import { includes, some } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import {
   selectBackupCodesVerified,
   selectIsInvestor,
   selectIsUserEmailVerified,
+  selectUserType,
 } from "../auth/selectors";
 import { selectKycLoading, selectKycRequestStatus } from "../kyc/selectors";
 import { INotification, settingsNotificationInvestor, settingsNotificationIssuer } from "./reducer";
@@ -29,6 +31,11 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
  */
 export const selectIsVisibleSecurityNotification = (state: IAppState): boolean => {
   const disallowedViewsPaths = [appRoutes.profile, appRoutes.kyc];
+  const userType = selectUserType(state);
+
+  if (userType === EUserType.NOMINEE) {
+    return false;
+  }
 
   if (
     state.router.location &&

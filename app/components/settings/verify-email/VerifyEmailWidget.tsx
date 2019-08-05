@@ -1,26 +1,16 @@
 import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "redux";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
-import { actions } from "../../../modules/actions";
-import {
-  selectIsThereUnverifiedEmail,
-  selectIsUserEmailVerified,
-  selectUnverifiedUserEmail,
-  selectVerifiedUserEmail,
-} from "../../../modules/auth/selectors";
-import { selectIsCancelEmail } from "../../../modules/profile/reducer";
-import { selectIsConnectedButtonLocked } from "../../../modules/verify-email-widget/reducer";
-import { appConnect } from "../../../store";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
+import { injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
 import { EColumnSpan } from "../../layouts/Container";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import { ButtonArrowRight } from "../../shared/buttons/Button";
-import { Form, FormField } from "../../shared/forms";
+import { Form, FormField } from "../../shared/forms/index";
 import { Panel } from "../../shared/Panel";
+import { connectVerifyEmailComponent } from "./ConnectVerifyEmail";
 
 import * as successIcon from "../../../assets/img/notifications/success.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
@@ -35,7 +25,7 @@ interface IStateProps {
   isEmailTemporaryCancelled: boolean;
 }
 
-interface IOwnProps {
+interface IExternalProps {
   step: number;
   columnSpan?: EColumnSpan;
 }
@@ -235,10 +225,9 @@ const UnVerifiedUser: React.FunctionComponent<{
   </section>
 );
 
-export const VerifyEmailWidgetComponent: React.FunctionComponent<
-  IStateProps & IDispatchProps & IOwnProps & IIntlProps
+export const VerifyEmailWidgetBase: React.FunctionComponent<
+  IStateProps & IDispatchProps & IExternalProps
 > = ({
-  intl: { formatIntlMessage },
   isUserEmailVerified,
   isThereUnverifiedEmail,
   resendEmail,
@@ -261,7 +250,13 @@ export const VerifyEmailWidgetComponent: React.FunctionComponent<
   return (
     <Panel
       columnSpan={columnSpan}
-      headerText={formatIntlMessage("settings.verify-email-widget.header", { step })}
+      headerText={
+        <FormattedHTMLMessage
+          tagName="span"
+          id="settings.verify-email-widget.header"
+          values={{ step }}
+        />
+      }
       rightComponent={
         isUserEmailVerified && !isThereUnverifiedEmail ? (
           <img src={successIcon} className={styles.icon} aria-hidden="true" alt="" />
@@ -296,29 +291,4 @@ export const VerifyEmailWidgetComponent: React.FunctionComponent<
   );
 };
 
-export const VerifyEmailWidget = compose<React.FunctionComponent<IOwnProps>>(
-  appConnect<IStateProps, IDispatchProps, IOwnProps>({
-    stateToProps: s => ({
-      isUserEmailVerified: selectIsUserEmailVerified(s.auth),
-      isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s.auth),
-      verifiedEmail: selectVerifiedUserEmail(s.auth),
-      unverifiedEmail: selectUnverifiedUserEmail(s.auth),
-      isLocked: selectIsConnectedButtonLocked(s.verifyEmailWidgetState),
-      isEmailTemporaryCancelled: selectIsCancelEmail(s.profile),
-    }),
-    dispatchToProps: dispatch => ({
-      resendEmail: () => {
-        dispatch(actions.profile.resendEmail());
-      },
-      addNewEmail: (values: { email: string }) => {
-        dispatch(actions.profile.addNewEmail(values.email));
-      },
-      cancelEmail: () => {
-        dispatch(actions.profile.cancelEmail());
-      },
-      revertCancelEmail: () => dispatch(actions.profile.revertCancelEmail()),
-      abortEmailUpdate: () => dispatch(actions.profile.abortEmailUpdate()),
-    }),
-  }),
-  injectIntlHelpers,
-)(VerifyEmailWidgetComponent);
+export const VerifyEmailWidget = connectVerifyEmailComponent<IExternalProps>(VerifyEmailWidgetBase);

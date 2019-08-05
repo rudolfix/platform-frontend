@@ -4,6 +4,7 @@ import {
   assertDashboard,
   assertEtoDashboard,
   assertEtoDocuments,
+  assertNomineeDashboard,
   assertPortfolio,
   assertProfile,
   assertWallet,
@@ -40,6 +41,11 @@ export const goToEtoDashboard = () => {
 export const goToEtoPreview = () => {
   cy.visit("/eto/view");
   assertIssuerEtoView();
+};
+
+export const goToNomineeDashboard = () => {
+  cy.visit("/dashboard");
+  assertNomineeDashboard();
 };
 
 export const goToProfile = () => {

@@ -2,32 +2,16 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { compose } from "redux";
 
 import { externalRoutes } from "../../../config/externalRoutes";
 import { ERequestOutsourcedStatus, ERequestStatus } from "../../../lib/api/KycApi.interfaces";
 import { EUserType } from "../../../lib/api/users/interfaces";
-import { actions } from "../../../modules/actions";
-import {
-  selectBackupCodesVerified,
-  selectIsUserEmailVerified,
-  selectUserType,
-} from "../../../modules/auth/selectors";
-import {
-  selectExternalKycUrl,
-  selectKycLoading,
-  selectKycRequestOutsourcedStatus,
-  selectKycRequestStatus,
-  selectWidgetError,
-} from "../../../modules/kyc/selectors";
-import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons";
+import { Button, ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons/index";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
+import { connectKycStatusWidget } from "./ConnectKycStatus";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as infoIcon from "../../../assets/img/notifications/info.svg";
@@ -46,18 +30,27 @@ interface IStateProps {
   userType: EUserType;
 }
 
-interface IOwnProps {
+interface IExternalProps {
   step: number;
   columnSpan?: EColumnSpan;
 }
 
 interface IDispatchProps {
-  onGoToKycHome: () => void;
   onGoToDashboard: () => void;
   cancelInstantId: () => void;
+  onGoToKycHome: () => void;
 }
 
-export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IOwnProps;
+interface IKycStatusLayoutProps {
+  requestStatus?: ERequestStatus;
+  requestOutsourcedStatus?: ERequestOutsourcedStatus;
+  isUserEmailVerified: boolean;
+  externalKycUrl?: string;
+  userType: EUserType;
+  backupCodesVerified: boolean;
+}
+
+export type IKycStatusWidgetProps = IStateProps & IDispatchProps & IExternalProps;
 
 const statusTextMap: Record<ERequestStatus, React.ReactNode> = {
   Accepted: <FormattedMessage id="settings.kyc-status-widget.status.accepted" />,
@@ -147,7 +140,7 @@ const ActionButton = ({
   onGoToDashboard,
   backupCodesVerified,
   cancelInstantId,
-}: IKycStatusWidgetProps) => {
+}: IKycStatusLayoutProps & IDispatchProps) => {
   if (requestStatus === ERequestStatus.ACCEPTED && userType === EUserType.INVESTOR) {
     return (
       <Button
@@ -258,7 +251,7 @@ const StatusIcon = ({
   return <img src={warningIcon} className={styles.icon} alt="" />;
 };
 
-export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetProps> = props => {
+export const KycStatusWidgetBase: React.FunctionComponent<IKycStatusWidgetProps> = props => {
   const {
     requestStatus,
     requestOutsourcedStatus,
@@ -299,29 +292,4 @@ export const KycStatusWidgetComponent: React.FunctionComponent<IKycStatusWidgetP
   );
 };
 
-export const KycStatusWidget = compose<React.ComponentClass<IOwnProps>>(
-  appConnect<IStateProps, IDispatchProps, IOwnProps>({
-    stateToProps: state => ({
-      isUserEmailVerified: selectIsUserEmailVerified(state.auth),
-      userType: selectUserType(state)!,
-      backupCodesVerified: selectBackupCodesVerified(state),
-      requestStatus: selectKycRequestStatus(state),
-      requestOutsourcedStatus: selectKycRequestOutsourcedStatus(state.kyc),
-      externalKycUrl: selectExternalKycUrl(state.kyc),
-      isLoading: selectKycLoading(state.kyc),
-      error: selectWidgetError(state.kyc),
-    }),
-    dispatchToProps: dispatch => ({
-      onGoToKycHome: () => dispatch(actions.routing.goToKYCHome()),
-      onGoToDashboard: () => dispatch(actions.routing.goToDashboard()),
-      cancelInstantId: () => dispatch(actions.kyc.kycCancelInstantId()),
-    }),
-  }),
-  // note: initial data for this view are loaded as part of app init process
-  onEnterAction({
-    actionCreator: d => d(actions.kyc.kycStartWatching()),
-  }),
-  onLeaveAction({
-    actionCreator: d => d(actions.kyc.kycStopWatching()),
-  }),
-)(KycStatusWidgetComponent);
+export const KycStatusWidget = connectKycStatusWidget<IExternalProps>(KycStatusWidgetBase);

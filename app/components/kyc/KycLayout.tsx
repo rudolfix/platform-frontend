@@ -2,7 +2,6 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EKycRequestType, ERequestStatus } from "../../lib/api/KycApi.interfaces";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { Button, EButtonLayout, EIconPosition } from "../shared/buttons";
 import { KycPanel } from "./KycPanel";
 import { KycRouter } from "./Router";
@@ -51,7 +50,6 @@ export const businessSteps = [
 
 type IProps = {
   requestLoading?: boolean;
-  userType: EUserType;
   requestStatus?: ERequestStatus;
   redirectUrl: string;
   pendingRequestType: EKycRequestType | undefined;
@@ -165,7 +163,6 @@ class RequestStateInfo extends React.Component<IProps, IState> {
 
 const KycLayout: React.FunctionComponent<IProps> = props => {
   const router = props.requestStatus === ERequestStatus.DRAFT ? <KycRouter /> : null;
-
   return (
     <>
       <RequestStateInfo {...props} />

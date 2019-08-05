@@ -1,30 +1,28 @@
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "redux";
 
-import { selectBackupCodesVerified } from "../../../modules/auth/selectors";
-import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons";
+import { ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons/index";
 import { Panel } from "../../shared/Panel";
 import { profileRoutes } from "../routes";
+import { connectBackupSeedWidget } from "./ConnectSetupWidget";
 
 import * as arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import * as successIcon from "../../../assets/img/notifications/success.svg";
 import * as warningIcon from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./BackupSeedWidget.module.scss";
 
-interface IStateProps {
-  backupCodesVerified?: boolean;
+interface IProps {
+  backupCodesVerified: boolean;
 }
 
-interface IOwnProps {
-  step: number;
+interface IExternalProps {
   columnSpan?: EColumnSpan;
+  step: number;
 }
 
-const BackupSeedWidgetComponent: React.FunctionComponent<IStateProps & IOwnProps> = ({
+const BackupSeedWidgetBase: React.FunctionComponent<IProps & IExternalProps> = ({
   backupCodesVerified,
   columnSpan,
 }) => (
@@ -80,12 +78,6 @@ const BackupSeedWidgetComponent: React.FunctionComponent<IStateProps & IOwnProps
   </Panel>
 );
 
-const BackupSeedWidget = compose<React.FunctionComponent<IOwnProps>>(
-  appConnect<IStateProps, IOwnProps>({
-    stateToProps: s => ({
-      backupCodesVerified: selectBackupCodesVerified(s),
-    }),
-  }),
-)(BackupSeedWidgetComponent);
+const BackupSeedWidget = connectBackupSeedWidget<IExternalProps>(BackupSeedWidgetBase);
 
-export { BackupSeedWidget, BackupSeedWidgetComponent };
+export { BackupSeedWidget, BackupSeedWidgetBase };

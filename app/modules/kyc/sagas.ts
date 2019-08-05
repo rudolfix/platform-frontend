@@ -18,15 +18,15 @@ import {
   IKycRequestState,
   TKycBankAccount,
 } from "../../lib/api/KycApi.interfaces";
-import { IUser } from "../../lib/api/users/interfaces";
+import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
 import { IAppState } from "../../store";
 import { actions, TAction } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
-import { selectIsUserVerified, selectUser } from "../auth/selectors";
+import { selectIsUserVerified, selectUser, selectUserType } from "../auth/selectors";
+import { userHasKycAndEmailVerified } from "../eto-flow/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
-import { EInitType } from "../init/reducer";
-import { selectIsSmartContractInitDone } from "../init/selectors";
+import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import {
   selectCombinedBeneficialOwnerOwnership,
@@ -49,9 +49,7 @@ let kycWidgetWatchDelay: number = 1000;
 function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): any {
   kycWidgetWatchDelay = 1000;
   while (true) {
-    const requestType: EKycRequestType = yield select((s: IAppState) =>
-      selectKycRequestType(s.kyc),
-    );
+    const requestType: EKycRequestType = yield select(selectKycRequestType);
     const status: ERequestStatus | undefined = yield select((s: IAppState) =>
       selectKycRequestStatus(s),
     );
@@ -546,16 +544,25 @@ function* loadBusinessRequest(
   }
 }
 function* submitBusinessRequestEffect({ apiKycService }: TGlobalDependencies): Iterator<any> {
+  const userType = yield select((s: IAppState) => selectUserType(s));
+  const kycAndEmailVerified = yield select((s: IAppState) => userHasKycAndEmailVerified(s));
+
   yield put(actions.kyc.kycUpdateBusinessRequestState(true));
   const result: IHttpResponse<IKycRequestState> = yield apiKycService.submitBusinessRequest();
   yield put(actions.kyc.kycUpdateBusinessRequestState(false, result.body));
+
+  const buttonAction =
+    !kycAndEmailVerified && userType === EUserType.NOMINEE
+      ? actions.routing.goToDashboard()
+      : actions.routing.goToProfile();
+
   yield put(
     actions.genericModal.showGenericModal(
       createMessage(KycFlowMessage.KYC_VERIFICATION_TITLE),
       createMessage(KycFlowMessage.KYC_VERIFICATION_DESCRIPTION),
       undefined,
       createMessage(KycFlowMessage.KYC_SETTINGS_BUTTON),
-      actions.routing.goToProfile(),
+      buttonAction,
     ),
   );
 }
@@ -656,10 +663,7 @@ function* waitForKycStatusLoad(): Iterator<any> {
 
 export function* loadKycRequestData(): any {
   // Wait for contracts to init
-  const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
-  if (!isSmartContractsInitialized) {
-    yield neuTakeOnly(actions.init.done, { initType: EInitType.START_CONTRACTS_INIT });
-  }
+  yield waitUntilSmartContractsAreInitialized();
 
   yield put(actions.kyc.kycLoadIndividualRequest());
   yield put(actions.kyc.kycLoadBusinessRequest());

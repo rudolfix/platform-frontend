@@ -1,9 +1,10 @@
-import { IWindowData, IWindowWithData } from "../../../test/helperTypes";
+import { IWindowWithData } from "../../../test/helperTypes";
 import { assertIssuerEtoView } from "../eto-view/EtoViewUtils";
 import {
   assertDashboard,
   assertEtoDashboard,
   assertEtoDocuments,
+  assertNomineeDashboard,
   assertPortfolio,
   assertProfile,
   assertWallet,
@@ -32,16 +33,6 @@ export const goToDashboardWithRequiredPayoutAmountSet = (
   }
 };
 
-export const goWalletWithParams = (params: IWindowData = {}) => {
-  cy.visit("/wallet", {
-    onBeforeLoad(win: IWindowWithData): void {
-      for (let [key, value] of Object.entries(params)) {
-        win[key as any] = value;
-      }
-    },
-  });
-};
-
 export const goToEtoDashboard = () => {
   cy.visit("/dashboard");
   assertEtoDashboard();
@@ -50,6 +41,11 @@ export const goToEtoDashboard = () => {
 export const goToEtoPreview = () => {
   cy.visit("/eto/view");
   assertIssuerEtoView();
+};
+
+export const goToNomineeDashboard = () => {
+  cy.visit("/dashboard");
+  assertNomineeDashboard();
 };
 
 export const goToProfile = () => {

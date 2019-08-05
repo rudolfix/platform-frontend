@@ -1,15 +1,10 @@
-import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { object, string } from "yup";
 
-import { RichTextAreaLayoutComponent } from "./RichTextAreaLayout";
+import { Field } from "./Field";
 
-import * as city from "../../../../assets/img/eto/city.png";
-
-const uploadAdapterFactory = () => ({
-  upload: () => Promise.resolve({ default: "/image-id" }),
-  abort: () => {},
-});
+import * as city from "../../assets/img/eto/city.png";
 
 const html = `
       <h2>Heading 2</h2>
@@ -86,39 +81,6 @@ const html = `
       </ul> 
     `;
 
-storiesOf("Atoms|RichTextAreaLayout", module)
-  .add("default", () => (
-    <RichTextAreaLayoutComponent
-      name="bmw"
-      value={html}
-      onChange={action("onClick")}
-      uploadAdapterFactory={uploadAdapterFactory}
-    />
-  ))
-  .add("with placeholder", () => (
-    <RichTextAreaLayoutComponent
-      name="bmw"
-      value={undefined}
-      placeholder="Provide some text"
-      onChange={action("onClick")}
-      uploadAdapterFactory={uploadAdapterFactory}
-    />
-  ))
-  .add("disabled", () => (
-    <RichTextAreaLayoutComponent
-      name="bmw"
-      value={"This is a disabled text area"}
-      disabled={true}
-      onChange={action("onClick")}
-      uploadAdapterFactory={uploadAdapterFactory}
-    />
-  ))
-  .add("invalid", () => (
-    <RichTextAreaLayoutComponent
-      name="bmw"
-      value={"This is a invalid text area"}
-      invalid={true}
-      onChange={action("onClick")}
-      uploadAdapterFactory={uploadAdapterFactory}
-    />
-  ));
+storiesOf("Atoms|Field", module).add("default", () => (
+  <Field name="foo" value={html} schema={object({ foo: string().meta({ isWysiwyg: true }) })} />
+));

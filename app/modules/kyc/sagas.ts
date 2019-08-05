@@ -17,7 +17,7 @@ import {
   IKycLegalRepresentative,
   IKycRequestState,
   TKycBankAccount,
-} from "../../lib/api/KycApi.interfaces";
+} from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
 import { IAppState } from "../../store";

@@ -1,6 +1,8 @@
 import { branch, compose, renderComponent, withProps } from "recompose";
 
+import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
+import { selectUserType } from "../../modules/auth/selectors";
 import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { appConnect } from "../../store";
@@ -16,6 +18,7 @@ import { withJurisdictionRoute } from "./shared/routing/withJurisdictionRoute";
 
 interface IStateProps {
   eto?: TEtoWithCompanyAndContract;
+  userType?: EUserType;
 }
 
 interface IRouterParams {
@@ -36,6 +39,7 @@ export const EtoPublicViewByContractId = compose<TProps, IRouterParams>(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps, IRouterParams>({
     stateToProps: (state, props) => ({
+      userType: selectUserType(state),
       eto: selectEtoWithCompanyAndContractById(state, props.etoId),
     }),
   }),

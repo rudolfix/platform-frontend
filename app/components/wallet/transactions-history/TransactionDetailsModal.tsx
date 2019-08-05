@@ -67,7 +67,7 @@ const TransactionTypeToComponentMap: React.FunctionComponent<IExternalProps> = (
 };
 
 export const TransactionDetailsModal: React.FunctionComponent<IExternalProps> = props => (
-  <section className={styles.contentWrapper} data-test-id="transaction-history-details-modal">
+  <section className={styles.contentWrapper}>
     <ModalHeading>
       <TransactionName transaction={props.transaction} />
     </ModalHeading>

@@ -1,11 +1,13 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectIsAgreementAccepted,
   selectIsLatestAgreementAccepted,
   selectIsLatestAgreementLoaded,
+  selectUserType,
 } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { Button, ButtonSize, EButtonLayout, EIconPosition } from "../../shared/buttons";
@@ -18,17 +20,19 @@ import * as styles from "./AcceptTosModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
+  userType?: EUserType;
   agreementChanged: boolean;
 }
 
 interface IDispatchProps {
   onAccept: () => void;
   onDownloadTos: () => void;
-  onLogout: () => void;
+  onLogout: (userType?: EUserType) => void;
 }
 
 export const AcceptTosModalInner: React.ComponentType<IStateProps & IDispatchProps> = ({
   onDownloadTos,
+  userType,
   onLogout,
   onAccept,
   agreementChanged,
@@ -74,7 +78,11 @@ export const AcceptTosModalInner: React.ComponentType<IStateProps & IDispatchPro
       </Button>
     </div>
     <div>
-      <Button className={styles.rejectTos} onClick={onLogout} layout={EButtonLayout.INLINE}>
+      <Button
+        className={styles.rejectTos}
+        onClick={() => onLogout(userType)}
+        layout={EButtonLayout.INLINE}
+      >
         <FormattedMessage id="settings.modal.accept-tos.logout-button" />
       </Button>
     </div>
@@ -91,10 +99,11 @@ export const AcceptTosModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: s => ({
     agreementChanged: selectIsAgreementAccepted(s) && !selectIsLatestAgreementAccepted(s),
     isOpen: !selectIsLatestAgreementAccepted(s) && selectIsLatestAgreementLoaded(s),
+    userType: selectUserType(s),
   }),
   dispatchToProps: dispatch => ({
     onDownloadTos: () => dispatch(actions.tosModal.downloadCurrentAgreement()),
     onAccept: () => dispatch(actions.tosModal.acceptCurrentAgreement()),
-    onLogout: () => dispatch(actions.auth.logout()),
+    onLogout: (userType?: EUserType) => dispatch(actions.auth.logout({ userType })),
   }),
 })(AcceptTosModalComponent);

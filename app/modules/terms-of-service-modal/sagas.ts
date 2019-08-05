@@ -13,8 +13,9 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { selectCurrentAgreementHash } from "../auth/selectors";
-import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
-import { neuCall, neuTakeEvery } from "../sagasUtils";
+import { EInitType } from "../init/reducer";
+import { selectIsSmartContractInitDone } from "../init/selectors";
+import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 
 /**
  * Handle ToS / agreement
@@ -23,9 +24,13 @@ export function* loadCurrentAgreement({
   contractsService,
   logger,
 }: TGlobalDependencies): Iterator<any> {
-  yield waitUntilSmartContractsAreInitialized();
-
   logger.info("Loading current agreement hash");
+
+  const isSmartContractsInitialized = yield select(selectIsSmartContractInitDone);
+
+  if (!isSmartContractsInitialized) {
+    yield neuTakeOnly(actions.init.done, { initType: EInitType.START_CONTRACTS_INIT });
+  }
 
   try {
     const result = yield contractsService.universeContract.currentAgreement();

@@ -1,4 +1,5 @@
 import { closeModal, confirmAccessModal, goToWallet } from "../utils";
+import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 
 export const doWithdraw = (
@@ -13,6 +14,16 @@ export const doWithdraw = (
   cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address")).type(address);
   cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).type(amount);
 
+  fillForm(
+    {
+      allowNewAddress: {
+        type: "checkbox",
+        values: { false: true },
+      },
+    },
+    { submit: false },
+  );
+
   cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"))
     .should("be.enabled")
     .click();
@@ -20,13 +31,6 @@ export const doWithdraw = (
   cy.get(tid("modals.tx-sender.withdraw-flow.summary.accept")).click();
 
   confirmAccessModal();
-
-  cy.get(tid("modals.shared.tx-pending.modal")).should("exist");
-
-  cy.get(tid("modals.shared.tx-pending.modal.tx-data.tx-hash"))
-    .should("exist")
-    .invoke("text")
-    .as("txHash");
 
   switch (closeWhen) {
     case "pending":
@@ -53,8 +57,6 @@ export const doWithdraw = (
 
       break;
   }
-
-  return cy.get("@txHash");
 };
 
 export const assertPendingWithdrawModal = (address: string, amount: string) => {
@@ -62,10 +64,9 @@ export const assertPendingWithdrawModal = (address: string, amount: string) => {
   cy.get(tid("modals.shared.tx-pending.modal")).should("exist");
 
   // should propagate correct data to modal
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.to")).contains(address);
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.value")).contains(amount);
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost")).contains(/0\.\d{4}/);
-  cy.get(tid("timestamp-row.timestamp")).should("exist");
+  cy.get(tid(`etherscan-link.${address}`)).should("exist");
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.value.large-value")).contains(amount);
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost.large-value")).contains(/0\.\d{4}/);
 };
 
 export const assertSuccessWithdrawModal = (address: string, amount: string) => {
@@ -73,8 +74,8 @@ export const assertSuccessWithdrawModal = (address: string, amount: string) => {
   cy.get(tid("modals.tx-sender.withdraw-flow.success")).should("exist");
 
   // should propagate correct data to modal
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.to")).contains(address);
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.value")).contains(amount);
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost")).contains(/0\.\d{4}/);
+  cy.get(tid(`etherscan-link.${address}`)).should("exist");
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.value.large-value")).contains(amount);
+  cy.get(tid("modals.tx-sender.withdraw-flow.summary.cost.large-value")).contains(/0\.\d{4}/);
   cy.get(tid("timestamp-row.timestamp")).should("exist");
 };

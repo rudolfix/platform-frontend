@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { match } from "react-router";
 
 import { externalRoutes } from "../../../config/externalRoutes";
+import { EUserType } from "../../../lib/api/users/interfaces";
 import { appRoutes } from "../../appRoutes";
 import { EMenuEntryType, TMenuEntry } from "./MenuEntry";
 
@@ -16,6 +17,7 @@ export const menuSeparatorData = (key: string): TMenuEntry => ({
 export const accountMenuData = (
   actionRequired: boolean,
   isLinkActive: (match: match<unknown>) => boolean,
+  userType: EUserType | undefined,
   logout: Function,
 ): TMenuEntry[] => [
   {
@@ -39,7 +41,7 @@ export const accountMenuData = (
     key: "logout",
     svgString: logoutIcon,
     menuName: <FormattedMessage id="menu.logout" />,
-    onClick: () => logout(),
+    onClick: () => logout(userType),
     "data-test-id": "menu-logout-button",
   },
 ];

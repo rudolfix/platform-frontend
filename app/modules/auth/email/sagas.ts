@@ -5,6 +5,7 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IVerifyEmailUser } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
+import { TStoredWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
 import { neuCall } from "../../sagasUtils";
@@ -12,6 +13,7 @@ import {
   selectActivationCodeFromQueryString,
   selectEmailFromQueryString,
 } from "../../web3/selectors";
+import { EWalletType } from "../../web3/types";
 import { selectUserEmail, selectVerifiedUserEmail } from "../selectors";
 import { ELogoutReason } from "../types";
 import { loadUser } from "../user/sagas";
@@ -19,7 +21,10 @@ import { loadUser } from "../user/sagas";
 /**
  * Email Verification
  */
-export function* verifyUserEmail({ notificationCenter }: TGlobalDependencies): Iterator<any> {
+export function* verifyUserEmail({
+  notificationCenter,
+  walletStorage,
+}: TGlobalDependencies): Iterator<any> {
   const userCode = yield select((s: IAppState) => selectActivationCodeFromQueryString(s.router));
   const urlEmail = yield select((s: IAppState) => selectEmailFromQueryString(s.router));
   const userEmail = yield select((s: IAppState) => selectUserEmail(s.auth));
@@ -40,6 +45,14 @@ export function* verifyUserEmail({ notificationCenter }: TGlobalDependencies): I
 
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield loadUser();
+
+  const walletMetadata = walletStorage.get();
+  // Update metadata email only when wallet type is LightWallet
+  if (walletMetadata && walletMetadata.walletType === EWalletType.LIGHT) {
+    const updatedMetadata: TStoredWalletMetadata = { ...walletMetadata, email: urlEmail };
+    walletStorage.set(updatedMetadata);
+  }
+
   yield put(actions.routing.goToProfile());
 }
 

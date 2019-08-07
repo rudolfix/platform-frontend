@@ -15,6 +15,7 @@ import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investment-flow/sagas";
 import { investorTicketsSagas } from "./investor-portfolio/sagas";
 import { kycSagas } from "./kyc/sagas";
+import { marketingEmailsSagas } from "./marketing-emails/sagas";
 import { notificationModalSagas } from "./notificationModal/sagas";
 import { profileSagas } from "./profile/sagas";
 import { routingSagas } from "./routing/sagas";
@@ -49,6 +50,7 @@ function* allSagas(): Iterator<Effect> {
     fork(routingSagas),
     fork(tokenPriceSagas),
     fork(notificationModalSagas),
+    fork(marketingEmailsSagas),
     // Sagas that should be restarted immediately when logout occurs
     fork(neuRestartIf, actions.auth.logout, termsOfServiceSagas),
     fork(neuRestartIf, actions.auth.logout, bankTransferFlowSaga),

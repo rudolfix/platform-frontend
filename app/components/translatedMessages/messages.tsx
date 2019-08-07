@@ -41,7 +41,8 @@ export type TranslatedMessageType =
   | Web3Message
   | ValidationMessage
   | TestMessage
-  | ETxHistoryMessage;
+  | ETxHistoryMessage
+  | MarketingEmailsMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -252,6 +253,10 @@ export enum ValidationMessage {
   VALIDATION_RESTRICTED_COUNTRY = "validationRestrictedCountry",
   VALIDATION_PECENTAGE_MAX = "validationPecentageMax",
   VALIDATION_PERCENTAGE_MIN = "validationPercentageMin",
+}
+
+export enum MarketingEmailsMessage {
+  UNSUBSCRIBE_ERROR = "unsubscribeError",
 }
 
 export enum TestMessage {
@@ -626,6 +631,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="form.field.error.percentage.max" values={{ ...messageData }} />;
     case ValidationMessage.VALIDATION_PERCENTAGE_MIN:
       return <FormattedMessage id="form.field.error.percentage.min" values={{ ...messageData }} />;
+
+    case MarketingEmailsMessage.UNSUBSCRIBE_ERROR:
+      return <FormattedMessage id="settings.unsubscription.error" />;
 
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:

@@ -46,8 +46,7 @@ export const assertProfile = () => {
   cy.get(tid("eto-profile")).should("exist");
 };
 
-export const getLatestEmailByUser = (r: any, email: string) =>
-  find(r.body, ["personalizations[0].to[0].email", email]);
+export const getLatestEmailByUser = (r: any, email: string) => find(r.body, ["to", email]);
 
 export const assertWaitForLatestEmailSentWithSalt = (
   userEmail: string,
@@ -59,10 +58,7 @@ export const assertWaitForLatestEmailSentWithSalt = (
 
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
     if (r.status === 200 && getLatestEmailByUser(r, userEmail)) {
-      const loginLink = get(
-        getLatestEmailByUser(r, userEmail),
-        "personalizations[0].dynamic_template_data.login_link",
-      );
+      const loginLink = get(getLatestEmailByUser(r, userEmail), "template_vars.login_link");
 
       expect(loginLink).to.contain("salt");
       return;

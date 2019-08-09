@@ -11,6 +11,7 @@ import { contractsActions } from "./contracts/actions";
 import { depositModalActions } from "./deposit-eth-modal/actions";
 import { etoDocumentsActions } from "./eto-documents/actions";
 import { etoFlowActions } from "./eto-flow/actions";
+import { etoNomineeActions } from "./eto-nominee/actions";
 import { etoActions } from "./eto/actions";
 import { gasActions } from "./gas/actions";
 import { genericModalActions } from "./generic-modal/actions";
@@ -20,6 +21,8 @@ import { initActions } from "./init/actions";
 import { investmentFlowActions } from "./investment-flow/actions";
 import { investorEtoTicketActions } from "./investor-portfolio/actions";
 import { kycActions } from "./kyc/actions";
+import { marketingEmailsActions } from "./marketing-emails/actions";
+import { nomineeFlowActions } from "./nominee-flow/actions";
 import { notificationModalActions } from "./notificationModal/actions";
 import { notificationActions } from "./notifications/actions";
 import { personProfileModalActions } from "./person-profile-modal/actions";
@@ -67,6 +70,7 @@ export const actions = {
   notificationModal: notificationModalActions,
   etoFlow: etoFlowActions,
   etoDocuments: etoDocumentsActions,
+  etoNominee: etoNomineeActions,
   eto: etoActions,
   bookBuilding: bookBuildingFlowActions,
   formSingleFileUpload: formSingleFileUploadActions,
@@ -81,6 +85,8 @@ export const actions = {
   personProfileModal: personProfileModalActions,
   tosModal: tosModalActions,
   portfolio: portfolioActions,
+  marketingEmails: marketingEmailsActions,
+  nomineeFlow: nomineeFlowActions,
 };
 
 /**

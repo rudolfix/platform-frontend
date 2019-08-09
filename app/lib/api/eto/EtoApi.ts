@@ -19,6 +19,7 @@ const ETO_SUBMISSION_PATH = "/etos/me/submission";
 const ETO_BOOK_BUILDING_PATH = "/etos/me/bookbuilding";
 const ETO_PREVIEW_PATH = "/eto/view/:previewCode";
 const ETO_PREVIEW_SUBMISSION_PATH = "/etos/me/preview-submission";
+const NOMINEE_ETOS_PATH = "/nominees/me/etos";
 
 @injectable()
 export class EtoApi {
@@ -135,5 +136,13 @@ export class EtoApi {
       baseUrl: BASE_PATH,
       url: ETOS_PATH + "/me/pledges",
     });
+  }
+
+  public async loadNomineeEtos(): Promise<IHttpResponse<TGeneralEtoData[]>> {
+    const response = await this.authorizedHttpClient.get<IHttpResponse<TGeneralEtoData[]>>({
+      baseUrl: BASE_PATH,
+      url: NOMINEE_ETOS_PATH,
+    });
+    return response.body;
   }
 }

@@ -1,9 +1,9 @@
 import { createSelector } from "reselect";
 
 import {
+  EKycRequestStatus,
   EKycRequestType,
   ERequestOutsourcedStatus,
-  ERequestStatus,
   KycBankQuintessenceBankAccount,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../store";
@@ -13,21 +13,21 @@ import { TBankAccount } from "./types";
 
 export const selectKyc = (state: IAppState) => state.kyc;
 
-export const selectKycRequestStatus = (state: IAppState): ERequestStatus | undefined => {
+export const selectKycRequestStatus = (state: IAppState): EKycRequestStatus | undefined => {
   const userKycType = selectKycRequestType(state);
   switch (userKycType) {
     case EKycRequestType.BUSINESS:
-      return state.kyc.businessRequestState!.status === ERequestStatus.ACCEPTED &&
+      return state.kyc.businessRequestState!.status === EKycRequestStatus.ACCEPTED &&
         !selectIsClaimsVerified(state)
-        ? ERequestStatus.PENDING
+        ? EKycRequestStatus.PENDING
         : state.kyc.businessRequestState!.status;
     case EKycRequestType.INDIVIDUAL:
-      return state.kyc.individualRequestState!.status === ERequestStatus.ACCEPTED &&
+      return state.kyc.individualRequestState!.status === EKycRequestStatus.ACCEPTED &&
         !selectIsClaimsVerified(state)
-        ? ERequestStatus.PENDING
+        ? EKycRequestStatus.PENDING
         : state.kyc.individualRequestState!.status;
     default:
-      return ERequestStatus.DRAFT;
+      return EKycRequestStatus.DRAFT;
   }
 };
 

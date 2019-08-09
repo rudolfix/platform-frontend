@@ -11,6 +11,7 @@ import { IHttpClient } from "../lib/api/client/IHttpClient";
 import { JsonHttpClient } from "../lib/api/client/JsonHttpClient";
 import { EtoApi } from "../lib/api/eto/EtoApi";
 import { EtoFileApi } from "../lib/api/eto/EtoFileApi";
+import { EtoNomineeApi } from "../lib/api/eto/EtoNomineeApi";
 import { EtoPledgeApi } from "../lib/api/eto/EtoPledgeApi";
 import { EtoProductApi } from "../lib/api/eto/EtoProductApi";
 import { FileStorageApi } from "../lib/api/file-storage/FileStorageApi";
@@ -21,6 +22,7 @@ import {
 import { GasApi } from "../lib/api/gas/GasApi";
 import { ImmutableStorageApi } from "../lib/api/immutable-storage/ImmutableStorageApi";
 import { KycApi } from "../lib/api/kyc/KycApi";
+import { MarketingEmailsApi } from "../lib/api/users/MarketingEmailsApi";
 import { UsersApi } from "../lib/api/users/UsersApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
@@ -117,6 +119,11 @@ export function setupBindings(config: IConfig): Container {
     .to(NotificationCenter)
     .inSingletonScope();
 
+  container
+    .bind<MarketingEmailsApi>(symbols.marketingEmailsApi)
+    .to(MarketingEmailsApi)
+    .inSingletonScope();
+
   // web3 & blockchain
   container
     .bind(symbols.contractsService)
@@ -161,6 +168,10 @@ export function setupBindings(config: IConfig): Container {
   container
     .bind<EtoFileApi>(symbols.apiEtoFileService)
     .to(EtoFileApi)
+    .inSingletonScope();
+  container
+    .bind<EtoNomineeApi>(symbols.apiEtoNomineeService)
+    .to(EtoNomineeApi)
     .inSingletonScope();
   container
     .bind<WalletStorage>(symbols.walletStorage)
@@ -262,12 +273,14 @@ export const createGlobalDependencies = (container: Container) => ({
   apiEtoPledgeService: container.get<EtoPledgeApi>(symbols.apiEtoPledgeService),
   apiEtoProductService: container.get<EtoProductApi>(symbols.apiEtoProductService),
   apiEtoFileService: container.get<EtoFileApi>(symbols.apiEtoFileService),
+  apiEtoNomineeService: container.get<EtoNomineeApi>(symbols.apiEtoNomineeService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
   analyticsApi: container.get<AnalyticsApi>(symbols.analyticsApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
   gasApi: container.get<GasApi>(symbols.gasApi),
   apiImmutableStorage: container.get<ImmutableStorageApi>(symbols.apiImmutableStorage),
+  marketingEmailsApi: container.get<MarketingEmailsApi>(symbols.apiImmutableStorage),
 
   intlWrapper: container.get<IntlWrapper>(symbols.intlWrapper),
 });

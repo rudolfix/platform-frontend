@@ -1,7 +1,10 @@
 import * as React from "react";
 import { branch, compose, renderNothing } from "recompose";
 
-import { ERequestOutsourcedStatus, ERequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import {
+  EKycRequestStatus,
+  ERequestOutsourcedStatus,
+} from "../../../lib/api/kyc/KycApi.interfaces";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import {
@@ -21,7 +24,7 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 
 interface IStateProps {
-  requestStatus?: ERequestStatus;
+  requestStatus?: EKycRequestStatus;
   requestOutsourcedStatus?: ERequestOutsourcedStatus;
   isUserEmailVerified: boolean;
   isLoading: boolean;

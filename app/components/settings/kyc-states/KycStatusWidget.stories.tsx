@@ -1,7 +1,10 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ERequestOutsourcedStatus, ERequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import {
+  EKycRequestStatus,
+  ERequestOutsourcedStatus,
+} from "../../../lib/api/kyc/KycApi.interfaces";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { KycStatusWidgetBase } from "./KycStatusWidget";
 
@@ -21,33 +24,35 @@ storiesOf("KYC/StatusWidget", module)
   .add("email-not-verified", () => (
     <KycStatusWidgetBase
       {...commonProps}
-      requestStatus={ERequestStatus.DRAFT}
+      requestStatus={EKycRequestStatus.DRAFT}
       isUserEmailVerified={false}
     />
   ))
   .add("backup-codes-not-verified", () => (
     <KycStatusWidgetBase
       {...commonProps}
-      requestStatus={ERequestStatus.DRAFT}
+      requestStatus={EKycRequestStatus.DRAFT}
       isUserEmailVerified={true}
       backupCodesVerified={false}
     />
   ))
-  .add("draft", () => <KycStatusWidgetBase {...commonProps} requestStatus={ERequestStatus.DRAFT} />)
+  .add("draft", () => (
+    <KycStatusWidgetBase {...commonProps} requestStatus={EKycRequestStatus.DRAFT} />
+  ))
   .add("pending", () => (
-    <KycStatusWidgetBase {...commonProps} requestStatus={ERequestStatus.PENDING} />
+    <KycStatusWidgetBase {...commonProps} requestStatus={EKycRequestStatus.PENDING} />
   ))
   .add("rejected", () => (
-    <KycStatusWidgetBase {...commonProps} requestStatus={ERequestStatus.REJECTED} />
+    <KycStatusWidgetBase {...commonProps} requestStatus={EKycRequestStatus.REJECTED} />
   ))
   .add("accepted", () => (
-    <KycStatusWidgetBase {...commonProps} requestStatus={ERequestStatus.ACCEPTED} />
+    <KycStatusWidgetBase {...commonProps} requestStatus={EKycRequestStatus.ACCEPTED} />
   ))
   .add("outsourced-started", () => (
     <KycStatusWidgetBase
       {...commonProps}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.STARTED}
       externalKycUrl={"https://neufund.org"}
     />
@@ -56,7 +61,7 @@ storiesOf("KYC/StatusWidget", module)
     <KycStatusWidgetBase
       {...commonProps}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.ABORTED}
     />
   ))
@@ -64,7 +69,7 @@ storiesOf("KYC/StatusWidget", module)
     <KycStatusWidgetBase
       {...commonProps}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.CANCELED}
     />
   ))
@@ -72,7 +77,7 @@ storiesOf("KYC/StatusWidget", module)
     <KycStatusWidgetBase
       {...commonProps}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.OTHER}
     />
   ))
@@ -80,7 +85,7 @@ storiesOf("KYC/StatusWidget", module)
     <KycStatusWidgetBase
       {...commonProps}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.REVIEW_PENDING}
     />
   ))
@@ -88,7 +93,7 @@ storiesOf("KYC/StatusWidget", module)
     <KycStatusWidgetBase
       {...commonProps}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.SUCCESS}
     />
   ))
@@ -96,7 +101,7 @@ storiesOf("KYC/StatusWidget", module)
     <KycStatusWidgetBase
       {...commonProps}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.SUCCESS_DATA_CHANGED}
     />
   ))
@@ -105,7 +110,7 @@ storiesOf("KYC/StatusWidget", module)
       {...commonProps}
       error="bla bla error"
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.REVIEW_PENDING}
     />
   ))
@@ -114,7 +119,7 @@ storiesOf("KYC/StatusWidget", module)
       {...commonProps}
       isLoading={true}
       userType={EUserType.INVESTOR}
-      requestStatus={ERequestStatus.OUTSOURCED}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
       requestOutsourcedStatus={ERequestOutsourcedStatus.REVIEW_PENDING}
     />
   ));

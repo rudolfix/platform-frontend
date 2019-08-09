@@ -30,6 +30,8 @@ export enum EJwtPermissions {
   UPLOAD_IMMUTABLE_DOCUMENT = "upload-issuer-immutable-document",
   DO_BOOK_BUILDING = "do-bookbuilding",
   SIGN_TOS = "sign-tos",
+  ISSUER_UPDATE_NOMINEE_REQUEST = "update-nominee-request",
+  ISSUER_REMOVE_NOMINEE = "issuer-remove-nominee",
 }
 
 /**
@@ -72,3 +74,5 @@ export const REDIRECT_CHANNEL_WATCH_DELAY = 5000;
 
 export const IPFS_PROTOCOL = "ipfs";
 export const supportEmail = "support@neufund.org";
+
+export const NOMINEE_REQUESTS_WATCHER_DELAY = 10000;

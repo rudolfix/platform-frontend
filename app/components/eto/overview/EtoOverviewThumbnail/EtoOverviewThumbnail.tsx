@@ -12,7 +12,7 @@ import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { FUNDING_ROUNDS } from "../../constants";
 import { ComingSoonEtoState, ETOState, SuccessEtoState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
-import { EtoCardPanelButton } from "./EtoCardPanel";
+import { EtoCardButton, EtoCardPanelButton } from "./EtoCardPanel";
 import { EtoStatusManager, SuccessfulInfo } from "./EtoStatusManager";
 
 import * as styles from "./EtoOverviewThumbnail.module.scss";
@@ -74,14 +74,8 @@ const MockEtoOverviewLayout: React.FunctionComponent<
   </EtoCardPanelButton>
 );
 
-const EtoOverviewLayout: React.FunctionComponent<TEtoProps & CommonHtmlProps & IDispatchProps> = ({
-  eto,
-  open,
-}) => (
-  <EtoCardPanelButton
-    data-test-id={`eto-overview-${eto.etoId}`}
-    onClick={() => open(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))}
-  >
+const EtoOverviewLayoutBase: React.FunctionComponent<TEtoProps> = ({ eto }) => (
+  <>
     <Cover
       className={styles.cover}
       companyBanner={{
@@ -138,22 +132,50 @@ const EtoOverviewLayout: React.FunctionComponent<TEtoProps & CommonHtmlProps & I
         </>
       )}
     </section>
+  </>
+);
+
+const EtoOverviewGridLayout: React.FunctionComponent<
+  TEtoProps & CommonHtmlProps & IDispatchProps
+> = ({ eto, open }) => (
+  <EtoCardPanelButton
+    data-test-id={`eto-overview-${eto.etoId}`}
+    onClick={() => open(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))}
+  >
+    <EtoOverviewLayoutBase eto={eto} />
   </EtoCardPanelButton>
 );
 
-const EtoOverviewThumbnail = compose<
-  TEtoProps & CommonHtmlProps & IDispatchProps,
-  TExternalProps & TCommonExternalProps & CommonHtmlProps
->(
-  appConnect<{}, IDispatchProps, TCommonExternalProps>({
-    dispatchToProps: (dispatch, { shouldOpenInNewWindow }) => ({
-      open: (url: string) =>
-        dispatch(
-          shouldOpenInNewWindow ? routingActions.openInNewWindow(url) : routingActions.push(url),
-        ),
-    }),
-  }),
-  branch<TExternalProps>(props => !!props.mockedEto, renderComponent(MockEtoOverviewLayout)),
-)(EtoOverviewLayout);
+const EtoOverviewComponent: React.FunctionComponent<
+  TEtoProps & CommonHtmlProps & IDispatchProps
+> = ({ eto }) => (
+  <EtoCardButton
+    data-test-id={`eto-overview-${eto.etoId}`}
+    onClick={() => open(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))}
+  >
+    <EtoOverviewLayoutBase eto={eto} />
+  </EtoCardButton>
+);
 
-export { EtoOverviewLayout, EtoOverviewThumbnail };
+const connectEtoOverviewThumbnail = <T extends {}>(
+  WrappedComponent: React.ComponentType<TEtoProps & CommonHtmlProps & IDispatchProps & T>,
+) =>
+  compose<
+    TEtoProps & CommonHtmlProps & IDispatchProps & T,
+    TExternalProps & TCommonExternalProps & CommonHtmlProps
+  >(
+    appConnect<{}, IDispatchProps, TCommonExternalProps>({
+      dispatchToProps: (dispatch, { shouldOpenInNewWindow }) => ({
+        open: (url: string) =>
+          dispatch(
+            shouldOpenInNewWindow ? routingActions.openInNewWindow(url) : routingActions.push(url),
+          ),
+      }),
+    }),
+    branch<TExternalProps>(props => !!props.mockedEto, renderComponent(MockEtoOverviewLayout)),
+  )(WrappedComponent);
+
+const EtoOverviewThumbnail = connectEtoOverviewThumbnail(EtoOverviewGridLayout);
+const NomineeEtoOverviewThumbnail = connectEtoOverviewThumbnail(EtoOverviewComponent);
+
+export { EtoOverviewGridLayout, EtoOverviewThumbnail, NomineeEtoOverviewThumbnail };

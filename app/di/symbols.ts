@@ -21,8 +21,10 @@ export const symbols = makeDebugSymbols({
   apiEtoPledgeService: Symbol(),
   apiEtoProductService: Symbol(),
   apiEtoFileService: Symbol(),
+  apiEtoNomineeService: Symbol(),
   fileStorageService: Symbol(),
   gasApi: Symbol(),
+  marketingEmailsApi: Symbol(),
 
   // contracts
   contractsService: Symbol(),

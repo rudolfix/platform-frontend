@@ -10,23 +10,24 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import { actions } from "../../../../modules/actions";
-import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
+import {
+  selectEtoNominee,
+  selectEtoNomineeDisplayName,
+  selectIssuerEto,
+  selectIssuerEtoState,
+} from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
-import { BOOL_TRUE_KEY, FormSelectField } from "../../../shared/forms";
+import { FormSelectField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { FormToggle } from "../../../shared/forms/fields/FormToggle.unsafe";
 import { applyDefaults, convert, parseStringToFloat } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
+import { Nominee } from "./Nominee/Nominee";
 
 import * as styles from "../Shared.module.scss";
-
-// TODO: this keys will be replaced dynamically by addresses from an API endpoint, once there are more than one
-const TOKEN_HOLDERS_RIGHTS = {
-  [BOOL_TRUE_KEY]: "Neumini UG",
-};
 
 const LIQUIDATION_PREFERENCE_VALUES = [0, 1, 1.5, 2];
 
@@ -43,6 +44,8 @@ interface IStateProps {
   loadingData: boolean;
   savingData: boolean;
   stateValues: TPartialEtoSpecData;
+  currentNomineeId: string | undefined;
+  currentNomineeName: string | undefined;
 }
 
 interface IDispatchProps {
@@ -51,48 +54,54 @@ interface IDispatchProps {
 
 type IProps = IExternalProps & IStateProps & IDispatchProps;
 
-const EtoVotingRightsComponent: React.FunctionComponent<IProps> = ({ readonly, savingData }) => (
+const EtoVotingRightsComponent: React.FunctionComponent<IProps> = ({
+  readonly,
+  savingData,
+  currentNomineeName,
+  currentNomineeId,
+}) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-voting-rights.title" />}
     validator={EtoVotingRightsType.toYup()}
   >
-    <Section>
-      <FormSelectField
-        values={TOKEN_HOLDERS_RIGHTS}
-        label={<FormattedMessage id="eto.form.section.token-holders-rights.nominee" />}
-        name="nominee"
-        disabled={readonly}
-      />
+    <Nominee
+      currentNomineeName={currentNomineeName}
+      currentNomineeId={currentNomineeId}
+      readonly={readonly}
+    />
 
-      <FormSelectField
-        customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => (
-          <option key={n} value={n}>
-            {n}
-          </option>
-        ))}
-        label={
-          <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
-        }
-        name="liquidationPreferenceMultiplier"
-        disabled={readonly}
-      />
-
-      <div className="form-group">
-        <FormFieldLabel name="generalVotingRule">
-          <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
-        </FormFieldLabel>
-        <FormToggle
-          name="generalVotingRule"
-          trueValue="positive"
-          falseValue="no_voting_rights"
-          disabledLabel={<FormattedMessage id="form.select.no" />}
-          enabledLabel={<FormattedMessage id="form.select.yes" />}
+    {currentNomineeId && (
+      <Section>
+        <FormSelectField
+          customOptions={LIQUIDATION_PREFERENCE_VALUES.map(n => (
+            <option key={n} value={n}>
+              {n}
+            </option>
+          ))}
+          label={
+            <FormattedMessage id="eto.form.section.token-holders-rights.liquidation-preference" />
+          }
+          name="liquidationPreferenceMultiplier"
           disabled={readonly}
         />
-      </div>
-    </Section>
 
-    {!readonly && (
+        <div className="form-group">
+          <FormFieldLabel name="generalVotingRule">
+            <FormattedMessage id="eto.form.section.token-holders-rights.voting-rights-enabled" />
+          </FormFieldLabel>
+          <FormToggle
+            name="generalVotingRule"
+            trueValue="positive"
+            falseValue="no_voting_rights"
+            disabledLabel={<FormattedMessage id="form.select.no" />}
+            enabledLabel={<FormattedMessage id="form.select.yes" />}
+            disabled={readonly}
+          />
+        </div>
+      </Section>
+    )}
+
+    {!readonly && currentNomineeId && (
       <Section className={styles.buttonSection}>
         <Button
           layout={EButtonLayout.PRIMARY}
@@ -115,6 +124,8 @@ const EtoVotingRights = compose<React.FunctionComponent<IExternalProps>>(
       savingData: s.etoFlow.saving,
       stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoVotingRights, selectIssuerEtoState(s)),
+      currentNomineeId: selectEtoNominee(s),
+      currentNomineeName: selectEtoNomineeDisplayName(s),
     }),
     dispatchToProps: dispatch => ({
       saveData: (data: TPartialEtoSpecData) => {

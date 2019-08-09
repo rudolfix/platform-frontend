@@ -57,9 +57,21 @@ storiesOf("ETO-Flow/Registration-forms", module)
     </Provider>
   ))
   .add("EtoVotingRights", () => (
-    <Provider store={createStore(() => ({}))}>
+    <Provider
+      store={createStore(() => ({
+        etoNominee: { isLoading: false },
+        etoFlow: { loading: false },
+      }))}
+    >
       <Formik initialValues={eto} onSubmit={() => {}}>
-        {props => <EtoVotingRightsComponent {...props} {...loadingState} />}
+        {props => (
+          <EtoVotingRightsComponent
+            {...props}
+            {...loadingState}
+            currentNomineeId={"123"}
+            currentNomineeName={"nominee"}
+          />
+        )}
       </Formik>
     </Provider>
   ))

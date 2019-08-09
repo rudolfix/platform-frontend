@@ -7,6 +7,7 @@ import { contractsReducer } from "./contracts/reducer";
 import { depositEthModalReducer } from "./deposit-eth-modal/reducer";
 import { etoDocumentReducer } from "./eto-documents/reducer";
 import { etoFlowReducer } from "./eto-flow/reducer";
+import { etoNomineeReducer } from "./eto-nominee/reducer";
 import { etoReducer } from "./eto/reducer";
 import { gasReducer } from "./gas/reducer";
 import { genericModalReducer } from "./generic-modal/reducer";
@@ -16,6 +17,7 @@ import { initReducer } from "./init/reducer";
 import { investmentFlowReducer } from "./investment-flow/reducer";
 import { investorTicketsReducer } from "./investor-portfolio/reducer";
 import { kycReducer } from "./kyc/reducer";
+import { nomineeFlowReducer } from "./nominee-flow/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./person-profile-modal/reducer";
 import { profileReducer } from "./profile/reducer";
@@ -58,6 +60,7 @@ export const appReducers = {
   etoFlow: etoFlowReducer,
   bookBuildingFlow: bookBuildingFlowReducer,
   etoDocuments: etoDocumentReducer,
+  etoNominee: etoNomineeReducer,
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
   txSender: txSenderReducer,
@@ -69,4 +72,5 @@ export const appReducers = {
   personProfileModal: personProfileModalReducer,
   portfolioDownloadAgreementsModal: portfolioDownloadAgreementsModalReducer,
   immutableStorage: immutableStorageReducer,
+  nomineeFlow: nomineeFlowReducer,
 };

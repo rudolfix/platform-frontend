@@ -8,7 +8,7 @@ export const assertWaitForBankTransferSummary = (reference: string, timeout: num
   cy.wait(1000);
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
     if (r.status === 200) {
-      const purpose = get(r, "body[0].personalizations[0].dynamic_template_data.purpose");
+      const purpose = get(r, "body[0].template_vars.purpose");
 
       cy.log(r.body);
 

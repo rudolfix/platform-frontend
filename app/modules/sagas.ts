@@ -7,6 +7,7 @@ import { bankTransferFlowSaga } from "./bank-transfer-flow/sagas";
 import { bookBuildingFlowSagas } from "./bookbuilding-flow/sagas";
 import { etoDocumentsSagas } from "./eto-documents/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
+import { etoNomineeSagas } from "./eto-nominee/sagas";
 import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
 import { icbmWalletGetDataSagas } from "./icbm-wallet-balance-modal/sagas";
@@ -16,6 +17,7 @@ import { investmentFlowSagas } from "./investment-flow/sagas";
 import { investorTicketsSagas } from "./investor-portfolio/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { marketingEmailsSagas } from "./marketing-emails/sagas";
+import { nomineeFlowSagas } from "./nominee-flow/sagas";
 import { notificationModalSagas } from "./notificationModal/sagas";
 import { profileSagas } from "./profile/sagas";
 import { routingSagas } from "./routing/sagas";
@@ -63,6 +65,7 @@ function* allSagas(): Iterator<Effect> {
     fork(neuRestartIf, actions.auth.logout, etoFlowSagas),
     fork(neuRestartIf, actions.auth.logout, immutableFileSagas),
     fork(neuRestartIf, actions.auth.logout, etoSagas),
+    fork(neuRestartIf, actions.auth.logout, etoNomineeSagas),
     fork(neuRestartIf, actions.auth.logout, bookBuildingFlowSagas),
     fork(neuRestartIf, actions.auth.logout, formSingleFileUploadSagas),
     fork(neuRestartIf, actions.auth.logout, remoteFileSagas),
@@ -73,6 +76,7 @@ function* allSagas(): Iterator<Effect> {
     fork(neuRestartIf, actions.auth.logout, txMonitorSagas),
     fork(neuRestartIf, actions.auth.logout, investmentFlowSagas),
     fork(neuRestartIf, actions.auth.logout, txHistorySaga),
+    fork(neuRestartIf, actions.auth.logout, nomineeFlowSagas),
   ]);
 }
 

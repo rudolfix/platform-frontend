@@ -42,7 +42,13 @@ export type TranslatedMessageType =
   | ValidationMessage
   | TestMessage
   | ETxHistoryMessage
-  | MarketingEmailsMessage;
+  | MarketingEmailsMessage
+  | EMaskedFormError
+  | EKycRequestStatusTranslation
+  | ENomineeRequestStatusTranslation
+  | ENomineeRequestErrorNotifications
+  | EEtoNomineeRequestNotifications
+  | EEtoNomineeRequestMessages;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -257,6 +263,51 @@ export enum ValidationMessage {
 
 export enum MarketingEmailsMessage {
   UNSUBSCRIBE_ERROR = "unsubscribeError",
+}
+
+export enum EMaskedFormError {
+  GENERIC_ERROR = "ethAddressValidationGenericError",
+  ILLEGAL_CHARACTER = "illegalCharacter",
+  INVALID_PREFIX = "ivalidPrefix",
+  MAX_LENGTH_EXCEEDED = "maxLengthExceeded",
+}
+
+export enum EKycRequestStatusTranslation {
+  DRAFT = "KycRequestStatusTranslationDraft",
+  PENDING = "KycRequestStatusTranslationPending",
+  OUTSOURCED = "KycRequestStatusTranslationOutsourced",
+  REJECTED = "KycRequestStatusTranslationRejected",
+  ACCEPTED = "KycRequestStatusTranslationAccepted",
+  IGNORED = "KycRequestStatusTranslationIgnored",
+}
+
+export enum ENomineeRequestStatusTranslation {
+  PENDING = "nomineeRequestPending",
+  APPROVED = "nomineeRequestApproved",
+  REJECTED = "nomineeRequestRejected",
+}
+
+export enum ENomineeRequestErrorNotifications {
+  ISSUER_ID_ERROR = "nomineeRequestIssuerIdError",
+  SUBMITTING_ERROR = "nomineeRequestGenericError",
+  REQUEST_EXISTS = "requestExists",
+  FETCH_NOMINEE_DATA_ERROR = "fetchNomineeDataError",
+}
+
+export enum EEtoNomineeRequestNotifications {
+  REJECT_NOMINEE_ERROR = "deleteNomineeRequestError",
+  ACCEPT_NOMINEE_ERROR = "acceptNomineeRequestError",
+  DELETE_NOMINEE_REQUEST_SUCCESS = "deleteNomineeRequestSuccess",
+  UPDATE_NOMINEE_REQUEST_ERROR = "updateNomineeRequestError",
+  GENERIC_NETWORK_ERROR = "etoNomineeRequestGenericError",
+  COULD_NOT_DELETE_REQUEST = "couldNotDeleteRequest",
+}
+
+export enum EEtoNomineeRequestMessages {
+  ISSUER_DELETE_NOMINEE_REQUEST = "issuerDeleteNomineeRequest",
+  ISSUER_DELETE_NOMINEE_REQUEST_TEXT = "issuerDeleteNomineeRequestText",
+  ISSUER_UPDATE_NOMINEE_REQUEST = "issuerUpdateNomineeRequest",
+  ISSUER_UPDATE_NOMINEE_REQUEST_TEXT = "issuerUpdateNomineeRequestText",
 }
 
 export enum TestMessage {
@@ -634,6 +685,70 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
 
     case MarketingEmailsMessage.UNSUBSCRIBE_ERROR:
       return <FormattedMessage id="settings.unsubscription.error" />;
+
+    case EMaskedFormError.GENERIC_ERROR:
+      return <FormattedMessage id="error-message.eth-address-validation.not-a-valid-eth-address" />;
+    case EMaskedFormError.ILLEGAL_CHARACTER:
+      return <FormattedMessage id="error-message.eth-address-validation.illegal-character" />;
+    case EMaskedFormError.INVALID_PREFIX:
+      return <FormattedMessage id="error-message.eth-address-validation.invalid-prefix" />;
+    case EMaskedFormError.MAX_LENGTH_EXCEEDED:
+      return <FormattedMessage id="error-message.eth-address-validation.max-length-exceeded" />;
+
+    case EKycRequestStatusTranslation.ACCEPTED:
+      return <FormattedMessage id="kyc-request.status.accepted" />;
+    case EKycRequestStatusTranslation.DRAFT:
+      return <FormattedMessage id="kyc-request.status.draft" />;
+    case EKycRequestStatusTranslation.IGNORED:
+      return <FormattedMessage id="kyc-request.status.ignored" />;
+    case EKycRequestStatusTranslation.OUTSOURCED:
+      return <FormattedMessage id="kyc-request.status.outsourced" />;
+    case EKycRequestStatusTranslation.PENDING:
+      return <FormattedMessage id="kyc-request.status.pending" />;
+    case EKycRequestStatusTranslation.REJECTED:
+      return <FormattedMessage id="kyc-request.status.rejected" />;
+
+    case ENomineeRequestStatusTranslation.APPROVED:
+      return <FormattedMessage id="nominee-link-request.status.approved" />;
+    case ENomineeRequestStatusTranslation.PENDING:
+      return <FormattedMessage id="nominee-link-request.status.pending" />;
+    case ENomineeRequestStatusTranslation.REJECTED:
+      return <FormattedMessage id="nominee-link-request.status.rejected" />;
+
+    case ENomineeRequestErrorNotifications.SUBMITTING_ERROR:
+      return <FormattedMessage id="nominee-flow.link-with-issuer.submitting-error-notification" />;
+    case ENomineeRequestErrorNotifications.FETCH_NOMINEE_DATA_ERROR:
+      return (
+        <FormattedMessage id="nominee-flow.link-with-issuer.fetch-nominee-data-error-notification" />
+      );
+    case ENomineeRequestErrorNotifications.ISSUER_ID_ERROR:
+      return <FormattedMessage id="nominee-flow.link-with-issuer.issuer-id-error-notification" />;
+    case ENomineeRequestErrorNotifications.REQUEST_EXISTS:
+      return (
+        <FormattedMessage id="nominee-flow.link-with-issuer.request-exists-error-notification" />
+      );
+
+    case EEtoNomineeRequestNotifications.DELETE_NOMINEE_REQUEST_SUCCESS:
+      return <FormattedMessage id="eto.form.eto-nominee.delete-nominee-request-success" />;
+    case EEtoNomineeRequestNotifications.GENERIC_NETWORK_ERROR:
+      return <FormattedMessage id="eto.form.eto-nominee.generic-network-error" />;
+    case EEtoNomineeRequestNotifications.COULD_NOT_DELETE_REQUEST:
+      return <FormattedMessage id="eto.form.eto-nominee.delete-request-error" />;
+    case EEtoNomineeRequestNotifications.REJECT_NOMINEE_ERROR:
+      return <FormattedMessage id="eto.form.eto-nominee.reject-nominee-request-error" />;
+    case EEtoNomineeRequestNotifications.ACCEPT_NOMINEE_ERROR:
+      return <FormattedMessage id="eto.form.eto-nominee.accept-nominee-request-error" />;
+    case EEtoNomineeRequestNotifications.UPDATE_NOMINEE_REQUEST_ERROR:
+      return <FormattedMessage id="eto.form.eto-nominee.accept-nominee-request-error" />;
+
+    case EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST:
+      return <FormattedMessage id="eto-nominee.permissions.delete-nominee-request-title" />;
+    case EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST_TEXT:
+      return <FormattedMessage id="eto-nominee.permissions.delete-nominee-request-text" />;
+    case EEtoNomineeRequestMessages.ISSUER_UPDATE_NOMINEE_REQUEST:
+      return <FormattedMessage id="eto-nominee.permissions.update-nominee-request-text" />;
+    case EEtoNomineeRequestMessages.ISSUER_UPDATE_NOMINEE_REQUEST_TEXT:
+      return <FormattedMessage id="eto-nominee.permissions.update-nominee-request-text" />;
 
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:

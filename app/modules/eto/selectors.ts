@@ -180,3 +180,14 @@ export const selectFilteredEtosByRestrictedJurisdictions = (
         );
       })
     : etos;
+
+export const selectEtoOfNominee = (
+  state: IAppState,
+  nomineeId: string,
+): TEtoWithCompanyAndContract | undefined => {
+  const etoState = selectEtoState(state);
+  const previewCode = Object.keys(etoState.etos).find(
+    (etoKey: string) => etoState.etos[etoKey]!.nominee === nomineeId,
+  );
+  return previewCode ? selectEtoWithCompanyAndContract(state, previewCode) : undefined;
+};

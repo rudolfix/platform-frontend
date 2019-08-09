@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 
-import { ERequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
+import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { selectIsUserVerifiedOnBlockchain, selectKycRequestStatus } from "../kyc/selectors";
@@ -25,6 +25,9 @@ export const selectUnverifiedUserEmail = (state: IAuthState): string | undefined
 
 export const selectUser = (state: IAuthState): IUser | undefined => state.user;
 
+export const selectUserId = (state: IAppState): string | undefined =>
+  state.auth.user && state.auth.user.userId;
+
 export const selectBackupCodesVerified = (state: IAppState): boolean =>
   !!(state.auth.user && state.auth.user.backupCodesVerified) || !selectIsLightWallet(state.web3);
 
@@ -42,7 +45,7 @@ export const selectDoesEmailExist = (state: IAuthState): boolean =>
  */
 export const selectIsUserVerified = (state: IAppState): boolean =>
   selectIsUserEmailVerified(state.auth) &&
-  selectKycRequestStatus(state) === ERequestStatus.ACCEPTED;
+  selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED;
 
 /**
  * Check if user is verified by API and Contract

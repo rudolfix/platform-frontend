@@ -11,6 +11,7 @@ import { IHttpClient } from "../lib/api/client/IHttpClient";
 import { JsonHttpClient } from "../lib/api/client/JsonHttpClient";
 import { EtoApi } from "../lib/api/eto/EtoApi";
 import { EtoFileApi } from "../lib/api/eto/EtoFileApi";
+import { EtoNomineeApi } from "../lib/api/eto/EtoNomineeApi";
 import { EtoPledgeApi } from "../lib/api/eto/EtoPledgeApi";
 import { EtoProductApi } from "../lib/api/eto/EtoProductApi";
 import { FileStorageApi } from "../lib/api/file-storage/FileStorageApi";
@@ -169,6 +170,10 @@ export function setupBindings(config: IConfig): Container {
     .to(EtoFileApi)
     .inSingletonScope();
   container
+    .bind<EtoNomineeApi>(symbols.apiEtoNomineeService)
+    .to(EtoNomineeApi)
+    .inSingletonScope();
+  container
     .bind<WalletStorage>(symbols.walletStorage)
     .to(WalletStorage)
     .inSingletonScope();
@@ -268,6 +273,7 @@ export const createGlobalDependencies = (container: Container) => ({
   apiEtoPledgeService: container.get<EtoPledgeApi>(symbols.apiEtoPledgeService),
   apiEtoProductService: container.get<EtoProductApi>(symbols.apiEtoProductService),
   apiEtoFileService: container.get<EtoFileApi>(symbols.apiEtoFileService),
+  apiEtoNomineeService: container.get<EtoNomineeApi>(symbols.apiEtoNomineeService),
   apiUserService: container.get<UsersApi>(symbols.usersApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
   analyticsApi: container.get<AnalyticsApi>(symbols.analyticsApi),

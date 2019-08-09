@@ -1,40 +1,34 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { branch, compose, nest, renderComponent, withProps } from "recompose";
+import { branch, compose, nest, renderNothing, withProps } from "recompose";
 
-import { ERequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
-import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../../modules/auth/selectors";
-import { selectKycRequestStatus } from "../../modules/kyc/selectors";
+import { actions } from "../../modules/actions";
+import { selectUserId } from "../../modules/auth/selectors";
+import { selectIsBankAccountVerified } from "../../modules/bank-transfer-flow/selectors";
+import { selectEtoOfNominee } from "../../modules/eto/selectors";
+import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
+import { selectNomineeStateIsLoading } from "../../modules/nominee-flow/selectors";
 import { SelectIsVerificationFullyDone } from "../../modules/selectors";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
+import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { Layout } from "../layouts/Layout";
-import { Panel } from "../shared/Panel";
-import { SuccessTick } from "../shared/SuccessTick";
-import { nomineeAccountSetupSteps } from "./AccountSetupData";
-import { AccountSetupStep, INomineeAccountSetupSteps } from "./AccountSetupWizard";
-import { NomineeKycPending } from "./NomineeKycPending";
-import { IStepComponentProps, prepareSetupAccountSteps } from "./utils";
+import { NomineeDashboardContainer } from "./nomineeDashboardContainer/NomineeDashboardContainer";
+import { NomineeDashboardTasks } from "./NomineeDashboardTasks";
+import { ENomineeTask, getNomineeTaskStep } from "./NomineeTasksData";
 
 import * as styles from "./NomineeDashboard.module.scss";
 
 interface IStateProps {
-  emailVerified: boolean;
-  backupCodesVerified: boolean;
-  kycRequestStatus: ERequestStatus | undefined;
   verificationIsComplete: boolean;
+  isLoading: boolean;
+  isBankAccountVerified: boolean;
+  nomineeEto: TEtoWithCompanyAndContract | undefined;
 }
 
-interface INomineeTask {
-  key: string;
+interface IDashboardProps {
+  nomineeTaskStep: ENomineeTask;
 }
-
-const NomineeDashboardContainer: React.FunctionComponent = ({ children }) => (
-  <div data-test-id="nominee-dashboard" className={styles.nomineeDashboardContainer}>
-    {children}
-  </div>
-);
 
 interface IDashboardTitleProps {
   title: TTranslatedString;
@@ -48,69 +42,38 @@ export const DashboardTitle: React.FunctionComponent<IDashboardTitleProps> = ({ 
   </div>
 );
 
-const NomineeAccountSetup: React.FunctionComponent<INomineeAccountSetupSteps> = ({
-  accountSetupStepsData,
-}) => (
-  <>
-    <DashboardTitle
-      title={<FormattedMessage id="account-setup.welcome-to-neufund" />}
-      text={<FormattedMessage id="account-setup.please-complete-setup" />}
-    />
-    <Panel className={styles.accountSetupWrapper}>
-      {accountSetupStepsData.map((stepData: IStepComponentProps) => (
-        <AccountSetupStep {...stepData} />
-      ))}
-    </Panel>
-  </>
-);
-
-const NoTasks = () => (
-  <>
-    <SuccessTick />
-    <h2 className={styles.dashboardTitle}>
-      <FormattedMessage id="nominee-dashboard.no-tasks-title" />
-    </h2>
-    <p className={styles.dashboardText}>
-      <FormattedMessage id="nominee-dashboard.no-tasks-text" />
-    </p>
-  </>
-);
-
-export const NomineeDashboardTasks: React.FunctionComponent<{ nomineeTasks?: INomineeTask[] }> = ({
-  nomineeTasks,
-}) => (
-  <Panel className={styles.dashboardContentPanel}>
-    {!nomineeTasks ? <NoTasks /> : () => <>tasks</>}
-  </Panel>
-);
-
-export const NomineeDashboard = compose<INomineeAccountSetupSteps, {}>(
-  withContainer(nest(Layout, NomineeDashboardContainer)),
-  appConnect<IStateProps>({
-    stateToProps: state => ({
-      emailVerified: selectIsUserEmailVerified(state.auth),
-      backupCodesVerified: selectBackupCodesVerified(state),
-      kycRequestStatus: selectKycRequestStatus(state),
-      verificationIsComplete: SelectIsVerificationFullyDone(state),
-    }),
+export const NomineeDashboard = compose<IDashboardProps, {}>(
+  appConnect<IStateProps | null>({
+    stateToProps: state => {
+      const nomineeId = selectUserId(state);
+      if (nomineeId !== undefined) {
+        return {
+          isLoading: selectNomineeStateIsLoading(state),
+          nomineeEto: selectEtoOfNominee(state, nomineeId),
+          isBankAccountVerified: selectIsBankAccountVerified(state),
+          verificationIsComplete: SelectIsVerificationFullyDone(state),
+        };
+      } else {
+        return null;
+      }
+    },
   }),
-  branch<IStateProps>(
-    props => props.kycRequestStatus === ERequestStatus.PENDING,
-    renderComponent(NomineeKycPending),
-  ),
-  branch<IStateProps>(
-    props => props.verificationIsComplete,
-    renderComponent(NomineeDashboardTasks),
-  ),
-  withProps<INomineeAccountSetupSteps, IStateProps>(
-    ({ emailVerified, backupCodesVerified, kycRequestStatus }: IStateProps) => ({
-      accountSetupStepsData: prepareSetupAccountSteps(
-        nomineeAccountSetupSteps(
-          emailVerified,
-          backupCodesVerified,
-          kycRequestStatus !== ERequestStatus.DRAFT,
-        ),
+  branch<IStateProps | null>(props => props === null, renderNothing),
+  onEnterAction<IStateProps>({
+    actionCreator: (dispatch, { verificationIsComplete }) => {
+      if (verificationIsComplete) {
+        dispatch(actions.nomineeFlow.loadNomineeTaskData());
+      }
+    },
+  }),
+  withProps<IDashboardProps, IStateProps>(
+    ({ verificationIsComplete, nomineeEto, isBankAccountVerified }) => ({
+      nomineeTaskStep: getNomineeTaskStep(
+        verificationIsComplete,
+        nomineeEto,
+        isBankAccountVerified,
       ),
     }),
   ),
-)(NomineeAccountSetup);
+  withContainer<IDashboardProps>(nest(Layout, NomineeDashboardContainer)),
+)(NomineeDashboardTasks);

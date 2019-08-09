@@ -18,7 +18,7 @@ import {
   EProductName,
   TEtoProduct,
 } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { ERequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
+import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
 import { selectIsUserEmailVerified } from "../auth/selectors";
@@ -37,6 +37,16 @@ export const selectIssuerEtoFlow = (state: IAppState) => state.etoFlow;
 export const selectIssuerEto: (state: IAppState) => TEtoSpecsData | undefined = createSelector(
   selectIssuerEtoFlow,
   (state: DeepReadonly<IEtoFlowState>) => state.eto,
+);
+
+export const selectEtoNominee: (state: IAppState) => string | undefined = createSelector(
+  selectIssuerEtoFlow,
+  (state: DeepReadonly<IEtoFlowState>) => state.eto && state.eto.nominee,
+);
+
+export const selectEtoNomineeDisplayName: (state: IAppState) => string | undefined = createSelector(
+  selectIssuerEtoFlow,
+  (state: DeepReadonly<IEtoFlowState>) => state.eto && state.eto.nomineeDisplayName,
 );
 
 export const selectIssuerEtoPreviewCode = createSelector(
@@ -218,7 +228,7 @@ export const selectSignedInvestmentAgreementUrl = (state: DeepReadonly<IAppState
   state.etoFlow.signedInvestmentAgreementUrl;
 
 export const userHasKycAndEmailVerified = (state: IAppState) =>
-  selectKycRequestStatus(state) === ERequestStatus.ACCEPTED &&
+  selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED &&
   selectIsUserEmailVerified(state.auth);
 
 export const selectIsGeneralEtoLoading = (state: IAppState) =>

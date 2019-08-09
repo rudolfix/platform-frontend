@@ -1,11 +1,11 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { InlineIcon } from "../shared/icons/InlineIcon";
-import { EAccountSetupStepState, IStepComponentProps } from "./utils";
+import { InlineIcon } from "../../shared/icons/InlineIcon";
+import { EAccountSetupStepState, IStepComponentProps } from "./types";
 
-import * as checkMark from "../../assets/img/inline_icons/icon_check.svg";
-import * as styles from "./NomineeDashboard.module.scss";
+import * as checkMark from "../../../assets/img/inline_icons/icon_check.svg";
+import * as styles from "../NomineeDashboard.module.scss";
 
 interface IStepTickerProps {
   stepState: EAccountSetupStepState;
@@ -14,10 +14,6 @@ interface IStepTickerProps {
 
 interface IExternalProps {
   isLast: boolean;
-}
-
-export interface INomineeAccountSetupSteps {
-  accountSetupStepsData: IStepComponentProps[];
 }
 
 const StepTicker: React.FunctionComponent<IStepTickerProps> = ({ stepState, number }) => {

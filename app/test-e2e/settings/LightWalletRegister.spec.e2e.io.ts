@@ -140,7 +140,7 @@ describe("Light wallet login / register", () => {
 
       const emailLinkVerification = get(
         r,
-        `body[0].personalizations[0].substitutions["-loginLink-"]`,
+        `body[0].template_vars.login_link`,
       );
       const emailLinkVerificationWithFixedDomain = emailLinkVerification.replace(
         process.env.NF_REMOTE_BACKEND_PROXY_ROOT!.replace("api/", ""),

@@ -121,10 +121,7 @@ export const getLatestVerifyUserEmailLink = (
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
     const latestEmailByUser = getLatestEmailByUser(r, email);
 
-    const activationLink = get(
-      latestEmailByUser,
-      "personalizations[0].dynamic_template_data.activation_link",
-    );
+    const activationLink = get(latestEmailByUser, "template_vars.activation_link");
 
     if (activationLink) {
       // we need to replace the loginlink pointing to a remote destination

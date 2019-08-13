@@ -23,11 +23,8 @@ import { selectLastTransactionId, selectTimestampOfLastChange, selectTXById } fr
 import { ETransactionStatus, ETransactionSubType, TTxHistory, TTxHistoryCommon } from "./types";
 import { getCurrencyFromTokenSymbol, getDecimalsFormat, getTxUniqueId } from "./utils";
 
-export function* mapAnalyticsApiTransactionResponse(
-  { logger }: TGlobalDependencies,
-  transaction: TAnalyticsTransaction,
-): IterableIterator<any> {
-  const common: TTxHistoryCommon = {
+function getTransactionCommon(transaction: TAnalyticsTransaction): TTxHistoryCommon {
+  return {
     amount: transaction.extraData.amount.toString(),
     amountFormat: getDecimalsFormat(transaction.extraData.tokenMetadata),
     blockNumber: transaction.blockNumber,
@@ -38,7 +35,12 @@ export function* mapAnalyticsApiTransactionResponse(
     transactionIndex: transaction.transactionIndex,
     txHash: transaction.txHash,
   };
+}
 
+export function* mapAnalyticsApiTransactionResponse(
+  { logger }: TGlobalDependencies,
+  transaction: TAnalyticsTransaction,
+): IterableIterator<any> {
   // we can return tx in each case but then we will loose type safety
   let tx: TTxHistory | undefined = undefined;
 
@@ -62,7 +64,7 @@ export function* mapAnalyticsApiTransactionResponse(
       const isCompleted = !!transaction.extraData.isClaimed || !!transaction.extraData.isRefunded;
 
       tx = {
-        ...common,
+        ...getTransactionCommon(transaction),
         neuReward,
         neuRewardEur,
         isICBMInvestment,
@@ -85,6 +87,8 @@ export function* mapAnalyticsApiTransactionResponse(
       if (!transaction.extraData.assetTokenMetadata || !transaction.extraData.tokenMetadata) {
         throw new Error("Invalid asset token metadata");
       }
+
+      const common = getTransactionCommon(transaction);
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
@@ -112,7 +116,7 @@ export function* mapAnalyticsApiTransactionResponse(
       // In case it's an equity token transaction
       if (transaction.extraData.tokenInterface === "equityTokenInterface") {
         tx = {
-          ...common,
+          ...getTransactionCommon(transaction),
           type: transaction.type,
           subType: ETransactionSubType.TRANSFER_EQUITY_TOKEN,
           currency: transaction.extraData.tokenMetadata!.tokenSymbol,
@@ -122,6 +126,8 @@ export function* mapAnalyticsApiTransactionResponse(
           toAddress: transaction.extraData.toAddress!,
         };
       } else {
+        const common = getTransactionCommon(transaction);
+
         const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
         const amountEur: string = yield select((state: IAppState) =>
@@ -142,7 +148,7 @@ export function* mapAnalyticsApiTransactionResponse(
     }
     case ETransactionType.NEUR_PURCHASE: {
       tx = {
-        ...common,
+        ...getTransactionCommon(transaction),
         subType: undefined,
         type: transaction.type,
         currency: ECurrency.EUR_TOKEN,
@@ -152,10 +158,11 @@ export function* mapAnalyticsApiTransactionResponse(
     }
     case ETransactionType.NEUR_REDEEM: {
       if (transaction.extraData.settledAmount) {
+        const common = getTransactionCommon(transaction);
         const settledAmount = transaction.extraData.settledAmount.toString();
 
         tx = {
-          ...common,
+          ...getTransactionCommon(transaction),
           settledAmount,
           subType: ETransactionStatus.COMPLETED,
           type: transaction.type,
@@ -166,7 +173,7 @@ export function* mapAnalyticsApiTransactionResponse(
         };
       } else {
         tx = {
-          ...common,
+          ...getTransactionCommon(transaction),
           subType: ETransactionStatus.PENDING,
           type: transaction.type,
           currency: ECurrency.EUR_TOKEN,
@@ -179,7 +186,7 @@ export function* mapAnalyticsApiTransactionResponse(
     }
     case ETransactionType.NEUR_DESTROY: {
       tx = {
-        ...common,
+        ...getTransactionCommon(transaction),
         subType: undefined,
         type: transaction.type,
         currency: ECurrency.EUR_TOKEN,
@@ -200,7 +207,7 @@ export function* mapAnalyticsApiTransactionResponse(
         );
 
         tx = {
-          ...common,
+          ...getTransactionCommon(transaction),
           neuReward,
           neuRewardEur,
           subType: undefined,
@@ -217,6 +224,8 @@ export function* mapAnalyticsApiTransactionResponse(
       if (!transaction.extraData.tokenMetadata) {
         throw new Error("Invalid token metadata");
       }
+
+      const common = getTransactionCommon(transaction);
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
@@ -242,6 +251,7 @@ export function* mapAnalyticsApiTransactionResponse(
       if (!transaction.extraData.tokenMetadata) {
         throw new Error("Invalid token metadata");
       }
+      const common = getTransactionCommon(transaction);
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 

@@ -219,7 +219,7 @@ export const parseInputToNumber = (val: string | undefined): string | null => {
 
   let value = val.trim().replace(/\s/g, "");
 
-  if (val.match(/^\d+$/)) {
+  if (value.match(/^\d+$/)) {
     return value;
   }
 

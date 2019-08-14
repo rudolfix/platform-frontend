@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   install-lint-test:
     # install and lint is taken as one job to remove required time for downloading cache
@@ -12,16 +13,16 @@ jobs:
       # Installation
       - run: yarn --frozen-lockfile
       # Confirm Artifact Version
-      - run: yarn contract-artifacts:check
+      - run: yarn workspace web contract-artifacts:check
       # Linting
-      - run: yarn lint
+      - run: yarn workspace web lint
       # Unit Tests
-      - run: yarn test:browser && yarn test:node
+      - run: yarn workspace web test:browser && yarn workspace web test:node
 
       - save_cache:
           paths:
             - node_modules
-            - app/lib/contracts
+            - packages/web/app/lib/contracts
             - /home/circleci/.cache/Cypress
           key: v22-deps-{{ checksum "package.json" }}
 
@@ -41,10 +42,10 @@ jobs:
 
       - run: yarn --frozen-lockfile
       - run:
-          command: yarn build:prod:e2e:io
+          command: yarn workspace web build:prod:e2e:io
           no_output_timeout: 10m
       - run:
-          command: yarn test:e2e:chrome
+          command: yarn workspace web test:e2e:chrome
 
   build-frontend:
     docker:
@@ -60,7 +61,7 @@ jobs:
 
       - run: yarn --frozen-lockfile
       - run:
-          command: yarn build:prod:e2e
+          command: yarn workspace web build:prod:e2e
           no_output_timeout: 10m
       # If build takes more than 10mins then fail
       - persist_to_workspace:
@@ -92,7 +93,7 @@ jobs:
             - v22-deps-
 
       - run:
-          command: source   /opt/circleci/.nvm/nvm.sh && yarn test:e2e
+          command: source /opt/circleci/.nvm/nvm.sh && yarn workspace web test:e2e
           no_output_timeout: 30m
 
   codechecks:
@@ -108,8 +109,8 @@ jobs:
             - v22-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn build:commit-deployment
-      - run: yarn codechecks
+      - run: yarn workspace web build:commit-deployment
+      - run: yarn workspace web codechecks
 
   codechecks-vis-reg:
     docker:
@@ -124,8 +125,8 @@ jobs:
             - v22-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn storybook:screenshots
-      - run: yarn codechecks ./codechecks-vis-reg.ts
+      - run: yarn workspace web storybook:screenshots
+      - run: yarn workspace web codechecks ./codechecks-vis-reg.ts
 
   deploy-storybook:
     docker:
@@ -140,7 +141,7 @@ jobs:
             - v22-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
+      - run: yarn workspace web deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
 
 workflows:
   version: 2

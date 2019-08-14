@@ -15,12 +15,12 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "typeRoots": ["./node_modules/@types", "./@types"]
+    "typeRoots": ["../../node_modules/@types", "./node_modules/@types", "./@types"]
   },
   "include": [
-    "./node_modules/types-bn/index.d.ts",
-    "./node_modules/types-ethereumjs-util/index.d.ts",
-    "./node_modules/web3-typescript-typings/index.d.ts",
+    "../../node_modules/types-bn/index.d.ts",
+    "../../node_modules/types-ethereumjs-util/index.d.ts",
+    "../../node_modules/web3-typescript-typings/index.d.ts",
     "./typings/**/*.ts",
     "./codecheks-vis-reg.ts",
     "./codechecks.ts",

@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
 
+const { getArtifactsSubmoduleRelativePath } = require("./getArtifacts");
+
 const getApiSha = async () => {
   try {
     console.log(`Requesting SHA from Health Check API`);
@@ -15,7 +17,7 @@ const getApiSha = async () => {
     console.log(`Commit SHA: ${response.commit_sha}`);
     const checkMode = process.argv[2];
 
-    if (checkMode == "--check") {
+    if (checkMode === "--check") {
       const oldCommits = JSON.parse(
         fs.readFileSync(path.resolve(__dirname, "..", "health-check-sha.json"), "utf8"),
       );
@@ -36,12 +38,7 @@ const getApiSha = async () => {
 
       console.log("Checking out to the correct contract artifacts version");
 
-      const contractArtifactsDir = path.resolve(
-        __dirname,
-        "..",
-        "git_modules",
-        "platform-contracts-artifacts",
-      );
+      const contractArtifactsDir = getArtifactsSubmoduleRelativePath();
 
       const CI_COMMAND = `git submodule update --init --recursive && git fetch && git checkout ${
         response.artifacts_sha

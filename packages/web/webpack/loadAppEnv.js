@@ -3,6 +3,8 @@ const { mapValues } = require("lodash");
 const dotenv = require("dotenv");
 const fs = require("fs");
 
+const { getArtifactsMeta } = require("../scripts/getArtifacts");
+
 module.exports = function loadAppEnv(processEnv) {
   const universeAddressExists = !!process.env.NF_UNIVERSE_CONTRACT_ADDRESS;
   const envs = dotenv.load({ path: join(__dirname, "../.env") }).parsed;
@@ -25,10 +27,9 @@ module.exports = function loadAppEnv(processEnv) {
   // overrides .env value, if meta.json exists, but not process.env
   if (!universeAddressExists) {
     try {
-      const meta = require(`../git_modules/platform-contracts-artifacts/${
-        allEnvs.NF_CONTRACT_ARTIFACTS_VERSION
-      }/meta.json`);
-      allEnvs.NF_UNIVERSE_CONTRACT_ADDRESS = meta.UNIVERSE_ADDRESS;
+      const { UNIVERSE_ADDRESS } = getArtifactsMeta(allEnvs.NF_CONTRACT_ARTIFACTS_VERSION);
+
+      allEnvs.NF_UNIVERSE_CONTRACT_ADDRESS = UNIVERSE_ADDRESS;
     } catch (e) {
       console.error("cannot read universe address from meta.json in contract artifacts", e.message);
       console.error("not overriding NF_UNIVERSE_CONTRACT_ADDRESS");

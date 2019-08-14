@@ -1,11 +1,13 @@
-import { AbiCoder as abiCoder } from "web3-eth-abi";
+import { AbiCoder } from "web3-eth-abi";
 import { sha3 } from "web3-utils";
 
 import { requestFromWeb3NodeFetch } from "./ethRpcUtils";
 
-const AbiCoder = new abiCoder();
+const abiCoder = new AbiCoder();
 
-export const CONTRACT_METADATA: any = require("../../../git_modules/platform-contracts-artifacts/localhost/meta.json");
+export const {
+  UNIVERSE_ADDRESS,
+}: any = require("../../../../../git_modules/platform-contracts-artifacts/localhost/meta.json");
 
 let currentStoredAgreement: undefined | string;
 
@@ -18,9 +20,9 @@ export const getAgreementHash = async () => {
   // Since we are contacting the node directly here we need to prepare the data and parse it
   // Once we move all functions into web3 we don't need encoding/parsing data anymore
   const response = await (await requestFromWeb3NodeFetch("eth_call", [
-    { to: CONTRACT_METADATA.UNIVERSE_ADDRESS, data: sha3("currentAgreement()").slice(0, 10) },
+    { to: UNIVERSE_ADDRESS, data: sha3("currentAgreement()").slice(0, 10) },
   ])).json();
-  const currentAgreement = AbiCoder.decodeParameters(
+  const currentAgreement = abiCoder.decodeParameters(
     ["address", "uint256", "string", "uint256"],
     response.result,
   )[2];

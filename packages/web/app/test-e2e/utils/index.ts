@@ -36,10 +36,9 @@ import { DEFAULT_PASSWORD } from "./userHelpers";
 
 export const LONG_WAIT_TIME = 60000;
 
-export const ETO_FIXTURES: any = require("../../../git_modules/platform-contracts-artifacts/localhost/eto_fixtures.json");
-export const ETO_TERMS_FIXTURES: any = require("../../../git_modules/platform-contracts-artifacts/localhost/eto_terms_contraints_fixtures.json");
-
-export const FIXTURE_ACCOUNTS: any = require("../../../git_modules/platform-contracts-artifacts/localhost/fixtures.json");
+export const ETO_FIXTURES: any = require("../../../../../git_modules/platform-contracts-artifacts/localhost/eto_fixtures.json");
+export const ETO_TERMS_FIXTURES: any = require("../../../../../git_modules/platform-contracts-artifacts/localhost/eto_terms_contraints_fixtures.json");
+export const FIXTURE_ACCOUNTS: any = require("../../../../../git_modules/platform-contracts-artifacts/localhost/fixtures.json");
 
 export const numberRegExPattern = /\d+/g;
 

@@ -1,29 +1,31 @@
 const tc = require("typechain");
 const path = require("path");
 const fs = require("fs");
+
+const { getArtifactsMeta, getArtifactsPath } = require("./getArtifacts");
 const loadAppEnv = require("../webpack/loadAppEnv");
+const { getArtifactsRelativePath } = require("./getArtifacts");
 
 loadAppEnv(process.env);
 
 const artifactsVersion = process.env.NF_CONTRACT_ARTIFACTS_VERSION || "localhost";
 
-const contractsPath = `git_modules/platform-contracts-artifacts/${artifactsVersion}`;
 const outDir = "app/lib/contracts";
 
 // @ts-ignore
 global.IS_CLI = true;
 
 async function generateKnownInterfaces() {
-  const knownInterfaces = require(`../${contractsPath}/meta.json`).KNOWN_INTERFACES;
+  const { KNOWN_INTERFACES } = getArtifactsMeta(artifactsVersion);
   fs.writeFileSync(
     path.resolve(__dirname, "..", outDir, "knownInterfaces.json"),
-    JSON.stringify(knownInterfaces, null, "  "),
+    JSON.stringify(KNOWN_INTERFACES, null, "  "),
   );
 }
 
 tc.generateTypeChainWrappers({
   outDir,
-  glob: `${contractsPath}/contracts/*.json`,
+  glob: `${getArtifactsRelativePath(artifactsVersion)}/contracts/*.json`,
   force: true,
 })
   .catch(e => {

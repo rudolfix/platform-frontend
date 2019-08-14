@@ -383,6 +383,7 @@ describe("Money utils", () => {
     });
     it("returns a number string in correct format if input value is a parseable number", () => {
       expect(parseInputToNumber("12334")).to.eq("12334");
+      expect(parseInputToNumber("123 342.66")).to.eq("123342.66");
       expect(parseInputToNumber("12334.22")).to.eq("12334.22");
       expect(parseInputToNumber("12334,22")).to.eq("12334.22");
       expect(parseInputToNumber("222,222,222.22")).to.eq("222222222.22");
@@ -391,7 +392,6 @@ describe("Money utils", () => {
       expect(parseInputToNumber("222.22")).to.eq("222.22");
       expect(parseInputToNumber("213,213,44")).to.eq("21321344");
       expect(parseInputToNumber("222,22")).to.eq("222.22");
-      expect(parseInputToNumber("222.222,22")).to.eq("222222.22");
       expect(parseInputToNumber("222.222,22")).to.eq("222222.22");
       expect(parseInputToNumber("222,222.22")).to.eq("222222.22");
     });

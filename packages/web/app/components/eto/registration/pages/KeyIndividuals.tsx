@@ -105,12 +105,11 @@ const Individual: React.FunctionComponent<IIndividual> = ({
         <FormField
           name={`${member}.name`}
           label={<FormattedMessage id="eto.form.key-individuals.name" />}
-          placeholder="name"
+          placeholder="Full Name"
         />
         <FormField
           name={`${member}.role`}
           label={<FormattedMessage id="eto.form.key-individuals.role" />}
-          placeholder="role"
         />
         <FormTextArea
           name={`${member}.description`}

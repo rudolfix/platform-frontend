@@ -7,6 +7,7 @@ import {
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import {
+  MAX_PERCENTAGE,
   MIN_COMPANY_SHARES,
   MIN_EXISTING_COMPANY_SHARES,
   MIN_NEW_SHARES_TO_ISSUE,
@@ -366,26 +367,34 @@ export const EtoInvestmentTermsType = YupTS.object({
   preMoneyValuationEur: YupTS.number().enhance(v => v.min(MIN_PRE_MONEY_VALUATION_EUR)),
   existingCompanyShares: YupTS.number().enhance(v => v.min(MIN_EXISTING_COMPANY_SHARES)),
   authorizedCapitalShares: YupTS.number().optional(),
-  newSharesToIssue: YupTS.number().enhance(v =>
-    v.when("minimumNewSharesToIssue", (value: number) =>
-      v.min(
-        value,
-        getMessageTranslation(
-          createMessage(ValidationMessage.VALIDATION_MAX_NEW_SHARES_LESS_THAN_MINIMUM),
+  newSharesToIssue: YupTS.number()
+    .enhance(v => v.required())
+    .enhance(v =>
+      v.when("minimumNewSharesToIssue", (value: number) =>
+        v.min(
+          value,
+          getMessageTranslation(
+            createMessage(ValidationMessage.VALIDATION_MAX_NEW_SHARES_LESS_THAN_MINIMUM),
+          ),
         ),
       ),
     ),
-  ),
   minimumNewSharesToIssue: YupTS.number().enhance(v => v.min(MIN_NEW_SHARES_TO_ISSUE)),
   newSharesToIssueInWhitelist: YupTS.number()
     .optional()
     .enhance(v => v.min(NEW_SHARES_TO_ISSUE_IN_WHITELIST)),
-  whitelistDiscountFraction: YupTS.number().optional(),
-  publicDiscountFraction: YupTS.number().optional(),
+  whitelistDiscountFraction: YupTS.number()
+    .optional()
+    .enhance(v => v.max(MAX_PERCENTAGE)),
+  publicDiscountFraction: YupTS.number()
+    .optional()
+    .enhance(v => v.max(MAX_PERCENTAGE)),
   newSharesToIssueInFixedSlots: YupTS.number()
     .optional()
     .enhance(v => v.min(NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS)),
-  fixedSlotsMaximumDiscountFraction: YupTS.number().optional(),
+  fixedSlotsMaximumDiscountFraction: YupTS.number()
+    .optional()
+    .enhance(v => v.max(MAX_PERCENTAGE)),
   discountScheme: YupTS.string().optional(),
 });
 

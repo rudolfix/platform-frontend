@@ -47,13 +47,13 @@ const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({ readonly
     <Section>
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-name" />}
-        placeholder="Token name"
+        placeholder="Token name should be associated with your company’s brand name or project"
         name="equityTokenName"
         disabled={readonly}
       />
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
-        placeholder="3 - 4 characters"
+        placeholder="Token symbol should be a short version of the token name (max. 3-4 characters)"
         maxLength="4"
         name="equityTokenSymbol"
         disabled={readonly}
@@ -63,7 +63,7 @@ const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({ readonly
           <FormattedMessage id="eto.form.section.equity-token-information.token-image" />
         </FormFieldLabel>
         <FormSingleFileUpload
-          label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
+          label={<FormattedMessage id="eto.form.section.equity-token-information.token-icon" />}
           name="equityTokenImage"
           acceptedFiles={[EMimeType.PNG, EMimeType.JPG]}
           fileFormatInformation="*200 x 200px png"

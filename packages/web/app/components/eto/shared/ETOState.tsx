@@ -2,10 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import {
-  EEtoMarketingDataVisibleInPreview,
-  EEtoState,
-} from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   EETOStateOnChain,
   EEtoSubState,
@@ -83,7 +80,8 @@ export const getStateName: (
 
 const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain | EEtoSubState, string>> = {
   [EEtoState.PREVIEW]: styles.blue,
-  [EEtoState.PENDING]: styles.red,
+  [EEtoState.PENDING]: styles.orange,
+  [EEtoState.LISTED]: styles.green,
   // eto on chain states
   [EETOStateOnChain.Whitelist]: styles.green,
   [EETOStateOnChain.Public]: styles.green,
@@ -106,12 +104,8 @@ const getState = (
   isIssuer: boolean,
 ): EETOStateOnChain | EEtoState | EEtoSubState => {
   const state = isOnChain(eto) ? eto.contract.timedState : eto.state;
-
   if (eto.subState) {
-    return isIssuer &&
-      eto.isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE
-      ? state
-      : eto.subState;
+    return isIssuer ? state : eto.subState;
   } else {
     return state;
   }
@@ -126,7 +120,6 @@ const ComingSoonEtoState: React.FunctionComponent<
   isIssuer,
 }) => {
   const state = EEtoSubState.COMING_SOON;
-
   return (
     <div
       className={cn(styles.projectStatus, stateToClassName[state], size, layout, className)}

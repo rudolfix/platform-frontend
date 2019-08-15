@@ -162,6 +162,7 @@ export enum EEtoStep {
   SIX = "six",
   SEVEN = "seven",
   EIGHT = "eight",
+  NINE = "nine",
 }
 
 export const selectEtoStep = (
@@ -208,6 +209,10 @@ export const selectEtoStep = (
 
   if (etoState === EEtoState.PENDING) {
     return EEtoStep.SEVEN;
+  }
+  // THIS IS TEMPORARY FIX. A full should happen to this logic
+  if (etoState === EEtoState.ON_CHAIN) {
+    return EEtoStep.NINE;
   }
 
   return EEtoStep.EIGHT;

@@ -63,7 +63,7 @@ const TagsFormEditor: React.FunctionComponent<ICombinedProps & IInternalProps> =
       simpleValue
       selectComponent={Creatable}
       onChange={newTag => onChange(newTag as any)}
-      placeholder={"Add category"}
+      placeholder={"Add tag e.g Technology"}
       noResultsText="No matching word"
       className={cn("mb-3", styles.tagsForm)}
     />

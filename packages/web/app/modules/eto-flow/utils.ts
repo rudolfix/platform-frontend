@@ -90,6 +90,12 @@ export const etoMediaProgressOptions: IProgressOptions = {
 export const etoInvestmentTermsProgressOptions: IProgressOptions = {
   ignore: {
     discountScheme: true,
+    fixedSlotsMaximumDiscountFraction: true,
+    newSharesToIssueInFixedSlots: true,
+    publicDiscountFraction: true,
+    whitelistDiscountFraction: true,
+    newSharesToIssueInWhitelist: true,
+    authorizedCapitalShares: true,
   },
 };
 

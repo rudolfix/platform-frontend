@@ -416,7 +416,7 @@ describe("selectEtoStep", () => {
         true,
         true,
       ),
-    ).to.eq(EEtoStep.EIGHT);
+    ).to.eq(EEtoStep.NINE);
 
     expect(
       selectEtoStep(
@@ -427,7 +427,7 @@ describe("selectEtoStep", () => {
         true,
         true,
       ),
-    ).to.eq(EEtoStep.EIGHT);
+    ).to.eq(EEtoStep.NINE);
 
     expect(
       selectEtoStep(

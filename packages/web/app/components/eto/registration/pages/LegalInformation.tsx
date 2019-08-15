@@ -80,6 +80,7 @@ const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => (
       <FormTextArea
         label={<FormattedMessage id="eto.form.legal-information.company-legal-description" />}
         name="companyLegalDescription"
+        placeholder="Please enter the legal purpose of the entity stated in your incorporation documents."
       />
       <FormField
         label={<FormattedMessage id="eto.form.legal-information.company-state-address" />}
@@ -140,7 +141,7 @@ const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => (
       >
         <ArrayOfKeyValueFields
           name="shareholders"
-          valuePlaceholder={"Amount"}
+          valuePlaceholder={"Amount of shares"}
           suggestions={["Full Name"]}
           fieldNames={["fullName", "shares"]}
         />

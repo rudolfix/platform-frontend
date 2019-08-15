@@ -29,7 +29,7 @@ describe("Eto Forms submit preview", function(): void {
 
       submitPreview();
 
-      cy.get(tid("eto-dashboard-publish-eto")).should("be.disabled");
+      cy.get(tid("eto-dashboard-publish-eto")).should("not.exist");
 
       goToEtoPreview();
 

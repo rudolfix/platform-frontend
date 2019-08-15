@@ -4,7 +4,7 @@ import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
-import { branch, compose, lifecycle, renderComponent } from "recompose";
+import { branch, compose, lifecycle, renderComponent, renderNothing } from "recompose";
 
 import { DAY } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
@@ -404,6 +404,10 @@ const ChooseEtoStartDateWidget = compose<
       }
     },
   }),
+  branch<IStateProps>(
+    props => !(props.etoDate && calculateTimeLeft(props.etoDate, true) > 0),
+    renderNothing,
+  ),
   branch<IStateProps>(
     props => props.issuerEtoLoading || props.newDateSaving || props.transactionMining,
     renderComponent(WidgetLoading),

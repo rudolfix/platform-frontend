@@ -119,7 +119,6 @@ const selectStepComponent = (etoStep: EEtoStep) => {
     case EEtoStep.ONE:
       return (
         <DashboardHeading
-          step={1}
           title={<FormattedMessage id="eto-dashboard.verification" />}
           data-test-id="eto-dashboard-verification"
         />
@@ -127,7 +126,6 @@ const selectStepComponent = (etoStep: EEtoStep) => {
     case EEtoStep.TWO:
       return (
         <DashboardHeading
-          step={2}
           title={<FormattedMessage id="eto-dashboard.company-informations" />}
           data-test-id="eto-dashboard-company-informations"
         />
@@ -135,7 +133,6 @@ const selectStepComponent = (etoStep: EEtoStep) => {
     case EEtoStep.THREE:
       return (
         <DashboardHeading
-          step={3}
           title={<FormattedMessage id="eto-dashboard.publish-listing" />}
           data-test-id="eto-dashboard-publish-listing"
         />
@@ -144,7 +141,6 @@ const selectStepComponent = (etoStep: EEtoStep) => {
       return (
         <>
           <DashboardHeading
-            step={4}
             title={<FormattedMessage id="eto-dashboard.listing-review" />}
             data-test-id="eto-dashboard-listing-review"
           />
@@ -155,7 +151,6 @@ const selectStepComponent = (etoStep: EEtoStep) => {
       return (
         <>
           <DashboardHeading
-            step={5}
             title={<FormattedMessage id="eto-dashboard.setup-eto" />}
             data-test-id="eto-dashboard-setup-eto"
           />
@@ -165,7 +160,6 @@ const selectStepComponent = (etoStep: EEtoStep) => {
     case EEtoStep.SIX:
       return (
         <DashboardHeading
-          step={6}
           title={<FormattedMessage id="eto-dashboard.publish" />}
           data-test-id="eto-dashboard-publish"
         />
@@ -174,7 +168,6 @@ const selectStepComponent = (etoStep: EEtoStep) => {
       return (
         <>
           <DashboardHeading
-            step={7}
             title={<FormattedMessage id="eto-dashboard.review" />}
             data-test-id="eto-dashboard-review"
           />
@@ -184,11 +177,12 @@ const selectStepComponent = (etoStep: EEtoStep) => {
     case EEtoStep.EIGHT:
       return (
         <DashboardHeading
-          step={8}
           title={<FormattedMessage id="eto-dashboard.live" />}
           data-test-id="eto-dashboard-live"
         />
       );
+    case EEtoStep.NINE:
+      return <DashboardHeading title={<FormattedMessage id="eto-dashboard.start-fundraising" />} />;
     default:
       return null;
   }
@@ -245,15 +239,21 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
           {/*Show actions header only if actions are available*/}
           {((shouldViewEtoSettings &&
             isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE) ||
-            shouldViewSubmissionSection) && (
-            <Container columnSpan={EColumnSpan.THREE_COL}>
-              <DashboardHeading title={<FormattedMessage id="eto-dashboard.available-actions" />} />
-            </Container>
-          )}
+            shouldViewSubmissionSection) &&
+            isMarketingDataVisibleInPreview !==
+              EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING && (
+              <Container columnSpan={EColumnSpan.THREE_COL}>
+                <DashboardHeading
+                  title={<FormattedMessage id="eto-dashboard.available-actions" />}
+                />
+              </Container>
+            )}
 
           {shouldViewEtoSettings &&
             !(shouldViewSubmissionSection && isTermSheetSubmitted) &&
-            isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE && (
+            isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE &&
+            isMarketingDataVisibleInPreview !==
+              EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING && (
               <PublishETOWidget
                 isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
                 columnSpan={EColumnSpan.ONE_AND_HALF_COL}
@@ -279,7 +279,9 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.LISTED:
       return (
         <>
-          {canEnableBookbuilding && <BookBuildingWidget columnSpan={EColumnSpan.TWO_COL} />}
+          {canEnableBookbuilding && (
+            <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+          )}
           {!isOfferingDocumentSubmitted &&
             (offeringDocumentType === EOfferingDocumentType.PROSPECTUS ? (
               <UploadProspectusWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
@@ -293,7 +295,9 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.PROSPECTUS_APPROVED:
       return (
         <>
-          {canEnableBookbuilding && <BookBuildingWidget columnSpan={EColumnSpan.TWO_COL} />}
+          {canEnableBookbuilding && (
+            <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+          )}
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
       );
@@ -301,7 +305,9 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
       return (
         <>
           <UploadInvestmentAgreement columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-          <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+          {canEnableBookbuilding && (
+            <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+          )}
           <ChooseEtoStartDateWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>

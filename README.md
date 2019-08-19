@@ -11,7 +11,7 @@ A monorepo of neufund frontend.
 
 ## scripts
 
-###`yarn deduplicate` 
+### `yarn deduplicate` 
 
 Removes duplicated transitive dependencies. Run after major dependencies upgrade to clean up `node_modules`.
 

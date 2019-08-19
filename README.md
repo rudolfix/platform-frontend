@@ -8,3 +8,12 @@ A monorepo of neufund frontend.
 
  - [web](https://github.com/Neufund/platform-frontend/packages/web) - web UI deployed on `platform.neufund.org`;
  - more coming soon...
+
+## scripts
+
+###`yarn deduplicate` 
+
+Removes duplicated transitive dependencies. Run after major dependencies upgrade to clean up `node_modules`.
+
+Under the hood uses [`yarn-deduplicate`](https://github.com/atlassian/yarn-deduplicate)
+package.

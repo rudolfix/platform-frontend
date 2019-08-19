@@ -1,4 +1,5 @@
-import { createActionFactory } from "../actionsUtils";
+import { createActionFactory } from "@neufund/shared";
+
 import { TTxHistory } from "./types";
 
 export const txHistoryActions = {

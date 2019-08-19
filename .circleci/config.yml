@@ -1,11 +1,21 @@
 version: 2.1
 
-jobs:
-  install-lint-test:
-    # install and lint is taken as one job to remove required time for downloading cache
+executors:
+  docker:
     docker:
       - image: circleci/node:11.14.0
     working_directory: /home/circleci/app
+
+  docker-browsers:
+    docker:
+      - image: circleci/node:11.14.0-browsers
+    working_directory: /home/circleci/app
+
+
+jobs:
+  install-lint-test:
+    # install and lint is taken as one job to remove required time for downloading cache
+    executor: docker
 
     steps:
       # Download and cache dependencies
@@ -13,11 +23,13 @@ jobs:
       # Installation
       - run: yarn --frozen-lockfile
       # Confirm Artifact Version
-      - run: yarn workspace web contract-artifacts:check
+      - run: yarn workspace @neufund/web contract-artifacts:check
       # Linting
-      - run: yarn workspace web lint
+      - run: yarn workspace @neufund/web lint
+      - run: yarn workspace @neufund/shared lint
       # Unit Tests
-      - run: yarn workspace web test:browser && yarn workspace web test:node
+      - run: yarn workspace @neufund/web test
+      - run: yarn workspace @neufund/shared test
 
       - save_cache:
           paths:
@@ -27,9 +39,8 @@ jobs:
           key: v22-deps-{{ checksum "package.json" }}
 
   build-docker-test-e2e:
-    docker:
-      - image: circleci/node:11.14.0-browsers
-    working_directory: /home/circleci/app
+    executor: docker-browsers
+
     resource_class: large
     parallelism: 4
 
@@ -42,15 +53,13 @@ jobs:
 
       - run: yarn --frozen-lockfile
       - run:
-          command: yarn workspace web build:prod:e2e:io
+          command: yarn workspace @neufund/web build:prod:e2e:io
           no_output_timeout: 10m
       - run:
-          command: yarn workspace web test:e2e:chrome
+          command: yarn workspace @neufund/web test:e2e:chrome
 
   build-frontend:
-    docker:
-      - image: circleci/node:11.14.0-browsers
-    working_directory: /home/circleci/app
+    executor: docker
 
     steps:
       - checkout
@@ -61,7 +70,7 @@ jobs:
 
       - run: yarn --frozen-lockfile
       - run:
-          command: yarn workspace web build:prod:e2e
+          command: yarn workspace @neufund/web build:prod:e2e
           no_output_timeout: 10m
       # If build takes more than 10mins then fail
       - persist_to_workspace:
@@ -93,13 +102,11 @@ jobs:
             - v22-deps-
 
       - run:
-          command: source /opt/circleci/.nvm/nvm.sh && yarn workspace web test:e2e
+          command: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web test:e2e
           no_output_timeout: 30m
 
   codechecks:
-    docker:
-      - image: circleci/node:11.14.0
-    working_directory: /home/circleci/app
+    executor: docker
 
     steps:
       - checkout
@@ -109,13 +116,11 @@ jobs:
             - v22-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn workspace web build:commit-deployment
-      - run: yarn workspace web codechecks
+      - run: yarn workspace @neufund/web build:commit-deployment
+      - run: yarn workspace @neufund/web codechecks
 
   codechecks-vis-reg:
-    docker:
-      - image: circleci/node:11.14.0-browsers
-    working_directory: /home/circleci/app
+    executor: docker-browsers
 
     steps:
       - checkout
@@ -125,13 +130,11 @@ jobs:
             - v22-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn workspace web storybook:screenshots
-      - run: yarn workspace web codechecks ./codechecks-vis-reg.ts
+      - run: yarn workspace @neufund/web storybook:screenshots
+      - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
 
   deploy-storybook:
-    docker:
-      - image: circleci/node:11.14.0
-    working_directory: /home/circleci/app
+    executor: docker
 
     steps:
       - checkout
@@ -141,7 +144,7 @@ jobs:
             - v22-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn workspace web deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
+      - run: yarn workspace @neufund/web deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
 
 workflows:
   version: 2

@@ -1,4 +1,4 @@
-import { createActionFactory } from "../../modules/actionsUtils";
+import { createActionFactory } from "@neufund/shared";
 
 export const portfolioActions = {
   // public actions

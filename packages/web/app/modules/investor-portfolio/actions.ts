@@ -1,6 +1,8 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { Dictionary } from "../../types";
-import { createAction, createActionFactory } from "../actionsUtils";
+import { createAction } from "../actionsUtils";
 import {
   ICalculatedContribution,
   IIncomingPayoutsData,

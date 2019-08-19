@@ -1,4 +1,4 @@
-import { createActionFactory } from "../actionsUtils";
+import { createActionFactory } from "@neufund/shared";
 
 export const profileActions = {
   addNewEmail: createActionFactory("PROFILE_ADD_NEW_EMAIL", (email: string) => ({

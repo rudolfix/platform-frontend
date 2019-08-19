@@ -1,5 +1,6 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { AppActionTypes } from "../../store";
-import { createActionFactory } from "../actionsUtils";
 import { ENotificationText, ENotificationType } from "./reducer";
 
 export interface INewNotification {

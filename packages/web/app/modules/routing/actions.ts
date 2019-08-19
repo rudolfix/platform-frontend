@@ -1,3 +1,4 @@
+import { createActionFactory } from "@neufund/shared";
 import { goBack, push } from "connected-react-router";
 import { LocationDescriptorObject, Path } from "history";
 
@@ -6,7 +7,6 @@ import { kycRoutes } from "../../components/kyc/routes";
 import { profileRoutes } from "../../components/settings/routes";
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import { walletRoutes } from "../../components/wallet/routes";
-import { createActionFactory } from "../actionsUtils";
 import { TLoginRouterState } from "./types";
 
 export const routingActions = {

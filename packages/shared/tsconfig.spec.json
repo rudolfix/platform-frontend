@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "allowJs": true,
     "module": "commonjs",
     "noUnusedLocals": false,
     "noUnusedParameters": false

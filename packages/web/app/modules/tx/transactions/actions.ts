@@ -1,4 +1,6 @@
-import { createAction, createActionFactory, createSimpleAction } from "../../actionsUtils";
+import { createActionFactory } from "@neufund/shared";
+
+import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ITokenDisbursal } from "../../investor-portfolio/types";
 import { ETokenType } from "../types";
 

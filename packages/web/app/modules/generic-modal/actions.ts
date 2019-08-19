@@ -1,8 +1,9 @@
+import { createActionFactory } from "@neufund/shared";
 import * as React from "react";
 
 import { TMessage } from "../../components/translatedMessages/utils";
 import { OmitKeys } from "../../types";
-import { createAction, createActionFactory } from "../actionsUtils";
+import { createAction } from "../actionsUtils";
 import { TIconType } from "./reducer";
 
 // TODO: Refactor actions to receive single object as a parameter

@@ -1,5 +1,6 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { IUser } from "../../lib/api/users/interfaces";
-import { createActionFactory } from "../actionsUtils";
 import { ELogoutReason } from "./types";
 
 type TLogoutActionOptions = {

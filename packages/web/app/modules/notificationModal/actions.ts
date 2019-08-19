@@ -1,5 +1,6 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { TMessage } from "../../components/translatedMessages/utils";
-import { createActionFactory } from "../actionsUtils";
 
 export enum ENotificationModalType {
   ERROR = "error",

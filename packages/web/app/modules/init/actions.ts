@@ -1,4 +1,5 @@
-import { createActionFactory } from "../actionsUtils";
+import { createActionFactory } from "@neufund/shared";
+
 import { EInitType } from "./reducer";
 
 export const initActions = {

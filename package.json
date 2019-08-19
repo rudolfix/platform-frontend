@@ -4,14 +4,13 @@
     "packages/**"
   ],
   "scripts": {
-    "compile": "lerna run compile",
-    "clean": "lerna run clean",
-    "lint": "lerna run lint",
-    "test": "lerna run test",
-    "check-packages": "yarn clean && yarn compile && yarn test && yarn lint",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test",
     "update-artifacts": "git submodule update --init --recursive",
-    "prepare": "yarn update-artifacts && yarn workspaces run prepare"
+    "prepare": "yarn update-artifacts && yarn workspaces run prepare",
+    "deduplicate": "yarn-deduplicate"
   },
   "devDependencies": {
+    "yarn-deduplicate": "^1.1.1"
   }
 }

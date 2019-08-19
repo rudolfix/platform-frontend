@@ -1,5 +1,7 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { ITxData } from "../../../lib/web3/types";
-import { createAction, createActionFactory, createSimpleAction } from "../../actionsUtils";
+import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ETxSenderType, TAdditionalDataByType, TSpecificTransactionState } from "../types";
 import { ETransactionErrorType, ITxSenderState } from "./reducer";
 

@@ -1,6 +1,7 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { TMessage } from "../../components/translatedMessages/utils";
 import { IImmutableFileId } from "../../lib/api/immutable-storage/ImmutableStorage.interfaces";
-import { createActionFactory } from "../actionsUtils";
 
 export const immutableStorageActions = {
   downloadImmutableFile: createActionFactory(

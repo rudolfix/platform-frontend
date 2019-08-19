@@ -60,7 +60,7 @@ export function* ethWithdrawFlow(_: TGlobalDependencies): any {
 
   if (!action.payload.txDraftData) return;
 
-  const txDataFromUser = action.payload.txDraftData;
+  const txDataFromUser: Partial<ITxData> = action.payload.txDraftData;
   const generatedTxDetails = yield neuCall(generateEthWithdrawTransaction, txDataFromUser);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 

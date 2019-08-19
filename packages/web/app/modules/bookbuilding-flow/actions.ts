@@ -1,5 +1,6 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { createActionFactory } from "../actionsUtils";
 
 export const bookBuildingFlowActions = {
   loadBookBuildingStats: createActionFactory("LOAD_BOOKBUILDING_FLOW_STATS", (etoId: string) => ({

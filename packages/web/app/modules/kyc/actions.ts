@@ -1,3 +1,5 @@
+import { createActionFactory } from "@neufund/shared";
+
 import {
   EKycBusinessType,
   IKycBeneficialOwner,
@@ -8,7 +10,7 @@ import {
   IKycRequestState,
   KycBankQuintessenceBankAccount,
 } from "../../lib/api/kyc/KycApi.interfaces";
-import { createAction, createActionFactory, createSimpleAction } from "../actionsUtils";
+import { createAction, createSimpleAction } from "../actionsUtils";
 import { TBankAccount, TClaims } from "./types";
 
 export const kycActions = {

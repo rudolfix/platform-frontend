@@ -1,7 +1,8 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { Dictionary } from "../../types";
-import { createActionFactory } from "../actionsUtils";
 import { IEtoContractData, IEtoTokenData } from "./types";
 
 export const etoActions = {

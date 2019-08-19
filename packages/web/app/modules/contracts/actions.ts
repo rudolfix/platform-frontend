@@ -1,4 +1,5 @@
-import { createActionFactory } from "../actionsUtils";
+import { createActionFactory } from "@neufund/shared";
+
 import { IPlatformTermsConstants } from "./reducer";
 
 export const contractsActions = {

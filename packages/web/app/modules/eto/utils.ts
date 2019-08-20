@@ -91,6 +91,18 @@ type TCalculateSubStateOptions = {
   isEligibleToPreEto: boolean;
 };
 
+/**
+ * Check if eto is still in preparation
+ * @returns {boolean} true when ETO is either in PREVIEW or PENDING state
+ */
+export const isComingSoon = (state: EEtoState): boolean =>
+  EEtoState.PREVIEW === state || EEtoState.PENDING === state;
+
+/**
+ * Calculates sub state of the ETO
+ * Should not be connected with issuer or investor states
+ * @todo Remove `isEligibleToPreEto` as it's related to investor
+ */
 export const getEtoSubState = ({
   eto,
   contract,
@@ -100,10 +112,10 @@ export const getEtoSubState = ({
   switch (eto.state) {
     case EEtoState.PREVIEW:
     case EEtoState.PENDING:
-      return EEtoSubState.COMING_SOON;
+      return undefined;
 
     case EEtoState.LISTED:
-    case EEtoState.PROSPECTUS_APPROVED:
+    case EEtoState.PROSPECTUS_APPROVED: {
       const investorCount = stats ? stats.investorsCount : 0;
 
       const isInvestorsLimitReached = investorCount >= eto.maxPledges;
@@ -117,7 +129,7 @@ export const getEtoSubState = ({
       }
 
       return EEtoSubState.CAMPAIGNING;
-
+    }
     case EEtoState.ON_CHAIN: {
       if (!contract) {
         throw new Error(`Eto ${eto.etoId} is on chain but without contracts deployed`);

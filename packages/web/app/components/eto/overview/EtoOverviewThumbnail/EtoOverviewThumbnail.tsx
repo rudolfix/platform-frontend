@@ -3,14 +3,15 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { TMockEto } from "../../../../data/etoCompanies";
-import { EEtoSubState, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
+import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
+import { isComingSoon } from "../../../../modules/eto/utils";
 import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps, XOR } from "../../../../types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { FUNDING_ROUNDS } from "../../constants";
-import { ComingSoonEtoState, ETOState, SuccessEtoState } from "../../shared/ETOState";
+import { ComingSoonEtoState, ETOInvestorState, SuccessEtoState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
 import { EtoCardButton, EtoCardPanelButton } from "./EtoCardPanel";
 import { EtoStatusManager, SuccessfulInfo } from "./EtoStatusManager";
@@ -57,7 +58,7 @@ const MockEtoOverviewLayout: React.FunctionComponent<
     {mockedEto.totalAmount ? (
       <SuccessEtoState className={styles.statusOfEto} />
     ) : (
-      <ComingSoonEtoState className={styles.statusOfEto} isIssuer={false} />
+      <ComingSoonEtoState className={styles.statusOfEto} />
     )}
 
     <section className={styles.content}>
@@ -88,14 +89,14 @@ const EtoOverviewLayoutBase: React.FunctionComponent<TEtoProps> = ({ eto }) => (
       jurisdiction={eto.product.jurisdiction}
     />
 
-    <ETOState className={styles.statusOfEto} eto={eto} isIssuer={false} />
+    <ETOInvestorState className={styles.statusOfEto} eto={eto} />
 
     <section className={styles.content}>
       <Heading titleClassName="text-truncate" decorator={false} level={2} size={EHeadingSize.HUGE}>
         {eto.company.brandName}
       </Heading>
 
-      {eto.subState === EEtoSubState.COMING_SOON ? (
+      {isComingSoon(eto.state) ? (
         <p data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
           {eto.company.keyQuoteFounder}
         </p>

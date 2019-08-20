@@ -2,14 +2,18 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, pure, withHandlers, withProps } from "recompose";
 
+import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EETOStateOnChain, EEtoSubState, TEtoStartOfStates } from "../../../../modules/eto/types";
+import { isComingSoon } from "../../../../modules/eto/utils";
 import { Block, EBlockTheme, EndBlock, StartBlock } from "./Block";
 import { DatePoint, Pointer } from "./Point";
 
 interface IExternalProps {
   startOfStates: TEtoStartOfStates | undefined;
+  // TODO: rename to onChainState
   currentState: EETOStateOnChain | undefined;
   subState: EEtoSubState | undefined;
+  state: EEtoState;
 }
 interface IWithProps {
   preEtoStartDate: number;
@@ -63,22 +67,23 @@ const getStartOfState = (state: EETOStateOnChain, startOfStates: TEtoStartOfStat
   return startDate ? startDate.getTime() : NaN;
 };
 
-const getSetupTitle = (subState: EEtoSubState | undefined) => {
-  switch (subState) {
-    case EEtoSubState.COMING_SOON:
-      return <FormattedMessage id="eto.status.sub-state.coming-soon" />;
-    case EEtoSubState.WHITELISTING:
-      return <FormattedMessage id="eto.status.sub-state.whitelisting" />;
-    default:
-      return <FormattedMessage id="eto.status.onchain.setup" />;
+const getSetupTitle = (state: EEtoState, subState: EEtoSubState | undefined) => {
+  if (isComingSoon(state)) {
+    return <FormattedMessage id="eto.status.sub-state.coming-soon" />;
   }
+
+  if (subState === EEtoSubState.WHITELISTING) {
+    return <FormattedMessage id="eto.status.sub-state.whitelisting" />;
+  }
+
+  return <FormattedMessage id="eto.status.onchain.setup" />;
 };
 
-const Setup: React.FunctionComponent<IExternalProps> = ({ subState }) => (
+const Setup: React.FunctionComponent<IExternalProps> = ({ state, subState }) => (
   <StartBlock
     start={0}
     end={CAMPAIGNING_BLOCK_WIDTH}
-    title={getSetupTitle(subState)}
+    title={getSetupTitle(state, subState)}
     theme={EBlockTheme.BLUE}
   />
 );

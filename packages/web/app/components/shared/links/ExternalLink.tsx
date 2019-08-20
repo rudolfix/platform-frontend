@@ -11,9 +11,15 @@ type TProps = OmitKeys<
 /**
  * Generate anchor tag with target="_blank" and correct rel value to prevent tabnabbing
  * See https://www.owasp.org/index.php/Reverse_Tabnabbing
+ * @note If it's a cypress run (IS_CYPRESS flat set) then links are opened in the same tab
  */
 const ExternalLink: React.FunctionComponent<TProps> = ({ href, children, ...rest }) => (
-  <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+  <a
+    href={href}
+    target={process.env.IS_CYPRESS ? undefined : "_blank"}
+    rel="noopener noreferrer"
+    {...rest}
+  >
     {children || href}
     {/* Hide accessibility improvement on e2e tests as often we get text content of anchor to compare with some pattern */}
     {!process.env.IS_CYPRESS && (

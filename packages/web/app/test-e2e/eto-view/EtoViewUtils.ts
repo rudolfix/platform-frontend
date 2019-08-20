@@ -1,3 +1,4 @@
+import { appRoutes } from "../../components/appRoutes";
 import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
 import { tid } from "../utils/selectors";
 import { getEto } from "../utils/userHelpers";
@@ -11,13 +12,12 @@ export const assertEtoView = (etoID: string) => {
         eto.equityTokenSymbol
       }) - Neufund Platform`,
     );
+
     if (eto.product.jurisdiction) {
       cy.get(tid(`eto.public-view.jurisdiction-banner.${eto.product.jurisdiction}`)).should(
         "exist",
       );
       cy.url().should("contain", eto.product.jurisdiction);
-    } else {
-      cy.get(tid(`eto.public-view.investor-preview-banner`)).should("exist");
     }
   });
 };
@@ -28,7 +28,14 @@ export const goToEtoViewById = (etoId: string) => {
   assertEtoView(etoId);
 };
 
+export const goToIssuerEtoView = () => {
+  cy.visit(appRoutes.etoIssuerView);
+
+  assertIssuerEtoView();
+};
+
 export const assertIssuerEtoView = () => {
   cy.url().should("contain", "/eto/view");
+
   cy.get(tid("eto.public-view")).should("exist");
 };

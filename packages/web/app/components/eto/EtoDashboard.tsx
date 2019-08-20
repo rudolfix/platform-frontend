@@ -47,7 +47,7 @@ import { UploadInvestmentMemorandum } from "./dashboard/UploadInvestmentMemorand
 import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
 import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
 import { DashboardHeading } from "./shared/DashboardHeading";
-import { EProjectStatusLayout, EProjectStatusSize, ETOState } from "./shared/ETOState";
+import { EProjectStatusLayout, EProjectStatusSize, ETOIssuerState } from "./shared/ETOState";
 import { EEtoStep, selectEtoStep } from "./utils";
 
 import * as styles from "./EtoDashboard.module.scss";
@@ -224,12 +224,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   shouldViewEtoSettings,
 }) => {
   const dashboardTitle = (
-    <ETOState
-      eto={eto}
-      isIssuer={true}
-      size={EProjectStatusSize.LARGE}
-      layout={EProjectStatusLayout.BLACK}
-    />
+    <ETOIssuerState eto={eto} size={EProjectStatusSize.LARGE} layout={EProjectStatusLayout.BLACK} />
   );
 
   switch (eto.state) {
@@ -348,12 +343,11 @@ const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = 
               <FormattedHTMLMessage tagName="span" id="eto-dashboard.header" />
             </Heading>
             {eto && (
-              <ETOState
+              <ETOIssuerState
                 eto={eto}
                 size={EProjectStatusSize.HUGE}
                 layout={EProjectStatusLayout.INHERIT}
                 className="ml-3"
-                isIssuer={true}
               />
             )}
           </div>

@@ -96,7 +96,6 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
     const eto = {
       ...rootEto,
       state: EEtoState.PREVIEW,
-      subState: EEtoSubState.COMING_SOON,
     };
 
     return withEto({ eto });

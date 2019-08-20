@@ -4,7 +4,17 @@ import { CSSProperties, ReactElement } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { ToastOptions } from "react-toastify";
 
-export type Dictionary<T> = Record<string, T>;
+/**
+ * Generates a dictionary with `T` values and `R` keys (default string)
+ */
+export type Dictionary<T, R extends string | number | symbol = string> = Record<R, T>;
+
+/**
+ * Generates a dictionary with `T` values and `R` keys (default string) where all properties are marked as partial
+ */
+export type PartialDictionary<T, R extends string | number | symbol = string> = Partial<
+  Dictionary<T, R>
+>;
 
 // opaque types can provide semantic information to simpler types like strings etc
 // read: https://codemix.com/opaque-types-in-javascript/

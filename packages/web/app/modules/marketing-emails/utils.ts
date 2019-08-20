@@ -1,6 +1,7 @@
-// Its possible for link to be undefined if user removed link prop from URL
-export const isValidLink = (link: string | undefined) =>
-  link &&
-  /^https?:\/\/(neufund\.(org|net|io)|localhost:\d+)\/api\/newsletter\/subscriptions\/\w+\/topics\/\w+$/.test(
-    link,
+export const isValidLink = (link: string) => {
+  const decodedLink = decodeURIComponent(link);
+
+  return /https?:\/\/(platform.neufund\.(org|net|io)|localhost:\d+)(\/api\/newsletter)?\/subscriptions\/\w+\/topics\/news\?signature=\w+&timestamp=\d+$/.test(
+    decodedLink,
   );
+};

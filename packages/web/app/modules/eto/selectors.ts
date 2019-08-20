@@ -1,8 +1,9 @@
-import { find } from "lodash/fp";
+import { find, findKey } from "lodash/fp";
 
 import { EEtoState, TEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { selectUserId } from "../auth/selectors";
 import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
 import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
 import { hiddenJurisdictions } from "./constants";
@@ -181,13 +182,13 @@ export const selectFilteredEtosByRestrictedJurisdictions = (
       })
     : etos;
 
-export const selectEtoOfNominee = (
-  state: IAppState,
-  nomineeId: string,
-): TEtoWithCompanyAndContract | undefined => {
+export const selectNomineeEto = (state: IAppState): TEtoWithCompanyAndContract | undefined => {
+  const nomineeId = selectUserId(state);
   const etoState = selectEtoState(state);
-  const previewCode = Object.keys(etoState.etos).find(
-    (etoKey: string) => etoState.etos[etoKey]!.nominee === nomineeId,
-  );
-  return previewCode ? selectEtoWithCompanyAndContract(state, previewCode) : undefined;
+  if (nomineeId) {
+    const previewCode = findKey(eto => eto!.nominee === nomineeId, etoState.etos);
+    return previewCode ? selectEtoWithCompanyAndContract(state, previewCode) : undefined;
+  } else {
+    throw new Error("linked nominee eto id is invalid");
+  }
 };

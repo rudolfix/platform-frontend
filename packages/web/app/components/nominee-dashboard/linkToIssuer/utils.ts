@@ -68,20 +68,20 @@ export const getNomineeRequestComponentState = (
     nomineeRequest.state === ENomineeRequestStatus.APPROVED &&
     !nomineeEto
   ) {
-    return ENomineeRequestComponentState.CREATE_NEW_REQUEST;
+    return ENomineeRequestComponentState.CREATE_ANOTHER_REQUEST;
   } else if (
     nomineeRequest &&
     nomineeRequest.state === ENomineeRequestStatus.APPROVED &&
     nomineeEto &&
     nomineeEto.etoId !== nomineeRequest.etoId
   ) {
-    return ENomineeRequestComponentState.CREATE_NEW_REQUEST;
+    return ENomineeRequestComponentState.CREATE_ANOTHER_REQUEST;
   } else if (
     nomineeRequest &&
     nomineeRequest.state === ENomineeRequestStatus.REJECTED &&
     nomineeRequestError === ENomineeRequestError.NONE
   ) {
-    return ENomineeRequestComponentState.CREATE_NEW_REQUEST;
+    return ENomineeRequestComponentState.CREATE_ANOTHER_REQUEST;
   } else if (
     nomineeRequest &&
     nomineeRequest.state === ENomineeRequestStatus.REJECTED &&

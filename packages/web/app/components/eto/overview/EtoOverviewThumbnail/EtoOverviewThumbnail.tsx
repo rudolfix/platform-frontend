@@ -8,6 +8,7 @@ import { isComingSoon } from "../../../../modules/eto/utils";
 import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps, XOR } from "../../../../types";
+import { appRoutes } from "../../../appRoutes";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { FUNDING_ROUNDS } from "../../constants";
@@ -31,17 +32,17 @@ type TCommonExternalProps = { shouldOpenInNewWindow?: boolean };
 type TExternalProps = XOR<TEtoProps, TMockEtoProps> & TCommonExternalProps;
 
 interface IDispatchProps {
-  open: (url: string) => void;
+  openEtoView: (url: string) => void;
 }
 
 const defaultEmpty = "-";
 
 const MockEtoOverviewLayout: React.FunctionComponent<
   TMockEtoProps & CommonHtmlProps & IDispatchProps
-> = ({ mockedEto, open }) => (
+> = ({ mockedEto, openEtoView }) => (
   <EtoCardPanelButton
     data-test-id={`eto-overview-${mockedEto.id}`}
-    onClick={() => open(mockedEto.url)}
+    onClick={() => openEtoView(mockedEto.url)}
   >
     <Cover
       className={styles.cover}
@@ -138,10 +139,10 @@ const EtoOverviewLayoutBase: React.FunctionComponent<TEtoProps> = ({ eto }) => (
 
 const EtoOverviewGridLayout: React.FunctionComponent<
   TEtoProps & CommonHtmlProps & IDispatchProps
-> = ({ eto, open }) => (
+> = ({ eto, openEtoView }) => (
   <EtoCardPanelButton
     data-test-id={`eto-overview-${eto.etoId}`}
-    onClick={() => open(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))}
+    onClick={() => openEtoView(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))}
   >
     <EtoOverviewLayoutBase eto={eto} />
   </EtoCardPanelButton>
@@ -149,10 +150,10 @@ const EtoOverviewGridLayout: React.FunctionComponent<
 
 const EtoOverviewComponent: React.FunctionComponent<
   TEtoProps & CommonHtmlProps & IDispatchProps
-> = ({ eto }) => (
+> = ({ eto, openEtoView }) => (
   <EtoCardButton
     data-test-id={`eto-overview-${eto.etoId}`}
-    onClick={() => open(etoPublicViewLink(eto.previewCode, eto.product.jurisdiction))}
+    onClick={() => openEtoView(appRoutes.etoIssuerView)}
   >
     <EtoOverviewLayoutBase eto={eto} />
   </EtoCardButton>
@@ -167,7 +168,7 @@ const connectEtoOverviewThumbnail = <T extends {}>(
   >(
     appConnect<{}, IDispatchProps, TCommonExternalProps>({
       dispatchToProps: (dispatch, { shouldOpenInNewWindow }) => ({
-        open: (url: string) =>
+        openEtoView: (url: string) =>
           dispatch(
             shouldOpenInNewWindow ? routingActions.openInNewWindow(url) : routingActions.push(url),
           ),

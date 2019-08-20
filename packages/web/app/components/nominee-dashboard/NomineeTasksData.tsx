@@ -4,7 +4,7 @@ import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { AcceptIsha } from "./AcceptIsha";
 import { AcceptTha } from "./AcceptTha";
 import { AccountSetup } from "./accountSetup/AccountSetup";
-import { LinkBankAccount } from "./LinkBankAccount";
+import { LinkBankAccount } from "./linkBankAccount/LinkBankAccount";
 import { LinkToIssuer } from "./linkToIssuer/LinkToIssuer";
 import { NoTasks } from "./NoTasks";
 import { RedeemShareCapital } from "./RedeemShareCapital";

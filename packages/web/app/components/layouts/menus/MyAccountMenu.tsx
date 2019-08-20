@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { match } from "react-router";
-import { compose, withHandlers, withProps } from "recompose";
+import { compose, withProps } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import { userHasKycAndEmailVerified } from "../../../modules/eto-flow/selectors";
@@ -17,16 +16,11 @@ import * as styles from "./MyAccountMenu.module.scss";
 
 interface IProps {
   actionRequired: boolean;
-  isLinkActive: (match: match<unknown>) => boolean;
   logout: () => void;
 }
 
 interface IStateProps {
   actionRequired: boolean;
-}
-
-interface IHandlers {
-  isLinkActive: (match: match<unknown>) => boolean;
 }
 
 interface IMenuData {
@@ -74,10 +68,7 @@ export const MyAccountMenu = compose<IMenuData, {}>(
       },
     }),
   }),
-  withHandlers<IProps, IHandlers>({
-    isLinkActive: () => match => Boolean(match),
-  }),
   withProps<IMenuData, IProps>(props => ({
-    data: accountMenuData(props.actionRequired, props.isLinkActive, props.logout),
+    data: accountMenuData(props.actionRequired, props.logout),
   })),
 )(MyAccountMenuLayout);

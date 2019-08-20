@@ -1,8 +1,8 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { match } from "react-router";
 
 import { externalRoutes } from "../../../config/externalRoutes";
+import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appRoutes } from "../../appRoutes";
 import { EMenuEntryType, TMenuEntry } from "./MenuEntry";
 
@@ -13,11 +13,7 @@ export const menuSeparatorData = (key: string): TMenuEntry => ({
   key,
 });
 
-export const accountMenuData = (
-  actionRequired: boolean,
-  isLinkActive: (match: match<unknown>) => boolean,
-  logout: Function,
-): TMenuEntry[] => [
+export const accountMenuData = (actionRequired: boolean, logout: Function): TMenuEntry[] => [
   {
     type: EMenuEntryType.LINK,
     key: "settings",
@@ -25,14 +21,12 @@ export const accountMenuData = (
     menuName: <FormattedMessage id="menu.settings" />,
     actionRequired: actionRequired,
     "data-test-id": "authorized-layout-profile-button",
-    isActive: isLinkActive,
   },
   {
     type: EMenuEntryType.EXTERNAL_LINK,
     key: "help",
     to: externalRoutes.neufundSupportHome,
     menuName: <FormattedMessage id="menu.help" />,
-    isActive: isLinkActive,
   },
   {
     type: EMenuEntryType.ACTION,
@@ -44,23 +38,19 @@ export const accountMenuData = (
   },
 ];
 
-export const investorMenuData = (
-  isLinkActive: (match: match<unknown>) => boolean,
-): TMenuEntry[] => {
+export const investorMenuData = (): TMenuEntry[] => {
   const data = [
     {
       type: EMenuEntryType.LINK,
       key: "investor-dashboard",
       to: appRoutes.dashboard,
       menuName: <FormattedMessage id="menu.dashboard" />,
-      isActive: isLinkActive,
     },
     {
       type: EMenuEntryType.LINK,
       key: "portfolio",
       to: appRoutes.portfolio,
       menuName: <FormattedMessage id="menu.portfolio" />,
-      isActive: isLinkActive,
     },
     {
       type: EMenuEntryType.LINK,
@@ -68,7 +58,6 @@ export const investorMenuData = (
       to: appRoutes.wallet,
       menuName: <FormattedMessage id="menu.wallet" />,
       "data-test-id": "authorized-layout-wallet-button",
-      isActive: isLinkActive,
     },
   ];
   if (process.env.NF_PORTFOLIO_PAGE_VISIBLE !== "1") {
@@ -108,7 +97,9 @@ export const issuerMenuData = (userHasKycAndVerifiedEmail: boolean): TMenuEntry[
   },
 ];
 
-export const nomineeMenuData = (userHasKycAndVerifiedEmail: boolean): TMenuEntry[] => [
+export const nomineeMenuData = (
+  nomineeEto: TEtoWithCompanyAndContract | undefined,
+): TMenuEntry[] => [
   {
     type: EMenuEntryType.LINK,
     key: "nominee-dashboard",
@@ -125,15 +116,15 @@ export const nomineeMenuData = (userHasKycAndVerifiedEmail: boolean): TMenuEntry
   {
     type: EMenuEntryType.LINK,
     key: "campaign",
-    to: appRoutes.campaign,
-    disabled: !userHasKycAndVerifiedEmail,
+    to: appRoutes.etoIssuerView,
+    disabled: !nomineeEto,
     menuName: <FormattedMessage id="menu.campaign-page" />,
   },
   {
     type: EMenuEntryType.LINK,
     key: "documents",
     to: appRoutes.documents,
-    disabled: !userHasKycAndVerifiedEmail,
+    disabled: true, //todo there's no clear spec yet what should be shown in the docs for nominee.
     menuName: <FormattedMessage id="menu.documents-page" />,
   },
 ];

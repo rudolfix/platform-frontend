@@ -54,13 +54,25 @@ export function* etoUpdateNomineeRequest(
     | TActionFromCreator<typeof actions.etoNominee.acceptNomineeRequest>
     | TActionFromCreator<typeof actions.etoNominee.rejectNomineeRequest>,
 ): Iterator<any> {
+  const options =
+    action.type === actions.etoNominee.acceptNomineeRequest.getType()
+      ? {
+          newStatus: ENomineeUpdateRequestStatus.APPROVED,
+          messageTitle: createMessage(EEtoNomineeRequestMessages.ISSUER_ACCEPT_NOMINEE_REQUEST),
+          messageText: createMessage(EEtoNomineeRequestMessages.ISSUER_ACCEPT_NOMINEE_REQUEST_TEXT),
+        }
+      : {
+          newStatus: ENomineeUpdateRequestStatus.REJECTED,
+          messageTitle: createMessage(EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST),
+          messageText: createMessage(EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST_TEXT),
+        };
   try {
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
-      neuCall(etoUpdateNomineeRequestEffect, action),
+      neuCall(etoUpdateNomineeRequestEffect, action.payload.nomineeId, options.newStatus),
       [EJwtPermissions.ISSUER_UPDATE_NOMINEE_REQUEST],
-      createMessage(EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST),
-      createMessage(EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST_TEXT),
+      options.messageTitle,
+      options.messageText,
     );
   } catch (e) {
     notificationCenter.error(createMessage(EEtoNomineeRequestNotifications.GENERIC_NETWORK_ERROR));
@@ -71,17 +83,11 @@ export function* etoUpdateNomineeRequest(
 
 export function* etoUpdateNomineeRequestEffect(
   { apiEtoNomineeService, notificationCenter, logger }: TGlobalDependencies,
-  action:
-    | TActionFromCreator<typeof actions.etoNominee.acceptNomineeRequest>
-    | TActionFromCreator<typeof actions.etoNominee.rejectNomineeRequest>,
+  nomineeId: string,
+  newStatus: ENomineeUpdateRequestStatus,
 ): Iterator<any> {
   try {
-    const newStatus =
-      action.type === actions.etoNominee.acceptNomineeRequest.getType()
-        ? ENomineeUpdateRequestStatus.APPROVED
-        : ENomineeUpdateRequestStatus.REJECTED;
-
-    yield apiEtoNomineeService.etoUpdateNomineeRequest(action.payload.nomineeId, newStatus);
+    yield apiEtoNomineeService.etoUpdateNomineeRequest(nomineeId, newStatus);
 
     if (newStatus === ENomineeUpdateRequestStatus.APPROVED) {
       yield put(actions.etoFlow.loadIssuerEto());

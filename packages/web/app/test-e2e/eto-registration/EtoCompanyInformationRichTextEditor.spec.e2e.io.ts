@@ -68,7 +68,7 @@ describe("Eto Company Information Rich Text Editor", () => {
       .clear()
       .type("Sunt tataes prensionem varius, regius turpises.")
       .clear();
-
+    cy.wait(3000);
     cy.get(formField(companyDescriptionName)).then($richTextEditor => {
       expect($richTextEditor).to.have.attr("aria-invalid", "true");
 

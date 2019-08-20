@@ -304,6 +304,8 @@ export enum EEtoNomineeRequestNotifications {
 }
 
 export enum EEtoNomineeRequestMessages {
+  ISSUER_ACCEPT_NOMINEE_REQUEST = "issuerAcceptNomineeRequest",
+  ISSUER_ACCEPT_NOMINEE_REQUEST_TEXT = "issuerAcceptNomineeRequestText",
   ISSUER_DELETE_NOMINEE_REQUEST = "issuerDeleteNomineeRequest",
   ISSUER_DELETE_NOMINEE_REQUEST_TEXT = "issuerDeleteNomineeRequestText",
   ISSUER_UPDATE_NOMINEE_REQUEST = "issuerUpdateNomineeRequest",
@@ -741,6 +743,10 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case EEtoNomineeRequestNotifications.UPDATE_NOMINEE_REQUEST_ERROR:
       return <FormattedMessage id="eto.form.eto-nominee.accept-nominee-request-error" />;
 
+    case EEtoNomineeRequestMessages.ISSUER_ACCEPT_NOMINEE_REQUEST:
+      return <FormattedMessage id="eto-nominee.permissions.accept-nominee-request-title" />;
+    case EEtoNomineeRequestMessages.ISSUER_ACCEPT_NOMINEE_REQUEST_TEXT:
+      return <FormattedMessage id="eto-nominee.permissions.accept-nominee-request-text" />;
     case EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST:
       return <FormattedMessage id="eto-nominee.permissions.delete-nominee-request-title" />;
     case EEtoNomineeRequestMessages.ISSUER_DELETE_NOMINEE_REQUEST_TEXT:

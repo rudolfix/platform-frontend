@@ -45,6 +45,7 @@ const TransactionSuccessImage = () => <img src={txSuccess} className={styles.ico
 export const PendingTransactionStatusLayout: React.FunctionComponent<IComponentProps> = ({
   pendingTransaction,
   monitorPendingTransaction,
+  className,
 }) => {
   switch (pendingTransaction.transactionStatus) {
     case ETxSenderState.MINING:
@@ -54,7 +55,7 @@ export const PendingTransactionStatusLayout: React.FunctionComponent<IComponentP
             data-test-id="pending-transactions-status.mining"
             layout={EButtonLayout.SIMPLE}
             onClick={monitorPendingTransaction}
-            className="mr-3"
+            className={className}
           >
             <PendingTransactionImage />
           </Button>
@@ -67,6 +68,7 @@ export const PendingTransactionStatusLayout: React.FunctionComponent<IComponentP
           data-test-id="pending-transactions-status.success"
           layout={EButtonLayout.SIMPLE}
           onClick={monitorPendingTransaction}
+          className={className}
         >
           <TransactionSuccessImage />
         </Button>
@@ -78,6 +80,7 @@ export const PendingTransactionStatusLayout: React.FunctionComponent<IComponentP
           data-test-id="pending-transactions-status.error"
           layout={EButtonLayout.SIMPLE}
           onClick={monitorPendingTransaction}
+          className={className}
         >
           <TransactionErrorImage />
         </Button>

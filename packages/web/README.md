@@ -1,5 +1,8 @@
 ## Web
 
+[![Project dependencies Status](https://david-dm.org/Neufund/platform-frontend/status.svg?path=packages/web)](https://david-dm.org/Neufund/platform-frontend?path=packages/web)
+[![Project devDependencies Status](https://david-dm.org/Neufund/platform-frontend/dev-status.svg?path=packages/web)](https://david-dm.org/Neufund/platform-frontend?type=dev&path=packages/web)
+
 A web UI of neufund platform.
 
 ### Useful links:
@@ -8,21 +11,10 @@ A web UI of neufund platform.
 
 ## Running project
 
-### Prerequisites
+#### Using external backend and ethereum node (recommended way to start frontend quickly)
 
-- running ethereum node on port `8545`. To start local instance just run `yarn ganache`
-- running `signature_auth_api` on port `5000`
-
-```sh
-yarn
-yarn ganache   # in separate window. You need to upload neufund contracts. Keep on reading.
-yarn start
-```
-
-#### Using external backend
-
-Set NF_REMOTE_BACKEND_PROXY_ROOT variable in your .env file and run `yarn start:remote` to connect
-to remote backend.
+Set `NF_REMOTE_BACKEND_PROXY_ROOT` and `NF_REMOTE_NODE_PROXY_ROOT` variables in your .env file and
+run `yarn start:remote` to connect to remote backend and node.
 
 #### Running production build locally
 
@@ -45,13 +37,13 @@ trigger it manually do: `yarn generate:contracts`.
 ## Running tests
 
 ```
-yarn test # checks formatting, runs linter and tests
+yarn test
 ```
 
-### Fix all autofixable errors and run tests
+### Fix all autofixable errors
 
 ```
-yarn test:fix
+yarn lint:fix
 ```
 
 ### Production build
@@ -94,11 +86,3 @@ yarn lint:fix
 ```
 
 job
-
-### Docs
-
-- [Component Development Guidelines](./docs/component-development-guidelines.md)
-- [React Guidelines](./docs/react-guidelines.md)
-- [Testing production build](./docs/testing-prod-build.md)
-- [Working with Intl](./docs/working-with-intl.md)
-- [Feature flags](./docs/feature-flags.md)

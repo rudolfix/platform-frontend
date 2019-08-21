@@ -1,12 +1,11 @@
 [![CircleCI](https://circleci.com/gh/Neufund/platform-frontend.svg?style=svg)](https://circleci.com/gh/Neufund/platform-frontend)
-[![Project dependencies Status](https://david-dm.org/Neufund/platform-frontend/status.svg)](https://david-dm.org/Neufund/platform-frontend)
-[![Project devDependencies Status](https://david-dm.org/Neufund/platform-frontend/dev-status.svg)](https://david-dm.org/Neufund/platform-frontend?type=dev)
 
 A monorepo of neufund frontend.
 
 ## packages
 
- - [web](https://github.com/Neufund/platform-frontend/packages/web) - web UI deployed on `platform.neufund.org`;
+ - [web](./packages/web) - web UI deployed on `platform.neufund.org`
+ - [shared](./packages/shared) - shared business logic
  - more coming soon...
 
 ## scripts
@@ -17,3 +16,11 @@ Removes duplicated transitive dependencies. Run after major dependencies upgrade
 
 Under the hood uses [`yarn-deduplicate`](https://github.com/atlassian/yarn-deduplicate)
 package.
+
+## Docs
+
+- [Component Development Guidelines](./docs/component-development-guidelines.md)
+- [React Guidelines](./docs/react-guidelines.md)
+- [Testing production build](./docs/testing-prod-build.md)
+- [Working with Intl](./docs/working-with-intl.md)
+- [Feature flags](./docs/feature-flags.md)

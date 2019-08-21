@@ -1,4 +1,3 @@
-import { delay } from "redux-saga";
 import { put } from "redux-saga-test-plan/matchers";
 import { call, fork } from "redux-saga/effects";
 
@@ -17,11 +16,6 @@ export function* downloadFile(
     const immutableFileId = action.payload.immutableFileId;
     const downloadedFile = yield apiImmutableStorage.getFile(immutableFileId);
     const extension = immutableFileId.asPdf ? ".pdf" : ".doc";
-
-    if (process.env.IS_CYPRESS) {
-      // required for cypress to be able to simulate generating time
-      yield delay(0);
-    }
 
     yield call(downloadLink, downloadedFile, action.payload.fileName, extension);
   } catch (e) {

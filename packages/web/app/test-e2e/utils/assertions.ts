@@ -97,7 +97,8 @@ export const assertErrorModal = () => {
   cy.get(tid("components.modals.generic-modal.title")).should("exist");
 };
 
-export const assertButtonIsActive = (id: string) => cy.get(tid(id)).should("be.not.disabled");
+export const assertButtonIsActive = (testId: string) =>
+  cy.get(tid(testId)).should("be.not.disabled");
 
 export const assertWaitForExternalPendingTransactionCount = (
   count: number,
@@ -128,8 +129,8 @@ export const assertUserInLanding = () => {
   cy.get(tid("landing-page")).should("exist");
 };
 
-export const assertMoneyNotEmpty = (selector: string) => {
-  cy.get(tid(selector)).then($element => {
+export const assertMoneyNotEmpty = (testId: string) => {
+  cy.get(tid(testId)).then($element => {
     const value = $element.text();
 
     expect(value).to.not.equal("-");
@@ -173,4 +174,19 @@ export const assertUserInBrowserWalletLoginPage = () => {
 
 export const assertUserInLedgerWalletLoginPage = () => {
   cy.get(tid("modals.wallet-selector.ledger-wallet.title"));
+};
+
+/**
+ * Assert that element is an external link (the link that opens in a new tab)
+ * @note We are not able to check `target="_blank"` as for cypress run we remove `target` attribute
+ * (see `ExternalLink` component implementation for details)
+ */
+export const assertIsExternalLink = (
+  testId: string,
+  context: Cypress.Chainable<JQuery<unknown>> = cy.get("body"),
+) => {
+  context
+    .find(tid(testId))
+    .get(tid("shared.links.external-link"))
+    .should("exist");
 };

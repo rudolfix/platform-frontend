@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ETagSize, Tag } from "./Tag.unsafe";
+import { ETagSize, Tag } from "./Tag";
 
 storiesOf("Basic UI/Tag", module)
   .add("default", () => <Tag text={"lorem"} />)

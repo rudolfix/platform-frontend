@@ -13,4 +13,6 @@ export const externalRoutes = {
   quintessenceLanding: "https://quintessence.global/",
   quintessenseTermsOfUse: "https://quintessence.global/terms-of-use.pdf",
   ledgerSupport: "https://support.ledger.com/hc/en-us/articles/360002731113-Update-device-firmware",
+  etherscanAddress: "https://etherscan.io/address/:address",
+  etherscanTransaction: "https://etherscan.io/tx/:txHash",
 };

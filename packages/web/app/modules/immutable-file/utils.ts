@@ -4,10 +4,14 @@ import { getMessageTranslation } from "../../components/translatedMessages/messa
 import { TMessage } from "../../components/translatedMessages/utils";
 
 export function downloadLink(blob: Blob, name: TMessage | string, fileExtension: string): void {
+  const resolvedName = typeof name === "string" ? name : getMessageTranslation(name);
+
+  // Cypress is not able to download files
   if (process.env.IS_CYPRESS) {
-    return;
+    return alert(
+      `This is a cypress mock for file download. Filename: ${resolvedName}${fileExtension}`,
+    );
   }
 
-  const resolvedName = typeof name === "string" ? name : getMessageTranslation(name);
   saveAs(blob, `${resolvedName}${fileExtension}`);
 }

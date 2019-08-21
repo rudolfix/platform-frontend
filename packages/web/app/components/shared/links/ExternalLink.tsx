@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { OmitKeys } from "../../../types";
+import { OmitKeys, TDataTestId } from "../../../types";
 
 type TProps = OmitKeys<
   React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>,
@@ -13,11 +13,17 @@ type TProps = OmitKeys<
  * See https://www.owasp.org/index.php/Reverse_Tabnabbing
  * @note If it's a cypress run (IS_CYPRESS flat set) then links are opened in the same tab
  */
-const ExternalLink: React.FunctionComponent<TProps> = ({ href, children, ...rest }) => (
+const ExternalLink: React.FunctionComponent<TProps & TDataTestId> = ({
+  href,
+  children,
+  "data-test-id": dataTestId,
+  ...rest
+}) => (
   <a
     href={href}
     target={process.env.IS_CYPRESS ? undefined : "_blank"}
     rel="noopener noreferrer"
+    data-test-id={`${dataTestId} shared.links.external-link`}
     {...rest}
   >
     {children || href}

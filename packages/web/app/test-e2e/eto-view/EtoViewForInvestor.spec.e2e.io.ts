@@ -225,31 +225,24 @@ describe("Eto Investor View", () => {
   });
 
   describe("Fixtures tests", () => {
-    it.skip("coming soon state should have pitch deck", () => {
+    it.skip("coming soon state should have token terms", () => {
       loginFixtureAccount("ISSUER_PREVIEW", {
         signTosAgreement: true,
         kyc: "business",
       }).then(() => {
         goToEtoPreview();
 
-        cy.get(tid("eto-overview-pitch-deck-button"))
-          .should("exist")
-          .should("have.attr", "href");
         // This ETO has product id set so token terms should be available
         cy.get(tid("eto-public-view-token-terms")).should("exist");
       });
     });
 
-    it("listed state", () => {
+    it("listed state should have token terms", () => {
       loginFixtureAccount("ISSUER_LISTED", {
         signTosAgreement: true,
       }).then(() => {
         goToEtoPreview();
 
-        cy.get(tid("eto-overview-pitch-deck-button"))
-          .should("exist")
-          .should("exist")
-          .should("have.attr", "href");
         cy.get(tid("eto-public-view-token-terms")).should("exist");
       });
     });

@@ -9,7 +9,7 @@ import Select from "react-virtualized-select";
 import { CommonHtmlProps } from "../../../types";
 import { FormFieldError } from "../../shared/forms";
 import { FormFieldLabel } from "../../shared/forms/fields/FormFieldLabel";
-import { ETagSize, Tag } from "../../shared/Tag.unsafe";
+import { ETagSize, Tag } from "../../shared/Tag";
 
 import * as checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
 import * as styles from "./EtoTagWidget.module.scss";

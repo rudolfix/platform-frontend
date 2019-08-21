@@ -8,6 +8,3 @@ export const withParams = (route: string, params: any) =>
 
     return replacement;
   });
-
-export const insecureWithParams = (route: string, params: any) =>
-  route.replace(/:(\w+)/g, (_, match) => params[match]);

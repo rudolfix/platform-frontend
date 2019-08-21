@@ -299,7 +299,17 @@ export const accountFixturePrivateKey = (name: string) => {
   return fixture.definition.privateKey as string;
 };
 
-export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hookName) as any);
+export const stubWindow = (hookName: string) => (window.open = cy.stub().as(hookName));
+
+export const stubAlert = (hookName: string) => cy.on("window:alert", cy.stub().as(hookName));
+
+export const shouldDownloadDocument = (id: string, documentName: string) => {
+  stubAlert("alert");
+
+  cy.get(tid(id)).click();
+
+  cy.get("@alert").should("be.calledWithMatch", new RegExp(`Filename: ${documentName}`));
+};
 
 /**
  * Extract amount from string.

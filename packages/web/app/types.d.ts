@@ -122,7 +122,7 @@ export type RequiredByKeys<T, K extends keyof T> = Required<Pick<T, K>> & OmitKe
 export type Overwrite<T1, T2> = { [P in Exclude<keyof T1, keyof T2>]: T1[P] } & T2;
 
 /**
- * Change the type of all properties from T to `never` and `undefined`
+ * Change the type of all properties from U in T to `never` and `undefined`
  * @example
  * Without<{ foo: boolean, bar: string }, { foo: boolean }> // { foo?: never }
  */

@@ -7,7 +7,7 @@ export function downloadLink(blob: Blob, name: TMessage | string, fileExtension:
   const resolvedName = typeof name === "string" ? name : getMessageTranslation(name);
 
   // Cypress is not able to download files
-  if (process.env.IS_CYPRESS) {
+  if (process.env.NF_CYPRESS_RUN === "1") {
     return alert(
       `This is a cypress mock for file download. Filename: ${resolvedName}${fileExtension}`,
     );

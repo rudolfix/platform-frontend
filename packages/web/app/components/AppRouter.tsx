@@ -201,7 +201,7 @@ export const AppRouter: React.FunctionComponent = () => (
     />
 
     {/*Routes used only in E2E tests*/}
-    {!!process.env.IS_CYPRESS && [
+    {process.env.NF_CYPRESS_RUN === "1" && [
       <Route
         key={1}
         path={e2eRoutes.embeddedWidget}

@@ -25,7 +25,7 @@ const TestInput: React.ComponentType<ITestInputProps & TDataTestId> = ({
 }) => (
   //hidden input for e2e tests
   <>
-    {!!process.env.IS_CYPRESS || process.env.NODE_ENV === "development" ? (
+    {process.env.NF_CYPRESS_RUN === "1" || process.env.NODE_ENV === "development" ? (
       <input
         data-test-id={dataTestId}
         autoComplete="off"

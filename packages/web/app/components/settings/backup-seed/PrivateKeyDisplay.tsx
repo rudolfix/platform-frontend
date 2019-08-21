@@ -67,7 +67,7 @@ const PrivateKeyDisplay: React.FunctionComponent<TProps> = ({ privateKey }) => {
           iconPosition={EIconPosition.ICON_AFTER}
         >
           {showPrivateKey ? (
-            process.env.IS_CYPRESS ? (
+            process.env.NF_CYPRESS_RUN === "1" ? (
               <div data-test-id="private-key-display.content">{privateKey}</div>
             ) : (
               privateKey

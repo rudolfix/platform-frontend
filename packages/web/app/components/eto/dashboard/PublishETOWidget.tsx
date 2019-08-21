@@ -2,9 +2,8 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
-import { compose } from "redux";
+import { compose } from "recompose";
 
-import { EEtoMarketingDataVisibleInPreview } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
@@ -21,38 +20,26 @@ interface IDispatchProps {
 
 interface IExternalProps {
   columnSpan?: EColumnSpan;
-  isMarketingDataVisibleInPreview?: EEtoMarketingDataVisibleInPreview;
 }
 
 export const PublishETOWidgetComponent: React.FunctionComponent<
   IDispatchProps & IExternalProps
-> = ({ publish, columnSpan, isMarketingDataVisibleInPreview }) => (
+> = ({ publish, columnSpan }) => (
   <Panel headerText={<FormattedMessage id="settings.publish-eto.header" />} columnSpan={columnSpan}>
     <section className={styles.content}>
       <p className={cn(styles.text, "pt-2")}>
         <FormattedMessage id="settings.publish-eto.description" />
       </p>
       <Col className="d-flex justify-content-center">
-        <ButtonArrowRight
-          data-test-id="eto-dashboard-publish-eto"
-          onClick={publish}
-          disabled={
-            isMarketingDataVisibleInPreview === EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING
-          }
-        >
-          {isMarketingDataVisibleInPreview ===
-          EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING ? (
-            <FormattedMessage id="settings.publish-eto.done" />
-          ) : (
-            <FormattedMessage id="settings.publish-eto.publish" />
-          )}
+        <ButtonArrowRight data-test-id="eto-dashboard-publish-eto" onClick={publish}>
+          <FormattedMessage id="settings.publish-eto.publish" />
         </ButtonArrowRight>
       </Col>
     </section>
   </Panel>
 );
 
-export const PublishETOWidget = compose<React.FunctionComponent<IExternalProps>>(
+export const PublishETOWidget = compose<IDispatchProps & IExternalProps, IExternalProps>(
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IDispatchProps>({
     dispatchToProps: dispatch => ({

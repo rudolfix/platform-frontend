@@ -75,15 +75,16 @@ interface IStateProps {
 }
 
 interface ISubmissionProps {
-  shouldViewEtoSettings?: boolean;
-  shouldViewSubmissionSection?: boolean;
+  shouldViewEtoSettings: boolean;
+  shouldViewSubmissionSection: boolean;
+  shouldViewMarketingSubmissionSection: boolean;
 }
 
 interface IComputedProps extends ISubmissionProps {
   isVerificationSectionDone: boolean;
 }
 
-interface IComponentProps extends ISubmissionProps, IEtoStep {
+interface IComponentProps extends IComputedProps, IEtoStep {
   verifiedEmail?: string;
   isLightWallet: boolean;
   userHasKycAndEmailVerified: boolean;
@@ -95,7 +96,6 @@ interface IComponentProps extends ISubmissionProps, IEtoStep {
   isOfferingDocumentSubmitted?: boolean;
   offeringDocumentType: EOfferingDocumentType | undefined;
   isVerificationSectionDone: boolean;
-  isMarketingDataVisibleInPreview?: EEtoMarketingDataVisibleInPreview;
 }
 
 interface IDispatchProps {
@@ -103,11 +103,11 @@ interface IDispatchProps {
 }
 
 interface IVerifiedUserSectionProps {
-  isMarketingDataVisibleInPreview?: EEtoMarketingDataVisibleInPreview;
   shouldViewSubmissionSection?: boolean;
   canEnableBookbuilding: boolean;
-  shouldViewEtoSettings?: boolean;
+  shouldViewEtoSettings: boolean;
   isTermSheetSubmitted?: boolean;
+  shouldViewMarketingSubmissionSection: boolean;
   isOfferingDocumentSubmitted?: boolean;
   offeringDocumentType: EOfferingDocumentType | undefined;
   eto?: TEtoWithCompanyAndContract;
@@ -209,8 +209,8 @@ interface IEtoStateRender {
   isOfferingDocumentSubmitted?: boolean;
   canEnableBookbuilding: boolean;
   offeringDocumentType: EOfferingDocumentType | undefined;
-  isMarketingDataVisibleInPreview?: EEtoMarketingDataVisibleInPreview;
-  shouldViewEtoSettings?: boolean;
+  shouldViewEtoSettings: boolean;
+  shouldViewMarketingSubmissionSection: boolean;
 }
 
 const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> = ({
@@ -220,8 +220,8 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   isOfferingDocumentSubmitted,
   canEnableBookbuilding,
   offeringDocumentType,
-  isMarketingDataVisibleInPreview,
   shouldViewEtoSettings,
+  shouldViewMarketingSubmissionSection,
 }) => {
   const dashboardTitle = (
     <ETOIssuerState eto={eto} size={EProjectStatusSize.LARGE} layout={EProjectStatusLayout.BLACK} />
@@ -232,28 +232,15 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
       return (
         <>
           {/*Show actions header only if actions are available*/}
-          {((shouldViewEtoSettings &&
-            isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE) ||
-            shouldViewSubmissionSection) &&
-            isMarketingDataVisibleInPreview !==
-              EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING && (
-              <Container columnSpan={EColumnSpan.THREE_COL}>
-                <DashboardHeading
-                  title={<FormattedMessage id="eto-dashboard.available-actions" />}
-                />
-              </Container>
-            )}
+          {(shouldViewMarketingSubmissionSection || shouldViewSubmissionSection) && (
+            <Container columnSpan={EColumnSpan.THREE_COL}>
+              <DashboardHeading title={<FormattedMessage id="eto-dashboard.available-actions" />} />
+            </Container>
+          )}
 
-          {shouldViewEtoSettings &&
-            !(shouldViewSubmissionSection && isTermSheetSubmitted) &&
-            isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE &&
-            isMarketingDataVisibleInPreview !==
-              EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING && (
-              <PublishETOWidget
-                isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
-                columnSpan={EColumnSpan.ONE_AND_HALF_COL}
-              />
-            )}
+          {shouldViewMarketingSubmissionSection && (
+            <PublishETOWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+          )}
 
           {shouldViewSubmissionSection && (
             <SubmitDashBoardSection
@@ -324,15 +311,15 @@ const VerificationSection: React.FunctionComponent<IEtoStep> = ({ etoStep, ...pr
 );
 
 const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = ({
-  isMarketingDataVisibleInPreview,
-  shouldViewSubmissionSection,
   canEnableBookbuilding,
-  shouldViewEtoSettings,
-  isTermSheetSubmitted,
-  isOfferingDocumentSubmitted,
-  offeringDocumentType,
   eto,
   etoStep,
+  isOfferingDocumentSubmitted,
+  isTermSheetSubmitted,
+  offeringDocumentType,
+  shouldViewEtoSettings,
+  shouldViewMarketingSubmissionSection,
+  shouldViewSubmissionSection,
 }) => {
   if (eto) {
     return (
@@ -366,7 +353,7 @@ const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = 
           eto={eto}
           canEnableBookbuilding={canEnableBookbuilding}
           offeringDocumentType={offeringDocumentType}
-          isMarketingDataVisibleInPreview={isMarketingDataVisibleInPreview}
+          shouldViewMarketingSubmissionSection={shouldViewMarketingSubmissionSection}
         />
       </>
     );
@@ -379,7 +366,7 @@ const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = 
   }
 };
 
-const EtoDashboardComponent: React.FunctionComponent<IComponentProps> = props => {
+const EtoDashboardLayout: React.FunctionComponent<IComponentProps> = props => {
   const { isVerificationSectionDone, userHasKycAndEmailVerified, ...rest } = props;
 
   return (
@@ -425,10 +412,16 @@ const EtoDashboard = compose<React.FunctionComponent>(
 
     const isVerificationSectionDone = props.userHasKycAndEmailVerified && props.backupCodesVerified;
 
+    const shouldViewMarketingSubmissionSection =
+      shouldViewEtoSettings &&
+      !(shouldViewSubmissionSection && props.isTermSheetSubmitted) &&
+      props.isMarketingDataVisibleInPreview === EEtoMarketingDataVisibleInPreview.NOT_VISIBLE;
+
     return {
       isVerificationSectionDone,
       shouldViewEtoSettings,
       shouldViewSubmissionSection,
+      shouldViewMarketingSubmissionSection,
       etoStep: props.eto
         ? selectEtoStep(
             isVerificationSectionDone,
@@ -456,6 +449,6 @@ const EtoDashboard = compose<React.FunctionComponent>(
     },
   }),
   withContainer(Layout),
-)(EtoDashboardComponent);
+)(EtoDashboardLayout);
 
-export { EtoDashboard, EtoDashboardComponent, EtoDashboardStateViewComponent };
+export { EtoDashboard, EtoDashboardLayout, EtoDashboardStateViewComponent };

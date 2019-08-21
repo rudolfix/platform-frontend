@@ -57,6 +57,9 @@ export const generalStateToName: Dictionary<
   [EETOStateOnChain.Refund]: <FormattedMessage id="eto.status.onchain.refund" />,
 
   // on chain sub state mappings
+  [EEtoSubState.MARKETING_LISTING_IN_REVIEW]: (
+    <FormattedMessage id="eto.status.sub-state.marketing-listing-in-review" />
+  ),
   [EEtoSubState.CAMPAIGNING]: <FormattedMessage id="eto.status.onchain.setup" />,
   [EEtoSubState.WHITELISTING]: <FormattedMessage id="eto.status.sub-state.whitelisting" />,
   [EEtoSubState.WHITELISTING_LIMIT_REACHED]: <FormattedMessage id="eto.status.onchain.setup" />,
@@ -86,6 +89,7 @@ const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain | EEtoSubSta
   [EETOStateOnChain.Signing]: styles.blue,
 
   // eto sub states
+  [EEtoSubState.MARKETING_LISTING_IN_REVIEW]: styles.orange,
   [EEtoSubState.CAMPAIGNING]: styles.blue,
   [EEtoSubState.WHITELISTING_LIMIT_REACHED]: styles.blue,
   [EEtoSubState.WHITELISTING]: styles.green,

@@ -1,6 +1,10 @@
 import BigNumber from "bignumber.js";
 
-import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+  TEtoSpecsData,
+} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { DeepPartial, Overwrite } from "../../types";
@@ -110,7 +114,20 @@ export const getEtoSubState = ({
   isEligibleToPreEto,
 }: TCalculateSubStateOptions): EEtoSubState | undefined => {
   switch (eto.state) {
-    case EEtoState.PREVIEW:
+    /**
+     * Sub states 'PREVIEW' can generate
+     * - MARKETING_LISTING_IN_REVIEW: after submitting marketing listing to review
+     */
+    case EEtoState.PREVIEW: {
+      if (
+        eto.isMarketingDataVisibleInPreview === EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING
+      ) {
+        return EEtoSubState.MARKETING_LISTING_IN_REVIEW;
+      }
+
+      return undefined;
+    }
+
     case EEtoState.PENDING:
       return undefined;
 

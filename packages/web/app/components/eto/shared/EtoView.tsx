@@ -45,12 +45,8 @@ interface IProps {
   publicView: boolean;
 }
 
-// TODO: There are lots of castings right now in this file, cause formerly the types of IProps was "any"
-// The castings should be resolved when the EtoApi.interface.ts reflects the correct data types from swagger!
-
 const EtoViewSchema = EtoCompanyInformationType.toYup().concat(EtoPitchType.toYup());
 
-// TODO: Refactor to smaller components
 const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, publicView }) => {
   const {
     socialChannels,

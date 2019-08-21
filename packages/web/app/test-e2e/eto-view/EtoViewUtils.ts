@@ -1,3 +1,4 @@
+import { appRoutes } from "../../components/appRoutes";
 import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
 import { tid } from "../utils/selectors";
 import { getEto } from "../utils/userHelpers";
@@ -26,6 +27,12 @@ export const goToEtoViewById = (etoId: string) => {
   cy.visit(etoPublicViewByIdLinkLegacy(etoId));
 
   assertEtoView(etoId);
+};
+
+export const goToIssuerEtoView = () => {
+  cy.visit(appRoutes.etoIssuerView);
+
+  assertIssuerEtoView();
 };
 
 export const assertIssuerEtoView = () => {

@@ -77,7 +77,7 @@ export function* generateDocumentFromTemplate(
 export function* generateDocumentFromTemplateByEtoId(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.etoDocuments.generateTemplateByEtoId>,
-): any {
+): Iterator<any> {
   try {
     const userEthAddress = yield select(selectEthereumAddressWithChecksum);
     const document = action.payload.document;
@@ -118,7 +118,7 @@ export function* generateDocumentFromTemplateByEtoId(
 export function* downloadDocumentStart(
   { apiImmutableStorage, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.etoDocuments.downloadDocumentStart>,
-): any {
+): Iterator<any> {
   try {
     const matchingDocument = yield getDocumentOfType(action.payload.documentType);
     const downloadedDocument = yield apiImmutableStorage.getFile({
@@ -187,10 +187,13 @@ function* uploadEtoFileEffect(
   documentType: EEtoDocumentType,
 ): Iterator<any> {
   const matchingDocument = yield getDocumentOfType(documentType);
-  if (matchingDocument)
+
+  if (matchingDocument) {
     yield apiEtoFileService.deleteSpecificEtoDocument(matchingDocument.ipfsHash);
+  }
 
   yield apiEtoFileService.uploadEtoDocument(file, documentType);
+
   notificationCenter.info(createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOADED));
 }
 
@@ -228,7 +231,7 @@ function* uploadEtoFile(
   }
 }
 
-export function* etoDocumentsSagas(): any {
+export function* etoDocumentsSagas(): Iterator<any> {
   yield fork(
     neuTakeEvery,
     actions.etoDocuments.generateTemplateByEtoId,

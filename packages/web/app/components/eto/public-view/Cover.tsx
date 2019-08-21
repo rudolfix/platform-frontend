@@ -6,7 +6,7 @@ import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TTranslatedString } from "../../../types";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { EImageFit, IResponsiveImage, ResponsiveImage } from "../../shared/ResponsiveImage";
-import { Tag } from "../../shared/Tag.unsafe";
+import { Tag } from "../../shared/Tag";
 
 import * as styles from "./Cover.module.scss";
 

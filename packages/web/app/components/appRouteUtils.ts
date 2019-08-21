@@ -14,6 +14,12 @@ export const icoMonitorEtoLink = (etoId: string) =>
 export const commitmentStatusLink = (walletAddress: string) =>
   withParams(externalRoutes.commitmentStatus, { walletAddress });
 
+export const etherscanAddressLink = (address: string) =>
+  withParams(externalRoutes.etherscanAddress, { address });
+
+export const etherscanTxLink = (txHash: string) =>
+  withParams(externalRoutes.etherscanTransaction, { txHash });
+
 export const etoPublicViewByIdLink = (etoId: string, jurisdiction: string) =>
   withParams(appRoutes.etoPublicViewById, { etoId, jurisdiction });
 

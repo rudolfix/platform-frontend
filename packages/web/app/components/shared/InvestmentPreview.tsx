@@ -6,7 +6,7 @@ import { Button, ButtonLink, EButtonLayout } from "./buttons";
 import { EThemeNew, MoneyNew } from "./formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "./formatters/utils";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
-import { ITag, Tag } from "./Tag.unsafe";
+import { Tag, TTag } from "./Tag";
 
 import * as styles from "./InvestmentPreview.module.scss";
 
@@ -20,7 +20,7 @@ interface IProps {
   neuInvestorsNum: number;
   company: string;
   endInDays: number;
-  tags: ITag[];
+  tags: TTag[];
   detailsLink: string;
   preFoundingStatus: IPreFoundingStatus;
   hasStarted: boolean;

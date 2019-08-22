@@ -1,6 +1,5 @@
-import { isEqual } from "lodash/fp";
 import * as React from "react";
-import { compose } from "redux";
+import { compose } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
@@ -38,7 +37,6 @@ interface IDispatchProps {
 }
 
 interface IState {
-  slidesPerView: number;
   elementWidth: number;
   visibleWidth: number;
   gap: number;
@@ -64,7 +62,6 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
   columnGap = 16;
 
   state: IState = {
-    slidesPerView: this.getSlidesPerView(),
     elementWidth: 0,
     visibleWidth: 0,
     gap: 0,
@@ -84,9 +81,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
       visibleWidth: visibleWidth,
     };
 
-    if (!isEqual(newState, this.state)) {
-      this.setState(newState);
-    }
+    this.setState(newState);
   };
 
   componentDidMount(): void {
@@ -104,13 +99,13 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
 
   getSlidesPerView(): number {
     const maxSlidesPerView = this.getMaxSlidesPerView();
-    return this.props.people.length < maxSlidesPerView
-      ? this.props.people.length
-      : maxSlidesPerView;
+
+    return Math.min(this.props.people.length, maxSlidesPerView);
   }
 
   getMaxSlidesPerView(): number {
-    const width = window.innerWidth;
+    const width = this.state.visibleWidth;
+
     if (width <= 740) {
       return 1;
     } else if (width <= 768) {
@@ -130,7 +125,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
       const paddingRight = parseFloat(style.paddingRight || "0");
       const visibleWidth = element.getBoundingClientRect().width - paddingLeft - paddingRight;
       const elementWidth =
-        (visibleWidth - this.columnGap * (this.state.slidesPerView - 1)) / this.state.slidesPerView;
+        (visibleWidth - this.columnGap * (this.getSlidesPerView() - 1)) / this.getSlidesPerView();
       return [visibleWidth, elementWidth];
     } else {
       return [0, 0];
@@ -156,17 +151,17 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
     // (translation is always negative)
     this.state.translation < 0;
 
-  onWindowResize = (): void => {
+  onWindowResize = () => {
     const [refWidth, elementWidth] = this.getVisibleWidth();
+
     this.setState({
-      slidesPerView: this.getSlidesPerView(),
       elementWidth: elementWidth,
       visibleWidth: refWidth,
       translation: 0,
     });
   };
 
-  onTouchStart = (e: any) => {
+  onTouchStart = (e: React.TouchEvent) => {
     // cache the event prop because event will be immediately reused,
     // @see https://reactjs.org/docs/events.html#event-pooling
     const x = e.touches[0].pageX;
@@ -176,7 +171,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
     });
   };
 
-  onTouchMove = (e: any) => {
+  onTouchMove = (e: React.TouchEvent) => {
     const x = e.touches[0].pageX;
     const delta = e.touches[0].pageX - this.state.touchStart!;
 
@@ -191,7 +186,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
     const position = Math.round(this.state.translation / fullElementWidth);
 
     return (
-      clamp(position, this.state.slidesPerView - this.props.people.length, 0) * fullElementWidth
+      clamp(position, this.getSlidesPerView() - this.props.people.length, 0) * fullElementWidth
     );
   };
 
@@ -214,11 +209,11 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
   };
 
   render(): React.ReactNode {
-    const isHorizontal = this.props.people.length < 3 || this.state.slidesPerView < 3;
-    const showArrows = this.props.people.length > this.state.slidesPerView;
+    const isHorizontal = this.props.people.length < 3 || this.getSlidesPerView() < 3;
+    const showArrows = this.props.people.length > this.getSlidesPerView();
 
     return (
-      <div className={styles.swiperMain} style={{ width: this.state.visibleWidth }}>
+      <div className={styles.swiperMain}>
         {showArrows && (
           <ButtonIcon
             svgIcon={prevIcon}
@@ -277,6 +272,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
             <div className={styles.placeholder} />
           )}
         </div>
+
         {showArrows && (
           <ButtonIcon
             svgIcon={nextIcon}
@@ -290,7 +286,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
   }
 }
 
-const PeopleSwiperWidget = compose<React.FunctionComponent<IOwnProps>>(
+const PeopleSwiperWidget = compose<IOwnProps & IDispatchProps, IOwnProps>(
   appConnect<{}, IDispatchProps, IOwnProps>({
     dispatchToProps: dispatch => ({
       showPersonModal: (name, role, description, image, socialChannels, website) =>

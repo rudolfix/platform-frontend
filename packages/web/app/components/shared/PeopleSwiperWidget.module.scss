@@ -1,43 +1,30 @@
 .swiper-main {
   position: relative;
   display: flex;
-  flex-flow: row;
-  flex: 1 1 100%;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
   height: 180px;
 }
 
 .swiper-base {
-  display: flex;
-  flex-flow: row;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-
+  align-self: stretch;
+  flex-grow: 1;
   overflow: hidden;
+  position: relative;
 }
 
 .swiper-moving-part {
+  position: absolute;
   display: grid;
-  grid-template: 1fr / auto;
   grid-column-gap: 16px;
-  grid-auto-columns: auto;
   grid-auto-flow: column;
-  margin: 0 auto;
   transition-timing-function: ease-in;
   transition: .2s;
-  justify-items: center;
 }
 
 .swiper-element {
   display: flex;
-  flex-flow: row;
   justify-content: center;
   align-items: flex-start;
-  height: 100%;
-  width: 100%;
 }
 
 .placeholder {
@@ -76,8 +63,6 @@
   border: 0;
   background-color: transparent;
 }
-
-
 
 @include media-breakpoint-up(sm) {
   .prev,

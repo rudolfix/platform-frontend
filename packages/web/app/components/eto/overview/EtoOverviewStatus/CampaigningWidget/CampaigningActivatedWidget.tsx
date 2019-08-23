@@ -116,7 +116,7 @@ const CampaigningActivatedWidgetComponent: React.FunctionComponent<IProps> = ({
             </span>
             <span className={styles.value}>
               <span data-test-id="eto-bookbuilding-remaining-slots">
-                {investorsCount !== 0 ? investorsLimit - investorsCount : investorsLimit}
+                {investorsLimit - investorsCount}
               </span>{" "}
               out of {investorsLimit} slots remaining
               {/* TODO: Move to translations once the format is stable */}

@@ -34,8 +34,11 @@
         }
       }
 
-      flex: 1;
       text-align: center;
+
+      // Firefox workaround for input shrinking
+      // see https://bugzilla.mozilla.org/show_bug.cgi?id=1242914
+      min-width: 0;
     }
   }
 }

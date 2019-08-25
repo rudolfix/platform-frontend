@@ -1051,7 +1051,6 @@
   "settings.modal.icbm-wallet-balance.title.migrate": "ICBM wallet Migration Tool",
   "settings.modal.icbm-wallet-balance.warning-message": "Please finalize your verification process before starting the wallet migration procedures",
   "settings.publish-eto.description": "Since you’ve completed all marketing information about your company you can now publish your listing page by submitting it. This will allow you to start fundraising and referring investors to the page. You will be able to edit the content any time during the listing period. You can also skip this step and configure your investment terms before publishing.",
-  "settings.publish-eto.done": "Your ETO data is being reviewed",
   "settings.publish-eto.header": "Publish your listing page",
   "settings.publish-eto.publish": "Submit",
   "settings.security-settings.title": "My Profile",

@@ -2,8 +2,7 @@ import * as React from "react";
 import { compose } from "recompose";
 
 import { actions } from "../../../modules/actions";
-import { selectUserId } from "../../../modules/auth/selectors";
-import { selectEtoOfNominee } from "../../../modules/eto/selectors";
+import { selectNomineeEto } from "../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
@@ -30,16 +29,9 @@ const LinkedNomineeDashboardContainerLayout: React.FunctionComponent<
 
 export const LinkedNomineeDashboardContainer = compose<ILinkedNomineeComponentProps, {}>(
   appConnect<ILinkedNomineeStateProps, {}, {}>({
-    stateToProps: state => {
-      const nomineeId = selectUserId(state);
-      if (nomineeId) {
-        return {
-          eto: selectEtoOfNominee(state, nomineeId),
-        };
-      } else {
-        throw new Error("userId is invalid");
-      }
-    },
+    stateToProps: state => ({
+      eto: selectNomineeEto(state),
+    }),
   }),
   onEnterAction<{}>({
     actionCreator: dispatch => {

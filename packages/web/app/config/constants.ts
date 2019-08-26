@@ -2,9 +2,8 @@ import BigNumber from "bignumber.js";
 
 export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
 // If running in cypress wait for a short time
-export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME = process.env.IS_CYPRESS
-  ? 1000 * 60
-  : 1000 * 60 * 3;
+export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME =
+  process.env.NF_CYPRESS_RUN === "1" ? 1000 * 60 : 1000 * 60 * 3;
 
 /**
  * Platform Constants
@@ -77,3 +76,4 @@ export const IPFS_PROTOCOL = "ipfs";
 export const supportEmail = "support@neufund.org";
 
 export const NOMINEE_REQUESTS_WATCHER_DELAY = 10000;
+export const NOMINEE_BANK_ACCOUNT_WATCHER_DELAY = 1000 * 60 * 5;

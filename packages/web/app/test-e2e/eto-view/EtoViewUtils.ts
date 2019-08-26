@@ -12,13 +12,12 @@ export const assertEtoView = (etoID: string) => {
         eto.equityTokenSymbol
       }) - Neufund Platform`,
     );
+
     if (eto.product.jurisdiction) {
       cy.get(tid(`eto.public-view.jurisdiction-banner.${eto.product.jurisdiction}`)).should(
         "exist",
       );
       cy.url().should("contain", eto.product.jurisdiction);
-    } else {
-      cy.get(tid(`eto.public-view.investor-preview-banner`)).should("exist");
     }
   });
 };
@@ -37,5 +36,6 @@ export const goToIssuerEtoView = () => {
 
 export const assertIssuerEtoView = () => {
   cy.url().should("contain", "/eto/view");
+
   cy.get(tid("eto.public-view")).should("exist");
 };

@@ -8,7 +8,7 @@ import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
 import { getTokenPrice } from "../../modules/investor-portfolio/utils";
 import { etoPublicViewLink } from "../appRouteUtils";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
-import { EProjectStatusSize, ETOState } from "../eto/shared/ETOState";
+import { EProjectStatusSize, ETOInvestorState } from "../eto/shared/ETOState";
 import { Container } from "../layouts/Container";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
 import { MoneyNew } from "../shared/formatters/Money";
@@ -103,7 +103,7 @@ const PortfolioPastInvestments: React.FunctionComponent<IExternalProps> = ({ pas
               outputFormat={ENumberOutputFormat.FULL}
               data-test-id="past-investments-asset-neu-reward"
             />
-            <ETOState eto={eto} size={EProjectStatusSize.SMALL} isIssuer={false} />
+            <ETOInvestorState eto={eto} size={EProjectStatusSize.SMALL} />
           </NewTableRow>
         );
       })}

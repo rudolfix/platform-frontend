@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
@@ -8,8 +8,10 @@ import { selectUserType } from "../../../modules/auth/selectors";
 import { selectIssuerEtoPreviewCode } from "../../../modules/eto-flow/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
+import { TDataTestId } from "../../../types";
 import { selectBaseUrl } from "../../../utils/locationUtils";
 import { Container, EColumnSpan } from "../../layouts/Container";
+import { ExternalLink } from "../../shared/links/ExternalLink";
 
 import * as infoIcon from "../../../assets/img/notifications/info.svg";
 import * as styles from "./CoverBanner.module.scss";
@@ -17,10 +19,6 @@ import * as styles from "./CoverBanner.module.scss";
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
   publicView: boolean;
-}
-
-interface IBaseProps {
-  dataTestId?: string;
 }
 
 interface IJurisdictionBannerProps {
@@ -34,7 +32,10 @@ interface IInvestorPreviewProps {
 
 type TBannerProps = IInvestorPreviewProps | IJurisdictionBannerProps;
 
-const BannerBase: React.FunctionComponent<IBaseProps> = ({ children, dataTestId }) => (
+const BannerBase: React.FunctionComponent<TDataTestId> = ({
+  children,
+  "data-test-id": dataTestId,
+}) => (
   <Container
     columnSpan={EColumnSpan.THREE_COL}
     className={styles.jurisdictionBanner}
@@ -51,13 +52,13 @@ export const InvestorBannerLayout: React.FunctionComponent<IJurisdictionBannerPr
   switch (jurisdiction) {
     case EJurisdiction.GERMANY:
       return (
-        <BannerBase dataTestId={`eto.public-view.jurisdiction-banner.${jurisdiction}`}>
+        <BannerBase data-test-id={`eto.public-view.jurisdiction-banner.${jurisdiction}`}>
           <FormattedMessage id="eto-overview.cover-banner.jurisdiction.de" />
         </BannerBase>
       );
     case EJurisdiction.LIECHTENSTEIN:
       return (
-        <BannerBase dataTestId={`eto.public-view.jurisdiction-banner.${jurisdiction}`}>
+        <BannerBase data-test-id={`eto.public-view.jurisdiction-banner.${jurisdiction}`}>
           <FormattedMessage id="eto-overview.cover-banner.jurisdiction.li" />
         </BannerBase>
       );
@@ -70,11 +71,20 @@ export const IssuerBannerLayout: React.FunctionComponent<IInvestorPreviewProps> 
   previewCode,
   origin,
 }) => (
-  <BannerBase dataTestId={`eto.public-view.investor-preview-banner`}>
-    <FormattedHTMLMessage
+  <BannerBase data-test-id="eto.public-view.investor-preview-banner">
+    <FormattedMessage
       tagName="span"
       id="eto-overview.cover-banner.go-to-investor-view"
-      values={{ href: `${origin}/eto/view/${previewCode}` }}
+      values={{
+        viewAsInvestor: (
+          <ExternalLink
+            data-test-id="eto.public-view.investor-preview-banner.view-as-investor"
+            href={`${origin}/eto/view/${previewCode}`}
+          >
+            <FormattedMessage id="eto-overview.cover-banner.view-as-investor" />
+          </ExternalLink>
+        ),
+      }}
     />
   </BannerBase>
 );

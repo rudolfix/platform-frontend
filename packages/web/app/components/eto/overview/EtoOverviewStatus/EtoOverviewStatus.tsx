@@ -7,7 +7,7 @@ import { EJurisdiction } from "../../../../lib/api/eto/EtoProductsApi.interfaces
 import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { Container, EColumnSpan } from "../../../layouts/Container";
-import { ETOState } from "../../shared/ETOState";
+import { ETOInvestorState, ETOIssuerState } from "../../shared/ETOState";
 import { EtoStats } from "./EtoStats";
 import { EtoStatusManager } from "./EtoStatusManager";
 import { EtoTitle } from "./EtoTitle";
@@ -38,7 +38,8 @@ const StatusOfEto: React.FunctionComponent<IStatusOfEtoProps> = ({ eto, publicVi
     <span className={styles.title}>
       <FormattedMessage id="shared-component.eto-overview.status-of-eto" />
     </span>
-    <ETOState eto={eto} isIssuer={!publicView} />
+    {/* In case it's a public view (something investor sees) show proper investor status, otherwise show issuer related state */}
+    {publicView ? <ETOInvestorState eto={eto} /> : <ETOIssuerState eto={eto} />}
   </div>
 );
 

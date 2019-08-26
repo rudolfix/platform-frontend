@@ -5,9 +5,9 @@ import { toCamelCase } from "../../utils/transformObjectKeys";
 import { isValidLink } from "./utils";
 
 const getUnsubscriptionLinkFromQueryString = (query: string) => {
-  const { confirmationUrl } = toCamelCase(queryString.parse(query));
+  const { confirmationUrl } = toCamelCase(queryString.parse(query, { decode: true }));
 
-  return isValidLink(confirmationUrl) ? confirmationUrl : undefined;
+  return confirmationUrl && isValidLink(confirmationUrl) ? confirmationUrl : undefined;
 };
 
 export const selectUnsubscriptionLinkFromQueryString = (state: IAppState): string | undefined => {

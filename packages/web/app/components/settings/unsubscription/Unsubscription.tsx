@@ -92,12 +92,15 @@ const Unsubscription = compose<TComponentProps, IRouterParams>(
       width: EContentWidth.FULL,
     })(Layout),
   ),
+  withProps((props: IRouterParams) => ({
+    email: decodeURIComponent(props.email),
+  })),
   branch<IRouterParams & IStateProps>(
     props => !isEmail(props.email),
     renderComponent(UnsubscriptionInvalidLayout),
   ),
   branch<IRouterParams & IStateProps>(
-    props => !isValidLink(props.unsubscriptionLink),
+    props => !props.unsubscriptionLink || !isValidLink(props.unsubscriptionLink),
     renderComponent(UnsubscriptionInvalidLayout),
   ),
 )(UnsubscriptionLayout);

@@ -9,6 +9,7 @@ import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
 import { UnlockWalletFundsFromLink } from "./edge-cases/UnlockWalletFundsFromLink";
 import { EtoDashboard } from "./eto/EtoDashboard";
 import { EtoIssuerView } from "./eto/EtoIssuerView";
+import { EtoNomineeView } from "./eto/EtoNomineeView";
 import { EtoPublicView } from "./eto/EtoPublicView";
 import { EtoPublicViewByContractId } from "./eto/EtoPublicViewByContractId";
 import { EtoWidgetView } from "./eto/EtoWidgetView";
@@ -142,9 +143,21 @@ export const AppRouter: React.FunctionComponent = () => (
     />
 
     {/* only issuer routes */}
-    <OnlyAuthorizedRoute path={appRoutes.documents} issuerComponent={Documents} />
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />
-    <OnlyAuthorizedRoute path={appRoutes.etoIssuerView} issuerComponent={EtoIssuerView} exact />
+
+    {/* issuer AND nominee routes */}
+    <OnlyAuthorizedRoute
+      path={appRoutes.documents}
+      issuerComponent={Documents}
+      nomineeComponent={Documents}
+      exact
+    />
+    <OnlyAuthorizedRoute
+      path={appRoutes.etoIssuerView}
+      issuerComponent={EtoIssuerView}
+      nomineeComponent={EtoNomineeView}
+      exact
+    />
 
     {/* common routes for both investors and issuers */}
     <OnlyAuthorizedRoute
@@ -188,7 +201,7 @@ export const AppRouter: React.FunctionComponent = () => (
     />
 
     {/*Routes used only in E2E tests*/}
-    {!!process.env.IS_CYPRESS && [
+    {process.env.NF_CYPRESS_RUN === "1" && [
       <Route
         key={1}
         path={e2eRoutes.embeddedWidget}

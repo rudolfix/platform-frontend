@@ -1,6 +1,10 @@
 import BigNumber from "bignumber.js";
 
-import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+  TEtoSpecsData,
+} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { DeepPartial, Overwrite } from "../../types";
@@ -91,6 +95,18 @@ type TCalculateSubStateOptions = {
   isEligibleToPreEto: boolean;
 };
 
+/**
+ * Check if eto is still in preparation
+ * @returns {boolean} true when ETO is either in PREVIEW or PENDING state
+ */
+export const isComingSoon = (state: EEtoState): boolean =>
+  EEtoState.PREVIEW === state || EEtoState.PENDING === state;
+
+/**
+ * Calculates sub state of the ETO
+ * Should not be connected with issuer or investor states
+ * @todo Remove `isEligibleToPreEto` as it's related to investor
+ */
 export const getEtoSubState = ({
   eto,
   contract,
@@ -98,12 +114,25 @@ export const getEtoSubState = ({
   isEligibleToPreEto,
 }: TCalculateSubStateOptions): EEtoSubState | undefined => {
   switch (eto.state) {
-    case EEtoState.PREVIEW:
+    /**
+     * Sub states 'PREVIEW' can generate
+     * - MARKETING_LISTING_IN_REVIEW: after submitting marketing listing to review
+     */
+    case EEtoState.PREVIEW: {
+      if (
+        eto.isMarketingDataVisibleInPreview === EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING
+      ) {
+        return EEtoSubState.MARKETING_LISTING_IN_REVIEW;
+      }
+
+      return undefined;
+    }
+
     case EEtoState.PENDING:
-      return EEtoSubState.COMING_SOON;
+      return undefined;
 
     case EEtoState.LISTED:
-    case EEtoState.PROSPECTUS_APPROVED:
+    case EEtoState.PROSPECTUS_APPROVED: {
       const investorCount = stats ? stats.investorsCount : 0;
 
       const isInvestorsLimitReached = investorCount >= eto.maxPledges;
@@ -117,7 +146,7 @@ export const getEtoSubState = ({
       }
 
       return EEtoSubState.CAMPAIGNING;
-
+    }
     case EEtoState.ON_CHAIN: {
       if (!contract) {
         throw new Error(`Eto ${eto.etoId} is on chain but without contracts deployed`);

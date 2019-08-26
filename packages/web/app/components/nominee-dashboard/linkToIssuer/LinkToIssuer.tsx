@@ -3,8 +3,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, renderNothing, withProps } from "recompose";
 
-import { selectUserId } from "../../../modules/auth/selectors";
-import { selectEtoOfNominee } from "../../../modules/eto/selectors";
+import { selectNomineeEto } from "../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import {
   ENomineeRequestError,
@@ -127,18 +126,11 @@ export const NomineeRequestContainer: React.FunctionComponent = ({ children }) =
 
 export const LinkToIssuer = compose<IStateProps, {}>(
   appConnect<IStateProps>({
-    stateToProps: state => {
-      const nomineeId = selectUserId(state);
-      if (nomineeId) {
-        return {
-          nomineeEto: selectEtoOfNominee(state, nomineeId),
-          nomineeRequest: takeLatestNomineeRequest(selectNomineeRequests(state)), //only take the latest one for now
-          nomineeRequestError: selectNomineeStateError(state),
-        };
-      } else {
-        throw new Error("user id is not valid");
-      }
-    },
+    stateToProps: state => ({
+      nomineeEto: selectNomineeEto(state),
+      nomineeRequest: takeLatestNomineeRequest(selectNomineeRequests(state)), //only take the latest one for now
+      nomineeRequestError: selectNomineeStateError(state),
+    }),
   }),
   withProps<{ nextState: ENomineeRequestComponentState }, IStateProps>(
     ({ nomineeRequest, nomineeRequestError, nomineeEto }) => ({
@@ -159,7 +151,7 @@ export const LinkToIssuer = compose<IStateProps, {}>(
     renderComponent(RepeatNomineeRequestLayout),
   ),
   branch<IBranchProps>(
-    ({ nextState }) => nextState === ENomineeRequestComponentState.CREATE_NEW_REQUEST,
+    ({ nextState }) => nextState === ENomineeRequestComponentState.CREATE_ANOTHER_REQUEST,
     renderComponent(RepeatCreateNomineeRequestLayout),
   ),
 )(CreateNomineeRequestLayout);

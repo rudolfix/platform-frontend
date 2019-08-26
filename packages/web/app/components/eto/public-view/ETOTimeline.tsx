@@ -38,6 +38,7 @@ const ETOTimeline: React.FunctionComponent<{ eto: TEtoWithCompanyAndContract }> 
       />
       <Panel>
         <EtoTimeline
+          state={eto.state}
           subState={eto.subState}
           currentState={isOnChain(eto) ? eto.contract.timedState : undefined}
           startOfStates={isOnChain(eto) ? eto.contract.startOfStates : undefined}

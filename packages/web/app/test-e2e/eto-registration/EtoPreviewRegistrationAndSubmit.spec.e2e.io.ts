@@ -1,4 +1,4 @@
-import { goToEtoDashboard, goToEtoPreview } from "../utils/navigation";
+import { goToEtoDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { fillAndAssert, submitPreview } from "./EtoRegistrationUtils";
@@ -27,13 +27,15 @@ describe("Eto Forms submit preview", function(): void {
 
       fillAndAssert("eto-progress-widget-equity-token-info", equityTokenInfoForm);
 
+      // should be in the preview status
+      cy.get(tid("eto-state-preview")).should("exist");
+
       submitPreview();
 
       cy.get(tid("eto-dashboard-publish-eto")).should("not.exist");
 
-      goToEtoPreview();
-
-      cy.get(tid("eto-state-preview")).should("exist");
+      // should be in in marketing review after submitting
+      cy.get(tid("eto-state-marketing_listing_in_review")).should("exist");
     });
   });
 });

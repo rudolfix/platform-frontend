@@ -120,46 +120,50 @@ const InvestNowButton = compose<TInvestWidgetProps, IInvestmentWidgetProps>(
 )(InvestNowButtonLayout);
 
 const InvestmentStats: React.FunctionComponent<IInvestmentStatsProps> = ({ eto }) => {
-  const totalInvestors = eto.contract!.totalInvestment.totalInvestors;
-  return (
-    <div>
-      <div className={styles.header}>
-        <div>
-          <MoneyNew
-            value={eto.contract!.totalInvestment.etherTokenBalance}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.ETH}
-          />
-          <br />
-          <MoneyNew
-            value={eto.contract!.totalInvestment.euroTokenBalance}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.EUR_TOKEN}
-          />
-        </div>
-        {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (
+  if (!eto.contract) {
+    throw new Error("eto.contract cannot be missing at this point");
+  } else {
+    const totalInvestors = eto.contract.totalInvestment.totalInvestors;
+    return (
+      <div>
+        <div className={styles.header}>
           <div>
-            <FormattedMessage
-              id="shared-component.eto-overview.investors"
-              values={{
-                totalInvestors,
-                totalInvestorsAsString: (
-                  <FormatNumber
-                    value={totalInvestors}
-                    outputFormat={ENumberOutputFormat.INTEGER}
-                    inputFormat={ENumberInputFormat.FLOAT}
-                  />
-                ),
-              }}
+            <MoneyNew
+              value={eto.contract.totalInvestment.etherTokenBalance}
+              inputFormat={ENumberInputFormat.ULPS}
+              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+              valueType={ECurrency.ETH}
+            />
+            <br />
+            <MoneyNew
+              value={eto.contract.totalInvestment.euroTokenBalance}
+              inputFormat={ENumberInputFormat.ULPS}
+              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+              valueType={ECurrency.EUR_TOKEN}
             />
           </div>
-        )}
+          {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (
+            <div>
+              <FormattedMessage
+                id="shared-component.eto-overview.investors"
+                values={{
+                  totalInvestors,
+                  totalInvestorsAsString: (
+                    <FormatNumber
+                      value={totalInvestors}
+                      outputFormat={ENumberOutputFormat.INTEGER}
+                      inputFormat={ENumberInputFormat.FLOAT}
+                    />
+                  ),
+                }}
+              />
+            </div>
+          )}
+        </div>
+        <InvestmentProgress eto={eto} />
       </div>
-      <InvestmentProgress eto={eto} />
-    </div>
-  );
+    );
+  }
 };
 
 export const InvestmentWidget: React.FunctionComponent<IInvestmentWidgetProps> = ({

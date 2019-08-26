@@ -49,7 +49,7 @@ export interface IEtoTokenData {
 }
 
 export enum EEtoSubState {
-  COMING_SOON = "coming_soon",
+  MARKETING_LISTING_IN_REVIEW = "marketing_listing_in_review",
   WHITELISTING = "whitelisting",
   WHITELISTING_LIMIT_REACHED = "whitelisting_limit_reached",
   CAMPAIGNING = "campaigning",

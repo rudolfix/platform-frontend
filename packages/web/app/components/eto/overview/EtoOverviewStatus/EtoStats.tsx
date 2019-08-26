@@ -4,9 +4,11 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
-import { selectEtoOnChainStateById } from "../../../../modules/eto/selectors";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
-import { selectIsEligibleToPreEto } from "../../../../modules/investor-portfolio/selectors";
+import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
+import {
+  selectShouldShowPublicDiscount,
+  selectShouldShowWhitelistDiscount,
+} from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
 import { MoneyNew } from "../../../shared/formatters/Money";
@@ -22,7 +24,11 @@ import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../shared/ToBeAnnouncedT
 import * as styles from "./EtoOverviewStatus.module.scss";
 
 function applyDiscountToPrice(price: number, discountFraction: number): number {
-  return price * (1 - discountFraction);
+  if (discountFraction > 1) {
+    throw new Error("discount more than 100% is not allowed");
+  } else {
+    return price * (1 - discountFraction);
+  }
 }
 
 interface IStateProps {
@@ -125,14 +131,9 @@ export const EtoStats = compose<IStateProps & IExternalProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
       let { tokenPrice } = getShareAndTokenPrice(props.eto);
-      const isPreEto =
-        selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist;
-      const isEligibleToPreEto = selectIsEligibleToPreEto(state, props.eto.etoId);
-      const showWhitelistDiscount =
-        !!props.eto.whitelistDiscountFraction && isEligibleToPreEto && isPreEto;
-      const showPublicDiscount = Boolean(
-        !showWhitelistDiscount && props.eto.publicDiscountFraction,
-      );
+
+      const showWhitelistDiscount = selectShouldShowWhitelistDiscount(state, props.eto);
+      const showPublicDiscount = selectShouldShowPublicDiscount(state, props.eto);
 
       if (showWhitelistDiscount) {
         tokenPrice = applyDiscountToPrice(tokenPrice, props.eto.whitelistDiscountFraction!);

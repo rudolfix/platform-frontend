@@ -5,12 +5,14 @@ import { createSelector } from "reselect";
 import { shouldShowToken } from "../../components/portfolio/utils";
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { Q18 } from "../../config/constants";
+import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { getShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../store";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
 import { isZero } from "../../utils/Number.utils";
 import {
   selectEtoById,
+  selectEtoOnChainStateById,
   selectEtos,
   selectEtoWithCompanyAndContractById,
   selectTokenData,
@@ -170,6 +172,15 @@ export const selectIsEligibleToPreEto = (state: IAppState, etoId: string) => {
 
   return isLockedWalletConnected || isWhitelisted;
 };
+
+export const selectShouldShowWhitelistDiscount = (state: IAppState, eto: TEtoSpecsData) => {
+  const isPreEto = selectEtoOnChainStateById(state, eto.etoId);
+  const isEligibleToPreEto = selectIsEligibleToPreEto(state, eto.etoId);
+  return Boolean(eto.whitelistDiscountFraction && isEligibleToPreEto && isPreEto);
+};
+
+export const selectShouldShowPublicDiscount = (state: IAppState, eto: TEtoSpecsData) =>
+  Boolean(!selectShouldShowWhitelistDiscount(state, eto) && eto.publicDiscountFraction);
 
 /**
  * Selects tokens disbursal with `amountToBeClaimed` greater than zero

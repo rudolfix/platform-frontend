@@ -1,5 +1,5 @@
 import * as React from "react";
-import { branch, compose, renderNothing } from "recompose";
+import { compose } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import { selectIsUserFullyVerified } from "../../../modules/auth/selectors";
@@ -48,7 +48,6 @@ const connectLinkBankAccountComponent = <T extends {}>(
           dispatch(actions.bankTransferFlow.startBankTransfer(EBankTransferType.VERIFY)),
       }),
     }),
-    branch<IStateProps>(({ bankAccount }) => bankAccount === undefined, renderNothing),
   )(WrappedComponent);
 
 export { connectLinkBankAccountComponent };

@@ -77,8 +77,6 @@
   text-transform: uppercase;
 }
 
-
-
 .account-setup-step-wrapper {
   display: grid;
   grid-template: auto auto / auto 1fr;
@@ -105,7 +103,6 @@
   &.done {
     background-color: $ticker-blue-two;
   }
-
 }
 
 .title {
@@ -134,4 +131,3 @@
   background-color: $new-gray-two;
   margin: 0 auto;
 }
-

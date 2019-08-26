@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EETOStateOnChain, EEtoSubState } from "../../../../modules/eto/types";
 import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
 import { EtoTimeline } from "./EtoTimeline";
@@ -21,7 +22,8 @@ storiesOf("ETO/EtoTimeline", module)
       <EtoTimeline
         startOfStates={undefined}
         currentState={undefined}
-        subState={EEtoSubState.COMING_SOON}
+        subState={undefined}
+        state={EEtoState.PREVIEW}
       />
     )),
   )
@@ -31,6 +33,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={undefined}
         currentState={EETOStateOnChain.Setup}
         subState={EEtoSubState.WHITELISTING}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   )
@@ -40,6 +43,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={undefined}
         currentState={EETOStateOnChain.Setup}
         subState={undefined}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   )
@@ -49,6 +53,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={startOfStates}
         currentState={EETOStateOnChain.Whitelist}
         subState={undefined}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   )
@@ -58,6 +63,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={startOfStates}
         currentState={EETOStateOnChain.Public}
         subState={undefined}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   )
@@ -67,6 +73,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={startOfStates}
         currentState={EETOStateOnChain.Signing}
         subState={undefined}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   )
@@ -76,6 +83,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={startOfStates}
         currentState={EETOStateOnChain.Claim}
         subState={undefined}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   )
@@ -85,6 +93,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={startOfStates}
         currentState={EETOStateOnChain.Payout}
         subState={undefined}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   )
@@ -94,6 +103,7 @@ storiesOf("ETO/EtoTimeline", module)
         startOfStates={startOfStates}
         currentState={EETOStateOnChain.Refund}
         subState={undefined}
+        state={EEtoState.ON_CHAIN}
       />
     )),
   );

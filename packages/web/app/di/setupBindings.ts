@@ -280,7 +280,7 @@ export const createGlobalDependencies = (container: Container) => ({
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
   gasApi: container.get<GasApi>(symbols.gasApi),
   apiImmutableStorage: container.get<ImmutableStorageApi>(symbols.apiImmutableStorage),
-  marketingEmailsApi: container.get<MarketingEmailsApi>(symbols.apiImmutableStorage),
+  marketingEmailsApi: container.get<MarketingEmailsApi>(symbols.marketingEmailsApi),
 
   intlWrapper: container.get<IntlWrapper>(symbols.intlWrapper),
 });

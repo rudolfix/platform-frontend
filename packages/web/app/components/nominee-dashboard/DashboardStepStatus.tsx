@@ -6,7 +6,7 @@ import * as styles from "./NomineeDashboard.module.scss";
 
 interface IStepStatus {
   contentTitleComponent: React.ReactChild;
-  contentTextComponent: React.ReactChild | React.ReactChild[];
+  contentTextComponent?: React.ReactChild | React.ReactChild[];
   status: TTranslatedString;
   mainComponent?: React.ReactChild;
 }

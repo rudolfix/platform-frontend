@@ -41,7 +41,6 @@ jobs:
   build-docker-test-e2e:
     executor: docker-browsers
 
-    resource_class: large
     parallelism: 4
 
     steps:
@@ -169,7 +168,6 @@ workflows:
       - codechecks-vis-reg:
           requires:
             - build-frontend
-            - build-docker-test-e2e
 
   nightly:
     triggers:

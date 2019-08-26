@@ -47,7 +47,11 @@ describe("Eto campaigning state", () => {
       }).then(() => {
         goToEtoDashboard();
 
+        cy.get(tid("eto-state-countdown_to_public_sale")).should("exist");
+
         cy.get(tid("eto-flow-start-bookbuilding")).awaitedClick();
+
+        cy.get(tid("eto-state-whitelisting")).should("exist");
 
         logout();
 

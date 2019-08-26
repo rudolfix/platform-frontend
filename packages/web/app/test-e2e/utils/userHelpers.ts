@@ -9,6 +9,7 @@ import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
 import { toCamelCase } from "../../utils/transformObjectKeys";
+import { assertUserInLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";
 import { tid } from "./selectors";
 
@@ -404,11 +405,15 @@ export const makeAuthenticatedCall = (path: string, config: RequestInit = {}) =>
 
 export const logout = () => {
   cy.log("logging out");
+
   cy.get(tid("account-menu-open-button"))
     .awaitedClick()
     .get(tid("menu-logout-button"))
     .awaitedClick();
-  cy.wait(2000);
+
+  assertUserInLanding();
+
+  cy.log("logged out");
 };
 
 export const createVaultApi = async (

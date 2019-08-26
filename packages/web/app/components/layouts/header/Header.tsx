@@ -8,8 +8,8 @@ import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
 import { ButtonLink, EButtonTheme } from "../../shared/buttons/index";
 import { loginWalletRoutes, walletRegisterRoutes } from "../../wallet-selector/walletRoutes";
-import { MenuAuthorized } from "../menus/MenuAuthorized";
-import { MobileMenu } from "../menus/MobileMenu";
+import { Menu } from "../menus/menu/Menu";
+import { MobileMenu } from "../menus/mobileMenu/MobileMenu";
 import { MyAccountMenu } from "../menus/MyAccountMenu";
 import { PendingTransactionStatus } from "./PendingTransactionStatus";
 
@@ -94,7 +94,7 @@ export const HeaderAuthorized: React.FunctionComponent<{}> = () => (
   <div className={styles.headerAuth}>
     <MobileMenu />
     <LogoAuth />
-    <MenuAuthorized />
+    <Menu />
     <PendingTransactionStatus className={styles.transactionStatus} />
     <MyAccountMenu />
   </div>

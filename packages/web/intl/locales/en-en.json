@@ -130,6 +130,8 @@
   "documents.generated-documents": "YOUR GENERATED DOCUMENTS",
   "documents.legal-documents": "Legal documents for your ETO",
   "documents.legal-documents.description": "In this section, you can manage all your legal agreements and documents for your ETO. In the first section, we generate for you agreements based on the date you enter into the ETO forms. You can download them as word files, review, adjust and upload signed versions in the second section below. The second section navigates you through the order of documents that need to be uploaded. ",
+  "documents.nominee-legal-documents": "Legal documents",
+  "documents.nominee-legal-documents.description": "Legal documents for your linked fundraising campaign.",
   "documents.please-fill-the-eto-forms-in-order-to-generate-templates": "Please fill the ETO forms in order to generate templates",
   "download-agreement-widget.download-and-sign": "UPLOAD SIGNED ISHA",
   "download-agreement-widget.go-to-wallet": "go to wallet",

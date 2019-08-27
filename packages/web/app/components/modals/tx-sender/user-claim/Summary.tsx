@@ -17,7 +17,7 @@ import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors"
 import { TClaimAdditionalData } from "../../../../modules/tx/transactions/claim/types";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
-import { getDocumentTitles } from "../../../documents/utils";
+import { getInvestorDocumentTitles } from "../../../documents/utils";
 import { ButtonIcon } from "../../../shared/buttons";
 import { DocumentTemplateLabel } from "../../../shared/DocumentLink";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
@@ -72,7 +72,9 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
                 <DocumentTemplateLabel
                   onClick={() => {}}
                   title={
-                    getDocumentTitles(etoData.product.offeringDocumentType)[document.documentType]
+                    getInvestorDocumentTitles(etoData.product.offeringDocumentType)[
+                      document.documentType
+                    ]
                   }
                 />
               }
@@ -110,7 +112,9 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
                 <DocumentTemplateLabel
                   onClick={() => {}}
                   title={
-                    getDocumentTitles(etoData.product.offeringDocumentType)[template.documentType]
+                    getInvestorDocumentTitles(etoData.product.offeringDocumentType)[
+                      template.documentType
+                    ]
                   }
                 />
               }

@@ -27,7 +27,7 @@ export const sortDocuments = (documents: string[]) =>
     (a: string, b: string) => documentsOrder.indexOf(a) - documentsOrder.indexOf(b),
   );
 
-export const getDocumentTitles = (documentType: EOfferingDocumentType) => ({
+export const documentTitles = {
   company_token_holder_agreement: <FormattedMessage id="eto.documents.tokenholder-agreement" />,
   reservation_and_acquisition_agreement: (
     <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
@@ -47,17 +47,23 @@ export const getDocumentTitles = (documentType: EOfferingDocumentType) => ({
   signed_investment_and_shareholder_agreement: (
     <FormattedMessage id="eto.documents.signed-investment-and-shareholder-agreement" />
   ),
-  approved_investor_offering_document:
-    documentType === EOfferingDocumentType.PROSPECTUS ? (
-      <FormattedMessage id="eto.documents.approved-investor-prospectus-document" />
-    ) : (
-      <FormattedMessage id="eto.documents.approved-investment-memorandum-document" />
-    ),
   signed_termsheet: <FormattedMessage id="eto.documents.signed-termsheet" />,
   investment_summary_template: <FormattedMessage id="eto.documents.investment-summary-template" />,
   investment_and_shareholder_agreement_preview: (
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement-preview" />
   ),
+};
+
+const approvedInvestorOfferingDocumentTitle = (documentType: EOfferingDocumentType) =>
+  documentType === EOfferingDocumentType.PROSPECTUS ? (
+    <FormattedMessage id="eto.documents.approved-investor-prospectus-document" />
+  ) : (
+    <FormattedMessage id="eto.documents.approved-investment-memorandum-document" />
+  );
+
+export const getInvestorDocumentTitles = (documentType: EOfferingDocumentType) => ({
+  ...documentTitles,
+  approved_investor_offering_document: approvedInvestorOfferingDocumentTitle(documentType),
 });
 
 export const getDocumentTemplateTitles = (documentType: EOfferingDocumentType) => ({

@@ -1,5 +1,11 @@
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EEtoDocumentType, IEtoFilesInfo } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { EUserType } from "../../lib/api/users/interfaces";
+import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { selectUserType } from "../auth/selectors";
+import { selectIssuerEtoState } from "../eto-flow/selectors";
+import { selectNomineeEtoState } from "../eto/selectors";
 import { IEtoDocumentState } from "./reducer";
 
 export const selectIsIpfsModalOpen = (state: DeepReadonly<IEtoDocumentState>): boolean =>
@@ -23,3 +29,14 @@ export const selectEtoDocumentsDownloading = (
 export const selectEtoDocumentsUploading = (
   state: DeepReadonly<IEtoDocumentState>,
 ): { [key in EEtoDocumentType]?: boolean } => state.uploading;
+
+export const selectEtoState = (state: IAppState): EEtoState => {
+  const userType = selectUserType(state);
+  const etoState =
+    userType === EUserType.NOMINEE ? selectNomineeEtoState(state) : selectIssuerEtoState(state);
+  if (userType === undefined || etoState === undefined) {
+    throw new Error("invalid app state");
+  } else {
+    return etoState;
+  }
+};

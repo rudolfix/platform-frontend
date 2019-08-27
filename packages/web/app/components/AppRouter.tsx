@@ -4,7 +4,8 @@ import { Redirect, Route } from "react-router-dom";
 import { SwitchConnected } from "../utils/connectedRouting";
 import { appRoutes } from "./appRoutes";
 import { Dashboard } from "./dashboard/Dashboard";
-import { Documents } from "./documents/Documents";
+import { Documents } from "./documents/issuerDocuments/Documents";
+import { NomineeDocuments } from "./documents/nomineeDocuments/NomineeDocuments";
 import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
 import { UnlockWalletFundsFromLink } from "./edge-cases/UnlockWalletFundsFromLink";
 import { EtoDashboard } from "./eto/EtoDashboard";
@@ -149,7 +150,7 @@ export const AppRouter: React.FunctionComponent = () => (
     <OnlyAuthorizedRoute
       path={appRoutes.documents}
       issuerComponent={Documents}
-      nomineeComponent={Documents}
+      nomineeComponent={NomineeDocuments}
       exact
     />
     <OnlyAuthorizedRoute

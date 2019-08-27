@@ -6,7 +6,7 @@ import { selectIsBankAccountVerified } from "../../modules/bank-transfer-flow/se
 import { selectNomineeEto } from "../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { selectNomineeStateIsLoading } from "../../modules/nominee-flow/selectors";
-import { SelectIsVerificationFullyDone } from "../../modules/selectors";
+import { selectIsVerificationFullyDone } from "../../modules/selectors";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -47,7 +47,7 @@ export const NomineeDashboard = compose<IDashboardProps, {}>(
       isLoading: selectNomineeStateIsLoading(state),
       nomineeEto: selectNomineeEto(state),
       isBankAccountVerified: selectIsBankAccountVerified(state),
-      verificationIsComplete: SelectIsVerificationFullyDone(state),
+      verificationIsComplete: selectIsVerificationFullyDone(state),
     }),
   }),
   onEnterAction<IStateProps>({

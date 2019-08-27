@@ -124,7 +124,7 @@ export const nomineeMenuData = (
     type: EMenuEntryType.LINK,
     key: "documents",
     to: appRoutes.documents,
-    disabled: true, //todo there's no clear spec yet what should be shown in the docs for nominee.
+    disabled: !nomineeEto,
     menuName: <FormattedMessage id="menu.documents-page" />,
   },
 ];

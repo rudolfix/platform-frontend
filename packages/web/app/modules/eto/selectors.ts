@@ -1,8 +1,11 @@
 import { find, findKey } from "lodash/fp";
 
 import { EEtoState, TEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { nomineeIgnoredTemplates } from "../../lib/api/eto/EtoFileUtils";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { objectToFilteredArray } from "../../utils/objectToFilteredArray";
 import { selectUserId } from "../auth/selectors";
 import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
 import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
@@ -191,4 +194,17 @@ export const selectNomineeEto = (state: IAppState): TEtoWithCompanyAndContract |
   } else {
     throw new Error("linked nominee eto id is invalid");
   }
+};
+
+export const selectNomineeEtoState = (state: IAppState) => {
+  const eto = selectNomineeEto(state);
+  return eto ? eto.state : undefined;
+};
+
+export const selectNomineeEtoTemplatesArray = (state: IAppState): IEtoDocument[] => {
+  const eto = selectNomineeEto(state);
+  const filterFunction = (key: string) =>
+    !nomineeIgnoredTemplates.some((templateKey: string) => templateKey === key);
+
+  return eto !== undefined ? objectToFilteredArray(filterFunction, eto.templates) : [];
 };

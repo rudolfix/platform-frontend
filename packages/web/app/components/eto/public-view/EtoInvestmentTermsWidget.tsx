@@ -87,7 +87,7 @@ const DownloadIshaOrTermsheetLink: React.FunctionComponent<IDownloadIsha> = ({
       />
     );
   }
-  docKey = getKeyByType(EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW);
+  docKey = getKeyByType(EEtoDocumentType.SIGNED_TERMSHEET);
   if (docKey) {
     return (
       <DocumentTemplateButton

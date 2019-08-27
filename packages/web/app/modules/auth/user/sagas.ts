@@ -97,6 +97,7 @@ export async function updateUserPromise(
 
 export function* loadOrCreateUser(userType: EUserType): Iterator<any> {
   const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
+
   yield put(actions.auth.setUser(user));
 
   yield neuCall(loadKycRequestData);

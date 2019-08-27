@@ -27,9 +27,11 @@ interface ILayoutUnauthProps {
 
 type TContentExternalProps = React.ComponentProps<typeof Content>;
 
-export const LayoutUnauthorized: React.FunctionComponent<
-  ILayoutUnauthProps & TContentExternalProps
-> = ({ children, hideHeaderCtaButtons = false, ...contentProps }) => (
+const LayoutUnauthorized: React.FunctionComponent<ILayoutUnauthProps & TContentExternalProps> = ({
+  children,
+  hideHeaderCtaButtons = false,
+  ...contentProps
+}) => (
   <>
     <HeaderUnauthorized hideHeaderCtaButtons={hideHeaderCtaButtons} />
     <Content {...contentProps}>{children}</Content>
@@ -37,7 +39,7 @@ export const LayoutUnauthorized: React.FunctionComponent<
   </>
 );
 
-export const LayoutAuthorized: React.FunctionComponent<TContentExternalProps> = ({
+const LayoutAuthorized: React.FunctionComponent<TContentExternalProps> = ({
   children,
   ...contentProps
 }) => (
@@ -57,7 +59,7 @@ export const LayoutAuthorized: React.FunctionComponent<TContentExternalProps> = 
   </>
 );
 
-export const LayoutComponent: React.FunctionComponent<
+const LayoutComponent: React.FunctionComponent<
   IStateProps & TDataTestId & TContentExternalProps & ILayoutUnauthProps
 > = ({
   children,
@@ -77,13 +79,19 @@ export const LayoutComponent: React.FunctionComponent<
   </div>
 );
 
-export const Layout = compose<
-  IStateProps,
-  TDataTestId & TContentExternalProps & ILayoutUnauthProps
->(
+const Layout = compose<IStateProps, TDataTestId & TContentExternalProps & ILayoutUnauthProps>(
   appConnect<IStateProps, {}, {}>({
     stateToProps: state => ({
       userIsAuthorized: selectIsAuthorized(state.auth),
     }),
   }),
 )(LayoutComponent);
+
+export {
+  Layout,
+  LayoutComponent,
+  LayoutAuthorized,
+  LayoutUnauthorized,
+  ILayoutUnauthProps,
+  TContentExternalProps,
+};

@@ -26,7 +26,7 @@ export const authReducer: AppReducer<IAuthState> = (
         ...state,
         jwt: action.payload.jwt,
       };
-    case "SET_CURRENT_AGREEMENT_HASH":
+    case actions.tosModal.setCurrentTosHash.getType():
       return {
         ...state,
         currentAgreementHash: action.payload.currentAgreementHash,

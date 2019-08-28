@@ -21,6 +21,7 @@ interface IStateProps {
 
 export const EtoRegister = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayout),
+  withContainer(Layout),
   onEnterAction({ actionCreator: d => d(actions.etoFlow.loadIssuerEto()) }),
   appConnect<IStateProps>({
     stateToProps: s => ({
@@ -28,5 +29,4 @@ export const EtoRegister = compose<React.FunctionComponent>(
     }),
   }),
   branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),
-  withContainer(Layout),
 )(EtoRegistrationPanel);

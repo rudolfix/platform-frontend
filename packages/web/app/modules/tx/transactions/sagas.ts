@@ -13,6 +13,7 @@ import { ETxSenderType } from "../types";
 import { startClaimGenerator } from "./claim/saga";
 import { etoSetDateGenerator, etoSignInvestmentAgreementGenerator } from "./eto-flow/saga";
 import { investmentFlowGenerator } from "./investment/sagas";
+import { startNomineeAgreementSign } from "./nominee/sign-agreement/saga";
 import { startInvestorPayoutAcceptGenerator } from "./payout/accept/saga";
 import { startInvestorPayoutRedistributionGenerator } from "./payout/redistribute/saga";
 import { startNEuroRedeemGenerator } from "./redeem/saga";
@@ -223,6 +224,34 @@ export function* etoRefundSaga(
   }
 }
 
+export function* startNomineeTHASignSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.NOMINEE_THA_SIGN,
+      transactionFlowGenerator: startNomineeAgreementSign,
+    });
+    logger.info("THA sign successful");
+  } catch (e) {
+    logger.info("THA sign cancelled", e);
+  } finally {
+    yield put(actions.nomineeFlow.loadNomineeTaskData());
+  }
+}
+
+export function* startNomineeRAAASignSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.NOMINEE_RAAA_SIGN,
+      transactionFlowGenerator: startNomineeAgreementSign,
+    });
+    logger.info("RAAA sign successful");
+  } catch (e) {
+    logger.info("RAAA sign cancelled", e);
+  } finally {
+    yield put(actions.nomineeFlow.loadNomineeTaskData());
+  }
+}
+
 export const txTransactionsSagasWatcher = function*(): Iterator<any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_WITHDRAW_ETH", withdrawSaga);
   yield fork(neuTakeLatest, "TRANSACTIONS_START_UPGRADE", upgradeSaga);
@@ -248,6 +277,8 @@ export const txTransactionsSagasWatcher = function*(): Iterator<any> {
     removePendingTransaction,
   );
   yield fork(neuTakeLatest, actions.txTransactions.startInvestorRefund, etoRefundSaga);
+  yield fork(neuTakeLatest, actions.txTransactions.startNomineeTHASign, startNomineeTHASignSaga);
+  yield fork(neuTakeLatest, actions.txTransactions.startNomineeRAAASign, startNomineeRAAASignSaga);
 
   // Add new transaction types here...
 };

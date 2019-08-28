@@ -35,6 +35,10 @@ const TxName: React.FunctionComponent<IProps> = ({ type }) => {
       return <FormattedMessage id="upgrade-flow.title" />;
     case ETxSenderType.INVESTOR_REFUND:
       return <FormattedMessage id="user-refund-flow.title" />;
+    case ETxSenderType.NOMINEE_THA_SIGN:
+      return <FormattedMessage id="nominee-sign-tha.title" />;
+    case ETxSenderType.NOMINEE_RAAA_SIGN:
+      return <FormattedMessage id="nominee-sign-raaa.title" />;
     default:
       return assertNever(type);
   }

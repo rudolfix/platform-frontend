@@ -23,6 +23,8 @@ import { InvestorRedistributePayoutConfirm } from "./investor-payout/Redistribut
 import { InvestorRedistributePayoutSuccess } from "./investor-payout/RedistributeSuccess";
 import { InvestorRedistributePayoutSummary } from "./investor-payout/RedistributeSummary";
 import { RefundSummary } from "./investor-refund/RefundSummary";
+import { SignNomineeAgreementSuccess } from "./nominee/sign-agreement/SignAgreementSuccess";
+import { SignNomineeAgreementSummary } from "./nominee/sign-agreement/SignAgreementSummary";
 import { BankTransferRedeemInit } from "./redeem/BankTransferRedeemInit";
 import { BankTransferRedeemSuccess } from "./redeem/BankTransferRedeemSuccess";
 import { BankTransferRedeemSummary } from "./redeem/BankTransferRedeemSummary";
@@ -128,6 +130,9 @@ const SummaryComponent: React.FunctionComponent<{ type?: ETxSenderType }> = ({ t
       return <SignInvestmentAgreementSummary />;
     case ETxSenderType.INVESTOR_REFUND:
       return <RefundSummary />;
+    case ETxSenderType.NOMINEE_THA_SIGN:
+    case ETxSenderType.NOMINEE_RAAA_SIGN:
+      return <SignNomineeAgreementSummary />;
     default:
       return <WithdrawSummary />;
   }
@@ -151,6 +156,9 @@ const SuccessComponent: React.FunctionComponent<{
       return <BankTransferRedeemSuccess {...props} />;
     case ETxSenderType.WITHDRAW:
       return <WithdrawSuccess {...props} />;
+    case ETxSenderType.NOMINEE_THA_SIGN:
+    case ETxSenderType.NOMINEE_RAAA_SIGN:
+      return <SignNomineeAgreementSuccess />;
     default:
       return <TxSuccess {...props} />;
   }

@@ -33,7 +33,7 @@ const openAndCheckValues = (
   goToEtoDashboard();
 };
 
-describe("Eto Forms", () => {
+describe.skip("Eto Forms", () => {
   it("should fill required fields and submit eto", function(): void {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(async () => {
       goToEtoDashboard();

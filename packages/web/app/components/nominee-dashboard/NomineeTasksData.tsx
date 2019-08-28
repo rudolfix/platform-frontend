@@ -1,8 +1,10 @@
 import * as React from "react";
 
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
+import { ENomineeAcceptAgreementStatus } from "../../modules/nominee-flow/reducer";
+import { nomineeIsEligibleToSignAgreement } from "../../modules/nominee-flow/utils";
+import { AcceptRAAA, AcceptTHA } from "./AcceptAgreement";
 import { AcceptIsha } from "./AcceptIsha";
-import { AcceptTha } from "./AcceptTha";
 import { AccountSetup } from "./accountSetup/AccountSetup";
 import { LinkBankAccount } from "./linkBankAccount/LinkBankAccount";
 import { LinkToIssuer } from "./linkToIssuer/LinkToIssuer";
@@ -25,6 +27,7 @@ export enum ENomineeTask {
   LINK_TO_ISSUER = "linkToIssuer",
   LINK_BANK_ACCOUNT = "linkBankAccount",
   ACCEPT_THA = "acceptTha",
+  ACCEPT_RAAA = "acceptRaaa",
   REDEEM_SHARE_CAPITAL = "redeemShareCapital",
   ACCEPT_ISHA = "acceptIsha",
 }
@@ -46,7 +49,11 @@ export const NomineeTasksData: TNomineeTasksData = {
   },
   [ENomineeTask.ACCEPT_THA]: {
     key: ENomineeTask.ACCEPT_THA,
-    taskRootComponent: AcceptTha,
+    taskRootComponent: AcceptTHA,
+  },
+  [ENomineeTask.ACCEPT_RAAA]: {
+    key: ENomineeTask.ACCEPT_RAAA,
+    taskRootComponent: AcceptRAAA,
   },
   [ENomineeTask.REDEEM_SHARE_CAPITAL]: {
     key: ENomineeTask.REDEEM_SHARE_CAPITAL,
@@ -67,6 +74,8 @@ export const getNomineeTaskStep = (
   verificationIsComplete: boolean,
   nomineeEto: TEtoWithCompanyAndContract | undefined,
   isBankAccountVerified: boolean,
+  THAStatus: ENomineeAcceptAgreementStatus | undefined,
+  RAAAStatus: ENomineeAcceptAgreementStatus | undefined,
 ): ENomineeTask => {
   if (!verificationIsComplete) {
     return ENomineeTask.ACCOUNT_SETUP;
@@ -74,6 +83,17 @@ export const getNomineeTaskStep = (
     return ENomineeTask.LINK_TO_ISSUER;
   } else if (!isBankAccountVerified) {
     return ENomineeTask.LINK_BANK_ACCOUNT;
+  } else if (
+    THAStatus !== ENomineeAcceptAgreementStatus.DONE &&
+    nomineeIsEligibleToSignAgreement(nomineeEto)
+  ) {
+    return ENomineeTask.ACCEPT_THA;
+  } else if (
+    THAStatus === ENomineeAcceptAgreementStatus.DONE &&
+    RAAAStatus !== ENomineeAcceptAgreementStatus.DONE &&
+    nomineeIsEligibleToSignAgreement(nomineeEto)
+  ) {
+    return ENomineeTask.ACCEPT_RAAA;
   } else {
     return ENomineeTask.NONE;
   }

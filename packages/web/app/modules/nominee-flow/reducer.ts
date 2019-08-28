@@ -20,7 +20,7 @@ export enum ENomineeRequestError {
   GENERIC_ERROR = "nominee_request_generic_error",
 }
 
-export enum ENomineeAcceptThaStatus {
+export enum ENomineeAcceptAgreementStatus {
   NOT_DONE = "not_done",
   DONE = "done",
   ERROR = "error",
@@ -72,7 +72,8 @@ export interface INomineeFlowState {
   error: ENomineeRequestError;
   nomineeRequests: TNomineeRequestStorage;
   linkBankAccount: ENomineeLinkBankAccountStatus;
-  acceptTha: ENomineeAcceptThaStatus;
+  acceptTha: ENomineeAcceptAgreementStatus;
+  acceptRaaa: ENomineeAcceptAgreementStatus;
   redeemShareholderCapital: ENomineeRedeemShareholderCapitalStatus;
   uploadIsha: ENomineeUploadIshaStatus;
 }
@@ -81,7 +82,8 @@ const nomineeFlowInitialState = {
   loading: false,
   error: ENomineeRequestError.NONE,
   nomineeRequests: {},
-  acceptTha: ENomineeAcceptThaStatus.NOT_DONE,
+  acceptTha: ENomineeAcceptAgreementStatus.NOT_DONE,
+  acceptRaaa: ENomineeAcceptAgreementStatus.NOT_DONE,
   linkBankAccount: ENomineeLinkBankAccountStatus.NOT_DONE,
   redeemShareholderCapital: ENomineeRedeemShareholderCapitalStatus.NOT_DONE,
   uploadIsha: ENomineeUploadIshaStatus.NOT_DONE,
@@ -103,6 +105,8 @@ export const nomineeFlowReducer: AppReducer<INomineeFlowState> = (
         ...state,
         loading: false,
         nomineeRequests: action.payload.tasks.nomineeRequests,
+        acceptTha: action.payload.tasks.acceptTha,
+        acceptRaaa: action.payload.tasks.acceptRaaa,
       };
     case actions.nomineeFlow.storeNomineeRequests.getType():
       return {

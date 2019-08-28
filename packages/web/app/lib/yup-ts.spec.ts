@@ -98,4 +98,12 @@ describe("Yup-ts", () => {
     expect(validator.isValidSync(2)).to.be.false;
     expect(validator.isValidSync(5)).to.be.true;
   });
+
+  describe("wysiwygString", () => {
+    it("adds `isWysiwyg` meta flag", () => {
+      const spec = YupTS.wysiwygString();
+      const validator = spec.toYup();
+      expect(validator.describe()).to.deep.include({ meta: { isWysiwyg: true } });
+    });
+  });
 });

@@ -11,14 +11,14 @@ interface IProps {
   enabledLabel: string | React.ReactNode;
   name: string;
   disabled?: boolean;
-  trueValue?: any;
-  falseValue?: any;
+  trueValue?: string | boolean;
+  falseValue?: string | boolean;
   "data-test-id"?: string;
 }
 
 interface IInternalProps {
   value: boolean;
-  onChange: (a: React.ChangeEvent<any>) => any;
+  onChange: (a: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const ToggleComponent: React.FunctionComponent<IProps & IInternalProps> = ({
@@ -72,7 +72,7 @@ class FormToggleLayout extends React.Component<IProps & TFormikConnect> {
     }
   }
 
-  onChange = (e: React.ChangeEvent<any>) => {
+  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { trueValue, falseValue, formik } = this.props;
     const { setFieldValue } = formik;
 
@@ -102,4 +102,4 @@ class FormToggleLayout extends React.Component<IProps & TFormikConnect> {
   }
 }
 
-export const FormToggle = connect<IProps, any>(FormToggleLayout);
+export const FormToggle = connect<IProps, unknown>(FormToggleLayout);

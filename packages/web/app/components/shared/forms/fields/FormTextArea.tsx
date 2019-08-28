@@ -5,6 +5,7 @@ import { Input } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { CommonHtmlProps, TFormikConnect } from "../../../../types";
+import { invariant } from "../../../../utils/invariant";
 import { FormFieldError, generateErrorId } from "./FormFieldError";
 import {
   applyCharactersLimit,
@@ -21,6 +22,9 @@ interface IFieldGroup {
   name: string;
   disabled?: boolean;
   placeholder?: string;
+  /**
+   * @deprecated Use `Yup` max validation to keep schema related validation in one place
+   */
   charactersLimit?: number;
 }
 
@@ -38,6 +42,13 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
   charactersLimit,
   formik,
 }) => {
+  if (process.env.NODE_ENV === "development") {
+    invariant(
+      charactersLimit === undefined,
+      "`charactersLimit` prop is deprecated and should not be used anymore for rich text editor",
+    );
+  }
+
   const { touched, errors, submitCount, setFieldTouched, setFieldValue } = formik;
 
   const invalid = isNonValid(touched, errors, name, submitCount);
@@ -56,7 +67,7 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
             value={field.value}
             onChange={value => {
               setFieldTouched(name);
-              setFieldValue(name, applyCharactersLimit(value, charactersLimit));
+              setFieldValue(name, value);
             }}
           />
           <FormFieldError name={name} />

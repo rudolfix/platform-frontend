@@ -21,7 +21,7 @@ describe("<SanitizedHtml />", () => {
       <h3>Heading 3</h3>
       <h4>Heading 4</h4>
       
-      <p>Paragraph</p>
+      <p>Paragraph first line<br />Paragraph second line</p>
       
       <a href="https://platform.neufund.org">Neufund Platform</a>
       
@@ -45,7 +45,7 @@ describe("<SanitizedHtml />", () => {
       <h3>Heading 3</h3>
       <h4>Heading 4</h4>
       
-      <p>Paragraph</p>
+      <p>Paragraph first line<br />Paragraph second line</p>
       
       <a href="https://platform.neufund.org" target="_blank" rel="noopener noreferrer">Neufund Platform</a>
       

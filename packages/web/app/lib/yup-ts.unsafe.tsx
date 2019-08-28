@@ -7,6 +7,7 @@ import { DeepReadonly, Dictionary, TTranslatedString } from "../types";
 
 export const object = <T extends {}>(objectShape: T) => new ObjectYTS(objectShape);
 export const string = <T extends string>() => new StringYTS<T>();
+export const wysiwygString = () => new WysiwygStringYTS();
 export const url = () => new StringYTS().enhance((v: Yup.StringSchema) => v.url());
 export const array = <T extends YTS<any>>(shape: T) => new ArrayYTS(shape);
 export const number = () => new NumberYTS();
@@ -66,6 +67,18 @@ class ObjectYTS<T> extends YTS<TypeOfProps<T>> {
 class StringYTS<T extends string = string> extends YTS<T> {
   constructor() {
     super(Yup.string());
+  }
+}
+
+class WysiwygStringYTS extends YTS<string> {
+  constructor() {
+    super(Yup.string().meta({ isWysiwyg: true }));
+  }
+
+  max(limit: number): YTS<string> {
+    return this.enhance(v =>
+      v.max(limit, <FormattedMessage id="form.field.error.wysiwyg-string.max" />),
+    );
   }
 }
 

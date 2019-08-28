@@ -21,7 +21,7 @@ import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormSelectField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
-import { FormToggle } from "../../../shared/forms/fields/FormToggle.unsafe";
+import { FormToggle } from "../../../shared/forms/fields/FormToggle";
 import { applyDefaults, convert, parseStringToFloat } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";

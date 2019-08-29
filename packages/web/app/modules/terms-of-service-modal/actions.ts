@@ -1,4 +1,4 @@
-import { createActionFactory } from "../../../../shared/dist/modules/actionsUtils";
+import { createActionFactory } from "@neufund/shared";
 
 export const tosModalActions = {
   loadCurrentTos: createActionFactory("LOAD_CURRENT_TOS"),

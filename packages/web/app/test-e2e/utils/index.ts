@@ -52,14 +52,6 @@ export const clearEmailServer = () => {
   cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
 };
 
-export const typeEmailPassword = (email: string, password: string) => {
-  cy.get(tid("wallet-selector-register-email")).type(email);
-  cy.get(tid("wallet-selector-register-password")).type(password);
-  cy.get(tid("wallet-selector-register-confirm-password")).type(password);
-
-  cy.get(tid("wallet-selector-register-button")).awaitedClick();
-};
-
 export const registerWithLightWalletETO = (
   email: string,
   password: string,
@@ -67,7 +59,7 @@ export const registerWithLightWalletETO = (
 ) => {
   cy.visit("eto/register/light");
 
-  typeEmailPassword(email, password);
+  lightWalletTypeRegistrationInfo(email, password);
   if (acceptTos) acceptTOS();
 };
 
@@ -78,7 +70,7 @@ export const registerWithLightWalletNominee = (
 ) => {
   cy.visit("nominee/register");
 
-  typeEmailPassword(email, password);
+  lightWalletTypeRegistrationInfo(email, password);
   if (acceptTos) acceptTOS();
 };
 
@@ -160,13 +152,7 @@ export const registerWithLightWallet = (
   cy.visit(asIssuer ? appRoutes.registerIssuer : appRoutes.register);
 
   cy.get(tid("wallet-selector-light")).awaitedClick();
-  cy.get(tid("wallet-selector-register-email")).type(email);
-  cy.get(tid("wallet-selector-register-password")).type(password);
-  cy.get(tid("wallet-selector-register-confirm-password")).type(password);
-  cy.get(tid("wallet-selector-register-button"))
-    .should("be.enabled")
-    .awaitedClick()
-    .should("be.disabled");
+  lightWalletTypeRegistrationInfo(email, password);
 
   acceptTOS();
 
@@ -184,6 +170,16 @@ export const acceptTOS = () => {
     .click({ force: true });
 
   cy.get(tid("modals.accept-tos")).should("not.exist");
+};
+
+export const lightWalletTypeRegistrationInfo = (email: string, password: string) => {
+  cy.get(tid("wallet-selector-register-email")).type(email);
+  cy.get(tid("wallet-selector-register-password")).type(password);
+  cy.get(tid("wallet-selector-register-confirm-password")).type(password);
+  cy.get(tid("wallet-selector-register-button"))
+    .should("be.enabled")
+    .awaitedClick()
+    .should("be.disabled");
 };
 
 export const logoutViaAccountMenu = () => {
@@ -221,14 +217,18 @@ export const goToUserAccountSettings = () => {
     .awaitedClick();
 };
 
-export const loginWithLightWallet = (email: string, password: string) => {
-  cy.get(tid("Header-login")).awaitedClick();
-  cy.get(tid("wallet-selector-light")).awaitedClick();
-
+export const lightWalletTypeLoginInfo = (email: string, password: string) => {
   cy.contains(tid("light-wallet-login-with-email-email-field"), email);
   cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
   cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
+};
+
+export const loginWithLightWallet = (email: string, password: string) => {
+  cy.get(tid("Header-login")).awaitedClick();
+  cy.get(tid("wallet-selector-light")).awaitedClick();
+
+  lightWalletTypeLoginInfo(email, password);
 };
 
 export const acceptWallet = () => {

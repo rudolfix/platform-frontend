@@ -5,7 +5,7 @@ import { EUserType } from "../../../lib/api/users/interfaces";
 import { IAppState } from "../../../store";
 import { DeepPartial } from "../../../types";
 import { withStore } from "../../../utils/storeDecorator.unsafe";
-import { HeaderAuthorized, HeaderUnauthComponent } from "./Header";
+import { HeaderAuthorized, HeaderTransitional, HeaderUnauthorized } from "./Header";
 
 const authStoreInvestor = {
   auth: {
@@ -43,14 +43,14 @@ storiesOf("Layout/Header for issuer", module)
     </>
   ));
 
-storiesOf("Layout/Header unauthorized", module)
-  .add("with buttons", () => (
-    <>
-      <HeaderUnauthComponent hideHeaderCtaButtons={false} isIssuerLocation={false} />
-    </>
-  ))
-  .add("without buttons", () => (
-    <>
-      <HeaderUnauthComponent hideHeaderCtaButtons={true} isIssuerLocation={false} />
-    </>
-  ));
+storiesOf("Layout/Header unauthorized", module).add("default", () => (
+  <>
+    <HeaderUnauthorized />
+  </>
+));
+
+storiesOf("Layout/Header transitional", module).add("default", () => (
+  <>
+    <HeaderTransitional />
+  </>
+));

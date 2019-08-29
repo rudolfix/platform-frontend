@@ -19,7 +19,6 @@ import { RedirectEtoPublicView } from "./eto/shared/routing/RedirectToEtoLink";
 import { EtoDashboard } from "./issuer-dashboard/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 import { Landing } from "./landing/Landing";
-import { LandingEto } from "./landing/LandingEto";
 import { NomineeDashboard } from "./nominee-dashboard/NomineeDashboard";
 import { Portfolio } from "./portfolio/Portfolio";
 import { BackupSeed } from "./settings/backup-seed/BackupSeed";
@@ -97,7 +96,7 @@ export const AppRouter: React.FunctionComponent = () => (
       <OnlyPublicRoute
         key={appRoutes.etoLanding}
         path={appRoutes.etoLanding}
-        component={LandingEto}
+        component={() => <Redirect to={appRoutes.root} />}
       />,
       <OnlyPublicRoute
         key={appRoutes.registerIssuer}

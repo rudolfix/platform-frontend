@@ -19,7 +19,7 @@ export function* browserWalletConnectionWatcher(): any {
 
     const { success } = yield race({
       fail: take("BROWSER_WALLET_CONNECTION_ERROR"),
-      success: take(["@@router/LOCATION_CHANGE", "WALLET_SELECTOR_CONNECTED"]),
+      success: take(["@@router/LOCATION_CHANGE", actions.walletSelector.connected]),
     });
 
     if (success) {

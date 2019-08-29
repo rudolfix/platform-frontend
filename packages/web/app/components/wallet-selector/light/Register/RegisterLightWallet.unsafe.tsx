@@ -48,6 +48,7 @@ const validationSchema = Yup.object().shape({
       <FormattedMessage id="wallet-selector.neuwallet.passwords-do-not-match" />,
     ),
 });
+
 class RegisterLightWalletForm extends React.Component<
   FormikProps<IFormValues> & IStateProps & IIntlProps & { restore: boolean }
 > {

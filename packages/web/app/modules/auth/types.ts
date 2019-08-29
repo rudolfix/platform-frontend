@@ -1,7 +1,7 @@
 export enum ELogoutReason {
-  SESSION_TIMEOUT,
-  USER_REQUESTED,
-  ALREADY_LOGGED_IN,
+  SESSION_TIMEOUT = "sessionTimeout",
+  USER_REQUESTED = "userRequested",
+  ALREADY_LOGGED_IN = "alreadyLoggedIn",
 }
 
 export enum EUserAuthType {

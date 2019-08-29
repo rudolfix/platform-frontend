@@ -39,7 +39,7 @@ export function* signInUser({
     const storedWalletMetadata: TStoredWalletMetadata = {
       // tslint:disable-next-line
       ...web3Manager.personalWallet!.getMetadata(),
-      userType: userType,
+      userType,
     };
     walletStorage.set(storedWalletMetadata);
 

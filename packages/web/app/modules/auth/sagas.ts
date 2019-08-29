@@ -20,18 +20,28 @@ import { handleJwtTimeout } from "./jwt/sagas";
 import { ELogoutReason, EUserAuthType } from "./types";
 import { setUser, signInUser } from "./user/sagas";
 
-function* handleLogOutUser(
-  { web3Manager, jwtStorage, logger, userStorage }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.auth.logout>,
-): Iterator<any> {
-  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
-
+export function* logoutUser({
+  web3Manager,
+  jwtStorage,
+  logger,
+  userStorage,
+}: TGlobalDependencies): Iterator<any> {
   userStorage.clear();
   jwtStorage.clear();
 
   yield web3Manager.unplugPersonalWallet();
 
   yield put(actions.web3.personalWalletDisconnected());
+  logger.info("user has been logged out");
+}
+
+function* handleLogOutUser(
+  { logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.auth.logout>,
+): Iterator<any> {
+  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
+
+  yield neuCall(logoutUser);
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:
@@ -137,6 +147,6 @@ export function* authSagas(): Iterator<Effect> {
   yield fork(neuTakeLatest, actions.auth.logout, handleLogOutUser);
   yield fork(neuTakeEvery, actions.auth.setUser, setUser);
   yield fork(neuTakeEvery, actions.auth.verifyEmail, verifyUserEmail);
-  yield fork(neuTakeEvery, "WALLET_SELECTOR_CONNECTED", handleSignInUser);
+  yield fork(neuTakeEvery, actions.walletSelector.connected, handleSignInUser);
   yield fork(neuTakeLatest, actions.auth.loadJWT, handleJwtTimeout);
 }

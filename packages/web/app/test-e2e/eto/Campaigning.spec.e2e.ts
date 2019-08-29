@@ -4,7 +4,7 @@ import {
   assertRegister,
   confirmAccessModal,
   etoFixtureAddressByName,
-  goToEtoDashboard,
+  goToIssuerDashboard,
 } from "../utils";
 import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
@@ -45,7 +45,7 @@ describe("Eto campaigning state", () => {
           is_bookbuilding: false,
         }),
       }).then(() => {
-        goToEtoDashboard();
+        goToIssuerDashboard();
 
         cy.get(tid("eto-state-countdown_to_public_sale")).should("exist");
 

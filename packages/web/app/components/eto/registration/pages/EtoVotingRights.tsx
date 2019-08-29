@@ -22,7 +22,7 @@ import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormSelectField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { FormToggle } from "../../../shared/forms/fields/FormToggle";
-import { applyDefaults, convert, parseStringToFloat } from "../../utils";
+import { convert, parseStringToFloat } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
 import { Nominee } from "./Nominee/Nominee";
@@ -30,11 +30,6 @@ import { Nominee } from "./Nominee/Nominee";
 import * as styles from "../Shared.module.scss";
 
 const LIQUIDATION_PREFERENCE_VALUES = [0, 1, 1.5, 2];
-
-const defaults = {
-  liquidationPreferenceMultiplier: 0,
-  generalVotingRule: "positive",
-};
 
 interface IExternalProps {
   readonly: boolean;
@@ -141,8 +136,8 @@ const EtoVotingRights = compose<React.FunctionComponent<IExternalProps>>(
   }),
   withFormik<IProps, TPartialEtoSpecData>({
     validationSchema: EtoVotingRightsType.toYup(),
-    mapPropsToValues: props => applyDefaults(props.stateValues, defaults),
-    handleSubmit: (values, props) => props.props.saveData(values),
+    mapPropsToValues: props => props.stateValues,
+    handleSubmit: (values, { props }) => props.saveData(values),
   }),
 )(EtoVotingRightsComponent);
 

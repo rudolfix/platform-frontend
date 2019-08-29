@@ -4,16 +4,16 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import {
   EEtoMarketingDataVisibleInPreview,
   EEtoState,
-} from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { etoFormIsReadonly } from "../../../lib/api/eto/EtoApiUtils";
+} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { etoFormIsReadonly } from "../../lib/api/eto/EtoApiUtils";
 import {
   selectIsGeneralEtoLoading,
   selectIssuerCompany,
   selectIssuerEto,
   selectIssuerEtoState,
   userHasKycAndEmailVerified,
-} from "../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../modules/eto-flow/types";
+} from "../../modules/eto-flow/selectors";
+import { EEtoFormTypes } from "../../modules/eto-flow/types";
 import {
   calculateCompanyInformationProgress,
   calculateEtoEquityTokenInfoProgress,
@@ -25,12 +25,12 @@ import {
   calculateInvestmentTermsProgress,
   calculateLegalInformationProgress,
   calculateProductVisionProgress,
-} from "../../../modules/eto-flow/utils";
-import { appConnect } from "../../../store";
-import { TTranslatedString } from "../../../types";
-import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
-import { Heading } from "../../shared/Heading";
-import { etoRegisterRoutes } from "../registration/routes";
+} from "../../modules/eto-flow/utils";
+import { appConnect } from "../../store";
+import { TTranslatedString } from "../../types";
+import { etoRegisterRoutes } from "../eto/registration/routes";
+import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
+import { Heading } from "../shared/Heading";
 import { EtoFormProgressWidget } from "./EtoFormProgressWidget";
 
 import * as styles from "./ETOFormsProgressSection.module.scss";

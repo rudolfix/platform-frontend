@@ -15,7 +15,7 @@ import { StepStatus } from "../DashboardStepStatus";
 import * as styles from "../NomineeDashboard.module.scss";
 
 export const NomineeRequestPendingLayout: React.FunctionComponent = () => (
-  <Panel className={styles.dashboardContentPanel} data-test-id="nominee-kyc-status">
+  <Panel className={styles.dashboardContentPanel} data-test-id="nominee-request-pending">
     <StepStatus
       contentTitleComponent={
         <FormattedMessage id="nominee-flow.link-with-issuer.link-with-issuer" />

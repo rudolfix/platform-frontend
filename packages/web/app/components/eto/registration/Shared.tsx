@@ -1,18 +1,16 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { HorizontalLine } from "../../shared/HorizontalLine";
+import { CommonHtmlProps, TDataTestId } from "../../../types";
 
 import * as styles from "./Shared.module.scss";
 
-interface ISectionProps {
-  line?: boolean;
-  className?: string;
-}
-
-export const Section: React.FunctionComponent<ISectionProps> = ({ line, className, children }) => (
-  <>
-    <div className={cn(styles.section, className)}>{children}</div>
-    {line && <HorizontalLine className="mb-5" />}
-  </>
+export const Section: React.FunctionComponent<CommonHtmlProps & TDataTestId> = ({
+  className,
+  children,
+  "data-test-id": dataTestId,
+}) => (
+  <section className={cn(styles.section, className)} data-test-id={dataTestId}>
+    {children}
+  </section>
 );

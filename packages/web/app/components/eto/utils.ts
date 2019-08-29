@@ -1,9 +1,5 @@
 import { cloneDeep, flow, get, set } from "lodash";
 
-import {
-  EEtoMarketingDataVisibleInPreview,
-  EEtoState,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { invariant } from "../../utils/invariant";
 import { formatFlexiPrecision } from "../../utils/Number.utils";
 
@@ -152,68 +148,3 @@ export const removeKeys = () => (data: { key: string }[]) =>
     delete arrayElement.key;
     return arrayElement;
   });
-
-export enum EEtoStep {
-  ONE = "one",
-  TWO = "two",
-  THREE = "three",
-  FOUR = "four",
-  FIVE = "five",
-  SIX = "six",
-  SEVEN = "seven",
-  EIGHT = "eight",
-  NINE = "nine",
-}
-
-export const selectEtoStep = (
-  isVerificationSectionDone: boolean,
-  etoState: EEtoState,
-  shouldViewEtoSettings: boolean,
-  isMarketingDataVisibleInPreview: EEtoMarketingDataVisibleInPreview | undefined,
-  shouldViewSubmissionSection: boolean,
-  isTermSheetSubmitted: boolean | undefined,
-): EEtoStep => {
-  if (!isVerificationSectionDone) {
-    return EEtoStep.ONE;
-  }
-
-  if (etoState === EEtoState.PREVIEW) {
-    if (
-      shouldViewEtoSettings &&
-      isMarketingDataVisibleInPreview === EEtoMarketingDataVisibleInPreview.VISIBILITY_PENDING
-    ) {
-      return EEtoStep.FOUR;
-    }
-
-    if (
-      shouldViewEtoSettings &&
-      isMarketingDataVisibleInPreview !== EEtoMarketingDataVisibleInPreview.VISIBLE &&
-      !(shouldViewSubmissionSection && isTermSheetSubmitted)
-    ) {
-      return EEtoStep.THREE;
-    }
-
-    if (shouldViewSubmissionSection && isTermSheetSubmitted) {
-      return EEtoStep.SIX;
-    }
-
-    if (
-      shouldViewSubmissionSection ||
-      isMarketingDataVisibleInPreview === EEtoMarketingDataVisibleInPreview.VISIBLE
-    ) {
-      return EEtoStep.FIVE;
-    }
-
-    return EEtoStep.TWO;
-  }
-
-  if (etoState === EEtoState.PENDING) {
-    return EEtoStep.SEVEN;
-  }
-  // THIS IS TEMPORARY FIX. A full should happen to this logic
-  if (etoState === EEtoState.ON_CHAIN) {
-    return EEtoStep.NINE;
-  }
-
-  return EEtoStep.EIGHT;
-};

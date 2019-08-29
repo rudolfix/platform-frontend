@@ -21,13 +21,19 @@ import {
   selectIsTermSheetSubmitted,
   userHasKycAndEmailVerified,
 } from "../../modules/eto-flow/selectors";
-import { calculateMarketingEtoData, calculateSettingsEtoData } from "../../modules/eto-flow/utils";
+import {
+  calculateInvestmentAndEtoTermsEtoData,
+  calculateMarketingEtoData,
+  calculateVotingRightsEtoData,
+} from "../../modules/eto-flow/utils";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
+import { DashboardHeading } from "../eto/shared/DashboardHeading";
+import { EProjectStatusLayout, EProjectStatusSize, ETOIssuerState } from "../eto/shared/ETOState";
 import { Container, EColumnSpan } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
@@ -35,28 +41,23 @@ import { SettingsWidgets } from "../settings/settings-widget/SettingsWidgets";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../shared/Heading";
-import { LoadingIndicator } from "../shared/loading-indicator";
+import { LoadingIndicator } from "../shared/loading-indicator/index";
 import { Tooltip } from "../shared/tooltips/Tooltip";
-import { BookBuildingWidget } from "./dashboard/bookBuildingWidget/BookBuildingWidget";
-import { ChooseEtoStartDateWidget } from "./dashboard/chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
-import { ETOFormsProgressSection } from "./dashboard/ETOFormsProgressSection";
-import { PublishETOWidget } from "./dashboard/PublishETOWidget";
-import { UploadInvestmentAgreement } from "./dashboard/signInvestmentAgreementWidget/UploadInvestmentAgreementWidget.unsafe";
-import { SubmitProposalWidget } from "./dashboard/submitProposalWidget/SubmitProposalWidget";
-import { UploadInvestmentMemorandum } from "./dashboard/UploadInvestmentMemorandum";
-import { UploadProspectusWidget } from "./dashboard/UploadProspectusWidget";
-import { UploadTermSheetWidget } from "./dashboard/UploadTermSheetWidget";
-import { DashboardHeading } from "./shared/DashboardHeading";
-import { EProjectStatusLayout, EProjectStatusSize, ETOIssuerState } from "./shared/ETOState";
+import { BookBuildingWidget } from "./bookBuildingWidget/BookBuildingWidget";
+import { ChooseEtoStartDateWidget } from "./chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
+import { DashboardStep } from "./dashboardStep/DashboardStep";
+import { ETOFormsProgressSection } from "./ETOFormsProgressSection";
+import { PublishETOWidget } from "./PublishETOWidget";
+import { UploadInvestmentAgreement } from "./signInvestmentAgreementWidget/UploadInvestmentAgreementWidget.unsafe";
+import { SubmitProposalWidget } from "./submitProposalWidget/SubmitProposalWidget";
+import { UploadInvestmentMemorandum } from "./UploadInvestmentMemorandum";
+import { UploadProspectusWidget } from "./UploadProspectusWidget";
+import { UploadTermSheetWidget } from "./UploadTermSheetWidget";
 import { EEtoStep, selectEtoStep } from "./utils";
 
 import * as styles from "./EtoDashboard.module.scss";
 
 const SUBMIT_PROPOSAL_THRESHOLD = 1;
-
-interface IEtoStep {
-  etoStep: EEtoStep;
-}
 
 interface IStateProps {
   verifiedEmail?: string;
@@ -66,131 +67,27 @@ interface IStateProps {
   requestStatus?: EKycRequestStatus;
   eto?: TEtoWithCompanyAndContract;
   canEnableBookbuilding: boolean;
-  marketingFormsProgress?: number;
-  etoSettingsFormsProgress?: number;
+  combinedEtoCompanyData: ReturnType<typeof selectCombinedEtoCompanyData>;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
   offeringDocumentType: EOfferingDocumentType | undefined;
   isMarketingDataVisibleInPreview?: EEtoMarketingDataVisibleInPreview;
 }
 
-interface ISubmissionProps {
+interface IComputedProps {
+  isVerificationSectionDone: boolean;
   shouldViewEtoSettings: boolean;
   shouldViewSubmissionSection: boolean;
   shouldViewMarketingSubmissionSection: boolean;
+  etoStep: EEtoStep;
 }
 
-interface IComputedProps extends ISubmissionProps {
-  isVerificationSectionDone: boolean;
-}
-
-interface IComponentProps extends IComputedProps, IEtoStep {
-  verifiedEmail?: string;
-  isLightWallet: boolean;
-  userHasKycAndEmailVerified: boolean;
-  requestStatus?: EKycRequestStatus;
-  eto?: TEtoWithCompanyAndContract;
-  canEnableBookbuilding: boolean;
-  etoFormProgress?: number;
-  isTermSheetSubmitted?: boolean;
-  isOfferingDocumentSubmitted?: boolean;
-  offeringDocumentType: EOfferingDocumentType | undefined;
-  isVerificationSectionDone: boolean;
-}
+type TVerificationSection = Omit<IStateProps, "combinedEtoCompanyData"> &
+  Omit<IComputedProps, "isVerificationSectionDone">;
 
 interface IDispatchProps {
   initEtoView: () => void;
 }
-
-interface IVerifiedUserSectionProps {
-  shouldViewSubmissionSection?: boolean;
-  canEnableBookbuilding: boolean;
-  shouldViewEtoSettings: boolean;
-  isTermSheetSubmitted?: boolean;
-  shouldViewMarketingSubmissionSection: boolean;
-  isOfferingDocumentSubmitted?: boolean;
-  offeringDocumentType: EOfferingDocumentType | undefined;
-  eto?: TEtoWithCompanyAndContract;
-  etoStep: EEtoStep;
-}
-
-const selectStepComponent = (etoStep: EEtoStep) => {
-  switch (etoStep) {
-    case EEtoStep.ONE:
-      return (
-        <DashboardHeading
-          title={<FormattedMessage id="eto-dashboard.verification" />}
-          data-test-id="eto-dashboard-verification"
-        />
-      );
-    case EEtoStep.TWO:
-      return (
-        <DashboardHeading
-          title={<FormattedMessage id="eto-dashboard.company-informations" />}
-          data-test-id="eto-dashboard-company-informations"
-        />
-      );
-    case EEtoStep.THREE:
-      return (
-        <DashboardHeading
-          title={<FormattedMessage id="eto-dashboard.publish-listing" />}
-          data-test-id="eto-dashboard-publish-listing"
-        />
-      );
-    case EEtoStep.FOUR:
-      return (
-        <>
-          <DashboardHeading
-            title={<FormattedMessage id="eto-dashboard.listing-review" />}
-            data-test-id="eto-dashboard-listing-review"
-          />
-          <FormattedMessage id="eto-dashboard.listing-review.description" />
-        </>
-      );
-    case EEtoStep.FIVE:
-      return (
-        <>
-          <DashboardHeading
-            title={<FormattedMessage id="eto-dashboard.setup-eto" />}
-            data-test-id="eto-dashboard-setup-eto"
-          />
-          <FormattedMessage id="eto-dashboard.setup-eto.description" />
-        </>
-      );
-    case EEtoStep.SIX:
-      return (
-        <DashboardHeading
-          title={<FormattedMessage id="eto-dashboard.publish" />}
-          data-test-id="eto-dashboard-publish"
-        />
-      );
-    case EEtoStep.SEVEN:
-      return (
-        <>
-          <DashboardHeading
-            title={<FormattedMessage id="eto-dashboard.review" />}
-            data-test-id="eto-dashboard-review"
-          />
-          <FormattedMessage id="eto-dashboard.review.description" />
-        </>
-      );
-    case EEtoStep.EIGHT:
-      return (
-        <DashboardHeading
-          title={<FormattedMessage id="eto-dashboard.live" />}
-          data-test-id="eto-dashboard-live"
-        />
-      );
-    case EEtoStep.NINE:
-      return <DashboardHeading title={<FormattedMessage id="eto-dashboard.start-fundraising" />} />;
-    default:
-      return null;
-  }
-};
-
-const EtoDashboardStepSelector: React.FunctionComponent<IEtoStep> = ({ etoStep }) => (
-  <Container columnSpan={EColumnSpan.THREE_COL}>{selectStepComponent(etoStep)}</Container>
-);
 
 const SubmitDashBoardSection: React.FunctionComponent<{
   isTermSheetSubmitted?: boolean;
@@ -303,14 +200,19 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   }
 };
 
-const VerificationSection: React.FunctionComponent<IEtoStep> = ({ etoStep, ...props }) => (
+const VerificationSection: React.FunctionComponent<TVerificationSection> = ({
+  etoStep,
+  ...props
+}) => (
   <>
-    <EtoDashboardStepSelector etoStep={etoStep} />
+    <Container columnSpan={EColumnSpan.THREE_COL}>
+      <DashboardStep etoStep={etoStep} />
+    </Container>
     <SettingsWidgets isDynamic={true} {...props} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
   </>
 );
 
-const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = ({
+const VerifiedUserSection: React.FunctionComponent<TVerificationSection> = ({
   canEnableBookbuilding,
   eto,
   etoStep,
@@ -344,7 +246,11 @@ const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = 
             <FormattedMessage id="eto-dashboard.tooltip" />
           </Tooltip>
         </Container>
-        <EtoDashboardStepSelector etoStep={etoStep} />
+
+        <Container columnSpan={EColumnSpan.THREE_COL}>
+          <DashboardStep etoStep={etoStep} />
+        </Container>
+
         <EtoDashboardStateViewComponent
           isTermSheetSubmitted={isTermSheetSubmitted}
           isOfferingDocumentSubmitted={isOfferingDocumentSubmitted}
@@ -366,13 +272,18 @@ const VerifiedUserSection: React.FunctionComponent<IVerifiedUserSectionProps> = 
   }
 };
 
-const EtoDashboardLayout: React.FunctionComponent<IComponentProps> = props => {
-  const { isVerificationSectionDone, userHasKycAndEmailVerified, ...rest } = props;
+const EtoDashboardLayout: React.FunctionComponent<
+  Omit<IStateProps, "combinedEtoCompanyData"> & IComputedProps
+> = props => {
+  const { isVerificationSectionDone, ...rest } = props;
 
   return (
     <WidgetGrid data-test-id="eto-dashboard-application">
-      {!isVerificationSectionDone && <VerificationSection {...rest} />}
-      {userHasKycAndEmailVerified && <VerifiedUserSection {...rest} />}
+      {isVerificationSectionDone ? (
+        <VerifiedUserSection {...rest} />
+      ) : (
+        <VerificationSection {...rest} />
+      )}
     </WidgetGrid>
   );
 };
@@ -390,8 +301,7 @@ const EtoDashboard = compose<React.FunctionComponent>(
       canEnableBookbuilding: selectCanEnableBookBuilding(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
       isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),
-      marketingFormsProgress: calculateMarketingEtoData(selectCombinedEtoCompanyData(s)),
-      etoSettingsFormsProgress: calculateSettingsEtoData(selectCombinedEtoCompanyData(s)),
+      combinedEtoCompanyData: selectCombinedEtoCompanyData(s),
       offeringDocumentType: selectIssuerEtoOfferingDocumentType(s),
       isMarketingDataVisibleInPreview: selectIsMarketingDataVisibleInPreview(s),
     }),
@@ -403,12 +313,22 @@ const EtoDashboard = compose<React.FunctionComponent>(
     }),
   }),
   withProps<IComputedProps, IStateProps>(props => {
-    const shouldViewEtoSettings = Boolean(
-      props.marketingFormsProgress && props.marketingFormsProgress >= SUBMIT_PROPOSAL_THRESHOLD,
+    const marketingFormsProgress = calculateMarketingEtoData(props.combinedEtoCompanyData);
+    const etoInvestmentAndEtoTermsFormsProgress = calculateInvestmentAndEtoTermsEtoData(
+      props.combinedEtoCompanyData,
     );
-    const shouldViewSubmissionSection = Boolean(
-      props.etoSettingsFormsProgress && props.etoSettingsFormsProgress >= SUBMIT_PROPOSAL_THRESHOLD,
-    );
+    const etoVotingRightsFormProgress = calculateVotingRightsEtoData(props.combinedEtoCompanyData);
+
+    const shouldViewEtoSettings = marketingFormsProgress >= SUBMIT_PROPOSAL_THRESHOLD;
+
+    const isInvestmentAndEtoTermsFilledWithAllRequired =
+      etoInvestmentAndEtoTermsFormsProgress >= SUBMIT_PROPOSAL_THRESHOLD;
+
+    const isVotingRightsFilledWithAllRequired =
+      etoVotingRightsFormProgress >= SUBMIT_PROPOSAL_THRESHOLD;
+
+    const shouldViewSubmissionSection =
+      isInvestmentAndEtoTermsFilledWithAllRequired && isVotingRightsFilledWithAllRequired;
 
     const isVerificationSectionDone = props.userHasKycAndEmailVerified && props.backupCodesVerified;
 
@@ -428,10 +348,11 @@ const EtoDashboard = compose<React.FunctionComponent>(
             props.eto.state,
             shouldViewEtoSettings,
             props.isMarketingDataVisibleInPreview,
-            shouldViewSubmissionSection,
             props.isTermSheetSubmitted,
+            isVotingRightsFilledWithAllRequired,
+            isInvestmentAndEtoTermsFilledWithAllRequired,
           )
-        : EEtoStep.ONE,
+        : EEtoStep.VERIFICATION,
     };
   }),
   onEnterAction<IStateProps & IDispatchProps>({

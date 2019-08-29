@@ -26,20 +26,20 @@ interface IDispatchProps {
   deleteNomineeRequest: () => void;
 }
 
-interface IComponentProps {
+interface ILayoutProps {
   readonly: boolean;
   currentNomineeId: string;
   currentNomineeName: string;
   deleteNomineeRequest: () => void;
 }
 
-const NomineeChosenComponent: React.FunctionComponent<IComponentProps> = ({
+const NomineeChosenLayout: React.FunctionComponent<ILayoutProps> = ({
   readonly,
   currentNomineeName,
   currentNomineeId,
   deleteNomineeRequest,
 }) => (
-  <div className={styles.nomineeChosenSection}>
+  <div className={styles.nomineeChosenSection} data-test-id={`chosen-nominee-${currentNomineeId}`}>
     <p className={styles.text}>
       <FormattedMessage id="eto.form.eto-nominee.text" />
     </p>
@@ -60,7 +60,7 @@ const NomineeChosenComponent: React.FunctionComponent<IComponentProps> = ({
   </div>
 );
 
-const Nominee = compose<IExternalProps & IComponentProps, IExternalProps>(
+const Nominee = compose<IExternalProps & ILayoutProps, IExternalProps>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       isLoading: selectEtoNomineeIsLoading(s) || selectIssuerEtoLoading(s),
@@ -74,6 +74,6 @@ const Nominee = compose<IExternalProps & IComponentProps, IExternalProps>(
     ({ currentNomineeId }) => currentNomineeId === undefined,
     renderComponent(ChooseNominee),
   ),
-)(NomineeChosenComponent);
+)(NomineeChosenLayout);
 
-export { NomineeChosenComponent, Nominee };
+export { NomineeChosenLayout, Nominee };

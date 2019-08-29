@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import {
   EtoCompanyInformationType,
   EtoEquityTokenInfoType,
+  ETOInvestmentAndEtoTermsDataType,
   EtoInvestmentTermsType,
   EtoKeyIndividualsType,
   EtoLegalInformationType,
@@ -12,9 +13,7 @@ import {
   EtoMediaType,
   EtoPitchType,
   EtoRiskAssessmentType,
-  EtoSettingDataType,
   EtoVotingRightsType,
-  GeneralEtoDataType,
   getEtoTermsSchema,
   TBookbuildingStatsType,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
@@ -35,7 +34,7 @@ export interface IProgressOptions {
 
 export type ProgressCalculator = (formState: any, initialData?: any) => number;
 
-// recursivly clones a YUP Schema and makes number and string properties required
+// recursively clones a YUP Schema and makes number and string properties required
 export function updateValidator(objectSchema: any, ignore: any): any {
   const type = objectSchema._type;
   if (ignore !== true) {
@@ -59,7 +58,7 @@ export function updateValidator(objectSchema: any, ignore: any): any {
   }
 }
 
-// recursivly create initial data from current values
+// recursively create initial data from current values
 function updateInitialData(initialData: any, currentValue: any): any {
   if (Array.isArray(currentValue)) {
     return currentValue.map((_, i) => updateInitialData({}, currentValue[i]));
@@ -128,10 +127,6 @@ export const calculateInvestmentTermsProgress = getFormFractionDoneCalculator(
   etoInvestmentTermsProgressOptions,
 );
 
-export const calculateGeneralEtoData = getFormFractionDoneCalculator(GeneralEtoDataType.toYup(), {
-  ignore: true,
-});
-
 export const calculateMarketingEtoData = getFormFractionDoneCalculator(
   EtoMarketingDataType.toYup(),
   {
@@ -139,9 +134,17 @@ export const calculateMarketingEtoData = getFormFractionDoneCalculator(
   },
 );
 
-export const calculateSettingsEtoData = getFormFractionDoneCalculator(EtoSettingDataType.toYup(), {
-  ignore: true,
-});
+export const calculateInvestmentAndEtoTermsEtoData = getFormFractionDoneCalculator(
+  ETOInvestmentAndEtoTermsDataType.toYup(),
+  { ignore: true },
+);
+
+export const calculateVotingRightsEtoData = getFormFractionDoneCalculator(
+  EtoVotingRightsType.toYup(),
+  {
+    ignore: true,
+  },
+);
 
 export function getFormFractionDoneCalculator(
   validator: Yup.Schema<any>,
@@ -149,10 +152,11 @@ export function getFormFractionDoneCalculator(
 ): ProgressCalculator {
   const strictValidator = validator.clone();
   const ignore = opts && opts.ignore;
+
   updateValidator(strictValidator, ignore);
 
   return (formState: any, initialData?: any) => {
-    if (typeof initialData === "undefined") {
+    if (initialData === undefined) {
       initialData = updateInitialData({}, formState);
     }
 

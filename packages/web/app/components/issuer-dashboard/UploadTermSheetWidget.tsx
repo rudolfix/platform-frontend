@@ -2,11 +2,11 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { appRoutes } from "../../appRoutes";
-import { EColumnSpan } from "../../layouts/Container";
-import { DashboardLinkWidget } from "../../shared/dashboard-link-widget/DashboardLinkWidget";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
+import { appRoutes } from "../appRoutes";
+import { EColumnSpan } from "../layouts/Container";
+import { DashboardLinkWidget } from "../shared/dashboard-link-widget/DashboardLinkWidget";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
+import { ErrorBoundaryPanel } from "../shared/errorBoundary/ErrorBoundaryPanel";
 
 export const UploadTermSheetWidgetComponent: React.FunctionComponent<{
   columnSpan?: EColumnSpan;

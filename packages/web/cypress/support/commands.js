@@ -33,17 +33,16 @@ Cypress.Commands.add("awaitedClick", { prevSubject: "element" }, (subject, waitD
     .click(),
 );
 
-let LOCAL_STORAGE_MEMORY = {};
+const LOCAL_STORAGE_MEMORY = new Map();
+const DEFAULT_STORAGE_KEY = "main";
 
-Cypress.Commands.add("saveLocalStorage", () => {
-  Object.keys(localStorage).forEach(key => {
-    LOCAL_STORAGE_MEMORY[key] = localStorage[key];
-  });
+Cypress.Commands.add("saveLocalStorage", (memoryKey = DEFAULT_STORAGE_KEY) => {
+  LOCAL_STORAGE_MEMORY.set(memoryKey, { ...localStorage });
 });
 
-Cypress.Commands.add("restoreLocalStorage", () => {
-  Object.keys(LOCAL_STORAGE_MEMORY).forEach(key => {
-    localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
+Cypress.Commands.add("restoreLocalStorage", (memoryKey = DEFAULT_STORAGE_KEY) => {
+  Object.entries(LOCAL_STORAGE_MEMORY.get(memoryKey)).forEach(([key, value]) => {
+    localStorage.setItem(key, value);
   });
 });
 

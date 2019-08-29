@@ -6,28 +6,28 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
 import { branch, compose, lifecycle, renderComponent, renderNothing } from "recompose";
 
-import { DAY } from "../../../../config/constants";
-import { actions } from "../../../../modules/actions";
+import { DAY } from "../../../config/constants";
+import { actions } from "../../../modules/actions";
 import {
   selectIssuerEtoDateToWhitelistMinDuration,
   selectIssuerEtoLoading,
   selectNewEtoDateSaving,
   selectPreEtoStartDateFromContract,
-} from "../../../../modules/eto-flow/selectors";
-import { isValidEtoStartDate } from "../../../../modules/eto-flow/utils";
-import { selectPlatformPendingTransaction } from "../../../../modules/tx/monitor/selectors";
-import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
-import { ETxSenderType } from "../../../../modules/tx/types";
-import { appConnect } from "../../../../store";
-import { EColumnSpan } from "../../../layouts/Container";
-import { ButtonArrowRight } from "../../../shared/buttons";
-import { DatePicker } from "../../../shared/DatePicker";
-import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
-import { FormError } from "../../../shared/forms";
-import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
-import { Panel } from "../../../shared/Panel";
-import { FancyTimeLeft, TimeLeft } from "../../../shared/TimeLeft.unsafe";
+} from "../../../modules/eto-flow/selectors";
+import { isValidEtoStartDate } from "../../../modules/eto-flow/utils";
+import { selectPlatformPendingTransaction } from "../../../modules/tx/monitor/selectors";
+import { ETxSenderState } from "../../../modules/tx/sender/reducer";
+import { ETxSenderType } from "../../../modules/tx/types";
+import { appConnect } from "../../../store";
+import { EColumnSpan } from "../../layouts/Container";
+import { ButtonArrowRight } from "../../shared/buttons/index";
+import { DatePicker } from "../../shared/DatePicker";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
+import { FormError } from "../../shared/forms/index";
+import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
+import { Panel } from "../../shared/Panel";
+import { FancyTimeLeft, TimeLeft } from "../../shared/TimeLeft.unsafe";
 import {
   calculateTimeLeft,
   localTime,
@@ -35,9 +35,9 @@ import {
   utcTime,
   weekdayLocal,
   weekdayUTC,
-} from "../../../shared/utils";
+} from "../../shared/utils";
 
-import * as styles from "../../EtoContentWidget.module.scss";
+import * as styles from "../../eto/EtoContentWidget.module.scss";
 
 interface IStateProps {
   etoDate?: Date;

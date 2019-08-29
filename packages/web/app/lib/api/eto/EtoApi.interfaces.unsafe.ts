@@ -16,7 +16,7 @@ import {
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
 } from "../../../config/constants";
-import { DeepPartial, DeepReadonly } from "../../../types";
+import { DeepPartial, DeepReadonly, EthereumAddressWithChecksum } from "../../../types";
 import * as YupTS from "../../yup-ts.unsafe";
 import { dateSchema, percentage } from "../util/schemaHelpers.unsafe";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
@@ -325,15 +325,10 @@ export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType
 export const EtoVotingRightsType = YupTS.object({
   liquidationPreferenceMultiplier: YupTS.number(),
   generalVotingRule: YupTS.string(),
-});
-
-export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
-
-export const EtoNomineeType = YupTS.object({
   nominee: YupTS.string(),
 });
 
-export type TEtoNomineeType = YupTS.TypeOf<typeof EtoNomineeType>;
+export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
 export const EtoInvestmentTermsType = YupTS.object({
   equityTokensPerShare: YupTS.number(),
@@ -375,7 +370,7 @@ export const EtoInvestmentTermsType = YupTS.object({
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
 
 interface IAdditionalEtoType {
-  etoId: string;
+  etoId: EthereumAddressWithChecksum;
   companyId: string;
   previewCode: string;
   state: EEtoState;
@@ -405,7 +400,6 @@ export type TBookbuildingStatsType = {
 export type TEtoSpecsData = TEtoTermsType &
   TEtoEquityTokenInfoType &
   TEtoVotingRightsType &
-  TEtoNomineeType &
   TEtoInvestmentTermsType &
   IAdditionalEtoType;
 
@@ -421,18 +415,6 @@ export type TGeneralEtoData = {
 // this is coming from the /etos endpoint for investors dashboard
 export type TEtoData = TEtoSpecsData & { company: TCompanyEtoData };
 
-export const GeneralEtoDataType = YupTS.object({
-  ...getEtoTermsSchema().shape,
-  ...EtoEquityTokenInfoType.shape,
-  ...EtoVotingRightsType.shape,
-  ...EtoMediaType.shape,
-  ...EtoLegalInformationType.shape,
-  ...EtoKeyIndividualsType.shape,
-  ...EtoPitchType.shape,
-  ...EtoCompanyInformationType.shape,
-  ...EtoRiskAssessmentType.shape,
-});
-
 export const EtoMarketingDataType = YupTS.object({
   ...EtoEquityTokenInfoType.shape,
   ...EtoMediaType.shape,
@@ -442,11 +424,9 @@ export const EtoMarketingDataType = YupTS.object({
   ...EtoRiskAssessmentType.shape,
 });
 
-export const EtoSettingDataType = YupTS.object({
+export const ETOInvestmentAndEtoTermsDataType = YupTS.object({
   ...EtoInvestmentTermsType.shape,
   ...getEtoTermsSchema().shape,
-  ...EtoVotingRightsType.shape,
-  ...EtoNomineeType.shape,
 });
 
 export type TNomineeRequestResponse = {

@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { CommonHtmlProps, TDataTestId, TTranslatedString } from "../../types";
+import { CommonHtmlProps, TDataTestId } from "../../types";
 
 import * as styles from "./Container.module.scss";
 
@@ -62,8 +62,6 @@ const resolveContainerType = (type: EContainerType, columnSpan: EColumnSpan) => 
 };
 
 export interface IContainerProps {
-  headerText?: TTranslatedString;
-  rightComponent?: React.ReactNode;
   columnSpan?: EColumnSpan;
   type?: EContainerType;
 }

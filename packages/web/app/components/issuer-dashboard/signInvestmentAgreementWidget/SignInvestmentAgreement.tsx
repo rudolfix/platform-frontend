@@ -4,24 +4,24 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, renderComponent, renderNothing } from "recompose";
 import { compose } from "redux";
 
-import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
-import { actions } from "../../../../modules/actions";
+import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { actions } from "../../../modules/actions";
 import {
   selectInvestmentAgreementLoading,
   selectIssuerEtoId,
   selectSignedInvestmentAgreementUrl,
   selectUploadedInvestmentAgreement,
-} from "../../../../modules/eto-flow/selectors";
-import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { investmentAgreementNotSigned } from "../../../documents/utils";
-import { EColumnSpan } from "../../../layouts/Container";
-import { ButtonArrowRight } from "../../../shared/buttons/Button";
-import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
-import { Panel } from "../../../shared/Panel";
+} from "../../../modules/eto-flow/selectors";
+import { appConnect } from "../../../store";
+import { onEnterAction } from "../../../utils/OnEnterAction";
+import { investmentAgreementNotSigned } from "../../documents/utils";
+import { EColumnSpan } from "../../layouts/Container";
+import { ButtonArrowRight } from "../../shared/buttons/Button";
+import { EHeadingSize, Heading } from "../../shared/Heading";
+import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
+import { Panel } from "../../shared/Panel";
 
-import * as styles from "../../EtoContentWidget.module.scss";
+import * as styles from "../../eto/EtoContentWidget.module.scss";
 
 interface IDispatchProps {
   signInvestmentAgreement: (etoId: string, agreementHash: string) => void;

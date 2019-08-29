@@ -1,6 +1,6 @@
 import {
   assertErrorModal,
-  assertEtoDashboard,
+  assertIssuerDashboard,
   goToDashboard,
   logoutViaAccountMenu,
   registerWithLightWalletETO,
@@ -14,7 +14,7 @@ describe("Wallet backup e2e recovery phrase", () => {
     cy.clearLocalStorage();
     registerWithLightWalletETO("moe-wallet-backup-e2e@test.com", passowrd);
 
-    assertEtoDashboard();
+    assertIssuerDashboard();
   });
 
   it("should raise an error that user is already used", () => {

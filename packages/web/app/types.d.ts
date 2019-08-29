@@ -3,6 +3,7 @@ import { FormikContext } from "formik";
 import { CSSProperties, ReactElement } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { ToastOptions } from "react-toastify";
+import { ComponentEnhancer } from "recompose";
 
 /**
  * Generates a dictionary with `T` values and `R` keys (default string)
@@ -142,3 +143,16 @@ export type TFormikConnect = {
 export type TElementRef<T> = null | T;
 
 export type ArrayWithAtLeastOneMember<T> = [T, ...T[]];
+
+/**
+ * Returns HOC inner props
+ * @note For consistency HOC\s should be always wrapped by function
+ * @example
+ * import { compose } from "recompose";
+ *
+ * const withFoo = () => compose<{ foo: string }, {}>(...);
+ * THocProps<typeof withFoo> // { foo: string }
+ */
+export type THocProps<
+  H extends () => ComponentEnhancer<any, any>
+> = H extends () => ComponentEnhancer<infer R, any> ? R : never;

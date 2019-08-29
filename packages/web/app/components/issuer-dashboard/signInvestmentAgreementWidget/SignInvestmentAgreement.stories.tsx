@@ -2,8 +2,8 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EEtoDocumentType, TEtoFormType } from "../../../../lib/api/eto/EtoFileApi.interfaces";
-import { ipfsLinkFromHash } from "../../../documents/utils";
+import { EEtoDocumentType, TEtoFormType } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { ipfsLinkFromHash } from "../../documents/utils";
 import { SignInvestmentAgreementLayout } from "./SignInvestmentAgreement";
 
 const ipfsHash = "1243654we645";

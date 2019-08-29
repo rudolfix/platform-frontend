@@ -6,20 +6,20 @@ import {
   TFormFixtureExpectedValues,
   uploadDocumentToFieldWithTid,
 } from "../utils/forms";
-import { goToEtoDashboard } from "../utils/navigation";
+import { goToIssuerDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-import { createAndSetNominee, fillAndAssert, submitProposal } from "./EtoRegistrationUtils";
 import {
-  aboutFormRequired,
-  aboutFormSubmit,
-  equityTokenInfoForm,
+  createAndSetNominee,
+  fillAndAssert,
+  fillRequiredCompanyInformation,
+  submitProposal,
+} from "./EtoRegistrationUtils";
+import {
   etoTermsRequiredForm,
   etoTermsRequiredFormExpectedValues,
   investmentTermsRequiredForm,
   investmentTermsRequiredFormExpectedResult,
-  legalInfoRequiredForm,
-  mediaRequiredForm,
   votingRights,
 } from "./fixtures";
 
@@ -30,34 +30,25 @@ const openAndCheckValues = (
 ) => {
   cy.get(`${tid(section)} button`).click();
   checkForm(sectionForm, expectedValues);
-  goToEtoDashboard();
+  goToIssuerDashboard();
 };
 
 describe.skip("Eto Forms", () => {
   it("should fill required fields and submit eto", function(): void {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(async () => {
-      goToEtoDashboard();
+      goToIssuerDashboard();
 
       cy.get(tid("eto-progress-widget-eto-terms")).should("not.exist");
 
       // Fill marketing data first
 
-      fillAndAssert("eto-progress-widget-about", {
-        ...aboutFormRequired,
-        ...aboutFormSubmit,
-      });
-
-      fillAndAssert("eto-progress-widget-legal-info", legalInfoRequiredForm);
-
-      fillAndAssert("eto-progress-widget-equity-token-info", equityTokenInfoForm);
-
-      fillAndAssert("eto-progress-widget-media", mediaRequiredForm);
-
-      // Connect nominee with issuer
-      createAndSetNominee();
+      fillRequiredCompanyInformation();
 
       // Now eto settings should be available
       cy.get(tid("eto-progress-widget-eto-terms")).should("exist");
+
+      // Connect nominee with issuer
+      createAndSetNominee();
 
       // Fill eto settings
       fillAndAssert("eto-progress-widget-investment-terms", investmentTermsRequiredForm);

@@ -24,7 +24,7 @@ import {
 } from "../kyc/fixtures";
 import {
   assertDashboard,
-  assertEtoDashboard,
+  assertIssuerDashboard,
   assertUserInLanding,
   assertWaitForExternalPendingTransactionCount,
   getLatestEmailByUser,
@@ -171,7 +171,7 @@ export const registerWithLightWallet = (
   acceptTOS();
 
   if (asIssuer) {
-    assertEtoDashboard();
+    assertIssuerDashboard();
   } else {
     assertDashboard();
   }

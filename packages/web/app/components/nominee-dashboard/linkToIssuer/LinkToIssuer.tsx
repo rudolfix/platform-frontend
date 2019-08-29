@@ -107,9 +107,11 @@ export const RepeatCreateNomineeRequestLayout: React.FunctionComponent<IRepeatRe
     <h1 className={styles.title}>
       <FormattedMessage id="nominee-flow.link-with-issuer.link-with-issuer" />
     </h1>
-    <p className={cn(styles.text, styles.error)}>
-      <FormattedHTMLMessage
-        tagName="span"
+    <p
+      className={cn(styles.text, styles.error)}
+      data-test-id={`nominee-dashboard-request-rejected-${nomineeRequest.etoId}`}
+    >
+      <FormattedMessage
         id="nominee-flow.link-with-issuer.error-request-rejected"
         values={{ etoId: nomineeRequest.etoId }}
       />

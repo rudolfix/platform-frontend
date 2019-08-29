@@ -35,9 +35,11 @@ const AccountAddress: React.FunctionComponent<
   className,
   "data-test-id": dataTestId = "account-address.your.ether-address.from-div",
 }) => (
-  <div className={cn(styles.onlyAddress, className)}>
+  <div className={cn(styles.accountAddress, className)}>
     <Avatar seed={address} />
-    <span data-test-id={dataTestId}>{address}</span>
+    <span className={styles.address} data-test-id={dataTestId}>
+      {address}
+    </span>
     <CopyToClipboardButton value={address} />
   </div>
 );
@@ -49,7 +51,7 @@ const AccountAddressWithHistoryLink: React.FunctionComponent<
   className,
   "data-test-id": dataTestId = "account-address.your.ether-address.from-div",
 }) => (
-  <div className={cn(styles.accountAddress, className)}>
+  <div className={cn(styles.accountAddressWithHistoryLink, className)}>
     <Avatar seed={address} />
 
     <div className={styles.addressWrapper}>

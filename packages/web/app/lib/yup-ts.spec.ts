@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { NumberSchema } from "yup";
 
+import { AssertEqual } from "../../test/testUtils";
 import { DeepReadonly } from "../types";
 import * as YupTS from "./yup-ts.unsafe";
 
@@ -51,16 +52,17 @@ describe("Yup-ts", () => {
 
   // assertions on types done according to: https://abstract.properties/typescript-compile-assertions.html
   it("should generate correct types", () => {
-    type assert<T> = T extends DeepReadonly<{
-      fullName: string;
-      middleName: string | undefined;
-      age: number;
-      married: boolean | undefined;
-      animals: Array<{ name: string | undefined }> | undefined;
-      url: string | undefined;
-    }>
-      ? true
-      : never;
+    type assert<T> = AssertEqual<
+      T,
+      DeepReadonly<{
+        fullName: string;
+        middleName: string | undefined;
+        age: number;
+        married: boolean | undefined;
+        animals: Array<{ name: string | undefined }> | undefined;
+        url: string | undefined;
+      }>
+    >;
 
     const t: assert<TValidatorType> = true;
     return t;

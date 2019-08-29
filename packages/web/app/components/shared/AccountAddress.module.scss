@@ -1,19 +1,25 @@
-.account-address {
+.account-address-with-history-link {
   display: inline-flex;
   width: 100%;
-}
 
-.address {
-  @include font-label;
+  .address {
+    @include font-label;
 
-  border: 0;
-  color: $neu-slate-grey;
-  min-height: 1em;
-  text-transform: none;
-  padding: 0;
-  resize: none;
-  width: 100%;
-  word-break: break-all;
+    border: 0;
+    color: $neu-slate-grey;
+    min-height: 1em;
+    text-transform: none;
+    padding: 0;
+    resize: none;
+    width: 100%;
+    word-break: break-all;
+  }
+
+  .address-wrapper {
+    flex: 1;
+    margin-right: px-to-rem(20px);
+    padding-left: 10px;
+  }
 }
 
 .transaction-history {
@@ -22,20 +28,22 @@
   color: $neu-silver;
 }
 
-.address-wrapper {
-  flex: 1;
-  margin-right: px-to-rem(20px);
-  padding-left: 10px;
-}
-
-.only-address {
-
+.account-address {
   display: grid;
   grid-template: 1fr / auto 1fr auto;
   grid-gap: 10px;
   align-items: center;
 
+  color: $neu-charcoal-grey2;
   font-family: $font-family-roboto;
   font-size: 16px;
-  color: $neu-charcoal-grey2;
+
+  .address {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    // force to not overflow
+    max-width: 100%;
+  }
 }

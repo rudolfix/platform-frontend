@@ -4,25 +4,25 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, renderComponent, renderNothing } from "recompose";
 import { compose } from "redux";
 
-import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
-import { actions } from "../../../../modules/actions";
+import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { actions } from "../../../modules/actions";
 import {
   selectIssuerEtoId,
   selectIssuerEtoTemplates,
   selectUploadedInvestmentAgreement,
-} from "../../../../modules/eto-flow/selectors";
-import { selectEtoOnChainStateById } from "../../../../modules/eto/selectors";
-import { EETOStateOnChain } from "../../../../modules/eto/types";
-import { appConnect } from "../../../../store";
-import { EColumnSpan } from "../../../layouts/Container";
-import { ButtonArrowRight } from "../../../shared/buttons/Button";
-import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
-import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { Panel } from "../../../shared/Panel";
+} from "../../../modules/eto-flow/selectors";
+import { selectEtoOnChainStateById } from "../../../modules/eto/selectors";
+import { EETOStateOnChain } from "../../../modules/eto/types";
+import { appConnect } from "../../../store";
+import { EColumnSpan } from "../../layouts/Container";
+import { ButtonArrowRight } from "../../shared/buttons/Button";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
+import { EHeadingSize, Heading } from "../../shared/Heading";
+import { Panel } from "../../shared/Panel";
 import { SignInvestmentAgreement } from "./SignInvestmentAgreement";
 
-import * as styles from "../../EtoContentWidget.module.scss";
+import * as styles from "../../eto/EtoContentWidget.module.scss";
 
 interface IDispatchProps {
   downloadAgreementTemplate: (agreementTemplate: IEtoDocument) => void;

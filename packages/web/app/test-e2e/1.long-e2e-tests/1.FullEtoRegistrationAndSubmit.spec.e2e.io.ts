@@ -10,9 +10,9 @@ import {
   productVisionForm,
   votingRights,
 } from "../eto-registration/fixtures";
-import { assertEtoDashboard } from "../utils";
+import { assertIssuerDashboard } from "../utils";
 import { fillForm } from "../utils/forms";
-import { goToEtoDashboard } from "../utils/navigation";
+import { goToIssuerDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -23,7 +23,7 @@ describe("Eto Forms", () => {
   });
   beforeEach(() => {
     cy.restoreLocalStorage();
-    goToEtoDashboard();
+    goToIssuerDashboard();
   });
 
   it("will fill and submit about", () => {
@@ -58,7 +58,7 @@ describe("Eto Forms", () => {
     cy.get(tid("key-individuals-group-button-partners")).awaitedClick();
     fillForm(etoKeyIndividualsForm);
 
-    assertEtoDashboard();
+    assertIssuerDashboard();
     cy.get(`${tid("eto-progress-widget-key-individuals")} ${tid("chart-circle.progress")}`).should(
       "contain",
       "100%",

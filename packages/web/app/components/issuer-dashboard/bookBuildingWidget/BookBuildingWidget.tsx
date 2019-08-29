@@ -5,37 +5,33 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
-import { DAY } from "../../../../config/constants";
-import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { actions } from "../../../../modules/actions";
-import { selectBookbuildingStats } from "../../../../modules/bookbuilding-flow/selectors";
+import { DAY } from "../../../config/constants";
+import { IBookBuildingStats } from "../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
+import { actions } from "../../../modules/actions";
+import { selectBookbuildingStats } from "../../../modules/bookbuilding-flow/selectors";
 import {
   selectCanEnableBookBuilding,
   selectIsBookBuilding,
   selectIssuerEtoDateToWhitelistMinDuration,
   selectIssuerEtoId,
   selectMaxPledges,
-} from "../../../../modules/eto-flow/selectors";
-import { appConnect } from "../../../../store";
-import { TTranslatedString } from "../../../../types";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { onLeaveAction } from "../../../../utils/OnLeaveAction";
-import { EColumnSpan } from "../../../layouts/Container";
-import { ButtonArrowRight } from "../../../shared/buttons";
-import { Document } from "../../../shared/Document";
-import { DocumentTemplateButton } from "../../../shared/DocumentLink";
-import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryPanel } from "../../../shared/errorBoundary/ErrorBoundaryPanel";
-import { MoneyNew } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
-import { LoadingIndicator } from "../../../shared/loading-indicator";
-import { Panel } from "../../../shared/Panel";
+} from "../../../modules/eto-flow/selectors";
+import { appConnect } from "../../../store";
+import { TTranslatedString } from "../../../types";
+import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onLeaveAction } from "../../../utils/OnLeaveAction";
+import { EColumnSpan } from "../../layouts/Container";
+import { ButtonArrowRight } from "../../shared/buttons/index";
+import { Document } from "../../shared/Document";
+import { DocumentTemplateButton } from "../../shared/DocumentLink";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
+import { MoneyNew } from "../../shared/formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
+import { LoadingIndicator } from "../../shared/loading-indicator/index";
+import { Panel } from "../../shared/Panel";
 
-import * as styles from "../../EtoContentWidget.module.scss";
+import * as styles from "../../eto/EtoContentWidget.module.scss";
 
 interface IDispatchProps {
   startBookBuilding: (etoId: string) => void;

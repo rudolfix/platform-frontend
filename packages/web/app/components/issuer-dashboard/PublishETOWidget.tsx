@@ -4,15 +4,15 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col } from "reactstrap";
 import { compose } from "recompose";
 
-import { actions } from "../../../modules/actions";
-import { appConnect } from "../../../store";
-import { EColumnSpan } from "../../layouts/Container";
-import { ButtonArrowRight } from "../../shared/buttons/Button";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
-import { Panel } from "../../shared/Panel";
+import { actions } from "../../modules/actions";
+import { appConnect } from "../../store";
+import { EColumnSpan } from "../layouts/Container";
+import { ButtonArrowRight } from "../shared/buttons/Button";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
+import { ErrorBoundaryPanel } from "../shared/errorBoundary/ErrorBoundaryPanel";
+import { Panel } from "../shared/Panel";
 
-import * as styles from "../EtoContentWidget.module.scss";
+import * as styles from "../eto/EtoContentWidget.module.scss";
 
 interface IDispatchProps {
   publish: () => void;

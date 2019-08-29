@@ -793,7 +793,7 @@ export const testEto: TEtoWithCompanyAndContract = {
   equityTokenName: "Quintessence",
   equityTokenSymbol: "QTT",
   equityTokensPerShare: 10000,
-  etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc",
+  etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc" as EthereumAddressWithChecksum,
   existingCompanyShares: 40976,
   fixedSlotsMaximumDiscountFraction: 0.5,
   generalVotingRule: "positive",

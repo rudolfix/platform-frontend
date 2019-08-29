@@ -12,6 +12,7 @@ import { EEtoStep } from "./utils";
 
 // KYC is not filled
 const stateStepOne = {
+  backupCodesVerified: true,
   shouldViewEtoSettings: false,
   shouldViewMarketingSubmissionSection: false,
   canEnableBookbuilding: false,
@@ -24,7 +25,7 @@ const stateStepOne = {
   loadFileDataStart: action("loadFileDataStart"),
   userHasKycAndEmailVerified: false,
   shouldViewSubmissionSection: false,
-  etoStep: EEtoStep.ONE,
+  etoStep: EEtoStep.VERIFICATION,
 };
 
 // Fill in information about your company
@@ -32,7 +33,7 @@ const stateStepTwo = {
   ...stateStepOne,
   isVerificationSectionDone: true,
   userHasKycAndEmailVerified: true,
-  etoStep: EEtoStep.TWO,
+  etoStep: EEtoStep.FILL_INFORMATION_ABOUT_COMPANY,
 };
 
 // Publish your listing page
@@ -40,7 +41,7 @@ const stateStepThree = {
   ...stateStepTwo,
   shouldViewEtoSettings: true,
   shouldViewMarketingSubmissionSection: true,
-  etoStep: EEtoStep.THREE,
+  etoStep: EEtoStep.PUBLISH_LISTING_PAGE,
 };
 
 // Publish your listing page
@@ -54,30 +55,30 @@ const stateStepThreeFilled = {
 const stateStepFour = {
   ...stateStepThree,
   shouldViewMarketingSubmissionSection: false,
-  etoStep: EEtoStep.FOUR,
+  etoStep: EEtoStep.LISTING_PAGE_IN_REVIEW,
 };
 
 const stateStepFourFilled = {
   ...stateStepThreeFilled,
   shouldViewMarketingSubmissionSection: false,
-  etoStep: EEtoStep.FOUR,
+  etoStep: EEtoStep.LISTING_PAGE_IN_REVIEW,
 };
 
 // Set up your ETO
 const stateStepFive = {
   ...stateStepFour,
-  etoStep: EEtoStep.FIVE,
+  etoStep: EEtoStep.UPLOAD_SIGNED_TERMSHEET,
 };
 
 const stateStepFiveFilled = {
   ...stateStepFourFilled,
-  etoStep: EEtoStep.FIVE,
+  etoStep: EEtoStep.UPLOAD_SIGNED_TERMSHEET,
 };
 
 const stateStepSix = {
   ...stateStepFiveFilled,
   isTermSheetSubmitted: true,
-  etoStep: EEtoStep.SIX,
+  etoStep: EEtoStep.PUBLISH_INVESTMENT_OFFER,
 };
 
 const stateStepSeven = {

@@ -2,10 +2,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
-import { appRoutes } from "../../appRoutes";
-import { EColumnSpan } from "../../layouts/Container";
-import { DashboardLinkWidget } from "../../shared/dashboard-link-widget/DashboardLinkWidget";
+import { IIntlProps, injectIntlHelpers } from "../../utils/injectIntlHelpers.unsafe";
+import { appRoutes } from "../appRoutes";
+import { EColumnSpan } from "../layouts/Container";
+import { DashboardLinkWidget } from "../shared/dashboard-link-widget/DashboardLinkWidget";
 
 interface IExternalProps {
   columnSpan: EColumnSpan;

@@ -153,7 +153,7 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
       );
 
     return (
-      <AccordionElement title={name} isOpened={true}>
+      <AccordionElement title={name} isDefaultOpened={true}>
         <KYCEnhancedForm {...this.props} />
         <MultiFileUpload
           uploadType={EKycRequestType.INDIVIDUAL}

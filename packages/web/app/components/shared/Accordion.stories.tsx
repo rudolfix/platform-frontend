@@ -9,21 +9,21 @@ const lorem =
 storiesOf("Basic UI/Accordion", module)
   .add("default", () => (
     <Accordion>
-      <AccordionElement title="Accordion title 1">
-        <p>{lorem}</p>
-      </AccordionElement>
-      <AccordionElement title="Accordion title 2">
-        <p>{lorem}</p>
-      </AccordionElement>
+      <AccordionElement title="Accordion title 1">{lorem}</AccordionElement>
+      <AccordionElement title="Accordion title 2">{lorem}</AccordionElement>
     </Accordion>
   ))
   .add("opened", () => (
     <Accordion>
-      <AccordionElement title="Accordion title 1" isOpened={true}>
-        <p>{lorem}</p>
+      <AccordionElement title="Accordion title 1" isDefaultOpened={true}>
+        {lorem}
       </AccordionElement>
-      <AccordionElement title="Accordion title 2">
-        <p>{lorem}</p>
-      </AccordionElement>
+      <AccordionElement title="Accordion title 2">{lorem}</AccordionElement>
+    </Accordion>
+  ))
+  .add("is first opened by default", () => (
+    <Accordion openFirst={true}>
+      <AccordionElement title="Accordion title 1">{lorem}</AccordionElement>
+      <AccordionElement title="Accordion title 2">{lorem}</AccordionElement>
     </Accordion>
   ));

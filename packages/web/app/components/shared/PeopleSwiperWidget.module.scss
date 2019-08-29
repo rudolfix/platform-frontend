@@ -41,6 +41,10 @@
 
   &:disabled {
     color: transparent;
+
+    svg * {
+      stroke: $neu-silver;
+    }
   }
 
   svg {

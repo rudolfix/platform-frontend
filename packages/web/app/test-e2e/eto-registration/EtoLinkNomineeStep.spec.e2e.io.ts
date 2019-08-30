@@ -8,7 +8,7 @@ import {
   assertLinkNomineeStep,
   assertLinkNomineeStepAwaitingApprovalState,
   assertLinkNomineeStepAwaitingRequestState,
-  assertSetupEtoStep,
+  assertUploadSignedTermsheetStep,
   cancelNominee,
   fillAndAssert,
   fillRequiredCompanyInformation,
@@ -58,7 +58,7 @@ describe("Eto Forms link nominee", () => {
 
             // should move to setup eto state after nominee was accepted
             goToIssuerDashboard();
-            assertSetupEtoStep();
+            assertUploadSignedTermsheetStep();
 
             // get back to nominee
             cy.restoreLocalStorage(nomineeAddress);

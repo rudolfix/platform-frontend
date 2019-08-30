@@ -33,8 +33,6 @@ const selectStepComponent = (props: IEtoStep) => {
           data-test-id="eto-dashboard-publish-listing"
         />
       );
-    case EEtoStep.LINK_NOMINEE:
-      return <LinkNomineeStep />;
     case EEtoStep.LISTING_PAGE_IN_REVIEW:
       return (
         <>
@@ -45,14 +43,16 @@ const selectStepComponent = (props: IEtoStep) => {
           <FormattedMessage id="eto-dashboard.listing-review.description" />
         </>
       );
+    case EEtoStep.LINK_NOMINEE:
+      return <LinkNomineeStep />;
     case EEtoStep.UPLOAD_SIGNED_TERMSHEET:
       return (
         <>
           <DashboardHeading
-            title={<FormattedMessage id="eto-dashboard.setup-eto" />}
-            data-test-id="eto-dashboard-setup-eto"
+            title={<FormattedMessage id="eto-dashboard.upload_signed_termsheet" />}
+            data-test-id="eto-dashboard-upload_signed_termsheet"
           />
-          <FormattedMessage id="eto-dashboard.setup-eto.description" />
+          <FormattedMessage id="eto-dashboard.upload_signed_termsheet.description" />
         </>
       );
     case EEtoStep.PUBLISH_INVESTMENT_OFFER:

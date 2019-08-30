@@ -10,6 +10,7 @@ import { goToIssuerDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
+  assertUploadSignedTermsheetStep,
   createAndSetNominee,
   fillAndAssert,
   fillRequiredCompanyInformation,
@@ -68,6 +69,8 @@ describe.skip("Eto Forms", () => {
         etoTermsRequiredForm,
         etoTermsRequiredFormExpectedValues,
       );
+
+      assertUploadSignedTermsheetStep();
 
       cy.get(tid("dashboard-upload-termsheet")).click();
       assertEtoDocuments();

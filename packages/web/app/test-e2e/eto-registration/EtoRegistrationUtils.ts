@@ -144,11 +144,11 @@ export const rejectNominee = () => {
   cy.get(tid("no-pending-nominee-requests")).should("exist");
 };
 
-export const assertSetupEtoStep = () => {
+export const assertUploadSignedTermsheetStep = () => {
   // eto state should be still in preview
   cy.get(tid("eto-state-preview")).should("exist");
-  // step should be moved to setup eto
-  cy.get(tid("eto-dashboard-setup-eto")).should("exist");
+  // step should be moved to upload signed termsheet step
+  cy.get(tid("eto-dashboard-upload_signed_termsheet")).should("exist");
 };
 
 export const assertLinkNomineeStep = () => {

@@ -1,5 +1,5 @@
 import { fillForm } from "../utils/forms";
-import { goToEtoDashboard } from "../utils/navigation";
+import { goToIssuerDashboard } from "../utils/navigation";
 import { formField, tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 
@@ -10,7 +10,7 @@ describe("Eto Terms", () => {
       kyc: "business",
     });
 
-    goToEtoDashboard();
+    goToIssuerDashboard();
 
     cy.get(`${tid("eto-progress-widget-eto-terms")} button`).click();
 
@@ -23,7 +23,7 @@ describe("Eto Terms", () => {
       kyc: "business",
     });
 
-    goToEtoDashboard();
+    goToIssuerDashboard();
 
     cy.get(`${tid("eto-progress-widget-eto-terms")} button`).click();
 
@@ -38,7 +38,7 @@ describe("Eto Terms", () => {
       kyc: "business",
     });
 
-    goToEtoDashboard();
+    goToIssuerDashboard();
 
     cy.get(`${tid("eto-progress-widget-eto-terms")} button`).click();
 

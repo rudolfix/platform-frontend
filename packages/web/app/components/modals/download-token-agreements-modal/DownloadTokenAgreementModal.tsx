@@ -15,7 +15,7 @@ import { selectEtoWithCompanyAndContractById } from "../../../modules/eto/select
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { selectIsPendingDownload } from "../../../modules/immutable-file/selectors";
 import { appConnect } from "../../../store";
-import { getDocumentTitles } from "../../documents/utils";
+import { getInvestorDocumentTitles } from "../../documents/utils";
 import {
   selectDownloadAgreementModalEtoId,
   selectDownloadAgrementModalIsOpen,
@@ -76,7 +76,9 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                       <DocumentTemplateLabel
                         onClick={() => {}}
                         title={
-                          getDocumentTitles(eto.product.offeringDocumentType)[document.documentType]
+                          getInvestorDocumentTitles(eto.product.offeringDocumentType)[
+                            document.documentType
+                          ]
                         }
                       />
                     }
@@ -116,7 +118,9 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                       <DocumentTemplateLabel
                         onClick={() => {}}
                         title={
-                          getDocumentTitles(eto.product.offeringDocumentType)[template.documentType]
+                          getInvestorDocumentTitles(eto.product.offeringDocumentType)[
+                            template.documentType
+                          ]
                         }
                       />
                     }

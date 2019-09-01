@@ -13,7 +13,7 @@ import { TxSenderModal } from "../modals/tx-sender/TxSender";
 import { NotificationWidget } from "../shared/notification-widget/NotificationWidget";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
-import { HeaderAuthorized, HeaderUnauthorized } from "./header/Header";
+import { HeaderAuthorized, HeaderTransitional, HeaderUnauthorized } from "./header/Header";
 
 import * as styles from "./Layout.module.scss";
 
@@ -27,17 +27,18 @@ interface ILayoutUnauthProps {
 
 type TContentExternalProps = React.ComponentProps<typeof Content>;
 
-export const LayoutUnauthorized: React.FunctionComponent<
-  ILayoutUnauthProps & TContentExternalProps
-> = ({ children, hideHeaderCtaButtons = false, ...contentProps }) => (
+const LayoutUnauthorized: React.FunctionComponent<ILayoutUnauthProps & TContentExternalProps> = ({
+  children,
+  ...contentProps
+}) => (
   <>
-    <HeaderUnauthorized hideHeaderCtaButtons={hideHeaderCtaButtons} />
+    <HeaderUnauthorized />
     <Content {...contentProps}>{children}</Content>
     <Footer />
   </>
 );
 
-export const LayoutAuthorized: React.FunctionComponent<TContentExternalProps> = ({
+const LayoutAuthorized: React.FunctionComponent<TContentExternalProps> = ({
   children,
   ...contentProps
 }) => (
@@ -57,33 +58,51 @@ export const LayoutAuthorized: React.FunctionComponent<TContentExternalProps> = 
   </>
 );
 
-export const LayoutComponent: React.FunctionComponent<
-  IStateProps & TDataTestId & TContentExternalProps & ILayoutUnauthProps
-> = ({
+const LayoutWrapper: React.FunctionComponent<TDataTestId> = ({
   children,
-  userIsAuthorized,
-  hideHeaderCtaButtons = false,
   "data-test-id": dataTestId,
-  ...contentProps
 }) => (
   <div className={styles.layout} data-test-id={dataTestId}>
-    {userIsAuthorized ? (
-      <LayoutAuthorized {...contentProps}>{children}</LayoutAuthorized>
-    ) : (
-      <LayoutUnauthorized {...contentProps} hideHeaderCtaButtons={hideHeaderCtaButtons}>
-        {children}
-      </LayoutUnauthorized>
-    )}
+    {children}
   </div>
 );
 
-export const Layout = compose<
-  IStateProps,
-  TDataTestId & TContentExternalProps & ILayoutUnauthProps
->(
+const LayoutComponent: React.FunctionComponent<
+  IStateProps & TDataTestId & TContentExternalProps & ILayoutUnauthProps
+> = ({ children, userIsAuthorized, "data-test-id": dataTestId, ...contentProps }) => (
+  <LayoutWrapper data-test-id={dataTestId}>
+    {userIsAuthorized ? (
+      <LayoutAuthorized {...contentProps}>{children}</LayoutAuthorized>
+    ) : (
+      <LayoutUnauthorized {...contentProps}>{children}</LayoutUnauthorized>
+    )}
+  </LayoutWrapper>
+);
+
+const Layout = compose<IStateProps, TDataTestId & TContentExternalProps & ILayoutUnauthProps>(
   appConnect<IStateProps, {}, {}>({
     stateToProps: state => ({
       userIsAuthorized: selectIsAuthorized(state.auth),
     }),
   }),
 )(LayoutComponent);
+
+const TransitionalLayout: React.FunctionComponent<
+  TDataTestId & TContentExternalProps & ILayoutUnauthProps
+> = ({ children, "data-test-id": dataTestId, ...contentProps }) => (
+  <LayoutWrapper data-test-id={dataTestId}>
+    <HeaderTransitional />
+    <Content {...contentProps}>{children}</Content>
+    <Footer />
+  </LayoutWrapper>
+);
+
+export {
+  Layout,
+  TransitionalLayout,
+  LayoutComponent,
+  LayoutAuthorized,
+  LayoutUnauthorized,
+  ILayoutUnauthProps,
+  TContentExternalProps,
+};

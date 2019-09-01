@@ -63,16 +63,17 @@ const EtoRegistrationCompanyInformationComponent = (
 
       <FormTextArea
         label={<FormattedMessage id="eto.form.company-information.company-description" />}
-        placeholder="Please describe your company, this description will be displayed on the listing page (max. 250 characters)."
+        placeholder="Please describe your company, this description will be displayed on the listing page."
         name="companyDescription"
-        charactersLimit={250}
       />
+
       <FormTextArea
         label={<FormattedMessage id="eto.form.company-information.founders-quote" />}
         placeholder="Please add a quote from your founder that will be displayed on the top of the listing page before you start whitelist subscriptions (max. 250 characters)."
         name="keyQuoteFounder"
         charactersLimit={250}
       />
+
       <FormTextArea
         label={<FormattedMessage id="eto.form.company-information.investor-quote" />}
         placeholder="Please add a quote from one of your significant supporters, investors or from press. It will be displayed on the listing page under the company description and should validate company’s position (max. 250 characters)."

@@ -15,4 +15,7 @@ export const externalRoutes = {
   ledgerSupport: "https://support.ledger.com/hc/en-us/articles/360002731113-Update-device-firmware",
   etherscanAddress: "https://etherscan.io/address/:address",
   etherscanTransaction: "https://etherscan.io/tx/:txHash",
+  imprint: "https://neufund.org/imprint",
+  tos: "https://neufund.org/terms-of-use",
+  privacyPolicy: "https://neufund.org/privacy-policy",
 };

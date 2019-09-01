@@ -1,15 +1,24 @@
+import { createActionFactory } from "@neufund/shared";
+
 import { TMessage } from "../../../components/translatedMessages/utils";
-import { createAction, createSimpleAction } from "../../actionsUtils";
 
 export const lightWizardActions = {
-  lightWalletConnectionError: (errorMsg: TMessage) =>
-    createAction("LIGHT_WALLET_CONNECTION_ERROR", { errorMsg }),
-  lightWalletReset: () => createSimpleAction("LIGHT_WALLET_RESET"),
-  lightWalletLogin: (email: string, password: string) =>
-    createAction("LIGHT_WALLET_LOGIN", { email, password }),
-  lightWalletRecover: (email: string, password: string, seed: string) =>
-    createAction("LIGHT_WALLET_RECOVER", { email, password, seed }),
-  lightWalletBackedUp: () => createSimpleAction("LIGHT_WALLET_BACKUP"),
-  lightWalletRegister: (email: string, password: string) =>
-    createAction("LIGHT_WALLET_REGISTER", { email, password }),
+  lightWalletConnectionError: createActionFactory(
+    "LIGHT_WALLET_CONNECTION_ERROR",
+    (errorMsg: TMessage) => ({ errorMsg }),
+  ),
+  lightWalletReset: createActionFactory("LIGHT_WALLET_RESET"),
+  lightWalletLogin: createActionFactory(
+    "LIGHT_WALLET_LOGIN",
+    (email: string, password: string) => ({ email, password }),
+  ),
+  lightWalletRecover: createActionFactory(
+    "LIGHT_WALLET_RECOVER",
+    (email: string, password: string, seed: string) => ({ email, password, seed }),
+  ),
+  lightWalletBackedUp: createActionFactory("LIGHT_WALLET_BACKUP"),
+  lightWalletRegister: createActionFactory(
+    "LIGHT_WALLET_REGISTER",
+    (email: string, password: string) => ({ email, password }),
+  ),
 };

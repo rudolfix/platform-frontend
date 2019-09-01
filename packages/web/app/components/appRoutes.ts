@@ -28,7 +28,6 @@ export const appRoutes = {
   profile: "/profile",
   demo: "/demo",
   eto: "/eto",
-  etoLanding: "/eto-landing",
 
   etoRegister: "/eto/registration",
 
@@ -42,6 +41,11 @@ export const appRoutes = {
    * they are only there to catch accidental user input
    * or for backward compatibility
    */
+
+  /*
+   * @deprecated
+   * */
+  etoLanding: "/eto-landing",
 
   /*
    * @deprecated

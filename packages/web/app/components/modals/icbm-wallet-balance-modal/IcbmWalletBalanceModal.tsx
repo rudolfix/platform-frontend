@@ -16,7 +16,7 @@ import {
   selectWalletMigrationCurrentStep,
   selectWalletMigrationData,
 } from "../../../modules/icbm-wallet-balance-modal/selectors";
-import { SelectIsVerificationFullyDone } from "../../../modules/selectors";
+import { selectIsVerificationFullyDone } from "../../../modules/selectors";
 import { ETokenType } from "../../../modules/tx/types";
 import {
   selectIsEtherUpgradeTargetSet,
@@ -119,7 +119,7 @@ const IcbmWalletBalanceModal = compose<IStateProps & IDispatchProps, {}>(
       ethAddress: selectIcbmWalletEthAddress(state),
       neumarksDue: selectEtherNeumarksDueIcbmModal(state),
       etherBalance: selectEtherBalanceIcbmModal(state),
-      isVerificationFullyDone: SelectIsVerificationFullyDone(state),
+      isVerificationFullyDone: selectIsVerificationFullyDone(state),
       walletMigrationData: selectWalletMigrationData(state.icbmWalletBalanceModal),
       lockedWalletConnected: selectLockedWalletConnected(state),
       currentMigrationStep: selectWalletMigrationCurrentStep(state),

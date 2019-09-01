@@ -15,7 +15,6 @@ describe("Nominee flow", () => {
   const email = generateRandomEmailAddress();
 
   it("should register nominee with light-wallet, let them logout and login again", () => {
-    cy.clearLocalStorage();
     registerWithLightWalletNominee(email, password);
     assertNomineeDashboard();
 

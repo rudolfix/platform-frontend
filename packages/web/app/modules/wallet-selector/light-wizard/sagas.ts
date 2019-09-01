@@ -23,9 +23,10 @@ import {
 import { IAppState } from "../../../store";
 import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../access-wallet/sagas";
-import { actions, TAction } from "../../actions";
+import { actions, TActionFromCreator } from "../../actions";
 import { checkEmailPromise } from "../../auth/email/sagas";
 import { createJwt } from "../../auth/jwt/sagas";
+import { logoutUser } from "../../auth/sagas";
 import { selectUserType } from "../../auth/selectors";
 import {
   createUser,
@@ -133,14 +134,11 @@ export function* loadSeedFromWalletWatch({
 
 export function* lightWalletRecoverWatch(
   { lightWalletConnector, web3Manager }: TGlobalDependencies,
-  action: TAction,
+  action: TActionFromCreator<typeof actions.walletSelector.lightWalletRecover>,
 ): Iterator<any> {
   try {
     const userType = yield select((state: IAppState) => selectUrlUserType(state.router));
 
-    if (action.type !== "LIGHT_WALLET_RECOVER") {
-      return;
-    }
     const { password, email, seed } = action.payload;
     const walletMetadata = yield neuCall(setupLightWalletPromise, email, password, seed, userType);
 
@@ -174,8 +172,10 @@ export function* lightWalletRecoverWatch(
         yield call(createUser, userUpdate);
       } else throw e;
     }
+
     const wallet = yield connectLightWallet(lightWalletConnector, walletMetadata, password);
     yield web3Manager.plugPersonalWallet(wallet);
+    yield neuCall(logoutUser);
 
     yield put(actions.routing.goToSuccessfulRecovery());
   } catch (e) {
@@ -183,10 +183,11 @@ export function* lightWalletRecoverWatch(
   }
 }
 
-export function* lightWalletRegisterWatch(_: TGlobalDependencies, action: TAction): Iterator<any> {
+export function* lightWalletRegisterWatch(
+  _: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.walletSelector.lightWalletRegister>,
+): Iterator<any> {
   try {
-    if (action.type !== "LIGHT_WALLET_REGISTER") return;
-
     const { password, email } = action.payload;
     const isEmailAvailable = yield neuCall(checkEmailPromise, email);
 
@@ -220,11 +221,8 @@ function* handleLightWalletError({ logger }: TGlobalDependencies, e: Error): any
 
 export function* lightWalletLoginWatch(
   { web3Manager, lightWalletConnector, logger }: TGlobalDependencies,
-  action: TAction,
+  action: TActionFromCreator<typeof actions.walletSelector.lightWalletLogin>,
 ): Iterator<any> {
-  if (action.type !== "LIGHT_WALLET_LOGIN") {
-    return;
-  }
   const { password } = action.payload;
   try {
     const walletMetadata: ILightWalletMetadata | undefined = yield call(
@@ -254,9 +252,9 @@ export function* lightWalletLoginWatch(
 }
 
 export function* lightWalletSagas(): Iterator<any> {
-  yield fork(neuTakeEvery, "LIGHT_WALLET_LOGIN", lightWalletLoginWatch);
-  yield fork(neuTakeEvery, "LIGHT_WALLET_REGISTER", lightWalletRegisterWatch);
-  yield fork(neuTakeEvery, "LIGHT_WALLET_BACKUP", lightWalletBackupWatch);
-  yield fork(neuTakeEvery, "LIGHT_WALLET_RECOVER", lightWalletRecoverWatch);
+  yield fork(neuTakeEvery, actions.walletSelector.lightWalletLogin, lightWalletLoginWatch);
+  yield fork(neuTakeEvery, actions.walletSelector.lightWalletRegister, lightWalletRegisterWatch);
+  yield fork(neuTakeEvery, actions.walletSelector.lightWalletBackedUp, lightWalletBackupWatch);
+  yield fork(neuTakeEvery, actions.walletSelector.lightWalletRecover, lightWalletRecoverWatch);
   yield fork(neuTakeEvery, "WEB3_FETCH_SEED", loadSeedFromWalletWatch);
 }

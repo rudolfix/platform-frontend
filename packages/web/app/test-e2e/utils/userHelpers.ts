@@ -91,7 +91,7 @@ export const createAndLoginNewUser = (
     }
 
     if (params.signTosAgreement || !params.onlyLogin) {
-      // This was done to maintain introduce `signTosAgreement` without changing the interface of existing tests
+      // This was done to maintain `signTosAgreement` without changing the interface of existing tests
       await setCorrectAgreement(jwt);
     }
 
@@ -109,6 +109,9 @@ export const createAndLoginNewUser = (
       cy.wait(1000);
       createAndLoginNewUser(params, attempts + 1);
     }
+
+    // TODO: find why we need to `cy.wrap` as normal `return { address }` is not working
+    return new Promise<{ address: string }>(resolve => resolve(cy.wrap({ address })));
   });
 
 /*

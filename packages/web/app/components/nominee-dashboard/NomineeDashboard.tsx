@@ -5,8 +5,13 @@ import { actions } from "../../modules/actions";
 import { selectIsBankAccountVerified } from "../../modules/bank-transfer-flow/selectors";
 import { selectNomineeEto } from "../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
-import { selectNomineeStateIsLoading } from "../../modules/nominee-flow/selectors";
-import { SelectIsVerificationFullyDone } from "../../modules/selectors";
+import { ENomineeAcceptAgreementStatus } from "../../modules/nominee-flow/reducer";
+import {
+  selectNomineeRAAAState,
+  selectNomineeStateIsLoading,
+  selectNomineeTHAState,
+} from "../../modules/nominee-flow/selectors";
+import { selectIsVerificationFullyDone } from "../../modules/selectors";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -23,6 +28,8 @@ interface IStateProps {
   isLoading: boolean;
   isBankAccountVerified: boolean;
   nomineeEto: TEtoWithCompanyAndContract | undefined;
+  nomineeTHAStatus: ENomineeAcceptAgreementStatus;
+  nomineeRAAAStatus: ENomineeAcceptAgreementStatus;
 }
 
 interface IDashboardProps {
@@ -47,7 +54,9 @@ export const NomineeDashboard = compose<IDashboardProps, {}>(
       isLoading: selectNomineeStateIsLoading(state),
       nomineeEto: selectNomineeEto(state),
       isBankAccountVerified: selectIsBankAccountVerified(state),
-      verificationIsComplete: SelectIsVerificationFullyDone(state),
+      verificationIsComplete: selectIsVerificationFullyDone(state),
+      nomineeTHAStatus: selectNomineeTHAState(state),
+      nomineeRAAAStatus: selectNomineeRAAAState(state),
     }),
   }),
   onEnterAction<IStateProps>({
@@ -58,11 +67,19 @@ export const NomineeDashboard = compose<IDashboardProps, {}>(
     },
   }),
   withProps<IDashboardProps, IStateProps>(
-    ({ verificationIsComplete, nomineeEto, isBankAccountVerified }) => ({
+    ({
+      verificationIsComplete,
+      nomineeEto,
+      isBankAccountVerified,
+      nomineeTHAStatus,
+      nomineeRAAAStatus,
+    }) => ({
       nomineeTaskStep: getNomineeTaskStep(
         verificationIsComplete,
         nomineeEto,
         isBankAccountVerified,
+        nomineeTHAStatus,
+        nomineeRAAAStatus,
       ),
     }),
   ),

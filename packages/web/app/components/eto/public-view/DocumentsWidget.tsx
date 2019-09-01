@@ -10,7 +10,7 @@ import { EOfferingDocumentType } from "../../../lib/api/eto/EtoProductsApi.inter
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
-import { getDocumentTitles } from "../../documents/utils";
+import { getInvestorDocumentTitles } from "../../documents/utils";
 import { Container, EColumnSpan } from "../../layouts/Container";
 import { DocumentTemplateButton } from "../../shared/DocumentLink";
 import { Panel } from "../../shared/Panel";
@@ -40,7 +40,7 @@ const DocumentsWidgetLayout: React.FunctionComponent<
   offeringDocumentType,
   columnSpan,
 }) => {
-  const documentTitles = getDocumentTitles(offeringDocumentType);
+  const documentTitles = getInvestorDocumentTitles(offeringDocumentType);
 
   return etoTemplates || etoDocuments ? (
     <Container columnSpan={EColumnSpan.ONE_COL}>

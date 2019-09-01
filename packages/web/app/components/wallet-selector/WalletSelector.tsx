@@ -29,7 +29,7 @@ import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { appRoutes } from "../appRoutes";
-import { Layout } from "../layouts/Layout";
+import { TransitionalLayout } from "../layouts/Layout";
 import { Button, ButtonLink, EButtonLayout } from "../shared/buttons";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
@@ -47,10 +47,6 @@ type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouter
 type TExternalProps = {
   isSecretProtected: boolean;
 } & TRouteLoginProps;
-
-interface ILayoutProps {
-  isSecretProtected?: boolean;
-}
 
 interface IStateProps {
   isMessageSigning: boolean;
@@ -254,11 +250,7 @@ export const WalletSelector = compose<
       openICBMModal: () => dispatch(actions.genericModal.showModal(ICBMWalletHelpTextModal)),
     }),
   }),
-  withContainer(
-    withProps<{ hideHeaderCtaButtons?: boolean }, ILayoutProps>(() => ({
-      hideHeaderCtaButtons: true,
-    }))(Layout),
-  ),
+  withContainer(TransitionalLayout),
   branch<IStateProps & IDispatchProps>(
     props => props.isMessageSigning,
     renderComponent(

@@ -19,11 +19,11 @@ import {
   selectIssuerEtoDocuments,
   selectIssuerEtoId,
   selectIssuerEtoProduct,
-  selectIssuerEtoState,
 } from "../eto-flow/selectors";
 import { downloadLink } from "../immutable-file/utils";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEtoState } from "./selectors";
 
 export function* generateDocumentFromTemplate(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
@@ -31,11 +31,9 @@ export function* generateDocumentFromTemplate(
 ): Iterator<any> {
   try {
     const document = action.payload.document;
-
-    const etoState: EEtoState = yield select(selectIssuerEtoState);
+    const etoState: EEtoState = yield select(selectEtoState);
 
     let resolvedTemplate = null;
-
     yield put(actions.immutableStorage.downloadDocumentStarted(document.ipfsHash));
 
     // resolve all documents if not on-chain, otherwise resolve only ISHA summary

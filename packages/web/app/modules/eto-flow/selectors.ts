@@ -13,6 +13,7 @@ import {
   IEtoDocument,
   TEtoDocumentTemplates,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
+import { ignoredTemplates } from "../../lib/api/eto/EtoFileUtils";
 import {
   EOfferingDocumentType,
   EProductName,
@@ -21,6 +22,7 @@ import {
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { objectToFilteredArray } from "../../utils/objectToFilteredArray";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
@@ -176,6 +178,14 @@ export const selectIssuerEtoTemplates = (state: IAppState): TEtoDocumentTemplate
   }
 
   return undefined;
+};
+
+export const selectFilteredIssuerEtoTemplatesArray = (state: IAppState): IEtoDocument[] => {
+  const templates = selectIssuerEtoTemplates(state);
+  const filterFunction = (key: string) =>
+    !ignoredTemplates.some(templateKey => templateKey === key);
+
+  return templates ? objectToFilteredArray(filterFunction, templates) : [];
 };
 
 export const selectIssuerEtoDocuments = (state: IAppState): TEtoDocumentTemplates | undefined => {

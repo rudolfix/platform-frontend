@@ -13,7 +13,7 @@ export * from "./fields/FormSelectCountryField.unsafe";
 export * from "./fields/FormSelectField";
 export * from "./fields/FormSelectNationalityField.unsafe";
 export * from "./fields/FormTextArea";
-export * from "./fields/FormToggle.unsafe";
+export * from "./fields/FormToggle";
 export * from "./fields/NumberTransformingField";
 export * from "./fields/utils.unsafe";
 

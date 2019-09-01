@@ -56,46 +56,80 @@ const EtoAccordionElements: React.FunctionComponent<{ eto: TEtoWithCompanyAndCon
           />
           <Panel>
             <Accordion openFirst={true}>
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.inspiration" />}
-                value={inspiration}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.company-mission" />}
-                value={companyMission}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.product-vision" />}
-                value={productVision}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
-                value={problemSolved}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
-                value={customerGroup}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
-                value={problemSolved}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.target-segment" />}
-                value={targetMarketAndIndustry}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
-                value={keyCompetitors}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
-                value={sellingProposition}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.key-benefits-for-investors" />}
-                value={keyBenefitsForInvestors}
-              />
+              {inspiration ? (
+                <AccordionField
+                  name="inspiration"
+                  title={<FormattedMessage id="eto.form.product-vision.inspiration" />}
+                  value={inspiration}
+                />
+              ) : null}
+
+              {companyMission ? (
+                <AccordionField
+                  name="companyMission"
+                  title={<FormattedMessage id="eto.form.product-vision.company-mission" />}
+                  value={companyMission}
+                />
+              ) : null}
+
+              {productVision ? (
+                <AccordionField
+                  name="productVision"
+                  title={<FormattedMessage id="eto.form.product-vision.product-vision" />}
+                  value={productVision}
+                />
+              ) : null}
+
+              {problemSolved ? (
+                <AccordionField
+                  name="problemSolved"
+                  title={<FormattedMessage id="eto.form.product-vision.problem-solved" />}
+                  value={problemSolved}
+                />
+              ) : null}
+
+              {customerGroup ? (
+                <AccordionField
+                  name="customerGroup"
+                  title={<FormattedMessage id="eto.form.product-vision.customer-group" />}
+                  value={customerGroup}
+                />
+              ) : null}
+
+              {targetMarketAndIndustry ? (
+                <AccordionField
+                  name="targetMarketAndIndustry"
+                  title={<FormattedMessage id="eto.form.product-vision.target-segment" />}
+                  value={targetMarketAndIndustry}
+                />
+              ) : null}
+
+              {keyCompetitors ? (
+                <AccordionField
+                  name="keyCompetitors"
+                  title={<FormattedMessage id="eto.form.product-vision.key-competitors" />}
+                  value={keyCompetitors}
+                />
+              ) : null}
+
+              {sellingProposition ? (
+                <AccordionField
+                  name="sellingProposition"
+                  title={<FormattedMessage id="eto.form.product-vision.selling-proposition" />}
+                  value={sellingProposition}
+                />
+              ) : null}
+
+              {keyBenefitsForInvestors ? (
+                <AccordionField
+                  name="keyBenefitsForInvestors"
+                  title={
+                    <FormattedMessage id="eto.form.product-vision.key-benefits-for-investors" />
+                  }
+                  value={keyBenefitsForInvestors}
+                />
+              ) : null}
+
               {(useOfCapitalList && useOfCapitalList.some(e => e && e.percent && e.percent > 0)) ||
               useOfCapital ? (
                 <AccordionElement
@@ -122,22 +156,38 @@ const EtoAccordionElements: React.FunctionComponent<{ eto: TEtoWithCompanyAndCon
                   )}
                 </AccordionElement>
               ) : null}
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.market-traction" />}
-                value={marketTraction}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.roadmap" />}
-                value={roadmap}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.business-model" />}
-                value={businessModel}
-              />
-              <AccordionField
-                title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
-                value={marketingApproach}
-              />
+
+              {marketTraction ? (
+                <AccordionField
+                  name="marketTraction"
+                  title={<FormattedMessage id="eto.form.product-vision.market-traction" />}
+                  value={marketTraction}
+                />
+              ) : null}
+
+              {roadmap ? (
+                <AccordionField
+                  name="roadmap"
+                  title={<FormattedMessage id="eto.form.product-vision.roadmap" />}
+                  value={roadmap}
+                />
+              ) : null}
+
+              {businessModel ? (
+                <AccordionField
+                  name="businessModel"
+                  title={<FormattedMessage id="eto.form.product-vision.business-model" />}
+                  value={businessModel}
+                />
+              ) : null}
+
+              {marketingApproach ? (
+                <AccordionField
+                  name="marketingApproach"
+                  title={<FormattedMessage id="eto.form.product-vision.marketing-approach" />}
+                  value={marketingApproach}
+                />
+              ) : null}
             </Accordion>
           </Panel>
         </>

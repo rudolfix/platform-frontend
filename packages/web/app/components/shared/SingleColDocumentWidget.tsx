@@ -61,7 +61,7 @@ const SingleColDocumentsLayout: React.FunctionComponent<IProps> = ({
   );
 };
 
-const SingleColDocuments = compose<React.FunctionComponent<IOwnProps>>(
+const ProductTemplates = compose<React.FunctionComponent<IOwnProps>>(
   setDisplayName("SingleColDocuments"),
   appConnect<{}, IDispatchProps>({
     dispatchToProps: dispatch => ({
@@ -71,4 +71,4 @@ const SingleColDocuments = compose<React.FunctionComponent<IOwnProps>>(
   }),
 )(SingleColDocumentsLayout);
 
-export { SingleColDocuments, SingleColDocumentsLayout };
+export { ProductTemplates, SingleColDocumentsLayout };

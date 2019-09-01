@@ -19,14 +19,12 @@ interface IProps {
 }
 
 const NoPendingNomineesComponent: React.FunctionComponent<IProps> = ({ issuerId }) => (
-  <Section>
-    <p>
-      <FormattedHTMLMessage
-        tagName="span"
-        id="eto.form.eto-nominee.select-nominee-text"
-        values={{ href: externalRoutes.neufundSupportHome }}
-      />
-    </p>
+  <Section data-test-id="no-pending-nominee-requests">
+    <FormattedHTMLMessage
+      tagName="p"
+      id="eto.form.eto-nominee.select-nominee-text"
+      values={{ href: externalRoutes.neufundSupportHome }}
+    />
 
     <FormHighlightGroup>
       <AccountAddress address={issuerId} data-test-id="issuer-id" />

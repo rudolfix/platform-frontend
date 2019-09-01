@@ -22,6 +22,7 @@ export const SANITIZER_OPTIONS = {
     "img",
     "figure",
     "figcaption",
+    "br",
   ],
   allowedAttributes: {
     a: ["href", "target", "rel"],

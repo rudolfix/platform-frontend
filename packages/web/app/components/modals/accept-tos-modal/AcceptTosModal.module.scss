@@ -21,3 +21,25 @@
 
   text-transform: none;
 }
+
+.tos-link {
+  font-size: .9rem;
+  font-weight: 700;
+  color: $neu-black;
+}
+
+.button-block {
+  display: grid;
+  grid-template: auto / 1fr 1fr;
+  grid-auto-flow: column;
+  grid-gap: 2rem;
+
+  margin: 1.5rem 0;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: px-to-rem(106px);
+}

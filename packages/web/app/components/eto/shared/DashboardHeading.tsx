@@ -5,14 +5,12 @@ import { EHeadingSize, Heading } from "../../shared/Heading";
 
 interface IProps {
   title: string | React.ReactNode;
-  step?: number;
   description?: TTranslatedString;
   size?: EHeadingSize;
 }
 
 const DashboardHeading: React.FunctionComponent<IProps & TDataTestId & CommonHtmlProps> = ({
   title,
-  step,
   "data-test-id": dataTestId,
   className,
   size,
@@ -26,7 +24,7 @@ const DashboardHeading: React.FunctionComponent<IProps & TDataTestId & CommonHtm
     data-test-id={dataTestId}
     description={description}
   >
-    {step && <>STEP {step}:</>} {title}
+    {title}
   </Heading>
 );
 

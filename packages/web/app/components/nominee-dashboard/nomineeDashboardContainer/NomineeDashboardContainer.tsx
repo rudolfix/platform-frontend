@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { selectIsBankAccountVerified } from "../../../modules/bank-transfer-flow/selectors";
 import { selectNomineeEto } from "../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
-import { SelectIsVerificationFullyDone } from "../../../modules/selectors";
+import { selectIsVerificationFullyDone } from "../../../modules/selectors";
 import { appConnect } from "../../../store";
 import { AccountSetupContainer } from "./AccountSetupContainer";
 import { LinkedNomineeDashboardContainer } from "./LinkedNomineeDashboardContainer";
@@ -38,7 +38,7 @@ const NomineeDashboardContainer = compose<IStateProps, {}>(
     stateToProps: state => ({
       nomineeEto: selectNomineeEto(state),
       isBankAccountVerified: selectIsBankAccountVerified(state),
-      verificationIsComplete: SelectIsVerificationFullyDone(state),
+      verificationIsComplete: selectIsVerificationFullyDone(state),
     }),
   }),
 )(NomineeDashboardContainerBase);

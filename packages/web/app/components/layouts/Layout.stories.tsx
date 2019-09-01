@@ -7,7 +7,7 @@ import { IAppState } from "../../store";
 import { DeepPartial } from "../../types";
 import { withStore } from "../../utils/storeDecorator.unsafe";
 import { EContentWidth } from "./Content";
-import { LayoutComponent } from "./Layout";
+import { LayoutComponent, TransitionalLayout } from "./Layout";
 
 const FakeContent = () => (
   <div style={{ height: "20rem", backgroundColor: "gray" }}>dummy content</div>
@@ -71,4 +71,9 @@ storiesOf("Layouts", module)
     <LayoutComponent userIsAuthorized={false}>
       <FakeContent />
     </LayoutComponent>
+  ))
+  .add("TransitionalLayout", () => (
+    <TransitionalLayout>
+      <FakeContent />
+    </TransitionalLayout>
   ));

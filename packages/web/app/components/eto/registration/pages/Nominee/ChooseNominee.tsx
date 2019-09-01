@@ -3,23 +3,16 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../../modules/actions";
-import { selectNomineeRequests } from "../../../../../modules/eto-nominee/selectors";
 import { INomineeRequest } from "../../../../../modules/nominee-flow/reducer";
-import { nomineeRequestsToArray } from "../../../../../modules/nominee-flow/utils";
 import { appConnect } from "../../../../../store";
-import { onEnterAction } from "../../../../../utils/OnEnterAction";
-import { onLeaveAction } from "../../../../../utils/OnLeaveAction";
 import { Button, EButtonLayout, EButtonTheme } from "../../../../shared/buttons/Button";
 import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";
+import { TWithNomineeProps, withNomineeRequests } from "../../../shared/hocs/withNomineeRequests";
 import { Section } from "../../Shared";
 import { CopyEtoIdComponent } from "./CopyEtoIdComponent";
 import { nomineeRequestsAreEmpty } from "./utils";
 
 import * as styles from "./Nominee.module.scss";
-
-interface IStateProps {
-  nomineeRequests: INomineeRequest[];
-}
 
 interface IDispatchProps {
   acceptNominee: (nomineeId: string) => void;
@@ -131,7 +124,7 @@ const PendingNomineeRequest: React.FunctionComponent<IPendingNomineeRequest & ID
   </FormHighlightGroup>
 );
 
-const PendingNomineesComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
+const PendingNomineesComponent: React.FunctionComponent<TWithNomineeProps & IDispatchProps> = ({
   nomineeRequests,
   acceptNominee,
   rejectNominee,
@@ -155,11 +148,9 @@ const PendingNomineesComponent: React.FunctionComponent<IStateProps & IDispatchP
   </>
 );
 
-const ChooseNominee = compose<IStateProps & IDispatchProps, {}>(
-  appConnect<IStateProps, IDispatchProps>({
-    stateToProps: s => ({
-      nomineeRequests: nomineeRequestsToArray(selectNomineeRequests(s)),
-    }),
+const ChooseNominee = compose<TWithNomineeProps & IDispatchProps, {}>(
+  withNomineeRequests(),
+  appConnect<{}, IDispatchProps>({
     dispatchToProps: dispatch => ({
       acceptNominee: (nomineeId: string) =>
         dispatch(actions.etoNominee.acceptNomineeRequest(nomineeId)),
@@ -167,13 +158,7 @@ const ChooseNominee = compose<IStateProps & IDispatchProps, {}>(
         dispatch(actions.etoNominee.rejectNomineeRequest(nomineeId)),
     }),
   }),
-  onEnterAction({
-    actionCreator: d => d(actions.etoNominee.startNomineeRequestsWatcher()),
-  }),
-  onLeaveAction({
-    actionCreator: d => d(actions.etoNominee.stopNomineeRequestsWatcher()),
-  }),
-  branch<IStateProps>(
+  branch<TWithNomineeProps>(
     ({ nomineeRequests }) => nomineeRequestsAreEmpty(nomineeRequests),
     renderComponent(CopyEtoIdComponent),
   ),

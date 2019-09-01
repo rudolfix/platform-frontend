@@ -39,7 +39,7 @@ export function* signInUser({
     const storedWalletMetadata: TStoredWalletMetadata = {
       // tslint:disable-next-line
       ...web3Manager.personalWallet!.getMetadata(),
-      userType: userType,
+      userType,
     };
     walletStorage.set(storedWalletMetadata);
 
@@ -97,6 +97,7 @@ export async function updateUserPromise(
 
 export function* loadOrCreateUser(userType: EUserType): Iterator<any> {
   const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
+
   yield put(actions.auth.setUser(user));
 
   yield neuCall(loadKycRequestData);

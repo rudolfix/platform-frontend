@@ -4,10 +4,10 @@ import { Redirect, Route } from "react-router-dom";
 import { SwitchConnected } from "../utils/connectedRouting";
 import { appRoutes } from "./appRoutes";
 import { Dashboard } from "./dashboard/Dashboard";
-import { Documents } from "./documents/Documents";
+import { Documents } from "./documents/issuerDocuments/Documents";
+import { NomineeDocuments } from "./documents/nomineeDocuments/NomineeDocuments";
 import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
 import { UnlockWalletFundsFromLink } from "./edge-cases/UnlockWalletFundsFromLink";
-import { EtoDashboard } from "./eto/EtoDashboard";
 import { EtoIssuerView } from "./eto/EtoIssuerView";
 import { EtoNomineeView } from "./eto/EtoNomineeView";
 import { EtoPublicView } from "./eto/EtoPublicView";
@@ -16,9 +16,9 @@ import { EtoWidgetView } from "./eto/EtoWidgetView";
 import { EtoRegister } from "./eto/registration/Start";
 import { RedirectEtoById } from "./eto/shared/routing/RedirectToEtoById";
 import { RedirectEtoPublicView } from "./eto/shared/routing/RedirectToEtoLink";
+import { EtoDashboard } from "./issuer-dashboard/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 import { Landing } from "./landing/Landing";
-import { LandingEto } from "./landing/LandingEto";
 import { NomineeDashboard } from "./nominee-dashboard/NomineeDashboard";
 import { Portfolio } from "./portfolio/Portfolio";
 import { BackupSeed } from "./settings/backup-seed/BackupSeed";
@@ -96,7 +96,7 @@ export const AppRouter: React.FunctionComponent = () => (
       <OnlyPublicRoute
         key={appRoutes.etoLanding}
         path={appRoutes.etoLanding}
-        component={LandingEto}
+        component={() => <Redirect to={appRoutes.root} />}
       />,
       <OnlyPublicRoute
         key={appRoutes.registerIssuer}
@@ -149,7 +149,7 @@ export const AppRouter: React.FunctionComponent = () => (
     <OnlyAuthorizedRoute
       path={appRoutes.documents}
       issuerComponent={Documents}
-      nomineeComponent={Documents}
+      nomineeComponent={NomineeDocuments}
       exact
     />
     <OnlyAuthorizedRoute

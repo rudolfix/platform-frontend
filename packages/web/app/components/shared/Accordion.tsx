@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 
 import { TTranslatedString } from "../../types";
@@ -9,47 +10,45 @@ import * as styles from "./Accordion.module.scss";
 
 interface IAccordionElementProps {
   title: TTranslatedString;
-  isOpened?: boolean;
-}
-
-interface IAccordionElementState {
-  isOpened: boolean;
+  isDefaultOpened?: boolean;
 }
 
 type IAccordionChildren =
-  | React.ReactElement<IAccordionElementProps | null>
-  | React.ReactElement<IAccordionElementProps | null>[]
+  | React.ReactElement<IAccordionElementProps>
+  | React.ReactElement<IAccordionElementProps>[]
   | null;
+
+type TAccordionField = {
+  value: string;
+  name: string;
+};
 
 interface IAccordionProps {
   openFirst?: boolean;
   children?: IAccordionChildren | IAccordionChildren[];
 }
 
-class AccordionElement extends React.Component<IAccordionElementProps, IAccordionElementState> {
-  state = {
-    isOpened: this.props.isOpened || false,
-  };
+const negate = (value: boolean) => !value;
 
-  toggleClose = () => {
-    this.setState(s => ({ isOpened: !s.isOpened }));
-  };
+const AccordionElement: React.FunctionComponent<IAccordionElementProps> = ({
+  title,
+  children,
+  isDefaultOpened = false,
+}) => {
+  const [isOpened, setIsOpened] = React.useState(isDefaultOpened);
 
-  render(): React.ReactChild {
-    const { title, children } = this.props;
-    const { isOpened } = this.state;
+  const toggle = () => setIsOpened(negate);
 
-    return (
-      <div className={`${styles.accordionElement} ${isOpened ? "" : "is-closed"}`}>
-        <h4 className={styles.title} onClick={this.toggleClose}>
-          <span>{title}</span>
-          <InlineIcon width="16px" height="16px" svgIcon={indicatorIcon} />
-        </h4>
-        <div className={styles.content}>{children}</div>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={cn(styles.accordionElement, { [styles.isClosed]: !isOpened })}>
+      <h4 className={styles.title} onClick={toggle}>
+        <span>{title}</span>
+        <InlineIcon width="16px" height="16px" svgIcon={indicatorIcon} />
+      </h4>
+      <div className={styles.content}>{children}</div>
+    </div>
+  );
+};
 
 const Accordion: React.FunctionComponent<IAccordionProps> = ({ children, openFirst }) => (
   <div className={styles.accordion}>
@@ -62,24 +61,27 @@ const Accordion: React.FunctionComponent<IAccordionProps> = ({ children, openFir
             React.cloneElement<IAccordionElementProps>(
               // type cast is required due of toArray that changes elements to ReactChild
               child as React.ReactElement<IAccordionElementProps>,
-              { isOpened: true },
+              { isDefaultOpened: true },
             )
           : child,
       )}
   </div>
 );
 
-const AccordionField: React.FunctionComponent<{
-  title: TTranslatedString;
-  value: string | undefined;
-}> = ({ title, value }) => (
-  <>
-    {value ? (
-      <AccordionElement title={title}>
-        <Field name="inspiration" value={value} />
+const AccordionField: React.FunctionComponent<IAccordionElementProps & TAccordionField> = ({
+  value,
+  name,
+  ...props
+}) => {
+  if (value) {
+    return (
+      <AccordionElement {...props}>
+        <Field name={name} value={value} />
       </AccordionElement>
-    ) : null}
-  </>
-);
+    );
+  }
+
+  return null;
+};
 
 export { Accordion, AccordionElement, AccordionField };

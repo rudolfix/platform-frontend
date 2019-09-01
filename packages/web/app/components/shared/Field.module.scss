@@ -1,5 +1,7 @@
 .rich-field,
 .rich-field > :global(.ck) {
+  word-break: break-word;
+
   h2 {
     @include headline-large;
 

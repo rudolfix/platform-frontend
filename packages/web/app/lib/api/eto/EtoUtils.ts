@@ -60,6 +60,14 @@ const getMaxInvestmentAmountWithDiscount = (
     return 0;
   }
 
+  if (
+    fixedSlotsMaximumDiscountFraction > 1 ||
+    whitelistDiscountFraction > 1 ||
+    publicDiscountFraction > 1
+  ) {
+    throw new Error("Fraction number is required instead of percentage value");
+  }
+
   let amount = 0;
 
   if (newSharesToIssueInFixedSlots > 0 && shares > 0) {

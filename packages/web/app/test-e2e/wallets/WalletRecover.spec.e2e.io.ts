@@ -1,4 +1,6 @@
 import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
+import { cyPromise } from "../utils/cyPromise";
+import { generateRandomSeedAndAddress } from "../utils/generateRandomSeedAndAddress";
 import {
   acceptTOS,
   assertDashboard,
@@ -7,30 +9,31 @@ import {
   createAndLoginNewUser,
   generateRandomEmailAddress,
   goToUserAccountSettings,
+  lightWalletTypeLoginInfo,
+  lightWalletTypeRegistrationInfo,
   tid,
-  typeEmailPassword,
   typeLightwalletRecoveryPhrase,
-} from "../utils";
-import { cyPromise } from "../utils/cyPromise";
-import { generateRandomSeedAndAddress } from "../utils/generateRandomSeedAndAddress";
+} from "../utils/index";
 
 describe("Wallet recover", function(): void {
   this.retries(2);
   it("should recover wallet from saved phrases", () => {
     cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
+        const password = "strongpassword";
         const email = generateRandomEmailAddress();
 
         cy.visit(`${recoverRoutes.seed}`);
 
         typeLightwalletRecoveryPhrase(words);
 
-        cy.get(tid("wallet-selector-register-email")).type(email);
-        cy.get(tid("wallet-selector-register-password")).type("strongpassword");
-        cy.get(tid("wallet-selector-register-confirm-password")).type("strongpassword{enter}");
+        lightWalletTypeRegistrationInfo(email, password);
 
-        cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
+        cy.get(tid("recovery-success-btn-go-to-login")).awaitedClick();
 
+        lightWalletTypeLoginInfo(email, password);
+
+        assertDashboard();
         assertWaitForLatestEmailSentWithSalt(email);
 
         cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
@@ -60,7 +63,7 @@ describe("Wallet recover", function(): void {
           cy.visit(`${recoverRoutes.seed}`);
           cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
             typeLightwalletRecoveryPhrase(seed);
-            typeEmailPassword(metaData.email, "randomPassword");
+            lightWalletTypeRegistrationInfo(metaData.email, "randomPassword");
 
             assertErrorModal();
           });
@@ -79,13 +82,13 @@ describe("Wallet recover", function(): void {
         const email = generateRandomEmailAddress();
         const password = "strongpassword";
         cy.clearLocalStorage();
-        cy.visit(`${recoverRoutes.seed}`);
+        cy.visit(recoverRoutes.seed);
 
         typeLightwalletRecoveryPhrase(seed);
-        typeEmailPassword(email, password);
+        lightWalletTypeRegistrationInfo(email, password);
         cy.wait(4000);
-        cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
-
+        cy.get(tid("recovery-success-btn-go-to-login")).awaitedClick();
+        lightWalletTypeLoginInfo(email, password);
         assertDashboard();
       });
     });
@@ -107,9 +110,9 @@ describe("Wallet recover", function(): void {
 
             typeLightwalletRecoveryPhrase(seed);
 
-            typeEmailPassword(email, password);
+            lightWalletTypeRegistrationInfo(email, password);
             assertWaitForLatestEmailSentWithSalt(email);
-            cy.get(tid("recovery-success-btn-go-dashboard")).awaitedClick();
+            cy.get(tid("recovery-success-btn-go-to-login")).awaitedClick();
             cy.visit("/");
             assertDashboard();
           });

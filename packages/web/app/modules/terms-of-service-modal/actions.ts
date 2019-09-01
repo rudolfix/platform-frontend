@@ -1,8 +1,10 @@
-import { createAction, createSimpleAction } from "../actionsUtils";
+import { createActionFactory } from "@neufund/shared";
 
 export const tosModalActions = {
-  setCurrentAgreementHash: (currentAgreementHash: string) =>
-    createAction("SET_CURRENT_AGREEMENT_HASH", { currentAgreementHash }),
-  acceptCurrentAgreement: () => createSimpleAction("ACCEPT_CURRENT_AGREEMENT"),
-  downloadCurrentAgreement: () => createSimpleAction("DOWNLOAD_CURRENT_AGREEMENT"),
+  loadCurrentTos: createActionFactory("LOAD_CURRENT_TOS"),
+  setCurrentTosHash: createActionFactory(
+    "SET_CURRENT_TOS_HASH",
+    (currentAgreementHash: string) => ({ currentAgreementHash }),
+  ),
+  acceptCurrentTos: createActionFactory("ACCEPT_CURRENT_TOS"),
 };

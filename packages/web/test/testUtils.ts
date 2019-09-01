@@ -5,8 +5,8 @@ import { spy } from "sinon";
 import { invariant } from "../app/utils/invariant";
 
 // helper to generate quickly selector for data-test-ids
-export function tid(id: string, rest?: string): string {
-  return `[data-test-id="${id}"]` + (rest ? ` ${rest}` : "");
+export function tid(id: string): string {
+  return `[data-test-id~="${id}"]`;
 }
 
 export interface IMockFns<T> {
@@ -77,3 +77,23 @@ export function errorEquality(actual: Error, expected: Error): void {
   expect(actual.message).to.be.eq(expected.message);
   expect(omit(actual, ["stack"])).to.be.deep.eq(omit(expected, ["stack"]));
 }
+
+/**
+ * Asserts at compile time that the provided type argument's type resolves to the expected boolean literal type.
+ * @example
+ * assertType<AssertEqual<string, string>>();
+ */
+export function assertType<T extends true>(expected: T): void {
+  if (expected !== true) {
+    throw new Error(`Invalid type assertion. Received ${expected} but true was expected`);
+  }
+}
+
+/**
+ * Assert that a give type `T` is exactly equal to `Expected`
+ * @example
+ * const cond: AssertEqual<string, string> = true;
+ */
+export type AssertEqual<T, Expected> = [T] extends [Expected]
+  ? ([Expected] extends [T] ? true : never)
+  : never;

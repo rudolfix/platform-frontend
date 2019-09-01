@@ -5,6 +5,7 @@ import { Col, Row } from "reactstrap";
 import { compose } from "redux";
 
 import { actions } from "../../../../modules/actions";
+import { ELogoutReason } from "../../../../modules/auth/types";
 import { appConnect } from "../../../../store";
 import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { Button } from "../../../shared/buttons";
@@ -42,8 +43,8 @@ export const RecoverySuccessComponent: React.FunctionComponent<IDispatchProps> =
     </Col>
     <Row className="justify-content-center mb-5 mt-5 pt-4">
       <Col xs={6} sm={5} md={4} lg={3}>
-        <Button onClick={goToDashboard} data-test-id="recovery-success-btn-go-dashboard">
-          <FormattedMessage id="components.wallet-selector.wallet-recover.recovery-success.go-to-dashboard" />
+        <Button onClick={goToDashboard} data-test-id="recovery-success-btn-go-to-login">
+          <FormattedMessage id="components.wallet-selector.wallet-recover.recovery-success.go-to-login" />
         </Button>
       </Col>
     </Row>
@@ -61,7 +62,8 @@ export const RecoverySuccessComponent: React.FunctionComponent<IDispatchProps> =
 export const RecoverySuccess = compose<React.FunctionComponent>(
   appConnect<void, IDispatchProps>({
     dispatchToProps: dispatch => ({
-      goToDashboard: () => dispatch(actions.walletSelector.connected()),
+      goToDashboard: () =>
+        dispatch(actions.routing.goToLogin({ logoutReason: ELogoutReason.USER_REQUESTED })),
     }),
   }),
   withContainer(WalletSelectorContainer),

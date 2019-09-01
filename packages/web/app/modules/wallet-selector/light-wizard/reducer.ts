@@ -1,6 +1,7 @@
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../store";
 import { DeepReadonly } from "../../../types";
+import { actions } from "../../actions";
 
 export interface ILightWalletWizardState {
   errorMsg?: DeepReadonly<TMessage>;
@@ -14,21 +15,21 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
   action,
 ): ILightWalletWizardState => {
   switch (action.type) {
-    case "LIGHT_WALLET_LOGIN":
-    case "LIGHT_WALLET_REGISTER":
+    case actions.walletSelector.lightWalletLogin.getType():
+    case actions.walletSelector.lightWalletRegister.getType():
       return {
         ...state,
         errorMsg: undefined,
         isLoading: true,
       };
-    case "LIGHT_WALLET_CONNECTION_ERROR":
+    case actions.walletSelector.lightWalletConnectionError.getType():
       return {
         ...state,
         errorMsg: action.payload.errorMsg,
         isLoading: false,
       };
-    case "WALLET_SELECTOR_CONNECTED":
-    case "WALLET_SELECTOR_RESET":
+    case actions.walletSelector.connected.getType():
+    case actions.walletSelector.reset.getType():
       return {
         ...state,
         isLoading: false,

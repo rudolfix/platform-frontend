@@ -56,6 +56,9 @@ const TxDetails: React.FunctionComponent<IProps & CommonHtmlProps> = props => {
       return null;
     case ETxSenderType.INVESTOR_REFUND:
       return <RefundTransactionDetails {...propsAsAny} />;
+    case ETxSenderType.NOMINEE_THA_SIGN:
+    case ETxSenderType.NOMINEE_RAAA_SIGN:
+      return null;
     default:
       return assertNever(type);
   }

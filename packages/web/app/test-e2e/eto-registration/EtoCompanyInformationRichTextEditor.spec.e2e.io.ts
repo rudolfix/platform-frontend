@@ -1,5 +1,5 @@
 import { etoRegisterRoutes } from "../../components/eto/registration/routes";
-import { assertEtoDashboard } from "../utils/assertions";
+import { assertIssuerDashboard } from "../utils/assertions";
 import { fillForm, uploadSingleFileToField } from "../utils/forms";
 import { goToEtoPreview } from "../utils/navigation";
 import { formField, tid } from "../utils/selectors";
@@ -37,7 +37,7 @@ describe("Eto Company Information Rich Text Editor", () => {
 
     fillForm(aboutFormSubmit);
 
-    assertEtoDashboard();
+    assertIssuerDashboard();
 
     goToEtoPreview();
 
@@ -97,7 +97,7 @@ describe("Eto Company Information Rich Text Editor", () => {
 
     fillForm(aboutFormSubmit);
 
-    assertEtoDashboard();
+    assertIssuerDashboard();
 
     goToEtoPreview();
 

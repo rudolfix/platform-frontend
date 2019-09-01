@@ -16,7 +16,7 @@ import {
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
 } from "../../../config/constants";
-import { DeepPartial, DeepReadonly } from "../../../types";
+import { DeepPartial, DeepReadonly, EthereumAddressWithChecksum } from "../../../types";
 import * as YupTS from "../../yup-ts.unsafe";
 import { dateSchema, percentage } from "../util/schemaHelpers.unsafe";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
@@ -46,7 +46,7 @@ export const EtoCompanyInformationType = YupTS.object({
   brandName: YupTS.string(),
   companyWebsite: YupTS.url(),
   companyOneliner: YupTS.string(),
-  companyDescription: YupTS.string().enhance(v => v.meta({ isWysiwyg: true })),
+  companyDescription: YupTS.wysiwygString(),
   keyQuoteFounder: YupTS.string(),
   keyQuoteInvestor: YupTS.string().optional(),
   categories: YupTS.array(tagsType).optional(),
@@ -57,47 +57,21 @@ export const EtoCompanyInformationType = YupTS.object({
 type TEtoTeamData = YupTS.TypeOf<typeof EtoCompanyInformationType>;
 
 export const EtoPitchType = YupTS.object({
-  problemSolved: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  productVision: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  inspiration: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  roadmap: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
+  problemSolved: YupTS.wysiwygString().optional(),
+  productVision: YupTS.wysiwygString().optional(),
+  inspiration: YupTS.wysiwygString().optional(),
+  roadmap: YupTS.wysiwygString().optional(),
   useOfCapital: YupTS.string().optional(),
   useOfCapitalList: YupTS.array(EtoCapitalListType).optional(),
-  customerGroup: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  sellingProposition: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  marketingApproach: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  companyMission: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  targetMarketAndIndustry: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  keyBenefitsForInvestors: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  keyCompetitors: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  marketTraction: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
-  businessModel: YupTS.string()
-    .optional()
-    .enhance(v => v.meta({ isWysiwyg: true })),
+  customerGroup: YupTS.wysiwygString().optional(),
+  sellingProposition: YupTS.wysiwygString().optional(),
+  marketingApproach: YupTS.wysiwygString().optional(),
+  companyMission: YupTS.wysiwygString().optional(),
+  targetMarketAndIndustry: YupTS.wysiwygString().optional(),
+  keyBenefitsForInvestors: YupTS.wysiwygString().optional(),
+  keyCompetitors: YupTS.wysiwygString().optional(),
+  marketTraction: YupTS.wysiwygString().optional(),
+  businessModel: YupTS.wysiwygString().optional(),
 });
 
 type TEtoProductVision = YupTS.TypeOf<typeof EtoPitchType>;
@@ -351,15 +325,10 @@ export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType
 export const EtoVotingRightsType = YupTS.object({
   liquidationPreferenceMultiplier: YupTS.number(),
   generalVotingRule: YupTS.string(),
-});
-
-export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
-
-export const EtoNomineeType = YupTS.object({
   nominee: YupTS.string(),
 });
 
-export type TEtoNomineeType = YupTS.TypeOf<typeof EtoNomineeType>;
+export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
 export const EtoInvestmentTermsType = YupTS.object({
   equityTokensPerShare: YupTS.number(),
@@ -401,7 +370,7 @@ export const EtoInvestmentTermsType = YupTS.object({
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
 
 interface IAdditionalEtoType {
-  etoId: string;
+  etoId: EthereumAddressWithChecksum;
   companyId: string;
   previewCode: string;
   state: EEtoState;
@@ -431,7 +400,6 @@ export type TBookbuildingStatsType = {
 export type TEtoSpecsData = TEtoTermsType &
   TEtoEquityTokenInfoType &
   TEtoVotingRightsType &
-  TEtoNomineeType &
   TEtoInvestmentTermsType &
   IAdditionalEtoType;
 
@@ -447,18 +415,6 @@ export type TGeneralEtoData = {
 // this is coming from the /etos endpoint for investors dashboard
 export type TEtoData = TEtoSpecsData & { company: TCompanyEtoData };
 
-export const GeneralEtoDataType = YupTS.object({
-  ...getEtoTermsSchema().shape,
-  ...EtoEquityTokenInfoType.shape,
-  ...EtoVotingRightsType.shape,
-  ...EtoMediaType.shape,
-  ...EtoLegalInformationType.shape,
-  ...EtoKeyIndividualsType.shape,
-  ...EtoPitchType.shape,
-  ...EtoCompanyInformationType.shape,
-  ...EtoRiskAssessmentType.shape,
-});
-
 export const EtoMarketingDataType = YupTS.object({
   ...EtoEquityTokenInfoType.shape,
   ...EtoMediaType.shape,
@@ -468,11 +424,9 @@ export const EtoMarketingDataType = YupTS.object({
   ...EtoRiskAssessmentType.shape,
 });
 
-export const EtoSettingDataType = YupTS.object({
+export const ETOInvestmentAndEtoTermsDataType = YupTS.object({
   ...EtoInvestmentTermsType.shape,
   ...getEtoTermsSchema().shape,
-  ...EtoVotingRightsType.shape,
-  ...EtoNomineeType.shape,
 });
 
 export type TNomineeRequestResponse = {

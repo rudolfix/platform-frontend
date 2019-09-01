@@ -5,11 +5,11 @@ import {
   assertErrorModal,
   assertWaitForLatestEmailSentWithSalt,
   generateRandomEmailAddress,
+  lightWalletTypeRegistrationInfo,
   loginWithLightWallet,
   logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
-  typeEmailPassword,
   verifyLatestUserEmail,
 } from "../utils/index";
 
@@ -99,7 +99,7 @@ describe("Light wallet login / register", () => {
 
     // register once and then verify email account
     cy.visit("/register");
-    typeEmailPassword(email, password);
+    lightWalletTypeRegistrationInfo(email, password);
     assertDashboard();
     acceptTOS();
     verifyLatestUserEmail(email);
@@ -108,7 +108,7 @@ describe("Light wallet login / register", () => {
 
     // register again with the same email, this should show a warning
     cy.visit("/register");
-    typeEmailPassword(email, password);
+    lightWalletTypeRegistrationInfo(email, password);
     assertErrorModal();
 
     //dismiss warning, register button must be enabled

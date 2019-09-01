@@ -104,6 +104,12 @@ const InvestmentCalculator: React.FunctionComponent<ICalculatorProps> = ({
 }) => (
   <FormikConsumer>
     {({ values }) => {
+      const fixedSlotsMaximumDiscountFraction = parseStringToFloat()(
+        values.fixedSlotsMaximumDiscountFraction,
+      );
+      const whitelistDiscountFraction = parseStringToFloat()(values.whitelistDiscountFraction);
+      const publicDiscountFraction = parseStringToFloat()(values.publicDiscountFraction);
+
       const calculatorValues = {
         newSharesToIssue: parseStringToFloat()(values.newSharesToIssue),
         minimumNewSharesToIssue: parseStringToFloat()(values.minimumNewSharesToIssue),
@@ -112,11 +118,15 @@ const InvestmentCalculator: React.FunctionComponent<ICalculatorProps> = ({
         preMoneyValuationEur: parseStringToFloat()(values.preMoneyValuationEur),
         newSharesToIssueInFixedSlots: parseStringToFloat()(values.newSharesToIssueInFixedSlots),
         newSharesToIssueInWhitelist: parseStringToFloat()(values.newSharesToIssueInWhitelist),
-        fixedSlotsMaximumDiscountFraction: parseStringToFloat()(
-          values.fixedSlotsMaximumDiscountFraction,
-        ),
-        whitelistDiscountFraction: parseStringToFloat()(values.whitelistDiscountFraction),
-        publicDiscountFraction: parseStringToFloat()(values.publicDiscountFraction),
+        fixedSlotsMaximumDiscountFraction: fixedSlotsMaximumDiscountFraction
+          ? convertPercentageToFraction()(fixedSlotsMaximumDiscountFraction)
+          : 0,
+        whitelistDiscountFraction: fixedSlotsMaximumDiscountFraction
+          ? convertPercentageToFraction()(whitelistDiscountFraction)
+          : 0,
+        publicDiscountFraction: fixedSlotsMaximumDiscountFraction
+          ? convertPercentageToFraction()(publicDiscountFraction)
+          : 0,
       };
 
       const { computedMaxNumberOfTokens, computedMinNumberOfTokens } = getNumberOfTokens(
@@ -446,4 +456,4 @@ const fromFormState = {
   authorizedCapitalShares: parseStringToInteger(),
 };
 
-export { EtoInvestmentTerms, EtoInvestmentTermsComponent };
+export { EtoInvestmentTerms, EtoInvestmentTermsComponent, InvestmentCalculator };

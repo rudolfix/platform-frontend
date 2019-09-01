@@ -29,6 +29,8 @@ export const txTransactionsActions = {
     "TRANSACTION_START_INVESTOR_REFUND",
     (etoId: string) => ({ etoId }),
   ),
+  startNomineeTHASign: createActionFactory("TRANSACTION_START_NOMINEE_THA_SIGN"),
+  startNomineeRAAASign: createActionFactory("TRANSACTION_START_NOMINEE_RAAA_SIGN"),
   // Add here new custom sagas that represent flows
 
   // Delete pending transaction

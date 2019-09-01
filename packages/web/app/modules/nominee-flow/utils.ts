@@ -1,6 +1,8 @@
 import { ENomineeRequestStatusTranslation } from "../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../components/translatedMessages/utils";
 import { TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
+import { isOnChain } from "../eto/utils";
 import { ENomineeRequestStatus, INomineeRequest, TNomineeRequestStorage } from "./reducer";
 
 export const nomineeRequestToTranslationMessage = (status: ENomineeRequestStatus): TMessage => {
@@ -77,3 +79,8 @@ export const nomineeRequestsToArray = (requests: TNomineeRequestStorage): INomin
     .filter((request: INomineeRequest) => request.state === ENomineeRequestStatus.PENDING)
     .sort(compareByDate);
 };
+
+export const nomineeIsEligibleToSignAgreement = (nomineeEto: TEtoWithCompanyAndContract) =>
+  isOnChain(nomineeEto) &&
+  nomineeEto.contract.timedState === EETOStateOnChain.Setup &&
+  nomineeEto.contract.startOfStates[EETOStateOnChain.Whitelist] === undefined;

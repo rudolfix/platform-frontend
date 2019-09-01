@@ -1,5 +1,5 @@
 import {
-  assertEtoDashboard,
+  assertIssuerDashboard,
   generateRandomEmailAddress,
   loginWithLightWallet,
   logoutViaAccountMenu,
@@ -10,11 +10,11 @@ const password = "strongpassword";
 
 const loginWithLightWalletETO = (testEmail: string, password: string) => {
   registerWithLightWalletETO(testEmail, password);
-  assertEtoDashboard();
+  assertIssuerDashboard();
 
   logoutViaAccountMenu();
   loginWithLightWallet(testEmail, password);
-  assertEtoDashboard();
+  assertIssuerDashboard();
 };
 
 describe("Light Wallet ETO Login", () => {

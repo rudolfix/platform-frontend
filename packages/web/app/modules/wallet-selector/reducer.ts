@@ -1,6 +1,7 @@
 import { TMessage } from "../../components/translatedMessages/utils";
 import { AppReducer } from "../../store";
 import { DeepReadonly } from "../../types";
+import { actions } from "../actions";
 
 export interface IWalletSelectorState {
   isMessageSigning: boolean;
@@ -16,18 +17,18 @@ export const walletSelectorReducer: AppReducer<IWalletSelectorState> = (
   action,
 ): IWalletSelectorState => {
   switch (action.type) {
-    case "WALLET_SELECTOR_MESSAGE_SIGNING":
+    case actions.walletSelector.messageSigning.getType():
       return {
         ...state,
         isMessageSigning: true,
         messageSigningError: undefined,
       };
-    case "WALLET_SELECTOR_MESSAGE_SIGNING_ERROR":
+    case actions.walletSelector.messageSigningError.getType():
       return {
         ...state,
         messageSigningError: action.payload.errorMessage,
       };
-    case "WALLET_SELECTOR_RESET":
+    case actions.walletSelector.reset.getType():
       return {
         ...state,
         isMessageSigning: false,

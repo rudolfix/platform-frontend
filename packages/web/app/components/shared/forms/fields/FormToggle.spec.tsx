@@ -5,7 +5,7 @@ import { spy } from "sinon";
 
 import { submit } from "../../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../../test/testUtils";
-import { FormToggle } from "./FormToggle.unsafe";
+import { FormToggle } from "./FormToggle";
 import { formWrapper } from "./testingUtils.unsafe";
 
 describe("Toggle", () => {

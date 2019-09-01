@@ -6,7 +6,7 @@ import { mockApiUrl } from "../config";
 import { tid } from "./selectors";
 import { getPendingTransactions } from "./userHelpers";
 
-export const assertEtoDashboard = () => {
+export const assertIssuerDashboard = () => {
   cy.get(tid("eto-dashboard-application")).should("exist");
   cy.url().should("contain", appRoutes.dashboard);
 };

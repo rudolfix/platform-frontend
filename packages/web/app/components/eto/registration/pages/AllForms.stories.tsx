@@ -10,7 +10,7 @@ import { EtoRegistrationCompanyInformationComponent } from "./CompanyInformation
 import { EtoEquityTokenInfoComponent } from "./EtoEquityTokenInfo";
 import { EtoRegistrationMediaComponent } from "./EtoMedia";
 import { EtoRegistrationPitchComponent } from "./EtoPitch";
-import { EtoVotingRightsComponent } from "./EtoVotingRights";
+import { EtoVotingRightsComponent } from "./EtoVotingRights/EtoVotingRights";
 import { EtoRegistrationKeyIndividualsComponent } from "./KeyIndividuals";
 import { EtoRegistrationLegalInformationComponent } from "./LegalInformation";
 import { EtoRegistrationRiskAssessmentComponent } from "./RiskAssessment";

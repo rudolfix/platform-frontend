@@ -101,7 +101,7 @@ const TextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> = ({
             aria-invalid={invalid}
             invalid={invalid}
             disabled={disabled}
-            value={field.value}
+            value={field.value === undefined ? "" : field.value}
             placeholder={placeholder}
             className={cn(className, styles.inputField)}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

@@ -13,7 +13,12 @@ import { ECurrency, ENumberOutputFormat } from "../../../shared/formatters/utils
 import { getIconForCurrency } from "../../../shared/icons/CurrencyIcon";
 import { EtherscanAddressLink } from "../../../shared/links/EtherscanLink";
 import { ExternalLink } from "../../../shared/links/ExternalLink";
-import { ESize, ETextPosition, ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
+import {
+  ESize,
+  ETextPosition,
+  ETheme,
+  MoneySuiteWidget,
+} from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { BasicTransactionDetails } from "./BasicTransactionDetails";
 
 interface IExternalProps {

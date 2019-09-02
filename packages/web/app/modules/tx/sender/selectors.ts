@@ -1,7 +1,8 @@
 import { IAppState } from "../../../store";
 import { multiplyBigNumbers } from "../../../utils/BigNumberUtils";
+import { selectEtherPriceEur } from "../../shared/tokenPrice/selectors";
 import { ETxSenderType, TAdditionalDataByType } from "../types";
-import { ETxSenderState, EValidationState } from "./reducer";
+import { ETxSenderState } from "./reducer";
 
 export const selectTxSenderModalOpened = (state: IAppState) =>
   state.txSender.state !== ETxSenderState.UNINITIALIZED;
@@ -24,5 +25,5 @@ export const selectTxGasCostEthUlps = (state: IAppState): string => {
   return multiplyBigNumbers([gasPrice, gasLimit]);
 };
 
-export const selectTxValidationState = (state: IAppState): EValidationState | undefined =>
-  state.txSender.validationState;
+export const selectTxGasCostEurUlps = (state: IAppState): string =>
+  multiplyBigNumbers([selectEtherPriceEur(state), selectTxGasCostEthUlps(state)]);

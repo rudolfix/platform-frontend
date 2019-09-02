@@ -2,11 +2,21 @@ import { Field, FieldProps, getIn } from "formik";
 import * as React from "react";
 
 import { OmitKeys } from "../../../../types";
-import { CheckboxLayout, RadioButtonLayout } from "../layouts/CheckboxLayout";
+import { CheckboxLayout, ECheckboxLayout, RadioButtonLayout } from "../layouts/CheckboxLayout";
 import { FormFieldError } from "./FormFieldError";
 
 type LayoutProps = React.ComponentProps<typeof CheckboxLayout>;
 type TProps = OmitKeys<LayoutProps, "onChange">;
+
+type TRadioButtonProps = {
+  layout?: ECheckboxLayout;
+  name: string;
+  label?: string | React.ReactNode;
+  value?: string | boolean;
+  checked?: boolean;
+  disabled?: boolean;
+  inputRef?: (el: HTMLInputElement | null) => void;
+};
 
 /*
  * Conditional checkbox.
@@ -38,26 +48,22 @@ class FormFieldBoolean extends React.Component<TProps> {
   }
 }
 
-class FormRadioButton extends React.Component<TProps> {
+class FormRadioButton extends React.Component<TRadioButtonProps> {
   render(): React.ReactNode {
-    const { name, checked, disabled } = this.props;
+    const { name, checked, disabled, value } = this.props;
 
     return (
       <Field
         name={name}
-        render={({ field, form }: FieldProps) => {
-          const { value } = this.props;
-
-          return (
-            <RadioButtonLayout
-              {...field}
-              {...this.props}
-              checked={checked || getIn(form.values, name) === value}
-              onChange={() => form.setFieldValue(name, value)}
-              disabled={disabled}
-            />
-          );
-        }}
+        render={({ field, form }: FieldProps) => (
+          <RadioButtonLayout
+            {...field}
+            {...this.props}
+            checked={checked || getIn(form.values, name) === value}
+            onChange={() => form.setFieldValue(name, value)}
+            disabled={disabled}
+          />
+        )}
       />
     );
   }

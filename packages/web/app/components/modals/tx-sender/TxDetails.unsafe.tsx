@@ -16,7 +16,7 @@ import { ClaimTransactionDetails } from "./user-claim/ClaimTransactionDetails";
 import { WithdrawTransactionDetails } from "./withdraw-flow/WithdrawTransactionDetails";
 
 type IProps = {
-  txData?: ITxData;
+  txData?: Partial<ITxData>;
 } & TSpecificTransactionState;
 
 /**

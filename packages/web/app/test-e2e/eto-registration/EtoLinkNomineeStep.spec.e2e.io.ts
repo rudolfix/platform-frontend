@@ -8,14 +8,14 @@ import {
   assertLinkNomineeStep,
   assertLinkNomineeStepAwaitingApprovalState,
   assertLinkNomineeStepAwaitingRequestState,
-  assertSetupEtoStep,
+  assertUploadSignedTermsheetStep,
   cancelNominee,
   fillAndAssert,
   fillRequiredCompanyInformation,
   rejectNominee,
   submitPreview,
 } from "./EtoRegistrationUtils";
-import { etoTermsRequiredForm, investmentTermsRequiredForm } from "./fixtures";
+import { etoTermsRequiredForm, investmentTermsRequiredForm, votingRights } from "./fixtures";
 
 const fillEtoToLinkNomineeStep = (issuerAddress: string) => {
   fillRequiredCompanyInformation();
@@ -55,10 +55,12 @@ describe("Eto Forms link nominee", () => {
             assertLinkNomineeStepAwaitingApprovalState();
 
             acceptNominee(nomineeAddress);
-
             // should move to setup eto state after nominee was accepted
             goToIssuerDashboard();
-            assertSetupEtoStep();
+            fillAndAssert("eto-progress-widget-voting-right", votingRights);
+
+            goToIssuerDashboard();
+            assertUploadSignedTermsheetStep();
 
             // get back to nominee
             cy.restoreLocalStorage(nomineeAddress);

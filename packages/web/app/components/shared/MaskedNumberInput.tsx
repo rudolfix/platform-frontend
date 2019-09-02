@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { DEFAULT_DECIMAL_PLACES } from "../../config/constants";
 import { TTranslatedString } from "../../types";
+import { FormInputError } from "../../utils/errors";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
@@ -16,7 +17,8 @@ import {
   toFixedPrecision,
   TValueFormat,
 } from "./formatters/utils";
-import { InputLayout } from "./forms";
+import { InputLayout } from "./forms/index";
+import { EInputTheme } from "./forms/layouts/InputLayout";
 
 interface IProps {
   name: string;
@@ -33,6 +35,12 @@ interface IProps {
   errorMsg?: TTranslatedString;
   invalid?: boolean;
   disabled?: boolean;
+  className?: string;
+  theme?: EInputTheme;
+  icon?: string;
+  reverseMetaInfo?: boolean;
+  prefix?: TTranslatedString;
+  suffix?: TTranslatedString;
 }
 
 export class MaskedNumberInput extends React.Component<IProps> {
@@ -121,6 +129,9 @@ export class MaskedNumberInput extends React.Component<IProps> {
   hasFocus = (id: string) => !!document.activeElement && document.activeElement.id === id;
 
   componentDidUpdate(): void {
+    if (!(this.props.value === undefined || typeof this.props.value === "string")) {
+      throw new FormInputError("MaskedNumberInput accepts only string|undefined");
+    }
     if (isValidNumber(this.props.value) || isEmptyValue(this.props.value)) {
       const propsValue = this.formatForDisplay(this.props.value, this.props.storageFormat);
       if (!this.hasFocus(this.props.name) && propsValue !== this.state.value) {
@@ -129,18 +140,29 @@ export class MaskedNumberInput extends React.Component<IProps> {
     }
   }
 
+  formatSuffix = () => {
+    const units =
+      this.props.valueType && this.props.showUnits ? selectUnits(this.props.valueType) : "";
+
+    return units || this.props.suffix ? (
+      <>
+        {units} {this.props.suffix}
+      </>
+    ) : (
+      undefined
+    );
+  };
+
   render(): React.ReactNode {
     return (
       <InputLayout
+        className={this.props.className}
         value={this.state.value}
         name={this.props.name}
         data-test-id={this.props["data-test-id"]}
         placeholder={this.props.placeholder}
-        suffix={
-          this.props.valueType && this.props.showUnits
-            ? selectUnits(this.props.valueType)
-            : undefined
-        }
+        prefix={this.props.prefix}
+        suffix={this.formatSuffix()}
         errorMsg={this.props.errorMsg}
         invalid={this.props.invalid}
         onBlur={(e: React.FocusEvent<HTMLInputElement>) => this.onBlur(e.target.value)}
@@ -148,6 +170,9 @@ export class MaskedNumberInput extends React.Component<IProps> {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.changeValue(e.target.value)}
         onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => this.onPaste(e)}
         disabled={this.props.disabled}
+        theme={this.props.theme}
+        icon={this.props.icon}
+        reverseMetaInfo={this.props.reverseMetaInfo}
       />
     );
   }

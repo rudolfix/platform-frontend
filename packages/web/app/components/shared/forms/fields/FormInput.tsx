@@ -40,12 +40,15 @@ export const FormInput: React.FunctionComponent<TExternalProps & FormInputProps>
   customValidation,
   onBlur,
   ignoreTouched,
+  icon,
+  theme,
   maxLength,
   ...props
 }) => (
   <FormikConsumer>
     {({ touched, errors, setFieldTouched, setFieldValue, submitCount }) => {
       const invalid = isNonValid(touched, errors, name, submitCount, ignoreTouched);
+
       return (
         <Field
           name={name}
@@ -82,7 +85,9 @@ export const FormInput: React.FunctionComponent<TExternalProps & FormInputProps>
                     ),
                   );
                 }}
+                theme={theme}
                 invalid={invalid}
+                icon={icon}
                 {...props}
               />
             );

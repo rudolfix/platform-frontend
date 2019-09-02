@@ -19,6 +19,7 @@ describe("etherscan links", () => {
           <ExternalLink
             href={`https://etherscan.io/tx/${hash}`}
             data-test-id="etherscan-external-link"
+            data-test-hash={hash}
           >
             0x23e1cea7...b4a0
           </ExternalLink>,
@@ -38,6 +39,7 @@ describe("etherscan links", () => {
           <ExternalLink
             href={`https://etherscan.io/tx/${hash}`}
             data-test-id="etherscan-external-link"
+            data-test-hash={hash}
           >
             etherscan.io
           </ExternalLink>,

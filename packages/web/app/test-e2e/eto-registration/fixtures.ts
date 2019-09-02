@@ -424,11 +424,26 @@ export const equityTokenInfoForm: TFormFixture = {
 
 // voting rights
 export const votingRights: TFormFixture = {
+  generalVotingDurationDays: "11",
+  restrictedActVotingDurationDays: "15",
+  votingFinalizationDurationDays: "12",
+  advisoryBoardSelector: { value: "true", type: "radio" },
+  advisoryBoard: "asdfasdf",
   liquidationPreferenceMultiplier: {
     value: "2",
     type: "select",
   },
+  hasFoundersVesting: { type: "radio", value: "false" },
   "eto-registration-voting-rights-submit": {
     type: "submit",
   },
+};
+
+export const votingRightsExpectedValues: TFormFixtureExpectedValues = {
+  generalVotingDurationDays: "11",
+  restrictedActVotingDurationDays: "15",
+  votingFinalizationDurationDays: "12",
+  advisoryBoard: "asdfasdf",
+  liquidationPreferenceMultiplier: "2",
+  hasFoundersVesting: "false",
 };

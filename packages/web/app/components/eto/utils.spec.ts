@@ -9,6 +9,7 @@ import {
   convertPercentageToFraction,
   convertToPrecision,
   parseStringToFloat,
+  removeEmptyField,
   removeEmptyKeyValueField,
   removeEmptyKeyValueFields,
 } from "./utils";
@@ -169,6 +170,39 @@ describe("convertNumberToString", () => {
   });
   it("throws if input is NaN", () => {
     expect(() => convertNumberToString()(NaN)).to.throw;
+  });
+});
+
+describe("removeEmptyField", () => {
+  it("sets the field to undefined if it's empty", () => {
+    const data = {
+      "1": "some data",
+      "2": "",
+      "3": [],
+      "4": null,
+      "5": NaN,
+      "6": 123,
+    };
+
+    const conversionSpec = {
+      "1": removeEmptyField(),
+      "2": removeEmptyField(),
+      "3": removeEmptyField(),
+      "4": removeEmptyField(),
+      "5": removeEmptyField(),
+      "6": removeEmptyField(),
+    };
+
+    const expectedOutput = {
+      "1": "some data",
+      "2": undefined,
+      "3": undefined,
+      "4": undefined,
+      "5": undefined,
+      "6": 123,
+    };
+
+    expect(convert(data, conversionSpec)).to.deep.equal(expectedOutput);
   });
 });
 

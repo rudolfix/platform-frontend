@@ -28,7 +28,9 @@ import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
 import { termsOfServiceSagas } from "./terms-of-service-modal/sagas";
 import { txHistorySaga } from "./tx-history/sagas";
 import { txMonitorSagas } from "./tx/monitor/sagas";
+import { txSenderSagasWatcher } from "./tx/sender/sagas";
 import { txTransactionsSagasWatcher } from "./tx/transactions/sagas";
+import { txUserFlowSagasWatcher } from "./tx/user-flow/withdraw/sagas";
 import { txValidatorSagasWatcher } from "./tx/validator/sagas";
 import { browserWalletSagas } from "./wallet-selector/browser-wizard/sagas";
 import { ledgerSagas } from "./wallet-selector/ledger-wizard/sagas";
@@ -56,6 +58,8 @@ function* allSagas(): Iterator<Effect> {
     // Sagas that should be restarted immediately when logout occurs
     fork(neuRestartIf, actions.auth.logout, termsOfServiceSagas),
     fork(neuRestartIf, actions.auth.logout, bankTransferFlowSaga),
+    fork(neuRestartIf, actions.auth.logout, txSenderSagasWatcher),
+    fork(neuRestartIf, actions.auth.logout, txUserFlowSagasWatcher),
     fork(neuRestartIf, actions.auth.logout, kycSagas),
     fork(neuRestartIf, actions.auth.logout, investorTicketsSagas),
     fork(neuRestartIf, actions.auth.logout, profileSagas),

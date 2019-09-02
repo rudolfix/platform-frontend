@@ -8,7 +8,7 @@ import {
   EInvestmentType,
 } from "../../../../modules/investment-flow/reducer";
 import { selectInvestmentActiveTypes } from "../../../../modules/investment-flow/selectors";
-import { EValidationState } from "../../../../modules/tx/sender/reducer";
+import { EValidationState } from "../../../../modules/tx/validator/reducer";
 import {
   selectICBMLockedEtherBalance,
   selectICBMLockedEtherBalanceEuroAmount,

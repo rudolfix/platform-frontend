@@ -57,7 +57,10 @@ const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProp
               <NewTableRow
                 key={transaction.id}
                 onClick={() => showTransactionDetails(transaction.id)}
-                data-test-id={`transactions-history-row transactions-history-${transaction.txHash}`}
+                data-test-id={`transactions-history-row transactions-history-${transaction.txHash.slice(
+                  0,
+                  10,
+                )}`}
               >
                 <TransactionData
                   top={<TransactionName transaction={transaction} />}

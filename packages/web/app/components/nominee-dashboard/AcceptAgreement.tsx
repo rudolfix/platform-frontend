@@ -31,7 +31,7 @@ type IComponentProps = IDispatchProps & IExternalProps;
 const isRAAA = (task: ENomineeTask): boolean => task === ENomineeTask.ACCEPT_RAAA;
 
 export const AcceptAgreementLayout: React.FunctionComponent<IComponentProps> = ({ sign, task }) => (
-  <>
+  <section data-test-id={isRAAA(task) ? "nominee-flow-sign-raaa" : "nominee-flow-sign-tha"}>
     <h4>
       {isRAAA(task) ? (
         <FormattedMessage id="nominee-flow.sign-raaa.title" />
@@ -54,7 +54,7 @@ export const AcceptAgreementLayout: React.FunctionComponent<IComponentProps> = (
     >
       <FormattedMessage id="nominee-flow.sign-agreement.sign-button" />
     </Button>
-  </>
+  </section>
 );
 
 const acceptAgreement = compose<IComponentProps, {}>(

@@ -3,7 +3,7 @@ import * as React from "react";
 import { TDataTestId, TTranslatedString } from "../../types";
 import { makeTid } from "../../utils/tidUtils";
 import { Button, EButtonLayout, EButtonTheme, EIconPosition } from "./buttons";
-import { IMoneySuiteWidgetProps, MoneySuiteWidget } from "./MoneySuiteWidget";
+import { IMoneySuiteWidgetProps, MoneySuiteWidget } from "./MoneySuiteWidget/MoneySuiteWidget";
 
 import * as arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./AccountBalance.module.scss";

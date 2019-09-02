@@ -1,5 +1,7 @@
 import { fork, put, select } from "redux-saga/effects";
 
+import { ETxValidationMessages } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
@@ -9,62 +11,74 @@ import {
   subtractBigNumbers,
 } from "../../../utils/BigNumberUtils";
 import { actions, TAction } from "../../actions";
-import { neuCall, neuTakeEvery } from "../../sagasUtils";
+import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
-import { EValidationState } from "../sender/reducer";
 import { generateInvestmentTransaction } from "../transactions/investment/sagas";
-import { generateEthWithdrawTransaction } from "../transactions/withdraw/sagas";
-import { ETxSenderType } from "../types";
+import { ETxSenderType, IInvestmentDraftType } from "../types";
+import { EValidationState } from "./reducer";
+import { txValidateWithdraw } from "./withdraw/sagas";
 
-export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "TX_SENDER_VALIDATE_DRAFT") return;
-  // reset validation
-  yield put(actions.txValidator.setValidationState());
-
-  let validationGenerator: any;
-  switch (action.payload.type) {
-    case ETxSenderType.WITHDRAW:
-      validationGenerator = generateEthWithdrawTransaction;
-      break;
-    case ETxSenderType.INVEST:
-      validationGenerator = generateInvestmentTransaction;
-      break;
-  }
-
-  let generatedTxDetails: ITxData | undefined;
-
+export function* txValidateDefault(txDraft: IInvestmentDraftType): Iterator<any> {
   try {
-    generatedTxDetails = yield neuCall(validationGenerator, action.payload);
-    yield validateGas(generatedTxDetails as ITxData);
+    const generatedTxDetails = yield neuCall(generateInvestmentTransaction, txDraft);
+    yield validateGas(generatedTxDetails);
+
     yield put(actions.txValidator.setValidationState(EValidationState.VALIDATION_OK));
+    return generatedTxDetails;
   } catch (error) {
     if (error instanceof NotEnoughEtherForGasError) {
-      logger.info(error);
       yield put(actions.txValidator.setValidationState(EValidationState.NOT_ENOUGH_ETHER_FOR_GAS));
     } else {
-      logger.error(error);
+      throw error;
     }
   }
+}
 
-  return generatedTxDetails;
+export function* txValidateSaga(
+  { logger, notificationCenter }: TGlobalDependencies,
+  action: TAction,
+): any {
+  if (action.type !== actions.txValidator.validateDraft.getType()) return;
+
+  try {
+    let validationGenerator: any;
+    switch (action.payload.type) {
+      case ETxSenderType.WITHDRAW:
+        validationGenerator = txValidateWithdraw(action.payload);
+        break;
+      case ETxSenderType.INVEST:
+        validationGenerator = txValidateDefault(action.payload);
+        break;
+    }
+
+    const txDetails = yield validationGenerator;
+    return txDetails;
+  } catch (e) {
+    logger.error("Something was wrong during TX validation", e);
+    yield notificationCenter.error(
+      createMessage(ETxValidationMessages.TX_VALIDATION_UNKNOWN_ERROR),
+    );
+    // In case of unknown error break the flow and hide modal
+    yield put(actions.txSender.txSenderHideModal());
+  }
 }
 
 export function* validateGas(txDetails: ITxData): any {
-  const etherBalance: string | undefined = yield select(selectEtherBalance);
-  if (!etherBalance) {
-    throw new Error("Ether Balance is undefined");
-  }
+  const maxEtherUlps = yield select(selectEtherBalance);
 
-  if (
-    compareBigNumbers(
-      multiplyBigNumbers([txDetails.gasPrice, txDetails.gas]),
-      subtractBigNumbers([etherBalance, txDetails.value.toString()]),
-    ) > 0
-  ) {
+  const costUlps = multiplyBigNumbers([txDetails.gasPrice, txDetails.gas]);
+  const valueUlps = subtractBigNumbers([maxEtherUlps, costUlps]);
+
+  if (compareBigNumbers(txDetails.value, valueUlps) > 0) {
     throw new NotEnoughEtherForGasError("Not enough Ether to pay the Gas for this transaction");
   }
 }
 
 export const txValidatorSagasWatcher = function*(): Iterator<any> {
-  yield fork(neuTakeEvery, "TX_SENDER_VALIDATE_DRAFT", txValidateSaga);
+  yield fork(
+    neuTakeLatestUntil,
+    "TX_SENDER_VALIDATE_DRAFT",
+    "TX_SENDER_HIDE_MODAL",
+    txValidateSaga,
+  );
 };

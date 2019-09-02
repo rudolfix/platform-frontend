@@ -14,6 +14,7 @@ import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
 import { txMonitorSaga } from "../sender/sagas";
 import { ETxSenderType, TSpecificTransactionState } from "../types";
+import { SchemaMismatchError } from "./errors";
 import { selectPlatformPendingTransaction } from "./selectors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "./types";
 
@@ -98,14 +99,32 @@ export function* markTransactionAsPending(
   return transactionTimestamp;
 }
 
+export function* makeSureWithdrawSchemaIsUpToDate(
+  pendingTransaction: TxPendingWithMetadata | undefined,
+): Iterator<any> {
+  // THIS IS A TEMPORARY PATCH A GENERAL SOLUTION THAT INCLUDES VERSIONING SHOULD COVER ALL TX TYPES
+  if (pendingTransaction && pendingTransaction.transactionType === ETxSenderType.WITHDRAW) {
+    if (
+      pendingTransaction.transactionAdditionalData === undefined ||
+      (pendingTransaction.transactionAdditionalData &&
+        (pendingTransaction.transactionAdditionalData.to === undefined ||
+          pendingTransaction.transactionAdditionalData.amount === undefined ||
+          pendingTransaction.transactionAdditionalData.amountEur === undefined ||
+          pendingTransaction.transactionAdditionalData.totalEur === undefined ||
+          pendingTransaction.transactionAdditionalData.total === undefined))
+    ) {
+      throw new SchemaMismatchError();
+    }
+  }
+}
+
 export function* updatePendingTxs({
   apiUserService,
   web3Manager,
   logger,
 }: TGlobalDependencies): any {
   let apiPendingTx: TPendingTxs = yield apiUserService.pendingTxs();
-
-  const pendingTransaction = apiPendingTx.pendingTransaction;
+  const pendingTransaction: TxPendingWithMetadata | undefined = apiPendingTx.pendingTransaction;
 
   // check whether transaction was mined
   if (pendingTransaction) {
@@ -155,8 +174,15 @@ export function* updatePendingTxs({
       }
     }
   }
-
-  yield put(actions.txMonitor.setPendingTxs(apiPendingTx));
+  try {
+    yield makeSureWithdrawSchemaIsUpToDate(pendingTransaction);
+    yield put(actions.txMonitor.setPendingTxs(apiPendingTx));
+  } catch (e) {
+    if (e instanceof SchemaMismatchError) {
+      logger.warn(new Error("Found Withdraw Schema Mismatch"));
+      yield apiUserService.deletePendingTx(apiPendingTx.pendingTransaction!.transaction.hash);
+    }
+  }
 }
 
 function* txMonitor({ logger }: TGlobalDependencies): any {

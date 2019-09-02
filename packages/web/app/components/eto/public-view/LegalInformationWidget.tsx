@@ -6,7 +6,7 @@ import {
   TEtoLegalShareholderType,
 } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { Container, EColumnSpan } from "../../layouts/Container";
-import { ChartDoughnut } from "../../shared/charts/ChartDoughnut.unsafe";
+import { ChartDoughnutLazy } from "../../shared/charts/ChartDoughnutLazy";
 import { generateColor } from "../../shared/charts/utils";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";
 import { MoneyNew } from "../../shared/formatters/Money";
@@ -162,7 +162,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
         </div>
 
         {companyData.shareholders && companyData.shareholders.length > 0 && (
-          <ChartDoughnut
+          <ChartDoughnutLazy
             data={{
               datasets: [
                 {

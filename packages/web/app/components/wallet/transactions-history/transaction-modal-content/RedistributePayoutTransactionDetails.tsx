@@ -6,7 +6,12 @@ import { TExtractTxHistoryFromType } from "../../../../modules/tx-history/types"
 import { DataRow } from "../../../modals/tx-sender/shared/DataRow";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { getIconForCurrency } from "../../../shared/icons/CurrencyIcon";
-import { ESize, ETextPosition, ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
+import {
+  ESize,
+  ETextPosition,
+  ETheme,
+  MoneySuiteWidget,
+} from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { BasicTransactionDetails } from "./BasicTransactionDetails";
 
 interface IExternalProps {

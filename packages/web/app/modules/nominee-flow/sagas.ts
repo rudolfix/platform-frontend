@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { delay } from "redux-saga";
-import { all, fork, put } from "redux-saga/effects";
+import { all, fork, put, select } from "redux-saga/effects";
 
 import { ENomineeTask } from "../../components/nominee-dashboard/NomineeTasksData";
 import { ENomineeRequestErrorNotifications } from "../../components/translatedMessages/messages";
@@ -11,6 +11,8 @@ import { TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.uns
 import { IssuerIdInvalid, NomineeRequestExists } from "../../lib/api/eto/EtoNomineeApi";
 import { actions, TActionFromCreator } from "../actions";
 import { loadNomineeEtos } from "../eto/sagas";
+import { selectNomineeEto } from "../eto/selectors";
+import { TEtoWithCompanyAndContract } from "../eto/types";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/saga";
 import {
@@ -160,15 +162,21 @@ function* loadAgreementStatus(
   try {
     const agreementType =
       agreementStep === ENomineeTask.ACCEPT_RAAA ? EAgreementType.RAAA : EAgreementType.THA;
+    const nomineeEto: TEtoWithCompanyAndContract = yield select(selectNomineeEto);
+
+    if (!nomineeEto) {
+      return ENomineeAcceptAgreementStatus.NOT_DONE;
+    }
 
     const { contract, currentAgreementHash }: IAgreementContractAndHash = yield neuCall(
       selectAgreementContractAndHash,
       agreementType,
+      nomineeEto,
     );
 
     const amendmentsCount: BigNumber | undefined = yield contract.amendmentsCount;
 
-    // if ammendments counts equals 0 or undefined we can skip hash check
+    // if amendments counts equals 0 or undefined we can skip hash check
     if (amendmentsCount === undefined || amendmentsCount.toString() === "0") {
       return ENomineeAcceptAgreementStatus.NOT_DONE;
     }

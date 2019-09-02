@@ -79,7 +79,7 @@ export const sendEth = (fixture: string, to: string, amount: BigNumber | "all") 
     if (availableAmount.greaterThan(0)) {
       cy.log("Sending ethereum");
 
-      const amountToSend = amount === "all" ? availableAmount : amount;
+      const amountToSend = new BigNumber(amount === "all" ? availableAmount : amount);
 
       cyPromise(() =>
         account.signTransaction({
@@ -91,7 +91,6 @@ export const sendEth = (fixture: string, to: string, amount: BigNumber | "all") 
       ).then((signed: any) => {
         sendRawTransactionRpc(signed.rawTransaction).should(hashResponse => {
           assertWaitForTransactionSuccess(hashResponse.body.result);
-
           cy.log(`${amountToSend} ethereum withdrawn`);
         });
       });

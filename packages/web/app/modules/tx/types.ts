@@ -107,3 +107,10 @@ export enum ETokenType {
   ETHER = "ETHER",
   EURO = "EURO",
 }
+
+export interface IAdditionalValidationData {
+  isAccepted?: boolean;
+  inputValue?: string;
+  inputValueEuro?: string;
+  maximumAvailableEther?: string;
+}

@@ -1,5 +1,7 @@
 export type TWithdrawAdditionalData = {
-  value: string;
   to: string;
-  cost: string;
+  amount: string;
+  amountEur: string;
+  total: string;
+  totalEur: string;
 };

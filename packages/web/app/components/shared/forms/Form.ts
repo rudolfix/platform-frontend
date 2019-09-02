@@ -33,7 +33,7 @@ const Form = compose<TProps, TProps>(
         if (invalidInput) {
           invalidInput.focus();
         } else {
-          this.props.logger!.warn(`It's not possible to focus invalid field`);
+          this.props.logger!.warn(`It's not possible to focus invalid field: ${selector}`);
         }
       }
     },

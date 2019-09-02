@@ -44,8 +44,8 @@ const NomineeChosenLayout: React.FunctionComponent<ILayoutProps> = ({
       <FormattedMessage id="eto.form.eto-nominee.text" />
     </p>
     <div className={styles.nomineeBlock}>
-      <span>{currentNomineeId}</span>
       <span>{currentNomineeName}</span>
+      <span>{currentNomineeId}</span>
     </div>
     {!readonly && (
       <Button

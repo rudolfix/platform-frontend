@@ -1,16 +1,18 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ECurrency } from "./formatters/utils";
+import { ECurrency } from "../formatters/utils";
 import {
   ESize,
   ETextPosition,
   ETheme,
   MoneySingleSuiteWidget,
   MoneySuiteWidget,
+  StaticMoneyWidget,
 } from "./MoneySuiteWidget";
 
-import * as neuIcon from "../../assets/img/neu_icon.svg";
+import * as ethIcon from "../../../assets/img/eth_icon.svg";
+import * as neuIcon from "../../../assets/img/neu_icon.svg";
 
 storiesOf("Core|Molecules/MoneySuiteWidget", module)
   .add("with icon", () => (
@@ -48,6 +50,18 @@ storiesOf("Core|Molecules/MoneySuiteWidget", module)
       icon={neuIcon}
     />
   ))
+  .add("with tilde sign", () => (
+    <MoneySuiteWidget
+      currency={ECurrency.NEU}
+      largeNumber={"1100000000000000000"}
+      value={"3050000000000000000"}
+      currencyTotal={ECurrency.EUR}
+      theme={ETheme.BLACK}
+      size={ESize.NORMAL}
+      icon={neuIcon}
+      useTildeSign={true}
+    />
+  ))
   .add("with single value", () => (
     <MoneySingleSuiteWidget
       currency={ECurrency.NEU}
@@ -55,5 +69,16 @@ storiesOf("Core|Molecules/MoneySuiteWidget", module)
       theme={ETheme.BLACK}
       size={ESize.NORMAL}
       icon={neuIcon}
+    />
+  ))
+  .add("with constant value value", () => (
+    <StaticMoneyWidget
+      icon={ethIcon}
+      upperText="< 0.0001 ETH"
+      lowerText="< 0.0001 EUR"
+      theme={ETheme.BLACK}
+      size={ESize.MEDIUM}
+      data-test-id="modals.tx-sender.withdraw-flow.summary.cost"
+      textPosition={ETextPosition.RIGHT}
     />
   ));

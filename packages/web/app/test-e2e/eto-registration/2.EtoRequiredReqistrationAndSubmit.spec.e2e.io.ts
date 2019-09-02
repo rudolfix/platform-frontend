@@ -10,6 +10,7 @@ import { goToIssuerDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import {
+  assertUploadSignedTermsheetStep,
   createAndSetNominee,
   fillAndAssert,
   fillRequiredCompanyInformation,
@@ -21,6 +22,7 @@ import {
   investmentTermsRequiredForm,
   investmentTermsRequiredFormExpectedResult,
   votingRights,
+  votingRightsExpectedValues,
 } from "./fixtures";
 
 const openAndCheckValues = (
@@ -33,7 +35,7 @@ const openAndCheckValues = (
   goToIssuerDashboard();
 };
 
-describe.skip("Eto Forms", () => {
+describe("Eto Forms", () => {
   it("should fill required fields and submit eto", function(): void {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(async () => {
       goToIssuerDashboard();
@@ -68,6 +70,13 @@ describe.skip("Eto Forms", () => {
         etoTermsRequiredForm,
         etoTermsRequiredFormExpectedValues,
       );
+      openAndCheckValues(
+        "eto-progress-widget-voting-right",
+        votingRights,
+        votingRightsExpectedValues,
+      );
+
+      assertUploadSignedTermsheetStep();
 
       cy.get(tid("dashboard-upload-termsheet")).click();
       assertEtoDocuments();

@@ -49,6 +49,10 @@ export const selectEtoStep = (
       return EEtoStep.PUBLISH_INVESTMENT_OFFER;
     }
 
+    /**
+     * When all eto forms are filled (which also means nominee is linked)
+     * And term sheet was not yet submitted
+     */
     if (areEtoFormsFilledWithAllRequired && !isTermSheetSubmitted) {
       return EEtoStep.UPLOAD_SIGNED_TERMSHEET;
     }

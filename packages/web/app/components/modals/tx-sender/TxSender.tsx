@@ -39,7 +39,7 @@ import { UserClaimSuccess } from "./user-claim/Success";
 import { UserClaimSummary } from "./user-claim/Summary";
 import { WithdrawSuccess } from "./withdraw-flow/Success";
 import { WithdrawSummary } from "./withdraw-flow/Summary";
-import { Withdraw } from "./withdraw-flow/Withdraw.unsafe";
+import { Withdraw } from "./withdraw-flow/withdraw/Withdraw";
 
 interface IStateProps {
   isOpen: boolean;

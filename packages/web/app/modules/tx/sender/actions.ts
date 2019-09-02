@@ -2,7 +2,12 @@ import { createActionFactory } from "@neufund/shared";
 
 import { ITxData } from "../../../lib/web3/types";
 import { createAction, createSimpleAction } from "../../actionsUtils";
-import { ETxSenderType, TAdditionalDataByType, TSpecificTransactionState } from "../types";
+import {
+  ETxSenderType,
+  IAdditionalValidationData,
+  TAdditionalDataByType,
+  TSpecificTransactionState,
+} from "../types";
 import { ETransactionErrorType, ITxSenderState } from "./reducer";
 
 export const txSenderActions = {
@@ -11,7 +16,7 @@ export const txSenderActions = {
     "TX_SENDER_SHOW_MODAL",
     (initialState: Partial<ITxSenderState> = {}) => ({ initialState }),
   ),
-  txSenderHideModal: () => createSimpleAction("TX_SENDER_HIDE_MODAL"),
+  txSenderHideModal: createActionFactory("TX_SENDER_HIDE_MODAL"),
   // User awaiting actions
   txSenderAcceptDraft: createActionFactory(
     "TX_SENDER_ACCEPT_DRAFT",
@@ -39,6 +44,14 @@ export const txSenderActions = {
     >("TX_SENDER_CONTINUE_TO_SUMMARY_WITH_DATA", { additionalData }),
 
   // reducer setters
-  setTransactionData: (txData?: ITxData) =>
+  setTransactionData: (txData: ITxData) =>
     createAction("TX_SENDER_SET_TRANSACTION_DATA", { txData }),
+  txSenderClearTransactionData: createActionFactory("TX_SENDER_CLEAR_TRANSACTION_DATA"),
+  setAdditionalData: createActionFactory(
+    "TX_SENDER_SET_ADDITIONAL_DATA",
+    (additionalData: IAdditionalValidationData) => ({ additionalData }),
+  ),
+  setTimestamp: createActionFactory("TX_SENDER_SET_TIMESTAMP", (txTimestamp: number) => ({
+    txTimestamp,
+  })),
 };

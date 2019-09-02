@@ -8,11 +8,19 @@ import {
 import { createMessage } from "../../../components/translatedMessages/utils";
 import {
   MAX_PERCENTAGE,
+  MAX_RESTRICTED_ACT_VOTING_DURATION,
+  MAX_VOTING_DURATION,
+  MAX_VOTING_FINALIZATION_DURATION,
+  MAX_VOTING_MAJORITY_FRACTION,
   MIN_COMPANY_SHARES,
   MIN_EXISTING_COMPANY_SHARES,
   MIN_NEW_SHARES_TO_ISSUE,
   MIN_PRE_MONEY_VALUATION_EUR,
+  MIN_RESTRICTED_ACT_VOTING_DURATION,
   MIN_SHARE_NOMINAL_VALUE_EUR,
+  MIN_VOTING_DURATION,
+  MIN_VOTING_FINALIZATION_DURATION,
+  MIN_VOTING_MAJORITY_FRACTION,
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
 } from "../../../config/constants";
@@ -322,9 +330,42 @@ export const EtoEquityTokenInfoType = YupTS.object({
 
 export type TEtoEquityTokenInfoType = YupTS.TypeOf<typeof EtoEquityTokenInfoType>;
 
+export enum ETagAlongVotingRule {
+  NO_VOTING_RIGHTS = "no_voting_rights",
+  POSITIVE = "positive",
+  NEGATIVE = "negative",
+  PROPORTIONAL = "proportional",
+}
+
+export enum EGeneralVotingRule {
+  NO_VOTING_RIGHTS = "no_voting_rights",
+  POSITIVE = "positive",
+  NEGATIVE = "negative",
+  PROPORTIONAL = "proportional",
+}
+
 export const EtoVotingRightsType = YupTS.object({
   liquidationPreferenceMultiplier: YupTS.number(),
   generalVotingRule: YupTS.string(),
+  hasGeneralInformationRights: YupTS.boolean(),
+  hasDividendRights: YupTS.boolean(),
+  tagAlongVotingRule: YupTS.string(),
+  generalVotingDurationDays: YupTS.number()
+    .enhance(v => v.min(MIN_VOTING_DURATION))
+    .enhance(v => v.max(MAX_VOTING_DURATION)),
+  restrictedActVotingDurationDays: YupTS.number()
+    .enhance(v => v.min(MIN_RESTRICTED_ACT_VOTING_DURATION))
+    .enhance(v => v.max(MAX_RESTRICTED_ACT_VOTING_DURATION)),
+  votingFinalizationDurationDays: YupTS.number()
+    .enhance(v => v.min(MIN_VOTING_FINALIZATION_DURATION))
+    .enhance(v => v.max(MAX_VOTING_FINALIZATION_DURATION)),
+  votingMajorityFraction: YupTS.number()
+    .enhance(v => v.min(MIN_VOTING_MAJORITY_FRACTION))
+    .enhance(v => v.max(MAX_VOTING_MAJORITY_FRACTION)),
+  advisoryBoard: YupTS.string().optional(),
+  hasDragAlongRights: YupTS.boolean(),
+  hasTagAlongRights: YupTS.boolean(),
+  hasFoundersVesting: YupTS.boolean(),
   nominee: YupTS.string(),
 });
 

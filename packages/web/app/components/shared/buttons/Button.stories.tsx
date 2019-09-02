@@ -3,6 +3,7 @@ import * as React from "react";
 
 import {
   Button,
+  ButtonArrowLeft,
   ButtonArrowRight,
   ButtonSize,
   ButtonWidth,
@@ -156,10 +157,20 @@ storiesOf("buttons/default", module)
       <Button width={ButtonWidth.NORMAL}>normal button</Button>
       <br />
       <br />
-      <Button width={ButtonWidth.BLOCK}>wide button</Button>
+      <Button width={ButtonWidth.BLOCK}>block button</Button>
+      <br />
+      <br />
+      <Button width={ButtonWidth.WIDE}>wide button</Button>
+      <br />
+      <br />
+      <Button width={ButtonWidth.NO_PADDING}>no padding</Button>
     </>
   ));
 
 storiesOf("buttons/ArrowRight", module).add("primary", () => (
   <ButtonArrowRight>primary</ButtonArrowRight>
+));
+
+storiesOf("buttons/ArrowLeft", module).add("primary", () => (
+  <ButtonArrowLeft>primary</ButtonArrowLeft>
 ));

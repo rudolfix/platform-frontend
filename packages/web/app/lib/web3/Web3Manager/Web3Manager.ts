@@ -18,7 +18,7 @@ import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
 import { Web3FactoryType } from "../Web3Batch/Web3Batch";
 
-const DEFAULT_UPPER_GAS_LIMIT = 2000000;
+export const DEFAULT_UPPER_GAS_LIMIT = 2000000;
 export const DEFAULT_LOWER_GAS_LIMIT = 21000;
 export class WalletNotConnectedError extends Error {
   constructor(public readonly wallet: IPersonalWallet) {
@@ -143,8 +143,8 @@ export class Web3Manager extends EventEmitter {
       // No need for overhead in this case
       return DEFAULT_UPPER_GAS_LIMIT.toString();
     }
-
-    return calculateGasLimitWithOverhead(gas);
+    // If gas is 21000 it means its a regular transaction
+    return gas === DEFAULT_LOWER_GAS_LIMIT ? gas.toString() : calculateGasLimitWithOverhead(gas);
   }
 
   private watchConnection = async () => {

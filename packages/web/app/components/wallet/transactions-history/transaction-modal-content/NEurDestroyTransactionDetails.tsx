@@ -7,7 +7,12 @@ import { DataRow, DataRowSeparator } from "../../../modals/tx-sender/shared/Data
 import { ECurrency } from "../../../shared/formatters/utils";
 import { getIconForCurrency } from "../../../shared/icons/CurrencyIcon";
 import { EtherscanAddressLink } from "../../../shared/links/EtherscanLink";
-import { ESize, ETextPosition, ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
+import {
+  ESize,
+  ETextPosition,
+  ETheme,
+  MoneySuiteWidget,
+} from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { BasicTransactionDetails } from "./BasicTransactionDetails";
 
 interface IExternalProps {

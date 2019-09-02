@@ -48,7 +48,8 @@ export type TranslatedMessageType =
   | ENomineeRequestStatusTranslation
   | ENomineeRequestErrorNotifications
   | EEtoNomineeRequestNotifications
-  | EEtoNomineeRequestMessages;
+  | EEtoNomineeRequestMessages
+  | ETxValidationMessages;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -179,6 +180,10 @@ export enum ImageUploadMessage {
 export enum ETxHistoryMessage {
   TX_HISTORY_FAILED_TO_LOAD = "txHistoryFailedToLoad",
   TX_HISTORY_FAILED_TO_LOAD_NEXT = "txHistoryFailedToLoadNext",
+}
+
+export enum ETxValidationMessages {
+  TX_VALIDATION_UNKNOWN_ERROR = "txValidationUnknownError",
 }
 
 export enum RemoteFileMessage {
@@ -477,6 +482,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="eto.public-view.could-not-load-eto" />;
     case EtoMessage.COULD_NOT_LOAD_ETOS:
       return <FormattedMessage id="dashboard.could-not-load-etos" />;
+
+    case ETxValidationMessages.TX_VALIDATION_UNKNOWN_ERROR:
+      return <FormattedMessage id="tx.validation-unknown-error" />;
 
     case IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE:
       return <FormattedMessage id="ipfs-failed-to-download-file" />;

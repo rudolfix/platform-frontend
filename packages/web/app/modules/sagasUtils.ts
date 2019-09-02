@@ -1,4 +1,5 @@
 import { isMatch } from "lodash/fp";
+import { delay } from "redux-saga";
 import {
   call,
   Effect,
@@ -9,6 +10,7 @@ import {
   take,
   takeEvery,
   takeLatest,
+  throttle,
 } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../di/setupBindings";
@@ -56,6 +58,22 @@ export function* neuTakeUntil(startAction: TType, stopAction: TType, saga: TSaga
       cancel: take(stopAction),
     });
   }
+}
+
+/**
+ * Starts saga on `startAction`, cancels on `stopAction`, loops...
+ */
+export function* neuTakeLatestUntil(
+  startAction: TType,
+  stopAction: TType,
+  saga: TSagaWithDeps,
+): any {
+  yield takeLatest(startAction, function*(payload): Iterator<any> {
+    yield race({
+      task: neuCall(saga, payload),
+      cancel: take(stopAction),
+    });
+  });
 }
 
 /**
@@ -110,4 +128,28 @@ export function* neuRestartIf(cancelAction: TType, saga: TSagaWithDeps, ...args:
       cancel: take(cancelAction),
     });
   }
+}
+
+/**
+ * Ignore incoming actions for a given period of time while processing a task.
+ * After spawning a task, it's still accepting incoming actions into the underlying buffer, keeping at most 1.
+ */
+export function* neuThrottle(ms: number, type: TType, saga: TSagaWithDeps): Iterator<Effect> {
+  const deps: TGlobalDependencies = yield getContext("deps");
+  yield throttle(ms, type, saga, deps);
+}
+
+function* next(ms: number, task: any, ...args: any[]): any {
+  yield delay(ms);
+  yield neuCall(task, ...args);
+}
+
+// TODO: Add tests for debounce
+export function* neuDebounce(
+  ms: number,
+  pattern: TType,
+  task: TSagaWithDeps,
+  ...args: any[]
+): Iterator<Effect> {
+  yield (takeLatest as any)(pattern, next, ms, task, ...args);
 }

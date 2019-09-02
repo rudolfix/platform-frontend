@@ -12,7 +12,7 @@ import { configureViewport, INITIAL_VIEWPORTS } from "@storybook/addon-viewport"
 import { addLocaleData } from "react-intl";
 import enLocaleData from "react-intl/locale-data/en";
 
-import { withStore } from "../app/utils/storeDecorator.unsafe";
+import { withStore, withSuspense } from "../app/utils/storeDecorator.unsafe";
 
 import languageEn from "../intl/locales/en-en.json";
 
@@ -59,6 +59,7 @@ addDecorator(
 addDecorator(withIntl);
 addDecorator(StoryRouter());
 addDecorator(withStore());
+addDecorator(withSuspense());
 
 // Load storybook
 const req = require.context("../app/components/", true, /stories\.tsx$/);

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EValidationState } from "../../../../modules/tx/sender/reducer";
+import { EValidationState } from "../../../../modules/tx/validator/reducer";
 import { Message } from "../../Message";
 
 interface IProps {

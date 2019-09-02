@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { Accordion, AccordionElement, AccordionField } from "../../shared/Accordion";
-import { ChartDoughnut } from "../../shared/charts/ChartDoughnut.unsafe";
+import { ChartDoughnutLazy } from "../../shared/charts/ChartDoughnutLazy";
 import { Panel } from "../../shared/Panel";
 import { DashboardHeading } from "../shared/DashboardHeading";
 import { CHART_COLORS } from "../shared/EtoView";
@@ -138,7 +138,7 @@ const EtoAccordionElements: React.FunctionComponent<{ eto: TEtoWithCompanyAndCon
                   {useOfCapital && <p>{useOfCapital}</p>}
 
                   {useOfCapitalList && (
-                    <ChartDoughnut
+                    <ChartDoughnutLazy
                       className={styles.doughnut}
                       layout="vertical"
                       data={{

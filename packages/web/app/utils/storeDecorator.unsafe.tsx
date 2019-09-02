@@ -4,6 +4,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { createStore } from "redux";
 import configureStore, { MockStore } from "redux-mock-store";
 
+import { TAction } from "../modules/actions";
 import { generateRootReducer, IAppState } from "../store";
 import { DeepPartial } from "../types";
 
@@ -11,8 +12,10 @@ const mockStore = configureStore();
 
 const rootReducer = generateRootReducer(createBrowserHistory());
 
-export const withStore = (initialState?: DeepPartial<IAppState>) => (story: any): any => {
-  const store = createStore(rootReducer, initialState as any);
+export const withStore = (initialState?: DeepPartial<IAppState>) => (
+  story: () => React.ReactNode,
+): any => {
+  const store = createStore<IAppState, TAction, unknown, unknown>(rootReducer, initialState as any);
 
   return <ReduxProvider store={store}>{story()}</ReduxProvider>;
 };
@@ -30,3 +33,7 @@ export const withMockStore = (initialState?: DeepPartial<IAppState>) => (
     node: <ReduxProvider store={store}>{node}</ReduxProvider>,
   };
 };
+
+export const withSuspense = () => (story: () => React.ReactNode): React.ReactNode => (
+  <React.Suspense fallback={() => "Loading chunks..."}>{story()}</React.Suspense>
+);

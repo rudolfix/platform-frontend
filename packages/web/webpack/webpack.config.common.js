@@ -26,7 +26,8 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": applicationEnv,
     }),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+    // import only `en-gb` locale from moment (which is a default one)
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en-gb/),
     new WorkboxPlugin.GenerateSW({
       swDest: "sw.js",
       clientsClaim: true,

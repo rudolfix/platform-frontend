@@ -5,20 +5,30 @@
       "options": {
         "files": [
           {
-            "path": "dist/*.vendors*.js",
+            "path": "dist/*.vendors~main.min.js",
             "maxSize": "900kB"
           },
           {
-            "path": "dist/*.main*.js",
+            "path": "dist/*.main.min.js",
             "maxSize": "320kB"
           },
           {
-            "path": "dist/*.main*.css",
+            "path": "dist/*.runtime~main.min.js",
+            "maxSize": "20kB"
+          },
+          {
+            "path": "dist/*.js"
+          },
+          {
+            "path": "dist/*.main.css",
             "maxSize": "60kB"
           },
           {
-            "path": "dist/*.vendors*.css",
+            "path": "dist/*.vendors~main.css",
             "maxSize": "20kB"
+          },
+          {
+            "path": "dist/*.*.css"
           }
         ]
       }

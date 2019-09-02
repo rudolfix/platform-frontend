@@ -58,8 +58,7 @@
     "tslint": "concurrently -p \"[{name}]\" -n \"APP,E2E\" -c \"bgGreen.bold,bgCyan.bold\" \"yarn tslint:app\" \"yarn tslint:e2e\"",
     "tslint:app": "NODE_OPTIONS=--max_old_space_size=9192 tslint --project ./tsconfig.json --format stylish",
     "tslint:e2e": "tslint --project ./tsconfig.e2e.json --format stylish",
-    "tslint:fix": "concurrently -p \"[{name}]\" -n \"APP,E2E\" -c \"bgGreen.bold,bgCyan.bold\" \"yarn tslint:app --fix\" \"yarn tslint:e2e --fix\"",
-    "postinstall": "patch-package"
+    "tslint:fix": "concurrently -p \"[{name}]\" -n \"APP,E2E\" -c \"bgGreen.bold,bgCyan.bold\" \"yarn tslint:app --fix\" \"yarn tslint:e2e --fix\""
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
@@ -157,7 +156,6 @@
     "network": "^0.4.1",
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
-    "patch-package": "^6.1.0",
     "postcss-loader": "^3.0.0",
     "prep": "^1.6.2",
     "prettier": "^1.16.4",

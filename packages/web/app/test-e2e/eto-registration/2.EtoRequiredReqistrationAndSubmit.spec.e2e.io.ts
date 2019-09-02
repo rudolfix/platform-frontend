@@ -22,6 +22,7 @@ import {
   investmentTermsRequiredForm,
   investmentTermsRequiredFormExpectedResult,
   votingRights,
+  votingRightsExpectedValues,
 } from "./fixtures";
 
 const openAndCheckValues = (
@@ -34,7 +35,7 @@ const openAndCheckValues = (
   goToIssuerDashboard();
 };
 
-describe.skip("Eto Forms", () => {
+describe("Eto Forms", () => {
   it("should fill required fields and submit eto", function(): void {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(async () => {
       goToIssuerDashboard();
@@ -68,6 +69,11 @@ describe.skip("Eto Forms", () => {
         "eto-progress-widget-eto-terms",
         etoTermsRequiredForm,
         etoTermsRequiredFormExpectedValues,
+      );
+      openAndCheckValues(
+        "eto-progress-widget-voting-right",
+        votingRights,
+        votingRightsExpectedValues,
       );
 
       assertUploadSignedTermsheetStep();

@@ -12,6 +12,8 @@ interface ICommonProps {
   label?: TTranslatedString;
   placeholder?: string;
   disabled?: boolean;
+  prefix?: TTranslatedString;
+  suffix?: TTranslatedString;
 }
 
 interface IFormMaskedNumberProps {
@@ -37,6 +39,8 @@ export const FormMaskedNumberInput: React.FunctionComponent<ICommonProps & TExte
   outputFormat,
   valueType,
   showUnits,
+  prefix,
+  suffix,
 }) => (
   <FormGroup>
     {label && <FormFieldLabel name={name}>{label}</FormFieldLabel>}
@@ -56,6 +60,8 @@ export const FormMaskedNumberInput: React.FunctionComponent<ICommonProps & TExte
           showUnits={showUnits}
           disabled={disabled}
           placeholder={placeholder}
+          prefix={prefix}
+          suffix={suffix}
         />
       )}
     </FormikConsumer>

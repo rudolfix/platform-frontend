@@ -38,7 +38,7 @@ const convertField = (input: any, f: any) => {
   if (Array.isArray(f)) {
     return flow(f)(input);
   } else {
-    return input !== undefined && input !== null ? f(input) : input;
+    return input !== undefined ? f(input) : input;
   }
 };
 
@@ -125,11 +125,18 @@ export const setDefaultValueIfUndefined = (defaultValue: any) => (data: any) =>
   data === undefined ? defaultValue : data;
 
 export const removeEmptyField = () => (data: any) => {
-  if (data === [] || data === null || Number.isNaN(data)) {
+  if (
+    data === "" ||
+    (Array.isArray(data) && data.length === 0) ||
+    data === null ||
+    Number.isNaN(data)
+  ) {
     data = undefined;
   }
   return data;
 };
+
+export const removeField = () => () => undefined;
 
 // this is to generate unique keys
 // that we supply to react elements when mapping over an array of data

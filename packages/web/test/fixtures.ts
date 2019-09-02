@@ -5,6 +5,7 @@ import { IConfig } from "../app/config/getConfig";
 import {
   EEtoMarketingDataVisibleInPreview,
   EEtoState,
+  ETagAlongVotingRule,
   TCompanyEtoData,
 } from "../app/lib/api/eto/EtoApi.interfaces.unsafe";
 import {
@@ -816,6 +817,17 @@ export const testEto: TEtoWithCompanyAndContract = {
   startDate: "2018-11-16T05:03:56+00:00",
   state: EEtoState.ON_CHAIN,
   subState: undefined,
+  hasGeneralInformationRights: true,
+  hasDividendRights: true,
+  tagAlongVotingRule: ETagAlongVotingRule.POSITIVE,
+  generalVotingDurationDays: 10,
+  restrictedActVotingDurationDays: 10,
+  votingFinalizationDurationDays: 14,
+  votingMajorityFraction: 0.5,
+  advisoryBoard: "some description text",
+  hasDragAlongRights: true,
+  hasTagAlongRights: true,
+  hasFoundersVesting: true,
   templates: {
     companyTokenHolderAgreement: {
       documentType: "company_token_holder_agreement" as EEtoDocumentType,

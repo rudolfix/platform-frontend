@@ -64,12 +64,11 @@ const InputLayout: React.FunctionComponent<TProps> = ({
   <section>
     <InputGroup size={size}>
       {prefix && (
-        <InputGroupAddon
-          addonType="prepend"
-          className={cn(styles.addon, addonStyle, { "is-invalid": invalid })}
+        <div
+          className={cn(styles.addon, addonStyle, { "is-invalid": invalid }, "input-group-prepend")}
         >
-          {prefix}
-        </InputGroupAddon>
+          <span className="input-group-text">{prefix}</span>
+        </div>
       )}
       <Input
         aria-describedby={generateErrorId(name)}

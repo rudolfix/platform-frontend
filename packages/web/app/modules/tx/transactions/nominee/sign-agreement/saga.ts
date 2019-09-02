@@ -18,9 +18,8 @@ import { EAgreementType, IAgreementContractAndHash } from "./types";
 export function* selectAgreementContractAndHash(
   { contractsService }: TGlobalDependencies,
   agreementType: EAgreementType,
+  nomineeEto: TEtoWithCompanyAndContract,
 ): Iterator<any> {
-  const nomineeEto: TEtoWithCompanyAndContract = yield select(selectNomineeEto);
-
   if (!nomineeEto || !nomineeEto.contract) {
     throw new Error("Missing nominee ETO");
   }
@@ -55,10 +54,12 @@ export function* generateNomineeSignAgreementTx(
 ): Iterator<any> {
   const agreementType =
     transactionType === ETxSenderType.NOMINEE_RAAA_SIGN ? EAgreementType.RAAA : EAgreementType.THA;
+  const nomineeEto: TEtoWithCompanyAndContract = yield select(selectNomineeEto);
 
   const { contract, currentAgreementHash }: IAgreementContractAndHash = yield neuCall(
     selectAgreementContractAndHash,
     agreementType,
+    nomineeEto,
   );
 
   const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);

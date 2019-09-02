@@ -55,7 +55,10 @@ const SignNomineeAgreementSummaryLayout: React.FunctionComponent<TComponentProps
   document,
   txType,
 }) => (
-  <section className="text-center">
+  <section
+    className="text-center"
+    data-test-id={isRAASign(txType) ? "nominee-sign-raaa-modal" : "nominee-sign-tha-modal"}
+  >
     <Heading decorator={false} level={2} size={EHeadingSize.HUGE}>
       {isRAASign(txType) ? (
         <FormattedMessage id="nominee.sign-raaa.title" />

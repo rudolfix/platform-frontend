@@ -1,4 +1,6 @@
 import { tid } from "../utils";
+import { fillForm } from "../utils/forms";
+import { acceptWallet } from "../utils/index";
 import { goToNomineeDashboard } from "../utils/navigation";
 
 export const linkEtoToNominee = (address: string) => {
@@ -9,4 +11,45 @@ export const linkEtoToNominee = (address: string) => {
   cy.get(tid("nominee-flow.link-with-issuer-submit")).click();
 
   cy.get(tid("nominee-request-pending")).should("exist");
+};
+
+export const signAgreement = (
+  containerSelector: string,
+  modalSelector: string,
+  successModalSelector: string,
+) => () => {
+  cy.get(containerSelector).should("exist");
+  cy.get(tid("eto-nominee-sign-agreement-action")).click();
+
+  cy.get(modalSelector).should("exist");
+
+  fillForm({
+    acceptAgreement: {
+      type: "toggle",
+      checked: true,
+    },
+    "nominee-sign-agreement-sign": {
+      type: "submit",
+    },
+  });
+
+  acceptWallet();
+
+  cy.get(successModalSelector).should("exist");
+  cy.get(tid("nominee-sign-agreement-success-close")).click();
+};
+
+export const signTHA = signAgreement(
+  tid("nominee-flow-sign-tha"),
+  tid("nominee-sign-tha-modal"),
+  tid("nominee-sign-tha-modal-success"),
+);
+export const signRAAA = signAgreement(
+  tid("nominee-flow-sign-raaa"),
+  tid("nominee-sign-raaa-modal"),
+  tid("nominee-sign-raaa-modal-success"),
+);
+
+export const assertNoTasks = () => {
+  cy.get(tid("nominee-flow-no-tasks")).should("exist");
 };

@@ -24,7 +24,12 @@ const SignNomineeAgreementSuccessLayout: React.FunctionComponent<TComponentProps
   onClose,
   txType,
 }) => (
-  <section className="text-center">
+  <section
+    className="text-center"
+    data-test-id={
+      isRAASign(txType) ? "nominee-sign-raaa-modal-success" : "nominee-sign-tha-modal-success"
+    }
+  >
     <Heading decorator={false} level={2} size={EHeadingSize.HUGE}>
       <FormattedMessage id="nominee.sign-agreement.success.title" />
     </Heading>

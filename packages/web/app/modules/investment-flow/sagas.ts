@@ -21,7 +21,7 @@ import {
 } from "../investor-portfolio/selectors";
 import { neuCall } from "../sagasUtils";
 import { selectEtherPriceEur, selectEurPriceEther } from "../shared/tokenPrice/selectors";
-import { selectTxGasCostEthUlps } from "../tx/sender/selectors";
+import { selectTxGasCostEthUlps, selectTxSenderModalOpened } from "../tx/sender/selectors";
 import { generateInvestmentTransaction } from "../tx/transactions/investment/sagas";
 import { ETxSenderType } from "../tx/types";
 import { txValidateSaga } from "../tx/validator/sagas";
@@ -197,7 +197,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
       const txData: ITxData = yield neuCall(
         txValidateSaga,
-        actions.txValidator.txSenderValidateDraft({ type: ETxSenderType.INVEST }),
+        actions.txValidator.validateDraft({ type: ETxSenderType.INVEST }),
       );
       yield put(actions.txSender.setTransactionData(txData));
 
@@ -277,13 +277,17 @@ function* recalculateCurrencies(): any {
 }
 
 function* resetTxDataAndValidations(): any {
-  yield put(actions.txValidator.setValidationState());
+  yield put(actions.txValidator.clearValidationState());
   const initialTxData = yield neuCall(generateInvestmentTransaction);
   yield put(actions.txSender.setTransactionData(initialTxData));
 }
 
 function* stop(): any {
-  yield put(actions.txSender.txSenderHideModal());
+  // TODO: Decouple stop from @@router/LOCATION_CHANGE as txSenderHideModal
+  //       is being called on every Router change
+  // THIS IS A QUICK FIX
+  const isOpen = yield select(selectTxSenderModalOpened);
+  if (isOpen) yield put(actions.txSender.txSenderHideModal());
 }
 
 export function* investmentFlowSagas(): any {

@@ -1,4 +1,4 @@
-import { call, Effect, put, race, select, take } from "redux-saga/effects";
+import { call, Effect, put, race, select, take, takeLatest } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import {
@@ -128,7 +128,6 @@ function* txSendProcess(
 
     yield neuRepeatIf("TX_SENDER_CHANGE", "TX_SENDER_ACCEPT", transactionFlowGenerator, extraParam);
     const txData = yield select(selectTxDetails);
-
     // Check if gas amount is correct
     yield validateGas(txData);
 
@@ -214,6 +213,9 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
 
     return txHash;
   } catch (error) {
+    // Set timestamp for failed transaction
+    yield put(actions.txSender.setTimestamp(Date.now()));
+
     if (
       error instanceof LedgerError ||
       error instanceof LightError ||
@@ -317,3 +319,19 @@ function* watchTxSubSaga({ logger }: TGlobalDependencies, txHash: string): any {
     logger.info("Stopped Watching for TXs", { txHash });
   }
 }
+
+function* cleanUpTxSender(): Iterator<any> {
+  // Conduct any general cleanup operations
+  yield put(actions.txValidator.clearValidationState());
+  yield put(actions.txUserFlowWithdraw.clearDraftTx());
+}
+
+function* updateWalletValues(): Iterator<any> {
+  // Refresh Wallet values
+  yield put(actions.wallet.loadWalletData());
+}
+
+export const txSenderSagasWatcher = function*(): Iterator<any> {
+  yield takeLatest("TX_SENDER_HIDE_MODAL", cleanUpTxSender);
+  yield takeLatest(["TX_SENDER_TX_MINED", "TX_SENDER_ERROR"], updateWalletValues);
+};

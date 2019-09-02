@@ -13,3 +13,7 @@ export const InfoAlert: React.FunctionComponent<TDataTestId> = ({
     {children}
   </div>
 );
+
+export const ErrorAlert: React.FunctionComponent = ({ children }) => (
+  <div className={styles.errorMessage}>{children}</div>
+);

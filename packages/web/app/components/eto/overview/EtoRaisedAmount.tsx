@@ -6,7 +6,7 @@ import { ChartBars, IChartBarsData } from "../../shared/charts/ChartBars";
 import { EThemeNew, MoneyNew } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { HorizontalLine } from "../../shared/HorizontalLine";
-import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
+import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 

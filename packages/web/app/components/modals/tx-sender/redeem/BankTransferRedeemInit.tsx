@@ -33,7 +33,7 @@ import { FormLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { Form } from "../../../shared/forms/Form";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
-import { ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget";
+import { ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { Tooltip } from "../../../shared/tooltips/Tooltip";
 import { VerifiedBankAccount } from "../../../wallet/VerifiedBankAccount";
 import { CalculatedFee } from "./CalculatedFee";

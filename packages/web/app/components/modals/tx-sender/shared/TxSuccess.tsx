@@ -17,7 +17,7 @@ import { TxName } from "../TxName";
 import { TxHashAndBlock } from "./TxHashAndBlock";
 
 export interface IStateProps {
-  txData?: ITxData;
+  txData?: Partial<ITxData>;
   txTimestamp?: number;
   additionalData?: TSpecificTransactionState["additionalData"];
 }

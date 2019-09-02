@@ -14,7 +14,7 @@ import {
   ETheme,
   MoneySingleSuiteWidget,
   MoneySuiteWidget,
-} from "../../../shared/MoneySuiteWidget";
+} from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { BasicTransactionDetails } from "./BasicTransactionDetails";
 
 interface IExternalProps {

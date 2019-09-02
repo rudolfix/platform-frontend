@@ -7,9 +7,10 @@ import { CopyToClipboardButton } from "../../../shared/CopyToClipboardButton";
 import * as styles from "./DataRow.module.scss";
 
 interface IDataRowProps {
-  caption: React.ReactNode;
+  caption?: React.ReactNode;
   value: React.ReactNode;
   clipboardCopyValue?: string;
+  noOverflow?: boolean;
 }
 
 const DataRowSeparator: React.FunctionComponent = () => <hr className={styles.separator} />;
@@ -21,10 +22,11 @@ const DataRow: React.FunctionComponent<IDataRowProps & CommonHtmlProps & TDataTe
   clipboardCopyValue,
   "data-test-id": dataTestId,
   className,
+  noOverflow,
 }) => (
   <section className={cn(styles.section, className)}>
-    {caption}
-    <span className={styles.value}>
+    <span>{caption}</span>
+    <span className={cn(styles.copyToClipboard, { [styles.value]: !noOverflow })}>
       <span data-test-id={dataTestId}>{value}</span>
       {clipboardCopyValue && (
         <CopyToClipboardButton

@@ -31,12 +31,10 @@ import {
   selectEtherPriceEur,
   selectEurPriceEther,
 } from "../../../../modules/shared/tokenPrice/selectors";
-import { EValidationState } from "../../../../modules/tx/sender/reducer";
-import {
-  selectTxGasCostEthUlps,
-  selectTxValidationState,
-} from "../../../../modules/tx/sender/selectors";
+import { selectTxGasCostEthUlps } from "../../../../modules/tx/sender/selectors";
 import { ETokenType } from "../../../../modules/tx/types";
+import { EValidationState } from "../../../../modules/tx/validator/reducer";
+import { selectTxValidationState } from "../../../../modules/tx/validator/selectors";
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";

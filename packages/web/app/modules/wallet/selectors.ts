@@ -25,10 +25,13 @@ export const selectEtherTokenBalance = (state: IAppState): string =>
   (state.wallet.data && state.wallet.data.etherTokenBalance) || "0";
 
 export const selectEtherTokenBalanceAsBigNumber = (state: IAppState): BigNumber =>
-  new BigNumber((state.wallet.data && state.wallet.data.etherTokenBalance) || "0");
+  new BigNumber(selectEtherTokenBalance(state));
 
 export const selectEtherBalance = (state: IAppState): string =>
   (state.wallet.data && state.wallet.data.etherBalance) || "0";
+
+export const selectEtherBalanceAsBigNumber = (state: IAppState): BigNumber =>
+  new BigNumber(selectEtherBalance(state));
 
 /**
  * Liquid Assets

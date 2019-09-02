@@ -43,6 +43,12 @@ export const Q18 = new BigNumber(10).pow(MONEY_DECIMALS);
  */
 export const ETHEREUM_ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
+/**
+ * Ethereum Address related constants
+ */
+
+export const ETHEREUM_ADDRESS_LENGTH = 40;
+
 /*
  * ETO REGISTRATION CONSTANTS
  */

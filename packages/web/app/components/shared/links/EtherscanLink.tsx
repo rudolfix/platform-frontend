@@ -15,7 +15,12 @@ const EtherscanTxLink: React.FunctionComponent<IEtherscanTxLink & CommonHtmlProp
   children,
   ...props
 }) => (
-  <ExternalLink href={etherscanTxLink(txHash)} {...props}>
+  <ExternalLink
+    href={etherscanTxLink(txHash)}
+    data-test-id={`etherscan-link.${txHash}`}
+    data-test-hash={txHash}
+    {...props}
+  >
     {children || trimEthereumHash(txHash)}
   </ExternalLink>
 );
@@ -29,7 +34,11 @@ const EtherscanAddressLink: React.FunctionComponent<IEtherscanAddressLink & Comm
   children,
   ...props
 }) => (
-  <ExternalLink href={etherscanAddressLink(address)} {...props}>
+  <ExternalLink
+    href={etherscanAddressLink(address)}
+    data-test-id={`etherscan-address.${address}`}
+    {...props}
+  >
     {children || trimEthereumHash(address)}
   </ExternalLink>
 );

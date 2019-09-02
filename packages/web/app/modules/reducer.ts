@@ -23,8 +23,7 @@ import { personProfileModalReducer } from "./person-profile-modal/reducer";
 import { profileReducer } from "./profile/reducer";
 import { tokenPriceReducer } from "./shared/tokenPrice/reducer";
 import { txHistoryReducer } from "./tx-history/reducer";
-import { txMonitorReducer } from "./tx/monitor/reducer";
-import { txSenderReducer } from "./tx/sender/reducer";
+import { txReducers } from "./tx/reducer";
 import { browserReducer } from "./user-agent/reducer";
 import { verifyEmailWidgetReducer } from "./verify-email-widget/reducer";
 import { videoModalReducer } from "./video-modal/reducer";
@@ -37,6 +36,7 @@ import { web3Reducer } from "./web3/reducer";
 
 // add new app reducers here. They must be AppReducer<T> type
 export const appReducers = {
+  ...txReducers,
   bankTransferFLow: bankTransferFlowReducer,
   contracts: contractsReducer,
   ledgerWizardState: ledgerWizardReducer,
@@ -63,10 +63,8 @@ export const appReducers = {
   etoNominee: etoNomineeReducer,
   eto: etoReducer,
   depositEthModal: depositEthModalReducer,
-  txSender: txSenderReducer,
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
-  txMonitor: txMonitorReducer,
   investmentFlow: investmentFlowReducer,
   videoModal: videoModalReducer,
   personProfileModal: personProfileModalReducer,

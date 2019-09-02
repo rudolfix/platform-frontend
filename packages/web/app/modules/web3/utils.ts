@@ -1,7 +1,7 @@
-import { isAddress, toChecksumAddress } from "web3-utils";
+import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
 
 import { ERoundingMode } from "../../components/shared/formatters/utils";
-import { MONEY_DECIMALS } from "../../config/constants";
+import { ETHEREUM_ADDRESS_LENGTH, MONEY_DECIMALS } from "../../config/constants";
 import { TBigNumberVariant } from "../../lib/web3/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
@@ -13,6 +13,8 @@ export function makeEthereumAddressChecksummed(
 ): EthereumAddressWithChecksum {
   return toChecksumAddress(ethereumAddress) as EthereumAddressWithChecksum;
 }
+
+export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);
 
 export function ethereumNetworkIdToNetworkName(networkId: EthereumNetworkId): string {
   switch (networkId) {
@@ -31,8 +33,7 @@ export function ethereumNetworkIdToNetworkName(networkId: EthereumNetworkId): st
   }
 }
 
-export const validateAddress = (value: string): boolean =>
-  !!value && isAddress(value.toUpperCase());
+export const isAddressValid = (value: string): boolean => !!(value && isAddress(value));
 
 export const doesUserHaveEnoughEther = (
   value: TBigNumberVariant,

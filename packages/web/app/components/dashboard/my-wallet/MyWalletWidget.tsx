@@ -23,7 +23,7 @@ import { ButtonLink, EButtonLayout, EButtonTheme, EIconPosition } from "../../sh
 import { MoneyNew } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { LoadingIndicator } from "../../shared/loading-indicator";
-import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget";
+import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { Panel } from "../../shared/Panel";
 import { ECustomTooltipTextPosition, Tooltip } from "../../shared/tooltips";
 import { WarningAlert } from "../../shared/WarningAlert";

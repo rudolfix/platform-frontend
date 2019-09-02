@@ -1,5 +1,6 @@
+import { generateRandomEthereumAddress } from "../../modules/web3/utils";
 import { doWithdraw } from "../pending-transactions/utils";
-import { accountFixtureAddress, goToWallet, loginFixtureAccount, tid } from "../utils/index";
+import { goToWallet, loginFixtureAccount, tid } from "../utils/index";
 
 describe("TransactionHistory", () => {
   it("should load transaction history", () => {
@@ -35,17 +36,15 @@ describe("TransactionHistory", () => {
   });
 
   it("should watch for new transactions", () => {
-    loginFixtureAccount("INV_HAS_EUR_HAS_KYC", {
-      kyc: "business",
-    });
+    loginFixtureAccount("INV_HAS_EUR_HAS_KYC", { kyc: "business" });
 
     // generate withdraw transaction to have new item in tx history list
-    doWithdraw(accountFixtureAddress("INV_ETH_ICBM_NO_KYC"), "1", { closeWhen: "pending" }).then(
-      txHash => {
-        goToWallet();
+    const randomAddress: string = generateRandomEthereumAddress();
 
-        cy.get(tid(`transactions-history-${txHash}`)).should("exist");
-      },
-    );
+    doWithdraw(randomAddress, "1", { closeWhen: "pending" }).then(txHash => {
+      goToWallet();
+
+      cy.get(tid(`transactions-history-${txHash}`)).should("exist");
+    });
   });
 });

@@ -1,6 +1,7 @@
 import { ITxData } from "../../../lib/web3/types";
 import { AppReducer } from "../../../store";
 import { Overwrite } from "../../../types";
+import { actions } from "../../actions";
 import { ITxTypeWithData, TSpecificTransactionState } from "../types";
 
 export enum ETransactionErrorType {
@@ -23,11 +24,6 @@ export enum ETransactionErrorType {
   UNKNOWN_ERROR = "unknown_error",
 }
 
-export enum EValidationState {
-  NOT_ENOUGH_ETHER_FOR_GAS = "not_enough_ether_for_gas",
-  VALIDATION_OK = "validation_ok",
-}
-
 export enum ETxSenderState {
   UNINITIALIZED = "UNINITIALIZED",
   WATCHING_PENDING_TXS = "WATCHING_PENDING_TXS",
@@ -44,12 +40,11 @@ type ITxSenderDefaultState = ITxTypeWithData<undefined, undefined>;
 
 interface ITxSenderCommonState {
   state: ETxSenderState;
-  txDetails?: ITxData;
+  txDetails: ITxData | undefined;
   txTimestamp?: number;
   blockId?: number;
   txHash?: string;
   error?: ETransactionErrorType;
-  validationState?: EValidationState;
 }
 
 type TTransactionState = TSpecificTransactionState | ITxSenderDefaultState;
@@ -64,6 +59,7 @@ const initialState: ITxSenderState = {
   type: undefined,
   additionalData: undefined,
   state: ETxSenderState.UNINITIALIZED,
+  txDetails: undefined,
 };
 
 export const txSenderReducer: AppReducer<ITxSenderState> = (
@@ -131,16 +127,6 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         state: ETxSenderState.ERROR_SIGN,
         error: action.payload.error,
       };
-    case "TX_SENDER_SET_VALIDATION_STATE":
-      return {
-        ...state,
-        ...action.payload,
-      };
-    case "TX_SENDER_VALIDATE_DRAFT":
-      return {
-        ...state,
-        validationState: undefined,
-      };
     case "TX_SENDER_CONTINUE_TO_SUMMARY_WITH_DATA":
       return {
         ...state,
@@ -153,6 +139,25 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...state,
         state: ETxSenderState.INIT,
         type: action.payload.type,
+      };
+
+    case actions.txSender.setAdditionalData.getType():
+      return {
+        ...state,
+        additionalData: {
+          ...state.additionalData!,
+          ...action.payload.additionalData,
+        },
+      };
+    case actions.txSender.setTimestamp.getType():
+      return {
+        ...state,
+        txTimestamp: action.payload.txTimestamp,
+      };
+    case actions.txSender.txSenderClearTransactionData.getType():
+      return {
+        ...state,
+        txDetails: undefined,
       };
   }
 

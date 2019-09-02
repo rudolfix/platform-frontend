@@ -1,7 +1,7 @@
 import { IAppState } from "../../store";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
-import { EValidationState } from "../tx/sender/reducer";
-import { selectTxValidationState } from "../tx/sender/selectors";
+import { EValidationState } from "../tx/validator/reducer";
+import { selectTxValidationState } from "../tx/validator/selectors";
 import { EInvestmentType } from "./reducer";
 
 // State Selectors

@@ -9,19 +9,23 @@ import {
   selectTxDetails,
   selectTxTimestamp,
 } from "../../../../modules/tx/sender/selectors";
-import { TSpecificTransactionState } from "../../../../modules/tx/types";
+import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx/types";
+import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
+import { EthereumAddressWithChecksum } from "../../../../types";
 import { Button } from "../../../shared/buttons/Button";
 import { EthereumIcon } from "../../../shared/ethereum";
 import { Message } from "../../Message";
 import { TxDetails } from "../TxDetails.unsafe";
 import { TxName } from "../TxName";
+import { WithdrawPending } from "../withdraw-flow/Pending";
 import { TxHashAndBlock } from "./TxHashAndBlock";
 
 export interface IStateProps {
-  txData?: ITxData;
+  txData?: Partial<ITxData>;
   txTimestamp?: number;
   additionalData?: TSpecificTransactionState["additionalData"];
+  walletAddress: EthereumAddressWithChecksum;
 }
 
 export interface ITxPendingProps {
@@ -32,17 +36,19 @@ export interface ITxPendingProps {
 
 interface IDispatchProps {
   deletePendingTransaction: () => void;
+  goToWallet: () => void;
 }
 
 type TTxPendingLayoutProps = {
-  txData?: ITxData;
+  txData?: Partial<ITxData>;
   blockId?: number;
+  walletAddress: string;
   txHash?: string;
   txTimestamp?: number;
 } & TSpecificTransactionState &
   IDispatchProps;
 
-const TxPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props => (
+const TxDefaultPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props => (
   <Message
     data-test-id="modals.shared.tx-pending.modal"
     image={<EthereumIcon className="mb-3" />}
@@ -56,13 +62,7 @@ const TxPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props =>
   >
     <TxDetails className="mb-3" {...props} />
 
-    {props.txHash && (
-      <TxHashAndBlock
-        data-test-id="modals.shared.tx-pending.modal.tx-data"
-        txHash={props.txHash}
-        blockId={props.blockId}
-      />
-    )}
+    {props.txHash && <TxHashAndBlock txHash={props.txHash} blockId={props.blockId} />}
 
     {/* This feature is only for testing purpose should not be enabled on production environment. */}
     {/* Because of it there is no need to include button string in translations */}
@@ -74,15 +74,33 @@ const TxPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props =>
   </Message>
 );
 
+const TxPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props => {
+  switch (props.type) {
+    case ETxSenderType.WITHDRAW:
+      return (
+        <WithdrawPending
+          txHash={props.txHash!}
+          blockId={props.blockId}
+          txTimestamp={props.txTimestamp}
+          walletAddress={props.walletAddress}
+        />
+      );
+    default:
+      return <TxDefaultPendingLayout {...props} />;
+  }
+};
+
 const TxPending = compose<TTxPendingLayoutProps, ITxPendingProps>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: d => ({
       deletePendingTransaction: () => d(actions.txTransactions.deletePendingTransaction()),
+      goToWallet: () => d(actions.routing.goToWallet()),
     }),
     stateToProps: state => ({
       txData: selectTxDetails(state),
       txTimestamp: selectTxTimestamp(state),
       additionalData: selectTxAdditionalData(state),
+      walletAddress: selectEthereumAddressWithChecksum(state),
     }),
   }),
 )(TxPendingLayout);

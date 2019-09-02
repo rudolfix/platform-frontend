@@ -1,15 +1,15 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { TDataTestId, TTranslatedString } from "../../types";
-import { MoneyNew } from "./formatters/Money";
+import { TDataTestId, TTranslatedString } from "../../../types";
+import { MoneyNew } from "../formatters/Money";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
   THumanReadableFormat,
   TValueFormat,
-} from "./formatters/utils";
-import { ESize as ETransactionDataSize, TransactionData } from "./TransactionData";
+} from "../formatters/utils";
+import { ESize as ETransactionDataSize, TransactionData } from "../TransactionData";
 
 import * as styles from "./MoneySuiteWidget.module.scss";
 
@@ -48,6 +48,7 @@ interface IMoneySuiteWidgetProps {
   textPosition?: ETextPosition;
   outputFormat?: THumanReadableFormat;
   inputFormat?: ENumberInputFormat;
+  useTildeSign?: boolean;
 }
 
 interface IMoneySingleSuiteWidgetProps {
@@ -110,6 +111,36 @@ const MoneySingleSuiteWidget: React.FunctionComponent<
   </div>
 );
 
+interface IStaticMoneyWidgetProps {
+  icon: string;
+  theme?: ETheme;
+  size?: ESize;
+  textPosition?: ETextPosition;
+  upperText: string;
+  lowerText: string;
+}
+
+const StaticMoneyWidget: React.FunctionComponent<IStaticMoneyWidgetProps & TDataTestId> = ({
+  icon,
+  upperText,
+  lowerText,
+  theme,
+  size,
+  "data-test-id": dataTestId,
+  textPosition = ETextPosition.LEFT,
+}) => (
+  <div className={cn(styles.moneySuiteWidget, theme, size, textPosition)}>
+    {textPosition === ETextPosition.LEFT && <Icon icon={icon} />}
+    <TransactionData
+      size={getSize(size)}
+      data-test-id={dataTestId}
+      top={upperText}
+      bottom={<>= {lowerText}</>}
+    />
+    {textPosition === ETextPosition.RIGHT && <Icon icon={icon} />}
+  </div>
+);
+
 const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTestId> = ({
   icon,
   currency,
@@ -123,6 +154,7 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
   textPosition = ETextPosition.LEFT,
   outputFormat = ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
   inputFormat = ENumberInputFormat.ULPS,
+  useTildeSign = false,
 }) => (
   <div className={cn(styles.moneySuiteWidget, theme, size, textPosition)}>
     {textPosition === ETextPosition.LEFT && <Icon icon={icon} walletName={walletName} />}
@@ -139,7 +171,7 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
       }
       bottom={
         <>
-          ={" "}
+          {useTildeSign ? <>~</> : <>=</>}{" "}
           <MoneyNew
             value={value}
             inputFormat={inputFormat}
@@ -153,4 +185,11 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
   </div>
 );
 
-export { ETheme, ESize, IMoneySuiteWidgetProps, MoneySuiteWidget, MoneySingleSuiteWidget };
+export {
+  ETheme,
+  ESize,
+  IMoneySuiteWidgetProps,
+  MoneySuiteWidget,
+  MoneySingleSuiteWidget,
+  StaticMoneyWidget,
+};

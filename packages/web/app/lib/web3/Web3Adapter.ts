@@ -7,7 +7,10 @@ import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from 
 import { promisify } from "../../utils/promisify";
 
 class Web3Error extends Error {}
-export class NotEnoughEtherForGasError extends Error {}
+export class NeuWeb3Error extends Error {}
+export class UserHasNoFundsError extends NeuWeb3Error {}
+
+export class NotEnoughEtherForGasError extends Web3Error {}
 export class RevertedTransactionError extends Web3Error {}
 export class OutOfGasError extends Web3Error {}
 export class NotEnoughFundsError extends Web3Error {}
@@ -233,6 +236,12 @@ export class Web3Adapter {
     const getBlockNumber = promisify<number>(this.web3.eth.getBlockNumber);
 
     return getBlockNumber();
+  }
+
+  public isSmartContract(address: EthereumAddressWithChecksum): Promise<boolean> {
+    // in case of missing smartcontract, code can be equal to "0x0" or "0x" depending on exact web3 implementation
+    // to cover all these cases we just check against the source code length — there won't be any meaningful EVM program in less then 3 chars
+    return promisify<string>(this.web3.eth.getCode)(address).then(v => v.length >= 4);
   }
 }
 

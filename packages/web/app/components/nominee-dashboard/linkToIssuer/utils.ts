@@ -4,7 +4,7 @@ import {
   ENomineeRequestStatus,
   INomineeRequest,
 } from "../../../modules/nominee-flow/reducer";
-import { validateAddress } from "../../../modules/web3/utils";
+import { isAddressValid } from "../../../modules/web3/utils";
 import { EMaskedFormError } from "../../translatedMessages/messages";
 import { ENomineeRequestComponentState } from "./types";
 
@@ -39,7 +39,7 @@ export const validateEthAddress = (value: string | undefined) => {
   if (value === undefined) {
     return false;
   } else {
-    return validateAddress(value);
+    return isAddressValid(value);
   }
 };
 

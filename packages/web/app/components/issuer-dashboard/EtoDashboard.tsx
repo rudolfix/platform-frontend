@@ -34,7 +34,7 @@ import { onEnterAction } from "../../utils/OnEnterAction";
 import { withContainer } from "../../utils/withContainer.unsafe";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { EProjectStatusLayout, EProjectStatusSize, ETOIssuerState } from "../eto/shared/ETOState";
-import { Container, EColumnSpan } from "../layouts/Container";
+import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
 import { SettingsWidgets } from "../settings/settings-widget/SettingsWidgets";
@@ -205,7 +205,7 @@ const VerificationSection: React.FunctionComponent<TVerificationSection> = ({
   ...props
 }) => (
   <>
-    <Container columnSpan={EColumnSpan.THREE_COL}>
+    <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
       <DashboardStep etoStep={etoStep} />
     </Container>
     <SettingsWidgets isDynamic={true} {...props} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
@@ -247,7 +247,7 @@ const VerifiedUserSection: React.FunctionComponent<TVerificationSection> = ({
           </Tooltip>
         </Container>
 
-        <Container columnSpan={EColumnSpan.THREE_COL}>
+        <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
           <DashboardStep etoStep={etoStep} />
         </Container>
 

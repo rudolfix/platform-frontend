@@ -45,7 +45,7 @@ const LinkNomineeStepLayout: React.FunctionComponent<TWithNomineeProps & TStateP
             values={{
               form: (
                 <Link to={etoRegisterRoutes.etoVotingRights}>
-                  <FormattedMessage id="eto.form-progress-widget.eto-settings.voting-right" />
+                  <FormattedMessage id="eto.form.section.token-holders-rights.title" />
                 </Link>
               ),
             }}

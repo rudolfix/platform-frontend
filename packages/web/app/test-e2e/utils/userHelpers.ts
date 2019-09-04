@@ -25,6 +25,7 @@ export const generateRandomEmailAddress = () =>
     .substring(7)}@e2e.com`;
 
 export const getJwtToken = () => JSON.parse(localStorage.getItem(JWT_KEY)!);
+export const getWalletMetaData = () => JSON.parse(localStorage.getItem(WALLET_STORAGE_KEY)!);
 
 /*
  * Pre-login user for faster tests

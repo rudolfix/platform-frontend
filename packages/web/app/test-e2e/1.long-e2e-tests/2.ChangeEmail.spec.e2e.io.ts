@@ -9,6 +9,7 @@ import {
   DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
+  getWalletMetaData,
   goToProfile,
   loginWithLightWallet,
   logoutViaAccountMenu,
@@ -22,11 +23,8 @@ describe("Change Email", function(): void {
     let email: string;
     beforeEach(() => {
       createAndLoginNewUser({ type: "investor", kyc: "individual" }).then(() => {
-        cy.window().then(window => {
-          // TODO: move into a seperate util method
-          const metaData = JSON.parse(window.localStorage.getItem("NF_WALLET_METADATA") as string);
-          email = metaData.email;
-        });
+        const metaData = getWalletMetaData();
+        email = metaData.email;
       });
     });
 

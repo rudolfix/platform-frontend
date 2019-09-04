@@ -23,13 +23,7 @@ import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
-import {
-  convert,
-  generateKeys,
-  removeEmptyField,
-  removeKeys,
-  setDefaultValueIfUndefined,
-} from "../../utils";
+import { convert, generateKeys, removeKeys, setDefaultValueIfUndefined } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
 
@@ -314,11 +308,11 @@ const toFormState = {
 };
 
 const fromFormState = {
-  "team.members": [removeKeys(), removeEmptyField()],
-  "advisors.members": [removeKeys(), removeEmptyField()],
-  "keyAlliances.members": [removeKeys(), removeEmptyField()],
-  "boardMembers.members": [removeKeys(), removeEmptyField()],
-  "notableInvestors.members": [removeKeys(), removeEmptyField()],
-  "keyCustomers.members": [removeKeys(), removeEmptyField()],
-  "partners.members": [removeKeys(), removeEmptyField()],
+  "team.members": [removeKeys()],
+  "advisors.members": [removeKeys()],
+  "keyAlliances.members": [removeKeys()],
+  "boardMembers.members": [removeKeys()],
+  "notableInvestors.members": [removeKeys()],
+  "keyCustomers.members": [removeKeys()],
+  "partners.members": [removeKeys()],
 };

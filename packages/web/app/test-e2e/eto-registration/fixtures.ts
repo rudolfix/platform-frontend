@@ -164,6 +164,11 @@ export const etoTermsFormExpectedValues: TFormFixtureExpectedValues = {
 };
 
 // key individuals
+export const etoKeyIndividualsFormSubmit: TFormFixture = {
+  "eto-registration-key-individuals-submit": {
+    type: "submit",
+  },
+};
 export const etoKeyIndividualsForm: TFormFixture = {
   "team.members.0.name": "Zoe",
   "team.members.0.role": "Boss",
@@ -284,9 +289,7 @@ export const etoKeyIndividualsForm: TFormFixture = {
     },
   },
 
-  "eto-registration-key-individuals-submit": {
-    type: "submit",
-  },
+  ...etoKeyIndividualsFormSubmit,
 };
 
 // product vision form

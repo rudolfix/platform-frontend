@@ -3,6 +3,7 @@ import {
   aboutForm,
   equityTokenInfoForm,
   etoKeyIndividualsForm,
+  etoKeyIndividualsFormSubmit,
   etoTermsForm,
   investmentTermsForm,
   legalInfoForm,
@@ -10,7 +11,6 @@ import {
   productVisionForm,
   votingRights,
 } from "../eto-registration/fixtures";
-import { assertIssuerDashboard } from "../utils";
 import { fillForm } from "../utils/forms";
 import { goToIssuerDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
@@ -46,23 +46,23 @@ describe("Eto Forms", () => {
     fillAndAssertFull("eto-progress-widget-media", mediaForm);
   });
 
-  it("will fill and submit key individuals", () => {
-    cy.get(`${tid("eto-progress-widget-key-individuals")} button`).awaitedClick();
-    // first click on all the add buttons to open the fields
-    cy.get(tid("key-individuals-group-button-team")).click();
-    cy.get(tid("key-individuals-group-button-advisors")).awaitedClick();
-    cy.get(tid("key-individuals-group-button-keyAlliances")).awaitedClick();
-    cy.get(tid("key-individuals-group-button-boardMembers")).awaitedClick();
-    cy.get(tid("key-individuals-group-button-notableInvestors")).awaitedClick();
-    cy.get(tid("key-individuals-group-button-keyCustomers")).awaitedClick();
-    cy.get(tid("key-individuals-group-button-partners")).awaitedClick();
-    fillForm(etoKeyIndividualsForm);
+  describe("Key Individuals", () => {
+    it("will submit form without changes", () => {
+      fillAndAssertFull("eto-progress-widget-key-individuals", etoKeyIndividualsFormSubmit);
+    });
 
-    assertIssuerDashboard();
-    cy.get(`${tid("eto-progress-widget-key-individuals")} ${tid("chart-circle.progress")}`).should(
-      "contain",
-      "100%",
-    );
+    it("will fill and submit key individuals", () => {
+      fillAndAssertFull("eto-progress-widget-key-individuals", () => {
+        cy.get(tid("key-individuals-group-button-team")).click();
+        cy.get(tid("key-individuals-group-button-advisors")).awaitedClick();
+        cy.get(tid("key-individuals-group-button-keyAlliances")).awaitedClick();
+        cy.get(tid("key-individuals-group-button-boardMembers")).awaitedClick();
+        cy.get(tid("key-individuals-group-button-notableInvestors")).awaitedClick();
+        cy.get(tid("key-individuals-group-button-keyCustomers")).awaitedClick();
+        cy.get(tid("key-individuals-group-button-partners")).awaitedClick();
+        fillForm(etoKeyIndividualsForm);
+      });
+    });
   });
 
   it("will find eto terms and fill investment terms", () => {

@@ -7,7 +7,9 @@ import {
   assertErrorModal,
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
+  DEFAULT_HD_PATH,
   generateRandomEmailAddress,
+  getWalletMetaData,
   goToUserAccountSettings,
   lightWalletTypeLoginInfo,
   lightWalletTypeRegistrationInfo,
@@ -18,7 +20,7 @@ import {
 describe("Wallet recover", function(): void {
   this.retries(2);
   it("should recover wallet from saved phrases", () => {
-    cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(
+    cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";
         const email = generateRandomEmailAddress();
@@ -56,24 +58,21 @@ describe("Wallet recover", function(): void {
       type: "investor",
       kyc: "individual",
     }).then(() => {
-      cy.window().then(window => {
-        // TODO: move into a seperate util method
-        const metaData = JSON.parse(window.localStorage.getItem("NF_WALLET_METADATA") as string);
-        cy.clearLocalStorage().then(() => {
-          cy.visit(`${recoverRoutes.seed}`);
-          cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
-            typeLightwalletRecoveryPhrase(seed);
-            lightWalletTypeRegistrationInfo(metaData.email, "randomPassword");
+      const metaData = getWalletMetaData();
+      cy.clearLocalStorage().then(() => {
+        cy.visit(recoverRoutes.seed);
+        cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
+          typeLightwalletRecoveryPhrase(seed);
+          lightWalletTypeRegistrationInfo(metaData.email, "randomPassword");
 
-            assertErrorModal();
-          });
+          assertErrorModal();
         });
       });
     });
   });
 
   it("should recover user with same email if its the same user", function(): void {
-    cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
+    cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "individual",
@@ -95,7 +94,7 @@ describe("Wallet recover", function(): void {
   });
 
   it.skip("should recover existing user with verified email from saved phrases and change email", function(): void {
-    cyPromise(() => generateRandomSeedAndAddress("m/44'/60'/0'")).then(({ seed }) => {
+    cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "individual",

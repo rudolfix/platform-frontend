@@ -1,6 +1,6 @@
 import {
+  assertLanding,
   assertUserInBrowserWalletLoginPage,
-  assertUserInLanding,
   assertUserInLedgerWalletLoginPage,
   assertUserInLightWalletLoginPage,
   assertUserInLightWalletRegisterPage,
@@ -68,6 +68,6 @@ describe("Authentication Routing", () => {
 
   it("should redirect to root page if the link is wrong", () => {
     cy.visit("/haha-im-a-wrong-link");
-    assertUserInLanding();
+    assertLanding();
   });
 });

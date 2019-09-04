@@ -6,7 +6,7 @@ import { getJwtExpiryDate } from "../../utils/JWTUtils";
 import {
   acceptWallet,
   assertEmailChangeFlow,
-  assertUserInLanding,
+  assertLanding,
   assertUserInLightWalletLoginPage,
   goToDashboard,
   goToProfile,
@@ -32,7 +32,7 @@ describe("JWT Refreshing and Escalation", () => {
 
       goToDashboard(false);
 
-      assertUserInLanding();
+      assertLanding();
 
       // Should remove jwt token from localstorage
       cy.wrap(null).should(() => {

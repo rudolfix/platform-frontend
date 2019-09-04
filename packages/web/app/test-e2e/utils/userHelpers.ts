@@ -9,13 +9,14 @@ import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
 import { toCamelCase } from "../../utils/transformObjectKeys";
-import { assertUserInLanding } from "./assertions";
+import { assertLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";
 import { tid } from "./selectors";
 
 const VAULT_API_ROOT = "/api/wallet";
 export const WALLET_STORAGE_KEY = "NF_WALLET_METADATA";
 export const JWT_KEY = "NF_JWT";
+export const NF_USER_KEY = "NF_USER";
 
 const NUMBER_OF_ATTEMPTS = 2;
 
@@ -25,6 +26,7 @@ export const generateRandomEmailAddress = () =>
     .substring(7)}@e2e.com`;
 
 export const getJwtToken = () => JSON.parse(localStorage.getItem(JWT_KEY)!);
+export const getWalletMetaData = () => JSON.parse(localStorage.getItem(WALLET_STORAGE_KEY)!);
 
 /*
  * Pre-login user for faster tests
@@ -414,7 +416,7 @@ export const logout = () => {
     .get(tid("menu-logout-button"))
     .awaitedClick();
 
-  assertUserInLanding();
+  assertLanding();
 
   cy.log("logged out");
 };

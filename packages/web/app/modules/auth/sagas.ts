@@ -7,6 +7,7 @@ import { REDIRECT_CHANNEL_WATCH_DELAY } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { STORAGE_JWT_KEY } from "../../lib/persistence/JwtObjectStorage";
 import { USER_JWT_KEY as USER_KEY } from "../../lib/persistence/UserStorage";
+import { STORAGE_WALLET_METADATA_KEY } from "../../lib/persistence/WalletMetadataObjectStorage";
 import {
   SignerRejectConfirmationError,
   SignerTimeoutError,
@@ -109,6 +110,11 @@ const redirectChannel = channel<{ type: EUserAuthType }>();
 export function* startRedirectChannel(): any {
   window.addEventListener("storage", (evt: StorageEvent) => {
     if (evt.key === STORAGE_JWT_KEY && evt.oldValue && !evt.newValue) {
+      redirectChannel.put({
+        type: EUserAuthType.LOGOUT,
+      });
+    }
+    if (evt.key === STORAGE_WALLET_METADATA_KEY && evt.oldValue && !evt.newValue) {
       redirectChannel.put({
         type: EUserAuthType.LOGOUT,
       });

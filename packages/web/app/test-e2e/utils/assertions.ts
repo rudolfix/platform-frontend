@@ -26,6 +26,13 @@ export const assertDashboard = () => {
   return cy.url().should("contain", appRoutes.dashboard);
 };
 
+export const assertLanding = () => {
+  cy.title().should("eq", "Neufund Platform");
+  cy.get(tid("landing-page")).should("exist");
+
+  cy.url().should("contain", appRoutes.root);
+};
+
 export const assertRegister = () => {
   cy.get(tid("register-layout")).should("exist");
   cy.url().should("contain", walletRegisterRoutes.light);
@@ -119,14 +126,6 @@ export const assertWaitForExternalPendingTransactionCount = (
 
 export const assertLockedAccessModal = () => {
   cy.get(tid("access-light-wallet-locked")).should("exist");
-};
-
-export const assertUserInLanding = () => {
-  cy.url().should("contain", appRoutes.root);
-
-  cy.title().should("eq", "Neufund Platform");
-
-  cy.get(tid("landing-page")).should("exist");
 };
 
 export const assertMoneyNotEmpty = (testId: string) => {

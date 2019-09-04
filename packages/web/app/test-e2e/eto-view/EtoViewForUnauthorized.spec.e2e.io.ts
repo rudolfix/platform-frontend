@@ -1,5 +1,5 @@
 import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
-import { assertUserInLanding, etoFixtureAddressByName, tid } from "../utils";
+import { assertLanding, etoFixtureAddressByName, tid } from "../utils";
 import { assertEtoView } from "./EtoViewUtils";
 
 describe("Eto Unauthorized View", () => {
@@ -33,7 +33,7 @@ describe("Eto Unauthorized View", () => {
 
       cy.get(tid("jurisdiction-disclaimer-modal.deny")).click();
 
-      assertUserInLanding();
+      assertLanding();
     });
   });
 });

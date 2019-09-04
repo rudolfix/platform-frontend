@@ -5,7 +5,7 @@ import {
   logoutViaAccountMenu,
   registerWithLightWalletETO,
 } from "../utils";
-import { createAndLoginNewUser } from "../utils/userHelpers";
+import { createAndLoginNewUser, getWalletMetaData } from "../utils/userHelpers";
 
 describe("Wallet backup e2e recovery phrase", () => {
   const passowrd = "strongpassword";
@@ -22,15 +22,12 @@ describe("Wallet backup e2e recovery phrase", () => {
       type: "investor",
       kyc: "individual",
     }).then(() => {
-      cy.window().then(window => {
-        // TODO: move into a seperate util method
-        const metaData = JSON.parse(window.localStorage.getItem("NF_WALLET_METADATA") as string);
-        goToDashboard();
-        logoutViaAccountMenu();
-        registerWithLightWalletETO(metaData.email, passowrd, false);
+      const metaData = getWalletMetaData();
+      goToDashboard();
+      logoutViaAccountMenu();
+      registerWithLightWalletETO(metaData.email, passowrd, false);
 
-        assertErrorModal();
-      });
+      assertErrorModal();
     });
   });
 });

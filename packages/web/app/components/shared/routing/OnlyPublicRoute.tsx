@@ -1,11 +1,12 @@
 import * as React from "react";
 import { RouteProps } from "react-router-dom";
-import { branch, compose, renderNothing } from "recompose";
+import { branch, compose, renderComponent, renderNothing } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import { selectIsAuthorized } from "../../../modules/auth/selectors";
 import { appConnect, AppDispatch } from "../../../store";
 import { onEnterAction } from "../../../utils/OnEnterAction";
+import { LoadingComponent } from "../../dashboard/my-portfolio/MyPortfolioWidget";
 
 interface IStateProps {
   isAuthorized: boolean;
@@ -34,5 +35,7 @@ export const OnlyPublicRoute = compose<IComponentProps, RouteProps>(
       }
     },
   }),
+  // We should not show child component if we are invoking redirection to prevent it from running it's enter actions
+  branch<IStateProps>(state => state.isAuthorized, renderComponent(LoadingComponent)),
   branch<IStateProps & RouteProps>(state => state.component === undefined, renderNothing),
 )(OnlyPublicRouteComponent);

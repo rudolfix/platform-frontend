@@ -12,4 +12,5 @@ export const authActions = {
   setUser: createActionFactory("AUTH_SET_USER", (user: IUser) => ({ user })),
   logout: createActionFactory("AUTH_LOGOUT", (options: TLogoutActionOptions = {}) => options),
   verifyEmail: createActionFactory("AUTH_VERIFY_EMAIL"),
+  reset: createActionFactory("AUTH_RESET"),
 };

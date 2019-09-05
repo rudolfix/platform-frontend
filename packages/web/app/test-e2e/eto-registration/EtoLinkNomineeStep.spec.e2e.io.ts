@@ -1,5 +1,6 @@
 import { goToIssuerEtoView } from "../eto-view/EtoViewUtils";
 import { linkEtoToNominee } from "../nominee-flow/NomineeFlowUtils";
+import { logoutViaAccountMenu } from "../utils/index";
 import { goToIssuerDashboard, goToNomineeDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
@@ -40,6 +41,7 @@ describe("Eto Forms link nominee", () => {
         cy.saveLocalStorage(issuerAddress);
 
         fillEtoToLinkNomineeStep(issuerAddress);
+        logoutViaAccountMenu();
 
         createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
           ({ address: nomineeAddress }) => {
@@ -83,12 +85,14 @@ describe("Eto Forms link nominee", () => {
         cy.saveLocalStorage(issuerAddress);
 
         fillEtoToLinkNomineeStep(issuerAddress);
+        logoutViaAccountMenu();
 
         createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
           ({ address: nomineeAddress }) => {
             cy.saveLocalStorage(nomineeAddress);
 
             linkEtoToNominee(issuerAddress);
+            logoutViaAccountMenu();
 
             // get back issuer
             cy.restoreLocalStorage(issuerAddress);
@@ -102,6 +106,7 @@ describe("Eto Forms link nominee", () => {
             // should move back to link nominee step
             goToIssuerDashboard();
             assertLinkNomineeStepAwaitingRequestState(issuerAddress);
+            logoutViaAccountMenu();
 
             // get back to nominee
             cy.restoreLocalStorage(nomineeAddress);
@@ -125,12 +130,14 @@ describe("Eto Forms link nominee", () => {
         cy.saveLocalStorage(issuerAddress);
 
         fillEtoToLinkNomineeStep(issuerAddress);
+        logoutViaAccountMenu();
 
         createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
           ({ address: nomineeAddress }) => {
             cy.saveLocalStorage(nomineeAddress);
 
             linkEtoToNominee(issuerAddress);
+            logoutViaAccountMenu();
 
             // get back issuer
             cy.restoreLocalStorage(issuerAddress);
@@ -146,6 +153,7 @@ describe("Eto Forms link nominee", () => {
             // should move back to link nominee step
             goToIssuerDashboard();
             assertLinkNomineeStep();
+            logoutViaAccountMenu();
 
             // get back to nominee
             cy.restoreLocalStorage(nomineeAddress);

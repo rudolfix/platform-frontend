@@ -1,17 +1,14 @@
 import { Container } from "inversify";
 import * as React from "react";
 import { hot } from "react-hot-loader/root";
+import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/logger";
 import { actions } from "../modules/actions";
 import { EInitType } from "../modules/init/reducer";
-import {
-  selectInitError,
-  selectIsInitDone,
-  selectIsInitInProgress,
-} from "../modules/init/selectors";
+import { selectInitError, selectIsInitInProgress } from "../modules/init/selectors";
 import { appConnect } from "../store";
 import { ContainerContext } from "../utils/InversifyProvider";
 import { onEnterAction } from "../utils/OnEnterAction";
@@ -22,7 +19,7 @@ import { CriticalError } from "./layouts/CriticalError";
 import { GenericModal } from "./modals/GenericModal";
 import { VideoModal } from "./modals/VideoModal";
 import { AccessWalletModal } from "./modals/wallet-access/AccessWalletModal";
-import { LoadingIndicator } from "./shared/loading-indicator";
+import { LoadingIndicator } from "./shared/loading-indicator/LoadingIndicator";
 import { ToastContainer } from "./shared/Toast";
 
 interface IState {
@@ -31,7 +28,6 @@ interface IState {
 
 interface IStateProps {
   inProgress: boolean;
-  done: boolean;
   error?: string;
 }
 
@@ -55,16 +51,8 @@ class AppComponent extends React.Component<IStateProps, IState> {
   }
 
   render(): React.ReactNode {
-    if (this.props.error) {
-      return <CriticalError message={this.props.error} />;
-    }
-
     if (this.state.renderingError) {
       return <CriticalError message={this.state.renderingError.message} />;
-    }
-
-    if (this.props.inProgress) {
-      return <LoadingIndicator />;
     }
 
     return (
@@ -89,11 +77,12 @@ const App = compose<React.ComponentClass>(
   appConnect<IStateProps>({
     stateToProps: s => ({
       inProgress: selectIsInitInProgress(s.init),
-      done: selectIsInitDone(s.init),
       error: selectInitError(s.init),
     }),
     options: { pure: false }, // we need this because of:https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/blocked-updates.md
   }),
+  branch<IStateProps>(state => !!state.error, renderComponent(CriticalError)),
+  branch<IStateProps>(state => state.inProgress, renderComponent(LoadingIndicator)),
 )(AppComponent);
 
 const AppHot = hot(App);

@@ -33,6 +33,7 @@ export function* logoutUser({
   yield web3Manager.unplugPersonalWallet();
 
   yield put(actions.web3.personalWalletDisconnected());
+  yield put(actions.auth.reset());
   logger.info("user has been logged out");
 }
 

@@ -31,6 +31,10 @@ export const authReducer: AppReducer<IAuthState> = (
         ...state,
         currentAgreementHash: action.payload.currentAgreementHash,
       };
+    case actions.auth.reset.getType():
+      return {
+        ...authInitialState,
+      };
     //Log out is done on whole state instead of just AUTH reducer
   }
 

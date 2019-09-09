@@ -78,7 +78,8 @@ describe("Eto Forms", () => {
 
       assertUploadSignedTermsheetStep();
 
-      cy.get(tid("dashboard-upload-termsheet")).click();
+      cy.get(tid("dashboard-upload-termsheet-widget.call-to-action")).click();
+
       assertEtoDocuments();
 
       const documentsForm: TFormFixture = {

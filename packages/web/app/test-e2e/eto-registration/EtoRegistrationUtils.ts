@@ -149,11 +149,16 @@ export const assertUploadSignedTermsheetStep = () => {
   cy.get(tid("eto-state-preview")).should("exist");
   // step should be moved to upload signed termsheet step
   cy.get(tid("eto-dashboard-upload_signed_termsheet")).should("exist");
+
+  cy.get(tid("dashboard-upload-termsheet-widget")).should("exist");
 };
 
 export const assertLinkNomineeStep = () => {
   cy.get(tid("eto-state-preview")).should("exist");
   cy.get(tid("eto-dashboard-link-nominee")).should("exist");
+
+  // termsheet widget should not be longer available
+  cy.get(tid("dashboard-upload-termsheet-widget")).should("not.exist");
 };
 
 export const assertLinkNomineeStepAwaitingRequestState = (issuerAddress: string) => {
@@ -166,4 +171,29 @@ export const assertLinkNomineeStepAwaitingApprovalState = () => {
   assertLinkNomineeStep();
 
   cy.get(tid("eto-dashboard-accept-nominee")).should("exist");
+};
+
+export const assertUploadMemorandumDocumentStep = () => {
+  cy.get(tid("eto-state-campaigning")).should("exist");
+  cy.get(tid("eto-dashboard-upload-memorandum-document")).should("exist");
+
+  cy.get(tid("dashboard-upload-investment-memorandum-widget")).should("exist");
+};
+
+export const assertUploadISHAStep = () => {
+  cy.get(tid("eto-state-campaigning")).should("exist");
+  cy.get(tid("eto-dashboard-upload-isha")).should("exist");
+
+  // memorandum widget should not be longer available
+  cy.get(tid("dashboard-upload-investment-memorandum-widget")).should("not.exist");
+
+  cy.get(tid("dashboard-upload-isha-widget")).should("exist");
+};
+
+export const assertWaitingForSmartContractsStep = () => {
+  cy.get(tid("eto-state-campaigning")).should("exist");
+  cy.get(tid("eto-dashboard-waiting-for-smart-contracts")).should("exist");
+
+  // isha upload should not be longer available
+  cy.get(tid("dashboard-upload-isha-widget")).should("not.exist");
 };

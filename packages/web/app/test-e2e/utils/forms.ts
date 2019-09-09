@@ -36,6 +36,7 @@ type TFormFieldFixture =
       type: "custom";
       method: string;
       value: any;
+      options?: object;
     }
   | string;
 
@@ -177,7 +178,7 @@ export const fillForm = (
         throw new Error(`Cannot find custom method ${method}`);
       }
 
-      method(key, field.value);
+      method(key, field.value, field.options);
     }
   });
 
@@ -258,11 +259,18 @@ export const getFieldError = (formTid: string, key: string): Cypress.Chainable<s
  * @param targetTid - test id of the dropzone field
  * @param fixture - which fixture to load
  */
-export const uploadDocumentToFieldWithTid = (targetTid: string, fixture: string) => {
+export const uploadDocumentToFieldWithTid = (
+  targetTid: string,
+  fixture: string,
+  options: { acceptWallet: boolean } = { acceptWallet: true },
+) => {
   cy.get(`${tid(targetTid)} ${tid("eto-add-document-drop-zone")}`).dropFile(fixture);
 
   cy.get(tid("documents-ipfs-modal-continue")).click();
-  acceptWallet();
+
+  if (options.acceptWallet) {
+    acceptWallet();
+  }
 
   cy.get(`${tid(targetTid)} ${tid("documents-download-document")}`).should("exist");
 };

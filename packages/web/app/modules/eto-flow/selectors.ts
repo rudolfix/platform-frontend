@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
 import { DEFAULT_DATE_TO_WHITELIST_MIN_DURATION } from "../../config/constants";
@@ -28,7 +29,7 @@ import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
 import { selectEtoContract } from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
-import { getEtoSubState } from "../eto/utils";
+import { getEtoSubState, isOnChain } from "../eto/utils";
 import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./types";
@@ -202,7 +203,7 @@ export const selectIsTermSheetSubmitted = (state: IAppState): boolean | undefine
   const documents = selectIssuerEtoDocuments(state);
 
   if (documents) {
-    return Object.keys(documents).some(key => documents[key].documentType === "signed_termsheet");
+    return some(documents, document => document.documentType === EEtoDocumentType.SIGNED_TERMSHEET);
   }
   return undefined;
 };
@@ -211,8 +212,22 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
   const documents = selectIssuerEtoDocuments(state);
 
   if (documents) {
-    return Object.keys(documents).some(
-      key => documents[key].documentType === "approved_investor_offering_document",
+    return some(
+      documents,
+      document => document.documentType === EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT,
+    );
+  }
+  return undefined;
+};
+
+export const selectIsISHAPreviewSubmitted = (state: IAppState): boolean | undefined => {
+  const documents = selectIssuerEtoDocuments(state);
+
+  if (documents) {
+    return some(
+      documents,
+      document =>
+        document.documentType === EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW,
     );
   }
   return undefined;
@@ -220,15 +235,13 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
 
 export const selectUploadedInvestmentAgreement = (
   state: DeepReadonly<IAppState>,
-): IEtoDocument | null => {
+): IEtoDocument | undefined => {
   const etoDocuments = selectIssuerEtoDocuments(state)!;
 
-  const key = Object.keys(etoDocuments).find(
-    uploadedKey =>
-      etoDocuments[uploadedKey].documentType ===
-      EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT,
+  return find(
+    etoDocuments,
+    document => document.documentType === EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT,
   );
-  return key ? etoDocuments[key] : null;
 };
 
 export const selectInvestmentAgreementLoading = (state: DeepReadonly<IAppState>): boolean =>
@@ -249,7 +262,7 @@ export const selectNewPreEtoStartDate = (state: IAppState) => state.etoFlow.newS
 export const selectPreEtoStartDateFromContract = (state: IAppState) => {
   const eto = selectIssuerEtoWithCompanyAndContract(state);
 
-  if (eto && eto.contract) {
+  if (eto && isOnChain(eto)) {
     return eto.contract.startOfStates[EETOStateOnChain.Whitelist];
   }
 

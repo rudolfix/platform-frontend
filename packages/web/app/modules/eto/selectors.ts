@@ -1,10 +1,13 @@
 import { find, findKey } from "lodash/fp";
+import createCachedSelector from "re-reselect";
+import { createSelector } from "reselect";
 
-import { EEtoState, TEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EEtoState, TEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { nomineeIgnoredTemplates } from "../../lib/api/eto/EtoFileUtils";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { nonNullable } from "../../utils/nonNullable";
 import { objectToFilteredArray } from "../../utils/objectToFilteredArray";
 import { selectUserId } from "../auth/selectors";
 import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
@@ -41,7 +44,17 @@ export const selectEtoTokenName = (state: IAppState, etoId: string) => {
   return undefined;
 };
 
-export const selectEto = (state: IAppState, previewCode: string) => state.eto.etos[previewCode];
+export const selectEto = createSelector(
+  selectEtoState,
+  (_: IAppState, previewCode: string) => previewCode,
+  (etoState: DeepReadonly<IEtoState>, previewCode: string) => etoState.etos[previewCode],
+);
+
+export const selectCompany = createSelector(
+  selectEtoState,
+  (_: IAppState, companyId: string) => companyId,
+  (etoState: DeepReadonly<IEtoState>, companyId: string) => etoState.companies[companyId],
+);
 
 export const selectEtoContract = (state: IAppState, previewCode: string) =>
   state.eto.contracts[previewCode];
@@ -49,26 +62,38 @@ export const selectEtoContract = (state: IAppState, previewCode: string) =>
 export const selectEtoById = (state: IAppState, etoId: string) =>
   state.eto.etos[selectEtoPreviewCode(state, etoId)!];
 
+export const selectEtoSubState = createCachedSelector(
+  // forward eto param to combiner
+  (_: IAppState, eto: TEtoSpecsData) => eto,
+  (state: IAppState, eto: TEtoSpecsData) => selectBookbuildingStats(state, eto.etoId),
+  (state: IAppState, eto: TEtoSpecsData) => selectIsEligibleToPreEto(state, eto.etoId),
+  (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
+  (eto, stats, isEligibleToPreEto, contract) =>
+    getEtoSubState({ eto, stats, contract, isEligibleToPreEto }),
+)((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
+
+const selectEtoWithCompanyAndContractInternal = createCachedSelector(
+  // forward eto param to combiner
+  (_: IAppState, eto: TEtoSpecsData) => eto,
+  (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
+  (state: IAppState, eto: TEtoSpecsData) => nonNullable(selectCompany(state, eto.companyId)),
+  (state: IAppState, eto: TEtoSpecsData) => selectEtoSubState(state, eto),
+  (eto, contract, company, subState) => ({
+    ...eto,
+    contract,
+    company,
+    subState,
+  }),
+)((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
+
 export const selectEtoWithCompanyAndContract = (
   state: IAppState,
   previewCode: string,
 ): TEtoWithCompanyAndContract | undefined => {
-  const etoState = selectEtoState(state);
-  const eto = etoState.etos[previewCode];
+  const eto = selectEto(state, previewCode);
 
   if (eto) {
-    const stats = selectBookbuildingStats(state, eto.etoId);
-    const isEligibleToPreEto = selectIsEligibleToPreEto(state, eto.etoId);
-    const contract = selectEtoContract(state, previewCode);
-
-    const subState = getEtoSubState({ eto, stats, contract, isEligibleToPreEto });
-
-    return {
-      ...eto,
-      subState,
-      contract,
-      company: etoState.companies[eto.companyId]!,
-    };
+    return selectEtoWithCompanyAndContractInternal(state, eto);
   }
 
   return undefined;

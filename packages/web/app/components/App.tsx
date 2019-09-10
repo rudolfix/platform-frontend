@@ -1,8 +1,7 @@
 import { Container } from "inversify";
 import * as React from "react";
 import { hot } from "react-hot-loader/root";
-import { branch, renderComponent } from "recompose";
-import { compose } from "redux";
+import { branch, compose, renderComponent } from "recompose";
 
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/logger";
@@ -69,7 +68,7 @@ class AppComponent extends React.Component<IStateProps, IState> {
   }
 }
 
-const App = compose<React.ComponentClass>(
+const App = compose<IStateProps, {}>(
   withRootMetaTag(),
   onEnterAction({
     actionCreator: d => d(actions.init.start(EInitType.APP_INIT)),
@@ -79,7 +78,6 @@ const App = compose<React.ComponentClass>(
       inProgress: selectIsInitInProgress(s.init),
       error: selectInitError(s.init),
     }),
-    options: { pure: false }, // we need this because of:https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/blocked-updates.md
   }),
   branch<IStateProps>(state => !!state.error, renderComponent(CriticalError)),
   branch<IStateProps>(state => state.inProgress, renderComponent(LoadingIndicator)),

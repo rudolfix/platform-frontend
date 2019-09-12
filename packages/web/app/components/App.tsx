@@ -1,17 +1,15 @@
 import { Container } from "inversify";
 import * as React from "react";
 import { hot } from "react-hot-loader/root";
-import { compose } from "redux";
+import IdleTimer from "react-idle-timer";
+import { branch, compose, renderComponent } from "recompose";
 
 import { symbols } from "../di/symbols";
 import { ILogger } from "../lib/dependencies/logger";
 import { actions } from "../modules/actions";
+import { INACTIVITY_THROTTLE_THRESHOLD } from "../modules/auth/constants";
 import { EInitType } from "../modules/init/reducer";
-import {
-  selectInitError,
-  selectIsInitDone,
-  selectIsInitInProgress,
-} from "../modules/init/selectors";
+import { selectInitError, selectIsInitInProgress } from "../modules/init/selectors";
 import { appConnect } from "../store";
 import { ContainerContext } from "../utils/InversifyProvider";
 import { onEnterAction } from "../utils/OnEnterAction";
@@ -22,7 +20,7 @@ import { CriticalError } from "./layouts/CriticalError";
 import { GenericModal } from "./modals/GenericModal";
 import { VideoModal } from "./modals/VideoModal";
 import { AccessWalletModal } from "./modals/wallet-access/AccessWalletModal";
-import { LoadingIndicator } from "./shared/loading-indicator";
+import { LoadingIndicator } from "./shared/loading-indicator/LoadingIndicator";
 import { ToastContainer } from "./shared/Toast";
 
 interface IState {
@@ -31,16 +29,19 @@ interface IState {
 
 interface IStateProps {
   inProgress: boolean;
-  done: boolean;
   error?: string;
 }
 
-class AppComponent extends React.Component<IStateProps, IState> {
+interface IDispatchProps {
+  userActive: () => void;
+}
+
+class AppComponent extends React.Component<IStateProps & IDispatchProps, IState> {
   static contextType = ContainerContext;
 
   logger: ILogger;
 
-  constructor(props: IStateProps, container: Container) {
+  constructor(props: IStateProps & IDispatchProps, container: Container) {
     super(props);
 
     this.state = { renderingError: null };
@@ -55,20 +56,21 @@ class AppComponent extends React.Component<IStateProps, IState> {
   }
 
   render(): React.ReactNode {
-    if (this.props.error) {
-      return <CriticalError message={this.props.error} />;
-    }
-
     if (this.state.renderingError) {
       return <CriticalError message={this.state.renderingError.message} />;
     }
 
-    if (this.props.inProgress) {
-      return <LoadingIndicator />;
-    }
-
     return (
       <>
+        <IdleTimer
+          element={document}
+          onAction={() => {
+            // Only use on action to control when the other tabs are idle
+            // @SEE https://github.com/SupremeTechnopriest/react-idle-timer/issues/89
+            this.props.userActive();
+          }}
+          throttle={INACTIVITY_THROTTLE_THRESHOLD}
+        />
         <ScrollToTop>
           <AppRouter />
         </ScrollToTop>
@@ -81,19 +83,20 @@ class AppComponent extends React.Component<IStateProps, IState> {
   }
 }
 
-const App = compose<React.ComponentClass>(
+const App = compose<IStateProps & IDispatchProps, {}>(
   withRootMetaTag(),
   onEnterAction({
     actionCreator: d => d(actions.init.start(EInitType.APP_INIT)),
   }),
-  appConnect<IStateProps>({
+  appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
       inProgress: selectIsInitInProgress(s.init),
-      done: selectIsInitDone(s.init),
       error: selectInitError(s.init),
     }),
-    options: { pure: false }, // we need this because of:https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/blocked-updates.md
+    dispatchToProps: d => ({ userActive: () => d(actions.auth.userActive()) }),
   }),
+  branch<IStateProps>(state => !!state.error, renderComponent(CriticalError)),
+  branch<IStateProps>(state => state.inProgress, renderComponent(LoadingIndicator)),
 )(AppComponent);
 
 const AppHot = hot(App);

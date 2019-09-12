@@ -309,16 +309,18 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
         placeholder="Number of shares"
         disabled={readonly}
       />
-      <FormMaskedNumberInput
-        name="publicDiscountFraction"
-        storageFormat={ENumberInputFormat.FLOAT}
-        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        showUnits={true}
-        valueType={ENumberFormat.PERCENTAGE}
-        label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
-        placeholder=" "
-        disabled={readonly}
-      />
+      {process.env.NF_SHOW_PUBLIC_DISCOUNT_FRACTION === "1" && (
+        <FormMaskedNumberInput
+          name="publicDiscountFraction"
+          storageFormat={ENumberInputFormat.FLOAT}
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+          showUnits={true}
+          valueType={ENumberFormat.PERCENTAGE}
+          label={<FormattedMessage id="eto.form.section.investment-terms.public-discount" />}
+          placeholder=" "
+          disabled={readonly}
+        />
+      )}
       <FormMaskedNumberInput
         name="newSharesToIssueInWhitelist"
         storageFormat={ENumberInputFormat.FLOAT}

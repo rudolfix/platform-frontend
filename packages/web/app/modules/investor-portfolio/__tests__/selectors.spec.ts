@@ -96,7 +96,7 @@ describe("investor-portfolio > selectors", () => {
     });
   });
 
-  describe("selectIsIncomingPayoutAvailable", () => {
+  describe("selectIsIncomingPayoutPending", () => {
     it("should show if amount equals 1 ETH", () => {
       const state = {
         investorTickets: {
@@ -109,7 +109,7 @@ describe("investor-portfolio > selectors", () => {
         },
       } as IAppState;
 
-      expect(investorTicketSelectors.selectIsIncomingPayoutAvailable(state)).to.be.true;
+      expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
 
     it("should show if amount is more than 1 ETH", () => {
@@ -124,7 +124,7 @@ describe("investor-portfolio > selectors", () => {
         },
       } as IAppState;
 
-      expect(investorTicketSelectors.selectIsIncomingPayoutAvailable(state)).to.be.true;
+      expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
 
     it("should show if amount equals 100 nEUR", () => {
@@ -139,7 +139,7 @@ describe("investor-portfolio > selectors", () => {
         },
       } as IAppState;
 
-      expect(investorTicketSelectors.selectIsIncomingPayoutAvailable(state)).to.be.true;
+      expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
 
     it("should show if amount is more than 100 nEUR", () => {
@@ -154,7 +154,7 @@ describe("investor-portfolio > selectors", () => {
         },
       } as IAppState;
 
-      expect(investorTicketSelectors.selectIsIncomingPayoutAvailable(state)).to.be.true;
+      expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
 
     it("should not show if amount is less than 100 nEUR and 1 ETH", () => {
@@ -169,7 +169,7 @@ describe("investor-portfolio > selectors", () => {
         },
       } as IAppState;
 
-      expect(investorTicketSelectors.selectIsIncomingPayoutAvailable(state)).to.be.false;
+      expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.false;
     });
   });
 
@@ -191,7 +191,7 @@ describe("investor-portfolio > selectors", () => {
     it("should render both nEUR and ETH to be claimed", () => {
       const state = {
         investorTickets: {
-          tokensDisbursal: [euroTokendDisbursal, ethDisbursal] as ITokenDisbursal[],
+          tokensDisbursal: { data: [euroTokendDisbursal, ethDisbursal] as ITokenDisbursal[] },
         } as IInvestorTicketsState,
       } as IAppState;
 
@@ -206,10 +206,12 @@ describe("investor-portfolio > selectors", () => {
       // amount of 0.90 nEUR
       const state = {
         investorTickets: {
-          tokensDisbursal: [
-            { ...euroTokendDisbursal, amountToBeClaimed: convertToBigInt("0.90") },
-            ethDisbursal,
-          ] as ITokenDisbursal[],
+          tokensDisbursal: {
+            data: [
+              { ...euroTokendDisbursal, amountToBeClaimed: convertToBigInt("0.90") },
+              ethDisbursal,
+            ] as ITokenDisbursal[],
+          },
         } as IInvestorTicketsState,
       } as IAppState;
 
@@ -223,10 +225,12 @@ describe("investor-portfolio > selectors", () => {
       // amount of 0.00023 ETH
       const state = {
         investorTickets: {
-          tokensDisbursal: [
-            euroTokendDisbursal,
-            { ...ethDisbursal, amountToBeClaimed: convertToBigInt("0.00023") },
-          ] as ITokenDisbursal[],
+          tokensDisbursal: {
+            data: [
+              euroTokendDisbursal,
+              { ...ethDisbursal, amountToBeClaimed: convertToBigInt("0.00023") },
+            ] as ITokenDisbursal[],
+          },
         } as IInvestorTicketsState,
       } as IAppState;
 

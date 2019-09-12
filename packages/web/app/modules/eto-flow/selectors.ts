@@ -1,13 +1,9 @@
 import BigNumber from "bignumber.js";
+import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
 import { DEFAULT_DATE_TO_WHITELIST_MIN_DURATION } from "../../config/constants";
-import {
-  EEtoState,
-  TEtoSpecsData,
-  TPartialCompanyEtoData,
-  TPartialEtoSpecData,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   EEtoDocumentType,
   IEtoDocument,
@@ -22,14 +18,13 @@ import {
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { nonNullable } from "../../utils/nonNullable";
 import { objectToFilteredArray } from "../../utils/objectToFilteredArray";
 import { selectIsUserEmailVerified } from "../auth/selectors";
-import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
-import { selectEtoContract } from "../eto/selectors";
+import { selectEtoContract, selectEtoSubState } from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
-import { getEtoSubState } from "../eto/utils";
-import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
+import { isOnChain } from "../eto/utils";
 import { selectKycRequestStatus } from "../kyc/selectors";
 import { IEtoFlowState } from "./types";
 import { isValidEtoStartDate, sortProducts } from "./utils";
@@ -61,25 +56,27 @@ export const selectIssuerCompany = createSelector(
   (state: DeepReadonly<IEtoFlowState>) => state.company,
 );
 
+const selectIssuerEtoWithCompanyAndContractInternal = createSelector(
+  // forward eto param to combiner
+  (_: IAppState, eto: TEtoSpecsData) => eto,
+  (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
+  (state: IAppState) => nonNullable(selectIssuerCompany(state)),
+  (state: IAppState, eto: TEtoSpecsData) => selectEtoSubState(state, eto),
+  (eto, contract, company, subState) => ({
+    ...eto,
+    contract,
+    company,
+    subState,
+  }),
+);
+
 export const selectIssuerEtoWithCompanyAndContract = (
   state: IAppState,
 ): TEtoWithCompanyAndContract | undefined => {
   const eto = selectIssuerEto(state);
-  const company = selectIssuerCompany(state);
 
-  if (eto && company) {
-    const stats = selectBookbuildingStats(state, eto.etoId);
-    const isEligibleToPreEto = selectIsEligibleToPreEto(state, eto.etoId);
-
-    const contract = selectEtoContract(state, eto.previewCode);
-    const subState = getEtoSubState({ eto, contract, stats, isEligibleToPreEto });
-
-    return {
-      ...eto,
-      subState,
-      company,
-      contract,
-    };
+  if (eto) {
+    return selectIssuerEtoWithCompanyAndContractInternal(state, eto);
   }
 
   return undefined;
@@ -163,12 +160,11 @@ export const selectIssuerEtoLoading = (state: IAppState): boolean => state.etoFl
 
 export const selectNewEtoDateSaving = (state: IAppState): boolean => state.etoFlow.etoDateSaving;
 
-export const selectCombinedEtoCompanyData = (
-  state: IAppState,
-): TPartialEtoSpecData & TPartialCompanyEtoData => ({
-  ...selectIssuerCompany(state),
-  ...selectIssuerEto(state),
-});
+export const selectCombinedEtoCompanyData = createSelector(
+  selectIssuerCompany,
+  selectIssuerEto,
+  (company, eto) => ({ ...company, ...eto }),
+);
 
 export const selectIssuerEtoTemplates = (state: IAppState): TEtoDocumentTemplates | undefined => {
   const eto = selectIssuerEto(state);
@@ -202,7 +198,7 @@ export const selectIsTermSheetSubmitted = (state: IAppState): boolean | undefine
   const documents = selectIssuerEtoDocuments(state);
 
   if (documents) {
-    return Object.keys(documents).some(key => documents[key].documentType === "signed_termsheet");
+    return some(documents, document => document.documentType === EEtoDocumentType.SIGNED_TERMSHEET);
   }
   return undefined;
 };
@@ -211,8 +207,22 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
   const documents = selectIssuerEtoDocuments(state);
 
   if (documents) {
-    return Object.keys(documents).some(
-      key => documents[key].documentType === "approved_investor_offering_document",
+    return some(
+      documents,
+      document => document.documentType === EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT,
+    );
+  }
+  return undefined;
+};
+
+export const selectIsISHAPreviewSubmitted = (state: IAppState): boolean | undefined => {
+  const documents = selectIssuerEtoDocuments(state);
+
+  if (documents) {
+    return some(
+      documents,
+      document =>
+        document.documentType === EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW,
     );
   }
   return undefined;
@@ -220,15 +230,13 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
 
 export const selectUploadedInvestmentAgreement = (
   state: DeepReadonly<IAppState>,
-): IEtoDocument | null => {
+): IEtoDocument | undefined => {
   const etoDocuments = selectIssuerEtoDocuments(state)!;
 
-  const key = Object.keys(etoDocuments).find(
-    uploadedKey =>
-      etoDocuments[uploadedKey].documentType ===
-      EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT,
+  return find(
+    etoDocuments,
+    document => document.documentType === EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT,
   );
-  return key ? etoDocuments[key] : null;
 };
 
 export const selectInvestmentAgreementLoading = (state: DeepReadonly<IAppState>): boolean =>
@@ -249,7 +257,7 @@ export const selectNewPreEtoStartDate = (state: IAppState) => state.etoFlow.newS
 export const selectPreEtoStartDateFromContract = (state: IAppState) => {
   const eto = selectIssuerEtoWithCompanyAndContract(state);
 
-  if (eto && eto.contract) {
+  if (eto && isOnChain(eto)) {
     return eto.contract.startOfStates[EETOStateOnChain.Whitelist];
   }
 

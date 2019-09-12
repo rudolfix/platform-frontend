@@ -4,6 +4,7 @@ import {
   assertDashboard,
   assertEtoDocuments,
   assertIssuerDashboard,
+  assertLanding,
   assertNomineeDashboard,
   assertPortfolio,
   assertProfile,
@@ -15,6 +16,14 @@ export const goToDashboard = (assert = true) => {
 
   if (assert) {
     assertDashboard();
+  }
+};
+
+export const goToLanding = (assert = true) => {
+  cy.visit("/");
+
+  if (assert) {
+    assertLanding();
   }
 };
 
@@ -53,8 +62,9 @@ export const goToEtoPreview = () => {
   assertIssuerEtoView();
 };
 
-export const goToNomineeDashboard = () => {
-  cy.visit("/dashboard");
+export const goToNomineeDashboard = (forcedActiveEtoPreviewCode?: string) => {
+  cy.visit(`/dashboard${forcedActiveEtoPreviewCode ? `?eto=${forcedActiveEtoPreviewCode}` : ""}`);
+
   assertNomineeDashboard();
 };
 

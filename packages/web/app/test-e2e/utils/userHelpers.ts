@@ -4,18 +4,19 @@ import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { toChecksumAddress } from "web3-utils";
 
 import { accountFixtureByName, removePendingExternalTransaction } from ".";
-import { TEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/promisify";
 import { toCamelCase } from "../../utils/transformObjectKeys";
-import { assertUserInLanding } from "./assertions";
+import { assertLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";
 import { tid } from "./selectors";
 
 const VAULT_API_ROOT = "/api/wallet";
 export const WALLET_STORAGE_KEY = "NF_WALLET_METADATA";
 export const JWT_KEY = "NF_JWT";
+export const NF_USER_KEY = "NF_USER";
 
 const NUMBER_OF_ATTEMPTS = 2;
 
@@ -415,7 +416,7 @@ export const logout = () => {
     .get(tid("menu-logout-button"))
     .awaitedClick();
 
-  assertUserInLanding();
+  assertLanding();
 
   cy.log("logged out");
 };
@@ -445,13 +446,28 @@ export interface IHttpPartialResponse<T> {
   body: T;
 }
 
-export const getEto = (etoID: string): Cypress.Chainable<TEtoData> => {
-  if (!etoID)
+export const getEto = (etoID: string): Cypress.Chainable<TEtoDataWithCompany> => {
+  if (!etoID) {
     throw new Error("Cannot fetch undefined value please check if the fixtures are in sync");
+  }
+
   return cy
     .request({ url: ETOS_PATH, method: "GET" })
-    .then(
-      (etos: IHttpPartialResponse<TEtoData>) =>
-        etos.body && toCamelCase(etos.body).filter((eto: TEtoData) => eto.etoId === etoID)[0],
-    );
+    .then((etos: IHttpPartialResponse<TEtoDataWithCompany>) => {
+      if (!etos.body) {
+        throw new Error(`There is no body response from ${ETOS_PATH} ping backend about this`);
+      }
+
+      const result: TEtoDataWithCompany[] = toCamelCase(etos.body).filter(
+        (eto: TEtoDataWithCompany) => eto.etoId === etoID,
+      );
+
+      if (result.length === 0) {
+        throw new Error(
+          "Something is wrong with the fixtures, this sometimes happens due to users changing fixtures from the platform. ",
+        );
+      }
+      // If there is more than one eto just return the first one
+      return result[0];
+    });
 };

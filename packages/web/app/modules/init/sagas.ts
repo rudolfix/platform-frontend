@@ -6,11 +6,12 @@ import { IAppState } from "../../store";
 import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { loadJwt, setJwt } from "../auth/jwt/sagas";
-import { loadUser } from "../auth/user/sagas";
+import { loadUser } from "../auth/user/external/sagas";
 import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
 import { initWeb3ManagerEvents } from "../web3/sagas";
+import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsSmartContractInitDone } from "./selectors";
 
@@ -34,6 +35,13 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any 
   }
 }
 
+function* makeSureWalletMetaDataExists({ walletStorage }: TGlobalDependencies): Iterator<any> {
+  const metadata = walletStorage.get();
+  if (metadata === undefined) {
+    throw new WalletMetadataNotFoundError();
+  }
+}
+
 function* initApp({ logger }: TGlobalDependencies): any {
   try {
     yield neuCall(detectUserAgent);
@@ -41,16 +49,13 @@ function* initApp({ logger }: TGlobalDependencies): any {
     const jwt = yield neuCall(loadJwt);
 
     if (jwt) {
+      yield neuCall(makeSureWalletMetaDataExists);
       if (isJwtExpiringLateEnough(jwt)) {
         try {
+          yield waitUntilSmartContractsAreInitialized();
+
           yield neuCall(setJwt, jwt);
-
-          // we need to initiate smartcontracts anyway to load user properly
-          if (yield checkIfSmartcontractsInitNeeded()) {
-            yield neuCall(initSmartcontracts);
-          }
-
-          yield loadUser();
+          yield neuCall(loadUser);
         } catch (e) {
           yield put(actions.auth.logout());
           logger.error(
@@ -65,8 +70,13 @@ function* initApp({ logger }: TGlobalDependencies): any {
 
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
-    yield put(actions.init.error(EInitType.APP_INIT, e.message || "Unknown error"));
-    logger.error("App init error", e);
+    if (e instanceof WalletMetadataNotFoundError) {
+      logger.error("User has JWT but no Wallet Metadata", e);
+      yield put(actions.auth.logout());
+    } else {
+      yield put(actions.init.error(EInitType.APP_INIT, e.message || "Unknown error"));
+      logger.error("App init error", e);
+    }
   }
 }
 

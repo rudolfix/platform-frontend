@@ -25,7 +25,7 @@ import {
 import {
   assertDashboard,
   assertIssuerDashboard,
-  assertUserInLanding,
+  assertLanding,
   assertWaitForExternalPendingTransactionCount,
   getLatestEmailByUser,
 } from "./assertions";
@@ -188,7 +188,7 @@ export const logoutViaAccountMenu = () => {
     .get(tid("menu-logout-button"))
     .awaitedClick();
 
-  assertUserInLanding();
+  assertLanding();
 };
 
 export const goThroughKycCorporateProcess = () => {

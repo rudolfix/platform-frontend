@@ -1,7 +1,10 @@
 import { find, get } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
-import { walletRegisterRoutes } from "../../components/wallet-selector/walletRoutes";
+import {
+  walletLoginRoutes,
+  walletRegisterRoutes,
+} from "../../components/wallet-selector/walletRoutes";
 import { mockApiUrl } from "../config";
 import { tid } from "./selectors";
 import { getPendingTransactions } from "./userHelpers";
@@ -26,9 +29,21 @@ export const assertDashboard = () => {
   return cy.url().should("contain", appRoutes.dashboard);
 };
 
+export const assertLanding = () => {
+  cy.title().should("eq", "Neufund Platform");
+  cy.get(tid("landing-page")).should("exist");
+
+  cy.url().should("contain", appRoutes.root);
+};
+
 export const assertRegister = () => {
-  cy.get(tid("register-layout")).should("exist");
+  cy.get(tid("wallet-selector")).should("exist");
   cy.url().should("contain", walletRegisterRoutes.light);
+};
+
+export const assertLogin = () => {
+  cy.get(tid("wallet-selector")).should("exist");
+  cy.url().should("contain", walletLoginRoutes.light);
 };
 
 export const assertPortfolio = () => {
@@ -119,14 +134,6 @@ export const assertWaitForExternalPendingTransactionCount = (
 
 export const assertLockedAccessModal = () => {
   cy.get(tid("access-light-wallet-locked")).should("exist");
-};
-
-export const assertUserInLanding = () => {
-  cy.url().should("contain", appRoutes.root);
-
-  cy.title().should("eq", "Neufund Platform");
-
-  cy.get(tid("landing-page")).should("exist");
 };
 
 export const assertMoneyNotEmpty = (testId: string) => {

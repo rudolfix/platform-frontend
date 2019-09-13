@@ -164,8 +164,8 @@ const EtoRegistrationLegalInformation = compose<React.FunctionComponent<IExterna
   setDisplayName(EEtoFormTypes.LegalInformation),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      loadingData: state.etoFlow.loading,
-      savingData: state.etoFlow.saving,
+      loadingData: state.etoIssuer.loading,
+      savingData: state.etoIssuer.saving,
       company: selectIssuerCompany(state) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({

@@ -60,7 +60,7 @@ storiesOf("ETO-Flow/Registration-forms", module)
     <Provider
       store={createStore(() => ({
         etoNominee: { isLoading: false },
-        etoFlow: { loading: false },
+        etoIssuer: { loading: false },
       }))}
     >
       <Formik initialValues={eto} onSubmit={() => {}}>

@@ -277,8 +277,8 @@ const EtoRegistrationKeyIndividuals = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.KeyIndividuals),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      loadingData: s.etoFlow.loading,
-      savingData: s.etoFlow.saving,
+      loadingData: s.etoIssuer.loading,
+      savingData: s.etoIssuer.saving,
       stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({

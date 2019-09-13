@@ -386,8 +386,8 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoInvestmentTerms),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      loadingData: s.etoFlow.loading,
-      savingData: s.etoFlow.saving,
+      loadingData: s.etoIssuer.loading,
+      savingData: s.etoIssuer.saving,
       eto: selectIssuerEto(s)!,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoInvestmentTerms, selectIssuerEtoState(s)),
     }),

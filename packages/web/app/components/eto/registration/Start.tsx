@@ -25,7 +25,7 @@ export const EtoRegister = compose<React.FunctionComponent>(
   onEnterAction({ actionCreator: d => d(actions.etoFlow.loadIssuerEto()) }),
   appConnect<IStateProps>({
     stateToProps: s => ({
-      isLoading: s.etoFlow.loading,
+      isLoading: s.etoIssuer.loading,
     }),
   }),
   branch<IStateProps>(props => props.isLoading, renderComponent(LoadingIndicator)),

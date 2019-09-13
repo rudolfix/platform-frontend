@@ -79,8 +79,8 @@ export const connectEtoVotingRightsForm = (
     setDisplayName(EEtoFormTypes.EtoVotingRights),
     appConnect<TStateProps, TDispatchProps>({
       stateToProps: s => ({
-        loadingData: s.etoFlow.loading,
-        savingData: s.etoFlow.saving,
+        loadingData: s.etoIssuer.loading,
+        savingData: s.etoIssuer.saving,
         stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
         readonly: etoFormIsReadonly(EEtoFormTypes.EtoVotingRights, selectIssuerEtoState(s)),
         currentNomineeId: selectEtoNominee(s),

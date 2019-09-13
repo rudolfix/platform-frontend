@@ -93,8 +93,8 @@ const EtoEquityTokenInfo = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoEquityTokenInfo),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      loadingData: s.etoFlow.loading,
-      savingData: s.etoFlow.saving,
+      loadingData: s.etoIssuer.loading,
+      savingData: s.etoIssuer.saving,
       stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoEquityTokenInfo, selectIssuerEtoState(s)),
     }),

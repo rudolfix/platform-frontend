@@ -104,7 +104,9 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
   downloadDocument,
 }) => {
   const isProductSet = etoData.product.id !== ETHEREUM_ZERO_ADDRESS;
-  const computedNewSharePrice = etoData.preMoneyValuationEur / etoData.existingCompanyShares;
+  const newSharePrice = etoData.investmentCalculatedValues
+    ? etoData.investmentCalculatedValues.sharePrice
+    : undefined;
 
   return (
     <Panel className={styles.tokenTerms}>
@@ -128,23 +130,23 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               data-test-id="eto-public-view-pre-money-valuation"
             />
             <Entry
-              label={<FormattedMessage id="eto.public-view.token-terms.existing-shares" />}
+              label={<FormattedMessage id="eto.public-view.token-terms.existing-share-capital" />}
               value={
                 <FormatNumber
-                  value={etoData.existingCompanyShares}
+                  value={etoData.existingShareCapital}
                   outputFormat={ENumberOutputFormat.INTEGER}
                   inputFormat={ENumberInputFormat.FLOAT}
                   defaultValue={<ToBeAnnounced />}
                 />
               }
-              data-test-id="eto-public-view-existing-shares"
+              data-test-id="eto-public-view-existing-share-capital"
             />
-            {etoData.authorizedCapitalShares && (
+            {etoData.authorizedCapital && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.authorized-capital" />}
                 value={
                   <FormatNumber
-                    value={etoData.authorizedCapitalShares}
+                    value={etoData.authorizedCapital}
                     outputFormat={ENumberOutputFormat.INTEGER}
                     inputFormat={ENumberInputFormat.FLOAT}
                     defaultValue={<ToBeAnnounced />}
@@ -186,7 +188,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.new-share-price" />}
               value={
                 <MoneyNew
-                  value={computedNewSharePrice}
+                  value={newSharePrice}
                   valueType={EPriceFormat.SHARE_PRICE}
                   inputFormat={ENumberInputFormat.FLOAT}
                   outputFormat={ENumberOutputFormat.FULL}
@@ -228,8 +230,8 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               value={
                 <MoneyNew
                   value={
-                    computedNewSharePrice && etoData.equityTokensPerShare
-                      ? computedNewSharePrice / etoData.equityTokensPerShare
+                    newSharePrice && etoData.equityTokensPerShare
+                      ? newSharePrice / etoData.equityTokensPerShare
                       : undefined
                   }
                   inputFormat={ENumberInputFormat.FLOAT}

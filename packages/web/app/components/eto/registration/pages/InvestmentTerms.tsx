@@ -12,10 +12,10 @@ import {
 } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
 import {
-  getCapPercent,
-  getInvestmentAmount,
-  getNumberOfTokens,
-  getShareAndTokenPrice,
+  calcCapPercent,
+  calcInvestmentAmount,
+  calcNumberOfTokens,
+  calcShareAndTokenPrice,
 } from "../../../../lib/api/eto/EtoUtils";
 import { actions } from "../../../../modules/actions";
 import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
@@ -114,7 +114,8 @@ const InvestmentCalculator: React.FunctionComponent<ICalculatorProps> = ({
         newSharesToIssue: parseStringToFloat()(values.newSharesToIssue),
         minimumNewSharesToIssue: parseStringToFloat()(values.minimumNewSharesToIssue),
         equityTokensPerShare: parseStringToFloat()(values.equityTokensPerShare),
-        existingCompanyShares: parseStringToFloat()(values.existingCompanyShares),
+        existingShareCapital: parseStringToFloat()(values.existingShareCapital),
+        newShareNominalValue: parseStringToFloat()(values.newShareNominalValue),
         preMoneyValuationEur: parseStringToFloat()(values.preMoneyValuationEur),
         newSharesToIssueInFixedSlots: parseStringToFloat()(values.newSharesToIssueInFixedSlots),
         newSharesToIssueInWhitelist: parseStringToFloat()(values.newSharesToIssueInWhitelist),
@@ -129,12 +130,12 @@ const InvestmentCalculator: React.FunctionComponent<ICalculatorProps> = ({
           : 0,
       };
 
-      const { computedMaxNumberOfTokens, computedMinNumberOfTokens } = getNumberOfTokens(
+      const { computedMaxNumberOfTokens, computedMinNumberOfTokens } = calcNumberOfTokens(
         calculatorValues,
       );
-      const { computedMaxCapPercent, computedMinCapPercent } = getCapPercent(calculatorValues);
-      const { sharePrice, tokenPrice } = getShareAndTokenPrice(calculatorValues);
-      const { minInvestmentAmount, maxInvestmentAmount } = getInvestmentAmount(
+      const { computedMaxCapPercent, computedMinCapPercent } = calcCapPercent(calculatorValues);
+      const { sharePrice, tokenPrice } = calcShareAndTokenPrice(calculatorValues);
+      const { minInvestmentAmount, maxInvestmentAmount } = calcInvestmentAmount(
         calculatorValues,
         sharePrice,
       );
@@ -253,14 +254,14 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
         label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
       />
       <FormMaskedNumberInput
-        name="shareNominalValueEur"
+        name="newShareNominalValueEur"
         storageFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.FULL}
         valueType={ECurrency.EUR}
         showUnits={true}
         placeholder="1"
         disabled={readonly}
-        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
+        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value-eur" />}
       />
       <FormMaskedNumberInput
         name="preMoneyValuationEur"
@@ -274,19 +275,19 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
         }
       />
       <FormMaskedNumberInput
-        name="existingCompanyShares"
+        name="existingShareCapital"
         storageFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.INTEGER}
         disabled={readonly}
-        placeholder="Number of existing shares"
-        label={<FormattedMessage id="eto.form.section.investment-terms.existing-shares" />}
+        placeholder="Amount of share capital"
+        label={<FormattedMessage id="eto.form.section.investment-terms.existing-share-capital" />}
       />
       <FormMaskedNumberInput
-        name="authorizedCapitalShares"
+        name="authorizedCapital"
         storageFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.INTEGER}
         disabled={readonly}
-        placeholder="Number of shares"
+        placeholder="Amount of share capital"
         label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
       />
       <FormMaskedNumberInput
@@ -431,11 +432,13 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
 const toFormState = {
   preMoneyValuationEur: convertNumberToString(),
   equityTokensPerShare: convertNumberToString(),
-  existingCompanyShares: convertNumberToString(),
+  existingShareCapital: convertNumberToString(),
+  // todo: add shareCapitalCurrencyCode
   minimumNewSharesToIssue: convertNumberToString(),
   newSharesToIssue: convertNumberToString(),
-  shareNominalValueEur: convertNumberToString(),
-  authorizedCapitalShares: convertNumberToString(),
+  // todo: add newShareNominalValue
+  newShareNominalValueEur: convertNumberToString(),
+  authorizedCapital: convertNumberToString(),
   newSharesToIssueInWhitelist: convertNumberToString(),
   newSharesToIssueInFixedSlots: convertNumberToString(),
   whitelistDiscountFraction: [convertFractionToPercentage(), convertNumberToString()],
@@ -449,13 +452,13 @@ const fromFormState = {
   fixedSlotsMaximumDiscountFraction: [parseStringToFloat(), convertPercentageToFraction()],
   preMoneyValuationEur: parseStringToInteger(),
   equityTokensPerShare: parseStringToInteger(),
-  existingCompanyShares: parseStringToInteger(),
+  existingShareCapital: parseStringToInteger(),
   newSharesToIssueInFixedSlots: parseStringToInteger(),
   newSharesToIssueInWhitelist: parseStringToInteger(),
-  shareNominalValueEur: parseStringToFloat(),
+  newShareNominalValueEur: parseStringToFloat(),
   minimumNewSharesToIssue: parseStringToInteger(),
   newSharesToIssue: parseStringToInteger(),
-  authorizedCapitalShares: parseStringToInteger(),
+  authorizedCapital: parseStringToInteger(),
 };
 
 export { EtoInvestmentTerms, EtoInvestmentTermsComponent, InvestmentCalculator };

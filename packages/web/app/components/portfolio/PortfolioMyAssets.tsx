@@ -132,13 +132,13 @@ const PortfolioMyAssetsComponent: React.FunctionComponent<TComponentProps> = ({
               </span>
               <MoneyNew
                 value={multiplyBigNumbers([tokenData.tokenPrice, tokenData.balance])}
-                inputFormat={ENumberInputFormat.ULPS}
+                inputFormat={ENumberInputFormat.FLOAT}
                 valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL}
               />
               <MoneyNew
                 value={tokenData.tokenPrice}
-                inputFormat={ENumberInputFormat.ULPS}
+                inputFormat={ENumberInputFormat.FLOAT}
                 valueType={ECurrency.EUR}
                 outputFormat={ENumberOutputFormat.FULL}
               />

@@ -130,20 +130,20 @@ const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => (
         label={<FormattedMessage id="eto.form.legal-information.last-funding-amount" />}
       />
       <FormMaskedNumberInput
-        name="companyShares"
+        name="companyShareCapital"
         storageFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.INTEGER}
         valueType={undefined}
-        label={<FormattedMessage id="eto.form.legal-information.number-of-existing-shares" />}
+        label={<FormattedMessage id="eto.form.legal-information.amount-of-share-capital" />}
       />
       <FormHighlightGroup
         title={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
       >
         <ArrayOfKeyValueFields
           name="shareholders"
-          valuePlaceholder={"Amount of shares"}
+          valuePlaceholder={"Share capital"}
           suggestions={["Full Name"]}
-          fieldNames={["fullName", "shares"]}
+          fieldNames={["fullName", "shareCapital"]}
         />
       </FormHighlightGroup>
     </Section>
@@ -183,14 +183,17 @@ const EtoRegistrationLegalInformation = compose<React.FunctionComponent<IExterna
 )(EtoRegistrationLegalInformationComponent);
 
 const toFormState = {
-  companyShares: convertNumberToString(),
+  companyShareCapital: convertNumberToString(),
   numberOfFounders: convertNumberToString(),
   lastFundingSizeEur: convertNumberToString(),
 };
 
 const fromFormState = {
-  shareholders: [removeEmptyKeyValueFields(), convertInArray({ shares: parseStringToInteger() })],
-  companyShares: parseStringToInteger(),
+  shareholders: [
+    removeEmptyKeyValueFields(),
+    convertInArray({ shareCapital: parseStringToInteger() }),
+  ],
+  companyShareCapital: parseStringToInteger(),
   lastFundingSizeEur: parseStringToFloat(),
   numberOfFounders: parseStringToInteger(),
 };

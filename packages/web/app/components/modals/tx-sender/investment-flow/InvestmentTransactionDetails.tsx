@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { getShareAndTokenPrice } from "../../../../lib/api/eto/EtoUtils";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
@@ -166,11 +165,9 @@ const InvestmentTransactionDetails: TransactionDetailsComponent<ETxSenderType.IN
     additionalData.equityTokens,
   );
 
-  const { tokenPrice: fullTokenPrice } = getShareAndTokenPrice({
-    preMoneyValuationEur: additionalData.eto.preMoneyValuationEur,
-    existingCompanyShares: additionalData.eto.existingCompanyShares,
-    equityTokensPerShare: additionalData.eto.equityTokensPerShare,
-  });
+  const fullTokenPrice =
+    additionalData.eto.investmentCalculatedValues.sharePrice! /
+    additionalData.eto.equityTokensPerShare;
 
   const discount = getTokenPriceDiscount(fullTokenPrice.toString(), actualTokenPrice);
   return (

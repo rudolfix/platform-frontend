@@ -12,12 +12,12 @@ import {
   MAX_VOTING_DURATION,
   MAX_VOTING_FINALIZATION_DURATION,
   MAX_VOTING_MAJORITY_FRACTION,
-  MIN_COMPANY_SHARES,
-  MIN_EXISTING_COMPANY_SHARES,
+  MIN_COMPANY_SHARE_CAPITAL,
+  MIN_EXISTING_SHARE_CAPITAL,
+  MIN_NEW_SHARE_NOMINAL_VALUE,
   MIN_NEW_SHARES_TO_ISSUE,
   MIN_PRE_MONEY_VALUATION_EUR,
   MIN_RESTRICTED_ACT_VOTING_DURATION,
-  MIN_SHARE_NOMINAL_VALUE_EUR,
   MIN_VOTING_DURATION,
   MIN_VOTING_FINALIZATION_DURATION,
   MIN_VOTING_MAJORITY_FRACTION,
@@ -135,7 +135,7 @@ type TEtoKeyIndividualsType = YupTS.TypeOf<typeof EtoKeyIndividualsType>;
 
 const EtoLegalShareholderType = YupTS.object({
   fullName: YupTS.string().optional(),
-  shares: YupTS.number()
+  shareCapital: YupTS.number()
     .optional()
     .enhance(v => v.moreThan(0)),
 });
@@ -156,7 +156,8 @@ export const EtoLegalInformationType = YupTS.object({
   companyStage: YupTS.string().optional(),
   numberOfFounders: YupTS.number().optional(),
   lastFundingSizeEur: YupTS.number().optional(),
-  companyShares: YupTS.number().enhance(v => v.min(MIN_COMPANY_SHARES)),
+  companyShareCapital: YupTS.number().enhance(v => v.min(MIN_COMPANY_SHARE_CAPITAL)),
+  shareCapitalCurrencyCode: YupTS.string().optional(),
   shareholders: YupTS.array(EtoLegalShareholderType.optional()).optional(),
 });
 
@@ -320,6 +321,21 @@ export const getEtoTermsSchema = ({
     }),
   });
 
+export const EtoInvestmentCalculatedValues = YupTS.object({
+  minInvestmentAmount: YupTS.number(),
+  maxInvestmentAmountWithAllDiscounts: YupTS.number(),
+  maxInvestmentAmount: YupTS.number(),
+  effectiveMaxTicket: YupTS.number(),
+  sharePrice: YupTS.number(),
+  publicSharePrice: YupTS.number(),
+  discountedSharePrice: YupTS.number(),
+  fixedSlotsMinSharePrice: YupTS.number(),
+  canBeListed: YupTS.boolean(),
+  canGoOnChain: YupTS.boolean(),
+});
+
+export type TEtoInvestmentCalculatedValues = YupTS.TypeOf<typeof EtoInvestmentCalculatedValues>;
+
 export type TEtoTermsType = YupTS.TypeOf<ReturnType<typeof getEtoTermsSchema>>;
 
 export const EtoEquityTokenInfoType = YupTS.object({
@@ -373,10 +389,12 @@ export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
 export const EtoInvestmentTermsType = YupTS.object({
   equityTokensPerShare: YupTS.number(),
-  shareNominalValueEur: YupTS.number().enhance(v => v.min(MIN_SHARE_NOMINAL_VALUE_EUR)),
+  newShareNominalValue: YupTS.number().enhance(v => v.min(MIN_NEW_SHARE_NOMINAL_VALUE)),
+  newShareNominalValueEur: YupTS.number().enhance(v => v.min(MIN_NEW_SHARE_NOMINAL_VALUE)),
   preMoneyValuationEur: YupTS.number().enhance(v => v.min(MIN_PRE_MONEY_VALUATION_EUR)),
-  existingCompanyShares: YupTS.number().enhance(v => v.min(MIN_EXISTING_COMPANY_SHARES)),
-  authorizedCapitalShares: YupTS.number().optional(),
+  existingShareCapital: YupTS.number().enhance(v => v.min(MIN_EXISTING_SHARE_CAPITAL)),
+  shareCapitalCurrencyCode: YupTS.string().optional(),
+  authorizedCapital: YupTS.number().optional(),
   newSharesToIssue: YupTS.number()
     .enhance(v => v.required())
     .enhance(v =>
@@ -406,6 +424,7 @@ export const EtoInvestmentTermsType = YupTS.object({
     .optional()
     .enhance(v => v.max(MAX_PERCENTAGE)),
   discountScheme: YupTS.string().optional(),
+  investmentCalculatedValues: EtoInvestmentCalculatedValues.optional(),
 });
 
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;

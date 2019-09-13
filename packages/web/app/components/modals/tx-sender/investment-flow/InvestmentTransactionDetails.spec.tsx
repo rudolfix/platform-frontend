@@ -11,9 +11,12 @@ describe("InvestmentTransactionDetails", () => {
     eto: {
       etoId: "0xE31EDf5FFB259CDfD701A62Fe50B9C2450726875",
       companyName: "Blokke",
-      existingCompanyShares: 5000,
+      existingShareCapital: 5000,
       equityTokensPerShare: 10000,
       preMoneyValuationEur: 30000000,
+      investmentCalculatedValues: {
+        sharePrice: 30000000 / (5000 * 10000),
+      },
     },
     investmentEth: "194415356251498492",
     investmentEur: "44000000000000000000",

@@ -1,4 +1,3 @@
-import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -14,7 +13,7 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormFieldBoolean, FormTextArea } from "../../../shared/forms";
-import { EtoFormBase } from "../EtoFormBase.unsafe";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
@@ -29,10 +28,15 @@ interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
+type IProps = IStateProps & IDispatchProps;
 
 const EtoRegistrationRiskAssessmentComponent = (props: IProps) => (
-  <EtoFormBase title="Risk Assessment" validator={EtoRiskAssessmentType.toYup()}>
+  <EtoFormBase
+    title="Risk Assessment"
+    validationSchema={EtoRiskAssessmentType.toYup()}
+    initialValues={props.stateValues}
+    onSubmit={props.saveData}
+  >
     <Section>
       <FormTextArea
         className="my-2"
@@ -124,11 +128,6 @@ const EtoRegistrationRiskAssessment = compose<React.FunctionComponent>(
         );
       },
     }),
-  }),
-  withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
-    validationSchema: EtoRiskAssessmentType.toYup(),
-    mapPropsToValues: props => props.stateValues,
-    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationRiskAssessmentComponent);
 

@@ -1,4 +1,3 @@
-import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -19,7 +18,7 @@ import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload.unsafe";
 import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
 import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget.unsafe";
-import { EtoFormBase } from "../EtoFormBase.unsafe";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
@@ -38,13 +37,17 @@ const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
 type IProps = IStateProps & IDispatchProps;
 
-const EtoRegistrationCompanyInformationComponent = (
-  props: FormikProps<TPartialCompanyEtoData> & IProps,
-) => (
+const EtoRegistrationCompanyInformationComponent = ({
+  stateValues,
+  saveData,
+  savingData,
+}: IProps) => (
   <EtoFormBase
     data-test-id="eto.form.company-information"
     title="Company Information"
-    validator={EtoCompanyInformationType.toYup()}
+    validationSchema={EtoCompanyInformationType.toYup()}
+    initialValues={stateValues}
+    onSubmit={saveData}
   >
     <Section>
       <FormField
@@ -128,7 +131,7 @@ const EtoRegistrationCompanyInformationComponent = (
       <Button
         layout={EButtonLayout.PRIMARY}
         type="submit"
-        isLoading={props.savingData}
+        isLoading={savingData}
         data-test-id="eto-registration-company-information-submit"
       >
         <FormattedMessage id="form.button.save" />
@@ -150,11 +153,6 @@ const EtoRegistrationCompanyInformation = compose<React.FunctionComponent>(
         dispatch(actions.etoFlow.saveDataStart({ companyData: data, etoData: {} }));
       },
     }),
-  }),
-  withFormik<IProps, TPartialCompanyEtoData>({
-    validationSchema: EtoCompanyInformationType.toYup(),
-    mapPropsToValues: props => props.stateValues,
-    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationCompanyInformationComponent);
 

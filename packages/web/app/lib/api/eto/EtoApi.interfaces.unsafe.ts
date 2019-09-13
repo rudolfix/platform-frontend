@@ -26,7 +26,7 @@ import {
 } from "../../../config/constants";
 import { DeepPartial, DeepReadonly, EthereumAddressWithChecksum } from "../../../types";
 import * as YupTS from "../../yup-ts.unsafe";
-import { dateSchema, percentage } from "../util/schemaHelpers.unsafe";
+import { dateSchema, percentage } from "../util/customSchemas.unsafe";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 import { TEtoProduct } from "./EtoProductsApi.interfaces";
 

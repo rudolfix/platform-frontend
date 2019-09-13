@@ -1,4 +1,3 @@
-import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -20,7 +19,7 @@ import { MediaLinksEditor } from "../../../shared/MediaLinksEditor.unsafe";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { Tooltip } from "../../../shared/tooltips";
 import { convert, removeEmptyKeyValueField, removeEmptyKeyValueFields } from "../../utils";
-import { EtoFormBase } from "../EtoFormBase.unsafe";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
@@ -35,13 +34,15 @@ interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
+type IProps = IStateProps & IDispatchProps;
 
-const EtoRegistrationMediaComponent = ({ savingData }: IProps) => (
+const EtoRegistrationMediaComponent = ({ savingData, stateValues, saveData }: IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-media.title" />}
-    validator={EtoMediaType.toYup()}
     progressOptions={etoMediaProgressOptions}
+    validationSchema={EtoMediaType.toYup()}
+    initialValues={stateValues}
+    onSubmit={saveData}
   >
     <Section>
       <FormFieldLabel
@@ -127,11 +128,6 @@ const EtoRegistrationMedia = compose<React.FunctionComponent>(
         dispatch(actions.etoFlow.saveDataStart({ companyData: convertedData, etoData: {} }));
       },
     }),
-  }),
-  withFormik<IProps, TPartialCompanyEtoData>({
-    validationSchema: EtoMediaType.toYup(),
-    mapPropsToValues: props => props.stateValues,
-    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationMediaComponent);
 

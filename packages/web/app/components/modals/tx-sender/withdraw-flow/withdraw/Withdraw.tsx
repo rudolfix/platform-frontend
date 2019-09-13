@@ -38,7 +38,7 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { Form } from "../../../../shared/forms";
+import { FormDeprecated } from "../../../../shared/forms";
 import { EHeadingSize, Heading } from "../../../../shared/Heading";
 import { DataRow } from "../../shared/DataRow";
 import {
@@ -151,7 +151,7 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
         errors,
         touched,
       }: FormikProps<IWithdrawData>) => (
-        <Form>
+        <FormDeprecated>
           <EtherAddressFormRow errors={errors} values={values} />
           <ShowAdditionalNotifications errors={errors} notifications={notifications} />
           <AvailableEthBalance ethAmount={ethAmount} />
@@ -225,7 +225,7 @@ const WithdrawLayout: React.FunctionComponent<TProps> = ({
               )}
             </Button>
           </section>
-        </Form>
+        </FormDeprecated>
       )}
     </Formik>
   </section>

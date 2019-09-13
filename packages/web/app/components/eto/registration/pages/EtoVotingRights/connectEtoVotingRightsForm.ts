@@ -1,4 +1,3 @@
-import { withFormik } from "formik";
 import * as React from "react";
 import { compose, setDisplayName } from "recompose";
 import * as Yup from "yup";
@@ -98,15 +97,6 @@ export const connectEtoVotingRightsForm = (
         },
       }),
     }),
-    withFormik<TExternalProps & TStateProps & TDispatchProps, TPartialEtoSpecData>({
-      mapPropsToValues: props => {
-        const converted = convert(props.stateValues, toFormState);
-        converted.advisoryBoardSelector = converted.advisoryBoard && !!converted.advisoryBoard;
-        return converted;
-      },
-      validationSchema: EtoVotingRightsValidator,
-      handleSubmit: (values, { props }) => props.saveData(values),
-    }),
   )(WrappedComponent);
 
 const fromFormState = {
@@ -119,7 +109,7 @@ const fromFormState = {
   restrictedActVotingDurationDays: parseStringToInteger(),
 };
 
-const toFormState = {
+export const toFormState = {
   votingFinalizationDurationDays: convertNumberToString(),
   votingMajorityFraction: [convertFractionToPercentage(), convertNumberToString()],
   generalVotingDurationDays: convertNumberToString(),

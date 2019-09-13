@@ -11,7 +11,7 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { CheckboxLayout, EInputSize, Form, FormInput } from "../../../../shared/forms";
+import { CheckboxLayout, EInputSize, FormDeprecated, FormInput } from "../../../../shared/forms";
 import { Tooltip } from "../../../../shared/tooltips";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -92,7 +92,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
         onSubmit={({ amount }) => backNow(Number(amount))}
         validationSchema={generateCampaigningValidation(minPledge, maxPledge)}
       >
-        <Form className={styles.group}>
+        <FormDeprecated className={styles.group}>
           <div className={cn(styles.label)}>
             <FormattedMessage id="eto-overview.campaigning.indicate-commitment" />
             <FormInput size={EInputSize.SMALL} name="amount" prefix="€" maxLength={8} type="text" />
@@ -107,7 +107,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
               <FormattedMessage id="shared-component.eto-overview.back-now" />
             </Button>
           </div>
-        </Form>
+        </FormDeprecated>
       </Formik>
     )}
   </>

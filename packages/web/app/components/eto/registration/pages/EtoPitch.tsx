@@ -1,4 +1,3 @@
-import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -22,7 +21,7 @@ import {
   convertPercentageToFraction,
   removeEmptyKeyValueFields,
 } from "../../utils";
-import { EtoFormBase } from "../EtoFormBase.unsafe";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
@@ -37,14 +36,16 @@ interface IDispatchProps {
   saveData: (values: TPartialCompanyEtoData) => void;
 }
 
-type IProps = IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
+type IProps = IStateProps & IDispatchProps;
 
 const distributionSuggestions = ["Development", "Other"];
 
 const EtoRegistrationPitchComponent = (props: IProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form-progress-widget.company-information.product-vision" />}
-    validator={EtoPitchType.toYup()}
+    validationSchema={EtoPitchType.toYup()}
+    initialValues={convert(props.stateValues, toFormState)}
+    onSubmit={props.saveData}
   >
     <Section>
       <FormTextArea
@@ -180,11 +181,6 @@ const EtoRegistrationPitch = compose<React.FunctionComponent>(
         );
       },
     }),
-  }),
-  withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
-    validationSchema: EtoPitchType.toYup(),
-    mapPropsToValues: props => convert(props.stateValues, toFormState),
-    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoRegistrationPitchComponent);
 

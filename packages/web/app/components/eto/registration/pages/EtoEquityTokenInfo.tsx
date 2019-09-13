@@ -1,4 +1,3 @@
-import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -18,7 +17,7 @@ import { FormField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload.unsafe";
 import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
-import { EtoFormBase } from "../EtoFormBase.unsafe";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
@@ -37,12 +36,19 @@ interface IDispatchProps {
   saveData: (values: TPartialEtoSpecData) => void;
 }
 
-type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialEtoSpecData>;
+type IProps = IExternalProps & IStateProps & IDispatchProps;
 
-const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({ readonly, savingData }) => (
+const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({
+  readonly,
+  savingData,
+  stateValues,
+  saveData,
+}) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.eto-equity-token-info.title" />}
-    validator={EtoEquityTokenInfoType.toYup()}
+    validationSchema={EtoEquityTokenInfoType.toYup()}
+    initialValues={stateValues}
+    onSubmit={saveData}
   >
     <Section>
       <FormField
@@ -99,22 +105,14 @@ const EtoEquityTokenInfo = compose<React.FunctionComponent<IExternalProps>>(
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoEquityTokenInfo, selectIssuerEtoState(s)),
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TPartialEtoSpecData) => {
+      saveData: (etoData: TPartialEtoSpecData) => {
         dispatch(
           actions.etoFlow.saveDataStart({
-            companyData: {},
-            etoData: {
-              ...data,
-            },
+            etoData,
           }),
         );
       },
     }),
-  }),
-  withFormik<IStateProps & IDispatchProps, TPartialEtoSpecData>({
-    validationSchema: EtoEquityTokenInfoType.toYup(),
-    mapPropsToValues: props => props.stateValues,
-    handleSubmit: (values, props) => props.props.saveData(values),
   }),
 )(EtoEquityTokenInfoComponent);
 

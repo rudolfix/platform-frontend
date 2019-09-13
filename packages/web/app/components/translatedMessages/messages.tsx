@@ -5,7 +5,7 @@ import { externalRoutes } from "../../config/externalRoutes";
 import { EWalletSubType } from "../../modules/web3/types";
 import { TTranslatedString } from "../../types";
 import { assertNever } from "../../utils/assertNever";
-import { MoneyNew } from "../shared/formatters/Money";
+import { Money } from "../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { TMessage } from "./utils";
 
@@ -641,7 +641,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
           id="shared-component.eto-overview.error.min-pledge"
           values={{
             minPledge: (
-              <MoneyNew
+              <Money
                 value={messageData as number}
                 inputFormat={ENumberInputFormat.FLOAT}
                 valueType={ECurrency.EUR}
@@ -657,7 +657,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
           id="shared-component.eto-overview.error.max-pledge"
           values={{
             maxPledge: (
-              <MoneyNew
+              <Money
                 value={messageData as number}
                 inputFormat={ENumberInputFormat.FLOAT}
                 valueType={ECurrency.EUR}

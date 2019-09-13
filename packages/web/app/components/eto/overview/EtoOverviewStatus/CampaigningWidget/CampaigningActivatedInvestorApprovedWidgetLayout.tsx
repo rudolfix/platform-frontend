@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { Button, ButtonSize, ButtonWidth } from "../../../../shared/buttons";
-import { MoneyNew } from "../../../../shared/formatters/Money";
+import { Money } from "../../../../shared/formatters/Money";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -68,7 +68,7 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
         <div className={styles.label} data-test-id="campaigning-your-commitment">
           <FormattedMessage id="eto-overview.campaigning.your-commitment" />
           <br />
-          <MoneyNew
+          <Money
             value={pledgedAmount}
             inputFormat={ENumberInputFormat.FLOAT}
             valueType={ECurrency.EUR}

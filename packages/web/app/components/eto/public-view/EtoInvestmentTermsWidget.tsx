@@ -12,7 +12,7 @@ import { TDataTestId, TTranslatedString } from "../../../types";
 import { DocumentTemplateButton } from "../../shared/DocumentLink";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";
 import { FormatNumberRange } from "../../shared/formatters/FormatNumberRange";
-import { MoneyNew } from "../../shared/formatters/Money";
+import { Money } from "../../shared/formatters/Money";
 import { MoneyRange } from "../../shared/formatters/MoneyRange";
 import {
   ECurrency,
@@ -117,7 +117,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.pre-money-valuation" />}
               value={
-                <MoneyNew
+                <Money
                   value={etoData.preMoneyValuationEur}
                   inputFormat={ENumberInputFormat.FLOAT}
                   valueType={ECurrency.EUR}
@@ -185,7 +185,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.new-share-price" />}
               value={
-                <MoneyNew
+                <Money
                   value={computedNewSharePrice}
                   valueType={EPriceFormat.SHARE_PRICE}
                   inputFormat={ENumberInputFormat.FLOAT}
@@ -226,7 +226,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.token-price" />}
               value={
-                <MoneyNew
+                <Money
                   value={
                     computedNewSharePrice && etoData.equityTokensPerShare
                       ? computedNewSharePrice / etoData.equityTokensPerShare

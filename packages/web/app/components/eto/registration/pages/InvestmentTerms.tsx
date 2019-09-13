@@ -18,7 +18,12 @@ import {
   getShareAndTokenPrice,
 } from "../../../../lib/api/eto/EtoUtils";
 import { actions } from "../../../../modules/actions";
-import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
+import {
+  selectIssuerEto,
+  selectIssuerEtoLoading,
+  selectIssuerEtoSaving,
+  selectIssuerEtoState,
+} from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
@@ -408,8 +413,8 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoInvestmentTerms),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      loadingData: s.etoIssuer.loading,
-      savingData: s.etoIssuer.saving,
+      loadingData: selectIssuerEtoLoading(s),
+      savingData: selectIssuerEtoSaving(s),
       eto: selectIssuerEto(s)!,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoInvestmentTerms, selectIssuerEtoState(s)),
     }),

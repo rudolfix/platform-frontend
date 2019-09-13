@@ -20,6 +20,8 @@ import {
   selectEtoNominee,
   selectEtoNomineeDisplayName,
   selectIssuerEto,
+  selectIssuerEtoLoading,
+  selectIssuerEtoSaving,
   selectIssuerEtoState,
 } from "../../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../../modules/eto-flow/types";
@@ -78,8 +80,8 @@ export const connectEtoVotingRightsForm = (
     setDisplayName(EEtoFormTypes.EtoVotingRights),
     appConnect<TStateProps, TDispatchProps>({
       stateToProps: s => ({
-        loadingData: s.etoIssuer.loading,
-        savingData: s.etoIssuer.saving,
+        loadingData: selectIssuerEtoLoading(s),
+        savingData: selectIssuerEtoSaving(s),
         stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
         readonly: etoFormIsReadonly(EEtoFormTypes.EtoVotingRights, selectIssuerEtoState(s)),
         currentNomineeId: selectEtoNominee(s),

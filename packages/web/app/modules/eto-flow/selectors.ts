@@ -309,7 +309,7 @@ export const selectAvailableProducts = createSelector(
   },
 );
 
-export const selectIsSaving = createSelector(
+export const selectIssuerEtoSaving = createSelector(
   selectIssuerEtoFlow,
   state => state.saving,
 );

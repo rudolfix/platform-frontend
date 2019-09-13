@@ -8,7 +8,11 @@ import {
   TPartialCompanyEtoData,
 } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
-import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
+import {
+  selectIssuerCompany,
+  selectIssuerEtoLoading,
+  selectIssuerEtoSaving,
+} from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
@@ -118,8 +122,8 @@ const EtoRegistrationMedia = compose<React.FunctionComponent>(
   setDisplayName(EEtoFormTypes.EtoMedia),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      loadingData: s.etoIssuer.loading,
-      savingData: s.etoIssuer.saving,
+      loadingData: selectIssuerEtoLoading(s),
+      savingData: selectIssuerEtoSaving(s),
       stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({

@@ -19,8 +19,8 @@ import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import {
   selectAvailableProducts,
-  selectIsSaving,
   selectIssuerEto,
+  selectIssuerEtoSaving,
   selectIssuerEtoState,
 } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
@@ -421,7 +421,7 @@ const EtoRegistrationTerms = compose<IProps, {}>(
   }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      savingData: selectIsSaving(s),
+      savingData: selectIssuerEtoSaving(s),
       eto: selectIssuerEto(s)!,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoTerms, selectIssuerEtoState(s)),
       availableProducts: selectAvailableProducts(s),

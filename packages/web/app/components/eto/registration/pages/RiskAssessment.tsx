@@ -123,13 +123,8 @@ const EtoRegistrationRiskAssessment = compose<React.FunctionComponent>(
       stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TPartialCompanyEtoData) => {
-        dispatch(
-          actions.etoFlow.saveDataStart({
-            companyData: data,
-            etoData: {},
-          }),
-        );
+      saveData: (company: TPartialCompanyEtoData) => {
+        dispatch(actions.etoFlow.saveCompanyStart(company));
       },
     }),
   }),

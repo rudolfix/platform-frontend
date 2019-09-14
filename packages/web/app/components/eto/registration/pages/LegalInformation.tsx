@@ -136,6 +136,10 @@ const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => (
         valueType={undefined}
         label={<FormattedMessage id="eto.form.legal-information.amount-of-share-capital" />}
       />
+      <FormField
+        label={<FormattedMessage id="eto.form.legal-information.share-capital-currency-code" />}
+        name="shareCapitalCurrencyCode"
+      />
       <FormHighlightGroup
         title={<FormattedMessage id="eto.form.legal-information.shareholder-structure" />}
       >

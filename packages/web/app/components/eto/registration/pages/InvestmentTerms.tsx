@@ -49,6 +49,7 @@ import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
+import { FormField } from "../../../shared/forms/fields/FormField";
 
 interface IExternalProps {
   readonly: boolean;
@@ -246,24 +247,6 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
   >
     <Section>
       <FormMaskedNumberInput
-        name="equityTokensPerShare"
-        storageFormat={ENumberInputFormat.FLOAT}
-        outputFormat={ENumberOutputFormat.INTEGER}
-        placeholder="1000000"
-        disabled={true}
-        label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
-      />
-      <FormMaskedNumberInput
-        name="newShareNominalValueEur"
-        storageFormat={ENumberInputFormat.FLOAT}
-        outputFormat={ENumberOutputFormat.FULL}
-        valueType={ECurrency.EUR}
-        showUnits={true}
-        placeholder="1"
-        disabled={readonly}
-        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value-eur" />}
-      />
-      <FormMaskedNumberInput
         name="preMoneyValuationEur"
         storageFormat={ENumberInputFormat.FLOAT}
         outputFormat={ENumberOutputFormat.FULL}
@@ -282,6 +265,30 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
         placeholder="Amount of share capital"
         label={<FormattedMessage id="eto.form.section.investment-terms.existing-share-capital" />}
       />
+      <FormField
+        label={<FormattedMessage id="eto.form.section.investment-terms.share-capital-currency-code" />}
+        name="shareCapitalCurrencyCode"
+      />
+      <FormMaskedNumberInput
+        name="newShareNominalValue"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.FULL}
+        valueType={ECurrency.EUR}
+        showUnits={false}
+        placeholder="1"
+        disabled={readonly}
+        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value" />}
+      />
+      <FormMaskedNumberInput
+        name="newShareNominalValueEur"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.FULL}
+        valueType={ECurrency.EUR}
+        showUnits={true}
+        placeholder="1"
+        disabled={readonly}
+        label={<FormattedMessage id="eto.form.section.investment-terms.share-nominal-value-eur" />}
+      />
       <FormMaskedNumberInput
         name="authorizedCapital"
         storageFormat={ENumberInputFormat.FLOAT}
@@ -289,6 +296,14 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
         disabled={readonly}
         placeholder="Amount of share capital"
         label={<FormattedMessage id="eto.form.section.investment-terms.authorized-capital" />}
+      />
+      <FormMaskedNumberInput
+        name="equityTokensPerShare"
+        storageFormat={ENumberInputFormat.FLOAT}
+        outputFormat={ENumberOutputFormat.INTEGER}
+        placeholder="1000000"
+        disabled={true}
+        label={<FormattedMessage id="eto.form.section.equity-token-information.tokens-per-share" />}
       />
       <FormMaskedNumberInput
         name="minimumNewSharesToIssue"
@@ -437,6 +452,7 @@ const toFormState = {
   minimumNewSharesToIssue: convertNumberToString(),
   newSharesToIssue: convertNumberToString(),
   // todo: add newShareNominalValue
+  newShareNominalValue: convertNumberToString(),
   newShareNominalValueEur: convertNumberToString(),
   authorizedCapital: convertNumberToString(),
   newSharesToIssueInWhitelist: convertNumberToString(),
@@ -455,6 +471,7 @@ const fromFormState = {
   existingShareCapital: parseStringToInteger(),
   newSharesToIssueInFixedSlots: parseStringToInteger(),
   newSharesToIssueInWhitelist: parseStringToInteger(),
+  newShareNominalValue: parseStringToFloat(),
   newShareNominalValueEur: parseStringToFloat(),
   minimumNewSharesToIssue: parseStringToInteger(),
   newSharesToIssue: parseStringToInteger(),

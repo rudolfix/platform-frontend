@@ -152,6 +152,20 @@ const EtoVotingRightsComponent: React.FunctionComponent<
               }
             />
           </div>
+          <div className="form-group">
+            <FormFieldLabel name="shareholdersVotingQuorum">
+              <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum" />
+            </FormFieldLabel>
+            <FormMaskedNumberInput
+              disabled={readonly}
+              name="shareholdersVotingQuorum"
+              storageFormat={ENumberInputFormat.FLOAT}
+              outputFormat={ENumberOutputFormat.INTEGER}
+              suffix={
+                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum-suffix" />
+              }
+            />
+          </div>
 
           <div className="form-group">
             <FormFieldLabel name="votingFinalizationDurationDays">

@@ -132,12 +132,15 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.existing-share-capital" />}
               value={
-                <FormatNumber
-                  value={etoData.existingShareCapital}
-                  outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
-                  defaultValue={<ToBeAnnounced />}
-                />
+                <>
+                  <FormatNumber
+                    value={etoData.existingShareCapital}
+                    outputFormat={ENumberOutputFormat.INTEGER}
+                    inputFormat={ENumberInputFormat.FLOAT}
+                    defaultValue={<ToBeAnnounced />}
+                  />
+                  {` ${etoData.company.shareCapitalCurrencyCode}`}
+                </>
               }
               data-test-id="eto-public-view-existing-share-capital"
             />
@@ -145,14 +148,34 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.authorized-capital" />}
                 value={
-                  <FormatNumber
-                    value={etoData.authorizedCapital}
-                    outputFormat={ENumberOutputFormat.INTEGER}
-                    inputFormat={ENumberInputFormat.FLOAT}
-                    defaultValue={<ToBeAnnounced />}
-                  />
+                  <>
+                    <FormatNumber
+                      value={etoData.authorizedCapital}
+                      outputFormat={ENumberOutputFormat.INTEGER}
+                      inputFormat={ENumberInputFormat.FLOAT}
+                      defaultValue={<ToBeAnnounced />}
+                    />
+                    {` ${etoData.company.shareCapitalCurrencyCode}`}
+                  </>
                 }
                 data-test-id="eto-public-view-authorized-capital"
+              />
+            )}
+            {etoData.newShareNominalValue && (
+              <Entry
+                label={<FormattedMessage id="eto.public-view.new-share-nominal-value" />}
+                value={
+                  <>
+                    <FormatNumber
+                      value={etoData.newShareNominalValue}
+                      outputFormat={ENumberOutputFormat.INTEGER}
+                      inputFormat={ENumberInputFormat.FLOAT}
+                      defaultValue={<ToBeAnnounced />}
+                    />
+                    {` ${etoData.company.shareCapitalCurrencyCode}`}
+                  </>
+                }
+                data-test-id="eto-public-view-new-share-nominal-value"
               />
             )}
             <Entry

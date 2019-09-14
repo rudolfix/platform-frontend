@@ -490,6 +490,7 @@
   "eto.overview.raised-amount.transaction-time.last": "Last transaction recorded",
   "eto.overview.token-distribution.table.number-of-investors": "Number of investors",
   "eto.overview.token-distribution.table.number-of-investors-header": "Total amount invested with the given ticket size",
+  "eto.public-view.new-share-nominal-value": "New share nominal value",
   "eto.public-view.asset-type": "Asset type",
   "eto.public-view.asset-type.security": "Security",
   "eto.public-view.asset-type.vma": "Investment asset",

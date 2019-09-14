@@ -157,6 +157,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
                   outputFormat={ENumberOutputFormat.INTEGER}
                   inputFormat={ENumberInputFormat.FLOAT}
                 />
+                {` ${companyData.shareCapitalCurrencyCode}`}
               </span>
             </div>
           )}

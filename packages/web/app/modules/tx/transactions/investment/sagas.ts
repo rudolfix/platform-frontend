@@ -172,7 +172,7 @@ export function* investmentFlowGenerator(_: TGlobalDependencies): any {
       existingShareCapital: eto.existingShareCapital,
       equityTokensPerShare: eto.equityTokensPerShare,
       preMoneyValuationEur: eto.preMoneyValuationEur,
-      investmentCalculatedValues: eto.investmentCalculatedValues!,
+      investmentCalculatedValues: eto.investmentCalculatedValues,
     },
     investmentEth,
     investmentEur,

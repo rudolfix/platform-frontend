@@ -36,7 +36,7 @@ import { TEtoProduct } from "./EtoProductsApi.interfaces";
  *  only deals with "/companies/me"
  */
 
-const CurrencyCodeType = YupTS.string().enhance((v: StringSchema) =>
+export const CurrencyCodeType = YupTS.string().enhance((v: StringSchema) =>
   v.matches(/^[A-Z]{3}$/, {
     message: getMessageTranslation(
       createMessage(ValidationMessage.VALIDATION_CURRENCY_CODE),
@@ -461,7 +461,6 @@ export const EtoInvestmentTermsType = YupTS.object({
     .optional()
     .enhance(v => v.max(MAX_PERCENTAGE)),
   discountScheme: YupTS.string().optional(),
-  investmentCalculatedValues: EtoInvestmentCalculatedValues.optional(),
 });
 
 export type TEtoInvestmentTermsType = YupTS.TypeOf<typeof EtoInvestmentTermsType>;
@@ -497,8 +496,9 @@ export type TBookbuildingStatsType = {
 export type TEtoSpecsData = TEtoTermsType &
   TEtoEquityTokenInfoType &
   TEtoVotingRightsType &
-  TEtoInvestmentTermsType &
-  IAdditionalEtoType;
+  TEtoInvestmentTermsType & {
+    investmentCalculatedValues: TEtoInvestmentCalculatedValues;
+  } & IAdditionalEtoType;
 
 /*General Interfaces */
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;

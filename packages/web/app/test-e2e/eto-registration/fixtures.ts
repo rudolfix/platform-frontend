@@ -73,8 +73,8 @@ export const legalInfoForm: TFormFixture = {
 // investment terms
 export const investmentTermsRequiredForm: TFormFixture = {
   shareCapitalCurrencyCode: "EUR",
-  newShareNominalValue: "321",
-  newShareNominalValueEur: "321",
+  newShareNominalValue: "150",
+  newShareNominalValueEur: "150",
   preMoneyValuationEur: "1000000",
   existingShareCapital: "1253862",
   minimumNewSharesToIssue: "10000",
@@ -98,7 +98,9 @@ export const investmentTermsForm: TFormFixture = {
 
 // investment terms expected values
 export const investmentTermsRequiredFormExpectedResult: TFormFixtureExpectedValues = {
-  newShareNominalValueEur: "321.00",
+  shareCapitalCurrencyCode: "EUR",
+  newShareNominalValue: "150.00",
+  newShareNominalValueEur: "150.00",
   preMoneyValuationEur: "1 000 000.00",
   existingShareCapital: "1 253 862",
   minimumNewSharesToIssue: "10 000",

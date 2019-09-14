@@ -450,10 +450,8 @@ const toFormState = {
   preMoneyValuationEur: convertNumberToString(),
   equityTokensPerShare: convertNumberToString(),
   existingShareCapital: convertNumberToString(),
-  // todo: add shareCapitalCurrencyCode
   minimumNewSharesToIssue: convertNumberToString(),
   newSharesToIssue: convertNumberToString(),
-  // todo: add newShareNominalValue
   newShareNominalValue: convertNumberToString(),
   newShareNominalValueEur: convertNumberToString(),
   authorizedCapital: convertNumberToString(),

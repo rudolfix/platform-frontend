@@ -136,6 +136,21 @@ const EtoVotingRightsComponent: React.FunctionComponent<
           </div>
 
           <div className="form-group">
+            <FormFieldLabel name="shareholdersVotingQuorum">
+              <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum" />
+            </FormFieldLabel>
+            <FormMaskedNumberInput
+              disabled={readonly}
+              name="shareholdersVotingQuorum"
+              storageFormat={ENumberInputFormat.FLOAT}
+              outputFormat={ENumberOutputFormat.INTEGER}
+              suffix={
+                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum-suffix" />
+              }
+            />
+          </div>
+
+          <div className="form-group">
             <FormFieldLabel name="votingMajorityFraction">
               <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction" />
             </FormFieldLabel>
@@ -149,20 +164,6 @@ const EtoVotingRightsComponent: React.FunctionComponent<
               }
               suffix={
                 <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-suffix" />
-              }
-            />
-          </div>
-          <div className="form-group">
-            <FormFieldLabel name="shareholdersVotingQuorum">
-              <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum" />
-            </FormFieldLabel>
-            <FormMaskedNumberInput
-              disabled={readonly}
-              name="shareholdersVotingQuorum"
-              storageFormat={ENumberInputFormat.FLOAT}
-              outputFormat={ENumberOutputFormat.INTEGER}
-              suffix={
-                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum-suffix" />
               }
             />
           </div>
@@ -231,7 +232,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<
                 <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-prefix" />
               }
               suffix={
-                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-suffix" />
+                <FormattedMessage id="eto.form.section.token-holders-rights.token-holders-voting-majority-fraction-suffix" />
               }
             />
           </div>

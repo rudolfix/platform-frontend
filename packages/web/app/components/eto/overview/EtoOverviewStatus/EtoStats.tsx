@@ -10,7 +10,7 @@ import {
 } from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
-import { MoneyNew } from "../../../shared/formatters/Money";
+import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -50,7 +50,7 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
         <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
       </span>
       <span className={styles.value}>
-        <MoneyNew
+        <Money
           className={styles.value}
           value={eto.preMoneyValuationEur}
           inputFormat={ENumberInputFormat.FLOAT}
@@ -86,7 +86,7 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
         <FormattedMessage id="shared-component.eto-overview-status.equity-token-price" />
       </span>
       <span className={styles.value}>
-        <MoneyNew
+        <Money
           value={tokenPrice}
           inputFormat={ENumberInputFormat.FLOAT}
           valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}

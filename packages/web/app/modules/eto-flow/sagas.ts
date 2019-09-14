@@ -10,7 +10,6 @@ import {
   EEtoState,
   TCompanyEtoData,
   TEtoSpecsData,
-  TPartialEtoSpecData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
@@ -22,7 +21,6 @@ import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { etoFlowActions } from "./actions";
 import {
   selectIsNewPreEtoStartDateValid,
-  selectIssuerCompany,
   selectIssuerEto,
   selectNewPreEtoStartDate,
   selectPreEtoStartDateFromContract,
@@ -106,39 +104,29 @@ export function* downloadBookBuildingStats({
   }
 }
 
-function stripEtoDataOptionalFields(data: TPartialEtoSpecData): TPartialEtoSpecData {
-  // formik will pass empty strings into numeric fields that are optional, see
-  // https://github.com/jaredpalmer/formik/pull/827
-  // todo: we should probably enumerate Yup schema and clean up all optional numbers
-  // todo: we strip these things on form save now, need to move it there -- at
-  if (!data.maxTicketEur) {
-    return {
-      ...data,
-      maxTicketEur: undefined,
-    };
-  }
-  return data;
-}
-
 export function* saveEtoData(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof etoFlowActions.saveDataStart>,
 ): Iterator<any> {
   try {
-    const currentCompanyData: TCompanyEtoData = yield effects.select(selectIssuerCompany);
-    const currentEtoData: TEtoSpecsData = yield effects.select(selectIssuerEto);
-    yield apiEtoService.putCompany({
-      ...currentCompanyData,
-      ...action.payload.data.companyData,
-    });
-    if (currentEtoData.state === EEtoState.PREVIEW)
-      yield apiEtoService.putMyEto(
-        stripEtoDataOptionalFields({
-          //TODO this is already being done on form save. Need to synchronize with convert() method
-          ...currentEtoData,
-          ...action.payload.data.etoData,
-        }),
-      );
+    if (action.payload.data.companyData) {
+      yield apiEtoService.patchCompany(action.payload.data.companyData);
+    }
+
+    if (action.payload.data.etoData) {
+      const currentEtoData: TEtoSpecsData = yield effects.select(selectIssuerEto);
+
+      if (currentEtoData.state === EEtoState.PREVIEW) {
+        yield apiEtoService.patchMyEto(action.payload.data.etoData);
+      } else {
+        logger.warn(
+          `Eto information can only be modified in ${EEtoState.PREVIEW} state, but the state is ${
+            currentEtoData.state
+          }`,
+        );
+      }
+    }
+
     yield put(actions.etoFlow.loadDataStart());
     yield put(actions.routing.goToDashboard());
   } catch (e) {

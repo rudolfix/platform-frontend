@@ -1,4 +1,3 @@
-import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -34,7 +33,7 @@ import {
   parseStringToInteger,
   removeEmptyKeyValueFields,
 } from "../../utils";
-import { EtoFormBase } from "../EtoFormBase.unsafe";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
@@ -61,11 +60,17 @@ const NUMBER_OF_EMPLOYEES = {
   ">1000": ">1000",
 };
 
-type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TPartialCompanyEtoData>;
+type IProps = IExternalProps & IStateProps & IDispatchProps;
 
 // Some fields in LegalInformation are always readonly because data are set during KYC process
-const EtoRegistrationLegalInformationComponent = ({ savingData }: IProps) => (
-  <EtoFormBase title="Legal Information" validator={EtoLegalInformationType.toYup()}>
+const EtoRegistrationLegalInformationComponent = ({ savingData, company, saveData }: IProps) => (
+  <EtoFormBase
+    data-test-id="eto.form.legal-information"
+    title="Legal Information"
+    validationSchema={EtoLegalInformationType.toYup()}
+    initialValues={convert(company, toFormState)}
+    onSubmit={saveData}
+  >
     <Section>
       <FormField
         label={<FormattedMessage id="eto.form.legal-information.legal-company-name" />}
@@ -168,8 +173,8 @@ const EtoRegistrationLegalInformation = compose<React.FunctionComponent<IExterna
   setDisplayName(EEtoFormTypes.LegalInformation),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      loadingData: state.etoFlow.loading,
-      savingData: state.etoFlow.saving,
+      loadingData: state.etoIssuer.loading,
+      savingData: state.etoIssuer.saving,
       company: selectIssuerCompany(state) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
@@ -178,11 +183,6 @@ const EtoRegistrationLegalInformation = compose<React.FunctionComponent<IExterna
         dispatch(actions.etoFlow.saveDataStart({ companyData: convertedData, etoData: {} }));
       },
     }),
-  }),
-  withFormik<IStateProps & IDispatchProps, TPartialCompanyEtoData>({
-    validationSchema: EtoLegalInformationType.toYup(),
-    mapPropsToValues: props => convert(props.company, toFormState),
-    handleSubmit: (values, { props }) => props.saveData(values),
   }),
 )(EtoRegistrationLegalInformationComponent);
 

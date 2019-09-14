@@ -1,4 +1,3 @@
-import { withFormik } from "formik";
 import * as React from "react";
 import { compose, setDisplayName } from "recompose";
 import * as Yup from "yup";
@@ -23,6 +22,8 @@ import {
   selectEtoNominee,
   selectEtoNomineeDisplayName,
   selectIssuerEto,
+  selectIssuerEtoLoading,
+  selectIssuerEtoSaving,
   selectIssuerEtoState,
 } from "../../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../../modules/eto-flow/types";
@@ -85,8 +86,8 @@ export const connectEtoVotingRightsForm = (
     setDisplayName(EEtoFormTypes.EtoVotingRights),
     appConnect<TStateProps, TDispatchProps>({
       stateToProps: s => ({
-        loadingData: s.etoFlow.loading,
-        savingData: s.etoFlow.saving,
+        loadingData: selectIssuerEtoLoading(s),
+        savingData: selectIssuerEtoSaving(s),
         stateValues: selectIssuerEto(s) as TPartialEtoSpecData,
         readonly: etoFormIsReadonly(EEtoFormTypes.EtoVotingRights, selectIssuerEtoState(s)),
         currentNomineeId: selectEtoNominee(s),
@@ -104,15 +105,6 @@ export const connectEtoVotingRightsForm = (
         },
       }),
     }),
-    withFormik<TExternalProps & TStateProps & TDispatchProps, TPartialEtoSpecData>({
-      mapPropsToValues: props => {
-        const converted = convert(props.stateValues, toFormState);
-        converted.advisoryBoardSelector = converted.advisoryBoard && !!converted.advisoryBoard;
-        return converted;
-      },
-      validationSchema: EtoVotingRightsValidator,
-      handleSubmit: (values, { props }) => props.saveData(values),
-    }),
   )(WrappedComponent);
 
 const fromFormState = {
@@ -126,7 +118,7 @@ const fromFormState = {
   restrictedActVotingDurationDays: parseStringToInteger(),
 };
 
-const toFormState = {
+export const toFormState = {
   votingFinalizationDurationDays: convertNumberToString(),
   votingMajorityFraction: [convertFractionToPercentage(), convertNumberToString()],
   shareholdersVotingQuorum: [convertFractionToPercentage(), convertNumberToString()],

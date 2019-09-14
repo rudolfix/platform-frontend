@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { FormikConsumer, FormikProps, withFormik } from "formik";
+import { FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -18,7 +18,12 @@ import {
   calcShareAndTokenPrice,
 } from "../../../../lib/api/eto/EtoUtils";
 import { actions } from "../../../../modules/actions";
-import { selectIssuerEto, selectIssuerEtoState } from "../../../../modules/eto-flow/selectors";
+import {
+  selectIssuerEto,
+  selectIssuerEtoLoading,
+  selectIssuerEtoSaving,
+  selectIssuerEtoState,
+} from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
@@ -46,7 +51,7 @@ import {
   parseStringToFloat,
   parseStringToInteger,
 } from "../../utils";
-import { EtoFormBase } from "../EtoFormBase.unsafe";
+import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
@@ -69,7 +74,7 @@ interface IDispatchProps {
   saveData: (values: TEtoSpecsData) => void;
 }
 
-type IProps = IExternalProps & IStateProps & IDispatchProps & FormikProps<TEtoSpecsData>;
+type IProps = IExternalProps & IStateProps & IDispatchProps;
 
 interface ICalculatorField {
   value: string | number | BigNumber;
@@ -235,15 +240,37 @@ const InvestmentCalculator: React.FunctionComponent<ICalculatorProps> = ({
   </FormikConsumer>
 );
 
+const validate = (values: TEtoSpecsData) => {
+  const errors: { -readonly [P in keyof (typeof values)]?: TTranslatedString } = {};
+
+  if ((values.publicDiscountFraction || 0) > (values.whitelistDiscountFraction || 0)) {
+    errors.whitelistDiscountFraction = (
+      <FormattedMessage id="eto.form.investment-terms.errors.whitelist-discount-must-at-least-as-big-as-public-discount" />
+    );
+  }
+
+  if ((values.fixedSlotsMaximumDiscountFraction || 0) < (values.publicDiscountFraction || 0)) {
+    errors.fixedSlotsMaximumDiscountFraction = (
+      <FormattedMessage id="eto.form.investment-terms.errors.fixed-slots-must-be-at-least-as-big-as-public-discount" />
+    );
+  }
+
+  return errors;
+};
+
 const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
   eto,
   savingData,
+  saveData,
   readonly,
 }) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form.investment-terms.title" />}
-    validator={EtoInvestmentTermsType.toYup()}
     progressOptions={etoInvestmentTermsProgressOptions}
+    validationSchema={EtoInvestmentTermsType.toYup()}
+    initialValues={convert(eto, toFormState)}
+    onSubmit={saveData}
+    validate={validate}
   >
     <Section>
       <FormMaskedNumberInput
@@ -404,8 +431,8 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
   setDisplayName(EEtoFormTypes.EtoInvestmentTerms),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      loadingData: s.etoFlow.loading,
-      savingData: s.etoFlow.saving,
+      loadingData: selectIssuerEtoLoading(s),
+      savingData: selectIssuerEtoSaving(s),
       eto: selectIssuerEto(s)!,
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoInvestmentTerms, selectIssuerEtoState(s)),
     }),
@@ -422,28 +449,6 @@ const EtoInvestmentTerms = compose<React.FunctionComponent<IExternalProps>>(
     }),
   }),
   branch<IStateProps>(props => props.eto === undefined, renderNothing),
-  withFormik<IStateProps & IDispatchProps, TEtoSpecsData>({
-    validationSchema: EtoInvestmentTermsType.toYup(),
-    mapPropsToValues: props => convert(props.eto, toFormState),
-    handleSubmit: (values, props) => props.props.saveData(values),
-    validate: values => {
-      const errors: { -readonly [P in keyof (typeof values)]?: TTranslatedString } = {};
-
-      if ((values.publicDiscountFraction || 0) > (values.whitelistDiscountFraction || 0)) {
-        errors.whitelistDiscountFraction = (
-          <FormattedMessage id="eto.form.investment-terms.errors.whitelist-discount-must-at-least-as-big-as-public-discount" />
-        );
-      }
-
-      if ((values.fixedSlotsMaximumDiscountFraction || 0) < (values.publicDiscountFraction || 0)) {
-        errors.fixedSlotsMaximumDiscountFraction = (
-          <FormattedMessage id="eto.form.investment-terms.errors.fixed-slots-must-be-at-least-as-big-as-public-discount" />
-        );
-      }
-
-      return errors;
-    },
-  }),
 )(EtoInvestmentTermsComponent);
 
 const toFormState = {

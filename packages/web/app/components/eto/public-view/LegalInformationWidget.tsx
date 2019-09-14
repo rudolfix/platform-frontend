@@ -9,7 +9,7 @@ import { Container, EColumnSpan } from "../../layouts/Container";
 import { ChartDoughnutLazy } from "../../shared/charts/ChartDoughnutLazy";
 import { generateColor } from "../../shared/charts/utils";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";
-import { MoneyNew } from "../../shared/formatters/Money";
+import { Money } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { Panel } from "../../shared/Panel";
 import { FUNDING_ROUNDS } from "../constants";
@@ -137,7 +137,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
                 <FormattedMessage id="eto.public-view.legal-information.last-funding-amount" />
               </span>
               <span className={styles.value}>
-                <MoneyNew
+                <Money
                   value={companyData.lastFundingSizeEur}
                   inputFormat={ENumberInputFormat.FLOAT}
                   valueType={ECurrency.EUR}

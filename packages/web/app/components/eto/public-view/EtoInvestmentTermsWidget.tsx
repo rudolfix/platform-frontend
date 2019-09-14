@@ -211,7 +211,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.new-share-price" />}
               value={
                 <Money
-                  value={computedNewSharePrice}
+                  value={newSharePrice}
                   valueType={EPriceFormat.SHARE_PRICE}
                   inputFormat={ENumberInputFormat.FLOAT}
                   outputFormat={ENumberOutputFormat.FULL}

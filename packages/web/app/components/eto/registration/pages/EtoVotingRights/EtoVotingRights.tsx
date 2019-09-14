@@ -148,38 +148,38 @@ const EtoVotingRightsComponent: React.FunctionComponent<
               />
             </div>
 
-          <div className="form-group">
-            <FormFieldLabel name="shareholdersVotingQuorum">
-              <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum" />
-            </FormFieldLabel>
-            <FormMaskedNumberInput
-              disabled={readonly}
-              name="shareholdersVotingQuorum"
-              storageFormat={ENumberInputFormat.FLOAT}
-              outputFormat={ENumberOutputFormat.INTEGER}
-              suffix={
-                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum-suffix" />
-              }
-            />
-          </div>
+            <div className="form-group">
+              <FormFieldLabel name="shareholdersVotingQuorum">
+                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum" />
+              </FormFieldLabel>
+              <FormMaskedNumberInput
+                disabled={readonly}
+                name="shareholdersVotingQuorum"
+                storageFormat={ENumberInputFormat.FLOAT}
+                outputFormat={ENumberOutputFormat.INTEGER}
+                suffix={
+                  <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-quorum-suffix" />
+                }
+              />
+            </div>
 
-          <div className="form-group">
-            <FormFieldLabel name="votingMajorityFraction">
-              <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction" />
-            </FormFieldLabel>
-            <FormMaskedNumberInput
-              disabled={true}
-              name="votingMajorityFraction"
-              storageFormat={ENumberInputFormat.FLOAT}
-              outputFormat={ENumberOutputFormat.INTEGER}
-              prefix={
-                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-prefix" />
-              }
-              suffix={
-                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-suffix" />
-              }
-            />
-          </div>
+            <div className="form-group">
+              <FormFieldLabel name="votingMajorityFraction">
+                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction" />
+              </FormFieldLabel>
+              <FormMaskedNumberInput
+                disabled={true}
+                name="votingMajorityFraction"
+                storageFormat={ENumberInputFormat.FLOAT}
+                outputFormat={ENumberOutputFormat.INTEGER}
+                prefix={
+                  <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-prefix" />
+                }
+                suffix={
+                  <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-suffix" />
+                }
+              />
+            </div>
 
             <div className="form-group">
               <FormFieldLabel name="votingFinalizationDurationDays">
@@ -232,24 +232,24 @@ const EtoVotingRightsComponent: React.FunctionComponent<
               />
             </div>
 
-          <div className="form-group">
-            <FormFieldLabel name="votingMajorityFraction">
-              <FormattedMessage id="eto.form.section.token-holders-rights.token-holders-voting-majority-fraction" />
-            </FormFieldLabel>
-            <FormMaskedNumberInput
-              disabled={true}
-              name="votingMajorityFraction"
-              storageFormat={ENumberInputFormat.FLOAT}
-              outputFormat={ENumberOutputFormat.INTEGER}
-              prefix={
-                <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-prefix" />
-              }
-              suffix={
-                <FormattedMessage id="eto.form.section.token-holders-rights.token-holders-voting-majority-fraction-suffix" />
-              }
-            />
-          </div>
-        </Section>
+            <div className="form-group">
+              <FormFieldLabel name="votingMajorityFraction">
+                <FormattedMessage id="eto.form.section.token-holders-rights.token-holders-voting-majority-fraction" />
+              </FormFieldLabel>
+              <FormMaskedNumberInput
+                disabled={true}
+                name="votingMajorityFraction"
+                storageFormat={ENumberInputFormat.FLOAT}
+                outputFormat={ENumberOutputFormat.INTEGER}
+                prefix={
+                  <FormattedMessage id="eto.form.section.token-holders-rights.shareholders-voting-majority-fraction-prefix" />
+                }
+                suffix={
+                  <FormattedMessage id="eto.form.section.token-holders-rights.token-holders-voting-majority-fraction-suffix" />
+                }
+              />
+            </div>
+          </Section>
 
           <Section>
             <h5 className={styles.formSubtitle}>

@@ -90,7 +90,7 @@ export const connectEtoVotingRightsForm = (
       dispatchToProps: dispatch => ({
         saveData: (eto: TPartialEtoSpecData) => {
           const convertedEto = convert(eto, fromFormState);
-          dispatch(actions.etoFlow.saveEtoStart(convertedEto));
+          dispatch(actions.etoFlow.saveEtoStart(convertedEto, { patch: false }));
         },
       }),
     }),

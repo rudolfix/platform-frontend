@@ -128,14 +128,24 @@ export function* saveEto(
   action: TActionFromCreator<typeof etoFlowActions.saveEtoStart>,
 ): Iterator<any> {
   try {
-    const currentEtoData: TEtoSpecsData = yield effects.select(selectIssuerEto);
+    const currentEto: TEtoSpecsData = yield effects.select(selectIssuerEto);
 
     // Eto is only allowed to be modified during PREVIEW state
-    if (currentEtoData.state !== EEtoState.PREVIEW) {
-      throw new InvalidETOStateError(currentEtoData.state, EEtoState.PREVIEW);
+    if (currentEto.state !== EEtoState.PREVIEW) {
+      throw new InvalidETOStateError(currentEto.state, EEtoState.PREVIEW);
     }
 
-    yield apiEtoService.patchMyEto(action.payload.eto);
+    if (action.payload.options.patch) {
+      yield apiEtoService.patchMyEto(action.payload.eto);
+    } else {
+      // It's a fix for Shareholder Agreement form
+      // as right now `patch` is not working properly for `Advisory Board`
+      // TODO: Remove `options` after `Advisory Board` gets fixed on the API side
+      yield apiEtoService.putMyEto({
+        ...currentEto,
+        ...action.payload.eto,
+      });
+    }
 
     yield put(actions.routing.goToDashboard());
   } catch (e) {

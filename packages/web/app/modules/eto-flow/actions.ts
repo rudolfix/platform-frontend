@@ -30,9 +30,13 @@ export const etoFlowActions = {
     "ETO_FLOW_SAVE_COMPANY_START",
     (company: TPartialCompanyEtoData) => ({ company }),
   ),
-  saveEtoStart: createActionFactory("ETO_FLOW_SAVE_ETO_START", (eto: TPartialEtoSpecData) => ({
-    eto,
-  })),
+  saveEtoStart: createActionFactory(
+    "ETO_FLOW_SAVE_ETO_START",
+    (eto: TPartialEtoSpecData, options: { patch: boolean } = { patch: true }) => ({
+      eto,
+      options,
+    }),
+  ),
   changeBookBuildingStatus: createActionFactory(
     "ETO_FLOW_CHANGE_BOOK_BUILDING_STATES",
     (status: boolean) => ({ status }),

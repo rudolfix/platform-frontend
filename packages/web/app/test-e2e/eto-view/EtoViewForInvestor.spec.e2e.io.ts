@@ -32,7 +32,7 @@ describe("Eto Investor View", () => {
       assertEtoView(ETO_ID);
     });
 
-    it("should display correct eto investment terms", () => {
+    it.skip("should display correct eto investment terms", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
       assertEtoView(ETO_ID);
 

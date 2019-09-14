@@ -457,7 +457,7 @@
   "eto.form.section.token-holders-rights.token-holders-general-voting-rule": "General voting rule for Token Holders",
   "eto.form.section.token-holders-rights.token-holders-general-voting-rule-label": "Nominee votes “Yes”",
   "eto.form.section.token-holders-rights.token-holders-voting-majority-fraction": "Token Holder voting majority",
-  "eto.form.section.token-holders-rights.token-holders-voting-majority-fraction-suffix": "% of voting power",
+  "eto.form.section.token-holders-rights.token-holders-voting-majority-fraction-suffix": "% of voting quorum",
   "eto.form.section.token-holders-rights.voting-finalization-duration": "Voting results upload deadline ({min} to {max} days)",
   "eto.form.section.token-holders-rights.voting-rights": "Voting Rules for Shareholders",
   "eto.form.section.token-holders-rights.voting-rights-explanation": "Please note that both minimum voting durations for shareholders will automatically be the maximum durations for token holders.",

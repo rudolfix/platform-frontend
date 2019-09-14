@@ -297,6 +297,7 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
           <FormattedMessage id="eto.form.section.investment-terms.share-capital-currency-code" />
         }
         name="shareCapitalCurrencyCode"
+        disabled={readonly}
       />
       <FormMaskedNumberInput
         name="newShareNominalValue"

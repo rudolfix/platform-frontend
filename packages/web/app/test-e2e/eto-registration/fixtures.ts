@@ -44,6 +44,7 @@ export const legalInfoRequiredForm: TFormFixture = {
     type: "date",
   },
   companyShareCapital: "5000",
+  shareCapitalCurrencyCode: "EUR",
   "shareholders.0.fullName": "Marcin Rudolf",
   "shareholders.0.shareCapital": "90",
   "eto-registration-legal-information-submit": {
@@ -71,6 +72,8 @@ export const legalInfoForm: TFormFixture = {
 
 // investment terms
 export const investmentTermsRequiredForm: TFormFixture = {
+  shareCapitalCurrencyCode: "EUR",
+  newShareNominalValue: "321",
   newShareNominalValueEur: "321",
   preMoneyValuationEur: "1000000",
   existingShareCapital: "1253862",
@@ -429,6 +432,7 @@ export const votingRights: TFormFixture = {
   generalVotingDurationDays: "11",
   restrictedActVotingDurationDays: "15",
   votingFinalizationDurationDays: "12",
+  shareholdersVotingQuorum: "45",
   advisoryBoardSelector: { value: "true", type: "radio" },
   advisoryBoard: "asdfasdf",
   liquidationPreferenceMultiplier: {
@@ -445,6 +449,7 @@ export const votingRightsExpectedValues: TFormFixtureExpectedValues = {
   generalVotingDurationDays: "11",
   restrictedActVotingDurationDays: "15",
   votingFinalizationDurationDays: "12",
+  shareholdersVotingQuorum: "45",
   advisoryBoard: "asdfasdf",
   liquidationPreferenceMultiplier: "2",
   hasFoundersVesting: "false",

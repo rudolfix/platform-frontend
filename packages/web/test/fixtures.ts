@@ -809,6 +809,7 @@ export const testEto: TEtoWithCompanyAndContract = {
   minTicketEur: 100,
   minimumNewSharesToIssue: 1000,
   newSharesToIssue: 3452,
+  shareholdersVotingQuorum: 0.5,
   newSharesToIssueInWhitelist: 1534,
   nominee: "0xCB6470fa4b5D56C8f494e7c1CE56B28c548931a6",
   preMoneyValuationEur: 132664672.0464,

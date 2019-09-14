@@ -11,7 +11,8 @@ import {
   MAX_RESTRICTED_ACT_VOTING_DURATION,
   MAX_VOTING_DURATION,
   MAX_VOTING_FINALIZATION_DURATION,
-  MAX_VOTING_MAJORITY_FRACTION, MAX_VOTING_QUORUM,
+  MAX_VOTING_MAJORITY_FRACTION,
+  MAX_VOTING_QUORUM,
   MIN_COMPANY_SHARE_CAPITAL,
   MIN_EXISTING_SHARE_CAPITAL,
   MIN_NEW_SHARE_NOMINAL_VALUE,
@@ -20,7 +21,8 @@ import {
   MIN_RESTRICTED_ACT_VOTING_DURATION,
   MIN_VOTING_DURATION,
   MIN_VOTING_FINALIZATION_DURATION,
-  MIN_VOTING_MAJORITY_FRACTION, MIN_VOTING_QUORUM,
+  MIN_VOTING_MAJORITY_FRACTION,
+  MIN_VOTING_QUORUM,
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
 } from "../../../config/constants";
@@ -33,6 +35,14 @@ import { TEtoProduct } from "./EtoProductsApi.interfaces";
 /** COMPANY ETO RELATED INTERFACES
  *  only deals with "/companies/me"
  */
+
+const CurrencyCodeType = YupTS.string().enhance((v: StringSchema) =>
+  v.matches(/^[A-Z]{3}$/, {
+    message: getMessageTranslation(
+      createMessage(ValidationMessage.VALIDATION_CURRENCY_CODE),
+    ) as string,
+  }),
+);
 
 const EtoFounderType = YupTS.object({
   fullName: YupTS.string(),
@@ -157,8 +167,7 @@ export const EtoLegalInformationType = YupTS.object({
   numberOfFounders: YupTS.number().optional(),
   lastFundingSizeEur: YupTS.number().optional(),
   companyShareCapital: YupTS.number().enhance(v => v.min(MIN_COMPANY_SHARE_CAPITAL)),
-//FIXME message
-  shareCapitalCurrencyCode: YupTS.string().enhance((v: StringSchema) => v.matches(/^[A-Z]{3}$/, { message: "please provied 3-letter currency code" })),
+  shareCapitalCurrencyCode: CurrencyCodeType,
   shareholders: YupTS.array(EtoLegalShareholderType.optional()).optional(),
 });
 type TEtoLegalData = YupTS.TypeOf<typeof EtoLegalInformationType>;
@@ -204,13 +213,15 @@ type TEtoCompanyBase = {
   city: string;
 };
 
-export type TCompanyEtoData = DeepReadonly<TEtoCompanyBase &
-  TEtoTeamData &
-  TEtoLegalData &
-  TEtoProductVision &
-  TEtoRiskAssessment &
-  TEtoKeyIndividualsType &
-  TEtoMediaData>;
+export type TCompanyEtoData = DeepReadonly<
+  TEtoCompanyBase &
+    TEtoTeamData &
+    TEtoLegalData &
+    TEtoProductVision &
+    TEtoRiskAssessment &
+    TEtoKeyIndividualsType &
+    TEtoMediaData
+>;
 
 /** ETO SPEC RELATED INTERFACES
  *  only deals with "/etos/me"
@@ -258,11 +269,11 @@ export const getEtoTermsSchema = ({
     minTicketEur: YupTS.number().enhance((v: NumberSchema) =>
       minTicketSize !== undefined
         ? v.min(
-        minTicketSize,
-        getMessageTranslation(
-          createMessage(ValidationMessage.VALIDATION_TICKET_LESS_THAN_ACCEPTED, minTicketSize),
-        ),
-        )
+            minTicketSize,
+            getMessageTranslation(
+              createMessage(ValidationMessage.VALIDATION_TICKET_LESS_THAN_ACCEPTED, minTicketSize),
+            ),
+          )
         : v,
     ),
     maxTicketEur: YupTS.number()
@@ -391,25 +402,35 @@ export type TEtoVotingRightsType = YupTS.TypeOf<typeof EtoVotingRightsType>;
 
 export const EtoInvestmentTermsType = YupTS.object({
   equityTokensPerShare: YupTS.number(),
-  newShareNominalValue: YupTS.number().enhance((v:StringSchema) => v.min(MIN_NEW_SHARE_NOMINAL_VALUE)),
-  newShareNominalValueEur: YupTS.number().enhance(
-    v => v
+  newShareNominalValue: YupTS.number().enhance((v: StringSchema) =>
+    v.min(MIN_NEW_SHARE_NOMINAL_VALUE),
+  ),
+  newShareNominalValueEur: YupTS.number().enhance(v =>
+    v
       .min(MIN_NEW_SHARE_NOMINAL_VALUE)
-      .when(["shareCapitalCurrencyCode", "newShareNominalValue"],
+      .when(
+        ["shareCapitalCurrencyCode", "newShareNominalValue"],
         (currencyCode: string, newShareNominalValue: string) => {
-          if(currencyCode === "EUR") {
-            console.log("currencyCode", v,currencyCode, newShareNominalValue);
-            //FIXME error message
-            return v.test('match' , "should match",(v) => v === newShareNominalValue)
+          if (currencyCode === "EUR") {
+            return v.test(
+              "match",
+              getMessageTranslation(
+                createMessage(ValidationMessage.VALIDATION_FIELDS_SHOULD_MATCH, [
+                  "Share nominal value",
+                  "Share nominal value in EUR",
+                ]),
+              ),
+              v => v === newShareNominalValue,
+            );
           } else {
-            return
+            return;
           }
-        })
+        },
+      ),
   ),
   preMoneyValuationEur: YupTS.number().enhance(v => v.min(MIN_PRE_MONEY_VALUATION_EUR)),
   existingShareCapital: YupTS.number().enhance(v => v.min(MIN_EXISTING_SHARE_CAPITAL)),
-  //fixme extract to a sep. validator
-  shareCapitalCurrencyCode: YupTS.string().enhance((v: StringSchema) => v.matches(/^[A-Z]{3}$/, { message: "please provied 3-letter currency code" })),
+  shareCapitalCurrencyCode: CurrencyCodeType,
   authorizedCapital: YupTS.number().optional(),
   newSharesToIssue: YupTS.number()
     .enhance(v => v.required())

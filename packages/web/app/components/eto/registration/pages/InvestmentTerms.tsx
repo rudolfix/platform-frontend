@@ -37,6 +37,7 @@ import {
   TValueFormat,
 } from "../../../shared/formatters/utils";
 import { FormFieldLayout, FormHighlightGroup, FormMaskedNumberInput } from "../../../shared/forms";
+import { FormField } from "../../../shared/forms/fields/FormField";
 import {
   convert,
   convertFractionToPercentage,
@@ -49,7 +50,6 @@ import { EtoFormBase } from "../EtoFormBase.unsafe";
 import { Section } from "../Shared";
 
 import * as styles from "../Shared.module.scss";
-import { FormField } from "../../../shared/forms/fields/FormField";
 
 interface IExternalProps {
   readonly: boolean;
@@ -266,7 +266,9 @@ const EtoInvestmentTermsComponent: React.FunctionComponent<IProps> = ({
         label={<FormattedMessage id="eto.form.section.investment-terms.existing-share-capital" />}
       />
       <FormField
-        label={<FormattedMessage id="eto.form.section.investment-terms.share-capital-currency-code" />}
+        label={
+          <FormattedMessage id="eto.form.section.investment-terms.share-capital-currency-code" />
+        }
         name="shareCapitalCurrencyCode"
       />
       <FormMaskedNumberInput

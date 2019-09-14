@@ -17,6 +17,10 @@ describe("investor-portfolio > selectors", () => {
       sinon.stub(etoSelectors, "selectEtoById").returns({
         minTicketEur: 10,
         maxTicketEur: 1000,
+        investmentCalculatedValues: {
+          sharePrice: 300,
+        },
+        equityTokensPerShare: 200,
       });
       sinon.stub(investorTicketSelectors, "selectCalculatedContribution").returns({
         minTicketEurUlps: new BigNumber("20").mul(Q18),

@@ -110,12 +110,8 @@ const EtoEquityTokenInfo = compose<React.FunctionComponent<IExternalProps>>(
       readonly: etoFormIsReadonly(EEtoFormTypes.EtoEquityTokenInfo, selectIssuerEtoState(s)),
     }),
     dispatchToProps: dispatch => ({
-      saveData: (etoData: TPartialEtoSpecData) => {
-        dispatch(
-          actions.etoFlow.saveDataStart({
-            etoData,
-          }),
-        );
+      saveData: (eto: TPartialEtoSpecData) => {
+        dispatch(actions.etoFlow.saveEtoStart(eto));
       },
     }),
   }),

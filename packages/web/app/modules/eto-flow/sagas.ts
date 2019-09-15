@@ -16,6 +16,7 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { IAppState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
+import { InvalidETOStateError } from "../eto/errors";
 import { loadEtoContract } from "../eto/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { etoFlowActions } from "./actions";
@@ -104,36 +105,55 @@ export function* downloadBookBuildingStats({
   }
 }
 
-export function* saveEtoData(
+export function* saveCompany(
   { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof etoFlowActions.saveDataStart>,
+  action: TActionFromCreator<typeof etoFlowActions.saveCompanyStart>,
 ): Iterator<any> {
   try {
-    if (action.payload.data.companyData) {
-      yield apiEtoService.patchCompany(action.payload.data.companyData);
-    }
+    yield apiEtoService.patchCompany(action.payload.company);
 
-    if (action.payload.data.etoData) {
-      const currentEtoData: TEtoSpecsData = yield effects.select(selectIssuerEto);
-
-      if (currentEtoData.state === EEtoState.PREVIEW) {
-        yield apiEtoService.patchMyEto(action.payload.data.etoData);
-      } else {
-        logger.warn(
-          `Eto information can only be modified in ${EEtoState.PREVIEW} state, but the state is ${
-            currentEtoData.state
-          }`,
-        );
-      }
-    }
-
-    yield put(actions.etoFlow.loadDataStart());
     yield put(actions.routing.goToDashboard());
   } catch (e) {
-    logger.error("Failed to send ETO data", e);
+    logger.error("Failed to save company", e);
     notificationCenter.error(
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
     );
+  } finally {
+    yield put(actions.etoFlow.loadDataStop());
+  }
+}
+
+export function* saveEto(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof etoFlowActions.saveEtoStart>,
+): Iterator<any> {
+  try {
+    const currentEto: TEtoSpecsData = yield effects.select(selectIssuerEto);
+
+    // Eto is only allowed to be modified during PREVIEW state
+    if (currentEto.state !== EEtoState.PREVIEW) {
+      throw new InvalidETOStateError(currentEto.state, EEtoState.PREVIEW);
+    }
+
+    if (action.payload.options.patch) {
+      yield apiEtoService.patchMyEto(action.payload.eto);
+    } else {
+      // It's a fix for Shareholder Agreement form
+      // as right now `patch` is not working properly for `Advisory Board`
+      // TODO: Remove `options` after `Advisory Board` gets fixed on the API side
+      yield apiEtoService.putMyEto({
+        ...currentEto,
+        ...action.payload.eto,
+      });
+    }
+
+    yield put(actions.routing.goToDashboard());
+  } catch (e) {
+    logger.error("Failed to save ETO", e);
+    notificationCenter.error(
+      createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
+    );
+  } finally {
     yield put(actions.etoFlow.loadDataStop());
   }
 }
@@ -268,7 +288,8 @@ export function* publishEtoData({
 
 export function* etoFlowSagas(): any {
   yield fork(neuTakeEvery, etoFlowActions.loadIssuerEto, loadIssuerEto);
-  yield fork(neuTakeEvery, etoFlowActions.saveDataStart, saveEtoData);
+  yield fork(neuTakeEvery, etoFlowActions.saveCompanyStart, saveCompany);
+  yield fork(neuTakeEvery, etoFlowActions.saveEtoStart, saveEto);
   yield fork(neuTakeEvery, etoFlowActions.submitDataStart, submitEtoData);
   yield fork(neuTakeEvery, etoFlowActions.changeBookBuildingStatus, changeBookBuildingStatus);
   yield fork(neuTakeLatest, etoFlowActions.downloadBookBuildingStats, downloadBookBuildingStats);

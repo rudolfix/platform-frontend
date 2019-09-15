@@ -211,7 +211,7 @@ export const assertWaitingForSmartContractsStep = () => {
 export const openAndCheckValues = (
   section: string,
   sectionForm: TFormFixture,
-  expectedValues?: TFormFixtureExpectedValues,
+  expectedValues: TFormFixtureExpectedValues,
 ) => {
   goToIssuerDashboard();
 

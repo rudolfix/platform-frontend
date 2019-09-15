@@ -175,14 +175,9 @@ const EtoRegistrationPitch = compose<React.FunctionComponent>(
       stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TPartialCompanyEtoData) => {
-        const convertedData = convert(data, fromFormState);
-        dispatch(
-          actions.etoFlow.saveDataStart({
-            companyData: convertedData,
-            etoData: {},
-          }),
-        );
+      saveData: (company: TPartialCompanyEtoData) => {
+        const convertedCompany = convert(company, fromFormState);
+        dispatch(actions.etoFlow.saveCompanyStart(convertedCompany));
       },
     }),
   }),

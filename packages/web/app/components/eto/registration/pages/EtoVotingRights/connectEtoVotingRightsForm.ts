@@ -94,14 +94,9 @@ export const connectEtoVotingRightsForm = (
         currentNomineeName: selectEtoNomineeDisplayName(s),
       }),
       dispatchToProps: dispatch => ({
-        saveData: (data: TPartialEtoSpecData) => {
-          const convertedData = convert(data, fromFormState);
-          dispatch(
-            actions.etoFlow.saveDataStart({
-              companyData: {},
-              etoData: convertedData,
-            }),
-          );
+        saveData: (eto: TPartialEtoSpecData) => {
+          const convertedEto = convert(eto, fromFormState);
+          dispatch(actions.etoFlow.saveEtoStart(convertedEto, { patch: false }));
         },
       }),
     }),

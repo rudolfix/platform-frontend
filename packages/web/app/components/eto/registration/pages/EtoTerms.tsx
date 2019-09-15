@@ -427,14 +427,9 @@ const EtoRegistrationTerms = compose<IProps, {}>(
       availableProducts: selectAvailableProducts(s),
     }),
     dispatchToProps: dispatch => ({
-      saveData: (data: TEtoSpecsData) => {
-        const convertedData = convert(data, fromFormState);
-        dispatch(
-          actions.etoFlow.saveDataStart({
-            companyData: {},
-            etoData: convertedData,
-          }),
-        );
+      saveData: (eto: TEtoSpecsData) => {
+        const convertedEto = convert(eto, fromFormState);
+        dispatch(actions.etoFlow.saveEtoStart(convertedEto));
       },
       changeProductType: (productId: string) => {
         dispatch(actions.etoFlow.changeProductType(productId));

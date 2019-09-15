@@ -104,7 +104,9 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
   downloadDocument,
 }) => {
   const isProductSet = etoData.product.id !== ETHEREUM_ZERO_ADDRESS;
-  const computedNewSharePrice = etoData.preMoneyValuationEur / etoData.existingCompanyShares;
+  const newSharePrice = etoData.investmentCalculatedValues
+    ? etoData.investmentCalculatedValues.sharePrice
+    : undefined;
 
   return (
     <Panel className={styles.tokenTerms}>
@@ -128,29 +130,52 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               data-test-id="eto-public-view-pre-money-valuation"
             />
             <Entry
-              label={<FormattedMessage id="eto.public-view.token-terms.existing-shares" />}
+              label={<FormattedMessage id="eto.public-view.token-terms.existing-share-capital" />}
               value={
-                <FormatNumber
-                  value={etoData.existingCompanyShares}
-                  outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
-                  defaultValue={<ToBeAnnounced />}
-                />
-              }
-              data-test-id="eto-public-view-existing-shares"
-            />
-            {etoData.authorizedCapitalShares && (
-              <Entry
-                label={<FormattedMessage id="eto.public-view.token-terms.authorized-capital" />}
-                value={
+                <>
                   <FormatNumber
-                    value={etoData.authorizedCapitalShares}
+                    value={etoData.existingShareCapital}
                     outputFormat={ENumberOutputFormat.INTEGER}
                     inputFormat={ENumberInputFormat.FLOAT}
                     defaultValue={<ToBeAnnounced />}
                   />
+                  {` ${etoData.company.shareCapitalCurrencyCode}`}
+                </>
+              }
+              data-test-id="eto-public-view-existing-share-capital"
+            />
+            {etoData.authorizedCapital && (
+              <Entry
+                label={<FormattedMessage id="eto.public-view.token-terms.authorized-capital" />}
+                value={
+                  <>
+                    <FormatNumber
+                      value={etoData.authorizedCapital}
+                      outputFormat={ENumberOutputFormat.INTEGER}
+                      inputFormat={ENumberInputFormat.FLOAT}
+                      defaultValue={<ToBeAnnounced />}
+                    />
+                    {` ${etoData.company.shareCapitalCurrencyCode}`}
+                  </>
                 }
                 data-test-id="eto-public-view-authorized-capital"
+              />
+            )}
+            {etoData.newShareNominalValue && (
+              <Entry
+                label={<FormattedMessage id="eto.public-view.new-share-nominal-value" />}
+                value={
+                  <>
+                    <FormatNumber
+                      value={etoData.newShareNominalValue}
+                      outputFormat={ENumberOutputFormat.INTEGER}
+                      inputFormat={ENumberInputFormat.FLOAT}
+                      defaultValue={<ToBeAnnounced />}
+                    />
+                    {` ${etoData.company.shareCapitalCurrencyCode}`}
+                  </>
+                }
+                data-test-id="eto-public-view-new-share-nominal-value"
               />
             )}
             <Entry
@@ -186,7 +211,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.new-share-price" />}
               value={
                 <Money
-                  value={computedNewSharePrice}
+                  value={newSharePrice}
                   valueType={EPriceFormat.SHARE_PRICE}
                   inputFormat={ENumberInputFormat.FLOAT}
                   outputFormat={ENumberOutputFormat.FULL}
@@ -228,8 +253,8 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               value={
                 <Money
                   value={
-                    computedNewSharePrice && etoData.equityTokensPerShare
-                      ? computedNewSharePrice / etoData.equityTokensPerShare
+                    newSharePrice && etoData.equityTokensPerShare
+                      ? newSharePrice / etoData.equityTokensPerShare
                       : undefined
                   }
                   inputFormat={ENumberInputFormat.FLOAT}

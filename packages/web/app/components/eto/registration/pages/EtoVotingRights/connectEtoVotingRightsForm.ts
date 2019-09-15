@@ -8,10 +8,12 @@ import {
   MAX_VOTING_DURATION,
   MAX_VOTING_FINALIZATION_DURATION,
   MAX_VOTING_MAJORITY_FRACTION,
+  MAX_VOTING_QUORUM,
   MIN_RESTRICTED_ACT_VOTING_DURATION,
   MIN_VOTING_DURATION,
   MIN_VOTING_FINALIZATION_DURATION,
   MIN_VOTING_MAJORITY_FRACTION,
+  MIN_VOTING_QUORUM,
 } from "../../../../../config/constants";
 import { TPartialEtoSpecData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { etoFormIsReadonly } from "../../../../../lib/api/eto/EtoApiUtils";
@@ -44,6 +46,10 @@ export const EtoVotingRightsValidator = Yup.object().shape({
   hasGeneralInformationRights: Yup.boolean().required(),
   hasDividendRights: Yup.boolean().required(),
   tagAlongVotingRule: Yup.string().required(),
+  shareholdersVotingQuorum: Yup.number()
+    .required()
+    .min(MIN_VOTING_QUORUM * 100)
+    .max(MAX_VOTING_QUORUM * 100),
   generalVotingDurationDays: Yup.number()
     .required()
     .min(MIN_VOTING_DURATION)
@@ -100,6 +106,7 @@ const fromFormState = {
   liquidationPreferenceMultiplier: parseStringToFloat(),
   votingFinalizationDurationDays: parseStringToInteger(),
   votingMajorityFraction: [parseStringToFloat(), convertPercentageToFraction()],
+  shareholdersVotingQuorum: [parseStringToFloat(), convertPercentageToFraction()],
   advisoryBoard: removeEmptyField(),
   advisoryBoardSelector: removeField(),
   generalVotingDurationDays: parseStringToInteger(),
@@ -109,6 +116,7 @@ const fromFormState = {
 export const toFormState = {
   votingFinalizationDurationDays: convertNumberToString(),
   votingMajorityFraction: [convertFractionToPercentage(), convertNumberToString()],
+  shareholdersVotingQuorum: [convertFractionToPercentage(), convertNumberToString()],
   generalVotingDurationDays: convertNumberToString(),
   restrictedActVotingDurationDays: convertNumberToString(),
 };

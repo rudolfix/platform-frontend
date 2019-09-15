@@ -7,7 +7,7 @@ import { TTranslatedString } from "../../types";
 import { assertNever } from "../../utils/assertNever";
 import { Money } from "../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
-import { TMessage } from "./utils";
+import { formatMatchingFieldNames, TMessage } from "./utils";
 
 interface ITranslationValues {
   [SignInUserErrorMessages: string]: string;
@@ -265,6 +265,8 @@ export enum ValidationMessage {
   VALIDATION_RESTRICTED_COUNTRY = "validationRestrictedCountry",
   VALIDATION_PECENTAGE_MAX = "validationPecentageMax",
   VALIDATION_PERCENTAGE_MIN = "validationPercentageMin",
+  VALIDATION_CURRENCY_CODE = "validationCurrencyCode",
+  VALIDATION_FIELDS_SHOULD_MATCH = "validationFieldsShouldMatch",
 }
 
 export enum MarketingEmailsMessage {
@@ -698,6 +700,15 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="form.field.error.percentage.max" values={{ ...messageData }} />;
     case ValidationMessage.VALIDATION_PERCENTAGE_MIN:
       return <FormattedMessage id="form.field.error.percentage.min" values={{ ...messageData }} />;
+    case ValidationMessage.VALIDATION_CURRENCY_CODE:
+      return <FormattedMessage id="form.field.error.currency-code" values={{ ...messageData }} />;
+    case ValidationMessage.VALIDATION_FIELDS_SHOULD_MATCH:
+      return (
+        <FormattedMessage
+          id={"form.field.error.fileds-should-match"}
+          values={{ fieldNames: formatMatchingFieldNames(messageData as string[]) }}
+        />
+      );
 
     case MarketingEmailsMessage.UNSUBSCRIBE_ERROR:
       return <FormattedMessage id="settings.unsubscription.error" />;

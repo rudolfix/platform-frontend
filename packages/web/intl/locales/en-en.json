@@ -1193,7 +1193,7 @@
   "shared-component.eto-overview.register": "Register",
   "shared-component.eto-overview.register-cta": "Interested in taking part in this ETO? Register on Neufund and become a verified investor now!",
   "shared-component.eto-overview.reveal-my-email": "Reveal your email",
-  "shared-component.eto-overview.reveal-my-email.tooltip": "When ticking this box your email address will be shared with the company doing the ETO.",
+  "shared-component.eto-overview.reveal-my-email.tooltip": "When ticking this box your email address will be shared with the company conducting the offering.",
   "shared-component.eto-overview.settings-update-required": "Verify your identity to invest",
   "shared-component.eto-overview.smart-contract-on-chain": "Smart contract on chain",
   "shared-component.eto-overview.status-in-preview": "In Draft",

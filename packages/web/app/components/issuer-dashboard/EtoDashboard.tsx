@@ -155,6 +155,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
         </>
       );
     case EEtoState.PENDING:
+    case EEtoState.SUSPENDED:
       return (
         <>
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
@@ -349,6 +350,7 @@ const EtoDashboard = compose<React.FunctionComponent>(
             isInvestmentAndEtoTermsFilledWithAllRequired,
             props.isOfferingDocumentSubmitted,
             props.isISHASubmitted,
+            !!props.eto.nominee,
           )
         : EEtoStep.VERIFICATION,
     };

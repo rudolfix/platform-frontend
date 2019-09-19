@@ -48,14 +48,24 @@ const selectStepComponent = (props: IEtoStep) => {
       );
     case EEtoStep.LINK_NOMINEE:
       return <LinkNomineeStep />;
+    case EEtoStep.FILL_INFORMATION_ABOUT_ETO:
+      return (
+        <>
+          <DashboardHeading
+            title={<FormattedMessage id="eto-dashboard.fill-information-about-eto" />}
+            data-test-id="eto-dashboard-fill-information-about-eto"
+          />
+          <FormattedMessage id="eto-dashboard.fill-information-about-eto.description" />
+        </>
+      );
     case EEtoStep.UPLOAD_SIGNED_TERMSHEET:
       return (
         <>
           <DashboardHeading
-            title={<FormattedMessage id="eto-dashboard.upload_signed_termsheet" />}
-            data-test-id="eto-dashboard-upload_signed_termsheet"
+            title={<FormattedMessage id="eto-dashboard.upload-signed-termsheet" />}
+            data-test-id="eto-dashboard-upload-signed-termsheet"
           />
-          <FormattedMessage id="eto-dashboard.upload_signed_termsheet.description" />
+          <FormattedMessage id="eto-dashboard.upload-signed-termsheet.description" />
         </>
       );
     case EEtoStep.PUBLISH_INVESTMENT_OFFER:
@@ -114,6 +124,16 @@ const selectStepComponent = (props: IEtoStep) => {
       );
     case EEtoStep.REQUEST_THA_SIGN:
       return <DashboardHeading title={<FormattedMessage id="eto-dashboard.start-fundraising" />} />;
+    case EEtoStep.ETO_SUSPENDED_FROM_ON_CHAIN:
+      return (
+        <>
+          <DashboardHeading
+            title={<FormattedMessage id="eto-dashboard.suspended" />}
+            data-test-id="eto-dashboard-suspended"
+          />
+          <FormattedMessage id="eto-dashboard.eto-contracts-suspended" />
+        </>
+      );
     default:
       return assertNever(props.etoStep);
   }

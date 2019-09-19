@@ -350,6 +350,7 @@ const EtoDashboard = compose<React.FunctionComponent>(
             isInvestmentAndEtoTermsFilledWithAllRequired,
             props.isOfferingDocumentSubmitted,
             props.isISHASubmitted,
+            !!props.eto.nominee,
           )
         : EEtoStep.VERIFICATION,
     };

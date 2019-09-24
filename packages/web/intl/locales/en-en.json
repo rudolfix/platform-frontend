@@ -605,7 +605,7 @@
   "eto.status.onchain.payout": "Proceeds payout",
   "eto.status.onchain.public": "Public sale",
   "eto.status.onchain.refund": "Refund",
-  "eto.status.onchain.setup": "Campaign",
+  "eto.status.onchain.setup": "Campaigning",
   "eto.status.onchain.signing": "In signing",
   "eto.status.onchain.whitelist": "Presale",
   "eto.status.sub-state.coming-soon": "Coming soon",

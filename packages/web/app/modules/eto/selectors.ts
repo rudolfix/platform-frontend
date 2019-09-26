@@ -25,7 +25,7 @@ import { getEtoSubState } from "./utils";
 const selectEtoState = (state: IAppState) => state.eto;
 
 const selectEtoPreviewCode = (state: IAppState, etoId: string) => {
-  const eto = find(eto => eto!.etoId === etoId, state.eto.etos);
+  const eto = find(e => e!.etoId === etoId, state.eto.etos);
 
   if (eto) {
     return eto.previewCode;
@@ -35,7 +35,7 @@ const selectEtoPreviewCode = (state: IAppState, etoId: string) => {
 };
 
 export const selectEtoTokenName = (state: IAppState, etoId: string) => {
-  const eto = find(eto => eto!.etoId === etoId, state.eto.etos);
+  const eto = find(e => e!.etoId === etoId, state.eto.etos);
 
   if (eto) {
     return eto.equityTokenName;
@@ -215,4 +215,32 @@ export const selectAgreementsStatus = createSelector(
   (_: IAppState, previewCode: string) => previewCode,
   (etoState: DeepReadonly<IEtoState>, previewCode: string) =>
     etoState.offeringAgreementsStatus[previewCode],
+);
+
+export const selectInvestmentAgreement = (state: IAppState, previewCode: string) => {
+  const eto = selectEtoState(state);
+
+  return eto.signedInvestmentAgreements[previewCode];
+};
+
+export const selectInvestmentAgreementLoading = createSelector(
+  selectInvestmentAgreement,
+  agreement => {
+    if (agreement) {
+      return agreement.isLoading;
+    }
+
+    return false;
+  },
+);
+
+export const selectSignedInvestmentAgreementHash = createSelector(
+  selectInvestmentAgreement,
+  agreement => {
+    if (agreement) {
+      return agreement.url;
+    }
+
+    return undefined;
+  },
 );

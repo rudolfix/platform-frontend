@@ -28,6 +28,7 @@ import { Dictionary } from "../../types";
 import { divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserVerified, selectUserType } from "../auth/selectors";
+import { shouldLoadPledgeData } from "../bookbuilding-flow/utils";
 import { selectMyAssets } from "../investor-portfolio/selectors";
 import { waitForKycStatus } from "../kyc/sagas";
 import { selectClientJurisdiction } from "../kyc/selectors";
@@ -43,6 +44,7 @@ import { InvalidETOStateError } from "./errors";
 import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
+  selectEtoOnChainStateById,
   selectEtoWithCompanyAndContract,
   selectFilteredEtosByRestrictedJurisdictions,
   selectIsEtoAnOffer,
@@ -74,8 +76,16 @@ function* loadEtoPreview(
       if (userType === EUserType.INVESTOR) {
         yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
       }
-
       yield neuCall(loadEtoContract, eto);
+    }
+
+    // This needs to always be after loadingEtoContract step
+    const onChainState = yield select((state: IAppState) =>
+      selectEtoOnChainStateById(state, eto.etoId),
+    );
+
+    if (shouldLoadPledgeData(eto.state, onChainState)) {
+      yield put(actions.bookBuilding.loadPledge(eto.etoId));
     }
 
     yield put(actions.eto.setEto({ eto, company }));
@@ -117,6 +127,15 @@ function* loadEto(
       yield neuCall(loadEtoContract, eto);
     }
 
+    // This needs to always be after loadingEtoContract step
+    const onChainState = yield select((state: IAppState) =>
+      selectEtoOnChainStateById(state, eto.etoId),
+    );
+
+    if (shouldLoadPledgeData(eto.state, onChainState)) {
+      yield put(actions.bookBuilding.loadPledge(eto.etoId));
+    }
+
     yield put(actions.eto.setEto({ eto, company }));
   } catch (e) {
     logger.error("Could not load eto by id", e);
@@ -143,7 +162,6 @@ export function* loadEtoContract(
     });
     return;
   }
-
   try {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
 
@@ -293,6 +311,13 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
       etos
         .filter(eto => eto.state === EEtoState.ON_CHAIN)
         .map(eto => neuCall(loadEtoContract, eto)),
+    );
+
+    // Pledge can be loaded after listed state
+    yield all(
+      etos
+        .filter(eto => shouldLoadPledgeData(eto.state))
+        .map(eto => put(actions.bookBuilding.loadPledge(eto.etoId))),
     );
 
     const filteredEtosByJurisdictionRestrictions: TEtoDataWithCompany[] = yield select(

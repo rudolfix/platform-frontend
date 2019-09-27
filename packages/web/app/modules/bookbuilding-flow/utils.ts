@@ -7,6 +7,8 @@ import {
   ValidationMessage,
 } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
+import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EETOStateOnChain } from "../eto/types";
 
 export enum EWhitelistingState {
   ACTIVE = "active",
@@ -32,6 +34,15 @@ export const isPledgeAboveMinimum = (minPledge: number): TestOptions => ({
     return isValidNumber(value) && new BigNumber(value).greaterThanOrEqualTo(minPledge.toString());
   },
 });
+
+export const shouldLoadPledgeData = (
+  etoState: EEtoState,
+  onChainState?: EETOStateOnChain,
+): boolean =>
+  !!(
+    etoState >= EEtoState.LISTED &&
+    (onChainState === undefined || onChainState < EETOStateOnChain.Claim)
+  );
 
 export const isPledgeNotAboveMaximum = (maxPledge?: number): TestOptions => ({
   name: "minAmount",

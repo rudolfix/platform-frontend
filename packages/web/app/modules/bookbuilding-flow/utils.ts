@@ -40,7 +40,7 @@ export const shouldLoadPledgeData = (
   onChainState?: EETOStateOnChain,
 ): boolean =>
   !!(
-    etoState >= EEtoState.LISTED &&
+    [EEtoState.LISTED, EEtoState.PROSPECTUS_APPROVED, EEtoState.ON_CHAIN].indexOf(etoState) >= 0 &&
     (onChainState === undefined || onChainState < EETOStateOnChain.Claim)
   );
 

@@ -242,16 +242,21 @@ function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: 
     }
 
     // if timeToNextState is negative then user and ethereum clock are not in sync
-    // in that case pool eto in two time intervals of 2 and 5 seconds
-    // if after than state time is still negative log warning message
+    // in that case poll eto 1 minute with intervals of 2seconds and then 4 minutes more with 5 seconds interval
+    // if after that state time is still negative log warning message
     const nextStateWatchCount = etoNextStateCount[previewCode];
     if (nextStateWatchCount === undefined) {
       etoNextStateCount[previewCode] = 1;
       return 2000;
     }
 
-    if (nextStateWatchCount === 1) {
-      etoNextStateCount[previewCode] = 2;
+    if (nextStateWatchCount < 30) {
+      etoNextStateCount[previewCode] = nextStateWatchCount + 1;
+      return 2000;
+    }
+
+    if (nextStateWatchCount >= 30 && nextStateWatchCount < 78) {
+      etoNextStateCount[previewCode] = nextStateWatchCount + 1;
       return 5000;
     }
 
@@ -290,14 +295,15 @@ export function* delayEtoRefresh(
   yield race(strategies);
 }
 
-function* watchEto(_: TGlobalDependencies, previewCode: string): any {
+export function* watchEto(_: TGlobalDependencies, previewCode: string): any {
   const eto: TEtoWithCompanyAndContract = yield select((state: IAppState) =>
     selectEtoWithCompanyAndContract(state, previewCode),
   );
 
-  yield neuCall(delayEtoRefresh, eto);
-
-  yield put(actions.eto.loadEtoPreview(eto.previewCode));
+  while (true) {
+    yield neuCall(delayEtoRefresh, eto);
+    yield put(actions.eto.loadEtoPreview(eto.previewCode));
+  }
 }
 
 function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {

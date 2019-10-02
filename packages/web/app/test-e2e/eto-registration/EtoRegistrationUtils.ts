@@ -121,6 +121,8 @@ export const fillRequiredCompanyInformation = () => {
 
   fillAndAssert("eto-progress-widget-media", mediaRequiredForm);
 
+  fillAndAssert("eto-progress-widget-product-vision", productVisionRequiredForm);
+
   fillAndAssert("eto-progress-widget-equity-token-info", equityTokenInfoForm);
 
   fillAndAssert("eto-progress-widget-product-vision", productVisionRequiredForm);

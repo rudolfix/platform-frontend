@@ -5,7 +5,7 @@ import { IWindowWithData } from "../../../test/helperTypes";
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { Q18 } from "../../config/constants";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { convertToBigInt } from "../../utils/Number.utils";
+import { convertToBigInt } from "../../utils/NumberUtils";
 import { EETOStateOnChain } from "../eto/types";
 import {
   EUserRefundStatus,

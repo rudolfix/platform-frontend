@@ -8,7 +8,7 @@ import { Q18 } from "../../config/constants";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IAppState } from "../../store";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
-import { isZero } from "../../utils/Number.utils";
+import { isZero } from "../../utils/NumberUtils";
 import { selectMyPledge } from "../bookbuilding-flow/selectors";
 import {
   selectEtoById,

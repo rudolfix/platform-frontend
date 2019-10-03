@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { convertToBigInt } from "../../../../utils/Number.utils";
+import { convertToBigInt } from "../../../../utils/NumberUtils";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { TxSuccessLayout } from "./TxSuccess";
 

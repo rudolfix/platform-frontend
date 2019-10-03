@@ -15,7 +15,7 @@ import {
   multiplyBigNumbers,
   subtractBigNumbers,
 } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/Number.utils";
+import { convertToBigInt } from "../../../../utils/NumberUtils";
 import { actions } from "../../../actions";
 import { deserializeClaims } from "../../../kyc/utils";
 import { neuCall } from "../../../sagasUtils";

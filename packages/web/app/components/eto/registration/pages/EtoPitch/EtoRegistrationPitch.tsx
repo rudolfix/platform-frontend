@@ -1,55 +1,36 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { setDisplayName } from "recompose";
-import { compose } from "redux";
 
+import { EtoPitchType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { Button, EButtonLayout } from "../../../../shared/buttons/index";
+import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";
 import {
-  EtoPitchType,
-  TPartialCompanyEtoData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { actions } from "../../../../modules/actions";
-import {
-  selectIssuerCompany,
-  selectIssuerEtoLoading,
-  selectIssuerEtoSaving,
-} from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
-import { appConnect } from "../../../../store";
-import { Button, EButtonLayout } from "../../../shared/buttons";
-import { ArrayOfKeyValueFields, FormTextArea } from "../../../shared/forms";
-import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
-import {
-  convert,
-  convertFractionToPercentage,
-  convertInArray,
-  convertPercentageToFraction,
-  removeEmptyKeyValueFields,
-} from "../../utils";
-import { EtoFormBase } from "../EtoFormBase";
-import { Section } from "../Shared";
+  ArrayOfKeyValueFields,
+  FormFieldError,
+  FormFieldLabel,
+  FormTextArea,
+} from "../../../../shared/forms/index";
+import { EtoFormBase } from "../../EtoFormBase";
+import { Section } from "../../Shared";
+import { TDispatchProps } from "../EtoVotingRights/EtoVotingRights";
+import { connectEtoRegistrationPitch, TComponentProps } from "./connectEtoRegistrationPitch";
 
-import * as styles from "../Shared.module.scss";
-
-interface IStateProps {
-  loadingData: boolean;
-  savingData: boolean;
-  stateValues: TPartialCompanyEtoData;
-}
-
-interface IDispatchProps {
-  saveData: (values: TPartialCompanyEtoData) => void;
-}
-
-type IProps = IStateProps & IDispatchProps;
+import * as styles from "../../Shared.module.scss";
 
 const distributionSuggestions = ["Development", "Other"];
 
-const EtoRegistrationPitchComponent = (props: IProps) => (
+const EtoRegistrationPitchComponent = ({
+  validationFn,
+  initialValues,
+  saveData,
+  savingData,
+}: TComponentProps & TDispatchProps) => (
   <EtoFormBase
     title={<FormattedMessage id="eto.form-progress-widget.company-information.product-vision" />}
     validationSchema={EtoPitchType.toYup()}
-    initialValues={convert(props.stateValues, toFormState)}
-    onSubmit={props.saveData}
+    validate={validationFn}
+    initialValues={initialValues}
+    onSubmit={saveData}
   >
     <Section>
       <FormTextArea
@@ -114,15 +95,19 @@ const EtoRegistrationPitchComponent = (props: IProps) => (
         placeholder="Describe"
         name="keyBenefitsForInvestors"
       />
-      <FormHighlightGroup title={<FormattedMessage id="eto.form.product-vision.use-of-capital" />}>
+      <FormHighlightGroup>
+        <FormFieldLabel name="useOfCapital">
+          <FormattedMessage id="eto.form.product-vision.use-of-capital" />
+        </FormFieldLabel>
+
         <FormTextArea name="useOfCapital" placeholder="Detail" disabled={false} />
         <ArrayOfKeyValueFields
           name="useOfCapitalList"
           suggestions={distributionSuggestions}
-          prefix="%"
-          transformRatio={100}
           fieldNames={["description", "percent"]}
+          suffix="%"
         />
+        <FormFieldError name={"useOfCapitalList"} />
       </FormHighlightGroup>
 
       <FormTextArea
@@ -157,41 +142,14 @@ const EtoRegistrationPitchComponent = (props: IProps) => (
       <Button
         layout={EButtonLayout.PRIMARY}
         type="submit"
-        isLoading={props.savingData}
+        isLoading={savingData}
         data-test-id="eto-registration-product-vision-submit"
       >
-        Save
+        <FormattedMessage id="eto.form.product-vision.save" />
       </Button>
     </Section>
   </EtoFormBase>
 );
 
-const EtoRegistrationPitch = compose<React.FunctionComponent>(
-  setDisplayName(EEtoFormTypes.ProductVision),
-  appConnect<IStateProps, IDispatchProps>({
-    stateToProps: s => ({
-      loadingData: selectIssuerEtoLoading(s),
-      savingData: selectIssuerEtoSaving(s),
-      stateValues: selectIssuerCompany(s) as TPartialCompanyEtoData,
-    }),
-    dispatchToProps: dispatch => ({
-      saveData: (company: TPartialCompanyEtoData) => {
-        const convertedCompany = convert(company, fromFormState);
-        dispatch(actions.etoFlow.saveCompanyStart(convertedCompany));
-      },
-    }),
-  }),
-)(EtoRegistrationPitchComponent);
-
-const toFormState = {
-  useOfCapitalList: [convertInArray({ percent: convertFractionToPercentage() })],
-};
-
-const fromFormState = {
-  useOfCapitalList: [
-    removeEmptyKeyValueFields(),
-    convertInArray({ percent: convertPercentageToFraction() }),
-  ],
-};
-
+const EtoRegistrationPitch = connectEtoRegistrationPitch(EtoRegistrationPitchComponent);
 export { EtoRegistrationPitch, EtoRegistrationPitchComponent };

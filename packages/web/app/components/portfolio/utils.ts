@@ -1,6 +1,6 @@
 import { IWindowWithData } from "../../../test/helperTypes";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../utils/Number.utils";
+import { convertToBigInt } from "../../utils/NumberUtils";
 import { ECurrency } from "../shared/formatters/utils";
 
 export const getRequiredAmount = (token: ECurrency) => {

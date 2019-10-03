@@ -8,7 +8,7 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../lib/web3/types";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../utils/Number.utils";
+import { convertToBigInt } from "../../utils/NumberUtils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { selectEtoById, selectEtoOnChainStateById } from "../eto/selectors";
@@ -221,7 +221,7 @@ function* start(action: TAction): any {
   yield put(actions.investmentFlow.resetInvestment());
   yield put(actions.investmentFlow.setEtoId(etoId));
   yield put(actions.kyc.kycLoadClientData());
-  yield put(actions.txTransactions.startInvestment());
+  yield put(actions.txTransactions.startInvestment(etoId));
   yield put(actions.investorEtoTicket.loadEtoInvestorTicket(selectEtoById(state, etoId)!));
 
   yield take("TX_SENDER_SHOW_MODAL");

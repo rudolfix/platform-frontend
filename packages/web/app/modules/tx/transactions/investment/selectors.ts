@@ -3,7 +3,7 @@ import { BigNumber } from "bignumber.js";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { IAppState } from "../../../../store";
 import { compareBigNumbers, subtractBigNumbers } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/Number.utils";
+import { convertToBigInt } from "../../../../utils/NumberUtils";
 import { EInvestmentType } from "../../../investment-flow/reducer";
 import {
   selectLiquidEtherBalance,

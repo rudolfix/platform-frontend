@@ -7,9 +7,9 @@ import {
   isLessThanNMinutes,
   minutesToMs,
   secondsToMs,
-} from "./Date.utils";
+} from "./DateUtils";
 
-describe("date.utils", () => {
+describe("date utils", () => {
   describe("formatDate", () => {
     it("formats dates", () => {
       const date = new Date("12/24/2018");

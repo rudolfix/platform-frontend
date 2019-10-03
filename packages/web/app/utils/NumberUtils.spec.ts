@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { convertToBigInt, isZero, normalize } from "./Number.utils";
+import { convertToBigInt, isZero, normalize } from "./NumberUtils";
 
 describe("convertToBigInt", () => {
   it("converts decimal currencies to bigInt representation", () => {

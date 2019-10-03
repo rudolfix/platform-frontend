@@ -1,6 +1,6 @@
 import * as moment from "moment";
 
-import { convertToBigInt } from "../../utils/Number.utils";
+import { convertToBigInt } from "../../utils/NumberUtils";
 import { assertMoneyNotEmpty, etoFixtureByName } from "../utils";
 import { goToDashboard, goToDashboardWithRequiredPayoutAmountSet } from "../utils/navigation";
 import { tid } from "../utils/selectors";

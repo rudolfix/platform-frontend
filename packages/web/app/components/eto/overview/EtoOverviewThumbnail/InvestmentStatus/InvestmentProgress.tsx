@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TEtoWithCompanyAndContract } from "../../../../../modules/eto/types";
 import { TTranslatedString } from "../../../../../types";
-import { normalize } from "../../../../../utils/Number.utils";
+import { normalize } from "../../../../../utils/NumberUtils";
 import {
   PercentageIndicatorBar,
   TProgressBarProps,

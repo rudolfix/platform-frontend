@@ -3,7 +3,7 @@ import { cloneDeep, flow, get, set } from "lodash";
 
 import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { invariant } from "../../utils/invariant";
-import { formatFlexiPrecision } from "../../utils/Number.utils";
+import { formatFlexiPrecision } from "../../utils/NumberUtils";
 import { TShareholder } from "./public-view/LegalInformationWidget";
 
 const HUNDRED_PERCENT = new BigNumber(100);
@@ -25,8 +25,7 @@ export const applyDefaults = (data: any, defaults: any) => {
 };
 
 /**** DATA CONVERSION FUNCTIONS ****/
-
-export const convert = (data: any, conversionSpec: any) => {
+export const convert = (conversionSpec: { [key: string]: unknown }) => (data: any) => {
   if (data) {
     const dataCopy = cloneDeep(data);
     Object.keys(conversionSpec).forEach(key => {
@@ -47,23 +46,24 @@ const convertField = (input: any, f: any) => {
   }
 };
 
-export const convertInArray = (conversionSpec: any) => (data: any[]) => {
+export const convertInArray = (conversionSpec: any) => (data: {}[]) => {
   if (Array.isArray(data)) {
-    return data.map(element => convert(element, conversionSpec));
+    return data.map(element => convert(conversionSpec)(element));
   } else {
     return data;
   }
 };
 
-const findNonEmptyKeyValueField = (data: ICompoundField | undefined) => {
-  if (data) {
-    const keys = Object.keys(data);
-
-    return data[keys[0]] !== undefined && data[keys[1]] !== undefined;
-  }
-
-  return undefined;
-};
+const findNonEmptyKeyValueField = (data: ICompoundField | undefined) =>
+  data
+    ? Object.keys(data).reduce((acc: boolean, key: string) => {
+        if (data[key] !== undefined) {
+          return true;
+        } else {
+          return acc;
+        }
+      }, false)
+    : false;
 
 //removes data left from empty key-value fields, e.g. {key:undefined,value:undefined}
 export const removeEmptyKeyValueFields = () => (data: ICompoundField[] | undefined) => {
@@ -79,13 +79,22 @@ export const removeEmptyKeyValueFields = () => (data: ICompoundField[] | undefin
 export const removeEmptyKeyValueField = () => (data: ICompoundField | undefined) =>
   findNonEmptyKeyValueField(data) ? data : undefined;
 
-export const convertPercentageToFraction = () => (data: number | undefined) => {
-  invariant(
-    data === undefined || Number.isFinite(data),
-    "convertPercentageToFraction: cannot convert NaN",
-  );
+type TConvertPercentageToFractionOptions = { passThroughInvalidData: true };
+// add an option to pass invalid values on. This is to be used in validation pipelines
+export const convertPercentageToFraction = (options?: TConvertPercentageToFractionOptions) => (
+  data: number | undefined,
+) => {
+  const parseFn = (number: number) => parseFloat((number / 100).toPrecision(4));
 
-  return data !== undefined ? parseFloat((data / 100).toPrecision(4)) : data;
+  if (options && options.passThroughInvalidData) {
+    return typeof data === "number" && Number.isFinite(data) ? parseFn(data) : data;
+  } else {
+    invariant(
+      data === undefined || Number.isFinite(data),
+      "convertPercentageToFraction: cannot convert non-number",
+    );
+    return data !== undefined ? parseFn(data) : data;
+  }
 };
 
 export const convertFractionToPercentage = () => (data: number | undefined) => {
@@ -96,10 +105,27 @@ export const convertFractionToPercentage = () => (data: number | undefined) => {
   return data !== undefined ? parseFloat((data * 100).toFixed(2)) : data;
 };
 
-export const parseStringToFloat = () => (data: string | number | undefined) => {
-  const result = typeof data === "string" ? parseFloat(data) : data;
-  return !Number.isFinite(result!) ? undefined : result; //need to assert here to be able to test `undefined` too
-};
+type TParseStringToFloatData = string | number | undefined;
+
+type TParseStringToFloatOptions = { passThroughInvalidData: true };
+
+// add an option to pass invalid values on. This is to be used in validation pipelines
+export function parseStringToFloat(): (data: TParseStringToFloatData) => number | undefined;
+export function parseStringToFloat(
+  options: TParseStringToFloatOptions,
+): (data: TParseStringToFloatData) => string | number | undefined;
+/* tslint:disable:typedef */
+export function parseStringToFloat(options?: TParseStringToFloatOptions) {
+  return (data: TParseStringToFloatData): number | undefined | string => {
+    const result = typeof data === "string" ? parseFloat(data) : data;
+    if (Number.isFinite(result!)) {
+      return result;
+    } else {
+      return options && options.passThroughInvalidData ? data : undefined;
+    }
+  };
+}
+/* tslint:enable:typedef */
 
 export const parseStringToInteger = () => (data: string | number | undefined) => {
   if (typeof data === "string") {

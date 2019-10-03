@@ -7,7 +7,7 @@ import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
-import { promisify } from "../../../utils/Promise.utils";
+import { promisify } from "../../../utils/PromiseUtils";
 import {
   LedgerContractsDisabledError,
   LedgerNotAvailableError,

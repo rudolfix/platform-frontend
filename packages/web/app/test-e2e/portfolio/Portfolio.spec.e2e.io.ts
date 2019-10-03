@@ -1,4 +1,4 @@
-import { convertToBigInt } from "../../utils/Number.utils";
+import { convertToBigInt } from "../../utils/NumberUtils";
 import {
   etoFixtureAddressByName,
   goToPortfolio,

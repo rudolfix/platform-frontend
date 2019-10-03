@@ -7,7 +7,7 @@ import { Panel } from "../../shared/Panel";
 import { IPerson, PeopleSwiperWidget } from "../../shared/PeopleSwiperWidget";
 import { TabContent, Tabs } from "../../shared/Tabs";
 import { DashboardHeading } from "../shared/DashboardHeading";
-import { areThereIndividuals, selectActiveCarouselTab } from "../shared/EtoView.utils";
+import { areThereIndividuals, selectActiveCarouselTab } from "../shared/EtoViewUtils";
 
 const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContract }> = ({ eto }) => {
   const {

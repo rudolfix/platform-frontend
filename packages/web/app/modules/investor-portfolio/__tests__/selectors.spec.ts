@@ -5,7 +5,7 @@ import * as sinon from "sinon";
 import { Q18 } from "../../../config/constants";
 import * as etoUtils from "../../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../../store";
-import { convertToBigInt } from "../../../utils/Number.utils";
+import { convertToBigInt } from "../../../utils/NumberUtils";
 import * as etoSelectors from "../../eto/selectors";
 import { IInvestorTicketsState } from "../reducer";
 import * as investorTicketSelectors from "../selectors";

@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { expect } from "chai";
 
-import { formatMoney } from "../../../utils/Money.utils";
+import { formatMoney } from "../../../utils/MoneyUtils";
 import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,

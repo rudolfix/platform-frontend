@@ -11,13 +11,19 @@ import {
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { HiResImage } from "../../shared/HiResImage";
+import { HiResImage, ISrcSet } from "../../shared/HiResImage";
 import { getMessageTranslation } from "../../translatedMessages/messages";
 import { Modal } from "../Modal";
 import { AccessLightWalletPrompt } from "./AccessLightWalletPrompt";
 
 import * as ledgerConfirm from "../../../assets/img/wallet_selector/ledger_confirm.svg";
 import * as lockIcon from "../../../assets/img/wallet_selector/lock_icon.svg";
+import * as logoGnosis1x from "../../../assets/img/wallet_selector/logo_gnosis.png";
+import * as logoGnosis2x from "../../../assets/img/wallet_selector/logo_gnosis@2x.png";
+import * as logoGnosis3x from "../../../assets/img/wallet_selector/logo_gnosis@3x.png";
+import * as logoMetamask1x from "../../../assets/img/wallet_selector/logo_metamask.png";
+import * as logoMetamask2x from "../../../assets/img/wallet_selector/logo_metamask@2x.png";
+import * as logoMetamask3x from "../../../assets/img/wallet_selector/logo_metamask@3x.png";
 import * as styles from "./AccessWalletModal.module.scss";
 
 interface IStateProps {
@@ -38,6 +44,18 @@ interface IExternalProps {
   title?: TTranslatedString;
   message?: TTranslatedString;
 }
+
+const logoGnosisSrcSet: ISrcSet = {
+  "1x": logoGnosis1x,
+  "2x": logoGnosis2x,
+  "3x": logoGnosis3x,
+};
+
+const logoMetamaskSrcSet: ISrcSet = {
+  "1x": logoMetamask1x,
+  "2x": logoMetamask2x,
+  "3x": logoMetamask3x,
+};
 
 export const AccessWalletContainerComponent: React.FunctionComponent<
   IStateProps & IDispatchProps
@@ -75,10 +93,7 @@ export const AccessWalletContainerComponent: React.FunctionComponent<
     {walletType === EWalletType.BROWSER && (
       <div>
         <HiResImage
-          partialPath={
-            "wallet_selector/" +
-            (walletSubType === EWalletSubType.GNOSIS ? "logo_gnosis" : "logo_metamask")
-          }
+          srcSet={walletSubType === EWalletSubType.GNOSIS ? logoGnosisSrcSet : logoMetamaskSrcSet}
           alt={walletSubType}
           title={walletSubType}
           className="mt-3 mb-3"

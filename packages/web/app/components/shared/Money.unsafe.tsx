@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import { MONEY_DECIMALS } from "../../config/constants";
-import { formatMoney } from "../../utils/Money.utils";
+import { formatMoney } from "../../utils/MoneyUtils";
 import { ECurrency, ENumberInputFormat, ERoundingMode } from "./formatters/utils";
 
 const selectDecimalPlaces = (currency: ECurrency, isPrice?: boolean): number => {

@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
 import { DeepReadonly } from "../../../../types";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/Number.utils";
+import { convertToBigInt } from "../../../../utils/NumberUtils";
 import { actions } from "../../../actions";
 import { selectBankFeeUlps } from "../../../bank-transfer-flow/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";

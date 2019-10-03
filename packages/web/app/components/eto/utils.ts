@@ -3,7 +3,7 @@ import { cloneDeep, flow, get, set } from "lodash";
 
 import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { invariant } from "../../utils/invariant";
-import { formatFlexiPrecision } from "../../utils/Number.utils";
+import { formatFlexiPrecision } from "../../utils/NumberUtils";
 import { TShareholder } from "./public-view/LegalInformationWidget";
 
 const HUNDRED_PERCENT = new BigNumber(100);

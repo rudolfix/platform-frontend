@@ -17,7 +17,7 @@ import { promisify } from "../../lib/contracts/typechain-runtime";
 import { IAppState } from "../../store";
 import { EthereumAddress } from "../../types";
 import { addBigNumbers } from "../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../utils/Number.utils";
+import { convertToBigInt } from "../../utils/NumberUtils";
 import { actions, TAction } from "../actions";
 import { selectUser } from "../auth/selectors";
 import { calculateSnapshotDate } from "../contracts/utils";

@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { EAdditionalValidationDataNotifications } from "../../../../../modules/tx/validator/reducer";
-import { convertToBigInt } from "../../../../../utils/Number.utils";
+import { convertToBigInt } from "../../../../../utils/NumberUtils";
 import { withModalBody } from "../../../../../utils/storybookHelpers.unsafe";
 import { WithdrawLayout } from "./Withdraw";
 

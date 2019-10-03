@@ -5,8 +5,8 @@ import { ETHEREUM_ADDRESS_LENGTH, MONEY_DECIMALS } from "../../config/constants"
 import { TBigNumberVariant } from "../../lib/web3/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
-import { formatMoney } from "../../utils/Money.utils";
-import { convertToBigInt } from "../../utils/Number.utils";
+import { formatMoney } from "../../utils/MoneyUtils";
+import { convertToBigInt } from "../../utils/NumberUtils";
 
 export function makeEthereumAddressChecksummed(
   ethereumAddress: EthereumAddress,

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { addBigNumbers, subtractBigNumbers } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/Number.utils";
+import { convertToBigInt } from "../../../../utils/NumberUtils";
 import { EInvestmentType } from "../../../investment-flow/reducer";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import { selectMaximumInvestment } from "./selectors";

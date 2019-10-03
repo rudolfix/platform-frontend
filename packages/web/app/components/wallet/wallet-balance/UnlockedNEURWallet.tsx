@@ -3,7 +3,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
 import { CommonHtmlProps } from "../../../types";
-import { isZero } from "../../../utils/Number.utils";
+import { isZero } from "../../../utils/NumberUtils";
 import { EColumnSpan } from "../../layouts/Container";
 import { AccountBalance } from "../../shared/AccountBalance";
 import { ECurrency } from "../../shared/formatters/utils";

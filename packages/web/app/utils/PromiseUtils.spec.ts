@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { delay } from "redux-saga";
 
 import { setupFakeClock } from "../../test/integrationTestUtils.unsafe";
-import { isPromise, promiseTimeout, promisify } from "./Promise.utils";
+import { isPromise, promiseTimeout, promisify } from "./PromiseUtils";
 
 describe("promisify", () => {
   const fn = (a: number, b: number, cb: Function) => {

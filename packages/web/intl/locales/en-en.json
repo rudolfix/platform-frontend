@@ -593,7 +593,7 @@
   "eto.settings.eto-start-date-summary.equity-token-address": "Equity Token contract address",
   "eto.settings.eto-start-date-summary.eto-commitment-contract-address": "ETO commitment contract address",
   "eto.settings.eto-start-date-summary.eto-terms-contract-address": "ETO terms contract address",
-  "eto.settings.eto-start-date-summary.new-start-date-local": "presale start date (local time)",
+  "eto.settings.eto-start-date-summary.new-start-date-local": "presale start date ({timezone})",
   "eto.settings.eto-start-date-summary.new-start-date-utc": "presale start date (UTC)",
   "eto.settings.eto-start-date-summary.time-to-start-date": "time to presale",
   "eto.settings.eto-start-date.title": "Eto start date",

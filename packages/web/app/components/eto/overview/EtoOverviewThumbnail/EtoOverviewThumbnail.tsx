@@ -11,13 +11,20 @@ import { appConnect } from "../../../../store";
 import { CommonHtmlProps, XOR } from "../../../../types";
 import { appRoutes } from "../../../appRoutes";
 import { etoPublicViewLink } from "../../../appRouteUtils";
+import { Money } from "../../../shared/formatters/Money";
+import {
+  EAbbreviatedNumberOutputFormat,
+  ECurrency,
+  ENumberInputFormat,
+} from "../../../shared/formatters/utils";
 import { VALUES } from "../../../shared/forms/fields/FormSelectCountryField.unsafe";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { FUNDING_ROUNDS } from "../../constants";
 import { ComingSoonEtoState, ETOInvestorState, SuccessEtoState } from "../../shared/ETOState";
 import { Cover } from "./Cover";
 import { EtoCardButton, EtoCardPanelButton } from "./EtoCardPanel";
-import { EtoCardStatusManager, SuccessfulInfo } from "./EtoCardStatusManager";
+import { EtoCardStatusManager } from "./EtoCardStatusManager";
+import { GreenInfo } from "./Info";
 
 import * as styles from "./EtoOverviewThumbnail.module.scss";
 
@@ -91,7 +98,28 @@ const MockEtoOverviewLayout: React.FunctionComponent<
         {mockedEto.keyQuoteFounder}
       </p>
 
-      {!!mockedEto.totalAmount && <SuccessfulInfo totalAmount={mockedEto.totalAmount} />}
+      {!!mockedEto.totalAmount && (
+        <GreenInfo
+          upperText={
+            <FormattedMessage id="eto-overview-thumbnail.success.successful-fundraising" />
+          }
+          lowerText={
+            <FormattedMessage
+              id="eto-overview-thumbnail.success.raised-amount"
+              values={{
+                totalAmount: (
+                  <Money
+                    value={mockedEto.totalAmount}
+                    inputFormat={ENumberInputFormat.ULPS}
+                    valueType={ECurrency.EUR}
+                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+                  />
+                ),
+              }}
+            />
+          }
+        />
+      )}
     </section>
   </EtoCardPanelButton>
 );

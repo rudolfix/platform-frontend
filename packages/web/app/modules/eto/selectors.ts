@@ -10,7 +10,6 @@ import {
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
 import { nonNullable } from "../../utils/nonNullable";
-import { selectBookbuildingStats } from "../bookbuilding-flow/selectors";
 import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
 import { hiddenJurisdictions } from "./constants";
 import { IEtoState } from "./reducer";
@@ -65,11 +64,9 @@ export const selectEtoById = (state: IAppState, etoId: string) =>
 export const selectEtoSubState = createCachedSelector(
   // forward eto param to combiner
   (_: IAppState, eto: TEtoSpecsData) => eto,
-  (state: IAppState, eto: TEtoSpecsData) => selectBookbuildingStats(state, eto.etoId),
   (state: IAppState, eto: TEtoSpecsData) => selectIsEligibleToPreEto(state, eto.etoId),
   (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
-  (eto, stats, isEligibleToPreEto, contract) =>
-    getEtoSubState({ eto, stats, contract, isEligibleToPreEto }),
+  (eto, isEligibleToPreEto, contract) => getEtoSubState({ eto, contract, isEligibleToPreEto }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
 const selectEtoWithCompanyAndContractInternal = createCachedSelector(

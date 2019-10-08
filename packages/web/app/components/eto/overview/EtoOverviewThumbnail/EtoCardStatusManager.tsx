@@ -1,6 +1,6 @@
-import * as cn from "classnames";
 import * as moment from "moment";
 import * as React from "react";
+import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
@@ -9,6 +9,8 @@ import {
   EEtoSubState,
   TEtoWithCompanyAndContract,
 } from "../../../../modules/eto/types";
+import { isOnChain } from "../../../../modules/eto/utils";
+import { nonNullable } from "../../../../utils/nonNullable";
 import { Money } from "../../../shared/formatters/Money";
 import {
   EAbbreviatedNumberOutputFormat,
@@ -18,37 +20,13 @@ import {
 } from "../../../shared/formatters/utils";
 import { CounterWidget } from "../EtoOverviewStatus/CounterWidget";
 import { getCurrentInvestmentProgressPercentage } from "../utils";
+import { GreenInfo, Info } from "./Info";
 import { InvestmentStatus } from "./InvestmentStatus/InvestmentStatus";
 import { Whitelist } from "./Whitelist/Whitelist";
-
-import * as styles from "./EtoStatusManager.module.scss";
 
 interface IExternalProps {
   eto: TEtoWithCompanyAndContract;
 }
-
-const SuccessfulInfo: React.FunctionComponent<{ totalAmount: string }> = ({ totalAmount }) => (
-  <div className={styles.successfulInfo}>
-    <p className={cn(styles.successfulInfoText)}>
-      <FormattedMessage id="eto-overview-thumbnail.success.successful-fundraising" />
-    </p>
-    <p className="mb-0">
-      <FormattedMessage
-        id="eto-overview-thumbnail.success.raised-amount"
-        values={{
-          totalAmount: (
-            <Money
-              value={totalAmount}
-              inputFormat={ENumberInputFormat.ULPS}
-              valueType={ECurrency.EUR}
-              outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-            />
-          ),
-        }}
-      />
-    </p>
-  </div>
-);
 
 const EtoCardStatusManager = ({ eto }: IExternalProps) => {
   const state = eto.contract ? eto.contract.timedState : eto.state;
@@ -57,32 +35,50 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
     case EEtoState.LISTED:
     case EEtoState.PROSPECTUS_APPROVED:
     case EETOStateOnChain.Setup: {
-      return <Whitelist eto={eto} />;
-    }
-    case EETOStateOnChain.Whitelist: {
-      const endDate = eto.contract!.startOfStates[EETOStateOnChain.Public]!;
+      // if start date was already set show countdown over whitelist components
+      if (
+        eto.subState === EEtoSubState.COUNTDOWN_TO_PRESALE ||
+        eto.subState === EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE
+      ) {
+        const nextState =
+          eto.subState === EEtoSubState.COUNTDOWN_TO_PRESALE
+            ? EETOStateOnChain.Whitelist
+            : EETOStateOnChain.Public;
 
-      if (eto.subState === EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE) {
+        if (!isOnChain(eto) || eto.contract.startOfStates[nextState] === undefined) {
+          throw new Error("Next state should be defined as this point");
+        }
+
+        const nextStateStartDate = nonNullable(eto.contract.startOfStates[nextState]);
+
         return (
-          <CounterWidget
-            endDate={endDate}
-            awaitedState={EETOStateOnChain.Public}
-            etoId={eto.etoId}
-          />
-        );
-      } else {
-        return (
-          <>
-            <InvestmentStatus eto={eto} />
-            <p className={styles.info}>
-              <FormattedMessage
-                id="eto-overview-thumbnail.presale.days-to-public-sale"
-                values={{ endDate: moment(new Date()).to(endDate, true) }}
-              />
-            </p>
-          </>
+          <CounterWidget endDate={nextStateStartDate} awaitedState={nextState} etoId={eto.etoId} />
         );
       }
+
+      return <Whitelist eto={eto} />;
+    }
+
+    case EETOStateOnChain.Whitelist: {
+      const publicSaleStartDate = eto.contract!.startOfStates[EETOStateOnChain.Public]!;
+
+      return (
+        <>
+          <InvestmentStatus eto={eto} />
+
+          <Info>
+            {/* user is not allowed to invest in presale */}
+            {eto.subState === EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE ? (
+              <FormattedMessage
+                id="eto-overview-thumbnail.presale.days-to-public-sale"
+                values={{ startDate: <FormattedRelative value={publicSaleStartDate} /> }}
+              />
+            ) : (
+              <FormattedMessage id="eto-overview-thumbnail.presale.view-offer" />
+            )}
+          </Info>
+        </>
+      );
     }
 
     case EETOStateOnChain.Public: {
@@ -92,7 +88,7 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
       return (
         <>
           <InvestmentStatus eto={eto} />
-          <p className={styles.info}>
+          <Info>
             <FormattedMessage
               id="eto-overview-thumbnail.public-sale.days-left"
               values={{
@@ -100,7 +96,7 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
                 foundedPercentage: Math.floor(currentProgressPercentage),
               }}
             />
-          </p>
+          </Info>
         </>
       );
     }
@@ -110,7 +106,7 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
         <>
           <InvestmentStatus eto={eto} />
 
-          <p className={styles.info}>
+          <Info>
             <FormattedMessage
               id="eto-overview-thumbnail.signing.raised-amount"
               values={{
@@ -124,23 +120,44 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
                 ),
               }}
             />
-          </p>
+          </Info>
         </>
       );
     }
 
     case EETOStateOnChain.Claim:
     case EETOStateOnChain.Payout: {
-      return <SuccessfulInfo totalAmount={eto.contract!.totalInvestment.totalEquivEurUlps} />;
+      return (
+        <GreenInfo
+          upperText={
+            <FormattedMessage id="eto-overview-thumbnail.success.successful-fundraising" />
+          }
+          lowerText={
+            <FormattedMessage
+              id="eto-overview-thumbnail.success.raised-amount"
+              values={{
+                totalAmount: (
+                  <Money
+                    value={eto.contract!.totalInvestment.totalEquivEurUlps}
+                    inputFormat={ENumberInputFormat.ULPS}
+                    valueType={ECurrency.EUR}
+                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+                  />
+                ),
+              }}
+            />
+          }
+        />
+      );
     }
 
     case EETOStateOnChain.Refund: {
       return (
         <>
           <InvestmentStatus eto={eto} />
-          <p className={styles.info}>
+          <Info>
             <FormattedMessage id="eto-overview-thumbnail.refund.claim-refund" />
-          </p>
+          </Info>
         </>
       );
     }
@@ -153,4 +170,4 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
   }
 };
 
-export { EtoCardStatusManager, SuccessfulInfo };
+export { EtoCardStatusManager };

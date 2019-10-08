@@ -51,7 +51,6 @@ export interface IEtoTokenData {
 export enum EEtoSubState {
   MARKETING_LISTING_IN_REVIEW = "marketing_listing_in_review",
   WHITELISTING = "whitelisting",
-  WHITELISTING_LIMIT_REACHED = "whitelisting_limit_reached",
   CAMPAIGNING = "campaigning",
   COUNTDOWN_TO_PRESALE = "countdown_to_presale",
   COUNTDOWN_TO_PUBLIC_SALE = "countdown_to_public_sale",

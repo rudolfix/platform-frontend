@@ -1,12 +1,13 @@
+import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { BookBuildingWidgetComponent } from "./BookBuildingWidget";
 
 const data = {
-  startBookBuilding: () => {},
-  stopBookBuilding: () => {},
-  downloadCSV: () => {},
+  startBookBuilding: action("startBookBuilding"),
+  stopBookBuilding: action("stopBookBuilding"),
+  downloadCSV: action("downloadCSV"),
   etoId: "some-eto-id",
   bookBuildingEnabled: false,
   bookBuildingStats: { investorsCount: 0, pledgedAmount: 0 },

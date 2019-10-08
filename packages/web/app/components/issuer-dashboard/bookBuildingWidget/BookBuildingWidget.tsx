@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { branch, renderComponent } from "recompose";
-import { compose } from "redux";
+import { branch, compose, renderComponent, renderNothing } from "recompose";
 
 import { DAY } from "../../../config/constants";
 import { IBookBuildingStats } from "../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
@@ -12,10 +11,13 @@ import {
   selectIsBookBuilding,
   selectIssuerEtoDateToWhitelistMinDuration,
   selectIssuerEtoId,
+  selectIssuerEtoOnChainState,
   selectMaxPledges,
 } from "../../../modules/eto-flow/selectors";
+import { EETOStateOnChain } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
-import { TTranslatedString } from "../../../types";
+import { OmitKeys, TTranslatedString } from "../../../types";
+import { nonNullable } from "../../../utils/nonNullable";
 import { onEnterAction } from "../../../utils/OnEnterAction";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { EColumnSpan } from "../../layouts/Container";
@@ -44,7 +46,7 @@ interface IStateProps {
   maxPledges: number | null;
   etoId: string;
   canEnableBookbuilding: boolean;
-  columnSpan?: EColumnSpan;
+  onChainState: EETOStateOnChain | undefined;
   minOffsetPeriod: number;
 }
 
@@ -72,7 +74,7 @@ interface ILayoutProps {
   columnSpan?: EColumnSpan;
 }
 
-type IProps = IDispatchProps & IStateProps;
+type TProps = IDispatchProps & OmitKeys<IStateProps, "onChainState"> & IExternalProps;
 
 const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBookBuilding) => (
   <>
@@ -140,7 +142,7 @@ const BookBuildingWidgetLayout: React.FunctionComponent<ILayoutProps> = ({
   </DashboardWidget>
 );
 
-export const BookBuildingWidgetComponent: React.FunctionComponent<IProps> = ({
+export const BookBuildingWidgetComponent: React.FunctionComponent<TProps> = ({
   startBookBuilding,
   bookBuildingEnabled,
   maxPledges,
@@ -220,15 +222,11 @@ const WidgetPanel: React.ComponentType<IPanelProps> = ({ columnSpan, headerText,
   </Panel>
 );
 
-export const BookBuildingWidget = compose<React.FunctionComponent<IExternalProps>>(
+export const BookBuildingWidget = compose<TProps, IExternalProps>(
   createErrorBoundary(ErrorBoundaryPanel),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
-      const etoId = selectIssuerEtoId(state);
-
-      if (!etoId) {
-        throw new Error("Eto id is required for bookbuilding");
-      }
+      const etoId = nonNullable(selectIssuerEtoId(state));
 
       return {
         etoId,
@@ -236,6 +234,7 @@ export const BookBuildingWidget = compose<React.FunctionComponent<IExternalProps
         bookBuildingStats: selectBookbuildingStats(state, etoId),
         maxPledges: selectMaxPledges(state),
         canEnableBookbuilding: selectCanEnableBookBuilding(state),
+        onChainState: selectIssuerEtoOnChainState(state),
         minOffsetPeriod: selectIssuerEtoDateToWhitelistMinDuration(state),
       };
     },
@@ -270,4 +269,9 @@ export const BookBuildingWidget = compose<React.FunctionComponent<IExternalProps
     },
   }),
   branch<IStateProps>(props => !props.bookBuildingStats, renderComponent(WidgetLoading)),
+  branch<IStateProps>(
+    // show widget when bookbuilding can be enabled or when eto is in presale state (to still access stats)
+    props => !props.canEnableBookbuilding && props.onChainState !== EETOStateOnChain.Whitelist,
+    renderNothing,
+  ),
 )(BookBuildingWidgetComponent);

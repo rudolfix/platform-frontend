@@ -5,7 +5,6 @@ import {
   EEtoState,
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IBookBuildingStats } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { DeepPartial, Overwrite } from "../../types";
 import { isPastInvestment } from "../investor-portfolio/utils";
@@ -91,7 +90,6 @@ export const isRestrictedEto = (eto: TEtoWithCompanyAndContract): boolean =>
 type TCalculateSubStateOptions = {
   eto: TEtoSpecsData;
   contract: IEtoContractData | undefined;
-  stats: IBookBuildingStats | undefined;
   isEligibleToPreEto: boolean;
 };
 
@@ -110,7 +108,6 @@ export const isComingSoon = (state: EEtoState): boolean =>
 export const getEtoSubState = ({
   eto,
   contract,
-  stats,
   isEligibleToPreEto,
 }: TCalculateSubStateOptions): EEtoSubState | undefined => {
   switch (eto.state) {
@@ -134,14 +131,6 @@ export const getEtoSubState = ({
 
     case EEtoState.LISTED:
     case EEtoState.PROSPECTUS_APPROVED: {
-      const investorCount = stats ? stats.investorsCount : 0;
-
-      const isInvestorsLimitReached = investorCount >= eto.maxPledges;
-
-      if (isInvestorsLimitReached) {
-        return EEtoSubState.WHITELISTING_LIMIT_REACHED;
-      }
-
       if (eto.isBookbuilding) {
         return EEtoSubState.WHITELISTING;
       }
@@ -155,14 +144,6 @@ export const getEtoSubState = ({
 
       switch (contract.timedState) {
         case EETOStateOnChain.Setup:
-          const investorCount = stats ? stats.investorsCount : 0;
-
-          const isInvestorsLimitReached = investorCount >= eto.maxPledges;
-
-          if (isInvestorsLimitReached) {
-            return EEtoSubState.WHITELISTING_LIMIT_REACHED;
-          }
-
           if (eto.isBookbuilding) {
             return EEtoSubState.WHITELISTING;
           }

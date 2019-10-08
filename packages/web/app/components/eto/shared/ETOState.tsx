@@ -63,7 +63,6 @@ export const generalStateToName: Dictionary<
   ),
   [EEtoSubState.CAMPAIGNING]: <FormattedMessage id="eto.status.onchain.setup" />,
   [EEtoSubState.WHITELISTING]: <FormattedMessage id="eto.status.sub-state.whitelisting" />,
-  [EEtoSubState.WHITELISTING_LIMIT_REACHED]: <FormattedMessage id="eto.status.onchain.setup" />,
   [EEtoSubState.COUNTDOWN_TO_PRESALE]: <FormattedMessage id="eto.status.onchain.setup" />,
   [EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE]: <FormattedMessage id="eto.status.onchain.setup" />,
 };
@@ -93,7 +92,6 @@ const stateToClassName: Partial<Record<EEtoState | EETOStateOnChain | EEtoSubSta
   // eto sub states
   [EEtoSubState.MARKETING_LISTING_IN_REVIEW]: styles.orange,
   [EEtoSubState.CAMPAIGNING]: styles.green,
-  [EEtoSubState.WHITELISTING_LIMIT_REACHED]: styles.green,
   [EEtoSubState.WHITELISTING]: styles.green,
   [EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE]: styles.green,
   [EEtoSubState.COUNTDOWN_TO_PRESALE]: styles.green,

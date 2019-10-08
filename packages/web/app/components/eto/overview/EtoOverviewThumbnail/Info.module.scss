@@ -1,7 +1,8 @@
 @import "../../../shared/Panel.module";
 
 .info,
-.successful-info {
+.green-info,
+.grey-info {
   @include remove-panel-padding;
   margin-top: px-to-rem(10px);
 
@@ -15,10 +16,10 @@
   padding: .5em;
 }
 
-.successful-info {
+.green-info,
+.grey-info {
   @include headline-bigger;
 
-  background: $neu-neon-yellow;
   color: $neu-charcoal-grey2;
   font-weight: bold;
   padding: px-to-rem(22px) px-to-rem(15px) px-to-rem(20px);
@@ -29,4 +30,12 @@
     color: $text-gray;
     margin-bottom: px-to-rem(2px);
   }
+}
+
+.green-info {
+  background: $neu-neon-yellow;
+}
+
+.grey-info {
+  background: $gray8;
 }

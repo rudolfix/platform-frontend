@@ -100,7 +100,21 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
 
     return withEto({ eto });
   })
-  .add("whitelisting", () => {
+  .add("whitelisting (not active)", () => {
+    const eto = {
+      ...rootEto,
+      subState: EEtoSubState.CAMPAIGNING,
+      isBookbuilding: false,
+      canEnableBookbuilding: true,
+      contract: {
+        ...testEto.contract!,
+        timedState: EETOStateOnChain.Setup,
+      },
+    };
+
+    return withEto({ eto });
+  })
+  .add("whitelisting (active)", () => {
     const eto = {
       ...rootEto,
       subState: EEtoSubState.WHITELISTING,
@@ -114,6 +128,43 @@ storiesOf("ETO/EtoOverviewThumbnail", module)
     const bookbuildingStats = {
       pledgedAmount: 100000,
       investorsCount: 40,
+    };
+
+    return withEto({ eto, bookbuildingStats });
+  })
+  .add("whitelisting (limit reached)", () => {
+    const eto = {
+      ...rootEto,
+      subState: EEtoSubState.WHITELISTING,
+      isBookbuilding: true,
+      contract: {
+        ...testEto.contract!,
+        timedState: EETOStateOnChain.Setup,
+      },
+    };
+
+    const bookbuildingStats = {
+      pledgedAmount: 100000,
+      investorsCount: rootEto.maxPledges,
+    };
+
+    return withEto({ eto, bookbuildingStats });
+  })
+  .add("whitelisting (closed)", () => {
+    const eto = {
+      ...rootEto,
+      subState: EEtoSubState.CAMPAIGNING,
+      isBookbuilding: false,
+      canEnableBookbuilding: false,
+      contract: {
+        ...testEto.contract!,
+        timedState: EETOStateOnChain.Setup,
+      },
+    };
+
+    const bookbuildingStats = {
+      pledgedAmount: 1000000,
+      investorsCount: 50,
     };
 
     return withEto({ eto, bookbuildingStats });

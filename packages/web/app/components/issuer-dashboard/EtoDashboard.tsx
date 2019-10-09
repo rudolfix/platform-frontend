@@ -13,7 +13,6 @@ import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
 import {
   selectAreAgreementsSignedByNominee,
-  selectCanEnableBookBuilding,
   selectCombinedEtoCompanyData,
   selectIsISHAPreviewSubmitted,
   selectIsMarketingDataVisibleInPreview,
@@ -73,7 +72,6 @@ interface IStateProps {
   userHasKycAndEmailVerified: boolean;
   requestStatus?: EKycRequestStatus;
   eto?: TEtoWithCompanyAndContract;
-  canEnableBookbuilding: boolean;
   combinedEtoCompanyData: ReturnType<typeof selectCombinedEtoCompanyData>;
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted: boolean | undefined;
@@ -121,7 +119,6 @@ interface IEtoStateRender {
   isTermSheetSubmitted?: boolean;
   isOfferingDocumentSubmitted?: boolean;
   isISHASubmitted: boolean | undefined;
-  canEnableBookbuilding: boolean;
   offeringDocumentType: EOfferingDocumentType | undefined;
   shouldViewEtoSettings: boolean;
   shouldViewMarketingSubmissionSection: boolean;
@@ -133,7 +130,6 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   isTermSheetSubmitted,
   isOfferingDocumentSubmitted,
   isISHASubmitted,
-  canEnableBookbuilding,
   offeringDocumentType,
   shouldViewEtoSettings,
   shouldViewMarketingSubmissionSection,
@@ -177,9 +173,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.LISTED:
       return (
         <>
-          {canEnableBookbuilding && (
-            <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-          )}
+          <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
 
           {!isOfferingDocumentSubmitted &&
             (offeringDocumentType === EOfferingDocumentType.PROSPECTUS ? (
@@ -198,9 +192,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.PROSPECTUS_APPROVED:
       return (
         <>
-          {canEnableBookbuilding && (
-            <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-          )}
+          <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
       );
@@ -208,9 +200,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
       return (
         <>
           <UploadInvestmentAgreement columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-          {canEnableBookbuilding && (
-            <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-          )}
+          <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <ChooseEtoStartDateWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <ETOFormsProgressSection shouldViewEtoSettings={shouldViewSubmissionSection} />
         </>
@@ -314,7 +304,6 @@ const EtoDashboard = compose<React.FunctionComponent>(
       userHasKycAndEmailVerified: userHasKycAndEmailVerified(s),
       requestStatus: selectKycRequestStatus(s),
       eto: selectIssuerEtoWithCompanyAndContract(s),
-      canEnableBookbuilding: selectCanEnableBookBuilding(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
       isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),
       isISHASubmitted: selectIsISHAPreviewSubmitted(s),

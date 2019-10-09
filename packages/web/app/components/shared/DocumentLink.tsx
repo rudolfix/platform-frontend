@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { TTranslatedString } from "../../types";
+import { TDataTestId, TTranslatedString } from "../../types";
 import { Button, ButtonTextPosition, EButtonLayout } from "./buttons";
 import { Document } from "./Document";
 import { ExternalLink } from "./links";
@@ -41,17 +41,15 @@ export interface IDocumentTemplateButtonProps {
   layout?: EButtonLayout;
 }
 
-const DocumentTemplateButton: React.FunctionComponent<IDocumentTemplateButtonProps> = ({
-  onClick,
-  title,
-  altIcon,
-  layout,
-}) => (
+const DocumentTemplateButton: React.FunctionComponent<
+  IDocumentTemplateButtonProps & TDataTestId
+> = ({ onClick, title, altIcon, layout, ["data-test-id"]: dataTestId }) => (
   <Button
     layout={layout}
     onClick={onClick}
     innerClassName={styles.documentButton}
     textPosition={ButtonTextPosition.LEFT}
+    data-test-id={dataTestId}
   >
     {altIcon || <Document extension="pdf" />}
     {title}

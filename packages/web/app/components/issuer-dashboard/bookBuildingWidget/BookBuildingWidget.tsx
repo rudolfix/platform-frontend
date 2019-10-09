@@ -96,14 +96,14 @@ const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBook
       <span className={styles.label}>
         <FormattedMessage id="shared-component.eto-overview.investors-backed" />
       </span>
-      <span data-test-id="bookbuilding-widget.stats.number-of-pledges">
-        {maxPledges !== null ? (
+      {maxPledges !== null ? (
+        <span data-test-id="bookbuilding-widget.stats.number-of-pledges">
           <FormattedMessage
             id="settings.book-building-stats-widget.number-of-pledges"
             values={{ pledges: bookBuildingStats.investorsCount, maxPledges }}
           />
-        ) : null}
-      </span>
+        </span>
+      ) : null}
     </div>
     {bookBuildingStats.investorsCount > 0 ? (
       <DocumentTemplateButton
@@ -141,6 +141,12 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<TProps> = ({
           }
           columnSpan={columnSpan}
         >
+          <BookBuildingStats
+            bookBuildingStats={bookBuildingStats}
+            downloadCSV={downloadCSV}
+            maxPledges={maxPledges}
+          />
+
           <div className="m-auto">
             <ButtonArrowRight
               onClick={() => stopBookBuilding(etoId)}
@@ -149,12 +155,6 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<TProps> = ({
               <FormattedMessage id="settings.book-building-widget.stop-book-building" />
             </ButtonArrowRight>
           </div>
-
-          <BookBuildingStats
-            bookBuildingStats={bookBuildingStats}
-            downloadCSV={downloadCSV}
-            maxPledges={maxPledges}
-          />
         </DashboardWidget>
       );
     case EWhitelistingState.NOT_ACTIVE:
@@ -181,6 +181,12 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<TProps> = ({
           text={<FormattedMessage id="settings.book-building-widget.book-building-disabled-text" />}
           columnSpan={columnSpan}
         >
+          <BookBuildingStats
+            bookBuildingStats={bookBuildingStats}
+            downloadCSV={downloadCSV}
+            maxPledges={maxPledges}
+          />
+
           <div className="m-auto">
             <ButtonArrowRight
               onClick={() => startBookBuilding(etoId)}
@@ -189,12 +195,6 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<TProps> = ({
               <FormattedMessage id="settings.book-building-widget.reactivate-book-building" />
             </ButtonArrowRight>
           </div>
-
-          <BookBuildingStats
-            bookBuildingStats={bookBuildingStats}
-            downloadCSV={downloadCSV}
-            maxPledges={maxPledges}
-          />
         </DashboardWidget>
       );
     case EWhitelistingState.STOPPED:

@@ -1,4 +1,5 @@
 import { etoPublicViewByIdLinkLegacy, etoPublicViewLink } from "../../components/appRouteUtils";
+import { formatThousands } from "../../components/shared/formatters/utils";
 import {
   assertRegister,
   confirmAccessModal,
@@ -23,8 +24,8 @@ const submitBookBuilding = (
   fillForm({
     amount,
     consentToRevealEmail: {
-      type: "radio",
-      value: consentToRevealEmail.toString(),
+      type: "toggle",
+      checked: consentToRevealEmail,
     },
     "eto-bookbuilding-commit": {
       type: "submit",
@@ -35,7 +36,7 @@ const submitBookBuilding = (
     confirmAccessModal();
   }
 
-  cy.get(`${tid("campaigning-your-commitment")} ${tid("value")}`).should("contain", amount);
+  cy.get(tid("campaigning-your-commitment")).contains(`${formatThousands(amount)} EUR`);
 };
 
 const changeBookBuilding = () => cy.get(tid("campaigning-your-commitment-change")).click();
@@ -136,7 +137,7 @@ describe("Eto campaigning state", () => {
 
     submitBookBuilding("200", true);
     changeBookBuilding();
-    submitBookBuilding("160", false, false);
+    submitBookBuilding("160", true, false);
     deleteBookBuilding();
   });
 

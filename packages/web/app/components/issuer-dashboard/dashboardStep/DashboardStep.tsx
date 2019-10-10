@@ -148,7 +148,12 @@ const selectStepComponent = (props: IEtoStep) => {
       );
 
     case EEtoStep.FUNDRAISING_IS_LIVE:
-      return <DashboardHeading title={<FormattedMessage id="eto-dashboard.fundraising-live" />} />;
+      return (
+        <DashboardHeading
+          title={<FormattedMessage id="eto-dashboard.fundraising-live" />}
+          data-test-id="eto-dashboard-fundraising-live"
+        />
+      );
 
     case EEtoStep.SIGN_YOUR_ISHA:
       return (

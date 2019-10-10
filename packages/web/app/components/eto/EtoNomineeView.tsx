@@ -2,6 +2,7 @@ import * as React from "react";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../modules/actions";
+import { selectIsUserFullyVerified } from "../../modules/auth/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { selectNomineeEtoWithCompanyAndContract } from "../../modules/nominee-flow/selectors";
 import { appConnect } from "../../store";
@@ -15,19 +16,17 @@ import { EtoView } from "./shared/EtoView";
 
 type TStateProps = {
   eto: TEtoWithCompanyAndContract | undefined;
+  isUserFullyVerified: boolean;
 };
 
 type TViewProps = {
   eto: TEtoWithCompanyAndContract;
   publicView: boolean;
+  isUserFullyVerified: boolean;
 };
 
 type TLinkedNomineeComponentProps = {
   eto: TEtoWithCompanyAndContract;
-};
-
-type TLinkedNomineeStateProps = {
-  eto: TEtoWithCompanyAndContract | undefined;
 };
 
 export const connectToNomineeEto = <T extends {}>(
@@ -35,9 +34,10 @@ export const connectToNomineeEto = <T extends {}>(
 ) =>
   compose<TLinkedNomineeComponentProps & T, T>(
     createErrorBoundary(ErrorBoundaryLayout),
-    appConnect<TLinkedNomineeStateProps, {}, T>({
+    appConnect<TStateProps, {}, T>({
       stateToProps: state => ({
         eto: selectNomineeEtoWithCompanyAndContract(state),
+        isUserFullyVerified: selectIsUserFullyVerified(state),
       }),
     }),
     onEnterAction({

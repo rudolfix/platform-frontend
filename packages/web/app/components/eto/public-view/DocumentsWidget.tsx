@@ -5,7 +5,7 @@ import { compose } from "recompose";
 
 import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IEtoDocument, TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
-import { ignoredDocuments, ignoredTemplatesPublicView } from "../../../lib/api/eto/EtoFileUtils";
+import { canShowDocument, ignoredTemplatesPublicView } from "../../../lib/api/eto/EtoFileUtils";
 import { EOfferingDocumentType } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
@@ -24,6 +24,7 @@ type TExternalProps = {
   etoDocuments: TEtoDocumentTemplates;
   offeringDocumentType: EOfferingDocumentType;
   columnSpan?: EColumnSpan;
+  isUserFullyVerified: boolean;
 };
 
 type TDispatchProps = {
@@ -39,6 +40,7 @@ const DocumentsWidgetLayout: React.FunctionComponent<
   className,
   offeringDocumentType,
   columnSpan,
+  isUserFullyVerified,
 }) => {
   const documentTitles = getInvestorDocumentTitles(offeringDocumentType);
 
@@ -60,16 +62,14 @@ const DocumentsWidgetLayout: React.FunctionComponent<
                   />
                 </Col>
               ))}
-            {Object.keys(etoDocuments)
-              .filter(
-                key =>
-                  !ignoredDocuments.some(document => document === etoDocuments[key].documentType),
-              )
-              .map((key, i) => (
+            {Object.values(etoDocuments)
+              .filter(document => canShowDocument(document, isUserFullyVerified))
+              .map((document, i) => (
                 <Col sm="6" md="12" lg="6" key={i} className={styles.document}>
                   <DocumentTemplateButton
-                    onClick={() => downloadDocument(etoDocuments[key])}
-                    title={documentTitles[etoDocuments[key].documentType]}
+                    data-test-id={`eto-public-view.documents.${document.documentType}`}
+                    onClick={() => downloadDocument(document)}
+                    title={documentTitles[document.documentType]}
                   />
                 </Col>
               ))}

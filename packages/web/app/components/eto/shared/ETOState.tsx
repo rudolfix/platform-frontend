@@ -67,11 +67,9 @@ export const generalStateToName: Dictionary<
   [EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE]: <FormattedMessage id="eto.status.onchain.setup" />,
 };
 
-export const issuerStateToName: PartialDictionary<
-  TTranslatedString,
-  EEtoState | EETOStateOnChain | EEtoSubState
-> = {
+export const issuerOnChainStateToName: PartialDictionary<TTranslatedString, EETOStateOnChain> = {
   // on chain state mappings
+  [EETOStateOnChain.Whitelist]: <FormattedMessage id="eto.status.onchain.whitelist" />,
   [EETOStateOnChain.Claim]: <FormattedMessage id="eto.status.onchain.issuer-withdraw-funds" />,
   [EETOStateOnChain.Payout]: <FormattedMessage id="eto.status.onchain.issuer-withdraw-funds" />,
 };
@@ -142,13 +140,14 @@ const ETOIssuerState: React.FunctionComponent<
   layout = EProjectStatusLayout.NORMAL,
 }) => {
   const state = getState(eto);
+  const timedState = isOnChain(eto) ? eto.contract.timedState : undefined;
 
   return (
     <div
       className={cn(styles.projectStatus, stateToClassName[state], size, layout, className)}
       data-test-id={`eto-state-${state}`}
     >
-      {issuerStateToName[state] || generalStateToName[state]}
+      {(timedState && issuerOnChainStateToName[timedState]) || generalStateToName[state]}
     </div>
   );
 };

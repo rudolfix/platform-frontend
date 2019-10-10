@@ -1,6 +1,7 @@
 import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../modules/actions";
+import { selectIsUserFullyVerified } from "../../modules/auth/selectors";
 import { selectEtoWithCompanyAndContract } from "../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { appConnect } from "../../store";
@@ -16,6 +17,7 @@ import { withJurisdictionRoute } from "./shared/routing/withJurisdictionRoute";
 
 interface IStateProps {
   eto?: TEtoWithCompanyAndContract;
+  isUserFullyVerified: boolean;
 }
 
 interface IRouterParams {
@@ -26,6 +28,7 @@ interface IRouterParams {
 type TProps = {
   eto: TEtoWithCompanyAndContract;
   publicView: boolean;
+  isUserFullyVerified: boolean;
 };
 
 export const EtoPublicView = compose<TProps, IRouterParams>(
@@ -33,6 +36,7 @@ export const EtoPublicView = compose<TProps, IRouterParams>(
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
       eto: selectEtoWithCompanyAndContract(state, props.previewCode),
+      isUserFullyVerified: selectIsUserFullyVerified(state),
     }),
   }),
   onEnterAction<IRouterParams>({

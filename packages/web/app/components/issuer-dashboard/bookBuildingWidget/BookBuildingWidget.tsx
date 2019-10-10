@@ -278,11 +278,6 @@ export const BookBuildingWidget = compose<TProps, IExternalProps>(
     },
   }),
   branch<IStateProps>(props => !props.bookBuildingStats, renderComponent(WidgetLoading)),
-  branch<IStateProps>(
-    // show widget when bookbuilding can be enabled or when eto is in presale state (to still access stats)
-    props => !props.canEnableBookbuilding && props.onChainState !== EETOStateOnChain.Whitelist,
-    renderNothing,
-  ),
   withProps<IWithProps, IStateProps>(
     ({ bookBuildingStats, maxPledges, canEnableBookbuilding, bookBuildingEnabled }) => {
       if (maxPledges === null || bookBuildingEnabled === undefined) {
@@ -303,4 +298,23 @@ export const BookBuildingWidget = compose<TProps, IExternalProps>(
       };
     },
   ),
+  branch<IStateProps & IWithProps>(props => {
+    // show widget when bookbuilding can be enabled
+    if (props.canEnableBookbuilding) {
+      return false;
+    }
+
+    // show widget when limit reached or stopped up until end of presale
+    if (
+      [EWhitelistingState.LIMIT_REACHED, EWhitelistingState.STOPPED].includes(
+        props.whitelistingState,
+      )
+    ) {
+      return ![undefined, EETOStateOnChain.Setup, EETOStateOnChain.Whitelist].includes(
+        props.onChainState,
+      );
+    }
+
+    return true;
+  }, renderNothing),
 )(BookBuildingWidgetComponent);

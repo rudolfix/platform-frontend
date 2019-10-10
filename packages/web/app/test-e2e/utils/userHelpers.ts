@@ -5,7 +5,7 @@ import { toChecksumAddress } from "web3-utils";
 
 import { accountFixtureByName, removePendingExternalTransaction } from ".";
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
+import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { promisify } from "../../utils/PromiseUtils";
 import { toCamelCase } from "../../utils/transformObjectKeys";
@@ -470,4 +470,24 @@ export const getEto = (etoID: string): Cypress.Chainable<TEtoDataWithCompany> =>
       // If there is more than one eto just return the first one
       return result[0];
     });
+};
+
+const EMAIL_VERIFICATION_PATH = USER_PATH + "/email-verification";
+
+export const verifyUserEmailCall = (activationLink: string): Cypress.Chainable<IUser> => {
+  const activationLinkURL = new URL(activationLink);
+  const activationLinkParams = new URLSearchParams(activationLinkURL.search);
+  const verificationCode = activationLinkParams.get("code")!;
+
+  return cy
+    .request({
+      url: EMAIL_VERIFICATION_PATH,
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${getJwtToken()}`,
+      },
+      body: JSON.stringify({ verification_code: verificationCode }),
+    })
+    .then(response => response.body);
 };

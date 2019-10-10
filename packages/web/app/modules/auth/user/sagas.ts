@@ -1,3 +1,4 @@
+import { delay } from "redux-saga";
 import { call, Effect, fork, put, race, select, take } from "redux-saga/effects";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
@@ -16,19 +17,26 @@ import {
 } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
 import { assertNever } from "../../../utils/assertNever";
+import { minutesToMs, secondsToMs } from "../../../utils/DateUtils";
 import { safeDelay } from "../../../utils/safeTimers";
 import { actions, TActionFromCreator } from "../../actions";
 import { EInitType } from "../../init/reducer";
 import { loadKycRequestData } from "../../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../../routing/selectors";
-import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
+import {
+  neuCall,
+  neuTakeEvery,
+  neuTakeLatest,
+  neuTakeLatestUntil,
+  neuTakeUntil,
+} from "../../sagasUtils";
 import { selectUrlUserType } from "../../wallet-selector/selectors";
 import { EWalletSubType, EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
 import { createJwt } from "../jwt/sagas";
-import { selectUserType } from "../selectors";
+import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
-import { logoutUser } from "./external/sagas";
+import { loadUser, logoutUser } from "./external/sagas";
 
 /**
  * Waits for user to conduct activity before a
@@ -229,9 +237,31 @@ function* handleSignInUser({ logger }: TGlobalDependencies): Iterator<any> {
   }
 }
 
+const UNVERIFIED_EMAIL_REFRESH_DELAY = secondsToMs(5);
+const NO_UNVERIFIED_EMAIL_REFRESH_DELAY = minutesToMs(5);
+
+function* profileMonitor({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    const isThereUnverifiedEmail = yield select((state: IAppState) =>
+      selectIsThereUnverifiedEmail(state.auth),
+    );
+
+    const delayTime = isThereUnverifiedEmail
+      ? UNVERIFIED_EMAIL_REFRESH_DELAY
+      : NO_UNVERIFIED_EMAIL_REFRESH_DELAY;
+
+    yield delay(delayTime);
+
+    yield neuCall(loadUser);
+  } catch (e) {
+    logger.error("Error getting profile data", e);
+  }
+}
+
 export function* authUserSagas(): Iterator<Effect> {
   yield fork(neuTakeLatest, actions.auth.logout, handleLogOutUser);
   yield fork(neuTakeEvery, actions.auth.setUser, setUser);
   yield fork(neuTakeEvery, actions.walletSelector.connected, handleSignInUser);
   yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, waitForUserActiveOrLogout);
+  yield fork(neuTakeLatestUntil, actions.auth.setUser, actions.auth.logout, profileMonitor);
 }

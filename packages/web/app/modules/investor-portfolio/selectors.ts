@@ -104,13 +104,13 @@ export const selectCalculatedContribution = (state: IAppState, etoId: string) =>
 
   return (
     investorState.calculatedContributions[etoId] ||
-    selectInitialCalculatedContribution(etoId, state)
+    selectInitialCalculatedContribution(state, etoId)
   );
 };
 
 export const selectInitialCalculatedContribution = (
-  etoId: string,
   state: IAppState,
+  etoId: string,
 ): ICalculatedContribution | undefined => {
   const investorState = selectInvestorTicketsState(state);
 
@@ -118,7 +118,7 @@ export const selectInitialCalculatedContribution = (
 };
 
 export const selectInitialMaxCapExceeded = (state: IAppState, etoId: string): boolean => {
-  const initialCalculatedContribution = selectInitialCalculatedContribution(etoId, state);
+  const initialCalculatedContribution = selectInitialCalculatedContribution(state, etoId);
 
   if (!initialCalculatedContribution) return false;
 
@@ -172,7 +172,7 @@ export const selectNeuRewardUlpsByEtoId = (state: IAppState, etoId: string) => {
 };
 
 export const selectIsWhitelisted = (state: IAppState, etoId: string) => {
-  const contrib = selectCalculatedContribution(state, etoId);
+  const contrib = selectInitialCalculatedContribution(state, etoId);
 
   return !!contrib && contrib.isWhitelisted;
 };

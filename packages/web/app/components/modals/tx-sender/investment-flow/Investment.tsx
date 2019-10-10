@@ -121,10 +121,10 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
       this.props.maxTicketEur,
       this.props.minTicketEur,
     );
-    const validationError = !this.state.validationError ? (
-      undefined
-    ) : (
+    const validationError = this.state.validationError ? (
       <FormattedMessage id="investment-flow.validation-error" />
+    ) : (
+      undefined
     );
 
     return validationError || externalError;
@@ -158,7 +158,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
     } = this.props;
     const error = this.getError();
     return (
-      <>
+      <section data-test-id="modals.investment.modal">
         <Container className={styles.container} fluid>
           <Row className="mt-0">
             <Col>
@@ -385,7 +385,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
             </Button>
           </Row>
         </Container>
-      </>
+      </section>
     );
   }
 }

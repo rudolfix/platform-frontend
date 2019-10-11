@@ -270,6 +270,16 @@ export const assertWaitingForSmartContractsStep = () => {
   cy.get(tid("dashboard-upload-isha-widget")).should("not.exist");
 };
 
+export const assertPresaleStep = () => {
+  cy.get(tid("eto-state-countdown_to_public_sale")).should("exist");
+  cy.get(tid("eto-dashboard-fundraising-live")).should("exist");
+};
+
+export const assertPublicStep = () => {
+  cy.get(tid("eto-state-2")).should("exist");
+  cy.get(tid("eto-dashboard-fundraising-live")).should("exist");
+};
+
 export const openAndCheckValues = (
   section: string,
   sectionForm: TFormFixture,

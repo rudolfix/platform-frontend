@@ -32,7 +32,7 @@ import {
 import { fillForm } from "./forms";
 import { goToWallet } from "./navigation";
 import { tid } from "./selectors";
-import { DEFAULT_PASSWORD } from "./userHelpers";
+import { DEFAULT_PASSWORD, verifyUserEmailCall } from "./userHelpers";
 
 export const LONG_WAIT_TIME = 60000;
 
@@ -142,6 +142,10 @@ export const verifyLatestUserEmail = (email: string) => {
 
 export const verifyLatestUserEmailAccountSetup = (email: string) => {
   verifyLatestUserEmailBase(email, undefined);
+};
+
+export const verifyLatestUserEmailWithAPI = (email: string) => {
+  getLatestVerifyUserEmailLink(email).then(verifyUserEmailCall);
 };
 
 export const registerWithLightWallet = (

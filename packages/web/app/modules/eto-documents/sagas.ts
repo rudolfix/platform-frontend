@@ -1,4 +1,3 @@
-import { findKey } from "lodash/fp";
 import { all, call, fork, put, select } from "redux-saga/effects";
 
 import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
@@ -27,6 +26,7 @@ import { downloadLink } from "../immutable-file/utils";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { selectEtoState } from "./selectors";
+import { getDocumentByType } from "./utils";
 
 export function* generateDocumentFromTemplate(
   { apiImmutableStorage, notificationCenter, logger, apiEtoFileService }: TGlobalDependencies,
@@ -177,9 +177,7 @@ export function* loadEtoFilesInfo({
 function* getDocumentOfType(documentType: EEtoDocumentType): Iterator<any> {
   const documents: TEtoDocumentTemplates = yield select(selectIssuerEtoDocuments);
 
-  const matchingDocument = findKey(document => document.documentType === documentType, documents);
-
-  return documents[matchingDocument!];
+  return getDocumentByType(documents, documentType);
 }
 
 function* uploadEtoFileEffect(

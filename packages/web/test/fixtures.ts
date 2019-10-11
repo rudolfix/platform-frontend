@@ -714,7 +714,7 @@ export const testCompany: TCompanyEtoData = {
 export const etoDocuments: TEtoDocumentTemplates = {
   qmWKa6ZVZjZu3X2CtJnSnthUwWMeAcyfv9IZDnoawmULeT: {
     documentType: EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT,
-    form: "document" as TEtoFormType,
+    form: "document",
     ipfsHash: "QmWKa6zVZjZu3x2CtJnSNTHUwWMeAcyfv9iZDnoawmULeT",
     mimeType: "application/pdf",
     language: EEtoDocumentLanguage.EN,
@@ -722,11 +722,19 @@ export const etoDocuments: TEtoDocumentTemplates = {
   },
   qmc4RZuxqKkvRahSuhs6QaeRq2VoqDiMXbiHwhZTfwXUdK: {
     documentType: EEtoDocumentType.SIGNED_TERMSHEET,
-    form: "document" as TEtoFormType,
+    form: "document",
     ipfsHash: "Qmc4rZUXQKkvRahSUHS6qaeRq2voqDiMXbiHwhZTfwXUdK",
     mimeType: "application/pdf",
     language: EEtoDocumentLanguage.EN,
     name: "./dev_fixtures/eto_fixtures/ETOInPublicState/signed_termsheet.pdf",
+  },
+  aF33RZuxqKkvRahSuhs6QaeRq2VoqDiMXbiHwhZTfwXUdK: {
+    documentType: EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW,
+    form: "document",
+    ipfsHash: "QmVZvnno5v4zc96QeuGghYtp8N6JDEiACQbpM1MHyG6Uib",
+    mimeType: "application/pdf",
+    name:
+      "./dev_fixtures/eto_fixtures/ISSUER_WHITELIST/investment_and_shareholder_agreement_preview.pdf",
   },
 };
 

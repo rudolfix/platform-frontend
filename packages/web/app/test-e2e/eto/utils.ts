@@ -1,5 +1,7 @@
 import { find } from "lodash";
 
+import { tid } from "../utils";
+
 const ETOS_PATH = "/api/eto-listing/etos";
 export const waitUntilEtoIsInState = async (etoId: string, state: string) => {
   while (true) {
@@ -16,4 +18,8 @@ export const waitUntilEtoIsInState = async (etoId: string, state: string) => {
       break;
     }
   }
+};
+
+export const assertInvestmentModal = () => {
+  cy.get(tid("modals.investment.modal")).should("exist");
 };

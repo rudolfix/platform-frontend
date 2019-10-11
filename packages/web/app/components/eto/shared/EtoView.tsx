@@ -43,11 +43,16 @@ export const DEFAULT_CHART_COLOR = "#c4c5c6";
 interface IProps {
   eto: TEtoWithCompanyAndContract;
   publicView: boolean;
+  isUserFullyVerified: boolean;
 }
 
 const EtoViewSchema = EtoCompanyInformationType.toYup().concat(EtoPitchType.toYup());
 
-const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, publicView }) => {
+const EtoViewLayout: React.FunctionComponent<IProps> = ({
+  eto,
+  publicView,
+  isUserFullyVerified,
+}) => {
   const {
     socialChannels,
     companyVideo,
@@ -143,7 +148,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, publicView }) => 
         {isProductSet && (
           <Container columnSpan={EColumnSpan.THREE_COL}>
             <DashboardHeading title={<FormattedMessage id="eto.public-view.token-terms.title" />} />
-            <EtoInvestmentTermsWidget etoData={eto} />
+            <EtoInvestmentTermsWidget eto={eto} isUserFullyVerified={isUserFullyVerified} />
           </Container>
         )}
         <Individuals eto={eto} />
@@ -156,6 +161,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({ eto, publicView }) => 
             etoTemplates={eto.templates}
             etoDocuments={eto.documents}
             offeringDocumentType={eto.product.offeringDocumentType}
+            isUserFullyVerified={isUserFullyVerified}
           />
 
           {isTwitterFeedEnabled && (

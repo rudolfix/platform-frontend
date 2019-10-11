@@ -62,15 +62,17 @@ export function* loadInvestorTicket(
 
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
 
-  const investorTickerRaw = yield etoContract.investorTicket(user.userId);
+  const { investorTickerRaw, contribution } = yield all({
+    investorTickerRaw: etoContract.investorTicket(user.userId),
+    contribution: neuCall(loadComputedContributionFromContract, action.payload.eto),
+  });
+
   yield put(
     actions.investorEtoTicket.setEtoInvestorTicket(
       etoId,
       convertToInvestorTicket(investorTickerRaw),
     ),
   );
-
-  const contribution = yield neuCall(loadComputedContributionFromContract, action.payload.eto);
 
   yield put(actions.investorEtoTicket.setInitialCalculatedContribution(etoId, contribution));
 }
@@ -83,24 +85,25 @@ export function* loadComputedContributionFromContract(
 ): any {
   if (eto.state !== EEtoState.ON_CHAIN) return;
 
-  const state: IAppState = yield select();
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
 
   if (etoContract) {
     const newInvestorContributionEurUlps =
       amountEuroUlps || convertToBigInt((eto.minTicketEur && eto.minTicketEur.toString()) || "0");
 
-    const from = selectEthereumAddressWithChecksum(state);
+    const from: ReturnType<typeof selectEthereumAddressWithChecksum> = yield select(
+      selectEthereumAddressWithChecksum,
+    );
 
     // TODO: check whether typechain but still is not fixed
     // sorry no typechain, typechain has a bug with boolean casting
-    const contribution = yield promisify(etoContract.rawWeb3Contract.calculateContribution, [
+    const contributionRaw = yield promisify(etoContract.rawWeb3Contract.calculateContribution, [
       from,
       isICBM,
       newInvestorContributionEurUlps,
     ]);
 
-    return convertToCalculatedContribution(contribution);
+    return convertToCalculatedContribution(contributionRaw);
   }
 }
 

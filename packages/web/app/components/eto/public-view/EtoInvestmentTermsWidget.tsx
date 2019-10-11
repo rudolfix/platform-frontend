@@ -4,8 +4,10 @@ import { compose } from "recompose";
 
 import { ETHEREUM_ZERO_ADDRESS } from "../../../config/constants";
 import { EEtoDocumentType, IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { canShowDocument } from "../../../lib/api/eto/EtoFileUtils";
 import { EAssetType, EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { getDocumentByType } from "../../../modules/eto-documents/utils";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { TDataTestId, TTranslatedString } from "../../../types";
@@ -30,7 +32,8 @@ import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../shared/ToBeAnnouncedTool
 import * as styles from "./EtoInvestmentTermsWidget.module.scss";
 
 type TExternalProps = {
-  etoData: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContract;
+  isUserFullyVerified: boolean;
 };
 
 type TDispatchProps = {
@@ -41,11 +44,6 @@ type TEntryExternalProps = {
   label: TTranslatedString;
   value: React.ReactNode;
 };
-
-interface IDownloadIsha {
-  etoData: TEtoWithCompanyAndContract;
-  downloadDocument: (document: IEtoDocument) => void;
-}
 
 const Entry: React.FunctionComponent<TEntryExternalProps & TDataTestId> = ({
   label,
@@ -60,39 +58,43 @@ const Entry: React.FunctionComponent<TEntryExternalProps & TDataTestId> = ({
   </div>
 );
 
-const DownloadIshaOrTermsheetLink: React.FunctionComponent<IDownloadIsha> = ({
-  etoData,
+const DownloadIshaOrTermsheetLink: React.FunctionComponent<TExternalProps & TDispatchProps> = ({
+  eto,
   downloadDocument,
+  isUserFullyVerified,
 }) => {
-  const getKeyByType = (documentType: EEtoDocumentType) =>
-    Object.keys(etoData.documents).find(
-      (key: string) => etoData.documents[key].documentType === documentType,
-    );
+  const getDocument = getDocumentByType(eto.documents);
 
-  let docKey = getKeyByType(EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT);
-  if (docKey) {
+  const signedIshaDoc = getDocument(EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT);
+  if (signedIshaDoc && canShowDocument(signedIshaDoc, isUserFullyVerified)) {
     return (
       <DocumentTemplateButton
+        data-test-id={`eto-public-view.investment-terms.document.${signedIshaDoc.documentType}`}
         title={<FormattedMessage id="eto.documents.signed-investment-and-shareholder-agreement" />}
-        onClick={() => downloadDocument(etoData.documents[docKey!])}
+        onClick={() => downloadDocument(signedIshaDoc)}
       />
     );
   }
-  docKey = getKeyByType(EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW);
-  if (docKey) {
+
+  const ishaDoc = getDocument(EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW);
+  if (ishaDoc && canShowDocument(ishaDoc, isUserFullyVerified)) {
     return (
       <DocumentTemplateButton
+        data-test-id={`eto-public-view.investment-terms.document.${ishaDoc.documentType}`}
         title={<FormattedMessage id="eto.documents.investment-and-shareholder-agreement-preview" />}
-        onClick={() => downloadDocument(etoData.documents[docKey!])}
+        onClick={() => downloadDocument(ishaDoc)}
       />
     );
   }
-  docKey = getKeyByType(EEtoDocumentType.SIGNED_TERMSHEET);
-  if (docKey) {
+  const signedTermsheetDoc = getDocument(EEtoDocumentType.SIGNED_TERMSHEET);
+  if (signedTermsheetDoc) {
     return (
       <DocumentTemplateButton
+        data-test-id={`eto-public-view.investment-terms.document.${
+          signedTermsheetDoc.documentType
+        }`}
         title={<FormattedMessage id="eto.documents.signed-termsheet" />}
-        onClick={() => downloadDocument(etoData.documents[docKey!])}
+        onClick={() => downloadDocument(signedTermsheetDoc)}
       />
     );
   }
@@ -100,12 +102,13 @@ const DownloadIshaOrTermsheetLink: React.FunctionComponent<IDownloadIsha> = ({
 };
 
 const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & TDispatchProps> = ({
-  etoData,
+  eto,
   downloadDocument,
+  isUserFullyVerified,
 }) => {
-  const isProductSet = etoData.product.id !== ETHEREUM_ZERO_ADDRESS;
-  const newSharePrice = etoData.investmentCalculatedValues
-    ? etoData.investmentCalculatedValues.sharePrice
+  const isProductSet = eto.product.id !== ETHEREUM_ZERO_ADDRESS;
+  const newSharePrice = eto.investmentCalculatedValues
+    ? eto.investmentCalculatedValues.sharePrice
     : undefined;
 
   return (
@@ -120,7 +123,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.pre-money-valuation" />}
               value={
                 <Money
-                  value={etoData.preMoneyValuationEur}
+                  value={eto.preMoneyValuationEur}
                   inputFormat={ENumberInputFormat.FLOAT}
                   valueType={ECurrency.EUR}
                   outputFormat={ENumberOutputFormat.INTEGER}
@@ -134,45 +137,45 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               value={
                 <>
                   <FormatNumber
-                    value={etoData.existingShareCapital}
+                    value={eto.existingShareCapital}
                     outputFormat={ENumberOutputFormat.INTEGER}
                     inputFormat={ENumberInputFormat.FLOAT}
                     defaultValue={<ToBeAnnounced />}
                   />
-                  {` ${etoData.company.shareCapitalCurrencyCode}`}
+                  {` ${eto.company.shareCapitalCurrencyCode}`}
                 </>
               }
               data-test-id="eto-public-view-existing-share-capital"
             />
-            {etoData.authorizedCapital && (
+            {eto.authorizedCapital && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.authorized-capital" />}
                 value={
                   <>
                     <FormatNumber
-                      value={etoData.authorizedCapital}
+                      value={eto.authorizedCapital}
                       outputFormat={ENumberOutputFormat.INTEGER}
                       inputFormat={ENumberInputFormat.FLOAT}
                       defaultValue={<ToBeAnnounced />}
                     />
-                    {` ${etoData.company.shareCapitalCurrencyCode}`}
+                    {` ${eto.company.shareCapitalCurrencyCode}`}
                   </>
                 }
                 data-test-id="eto-public-view-authorized-capital"
               />
             )}
-            {etoData.newShareNominalValue && (
+            {eto.newShareNominalValue && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.new-share-nominal-value" />}
                 value={
                   <>
                     <FormatNumber
-                      value={etoData.newShareNominalValue}
+                      value={eto.newShareNominalValue}
                       outputFormat={ENumberOutputFormat.INTEGER}
                       inputFormat={ENumberInputFormat.FLOAT}
                       defaultValue={<ToBeAnnounced />}
                     />
-                    {` ${etoData.company.shareCapitalCurrencyCode}`}
+                    {` ${eto.company.shareCapitalCurrencyCode}`}
                   </>
                 }
                 data-test-id="eto-public-view-new-share-nominal-value"
@@ -182,8 +185,8 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.new-shares-to-issue" />}
               value={
                 <FormatNumberRange
-                  valueFrom={etoData.minimumNewSharesToIssue}
-                  valueUpto={etoData.newSharesToIssue}
+                  valueFrom={eto.minimumNewSharesToIssue}
+                  valueUpto={eto.newSharesToIssue}
                   outputFormat={ENumberOutputFormat.INTEGER}
                   inputFormat={ENumberInputFormat.FLOAT}
                   defaultValue={<ToBeAnnounced />}
@@ -191,14 +194,14 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               }
               data-test-id="eto-public-view-new-shares-to-issue"
             />
-            {!!etoData.newSharesToIssueInWhitelist && (
+            {!!eto.newSharesToIssueInWhitelist && (
               <Entry
                 label={
                   <FormattedMessage id="eto.public-view.token-terms.new-shares-to-issue-in-whitelist" />
                 }
                 value={
                   <FormatNumber
-                    value={etoData.newSharesToIssueInWhitelist}
+                    value={eto.newSharesToIssueInWhitelist}
                     outputFormat={ENumberOutputFormat.INTEGER}
                     inputFormat={ENumberInputFormat.FLOAT}
                     defaultValue={<ToBeAnnounced />}
@@ -222,10 +225,14 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             />
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.investment-amount" />}
-              value={<InvestmentAmount etoData={etoData} />}
+              value={<InvestmentAmount etoData={eto} />}
               data-test-id="eto-public-view-investment-amount"
             />
-            <DownloadIshaOrTermsheetLink etoData={etoData} downloadDocument={downloadDocument} />
+            <DownloadIshaOrTermsheetLink
+              eto={eto}
+              downloadDocument={downloadDocument}
+              isUserFullyVerified={isUserFullyVerified}
+            />
           </div>
         </div>
 
@@ -240,7 +247,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />}
               value={
                 <FormatNumber
-                  value={etoData.equityTokensPerShare}
+                  value={eto.equityTokensPerShare}
                   outputFormat={ENumberOutputFormat.INTEGER}
                   inputFormat={ENumberInputFormat.FLOAT}
                   defaultValue={<ToBeAnnounced />}
@@ -253,8 +260,8 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               value={
                 <Money
                   value={
-                    newSharePrice && etoData.equityTokensPerShare
-                      ? newSharePrice / etoData.equityTokensPerShare
+                    newSharePrice && eto.equityTokensPerShare
+                      ? newSharePrice / eto.equityTokensPerShare
                       : undefined
                   }
                   inputFormat={ENumberInputFormat.FLOAT}
@@ -265,17 +272,17 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               }
               data-test-id="eto-public-view-token-price"
             />
-            {!!etoData.whitelistDiscountFraction && (
+            {!!eto.whitelistDiscountFraction && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.whitelist-discount" />}
-                value={<Percentage>{etoData.whitelistDiscountFraction}</Percentage>}
+                value={<Percentage>{eto.whitelistDiscountFraction}</Percentage>}
                 data-test-id="eto-public-view-whitelist-discount"
               />
             )}
-            {!!etoData.publicDiscountFraction && (
+            {!!eto.publicDiscountFraction && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.public-discount" />}
-                value={<Percentage>{etoData.publicDiscountFraction}</Percentage>}
+                value={<Percentage>{eto.publicDiscountFraction}</Percentage>}
                 data-test-id="eto-public-view-public-discount"
               />
             )}
@@ -283,8 +290,8 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.ticket-size" />}
               value={
                 <MoneyRange
-                  valueFrom={etoData.minTicketEur}
-                  valueUpto={etoData.maxTicketEur ? etoData.maxTicketEur : ESpecialNumber.UNLIMITED}
+                  valueFrom={eto.minTicketEur}
+                  valueUpto={eto.maxTicketEur ? eto.maxTicketEur : ESpecialNumber.UNLIMITED}
                   inputFormat={ENumberInputFormat.FLOAT}
                   valueType={ECurrency.EUR}
                   outputFormat={ENumberOutputFormat.INTEGER}
@@ -296,21 +303,17 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.currencies.label" />}
               value={
-                etoData.currencies ? (
-                  etoData.currencies.map(selectUnits).join(", ")
-                ) : (
-                  <ToBeAnnounced />
-                )
+                eto.currencies ? eto.currencies.map(selectUnits).join(", ") : <ToBeAnnounced />
               }
               data-test-id="eto-public-view-currencies"
             />
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.pre-eto-duration" />}
               value={
-                etoData.whitelistDurationDays ? (
+                eto.whitelistDurationDays ? (
                   <FormattedMessage
                     id="eto.public-view.token-terms.days"
-                    values={{ days: etoData.whitelistDurationDays }}
+                    values={{ days: eto.whitelistDurationDays }}
                   />
                 ) : (
                   <ToBeAnnounced />
@@ -321,10 +324,10 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.public-eto-duration" />}
               value={
-                etoData.publicDurationDays ? (
+                eto.publicDurationDays ? (
                   <FormattedMessage
                     id="eto.public-view.token-terms.days"
-                    values={{ days: etoData.publicDurationDays }}
+                    values={{ days: eto.publicDurationDays }}
                   />
                 ) : (
                   <ToBeAnnounced />
@@ -339,12 +342,12 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               value={
                 isProductSet ? (
                   <>
-                    {etoData.product.jurisdiction === EJurisdiction.GERMANY && (
+                    {eto.product.jurisdiction === EJurisdiction.GERMANY && (
                       <FormattedMessage
                         id={`eto.public-view.token-terms.public-eto.product.jurisdiction.de`}
                       />
                     )}
-                    {etoData.product.jurisdiction === EJurisdiction.LIECHTENSTEIN && (
+                    {eto.product.jurisdiction === EJurisdiction.LIECHTENSTEIN && (
                       <FormattedMessage
                         id={`eto.public-view.token-terms.public-eto.product.jurisdiction.li`}
                       />
@@ -356,14 +359,12 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               }
               data-test-id="eto-public-view-public-eto-duration"
             />
-            {etoData.templates && etoData.templates.reservationAndAcquisitionAgreement && (
+            {eto.templates && eto.templates.reservationAndAcquisitionAgreement && (
               <DocumentTemplateButton
                 title={
                   <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
                 }
-                onClick={() =>
-                  downloadDocument(etoData.templates.reservationAndAcquisitionAgreement)
-                }
+                onClick={() => downloadDocument(eto.templates.reservationAndAcquisitionAgreement)}
               />
             )}
           </div>
@@ -378,16 +379,16 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
           <div className={styles.groupContent}>
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.nominee" />}
-              value={etoData.nominee ? etoData.nomineeDisplayName : <ToBeAnnounced />}
+              value={eto.nominee ? eto.nomineeDisplayName : <ToBeAnnounced />}
               data-test-id="eto-public-view-nominee"
             />
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.public-offer-duration" />}
               value={
-                etoData.signingDurationDays ? (
+                eto.signingDurationDays ? (
                   <FormattedMessage
                     id="eto.public-view.token-terms.days"
-                    values={{ days: etoData.signingDurationDays }}
+                    values={{ days: eto.signingDurationDays }}
                   />
                 ) : (
                   <ToBeAnnounced />
@@ -399,9 +400,9 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-transferability" />}
               value={
-                etoData.enableTransferOnSuccess === undefined ? (
+                eto.enableTransferOnSuccess === undefined ? (
                   <ToBeAnnounced />
-                ) : etoData.enableTransferOnSuccess === true ? (
+                ) : eto.enableTransferOnSuccess === true ? (
                   <FormattedMessage id="eto.public-view.token-transferability.yes" />
                 ) : (
                   <FormattedMessage id="eto.public-view.token-transferability.no" />
@@ -410,12 +411,12 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               data-test-id="eto-public-view-token-transferability"
             />
 
-            {etoData.enableTransferOnSuccess && (
+            {eto.enableTransferOnSuccess && (
               <Entry
                 label={<FormattedMessage id="eto.public-view.token-terms.token-tradability" />}
                 value={
                   <>
-                    {etoData.tokenTradeableOnSuccess ? (
+                    {eto.tokenTradeableOnSuccess ? (
                       <FormattedMessage id="eto.public-view.token-terms.enabled" />
                     ) : (
                       <FormattedMessage id="eto.public-view.token-terms.disabled" />
@@ -430,7 +431,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.asset-type" />}
               value={
                 isProductSet ? (
-                  etoData.product.assetType === EAssetType.SECURITY ? (
+                  eto.product.assetType === EAssetType.SECURITY ? (
                     <FormattedMessage id={`eto.public-view.asset-type.security`} />
                   ) : (
                     <FormattedMessage id={`eto.public-view.asset-type.vma`} />
@@ -445,9 +446,9 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.token-terms.voting-rights" />}
               value={
-                etoData.generalVotingRule === undefined ? (
+                eto.generalVotingRule === undefined ? (
                   <ToBeAnnounced />
-                ) : etoData.generalVotingRule === "negative" ? (
+                ) : eto.generalVotingRule === "negative" ? (
                   <FormattedMessage id="eto.public-view.token-terms.no" />
                 ) : (
                   <FormattedMessage id="eto.public-view.token-terms.yes" />
@@ -459,7 +460,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.dividend-rights" />}
               value={
-                etoData.hasDividendRights ? (
+                eto.hasDividendRights ? (
                   <FormattedMessage id="form.select.yes" />
                 ) : (
                   <ToBeAnnounced />
@@ -468,10 +469,10 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               data-test-id="eto-public-view-dividend-rights"
             />
 
-            {etoData.templates && etoData.templates.companyTokenHolderAgreement && (
+            {eto.templates && eto.templates.companyTokenHolderAgreement && (
               <DocumentTemplateButton
                 title={<FormattedMessage id="eto.documents.tokenholder-agreement" />}
-                onClick={() => downloadDocument(etoData.templates.companyTokenHolderAgreement)}
+                onClick={() => downloadDocument(eto.templates.companyTokenHolderAgreement)}
               />
             )}
           </div>

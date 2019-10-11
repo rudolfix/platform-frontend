@@ -168,37 +168,4 @@ describe("Eto campaigning state", () => {
       cy.get(`${tid("campaigning-your-commitment")} ${tid("value")}`).should("contain", amount);
     });
   });
-
-  it("should show bookbuilding stats in presale", () => {
-    loginFixtureAccount("ISSUER_WHITELIST", {
-      kyc: "business",
-      signTosAgreement: true,
-      clearPendingTransactions: true,
-    });
-
-    goToIssuerDashboard();
-
-    cy.get(tid("bookbuilding-widget.closed")).should("exist");
-
-    cy.get(tid("bookbuilding-widget.stats.amount-backed")).contains("500 000 EUR");
-    cy.get(tid("bookbuilding-widget.stats.number-of-pledges"))
-      // 5 slots filled
-      .contains(/\b5\b/)
-      //out of 500
-      .contains(/\b500\b/);
-
-    cy.get(tid("bookbuilding-widget.stats.download")).should("exist");
-  });
-
-  it("should not show bookbuilding stats after presale", () => {
-    loginFixtureAccount("ISSUER_PUBLIC", {
-      kyc: "business",
-      signTosAgreement: true,
-      clearPendingTransactions: true,
-    });
-
-    goToIssuerDashboard();
-
-    cy.get(tid("bookbuilding-widget.closed")).should("not.exist");
-  });
 });

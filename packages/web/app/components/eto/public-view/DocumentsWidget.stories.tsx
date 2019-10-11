@@ -88,6 +88,17 @@ storiesOf("Document/DocumentsWidget", module)
       companyMarketingLinks={marketingLinks}
       downloadDocument={action("download document")}
       offeringDocumentType={EOfferingDocumentType.MEMORANDUM}
+      isUserFullyVerified={true}
+    />
+  ))
+  .add("seen by non verified user", () => (
+    <DocumentsWidgetLayout
+      etoTemplates={templates}
+      etoDocuments={documents}
+      companyMarketingLinks={marketingLinks}
+      downloadDocument={action("download document")}
+      offeringDocumentType={EOfferingDocumentType.MEMORANDUM}
+      isUserFullyVerified={false}
     />
   ))
   .add("retail ETO", () => (
@@ -97,5 +108,6 @@ storiesOf("Document/DocumentsWidget", module)
       companyMarketingLinks={marketingLinks}
       downloadDocument={action("download document")}
       offeringDocumentType={EOfferingDocumentType.PROSPECTUS}
+      isUserFullyVerified={true}
     />
   ));

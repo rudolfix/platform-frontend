@@ -8,11 +8,12 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../lib/web3/types";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
+import { nonNullable } from "../../utils/nonNullable";
 import { convertToBigInt } from "../../utils/NumberUtils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import { selectEtoById, selectEtoOnChainStateById } from "../eto/selectors";
-import { EETOStateOnChain } from "../eto/types";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../gas/selectors";
 import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
 import {
@@ -186,10 +187,12 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   let state: IAppState = yield select();
   const eto = selectEtoById(state, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
+
   if (value && eto) {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
     if (etoContract) {
       const isICBM = selectIsICBMInvestment(state);
+
       const contribution = yield neuCall(loadComputedContributionFromContract, eto, value, isICBM);
 
       yield put(actions.investorEtoTicket.setCalculatedContribution(eto.etoId, contribution));
@@ -217,12 +220,15 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
   const etoId = action.payload.etoId;
-  const state: IAppState = yield select();
+  const eto: TEtoWithCompanyAndContract = nonNullable(
+    yield select((state: IAppState) => selectEtoById(state, etoId)),
+  );
+
   yield put(actions.investmentFlow.resetInvestment());
   yield put(actions.investmentFlow.setEtoId(etoId));
   yield put(actions.kyc.kycLoadClientData());
   yield put(actions.txTransactions.startInvestment(etoId));
-  yield put(actions.investorEtoTicket.loadEtoInvestorTicket(selectEtoById(state, etoId)!));
+  yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
 
   yield take("TX_SENDER_SHOW_MODAL");
   yield getActiveInvestmentTypes();
@@ -236,12 +242,12 @@ export function* onInvestmentTxModalHide(): any {
 function* getActiveInvestmentTypes(): any {
   const state: IAppState = yield select();
   const etoId = selectInvestmentEtoId(state);
-  const etoState = selectEtoOnChainStateById(state, etoId);
+  const etoOnChainState = selectEtoOnChainStateById(state, etoId);
 
   let activeTypes: EInvestmentType[] = [EInvestmentType.Eth, EInvestmentType.NEur];
 
   // no regular investment if not whitelisted in pre eto
-  if (etoState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) {
+  if (etoOnChainState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) {
     activeTypes = [];
   }
 

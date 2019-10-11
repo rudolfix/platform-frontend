@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserActivityMessage } from "../../../lib/dependencies/broadcast-channel/types";
 import { STORAGE_JWT_KEY } from "../../../lib/persistence/JwtObjectStorage";
 import { USER_JWT_KEY as USER_KEY } from "../../../lib/persistence/UserStorage";
-import { STORAGE_WALLET_METADATA_KEY } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { STORAGE_WALLET_METADATA_KEY } from "../../../lib/persistence/WalletStorage";
 import { assertNever } from "../../../utils/assertNever";
 import { actions } from "../../actions";
 import { EInitType } from "../../init/reducer";

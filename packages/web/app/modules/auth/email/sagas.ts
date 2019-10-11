@@ -5,7 +5,7 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IVerifyEmailUser } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
-import { TStoredWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";

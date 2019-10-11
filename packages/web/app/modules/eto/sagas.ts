@@ -1,11 +1,13 @@
 import BigNumber from "bignumber.js";
 import { LOCATION_CHANGE } from "connected-react-router";
-import { camelCase } from "lodash";
+import { camelCase, isString } from "lodash";
 import { compose, keyBy, map, omit } from "lodash/fp";
-import { delay } from "redux-saga";
+import { delay, Effect } from "redux-saga";
 import { all, fork, put, race, select, take } from "redux-saga/effects";
 
-import { hashFromIpfsLink } from "../../components/documents/utils";
+import { IWindowWithData } from "../../../test/helperTypes";
+import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/documents/utils";
+import { DocumentConfidentialityAgreementModal } from "../../components/eto/public-view/DocumentConfidentialityAgreementModal";
 import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
 import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -17,7 +19,12 @@ import {
   TEtoDataWithCompany,
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
+import {
+  EEtoDocumentType,
+  IEtoDocument,
+  immutableDocumentName,
+} from "../../lib/api/eto/EtoFileApi.interfaces";
+import { canShowDocument } from "../../lib/api/eto/EtoFileUtils";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { ECountries } from "../../lib/api/util/countries.enum";
 import { EtherToken } from "../../lib/contracts/EtherToken";
@@ -26,8 +33,9 @@ import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
 import { divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
+import { invariant } from "../../utils/invariant";
 import { actions, TActionFromCreator } from "../actions";
-import { selectIsUserVerified, selectUserType } from "../auth/selectors";
+import { selectIsUserVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadPledgeData } from "../bookbuilding-flow/utils";
 import { selectMyAssets } from "../investor-portfolio/selectors";
 import { waitForKycStatus } from "../kyc/sagas";
@@ -55,6 +63,7 @@ import {
   convertToStateStartDate,
   isOnChain,
   isRestrictedEto,
+  isUserAssociatedWithEto,
 } from "./utils";
 
 function* loadEtoPreview(
@@ -363,26 +372,111 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
   }
 }
 
-function* download(document: IEtoDocument): any {
-  if (document) {
-    yield put(
-      actions.immutableStorage.downloadImmutableFile(
-        {
-          ipfsHash: document.ipfsHash,
-          mimeType: document.mimeType,
-          asPdf: true,
-        },
-        immutableDocumentName[document.documentType],
-      ),
-    );
+function* download(document: IEtoDocument): Iterator<Effect> {
+  yield put(
+    actions.immutableStorage.downloadImmutableFile(
+      {
+        ipfsHash: document.ipfsHash,
+        mimeType: document.mimeType,
+        asPdf: true,
+      },
+      immutableDocumentName[document.documentType],
+    ),
+  );
+}
+
+function getDocumentsRequiredConfidentialityAgreements(previewCode: string): EEtoDocumentType[] {
+  let ishaRequirements = process.env.NF_ISHA_CONFIDENTIALITY_REQUIREMENTS;
+
+  // TODO: Remove after to add an ability to overwrite feature flags at runtime
+  // https://github.com/Neufund/platform-frontend/pull/3243
+  if (process.env.NF_CYPRESS_RUN === "1") {
+    const { nfISHAConfidentialityAgreementsRequirements } = window as IWindowWithData;
+    ishaRequirements = nfISHAConfidentialityAgreementsRequirements || ishaRequirements;
   }
+
+  if (ishaRequirements && isString(ishaRequirements)) {
+    if (ishaRequirements.split(",").includes(previewCode)) {
+      return [EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW];
+    }
+  }
+
+  return [];
 }
 
 function* downloadDocument(
-  _: TGlobalDependencies,
+  { logger, documentsConfidentialityAgreementsStorage }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.downloadEtoDocument>,
-): any {
-  yield download(action.payload.document);
+): Iterator<any> {
+  const { document, eto } = action.payload;
+
+  const isUserFullyVerified: ReturnType<typeof selectIsUserVerified> = yield select(
+    selectIsUserVerified,
+  );
+
+  invariant(
+    canShowDocument(document, isUserFullyVerified),
+    "Non visible documents can't be downloaded",
+  );
+
+  const userId: ReturnType<typeof selectUserId> = yield select(selectUserId);
+
+  const etoConfidentialAgreements = getDocumentsRequiredConfidentialityAgreements(eto.previewCode);
+
+  // for guest users we always require agreement acceptance
+  const isAgreementAlreadyAccepted = userId
+    ? yield documentsConfidentialityAgreementsStorage.isAgreementAccepted(
+        userId,
+        eto.previewCode,
+        document.documentType,
+      )
+    : false;
+
+  if (
+    // document requires confidential agreement
+    etoConfidentialAgreements.includes(document.documentType) &&
+    // user not associated with the eto (aka issuer or nominee)
+    userId !== undefined &&
+    !isUserAssociatedWithEto(eto, userId) &&
+    // agreement not yet accepted
+    !isAgreementAlreadyAccepted
+  ) {
+    const documentTitles = getInvestorDocumentTitles(eto.product.offeringDocumentType);
+
+    yield put(
+      actions.genericModal.showModal(DocumentConfidentialityAgreementModal, {
+        documentTitle: documentTitles[document.documentType],
+        companyName: eto.company.name,
+      }),
+    );
+
+    const { confirmed, denied } = yield race({
+      confirmed: take(actions.eto.confirmConfidentialityAgreement),
+      denied: take(actions.genericModal.hideGenericModal),
+    });
+
+    if (denied) {
+      logger.info(
+        `Confidentiality agreement acceptance denied of '${
+          document.documentType
+        }' document for eto '${eto.previewCode}'`,
+      );
+    }
+
+    if (confirmed) {
+      yield put(actions.genericModal.hideGenericModal());
+
+      yield documentsConfidentialityAgreementsStorage.markAgreementAsAccepted(
+        userId,
+        eto.previewCode,
+        document.documentType,
+      );
+
+      yield download(document);
+    }
+  } else {
+    yield download(document);
+  }
 }
 
 function* downloadTemplateByType(

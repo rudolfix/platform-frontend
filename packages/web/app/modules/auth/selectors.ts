@@ -3,6 +3,7 @@ import { createSelector } from "reselect";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
+import { EthereumAddressWithChecksum } from "../../types";
 import { selectIsUserVerifiedOnBlockchain, selectKycRequestStatus } from "../kyc/selectors";
 import { selectIsLightWallet } from "../web3/selectors";
 import { IAuthState } from "./reducer";
@@ -25,7 +26,7 @@ export const selectUnverifiedUserEmail = (state: IAuthState): string | undefined
 
 export const selectUser = (state: IAuthState): IUser | undefined => state.user;
 
-export const selectUserId = (state: IAppState): string | undefined =>
+export const selectUserId = (state: IAppState): EthereumAddressWithChecksum | undefined =>
   state.auth.user && state.auth.user.userId;
 
 export const selectBackupCodesVerified = (state: IAppState): boolean =>

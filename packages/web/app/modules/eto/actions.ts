@@ -25,9 +25,13 @@ export const etoActions = {
     widgetView,
   })),
   loadEtos: createActionFactory("ETO_LOAD_ETOS"),
-  downloadEtoDocument: createActionFactory("ETO_DOWNLOAD_DOCUMENT", (document: IEtoDocument) => ({
-    document,
-  })),
+  downloadEtoDocument: createActionFactory(
+    "ETO_DOWNLOAD_DOCUMENT",
+    (document: IEtoDocument, eto: TEtoWithCompanyAndContract) => ({
+      document,
+      eto,
+    }),
+  ),
   downloadEtoTemplateByType: createActionFactory(
     "ETO_DOWNLOAD_TEMPLATE_BY_TYPE",
     (etoId: string, documentType: EEtoDocumentType) => ({ etoId, documentType }),
@@ -47,6 +51,7 @@ export const etoActions = {
     }),
   ),
   confirmJurisdictionDisclaimer: createActionFactory("ETO_CONFIRM_JURISDICTION_DISCLAIMER"),
+  confirmConfidentialityAgreement: createActionFactory("ETO_CONFIRM_CONFIDENTIALITY_AGREEMENT"),
   verifyEtoAccess: createActionFactory("ETO_VERIFY_ETO_ACCESS", (previewCode: string) => ({
     previewCode,
   })),

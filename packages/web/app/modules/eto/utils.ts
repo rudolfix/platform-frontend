@@ -6,7 +6,7 @@ import {
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { DeepPartial, Overwrite } from "../../types";
+import { DeepPartial, EthereumAddressWithChecksum, Overwrite } from "../../types";
 import { isPastInvestment } from "../investor-portfolio/utils";
 import {
   EETOStateOnChain,
@@ -86,6 +86,15 @@ export function isOnChain(
 
 export const isRestrictedEto = (eto: TEtoWithCompanyAndContract): boolean =>
   eto.product.jurisdiction === EJurisdiction.GERMANY && !isPastInvestment(eto.contract!.timedState);
+
+/**
+ * Check if user is associated with given eto
+ * @returns true if user is either the issuer or nominee of the eto
+ */
+export const isUserAssociatedWithEto = (
+  eto: TEtoWithCompanyAndContract,
+  userId: EthereumAddressWithChecksum,
+) => eto.companyId === userId || eto.nominee === userId;
 
 type TCalculateSubStateOptions = {
   eto: TEtoSpecsData;

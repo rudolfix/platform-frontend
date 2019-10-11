@@ -3,11 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "recompose";
 
-import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IEtoDocument, TEtoDocumentTemplates } from "../../../lib/api/eto/EtoFileApi.interfaces";
+import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { canShowDocument, ignoredTemplatesPublicView } from "../../../lib/api/eto/EtoFileUtils";
-import { EOfferingDocumentType } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { getInvestorDocumentTitles } from "../../documents/utils";
@@ -19,10 +18,7 @@ import { DashboardHeading } from "../shared/DashboardHeading";
 import * as styles from "./DocumentsWidget.module.scss";
 
 type TExternalProps = {
-  companyMarketingLinks: TCompanyEtoData["marketingLinks"];
-  etoTemplates: TEtoDocumentTemplates;
-  etoDocuments: TEtoDocumentTemplates;
-  offeringDocumentType: EOfferingDocumentType;
+  eto: TEtoWithCompanyAndContract;
   columnSpan?: EColumnSpan;
   isUserFullyVerified: boolean;
 };
@@ -33,18 +29,12 @@ type TDispatchProps = {
 
 const DocumentsWidgetLayout: React.FunctionComponent<
   TDispatchProps & TExternalProps & CommonHtmlProps
-> = ({
-  downloadDocument,
-  etoDocuments,
-  etoTemplates,
-  className,
-  offeringDocumentType,
-  columnSpan,
-  isUserFullyVerified,
-}) => {
-  const documentTitles = getInvestorDocumentTitles(offeringDocumentType);
+> = ({ downloadDocument, className, columnSpan, isUserFullyVerified, eto }) => {
+  const { templates, documents, product } = eto;
 
-  return etoTemplates || etoDocuments ? (
+  const documentTitles = getInvestorDocumentTitles(product.offeringDocumentType);
+
+  return templates || documents ? (
     <Container columnSpan={EColumnSpan.ONE_COL}>
       <DashboardHeading
         title={<FormattedMessage id="eto.public-view.documents.legal-documents" />}
@@ -52,17 +42,17 @@ const DocumentsWidgetLayout: React.FunctionComponent<
       <Panel className={className} columnSpan={columnSpan}>
         <section className={styles.group}>
           <Row>
-            {Object.keys(etoTemplates)
+            {Object.keys(templates)
               .filter(key => !ignoredTemplatesPublicView.some(template => template === key))
               .map((key, i) => (
                 <Col sm="6" md="12" lg="6" key={i} className={styles.document}>
                   <DocumentTemplateButton
-                    onClick={() => downloadDocument(etoTemplates[key])}
-                    title={documentTitles[etoTemplates[key].documentType]}
+                    onClick={() => downloadDocument(templates[key])}
+                    title={documentTitles[templates[key].documentType]}
                   />
                 </Col>
               ))}
-            {Object.values(etoDocuments)
+            {Object.values(documents)
               .filter(document => canShowDocument(document, isUserFullyVerified))
               .map((document, i) => (
                 <Col sm="6" md="12" lg="6" key={i} className={styles.document}>
@@ -85,9 +75,9 @@ const DocumentsWidget = compose<
   TExternalProps & CommonHtmlProps
 >(
   appConnect<{}, TDispatchProps, TExternalProps>({
-    dispatchToProps: dispatch => ({
+    dispatchToProps: (dispatch, { eto }) => ({
       downloadDocument: (document: IEtoDocument) =>
-        dispatch(actions.eto.downloadEtoDocument(document)),
+        dispatch(actions.eto.downloadEtoDocument(document, eto)),
     }),
   }),
 )(DocumentsWidgetLayout);

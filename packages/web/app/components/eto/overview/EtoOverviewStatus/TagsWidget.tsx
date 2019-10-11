@@ -120,9 +120,9 @@ const TagsWidgetLayout: React.FunctionComponent<IWithProps & IExternalProps & ID
 
 const TagsWidget = compose<IDispatchProps & IWithProps & IExternalProps, IExternalProps>(
   appConnect<{}, IDispatchProps, IExternalProps>({
-    dispatchToProps: dispatch => ({
+    dispatchToProps: (dispatch, { eto }) => ({
       downloadDocument: (document: IEtoDocument) =>
-        dispatch(actions.eto.downloadEtoDocument(document)),
+        dispatch(actions.eto.downloadEtoDocument(document, eto)),
     }),
   }),
   withProps<IWithProps, IExternalProps & IDispatchProps>(props => {

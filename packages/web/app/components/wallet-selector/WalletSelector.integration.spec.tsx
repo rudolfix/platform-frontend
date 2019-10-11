@@ -110,7 +110,7 @@ describe("Wallet selector integration", () => {
       ledgerWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
-      storageMock: new Storage({}),
+      storageMock: new Storage({} as any),
       contractsMock,
       initialState: {
         browser: {
@@ -270,7 +270,7 @@ describe("Wallet selector integration", () => {
       browserWalletConnectorMock,
       signatureAuthApiMock,
       usersApiMock,
-      storageMock: new Storage({}),
+      storageMock: new Storage({} as any),
       contractsMock,
       initialRoute: appRoutes.register,
       initialState: {

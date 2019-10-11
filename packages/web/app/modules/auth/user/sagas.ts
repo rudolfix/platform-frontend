@@ -9,7 +9,7 @@ import { EUserType, IUser } from "../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../lib/api/users/UsersApi";
 import { EUserActivityMessage } from "../../../lib/dependencies/broadcast-channel/types";
 import { REGISTRATION_LOGIN_DONE } from "../../../lib/persistence/UserStorage";
-import { TStoredWalletMetadata } from "../../../lib/persistence/WalletMetadataObjectStorage";
+import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import {
   SignerRejectConfirmationError,
   SignerTimeoutError,

@@ -484,9 +484,9 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
 
 const EtoInvestmentTermsWidget = compose<TExternalProps & TDispatchProps, TExternalProps>(
   appConnect<{}, TDispatchProps, TExternalProps>({
-    dispatchToProps: dispatch => ({
+    dispatchToProps: (dispatch, { eto }) => ({
       downloadDocument: (document: IEtoDocument) =>
-        dispatch(actions.eto.downloadEtoDocument(document)),
+        dispatch(actions.eto.downloadEtoDocument(document, eto)),
     }),
   }),
 )(EtoInvestmentTermsWidgetLayout);

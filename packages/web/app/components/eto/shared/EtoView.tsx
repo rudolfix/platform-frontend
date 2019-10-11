@@ -156,11 +156,8 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({
 
         <Container columnSpan={EColumnSpan.ONE_COL} type={EContainerType.INHERIT_GRID}>
           <DocumentsWidget
+            eto={eto}
             columnSpan={EColumnSpan.THREE_COL}
-            companyMarketingLinks={marketingLinks}
-            etoTemplates={eto.templates}
-            etoDocuments={eto.documents}
-            offeringDocumentType={eto.product.offeringDocumentType}
             isUserFullyVerified={isUserFullyVerified}
           />
 

@@ -1,6 +1,7 @@
 import { expect } from "chai";
 
 import { EUserType } from "../../lib/api/users/interfaces";
+import { EthereumAddressWithChecksum } from "../../types";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { IAuthState } from "./reducer";
 import { selectIsAuthorized, selectUserEmail } from "./selectors";
@@ -11,7 +12,7 @@ describe("auth > selectors", () => {
       const state: IAuthState = {
         jwt: "eyjwt",
         user: {
-          userId: "user-id",
+          userId: "user-id" as EthereumAddressWithChecksum,
           type: EUserType.INVESTOR,
           walletType: EWalletType.LIGHT,
           walletSubtype: EWalletSubType.UNKNOWN,
@@ -41,7 +42,7 @@ describe("auth > selectors", () => {
       const state: IAuthState = {
         jwt: "eyjwt",
         user: {
-          userId: "user-id",
+          userId: "user-id" as EthereumAddressWithChecksum,
           unverifiedEmail: "unverified@email.com",
           verifiedEmail: "some.verified@email.com",
           type: EUserType.INVESTOR,

@@ -7,7 +7,7 @@ import { ECurrency } from "../../components/shared/formatters/utils";
 import { Q18 } from "../../config/constants";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IAppState } from "../../store";
-import { compareBigNumbers } from "../../utils/BigNumberUtils";
+import { compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
 import { isZero } from "../../utils/NumberUtils";
 import { selectMyPledge } from "../bookbuilding-flow/selectors";
 import {
@@ -20,12 +20,21 @@ import {
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
 import { isOnChain } from "../eto/utils";
 import { selectLockedWalletConnected } from "../wallet/selectors";
-import { ICalculatedContribution, TETOWithInvestorTicket, TETOWithTokenData } from "./types";
+import {
+  ICalculatedContribution,
+  IInvestorTicket,
+  TETOWithInvestorTicket,
+  TETOWithTokenData,
+  TTokensPersonalDiscount,
+} from "./types";
 import { getRequiredIncomingAmount, isPastInvestment } from "./utils";
 
 const selectInvestorTicketsState = (state: IAppState) => state.investorTickets;
 
-export const selectInvestorTicket = (state: IAppState, etoId: string) => {
+export const selectInvestorTicket = (
+  state: IAppState,
+  etoId: string,
+): IInvestorTicket | undefined => {
   const investorState = selectInvestorTicketsState(state);
 
   return investorState.investorEtoTickets[etoId];
@@ -314,3 +323,33 @@ export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[
 
   return undefined;
 };
+
+export const selectTokenPersonalDiscount = (
+  state: IAppState,
+  etoId: string,
+): TTokensPersonalDiscount | undefined => {
+  const investorState = selectInvestorTicketsState(state);
+
+  return investorState.tokensPersonalDiscounts[etoId];
+};
+
+export const selectPersonalDiscount = createSelector(
+  selectInvestorTicket,
+  selectTokenPersonalDiscount,
+  (investorTicket, tokenPersonalDiscount) => {
+    if (investorTicket && tokenPersonalDiscount) {
+      const whitelistDiscountAmountLeft = subtractBigNumbers([
+        tokenPersonalDiscount.whitelistDiscountAmountEurUlps,
+        investorTicket.equivEurUlps,
+      ]);
+
+      return {
+        whitelistDiscountAmountLeft,
+        whitelistDiscountUlps: tokenPersonalDiscount.whitelistDiscountUlps,
+        whitelistDiscountFrac: tokenPersonalDiscount.whitelistDiscountFrac,
+      };
+    }
+
+    return undefined;
+  },
+);

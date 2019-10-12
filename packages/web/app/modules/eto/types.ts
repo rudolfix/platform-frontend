@@ -1,5 +1,5 @@
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { DeepReadonly, Dictionary } from "../../types";
+import { DeepReadonly, Dictionary, Overwrite } from "../../types";
 import { EAgreementType } from "../tx/transactions/nominee/sign-agreement/types";
 
 export interface IEtoTotalInvestment {
@@ -40,12 +40,24 @@ export type TEtoWithCompanyAndContract = DeepReadonly<
   }
 >;
 
+export type TEtoWithCompanyAndContractTypeChecked = Overwrite<
+  TEtoWithCompanyAndContract,
+  { contract: Exclude<TEtoWithCompanyAndContract["contract"], undefined> }
+>;
+
 export interface IEtoTokenData {
   balance: string;
   tokensPerShare: string;
   totalCompanyShares: string;
   companyValuationEurUlps: string;
   tokenPrice: string;
+}
+
+export interface IEtoTokenGeneralDiscounts {
+  whitelistDiscountFrac: string;
+  whitelistDiscountUlps: string;
+  publicDiscountFrac: string;
+  publicDiscountUlps: string;
 }
 
 export enum EEtoSubState {

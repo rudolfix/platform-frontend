@@ -3,11 +3,13 @@ import { createActionFactory } from "@neufund/shared";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { Dictionary } from "../../types";
 import { createAction } from "../actionsUtils";
+import { TEtoWithCompanyAndContract } from "../eto/types";
 import {
   ICalculatedContribution,
   IIncomingPayoutsData,
   IInvestorTicket,
   ITokenDisbursal,
+  TTokensPersonalDiscount,
 } from "./types";
 
 export const investorEtoTicketActions = {
@@ -15,6 +17,11 @@ export const investorEtoTicketActions = {
   loadEtoInvestorTicket: (eto: TEtoSpecsData) => createAction("INVESTOR_TICKET_LOAD", { eto }),
   loadInvestorTickets: (etos: Dictionary<TEtoSpecsData>) =>
     createAction("INVESTOR_TICKET_ETOS_LOAD", { etos }),
+  loadTokenPersonalDiscount: createActionFactory(
+    "INVESTOR_TICKET_LOAD_TOKEN_PERSONAL_DISCOUNT",
+    (eto: TEtoWithCompanyAndContract) => ({ eto }),
+  ),
+
   claim: (etoId: string) => createAction("INVESTOR_TICKET_CLAIM", { etoId }),
   loadClaimables: createActionFactory("INVESTOR_CLAIMABLES_LOAD"),
   getIncomingPayouts: createActionFactory("INVESTOR_TICKET_GET_INCOMING_PAYOUTS"),
@@ -43,4 +50,11 @@ export const investorEtoTicketActions = {
   ),
   setIncomingPayoutsError: createActionFactory("INVESTOR_TICKET_SET_INCOMING_PAYOUTS_ERROR"),
   resetIncomingPayouts: createActionFactory("INVESTOR_TICKET_RESET_INCOMING_PAYOUTS"),
+  setTokenPersonalDiscount: createActionFactory(
+    "INVESTOR_TICKET_SET_TOKEN_PERSONAL_DISCOUNTS",
+    (etoId: string, tokenPersonalDiscount: TTokensPersonalDiscount) => ({
+      etoId,
+      tokenPersonalDiscount,
+    }),
+  ),
 };

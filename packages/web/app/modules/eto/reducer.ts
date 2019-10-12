@@ -5,6 +5,7 @@ import { actions } from "../actions";
 import {
   IEtoContractData,
   IEtoTokenData,
+  IEtoTokenGeneralDiscounts,
   SignedISHAStatus,
   TOfferingAgreementsStatus,
 } from "./types";
@@ -17,6 +18,7 @@ export interface IEtoState {
   maxCapExceeded: { [previewCode: string]: boolean | undefined };
   etoWidgetError: boolean | undefined;
   tokenData: { [previewCode: string]: IEtoTokenData | undefined };
+  tokenGeneralDiscounts: { [etoId: string]: IEtoTokenGeneralDiscounts | undefined };
   offeringAgreementsStatus: { [previewCode: string]: TOfferingAgreementsStatus | undefined };
   signedInvestmentAgreements: { [previewCode: string]: SignedISHAStatus | undefined };
 }
@@ -29,6 +31,7 @@ export const etoFlowInitialState: IEtoState = {
   maxCapExceeded: {},
   etoWidgetError: undefined,
   tokenData: {},
+  tokenGeneralDiscounts: {},
   offeringAgreementsStatus: {},
   signedInvestmentAgreements: {},
 };
@@ -88,6 +91,14 @@ export const etoReducer: AppReducer<IEtoState> = (
         tokenData: {
           ...state.tokenData,
           [action.payload.previewCode]: action.payload.tokenData,
+        },
+      };
+    case actions.eto.setTokenGeneralDiscounts.getType():
+      return {
+        ...state,
+        tokenGeneralDiscounts: {
+          ...state.tokenGeneralDiscounts,
+          [action.payload.etoId]: action.payload.tokenGeneralDiscounts,
         },
       };
     case actions.eto.setAgreementsStatus.getType():

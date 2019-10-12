@@ -10,6 +10,12 @@ export function isZero(value: string): boolean {
   return bigNumberValue.isZero();
 }
 
+export function isLessThanOrEqualToZero(value: string): boolean {
+  const bigNumberValue = new BigNumber(value);
+
+  return bigNumberValue.lessThanOrEqualTo(0);
+}
+
 export function convertToBigInt(value: TBigNumberVariant, currencyDecimals?: number): string {
   const q = currencyDecimals ? new BigNumber(10).pow(currencyDecimals) : Q18;
   const moneyInWei = q.mul(value);

@@ -5,9 +5,19 @@ import { Link } from "react-router-dom";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { compose, withProps } from "recompose";
 
+import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
-import { selectEtoWithCompanyAndContractById } from "../../../../modules/eto/selectors";
-import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
+import { InvalidETOStateError } from "../../../../modules/eto/errors";
+import {
+  selectEtoTokenGeneralDiscounts,
+  selectEtoTokenStandardPrice,
+  selectEtoWithCompanyAndContractById,
+} from "../../../../modules/eto/selectors";
+import {
+  IEtoTokenGeneralDiscounts,
+  TEtoWithCompanyAndContractTypeChecked,
+} from "../../../../modules/eto/types";
+import { isOnChain } from "../../../../modules/eto/utils";
 import {
   EInvestmentErrorState,
   EInvestmentType,
@@ -26,7 +36,9 @@ import {
   selectEquityTokenCountByEtoId,
   selectHasInvestorTicket,
   selectNeuRewardUlpsByEtoId,
+  selectPersonalDiscount,
 } from "../../../../modules/investor-portfolio/selectors";
+import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
 import {
   selectEtherPriceEur,
   selectEurPriceEther,
@@ -38,6 +50,7 @@ import { selectTxValidationState } from "../../../../modules/tx/validator/select
 import { appConnect } from "../../../../store";
 import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
+import { nonNullable } from "../../../../utils/nonNullable";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, EButtonLayout } from "../../../shared/buttons";
@@ -54,13 +67,14 @@ import {
 } from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
+import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 import { createWallets, formatMinMaxTickets, getInputErrorMessage } from "./utils";
 
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractTypeChecked;
   wallets: WalletSelectionData[];
   euroValue: string;
   ethValue: string;
@@ -79,6 +93,9 @@ interface IStateProps {
     minTicketEurUlps: BigNumber;
     maxTicketEurUlps: BigNumber;
   };
+  etoTokenGeneralDiscounts: IEtoTokenGeneralDiscounts;
+  etoTokenPersonalDiscount: IPersonalDiscount;
+  etoTokenStandardPrice: number;
 }
 
 interface IDispatchProps {
@@ -103,6 +120,7 @@ interface IState {
   validationError: boolean;
 }
 
+// TODO: Refactor smaller components
 export class InvestmentSelectionComponent extends React.Component<IProps, IState> {
   state = { validationError: false };
 
@@ -155,6 +173,9 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
       wallets,
       hasPreviouslyInvested,
       startUpgradeFlow,
+      etoTokenGeneralDiscounts,
+      etoTokenPersonalDiscount,
+      etoTokenStandardPrice,
     } = this.props;
     const error = this.getError();
     return (
@@ -185,7 +206,12 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
           <Row>
             <Col>
               <p className={styles.amountToInvest}>
-                <FormattedMessage id="investment-flow.amount-to-invest" />
+                <InvestmentPriceInfo
+                  onChainState={eto.contract.timedState}
+                  etoTokenPersonalDiscount={etoTokenPersonalDiscount}
+                  etoTokenGeneralDiscounts={etoTokenGeneralDiscounts}
+                  etoTokenStandardPrice={etoTokenStandardPrice}
+                />
               </p>
             </Col>
           </Row>
@@ -395,8 +421,14 @@ export const InvestmentSelection = compose<IProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectInvestmentEtoId(state);
-      const eto = selectEtoWithCompanyAndContractById(state, etoId)!;
+      const eto = nonNullable(selectEtoWithCompanyAndContractById(state, etoId));
+
+      if (!isOnChain(eto)) {
+        throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
+      }
+
       const eur = selectInvestmentEurValueUlps(state);
+
       return {
         eto,
         etherPriceEur: selectEtherPriceEur(state),
@@ -414,6 +446,9 @@ export const InvestmentSelection = compose<IProps, {}>(
         readyToInvest: selectIsReadyToInvest(state),
         etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(state, etoId),
         hasPreviouslyInvested: selectHasInvestorTicket(state, etoId),
+        etoTokenGeneralDiscounts: nonNullable(selectEtoTokenGeneralDiscounts(state, etoId)),
+        etoTokenPersonalDiscount: nonNullable(selectPersonalDiscount(state, etoId)),
+        etoTokenStandardPrice: nonNullable(selectEtoTokenStandardPrice(state, eto.previewCode)),
       };
     },
     dispatchToProps: dispatch => ({

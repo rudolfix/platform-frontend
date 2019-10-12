@@ -4,7 +4,10 @@ import { Formik } from "formik";
 import * as React from "react";
 
 import { testEto } from "../../../../../test/fixtures";
-import { TEtoWithCompanyAndContractTypeChecked } from "../../../../modules/eto/types";
+import {
+  EETOStateOnChain,
+  TEtoWithCompanyAndContractTypeChecked,
+} from "../../../../modules/eto/types";
 import {
   EInvestmentErrorState,
   EInvestmentType,
@@ -15,6 +18,14 @@ import { InvestmentSelectionComponent } from "./Investment";
 import { wallets } from "./InvestmentTypeSelector.stories";
 
 const Investment = injectIntlHelpers(InvestmentSelectionComponent);
+
+const testEtoInWhitelist = {
+  ...testEto,
+  contract: {
+    ...testEto.contract!,
+    timedState: EETOStateOnChain.Whitelist,
+  },
+} as TEtoWithCompanyAndContractTypeChecked;
 
 storiesOf("Investment/Form", module)
   .addDecorator(withModalBody())
@@ -32,8 +43,7 @@ storiesOf("Investment/Form", module)
       equityTokenCount={"1234"}
       errorState={EInvestmentErrorState.ExceedsWalletBalance}
       ethValue={"1234123412341232341234"}
-      // tslint:disable-next-line:no-object-literal-type-assertion
-      eto={testEto as TEtoWithCompanyAndContractTypeChecked}
+      eto={testEtoInWhitelist}
       euroValue={"123412341234123412341234"}
       gasCostEth={"123412323412341234"}
       gasCostEuro={"12341234123412341234"}

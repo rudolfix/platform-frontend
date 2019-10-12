@@ -205,7 +205,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
           </Row>
           <Row>
             <Col>
-              <p className={styles.amountToInvest}>
+              <p className={styles.investmentPriceInfo}>
                 <InvestmentPriceInfo
                   onChainState={eto.contract.timedState}
                   etoTokenPersonalDiscount={etoTokenPersonalDiscount}
@@ -288,7 +288,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                   <Label>
                     <FormattedMessage id="investment-flow.equity-tokens" />
                   </Label>
-                  <InfoAlert>
+                  <InfoAlert data-test-id="invest-modal.est-equity-tokens">
                     {(showTokens &&
                       !error &&
                       equityTokenCount &&

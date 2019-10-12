@@ -47,8 +47,6 @@
   text-align: center;
 }
 
-.amount-to-invest {
+.investment-price-info {
   @include font-headline-small;
-
-  margin-top: px-to-rem(40px);
 }

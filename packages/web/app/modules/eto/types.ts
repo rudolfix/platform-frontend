@@ -54,9 +54,9 @@ export interface IEtoTokenData {
 }
 
 export interface IEtoTokenGeneralDiscounts {
-  whitelistDiscountFrac: string;
+  whitelistDiscountFrac: number;
   whitelistDiscountUlps: string;
-  publicDiscountFrac: string;
+  publicDiscountFrac: number;
   publicDiscountUlps: string;
 }
 

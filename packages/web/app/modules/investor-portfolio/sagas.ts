@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
-import { ECurrency } from "../../components/shared/formatters/utils";
+import { convertFromUlps, ECurrency } from "../../components/shared/formatters/utils";
 import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { Q18 } from "../../config/constants";
@@ -214,7 +214,8 @@ export function* loadPersonalTokenDiscount(
 
   yield put(
     actions.investorEtoTicket.setTokenPersonalDiscount(eto.etoId, {
-      ...whitelistTicket,
+      whitelistDiscountAmountEurUlps: whitelistTicket.whitelistDiscountAmountEurUlps.toString(),
+      whitelistDiscountFrac: convertFromUlps(whitelistTicket.whitelistDiscountFrac).toNumber(),
       whitelistDiscountUlps: discountTokenPriceUlps.toString(),
     }),
   );

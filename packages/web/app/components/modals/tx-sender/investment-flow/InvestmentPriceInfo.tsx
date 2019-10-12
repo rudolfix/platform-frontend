@@ -7,11 +7,11 @@ import { isLessThanOrEqualToZero, isZero } from "../../../../utils/NumberUtils";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
-  ENumberFormat,
   ENumberInputFormat,
   ENumberOutputFormat,
   EPriceFormat,
 } from "../../../shared/formatters/utils";
+import { Percentage } from "../../../shared/Percentage";
 
 interface IExternalProps {
   onChainState: EETOStateOnChain;
@@ -33,7 +33,7 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
           <FormattedMessage
             id="investment-flow.token-price-info.personal-discount"
             values={{
-              discountAmountLeft: (
+              whitelistDiscountAmountLeft: (
                 <Money
                   value={etoTokenPersonalDiscount.whitelistDiscountAmountLeft}
                   inputFormat={ENumberInputFormat.ULPS}
@@ -41,7 +41,7 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
                   outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 />
               ),
-              discountTokenPrice: (
+              whitelistDiscount: (
                 <Money
                   value={etoTokenPersonalDiscount.whitelistDiscountUlps}
                   inputFormat={ENumberInputFormat.ULPS}
@@ -49,13 +49,8 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
                   outputFormat={ENumberOutputFormat.FULL}
                 />
               ),
-              fullTokenPriceFrac: (
-                <Money
-                  value={etoTokenPersonalDiscount.whitelistDiscountFrac}
-                  inputFormat={ENumberInputFormat.ULPS}
-                  outputFormat={ENumberOutputFormat.FULL}
-                  valueType={ENumberFormat.PERCENTAGE}
-                />
+              whitelistDiscountPercentage: (
+                <Percentage>{etoTokenPersonalDiscount.whitelistDiscountFrac}</Percentage>
               ),
             }}
           />
@@ -75,13 +70,8 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
                   outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 />
               ),
-              discountTokenPriceFrac: (
-                <Money
-                  value={etoTokenGeneralDiscounts.whitelistDiscountFrac}
-                  inputFormat={ENumberInputFormat.ULPS}
-                  outputFormat={ENumberOutputFormat.FULL}
-                  valueType={ENumberFormat.PERCENTAGE}
-                />
+              discountTokenPricePercentage: (
+                <Percentage>{etoTokenPersonalDiscount.whitelistDiscountFrac}</Percentage>
               ),
             }}
           />
@@ -118,13 +108,8 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
                   outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 />
               ),
-              discountTokenPriceFrac: (
-                <Money
-                  value={etoTokenGeneralDiscounts.publicDiscountFrac}
-                  inputFormat={ENumberInputFormat.ULPS}
-                  outputFormat={ENumberOutputFormat.FULL}
-                  valueType={ENumberFormat.PERCENTAGE}
-                />
+              discountTokenPricePercentage: (
+                <Percentage>{etoTokenPersonalDiscount.whitelistDiscountFrac}</Percentage>
               ),
             }}
           />

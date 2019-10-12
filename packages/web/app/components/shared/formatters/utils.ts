@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-import { DEFAULT_DECIMAL_PLACES, MONEY_DECIMALS } from "../../../config/constants";
+import { DEFAULT_DECIMAL_PLACES, Q18 } from "../../../config/constants";
 import { Opaque } from "../../../types";
 import { invariant } from "../../../utils/invariant";
 
@@ -104,8 +104,7 @@ export const selectDecimalPlaces = (
   }
 };
 
-export const convertFromUlps = (value: BigNumber, baseFactor: number) =>
-  value.div(new BigNumber(10).pow(baseFactor));
+export const convertFromUlps = (value: BigNumber) => value.div(Q18);
 
 export function formatThousands(value?: string): string {
   // todo remove optionality. This function should accept string only. Leave for now for backward compat.
@@ -178,9 +177,7 @@ export const toFixedPrecision = ({
   const asBigNumber = value instanceof BigNumber ? value : new BigNumber(value.toString());
 
   const moneyInPrimaryBase =
-    inputFormat === ENumberInputFormat.ULPS
-      ? convertFromUlps(asBigNumber, MONEY_DECIMALS)
-      : asBigNumber;
+    inputFormat === ENumberInputFormat.ULPS ? convertFromUlps(asBigNumber) : asBigNumber;
   return moneyInPrimaryBase.toFixed(dp, getBigNumberRoundingMode(roundingMode, outputFormat));
 };
 

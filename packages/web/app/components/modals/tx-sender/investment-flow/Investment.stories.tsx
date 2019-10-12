@@ -50,15 +50,15 @@ storiesOf("Investment/Form", module)
       hasPreviouslyInvested={true}
       startUpgradeFlow={action("startUpgradeFlow")}
       etoTokenGeneralDiscounts={{
-        whitelistDiscountFrac: "300000000000000000",
+        whitelistDiscountFrac: 0.35,
         whitelistDiscountUlps: "296633323000000000",
-        publicDiscountFrac: "200000000000000000",
+        publicDiscountFrac: 0.25,
         publicDiscountUlps: "339009512000000000",
       }}
       etoTokenPersonalDiscount={{
         whitelistDiscountAmountLeft: "-1.043240344598e+23",
         whitelistDiscountUlps: "0",
-        whitelistDiscountFrac: "1000000000000000000",
+        whitelistDiscountFrac: 0.5,
       }}
       etoTokenStandardPrice={0.6}
     />

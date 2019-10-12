@@ -9,6 +9,7 @@ import { IWindowWithData } from "../../../test/helperTypes";
 import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/documents/utils";
 import { DocumentConfidentialityAgreementModal } from "../../components/eto/public-view/DocumentConfidentialityAgreementModal";
 import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
+import { convertFromUlps } from "../../components/shared/formatters/utils";
 import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { Q18 } from "../../config/constants";
@@ -749,9 +750,9 @@ export function* loadEtoGeneralTokenDiscounts(
 
   yield put(
     actions.eto.setTokenGeneralDiscounts(eto.etoId, {
-      whitelistDiscountFrac: whitelistDiscountFrac.toString(),
+      whitelistDiscountFrac: convertFromUlps(whitelistDiscountFrac).toNumber(),
       whitelistDiscountUlps: whitelistDiscountUlps.toString(),
-      publicDiscountFrac: publicDiscountFrac.toString(),
+      publicDiscountFrac: convertFromUlps(publicDiscountFrac).toNumber(),
       publicDiscountUlps: publicDiscountUlps.toString(),
     }),
   );

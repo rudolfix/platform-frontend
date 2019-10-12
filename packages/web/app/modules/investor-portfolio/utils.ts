@@ -12,7 +12,6 @@ import {
   ICalculatedContribution,
   IInvestorTicket,
   ITokenDisbursal,
-  IWhitelistTicket,
 } from "./types";
 
 export const convertToCalculatedContribution = ([
@@ -92,13 +91,13 @@ export const convertToTokenDisbursal = (
   timeToFirstDisbursalRecycle: timeToFirstDisbursalRecycle.mul(1000).toNumber(),
 });
 
-export const convertToWhitelistTicket = ([_, discountAmountEurUlps, fullTokenPriceFrac]: [
-  boolean,
-  BigNumber,
-  BigNumber
-]): IWhitelistTicket => ({
-  whitelistDiscountAmountEurUlps: discountAmountEurUlps.toString(),
-  whitelistDiscountFrac: fullTokenPriceFrac.toString(),
+export const convertToWhitelistTicket = ([
+  _,
+  whitelistDiscountAmountEurUlps,
+  whitelistDiscountFrac,
+]: [boolean, BigNumber, BigNumber]) => ({
+  whitelistDiscountAmountEurUlps,
+  whitelistDiscountFrac,
 });
 
 export const getTokenPrice = (equityTokenInt: string, equivEurUlps: string): string => {

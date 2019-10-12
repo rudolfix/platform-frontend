@@ -39,7 +39,7 @@ export interface ICalculatedContribution {
 
 export interface IWhitelistTicket {
   whitelistDiscountAmountEurUlps: string;
-  whitelistDiscountFrac: string;
+  whitelistDiscountFrac: number;
 }
 
 export type TTokensPersonalDiscount = IWhitelistTicket & {
@@ -49,7 +49,7 @@ export type TTokensPersonalDiscount = IWhitelistTicket & {
 export interface IPersonalDiscount {
   whitelistDiscountAmountLeft: string;
   whitelistDiscountUlps: string;
-  whitelistDiscountFrac: string;
+  whitelistDiscountFrac: number;
 }
 
 export type TETOWithInvestorTicket = TEtoWithCompanyAndContract & {

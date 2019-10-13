@@ -1,0 +1,31 @@
+.eto-public-start-date {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.date {
+  font-weight: normal;
+  width: auto;
+  border: 0;
+
+  & td {
+    padding-right: .5rem;
+  }
+}
+
+.date-bold {
+  font-weight: bold;
+}
+
+.eto-time-left-start {
+  font-weight: normal;
+}
+
+.public-start-info {
+  align-self: flex-start;
+  margin-top: px-to-rem(20px);
+  margin-bottom: 0;
+}

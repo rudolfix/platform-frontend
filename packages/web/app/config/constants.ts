@@ -95,3 +95,5 @@ export const MAX_VOTING_QUORUM = 1;
 export const ADVISORY_BOARD_TEXT_MIN_LENGTH = 1;
 export const PAYOUT_POLLING_DELAY = 1000;
 export const NEXT_ETO_STATE_POLLING_DELAY = 5000;
+
+export const ICO_MONITOR_STATS_URL = "https://icomonitor.io/#/stats/";

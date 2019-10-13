@@ -15,6 +15,9 @@ describe("Eto presale state", () => {
 
     cy.get(tid("bookbuilding-widget.closed")).should("exist");
 
+    cy.get(tid("settings.fundraising-statistics")).should("exist");
+    cy.get(tid("settings.presale-counter")).should("exist");
+
     cy.get(tid("bookbuilding-widget.stats.amount-backed")).contains("500 000 EUR");
     cy.get(tid("bookbuilding-widget.stats.number-of-pledges"))
       // 5 slots filled

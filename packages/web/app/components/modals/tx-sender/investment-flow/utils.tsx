@@ -22,7 +22,9 @@ import {
 } from "../../../../modules/wallet/selectors";
 import { IAppState } from "../../../../store";
 import { Dictionary, TTranslatedString } from "../../../../types";
+import { assertNever } from "../../../../utils/assertNever";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
+import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -34,6 +36,24 @@ import {
   toFixedPrecision,
 } from "../../../shared/formatters/utils";
 import { WalletSelectionData } from "./InvestmentTypeSelector";
+
+export enum EInvestmentCurrency {
+  ETH = ECurrency.ETH,
+  EUR_TOKEN = ECurrency.EUR_TOKEN,
+}
+
+export const getInvestmentCurrency = (investmentType: EInvestmentType) => {
+  switch (investmentType) {
+    case EInvestmentType.Eth:
+    case EInvestmentType.ICBMEth:
+      return EInvestmentCurrency.ETH;
+    case EInvestmentType.NEur:
+    case EInvestmentType.ICBMnEuro:
+      return EInvestmentCurrency.EUR_TOKEN;
+    default:
+      return assertNever(investmentType);
+  }
+};
 
 function isICBMWallet(type: EInvestmentType): boolean {
   return includes(type, [EInvestmentType.ICBMnEuro, EInvestmentType.ICBMEth]);
@@ -104,6 +124,8 @@ export function getInputErrorMessage(
   tokenName: string,
   maxTicketEur: string,
   minTicketEur: string,
+  minTicketEth: string,
+  investmentCurrency: EInvestmentCurrency,
 ): TTranslatedString | undefined {
   switch (investmentTxErrorState) {
     case EInvestmentErrorState.ExceedsTokenAmount:
@@ -118,12 +140,14 @@ export function getInputErrorMessage(
         <FormattedMessage
           id="investment-flow.error-message.above-maximum-ticket-size"
           values={{
-            maxAmount: formatNumber({
-              value: maxTicketEur || 0,
-              decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
-              inputFormat: ENumberInputFormat.FLOAT,
-              outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
-            }),
+            maxEurAmount: (
+              <Money
+                value={maxTicketEur || 0}
+                inputFormat={ENumberInputFormat.FLOAT}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+              />
+            ),
           }}
         />
       );
@@ -132,15 +156,27 @@ export function getInputErrorMessage(
         <FormattedMessage
           id="investment-flow.error-message.below-minimum-ticket-size"
           values={{
-            minAmount: formatNumber({
-              value: minTicketEur || 0,
-              decimalPlaces: selectDecimalPlaces(ECurrency.EUR),
-              inputFormat: ENumberInputFormat.FLOAT,
-              outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
-            }),
+            investmentCurrency,
+            minEurAmount: (
+              <Money
+                value={minTicketEur || 0}
+                inputFormat={ENumberInputFormat.FLOAT}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+              />
+            ),
+            minEthAmount: (
+              <Money
+                value={minTicketEth || 0}
+                inputFormat={ENumberInputFormat.FLOAT}
+                valueType={ECurrency.ETH}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
+              />
+            ),
           }}
         />
       );
+
     case EInvestmentErrorState.ExceedsWalletBalance:
       return <FormattedMessage id="investment-flow.error-message.exceeds-wallet-balance" />;
   }

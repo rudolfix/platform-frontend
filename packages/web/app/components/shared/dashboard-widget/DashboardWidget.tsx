@@ -12,7 +12,7 @@ import * as styles from "./DashboardWidget.module.scss";
 
 type TDashboardCommonProps = {
   title: TTranslatedString;
-  text: TTranslatedString;
+  text?: TTranslatedString;
   columnSpan?: EColumnSpan;
 };
 
@@ -43,7 +43,7 @@ export const DashboardWidget: React.FunctionComponent<
 > = ({ title, text, columnSpan, children, "data-test-id": dataTestId }) => (
   <Panel headerText={title} columnSpan={columnSpan} data-test-id={dataTestId}>
     <div className={styles.content}>
-      <p className={styles.text}>{text}</p>
+      {text && <p className={styles.text}>{text}</p>}
       {children}
     </div>
   </Panel>

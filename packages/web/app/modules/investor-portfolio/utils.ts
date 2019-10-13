@@ -92,10 +92,11 @@ export const convertToTokenDisbursal = (
 });
 
 export const convertToWhitelistTicket = ([
-  _,
+  isWhitelisted,
   whitelistDiscountAmountEurUlps,
   whitelistDiscountFrac,
 ]: [boolean, BigNumber, BigNumber]) => ({
+  isWhitelisted,
   whitelistDiscountAmountEurUlps,
   whitelistDiscountFrac,
 });

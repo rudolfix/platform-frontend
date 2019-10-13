@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import { DEFAULT_DECIMAL_PLACES, Q18 } from "../../../config/constants";
+import { TBigNumberVariant } from "../../../lib/web3/types";
 import { Opaque } from "../../../types";
 import { invariant } from "../../../utils/invariant";
 
@@ -104,7 +105,7 @@ export const selectDecimalPlaces = (
   }
 };
 
-export const convertFromUlps = (value: BigNumber) => value.div(Q18);
+export const convertFromUlps = (value: TBigNumberVariant) => new BigNumber(value).div(Q18);
 
 export function formatThousands(value?: string): string {
   // todo remove optionality. This function should accept string only. Leave for now for backward compat.

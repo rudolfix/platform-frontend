@@ -208,9 +208,13 @@ export function* loadPersonalTokenDiscount(
   const whitelistTicketRaw = yield etoTerms.whitelistTicket(userId);
   const whitelistTicket = convertToWhitelistTicket(whitelistTicketRaw);
 
-  const discountTokenPriceUlps: BigNumber = yield etoTerms.calculatePriceFraction(
-    Q18.minus(whitelistTicket.whitelistDiscountFrac),
-  );
+  let discountTokenPriceUlps: BigNumber = new BigNumber(0);
+  // only check for price when we have discount
+  if (whitelistTicket.isWhitelisted) {
+    discountTokenPriceUlps = yield etoTerms.calculatePriceFraction(
+      Q18.minus(whitelistTicket.whitelistDiscountFrac),
+    );
+  }
 
   yield put(
     actions.investorEtoTicket.setTokenPersonalDiscount(eto.etoId, {

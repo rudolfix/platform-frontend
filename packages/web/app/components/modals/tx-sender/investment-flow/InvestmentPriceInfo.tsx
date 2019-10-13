@@ -3,9 +3,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EETOStateOnChain, IEtoTokenGeneralDiscounts } from "../../../../modules/eto/types";
 import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
-import { isLessThanOrEqualToZero, isZero } from "../../../../utils/NumberUtils";
+import { isZero } from "../../../../utils/NumberUtils";
 import { Money } from "../../../shared/formatters/Money";
 import {
+  convertFromUlps,
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
@@ -28,9 +29,10 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
 }) => {
   switch (onChainState) {
     case EETOStateOnChain.Whitelist: {
-      const isTherePersonalWhitelistDiscount = !isLessThanOrEqualToZero(
+      // do not show personal discount if the amount left is less than 1 cent
+      const isTherePersonalWhitelistDiscount = convertFromUlps(
         etoTokenPersonalDiscount.whitelistDiscountAmountLeft,
-      );
+      ).greaterThanOrEqualTo(0.01);
       const isThereGeneralWhitelistDiscount = !isZero(
         etoTokenGeneralDiscounts.whitelistDiscountFrac,
       );
@@ -47,7 +49,7 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
                     value={etoTokenPersonalDiscount.whitelistDiscountAmountLeft}
                     inputFormat={ENumberInputFormat.ULPS}
                     valueType={ECurrency.EUR}
-                    outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                    outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
                   />
                 ),
                 whitelistDiscount: (
@@ -146,7 +148,7 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
       );
     }
     case EETOStateOnChain.Public:
-      if (etoTokenGeneralDiscounts && !isZero(etoTokenGeneralDiscounts.publicDiscountFrac)) {
+      if (!isZero(etoTokenGeneralDiscounts.publicDiscountFrac)) {
         return (
           <FormattedMessage
             id="investment-flow.token-price-info.general-discount"

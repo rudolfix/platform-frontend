@@ -50,3 +50,8 @@
 .investment-price-info {
   @include font-headline-small;
 }
+
+.help-text {
+  color: $text-gray;
+  text-align: right;
+}

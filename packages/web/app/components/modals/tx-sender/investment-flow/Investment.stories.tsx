@@ -16,6 +16,7 @@ import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { InvestmentSelectionComponent } from "./Investment";
 import { wallets } from "./InvestmentTypeSelector.stories";
+import { EInvestmentCurrency } from "./utils";
 
 const Investment = injectIntlHelpers(InvestmentSelectionComponent);
 
@@ -51,6 +52,7 @@ storiesOf("Investment/Form", module)
       eurPriceEther={"0.123412341234123412341234"}
       investEntireBalance={action("investEntireBalance")}
       investmentType={EInvestmentType.Eth}
+      investmentCurrency={EInvestmentCurrency.ETH}
       minTicketEth={"12341234123412341234"}
       minTicketEur={"1234"}
       maxTicketEur={"123456"}

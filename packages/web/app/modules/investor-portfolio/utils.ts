@@ -98,11 +98,11 @@ export const convertToTokenDisbursal = (
 export const convertToWhitelistTicket = ([
   isWhitelisted,
   whitelistDiscountAmountEurUlps,
-  whitelistDiscountFrac,
+  fullTokenPriceFrac,
 ]: [boolean, BigNumber, BigNumber]) => ({
   isWhitelisted,
   whitelistDiscountAmountEurUlps,
-  whitelistDiscountFrac,
+  fullTokenPriceFrac,
 });
 
 export const getTokenPrice = (equityTokenInt: string, equivEurUlps: string): string => {

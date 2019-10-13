@@ -213,7 +213,7 @@ export const getTokenPriceDiscount = (fullTokenPrice: string, actualTokenPrice: 
   const discount = new BigNumber(1)
     .sub(new BigNumber(actualTokenPrice).div(new BigNumber(fullTokenPrice)))
     .mul(100)
-    .round(0, BigNumber.ROUND_UP);
+    .round(0, BigNumber.ROUND_HALF_UP);
 
   return discount.gte(1) ? discount.toString() : null;
 };

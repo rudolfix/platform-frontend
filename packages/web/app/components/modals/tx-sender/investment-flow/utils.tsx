@@ -209,10 +209,11 @@ export function getActualTokenPriceEur(
 }
 
 export const getTokenPriceDiscount = (fullTokenPrice: string, actualTokenPrice: string) => {
+  // round up effective discount
   const discount = new BigNumber(1)
     .sub(new BigNumber(actualTokenPrice).div(new BigNumber(fullTokenPrice)))
     .mul(100)
-    .round(0, 4);
+    .round(0, 0);
 
   return discount.gte(1) ? discount.toString() : null;
 };

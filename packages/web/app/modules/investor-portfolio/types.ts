@@ -37,6 +37,21 @@ export interface ICalculatedContribution {
   maxCapExceeded: boolean;
 }
 
+export interface IWhitelistTicket {
+  whitelistDiscountAmountEurUlps: string;
+  whitelistDiscountFrac: number;
+}
+
+export type TTokensPersonalDiscount = IWhitelistTicket & {
+  whitelistDiscountUlps: string;
+};
+
+export interface IPersonalDiscount {
+  whitelistDiscountAmountLeft: string;
+  whitelistDiscountUlps: string;
+  whitelistDiscountFrac: number;
+}
+
 export type TETOWithInvestorTicket = TEtoWithCompanyAndContract & {
   investorTicket: IInvestorTicket;
 };

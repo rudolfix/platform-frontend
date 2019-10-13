@@ -6,6 +6,7 @@ import { Dictionary } from "../../types";
 import {
   IEtoContractData,
   IEtoTokenData,
+  IEtoTokenGeneralDiscounts,
   SignedISHAStatus,
   TEtoWithCompanyAndContract,
   TOfferingAgreementsStatus,
@@ -25,6 +26,10 @@ export const etoActions = {
     widgetView,
   })),
   loadEtos: createActionFactory("ETO_LOAD_ETOS"),
+  loadTokenTerms: createActionFactory(
+    "INVESTOR_TOKEN_PRICE_LOAD",
+    (eto: TEtoWithCompanyAndContract) => ({ eto }),
+  ),
   downloadEtoDocument: createActionFactory(
     "ETO_DOWNLOAD_DOCUMENT",
     (document: IEtoDocument, eto: TEtoWithCompanyAndContract) => ({
@@ -80,10 +85,17 @@ export const etoActions = {
   ),
   setEtoWidgetError: createActionFactory("ETO_SET_ETO_WIDGET_ERROR"),
   setTokenData: createActionFactory(
-    "PORTFOLIO_SET_TOKEN_DATA",
+    "ETO_SET_ETO_TOKEN_DATA",
     (previewCode: string, tokenData: IEtoTokenData) => ({
       previewCode,
       tokenData,
+    }),
+  ),
+  setTokenGeneralDiscounts: createActionFactory(
+    "ETO_SET_ETO_TOKEN_GENERAL_DISCOUNTS",
+    (etoId: string, tokenGeneralDiscounts: IEtoTokenGeneralDiscounts) => ({
+      etoId,
+      tokenGeneralDiscounts,
     }),
   ),
   setAgreementsStatus: createActionFactory(

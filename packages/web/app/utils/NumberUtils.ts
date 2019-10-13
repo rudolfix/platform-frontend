@@ -4,10 +4,16 @@ import { curry } from "lodash/fp";
 import { Q18 } from "../config/constants";
 import { TBigNumberVariant } from "../lib/web3/types";
 
-export function isZero(value: string): boolean {
+export function isZero(value: TBigNumberVariant): boolean {
   const bigNumberValue = new BigNumber(value);
 
   return bigNumberValue.isZero();
+}
+
+export function isLessThanOrEqualToZero(value: TBigNumberVariant): boolean {
+  const bigNumberValue = new BigNumber(value);
+
+  return bigNumberValue.lessThanOrEqualTo(0);
 }
 
 export function convertToBigInt(value: TBigNumberVariant, currencyDecimals?: number): string {

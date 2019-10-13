@@ -162,7 +162,7 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
                 />
               ),
               discountTokenPricePercentage: (
-                <Percentage>{etoTokenGeneralDiscounts.whitelistDiscountFrac}</Percentage>
+                <Percentage>{etoTokenGeneralDiscounts.publicDiscountFrac}</Percentage>
               ),
             }}
           />

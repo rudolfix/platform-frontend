@@ -7,7 +7,7 @@ import { ECurrency } from "../../components/shared/formatters/utils";
 import { Q18 } from "../../config/constants";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IAppState } from "../../store";
-import { compareBigNumbers } from "../../utils/BigNumberUtils";
+import { compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
 import { isZero } from "../../utils/NumberUtils";
 import { selectMyPledge } from "../bookbuilding-flow/selectors";
 import {
@@ -20,12 +20,25 @@ import {
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
 import { isOnChain } from "../eto/utils";
 import { selectLockedWalletConnected } from "../wallet/selectors";
-import { ICalculatedContribution, TETOWithInvestorTicket, TETOWithTokenData } from "./types";
-import { getRequiredIncomingAmount, isPastInvestment } from "./utils";
+import {
+  ICalculatedContribution,
+  IInvestorTicket,
+  TETOWithInvestorTicket,
+  TETOWithTokenData,
+  TTokensPersonalDiscount,
+} from "./types";
+import {
+  getRequiredIncomingAmount,
+  isPastInvestment,
+  MIMIMUM_RETAIL_TICKET_EUR_ULPS,
+} from "./utils";
 
 const selectInvestorTicketsState = (state: IAppState) => state.investorTickets;
 
-export const selectInvestorTicket = (state: IAppState, etoId: string) => {
+export const selectInvestorTicket = (
+  state: IAppState,
+  etoId: string,
+): IInvestorTicket | undefined => {
   const investorState = selectInvestorTicketsState(state);
 
   return investorState.investorEtoTickets[etoId];
@@ -136,6 +149,7 @@ export const selectCalculatedEtoTicketSizesUlpsById = (state: IAppState, etoId: 
   const investorTicket = selectInvestorTicket(state, etoId);
   const zero = new BigNumber(0);
 
+  // todo: check if contrib is ever undefined and simplify this condition
   let min =
     (contrib && new BigNumber(contrib.minTicketEurUlps)) ||
     (eto && Q18.mul(eto.minTicketEur || zero));
@@ -145,16 +159,18 @@ export const selectCalculatedEtoTicketSizesUlpsById = (state: IAppState, etoId: 
 
   if (min && max) {
     if (eto && investorTicket) {
-      if (!eto.investmentCalculatedValues) {
-        return {
-          minTicketEurUlps: zero,
-          maxTicketEurUlps: zero,
-        };
-      }
-
-      const tokenPrice = eto.investmentCalculatedValues.sharePrice / eto.equityTokensPerShare;
-      min = BigNumber.max(min.sub(investorTicket.equivEurUlps), Q18.mul(tokenPrice.toString()));
+      // todo: replace with price taken from smart contract
+      const tokenPrice = eto.investmentCalculatedValues!.sharePrice / eto.equityTokensPerShare;
       max = BigNumber.max(max.sub(investorTicket.equivEurUlps), 0);
+      // when already invested, you can invest less than minimum ticket however we set this value
+      // to more than just one token: we have official retail min ticket at 10 EUR so use it
+      min = BigNumber.max(
+        min.sub(investorTicket.equivEurUlps),
+        Q18.mul(tokenPrice.toString()),
+        MIMIMUM_RETAIL_TICKET_EUR_ULPS,
+      );
+      // however it cannot be more than max
+      min = BigNumber.min(max, min);
     }
 
     return {
@@ -314,3 +330,33 @@ export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[
 
   return undefined;
 };
+
+export const selectTokenPersonalDiscount = (
+  state: IAppState,
+  etoId: string,
+): TTokensPersonalDiscount | undefined => {
+  const investorState = selectInvestorTicketsState(state);
+
+  return investorState.tokensPersonalDiscounts[etoId];
+};
+
+export const selectPersonalDiscount = createSelector(
+  selectInvestorTicket,
+  selectTokenPersonalDiscount,
+  (investorTicket, tokenPersonalDiscount) => {
+    if (investorTicket && tokenPersonalDiscount) {
+      const whitelistDiscountAmountLeft = subtractBigNumbers([
+        tokenPersonalDiscount.whitelistDiscountAmountEurUlps,
+        investorTicket.equivEurUlps,
+      ]);
+
+      return {
+        whitelistDiscountAmountLeft,
+        whitelistDiscountUlps: tokenPersonalDiscount.whitelistDiscountUlps,
+        whitelistDiscountFrac: tokenPersonalDiscount.whitelistDiscountFrac,
+      };
+    }
+
+    return undefined;
+  },
+);

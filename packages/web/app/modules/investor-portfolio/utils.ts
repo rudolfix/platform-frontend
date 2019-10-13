@@ -14,6 +14,10 @@ import {
   ITokenDisbursal,
 } from "./types";
 
+// when calculating minimum ticket, this is defult value for subsequent investments
+// in the same ETO
+export const MIMIMUM_RETAIL_TICKET_EUR_ULPS = Q18.mul(10);
+
 export const convertToCalculatedContribution = ([
   isWhitelisted,
   isEligible,
@@ -89,6 +93,16 @@ export const convertToTokenDisbursal = (
   totalDisbursedAmount: totalDisbursedAmount.toString(),
   // convert seconds timestamp to milliseconds
   timeToFirstDisbursalRecycle: timeToFirstDisbursalRecycle.mul(1000).toNumber(),
+});
+
+export const convertToWhitelistTicket = ([
+  isWhitelisted,
+  whitelistDiscountAmountEurUlps,
+  whitelistDiscountFrac,
+]: [boolean, BigNumber, BigNumber]) => ({
+  isWhitelisted,
+  whitelistDiscountAmountEurUlps,
+  whitelistDiscountFrac,
 });
 
 export const getTokenPrice = (equityTokenInt: string, equivEurUlps: string): string => {

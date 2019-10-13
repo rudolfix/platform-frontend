@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { delay } from "redux-saga";
-import { put, select, take, takeEvery, takeLatest } from "redux-saga/effects";
+import { all, put, select, take, takeEvery, takeLatest } from "redux-saga/effects";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -12,7 +12,11 @@ import { nonNullable } from "../../utils/nonNullable";
 import { convertToBigInt } from "../../utils/NumberUtils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
-import { selectEtoById, selectEtoOnChainStateById } from "../eto/selectors";
+import {
+  selectEtoById,
+  selectEtoOnChainStateById,
+  selectEtoWithCompanyAndContractById,
+} from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../gas/selectors";
 import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
@@ -221,14 +225,24 @@ function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
   const etoId = action.payload.etoId;
   const eto: TEtoWithCompanyAndContract = nonNullable(
-    yield select((state: IAppState) => selectEtoById(state, etoId)),
+    yield select((state: IAppState) => selectEtoWithCompanyAndContractById(state, etoId)),
   );
 
   yield put(actions.investmentFlow.resetInvestment());
   yield put(actions.investmentFlow.setEtoId(etoId));
   yield put(actions.kyc.kycLoadClientData());
-  yield put(actions.txTransactions.startInvestment(etoId));
   yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
+
+  yield put(actions.investorEtoTicket.loadTokenPersonalDiscount(eto));
+  yield put(actions.eto.loadTokenTerms(eto));
+
+  // wait for discount to be in the state
+  yield all([
+    take(actions.eto.setTokenGeneralDiscounts),
+    take(actions.investorEtoTicket.setTokenPersonalDiscount),
+  ]);
+
+  yield put(actions.txTransactions.startInvestment(etoId));
 
   yield take("TX_SENDER_SHOW_MODAL");
   yield getActiveInvestmentTypes();

@@ -70,12 +70,16 @@ describe("investor-portfolio > selectors", () => {
 
     it("returns reduces amount by investor ticket", () => {
       (investorTicketSelectors.selectInvestorTicket as sinon.SinonStub).returns({
-        equivEurUlps: new BigNumber(18).mul(Q18),
+        equivEurUlps: new BigNumber("25").mul(Q18),
+      });
+      (investorTicketSelectors.selectCalculatedContribution as sinon.SinonStub).returns({
+        minTicketEurUlps: new BigNumber("50").mul(Q18),
+        maxTicketEurUlps: new BigNumber("2000").mul(Q18),
       });
       const result = selectCalculatedEtoTicketSizesUlpsById(state, etoId);
       expect(result).to.deep.equal({
-        minTicketEurUlps: new BigNumber("2").mul(Q18),
-        maxTicketEurUlps: new BigNumber("1982").mul(Q18),
+        minTicketEurUlps: new BigNumber("25").mul(Q18),
+        maxTicketEurUlps: new BigNumber("1975").mul(Q18),
       });
     });
 
@@ -85,7 +89,7 @@ describe("investor-portfolio > selectors", () => {
       });
       let result = selectCalculatedEtoTicketSizesUlpsById(state, etoId);
       expect(result).to.deep.equal({
-        minTicketEurUlps: new BigNumber("1.5").mul(Q18),
+        minTicketEurUlps: new BigNumber("10").mul(Q18),
         maxTicketEurUlps: new BigNumber("1970").mul(Q18),
       });
 
@@ -94,7 +98,7 @@ describe("investor-portfolio > selectors", () => {
       });
       result = selectCalculatedEtoTicketSizesUlpsById(state, etoId);
       expect(result).to.deep.equal({
-        minTicketEurUlps: new BigNumber("1.5").mul(Q18),
+        minTicketEurUlps: new BigNumber("0").mul(Q18),
         maxTicketEurUlps: new BigNumber("0"),
       });
     });

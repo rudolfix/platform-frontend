@@ -7,6 +7,7 @@ import {
   TEtoDataWithCompany,
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { calcShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
 import { nonNullable } from "../../utils/nonNullable";
@@ -212,6 +213,25 @@ export const selectAgreementsStatus = createSelector(
   (_: IAppState, previewCode: string) => previewCode,
   (etoState: DeepReadonly<IEtoState>, previewCode: string) =>
     etoState.offeringAgreementsStatus[previewCode],
+);
+
+export const selectEtoTokenGeneralDiscounts = createSelector(
+  selectEtoState,
+  (_: IAppState, etoId: string) => etoId,
+  (etoState: DeepReadonly<IEtoState>, etoId: string) => etoState.tokenGeneralDiscounts[etoId],
+);
+
+export const selectEtoTokenStandardPrice = createSelector(
+  selectEtoWithCompanyAndContract,
+  eto => {
+    if (eto) {
+      const { tokenPrice } = calcShareAndTokenPrice(eto);
+
+      return tokenPrice;
+    }
+
+    return undefined;
+  },
 );
 
 export const selectInvestmentAgreement = (state: IAppState, previewCode: string) => {

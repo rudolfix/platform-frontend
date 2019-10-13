@@ -9,6 +9,7 @@ import { IWindowWithData } from "../../../test/helperTypes";
 import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/documents/utils";
 import { DocumentConfidentialityAgreementModal } from "../../components/eto/public-view/DocumentConfidentialityAgreementModal";
 import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
+import { convertFromUlps } from "../../components/shared/formatters/utils";
 import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { Q18 } from "../../config/constants";
@@ -29,6 +30,7 @@ import { EUserType } from "../../lib/api/users/interfaces";
 import { ECountries } from "../../lib/api/util/countries.enum";
 import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
+import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
@@ -718,12 +720,51 @@ export function* loadInvestmentAgreement(
   yield put(actions.eto.setInvestmentAgreementHash(action.payload.eto.previewCode, parsedUrl));
 }
 
+export function* loadEtoGeneralTokenDiscounts(
+  { contractsService }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.eto.loadTokenTerms>,
+): Iterator<any> {
+  const { eto } = action.payload;
+
+  if (!isOnChain(eto)) {
+    throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
+  }
+
+  const etoTerms: ETOTerms = yield contractsService.getEtoTerms(eto.contract.etoTermsAddress);
+
+  const {
+    whitelistDiscountFrac,
+    publicDiscountFrac,
+  }: { whitelistDiscountFrac: BigNumber; publicDiscountFrac: BigNumber } = yield all({
+    whitelistDiscountFrac: yield etoTerms.WHITELIST_DISCOUNT_FRAC,
+    publicDiscountFrac: yield etoTerms.PUBLIC_DISCOUNT_FRAC,
+  });
+
+  const {
+    whitelistDiscountUlps,
+    publicDiscountUlps,
+  }: { whitelistDiscountUlps: BigNumber; publicDiscountUlps: BigNumber } = yield all({
+    whitelistDiscountUlps: yield etoTerms.calculatePriceFraction(Q18.minus(whitelistDiscountFrac)),
+    publicDiscountUlps: yield etoTerms.calculatePriceFraction(Q18.minus(publicDiscountFrac)),
+  });
+
+  yield put(
+    actions.eto.setTokenGeneralDiscounts(eto.etoId, {
+      whitelistDiscountFrac: convertFromUlps(whitelistDiscountFrac).toNumber(),
+      whitelistDiscountUlps: whitelistDiscountUlps.toString(),
+      publicDiscountFrac: convertFromUlps(publicDiscountFrac).toNumber(),
+      publicDiscountUlps: publicDiscountUlps.toString(),
+    }),
+  );
+}
+
 export function* etoSagas(): Iterator<any> {
   yield fork(neuTakeEvery, actions.eto.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.eto.loadEto, loadEto);
   yield fork(neuTakeEvery, actions.eto.loadEtos, loadEtos);
   yield fork(neuTakeEvery, actions.eto.loadTokensData, loadTokensData);
   yield fork(neuTakeEvery, actions.eto.loadEtoAgreementsStatus, loadAgreementsStatus);
+  yield fork(neuTakeLatest, actions.eto.loadTokenTerms, loadEtoGeneralTokenDiscounts);
 
   yield fork(neuTakeEvery, actions.eto.downloadEtoDocument, downloadDocument);
   yield fork(neuTakeEvery, actions.eto.downloadEtoTemplateByType, downloadTemplateByType);

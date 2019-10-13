@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { convertToBigInt, isZero, normalize } from "./NumberUtils";
+import { convertToBigInt, isLessThanOrEqualToZero, isZero, normalize } from "./NumberUtils";
 
 describe("convertToBigInt", () => {
   it("converts decimal currencies to bigInt representation", () => {
@@ -24,5 +24,13 @@ describe("isZero", () => {
   it("should correctly recognize zeros", () => {
     expect(isZero("000000000000000000")).to.be.true;
     expect(isZero("364458900000000000")).to.be.false;
+  });
+});
+
+describe("isLessThanOrEqualToZero", () => {
+  it("should correctly recognize zeros and negative values", () => {
+    expect(isLessThanOrEqualToZero("000000000000000000")).to.be.true;
+    expect(isLessThanOrEqualToZero("-364458900000000000")).to.be.true;
+    expect(isLessThanOrEqualToZero("364458900000000000")).to.be.false;
   });
 });

@@ -2,15 +2,22 @@ import * as cn from "classnames";
 import { some } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "recompose";
+import { branch, compose, renderComponent } from "recompose";
 
-import { ETHEREUM_ZERO_ADDRESS } from "../../../config/constants";
+import { ETHEREUM_ZERO_ADDRESS, ICO_MONITOR_STATS_URL } from "../../../config/constants";
 import {
   EtoCompanyInformationType,
   EtoPitchType,
   TSocialChannelsType,
 } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
+import { selectIsIssuer } from "../../../modules/auth/selectors";
+import { selectEtoSubState } from "../../../modules/eto/selectors";
+import {
+  EETOStateOnChain,
+  EEtoSubState,
+  TEtoWithCompanyAndContract,
+} from "../../../modules/eto/types";
+import { appConnect, IAppState } from "../../../store";
 import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
@@ -20,6 +27,7 @@ import { ILink, MediaLinksWidget } from "../../shared/MediaLinksWidget";
 import { Panel } from "../../shared/Panel";
 import { Slides } from "../../shared/Slides";
 import { IEtoSocialProfile, SocialProfilesList } from "../../shared/SocialProfilesList";
+import { TabContent, Tabs } from "../../shared/Tabs";
 import { TwitterTimelineEmbed } from "../../shared/TwitterTimeline";
 import { Video } from "../../shared/Video";
 import { EtoOverviewStatus } from "../overview/EtoOverviewStatus/EtoOverviewStatus";
@@ -46,23 +54,20 @@ interface IProps {
   isUserFullyVerified: boolean;
 }
 
+interface IEtoViewTabsState {
+  etoSubState?: EEtoSubState;
+  isIssuer: boolean;
+}
+
 const EtoViewSchema = EtoCompanyInformationType.toYup().concat(EtoPitchType.toYup());
 
-const EtoViewLayout: React.FunctionComponent<IProps> = ({
-  eto,
-  publicView,
-  isUserFullyVerified,
-}) => {
+const EtoViewCampaignOverview: React.FunctionComponent<IProps> = ({ eto, isUserFullyVerified }) => {
   const {
     socialChannels,
     companyVideo,
-    categories,
     disableTwitterFeed,
     companySlideshare,
     brandName,
-    companyOneliner,
-    companyLogo,
-    companyBanner,
     companyNews,
     marketingLinks,
   } = eto.company;
@@ -92,6 +97,204 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({
       : EColumnSpan.THREE_COL;
 
   return (
+    <>
+      <ETOTimeline eto={eto} />
+
+      <Container columnSpan={shouldSplitGrid}>
+        <CompanyDescription eto={eto} />
+        <LegalInformationWidget companyData={eto.company} columnSpan={EColumnSpan.THREE_COL} />
+      </Container>
+      <Container columnSpan={EColumnSpan.ONE_COL}>
+        {isSlideShareAvailable && (
+          <Container>
+            <DashboardHeading title={<FormattedMessage id="eto.public-view.pitch-deck" />} />
+            <Slides slideShareUrl={companySlideshare && companySlideshare.url} />
+          </Container>
+        )}
+
+        {isYouTubeVideoAvailable && (
+          <Container>
+            <DashboardHeading title={<FormattedMessage id="eto.public-view.video" />} />
+            <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
+          </Container>
+        )}
+        <Container>
+          <div className={cn((isSlideShareAvailable || isYouTubeVideoAvailable) && "mt-4")}>
+            <SocialProfilesList profiles={(socialChannels as IEtoSocialProfile[]) || []} />
+          </div>
+        </Container>
+      </Container>
+      <MarketingDocumentsWidget
+        columnSpan={EColumnSpan.THREE_COL}
+        companyMarketingLinks={marketingLinks}
+      />
+      {isProductSet && (
+        <Container columnSpan={EColumnSpan.THREE_COL}>
+          <DashboardHeading title={<FormattedMessage id="eto.public-view.token-terms.title" />} />
+          <EtoInvestmentTermsWidget eto={eto} isUserFullyVerified={isUserFullyVerified} />
+        </Container>
+      )}
+      <Individuals eto={eto} />
+      <EtoAccordionElements eto={eto} />
+
+      <Container columnSpan={EColumnSpan.ONE_COL} type={EContainerType.INHERIT_GRID}>
+        <DocumentsWidget
+          eto={eto}
+          columnSpan={EColumnSpan.THREE_COL}
+          isUserFullyVerified={isUserFullyVerified}
+        />
+
+        {isTwitterFeedEnabled && (
+          <Container columnSpan={EColumnSpan.ONE_COL}>
+            <DashboardHeading title={<FormattedMessage id={"eto.public-view.twitter-feed"} />} />
+            <Panel className={styles.twitter}>
+              <TwitterTimelineEmbed url={twitterUrl!} userName={brandName} />
+            </Panel>
+          </Container>
+        )}
+
+        {companyNews && !!companyNews[0].url && (
+          <Container columnSpan={EColumnSpan.ONE_COL}>
+            <DashboardHeading title={<FormattedMessage id="eto.form.media-links.title" />} />
+            <MediaLinksWidget
+              links={[...companyNews].reverse() as ILink[]}
+              columnSpan={EColumnSpan.THREE_COL}
+            />
+          </Container>
+        )}
+      </Container>
+    </>
+  );
+};
+
+const EtoViewFundraisingStatistics: React.FunctionComponent<{ url: string }> = ({ url }) => {
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+
+  const [height, setHeight] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const onMessage = (msg: MessageEvent) => {
+      const { origin } = new URL(url);
+      if (msg.origin === origin) {
+        const receivedHeight = Number(msg.data);
+
+        if (!Number.isNaN(receivedHeight)) {
+          setHeight(receivedHeight);
+        }
+      }
+    };
+
+    if (iframeRef.current) {
+      window.addEventListener("message", onMessage);
+    }
+
+    return () => {
+      window.removeEventListener("message", onMessage);
+    };
+  }, []);
+
+  return (
+    <iframe
+      sandbox="allow-scripts allow-same-origin"
+      ref={iframeRef}
+      style={{ height: height }}
+      src={url}
+      className={styles.fundraisingContainer}
+      scrolling="no"
+      data-test-id="eto.public-view.fundraising-statistics.iframe"
+    />
+  );
+};
+
+const EtoViewTabsLayout: React.FunctionComponent<IProps & IEtoViewTabsState> = ({
+  eto,
+  publicView,
+  isUserFullyVerified,
+}) => {
+  let statsUrl = `${ICO_MONITOR_STATS_URL}${eto.etoId}`;
+
+  if (
+    /platform.neufund.io|platform.neufund.net|localhost|192\.168\.8\.178/.test(
+      window.location.hostname,
+    ) &&
+    process.env.NF_CYPRESS_RUN !== "1"
+  ) {
+    // hardcode url if is .io or .net or localhost, ignore for cypress run
+    statsUrl = "https://test.icomonitor.io/#/stats/0x01A1f17808edAE0B004A4F11a03620D3d804b997";
+  }
+
+  return (
+    <Container columnSpan={EColumnSpan.THREE_COL}>
+      <Tabs
+        className="mb-3"
+        layoutSize="large"
+        layoutOrnament={false}
+        data-test-id="eto.public-view.campaign-overview"
+      >
+        <TabContent tab={<FormattedMessage id="eto.public-view.campaign-overview" />}>
+          <WidgetGrid className={styles.etoLayout} data-test-id="eto.public-view">
+            <EtoViewCampaignOverview
+              eto={eto}
+              isUserFullyVerified={isUserFullyVerified}
+              publicView={publicView}
+            />
+          </WidgetGrid>
+        </TabContent>
+        <TabContent
+          tab={<FormattedMessage id="eto.public-view.fundraising-statistics" />}
+          data-test-id="eto.public-view.fundraising-statistics"
+        >
+          <EtoViewFundraisingStatistics url={statsUrl} />
+        </TabContent>
+      </Tabs>
+    </Container>
+  );
+};
+
+const EtoViewTabs = compose<IProps & IEtoViewTabsState, IProps>(
+  appConnect<IEtoViewTabsState, {}, IProps>({
+    stateToProps: (state: IAppState, props: IProps) => ({
+      etoSubState: selectEtoSubState(state, props.eto),
+      isIssuer: selectIsIssuer(state),
+    }),
+  }),
+  branch<IProps & IEtoViewTabsState>(
+    props =>
+      !!props.eto.contract &&
+      props.eto.contract.timedState === EETOStateOnChain.Whitelist &&
+      props.eto.subState !== EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE,
+    renderComponent(EtoViewTabsLayout),
+  ),
+  branch<IProps & IEtoViewTabsState>(
+    props =>
+      !!props.eto.contract &&
+      props.eto.contract.timedState === EETOStateOnChain.Whitelist &&
+      props.isIssuer &&
+      !props.publicView,
+    renderComponent(EtoViewTabsLayout),
+  ),
+  branch<IProps>(
+    props =>
+      !!props.eto.contract &&
+      [
+        EETOStateOnChain.Public,
+        EETOStateOnChain.Signing,
+        EETOStateOnChain.Claim,
+        EETOStateOnChain.Payout,
+        EETOStateOnChain.Refund,
+      ].includes(props.eto.contract.timedState),
+    renderComponent(EtoViewTabsLayout),
+  ),
+)(EtoViewCampaignOverview);
+
+const EtoViewLayout: React.FunctionComponent<IProps> = ({
+  eto,
+  publicView,
+  isUserFullyVerified,
+}) => {
+  const { categories, brandName, companyOneliner, companyLogo, companyBanner } = eto.company;
+
+  return (
     <FieldSchemaProvider value={EtoViewSchema}>
       <PersonProfileModal />
       <WidgetGrid className={styles.etoLayout} data-test-id="eto.public-view">
@@ -115,71 +318,7 @@ const EtoViewLayout: React.FunctionComponent<IProps> = ({
           tags={categories}
         />
         <EtoOverviewStatus eto={eto} publicView={publicView} isEmbedded={false} />
-        <ETOTimeline eto={eto} />
-
-        <Container columnSpan={shouldSplitGrid}>
-          <CompanyDescription eto={eto} />
-          <LegalInformationWidget companyData={eto.company} columnSpan={EColumnSpan.THREE_COL} />
-        </Container>
-        <Container columnSpan={EColumnSpan.ONE_COL}>
-          {isSlideShareAvailable && (
-            <Container>
-              <DashboardHeading title={<FormattedMessage id="eto.public-view.pitch-deck" />} />
-              <Slides slideShareUrl={companySlideshare && companySlideshare.url} />
-            </Container>
-          )}
-
-          {isYouTubeVideoAvailable && (
-            <Container>
-              <DashboardHeading title={<FormattedMessage id="eto.public-view.video" />} />
-              <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
-            </Container>
-          )}
-          <Container>
-            <div className={cn((isSlideShareAvailable || isYouTubeVideoAvailable) && "mt-4")}>
-              <SocialProfilesList profiles={(socialChannels as IEtoSocialProfile[]) || []} />
-            </div>
-          </Container>
-        </Container>
-        <MarketingDocumentsWidget
-          columnSpan={EColumnSpan.THREE_COL}
-          companyMarketingLinks={marketingLinks}
-        />
-        {isProductSet && (
-          <Container columnSpan={EColumnSpan.THREE_COL}>
-            <DashboardHeading title={<FormattedMessage id="eto.public-view.token-terms.title" />} />
-            <EtoInvestmentTermsWidget eto={eto} isUserFullyVerified={isUserFullyVerified} />
-          </Container>
-        )}
-        <Individuals eto={eto} />
-        <EtoAccordionElements eto={eto} />
-
-        <Container columnSpan={EColumnSpan.ONE_COL} type={EContainerType.INHERIT_GRID}>
-          <DocumentsWidget
-            eto={eto}
-            columnSpan={EColumnSpan.THREE_COL}
-            isUserFullyVerified={isUserFullyVerified}
-          />
-
-          {isTwitterFeedEnabled && (
-            <Container columnSpan={EColumnSpan.ONE_COL}>
-              <DashboardHeading title={<FormattedMessage id={"eto.public-view.twitter-feed"} />} />
-              <Panel className={styles.twitter}>
-                <TwitterTimelineEmbed url={twitterUrl!} userName={brandName} />
-              </Panel>
-            </Container>
-          )}
-
-          {companyNews && !!companyNews[0].url && (
-            <Container columnSpan={EColumnSpan.ONE_COL}>
-              <DashboardHeading title={<FormattedMessage id="eto.form.media-links.title" />} />
-              <MediaLinksWidget
-                links={[...companyNews].reverse() as ILink[]}
-                columnSpan={EColumnSpan.THREE_COL}
-              />
-            </Container>
-          )}
-        </Container>
+        <EtoViewTabs eto={eto} publicView={publicView} isUserFullyVerified={isUserFullyVerified} />
       </WidgetGrid>
     </FieldSchemaProvider>
   );

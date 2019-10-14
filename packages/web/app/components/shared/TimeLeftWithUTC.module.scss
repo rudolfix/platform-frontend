@@ -1,18 +1,16 @@
-.eto-public-start-date {
+.time-left {
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
 }
 
 .date {
-  font-weight: normal;
   width: auto;
   border: 0;
 
-  & td {
-    padding-right: .5rem;
+  td {
+    padding-right: .5em;
   }
 }
 
@@ -20,12 +18,13 @@
   font-weight: bold;
 }
 
-.eto-time-left-start {
-  font-weight: normal;
-}
-
-.public-start-info {
+.additional-info {
   align-self: flex-start;
   margin-top: px-to-rem(20px);
   margin-bottom: 0;
+}
+
+.label {
+  font-size: 1.5rem;
+  font-weight: normal;
 }

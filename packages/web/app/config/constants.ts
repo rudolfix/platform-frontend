@@ -87,8 +87,6 @@ export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
  * Storage Listener Constants
  */
 
-export const REDIRECT_CHANNEL_WATCH_DELAY = 5000;
-
 export const IPFS_PROTOCOL = "ipfs";
 
 export const NOMINEE_REQUESTS_WATCHER_DELAY = 10000;

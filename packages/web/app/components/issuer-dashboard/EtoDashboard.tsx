@@ -52,8 +52,8 @@ import { BookBuildingWidget } from "./bookBuildingWidget/BookBuildingWidget";
 import { ChooseEtoStartDateWidget } from "./chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
 import { DashboardStep } from "./dashboardStep/DashboardStep";
 import { ETOFormsProgressSection } from "./ETOFormsProgressSection";
+import { ETOFundraisingCounterWidget } from "./ETOFundraisingCounterWidget";
 import { ETOFundraisingStatistics } from "./ETOFundraisingStatistics";
-import { ETOPresaleCounterWidget } from "./ETOPresaleCounterWidget";
 import { PublishETOWidget } from "./PublishETOWidget";
 import { UploadInvestmentAgreement } from "./signInvestmentAgreementWidget/UploadInvestmentAgreementWidget";
 import { SubmitProposalWidget } from "./submitProposalWidget/SubmitProposalWidget";
@@ -201,12 +201,15 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.ON_CHAIN:
       return (
         <>
-          {eto.contract && eto.contract.timedState === EETOStateOnChain.Whitelist && (
-            <>
-              <ETOFundraisingStatistics eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-              <ETOPresaleCounterWidget eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-            </>
-          )}
+          {isOnChain(eto) &&
+            [EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(
+              eto.contract.timedState,
+            ) && (
+              <>
+                <ETOFundraisingStatistics eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+                <ETOFundraisingCounterWidget eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+              </>
+            )}
 
           <UploadInvestmentAgreement columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />

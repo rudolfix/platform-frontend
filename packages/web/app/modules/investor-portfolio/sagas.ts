@@ -7,11 +7,7 @@ import { InvestorPortfolioMessage } from "../../components/translatedMessages/me
 import { createMessage } from "../../components/translatedMessages/utils";
 import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import {
-  EEtoState,
-  TEtoDataWithCompany,
-  TEtoSpecsData,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
@@ -85,7 +81,7 @@ export function* loadInvestorTicket(
 
 export function* loadComputedContributionFromContract(
   { contractsService }: TGlobalDependencies,
-  eto: TEtoDataWithCompany,
+  eto: TEtoSpecsData,
   amountEuroUlps?: string,
   isICBM = false,
 ): any {

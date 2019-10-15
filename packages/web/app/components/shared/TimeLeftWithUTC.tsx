@@ -24,7 +24,9 @@ const TimeLeftWithUTC: React.FunctionComponent<IProps> = ({ countdownDate, child
         <tbody>
           <tr>
             <td>UTC:</td>
-            <td>{`${weekdayUTC(countdownDate)}, ${utcTime(countdownDate)}`}</td>
+            <td data-test-id="time-left.start-date-utc">{`${weekdayUTC(countdownDate)}, ${utcTime(
+              countdownDate,
+            )}`}</td>
           </tr>
           <tr>
             <td>{`${timeZone()}: `}</td>

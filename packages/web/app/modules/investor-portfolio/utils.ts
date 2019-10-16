@@ -5,7 +5,7 @@ import { IWindowWithData } from "../../../test/helperTypes";
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { Q18 } from "../../config/constants";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { convertToBigInt } from "../../utils/NumberUtils";
+import { convertToUlps } from "../../utils/NumberUtils";
 import { EETOStateOnChain } from "../eto/types";
 import {
   EUserRefundStatus,
@@ -125,10 +125,10 @@ export const getRequiredIncomingAmount = (token: ECurrency) => {
 
   switch (token) {
     case ECurrency.ETH: {
-      return convertToBigInt(1);
+      return convertToUlps(1);
     }
     case ECurrency.EUR_TOKEN: {
-      return convertToBigInt(100);
+      return convertToUlps(100);
     }
     default:
       return "0";

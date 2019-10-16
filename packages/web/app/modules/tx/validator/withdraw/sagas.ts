@@ -14,7 +14,7 @@ import {
   multiplyBigNumbers,
   subtractBigNumbers,
 } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/NumberUtils";
+import { convertToUlps } from "../../../../utils/NumberUtils";
 import { actions } from "../../../actions";
 import { deserializeClaims } from "../../../kyc/utils";
 import { neuCall } from "../../../sagasUtils";
@@ -82,7 +82,7 @@ export function* txValidateWithdraw(userInput: IWithdrawDraftType): Iterator<any
       ]),
     );
 
-    const valueUlps = convertToBigInt(modifiedUserInput.value);
+    const valueUlps = convertToUlps(modifiedUserInput.value);
     const valueFromUserEuro = multiplyBigNumbers([euroPrice, valueUlps]);
     const transactionCost = multiplyBigNumbers([
       generatedTxDetails.gasPrice,
@@ -142,7 +142,7 @@ export function* isAddressValidAcceptsEther(
     }
 
     // If user inputs no value assume 1 wei as fallback value
-    const calculatedValueFromUserInput = value === "0" ? "1" : convertToBigInt(value);
+    const calculatedValueFromUserInput = value === "0" ? "1" : convertToUlps(value);
     yield web3Manager.estimateGas({ to, value: calculatedValueFromUserInput });
   } catch (e) {
     if (e instanceof UserHasNoFundsError) {

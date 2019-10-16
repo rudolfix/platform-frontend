@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
-import { convertFromUlps, ECurrency } from "../../components/shared/formatters/utils";
+import { ECurrency } from "../../components/shared/formatters/utils";
 import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { Q18 } from "../../config/constants";
@@ -16,7 +16,7 @@ import { IAppState } from "../../store";
 import { EthereumAddress } from "../../types";
 import { addBigNumbers } from "../../utils/BigNumberUtils";
 import { nonNullable } from "../../utils/nonNullable";
-import { convertToBigInt } from "../../utils/NumberUtils";
+import { convertFromUlps, convertToUlps } from "../../utils/NumberUtils";
 import { actions, TAction, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
 import { calculateSnapshotDate } from "../contracts/utils";
@@ -90,7 +90,7 @@ export function* loadComputedContributionFromContract(
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
 
   const newInvestorContributionEurUlps =
-    amountEuroUlps || convertToBigInt((eto.minTicketEur && eto.minTicketEur.toString()) || "0");
+    amountEuroUlps || convertToUlps((eto.minTicketEur && eto.minTicketEur.toString()) || "0");
 
   const from: ReturnType<typeof selectEthereumAddressWithChecksum> = yield select(
     selectEthereumAddressWithChecksum,

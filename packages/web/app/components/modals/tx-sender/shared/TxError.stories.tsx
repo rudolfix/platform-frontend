@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { convertToBigInt } from "../../../../utils/NumberUtils";
+import { convertToUlps } from "../../../../utils/NumberUtils";
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { TxErrorLayout } from "./TxError";
@@ -55,11 +55,11 @@ const investTxData: React.ComponentProps<typeof TxErrorLayout> = {
       },
     },
     equityTokens: "211",
-    estimatedReward: convertToBigInt("125"),
+    estimatedReward: convertToUlps("125"),
     etherPriceEur: "2542.22",
-    gasCostEth: convertToBigInt("0.124"),
-    investmentEth: convertToBigInt("120"),
-    investmentEur: convertToBigInt("22506"),
+    gasCostEth: convertToUlps("0.124"),
+    investmentEth: convertToUlps("120"),
+    investmentEur: convertToUlps("22506"),
     isIcbm: false,
   },
   ...baseTxData,

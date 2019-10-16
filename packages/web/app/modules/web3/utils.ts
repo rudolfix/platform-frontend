@@ -6,7 +6,7 @@ import { TBigNumberVariant } from "../../lib/web3/types";
 import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
 import { compareBigNumbers } from "../../utils/BigNumberUtils";
 import { formatMoney } from "../../utils/MoneyUtils";
-import { convertToBigInt } from "../../utils/NumberUtils";
+import { convertToUlps } from "../../utils/NumberUtils";
 
 export function makeEthereumAddressChecksummed(
   ethereumAddress: EthereumAddress,
@@ -41,7 +41,7 @@ export const doesUserHaveEnoughEther = (
   maxEther: TBigNumberVariant,
 ): boolean => {
   if (value === "") return false;
-  return compareBigNumbers(convertToBigInt(value || "0"), maxEther) < 0;
+  return compareBigNumbers(convertToUlps(value || "0"), maxEther) < 0;
 };
 
 export const doesUserHaveEnoughNEuro = (
@@ -51,7 +51,7 @@ export const doesUserHaveEnoughNEuro = (
   if (value === "") return false;
   const formattedMax = formatMoney(maxNEuro, MONEY_DECIMALS, 2, ERoundingMode.DOWN);
 
-  return compareBigNumbers(convertToBigInt(value || "0"), convertToBigInt(formattedMax)) <= 0;
+  return compareBigNumbers(convertToUlps(value || "0"), convertToUlps(formattedMax)) <= 0;
 };
 
 export const doesUserWithdrawMinimal = (
@@ -59,5 +59,5 @@ export const doesUserWithdrawMinimal = (
   minNEuro: TBigNumberVariant,
 ): boolean => {
   if (value === "") return false;
-  return compareBigNumbers(convertToBigInt(value || "0"), minNEuro) >= 0;
+  return compareBigNumbers(convertToUlps(value || "0"), minNEuro) >= 0;
 };

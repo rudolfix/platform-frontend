@@ -3,10 +3,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EETOStateOnChain, IEtoTokenGeneralDiscounts } from "../../../../modules/eto/types";
 import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
-import { isZero } from "../../../../utils/NumberUtils";
+import { convertFromUlps, isZero } from "../../../../utils/NumberUtils";
 import { Money } from "../../../shared/formatters/Money";
 import {
-  convertFromUlps,
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,

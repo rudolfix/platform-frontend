@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { convertToBigInt } from "../../../../utils/NumberUtils";
+import { convertToUlps } from "../../../../utils/NumberUtils";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { TxSuccessLayout } from "./TxSuccess";
 
@@ -20,11 +20,11 @@ const txData: React.ComponentProps<typeof TxSuccessLayout> = {
       },
     },
     equityTokens: "211",
-    estimatedReward: convertToBigInt("125"),
+    estimatedReward: convertToUlps("125"),
     etherPriceEur: "2542.22",
-    gasCostEth: convertToBigInt("0.124"),
-    investmentEth: convertToBigInt("120"),
-    investmentEur: convertToBigInt("22506"),
+    gasCostEth: convertToUlps("0.124"),
+    investmentEth: convertToUlps("120"),
+    investmentEur: convertToUlps("22506"),
     isIcbm: false,
   },
   blockId: 4623487932,

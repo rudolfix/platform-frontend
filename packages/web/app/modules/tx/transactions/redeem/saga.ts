@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
 import { DeepReadonly } from "../../../../types";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/NumberUtils";
+import { convertToUlps } from "../../../../utils/NumberUtils";
 import { actions } from "../../../actions";
 import { selectBankFeeUlps } from "../../../bank-transfer-flow/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
@@ -50,11 +50,11 @@ export function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
     .toFixed(2, BigNumber.ROUND_DOWN);
 
   // Whole precision number should be passed when there is whole balance redeemed
-  // also when user provided value has been used, then it have to be converted to Q18 via convertToBigInt
+  // also when user provided value has been used, then it have to be converted to Q18 via convertToUlps
   const redeemAmountUlps =
     compareBigNumbers(selectedAmount, nEURBalance) === 0
       ? nEURBalanceUlps
-      : convertToBigInt(selectedAmount);
+      : convertToUlps(selectedAmount);
 
   const generatedTxDetails: ITxData = yield neuCall(
     generateNeuWithdrawTransaction,

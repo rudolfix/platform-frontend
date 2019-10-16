@@ -5,7 +5,7 @@ import * as sinon from "sinon";
 import { Q18 } from "../../../config/constants";
 import * as etoUtils from "../../../lib/api/eto/EtoUtils";
 import { IAppState } from "../../../store";
-import { convertToBigInt } from "../../../utils/NumberUtils";
+import { convertToUlps } from "../../../utils/NumberUtils";
 import * as etoSelectors from "../../eto/selectors";
 import { IInvestorTicketsState } from "../reducer";
 import * as investorTicketSelectors from "../selectors";
@@ -111,7 +111,7 @@ describe("investor-portfolio > selectors", () => {
           incomingPayouts: {
             data: {
               euroTokenIncomingPayoutValue: "0",
-              etherTokenIncomingPayoutValue: convertToBigInt("1"),
+              etherTokenIncomingPayoutValue: convertToUlps("1"),
             },
           },
         },
@@ -126,7 +126,7 @@ describe("investor-portfolio > selectors", () => {
           incomingPayouts: {
             data: {
               euroTokenIncomingPayoutValue: "0",
-              etherTokenIncomingPayoutValue: convertToBigInt("123"),
+              etherTokenIncomingPayoutValue: convertToUlps("123"),
             },
           },
         },
@@ -140,7 +140,7 @@ describe("investor-portfolio > selectors", () => {
         investorTickets: {
           incomingPayouts: {
             data: {
-              euroTokenIncomingPayoutValue: convertToBigInt("100"),
+              euroTokenIncomingPayoutValue: convertToUlps("100"),
               etherTokenIncomingPayoutValue: "0",
             },
           },
@@ -155,7 +155,7 @@ describe("investor-portfolio > selectors", () => {
         investorTickets: {
           incomingPayouts: {
             data: {
-              euroTokenIncomingPayoutValue: convertToBigInt("12452"),
+              euroTokenIncomingPayoutValue: convertToUlps("12452"),
               etherTokenIncomingPayoutValue: "0",
             },
           },
@@ -170,8 +170,8 @@ describe("investor-portfolio > selectors", () => {
         investorTickets: {
           incomingPayouts: {
             data: {
-              euroTokenIncomingPayoutValue: convertToBigInt("50"),
-              etherTokenIncomingPayoutValue: convertToBigInt("0.4"),
+              euroTokenIncomingPayoutValue: convertToUlps("50"),
+              etherTokenIncomingPayoutValue: convertToUlps("0.4"),
             },
           },
         },
@@ -185,7 +185,7 @@ describe("investor-portfolio > selectors", () => {
     const euroTokendDisbursal = {
       token: "eur_t",
       amountToBeClaimed: "499807466992079716049",
-      totalDisbursedAmount: convertToBigInt("97154.607"),
+      totalDisbursedAmount: convertToUlps("97154.607"),
       timeToFirstDisbursalRecycle: 1680747704000,
     };
 
@@ -216,7 +216,7 @@ describe("investor-portfolio > selectors", () => {
         investorTickets: {
           tokensDisbursal: {
             data: [
-              { ...euroTokendDisbursal, amountToBeClaimed: convertToBigInt("0.90") },
+              { ...euroTokendDisbursal, amountToBeClaimed: convertToUlps("0.90") },
               ethDisbursal,
             ] as ITokenDisbursal[],
           },
@@ -236,7 +236,7 @@ describe("investor-portfolio > selectors", () => {
           tokensDisbursal: {
             data: [
               euroTokendDisbursal,
-              { ...ethDisbursal, amountToBeClaimed: convertToBigInt("0.00023") },
+              { ...ethDisbursal, amountToBeClaimed: convertToUlps("0.00023") },
             ] as ITokenDisbursal[],
           },
         } as IInvestorTicketsState,

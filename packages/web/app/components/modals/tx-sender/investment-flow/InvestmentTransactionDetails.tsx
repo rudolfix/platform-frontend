@@ -11,6 +11,8 @@ import {
   ENumberOutputFormat,
   EPriceFormat,
 } from "../../../shared/formatters/utils";
+import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
+import { TokenIcon } from "../../../shared/icons/TokenIcon";
 import { TooltipBase } from "../../../shared/tooltips";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
@@ -18,7 +20,6 @@ import { TimestampRow } from "../shared/TimestampRow";
 import { TransactionDetailsComponent } from "../types";
 import { getActualTokenPriceEur, getTokenPriceDiscount } from "./utils";
 
-import * as neuIcon from "../../../../assets/img/neu_icon.svg";
 import * as info from "../../../../assets/img/notifications/info.svg";
 import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./Summary.module.scss";
@@ -63,7 +64,7 @@ interface ITotal {
 const EquityTokensValue: React.FunctionComponent<IEquityTockenValue> = ({ equityTokens }) => (
   <span>
     {/* TODO: Change to actual custom token icon (eto.equityTokenImage)*/}
-    <img src={tokenIcon} alt="" />{" "}
+    <TokenIcon srcSet={{ "1x": tokenIcon }} alt="" />{" "}
     <FormatNumber
       value={equityTokens}
       inputFormat={ENumberInputFormat.FLOAT}
@@ -74,7 +75,7 @@ const EquityTokensValue: React.FunctionComponent<IEquityTockenValue> = ({ equity
 
 const EstimatedRewardValue: React.FunctionComponent<IEstimatedReward> = ({ estimatedReward }) => (
   <span>
-    <img src={neuIcon} alt="" />{" "}
+    <CurrencyIcon currency={ECurrency.NEU} />{" "}
     <Money
       value={estimatedReward}
       inputFormat={ENumberInputFormat.ULPS}

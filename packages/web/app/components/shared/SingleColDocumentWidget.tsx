@@ -9,7 +9,7 @@ import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
 import { getDocumentTemplateTitles } from "../documents/utils";
-import { DocumentTemplateButton } from "./DocumentLink";
+import { DocumentButton } from "./DocumentLink";
 import { InlineIcon } from "./icons";
 
 import * as link from "../../assets/img/inline_icons/social_link.svg";
@@ -41,7 +41,7 @@ const SingleColDocumentsLayout: React.FunctionComponent<IProps> = ({
       <section className={styles.group}>
         {documents.map(({ ipfsHash, mimeType, documentType }) => (
           <div className={styles.document} key={ipfsHash}>
-            <DocumentTemplateButton
+            <DocumentButton
               onClick={() =>
                 downloadImmutableFile(
                   {

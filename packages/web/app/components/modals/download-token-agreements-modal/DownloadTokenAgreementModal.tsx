@@ -21,7 +21,7 @@ import {
   selectDownloadAgrementModalIsOpen,
 } from "../../portfolio/selectors";
 import { ButtonIcon } from "../../shared/buttons";
-import { DocumentTemplateLabel } from "../../shared/DocumentLink";
+import { DocumentLabel } from "../../shared/DocumentLink";
 import { EHeadingSize, Heading } from "../../shared/Heading";
 import { Modal } from "../Modal";
 import { InfoList } from "../tx-sender/shared/InfoList";
@@ -73,8 +73,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                   <InfoRow
                     key={document.ipfsHash}
                     caption={
-                      <DocumentTemplateLabel
-                        onClick={() => {}}
+                      <DocumentLabel
                         title={
                           getInvestorDocumentTitles(eto.product.offeringDocumentType)[
                             document.documentType
@@ -115,8 +114,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                   <InfoRow
                     key={template.ipfsHash}
                     caption={
-                      <DocumentTemplateLabel
-                        onClick={() => {}}
+                      <DocumentLabel
                         title={
                           getInvestorDocumentTitles(eto.product.offeringDocumentType)[
                             template.documentType

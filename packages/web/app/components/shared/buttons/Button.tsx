@@ -113,7 +113,15 @@ const Button: React.ForwardRefExoticComponent<
     >
       <div className={cn(styles.content, innerClassName, textPosition)} tabIndex={-1}>
         {isLoading ? (
-          <LoadingIndicator light />
+          <>
+            {/*
+              &nbsp; makes button the same in height as normal button
+              (avoids height dumping after switching to loading state)
+            */}
+            &nbsp;
+            <LoadingIndicator light />
+            &nbsp;
+          </>
         ) : (
           <>
             {iconPosition === EIconPosition.ICON_BEFORE && <InlineIcon svgIcon={svgIcon || ""} />}

@@ -1,10 +1,6 @@
-.document-link {
+.document-label {
   align-items: center;
   display: inline-flex;
-}
-
-.document-link,
-.document-button {
   font-size: px-to-rem(14px);
 
   :global {

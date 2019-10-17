@@ -43,7 +43,7 @@ import { selectMyAssets } from "../investor-portfolio/selectors";
 import { waitForKycStatus } from "../kyc/sagas";
 import { selectClientJurisdiction } from "../kyc/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
-import { getAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/saga";
+import { getAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/sagas";
 import {
   EAgreementType,
   IAgreementContractAndHash,

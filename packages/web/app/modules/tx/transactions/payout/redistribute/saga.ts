@@ -18,7 +18,7 @@ import { ETxSenderType } from "../../../types";
 // see https://github.com/Neufund/platform-contracts/blob/59e88f6881bf5adbced8462f1925496467ea4c18/contracts/FeeDisbursal/FeeDisbursal.sol#L164
 const REDISTRIBUTE_ALL_DISBURSALS = new BigNumber(2).pow(256).minus(1);
 
-export function* generatePayoutRedistributeTransaction(
+function* generatePayoutRedistributeTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   tokenDisbursal: ITokenDisbursal,
 ): any {

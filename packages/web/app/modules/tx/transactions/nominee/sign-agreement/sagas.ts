@@ -1,4 +1,4 @@
-import { put, select } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { ipfsLinkFromHash } from "../../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
@@ -16,8 +16,9 @@ import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../eto/ty
 import { isOnChain } from "../../../../eto/utils";
 import { selectStandardGasPriceWithOverHead } from "../../../../gas/selectors";
 import { selectNomineeEtoWithCompanyAndContract } from "../../../../nominee-flow/selectors";
-import { neuCall } from "../../../../sagasUtils";
+import { neuCall, neuTakeLatest } from "../../../../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../../../../web3/selectors";
+import { txSendSaga } from "../../../sender/sagas";
 import { selectTxType } from "../../../sender/selectors";
 import { ETxSenderType } from "../../../types";
 import { EAgreementType, IAgreementContractAndHash } from "./types";
@@ -59,7 +60,7 @@ export function* getAgreementContractAndHash(
   }
 }
 
-export function* generateNomineeSignAgreementTx(
+function* generateNomineeSignAgreementTx(
   { web3Manager }: TGlobalDependencies,
   transactionType: ETxSenderType.NOMINEE_RAAA_SIGN | ETxSenderType.NOMINEE_THA_SIGN,
 ): Iterator<any> {
@@ -102,7 +103,7 @@ export function* generateNomineeSignAgreementTx(
   return txDetails;
 }
 
-export function* startNomineeAgreementSign(_: TGlobalDependencies): Iterator<any> {
+function* startNomineeAgreementSign(_: TGlobalDependencies): Iterator<any> {
   const transactionType: ReturnType<typeof selectTxType> = yield select(selectTxType);
 
   if (
@@ -122,7 +123,7 @@ export function* startNomineeAgreementSign(_: TGlobalDependencies): Iterator<any
   );
 }
 
-export function* generateSignInvestmentAgreementTx({
+function* generateSignNomineeInvestmentAgreementTx({
   contractsService,
   web3Manager,
 }: TGlobalDependencies): Iterator<any> {
@@ -172,8 +173,56 @@ export function* generateSignInvestmentAgreementTx({
   return txDetails;
 }
 
-export function* nomineeSignInvestmentAgreementGenerator(_: TGlobalDependencies): Iterator<any> {
-  const generatedTxDetails = yield neuCall(generateSignInvestmentAgreementTx);
+function* nomineeSignInvestmentAgreementGenerator(_: TGlobalDependencies): Iterator<any> {
+  const generatedTxDetails = yield neuCall(generateSignNomineeInvestmentAgreementTx);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
   yield put(actions.txSender.txSenderContinueToSummary<ETxSenderType.NOMINEE_ISHA_SIGN>(undefined));
 }
+
+function* startNomineeTHASignSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.NOMINEE_THA_SIGN,
+      transactionFlowGenerator: startNomineeAgreementSign,
+    });
+    logger.info("THA sign successful");
+  } catch (e) {
+    logger.info("THA sign cancelled", e);
+  } finally {
+    yield put(actions.nomineeFlow.loadNomineeTaskData());
+  }
+}
+
+function* startNomineeRAAASignSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.NOMINEE_RAAA_SIGN,
+      transactionFlowGenerator: startNomineeAgreementSign,
+    });
+    logger.info("RAAA sign successful");
+  } catch (e) {
+    logger.info("RAAA sign cancelled", e);
+  } finally {
+    yield put(actions.nomineeFlow.loadNomineeTaskData());
+  }
+}
+
+function* startNomineeISHASignSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.NOMINEE_ISHA_SIGN,
+      transactionFlowGenerator: nomineeSignInvestmentAgreementGenerator,
+    });
+    logger.info("ISHA sign successful");
+  } catch (e) {
+    logger.info("ISHA sign cancelled", e);
+  } finally {
+    yield put(actions.nomineeFlow.loadNomineeTaskData());
+  }
+}
+
+export const txSignAgreementSagas = function*(): Iterator<any> {
+  yield fork(neuTakeLatest, actions.txTransactions.startNomineeTHASign, startNomineeTHASignSaga);
+  yield fork(neuTakeLatest, actions.txTransactions.startNomineeRAAASign, startNomineeRAAASignSaga);
+  yield fork(neuTakeLatest, actions.txTransactions.startNomineeISHASign, startNomineeISHASignSaga);
+};

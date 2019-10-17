@@ -223,7 +223,21 @@ export const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHas
     };
   });
 
+function* removePendingTransaction({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    // call delete transaction saga
+    yield neuCall(deletePendingTransaction);
+
+    logger.info("Pending transaction has been deleted");
+  } catch (e) {
+    logger.error(new Error("Unable to delete pending transaction"));
+  } finally {
+    yield put(actions.txSender.txSenderHideModal());
+  }
+}
+
 export function* txMonitorSagas(): any {
   yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, txMonitor);
   yield fork(neuTakeLatest, actions.txMonitor.monitorPendingPlatformTx, txMonitorSaga);
+  yield fork(neuTakeLatest, actions.txMonitor.deletePendingTransaction, removePendingTransaction);
 }

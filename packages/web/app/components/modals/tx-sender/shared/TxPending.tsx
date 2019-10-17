@@ -93,7 +93,7 @@ const TxPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props =>
 const TxPending = compose<TTxPendingLayoutProps, ITxPendingProps>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: d => ({
-      deletePendingTransaction: () => d(actions.txTransactions.deletePendingTransaction()),
+      deletePendingTransaction: () => d(actions.txMonitor.deletePendingTransaction()),
       goToWallet: () => d(actions.routing.goToWallet()),
     }),
     stateToProps: state => ({

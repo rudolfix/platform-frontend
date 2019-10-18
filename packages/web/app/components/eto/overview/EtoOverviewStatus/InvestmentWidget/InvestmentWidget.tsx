@@ -22,8 +22,8 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
+import { InvestmentProgress } from "../../InvestmentProgress";
 import { EndTimeWidget } from "../EndTimeWidget";
-import { InvestmentProgress } from "./InvestmentProgress";
 
 import * as styles from "./InvestmentWidget.module.scss";
 

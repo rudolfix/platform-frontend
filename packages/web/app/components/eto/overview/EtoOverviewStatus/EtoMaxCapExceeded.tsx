@@ -15,8 +15,8 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
+import { InvestmentProgress } from "../InvestmentProgress";
 import { CounterWidget } from "./CounterWidget";
-import { InvestmentProgress } from "./InvestmentWidget/InvestmentProgress";
 import { SuccessMessage } from "./Message";
 
 import * as styles from "./EtoMaxCapExceeded.module.scss";

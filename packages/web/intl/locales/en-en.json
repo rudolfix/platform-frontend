@@ -1215,6 +1215,7 @@
   "shared-component.eto-overview.invest-now": "Invest now",
   "shared-component.eto-overview.invest.ends-in": "Ends {endsIn}",
   "shared-component.eto-overview.invest.min-amount": "Soft Cap",
+  "shared-component.eto-overview.invest.min-amount-reached": "Soft cap is reached",
   "shared-component.eto-overview.investment-memorandum": "Investment memorandum",
   "shared-component.eto-overview.investors": "{totalInvestorsAsString} {totalInvestors, plural, one {investor} other {investors}}",
   "shared-component.eto-overview.investors-backed": "Whitelisted investors",

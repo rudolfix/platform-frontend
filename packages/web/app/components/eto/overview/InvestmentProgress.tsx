@@ -2,17 +2,11 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContract } from "../../../../../modules/eto/types";
-import { TTranslatedString } from "../../../../../types";
-import { normalize } from "../../../../../utils/NumberUtils";
-import {
-  PercentageIndicatorBar,
-  TProgressBarProps,
-} from "../../../../shared/PercentageIndicatorBar";
-import {
-  getCurrentInvestmentProgressPercentage,
-  getInvestmentCalculatedPercentage,
-} from "../..//utils";
+import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
+import { TTranslatedString } from "../../../types";
+import { normalize } from "../../../utils/NumberUtils";
+import { PercentageIndicatorBar, TProgressBarProps } from "../../shared/PercentageIndicatorBar";
+import { getCurrentInvestmentProgressPercentage, getInvestmentCalculatedPercentage } from "./utils";
 
 import * as styles from "./InvestmentProgress.module.scss";
 
@@ -51,6 +45,15 @@ const InvestmentProgress: React.FunctionComponent<TProps> = ({ eto }) => {
 
   if (currentProgressOfEtoNormalized > successOfEtoNormalized) {
     progress.push({ progress: successOfEtoNormalized * 100, radius: 0 });
+  }
+
+  // replace by static message in case soft-cap was reached
+  if (currentProgressPercentage >= 100) {
+    return (
+      <p className={styles.softCapReached}>
+        <FormattedMessage id="shared-component.eto-overview.invest.min-amount-reached" />
+      </p>
+    );
   }
 
   return (

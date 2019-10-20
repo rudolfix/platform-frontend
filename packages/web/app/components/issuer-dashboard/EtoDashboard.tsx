@@ -140,6 +140,10 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     <ETOIssuerState eto={eto} size={EProjectStatusSize.LARGE} layout={EProjectStatusLayout.BLACK} />
   );
 
+  const shouldDisplayStatistics =
+    isOnChain(eto) &&
+    [EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(eto.contract.timedState);
+
   switch (eto.state) {
     case EEtoState.PREVIEW:
       return (
@@ -201,15 +205,12 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.ON_CHAIN:
       return (
         <>
-          {isOnChain(eto) &&
-            [EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(
-              eto.contract.timedState,
-            ) && (
-              <>
-                <ETOFundraisingStatistics eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-                <ETOFundraisingCounterWidget eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-              </>
-            )}
+          {shouldDisplayStatistics && (
+            <>
+              <ETOFundraisingStatistics eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+              <ETOFundraisingCounterWidget eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+            </>
+          )}
 
           <UploadInvestmentAgreement columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />

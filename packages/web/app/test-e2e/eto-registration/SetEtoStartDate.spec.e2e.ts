@@ -28,7 +28,7 @@ const setStartDay = (startDate: moment.Moment, textToCheck: RegExp) => {
 
   closeModal();
 
-  cy.get(tid("eto-settings-display-start-date-utc"))
+  cy.get(tid("time-left.start-date-utc"))
     .should($e =>
       expect($e.text()).to.be.equal(
         `${weekdayUTC(startDate.toDate())}, ${utcTime(startDate.toDate())}`,

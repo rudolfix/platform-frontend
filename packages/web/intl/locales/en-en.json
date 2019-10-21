@@ -606,7 +606,7 @@
   "eto.settings.minutes": "{minutes, plural, =0 {minutes} one {minute} other {minutes}}",
   "eto.settings.seconds": "{timeLeft, plural, =0 {seconds} one {second} other {seconds}}",
   "eto.settings.set-eto-start-date": "Set the date",
-  "eto.settings.set-eto-start-date-time-left": "Time left",
+  "eto.settings.set-eto-start-date-time-left": "Time left:",
   "eto.settings.time-left-none": "none",
   "eto.status.mock.success": "Success",
   "eto.status.onchain.change-eto-date-countdown-text": "This date can still be changed for the next",

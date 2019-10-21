@@ -10,7 +10,7 @@ import { selectEtherPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../store";
 import { divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { DashboardWidget } from "../shared/dashboard-widget/DashboardWidget";
-import { ECurrencySymbol, Money } from "../shared/formatters/Money";
+import { Money } from "../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { IPanelProps } from "../shared/Panel";
 
@@ -24,12 +24,12 @@ interface IStateProps {
   etherPriceEur: string;
 }
 
-interface IComputedProps {
+interface IWithProps {
   etherTokenEurEquivUlps: string;
   averageInvestmentEurUlps: string;
 }
 
-type IProps = IExternalProps & IPanelProps & IComputedProps;
+type IProps = IExternalProps & IPanelProps & IWithProps;
 
 const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
   eto,
@@ -63,7 +63,6 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
           valueType={ECurrency.EUR}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          currencySymbol={ECurrencySymbol.CODE}
         />
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.eth-investment" />
@@ -74,7 +73,6 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
             valueType={ECurrency.ETH}
             inputFormat={ENumberInputFormat.ULPS}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            currencySymbol={ECurrencySymbol.CODE}
           />
           {" ≈ "}
           <Money
@@ -82,7 +80,6 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
             valueType={ECurrency.EUR}
             inputFormat={ENumberInputFormat.ULPS}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            currencySymbol={ECurrencySymbol.CODE}
           />
         </span>
         <span className={styles.label}>
@@ -93,7 +90,6 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
           valueType={ECurrency.EUR_TOKEN}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          currencySymbol={ECurrencySymbol.CODE}
         />
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.average-investment-value" />
@@ -103,7 +99,6 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
           valueType={ECurrency.EUR}
           inputFormat={ENumberInputFormat.ULPS}
           outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          currencySymbol={ECurrencySymbol.CODE}
         />
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.total-investors" />
@@ -121,16 +116,22 @@ const ETOFundraisingStatistics = compose<IProps, IExternalProps & IPanelProps>(
       etherPriceEur: selectEtherPriceEur(state),
     }),
   }),
-  withProps<IComputedProps, IProps & IStateProps>(props => ({
-    etherTokenEurEquivUlps: multiplyBigNumbers([
-      props.eto.contract!.totalInvestment.etherTokenBalance,
-      props.etherPriceEur,
-    ]),
-    averageInvestmentEurUlps: divideBigNumbers(
-      props.eto.contract!.totalInvestment.totalEquivEurUlps,
-      props.eto.contract!.totalInvestment.totalInvestors,
-    ),
-  })),
+  withProps<IWithProps, IProps & IStateProps>(props => {
+    if (!isOnChain(props.eto)) {
+      throw new InvalidETOStateError(props.eto.state, EEtoState.ON_CHAIN);
+    }
+
+    return {
+      etherTokenEurEquivUlps: multiplyBigNumbers([
+        props.eto.contract.totalInvestment.etherTokenBalance,
+        props.etherPriceEur,
+      ]),
+      averageInvestmentEurUlps: divideBigNumbers(
+        props.eto.contract.totalInvestment.totalEquivEurUlps,
+        props.eto.contract.totalInvestment.totalInvestors,
+      ),
+    };
+  }),
 )(ETOFundraisingStatisticsLayout);
 
 export { ETOFundraisingStatistics, ETOFundraisingStatisticsLayout };

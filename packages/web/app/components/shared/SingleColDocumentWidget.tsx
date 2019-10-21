@@ -19,6 +19,7 @@ interface IOwnProps {
   offeringDocumentType: EOfferingDocumentType;
   documents: IEtoDocument[];
   title: TTranslatedString;
+  description?: TTranslatedString;
   className?: string;
 }
 interface IDispatchProps {
@@ -31,6 +32,7 @@ const SingleColDocumentsLayout: React.FunctionComponent<IProps> = ({
   documents,
   className,
   title,
+  description,
   downloadImmutableFile,
   offeringDocumentType,
 }) => {
@@ -38,6 +40,7 @@ const SingleColDocumentsLayout: React.FunctionComponent<IProps> = ({
   return (
     <div className={className}>
       <h3 className={styles.groupName}>{title}</h3>
+      {description && <p className={styles.groupDescription}>{description}</p>}
       <section className={styles.group}>
         {documents.map(({ ipfsHash, mimeType, documentType }) => (
           <div className={styles.document} key={ipfsHash}>

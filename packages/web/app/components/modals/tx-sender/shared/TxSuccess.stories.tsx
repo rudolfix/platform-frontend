@@ -3,8 +3,11 @@ import * as React from "react";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { convertToUlps } from "../../../../utils/NumberUtils";
+import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { TxSuccessLayout } from "./TxSuccess";
+
+import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 
 const txData: React.ComponentProps<typeof TxSuccessLayout> = {
   type: ETxSenderType.INVEST,
@@ -12,11 +15,12 @@ const txData: React.ComponentProps<typeof TxSuccessLayout> = {
     eto: {
       etoId: "123",
       companyName: "Test Co",
-      existingShareCapital: 20,
-      preMoneyValuationEur: 100,
       equityTokensPerShare: 10,
-      investmentCalculatedValues: {
-        sharePrice: 100 / (20 * 10),
+      sharePrice: 100 / (20 * 10),
+      equityTokenInfo: {
+        equityTokenSymbol: toEquityTokenSymbol("QTT"),
+        equityTokenImage: tokenIcon,
+        equityTokenName: "Quintessence",
       },
     },
     equityTokens: "211",

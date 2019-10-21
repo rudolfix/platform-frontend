@@ -5,11 +5,11 @@ import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../../modules/tx/utils";
-import { EthereumNetworkId } from "../../../types";
 import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,
 } from "../../../utils/AsyncIntervalScheduler";
+import { EthereumNetworkId } from "../../../utils/opaque-types/types";
 import { promiseTimeout } from "../../../utils/PromiseUtils";
 import { ILogger } from "../../dependencies/logger";
 import { LightWallet } from "../light-wallet/LightWallet";

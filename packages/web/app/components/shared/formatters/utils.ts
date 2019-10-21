@@ -1,9 +1,9 @@
 import BigNumber from "bignumber.js";
 
 import { DEFAULT_DECIMAL_PLACES } from "../../../config/constants";
-import { Opaque } from "../../../types";
 import { invariant } from "../../../utils/invariant";
 import { convertFromUlps } from "../../../utils/NumberUtils";
+import { EquityToken } from "../../../utils/opaque-types/types";
 
 export enum ERoundingMode {
   UP = "up",
@@ -53,8 +53,6 @@ export type THumanReadableFormat = ENumberOutputFormat | EAbbreviatedNumberOutpu
 export enum ESpecialNumber {
   UNLIMITED = "unlimited",
 }
-
-export type EquityToken = Opaque<"EquityToken", string>;
 
 export type TValueFormat = ECurrency | EPriceFormat | ENumberFormat | EquityToken;
 

@@ -3,7 +3,11 @@ import { delay } from "redux-saga";
 import * as Web3 from "web3";
 
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
-import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
+import {
+  EthereumAddress,
+  EthereumAddressWithChecksum,
+  EthereumNetworkId,
+} from "../../utils/opaque-types/types";
 import { promisify } from "../../utils/PromiseUtils";
 
 class Web3Error extends Error {}

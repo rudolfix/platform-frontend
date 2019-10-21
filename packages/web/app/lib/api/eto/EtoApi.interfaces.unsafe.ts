@@ -26,7 +26,8 @@ import {
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
 } from "../../../config/constants";
-import { DeepPartial, DeepReadonly, EthereumAddressWithChecksum } from "../../../types";
+import { DeepPartial, DeepReadonly } from "../../../types";
+import { EquityToken, EthereumAddressWithChecksum } from "../../../utils/opaque-types/types";
 import * as YupTS from "../../yup-ts.unsafe";
 import { currencyCodeSchema, dateSchema, percentage } from "../util/customSchemas.unsafe";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
@@ -357,7 +358,7 @@ export type TEtoTermsType = YupTS.TypeOf<ReturnType<typeof getEtoTermsSchema>>;
 
 export const EtoEquityTokenInfoType = YupTS.object({
   equityTokenName: YupTS.string(),
-  equityTokenSymbol: YupTS.string(),
+  equityTokenSymbol: YupTS.string<EquityToken>(),
   equityTokenImage: YupTS.string(),
 });
 

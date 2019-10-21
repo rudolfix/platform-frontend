@@ -3,7 +3,7 @@ import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
-import { EthereumNetworkId } from "../../../types";
+import { EthereumNetworkId } from "../../../utils/opaque-types/types";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
 import { LedgerError, LedgerNotAvailableError, LedgerUnknownError } from "./errors";

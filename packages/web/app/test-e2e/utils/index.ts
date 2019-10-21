@@ -14,7 +14,7 @@ import {
   toFixedPrecision,
 } from "../../components/shared/formatters/utils";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
-import { EthereumAddress } from "../../types";
+import { EthereumAddress } from "../../utils/opaque-types/types";
 import { mockApiUrl } from "../config";
 import {
   kycCompanyDocsForm,

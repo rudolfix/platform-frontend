@@ -3,7 +3,7 @@ import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
-import { EthereumAddress } from "../../../../types";
+import { EthereumAddress } from "../../../../utils/opaque-types/types";
 import { actions, TAction } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";

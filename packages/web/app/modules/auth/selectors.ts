@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
-import { EthereumAddressWithChecksum } from "../../types";
+import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
 import { selectIsUserVerifiedOnBlockchain, selectKycRequestStatus } from "../kyc/selectors";
 import { selectIsLightWallet } from "../web3/selectors";
 import { IAuthState } from "./reducer";

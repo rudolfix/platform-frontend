@@ -24,7 +24,12 @@ import {
   EProductName,
 } from "../app/lib/api/eto/EtoProductsApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../app/modules/eto/types";
-import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../app/types";
+import {
+  EthereumAddress,
+  EthereumAddressWithChecksum,
+  EthereumNetworkId,
+} from "../app/utils/opaque-types/types";
+import { toEquityTokenSymbol } from "../app/utils/opaque-types/utils";
 
 import * as companyBanner from "./assets/company-banner.png";
 import * as companyPreviewCardBanner from "./assets/company-preview-banner.png";
@@ -801,7 +806,7 @@ export const testEto: TEtoWithCompanyAndContract = {
   equityTokenImage:
     "https://documents.neufund.io/0x64Ee2B334454A920cE99f39Cc7557b428db8D5B8/a03810cf-7e99-4264-8a94-24303dce4e3b.png",
   equityTokenName: "Quintessence",
-  equityTokenSymbol: "QTT",
+  equityTokenSymbol: toEquityTokenSymbol("QTT"),
   equityTokensPerShare: 10000,
   etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc" as EthereumAddressWithChecksum,
   existingShareCapital: 40976,

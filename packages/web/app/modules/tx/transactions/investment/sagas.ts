@@ -27,7 +27,7 @@ import { selectEtherTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
-import { ETxSenderType } from "../../types";
+import { ETxSenderType, TAdditionalDataByType } from "../../types";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
 
@@ -136,14 +136,17 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any
     throw new Error("ETO investment calculated values are empty");
   }
 
-  const additionalData = {
+  const additionalData: TAdditionalDataByType<ETxSenderType.INVEST> = {
     eto: {
       etoId,
       companyName: eto.company.name,
-      existingShareCapital: eto.existingShareCapital,
       equityTokensPerShare: eto.equityTokensPerShare,
-      preMoneyValuationEur: eto.preMoneyValuationEur,
-      investmentCalculatedValues: eto.investmentCalculatedValues,
+      sharePrice: eto.investmentCalculatedValues.sharePrice,
+      equityTokenInfo: {
+        equityTokenSymbol: eto.equityTokenSymbol,
+        equityTokenImage: eto.equityTokenImage,
+        equityTokenName: eto.equityTokenName,
+      },
     },
     investmentEth,
     investmentEur,
@@ -154,7 +157,7 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any
     isIcbm,
   };
 
-  yield put(actions.txSender.txSenderContinueToSummary<ETxSenderType.INVEST>(additionalData));
+  yield put(actions.txSender.txSenderContinueToSummary(additionalData));
 }
 
 function* investSaga(

@@ -5,7 +5,7 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
 import { IAppState } from "../../../../store";
-import { EthereumAddressWithChecksum } from "../../../../types";
+import { EthereumAddressWithChecksum } from "../../../../utils/opaque-types/types";
 import { actions, TActionFromCreator } from "../../../actions";
 import { etoFlowActions } from "../../../eto-flow/actions";
 import {

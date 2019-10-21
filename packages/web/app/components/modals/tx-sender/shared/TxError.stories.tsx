@@ -4,9 +4,12 @@ import * as React from "react";
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { convertToUlps } from "../../../../utils/NumberUtils";
+import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { TxErrorLayout } from "./TxError";
+
+import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 
 const baseTxData = {
   blockId: 4623487932,
@@ -47,11 +50,12 @@ const investTxData: React.ComponentProps<typeof TxErrorLayout> = {
     eto: {
       etoId: "123",
       companyName: "Test Co",
-      existingShareCapital: 20,
-      preMoneyValuationEur: 100,
       equityTokensPerShare: 10,
-      investmentCalculatedValues: {
-        sharePrice: 100 / (20 * 10),
+      sharePrice: 100 / (20 * 10),
+      equityTokenInfo: {
+        equityTokenSymbol: toEquityTokenSymbol("QTT"),
+        equityTokenImage: tokenIcon,
+        equityTokenName: "Quintessence",
       },
     },
     equityTokens: "211",

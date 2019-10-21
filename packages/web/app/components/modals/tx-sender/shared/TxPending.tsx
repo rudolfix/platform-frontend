@@ -12,7 +12,7 @@ import {
 import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx/types";
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
-import { EthereumAddressWithChecksum } from "../../../../types";
+import { EthereumAddressWithChecksum } from "../../../../utils/opaque-types/types";
 import { Button } from "../../../shared/buttons/Button";
 import { EthereumIcon } from "../../../shared/ethereum";
 import { Message } from "../../Message";

@@ -4,7 +4,7 @@ import { compose, withProps } from "recompose";
 
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { InvalidETOStateError } from "../../modules/eto/errors";
-import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
+import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { isOnChain } from "../../modules/eto/utils";
 import { selectEtherPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../store";
@@ -51,7 +51,13 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
   return (
     <DashboardWidget
       data-test-id="settings.fundraising-statistics"
-      title={<FormattedMessage id="settings.fundraising-statistics.title" />}
+      title={
+        eto.contract.timedState === EETOStateOnChain.Whitelist ? (
+          <FormattedMessage id="settings.fundraising-statistics.presale.title" />
+        ) : (
+          <FormattedMessage id="settings.fundraising-statistics.public-sale.title" />
+        )
+      }
       columnSpan={columnSpan}
     >
       <section className={styles.groupWrapper}>

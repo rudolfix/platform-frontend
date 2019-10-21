@@ -1300,6 +1300,7 @@
   "shared-component.wallet-verified-bank-account.title": "Verified bank account",
   "shared-components.account-address.transaction-history": "Check your ETH transaction history in {etherscan}",
   "shared-components.table.default-placeholder": "There is nothing to show here right now",
+  "shared.chart-doughnut.others": "Others",
   "signing.browser-gnosis-wallet.message": "Please provide your signature on Gnosis Safe to connect to Neufund.",
   "signing.browser-wallet.header": "Confirm your wallet ownership",
   "signing.browser-wallet.message": "Please provide your signature on MetaMask to connect to Neufund.",

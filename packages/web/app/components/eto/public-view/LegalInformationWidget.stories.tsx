@@ -18,9 +18,18 @@ const moreThanSix = {
   }),
 };
 
+const withOthers = {
+  ...testCompany,
+  shareholders: Array(2).fill({
+    fullName: "Shareholder",
+    shareCapital: 10000,
+  }),
+};
+
 storiesOf("ETO/PublicView/LegalInformationWidget", module)
   .add("default", () => <LegalInformationWidget companyData={testCompany} />)
   .add("empty shareholders", () => (
     <LegalInformationWidget companyData={(emptyShareholders as unknown) as TCompanyEtoData} />
   ))
-  .add("more than 6 shareholders", () => <LegalInformationWidget companyData={moreThanSix} />);
+  .add("more than 6 shareholders", () => <LegalInformationWidget companyData={moreThanSix} />)
+  .add("with others", () => <LegalInformationWidget companyData={withOthers} />);

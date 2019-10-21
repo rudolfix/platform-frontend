@@ -4,20 +4,20 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
-import { ETHEREUM_ZERO_ADDRESS, ICO_MONITOR_STATS_URL } from "../../../config/constants";
+import { ETHEREUM_ZERO_ADDRESS } from "../../../config/constants";
 import {
   EtoCompanyInformationType,
   EtoPitchType,
   TSocialChannelsType,
 } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { selectIsIssuer } from "../../../modules/auth/selectors";
-import { selectEtoSubState } from "../../../modules/eto/selectors";
 import {
   EETOStateOnChain,
   EEtoSubState,
   TEtoWithCompanyAndContract,
 } from "../../../modules/eto/types";
-import { appConnect, IAppState } from "../../../store";
+import { isOnChain } from "../../../modules/eto/utils";
+import { appConnect } from "../../../store";
 import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
@@ -42,6 +42,7 @@ import { Individuals } from "../public-view/Individuals";
 import { LegalInformationWidget } from "../public-view/LegalInformationWidget";
 import { MarketingDocumentsWidget } from "../public-view/MarketingDocumentsWidget";
 import { DashboardHeading } from "./DashboardHeading";
+import { EtoViewFundraisingStatistics } from "./EtoViewFundraisingStatistics";
 
 import * as styles from "./EtoView.module.scss";
 
@@ -55,7 +56,6 @@ interface IProps {
 }
 
 interface IEtoViewTabsState {
-  etoSubState?: EEtoSubState;
   isIssuer: boolean;
 }
 
@@ -167,115 +167,63 @@ const EtoViewCampaignOverview: React.FunctionComponent<IProps> = ({ eto, isUserF
   );
 };
 
-const EtoViewFundraisingStatistics: React.FunctionComponent<{ url: string }> = ({ url }) => {
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
-
-  const [height, setHeight] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    const onMessage = (msg: MessageEvent) => {
-      const { origin } = new URL(url);
-      if (msg.origin === origin) {
-        const receivedHeight = Number(msg.data);
-
-        if (!Number.isNaN(receivedHeight)) {
-          setHeight(receivedHeight);
-        }
-      }
-    };
-
-    if (iframeRef.current) {
-      window.addEventListener("message", onMessage);
-    }
-
-    return () => {
-      window.removeEventListener("message", onMessage);
-    };
-  }, []);
-
-  return (
-    <iframe
-      sandbox="allow-scripts allow-same-origin"
-      ref={iframeRef}
-      style={{ height: height }}
-      src={url}
-      className={styles.fundraisingContainer}
-      scrolling="no"
-      data-test-id="eto.public-view.fundraising-statistics.iframe"
-    />
-  );
-};
-
 const EtoViewTabsLayout: React.FunctionComponent<IProps & IEtoViewTabsState> = ({
   eto,
   publicView,
   isUserFullyVerified,
-}) => {
-  let statsUrl = `${ICO_MONITOR_STATS_URL}${eto.etoId}`;
-
-  if (
-    /platform.neufund.io|platform.neufund.net|localhost|192\.168\.8\.178/.test(
-      window.location.hostname,
-    ) &&
-    process.env.NF_CYPRESS_RUN !== "1"
-  ) {
-    // hardcode url if is .io or .net or localhost, ignore for cypress run
-    statsUrl = "https://test.icomonitor.io/#/stats/0x01A1f17808edAE0B004A4F11a03620D3d804b997";
-  }
-
-  return (
-    <Container columnSpan={EColumnSpan.THREE_COL}>
-      <Tabs
-        className="mb-3"
-        layoutSize="large"
-        layoutOrnament={false}
-        data-test-id="eto.public-view.campaign-overview"
+}) => (
+  <Container columnSpan={EColumnSpan.THREE_COL}>
+    <Tabs
+      className="mb-3"
+      layoutSize="large"
+      layoutOrnament={false}
+      data-test-id="eto.public-view.campaign-overview"
+    >
+      <TabContent tab={<FormattedMessage id="eto.public-view.campaign-overview" />}>
+        <WidgetGrid className={styles.etoLayout} data-test-id="eto.public-view">
+          <EtoViewCampaignOverview
+            eto={eto}
+            isUserFullyVerified={isUserFullyVerified}
+            publicView={publicView}
+          />
+        </WidgetGrid>
+      </TabContent>
+      <TabContent
+        tab={<FormattedMessage id="eto.public-view.fundraising-statistics" />}
+        data-test-id="eto.public-view.fundraising-statistics"
       >
-        <TabContent tab={<FormattedMessage id="eto.public-view.campaign-overview" />}>
-          <WidgetGrid className={styles.etoLayout} data-test-id="eto.public-view">
-            <EtoViewCampaignOverview
-              eto={eto}
-              isUserFullyVerified={isUserFullyVerified}
-              publicView={publicView}
-            />
-          </WidgetGrid>
-        </TabContent>
-        <TabContent
-          tab={<FormattedMessage id="eto.public-view.fundraising-statistics" />}
-          data-test-id="eto.public-view.fundraising-statistics"
-        >
-          <EtoViewFundraisingStatistics url={statsUrl} />
-        </TabContent>
-      </Tabs>
-    </Container>
-  );
-};
+        <EtoViewFundraisingStatistics etoId={eto.etoId} />
+      </TabContent>
+    </Tabs>
+  </Container>
+);
 
 const EtoViewTabs = compose<IProps & IEtoViewTabsState, IProps>(
   appConnect<IEtoViewTabsState, {}, IProps>({
-    stateToProps: (state: IAppState, props: IProps) => ({
-      etoSubState: selectEtoSubState(state, props.eto),
+    stateToProps: state => ({
       isIssuer: selectIsIssuer(state),
     }),
   }),
   branch<IProps & IEtoViewTabsState>(
     props =>
-      !!props.eto.contract &&
+      isOnChain(props.eto) &&
       props.eto.contract.timedState === EETOStateOnChain.Whitelist &&
       props.eto.subState !== EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE,
     renderComponent(EtoViewTabsLayout),
   ),
   branch<IProps & IEtoViewTabsState>(
     props =>
-      !!props.eto.contract &&
+      isOnChain(props.eto) &&
       props.eto.contract.timedState === EETOStateOnChain.Whitelist &&
-      props.isIssuer &&
-      !props.publicView,
+      // investor can invest
+      (props.eto.subState !== EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE ||
+        // or it's a issuer view
+        !props.publicView),
     renderComponent(EtoViewTabsLayout),
   ),
   branch<IProps>(
     props =>
-      !!props.eto.contract &&
+      isOnChain(props.eto) &&
       [
         EETOStateOnChain.Public,
         EETOStateOnChain.Signing,

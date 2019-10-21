@@ -20,4 +20,5 @@ export const externalRoutes = {
   tos: "https://neufund.org/terms-of-use",
   privacyPolicy: "https://neufund.org/privacy-policy",
   ipfsDocument: "https://ipfs.io/ipfs/:ipfsHash",
+  icoMonitorStats: "https://icomonitor.io/#/stats/:etoId",
 };

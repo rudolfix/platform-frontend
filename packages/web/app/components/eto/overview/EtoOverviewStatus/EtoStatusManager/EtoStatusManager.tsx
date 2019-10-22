@@ -1,7 +1,7 @@
 import * as React from "react";
 import { compose } from "recompose";
 
-import { selectEtoOnChainStateById } from "../../../../../modules/eto/selectors";
+import { selectEtoOnChainStateById, selectEtoWithCompanyAndContract } from "../../../../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../../modules/eto/types";
 import { isOnChain } from "../../../../../modules/eto/utils";
 import {
@@ -18,13 +18,15 @@ import { EtoMaxCapExceededWidget } from "../EtoMaxCapExceeded";
 import { InvestmentWidget } from "../InvestmentWidget/InvestmentWidget";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
+import { DataUnavailableError } from "../../../../../utils/errors";
 
 interface IExternalProps {
-  eto: TEtoWithCompanyAndContract;
+  previewCode: string;
   isEmbedded: boolean;
 }
 
 interface IStateProps {
+  eto: TEtoWithCompanyAndContract;
   isEligibleToPreEto: boolean;
   maxCapExceeded: boolean;
 }
@@ -106,17 +108,25 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
     }
 
     default:
-      throw new Error(`State (${timedState}) is not known. Please provide implementation.`);
+      throw new Error(`State (${timedState}) is not known. Please provide an implementation.`);
   }
 };
 
 export const EtoStatusManager = compose<IStateProps & IExternalProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
-    stateToProps: (state, props) => ({
-      isEligibleToPreEto: selectIsEligibleToPreEto(state, props.eto.etoId),
-      isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
-      maxCapExceeded: selectInitialMaxCapExceeded(state, props.eto.etoId),
-    }),
+    stateToProps: (state, props) => {
+      const eto = selectEtoWithCompanyAndContract(state, props.previewCode);
+      if (eto) {
+        return {
+          eto,
+          isEligibleToPreEto: selectIsEligibleToPreEto(state, eto.etoId),
+          isPreEto: selectEtoOnChainStateById(state, eto.etoId) === EETOStateOnChain.Whitelist,
+          maxCapExceeded: selectInitialMaxCapExceeded(state, eto.etoId),
+        }
+      } else {
+        throw new DataUnavailableError("eto cannot be undefined at this point")
+      }
+    },
   }),
   withContainer(EtoStatusManagerContainer),
 )(EtoStatusComponentChooser);

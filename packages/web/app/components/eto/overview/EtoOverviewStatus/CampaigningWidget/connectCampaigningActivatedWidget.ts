@@ -86,10 +86,7 @@ const connectCampaigningActivatedWidget = (
             investorsCount,
           }),
           maxPledge: investmentCalculatedValues && investmentCalculatedValues.effectiveMaxTicket,
-          countdownDate:
-            !!nextStateStartDate && nextStateStartDate > new Date()
-              ? nextStateStartDate
-              : undefined,
+          countdownDate: nextStateStartDate
         };
       },
     ),

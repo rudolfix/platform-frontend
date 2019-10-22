@@ -41,6 +41,10 @@ const highIncome: TFormFixture =
 export const kycInvidualForm: TFormFixture = {
   ...kycPersonBaseForm,
   ...highIncome,
+  isUsCitizen: {
+    value: "false",
+    type: "select",
+  },
   "kyc-personal-start-submit-form": {
     type: "submit",
   },

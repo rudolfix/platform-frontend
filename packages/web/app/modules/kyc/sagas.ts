@@ -158,7 +158,7 @@ function* submitIndividualData(
     );
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
     yield put(actions.routing.goToKYCIndividualDocumentVerification());
-  } catch (e) {
+  } catch {
     notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
   }
 }

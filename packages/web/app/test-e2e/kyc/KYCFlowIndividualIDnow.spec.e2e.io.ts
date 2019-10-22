@@ -21,7 +21,7 @@ const initiateIDNowKyc = () => {
   cy.get(tid("kyc-panel-outsourced")).should("exist");
 };
 
-describe("KYC Personal flow with ID Now", () => {
+describe.skip("KYC Personal flow with ID Now", () => {
   it("should go through ID Now Cancel then try ID now again", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       initiateIDNowKyc();

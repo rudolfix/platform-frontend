@@ -16,7 +16,6 @@ describe("Eto presale state", () => {
     cy.get(tid("bookbuilding-widget.closed")).should("exist");
 
     cy.get(tid("settings.fundraising-statistics")).should("exist");
-    cy.get(tid("settings.public-sale-counter")).should("not.exist");
     cy.get(tid("settings.presale-counter")).should("exist");
 
     cy.get(tid("bookbuilding-widget.stats.amount-backed")).contains("500 000 EUR");

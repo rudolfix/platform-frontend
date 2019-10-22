@@ -13,9 +13,8 @@ describe("Eto public state", () => {
 
     assertPublicStep();
 
-    cy.get(tid("settings.fundraising-statistics")).should("exist");
+    cy.get(tid("settings.fundraising-statistics")).should("not.exist");
     cy.get(tid("settings.presale-counter")).should("not.exist");
-    cy.get(tid("settings.public-sale-counter")).should("exist");
 
     cy.get(tid("bookbuilding-widget.closed")).should("not.exist");
   });

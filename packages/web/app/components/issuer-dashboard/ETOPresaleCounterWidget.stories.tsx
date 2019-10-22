@@ -5,7 +5,7 @@ import * as React from "react";
 import { testEto } from "../../../test/fixtures";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { withMockedDate } from "../../utils/storybookHelpers.unsafe";
-import { ETOFundraisingCounterWidget } from "./ETOFundraisingCounterWidget";
+import { ETOPresaleCounterWidget } from "./ETOPresaleCounterWidget";
 
 const dummyNow = new Date(2018, 11, 17);
 const date = moment
@@ -26,6 +26,6 @@ const eto: TEtoWithCompanyAndContract = {
   },
 };
 
-storiesOf("ETOFundraisingCounterWidget", module)
+storiesOf("ETOPresaleCounterWidget", module)
   .addDecorator(withMockedDate(dummyNow))
-  .add("default", () => <ETOFundraisingCounterWidget eto={eto} />);
+  .add("default", () => <ETOPresaleCounterWidget eto={eto} />);

@@ -12,6 +12,7 @@ import {
 } from "../../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../../test/testUtils";
 import { actions } from "../../../../modules/actions";
+import { EAuthStatus } from "../../../../modules/auth/reducer";
 import { watchEto } from "../../../../modules/eto/sagas";
 import { EETOStateOnChain } from "../../../../modules/eto/types";
 import { neuCall } from "../../../../modules/sagasUtils";
@@ -40,6 +41,7 @@ const initialStateBase = {
       userId: "0x353d3030AF583fc0e547Da80700BbD953F330A4b",
     },
     jwt: "blabla",
+    status: EAuthStatus.AUTHORIZED,
   },
   eto,
 };
@@ -58,8 +60,21 @@ describe("EtoStatusManager state change", () => {
   });
 
   it("shows a quote if state is SETUP and Whitelisting is not active", async () => {
-    const initialState = cloneDeep(initialStateBase);
+    const initialState = {
+      ...cloneDeep(initialStateBase),
+      bookBuildingFlow: {
+        pledges: {
+          [testEto.etoId]: undefined,
+        },
+        bookbuildingStats: {
+          [testEto.etoId]: {
+            investorsCount: 0,
+          },
+        },
+      },
+    };
     initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Setup;
+    (initialState.eto.etos[testEto.previewCode].canEnableBookbuilding as unknown) = true;
 
     clock.fakeClock.setSystemTime(
       new Date(testContract.startOfStates[EETOStateOnChain.Whitelist]).valueOf() - 2000,
@@ -83,20 +98,18 @@ describe("EtoStatusManager state change", () => {
   // there is a bootstrap Tooltip component deep inside the component tree
   // that throws for some reason. Skipping this for now
   it.skip("shows the whitelisting component", async () => {
-    const setupWLactiveInitialState = cloneDeep(initialStateBase);
-    setupWLactiveInitialState.eto.contracts[testEto.previewCode].timedState =
-      EETOStateOnChain.Setup;
+    const initialState = cloneDeep(initialStateBase);
+    initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Setup;
 
-    (setupWLactiveInitialState.eto.etos[testEto.previewCode].isBookbuilding as unknown) = true;
-    (setupWLactiveInitialState.eto.etos[testEto.previewCode]
-      .canEnableBookbuilding as unknown) = true;
+    (initialState.eto.etos[testEto.previewCode].isBookbuilding as unknown) = true;
+    (initialState.eto.etos[testEto.previewCode].canEnableBookbuilding as unknown) = true;
 
     clock.fakeClock.setSystemTime(
       new Date(testContract.startOfStates[EETOStateOnChain.Whitelist]).valueOf() - 2000,
     );
 
     const { store, sagaMiddleware } = createIntegrationTestsSetup({
-      initialState: setupWLactiveInitialState,
+      initialState: initialState,
     });
 
     sagaMiddleware.run(function*(): any {

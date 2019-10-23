@@ -125,11 +125,6 @@ const connectCampaigningActivatedWidget = (
         }
       },
     }),
-    // branch<IWithProps & IExternalProps & IStateProps>(
-    //   ({ whitelistingState }) =>
-    //     whitelistingState === EWhitelistingState.LOADING,
-    //   renderComponent(LoadingIndicator),
-    // ),
   )(WrappedComponent);
 
 export { connectCampaigningActivatedWidget, TComponentProps };

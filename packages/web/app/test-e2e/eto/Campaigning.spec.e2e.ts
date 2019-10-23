@@ -1,12 +1,12 @@
 import { etoPublicViewByIdLinkLegacy, etoPublicViewLink } from "../../components/appRouteUtils";
 import { formatThousands } from "../../components/shared/formatters/utils";
+import { fillForm } from "../utils/forms";
 import {
   assertRegister,
   confirmAccessModal,
   etoFixtureAddressByName,
   goToIssuerDashboard,
-} from "../utils";
-import { fillForm } from "../utils/forms";
+} from "../utils/index";
 import { tid } from "../utils/selectors";
 import {
   createAndLoginNewUser,
@@ -167,5 +167,21 @@ describe("Eto campaigning state", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
       cy.get(`${tid("campaigning-your-commitment")} ${tid("value")}`).should("contain", amount);
     });
+  });
+  it("loads bookbuilding data correctly", () => {
+    createAndLoginNewUser({
+      type: "investor",
+      signTosAgreement: true,
+    });
+
+    const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
+
+    cy.server();
+    cy.fixture("etoData.json").as("etoData");
+    cy.route("GET", `**/api/eto-listing/etos/${ETO_ID}`, "@etoData");
+    cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
+
+    //if the bookbuilding data is not loaded at it will show a quote instead of counter
+    cy.get(`${tid("eto-whitelist-countdown")}`).should("exist");
   });
 });

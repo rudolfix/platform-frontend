@@ -7,7 +7,10 @@ import {
   ValidationMessage,
 } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EEtoState,
+  TEtoInvestmentCalculatedValues,
+} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EETOStateOnChain } from "../eto/types";
 
 // TODO: remove state machine duplication! EEtoSubState has same role
@@ -18,13 +21,15 @@ export enum EWhitelistingState {
   LIMIT_REACHED = "limitReached",
   SUSPENDED = "suspended",
   STOPPED = "stopped",
+  LOADING = "loading",
 }
 
 type TcalculateWhitelistingState = {
   canEnableBookbuilding: boolean;
   whitelistingIsActive: boolean;
   bookbuildingLimitReached: boolean;
-  investorsCount: number;
+  investorsCount: number | undefined;
+  investmentCalculatedValues?: TEtoInvestmentCalculatedValues;
 };
 
 export const isPledgeAboveMinimum = (minPledge: number): TestOptions => ({
@@ -64,9 +69,15 @@ export const calculateWhitelistingState = ({
   whitelistingIsActive,
   bookbuildingLimitReached,
   investorsCount,
+  investmentCalculatedValues,
 }: TcalculateWhitelistingState) => {
   //TODO this should be put in line with api after API's canEnableBookbuilding after limit is reached gets fixed by Marcin
-  if (bookbuildingLimitReached) {
+  if (
+    investorsCount === undefined ||
+    (investmentCalculatedValues === undefined && whitelistingIsActive)
+  ) {
+    return EWhitelistingState.LOADING;
+  } else if (bookbuildingLimitReached) {
     return EWhitelistingState.LIMIT_REACHED;
   } else if (whitelistingIsActive) {
     return EWhitelistingState.ACTIVE;

@@ -1,7 +1,7 @@
 import { expect } from "chai";
+import { cloneDeep } from "lodash";
 import * as React from "react";
 import { spy } from "sinon";
-import { cloneDeep } from "lodash";
 
 import { createMount } from "../../../../../test/createMount";
 import { testCompany, testContract, testEto } from "../../../../../test/fixtures";
@@ -39,18 +39,18 @@ const initialStateBase = {
     user: {
       userId: "0x353d3030AF583fc0e547Da80700BbD953F330A4b",
     },
-    jwt: "blabla"
+    jwt: "blabla",
   },
   eto,
 };
 
 const props = {
   isEmbedded: false,
-  previewCode: testEto.previewCode
+  previewCode: testEto.previewCode,
 };
 
 //TODO test all eto state changes, including EtoCard
-describe.only("EtoStatusManager state change", () => {
+describe("EtoStatusManager state change", () => {
   const clock = setupFakeClock();
 
   beforeEach(() => {
@@ -84,15 +84,16 @@ describe.only("EtoStatusManager state change", () => {
   // that throws for some reason. Skipping this for now
   it.skip("shows the whitelisting component", async () => {
     const setupWLactiveInitialState = cloneDeep(initialStateBase);
-    setupWLactiveInitialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Setup;
+    setupWLactiveInitialState.eto.contracts[testEto.previewCode].timedState =
+      EETOStateOnChain.Setup;
 
     (setupWLactiveInitialState.eto.etos[testEto.previewCode].isBookbuilding as unknown) = true;
-    (setupWLactiveInitialState.eto.etos[testEto.previewCode].canEnableBookbuilding as unknown) = true;
+    (setupWLactiveInitialState.eto.etos[testEto.previewCode]
+      .canEnableBookbuilding as unknown) = true;
 
     clock.fakeClock.setSystemTime(
       new Date(testContract.startOfStates[EETOStateOnChain.Whitelist]).valueOf() - 2000,
     );
-
 
     const { store, sagaMiddleware } = createIntegrationTestsSetup({
       initialState: setupWLactiveInitialState,
@@ -107,22 +108,21 @@ describe.only("EtoStatusManager state change", () => {
     );
 
     expect(component.find(tid("eto-overview-status-whitelisting-active")).length).to.eq(1);
-
   });
 
   it("shows the whitelisting component with WhitelistingLimitReached", async () => {
     const initialState = {
       ...cloneDeep(initialStateBase),
       bookBuildingFlow: {
-        pledges:{
-          [testEto.etoId]: undefined
+        pledges: {
+          [testEto.etoId]: undefined,
         },
         bookbuildingStats: {
           [testEto.etoId]: {
-            investorsCount: 500
-          }
-        }
-      }
+            investorsCount: 500,
+          },
+        },
+      },
     };
     initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Setup;
     (initialState.eto.etos[testEto.previewCode].isBookbuilding as unknown) = true;
@@ -144,22 +144,24 @@ describe.only("EtoStatusManager state change", () => {
       wrapWithProviders(() => <EtoStatusManager {...props} />, { store }),
     );
 
-    expect(component.render().find(tid("eto-overview-status-whitelisting-limit-reached")).length).to.eq(1);
+    expect(
+      component.render().find(tid("eto-overview-status-whitelisting-limit-reached")).length,
+    ).to.eq(1);
   });
 
   it("SETUP, shows the whitelisting component with WhitelistingLimitReached", async () => {
     const initialState = {
       ...cloneDeep(initialStateBase),
       bookBuildingFlow: {
-        pledges:{
-          [testEto.etoId]: undefined
+        pledges: {
+          [testEto.etoId]: undefined,
         },
         bookbuildingStats: {
           [testEto.etoId]: {
-            investorsCount: 500
-          }
-        }
-      }
+            investorsCount: 500,
+          },
+        },
+      },
     };
     initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Setup;
     (initialState.eto.etos[testEto.previewCode].isBookbuilding as unknown) = true;
@@ -199,15 +201,15 @@ describe.only("EtoStatusManager state change", () => {
     const initialState = {
       ...cloneDeep(initialStateBase),
       bookBuildingFlow: {
-        pledges:{
-          [testEto.etoId]: undefined
+        pledges: {
+          [testEto.etoId]: undefined,
         },
         bookbuildingStats: {
           [testEto.etoId]: {
-            investorsCount: 10
-          }
-        }
-      }
+            investorsCount: 10,
+          },
+        },
+      },
     };
     initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Setup;
     (initialState.eto.etos[testEto.previewCode].isBookbuilding as unknown) = false;
@@ -242,7 +244,9 @@ describe.only("EtoStatusManager state change", () => {
       wrapWithProviders(() => <EtoStatusManager {...props} />, { store }),
     );
 
-    expect(componentUpdated.find(tid("eto-overview-status-whitelisting-suspended")).length).to.eq(2);
+    expect(componentUpdated.find(tid("eto-overview-status-whitelisting-suspended")).length).to.eq(
+      2,
+    );
     expect(componentUpdated.find(tid("eto-whitelist-countdown")).length).to.eq(0);
     expect(componentUpdated.find(tid("eto-whitelist-countdown-finished")).length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.be.calledOnceWith(props.previewCode);
@@ -285,7 +289,6 @@ describe.only("EtoStatusManager state change", () => {
     clock.fakeClock.setSystemTime(
       new Date(testContract.startOfStates[EETOStateOnChain.Signing]).valueOf() - 2000,
     );
-
 
     const { store, sagaMiddleware } = createIntegrationTestsSetup({
       initialState,

@@ -1,7 +1,10 @@
 import * as React from "react";
 import { compose } from "recompose";
 
-import { selectEtoOnChainStateById, selectEtoWithCompanyAndContract } from "../../../../../modules/eto/selectors";
+import {
+  selectEtoOnChainStateById,
+  selectEtoWithCompanyAndContract,
+} from "../../../../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../../modules/eto/types";
 import { isOnChain } from "../../../../../modules/eto/utils";
 import {
@@ -9,6 +12,7 @@ import {
   selectIsEligibleToPreEto,
 } from "../../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../../store";
+import { DataUnavailableError } from "../../../../../utils/errors";
 import { withContainer } from "../../../../../utils/withContainer.unsafe";
 import { CampaigningActivatedWidget } from "../CampaigningWidget/CampaigningActivatedWidget";
 import { ClaimWidget } from "../ClaimRefundWidget/ClaimWidget";
@@ -18,7 +22,6 @@ import { EtoMaxCapExceededWidget } from "../EtoMaxCapExceeded";
 import { InvestmentWidget } from "../InvestmentWidget/InvestmentWidget";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
-import { DataUnavailableError } from "../../../../../utils/errors";
 
 interface IExternalProps {
   previewCode: string;
@@ -71,6 +74,7 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
         />
       );
     }
+
     case EETOStateOnChain.Whitelist: {
       if (isEligibleToPreEto) {
         return <InvestmentWidget eto={eto} isEmbedded={isEmbedded} />;
@@ -122,9 +126,9 @@ export const EtoStatusManager = compose<IStateProps & IExternalProps, IExternalP
           isEligibleToPreEto: selectIsEligibleToPreEto(state, eto.etoId),
           isPreEto: selectEtoOnChainStateById(state, eto.etoId) === EETOStateOnChain.Whitelist,
           maxCapExceeded: selectInitialMaxCapExceeded(state, eto.etoId),
-        }
+        };
       } else {
-        throw new DataUnavailableError("eto cannot be undefined at this point")
+        throw new DataUnavailableError("eto cannot be undefined at this point");
       }
     },
   }),

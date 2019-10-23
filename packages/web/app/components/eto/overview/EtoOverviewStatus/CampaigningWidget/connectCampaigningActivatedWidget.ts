@@ -1,7 +1,8 @@
-import { branch, compose, renderComponent, setDisplayName, withProps } from "recompose";
+import { compose, setDisplayName, withProps } from "recompose";
 
 import { TEtoInvestmentCalculatedValues } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
+import { actions } from "../../../../../modules/actions";
 import {
   selectIsAuthorized,
   selectIsInvestor,
@@ -18,14 +19,14 @@ import {
 } from "../../../../../modules/bookbuilding-flow/utils";
 import { EETOStateOnChain } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
-import { OmitKeys } from "../../../../../types";
-import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
+import { onEnterAction } from "../../../../../utils/OnEnterAction";
+import { onLeaveAction } from "../../../../../utils/OnLeaveAction";
 
 interface IExternalProps {
   etoId: string;
   investorsLimit: number;
   minPledge: number;
-  investmentCalculatedValues?: TEtoInvestmentCalculatedValues;
+  investmentCalculatedValues: TEtoInvestmentCalculatedValues | undefined;
   nextState: EETOStateOnChain;
   nextStateStartDate?: Date;
   whitelistingIsActive: boolean;
@@ -35,8 +36,8 @@ interface IExternalProps {
 }
 
 interface IStateProps {
-  pledgedAmount: number;
-  investorsCount: number;
+  pledgedAmount: number | undefined;
+  investorsCount: number | undefined;
   isAuthorized: boolean;
   isInvestor: boolean;
   isVerifiedInvestor: boolean;
@@ -49,9 +50,25 @@ interface IWithProps {
   maxPledge?: number;
 }
 
-type TComponentProps = OmitKeys<IExternalProps, "canEnableBookbuilding" | "whitelistingIsActive"> &
-  IStateProps &
-  IWithProps;
+type TComponentProps = {
+  etoId: string;
+  investorsLimit: number;
+  minPledge: number;
+  investmentCalculatedValues: TEtoInvestmentCalculatedValues | undefined;
+  nextState: EETOStateOnChain;
+  nextStateStartDate?: Date;
+  keyQuoteFounder: string;
+  isEmbedded: boolean;
+  pledgedAmount: number;
+  investorsCount: number;
+  isAuthorized: boolean;
+  isInvestor: boolean;
+  isVerifiedInvestor: boolean;
+  pledge?: IPledge;
+  whitelistingState: EWhitelistingState;
+  countdownDate: Date | undefined;
+  maxPledge?: number;
+};
 
 const connectCampaigningActivatedWidget = (
   WrappedComponent: React.ComponentType<TComponentProps>,
@@ -77,24 +94,42 @@ const connectCampaigningActivatedWidget = (
         investorsCount,
         investmentCalculatedValues,
       }) => {
-        const bookbuildingLimitReached = investorsLimit - investorsCount === 0;
+        const bookbuildingLimitReached =
+          investorsCount !== undefined && investorsLimit - investorsCount === 0;
         return {
           whitelistingState: calculateWhitelistingState({
             canEnableBookbuilding,
             whitelistingIsActive,
             bookbuildingLimitReached,
             investorsCount,
+            investmentCalculatedValues,
           }),
           maxPledge: investmentCalculatedValues && investmentCalculatedValues.effectiveMaxTicket,
-          countdownDate: nextStateStartDate
+          countdownDate: nextStateStartDate,
         };
       },
     ),
-    branch<IWithProps & IExternalProps>(
-      ({ whitelistingState, investmentCalculatedValues }) =>
-        whitelistingState === EWhitelistingState.ACTIVE && !investmentCalculatedValues,
-      renderComponent(LoadingIndicator),
-    ),
+    onEnterAction<IStateProps & IExternalProps & IWithProps>({
+      actionCreator: (dispatch, props) => {
+        if (props.whitelistingState === EWhitelistingState.ACTIVE) {
+          dispatch(actions.bookBuilding.bookBuildingStartWatch(props.etoId));
+        } else if (props.whitelistingState === EWhitelistingState.LOADING) {
+          dispatch(actions.bookBuilding.loadBookBuildingStats(props.etoId));
+        }
+      },
+    }),
+    onLeaveAction<IStateProps & IExternalProps & IWithProps>({
+      actionCreator: (dispatch, props) => {
+        if (props.whitelistingState === EWhitelistingState.ACTIVE) {
+          dispatch(actions.bookBuilding.bookBuildingStopWatch(props.etoId));
+        }
+      },
+    }),
+    // branch<IWithProps & IExternalProps & IStateProps>(
+    //   ({ whitelistingState }) =>
+    //     whitelistingState === EWhitelistingState.LOADING,
+    //   renderComponent(LoadingIndicator),
+    // ),
   )(WrappedComponent);
 
 export { connectCampaigningActivatedWidget, TComponentProps };

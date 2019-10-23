@@ -213,7 +213,8 @@ export const BookBuildingWidgetComponent: React.FunctionComponent<TProps> = ({
           />
         </DashboardWidget>
       );
-
+    case EWhitelistingState.LOADING:
+      return <LoadingIndicator />;
     default:
       return assertNever(whitelistingState);
   }

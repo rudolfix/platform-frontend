@@ -6,7 +6,8 @@ import {
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { DeepPartial, EthereumAddressWithChecksum, Overwrite } from "../../types";
+import { DeepPartial, Overwrite } from "../../types";
+import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
 import { isPastInvestment } from "../investor-portfolio/utils";
 import {
   EETOStateOnChain,

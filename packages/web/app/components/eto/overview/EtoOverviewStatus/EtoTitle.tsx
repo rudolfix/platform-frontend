@@ -7,6 +7,7 @@ import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { TokenSymbolWidget } from "./TokenSymbolWidget";
 
+import * as tokenIcon from "../../../../assets/img/token_icon.svg";
 import * as styles from "./EtoOverviewStatus.module.scss";
 
 interface IExternalProps {
@@ -58,7 +59,7 @@ export const EtoTitle: React.FunctionComponent<IExternalProps & IEtoProp> = ({
       brandName={eto.company.brandName}
       tokenImage={{
         alt: eto.equityTokenName || "",
-        srcSet: { "1x": eto.equityTokenImage || "" },
+        srcSet: { "1x": eto.equityTokenImage || tokenIcon },
       }}
       tokenName={eto.equityTokenName}
       tokenSymbol={eto.equityTokenSymbol || ""}

@@ -11,7 +11,7 @@ import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { getInvestorDocumentTitles } from "../../documents/utils";
 import { Container, EColumnSpan } from "../../layouts/Container";
-import { DocumentTemplateButton } from "../../shared/DocumentLink";
+import { DocumentButton } from "../../shared/DocumentLink";
 import { Panel } from "../../shared/Panel";
 import { DashboardHeading } from "../shared/DashboardHeading";
 
@@ -46,7 +46,7 @@ const DocumentsWidgetLayout: React.FunctionComponent<
               .filter(key => !ignoredTemplatesPublicView.some(template => template === key))
               .map((key, i) => (
                 <Col sm="6" md="12" lg="6" key={i} className={styles.document}>
-                  <DocumentTemplateButton
+                  <DocumentButton
                     onClick={() => downloadDocument(templates[key])}
                     title={documentTitles[templates[key].documentType]}
                   />
@@ -56,7 +56,7 @@ const DocumentsWidgetLayout: React.FunctionComponent<
               .filter(document => canShowDocument(document, isUserFullyVerified))
               .map((document, i) => (
                 <Col sm="6" md="12" lg="6" key={i} className={styles.document}>
-                  <DocumentTemplateButton
+                  <DocumentButton
                     data-test-id={`eto-public-view.documents.${document.documentType}`}
                     onClick={() => downloadDocument(document)}
                     title={documentTitles[document.documentType]}

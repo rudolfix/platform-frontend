@@ -70,12 +70,6 @@ export const foundingDate = date.test(
 
 export const citizen = Yup.bool();
 
-export const isUsCitizen = citizen.test(
-  "is-us-citizen",
-  getMessageTranslation(createMessage(ValidationMessage.VALIDATION_US_CITIZEN)),
-  response => response === false,
-);
-
 export const countryCode = Yup.string();
 export const RESTRICTED_COUNTRIES = [
   ECountries.AFGHANISTAN,

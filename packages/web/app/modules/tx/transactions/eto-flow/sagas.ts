@@ -1,12 +1,13 @@
-import { put, select } from "redux-saga/effects";
+import { fork, put, select } from "redux-saga/effects";
 
 import { ipfsLinkFromHash } from "../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
 import { IAppState } from "../../../../store";
-import { EthereumAddressWithChecksum } from "../../../../types";
-import { actions } from "../../../actions";
+import { EthereumAddressWithChecksum } from "../../../../utils/opaque-types/types";
+import { actions, TActionFromCreator } from "../../../actions";
+import { etoFlowActions } from "../../../eto-flow/actions";
 import {
   selectIsNewPreEtoStartDateValid,
   selectIssuerEto,
@@ -15,11 +16,12 @@ import {
 } from "../../../eto-flow/selectors";
 import { TEtoWithCompanyAndContract } from "../../../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
-import { neuCall } from "../../../sagasUtils";
+import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 
-export function* generateSetStartDateTransaction({
+function* generateSetStartDateTransaction({
   contractsService,
   web3Manager,
 }: TGlobalDependencies): any {
@@ -59,7 +61,7 @@ export function* generateSetStartDateTransaction({
 
 type TExtraParams = { eto: TEtoWithCompanyAndContract; agreementHash: string };
 
-export function* generateSignInvestmentAgreementTx(
+function* generateSignInvestmentAgreementTx(
   { contractsService, web3Manager }: TGlobalDependencies,
   extraParam: TExtraParams,
 ): any {
@@ -98,7 +100,7 @@ export function* generateSignInvestmentAgreementTx(
   }
 }
 
-export function* etoSetDateGenerator(_: TGlobalDependencies): any {
+function* etoSetDateGenerator(_: TGlobalDependencies): any {
   const generatedTxDetails = yield neuCall(generateSetStartDateTransaction);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
@@ -111,7 +113,7 @@ export function* etoSetDateGenerator(_: TGlobalDependencies): any {
   );
 }
 
-export function* etoSignInvestmentAgreementGenerator(
+function* etoSignInvestmentAgreementGenerator(
   _: TGlobalDependencies,
   extraParam: TExtraParams,
 ): any {
@@ -121,3 +123,41 @@ export function* etoSignInvestmentAgreementGenerator(
     actions.txSender.txSenderContinueToSummary<ETxSenderType.SIGN_INVESTMENT_AGREEMENT>(undefined),
   );
 }
+
+function* etoSetDateSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield put(actions.etoFlow.setEtoDateStart());
+
+    yield txSendSaga({
+      type: ETxSenderType.ETO_SET_DATE,
+      transactionFlowGenerator: etoSetDateGenerator,
+    });
+    logger.info("Setting ETO date successful");
+  } catch (e) {
+    logger.info("Setting ETO date cancelled", e);
+    yield put(actions.etoFlow.setEtoDateStop());
+  }
+}
+
+function* etoSignInvestmentAgreementSaga(
+  { logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.etoFlow.signInvestmentAgreement>,
+): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.SIGN_INVESTMENT_AGREEMENT,
+      transactionFlowGenerator: etoSignInvestmentAgreementGenerator,
+      extraParam: action.payload,
+    });
+    logger.info("Signing investment agreement was successful");
+  } catch (e) {
+    logger.info("Signing investment agreement was cancelled", e);
+  } finally {
+    yield put(actions.eto.loadSignedInvestmentAgreement(action.payload.eto));
+  }
+}
+
+export const txEtoSetDateSagas = function*(): Iterator<any> {
+  yield fork(neuTakeLatest, "TRANSACTIONS_START_ETO_SET_DATE", etoSetDateSaga);
+  yield fork(neuTakeLatest, etoFlowActions.signInvestmentAgreement, etoSignInvestmentAgreementSaga);
+};

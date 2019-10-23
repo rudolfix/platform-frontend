@@ -1,7 +1,6 @@
-import { channel, delay, Effect } from "redux-saga";
+import { channel, Effect } from "redux-saga";
 import { fork, put, race, take } from "redux-saga/effects";
 
-import { REDIRECT_CHANNEL_WATCH_DELAY } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserActivityMessage } from "../../../lib/dependencies/broadcast-channel/types";
 import { STORAGE_JWT_KEY } from "../../../lib/persistence/JwtObjectStorage";
@@ -76,7 +75,6 @@ export function* watchRedirectChannel(): Iterator<any> {
         yield put(actions.auth.refreshTimer());
         break;
     }
-    yield delay(REDIRECT_CHANNEL_WATCH_DELAY);
   }
 }
 

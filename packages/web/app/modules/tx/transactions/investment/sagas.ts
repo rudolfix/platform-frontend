@@ -1,15 +1,16 @@
 import { BigNumber } from "bignumber.js";
-import { put, select, take } from "redux-saga/effects";
+import { fork, put, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
 import { IAppState } from "../../../../store";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
-import { actions } from "../../../actions";
+import { actions, TActionFromCreator } from "../../../actions";
 import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { EInvestmentType } from "../../../investment-flow/reducer";
+import { onInvestmentTxModalHide } from "../../../investment-flow/sagas";
 import {
   selectInvestmentEthValueUlps,
   selectInvestmentEtoId,
@@ -20,19 +21,20 @@ import {
   selectEquityTokenCountByEtoId,
   selectNeuRewardUlpsByEtoId,
 } from "../../../investor-portfolio/selectors";
-import { neuCall } from "../../../sagasUtils";
+import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../shared/tokenPrice/selectors";
 import { selectEtherTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { txSendSaga } from "../../sender/sagas";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
-import { ETxSenderType } from "../../types";
+import { ETxSenderType, TAdditionalDataByType } from "../../types";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
 
 function* getEtherTokenTransaction(
   { contractsService }: TGlobalDependencies,
   etoId: string,
-  investAmountUlps: string,
+  investAmountUlps: BigNumber,
 ): Iterator<any> {
   const etherTokenBalance = yield select(selectEtherTokenBalance);
   if (!etherTokenBalance) {
@@ -108,7 +110,7 @@ export function* generateInvestmentTransaction(
   return { ...transaction, gas };
 }
 
-export function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any> {
+function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any> {
   yield take(actions.txSender.txSenderAcceptDraft);
 
   const etoId: string = yield select(selectInvestmentEtoId);
@@ -134,14 +136,17 @@ export function* investmentFlowGenerator({ logger }: TGlobalDependencies): Itera
     throw new Error("ETO investment calculated values are empty");
   }
 
-  const additionalData = {
+  const additionalData: TAdditionalDataByType<ETxSenderType.INVEST> = {
     eto: {
       etoId,
       companyName: eto.company.name,
-      existingShareCapital: eto.existingShareCapital,
       equityTokensPerShare: eto.equityTokensPerShare,
-      preMoneyValuationEur: eto.preMoneyValuationEur,
-      investmentCalculatedValues: eto.investmentCalculatedValues,
+      sharePrice: eto.investmentCalculatedValues.sharePrice,
+      equityTokenInfo: {
+        equityTokenSymbol: eto.equityTokenSymbol,
+        equityTokenImage: eto.equityTokenImage,
+        equityTokenName: eto.equityTokenName,
+      },
     },
     investmentEth,
     investmentEur,
@@ -152,5 +157,28 @@ export function* investmentFlowGenerator({ logger }: TGlobalDependencies): Itera
     isIcbm,
   };
 
-  yield put(actions.txSender.txSenderContinueToSummary<ETxSenderType.INVEST>(additionalData));
+  yield put(actions.txSender.txSenderContinueToSummary(additionalData));
 }
+
+function* investSaga(
+  { logger }: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.txTransactions.startInvestment>,
+): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.INVEST,
+      transactionFlowGenerator: investmentFlowGenerator,
+    });
+    logger.info("Investment successful");
+  } catch (e) {
+    // Add clean up functions here ...
+    yield onInvestmentTxModalHide();
+    logger.info("Investment cancelled", e);
+  } finally {
+    yield put(actions.eto.loadEto(payload.etoId));
+  }
+}
+
+export const txInvestmentSagas = function*(): Iterator<any> {
+  yield fork(neuTakeLatest, actions.txTransactions.startInvestment, investSaga);
+};

@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { put, select, take } from "redux-saga/effects";
+import { fork, put, select, take } from "redux-saga/effects";
 
 import { IWindowWithData } from "../../../../../test/helperTypes";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
@@ -7,9 +7,11 @@ import { ITxData } from "../../../../lib/web3/types";
 import { DEFAULT_UPPER_GAS_LIMIT } from "../../../../lib/web3/Web3Manager/Web3Manager";
 import { actions } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
+import { neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherTokenBalanceAsBigNumber } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { isAddressValid } from "../../../web3/utils";
+import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 import { TxUserFlowDetails, TxUserFlowInputData } from "../../user-flow/withdraw/reducer";
 import { selectUserFlowTxDetails, selectUserFlowTxInput } from "../../user-flow/withdraw/selectors";
@@ -117,7 +119,7 @@ export function* generateEthWithdrawTransaction(
   }
 }
 
-export function* ethWithdrawFlow(_: TGlobalDependencies): Iterator<any> {
+function* ethWithdrawFlow(_: TGlobalDependencies): Iterator<any> {
   yield take(actions.txSender.txSenderAcceptDraft);
 
   const txUserFlowData: TxUserFlowDetails = yield select(selectUserFlowTxDetails);
@@ -136,3 +138,19 @@ export function* ethWithdrawFlow(_: TGlobalDependencies): Iterator<any> {
 
   yield put(actions.txSender.txSenderContinueToSummary<ETxSenderType.WITHDRAW>(additionalData));
 }
+
+function* withdrawSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.WITHDRAW,
+      transactionFlowGenerator: ethWithdrawFlow,
+    });
+    logger.info("Withdrawing successful");
+  } catch (e) {
+    logger.info("Withdrawing cancelled", e);
+  }
+}
+
+export const txWithdrawSagas = function*(): Iterator<any> {
+  yield fork(neuTakeLatest, "TRANSACTIONS_START_WITHDRAW_ETH", withdrawSaga);
+};

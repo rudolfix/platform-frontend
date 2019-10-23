@@ -11,7 +11,7 @@ import { getDocumentByType } from "../../../modules/eto-documents/utils";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { TDataTestId, TTranslatedString } from "../../../types";
-import { DocumentTemplateButton } from "../../shared/DocumentLink";
+import { DocumentButton } from "../../shared/DocumentLink";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";
 import { FormatNumberRange } from "../../shared/formatters/FormatNumberRange";
 import { Money } from "../../shared/formatters/Money";
@@ -68,7 +68,7 @@ const DownloadIshaOrTermsheetLink: React.FunctionComponent<TExternalProps & TDis
   const signedIshaDoc = getDocument(EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT);
   if (signedIshaDoc && canShowDocument(signedIshaDoc, isUserFullyVerified)) {
     return (
-      <DocumentTemplateButton
+      <DocumentButton
         data-test-id={`eto-public-view.investment-terms.document.${signedIshaDoc.documentType}`}
         title={<FormattedMessage id="eto.documents.signed-investment-and-shareholder-agreement" />}
         onClick={() => downloadDocument(signedIshaDoc)}
@@ -79,7 +79,7 @@ const DownloadIshaOrTermsheetLink: React.FunctionComponent<TExternalProps & TDis
   const ishaDoc = getDocument(EEtoDocumentType.INVESTMENT_AND_SHAREHOLDER_AGREEMENT_PREVIEW);
   if (ishaDoc && canShowDocument(ishaDoc, isUserFullyVerified)) {
     return (
-      <DocumentTemplateButton
+      <DocumentButton
         data-test-id={`eto-public-view.investment-terms.document.${ishaDoc.documentType}`}
         title={<FormattedMessage id="eto.documents.investment-and-shareholder-agreement-preview" />}
         onClick={() => downloadDocument(ishaDoc)}
@@ -89,7 +89,7 @@ const DownloadIshaOrTermsheetLink: React.FunctionComponent<TExternalProps & TDis
   const signedTermsheetDoc = getDocument(EEtoDocumentType.SIGNED_TERMSHEET);
   if (signedTermsheetDoc) {
     return (
-      <DocumentTemplateButton
+      <DocumentButton
         data-test-id={`eto-public-view.investment-terms.document.${
           signedTermsheetDoc.documentType
         }`}
@@ -360,7 +360,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               data-test-id="eto-public-view-public-eto-duration"
             />
             {eto.templates && eto.templates.reservationAndAcquisitionAgreement && (
-              <DocumentTemplateButton
+              <DocumentButton
                 title={
                   <FormattedMessage id="eto.documents.reservation-and-acquisition-agreement" />
                 }
@@ -470,7 +470,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             />
 
             {eto.templates && eto.templates.companyTokenHolderAgreement && (
-              <DocumentTemplateButton
+              <DocumentButton
                 title={<FormattedMessage id="eto.documents.tokenholder-agreement" />}
                 onClick={() => downloadDocument(eto.templates.companyTokenHolderAgreement)}
               />

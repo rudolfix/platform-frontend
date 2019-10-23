@@ -2,25 +2,21 @@ import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 import { all, fork, put, select } from "redux-saga/effects";
 
-import { convertFromUlps, ECurrency } from "../../components/shared/formatters/utils";
+import { ECurrency } from "../../components/shared/formatters/utils";
 import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import {
-  EEtoState,
-  TEtoDataWithCompany,
-  TEtoSpecsData,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { promisify } from "../../lib/contracts/typechain-runtime";
 import { IAppState } from "../../store";
-import { EthereumAddress } from "../../types";
 import { addBigNumbers } from "../../utils/BigNumberUtils";
 import { nonNullable } from "../../utils/nonNullable";
-import { convertToBigInt } from "../../utils/NumberUtils";
+import { convertFromUlps, convertToUlps } from "../../utils/NumberUtils";
+import { EthereumAddress } from "../../utils/opaque-types/types";
 import { actions, TAction, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
 import { calculateSnapshotDate } from "../contracts/utils";
@@ -85,7 +81,7 @@ export function* loadInvestorTicket(
 
 export function* loadComputedContributionFromContract(
   { contractsService }: TGlobalDependencies,
-  eto: TEtoDataWithCompany,
+  eto: TEtoSpecsData,
   amountEuroUlps?: string,
   isICBM = false,
 ): any {
@@ -94,7 +90,7 @@ export function* loadComputedContributionFromContract(
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
 
   const newInvestorContributionEurUlps =
-    amountEuroUlps || convertToBigInt((eto.minTicketEur && eto.minTicketEur.toString()) || "0");
+    amountEuroUlps || convertToUlps((eto.minTicketEur && eto.minTicketEur.toString()) || "0");
 
   const from: ReturnType<typeof selectEthereumAddressWithChecksum> = yield select(
     selectEthereumAddressWithChecksum,

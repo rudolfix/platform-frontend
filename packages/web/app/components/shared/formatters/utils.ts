@@ -1,9 +1,9 @@
 import BigNumber from "bignumber.js";
 
-import { DEFAULT_DECIMAL_PLACES, Q18 } from "../../../config/constants";
-import { TBigNumberVariant } from "../../../lib/web3/types";
-import { Opaque } from "../../../types";
+import { DEFAULT_DECIMAL_PLACES } from "../../../config/constants";
 import { invariant } from "../../../utils/invariant";
+import { convertFromUlps } from "../../../utils/NumberUtils";
+import { EquityToken } from "../../../utils/opaque-types/types";
 
 export enum ERoundingMode {
   UP = "up",
@@ -54,8 +54,6 @@ export enum ESpecialNumber {
   UNLIMITED = "unlimited",
 }
 
-export type EquityToken = Opaque<"EquityToken", string>;
-
 export type TValueFormat = ECurrency | EPriceFormat | ENumberFormat | EquityToken;
 
 interface IToFixedPrecision {
@@ -104,8 +102,6 @@ export const selectDecimalPlaces = (
     }
   }
 };
-
-export const convertFromUlps = (value: TBigNumberVariant) => new BigNumber(value).div(Q18);
 
 export function formatThousands(value?: string): string {
   // todo remove optionality. This function should accept string only. Leave for now for backward compat.

@@ -30,7 +30,7 @@ import { EColumnSpan } from "../../layouts/Container";
 import { ButtonArrowRight } from "../../shared/buttons/index";
 import { DashboardWidget } from "../../shared/dashboard-widget/DashboardWidget";
 import { Document } from "../../shared/Document";
-import { DocumentTemplateButton } from "../../shared/DocumentLink";
+import { DocumentButton } from "../../shared/DocumentLink";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 import { Money } from "../../shared/formatters/Money";
@@ -106,7 +106,7 @@ const BookBuildingStats = ({ bookBuildingStats, maxPledges, downloadCSV }: IBook
       ) : null}
     </div>
     {bookBuildingStats.investorsCount > 0 ? (
-      <DocumentTemplateButton
+      <DocumentButton
         onClick={downloadCSV}
         title={<FormattedMessage id="eto-bookbuilding-widget.download-bookbuilding-stats" />}
         altIcon={<Document extension="csv" />}

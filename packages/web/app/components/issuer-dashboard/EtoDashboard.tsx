@@ -124,7 +124,6 @@ interface IEtoStateRender {
   offeringDocumentType: EOfferingDocumentType | undefined;
   shouldViewEtoSettings: boolean;
   shouldViewMarketingSubmissionSection: boolean;
-  etoStep: EEtoStep | undefined;
 }
 
 const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> = ({
@@ -136,7 +135,6 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   offeringDocumentType,
   shouldViewEtoSettings,
   shouldViewMarketingSubmissionSection,
-  etoStep,
 }) => {
   const dashboardTitle = (
     <ETOIssuerState eto={eto} size={EProjectStatusSize.LARGE} layout={EProjectStatusLayout.BLACK} />
@@ -203,14 +201,12 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
     case EEtoState.ON_CHAIN:
       return (
         <>
-          {etoStep === EEtoStep.FUNDRAISING_IS_LIVE &&
-            eto.contract &&
-            eto.contract.timedState === EETOStateOnChain.Whitelist && (
-              <>
-                <ETOFundraisingStatistics eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-                <ETOPresaleCounterWidget eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
-              </>
-            )}
+          {eto.contract && eto.contract.timedState === EETOStateOnChain.Whitelist && (
+            <>
+              <ETOFundraisingStatistics eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+              <ETOPresaleCounterWidget eto={eto} columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
+            </>
+          )}
 
           <UploadInvestmentAgreement columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
           <BookBuildingWidget columnSpan={EColumnSpan.ONE_AND_HALF_COL} />
@@ -272,7 +268,7 @@ const VerifiedUserSection: React.FunctionComponent<TVerificationSection> = ({
           <DashboardStep etoStep={etoStep} offeringDocumentType={rest.offeringDocumentType} />
         </Container>
 
-        <EtoDashboardStateViewComponent eto={eto} etoStep={etoStep} {...rest} />
+        <EtoDashboardStateViewComponent eto={eto} {...rest} />
       </>
     );
   } else {

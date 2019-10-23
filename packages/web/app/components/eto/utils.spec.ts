@@ -355,7 +355,7 @@ describe("generate shareholders", () => {
       },
       {
         fullName: "shareholder1",
-        shareCapital: 123,
+        shareCapital: 163,
       },
     ];
     const expectedOutput: TShareholder[] = [
@@ -364,12 +364,12 @@ describe("generate shareholders", () => {
         percentageOfShares: 40,
       },
       {
-        fullName: "Others",
-        percentageOfShares: 35.4,
+        fullName: "shareholder1",
+        percentageOfShares: 32.6,
       },
       {
-        fullName: "shareholder1",
-        percentageOfShares: 24.6,
+        fullName: "Others",
+        percentageOfShares: 27.4,
       },
     ];
     expect(generateShareholders(data, companyShares)).to.deep.eq(expectedOutput);
@@ -434,6 +434,34 @@ describe("generate shareholders", () => {
       {
         fullName: "shareholder3",
         percentageOfShares: 0.9,
+      },
+    ];
+    expect(generateShareholders(data, companyShares)).to.deep.eq(expectedOutput);
+  });
+  it("others should be at the end no matter how much shares it have", () => {
+    const companyShares = 100;
+    const data = [
+      {
+        fullName: "shareholder1",
+        shareCapital: 15,
+      },
+      {
+        fullName: "shareholder2",
+        shareCapital: 21,
+      },
+    ];
+    const expectedOutput: TShareholder[] = [
+      {
+        fullName: "shareholder2",
+        percentageOfShares: 21,
+      },
+      {
+        fullName: "shareholder1",
+        percentageOfShares: 15,
+      },
+      {
+        fullName: "Others",
+        percentageOfShares: 64,
       },
     ];
     expect(generateShareholders(data, companyShares)).to.deep.eq(expectedOutput);

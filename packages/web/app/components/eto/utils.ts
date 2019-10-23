@@ -7,6 +7,7 @@ import { formatFlexiPrecision } from "../../utils/NumberUtils";
 import { TShareholder } from "./public-view/LegalInformationWidget";
 
 const HUNDRED_PERCENT = new BigNumber(100);
+export const OTHERS_NAME = "Others";
 
 export interface ICompoundField {
   [x: string]: string | number | undefined;
@@ -201,6 +202,11 @@ const shareholderSortingFunction = (
   a: TEtoLegalShareholderTypeNarrowed,
   b: TEtoLegalShareholderTypeNarrowed,
 ) => {
+  // Always move Others to end
+  if (a.fullName === OTHERS_NAME) {
+    return 1;
+  }
+
   if (a.shareCapital === b.shareCapital) {
     return 0;
   } else {
@@ -227,7 +233,7 @@ export const generateShareholders = (
 
     if (assignedShares < companyShares) {
       shareholdersData.push({
-        fullName: "Others",
+        fullName: OTHERS_NAME,
         shareCapital: companyShares - assignedShares,
       });
     }

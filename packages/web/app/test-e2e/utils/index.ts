@@ -14,7 +14,7 @@ import {
   toFixedPrecision,
 } from "../../components/shared/formatters/utils";
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
-import { EthereumAddress } from "../../types";
+import { EthereumAddress } from "../../utils/opaque-types/types";
 import { mockApiUrl } from "../config";
 import {
   kycCompanyDocsForm,
@@ -321,8 +321,10 @@ export const parseAmount = (amount: string) => new BigNumber(amount.replace(/\s|
 /**
  * Get eth wallet balance
  */
-export const getWalletEthAmount = () => {
-  goToWallet();
+export const getWalletEthAmount = (navigateToWallet: boolean = true) => {
+  if (navigateToWallet) {
+    goToWallet();
+  }
 
   return cy
     .get(tid("wallet-balance.ether.balance-values.large-value"))

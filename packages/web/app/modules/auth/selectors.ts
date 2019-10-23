@@ -3,12 +3,13 @@ import { createSelector } from "reselect";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
-import { EthereumAddressWithChecksum } from "../../types";
+import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
 import { selectIsUserVerifiedOnBlockchain, selectKycRequestStatus } from "../kyc/selectors";
 import { selectIsLightWallet } from "../web3/selectors";
-import { IAuthState } from "./reducer";
+import { EAuthStatus, IAuthState } from "./reducer";
 
-export const selectIsAuthorized = (state: IAuthState): boolean => !!(state.jwt && state.user);
+export const selectIsAuthorized = (state: IAuthState): boolean =>
+  !!(state.jwt && state.user && state.status === EAuthStatus.AUTHORIZED);
 
 export const selectJwt = (state: IAppState): string | undefined => state.auth.jwt;
 

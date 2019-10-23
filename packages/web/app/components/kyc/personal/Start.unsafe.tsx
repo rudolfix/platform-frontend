@@ -56,12 +56,6 @@ const PEP_VALUES = {
   [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-i-am-not" />,
 };
 
-const US_CITIZEN_VALUES = {
-  [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
-  [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes-i-am" />,
-  [BOOL_FALSE_KEY]: <FormattedMessage id="form.select.no-i-am-not" />,
-};
-
 const HIGH_INCOME_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
   [BOOL_TRUE_KEY]: <FormattedMessage id="form.select.yes" />,
@@ -161,17 +155,6 @@ const KYCForm = injectIntlHelpers<IProps & IKycIndividualData>(
           )
         }
         data-test-id="kyc-personal-start-is-politically-exposed"
-      />
-      <FormSelectField
-        values={US_CITIZEN_VALUES}
-        label={
-          <>
-            <FormattedMessage id={"kyc.personal.us-citizen.question"} />
-            <Tooltip content={formatIntlMessage("kyc.personal.us-citizen.disclaimer")} />
-          </>
-        }
-        name="isUsCitizen"
-        data-test-id="kyc-personal-start-is-us-citizen"
       />
       {process.env.NF_DISABLE_HIGH_INCOME !== "1" && (
         <FormSelectField

@@ -1,4 +1,5 @@
-import { ICO_MONITOR_STATS_URL } from "../../config/constants";
+import { externalRoutes } from "../../config/externalRoutes";
+import { withParams } from "../../utils/withParams";
 import { etoFixtureAddressByName, tid } from "../utils";
 import { loginFixtureAccount } from "../utils/userHelpers";
 import { goToEtoViewById } from "./EtoViewUtils";
@@ -6,13 +7,10 @@ import { goToEtoViewById } from "./EtoViewUtils";
 const assertFundraisingStatisticsTab = (etoId: string) => {
   goToEtoViewById(etoId);
 
-  cy.get(tid("eto.public-view.fundraising-statistics"))
-    .should("exist")
-    .click();
+  cy.get(tid("eto.public-view.fundraising-statistics")).click();
   cy.get(tid("eto.public-view.fundraising-statistics.iframe"))
-    .should("exist")
     .and("have.attr", "src")
-    .and("include", `${ICO_MONITOR_STATS_URL}${etoId}`);
+    .and("include", withParams(externalRoutes.icoMonitorStats, { etoId }));
 };
 
 const assertNoFundraisingStatisticsTab = (etoId: string) => {

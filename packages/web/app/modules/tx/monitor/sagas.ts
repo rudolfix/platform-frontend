@@ -13,6 +13,7 @@ import { actions } from "../../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
 import { txMonitorSaga } from "../sender/sagas";
+import { InvestmentAdditionalDataSchema } from "../transactions/investment/types";
 import { ETxSenderType, TSpecificTransactionState } from "../types";
 import { SchemaMismatchError } from "./errors";
 import { selectPlatformPendingTransaction } from "./selectors";
@@ -99,22 +100,38 @@ export function* markTransactionAsPending(
   return transactionTimestamp;
 }
 
-export function* makeSureWithdrawSchemaIsUpToDate(
-  pendingTransaction: TxPendingWithMetadata | undefined,
+export function* ensumrePendingTransactionSchemaIsValid(
+  pendingTransaction: TxPendingWithMetadata,
 ): Iterator<any> {
   // THIS IS A TEMPORARY PATCH A GENERAL SOLUTION THAT INCLUDES VERSIONING SHOULD COVER ALL TX TYPES
-  if (pendingTransaction && pendingTransaction.transactionType === ETxSenderType.WITHDRAW) {
-    if (
-      pendingTransaction.transactionAdditionalData === undefined ||
-      (pendingTransaction.transactionAdditionalData &&
-        (pendingTransaction.transactionAdditionalData.to === undefined ||
-          pendingTransaction.transactionAdditionalData.amount === undefined ||
-          pendingTransaction.transactionAdditionalData.amountEur === undefined ||
-          pendingTransaction.transactionAdditionalData.totalEur === undefined ||
-          pendingTransaction.transactionAdditionalData.total === undefined))
-    ) {
-      throw new SchemaMismatchError();
+  switch (pendingTransaction.transactionType) {
+    case ETxSenderType.WITHDRAW:
+      if (
+        pendingTransaction.transactionAdditionalData === undefined ||
+        (pendingTransaction.transactionAdditionalData &&
+          (pendingTransaction.transactionAdditionalData.to === undefined ||
+            pendingTransaction.transactionAdditionalData.amount === undefined ||
+            pendingTransaction.transactionAdditionalData.amountEur === undefined ||
+            pendingTransaction.transactionAdditionalData.totalEur === undefined ||
+            pendingTransaction.transactionAdditionalData.total === undefined))
+      ) {
+        throw new SchemaMismatchError(ETxSenderType.WITHDRAW);
+      }
+      break;
+
+    case ETxSenderType.INVEST: {
+      const isValid = yield InvestmentAdditionalDataSchema.toYup().isValid(
+        pendingTransaction.transactionAdditionalData,
+      );
+
+      if (!isValid) {
+        throw new SchemaMismatchError(ETxSenderType.INVEST);
+      }
+      break;
     }
+
+    default:
+      return;
   }
 }
 
@@ -124,10 +141,10 @@ export function* updatePendingTxs({
   logger,
 }: TGlobalDependencies): any {
   let apiPendingTx: TPendingTxs = yield apiUserService.pendingTxs();
-  const pendingTransaction: TxPendingWithMetadata | undefined = apiPendingTx.pendingTransaction;
 
   // check whether transaction was mined
-  if (pendingTransaction) {
+  if (apiPendingTx.pendingTransaction) {
+    const pendingTransaction = apiPendingTx.pendingTransaction;
     const txHash = pendingTransaction.transaction.hash;
 
     if (pendingTransaction.transactionStatus === undefined) {
@@ -174,13 +191,23 @@ export function* updatePendingTxs({
       }
     }
   }
+
   try {
-    yield makeSureWithdrawSchemaIsUpToDate(pendingTransaction);
+    // If there is a pending transaction, check if schema is valid
+    if (apiPendingTx.pendingTransaction) {
+      yield ensumrePendingTransactionSchemaIsValid(apiPendingTx.pendingTransaction);
+    }
+
     yield put(actions.txMonitor.setPendingTxs(apiPendingTx));
   } catch (e) {
     if (e instanceof SchemaMismatchError) {
-      logger.warn(new Error("Found Withdraw Schema Mismatch"));
-      yield apiUserService.deletePendingTx(apiPendingTx.pendingTransaction!.transaction.hash);
+      logger.warn("Found pending transaction Schema Mismatch", e);
+
+      if (apiPendingTx.pendingTransaction) {
+        yield apiUserService.deletePendingTx(apiPendingTx.pendingTransaction.transaction.hash);
+      }
+    } else {
+      throw e;
     }
   }
 }
@@ -223,7 +250,21 @@ export const createWatchTxChannel = ({ web3Manager }: TGlobalDependencies, txHas
     };
   });
 
+function* removePendingTransaction({ logger }: TGlobalDependencies): Iterator<any> {
+  try {
+    // call delete transaction saga
+    yield neuCall(deletePendingTransaction);
+
+    logger.info("Pending transaction has been deleted");
+  } catch (e) {
+    logger.error(new Error("Unable to delete pending transaction"));
+  } finally {
+    yield put(actions.txSender.txSenderHideModal());
+  }
+}
+
 export function* txMonitorSagas(): any {
   yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, txMonitor);
   yield fork(neuTakeLatest, actions.txMonitor.monitorPendingPlatformTx, txMonitorSaga);
+  yield fork(neuTakeLatest, actions.txMonitor.deletePendingTransaction, removePendingTransaction);
 }

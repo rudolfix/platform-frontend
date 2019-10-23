@@ -9,7 +9,7 @@ import { ITxData } from "../../lib/web3/types";
 import { IAppState } from "../../store";
 import { addBigNumbers, compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
 import { nonNullable } from "../../utils/nonNullable";
-import { convertToBigInt } from "../../utils/NumberUtils";
+import { convertToUlps } from "../../utils/NumberUtils";
 import { extractNumber } from "../../utils/StringUtils";
 import { actions, TAction } from "../actions";
 import {
@@ -52,7 +52,7 @@ function* processCurrencyValue(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_SUBMIT_INVESTMENT_VALUE") return;
   const state: IAppState = yield select();
 
-  const value = action.payload.value && convertToBigInt(extractNumber(action.payload.value));
+  const value = action.payload.value && convertToUlps(extractNumber(action.payload.value));
   const curr = action.payload.currency;
   const oldVal =
     curr === ECurrency.ETH

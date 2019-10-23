@@ -3,7 +3,11 @@ import { delay } from "redux-saga";
 import * as Web3 from "web3";
 
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
-import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "../../types";
+import {
+  EthereumAddress,
+  EthereumAddressWithChecksum,
+  EthereumNetworkId,
+} from "../../utils/opaque-types/types";
 import { promisify } from "../../utils/PromiseUtils";
 
 class Web3Error extends Error {}
@@ -238,7 +242,7 @@ export class Web3Adapter {
     return getBlockNumber();
   }
 
-  public isSmartContract(address: EthereumAddressWithChecksum): Promise<boolean> {
+  public isSmartContract(address: EthereumAddress): Promise<boolean> {
     // in case of missing smartcontract, code can be equal to "0x0" or "0x" depending on exact web3 implementation
     // to cover all these cases we just check against the source code length — there won't be any meaningful EVM program in less then 3 chars
     return promisify<string>(this.web3.eth.getCode)(address).then(v => v.length >= 4);

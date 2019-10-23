@@ -12,7 +12,7 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { symbols } from "../../../di/symbols";
 import { EWalletSubType, EWalletType, ILightWalletMetadata } from "../../../modules/web3/types";
-import { EthereumAddress } from "../../../types";
+import { EthereumAddress } from "../../../utils/opaque-types/types";
 import { ILogger } from "../../dependencies/logger";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { IEthereumNetworkConfig, IRawTxData } from "./../types";
@@ -146,13 +146,19 @@ export class LightWallet implements IPersonalWallet {
     return await testWalletPassword(this.vault.walletInstance, newPassword);
   }
 
-  public getMetadata = (): ILightWalletMetadata => ({
-    address: this.ethereumAddress,
-    email: this.email,
-    salt: this.vault.salt,
-    walletType: this.walletType,
-    walletSubType: this.walletSubType,
-  });
+  public getMetadata(): ILightWalletMetadata {
+    return {
+      address: this.ethereumAddress,
+      email: this.email,
+      salt: this.vault.salt,
+      walletType: this.walletType,
+      walletSubType: this.walletSubType,
+    };
+  }
+
+  public isUnlocked(): boolean {
+    return !!this.password;
+  }
 }
 
 @injectable()

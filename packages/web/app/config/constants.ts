@@ -87,13 +87,9 @@ export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
  * Storage Listener Constants
  */
 
-export const REDIRECT_CHANNEL_WATCH_DELAY = 5000;
-
 export const IPFS_PROTOCOL = "ipfs";
 
 export const NOMINEE_REQUESTS_WATCHER_DELAY = 10000;
 export const NOMINEE_BANK_ACCOUNT_WATCHER_DELAY = 1000 * 60 * 5;
 export const PAYOUT_POLLING_DELAY = 1000;
 export const NEXT_ETO_STATE_POLLING_DELAY = 5000;
-
-export const ICO_MONITOR_STATS_URL = "https://icomonitor.io/#/stats/";

@@ -3,7 +3,7 @@ import { BigNumber } from "bignumber.js";
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { IAppState } from "../../../../store";
 import { compareBigNumbers, subtractBigNumbers } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/NumberUtils";
+import { convertToUlps } from "../../../../utils/NumberUtils";
 import { EInvestmentType } from "../../../investment-flow/reducer";
 import {
   selectLiquidEtherBalance,
@@ -73,7 +73,7 @@ export const selectMaximumInvestment = (state: IAppState): string => {
   // Compare rounded balance to value provided by user
   // if both are the same use entire wallet balance
   // if not use value provided by user
-  return compareBigNumbers(selectedAmountUlps, convertToBigInt(roundedBalance)) === 0
+  return compareBigNumbers(selectedAmountUlps, convertToUlps(roundedBalance)) === 0
     ? walletBalanceUlps
     : selectedAmountUlps;
 };

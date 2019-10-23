@@ -1,5 +1,7 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
+import { OTHERS_NAME } from "../../eto/utils";
 import { Money } from "../formatters/Money";
 import { ENumberFormat, ENumberInputFormat, ENumberOutputFormat } from "../formatters/utils";
 
@@ -29,7 +31,11 @@ export const ChartLegend: React.FunctionComponent<IProps> = ({ data }) => (
             style={{ backgroundColor: dataset.backgroundColor[index] }}
           />
           <div>
-            {`${data.labels[index]} `}
+            {data.labels[index] === OTHERS_NAME ? (
+              <FormattedMessage id="shared.chart-doughnut.others" />
+            ) : (
+              data.labels[index]
+            )}{" "}
             <Money
               value={value}
               inputFormat={ENumberInputFormat.FLOAT}

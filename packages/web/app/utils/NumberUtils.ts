@@ -16,11 +16,11 @@ export function isLessThanOrEqualToZero(value: TBigNumberVariant): boolean {
   return bigNumberValue.lessThanOrEqualTo(0);
 }
 
-export function convertToBigInt(value: TBigNumberVariant, currencyDecimals?: number): string {
-  const q = currencyDecimals ? new BigNumber(10).pow(currencyDecimals) : Q18;
-  const moneyInWei = q.mul(value);
-  return moneyInWei.toFixed(0, BigNumber.ROUND_UP);
-}
+export const convertFromUlps = (value: TBigNumberVariant) => new BigNumber(value).div(Q18);
+
+export const convertToUlps = (value: TBigNumberVariant) =>
+  Q18.mul(value).toFixed(0, BigNumber.ROUND_UP);
+
 /*
  * @deprecated
  * */

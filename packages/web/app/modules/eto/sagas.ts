@@ -9,7 +9,6 @@ import { IWindowWithData } from "../../../test/helperTypes";
 import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/documents/utils";
 import { DocumentConfidentialityAgreementModal } from "../../components/eto/public-view/DocumentConfidentialityAgreementModal";
 import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
-import { convertFromUlps } from "../../components/shared/formatters/utils";
 import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { Q18 } from "../../config/constants";
@@ -36,6 +35,7 @@ import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
 import { divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { invariant } from "../../utils/invariant";
+import { convertFromUlps } from "../../utils/NumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadPledgeData } from "../bookbuilding-flow/utils";
@@ -43,7 +43,7 @@ import { selectMyAssets } from "../investor-portfolio/selectors";
 import { waitForKycStatus } from "../kyc/sagas";
 import { selectClientJurisdiction } from "../kyc/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
-import { getAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/saga";
+import { getAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/sagas";
 import {
   EAgreementType,
   IAgreementContractAndHash,
@@ -165,7 +165,7 @@ function* loadEto(
 
 export function* loadEtoContract(
   { contractsService, logger }: TGlobalDependencies,
-  { etoId, previewCode, state }: TEtoDataWithCompany,
+  { etoId, previewCode, state }: TEtoSpecsData,
 ): Iterator<any> {
   if (state !== EEtoState.ON_CHAIN) {
     logger.error("Invalid eto state", new InvalidETOStateError(state, EEtoState.ON_CHAIN), {

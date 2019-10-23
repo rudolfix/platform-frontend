@@ -12,6 +12,7 @@ import {
   TEtoWithCompanyAndContract,
 } from "../../../../modules/eto/types";
 import { ICalculatedContribution } from "../../../../modules/investor-portfolio/types";
+import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
 import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
 import { EtoOverviewThumbnail } from "./EtoOverviewThumbnail";
@@ -29,7 +30,7 @@ const rootEto: TEtoWithCompanyAndContract = {
   maxTicketEur: 1000,
   minTicketEur: 1,
   equityTokenName: "TokenName",
-  equityTokenSymbol: "TKN",
+  equityTokenSymbol: toEquityTokenSymbol("TKN"),
 };
 
 // 2018-11-16T05:03:56.000Z

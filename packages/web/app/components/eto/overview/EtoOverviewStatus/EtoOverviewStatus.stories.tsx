@@ -10,6 +10,7 @@ import {
   IEtoContractData,
   TEtoWithCompanyAndContract,
 } from "../../../../modules/eto/types";
+import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
 import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
 import { ECurrency } from "../../../shared/formatters/utils";
@@ -26,7 +27,7 @@ const eto: TEtoWithCompanyAndContract = {
   maxTicketEur: 1000,
   minTicketEur: 1,
   equityTokenName: "TokenName",
-  equityTokenSymbol: "TKN",
+  equityTokenSymbol: toEquityTokenSymbol("TKN"),
   company: { ...testEto.company, brandName: "BrandName" },
   contract: {
     ...testEto.contract!,

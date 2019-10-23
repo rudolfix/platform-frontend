@@ -1,13 +1,22 @@
 import { expect } from "chai";
 
-import { convertToBigInt, isLessThanOrEqualToZero, isZero, normalize } from "./NumberUtils";
+import {
+  convertFromUlps,
+  convertToUlps,
+  isLessThanOrEqualToZero,
+  isZero,
+  normalize,
+} from "./NumberUtils";
 
-describe("convertToBigInt", () => {
-  it("converts decimal currencies to bigInt representation", () => {
-    expect(convertToBigInt("123.4567")).to.eq("123456700000000000000");
-    expect(convertToBigInt("123.4567", 6)).to.eq("123456700");
-    expect(convertToBigInt("123.4567", 2)).to.eq("12346");
-    expect(convertToBigInt("65.4321", 2)).to.eq("6544");
+describe("convertToUlps", () => {
+  it("converts decimal to ulps representation", () => {
+    expect(convertToUlps("123.4567")).to.eq("123456700000000000000");
+  });
+});
+
+describe("convertFromUlps", () => {
+  it("converts ulps to decimal representation", () => {
+    expect(convertFromUlps("123456700000000000000").toString()).to.eq("123.4567");
   });
 });
 

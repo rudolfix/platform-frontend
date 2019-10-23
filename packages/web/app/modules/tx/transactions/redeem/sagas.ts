@@ -1,23 +1,28 @@
 import BigNumber from "bignumber.js";
-import { put, select, take } from "redux-saga/effects";
+import { fork, put, select, take } from "redux-saga/effects";
 
 import { MONEY_DECIMALS } from "../../../../config/constants";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
 import { DeepReadonly } from "../../../../types";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
-import { convertToBigInt } from "../../../../utils/NumberUtils";
+import { convertToUlps } from "../../../../utils/NumberUtils";
 import { actions } from "../../../actions";
-import { selectBankFeeUlps } from "../../../bank-transfer-flow/selectors";
+import { EBankTransferType } from "../../../bank-transfer-flow/reducer";
+import {
+  selectBankFeeUlps,
+  selectIsBankAccountVerified,
+} from "../../../bank-transfer-flow/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { selectBankAccount } from "../../../kyc/selectors";
 import { TBankAccount } from "../../../kyc/types";
-import { neuCall } from "../../../sagasUtils";
+import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectLiquidEuroTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 
-export function* generateNeuWithdrawTransaction(
+function* generateNeuWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   amount: string,
 ): any {
@@ -37,7 +42,7 @@ export function* generateNeuWithdrawTransaction(
   return { ...txDetails, gas: estimatedGasWithOverhead };
 }
 
-export function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
+function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
   // Wait for withdraw confirmation
   const action = yield take(actions.txSender.txSenderAcceptDraft);
   const txDataFromUser = action.payload.txDraftData;
@@ -50,11 +55,11 @@ export function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
     .toFixed(2, BigNumber.ROUND_DOWN);
 
   // Whole precision number should be passed when there is whole balance redeemed
-  // also when user provided value has been used, then it have to be converted to Q18 via convertToBigInt
+  // also when user provided value has been used, then it have to be converted to Q18 via convertToUlps
   const redeemAmountUlps =
     compareBigNumbers(selectedAmount, nEURBalance) === 0
       ? nEURBalanceUlps
-      : convertToBigInt(selectedAmount);
+      : convertToUlps(selectedAmount);
 
   const generatedTxDetails: ITxData = yield neuCall(
     generateNeuWithdrawTransaction,
@@ -83,3 +88,27 @@ export function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
     actions.txSender.txSenderContinueToSummary<ETxSenderType.NEUR_REDEEM>(additionalDetails),
   );
 }
+
+function* neurRedeemSaga({ logger }: TGlobalDependencies): Iterator<any> {
+  const isVerified: boolean = yield select(selectIsBankAccountVerified);
+
+  if (!isVerified) {
+    yield put(actions.bankTransferFlow.startBankTransfer(EBankTransferType.VERIFY));
+    return;
+  }
+
+  try {
+    yield txSendSaga({
+      type: ETxSenderType.NEUR_REDEEM,
+      transactionFlowGenerator: startNEuroRedeemGenerator,
+    });
+
+    logger.info("Investor nEUR withdrawal successful");
+  } catch (e) {
+    logger.info("Investor nEUR withdrawal cancelled", e);
+  }
+}
+
+export const txRedeemSagas = function*(): Iterator<any> {
+  yield fork(neuTakeLatest, actions.txTransactions.startWithdrawNEuro, neurRedeemSaga);
+};

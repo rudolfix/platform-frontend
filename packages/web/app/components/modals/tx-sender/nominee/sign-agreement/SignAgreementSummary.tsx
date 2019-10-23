@@ -14,7 +14,7 @@ import { ETxSenderType } from "../../../../../modules/tx/types";
 import { appConnect } from "../../../../../store";
 import { RequiredByKeys } from "../../../../../types";
 import { Button, EButtonLayout, EButtonTheme } from "../../../../shared/buttons/Button";
-import { DocumentTemplateButton } from "../../../../shared/DocumentLink";
+import { DocumentButton } from "../../../../shared/DocumentLink";
 import { FormFieldBoolean } from "../../../../shared/forms/fields/FormFieldBoolean";
 import { FormDeprecated } from "../../../../shared/forms/FormDeprecated";
 import { EHeadingSize, Heading } from "../../../../shared/Heading";
@@ -73,7 +73,7 @@ const SignNomineeAgreementSummaryLayout: React.FunctionComponent<TComponentProps
         <FormattedMessage id="nominee.sign-tha.text" />
       )}
     </p>
-    <DocumentTemplateButton
+    <DocumentButton
       layout={EButtonLayout.PRIMARY}
       onClick={() =>
         downloadImmutableFile(

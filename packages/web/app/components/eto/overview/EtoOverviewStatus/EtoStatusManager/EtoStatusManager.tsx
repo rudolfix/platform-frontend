@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import {
   selectEtoOnChainStateById,
   selectEtoWithCompanyAndContract,
+  selectInvestorEtoWithCompanyAndContract,
 } from "../../../../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../../modules/eto/types";
 import { isOnChain } from "../../../../../modules/eto/utils";
@@ -22,6 +23,9 @@ import { EtoMaxCapExceededWidget } from "../EtoMaxCapExceeded";
 import { InvestmentWidget } from "../InvestmentWidget/InvestmentWidget";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
+import { selectUserType } from "../../../../../modules/auth/selectors";
+import { EUserType } from "../../../../../lib/api/users/interfaces";
+import { selectIssuerEtoWithCompanyAndContract } from "../../../../../modules/eto-flow/selectors";
 
 interface IExternalProps {
   previewCode: string;
@@ -116,10 +120,18 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
   }
 };
 
+// const selectEtoWithCompanyAndContract
+
 export const EtoStatusManager = compose<IStateProps & IExternalProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
-      const eto = selectEtoWithCompanyAndContract(state, props.previewCode);
+      const userType = selectUserType(state)
+      const eto = userType && selectEtoWithCompanyAndContract({
+        userType,
+        state,
+        // previewCode: props.previewCode
+      });
+      console.log("EtoStatusManager",eto, userType)
       if (eto) {
         return {
           eto,

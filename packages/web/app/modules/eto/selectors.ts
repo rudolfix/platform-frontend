@@ -21,6 +21,9 @@ import {
   TEtoWithCompanyAndContract,
 } from "./types";
 import { getEtoSubState } from "./utils";
+import { EUserType } from "../../lib/api/users/interfaces";
+import { selectNomineeEtoWithCompanyAndContract } from "../nominee-flow/selectors";
+import { selectIssuerEtoWithCompanyAndContract } from "../eto-flow/selectors";
 
 const selectEtoState = (state: IAppState) => state.eto;
 
@@ -46,8 +49,14 @@ export const selectEtoTokenName = (state: IAppState, etoId: string) => {
 
 export const selectEto = createSelector(
   selectEtoState,
-  (_: IAppState, previewCode: string) => previewCode,
-  (etoState: DeepReadonly<IEtoState>, previewCode: string) => etoState.etos[previewCode],
+  (_: IAppState, previewCode: string) => {
+    console.log("selectEto 1", previewCode);
+    return previewCode
+  },
+  (etoState: DeepReadonly<IEtoState>, previewCode: string) => {
+    console.log("selectEto 2", previewCode, JSON.stringify(etoState.etos));
+    return etoState.etos[previewCode]
+  },
 );
 
 export const selectCompany = createSelector(
@@ -92,12 +101,30 @@ const selectEtoWithCompanyAndContractInternal = createCachedSelector(
   }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
-export const selectEtoWithCompanyAndContract = (
+type TSelectEtoWithCompanyAndContract =
+  {userType:EUserType.ISSUER} & {state:IAppState} |
+  {userType:EUserType.NOMINEE} & {state:IAppState} |
+  {userType:EUserType.INVESTOR} & {state:IAppState,previewCode:string}
+
+export const selectEtoWithCompanyAndContract = (params: TSelectEtoWithCompanyAndContract) => {
+  switch (params.userType) {
+    case EUserType.NOMINEE:
+      return selectNomineeEtoWithCompanyAndContract(params.state);
+    case EUserType.ISSUER:
+      return selectIssuerEtoWithCompanyAndContract(params.state);
+    case EUserType.INVESTOR:
+      return selectInvestorEtoWithCompanyAndContract(params.state, params.previewCode);
+    default:
+      throw new Error("user type is invalid")
+  }
+};
+
+export const selectInvestorEtoWithCompanyAndContract = (
   state: IAppState,
   previewCode: string,
 ): TEtoWithCompanyAndContract | undefined => {
   const eto = selectEto(state, previewCode);
-
+  console.log("selectEtoWithCompanyAndContract", previewCode, eto)
   if (eto) {
     return selectEtoWithCompanyAndContractInternal(state, eto);
   }
@@ -112,7 +139,7 @@ export const selectEtoWithCompanyAndContractById = (
   const previewCode = selectEtoPreviewCode(state, etoId);
 
   if (previewCode) {
-    return selectEtoWithCompanyAndContract(state, previewCode);
+    return selectInvestorEtoWithCompanyAndContract(state, previewCode);
   }
 
   return undefined;
@@ -123,7 +150,7 @@ export const selectEtos = (state: IAppState): TEtoWithCompanyAndContract[] | und
 
   if (etoState.displayOrder) {
     return etoState.displayOrder
-      .map(id => selectEtoWithCompanyAndContract(state, id)!)
+      .map(id => selectInvestorEtoWithCompanyAndContract(state, id)!)
       .filter(Boolean);
   }
 
@@ -152,7 +179,7 @@ export const selectEtoOnChainNextStateStartDate = (
   state: IAppState,
   previewCode: string,
 ): Date | undefined => {
-  const eto = selectEtoWithCompanyAndContract(state, previewCode);
+  const eto = selectInvestorEtoWithCompanyAndContract(state, previewCode);
 
   if (eto && eto.contract) {
     const nextState: EETOStateOnChain | undefined = eto.contract.timedState + 1;
@@ -202,18 +229,18 @@ export const selectFilteredEtosByRestrictedJurisdictions = (
 ) =>
   jurisdiction
     ? etos.filter(eto => {
-        // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
-        const isEtoAnOffer = selectIsEtoAnOffer(state, eto.previewCode, eto.state);
-        return (
-          !isEtoAnOffer ||
-          !(
-            hiddenJurisdictions[jurisdiction] &&
-            hiddenJurisdictions[jurisdiction].some(
-              (hiddenJurisdiction: string) => hiddenJurisdiction === eto.product.jurisdiction,
-            )
+      // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
+      const isEtoAnOffer = selectIsEtoAnOffer(state, eto.previewCode, eto.state);
+      return (
+        !isEtoAnOffer ||
+        !(
+          hiddenJurisdictions[jurisdiction] &&
+          hiddenJurisdictions[jurisdiction].some(
+            (hiddenJurisdiction: string) => hiddenJurisdiction === eto.product.jurisdiction,
           )
-        );
-      })
+        )
+      );
+    })
     : etos;
 
 export const selectAgreementsStatus = createSelector(
@@ -230,7 +257,7 @@ export const selectEtoTokenGeneralDiscounts = createSelector(
 );
 
 export const selectEtoTokenStandardPrice = createSelector(
-  selectEtoWithCompanyAndContract,
+  selectInvestorEtoWithCompanyAndContract,
   eto => {
     if (eto) {
       const { tokenPrice } = calcShareAndTokenPrice(eto);

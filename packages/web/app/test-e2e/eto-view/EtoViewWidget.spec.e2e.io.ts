@@ -33,7 +33,7 @@ describe("Eto view widget", () => {
     );
   });
 
-  it("should render tags as non clickable when documents and pitch are not available and eto is not on chain", () => {
+  it.only("should render tags as non clickable when documents and pitch are not available and eto is not on chain", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" });
 
     goToIssuerEtoView();

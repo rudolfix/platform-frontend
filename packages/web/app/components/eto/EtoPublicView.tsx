@@ -2,7 +2,7 @@ import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { selectIsUserFullyVerified } from "../../modules/auth/selectors";
-import { selectInvestorEtoWithCompanyAndContract } from "../../modules/eto/selectors";
+import { selectEtoWithCompanyAndContract } from "../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -35,7 +35,7 @@ export const EtoPublicView = compose<TProps, IRouterParams>(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
-      eto: selectInvestorEtoWithCompanyAndContract(state, props.previewCode),
+      eto: selectEtoWithCompanyAndContract(state, props.previewCode),
       isUserFullyVerified: selectIsUserFullyVerified(state),
     }),
   }),

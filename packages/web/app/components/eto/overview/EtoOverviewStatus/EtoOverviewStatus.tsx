@@ -90,7 +90,7 @@ export const EtoOverviewStatus: React.FunctionComponent<IExternalProps> = ({
       <Divider />
       <EtoStats eto={eto} />
       <Divider />
-      <EtoStatusManager previewCode={eto.previewCode} isEmbedded={isEmbedded} />
+      <EtoStatusManager eto={eto} isEmbedded={isEmbedded} />
       <AdditionalInfo
         isEmbedded={isEmbedded}
         publicView={publicView}

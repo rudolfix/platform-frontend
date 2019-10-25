@@ -1,10 +1,7 @@
 import * as React from "react";
 import { compose } from "recompose";
 
-import {
-  selectEtoOnChainStateById,
-  selectEtoWithCompanyAndContract,
-} from "../../../../../modules/eto/selectors";
+import { selectEtoOnChainStateById } from "../../../../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../../../../modules/eto/types";
 import { isOnChain } from "../../../../../modules/eto/utils";
 import {
@@ -12,7 +9,6 @@ import {
   selectIsEligibleToPreEto,
 } from "../../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../../store";
-import { DataUnavailableError } from "../../../../../utils/errors";
 import { withContainer } from "../../../../../utils/withContainer.unsafe";
 import { CampaigningActivatedWidget } from "../CampaigningWidget/CampaigningActivatedWidget";
 import { ClaimWidget } from "../ClaimRefundWidget/ClaimWidget";
@@ -24,12 +20,12 @@ import { InvestmentWidget } from "../InvestmentWidget/InvestmentWidget";
 import * as styles from "../EtoOverviewStatus.module.scss";
 
 interface IExternalProps {
-  previewCode: string;
+  // previewCode: string;
   isEmbedded: boolean;
+  eto: TEtoWithCompanyAndContract;
 }
 
 interface IStateProps {
-  eto: TEtoWithCompanyAndContract;
   isEligibleToPreEto: boolean;
   maxCapExceeded: boolean;
 }
@@ -118,19 +114,11 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
 
 export const EtoStatusManager = compose<IStateProps & IExternalProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
-    stateToProps: (state, props) => {
-      const eto = selectEtoWithCompanyAndContract(state, props.previewCode);
-      if (eto) {
-        return {
-          eto,
-          isEligibleToPreEto: selectIsEligibleToPreEto(state, eto.etoId),
-          isPreEto: selectEtoOnChainStateById(state, eto.etoId) === EETOStateOnChain.Whitelist,
-          maxCapExceeded: selectInitialMaxCapExceeded(state, eto.etoId),
-        };
-      } else {
-        throw new DataUnavailableError("eto cannot be undefined at this point");
-      }
-    },
+    stateToProps: (state, props) => ({
+      isEligibleToPreEto: selectIsEligibleToPreEto(state, props.eto.etoId),
+      isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
+      maxCapExceeded: selectInitialMaxCapExceeded(state, props.eto.etoId),
+    }),
   }),
   withContainer(EtoStatusManagerContainer),
 )(EtoStatusComponentChooser);

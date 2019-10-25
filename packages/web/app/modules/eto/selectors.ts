@@ -103,14 +103,17 @@ export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode?: 
     case EUserType.NOMINEE:
       return selectNomineeEtoWithCompanyAndContract(state);
     case EUserType.ISSUER:
-      return selectIssuerEtoWithCompanyAndContract(state);
+      if (previewCode !== undefined) {
+        return selectInvestorEtoWithCompanyAndContract(state, previewCode);
+      } else {
+        return selectIssuerEtoWithCompanyAndContract(state);
+      }
     case EUserType.INVESTOR:
+    default:
       if (previewCode === undefined) {
         throw new DataUnavailableError("preview code missing");
       }
       return selectInvestorEtoWithCompanyAndContract(state, previewCode);
-    default:
-      throw new Error("user type is invalid");
   }
 };
 

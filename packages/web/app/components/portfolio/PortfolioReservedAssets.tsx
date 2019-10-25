@@ -125,6 +125,7 @@ const PortfolioReservedAssets: React.FunctionComponent<IExternalProps> = ({ pend
                         <FormattedRelative
                           value={eto.contract!.startOfStates[EETOStateOnChain.Signing]!}
                           style="numeric"
+                          initialNow={new Date()}
                         />
                       ),
                     }}

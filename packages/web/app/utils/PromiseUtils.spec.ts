@@ -12,15 +12,21 @@ describe("promisify", () => {
     return cb(null, a + b);
   };
 
-  it("New function resolves promise correctly", () => {
+  it("resolves promise correctly with null as an error", () => {
     expect(promisify(fn)(1, 2)).to.be.fulfilled;
   });
 
-  it("New function rejects promise if there's an error", () => {
+  it("resolves promise correctly with undefined as an error", () => {
+    const callback = (cb: Function) => cb(undefined, 10);
+
+    expect(promisify(callback)()).to.be.fulfilled;
+  });
+
+  it("rejects promise if there's an error", () => {
     expect(promisify(fn)(1, 3)).to.be.rejected;
   });
 
-  it("Passing context works", async () => {
+  it("passing context works", async () => {
     const anotherFn = function(this: { a: number }, b: number, cb: Function): void {
       if (this.a + b !== 3) {
         cb(new Error("error!"));

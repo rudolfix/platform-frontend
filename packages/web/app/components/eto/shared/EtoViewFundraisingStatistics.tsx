@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { externalRoutes } from "../../../config/externalRoutes";
 import { withParams } from "../../../utils/withParams";
+import { LoadingIndicatorHexagon } from "../../shared/loading-indicator/LoadingIndicatorHexagon";
 
 import * as styles from "./EtoViewFundraisingStatistics.module.scss";
 
@@ -16,12 +17,19 @@ const EtoViewFundraisingStatistics: React.FunctionComponent<{ etoId: string }> =
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
 
   const [height, setHeight] = React.useState<number>(0);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     const onMessage = (msg: MessageEvent) => {
       const { origin } = new URL(statsUrl);
       if (msg.origin === origin) {
         const receivedHeight = Number(msg.data);
+
+        if (isLoading && receivedHeight > 0) {
+          // Mark component as loaded on first message
+          // with height >0 received from iFrame
+          setIsLoading(false);
+        }
 
         if (!Number.isNaN(receivedHeight)) {
           setHeight(receivedHeight);
@@ -36,18 +44,21 @@ const EtoViewFundraisingStatistics: React.FunctionComponent<{ etoId: string }> =
     return () => {
       window.removeEventListener("message", onMessage);
     };
-  }, [iframeRef.current]);
+  }, []);
 
   return (
-    <iframe
-      sandbox="allow-scripts allow-same-origin"
-      ref={iframeRef}
-      style={{ height: height }}
-      src={statsUrl}
-      className={styles.fundraisingContainer}
-      scrolling="no"
-      data-test-id="eto.public-view.fundraising-statistics.iframe"
-    />
+    <>
+      {isLoading && <LoadingIndicatorHexagon />}
+      <iframe
+        sandbox="allow-scripts allow-same-origin"
+        ref={iframeRef}
+        style={{ height: height }}
+        src={statsUrl}
+        className={styles.fundraisingContainer}
+        scrolling="no"
+        data-test-id="eto.public-view.fundraising-statistics.iframe"
+      />
+    </>
   );
 };
 

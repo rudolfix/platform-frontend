@@ -121,6 +121,12 @@
   text-transform: uppercase;
 }
 
+// Text
+@mixin font-small-roboto {
+  font-family: $font-family-roboto;
+  font-size: px-to-rem(12px);
+}
+
 // Typography utils
 
 @mixin line-clamp ($lines, $line-height: false) {

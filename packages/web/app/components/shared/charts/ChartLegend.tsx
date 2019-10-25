@@ -22,7 +22,7 @@ interface IProps {
 }
 
 export const ChartLegend: React.FunctionComponent<IProps> = ({ data }) => (
-  <div>
+  <>
     {data.datasets.map(dataset =>
       dataset.data.map((value, index) => (
         <div className={styles.chartLegend} key={data.labels[index]}>
@@ -46,5 +46,5 @@ export const ChartLegend: React.FunctionComponent<IProps> = ({ data }) => (
         </div>
       )),
     )}
-  </div>
+  </>
 );

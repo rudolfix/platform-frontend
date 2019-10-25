@@ -7,7 +7,7 @@ import * as sinon from "sinon";
 import { wrapWithIntl } from "../../../../../test/integrationTestUtils.unsafe";
 import { EndTimeWidget } from "./EndTimeWidget";
 
-const TIMESTAMP = new Date().getTime();
+const TIMESTAMP = new Date("Fri Oct 25 2019 10:00:00 UTC").getTime();
 
 describe("<EndTimeWidget />", () => {
   let clock: sinon.SinonFakeTimers;
@@ -40,7 +40,7 @@ describe("<EndTimeWidget />", () => {
       />,
     );
 
-    expect(mount(component).text()).to.eq("Ends in 1 day");
+    expect(mount(component).text()).to.eq("Ends tomorrow At 10:00 AM UTC");
   });
 
   it("should render text for few hours", () => {
@@ -52,7 +52,7 @@ describe("<EndTimeWidget />", () => {
       />,
     );
 
-    expect(mount(component).text()).to.eq("Ends in 8 hours");
+    expect(mount(component).text()).to.eq("Ends today At 6:00 PM UTC");
   });
 
   it("should render text for one hour", () => {
@@ -64,7 +64,7 @@ describe("<EndTimeWidget />", () => {
       />,
     );
 
-    expect(mount(component).text()).to.eq("Ends in 1 hour");
+    expect(mount(component).text()).to.eq("Ends today At 11:00 AM UTC");
   });
 
   it("should render text for few minutes", () => {
@@ -76,7 +76,7 @@ describe("<EndTimeWidget />", () => {
       />,
     );
 
-    expect(mount(component).text()).to.eq("Ends in 50 minutes");
+    expect(mount(component).text()).to.eq("Ends today At 10:50 AM UTC");
   });
 
   it("should render text for one minute", () => {
@@ -88,6 +88,6 @@ describe("<EndTimeWidget />", () => {
       />,
     );
 
-    expect(mount(component).text()).to.eq("Ends in 1 minute");
+    expect(mount(component).text()).to.eq("Ends today At 10:01 AM UTC");
   });
 });

@@ -13,13 +13,13 @@ import { appConnect } from "../../../../store";
 import { Money } from "../../../shared/formatters/Money";
 import { MoneyRange } from "../../../shared/formatters/MoneyRange";
 import {
+  EAbbreviatedNumberOutputFormat,
   ECurrency,
   ENumberFormat,
   ENumberInputFormat,
   ENumberOutputFormat,
   EPriceFormat,
 } from "../../../shared/formatters/utils";
-import { InvestmentAmount } from "../../shared/InvestmentAmount";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../shared/ToBeAnnouncedTooltip";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
@@ -68,10 +68,18 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
     </div>
     <div className={styles.group}>
       <span className={styles.label}>
-        <FormattedMessage id="shared-component.eto-overview-status.investment-amount" />
+        <FormattedMessage id="shared-component.eto-overview-status.target-investment-amount" />
       </span>
       <span className={styles.value}>
-        <InvestmentAmount etoData={eto} />
+        <Money
+          value={
+            eto.investmentCalculatedValues && eto.investmentCalculatedValues.maxInvestmentAmount
+          }
+          inputFormat={ENumberInputFormat.FLOAT}
+          valueType={ECurrency.EUR}
+          outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
+          defaultValue={<ToBeAnnounced />}
+        />
       </span>
     </div>
     <div className={styles.group}>

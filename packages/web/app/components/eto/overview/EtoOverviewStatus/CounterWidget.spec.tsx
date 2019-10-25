@@ -113,7 +113,7 @@ describe("EtoStatusManager state change", () => {
 
     expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
     expect(component.find(tid("investment-widget")).length).to.eq(1);
-    expect(component.find(tid("end-time-widget-running")).length).to.eq(1);
+    expect(component.find(tid("end-time-widget-running")).hostNodes().length).to.eq(1);
     expect(component.find(tid("end-time-widget-finished")).length).to.eq(0);
     expect(actions.eto.loadEtoPreview).to.not.be.called;
 
@@ -121,7 +121,7 @@ describe("EtoStatusManager state change", () => {
     component.update();
 
     expect(component.find(tid("end-time-widget-running")).length).to.eq(0);
-    expect(component.find(tid("end-time-widget-finished")).length).to.eq(1);
+    expect(component.find(tid("end-time-widget-finished")).hostNodes().length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.be.calledOnceWith(props.eto.previewCode);
   });
 });

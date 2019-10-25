@@ -34,17 +34,11 @@ const InvestmentLayout: React.FunctionComponent<TInvestWidgetProps> = ({ eto }) 
       <div className={styles.header}>
         {eto.contract!.timedState !== EETOStateOnChain.Payout && (
           <div>
+            {"≈"}
             <Money
-              value={eto.contract!.totalInvestment.etherTokenBalance}
+              value={eto.contract!.totalInvestment.totalEquivEurUlps}
               inputFormat={ENumberInputFormat.ULPS}
-              valueType={ECurrency.ETH}
-              outputFormat={ENumberOutputFormat.FULL}
-            />
-            <br />
-            <Money
-              value={eto.contract!.totalInvestment.euroTokenBalance}
-              inputFormat={ENumberInputFormat.ULPS}
-              valueType={ECurrency.EUR_TOKEN}
+              valueType={ECurrency.EUR}
               outputFormat={ENumberOutputFormat.FULL}
             />
           </div>

@@ -5,8 +5,8 @@ import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { isOnChain } from "../../../modules/eto/utils";
 import { Container, EColumnSpan } from "../../layouts/Container";
 import { Panel } from "../../shared/Panel";
-import { EtoTimeline } from "../overview/EtoTimeline/EtoTimeline";
 import { DashboardHeading } from "../shared/DashboardHeading";
+import { EtoTimeline } from "../shared/timeline/EtoTimeline";
 
 import * as styles from "./ETOTimeline.module.scss";
 

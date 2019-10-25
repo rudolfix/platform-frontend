@@ -23,7 +23,8 @@ import {
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
 import { InvestmentProgress } from "../../InvestmentProgress";
-import { EndTimeWidget } from "../EndTimeWidget";
+import { EndTimeWidget } from "../../shared/EndTimeWidget";
+import { FundraisingBreakdownTooltip } from "./FundraisingBreakdownTooltip";
 
 import * as styles from "./InvestmentWidget.module.scss";
 
@@ -103,7 +104,7 @@ const InvestNowButton: React.FunctionComponent<TInvestWidgetProps> = ({
   return (
     <div className={styles.investNowButton}>
       {investNowButtonSelector()}
-      <EndTimeWidget endTime={nextStateDate} />
+      {nextStateDate && <EndTimeWidget endTime={nextStateDate} className={styles.endTime} />}
     </div>
   );
 };
@@ -118,19 +119,17 @@ const InvestmentStats: React.FunctionComponent<IInvestmentStatsProps> = ({ eto }
     <div>
       <div className={styles.header}>
         <div>
+          {"≈"}
           <Money
-            value={eto.contract.totalInvestment.etherTokenBalance}
+            data-test-id="investment-widget-total-nEur-invested"
+            value={eto.contract.totalInvestment.totalEquivEurUlps}
             inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.ETH}
+            valueType={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.FULL}
           />
-          <br />
-          <Money
-            data-test-id="investment-widget-nEur-invested"
-            value={eto.contract.totalInvestment.euroTokenBalance}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.EUR_TOKEN}
+          <FundraisingBreakdownTooltip
+            etherTokenBalance={eto.contract.totalInvestment.etherTokenBalance}
+            euroTokenBalance={eto.contract.totalInvestment.euroTokenBalance}
           />
         </div>
         {process.env.NF_MAY_SHOW_INVESTOR_STATS === "1" && (

@@ -33,7 +33,7 @@ describe("Invest with nEur", () => {
     // click invest now button
     cy.get(tid(`eto-overview-${PUBLIC_ETO_ID}`)).click();
 
-    cy.get(`${tid("investment-widget-nEur-invested")} ${tid("value")}`)
+    cy.get(`${tid("investment-widget-total-nEur-invested")} ${tid("value")}`)
       .then($e => parseAmount($e.text()))
       .as("nEurInvested");
 
@@ -63,7 +63,7 @@ describe("Invest with nEur", () => {
     closeModal();
 
     cy.get<BigNumber>("@nEurInvested").then(previousAmount => {
-      cy.get(`${tid("investment-widget-nEur-invested")} ${tid("value")}`).should(
+      cy.get(`${tid("investment-widget-total-nEur-invested")} ${tid("value")}`).should(
         "contain",
         getFormattedNumber(
           previousAmount.plus(INVESTED_NEUR_AMOUNT).toNumber(),

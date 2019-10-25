@@ -4,7 +4,6 @@ import { DAY } from "../config/constants";
  *  Formats date to dd-mm-yyyy format
  *
  */
-
 export function formatDate(timestamp: number): string {
   const date = new Date(timestamp);
   return date.toLocaleDateString("de", {

@@ -1,4 +1,3 @@
-import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -18,7 +17,7 @@ import {
   ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
 import { CounterWidget } from "../EtoOverviewStatus/CounterWidget";
-import { getCurrentInvestmentProgressPercentage } from "../utils";
+import { EndTimeWidget } from "../shared/EndTimeWidget";
 import { GreenInfo, Info } from "./Info";
 import { InvestmentStatus } from "./InvestmentStatus/InvestmentStatus";
 import { Whitelist } from "./Whitelist/Whitelist";
@@ -86,20 +85,13 @@ const EtoCardStatusManager = ({ eto }: IExternalProps) => {
     }
 
     case EETOStateOnChain.Public: {
-      const currentProgressPercentage = getCurrentInvestmentProgressPercentage(eto);
       const endDate = eto.contract!.startOfStates[EETOStateOnChain.Signing]!;
 
       return (
         <>
           <InvestmentStatus eto={eto} />
           <Info>
-            <FormattedMessage
-              id="eto-overview-thumbnail.public-sale.days-left"
-              values={{
-                endDate: moment(new Date()).to(endDate, true),
-                foundedPercentage: Math.floor(currentProgressPercentage),
-              }}
-            />
+            <EndTimeWidget endTime={endDate} />
           </Info>
         </>
       );

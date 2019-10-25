@@ -5,7 +5,10 @@ import { Col } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
-import { selectEtoWidgetError, selectInvestorEtoWithCompanyAndContract } from "../../modules/eto/selectors";
+import {
+  selectEtoWidgetError,
+  selectInvestorEtoWithCompanyAndContract,
+} from "../../modules/eto/selectors";
 import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";

@@ -55,8 +55,8 @@ import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoOnChainStateById,
-  selectInvestorEtoWithCompanyAndContract,
   selectFilteredEtosByRestrictedJurisdictions,
+  selectInvestorEtoWithCompanyAndContract,
   selectIsEtoAnOffer,
 } from "./selectors";
 import { EEtoAgreementStatus, EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
@@ -559,8 +559,8 @@ function* ensureEtoJurisdiction(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.ensureEtoJurisdiction>,
 ): Iterable<any> {
-  const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select((state: IAppState) =>
-    selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
+  const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select(
+    (state: IAppState) => selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
   );
 
   if (eto === undefined) {
@@ -576,8 +576,8 @@ function* verifyEtoAccess(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.verifyEtoAccess>,
 ): Iterable<any> {
-  const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select((state: IAppState) =>
-    selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
+  const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select(
+    (state: IAppState) => selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
   );
 
   if (eto === undefined) {

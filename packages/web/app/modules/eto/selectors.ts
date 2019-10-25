@@ -8,10 +8,15 @@ import {
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { calcShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { DataUnavailableError } from "../../utils/errors";
 import { nonNullable } from "../../utils/nonNullable";
+import { selectUserType } from "../auth/selectors";
+import { selectIssuerEtoWithCompanyAndContract } from "../eto-flow/selectors";
 import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
+import { selectNomineeEtoWithCompanyAndContract } from "../nominee-flow/selectors";
 import { hiddenJurisdictions } from "./constants";
 import { IEtoState } from "./reducer";
 import {
@@ -21,9 +26,6 @@ import {
   TEtoWithCompanyAndContract,
 } from "./types";
 import { getEtoSubState } from "./utils";
-import { EUserType } from "../../lib/api/users/interfaces";
-import { selectNomineeEtoWithCompanyAndContract } from "../nominee-flow/selectors";
-import { selectIssuerEtoWithCompanyAndContract } from "../eto-flow/selectors";
 
 const selectEtoState = (state: IAppState) => state.eto;
 
@@ -49,14 +51,8 @@ export const selectEtoTokenName = (state: IAppState, etoId: string) => {
 
 export const selectEto = createSelector(
   selectEtoState,
-  (_: IAppState, previewCode: string) => {
-    console.log("selectEto 1", previewCode);
-    return previewCode
-  },
-  (etoState: DeepReadonly<IEtoState>, previewCode: string) => {
-    console.log("selectEto 2", previewCode, JSON.stringify(etoState.etos));
-    return etoState.etos[previewCode]
-  },
+  (_: IAppState, previewCode: string) => previewCode,
+  (etoState: DeepReadonly<IEtoState>, previewCode: string) => etoState.etos[previewCode],
 );
 
 export const selectCompany = createSelector(
@@ -101,21 +97,20 @@ const selectEtoWithCompanyAndContractInternal = createCachedSelector(
   }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
-type TSelectEtoWithCompanyAndContract =
-  {userType:EUserType.ISSUER} & {state:IAppState} |
-  {userType:EUserType.NOMINEE} & {state:IAppState} |
-  {userType:EUserType.INVESTOR} & {state:IAppState,previewCode:string}
-
-export const selectEtoWithCompanyAndContract = (params: TSelectEtoWithCompanyAndContract) => {
-  switch (params.userType) {
+export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode?: string) => {
+  const userType = selectUserType(state);
+  switch (userType) {
     case EUserType.NOMINEE:
-      return selectNomineeEtoWithCompanyAndContract(params.state);
+      return selectNomineeEtoWithCompanyAndContract(state);
     case EUserType.ISSUER:
-      return selectIssuerEtoWithCompanyAndContract(params.state);
+      return selectIssuerEtoWithCompanyAndContract(state);
     case EUserType.INVESTOR:
-      return selectInvestorEtoWithCompanyAndContract(params.state, params.previewCode);
+      if (previewCode === undefined) {
+        throw new DataUnavailableError("preview code missing");
+      }
+      return selectInvestorEtoWithCompanyAndContract(state, previewCode);
     default:
-      throw new Error("user type is invalid")
+      throw new Error("user type is invalid");
   }
 };
 
@@ -124,7 +119,6 @@ export const selectInvestorEtoWithCompanyAndContract = (
   previewCode: string,
 ): TEtoWithCompanyAndContract | undefined => {
   const eto = selectEto(state, previewCode);
-  console.log("selectEtoWithCompanyAndContract", previewCode, eto)
   if (eto) {
     return selectEtoWithCompanyAndContractInternal(state, eto);
   }
@@ -229,18 +223,18 @@ export const selectFilteredEtosByRestrictedJurisdictions = (
 ) =>
   jurisdiction
     ? etos.filter(eto => {
-      // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
-      const isEtoAnOffer = selectIsEtoAnOffer(state, eto.previewCode, eto.state);
-      return (
-        !isEtoAnOffer ||
-        !(
-          hiddenJurisdictions[jurisdiction] &&
-          hiddenJurisdictions[jurisdiction].some(
-            (hiddenJurisdiction: string) => hiddenJurisdiction === eto.product.jurisdiction,
+        // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
+        const isEtoAnOffer = selectIsEtoAnOffer(state, eto.previewCode, eto.state);
+        return (
+          !isEtoAnOffer ||
+          !(
+            hiddenJurisdictions[jurisdiction] &&
+            hiddenJurisdictions[jurisdiction].some(
+              (hiddenJurisdiction: string) => hiddenJurisdiction === eto.product.jurisdiction,
+            )
           )
-        )
-      );
-    })
+        );
+      })
     : etos;
 
 export const selectAgreementsStatus = createSelector(

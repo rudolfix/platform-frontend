@@ -178,10 +178,11 @@ describe("Eto campaigning state", () => {
 
     cy.server();
     cy.fixture("etoData.json").as("etoData");
+    cy.fixture("bookbuildingData.json").as("bookbuildingData");
     cy.route("GET", `**/api/eto-listing/etos/${ETO_ID}`, "@etoData");
+    cy.route("GET", `**/api/eto-listing/etos/${ETO_ID}/bookbuilding-stats`, "@bookbuildingData");
     cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
 
-    //if the bookbuilding data is not loaded at it will show a quote instead of counter
     cy.get(`${tid("eto-whitelist-countdown")}`).should("exist");
   });
 });

@@ -2,7 +2,6 @@ import { compose, setDisplayName, withProps } from "recompose";
 
 import { TEtoInvestmentCalculatedValues } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { actions } from "../../../../../modules/actions";
 import {
   selectIsAuthorized,
   selectIsInvestor,
@@ -19,8 +18,6 @@ import {
 } from "../../../../../modules/bookbuilding-flow/utils";
 import { EETOStateOnChain } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
-import { onEnterAction } from "../../../../../utils/OnEnterAction";
-import { onLeaveAction } from "../../../../../utils/OnLeaveAction";
 
 interface IExternalProps {
   etoId: string;
@@ -109,22 +106,6 @@ const connectCampaigningActivatedWidget = (
         };
       },
     ),
-    onEnterAction<IStateProps & IExternalProps & IWithProps>({
-      actionCreator: (dispatch, props) => {
-        if (props.whitelistingState === EWhitelistingState.ACTIVE) {
-          dispatch(actions.bookBuilding.bookBuildingStartWatch(props.etoId));
-        } else if (props.whitelistingState === EWhitelistingState.LOADING) {
-          dispatch(actions.bookBuilding.loadBookBuildingStats(props.etoId));
-        }
-      },
-    }),
-    onLeaveAction<IStateProps & IExternalProps & IWithProps>({
-      actionCreator: (dispatch, props) => {
-        if (props.whitelistingState === EWhitelistingState.ACTIVE) {
-          dispatch(actions.bookBuilding.bookBuildingStopWatch(props.etoId));
-        }
-      },
-    }),
   )(WrappedComponent);
 
 export { connectCampaigningActivatedWidget, TComponentProps };

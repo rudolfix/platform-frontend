@@ -51,6 +51,9 @@ export const shouldLoadPledgeData = (
     (onChainState === undefined || onChainState < EETOStateOnChain.Claim)
   );
 
+export const shouldLoadBookbuildingStats = (onChainState: EETOStateOnChain | undefined): boolean =>
+  onChainState === EETOStateOnChain.Setup || onChainState === EETOStateOnChain.Whitelist;
+
 export const isPledgeNotAboveMaximum = (maxPledge?: number): TestOptions => ({
   name: "minAmount",
   message: getMessageTranslation(

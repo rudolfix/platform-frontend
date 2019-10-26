@@ -21,6 +21,11 @@ import { EtoStatusManager } from "./EtoStatusManager/EtoStatusManager";
 
 actions.eto.loadEtoPreview = spy(() => ({ type: "loadEtoPreview" })) as any;
 
+const contract = {
+  ...testContract,
+  timedState: EETOStateOnChain.Setup,
+};
+
 const eto = {
   etos: {
     [testEto.previewCode]: testEto,
@@ -29,10 +34,7 @@ const eto = {
     [testEto.companyId]: testCompany,
   },
   contracts: {
-    [testEto.previewCode]: {
-      ...testContract,
-      timedState: EETOStateOnChain.Whitelist,
-    },
+    [testEto.previewCode]: contract,
   },
 };
 
@@ -50,11 +52,14 @@ const initialStateBase = {
 
 const props = {
   isEmbedded: false,
-  eto: testEto,
+  eto: {
+    ...testEto,
+    contract: contract,
+  },
 };
 
 //TODO test all eto state changes, including EtoCard
-describe.skip("EtoStatusManager state change", () => {
+describe("EtoStatusManager state change", () => {
   const clock = setupFakeClock();
 
   beforeEach(() => {
@@ -75,7 +80,6 @@ describe.skip("EtoStatusManager state change", () => {
         },
       },
     };
-    initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Setup;
     (initialState.eto.etos[testEto.previewCode].canEnableBookbuilding as unknown) = true;
 
     clock.fakeClock.setSystemTime(
@@ -83,7 +87,7 @@ describe.skip("EtoStatusManager state change", () => {
     );
 
     const { store, sagaMiddleware } = createIntegrationTestsSetup({
-      initialState: initialState,
+      initialState,
     });
 
     sagaMiddleware.run(function*(): any {
@@ -272,6 +276,9 @@ describe.skip("EtoStatusManager state change", () => {
       new Date(testContract.startOfStates[EETOStateOnChain.Public]).valueOf() - 2000,
     );
 
+    initialStateBase.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Whitelist;
+    props.eto.contract.timedState = EETOStateOnChain.Whitelist;
+
     const { store, sagaMiddleware } = createIntegrationTestsSetup({
       initialState: initialStateBase,
     });
@@ -300,6 +307,7 @@ describe.skip("EtoStatusManager state change", () => {
     const initialState = cloneDeep(initialStateBase);
     initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Public;
     (initialState.auth.jwt as unknown) = undefined; //set user to not authorized to be able to test the counter
+    props.eto.contract.timedState = EETOStateOnChain.Public;
 
     clock.fakeClock.setSystemTime(
       new Date(testContract.startOfStates[EETOStateOnChain.Signing]).valueOf() - 2000,

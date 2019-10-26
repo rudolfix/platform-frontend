@@ -38,7 +38,7 @@ import { invariant } from "../../utils/invariant";
 import { convertFromUlps } from "../../utils/NumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserVerified, selectUserId, selectUserType } from "../auth/selectors";
-import { shouldLoadPledgeData } from "../bookbuilding-flow/utils";
+import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuilding-flow/utils";
 import { selectMyAssets } from "../investor-portfolio/selectors";
 import { waitForKycStatus } from "../kyc/sagas";
 import { selectClientJurisdiction } from "../kyc/selectors";
@@ -91,12 +91,20 @@ function* loadEtoPreview(
     }
 
     // This needs to always be after loadingEtoContract step
-    const onChainState = yield select((state: IAppState) =>
+    const onChainState: EETOStateOnChain | undefined = yield select((state: IAppState) =>
       selectEtoOnChainStateById(state, eto.etoId),
     );
 
     if (shouldLoadPledgeData(eto.state, onChainState)) {
       yield put(actions.bookBuilding.loadPledge(eto.etoId));
+    }
+
+    if (shouldLoadBookbuildingStats(onChainState)) {
+      eto.isBookbuilding
+        ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
+        : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
+    } else {
+      yield put(actions.bookBuilding.bookBuildingStopWatch(eto.etoId));
     }
 
     yield put(actions.eto.setEto({ eto, company }));
@@ -120,9 +128,7 @@ function* loadEto(
 ): any {
   try {
     const etoId = action.payload.etoId;
-
     const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
-
     const company: TCompanyEtoData = yield apiEtoService.getCompanyById(eto.companyId);
 
     // Load contract data if eto is already on blockchain
@@ -139,12 +145,20 @@ function* loadEto(
     }
 
     // This needs to always be after loadingEtoContract step
-    const onChainState = yield select((state: IAppState) =>
+    const onChainState: EETOStateOnChain | undefined = yield select((state: IAppState) =>
       selectEtoOnChainStateById(state, eto.etoId),
     );
 
     if (shouldLoadPledgeData(eto.state, onChainState)) {
       yield put(actions.bookBuilding.loadPledge(eto.etoId));
+    }
+
+    if (shouldLoadBookbuildingStats(onChainState)) {
+      eto.isBookbuilding
+        ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
+        : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
+    } else {
+      yield put(actions.bookBuilding.bookBuildingStopWatch(eto.etoId));
     }
 
     yield put(actions.eto.setEto({ eto, company }));
@@ -295,7 +309,7 @@ export function* delayEtoRefresh(
     }
 
     const nextStateDelay: number = yield neuCall(calculateNextStateDelay, eto.previewCode);
-    // Do not schedule update if it's later than normal pooling
+    // Do not schedule update if it's later than normal polling
     // otherwise it's possible to overflow max timeout limit
     // see https://stackoverflow.com/questions/3468607/why-does-settimeout-break-for-large-millisecond-delay-values
     if (nextStateDelay && nextStateDelay < etoNormalPollingDelay) {

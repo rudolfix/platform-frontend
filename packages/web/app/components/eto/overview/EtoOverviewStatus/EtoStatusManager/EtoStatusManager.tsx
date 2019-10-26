@@ -20,7 +20,6 @@ import { InvestmentWidget } from "../InvestmentWidget/InvestmentWidget";
 import * as styles from "../EtoOverviewStatus.module.scss";
 
 interface IExternalProps {
-  // previewCode: string;
   isEmbedded: boolean;
   eto: TEtoWithCompanyAndContract;
 }

@@ -1,4 +1,4 @@
-import { branch, compose, renderComponent, setDisplayName, withProps } from "recompose";
+import { compose, setDisplayName, withProps } from "recompose";
 
 import { TEtoInvestmentCalculatedValues } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
@@ -18,14 +18,12 @@ import {
 } from "../../../../../modules/bookbuilding-flow/utils";
 import { EETOStateOnChain } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
-import { OmitKeys } from "../../../../../types";
-import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
 
 interface IExternalProps {
   etoId: string;
   investorsLimit: number;
   minPledge: number;
-  investmentCalculatedValues?: TEtoInvestmentCalculatedValues;
+  investmentCalculatedValues: TEtoInvestmentCalculatedValues | undefined;
   nextState: EETOStateOnChain;
   nextStateStartDate?: Date;
   whitelistingIsActive: boolean;
@@ -35,8 +33,8 @@ interface IExternalProps {
 }
 
 interface IStateProps {
-  pledgedAmount: number;
-  investorsCount: number;
+  pledgedAmount: number | undefined;
+  investorsCount: number | undefined;
   isAuthorized: boolean;
   isInvestor: boolean;
   isVerifiedInvestor: boolean;
@@ -49,9 +47,25 @@ interface IWithProps {
   maxPledge?: number;
 }
 
-type TComponentProps = OmitKeys<IExternalProps, "canEnableBookbuilding" | "whitelistingIsActive"> &
-  IStateProps &
-  IWithProps;
+type TComponentProps = {
+  etoId: string;
+  investorsLimit: number;
+  minPledge: number;
+  investmentCalculatedValues: TEtoInvestmentCalculatedValues | undefined;
+  nextState: EETOStateOnChain;
+  nextStateStartDate?: Date;
+  keyQuoteFounder: string;
+  isEmbedded: boolean;
+  pledgedAmount: number;
+  investorsCount: number;
+  isAuthorized: boolean;
+  isInvestor: boolean;
+  isVerifiedInvestor: boolean;
+  pledge?: IPledge;
+  whitelistingState: EWhitelistingState;
+  countdownDate: Date | undefined;
+  maxPledge?: number;
+};
 
 const connectCampaigningActivatedWidget = (
   WrappedComponent: React.ComponentType<TComponentProps>,
@@ -77,26 +91,20 @@ const connectCampaigningActivatedWidget = (
         investorsCount,
         investmentCalculatedValues,
       }) => {
-        const bookbuildingLimitReached = investorsLimit - investorsCount === 0;
+        const bookbuildingLimitReached =
+          investorsCount !== undefined && investorsLimit - investorsCount === 0;
         return {
           whitelistingState: calculateWhitelistingState({
             canEnableBookbuilding,
             whitelistingIsActive,
             bookbuildingLimitReached,
             investorsCount,
+            investmentCalculatedValues,
           }),
           maxPledge: investmentCalculatedValues && investmentCalculatedValues.effectiveMaxTicket,
-          countdownDate:
-            !!nextStateStartDate && nextStateStartDate > new Date()
-              ? nextStateStartDate
-              : undefined,
+          countdownDate: nextStateStartDate,
         };
       },
-    ),
-    branch<IWithProps & IExternalProps>(
-      ({ whitelistingState, investmentCalculatedValues }) =>
-        whitelistingState === EWhitelistingState.ACTIVE && !investmentCalculatedValues,
-      renderComponent(LoadingIndicator),
     ),
   )(WrappedComponent);
 

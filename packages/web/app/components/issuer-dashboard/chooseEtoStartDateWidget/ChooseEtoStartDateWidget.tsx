@@ -369,10 +369,9 @@ const ChooseEtoStartDateWidget = compose<
       }
     },
   }),
+  branch<IStateProps>(props => !props.areAgreementsSignedByNominee, renderNothing),
   branch<IStateProps>(
-    props =>
-      !props.areAgreementsSignedByNominee &&
-      !(props.etoDate && calculateTimeLeft(props.etoDate, true) > 0),
+    props => !!props.etoDate && calculateTimeLeft(props.etoDate, true) < 0,
     renderNothing,
   ),
   branch<IStateProps>(

@@ -438,7 +438,7 @@ describe("generate shareholders", () => {
     ];
     expect(generateShareholders(data, companyShares)).to.deep.eq(expectedOutput);
   });
-  it("others should be at the end no matter how much shares it have", () => {
+  it.skip("others should be at the end no matter how much shares it have", () => {
     const companyShares = 100;
     const data = [
       {

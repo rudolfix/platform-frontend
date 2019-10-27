@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
+import { testEto } from "../../../../../../test/fixtures";
 import { EWhitelistingState } from "../../../../../modules/bookbuilding-flow/utils";
 import { EETOStateOnChain } from "../../../../../modules/eto/types";
 import { ECurrency } from "../../../../shared/formatters/utils";
@@ -25,6 +26,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={false}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Active, not authorized, some investors pledged", () => (
@@ -42,6 +44,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={false}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Active, verified investor view, investor didn't pledge", () => (
@@ -59,6 +62,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={true}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Active, verified investor view, investor did pledge", () => (
@@ -77,6 +81,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       pledge={{ amountEur: 999, currency: ECurrency.EUR_TOKEN, consentToRevealEmail: true }}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Active, non-verified-investor view", () => (
@@ -94,6 +99,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Active, non-investor view", () => (
@@ -111,6 +117,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Suspended, is verified investor, has pledged", () => (
@@ -129,6 +136,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       pledge={{ amountEur: 999, currency: ECurrency.EUR_TOKEN, consentToRevealEmail: true }}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Suspended, is verified investor, has not pledged", () => (
@@ -147,6 +155,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       pledge={undefined}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Suspended, is investor, is not a verified investor", () => (
@@ -164,6 +173,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Suspended, is not an investor", () => (
@@ -181,6 +191,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("NotActive, is verified investor", () => (
@@ -198,6 +209,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={true}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("NotActive, not an investor", () => (
@@ -215,6 +227,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Investor Limit Reached, is verified investor, has pledged, next start date not set", () => (
@@ -233,6 +246,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       pledge={{ amountEur: 999, currency: ECurrency.EUR_TOKEN, consentToRevealEmail: true }}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add(
@@ -252,6 +266,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
         isVerifiedInvestor={true}
         isAuthorized={true}
         isEmbedded={false}
+        investmentCalculatedValues={testEto.investmentCalculatedValues}
       />
     ),
   )
@@ -272,6 +287,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
         isVerifiedInvestor={false}
         isAuthorized={true}
         isEmbedded={false}
+        investmentCalculatedValues={testEto.investmentCalculatedValues}
       />
     ),
   )
@@ -290,6 +306,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Investor Limit Reached, Start date is set, is verified investor", () => (
@@ -310,6 +327,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       pledge={{ amountEur: 999, currency: ECurrency.EUR_TOKEN, consentToRevealEmail: true }}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Investor Limit Reached, Start date is set, is investor, not a verified investor", () => (
@@ -329,6 +347,7 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ))
   .add("Investor Limit Reached, Start date is set, is not an investor", () => (
@@ -348,5 +367,6 @@ storiesOf("ETO/CampaigningActivatedWidgetLayout", module)
       isVerifiedInvestor={false}
       isAuthorized={true}
       isEmbedded={false}
+      investmentCalculatedValues={testEto.investmentCalculatedValues}
     />
   ));

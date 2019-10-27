@@ -20,8 +20,8 @@ import { InvestmentWidget } from "../InvestmentWidget/InvestmentWidget";
 import * as styles from "../EtoOverviewStatus.module.scss";
 
 interface IExternalProps {
-  eto: TEtoWithCompanyAndContract;
   isEmbedded: boolean;
+  eto: TEtoWithCompanyAndContract;
 }
 
 interface IStateProps {
@@ -69,6 +69,7 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
         />
       );
     }
+
     case EETOStateOnChain.Whitelist: {
       if (isEligibleToPreEto) {
         return <InvestmentWidget eto={eto} isEmbedded={isEmbedded} />;
@@ -106,7 +107,7 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
     }
 
     default:
-      throw new Error(`State (${timedState}) is not known. Please provide implementation.`);
+      throw new Error(`State (${timedState}) is not known. Please provide an implementation.`);
   }
 };
 

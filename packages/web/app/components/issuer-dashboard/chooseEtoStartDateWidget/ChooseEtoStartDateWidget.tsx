@@ -375,7 +375,10 @@ const ChooseEtoStartDateWidget = compose<
       !(props.etoDate && calculateTimeLeft(props.etoDate, true) > 0),
     renderNothing,
   ),
-  branch<IStateProps>(props => !!props.etoDate && calculateTimeLeft(props.etoDate, true) < 0, renderNothing),
+  branch<IStateProps>(
+    props => !!props.etoDate && calculateTimeLeft(props.etoDate, true) < 0,
+    renderNothing,
+  ),
   branch<IStateProps>(
     props => props.issuerEtoLoading || props.newDateSaving || props.transactionMining,
     renderComponent(WidgetLoading),

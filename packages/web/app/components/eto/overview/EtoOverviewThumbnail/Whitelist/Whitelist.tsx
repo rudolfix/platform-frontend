@@ -18,6 +18,7 @@ import {
   ECurrency,
   ENumberInputFormat,
 } from "../../../../shared/formatters/utils";
+import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
 import { GreyInfo, Info } from "../Info";
 import { WhitelistStatus } from "./WhitelistStatus";
 
@@ -124,7 +125,8 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
           }
         />
       );
-
+    case EWhitelistingState.LOADING:
+      return <LoadingIndicator />;
     default:
       return assertNever(whitelistingState);
   }
@@ -150,6 +152,7 @@ const Whitelist = compose<IProps, IExternalProps>(
         whitelistingIsActive: eto.isBookbuilding,
         bookbuildingLimitReached,
         investorsCount,
+        investmentCalculatedValues: eto.investmentCalculatedValues,
       }),
     };
   }),

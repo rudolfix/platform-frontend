@@ -8,10 +8,15 @@ import {
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { calcShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
 import { DeepReadonly } from "../../types";
+import { DataUnavailableError } from "../../utils/errors";
 import { nonNullable } from "../../utils/nonNullable";
+import { selectUserType } from "../auth/selectors";
+import { selectIssuerEtoWithCompanyAndContract } from "../eto-flow/selectors";
 import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
+import { selectNomineeEtoWithCompanyAndContract } from "../nominee-flow/selectors";
 import { hiddenJurisdictions } from "./constants";
 import { IEtoState } from "./reducer";
 import {
@@ -92,12 +97,31 @@ const selectEtoWithCompanyAndContractInternal = createCachedSelector(
   }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
-export const selectEtoWithCompanyAndContract = (
+export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode?: string) => {
+  const userType = selectUserType(state);
+  switch (userType) {
+    case EUserType.NOMINEE:
+      return selectNomineeEtoWithCompanyAndContract(state);
+    case EUserType.ISSUER:
+      if (previewCode !== undefined) {
+        return selectInvestorEtoWithCompanyAndContract(state, previewCode);
+      } else {
+        return selectIssuerEtoWithCompanyAndContract(state);
+      }
+    case EUserType.INVESTOR:
+    default:
+      if (previewCode === undefined) {
+        throw new DataUnavailableError("preview code missing");
+      }
+      return selectInvestorEtoWithCompanyAndContract(state, previewCode);
+  }
+};
+
+export const selectInvestorEtoWithCompanyAndContract = (
   state: IAppState,
   previewCode: string,
 ): TEtoWithCompanyAndContract | undefined => {
   const eto = selectEto(state, previewCode);
-
   if (eto) {
     return selectEtoWithCompanyAndContractInternal(state, eto);
   }
@@ -112,7 +136,7 @@ export const selectEtoWithCompanyAndContractById = (
   const previewCode = selectEtoPreviewCode(state, etoId);
 
   if (previewCode) {
-    return selectEtoWithCompanyAndContract(state, previewCode);
+    return selectInvestorEtoWithCompanyAndContract(state, previewCode);
   }
 
   return undefined;
@@ -123,7 +147,7 @@ export const selectEtos = (state: IAppState): TEtoWithCompanyAndContract[] | und
 
   if (etoState.displayOrder) {
     return etoState.displayOrder
-      .map(id => selectEtoWithCompanyAndContract(state, id)!)
+      .map(id => selectInvestorEtoWithCompanyAndContract(state, id)!)
       .filter(Boolean);
   }
 
@@ -152,7 +176,7 @@ export const selectEtoOnChainNextStateStartDate = (
   state: IAppState,
   previewCode: string,
 ): Date | undefined => {
-  const eto = selectEtoWithCompanyAndContract(state, previewCode);
+  const eto = selectInvestorEtoWithCompanyAndContract(state, previewCode);
 
   if (eto && eto.contract) {
     const nextState: EETOStateOnChain | undefined = eto.contract.timedState + 1;
@@ -230,7 +254,7 @@ export const selectEtoTokenGeneralDiscounts = createSelector(
 );
 
 export const selectEtoTokenStandardPrice = createSelector(
-  selectEtoWithCompanyAndContract,
+  selectInvestorEtoWithCompanyAndContract,
   eto => {
     if (eto) {
       const { tokenPrice } = calcShareAndTokenPrice(eto);

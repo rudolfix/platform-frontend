@@ -15,10 +15,10 @@ import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { BLOCK_MINING_TIME_DELAY } from "./../../config/constants";
 import { IWalletMigrationData } from "./reducer";
 import { selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress } from "./selectors";
 
-const BLOCK_MINING_TIME_DELAY = 12000;
 class IcbmWalletError extends Error {}
 class NoIcbmWalletError extends IcbmWalletError {}
 class SameUserError extends IcbmWalletError {}

@@ -76,8 +76,9 @@ function* loadIcbmWalletMigrationTransactionSaga({
     if (
       didUserConductFirstTransaction(investorMigrationWallet, currentEthAddress) &&
       !isFirstTxDone
-    )
+    ) {
       yield put(actions.icbmWalletBalanceModal.setFirstTxDone());
+    }
 
     yield put(actions.icbmWalletBalanceModal.loadIcbmMigrationData(walletMigrationData));
   } catch (e) {
@@ -110,12 +111,14 @@ function* loadIcbmWalletMigrationSaga({ logger, notificationCenter }: TGlobalDep
     yield put(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal());
     logger.error("Load ICBM migration wallet", e);
     // todo: all texts to text resources
-    if (e instanceof NoIcbmWalletError)
+    if (e instanceof NoIcbmWalletError) {
       return notificationCenter.error(createMessage(IcbmWalletMessage.ICBM_COULD_NOT_FIND_ADDRESS));
-    if (e instanceof SameUserError)
+    }
+    if (e instanceof SameUserError) {
       return notificationCenter.error(
         createMessage(IcbmWalletMessage.ICBM_WALLET_AND_ICBM_ADDRESSES_ARE_THE_SAME),
       );
+    }
     // Default Error
     return notificationCenter.error(
       createMessage(IcbmWalletMessage.ICBM_COULD_NOT_LOAD_WALLET_DATA),

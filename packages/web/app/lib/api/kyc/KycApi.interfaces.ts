@@ -39,15 +39,13 @@ export const KycPersonSchema = Yup.object().shape({
 
 // individual data
 export interface IKycIndividualData extends IKycPerson {
-  isUsCitizen?: boolean;
   isHighIncome?: boolean;
 }
 
 const KycIndividualDataShape =
   process.env.NF_DISABLE_HIGH_INCOME === "1"
-    ? { isUsCitizen }
+    ? {}
     : {
-        isUsCitizen,
         isHighIncome: Yup.bool(),
       };
 

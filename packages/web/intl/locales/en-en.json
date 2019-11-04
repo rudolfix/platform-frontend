@@ -827,6 +827,8 @@
   "kyc.personal.politically-exposed.question": "Are you a Politically Exposed Person?",
   "kyc.personal.politically-exposed.tooltip": "<p>Politically Exposed Person means a natural person who is or who has been entrusted with prominent public functions and includes the following:</p><ul><li>heads of State, heads of government, ministers and deputy or assistant ministers</li><li>members of parliament or of similar legislative bodies</li><li>members of the governing bodies of political parties</li>",
   "kyc.personal.uploadId.description": "Only one more step to go! Please upload your proof of identity and proof of address as per the instructions below:",
+  "kyc.personal.us-citizen.disclaimer": "Due to regulatory uncertainties in the US we can currently not accept any US American citizens. Since US law also operates outside of its geographical borders we cannot make an exception even if you are based overseas",
+  "kyc.personal.us-citizen.question": "Are you a US citizen?",
   "kyc.request-state.accepted.description": "Your Verification Process request was approved",
   "kyc.request-state.accepted.title": "Verification Process request approved",
   "kyc.request-state.click-here-to-continue": "Click here to continue",

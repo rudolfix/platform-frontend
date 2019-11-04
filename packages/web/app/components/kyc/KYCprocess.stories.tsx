@@ -36,6 +36,7 @@ storiesOf("KYC/process", module).add("start", () => (
 storiesOf("KYC/process", module).add("personal/start", () => {
   const currentValues: IKycIndividualData = {
     ...personalData,
+    isUsCitizen: false,
     isHighIncome: false,
   };
 

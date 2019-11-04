@@ -1233,6 +1233,8 @@
   "shared-component.eto-overview.error.widget": "Offering not found",
   "shared-component.eto-overview.fundraising-breakdown": "Fundraising breakdown:",
   "shared-component.eto-overview.go-to-dashboard": "Go to Dashboard",
+  "shared-component.eto-overview.info.soft-cap-reached": "Fundraising soft cap reached!",
+  "shared-component.eto-overview.info.soft-cap-reached.view-details": "View details",
   "shared-component.eto-overview.invest-now": "Invest now",
   "shared-component.eto-overview.invest.ends-at": "At {endsAtTime}",
   "shared-component.eto-overview.invest.ends-in": "Ends {endsIn}",

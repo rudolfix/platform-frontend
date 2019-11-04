@@ -26,7 +26,6 @@ import {
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { canShowDocument } from "../../lib/api/eto/EtoFileUtils";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { ECountries } from "../../lib/api/util/countries.enum";
 import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
@@ -34,6 +33,7 @@ import { EuroToken } from "../../lib/contracts/EuroToken";
 import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
 import { divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
+import { ECountries } from "../../utils/enums/countriesEnum";
 import { invariant } from "../../utils/invariant";
 import { convertFromUlps } from "../../utils/NumberUtils";
 import { actions, TActionFromCreator } from "../actions";
@@ -670,7 +670,7 @@ function* loadAgreementStatus(
     }
 
     // agreement indexing starts from 0 so we have to subtract 1 from amendments count
-    const currentAgreementIndex = amendmentsCount.sub(1);
+    const currentAgreementIndex = amendmentsCount.sub("1");
 
     const pastAgreement = yield contract.pastAgreement(currentAgreementIndex);
     const pastAgreementHash = hashFromIpfsLink(pastAgreement[2]);

@@ -7,7 +7,7 @@ import {
   ValidationMessage,
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
-import { ECountries } from "./countries.enum";
+import { ECountries } from "../../../utils/enums/countriesEnum";
 
 /**
  * Date schema
@@ -70,13 +70,8 @@ export const foundingDate = date.test(
 
 export const citizen = Yup.bool();
 
-export const isUsCitizen = citizen.test(
-  "is-us-citizen",
-  getMessageTranslation(createMessage(ValidationMessage.VALIDATION_US_CITIZEN)),
-  response => response === false,
-);
-
 export const countryCode = Yup.string();
+
 export const RESTRICTED_COUNTRIES = [
   ECountries.AFGHANISTAN,
   ECountries.BAHAMAS,
@@ -98,7 +93,6 @@ export const RESTRICTED_COUNTRIES = [
   ECountries.SYRIAN_ARAB_REPUBLIC,
   ECountries.TRINIDAD_AND_TOBAGO,
   ECountries.TUNISIA,
-  ECountries.UNITED_STATES,
   ECountries.YEMEN,
 ];
 
@@ -109,9 +103,9 @@ export const restrictedCountry = countryCode.test(
 );
 
 export const percentage = Yup.number()
-  .max(100, (values: any) =>
+  .max(100, (values: unknown) =>
     getMessageTranslation(createMessage(ValidationMessage.VALIDATION_PECENTAGE_MAX, values)),
   )
-  .min(0, (values: any) =>
+  .min(0, (values: unknown) =>
     getMessageTranslation(createMessage(ValidationMessage.VALIDATION_PERCENTAGE_MIN, values)),
   );

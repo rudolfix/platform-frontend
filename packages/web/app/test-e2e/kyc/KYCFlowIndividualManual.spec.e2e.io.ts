@@ -9,7 +9,7 @@ import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 import { kycInvidualForm } from "./fixtures";
 
-describe.skip("KYC Personal flow with manual verification", () => {
+describe("KYC Personal flow with manual verification", () => {
   it("went through KYC flow with personal data", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       // TODO: Move to a separate test

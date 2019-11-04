@@ -1,5 +1,7 @@
 import BigNumber from "bignumber.js";
 
+import { EUSState } from "../utils/enums/usStatesEnum";
+
 export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
 // If running in cypress wait for a short time
 export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME =
@@ -36,7 +38,7 @@ export enum EJwtPermissions {
 /**
  * Useful for money related calculations
  */
-export const Q18 = new BigNumber(10).pow(MONEY_DECIMALS);
+export const Q18 = new BigNumber("10").pow(MONEY_DECIMALS);
 
 /**
  * Represent zero address on Ethereum - non existing address used by ERC20 to mark minting and burning
@@ -93,3 +95,12 @@ export const NOMINEE_REQUESTS_WATCHER_DELAY = 10000;
 export const NOMINEE_BANK_ACCOUNT_WATCHER_DELAY = 1000 * 60 * 5;
 export const PAYOUT_POLLING_DELAY = 1000;
 export const NEXT_ETO_STATE_POLLING_DELAY = 5000;
+
+/* WEB3 Related Constants */
+export const BLOCK_MINING_TIME_DELAY = 12000;
+
+/**
+ * NEUR is only allowed (by legal) for a couple of US states
+ * For now we need to disable NEUR for all US states
+ */
+export const NEUR_ALLOWED_US_STATES: EUSState[] = [];

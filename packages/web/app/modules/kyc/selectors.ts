@@ -54,24 +54,29 @@ export const selectExternalKycUrl = (state: DeepReadonly<IKycState>): string | u
 export const selectPendingKycRequestType = (
   state: DeepReadonly<IKycState>,
 ): EKycRequestType | undefined => {
-  if (state.individualRequestState && state.individualRequestState.status === "Pending")
+  if (state.individualRequestState && state.individualRequestState.status === "Pending") {
     return EKycRequestType.INDIVIDUAL;
-  if (state.businessRequestState && state.businessRequestState.status === "Pending")
+  }
+  if (state.businessRequestState && state.businessRequestState.status === "Pending") {
     return EKycRequestType.BUSINESS;
+  }
   return undefined;
 };
 
 export const selectKycRequestType = (state: IAppState): EKycRequestType | undefined => {
-  if (state.kyc.individualRequestState && state.kyc.individualRequestState.status !== "Draft")
+  if (state.kyc.individualRequestState && state.kyc.individualRequestState.status !== "Draft") {
     return EKycRequestType.INDIVIDUAL;
-  if (state.kyc.businessRequestState && state.kyc.businessRequestState.status !== "Draft")
+  }
+  if (state.kyc.businessRequestState && state.kyc.businessRequestState.status !== "Draft") {
     return EKycRequestType.BUSINESS;
+  }
   return undefined;
 };
 
 export const selectKycOutSourcedURL = (state: DeepReadonly<IKycState>): string => {
-  if (state.individualRequestState && state.individualRequestState.redirectUrl)
+  if (state.individualRequestState && state.individualRequestState.redirectUrl) {
     return state.individualRequestState.redirectUrl;
+  }
   return "";
 };
 
@@ -107,6 +112,23 @@ export const selectClientJurisdiction = createSelector(
     // @SEE https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489081031
     (state.businessData && state.businessData.jurisdiction) ||
     (state.individualData && state.individualData.country),
+);
+
+export const selectIndividualAddress = createSelector(
+  selectKyc,
+  (state: DeepReadonly<IKycState>) => {
+    if (state.individualData) {
+      return {
+        street: state.individualData.street,
+        city: state.individualData.city,
+        zipCode: state.individualData.zipCode,
+        country: state.individualData.country,
+        usState: state.individualData.usState,
+      };
+    }
+
+    return undefined;
+  },
 );
 
 export const selectClaims = (state: IAppState) => state.kyc.claims;

@@ -1,14 +1,9 @@
 import * as Yup from "yup";
 
+import { EUSState } from "../../../utils/enums/usStatesEnum";
 import { makeAllRequired } from "../../../utils/yupUtils";
 import * as YupTS from "../../yup-ts.unsafe";
-import {
-  countryCode,
-  isUsCitizen,
-  percentage,
-  personBirthDate,
-  restrictedCountry,
-} from "../util/customSchemas.unsafe";
+import { countryCode, percentage, personBirthDate, restrictedCountry } from "../util/customSchemas";
 
 export enum EKycRequestType {
   BUSINESS = "business",
@@ -22,6 +17,7 @@ export interface IKycPerson {
   city?: string;
   zipCode?: string;
   country?: string;
+  usState?: EUSState;
   birthDate?: string;
   placeOfBirth?: string;
   nationality?: string;
@@ -43,15 +39,13 @@ export const KycPersonSchema = Yup.object().shape({
 
 // individual data
 export interface IKycIndividualData extends IKycPerson {
-  isUsCitizen?: boolean;
   isHighIncome?: boolean;
 }
 
 const KycIndividualDataShape =
   process.env.NF_DISABLE_HIGH_INCOME === "1"
-    ? { isUsCitizen }
+    ? {}
     : {
-        isUsCitizen,
         isHighIncome: Yup.bool(),
       };
 

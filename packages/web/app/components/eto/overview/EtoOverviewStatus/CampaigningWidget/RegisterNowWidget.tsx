@@ -11,14 +11,18 @@ import {
 } from "../../../../shared/formatters/utils";
 import { Message } from "../Message";
 
-type TExternalProps = { isEmbedded: boolean; pledgedAmount: number; investorsCount: number };
+type TExternalProps = {
+  isEmbedded: boolean;
+  pledgedAmount: number;
+  investorsCount: number | undefined;
+};
 
 const RegisterNowWidget: React.FunctionComponent<TExternalProps> = ({
   isEmbedded,
   investorsCount,
   pledgedAmount,
 }) => {
-  const wasPledged = investorsCount !== 0;
+  const wasPledged = investorsCount && investorsCount !== 0;
 
   return (
     <Message

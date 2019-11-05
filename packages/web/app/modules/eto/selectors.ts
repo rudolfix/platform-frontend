@@ -25,7 +25,7 @@ import {
   TEtoStartOfStates,
   TEtoWithCompanyAndContract,
 } from "./types";
-import { getEtoSubState } from "./utils";
+import { getEtoSubState, isOnChain } from "./utils";
 
 const selectEtoState = (state: IAppState) => state.eto;
 
@@ -178,7 +178,7 @@ export const selectEtoOnChainNextStateStartDate = (
 ): Date | undefined => {
   const eto = selectInvestorEtoWithCompanyAndContract(state, previewCode);
 
-  if (eto && eto.contract) {
+  if (eto && isOnChain(eto)) {
     const nextState: EETOStateOnChain | undefined = eto.contract.timedState + 1;
 
     if (nextState) {

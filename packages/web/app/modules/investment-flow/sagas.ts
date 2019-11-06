@@ -15,9 +15,9 @@ import { actions, TAction } from "../actions";
 import {
   selectEtoById,
   selectEtoOnChainStateById,
-  selectEtoWithCompanyAndContractById,
+  selecTEtoWithCompanyAndContractReadonlyById,
 } from "../eto/selectors";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
+import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../gas/selectors";
 import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
 import {
@@ -230,8 +230,8 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
   const etoId = action.payload.etoId;
-  const eto: TEtoWithCompanyAndContract = nonNullable(
-    yield select((state: IAppState) => selectEtoWithCompanyAndContractById(state, etoId)),
+  const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
+    yield select((state: IAppState) => selecTEtoWithCompanyAndContractReadonlyById(state, etoId)),
   );
 
   yield put(actions.investmentFlow.resetInvestment());

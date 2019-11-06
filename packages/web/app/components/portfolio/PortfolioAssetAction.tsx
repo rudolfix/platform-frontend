@@ -2,8 +2,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../modules/actions";
-import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
-import { EETOStateOnChain, TEtoWithCompanyAndContract } from "../../modules/eto/types";
+import { selecTEtoWithCompanyAndContractReadonlyById } from "../../modules/eto/selectors";
+import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { InvestmentProgress } from "../eto/overview/InvestmentProgress";
 import { Button, ButtonSize, EButtonLayout, EIconPosition } from "../shared/buttons";
@@ -21,7 +21,7 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
 }
 
 const PortfolioAssetActionComponent: React.FunctionComponent<
@@ -72,7 +72,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
 
 const PortfolioAssetAction = appConnect<IStateProps, IDispatchProps, TExternalProps>({
   stateToProps: (state, props) => ({
-    eto: selectEtoWithCompanyAndContractById(state, props.etoId)!,
+    eto: selecTEtoWithCompanyAndContractReadonlyById(state, props.etoId)!,
   }),
   dispatchToProps: dispatch => ({
     onClaim: (etoId: string) => dispatch(actions.txTransactions.startUserClaim(etoId)),

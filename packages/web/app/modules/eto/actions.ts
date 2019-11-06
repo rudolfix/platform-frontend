@@ -8,7 +8,7 @@ import {
   IEtoTokenData,
   IEtoTokenGeneralDiscounts,
   SignedISHAStatus,
-  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
   TOfferingAgreementsStatus,
 } from "./types";
 
@@ -28,11 +28,11 @@ export const etoActions = {
   loadEtos: createActionFactory("ETO_LOAD_ETOS"),
   loadTokenTerms: createActionFactory(
     "INVESTOR_TOKEN_PRICE_LOAD",
-    (eto: TEtoWithCompanyAndContract) => ({ eto }),
+    (eto: TEtoWithCompanyAndContractReadonly) => ({ eto }),
   ),
   downloadEtoDocument: createActionFactory(
     "ETO_DOWNLOAD_DOCUMENT",
-    (document: IEtoDocument, eto: TEtoWithCompanyAndContract) => ({
+    (document: IEtoDocument, eto: TEtoWithCompanyAndContractReadonly) => ({
       document,
       eto,
     }),
@@ -44,7 +44,7 @@ export const etoActions = {
   loadTokensData: createActionFactory("ETO_LOAD_TOKENS_DATA"),
   loadEtoAgreementsStatus: createActionFactory(
     "ETO_LOAD_AGREEMENTS_STATUS",
-    (eto: TEtoWithCompanyAndContract) => ({
+    (eto: TEtoWithCompanyAndContractReadonly) => ({
       eto,
     }),
   ),
@@ -107,7 +107,7 @@ export const etoActions = {
   ),
   loadSignedInvestmentAgreement: createActionFactory(
     "ETO_LOAD_INVESTMENT_AGREEMENT",
-    (eto: TEtoWithCompanyAndContract) => ({ eto }),
+    (eto: TEtoWithCompanyAndContractReadonly) => ({ eto }),
   ),
   setInvestmentAgreementHash: createActionFactory(
     "ETO_SET_INVESTMENT_AGREEMENT_URL",

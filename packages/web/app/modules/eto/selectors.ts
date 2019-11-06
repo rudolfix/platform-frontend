@@ -23,7 +23,7 @@ import {
   EETOStateOnChain,
   IEtoTokenData,
   TEtoStartOfStates,
-  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
 } from "./types";
 import { getEtoSubState, isOnChain } from "./utils";
 
@@ -83,7 +83,7 @@ export const selectEtoSubState = createCachedSelector(
   (eto, isEligibleToPreEto, contract) => getEtoSubState({ eto, contract, isEligibleToPreEto }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
-const selectEtoWithCompanyAndContractInternal = createCachedSelector(
+const selecTEtoWithCompanyAndContractReadonlyInternal = createCachedSelector(
   // forward eto param to combiner
   (_: IAppState, eto: TEtoSpecsData) => eto,
   (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
@@ -97,7 +97,7 @@ const selectEtoWithCompanyAndContractInternal = createCachedSelector(
   }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
-export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode?: string) => {
+export const selecTEtoWithCompanyAndContractReadonly = (state: IAppState, previewCode?: string) => {
   const userType = selectUserType(state);
   switch (userType) {
     case EUserType.NOMINEE:
@@ -120,19 +120,19 @@ export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode?: 
 export const selectInvestorEtoWithCompanyAndContract = (
   state: IAppState,
   previewCode: string,
-): TEtoWithCompanyAndContract | undefined => {
+): TEtoWithCompanyAndContractReadonly | undefined => {
   const eto = selectEto(state, previewCode);
   if (eto) {
-    return selectEtoWithCompanyAndContractInternal(state, eto);
+    return selecTEtoWithCompanyAndContractReadonlyInternal(state, eto);
   }
 
   return undefined;
 };
 
-export const selectEtoWithCompanyAndContractById = (
+export const selecTEtoWithCompanyAndContractReadonlyById = (
   state: IAppState,
   etoId: string,
-): TEtoWithCompanyAndContract | undefined => {
+): TEtoWithCompanyAndContractReadonly | undefined => {
   const previewCode = selectEtoPreviewCode(state, etoId);
 
   if (previewCode) {
@@ -142,7 +142,7 @@ export const selectEtoWithCompanyAndContractById = (
   return undefined;
 };
 
-export const selectEtos = (state: IAppState): TEtoWithCompanyAndContract[] | undefined => {
+export const selectEtos = (state: IAppState): TEtoWithCompanyAndContractReadonly[] | undefined => {
   const etoState = selectEtoState(state);
 
   if (etoState.displayOrder) {

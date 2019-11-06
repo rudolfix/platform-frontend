@@ -16,7 +16,7 @@ import {
 } from "../eto/selectors";
 import {
   EEtoAgreementStatus,
-  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
   TOfferingAgreementsStatus,
 } from "../eto/types";
 import { selectRouter } from "../routing/selectors";
@@ -84,7 +84,7 @@ const selectNomineeEtoWithCompanyAndContractInternal = createSelector(
 
 export const selectNomineeEtoWithCompanyAndContract = (
   state: IAppState,
-): TEtoWithCompanyAndContract | undefined => {
+): TEtoWithCompanyAndContractReadonly | undefined => {
   const eto = selectActiveNomineeEto(state);
 
   if (eto) {

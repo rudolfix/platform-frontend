@@ -31,7 +31,7 @@ export interface IEtoContractData {
   etoTermsAddress: string;
 }
 
-export type TEtoWithCompanyAndContract = DeepReadonly<
+export type TEtoWithCompanyAndContractReadonly = DeepReadonly<
   TEtoSpecsData & {
     // contract is undefined when ETO is not on blockchain
     contract?: IEtoContractData;
@@ -40,9 +40,9 @@ export type TEtoWithCompanyAndContract = DeepReadonly<
   }
 >;
 
-export type TEtoWithCompanyAndContractTypeChecked = Overwrite<
-  TEtoWithCompanyAndContract,
-  { contract: Exclude<TEtoWithCompanyAndContract["contract"], undefined> }
+export type TEtoWithCompanyAndContractReadonlyTypeChecked = Overwrite<
+  TEtoWithCompanyAndContractReadonly,
+  { contract: Exclude<TEtoWithCompanyAndContractReadonly["contract"], undefined> }
 >;
 
 export interface IEtoTokenData {

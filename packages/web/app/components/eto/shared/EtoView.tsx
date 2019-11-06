@@ -15,7 +15,7 @@ import { selectIsIssuer } from "../../../modules/auth/selectors";
 import {
   EETOStateOnChain,
   EEtoSubState,
-  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
 } from "../../../modules/eto/types";
 import { isOnChain } from "../../../modules/eto/utils";
 import { appConnect } from "../../../store";
@@ -52,7 +52,7 @@ export const CHART_COLORS = ["#50e3c2", "#2fb194", "#4a90e2", "#0b0e11", "#39465
 export const DEFAULT_CHART_COLOR = "#c4c5c6";
 
 interface IProps {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
   publicView: boolean;
   isUserFullyVerified: boolean;
 }
@@ -65,7 +65,7 @@ interface IEtoViewTabsExternalProps {
   match: routerMatch<unknown>;
   isUserFullyVerified: boolean;
   publicView: boolean;
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
 }
 
 const EtoViewSchema = EtoCompanyInformationType.toYup().concat(EtoPitchType.toYup());

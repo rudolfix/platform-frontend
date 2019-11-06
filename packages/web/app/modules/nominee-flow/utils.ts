@@ -7,7 +7,7 @@ import { TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.uns
 import {
   EEtoAgreementStatus,
   EETOStateOnChain,
-  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
   TOfferingAgreementsStatus,
 } from "../eto/types";
 import { isOnChain } from "../eto/utils";
@@ -94,18 +94,18 @@ export const nomineeRequestsToArray = (requests: TNomineeRequestStorage): INomin
     .sort(compareByDate);
 };
 
-export const nomineeIsEligibleToSignTHAOrRAA = (nomineeEto: TEtoWithCompanyAndContract) =>
+export const nomineeIsEligibleToSignTHAOrRAA = (nomineeEto: TEtoWithCompanyAndContractReadonly) =>
   isOnChain(nomineeEto) &&
   nomineeEto.contract.timedState === EETOStateOnChain.Setup &&
   nomineeEto.contract.startOfStates[EETOStateOnChain.Whitelist] === undefined;
 
-export const nomineeIsEligibleToSignISHA = (nomineeEto: TEtoWithCompanyAndContract) =>
+export const nomineeIsEligibleToSignISHA = (nomineeEto: TEtoWithCompanyAndContractReadonly) =>
   isOnChain(nomineeEto) && nomineeEto.contract.timedState === EETOStateOnChain.Signing;
 
 // TODO: Move to redux selector
 export const getNomineeTaskStep = (
   verificationIsComplete: boolean,
-  nomineeEto: TEtoWithCompanyAndContract | undefined,
+  nomineeEto: TEtoWithCompanyAndContractReadonly | undefined,
   isBankAccountVerified: boolean,
   documentsStatus: TOfferingAgreementsStatus | undefined,
   isISHASignedByNominee: boolean | undefined,

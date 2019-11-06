@@ -11,8 +11,8 @@ import {
 } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectEtoWithCompanyAndContractById } from "../../../modules/eto/selectors";
-import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
+import { selecTEtoWithCompanyAndContractReadonlyById } from "../../../modules/eto/selectors";
+import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import { appConnect } from "../../../store";
 import { getInvestorDocumentTitles } from "../../documents/utils";
@@ -32,7 +32,7 @@ import * as styles from "./DownloadTokenAgreementModal.module.scss";
 
 interface IStateProps {
   isOpen: boolean;
-  eto: TEtoWithCompanyAndContract | undefined;
+  eto: TEtoWithCompanyAndContractReadonly | undefined;
   pendingDownloads: ReturnType<typeof selectPendingDownloads>;
 }
 
@@ -150,7 +150,7 @@ const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectDownloadAgreementModalEtoId(state);
-      const eto = etoId ? selectEtoWithCompanyAndContractById(state, etoId) : undefined;
+      const eto = etoId ? selecTEtoWithCompanyAndContractReadonlyById(state, etoId) : undefined;
       return {
         eto,
         isOpen: etoId ? selectDownloadAgrementModalIsOpen(state) : false,

@@ -3,7 +3,7 @@ import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { selectIsUserFullyVerified } from "../../modules/auth/selectors";
-import { TEtoWithCompanyAndContract } from "../../modules/eto/types";
+import { TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
 import { selectNomineeEtoWithCompanyAndContract } from "../../modules/nominee-flow/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/OnEnterAction";
@@ -15,18 +15,18 @@ import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoView } from "./shared/EtoView";
 
 type TStateProps = {
-  eto: TEtoWithCompanyAndContract | undefined;
+  eto: TEtoWithCompanyAndContractReadonly | undefined;
   isUserFullyVerified: boolean;
 };
 
 type TViewProps = {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
   publicView: boolean;
   isUserFullyVerified: boolean;
 };
 
 type TLinkedNomineeComponentProps = {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
 };
 
 export const connectToNomineeEto = <T extends {}>(

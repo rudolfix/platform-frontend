@@ -8,7 +8,7 @@ import { EUserType } from "../../../../lib/api/users/interfaces";
 import {
   EETOStateOnChain,
   IEtoContractData,
-  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
 } from "../../../../modules/eto/types";
 import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
 import { withStore } from "../../../../utils/storeDecorator.unsafe";
@@ -16,7 +16,7 @@ import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { EtoOverviewStatus } from "./EtoOverviewStatus";
 
-const eto: TEtoWithCompanyAndContract = {
+const eto: TEtoWithCompanyAndContractReadonly = {
   ...testEto,
   preMoneyValuationEur: 10000,
   existingShareCapital: 10,

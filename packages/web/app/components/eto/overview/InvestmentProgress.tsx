@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
+import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import {
   getCurrentInvestmentProgressPercentage,
   getInvestmentCalculatedPercentage,
@@ -15,7 +15,7 @@ import { PercentageIndicatorBar, TProgressBarProps } from "../../shared/Percenta
 import * as styles from "./InvestmentProgress.module.scss";
 
 type TProps = {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
 };
 
 type TLabelExternalProps = {

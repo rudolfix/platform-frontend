@@ -6,7 +6,7 @@ import * as React from "react";
 import { testEto } from "../../../../../test/fixtures";
 import {
   EETOStateOnChain,
-  TEtoWithCompanyAndContractTypeChecked,
+  TEtoWithCompanyAndContractReadonlyTypeChecked,
 } from "../../../../modules/eto/types";
 import {
   EInvestmentErrorState,
@@ -26,7 +26,7 @@ const testEtoInWhitelist = {
     ...testEto.contract!,
     timedState: EETOStateOnChain.Whitelist,
   },
-} as TEtoWithCompanyAndContractTypeChecked;
+} as TEtoWithCompanyAndContractReadonlyTypeChecked;
 
 storiesOf("Investment/Form", module)
   .addDecorator(withModalBody())

@@ -6,7 +6,7 @@ import { testEto } from "../../../test/fixtures";
 import {
   EETOStateOnChain,
   IEtoContractData,
-  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
 } from "../../modules/eto/types";
 import { withMockedDate } from "../../utils/storybookHelpers.unsafe";
 import { ETOFundraisingCounterWidget } from "./ETOFundraisingCounterWidget";
@@ -18,7 +18,7 @@ const date = moment
   .add(1, "hours")
   .add(37, "minutes");
 
-const presaleEto: TEtoWithCompanyAndContract = {
+const presaleEto: TEtoWithCompanyAndContractReadonly = {
   ...testEto,
   contract: {
     ...testEto.contract,
@@ -30,7 +30,7 @@ const presaleEto: TEtoWithCompanyAndContract = {
   } as IEtoContractData,
 };
 
-const publicEto: TEtoWithCompanyAndContract = {
+const publicEto: TEtoWithCompanyAndContractReadonly = {
   ...testEto,
   contract: {
     ...testEto.contract,

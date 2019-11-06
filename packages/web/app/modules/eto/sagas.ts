@@ -59,7 +59,7 @@ import {
   selectInvestorEtoWithCompanyAndContract,
   selectIsEtoAnOffer,
 } from "./selectors";
-import { EEtoAgreementStatus, EETOStateOnChain, TEtoWithCompanyAndContract } from "./types";
+import { EEtoAgreementStatus, EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "./types";
 import {
   convertToEtoTotalInvestment,
   convertToStateStartDate,
@@ -297,7 +297,7 @@ function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: 
 
 export function* delayEtoRefresh(
   _: TGlobalDependencies,
-  eto: TEtoWithCompanyAndContract,
+  eto: TEtoWithCompanyAndContractReadonly,
 ): Iterator<any> {
   const strategies: Dictionary<Promise<true>> = {
     default: delay(etoNormalPollingDelay),
@@ -321,7 +321,7 @@ export function* delayEtoRefresh(
 }
 
 export function* watchEto(_: TGlobalDependencies, previewCode: string): any {
-  const eto: TEtoWithCompanyAndContract = yield select((state: IAppState) =>
+  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: IAppState) =>
     selectInvestorEtoWithCompanyAndContract(state, previewCode),
   );
 
@@ -649,7 +649,7 @@ function* verifyEtoAccess(
 function* loadAgreementStatus(
   { logger }: TGlobalDependencies,
   agreementType: EAgreementType,
-  eto: TEtoWithCompanyAndContract,
+  eto: TEtoWithCompanyAndContractReadonly,
 ): Iterator<any> {
   try {
     if (!isOnChain(eto)) {
@@ -688,7 +688,7 @@ function* loadAgreementStatus(
 
 function* loadISHAStatus(
   { logger }: TGlobalDependencies,
-  eto: TEtoWithCompanyAndContract,
+  eto: TEtoWithCompanyAndContractReadonly,
 ): Iterator<any> {
   try {
     if (!isOnChain(eto)) {

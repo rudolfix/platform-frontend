@@ -14,7 +14,7 @@ import {
   selectEtoById,
   selectEtoOnChainStateById,
   selectEtos,
-  selecTEtoWithCompanyAndContractReadonlyById,
+  selectEtoWithCompanyAndContractById,
   selectTokenData,
 } from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
@@ -104,7 +104,7 @@ export const selectMyInvestorTicketByEtoId = (
   state: IAppState,
   etoId: string,
 ): TETOWithInvestorTicket | undefined => {
-  const eto = selecTEtoWithCompanyAndContractReadonlyById(state, etoId);
+  const eto = selectEtoWithCompanyAndContractById(state, etoId);
   const investorTicket = selectInvestorTicket(state, etoId);
 
   if (investorTicket && eto) {

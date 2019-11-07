@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../modules/actions";
-import { selecTEtoWithCompanyAndContractReadonlyById } from "../../modules/eto/selectors";
+import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
 import { appConnect } from "../../store";
 import { InvestmentProgress } from "../eto/overview/InvestmentProgress";
@@ -72,7 +72,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<
 
 const PortfolioAssetAction = appConnect<IStateProps, IDispatchProps, TExternalProps>({
   stateToProps: (state, props) => ({
-    eto: selecTEtoWithCompanyAndContractReadonlyById(state, props.etoId)!,
+    eto: selectEtoWithCompanyAndContractById(state, props.etoId)!,
   }),
   dispatchToProps: dispatch => ({
     onClaim: (etoId: string) => dispatch(actions.txTransactions.startUserClaim(etoId)),

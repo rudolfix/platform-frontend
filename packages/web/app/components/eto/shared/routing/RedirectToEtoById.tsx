@@ -3,7 +3,7 @@ import { Redirect } from "react-router";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../modules/actions";
-import { selecTEtoWithCompanyAndContractReadonlyById } from "../../../../modules/eto/selectors";
+import { selectEtoWithCompanyAndContractById } from "../../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
@@ -31,7 +31,7 @@ const RedirectEtoByIdComponent: React.FunctionComponent<TProps> = ({ eto }) => (
 export const RedirectEtoById = compose<TProps, IRouterParams>(
   appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
-      eto: selecTEtoWithCompanyAndContractReadonlyById(state, props.etoId),
+      eto: selectEtoWithCompanyAndContractById(state, props.etoId),
     }),
   }),
   withContainer(Layout),

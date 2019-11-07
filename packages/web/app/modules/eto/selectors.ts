@@ -83,7 +83,7 @@ export const selectEtoSubState = createCachedSelector(
   (eto, isEligibleToPreEto, contract) => getEtoSubState({ eto, contract, isEligibleToPreEto }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
-const selecTEtoWithCompanyAndContractReadonlyInternal = createCachedSelector(
+const selectEtoWithCompanyAndContractInternal = createCachedSelector(
   // forward eto param to combiner
   (_: IAppState, eto: TEtoSpecsData) => eto,
   (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
@@ -97,7 +97,7 @@ const selecTEtoWithCompanyAndContractReadonlyInternal = createCachedSelector(
   }),
 )((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
 
-export const selecTEtoWithCompanyAndContractReadonly = (state: IAppState, previewCode?: string) => {
+export const selectEtoWithCompanyAndContractReadonly = (state: IAppState, previewCode?: string) => {
   const userType = selectUserType(state);
   switch (userType) {
     case EUserType.NOMINEE:
@@ -123,13 +123,13 @@ export const selectInvestorEtoWithCompanyAndContract = (
 ): TEtoWithCompanyAndContractReadonly | undefined => {
   const eto = selectEto(state, previewCode);
   if (eto) {
-    return selecTEtoWithCompanyAndContractReadonlyInternal(state, eto);
+    return selectEtoWithCompanyAndContractInternal(state, eto);
   }
 
   return undefined;
 };
 
-export const selecTEtoWithCompanyAndContractReadonlyById = (
+export const selectEtoWithCompanyAndContractById = (
   state: IAppState,
   etoId: string,
 ): TEtoWithCompanyAndContractReadonly | undefined => {

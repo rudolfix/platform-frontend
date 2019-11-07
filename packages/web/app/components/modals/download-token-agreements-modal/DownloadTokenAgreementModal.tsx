@@ -11,7 +11,7 @@ import {
 } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
-import { selecTEtoWithCompanyAndContractReadonlyById } from "../../../modules/eto/selectors";
+import { selectEtoWithCompanyAndContractById } from "../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import { appConnect } from "../../../store";
@@ -150,7 +150,7 @@ const DownloadTokenAgreementModal = compose<IComponentProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectDownloadAgreementModalEtoId(state);
-      const eto = etoId ? selecTEtoWithCompanyAndContractReadonlyById(state, etoId) : undefined;
+      const eto = etoId ? selectEtoWithCompanyAndContractById(state, etoId) : undefined;
       return {
         eto,
         isOpen: etoId ? selectDownloadAgrementModalIsOpen(state) : false,

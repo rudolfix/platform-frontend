@@ -11,11 +11,11 @@ import { InvalidETOStateError } from "../../../../modules/eto/errors";
 import {
   selectEtoTokenGeneralDiscounts,
   selectEtoTokenStandardPrice,
-  selecTEtoWithCompanyAndContractReadonlyById,
+  selectEtoWithCompanyAndContractById,
 } from "../../../../modules/eto/selectors";
 import {
   IEtoTokenGeneralDiscounts,
-  TEtoWithCompanyAndContractReadonlyTypeChecked,
+  TEtoWithCompanyAndContractTypeChecked,
 } from "../../../../modules/eto/types";
 import { isOnChain } from "../../../../modules/eto/utils";
 import {
@@ -81,7 +81,7 @@ import {
 import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
-  eto: TEtoWithCompanyAndContractReadonlyTypeChecked;
+  eto: TEtoWithCompanyAndContractTypeChecked;
   wallets: WalletSelectionData[];
   euroValue: string;
   ethValue: string;
@@ -443,7 +443,7 @@ export const InvestmentSelection = compose<IProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectInvestmentEtoId(state);
-      const eto = nonNullable(selecTEtoWithCompanyAndContractReadonlyById(state, etoId));
+      const eto = nonNullable(selectEtoWithCompanyAndContractById(state, etoId));
 
       if (!isOnChain(eto)) {
         throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);

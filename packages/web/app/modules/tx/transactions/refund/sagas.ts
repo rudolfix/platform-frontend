@@ -7,7 +7,7 @@ import { IAppState } from "../../../../store";
 import { multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
 import { EthereumAddressWithChecksum } from "../../../../utils/opaque-types/types";
 import { actions, TActionFromCreator } from "../../../actions";
-import { selecTEtoWithCompanyAndContractReadonlyById } from "../../../eto/selectors";
+import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { selectInvestorTicket } from "../../../investor-portfolio/selectors";
 import { IInvestorTicket } from "../../../investor-portfolio/types";
@@ -53,7 +53,7 @@ function* startRefundGenerator(_: TGlobalDependencies, etoId: string): Iterator<
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
   const etoData = yield select((state: IAppState) =>
-    selecTEtoWithCompanyAndContractReadonlyById(state, etoId),
+    selectEtoWithCompanyAndContractById(state, etoId),
   );
   const investorTicket: IInvestorTicket = yield select((state: IAppState) =>
     selectInvestorTicket(state, etoId),

@@ -6,7 +6,7 @@ import { ITxData } from "../../../../lib/web3/types";
 import { IAppState } from "../../../../store";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../../../actions";
-import { selecTEtoWithCompanyAndContractReadonlyById } from "../../../eto/selectors";
+import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { EInvestmentType } from "../../../investment-flow/reducer";
@@ -127,7 +127,7 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any
 
   const etoId: string = yield select(selectInvestmentEtoId);
   const eto: TEtoWithCompanyAndContractReadonly = yield select((state: IAppState) =>
-    selecTEtoWithCompanyAndContractReadonlyById(state, etoId),
+    selectEtoWithCompanyAndContractById(state, etoId),
   );
 
   const investmentEth: string = yield select(selectInvestmentEthValueUlps);

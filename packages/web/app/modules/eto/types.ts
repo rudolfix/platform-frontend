@@ -40,7 +40,7 @@ export type TEtoWithCompanyAndContractReadonly = DeepReadonly<
   }
 >;
 
-export type TEtoWithCompanyAndContractReadonlyTypeChecked = Overwrite<
+export type TEtoWithCompanyAndContractTypeChecked = Overwrite<
   TEtoWithCompanyAndContractReadonly,
   { contract: Exclude<TEtoWithCompanyAndContractReadonly["contract"], undefined> }
 >;

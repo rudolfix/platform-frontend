@@ -15,7 +15,7 @@ import { actions, TAction } from "../actions";
 import {
   selectEtoById,
   selectEtoOnChainStateById,
-  selecTEtoWithCompanyAndContractReadonlyById,
+  selectEtoWithCompanyAndContractById,
 } from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../gas/selectors";
@@ -231,7 +231,7 @@ function* start(action: TAction): any {
   if (action.type !== "INVESTMENT_FLOW_START") return;
   const etoId = action.payload.etoId;
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
-    yield select((state: IAppState) => selecTEtoWithCompanyAndContractReadonlyById(state, etoId)),
+    yield select((state: IAppState) => selectEtoWithCompanyAndContractById(state, etoId)),
   );
 
   yield put(actions.investmentFlow.resetInvestment());

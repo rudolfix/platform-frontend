@@ -92,8 +92,9 @@ const outsourcedStatusTextMap: Record<ERequestOutsourcedStatus, React.ReactNode>
 const getStatus = (
   selectIsUserEmailVerified: boolean,
   isKycFlowBlockedByRegion: boolean,
+  isRestrictedCountryInvestor: boolean,
   requestStatus: EKycRequestStatus | undefined,
-  requestOutsourcedStatus?: ERequestOutsourcedStatus | undefined,
+  requestOutsourcedStatus: ERequestOutsourcedStatus | undefined,
 ): React.ReactNode => {
   // In case KYC flow is blocked show message immediately
   if (isKycFlowBlockedByRegion) {
@@ -110,6 +111,14 @@ const getStatus = (
 
   if (!requestStatus) {
     return "";
+  }
+
+  if (requestStatus === EKycRequestStatus.ACCEPTED && isRestrictedCountryInvestor) {
+    return (
+      <span data-test-id="settings.kyc-status-widget.restricted-country-investor">
+        <FormattedMessage id="settings.kyc-status-widget.status.error-restricted-country-investor" />
+      </span>
+    );
   }
 
   if (requestStatus === EKycRequestStatus.OUTSOURCED && requestOutsourcedStatus) {
@@ -212,13 +221,14 @@ const StatusIcon = ({
   requestStatus,
   isLoading,
   requestOutsourcedStatus,
+  isRestrictedCountryInvestor,
 }: IKycStatusWidgetProps) => {
   if (isLoading) {
     return null;
   }
 
   if (
-    requestStatus === EKycRequestStatus.ACCEPTED ||
+    (!isRestrictedCountryInvestor && requestStatus === EKycRequestStatus.ACCEPTED) ||
     (requestStatus === EKycRequestStatus.OUTSOURCED &&
       [ERequestOutsourcedStatus.SUCCESS, ERequestOutsourcedStatus.SUCCESS_DATA_CHANGED].includes(
         requestOutsourcedStatus!,
@@ -252,6 +262,7 @@ export const KycStatusWidgetBase: React.FunctionComponent<IKycStatusWidgetProps>
     step,
     columnSpan,
     isKycFlowBlockedByRegion,
+    isRestrictedCountryInvestor,
   } = props;
 
   return (
@@ -278,6 +289,7 @@ export const KycStatusWidgetBase: React.FunctionComponent<IKycStatusWidgetProps>
             {getStatus(
               isUserEmailVerified,
               isKycFlowBlockedByRegion,
+              isRestrictedCountryInvestor,
               requestStatus,
               requestOutsourcedStatus,
             )}

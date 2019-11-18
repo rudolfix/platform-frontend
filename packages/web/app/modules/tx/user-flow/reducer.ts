@@ -1,5 +1,5 @@
-import { txUserFlowWithdrawReducer } from "./withdraw/reducer";
+import { txUserFlowTransferReducer } from "./transfer/reducer";
 
 export const txUserFlowReducers = {
-  txUserFlowWithdraw: txUserFlowWithdrawReducer,
+  txUserFlowTransfer: txUserFlowTransferReducer,
 };

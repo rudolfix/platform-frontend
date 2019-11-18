@@ -30,6 +30,7 @@ import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { EuroToken } from "../../lib/contracts/EuroToken";
+import { ITokenController } from "../../lib/contracts/ITokenController";
 import { IAppState } from "../../store";
 import { Dictionary } from "../../types";
 import { divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
@@ -49,6 +50,7 @@ import {
   IAgreementContractAndHash,
 } from "../tx/transactions/nominee/sign-agreement/types";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { generateRandomEthereumAddress } from "./../web3/utils";
 import { etoInProgressPollingDelay, etoNormalPollingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
 import {
@@ -524,8 +526,16 @@ function* loadTokensData({ contractsService }: TGlobalDependencies): any {
       tokensPerShare: equityToken.tokensPerShare,
       tokenController: equityToken.tokenController,
     });
-
     const controllerGovernance = yield contractsService.getControllerGovernance(tokenController);
+    const tokenControllerMe: ITokenController = yield contractsService.getTokenController(
+      tokenController,
+    );
+    const canTransferToken = yield tokenControllerMe.onTransfer(
+      walletAddress,
+      walletAddress,
+      generateRandomEthereumAddress(),
+      new BigNumber("1"),
+    );
 
     let [
       shareCapital,
@@ -564,6 +574,7 @@ function* loadTokensData({ contractsService }: TGlobalDependencies): any {
         totalCompanyShares: shareCapital.toString(),
         companyValuationEurUlps: companyValuationEurUlps.toString(),
         tokenPrice: tokenPrice.toString(),
+        canTransferToken,
       }),
     );
   }

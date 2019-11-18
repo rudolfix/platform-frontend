@@ -94,7 +94,7 @@ const InvestmentSummary = compose<IProps, {}>(
     }),
     dispatchToProps: d => ({
       onAccept: () => d(actions.txSender.txSenderAccept()),
-      onChange: () => d(actions.txSender.txSenderChange(ETxSenderType.INVEST)),
+      onChange: () => d(actions.txSender.txSenderChange()),
       downloadAgreement: (etoId: string) =>
         d(
           actions.eto.downloadEtoTemplateByType(

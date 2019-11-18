@@ -51,6 +51,7 @@ export interface IEtoTokenData {
   totalCompanyShares: string;
   companyValuationEurUlps: string;
   tokenPrice: string;
+  canTransferToken: boolean;
 }
 
 export interface IEtoTokenGeneralDiscounts {

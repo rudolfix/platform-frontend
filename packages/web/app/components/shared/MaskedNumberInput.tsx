@@ -25,7 +25,7 @@ interface IProps {
   storageFormat: ENumberInputFormat; // how is this value stored in the app state (ULPS or FLOAT)
   outputFormat: ENumberOutputFormat; // how should this value be visualized
   valueType?: TValueFormat;
-  value: string;
+  value?: string;
   onChangeFn: (value: string) => void;
   returnInvalidValues?: boolean;
   setError?: (v: boolean) => void;
@@ -43,6 +43,7 @@ interface IProps {
   suffix?: TTranslatedString;
   size?: EInputSize;
   tokenDecimals?: number;
+  validateOnMount?: boolean; //this is a workaround to validate initial values on mount before we upgraded formik to 2.0. Please do not use it!
 }
 
 export class MaskedNumberInput extends React.Component<IProps> {
@@ -141,6 +142,12 @@ export class MaskedNumberInput extends React.Component<IProps> {
   };
 
   hasFocus = (id: string) => !!document.activeElement && document.activeElement.id === id;
+
+  componentDidMount(): void {
+    if (this.props.validateOnMount) {
+      this.changeValue(this.props.value === undefined ? "" : this.props.value);
+    }
+  }
 
   componentDidUpdate(): void {
     if (!(this.props.value === undefined || typeof this.props.value === "string")) {

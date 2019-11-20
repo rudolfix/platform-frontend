@@ -32,30 +32,34 @@ interface IExternalProps {
 export type IKycStatusWidgetProps = THocProps<typeof connectKycStatusWidget> & IExternalProps;
 
 const statusTextMap: Record<EKycRequestStatus, React.ReactNode> = {
-  Accepted: <FormattedMessage id="settings.kyc-status-widget.status.accepted" />,
-  Rejected: (
+  [EKycRequestStatus.ACCEPTED]: (
+    <FormattedMessage id="settings.kyc-status-widget.status.accepted" />
+  ),
+  [EKycRequestStatus.REJECTED]: (
     <FormattedHTMLMessage
       tagName="span"
       id="settings.kyc-status-widget.status.rejected"
       values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
-  Ignored: <FormattedMessage id="settings.kyc-status-widget.status.ignored" />,
-  Pending: (
+  [EKycRequestStatus.IGNORED]: <FormattedMessage id="settings.kyc-status-widget.status.ignored" />,
+  [EKycRequestStatus.PENDING]: (
     <FormattedHTMLMessage
       tagName="span"
       id="settings.kyc-status-widget.status.pending"
       values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
-  Draft: (
+  [EKycRequestStatus.DRAFT]: (
     <FormattedHTMLMessage
       tagName="span"
       id="settings.kyc-status-widget.status.draft"
       values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
-  Outsourced: <FormattedMessage id="settings.kyc-status-widget.status.outsourced.started" />,
+  [EKycRequestStatus.OUTSOURCED]: (
+    <FormattedMessage id="settings.kyc-status-widget.status.outsourced.started" />
+  ),
 };
 
 const outsourcedStatusTextMap: Record<ERequestOutsourcedStatus, React.ReactNode> = {

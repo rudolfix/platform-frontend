@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 
 import { EJurisdiction } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import { TEtoWithCompanyAndContract } from "../../../../modules/eto/types";
+import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
 import { isEtoSoftCapReached, isFundraisingActive } from "../../../../modules/eto/utils";
 import { CommonHtmlProps, XOR } from "../../../../types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
@@ -23,15 +23,15 @@ type TExternalProps = XOR<
     isEmbedded: true;
   },
   { isEmbedded: false; url: string }
-> & { eto: TEtoWithCompanyAndContract; publicView: boolean };
+> & { eto: TEtoWithCompanyAndContractReadonly; publicView: boolean };
 
 interface IStatusOfEtoProps {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
   publicView: boolean;
 }
 
 interface IInfoProps {
-  eto: TEtoWithCompanyAndContract;
+  eto: TEtoWithCompanyAndContractReadonly;
   url: string;
 }
 

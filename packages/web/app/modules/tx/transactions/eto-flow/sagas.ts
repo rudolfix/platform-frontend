@@ -14,7 +14,7 @@ import {
   selectNewPreEtoStartDate,
   selectPreEtoStartDate,
 } from "../../../eto-flow/selectors";
-import { TEtoWithCompanyAndContract } from "../../../eto/types";
+import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
@@ -59,7 +59,7 @@ function* generateSetStartDateTransaction({
   return txDetails;
 }
 
-type TExtraParams = { eto: TEtoWithCompanyAndContract; agreementHash: string };
+type TExtraParams = { eto: TEtoWithCompanyAndContractReadonly; agreementHash: string };
 
 function* generateSignInvestmentAgreementTx(
   { contractsService, web3Manager }: TGlobalDependencies,
@@ -153,7 +153,12 @@ function* etoSignInvestmentAgreementSaga(
   } catch (e) {
     logger.info("Signing investment agreement was cancelled", e);
   } finally {
-    yield put(actions.eto.loadSignedInvestmentAgreement(action.payload.eto));
+    yield put(
+      actions.eto.loadSignedInvestmentAgreement(
+        action.payload.eto.etoId,
+        action.payload.eto.previewCode,
+      ),
+    );
   }
 }
 

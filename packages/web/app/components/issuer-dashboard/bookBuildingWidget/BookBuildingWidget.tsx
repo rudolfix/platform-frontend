@@ -1,6 +1,7 @@
 import * as React from "react";
 import { branch, compose, renderComponent, renderNothing, withProps } from "recompose";
 
+import { TEtoInvestmentCalculatedValues } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { actions } from "../../../modules/actions";
 import { selectIsAuthorized } from "../../../modules/auth/selectors";
@@ -17,6 +18,7 @@ import {
   selectIssuerEtoOnChainState,
   selectMaxPledges,
 } from "../../../modules/eto-flow/selectors";
+import { selectIssuerEtoInvestmentCalculatedValues } from "../../../modules/eto/selectors";
 import { EETOStateOnChain } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { OmitKeys, TTranslatedString } from "../../../types";
@@ -54,6 +56,7 @@ interface IStateProps {
   onChainState: EETOStateOnChain | undefined;
   minOffsetPeriod: number;
   isAuthorized: boolean;
+  investmentCalculatedValues: TEtoInvestmentCalculatedValues | undefined;
 }
 
 interface IWithProps {
@@ -144,13 +147,14 @@ export const BookBuildingWidget = compose<TProps, IExternalProps>(
 
       return {
         etoId,
+        investmentCalculatedValues: selectIssuerEtoInvestmentCalculatedValues(state),
         bookBuildingEnabled: selectIsBookBuilding(state),
         bookBuildingStats: selectBookbuildingStats(state, etoId),
         maxPledges: selectMaxPledges(state),
         canEnableBookbuilding: selectCanEnableBookBuilding(state),
         onChainState: selectIssuerEtoOnChainState(state),
         minOffsetPeriod: selectIssuerEtoDateToWhitelistMinDuration(state),
-        isAuthorized: selectIsAuthorized(state.auth),
+        isAuthorized: selectIsAuthorized(state),
       };
     },
     dispatchToProps: dispatch => ({
@@ -191,6 +195,7 @@ export const BookBuildingWidget = compose<TProps, IExternalProps>(
       canEnableBookbuilding,
       bookBuildingEnabled,
       isAuthorized,
+      investmentCalculatedValues,
     }) => {
       if (maxPledges === null || bookBuildingEnabled === undefined) {
         throw new InvariantError(
@@ -205,6 +210,7 @@ export const BookBuildingWidget = compose<TProps, IExternalProps>(
           canEnableBookbuilding: canEnableBookbuilding,
           whitelistingIsActive: bookBuildingEnabled,
           bookbuildingLimitReached,
+          investmentCalculatedValues,
           investorsCount: bookBuildingStats.investorsCount,
           isAuthorized,
         }),

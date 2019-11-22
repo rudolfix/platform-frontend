@@ -105,7 +105,7 @@ export const DocumentUploadableDropzone: React.FunctionComponent<IUploadableDocu
         maxSize={MAX_UPLOADABLE_SIZE}
         onDropRejected={() => setRejected(true)}
         onDropAccepted={() => setRejected(false)}
-        isUploading={busy}
+        isUploading={!!busy}
       />
       <DocumentUploadTypeDescription typedFileName={typedFileName} />
       {rejected && <DocumentUploadDropzoneError />}

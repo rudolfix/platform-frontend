@@ -20,7 +20,7 @@ interface IOwnProps {
   maxSize?: number;
   onDropRejected?: DropFileEventHandler;
   onDropAccepted?: DropFileEventHandler;
-  isUploading?: boolean;
+  isUploading: boolean;
 }
 //todo dropzone should accept all files dropped, not only the first one, see #2243
 export const ETOAddDocumentsComponent: React.FunctionComponent<IDispatchProps & IOwnProps> = ({

@@ -273,7 +273,7 @@ export const uploadDocumentToFieldWithTid = (
     confirmAccessModal();
   }
 
-  cy.get(`${tid(targetTid)} ${tid("documents-download-document")}`).should("exist");
+  cy.get(`${tid(targetTid)} ${tid("documents.actions.download")}`).should("exist");
 };
 
 /**
@@ -283,7 +283,7 @@ export const uploadDocumentToFieldWithTid = (
  */
 export const uploadSingleFileToField = (name: string, fixture: string) => {
   cy.get(formField(name)).within(() => {
-    cy.root().dropFile(fixture);
+    cy.get(tid("dropzone")).dropFile(fixture);
     cy.get("img").should("exist");
   });
 };

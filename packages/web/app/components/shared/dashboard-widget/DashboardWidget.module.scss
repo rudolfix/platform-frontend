@@ -10,5 +10,7 @@
 }
 
 .text {
+  @include font-medium-roboto;
+
   margin-bottom: 0;
 }

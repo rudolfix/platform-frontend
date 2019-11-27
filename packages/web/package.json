@@ -127,6 +127,7 @@
     "copy-webpack-plugin": "^5.0.2",
     "css-loader": "^1.0.1",
     "cypress": "^3.6.1",
+    "cypress-log-to-output": "^1.0.7",
     "cypress-plugin-retries": "^1.4.0",
     "dotenv": "^6.0.0",
     "enzyme": "^3.10.0",

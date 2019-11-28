@@ -94,7 +94,6 @@ jobs:
           at: /home/circleci/app
       - checkout
       - run: ./.circleci/install-yarn.sh
-      - run: ./.circleci/install-chrome.sh
       - restore_cache:
           keys:
             - v23-deps-{{ checksum "package.json" }}

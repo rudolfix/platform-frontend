@@ -180,22 +180,22 @@ workflows:
                 - production
     jobs:
       - install-lint-test
-      - build-docker-test-e2e:
-          requires:
-            - install-lint-test
+      # - build-docker-test-e2e:
+      # requires:
+      # - install-lint-test
       - build-frontend:
           requires:
             - install-lint-test
       - test-e2e:
           requires:
             - build-frontend
-            - build-docker-test-e2e
-      - codechecks:
-          requires:
-            - build-frontend
-      - codechecks-vis-reg:
-          requires:
-            - build-frontend
+            # - build-docker-test-e2e
+      # - codechecks:
+          # requires:
+            # - build-frontend
+      # - codechecks-vis-reg:
+          # requires:
+            # - build-frontend
 
   deploy-storybook:
     jobs:

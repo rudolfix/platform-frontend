@@ -32,6 +32,8 @@ import { INVESTMENT_GAS_AMOUNT } from "../tx/transactions/investment/sagas";
 import { ETxSenderType } from "../tx/types";
 import { txValidateSaga } from "../tx/validator/sagas";
 import {
+  selectICBMLockedEtherBalance,
+  selectICBMLockedEuroTokenBalance,
   selectLiquidEtherBalance,
   selectLiquidEuroTokenBalance,
   selectLockedEtherBalance,
@@ -228,9 +230,14 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   }
 }
 
+function* getInvestmentViewData () {
+
+}
+
 function* start(
   action: TActionFromCreator<typeof actions.investmentFlow.startInvestment>,
 ): Iterator<any> {
+  console.log("start investment")
   const etoId = action.payload.etoId;
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
     yield select((state: IAppState) => selectEtoWithCompanyAndContractById(state, etoId)),
@@ -250,9 +257,11 @@ function* start(
     take(actions.investorEtoTicket.setTokenPersonalDiscount),
   ]);
 
+
   yield put(actions.txTransactions.startInvestment(etoId));
 
   yield take("TX_SENDER_SHOW_MODAL");
+  getInvestmentViewData()
   yield getActiveInvestmentTypes();
   yield resetTxDataAndValidations();
 }
@@ -261,36 +270,56 @@ export function* onInvestmentTxModalHide(): any {
   yield put(actions.investmentFlow.resetInvestment());
 }
 
-function* getActiveInvestmentTypes(): Iterator<any> {
-  const state: IAppState = yield select();
-  const etoId = selectInvestmentEtoId(state);
-  const etoOnChainState = selectEtoOnChainStateById(state, etoId);
-  const neurStatus = selectNEURStatus(state);
+const hasFunds = (input:string) => {
+  return  compareBigNumbers(input, "0") > 0
+}
 
-  let activeTypes: EInvestmentType[] = [EInvestmentType.Eth];
+function* getActiveInvestmentTypes(): Iterator<any> {
+  const etoId = yield select(selectInvestmentEtoId);
+  const etoOnChainState = yield select(selectEtoOnChainStateById, etoId);
+  const neurStatus = yield select(selectNEURStatus);
+  const userIsWhitelisted = yield select(selectIsWhitelisted,etoId);
+
+  const balanceNEur:string = yield select(selectLiquidEuroTokenBalance);
+  const ethBalance:string = yield select(selectLiquidEtherBalance);
+
+  const icbmBalanceNEuro:string = yield(selectICBMLockedEuroTokenBalance);
+  const icbmBalanceEth:string = yield select(selectICBMLockedEtherBalance);
+  const lockedBalanceNEuro:string = yield select(selectLockedEuroTokenBalance);
+  const lockedBalanceEth:string = yield select(selectLockedEtherBalance);
+
+
+  let activeTypes: EInvestmentType[] = []//[EInvestmentType.Eth];
+
+  // if (hasFunds(ethBalance)) {
+  //   activeTypes.unshift(EInvestmentType.Eth);
+  // }
 
   // if neur is not restricted because of the us state
-  if (neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
+  if (hasFunds(balanceNEur) &&  neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
     activeTypes.unshift(EInvestmentType.NEur);
   }
 
   // no regular investment if not whitelisted in pre eto
-  if (etoOnChainState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) {
+  if (etoOnChainState === EETOStateOnChain.Whitelist && !userIsWhitelisted) {
     activeTypes = [];
   }
 
   // only ICBM investment if balance available
-  if (compareBigNumbers(selectLockedEuroTokenBalance(state), "0") > 0) {
+  if (hasFunds(lockedBalanceNEuro) ) {
     activeTypes.unshift(EInvestmentType.ICBMnEuro);
   }
-  if (compareBigNumbers(selectLockedEtherBalance(state), "0") > 0) {
+  if (hasFunds(lockedBalanceEth) ) {
     activeTypes.unshift(EInvestmentType.ICBMEth);
   }
+
+
 
   yield put(actions.investmentFlow.setActiveInvestmentTypes(activeTypes));
 
   // guarantee that current type is inside active types.
-  const currentType = selectInvestmentType(state);
+  const currentType = yield select(selectInvestmentType);
+  console.log("activeTypes",activeTypes,"currentType",currentType)
   if (currentType && !activeTypes.includes(currentType)) {
     yield put(actions.investmentFlow.selectInvestmentType(activeTypes[0]));
   }

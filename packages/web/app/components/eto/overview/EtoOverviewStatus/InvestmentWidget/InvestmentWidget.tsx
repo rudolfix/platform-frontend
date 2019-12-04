@@ -60,7 +60,7 @@ const InvestNowButton: React.FunctionComponent<TInvestWidgetProps> = ({
           to={etoPublicViewLink(eto.previewCode, eto.product.jurisdiction)}
           target="_blank"
           data-test-id="eto-widget-invest-now-button"
-        >
+        >sdfasdf
           <FormattedMessage id="shared-component.eto-overview.invest-now" />
         </ButtonLink>
       );

@@ -113,7 +113,10 @@ export function createWallets(state: IAppState): WalletSelectionData[] {
   return (
     walletsList
       .map(w => ({ ...wallets[w], enabled: enabledWallets.some(v => v === w) }))
+      .map(w => {console.log("1:",w);return w})
       .filter(w => w.hasFunds)
+      .map(w => {console.log("2:",w);return w})
+
       // filter not enabled wallets that are not ICBM in current investment flow
       .filter(w => isICBMWallet(w.type) || w.enabled)
   );

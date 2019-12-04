@@ -150,11 +150,9 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
       this.props.investmentCurrency,
     );
 
-    const validationError = this.state.validationError ? (
-      <FormattedMessage id="investment-flow.validation-error" />
-    ) : (
-      undefined
-    );
+    const validationError = this.state.validationError
+      ? <FormattedMessage id="investment-flow.validation-error" />
+      : undefined;
 
     return validationError || externalError;
   };
@@ -173,7 +171,6 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
       euroValue,
       gasCostEth,
       gasCostEuro,
-      intl,
       investmentType,
       minTicketEth,
       minTicketEur,
@@ -188,7 +185,14 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
       etoTokenGeneralDiscounts,
       etoTokenPersonalDiscount,
       etoTokenStandardPrice,
+
+      intl,
+      // eto.contract.timedState
+      // eto.equityTokenSymbol
+      //-d-changeEuroValue
+      //-d-changeEthValue
     } = this.props;
+    console.log("InvestmentSelectionComponent")
     const error = this.getError();
     return (
       <section data-test-id="modals.investment.modal">
@@ -232,7 +236,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
               {investmentCurrency === EInvestmentCurrency.EUR_TOKEN && (
                 <MaskedNumberInput
                   name="euroValue"
-                  value={this.props.euroValue}
+                  value={euroValue}
                   storageFormat={ENumberInputFormat.ULPS}
                   valueType={ECurrency.EUR_TOKEN}
                   outputFormat={ENumberOutputFormat.FULL}
@@ -254,7 +258,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                     valueType={ECurrency.ETH}
                     storageFormat={ENumberInputFormat.ULPS}
                     outputFormat={ENumberOutputFormat.FULL}
-                    value={this.props.ethValue}
+                    value={ethValue}
                     onChangeFn={this.props.changeEthValue}
                     placeholder={`${intl.formatIntlMessage(
                       "investment-flow.min-ticket-size",
@@ -275,8 +279,8 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                     {"≈ "}
                     <Money
                       value={
-                        isValidFormNumber(this.props.euroValue)
-                          ? this.props.euroValue
+                        isValidFormNumber(euroValue)
+                          ? euroValue
                           : "0" /* Show 0 if form is invalid */
                       }
                       inputFormat={ENumberInputFormat.ULPS}
@@ -449,7 +453,8 @@ export const InvestmentSelection = compose<IProps, {}>(
       }
 
       const eur = selectInvestmentEurValueUlps(state);
-
+      const wallets = createWallets(state);
+      console.log(wallets)
       return {
         eto,
         etherPriceEur: selectEtherPriceEur(state),
@@ -460,7 +465,7 @@ export const InvestmentSelection = compose<IProps, {}>(
         txValidationState: selectTxValidationState(state),
         gasCostEth: selectTxGasCostEthUlps(state),
         investmentType: nonNullable(selectInvestmentType(state)),
-        wallets: createWallets(state),
+        wallets,
         neuReward: selectNeuRewardUlpsByEtoId(state, etoId),
         equityTokenCount: selectEquityTokenCountByEtoId(state, etoId),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),

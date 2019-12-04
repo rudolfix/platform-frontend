@@ -85,11 +85,7 @@ function* txMonitor(_: TGlobalDependencies): Iterable<any> {
 }
 
 function* txControllerSaga(controlledEffect: Iterator<Effect>): any {
-  const gasPrice: IGasState = yield select(selectGasPrice);
-
-  if (!gasPrice) {
-    yield take(actions.gas.gasApiLoaded);
-  }
+  yield waitForGasPriceToLoad();
 
   const { cancel } = yield race({
     result: controlledEffect,
@@ -146,6 +142,14 @@ function* txSendProcess(
     logger.error(`Error while processing transaction`, error, { errorType, transactionType });
 
     yield put(actions.txSender.txSenderError(errorType));
+  }
+}
+
+export function* waitForGasPriceToLoad() {
+  const gasPrice: IGasState = yield select(selectGasPrice);
+
+  if (!gasPrice) {
+    yield take(actions.gas.gasApiLoaded);
   }
 }
 

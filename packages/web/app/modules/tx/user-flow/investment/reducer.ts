@@ -2,40 +2,50 @@ import { AppReducer } from "../../../../store";
 import { actions } from "../../../actions";
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { EProcessState } from "../../../../utils/enums/processStates";
-import { XOR } from "../../../../types";
+import { DeepReadonly, XOR } from "../../../../types";
+import { EInvestmentCurrency } from "../../../../components/modals/tx-sender/investment-flow/utils";
+import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
+import { EInvestmentErrorState, EInvestmentType } from "../../../investment-flow/reducer";
+import { EValidationState } from "../../validator/reducer";
 
-export type TxUserFlowInvestmentReadyState = {
+export type TTxUserFlowInvestmentReadyState = {
   eto: TEtoWithCompanyAndContractReadonly,
-  investmentType: string,
+  investmentValue: string,
   equityTokenCount: string,
-  ethValue: string,
-  euroValue: string,
   gasCostEth: string,
   gasCostEuro: string,
-  minTicketEth: string,
+  investmentType: EInvestmentType,
   minTicketEur: string,
   maxTicketEur: string,
   neuReward: string,
   readyToInvest: string,
-  sendTransaction: string,
-  showTokens: string,
-  wallets: string,
+  showTokens: boolean,
+  wallets: DeepReadonly<WalletSelectionData[]>,
   hasPreviouslyInvested: boolean,
-  investmentCurrency: string,
+  investmentCurrency: EInvestmentCurrency,
   etoTokenGeneralDiscounts: string,
   etoTokenPersonalDiscount: string,
   etoTokenStandardPrice: string,
-  errorState: string,
-  txValidationState: string,
-  equityTokenName: string,
+  error: TInvestmentInputError | undefined,
+  totalCostEth:string,
+  totalCostEuro: string,
+  minEthTicketFormatted: string,
+  equityTokenCountFormatted: string,
+  euroValueWithFallback: string,
 }
 
+export enum EInvestmentInputValidationError {
+  INPUT_VALIDATION_ERROR = "inputValidationError",
+}
+
+export type TInvestmentInputError = EInvestmentErrorState & EInvestmentInputValidationError
+
 export type TxUserFlowInvestmentState = XOR<
-  { processState: EProcessState.SUCCESS } & TxUserFlowInvestmentReadyState,
-  { processState: EProcessState.ERROR | EProcessState.IN_PROGRESS | EProcessState.NOT_STARTED}
+  { processState: EProcessState.NOT_STARTED | EProcessState.ERROR | EProcessState.IN_PROGRESS },
+  ({ processState: EProcessState.SUCCESS } & TTxUserFlowInvestmentReadyState)
   >
 
-const initialState = {processState: EProcessState.NOT_STARTED};
+const initialState:TxUserFlowInvestmentState = {processState: EProcessState.NOT_STARTED};
 
 export const txUserFlowInvestmentReducer: AppReducer<TxUserFlowInvestmentState> = (
   state = initialState,
@@ -48,6 +58,23 @@ export const txUserFlowInvestmentReducer: AppReducer<TxUserFlowInvestmentState> 
         processState: EProcessState.SUCCESS,
         ...action.payload.data
       }
+    }
+    case actions.txUserFlowInvestment.setInvestmentValue.getType(): {
+      return state.processState === EProcessState.SUCCESS
+      ? {
+        ...state,
+        investmentValue: action.payload.value
+      }
+      : state
+    }
+    case actions.txUserFlowInvestment.setValidationError.getType():{
+      console.log("setValidationError", action.payload.error)
+      return state.processState === EProcessState.SUCCESS
+        ? {
+          ...state,
+          error: action.payload.error
+        }
+        : state
     }
   }
 

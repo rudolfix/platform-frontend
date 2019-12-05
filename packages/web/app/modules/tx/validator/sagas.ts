@@ -13,7 +13,7 @@ import {
   multiplyBigNumbers,
   subtractBigNumbers,
 } from "../../../utils/BigNumberUtils";
-import { actions, TAction } from "../../actions";
+import { actions, TAction, TActionFromCreator } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
 import { selectWalletType } from "../../web3/selectors";
@@ -53,9 +53,8 @@ export function* txValidateInvestment(): Iterator<any> {
 
 export function* txValidateSaga(
   { logger, notificationCenter }: TGlobalDependencies,
-  action: TAction,
-): any {
-  if (action.type !== actions.txValidator.validateDraft.getType()) return;
+  action: TActionFromCreator<typeof actions.txValidator.validateDraft>,
+): Iterator<any> {
   try {
     let validationGenerator: any;
     switch (action.payload.type) {

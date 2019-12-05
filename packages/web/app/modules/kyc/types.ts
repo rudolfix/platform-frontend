@@ -13,7 +13,3 @@ export type TBankAccount =
       details: KycBankVerifiedBankAccount;
     }
   | { hasBankAccount: false };
-
-export type TIdNow = {
-  redirectUrl: string;
-};

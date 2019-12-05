@@ -221,3 +221,16 @@ export type KycBankQuintessenceBankAccount = YupTS.TypeOf<
 >;
 export type TKycBankAccount = YupTS.TypeOf<typeof KycBankAccountSchema>;
 export type TKycBankTransferPurpose = YupTS.TypeOf<typeof KycBankTransferPurposeSchema>;
+
+export const KycOnfidoUploadRequestSchema = YupTS.object({
+  webtoken: YupTS.string(),
+});
+
+export type TKycOnfidoUploadRequest = YupTS.TypeOf<typeof KycOnfidoUploadRequestSchema>;
+
+export const KycOnfidoCheckRequestSchema = YupTS.object({
+  result: YupTS.string().optional(),
+  status: YupTS.string(),
+});
+
+export type TKycOnfidoCheckRequest = YupTS.TypeOf<typeof KycOnfidoCheckRequestSchema>;

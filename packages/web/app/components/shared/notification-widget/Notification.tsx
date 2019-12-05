@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
 import { ENotificationText, ENotificationType } from "../../../modules/notifications/types";
-import { TDataTestId } from "../../../types";
+import { CommonHtmlProps, TDataTestId } from "../../../types";
 import { getHostname } from "../../../utils/StringUtils";
 import { ButtonBase } from "../buttons";
 import { ButtonClose } from "../buttons/CommonButtons";
@@ -41,6 +41,9 @@ const notificationTexts = {
   [ENotificationText.AUTH_SESSION_TIMEOUT]: (
     <FormattedMessage id="notifications.auth-session-timeout" />
   ),
+  [ENotificationText.NOT_SUPPORTED_ONFIDO_BROWSER]: (
+    <FormattedMessage id="notifications.not-supported-onfido-browser" />
+  ),
   [ENotificationText.NOT_ACCREDITED_INVESTOR]: (
     <FormattedMessage
       id="notifications.not-accredited-investor"
@@ -74,13 +77,14 @@ const NotificationContent: React.FunctionComponent<INotificationContentProps> = 
   </div>
 );
 
-const Notification: React.FunctionComponent<INotificationProps & TDataTestId> = ({
+const Notification: React.FunctionComponent<INotificationProps & TDataTestId & CommonHtmlProps> = ({
   type,
   text,
   onClick,
+  className,
   "data-test-id": dataTestId,
 }) => (
-  <section data-test-id={dataTestId} className={cn(styles.notificationWrapper)}>
+  <section data-test-id={dataTestId} className={cn(styles.notificationWrapper, className)}>
     {onClick ? (
       <ButtonBase className="w-100" data-test-id="notification-button" onClick={onClick}>
         <NotificationContent text={text} type={type} />

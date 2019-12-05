@@ -10,10 +10,15 @@ import {
 import { AppReducer } from "../../store";
 import { DeepReadonly, Dictionary } from "../../types";
 import { actions } from "../actions";
-import { TBankAccount, TClaims, TIdNow } from "./types";
+import { idNowInitialState, idNowReducer, IKycIdNowState } from "./instant-id/id-now/reducer";
+import { IKycOnfidoState, onfidoInitialState, onfidoReducer } from "./instant-id/onfido/reducer";
+import { TBankAccount, TClaims } from "./types";
 import { appendIfExists, omitUndefined, updateArrayItem } from "./utils";
 
 export interface IKycState {
+  onfido: DeepReadonly<IKycOnfidoState>;
+  idNow: DeepReadonly<IKycIdNowState>;
+
   status: TKycStatus | undefined;
   statusLoading: boolean;
   statusError: string | undefined;
@@ -57,11 +62,12 @@ export interface IKycState {
   quintessenceBankAccount: KycBankQuintessenceBankAccount | undefined;
 
   kycSaving: boolean | undefined;
-
-  idNow: TIdNow | undefined;
 }
 
 const kycInitialState: IKycState = {
+  onfido: onfidoInitialState,
+  idNow: idNowInitialState,
+
   status: undefined,
   statusLoading: false,
   statusError: undefined,
@@ -98,14 +104,18 @@ const kycInitialState: IKycState = {
   bankAccount: undefined,
   quintessenceBankAccount: undefined,
   kycSaving: undefined,
-
-  idNow: undefined,
 };
 
 export const kycReducer: AppReducer<IKycState> = (
-  state = kycInitialState,
+  reduxState = kycInitialState,
   action,
 ): DeepReadonly<IKycState> => {
+  const state = {
+    ...reduxState,
+    onfido: onfidoReducer(reduxState.onfido, action),
+    idNow: idNowReducer(reduxState.idNow, action),
+  };
+
   switch (action.type) {
     // general
     case actions.kyc.setStatusLoading.getType():
@@ -208,10 +218,6 @@ export const kycReducer: AppReducer<IKycState> = (
 
     case actions.kyc.setQuintessenceBankAccountDetails.getType(): {
       return { ...state, quintessenceBankAccount: action.payload.quintessenceBankAccount };
-    }
-
-    case actions.kyc.setIdNowRedirectUrl.getType(): {
-      return { ...state, idNow: { redirectUrl: action.payload.redirectUrl } };
     }
 
     default:

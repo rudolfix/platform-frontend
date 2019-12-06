@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { fork, put, select } from "redux-saga/effects";
+import { call, fork, put, select } from "redux-saga/effects";
 
 import { ETxValidationMessages } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
@@ -13,7 +13,7 @@ import {
   multiplyBigNumbers,
   subtractBigNumbers,
 } from "../../../utils/BigNumberUtils";
-import { actions, TAction, TActionFromCreator } from "../../actions";
+import { actions, TActionFromCreator } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
 import { selectWalletType } from "../../web3/selectors";
@@ -26,28 +26,54 @@ import { EValidationState } from "./reducer";
 import { selectInvestmentFLow } from "./selectors";
 import { txValidateTokenTransfer } from "./transfer/token-transfer/sagas";
 import { txValidateWithdraw } from "./transfer/withdraw/sagas";
+import { EInvestmentType } from "../../investment-flow/reducer";
 
-export function* txValidateInvestment(): Iterator<any> {
+type TTxValidateInvestmentInternal = {
+  investmentType:EInvestmentType,
+  etoId:string,
+  investAmountUlps: string
+}
+
+export function* txValidateInvestmentInternal({
+  investmentType,
+  etoId,
+  investAmountUlps
+}: TTxValidateInvestmentInternal): Iterator<any> {
   try {
-    const investFlow = yield select(selectInvestmentFLow);
-    const investAmountUlps = yield select(selectMaximumInvestment);
 
     const generatedTxDetails = yield neuCall(generateInvestmentTransaction, {
-      investmentType: investFlow.investmentType,
-      etoId: investFlow.etoId,
+      investmentType: investmentType,
+      etoId: etoId,
       investAmountUlps: new BigNumber(investAmountUlps),
     });
 
     yield neuCall(validateGas, generatedTxDetails);
 
-    yield put(actions.txValidator.setValidationState(EValidationState.VALIDATION_OK));
-    return generatedTxDetails;
+    return EValidationState.VALIDATION_OK;
   } catch (error) {
     if (error instanceof NotEnoughEtherForGasError) {
-      yield put(actions.txValidator.setValidationState(EValidationState.NOT_ENOUGH_ETHER_FOR_GAS));
+      return EValidationState.NOT_ENOUGH_ETHER_FOR_GAS;
     } else {
-      throw error;
+      throw error
     }
+  }
+}
+
+export function* txValidateInvestment(): Iterator<any> {
+  const investFlow = yield select(selectInvestmentFLow);
+  const investAmountUlps = yield select(selectMaximumInvestment); //fixme this uses investmentFlow
+
+  const { validationResult, generatedTxDetails } = yield call(txValidateInvestmentInternal, {
+    etoId: investFlow.etoId,
+    investmentType: investFlow.investmentType,
+    investAmountUlps
+  });
+
+  if (validationResult === EValidationState.VALIDATION_OK) {
+    yield put(actions.txValidator.setValidationState(validationResult));
+    return generatedTxDetails;
+  } else if (validationResult === EValidationState.NOT_ENOUGH_ETHER_FOR_GAS) {
+    yield put(actions.txValidator.setValidationState(EValidationState.NOT_ENOUGH_ETHER_FOR_GAS));
   }
 }
 
@@ -104,7 +130,7 @@ export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails:
   }
 }
 
-export const txValidatorSagasWatcher = function*(): Iterator<any> {
+export const txValidatorSagasWatcher = function* (): Iterator<any> {
   yield fork(
     neuTakeLatestUntil,
     "TX_SENDER_VALIDATE_DRAFT",

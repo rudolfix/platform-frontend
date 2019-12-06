@@ -27,18 +27,16 @@ import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector } from "./InvestmentTypeSelector";
-import { EInvestmentCurrency, getInputErrorMessage } from "./utils";
+import { EInvestmentCurrency } from "./utils";
 
 import * as styles from "./Investment.module.scss";
 import { selectTxUserFlowInvestmentState } from "../../../../modules/tx/user-flow/investment/selectors";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
-import { EInvestmentInputValidationError } from "../../../../modules/tx/user-flow/investment/reducer";
 
 // TODO: Refactor smaller components
 export const InvestmentSelectionComponent = ({
   changeInvestmentType,
-  equityTokenCount,
   eto,
   gasCostEth,
   gasCostEuro,
@@ -46,8 +44,6 @@ export const InvestmentSelectionComponent = ({
   minTicketEur,
   neuReward,
   readyToInvest,
-  sendTransaction,
-  showTokens,
   wallets,
   hasPreviouslyInvested,
   startUpgradeFlow,
@@ -57,65 +53,18 @@ export const InvestmentSelectionComponent = ({
   etoTokenStandardPrice,
   totalCostEth,
   totalCostEuro,
-
+  error,
   minEthTicketFormatted,
   equityTokenCountFormatted,
   euroValueWithFallback,
-
   investmentValue,
 
+  sendTransaction,
   investEntireBalance,
-  error,
-  errorState,
-  setError,
   changeEuroValue,
   changeEthValue,
   intl,
-  // eto.contract.timedState
-  // eto.equityTokenSymbol
-  //-d-changeEuroValue
-  //-d-changeEthValue
 }) => {
-
-  // setError = (hasError: boolean) => {
-  //   this.setState({ validationError: hasError });
-  // };
-  //
-  // getError = () => {
-  //   const externalError = getInputErrorMessage(
-  //     this.props.errorState,
-  //     this.props.txValidationState,
-  //     this.props.eto.equityTokenName,
-  //     this.props.maxTicketEur,
-  //     this.props.minTicketEur,
-  //     this.props.minTicketEth,
-  //     this.props.investmentCurrency,
-  //   );
-  //
-  //   const validationError = this.state.validationError
-  //     ? <FormattedMessage id="investment-flow.validation-error" />
-  //     : undefined;
-  //
-  //   return validationError || externalError;
-  // };
-  //
-  // investEntireBalance = () => {
-  //   this.setError(false);
-  //   this.props.investEntireBalance();
-  // };
-
-
-  // const error = this.getError();
-
-  // const externalError = getInputErrorMessage(
-  //     errorState,
-  //     txValidationState,
-  //     eto.equityTokenName,
-  //     maxTicketEur,
-  //     minTicketEur,
-  //     minTicketEth,
-  //     investmentCurrency,
-  //   );
   console.log("render",error)
   return (
     <section data-test-id="modals.investment.modal">
@@ -171,7 +120,7 @@ export const InvestmentSelectionComponent = ({
                 )} ${minTicketEur} EUR`}
                 errorMsg={error}
                 invalid={!!error}
-                setError={setError}
+                // setError={setError}
               />
             )}
             {investmentCurrency === EInvestmentCurrency.ETH && (
@@ -190,9 +139,9 @@ export const InvestmentSelectionComponent = ({
                   showUnits={true}
                   errorMsg={error}
                   invalid={!!error}
-                  setError={setError}
+                  // setError={setError}
                 />
-                <div className={styles.helpText}>
+                {!error && <div className={styles.helpText}>
                   {"≈ "}
                   <Money
                     value={euroValueWithFallback}
@@ -200,7 +149,7 @@ export const InvestmentSelectionComponent = ({
                     valueType={ECurrency.EUR}
                     outputFormat={ENumberOutputFormat.FULL}
                   />
-                </div>
+                </div>}
               </>
             )}
             <small>
@@ -231,9 +180,7 @@ export const InvestmentSelectionComponent = ({
                   <FormattedMessage id="investment-flow.equity-tokens" />
                 </Label>
                 <InfoAlert data-test-id="invest-modal.est-equity-tokens">
-                  {(showTokens &&
-                    !error &&
-                    equityTokenCount &&
+                  {(equityTokenCountFormatted &&
                     `${equityTokenCountFormatted} ${eto.equityTokenSymbol}`) ||
                   "\xA0" /* non breaking space*/}
                 </InfoAlert>
@@ -246,7 +193,7 @@ export const InvestmentSelectionComponent = ({
                   <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                 </Label>
                 <InfoAlert data-test-id="invest-modal.est-neu-tokens">
-                  {(showTokens && !error && neuReward && (
+                  {(neuReward && (
                     <Money
                       value={neuReward}
                       inputFormat={ENumberInputFormat.ULPS}
@@ -360,16 +307,13 @@ export const InvestmentSelection = compose(
       return { ...selectTxUserFlowInvestmentState(state) }
     },
     dispatchToProps: dispatch => ({
-      setError: (error:boolean|undefined) => {
-          console.log("setError", error); return error && dispatch(actions.txUserFlowInvestment.setValidationError(EInvestmentInputValidationError.INPUT_VALIDATION_ERROR))
-        },
       sendTransaction: () => dispatch(actions.txSender.txSenderAcceptDraft()),
       changeEthValue: value => {
         console.log("changeEthValue",value)
-        return dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.ETH))
+        return dispatch(actions.txUserFlowInvestment.updateValue(value))
       },
       changeEuroValue: value =>
-        dispatch(actions.investmentFlow.submitCurrencyValue(value, ECurrency.EUR_TOKEN)),
+        dispatch(actions.txUserFlowInvestment.updateValue(value)),
       changeInvestmentType: (type: EInvestmentType) =>
         dispatch(actions.investmentFlow.selectInvestmentType(type)),
       investEntireBalance: () => dispatch(actions.investmentFlow.investEntireBalance()),

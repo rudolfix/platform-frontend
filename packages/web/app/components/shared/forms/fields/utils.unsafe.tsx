@@ -2,7 +2,6 @@ import { FormikContext, FormikErrors, FormikTouched } from "formik";
 import { get } from "lodash";
 import * as React from "react";
 import { FormGroup, InputProps } from "reactstrap";
-import { createNumberMask } from "text-mask-addons/dist/textMaskAddons";
 import { Schema } from "yup";
 
 import { ArrayWithAtLeastOneMember, Dictionary, TTranslatedString } from "../../../../types";
@@ -12,8 +11,6 @@ import {
   getValidationSchema,
   isRequired,
 } from "../../../../utils/yupUtils";
-import { ECurrency } from "../../formatters/utils";
-import { selectDecimalPlaces } from "../../Money.unsafe";
 import { FormFieldLabel } from "./FormFieldLabel";
 import { IImageDimensions } from "./FormSingleFileUpload";
 
@@ -113,18 +110,6 @@ export const isWysiwyg = <T extends any>(validationSchema: Schema<T>, name: stri
   } else {
     return false;
   }
-};
-
-export const generateMaskFromCurrency = (currency: ECurrency, isPrice?: boolean) => {
-  const decimalLimit = selectDecimalPlaces(currency, isPrice);
-  const integerLimit = 15 - decimalLimit; // when over 16 digits Formik starts to throw errors
-  return createNumberMask({
-    prefix: "",
-    thousandsSeparatorSymbol: " ",
-    allowDecimal: true,
-    decimalLimit,
-    integerLimit,
-  });
 };
 
 const mapMimeTypeToExtension = (mimeType: EMimeType): string => {

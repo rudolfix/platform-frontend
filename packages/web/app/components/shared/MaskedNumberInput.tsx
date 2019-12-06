@@ -117,7 +117,7 @@ export class MaskedNumberInput extends React.Component<IProps> {
       }
     } else if (value !== this.state.value) {
       this.setState({ value });
-      this.props.onChangeFn(Boolean(this.props.returnInvalidValues) ? value : "");
+      this.props.onChangeFn(value);
       this.props.setError && this.props.setError(true);
     }
   };

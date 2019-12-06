@@ -119,6 +119,7 @@ function* txSendProcess(
   extraParam?: any,
 ): any {
   try {
+    //todo ui controller should be called here, not the showModal()
     yield put(actions.txSender.txSenderShowModal({ type: transactionType }));
 
     yield neuRepeatIf("TX_SENDER_CHANGE", "TX_SENDER_ACCEPT", transactionFlowGenerator, extraParam);

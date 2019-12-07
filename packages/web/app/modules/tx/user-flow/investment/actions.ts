@@ -1,5 +1,6 @@
 import { createActionFactory } from "@neufund/shared";
 import { EInvestmentInputValidationError, TInvestmentInputError, TTxUserFlowInvestmentViewData } from "./reducer";
+import { ETxSenderType, TAdditionalDataByType } from "../../types";
 
 export const txUserFlowInvestmentActions = {
   setEtoId: createActionFactory(
@@ -29,6 +30,13 @@ export const txUserFlowInvestmentActions = {
   ),
   investEntireBalance: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_INVEST_ENTIRE_BALANCE",
+  ),
+  submitInvestment: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_SUBMIT_INVESTMENT",
+  ),
+  submitTransaction: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_SUBMIT_TRANSACTION",
+    (transactionData:TAdditionalDataByType<ETxSenderType.INVEST>)=>({transactionData})
   ),
   setResult: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_SET_RESUTL",

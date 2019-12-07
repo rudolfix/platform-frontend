@@ -62,7 +62,12 @@ import {
 import { EInvestmentErrorState, EInvestmentType } from "../../../investment-flow/reducer";
 import { ENEURWalletStatus } from "../../../wallet/types";
 import { nonNullable } from "../../../../utils/nonNullable";
-import { EInvestmentFormState, EInvestmentInputValidationError, TTxUserFlowInvestmentReadyState, } from "./reducer";
+import {
+  EInvestmentFormState,
+  EInvestmentInputValidationError,
+  TTxUserFlowInvestmentBasicData, TTxUserFlowInvestmentCalculatedCostsData,
+  TTxUserFlowInvestmentReadyState,
+} from "./reducer";
 import BigNumber from "bignumber.js";
 import { loadComputedContributionFromContract } from "../../../investor-portfolio/sagas";
 import { txValidateInvestmentInternal } from "../../validator/sagas";
@@ -71,6 +76,7 @@ import { IAppState } from "../../../../store";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { INVESTMENT_GAS_AMOUNT } from "../../transactions/investment/sagas";
 import { isEtherInvestment } from "../../transactions/investment/selectors";
+import { ETxSenderType, TAdditionalDataByType } from "../../types";
 
 
 function* initInvestmentView(
@@ -123,6 +129,52 @@ function* updateInvestmentView(
       yield put(actions.txUserFlowInvestment.setViewData(investmentCalculatedData));
     }
   }
+}
+
+//fixme add VALIDATING form state to prevent submitting when validation is not ready
+function* submitInvestment(
+  {logger}:TGlobalDependencies
+){
+  console.log("submitInvestment")
+  const {
+    investmentCurrency,
+    investmentType,
+    investmentValue,
+    eto,
+    gasCostEth,
+    neuReward,
+  }: TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentCalculatedCostsData = yield select(selectTxUserFlowInvestmentState);
+
+  const { euroValueUlps, ethValueUlps } = yield call(computeCurrencies, convertToUlps(investmentValue), investmentCurrency);
+  const isIcbm = yield call(isIcbmInvestment, investmentType);
+  const equityTokens = yield select(selectEquityTokenCountByEtoId, eto.etoId);
+  const etherPriceEur = yield select(selectEtherPriceEur);
+
+  if (!eto.investmentCalculatedValues) {
+    logger.error("ETO investment calculated values are empty");
+    throw new Error("ETO investment calculated values are empty");
+  }
+
+  yield put(actions.txUserFlowInvestment.submitTransaction({
+    eto: {
+      etoId: eto.etoId,
+      companyName: eto.company.name,
+      equityTokensPerShare: eto.equityTokensPerShare,
+      sharePrice: eto.investmentCalculatedValues.sharePrice,
+      equityTokenInfo: {
+        equityTokenSymbol: eto.equityTokenSymbol,
+        equityTokenImage: eto.equityTokenImage,
+        equityTokenName: eto.equityTokenName,
+      },
+    },
+    investmentEth:ethValueUlps,
+    investmentEur:euroValueUlps,
+    gasCostEth,
+    equityTokens,
+    estimatedReward:neuReward,
+    etherPriceEur,
+    isIcbm,
+  }))
 }
 
 function* reinitInvestmentView(): Iterator<any> {
@@ -185,8 +237,8 @@ function* calculateInvestmentCostsData(
   const etoTokenGeneralDiscounts = yield select(selectEtoTokenGeneralDiscounts, eto.etoId);
   const etoTokenPersonalDiscount = yield select(selectPersonalDiscount, eto.etoId);
   const etoTokenStandardPrice = yield select(selectEtoTokenStandardPrice, eto.previewCode);
-  const gasCostEth = yield select(selectTxGasCostEthUlps);
-
+  const gasCostEth = yield select(selectTxGasCostEthUlps); //fixme this uses txDetails
+  console.log("-----------------gasCostEth",gasCostEth)
   const maxTicketEur =
     (etoTicketSizes &&
       etoTicketSizes.maxTicketEurUlps &&
@@ -485,7 +537,7 @@ function* setTransactionWithPresetGas(): any {
 
 function* investEntireBalance(): any {
   const { investmentType }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
-  yield setTransactionWithPresetGas();
+  yield setTransactionWithPresetGas(); //fixme remove this, store gas data elsewhere
   const state: IAppState = yield select();
 
   let balance = "";
@@ -519,6 +571,7 @@ export const txUserFlowInvestmentSagas = function* (): Iterator<any> {
   yield fork(neuTakeLatest, actions.investmentFlow.startInvestment, initInvestmentView);
   yield fork(neuTakeLatest, actions.txUserFlowInvestment.updateValue, updateInvestmentView);
   yield fork(neuTakeLatest, actions.txUserFlowInvestment.investEntireBalance, investEntireBalance);
+  yield fork(neuTakeLatest, actions.txUserFlowInvestment.submitInvestment, submitInvestment);
   yield fork(neuTakeLatest, actions.txSender.txSenderHideModal, cleanupInvestmentView);
 };
 

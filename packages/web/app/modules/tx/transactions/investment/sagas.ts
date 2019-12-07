@@ -123,53 +123,59 @@ export function* generateInvestmentTransaction(
 }
 
 function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any> {
-  yield take(actions.txSender.txSenderAcceptDraft);
+  const {payload} = yield take(actions.txUserFlowInvestment.submitTransaction);
+  console.log("investmentFlowGenerator", payload)
+  // const etoId: string = yield select(selectInvestmentEtoId);
+  // const eto: TEtoWithCompanyAndContractReadonly = yield select((state: IAppState) =>
+  //   selectEtoWithCompanyAndContractById(state, etoId),
+  // );
+  //
+  // const investmentEth: string = payload.ethValueUlps;
+  // const investmentEur: string = payload.euroValueUlps;
+  //
+  // ///
+  // /// TODO get all this data from action directly from investmentView
+  // ///
+  //
+  //
+  // const gasCostEth: string = yield select(selectTxGasCostEthUlps);
+  // const equityTokens: string = yield select((state: IAppState) =>
+  //   selectEquityTokenCountByEtoId(state, etoId),
+  // );
+  // const estimatedReward: string = yield select((state: IAppState) =>
+  //   selectNeuRewardUlpsByEtoId(state, etoId),
+  // );
+  //
+  // const etherPriceEur: string = yield select(selectEtherPriceEur);
+  // const isIcbm: boolean = yield select(selectIsICBMInvestment);
+  //
+  // if (!eto.investmentCalculatedValues) {
+  //   logger.error("ETO investment calculated values are empty");
+  //   throw new Error("ETO investment calculated values are empty");
+  // }
+  //
+  // const additionalData: TAdditionalDataByType<ETxSenderType.INVEST> = {
+  //   eto: {
+  //     etoId,
+  //     companyName: eto.company.name,
+  //     equityTokensPerShare: eto.equityTokensPerShare,
+  //     sharePrice: eto.investmentCalculatedValues.sharePrice,
+  //     equityTokenInfo: {
+  //       equityTokenSymbol: eto.equityTokenSymbol,
+  //       equityTokenImage: eto.equityTokenImage,
+  //       equityTokenName: eto.equityTokenName,
+  //     },
+  //   },
+  //   investmentEth,
+  //   investmentEur,
+  //   gasCostEth,
+  //   equityTokens,
+  //   estimatedReward,
+  //   etherPriceEur,
+  //   isIcbm,
+  // };
 
-  const etoId: string = yield select(selectInvestmentEtoId);
-  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: IAppState) =>
-    selectEtoWithCompanyAndContractById(state, etoId),
-  );
-
-  const investmentEth: string = yield select(selectInvestmentEthValueUlps);
-  const investmentEur: string = yield select(selectInvestmentEurValueUlps);
-  const gasCostEth: string = yield select(selectTxGasCostEthUlps);
-  const equityTokens: string = yield select((state: IAppState) =>
-    selectEquityTokenCountByEtoId(state, etoId),
-  );
-  const estimatedReward: string = yield select((state: IAppState) =>
-    selectNeuRewardUlpsByEtoId(state, etoId),
-  );
-
-  const etherPriceEur: string = yield select(selectEtherPriceEur);
-  const isIcbm: boolean = yield select(selectIsICBMInvestment);
-
-  if (!eto.investmentCalculatedValues) {
-    logger.error("ETO investment calculated values are empty");
-    throw new Error("ETO investment calculated values are empty");
-  }
-
-  const additionalData: TAdditionalDataByType<ETxSenderType.INVEST> = {
-    eto: {
-      etoId,
-      companyName: eto.company.name,
-      equityTokensPerShare: eto.equityTokensPerShare,
-      sharePrice: eto.investmentCalculatedValues.sharePrice,
-      equityTokenInfo: {
-        equityTokenSymbol: eto.equityTokenSymbol,
-        equityTokenImage: eto.equityTokenImage,
-        equityTokenName: eto.equityTokenName,
-      },
-    },
-    investmentEth,
-    investmentEur,
-    gasCostEth,
-    equityTokens,
-    estimatedReward,
-    etherPriceEur,
-    isIcbm,
-  };
-
-  yield put(actions.txSender.txSenderContinueToSummary(additionalData));
+  yield put(actions.txSender.txSenderContinueToSummary(payload.transactionData));
 }
 
 function* investSaga(

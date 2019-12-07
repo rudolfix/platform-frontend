@@ -46,7 +46,6 @@ export function* txValidateInvestmentInternal({
       etoId: etoId,
       investAmountUlps: new BigNumber(investAmountUlps),
     });
-    console.log("generatedTxDetails",generatedTxDetails)
     yield neuCall(validateGas, generatedTxDetails);
 
     return EValidationState.VALIDATION_OK;

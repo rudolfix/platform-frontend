@@ -32,7 +32,7 @@ import {
 } from "../../../../modules/tx/user-flow/investment/reducer";
 
 type TDispatchProps = {
-  sendTransaction: ()=>void
+  submitInvestment: ()=>void
   changeInvestmentValue: (value: string)=>void
   changeInvestmentType: (type: EInvestmentType)=>void
   investEntireBalance: ()=>void
@@ -42,7 +42,7 @@ type TDispatchProps = {
 export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInvestmentViewData & TDispatchProps & IIntlProps> = (p) => {
   const {
     formState,
-    sendTransaction,
+    submitInvestment,
     investEntireBalance,
     changeInvestmentValue,
     intl,
@@ -291,7 +291,7 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
       <Container>
         <Row className="justify-content-center mb-0">
           <Button
-            onClick={sendTransaction}
+            onClick={submitInvestment}
             layout={EButtonLayout.OUTLINE}
             type="submit"
             disabled={formState !== EInvestmentFormState.VALID}
@@ -314,7 +314,7 @@ export const InvestmentSelection = compose<TTxUserFlowInvestmentViewData & TDisp
       return { ...selectTxUserFlowInvestmentState(state) }
     },
     dispatchToProps: dispatch => ({
-      sendTransaction: () => dispatch(actions.txSender.txSenderAcceptDraft()),
+      submitInvestment: () => dispatch(actions.txUserFlowInvestment.submitInvestment()),
       changeInvestmentValue: value => {
         return dispatch(actions.txUserFlowInvestment.updateValue(value))
       },

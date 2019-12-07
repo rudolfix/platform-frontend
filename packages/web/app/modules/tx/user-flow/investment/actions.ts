@@ -27,6 +27,9 @@ export const txUserFlowInvestmentActions = {
     "TX_USER_FLOW_INVESTMENT_UPDATE_VALUE",
     (value: string) => ({value})
   ),
+  investEntireBalance: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_INVEST_ENTIRE_BALANCE",
+  ),
   setResult: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_SET_RESUTL",
     (value: string, error: TInvestmentInputError) => ({value, error})

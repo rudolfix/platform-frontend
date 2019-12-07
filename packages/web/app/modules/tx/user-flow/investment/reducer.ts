@@ -83,11 +83,13 @@ export const txUserFlowInvestmentReducer: AppReducer<TTxUserFlowInvestmentState>
         : state
     }
     case actions.txUserFlowInvestment.setViewData.getType(): {
-      return {
-        ...state,
+      return state.processState !== EProcessState.NOT_STARTED
+      ? {
+        etoId: state.etoId,
         processState: EProcessState.SUCCESS,
         ...action.payload.data
       }
+      : state
     }
     case actions.txUserFlowInvestment.reset.getType(): {
       return initialState
@@ -100,16 +102,16 @@ export const txUserFlowInvestmentReducer: AppReducer<TTxUserFlowInvestmentState>
         }
         : state
     }
-    case actions.txUserFlowInvestment.setValidationError.getType(): {
-      console.log("setValidationError", action.payload.error)
-      return state.processState === EProcessState.SUCCESS
-        ? {
-          ...state,
-          formState: EInvestmentFormState.INVALID,
-          error: action.payload.error
-        }
-        : state
-    }
+    // case actions.txUserFlowInvestment.setValidationError.getType(): {
+    //   console.log("setValidationError", action.payload.error)
+    //   return state.processState === EProcessState.SUCCESS
+    //     ? {
+    //       ...state,
+    //       formState: EInvestmentFormState.INVALID,
+    //       error: action.payload.error
+    //     }
+    //     : state
+    // }
   }
 
   return state;

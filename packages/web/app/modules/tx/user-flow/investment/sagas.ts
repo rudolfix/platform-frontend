@@ -6,23 +6,29 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { selectTxUserFlowInvestmentEtoId, selectTxUserFlowInvestmentState } from "./selectors";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
-import {
-  selectInvestmentEtoId,
-  selectInvestmentType,
-} from "../../../investment-flow/selectors";
+import { selectInvestmentEtoId, selectInvestmentType, } from "../../../investment-flow/selectors";
 import { selectEtherPriceEur, selectEurPriceEther } from "../../../shared/tokenPrice/selectors";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import {
   selectCalculatedEtoTicketSizesUlpsById,
-  selectEquityTokenCountByEtoId, selectHasInvestorTicket, selectIsWhitelisted,
-  selectNeuRewardUlpsByEtoId, selectPersonalDiscount
+  selectEquityTokenCountByEtoId,
+  selectHasInvestorTicket,
+  selectIsWhitelisted,
+  selectNeuRewardUlpsByEtoId,
+  selectPersonalDiscount
 } from "../../../investor-portfolio/selectors";
 import {
   selectEtoOnChainStateById,
   selectEtoTokenGeneralDiscounts,
-  selectEtoTokenStandardPrice, selectEtoWithCompanyAndContractById
+  selectEtoTokenStandardPrice,
+  selectEtoWithCompanyAndContractById
 } from "../../../eto/selectors";
-import { addBigNumbers, compareBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
+import {
+  addBigNumbers,
+  compareBigNumbers,
+  multiplyBigNumbers,
+  subtractBigNumbers
+} from "../../../../utils/BigNumberUtils";
 import {
   createWallets,
   EInvestmentCurrency,
@@ -34,27 +40,37 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
-  formatNumber, formatThousands, isEmptyValue, parseInputToNumber, selectDecimalPlaces
+  formatNumber,
+  formatThousands,
+  isEmptyValue,
+  parseInputToNumber,
+  selectDecimalPlaces
 } from "../../../../components/shared/formatters/utils";
 import { EValidationState } from "../../validator/reducer";
 import {
-  selectICBMLockedEtherBalance, selectICBMLockedEtherBalanceEuroAmount,
+  selectICBMLockedEtherBalance,
+  selectICBMLockedEtherBalanceEuroAmount,
   selectICBMLockedEuroTokenBalance,
-  selectLiquidEtherBalance, selectLiquidEtherBalanceEuroAmount,
-  selectLiquidEuroTokenBalance, selectLockedEtherBalance, selectLockedEuroTokenBalance,
-  selectNEURStatus, selectWalletData
+  selectLiquidEtherBalance,
+  selectLiquidEtherBalanceEuroAmount,
+  selectLiquidEuroTokenBalance,
+  selectLockedEtherBalance,
+  selectLockedEuroTokenBalance,
+  selectNEURStatus,
+  selectWalletData
 } from "../../../wallet/selectors";
 import { EInvestmentErrorState, EInvestmentType } from "../../../investment-flow/reducer";
 import { ENEURWalletStatus } from "../../../wallet/types";
 import { nonNullable } from "../../../../utils/nonNullable";
-import {
-  EInvestmentFormState,
-  EInvestmentInputValidationError,
-  TTxUserFlowInvestmentReadyState,
-} from "./reducer";
+import { EInvestmentFormState, EInvestmentInputValidationError, TTxUserFlowInvestmentReadyState, } from "./reducer";
 import BigNumber from "bignumber.js";
 import { loadComputedContributionFromContract } from "../../../investor-portfolio/sagas";
 import { txValidateInvestmentInternal } from "../../validator/sagas";
+import { convertFromUlps, convertToUlps } from "../../../../utils/NumberUtils";
+import { IAppState } from "../../../../store";
+import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
+import { INVESTMENT_GAS_AMOUNT } from "../../transactions/investment/sagas";
+import { isEtherInvestment } from "../../transactions/investment/selectors";
 
 
 function* initInvestmentView(
@@ -87,21 +103,23 @@ function* updateInvestmentView(
     yield put(actions.txUserFlowInvestment.setViewData(formResetData))
 
   } else if (!valueIsAValidNumber) {
-    const formDataInvalid = yield call(populateInvalidViewData, payload.value, EInvestmentInputValidationError.INPUT_VALIDATION_ERROR);
-    yield put(actions.txUserFlowInvestment.setViewData(formDataInvalid));
+    const formInvalidData = yield call(populateInvalidViewData, payload.value, EInvestmentInputValidationError.INPUT_VALIDATION_ERROR);
+    yield put(actions.txUserFlowInvestment.setViewData(formInvalidData));
 
   } else {
     //calculations and validations take time, set the new value to show it in UI in the meantime
     yield put(actions.txUserFlowInvestment.setInvestmentValue(payload.value));
 
-    const { euroValueUlps, ethValueUlps } = yield call(computeCurrencies, payload.value, investmentCurrency);
-    const validationResult = yield neuCall(validateInvestmentInput, euroValueUlps);
+    const investmentValueUlps = convertToUlps(payload.value);
+
+    const { euroValueUlps, ethValueUlps } = yield call(computeCurrencies, investmentValueUlps, investmentCurrency);
+    const validationResult = yield neuCall(validateInvestmentInput, {euroValueUlps,ethValueUlps});
 
     if (validationResult !== EValidationState.VALIDATION_OK) {
-      const formDataInvalid = yield call(populateInvalidViewData, payload.value, validationResult);
-      yield put(actions.txUserFlowInvestment.setViewData(formDataInvalid));
+      const formInvalidData = yield call(populateInvalidViewData, payload.value, validationResult);
+      yield put(actions.txUserFlowInvestment.setViewData(formInvalidData));
     } else {
-      const investmentCalculatedData = yield call(calculateInvestmentCostsData, payload.value, euroValueUlps, ethValueUlps);
+      const investmentCalculatedData = yield call(calculateInvestmentCostsData, payload.value, {euroValueUlps, ethValueUlps});
       yield put(actions.txUserFlowInvestment.setViewData(investmentCalculatedData));
     }
   }
@@ -147,8 +165,8 @@ function* populateInvalidViewData(
 
 function* calculateInvestmentCostsData(
   investmentValue: string,
-  euroValueUlps: string,
-  ethValueUlps: string
+  {euroValueUlps,
+  ethValueUlps}:TInvestmentValuePair
 ) {
   const {
     eto,
@@ -329,13 +347,13 @@ function* generateWalletsData(): Iterator<any> {
 }
 
 function* computeCurrencies(
-  value: string, currency: EInvestmentCurrency
+  valueUlps: string, currency: EInvestmentCurrency
 ): Iterator<any> {
   const etherPriceEur = yield select(selectEtherPriceEur);
   const eurPriceEther = yield select(selectEurPriceEther);
 
   if (etherPriceEur && etherPriceEur !== "0") {
-    const valueAsBigNumber = new BigNumber(value);
+    const valueAsBigNumber = new BigNumber(valueUlps);
     switch (currency) {
       case EInvestmentCurrency.ETH:
         const eurVal = valueAsBigNumber.mul(etherPriceEur);
@@ -355,36 +373,42 @@ function* computeCurrencies(
 
 function* validateInvestmentInput(
   _: TGlobalDependencies,
-  euroValueUlps: string
+  {euroValueUlps,
+  ethValueUlps}:TInvestmentValuePair,
 ): Iterator<any> {
   const { etoId, investmentType }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
-  const validationError = yield call(validateInvestment, euroValueUlps);
+  const validationError = yield call(validateInvestment, {euroValueUlps, ethValueUlps});
+
   if (validationError) {
     yield put(actions.investmentFlow.setErrorState(validationError));
-    return { validationError }
+    return validationError
   }
-
   const txValidationResult = yield call(txValidateInvestmentInternal, {
     investmentType,
     etoId,
-    investAmountUlps: euroValueUlps
+    investAmountUlps: isEtherInvestment(investmentType) ? ethValueUlps : euroValueUlps
   });
+
   if (txValidationResult !== EValidationState.VALIDATION_OK) {
-    return { txValidationResult }
+    return txValidationResult
   }
 
   return EValidationState.VALIDATION_OK
 }
 
-function* validateInvestment(
-  euroValueUlps: string
-): Iterator<any> {
+export type TInvestmentValuePair = {
+  euroValueUlps: string,
+    ethValueUlps: string
+}
 
+function* validateInvestment({
+  euroValueUlps,
+  ethValueUlps
+}:TInvestmentValuePair): Iterator<any> {
   const {
     etoId,
     investmentType,
-    investmentValue,
     eto
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
@@ -395,13 +419,13 @@ function* validateInvestment(
   const wallet = yield select(selectWalletData);
   const ticketSizes = yield select(selectCalculatedEtoTicketSizesUlpsById, etoId);
 
-  if (!contribution || !investmentValue || !wallet || !ticketSizes) return;
+  if (!contribution || !euroValueUlps || !wallet || !ticketSizes) return;
 
   if (investmentType === EInvestmentType.Eth) {
     const gasPrice = yield select(selectTxGasCostEthUlps);
     const etherBalance = yield select(selectLiquidEtherBalance);
     if (
-      compareBigNumbers(addBigNumbers([investmentValue, gasPrice]), etherBalance) > 0
+      compareBigNumbers(addBigNumbers([ethValueUlps, gasPrice]), etherBalance) > 0
     ) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
@@ -409,30 +433,30 @@ function* validateInvestment(
 
   if (investmentType === EInvestmentType.ICBMnEuro) {
     const lockedEuroTokenBalance = yield select(selectLockedEuroTokenBalance);
-    if (compareBigNumbers(investmentValue, lockedEuroTokenBalance) > 0) {
+    if (compareBigNumbers(euroValueUlps, lockedEuroTokenBalance) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
   if (investmentType === EInvestmentType.NEur) {
     const liquidEuroTokenBalance = yield select(selectLiquidEuroTokenBalance);
-    if (compareBigNumbers(investmentValue, liquidEuroTokenBalance) > 0) {
+    if (compareBigNumbers(euroValueUlps, liquidEuroTokenBalance) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
   if (investmentType === EInvestmentType.ICBMEth) {
     const lockedEtherBalance = yield select(selectLockedEtherBalance);
-    if (compareBigNumbers(investmentValue, lockedEtherBalance) > 0) {
+    if (compareBigNumbers(ethValueUlps, lockedEtherBalance) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
-  if (compareBigNumbers(investmentValue, ticketSizes.minTicketEurUlps) < 0) {
+  if (compareBigNumbers(euroValueUlps, ticketSizes.minTicketEurUlps) < 0) {
     return EInvestmentErrorState.BelowMinimumTicketSize;
   }
 
-  if (compareBigNumbers(investmentValue, ticketSizes.maxTicketEurUlps) > 0) {
+  if (compareBigNumbers(euroValueUlps, ticketSizes.maxTicketEurUlps) > 0) {
     return EInvestmentErrorState.AboveMaximumTicketSize;
   }
 
@@ -443,9 +467,58 @@ function* validateInvestment(
   return;
 }
 
+function* setTransactionWithPresetGas(): any {
+  const gasPrice = yield select(selectStandardGasPriceWithOverHead);
+
+  yield put(
+    actions.txSender.setTransactionData({
+      gas: INVESTMENT_GAS_AMOUNT,
+      value: "",
+      to: "",
+      from: "",
+      gasPrice,
+    }),
+    // This sets all other irrelevant values into false values.
+    // TODO: Refactor the whole transaction flow into a simpler flow that doesn't relay on txData
+  );
+}
+
+function* investEntireBalance(): any {
+  const { investmentType }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
+  yield setTransactionWithPresetGas();
+  const state: IAppState = yield select();
+
+  let balance = "";
+  switch (investmentType) {
+    case EInvestmentType.ICBMEth:
+      balance = selectLockedEtherBalance(state);
+      break;
+
+    case EInvestmentType.ICBMnEuro:
+      balance = selectLockedEuroTokenBalance(state);
+      break;
+
+    case EInvestmentType.NEur:
+      balance = selectLiquidEuroTokenBalance(state);
+      break;
+
+    case EInvestmentType.Eth:
+      const gasCostEth = selectTxGasCostEthUlps(state);
+      const fullBalance = selectLiquidEtherBalance(state);
+      balance = subtractBigNumbers([fullBalance, gasCostEth]);
+      break;
+  }
+
+  if (balance) {
+    const balanceFromUlps = convertFromUlps(balance).toString();
+    yield put(actions.txUserFlowInvestment.updateValue(balanceFromUlps))
+  }
+}
+
 export const txUserFlowInvestmentSagas = function* (): Iterator<any> {
   yield fork(neuTakeLatest, actions.investmentFlow.startInvestment, initInvestmentView);
   yield fork(neuTakeLatest, actions.txUserFlowInvestment.updateValue, updateInvestmentView);
+  yield fork(neuTakeLatest, actions.txUserFlowInvestment.investEntireBalance, investEntireBalance);
   yield fork(neuTakeLatest, actions.txSender.txSenderHideModal, cleanupInvestmentView);
 };
 

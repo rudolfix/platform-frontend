@@ -46,7 +46,7 @@ export function* txValidateInvestmentInternal({
       etoId: etoId,
       investAmountUlps: new BigNumber(investAmountUlps),
     });
-
+    console.log("generatedTxDetails",generatedTxDetails)
     yield neuCall(validateGas, generatedTxDetails);
 
     return EValidationState.VALIDATION_OK;
@@ -61,7 +61,7 @@ export function* txValidateInvestmentInternal({
 
 export function* txValidateInvestment(): Iterator<any> {
   const investFlow = yield select(selectInvestmentFLow);
-  const investAmountUlps = yield select(selectMaximumInvestment); //fixme this uses investmentFlow
+  const investAmountUlps = yield select(selectMaximumInvestment);
 
   const { validationResult, generatedTxDetails } = yield call(txValidateInvestmentInternal, {
     etoId: investFlow.etoId,

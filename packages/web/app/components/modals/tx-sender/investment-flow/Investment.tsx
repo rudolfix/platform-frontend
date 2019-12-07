@@ -6,23 +6,15 @@ import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../modules/actions";
-import {
-  EInvestmentErrorState,
-  EInvestmentType,
-} from "../../../../modules/investment-flow/reducer";
+import { EInvestmentType, } from "../../../../modules/investment-flow/reducer";
 import { ETokenType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
-import { injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
+import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
 import { Button, ButtonInline, EButtonLayout } from "../../../shared/buttons";
 import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  ERoundingMode
-} from "../../../shared/formatters/utils";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat, ERoundingMode } from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
@@ -33,39 +25,54 @@ import * as styles from "./Investment.module.scss";
 import { selectTxUserFlowInvestmentState } from "../../../../modules/tx/user-flow/investment/selectors";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
+import {
+  EInvestmentFormState, TTxUserFlowInvestmentErrorData,
+  TTxUserFlowInvestmentState,
+  TTxUserFlowInvestmentViewData
+} from "../../../../modules/tx/user-flow/investment/reducer";
 
+type TDispatchProps = {
+  sendTransaction: ()=>void
+  changeInvestmentValue: (value: string)=>void
+  changeInvestmentType: (type: EInvestmentType)=>void
+  investEntireBalance: ()=>void
+  startUpgradeFlow: (token: ETokenType)=>void
+}
 // TODO: Refactor smaller components
-export const InvestmentSelectionComponent = ({
-  changeInvestmentType,
-  eto,
-  gasCostEth,
-  gasCostEuro,
-  investmentType,
-  minTicketEur,
-  neuReward,
-  readyToInvest,
-  wallets,
-  hasPreviouslyInvested,
-  startUpgradeFlow,
-  investmentCurrency,
-  etoTokenGeneralDiscounts,
-  etoTokenPersonalDiscount,
-  etoTokenStandardPrice,
-  totalCostEth,
-  totalCostEuro,
-  error,
-  minEthTicketFormatted,
-  equityTokenCountFormatted,
-  euroValueWithFallback,
-  investmentValue,
+export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInvestmentViewData & TDispatchProps & IIntlProps> = (p) => {
+  const {
+    formState,
+    sendTransaction,
+    investEntireBalance,
+    changeInvestmentValue,
+    intl,
 
-  sendTransaction,
-  investEntireBalance,
-  changeEuroValue,
-  changeEthValue,
-  intl,
-}) => {
-  console.log("render",error)
+    changeInvestmentType,
+    eto,
+    investmentType,
+    minTicketEur,
+    wallets,
+    hasPreviouslyInvested,
+    startUpgradeFlow,
+    investmentCurrency,
+    totalCostEth,
+    totalCostEuro,
+    minEthTicketFormatted,
+    euroValueWithFallback,
+    investmentValue,
+
+
+    gasCostEth,
+    gasCostEuro,
+    neuReward,
+    etoTokenGeneralDiscounts,
+    etoTokenPersonalDiscount,
+    etoTokenStandardPrice,
+    equityTokenCountFormatted
+
+
+  } = p
+  console.log("render", investmentValue)
   return (
     <section data-test-id="modals.investment.modal">
       <Container className={styles.container} fluid>
@@ -93,14 +100,14 @@ export const InvestmentSelectionComponent = ({
         </Row>
         <Row>
           <Col>
-            <p className={styles.investmentPriceInfo}>
+            {formState === EInvestmentFormState.VALID && <p className={styles.investmentPriceInfo}>
               <InvestmentPriceInfo
                 onChainState={eto.contract.timedState}
                 etoTokenPersonalDiscount={etoTokenPersonalDiscount}
                 etoTokenGeneralDiscounts={etoTokenGeneralDiscounts}
                 etoTokenStandardPrice={etoTokenStandardPrice}
               />
-            </p>
+            </p>}
           </Col>
         </Row>
         <Row>
@@ -109,18 +116,17 @@ export const InvestmentSelectionComponent = ({
               <MaskedNumberInput
                 name="euroValue"
                 value={investmentValue}
-                storageFormat={ENumberInputFormat.ULPS}
+                storageFormat={ENumberInputFormat.FLOAT}
                 valueType={ECurrency.EUR_TOKEN}
                 outputFormat={ENumberOutputFormat.FULL}
-                onChangeFn={changeEuroValue}
+                onChangeFn={changeInvestmentValue}
                 showUnits={true}
                 data-test-id="invest-modal-eur-field"
                 placeholder={`${intl.formatIntlMessage(
                   "investment-flow.min-ticket-size",
                 )} ${minTicketEur} EUR`}
-                errorMsg={error}
-                invalid={!!error}
-                // setError={setError}
+                errorMsg={formState === EInvestmentFormState.INVALID ? (p as TTxUserFlowInvestmentErrorData).error : undefined}
+                invalid={formState === EInvestmentFormState.INVALID}
               />
             )}
             {investmentCurrency === EInvestmentCurrency.ETH && (
@@ -131,17 +137,16 @@ export const InvestmentSelectionComponent = ({
                   valueType={ECurrency.ETH}
                   storageFormat={ENumberInputFormat.FLOAT}
                   outputFormat={ENumberOutputFormat.FULL}
-                  onChangeFn={changeEthValue}
+                  onChangeFn={changeInvestmentValue}
                   placeholder={`${intl.formatIntlMessage(
                     "investment-flow.min-ticket-size",
                   )} ${minEthTicketFormatted} ETH`}
                   data-test-id="invest-modal-eth-field"
                   showUnits={true}
-                  errorMsg={error}
-                  invalid={!!error}
-                  // setError={setError}
+                  errorMsg={formState === EInvestmentFormState.INVALID && p.error}
+                  invalid={formState === EInvestmentFormState.INVALID}
                 />
-                {!error && <div className={styles.helpText}>
+                {formState !== EInvestmentFormState.INVALID && <div className={styles.helpText}>
                   {"≈ "}
                   <Money
                     value={euroValueWithFallback}
@@ -180,7 +185,7 @@ export const InvestmentSelectionComponent = ({
                   <FormattedMessage id="investment-flow.equity-tokens" />
                 </Label>
                 <InfoAlert data-test-id="invest-modal.est-equity-tokens">
-                  {(equityTokenCountFormatted &&
+                  {(formState === EInvestmentFormState.VALID &&
                     `${equityTokenCountFormatted} ${eto.equityTokenSymbol}`) ||
                   "\xA0" /* non breaking space*/}
                 </InfoAlert>
@@ -193,7 +198,7 @@ export const InvestmentSelectionComponent = ({
                   <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                 </Label>
                 <InfoAlert data-test-id="invest-modal.est-neu-tokens">
-                  {(neuReward && (
+                  {(formState === EInvestmentFormState.VALID &&  (
                     <Money
                       value={neuReward}
                       inputFormat={ENumberInputFormat.ULPS}
@@ -224,7 +229,7 @@ export const InvestmentSelectionComponent = ({
       <Container className={styles.container} fluid>
         <Row>
           <Col className={styles.summary}>
-            {gasCostEth && (
+            {formState === EInvestmentFormState.VALID &&  (
               <div>
                 + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
                 <span className="text-warning" data-test-id="invest-modal-gas-cost">
@@ -289,7 +294,7 @@ export const InvestmentSelectionComponent = ({
             onClick={sendTransaction}
             layout={EButtonLayout.OUTLINE}
             type="submit"
-            disabled={!readyToInvest}
+            disabled={formState !== EInvestmentFormState.VALID}
             data-test-id="invest-modal-invest-now-button"
           >
             <FormattedMessage id="investment-flow.invest-now" />
@@ -300,27 +305,26 @@ export const InvestmentSelectionComponent = ({
   );
 };
 
-export const InvestmentSelection = compose(
+
+
+export const InvestmentSelection = compose<TTxUserFlowInvestmentViewData & TDispatchProps & IIntlProps,{}>(
   injectIntlHelpers,
-  appConnect({
+  appConnect<TTxUserFlowInvestmentState, TDispatchProps>({
     stateToProps: state => {
       return { ...selectTxUserFlowInvestmentState(state) }
     },
     dispatchToProps: dispatch => ({
       sendTransaction: () => dispatch(actions.txSender.txSenderAcceptDraft()),
-      changeEthValue: value => {
-        console.log("changeEthValue",value)
+      changeInvestmentValue: value => {
         return dispatch(actions.txUserFlowInvestment.updateValue(value))
       },
-      changeEuroValue: value =>
-        dispatch(actions.txUserFlowInvestment.updateValue(value)),
       changeInvestmentType: (type: EInvestmentType) =>
         dispatch(actions.investmentFlow.selectInvestmentType(type)),
-      investEntireBalance: () => dispatch(actions.investmentFlow.investEntireBalance()),
+      investEntireBalance: () => dispatch(actions.txUserFlowInvestment.investEntireBalance()),
       startUpgradeFlow: (token: ETokenType) => dispatch(actions.txTransactions.startUpgrade(token)),
     }),
   }),
-  branch(({ processState }) => {
+  branch<TTxUserFlowInvestmentState>(({ processState }) => {
       return processState !== EProcessState.SUCCESS
     },
     renderComponent(LoadingIndicator))

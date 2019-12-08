@@ -3,7 +3,6 @@ import { fork, put, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
-import { IAppState } from "../../../../store";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
@@ -122,7 +121,9 @@ export function* generateInvestmentTransaction(
   return { ...transaction, gas };
 }
 
-function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any> {
+function* investmentFlowGenerator(
+  _: TGlobalDependencies
+): Iterator<any> {
   const {payload} = yield take(actions.txUserFlowInvestment.submitTransaction);
   console.log("investmentFlowGenerator", payload)
   // const etoId: string = yield select(selectInvestmentEtoId);
@@ -138,7 +139,7 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Iterator<any
   // ///
   //
   //
-  // const gasCostEth: string = yield select(selectTxGasCostEthUlps);
+  const gasCostEth: string = yield select(selectTxGasCostEthUlps);
   // const equityTokens: string = yield select((state: IAppState) =>
   //   selectEquityTokenCountByEtoId(state, etoId),
   // );

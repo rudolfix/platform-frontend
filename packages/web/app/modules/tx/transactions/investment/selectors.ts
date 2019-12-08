@@ -34,7 +34,7 @@ export const selectWalletBalance = (state: IAppState): string => {
   }
 };
 
-export const isEtherInvestment = (investmentType: EInvestmentType | undefined) => {
+export const isEthInvestment = (investmentType: EInvestmentType | undefined) => {
   switch (investmentType) {
     case EInvestmentType.Eth:
     case EInvestmentType.ICBMEth:
@@ -57,13 +57,13 @@ export const selectMaximumInvestment = (state: IAppState): string => {
   const selectedEuroAmountUlps = investmentState.euroValueUlps || "0";
 
   // Select which input value should be used;
-  const selectedAmountUlps = isEtherInvestment(investmentType)
+  const selectedAmountUlps = isEthInvestment(investmentType)
     ? selectedEthAmountUlps
     : selectedEuroAmountUlps;
 
   // Select wallet balance based of investment type
   const walletBalanceUlps = selectWalletBalance(state);
-  const decimalsPrecision = isEtherInvestment(investmentType) ? 4 : 2;
+  const decimalsPrecision = isEthInvestment(investmentType) ? 4 : 2;
 
   // Round balance value to fixed number with precision based on investment type
   const roundedBalance = new BigNumber(walletBalanceUlps)

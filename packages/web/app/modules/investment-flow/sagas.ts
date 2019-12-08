@@ -221,7 +221,6 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
       if (validationError) {
         yield put(actions.investmentFlow.setErrorState(validationError));
-        yield call(getInvestmentInitViewData, eto); //fixme
         return
       }
 
@@ -236,7 +235,6 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
     }
   }
-  eto && (yield call(getInvestmentInitViewData, eto))//fixme
 }
 
 function* start(

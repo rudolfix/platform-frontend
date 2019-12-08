@@ -9,6 +9,7 @@ import { EInvestmentErrorState, EInvestmentType } from "../../../investment-flow
 
 export enum EInvestmentFormState {
   EMPTY = "empty",
+  VALIDATING = "VALIDATING",
   VALID = "valid",
   INVALID = "invalid"
 }
@@ -102,16 +103,14 @@ export const txUserFlowInvestmentReducer: AppReducer<TTxUserFlowInvestmentState>
         }
         : state
     }
-    // case actions.txUserFlowInvestment.setValidationError.getType(): {
-    //   console.log("setValidationError", action.payload.error)
-    //   return state.processState === EProcessState.SUCCESS
-    //     ? {
-    //       ...state,
-    //       formState: EInvestmentFormState.INVALID,
-    //       error: action.payload.error
-    //     }
-    //     : state
-    // }
+    case actions.txUserFlowInvestment.setFormState.getType(): {
+      return state.processState === EProcessState.SUCCESS
+        ? {
+          ...state,
+          formState: action.payload.formState
+        }
+        : state
+    }
   }
 
   return state;

@@ -1,5 +1,10 @@
 import { createActionFactory } from "@neufund/shared";
-import { EInvestmentInputValidationError, TInvestmentInputError, TTxUserFlowInvestmentViewData } from "./reducer";
+import {
+  EInvestmentFormState,
+  EInvestmentInputValidationError,
+  TInvestmentInputError,
+  TTxUserFlowInvestmentViewData
+} from "./reducer";
 import { ETxSenderType, TAdditionalDataByType } from "../../types";
 
 export const txUserFlowInvestmentActions = {
@@ -19,6 +24,10 @@ export const txUserFlowInvestmentActions = {
   setInvestmentValue: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_SET_VALUE",
     (value: string) => ({value})
+  ),
+  setFormState: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_SET_FORM_STATE",
+    (formState: EInvestmentFormState) => ({formState})
   ),
   setValidationError: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_SET_VALIDATION_ERROR",

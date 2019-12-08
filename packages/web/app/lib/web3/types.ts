@@ -1,13 +1,16 @@
 import BigNumber from "bignumber.js";
 
-export interface ITxData {
-  to: string;
+export interface IGasValidationData {
   value: string;
+  gas: string;
+  gasPrice: string;
+}
+
+export type ITxData = IGasValidationData & {
+  to: string;
   data?: string;
   from: string;
   input?: string;
-  gas: string;
-  gasPrice: string;
 }
 
 export interface IRawTxData extends ITxData {

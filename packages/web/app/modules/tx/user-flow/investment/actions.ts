@@ -6,6 +6,7 @@ import {
   TTxUserFlowInvestmentViewData
 } from "./reducer";
 import { ETxSenderType, TAdditionalDataByType } from "../../types";
+import { EInvestmentType } from "../../../investment-flow/reducer";
 
 export const txUserFlowInvestmentActions = {
   setEtoId: createActionFactory(
@@ -47,8 +48,12 @@ export const txUserFlowInvestmentActions = {
     "TX_USER_FLOW_INVESTMENT_SUBMIT_TRANSACTION",
     (transactionData:TAdditionalDataByType<ETxSenderType.INVEST>)=>({transactionData})
   ),
-  setResult: createActionFactory(
-    "TX_USER_FLOW_INVESTMENT_SET_RESUTL",
-    (value: string, error: TInvestmentInputError) => ({value, error})
+  setInvestmentType: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_SET_INVESTMENT_TYPE",
+    (investmentType:EInvestmentType)=>({investmentType})
   ),
+  // setResult: createActionFactory(
+  //   "TX_USER_FLOW_INVESTMENT_SET_RESUTL",
+  //   (value: string, error: TInvestmentInputError) => ({value, error})
+  // ),
 };

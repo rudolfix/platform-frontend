@@ -4,7 +4,7 @@ import { fork, put, select } from "redux-saga/effects";
 import { ETxValidationMessages } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IGasValidationData, ITxData } from "../../../lib/web3/types";
+import { ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
 import { IAppState } from "../../../store";
 import {
@@ -98,7 +98,7 @@ export function* txValidateSaga(
   }
 }
 
-export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails: IGasValidationData): any {
+export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails: ITxData): any {
   const maxEtherUlps = yield select(selectEtherBalance);
 
   const costUlps = multiplyBigNumbers([txDetails.gasPrice, txDetails.gas]);

@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { selectTxUserFlowInvestmentEtoId, selectTxUserFlowInvestmentState } from "./selectors";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
-import { selectInvestmentEtoId, selectInvestmentType, } from "../../../investment-flow/selectors";
+import { selectInvestmentEtoId, } from "../../../investment-flow/selectors";
 import { selectEtherPriceEur, selectEurPriceEther } from "../../../shared/tokenPrice/selectors";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import {
@@ -29,12 +29,6 @@ import {
   multiplyBigNumbers,
   subtractBigNumbers
 } from "../../../../utils/BigNumberUtils";
-import {
-  createWallets,
-  EInvestmentCurrency,
-  formatMinMaxTickets,
-  getInvestmentCurrency
-} from "../../../../components/modals/tx-sender/investment-flow/utils";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -64,7 +58,6 @@ import { ENEURWalletStatus } from "../../../wallet/types";
 import { nonNullable } from "../../../../utils/nonNullable";
 import {
   EInvestmentFormState,
-  EInvestmentInputValidationError,
   TTxUserFlowInvestmentBasicData,
   TTxUserFlowInvestmentCalculatedCostsData,
   TTxUserFlowInvestmentReadyState,
@@ -78,7 +71,13 @@ import { generateInvestmentTransaction, INVESTMENT_GAS_AMOUNT } from "../../tran
 import { isEthInvestment } from "../../transactions/investment/selectors";
 import { IGasValidationData } from "../../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../../lib/web3/Web3Adapter";
-import { hasFunds, isIcbmInvestment } from "./utils";
+import { createWallets, formatMinMaxTickets, getInvestmentCurrency, hasFunds, isIcbmInvestment } from "./utils";
+import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
+
+export enum EInvestmentCurrency {
+  ETH = ECurrency.ETH,
+  EUR_TOKEN = ECurrency.EUR_TOKEN,
+}
 
 enum EInvestmentValueType {
   FULL_BALANCE = "fullBalance",
@@ -90,10 +89,10 @@ enum EInputValidationError {
   NOT_A_NUMBER = "notANumber",
 }
 
-type TValidationError = EInputValidationError & EInvestmentErrorState & EValidationState.NOT_ENOUGH_ETHER_FOR_GAS
+type TValidationError = EInputValidationError | EInvestmentErrorState | EValidationState.NOT_ENOUGH_ETHER_FOR_GAS
 
 export type TInvestmentValidationResult = {
-  validationError: TValidationError & null
+  validationError: TValidationError | null
   investmentDetails: { investmentGasData: IGasValidationData, euroValueUlps: string, ethValueUlps: string }
 }
 
@@ -173,7 +172,7 @@ function* validateInvestmentValue({
     return { validationError: EInputValidationError.NOT_A_NUMBER, txDetails: null }
   }
 
-  const investmentValueUlps = yield call(convertToUlps,value);
+  const investmentValueUlps = yield call(convertToUlps, value);
   const { euroValueUlps, ethValueUlps } = yield call(computeCurrencies, investmentValueUlps, investmentCurrency);
   const validationError: EInvestmentErrorState | undefined = yield call(validateInvestmentLimits, {
     euroValueUlps,
@@ -205,35 +204,35 @@ function* generateUpdatedView(
 ) {
   const { validationError, investmentDetails } = validationResult;
 
-  switch (validationError) {
-    case EInputValidationError.IS_EMPTY: {
-      const formResetData = yield call(reinitInvestmentView);
-      return yield put(actions.txUserFlowInvestment.setViewData(formResetData));
+  if (validationError !== null) {
+    switch (validationError) {
+      case EInputValidationError.IS_EMPTY: {
+        const formResetData = yield call(reinitInvestmentView);
+        return yield put(actions.txUserFlowInvestment.setViewData(formResetData));
+      }
+      case EInputValidationError.NOT_A_NUMBER: {
+        const formInvalidData = yield call(populateInvalidViewData, value, EInputValidationError.NOT_A_NUMBER);
+        return yield put(actions.txUserFlowInvestment.setViewData(formInvalidData));
+      }
+      case EInvestmentErrorState.AboveMaximumTicketSize:
+      case EInvestmentErrorState.BelowMinimumTicketSize:
+      case EInvestmentErrorState.ExceedsTokenAmount:
+      case EInvestmentErrorState.ExceedsWalletBalance:
+      case EValidationState.NOT_ENOUGH_ETHER_FOR_GAS: {
+        const formInvalidData = yield call(populateInvalidViewData, value, validationError);
+        return yield put(actions.txUserFlowInvestment.setViewData(formInvalidData));
+      }
     }
-    case EInputValidationError.NOT_A_NUMBER: {
-      const formInvalidData = yield call(populateInvalidViewData, value, EInvestmentInputValidationError.INPUT_VALIDATION_ERROR);
-      return yield put(actions.txUserFlowInvestment.setViewData(formInvalidData));
-    }
-    case EInvestmentErrorState.AboveMaximumTicketSize:
-    case EInvestmentErrorState.BelowMinimumTicketSize:
-    case EInvestmentErrorState.ExceedsTokenAmount:
-    case EInvestmentErrorState.ExceedsWalletBalance:
-    case EValidationState.NOT_ENOUGH_ETHER_FOR_GAS: {
-      const formInvalidData = yield call(populateInvalidViewData, value, validationError);
-      return yield put(actions.txUserFlowInvestment.setViewData(formInvalidData));
-    }
-    default: { //no error
-      const { investmentGasData, euroValueUlps, ethValueUlps } = investmentDetails;
-      const investmentCalculatedData = yield call(calculateInvestmentCostsData, value, {
-        euroValueUlps,
-        ethValueUlps
-      }, investmentGasData);
-      return yield put(actions.txUserFlowInvestment.setViewData(investmentCalculatedData));
-    }
+  } else {
+    const { investmentGasData, euroValueUlps, ethValueUlps } = investmentDetails;
+    const investmentCalculatedData = yield call(calculateInvestmentCostsData, value, {
+      euroValueUlps,
+      ethValueUlps
+    }, investmentGasData);
+    return yield put(actions.txUserFlowInvestment.setViewData(investmentCalculatedData));
   }
 }
 
-//fixme add VALIDATING form state to prevent submitting when validation is not ready
 function* submitInvestment(
   { logger }: TGlobalDependencies
 ) {
@@ -314,7 +313,7 @@ function* reinitInvestmentView(): Iterator<any> {
 
 function* populateInvalidViewData(
   investmentValue: string,
-  error: any //fixme
+  error: TValidationError
 ) {
   const formData = yield call(reinitInvestmentView);
   formData.formState = EInvestmentFormState.INVALID;
@@ -424,11 +423,18 @@ export function* getInvestmentInitViewData(
     yield select(selectEtoWithCompanyAndContractById, etoId),
   );
 
-  const investmentType = EInvestmentType.Eth; //fixme sync with walletData
+  const wallets: WalletSelectionData[] = yield call(generateWalletsData);
+  let investmentType;
+
+  if (!wallets.find((wallet: WalletSelectionData) => wallet.type === EInvestmentType.Eth)) {
+    investmentType = wallets[0].type
+  } else {
+    investmentType = EInvestmentType.Eth
+  }
 
   const initialValues = {
     eto,
-    wallets: yield call(generateWalletsData),
+    wallets,
     investmentValue: "",
     euroValueWithFallback: "0",
     investmentType,
@@ -476,7 +482,7 @@ export function* getInvestmentInitViewData(
 }
 
 function* generateWalletsData(): Iterator<any> {
-  const etoId = yield     select(selectInvestmentEtoId);
+  const etoId = yield select(selectInvestmentEtoId);
 
   const [
     etoOnChainState,
@@ -508,40 +514,43 @@ function* generateWalletsData(): Iterator<any> {
   ]);
 
 
-  let activeTypes: EInvestmentType[] = [];
+  let activeInvestmentTypes: EInvestmentType[] = [];
 
   if (hasFunds(ethBalance)) {
-    activeTypes.unshift(EInvestmentType.Eth);
+    activeInvestmentTypes.unshift(EInvestmentType.Eth);
   }
 
   // if neur is not restricted because of the us state
   if (hasFunds(balanceNEur) && neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
-    activeTypes.unshift(EInvestmentType.NEur);
+    activeInvestmentTypes.unshift(EInvestmentType.NEur);
   }
 
   // no regular investment if not whitelisted in pre eto
   if (etoOnChainState === EETOStateOnChain.Whitelist && !userIsWhitelisted) {
-    activeTypes = [];
+    activeInvestmentTypes = [];
   }
 
   // only ICBM investment if balance available
   if (hasFunds(lockedBalanceNEuro)) {
-    activeTypes.unshift(EInvestmentType.ICBMnEuro);
+    activeInvestmentTypes.unshift(EInvestmentType.ICBMnEuro);
   }
   if (hasFunds(lockedBalanceEth)) {
-    activeTypes.unshift(EInvestmentType.ICBMEth);
+    activeInvestmentTypes.unshift(EInvestmentType.ICBMEth);
   }
 
-  yield put(actions.investmentFlow.setActiveInvestmentTypes(activeTypes));
+  yield put(actions.investmentFlow.setActiveInvestmentTypes(activeInvestmentTypes));
 
-  // guarantee that current type is inside active types.
-  const currentType = yield select(selectInvestmentType);
-  if (currentType && !activeTypes.includes(currentType)) {
-    yield put(actions.investmentFlow.selectInvestmentType(activeTypes[0]));
-  }
-
-  return createWallets(lockedBalanceNEuro, balanceNEur, icbmBalanceNEuro,
-    ethBalance, lockedBalanceEth, icbmBalanceEth, ethBalanceAsEuro, icbmBalanceEthAsEuro, activeTypes);
+  return createWallets({
+    lockedBalanceNEuro,
+    balanceNEur,
+    icbmBalanceNEuro,
+    ethBalance,
+    lockedBalanceEth,
+    icbmBalanceEth,
+    ethBalanceAsEuro,
+    icbmBalanceEthAsEuro,
+    activeInvestmentTypes
+  });
 }
 
 function* computeCurrencies(

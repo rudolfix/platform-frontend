@@ -3,9 +3,9 @@ import { actions } from "../../../actions";
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { DeepReadonly } from "../../../../types";
-import { EInvestmentCurrency } from "../../../../components/modals/tx-sender/investment-flow/utils";
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { EInvestmentErrorState, EInvestmentType } from "../../../investment-flow/reducer";
+import { EInvestmentCurrency } from "./sagas";
 
 export enum EInvestmentFormState {
   EMPTY = "empty",
@@ -44,15 +44,11 @@ export type TTxUserFlowInvestmentCalculatedCostsData = {
 }
 
 export type TTxUserFlowInvestmentViewData =
-  | {formState: EInvestmentFormState.EMPTY} & TTxUserFlowInvestmentBasicData
-  | {formState: EInvestmentFormState.INVALID} & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentErrorData
-  | {formState: EInvestmentFormState.VALID} & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentCalculatedCostsData;
+  | {formState: EInvestmentFormState.EMPTY | EInvestmentFormState.VALIDATING} & TTxUserFlowInvestmentBasicData
+  | {formState: EInvestmentFormState.INVALID| EInvestmentFormState.VALIDATING} & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentErrorData
+  | {formState: EInvestmentFormState.VALID| EInvestmentFormState.VALIDATING} & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentCalculatedCostsData;
 
-export enum EInvestmentInputValidationError {
-  INPUT_VALIDATION_ERROR = "inputValidationError",
-}
-
-export type TInvestmentInputError = EInvestmentErrorState & EInvestmentInputValidationError
+// export type TInvestmentInputError = EInvestmentErrorState & EInvestmentInputValidationError
 
 export type TTxUserFlowInvestmentReadyState =
   { processState: EProcessState.SUCCESS } & { etoId: string } & TTxUserFlowInvestmentViewData
@@ -108,6 +104,14 @@ export const txUserFlowInvestmentReducer: AppReducer<TTxUserFlowInvestmentState>
         ? {
           ...state,
           formState: action.payload.formState
+        }
+        : state
+    }
+    case actions.txUserFlowInvestment.setInvestmentType.getType(): {
+      return state.processState === EProcessState.SUCCESS
+        ? {
+          ...state,
+          investmentType: action.payload.investmentType
         }
         : state
     }

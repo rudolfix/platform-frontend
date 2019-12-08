@@ -38,100 +38,6 @@ import {
 } from "../../../shared/formatters/utils";
 import { WalletSelectionData } from "./InvestmentTypeSelector";
 
-export enum EInvestmentCurrency {
-  ETH = ECurrency.ETH,
-  EUR_TOKEN = ECurrency.EUR_TOKEN,
-}
-
-export const getInvestmentCurrency = (investmentType: EInvestmentType) => {
-  switch (investmentType) {
-    case EInvestmentType.Eth:
-    case EInvestmentType.ICBMEth:
-      return EInvestmentCurrency.ETH;
-    case EInvestmentType.NEur:
-    case EInvestmentType.ICBMnEuro:
-      return EInvestmentCurrency.EUR_TOKEN;
-    default:
-      return assertNever(investmentType);
-  }
-};
-
-function isICBMWallet(type: EInvestmentType): boolean {
-  return includes(type, [EInvestmentType.ICBMnEuro, EInvestmentType.ICBMEth]);
-}
-
-export function createWallets(
-  lockedBalanceNEuro,
-  balanceNEur,
-  icbmBalanceNEuro,
-  ethBalance,
-  lockedBalanceEth,
-  icbmBalanceEth,
-  ethBalanceAsEuro,
-  icbmBalanceEthAsEuro,
-  enabledWallets
-): WalletSelectionData[] {
-  // const icbmNeuro = selectLockedEuroTokenBalance(state);
-  // const balanceNEur = selectLiquidEuroTokenBalance(state);
-  // const lockedBalanceNEur = selectICBMLockedEuroTokenBalance(state);
-  // const liquidEthBalance = selectLiquidEtherBalance(state);
-  // const balanceEth = selectLockedEtherBalance(state);
-  // const icbmBalanceEth = selectICBMLockedEtherBalance(state);
-  //balanceEur: selectLiquidEtherBalanceEuroAmount(state),
-  // icbmBalanceEur = selectICBMLockedEtherBalanceEuroAmount(state)
-
-  const wallets: Dictionary<WalletSelectionData> = {
-    [EInvestmentType.Eth]: {
-      balanceEth: ethBalance,
-      balanceEur:   ethBalanceAsEuro,
-      type: EInvestmentType.Eth,
-      name: "ETH Balance",
-      enabled: false,
-      hasFunds: ethBalance !== "0",
-    },
-    [EInvestmentType.NEur]: {
-      balanceNEuro: balanceNEur,
-      balanceEur: balanceNEur,
-      type: EInvestmentType.NEur,
-      name: "nEUR Balance",
-      enabled: false,
-      hasFunds: balanceNEur !== "0",
-    },
-    [EInvestmentType.ICBMnEuro]: {
-      type: EInvestmentType.ICBMnEuro,
-      name: "ICBM Balance",
-      balanceNEuro: lockedBalanceNEuro,
-      balanceEur: lockedBalanceNEuro,
-      icbmBalanceNEuro: icbmBalanceNEuro,
-      icbmBalanceEur: icbmBalanceNEuro,
-      hasFunds: icbmBalanceNEuro !== "0" || lockedBalanceNEuro !== "0",
-      enabled: false,
-    },
-    [EInvestmentType.ICBMEth]: {
-      type: EInvestmentType.ICBMEth,
-      name: "ICBM Balance",
-      balanceEth: lockedBalanceEth,
-      balanceEur:   ethBalanceAsEuro,
-      icbmBalanceEth: icbmBalanceEth,
-      icbmBalanceEur: icbmBalanceEthAsEuro,
-      hasFunds: icbmBalanceEth !== "0" || lockedBalanceEth !== "0",
-      enabled: false,
-    },
-  };
-
-  const walletsList = Object.keys(wallets);
-
-  return (
-    walletsList
-      .map(w => ({ ...wallets[w], enabled: enabledWallets.some(v => v === w) }))
-      // .map(w => {console.log("1:",w);return w})
-      .filter(w => w.hasFunds)
-      // .map(w => {console.log("2:",w);return w})
-
-      // filter not enabled wallets that are not ICBM in current investment flow
-      .filter(w => isICBMWallet(w.type) || w.enabled)
-  );
-}
 
 export function getInputErrorMessage(
   investmentTxErrorState: EInvestmentErrorState | undefined,
@@ -203,15 +109,6 @@ export function getInputErrorMessage(
 
   return undefined;
 }
-
-export const formatMinMaxTickets = (value: TBigNumberVariants, roundingMode: ERoundingMode) =>
-  toFixedPrecision({
-    value,
-    inputFormat: ENumberInputFormat.ULPS,
-    outputFormat: ENumberOutputFormat.FULL,
-    decimalPlaces: selectDecimalPlaces(ECurrency.EUR, ENumberOutputFormat.FULL),
-    roundingMode: roundingMode,
-  });
 
 export function getActualTokenPriceEur(
   investmentEurUlps: string,

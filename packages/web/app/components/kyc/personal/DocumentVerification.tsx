@@ -11,12 +11,14 @@ import {
 import { OnfidoSDK } from "../../../lib/dependencies/onfido/OnfidoSDK";
 import { actions } from "../../../modules/actions";
 import { selectKycIdNowRedirectUrl } from "../../../modules/kyc/instant-id/id-now/selectors";
+import { selectKycOnfidoRequestStartError } from "../../../modules/kyc/instant-id/onfido/selectors";
 import {
   selectKycInstantIdProvider,
   selectKycRecommendedInstantIdProvider,
   selectKycRequestStatus,
   selectKycSupportedInstantIdProviders,
 } from "../../../modules/kyc/selectors";
+import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { assertNever } from "../../../utils/assertNever";
@@ -25,6 +27,7 @@ import { Button, EButtonLayout, EButtonSize } from "../../shared/buttons/Button"
 import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
 import { withDependencies } from "../../shared/hocs/withDependencies";
 import { ExternalLink } from "../../shared/links/ExternalLink";
+import { Notification } from "../../shared/notification-widget/Notification";
 import { KycStep } from "../shared/KycStep";
 import { VerificationMethod } from "../shared/VerificationMethod";
 import {
@@ -46,6 +49,7 @@ interface IStateProps {
   currentProvider: EKycInstantIdProvider | TInstantIdNoneProvider | undefined;
   requestStatus: EKycRequestStatus | undefined;
   idNowRedirectUrl: string | undefined;
+  onfidoRequestStartError: Error | undefined;
 }
 
 interface IStartInstantIdProps {
@@ -134,7 +138,6 @@ const selectProviderInfoText = (
       return undefined;
   }
 };
-
 const KycPersonalDocumentVerificationRecommended: React.FunctionComponent<IRecommendedProps &
   IStartInstantIdProps &
   TDependenciesProps> = ({
@@ -177,6 +180,7 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
   onfidoSdk,
   requestStatus,
   idNowRedirectUrl,
+  onfidoRequestStartError,
   ...dispatchers
 }) => {
   const enabledInstantIdProviders = getEnabledInstantIdProviders(supportedInstantIdProviders);
@@ -189,6 +193,14 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
         description={<FormattedMessage id="kyc.personal.verify.description" />}
         buttonAction={() => goToDashboard()}
       />
+
+      {onfidoRequestStartError && (
+        <Notification
+          className="mb-4"
+          type={ENotificationType.WARNING}
+          text={<FormattedMessage id="kyc.personal.verify.error" />}
+        />
+      )}
 
       {recommendedInstantIdProvider &&
         recommendedInstantIdProvider !== NONE_KYC_INSTANTID_PROVIDER && (
@@ -262,6 +274,7 @@ export const KycPersonalDocumentVerification = compose<
       currentProvider: selectKycInstantIdProvider(state),
       requestStatus: selectKycRequestStatus(state),
       idNowRedirectUrl: selectKycIdNowRedirectUrl(state),
+      onfidoRequestStartError: selectKycOnfidoRequestStartError(state),
     }),
     dispatchToProps: dispatch => ({
       onStartIdNow: () => dispatch(actions.kyc.startIdNowRequest()),

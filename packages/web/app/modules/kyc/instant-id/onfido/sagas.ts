@@ -97,7 +97,7 @@ function* startOnfidoRequest({ logger }: TGlobalDependencies): Iterator<any> {
   } catch (e) {
     logger.error("Failed to start onfido request", e);
 
-    // TODO: After merged with KYC UI changes add proper message on UI
+    yield put(actions.kyc.startOnfidoRequestError(e));
   }
 }
 

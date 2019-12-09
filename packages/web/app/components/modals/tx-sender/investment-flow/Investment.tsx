@@ -19,17 +19,21 @@ import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector } from "./InvestmentTypeSelector";
-import { EInvestmentCurrency } from "./utils";
-
-import * as styles from "./Investment.module.scss";
 import { selectTxUserFlowInvestmentState } from "../../../../modules/tx/user-flow/investment/selectors";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import {
-  EInvestmentFormState, TTxUserFlowInvestmentErrorData,
+  EInvestmentCurrency,
+  EInvestmentFormState,
+  TTxUserFlowInvestmentCalculatedCostsData,
+  TTxUserFlowInvestmentErrorData,
   TTxUserFlowInvestmentState,
   TTxUserFlowInvestmentViewData
 } from "../../../../modules/tx/user-flow/investment/reducer";
+import { EETOStateOnChain, IEtoTokenGeneralDiscounts } from "../../../../modules/eto/types";
+import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
+
+import * as styles from "./Investment.module.scss";
 
 type TDispatchProps = {
   submitInvestment: ()=>void
@@ -39,39 +43,83 @@ type TDispatchProps = {
   startUpgradeFlow: (token: ETokenType)=>void
 }
 // TODO: Refactor smaller components
-export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInvestmentViewData & TDispatchProps & IIntlProps> = (p) => {
-  const {
-    formState,
-    submitInvestment,
-    investEntireBalance,
-    changeInvestmentValue,
-    intl,
 
-    changeInvestmentType,
-    eto,
-    investmentType,
-    minTicketEur,
-    wallets,
-    hasPreviouslyInvested,
-    startUpgradeFlow,
-    investmentCurrency,
-    totalCostEth,
-    totalCostEuro,
-    minEthTicketFormatted,
-    euroValueWithFallback,
-    investmentValue,
+type TInvestmentTotalsProps = {
+  gasCostEth:string,
+  gasCostEuro:string,
+}
 
+export const InvestmentTotals = ({
+  gasCostEth,
+  gasCostEuro
+}:TInvestmentTotalsProps) =>
+  <div>
+    + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
+    <span className="text-warning" data-test-id="invest-modal-gas-cost">
+      <Money
+        value={gasCostEth}
+        inputFormat={ENumberInputFormat.ULPS}
+        outputFormat={ENumberOutputFormat.FULL}
+        valueType={ECurrency.ETH}
+        roundingMode={ERoundingMode.UP}
+      />
+      <span className={styles.helpText}>
+        {" ≈ "}
+        <Money
+          value={gasCostEuro}
+          inputFormat={ENumberInputFormat.ULPS}
+          outputFormat={ENumberOutputFormat.FULL}
+          valueType={ECurrency.EUR}
+          roundingMode={ERoundingMode.UP}
+        />
+      </span>
+    </span>
+  </div>;
 
-    gasCostEth,
-    gasCostEuro,
-    neuReward,
-    etoTokenGeneralDiscounts,
-    etoTokenPersonalDiscount,
-    etoTokenStandardPrice,
-    equityTokenCountFormatted
+type TInvestmentPriceInfoProps = {
+  timedState:EETOStateOnChain,
+  etoTokenPersonalDiscount:IPersonalDiscount,
+  etoTokenGeneralDiscounts:IEtoTokenGeneralDiscounts,
+  etoTokenStandardPrice:string
+}
 
+export const InvestmentPrice = ({
+  timedState,
+  etoTokenPersonalDiscount,
+  etoTokenGeneralDiscounts,
+  etoTokenStandardPrice
+}:TInvestmentPriceInfoProps) =>
+  <p className={styles.investmentPriceInfo}>
+    <InvestmentPriceInfo
+      onChainState={timedState}
+      etoTokenPersonalDiscount={etoTokenPersonalDiscount}
+      etoTokenGeneralDiscounts={etoTokenGeneralDiscounts}
+      etoTokenStandardPrice={etoTokenStandardPrice}
+    />
+  </p>;
 
-  } = p
+export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInvestmentViewData & TDispatchProps & IIntlProps> = ({
+  formState,
+  submitInvestment,
+  investEntireBalance,
+  changeInvestmentValue,
+  intl,
+
+  changeInvestmentType,
+  eto,
+  investmentType,
+  minTicketEur,
+  wallets,
+  hasPreviouslyInvested,
+  startUpgradeFlow,
+  investmentCurrency,
+  totalCostEth,
+  totalCostEuro,
+  minEthTicketFormatted,
+  euroValueWithFallback,
+  investmentValue,
+  ...rest
+})=>{
   console.log("render", investmentValue)
   return (
     <section data-test-id="modals.investment.modal">
@@ -100,14 +148,9 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
         </Row>
         <Row>
           <Col>
-            {formState === EInvestmentFormState.VALID && <p className={styles.investmentPriceInfo}>
-              <InvestmentPriceInfo
-                onChainState={eto.contract.timedState}
-                etoTokenPersonalDiscount={etoTokenPersonalDiscount}
-                etoTokenGeneralDiscounts={etoTokenGeneralDiscounts}
-                etoTokenStandardPrice={etoTokenStandardPrice}
-              />
-            </p>}
+            {formState === EInvestmentFormState.VALID && eto.contract &&
+            <InvestmentPrice timedState={eto.contract.timedState} {...(rest as TTxUserFlowInvestmentCalculatedCostsData)}/>
+            }
           </Col>
         </Row>
         <Row>
@@ -125,7 +168,7 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
                 placeholder={`${intl.formatIntlMessage(
                   "investment-flow.min-ticket-size",
                 )} ${minTicketEur} EUR`}
-                errorMsg={formState === EInvestmentFormState.INVALID ? (p as TTxUserFlowInvestmentErrorData).error : undefined}
+                errorMsg={formState === EInvestmentFormState.INVALID ? (rest as TTxUserFlowInvestmentErrorData).error : undefined}
                 invalid={formState === EInvestmentFormState.INVALID}
               />
             )}
@@ -143,7 +186,7 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
                   )} ${minEthTicketFormatted} ETH`}
                   data-test-id="invest-modal-eth-field"
                   showUnits={true}
-                  errorMsg={formState === EInvestmentFormState.INVALID && p.error}
+                  errorMsg={formState === EInvestmentFormState.INVALID ? (rest as TTxUserFlowInvestmentErrorData).error : undefined}
                   invalid={formState === EInvestmentFormState.INVALID}
                 />
                 {formState !== EInvestmentFormState.INVALID && <div className={styles.helpText}>
@@ -186,7 +229,7 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
                 </Label>
                 <InfoAlert data-test-id="invest-modal.est-equity-tokens">
                   {(formState === EInvestmentFormState.VALID &&
-                    `${equityTokenCountFormatted} ${eto.equityTokenSymbol}`) ||
+                    `${(rest as TTxUserFlowInvestmentCalculatedCostsData).equityTokenCountFormatted} ${eto.equityTokenSymbol}`) ||
                   "\xA0" /* non breaking space*/}
                 </InfoAlert>
               </FormGroup>
@@ -200,7 +243,7 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
                 <InfoAlert data-test-id="invest-modal.est-neu-tokens">
                   {(formState === EInvestmentFormState.VALID &&  (
                     <Money
-                      value={neuReward}
+                      value={(rest as TTxUserFlowInvestmentCalculatedCostsData).neuReward}
                       inputFormat={ENumberInputFormat.ULPS}
                       valueType={ECurrency.NEU}
                       outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
@@ -229,30 +272,7 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
       <Container className={styles.container} fluid>
         <Row>
           <Col className={styles.summary}>
-            {formState === EInvestmentFormState.VALID &&  (
-              <div>
-                + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
-                <span className="text-warning" data-test-id="invest-modal-gas-cost">
-                    <Money
-                      value={gasCostEth}
-                      inputFormat={ENumberInputFormat.ULPS}
-                      outputFormat={ENumberOutputFormat.FULL}
-                      valueType={ECurrency.ETH}
-                      roundingMode={ERoundingMode.UP}
-                    />
-                    <span className={styles.helpText}>
-                      {" ≈ "}
-                      <Money
-                        value={gasCostEuro}
-                        inputFormat={ENumberInputFormat.ULPS}
-                        outputFormat={ENumberOutputFormat.FULL}
-                        valueType={ECurrency.EUR}
-                        roundingMode={ERoundingMode.UP}
-                      />
-                    </span>
-                  </span>
-              </div>
-            )}
+            {formState === EInvestmentFormState.VALID &&  <InvestmentTotals {...(rest as TTxUserFlowInvestmentCalculatedCostsData)}/>}
             <div>
               <FormattedMessage id="investment-flow.total" />:{" "}
               <span className="text-warning" data-test-id="invest-modal-total-cost">
@@ -304,8 +324,6 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
     </section>
   );
 };
-
-
 
 export const InvestmentSelection = compose<TTxUserFlowInvestmentViewData & TDispatchProps & IIntlProps,{}>(
   injectIntlHelpers,

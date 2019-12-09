@@ -1,8 +1,5 @@
 import { createActionFactory } from "@neufund/shared";
 import {
-  EInvestmentFormState,
-  EInvestmentInputValidationError,
-  TInvestmentInputError,
   TTxUserFlowInvestmentViewData
 } from "./reducer";
 import { ETxSenderType, TAdditionalDataByType } from "../../types";
@@ -26,13 +23,8 @@ export const txUserFlowInvestmentActions = {
     "TX_USER_FLOW_INVESTMENT_SET_VALUE",
     (value: string) => ({value})
   ),
-  setFormState: createActionFactory(
-    "TX_USER_FLOW_INVESTMENT_SET_FORM_STATE",
-    (formState: EInvestmentFormState) => ({formState})
-  ),
-  setValidationError: createActionFactory(
-    "TX_USER_FLOW_INVESTMENT_SET_VALIDATION_ERROR",
-    (error: EInvestmentInputValidationError) => ({error})
+  setFormStateValidating: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_SET_FORM_STATE_VALIDATING",
   ),
   updateValue: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_UPDATE_VALUE",
@@ -52,8 +44,8 @@ export const txUserFlowInvestmentActions = {
     "TX_USER_FLOW_INVESTMENT_SET_INVESTMENT_TYPE",
     (investmentType:EInvestmentType)=>({investmentType})
   ),
-  // setResult: createActionFactory(
-  //   "TX_USER_FLOW_INVESTMENT_SET_RESUTL",
-  //   (value: string, error: TInvestmentInputError) => ({value, error})
-  // ),
+  startInvestment: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_START_INVESTMENT",
+    (etoId:string)=>({etoId})
+  ),
 };

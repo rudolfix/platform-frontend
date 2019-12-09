@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import { EUSState } from "../utils/enums/usStatesEnum";
+import { EInvestmentType } from "../modules/investment-flow/reducer";
 
 export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
 // If running in cypress wait for a short time
@@ -105,3 +106,4 @@ export const BLOCK_MINING_TIME_DELAY = 12000;
  * For now we need to disable NEUR for all US states
  */
 export const NEUR_ALLOWED_US_STATES: EUSState[] = [];
+export const DEFAULT_INVESTMENT_TYPE = EInvestmentType.Eth;

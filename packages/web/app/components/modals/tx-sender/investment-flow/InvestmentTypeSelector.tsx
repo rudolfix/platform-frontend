@@ -17,6 +17,7 @@ import {
 import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
 
 import * as styles from "./InvestmentTypeSelector.module.scss";
+import { DeepReadonly } from "../../../../types";
 
 interface IWalletBase {
   balanceEur: string;
@@ -41,7 +42,7 @@ interface IInEuroWallet extends IWalletBase {
 export type WalletSelectionData = IEthWallet | IInEuroWallet;
 
 interface IProps {
-  wallets: WalletSelectionData[];
+  wallets: DeepReadonly<WalletSelectionData[]>;
   currentType?: EInvestmentType;
   onSelect: (type: EInvestmentType) => void;
   startUpgradeFlow: (token: ETokenType) => void;

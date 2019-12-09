@@ -1,59 +1,30 @@
-import BigNumber from "bignumber.js";
 import { delay } from "redux-saga";
-import { all, call, put, select, take, takeEvery, takeLatest } from "redux-saga/effects";
+import { all, put, select, take, takeEvery } from "redux-saga/effects";
 
 import {
   ECurrency,
 } from "../../components/shared/formatters/utils";
-import { TGlobalDependencies } from "../../di/setupBindings";
-import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { ITxData } from "../../lib/web3/types";
 import { IAppState } from "../../store";
-import { addBigNumbers, compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { nonNullable } from "../../utils/nonNullable";
-import { convertToUlps } from "../../utils/NumberUtils";
-import { extractNumber } from "../../utils/StringUtils";
 import { actions, TActionFromCreator } from "../actions";
-import {
-  selectEtoWithCompanyAndContractById,
-} from "../eto/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../eto/types";
-import { selectStandardGasPriceWithOverHead } from "../gas/selectors";
-import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
-import {
-  selectCalculatedContribution,
-  selectCalculatedEtoTicketSizesUlpsById,
-} from "../investor-portfolio/selectors";
-import { neuCall } from "../sagasUtils";
-import { selectEtherPriceEur, selectEurPriceEther } from "../shared/tokenPrice/selectors";
-import { selectTxGasCostEthUlps, selectTxSenderModalOpened } from "../tx/sender/selectors";
-import { INVESTMENT_GAS_AMOUNT } from "../tx/transactions/investment/sagas";
-import { ETxSenderType } from "../tx/types";
-import { txValidateSaga } from "../tx/validator/sagas";
-import {
-  selectLiquidEtherBalance,
-  selectLiquidEuroTokenBalance,
-  selectLockedEtherBalance,
-  selectLockedEuroTokenBalance,
-  selectWalletData,
-} from "../wallet/selectors";
-import { EInvestmentErrorState, EInvestmentType } from "./reducer";
+
+import {  selectTxSenderModalOpened } from "../tx/sender/selectors";
+
 import {
   selectInvestmentEthValueUlps,
-  selectInvestmentEtoId,
   selectInvestmentEurValueUlps,
   selectInvestmentType,
-  selectIsICBMInvestment,
 } from "./selectors";
 import { getCurrencyByInvestmentType } from "./utils";
-import { getInvestmentInitViewData } from "../tx/user-flow/investment/sagas";
+import { selectEtherPriceEur, selectEurPriceEther } from "../shared/tokenPrice/selectors";
+import BigNumber from "bignumber.js";
+import { TEtoWithCompanyAndContractReadonly } from "../eto/types";
+import { nonNullable } from "../../utils/nonNullable";
+import { selectEtoWithCompanyAndContractById } from "../eto/selectors";
 
 // function* processCurrencyValue(
 //   action: TActionFromCreator<typeof actions.investmentFlow.submitCurrencyValue>,
 // ): Iterator<any> {
 //   const currency = action.payload.currency;
-//
-//   yield put(actions.txUserFlowInvestment.setInvestmentValue(action.payload.value));//fixme
 //
 //   const value = action.payload.value && convertToUlps(extractNumber(action.payload.value));
 //   const oldVal =
@@ -72,34 +43,34 @@ import { getInvestmentInitViewData } from "../tx/user-flow/investment/sagas";
 //
 // }
 
-// function* computeAndSetCurrencies(value: string, currency: ECurrency): any {
-//   const state: IAppState = yield select();
-//   const etherPriceEur = selectEtherPriceEur(state);
-//   const eurPriceEther = selectEurPriceEther(state);
-//   if (!value) {
-//     yield put(actions.investmentFlow.setEthValue(""));
-//     yield put(actions.investmentFlow.setEurValue(""));
-//   } else if (etherPriceEur && etherPriceEur !== "0") {
-//     const valueAsBigNumber = new BigNumber(value);
-//     switch (currency) {
-//       case ECurrency.ETH:
-//         const eurVal = valueAsBigNumber.mul(etherPriceEur);
-//         yield put(
-//           actions.investmentFlow.setEthValue(valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP)),
-//         );
-//         yield put(actions.investmentFlow.setEurValue(eurVal.toFixed(0, BigNumber.ROUND_UP)));
-//         console.log("computeAndSetCurrencies", valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP), eurVal.toFixed(0, BigNumber.ROUND_UP))
-//         return;
-//       case ECurrency.EUR_TOKEN:
-//         const ethVal = valueAsBigNumber.mul(eurPriceEther);
-//         yield put(actions.investmentFlow.setEthValue(ethVal.toFixed(0, BigNumber.ROUND_UP)));
-//         yield put(
-//           actions.investmentFlow.setEurValue(valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP)),
-//         );
-//         return;
-//     }
-//   }
-// }
+function* computeAndSetCurrencies(value: string, currency: ECurrency): any {
+  const state: IAppState = yield select();
+  const etherPriceEur = selectEtherPriceEur(state);
+  const eurPriceEther = selectEurPriceEther(state);
+  if (!value) {
+    yield put(actions.investmentFlow.setEthValue(""));
+    yield put(actions.investmentFlow.setEurValue(""));
+  } else if (etherPriceEur && etherPriceEur !== "0") {
+    const valueAsBigNumber = new BigNumber(value);
+    switch (currency) {
+      case ECurrency.ETH:
+        const eurVal = valueAsBigNumber.mul(etherPriceEur);
+        yield put(
+          actions.investmentFlow.setEthValue(valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP)),
+        );
+        yield put(actions.investmentFlow.setEurValue(eurVal.toFixed(0, BigNumber.ROUND_UP)));
+        console.log("computeAndSetCurrencies", valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP), eurVal.toFixed(0, BigNumber.ROUND_UP))
+        return;
+      case ECurrency.EUR_TOKEN:
+        const ethVal = valueAsBigNumber.mul(eurPriceEther);
+        yield put(actions.investmentFlow.setEthValue(ethVal.toFixed(0, BigNumber.ROUND_UP)));
+        yield put(
+          actions.investmentFlow.setEurValue(valueAsBigNumber.toFixed(0, BigNumber.ROUND_UP)),
+        );
+        return;
+    }
+  }
+}
 
 // function* investEntireBalance(): any {
 //   yield setTransactionWithPresetGas();
@@ -201,7 +172,7 @@ import { getInvestmentInitViewData } from "../tx/user-flow/investment/sagas";
 
 // function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies): any {
 //   // debounce validation
-//   yield delay(300); //fixme !!
+//   yield delay(300);
 //   yield put(actions.investmentFlow.setErrorState(undefined));
 //
 //   const etoId = yield select(selectInvestmentEtoId);
@@ -262,9 +233,6 @@ import { getInvestmentInitViewData } from "../tx/user-flow/investment/sagas";
 //
 //
 //   yield put(actions.txTransactions.startInvestment(etoId));
-//
-//   yield resetTxDataAndValidations();
-//   // yield take("TX_SENDER_SHOW_MODAL");
 // }
 
 // export function* onInvestmentTxModalHide(): any {
@@ -291,26 +259,6 @@ function* recalculateCurrencies(): any {
   }
 }
 
-// function* setTransactionWithPresetGas(): any {
-//   const gasPrice = yield select(selectStandardGasPriceWithOverHead);
-//
-//   yield put(
-//     actions.txSender.setTransactionData({
-//       gas: INVESTMENT_GAS_AMOUNT,
-//       value: "",
-//       to: "",
-//       from: "",
-//       gasPrice,
-//     }),
-//     // This sets all other irrelevant values into false values.
-//     // TODO: Refactor the whole transaction flow into a simpler flow that doesn't relay on txData
-//   );
-// }
-
-// function* resetTxDataAndValidations(): any {
-//   yield put(actions.txValidator.clearValidationState());
-//   yield put(actions.txSender.txSenderClearTransactionData());
-// }
 
 function* stop(): any {
   // TODO: Decouple stop from @@router/LOCATION_CHANGE as txSenderHideModal

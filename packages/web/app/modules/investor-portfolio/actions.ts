@@ -31,6 +31,9 @@ export const investorEtoTicketActions = {
   getIncomingPayoutsInBackground: createActionFactory(
     "INVESTOR_TICKET_GET_INCOMING_PAYOUTS_IN_BACKGROUND",
   ),
+  loadCalculatedContribution: createActionFactory("INVESTOR_TICKET_LOAD_CALCULATED_CONTRIBUTION",
+    (eto: TEtoSpecsData,  amountEuroUlps?: string,  isICBM = false) => ({eto,amountEuroUlps,isICBM})
+    ),
 
   // state mutations
   setEtoInvestorTicket: createActionFactory(

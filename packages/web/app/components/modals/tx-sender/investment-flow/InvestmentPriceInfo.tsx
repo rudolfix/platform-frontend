@@ -17,7 +17,7 @@ interface IExternalProps {
   onChainState: EETOStateOnChain;
   etoTokenGeneralDiscounts: IEtoTokenGeneralDiscounts;
   etoTokenPersonalDiscount: IPersonalDiscount;
-  etoTokenStandardPrice: number;
+  etoTokenStandardPrice: string;
 }
 
 const PersonalWhitelistDiscountMessage: React.FunctionComponent<Pick<
@@ -88,7 +88,7 @@ const PersonalWhitelistDiscountNoGeneralDiscountMessage: React.FunctionComponent
     values={{
       tokenPriceEur: (
         <Money
-          value={etoTokenStandardPrice.toString()}
+          value={etoTokenStandardPrice}
           inputFormat={ENumberInputFormat.FLOAT}
           valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
           outputFormat={ENumberOutputFormat.FULL}
@@ -154,7 +154,7 @@ const NoDiscountMessage: React.FunctionComponent<Pick<IExternalProps, "etoTokenS
       tokenPriceEur: (
         <Money
           data-test-id="investment-flow.token-price.no-discount.price"
-          value={etoTokenStandardPrice.toString()}
+          value={etoTokenStandardPrice}
           inputFormat={ENumberInputFormat.FLOAT}
           valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
           outputFormat={ENumberOutputFormat.FULL}

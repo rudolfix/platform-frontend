@@ -1,5 +1,6 @@
 import { delay } from "redux-saga";
 import { put, select, takeLatest } from "redux-saga/effects";
+import { isEqual } from "lodash/fp";
 
 import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -8,6 +9,7 @@ import { numericValuesToString } from "../../contracts/utils";
 import { selectIsSmartContractInitDone } from "../../init/selectors";
 import { neuCall } from "../../sagasUtils";
 import { ITokenPriceStateData } from "./reducer";
+import { selectTokenPriceData } from "./selectors";
 
 const TOKEN_PRICE_MONITOR_DELAY = 120000;
 const TOKEN_PRICE_MONITOR_SHORT_DELAY = 1000;
@@ -48,8 +50,13 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
   while (true) {
     try {
       logger.info("Querying for tokenPrice");
-      const tokenPriceData = yield neuCall(loadTokenPriceDataAsync);
-      yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
+      const tokenPriceData:ITokenPriceStateData = yield neuCall(loadTokenPriceDataAsync);
+      const oldTokenPriceData:ITokenPriceStateData = yield select(selectTokenPriceData);
+
+      if(!oldTokenPriceData || !isEqual(tokenPriceData, oldTokenPriceData)){
+        yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
+      }
+
     } catch (e) {
       logger.error("Token Price Oracle Failed", e);
       yield delay(TOKEN_PRICE_MONITOR_SHORT_DELAY);

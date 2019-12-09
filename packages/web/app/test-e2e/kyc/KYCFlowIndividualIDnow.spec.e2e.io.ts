@@ -67,15 +67,21 @@ const fillAndAssert = (personalData: TFormFixture, addressData: TFormFixture, is
 };
 
 describe("KYC Personal flow with ID Now", () => {
-  it("should go through ID Now", () => {
+  it("should go through ID Now", function(): void {
+    this.retries(2);
+
     fillAndAssert(kycInvidualForm, kycInvidualAddressForm, false);
   });
 
-  it("should go through ID Now for US investor", () => {
+  it("should go through ID Now for US investor", function(): void {
+    this.retries(2);
+
     fillAndAssert(kycInvidualFormUS, kycInvidualAddressForm, true);
   });
 
-  it("should go through ID Now for US resident", () => {
+  it("should go through ID Now for US resident", function(): void {
+    this.retries(2);
+
     fillAndAssert(kycInvidualFormUSResident, kycInvidualAddressFormUSResident, true);
   });
 });

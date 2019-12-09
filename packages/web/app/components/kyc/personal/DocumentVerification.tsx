@@ -22,6 +22,7 @@ import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { assertNever } from "../../../utils/assertNever";
+import { nonNullable } from "../../../utils/nonNullable";
 import { onLeaveAction } from "../../../utils/OnLeaveAction";
 import { Button, EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
 import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
@@ -41,11 +42,8 @@ import {
 import * as styles from "./DocumentVerification.module.scss";
 
 interface IStateProps {
-  supportedInstantIdProviders:
-    | ReadonlyArray<EKycInstantIdProvider>
-    | TInstantIdNoneProvider
-    | undefined;
-  recommendedInstantIdProvider: EKycInstantIdProvider | TInstantIdNoneProvider | undefined;
+  supportedInstantIdProviders: ReadonlyArray<EKycInstantIdProvider>;
+  recommendedInstantIdProvider: EKycInstantIdProvider | TInstantIdNoneProvider;
   currentProvider: EKycInstantIdProvider | TInstantIdNoneProvider | undefined;
   requestStatus: EKycRequestStatus | undefined;
   idNowRedirectUrl: string | undefined;
@@ -184,6 +182,15 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
   ...dispatchers
 }) => {
   const enabledInstantIdProviders = getEnabledInstantIdProviders(supportedInstantIdProviders);
+
+  const otherEnabledInstantIdProviders = enabledInstantIdProviders.filter(
+    provider => provider !== recommendedInstantIdProvider,
+  );
+
+  const shouldShowRecommendedProvider =
+    recommendedInstantIdProvider !== NONE_KYC_INSTANTID_PROVIDER &&
+    enabledInstantIdProviders.includes(recommendedInstantIdProvider);
+
   return (
     <>
       <KycStep
@@ -202,39 +209,38 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
         />
       )}
 
-      {recommendedInstantIdProvider &&
-        recommendedInstantIdProvider !== NONE_KYC_INSTANTID_PROVIDER && (
-          <>
-            <KycPersonalDocumentVerificationRecommended
-              currentProvider={currentProvider}
-              recommendedInstantIdProvider={recommendedInstantIdProvider}
-              onfidoSdk={onfidoSdk}
-              requestStatus={requestStatus}
-              idNowRedirectUrl={idNowRedirectUrl}
-              {...dispatchers}
-            />
+      {shouldShowRecommendedProvider && (
+        <>
+          <KycPersonalDocumentVerificationRecommended
+            currentProvider={currentProvider}
+            recommendedInstantIdProvider={recommendedInstantIdProvider as EKycInstantIdProvider}
+            onfidoSdk={onfidoSdk}
+            requestStatus={requestStatus}
+            idNowRedirectUrl={idNowRedirectUrl}
+            {...dispatchers}
+          />
+          {otherEnabledInstantIdProviders.length > 0 && (
             <p className={styles.label}>
               <FormattedMessage id="kyc.personal.document-verification.other" />
             </p>
-          </>
-        )}
-      {enabledInstantIdProviders &&
-        enabledInstantIdProviders.length > 0 &&
-        (enabledInstantIdProviders as EKycInstantIdProvider[])
-          .filter(provider => provider !== recommendedInstantIdProvider)
-          .map(provider => (
-            <VerificationMethod
-              key={provider}
-              data-test-id={`kyc-go-to-outsourced-verification-${provider}`}
-              disabled={selectIsDisabled(currentProvider, provider, onfidoSdk)}
-              errorText={selectProviderErrorText(provider, onfidoSdk)}
-              infoText={selectProviderInfoText(provider, requestStatus, idNowRedirectUrl)}
-              onClick={selectProviderAction(provider, dispatchers)}
-              logo={selectProviderLogo(provider)}
-              text={selectProviderText(provider)}
-              name={provider}
-            />
-          ))}
+          )}
+        </>
+      )}
+
+      {otherEnabledInstantIdProviders.map(provider => (
+        <VerificationMethod
+          key={provider}
+          data-test-id={`kyc-go-to-outsourced-verification-${provider}`}
+          disabled={selectIsDisabled(currentProvider, provider, onfidoSdk)}
+          errorText={selectProviderErrorText(provider, onfidoSdk)}
+          infoText={selectProviderInfoText(provider, requestStatus, idNowRedirectUrl)}
+          onClick={selectProviderAction(provider, dispatchers)}
+          logo={selectProviderLogo(provider)}
+          text={selectProviderText(provider)}
+          name={provider}
+        />
+      ))}
+
       <ButtonGroup className={styles.buttons}>
         <Button
           layout={EButtonLayout.OUTLINE}
@@ -246,7 +252,7 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
           <FormattedMessage id="form.back" />
         </Button>
 
-        {isManualVerificationEnabled && (
+        {isManualVerificationEnabled() && (
           <Button
             disabled={currentProvider !== NONE_KYC_INSTANTID_PROVIDER}
             layout={EButtonLayout.GHOST}
@@ -269,8 +275,8 @@ export const KycPersonalDocumentVerification = compose<
 >(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      supportedInstantIdProviders: selectKycSupportedInstantIdProviders(state),
-      recommendedInstantIdProvider: selectKycRecommendedInstantIdProvider(state),
+      supportedInstantIdProviders: nonNullable(selectKycSupportedInstantIdProviders(state)),
+      recommendedInstantIdProvider: nonNullable(selectKycRecommendedInstantIdProvider(state)),
       currentProvider: selectKycInstantIdProvider(state),
       requestStatus: selectKycRequestStatus(state),
       idNowRedirectUrl: selectKycIdNowRedirectUrl(state),

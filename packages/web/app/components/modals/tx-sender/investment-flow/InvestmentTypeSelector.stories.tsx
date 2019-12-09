@@ -2,9 +2,9 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
+import { EInvestmentType } from "../../../../modules/tx/user-flow/investment/reducer";
 
 export const wallets: WalletSelectionData[] = [
   {

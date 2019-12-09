@@ -6,13 +6,13 @@ import { ITxData } from "../../../../lib/web3/types";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
-import { EInvestmentType } from "../../../investment-flow/reducer";
-import { onInvestmentTxModalHide } from "../../../investment-flow/sagas";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
+import { cleanupInvestmentView } from "../../user-flow/investment/sagas";
+import { EInvestmentType } from "../../user-flow/investment/reducer";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
 
@@ -126,7 +126,7 @@ function* investSaga(
     logger.info("Investment successful");
   } catch (e) {
     // Add clean up functions here ...
-    yield onInvestmentTxModalHide();
+    yield cleanupInvestmentView();
     logger.info("Investment cancelled", e);
   } finally {
     yield put(actions.eto.loadEto(payload.etoId));

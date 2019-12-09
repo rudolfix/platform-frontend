@@ -6,7 +6,6 @@ import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../modules/actions";
-import { EInvestmentType, } from "../../../../modules/investment-flow/reducer";
 import { ETokenType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
@@ -24,7 +23,7 @@ import { EProcessState } from "../../../../utils/enums/processStates";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import {
   EInvestmentCurrency,
-  EInvestmentFormState,
+  EInvestmentFormState, EInvestmentType,
   TTxUserFlowInvestmentCalculatedCostsData,
   TTxUserFlowInvestmentErrorData,
   TTxUserFlowInvestmentState,
@@ -120,7 +119,7 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
   investmentValue,
   ...rest
 })=>{
-  console.log("render", investmentValue)
+  console.log("render", investmentValue, "totalCostEth",totalCostEth, "totalCostEuro",totalCostEuro)
   return (
     <section data-test-id="modals.investment.modal">
       <Container className={styles.container} fluid>
@@ -192,10 +191,11 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
                 {formState !== EInvestmentFormState.INVALID && <div className={styles.helpText}>
                   {"≈ "}
                   <Money
-                    value={euroValueWithFallback}
+                    value={formState !== EInvestmentFormState.VALID ? undefined : euroValueWithFallback}
                     inputFormat={ENumberInputFormat.FLOAT}
                     valueType={ECurrency.EUR}
                     outputFormat={ENumberOutputFormat.FULL}
+                    defaultValue={"-"}
                   />
                 </div>}
               </>
@@ -278,27 +278,31 @@ export const InvestmentSelectionComponent:React.FunctionComponent<TTxUserFlowInv
               <span className="text-warning" data-test-id="invest-modal-total-cost">
                   {investmentCurrency === EInvestmentCurrency.EUR_TOKEN && (
                     <Money
-                      value={totalCostEuro}
+                      value={formState !== EInvestmentFormState.VALID ? undefined : totalCostEuro}
                       inputFormat={ENumberInputFormat.ULPS}
                       valueType={ECurrency.EUR}
                       outputFormat={ENumberOutputFormat.FULL}
+                      defaultValue={"-"}
                     />
                   )}
                 {investmentCurrency === EInvestmentCurrency.ETH && (
                   <>
                     <Money
-                      value={totalCostEth}
+                      value={formState !== EInvestmentFormState.VALID ? undefined : totalCostEth}
                       inputFormat={ENumberInputFormat.ULPS}
                       outputFormat={ENumberOutputFormat.FULL}
                       valueType={ECurrency.ETH}
+                      defaultValue={"-"}
                     />
                     <span className={styles.helpText}>
                         {" ≈ "}
+                      {console.log("-->>--totalCostEuro",totalCostEuro)}
                       <Money
-                        value={totalCostEuro}
+                        value={formState !== EInvestmentFormState.VALID ? undefined : totalCostEuro}
                         inputFormat={ENumberInputFormat.ULPS}
                         valueType={ECurrency.EUR}
                         outputFormat={ENumberOutputFormat.FULL}
+                        defaultValue={"-"}
                       />
                       </span>
                   </>
@@ -337,7 +341,7 @@ export const InvestmentSelection = compose<TTxUserFlowInvestmentViewData & TDisp
         return dispatch(actions.txUserFlowInvestment.updateValue(value))
       },
       changeInvestmentType: (type: EInvestmentType) =>
-        dispatch(actions.investmentFlow.selectInvestmentType(type)),
+        dispatch(actions.txUserFlowInvestment.setInvestmentType(type)),
       investEntireBalance: () => dispatch(actions.txUserFlowInvestment.investEntireBalance()),
       startUpgradeFlow: (token: ETokenType) => dispatch(actions.txTransactions.startUpgrade(token)),
     }),

@@ -3,8 +3,6 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, FormGroup } from "reactstrap";
 
-import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
-import { getCurrencyByInvestmentType } from "../../../../modules/investment-flow/utils";
 import { ETokenType } from "../../../../modules/tx/types";
 import { Button, EButtonLayout, EButtonWidth } from "../../../shared/buttons";
 import { EButtonSize } from "../../../shared/buttons/Button";
@@ -15,9 +13,11 @@ import {
   ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
 import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
+import { DeepReadonly } from "../../../../types";
+import { getCurrencyByInvestmentType } from "../../../../modules/tx/user-flow/investment/utils";
+import { EInvestmentType } from "../../../../modules/tx/user-flow/investment/reducer";
 
 import * as styles from "./InvestmentTypeSelector.module.scss";
-import { DeepReadonly } from "../../../../types";
 
 interface IWalletBase {
   balanceEur: string;

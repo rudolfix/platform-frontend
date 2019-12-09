@@ -1,9 +1,9 @@
 import { createActionFactory } from "@neufund/shared";
 import {
+  EInvestmentType,
   TTxUserFlowInvestmentViewData
 } from "./reducer";
 import { ETxSenderType, TAdditionalDataByType } from "../../types";
-import { EInvestmentType } from "../../../investment-flow/reducer";
 
 export const txUserFlowInvestmentActions = {
   setEtoId: createActionFactory(

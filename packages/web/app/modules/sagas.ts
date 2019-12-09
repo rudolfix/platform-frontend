@@ -13,7 +13,6 @@ import { gasApiSagas } from "./gas/sagas";
 import { icbmWalletGetDataSagas } from "./icbm-wallet-balance-modal/sagas";
 import { immutableFileSagas } from "./immutable-file/sagas";
 import { initSagas } from "./init/sagas";
-import { investmentFlowSagas } from "./investment-flow/sagas";
 import { investorTicketsSagas } from "./investor-portfolio/sagas";
 import { kycSagas } from "./kyc/sagas";
 import { marketingEmailsSagas } from "./marketing-emails/sagas";
@@ -78,7 +77,6 @@ function* allSagas(): Iterator<Effect> {
     fork(neuRestartIf, actions.auth.logout, gasApiSagas),
     fork(neuRestartIf, actions.auth.logout, etoDocumentsSagas),
     fork(neuRestartIf, actions.auth.logout, txMonitorSagas),
-    fork(neuRestartIf, actions.auth.logout, investmentFlowSagas),
     fork(neuRestartIf, actions.auth.logout, txHistorySaga),
     fork(neuRestartIf, actions.auth.logout, nomineeFlowSagas),
   ]);

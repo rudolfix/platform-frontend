@@ -4,7 +4,6 @@ import { IEtoTokenGeneralDiscounts, TEtoWithCompanyAndContractReadonly } from ".
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { DeepReadonly } from "../../../../types";
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
-import { EInvestmentErrorState, EInvestmentType } from "../../../investment-flow/reducer";
 import { ECurrency } from "../../../../components/shared/formatters/utils";
 import { EValidationState } from "../../validator/reducer";
 import { IPersonalDiscount } from "../../../investor-portfolio/types";
@@ -29,6 +28,20 @@ export enum EInputValidationError {
 export enum EInvestmentValueType {
   FULL_BALANCE = "fullBalance",
   PARTIAL_BALANCE = "partialBalance"
+}
+
+export enum EInvestmentType {
+  Eth = "ETH",
+  NEur = "NEUR",
+  ICBMEth = "ICBM_ETH",
+  ICBMnEuro = "ICBM_NEUR",
+}
+
+export enum EInvestmentErrorState {
+  AboveMaximumTicketSize = "above_maximum_ticket_size",
+  BelowMinimumTicketSize = "below_minimum_ticket_size",
+  ExceedsTokenAmount = "exceeds_token_amount",
+  ExceedsWalletBalance = "exceeds_wallet_balance",
 }
 
 export type TValidationError = EInputValidationError | EInvestmentErrorState | EValidationState.NOT_ENOUGH_ETHER_FOR_GAS
@@ -64,9 +77,9 @@ export type TTxUserFlowInvestmentCalculatedCostsData = {
 }
 
 export type TTxUserFlowInvestmentViewData =
-  | {formState: EInvestmentFormState.EMPTY | EInvestmentFormState.VALIDATING } & TTxUserFlowInvestmentBasicData
-  | {formState: EInvestmentFormState.INVALID | EInvestmentFormState.VALIDATING } & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentErrorData
-  | {formState: EInvestmentFormState.VALID| EInvestmentFormState.VALIDATING } & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentCalculatedCostsData;
+  | ({formState: EInvestmentFormState.EMPTY | EInvestmentFormState.VALIDATING } & TTxUserFlowInvestmentBasicData)
+  | ({formState: EInvestmentFormState.INVALID | EInvestmentFormState.VALIDATING } & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentErrorData)
+  | ({formState: EInvestmentFormState.VALID | EInvestmentFormState.VALIDATING } & TTxUserFlowInvestmentBasicData & TTxUserFlowInvestmentCalculatedCostsData);
 
 export type TTxUserFlowInvestmentReadyState =
   { processState: EProcessState.SUCCESS } & { etoId: string } & TTxUserFlowInvestmentViewData

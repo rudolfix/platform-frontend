@@ -1,29 +1,9 @@
 import BigNumber from "bignumber.js";
-import { includes } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TBigNumberVariants } from "../../../../lib/web3/types";
-import {
-  EInvestmentErrorState,
-  EInvestmentType,
-} from "../../../../modules/investment-flow/reducer";
-import { selectInvestmentActiveTypes } from "../../../../modules/investment-flow/selectors";
 import { EValidationState } from "../../../../modules/tx/validator/reducer";
-import {
-  selectICBMLockedEtherBalance,
-  selectICBMLockedEtherBalanceEuroAmount,
-  selectICBMLockedEuroTokenBalance,
-  selectLiquidEtherBalance,
-  selectLiquidEtherBalanceEuroAmount,
-  selectLiquidEuroTokenBalance,
-  selectLockedEtherBalance,
-  selectLockedEtherBalanceEuroAmount,
-  selectLockedEuroTokenBalance,
-} from "../../../../modules/wallet/selectors";
-import { IAppState } from "../../../../store";
-import { Dictionary, TTranslatedString } from "../../../../types";
-import { assertNever } from "../../../../utils/assertNever";
+import {  TTranslatedString } from "../../../../types";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
 import { Money } from "../../../shared/formatters/Money";
 import {
@@ -31,12 +11,12 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
   EPriceFormat,
-  ERoundingMode,
+
   formatNumber,
   selectDecimalPlaces,
-  toFixedPrecision,
+
 } from "../../../shared/formatters/utils";
-import { WalletSelectionData } from "./InvestmentTypeSelector";
+import { EInvestmentCurrency, EInvestmentErrorState } from "../../../../modules/tx/user-flow/investment/reducer";
 
 
 export function getInputErrorMessage(

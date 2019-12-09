@@ -95,7 +95,7 @@ export function* neuTakeOnly<T extends TPattern>(
   payload: Partial<TActionPayload<T>>,
 ): any {
   while (true) {
-    const takenAction = yield take(type);
+    const takenAction = yield take(type as any);
     if (isMatch(payload, takenAction.payload)) {
       return takenAction;
     }

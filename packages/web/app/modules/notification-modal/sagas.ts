@@ -1,7 +1,6 @@
 import { fork } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { assertNever } from "../../utils/assertNever";
 import { actions, TActionFromCreator } from "../actions";
 import { neuTakeEvery } from "../sagasUtils";
 import { ENotificationModalType } from "./actions";
@@ -19,8 +18,6 @@ export function* showNotification(
       return notificationCenter.error(message);
     case ENotificationModalType.INFO:
       return notificationCenter.info(message);
-    default:
-      assertNever(type, "unknown notification type");
   }
 }
 

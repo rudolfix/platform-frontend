@@ -15,7 +15,6 @@ import { genericModalReducer } from "./generic-modal/reducer";
 import { icbmWalletBalanceModalReducer } from "./icbm-wallet-balance-modal/reducer";
 import { immutableStorageReducer } from "./immutable-file/reducer";
 import { initReducer } from "./init/reducer";
-import { investmentFlowReducer } from "./investment-flow/reducer";
 import { investorTicketsReducer } from "./investor-portfolio/reducer";
 import { kycReducer } from "./kyc/reducer";
 import { nomineeFlowReducer } from "./nominee-flow/reducer";
@@ -66,7 +65,6 @@ export const appReducers = {
   depositEthModal: depositEthModalReducer,
   icbmWalletBalanceModal: icbmWalletBalanceModalReducer,
   gas: gasReducer,
-  investmentFlow: investmentFlowReducer,
   videoModal: videoModalReducer,
   personProfileModal: personProfileModalReducer,
   portfolioDownloadAgreementsModal: portfolioDownloadAgreementsModalReducer,

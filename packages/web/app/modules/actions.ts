@@ -19,7 +19,6 @@ import { genericModalActions } from "./generic-modal/actions";
 import { icbmWalletBalanceModalActions } from "./icbm-wallet-balance-modal/actions";
 import { immutableStorageActions } from "./immutable-file/actions";
 import { initActions } from "./init/actions";
-import { investmentFlowActions } from "./investment-flow/actions";
 import { investorEtoTicketActions } from "./investor-portfolio/actions";
 import { kycActions } from "./kyc/actions";
 import { marketingEmailsActions } from "./marketing-emails/actions";
@@ -75,7 +74,6 @@ export const actions = {
   depositEthModal: depositModalActions,
   icbmWalletBalanceModal: icbmWalletBalanceModalActions,
   gas: gasActions,
-  investmentFlow: investmentFlowActions,
   videoModal: videoModalActions,
   personProfileModal: personProfileModalActions,
   tosModal: tosModalActions,

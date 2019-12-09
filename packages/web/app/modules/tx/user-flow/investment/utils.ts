@@ -1,4 +1,3 @@
-import { EInvestmentType } from "../../../investment-flow/reducer";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { Dictionary } from "../../../../types";
@@ -12,7 +11,7 @@ import {
 } from "../../../../components/shared/formatters/utils";
 import { assertNever } from "../../../../utils/assertNever";
 import { includes } from "lodash/fp";
-import { EInvestmentCurrency } from "./reducer";
+import { EInvestmentCurrency, EInvestmentType } from "./reducer";
 import { DEFAULT_INVESTMENT_TYPE, Q18 } from "../../../../config/constants";
 import BigNumber from "bignumber.js";
 import { MIMIMUM_RETAIL_TICKET_EUR_ULPS } from "../../../investor-portfolio/utils";
@@ -94,10 +93,7 @@ export function createWallets({
   return (
     walletsList
       .map(w => ({ ...wallets[w], enabled: activeInvestmentTypes.some(v => v === w) }))
-      // .map(w => {console.log("1:",w);return w})
       .filter(w => w.hasFunds)
-      // .map(w => {console.log("2:",w);return w})
-
       // filter not enabled wallets that are not ICBM in current investment flow
       .filter(w => isICBMWallet(w.type) || w.enabled)
   );
@@ -116,17 +112,9 @@ export const getInvestmentCurrency = (investmentType: EInvestmentType) => {
   }
 };
 
-export const mapInvestmentCurrency = (investmentCurrency:EInvestmentCurrency) =>
-  ({
-    [EInvestmentCurrency.ETH]: ECurrency.ETH,
-    [EInvestmentCurrency.EUR_TOKEN]:ECurrency.EUR_TOKEN
-  })[investmentCurrency];
-
-
 function isICBMWallet(type: EInvestmentType): boolean {
   return includes(type, [EInvestmentType.ICBMnEuro, EInvestmentType.ICBMEth]);
 }
-
 
 export const formatMinMaxTickets = (value: TBigNumberVariants, roundingMode: ERoundingMode) =>
   toFixedPrecision({
@@ -186,4 +174,15 @@ export const calculateTicketLimitsUlps = ({
     minTicketEurUlps: min,
     maxTicketEurUlps: max,
   };
+};
+
+export const getCurrencyByInvestmentType = (type: EInvestmentType) => {
+  switch (type) {
+    case EInvestmentType.NEur:
+    case EInvestmentType.ICBMnEuro:
+      return ECurrency.EUR_TOKEN;
+    case EInvestmentType.Eth:
+    case EInvestmentType.ICBMEth:
+      return ECurrency.ETH;
+  }
 };

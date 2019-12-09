@@ -7,7 +7,6 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { selectTxUserFlowInvestmentEtoId, selectTxUserFlowInvestmentState } from "./selectors";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
-import { selectInvestmentEtoId, } from "../../../investment-flow/selectors";
 import { selectEtherPriceEur, selectEurPriceEther } from "../../../shared/tokenPrice/selectors";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import {
@@ -54,13 +53,12 @@ import {
   selectNEURStatus,
   selectWalletData
 } from "../../../wallet/selectors";
-import { EInvestmentErrorState, EInvestmentType } from "../../../investment-flow/reducer";
 import { ENEURWalletStatus } from "../../../wallet/types";
 import { nonNullable } from "../../../../utils/nonNullable";
 import {
   EInputValidationError,
-  EInvestmentCurrency,
-  EInvestmentFormState,
+  EInvestmentCurrency, EInvestmentErrorState,
+  EInvestmentFormState, EInvestmentType,
   EInvestmentValueType,
   TTxUserFlowInvestmentBasicData,
   TTxUserFlowInvestmentCalculatedCostsData,
@@ -83,7 +81,7 @@ import {
   getInvestmentCurrency,
   getInvestmentType,
   hasFunds,
-  isIcbmInvestment, mapInvestmentCurrency
+  isIcbmInvestment
 } from "./utils";
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 
@@ -109,7 +107,7 @@ function* initInvestmentView(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.txUserFlowInvestment.startInvestment>
 ) {
-  console.log("initInvestmentView")
+
   try {
     //start the tx sagas and wait until txSendProcess opens the modal. This is for backwards compatibility
     //todo refactor transaction flow to not deal with modals and UI in general
@@ -132,7 +130,6 @@ function* updateInvestmentView(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.txUserFlowInvestment.updateValue>
 ) {
-  console.log("---updateInvestmentView", payload.value)
   try {
     const {
       investmentCurrency,
@@ -160,11 +157,9 @@ function* updateInvestmentView(
           investmentValueType: EInvestmentValueType.PARTIAL_BALANCE
         });
 
-      console.log("---updateInvestmentView validationResult", validationResult)
       const investmentCalculatedData = yield call(generateUpdatedView, validationResult, EInvestmentValueType.PARTIAL_BALANCE, payload.value);
       yield put(actions.txUserFlowInvestment.setViewData(investmentCalculatedData));
     }
-  console.log("---updateInvestmentView done")
   } catch(e){
     console.log("updateInvestmentView", e)
   }
@@ -198,7 +193,7 @@ function* recalculateView() {
   }
 }
 
-function* cleanupInvestmentView() {
+export function* cleanupInvestmentView() {
   yield put(actions.txUserFlowInvestment.reset())
 }
 
@@ -250,30 +245,34 @@ function* generateUpdatedView(
   investmentValueType: EInvestmentValueType,
   value: string
 ) {
-  const { validationError, investmentDetails } = validationResult;
+  try {
+    const { validationError, investmentDetails } = validationResult;
+    if (validationError !== null) {
 
-  if (validationError !== null) {
-    switch (validationError) {
-      case EInputValidationError.IS_EMPTY: {
-        return yield call(reinitInvestmentView);
+      switch (validationError) {
+        case EInputValidationError.IS_EMPTY: {
+          return yield call(reinitInvestmentView);
+        }
+        case EInputValidationError.NOT_A_NUMBER: {
+          return yield call(populateInvalidViewData, value, EInputValidationError.NOT_A_NUMBER);
+        }
+        case EInvestmentErrorState.AboveMaximumTicketSize:
+        case EInvestmentErrorState.BelowMinimumTicketSize:
+        case EInvestmentErrorState.ExceedsTokenAmount:
+        case EInvestmentErrorState.ExceedsWalletBalance:
+        case EValidationState.NOT_ENOUGH_ETHER_FOR_GAS: {
+          return yield call(populateInvalidViewData, value, validationError);
+        }
       }
-      case EInputValidationError.NOT_A_NUMBER: {
-        return yield yield call(populateInvalidViewData, value, EInputValidationError.NOT_A_NUMBER);
-      }
-      case EInvestmentErrorState.AboveMaximumTicketSize:
-      case EInvestmentErrorState.BelowMinimumTicketSize:
-      case EInvestmentErrorState.ExceedsTokenAmount:
-      case EInvestmentErrorState.ExceedsWalletBalance:
-      case EValidationState.NOT_ENOUGH_ETHER_FOR_GAS: {
-        return yield yield call(populateInvalidViewData, value, validationError);
-      }
+    } else {
+      const { investmentGasData, euroValueUlps, ethValueUlps } = investmentDetails;
+      return yield call(calculateInvestmentCostsData, value, investmentValueType, {
+        euroValueUlps,
+        ethValueUlps
+      }, investmentGasData);
     }
-  } else {
-    const { investmentGasData, euroValueUlps, ethValueUlps } = investmentDetails;
-    return yield call(calculateInvestmentCostsData, value, investmentValueType, {
-      euroValueUlps,
-      ethValueUlps
-    }, investmentGasData);
+  } catch(e){
+    console.log("generateUpdatedView",e)
   }
 }
 
@@ -359,11 +358,13 @@ function* populateInvalidViewData(
   investmentValue: string,
   error: TValidationError
 ) {
-  const formData = yield call(reinitInvestmentView);
-  formData.formState = EInvestmentFormState.INVALID;
-  formData.investmentValue = investmentValue;
-  formData.error = error;
-  return formData
+  try {
+    const formData = yield call(reinitInvestmentView);
+    formData.formState = EInvestmentFormState.INVALID;
+    formData.investmentValue = investmentValue;
+    formData.error = error;
+    return formData
+  }catch(e){console.log(e)}
 }
 
 function* calculateInvestmentCostsData(
@@ -418,13 +419,7 @@ function* calculateInvestmentCostsData(
     gasCostEuro,
   ] = yield all([
     call(formatThousands,equityTokenCount.toString()),
-    call(formatNumber, {
-      value: euroValueUlps,
-      inputFormat: ENumberInputFormat.ULPS,
-      outputFormat: ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
-      decimalPlaces: selectDecimalPlaces(mapInvestmentCurrency(investmentCurrency), ENumberOutputFormat.ONLY_NONZERO_DECIMALS),
-      roundingMode: ERoundingMode.UP,
-    }),
+    call(convertFromUlps, euroValueUlps),
     call(multiplyBigNumbers,[gasCostEth, etherPriceEur]),
   ]);
 
@@ -432,8 +427,8 @@ function* calculateInvestmentCostsData(
     totalCostEth,
     totalCostEuro
   ] = yield all([
-    addBigNumbers([gasCostEth, ethValueUlps || "0"]),
-    addBigNumbers([gasCostEuro, euroValueUlps || "0"]),
+    addBigNumbers([gasCostEth, ethValueUlps]),
+    addBigNumbers([gasCostEuro, euroValueUlps]),
   ]);
 
   return {
@@ -528,7 +523,7 @@ export function* getInvestmentInitViewData(
 }
 
 function* generateWalletsData(): Iterator<any> {
-  const etoId = yield select(selectInvestmentEtoId);
+  const etoId = yield select(selectTxUserFlowInvestmentEtoId);
 
   const [
     etoOnChainState,
@@ -585,8 +580,6 @@ function* generateWalletsData(): Iterator<any> {
     activeInvestmentTypes.unshift(EInvestmentType.ICBMEth);
   }
 
-  yield put(actions.investmentFlow.setActiveInvestmentTypes(activeInvestmentTypes));
-
   return createWallets({
     lockedBalanceNEuro,
     balanceNEur,
@@ -603,11 +596,9 @@ function* generateWalletsData(): Iterator<any> {
 function* computeCurrencies(
   valueUlps: string, currency: EInvestmentCurrency
 ): Iterator<any> {
-  console.log("computeCurrencies", valueUlps, currency)
   const etherPriceEur = yield select(selectEtherPriceEur);
   const eurPriceEther = yield select(selectEurPriceEther);
 
-  console.log("computeCurrencies 1", etherPriceEur, eurPriceEther)
   if (etherPriceEur && etherPriceEur !== "0") {
     const valueAsBigNumber = new BigNumber(valueUlps);
     switch (currency) {
@@ -742,7 +733,9 @@ function* investEntireBalance(): any {
       investmentValueType: EInvestmentValueType.FULL_BALANCE
     });
 
-  yield call(generateUpdatedView, validationResult, EInvestmentValueType.FULL_BALANCE, balanceFromUlps);
+  const viewData= yield call(generateUpdatedView, validationResult, EInvestmentValueType.FULL_BALANCE, balanceFromUlps);
+  yield put(actions.txUserFlowInvestment.setViewData(viewData));
+
 }
 
 function* calculateEntireBalanceValue(

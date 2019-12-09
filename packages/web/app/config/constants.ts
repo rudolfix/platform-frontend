@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 
 import { EUSState } from "../utils/enums/usStatesEnum";
-import { EInvestmentType } from "../modules/investment-flow/reducer";
+import { EInvestmentType } from "../modules/tx/user-flow/investment/reducer";
 
 export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
 // If running in cypress wait for a short time

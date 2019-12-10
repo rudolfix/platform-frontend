@@ -1,12 +1,15 @@
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
+import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { TTranslatedString } from "../../types";
-import { ButtonIcon } from "./buttons";
+import { Button, EButtonLayout } from "./buttons";
+import { EButtonSize } from "./buttons/Button";
+import { EInlineIconFill } from "./icons/InlineIcon";
 import { SlidePerson } from "./SlidePerson";
-import { IEtoSocialProfile } from "./SocialProfilesList";
 
 import * as prevIcon from "../../assets/img/inline_icons/arrow_bordered_left.svg";
 import * as nextIcon from "../../assets/img/inline_icons/arrow_bordered_right.svg";
@@ -17,7 +20,7 @@ export interface IPerson {
   image: string;
   description: string;
   role: string;
-  socialChannels: IEtoSocialProfile[];
+  socialChannels: TSocialChannelsType;
   website?: string;
 }
 
@@ -31,7 +34,7 @@ interface IDispatchProps {
     role: string,
     description: TTranslatedString,
     image: string,
-    socialChannels: IEtoSocialProfile[],
+    socialChannels: TSocialChannelsType,
     website?: string,
   ) => void;
 }
@@ -215,8 +218,14 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
     return (
       <div className={styles.swiperMain}>
         {showArrows && (
-          <ButtonIcon
+          <Button
+            layout={EButtonLayout.GHOST}
             svgIcon={prevIcon}
+            iconProps={{
+              alt: <FormattedMessage id="people-swiper-widget.prev" />,
+              fill: EInlineIconFill.FILL_OUTLINE,
+            }}
+            size={EButtonSize.HUGE}
             disabled={!this.canGoRight()}
             className={styles.prev}
             onClick={this.canGoRight() ? this.goRight : undefined}
@@ -274,8 +283,14 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
         </div>
 
         {showArrows && (
-          <ButtonIcon
+          <Button
+            layout={EButtonLayout.GHOST}
             svgIcon={nextIcon}
+            iconProps={{
+              alt: <FormattedMessage id="people-swiper-widget.next" />,
+              fill: EInlineIconFill.FILL_OUTLINE,
+            }}
+            size={EButtonSize.HUGE}
             disabled={!this.canGoLeft()}
             className={styles.next}
             onClick={this.canGoLeft() ? this.goLeft : undefined}

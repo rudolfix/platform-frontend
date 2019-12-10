@@ -25,7 +25,6 @@ import { onEnterAction } from "../../../utils/OnEnterAction";
 import { Button } from "../../shared/buttons";
 import { EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
 import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
-import { ButtonInline } from "../../shared/buttons/ButtonInline";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -95,7 +94,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
         step={2}
         allSteps={5}
         title={<FormattedMessage id="kyc.personal.details.title" />}
-        description={<FormattedMessage id="shared.kyc.select-type.company.description" />}
+        description={<FormattedMessage id="kyc.personal.details.description" />}
         buttonAction={() => props.submitAndClose(boolify(values))}
       />
       <FormDeprecated>
@@ -157,20 +156,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
             {values.isAccreditedUsCitizen === BOOL_FALSE_KEY && (
               <Notification
                 className="mb-4"
-                text={
-                  <FormattedMessage
-                    id="notifications.not-accredited-investor"
-                    values={{
-                      link: (
-                        <strong>
-                          <ButtonInline onClick={() => props.submitAndClose(boolify(values))}>
-                            <FormattedMessage id="form.save-and-close" />
-                          </ButtonInline>
-                        </strong>
-                      ),
-                    }}
-                  />
-                }
+                text={<FormattedMessage id="notifications.not-accredited-investor" />}
                 type={ENotificationType.WARNING}
               />
             )}

@@ -362,7 +362,7 @@ export const InvestmentSelection = compose<
       submitInvestment: () => dispatch(actions.txUserFlowInvestment.submitInvestment()),
       changeInvestmentValue: value => dispatch(actions.txUserFlowInvestment.updateValue(value)),
       changeInvestmentType: (type: EInvestmentType) =>
-        dispatch(actions.txUserFlowInvestment.setInvestmentType(type)),
+        dispatch(actions.txUserFlowInvestment.changeInvestmentType(type)),
       investEntireBalance: () => dispatch(actions.txUserFlowInvestment.investEntireBalance()),
       startUpgradeFlow: (token: ETokenType) => dispatch(actions.txTransactions.startUpgrade(token)),
     }),

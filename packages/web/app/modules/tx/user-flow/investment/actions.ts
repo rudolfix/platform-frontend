@@ -33,6 +33,10 @@ export const txUserFlowInvestmentActions = {
       additionalData,
     }),
   ),
+  changeInvestmentType: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_CHANGE_INVESTMENT_TYPE",
+    (investmentType: EInvestmentType) => ({ investmentType }),
+  ),
   setInvestmentType: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_SET_INVESTMENT_TYPE",
     (investmentType: EInvestmentType) => ({ investmentType }),

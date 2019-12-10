@@ -11,7 +11,7 @@ import { selectEtherTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
-import { EInvestmentType } from "../../user-flow/investment/reducer";
+import { EInvestmentType, EInvestmentValueType } from "../../user-flow/investment/reducer";
 import { cleanupInvestmentView } from "../../user-flow/investment/sagas";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
@@ -54,10 +54,16 @@ function* getEtherTokenTransaction(
 export function* generateInvestmentTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   {
+    investmentValueType,
     investmentType,
     etoId,
     investAmountUlps,
-  }: { investmentType: EInvestmentType; etoId: string; investAmountUlps: BigNumber },
+  }: {
+    investmentValueType: EInvestmentValueType;
+    investmentType: EInvestmentType;
+    etoId: string;
+    investAmountUlps: BigNumber;
+  },
 ): Generator<any, any, any> {
   const from: string = yield select(selectEthereumAddressWithChecksum);
   const gasPrice: string = yield select(selectStandardGasPriceWithOverHead);
@@ -95,16 +101,19 @@ export function* generateInvestmentTransaction(
       to = contractsService.euroLock.address;
       break;
   }
-  const transaction: Partial<ITxData> = {
+  const partialTransaction: Partial<ITxData> = {
     to,
     from,
     data,
     value: value || "0",
     gasPrice,
   };
-  const gas = yield web3Manager.estimateGasWithOverhead(transaction);
+  const gas =
+    investmentValueType === EInvestmentValueType.PARTIAL_BALANCE
+      ? yield web3Manager.estimateGasWithOverhead(partialTransaction)
+      : yield INVESTMENT_GAS_AMOUNT;
 
-  return { ...transaction, gas };
+  return { ...partialTransaction, gas };
 }
 
 function* investmentFlowGenerator(_: TGlobalDependencies): Generator<any, any, any> {

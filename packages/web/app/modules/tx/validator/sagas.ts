@@ -25,7 +25,7 @@ import { txValidateWithdraw } from "./transfer/withdraw/sagas";
 export function* txValidateSaga(
   { logger, notificationCenter }: TGlobalDependencies,
   action: TAction,
-): any {
+): Generator<any, any, any> {
   if (action.type !== actions.txValidator.validateDraft.getType()) return;
   try {
     let validationGenerator: any;
@@ -36,9 +36,6 @@ export function* txValidateSaga(
       case ETxSenderType.TRANSFER_TOKENS:
         validationGenerator = txValidateTokenTransfer(action.payload);
         break;
-      // case ETxSenderType.INVEST:
-      //   validationGenerator = txValidateInvestment();
-      //   break;
     }
 
     const txDetails = yield validationGenerator;
@@ -53,7 +50,10 @@ export function* txValidateSaga(
   }
 }
 
-export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails: ITxData): any {
+export function* validateGas(
+  { apiUserService }: TGlobalDependencies,
+  txDetails: ITxData,
+): Generator<any, any, any> {
   const maxEtherUlps = yield select(selectEtherBalance);
 
   const costUlps = multiplyBigNumbers([txDetails.gasPrice, txDetails.gas]);

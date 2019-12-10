@@ -1,4 +1,3 @@
-// import BigNumber from "bignumber.js";
 import { fork, put, select } from "redux-saga/effects";
 
 import { ETxValidationMessages } from "../../../components/translatedMessages/messages";
@@ -17,40 +16,11 @@ import { actions, TAction } from "../../actions";
 import { neuTakeLatestUntil } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
 import { selectWalletType } from "../../web3/selectors";
-// import { generateInvestmentTransaction } from "../transactions/investment/sagas";
-// import { selectMaximumInvestment } from "../transactions/investment/selectors";
 import { ETxSenderType } from "../types";
 import { STIPEND_ELIGIBLE_WALLETS } from "./../../../lib/web3/constants";
 import { isGaslessTxEnabled } from "./../../../utils/isGaslessTxEnabled";
-// import { EValidationState } from "./reducer";
-// import { selectInvestmentFLow } from "./selectors";
 import { txValidateTokenTransfer } from "./transfer/token-transfer/sagas";
 import { txValidateWithdraw } from "./transfer/withdraw/sagas";
-
-
-// export function* txValidateInvestment(): Generator<any,any,any> {
-//   try {
-//     const investFlow = yield select(selectInvestmentFLow);
-//     const investAmountUlps = yield select(selectMaximumInvestment);
-//
-//     const generatedTxDetails = yield neuCall(generateInvestmentTransaction, {
-//       investmentType: investFlow.investmentType,
-//       etoId: investFlow.etoId,
-//       investAmountUlps: new BigNumber(investAmountUlps),
-//     });
-//
-//     yield neuCall(validateGas, generatedTxDetails);
-//
-//     yield put(actions.txValidator.setValidationState(EValidationState.VALIDATION_OK));
-//     return generatedTxDetails;
-//   } catch (error) {
-//     if (error instanceof NotEnoughEtherForGasError) {
-//       yield put(actions.txValidator.setValidationState(EValidationState.NOT_ENOUGH_ETHER_FOR_GAS));
-//     } else {
-//       throw error;
-//     }
-//   }
-// }
 
 export function* txValidateSaga(
   { logger, notificationCenter }: TGlobalDependencies,
@@ -106,7 +76,7 @@ export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails:
   }
 }
 
-export const txValidatorSagasWatcher = function* (): Generator<any, any, any> {
+export const txValidatorSagasWatcher = function*(): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
     "TX_SENDER_VALIDATE_DRAFT",

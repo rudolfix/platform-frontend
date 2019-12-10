@@ -84,7 +84,6 @@ function* allSagas(): Generator<any, any, any> {
 
 function* handleRootError(error: Error): Generator<any, any, any> {
   const { logger }: TGlobalDependencies = yield getContext("deps");
-console.log(error)
   logger.error(error);
 }
 

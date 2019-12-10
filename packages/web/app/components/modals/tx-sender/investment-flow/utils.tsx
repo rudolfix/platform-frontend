@@ -2,8 +2,12 @@ import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import {
+  EInvestmentCurrency,
+  EInvestmentErrorState,
+} from "../../../../modules/tx/user-flow/investment/reducer";
 import { EValidationState } from "../../../../modules/tx/validator/reducer";
-import {  TTranslatedString } from "../../../../types";
+import { TTranslatedString } from "../../../../types";
 import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
 import { Money } from "../../../shared/formatters/Money";
 import {
@@ -11,13 +15,9 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
   EPriceFormat,
-
   formatNumber,
   selectDecimalPlaces,
-
 } from "../../../shared/formatters/utils";
-import { EInvestmentCurrency, EInvestmentErrorState } from "../../../../modules/tx/user-flow/investment/reducer";
-
 
 export function getInputErrorMessage(
   investmentTxErrorState: EInvestmentErrorState | undefined,

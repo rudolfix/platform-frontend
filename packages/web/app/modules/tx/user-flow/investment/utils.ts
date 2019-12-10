@@ -1,41 +1,41 @@
-import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
+import BigNumber from "bignumber.js";
+import { includes } from "lodash/fp";
+
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
-import { Dictionary } from "../../../../types";
-import { TBigNumberVariants } from "../../../../lib/web3/types";
 import {
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
-  ERoundingMode, selectDecimalPlaces,
-  toFixedPrecision
+  ERoundingMode,
+  selectDecimalPlaces,
+  toFixedPrecision,
 } from "../../../../components/shared/formatters/utils";
-import { assertNever } from "../../../../utils/assertNever";
-import { includes } from "lodash/fp";
-import { EInvestmentCurrency, EInvestmentType } from "./reducer";
 import { DEFAULT_INVESTMENT_TYPE, Q18 } from "../../../../config/constants";
-import BigNumber from "bignumber.js";
-import { MIMIMUM_RETAIL_TICKET_EUR_ULPS } from "../../../investor-portfolio/utils";
-import { ICalculatedContribution, IInvestorTicket } from "../../../investor-portfolio/types";
 import { TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TBigNumberVariants } from "../../../../lib/web3/types";
+import { Dictionary } from "../../../../types";
+import { assertNever } from "../../../../utils/assertNever";
+import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
+import { ICalculatedContribution, IInvestorTicket } from "../../../investor-portfolio/types";
+import { MIMIMUM_RETAIL_TICKET_EUR_ULPS } from "../../../investor-portfolio/utils";
+import { EInvestmentCurrency, EInvestmentType } from "./reducer";
 
 export const isIcbmInvestment = (investmentType: EInvestmentType) =>
   investmentType === EInvestmentType.ICBMEth || investmentType === EInvestmentType.ICBMnEuro;
 
-export const hasFunds = (input: string) => {
-  return compareBigNumbers(input, "0") > 0
-};
+export const hasFunds = (input: string) => compareBigNumbers(input, "0") > 0;
 
 export type TCreateWalletsInput = {
-  lockedBalanceNEuro: string,
-  balanceNEur: string,
-  icbmBalanceNEuro: string,
-  ethBalance: string,
-  lockedBalanceEth: string,
-  icbmBalanceEth: string,
-  ethBalanceAsEuro: string,
-  icbmBalanceEthAsEuro: string,
-  activeInvestmentTypes: EInvestmentType[]
-}
+  lockedBalanceNEuro: string;
+  balanceNEur: string;
+  icbmBalanceNEuro: string;
+  ethBalance: string;
+  lockedBalanceEth: string;
+  icbmBalanceEth: string;
+  ethBalanceAsEuro: string;
+  icbmBalanceEthAsEuro: string;
+  activeInvestmentTypes: EInvestmentType[];
+};
 
 export function createWallets({
   lockedBalanceNEuro,
@@ -46,9 +46,8 @@ export function createWallets({
   icbmBalanceEth,
   ethBalanceAsEuro,
   icbmBalanceEthAsEuro,
-  activeInvestmentTypes
+  activeInvestmentTypes,
 }: TCreateWalletsInput): WalletSelectionData[] {
-
   const wallets: Dictionary<WalletSelectionData> = {
     [EInvestmentType.Eth]: {
       balanceEth: ethBalance,
@@ -127,31 +126,31 @@ export const formatMinMaxTickets = (value: TBigNumberVariants, roundingMode: ERo
 
 export const getInvestmentType = (wallets: WalletSelectionData[]): EInvestmentType => {
   if (!wallets.find((wallet: WalletSelectionData) => wallet.type === DEFAULT_INVESTMENT_TYPE)) {
-    return wallets[0].type
+    return wallets[0].type;
   } else {
-    return DEFAULT_INVESTMENT_TYPE
+    return DEFAULT_INVESTMENT_TYPE;
   }
 };
 
 export type TCalculateTicketLimitsUlps = {
-  contribution:ICalculatedContribution,
-  eto:TEtoSpecsData,
-  investorTicket:IInvestorTicket | undefined
-}
+  contribution: ICalculatedContribution;
+  eto: TEtoSpecsData;
+  investorTicket: IInvestorTicket | undefined;
+};
 
 export const calculateTicketLimitsUlps = ({
   contribution,
   eto,
-  investorTicket
-}:TCalculateTicketLimitsUlps) => {
+  investorTicket,
+}: TCalculateTicketLimitsUlps) => {
   const zero = new BigNumber("0");
 
   // todo: check if contrib is ever undefined and simplify this condition
   let min =
-    (new BigNumber(contribution.minTicketEurUlps)) ||
+    new BigNumber(contribution.minTicketEurUlps) ||
     (eto.minTicketEur ? Q18.mul(eto.minTicketEur.toString()) : zero);
   let max =
-    (new BigNumber(contribution.maxTicketEurUlps)) ||
+    new BigNumber(contribution.maxTicketEurUlps) ||
     (eto.maxTicketEur ? Q18.mul(eto.maxTicketEur.toString()) : zero);
 
   const tokenPrice = eto.investmentCalculatedValues!.sharePrice / eto.equityTokensPerShare;

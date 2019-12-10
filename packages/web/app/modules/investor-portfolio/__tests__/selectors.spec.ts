@@ -7,7 +7,6 @@ import * as investorTicketSelectors from "../selectors";
 import { ITokenDisbursal } from "../types";
 
 describe("investor-portfolio > selectors", () => {
-
   describe("selectIsIncomingPayoutPending", () => {
     it("should show if amount equals 1 ETH", () => {
       const state = {

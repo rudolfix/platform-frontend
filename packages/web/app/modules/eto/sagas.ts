@@ -85,7 +85,6 @@ function* loadEtoPreview(
       );
       if (userType === EUserType.INVESTOR) {
         yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
-        console.log("loadEtoPreview loadEtoInvestorTicket")
       }
       yield neuCall(loadEtoContract, eto);
     }
@@ -138,7 +137,6 @@ function* loadEto(
         selectUserType(state),
       );
       if (userType === EUserType.INVESTOR) {
-  console.log("---loadEto loadEtoInvestorTicket")
         yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
       }
 

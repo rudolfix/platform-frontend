@@ -80,9 +80,16 @@ export function* loadInvestorTicket(
 
 export function* loadComputedContributionFromContractWrapper(
   _: TGlobalDependencies,
-  {payload:{eto,amountEuroUlps,isICBM}}: TActionFromCreator<typeof actions.investorEtoTicket.loadCalculatedContribution>
-){
-  const contribution = yield neuCall(loadComputedContributionFromContract, eto,amountEuroUlps,isICBM);
+  {
+    payload: { eto, amountEuroUlps, isICBM },
+  }: TActionFromCreator<typeof actions.investorEtoTicket.loadCalculatedContribution>,
+): Generator<any, any, any> {
+  const contribution = yield neuCall(
+    loadComputedContributionFromContract,
+    eto,
+    amountEuroUlps,
+    isICBM,
+  );
   yield put(actions.investorEtoTicket.setCalculatedContribution(eto.etoId, contribution));
 }
 
@@ -255,5 +262,9 @@ export function* investorTicketsSagas(): any {
     ],
     getIncomingPayouts,
   );
-  yield fork(neuTakeLatest,actions.investorEtoTicket.loadCalculatedContribution, loadComputedContributionFromContractWrapper)
+  yield fork(
+    neuTakeLatest,
+    actions.investorEtoTicket.loadCalculatedContribution,
+    loadComputedContributionFromContractWrapper,
+  );
 }

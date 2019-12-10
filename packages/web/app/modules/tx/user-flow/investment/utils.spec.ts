@@ -1,9 +1,10 @@
-import { expect } from "chai";
 import BigNumber from "bignumber.js";
-import { Q18 } from "../../../../config/constants";
-import { calculateTicketLimitsUlps } from "./utils";
+import { expect } from "chai";
+
 import { testEto } from "../../../../../test/fixtures";
+import { Q18 } from "../../../../config/constants";
 import { IInvestorTicket } from "../../../investor-portfolio/types";
+import { calculateTicketLimitsUlps } from "./utils";
 
 const contribution = {
   isWhitelisted: false,
@@ -21,7 +22,11 @@ const investorTicket = {
 
 describe("calculateTicketLimitsUlps", () => {
   it("returns eto ticket sizes", () => {
-    const result = calculateTicketLimitsUlps({ contribution, eto: testEto, investorTicket: undefined });
+    const result = calculateTicketLimitsUlps({
+      contribution,
+      eto: testEto,
+      investorTicket: undefined,
+    });
     expect(result).to.deep.equal({
       minTicketEurUlps: new BigNumber("20").mul(Q18),
       maxTicketEurUlps: new BigNumber("2000").mul(Q18),

@@ -124,6 +124,7 @@ function* txSendProcess(
     yield neuRepeatIf("TX_SENDER_CHANGE", "TX_SENDER_ACCEPT", transactionFlowGenerator, extraParam);
 
     const txData = yield select(selectTxDetails);
+
     // Check if gas amount is correct
     yield neuCall(validateGas, txData);
 
@@ -145,7 +146,7 @@ function* txSendProcess(
   }
 }
 
-export function* waitForGasPriceToLoad() {
+export function* waitForGasPriceToLoad(): Generator<any, any, any> {
   const gasPrice: IGasState = yield select(selectGasPrice);
 
   if (!gasPrice) {

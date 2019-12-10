@@ -1,5 +1,5 @@
-import { put, select, takeLatest,delay } from "redux-saga/effects";
 import { isEqual } from "lodash/fp";
+import { delay, put, select, takeLatest } from "redux-saga/effects";
 
 import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -49,13 +49,12 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
   while (true) {
     try {
       logger.info("Querying for tokenPrice");
-      const tokenPriceData:ITokenPriceStateData = yield neuCall(loadTokenPriceDataAsync);
-      const oldTokenPriceData:ITokenPriceStateData = yield select(selectTokenPriceData);
+      const tokenPriceData: ITokenPriceStateData = yield neuCall(loadTokenPriceDataAsync);
+      const oldTokenPriceData: ITokenPriceStateData = yield select(selectTokenPriceData);
 
-      if(!oldTokenPriceData || !isEqual(tokenPriceData, oldTokenPriceData)){
+      if (!oldTokenPriceData || !isEqual(tokenPriceData, oldTokenPriceData)) {
         yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
       }
-
     } catch (e) {
       logger.error("Token Price Oracle Failed", e);
       yield delay(TOKEN_PRICE_MONITOR_SHORT_DELAY);

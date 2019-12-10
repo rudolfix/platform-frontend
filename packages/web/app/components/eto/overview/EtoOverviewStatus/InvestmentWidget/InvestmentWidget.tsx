@@ -124,7 +124,8 @@ const InvestmentWidget = compose<TInvestWidgetProps, IExternalProps>(
       nextStateDate: selectEtoOnChainNextStateStartDate(state, props.eto.previewCode),
     }),
     dispatchToProps: (dispatch, props) => ({
-      startInvestmentFlow: () => dispatch(actions.txUserFlowInvestment.startInvestment(props.eto.etoId)),
+      startInvestmentFlow: () =>
+        dispatch(actions.txUserFlowInvestment.startInvestment(props.eto.etoId)),
     }),
   }),
   branch<IStateProps>(props => props.isUsInvestor, renderComponent(USInvestorMessage)),

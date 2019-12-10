@@ -4,6 +4,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, FormGroup } from "reactstrap";
 
 import { ETokenType } from "../../../../modules/tx/types";
+import { EInvestmentType } from "../../../../modules/tx/user-flow/investment/reducer";
+import { getCurrencyByInvestmentType } from "../../../../modules/tx/user-flow/investment/utils";
+import { DeepReadonly } from "../../../../types";
 import { Button, EButtonLayout, EButtonWidth } from "../../../shared/buttons";
 import { EButtonSize } from "../../../shared/buttons/Button";
 import { Money } from "../../../shared/formatters/Money";
@@ -13,9 +16,6 @@ import {
   ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
 import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
-import { DeepReadonly } from "../../../../types";
-import { getCurrencyByInvestmentType } from "../../../../modules/tx/user-flow/investment/utils";
-import { EInvestmentType } from "../../../../modules/tx/user-flow/investment/reducer";
 
 import * as styles from "./InvestmentTypeSelector.module.scss";
 

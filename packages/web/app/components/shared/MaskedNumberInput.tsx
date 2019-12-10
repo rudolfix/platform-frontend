@@ -106,7 +106,6 @@ export class MaskedNumberInput extends React.Component<IProps> {
   };
 
   changeValue = (value: string) => {
-    console.log("---changeValue")
     const validValue: string | null = parseInputToNumber(value);
 
     if (validValue !== null) {

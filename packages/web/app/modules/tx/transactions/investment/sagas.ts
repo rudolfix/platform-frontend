@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { fork, put, select, take } from "redux-saga/effects";
+import { all, fork, put, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
@@ -11,8 +11,8 @@ import { selectEtherTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
-import { cleanupInvestmentView } from "../../user-flow/investment/sagas";
 import { EInvestmentType } from "../../user-flow/investment/reducer";
+import { cleanupInvestmentView } from "../../user-flow/investment/sagas";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
 
@@ -107,11 +107,12 @@ export function* generateInvestmentTransaction(
   return { ...transaction, gas };
 }
 
-function* investmentFlowGenerator(
-  _: TGlobalDependencies
-): Generator<any,any,any> {
-  const {payload} = yield take(actions.txUserFlowInvestment.submitTransaction);
-  yield put(actions.txSender.txSenderContinueToSummary(payload.transactionData));
+function* investmentFlowGenerator(_: TGlobalDependencies): Generator<any, any, any> {
+  const { payload } = yield take(actions.txUserFlowInvestment.submitTransaction);
+  yield all([
+    put(actions.txSender.setTransactionData(payload.transactionData)),
+    put(actions.txSender.txSenderContinueToSummary(payload.additionalData)),
+  ]);
 }
 
 function* investSaga(

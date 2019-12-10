@@ -50,7 +50,7 @@ export const txHistoryReducer: AppReducer<ITxHistoryState> = (
 
       return {
         ...state,
-        transactionsOrder: action.payload.transactions.map((tx:TTxHistory) => tx.id),
+        transactionsOrder: action.payload.transactions.map((tx: TTxHistory) => tx.id),
         transactionsByHash: keyBy(tx => tx.id, action.payload.transactions),
         lastTransactionId: action.payload.lastTransactionId,
         timestampOfLastChange: action.payload.timestampOfLastChange,
@@ -67,7 +67,7 @@ export const txHistoryReducer: AppReducer<ITxHistoryState> = (
 
       return {
         ...state,
-        transactionsOrder: order.concat(action.payload.transactions.map((tx:TTxHistory) => tx.id)),
+        transactionsOrder: order.concat(action.payload.transactions.map((tx: TTxHistory) => tx.id)),
         transactionsByHash: {
           ...transactions,
           ...keyBy(tx => tx.id, action.payload.transactions),
@@ -82,8 +82,8 @@ export const txHistoryReducer: AppReducer<ITxHistoryState> = (
       const currentTransactionsByHash = state.transactionsByHash || {};
 
       const newTransactionsIds = action.payload.transactions
-        .filter((tx:TTxHistory) => !currentTransactionsByHash[tx.id])
-        .map((tx:TTxHistory) => tx.id);
+        .filter((tx: TTxHistory) => !currentTransactionsByHash[tx.id])
+        .map((tx: TTxHistory) => tx.id);
 
       const transactionsByHash = {
         ...currentTransactionsByHash,

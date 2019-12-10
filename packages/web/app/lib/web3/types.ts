@@ -11,7 +11,7 @@ export type ITxData = IGasValidationData & {
   data?: string;
   from: string;
   input?: string;
-}
+};
 
 export interface IRawTxData extends ITxData {
   nonce: string;

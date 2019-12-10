@@ -25,10 +25,7 @@ import {
   TETOWithTokenData,
   TTokensPersonalDiscount,
 } from "./types";
-import {
-  getRequiredIncomingAmount,
-  isPastInvestment,
-} from "./utils";
+import { getRequiredIncomingAmount, isPastInvestment } from "./utils";
 
 const selectInvestorTicketsState = (state: IAppState) => state.investorTickets;
 
@@ -141,45 +138,6 @@ export const selectEquityTokenCountByEtoId = (state: IAppState, etoId: string) =
   const contrib = selectCalculatedContribution(state, etoId);
   return contrib && contrib.equityTokenInt.toString();
 };
-
-// export const selectCalculatedEtoTicketSizesUlpsById = (state: IAppState, etoId: string) => {
-//   const eto = selectEtoById(state, etoId);
-//   const contrib = selectCalculatedContribution(state, etoId);
-//   const investorTicket = selectInvestorTicket(state, etoId);
-//   const zero = new BigNumber("0");
-//
-//   // todo: check if contrib is ever undefined and simplify this condition
-//   let min =
-//     (contrib && new BigNumber(contrib.minTicketEurUlps)) ||
-//     (eto && Q18.mul(eto.minTicketEur.toString() || zero));
-//   let max =
-//     (contrib && new BigNumber(contrib.maxTicketEurUlps)) ||
-//     (eto && eto.maxTicketEur && Q18.mul(eto.maxTicketEur.toString() || zero));
-//
-//   if (min && max) {
-//     if (eto && investorTicket) {
-//       // todo: replace with price taken from smart contract
-//       const tokenPrice = eto.investmentCalculatedValues!.sharePrice / eto.equityTokensPerShare;
-//       max = BigNumber.max(max.sub(investorTicket.equivEurUlps), "0");
-//       // when already invested, you can invest less than minimum ticket however we set this value
-//       // to more than just one token: we have official retail min ticket at 10 EUR so use it
-//       min = BigNumber.max(
-//         min.sub(investorTicket.equivEurUlps),
-//         Q18.mul(tokenPrice.toString()),
-//         MIMIMUM_RETAIL_TICKET_EUR_ULPS,
-//       );
-//       // however it cannot be more than max
-//       min = BigNumber.min(max, min);
-//     }
-//
-//     return {
-//       minTicketEurUlps: min,
-//       maxTicketEurUlps: max,
-//     };
-//   }
-//
-//   return undefined;
-// };
 
 export const selectNeuRewardUlpsByEtoId = (state: IAppState, etoId: string) => {
   const contrib = selectCalculatedContribution(state, etoId);

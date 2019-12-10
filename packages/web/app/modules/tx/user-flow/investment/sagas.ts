@@ -1,5 +1,4 @@
-import { all, call, fork, put, select, take } from "redux-saga/effects";
-import { takeLatest } from "redux-saga";
+import { all, call, fork, put, select, take, takeLatest } from "redux-saga/effects";
 
 import { actions, TActionFromCreator } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
@@ -84,6 +83,7 @@ import {
   isIcbmInvestment
 } from "./utils";
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
+import {TEtoSpecsData} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 
 export type TInvestmentValidationResult = {
   validationError: TValidationError | null
@@ -143,10 +143,10 @@ function* updateInvestmentView(
       return
     } else {
       // many api calls ahead, set Investment Value to show it in the UI in the meantime
-      yield all([
-        put(actions.txUserFlowInvestment.setInvestmentValue(payload.value)),
-        put(actions.txUserFlowInvestment.setFormStateValidating()),
-      ]);
+      // yield all([
+        yield put(actions.txUserFlowInvestment.setInvestmentValue(payload.value));
+        yield put(actions.txUserFlowInvestment.setFormStateValidating());
+      // ]);
 
       const validationResult = yield call(validateInvestmentValue,
         {
@@ -327,7 +327,7 @@ function* submitInvestment(
   }))
 }
 
-function* reinitInvestmentView(): Iterator<any> {
+function* reinitInvestmentView(): Generator<any,any,any> {
   const {
     eto,
     wallets,
@@ -486,13 +486,15 @@ export function* getInvestmentInitViewData(
 
   const [
     eurPriceEther,
-    etoTicketSizes,
+
     hasPreviouslyInvested,
   ] = yield all([
     select(selectEurPriceEther),
-    call(getCalculatedContribution, {eto, investmentValue:"0", investmentType}),
+
     select(selectHasInvestorTicket, eto.etoId),
   ]);
+
+  const etoTicketSizes = yield call(getCalculatedContribution, {eto, investmentValue:"0", investmentType});
 
   const minTicketEur =
     (etoTicketSizes &&
@@ -522,10 +524,10 @@ export function* getInvestmentInitViewData(
   };
 }
 
-function* generateWalletsData(): Iterator<any> {
+function* generateWalletsData(): Generator<any,any,any> {
   const etoId = yield select(selectTxUserFlowInvestmentEtoId);
 
-  const [
+  const {
     etoOnChainState,
     neurStatus,
     userIsWhitelisted,
@@ -537,22 +539,19 @@ function* generateWalletsData(): Iterator<any> {
     lockedBalanceEth,
     ethBalanceAsEuro,
     icbmBalanceEthAsEuro,
-  ] = yield all([
-    select(selectEtoOnChainStateById, etoId),
-    select(selectNEURStatus),
-    select(selectIsWhitelisted, etoId),
-
-    select(selectLiquidEuroTokenBalance),
-    select(selectLiquidEtherBalance),
-
-    select(selectICBMLockedEuroTokenBalance),
-    select(selectICBMLockedEtherBalance),
-    select(selectLockedEuroTokenBalance),
-    select(selectLockedEtherBalance),
-
-    select(selectLiquidEtherBalanceEuroAmount),
-    select(selectICBMLockedEtherBalanceEuroAmount),
-  ]);
+  } = yield all({
+    etoOnChainState: select(selectEtoOnChainStateById, etoId),
+    neurStatus: select(selectNEURStatus),
+    userIsWhitelisted: select(selectIsWhitelisted, etoId),
+    balanceNEur: select(selectLiquidEuroTokenBalance),
+    ethBalance: select(selectLiquidEtherBalance),
+    icbmBalanceNEuro: select(selectICBMLockedEuroTokenBalance),
+    icbmBalanceEth: select(selectICBMLockedEtherBalance),
+    lockedBalanceNEuro: select(selectLockedEuroTokenBalance),
+    lockedBalanceEth: select(selectLockedEtherBalance),
+    ethBalanceAsEuro: select(selectLiquidEtherBalanceEuroAmount),
+    icbmBalanceEthAsEuro: select(selectICBMLockedEtherBalanceEuroAmount),
+  });
 
 
   let activeInvestmentTypes: EInvestmentType[] = [];
@@ -595,7 +594,7 @@ function* generateWalletsData(): Iterator<any> {
 
 function* computeCurrencies(
   valueUlps: string, currency: EInvestmentCurrency
-): Iterator<any> {
+): Generator<any,any,any> {
   const etherPriceEur = yield select(selectEtherPriceEur);
   const eurPriceEther = yield select(selectEurPriceEther);
 
@@ -628,18 +627,18 @@ function* getCalculatedContribution({
   eto,
   investmentValue,
   investmentType
-}:TGetCalculatedContributionInput):Iterator<any> {
+}:TGetCalculatedContributionInput):Generator<any,any,any> {
   const isICBM = yield call(isIcbmInvestment, investmentType);
-  const contribution = yield neuCall(loadComputedContributionFromContract, eto, investmentValue, isICBM);
+  const contribution = yield neuCall(loadComputedContributionFromContract, (eto as TEtoSpecsData), investmentValue, isICBM);
   const investorTicket = yield select(selectInvestorTicket, eto.etoId);
 
-  return yield call(calculateTicketLimitsUlps, {contribution,eto,investorTicket})
+  return yield call(calculateTicketLimitsUlps, {contribution,eto:(eto as TEtoSpecsData),investorTicket})
 }
 
 function* validateInvestmentLimits({
   euroValueUlps,
   ethValueUlps
-}: TInvestmentULPSValuePair): Iterator<any> {
+}: TInvestmentULPSValuePair): Generator<any,any,any> {
   const {
     etoId,
     investmentType,
@@ -647,7 +646,7 @@ function* validateInvestmentLimits({
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
   const isICBM = yield call(isIcbmInvestment, investmentType);
-  const contribution = yield neuCall(loadComputedContributionFromContract, eto, euroValueUlps, isICBM);
+  const contribution = yield neuCall(loadComputedContributionFromContract, (eto as TEtoSpecsData), euroValueUlps, isICBM);
   yield put(actions.investorEtoTicket.setCalculatedContribution(etoId, contribution));
 
   // const contribution = yield select(selectCalculatedContribution,etoId);
@@ -759,7 +758,7 @@ function* calculateEntireBalanceValue(
 
 export function* validateTxGas(
   gasData: IGasValidationData
-): Iterator<any> {
+): Generator<any,any,any> {
   //this is just a wrapper for validateGas that uses exceptions to express validation results.
   //validateGas expects a ITxData but only uses some fields of it. We can't create a real ITxData at this moment.
   //We use IGasValidationData here to make this more clear and only cast to ITxData when calling validateGas
@@ -778,7 +777,7 @@ export function* validateTxGas(
 
 function* preloadInvestmentData(
   eto: TEtoWithCompanyAndContractReadonly
-): Iterator<any> {
+): Generator<any,any,any> {
   yield all([
     put(actions.investorEtoTicket.loadTokenPersonalDiscount(eto)),
     put(actions.eto.loadTokenTerms(eto)),
@@ -789,7 +788,7 @@ function* preloadInvestmentData(
 }
 
 
-export const txUserFlowInvestmentSagas = function* (): Iterator<any> {
+export const txUserFlowInvestmentSagas = function* (): Generator<any,any,any> {
   yield fork(neuTakeLatest, actions.txUserFlowInvestment.startInvestment, initInvestmentView);
   yield takeLatest("TOKEN_PRICE_SAVE", recalculateView);
   yield fork(neuTakeLatest, actions.txUserFlowInvestment.updateValue, updateInvestmentView);

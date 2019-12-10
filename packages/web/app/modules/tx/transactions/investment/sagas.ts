@@ -109,7 +109,7 @@ export function* generateInvestmentTransaction(
 
 function* investmentFlowGenerator(
   _: TGlobalDependencies
-): Iterator<any> {
+): Generator<any,any,any> {
   const {payload} = yield take(actions.txUserFlowInvestment.submitTransaction);
   yield put(actions.txSender.txSenderContinueToSummary(payload.transactionData));
 }

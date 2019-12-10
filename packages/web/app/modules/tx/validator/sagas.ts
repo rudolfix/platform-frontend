@@ -28,7 +28,7 @@ import { txValidateTokenTransfer } from "./transfer/token-transfer/sagas";
 import { txValidateWithdraw } from "./transfer/withdraw/sagas";
 
 
-// export function* txValidateInvestment(): Iterator<any> {
+// export function* txValidateInvestment(): Generator<any,any,any> {
 //   try {
 //     const investFlow = yield select(selectInvestmentFLow);
 //     const investAmountUlps = yield select(selectMaximumInvestment);

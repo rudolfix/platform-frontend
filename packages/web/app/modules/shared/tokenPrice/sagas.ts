@@ -1,5 +1,4 @@
-import { delay } from "redux-saga";
-import { put, select, takeLatest } from "redux-saga/effects";
+import { put, select, takeLatest,delay } from "redux-saga/effects";
 import { isEqual } from "lodash/fp";
 
 import { Q18 } from "../../../config/constants";

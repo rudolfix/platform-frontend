@@ -20,7 +20,7 @@ function* getEtherTokenTransaction(
   { contractsService }: TGlobalDependencies,
   etoId: string,
   investAmountUlps: BigNumber,
-): Iterator<any> {
+): Generator<any, any, any> {
   const etherTokenBalance = yield select(selectEtherTokenBalance);
   if (!etherTokenBalance) {
     throw new Error("No ether Token Balance");
@@ -58,7 +58,7 @@ export function* generateInvestmentTransaction(
     etoId,
     investAmountUlps,
   }: { investmentType: EInvestmentType; etoId: string; investAmountUlps: BigNumber },
-): Iterator<any> {
+): Generator<any, any, any> {
   const from: string = yield select(selectEthereumAddressWithChecksum);
   const gasPrice: string = yield select(selectStandardGasPriceWithOverHead);
   let data;
@@ -117,7 +117,7 @@ function* investmentFlowGenerator(
 function* investSaga(
   { logger }: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.txTransactions.startInvestment>,
-): Iterator<any> {
+): Generator<any, any, any> {
   try {
     yield txSendSaga({
       type: ETxSenderType.INVEST,
@@ -133,6 +133,6 @@ function* investSaga(
   }
 }
 
-export const txInvestmentSagas = function*(): Iterator<any> {
+export const txInvestmentSagas = function*(): Generator<any, any, any> {
   yield fork(neuTakeLatest, actions.txTransactions.startInvestment, investSaga);
 };

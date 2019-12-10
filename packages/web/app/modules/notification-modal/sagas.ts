@@ -8,7 +8,7 @@ import { ENotificationModalType } from "./actions";
 export function* showNotification(
   { notificationCenter }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.notificationModal.notify>,
-): Iterator<any> {
+): Generator<any, any, any> {
   if (action.type !== "NOTIFY") return;
 
   const { type, message } = action.payload;
@@ -21,6 +21,6 @@ export function* showNotification(
   }
 }
 
-export function* notificationModalSagas(): Iterator<any> {
+export function* notificationModalSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.notificationModal.notify, showNotification);
 }

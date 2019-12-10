@@ -106,7 +106,7 @@ export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails:
   }
 }
 
-export const txValidatorSagasWatcher = function* (): Iterator<any> {
+export const txValidatorSagasWatcher = function* (): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
     "TX_SENDER_VALIDATE_DRAFT",

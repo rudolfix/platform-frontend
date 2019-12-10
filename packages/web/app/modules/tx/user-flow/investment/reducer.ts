@@ -1,5 +1,4 @@
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
-import { ECurrency } from "../../../../components/shared/formatters/utils";
 import { AppReducer } from "../../../../store";
 import { DeepReadonly } from "../../../../types";
 import { EProcessState } from "../../../../utils/enums/processStates";
@@ -9,8 +8,8 @@ import { IPersonalDiscount } from "../../../investor-portfolio/types";
 import { EValidationState } from "../../validator/reducer";
 
 export enum EInvestmentCurrency {
-  ETH = ECurrency.ETH,
-  EUR_TOKEN = ECurrency.EUR_TOKEN,
+  ETH = "ETH",
+  EUR_TOKEN = "EUR_TOKEN",
 }
 
 export enum EInvestmentFormState {

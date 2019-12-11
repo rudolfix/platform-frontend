@@ -61,6 +61,9 @@ export type TTxUserFlowInvestmentBasicData = {
   minTicketEur: string;
   minEthTicketFormatted: string;
   investmentValueType: EInvestmentValueType;
+  etoTokenGeneralDiscounts: IEtoTokenGeneralDiscounts;
+  etoTokenPersonalDiscount: IPersonalDiscount;
+  etoTokenStandardPrice: string;
 };
 
 export type TTxUserFlowInvestmentErrorData = {
@@ -72,9 +75,6 @@ export type TTxUserFlowInvestmentCalculatedCostsData = {
   gasCostEuro: string;
   maxTicketEur: string;
   neuReward: string;
-  etoTokenGeneralDiscounts: IEtoTokenGeneralDiscounts;
-  etoTokenPersonalDiscount: IPersonalDiscount;
-  etoTokenStandardPrice: string;
   equityTokenCountFormatted: string;
 };
 

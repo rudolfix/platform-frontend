@@ -89,7 +89,7 @@ import {
 export type TInvestmentValidationResult = {
   validationError: TValidationError | null;
   investmentDetails: {
-    investmentGasData: IGasValidationData;
+    investmentTransaction: ITxData;
     euroValueUlps: string;
     ethValueUlps: string;
   };
@@ -245,20 +245,20 @@ function* validateInvestmentValue({
     return { validationError: validationError, txDetails: null };
   }
 
-  const investmentGasData = yield neuCall(generateInvestmentTransaction, {
+  const investmentTransaction = yield neuCall(generateInvestmentTransaction, {
     investmentValueType,
     investmentType,
     etoId,
     investAmountUlps: new BigNumber(isEthInvestment(investmentType) ? ethValueUlps : euroValueUlps),
   });
 
-  const txValidationResult = yield call(validateTxGas, investmentGasData);
+  const txValidationResult = yield call(validateTxGas, investmentTransaction);
   if (txValidationResult !== EValidationState.VALIDATION_OK) {
     return { validationError: txValidationResult, txDetails: null };
   } else {
     return {
       validationError: null,
-      investmentDetails: { investmentGasData, euroValueUlps, ethValueUlps },
+      investmentDetails: { investmentTransaction, euroValueUlps, ethValueUlps },
     };
   }
 }
@@ -286,7 +286,7 @@ function* generateUpdatedView(
       }
     }
   } else {
-    const { investmentGasData, euroValueUlps, ethValueUlps } = investmentDetails;
+    const { investmentTransaction, euroValueUlps, ethValueUlps } = investmentDetails;
     return yield call(
       calculateInvestmentCostsData,
       value,
@@ -295,7 +295,7 @@ function* generateUpdatedView(
         euroValueUlps,
         ethValueUlps,
       },
-      investmentGasData,
+      investmentTransaction,
     );
   }
 }
@@ -368,6 +368,9 @@ function* reinitInvestmentView(): Generator<any, any, any> {
     investmentType,
     minTicketEur,
     hasPreviouslyInvested,
+    etoTokenGeneralDiscounts,
+    etoTokenPersonalDiscount,
+    etoTokenStandardPrice,
     minEthTicketFormatted,
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
@@ -386,6 +389,9 @@ function* reinitInvestmentView(): Generator<any, any, any> {
     minTicketEur,
     hasPreviouslyInvested,
     minEthTicketFormatted,
+    etoTokenGeneralDiscounts,
+    etoTokenPersonalDiscount,
+    etoTokenStandardPrice,
   };
 }
 
@@ -414,6 +420,9 @@ function* calculateInvestmentCostsData(
     minTicketEur,
     hasPreviouslyInvested,
     minEthTicketFormatted,
+    etoTokenGeneralDiscounts,
+    etoTokenPersonalDiscount,
+    etoTokenStandardPrice,
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
   const [
@@ -422,18 +431,12 @@ function* calculateInvestmentCostsData(
     equityTokenCount,
     etoTicketSizes,
     neuReward,
-    etoTokenGeneralDiscounts,
-    etoTokenPersonalDiscount,
-    etoTokenStandardPrice,
   ] = yield all([
     call(multiplyBigNumbers, [txDetails.gas, txDetails.gasPrice]),
     select(selectEtherPriceEur),
     select(selectEquityTokenCountByEtoId, eto.etoId),
     call(getCalculatedContribution, { eto, investmentValue: "0", investmentType }),
     select(selectNeuRewardUlpsByEtoId, eto.etoId),
-    select(selectEtoTokenGeneralDiscounts, eto.etoId),
-    select(selectPersonalDiscount, eto.etoId),
-    select(selectEtoTokenStandardPrice, eto.previewCode),
   ]);
 
   const maxTicketEur =
@@ -481,6 +484,7 @@ function* calculateInvestmentCostsData(
 }
 
 export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<any, any, any> {
+  try{
   const etoId = yield select(selectTxUserFlowInvestmentEtoId);
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
     yield select(selectEtoWithCompanyAndContractById, etoId),
@@ -504,10 +508,18 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
     investmentValueType: EInvestmentValueType.PARTIAL_BALANCE,
   };
 
-  const [eurPriceEther, hasPreviouslyInvested] = yield all([
+  const [
+    eurPriceEther, 
+    hasPreviouslyInvested,
+    etoTokenGeneralDiscounts,
+    etoTokenPersonalDiscount,
+    etoTokenStandardPrice,
+  ] = yield all([
     select(selectEurPriceEther),
-
     select(selectHasInvestorTicket, eto.etoId),
+    select(selectEtoTokenGeneralDiscounts, eto.etoId),
+    select(selectPersonalDiscount, eto.etoId),
+    select(selectEtoTokenStandardPrice, eto.previewCode),
   ]);
 
   const etoTicketSizes = yield call(getCalculatedContribution, {
@@ -535,6 +547,9 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
     minTicketEur,
     hasPreviouslyInvested,
     minEthTicketFormatted,
+    etoTokenGeneralDiscounts,
+    etoTokenPersonalDiscount,
+    etoTokenStandardPrice,
   };
 
   return {
@@ -542,6 +557,9 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
     ...initialDefaultValues,
     ...initialComputedValues,
   };
+}catch(e){
+  console.log(e)
+}
 }
 
 function* generateWalletsData(): Generator<any, any, any> {
@@ -780,12 +798,10 @@ function* calculateEntireBalanceValue(investmentType: EInvestmentType): Generato
   }
 }
 
-export function* validateTxGas(gasData: IGasValidationData): Generator<any, any, any> {
+export function* validateTxGas(investmentTransaction: ITxData): Generator<any, any, any> {
   //this is just a wrapper for validateGas that uses exceptions to express validation results.
-  //validateGas expects a ITxData but only uses some fields of it. We can't create a real ITxData at this moment.
-  //We use IGasValidationData here to make this more clear and only cast to ITxData when calling validateGas
   try {
-    yield neuCall(validateGas, gasData as ITxData);
+    yield neuCall(validateGas, investmentTransaction);
 
     return EValidationState.VALIDATION_OK;
   } catch (error) {

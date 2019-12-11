@@ -1,4 +1,5 @@
 import { WalletSelectionData } from "../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
+import { TMessage } from "../../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../../store";
 import { DeepReadonly } from "../../../../types";
 import { EProcessState } from "../../../../utils/enums/processStates";
@@ -6,7 +7,6 @@ import { actions } from "../../../actions";
 import { IEtoTokenGeneralDiscounts, TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { IPersonalDiscount } from "../../../investor-portfolio/types";
 import { EValidationState } from "../../validator/reducer";
-import { TMessage } from '../../../../components/translatedMessages/utils';
 
 export enum EInvestmentCurrency {
   ETH = "ETH",

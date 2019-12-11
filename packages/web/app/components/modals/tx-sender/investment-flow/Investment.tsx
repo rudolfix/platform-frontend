@@ -33,9 +33,9 @@ import {
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
+import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector } from "./InvestmentTypeSelector";
-import { getMessageTranslation } from '../../../translatedMessages/messages';
 
 import * as styles from "./Investment.module.scss";
 
@@ -92,9 +92,6 @@ export const InvestmentPrice = ({
   etoTokenStandardPrice,
 }: TInvestmentPriceInfoProps) => (
   <p className={styles.investmentPriceInfo}>
-    {console.log( "InvestmentPrice", etoTokenPersonalDiscount,
-  etoTokenGeneralDiscounts,
-  etoTokenStandardPrice,)}
     <InvestmentPriceInfo
       onChainState={timedState}
       etoTokenPersonalDiscount={etoTokenPersonalDiscount}
@@ -131,7 +128,6 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
   ...rest
 }) => (
   <section data-test-id="modals.investment.modal">
-    {console.log("InvestmentSelectionComponent")}
     <Container className={styles.container} fluid>
       <Row className="mt-0">
         <Col>
@@ -205,7 +201,7 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
                 data-test-id="invest-modal-eth-field"
                 showUnits={true}
                 errorMsg={
-                 rest.formState === EInvestmentFormState.INVALID
+                  rest.formState === EInvestmentFormState.INVALID
                     ? getMessageTranslation(rest.error)
                     : undefined
                 }
@@ -216,7 +212,9 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
                   {"≈ "}
                   <Money
                     value={
-                      rest.formState !== EInvestmentFormState.VALID ? undefined : euroValueWithFallback
+                      rest.formState !== EInvestmentFormState.VALID
+                        ? undefined
+                        : euroValueWithFallback
                     }
                     inputFormat={ENumberInputFormat.FLOAT}
                     valueType={ECurrency.EUR}
@@ -256,9 +254,7 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
               </Label>
               <InfoAlert data-test-id="invest-modal.est-equity-tokens">
                 {(rest.formState === EInvestmentFormState.VALID &&
-                  `${
-                    rest.equityTokenCountFormatted
-                  } ${eto.equityTokenSymbol}`) ||
+                  `${rest.equityTokenCountFormatted} ${eto.equityTokenSymbol}`) ||
                   "\xA0" /* non breaking space*/}
               </InfoAlert>
             </FormGroup>
@@ -301,9 +297,7 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
     <Container className={styles.container} fluid>
       <Row>
         <Col className={styles.summary}>
-          {rest.formState === EInvestmentFormState.VALID && (
-            <InvestmentTotals {...rest} />
-          )}
+          {rest.formState === EInvestmentFormState.VALID && <InvestmentTotals {...rest} />}
           <div>
             <FormattedMessage id="investment-flow.total" />:{" "}
             <span className="text-warning" data-test-id="invest-modal-total-cost">
@@ -328,7 +322,9 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
                   <span className={styles.helpText}>
                     {" ≈ "}
                     <Money
-                      value={rest.formState !== EInvestmentFormState.VALID ? undefined : totalCostEuro}
+                      value={
+                        rest.formState !== EInvestmentFormState.VALID ? undefined : totalCostEuro
+                      }
                       inputFormat={ENumberInputFormat.ULPS}
                       valueType={ECurrency.EUR}
                       outputFormat={ENumberOutputFormat.FULL}

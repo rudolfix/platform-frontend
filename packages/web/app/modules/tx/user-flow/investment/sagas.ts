@@ -13,6 +13,8 @@ import {
   parseInputToNumber,
   selectDecimalPlaces,
 } from "../../../../components/shared/formatters/utils";
+import { EInvestmentErrorMessage } from "../../../../components/translatedMessages/messages";
+import { createMessage, TMessage } from "../../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IGasValidationData, ITxData } from "../../../../lib/web3/types";
@@ -24,6 +26,7 @@ import {
   subtractBigNumbers,
 } from "../../../../utils/BigNumberUtils";
 import { EProcessState } from "../../../../utils/enums/processStates";
+import { InvariantError } from "../../../../utils/invariant";
 import { nonNullable } from "../../../../utils/nonNullable";
 import { convertFromUlps, convertToUlps } from "../../../../utils/NumberUtils";
 import { actions, TActionFromCreator } from "../../../actions";
@@ -37,7 +40,7 @@ import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../e
 import { loadComputedContributionFromContract } from "../../../investor-portfolio/sagas";
 import {
   selectEquityTokenCountByEtoId,
-  selectHasInvestorTicket,
+  selectHasIdInvestorTicket,
   selectInvestorTicket,
   selectIsWhitelisted,
   selectNeuRewardUlpsByEtoId,
@@ -85,10 +88,6 @@ import {
   hasFunds,
   isIcbmInvestment,
 } from "./utils";
-import { createMessage } from '../../../../components/translatedMessages/utils';
-import { EInvestmentErrorMessage } from '../../../../components/translatedMessages/messages';
-import { assertNever } from '../../../../utils/assertNever';
-import { InvariantError } from '../../../../utils/invariant';
 
 export type TInvestmentValidationResult = {
   validationError: TValidationError | null;
@@ -114,7 +113,7 @@ export type TValidateInvestmentValueInput = {
 
 type TGetCalculatedContributionInput = {
   eto: TEtoWithCompanyAndContractReadonly;
-  investmentValue: string;
+  euroValueUlps: string;
   investmentType: EInvestmentType;
 };
 
@@ -161,7 +160,6 @@ function* updateInvestmentView(
       etoId,
       investmentValueType: EInvestmentValueType.PARTIAL_BALANCE,
     });
-
     const investmentCalculatedData = yield call(
       generateUpdatedView,
       validationResult,
@@ -278,9 +276,7 @@ function* generateUpdatedView(
       case EInputValidationError.IS_EMPTY: {
         return yield call(reinitInvestmentView);
       }
-      case EInputValidationError.NOT_A_NUMBER: {
-        return yield call(populateInvalidViewData, value, EInputValidationError.NOT_A_NUMBER);
-      }
+      case EInputValidationError.NOT_A_NUMBER:
       case EInvestmentErrorState.AboveMaximumTicketSize:
       case EInvestmentErrorState.BelowMinimumTicketSize:
       case EInvestmentErrorState.ExceedsTokenAmount:
@@ -399,53 +395,101 @@ function* reinitInvestmentView(): Generator<any, any, any> {
   };
 }
 
-const mapErrorsToMessages = (
-  error:TValidationError,
-  maxEurAmount:string,
-  investmentCurrency:string,
-  minTicketEur:string,
-  minTicketEth:string,
-  tokenName:string
-  ) => {
-  switch(error){
-    case EInputValidationError.NOT_A_NUMBER:
-      return createMessage(EInvestmentErrorMessage.NOT_A_NUMBER)
-    case EInvestmentErrorState.AboveMaximumTicketSize:
-      return createMessage(EInvestmentErrorMessage.ABOVE_MAXIMUM_TICKET_SIZE,{value:maxEurAmount})
-    case EInvestmentErrorState.BelowMinimumTicketSize:
-        return createMessage(
-          EInvestmentErrorMessage.BELOW_MINIMUM_TICKET_SIZE,
-          {
-            investmentCurrency,
-            minTicketEur,
-            minTicketEth
-          })
-    case EInvestmentErrorState.ExceedsTokenAmount:
-        return createMessage(EInvestmentErrorMessage.EXCEEDS_TOKEN_AMOUNT, {tokenName})
-    case EInvestmentErrorState.ExceedsWalletBalance:
-        return createMessage(EInvestmentErrorMessage.EXCEEDS_WALLET_BALANCE)
-    case EValidationState.NOT_ENOUGH_ETHER_FOR_GAS:
-        return createMessage(EInvestmentErrorMessage.NOT_ENOUGH_ETHER_FOR_GAS)
-    default: 
-      throw new InvariantError("mapErrorsToMessages received an unexpected message variant");     
-  }
-}
-
 function* populateInvalidViewData(
   investmentValue: string,
   error: TValidationError,
 ): Generator<any, any, any> {
-  const formData = yield call(reinitInvestmentView);
-  formData.formState = EInvestmentFormState.INVALID;
-  formData.investmentValue = investmentValue;
-  formData.error = mapErrorsToMessages(
-    error,
-    maxEurAmount,
-    formData.investmentCurrency,
-    fromData.minTicketEur,
-    minEthTicketFormatted,
-    tokenName);
-  return formData;
+  const {
+    eto,
+    investmentType,
+    investmentCurrency,
+    minTicketEur,
+    minTicketEth,
+    ...formData
+  } = yield call(reinitInvestmentView);
+
+  let errorMessage: TMessage;
+
+  switch (error) {
+    case EInputValidationError.NOT_A_NUMBER:
+      errorMessage = createMessage(EInvestmentErrorMessage.NOT_A_NUMBER);
+      break;
+    case EInvestmentErrorState.AboveMaximumTicketSize:
+      const { euroValueUlps } = yield call(
+        computeCurrencies,
+        convertToUlps(investmentValue),
+        investmentCurrency,
+      );
+      const { maxTicketEur } = yield getEuroTicketSizes({ eto, euroValueUlps, investmentType });
+      errorMessage = createMessage(EInvestmentErrorMessage.ABOVE_MAXIMUM_TICKET_SIZE, {
+        value: maxTicketEur,
+      });
+      break;
+    case EInvestmentErrorState.BelowMinimumTicketSize:
+      errorMessage = createMessage(EInvestmentErrorMessage.BELOW_MINIMUM_TICKET_SIZE, {
+        investmentCurrency: investmentCurrency,
+        minTicketEur: minTicketEur,
+        minTicketEth: minTicketEth,
+      });
+      break;
+    case EInvestmentErrorState.ExceedsTokenAmount:
+      errorMessage = createMessage(EInvestmentErrorMessage.EXCEEDS_TOKEN_AMOUNT, {
+        tokenName: formData.eto.equityTokenName,
+      });
+      break;
+    case EInvestmentErrorState.ExceedsWalletBalance:
+      errorMessage = createMessage(EInvestmentErrorMessage.EXCEEDS_WALLET_BALANCE);
+      break;
+    case EValidationState.NOT_ENOUGH_ETHER_FOR_GAS:
+      errorMessage = createMessage(EInvestmentErrorMessage.NOT_ENOUGH_ETHER_FOR_GAS);
+      break;
+    default:
+      throw new InvariantError("mapErrorsToMessages received an unexpected message variant");
+  }
+
+  return {
+    ...formData,
+    formState: EInvestmentFormState.INVALID,
+    error: errorMessage,
+    eto,
+    investmentType,
+    investmentCurrency,
+    minTicketEur,
+    minTicketEth,
+  };
+}
+
+type TGetmaxTicketEurInput = {
+  eto: TEtoWithCompanyAndContractReadonly;
+  euroValueUlps: string;
+  investmentType: EInvestmentType;
+};
+
+function* getEuroTicketSizes({
+  eto,
+  euroValueUlps,
+  investmentType,
+}: TGetmaxTicketEurInput): Generator<any, any, any> {
+  const etoTicketSizes = yield call(getCalculatedContribution, {
+    eto,
+    euroValueUlps,
+    investmentType,
+  });
+
+  const minTicketEur =
+    (etoTicketSizes.minTicketEurUlps &&
+      formatMinMaxTickets(etoTicketSizes.minTicketEurUlps, ERoundingMode.UP)) ||
+    "0";
+
+  const maxTicketEur =
+    (etoTicketSizes.maxTicketEurUlps &&
+      formatMinMaxTickets(etoTicketSizes.maxTicketEurUlps, ERoundingMode.DOWN)) ||
+    "0";
+
+  return {
+    minTicketEur,
+    maxTicketEur,
+  };
 }
 
 function* calculateInvestmentCostsData(
@@ -467,25 +511,13 @@ function* calculateInvestmentCostsData(
     etoTokenStandardPrice,
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
-  const [
-    gasCostEth,
-    etherPriceEur,
-    equityTokenCount,
-    etoTicketSizes,
-    neuReward,
-  ] = yield all([
+  const [gasCostEth, etherPriceEur, equityTokenCount, { maxTicketEur }, neuReward] = yield all([
     call(multiplyBigNumbers, [txDetails.gas, txDetails.gasPrice]),
     select(selectEtherPriceEur),
     select(selectEquityTokenCountByEtoId, eto.etoId),
-    call(getCalculatedContribution, { eto, investmentValue: "0", investmentType }),
+    call(getEuroTicketSizes, { eto, euroValueUlps: "0", investmentType }),
     select(selectNeuRewardUlpsByEtoId, eto.etoId),
   ]);
-
-  const maxTicketEur =
-    (etoTicketSizes &&
-      etoTicketSizes.maxTicketEurUlps &&
-      formatMinMaxTickets(etoTicketSizes.maxTicketEurUlps, ERoundingMode.DOWN)) ||
-    "0";
 
   const [equityTokenCountFormatted, euroValueWithFallback, gasCostEuro] = yield all([
     call(formatThousands, equityTokenCount.toString()),
@@ -526,7 +558,6 @@ function* calculateInvestmentCostsData(
 }
 
 export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<any, any, any> {
-  try{
   const etoId = yield select(selectTxUserFlowInvestmentEtoId);
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
     yield select(selectEtoWithCompanyAndContractById, etoId),
@@ -551,7 +582,7 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
   };
 
   const [
-    eurPriceEther, 
+    eurPriceEther,
     hasPreviouslyInvested,
     etoTokenGeneralDiscounts,
     etoTokenPersonalDiscount,
@@ -564,17 +595,7 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
     select(selectEtoTokenStandardPrice, eto.previewCode),
   ]);
 
-  const etoTicketSizes = yield call(getCalculatedContribution, {
-    eto,
-    investmentValue: "0",
-    investmentType,
-  });
-
-  const minTicketEur =
-    (etoTicketSizes &&
-      etoTicketSizes.minTicketEurUlps &&
-      formatMinMaxTickets(etoTicketSizes.minTicketEurUlps, ERoundingMode.UP)) ||
-    "0";
+  const { minTicketEur } = yield getEuroTicketSizes({ eto, euroValueUlps: "0", investmentType });
 
   const minTicketEth = multiplyBigNumbers([minTicketEur, eurPriceEther]);
   const minEthTicketFormatted = formatNumber({
@@ -587,6 +608,7 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
 
   const initialComputedValues = {
     minTicketEur,
+    minTicketEth,
     hasPreviouslyInvested,
     minEthTicketFormatted,
     etoTokenGeneralDiscounts,
@@ -599,9 +621,6 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
     ...initialDefaultValues,
     ...initialComputedValues,
   };
-}catch(e){
-  console.log(e)
-}
 }
 
 function* generateWalletsData(): Generator<any, any, any> {
@@ -699,14 +718,14 @@ function* computeCurrencies(
 
 function* getCalculatedContribution({
   eto,
-  investmentValue,
+  euroValueUlps,
   investmentType,
 }: TGetCalculatedContributionInput): Generator<any, any, any> {
   const isICBM = yield call(isIcbmInvestment, investmentType);
   const contribution = yield neuCall(
     loadComputedContributionFromContract,
     eto as TEtoSpecsData,
-    investmentValue,
+    euroValueUlps,
     isICBM,
   );
   const investorTicket = yield select(selectInvestorTicket, eto.etoId);
@@ -737,7 +756,7 @@ function* validateInvestmentLimits({
 
   const [wallet, ticketSizes] = yield all([
     select(selectWalletData),
-    call(getCalculatedContribution, { eto, investmentValue: euroValueUlps, investmentType }),
+    call(getCalculatedContribution, { eto, euroValueUlps, investmentType }),
   ]);
 
   if (!contribution || !euroValueUlps || !wallet || !ticketSizes) return;

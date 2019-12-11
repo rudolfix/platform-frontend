@@ -116,6 +116,7 @@ function isICBMWallet(type: EInvestmentType): boolean {
 }
 
 export const formatMinMaxTickets = (value: TBigNumberVariants, roundingMode: ERoundingMode) =>
+  //todo find out why in `selectDecimalPlaces(ECurrency.EUR,...)`  currency is always eur
   toFixedPrecision({
     value,
     inputFormat: ENumberInputFormat.ULPS,

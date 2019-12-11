@@ -2,13 +2,13 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
+import { EInvestmentCurrency } from "../../modules/tx/user-flow/investment/reducer";
 import { EWalletSubType } from "../../modules/web3/types";
 import { TTranslatedString } from "../../types";
 import { assertNever } from "../../utils/assertNever";
 import { Money } from "../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { formatMatchingFieldNames, TMessage } from "./utils";
-import { EInvestmentCurrency } from '../../modules/tx/user-flow/investment/reducer';
 
 interface ITranslationValues {
   [SignInUserErrorMessages: string]: string;
@@ -800,61 +800,70 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.complete-request" />;
     case ENotificationText.COMPLETE_UPDATE_ACCOUNT:
       return <FormattedMessage id="notifications.update-account" />;
-    
+
     case EInvestmentErrorMessage.ABOVE_MAXIMUM_TICKET_SIZE:
-    const aboveMaximumTicketSizeTranslationData =  messageData as {value:string}
-    return <FormattedMessage
-      id="investment-flow.error-message.above-maximum-ticket-size"
-      values={{
-        maxEurAmount: (
-          <Money
-            value={aboveMaximumTicketSizeTranslationData.value || "0"}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
-        ),
-      }}
-    />
+      const aboveMaximumTicketSizeTranslationData = messageData as { value: string };
+      return (
+        <FormattedMessage
+          id="investment-flow.error-message.above-maximum-ticket-size"
+          values={{
+            maxEurAmount: (
+              <Money
+                value={aboveMaximumTicketSizeTranslationData.value || "0"}
+                inputFormat={ENumberInputFormat.FLOAT}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+              />
+            ),
+          }}
+        />
+      );
     case EInvestmentErrorMessage.BELOW_MINIMUM_TICKET_SIZE:
-    const belowMinimumTicketSizeTranslationData = messageData as {investmentCurrency: EInvestmentCurrency, minTicketEur:string, minTicketEth:string}
-    return <FormattedMessage
-      id="investment-flow.error-message.below-minimum-ticket-size"
-      values={{
-        investmentCurrency: belowMinimumTicketSizeTranslationData.investmentCurrency,
-        minEurAmount: (
-          <Money
-            value={belowMinimumTicketSizeTranslationData.minTicketEur || "0"}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
-        ),
-        minEthAmount: (
-          <Money
-            value={belowMinimumTicketSizeTranslationData.minTicketEth || "0"}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.ETH}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
-          />
-        ),
-      }}
-    />
+      const belowMinimumTicketSizeTranslationData = messageData as {
+        investmentCurrency: EInvestmentCurrency;
+        minTicketEur: string;
+        minTicketEth: string;
+      };
+      return (
+        <FormattedMessage
+          id="investment-flow.error-message.below-minimum-ticket-size"
+          values={{
+            investmentCurrency: belowMinimumTicketSizeTranslationData.investmentCurrency,
+            minEurAmount: (
+              <Money
+                value={belowMinimumTicketSizeTranslationData.minTicketEur || "0"}
+                inputFormat={ENumberInputFormat.FLOAT}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+              />
+            ),
+            minEthAmount: (
+              <Money
+                value={belowMinimumTicketSizeTranslationData.minTicketEth || "0"}
+                inputFormat={ENumberInputFormat.FLOAT}
+                valueType={ECurrency.ETH}
+                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
+              />
+            ),
+          }}
+        />
+      );
     case EInvestmentErrorMessage.EXCEEDS_TOKEN_AMOUNT:
-    const exceedsTokenAmountTranslationData = messageData as {tokenName:string}  
-    return <FormattedMessage
-      id="investment-flow.error-message.exceeds-token-amount"
-      values={{ tokenName:exceedsTokenAmountTranslationData.tokenName }}
-    />
+      const exceedsTokenAmountTranslationData = messageData as { tokenName: string };
+      return (
+        <FormattedMessage
+          id="investment-flow.error-message.exceeds-token-amount"
+          values={{ tokenName: exceedsTokenAmountTranslationData.tokenName }}
+        />
+      );
     case EInvestmentErrorMessage.EXCEEDS_WALLET_BALANCE:
       return <FormattedMessage id="investment-flow.error-message.exceeds-wallet-balance" />;
     case EInvestmentErrorMessage.NOT_ENOUGH_ETHER_FOR_GAS:
-        return <FormattedMessage id="modal.txsender.error-message.not-enough-ether-for-gas" />;
-    case EInvestmentErrorMessage.NOT_A_NUMBER:    
-      return <FormattedMessage id="investment-flow.validation-error" />
+      return <FormattedMessage id="modal.txsender.error-message.not-enough-ether-for-gas" />;
+    case EInvestmentErrorMessage.NOT_A_NUMBER:
+      return <FormattedMessage id="investment-flow.validation-error" />;
 
-
-      // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
+    // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
       return messageData!.message as TTranslatedString;
 

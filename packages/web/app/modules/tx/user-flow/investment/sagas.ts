@@ -85,6 +85,10 @@ import {
   hasFunds,
   isIcbmInvestment,
 } from "./utils";
+import { createMessage } from '../../../../components/translatedMessages/utils';
+import { EInvestmentErrorMessage } from '../../../../components/translatedMessages/messages';
+import { assertNever } from '../../../../utils/assertNever';
+import { InvariantError } from '../../../../utils/invariant';
 
 export type TInvestmentValidationResult = {
   validationError: TValidationError | null;
@@ -395,6 +399,38 @@ function* reinitInvestmentView(): Generator<any, any, any> {
   };
 }
 
+const mapErrorsToMessages = (
+  error:TValidationError,
+  maxEurAmount:string,
+  investmentCurrency:string,
+  minTicketEur:string,
+  minTicketEth:string,
+  tokenName:string
+  ) => {
+  switch(error){
+    case EInputValidationError.NOT_A_NUMBER:
+      return createMessage(EInvestmentErrorMessage.NOT_A_NUMBER)
+    case EInvestmentErrorState.AboveMaximumTicketSize:
+      return createMessage(EInvestmentErrorMessage.ABOVE_MAXIMUM_TICKET_SIZE,{value:maxEurAmount})
+    case EInvestmentErrorState.BelowMinimumTicketSize:
+        return createMessage(
+          EInvestmentErrorMessage.BELOW_MINIMUM_TICKET_SIZE,
+          {
+            investmentCurrency,
+            minTicketEur,
+            minTicketEth
+          })
+    case EInvestmentErrorState.ExceedsTokenAmount:
+        return createMessage(EInvestmentErrorMessage.EXCEEDS_TOKEN_AMOUNT, {tokenName})
+    case EInvestmentErrorState.ExceedsWalletBalance:
+        return createMessage(EInvestmentErrorMessage.EXCEEDS_WALLET_BALANCE)
+    case EValidationState.NOT_ENOUGH_ETHER_FOR_GAS:
+        return createMessage(EInvestmentErrorMessage.NOT_ENOUGH_ETHER_FOR_GAS)
+    default: 
+      throw new InvariantError("mapErrorsToMessages received an unexpected message variant");     
+  }
+}
+
 function* populateInvalidViewData(
   investmentValue: string,
   error: TValidationError,
@@ -402,7 +438,13 @@ function* populateInvalidViewData(
   const formData = yield call(reinitInvestmentView);
   formData.formState = EInvestmentFormState.INVALID;
   formData.investmentValue = investmentValue;
-  formData.error = error;
+  formData.error = mapErrorsToMessages(
+    error,
+    maxEurAmount,
+    formData.investmentCurrency,
+    fromData.minTicketEur,
+    minEthTicketFormatted,
+    tokenName);
   return formData;
 }
 

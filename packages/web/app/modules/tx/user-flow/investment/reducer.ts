@@ -6,6 +6,7 @@ import { actions } from "../../../actions";
 import { IEtoTokenGeneralDiscounts, TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { IPersonalDiscount } from "../../../investor-portfolio/types";
 import { EValidationState } from "../../validator/reducer";
+import { TMessage } from '../../../../components/translatedMessages/utils';
 
 export enum EInvestmentCurrency {
   ETH = "ETH",
@@ -67,7 +68,7 @@ export type TTxUserFlowInvestmentBasicData = {
 };
 
 export type TTxUserFlowInvestmentErrorData = {
-  error: TValidationError;
+  error: TMessage;
 };
 
 export type TTxUserFlowInvestmentCalculatedCostsData = {

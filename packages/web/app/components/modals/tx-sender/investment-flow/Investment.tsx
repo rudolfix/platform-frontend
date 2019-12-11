@@ -35,6 +35,7 @@ import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndic
 import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector } from "./InvestmentTypeSelector";
+import { getMessageTranslation } from '../../../translatedMessages/messages';
 
 import * as styles from "./Investment.module.scss";
 
@@ -183,7 +184,7 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
               )} ${minTicketEur} EUR`}
               errorMsg={
                 rest.formState === EInvestmentFormState.INVALID
-                  ? rest.error
+                  ? getMessageTranslation(rest.error)
                   : undefined
               }
               invalid={rest.formState === EInvestmentFormState.INVALID}
@@ -205,7 +206,7 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
                 showUnits={true}
                 errorMsg={
                  rest.formState === EInvestmentFormState.INVALID
-                    ? rest.error
+                    ? getMessageTranslation(rest.error)
                     : undefined
                 }
                 invalid={rest.formState === EInvestmentFormState.INVALID}

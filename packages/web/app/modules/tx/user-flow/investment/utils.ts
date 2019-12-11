@@ -18,7 +18,7 @@ import { assertNever } from "../../../../utils/assertNever";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { ICalculatedContribution, IInvestorTicket } from "../../../investor-portfolio/types";
 import { MIMIMUM_RETAIL_TICKET_EUR_ULPS } from "../../../investor-portfolio/utils";
-import { EInvestmentCurrency, EInvestmentType } from "./reducer";
+import { EInvestmentCurrency, EInvestmentType } from "./types";
 
 export const isIcbmInvestment = (investmentType: EInvestmentType) =>
   investmentType === EInvestmentType.ICBMEth || investmentType === EInvestmentType.ICBMnEuro;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
-import { EInvestmentCurrency } from "../../modules/tx/user-flow/investment/reducer";
+import { EInvestmentCurrency } from "../../modules/tx/user-flow/investment/types";
 import { EWalletSubType } from "../../modules/web3/types";
 import { TTranslatedString } from "../../types";
 import { assertNever } from "../../utils/assertNever";

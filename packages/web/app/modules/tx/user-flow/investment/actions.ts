@@ -2,7 +2,7 @@ import { createActionFactory } from "@neufund/shared";
 
 import { ITxData } from "../../../../lib/web3/types";
 import { ETxSenderType, TAdditionalDataByType } from "../../types";
-import { EInvestmentType, TTxUserFlowInvestmentViewData } from "./reducer";
+import { EInvestmentType, TTxUserFlowInvestmentViewData } from "./types";
 
 export const txUserFlowInvestmentActions = {
   setEtoId: createActionFactory("TX_USER_FLOW_INVESTMENT_SET_ETO_ID", (etoId: string) => ({

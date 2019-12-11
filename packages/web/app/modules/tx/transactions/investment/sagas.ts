@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { all, fork, put, select, take } from "redux-saga/effects";
+import { all, call, fork, put, select, take } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
@@ -11,8 +11,8 @@ import { selectEtherTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
-import { EInvestmentType, EInvestmentValueType } from "../../user-flow/investment/reducer";
-import { cleanupInvestmentView } from "../../user-flow/investment/sagas";
+import { cleanupInvestmentView } from "../../user-flow/investment/sagas/cleanupInvestmentView";
+import { EInvestmentType, EInvestmentValueType } from "../../user-flow/investment/types";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
 
@@ -136,7 +136,7 @@ function* investSaga(
     logger.info("Investment successful");
   } catch (e) {
     // Add clean up functions here ...
-    yield cleanupInvestmentView();
+    yield call(cleanupInvestmentView);
     logger.info("Investment cancelled", e);
   } finally {
     yield put(actions.eto.loadEto(payload.etoId));

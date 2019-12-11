@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, FormGroup } from "reactstrap";
 
 import { ETokenType } from "../../../../modules/tx/types";
-import { EInvestmentType } from "../../../../modules/tx/user-flow/investment/reducer";
+import { EInvestmentType } from "../../../../modules/tx/user-flow/investment/types";
 import { getCurrencyByInvestmentType } from "../../../../modules/tx/user-flow/investment/utils";
 import { DeepReadonly } from "../../../../types";
 import { Button, EButtonLayout, EButtonWidth } from "../../../shared/buttons";

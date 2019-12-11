@@ -9,14 +9,14 @@ import { actions } from "../../../../modules/actions";
 import { EETOStateOnChain, IEtoTokenGeneralDiscounts } from "../../../../modules/eto/types";
 import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
 import { ETokenType } from "../../../../modules/tx/types";
+import { selectTxUserFlowInvestmentState } from "../../../../modules/tx/user-flow/investment/selectors";
 import {
   EInvestmentCurrency,
   EInvestmentFormState,
   EInvestmentType,
   TTxUserFlowInvestmentState,
   TTxUserFlowInvestmentViewData,
-} from "../../../../modules/tx/user-flow/investment/reducer";
-import { selectTxUserFlowInvestmentState } from "../../../../modules/tx/user-flow/investment/selectors";
+} from "../../../../modules/tx/user-flow/investment/types";
 import { appConnect } from "../../../../store";
 import { EProcessState } from "../../../../utils/enums/processStates";
 import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";

@@ -1,4 +1,4 @@
-import { EInvestmentType } from "../../user-flow/investment/reducer";
+import { EInvestmentType } from "../../user-flow/investment/types";
 
 export const isEthInvestment = (investmentType: EInvestmentType | undefined) => {
   switch (investmentType) {

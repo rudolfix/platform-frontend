@@ -12,7 +12,7 @@ import {
   EInvestmentFormState,
   EInvestmentType,
   EInvestmentValueType,
-} from "../../../../modules/tx/user-flow/investment/reducer";
+} from "../../../../modules/tx/user-flow/investment/types";
 import { dummyIntl } from "../../../../utils/injectIntlHelpers.fixtures";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
 import { InvestmentSelectionComponent } from "./Investment";

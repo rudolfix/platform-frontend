@@ -8,7 +8,7 @@ import {
   selectEquityTokenCountByEtoId,
   selectNeuRewardUlpsByEtoId,
 } from "../../../../investor-portfolio/selectors";
-import { selectEtherPriceEur } from "../../../../shared/tokenPrice/selectors";
+import { selectEtherPriceEur, selectEurPriceEther } from "../../../../shared/tokenPrice/selectors";
 import { selectTxUserFlowInvestmentState } from "../selectors";
 import {
   EInvestmentFormState,
@@ -16,7 +16,7 @@ import {
   TInvestmentULPSValuePair,
   TTxUserFlowInvestmentReadyState,
 } from "../types";
-import { getEuroTicketSizes } from "./getEuroTicketSizes";
+import { getTicketSizes } from "./getTicketSizes";
 
 export function* calculateInvestmentCostsData(
   investmentValue: string,
@@ -37,11 +37,13 @@ export function* calculateInvestmentCostsData(
     etoTokenStandardPrice,
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
+  const eurPriceEther = yield select(selectEurPriceEther);
+
   const [gasCostEth, etherPriceEur, equityTokenCount, { maxTicketEur }, neuReward] = yield all([
     call(multiplyBigNumbers, [txDetails.gas, txDetails.gasPrice]),
     select(selectEtherPriceEur),
     select(selectEquityTokenCountByEtoId, eto.etoId),
-    call(getEuroTicketSizes, { eto, euroValueUlps: "0", investmentType }),
+    call(getTicketSizes, { eto, euroValueUlps: "0", investmentType, eurPriceEther }),
     select(selectNeuRewardUlpsByEtoId, eto.etoId),
   ]);
 

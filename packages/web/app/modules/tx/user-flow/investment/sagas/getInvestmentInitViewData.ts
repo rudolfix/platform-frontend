@@ -10,7 +10,6 @@ import {
   selectDecimalPlaces,
 } from "../../../../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { multiplyBigNumbers } from "../../../../../utils/BigNumberUtils";
 import { nonNullable } from "../../../../../utils/nonNullable";
 import {
   selectEtoTokenGeneralDiscounts,
@@ -27,7 +26,7 @@ import { selectTxUserFlowInvestmentEtoId } from "../selectors";
 import { EInvestmentFormState, EInvestmentValueType } from "../types";
 import { getInvestmentCurrency, getInvestmentType } from "../utils";
 import { generateWalletsData } from "./generateWalletsViewData";
-import { getEuroTicketSizes } from "./getEuroTicketSizes";
+import { getTicketSizes } from "./getTicketSizes";
 import { preloadInvestmentData } from "./preloadInvestmentData";
 
 export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<any, any, any> {
@@ -68,13 +67,13 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
     select(selectEtoTokenStandardPrice, eto.previewCode),
   ]);
 
-  const { minTicketEur } = yield call(getEuroTicketSizes, {
+  const { minTicketEur, minTicketEth } = yield call(getTicketSizes, {
     eto,
     euroValueUlps: "0",
     investmentType,
+    eurPriceEther,
   });
 
-  const minTicketEth = yield call(multiplyBigNumbers, [minTicketEur, eurPriceEther]);
   const minEthTicketFormatted = yield call(formatNumber, {
     value: minTicketEth,
     inputFormat: ENumberInputFormat.FLOAT,

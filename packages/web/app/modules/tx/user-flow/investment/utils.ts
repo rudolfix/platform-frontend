@@ -18,7 +18,8 @@ import { assertNever } from "../../../../utils/assertNever";
 import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { ICalculatedContribution, IInvestorTicket } from "../../../investor-portfolio/types";
 import { MIMIMUM_RETAIL_TICKET_EUR_ULPS } from "../../../investor-portfolio/utils";
-import { EInvestmentCurrency, EInvestmentType } from "./types";
+import { isEthInvestment } from "../../transactions/investment/selectors";
+import { EInvestmentCurrency, EInvestmentType, EInvestmentValueType } from "./types";
 
 export const isIcbmInvestment = (investmentType: EInvestmentType) =>
   investmentType === EInvestmentType.ICBMEth || investmentType === EInvestmentType.ICBMnEuro;
@@ -184,5 +185,18 @@ export const getCurrencyByInvestmentType = (type: EInvestmentType) => {
     case EInvestmentType.Eth:
     case EInvestmentType.ICBMEth:
       return ECurrency.ETH;
+  }
+};
+
+export const chooseTransactionValue = (
+  investmentValueType: EInvestmentValueType,
+  investmentType: EInvestmentType,
+  ethValueUlps: string,
+  euroValueUlps: string,
+) => {
+  if (investmentValueType === EInvestmentValueType.FULL_BALANCE) {
+    return new BigNumber("0");
+  } else {
+    return new BigNumber(isEthInvestment(investmentType) ? ethValueUlps : euroValueUlps);
   }
 };

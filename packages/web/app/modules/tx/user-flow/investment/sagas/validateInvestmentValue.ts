@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { call } from "redux-saga/effects";
 
 import {
@@ -8,7 +7,6 @@ import {
 import { convertToUlps } from "../../../../../utils/NumberUtils";
 import { neuCall } from "../../../../sagasUtils";
 import { generateInvestmentTransaction } from "../../../transactions/investment/sagas";
-import { isEthInvestment } from "../../../transactions/investment/selectors";
 import { EValidationState } from "../../../validator/reducer";
 import {
   EInputValidationError,
@@ -17,6 +15,7 @@ import {
   EInvestmentType,
   EInvestmentValueType,
 } from "../types";
+import { chooseTransactionValue } from "../utils";
 import { computeCurrencies } from "./computeCurrencies";
 import { validateInvestmentLimits } from "./validateInvestmentLimits";
 import { validateTxGas } from "./validateTxGas";
@@ -52,6 +51,7 @@ export function* validateInvestmentValue({
     investmentValueUlps,
     investmentCurrency,
   );
+
   const validationError: EInvestmentErrorState | undefined = yield call(validateInvestmentLimits, {
     euroValueUlps,
     ethValueUlps,
@@ -64,7 +64,12 @@ export function* validateInvestmentValue({
     investmentValueType,
     investmentType,
     etoId,
-    investAmountUlps: new BigNumber(isEthInvestment(investmentType) ? ethValueUlps : euroValueUlps),
+    investAmountUlps: chooseTransactionValue(
+      investmentValueType,
+      investmentType,
+      ethValueUlps,
+      euroValueUlps,
+    ),
   });
 
   const txValidationResult = yield call(validateTxGas, investmentTransaction);

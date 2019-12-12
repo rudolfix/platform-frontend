@@ -2,7 +2,6 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
-import { EInvestmentCurrency } from "../../modules/tx/user-flow/investment/types";
 import { EWalletSubType } from "../../modules/web3/types";
 import { TTranslatedString } from "../../types";
 import { assertNever } from "../../utils/assertNever";
@@ -802,16 +801,19 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.update-account" />;
 
     case EInvestmentErrorMessage.ABOVE_MAXIMUM_TICKET_SIZE:
-      const aboveMaximumTicketSizeTranslationData = messageData as { value: string };
+      const aboveMaximumTicketSizeTranslationData = messageData as {
+        value: string;
+        investmentCurrency: ECurrency;
+      };
       return (
         <FormattedMessage
           id="investment-flow.error-message.above-maximum-ticket-size"
           values={{
-            maxEurAmount: (
+            maxAmount: (
               <Money
                 value={aboveMaximumTicketSizeTranslationData.value || "0"}
                 inputFormat={ENumberInputFormat.FLOAT}
-                valueType={ECurrency.EUR}
+                valueType={aboveMaximumTicketSizeTranslationData.investmentCurrency}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               />
             ),
@@ -820,28 +822,18 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       );
     case EInvestmentErrorMessage.BELOW_MINIMUM_TICKET_SIZE:
       const belowMinimumTicketSizeTranslationData = messageData as {
-        investmentCurrency: EInvestmentCurrency;
-        minTicketEur: string;
-        minTicketEth: string;
+        investmentCurrency: ECurrency;
+        minAmount: string;
       };
       return (
         <FormattedMessage
           id="investment-flow.error-message.below-minimum-ticket-size"
           values={{
-            investmentCurrency: belowMinimumTicketSizeTranslationData.investmentCurrency,
-            minEurAmount: (
+            minAmount: (
               <Money
-                value={belowMinimumTicketSizeTranslationData.minTicketEur || "0"}
+                value={belowMinimumTicketSizeTranslationData.minAmount || "0"}
                 inputFormat={ENumberInputFormat.FLOAT}
-                valueType={ECurrency.EUR}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-              />
-            ),
-            minEthAmount: (
-              <Money
-                value={belowMinimumTicketSizeTranslationData.minTicketEth || "0"}
-                inputFormat={ENumberInputFormat.FLOAT}
-                valueType={ECurrency.ETH}
+                valueType={belowMinimumTicketSizeTranslationData.investmentCurrency}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
               />
             ),

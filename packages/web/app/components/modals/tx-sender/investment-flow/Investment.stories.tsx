@@ -44,6 +44,7 @@ const props = {
   gasCostEth: "12341234123412341234",
   gasCostEuro: "123412323412341234",
   minTicketEur: "1234",
+  minTicketEth: "12344444",
   maxTicketEur: "10000000000",
   neuReward: "100",
   etoTokenGeneralDiscounts: {

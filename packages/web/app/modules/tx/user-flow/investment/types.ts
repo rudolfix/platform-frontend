@@ -59,6 +59,7 @@ export type TTxUserFlowInvestmentBasicData = {
   totalCostEuro: string;
   hasPreviouslyInvested: boolean;
   minTicketEur: string;
+  minTicketEth: string;
   minEthTicketFormatted: string;
   investmentValueType: EInvestmentValueType;
   etoTokenGeneralDiscounts: IEtoTokenGeneralDiscounts;

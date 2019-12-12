@@ -1,9 +1,11 @@
-import { call } from "redux-saga/effects";
+import { call, select } from "redux-saga/effects";
 
 import { EInvestmentErrorMessage } from "../../../../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../../../../components/translatedMessages/utils";
 import { InvariantError } from "../../../../../utils/invariant";
 import { convertToUlps } from "../../../../../utils/NumberUtils";
+import { selectEurPriceEther } from "../../../../shared/tokenPrice/selectors";
+import { isEthInvestment } from "../../../transactions/investment/selectors";
 import { EValidationState } from "../../../validator/reducer";
 import {
   EInputValidationError,
@@ -12,7 +14,7 @@ import {
   TValidationError,
 } from "../types";
 import { computeCurrencies } from "./computeCurrencies";
-import { getEuroTicketSizes } from "./getEuroTicketSizes";
+import { getTicketSizes } from "./getTicketSizes";
 import { reinitInvestmentView } from "./reinitInvestmentView";
 
 export function* populateInvalidViewData(
@@ -20,7 +22,6 @@ export function* populateInvalidViewData(
   error: TValidationError,
 ): Generator<any, any, any> {
   const formData = yield call(reinitInvestmentView);
-
   const { eto, investmentType, investmentCurrency, minTicketEur, minTicketEth } = formData;
 
   let errorMessage: TMessage;
@@ -35,20 +36,23 @@ export function* populateInvalidViewData(
         convertToUlps(investmentValue),
         investmentCurrency,
       );
-      const { maxTicketEur } = yield call(getEuroTicketSizes, {
+      const eurPriceEther = yield select(selectEurPriceEther);
+
+      const { maxTicketEur, maxTicketEth } = yield call(getTicketSizes, {
         eto,
         euroValueUlps,
         investmentType,
+        eurPriceEther,
       });
       errorMessage = yield call(createMessage, EInvestmentErrorMessage.ABOVE_MAXIMUM_TICKET_SIZE, {
-        value: maxTicketEur,
+        value: isEthInvestment(investmentType) ? maxTicketEth : maxTicketEur,
+        investmentCurrency: investmentCurrency,
       });
       break;
     case EInvestmentErrorState.BelowMinimumTicketSize:
       errorMessage = yield call(createMessage, EInvestmentErrorMessage.BELOW_MINIMUM_TICKET_SIZE, {
         investmentCurrency: investmentCurrency,
-        minTicketEur: minTicketEur,
-        minTicketEth: minTicketEth,
+        minAmount: isEthInvestment(investmentType) ? minTicketEth : minTicketEur,
       });
       break;
     case EInvestmentErrorState.ExceedsTokenAmount:

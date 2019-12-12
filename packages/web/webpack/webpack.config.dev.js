@@ -45,7 +45,7 @@ module.exports = merge.smart(configCommon, {
         "*; " + // this should be only enabled for twitter-iframe.html
         "font-src 'self' fonts.gstatic.com; " +
         "media-src 'self' blob:; " +
-        "img-src 'self' blob: data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net " +
+        "img-src 'self' blob: data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net https://lipis.github.io/flag-icon-css/flags " +
         "*; " + // this should be only enabled for twitter-iframe.html
         "connect-src 'self' https://*.neufund.io https://*.onfido.com wss://*.onfido.com wss://localhost:9090", // needed for hot reload
     },

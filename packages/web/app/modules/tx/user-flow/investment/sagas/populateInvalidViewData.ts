@@ -22,7 +22,7 @@ export function* populateInvalidViewData(
   error: TValidationError,
 ): Generator<any, any, any> {
   const formData = yield call(reinitInvestmentView);
-  const { eto, investmentType, investmentCurrency, minTicketEur, minTicketEth } = formData;
+  const { eto, investmentWallet, investmentCurrency, minTicketEur, minTicketEth } = formData;
 
   let errorMessage: TMessage;
 
@@ -41,18 +41,18 @@ export function* populateInvalidViewData(
       const { maxTicketEur, maxTicketEth } = yield call(getTicketSizes, {
         eto,
         euroValueUlps,
-        investmentType,
+        investmentWallet,
         eurPriceEther,
       });
       errorMessage = yield call(createMessage, EInvestmentErrorMessage.ABOVE_MAXIMUM_TICKET_SIZE, {
-        value: isEthInvestment(investmentType) ? maxTicketEth : maxTicketEur,
+        value: isEthInvestment(investmentWallet) ? maxTicketEth : maxTicketEur,
         investmentCurrency: investmentCurrency,
       });
       break;
     case EInvestmentErrorState.BelowMinimumTicketSize:
       errorMessage = yield call(createMessage, EInvestmentErrorMessage.BELOW_MINIMUM_TICKET_SIZE, {
         investmentCurrency: investmentCurrency,
-        minAmount: isEthInvestment(investmentType) ? minTicketEth : minTicketEur,
+        minAmount: isEthInvestment(investmentWallet) ? minTicketEth : minTicketEur,
       });
       break;
     case EInvestmentErrorState.ExceedsTokenAmount:

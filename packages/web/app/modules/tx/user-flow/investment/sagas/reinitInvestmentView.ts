@@ -8,7 +8,7 @@ export function* reinitInvestmentView(): Generator<any, any, any> {
   const {
     eto,
     wallets,
-    investmentType,
+    investmentWallet,
     minTicketEur,
     minTicketEth,
     hasPreviouslyInvested,
@@ -18,7 +18,7 @@ export function* reinitInvestmentView(): Generator<any, any, any> {
     minEthTicketFormatted,
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
-  const investmentCurrency = yield call(getInvestmentCurrency, investmentType);
+  const investmentCurrency = yield call(getInvestmentCurrency, investmentWallet);
 
   return {
     formState: EInvestmentFormState.EMPTY,
@@ -26,7 +26,7 @@ export function* reinitInvestmentView(): Generator<any, any, any> {
     wallets,
     investmentValue: "",
     euroValueWithFallback: "0",
-    investmentType,
+    investmentWallet,
     investmentCurrency,
     totalCostEth: "0",
     totalCostEuro: "0",

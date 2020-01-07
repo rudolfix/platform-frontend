@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-import { EInvestmentType } from "../modules/tx/user-flow/investment/types";
+import { EInvestmentWallet } from "../modules/tx/user-flow/investment/types";
 import { EUSState } from "../utils/enums/usStatesEnum";
 
 export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
@@ -106,4 +106,4 @@ export const BLOCK_MINING_TIME_DELAY = 12000;
  * For now we need to disable NEUR for all US states
  */
 export const NEUR_ALLOWED_US_STATES: EUSState[] = [];
-export const DEFAULT_INVESTMENT_TYPE = EInvestmentType.Eth;
+export const DEFAULT_INVESTMENT_TYPE = EInvestmentWallet.Eth;

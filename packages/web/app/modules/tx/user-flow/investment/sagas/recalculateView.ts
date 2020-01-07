@@ -12,7 +12,7 @@ export function* recalculateView(_: TGlobalDependencies): Generator<any, any, an
     formState,
     investmentValue,
     investmentCurrency,
-    investmentType,
+    investmentWallet,
     etoId,
     investmentValueType,
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
@@ -24,7 +24,7 @@ export function* recalculateView(_: TGlobalDependencies): Generator<any, any, an
     const validationResult = yield call(validateInvestmentValue, {
       value: investmentValue,
       investmentCurrency,
-      investmentType,
+      investmentWallet,
       etoId,
       investmentValueType,
     });

@@ -8,22 +8,22 @@ import {
   selectLockedEuroTokenBalance,
 } from "../../../../wallet/selectors";
 import { selectTxGasCostEthUlps } from "../../../sender/selectors";
-import { EInvestmentType } from "../types";
+import { EInvestmentWallet } from "../types";
 
 export function* calculateEntireBalanceValue(
-  investmentType: EInvestmentType,
-): Generator<any, any, any> {
-  switch (investmentType) {
-    case EInvestmentType.ICBMEth:
+  investmentWallet: EInvestmentWallet,
+): Generator<any, string, any> {
+  switch (investmentWallet) {
+    case EInvestmentWallet.ICBMEth:
       return yield select(selectLockedEtherBalance);
 
-    case EInvestmentType.ICBMnEuro:
+    case EInvestmentWallet.ICBMnEuro:
       return yield select(selectLockedEuroTokenBalance);
 
-    case EInvestmentType.NEur:
+    case EInvestmentWallet.NEur:
       return yield select(selectLiquidEuroTokenBalance);
 
-    case EInvestmentType.Eth:
+    case EInvestmentWallet.Eth:
       const [gasCostEth, fullBalance] = yield all([
         select(selectTxGasCostEthUlps),
         select(selectLiquidEtherBalance),

@@ -2,7 +2,7 @@ import { createActionFactory } from "@neufund/shared";
 
 import { ITxData } from "../../../../lib/web3/types";
 import { ETxSenderType, TAdditionalDataByType } from "../../types";
-import { EInvestmentType, TTxUserFlowInvestmentViewData } from "./types";
+import { EInvestmentWallet, TTxUserFlowInvestmentViewData } from "./types";
 
 export const txUserFlowInvestmentActions = {
   setEtoId: createActionFactory("TX_USER_FLOW_INVESTMENT_SET_ETO_ID", (etoId: string) => ({
@@ -33,13 +33,13 @@ export const txUserFlowInvestmentActions = {
       additionalData,
     }),
   ),
-  changeInvestmentType: createActionFactory(
-    "TX_USER_FLOW_INVESTMENT_CHANGE_INVESTMENT_TYPE",
-    (investmentType: EInvestmentType) => ({ investmentType }),
+  changeInvestmentWallet: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_CHANGE_INVESTMENT_WALLET",
+    (investmentWallet: EInvestmentWallet) => ({ investmentWallet }),
   ),
-  setInvestmentType: createActionFactory(
-    "TX_USER_FLOW_INVESTMENT_SET_INVESTMENT_TYPE",
-    (investmentType: EInvestmentType) => ({ investmentType }),
+  setInvestmentWallet: createActionFactory(
+    "TX_USER_FLOW_INVESTMENT_SET_INVESTMENT_WALLET",
+    (investmentWallet: EInvestmentWallet) => ({ investmentWallet }),
   ),
   startInvestment: createActionFactory(
     "TX_USER_FLOW_INVESTMENT_START_INVESTMENT",

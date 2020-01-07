@@ -12,7 +12,7 @@ import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 import { cleanupInvestmentView } from "../../user-flow/investment/sagas/cleanupInvestmentView";
-import { EInvestmentType, EInvestmentValueType } from "../../user-flow/investment/types";
+import { EInvestmentValueType, EInvestmentWallet } from "../../user-flow/investment/types";
 
 export const INVESTMENT_GAS_AMOUNT = "600000";
 
@@ -55,12 +55,12 @@ export function* generateInvestmentTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   {
     investmentValueType,
-    investmentType,
+    investmentWallet,
     etoId,
     investAmountUlps,
   }: {
     investmentValueType: EInvestmentValueType;
-    investmentType: EInvestmentType;
+    investmentWallet: EInvestmentWallet;
     etoId: string;
     investAmountUlps: BigNumber;
   },
@@ -71,12 +71,12 @@ export function* generateInvestmentTransaction(
   let to;
   let value;
 
-  switch (investmentType) {
-    case EInvestmentType.Eth:
+  switch (investmentWallet) {
+    case EInvestmentWallet.Eth:
       ({ value, data } = yield neuCall(getEtherTokenTransaction, etoId, investAmountUlps));
       to = contractsService.etherToken.address;
       break;
-    case EInvestmentType.NEur:
+    case EInvestmentWallet.NEur:
       // @see https://github.com/ethereum-ts/TypeChain/issues/123
       // current version of typescript miss-type bytes as array of bytes.
       data = yield contractsService.euroToken.rawWeb3Contract.transfer[
@@ -84,7 +84,7 @@ export function* generateInvestmentTransaction(
       ].getData(etoId, investAmountUlps, "");
       to = contractsService.euroToken.address;
       break;
-    case EInvestmentType.ICBMEth:
+    case EInvestmentWallet.ICBMEth:
       // @see https://github.com/ethereum-ts/TypeChain/issues/123
       // current version of typescript miss-type bytes as array of bytes.
       data = yield contractsService.etherLock.rawWeb3Contract.transfer[
@@ -92,7 +92,7 @@ export function* generateInvestmentTransaction(
       ].getData(etoId, investAmountUlps, "");
       to = contractsService.etherLock.address;
       break;
-    case EInvestmentType.ICBMnEuro:
+    case EInvestmentWallet.ICBMnEuro:
       // @see https://github.com/ethereum-ts/TypeChain/issues/123
       // current version of typescript miss-type bytes as array of bytes.
       data = yield contractsService.euroLock.rawWeb3Contract.transfer[

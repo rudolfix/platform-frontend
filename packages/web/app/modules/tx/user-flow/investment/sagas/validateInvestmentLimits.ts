@@ -16,7 +16,7 @@ import { selectTxGasCostEthUlps } from "../../../sender/selectors";
 import { selectTxUserFlowInvestmentState } from "../selectors";
 import {
   EInvestmentErrorState,
-  EInvestmentType,
+  EInvestmentWallet,
   TInvestmentULPSValuePair,
   TTxUserFlowInvestmentReadyState,
 } from "../types";
@@ -27,11 +27,11 @@ export function* validateInvestmentLimits({
   euroValueUlps,
   ethValueUlps,
 }: TInvestmentULPSValuePair): Generator<any, any, any> {
-  const { etoId, investmentType, eto }: TTxUserFlowInvestmentReadyState = yield select(
+  const { etoId, investmentWallet, eto }: TTxUserFlowInvestmentReadyState = yield select(
     selectTxUserFlowInvestmentState,
   );
 
-  const isICBM = yield call(isIcbmInvestment, investmentType);
+  const isICBM = yield call(isIcbmInvestment, investmentWallet);
   const contribution = yield neuCall(
     loadComputedContributionFromContract,
     eto as TEtoSpecsData,
@@ -42,12 +42,12 @@ export function* validateInvestmentLimits({
 
   const [wallet, ticketSizes] = yield all([
     select(selectWalletData),
-    call(getCalculatedContribution, { eto, euroValueUlps, investmentType }),
+    call(getCalculatedContribution, { eto, euroValueUlps, investmentWallet }),
   ]);
 
   if (!contribution || !euroValueUlps || !wallet || !ticketSizes) return;
 
-  if (investmentType === EInvestmentType.Eth) {
+  if (investmentWallet === EInvestmentWallet.Eth) {
     const [gasPrice, etherBalance] = yield all([
       select(selectTxGasCostEthUlps),
       select(selectLiquidEtherBalance),
@@ -57,21 +57,21 @@ export function* validateInvestmentLimits({
     }
   }
 
-  if (investmentType === EInvestmentType.ICBMnEuro) {
+  if (investmentWallet === EInvestmentWallet.ICBMnEuro) {
     const lockedEuroTokenBalance = yield select(selectLockedEuroTokenBalance);
     if (compareBigNumbers(euroValueUlps, lockedEuroTokenBalance) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
-  if (investmentType === EInvestmentType.NEur) {
+  if (investmentWallet === EInvestmentWallet.NEur) {
     const liquidEuroTokenBalance = yield select(selectLiquidEuroTokenBalance);
     if (compareBigNumbers(euroValueUlps, liquidEuroTokenBalance) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
-  if (investmentType === EInvestmentType.ICBMEth) {
+  if (investmentWallet === EInvestmentWallet.ICBMEth) {
     const lockedEtherBalance = yield select(selectLockedEtherBalance);
     if (compareBigNumbers(ethValueUlps, lockedEtherBalance) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;

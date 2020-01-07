@@ -13,7 +13,7 @@ import { selectTxUserFlowInvestmentState } from "../../../../modules/tx/user-flo
 import {
   EInvestmentCurrency,
   EInvestmentFormState,
-  EInvestmentType,
+  EInvestmentWallet,
   TTxUserFlowInvestmentState,
   TTxUserFlowInvestmentViewData,
 } from "../../../../modules/tx/user-flow/investment/types";
@@ -42,7 +42,7 @@ import * as styles from "./Investment.module.scss";
 type TDispatchProps = {
   submitInvestment: () => void;
   changeInvestmentValue: (value: string) => void;
-  changeInvestmentType: (type: EInvestmentType) => void;
+  changeInvestmentWallet: (type: EInvestmentWallet) => void;
   investEntireBalance: () => void;
   startUpgradeFlow: (token: ETokenType) => void;
 };
@@ -109,9 +109,9 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
   changeInvestmentValue,
   intl,
 
-  changeInvestmentType,
+  changeInvestmentWallet,
   eto,
-  investmentType,
+  investmentWallet,
   minTicketEur,
   wallets,
   hasPreviouslyInvested,
@@ -139,8 +139,8 @@ export const InvestmentSelectionComponent: React.FunctionComponent<TTxUserFlowIn
       <Row>
         <InvestmentTypeSelector
           wallets={wallets}
-          currentType={investmentType}
-          onSelect={changeInvestmentType}
+          currentType={investmentWallet}
+          onSelect={changeInvestmentWallet}
           startUpgradeFlow={startUpgradeFlow}
         />
       </Row>
@@ -364,8 +364,8 @@ export const InvestmentSelection = compose<
     dispatchToProps: dispatch => ({
       submitInvestment: () => dispatch(actions.txUserFlowInvestment.submitInvestment()),
       changeInvestmentValue: value => dispatch(actions.txUserFlowInvestment.updateValue(value)),
-      changeInvestmentType: (type: EInvestmentType) =>
-        dispatch(actions.txUserFlowInvestment.changeInvestmentType(type)),
+      changeInvestmentWallet: (type: EInvestmentWallet) =>
+        dispatch(actions.txUserFlowInvestment.changeInvestmentWallet(type)),
       investEntireBalance: () => dispatch(actions.txUserFlowInvestment.investEntireBalance()),
       startUpgradeFlow: (token: ETokenType) => dispatch(actions.txTransactions.startUpgrade(token)),
     }),

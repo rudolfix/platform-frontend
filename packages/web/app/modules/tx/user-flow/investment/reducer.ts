@@ -47,11 +47,11 @@ export const txUserFlowInvestmentReducer: AppReducer<TTxUserFlowInvestmentState>
           }
         : state;
     }
-    case actions.txUserFlowInvestment.setInvestmentType.getType(): {
+    case actions.txUserFlowInvestment.setInvestmentWallet.getType(): {
       return state.processState === EProcessState.SUCCESS
         ? {
             ...state,
-            investmentType: action.payload.investmentType,
+            investmentWallet: action.payload.investmentWallet,
           }
         : state;
     }

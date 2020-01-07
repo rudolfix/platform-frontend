@@ -10,12 +10,12 @@ import { validateInvestmentValue } from "./validateInvestmentValue";
 
 export function* investEntireBalance(): Generator<any, any, any> {
   const {
-    investmentType,
+    investmentWallet,
     investmentCurrency,
     etoId,
   }: TTxUserFlowInvestmentReadyState = yield select(selectTxUserFlowInvestmentState);
 
-  const balance = yield call(calculateEntireBalanceValue, investmentType);
+  const balance = yield call(calculateEntireBalanceValue, investmentWallet);
   const balanceFromUlps = (yield call(convertFromUlps, balance)).toString();
 
   yield all([
@@ -26,7 +26,7 @@ export function* investEntireBalance(): Generator<any, any, any> {
   const validationResult = yield call(validateInvestmentValue, {
     value: balanceFromUlps,
     investmentCurrency,
-    investmentType,
+    investmentWallet,
     etoId,
     investmentValueType: EInvestmentValueType.FULL_BALANCE,
   });

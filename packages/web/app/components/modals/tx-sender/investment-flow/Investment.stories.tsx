@@ -10,8 +10,8 @@ import {
 import {
   EInvestmentCurrency,
   EInvestmentFormState,
-  EInvestmentType,
   EInvestmentValueType,
+  EInvestmentWallet,
 } from "../../../../modules/tx/user-flow/investment/types";
 import { dummyIntl } from "../../../../utils/injectIntlHelpers.fixtures";
 import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
@@ -33,7 +33,7 @@ const props = {
   wallets,
   investmentValue: "1234553",
   euroValueWithFallback: "223450",
-  investmentType: EInvestmentType.Eth,
+  investmentWallet: EInvestmentWallet.Eth,
   investmentCurrency: EInvestmentCurrency.ETH,
   totalCostEth: "1234556",
   totalCostEuro: "223456",
@@ -64,7 +64,7 @@ const props = {
   submitInvestment: () => action("submitInvestment"),
   investEntireBalance: () => action("investEntireBalance"),
   changeInvestmentValue: () => action("changeInvestmentValue"),
-  changeInvestmentType: () => action("changeInvestmentType"),
+  changeInvestmentWallet: () => action("changeInvestmentType"),
   startUpgradeFlow: () => action("startUpgradeFlow"),
 
   intl: dummyIntl,

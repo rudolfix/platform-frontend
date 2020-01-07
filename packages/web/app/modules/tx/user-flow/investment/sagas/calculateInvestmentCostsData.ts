@@ -27,7 +27,7 @@ export function* calculateInvestmentCostsData(
   const {
     eto,
     wallets,
-    investmentType,
+    investmentWallet,
     investmentCurrency,
     minTicketEur,
     hasPreviouslyInvested,
@@ -43,7 +43,7 @@ export function* calculateInvestmentCostsData(
     call(multiplyBigNumbers, [txDetails.gas, txDetails.gasPrice]),
     select(selectEtherPriceEur),
     select(selectEquityTokenCountByEtoId, eto.etoId),
-    call(getTicketSizes, { eto, euroValueUlps: "0", investmentType, eurPriceEther }),
+    call(getTicketSizes, { eto, euroValueUlps: "0", investmentWallet, eurPriceEther }),
     select(selectNeuRewardUlpsByEtoId, eto.etoId),
   ]);
 
@@ -64,7 +64,7 @@ export function* calculateInvestmentCostsData(
     investmentValueType,
     eto,
     wallets,
-    investmentType,
+    investmentWallet,
     investmentCurrency,
     minTicketEur,
     hasPreviouslyInvested,

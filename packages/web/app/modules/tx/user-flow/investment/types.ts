@@ -29,7 +29,7 @@ export enum EInvestmentValueType {
   PARTIAL_BALANCE = "partialBalance",
 }
 
-export enum EInvestmentType {
+export enum EInvestmentWallet {
   Eth = "ETH",
   NEur = "NEUR",
   ICBMEth = "ICBM_ETH",
@@ -53,7 +53,7 @@ export type TTxUserFlowInvestmentBasicData = {
   wallets: DeepReadonly<WalletSelectionData[]>;
   investmentValue: string;
   euroValueWithFallback: string;
-  investmentType: EInvestmentType;
+  investmentWallet: EInvestmentWallet;
   investmentCurrency: EInvestmentCurrency;
   totalCostEth: string;
   totalCostEuro: string;

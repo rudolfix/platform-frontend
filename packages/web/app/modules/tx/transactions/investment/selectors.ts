@@ -1,12 +1,12 @@
-import { EInvestmentType } from "../../user-flow/investment/types";
+import { EInvestmentWallet } from "../../user-flow/investment/types";
 
-export const isEthInvestment = (investmentType: EInvestmentType | undefined) => {
-  switch (investmentType) {
-    case EInvestmentType.Eth:
-    case EInvestmentType.ICBMEth:
+export const isEthInvestment = (investmentWallet: EInvestmentWallet | undefined) => {
+  switch (investmentWallet) {
+    case EInvestmentWallet.Eth:
+    case EInvestmentWallet.ICBMEth:
       return true;
-    case EInvestmentType.NEur:
-    case EInvestmentType.ICBMnEuro:
+    case EInvestmentWallet.NEur:
+    case EInvestmentWallet.ICBMnEuro:
       return false;
     default:
       throw Error("Incorrect investment type");

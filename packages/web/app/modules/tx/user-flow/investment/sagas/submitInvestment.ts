@@ -18,7 +18,7 @@ export function* submitInvestment({ logger }: TGlobalDependencies): Generator<an
   const {
     investmentValueType,
     investmentCurrency,
-    investmentType,
+    investmentWallet,
     investmentValue,
     eto,
     gasCostEth,
@@ -34,7 +34,7 @@ export function* submitInvestment({ logger }: TGlobalDependencies): Generator<an
     etherPriceEur,
   } = yield all({
     values: call(computeCurrencies, convertToUlps(investmentValue), investmentCurrency),
-    isIcbm: call(isIcbmInvestment, investmentType),
+    isIcbm: call(isIcbmInvestment, investmentWallet),
     equityTokens: select(selectEquityTokenCountByEtoId, eto.etoId),
     etherPriceEur: select(selectEtherPriceEur),
   });
@@ -46,9 +46,11 @@ export function* submitInvestment({ logger }: TGlobalDependencies): Generator<an
 
   const transactionData = yield neuCall(generateInvestmentTransaction, {
     investmentValueType,
-    investmentType,
+    investmentWallet,
     etoId: eto.etoId,
-    investAmountUlps: new BigNumber(isEthInvestment(investmentType) ? ethValueUlps : euroValueUlps),
+    investAmountUlps: new BigNumber(
+      isEthInvestment(investmentWallet) ? ethValueUlps : euroValueUlps,
+    ),
   });
 
   const additionalData = {

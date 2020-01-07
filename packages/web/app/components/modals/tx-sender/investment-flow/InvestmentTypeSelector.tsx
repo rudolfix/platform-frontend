@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, FormGroup } from "reactstrap";
 
 import { ETokenType } from "../../../../modules/tx/types";
-import { EInvestmentType } from "../../../../modules/tx/user-flow/investment/types";
+import { EInvestmentWallet } from "../../../../modules/tx/user-flow/investment/types";
 import { getCurrencyByInvestmentType } from "../../../../modules/tx/user-flow/investment/utils";
 import { DeepReadonly } from "../../../../types";
 import { Button, EButtonLayout, EButtonWidth } from "../../../shared/buttons";
@@ -28,13 +28,13 @@ interface IWalletBase {
 }
 
 interface IEthWallet extends IWalletBase {
-  type: EInvestmentType.ICBMEth | EInvestmentType.Eth;
+  type: EInvestmentWallet.ICBMEth | EInvestmentWallet.Eth;
   balanceEth: string;
   icbmBalanceEth?: string;
 }
 
 interface IInEuroWallet extends IWalletBase {
-  type: EInvestmentType.ICBMnEuro | EInvestmentType.NEur;
+  type: EInvestmentWallet.ICBMnEuro | EInvestmentWallet.NEur;
   balanceNEuro: string;
   icbmBalanceNEuro?: string;
 }
@@ -43,8 +43,8 @@ export type WalletSelectionData = IEthWallet | IInEuroWallet;
 
 interface IProps {
   wallets: DeepReadonly<WalletSelectionData[]>;
-  currentType?: EInvestmentType;
-  onSelect: (type: EInvestmentType) => void;
+  currentType?: EInvestmentWallet;
+  onSelect: (type: EInvestmentWallet) => void;
   startUpgradeFlow: (token: ETokenType) => void;
 }
 
@@ -56,10 +56,11 @@ const WalletBalance: React.FunctionComponent<WalletSelectionData> = wallet => (
   </div>
 );
 
+//TODO move number formatting to sagas.
 const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet => {
   switch (wallet.type) {
-    case EInvestmentType.ICBMEth:
-    case EInvestmentType.Eth:
+    case EInvestmentWallet.ICBMEth:
+    case EInvestmentWallet.Eth:
       return (
         <>
           <Money
@@ -80,8 +81,8 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
         </>
       );
 
-    case EInvestmentType.NEur:
-    case EInvestmentType.ICBMnEuro:
+    case EInvestmentWallet.NEur:
+    case EInvestmentWallet.ICBMnEuro:
       return (
         <>
           <Money
@@ -113,7 +114,8 @@ export const InvestmentTypeSelector: React.FunctionComponent<IProps> = ({
   <div className={styles.container}>
     {wallets.map(wallet => {
       const checked = currentType === wallet.type;
-      const token = wallet.type === EInvestmentType.ICBMnEuro ? ETokenType.EURO : ETokenType.ETHER;
+      const token =
+        wallet.type === EInvestmentWallet.ICBMnEuro ? ETokenType.EURO : ETokenType.ETHER;
 
       return (
         <Col md="6" key={wallet.type}>
@@ -122,7 +124,7 @@ export const InvestmentTypeSelector: React.FunctionComponent<IProps> = ({
               <input
                 className={styles.input}
                 checked={checked}
-                onChange={e => onSelect(e.target.value as EInvestmentType)}
+                onChange={e => onSelect(e.target.value as EInvestmentWallet)}
                 type="radio"
                 name="investmentType"
                 value={wallet.type}

@@ -16,7 +16,7 @@ import {
 } from "../../../../wallet/selectors";
 import { ENEURWalletStatus } from "../../../../wallet/types";
 import { selectTxUserFlowInvestmentEtoId } from "../selectors";
-import { EInvestmentType } from "../types";
+import { EInvestmentWallet } from "../types";
 import { createWallets, hasFunds } from "../utils";
 
 export function* generateWalletsData(): Generator<any, any, any> {
@@ -48,16 +48,16 @@ export function* generateWalletsData(): Generator<any, any, any> {
     icbmBalanceEthAsEuro: select(selectICBMLockedEtherBalanceEuroAmount),
   });
 
-  let activeInvestmentTypes: EInvestmentType[] = [];
+  let activeInvestmentTypes: EInvestmentWallet[] = [];
 
   //todo rewrite this logic in a nicer way
   if (hasFunds(ethBalance)) {
-    activeInvestmentTypes.unshift(EInvestmentType.Eth);
+    activeInvestmentTypes.unshift(EInvestmentWallet.Eth);
   }
 
   // if neur is not restricted because of the us state
   if (hasFunds(balanceNEur) && neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
-    activeInvestmentTypes.unshift(EInvestmentType.NEur);
+    activeInvestmentTypes.unshift(EInvestmentWallet.NEur);
   }
 
   // no regular investment if not whitelisted in pre eto
@@ -67,10 +67,10 @@ export function* generateWalletsData(): Generator<any, any, any> {
 
   // only ICBM investment if balance available
   if (hasFunds(lockedBalanceNEuro)) {
-    activeInvestmentTypes.unshift(EInvestmentType.ICBMnEuro);
+    activeInvestmentTypes.unshift(EInvestmentWallet.ICBMnEuro);
   }
   if (hasFunds(lockedBalanceEth)) {
-    activeInvestmentTypes.unshift(EInvestmentType.ICBMEth);
+    activeInvestmentTypes.unshift(EInvestmentWallet.ICBMEth);
   }
 
   return createWallets({

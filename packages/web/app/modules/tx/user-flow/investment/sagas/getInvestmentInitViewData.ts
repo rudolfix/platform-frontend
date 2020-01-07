@@ -38,15 +38,15 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
   yield call(preloadInvestmentData, eto);
 
   const wallets: WalletSelectionData[] = yield call(generateWalletsData);
-  const investmentType = yield call(getInvestmentType, wallets);
-  const investmentCurrency = yield call(getInvestmentCurrency, investmentType);
+  const investmentWallet = yield call(getInvestmentType, wallets);
+  const investmentCurrency = yield call(getInvestmentCurrency, investmentWallet);
 
   const initialDefaultValues = {
     eto,
     wallets,
     investmentValue: "",
     euroValueWithFallback: "0",
-    investmentType,
+    investmentWallet,
     investmentCurrency,
     totalCostEth: "0",
     totalCostEuro: "0",
@@ -70,7 +70,7 @@ export function* getInvestmentInitViewData(_: TGlobalDependencies): Generator<an
   const { minTicketEur, minTicketEth } = yield call(getTicketSizes, {
     eto,
     euroValueUlps: "0",
-    investmentType,
+    investmentWallet,
     eurPriceEther,
   });
 

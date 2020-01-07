@@ -3,27 +3,27 @@ import { call } from "redux-saga/effects";
 import { ERoundingMode } from "../../../../../components/shared/formatters/utils";
 import { multiplyBigNumbers } from "../../../../../utils/BigNumberUtils";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../eto/types";
-import { EInvestmentType } from "../types";
+import { EInvestmentWallet } from "../types";
 import { formatMinMaxTickets } from "../utils";
 import { getCalculatedContribution } from "./getCalculatedContribution";
 
 export type TGetmaxTicketEurInput = {
   eto: TEtoWithCompanyAndContractReadonly;
   euroValueUlps: string;
-  investmentType: EInvestmentType;
+  investmentWallet: EInvestmentWallet;
   eurPriceEther: string;
 };
 
 export function* getTicketSizes({
   eto,
   euroValueUlps,
-  investmentType,
+  investmentWallet,
   eurPriceEther,
 }: TGetmaxTicketEurInput): Generator<any, any, any> {
   const etoTicketSizes = yield call(getCalculatedContribution, {
     eto,
     euroValueUlps,
-    investmentType,
+    investmentWallet,
   });
 
   const minTicketEur =

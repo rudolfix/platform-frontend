@@ -12,8 +12,8 @@ import {
   EInputValidationError,
   EInvestmentCurrency,
   EInvestmentErrorState,
-  EInvestmentType,
   EInvestmentValueType,
+  EInvestmentWallet,
 } from "../types";
 import { chooseTransactionValue } from "../utils";
 import { computeCurrencies } from "./computeCurrencies";
@@ -23,7 +23,7 @@ import { validateTxGas } from "./validateTxGas";
 export type TValidateInvestmentValueInput = {
   value: string;
   investmentCurrency: EInvestmentCurrency;
-  investmentType: EInvestmentType;
+  investmentWallet: EInvestmentWallet;
   etoId: string;
   investmentValueType: EInvestmentValueType;
 };
@@ -31,7 +31,7 @@ export type TValidateInvestmentValueInput = {
 export function* validateInvestmentValue({
   value,
   investmentCurrency,
-  investmentType,
+  investmentWallet,
   etoId,
   investmentValueType,
 }: TValidateInvestmentValueInput): Generator<any, any, any> {
@@ -62,11 +62,11 @@ export function* validateInvestmentValue({
 
   const investmentTransaction = yield neuCall(generateInvestmentTransaction, {
     investmentValueType,
-    investmentType,
+    investmentWallet,
     etoId,
     investAmountUlps: chooseTransactionValue(
       investmentValueType,
-      investmentType,
+      investmentWallet,
       ethValueUlps,
       euroValueUlps,
     ),

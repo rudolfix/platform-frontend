@@ -19,10 +19,11 @@ import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { ICalculatedContribution, IInvestorTicket } from "../../../investor-portfolio/types";
 import { MIMIMUM_RETAIL_TICKET_EUR_ULPS } from "../../../investor-portfolio/utils";
 import { isEthInvestment } from "../../transactions/investment/selectors";
-import { EInvestmentCurrency, EInvestmentType, EInvestmentValueType } from "./types";
+import { EInvestmentCurrency, EInvestmentValueType, EInvestmentWallet } from "./types";
 
-export const isIcbmInvestment = (investmentType: EInvestmentType) =>
-  investmentType === EInvestmentType.ICBMEth || investmentType === EInvestmentType.ICBMnEuro;
+export const isIcbmInvestment = (investmentWallet: EInvestmentWallet) =>
+  investmentWallet === EInvestmentWallet.ICBMEth ||
+  investmentWallet === EInvestmentWallet.ICBMnEuro;
 
 export const hasFunds = (input: string) => compareBigNumbers(input, "0") > 0;
 
@@ -35,7 +36,7 @@ export type TCreateWalletsInput = {
   icbmBalanceEth: string;
   ethBalanceAsEuro: string;
   icbmBalanceEthAsEuro: string;
-  activeInvestmentTypes: EInvestmentType[];
+  activeInvestmentTypes: EInvestmentWallet[];
 };
 
 export function createWallets({
@@ -50,24 +51,24 @@ export function createWallets({
   activeInvestmentTypes,
 }: TCreateWalletsInput): WalletSelectionData[] {
   const wallets: Dictionary<WalletSelectionData> = {
-    [EInvestmentType.Eth]: {
+    [EInvestmentWallet.Eth]: {
       balanceEth: ethBalance,
       balanceEur: ethBalanceAsEuro,
-      type: EInvestmentType.Eth,
+      type: EInvestmentWallet.Eth,
       name: "ETH Balance",
       enabled: false,
       hasFunds: ethBalance !== "0",
     },
-    [EInvestmentType.NEur]: {
+    [EInvestmentWallet.NEur]: {
       balanceNEuro: balanceNEur,
       balanceEur: balanceNEur,
-      type: EInvestmentType.NEur,
+      type: EInvestmentWallet.NEur,
       name: "nEUR Balance",
       enabled: false,
       hasFunds: balanceNEur !== "0",
     },
-    [EInvestmentType.ICBMnEuro]: {
-      type: EInvestmentType.ICBMnEuro,
+    [EInvestmentWallet.ICBMnEuro]: {
+      type: EInvestmentWallet.ICBMnEuro,
       name: "ICBM Balance",
       balanceNEuro: lockedBalanceNEuro,
       balanceEur: lockedBalanceNEuro,
@@ -76,8 +77,8 @@ export function createWallets({
       hasFunds: icbmBalanceNEuro !== "0" || lockedBalanceNEuro !== "0",
       enabled: false,
     },
-    [EInvestmentType.ICBMEth]: {
-      type: EInvestmentType.ICBMEth,
+    [EInvestmentWallet.ICBMEth]: {
+      type: EInvestmentWallet.ICBMEth,
       name: "ICBM Balance",
       balanceEth: lockedBalanceEth,
       balanceEur: ethBalanceAsEuro,
@@ -99,21 +100,21 @@ export function createWallets({
   );
 }
 
-export const getInvestmentCurrency = (investmentType: EInvestmentType) => {
-  switch (investmentType) {
-    case EInvestmentType.Eth:
-    case EInvestmentType.ICBMEth:
+export const getInvestmentCurrency = (investmentWallet: EInvestmentWallet) => {
+  switch (investmentWallet) {
+    case EInvestmentWallet.Eth:
+    case EInvestmentWallet.ICBMEth:
       return EInvestmentCurrency.ETH;
-    case EInvestmentType.NEur:
-    case EInvestmentType.ICBMnEuro:
+    case EInvestmentWallet.NEur:
+    case EInvestmentWallet.ICBMnEuro:
       return EInvestmentCurrency.EUR_TOKEN;
     default:
-      return assertNever(investmentType);
+      return assertNever(investmentWallet);
   }
 };
 
-function isICBMWallet(type: EInvestmentType): boolean {
-  return includes(type, [EInvestmentType.ICBMnEuro, EInvestmentType.ICBMEth]);
+function isICBMWallet(type: EInvestmentWallet): boolean {
+  return includes(type, [EInvestmentWallet.ICBMnEuro, EInvestmentWallet.ICBMEth]);
 }
 
 export const formatMinMaxTickets = (value: TBigNumberVariants, roundingMode: ERoundingMode) =>
@@ -126,7 +127,7 @@ export const formatMinMaxTickets = (value: TBigNumberVariants, roundingMode: ERo
     roundingMode: roundingMode,
   });
 
-export const getInvestmentType = (wallets: WalletSelectionData[]): EInvestmentType => {
+export const getInvestmentType = (wallets: WalletSelectionData[]): EInvestmentWallet => {
   if (!wallets.find((wallet: WalletSelectionData) => wallet.type === DEFAULT_INVESTMENT_TYPE)) {
     return wallets[0].type;
   } else {
@@ -177,20 +178,20 @@ export const calculateTicketLimitsUlps = ({
   };
 };
 
-export const getCurrencyByInvestmentType = (type: EInvestmentType) => {
+export const getCurrencyByInvestmentType = (type: EInvestmentWallet) => {
   switch (type) {
-    case EInvestmentType.NEur:
-    case EInvestmentType.ICBMnEuro:
+    case EInvestmentWallet.NEur:
+    case EInvestmentWallet.ICBMnEuro:
       return ECurrency.EUR_TOKEN;
-    case EInvestmentType.Eth:
-    case EInvestmentType.ICBMEth:
+    case EInvestmentWallet.Eth:
+    case EInvestmentWallet.ICBMEth:
       return ECurrency.ETH;
   }
 };
 
 export const chooseTransactionValue = (
   investmentValueType: EInvestmentValueType,
-  investmentType: EInvestmentType,
+  investmentType: EInvestmentWallet,
   ethValueUlps: string,
   euroValueUlps: string,
 ) => {

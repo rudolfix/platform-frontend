@@ -11,6 +11,11 @@ executors:
       - image: circleci/node:11.14.0-browsers
     working_directory: /home/circleci/app
 
+  regviz:
+    docker:
+      - image: regviz/node-xcb
+    working_directory: /home/circleci/app
+
 
 jobs:
   install-lint-test:
@@ -119,7 +124,7 @@ jobs:
       - run: yarn workspace @neufund/web codechecks
 
   codechecks-vis-reg:
-    executor: docker-browsers
+    executor: regviz
 
     steps:
       - checkout
@@ -143,7 +148,7 @@ jobs:
             - v25-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn workspace @neufund/web deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
+      - run: yarn workspace @neufund/web storybook:deploy-ghpages --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
 
 workflows:
   version: 2

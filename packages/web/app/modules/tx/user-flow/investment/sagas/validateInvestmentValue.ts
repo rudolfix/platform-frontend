@@ -40,8 +40,8 @@ export function* validateInvestmentValue({
     return { validationError: EInputValidationError.IS_EMPTY, txDetails: null };
   }
 
-  const isAValidNumber = yield call(parseInputToNumber, value);
-  if (!isAValidNumber) {
+  const isValidNumber = yield call(parseInputToNumber, value);
+  if (!isValidNumber) {
     return { validationError: EInputValidationError.NOT_A_NUMBER, txDetails: null };
   }
 

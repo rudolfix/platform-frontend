@@ -5,7 +5,8 @@ import { EValidationState } from "../../../validator/reducer";
 import { validateGas } from "../../../validator/sagas";
 
 export function* validateTxGas(investmentTransaction: ITxData): Generator<any, any, any> {
-  //this is just a wrapper for validateGas that uses exceptions to express validation results.
+  //this is just a wrapper for validateGas() which uses exceptions to express validation results.
+  // This wrapper converts them into a more convenient form
   try {
     yield neuCall(validateGas, investmentTransaction);
 

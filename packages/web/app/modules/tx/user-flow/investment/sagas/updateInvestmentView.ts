@@ -9,6 +9,7 @@ import {
   selectDecimalPlaces,
 } from "../../../../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
+import { convertFromUlps } from "../../../../../utils/NumberUtils";
 import { actions, TActionFromCreator } from "../../../../actions";
 import { selectTxUserFlowInvestmentState } from "../selectors";
 import { EInvestmentValueType, EInvestmentWallet, TTxUserFlowInvestmentReadyState } from "../types";
@@ -17,9 +18,10 @@ import { generateUpdatedView } from "./generateUpdatedView";
 import { investEntireBalance } from "./investEntireBalance";
 import { validateInvestmentValue } from "./validateInvestmentValue";
 
-function* formatEntireBalance(investmentWallet: EInvestmentWallet): Generator<any, string, any> {
-  const balance = yield call(calculateEntireBalanceValue, investmentWallet);
-
+function* formatBalance(
+  value: string,
+  investmentWallet: EInvestmentWallet,
+): Generator<any, string, any> {
   let valueType: ECurrency;
   switch (investmentWallet) {
     case EInvestmentWallet.ICBMEth:
@@ -35,12 +37,25 @@ function* formatEntireBalance(investmentWallet: EInvestmentWallet): Generator<an
   const outputFormat = ENumberOutputFormat.FULL;
 
   return formatNumber({
-    value: balance,
-    inputFormat: ENumberInputFormat.ULPS,
+    value,
+    inputFormat: ENumberInputFormat.FLOAT,
     roundingMode: ERoundingMode.DOWN,
     outputFormat,
     decimalPlaces: selectDecimalPlaces(valueType, outputFormat),
   });
+}
+
+function* valueIsEntireBalance(
+  investmentWallet: EInvestmentWallet,
+  value: string,
+): Generator<any, any, any> {
+  const fullWalletBalance = convertFromUlps(
+    yield call(calculateEntireBalanceValue, investmentWallet, EInvestmentValueType.PARTIAL_BALANCE),
+  ).toString();
+  const formattedInvestmentValue = yield call(formatBalance, value, investmentWallet);
+  const formattedFullWalletBalance = yield call(formatBalance, fullWalletBalance, investmentWallet);
+
+  return formattedInvestmentValue === formattedFullWalletBalance;
 }
 
 export function* updateInvestmentView(
@@ -62,11 +77,12 @@ export function* updateInvestmentView(
   yield put(actions.txUserFlowInvestment.setInvestmentValue(payload.value));
   yield put(actions.txUserFlowInvestment.setFormStateValidating());
 
-  if (payload.value === (yield call(formatEntireBalance, investmentWallet))) {
-    // if user types in the full amount, switch to entire balance investment flow
-    // in order to check it we format the investment wallet balance the same way it's shown in the UI
-    // and compare with input value
-    //TODO formatting should be done in initInvestmentView saga
+  // in case user types in the full amount as they see it in the UI (truncated to 2/4 decimal places and rounded up),
+  // we switch to 'invest entire balance' flow.
+  // To check it we format the investment wallet balance the same way it's shown in the UI
+  // and compare to input value
+  if (yield call(valueIsEntireBalance, investmentWallet, payload.value)) {
+    //TODO formatting of wallet balances should be done in initInvestmentView saga, UI should only get strings ready to be shown
     yield call(investEntireBalance);
   } else {
     const validationResult = yield call(validateInvestmentValue, {

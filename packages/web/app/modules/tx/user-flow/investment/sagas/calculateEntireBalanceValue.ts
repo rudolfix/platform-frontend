@@ -7,11 +7,12 @@ import {
   selectLockedEtherBalance,
   selectLockedEuroTokenBalance,
 } from "../../../../wallet/selectors";
-import { selectTxGasCostEthUlps } from "../../../sender/selectors";
-import { EInvestmentWallet } from "../types";
+import { selectFakeTxGasCostEthUlps } from "../../../sender/selectors";
+import { EInvestmentValueType, EInvestmentWallet } from "../types";
 
 export function* calculateEntireBalanceValue(
   investmentWallet: EInvestmentWallet,
+  investmentValueType: EInvestmentValueType,
 ): Generator<any, string, any> {
   switch (investmentWallet) {
     case EInvestmentWallet.ICBMEth:
@@ -24,10 +25,14 @@ export function* calculateEntireBalanceValue(
       return yield select(selectLiquidEuroTokenBalance);
 
     case EInvestmentWallet.Eth:
-      const [gasCostEth, fullBalance] = yield all([
-        select(selectTxGasCostEthUlps),
-        select(selectLiquidEtherBalance),
-      ]);
-      return subtractBigNumbers([fullBalance, gasCostEth]);
+      if (investmentValueType === EInvestmentValueType.FULL_BALANCE) {
+        const [gasCostEth, fullBalance] = yield all([
+          select(selectFakeTxGasCostEthUlps),
+          select(selectLiquidEtherBalance),
+        ]);
+        return subtractBigNumbers([fullBalance, gasCostEth]);
+      } else {
+        return yield select(selectLiquidEtherBalance);
+      }
   }
 }

@@ -28,13 +28,7 @@ export type TValidateInvestmentValueInput = {
   investmentValueType: EInvestmentValueType;
 };
 
-export function* validateInvestmentValue({
-  value,
-  investmentCurrency,
-  investmentWallet,
-  etoId,
-  investmentValueType,
-}: TValidateInvestmentValueInput): Generator<any, any, any> {
+export function* inputIsInvalid(value: string): Generator<any, any, any> {
   const isEmpty = yield call(isEmptyValue, value);
   if (isEmpty) {
     return { validationError: EInputValidationError.IS_EMPTY, txDetails: null };
@@ -43,6 +37,21 @@ export function* validateInvestmentValue({
   const isValidNumber = yield call(parseInputToNumber, value);
   if (!isValidNumber) {
     return { validationError: EInputValidationError.NOT_A_NUMBER, txDetails: null };
+  }
+  return undefined;
+}
+
+export function* validateInvestmentValue({
+  value,
+  investmentCurrency,
+  investmentWallet,
+  etoId,
+  investmentValueType,
+}: TValidateInvestmentValueInput): Generator<any, any, any> {
+  const inputValidationError = yield inputIsInvalid(value);
+
+  if (inputValidationError) {
+    return inputValidationError;
   }
 
   const investmentValueUlps = yield call(convertToUlps, value);

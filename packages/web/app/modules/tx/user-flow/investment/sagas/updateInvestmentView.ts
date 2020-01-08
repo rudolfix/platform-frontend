@@ -16,7 +16,7 @@ import { EInvestmentValueType, EInvestmentWallet, TTxUserFlowInvestmentReadyStat
 import { calculateEntireBalanceValue } from "./calculateEntireBalanceValue";
 import { generateUpdatedView } from "./generateUpdatedView";
 import { investEntireBalance } from "./investEntireBalance";
-import { validateInvestmentValue } from "./validateInvestmentValue";
+import { inputIsInvalid, validateInvestmentValue } from "./validateInvestmentValue";
 
 function* formatBalance(
   value: string,
@@ -49,6 +49,10 @@ function* valueIsEntireBalance(
   investmentWallet: EInvestmentWallet,
   value: string,
 ): Generator<any, any, any> {
+  if (yield call(inputIsInvalid, value)) {
+    return false;
+  }
+
   const fullWalletBalance = convertFromUlps(
     yield call(calculateEntireBalanceValue, investmentWallet, EInvestmentValueType.PARTIAL_BALANCE),
   ).toString();

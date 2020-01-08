@@ -11,7 +11,7 @@
   position: absolute;
   top: $header-height-sm;
   left: 0;
-
+  overflow: auto;
   width: 100%;
   height: calc(100vh - #{$header-height-sm});
   background-color: $neu-white-two;

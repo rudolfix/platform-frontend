@@ -8,8 +8,8 @@ export function* changeInvestmentWallet(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.txUserFlowInvestment.changeInvestmentWallet>,
 ): Generator<any, any, any> {
-    yield put(actions.txUserFlowInvestment.setInvestmentWallet(payload.investmentWallet));
+  yield put(actions.txUserFlowInvestment.setInvestmentWallet(payload.investmentWallet));
 
-    const viewData = yield call(reinitInvestmentView);
-    yield put(actions.txUserFlowInvestment.setViewData(viewData));
+  const viewData = yield call(reinitInvestmentView);
+  yield put(actions.txUserFlowInvestment.setViewData(viewData));
 }

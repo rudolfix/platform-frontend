@@ -1,5 +1,4 @@
-import { END, eventChannel } from "redux-saga";
-import { fork, put, take } from "redux-saga/effects";
+import { END, eventChannel, fork, put, take } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { TKycOnfidoUploadRequest } from "../../../../lib/api/kyc/KycApi.interfaces";

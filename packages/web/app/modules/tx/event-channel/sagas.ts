@@ -1,5 +1,4 @@
-import { buffers, channel, Channel } from "redux-saga";
-import { call, delay, put, race } from "redux-saga/effects";
+import { buffers, call, channel, Channel, delay, put, race } from "@neufund/sagas";
 import * as Web3 from "web3";
 
 import { BLOCK_MINING_TIME_DELAY } from "../../../config/constants";

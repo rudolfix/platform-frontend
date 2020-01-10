@@ -1,4 +1,4 @@
-import { call, select } from "redux-saga/effects";
+import { call, select } from "@neufund/sagas";
 
 import { EInvestmentErrorMessage } from "../../../../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../../../../components/translatedMessages/utils";

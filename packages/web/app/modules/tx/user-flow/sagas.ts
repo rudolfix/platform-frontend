@@ -1,4 +1,4 @@
-import { fork } from "redux-saga/effects";
+import { fork } from "@neufund/sagas";
 
 import { txUserFlowInvestmentSagas } from "./investment/sagas";
 import { txTransferUserFlowSagasWatcher } from "./transfer/sagas";

@@ -1,4 +1,4 @@
-import { all, select } from "redux-saga/effects";
+import { all, select } from "@neufund/sagas";
 
 import { subtractBigNumbers } from "../../../../../utils/BigNumberUtils";
 import {

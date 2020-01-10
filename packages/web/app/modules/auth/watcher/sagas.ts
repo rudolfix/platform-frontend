@@ -1,5 +1,4 @@
-import { channel } from "redux-saga";
-import { fork, put, race, take } from "redux-saga/effects";
+import { channel, fork, put, race, take } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserActivityMessage } from "../../../lib/dependencies/broadcast-channel/types";

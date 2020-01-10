@@ -1,4 +1,4 @@
-import { all, put, take } from "redux-saga/effects";
+import { all, put, take } from "@neufund/sagas";
 
 import { actions } from "../../../../actions";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../eto/types";

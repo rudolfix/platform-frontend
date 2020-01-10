@@ -1,4 +1,4 @@
-import { all, call, fork, getContext } from "redux-saga/effects";
+import { all, call, fork, getContext } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../di/setupBindings";
 import { actions } from "./actions";
@@ -87,7 +87,7 @@ function* handleRootError(error: Error): Generator<any, any, any> {
   logger.error(error);
 }
 
-export function* rootSaga(): /* Iterator<unknown, Saga<any[]>> */ any {
+export function* rootSaga(): Generator<any, any, any> {
   while (true) {
     try {
       yield call(allSagas);

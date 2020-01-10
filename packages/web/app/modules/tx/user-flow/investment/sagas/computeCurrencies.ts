@@ -1,5 +1,5 @@
+import { select } from "@neufund/sagas";
 import BigNumber from "bignumber.js";
-import { select } from "redux-saga/effects";
 
 import { selectEtherPriceEur, selectEurPriceEther } from "../../../../shared/tokenPrice/selectors";
 import { EInvestmentCurrency } from "../types";

@@ -1,5 +1,5 @@
+import { delay, put, select, takeLatest } from "@neufund/sagas";
 import { isEqual } from "lodash/fp";
-import { delay, put, select, takeLatest } from "redux-saga/effects";
 
 import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";

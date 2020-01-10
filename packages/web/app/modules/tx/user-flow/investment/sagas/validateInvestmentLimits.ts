@@ -1,4 +1,4 @@
-import { all, call, put, select } from "redux-saga/effects";
+import { all, call, put, select } from "@neufund/sagas";
 
 import { TEtoSpecsData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { addBigNumbers, compareBigNumbers } from "../../../../../utils/BigNumberUtils";

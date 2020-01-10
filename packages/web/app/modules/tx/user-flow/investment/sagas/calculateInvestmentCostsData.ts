@@ -1,4 +1,4 @@
-import { all, call, select } from "redux-saga/effects";
+import { all, call, select } from "@neufund/sagas";
 
 import { formatThousands } from "../../../../../components/shared/formatters/utils";
 import { IGasValidationData } from "../../../../../lib/web3/types";

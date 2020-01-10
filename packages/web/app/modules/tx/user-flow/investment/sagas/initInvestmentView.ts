@@ -1,4 +1,4 @@
-import { put, select, take } from "redux-saga/effects";
+import { put, select, take } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { EProcessState } from "../../../../../utils/enums/processStates";

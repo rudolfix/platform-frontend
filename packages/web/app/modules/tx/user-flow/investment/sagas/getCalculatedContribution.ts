@@ -1,4 +1,4 @@
-import { call, select } from "redux-saga/effects";
+import { call, select } from "@neufund/sagas";
 
 import { TEtoSpecsData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../eto/types";

@@ -1,4 +1,4 @@
-import { all, select } from "redux-saga/effects";
+import { all, select } from "@neufund/sagas";
 
 import { selectEtoOnChainStateById } from "../../../../eto/selectors";
 import { EETOStateOnChain } from "../../../../eto/types";

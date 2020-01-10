@@ -1,4 +1,4 @@
-import { call, select } from "redux-saga/effects";
+import { call, select } from "@neufund/sagas";
 
 import { selectTxUserFlowInvestmentState } from "../selectors";
 import { EInvestmentFormState, TTxUserFlowInvestmentReadyState } from "../types";

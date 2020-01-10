@@ -1,4 +1,4 @@
-import { fork } from "redux-saga/effects";
+import { fork } from "@neufund/sagas";
 
 import { actions } from "../../../actions";
 import { neuTakeLatest } from "../../../sagasUtils";

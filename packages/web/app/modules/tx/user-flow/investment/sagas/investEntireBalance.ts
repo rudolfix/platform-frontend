@@ -1,4 +1,4 @@
-import { all, put, select } from "redux-saga/effects";
+import { all, put, select } from "@neufund/sagas";
 import { call } from "typed-redux-saga";
 
 import { convertFromUlps } from "../../../../../utils/NumberUtils";

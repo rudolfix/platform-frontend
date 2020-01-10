@@ -1,5 +1,5 @@
+import { all, call, put, select } from "@neufund/sagas";
 import BigNumber from "bignumber.js";
-import { all, call, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { convertToUlps } from "../../../../../utils/NumberUtils";

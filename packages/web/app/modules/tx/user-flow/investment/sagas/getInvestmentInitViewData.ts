@@ -1,4 +1,4 @@
-import { all, call, select } from "redux-saga/effects";
+import { all, call, select } from "@neufund/sagas";
 
 import { WalletSelectionData } from "../../../../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import {

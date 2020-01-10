@@ -1,4 +1,4 @@
-import { call } from "redux-saga/effects";
+import { call } from "@neufund/sagas";
 
 import {
   isEmptyValue,

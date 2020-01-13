@@ -18,9 +18,18 @@ storiesOf("RecoveryProcesses", module)
       },
     }),
   )
-  .add("Enter Seed", () => <RecoveryProcessesComponent submitForm={action("recover")} />)
+  .add("Enter Seed", () => (
+    <RecoveryProcessesComponent
+      submitForm={action("recover")}
+      onInvalidSeed={action("onInvalidSeed")}
+    />
+  ))
   .add("Enter Email and Password", () => (
-    <RecoveryProcessesComponent submitForm={action("recover")} seed="HEHE IAMA SEED PHRASE" />
+    <RecoveryProcessesComponent
+      submitForm={action("recover")}
+      seed="HEHE IAMA SEED PHRASE"
+      onInvalidSeed={action("onInvalidSeed")}
+    />
   ));
 
 storiesOf("RecoveryProcesses Message Signing", module)

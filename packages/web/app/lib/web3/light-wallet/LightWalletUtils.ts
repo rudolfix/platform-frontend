@@ -1,3 +1,4 @@
+import { isValid as isMnemonicValid } from "bitcore-mnemonic";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as nacl from "tweetnacl";
 import * as naclUtil from "tweetnacl-util";
@@ -157,3 +158,5 @@ export const getWalletPrivKey = async (
     throw new LightWrongPasswordSaltError();
   }
 };
+
+export const testWalletSeed = (seed: string): boolean => isMnemonicValid(seed);

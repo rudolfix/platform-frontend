@@ -1,6 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Neufund/platform-frontend.svg?style=svg)](https://circleci.com/gh/Neufund/platform-frontend)
 
-
 ![Neufund logo](https://neufund.org/img/logo-neufund.svg)
 
 A monorepo of Neufund frontend.

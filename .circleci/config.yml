@@ -11,12 +11,6 @@ executors:
       - image: circleci/node:11.14.0-browsers
     working_directory: /home/circleci/app
 
-  regviz:
-    docker:
-      - image: regviz/node-xcb
-    working_directory: /home/circleci/app
-
-
 jobs:
   install-lint-test:
     # install and lint is taken as one job to remove required time for downloading cache
@@ -124,7 +118,7 @@ jobs:
       - run: yarn workspace @neufund/web codechecks
 
   codechecks-vis-reg:
-    executor: regviz
+    executor: docker-browsers
 
     steps:
       - checkout

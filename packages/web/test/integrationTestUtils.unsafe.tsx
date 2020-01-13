@@ -157,6 +157,7 @@ export async function waitForTid(component: ReactWrapper, id: string): Promise<v
     throw new Error(`Timeout while waiting for '${id}'`);
   }
 }
+
 export async function waitForPredicate(predicate: () => boolean, errorMsg: string): Promise<void> {
   // wait until event queue is empty :/ currently we don't have a better way to solve it
   let waitTime = 20;

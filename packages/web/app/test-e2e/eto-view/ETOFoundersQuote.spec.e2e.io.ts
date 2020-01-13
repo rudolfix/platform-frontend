@@ -8,7 +8,7 @@ const assertFoundersQuote = () => {
 };
 
 describe("ETO founders quote", () => {
-  it("should dispaly founders quote for eto in draft state for both issuer and investor", () => {
+  it.skip("should dispaly founders quote for eto in draft state for both issuer and investor", () => {
     loginFixtureAccount("ISSUER_HAS_KYC_AND_FILLED_COMPANY_DATA");
 
     assertFoundersQuote();

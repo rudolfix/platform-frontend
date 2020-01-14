@@ -83,9 +83,9 @@ export const removeEmptyKeyValueField = () => (data: ICompoundField | undefined)
 type TConvertPercentageToFractionOptions = { passThroughInvalidData: true };
 // add an option to pass invalid values on. This is to be used in validation pipelines
 export const convertPercentageToFraction = (options?: TConvertPercentageToFractionOptions) => (
-  data: number | undefined | TBigNumberVariants,
-): number | undefined => {
-  const parseFn = (value: number | TBigNumberVariants) => {
+  data: number | undefined,
+) => {
+  const parseFn = (value: number | TBigNumberVariants): number => {
     // cast to string to avoid errors with longer numbers
     const valueBn =
       typeof value === "number" ? new BigNumber(value.toString()) : new BigNumber(value);
@@ -103,14 +103,13 @@ export const convertPercentageToFraction = (options?: TConvertPercentageToFracti
 
       // return directly if not valid
       if (!data) {
-        return undefined;
+        return data;
       }
 
       return parseFn(data);
     } catch {
-      // TODO: return string after refactoring ETO display
       // return value if BigNumber throws not a number error
-      return typeof data === "number" ? data : undefined;
+      return data;
     }
   } else {
     invariant(

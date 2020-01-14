@@ -32,7 +32,9 @@ describe("Backup Seed and Private Key save and view", function(): void {
     assertLockedAccessModal();
   });
 
-  it("should allow to copy private key", () => {
+  it.skip("should allow to copy private key", () => {
+    // Temporary skip this test, due of issues related to Cypress run on top of Chrome
+    // https://github.com/cypress-io/cypress/issues/2752
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
     goToProfile();
 

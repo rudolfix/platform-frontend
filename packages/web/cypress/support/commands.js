@@ -24,6 +24,8 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import { tid } from "../../app/test-e2e/utils/selectors";
+
 Cypress.Commands.add("awaitedClick", { prevSubject: "element" }, (subject, waitDuration = 500) =>
   cy
     .get(subject.selector)
@@ -124,4 +126,65 @@ Cypress.Commands.add("iframe", selector => {
       });
     });
   });
+});
+
+Cypress.Screenshot.defaults({
+  onBeforeScreenshot($el) {
+    const $header = $el.find("header");
+    const $modal = $el.find(".modal");
+
+    if ($header) {
+      $header.css("position", "relative");
+    }
+
+    if ($modal) {
+      $modal.css("position", "absolute");
+      $modal.css("margin-top", "-100%");
+    }
+  },
+
+  onAfterScreenshot($el, _) {
+    const $header = $el.find("header");
+    const $modal = $el.find(".modal");
+
+    if ($header) {
+      $header.css("position", "sticky");
+    }
+
+    if ($modal) {
+      $modal.css("position", "fixed");
+      $modal.css("margin-top", "0");
+    }
+  },
+  blackout: [
+    // General blackout
+    tid("value"),
+    // Incoming payout blackout
+    tid("incoming-payout-counter"),
+    `${tid("incoming-payout-euro-token")} ${tid("value")}`,
+    `${tid("incoming-payout-ether-token")} ${tid("value")}`,
+    // My NEU balance widget blackout
+    tid("my-neu-widget-neumark-balance.large-value"),
+    tid("my-neu-widget-neumark-balance.value"),
+    // My wallet widget blackout
+    tid("my-wallet-widget-eur-token.large-value"),
+    tid("my-wallet-widget-eur-token.value"),
+    tid("my-wallet-widget-eth-token.large-value"),
+    tid("my-wallet-widget-eth-token.value"),
+    tid("my-wallet-widget-total"),
+    // Portfolio blackout
+    tid("asset-portfolio.payout.amount-to-be-claimed"),
+    tid("portfolio-reserved-asset-token-balance"),
+    // Profile blackout
+    tid("account-address.your.ether-address.from-div"),
+    tid("profile.verify-email-widget.verified-email"),
+  ],
+});
+
+Cypress.Commands.add("awaitedScreenshot", selector => {
+  cy.get(selector).should("exist");
+
+  cy.wait(100);
+
+  cy.screenshot();
 });

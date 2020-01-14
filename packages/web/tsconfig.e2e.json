@@ -13,7 +13,8 @@
     "./typings/**/*.d.ts",
     "./cypress/typings/**/*.d.ts",
     "./app/test-e2e/**/*.spec.e2e.ts",
-    "./app/test-e2e/**/*.spec.e2e.io.ts"
+    "./app/test-e2e/**/*.spec.e2e.io.ts",
+    "./app/test-e2e/**/*.spec.e2e.vis-reg.ts"
   ],
   "exclude": []
 }

@@ -92,7 +92,6 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci/app
-      - checkout
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
           keys:
@@ -131,6 +130,24 @@ jobs:
       - run: yarn workspace @neufund/web storybook:screenshots
       - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
 
+  codechecks-e2e-vis-reg:
+    executor: docker-browsers
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v25-deps-{{ checksum "package.json" }}
+            - v25-deps-
+
+      - run: yarn --frozen-lockfile
+      - run:
+          command: yarn workspace @neufund/web build:prod:e2e:io
+          no_output_timeout: 10m
+      - run:
+          command: yarn workspace @neufund/web test:e2e:vis-reg
+      - run: yarn workspace @neufund/web codechecks ./codechecks-e2e-vis-reg.ts
+
   deploy-storybook:
     executor: docker
 
@@ -153,6 +170,7 @@ workflows:
       - build-docker-test-e2e:
           requires:
             - install-lint-test
+            - codechecks-e2e-vis-reg
       - build-frontend:
           requires:
             - install-lint-test
@@ -165,6 +183,9 @@ workflows:
             - build-frontend
             - build-docker-test-e2e
       - codechecks-vis-reg:
+          requires:
+            - build-frontend
+      - codechecks-e2e-vis-reg:
           requires:
             - build-frontend
 
@@ -193,6 +214,9 @@ workflows:
           requires:
             - build-frontend
       - codechecks-vis-reg:
+          requires:
+            - build-frontend
+      - codechecks-e2e-vis-reg:
           requires:
             - build-frontend
 

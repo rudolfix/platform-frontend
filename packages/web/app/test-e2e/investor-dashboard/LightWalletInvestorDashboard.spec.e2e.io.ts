@@ -76,11 +76,11 @@ describe("Incoming payout", function(): void {
     const ETO_ID = eto.address;
     const numberOfInvestors = Object.keys(eto.investors).length;
 
-    createAndLoginNewUser({ type: "investor" }).then(() => {
-      goToDashboard();
-      cy.get(tid(`eto-overview-${ETO_ID}-investors-count`))
-        .get(tid("value"))
-        .contains(numberOfInvestors);
-    });
+    createAndLoginNewUser({ type: "investor" });
+
+    goToDashboard();
+    cy.get(tid(`eto-overview-${ETO_ID}-investors-count`))
+      .get(tid("value"))
+      .contains(numberOfInvestors);
   });
 });

@@ -1,0 +1,11 @@
+{
+  "core": {
+    "actualDir": "cypress/screenshots"
+  },
+  "plugins": {
+    "reg-simple-keygen-plugin": {
+      "expectedKey": "${CURRENT_KEY}",
+      "actualKey": "${BASE_KEY}"
+    }
+  }
+}

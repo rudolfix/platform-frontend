@@ -45,6 +45,7 @@ const fillAndAssert = (personalData: TFormFixture, addressData: TFormFixture, is
   // go to the manual verification with file upload
   cy.get(tid("kyc-go-to-manual-verification")).awaitedClick();
   cy.url().should("contain", kycRoutes.individualUpload);
+
   // upload file
   uploadMultipleFilesToFieldWithTid("kyc-personal-upload-dropzone", ["example.jpg"]);
 

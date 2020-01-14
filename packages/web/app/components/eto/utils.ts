@@ -2,8 +2,8 @@ import BigNumber from "bignumber.js";
 import { cloneDeep, flow, get, set } from "lodash";
 
 import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TBigNumberVariants } from "../../lib/web3/types";
 import { invariant } from "../../utils/invariant";
-import { formatFlexiPrecision } from "../../utils/NumberUtils";
 import { TShareholder } from "./public-view/LegalInformationWidget";
 
 const HUNDRED_PERCENT = new BigNumber("100");
@@ -83,27 +83,60 @@ export const removeEmptyKeyValueField = () => (data: ICompoundField | undefined)
 type TConvertPercentageToFractionOptions = { passThroughInvalidData: true };
 // add an option to pass invalid values on. This is to be used in validation pipelines
 export const convertPercentageToFraction = (options?: TConvertPercentageToFractionOptions) => (
-  data: number | undefined,
-) => {
-  const parseFn = (number: number) => parseFloat((number / 100).toPrecision(4));
+  data: number | undefined | TBigNumberVariants,
+): number | undefined => {
+  const parseFn = (value: number | TBigNumberVariants) => {
+    // cast to string to avoid errors with longer numbers
+    const valueBn =
+      typeof value === "number" ? new BigNumber(value.toString()) : new BigNumber(value);
+    const fractionBn = valueBn.dividedBy("100").toFixed(4);
+
+    // TODO: return string after refactoring ETO display
+    return Number(fractionBn);
+  };
 
   if (options && options.passThroughInvalidData) {
-    return typeof data === "number" && Number.isFinite(data) ? parseFn(data) : data;
+    try {
+      if (typeof data === "number" && new BigNumber(data.toString()).isFinite()) {
+        return parseFn(data);
+      }
+
+      // return directly if not valid
+      if (!data) {
+        return undefined;
+      }
+
+      return parseFn(data);
+    } catch {
+      // TODO: return string after refactoring ETO display
+      // return value if BigNumber throws not a number error
+      return typeof data === "number" ? data : undefined;
+    }
   } else {
     invariant(
-      data === undefined || Number.isFinite(data),
+      data === undefined || new BigNumber(data.toString()).isFinite(),
       "convertPercentageToFraction: cannot convert non-number",
     );
     return data !== undefined ? parseFn(data) : data;
   }
 };
 
-export const convertFractionToPercentage = () => (data: number | undefined) => {
+export const convertFractionToPercentage = () => (
+  data: number | undefined | TBigNumberVariants,
+) => {
   invariant(
-    data === undefined || Number.isFinite(data),
+    data === undefined || new BigNumber(data.toString()).isFinite(),
     "convertFractionToPercentage: cannot convert NaN",
   );
-  return data !== undefined ? parseFloat((data * 100).toFixed(2)) : data;
+  if (data !== undefined) {
+    // cast to string to avoid errors with longer numbers
+    const valueBn = new BigNumber(data.toString()).mul("100").toFixed(2);
+
+    // TODO: return string after refactoring ETO display
+    return Number(valueBn);
+  }
+
+  return data;
 };
 
 type TParseStringToFloatData = string | number | undefined;
@@ -118,39 +151,60 @@ export function parseStringToFloat(
 /* tslint:disable:typedef */
 export function parseStringToFloat(options?: TParseStringToFloatOptions) {
   return (data: TParseStringToFloatData): number | undefined | string => {
-    const result = typeof data === "string" ? parseFloat(data) : data;
-    if (Number.isFinite(result!)) {
-      return result;
-    } else {
-      return options && options.passThroughInvalidData ? data : undefined;
+    if (data) {
+      try {
+        // cast to string to avoid errors with longer numbers
+        const valueBn = new BigNumber(data.toString());
+
+        if (valueBn.isFinite()) {
+          return Number(valueBn);
+        }
+      } catch {
+        // ignore error and jump to next return;
+      }
     }
+
+    return options && options.passThroughInvalidData ? data : undefined;
   };
 }
 /* tslint:enable:typedef */
 
-export const parseStringToInteger = () => (data: string | number | undefined) => {
-  if (typeof data === "string") {
-    const result = parseInt(data, 10);
-    return Number.isNaN(result) ? undefined : result;
-  } else {
-    return data;
+export const parseStringToInteger = () => (data: TBigNumberVariants | number | undefined) => {
+  try {
+    if (data) {
+      // cast to string to avoid errors with longer numbers
+      const valueBn = new BigNumber(data.toString());
+
+      if (valueBn.isFinite()) {
+        return Number(valueBn.toFixed(0, BigNumber.ROUND_DOWN));
+      }
+    }
+  } catch {
+    // ignore error and jump to next return;
   }
+
+  return undefined;
 };
 
-export const convertNumberToString = () => (data: number | undefined) => {
+export const convertNumberToString = () => (data: TBigNumberVariants | number | undefined) => {
   invariant(
-    data === undefined || Number.isFinite(data),
+    data === undefined || new BigNumber(data.toString()).isFinite(),
     "convertNumberToString: cannot convert NaN",
   );
-  return data !== undefined ? data.toString() : data;
+  // cast to string to avoid errors with longer numbers
+  return data !== undefined ? new BigNumber(data.toString()).toFixed() : data;
 };
 
 export const convertToPrecision = (precision: number) => (data: number) => {
-  if (data && !Number.isNaN(data)) {
-    return parseFloat(formatFlexiPrecision(data, precision));
-  } else {
-    return undefined;
+  if (data) {
+    // cast to string to avoid errors with longer numbers
+    const valueBn = new BigNumber(data.toString()).toFixed(precision);
+
+    // TODO: return string after refactoring ETO display
+    return Number(valueBn);
   }
+
+  return undefined;
 };
 
 export const setDefaultValueIfUndefined = (defaultValue: any) => (data: any) =>

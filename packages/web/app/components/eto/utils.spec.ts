@@ -11,6 +11,7 @@ import {
   convertToPrecision,
   generateShareholders,
   parseStringToFloat,
+  parseStringToInteger,
   removeEmptyField,
   removeEmptyKeyValueField,
   removeEmptyKeyValueFields,
@@ -212,6 +213,23 @@ describe("parseStringToFloat with options", () => {
     expect(parseStringToFloat({ passThroughInvalidData: true })(Infinity)).to.eq(Infinity);
     expect(parseStringToFloat({ passThroughInvalidData: true })((null as unknown) as number)).to.be
       .null;
+  });
+});
+
+describe("parseStringToInteger", () => {
+  it("should return integer", () => {
+    expect(parseStringToInteger()("10")).to.be.eq(10);
+    expect(parseStringToInteger()("10.3")).to.be.eq(10);
+    expect(parseStringToInteger()("10.8")).to.be.eq(10);
+
+    expect(parseStringToInteger()(10)).to.be.eq(10);
+    expect(parseStringToInteger()(10.3)).to.be.eq(10);
+    expect(parseStringToInteger()(10.8)).to.be.eq(10);
+
+    expect(parseStringToInteger()("")).to.be.undefined;
+    expect(parseStringToInteger()(NaN)).to.be.undefined;
+    expect(parseStringToInteger()(undefined)).to.be.undefined;
+    expect(parseStringToInteger()(Infinity)).to.be.undefined;
   });
 });
 

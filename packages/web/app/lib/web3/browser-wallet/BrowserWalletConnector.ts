@@ -20,7 +20,7 @@ import {
 @injectable()
 export class BrowserWalletConnector {
   dataApprovalPending = false;
-  public async connect(networkId: EthereumNetworkId): Promise<BrowserWallet> {
+  public connect = async (networkId: EthereumNetworkId): Promise<BrowserWallet> => {
     let newMetamask = true;
     let injectedWeb3Provider;
     if (typeof (window as any).ethereum !== "undefined") {
@@ -68,8 +68,8 @@ export class BrowserWalletConnector {
     const walletType = await this.getBrowserWalletType(web3Adapter.web3);
     const ethereumAddress = await web3Adapter.getAccountAddress();
     return new BrowserWallet(web3Adapter, walletType, ethereumAddress);
-  }
-  private async getBrowserWalletType(web3: Web3): Promise<EWalletSubType> {
+  };
+  private getBrowserWalletType = async (web3: Web3): Promise<EWalletSubType> => {
     const nodeIdString = await promisify<string>(web3.version.getNode)();
     const matchNodeIdString = nodeIdString.toLowerCase();
     // safe will yield to metamask so order does not matter
@@ -83,9 +83,10 @@ export class BrowserWalletConnector {
       return EWalletSubType.PARITY;
     }
     return EWalletSubType.UNKNOWN;
-  }
+  };
 }
-export function parseBrowserWalletError(error: any): BrowserWalletError {
+
+export const parseBrowserWalletError = (error: any): BrowserWalletError => {
   // detect Metamask rejection
   if (
     error.code !== undefined &&
@@ -108,4 +109,4 @@ export function parseBrowserWalletError(error: any): BrowserWalletError {
     return new BrowserWalletConfirmationRejectedError();
   }
   return new BrowserWalletUnknownError();
-}
+};

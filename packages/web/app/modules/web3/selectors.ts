@@ -56,11 +56,8 @@ export const selectIsExternalWallet = (state: IWeb3State): boolean => {
 
 export const selectWalletSubType = (state: IWeb3State): EWalletSubType | undefined =>
   state.connected
-    ? (state.wallet.walletType === EWalletType.BROWSER && state.wallet.walletSubType) || undefined
-    : (state.previousConnectedWallet &&
-        state.previousConnectedWallet.walletType === EWalletType.BROWSER &&
-        state.previousConnectedWallet.walletSubType) ||
-      undefined;
+    ? state.wallet.walletSubType
+    : state.previousConnectedWallet && state.previousConnectedWallet.walletSubType;
 
 export const selectWalletType = (state: IWeb3State): EWalletType | undefined =>
   state.connected

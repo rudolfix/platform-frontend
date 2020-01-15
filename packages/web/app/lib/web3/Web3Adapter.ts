@@ -33,9 +33,8 @@ export class UnknownEthNodeError extends EthNodeError {}
 export class Web3Adapter {
   constructor(public readonly web3: Web3) {}
 
-  public async getNetworkId(): Promise<EthereumNetworkId> {
-    return promisify<EthereumNetworkId>(this.web3.version.getNetwork)();
-  }
+  public getNetworkId = async (): Promise<EthereumNetworkId> =>
+    promisify<EthereumNetworkId>(this.web3.version.getNetwork)();
 
   public async getBalance(address: string): Promise<BigNumber> {
     return promisify<BigNumber>(this.web3.eth.getBalance)(address);

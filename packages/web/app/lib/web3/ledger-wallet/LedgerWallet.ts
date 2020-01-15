@@ -27,20 +27,18 @@ export class LedgerWallet implements IPersonalWallet {
     public readonly derivationPath: string,
   ) {}
 
-  public getSignerType(): SignerType {
-    return SignerType.ETH_SIGN;
-  }
+  public getSignerType = (): SignerType => SignerType.ETH_SIGN;
 
-  public async testConnection(): Promise<boolean> {
+  public testConnection = async (): Promise<boolean> => {
     if (!this.ledgerInstance) throw new LedgerNotAvailableError();
 
     if (this.waitingForCommand) {
       return true;
     }
     return testConnection(this.ledgerInstance.getTransport);
-  }
+  };
 
-  public async signMessage(data: string): Promise<string> {
+  public signMessage = async (data: string): Promise<string> => {
     try {
       this.waitingForCommand = true;
 
@@ -65,18 +63,16 @@ export class LedgerWallet implements IPersonalWallet {
     } finally {
       this.waitingForCommand = false;
     }
-  }
+  };
 
-  public getMetadata(): ILedgerWalletMetadata {
-    return {
-      address: this.ethereumAddress,
-      walletType: EWalletType.LEDGER,
-      walletSubType: EWalletSubType.UNKNOWN,
-      derivationPath: this.derivationPath,
-    };
-  }
+  public getMetadata = (): ILedgerWalletMetadata => ({
+    address: this.ethereumAddress,
+    walletType: EWalletType.LEDGER,
+    walletSubType: EWalletSubType.UNKNOWN,
+    derivationPath: this.derivationPath,
+  });
 
-  public async sendTransaction(data: Web3.TxData): Promise<string> {
+  public sendTransaction = async (data: Web3.TxData): Promise<string> => {
     try {
       return await this.web3Adapter.sendTransaction(data);
     } catch (e) {
@@ -91,9 +87,7 @@ export class LedgerWallet implements IPersonalWallet {
     } finally {
       this.waitingForCommand = false;
     }
-  }
+  };
 
-  public isUnlocked(): boolean {
-    return true;
-  }
+  public isUnlocked = (): boolean => true;
 }

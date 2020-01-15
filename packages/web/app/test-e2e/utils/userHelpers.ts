@@ -108,6 +108,9 @@ export const createAndLoginNewUser = ({
       await setCorrectAgreement(jwt);
     }
 
+    // Wait until backend messaging stabalizes
+    cy.wait(3000);
+
     if (kyc) {
       // wait for kyc to be properly set as verified on blockchain
       // otherwise UI is not deterministically stable

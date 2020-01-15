@@ -28,7 +28,7 @@ export class LedgerWalletConnector {
     @inject(symbols.ethereumNetworkConfig) public readonly web3Config: IEthereumNetworkConfig,
   ) {}
 
-  public async connect(): Promise<void> {
+  public connect = async (): Promise<void> => {
     try {
       this.getTransport = await connectToLedger();
     } catch (e) {
@@ -38,12 +38,12 @@ export class LedgerWalletConnector {
         throw new LedgerUnknownError();
       }
     }
-  }
+  };
 
-  public async finishConnecting(
+  public finishConnecting = async (
     derivationPath: string,
     networkId: EthereumNetworkId,
-  ): Promise<LedgerWallet> {
+  ): Promise<LedgerWallet> => {
     if (!this.getTransport) throw new LedgerNotAvailableError();
 
     let providerEngine: any;
@@ -71,13 +71,13 @@ export class LedgerWalletConnector {
       }
       throw e;
     }
-  }
+  };
 
-  public async getMultipleAccountsFromHdPath(
+  public getMultipleAccountsFromHdPath = async (
     derivationPaths: string,
     indexOffset: number = 1,
     accountsNo: number = 0,
-  ): Promise<IDerivationPathToAddress> {
+  ): Promise<IDerivationPathToAddress> => {
     if (!this.getTransport) throw new LedgerNotAvailableError();
 
     const Transport = await this.getTransport();
@@ -97,22 +97,24 @@ export class LedgerWalletConnector {
     } finally {
       await Transport.close();
     }
-  }
+  };
 
-  public async getMultipleAccounts(derivationPaths: string[]): Promise<IDerivationPathToAddress> {
+  public getMultipleAccounts = async (
+    derivationPaths: string[],
+  ): Promise<IDerivationPathToAddress> => {
     const accounts = await Promise.all(
       derivationPaths.map(path => this.getMultipleAccountsFromHdPath(path, 0, 1)),
     );
 
     // reduce to single object
     return Object.assign({}, ...accounts);
-  }
+  };
 
-  public async getMultipleAccountsFromDerivationPrefix(
+  public getMultipleAccountsFromDerivationPrefix = async (
     derivationPathPrefix: string,
     page: number,
     addressesPerPage: number,
-  ): Promise<IDerivationPathToAddress> {
+  ): Promise<IDerivationPathToAddress> => {
     const derivationPath = derivationPathPrefix + "0";
 
     return this.getMultipleAccountsFromHdPath(
@@ -120,10 +122,10 @@ export class LedgerWalletConnector {
       page * addressesPerPage,
       addressesPerPage,
     );
-  }
-  public async testConnection(): Promise<boolean> {
+  };
+  public testConnection = async (): Promise<boolean> => {
     if (!this.getTransport) throw new LedgerNotAvailableError();
 
     return testConnection(this.getTransport);
-  }
+  };
 }

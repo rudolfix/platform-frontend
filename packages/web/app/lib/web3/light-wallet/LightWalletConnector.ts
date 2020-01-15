@@ -36,11 +36,11 @@ export class LightWalletConnector {
   public passwordProvider(): any {
     return "";
   }
-  public async connect(
+  public connect = async (
     lightWalletVault: IVault,
     email: string,
     password?: string,
-  ): Promise<IPersonalWallet> {
+  ): Promise<IPersonalWallet> => {
     try {
       this.web3Adapter = new Web3Adapter(await this.setWeb3Provider(lightWalletVault));
       return new LightWallet(
@@ -57,8 +57,8 @@ export class LightWalletConnector {
         throw new LightUnknownError();
       }
     }
-  }
-  private async setWeb3Provider(lightWalletVault: IVault): Promise<any> {
+  };
+  private setWeb3Provider = async (lightWalletVault: IVault): Promise<any> => {
     let engine: any;
     lightWalletVault.walletInstance.passwordProvider = (callback: any) =>
       callback(null, this.passwordProvider());
@@ -99,5 +99,5 @@ export class LightWalletConnector {
       }
       throw e;
     }
-  }
+  };
 }

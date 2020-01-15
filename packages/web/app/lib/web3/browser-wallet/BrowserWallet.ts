@@ -33,7 +33,7 @@ export class BrowserWallet implements IPersonalWallet {
     public readonly ethereumAddress: EthereumAddress,
   ) {}
 
-  public getSignerType(): SignerType {
+  public getSignerType = (): SignerType => {
     switch (this.walletSubType) {
       case EWalletSubType.METAMASK:
         return SignerType.ETH_SIGN_TYPED_DATA;
@@ -42,18 +42,18 @@ export class BrowserWallet implements IPersonalWallet {
       default:
         return SignerType.ETH_SIGN;
     }
-  }
+  };
 
-  public async testConnection(networkId: string): Promise<boolean> {
+  public testConnection = async (networkId: string): Promise<boolean> => {
     const currentNetworkId = await this.web3Adapter.getNetworkId();
     if (currentNetworkId !== networkId) {
       return false;
     }
 
     return !!(await this.web3Adapter.getAccountAddress());
-  }
+  };
 
-  public async signMessage(data: string): Promise<string> {
+  public signMessage = async (data: string): Promise<string> => {
     try {
       if (this.walletSubType === EWalletSubType.METAMASK) {
         const typedDataDecoded = JSON.parse(hex2ascii(data));
@@ -73,9 +73,9 @@ export class BrowserWallet implements IPersonalWallet {
         throw error;
       }
     }
-  }
+  };
 
-  public async sendTransaction(data: Web3.TxData): Promise<string> {
+  public sendTransaction = async (data: Web3.TxData): Promise<string> => {
     try {
       return await this.web3Adapter.sendTransaction(data);
     } catch (e) {
@@ -86,17 +86,13 @@ export class BrowserWallet implements IPersonalWallet {
         throw error;
       }
     }
-  }
+  };
 
-  public getMetadata(): IBrowserWalletMetadata {
-    return {
-      address: this.ethereumAddress,
-      walletType: EWalletType.BROWSER,
-      walletSubType: this.walletSubType,
-    };
-  }
+  public getMetadata = (): IBrowserWalletMetadata => ({
+    address: this.ethereumAddress,
+    walletType: EWalletType.BROWSER,
+    walletSubType: this.walletSubType,
+  });
 
-  public isUnlocked(): boolean {
-    return true;
-  }
+  public isUnlocked = (): boolean => true;
 }

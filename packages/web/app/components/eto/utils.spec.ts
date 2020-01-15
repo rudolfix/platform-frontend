@@ -112,6 +112,13 @@ describe("convertPercentageToFraction", () => {
     expect(convertPercentageToFraction()(percentage)).to.be.equal(expectedOutput);
   });
 
+  it("converts float representing percentage to a fractional representation with precision explicitly set", () => {
+    const percentage = 15.3421411;
+    const expectedOutput = 0.153421;
+
+    expect(convertPercentageToFraction({ precision: 6 })(percentage)).to.be.equal(expectedOutput);
+  });
+
   it("passes through an undefined value", () => {
     const percentage = undefined;
     const expectedOutput = undefined;

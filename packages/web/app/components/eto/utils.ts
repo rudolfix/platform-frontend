@@ -80,16 +80,19 @@ export const removeEmptyKeyValueFields = () => (data: ICompoundField[] | undefin
 export const removeEmptyKeyValueField = () => (data: ICompoundField | undefined) =>
   findNonEmptyKeyValueField(data) ? data : undefined;
 
-type TConvertPercentageToFractionOptions = { passThroughInvalidData: true };
+type TConvertPercentageToFractionOptions = { passThroughInvalidData?: true; precision?: number };
 // add an option to pass invalid values on. This is to be used in validation pipelines
 export const convertPercentageToFraction = (options?: TConvertPercentageToFractionOptions) => (
   data: number | undefined,
 ) => {
+  // Use default 4 which is max precision for our backend
+  const precision = options && options.precision ? options.precision : 4;
+
   const parseFn = (value: number | TBigNumberVariants): number => {
     // cast to string to avoid errors with longer numbers
     const valueBn =
       typeof value === "number" ? new BigNumber(value.toString()) : new BigNumber(value);
-    const fractionBn = valueBn.dividedBy("100").toFixed(4);
+    const fractionBn = valueBn.dividedBy("100").toFixed(precision);
 
     // TODO: return string after refactoring ETO display
     return Number(fractionBn);

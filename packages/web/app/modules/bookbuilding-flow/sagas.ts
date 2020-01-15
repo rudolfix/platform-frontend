@@ -6,7 +6,7 @@ import { BOOKBUILDING_WATCHER_DELAY, EJwtPermissions } from "../../config/consta
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
-import { IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
+import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
@@ -116,6 +116,27 @@ export function* loadBookBuildingStats(
   }
 }
 
+export function* loadBookBuildingListStats(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.bookBuilding.loadBookBuildingListStats>,
+): Generator<any, any, any> {
+  try {
+    const etosIds = action.payload.etosIds;
+    const statsListResponse: Record<
+      string,
+      IBookBuildingStats
+    > = yield apiEtoService.getBookBuildingStatsList(etosIds);
+
+    yield put(actions.bookBuilding.setBookBuildingListStats(statsListResponse));
+  } catch (e) {
+    notificationCenter.error(
+      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
+    );
+
+    logger.error(`Failed to load bookbuilding stats pledge`, e);
+  }
+}
+
 export function* loadMyPledge(
   { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.bookBuilding.loadPledge>,
@@ -151,6 +172,11 @@ export function* bookBuildingFlowSagas(): Generator<any, any, any> {
     actions.bookBuilding.bookBuildingStartWatch,
     actions.bookBuilding.bookBuildingStopWatch,
     watchBookBuildingStats,
+  );
+  yield fork(
+    neuTakeEvery,
+    actions.bookBuilding.loadBookBuildingListStats,
+    loadBookBuildingListStats,
   );
   yield fork(neuTakeEvery, actions.bookBuilding.loadPledge, loadMyPledge);
   yield fork(neuTakeEvery, actions.bookBuilding.savePledge, saveMyPledge);

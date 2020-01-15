@@ -26,11 +26,12 @@ import {
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
 } from "../../../config/constants";
-import { DeepPartial, DeepReadonly } from "../../../types";
+import { DeepPartial, DeepReadonly, Dictionary } from "../../../types";
 import { EquityToken, EthereumAddressWithChecksum } from "../../../utils/opaque-types/types";
 import * as YupTS from "../../yup-ts.unsafe";
 import { currencyCodeSchema, dateSchema, percentage } from "../util/customSchemas";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
+import { IBookBuildingStats } from "./EtoPledgeApi.interfaces.unsafe";
 import { TEtoProduct } from "./EtoProductsApi.interfaces";
 
 /** COMPANY ETO RELATED INTERFACES
@@ -517,6 +518,10 @@ export type TBookbuildingStatsType = {
   insertedAt: string;
   updatedAt: string;
   userId: string;
+};
+
+export type TBookBuildingsStatsList = {
+  bookbuildingStats: Dictionary<IBookBuildingStats>;
 };
 
 export type TEtoSpecsData = TEtoTermsType &

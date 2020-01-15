@@ -17,7 +17,7 @@ describe("Auto Login", () => {
 // TODO: Enable when fixed
 describe.skip("Incoming payout", function(): void {
   this.retries(2);
-  it("should show counter with incoming payout value", () => {
+  it.skip("should show counter with incoming payout value", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
@@ -60,7 +60,7 @@ describe.skip("Incoming payout", function(): void {
     });
   });
 
-  it("Should show counter without ETH", () => {
+  it.skip("Should show counter without ETH", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboardWithRequiredPayoutAmountSet(false, convertToUlps("1000"));
 

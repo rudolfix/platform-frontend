@@ -6,5 +6,6 @@ declare namespace Cypress {
     iframe: (selector: string) => Cypress.Chainable<JQuery<HTMLBodyElement>>;
     saveLocalStorage: (memoryKey?: string) => Cypress.Chainable;
     restoreLocalStorage: (memoryKey?: string) => Cypress.Chainable;
+    awaitedScreenshot: (selector: string) => Cypress.Chainable;
   }
 }

@@ -2,9 +2,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName, withProps } from "recompose";
 
-import { actions } from "../../../../../modules/actions";
 import { selectIsAuthorized, selectIsInvestor } from "../../../../../modules/auth/selectors";
-import { selectBookbuildingStats } from "../../../../../modules/bookbuilding-flow/selectors";
+import { selectBookbuildingStatsFromList } from "../../../../../modules/bookbuilding-flow/selectors";
 import {
   calculateWhitelistingState,
   EWhitelistingState,
@@ -12,7 +11,6 @@ import {
 import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
 import { assertNever } from "../../../../../utils/assertNever";
-import { onEnterAction } from "../../../../../utils/OnEnterAction";
 import { Money } from "../../../../shared/formatters/Money";
 import {
   EAbbreviatedNumberOutputFormat,
@@ -138,7 +136,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
 const Whitelist = compose<IProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
-      const stats = selectBookbuildingStats(state, props.eto.etoId);
+      const stats = selectBookbuildingStatsFromList(state, props.eto.etoId);
 
       return {
         pledgedAmount: stats ? stats.pledgedAmount : null,
@@ -165,11 +163,6 @@ const Whitelist = compose<IProps, IExternalProps>(
       };
     },
   ),
-  onEnterAction<IExternalProps & IStateProps>({
-    actionCreator: (dispatch, props) => {
-      dispatch(actions.bookBuilding.loadBookBuildingStats(props.eto.etoId));
-    },
-  }),
   setDisplayName("Whitelist"),
 )(WhitelistLayout);
 

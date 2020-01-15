@@ -1,5 +1,4 @@
-import { put } from "redux-saga-test-plan/matchers";
-import { call, fork } from "redux-saga/effects";
+import { call, fork, put } from "@neufund/sagas";
 
 import { IpfsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -11,7 +10,7 @@ import { downloadLink } from "./utils";
 export function* downloadFile(
   { apiImmutableStorage, notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.immutableStorage.downloadImmutableFile>,
-): Iterator<any> {
+): Generator<any, any, any> {
   try {
     const immutableFileId = action.payload.immutableFileId;
     const downloadedFile = yield apiImmutableStorage.getFile(immutableFileId);
@@ -28,6 +27,6 @@ export function* downloadFile(
   }
 }
 
-export function* immutableFileSagas(): Iterator<any> {
+export function* immutableFileSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.immutableStorage.downloadImmutableFile, downloadFile);
 }

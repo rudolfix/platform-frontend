@@ -1,4 +1,4 @@
-import { fork, put, select } from "redux-saga/effects";
+import { fork, put, select } from "@neufund/sagas";
 
 import { MarketingEmailsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -11,7 +11,7 @@ function* unsubscribeEmail({
   marketingEmailsApi,
   notificationCenter,
   logger,
-}: TGlobalDependencies): Iterator<any> {
+}: TGlobalDependencies): Generator<any, any, any> {
   const unsubscribeLink = yield select(selectUnsubscriptionLinkFromQueryString);
 
   if (!unsubscribeLink) {
@@ -29,6 +29,6 @@ function* unsubscribeEmail({
   }
 }
 
-export function* marketingEmailsSagas(): Iterator<any> {
+export function* marketingEmailsSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.marketingEmails.unsubscribe, unsubscribeEmail);
 }

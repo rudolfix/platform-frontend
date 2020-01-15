@@ -16,11 +16,7 @@ describe("Invest with ethereum", () => {
   it("Invest Small Amount", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
-    loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED", {
-      kyc: "business",
-      signTosAgreement: true,
-      clearPendingTransactions: true,
-    });
+    loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
 
     goToDashboard();
 
@@ -60,15 +56,14 @@ describe("Invest with ethereum", () => {
       });
     });
   });
-  it("Invest ALL", () => {
+
+  it.skip("Invest ALL", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
     const value = "2";
     createAndLoginNewUser({
       type: "investor",
       kyc: "individual",
-      onlyLogin: false,
-      signTosAgreement: true,
     }).then(({ address }) => {
       sendEth("DEPLOYER", address, Q18.mul(value));
 

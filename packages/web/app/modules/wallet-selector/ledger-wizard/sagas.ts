@@ -1,5 +1,5 @@
+import { call, fork, put, select } from "@neufund/sagas";
 import { toPairs, zip } from "lodash";
-import { fork, put, select } from "redux-saga/effects";
 
 import { tripleZip } from "../../../../typings/modifications";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -14,7 +14,7 @@ export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/0'/0", "44'/60'/0
 
 export function* tryEstablishingConnectionWithLedger({
   ledgerWalletConnector,
-}: TGlobalDependencies): IterableIterator<any> {
+}: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield ledgerWalletConnector.connect();
 
@@ -30,7 +30,7 @@ export function* loadLedgerAccounts({
   ledgerWalletConnector,
   web3Manager,
   contractsService,
-}: TGlobalDependencies): IterableIterator<any> {
+}: TGlobalDependencies): Generator<any, any, any> {
   const state: IAppState = yield select();
   const {
     advanced,
@@ -103,9 +103,10 @@ export function* goToPreviousPageAndLoadData(): any {
 export function* finishSettingUpLedgerConnector(
   { ledgerWalletConnector, web3Manager }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.walletSelector.ledgerFinishSettingUpLedgerConnector>,
-): IterableIterator<any> {
+): Generator<any, any, any> {
   try {
-    const ledgerWallet = yield ledgerWalletConnector.finishConnecting(
+    const ledgerWallet = yield* call(
+      ledgerWalletConnector.finishConnecting,
       action.payload.derivationPath,
       web3Manager.networkId,
     );
@@ -122,7 +123,7 @@ export function* finishSettingUpLedgerConnector(
   }
 }
 
-export function* ledgerSagas(): Iterator<any> {
+export function* ledgerSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
     "LEDGER_TRY_ESTABLISHING_CONNECTION",

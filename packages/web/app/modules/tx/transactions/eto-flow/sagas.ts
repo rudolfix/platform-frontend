@@ -1,4 +1,4 @@
-import { fork, put, select } from "redux-saga/effects";
+import { fork, put, select } from "@neufund/sagas";
 
 import { ipfsLinkFromHash } from "../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
@@ -124,7 +124,7 @@ function* etoSignInvestmentAgreementGenerator(
   );
 }
 
-function* etoSetDateSaga({ logger }: TGlobalDependencies): Iterator<any> {
+function* etoSetDateSaga({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield put(actions.etoFlow.setEtoDateStart());
 
@@ -142,7 +142,7 @@ function* etoSetDateSaga({ logger }: TGlobalDependencies): Iterator<any> {
 function* etoSignInvestmentAgreementSaga(
   { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.etoFlow.issuerSignInvestmentAgreement>,
-): Iterator<any> {
+): Generator<any, any, any> {
   try {
     yield txSendSaga({
       type: ETxSenderType.SIGN_INVESTMENT_AGREEMENT,
@@ -162,7 +162,7 @@ function* etoSignInvestmentAgreementSaga(
   }
 }
 
-export const txEtoSetDateSagas = function*(): Iterator<any> {
+export const txEtoSetDateSagas = function*(): Generator<any, any, any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_ETO_SET_DATE", etoSetDateSaga);
   yield fork(
     neuTakeLatest,

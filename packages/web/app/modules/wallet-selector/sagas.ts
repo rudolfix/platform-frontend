@@ -1,21 +1,21 @@
-import { fork, put } from "redux-saga/effects";
+import { fork, put } from "@neufund/sagas";
 
 import { actions } from "../actions";
 import { handleSignInUser } from "../auth/user/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../sagasUtils";
 import { loadPreviousWallet } from "../web3/sagas";
 
-export function* walletSelectorConnect(): Iterator<any> {
+export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
 
   yield neuCall(handleSignInUser);
 }
 
-export function* walletSelectorReset(): Iterator<any> {
+export function* walletSelectorReset(): Generator<any, any, any> {
   yield neuCall(loadPreviousWallet);
 }
 
-export function* walletSelectorSagas(): Iterator<any> {
+export function* walletSelectorSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
     actions.walletSelector.connected,

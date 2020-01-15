@@ -1,5 +1,4 @@
-import BigNumber from "bignumber.js";
-import { put, select } from "redux-saga/effects";
+import { put, select } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { UserHasNoFundsError } from "../../../../../lib/web3/Web3Adapter";
@@ -22,7 +21,7 @@ import {
 import { ITxData } from "./../../../../../lib/web3/types";
 import { SmartContractDoesNotAcceptEtherError } from "./errors";
 
-export function* txValidateWithdraw(userInput: IWithdrawDraftType): Iterator<any> {
+export function* txValidateWithdraw(userInput: IWithdrawDraftType): Generator<any, any, any> {
   try {
     const {
       modifiedUserInput,
@@ -53,7 +52,7 @@ export function* txValidateWithdraw(userInput: IWithdrawDraftType): Iterator<any
       isValueValid && modifiedUserInput.value,
     );
 
-    const euroPrice: string = yield select(selectEtherPriceEur);
+    const euroPrice = yield* select(selectEtherPriceEur);
 
     const valueFromUserEuro = multiplyBigNumbers([euroPrice, valueUlps]);
     const transactionCost = multiplyBigNumbers([
@@ -88,9 +87,9 @@ export function* isAddressValidAcceptsEther(
   { web3Manager }: TGlobalDependencies,
   to: string,
   value: string,
-): Iterator<any> {
+): Generator<any, any, any> {
   try {
-    const etherBalance: BigNumber = yield select(selectEtherBalanceAsBigNumber);
+    const etherBalance = yield* select(selectEtherBalanceAsBigNumber);
     if (etherBalance.isZero()) {
       throw new UserHasNoFundsError();
     }

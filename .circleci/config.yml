@@ -11,7 +11,6 @@ executors:
       - image: circleci/node:11.14.0-browsers
     working_directory: /home/circleci/app
 
-
 jobs:
   install-lint-test:
     # install and lint is taken as one job to remove required time for downloading cache
@@ -36,7 +35,7 @@ jobs:
             - node_modules
             - packages/web/app/lib/contracts
             - /home/circleci/.cache/Cypress
-          key: v23-deps-{{ checksum "package.json" }}
+          key: v26-deps-{{ checksum "package.json" }}
 
   build-docker-test-e2e:
     executor: docker-browsers
@@ -47,8 +46,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v23-deps-{{ checksum "package.json" }}
-            - v23-deps-
+            - v26-deps-{{ checksum "package.json" }}
+            - v26-deps-
 
       - run: yarn --frozen-lockfile
       - run:
@@ -64,8 +63,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v23-deps-{{ checksum "package.json" }}
-            - v23-deps-
+            - v26-deps-{{ checksum "package.json" }}
+            - v26-deps-
 
       - run: yarn --frozen-lockfile
       - run:
@@ -93,12 +92,11 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci/app
-      - checkout
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
           keys:
-            - v23-deps-{{ checksum "package.json" }}
-            - v23-deps-
+            - v26-deps-{{ checksum "package.json" }}
+            - v26-deps-
 
       - run:
           command: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web test:e2e
@@ -111,8 +109,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v23-deps-{{ checksum "package.json" }}
-            - v23-deps-
+            - v26-deps-{{ checksum "package.json" }}
+            - v26-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn workspace @neufund/web build:commit-deployment
@@ -125,12 +123,30 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v23-deps-{{ checksum "package.json" }}
-            - v23-deps-
+            - v26-deps-{{ checksum "package.json" }}
+            - v26-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn workspace @neufund/web storybook:screenshots
       - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
+
+  codechecks-e2e-vis-reg:
+    executor: docker-browsers
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v26-deps-{{ checksum "package.json" }}
+            - v26-deps-
+
+      - run: yarn --frozen-lockfile
+      - run:
+          command: yarn workspace @neufund/web build:prod:e2e:io
+          no_output_timeout: 10m
+      - run:
+          command: yarn workspace @neufund/web test:e2e:vis-reg
+      - run: yarn workspace @neufund/web codechecks ./codechecks-e2e-vis-reg.ts
 
   deploy-storybook:
     executor: docker
@@ -139,11 +155,11 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v23-deps-{{ checksum "package.json" }}
-            - v23-deps-
+            - v26-deps-{{ checksum "package.json" }}
+            - v26-deps-
 
       - run: yarn --frozen-lockfile
-      - run: yarn workspace @neufund/web deploy-storybook --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
+      - run: yarn workspace @neufund/web storybook:deploy-ghpages --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN
 
 workflows:
   version: 2
@@ -154,6 +170,7 @@ workflows:
       - build-docker-test-e2e:
           requires:
             - install-lint-test
+            - codechecks-e2e-vis-reg
       - build-frontend:
           requires:
             - install-lint-test
@@ -166,6 +183,9 @@ workflows:
             - build-frontend
             - build-docker-test-e2e
       - codechecks-vis-reg:
+          requires:
+            - build-frontend
+      - codechecks-e2e-vis-reg:
           requires:
             - build-frontend
 
@@ -194,6 +214,9 @@ workflows:
           requires:
             - build-frontend
       - codechecks-vis-reg:
+          requires:
+            - build-frontend
+      - codechecks-e2e-vis-reg:
           requires:
             - build-frontend
 

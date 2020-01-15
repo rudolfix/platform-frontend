@@ -1,5 +1,5 @@
+import { fork, put, select } from "@neufund/sagas";
 import { addHexPrefix } from "ethereumjs-util";
-import { fork, put, select } from "redux-saga/effects";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
@@ -93,7 +93,7 @@ function* upgradeTransactionFlow(_: TGlobalDependencies, tokenType: ETokenType):
   );
 }
 
-function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): Iterator<any> {
+function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): Generator<any, any, any> {
   try {
     if (action.type !== "TRANSACTIONS_START_UPGRADE") return;
 
@@ -111,6 +111,6 @@ function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): Iterato
   }
 }
 
-export const txUpgradeSagas = function*(): Iterator<any> {
+export const txUpgradeSagas = function*(): Generator<any, any, any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_UPGRADE", upgradeSaga);
 };

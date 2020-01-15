@@ -30,7 +30,11 @@ const EtoListThumbnails: React.FunctionComponent<TListProps & TExternalProps> = 
   mockedEtos = [],
   shouldOpenInNewWindow,
 }) => (
-  <Container type={EContainerType.INHERIT_GRID} className={styles.progressSectionLayout}>
+  <Container
+    type={EContainerType.INHERIT_GRID}
+    className={styles.progressSectionLayout}
+    data-test-id="dashboard-eto-list"
+  >
     {etos.map(eto => (
       <EtoOverviewThumbnail
         eto={eto}

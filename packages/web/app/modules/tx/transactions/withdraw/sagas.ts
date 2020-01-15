@@ -1,8 +1,9 @@
+import { fork, put, select, take } from "@neufund/sagas";
 import BigNumber from "bignumber.js";
-import { fork, put, select, take } from "redux-saga/effects";
 
 import { IWindowWithData } from "../../../../../test/helperTypes";
 import { ECurrency } from "../../../../components/shared/formatters/utils";
+import { ETH_DECIMALS } from "../../../../config/constants";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
 import { DEFAULT_UPPER_GAS_LIMIT } from "../../../../lib/web3/Web3Manager/Web3Manager";
@@ -10,20 +11,21 @@ import { toEthereumAddress } from "../../../../utils/opaque-types/utils";
 import { actions } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuTakeLatest } from "../../../sagasUtils";
-import { selectEtherTokenBalanceAsBigNumber } from "../../../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import {
+  selectEtherTokenBalanceAsBigNumber,
+  selectLiquidEtherBalance,
+} from "../../../wallet/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { isAddressValid } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 import { selectUserFlowTxDetails, selectUserFlowTxInput } from "../../user-flow/transfer/selectors";
+import { TxUserFlowInputData, TxUserFlowTransferDetails } from "../../user-flow/transfer/types";
 import { calculateGasLimitWithOverhead, EMPTY_DATA } from "../../utils";
 import { WrongValuesError } from "../errors";
-import { ETH_DECIMALS } from "./../../../../config/constants";
-import { selectLiquidEtherBalance } from "./../../../wallet/selectors";
-import { TxUserFlowInputData, TxUserFlowTransferDetails } from "./../../user-flow/transfer/types";
 import { TWithdrawAdditionalData } from "./types";
 
-import * as ethImage from "../../../../assets/img/eth_icon.svg";
+import ethImage from "../../../../assets/img/eth_icon.svg";
 
 export interface IWithdrawTxGenerator {
   to: string;
@@ -33,7 +35,7 @@ export interface IWithdrawTxGenerator {
 export function* generateEthWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   { to, valueUlps }: IWithdrawTxGenerator,
-): Iterator<any> {
+): Generator<any, any, any> {
   // Sanity checks
   if (!to || !isAddressValid(to)) throw new WrongValuesError();
   if (
@@ -45,7 +47,7 @@ export function* generateEthWithdrawTransaction(
   const valueUlpsAsBigN = new BigNumber(valueUlps);
 
   const etherTokenBalance: BigNumber = yield select(selectEtherTokenBalanceAsBigNumber);
-  const from: string = yield select(selectEthereumAddressWithChecksum);
+  const from: string = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   let txDetails: Partial<ITxData> = {};
@@ -103,7 +105,7 @@ export function* generateEthWithdrawTransaction(
   };
 }
 
-function* ethWithdrawFlow(_: TGlobalDependencies): Iterator<any> {
+function* ethWithdrawFlow(_: TGlobalDependencies): Generator<any, any, any> {
   yield take(actions.txSender.txSenderAcceptDraft);
 
   const txUserFlowData: TxUserFlowTransferDetails = yield select(selectUserFlowTxDetails);
@@ -123,7 +125,10 @@ function* ethWithdrawFlow(_: TGlobalDependencies): Iterator<any> {
   yield put(actions.txSender.txSenderContinueToSummary<ETxSenderType.WITHDRAW>(additionalData));
 }
 
-function* withdrawSaga({ logger, contractsService }: TGlobalDependencies): Iterator<any> {
+function* withdrawSaga({
+  logger,
+  contractsService,
+}: TGlobalDependencies): Generator<any, any, any> {
   try {
     const etherTokenAddress = contractsService.etherToken.address;
     const userBalance: string = yield select(selectLiquidEtherBalance);
@@ -148,6 +153,6 @@ function* withdrawSaga({ logger, contractsService }: TGlobalDependencies): Itera
   }
 }
 
-export const txWithdrawSagas = function*(): Iterator<any> {
+export const txWithdrawSagas = function*(): Generator<any, any, any> {
   yield fork(neuTakeLatest, "TRANSACTIONS_START_WITHDRAW_ETH", withdrawSaga);
 };

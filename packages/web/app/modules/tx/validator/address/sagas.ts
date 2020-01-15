@@ -1,4 +1,4 @@
-import { all } from "redux-saga/effects";
+import { all } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IdentityRegistry } from "../../../../lib/contracts/IdentityRegistry";
@@ -10,7 +10,7 @@ export function* txProcessAddressValidations(
   { web3Manager, contractsService }: TGlobalDependencies,
   address: string,
   registeredChecks: EAdditionalValidationDataNotifications[],
-): Iterator<any> {
+): Generator<any, any, any> {
   if (!isAddressValid(address)) {
     throw new Error(`Invalid ethereum address passed: ${address}`);
   }

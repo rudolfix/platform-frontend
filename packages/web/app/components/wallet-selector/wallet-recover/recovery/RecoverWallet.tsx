@@ -5,12 +5,15 @@ import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
+import { testWalletSeed } from "../../../../lib/web3/light-wallet/LightWalletUtils";
 import { actions } from "../../../../modules/actions";
 import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
 import { withContainer } from "../../../../utils/withContainer.unsafe";
 import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
 import { ExternalLink } from "../../../shared/links/ExternalLink";
+import { GenericModalMessage, LightWalletErrorMessage } from "../../../translatedMessages/messages";
+import { createMessage } from "../../../translatedMessages/utils";
 import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet.unsafe";
 import { WalletMessageSigner } from "../../WalletMessageSigner";
 import { WalletSelectorContainer } from "../../WalletSelectorContainer";
@@ -25,6 +28,7 @@ interface IRecoveryFormValues {
 
 interface IDispatchProps {
   submitForm: (values: IRecoveryFormValues, seed: string) => void;
+  onInvalidSeed: () => void;
 }
 
 interface IStateProps {
@@ -45,8 +49,15 @@ class RecoveryProcessesComponent extends React.Component<IMainRecoveryProps, IMa
     super(props);
     this.state = { seed: props.seed };
   }
-  setSeed = (words: string): void => {
-    this.setState({ seed: words });
+
+  onSendWords = (words: string): void => {
+    const { onInvalidSeed } = this.props;
+
+    if (testWalletSeed(words)) {
+      this.setState({ seed: words });
+    } else {
+      onInvalidSeed();
+    }
   };
 
   render(): React.ReactNode {
@@ -73,7 +84,7 @@ class RecoveryProcessesComponent extends React.Component<IMainRecoveryProps, IMa
             <WalletLightSeedRecoveryComponent
               startingStep={0}
               extraSteps={2}
-              sendWords={this.setSeed}
+              sendWords={this.onSendWords}
             />
           </div>
         )}
@@ -103,6 +114,16 @@ const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps, {}>(
     dispatchToProps: dispatch => ({
       submitForm: (values: IRecoveryFormValues, seed: string) => {
         dispatch(actions.walletSelector.lightWalletRecover(values.email, values.password, seed));
+      },
+      onInvalidSeed: () => {
+        const error = createMessage(LightWalletErrorMessage.WRONG_MNEMONIC);
+
+        dispatch(
+          actions.genericModal.showErrorModal(
+            createMessage(GenericModalMessage.ERROR_TITLE),
+            error,
+          ),
+        );
       },
     }),
   }),

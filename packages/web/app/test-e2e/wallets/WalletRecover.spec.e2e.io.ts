@@ -19,6 +19,18 @@ import {
 
 describe("Wallet recover", function(): void {
   this.retries(2);
+
+  it("should show error modal for invalid recovery phrases", () => {
+    cy.visit(`${recoverRoutes.seed}`);
+
+    const wrongMnemonics = "mutual mutual phone brief hedgehog friend brown actual candy will tank case phone rather program clap scrap dog trouble phrase fit section snack world".split(
+      " ",
+    );
+
+    typeLightwalletRecoveryPhrase(wrongMnemonics);
+    assertErrorModal();
+  });
+
   it("should recover wallet from saved phrases", () => {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {

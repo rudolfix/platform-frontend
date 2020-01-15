@@ -1,9 +1,8 @@
+import { all, delay, fork, put, race, select, take } from "@neufund/sagas";
 import BigNumber from "bignumber.js";
 import { LOCATION_CHANGE } from "connected-react-router";
 import { camelCase, isString } from "lodash";
 import { compose, keyBy, map, omit } from "lodash/fp";
-import { delay, Effect } from "redux-saga";
-import { all, fork, put, race, select, take } from "redux-saga/effects";
 
 import { IWindowWithData } from "../../../test/helperTypes";
 import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/documents/utils";
@@ -182,7 +181,7 @@ export function* getEtoContract(
   { contractsService, logger }: TGlobalDependencies,
   etoId: string,
   state: EEtoState,
-): Iterator<any> {
+): Generator<any, any, any> {
   if (state !== EEtoState.ON_CHAIN) {
     logger.error("Invalid eto state", new InvalidETOStateError(state, EEtoState.ON_CHAIN), {
       etoId: etoId,
@@ -194,8 +193,6 @@ export function* getEtoContract(
 
     const etherTokenContract: EtherToken = contractsService.etherToken;
     const euroTokenContract: EuroToken = contractsService.euroToken;
-
-    yield put(actions.bookBuilding.loadPledge(etoId));
 
     // fetch eto contracts state with 'all' to improve performance
     const [
@@ -238,7 +235,7 @@ export function* getEtoContract(
 export function* loadEtoContract(
   _: TGlobalDependencies,
   { etoId, previewCode, state }: TEtoSpecsData,
-): Iterator<any> {
+): Generator<any, any, any> {
   const contract = yield neuCall(getEtoContract, etoId, state);
   yield put(actions.eto.setEtoDataFromContract(previewCode, contract));
 }
@@ -306,8 +303,8 @@ function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: 
 export function* delayEtoRefresh(
   _: TGlobalDependencies,
   eto: TEtoWithCompanyAndContractReadonly,
-): Iterator<any> {
-  const strategies: Dictionary<Promise<true>> = {
+): Generator<any, any, any> {
+  const strategies: Dictionary<any> = {
     default: delay(etoNormalPollingDelay),
   };
 
@@ -342,20 +339,14 @@ export function* watchEto(_: TGlobalDependencies, previewCode: string): any {
 function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
   try {
     const etos: TEtoDataWithCompany[] = yield apiEtoService.getEtos();
-
     const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
+
+    yield put(actions.bookBuilding.loadBookBuildingListStats(etos.map(eto => eto.etoId)));
 
     yield all(
       etos
         .filter(eto => eto.state === EEtoState.ON_CHAIN)
         .map(eto => neuCall(loadEtoContract, eto)),
-    );
-
-    // Pledge can be loaded after listed state
-    yield all(
-      etos
-        .filter(eto => shouldLoadPledgeData(eto.state))
-        .map(eto => put(actions.bookBuilding.loadPledge(eto.etoId))),
     );
 
     const filteredEtosByJurisdictionRestrictions: TEtoDataWithCompany[] = yield select(
@@ -395,7 +386,7 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
   }
 }
 
-function* download(document: IEtoDocument): Iterator<Effect> {
+function* download(document: IEtoDocument): Generator<any, any, any> {
   yield put(
     actions.immutableStorage.downloadImmutableFile(
       {
@@ -430,7 +421,7 @@ function getDocumentsRequiredConfidentialityAgreements(previewCode: string): EEt
 function* downloadDocument(
   { logger, documentsConfidentialityAgreementsStorage }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.downloadEtoDocument>,
-): Iterator<any> {
+): Generator<any, any, any> {
   const { document, eto } = action.payload;
 
   const isUserFullyVerified: ReturnType<typeof selectIsUserVerified> = yield select(
@@ -586,7 +577,7 @@ function* loadTokensData({ contractsService }: TGlobalDependencies): any {
 function* ensureEtoJurisdiction(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.ensureEtoJurisdiction>,
-): Iterable<any> {
+): Generator<any, any, any> {
   const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select(
     (state: IAppState) => selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
   );
@@ -603,7 +594,7 @@ function* ensureEtoJurisdiction(
 function* verifyEtoAccess(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.verifyEtoAccess>,
-): Iterable<any> {
+): Generator<any, any, any> {
   const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select(
     (state: IAppState) => selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
   );
@@ -664,7 +655,7 @@ function* loadAgreementStatus(
   { logger }: TGlobalDependencies,
   agreementType: EAgreementType,
   eto: TEtoWithCompanyAndContractReadonly,
-): Iterator<any> {
+): Generator<any, any, any> {
   try {
     if (!isOnChain(eto)) {
       return EEtoAgreementStatus.NOT_DONE;
@@ -703,7 +694,7 @@ function* loadAgreementStatus(
 function* loadISHAStatus(
   { logger }: TGlobalDependencies,
   eto: TEtoWithCompanyAndContractReadonly,
-): Iterator<any> {
+): Generator<any, any, any> {
   try {
     if (!isOnChain(eto)) {
       return EEtoAgreementStatus.NOT_DONE;
@@ -724,7 +715,7 @@ function* loadISHAStatus(
 export function* issuerFlowLoadAgreementsStatus(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.loadEtoAgreementsStatus>,
-): Iterator<any> {
+): Generator<any, any, any> {
   const statuses: Dictionary<EEtoAgreementStatus, EAgreementType> = yield neuCall(
     loadAgreementsStatus,
     payload.eto,
@@ -736,7 +727,7 @@ export function* issuerFlowLoadAgreementsStatus(
 export function* loadAgreementsStatus(
   _: TGlobalDependencies,
   eto: TEtoWithCompanyAndContractReadonly,
-): Iterator<any> {
+): Generator<any, any, any> {
   return yield all({
     [EAgreementType.THA]: neuCall(loadAgreementStatus, EAgreementType.THA, eto),
     [EAgreementType.RAAA]: neuCall(loadAgreementStatus, EAgreementType.RAAA, eto),
@@ -749,7 +740,7 @@ export function* issuerFlowLoadInvestmentAgreement(
   {
     payload: { etoId, previewCode },
   }: TActionFromCreator<typeof actions.eto.loadSignedInvestmentAgreement>,
-): Iterator<any> {
+): Generator<any, any, any> {
   const url = yield neuCall(loadInvestmentAgreement, etoId);
 
   yield put(actions.eto.setInvestmentAgreementHash(previewCode, url));
@@ -758,7 +749,7 @@ export function* issuerFlowLoadInvestmentAgreement(
 export function* loadInvestmentAgreement(
   { contractsService }: TGlobalDependencies,
   etoId: string,
-): Iterator<any> {
+): Generator<any, any, any> {
   const contract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
   const url: string = yield contract.signedInvestmentAgreementUrl;
 
@@ -768,7 +759,7 @@ export function* loadInvestmentAgreement(
 export function* loadCapitalIncrease(
   { contractsService }: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.loadCapitalIncrease>,
-): Iterator<any> {
+): Generator<any, any, any> {
   const contract: ETOCommitment = yield contractsService.getETOCommitmentContract(payload.etoId);
 
   const [, capitalIncrease]: [
@@ -788,7 +779,7 @@ export function* loadCapitalIncrease(
 export function* loadEtoGeneralTokenDiscounts(
   { contractsService }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadTokenTerms>,
-): Iterator<any> {
+): Generator<any, any, any> {
   const { eto } = action.payload;
 
   if (!isOnChain(eto)) {
@@ -823,7 +814,7 @@ export function* loadEtoGeneralTokenDiscounts(
   );
 }
 
-export function* etoSagas(): Iterator<any> {
+export function* etoSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.eto.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.eto.loadEto, loadEto);
   yield fork(neuTakeEvery, actions.eto.loadEtos, loadEtos);

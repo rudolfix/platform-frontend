@@ -16,7 +16,7 @@ describe("Auto Login", () => {
 
 describe("Incoming payout", function(): void {
   this.retries(2);
-  it("should show counter with incoming payout value", () => {
+  it.skip("should show counter with incoming payout value", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
@@ -59,7 +59,7 @@ describe("Incoming payout", function(): void {
     });
   });
 
-  it("Should show counter without ETH", () => {
+  it.skip("Should show counter without ETH", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboardWithRequiredPayoutAmountSet(false, convertToUlps("1000"));
 
@@ -76,11 +76,11 @@ describe("Incoming payout", function(): void {
     const ETO_ID = eto.address;
     const numberOfInvestors = Object.keys(eto.investors).length;
 
-    createAndLoginNewUser({ type: "investor" }).then(() => {
-      goToDashboard();
-      cy.get(tid(`eto-overview-${ETO_ID}-investors-count`))
-        .get(tid("value"))
-        .contains(numberOfInvestors);
-    });
+    createAndLoginNewUser({ type: "investor" });
+
+    goToDashboard();
+    cy.get(tid(`eto-overview-${ETO_ID}-investors-count`))
+      .get(tid("value"))
+      .contains(numberOfInvestors);
   });
 });

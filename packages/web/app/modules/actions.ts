@@ -1,5 +1,5 @@
+import { StringableActionCreator } from "@neufund/sagas";
 import { LocationChangeAction } from "connected-react-router";
-import { StringableActionCreator } from "redux-saga/effects";
 
 import { portfolioActions } from "../components/portfolio/actions";
 import { TDictionaryValues } from "../types";

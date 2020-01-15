@@ -37,11 +37,12 @@
     "tslib": "^1.10.0",
     "tslint": "^5.14.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.5.3",
+    "typescript": "^3.7.3",
     "typestrict": "^1.0.2"
   },
   "peerDependencies": {
     "bignumber.js": "^5.0.0",
     "tslib": "^1.10.0"
-  }
+  },
+  "dependencies": {}
 }

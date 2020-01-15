@@ -29,7 +29,7 @@ export const KYCStartComponent: React.FunctionComponent<TProps> = ({
       description={<FormattedHTMLMessage tagName="span" id="kyc.start.description" />}
       buttonAction={() => goToDashboard()}
     />
-    <section className={styles.cardsContainer}>
+    <section className={styles.cardsContainer} data-test-id="kyc-flow-start">
       <SelectTypeCard
         data-test-id="kyc-start-go-to-personal"
         kycType={EKycRequestType.INDIVIDUAL}

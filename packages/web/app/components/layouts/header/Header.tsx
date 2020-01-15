@@ -10,8 +10,8 @@ import { MobileMenu } from "../menus/mobileMenu/MobileMenu";
 import { MyAccountMenu } from "../menus/MyAccountMenu";
 import { PendingTransactionStatus } from "./PendingTransactionStatus";
 
-import * as logoNew from "../../../assets/img/logo_neufund_on_white.svg";
-import * as logoNewTitle from "../../../assets/img/logo_neufund_on_white_title.svg";
+import logoNew from "../../../assets/img/logo_neufund_on_white.svg";
+import logoNewTitle from "../../../assets/img/logo_neufund_on_white_title.svg";
 import * as styles from "./Header.module.scss";
 
 const LogoUnauth = () => (
@@ -51,27 +51,27 @@ const GetStartedButton: React.FunctionComponent = () => (
 );
 
 const HeaderUnauthorized: React.FunctionComponent = () => (
-  <div className={styles.headerUnauth}>
+  <header className={styles.headerUnauth}>
     <LogoUnauth />
     <LoginButton />
     <GetStartedButton />
-  </div>
+  </header>
 );
 
 const HeaderTransitional: React.FunctionComponent = () => (
-  <div className={styles.headerUnauth}>
+  <header className={styles.headerUnauth}>
     <LogoUnauth />
-  </div>
+  </header>
 );
 
 const HeaderAuthorized: React.FunctionComponent = () => (
-  <div className={styles.headerAuth}>
+  <header className={styles.headerAuth}>
     <MobileMenu />
     <LogoAuth />
     <Menu />
     <PendingTransactionStatus className={styles.transactionStatus} />
     <MyAccountMenu />
-  </div>
+  </header>
 );
 
 export { HeaderUnauthorized, HeaderAuthorized, HeaderTransitional, LogoAuth, LogoUnauth };

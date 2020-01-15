@@ -272,7 +272,7 @@ describe("PayoutWidget", () => {
     expect(component.find(tid("my-portfolio-widget-incoming-payout-available")).length).to.eq(1);
   });
 
-  it("switches from pending payouts component to to waiting state and then to available payouts state", async () => {
+  it.skip("switches from pending payouts component to to waiting state and then to available payouts state", async () => {
     clock.fakeClock.setSystemTime(NOT_ACTUAL_DATE);
     feeDisbursalMock.reMock({
       getNonClaimableDisbursals: getNonClaimableDisbursalsData,

@@ -1,3 +1,4 @@
+import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
@@ -7,7 +8,6 @@ import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, createStore, Store } from "redux";
-import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { SinonSpy } from "sinon";
 
 import {
@@ -157,6 +157,7 @@ export async function waitForTid(component: ReactWrapper, id: string): Promise<v
     throw new Error(`Timeout while waiting for '${id}'`);
   }
 }
+
 export async function waitForPredicate(predicate: () => boolean, errorMsg: string): Promise<void> {
   // wait until event queue is empty :/ currently we don't have a better way to solve it
   let waitTime = 20;

@@ -1,5 +1,5 @@
+import { all, fork, put, select, take } from "@neufund/sagas";
 import BigNumber from "bignumber.js";
-import { all, fork, put, select, take } from "redux-saga/effects";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { BankTransferFlowMessage } from "../../components/translatedMessages/messages";
@@ -16,7 +16,7 @@ import {
   selectIsBankTransferModalOpened,
 } from "./selectors";
 
-function* generateReference({ apiKycService }: TGlobalDependencies): Iterable<any> {
+function* generateReference({ apiKycService }: TGlobalDependencies): Generator<any, any, any> {
   const { purpose }: TKycBankTransferPurpose = yield apiKycService.nEurPurchaseRequestPreparation();
 
   return purpose;

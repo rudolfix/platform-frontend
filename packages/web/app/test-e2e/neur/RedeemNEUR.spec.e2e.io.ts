@@ -14,23 +14,20 @@ import { assertBankAccountDetails } from "./assertions";
 describe("Redeem NEUR", function(): void {
   this.retries(2);
   beforeEach(() => {
-    loginFixtureAccount("demoinvestor2", {
-      kyc: "individual",
-    }).then(() => {
-      // store actual balance
-      getWalletNEurAmount().as("currentAmount");
+    loginFixtureAccount("demoinvestor2");
+    // store actual balance
+    getWalletNEurAmount().as("currentAmount");
 
-      assertWallet();
+    assertWallet();
 
-      // check if bank account is linked
-      assertBankAccountDetails();
+    // check if bank account is linked
+    assertBankAccountDetails();
 
-      // start redeem flow
-      cy.get(tid("wallet-balance.neur.redeem-button")).click();
-    });
+    // start redeem flow
+    cy.get(tid("wallet-balance.neur.redeem-button")).click();
   });
 
-  it("should not allow to use value below 5 NEUR", () => {
+  it.skip("should not allow to use value below 5 NEUR", () => {
     fillForm(
       {
         amount: "2.22",

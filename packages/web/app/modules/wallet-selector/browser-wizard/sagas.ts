@@ -1,4 +1,4 @@
-import { fork, put, select } from "redux-saga/effects";
+import { fork, put, select } from "@neufund/sagas";
 
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -39,7 +39,7 @@ export function* tryConnectingWithBrowserWallet({
   }
 }
 
-export function* browserWalletSagas(): Iterator<any> {
+export function* browserWalletSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeUntil,
     "BROWSER_WALLET_TRY_CONNECTING",

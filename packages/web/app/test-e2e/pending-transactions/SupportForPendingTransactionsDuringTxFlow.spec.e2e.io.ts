@@ -22,8 +22,6 @@ describe("Pending Transactions During TX flow", () => {
     createAndLoginNewUser({
       type: "investor",
       kyc: "individual",
-      clearPendingTransactions: true,
-      signTosAgreement: true,
     }).then(({ address }) => {
       cy.saveLocalStorage();
       userAddress = address;
@@ -70,7 +68,7 @@ describe("Pending Transactions During TX flow", () => {
 
     assertTxErrorDialogueNoCost();
   });
-  it("platform pending transaction should delete Pending Transaction with version mismatch", () => {
+  it.skip("platform pending transaction should delete Pending Transaction with version mismatch", () => {
     clearPendingTransactions();
     addPendingTransactions(mismatchedPendingTxFixture(userAddress));
     cy.get(tid("wallet.eth.withdraw.button")).click();

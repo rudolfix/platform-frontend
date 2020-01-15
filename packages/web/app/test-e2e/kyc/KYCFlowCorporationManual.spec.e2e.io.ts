@@ -9,6 +9,7 @@ describe("KYC Business flow", () => {
 
     // go to corporate start page
     cy.visit(kycRoutes.start);
+
     cy.get(tid("kyc-start-go-to-business")).awaitedClick();
 
     goThroughKycCorporateProcess();

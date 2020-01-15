@@ -1,4 +1,4 @@
-import { fork, put } from "redux-saga/effects";
+import { fork, put } from "@neufund/sagas";
 
 import { KycFlowMessage } from "../../../../components/translatedMessages/messages";
 import { createMessage } from "../../../../components/translatedMessages/utils";
@@ -11,7 +11,7 @@ function* startIdNow({
   apiKycService,
   notificationCenter,
   logger,
-}: TGlobalDependencies): Iterator<any> {
+}: TGlobalDependencies): Generator<any, any, any> {
   try {
     const { redirectUrl }: TKycIdNowIdentification = yield apiKycService.startInstantId();
 
@@ -25,6 +25,6 @@ function* startIdNow({
     notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED));
   }
 }
-export function* kycIdNowSagas(): Iterator<any> {
+export function* kycIdNowSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.kyc.startIdNowRequest, startIdNow);
 }

@@ -2,13 +2,18 @@ import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
 import { amendEtoToCompatibleFormat } from "../../../modules/eto/utils";
+import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
+import { Dictionary } from "../../../types";
+import { EthereumAddress } from "../../../utils/opaque-types/types";
 import { withParams } from "../../../utils/withParams";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
+  TBookBuildingsStatsList,
   TEtoDataWithCompany,
   TPartialCompanyEtoData,
   TPartialEtoSpecData,
 } from "./EtoApi.interfaces.unsafe";
+import { IBookBuildingStats } from "./EtoPledgeApi.interfaces.unsafe";
 
 const BASE_PATH = "/api/eto-listing/";
 const COMPANIES_ME_DATA_PATH = "/companies/me";
@@ -147,6 +152,22 @@ export class EtoApi {
       baseUrl: BASE_PATH,
       url: ETOS_PATH + "/" + etoId + "/bookbuilding-stats",
     });
+  }
+
+  public getBookBuildingStatsList(etosIds: string[]): Promise<Dictionary<IBookBuildingStats>> {
+    return this.httpClient
+      .get<TBookBuildingsStatsList>({
+        baseUrl: BASE_PATH,
+        url: `/bookbuilding-stats?eto_ids=${etosIds}`,
+      })
+      .then(response => {
+        const etosStatsResponse: Dictionary<IBookBuildingStats> = response.body.bookbuildingStats;
+        const etoStats: any = {};
+        for (let key in etosStatsResponse) {
+          etoStats[makeEthereumAddressChecksummed(key as EthereumAddress)] = etosStatsResponse[key];
+        }
+        return etoStats;
+      });
   }
 
   public getDetailedBookBuildingStats(): Promise<IHttpResponse<any>> {

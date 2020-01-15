@@ -1,4 +1,4 @@
-import { fork } from "redux-saga/effects";
+import { fork } from "@neufund/sagas";
 
 import { txUserClaimSagas } from "./claim/sagas";
 import { txEtoSetDateSagas } from "./eto-flow/sagas";
@@ -12,7 +12,7 @@ import { txUnlockWalletSagas } from "./unlock/sagas";
 import { txUpgradeSagas } from "./upgrade/sagas";
 import { txWithdrawSagas } from "./withdraw/sagas";
 
-export const txTransactionsSagasWatcher = function*(): Iterator<any> {
+export const txTransactionsSagasWatcher = function*(): Generator<any, any, any> {
   yield fork(txWithdrawSagas);
   yield fork(txUpgradeSagas);
   yield fork(txInvestmentSagas);

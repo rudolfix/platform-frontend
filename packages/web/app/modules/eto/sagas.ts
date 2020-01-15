@@ -194,8 +194,6 @@ export function* getEtoContract(
     const etherTokenContract: EtherToken = contractsService.etherToken;
     const euroTokenContract: EuroToken = contractsService.euroToken;
 
-    yield put(actions.bookBuilding.loadPledge(etoId));
-
     // fetch eto contracts state with 'all' to improve performance
     const [
       etherTokenBalance,
@@ -341,20 +339,14 @@ export function* watchEto(_: TGlobalDependencies, previewCode: string): any {
 function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
   try {
     const etos: TEtoDataWithCompany[] = yield apiEtoService.getEtos();
-
     const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
+
+    yield put(actions.bookBuilding.loadBookBuildingListStats(etos.map(eto => eto.etoId)));
 
     yield all(
       etos
         .filter(eto => eto.state === EEtoState.ON_CHAIN)
         .map(eto => neuCall(loadEtoContract, eto)),
-    );
-
-    // Pledge can be loaded after listed state
-    yield all(
-      etos
-        .filter(eto => shouldLoadPledgeData(eto.state))
-        .map(eto => put(actions.bookBuilding.loadPledge(eto.etoId))),
     );
 
     const filteredEtosByJurisdictionRestrictions: TEtoDataWithCompany[] = yield select(

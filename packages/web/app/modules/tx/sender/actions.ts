@@ -22,7 +22,8 @@ export const txSenderActions = {
   // Signer actions
   txSenderSigned: (txHash: string, type: ETxSenderType, txTimestamp: number) =>
     createAction("TX_SENDER_SIGNED", { txHash, type, txTimestamp }),
-  txSenderWalletPlugged: () => createSimpleAction("TX_SENDER_WALLET_PLUGGED"),
+  txSenderWalletSigning: () => createSimpleAction("TX_SENDER_WALLET_SIGNING"),
+  txSenderLoading: () => createSimpleAction("TX_SENDER_LOADING"),
   // Block mining actions
   txSenderReportBlock: (blockId: number) => createAction("TX_SENDER_REPORT_BLOCK", blockId),
   txSenderTxMined: () => createSimpleAction("TX_SENDER_TX_MINED"),

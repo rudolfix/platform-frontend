@@ -25,6 +25,8 @@ import { actions } from "../../actions";
 import { IGasState } from "../../gas/reducer";
 import { selectGasPrice } from "../../gas/selectors";
 import { neuCall, neuRepeatIf, neuSpawn } from "../../sagasUtils";
+import { selectWalletType } from "../../web3/selectors";
+import { EWalletType } from "../../web3/types";
 import { createWatchTxChannel } from "../event-channel/sagas";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "../event-channel/types";
 import {
@@ -123,6 +125,9 @@ function* txSendProcess(
   extraParam?: any,
 ): any {
   try {
+    const walletType: EWalletType = yield select((state: IAppState) =>
+      selectWalletType(state.web3),
+    );
     yield put(actions.txSender.txSenderShowModal({ type: transactionType }));
 
     yield neuRepeatIf("TX_SENDER_CHANGE", "TX_SENDER_ACCEPT", transactionFlowGenerator, extraParam);
@@ -134,7 +139,12 @@ function* txSendProcess(
     // accept transaction on wallet
     yield call(connectWallet);
 
-    yield put(actions.txSender.txSenderWalletPlugged());
+    // TODO: Use is wallet unlocked from WalletMeta instead of asserting the wallet type directly
+    if (walletType === EWalletType.LIGHT) {
+      yield put(actions.txSender.txSenderLoading());
+    } else {
+      yield put(actions.txSender.txSenderWalletSigning());
+    }
 
     // send transaction
     const txHash = yield neuCall(sendTxSubSaga);

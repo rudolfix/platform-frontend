@@ -34,6 +34,7 @@ export enum ETxSenderState {
   MINING = "MINING",
   DONE = "DONE",
   ERROR_SIGN = "ERROR_SIGN",
+  LOADING = "LOADING",
 }
 
 type ITxSenderDefaultState = ITxTypeWithData<undefined, undefined>;
@@ -95,10 +96,15 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...state,
         txDetails: action.payload.txData,
       };
-    case "TX_SENDER_WALLET_PLUGGED":
+    case "TX_SENDER_WALLET_SIGNING":
       return {
         ...state,
         state: ETxSenderState.SIGNING,
+      };
+    case "TX_SENDER_LOADING":
+      return {
+        ...state,
+        state: ETxSenderState.LOADING,
       };
     case "TX_SENDER_SIGNED":
       return {

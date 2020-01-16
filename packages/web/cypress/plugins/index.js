@@ -13,4 +13,15 @@ module.exports = on => {
     webpackOptions: require("../../webpack/webpack.config.cypress"),
   };
   on("file:preprocessor", webpack(options));
+
+  // open dev tools for new tabs
+  on("before:browser:launch", (browser = {}, args) => {
+    if (browser.name === "chrome") {
+      args = args.concat("--auto-open-devtools-for-tabs");
+    } else if (browser.name === "electron") {
+      // Cypress-specific option (state)
+      args.devTools = true;
+    }
+    return args;
+  });
 };

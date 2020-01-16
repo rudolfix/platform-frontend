@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -18,6 +19,7 @@ import { Panel } from "../shared/Panel";
 import { NewTable, NewTableRow } from "../shared/table";
 
 import neuIcon from "../../assets/img/neu_icon.svg";
+import * as styles from "./PortfolioLayout.module.scss";
 
 interface IExternalProps {
   tokensDisbursal: ReadonlyArray<ITokenDisbursal> | undefined;
@@ -112,7 +114,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
             data-test-id={`asset-portfolio.payout-${tokenDisbursal.token}`}
           >
             <>
-              <CurrencyIcon currency={tokenDisbursal.token} className="mr-2" />
+              <CurrencyIcon currency={tokenDisbursal.token} className={cn("mr-2", styles.token)} />
               {selectUnits(tokenDisbursal.token)}
             </>
             <Money

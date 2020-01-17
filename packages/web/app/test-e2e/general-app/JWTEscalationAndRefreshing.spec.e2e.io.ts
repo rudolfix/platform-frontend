@@ -1,4 +1,5 @@
 import {
+  AUTH_INACTIVITY_THRESHOLD,
   AUTH_JWT_TIMING_THRESHOLD,
   AUTH_TOKEN_REFRESH_THRESHOLD,
 } from "../../modules/auth/constants";
@@ -12,12 +13,16 @@ import {
   goToProfile,
   tid,
 } from "../utils";
+import { assertDashboard, assertLogin } from "../utils/assertions";
+import { cyPromise } from "../utils/cyPromise";
 import { fillForm } from "../utils/forms";
 import {
   createAndLoginNewUser,
   generateRandomEmailAddress,
   getJwtToken,
+  loginFixtureAccount,
 } from "../utils/userHelpers";
+import { keepSessionActive, routeJwtCreate, routeJwtRefresh } from "./utils";
 
 describe("JWT Refreshing and Escalation", () => {
   it("should logout to landing when token is initially expired", () => {
@@ -63,62 +68,157 @@ describe("JWT Refreshing and Escalation", () => {
     });
   });
 
-  it("should refresh jwt token", () => {
-    cy.server();
-    cy.route("POST", "**/jwt/refresh").as("jwtRefresh");
+  describe("jwt refresh", () => {
+    beforeEach(() => {
+      cy.server();
+    });
 
-    createAndLoginNewUser({ type: "investor" }).then(() => {
-      goToDashboard();
+    it("should refresh jwt token", () => {
+      createAndLoginNewUser({ type: "investor" }).then(() => {
+        goToDashboard();
 
-      const now = Date.now();
+        const now = Date.now();
 
-      cy.clock(now, ["Date"]);
+        cy.clock(now, ["Date"]);
 
-      const jwtToken = getJwtToken();
+        const jwtToken = getJwtToken();
 
-      const jwtExpiryDate = getJwtExpiryDate(jwtToken);
+        const jwtExpiryDate = getJwtExpiryDate(jwtToken);
 
-      const diff = jwtExpiryDate.diff(now, "milliseconds");
+        const diff = jwtExpiryDate.diff(now, "milliseconds");
 
-      const expectedTokenRefreshTimeFromNow = diff - AUTH_TOKEN_REFRESH_THRESHOLD;
+        let expectedTokenRefreshTimeFromNow = diff - AUTH_TOKEN_REFRESH_THRESHOLD;
 
-      cy.tick(expectedTokenRefreshTimeFromNow + 1);
+        keepSessionActive(expectedTokenRefreshTimeFromNow);
 
-      cy.wait("@jwtRefresh");
+        routeJwtRefresh().as("jwtRefresh");
 
-      // Should refresh jwt token in localstorage
-      cy.wrap(jwtToken).should(token => {
-        expect(token).to.not.equal(getJwtToken());
+        cy.tick(1);
+
+        cy.wait("@jwtRefresh");
+
+        cy.requestsCount("@jwtRefresh").should("equal", 1);
+
+        // Should refresh jwt token in localstorage
+        cy.wrap(jwtToken).should(token => {
+          expect(token).to.not.equal(getJwtToken());
+        });
       });
     });
-  });
 
-  it("should escalate jwt token with new permissions", () => {
-    cy.server();
-    cy.route("POST", "**/jwt/create").as("jwtEscalate");
+    it("should not refresh jwt token after logging out due to inactivity", () => {
+      createAndLoginNewUser({ type: "investor" }).then(() => {
+        goToDashboard();
 
-    createAndLoginNewUser({ type: "investor" }).then(() => {
-      goToProfile();
+        const jwtToken = getJwtToken();
 
-      assertEmailChangeFlow();
+        const jwtExpiryDate = getJwtExpiryDate(jwtToken);
 
-      const jwtToken = getJwtToken();
+        let now = Date.now();
 
-      fillForm({
-        email: generateRandomEmailAddress(),
-        "verify-email-widget-form-submit": { type: "submit" },
+        // simulate inactivity logout
+        cy.clock(now);
+
+        cy.tick(AUTH_INACTIVITY_THRESHOLD / 2);
+        now += AUTH_INACTIVITY_THRESHOLD / 2;
+
+        assertDashboard();
+
+        cy.tick(AUTH_INACTIVITY_THRESHOLD);
+        now += AUTH_INACTIVITY_THRESHOLD;
+
+        assertLogin();
+
+        routeJwtRefresh().as("jwtRefresh");
+
+        const diff = jwtExpiryDate.diff(now, "milliseconds");
+
+        const expectedTokenRefreshTimeFromNow = diff - AUTH_TOKEN_REFRESH_THRESHOLD;
+
+        cy.tick(expectedTokenRefreshTimeFromNow + 1);
+
+        // should not try to refresh jwt token after inactivity logout
+        cy.requestsCount("@jwtRefresh").should("equal", 0);
+      });
+    });
+
+    it("should refresh jwt token after logging out due to inactivity and logged in again", () => {
+      const fixture = "INV_HAS_EUR_HAS_KYC";
+
+      loginFixtureAccount(fixture).then(() => {
+        goToDashboard();
+
+        let now = Date.now();
+
+        cy.clock(now).then(clock => {
+          clock.tick(AUTH_INACTIVITY_THRESHOLD / 2);
+
+          assertDashboard();
+
+          clock.tick(AUTH_INACTIVITY_THRESHOLD);
+
+          assertLogin();
+
+          // restore the clock to unblock next attempt to login
+          // wrap with promise so it wait's for previous commands to finish
+          cyPromise(() => Promise.resolve(clock.restore()));
+        });
       });
 
-      confirmAccessModal();
+      loginFixtureAccount(fixture).then(() => {
+        goToDashboard();
 
-      // Should send current jwt during escalation to preserve existing permissions
-      cy.wait("@jwtEscalate").should((xhr: Cypress.WaitXHR) => {
-        expect(xhr.request.headers.authorization).to.equal(`Bearer ${jwtToken}`);
+        let now = Date.now();
+
+        cy.clock(now, ["Date"]);
+
+        let jwtToken = getJwtToken();
+        let jwtExpiryDate = getJwtExpiryDate(jwtToken);
+        let diff = jwtExpiryDate.diff(now, "milliseconds");
+        let expectedTokenRefreshTimeFromNow = diff - AUTH_TOKEN_REFRESH_THRESHOLD;
+
+        keepSessionActive(expectedTokenRefreshTimeFromNow);
+
+        routeJwtRefresh().as("jwtRefresh");
+
+        cy.tick(1);
+
+        cy.wait("@jwtRefresh");
+        cy.requestsCount("@jwtRefresh").should("equal", 1);
+
+        // Should refresh jwt token in localstorage
+        cy.wrap(jwtToken).should(token => {
+          expect(token).to.not.equal(getJwtToken());
+        });
       });
+    });
 
-      // Should refresh jwt localstorage
-      cy.wrap(jwtToken).should(token => {
-        expect(token).to.not.equal(getJwtToken());
+    it("should escalate jwt token with new permissions", () => {
+      routeJwtCreate().as("jwtEscalate");
+
+      createAndLoginNewUser({ type: "investor" }).then(() => {
+        goToProfile();
+
+        assertEmailChangeFlow();
+
+        const jwtToken = getJwtToken();
+
+        fillForm({
+          email: generateRandomEmailAddress(),
+          "verify-email-widget-form-submit": { type: "submit" },
+        });
+
+        confirmAccessModal();
+
+        // Should send current jwt during escalation to preserve existing permissions
+        cy.wait("@jwtEscalate").should((xhr: Cypress.WaitXHR) => {
+          expect(xhr.request.headers.authorization).to.equal(`Bearer ${jwtToken}`);
+        });
+
+        // Should refresh jwt localstorage
+        cy.wrap(jwtToken).should(token => {
+          expect(token).to.not.equal(getJwtToken());
+        });
       });
     });
   });

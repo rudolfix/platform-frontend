@@ -33,6 +33,15 @@ Cypress.Commands.add("awaitedClick", { prevSubject: "element" }, (subject, waitD
     .click(),
 );
 
+Cypress.Commands.add("requestsCount", as => {
+  // remove first `@` from alias for consistency with Cypress API
+  const alias = as.slice(1);
+
+  const requests = cy.state("requests").filter(a => a.alias === alias);
+
+  return requests.length;
+});
+
 const LOCAL_STORAGE_MEMORY = new Map();
 const DEFAULT_STORAGE_KEY = "main";
 

@@ -56,6 +56,7 @@ describe("Pending Transactions During TX flow", () => {
     // It's not possible to that transaction will move to success/error state as
     // this is a mock transaction that doesn't exist on a blockchain
   });
+
   it("platform pending transaction should show cancelled transaction when transactional node fails", () => {
     const tx = generalPendingTxFixture(userAddress);
     addPendingTransactions(tx);
@@ -68,6 +69,8 @@ describe("Pending Transactions During TX flow", () => {
 
     assertTxErrorDialogueNoCost();
   });
+
+  // TODO: Understand and fix flaky behaviour
   it.skip("platform pending transaction should delete Pending Transaction with version mismatch", () => {
     clearPendingTransactions();
     addPendingTransactions(mismatchedPendingTxFixture(userAddress));

@@ -1,6 +1,3 @@
-import BroadcastChannel from "broadcast-channel";
-
-import { symbols } from "../../di/symbols";
 import {
   assertDashboard,
   assertLanding,
@@ -18,6 +15,7 @@ import {
   NF_USER_KEY,
   WALLET_STORAGE_KEY,
 } from "../utils/userHelpers";
+import { keepSessionActive } from "./utils";
 
 const REGISTRATION_LOGIN_DONE = "logged_in";
 const AUTH_INACTIVITY_THRESHOLD = 300000;
@@ -32,6 +30,7 @@ const clearKeyFromStorageWithEvents = (Window: Window, key: string) => {
   );
   Window.localStorage.removeItem(key);
 };
+
 const setKeyFromStorageWithEvents = (Window: Window, key: string, newValue: string) => {
   const oldValue = Window.localStorage.getItem(key);
   Window.localStorage.setItem(key, newValue);
@@ -43,30 +42,6 @@ const setKeyFromStorageWithEvents = (Window: Window, key: string, newValue: stri
     }),
   );
 };
-
-export enum EUserActivityMessage {
-  USER_ACTIVE = "user-active",
-}
-
-export declare type UserActivityChannelMessage = {
-  status: EUserActivityMessage;
-};
-
-const channel: BroadcastChannel<UserActivityChannelMessage> = new BroadcastChannel(
-  symbols.userActivityChannel.toString(),
-  { webWorkerSupport: false },
-);
-
-const pushTimeThenPostMessage = (clock: any) =>
-  cyPromise(() => {
-    // Posting a message takes some time before it reaches to another browser this generates race conditions
-    // We need to await for sometimes to guarantee that the posted message was received
-    cy.wait(500);
-    clock.tick(AUTH_INACTIVITY_THRESHOLD / 2);
-    return channel.postMessage({
-      status: EUserActivityMessage.USER_ACTIVE,
-    });
-  });
 
 describe("auto-logout/auto-login", () => {
   describe("Automatic Actions", () => {
@@ -113,12 +88,12 @@ describe("auto-logout/auto-login", () => {
       }).then(() => {
         goToDashboard();
         const now = Date.now();
-        cy.clock(now).then(clock => {
-          pushTimeThenPostMessage(clock);
-          pushTimeThenPostMessage(clock);
-          pushTimeThenPostMessage(clock);
-          assertDashboard();
-        });
+
+        cy.clock(now);
+
+        keepSessionActive(AUTH_INACTIVITY_THRESHOLD * 1.5);
+
+        assertDashboard();
       });
     });
   });

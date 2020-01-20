@@ -1,10 +1,10 @@
+import { Dictionary } from "@neufund/shared";
 import { inject, injectable } from "inversify";
 import defaultTo from "lodash/defaultTo";
 import mapValues from "lodash/mapValues";
 import { array, lazy, object } from "yup"; // for only what you need
 
 import { symbols } from "../../di/symbols";
-import { Dictionary } from "../../types";
 import { EEtoDocumentType } from "../api/eto/EtoFileApi.interfaces";
 import { ILogger } from "../dependencies/logger";
 import { ObjectStorage } from "./ObjectStorage";

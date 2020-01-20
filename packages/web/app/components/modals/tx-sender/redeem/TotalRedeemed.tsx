@@ -1,7 +1,6 @@
+import { multiplyBigNumbers, Q18, subtractBigNumbers } from "@neufund/shared";
 import * as React from "react";
 
-import { Q18 } from "../../../../config/constants";
-import { multiplyBigNumbers, subtractBigNumbers } from "../../../../utils/BigNumberUtils";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,

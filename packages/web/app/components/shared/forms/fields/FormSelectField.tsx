@@ -1,10 +1,11 @@
+import { Dictionary } from "@neufund/shared";
 import * as cn from "classnames";
 import { Field, FieldProps, FormikConsumer } from "formik";
 import { map, mapValues } from "lodash";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
 
-import { Dictionary, TDataTestId, TTranslatedString } from "../../../../types";
+import { TDataTestId, TTranslatedString } from "../../../../types";
 import { FormFieldError, generateErrorId } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
 import { isNonValid } from "./utils.unsafe";

@@ -1,3 +1,4 @@
+import { withContainer, withMetaTags } from "@neufund/shared";
 import { isEqual } from "lodash/fp";
 import { branch, compose, lifecycle, renderComponent } from "recompose";
 
@@ -11,9 +12,7 @@ import {
 } from "../../modules/investor-portfolio/selectors";
 import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction";
-import { withContainer } from "../../utils/withContainer.unsafe";
-import { withMetaTags } from "../../utils/withMetaTags.unsafe";
+import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { Layout } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";

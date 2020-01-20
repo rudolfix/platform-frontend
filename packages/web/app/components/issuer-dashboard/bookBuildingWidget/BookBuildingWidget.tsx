@@ -1,3 +1,4 @@
+import { assertNever, InvariantError, nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { branch, compose, renderComponent, renderNothing, withProps } from "recompose";
 
@@ -22,11 +23,8 @@ import { selectIssuerEtoInvestmentCalculatedValues } from "../../../modules/eto/
 import { EETOStateOnChain } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { assertNever } from "../../../utils/assertNever";
-import { InvariantError } from "../../../utils/invariant";
-import { nonNullable } from "../../../utils/nonNullable";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { onLeaveAction } from "../../../utils/OnLeaveAction";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
 import { EColumnSpan } from "../../layouts/Container";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";

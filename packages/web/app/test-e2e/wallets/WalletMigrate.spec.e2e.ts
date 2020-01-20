@@ -1,8 +1,8 @@
+import { Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
 import { appRoutes } from "../../components/appRoutes";
-import { Q18 } from "../../config/constants";
 import { NODE_ADDRESS } from "../config";
 import {
   accountFixtureAddress,

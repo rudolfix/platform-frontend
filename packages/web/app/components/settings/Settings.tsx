@@ -1,3 +1,4 @@
+import { withContainer, withMetaTags } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
@@ -13,9 +14,7 @@ import {
 } from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction";
-import { withContainer } from "../../utils/withContainer.unsafe";
-import { withMetaTags } from "../../utils/withMetaTags.unsafe";
+import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";

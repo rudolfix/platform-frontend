@@ -1,14 +1,12 @@
+import { InvariantError, isZero, NEUR_ALLOWED_US_STATES } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { NEUR_ALLOWED_US_STATES } from "../../../config/constants";
 import { externalRoutes } from "../../../config/externalRoutes";
 import { selectIndividualAddress } from "../../../modules/kyc/selectors";
 import { ENEURWalletStatus } from "../../../modules/wallet/types";
 import { CommonHtmlProps } from "../../../types";
 import { US_STATES } from "../../../utils/enums/usStatesEnum";
-import { InvariantError } from "../../../utils/invariant";
-import { isZero } from "../../../utils/NumberUtils";
 import { EColumnSpan } from "../../layouts/Container";
 import { AccountBalance } from "../../shared/AccountBalance";
 import { EDelimiter, FormattedList } from "../../shared/FormattedList";

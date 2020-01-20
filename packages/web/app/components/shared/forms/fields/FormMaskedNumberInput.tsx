@@ -1,8 +1,9 @@
+import { XOR } from "@neufund/shared";
 import { FormikConsumer } from "formik";
 import * as React from "react";
 import { FormGroup } from "reactstrap";
 
-import { TTranslatedString, XOR } from "../../../../types";
+import { TTranslatedString } from "../../../../types";
 import { ENumberInputFormat, ENumberOutputFormat, TValueFormat } from "../../formatters/utils";
 import { MaskedNumberInput } from "../../MaskedNumberInput";
 import { FormFieldLabel } from "./FormFieldLabel";

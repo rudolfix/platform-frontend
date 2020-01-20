@@ -1,4 +1,5 @@
 import { expectSaga } from "@neufund/sagas";
+import { Dictionary } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
@@ -15,7 +16,6 @@ import { LedgerWallet } from "../../../lib/web3/ledger-wallet/LedgerWallet";
 import { IDerivationPathToAddress } from "../../../lib/web3/ledger-wallet/types";
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
-import { Dictionary } from "../../../types";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../web3/types";
 import { TGlobalDependencies } from "./../../../di/setupBindings";

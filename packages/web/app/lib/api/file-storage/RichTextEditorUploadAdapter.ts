@@ -1,8 +1,8 @@
 import { IUploadAdapter, IUploadAdapterFactory, TLoader } from "@ckeditor/ckeditor5-react";
+import { toReadableBytes } from "@neufund/shared";
 import { inject, interfaces } from "inversify";
 
 import { symbols } from "../../../di/symbols";
-import { toReadableBytes } from "../../../utils/toReadableBytes";
 import { ILogger } from "../../dependencies/logger/ILogger";
 import { FileStorageApi, MAX_ALLOWED_FILE_SIZE } from "./FileStorageApi";
 

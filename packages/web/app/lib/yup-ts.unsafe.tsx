@@ -1,9 +1,10 @@
+import { DeepReadonly, Dictionary } from "@neufund/shared";
 import { mapValues } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
-import { DeepReadonly, Dictionary, TTranslatedString } from "../types";
+import { TTranslatedString } from "../types";
 
 export const object = <T extends {}>(objectShape: T) => new ObjectYTS(objectShape);
 export const string = <T extends string>() => new StringYTS<T>();

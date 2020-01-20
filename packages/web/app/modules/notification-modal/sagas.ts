@@ -1,7 +1,7 @@
 import { fork } from "@neufund/sagas";
+import { assertNever } from "@neufund/shared";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { assertNever } from "../../utils/assertNever";
 import { actions, TActionFromCreator } from "../actions";
 import { neuTakeEvery } from "../sagasUtils";
 import { ENotificationModalType } from "./actions";

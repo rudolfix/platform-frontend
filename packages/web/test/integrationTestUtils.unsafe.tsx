@@ -1,9 +1,9 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
+import { dummyIntl, InversifyProvider } from "@neufund/shared";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
 import { Container } from "inversify";
-import * as lolex from "lolex";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
@@ -30,9 +30,6 @@ import { Web3ManagerMock } from "../app/lib/web3/Web3Manager/Web3Manager.mock";
 import { rootSaga } from "../app/modules/sagas";
 import { generateRootReducer, IAppState } from "../app/store";
 import { DeepPartial } from "../app/types";
-import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
-import { InversifyProvider } from "../app/utils/InversifyProvider";
-import { LolexClockAsync } from "../typings/lolex";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
 import { createMock, tid } from "./testUtils";
@@ -57,22 +54,6 @@ interface ICreateIntegrationTestsSetupOutput {
   history: History;
   sagaMiddleware: SagaMiddleware<{ container: Container; deps: TGlobalDependencies }>;
 }
-
-export const setupFakeClock = (now?: number) => {
-  let wrapper: { fakeClock: LolexClockAsync<any> } = {} as any;
-
-  beforeEach(() => {
-    // note: we use custom fork of lolex providing tickAsync function which should be used to await for any async actions triggered by tick. Read more: https://github.com/sinonjs/lolex/pull/105
-    // TODO: check why typings are not accurate here
-    wrapper.fakeClock = lolex.install(now as any);
-  });
-
-  afterEach(() => {
-    wrapper.fakeClock.uninstall();
-  });
-
-  return wrapper;
-};
 
 export function createIntegrationTestsSetup(
   options: ICreateIntegrationTestsSetupOptions = {},
@@ -171,7 +152,7 @@ export async function waitForPredicate(predicate: () => boolean, errorMsg: strin
 }
 
 export async function waitUntilDoesntThrow(
-  globalFakeClock: LolexClockAsync<any>,
+  globalFakeClock: any /* lolex.InstalledClock<lolex.Clock> */,
   fn: () => any,
   errorMsg: string,
 ): Promise<void> {

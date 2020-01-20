@@ -1,6 +1,6 @@
+import { multiplyBigNumbers } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
-import { multiplyBigNumbers } from "../../utils/BigNumberUtils";
 import { confirmAccessModal, DEFAULT_PASSWORD, parseAmount, tid } from "../utils";
 import { getBalanceRpc, getTransactionByHashRpc } from "../utils/ethRpcUtils";
 

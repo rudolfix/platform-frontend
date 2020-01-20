@@ -1,5 +1,6 @@
+import { EthereumAddressWithChecksum } from "@neufund/shared";
+
 import { TWalletMetadata } from "../../../modules/web3/types";
-import { EthereumAddressWithChecksum } from "../../../utils/opaque-types/types";
 import { EUserType } from "./interfaces";
 
 export const getDummyUser = (walletMetadata: TWalletMetadata) => ({

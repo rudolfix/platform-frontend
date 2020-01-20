@@ -1,6 +1,7 @@
+import { Overwrite } from "@neufund/shared";
+
 import { ITxData } from "../../../lib/web3/types";
 import { AppReducer } from "../../../store";
-import { Overwrite } from "../../../types";
 import { actions } from "../../actions";
 import { ITxTypeWithData, TSpecificTransactionState } from "../types";
 

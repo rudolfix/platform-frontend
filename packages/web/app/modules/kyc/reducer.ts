@@ -1,3 +1,5 @@
+import { DeepReadonly, Dictionary } from "@neufund/shared";
+
 import {
   IKycBeneficialOwner,
   IKycBusinessData,
@@ -8,7 +10,6 @@ import {
   TKycStatus,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { AppReducer } from "../../store";
-import { DeepReadonly, Dictionary } from "../../types";
 import { actions } from "../actions";
 import { idNowInitialState, idNowReducer, IKycIdNowState } from "./instant-id/id-now/reducer";
 import { IKycOnfidoState, onfidoInitialState, onfidoReducer } from "./instant-id/onfido/reducer";

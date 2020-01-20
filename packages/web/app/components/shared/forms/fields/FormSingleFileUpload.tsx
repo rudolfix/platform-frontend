@@ -1,3 +1,4 @@
+import { ArrayWithAtLeastOneMember } from "@neufund/shared";
 import { connect as formikConnect, Field, FieldProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -5,7 +6,7 @@ import { compose } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { ArrayWithAtLeastOneMember, CommonHtmlProps, TFormikConnect } from "../../../../types";
+import { CommonHtmlProps, TFormikConnect } from "../../../../types";
 import { IUploadRequirements, SingleFileUpload } from "../../SingleFileUpload";
 import {
   generateFileInformationDescription,

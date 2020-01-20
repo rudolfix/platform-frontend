@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 import {
   IEtoTokenData,

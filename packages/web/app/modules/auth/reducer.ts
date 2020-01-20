@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { IUser } from "../../lib/api/users/interfaces";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 
 export enum EAuthStatus {

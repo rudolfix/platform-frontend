@@ -1,3 +1,4 @@
+import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
@@ -19,9 +20,6 @@ import {
 } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
-import { nonNullable } from "../../utils/nonNullable";
-import { objectToFilteredArray } from "../../utils/objectToFilteredArray";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
 import { selectAgreementsStatus, selectEtoContract, selectEtoSubState } from "../eto/selectors";

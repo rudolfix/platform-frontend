@@ -1,4 +1,5 @@
-import { Q18 } from "../../config/constants";
+import { Q18 } from "@neufund/shared";
+
 import {
   addPendingExternalTransaction,
   goToWallet,

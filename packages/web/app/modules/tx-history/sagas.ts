@@ -1,4 +1,5 @@
 import { all, delay, fork, put, select } from "@neufund/sagas";
+import { EthereumAddressWithChecksum, subtractBigNumbers } from "@neufund/shared";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { ETxHistoryMessage } from "../../components/translatedMessages/messages";
@@ -11,8 +12,6 @@ import {
   TAnalyticsTransactionsResponse,
 } from "../../lib/api/analytics-api/interfaces";
 import { IAppState } from "../../store";
-import { subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
 import { actions, TActionFromCreator } from "../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEurEquivalent } from "../shared/tokenPrice/selectors";

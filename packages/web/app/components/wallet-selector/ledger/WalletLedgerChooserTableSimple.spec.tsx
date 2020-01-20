@@ -1,3 +1,4 @@
+import { Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { expect } from "chai";
 import { render, shallow } from "enzyme";
@@ -6,7 +7,6 @@ import { spy } from "sinon";
 
 import { wrapWithIntl } from "../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../test/testUtils";
-import { Q18 } from "../../../config/constants";
 import { AccountRow, WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 
 const weiBalance = new BigNumber("1.6495").mul(Q18).toString();

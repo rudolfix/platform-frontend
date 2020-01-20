@@ -3,9 +3,9 @@
  *
  */
 
+import { Dictionary } from "@neufund/shared";
 import { injectable } from "inversify";
 
-import { Dictionary } from "../../../types";
 import { HttpClient, ResponseParsingError } from "./HttpClient";
 import { HttpMethod, IHttpRequestCommon, IHttpResponse } from "./IHttpClient";
 

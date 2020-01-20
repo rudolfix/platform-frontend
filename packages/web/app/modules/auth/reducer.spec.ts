@@ -1,8 +1,8 @@
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 import { expect } from "chai";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
-import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
 import { EWalletSubType, EWalletType } from "../web3/types";
 import { EAuthStatus, IAuthState } from "./reducer";
 import { selectIsAuthorized, selectUserEmail } from "./selectors";

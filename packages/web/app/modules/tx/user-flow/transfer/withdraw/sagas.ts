@@ -1,9 +1,8 @@
 import { fork, put, select } from "@neufund/sagas";
+import { multiplyBigNumbers, Q18, subtractBigNumbers } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
-import { Q18 } from "../../../../../config/constants";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { multiplyBigNumbers, subtractBigNumbers } from "../../../../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../../../../actions";
 import { neuCall, neuDebounce } from "../../../../sagasUtils";
 import { selectLiquidEtherBalance } from "../../../../wallet/selectors";

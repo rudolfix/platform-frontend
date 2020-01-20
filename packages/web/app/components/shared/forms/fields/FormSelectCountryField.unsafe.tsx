@@ -1,9 +1,9 @@
+import { COUNTRIES, Dictionary } from "@neufund/shared";
 import { FieldAttributes } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Dictionary, TTranslatedString } from "../../../../types";
-import { COUNTRIES } from "../../../../utils/enums/countriesEnum";
+import { TTranslatedString } from "../../../../types";
 import { FormSelectField, NONE_KEY } from "./FormSelectField";
 
 const VALUES: Dictionary<TTranslatedString> = {

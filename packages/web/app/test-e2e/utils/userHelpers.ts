@@ -1,3 +1,4 @@
+import { promisify, toCamelCase } from "@neufund/shared";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
@@ -6,8 +7,6 @@ import { toChecksumAddress } from "web3-utils";
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
-import { promisify } from "../../utils/PromiseUtils";
-import { toCamelCase } from "../../utils/transformObjectKeys";
 import { assertIsUserVerifiedOnBlockchain, assertLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";
 import { accountFixtureByName, removePendingExternalTransaction } from "./index";
@@ -109,6 +108,9 @@ export const createAndLoginNewUser = ({
       // This was done to maintain `signTosAgreement` without changing the interface of existing tests
       await setCorrectAgreement(jwt);
     }
+
+    // Wait until backend messaging stabalizes
+    cy.wait(3000);
 
     if (kyc) {
       // wait for kyc to be properly set as verified on blockchain

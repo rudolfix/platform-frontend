@@ -1,7 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
 import { createSelector } from "reselect";
 
 import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
 import { selectBankAccount, selectClaims } from "../kyc/selectors";
 import { TBankAccount, TClaims } from "../kyc/types";
 import { EBankTransferFlowState } from "./reducer";

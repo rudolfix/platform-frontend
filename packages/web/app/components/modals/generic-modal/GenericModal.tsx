@@ -1,3 +1,4 @@
+import { DeepReadonly } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Row } from "reactstrap";
@@ -12,7 +13,6 @@ import {
   selectGenericModalObj,
 } from "../../../modules/generic-modal/selectors";
 import { appConnect, AppDispatch } from "../../../store";
-import { DeepReadonly } from "../../../types";
 import { Button } from "../../shared/buttons";
 import { getMessageTranslation } from "../../translatedMessages/messages";
 import { Modal } from "../Modal";

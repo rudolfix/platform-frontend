@@ -1,4 +1,5 @@
-import { DeepReadonly } from "../../types";
+import { DeepReadonly } from "@neufund/shared";
+
 import { IAppState } from "./../../store";
 import { IIcbmWalletBalanceModal, IWalletMigrationData, TWalletMigrationSteps } from "./reducer";
 

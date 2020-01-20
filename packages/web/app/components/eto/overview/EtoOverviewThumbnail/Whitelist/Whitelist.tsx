@@ -1,3 +1,4 @@
+import { assertNever } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName, withProps } from "recompose";
@@ -10,7 +11,6 @@ import {
 } from "../../../../../modules/bookbuilding-flow/utils";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
-import { assertNever } from "../../../../../utils/assertNever";
 import { Money } from "../../../../shared/formatters/Money";
 import {
   EAbbreviatedNumberOutputFormat,

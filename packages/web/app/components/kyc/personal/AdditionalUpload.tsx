@@ -10,8 +10,8 @@ import {
   selectIndividualFileUploading,
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { withProgress } from "../../../utils/withProgress";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import { withProgress } from "../../../utils/react-connected-components/withProgress";
 import { EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
 import { Button, ButtonGroup } from "../../shared/buttons/index";
 import { EMimeType } from "../../shared/forms/fields/utils.unsafe";

@@ -1,7 +1,8 @@
+import { ArrayWithAtLeastOneMember } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ArrayWithAtLeastOneMember, CommonHtmlProps, TTranslatedString } from "../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../types";
 import { Dropzone } from "./Dropzone";
 import { DropzoneActionButtons } from "./DropzoneActionButtons";
 import { FormFieldError } from "./forms/fields/FormFieldError";

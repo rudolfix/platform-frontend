@@ -1,13 +1,13 @@
-import { BigNumber } from "bignumber.js";
-import * as Web3 from "web3";
-
-import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 import {
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumNetworkId,
-} from "../../utils/opaque-types/types";
-import { promisify } from "../../utils/PromiseUtils";
+  promisify,
+} from "@neufund/shared";
+import { BigNumber } from "bignumber.js";
+import * as Web3 from "web3";
+
+import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 
 class Web3Error extends Error {}
 export class NeuWeb3Error extends Error {}

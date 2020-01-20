@@ -1,4 +1,5 @@
-import { EUSState } from "../../utils/enums/usStatesEnum";
+import { EUSState } from "@neufund/shared";
+
 import { TFormFixture } from "../utils/forms";
 
 const kycPersonBaseForm: TFormFixture = {

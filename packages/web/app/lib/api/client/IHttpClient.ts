@@ -1,6 +1,6 @@
+import { Dictionary, Primitive } from "@neufund/shared";
 import * as Yup from "yup";
 
-import { Dictionary, Primitive } from "../../../types";
 import { Schema } from "../../yup-ts.unsafe";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";

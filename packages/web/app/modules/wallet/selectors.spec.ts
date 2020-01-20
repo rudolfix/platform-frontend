@@ -1,6 +1,6 @@
+import { Q18 } from "@neufund/shared";
 import { expect } from "chai";
 
-import { Q18 } from "../../config/constants";
 import { IAppState } from "../../store";
 import {
   selectICBMLockedEuroTotalAmount,

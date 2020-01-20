@@ -69,6 +69,8 @@
     "no-commented-code": true,
     "no-submodule-imports": false,
     "no-use-before-declare": false,
+    "no-useless-cast": false,
+    "restrict-plus-operands": false,
     "mocha-avoid-only": true
   },
   "linterOptions": {

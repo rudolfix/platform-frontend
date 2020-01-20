@@ -1,6 +1,6 @@
+import { Dictionary } from "@neufund/shared";
 import { findKey, forEach } from "lodash";
 
-import { Dictionary } from "../../types";
 import { confirmAccessModal, formFieldValue } from "./index";
 import { formField, formFieldErrorMessage, tid } from "./selectors";
 

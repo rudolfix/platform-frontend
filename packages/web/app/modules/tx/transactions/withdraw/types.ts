@@ -1,4 +1,4 @@
-import { EquityToken } from "./../../../../utils/opaque-types/types";
+import { EquityToken } from "@neufund/shared";
 
 export type TWithdrawAdditionalData = {
   to: string;

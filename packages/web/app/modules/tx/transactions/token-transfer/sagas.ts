@@ -1,10 +1,10 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
+import { EthereumAddress, toEthereumAddress } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IERC223Token } from "../../../../lib/contracts/IERC223Token";
 import { ITxData } from "../../../../lib/web3/types";
-import { toEthereumAddress } from "../../../../utils/opaque-types/utils";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
@@ -12,10 +12,11 @@ import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
 import { isAddressValid } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
-import { selectUserFlowTxDetails } from "../../user-flow/transfer/selectors";
+import {
+  selectUserFlowTokenData,
+  selectUserFlowTxDetails,
+} from "../../user-flow/transfer/selectors";
 import { WrongValuesError } from "../errors";
-import { EthereumAddress } from "./../../../../utils/opaque-types/types";
-import { selectUserFlowTokenData } from "./../../user-flow/transfer/selectors";
 import { TxUserFlowTransferDetails } from "./../../user-flow/transfer/types";
 import { TTokenTransferAdditionalData } from "./types";
 

@@ -1,6 +1,7 @@
+import { EquityToken } from "@neufund/shared";
+
 import { ETxSenderState } from "../../modules/tx/sender/reducer";
 import { ETxSenderType } from "./../../modules/tx/types";
-import { EquityToken } from "./../../utils/opaque-types/types";
 
 export const generalPendingTxFixture = (
   from: string,

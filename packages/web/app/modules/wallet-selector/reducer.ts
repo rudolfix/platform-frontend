@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { TMessage } from "../../components/translatedMessages/utils";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 
 export interface IWalletSelectorState {

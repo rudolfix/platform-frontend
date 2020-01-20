@@ -1,3 +1,4 @@
+import { DeepReadonly, RequiredByKeys } from "@neufund/shared";
 import { FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -25,8 +26,7 @@ import {
 } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
-import { DeepReadonly, RequiredByKeys } from "../../../../types";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
   ECheckboxLayout,

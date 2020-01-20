@@ -1,10 +1,11 @@
+import { assertNever } from "@neufund/shared";
+
 import {
   EKycInstantIdProvider,
   TInstantIdNoneProvider,
   TManualIdProvider,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { OnfidoSDK } from "../../lib/dependencies/onfido/OnfidoSDK";
-import { assertNever } from "../../utils/assertNever";
 
 import id_now from "../../assets/img/instant-id/id_now.svg";
 import onfido from "../../assets/img/instant-id/onfido.svg";

@@ -1,3 +1,4 @@
+import { DeepReadonly } from "@neufund/shared";
 import * as React from "react";
 import { compose } from "recompose";
 
@@ -9,8 +10,7 @@ import { TBankAccount } from "../../../modules/kyc/types";
 import { selectNEURStatus } from "../../../modules/wallet/selectors";
 import { ENEURWalletStatus } from "../../../modules/wallet/types";
 import { appConnect } from "../../../store";
-import { DeepReadonly } from "../../../types";
-import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 
 interface IDispatchProps {
   verifyBankAccount: () => void;

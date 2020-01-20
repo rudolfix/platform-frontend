@@ -1,10 +1,9 @@
+import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared";
 import { createSelector } from "reselect";
 
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IAppState } from "../../store";
-import { ECountries } from "../../utils/enums/countriesEnum";
-import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
 import {
   selectClientCountry,
   selectIsUserVerifiedOnBlockchain,

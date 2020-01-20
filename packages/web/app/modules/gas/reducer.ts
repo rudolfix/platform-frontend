@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { GasModelShape } from "../../lib/api/gas/GasApi";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 
 export interface IGasState {

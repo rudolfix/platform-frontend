@@ -1,3 +1,4 @@
+import { DeepReadonly } from "@neufund/shared";
 import { createSelector } from "reselect";
 
 import {
@@ -5,7 +6,6 @@ import {
   KycBankQuintessenceBankAccount,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
 import { IKycState } from "./reducer";
 import { TBankAccount } from "./types";
 

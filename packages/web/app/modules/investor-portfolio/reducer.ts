@@ -1,5 +1,6 @@
+import { DeepReadonly, Dictionary } from "@neufund/shared";
+
 import { AppReducer } from "../../store";
-import { DeepReadonly, Dictionary } from "../../types";
 import { actions } from "../actions";
 import {
   ICalculatedContribution,

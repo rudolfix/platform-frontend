@@ -1,7 +1,7 @@
+import { COMPANY_TAGS_LIMIT } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 
-import { COMPANY_TAGS_LIMIT } from "../../../config/constants";
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TTranslatedString } from "../../../types";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";

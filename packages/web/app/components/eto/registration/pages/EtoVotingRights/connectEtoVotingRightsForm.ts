@@ -1,7 +1,3 @@
-import * as React from "react";
-import { compose, setDisplayName } from "recompose";
-import * as Yup from "yup";
-
 import {
   ADVISORY_BOARD_TEXT_MIN_LENGTH,
   MAX_RESTRICTED_ACT_VOTING_DURATION,
@@ -14,7 +10,11 @@ import {
   MIN_VOTING_FINALIZATION_DURATION,
   MIN_VOTING_MAJORITY_FRACTION,
   MIN_VOTING_QUORUM,
-} from "../../../../../config/constants";
+} from "@neufund/shared";
+import * as React from "react";
+import { compose, setDisplayName } from "recompose";
+import * as Yup from "yup";
+
 import { TPartialEtoSpecData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { etoFormIsReadonly } from "../../../../../lib/api/eto/EtoApiUtils";
 import { actions } from "../../../../../modules/actions";

@@ -1,3 +1,4 @@
+import { ECountries, injectIntlHelpers } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -12,8 +13,6 @@ import {
 } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { ECountries } from "../../../utils/enums/countriesEnum";
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
 import { AccordionElement } from "../../shared/Accordion";
 import { Button, EButtonLayout } from "../../shared/buttons";
 import {

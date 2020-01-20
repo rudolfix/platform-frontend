@@ -1,4 +1,5 @@
-import { IIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
+import { IIntlHelpers } from "@neufund/shared";
+
 import { ILogger } from "../logger";
 
 const getOnfidoSteps = (logger: ILogger, intl: IIntlHelpers) => {

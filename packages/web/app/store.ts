@@ -1,3 +1,4 @@
+import { DeepReadonly } from "@neufund/shared";
 import { connectRouter, LocationChangeAction, RouterState } from "connected-react-router";
 import { History } from "history";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
@@ -6,7 +7,6 @@ import { combineReducers, Reducer } from "redux";
 import { actions, TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
 import { appReducers } from "./modules/reducer";
-import { DeepReadonly } from "./types";
 
 export interface IAppAction {
   type: string;

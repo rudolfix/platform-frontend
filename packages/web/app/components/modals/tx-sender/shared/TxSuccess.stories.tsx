@@ -1,10 +1,9 @@
+import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { convertToUlps } from "../../../../utils/NumberUtils";
-import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
-import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TxSuccessLayout } from "./TxSuccess";
 
 import tokenIcon from "../../../../assets/img/token_icon.svg";

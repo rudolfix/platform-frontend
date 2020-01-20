@@ -1,6 +1,6 @@
 import { delay, put, select, takeLatest } from "@neufund/sagas";
+import { Q18 } from "@neufund/shared";
 
-import { Q18 } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { actions } from "../../actions";
 import { numericValuesToString } from "../../contracts/utils";

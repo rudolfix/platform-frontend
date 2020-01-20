@@ -1,11 +1,11 @@
 import { expectSaga, matchers } from "@neufund/sagas";
+import { toEthereumAddress } from "@neufund/shared";
 
 import { createMock } from "../../../../../test/testUtils";
 import { EtherToken } from "../../../../lib/contracts/EtherToken";
 import { IERC223Token } from "../../../../lib/contracts/IERC223Token";
 import { ContractsService } from "../../../../lib/web3/ContractsService";
 import { IAppState } from "../../../../store";
-import { toEthereumAddress } from "../../../../utils/opaque-types/utils";
 import { getDummyLightWalletMetadata } from "../../../web3/fixtures";
 import { generateTokenWithdrawTransaction, isERC223TransferSupported } from "./sagas";
 

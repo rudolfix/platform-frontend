@@ -1,14 +1,11 @@
+import { setupFakeClock } from "@neufund/shared";
 import { expect } from "chai";
 import { render, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
 import { createMount } from "../../../../test/createMount";
-import {
-  setupFakeClock,
-  waitUntilDoesntThrow,
-  wrapWithIntl,
-} from "../../../../test/integrationTestUtils.unsafe";
+import { waitUntilDoesntThrow, wrapWithIntl } from "../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../test/testUtils";
 import { VerifyEmailWidgetBase } from "./VerifyEmailWidget";
 

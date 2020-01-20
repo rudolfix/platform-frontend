@@ -1,4 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
+import { assertNever, EthereumAddressWithChecksum, nonNullable } from "@neufund/shared";
 
 import { ipfsLinkFromHash } from "../../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
@@ -6,9 +7,6 @@ import { EEtoState } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { ETOCommitment } from "../../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../../lib/web3/types";
 import { IAppState } from "../../../../../store";
-import { assertNever } from "../../../../../utils/assertNever";
-import { nonNullable } from "../../../../../utils/nonNullable";
-import { EthereumAddressWithChecksum } from "../../../../../utils/opaque-types/types";
 import { actions } from "../../../../actions";
 import { InvalidETOStateError } from "../../../../eto/errors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../../eto/types";

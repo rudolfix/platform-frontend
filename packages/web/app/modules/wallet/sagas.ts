@@ -1,10 +1,10 @@
 import { delay, fork, put, select, take } from "@neufund/sagas";
+import { EthereumAddress } from "@neufund/shared";
 import * as promiseAll from "promise-all";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ICBMLockedAccount } from "../../lib/contracts/ICBMLockedAccount";
 import { LockedAccount } from "../../lib/contracts/LockedAccount";
-import { EthereumAddress } from "../../utils/opaque-types/types";
 import { actions } from "../actions";
 import { numericValuesToString } from "../contracts/utils";
 import { waitUntilSmartContractsAreInitialized } from "../init/sagas";

@@ -1,12 +1,11 @@
+import { EthereumAddressWithChecksum, EthereumTxHash, toEquityTokenSymbol } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { ETransactionDirection, ETransactionType } from "../../../lib/api/analytics-api/interfaces";
 import { ETransactionStatus, ETransactionSubType } from "../../../modules/tx-history/types";
-import { EthereumAddressWithChecksum, EthereumTxHash } from "../../../utils/opaque-types/types";
-import { toEquityTokenSymbol } from "../../../utils/opaque-types/utils";
-import { withModalBody } from "../../../utils/storybookHelpers.unsafe";
+import { withModalBody } from "../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { ECurrency, ENumberInputFormat } from "../../shared/formatters/utils";
 import { TransactionDetailsModal } from "./TransactionDetailsModal";
 

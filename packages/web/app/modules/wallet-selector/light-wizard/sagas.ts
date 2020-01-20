@@ -1,4 +1,5 @@
 import { call, fork, put, select } from "@neufund/sagas";
+import { EJwtPermissions, invariant } from "@neufund/shared";
 
 import {
   BackupRecoveryMessage,
@@ -7,7 +8,6 @@ import {
   SignInUserErrorMessage,
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
-import { EJwtPermissions } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IUser, IUserInput } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
@@ -22,7 +22,6 @@ import {
 } from "../../../lib/web3/light-wallet/LightWalletUtils";
 import { IPersonalWallet } from "../../../lib/web3/PersonalWeb3";
 import { IAppState } from "../../../store";
-import { invariant } from "../../../utils/invariant";
 import { connectLightWallet } from "../../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../../actions";
 import { checkEmailPromise } from "../../auth/email/sagas";

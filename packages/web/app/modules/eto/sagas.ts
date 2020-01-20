@@ -1,4 +1,13 @@
 import { all, delay, fork, put, race, select, take } from "@neufund/sagas";
+import {
+  convertFromUlps,
+  Dictionary,
+  divideBigNumbers,
+  ECountries,
+  invariant,
+  multiplyBigNumbers,
+  Q18,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { LOCATION_CHANGE } from "connected-react-router";
 import { camelCase, isString } from "lodash";
@@ -10,7 +19,6 @@ import { DocumentConfidentialityAgreementModal } from "../../components/eto/publ
 import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
 import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   EEtoState,
@@ -31,11 +39,6 @@ import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { ITokenController } from "../../lib/contracts/ITokenController";
 import { IAppState } from "../../store";
-import { Dictionary } from "../../types";
-import { divideBigNumbers, multiplyBigNumbers } from "../../utils/BigNumberUtils";
-import { ECountries } from "../../utils/enums/countriesEnum";
-import { invariant } from "../../utils/invariant";
-import { convertFromUlps } from "../../utils/NumberUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuilding-flow/utils";

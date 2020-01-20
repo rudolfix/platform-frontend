@@ -1,10 +1,11 @@
+import { ETHEREUM_ZERO_ADDRESS } from "@neufund/shared";
+
 import { etoPublicViewByIdLinkLegacy } from "../../components/appRouteUtils";
 import {
   ENumberOutputFormat,
   ERoundingMode,
   selectUnits,
 } from "../../components/shared/formatters/utils";
-import { ETHEREUM_ZERO_ADDRESS } from "../../config/constants";
 import { EAssetType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { calcInvestmentAmount, calcShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import {

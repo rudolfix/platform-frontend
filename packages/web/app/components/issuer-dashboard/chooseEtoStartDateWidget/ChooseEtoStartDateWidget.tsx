@@ -1,10 +1,10 @@
+import { DAY } from "@neufund/shared";
 import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
 import { branch, compose, lifecycle, renderComponent, renderNothing } from "recompose";
 
-import { DAY } from "../../../config/constants";
 import { actions } from "../../../modules/actions";
 import {
   selectAreAgreementsSignedByNominee,

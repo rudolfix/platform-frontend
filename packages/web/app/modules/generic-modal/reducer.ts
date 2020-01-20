@@ -1,7 +1,8 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { genericModalIcons } from "../../components/modals/generic-modal/GenericModal";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { AppActionTypes, AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 
 export interface IGenericModalState {

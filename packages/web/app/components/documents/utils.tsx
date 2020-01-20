@@ -1,7 +1,7 @@
+import { DeepReadonly, invariant, IPFS_PROTOCOL } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { IPFS_PROTOCOL } from "../../config/constants";
 import { EEtoState, EtoStateToCamelcase } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   EEtoDocumentType,
@@ -11,8 +11,6 @@ import {
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { EETOStateOnChain } from "../../modules/eto/types";
-import { DeepReadonly } from "../../types";
-import { invariant } from "../../utils/invariant";
 
 const documentsOrder = [
   "termsheetTemplate",

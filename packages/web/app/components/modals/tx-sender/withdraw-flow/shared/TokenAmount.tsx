@@ -1,6 +1,6 @@
+import { EquityToken } from "@neufund/shared";
 import * as React from "react";
 
-import { EquityToken } from "../../../../../utils/opaque-types/types";
 import { ECurrency } from "../../../../shared/formatters/utils";
 import {
   ETextPosition,

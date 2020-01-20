@@ -1,3 +1,4 @@
+import { Dictionary, PartialDictionary } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -9,7 +10,7 @@ import {
   TEtoWithCompanyAndContractReadonly,
 } from "../../../modules/eto/types";
 import { isComingSoon, isOnChain } from "../../../modules/eto/utils";
-import { CommonHtmlProps, Dictionary, PartialDictionary, TTranslatedString } from "../../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../../types";
 
 import * as styles from "./ETOState.module.scss";
 

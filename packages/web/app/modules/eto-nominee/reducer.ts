@@ -1,5 +1,6 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 import { TNomineeRequestStorage } from "../nominee-flow/types";
 

@@ -1,9 +1,9 @@
+import { promisify } from "@neufund/shared";
 import { isValid as isMnemonicValid } from "bitcore-mnemonic";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as nacl from "tweetnacl";
 import * as naclUtil from "tweetnacl-util";
 
-import { promisify } from "../../../utils/PromiseUtils";
 import { ICreateVault } from "./LightWallet";
 
 export class LightWalletUtilError extends Error {}

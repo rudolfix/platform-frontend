@@ -1,3 +1,4 @@
+import { RequiredByKeys } from "@neufund/shared";
 import { branch, compose } from "recompose";
 
 import { actions } from "../../../../../modules/actions";
@@ -11,7 +12,6 @@ import { TWithdrawAdditionalData } from "../../../../../modules/tx/transactions/
 import { ETxSenderType } from "../../../../../modules/tx/types";
 import { selectEthereumAddressWithChecksum } from "../../../../../modules/web3/selectors";
 import { appConnect } from "../../../../../store";
-import { RequiredByKeys } from "../../../../../types";
 import { ETxStatus } from "../../types";
 
 export interface ITransferTransactionExternalProps {

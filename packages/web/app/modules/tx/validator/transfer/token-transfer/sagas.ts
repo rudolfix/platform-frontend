@@ -1,10 +1,14 @@
 import { put, select } from "@neufund/sagas";
+import {
+  compareBigNumbers,
+  convertToUlps,
+  EthereumAddress,
+  multiplyBigNumbers,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { IERC223Token } from "../../../../../lib/contracts/IERC223Token";
-import { compareBigNumbers, multiplyBigNumbers } from "../../../../../utils/BigNumberUtils";
-import { convertToUlps } from "../../../../../utils/NumberUtils";
 import { actions } from "../../../../actions";
 import { neuCall } from "../../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../../shared/tokenPrice/selectors";
@@ -18,7 +22,6 @@ import {
   runInitialValidations,
 } from "../sagas";
 import { ITxData } from "./../../../../../lib/web3/types";
-import { EthereumAddress } from "./../../../../../utils/opaque-types/types";
 import { WrongValuesError } from "./../../../transactions/errors";
 import { selectUserFlowTokenAddress } from "./../../../user-flow/transfer/selectors";
 import { UserHasNotEnoughTokensError } from "./errors";

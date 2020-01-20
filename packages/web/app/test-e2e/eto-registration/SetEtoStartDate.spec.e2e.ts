@@ -1,41 +1,37 @@
 import * as moment from "moment";
 
-import { appRoutes } from "../../components/appRoutes";
 import { utcTime, weekdayUTC } from "../../components/shared/utils";
 import { closeModal, confirmAccessModal } from "../utils";
+import { goToIssuerDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 
 const setStartDay = (startDate: moment.Moment, textToCheck: RegExp) => {
-  cy.visit(appRoutes.dashboard)
-    .get(tid("eto-settings-start-date-open-date-picker"))
-    .click()
-    .get(tid("eto-settings-start-date-input"))
+  goToIssuerDashboard();
+
+  cy.get(tid("eto-settings-start-date-open-date-picker")).click();
+
+  cy.get(tid("eto-settings-start-date-input"))
     .clear({ force: true })
-    .type(startDate.format("MM/DD/YYYY HH:mm"), { force: true })
-    .get(tid("eto-settings-start-date-confirm"))
-    .click()
-    .get(tid("set-eto-date-summary-time-to-eto"))
-    .should($e => {
-      expect($e.text()).to.match(textToCheck);
-    })
-    .get(tid("set-eto-date-summary-confirm-button"))
-    .click();
+    .type(startDate.format("MM/DD/YYYY HH:mm"), { force: true });
+
+  cy.get(tid("eto-settings-start-date-confirm")).click();
+
+  cy.get(tid("set-eto-date-summary-time-to-eto")).contains(textToCheck);
+
+  cy.get(tid("set-eto-date-summary-confirm-button")).click();
 
   confirmAccessModal();
 
-  cy.get(tid("modals.shared.tx-success.modal"));
+  cy.get(tid("modals.shared.tx-success.modal")).should("exist");
 
   closeModal();
 
-  cy.get(tid("time-left.start-date-utc"))
-    .should($e =>
-      expect($e.text()).to.be.equal(
-        `${weekdayUTC(startDate.toDate())}, ${utcTime(startDate.toDate())}`,
-      ),
-    )
-    .get(tid("eto-settings-start-date-open-date-picker"))
-    .should("be.enabled");
+  cy.get(tid("time-left.start-date-utc")).contains(
+    `${weekdayUTC(startDate.toDate())}, ${utcTime(startDate.toDate())}`,
+  );
+
+  cy.get(tid("eto-settings-start-date-open-date-picker")).should("be.enabled");
 };
 
 describe("Eto start date setup", function(): void {
@@ -44,7 +40,7 @@ describe("Eto start date setup", function(): void {
     // enable after
     loginFixtureAccount("ISSUER_SETUP");
 
-    //happy path
+    // happy path
     const newStartDate = moment
       .utc()
       .add(20, "days")
@@ -71,13 +67,14 @@ describe("Eto start date setup", function(): void {
     // should not be allowed to set a date that is too soon
     const falseDate = newStartDate.clone().subtract(20, "days");
 
-    cy.get(tid("eto-settings-start-date-open-date-picker"))
-      .click()
-      .get(tid("eto-settings-start-date-input"))
+    cy.get(tid("eto-settings-start-date-open-date-picker")).click();
+
+    cy.get(tid("eto-settings-start-date-input"))
       .clear({ force: true })
-      .type(falseDate.format("MM/DD/YYYY HH:mm"), { force: true })
-      .get(tid("eto-settings-start-date-confirm"))
-      .should("be.disabled")
-      .get(tid("form.etoStartDate.error-message"));
+      .type(falseDate.format("MM/DD/YYYY HH:mm"), { force: true });
+
+    cy.get(tid("eto-settings-start-date-confirm")).should("be.disabled");
+
+    cy.get(tid("form.etoStartDate.error-message")).should("exist");
   });
 });

@@ -14,6 +14,7 @@ describe("Auto Login", () => {
   });
 });
 
+// TODO: Find why these tests are flaky
 describe("Incoming payout", function(): void {
   this.retries(2);
   it.skip("should show counter with incoming payout value", () => {

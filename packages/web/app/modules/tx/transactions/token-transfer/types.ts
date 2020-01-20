@@ -1,11 +1,11 @@
 import { EquityToken } from "./../../../../utils/opaque-types/types";
 
-export type TWithdrawAdditionalData = {
+export type TTokenTransferAdditionalData = {
   to: string;
   amount: string;
   amountEur: string;
-  total: string;
-  totalEur: string;
+  total: null;
+  totalEur: null;
   tokenImage: string;
   tokenSymbol: EquityToken;
   tokenDecimals: number;

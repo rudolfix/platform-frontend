@@ -1,3 +1,5 @@
+import { createSelector } from "reselect";
+
 import { IAppState } from "../../../../store";
 import { EquityToken } from "../../../../utils/opaque-types/types";
 import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
@@ -36,3 +38,14 @@ export const selectUserFlowTokenAddress = (state: IAppState) =>
 
 export const selectUserFlowTokenDecimals = (state: IAppState) =>
   state.txUserFlowTransfer.txUserTokenData.tokenDecimals;
+
+export const selectUserFlowTokenData = createSelector(
+  selectUserFlowTokenImage,
+  selectUserFlowTokenSymbol,
+  selectUserFlowTokenDecimals,
+  (tokenImage, tokenSymbol, tokenDecimals) => ({
+    tokenImage,
+    tokenSymbol,
+    tokenDecimals,
+  }),
+);

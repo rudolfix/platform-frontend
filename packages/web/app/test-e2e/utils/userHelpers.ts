@@ -86,7 +86,9 @@ export const createAndLoginNewUser = ({
 
     // fetch a token and store it in local storage
     const jwt = await getJWT(address, lightWalletInstance, walletKey, permissions);
+
     ls.setItem(JWT_KEY, `"${jwt}"`);
+
     await createVaultApi(salt, DEFAULT_PASSWORD, lightWalletInstance.serialize());
 
     if (!skipCreatingNewUser) {

@@ -5,6 +5,7 @@ import { TAcceptPayoutAdditionalData } from "./transactions/payout/accept/types"
 import { TRedistributePayoutAdditionalData } from "./transactions/payout/redistribute/types";
 import { TNEurRedeemAdditionalDetails } from "./transactions/redeem/types";
 import { TRefundAdditionalData } from "./transactions/refund/types";
+import { TTokenTransferAdditionalData } from "./transactions/token-transfer/types";
 import { TUnlockAdditionalData } from "./transactions/unlock/types";
 import { TUpgradeAdditionalData } from "./transactions/upgrade/types";
 import { TWithdrawAdditionalData } from "./transactions/withdraw/types";
@@ -52,9 +53,8 @@ export interface ITxTypeWithData<T extends ETxSenderType | undefined, P> {
 
 type TTxSenderTokenTransferState = ITxTypeWithData<
   ETxSenderType.TRANSFER_TOKENS,
-  TWithdrawAdditionalData
+  TTokenTransferAdditionalData
 >;
-// THINK ABOUT WHAT TO ADD UP
 
 type TTxSenderWithdrawState = ITxTypeWithData<ETxSenderType.WITHDRAW, TWithdrawAdditionalData>;
 

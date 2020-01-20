@@ -116,15 +116,12 @@ export const TransferTransactionWrapperLayout: React.FunctionComponent<TTransfer
   gasCost,
   gasCostEur,
   onClick,
-  tokenImage,
-  tokenSymbol,
-  tokenDecimals,
   status,
   isMined,
   amountCaption,
   "data-test-id": dataTestId,
 }) => (
-  <TransferHeader tokenSymbol={tokenSymbol} data-test-id={dataTestId}>
+  <TransferHeader tokenSymbol={additionalData.tokenSymbol} data-test-id={dataTestId}>
     <DataRow
       className={cn({ [styles.noSpacing]: !!blockId })}
       caption={<FormattedMessage id="modal.sent-eth.transaction-status" />}
@@ -172,9 +169,9 @@ export const TransferTransactionWrapperLayout: React.FunctionComponent<TTransfer
     <TokenAmount
       amount={error ? "0" : additionalData.amount}
       amountEur={error ? "0" : additionalData.amountEur}
-      tokenImage={tokenImage}
-      tokenSymbol={tokenSymbol}
-      tokenDecimals={tokenDecimals}
+      tokenImage={additionalData.tokenImage}
+      tokenSymbol={additionalData.tokenSymbol}
+      tokenDecimals={additionalData.tokenDecimals}
       caption={amountCaption}
     />
     {(!error || (error && isMined)) && (

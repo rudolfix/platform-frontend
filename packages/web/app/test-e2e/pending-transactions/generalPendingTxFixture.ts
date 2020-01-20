@@ -1,5 +1,6 @@
 import { ETxSenderState } from "../../modules/tx/sender/reducer";
-import { ETxSenderType } from "../../modules/tx/types";
+import { ETxSenderType } from "./../../modules/tx/types";
+import { EquityToken } from "./../../utils/opaque-types/types";
 
 export const generalPendingTxFixture = (
   from: string,
@@ -28,6 +29,9 @@ export const generalPendingTxFixture = (
     amount: "10000000000000000000",
     amountEur: "10000000000000000000",
     totalEur: "10000000000000000000",
+    tokenSymbol: "QTT" as EquityToken,
+    tokenImage: "test",
+    tokenDecimals: 18,
   },
   transactionStatus,
   transactionTimestamp: 1553762875525,

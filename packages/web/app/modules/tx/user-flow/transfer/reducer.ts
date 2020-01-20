@@ -29,6 +29,7 @@ const initialState: ITxUserFlowState = {
   txUserFlowDetails: {
     inputValue: "0",
     inputValueEuro: "0",
+    inputTo: "",
     totalValue: "0",
     totalValueEur: "0",
     transactionCost: "0",

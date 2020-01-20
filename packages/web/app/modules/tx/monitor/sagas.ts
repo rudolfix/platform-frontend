@@ -107,6 +107,7 @@ export function* ensurePendingTransactionSchemaIsValid(
   // THIS IS A TEMPORARY PATCH A GENERAL SOLUTION THAT INCLUDES VERSIONING SHOULD COVER ALL TX TYPES
   switch (pendingTransaction.transactionType) {
     case ETxSenderType.WITHDRAW:
+    case ETxSenderType.TRANSFER_TOKENS:
       if (
         pendingTransaction.transactionAdditionalData === undefined ||
         (pendingTransaction.transactionAdditionalData &&
@@ -114,7 +115,10 @@ export function* ensurePendingTransactionSchemaIsValid(
             pendingTransaction.transactionAdditionalData.amount === undefined ||
             pendingTransaction.transactionAdditionalData.amountEur === undefined ||
             pendingTransaction.transactionAdditionalData.totalEur === undefined ||
-            pendingTransaction.transactionAdditionalData.total === undefined))
+            pendingTransaction.transactionAdditionalData.total === undefined ||
+            pendingTransaction.transactionAdditionalData.tokenDecimals === undefined ||
+            pendingTransaction.transactionAdditionalData.tokenImage === undefined ||
+            pendingTransaction.transactionAdditionalData.tokenSymbol === undefined))
       ) {
         throw new SchemaMismatchError(ETxSenderType.WITHDRAW);
       }

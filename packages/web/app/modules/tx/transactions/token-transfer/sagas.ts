@@ -15,7 +15,9 @@ import { ETxSenderType } from "../../types";
 import { selectUserFlowTxDetails } from "../../user-flow/transfer/selectors";
 import { WrongValuesError } from "../errors";
 import { EthereumAddress } from "./../../../../utils/opaque-types/types";
+import { selectUserFlowTokenData } from "./../../user-flow/transfer/selectors";
 import { TxUserFlowTransferDetails } from "./../../user-flow/transfer/types";
+import { TTokenTransferAdditionalData } from "./types";
 
 export interface ITransferTokenTxGenerator {
   tokenAddress: EthereumAddress;
@@ -91,12 +93,20 @@ function* tokenTransferFlowGenerator(_: TGlobalDependencies): Generator<any, any
   // ADD SOME LOGIC HERE IN THE MIDDLE
   const txUserFlowData: TxUserFlowTransferDetails = yield select(selectUserFlowTxDetails);
 
-  const additionalData: any = {
+  const tokenData = yield* select(selectUserFlowTokenData);
+
+  // Internally we represent eth withdraw in two different modes (normal ether withdrawal and ether token withdrawal)
+  // in case of ether token withdrawal `to` points to contract address and `value` is empty
+
+  const additionalData: TTokenTransferAdditionalData = {
     to: txUserFlowData.inputTo,
     amount: txUserFlowData.inputValue,
     amountEur: txUserFlowData.inputValueEuro,
     total: null,
     totalEur: null,
+    tokenSymbol: tokenData.tokenSymbol,
+    tokenImage: tokenData.tokenImage,
+    tokenDecimals: tokenData.tokenDecimals,
   };
 
   yield put(

@@ -41,6 +41,9 @@ const txData: React.ComponentProps<typeof TxErrorLayout> = {
     amountEur: "5500000000000000000",
     total: "313131232312331212",
     totalEur: "313131232312331212",
+    tokenSymbol: toEquityTokenSymbol("QTT"),
+    tokenImage: tokenIcon,
+    tokenDecimals: 18,
   },
   ...baseTxData,
 };

@@ -16,15 +16,15 @@ const props = {
     amountEur: "5500000000000000000",
     total: "313131232312331212",
     totalEur: "313131232312331212",
+    tokenImage: ethImage,
+    tokenSymbol: toEquityTokenSymbol("ETH"),
+    tokenDecimals: 18,
   },
   walletAddress: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
   gasCost: "023",
   gasCostEur: "123",
   onAccept: action("onAccept"),
   onChange: action("onChange"),
-  tokenImage: ethImage,
-  tokenSymbol: toEquityTokenSymbol("ETH"),
-  tokenDecimals: 18,
 };
 
 storiesOf("Withdraw/Summary", module)

@@ -2,7 +2,7 @@ export type TxUserFlowTransferDetails = {
   transferAllValue?: string;
   inputValue: string;
   inputValueEuro: string;
-  inputTo?: string;
+  inputTo: string;
   totalValue: string;
   totalValueEur: string;
   transactionCost: string;

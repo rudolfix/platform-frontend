@@ -6,17 +6,12 @@ import {
   selectTxAdditionalData,
   selectTxGasCostEthUlps,
 } from "../../../../../modules/tx/sender/selectors";
+import { TTokenTransferAdditionalData } from "../../../../../modules/tx/transactions/token-transfer/types";
 import { TWithdrawAdditionalData } from "../../../../../modules/tx/transactions/withdraw/types";
 import { ETxSenderType } from "../../../../../modules/tx/types";
-import {
-  selectUserFlowTokenDecimals,
-  selectUserFlowTokenImage,
-  selectUserFlowTokenSymbol,
-} from "../../../../../modules/tx/user-flow/transfer/selectors";
 import { selectEthereumAddressWithChecksum } from "../../../../../modules/web3/selectors";
 import { appConnect } from "../../../../../store";
 import { RequiredByKeys } from "../../../../../types";
-import { EquityToken } from "../../../../../utils/opaque-types/types";
 import { ETxStatus } from "../../types";
 
 export interface ITransferTransactionExternalProps {
@@ -39,13 +34,10 @@ interface IDispatchProps {
 }
 
 interface IStateProps {
-  additionalData?: TWithdrawAdditionalData;
+  additionalData?: TWithdrawAdditionalData | TTokenTransferAdditionalData;
   gasCost: string;
   gasCostEur: string;
   walletAddress: string;
-  tokenImage: string;
-  tokenSymbol: EquityToken;
-  tokenDecimals: number;
 }
 
 export type TTransferTransactionProps = RequiredByKeys<IStateProps, "additionalData"> &
@@ -63,9 +55,6 @@ export const transferTransaction = () =>
         walletAddress: selectEthereumAddressWithChecksum(state),
         gasCost: selectTxGasCostEthUlps(state),
         gasCostEur: selectTxGasCostEthUlps(state),
-        tokenSymbol: selectUserFlowTokenSymbol(state),
-        tokenImage: selectUserFlowTokenImage(state),
-        tokenDecimals: selectUserFlowTokenDecimals(state),
       }),
       dispatchToProps: d => ({
         onClick: () => d(actions.txSender.txSenderHideModal()),

@@ -74,10 +74,13 @@ function startupApp(history: History): { store: Store<IAppState>; container: Con
 
   const rootReducer = generateRootReducer(history);
 
+  const composeEnhancers = composeWithDevTools({
+    actionsBlacklist: (process.env.REDUX_DEVTOOLS_ACTION_BLACK_LIST || "").split(","),
+  });
   const store: Store<IAppState> =
     process.env.NODE_ENV === "production"
       ? createStore(rootReducer, middleware)
-      : createStore(rootReducer, composeWithDevTools(middleware));
+      : createStore(rootReducer, composeEnhancers(middleware));
 
   // we have to create the dependencies here, because getState and dispatch get
   // injected in the middleware step above, maybe change this later

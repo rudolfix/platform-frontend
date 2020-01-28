@@ -16,6 +16,9 @@ import { snapshotIsActual } from "../../../../modules/investor-portfolio/utils";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/OnEnterAction";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
+import { IncomingPayoutAvailable } from "./IncomingPayoutAvailable";
+import { IncomingPayoutPending } from "./IncomingPayoutPending";
+import { IncomingPayoutWaiting } from "./IncomingPayoutWaiting";
 import { PayoutWidgetError } from "./PayoutWidgetError";
 import { WelcomeToNeufund } from "./WelcomeToNeufund";
 
@@ -53,5 +56,16 @@ export const PayoutWidget = compose<{}, {}>(
   }),
   branch((props: IStateProps) => props.error, renderComponent(PayoutWidgetError)),
   branch((props: IStateProps) => props.isLoading, renderComponent(LoadingIndicator)),
-  // Temporary Removed the logic here
-)(WelcomeToNeufund);
+  branch(
+    (props: IStateProps) => !props.pendingPayout && !props.availablePayout,
+    renderComponent(WelcomeToNeufund),
+  ),
+  branch(
+    (props: IStateProps) => !props.pendingPayout && props.availablePayout,
+    renderComponent(IncomingPayoutAvailable),
+  ),
+  branch(
+    (props: IStateProps) => props.pendingPayout && !props.snapshotIsActual,
+    renderComponent(IncomingPayoutWaiting),
+  ) /* for the case the user's clock is ahead of the node's clock */,
+)(IncomingPayoutPending);

@@ -158,7 +158,7 @@ describe("PayoutWidget", () => {
     expect(component.render().find(tid("my-portfolio-widget-error")).length).to.eq(1);
   });
 
-  it.skip("shows the welcome component", async () => {
+  it("shows the welcome component", async () => {
     clock.fakeClock.setSystemTime(ACTUAL_DATE);
 
     feeDisbursalMock.reMock({

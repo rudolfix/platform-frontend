@@ -30,4 +30,25 @@ const data: TPortfolioLayoutProps = {
 
 storiesOf("Portfolio/PortfolioLayout", module)
   .addDecorator(withStore({}))
-  .add("default", () => <PortfolioLayout {...data} />);
+  .add("default", () => <PortfolioLayout {...data} />)
+  .add("minimal Amount", () => (
+    <PortfolioLayout
+      {...{
+        ...data,
+        tokensDisbursal: [
+          {
+            token: ECurrency.EUR_TOKEN,
+            amountToBeClaimed: "12",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "364458900000000000",
+          },
+          {
+            token: ECurrency.ETH,
+            amountToBeClaimed: "12",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "064458900000000000",
+          },
+        ],
+      }}
+    />
+  ));

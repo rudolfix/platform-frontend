@@ -158,6 +158,7 @@ export function* getIncomingPayouts({
         neumark.address,
       ),
     });
+    // TODO: Recheck the code here
     const snapshotDate = calculateSnapshotDate(yield neumark.currentSnapshotId);
     const euroTokenIncomingPayoutValue = addBigNumbers(
       euroTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
@@ -165,7 +166,7 @@ export function* getIncomingPayouts({
     const etherTokenIncomingPayoutValue = addBigNumbers(
       etherTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
     );
-
+    // TODO:
     if (euroTokenIncomingPayoutValue || etherTokenIncomingPayoutValue) {
       yield put(
         actions.investorEtoTicket.setIncomingPayouts({

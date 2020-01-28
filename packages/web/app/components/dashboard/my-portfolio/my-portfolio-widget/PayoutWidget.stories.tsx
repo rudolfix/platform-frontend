@@ -64,5 +64,52 @@ storiesOf("IncomingPayoutWidget", module)
         ]}
       />
     ),
+
+    { decorators: [withStore(testStore)] },
+  )
+  .add(
+    "IncomingPayoutAvailable-MinimalAmount",
+    () => (
+      <IncomingPayoutAvailableBase
+        tokensDisbursal={[
+          {
+            token: ECurrency.EUR_TOKEN,
+            amountToBeClaimed: "00000657227385184",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "364458900000000000",
+          },
+          {
+            token: ECurrency.ETH,
+            amountToBeClaimed: "00000657227385184",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "064458900000000000",
+          },
+        ]}
+      />
+    ),
+
+    { decorators: [withStore(testStore)] },
+  )
+  .add(
+    "IncomingPayoutAvailable-ZeroAmount",
+    () => (
+      <IncomingPayoutAvailableBase
+        tokensDisbursal={[
+          {
+            token: ECurrency.EUR_TOKEN,
+            amountToBeClaimed: "0",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "364458900000000000",
+          },
+          {
+            token: ECurrency.ETH,
+            amountToBeClaimed: "0",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "064458900000000000",
+          },
+        ]}
+      />
+    ),
+
     { decorators: [withStore(testStore)] },
   );

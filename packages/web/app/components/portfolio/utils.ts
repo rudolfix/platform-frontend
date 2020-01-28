@@ -3,6 +3,9 @@ import { compareBigNumbers } from "../../utils/BigNumberUtils";
 import { convertToUlps } from "../../utils/NumberUtils";
 import { ECurrency } from "../shared/formatters/utils";
 
+const EURO_TOKEN_PAYOUT_THRESHOLD = "1";
+const ETHER_TOKEN_PAYOUT_THRESHOLD = "0.01";
+
 export const getRequiredAmount = (token: ECurrency) => {
   // In case of Cypress tests we have to return 0 by default to prevent tests with low amounts from crash
   // If there is data stored in window use it
@@ -13,10 +16,10 @@ export const getRequiredAmount = (token: ECurrency) => {
 
   switch (token) {
     case ECurrency.ETH: {
-      return convertToUlps("0.01");
+      return convertToUlps(ETHER_TOKEN_PAYOUT_THRESHOLD);
     }
     case ECurrency.EUR_TOKEN: {
-      return convertToUlps("1");
+      return convertToUlps(EURO_TOKEN_PAYOUT_THRESHOLD);
     }
     default:
       return "0";

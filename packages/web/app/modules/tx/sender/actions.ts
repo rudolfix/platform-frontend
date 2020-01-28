@@ -26,7 +26,7 @@ export const txSenderActions = {
   txSenderLoading: () => createSimpleAction("TX_SENDER_LOADING"),
   // Block mining actions
   txSenderReportBlock: (blockId: number) => createAction("TX_SENDER_REPORT_BLOCK", blockId),
-  txSenderTxMined: () => createSimpleAction("TX_SENDER_TX_MINED"),
+  txSenderTxMined: createActionFactory("TX_SENDER_TX_MINED"),
   // Pending transaction related actions
   txSenderWatchPendingTxs: (txHash: string) =>
     createAction("TX_SENDER_WATCH_PENDING_TXS", { txHash }),

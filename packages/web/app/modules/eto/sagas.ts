@@ -6,6 +6,7 @@ import {
   ECountries,
   invariant,
   multiplyBigNumbers,
+  nonNullable,
   Q18,
 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
@@ -45,11 +46,13 @@ import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuildi
 import { selectMyAssets } from "../investor-portfolio/selectors";
 import { selectClientJurisdiction } from "../kyc/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
+import { selectTxAdditionalData, selectTxType } from "../tx/sender/selectors";
 import { getAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/sagas";
 import {
   EAgreementType,
   IAgreementContractAndHash,
 } from "../tx/transactions/nominee/sign-agreement/types";
+import { ETxSenderType, TAdditionalDataByType } from "../tx/types";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { generateRandomEthereumAddress } from "../web3/utils";
 import { etoInProgressPollingDelay, etoNormalPollingDelay } from "./constants";
@@ -58,6 +61,7 @@ import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoOnChainStateById,
+  selectEtoWithCompanyAndContractById,
   selectFilteredEtosByRestrictedJurisdictions,
   selectInvestorEtoWithCompanyAndContract,
   selectIsEtoAnOffer,
@@ -125,46 +129,49 @@ function* loadEtoPreview(
   }
 }
 
+function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
+  const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
+  const company: TCompanyEtoData = yield apiEtoService.getCompanyById(eto.companyId);
+
+  // Load contract data if eto is already on blockchain
+  if (eto.state === EEtoState.ON_CHAIN) {
+    // load investor tickets
+    const userType: EUserType | undefined = yield select((state: IAppState) =>
+      selectUserType(state),
+    );
+    if (userType === EUserType.INVESTOR) {
+      yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
+    }
+
+    yield neuCall(loadEtoContract, eto);
+  }
+
+  // This needs to always be after loadingEtoContract step
+  const onChainState: EETOStateOnChain | undefined = yield select((state: IAppState) =>
+    selectEtoOnChainStateById(state, eto.etoId),
+  );
+
+  if (shouldLoadPledgeData(eto.state, onChainState)) {
+    yield put(actions.bookBuilding.loadPledge(eto.etoId));
+  }
+
+  if (shouldLoadBookbuildingStats(onChainState)) {
+    eto.isBookbuilding
+      ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
+      : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
+  } else {
+    yield put(actions.bookBuilding.bookBuildingStopWatch(eto.etoId));
+  }
+
+  yield put(actions.eto.setEto({ eto, company }));
+}
+
 function* loadEto(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  { notificationCenter, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadEto>,
 ): any {
   try {
-    const etoId = action.payload.etoId;
-    const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
-    const company: TCompanyEtoData = yield apiEtoService.getCompanyById(eto.companyId);
-
-    // Load contract data if eto is already on blockchain
-    if (eto.state === EEtoState.ON_CHAIN) {
-      // load investor tickets
-      const userType: EUserType | undefined = yield select((state: IAppState) =>
-        selectUserType(state),
-      );
-      if (userType === EUserType.INVESTOR) {
-        yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
-      }
-
-      yield neuCall(loadEtoContract, eto);
-    }
-
-    // This needs to always be after loadingEtoContract step
-    const onChainState: EETOStateOnChain | undefined = yield select((state: IAppState) =>
-      selectEtoOnChainStateById(state, eto.etoId),
-    );
-
-    if (shouldLoadPledgeData(eto.state, onChainState)) {
-      yield put(actions.bookBuilding.loadPledge(eto.etoId));
-    }
-
-    if (shouldLoadBookbuildingStats(onChainState)) {
-      eto.isBookbuilding
-        ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
-        : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
-    } else {
-      yield put(actions.bookBuilding.bookBuildingStopWatch(eto.etoId));
-    }
-
-    yield put(actions.eto.setEto({ eto, company }));
+    yield neuCall(fetchEto, action.payload.etoId);
   } catch (e) {
     logger.error("Could not load eto by id", e);
 
@@ -505,75 +512,115 @@ function* downloadTemplateByType(
   }
 }
 
-function* loadTokensData({ contractsService }: TGlobalDependencies): any {
+function* loadToken(
+  { contractsService }: TGlobalDependencies,
+  eto: TEtoWithCompanyAndContractReadonly,
+): Generator<any, any, any> {
+  const walletAddress: string = nonNullable(yield select(selectEthereumAddressWithChecksum));
+
+  if (!isOnChain(eto)) {
+    return;
+  }
+
+  const equityTokenAddress = eto.contract.equityTokenAddress;
+
+  const equityToken = yield contractsService.getEquityToken(equityTokenAddress);
+
+  const { balance, tokensPerShare, tokenController } = yield all({
+    balance: equityToken.balanceOf(walletAddress),
+    tokensPerShare: equityToken.tokensPerShare,
+    tokenController: equityToken.tokenController,
+  });
+
+  const controllerGovernance = yield contractsService.getControllerGovernance(tokenController);
+  const tokenControllerMe: ITokenController = yield contractsService.getTokenController(
+    tokenController,
+  );
+  const canTransferToken = yield tokenControllerMe.onTransfer(
+    walletAddress,
+    walletAddress,
+    generateRandomEthereumAddress(),
+    new BigNumber("1"),
+  );
+
+  let [
+    shareCapital,
+    companyValuationEurUlps,
+    ,
+  ] = yield controllerGovernance.shareholderInformation();
+
+  // backward compatibility with FF Token Controller - may be removed after controller migration
+  if (Q18.gt(shareCapital)) {
+    // convert shares to capital amount with nominal share value of 1 (Q18)
+    shareCapital = shareCapital.mul(Q18);
+  }
+
+  // obtain nominal value of a share from IEquityToken
+  let shareNominalValueUlps;
+  try {
+    shareNominalValueUlps = yield equityToken.shareNominalValueUlps;
+  } catch (e) {
+    // make it backward compatible with FF ETO, which is always and forever Q18 and does not provide method above
+    shareNominalValueUlps = Q18;
+  }
+
+  // todo: use standard calcSharePrice util from calculator, after converting from wei scale
+  const tokenPrice = divideBigNumbers(
+    divideBigNumbers(
+      multiplyBigNumbers([companyValuationEurUlps, shareNominalValueUlps]),
+      shareCapital,
+    ),
+    tokensPerShare,
+  );
+
+  return {
+    balance: balance.toString(),
+    tokensPerShare: tokensPerShare.toString(),
+    totalCompanyShares: shareCapital.toString(),
+    companyValuationEurUlps: companyValuationEurUlps.toString(),
+    tokenPrice: tokenPrice.toString(),
+    canTransferToken,
+  };
+}
+
+function* loadTokensData(): any {
   const myAssets = yield select(selectMyAssets);
-  const walletAddress = yield select(selectEthereumAddressWithChecksum);
 
   if (!myAssets) {
     return;
   }
 
   for (const eto of myAssets) {
-    const equityTokenAddress = eto.contract.equityTokenAddress;
+    const tokenData = yield neuCall(loadToken, eto);
 
-    const equityToken = yield contractsService.getEquityToken(equityTokenAddress);
+    yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
+  }
+}
 
-    const { balance, tokensPerShare, tokenController } = yield all({
-      balance: equityToken.balanceOf(walletAddress),
-      tokensPerShare: equityToken.tokensPerShare,
-      tokenController: equityToken.tokenController,
-    });
-    const controllerGovernance = yield contractsService.getControllerGovernance(tokenController);
-    const tokenControllerMe: ITokenController = yield contractsService.getTokenController(
-      tokenController,
-    );
-    const canTransferToken = yield tokenControllerMe.onTransfer(
-      walletAddress,
-      walletAddress,
-      generateRandomEthereumAddress(),
-      new BigNumber("1"),
-    );
+function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any, any, any> {
+  const txType = yield select(selectTxType);
 
-    let [
-      shareCapital,
-      companyValuationEurUlps,
-      ,
-    ] = yield controllerGovernance.shareholderInformation();
+  // Return if transaction type is not Claim
+  if (txType !== ETxSenderType.USER_CLAIM) {
+    return;
+  }
 
-    // backward compatibility with FF Token Controller - may be removed after controller migration
-    if (Q18.gt(shareCapital)) {
-      // convert shares to capital amount with nominal share value of 1 (Q18)
-      shareCapital = shareCapital.mul(Q18);
-    }
+  const additionalData: TAdditionalDataByType<ETxSenderType.USER_CLAIM> = yield select(
+    selectTxAdditionalData,
+  );
+  try {
+    yield neuCall(fetchEto, additionalData.etoId);
 
-    // obtain nominal value of a share from IEquityToken
-    let shareNominalValueUlps;
-    try {
-      shareNominalValueUlps = yield equityToken.shareNominalValueUlps;
-    } catch (e) {
-      // make it backward compatible with FF ETO, which is always and forever Q18 and does not provide method above
-      shareNominalValueUlps = Q18;
-    }
-
-    // todo: use standard calcSharePrice util from calculator, after converting from wei scale
-    const tokenPrice = divideBigNumbers(
-      divideBigNumbers(
-        multiplyBigNumbers([companyValuationEurUlps, shareNominalValueUlps]),
-        shareCapital,
+    const eto = nonNullable(
+      yield select((state: IAppState) =>
+        selectEtoWithCompanyAndContractById(state, additionalData.etoId),
       ),
-      tokensPerShare,
     );
+    const tokenData = yield neuCall(loadToken, eto);
 
-    yield put(
-      actions.eto.setTokenData(eto.previewCode, {
-        balance: balance.toString(),
-        tokensPerShare: tokensPerShare.toString(),
-        totalCompanyShares: shareCapital.toString(),
-        companyValuationEurUlps: companyValuationEurUlps.toString(),
-        tokenPrice: tokenPrice.toString(),
-        canTransferToken,
-      }),
-    );
+    yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
+  } catch (e) {
+    logger.error("Could not load eto by id", e);
   }
 }
 
@@ -839,4 +886,7 @@ export function* etoSagas(): Generator<any, any, any> {
 
   yield fork(neuTakeUntil, actions.eto.setEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetAction);
+
+  // Update  eto and token data on successfully mined transaction
+  yield fork(neuTakeEvery, actions.txSender.txSenderTxMined, updateEtoAndTokenData);
 }

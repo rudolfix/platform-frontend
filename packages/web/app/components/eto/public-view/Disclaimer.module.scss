@@ -1,0 +1,13 @@
+.card {
+  @include media-breakpoint-down(sm) {
+    padding: px-to-rem(20px);
+  }
+
+  background-color: $neu-pale-grey-three;
+  box-shadow: $shadow;
+  padding: px-to-rem(32px) px-to-rem(64px);
+}
+
+.message {
+  margin-bottom: 0;
+}

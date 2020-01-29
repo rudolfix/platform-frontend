@@ -7,10 +7,15 @@ import { match as routerMatch, Route, RouteComponentProps, withRouter } from "re
 import { branch, compose, renderComponent } from "recompose";
 
 import {
+  EEtoState,
   EtoCompanyInformationType,
   EtoPitchType,
   TSocialChannelsType,
 } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EJurisdiction,
+  EOfferingDocumentType,
+} from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { selectIsIssuer } from "../../../modules/auth/selectors";
 import {
   EETOStateOnChain,
@@ -35,6 +40,7 @@ import { EtoOverviewStatus } from "../overview/EtoOverviewStatus/EtoOverviewStat
 import { CompanyDescription } from "../public-view/CompanyDescription";
 import { Cover } from "../public-view/Cover";
 import { CoverBanner } from "../public-view/CoverBanner";
+import { Disclaimer } from "../public-view/Disclaimer";
 import { DocumentsWidget } from "../public-view/DocumentsWidget";
 import { EtoAccordionElements } from "../public-view/EtoAccordionElements";
 import { EtoInvestmentTermsWidget } from "../public-view/EtoInvestmentTermsWidget";
@@ -104,9 +110,23 @@ const EtoViewCampaignOverview: React.FunctionComponent<IProps> = ({ eto, isUserF
       ? EColumnSpan.TWO_COL
       : EColumnSpan.THREE_COL;
 
+  const showTimeline = [
+    EEtoState.LISTED,
+    EEtoState.PROSPECTUS_APPROVED,
+    EEtoState.ON_CHAIN,
+  ].includes(eto.state);
+
+  const isSupportedJurisdiction = [EJurisdiction.GERMANY, EJurisdiction.LIECHTENSTEIN].includes(
+    eto.product.jurisdiction,
+  );
+  const showDisclaimer =
+    isSupportedJurisdiction &&
+    ([EEtoState.PREVIEW, EEtoState.PENDING].includes(eto.state) ||
+      eto.product.offeringDocumentType === EOfferingDocumentType.PROSPECTUS);
+
   return (
     <>
-      <ETOTimeline eto={eto} />
+      {showTimeline && <ETOTimeline eto={eto} />}
 
       <Container columnSpan={shouldSplitGrid}>
         <CompanyDescription eto={eto} />
@@ -145,6 +165,7 @@ const EtoViewCampaignOverview: React.FunctionComponent<IProps> = ({ eto, isUserF
           <EtoInvestmentTermsWidget eto={eto} isUserFullyVerified={isUserFullyVerified} />
         </Container>
       )}
+      {showDisclaimer && <Disclaimer />}
       <Individuals eto={eto} />
       <EtoAccordionElements eto={eto} />
 

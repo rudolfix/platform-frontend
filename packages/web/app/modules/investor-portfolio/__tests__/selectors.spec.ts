@@ -209,7 +209,7 @@ describe("investor-portfolio > selectors", () => {
       expect(data).to.contain(euroTokendDisbursal);
     });
 
-    it("should return only ETH to be claimed", () => {
+    it.skip("should return only ETH to be claimed", () => {
       // amount of 0.90 nEUR
       const state = {
         investorTickets: {
@@ -228,7 +228,7 @@ describe("investor-portfolio > selectors", () => {
       expect(data).to.contain(ethDisbursal);
     });
 
-    it("should return only nEUR to be claimed", () => {
+    it.skip("should return only nEUR to be claimed", () => {
       // amount of 0.00023 ETH
       const state = {
         investorTickets: {

@@ -10,7 +10,8 @@ import { appConnect } from "../../store";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Button, EButtonLayout, EButtonSize } from "../shared/buttons";
-import { ETheme, Money } from "../shared/formatters/Money";
+import { ETheme } from "../shared/formatters/Money";
+import { MoneyWithLessThan } from "../shared/formatters/MoneyWithLessThan";
 import { ENumberInputFormat, ENumberOutputFormat, selectUnits } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
@@ -69,12 +70,12 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
                 <>
                   {tokensDisbursal
                     .map(t => (
-                      <Money
+                      <MoneyWithLessThan
                         value={t.amountToBeClaimed}
                         inputFormat={ENumberInputFormat.ULPS}
                         valueType={t.token}
                         outputFormat={ENumberOutputFormat.FULL}
-                        theme={ETheme.GREEN_BIG}
+                        theme={ETheme.GREEN}
                         key={t.token}
                       />
                     ))
@@ -117,7 +118,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
               <CurrencyIcon currency={tokenDisbursal.token} className={cn("mr-2", styles.token)} />
               {selectUnits(tokenDisbursal.token)}
             </>
-            <Money
+            <MoneyWithLessThan
               value={tokenDisbursal.amountToBeClaimed}
               inputFormat={ENumberInputFormat.ULPS}
               valueType={tokenDisbursal.token}
@@ -125,7 +126,7 @@ const AssetPortfolioLayout: React.FunctionComponent<ILayoutProps & IDispatchToPr
               data-test-id={`asset-portfolio.payout.amount-to-be-claimed`}
               theme={ETheme.GREEN}
             />
-            <Money
+            <MoneyWithLessThan
               value={tokenDisbursal.totalDisbursedAmount}
               inputFormat={ENumberInputFormat.ULPS}
               valueType={tokenDisbursal.token}

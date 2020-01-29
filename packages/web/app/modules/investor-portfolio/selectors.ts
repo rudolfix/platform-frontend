@@ -21,6 +21,7 @@ import { selectLockedWalletConnected } from "../wallet/selectors";
 import {
   ICalculatedContribution,
   IInvestorTicket,
+  ITokenDisbursal,
   TETOWithInvestorTicket,
   TETOWithTokenData,
   TTokensPersonalDiscount,
@@ -227,8 +228,8 @@ export const selectTokensDisbursalError = (state: IAppState) =>
 export const selectTokensDisbursal = createSelector(selectInvestorTicketsState, investorTickets => {
   if (isArray(investorTickets.tokensDisbursal.data)) {
     return investorTickets.tokensDisbursal.data
-      .filter(d => !isZero(d.amountToBeClaimed))
-      .filter(t => shouldShowToken(t.token, t.amountToBeClaimed));
+      .filter((d: ITokenDisbursal) => !isZero(d.amountToBeClaimed))
+      .filter((t: ITokenDisbursal) => shouldShowToken(t.token, t.totalDisbursedAmount));
   }
   return investorTickets.tokensDisbursal.data;
 });

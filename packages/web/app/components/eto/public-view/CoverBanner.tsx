@@ -2,11 +2,13 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
+import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { selectUserType } from "../../../modules/auth/selectors";
 import { selectIssuerEtoPreviewCode } from "../../../modules/eto-flow/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
+import { selectEtoOnChainStateById } from "../../../modules/eto/selectors";
+import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { TDataTestId } from "../../../types";
 import { selectBaseUrl } from "../../../utils/locationUtils";
@@ -23,6 +25,7 @@ interface IExternalProps {
 
 interface IJurisdictionBannerProps {
   jurisdiction?: EJurisdiction;
+  etoStateOnChain?: EETOStateOnChain;
 }
 
 interface IInvestorPreviewProps {
@@ -46,25 +49,48 @@ const BannerBase: React.FunctionComponent<TDataTestId> = ({
   </Container>
 );
 
-export const InvestorBannerLayout: React.FunctionComponent<IJurisdictionBannerProps> = ({
-  jurisdiction,
-}) => {
-  switch (jurisdiction) {
-    case EJurisdiction.GERMANY:
-      return (
-        <BannerBase data-test-id={`eto.public-view.jurisdiction-banner.${jurisdiction}`}>
-          <FormattedMessage id="eto-overview.cover-banner.jurisdiction.de" />
-        </BannerBase>
-      );
-    case EJurisdiction.LIECHTENSTEIN:
-      return (
-        <BannerBase data-test-id={`eto.public-view.jurisdiction-banner.${jurisdiction}`}>
-          <FormattedMessage id="eto-overview.cover-banner.jurisdiction.li" />
-        </BannerBase>
-      );
-    default:
-      return null;
+export const InvestorBannerLayout: React.FunctionComponent<IJurisdictionBannerProps &
+  IExternalProps> = ({ eto, jurisdiction, etoStateOnChain }) => {
+  if (jurisdiction !== EJurisdiction.GERMANY && jurisdiction !== EJurisdiction.LIECHTENSTEIN) {
+    return null;
   }
+
+  let message;
+
+  const toBeOffered = [EEtoState.PREVIEW, EEtoState.PENDING, EEtoState.LISTED].includes(eto.state);
+  const currentlyOffered =
+    eto.state === EEtoState.PROSPECTUS_APPROVED ||
+    (eto.state === EEtoState.ON_CHAIN &&
+      (etoStateOnChain || EETOStateOnChain.Setup) < EETOStateOnChain.Signing);
+
+  if (toBeOffered) {
+    message =
+      jurisdiction === EJurisdiction.GERMANY ? (
+        <FormattedMessage id="eto-overview.cover-banner.jurisdiction.de.to-be" />
+      ) : (
+        <FormattedMessage id="eto-overview.cover-banner.jurisdiction.li.to-be" />
+      );
+  } else if (currentlyOffered) {
+    message =
+      jurisdiction === EJurisdiction.GERMANY ? (
+        <FormattedMessage id="eto-overview.cover-banner.jurisdiction.de.currently" />
+      ) : (
+        <FormattedMessage id="eto-overview.cover-banner.jurisdiction.li.currently" />
+      );
+  } else {
+    message =
+      jurisdiction === EJurisdiction.GERMANY ? (
+        <FormattedMessage id="eto-overview.cover-banner.jurisdiction.de.offered" />
+      ) : (
+        <FormattedMessage id="eto-overview.cover-banner.jurisdiction.li.offered" />
+      );
+  }
+
+  return (
+    <BannerBase data-test-id={`eto.public-view.jurisdiction-banner.${jurisdiction}`}>
+      {message}
+    </BannerBase>
+  );
 };
 
 export const IssuerBannerLayout: React.FunctionComponent<IInvestorPreviewProps> = ({
@@ -89,7 +115,7 @@ export const IssuerBannerLayout: React.FunctionComponent<IInvestorPreviewProps> 
   </BannerBase>
 );
 
-export const CoverBanner = compose<TBannerProps, IExternalProps & TBannerProps>(
+export const CoverBanner = compose<IExternalProps & TBannerProps, IExternalProps & TBannerProps>(
   appConnect<TBannerProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
       const userType = selectUserType(state);
@@ -104,6 +130,7 @@ export const CoverBanner = compose<TBannerProps, IExternalProps & TBannerProps>(
         return {
           userType,
           jurisdiction: props.eto.product.jurisdiction,
+          etoStateOnChain: selectEtoOnChainStateById(state, props.eto.etoId),
         };
       }
     },

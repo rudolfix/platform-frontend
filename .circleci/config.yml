@@ -181,7 +181,6 @@ workflows:
       - codechecks:
           requires:
             - build-frontend
-            - build-docker-test-e2e
       - codechecks-vis-reg:
           requires:
             - build-frontend

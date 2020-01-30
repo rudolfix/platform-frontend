@@ -28,6 +28,8 @@ export const getProductMeaningfulName = (productName: EProductName) => {
       );
     case EProductName.RETAIL_ETO_LI_VMA:
       return <FormattedMessage id="eto.form.section.eto-terms.product.name.retail-eto-li-vma" />;
+    case EProductName.RETAIL_EU_SME_ETO_LI_SECURITY:
+      return <FormattedMessage id="eto.form.section.eto-terms.product.name.retail-eto-li-sme" />;
     case EProductName.FIFTH_FORCE_ETO:
       return invariant(false, "Fifth Force eto should not be displayed on UI");
     default:

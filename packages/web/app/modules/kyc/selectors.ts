@@ -29,11 +29,19 @@ export const selectIsSavingKycForm = (state: IAppState) => !!state.kyc.kycSaving
 
 export const selectIndividualFiles = (state: IAppState) => state.kyc.individualFiles;
 export const selectIndividualFilesLoading = (state: IAppState) => state.kyc.individualFilesLoading;
-export const selectIndividualFileUploading = (state: IAppState) =>
-  state.kyc.individualFileUploading;
+export const selectIndividualFilesUploading = (state: IAppState): boolean =>
+  state.kyc.individualFilesUploadingCount > 0;
 
 export const selectBusinessFiles = (state: IAppState) => state.kyc.businessFiles;
+export const selectBusinessFilesUploading = (state: IAppState): boolean =>
+  state.kyc.businessFilesUploadingCount > 0;
+
 export const selectLegalRepFiles = (state: IAppState) => state.kyc.legalRepresentativeFiles;
+export const selectLegalRepFilesUploading = (state: IAppState): boolean =>
+  state.kyc.legalRepresentativeFilesUploadingCount > 0;
+
+export const selectBeneficialOwnerFilesUploading = (state: IAppState, fileId: string): boolean =>
+  state.kyc.beneficialOwnerFilesUploadingCount[fileId] > 0;
 
 export const selectKycUploadedFiles = (state: IAppState) =>
   selectIndividualFiles(state) || selectBusinessFiles(state) || selectLegalRepFiles(state);

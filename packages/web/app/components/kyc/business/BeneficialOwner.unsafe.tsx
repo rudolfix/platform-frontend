@@ -12,6 +12,7 @@ import {
   KycBeneficialOwnerSchemaRequired,
 } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { selectBeneficialOwnerFilesUploading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { AccordionElement } from "../../shared/Accordion";
 import { Button, EButtonLayout } from "../../shared/buttons";
@@ -29,9 +30,9 @@ import {
   unboolify,
 } from "../../shared/forms";
 import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
-import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/tooltips";
+import { AcceptedKYCDocumentTypes } from "../utils";
 
 const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,
@@ -42,7 +43,7 @@ const PEP_VALUES = {
 interface IStateProps {
   owner: IKycBeneficialOwner;
   index: number;
-  fileUploading: boolean;
+  filesUploading: boolean;
   filesLoading: boolean;
   files: ReadonlyArray<IKycFileInfo>;
   loading: boolean;
@@ -161,11 +162,11 @@ export class KYCBeneficialOwnerComponent extends React.Component<IProps> {
         <KYCEnhancedForm {...this.props} />
         <MultiFileUpload
           uploadType={EKycRequestType.INDIVIDUAL}
-          acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+          acceptedFiles={AcceptedKYCDocumentTypes}
           layout="vertical"
           onDropFile={this.props.onDropFile}
           files={this.props.files}
-          fileUploading={this.props.fileUploading}
+          filesUploading={this.props.filesUploading}
         />
         <div className="p-4 text-center">
           <Button
@@ -189,7 +190,7 @@ export const KYCBeneficialOwner = compose<React.FunctionComponent<IOwnProps>>(
       index: ownProps.index,
       files: state.kyc.beneficialOwnerFiles[ownProps.id] || [],
       filesLoading: !!state.kyc.beneficialOwnerFilesLoading[ownProps.id],
-      fileUploading: !!state.kyc.beneficialOwnerFileUploading[ownProps.id],
+      filesUploading: selectBeneficialOwnerFilesUploading(state, ownProps.id),
       loading: !!state.kyc.loadingBeneficialOwner,
     }),
     dispatchToProps: (dispatch, ownProps) => ({

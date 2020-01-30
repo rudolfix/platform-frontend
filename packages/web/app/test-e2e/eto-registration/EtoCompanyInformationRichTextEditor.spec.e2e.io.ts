@@ -89,7 +89,7 @@ describe("Eto Company Information Rich Text Editor", () => {
     cy.get(formField("companyDescription")).clear();
 
     cy.get(formField("companyDescription")).within(() => {
-      cy.root().dropFile("example.jpg");
+      cy.root().dropFiles(["example.jpg"]);
       cy.get("img").should("exist");
     });
 

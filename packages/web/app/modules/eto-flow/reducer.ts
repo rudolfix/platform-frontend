@@ -45,6 +45,11 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
         ...state,
         saving: true,
       };
+    case actions.etoFlow.setSaving.getType():
+      return {
+        ...state,
+        saving: action.payload.savingData,
+      };
     case "ETO_FLOW_SET_START_DATE":
     case "ETO_FLOW_CLEAR_START_DATE":
       return {

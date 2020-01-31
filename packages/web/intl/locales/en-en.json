@@ -1363,6 +1363,7 @@
   "shared.dropzone.remove.confirm": "Remove?",
   "shared.dropzone.upload.drop-here": "or drag files here",
   "shared.dropzone.upload.image.errors.error": "There was an error while reading this file: {error}",
+  "shared.dropzone.upload.image.errors.is-uploading": "File uploading is in progress",
   "shared.dropzone.upload.image.errors.wrong-dimensions": "Please upload an image with required dimensions",
   "shared.dropzone.upload.upload": "Upload",
   "shared.dropzone.uploading": "Uploading...",

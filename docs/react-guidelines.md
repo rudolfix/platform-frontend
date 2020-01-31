@@ -15,6 +15,18 @@ DO:
 ```
 <MyComponent title="good" />
 ```
+- Don't use short style conditionals, prefer full if statements.
+DO NOT
+```
+this.props.myConditionalFunction && this.props.myConditionalFunction();
+```
+
+DO
+```
+if (this.props.myConditionalFunction) {
+    this.props.myConditionalFunction();
+}
+```
 
 ## Imports & Exports
 

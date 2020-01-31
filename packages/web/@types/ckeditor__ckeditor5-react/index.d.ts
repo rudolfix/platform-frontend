@@ -11,6 +11,10 @@ declare module "@ckeditor/ckeditor5-react" {
 
   export type TLoader = {
     file: Promise<File>;
+    on: (
+      eventName: "change:status" | "change:uploaded" | "change:uploadTotal",
+      event: unknown,
+    ) => void;
   };
 
   export type IUploadAdapterFactory = (loader: TLoader) => IUploadAdapter;
@@ -22,6 +26,7 @@ declare module "@ckeditor/ckeditor5-react" {
 
   export type TCkEditor = {
     getData(): string;
+    loadingData: boolean;
     editing: {
       view: {
         change(callback: (writer: TCkEditorWriter) => void): void;
@@ -35,6 +40,7 @@ declare module "@ckeditor/ckeditor5-react" {
         plugin: "FileRepository",
       ) => {
         createUploadAdapter: IUploadAdapterFactory;
+        on?: (eventName: string, event: unknown) => void;
       };
     };
   };

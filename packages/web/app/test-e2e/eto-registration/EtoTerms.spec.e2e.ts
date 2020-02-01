@@ -4,14 +4,14 @@ import { formField, tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 
 describe("Eto Terms", () => {
-  it("should show 6 available products", () => {
+  it("should show 7 available products", () => {
     loginFixtureAccount("ISSUER_PREVIEW");
 
     goToIssuerDashboard();
 
     cy.get(`${tid("eto-progress-widget-eto-terms")} button`).click();
 
-    cy.get(formField("productId")).should("have.length", 6);
+    cy.get(formField("productId")).should("have.length", 7);
   });
 
   it("should show product details on hover", () => {

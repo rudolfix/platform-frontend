@@ -35,6 +35,7 @@ export const documentTitles = {
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement" />
   ),
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-template" />,
+  lean_prospectus_template: <FormattedMessage id="eto.documents.lean-prospectus-template" />,
   termsheet_template: <FormattedMessage id="eto.documents.termsheet" />,
   investment_memorandum_template: (
     <FormattedMessage id="eto.documents.investment-memorandum-template" />
@@ -76,6 +77,7 @@ export const getDocumentTemplateTitles = (documentType: EOfferingDocumentType) =
     <FormattedMessage id="eto.documents.investment-and-shareholder-agreement-template" />
   ),
   prospectus_template: <FormattedMessage id="eto.documents.prospectus-template" />,
+  lean_prospectus_template: <FormattedMessage id="eto.documents.lean-prospectus-template" />,
   termsheet_template: <FormattedMessage id="eto.documents.termsheet-template" />,
   investment_memorandum_template: (
     <FormattedMessage id="eto.documents.investment-memorandum-template" />

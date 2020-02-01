@@ -161,6 +161,7 @@ export function* getIncomingPayouts({
         neumark.address,
       ),
     });
+    // TODO: Recheck the code here
     const snapshotDate = calculateSnapshotDate(yield neumark.currentSnapshotId);
     const euroTokenIncomingPayoutValue = addBigNumbers(
       euroTokenIncomingPayout.map((v: BigNumber[]) => v[1]),

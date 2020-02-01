@@ -75,7 +75,7 @@ describe("Eto widget page", () => {
     });
   });
 
-  it.skip("ETOInWhitelistState", () => {
+  it("ETOInWhitelistState", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
       cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));

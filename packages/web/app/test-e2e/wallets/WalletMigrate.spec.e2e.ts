@@ -28,7 +28,7 @@ describe("Wallet Migration Flow", () => {
     cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"));
   });
 
-  it("It will migrate an ICBM wallet into a new user", () => {
+  it.skip("It will migrate an ICBM wallet into a new user", () => {
     const INV_ETH_ICBM_NO_KYC_ADDRESS = accountFixtureAddress("INV_ETH_ICBM_NO_KYC");
 
     createAndLoginNewUser({

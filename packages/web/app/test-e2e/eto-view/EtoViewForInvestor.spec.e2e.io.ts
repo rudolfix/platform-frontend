@@ -219,7 +219,7 @@ describe("Eto Investor View", () => {
   });
 
   describe("Fixtures tests", () => {
-    it.skip("coming soon state should have token terms", () => {
+    it("coming soon state should have token terms", () => {
       loginFixtureAccount("ISSUER_PREVIEW");
       goToEtoPreview();
 

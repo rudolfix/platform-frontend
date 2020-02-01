@@ -2,8 +2,8 @@ import { closeModal, confirmAccessModal } from "../utils";
 import { tid } from "../utils/selectors";
 import { loginFixtureAccount } from "../utils/userHelpers";
 
-describe("Unlock Ether Funds", () => {
-  it.skip("do", () => {
+describe.skip("Unlock Ether Funds", () => {
+  it("do", () => {
     //Can't enable without a new fixture
     loginFixtureAccount("");
     cy.visit("/wallet-unlock-etherlock");

@@ -1,4 +1,12 @@
 import { all, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
+import {
+  addBigNumbers,
+  compareBigNumbers,
+  convertToUlps,
+  extractNumber,
+  nonNullable,
+  subtractBigNumbers,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
@@ -6,10 +14,6 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../lib/web3/types";
 import { IAppState } from "../../store";
-import { addBigNumbers, compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { nonNullable } from "../../utils/nonNullable";
-import { convertToUlps } from "../../utils/NumberUtils";
-import { extractNumber } from "../../utils/StringUtils";
 import { actions, TActionFromCreator } from "../actions";
 import {
   selectEtoById,

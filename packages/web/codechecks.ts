@@ -1,7 +1,5 @@
 import { codechecks } from "@codechecks/client";
 
-// disabling faulty rules
-// tslint:disable:no-useless-cast restrict-plus-operands
 export async function main(): Promise<void> {
   await checkPackageLock();
 }

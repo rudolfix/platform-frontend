@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { AppReducer } from "../../../store";
-import { DeepReadonly } from "../../../types";
 
 export interface ITxMonitorState {
   txs: TPendingTxs;

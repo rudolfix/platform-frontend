@@ -1,4 +1,5 @@
 import { call, Effect, put, race, select, take } from "@neufund/sagas";
+import { invariant } from "@neufund/shared";
 
 import { GenericErrorMessage } from "../../components/translatedMessages/messages";
 import { TMessage } from "../../components/translatedMessages/utils";
@@ -15,7 +16,6 @@ import {
 import { IPersonalWallet } from "../../lib/web3/PersonalWeb3";
 import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../store";
-import { invariant } from "../../utils/invariant";
 import { actions, TActionFromCreator } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
 import { neuCall } from "../sagasUtils";

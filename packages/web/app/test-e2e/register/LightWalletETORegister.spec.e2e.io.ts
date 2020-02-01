@@ -7,7 +7,7 @@ import {
 } from "../utils";
 import { createAndLoginNewUser, getWalletMetaData } from "../utils/userHelpers";
 
-describe("Wallet backup e2e recovery phrase", () => {
+describe("Register ETO issuer", () => {
   const passowrd = "strongpassword";
 
   it("should register user with light-wallet", () => {

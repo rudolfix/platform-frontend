@@ -1,8 +1,8 @@
+import { NATIONALITIES } from "@neufund/shared";
 import { FieldAttributes } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { NATIONALITIES } from "../../../../utils/enums/countriesEnum";
 import { FormSelectField, NONE_KEY } from "./FormSelectField";
 
 const VALUES = {

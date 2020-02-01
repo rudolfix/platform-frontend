@@ -1,3 +1,4 @@
+import { EthereumAddress } from "@neufund/shared";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -22,7 +23,6 @@ import { Neumark } from "../contracts/Neumark";
 import { PlatformTerms } from "../contracts/PlatformTerms";
 import { Universe } from "../contracts/Universe";
 import { ILogger } from "../dependencies/logger";
-import { EthereumAddress } from "./../../utils/opaque-types/types";
 import { Web3Manager } from "./Web3Manager/Web3Manager";
 
 @injectable()

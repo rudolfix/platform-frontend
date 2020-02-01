@@ -1,7 +1,7 @@
+import { formatMoney } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { expect } from "chai";
 
-import { formatMoney } from "../../../utils/MoneyUtils";
 import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,

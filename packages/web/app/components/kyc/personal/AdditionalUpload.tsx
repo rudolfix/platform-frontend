@@ -7,20 +7,20 @@ import { actions } from "../../../modules/actions";
 import {
   selectIndividualFiles,
   selectIndividualFilesLoading,
-  selectIndividualFileUploading,
+  selectIndividualFilesUploading,
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { withProgress } from "../../../utils/withProgress";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import { withProgress } from "../../../utils/react-connected-components/withProgress";
 import { EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
 import { Button, ButtonGroup } from "../../shared/buttons/index";
-import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { EKycUploadType, MultiFileUpload } from "../../shared/MultiFileUpload";
+import { AcceptedKYCDocumentTypes } from "../utils";
 
 import * as styles from "./Start.module.scss";
 
 interface IStateProps {
-  fileUploading: boolean;
+  filesUploading: boolean;
   filesLoading: boolean;
   files: ReadonlyArray<IKycFileInfo>;
 }
@@ -34,11 +34,11 @@ export const KYCAdditionalUploadLayout: React.FunctionComponent<IStateProps &
   IDispatchProps> = props => (
   <>
     <MultiFileUpload
-      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+      acceptedFiles={AcceptedKYCDocumentTypes}
       onDropFile={props.onDropFile}
       uploadType={EKycUploadType.ADDITIONAL_INDIVIDUAL}
       files={props.files}
-      fileUploading={props.fileUploading}
+      filesUploading={props.filesUploading}
       data-test-id="kyc-personal-upload-dropzone"
       layout="vertical"
     />
@@ -62,7 +62,7 @@ export const KYCAdditionalUpload = compose<React.FunctionComponent>(
     stateToProps: state => ({
       files: selectIndividualFiles(state),
       filesLoading: selectIndividualFilesLoading(state),
-      fileUploading: selectIndividualFileUploading(state),
+      filesUploading: selectIndividualFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadIndividualDocument(file)),

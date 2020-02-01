@@ -1,10 +1,10 @@
 import { fork, put, select, take } from "@neufund/sagas";
+import { compareBigNumbers } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
 import { IAppState } from "../../../../store";
-import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";

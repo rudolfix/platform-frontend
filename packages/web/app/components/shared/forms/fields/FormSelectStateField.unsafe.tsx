@@ -1,8 +1,9 @@
+import { Dictionary } from "@neufund/shared";
 import { FieldAttributes } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Dictionary, TTranslatedString } from "../../../../types";
+import { TTranslatedString } from "../../../../types";
 import { US_STATES } from "../../../../utils/enums/usStatesEnum";
 import { FormSelectField, NONE_KEY } from "./FormSelectField";
 

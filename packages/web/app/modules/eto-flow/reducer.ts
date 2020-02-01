@@ -1,5 +1,6 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 import { IEtoFlowState } from "./types";
 
@@ -43,6 +44,11 @@ export const etoFlowReducer: AppReducer<IEtoFlowState> = (
       return {
         ...state,
         saving: true,
+      };
+    case actions.etoFlow.setSaving.getType():
+      return {
+        ...state,
+        saving: action.payload.savingData,
       };
     case "ETO_FLOW_SET_START_DATE":
     case "ETO_FLOW_CLEAR_START_DATE":

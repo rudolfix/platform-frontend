@@ -1,11 +1,11 @@
 import { delay, fork, put, select } from "@neufund/sagas";
+import { EJwtPermissions } from "@neufund/shared";
 
 import {
   EEtoNomineeRequestMessages,
   EEtoNomineeRequestNotifications,
 } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { EJwtPermissions, NOMINEE_REQUESTS_WATCHER_DELAY } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions, TActionFromCreator } from "../actions";
@@ -14,6 +14,7 @@ import { selectEtoNominee } from "../eto-flow/selectors";
 import { ENomineeUpdateRequestStatus, TNomineeRequestStorage } from "../nominee-flow/types";
 import { etoApiDataToNomineeRequests } from "../nominee-flow/utils";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
+import { NOMINEE_REQUESTS_WATCHER_DELAY } from "./../../config/constants";
 
 export function* etoGetNomineeRequests({
   apiEtoNomineeService,

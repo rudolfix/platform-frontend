@@ -1,3 +1,4 @@
+import { RequiredByKeys } from "@neufund/shared";
 import * as React from "react";
 import { compose, setDisplayName } from "recompose";
 
@@ -5,8 +6,7 @@ import { actions } from "../../../modules/actions";
 import { selectEtos } from "../../../modules/eto/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
-import { RequiredByKeys } from "../../../types";
-import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { EtoOverviewThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtoOverviewThumbnail";
 import { EtosComingSoonThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtosComingSoonThumbnail";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";

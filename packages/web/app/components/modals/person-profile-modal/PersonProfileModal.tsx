@@ -1,3 +1,4 @@
+import { DeepReadonly } from "@neufund/shared";
 import * as React from "react";
 
 import { actions } from "../../../modules/actions";
@@ -7,7 +8,6 @@ import {
   selectPersonProfileModalObj,
 } from "../../../modules/person-profile-modal/reducer";
 import { appConnect } from "../../../store";
-import { DeepReadonly } from "../../../types";
 import { ExternalLink } from "../../shared/links";
 import { SlidePerson } from "../../shared/SlidePerson";
 import { Modal } from "../Modal";

@@ -1,11 +1,11 @@
 import { call, fork, put, select } from "@neufund/sagas";
+import { toEthereumAddress } from "@neufund/shared";
 import { toPairs, zip } from "lodash";
 
 import { tripleZip } from "../../../../typings/modifications";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
 import { IAppState } from "../../../store";
-import { toEthereumAddress } from "../../../utils/opaque-types/utils";
 import { actions, TAction, TActionFromCreator } from "../../actions";
 import { neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
 import { mapLedgerErrorToErrorMessage } from "./errors";

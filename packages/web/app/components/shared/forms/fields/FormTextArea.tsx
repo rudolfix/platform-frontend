@@ -1,11 +1,12 @@
+import { invariant } from "@neufund/shared";
 import * as cn from "classnames";
 import { connect as formikConnect, Field, FieldProps } from "formik";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { Input } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { CommonHtmlProps, TFormikConnect } from "../../../../types";
-import { invariant } from "../../../../utils/invariant";
 import { FormFieldError, generateErrorId } from "./FormFieldError";
 import {
   applyCharactersLimit,
@@ -50,13 +51,28 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
     );
   }
 
+  const [isUploading, setIsUploading] = React.useState(false);
+
+  const onLoadingData = (loading: boolean) => {
+    setIsUploading(loading);
+  };
+
   const { touched, errors, submitCount, setFieldTouched, setFieldValue } = formik;
 
   const invalid = isNonValid(touched, errors, name, submitCount);
 
+  const validate = () => {
+    if (isUploading) {
+      return <FormattedMessage id="shared.dropzone.upload.image.errors.is-uploading" />;
+    }
+
+    return undefined;
+  };
+
   return (
     <Field
       name={name}
+      validate={validate}
       render={({ field }: FieldProps) => (
         <>
           <RichTextAreaLayout
@@ -66,6 +82,7 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
             className={className}
             disabled={disabled}
             value={field.value}
+            onLoadingData={onLoadingData}
             onChange={value => {
               setFieldTouched(name);
               setFieldValue(name, value);

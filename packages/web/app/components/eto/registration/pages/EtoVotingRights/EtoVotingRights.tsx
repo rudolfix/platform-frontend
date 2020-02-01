@@ -1,6 +1,3 @@
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-
 import {
   MAX_RESTRICTED_ACT_VOTING_DURATION,
   MAX_VOTING_DURATION,
@@ -8,7 +5,10 @@ import {
   MIN_RESTRICTED_ACT_VOTING_DURATION,
   MIN_VOTING_DURATION,
   MIN_VOTING_FINALIZATION_DURATION,
-} from "../../../../../config/constants";
+} from "@neufund/shared";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
+
 import { TPartialEtoSpecData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { Button, EButtonLayout } from "../../../../shared/buttons/index";
 import { ENumberInputFormat, ENumberOutputFormat } from "../../../../shared/formatters/utils";

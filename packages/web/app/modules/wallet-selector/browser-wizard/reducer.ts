@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../store";
-import { DeepReadonly } from "../../../types";
 
 export interface IBrowserWalletWizardState {
   errorMsg: DeepReadonly<TMessage> | undefined;

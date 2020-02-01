@@ -1,7 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 
 /**

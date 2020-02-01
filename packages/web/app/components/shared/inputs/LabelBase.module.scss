@@ -1,0 +1,12 @@
+.label {
+  @include nds-input-label;
+
+  color: $neu-charcoal-grey;
+}
+
+.optional-field {
+  @include nds-input-label-small;
+
+  color: $neu-gull-gray;
+  vertical-align: top;
+}

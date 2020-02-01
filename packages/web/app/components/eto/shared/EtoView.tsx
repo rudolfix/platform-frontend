@@ -1,3 +1,4 @@
+import { ETHEREUM_ZERO_ADDRESS, withMetaTags } from "@neufund/shared";
 import * as cn from "classnames";
 import { some } from "lodash";
 import * as React from "react";
@@ -5,7 +6,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { match as routerMatch, Route, RouteComponentProps, withRouter } from "react-router";
 import { branch, compose, renderComponent } from "recompose";
 
-import { ETHEREUM_ZERO_ADDRESS } from "../../../config/constants";
 import {
   EEtoState,
   EtoCompanyInformationType,
@@ -24,8 +24,7 @@ import {
 } from "../../../modules/eto/types";
 import { isOnChain } from "../../../modules/eto/utils";
 import { appConnect } from "../../../store";
-import { SwitchConnected } from "../../../utils/connectedRouting";
-import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
+import { SwitchConnected } from "../../../utils/react-connected-components/connectedRouting";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { PersonProfileModal } from "../../modals/person-profile-modal/PersonProfileModal";

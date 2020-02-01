@@ -1,8 +1,8 @@
 import { fork, put, select } from "@neufund/sagas";
+import { isJwtExpiringLateEnough } from "@neufund/shared";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IAppState } from "../../store";
-import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
 import { actions, TActionFromCreator } from "../actions";
 import { loadJwt, setJwt } from "../auth/jwt/sagas";
 import { loadUser } from "../auth/user/external/sagas";

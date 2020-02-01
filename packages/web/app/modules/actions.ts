@@ -1,8 +1,8 @@
 import { StringableActionCreator } from "@neufund/sagas";
+import { TDictionaryValues } from "@neufund/shared";
 import { LocationChangeAction } from "connected-react-router";
 
 import { portfolioActions } from "../components/portfolio/actions";
-import { TDictionaryValues } from "../types";
 import { accessWalletActions } from "./access-wallet/actions";
 import { authActions } from "./auth/actions";
 import { bankTransferFLowActions } from "./bank-transfer-flow/actions";

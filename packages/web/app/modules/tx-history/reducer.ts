@@ -1,7 +1,7 @@
+import { DeepReadonly, Dictionary } from "@neufund/shared";
 import { compose, keyBy, reverse, sortBy } from "lodash/fp";
 
 import { AppReducer } from "../../store";
-import { DeepReadonly, Dictionary } from "../../types";
 import { actions } from "../actions";
 import { TTxHistory } from "./types";
 

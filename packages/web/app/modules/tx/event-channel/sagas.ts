@@ -1,11 +1,10 @@
 import { buffers, call, channel, Channel, delay, put, race } from "@neufund/sagas";
+import { BLOCK_MINING_TIME_DELAY, secondsToMs } from "@neufund/shared";
 import * as Web3 from "web3";
 
-import { BLOCK_MINING_TIME_DELAY } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
-import { secondsToMs } from "../../../utils/DateUtils";
 import { neuCall } from "../../sagasUtils";
 import { TransactionCancelledError } from "./errors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "./types";

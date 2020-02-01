@@ -1,7 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
 import { createSelector } from "reselect";
 
 import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
 import { IGenericModal, IGenericModalState } from "./reducer";
 
 const selectGenericModal = (state: IAppState) => state.genericModal;

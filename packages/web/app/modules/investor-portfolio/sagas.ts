@@ -1,11 +1,18 @@
 import { all, fork, put, select } from "@neufund/sagas";
+import {
+  addBigNumbers,
+  convertFromUlps,
+  convertToUlps,
+  EthereumAddress,
+  nonNullable,
+  Q18,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser } from "../../lib/api/users/interfaces";
@@ -13,10 +20,6 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { promisify } from "../../lib/contracts/typechain-runtime";
 import { IAppState } from "../../store";
-import { addBigNumbers } from "../../utils/BigNumberUtils";
-import { nonNullable } from "../../utils/nonNullable";
-import { convertFromUlps, convertToUlps } from "../../utils/NumberUtils";
-import { EthereumAddress } from "../../utils/opaque-types/types";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
 import { calculateSnapshotDate } from "../contracts/utils";
@@ -166,7 +169,7 @@ export function* getIncomingPayouts({
     const etherTokenIncomingPayoutValue = addBigNumbers(
       etherTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
     );
-    // TODO:
+    // TODO: Recheck the code here
     if (euroTokenIncomingPayoutValue || etherTokenIncomingPayoutValue) {
       yield put(
         actions.investorEtoTicket.setIncomingPayouts({

@@ -1,3 +1,4 @@
+import { RequiredNonNullable } from "@neufund/shared";
 import * as cn from "classnames";
 import { isEmpty } from "lodash";
 import * as React from "react";
@@ -7,7 +8,6 @@ import {
   TSocialChannelsType,
   TSocialChannelType,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { RequiredNonNullable } from "../../types";
 import { InlineIcon } from "./icons";
 import { ExternalLink } from "./links";
 

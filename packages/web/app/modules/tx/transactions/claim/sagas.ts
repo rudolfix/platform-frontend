@@ -74,9 +74,6 @@ function* userClaimSaga(
     logger.info("User claim successful");
   } catch (e) {
     logger.info("User claim cancelled", e);
-  } finally {
-    yield put(actions.eto.loadEto(etoId));
-    yield put(actions.eto.loadTokensData());
   }
 }
 

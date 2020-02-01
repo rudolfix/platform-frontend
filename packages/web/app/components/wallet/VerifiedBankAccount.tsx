@@ -1,3 +1,4 @@
+import { DeepReadonly } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,7 +9,7 @@ import { selectIsBankAccountVerified } from "../../modules/bank-transfer-flow/se
 import { selectBankAccount, selectIsBankAccountLoading } from "../../modules/kyc/selectors";
 import { TBankAccount } from "../../modules/kyc/types";
 import { appConnect } from "../../store";
-import { CommonHtmlProps, DeepReadonly } from "../../types";
+import { CommonHtmlProps } from "../../types";
 import { ButtonInline } from "../shared/buttons";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
 import { BankAccount } from "./BankAccount";

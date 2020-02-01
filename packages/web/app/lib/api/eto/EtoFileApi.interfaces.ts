@@ -1,4 +1,5 @@
-import { Dictionary } from "../../../types";
+import { Dictionary } from "@neufund/shared";
+
 import { EtoStateToCamelcase } from "./EtoApi.interfaces.unsafe";
 
 type fileStates = "canReplace" | "locked" | "readOnly";
@@ -23,6 +24,7 @@ export enum EEtoDocumentType {
   RESERVATION_AND_ACQUISITION_AGREEMENT = "reservation_and_acquisition_agreement",
   INVESTMENT_AND_SHAREHOLDER_AGREEMENT_TEMPLATE = "investment_and_shareholder_agreement_template",
   PROSPECTUS_TEMPLATE = "prospectus_template",
+  LEAN_PROSPECTUS_TEMPLATE = "lean_prospectus_template",
   TERMSHEET_TEMPLATE = "termsheet_template",
   INVESTMENT_MEMORANDUM_TEMPLATE = "investment_memorandum_template",
   INVESTMENT_SUMMARY_TEMPLATE = "investment_summary_template",
@@ -72,6 +74,7 @@ export const immutableDocumentName: { [key in EEtoDocumentType]: string } = {
   reservation_and_acquisition_agreement: "Reservation and Acquisition Agreement",
   investment_and_shareholder_agreement_template: "Investment and Shareholder Agreement Template",
   prospectus_template: "Prospectus Template",
+  lean_prospectus_template: "EEA - SME Growth Prospectus Template",
   termsheet_template: "Termsheet Template",
   investment_memorandum_template: "Investment Memorandum Template",
   investment_summary_template: "ETO Investment Offer Summary",

@@ -26,6 +26,7 @@ type TWithProps = {
 export type TComponentProps = {
   loadingData: boolean;
   savingData: boolean;
+  setSaving: (saving: boolean) => void;
 } & TWithProps;
 
 type TStateProps = {
@@ -56,6 +57,9 @@ const connectEtoRegistrationPitch = (
         saveData: (company: TPartialCompanyEtoData) => {
           const convertedCompany = convert(fromFormState)(company);
           dispatch(actions.etoFlow.saveCompanyStart(convertedCompany));
+        },
+        setSaving: (saving: boolean) => {
+          dispatch(actions.etoFlow.setSaving(saving));
         },
       }),
     }),

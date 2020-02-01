@@ -1,9 +1,9 @@
+import { ECountries } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { ECountries } from "../../../utils/enums/countriesEnum";
 import { Message } from "../../modals/message/Message";
 import { ButtonArrowRight, EButtonLayout } from "../../shared/buttons";
 import { VALUES } from "../../shared/forms/fields/FormSelectCountryField.unsafe";

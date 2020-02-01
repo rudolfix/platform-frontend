@@ -1,8 +1,8 @@
 import { call, fork, put, select } from "@neufund/sagas";
+import { EJwtPermissions } from "@neufund/shared";
 
 import { ProfileMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
 import { IAppState } from "../../store";

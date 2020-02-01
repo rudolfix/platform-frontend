@@ -1,10 +1,10 @@
 import Eth from "@ledgerhq/hw-app-eth";
+import { EthereumNetworkId } from "@neufund/shared";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
 import { EWalletType } from "../../../modules/web3/types";
-import { EthereumNetworkId } from "../../../utils/opaque-types/types";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
 import { STIPEND_ELIGIBLE_WALLETS } from "./../constants";

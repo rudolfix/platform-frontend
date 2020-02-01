@@ -3,14 +3,18 @@ import { compose } from "redux";
 
 import { EKycRequestType, IKycFileInfo } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
+import {
+  selectBusinessFilesUploading,
+  selectIndividualFilesUploading,
+} from "../../../modules/kyc/selectors";
 import { AppActionTypes, appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { EKycUploadType, MultiFileUpload } from "../../shared/MultiFileUpload";
+import { AcceptedKYCDocumentTypes } from "../utils";
 
 interface IStateProps {
-  fileUploading: boolean;
+  filesUploading: boolean;
   files: ReadonlyArray<IKycFileInfo>;
 }
 
@@ -26,16 +30,16 @@ interface IOwnProps {
 
 export const KYCAddDocumentsComponent: React.FunctionComponent<IStateProps &
   IDispatchProps &
-  IOwnProps> = ({ onDropFile, files, fileUploading, uploadType, isLoading }) =>
+  IOwnProps> = ({ onDropFile, files, filesUploading, uploadType, isLoading }) =>
   isLoading ? (
     <LoadingIndicator />
   ) : (
     <MultiFileUpload
       data-test-id="kyc-upload-documents-dropzone"
-      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+      acceptedFiles={AcceptedKYCDocumentTypes}
       onDropFile={onDropFile}
       files={files}
-      fileUploading={fileUploading}
+      filesUploading={filesUploading}
       uploadType={uploadType}
       layout="vertical"
     />
@@ -58,13 +62,13 @@ export const KYCAddDocuments = compose<React.FunctionComponent<IOwnProps>>(
       ].includes(ownProps.uploadType)
         ? !!state.kyc.individualFilesLoading
         : !!state.kyc.businessFilesLoading,
-      fileUploading: [
+      filesUploading: [
         EKycRequestType.INDIVIDUAL,
         EKycUploadType.US_ACCREDITATION,
         EKycUploadType.PROOF_OF_ADDRESS,
       ].includes(ownProps.uploadType)
-        ? !!state.kyc.individualFileUploading
-        : !!state.kyc.businessFileUploading,
+        ? selectIndividualFilesUploading(state)
+        : selectBusinessFilesUploading(state),
       title: "",
     }),
     dispatchToProps: (dispatch, ownProps) => ({

@@ -1,8 +1,8 @@
 import { call, delay, fork, put, race, select, take } from "@neufund/sagas";
+import { assertNever, EJwtPermissions, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
-import { EJwtPermissions } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IUser } from "../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../lib/api/users/UsersApi";
@@ -15,9 +15,6 @@ import {
   SignerUnknownError,
 } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
-import { assertNever } from "../../../utils/assertNever";
-import { minutesToMs, secondsToMs } from "../../../utils/DateUtils";
-import { safeDelay } from "../../../utils/safeTimers";
 import { actions, TActionFromCreator } from "../../actions";
 import { EInitType } from "../../init/reducer";
 import { loadKycRequestData } from "../../kyc/sagas";

@@ -1,9 +1,9 @@
+import { ArrayWithAtLeastOneMember } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { EKycRequestType, IKycFileInfo } from "../../lib/api/kyc/KycApi.interfaces";
-import { ArrayWithAtLeastOneMember } from "../../types";
 import { Dropzone } from "./Dropzone";
 import { TAcceptedFileType } from "./forms/fields/utils.unsafe";
 import { ResponsiveImage } from "./ResponsiveImage";
@@ -23,7 +23,7 @@ export enum EKycUploadType {
 interface IProps {
   uploadType: EKycRequestType | EKycUploadType;
   acceptedFiles: ArrayWithAtLeastOneMember<TAcceptedFileType>;
-  fileUploading: boolean;
+  filesUploading: boolean;
   onDropFile: (file: File) => void;
   layout?: "horizontal" | "vertical";
   files?: ReadonlyArray<IKycFileInfo>;
@@ -43,7 +43,7 @@ const selectTitle = (uploadType: EKycRequestType | EKycUploadType) => {
 
 const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   acceptedFiles,
-  fileUploading,
+  filesUploading,
   files,
   layout,
   onDropFile,
@@ -51,7 +51,7 @@ const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   "data-test-id": dataTestId,
   ...props
 }) => {
-  const onDrop = (accepted: File[]) => accepted[0] && onDropFile(accepted[0]);
+  const onDrop = (accepted: File[]) => accepted.forEach(onDropFile);
 
   return (
     <div className={cn(styles.multiFileUpload, layout)} data-test-id={dataTestId}>
@@ -62,8 +62,8 @@ const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
             data-test-id="multi-file-upload-dropzone"
             accept={acceptedFiles}
             onDrop={onDrop}
-            disabled={fileUploading}
-            isUploading={fileUploading}
+            disabled={filesUploading}
+            isUploading={filesUploading}
             name={uploadType}
             {...props}
           />
@@ -177,7 +177,7 @@ export const MultiFileUploadGuide: React.FunctionComponent<{
 // TODO: MultiFileUpload should not contain any information about upload type
 export const MultiFileUpload: React.FunctionComponent<IProps> = ({
   acceptedFiles,
-  fileUploading,
+  filesUploading,
   files,
   onDropFile,
   uploadType,
@@ -191,7 +191,7 @@ export const MultiFileUpload: React.FunctionComponent<IProps> = ({
         acceptedFiles={acceptedFiles}
         onDropFile={onDropFile}
         files={files}
-        fileUploading={fileUploading}
+        filesUploading={filesUploading}
         uploadType={uploadType}
         layout={layout}
         data-test-id={dataTestId}

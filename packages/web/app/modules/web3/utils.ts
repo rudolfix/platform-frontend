@@ -1,16 +1,17 @@
-import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
-
-import { ERoundingMode } from "../../components/shared/formatters/utils";
-import { ETH_DECIMALS, ETHEREUM_ADDRESS_LENGTH } from "../../config/constants";
-import { TBigNumberVariants } from "../../lib/web3/types";
-import { compareBigNumbers } from "../../utils/BigNumberUtils";
-import { formatMoney } from "../../utils/MoneyUtils";
-import { convertToUlps } from "../../utils/NumberUtils";
 import {
+  compareBigNumbers,
+  convertToUlps,
+  ETH_DECIMALS,
+  ETHEREUM_ADDRESS_LENGTH,
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumNetworkId,
-} from "../../utils/opaque-types/types";
+  formatMoney,
+} from "@neufund/shared";
+import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
+
+import { ERoundingMode } from "../../components/shared/formatters/utils";
+import { TBigNumberVariants } from "../../lib/web3/types";
 
 export function makeEthereumAddressChecksummed(
   ethereumAddress: EthereumAddress,

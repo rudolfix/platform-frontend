@@ -1,3 +1,4 @@
+import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
@@ -19,9 +20,6 @@ import {
 } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
-import { nonNullable } from "../../utils/nonNullable";
-import { objectToFilteredArray } from "../../utils/objectToFilteredArray";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
 import { selectAgreementsStatus, selectEtoContract, selectEtoSubState } from "../eto/selectors";
@@ -299,13 +297,14 @@ const recognizedProductTypes = [
   EProductName.RETAIL_ETO_LI_SECURITY,
   EProductName.RETAIL_ETO_LI_VMA,
   EProductName.FIFTH_FORCE_ETO,
+  EProductName.RETAIL_EU_SME_ETO_LI_SECURITY,
 ];
 
 export const selectAvailableProducts = createSelector(selectIssuerEtoFlow, ({ products }) => {
   if (products !== undefined) {
     const availableProducts = products
       .filter(product => product.available)
-      // TODO: remove after platform-backend/#1550 is done
+      // remove fifth force as it's enabled on dev
       .filter(product => product.name !== EProductName.FIFTH_FORCE_ETO)
       // Remove unrecognized product types
       .filter(product =>

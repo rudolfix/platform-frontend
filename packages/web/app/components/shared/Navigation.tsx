@@ -1,7 +1,6 @@
+import { Dictionary } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
-
-import { Dictionary } from "../../types";
 
 import * as styles from "./Navigation.module.scss";
 

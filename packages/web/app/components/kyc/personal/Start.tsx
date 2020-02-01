@@ -1,3 +1,4 @@
+import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -14,14 +15,13 @@ import {
   selectIndividualDataLoading,
   selectIndividualFiles,
   selectIndividualFilesLoading,
-  selectIndividualFileUploading,
+  selectIndividualFilesUploading,
   selectIsSavingKycForm,
   selectKycUploadedFiles,
 } from "../../../modules/kyc/selectors";
 import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
-import { ECountries } from "../../../utils/enums/countriesEnum";
-import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { Button } from "../../shared/buttons";
 import { EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
 import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
@@ -58,7 +58,7 @@ interface IStateProps {
   isSavingForm: boolean;
   uploadedFiles: ReturnType<typeof selectKycUploadedFiles>;
   uploadedFilesLoading: ReturnType<typeof selectIndividualFilesLoading>;
-  individualFileUploading: ReturnType<typeof selectIndividualFileUploading>;
+  individualFilesUploading: ReturnType<typeof selectIndividualFilesUploading>;
 }
 
 interface IDispatchProps {
@@ -73,7 +73,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
   uploadedFiles,
   values,
   uploadedFilesLoading,
-  individualFileUploading,
+  individualFilesUploading,
   ...props
 }) => {
   const shouldAddAccreditedInvestorFlow = [values.country, values.nationality].includes(
@@ -218,7 +218,7 @@ export const KYCPersonalStart = compose<IStateProps & IDispatchProps, {}>(
       isSavingForm: selectIsSavingKycForm(state),
       uploadedFiles: selectIndividualFiles(state),
       uploadedFilesLoading: selectIndividualFilesLoading(state),
-      individualFileUploading: selectIndividualFileUploading(state),
+      individualFilesUploading: selectIndividualFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCHome()),

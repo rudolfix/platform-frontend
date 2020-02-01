@@ -1,3 +1,5 @@
+import { DeepReadonly, Dictionary } from "@neufund/shared";
+
 import {
   IKycBeneficialOwner,
   IKycBusinessData,
@@ -8,12 +10,11 @@ import {
   TKycStatus,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { AppReducer } from "../../store";
-import { DeepReadonly, Dictionary } from "../../types";
 import { actions } from "../actions";
 import { idNowInitialState, idNowReducer, IKycIdNowState } from "./instant-id/id-now/reducer";
 import { IKycOnfidoState, onfidoInitialState, onfidoReducer } from "./instant-id/onfido/reducer";
 import { TBankAccount, TClaims } from "./types";
-import { appendIfExists, omitUndefined, updateArrayItem } from "./utils";
+import { appendIfExists, conditionalCounter, omitUndefined, updateArrayItem } from "./utils";
 
 export interface IKycState {
   onfido: DeepReadonly<IKycOnfidoState>;
@@ -28,7 +29,7 @@ export interface IKycState {
   individualDataLoading: boolean;
 
   individualFilesLoading: boolean;
-  individualFileUploading: boolean;
+  individualFilesUploadingCount: number;
   individualFiles: IKycFileInfo[];
 
   // business
@@ -36,14 +37,14 @@ export interface IKycState {
   businessDataLoading: boolean;
 
   businessFilesLoading: boolean;
-  businessFileUploading: boolean;
+  businessFilesUploadingCount: number;
   businessFiles: IKycFileInfo[];
 
   // legal representatives
   legalRepresentative: IKycLegalRepresentative | undefined;
   legalRepresentativeLoading: boolean;
   legalRepresentativeFilesLoading: boolean;
-  legalRepresentativeFileUploading: boolean;
+  legalRepresentativeFilesUploadingCount: number;
   legalRepresentativeFiles: IKycFileInfo[];
 
   // beneficial owners
@@ -51,7 +52,7 @@ export interface IKycState {
   loadingBeneficialOwner: boolean;
   beneficialOwners: IKycBeneficialOwner[];
   beneficialOwnerFilesLoading: Dictionary<boolean>;
-  beneficialOwnerFileUploading: Dictionary<boolean>;
+  beneficialOwnerFilesUploadingCount: Dictionary<number>;
   beneficialOwnerFiles: Dictionary<IKycFileInfo[]>;
 
   // contract claims
@@ -76,20 +77,20 @@ const kycInitialState: IKycState = {
   individualDataLoading: false,
 
   individualFilesLoading: false,
-  individualFileUploading: false,
+  individualFilesUploadingCount: 0,
   individualFiles: [],
 
   businessData: undefined,
   businessDataLoading: false,
 
   businessFilesLoading: false,
-  businessFileUploading: false,
+  businessFilesUploadingCount: 0,
   businessFiles: [],
 
   legalRepresentative: undefined,
   legalRepresentativeLoading: false,
   legalRepresentativeFilesLoading: false,
-  legalRepresentativeFileUploading: false,
+  legalRepresentativeFilesUploadingCount: 0,
   legalRepresentativeFiles: [],
 
   loadingBeneficialOwners: false,
@@ -97,7 +98,7 @@ const kycInitialState: IKycState = {
   beneficialOwners: [],
   beneficialOwnerFiles: {},
   beneficialOwnerFilesLoading: {},
-  beneficialOwnerFileUploading: {},
+  beneficialOwnerFilesUploadingCount: {},
 
   claims: undefined,
 
@@ -150,7 +151,10 @@ export const kycReducer: AppReducer<IKycState> = (
     case actions.kyc.kycUpdateIndividualDocument.getType():
       return {
         ...state,
-        individualFileUploading: action.payload.individualFileUploading,
+        individualFilesUploadingCount: conditionalCounter(
+          action.payload.individualFileUploading,
+          state.individualFilesUploadingCount,
+        ),
         individualFiles: appendIfExists(state.individualFiles, action.payload.file),
       };
     case actions.kyc.kycUpdateBusinessData.getType():
@@ -162,7 +166,10 @@ export const kycReducer: AppReducer<IKycState> = (
     case actions.kyc.kycUpdateLegalRepresentativeDocument.getType():
       return {
         ...state,
-        legalRepresentativeFileUploading: action.payload.legalRepresentativeUploading,
+        legalRepresentativeFilesUploadingCount: conditionalCounter(
+          action.payload.legalRepresentativeUploading,
+          state.legalRepresentativeFilesUploadingCount,
+        ),
         legalRepresentativeFiles: appendIfExists(
           state.legalRepresentativeFiles,
           action.payload.file,
@@ -171,7 +178,10 @@ export const kycReducer: AppReducer<IKycState> = (
     case actions.kyc.kycUpdateBusinessDocument.getType():
       return {
         ...state,
-        businessFileUploading: action.payload.businessFileUploading,
+        businessFilesUploadingCount: conditionalCounter(
+          action.payload.businessFileUploading,
+          state.businessFilesUploadingCount,
+        ),
         businessFiles: appendIfExists(state.businessFiles, action.payload.file),
       };
     case actions.kyc.kycUpdateBeneficialOwner.getType():
@@ -200,9 +210,12 @@ export const kycReducer: AppReducer<IKycState> = (
       const { boid } = action.payload;
       return {
         ...state,
-        beneficialOwnerFileUploading: {
-          ...state.beneficialOwnerFileUploading,
-          [boid]: action.payload.beneficialOwnerFileUploading,
+        beneficialOwnerFilesUploadingCount: {
+          ...state.beneficialOwnerFilesUploadingCount,
+          [boid]: conditionalCounter(
+            action.payload.beneficialOwnerFileUploading,
+            state.beneficialOwnerFilesUploadingCount[boid],
+          ),
         },
         beneficialOwnerFiles: {
           ...state.beneficialOwnerFiles,

@@ -1,4 +1,10 @@
 import { put, select } from "@neufund/sagas";
+import {
+  addBigNumbers,
+  compareBigNumbers,
+  multiplyBigNumbers,
+  subtractBigNumbers,
+} from "@neufund/shared";
 import { cloneDeep } from "lodash";
 
 import { UserHasNoFundsError } from "../../../../lib/web3/Web3Adapter";
@@ -11,12 +17,6 @@ import { validateGas } from "../sagas";
 import { IWindowWithData } from "./../../../../../test/helperTypes";
 import { ITxData } from "./../../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "./../../../../lib/web3/Web3Adapter";
-import {
-  addBigNumbers,
-  compareBigNumbers,
-  multiplyBigNumbers,
-  subtractBigNumbers,
-} from "./../../../../utils/BigNumberUtils";
 import { selectEtherBalance } from "./../../../wallet/selectors";
 import { generateRandomEthereumAddress } from "./../../../web3/utils";
 import { ITokenTransferDraftType, IWithdrawDraftType } from "./../../types";

@@ -1,8 +1,8 @@
 import { IUploadAdapter, IUploadAdapterFactory, TLoader } from "@ckeditor/ckeditor5-react";
+import { toReadableBytes } from "@neufund/shared";
 import { inject, interfaces } from "inversify";
 
 import { symbols } from "../../../di/symbols";
-import { toReadableBytes } from "../../../utils/toReadableBytes";
 import { ILogger } from "../../dependencies/logger/ILogger";
 import { FileStorageApi, MAX_ALLOWED_FILE_SIZE } from "./FileStorageApi";
 
@@ -24,14 +24,11 @@ export class RichTextEditorUploadAdapter implements IUploadAdapter {
         )} where file size is ${toReadableBytes(file.size)}`,
       );
     }
-
     try {
       const { url } = await this.fileStorageApi.uploadFile("image", file);
-
       return { default: url };
     } catch (e) {
       this.logger.error("Could not upload file for rich text editor", e);
-
       return Promise.reject(`Couldn't upload file: ${file.name}.`);
     }
   }

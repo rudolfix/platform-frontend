@@ -1,3 +1,4 @@
+import { EquityToken } from "@neufund/shared";
 import * as cn from "classnames";
 import { Formik, FormikErrors, FormikProps } from "formik";
 import * as React from "react";
@@ -11,7 +12,6 @@ import {
 } from "../../../../../../modules/tx/validator/reducer";
 import { isValidFormNumber } from "../../../../../../modules/tx/validator/transfer/utils";
 import { isAddressValid } from "../../../../../../modules/web3/utils";
-import { EquityToken } from "../../../../../../utils/opaque-types/types";
 import { Button } from "../../../../../shared/buttons";
 import { Money } from "../../../../../shared/formatters/Money";
 import { ENumberInputFormat, ENumberOutputFormat } from "../../../../../shared/formatters/utils";

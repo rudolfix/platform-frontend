@@ -11,10 +11,10 @@ import {
   takeLatest,
   throttle,
 } from "@neufund/sagas";
+import { TSingleOrArray } from "@neufund/shared";
 import { isMatch } from "lodash/fp";
 
 import { TGlobalDependencies } from "../di/setupBindings";
-import { TSingleOrArray } from "../types";
 import { TActionPayload, TPattern } from "./actions";
 
 type TSagaWithDeps = (deps: TGlobalDependencies, ...args: any[]) => any;

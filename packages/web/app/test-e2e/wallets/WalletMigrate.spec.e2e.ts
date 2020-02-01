@@ -1,8 +1,8 @@
+import { Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import Web3Accounts from "web3-eth-accounts";
 
 import { appRoutes } from "../../components/appRoutes";
-import { Q18 } from "../../config/constants";
 import { NODE_ADDRESS } from "../config";
 import {
   accountFixtureAddress,
@@ -28,7 +28,7 @@ describe("Wallet Migration Flow", () => {
     cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"));
   });
 
-  it("It will migrate an ICBM wallet into a new user", () => {
+  it.skip("It will migrate an ICBM wallet into a new user", () => {
     const INV_ETH_ICBM_NO_KYC_ADDRESS = accountFixtureAddress("INV_ETH_ICBM_NO_KYC");
 
     createAndLoginNewUser({

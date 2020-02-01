@@ -1,7 +1,6 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory, Dictionary } from "@neufund/shared";
 
 import { EEtoDocumentType } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { Dictionary } from "../../types";
 import {
   SignedISHAStatus,
   TEtoWithCompanyAndContract,

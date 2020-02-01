@@ -1,9 +1,9 @@
+import { toEquityTokenSymbol } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { toEquityTokenSymbol } from "../../../../../../utils/opaque-types/utils";
-import { withModalBody } from "../../../../../../utils/storybookHelpers.unsafe";
+import { withModalBody } from "../../../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TransferSummaryLayout } from "./TransferSummaryLayout";
 
 import ethImage from "../../../../../../assets/img/eth_icon.svg";

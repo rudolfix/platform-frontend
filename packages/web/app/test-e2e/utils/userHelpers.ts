@@ -1,3 +1,4 @@
+import { promisify, toCamelCase } from "@neufund/shared";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
@@ -6,9 +7,7 @@ import { toChecksumAddress } from "web3-utils";
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
-import { promisify } from "../../utils/PromiseUtils";
-import { toCamelCase } from "../../utils/transformObjectKeys";
-import { assertIsUserVerifiedOnBlockchain, assertLanding } from "./assertions";
+import { assertLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";
 import { accountFixtureByName, removePendingExternalTransaction } from "./index";
 import { tid } from "./selectors";
@@ -110,11 +109,8 @@ export const createAndLoginNewUser = ({
       await setCorrectAgreement(jwt);
     }
 
-    if (kyc) {
-      // wait for kyc to be properly set as verified on blockchain
-      // otherwise UI is not deterministically stable
-      assertIsUserVerifiedOnBlockchain(address);
-    }
+    // Wait until backend messaging stabalizes
+    cy.wait(4000);
 
     cy.log(`Logged in as ${type}`, `KYC: ${kyc}, seed: ${seed}`);
 

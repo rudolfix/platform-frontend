@@ -1,11 +1,9 @@
+import { Dictionary, EthereumAddress, withParams } from "@neufund/shared";
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
 import { amendEtoToCompatibleFormat } from "../../../modules/eto/utils";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
-import { Dictionary } from "../../../types";
-import { EthereumAddress } from "../../../utils/opaque-types/types";
-import { withParams } from "../../../utils/withParams";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
   TBookBuildingsStatsList,

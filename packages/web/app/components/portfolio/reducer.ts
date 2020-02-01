@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { actions } from "../../modules/actions";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 
 export interface IPortfolioDownloadAgreementsModalState {
   isOpen: boolean;

@@ -1,13 +1,23 @@
+import { assertNever } from "@neufund/shared";
+
+import { ArrayWithAtLeastOneMember } from "../../../../shared/src/utils/types";
 import {
   EKycInstantIdProvider,
   TInstantIdNoneProvider,
   TManualIdProvider,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { OnfidoSDK } from "../../lib/dependencies/onfido/OnfidoSDK";
-import { assertNever } from "../../utils/assertNever";
+import { EMimeType, TAcceptedFileType } from "../shared/forms/fields/utils.unsafe";
 
 import id_now from "../../assets/img/instant-id/id_now.svg";
 import onfido from "../../assets/img/instant-id/onfido.svg";
+
+export const AcceptedKYCDocumentTypes: ArrayWithAtLeastOneMember<TAcceptedFileType> = [
+  EMimeType.PNG,
+  EMimeType.JPEG,
+  EMimeType.JPG,
+  EMimeType.PDF,
+];
 
 export const NONE_KYC_INSTANTID_PROVIDER: TInstantIdNoneProvider = "none";
 export const MANUAL_KYC_PROVIDER: TManualIdProvider = "manual";

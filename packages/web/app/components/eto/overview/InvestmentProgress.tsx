@@ -1,9 +1,9 @@
+import { nonNullable } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { getInvestmentCalculatedPercentage } from "../../../modules/eto/utils";
-import { nonNullable } from "../../../utils/nonNullable";
 import { ProgressBarSimple } from "../../shared/ProgressBarSimple";
 
 type TExternalProps = {

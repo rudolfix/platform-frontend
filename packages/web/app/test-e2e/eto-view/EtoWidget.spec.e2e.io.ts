@@ -1,8 +1,9 @@
+import { withParams } from "@neufund/shared";
+
 import { appRoutes } from "../../components/appRoutes";
 import { etherscanAddressLink } from "../../components/appRouteUtils";
 import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { withParams } from "../../utils/withParams";
 import { etoFixtureAddressByName, tid } from "../utils";
 import { assertIsExternalLink } from "../utils/assertions";
 import { getEto } from "../utils/userHelpers";
@@ -74,7 +75,7 @@ describe("Eto widget page", () => {
     });
   });
 
-  it.skip("ETOInWhitelistState", () => {
+  it("ETOInWhitelistState", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
       cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));

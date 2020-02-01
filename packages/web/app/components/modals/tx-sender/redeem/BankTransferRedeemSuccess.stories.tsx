@@ -1,10 +1,13 @@
+import { Q18 } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { Q18 } from "../../../../config/constants";
-import { withMockedDate, withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import {
+  withMockedDate,
+  withModalBody,
+} from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { BankTransferRedeemSuccessComponent } from "./BankTransferRedeemSuccess";
 
 const dummyNow = new Date("10/3/2019");

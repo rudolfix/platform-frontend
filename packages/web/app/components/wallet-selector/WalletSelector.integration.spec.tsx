@@ -1,3 +1,4 @@
+import { setupFakeClock } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import * as jsonwebtoken from "jsonwebtoken";
@@ -8,7 +9,6 @@ import { createMount, remount } from "../../../test/createMount";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import {
   createIntegrationTestsSetup,
-  setupFakeClock,
   waitForPredicate,
   waitForTid,
   wrapWithProviders,

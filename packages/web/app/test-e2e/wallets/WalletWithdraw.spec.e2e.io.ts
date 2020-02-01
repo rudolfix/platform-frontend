@@ -1,6 +1,6 @@
+import { Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
-import { Q18 } from "../../config/constants";
 import { generateRandomEthereumAddress } from "../../modules/web3/utils";
 import {
   assertTxErrorDialogueWithCost,

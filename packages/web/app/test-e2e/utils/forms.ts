@@ -1,6 +1,6 @@
+import { Dictionary } from "@neufund/shared";
 import { findKey, forEach } from "lodash";
 
-import { Dictionary } from "../../types";
 import { confirmAccessModal, formFieldValue } from "./index";
 import { formField, formFieldErrorMessage, tid } from "./selectors";
 
@@ -256,7 +256,7 @@ export const getFieldError = (formTid: string, key: string): Cypress.Chainable<s
 };
 
 export const dropDocumentToFieldWithTid = (targetTid: string, fixture: string) => {
-  cy.get(`${tid(targetTid)} ${tid("eto-add-document-drop-zone")}`).dropFile(fixture);
+  cy.get(`${tid(targetTid)} ${tid("eto-add-document-drop-zone")}`).dropFiles([fixture]);
 };
 
 /**
@@ -287,7 +287,7 @@ export const uploadDocumentToFieldWithTid = (
  */
 export const uploadSingleFileToField = (name: string, fixture: string) => {
   cy.get(formField(name)).within(() => {
-    cy.get(tid("dropzone")).dropFile(fixture);
+    cy.get(tid("dropzone")).dropFiles([fixture]);
     cy.get("img").should("exist");
   });
 };
@@ -298,11 +298,8 @@ export const uploadSingleFileToField = (name: string, fixture: string) => {
  * @param fixtures - which fixtures to load
  */
 export const uploadMultipleFilesToFieldWithTid = (name: string, fixtures: string[]) => {
-  fixtures.forEach(fixture =>
-    cy.get(formField(name)).within(() => {
-      cy.get(tid("multi-file-upload-dropzone")).dropFile(fixture);
-
-      cy.get(tid(`multi-file-upload-file-${fixture}`)).should("exist");
-    }),
-  );
+  cy.get(formField(name)).within(() => {
+    cy.get(tid("multi-file-upload-dropzone")).dropFiles(fixtures);
+    fixtures.forEach(fixture => cy.get(tid(`multi-file-upload-file-${fixture}`)).should("exist"));
+  });
 };

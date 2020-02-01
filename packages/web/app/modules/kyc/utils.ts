@@ -75,3 +75,9 @@ export function updateArrayItem<T extends { id?: string }>(
 export function omitUndefined<T>(obj: T): { [P in keyof T]?: T[P] } {
   return omitBy(obj, isNil) as any;
 }
+
+/**
+ * Used to manage a counter that represents say files currently being uploaded
+ */
+export const conditionalCounter = (condition: boolean, value: number): number =>
+  condition ? value + 1 : value - 1;

@@ -1,3 +1,4 @@
+import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -6,9 +7,7 @@ import {
   EAdditionalValidationDataNotifications,
   EValidationState,
 } from "../../../../../../modules/tx/validator/reducer";
-import { convertToUlps } from "../../../../../../utils/NumberUtils";
-import { toEquityTokenSymbol } from "../../../../../../utils/opaque-types/utils";
-import { withModalBody } from "../../../../../../utils/storybookHelpers.unsafe";
+import { withModalBody } from "../../../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TransferLayout } from "./TransferLayout";
 
 const props = {

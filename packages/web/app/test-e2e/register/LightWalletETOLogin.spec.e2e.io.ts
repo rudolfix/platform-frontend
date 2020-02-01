@@ -25,8 +25,4 @@ describe("Light Wallet ETO Login", () => {
     const testEmail = generateRandomEmailAddress();
     loginWithLightWalletETO(testEmail, PASSWORD);
   });
-  it("should login/logout as investor navigate to ETO then login/logout as issuer", () => {
-    const testEmail = generateRandomEmailAddress();
-    loginWithLightWalletETO(testEmail, PASSWORD);
-  });
 });

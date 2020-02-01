@@ -1,9 +1,8 @@
 import { put, select } from "@neufund/sagas";
+import { addBigNumbers, convertToUlps, multiplyBigNumbers } from "@neufund/shared";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { UserHasNoFundsError } from "../../../../../lib/web3/Web3Adapter";
-import { addBigNumbers, multiplyBigNumbers } from "../../../../../utils/BigNumberUtils";
-import { convertToUlps } from "../../../../../utils/NumberUtils";
 import { actions } from "../../../../actions";
 import { neuCall } from "../../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../../shared/tokenPrice/selectors";

@@ -1,8 +1,8 @@
+import { invariant } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EProductName } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import { invariant } from "../../../../utils/invariant";
 import { THumanReadableFormat, ToHumanReadableForm } from "../../../shared/ToHumanReadableForm";
 
 export const convertAmountToText = (amount: number) =>
@@ -28,6 +28,8 @@ export const getProductMeaningfulName = (productName: EProductName) => {
       );
     case EProductName.RETAIL_ETO_LI_VMA:
       return <FormattedMessage id="eto.form.section.eto-terms.product.name.retail-eto-li-vma" />;
+    case EProductName.RETAIL_EU_SME_ETO_LI_SECURITY:
+      return <FormattedMessage id="eto.form.section.eto-terms.product.name.retail-eto-li-sme" />;
     case EProductName.FIFTH_FORCE_ETO:
       return invariant(false, "Fifth Force eto should not be displayed on UI");
     default:

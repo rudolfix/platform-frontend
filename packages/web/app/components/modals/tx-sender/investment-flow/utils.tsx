@@ -1,3 +1,4 @@
+import { assertNever, Dictionary, divideBigNumbers } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 import * as React from "react";
@@ -22,9 +23,7 @@ import {
   selectLockedEuroTokenBalance,
 } from "../../../../modules/wallet/selectors";
 import { IAppState } from "../../../../store";
-import { Dictionary, TTranslatedString } from "../../../../types";
-import { assertNever } from "../../../../utils/assertNever";
-import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
+import { TTranslatedString } from "../../../../types";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,

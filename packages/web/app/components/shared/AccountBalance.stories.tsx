@@ -1,7 +1,7 @@
+import { Q18 } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Q18 } from "../../config/constants";
 import { AccountBalance } from "./AccountBalance";
 import { ECurrency } from "./formatters/utils";
 

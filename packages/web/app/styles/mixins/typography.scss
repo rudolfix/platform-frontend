@@ -151,6 +151,28 @@
   line-height: 1.71;
 }
 
+@mixin nds-input-text {
+  font-family: $font-family-roboto;
+  font-size: px-to-rem(14px);
+  line-height: 1.71;
+  font-weight: normal;
+}
+
+@mixin nds-input-label {
+  font-family: $font-family-roboto;
+  font-size: px-to-rem(14px);
+  line-height: 1.71;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+@mixin nds-input-label-small {
+  font-family: $font-family-roboto;
+  font-size: px-to-rem(12px);
+  line-height: 1.33;
+  text-transform: uppercase;
+}
+
 @mixin nds-label {
   font-family: $font-family-roboto;
   font-size: px-to-rem(10px);

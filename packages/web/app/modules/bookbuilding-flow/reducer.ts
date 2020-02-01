@@ -1,6 +1,7 @@
+import { DeepReadonly, Dictionary } from "@neufund/shared";
+
 import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { AppReducer } from "../../store";
-import { DeepReadonly, Dictionary } from "../../types";
 import { actions } from "../actions";
 
 export interface IBookbuildingFLow {

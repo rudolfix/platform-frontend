@@ -1,5 +1,6 @@
+import { DeepReadonlyObject } from "@neufund/shared";
+
 import { IAppState } from "../../../store";
-import { DeepReadonlyObject } from "../../../types";
 import { IInvestmentFlowState } from "../../investment-flow/reducer";
 import { EAdditionalValidationDataNotifications, EValidationState } from "./reducer";
 

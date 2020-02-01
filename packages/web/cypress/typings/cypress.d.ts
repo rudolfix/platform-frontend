@@ -1,7 +1,7 @@
 declare namespace Cypress {
   // noinspection TsLint
   interface Chainable<Subject = any> {
-    dropFile: (fixture: string) => void;
+    dropFiles: (fixtures: string[]) => void;
     awaitedClick: (waitDuration?: number) => Cypress.Chainable;
     requestsCount: (alias: string) => Cypress.Chainable<number>;
     iframe: (selector: string) => Cypress.Chainable<JQuery<HTMLBodyElement>>;

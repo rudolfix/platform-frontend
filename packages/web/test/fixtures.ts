@@ -1,3 +1,9 @@
+import {
+  EthereumAddress,
+  EthereumAddressWithChecksum,
+  EthereumNetworkId,
+  toEquityTokenSymbol,
+} from "@neufund/shared";
 import { createStore, Store } from "redux";
 
 import { ECurrency } from "../app/components/shared/formatters/utils";
@@ -25,12 +31,6 @@ import {
   EProductName,
 } from "../app/lib/api/eto/EtoProductsApi.interfaces";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../app/modules/eto/types";
-import {
-  EthereumAddress,
-  EthereumAddressWithChecksum,
-  EthereumNetworkId,
-} from "../app/utils/opaque-types/types";
-import { toEquityTokenSymbol } from "../app/utils/opaque-types/utils";
 
 import companyBanner from "./assets/company-banner.png";
 import companyPreviewCardBanner from "./assets/company-preview-banner.png";

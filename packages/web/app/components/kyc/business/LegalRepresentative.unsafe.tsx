@@ -1,3 +1,4 @@
+import { ECountries, IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -13,10 +14,9 @@ import {
   KycLegalRepresentativeSchemaRequired,
 } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { selectLegalRepFilesUploading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { ECountries } from "../../../utils/enums/countriesEnum";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
-import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { Button } from "../../shared/buttons";
 import {
   BOOL_FALSE_KEY,
@@ -32,11 +32,11 @@ import {
   unboolify,
 } from "../../shared/forms";
 import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
-import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/tooltips";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
+import { AcceptedKYCDocumentTypes } from "../utils";
 import { KYCBeneficialOwners } from "./BeneficialOwners";
 
 export const businessSteps = [
@@ -67,7 +67,7 @@ const PEP_VALUES = {
 interface IStateProps {
   legalRepresentative?: IKycLegalRepresentative;
   loadingData: boolean;
-  fileUploading: boolean;
+  filesUploading: boolean;
   filesLoading: boolean;
   files: ReadonlyArray<IKycFileInfo>;
   businessData?: IKycBusinessData;
@@ -191,11 +191,11 @@ const FileUploadList: React.FunctionComponent<IProps & { lrDataValid: boolean }>
       <MultiFileUpload
         uploadType={EKycRequestType.INDIVIDUAL}
         layout="vertical"
-        acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+        acceptedFiles={AcceptedKYCDocumentTypes}
         data-test-id="kyc-company-legal-representative-documents"
         onDropFile={props.onDropFile}
         files={props.files}
-        fileUploading={props.fileUploading}
+        filesUploading={props.filesUploading}
       />
     </div>
   );
@@ -243,7 +243,7 @@ export const KycLegalRepresentative = compose<React.FunctionComponent>(
       loadingData: !!state.kyc.legalRepresentativeLoading,
       files: state.kyc.legalRepresentativeFiles,
       filesLoading: !!state.kyc.legalRepresentativeFilesLoading,
-      fileUploading: !!state.kyc.legalRepresentativeFileUploading,
+      filesUploading: selectLegalRepFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadLegalRepresentativeDocument(file)),

@@ -1,7 +1,8 @@
+import { XOR } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 
-import { TDataTestId, TTranslatedString, XOR } from "../../types";
+import { TDataTestId, TTranslatedString } from "../../types";
 import { InlineIcon } from "./icons";
 import { ExternalLink } from "./links/ExternalLink";
 

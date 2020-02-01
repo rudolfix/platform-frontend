@@ -83,7 +83,7 @@ describe("Verify Email Widget", () => {
     assertVerifyEmailWidgetIsInVerfiedEmailState();
   });
 
-  it.skip("should automatically update email after change", () => {
+  it("should automatically update email after change", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 

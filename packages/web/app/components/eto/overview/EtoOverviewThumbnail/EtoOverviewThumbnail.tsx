@@ -1,3 +1,4 @@
+import { XOR } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
@@ -8,7 +9,7 @@ import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/type
 import { isComingSoon } from "../../../../modules/eto/utils";
 import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
-import { CommonHtmlProps, XOR } from "../../../../types";
+import { CommonHtmlProps } from "../../../../types";
 import { appRoutes } from "../../../appRoutes";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { Money } from "../../../shared/formatters/Money";

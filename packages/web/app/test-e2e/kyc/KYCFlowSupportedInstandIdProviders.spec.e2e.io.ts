@@ -9,7 +9,8 @@ import {
 } from "./utils";
 
 describe("KYC flow supported instant id providers", () => {
-  it("should show a notification when none providers supported for the individual nationality is Vatican", () => {
+  // Onfido is supported for every country right now, these tests should be disabled
+  it.skip("should show a notification when none providers supported for the individual nationality is Vatican", () => {
     createAndLoginNewUser({ type: "investor" });
 
     goToPersonalVerification();
@@ -36,7 +37,7 @@ describe("KYC flow supported instant id providers", () => {
     cy.get(tid("kyc-go-to-outsourced-verification-onfido")).should("not.exist");
   });
 
-  it("should show only idnow as supported provider when individual nationality is Angola", () => {
+  it.skip("should show only idnow as supported provider when individual nationality is Angola", () => {
     createAndLoginNewUser({ type: "investor" });
 
     goToPersonalVerification();

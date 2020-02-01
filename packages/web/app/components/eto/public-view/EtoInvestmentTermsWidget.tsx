@@ -1,8 +1,8 @@
+import { divideBigNumbers, ETHEREUM_ZERO_ADDRESS } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { ETHEREUM_ZERO_ADDRESS } from "../../../config/constants";
 import { EEtoDocumentType, IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { canShowDocument } from "../../../lib/api/eto/EtoFileUtils";
 import { EAssetType, EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
@@ -10,7 +10,6 @@ import { actions } from "../../../modules/actions";
 import { getDocumentByType } from "../../../modules/eto-documents/utils";
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
-import { divideBigNumbers } from "../../../utils/BigNumberUtils";
 import { DocumentButton } from "../../shared/DocumentLink";
 import { Entry } from "../../shared/Entry";
 import { FormatNumber } from "../../shared/formatters/FormatNumber";

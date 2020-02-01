@@ -1,8 +1,9 @@
+import { XOR } from "@neufund/shared";
 import { isString } from "lodash";
 import * as React from "react";
 import { ListGroupItem } from "reactstrap";
 
-import { TDataTestId, XOR } from "../../../../types";
+import { TDataTestId } from "../../../../types";
 import { CopyToClipboardButton } from "../../../shared/CopyToClipboardButton";
 
 import * as styles from "./InfoRow.module.scss";

@@ -1,10 +1,10 @@
+import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TEtoInvestmentCalculatedValues } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { getEtoEurMaxTarget, getEtoEurMinTarget } from "../../../modules/eto/utils";
-import { nonNullable } from "../../../utils/nonNullable";
 import { Entry } from "../../shared/Entry";
 import { MoneyRange } from "../../shared/formatters/MoneyRange";
 import {

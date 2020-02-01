@@ -1,3 +1,4 @@
+import { ECountries, IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -11,18 +12,17 @@ import {
   KycBusinessDataSchema,
 } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { selectBusinessFilesUploading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { ECountries } from "../../../utils/enums/countriesEnum";
-import { IIntlProps, injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
-import { onEnterAction } from "../../../utils/OnEnterAction";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { Button } from "../../shared/buttons";
 import { FormDeprecated, FormField, FormSelectCountryField } from "../../shared/forms";
 import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
-import { EMimeType } from "../../shared/forms/fields/utils.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycPanel } from "../KycPanel";
 import { kycRoutes } from "../routes";
 import { KycDisclaimer } from "../shared/KycDisclaimer";
+import { AcceptedKYCDocumentTypes } from "../utils";
 
 export const businessSteps = [
   {
@@ -45,7 +45,7 @@ export const businessSteps = [
 interface IStateProps {
   currentValues?: IKycBusinessData;
   loadingData: boolean;
-  fileUploading: boolean;
+  filesUploading: boolean;
   filesLoading: boolean;
   files: ReadonlyArray<IKycFileInfo>;
 }
@@ -149,11 +149,11 @@ const FileUploadList: React.FunctionComponent<IProps & { dataValid: boolean }> =
       <br />
       <MultiFileUpload
         uploadType={EKycRequestType.BUSINESS}
-        acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+        acceptedFiles={AcceptedKYCDocumentTypes}
         data-test-id="kyc-company-business-supporting-documents"
         onDropFile={props.onDropFile}
         files={props.files}
-        fileUploading={props.fileUploading}
+        filesUploading={props.filesUploading}
       />
     </div>
   );
@@ -195,7 +195,7 @@ export const KycBusinessData = compose<React.FunctionComponent>(
       loadingData: !!state.kyc.businessDataLoading,
       files: state.kyc.businessFiles,
       filesLoading: !!state.kyc.businessFilesLoading,
-      fileUploading: !!state.kyc.businessFileUploading,
+      filesUploading: selectBusinessFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadBusinessDocument(file)),

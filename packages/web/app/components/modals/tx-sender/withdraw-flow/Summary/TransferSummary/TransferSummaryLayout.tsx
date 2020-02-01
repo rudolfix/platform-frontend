@@ -1,3 +1,4 @@
+import { addBigNumbers, RequiredByKeys, toEquityTokenSymbol } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -9,9 +10,6 @@ import {
   toFixedPrecisionGasCostEth,
   toFixedPrecisionGasCostEur,
 } from "../../../../../../modules/tx/user-flow/transfer/utils";
-import { RequiredByKeys } from "../../../../../../types";
-import { addBigNumbers } from "../../../../../../utils/BigNumberUtils";
-import { toEquityTokenSymbol } from "../../../../../../utils/opaque-types/utils";
 import { Button, ButtonArrowLeft, EButtonWidth } from "../../../../../shared/buttons";
 import { ECurrency } from "../../../../../shared/formatters/utils";
 import { EtherscanTxLink } from "../../../../../shared/links";

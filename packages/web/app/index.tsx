@@ -17,6 +17,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
+import { InversifyProvider } from "@neufund/shared";
 import { App } from "./components/App";
 import { getConfig } from "./config/getConfig";
 import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "./di/setupBindings";
@@ -27,7 +28,6 @@ import { rootSaga } from "./modules/sagas";
 import { generateRootReducer, IAppState } from "./store";
 import * as ga from "./utils/googleAnalitycs.js";
 import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
-import { InversifyProvider } from "./utils/InversifyProvider";
 import * as serviceWorker from "./utils/serviceWorker.unsafe";
 
 function renderApp(
@@ -74,10 +74,13 @@ function startupApp(history: History): { store: Store<IAppState>; container: Con
 
   const rootReducer = generateRootReducer(history);
 
+  const composeEnhancers = composeWithDevTools({
+    actionsBlacklist: (process.env.REDUX_DEVTOOLS_ACTION_BLACK_LIST || "").split(","),
+  });
   const store: Store<IAppState> =
     process.env.NODE_ENV === "production"
       ? createStore(rootReducer, middleware)
-      : createStore(rootReducer, composeWithDevTools(middleware));
+      : createStore(rootReducer, composeEnhancers(middleware));
 
   // we have to create the dependencies here, because getState and dispatch get
   // injected in the middleware step above, maybe change this later

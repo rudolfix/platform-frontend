@@ -1,12 +1,16 @@
 import { call, fork, put, select } from "@neufund/sagas";
+import {
+  EDelayTiming,
+  EthereumAddressWithChecksum,
+  getJwtExpiryDate,
+  hasValidPermissions,
+  safeDelay,
+} from "@neufund/shared";
 
 import { calculateTimeLeft } from "../../../components/shared/utils";
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { ICreateJwtEndpointResponse } from "../../../lib/api/auth/SignatureAuthApi";
-import { getJwtExpiryDate, hasValidPermissions } from "../../../utils/JWTUtils";
-import { EthereumAddressWithChecksum } from "../../../utils/opaque-types/types";
-import { EDelayTiming, safeDelay } from "../../../utils/safeTimers";
 import { accessWalletAndRunEffect } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";

@@ -1,3 +1,4 @@
+import { RequiredByKeys } from "@neufund/shared";
 import { Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -12,7 +13,6 @@ import { selectActiveNomineeEto } from "../../../../../modules/nominee-flow/sele
 import { selectTxType } from "../../../../../modules/tx/sender/selectors";
 import { ETxSenderType } from "../../../../../modules/tx/types";
 import { appConnect } from "../../../../../store";
-import { RequiredByKeys } from "../../../../../types";
 import { Button, EButtonLayout } from "../../../../shared/buttons/Button";
 import { DocumentButton } from "../../../../shared/DocumentLink";
 import { FormFieldBoolean } from "../../../../shared/forms/fields/FormFieldBoolean";

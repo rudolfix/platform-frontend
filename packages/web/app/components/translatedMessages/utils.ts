@@ -1,4 +1,6 @@
-import { DeepReadonly, TDataTestId, TTranslatedString } from "../../types";
+import { DeepReadonly } from "@neufund/shared";
+
+import { TDataTestId, TTranslatedString } from "../../types";
 import { TranslatedMessageType } from "./messages";
 
 export interface IMessageData extends TDataTestId {

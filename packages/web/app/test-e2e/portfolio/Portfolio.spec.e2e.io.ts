@@ -1,4 +1,5 @@
-import { convertToUlps } from "../../utils/NumberUtils";
+import { convertToUlps } from "@neufund/shared";
+
 import {
   etoFixtureAddressByName,
   goToPortfolio,

@@ -1,3 +1,4 @@
+import { EthereumAddress, EthereumNetworkId } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { EventEmitter } from "events";
 import { decorate, inject, injectable } from "inversify";
@@ -5,7 +6,6 @@ import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../../modules/tx/utils";
-import { EthereumAddress, EthereumNetworkId } from "../../../utils/opaque-types/types";
 import { ILogger } from "../../dependencies/logger";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";

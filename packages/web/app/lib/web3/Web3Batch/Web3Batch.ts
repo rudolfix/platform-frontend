@@ -1,8 +1,8 @@
+import { SelectPropertyNames } from "@neufund/shared";
 import { interfaces } from "inversify";
 import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
-import { SelectPropertyNames } from "../../../types";
 import { ILogger } from "../../dependencies/logger";
 
 /**

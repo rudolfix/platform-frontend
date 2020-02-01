@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { EEtoDocumentType, IEtoFilesInfo } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 
 export interface IEtoDocumentState {

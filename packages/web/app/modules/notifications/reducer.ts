@@ -1,9 +1,10 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import {
   ENotificationText,
   getMessageTranslation,
 } from "../../components/translatedMessages/messages";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { actions } from "../actions";
 import { routingActions } from "../routing/actions";
 import { notificationActions } from "./actions";

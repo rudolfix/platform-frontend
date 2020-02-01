@@ -1,3 +1,4 @@
+import { ECountries } from "@neufund/shared";
 import { includes } from "lodash";
 import * as moment from "moment";
 import * as Yup from "yup";
@@ -7,7 +8,6 @@ import {
   ValidationMessage,
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
-import { ECountries } from "../../../utils/enums/countriesEnum";
 
 /**
  * Date schema

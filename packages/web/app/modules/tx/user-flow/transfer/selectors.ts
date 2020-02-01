@@ -1,8 +1,7 @@
+import { EquityToken, toEquityTokenSymbol } from "@neufund/shared";
 import { createSelector } from "reselect";
 
 import { IAppState } from "../../../../store";
-import { EquityToken } from "../../../../utils/opaque-types/types";
-import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
 import { TxUserFlowInputData, TxUserFlowTransferDetails } from "./types";
 
 export type TSelectUserFlowDetails = Required<TxUserFlowTransferDetails>;

@@ -1,10 +1,10 @@
+import { toEquityTokenSymbol } from "@neufund/shared";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../../test/testUtils";
-import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
 import { InvestmentTransactionDetails } from "./InvestmentTransactionDetails";
 
 import tokenIcon from "../../../../assets/img/token_icon.svg";

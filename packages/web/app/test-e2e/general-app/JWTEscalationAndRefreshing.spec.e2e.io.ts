@@ -1,9 +1,10 @@
+import { getJwtExpiryDate } from "@neufund/shared";
+
 import {
   AUTH_INACTIVITY_THRESHOLD,
   AUTH_JWT_TIMING_THRESHOLD,
   AUTH_TOKEN_REFRESH_THRESHOLD,
 } from "../../modules/auth/constants";
-import { getJwtExpiryDate } from "../../utils/JWTUtils";
 import {
   assertEmailChangeFlow,
   assertLanding,
@@ -60,6 +61,7 @@ describe("JWT Refreshing and Escalation", () => {
       const expectedTokenRefreshTimeFromNow = diff - AUTH_TOKEN_REFRESH_THRESHOLD;
 
       // add one second to simulate inactivity (for e.g. hibernation)
+      // TODO: Check why the linter assumes the constants down are of type any
       cy.tick(expectedTokenRefreshTimeFromNow + AUTH_JWT_TIMING_THRESHOLD + 1000);
 
       assertUserInLightWalletLoginPage();

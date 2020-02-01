@@ -1,4 +1,5 @@
 import { all, delay, fork, put, select } from "@neufund/sagas";
+import { Dictionary, InvariantError, nonNullable } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { cloneDeep, isEmpty } from "lodash/fp";
 
@@ -18,9 +19,6 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IssuerIdInvalid, NomineeRequestExists } from "../../lib/api/eto/EtoNomineeApi";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { Dictionary } from "../../types";
-import { InvariantError } from "../../utils/invariant";
-import { nonNullable } from "../../utils/nonNullable";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified } from "../auth/selectors";
 import { selectIsBankAccountVerified } from "../bank-transfer-flow/selectors";

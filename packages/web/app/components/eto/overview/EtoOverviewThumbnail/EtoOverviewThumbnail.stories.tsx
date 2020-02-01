@@ -1,8 +1,8 @@
+import { Q18, toEquityTokenSymbol } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto } from "../../../../../test/fixtures";
-import { Q18 } from "../../../../config/constants";
 import { TMockEto } from "../../../../data/etoCompanies";
 import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IBookBuildingStats } from "../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
@@ -12,9 +12,8 @@ import {
   TEtoWithCompanyAndContractReadonly,
 } from "../../../../modules/eto/types";
 import { ICalculatedContribution } from "../../../../modules/investor-portfolio/types";
-import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
-import { withStore } from "../../../../utils/storeDecorator.unsafe";
-import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
+import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
+import { withMockedDate } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { EtoOverviewThumbnail } from "./EtoOverviewThumbnail";
 
 import icbmThumbnail from "../../../../assets/img/eto_offers/investment_thumbnails_icbm_capital_raise.png";

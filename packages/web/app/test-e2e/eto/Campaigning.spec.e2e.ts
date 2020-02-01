@@ -161,7 +161,7 @@ describe("Eto campaigning state", () => {
       cy.get(`${tid("campaigning-your-commitment")} ${tid("value")}`).should("contain", amount);
     });
   });
-  it("loads bookbuilding data correctly", () => {
+  it("loads full bookbuilding data and shows public sale countdown", () => {
     createAndLoginNewUser({
       type: "investor",
     });
@@ -169,9 +169,7 @@ describe("Eto campaigning state", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
 
     cy.server();
-    cy.fixture("etoData.json").as("etoData");
-    cy.fixture("bookbuildingData.json").as("bookbuildingData");
-    cy.route("GET", `**/api/eto-listing/etos/${ETO_ID}`, "@etoData");
+    cy.fixture("bookbuildingFullData.json").as("bookbuildingData");
     cy.route("GET", `**/api/eto-listing/etos/${ETO_ID}/bookbuilding-stats`, "@bookbuildingData");
     cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
 

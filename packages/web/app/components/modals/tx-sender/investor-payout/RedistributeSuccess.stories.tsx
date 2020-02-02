@@ -16,6 +16,7 @@ const ethTokenDisbursal: ITokenDisbursal = {
   amountToBeClaimed: "6.582870355588135389497e+21",
   totalDisbursedAmount: "9.7154607e+22",
   timeToFirstDisbursalRecycle: 1675401473000,
+  amountEquivEur: "984609705509027210028",
 };
 
 const dummyNow = new Date("10/3/2019");

@@ -1,8 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  color: $neu-charcoal-grey;
   padding: px-to-rem(20px);
+  color: $neu-charcoal-grey;
 }
 
 .title {
@@ -45,4 +45,16 @@
     left: auto;
     bottom: 0;
   };
+}
+
+.no-assets {
+  @include nds-body;
+
+  display: flex;
+  color: $neu-shuttle-gray;
+  height: px-to-rem(126px);
+  margin-bottom: 0;
+  line-height: normal;
+  align-items: center;
+  justify-content: center;
 }

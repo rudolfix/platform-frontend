@@ -39,8 +39,11 @@ export const DashboardLayout = () => (
 export const Dashboard = compose<{}, {}>(
   setDisplayName("Dashboard"),
   onEnterAction({
-    actionCreator: d => {
-      d(actions.wallet.loadWalletData());
+    actionCreator: dispatch => {
+      dispatch(actions.investorEtoTicket.getIncomingPayouts());
+      dispatch(actions.investorEtoTicket.loadClaimables());
+      dispatch(actions.wallet.loadWalletData());
+      dispatch(actions.eto.loadEtos());
     },
   }),
   withContainer(

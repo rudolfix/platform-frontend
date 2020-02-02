@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
@@ -13,9 +14,11 @@ const props = {
     isIcbmWalletConnected: false,
     isLockedWalletConnected: false,
   },
+  goToWallet: action("GO_TO_WALLET"),
+  goToPortfolio: action("GO_TO_PORTFOLIO"),
 };
 
-storiesOf("MyWalletWidget", module)
+storiesOf("NDS|Molecules/Dashboard/MyWalletWidget", module)
   .add("loading", () => {
     const testData = {
       ...props,

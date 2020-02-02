@@ -7,9 +7,11 @@
   padding: 0 1.5rem;
   color: $neu-bright-orange;
   font-size: $font-size-sm;
+  text-align: center;
 
   .icon {
     font-size: 1.4em;
     vertical-align: text-bottom;
+    display: block;
   }
 }

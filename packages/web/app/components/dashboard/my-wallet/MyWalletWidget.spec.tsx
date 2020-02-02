@@ -1,20 +1,21 @@
 import { expect } from "chai";
-import { render, shallow } from "enzyme";
+import { mount, render } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../test/testUtils";
-import { MyWalletWidgetComponentBody } from "./MyWalletWidget";
+import { MyWalletWidgetComponent } from "./MyWalletWidget";
 
 describe("<MyWalletWidget />", () => {
   let initialWalletWidgetEnabledState: any;
   let initialWalletWidgetInDashboardState: any;
 
-  it("should render all default components when icbm and locket wallets are connected", () => {
+  it("should render all default components when icbm and locked wallets are connected", () => {
     process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED = "1";
 
     const props = {
       isLoading: false,
+      isError: false,
       data: {
         euroTokenEuroAmount: "66482" + "0".repeat(14),
         euroTokenAmount: "36490" + "0".repeat(18),
@@ -25,13 +26,19 @@ describe("<MyWalletWidget />", () => {
         isIcbmWalletConnected: true,
         isLockedWalletConnected: true,
       },
+      goToWallet: () => {},
+      goToPortfolio: () => {},
     };
 
-    const component = shallow(<MyWalletWidgetComponentBody {...props} />);
+    const component = mount(wrapWithIntl(<MyWalletWidgetComponent {...props} />));
 
-    expect(component.find(tid("my-wallet-widget-eur-token"))).to.have.length(1);
-    expect(component.find(tid("my-wallet-widget-eth-token"))).to.have.length(1);
-    expect(component.find(tid("my-wallet-widget-total"))).to.have.length(1);
+    expect(
+      component.find(tid("my-wallet-widget-eur-token.value")).find(tid("value")),
+    ).to.have.length(1);
+    expect(
+      component.find(tid("my-wallet-widget-eth-token.value")).find(tid("value")),
+    ).to.have.length(1);
+    expect(component.find(tid("my-wallet-widget-total")).find(tid("value"))).to.have.length(1);
     expect(component.find(tid("my-wallet-widget-icbm-help-text"))).to.have.length(0);
   });
 
@@ -41,6 +48,7 @@ describe("<MyWalletWidget />", () => {
 
     const props = {
       isLoading: false,
+      isError: false,
       data: {
         euroTokenEuroAmount: "66482" + "0".repeat(14),
         euroTokenAmount: "36490" + "0".repeat(18),
@@ -51,9 +59,11 @@ describe("<MyWalletWidget />", () => {
         isIcbmWalletConnected: false,
         isLockedWalletConnected: false,
       },
+      goToWallet: () => {},
+      goToPortfolio: () => {},
     };
 
-    const component = shallow(<MyWalletWidgetComponentBody {...props} />);
+    const component = mount(wrapWithIntl(<MyWalletWidgetComponent {...props} />));
 
     expect(component.find(tid("my-wallet-widget-icbm-help-text"))).to.have.length(1);
   });
@@ -61,6 +71,7 @@ describe("<MyWalletWidget />", () => {
     process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED = "1";
     const props = {
       isLoading: false,
+      isError: false,
       data: {
         euroTokenEuroAmount: "66482" + "0".repeat(14),
         euroTokenAmount: "36490" + "0".repeat(18),
@@ -71,22 +82,24 @@ describe("<MyWalletWidget />", () => {
         isIcbmWalletConnected: false,
         isLockedWalletConnected: false,
       },
+      goToWallet: () => {},
+      goToPortfolio: () => {},
     };
 
-    const component = render(wrapWithIntl(<MyWalletWidgetComponentBody {...props} />));
+    const component = render(wrapWithIntl(<MyWalletWidgetComponent {...props} />));
 
     expect(
       component
         .find(tid("my-wallet-widget-eur-token.large-value"))
         .find(tid("value"))
         .text(),
-    ).to.eq("36 490");
+    ).to.eq("36 490.00");
     expect(
       component
         .find(tid("my-wallet-widget-eur-token.value"))
         .find(tid("value"))
         .text(),
-    ).to.eq("36 490");
+    ).to.eq("36 490.00");
 
     expect(
       component
@@ -106,7 +119,7 @@ describe("<MyWalletWidget />", () => {
         .find(tid("my-wallet-widget-total"))
         .find(tid("value"))
         .text(),
-    ).to.eq("637 238");
+    ).to.eq("637 238.00");
     expect(
       component
         .find(tid("my-wallet-widget-total"))

@@ -4,6 +4,14 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
+import { actions } from "../../../../modules/actions";
+import {
+  selectIsIncomingPayoutPending,
+  selectPayoutAvailable,
+  selectTokensDisbursal,
+  selectTokensDisbursalEurEquivTotal,
+} from "../../../../modules/investor-portfolio/selectors";
+import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import {
   selectIsLoading,
   selectNeuBalance,
@@ -11,39 +19,50 @@ import {
   selectWalletError,
 } from "../../../../modules/wallet/selectors";
 import { appConnect } from "../../../../store";
-import { EButtonLayout, EIconPosition } from "../../../shared/buttons/Button";
+import { EButtonLayout, EButtonSize } from "../../../shared/buttons/Button";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { ESize, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
+import { MyNeuWidgetAvailablePayout } from "./MyNeuWidgetAvailalblePayout";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
+import { MyNeuWidgetPendingPayout } from "./MyNeuWidgetPendingPayout";
 
-import arrowRight from "../../../../assets/img/inline_icons/arrow_right.svg";
 import icon from "../../../../assets/img/neu_icon.svg";
-import * as styles from "./MyNeuWidget.module.scss";
+import styles from "./MyNeuWidget.module.scss";
 
-interface IStateProps {
-  balanceNeu: string;
-  balanceEur: string;
+type TErrorStateProps = {
   isLoading: boolean;
   error: string | undefined;
-}
+};
 
-interface IComponentProps {
+type TComponentStateProps = {
   balanceNeu: string;
   balanceEur: string;
-}
+  tokensDisbursalEurEquiv: string | undefined;
+  availablePayout: boolean;
+  pendingPayout: boolean;
+  tokensDisbursal: ReadonlyArray<ITokenDisbursal> | undefined;
+};
+
+type TStateProps = TErrorStateProps & TComponentStateProps;
+
+export type TDispatchProps = {
+  acceptCombinedPayout: (tokensDisbursal: ReadonlyArray<ITokenDisbursal>) => void;
+};
+
+type TComponentProps = TComponentStateProps & TDispatchProps;
 
 export const MyNeuWidgetLayoutWrapper: React.FunctionComponent = ({ children }) => (
   <section className={styles.wrapper}>
-    <h5 className={styles.title}>
+    <h4 className={styles.title}>
       <FormattedMessage id="dashboard.my-neu-widget.my-neumark" />
-    </h5>
+    </h4>
     {children}
   </section>
 );
 
-export const MyNeuWidgetLayout: React.FunctionComponent<IComponentProps> = props => (
+export const MyNeuWidgetLayout: React.FunctionComponent<TComponentProps> = props => (
   <>
     <div className={styles.content}>
       <MoneySuiteWidget
@@ -55,30 +74,51 @@ export const MyNeuWidgetLayout: React.FunctionComponent<IComponentProps> = props
         data-test-id="my-neu-widget-neumark-balance"
         size={ESize.LARGE}
       />
-      <ButtonLink
-        to={externalRoutes.neufundSupportWhatIsNeu}
-        target="_blank"
-        layout={EButtonLayout.GHOST}
-        iconPosition={EIconPosition.ICON_AFTER}
-        svgIcon={arrowRight}
-        data-test-id="my-neu-widget-support-link"
-      >
-        <FormattedMessage id="dashboard.my-neu-widget.about" />
-      </ButtonLink>
+      {props.availablePayout && props.tokensDisbursalEurEquiv && (
+        <MyNeuWidgetAvailablePayout
+          acceptCombinedPayout={props.acceptCombinedPayout}
+          tokensDisbursal={props.tokensDisbursal}
+          tokensDisbursalEurEquiv={props.tokensDisbursalEurEquiv}
+        />
+      )}
+      {!props.availablePayout && props.pendingPayout && <MyNeuWidgetPendingPayout />}
+      {!props.availablePayout && !props.pendingPayout && (
+        <ButtonLink
+          to={externalRoutes.neufundSupportWhatIsNeu}
+          target="_blank"
+          layout={EButtonLayout.OUTLINE}
+          data-test-id="my-neu-widget-support-link"
+          size={EButtonSize.SMALL}
+          className={styles.button}
+        >
+          <FormattedMessage id="dashboard.my-neu-widget.about" />
+        </ButtonLink>
+      )}
     </div>
   </>
 );
 
-export const MyNeuWidget = compose<IComponentProps, {}>(
-  appConnect<IStateProps>({
-    stateToProps: s => ({
-      isLoading: selectIsLoading(s),
-      error: selectWalletError(s),
-      balanceNeu: selectNeuBalance(s),
-      balanceEur: selectNeuBalanceEuroAmount(s),
+export const MyNeuWidget = compose<TComponentProps, {}>(
+  appConnect<TStateProps>({
+    stateToProps: state => ({
+      isLoading: selectIsLoading(state),
+      error: selectWalletError(state),
+      balanceNeu: selectNeuBalance(state),
+      balanceEur: selectNeuBalanceEuroAmount(state),
+      pendingPayout: selectIsIncomingPayoutPending(state),
+      availablePayout: selectPayoutAvailable(state),
+      tokensDisbursal: selectTokensDisbursal(state),
+      tokensDisbursalEurEquiv: selectTokensDisbursalEurEquivTotal(state),
+    }),
+    dispatchToProps: dispatch => ({
+      acceptCombinedPayout: (tokensDisbursal: ReadonlyArray<ITokenDisbursal>) =>
+        dispatch(actions.txTransactions.startInvestorPayoutAccept(tokensDisbursal)),
     }),
   }),
   withContainer(MyNeuWidgetLayoutWrapper),
-  branch<IStateProps>(({ error }) => !!error, renderComponent(MyNeuWidgetError)),
-  branch<IStateProps>(({ isLoading }) => isLoading, renderComponent(LoadingIndicator)),
+  branch<TStateProps>(({ error }) => !!error, renderComponent(MyNeuWidgetError)),
+  branch<TStateProps>(
+    ({ isLoading, tokensDisbursalEurEquiv }) => isLoading || tokensDisbursalEurEquiv === undefined,
+    renderComponent(LoadingIndicator),
+  ),
 )(MyNeuWidgetLayout);

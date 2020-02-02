@@ -12,6 +12,7 @@ interface ITimeLeftRefresher {
   finalTime: moment.Moment | Date;
   asUtc: boolean;
   renderComponent: React.ComponentType<ITimeLeftProps>;
+  onFinish?: () => void;
 }
 
 interface ITimeLeftProps {
@@ -128,6 +129,8 @@ class TimeLeftRefresher extends React.PureComponent<ITimeLeftRefresher, { timeLe
         window.clearTimeout(this.timeout);
         if (this.state.timeLeft > 0) {
           this.doRefresh();
+        } else if (this.props.onFinish) {
+          this.props.onFinish();
         }
         this.setState({ timeLeft: calculateTimeLeft(this.props.finalTime, this.props.asUtc) });
       },

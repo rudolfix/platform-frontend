@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { ButtonInline } from "./buttons";
-import { Panel } from "./Panel";
+import { Panel, PanelRounded } from "./Panel";
 
 import icon from "../../assets/img/notifications/warning.svg";
 
@@ -26,4 +26,5 @@ storiesOf("Basic UI/Panel", module)
     >
       {lorem}
     </Panel>
-  ));
+  ))
+  .add("rounded", () => <PanelRounded>{lorem}</PanelRounded>);

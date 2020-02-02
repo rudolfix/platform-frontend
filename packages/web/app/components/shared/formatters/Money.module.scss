@@ -29,7 +29,7 @@
   // Themes
 
   &.t-green {
-    color: $neu-seaweed;
+    color: $neu-base-green;
   }
 
   &.t-orange {
@@ -39,7 +39,7 @@
   &.t-big-value {
     .value {
       font-size: px-to-rem(26px);
-      color: $neu-seaweed;
+      color: $neu-base-green;
     }
   }
 }

@@ -6,6 +6,7 @@ export interface ITokenDisbursal {
   amountToBeClaimed: string;
   totalDisbursedAmount: string;
   timeToFirstDisbursalRecycle: number;
+  amountEquivEur: string;
 }
 
 export type TTokenDisbursalData = {

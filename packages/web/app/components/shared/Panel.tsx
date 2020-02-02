@@ -15,7 +15,7 @@ export interface IPanelProps {
   columnSpan?: EColumnSpan;
 }
 
-const Panel: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
+const PanelBase: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
   headerText,
   rightComponent,
   icon,
@@ -46,4 +46,24 @@ const Panel: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId
   </Container>
 );
 
-export { Panel };
+const Panel: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <PanelBase className={cn(styles.shadow, className)} {...props}>
+    {children}
+  </PanelBase>
+);
+
+const PanelRounded: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <PanelBase className={cn(styles.rounded, className)} {...props}>
+    {children}
+  </PanelBase>
+);
+
+export { Panel, PanelRounded };

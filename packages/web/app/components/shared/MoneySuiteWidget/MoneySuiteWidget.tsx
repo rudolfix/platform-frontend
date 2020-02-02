@@ -35,7 +35,7 @@ enum ESize {
 }
 
 interface IMoneySuiteWidgetProps {
-  icon: string;
+  icon?: string;
   currency: TValueFormat;
   currencyTotal: TValueFormat;
   largeNumber: string;
@@ -163,10 +163,14 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
   inputFormat = ENumberInputFormat.ULPS,
   useTildeSign = false,
 }) => {
-  const walletIcon = walletName ? (
-    <IconWithWallet icon={icon} walletName={walletName} />
+  const walletIcon = icon ? (
+    walletName ? (
+      <IconWithWallet icon={icon} walletName={walletName} />
+    ) : (
+      <Icon icon={icon} />
+    )
   ) : (
-    <Icon icon={icon} />
+    undefined
   );
 
   return (

@@ -6,10 +6,12 @@ import { branch, compose, renderComponent } from "recompose";
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
 import {
+  selectIncomingPayoutError,
   selectIsIncomingPayoutLoading,
   selectIsIncomingPayoutNotInitialized,
   selectIsIncomingPayoutPending,
   selectPayoutAvailable,
+  selectTokensDisbursalError,
   selectTokensDisbursalIsLoading,
   selectTokensDisbursalNotInitialized,
 } from "../../../../modules/investor-portfolio/selectors";
@@ -36,7 +38,7 @@ import * as styles from "./MyNeuWidget.module.scss";
 
 type TErrorStateProps = {
   isLoading: boolean;
-  error: string | undefined;
+  error: boolean;
 };
 
 type TComponentStateProps = {
@@ -103,11 +105,12 @@ export const MyNeuWidget = compose<TComponentProps, {}>(
     stateToProps: state => ({
       isLoading:
         selectIsLoading(state) ||
-        selectIsIncomingPayoutNotInitialized(state) ||
-        selectTokensDisbursalNotInitialized(state) ||
-        selectIsIncomingPayoutLoading(state) ||
-        selectTokensDisbursalIsLoading(state),
-      error: selectWalletError(state),
+        (selectIsIncomingPayoutNotInitialized(state) && selectIsIncomingPayoutLoading(state)) ||
+        (selectTokensDisbursalNotInitialized(state) && selectTokensDisbursalIsLoading(state)),
+      error:
+        !!selectWalletError(state) ||
+        selectIncomingPayoutError(state) ||
+        selectTokensDisbursalError(state),
       balanceNeu: selectNeuBalance(state),
       balanceEur: selectNeuBalanceEuroAmount(state),
       pendingPayout: selectIsIncomingPayoutPending(state),
@@ -115,6 +118,6 @@ export const MyNeuWidget = compose<TComponentProps, {}>(
     }),
   }),
   withContainer(MyNeuWidgetLayoutWrapper),
-  branch<TStateProps>(({ error }) => !!error, renderComponent(MyNeuWidgetError)),
+  branch<TStateProps>(({ error }) => error, renderComponent(MyNeuWidgetError)),
   branch<TStateProps>(({ isLoading }) => isLoading, renderComponent(LoadingIndicator)),
 )(MyNeuWidgetLayout);

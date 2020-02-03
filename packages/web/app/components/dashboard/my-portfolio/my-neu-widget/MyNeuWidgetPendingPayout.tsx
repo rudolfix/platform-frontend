@@ -1,7 +1,6 @@
-import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { branch, compose, renderNothing, withProps } from "recompose";
+import { branch, compose, renderNothing } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
@@ -20,7 +19,8 @@ import {
 } from "../../../shared/formatters/utils";
 import { InlineIcon } from "../../../shared/icons/InlineIcon";
 import { TimeLeftWithSeconds } from "../../../shared/TimeLeft.unsafe";
-import { IIncomingPayoutData } from "../my-portfolio-widget/IncomingPayoutPending";
+import { getTomorrowsDate } from "../../../shared/utils";
+import { TPayoutProps } from "./MyNeuWidgetPayout";
 
 import warningIcon from "../../../../assets/img/inline_icons/warning-circle--gray.svg";
 import * as styles from "./MyNeuWidget.module.scss";
@@ -30,19 +30,14 @@ type TStateProps = {
   isIncomingPayoutPending: boolean;
 };
 
-type TEndDate = {
-  endDate: Date;
-};
-
 type TDispatchProps = {
   loadPayoutsData: () => void;
 };
 
-type TPendingPayoutProps = TStateProps & TEndDate & TDispatchProps;
+type TPendingPayoutProps = TStateProps & TDispatchProps;
 
 const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProps> = ({
   incomingPayoutEurEquiv,
-  endDate,
   loadPayoutsData,
 }) => (
   <section className={styles.payoutContainer} data-test-id="my-neu-widget-payout-pending">
@@ -53,7 +48,11 @@ const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProp
         values={{
           separator: <br />,
           time: (
-            <TimeLeftWithSeconds finalTime={endDate} refresh={true} onFinish={loadPayoutsData} />
+            <TimeLeftWithSeconds
+              finalTime={getTomorrowsDate()}
+              refresh={true}
+              onFinish={loadPayoutsData}
+            />
           ),
           amount: (
             <Money
@@ -78,7 +77,7 @@ const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProp
   </section>
 );
 
-const MyNeuWidgetPendingPayout = compose<TPendingPayoutProps, {}>(
+const MyNeuWidgetPendingPayout = compose<TPendingPayoutProps, TPayoutProps>(
   appConnect<TStateProps, TDispatchProps>({
     stateToProps: state => ({
       incomingPayoutEurEquiv: selectIncomingPayoutEurEquiv(state),
@@ -92,13 +91,6 @@ const MyNeuWidgetPendingPayout = compose<TPendingPayoutProps, {}>(
     }),
   }),
   branch<TStateProps>(({ isIncomingPayoutPending }) => !isIncomingPayoutPending, renderNothing),
-  withProps<TEndDate, IIncomingPayoutData>({
-    endDate: moment()
-      .utc()
-      .add(1, "day")
-      .startOf("day")
-      .toDate(),
-  }),
 )(MyNeuWidgetPendingPayoutLayout);
 
 export { MyNeuWidgetPendingPayoutLayout, MyNeuWidgetPendingPayout };

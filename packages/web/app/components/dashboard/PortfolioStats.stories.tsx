@@ -9,6 +9,7 @@ import {
   PortfolioStatsLayout,
   PortfolioStatsLoadingLayout,
   PortfolioStatsNoAssetsLayout,
+  PortfolioStatsNoKYCLayout,
 } from "./PortfolioStats";
 
 import tokenIcon from "../../assets/img/nEUR_icon.svg";
@@ -43,16 +44,41 @@ const myAssets = ([
   },
 ] as unknown) as TETOWithTokenData[];
 
+const moreAssets = ([
+  ...myAssets,
+  {
+    equityTokenImage: tokenIcon,
+    equityTokenName: "Number 4",
+    equityTokenSymbol: "NO4",
+    tokenData: {
+      balance: "123",
+      tokenPrice: convertToUlps("27.31"),
+    },
+  },
+] as unknown) as TETOWithTokenData[];
+
 storiesOf("NDS|Molecules/Dashboard/PortfolioStats", module)
   .add("default", () => (
     <PortfolioStatsLayout
+      isVerifiedInvestor={true}
       myAssetsEurEquivTotal={convertToUlps("1234")}
       myAssets={myAssets}
       goToPortfolio={action("GO_TO_PORTFOLIO")}
+      goToProfile={action("GO_TO_PROFILE")}
     />
   ))
-  .add("No assets", () => (
+  .add("more than 3", () => (
+    <PortfolioStatsLayout
+      isVerifiedInvestor={true}
+      myAssetsEurEquivTotal={convertToUlps("1234")}
+      myAssets={moreAssets}
+      goToPortfolio={action("GO_TO_PORTFOLIO")}
+      goToProfile={action("GO_TO_PROFILE")}
+    />
+  ))
+  .add("is not verified", () => <PortfolioStatsNoKYCLayout goToProfile={action("GO_TO_PROFILE")} />)
+  .add("no assets", () => (
     <PortfolioStatsNoAssetsLayout goToPortfolio={action("GO_TO_PORTFOLIO")} />
   ))
-  .add("Has error", () => <PortfolioStatsErrorLayout />)
-  .add("Loading", () => <PortfolioStatsLoadingLayout />);
+  .add("has error", () => <PortfolioStatsErrorLayout />)
+  .add("loading", () => <PortfolioStatsLoadingLayout />);

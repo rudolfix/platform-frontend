@@ -29,6 +29,13 @@ const calculateTimeLeft = (
   unit: moment.unitOfTime.Diff = "seconds",
 ) => (asUtc ? moment.utc(value).diff(moment().utc(), unit) : moment(value).diff(moment(), unit));
 
+const getTomorrowsDate = () =>
+  moment()
+    .utc()
+    .add(1, "day")
+    .startOf("day")
+    .toDate();
+
 const utcTime = (value: moment.MomentInput) => moment.utc(value).format("MMMM Do YYYY, HH:mm");
 const localTime = (value: moment.MomentInput) => moment(value).format("MMMM Do YYYY, HH:mm");
 const timeZone = () => jstz.determine().name();
@@ -55,6 +62,7 @@ export {
   weekdayUTC,
   calculateTimeLeft,
   formatEuroValueToString,
+  getTomorrowsDate,
 };
 
 // TODO: Move whole file to general app utils folder

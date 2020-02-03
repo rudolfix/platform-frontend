@@ -1,10 +1,11 @@
-import { convertToUlps, multiplyBigNumbers, OmitKeys } from "@neufund/shared";
+import { convertToUlps, multiplyBigNumbers, nonNullable, OmitKeys } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
+import { selectIsVerifiedInvestor } from "../../modules/auth/selectors";
 import { selectEtos } from "../../modules/eto/selectors";
 import {
   selectMyAssetsEurEquivTotal,
@@ -28,10 +29,12 @@ type TStateProps = {
   myAssets: TETOWithTokenData[] | undefined;
   myAssetsEurEquivTotal: string | undefined;
   hasError: boolean | undefined;
+  isVerifiedInvestor: boolean;
 };
 
 type TDispatchProps = {
   goToPortfolio: () => void;
+  goToProfile: () => void;
 };
 
 type PortfolioStatsProps = TStateProps & TDispatchProps;
@@ -77,9 +80,10 @@ const PortfolioStatsErrorLayout: React.FunctionComponent = () => (
   </PortFolioStatsLayoutContainer>
 );
 
-const PortfolioStatsNoAssetsLayout: React.FunctionComponent<TDispatchProps> = ({
-  goToPortfolio,
-}) => (
+const PortfolioStatsNoAssetsLayout: React.FunctionComponent<Pick<
+  TDispatchProps,
+  "goToPortfolio"
+>> = ({ goToPortfolio }) => (
   <PortFolioStatsLayoutContainer myAssetsEurEquivTotal={undefined}>
     <span className={styles.noAssets}>
       <FormattedMessage id="dashboard.portfolio-stats.no-assets" />
@@ -96,14 +100,35 @@ const PortfolioStatsNoAssetsLayout: React.FunctionComponent<TDispatchProps> = ({
   </PortFolioStatsLayoutContainer>
 );
 
+const PortfolioStatsNoKYCLayout: React.FunctionComponent<Pick<TDispatchProps, "goToProfile">> = ({
+  goToProfile,
+}) => (
+  <PortFolioStatsLayoutContainer myAssetsEurEquivTotal={undefined}>
+    <span className={styles.noAssets}>
+      <FormattedMessage id="dashboard.portfolio-stats.no-assets" />
+    </span>
+    <Button
+      className={styles.button}
+      layout={EButtonLayout.PRIMARY}
+      size={EButtonSize.NORMAL}
+      width={EButtonWidth.NORMAL}
+      onClick={goToProfile}
+    >
+      <FormattedMessage id="dashboard.portfolio-stats.complete-account-setup" />
+    </Button>
+  </PortFolioStatsLayoutContainer>
+);
+
 const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<PortfolioStatsProps, "hasError">> = ({
   myAssets,
   goToPortfolio,
   myAssetsEurEquivTotal,
-}) => (
-  <PortFolioStatsLayoutContainer myAssetsEurEquivTotal={myAssetsEurEquivTotal}>
-    {myAssets &&
-      myAssets.slice(0, 2).map(eto => (
+}) => {
+  const assets = nonNullable(myAssets);
+
+  return (
+    <PortFolioStatsLayoutContainer myAssetsEurEquivTotal={myAssetsEurEquivTotal}>
+      {assets.slice(0, 3).map(eto => (
         <DataRow
           key={eto.equityTokenName}
           className={styles.row}
@@ -130,17 +155,22 @@ const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<PortfolioStatsProps
           }
         />
       ))}
-    <Button
-      className={styles.button}
-      layout={EButtonLayout.PRIMARY}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.NORMAL}
-      onClick={goToPortfolio}
-    >
-      <FormattedMessage id="dashboard.portfolio-stats.view-portfolio" />
-    </Button>
-  </PortFolioStatsLayoutContainer>
-);
+      <Button
+        className={styles.button}
+        layout={EButtonLayout.PRIMARY}
+        size={EButtonSize.SMALL}
+        width={EButtonWidth.NORMAL}
+        onClick={goToPortfolio}
+      >
+        {assets.length > 3 ? (
+          <FormattedMessage id="dashboard.portfolio-stats.view-more" />
+        ) : (
+          <FormattedMessage id="dashboard.portfolio-stats.view-portfolio" />
+        )}
+      </Button>
+    </PortFolioStatsLayoutContainer>
+  );
+};
 
 const PortfolioStats = compose<PortfolioStatsProps, {}>(
   appConnect<TStateProps, TDispatchProps, {}>({
@@ -152,12 +182,18 @@ const PortfolioStats = compose<PortfolioStatsProps, {}>(
         myAssetsEurEquivTotal: selectMyAssetsEurEquivTotal(state),
         //  If etos exists and array lengt is 0 we assume that there was an error
         hasError: etos && etos.length === 0,
+        isVerifiedInvestor: selectIsVerifiedInvestor(state),
       };
     },
     dispatchToProps: dispatch => ({
       goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),
+      goToProfile: () => dispatch(actions.routing.goToProfile()),
     }),
   }),
+  branch<TStateProps>(
+    state => !state.isVerifiedInvestor,
+    renderComponent(PortfolioStatsNoKYCLayout),
+  ),
   branch<TStateProps>(state => !!state.hasError, renderComponent(PortfolioStatsErrorLayout)),
   branch<TStateProps>(state => !state.myAssets, renderComponent(PortfolioStatsLoadingLayout)),
   branch<TStateProps>(
@@ -172,4 +208,5 @@ export {
   PortfolioStatsNoAssetsLayout,
   PortfolioStatsLoadingLayout,
   PortfolioStatsErrorLayout,
+  PortfolioStatsNoKYCLayout,
 };

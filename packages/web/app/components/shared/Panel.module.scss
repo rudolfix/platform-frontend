@@ -10,18 +10,6 @@
   align-items: stretch;
   grid-auto-rows: 1fr auto;
 
-  &.shadow {
-    box-shadow: $shadow-bottom-black;
-    padding: $padding;
-  }
-
-  &.rounded {
-    border-radius: px-to-rem(4px);
-    border: solid 1px $neu-light-blue-grey-two;
-    box-shadow: none;
-    overflow: hidden;
-  }
-
   &.narrow {
     padding: $narrow-padding;
   }
@@ -35,4 +23,16 @@
   width: 100%;
 
   align-self: start;
+}
+
+.shadow {
+  box-shadow: $shadow-bottom-black;
+  padding: $padding;
+}
+
+.rounded {
+  border-radius: px-to-rem(4px);
+  border: solid 1px $neu-light-blue-grey-two;
+  box-shadow: none;
+  overflow: hidden;
 }

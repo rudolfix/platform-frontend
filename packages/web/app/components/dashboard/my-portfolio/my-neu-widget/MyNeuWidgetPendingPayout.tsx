@@ -23,7 +23,7 @@ import { TimeLeft } from "../../../shared/TimeLeft.unsafe";
 import { IIncomingPayoutData } from "../my-portfolio-widget/IncomingPayoutPending";
 
 import warningIcon from "../../../../assets/img/inline_icons/error.svg";
-import styles from "./MyNeuWidget.module.scss";
+import * as styles from "./MyNeuWidget.module.scss";
 
 type TStateProps = {
   incomingPayoutEurEquiv: string;
@@ -45,7 +45,7 @@ const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProp
   endDate,
   loadPayoutsData,
 }) => (
-  <section className={styles.payoutContainer}>
+  <section className={styles.payoutContainer} data-test-id="my-neu-widget-payout-pending">
     <InlineIcon svgIcon={warningIcon} className={styles.warningIcon} />
     <div>
       <FormattedMessage

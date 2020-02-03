@@ -1,52 +1,99 @@
-import { convertToUlps, Q18 } from "@neufund/shared";
+import { convertToUlps } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { mockedStore } from "../../../../../test/fixtures/mockedStore";
+import { IAppState } from "../../../../store";
+import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { MyNeuWidgetLayout, MyNeuWidgetLayoutWrapper } from "./MyNeuWidget";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
 
+const tokensDisbursal = {
+  tokensDisbursal: {
+    loading: false,
+    error: false,
+    data: [
+      {
+        token: "eur_t",
+        amountToBeClaimed: "984609705509027210028",
+        totalDisbursedAmount: "2.912595230000000001e+23",
+        amountEquivEur: "984609705509027210028",
+        timeToFirstDisbursalRecycle: 1706843924000,
+      },
+      {
+        token: "eth",
+        amountToBeClaimed: "560514573245763224",
+        totalDisbursedAmount: "165807026200000000000",
+        amountEquivEur: "96483084153784861454.86614639805432",
+        timeToFirstDisbursalRecycle: 1706843924000,
+      },
+    ],
+  },
+};
+
+const incomingPayouts = {
+  incomingPayouts: {
+    loading: false,
+    error: false,
+    data: {
+      euroTokenIncomingPayoutValue: "1.100012812e+23",
+      etherTokenIncomingPayoutValue: "128128120000000000000",
+      snapshotDate: 1580688000,
+    },
+  },
+};
+
+const payoutState = ({
+  ...mockedStore,
+  investorTickets: { ...mockedStore.investorTickets, ...tokensDisbursal },
+} as unknown) as IAppState;
+const incomingPayoutState = ({
+  ...mockedStore,
+  investorTickets: { ...mockedStore.investorTickets, ...incomingPayouts },
+} as unknown) as IAppState;
+
 storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
-  .add("with funds", () => (
-    <MyNeuWidgetLayoutWrapper>
-      <MyNeuWidgetLayout
-        availablePayout={false}
-        pendingPayout={false}
-        tokensDisbursalEurEquiv={"0"}
-        balanceNeu={Q18.mul("123").toString()}
-        balanceEur="5947506"
-        acceptCombinedPayout={action("ACCEPT_PAYOUT")}
-        tokensDisbursal={[]}
-      />
-    </MyNeuWidgetLayoutWrapper>
-  ))
-  .add("with available payout", () => (
-    <MyNeuWidgetLayoutWrapper>
-      <MyNeuWidgetLayout
-        availablePayout={true}
-        pendingPayout={false}
-        tokensDisbursalEurEquiv={convertToUlps("123.24")}
-        balanceNeu={Q18.mul("123").toString()}
-        balanceEur="5947506"
-        acceptCombinedPayout={action("ACCEPT_PAYOUT")}
-        tokensDisbursal={[]}
-      />
-    </MyNeuWidgetLayoutWrapper>
-  ))
-  .add("with pending payout", () => (
-    <MyNeuWidgetLayoutWrapper>
-      <MyNeuWidgetLayout
-        availablePayout={false}
-        pendingPayout={true}
-        tokensDisbursalEurEquiv={convertToUlps("123.24")}
-        balanceNeu={Q18.mul("123").toString()}
-        balanceEur="5947506"
-        acceptCombinedPayout={action("ACCEPT_PAYOUT")}
-        tokensDisbursal={[]}
-      />
-    </MyNeuWidgetLayoutWrapper>
-  ))
+  .add("with funds", () =>
+    withStore(mockedStore)(() => (
+      <MyNeuWidgetLayoutWrapper>
+        <MyNeuWidgetLayout
+          availablePayout={false}
+          pendingPayout={false}
+          balanceNeu={convertToUlps("1234")}
+          balanceEur={convertToUlps("1234")}
+          acceptCombinedPayout={action("ACCEPT_PAYOUT")}
+        />
+      </MyNeuWidgetLayoutWrapper>
+    )),
+  )
+  .add("with available payout", () =>
+    withStore(payoutState)(() => (
+      <MyNeuWidgetLayoutWrapper>
+        <MyNeuWidgetLayout
+          availablePayout={true}
+          pendingPayout={false}
+          balanceNeu={convertToUlps("1234")}
+          balanceEur={convertToUlps("1234")}
+          acceptCombinedPayout={action("ACCEPT_PAYOUT")}
+        />
+      </MyNeuWidgetLayoutWrapper>
+    )),
+  )
+  .add("with pending payout", () =>
+    withStore(incomingPayoutState)(() => (
+      <MyNeuWidgetLayoutWrapper>
+        <MyNeuWidgetLayout
+          availablePayout={false}
+          pendingPayout={true}
+          balanceNeu={convertToUlps("1234")}
+          balanceEur={convertToUlps("1234")}
+          acceptCombinedPayout={action("ACCEPT_PAYOUT")}
+        />
+      </MyNeuWidgetLayoutWrapper>
+    )),
+  )
   .add("loading", () => (
     <MyNeuWidgetLayoutWrapper>
       <LoadingIndicator />
@@ -54,13 +101,6 @@ storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
   ))
   .add("error", () => (
     <MyNeuWidgetLayoutWrapper>
-      <MyNeuWidgetError
-        error={
-          <>
-            Something went wrong. <br />
-            Please reload the page.
-          </>
-        }
-      />
+      <MyNeuWidgetError error={"Random error passed from saga"} />
     </MyNeuWidgetLayoutWrapper>
   ));

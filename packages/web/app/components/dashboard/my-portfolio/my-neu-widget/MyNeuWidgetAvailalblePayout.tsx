@@ -1,8 +1,6 @@
-import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import { ButtonInline } from "../../../shared/buttons/ButtonInline";
 import { ETheme, Money } from "../../../shared/formatters/Money";
 import {
@@ -11,22 +9,20 @@ import {
   ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
 import { InlineIcon } from "../../../shared/icons/InlineIcon";
-import { TDispatchProps } from "./MyNeuWidget";
 
 import warningIcon from "../../../../assets/img/inline_icons/error.svg";
-import styles from "./MyNeuWidget.module.scss";
+import * as styles from "./MyNeuWidget.module.scss";
 
 type TAvailablePayoutProps = {
-  tokensDisbursalEurEquiv: string;
-  tokensDisbursal: ReadonlyArray<ITokenDisbursal> | undefined;
-} & TDispatchProps;
+  tokensDisbursalEurEquiv: string | undefined;
+  goToPortfolio: () => void;
+};
 
 export const MyNeuWidgetAvailablePayout: React.FunctionComponent<TAvailablePayoutProps> = ({
   tokensDisbursalEurEquiv,
-  acceptCombinedPayout,
-  tokensDisbursal,
+  goToPortfolio,
 }) => (
-  <section className={styles.payoutContainer}>
+  <section className={styles.payoutContainer} data-test-id="my-neu-widget-payout-available">
     <InlineIcon svgIcon={warningIcon} className={styles.warningIcon} />
     <div>
       <FormattedMessage
@@ -44,10 +40,7 @@ export const MyNeuWidgetAvailablePayout: React.FunctionComponent<TAvailablePayou
           ),
         }}
       />
-      <ButtonInline
-        onClick={() => acceptCombinedPayout(nonNullable(tokensDisbursal))}
-        className={styles.buttonPayout}
-      >
+      <ButtonInline onClick={goToPortfolio} className={styles.buttonPayout}>
         <FormattedMessage id="dashboard.my-neu-widget.available-payout-claim" />
       </ButtonInline>
     </div>

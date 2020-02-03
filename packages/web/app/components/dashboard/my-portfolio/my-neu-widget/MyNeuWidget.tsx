@@ -4,12 +4,13 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import { actions } from "../../../../modules/actions";
 import {
+  selectIsIncomingPayoutLoading,
+  selectIsIncomingPayoutNotInitialized,
   selectIsIncomingPayoutPending,
   selectPayoutAvailable,
-  selectTokensDisbursal,
-  selectTokensDisbursalEurEquivTotal,
+  selectTokensDisbursalIsLoading,
+  selectTokensDisbursalNotInitialized,
 } from "../../../../modules/investor-portfolio/selectors";
 import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import {
@@ -25,12 +26,11 @@ import { ECurrency } from "../../../shared/formatters/utils";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ETheme } from "../../../shared/TransactionData";
-import { MyNeuWidgetAvailablePayout } from "./MyNeuWidgetAvailalblePayout";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
-import { MyNeuWidgetPendingPayout } from "./MyNeuWidgetPendingPayout";
+import { MyNeuWidgetPayout } from "./MyNeuWidgetPayout";
 
 import icon from "../../../../assets/img/neu_icon.svg";
-import styles from "./MyNeuWidget.module.scss";
+import * as styles from "./MyNeuWidget.module.scss";
 
 type TErrorStateProps = {
   isLoading: boolean;
@@ -40,10 +40,8 @@ type TErrorStateProps = {
 type TComponentStateProps = {
   balanceNeu: string;
   balanceEur: string;
-  tokensDisbursalEurEquiv: string | undefined;
   availablePayout: boolean;
   pendingPayout: boolean;
-  tokensDisbursal: ReadonlyArray<ITokenDisbursal> | undefined;
 };
 
 type TStateProps = TErrorStateProps & TComponentStateProps;
@@ -75,14 +73,7 @@ export const MyNeuWidgetLayout: React.FunctionComponent<TComponentProps> = props
         data-test-id="my-neu-widget-neumark-balance"
         transactionTheme={ETheme.SILVER_LIGHT}
       />
-      {props.availablePayout && props.tokensDisbursalEurEquiv && (
-        <MyNeuWidgetAvailablePayout
-          acceptCombinedPayout={props.acceptCombinedPayout}
-          tokensDisbursal={props.tokensDisbursal}
-          tokensDisbursalEurEquiv={props.tokensDisbursalEurEquiv}
-        />
-      )}
-      {!props.availablePayout && props.pendingPayout && <MyNeuWidgetPendingPayout />}
+      <MyNeuWidgetPayout />
       {!props.availablePayout && !props.pendingPayout && (
         <ButtonLink
           to={externalRoutes.neufundSupportWhatIsNeu}
@@ -102,24 +93,20 @@ export const MyNeuWidgetLayout: React.FunctionComponent<TComponentProps> = props
 export const MyNeuWidget = compose<TComponentProps, {}>(
   appConnect<TStateProps>({
     stateToProps: state => ({
-      isLoading: selectIsLoading(state),
+      isLoading:
+        selectIsLoading(state) ||
+        selectIsIncomingPayoutNotInitialized(state) ||
+        selectTokensDisbursalNotInitialized(state) ||
+        selectIsIncomingPayoutLoading(state) ||
+        selectTokensDisbursalIsLoading(state),
       error: selectWalletError(state),
       balanceNeu: selectNeuBalance(state),
       balanceEur: selectNeuBalanceEuroAmount(state),
       pendingPayout: selectIsIncomingPayoutPending(state),
       availablePayout: selectPayoutAvailable(state),
-      tokensDisbursal: selectTokensDisbursal(state),
-      tokensDisbursalEurEquiv: selectTokensDisbursalEurEquivTotal(state),
-    }),
-    dispatchToProps: dispatch => ({
-      acceptCombinedPayout: (tokensDisbursal: ReadonlyArray<ITokenDisbursal>) =>
-        dispatch(actions.txTransactions.startInvestorPayoutAccept(tokensDisbursal)),
     }),
   }),
   withContainer(MyNeuWidgetLayoutWrapper),
   branch<TStateProps>(({ error }) => !!error, renderComponent(MyNeuWidgetError)),
-  branch<TStateProps>(
-    ({ isLoading, tokensDisbursalEurEquiv }) => isLoading || tokensDisbursalEurEquiv === undefined,
-    renderComponent(LoadingIndicator),
-  ),
+  branch<TStateProps>(({ isLoading }) => isLoading, renderComponent(LoadingIndicator)),
 )(MyNeuWidgetLayout);

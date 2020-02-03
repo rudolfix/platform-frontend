@@ -1,11 +1,14 @@
 import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose, withProps } from "recompose";
+import { branch, compose, renderNothing, withProps } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
-import { selectIncomingPayoutEurEquiv } from "../../../../modules/investor-portfolio/selectors";
+import {
+  selectIncomingPayoutEurEquiv,
+  selectIsIncomingPayoutPending,
+} from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
 import { ButtonInline } from "../../../shared/buttons/ButtonInline";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
@@ -24,6 +27,7 @@ import styles from "./MyNeuWidget.module.scss";
 
 type TStateProps = {
   incomingPayoutEurEquiv: string;
+  isIncomingPayoutPending: boolean;
 };
 
 type TEndDate = {
@@ -76,6 +80,7 @@ const MyNeuWidgetPendingPayout = compose<TPendingPayoutProps, {}>(
   appConnect<TStateProps, TDispatchProps>({
     stateToProps: state => ({
       incomingPayoutEurEquiv: selectIncomingPayoutEurEquiv(state),
+      isIncomingPayoutPending: selectIsIncomingPayoutPending(state),
     }),
     dispatchToProps: dispatch => ({
       loadPayoutsData: () => {
@@ -84,6 +89,7 @@ const MyNeuWidgetPendingPayout = compose<TPendingPayoutProps, {}>(
       },
     }),
   }),
+  branch<TStateProps>(({ isIncomingPayoutPending }) => !isIncomingPayoutPending, renderNothing),
   withProps<TEndDate, IIncomingPayoutData>({
     endDate: moment()
       .utc()

@@ -19,7 +19,7 @@ import {
   ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
 import { InlineIcon } from "../../../shared/icons/InlineIcon";
-import { TimeLeft } from "../../../shared/TimeLeft.unsafe";
+import { TimeLeftWithSeconds } from "../../../shared/TimeLeft.unsafe";
 import { IIncomingPayoutData } from "../my-portfolio-widget/IncomingPayoutPending";
 
 import warningIcon from "../../../../assets/img/inline_icons/warning-circle--gray.svg";
@@ -52,7 +52,9 @@ const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProp
         id="dashboard.my-neu-widget.pending-payout"
         values={{
           separator: <br />,
-          time: <TimeLeft finalTime={endDate} refresh={true} onFinish={loadPayoutsData} />,
+          time: (
+            <TimeLeftWithSeconds finalTime={endDate} refresh={true} onFinish={loadPayoutsData} />
+          ),
           amount: (
             <Money
               value={incomingPayoutEurEquiv}

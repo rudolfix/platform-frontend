@@ -634,6 +634,7 @@
   "eto.settings.seconds": "{timeLeft, plural, =0 {seconds} one {second} other {seconds}}",
   "eto.settings.set-eto-start-date": "Set the ETO date",
   "eto.settings.set-eto-start-date-time-left": "Presale starts in:",
+  "eto.settings.time-left-less-than-second": "less than second",
   "eto.settings.time-left-none": "none",
   "eto.status.mock.success": "Success",
   "eto.status.onchain.change-eto-date-countdown-text": "You have {timeLeft} left to change the date of the ETO",

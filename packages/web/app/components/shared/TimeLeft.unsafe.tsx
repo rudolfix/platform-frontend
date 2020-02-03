@@ -13,6 +13,7 @@ interface ITimeLeftRefresher {
   asUtc: boolean;
   renderComponent: React.ComponentType<ITimeLeftProps>;
   onFinish?: () => void;
+  withSeconds?: boolean;
 }
 
 interface ITimeLeftProps {
@@ -49,6 +50,41 @@ const RenderTimeLeft: React.ComponentType<ITimeLeftProps> = ({ timeLeft }) => {
       {timeLeft === 0 && (
         <>
           <FormattedMessage id="eto.settings.time-left-none" />
+        </>
+      )}
+    </>
+  );
+};
+
+const RenderTimeLeftWithSeconds: React.ComponentType<ITimeLeftProps> = ({ timeLeft }) => {
+  const [days, hours, minutes, seconds] = calculateTimeLeftUnits(timeLeft);
+  return (
+    <>
+      {days > 0 && (
+        <span className={styles.time}>
+          {days} <FormattedMessage values={{ days }} id="eto.settings.days" />
+        </span>
+      )}
+      {hours > 0 && (
+        <span className={styles.time}>
+          {hours} <FormattedMessage values={{ hours }} id="eto.settings.hours" />
+        </span>
+      )}
+      {minutes > 0 && (
+        <span className={styles.time}>
+          {minutes} <FormattedMessage values={{ minutes }} id="eto.settings.minutes" />
+        </span>
+      )}
+
+      {seconds > 0 && (
+        <span className={styles.time}>
+          {seconds} <FormattedMessage values={{ timeLeft: seconds }} id="eto.settings.seconds" />
+        </span>
+      )}
+
+      {timeLeft <= 0 && (
+        <>
+          <FormattedMessage id="eto.settings.time-left-less-than-second" />
         </>
       )}
     </>
@@ -134,7 +170,7 @@ class TimeLeftRefresher extends React.PureComponent<ITimeLeftRefresher, { timeLe
         }
         this.setState({ timeLeft: calculateTimeLeft(this.props.finalTime, this.props.asUtc) });
       },
-      this.state.timeLeft > 3600 ? 60000 : 1000,
+      this.props.withSeconds ? 1000 : this.state.timeLeft > 3600 ? 60000 : 1000,
     );
   };
 
@@ -167,4 +203,17 @@ const TimeLeft = ({ finalTime, asUtc, refresh }: any) =>
     <RenderTimeLeft timeLeft={calculateTimeLeft(finalTime, true)} />
   );
 
-export { FancyTimeLeft, TimeLeft, RenderTimeLeft, FancyRenderTimeLeft };
+const TimeLeftWithSeconds = ({ finalTime, asUtc, refresh, onFinish }: any) =>
+  refresh && process.env.STORYBOOK_RUN !== "1" ? (
+    <TimeLeftRefresher
+      finalTime={finalTime}
+      asUtc={asUtc}
+      withSeconds={true}
+      renderComponent={RenderTimeLeftWithSeconds}
+      onFinish={onFinish}
+    />
+  ) : (
+    <RenderTimeLeftWithSeconds timeLeft={calculateTimeLeft(finalTime, true)} />
+  );
+
+export { FancyTimeLeft, TimeLeft, RenderTimeLeft, FancyRenderTimeLeft, TimeLeftWithSeconds };

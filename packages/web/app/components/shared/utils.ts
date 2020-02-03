@@ -10,7 +10,7 @@ import {
   toFixedPrecision,
 } from "./formatters/utils";
 
-const calculateTimeLeftUnits = (timeLeft: number): [number, number, number] => {
+const calculateTimeLeftUnits = (timeLeft: number): [number, number, number, number] => {
   const minute = 60;
   const hour = minute * 60;
   const day = hour * 24;
@@ -18,8 +18,9 @@ const calculateTimeLeftUnits = (timeLeft: number): [number, number, number] => {
   const days = Math.floor(timeLeft / day);
   const hours = Math.floor((timeLeft % day) / hour);
   const minutes = Math.floor(((timeLeft % day) % hour) / minute);
+  const seconds = Math.floor(((timeLeft % day) % hour) % minute);
 
-  return [days, hours, minutes];
+  return [days, hours, minutes, seconds];
 };
 
 const calculateTimeLeft = (

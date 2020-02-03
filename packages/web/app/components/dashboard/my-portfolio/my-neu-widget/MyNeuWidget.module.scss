@@ -69,7 +69,7 @@ $payout-container-color: rgba($neu-white-two, .1);
 .warning-icon {
   @include rect(20px);
 
-  color: $neu-white-two;
+  color: transparent;
   margin-right: px-to-rem(10px);
 }
 

@@ -40,9 +40,6 @@ export const Dashboard = compose<{}, {}>(
   setDisplayName("Dashboard"),
   onEnterAction({
     actionCreator: dispatch => {
-      dispatch(actions.investorEtoTicket.getIncomingPayouts());
-      dispatch(actions.investorEtoTicket.loadClaimables());
-      dispatch(actions.wallet.loadWalletData());
       dispatch(actions.eto.loadEtos());
     },
   }),

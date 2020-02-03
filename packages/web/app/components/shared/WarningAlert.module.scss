@@ -11,7 +11,10 @@
   text-align: center;
 
   .icon {
-    font-size: 1.4em;
+    @include rect(20px);
+
+    margin: auto;
+    color: $neu-flamingo-red;
     vertical-align: text-bottom;
     display: block;
   }

@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
+import { actions } from "../../../../modules/actions";
 import {
   selectIsIncomingPayoutLoading,
   selectIsIncomingPayoutNotInitialized,
@@ -20,6 +21,7 @@ import {
   selectWalletError,
 } from "../../../../modules/wallet/selectors";
 import { appConnect } from "../../../../store";
+import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { EButtonLayout, EButtonSize } from "../../../shared/buttons/Button";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ECurrency } from "../../../shared/formatters/utils";
@@ -91,6 +93,12 @@ export const MyNeuWidgetLayout: React.FunctionComponent<TComponentProps> = props
 );
 
 export const MyNeuWidget = compose<TComponentProps, {}>(
+  onEnterAction({
+    actionCreator: dispatch => {
+      dispatch(actions.investorEtoTicket.getIncomingPayouts());
+      dispatch(actions.investorEtoTicket.loadClaimables());
+    },
+  }),
   appConnect<TStateProps>({
     stateToProps: state => ({
       isLoading:

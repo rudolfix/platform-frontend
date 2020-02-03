@@ -10,7 +10,7 @@ import {
 } from "../../../shared/formatters/utils";
 import { InlineIcon } from "../../../shared/icons/InlineIcon";
 
-import warningIcon from "../../../../assets/img/inline_icons/error.svg";
+import warningIcon from "../../../../assets/img/inline_icons/warning-circle--gray.svg";
 import * as styles from "./MyNeuWidget.module.scss";
 
 type TAvailablePayoutProps = {

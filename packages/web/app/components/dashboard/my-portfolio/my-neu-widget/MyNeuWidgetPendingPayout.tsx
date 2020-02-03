@@ -22,7 +22,7 @@ import { InlineIcon } from "../../../shared/icons/InlineIcon";
 import { TimeLeft } from "../../../shared/TimeLeft.unsafe";
 import { IIncomingPayoutData } from "../my-portfolio-widget/IncomingPayoutPending";
 
-import warningIcon from "../../../../assets/img/inline_icons/error.svg";
+import warningIcon from "../../../../assets/img/inline_icons/warning-circle--gray.svg";
 import * as styles from "./MyNeuWidget.module.scss";
 
 type TStateProps = {

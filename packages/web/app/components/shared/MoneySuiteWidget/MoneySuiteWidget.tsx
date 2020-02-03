@@ -10,7 +10,11 @@ import {
   TValueFormat,
 } from "../formatters/utils";
 import { TokenIcon } from "../icons/TokenIcon";
-import { ESize as ETransactionDataSize, TransactionData } from "../TransactionData";
+import {
+  ESize as ETransactionDataSize,
+  ETheme as ETransactionTheme,
+  TransactionData,
+} from "../TransactionData";
 
 import * as styles from "./MoneySuiteWidget.module.scss";
 
@@ -50,6 +54,7 @@ interface IMoneySuiteWidgetProps {
   outputFormat?: THumanReadableFormat;
   inputFormat?: ENumberInputFormat;
   useTildeSign?: boolean;
+  transactionTheme?: ETransactionTheme;
 }
 
 interface IMoneySingleSuiteWidgetProps {
@@ -162,6 +167,7 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
   outputFormat = ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
   inputFormat = ENumberInputFormat.ULPS,
   useTildeSign = false,
+  transactionTheme,
 }) => {
   const walletIcon = icon ? (
     walletName ? (
@@ -177,6 +183,7 @@ const MoneySuiteWidget: React.FunctionComponent<IMoneySuiteWidgetProps & TDataTe
     <div className={cn(styles.moneySuiteWidget, theme, size, textPosition)}>
       {textPosition === ETextPosition.LEFT && walletIcon}
       <TransactionData
+        theme={transactionTheme}
         size={getSize(size)}
         data-test-id={dataTestId}
         top={

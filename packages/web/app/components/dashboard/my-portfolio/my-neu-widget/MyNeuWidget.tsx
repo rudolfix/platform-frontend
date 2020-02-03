@@ -23,7 +23,8 @@ import { EButtonLayout, EButtonSize } from "../../../shared/buttons/Button";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
-import { ESize, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
+import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
+import { ETheme } from "../../../shared/TransactionData";
 import { MyNeuWidgetAvailablePayout } from "./MyNeuWidgetAvailalblePayout";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
 import { MyNeuWidgetPendingPayout } from "./MyNeuWidgetPendingPayout";
@@ -72,7 +73,7 @@ export const MyNeuWidgetLayout: React.FunctionComponent<TComponentProps> = props
         value={props.balanceEur}
         currencyTotal={ECurrency.EUR}
         data-test-id="my-neu-widget-neumark-balance"
-        size={ESize.LARGE}
+        transactionTheme={ETheme.SILVER_LIGHT}
       />
       {props.availablePayout && props.tokensDisbursalEurEquiv && (
         <MyNeuWidgetAvailablePayout

@@ -199,6 +199,7 @@
     "@ledgerhq/web3-subprovider": "^4.41.1",
     "@neufund/shared": "^1.0.0",
     "@sentry/browser": "^4.3.0",
+    "@types/ethereum-protocol": "^1.0.0",
     "babel-regenerator-runtime": "^6.5.0",
     "bignumber.js": "^5.0.0",
     "bitcore-mnemonic": "^8.3.3",
@@ -210,6 +211,7 @@
     "copy-text-to-clipboard": "^2.1.0",
     "crypto-random-string": "^3.0.1",
     "detect-browser": "^2.0.0",
+    "eth-block-tracker": "^4.4.3",
     "eth-lightwallet": "https://github.com/Neufund/eth-lightwallet#eb174e6831d3b62adfde396f26d15c1b7e1ab30f",
     "eth-sig-util": "^1.4.2",
     "ethereumjs-util": "^5.1.4",
@@ -265,7 +267,7 @@
     "tweetnacl-util": "^0.15.0",
     "typed-redux-saga": "^0.4.0",
     "web3": "0.20.2",
-    "web3-provider-engine": "^14.1.0",
+    "web3-provider-engine": "^15.0.4",
     "web3-utils": "^1.2.4",
     "yup": "^0.26.7"
   }

@@ -42,6 +42,7 @@ export const mockedStore: DeepPartial<IAppState> = {
       latestAcceptedTosIpfs: "qwerty123",
       backupCodesVerified: false,
       userId: "0xqwerty123",
+      verifiedEmail: "storybook@neufund.org",
     },
     currentAgreementHash: "qwerty123",
   },

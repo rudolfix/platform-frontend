@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { mockedStore } from "../../../../test/fixtures/mockedStore";
+import { EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
 import { IAppState } from "../../../store";
 import { withStore } from "../../../utils/react-connected-components/storeDecorator.unsafe";
 import { MyPortfolioWidget } from "./MyPortfolioWidget";
@@ -17,6 +18,14 @@ const errorState = {
 
 const defaultState = ({
   ...mockedStore,
+  kyc: {
+    claims: {
+      isVerified: true,
+    },
+    status: {
+      status: EKycRequestStatus.ACCEPTED,
+    },
+  },
   investorTickets: {
     incomingPayouts: {
       loading: false,
@@ -50,7 +59,10 @@ const defaultState = ({
   },
 } as unknown) as IAppState;
 
+const stateNoKyc = { ...defaultState, kyc: undefined };
+
 storiesOf("NDS|Organisms/Dashboard/MyPortfolioWidget", module)
   .add("loading", () => <MyPortfolioWidget />)
   .add("error", () => withStore(errorState)(() => <MyPortfolioWidget />))
-  .add("default", () => withStore(defaultState)(() => <MyPortfolioWidget />));
+  .add("default", () => withStore(defaultState)(() => <MyPortfolioWidget />))
+  .add("no kyc", () => withStore(stateNoKyc)(() => <MyPortfolioWidget />));

@@ -191,11 +191,11 @@ const PortfolioStats = compose<PortfolioStatsProps, {}>(
     }),
   }),
   branch<TStateProps>(state => !!state.hasError, renderComponent(PortfolioStatsErrorLayout)),
+  branch<TStateProps>(state => !state.myAssets, renderComponent(PortfolioStatsLoadingLayout)),
   branch<TStateProps>(
     state => !state.isVerifiedInvestor,
     renderComponent(PortfolioStatsNoKYCLayout),
   ),
-  branch<TStateProps>(state => !state.myAssets, renderComponent(PortfolioStatsLoadingLayout)),
   branch<TStateProps>(
     state => !!state.myAssets && state.myAssets.length === 0,
     renderComponent(PortfolioStatsNoAssetsLayout),

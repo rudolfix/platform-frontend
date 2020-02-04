@@ -61,7 +61,6 @@ import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoOnChainStateById,
-  selectEtoWithCompanyAndContractById,
   selectFilteredEtosByRestrictedJurisdictions,
   selectInvestorEtoWithCompanyAndContract,
   selectIsEtoAnOffer,
@@ -143,7 +142,15 @@ function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
       yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
     }
 
-    yield neuCall(loadEtoContract, eto);
+    const etoWithContract: TEtoWithCompanyAndContractReadonly = yield neuCall(loadEtoContract, eto);
+    if (
+      etoWithContract.contract &&
+      [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(
+        etoWithContract.contract.timedState,
+      )
+    ) {
+      yield neuCall(loadToken, etoWithContract);
+    }
   }
 
   // This needs to always be after loadingEtoContract step
@@ -604,35 +611,23 @@ function* loadTokensData(): any {
     return;
   }
 
-  for (const eto of myAssets) {
-    const tokenData = yield neuCall(loadToken, eto);
-
-    yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
-  }
+  yield all(myAssets.map((eto: TEtoWithCompanyAndContractReadonly) => neuCall(loadToken, eto)));
 }
 
 function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any, any, any> {
   const txType = yield select(selectTxType);
 
   // Return if transaction type is not Claim
-  if (txType !== ETxSenderType.USER_CLAIM) {
+  if (txType !== ETxSenderType.USER_CLAIM && txType !== ETxSenderType.INVESTOR_REFUND) {
     return;
   }
 
   const additionalData: TAdditionalDataByType<ETxSenderType.USER_CLAIM> = yield select(
     selectTxAdditionalData,
   );
+
   try {
     yield neuCall(fetchEto, additionalData.etoId);
-
-    const eto = nonNullable(
-      yield select((state: IAppState) =>
-        selectEtoWithCompanyAndContractById(state, additionalData.etoId),
-      ),
-    );
-    const tokenData = yield neuCall(loadToken, eto);
-
-    yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
   } catch (e) {
     logger.error("Could not load eto by id", e);
   }

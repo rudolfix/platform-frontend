@@ -101,6 +101,6 @@ storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
   ))
   .add("error", () => (
     <MyNeuWidgetLayoutWrapper>
-      <MyNeuWidgetError error={"Random error passed from saga"} />
+      <MyNeuWidgetError />
     </MyNeuWidgetLayoutWrapper>
   ));

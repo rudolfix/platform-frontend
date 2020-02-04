@@ -267,7 +267,7 @@ export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData
         ...asset,
         tokenData: selectTokenData(state.eto, asset.previewCode)!,
       }))
-      .filter(asset => asset.tokenData.balance !== "0");
+      .filter(asset => asset.tokenData && asset.tokenData.balance !== "0");
   }
 
   return undefined;

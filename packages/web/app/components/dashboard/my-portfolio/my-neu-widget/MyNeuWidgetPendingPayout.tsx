@@ -63,6 +63,7 @@ const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProp
               outputFormat={ENumberOutputFormat.FULL}
               theme={ETheme.GREEN}
               className={cn(styles.payoutAmount, "text-nowrap")}
+              data-test-id="my-neu-widget-payout-pending-money"
             />
           ),
         }}

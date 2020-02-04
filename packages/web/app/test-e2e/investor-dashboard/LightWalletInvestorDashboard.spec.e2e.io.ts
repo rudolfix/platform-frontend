@@ -1,8 +1,7 @@
-import { convertToUlps } from "@neufund/shared";
 import * as moment from "moment";
 
 import { assertMoneyNotEmpty, etoFixtureByName } from "../utils";
-import { goToDashboard, goToDashboardWithRequiredPayoutAmountSet } from "../utils/navigation";
+import { goToDashboard } from "../utils/navigation";
 import { tid } from "../utils/selectors";
 import { createAndLoginNewUser } from "../utils/userHelpers";
 
@@ -21,11 +20,9 @@ describe("Incoming payout", function(): void {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
-      cy.get(tid("incoming-payout-counter"));
+      cy.get(tid("my-neu-widget-payout-pending"));
 
-      assertMoneyNotEmpty("incoming-payout-euro-token");
-
-      assertMoneyNotEmpty("incoming-payout-ether-token");
+      assertMoneyNotEmpty("my-neu-widget-payout-pending-money");
     });
   });
 
@@ -56,18 +53,6 @@ describe("Incoming payout", function(): void {
         });
 
       cy.url().should("include", "/portfolio");
-    });
-  });
-
-  it("Should show counter without ETH", () => {
-    createAndLoginNewUser({ type: "investor" }).then(() => {
-      goToDashboardWithRequiredPayoutAmountSet(false, convertToUlps("1000"));
-
-      cy.get(tid("incoming-payout-counter"));
-
-      assertMoneyNotEmpty("incoming-payout-euro-token");
-
-      cy.get(tid("incoming-payout-ether-token")).should("not.exist");
     });
   });
 

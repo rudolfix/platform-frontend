@@ -3,7 +3,7 @@ import { fillForm } from "../utils/forms";
 import { tid } from "../utils/selectors";
 import { DEFAULT_PASSWORD, loginFixtureAccount } from "../utils/userHelpers";
 import { getTokenBalance } from "./../utils/ethRpcUtils";
-import { etoFixtureAddressByName } from "./../utils/index";
+import { etoFixtureAddressByName, etoFixtureByName } from "./../utils/index";
 import { goToPortfolio } from "./../utils/navigation";
 import { assertWithdrawButtonIsDisabled, typeWithdrawForm } from "./../wallets/utils";
 
@@ -38,11 +38,13 @@ const continueTokenFlow = (etoId: string, uniqueFlowSteps: () => void) => {
 };
 
 describe("Token Transfer", () => {
+  // todo: generate random address for new wallet
   const testAddress = "0x00b30CC2cc22c9820d47a4E0C9E1A54455bA0883";
+  const tokenAddress = etoFixtureByName("ETOInClaimState").equityToken;
   const testValue = "5";
   it("should transfer tokens to new wallet", () => {
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC").then(({ address }) => {
-      getTokenBalance("0xf4c2ccae6289a23f663e9b10795d1ef6f80d494e", address).then(tokenBalance => {
+      getTokenBalance(tokenAddress, address).then(tokenBalance => {
         const etoId = etoFixtureAddressByName("ETOInClaimState");
 
         goToPortfolio();
@@ -51,7 +53,7 @@ describe("Token Transfer", () => {
           typeWithdrawForm(testAddress, testValue);
         });
 
-        getTokenBalance("0xf4c2ccae6289a23f663e9b10795d1ef6f80d494e", address).then(balance2 => {
+        getTokenBalance(tokenAddress, address).then(balance2 => {
           const transferedAmount = tokenBalance.sub(balance2).toString();
           expect(transferedAmount).to.be.equal(testValue);
         });
@@ -68,7 +70,7 @@ describe("Token Transfer", () => {
         typeWithdrawForm(testAddress, testValue);
         cy.get(tid("modals.tx-sender.transfer-flow.transfer-component.whole-balance")).click();
       });
-      getTokenBalance("0xf4c2ccae6289a23f663e9b10795d1ef6f80d494e", address).then(balance => {
+      getTokenBalance(tokenAddress, address).then(balance => {
         expect(balance.toString()).to.be.equal(zeroAmount);
       });
     });

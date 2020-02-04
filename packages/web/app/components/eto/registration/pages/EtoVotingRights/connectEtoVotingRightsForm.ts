@@ -98,6 +98,9 @@ export const connectEtoVotingRightsForm = (
           const convertedEto = convert(fromFormState)(eto);
           dispatch(actions.etoFlow.saveEtoStart(convertedEto, { patch: false }));
         },
+        setSaving: (saving: boolean) => {
+          dispatch(actions.etoFlow.setSaving(saving));
+        },
       }),
     }),
   )(WrappedComponent);

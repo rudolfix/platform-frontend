@@ -248,7 +248,6 @@ export function* lightWalletLoginWatch(
     // TODO-UPDATE-SAGAS: FIX THIS ANOMALY
 
     yield web3Manager.plugPersonalWallet(wallet);
-
     yield put(actions.walletSelector.connected());
   } catch (e) {
     logger.error("Light Wallet login error", e);

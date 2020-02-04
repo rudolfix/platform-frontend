@@ -39,6 +39,8 @@ interface IStateProps {
 
 interface IDispatchProps {
   saveData: (values: TPartialEtoSpecData) => void;
+  setUploadStart: () => void;
+  setUploadDone: () => void;
 }
 
 type IProps = IExternalProps & IStateProps & IDispatchProps;
@@ -114,6 +116,12 @@ const EtoEquityTokenInfo = compose<React.FunctionComponent<IExternalProps>>(
     dispatchToProps: dispatch => ({
       saveData: (eto: TPartialEtoSpecData) => {
         dispatch(actions.etoFlow.saveEtoStart(eto));
+      },
+      setUploadStart: () => {
+        dispatch(actions.etoFlow.setSaving(true));
+      },
+      setUploadDone: () => {
+        dispatch(actions.etoFlow.setSaving(false));
       },
     }),
   }),

@@ -17,7 +17,7 @@ describe("Auto Login", () => {
 // TODO: Find why these tests are flaky
 describe("Incoming payout", function(): void {
   this.retries(2);
-  it.skip("should show counter with incoming payout value", () => {
+  it("should show counter with incoming payout value", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
@@ -29,7 +29,6 @@ describe("Incoming payout", function(): void {
     });
   });
 
-  // TODO: handle jwt timeout
   it.skip("should change view after incoming payout complete", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       let clock: any = null;
@@ -60,7 +59,7 @@ describe("Incoming payout", function(): void {
     });
   });
 
-  it.skip("Should show counter without ETH", () => {
+  it("Should show counter without ETH", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboardWithRequiredPayoutAmountSet(false, convertToUlps("1000"));
 

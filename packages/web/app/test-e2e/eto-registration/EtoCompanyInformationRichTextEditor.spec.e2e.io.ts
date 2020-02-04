@@ -89,11 +89,10 @@ describe("Eto Company Information Rich Text Editor", () => {
     cy.get(formField("companyDescription")).clear();
 
     cy.get(formField("companyDescription")).within(() => {
-      cy.root().dropFile("example.jpg");
+      cy.root().dropFiles(["example.jpg"]);
       cy.get("img").should("exist");
     });
 
-    // TODO: check if it's possible to get editor state and block saving until image is properly uploaded
     cy.wait(3000);
 
     fillForm(aboutFormSubmit);

@@ -15,7 +15,7 @@ import {
   selectIndividualDataLoading,
   selectIndividualFiles,
   selectIndividualFilesLoading,
-  selectIndividualFileUploading,
+  selectIndividualFilesUploading,
   selectIsSavingKycForm,
   selectKycUploadedFiles,
 } from "../../../modules/kyc/selectors";
@@ -58,7 +58,7 @@ interface IStateProps {
   isSavingForm: boolean;
   uploadedFiles: ReturnType<typeof selectKycUploadedFiles>;
   uploadedFilesLoading: ReturnType<typeof selectIndividualFilesLoading>;
-  individualFileUploading: ReturnType<typeof selectIndividualFileUploading>;
+  individualFilesUploading: ReturnType<typeof selectIndividualFilesUploading>;
 }
 
 interface IDispatchProps {
@@ -73,7 +73,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
   uploadedFiles,
   values,
   uploadedFilesLoading,
-  individualFileUploading,
+  individualFilesUploading,
   ...props
 }) => {
   const shouldAddAccreditedInvestorFlow = [values.country, values.nationality].includes(
@@ -218,7 +218,7 @@ export const KYCPersonalStart = compose<IStateProps & IDispatchProps, {}>(
       isSavingForm: selectIsSavingKycForm(state),
       uploadedFiles: selectIndividualFiles(state),
       uploadedFilesLoading: selectIndividualFilesLoading(state),
-      individualFileUploading: selectIndividualFileUploading(state),
+      individualFilesUploading: selectIndividualFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCHome()),

@@ -13,7 +13,7 @@ import {
 import { sendEth } from "../utils/ethRpcUtils";
 
 describe("Try and invest without money", () => {
-  it("should keep invest button disabled", () => {
+  it.skip("should keep invest button disabled", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     createAndLoginNewUser({
       type: "investor",
@@ -35,7 +35,7 @@ describe("Try and invest without money", () => {
     cy.get(tid("invest-modal-invest-now-button")).should("be.disabled");
   });
 
-  it.skip("should invest when user has no ether - Gasless Transaction", () => {
+  it("should invest when user has no ether - Gasless Transaction", () => {
     const fixture = "INV_ETH_EUR_ICBM_M_HAS_KYC_DUP_HAS_NEUR_AND_NO_ETH";
 
     sendEth(fixture, ETHEREUM_ZERO_ADDRESS, "all");

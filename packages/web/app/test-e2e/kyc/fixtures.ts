@@ -28,7 +28,7 @@ const kycPersonAddressForm: TFormFixture = {
   city: "Berlin",
   zipCode: "10247",
   "kyc-upload-documents-dropzone": {
-    values: ["example.jpg"],
+    values: ["example.jpg", "example.png"],
     type: "multiple-files",
   },
 };
@@ -150,7 +150,7 @@ export const kycCorporateCompanyForm: TFormFixture = {
 
 export const kycCompanyDocsForm: TFormFixture = {
   "kyc-company-business-supporting-documents": {
-    values: ["example.jpg"],
+    values: ["example.jpg", "example.png"],
     type: "multiple-files",
   },
   "kyc-company-business-supporting-continue": {

@@ -47,7 +47,6 @@ const deleteBookBuilding = () => {
 };
 
 const PLEDGE_AMOUNT = "1000";
-const CHANGED_AMOUNT = "1500";
 
 describe("Eto campaigning state", () => {
   it("should show Register button when not logged in", () => {
@@ -105,9 +104,12 @@ describe("Eto campaigning state", () => {
           cy.get(tid("eto-bookbuilding-remaining-slots")).should("contain", remainingSlots - 1);
         });
 
+        deleteBookBuilding();
+
         logout();
 
-        createAndLoginNewUser({
+        // Disabled this until bookbuilding is connected to a newly created non-fixture eto
+        /*  createAndLoginNewUser({
           type: "investor",
           kyc: "individual",
         });
@@ -119,7 +121,7 @@ describe("Eto campaigning state", () => {
         cy.get<number>("@remainingSlots").then(remainingSlots => {
           // Remove two from remaining slots as it's second pledge
           cy.get(tid("eto-bookbuilding-remaining-slots")).should("contain", remainingSlots - 2);
-        });
+        }); */
       }),
     );
   });
@@ -160,8 +162,9 @@ describe("Eto campaigning state", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
       cy.get(`${tid("campaigning-your-commitment")} ${tid("value")}`).should("contain", amount);
     });
+    deleteBookBuilding();
   });
-  it("loads bookbuilding data correctly", () => {
+  it.skip("loads bookbuilding data correctly", () => {
     createAndLoginNewUser({
       type: "investor",
     });

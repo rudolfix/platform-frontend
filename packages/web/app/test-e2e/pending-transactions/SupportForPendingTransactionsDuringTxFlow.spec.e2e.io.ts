@@ -19,6 +19,7 @@ import { assertDraftWithdrawModal, assertPendingWithdrawModal } from "./utils";
 
 describe("Pending Transactions During TX flow", () => {
   let userAddress: string;
+
   before(() => {
     createAndLoginNewUser({
       type: "investor",
@@ -29,6 +30,7 @@ describe("Pending Transactions During TX flow", () => {
       sendEth("DEPLOYER", address, Q18.mul("2"));
     });
   });
+
   beforeEach(() => {
     cy.restoreLocalStorage();
     goToWallet();

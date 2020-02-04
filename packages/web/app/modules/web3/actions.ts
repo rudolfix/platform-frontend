@@ -5,6 +5,12 @@ import { TWalletMetadata } from "./types";
 
 export const web3Actions = {
   personalWalletDisconnected: createActionFactory("PERSONAL_WALLET_DISCONNECTED"),
+  newBlockArrived: createActionFactory("NEW_BLOCK_ARRIVED", (blockNumber: string) => ({
+    blockNumber,
+  })),
+  ethBlockTrackerError: createActionFactory("ETH_BLOCK_TRACKER_ERROR", (error: Error) => ({
+    error,
+  })),
 
   newPersonalWalletPlugged: (walletMetadata: TWalletMetadata, isUnlocked: boolean) =>
     createAction("NEW_PERSONAL_WALLET_PLUGGED", { walletMetadata, isUnlocked }),

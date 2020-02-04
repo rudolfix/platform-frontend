@@ -27,7 +27,7 @@ describe("Redeem NEUR", function(): void {
     cy.get(tid("wallet-balance.neur.redeem-button")).click();
   });
 
-  it.skip("should not allow to use value below 5 NEUR", () => {
+  it("should not allow to use value below 5 NEUR", () => {
     fillForm(
       {
         amount: "2.22",

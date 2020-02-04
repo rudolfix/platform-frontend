@@ -17,6 +17,9 @@ export const etoFlowActions = {
   setProducts: createActionFactory("ETO_FLOW_SET_PRODUCTS", (products: TEtoProducts) => ({
     products,
   })),
+  setSaving: createActionFactory("ETO_FLOW_SET_SAVING_DATA", (savingData: boolean) => ({
+    savingData,
+  })),
   changeProductType: createActionFactory("ETO_FLOW_CHANGE_PRODUCT", (productId: string) => ({
     productId,
   })),

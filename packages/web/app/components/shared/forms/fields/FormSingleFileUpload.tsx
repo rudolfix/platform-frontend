@@ -143,12 +143,21 @@ export class FormSingleFileUploadComponent extends React.Component<
     setFieldValue(name, value);
   }
 
+  private validate = () => {
+    if (this.state.isUploading) {
+      return <FormattedMessage id="shared.dropzone.upload.image.errors.is-uploading" />;
+    }
+
+    return undefined;
+  };
+
   render(): React.ReactChild {
     const { label, name, acceptedFiles, className, style, disabled } = this.props;
 
     return (
       <Field
         name={name}
+        validate={this.validate}
         render={({ field }: FieldProps) => (
           <SingleFileUpload
             name={name}

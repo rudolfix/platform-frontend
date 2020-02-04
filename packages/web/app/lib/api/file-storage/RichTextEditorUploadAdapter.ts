@@ -24,14 +24,11 @@ export class RichTextEditorUploadAdapter implements IUploadAdapter {
         )} where file size is ${toReadableBytes(file.size)}`,
       );
     }
-
     try {
       const { url } = await this.fileStorageApi.uploadFile("image", file);
-
       return { default: url };
     } catch (e) {
       this.logger.error("Could not upload file for rich text editor", e);
-
       return Promise.reject(`Couldn't upload file: ${file.name}.`);
     }
   }

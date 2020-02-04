@@ -1,0 +1,7 @@
+.description {
+  @include nds-input-label-small;
+
+  color: $neu-gull-gray;
+  text-transform: none;
+  margin: px-to-rem(4px) 0;
+}

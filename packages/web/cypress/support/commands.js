@@ -112,16 +112,26 @@ const createCustomEvent = (eventName, data, files) => {
   return Object.assign(event, { dataTransfer });
 };
 
-Cypress.Commands.add("dropFile", { prevSubject: "element" }, (subject, file) => {
-  cy.log(`Drop ${file}`);
+const createFileFromName = file =>
+  new Cypress.Promise(resolve => {
+    cy.fixture(file, "base64")
+      .then(Cypress.Blob.base64StringToBlob)
+      .then(blob => configureBlob(blob, file))
+      .then(blob => {
+        resolve(new File([blob], file, { type: blob.type }));
+      });
+  });
 
-  return cy
-    .fixture(file, "base64")
-    .then(Cypress.Blob.base64StringToBlob)
-    .then(blob => configureBlob(blob, file))
-    .then(blob => new File([blob], file, { type: blob.type }))
-    .then(file => createCustomEvent("drop", {}, [file]))
-    .then(event => subject[0].dispatchEvent(event));
+/**
+ * Drag & drop upload files on an element
+ * Provide names of files from cypress/fixtures directory
+ */
+Cypress.Commands.add("dropFiles", { prevSubject: "element" }, (subject, fileNames) => {
+  cy.log(`Drop files ${fileNames}`);
+
+  Promise.all(fileNames.map(createFileFromName)).then(files => {
+    subject[0].dispatchEvent(createCustomEvent("drop", {}, files));
+  });
 });
 
 // based on https://github.com/cypress-io/cypress/issues/136#issuecomment-342391119

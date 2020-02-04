@@ -71,15 +71,30 @@ export function* loadPreviousWallet({
   }
 }
 
-type TChannelTypes = {
-  type: EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED;
-  payload: { isUnlocked: boolean; metaData: TWalletMetadata };
-};
+type TChannelTypes =
+  | {
+      type: EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED;
+      payload: { isUnlocked: boolean; metaData: TWalletMetadata };
+    }
+  | {
+      type: EWeb3ManagerEvents.NEW_BLOCK_ARRIVED;
+      payload: { blockNumber: string };
+    }
+  | {
+      type: EWeb3ManagerEvents.ETH_BLOCK_TRACKER_ERROR;
+      payload: { error: Error };
+    };
 
 export function* initWeb3ManagerEvents({ web3Manager }: TGlobalDependencies): any {
   const channel = eventChannel<TChannelTypes>(emit => {
     web3Manager.on(EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, payload =>
       emit({ type: EWeb3ManagerEvents.NEW_PERSONAL_WALLET_PLUGGED, payload }),
+    );
+    web3Manager.on(EWeb3ManagerEvents.NEW_BLOCK_ARRIVED, payload =>
+      emit({ type: EWeb3ManagerEvents.NEW_BLOCK_ARRIVED, payload }),
+    );
+    web3Manager.on(EWeb3ManagerEvents.ETH_BLOCK_TRACKER_ERROR, payload =>
+      emit({ type: EWeb3ManagerEvents.ETH_BLOCK_TRACKER_ERROR, payload }),
     );
 
     return () => {
@@ -94,6 +109,12 @@ export function* initWeb3ManagerEvents({ web3Manager }: TGlobalDependencies): an
         yield put(
           actions.web3.newPersonalWalletPlugged(event.payload.metaData, event.payload.isUnlocked),
         );
+        break;
+      case EWeb3ManagerEvents.NEW_BLOCK_ARRIVED:
+        yield put(actions.web3.newBlockArrived(event.payload.blockNumber));
+        break;
+      case EWeb3ManagerEvents.ETH_BLOCK_TRACKER_ERROR:
+        yield put(actions.web3.ethBlockTrackerError(event.payload.error));
         break;
     }
   }

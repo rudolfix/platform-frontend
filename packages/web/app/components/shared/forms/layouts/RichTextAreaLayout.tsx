@@ -1,5 +1,5 @@
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
-import CKEditor, { IUploadAdapterFactory, TCkEditor } from "@ckeditor/ckeditor5-react";
+import CKEditor, { IUploadAdapterFactory, TCkEditor, TLoader } from "@ckeditor/ckeditor5-react";
 import * as cn from "classnames";
 import { difference } from "lodash";
 import * as React from "react";
@@ -22,6 +22,7 @@ type TExternalProps = {
   name: string;
   placeholder?: string;
   onChange: (value: string) => void;
+  onLoadingData?: (loading: boolean) => void;
   value?: string;
   disabled?: boolean;
 };
@@ -52,6 +53,7 @@ const RichTextAreaLayoutComponent: React.FunctionComponent<TExternalProps &
   onChange,
   placeholder,
   uploadAdapterFactory,
+  onLoadingData,
 }) => {
   const [editor, setEditor] = React.useState<TCkEditor>();
 
@@ -104,7 +106,15 @@ const RichTextAreaLayoutComponent: React.FunctionComponent<TExternalProps &
         onInit={(ckEditor: TCkEditor) => {
           setEditor(ckEditor);
 
-          ckEditor.plugins.get("FileRepository").createUploadAdapter = uploadAdapterFactory;
+          ckEditor.plugins.get("FileRepository").createUploadAdapter = (loader: TLoader) => {
+            loader.on("change:status", (...options: unknown[]) => {
+              const status = options[2] === "reading" || options[2] === "uploading" ? true : false;
+              if (onLoadingData) {
+                onLoadingData(status);
+              }
+            });
+            return uploadAdapterFactory(loader);
+          };
         }}
         onChange={(_: unknown, ckEditor: TCkEditor) => {
           onChange(ckEditor.getData());

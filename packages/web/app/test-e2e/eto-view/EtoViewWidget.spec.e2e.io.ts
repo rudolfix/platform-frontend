@@ -63,7 +63,6 @@ describe("Eto view widget", () => {
     cy.get(tid("eto-overview.stats.equity-token-price-whitelist-discount")).contains("20%");
   });
 
-  // skip until hdPath has been fixed
   it.skip("should render eto stats for eto in public-sale", () => {
     const etoId = etoFixtureAddressByName("ETOInPublicState");
 

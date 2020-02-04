@@ -34,15 +34,13 @@ const LoadingIndicator: React.FunctionComponent<ILoadingIndicatorProps & CommonH
     case ELoadingIndicator.PULSE:
     case ELoadingIndicator.PULSE_WHITE:
       return (
-        <div>
-          <div
-            data-test-id="loading-indicator-pulse"
-            className={cn(className, styles.pulse, {
-              [styles.pulseLight]: light,
-              [styles.pulseWhite]: type === ELoadingIndicator.PULSE_WHITE,
-            })}
-          />
-        </div>
+        <div
+          data-test-id="loading-indicator-pulse"
+          className={cn(className, styles.pulse, {
+            [styles.pulseLight]: light,
+            [styles.pulseWhite]: type === ELoadingIndicator.PULSE_WHITE,
+          })}
+        />
       );
 
     case ELoadingIndicator.BLOCKS:

@@ -55,11 +55,7 @@ type TComponentProps = TStateProps & TDispatchProps;
 
 export const MyWalletWidgetComponentBody: React.FunctionComponent<TComponentProps> = props => {
   if (props.isLoading) {
-    return (
-      <div>
-        <LoadingIndicator />
-      </div>
-    );
+    return <LoadingIndicator className="m-auto" />;
   } else if (props.error) {
     return (
       <WarningAlert data-test-id="my-wallet-error" className="m-auto">

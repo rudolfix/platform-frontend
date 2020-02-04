@@ -122,7 +122,7 @@
   "dashboard.my-neu-widget.available-payout": "You have a payout from NEU equivalent to {amount} waiting for you.",
   "dashboard.my-neu-widget.available-payout-claim": "Claim payout",
   "dashboard.my-neu-widget.my-neumark": "My Neumark",
-  "dashboard.my-neu-widget.pending-payout": "Upcoming NEU payout totalling {amount} EUR{separator}in {time}.",
+  "dashboard.my-neu-widget.pending-payout": "Upcoming NEU payout totalling {amount} {separator}in {time}.",
   "dashboard.my-neu-widget.pending-payout-more": "Learn more",
   "dashboard.my-portfolio-widget.cant-see-your-icbm-wallet": "Can’t see your ICBM wallet?",
   "dashboard.my-portfolio-widget.check-it-here": "Migrate your commitment here",

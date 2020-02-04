@@ -68,7 +68,7 @@ const PortFolioStatsLayoutContainer: React.FunctionComponent<Pick<
 
 const PortfolioStatsLoadingLayout: React.FunctionComponent = () => (
   <PortFolioStatsLayoutContainer myAssetsEurEquivTotal={undefined}>
-    <LoadingIndicator />
+    <LoadingIndicator className="m-auto" />
   </PortFolioStatsLayoutContainer>
 );
 

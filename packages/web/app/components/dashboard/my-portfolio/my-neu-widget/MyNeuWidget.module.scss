@@ -1,10 +1,15 @@
 $payout-container-color: rgba($neu-white-two, .1);
 
 .wrapper {
+  @include media-breakpoint-down(sm) {
+    min-height: px-to-rem(212px);
+  }
+
   display: flex;
   flex-direction: column;
   background: $neu-charcoal-grey;
   padding: px-to-rem(20px);
+  min-height: px-to-rem(262px);
 }
 
 .icon {

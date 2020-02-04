@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderNothing } from "recompose";
@@ -61,7 +62,7 @@ const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProp
               valueType={ECurrency.EUR}
               outputFormat={ENumberOutputFormat.FULL}
               theme={ETheme.GREEN}
-              className={styles.payoutAmount}
+              className={cn(styles.payoutAmount, "text-nowrap")}
             />
           ),
         }}

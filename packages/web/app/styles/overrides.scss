@@ -49,16 +49,21 @@ textarea {
   color: $neu-greyish-brown;
   font-size: px-to-rem(20px);
   padding: 0 px-to-rem(10px) px-to-rem(4px);
+  height: calc(2.25rem + 2px);
 
   &:disabled {
     background-color: transparent;
+  }
+
+  &.is-valid,
+  &.is-invalid {
+    background: none;
   }
 
   &,
   &.is-valid {
     &,
     &:focus {
-      background-color: transparent;
       border-color: $neu-greyish-brown;
     }
   }

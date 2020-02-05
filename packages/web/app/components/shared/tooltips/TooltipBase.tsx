@@ -22,10 +22,7 @@ interface IState {
   tooltipOpen: boolean;
 }
 
-export class TooltipBase extends React.Component<
-  IProps & TooltipProps<{ hideArrow?: boolean }>,
-  IState
-> {
+export class TooltipBase extends React.Component<IProps & TooltipProps, IState> {
   static contextType = ContainerContext;
   context!: React.ContextType<typeof ContainerContext> | undefined;
 
@@ -74,6 +71,7 @@ export class TooltipBase extends React.Component<
         autohide={false}
         isOpen={this.state.tooltipOpen}
         toggle={this.toggle}
+        fade={false}
         {...props}
       >
         {children}

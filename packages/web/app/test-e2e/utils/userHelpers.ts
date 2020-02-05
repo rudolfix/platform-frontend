@@ -92,7 +92,7 @@ export const createAndLoginNewUser = ({
 
     if (!skipCreatingNewUser) {
       // create a user object on the backend
-      await createUser(type, privateKey, kyc);
+      await createUser(type, privateKey, kyc, 4);
     }
 
     if (!skipBackupCodesVerification) {
@@ -108,9 +108,6 @@ export const createAndLoginNewUser = ({
       // This was done to maintain `signTosAgreement` without changing the interface of existing tests
       await setCorrectAgreement(jwt);
     }
-
-    // Wait until backend messaging stabalizes
-    cy.wait(4000);
 
     cy.log(`Logged in as ${type}`, `KYC: ${kyc}, seed: ${seed}`);
 
@@ -200,7 +197,12 @@ const CREATE_USER_PATH = "/api/external-services-mock/e2e-tests/user/";
 
 type TUserType = "investor" | "issuer" | "nominee";
 
-export const createUser = (userType: TUserType, privateKey?: string, kyc?: TKycType) => {
+export const createUser = (
+  userType: TUserType,
+  privateKey?: string,
+  kyc?: TKycType,
+  timeoutInSeconds?: number,
+) => {
   let path = `${CREATE_USER_PATH}?user_type=${userType}`;
 
   if (kyc) {
@@ -209,6 +211,10 @@ export const createUser = (userType: TUserType, privateKey?: string, kyc?: TKycT
 
   if (privateKey) {
     path += `&private_key=0x${privateKey}`;
+  }
+
+  if (timeoutInSeconds) {
+    path += `&max_verification_wait=${timeoutInSeconds}`;
   }
 
   return fetch(path, {

@@ -16,6 +16,14 @@ device** (just for android development).
 After environment setup is completed you can start the app in emulator (`yarn start:ios` or
 `yarn start:android`).
 
+_**Note**: For ios before starting the app for the first time `pod`'s should be installed manually._
+
+```bash
+cd ./packages/wallet/ios
+
+pod install
+```
+
 ## Scripts
 
 #### Start app on **ios** emulator

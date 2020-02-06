@@ -1,4 +1,4 @@
-import { expectSaga, matchers } from "@neufund/sagas";
+import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { toEthereumAddress } from "@neufund/shared";
 
 import { createMock } from "../../../../../test/testUtils";

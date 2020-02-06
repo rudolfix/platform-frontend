@@ -1,4 +1,5 @@
-import { cancelled, delay, expectSaga, put } from "@neufund/sagas";
+import { cancelled, delay, put } from "@neufund/sagas";
+import { expectSaga } from "@neufund/sagas/tests";
 
 import { TPattern } from "./actions";
 import { neuRepeatIf, neuRestartIf, neuTakeOnly, neuTakeUntil } from "./sagasUtils";

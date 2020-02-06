@@ -1,4 +1,4 @@
-import { expectSaga } from "@neufund/sagas";
+import { expectSaga } from "@neufund/sagas/tests";
 import { EthereumAddressWithChecksum, EthereumTxHash } from "@neufund/shared";
 
 import { ECurrency, ENumberInputFormat } from "../../components/shared/formatters/utils";

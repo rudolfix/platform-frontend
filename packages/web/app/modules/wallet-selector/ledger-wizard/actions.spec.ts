@@ -1,4 +1,4 @@
-import { expectSaga } from "@neufund/sagas";
+import { expectSaga } from "@neufund/sagas/tests";
 import { Dictionary } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
@@ -8,6 +8,7 @@ import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures"
 import { createMock } from "../../../../test/testUtils";
 import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
+import { TGlobalDependencies } from "../../../di/setupBindings";
 import { Neumark } from "../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../lib/web3/ContractsService";
 import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
@@ -18,7 +19,6 @@ import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { IAppState } from "../../../store";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../web3/types";
-import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
 import {
   finishSettingUpLedgerConnector,

@@ -1,1 +1,1 @@
-export * from "./modules/sagaEffects";
+export * from "./sagaEffects";

@@ -1,3 +1,4 @@
+import { Button, ButtonGroup, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, renderNothing } from "recompose";
@@ -14,8 +15,7 @@ import { EETOStateOnChain } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonGroup, ButtonLink } from "../../shared/buttons";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
+import { ButtonLink } from "../../shared/buttons/ButtonLink";
 import {
   DashboardCenteredWidget,
   DashboardLinkWidget,

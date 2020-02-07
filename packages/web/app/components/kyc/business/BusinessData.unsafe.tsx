@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { ECountries, IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
@@ -15,7 +16,6 @@ import { actions } from "../../../modules/actions";
 import { selectBusinessFilesUploading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { Button } from "../../shared/buttons";
 import { FormDeprecated, FormField, FormSelectCountryField } from "../../shared/forms";
 import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";

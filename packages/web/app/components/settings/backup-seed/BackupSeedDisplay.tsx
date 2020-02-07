@@ -1,10 +1,10 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 
 import { IWalletPrivateData } from "../../../modules/web3/reducer";
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { Heading } from "../../shared/Heading";
 import { PrivateKeyDisplay } from "./PrivateKeyDisplay";
 

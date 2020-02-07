@@ -90,7 +90,7 @@ module.exports = merge.smart(configCommon, {
               {
                 loader: "sass-resources-loader",
                 options: {
-                  resources: [path.join(__dirname, "../app/styles/neufund-theme.scss")],
+                  resources: [paths.neufundTheme],
                 },
               },
             ],

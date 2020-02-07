@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { DeepReadonly, RequiredByKeys } from "@neufund/shared";
 import { FormikConsumer } from "formik";
 import * as React from "react";
@@ -27,7 +28,6 @@ import {
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
   ECheckboxLayout,
   FormField,

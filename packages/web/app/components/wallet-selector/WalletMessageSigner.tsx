@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { withContainer } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,7 +9,6 @@ import { actions } from "../../modules/actions";
 import { selectWalletType } from "../../modules/web3/selectors";
 import { EWalletType } from "../../modules/web3/types";
 import { appConnect } from "../../store";
-import { Button } from "../shared/buttons";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import { MessageSignPrompt } from "../signing/MessageSignPrompt";

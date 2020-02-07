@@ -1,3 +1,4 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
@@ -8,7 +9,6 @@ import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors"
 import { TNEurRedeemAdditionalDetails } from "../../../../modules/tx/transactions/redeem/types";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
-import { ButtonArrowRight } from "../../../shared/buttons";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { BankTransferRedeemDetails } from "./BankTransferRedeemDetails";
 

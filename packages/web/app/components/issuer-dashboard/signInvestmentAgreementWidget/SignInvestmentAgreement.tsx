@@ -1,3 +1,4 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, renderComponent, renderNothing } from "recompose";
@@ -18,7 +19,6 @@ import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { investmentAgreementNotSigned } from "../../documents/utils";
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonArrowRight } from "../../shared/buttons";
 import {
   DashboardCenteredWidget,
   DashboardWidget,

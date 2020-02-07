@@ -1,7 +1,7 @@
+import { Button } from "@neufund/design-system";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Button } from "../buttons";
 import { ECustomTooltipTextPosition, TooltipBase } from "./TooltipBase";
 
 import icon from "../../../assets/img/logo_yellow.svg";

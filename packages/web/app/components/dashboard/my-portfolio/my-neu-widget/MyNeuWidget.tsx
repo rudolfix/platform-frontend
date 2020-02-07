@@ -1,3 +1,4 @@
+import { EButtonLayout, EIconPosition } from "@neufund/design-system";
 import { withContainer } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -11,7 +12,6 @@ import {
   selectWalletError,
 } from "../../../../modules/wallet/selectors";
 import { appConnect } from "../../../../store";
-import { EButtonLayout, EIconPosition } from "../../../shared/buttons/Button";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";

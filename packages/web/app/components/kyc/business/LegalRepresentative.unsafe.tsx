@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { ECountries, IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
@@ -17,7 +18,6 @@ import { actions } from "../../../modules/actions";
 import { selectLegalRepFilesUploading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { Button } from "../../shared/buttons";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,

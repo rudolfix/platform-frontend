@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { invariant } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -15,8 +16,7 @@ import { selectIsUserVerifiedOnBlockchain } from "../../../../../modules/kyc/sel
 import { appConnect } from "../../../../../store";
 import { appRoutes } from "../../../../appRoutes";
 import { etoPublicViewLink } from "../../../../appRouteUtils";
-import { Button, ButtonLink } from "../../../../shared/buttons";
-import { EButtonLayout } from "../../../../shared/buttons/Button";
+import { ButtonLink } from "../../../../shared/buttons/ButtonLink";
 import { EndTimeWidget } from "../../shared/EndTimeWidget";
 import { InvestmentStatusWidget } from "./InvestmentStatusWidget";
 import { USInvestorMessage } from "./USInvestorMessage";

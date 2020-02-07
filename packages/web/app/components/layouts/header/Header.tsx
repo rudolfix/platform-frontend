@@ -1,9 +1,10 @@
+import { EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 
 import { appRoutes } from "../../appRoutes";
-import { ButtonLink, EButtonLayout } from "../../shared/buttons/index";
+import { ButtonLink } from "../../shared/buttons/ButtonLink";
 import { walletLoginRoutes, walletRegisterRoutes } from "../../wallet-selector/walletRoutes";
 import { Menu } from "../menus/menu/Menu";
 import { MobileMenu } from "../menus/mobileMenu/MobileMenu";

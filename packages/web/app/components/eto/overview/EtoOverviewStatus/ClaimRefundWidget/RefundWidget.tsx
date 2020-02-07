@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
@@ -16,7 +17,6 @@ import {
 } from "../../../../../modules/investor-portfolio/types";
 import { getRefundStatus } from "../../../../../modules/investor-portfolio/utils";
 import { appConnect } from "../../../../../store";
-import { Button } from "../../../../shared/buttons";
 
 import * as style from "./RefundWidget.module.scss";
 

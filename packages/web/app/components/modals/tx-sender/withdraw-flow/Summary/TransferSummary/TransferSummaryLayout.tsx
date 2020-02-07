@@ -1,3 +1,4 @@
+import { Button, ButtonArrowLeft, EButtonWidth } from "@neufund/design-system";
 import { addBigNumbers, RequiredByKeys, toEquityTokenSymbol } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -10,7 +11,6 @@ import {
   toFixedPrecisionGasCostEth,
   toFixedPrecisionGasCostEur,
 } from "../../../../../../modules/tx/user-flow/transfer/utils";
-import { Button, ButtonArrowLeft, EButtonWidth } from "../../../../../shared/buttons";
 import { ECurrency } from "../../../../../shared/formatters/utils";
 import { EtherscanTxLink } from "../../../../../shared/links";
 import { DataRow, DataRowSeparator } from "../../../shared/DataRow";

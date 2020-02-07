@@ -1,3 +1,4 @@
+import { EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -19,7 +20,7 @@ import { CommonHtmlProps } from "../../../types";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { appRoutes } from "../../appRoutes";
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons";
+import { ButtonLink } from "../../shared/buttons/ButtonLink";
 import { Money } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { LoadingIndicator } from "../../shared/loading-indicator";

@@ -1,9 +1,10 @@
+import { EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TDataTestId } from "../../types";
 import { EColumnSpan } from "../layouts/Container";
-import { ButtonLink, EButtonLayout, EIconPosition } from "../shared/buttons/index";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { ChartCircle, IChartCircleProps } from "../shared/charts/ChartCircle";
 import { LoadingIndicator } from "../shared/loading-indicator/index";
 import { Panel } from "../shared/Panel";

@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -9,7 +10,6 @@ import {
   EInvestmentStatusSize,
   InvestmentStatusWidget,
 } from "../eto/overview/EtoOverviewStatus/InvestmentWidget/InvestmentStatusWidget";
-import { Button, EButtonLayout, EButtonSize, EIconPosition } from "../shared/buttons";
 
 import arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
 

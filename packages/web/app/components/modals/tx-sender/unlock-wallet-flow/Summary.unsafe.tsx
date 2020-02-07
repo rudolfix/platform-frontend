@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";
@@ -9,7 +10,6 @@ import { selectTxAdditionalData, selectTxDetails } from "../../../../modules/tx/
 import { TUnlockAdditionalData } from "../../../../modules/tx/transactions/unlock/types";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/buttons";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { UnlockWalletTransactionDetails } from "./UnlockWalletTransactionDetails";
 

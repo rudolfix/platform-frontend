@@ -1,3 +1,4 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import { myEtherWalletUrl } from "@neufund/shared";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -7,7 +8,6 @@ import {
   IWalletMigrationData,
   TWalletMigrationSteps,
 } from "../../../modules/icbm-wallet-balance-modal/reducer";
-import { ButtonArrowRight } from "../../shared/buttons";
 import { ConfettiEthereum, EthereumIcon } from "../../shared/ethereum";
 import { Heading } from "../../shared/Heading";
 import { ExternalLink } from "../../shared/links";

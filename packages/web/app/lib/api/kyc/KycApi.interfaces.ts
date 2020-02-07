@@ -1,6 +1,7 @@
-import { ECountries, EUSState, makeAllRequiredExcept } from "@neufund/shared";
+import { ECountries, EUSState } from "@neufund/shared";
 import * as Yup from "yup";
 
+import { makeAllRequiredExcept } from "../../../utils/yupUtils";
 import * as YupTS from "../../yup-ts.unsafe";
 import { countryCode, percentage, personBirthDate, restrictedCountry } from "../util/customSchemas";
 

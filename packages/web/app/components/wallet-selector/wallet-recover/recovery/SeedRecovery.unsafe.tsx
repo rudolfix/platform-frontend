@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { range } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -5,7 +6,6 @@ import { Col, Row } from "reactstrap";
 
 import { TElementRef } from "../../../../types";
 import { englishMnemonics } from "../../../../utils/englishMnemonics";
-import { Button } from "../../../shared/buttons";
 import { VirtualizedSelect } from "../../../shared/forms/fields/VirtualizedSelect";
 import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
 

@@ -1,3 +1,4 @@
+import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -6,8 +7,6 @@ import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { withHeaderButton } from "../../utils/react-connected-components/withHeaderButton";
 import { withProgress } from "../../utils/react-connected-components/withProgress";
-import { Button, EButtonLayout, EButtonSize } from "../shared/buttons/Button";
-import { ButtonGroup } from "../shared/buttons/ButtonGroup";
 import { SuccessTick } from "../shared/SuccessTick";
 
 import * as styles from "./Success.module.scss";

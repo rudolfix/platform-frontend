@@ -1,3 +1,4 @@
+import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
@@ -12,8 +13,6 @@ import {
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { withProgress } from "../../../utils/react-connected-components/withProgress";
-import { EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
-import { Button, ButtonGroup } from "../../shared/buttons/index";
 import { EKycUploadType, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { AcceptedKYCDocumentTypes } from "../utils";
 

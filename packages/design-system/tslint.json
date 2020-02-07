@@ -1,0 +1,4 @@
+{
+  "extends": ["@neufund/shared/tslint.json"],
+  "rules": {}
+}

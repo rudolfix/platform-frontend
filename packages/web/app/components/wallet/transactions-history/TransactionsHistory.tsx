@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -10,7 +11,6 @@ import { selectTxHistoryPaginated } from "../../../modules/tx-history/selectors"
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { ETheme, Money } from "../../shared/formatters/Money";
 import { ENumberOutputFormat } from "../../shared/formatters/utils";
 import { Heading } from "../../shared/Heading";

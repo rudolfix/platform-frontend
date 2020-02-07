@@ -33,7 +33,7 @@ module.exports = ({ config }) => {
             {
               loader: "sass-resources-loader",
               options: {
-                resources: [path.join(__dirname, "../app/styles/neufund-theme.scss")],
+                resources: [paths.neufundTheme],
               },
             },
           ],

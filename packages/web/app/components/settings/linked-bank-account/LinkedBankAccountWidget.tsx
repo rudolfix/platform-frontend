@@ -1,3 +1,10 @@
+import {
+  Button,
+  ButtonInline,
+  EButtonLayout,
+  EButtonSize,
+  EIconPosition,
+} from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderNothing } from "recompose";
@@ -5,13 +12,6 @@ import { branch, compose, renderNothing } from "recompose";
 import { ENEURWalletStatus } from "../../../modules/wallet/types";
 import { THocProps } from "../../../types";
 import { EColumnSpan } from "../../layouts/Container";
-import {
-  Button,
-  ButtonInline,
-  EButtonLayout,
-  EButtonSize,
-  EIconPosition,
-} from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 import { BankAccount } from "../../wallet/BankAccount";
 import { connectLinkBankAccountComponent } from "./ConnectLinkBankAccount";

@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
@@ -6,7 +7,6 @@ import { actions } from "../../../../../modules/actions";
 import { selectIssuerEtoLoading } from "../../../../../modules/eto-flow/selectors";
 import { selectEtoNomineeIsLoading } from "../../../../../modules/eto-nominee/selectors";
 import { appConnect } from "../../../../../store";
-import { Button, EButtonLayout } from "../../../../shared/buttons/index";
 import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
 import { ChooseNominee } from "./ChooseNominee";
 

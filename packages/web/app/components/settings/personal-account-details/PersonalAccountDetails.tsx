@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
@@ -8,7 +9,6 @@ import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { Panel } from "../../shared/Panel";
 
 import arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";

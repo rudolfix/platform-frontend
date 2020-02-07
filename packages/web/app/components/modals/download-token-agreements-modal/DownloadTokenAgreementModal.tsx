@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
 import { map } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -20,8 +21,6 @@ import {
   selectDownloadAgreementModalEtoId,
   selectDownloadAgrementModalIsOpen,
 } from "../../portfolio/selectors";
-import { Button } from "../../shared/buttons";
-import { EButtonLayout, EButtonWidth } from "../../shared/buttons/Button";
 import { DocumentLabel } from "../../shared/DocumentLink";
 import { EHeadingSize, Heading } from "../../shared/Heading";
 import { Modal } from "../Modal";

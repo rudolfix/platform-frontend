@@ -1,11 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as cn from "classnames";
 import { connect, FieldArray } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps, TFormikConnect } from "../../types";
-import { Button } from "./buttons";
-import { EButtonLayout } from "./buttons/Button";
 import { FormField } from "./forms";
 
 import closeIcon from "../../assets/img/inline_icons/round_close.svg";

@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import { InvariantError } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -9,7 +10,6 @@ import { externalRoutes } from "../../../config/externalRoutes";
 import { EKycInstantIdStatus, EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
 import { THocProps } from "../../../types";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons/index";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";

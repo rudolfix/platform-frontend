@@ -1,8 +1,8 @@
+import { ButtonInline } from "@neufund/design-system";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ButtonInline } from "./buttons";
 import { Panel } from "./Panel";
 
 import icon from "../../assets/img/notifications/warning.svg";

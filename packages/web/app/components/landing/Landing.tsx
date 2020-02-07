@@ -1,3 +1,4 @@
+import { ButtonGroup, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
 import { withContainer } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -12,13 +13,7 @@ import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Content, EContentWidth } from "../layouts/Content";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
-import {
-  ButtonGroup,
-  ButtonLink,
-  EButtonLayout,
-  EButtonSize,
-  EIconPosition,
-} from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 

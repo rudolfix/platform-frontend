@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { withContainer } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,7 +8,6 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { EContentWidth } from "../../layouts/Content";
 import { Layout } from "../../layouts/Layout";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../../shared/Heading";

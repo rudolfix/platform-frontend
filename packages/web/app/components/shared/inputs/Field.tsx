@@ -1,8 +1,8 @@
-import { getSchemaField, getValidationSchema, isRequired } from "@neufund/shared";
 import { Field, FieldProps, FormikConsumer, getIn } from "formik";
 import * as React from "react";
 
 import { TDataTestId } from "../../../types";
+import { getSchemaField, getValidationSchema, isRequired } from "../../../utils/yupUtils";
 import { applyCharactersLimit, isNonValid } from "../forms/fields/utils.unsafe";
 import { InputBase } from "./InputBase";
 import { InputDescription } from "./InputDescription";

@@ -1,10 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { DAY } from "@neufund/shared";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { IBookBuildingStats } from "../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout } from "../../shared/buttons";
 import { DashboardWidget } from "../../shared/dashboard-widget/DashboardWidget";
 import { BookBuildingStats } from "./BookBuildingStats";
 

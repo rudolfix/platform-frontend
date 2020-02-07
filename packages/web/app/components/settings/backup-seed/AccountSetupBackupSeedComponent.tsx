@@ -1,7 +1,7 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { connectBackupSeedWidget } from "./ConnectSetupWidget";
 
 import * as styles from "./AccountSetupBackupSeedComponent.module.scss";

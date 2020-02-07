@@ -1,8 +1,8 @@
+import { EButtonLayout } from "@neufund/design-system";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EButtonLayout } from "./buttons";
 import { DocumentButton, DocumentLabel, DocumentLink } from "./DocumentLink";
 import { InlineIcon } from "./icons";
 

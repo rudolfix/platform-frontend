@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate, FormattedRelative } from "react-intl";
@@ -9,7 +10,6 @@ import {
   toFixedPrecisionGasCostEur,
 } from "../../../../../modules/tx/user-flow/transfer/utils";
 import { ErrorAlert } from "../../../../shared/Alerts";
-import { Button } from "../../../../shared/buttons";
 import { EtherscanTxLink } from "../../../../shared/links/EtherscanLink";
 import { ExternalLink } from "../../../../shared/links/ExternalLink";
 import {

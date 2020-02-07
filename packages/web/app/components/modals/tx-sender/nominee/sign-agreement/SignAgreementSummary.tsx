@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { RequiredByKeys } from "@neufund/shared";
 import { Formik } from "formik";
 import * as React from "react";
@@ -13,7 +14,6 @@ import { selectActiveNomineeEto } from "../../../../../modules/nominee-flow/sele
 import { selectTxType } from "../../../../../modules/tx/sender/selectors";
 import { ETxSenderType } from "../../../../../modules/tx/types";
 import { appConnect } from "../../../../../store";
-import { Button, EButtonLayout } from "../../../../shared/buttons/Button";
 import { DocumentButton } from "../../../../shared/DocumentLink";
 import { FormFieldBoolean } from "../../../../shared/forms/fields/FormFieldBoolean";
 import { FormDeprecated } from "../../../../shared/forms/FormDeprecated";

@@ -1,10 +1,11 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import { makeTid } from "@neufund/shared";
 import * as H from "history";
 import * as React from "react";
 
 import { TDataTestId, TTranslatedString } from "../../../types";
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonArrowRight, ButtonLink } from "../buttons";
+import { ButtonLink } from "../buttons/ButtonLink";
 import { LoadingIndicator } from "../loading-indicator/LoadingIndicator";
 import { Panel } from "../Panel";
 

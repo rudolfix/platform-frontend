@@ -1,10 +1,10 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, StateHandler, withStateHandlers } from "recompose";
 
 import { selectBankTransferMinAmount } from "../../../../modules/bank-transfer-flow/selectors";
 import { appConnect } from "../../../../store";
-import { ButtonArrowRight } from "../../../shared/buttons";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,

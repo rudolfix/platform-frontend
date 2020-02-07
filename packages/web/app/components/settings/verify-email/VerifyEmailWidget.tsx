@@ -1,3 +1,4 @@
+import { Button, ButtonArrowRight, EButtonLayout } from "@neufund/design-system";
 import { injectIntlHelpers } from "@neufund/shared";
 import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
@@ -6,7 +7,6 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, ButtonArrowRight, EButtonLayout } from "../../shared/buttons";
 import { FormDeprecated, FormField } from "../../shared/forms";
 import { Panel } from "../../shared/Panel";
 import { connectVerifyEmailComponent } from "./ConnectVerifyEmail";

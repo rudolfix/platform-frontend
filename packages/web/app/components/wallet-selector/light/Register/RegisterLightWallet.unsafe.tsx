@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
@@ -9,7 +10,6 @@ import * as Yup from "yup";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/buttons";
 import { FormDeprecated, FormField } from "../../../shared/forms";
 import { TMessage } from "../../../translatedMessages/utils";
 

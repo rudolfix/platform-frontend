@@ -1,9 +1,9 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { THocProps } from "../../../types";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { connectKycStatusWidget } from "./connectKycStatus";

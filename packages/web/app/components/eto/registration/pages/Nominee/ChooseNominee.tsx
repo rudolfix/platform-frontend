@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
@@ -5,7 +6,6 @@ import { branch, compose, renderComponent } from "recompose";
 import { actions } from "../../../../../modules/actions";
 import { INomineeRequest } from "../../../../../modules/nominee-flow/types";
 import { appConnect } from "../../../../../store";
-import { Button, EButtonLayout } from "../../../../shared/buttons/Button";
 import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";
 import { TWithNomineeProps, withNomineeRequests } from "../../../shared/hocs/withNomineeRequests";
 import { Section } from "../../Shared";

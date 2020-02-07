@@ -1,3 +1,4 @@
+import { ButtonInline } from "@neufund/design-system";
 import { DeepReadonly } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -10,7 +11,6 @@ import { selectBankAccount, selectIsBankAccountLoading } from "../../modules/kyc
 import { TBankAccount } from "../../modules/kyc/types";
 import { appConnect } from "../../store";
 import { CommonHtmlProps } from "../../types";
-import { ButtonInline } from "../shared/buttons";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
 import { BankAccount } from "./BankAccount";
 

@@ -1,3 +1,4 @@
+import { ButtonInline } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -11,7 +12,7 @@ import { ELogoutReason } from "../../modules/auth/types";
 import { ENotificationType } from "../../modules/notifications/types";
 import { TLoginRouterState } from "../../modules/routing/types";
 import { appRoutes } from "../appRoutes";
-import { ButtonInline, ButtonLink } from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons";
 import { ExternalLink } from "../shared/links";
 import { Notification } from "../shared/notification-widget/Notification";
 import { WalletRouter } from "./WalletRouter";

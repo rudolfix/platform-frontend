@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,7 +9,6 @@ import { externalRoutes } from "../../../config/externalRoutes";
 import { minimumLedgerVersion } from "../../../lib/web3/ledger-wallet/ledgerUtils";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
-import { Button } from "../../shared/buttons";
 import { ExternalLink } from "../../shared/links";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { WarningAlert } from "../../shared/WarningAlert";

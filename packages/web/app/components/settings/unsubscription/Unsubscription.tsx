@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { isEmail, withContainer } from "@neufund/shared";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -10,7 +11,6 @@ import { isValidLink } from "../../../modules/marketing-emails/utils";
 import { appConnect } from "../../../store";
 import { EContentWidth } from "../../layouts/Content";
 import { Layout } from "../../layouts/Layout";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../../shared/Heading";

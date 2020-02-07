@@ -1,10 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { TDataTestId } from "../../../types";
 import { Container, EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { InlineIcon } from "../../shared/icons/InlineIcon";
 
 import company from "../../../assets/img/inline_icons/company.svg";

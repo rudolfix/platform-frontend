@@ -1,7 +1,7 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../types";
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons/Button";
 import { LogoUnauth } from "./Header";
 
 import close from "../../../assets/img/inline_icons/close.svg";

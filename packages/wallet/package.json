@@ -12,10 +12,10 @@
     "prepare": "echo 'Nothing to prepare for wallet yet...'"
   },
   "dependencies": {
-    "react": "16.9.0",
+    "@neufund/shared": "^1.0.0",
+    "react": "^16.12.0",
     "react-native": "0.61.5",
-    "tslib": "^1.10.0",
-    "@neufund/shared": "^1.0.0"
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

@@ -116,4 +116,5 @@ export const etoActions = {
     "ETO_LOAD_CAPITAL_INCREASE",
     (etoId: string, previewCode: string) => ({ etoId, previewCode }),
   ),
+  setEtosError: createActionFactory("ETO_SET_ETOS_ERROR"),
 };

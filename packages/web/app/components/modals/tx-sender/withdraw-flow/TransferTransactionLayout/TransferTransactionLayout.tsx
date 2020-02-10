@@ -10,6 +10,7 @@ import {
   toFixedPrecisionGasCostEur,
 } from "../../../../../modules/tx/user-flow/transfer/utils";
 import { ErrorAlert } from "../../../../shared/Alerts";
+import { DataRow, DataRowSeparator } from "../../../../shared/DataRow";
 import { EtherscanTxLink } from "../../../../shared/links/EtherscanLink";
 import { ExternalLink } from "../../../../shared/links/ExternalLink";
 import {
@@ -17,7 +18,6 @@ import {
   ETheme as ETransactionDataTheme,
   TransactionData,
 } from "../../../../shared/TransactionData";
-import { DataRow, DataRowSeparator } from "../../shared/DataRow";
 import { TxStatusLabel } from "../../shared/TxStatusLabel";
 import { TokenAmount } from "../shared/TokenAmount";
 import { TransferHeader } from "../shared/TransferHeader";

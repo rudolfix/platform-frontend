@@ -15,10 +15,9 @@ export interface IPanelProps {
   columnSpan?: EColumnSpan;
 }
 
-const Panel: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
+const PanelBase: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
   headerText,
   rightComponent,
-  icon,
   className,
   children,
   narrow,
@@ -34,11 +33,7 @@ const Panel: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId
   >
     {(headerText || rightComponent) && (
       <div className={cn(styles.header)}>
-        {headerText && (
-          <Heading level={3} size={EHeadingSize.SMALL} decorator={icon}>
-            {headerText}
-          </Heading>
-        )}
+        {headerText}
         {rightComponent}
       </div>
     )}
@@ -46,4 +41,38 @@ const Panel: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId
   </Container>
 );
 
-export { Panel };
+const Panel: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
+  children,
+  className,
+  headerText,
+  icon,
+  ...props
+}) => (
+  <PanelBase
+    headerText={
+      headerText ? (
+        <Heading level={3} size={EHeadingSize.SMALL} decorator={icon}>
+          {headerText}
+        </Heading>
+      ) : (
+        undefined
+      )
+    }
+    className={cn(styles.defaultPanel, className)}
+    {...props}
+  >
+    {children}
+  </PanelBase>
+);
+
+const PanelRounded: React.FunctionComponent<IPanelProps & CommonHtmlProps & TDataTestId> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <PanelBase className={cn(styles.rounded, className)} {...props}>
+    {children}
+  </PanelBase>
+);
+
+export { Panel, PanelRounded };

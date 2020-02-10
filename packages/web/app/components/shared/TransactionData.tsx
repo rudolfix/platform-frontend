@@ -17,6 +17,7 @@ enum ETheme {
   BLACK = styles.black,
   SILVER = styles.silver,
   BLACK_THIN = styles.blackThin,
+  SILVER_LIGHT = styles.silverLight,
 }
 
 type TExternalProps = {

@@ -42,6 +42,7 @@ export const mockedStore: DeepPartial<IAppState> = {
       latestAcceptedTosIpfs: "qwerty123",
       backupCodesVerified: false,
       userId: "0xqwerty123",
+      verifiedEmail: "storybook@neufund.org",
     },
     currentAgreementHash: "qwerty123",
   },
@@ -90,5 +91,25 @@ export const mockedStore: DeepPartial<IAppState> = {
       },
     },
     pledges: {},
+  },
+  investorTickets: {
+    calculatedContributions: {},
+    initialCalculatedContributions: {},
+    investorEtoTickets: {},
+    tokensDisbursal: {
+      loading: false,
+      error: false,
+      data: [],
+    },
+    incomingPayouts: {
+      loading: false,
+      error: false,
+      data: {
+        euroTokenIncomingPayoutValue: "0",
+        etherTokenIncomingPayoutValue: "0",
+        snapshotDate: 1580688000,
+      },
+    },
+    tokensPersonalDiscounts: {},
   },
 };

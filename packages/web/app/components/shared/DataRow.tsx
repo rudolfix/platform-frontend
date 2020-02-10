@@ -1,8 +1,8 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { CommonHtmlProps, TDataTestId } from "../../../../types";
-import { CopyToClipboardButton } from "../../../shared/CopyToClipboardButton";
+import { CommonHtmlProps, TDataTestId } from "../../types";
+import { CopyToClipboardButton } from "./CopyToClipboardButton";
 
 import * as styles from "./DataRow.module.scss";
 
@@ -35,4 +35,9 @@ const DataRow: React.FunctionComponent<IDataRowProps & CommonHtmlProps & TDataTe
   </section>
 );
 
-export { DataRow, DataRowSeparator };
+const DataRowSeparated: React.FunctionComponent<IDataRowProps & CommonHtmlProps & TDataTestId> = ({
+  className,
+  ...props
+}) => <DataRow className={cn(styles.separated, className)} {...props} />;
+
+export { DataRow, DataRowSeparated, DataRowSeparator };

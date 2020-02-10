@@ -10,3 +10,12 @@
   $rem-size: $size / 16;
   @return #{strip-unit($rem-size)}rem;
  }
+
+@mixin flex-stick-bottom {
+  margin: {
+    top: auto;
+    right: auto;
+    left: auto;
+    bottom: 0;
+  };
+}

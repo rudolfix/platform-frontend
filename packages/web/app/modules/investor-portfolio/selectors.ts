@@ -1,4 +1,11 @@
-import { compareBigNumbers, isZero, Q18, subtractBigNumbers } from "@neufund/shared";
+import {
+  addBigNumbers,
+  compareBigNumbers,
+  isZero,
+  multiplyBigNumbers,
+  Q18,
+  subtractBigNumbers,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { isArray } from "lodash/fp";
 import { createSelector } from "reselect";
@@ -17,6 +24,7 @@ import {
 } from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
 import { isOnChain } from "../eto/utils";
+import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import {
   ICalculatedContribution,
@@ -234,6 +242,17 @@ export const selectTokensDisbursal = createSelector(selectInvestorTicketsState, 
   return investorTickets.tokensDisbursal.data;
 });
 
+export const selectTokensDisbursalEurEquivTotal = createSelector(
+  selectTokensDisbursal,
+  tokensDisbursal => {
+    if (tokensDisbursal) {
+      return addBigNumbers([...tokensDisbursal].map(t => t.amountEquivEur));
+    }
+
+    return undefined;
+  },
+);
+
 export const selectPayoutAvailable = (state: IAppState) => {
   const tokenDisbursal = selectTokensDisbursal(state);
   return !!tokenDisbursal && tokenDisbursal.length > 0;
@@ -242,14 +261,26 @@ export const selectPayoutAvailable = (state: IAppState) => {
 export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData[] | undefined => {
   const myAsssets = selectMyAssets(state);
   if (myAsssets) {
-    return myAsssets.map((asset: TEtoWithCompanyAndContractReadonly) => ({
-      ...asset,
-      tokenData: selectTokenData(state.eto, asset.previewCode)!,
-    }));
+    return myAsssets
+      .map((asset: TEtoWithCompanyAndContractReadonly) => ({
+        ...asset,
+        tokenData: selectTokenData(state.eto, asset.previewCode)!,
+      }))
+      .filter(asset => asset.tokenData && asset.tokenData.balance !== "0");
   }
 
   return undefined;
 };
+
+export const selectMyAssetsEurEquivTotal = createSelector(selectMyAssetsWithTokenData, myAssets => {
+  if (myAssets && myAssets.length > 0) {
+    return myAssets
+      .map(asset => asset.tokenData)
+      .reduce((p, c) => addBigNumbers([p, multiplyBigNumbers([c.balance, c.tokenPrice])]), "0");
+  }
+
+  return undefined;
+});
 
 export const selectIsIncomingPayoutLoading = (state: IAppState): boolean =>
   state.investorTickets.incomingPayouts.loading;
@@ -303,6 +334,17 @@ export const selectIsIncomingPayoutPending = (state: IAppState): boolean => {
 
   return shouldShowEtherToken || shouldShowEuroToken;
 };
+
+export const selectIncomingPayoutEurEquiv = createSelector(
+  selectEtherTokenIncomingPayout,
+  selectEuroTokenIncomingPayout,
+  selectEtherPriceEur,
+  (etherTokenIncomingPayout, euroTokenIncomingPayout, etherPriceEur) =>
+    addBigNumbers([
+      euroTokenIncomingPayout,
+      multiplyBigNumbers([etherTokenIncomingPayout, etherPriceEur]),
+    ]),
+);
 
 export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
   const etos = selectEtoWithInvestorTickets(state);

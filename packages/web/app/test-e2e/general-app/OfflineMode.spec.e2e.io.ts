@@ -8,11 +8,15 @@ describe("Offline mode", () => {
 
     goOffline();
 
-    cy.get(tid("my-portfolio-widget-error")).should("exist");
+    cy.get(tid("my-neu-widget-error")).should("exist");
+    cy.get(tid("my-wallet-error")).should("exist");
+    cy.get(tid("portfolio-stats-error")).should("exist");
 
     cy.wait(10000);
 
-    cy.get(tid("my-portfolio-widget-error")).should("exist");
+    cy.get(tid("my-neu-widget-error")).should("exist");
+    cy.get(tid("my-wallet-error")).should("exist");
+    cy.get(tid("portfolio-stats-error")).should("exist");
 
     goOnline();
 
@@ -20,6 +24,8 @@ describe("Offline mode", () => {
 
     cy.go("back");
 
-    cy.get(tid("my-portfolio-widget-incoming-payout-pending")).should("exist");
+    cy.get(tid("my-neu-widget-error")).should("not.exist");
+    cy.get(tid("my-wallet-error")).should("not.exist");
+    cy.get(tid("portfolio-stats-error")).should("not.exist");
   });
 });

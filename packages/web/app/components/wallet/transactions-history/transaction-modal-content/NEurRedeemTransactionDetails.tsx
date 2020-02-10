@@ -7,7 +7,7 @@ import {
   ETransactionStatus,
   TExtractTxHistoryFromType,
 } from "../../../../modules/tx-history/types";
-import { DataRow, DataRowSeparator } from "../../../modals/tx-sender/shared/DataRow";
+import { DataRow, DataRowSeparator } from "../../../shared/DataRow";
 import { Money } from "../../../shared/formatters/Money";
 import { ECurrency, ENumberOutputFormat } from "../../../shared/formatters/utils";
 import { getIconForCurrency } from "../../../shared/icons/CurrencyIcon";

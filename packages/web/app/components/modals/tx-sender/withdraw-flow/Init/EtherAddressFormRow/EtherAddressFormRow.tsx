@@ -6,11 +6,11 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import * as YupTS from "../../../../../../lib/yup-ts.unsafe";
 import { ETH_ADDRESS_SIZE } from "../../../../../../modules/tx/utils";
 import { isAddressValid } from "../../../../../../modules/web3/utils";
+import { DataRow } from "../../../../../shared/DataRow";
 import { FormLabel } from "../../../../../shared/forms";
 import { FormInput } from "../../../../../shared/forms/fields/FormInput";
 import { EInputTheme } from "../../../../../shared/forms/layouts/InputLayout";
 import { EtherscanAddressLink } from "../../../../../shared/links/EtherscanLink";
-import { DataRow } from "../../../shared/DataRow";
 
 import txSuccess from "../../../../../../assets/img/icon_txn_status_success.svg";
 import * as styles from "../../Transfer.module.scss";

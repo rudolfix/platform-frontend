@@ -13,3 +13,15 @@
   font-weight: bold;
   color: $neu-piss-yellow;
 }
+
+.time {
+  &::after {
+    content: " ";
+  }
+
+  &:last-of-type {
+    &::after {
+      content: none;
+    }
+  }
+}

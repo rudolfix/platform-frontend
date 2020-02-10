@@ -1,6 +1,7 @@
 import { EquityToken } from "@neufund/shared";
 import * as React from "react";
 
+import { DataRow } from "../../../../shared/DataRow";
 import { ECurrency } from "../../../../shared/formatters/utils";
 import {
   ETextPosition,
@@ -9,7 +10,6 @@ import {
   MoneySuiteWidget,
 } from "../../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ESize } from "../../../../shared/TransactionData";
-import { DataRow } from "../../shared/DataRow";
 
 import * as styles from "../Transfer.module.scss";
 

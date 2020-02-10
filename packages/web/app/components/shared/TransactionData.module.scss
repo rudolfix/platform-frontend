@@ -1,23 +1,23 @@
 .transaction-data {
   &.huge {
     .top {
-      @include font-headline;
+      @include nds-headline-4;
     }
 
     .bottom {
-      @include font-headline-small;
+      @include nds-body;
     }
   }
 
   &.large {
     .top {
-      @include font-headline-medium;
+      @include font-large-roboto;
     }
   }
 
   &.medium {
     .top {
-      @include font-headline-small;
+      @include nds-body;
     }
   }
 
@@ -44,11 +44,21 @@
 
   &.silver {
     .top {
-      color: $neu-slate-grey;
+      color: $neu-charcoal-grey;
     }
 
     .bottom {
-      color: $neu-silver;
+      color: $neu-gull-gray;
+    }
+  }
+
+  &.silver-light {
+    .top {
+      color: $neu-light-blue-grey-two;
+    }
+
+    .bottom {
+      color: $neu-light-blue-grey-two;
     }
   }
 

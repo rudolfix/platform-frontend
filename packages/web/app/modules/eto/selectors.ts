@@ -312,3 +312,5 @@ export const selectStartOfOnchainState = (
 
   return startOfStates && startOfStates[onChainState];
 };
+
+export const selectEtosError = createSelector(selectEtoState, eto => eto.etosError);

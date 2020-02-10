@@ -11,9 +11,9 @@ import {
   toFixedPrecisionGasCostEth,
   toFixedPrecisionGasCostEur,
 } from "../../../../../../modules/tx/user-flow/transfer/utils";
+import { DataRow, DataRowSeparator } from "../../../../../shared/DataRow";
 import { ECurrency } from "../../../../../shared/formatters/utils";
 import { EtherscanTxLink } from "../../../../../shared/links";
-import { DataRow, DataRowSeparator } from "../../../shared/DataRow";
 import { TokenTotalFormField } from "../../Init/TokenTotalFormField/TokenTotalFormField";
 import { TokenAmount } from "../../shared/TokenAmount";
 import { TransferHeader } from "../../shared/TransferHeader";

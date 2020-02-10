@@ -13,10 +13,10 @@ import {
 } from "../../../../../../modules/tx/validator/reducer";
 import { isValidFormNumber } from "../../../../../../modules/tx/validator/transfer/utils";
 import { isAddressValid } from "../../../../../../modules/web3/utils";
+import { DataRow } from "../../../../../shared/DataRow";
 import { Money } from "../../../../../shared/formatters/Money";
 import { ENumberInputFormat, ENumberOutputFormat } from "../../../../../shared/formatters/utils";
 import { FormDeprecated } from "../../../../../shared/forms";
-import { DataRow } from "../../../shared/DataRow";
 import { TransferHeader } from "../../shared/TransferHeader";
 import { EtherAddressFormRow } from "../EtherAddressFormRow/EtherAddressFormRow";
 import { ShowAdditionalNotifications } from "../ShowAdditionalNotifications/ShowAdditionalNotifications";

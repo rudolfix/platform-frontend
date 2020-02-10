@@ -61,7 +61,6 @@ import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoOnChainStateById,
-  selectEtoWithCompanyAndContractById,
   selectFilteredEtosByRestrictedJurisdictions,
   selectInvestorEtoWithCompanyAndContract,
   selectIsEtoAnOffer,
@@ -143,7 +142,16 @@ function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
       yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
     }
 
-    yield neuCall(loadEtoContract, eto);
+    const etoWithContract: TEtoWithCompanyAndContractReadonly = yield neuCall(loadEtoContract, eto);
+    if (
+      etoWithContract.contract &&
+      [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(
+        etoWithContract.contract.timedState,
+      ) &&
+      userType === EUserType.INVESTOR
+    ) {
+      yield neuCall(loadToken, etoWithContract);
+    }
   }
 
   // This needs to always be after loadingEtoContract step
@@ -244,10 +252,12 @@ export function* getEtoContract(
 
 export function* loadEtoContract(
   _: TGlobalDependencies,
-  { etoId, previewCode, state }: TEtoSpecsData,
+  eto: TEtoSpecsData,
 ): Generator<any, any, any> {
-  const contract = yield neuCall(getEtoContract, etoId, state);
-  yield put(actions.eto.setEtoDataFromContract(previewCode, contract));
+  const contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
+  yield put(actions.eto.setEtoDataFromContract(eto.previewCode, contract));
+
+  return { ...eto, contract };
 }
 
 function* watchEtoSetAction(
@@ -353,7 +363,7 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
 
     yield put(actions.bookBuilding.loadBookBuildingListStats(etos.map(eto => eto.etoId)));
 
-    yield all(
+    const etosWithContract: TEtoWithCompanyAndContractReadonly[] = yield all(
       etos
         .filter(eto => eto.state === EEtoState.ON_CHAIN)
         .map(eto => neuCall(loadEtoContract, eto)),
@@ -383,6 +393,16 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
     );
     if (userType === EUserType.INVESTOR) {
       yield put(actions.investorEtoTicket.loadInvestorTickets(etosByPreviewCode));
+
+      yield all(
+        etosWithContract
+          .filter(
+            eto =>
+              eto.contract &&
+              [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(eto.contract.timedState),
+          )
+          .map(eto => neuCall(loadToken, eto)),
+      );
     }
     yield put(actions.eto.setEtos({ etos: etosByPreviewCode, companies }));
     yield put(actions.eto.setEtosDisplayOrder(order));
@@ -393,6 +413,7 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
 
     // set empty display order to remove loading indicator
     yield put(actions.eto.setEtosDisplayOrder([]));
+    yield put(actions.eto.setEtosError());
   }
 }
 
@@ -573,7 +594,7 @@ function* loadToken(
     tokensPerShare,
   );
 
-  return {
+  const tokenData = {
     balance: balance.toString(),
     tokensPerShare: tokensPerShare.toString(),
     totalCompanyShares: shareCapital.toString(),
@@ -581,6 +602,8 @@ function* loadToken(
     tokenPrice: tokenPrice.toString(),
     canTransferToken,
   };
+
+  yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
 }
 
 function* loadTokensData(): any {
@@ -590,35 +613,23 @@ function* loadTokensData(): any {
     return;
   }
 
-  for (const eto of myAssets) {
-    const tokenData = yield neuCall(loadToken, eto);
-
-    yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
-  }
+  yield all(myAssets.map((eto: TEtoWithCompanyAndContractReadonly) => neuCall(loadToken, eto)));
 }
 
 function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any, any, any> {
   const txType = yield select(selectTxType);
 
-  // Return if transaction type is not Claim
-  if (txType !== ETxSenderType.USER_CLAIM) {
+  // Return if transaction type is not Claim or Refund
+  if (txType !== ETxSenderType.USER_CLAIM && txType !== ETxSenderType.INVESTOR_REFUND) {
     return;
   }
 
   const additionalData: TAdditionalDataByType<ETxSenderType.USER_CLAIM> = yield select(
     selectTxAdditionalData,
   );
+
   try {
     yield neuCall(fetchEto, additionalData.etoId);
-
-    const eto = nonNullable(
-      yield select((state: IAppState) =>
-        selectEtoWithCompanyAndContractById(state, additionalData.etoId),
-      ),
-    );
-    const tokenData = yield neuCall(loadToken, eto);
-
-    yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
   } catch (e) {
     logger.error("Could not load eto by id", e);
   }

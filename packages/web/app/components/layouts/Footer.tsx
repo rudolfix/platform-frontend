@@ -14,7 +14,7 @@ interface IStateProps {
 
 export const FooterLayout: React.FunctionComponent<IStateProps> = ({ isAuthorized }) => (
   <footer className={styles.footer}>
-    <span className={styles.copyright}>©2019 Fifth Force GmbH</span>
+    <span className={styles.copyright}>©2020 Fifth Force Liechtenstein GmbH</span>
     <ExternalLink href={externalRoutes.imprint} className={styles.link}>
       <FormattedMessage id="footer.links.imprint" />
     </ExternalLink>

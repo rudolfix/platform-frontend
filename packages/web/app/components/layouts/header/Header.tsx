@@ -1,4 +1,4 @@
-import { EButtonLayout } from "@neufund/design-system";
+import { EButtonLayout, EButtonSize } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
@@ -29,25 +29,38 @@ const LogoAuth = () => (
   </Link>
 );
 
+const LogoFullScreen = () => (
+  <Link to={appRoutes.root} className={styles.logoUnauth}>
+    <img src={logoNew} alt="NEUFUND" className={styles.logoImage} />
+    <img src={logoNewTitle} alt="NEUFUND" className={styles.logoTitleFullscreen} />
+  </Link>
+);
+
 const LoginButton: React.FunctionComponent = () => (
   <ButtonLink
     className={styles.button}
-    layout={EButtonLayout.GHOST}
+    layout={EButtonLayout.OUTLINE}
     data-test-id="Header-login"
     to={walletLoginRoutes.light}
+    size={EButtonSize.DYNAMIC}
   >
     <FormattedMessage id="header.login-button" />
   </ButtonLink>
 );
 
-const GetStartedButton: React.FunctionComponent = () => (
+const GetStartedButton: React.FunctionComponent<{ isLoginPage?: boolean }> = ({ isLoginPage }) => (
   <ButtonLink
     className={styles.button}
     layout={EButtonLayout.PRIMARY}
     data-test-id="Header-register"
     to={walletRegisterRoutes.light}
+    size={EButtonSize.DYNAMIC}
   >
-    <FormattedMessage id="header.get-started-button" />
+    {isLoginPage ? (
+      <FormattedMessage id="header.sign-up-button" />
+    ) : (
+      <FormattedMessage id="header.get-started-button" />
+    )}
   </ButtonLink>
 );
 
@@ -59,9 +72,27 @@ const HeaderUnauthorized: React.FunctionComponent = () => (
   </header>
 );
 
-const HeaderTransitional: React.FunctionComponent = () => (
+const HeaderTransitional: React.FunctionComponent<{ isLoginRoute: boolean }> = ({
+  isLoginRoute,
+}) => (
   <header className={styles.headerUnauth}>
-    <LogoUnauth />
+    <LogoFullScreen />
+    {isLoginRoute ? (
+      <>
+        <span className={styles.helperText}>
+          <FormattedMessage id="header.need-an-account" />
+        </span>
+        <GetStartedButton isLoginPage={true} />
+      </>
+    ) : (
+      <>
+        {" "}
+        <span className={styles.helperText}>
+          <FormattedMessage id="header.already-have-an-account" />
+        </span>
+        <LoginButton />
+      </>
+    )}
   </header>
 );
 
@@ -75,4 +106,11 @@ const HeaderAuthorized: React.FunctionComponent = () => (
   </header>
 );
 
-export { HeaderUnauthorized, HeaderAuthorized, HeaderTransitional, LogoAuth, LogoUnauth };
+export {
+  HeaderUnauthorized,
+  HeaderAuthorized,
+  HeaderTransitional,
+  LogoAuth,
+  LogoUnauth,
+  LogoFullScreen,
+};

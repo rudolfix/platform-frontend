@@ -2,7 +2,7 @@ import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 
 import { CommonHtmlProps, TTranslatedString } from "../../../types";
-import { LogoUnauth } from "./Header";
+import { LogoFullScreen } from "./Header";
 
 import close from "../../../assets/img/inline_icons/close.svg";
 import * as styles from "./Header.module.scss";
@@ -33,7 +33,7 @@ const HeaderFullscreen: React.FunctionComponent<THeaderFullscreenProps> = ({
   buttonText,
 }) => (
   <header className={styles.headerUnauth}>
-    <LogoUnauth />
+    <LogoFullScreen />
     {buttonAction && (
       <ActionButton className={styles.button} buttonAction={buttonAction} buttonText={buttonText} />
     )}

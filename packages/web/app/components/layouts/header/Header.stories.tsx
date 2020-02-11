@@ -49,8 +49,14 @@ storiesOf("Layout/Header unauthorized", module).add("default", () => (
   </>
 ));
 
-storiesOf("Layout/Header transitional", module).add("default", () => (
-  <>
-    <HeaderTransitional />
-  </>
-));
+storiesOf("Layout/Header transitional", module)
+  .add("login route", () => (
+    <>
+      <HeaderTransitional isLoginRoute={true} />
+    </>
+  ))
+  .add("register route", () => (
+    <>
+      <HeaderTransitional isLoginRoute={false} />
+    </>
+  ));

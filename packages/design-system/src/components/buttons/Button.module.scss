@@ -171,4 +171,14 @@
   &--no-padding {
     padding: 0;
   }
+
+  &--dynamic {
+    @include media-breakpoint-up(sm) {
+      min-width: px-to-rem(110px);
+    }
+
+    @include media-breakpoint-down(sm) {
+      padding: px-to-rem(4px) px-to-rem(12px) px-to-rem(3px);
+    }
+  }
 }

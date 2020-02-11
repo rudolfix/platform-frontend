@@ -5,13 +5,13 @@
 
 @import "./variables/index";
 
-$header-height-sm: 64px;
+$header-height-sm: 56px;
 $header-height-md: 64px;
-$header-height-lg: 80px;
+$header-height-lg: 64px;
 
-$layout-content-padding-sm: px-to-rem(15px);
-$layout-content-padding-md: px-to-rem(20px);
-$layout-content-padding-lg: px-to-rem(32px);
+$layout-content-padding-sm: px-to-rem(20px);
+$layout-content-padding-md: px-to-rem(24px);
+$layout-content-padding-lg: px-to-rem(24px);
 
 $header-height: 60px;
 $footer-dots-height: 360px;

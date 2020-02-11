@@ -91,7 +91,7 @@ storiesOf("Templates|Layouts/Layout", module)
   .add(
     "TransitionalLayout",
     () => (
-      <TransitionalLayout>
+      <TransitionalLayout isLoginRoute={true}>
         <FakeContent />
       </TransitionalLayout>
     ),

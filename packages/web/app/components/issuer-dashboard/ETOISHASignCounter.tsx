@@ -13,7 +13,7 @@ import {
 import { selectEtoOnChainState } from "../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
 import { isOnChain } from "../../modules/eto/utils";
-import { appConnect, IAppState } from "../../store";
+import { appConnect, TAppGlobalState } from "../../store";
 import { DashboardWidget } from "../shared/dashboard-widget/DashboardWidget";
 import { IPanelProps } from "../shared/Panel";
 import { TimeLeftWithUTC } from "../shared/TimeLeftWithUTC";
@@ -53,7 +53,7 @@ const ETOISHASignCounterLayout: React.FunctionComponent<IPanelProps &
 
 const ETOISHASignCounter = compose<TProps, IExternalProps & IPanelProps>(
   appConnect<IStateProps | null, {}, IExternalProps & IPanelProps>({
-    stateToProps: (state: IAppState, ownProps: IExternalProps) => {
+    stateToProps: (state: TAppGlobalState, ownProps: IExternalProps) => {
       const isIssuer = selectIsIssuer(state);
 
       if (!isIssuer || !isOnChain(ownProps.eto)) {

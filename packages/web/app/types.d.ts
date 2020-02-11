@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { FormikContext } from "formik";
 import { CSSProperties, ReactElement } from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

@@ -4,7 +4,7 @@ import { BigNumber } from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
-import { IAppState } from "../../../../store";
+import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
@@ -126,17 +126,17 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Generator<an
   yield take(actions.txSender.txSenderAcceptDraft);
 
   const etoId: string = yield select(selectInvestmentEtoId);
-  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: IAppState) =>
+  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: TAppGlobalState) =>
     selectEtoWithCompanyAndContractById(state, etoId),
   );
 
   const investmentEth: string = yield select(selectInvestmentEthValueUlps);
   const investmentEur: string = yield select(selectInvestmentEurValueUlps);
   const gasCostEth: string = yield select(selectTxGasCostEthUlps);
-  const equityTokens: string = yield select((state: IAppState) =>
+  const equityTokens: string = yield select((state: TAppGlobalState) =>
     selectEquityTokenCountByEtoId(state, etoId),
   );
-  const estimatedReward: string = yield select((state: IAppState) =>
+  const estimatedReward: string = yield select((state: TAppGlobalState) =>
     selectNeuRewardUlpsByEtoId(state, etoId),
   );
 

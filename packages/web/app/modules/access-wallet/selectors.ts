@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
 
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 
-export const selectAccessWallet = (state: IAppState) => state.accessWallet;
+export const selectAccessWallet = (state: TAppGlobalState) => state.accessWallet;
 
 export const selectIsAccessWalletModalOpen = createSelector(
   selectAccessWallet,

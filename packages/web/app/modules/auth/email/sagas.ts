@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IVerifyEmailUser } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
 import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
@@ -28,7 +28,7 @@ export function* verifyUserEmail({
 }: TGlobalDependencies): Generator<any, any, any> {
   const userCode = yield select(selectActivationCodeFromQueryString);
   const urlEmail = yield select(selectEmailFromQueryString);
-  const userEmail = yield select((s: IAppState) => selectUserEmail(s.auth));
+  const userEmail = yield select((s: TAppGlobalState) => selectUserEmail(s.auth));
 
   if (userEmail && userEmail !== urlEmail) {
     // Logout if there is different user session active
@@ -42,7 +42,7 @@ export function* verifyUserEmail({
     return;
   }
 
-  const verifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
+  const verifiedEmail = yield select((s: TAppGlobalState) => selectVerifiedUserEmail(s.auth));
 
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);
@@ -54,8 +54,8 @@ export function* verifyUserEmail({
     walletStorage.set(updatedMetadata);
   }
 
-  const userType = yield select((s: IAppState) => selectUserType(s));
-  const kycAndEmailVerified = yield select((s: IAppState) => userHasKycAndEmailVerified(s));
+  const userType = yield select((s: TAppGlobalState) => selectUserType(s));
+  const kycAndEmailVerified = yield select((s: TAppGlobalState) => userHasKycAndEmailVerified(s));
 
   if (!kycAndEmailVerified && userType === EUserType.NOMINEE) {
     yield put(actions.routing.goToDashboard());

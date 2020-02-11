@@ -1,5 +1,6 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
 import { dummyIntl, InversifyProvider } from "@neufund/shared";
+import { noopLogger } from "@neufund/shared-modules";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
@@ -7,7 +8,7 @@ import { Container } from "inversify";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
-import { applyMiddleware, createStore, Store } from "redux";
+import { applyMiddleware, combineReducers, createStore, Store } from "redux";
 import { SinonSpy } from "sinon";
 
 import {
@@ -19,7 +20,6 @@ import { symbols } from "../app/di/symbols";
 import { SignatureAuthApi } from "../app/lib/api/auth/SignatureAuthApi";
 import { UsersApi } from "../app/lib/api/users/UsersApi";
 import { BroadcastChannelMock } from "../app/lib/dependencies/broadcast-channel/BroadcastChannel.mock";
-import { noopLogger } from "../app/lib/dependencies/logger";
 import { IntlWrapper } from "../app/lib/intl/IntlWrapper";
 import { Storage } from "../app/lib/persistence/Storage";
 import { createMockStorage } from "../app/lib/persistence/Storage.mock";
@@ -28,7 +28,7 @@ import { ContractsService } from "../app/lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../app/lib/web3/ledger-wallet/LedgerConnector";
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager/Web3Manager.mock";
 import { rootSaga } from "../app/modules/sagas";
-import { generateRootReducer, IAppState } from "../app/store";
+import { generateRootModuleReducerMap, TAppGlobalState } from "../app/store";
 import { DeepPartial } from "../app/types";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
@@ -37,7 +37,7 @@ import { createMock, tid } from "./testUtils";
 const defaultTranslations = require("../intl/locales/en-en.json");
 
 interface ICreateIntegrationTestsSetupOptions {
-  initialState?: DeepPartial<IAppState>;
+  initialState?: DeepPartial<TAppGlobalState>;
   browserWalletConnectorMock?: BrowserWalletConnector;
   ledgerWalletConnectorMock?: LedgerWalletConnector;
   storageMock?: Storage;
@@ -48,7 +48,7 @@ interface ICreateIntegrationTestsSetupOptions {
 }
 
 interface ICreateIntegrationTestsSetupOutput {
-  store: Store<IAppState>;
+  store: Store<TAppGlobalState>;
   container: Container;
   dispatchSpy: SinonSpy;
   history: History;
@@ -67,7 +67,9 @@ export function createIntegrationTestsSetup(
   const signatureAuthApiMock = options.signatureAuthApiMock || createMock(SignatureAuthApi, {});
   const contractsMock = options.contractsMock || createMock(ContractsService, {});
 
-  const container = setupBindings(dummyConfig);
+  const container = new Container();
+
+  container.load(setupBindings(dummyConfig));
 
   container.rebind(symbols.userActivityChannel).toConstantValue(new BroadcastChannelMock());
   container.rebind(symbols.ledgerWalletConnector).toConstantValue(ledgerWalletMock);
@@ -76,7 +78,7 @@ export function createIntegrationTestsSetup(
     .rebind(symbols.web3Manager)
     .to(Web3ManagerMock)
     .inSingletonScope();
-  container.rebind(symbols.logger).toConstantValue(noopLogger);
+  container.bind(symbols.logger).toConstantValue(noopLogger);
   container.rebind(symbols.storage).toConstantValue(storageMock);
   container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
   container.rebind(symbols.signatureAuthApi).toConstantValue(signatureAuthApiMock);
@@ -103,7 +105,7 @@ export function createIntegrationTestsSetup(
     sagaMiddleware,
   );
 
-  const rootReducer = generateRootReducer(history);
+  const rootReducer = combineReducers(generateRootModuleReducerMap(history));
 
   const store = createStore(rootReducer, options.initialState as any, middleware);
   context.deps = createGlobalDependencies(container);

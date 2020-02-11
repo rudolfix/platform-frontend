@@ -2,7 +2,7 @@ import { setupFakeClock } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { createMemoryHistory } from "history";
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 
 import { createMount } from "../../../../../test/createMount";
 import {
@@ -18,7 +18,7 @@ import { FeeDisbursal } from "../../../../lib/contracts/FeeDisbursal";
 import { Neumark } from "../../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../../lib/web3/ContractsService";
 import { EWalletSubType, EWalletType } from "../../../../modules/web3/types";
-import { generateRootReducer } from "../../../../store";
+import { generateRootModuleReducerMap } from "../../../../store";
 import { PayoutWidget } from "./PayoutWidget";
 
 /*
@@ -135,7 +135,7 @@ const contractsMock = createMock(ContractsService, {
   feeDisbursal: feeDisbursalMock,
 });
 
-const rootReducer = generateRootReducer(history);
+const rootReducer = combineReducers(generateRootModuleReducerMap(history));
 
 describe("PayoutWidget", () => {
   const clock = setupFakeClock();

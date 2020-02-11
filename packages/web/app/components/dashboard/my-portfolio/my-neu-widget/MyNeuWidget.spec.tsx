@@ -2,7 +2,7 @@ import { setupFakeClock } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { createMemoryHistory } from "history";
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 
 import { createMount } from "../../../../../test/createMount";
 import {
@@ -16,7 +16,7 @@ import { EuroToken } from "../../../../lib/contracts/EuroToken";
 import { FeeDisbursal } from "../../../../lib/contracts/FeeDisbursal";
 import { Neumark } from "../../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../../lib/web3/ContractsService";
-import { generateRootReducer, IAppState } from "../../../../store";
+import { generateRootModuleReducerMap, TAppGlobalState } from "../../../../store";
 import { MyNeuWidget } from "./MyNeuWidget";
 
 /*
@@ -36,8 +36,6 @@ import { MyNeuWidget } from "./MyNeuWidget";
 
 const ACTUAL_DATE = 1567468800 * 1000;
 const NOT_ACTUAL_DATE = 1567555199 * 1000;
-
-const history = createMemoryHistory();
 
 const initialState = ({
   wallet: {
@@ -59,7 +57,7 @@ const initialState = ({
       data: undefined,
     },
   },
-} as unknown) as IAppState;
+} as unknown) as TAppGlobalState;
 
 const getNonClaimableDisbursalsRejection = (_: string, _1: string) =>
   Promise.reject("nothing for you here");
@@ -133,13 +131,15 @@ const contractsMock = createMock(ContractsService, {
   feeDisbursal: feeDisbursalMock,
 });
 
-const rootReducer = generateRootReducer(history);
+const history = createMemoryHistory();
+
+const rootReducer = combineReducers(generateRootModuleReducerMap(history));
 
 describe("MyNeuWidget", () => {
   const clock = setupFakeClock();
 
   it("shows the loading indicator", () => {
-    const store = createStore(rootReducer, initialState);
+    const store = createStore(rootReducer, initialState as any);
     const component = createMount(wrapWithProviders(MyNeuWidget, { store }));
 
     expect(component.find(tid("loading-indicator-pulse")).length).to.eq(1);

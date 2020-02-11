@@ -1,15 +1,16 @@
 import { DeepReadonlyObject } from "@neufund/shared";
 
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { IInvestmentFlowState } from "../../investment-flow/reducer";
 import { EAdditionalValidationDataNotifications, EValidationState } from "./reducer";
 
-export const selectTxValidationState = (state: IAppState): EValidationState | undefined =>
+export const selectTxValidationState = (state: TAppGlobalState): EValidationState | undefined =>
   state.txValidator.validationState;
 
 export const selectTxValidationNotifications = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): ReadonlyArray<EAdditionalValidationDataNotifications> => state.txValidator.notifications;
 
-export const selectInvestmentFLow = (state: IAppState): DeepReadonlyObject<IInvestmentFlowState> =>
-  state.investmentFlow;
+export const selectInvestmentFLow = (
+  state: TAppGlobalState,
+): DeepReadonlyObject<IInvestmentFlowState> => state.investmentFlow;

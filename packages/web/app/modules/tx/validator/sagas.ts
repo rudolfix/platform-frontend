@@ -13,7 +13,7 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions, TAction } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
@@ -89,7 +89,7 @@ export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails:
   const valueUlps = subtractBigNumbers([maxEtherUlps, costUlps]);
 
   if (compareBigNumbers(txDetails.value, valueUlps) > 0) {
-    const walletType = yield select((state: IAppState) => selectWalletType(state.web3));
+    const walletType = yield select((state: TAppGlobalState) => selectWalletType(state.web3));
     if (isGaslessTxEnabled && STIPEND_ELIGIBLE_WALLETS.includes(walletType)) {
       // @SEE https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2015.md
       // @SEE https://github.com/MetaMask/metamask-extension/issues/5101

@@ -19,7 +19,7 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { promisify } from "../../lib/contracts/typechain-runtime";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
 import { calculateSnapshotDate } from "../contracts/utils";
@@ -63,7 +63,7 @@ export function* loadInvestorTicket(
   }
 
   const etoId = action.payload.eto.etoId;
-  const user: IUser = yield select((state: IAppState) => selectUser(state.auth));
+  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
 
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
 
@@ -115,7 +115,7 @@ export function* loadClaimables({
   logger,
   notificationCenter,
 }: TGlobalDependencies): any {
-  const user: IUser = yield select((state: IAppState) => selectUser(state.auth));
+  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
   const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
   const etherPrice = yield select(selectEtherPriceEur);
 

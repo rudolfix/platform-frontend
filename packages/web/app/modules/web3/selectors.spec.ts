@@ -2,7 +2,7 @@ import { nonNullable } from "@neufund/shared";
 import { expect } from "chai";
 
 import { dummyEthereumAddress } from "../../../test/fixtures";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import {
   getDummyBrowserWalletMetadata,
   getDummyLedgerWalletMetadata,
@@ -104,7 +104,7 @@ describe("web3 > selectors", () => {
           },
           action: "POP",
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       const result = nonNullable(selectActivationCodeFromQueryString(state));
 
@@ -123,7 +123,7 @@ describe("web3 > selectors", () => {
             search: encodeURI(`?redirect=/&email=${email}&salt=${salt}`),
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       const result = nonNullable(selectLightWalletFromQueryString(state));
 
@@ -142,7 +142,7 @@ describe("web3 > selectors", () => {
             search: encodeURI(`?redirect=/&email=${email}`),
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(selectLightWalletFromQueryString(state)).to.be.undefined;
 
@@ -163,7 +163,7 @@ describe("web3 > selectors", () => {
             search: encodeURI(`?redirect=/&email=${email}`),
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(selectLightWalletEmailFromQueryString(state)).to.be.undefined;
     });

@@ -21,7 +21,7 @@ import {
   deserializeLightWalletVault,
 } from "../../../lib/web3/light-wallet/LightWalletUtils";
 import { IPersonalWallet } from "../../../lib/web3/PersonalWeb3";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { connectLightWallet } from "../../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../../actions";
 import { checkEmailPromise } from "../../auth/email/sagas";
@@ -79,7 +79,7 @@ export async function setupLightWalletPromise(
 
 export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    const user: IUser = yield select((state: IAppState) => state.auth.user);
+    const user: IUser = yield select((state: TAppGlobalState) => state.auth.user);
     yield neuCall(updateUser, { ...user, backupCodesVerified: true });
     yield call(
       displayInfoModalSaga,
@@ -109,7 +109,7 @@ export function* loadSeedFromWalletWatch({
   web3Manager,
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    const isUnlocked = yield* select((s: IAppState) => selectIsUnlocked(s.web3));
+    const isUnlocked = yield* select((s: TAppGlobalState) => selectIsUnlocked(s.web3));
 
     if (!isUnlocked) {
       yield put(
@@ -137,7 +137,7 @@ export function* lightWalletRecoverWatch(
   const { password, email, seed } = action.payload;
 
   try {
-    const userType = yield* select((state: IAppState) => selectUrlUserType(state.router));
+    const userType = yield* select((state: TAppGlobalState) => selectUrlUserType(state.router));
     const walletMetadata = yield* neuCall(setupLightWalletPromise, email, password, seed);
     yield neuCall(createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
 

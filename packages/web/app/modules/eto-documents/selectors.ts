@@ -3,7 +3,7 @@ import { DeepReadonly } from "@neufund/shared";
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EEtoDocumentType, IEtoFilesInfo } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { selectUserType } from "../auth/selectors";
 import { selectIssuerEtoState } from "../eto-flow/selectors";
 import { selectNomineeEtoState } from "../nominee-flow/selectors";
@@ -31,7 +31,7 @@ export const selectEtoDocumentsUploading = (
   state: DeepReadonly<IEtoDocumentState>,
 ): { [key in EEtoDocumentType]?: boolean } => state.uploading;
 
-export const selectEtoState = (state: IAppState): EEtoState => {
+export const selectEtoState = (state: TAppGlobalState): EEtoState => {
   const userType = selectUserType(state);
   const etoState =
     userType === EUserType.NOMINEE ? selectNomineeEtoState(state) : selectIssuerEtoState(state);

@@ -2,13 +2,13 @@ import { expect } from "chai";
 
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { DeepPartial } from "../../types";
 import { selectIsVisibleSecurityNotification } from "./selectors";
 
 describe("selectIsVisibleSecurityNotification", () => {
   it("should return false if KYC data is still loading", () => {
-    const appState: DeepPartial<IAppState> = {
+    const appState: DeepPartial<TAppGlobalState> = {
       kyc: {
         statusLoading: true,
       },
@@ -26,7 +26,7 @@ describe("selectIsVisibleSecurityNotification", () => {
   });
 
   it("should return false if route is whitelisted", () => {
-    const appState: DeepPartial<IAppState> = {
+    const appState: DeepPartial<TAppGlobalState> = {
       kyc: {},
       auth: {
         user: {

@@ -4,7 +4,7 @@ import { isString } from "lodash";
 import * as queryString from "query-string";
 import { createSelector } from "reselect";
 
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { selectRouter } from "../routing/selectors";
 import { IConnectedWeb3State, IWalletPrivateData, IWeb3State } from "./reducer";
 import { EWalletSubType, EWalletType, TWalletMetadata } from "./types";
@@ -17,7 +17,7 @@ export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State
   return state;
 };
 
-export const selectEthereumAddress = (state: IAppState): EthereumAddress =>
+export const selectEthereumAddress = (state: TAppGlobalState): EthereumAddress =>
   state.web3.connected ? state.web3.wallet.address : state.web3.previousConnectedWallet!.address;
 
 export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAddress, address =>
@@ -64,7 +64,7 @@ export const selectWalletType = (state: IWeb3State): EWalletType | undefined =>
     ? state.wallet.walletType
     : state.previousConnectedWallet && state.previousConnectedWallet.walletType;
 
-export const selectCurrentLightWalletSalt = (state: IAppState): string | undefined =>
+export const selectCurrentLightWalletSalt = (state: TAppGlobalState): string | undefined =>
   (state.web3.connected &&
     state.web3.wallet &&
     state.web3.wallet.walletType === EWalletType.LIGHT &&
@@ -80,7 +80,7 @@ export const selectPreviousLightWalletEmail = (state: IWeb3State): string | unde
     state.previousConnectedWallet.email) ||
   undefined;
 
-export const selectPreviousLightWalletSalt = (state: IAppState): string | undefined =>
+export const selectPreviousLightWalletSalt = (state: TAppGlobalState): string | undefined =>
   (!state.web3.connected &&
     state.web3.previousConnectedWallet &&
     state.web3.previousConnectedWallet.walletType === EWalletType.LIGHT &&

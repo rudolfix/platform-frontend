@@ -4,7 +4,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { mockedStore } from "../../../../../test/fixtures/mockedStore";
-import { IAppState } from "../../../../store";
+import { TAppGlobalState } from "../../../../store";
 import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { MyNeuWidgetLayout, MyNeuWidgetLayoutWrapper } from "./MyNeuWidget";
@@ -48,11 +48,11 @@ const incomingPayouts = {
 const payoutState = ({
   ...mockedStore,
   investorTickets: { ...mockedStore.investorTickets, ...tokensDisbursal },
-} as unknown) as IAppState;
+} as unknown) as TAppGlobalState;
 const incomingPayoutState = ({
   ...mockedStore,
   investorTickets: { ...mockedStore.investorTickets, ...incomingPayouts },
-} as unknown) as IAppState;
+} as unknown) as TAppGlobalState;
 
 storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
   .add("with funds", () =>

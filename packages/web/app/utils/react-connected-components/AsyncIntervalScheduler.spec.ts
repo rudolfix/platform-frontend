@@ -1,8 +1,8 @@
 import { safeDelay, setupFakeClock } from "@neufund/shared";
+import { noopLogger } from "@neufund/shared-modules";
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { noopLogger } from "../../lib/dependencies/logger";
 import { AsyncIntervalScheduler } from "./AsyncIntervalScheduler";
 
 describe("AsyncIntervalScheduler", () => {

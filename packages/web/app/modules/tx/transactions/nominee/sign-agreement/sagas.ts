@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { EEtoState } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { ETOCommitment } from "../../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../../lib/web3/types";
-import { IAppState } from "../../../../../store";
+import { TAppGlobalState } from "../../../../../store";
 import { actions } from "../../../../actions";
 import { InvalidETOStateError } from "../../../../eto/errors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../../eto/types";
@@ -135,7 +135,7 @@ function* generateSignNomineeInvestmentAgreementTx({
     throw new InvalidETOStateError(nomineeEto.state, EEtoState.ON_CHAIN);
   }
 
-  const agreementLink = yield select((state: IAppState) =>
+  const agreementLink = yield select((state: TAppGlobalState) =>
     selectNomineeInvestmentAgreementHash(state, nomineeEto.previewCode),
   );
 

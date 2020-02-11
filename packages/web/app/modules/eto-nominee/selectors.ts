@@ -1,7 +1,8 @@
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { nomineeRequestsToArray } from "../nominee-flow/utils";
 
-export const selectNomineeRequests = (state: IAppState) =>
+export const selectNomineeRequests = (state: TAppGlobalState) =>
   nomineeRequestsToArray(state.etoNominee.nomineeRequests);
 
-export const selectEtoNomineeIsLoading = (state: IAppState): boolean => state.etoNominee.isLoading;
+export const selectEtoNomineeIsLoading = (state: TAppGlobalState): boolean =>
+  state.etoNominee.isLoading;

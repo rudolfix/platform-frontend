@@ -1,28 +1,32 @@
 import { assertNever, multiplyBigNumbers } from "@neufund/shared";
 
 import { ECurrency } from "../../../components/shared/formatters/utils";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { ITokenPriceStateData } from "./reducer";
 
-export const selectTokenPriceData = (state: IAppState): ITokenPriceStateData | undefined =>
+export const selectTokenPriceData = (state: TAppGlobalState): ITokenPriceStateData | undefined =>
   state.tokenPrice.tokenPriceData;
 
-export const selectEtherPriceEur = (state: IAppState): string => {
+export const selectEtherPriceEur = (state: TAppGlobalState): string => {
   const data = selectTokenPriceData(state);
   return (data && data.etherPriceEur) || "0";
 };
 
-export const selectNeuPriceEur = (state: IAppState): string => {
+export const selectNeuPriceEur = (state: TAppGlobalState): string => {
   const data = selectTokenPriceData(state);
   return (data && data.neuPriceEur) || "0";
 };
 
-export const selectEurPriceEther = (state: IAppState): string => {
+export const selectEurPriceEther = (state: TAppGlobalState): string => {
   const data = selectTokenPriceData(state);
   return (data && data.eurPriceEther) || "0";
 };
 
-export const selectEurEquivalent = (state: IAppState, amount: string, currency: ECurrency) => {
+export const selectEurEquivalent = (
+  state: TAppGlobalState,
+  amount: string,
+  currency: ECurrency,
+) => {
   switch (currency) {
     case ECurrency.NEU:
       return multiplyBigNumbers([selectNeuPriceEur(state), amount]);

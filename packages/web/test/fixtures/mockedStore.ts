@@ -2,11 +2,11 @@ import BigNumber from "bignumber.js";
 
 import { EUserType } from "../../app/lib/api/users/interfaces";
 import { EWalletSubType, EWalletType } from "../../app/modules/web3/types";
-import { IAppState } from "../../app/store";
+import { TAppGlobalState } from "../../app/store";
 import { DeepPartial } from "../../app/types";
 import { testCompany, testEto } from "../fixtures";
 
-export const mockedStore: DeepPartial<IAppState> = {
+export const mockedStore: DeepPartial<TAppGlobalState> = {
   etoIssuer: {
     eto: testEto,
     company: testCompany,

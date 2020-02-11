@@ -3,7 +3,7 @@ import { fork, put, select } from "@neufund/sagas";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
-import { IAppState } from "../../../../store";
+import { TAppGlobalState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { selectMyInvestorTicketByEtoId } from "../../../investor-portfolio/selectors";
@@ -45,7 +45,9 @@ function* startClaimGenerator(_: TGlobalDependencies, etoId: string): any {
   const generatedTxDetails: ITxData = yield neuCall(generateGetClaimTransaction, etoId);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
-  const etoData = yield select((state: IAppState) => selectMyInvestorTicketByEtoId(state, etoId));
+  const etoData = yield select((state: TAppGlobalState) =>
+    selectMyInvestorTicketByEtoId(state, etoId),
+  );
   const costUlps = yield select(selectTxGasCostEthUlps);
 
   yield put(

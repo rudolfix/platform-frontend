@@ -11,7 +11,7 @@ import {
   TAnalyticsTransaction,
   TAnalyticsTransactionsResponse,
 } from "../../lib/api/analytics-api/interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEurEquivalent } from "../shared/tokenPrice/selectors";
@@ -49,7 +49,7 @@ export function* mapAnalyticsApiTransactionResponse(
       }
 
       const neuReward = transaction.extraData.neumarkReward!.toString();
-      const neuRewardEur: string = yield select((state: IAppState) =>
+      const neuRewardEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, neuReward, ECurrency.NEU),
       );
 
@@ -90,7 +90,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-      const amountEur: string = yield select((state: IAppState) =>
+      const amountEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, common.amount, currency),
       );
 
@@ -128,7 +128,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
         const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-        const amountEur: string = yield select((state: IAppState) =>
+        const amountEur: string = yield select((state: TAppGlobalState) =>
           selectEurEquivalent(state, common.amount, currency),
         );
 
@@ -200,7 +200,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
         const neuReward = transaction.extraData.neumarkReward!.toString();
 
-        const neuRewardEur: string = yield select((state: IAppState) =>
+        const neuRewardEur: string = yield select((state: TAppGlobalState) =>
           selectEurEquivalent(state, neuReward, ECurrency.NEU),
         );
 
@@ -227,7 +227,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-      const amountEur: string = yield select((state: IAppState) =>
+      const amountEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, common.amount, currency),
       );
 
@@ -253,7 +253,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-      const amountEur: string = yield select((state: IAppState) =>
+      const amountEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, common.amount, currency),
       );
 
@@ -414,7 +414,9 @@ function* showTransactionDetails(
   _: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.txHistory.showTransactionDetails>,
 ): Generator<any, any, any> {
-  const transaction = yield select((state: IAppState) => selectTXById(action.payload.id, state));
+  const transaction = yield select((state: TAppGlobalState) =>
+    selectTXById(action.payload.id, state),
+  );
 
   if (!transaction) {
     throw new Error(`Transaction should be defined for ${action.payload.id}`);

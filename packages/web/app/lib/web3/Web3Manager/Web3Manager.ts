@@ -1,4 +1,5 @@
 import { EthereumAddress, EthereumNetworkId } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 import { BigNumber } from "bignumber.js";
 import PollingBlockTracker from "eth-block-tracker";
 import { EventEmitter } from "events";
@@ -7,7 +8,6 @@ import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../../modules/tx/utils";
-import { ILogger } from "../../dependencies/logger";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";

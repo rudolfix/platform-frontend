@@ -1,10 +1,11 @@
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 
-export const selectDownloadAgrementModalIsOpen = (state: IAppState): boolean =>
+export const selectDownloadAgrementModalIsOpen = (state: TAppGlobalState): boolean =>
   state.portfolioDownloadAgreementsModal.isOpen;
 
-export const selectDownloadAgreementModalEtoId = (state: IAppState): string | undefined =>
+export const selectDownloadAgreementModalEtoId = (state: TAppGlobalState): string | undefined =>
   state.portfolioDownloadAgreementsModal.etoId;
 
-export const selectDownloadAgreementModalIsRetailEto = (state: IAppState): boolean | undefined =>
-  state.portfolioDownloadAgreementsModal.isRetailEto;
+export const selectDownloadAgreementModalIsRetailEto = (
+  state: TAppGlobalState,
+): boolean | undefined => state.portfolioDownloadAgreementsModal.isRetailEto;

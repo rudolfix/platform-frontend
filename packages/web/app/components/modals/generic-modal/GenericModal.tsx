@@ -13,7 +13,7 @@ import {
   selectGenericModalIsOpen,
   selectGenericModalObj,
 } from "../../../modules/generic-modal/selectors";
-import { appConnect, AppDispatch } from "../../../store";
+import { appConnect, AppGlobalDispatch } from "../../../store";
 import { getMessageTranslation } from "../../translatedMessages/messages";
 import { Modal } from "../Modal";
 
@@ -34,7 +34,7 @@ interface IHandlersProps {
 }
 
 interface IReduxProps {
-  dispatch: AppDispatch;
+  dispatch: AppGlobalDispatch;
 }
 
 export const genericModalIcons = {

@@ -4,7 +4,7 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 
 import * as etoUtils from "../../../lib/api/eto/EtoUtils";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import * as etoSelectors from "../../eto/selectors";
 import { IInvestorTicketsState } from "../reducer";
 import * as investorTicketSelectors from "../selectors";
@@ -37,7 +37,7 @@ describe("investor-portfolio > selectors", () => {
     });
 
     // tslint:disable-next-line:no-object-literal-type-assertion
-    const state = {} as IAppState;
+    const state = {} as TAppGlobalState;
     const etoId = "";
     const selectCalculatedEtoTicketSizesUlpsById =
       investorTicketSelectors.selectCalculatedEtoTicketSizesUlpsById;
@@ -114,7 +114,7 @@ describe("investor-portfolio > selectors", () => {
             },
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
@@ -129,7 +129,7 @@ describe("investor-portfolio > selectors", () => {
             },
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
@@ -144,7 +144,7 @@ describe("investor-portfolio > selectors", () => {
             },
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
@@ -159,7 +159,7 @@ describe("investor-portfolio > selectors", () => {
             },
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.true;
     });
@@ -174,7 +174,7 @@ describe("investor-portfolio > selectors", () => {
             },
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(investorTicketSelectors.selectIsIncomingPayoutPending(state)).to.be.false;
     });
@@ -200,7 +200,7 @@ describe("investor-portfolio > selectors", () => {
         investorTickets: {
           tokensDisbursal: { data: [euroTokendDisbursal, ethDisbursal] as ITokenDisbursal[] },
         } as IInvestorTicketsState,
-      } as IAppState;
+      } as TAppGlobalState;
 
       const data = investorTicketSelectors.selectTokensDisbursal(state);
 
@@ -220,7 +220,7 @@ describe("investor-portfolio > selectors", () => {
             ] as ITokenDisbursal[],
           },
         } as IInvestorTicketsState,
-      } as IAppState;
+      } as TAppGlobalState;
 
       const data = investorTicketSelectors.selectTokensDisbursal(state);
 
@@ -239,7 +239,7 @@ describe("investor-portfolio > selectors", () => {
             ] as ITokenDisbursal[],
           },
         } as IInvestorTicketsState,
-      } as IAppState;
+      } as TAppGlobalState;
 
       const data = investorTicketSelectors.selectTokensDisbursal(state);
 

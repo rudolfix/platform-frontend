@@ -1,5 +1,4 @@
-import { ILogger } from ".";
-import { ErrorArgs, LogArg, TUser } from "./ILogger";
+import { ErrorArgs, ILogger, LogArg, TUser } from "./ILogger";
 
 export class DevConsoleLogger implements ILogger {
   setUser(user: TUser | null): void {

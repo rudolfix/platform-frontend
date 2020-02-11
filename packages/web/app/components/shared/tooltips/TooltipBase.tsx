@@ -1,11 +1,10 @@
 import { ContainerContext } from "@neufund/shared";
+import { ILogger, noopLogger } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { Tooltip, TooltipProps } from "reactstrap";
 
 import { symbols } from "../../../di/symbols";
-import { ILogger } from "../../../lib/dependencies/logger";
-import { noopLogger } from "../../../lib/dependencies/logger/index";
 
 import * as styles from "./TooltipBase.module.scss";
 

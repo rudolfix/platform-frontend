@@ -5,7 +5,7 @@ import { toPairs, zip } from "lodash";
 import { tripleZip } from "../../../../typings/modifications";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions, TAction, TActionFromCreator } from "../../actions";
 import { neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
 import { mapLedgerErrorToErrorMessage } from "./errors";
@@ -31,7 +31,7 @@ export function* loadLedgerAccounts({
   web3Manager,
   contractsService,
 }: TGlobalDependencies): Generator<any, any, any> {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
   const {
     advanced,
     index,
@@ -80,7 +80,7 @@ export function* loadLedgerAccounts({
 
 export function* setDerivationPathPrefix(_: TGlobalDependencies, action: TAction): any {
   if (action.type !== "LEDGER_SET_DERIVATION_PATH_PREFIX") return;
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
   const currDp = state.ledgerWizardState.derivationPathPrefix;
   const { derivationPathPrefix } = action.payload;
 

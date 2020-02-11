@@ -1,4 +1,4 @@
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 
-export const selectPendingDownloads = (state: IAppState): { [ipfsHash: string]: boolean } =>
+export const selectPendingDownloads = (state: TAppGlobalState): { [ipfsHash: string]: boolean } =>
   state.immutableStorage.pendingDownloads;

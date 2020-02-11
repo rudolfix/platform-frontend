@@ -4,7 +4,7 @@ import { EthereumAddressWithChecksum, multiplyBigNumbers } from "@neufund/shared
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
-import { IAppState } from "../../../../store";
+import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
@@ -51,10 +51,10 @@ function* startRefundGenerator(_: TGlobalDependencies, etoId: string): Generator
   const generatedTxDetails: ITxData = yield neuCall(generateGetRefundTransaction, etoId);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
-  const etoData = yield select((state: IAppState) =>
+  const etoData = yield select((state: TAppGlobalState) =>
     selectEtoWithCompanyAndContractById(state, etoId),
   );
-  const investorTicket: IInvestorTicket = yield select((state: IAppState) =>
+  const investorTicket: IInvestorTicket = yield select((state: TAppGlobalState) =>
     selectInvestorTicket(state, etoId),
   );
   const ethPrice: string = yield select(selectEtherPriceEur);

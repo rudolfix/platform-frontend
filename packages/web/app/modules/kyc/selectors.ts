@@ -5,11 +5,11 @@ import {
   EKycRequestStatus,
   KycBankQuintessenceBankAccount,
 } from "../../lib/api/kyc/KycApi.interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { IKycState } from "./reducer";
 import { TBankAccount } from "./types";
 
-export const selectKyc = (state: IAppState) => state.kyc;
+export const selectKyc = (state: TAppGlobalState) => state.kyc;
 
 export const selectKycStatus = createSelector(selectKyc, kyc => kyc.status);
 
@@ -23,30 +23,34 @@ export const selectKycRequestType = createSelector(
   status => status && status.type,
 );
 
-export const selectIndividualData = (state: IAppState) => state.kyc.individualData;
-export const selectIndividualDataLoading = (state: IAppState) => !!state.kyc.individualDataLoading;
-export const selectIsSavingKycForm = (state: IAppState) => !!state.kyc.kycSaving;
+export const selectIndividualData = (state: TAppGlobalState) => state.kyc.individualData;
+export const selectIndividualDataLoading = (state: TAppGlobalState) =>
+  !!state.kyc.individualDataLoading;
+export const selectIsSavingKycForm = (state: TAppGlobalState) => !!state.kyc.kycSaving;
 
-export const selectIndividualFiles = (state: IAppState) => state.kyc.individualFiles;
-export const selectIndividualFilesLoading = (state: IAppState) => state.kyc.individualFilesLoading;
-export const selectIndividualFilesUploading = (state: IAppState): boolean =>
+export const selectIndividualFiles = (state: TAppGlobalState) => state.kyc.individualFiles;
+export const selectIndividualFilesLoading = (state: TAppGlobalState) =>
+  state.kyc.individualFilesLoading;
+export const selectIndividualFilesUploading = (state: TAppGlobalState): boolean =>
   state.kyc.individualFilesUploadingCount > 0;
 
-export const selectBusinessFiles = (state: IAppState) => state.kyc.businessFiles;
-export const selectBusinessFilesUploading = (state: IAppState): boolean =>
+export const selectBusinessFiles = (state: TAppGlobalState) => state.kyc.businessFiles;
+export const selectBusinessFilesUploading = (state: TAppGlobalState): boolean =>
   state.kyc.businessFilesUploadingCount > 0;
 
-export const selectLegalRepFiles = (state: IAppState) => state.kyc.legalRepresentativeFiles;
-export const selectLegalRepFilesUploading = (state: IAppState): boolean =>
+export const selectLegalRepFiles = (state: TAppGlobalState) => state.kyc.legalRepresentativeFiles;
+export const selectLegalRepFilesUploading = (state: TAppGlobalState): boolean =>
   state.kyc.legalRepresentativeFilesUploadingCount > 0;
 
-export const selectBeneficialOwnerFilesUploading = (state: IAppState, fileId: string): boolean =>
-  state.kyc.beneficialOwnerFilesUploadingCount[fileId] > 0;
+export const selectBeneficialOwnerFilesUploading = (
+  state: TAppGlobalState,
+  fileId: string,
+): boolean => state.kyc.beneficialOwnerFilesUploadingCount[fileId] > 0;
 
-export const selectKycUploadedFiles = (state: IAppState) =>
+export const selectKycUploadedFiles = (state: TAppGlobalState) =>
   selectIndividualFiles(state) || selectBusinessFiles(state) || selectLegalRepFiles(state);
 
-export const selectKycRequestStatus = (state: IAppState): EKycRequestStatus | undefined => {
+export const selectKycRequestStatus = (state: TAppGlobalState): EKycRequestStatus | undefined => {
   const kycStatus = selectKycStatus(state);
 
   if (kycStatus) {
@@ -80,7 +84,7 @@ export const selectCombinedBeneficialOwnerOwnership = (state: DeepReadonly<IKycS
   );
 };
 
-export const selectKycIsLoading = (state: IAppState): boolean => state.kyc.statusLoading;
+export const selectKycIsLoading = (state: TAppGlobalState): boolean => state.kyc.statusLoading;
 
 export const selectKycIsInitialLoading = createSelector(
   selectKycStatus,
@@ -91,25 +95,25 @@ export const selectKycIsInitialLoading = createSelector(
 export const selectWidgetError = (state: DeepReadonly<IKycState>): string | undefined =>
   state.statusError;
 
-export const selectIndividualClientName = (state: IAppState) => {
+export const selectIndividualClientName = (state: TAppGlobalState) => {
   const data = state.kyc.individualData;
 
   return data ? [data.firstName, data.lastName].filter(Boolean).join(" ") : undefined;
 };
 
-export const selectBusinessClientName = (state: IAppState) =>
+export const selectBusinessClientName = (state: TAppGlobalState) =>
   state.kyc.businessData && state.kyc.businessData.name;
 
-export const selectClientName = (state: IAppState) =>
+export const selectClientName = (state: TAppGlobalState) =>
   selectBusinessClientName(state) || selectIndividualClientName(state);
 
-export const selectIndividualClientCountry = ({ kyc }: IAppState) =>
+export const selectIndividualClientCountry = ({ kyc }: TAppGlobalState) =>
   kyc.individualData && kyc.individualData.country;
 
-export const selectBusinessClientCountry = ({ kyc }: IAppState) =>
+export const selectBusinessClientCountry = ({ kyc }: TAppGlobalState) =>
   kyc.businessData && kyc.businessData.country;
 
-export const selectClientCountry = (state: IAppState) =>
+export const selectClientCountry = (state: TAppGlobalState) =>
   selectIndividualClientCountry(state) || selectBusinessClientCountry(state);
 
 export const selectClientJurisdiction = createSelector(
@@ -137,7 +141,7 @@ export const selectIndividualAddress = createSelector(
   },
 );
 
-export const selectClaims = (state: IAppState) => state.kyc.claims;
+export const selectClaims = (state: TAppGlobalState) => state.kyc.claims;
 
 export const selectIsClaimsVerified = createSelector(selectClaims, claims => {
   if (claims) {
@@ -155,17 +159,17 @@ export const selectIsAccountFrozen = createSelector(selectClaims, claims => {
   return false;
 });
 
-export const selectIsUserVerifiedOnBlockchain = (state: IAppState) =>
+export const selectIsUserVerifiedOnBlockchain = (state: TAppGlobalState) =>
   selectIsClaimsVerified(state) && !selectIsAccountFrozen(state);
 
-export const selectBankAccount = (state: IAppState): DeepReadonly<TBankAccount> | undefined =>
+export const selectBankAccount = (state: TAppGlobalState): DeepReadonly<TBankAccount> | undefined =>
   state.kyc.bankAccount;
 
-export const selectIsBankAccountLoading = (state: IAppState): boolean =>
+export const selectIsBankAccountLoading = (state: TAppGlobalState): boolean =>
   state.kyc.bankAccount === undefined;
 
 export const selectQuintessenceBankAccount = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): DeepReadonly<KycBankQuintessenceBankAccount> | undefined => state.kyc.quintessenceBankAccount;
 
 export const selectKycSupportedInstantIdProviders = createSelector(

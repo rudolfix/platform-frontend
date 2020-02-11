@@ -1,14 +1,14 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { AppDispatch } from "../../store";
+import { AppGlobalDispatch } from "../../store";
 
 interface IOnLeaveActionDispatchProps {
   enterAction: Function;
 }
 
 interface IOnLeaveActionOptions<P = {}> {
-  actionCreator: (dispatch: AppDispatch, props: P) => void;
+  actionCreator: (dispatch: AppGlobalDispatch, props: P) => void;
   pure?: boolean;
 }
 

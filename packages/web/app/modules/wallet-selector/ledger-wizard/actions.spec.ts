@@ -16,7 +16,7 @@ import { LedgerWalletConnector } from "../../../lib/web3/ledger-wallet/LedgerCon
 import { LedgerWallet } from "../../../lib/web3/ledger-wallet/LedgerWallet";
 import { IDerivationPathToAddress } from "../../../lib/web3/ledger-wallet/types";
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../web3/types";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
@@ -80,7 +80,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
   describe("loadLedgerAccountsAction", () => {
     it("should load accounts from ledger connector", async () => {
-      const dummyState: Partial<IAppState> = {
+      const dummyState: Partial<TAppGlobalState> = {
         ledgerWizardState: {
           isInitialConnectionInProgress: false,
           index: 1,
@@ -184,7 +184,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
   describe("setDerivationPathPrefixAction", () => {
     const newDP = "test";
-    const dummyState: Partial<IAppState> = {
+    const dummyState: Partial<TAppGlobalState> = {
       ledgerWizardState: {
         isInitialConnectionInProgress: false,
         index: 1,

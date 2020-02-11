@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { mockedStore } from "../../../../test/fixtures/mockedStore";
 import { EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { withStore } from "../../../utils/react-connected-components/storeDecorator.unsafe";
 import { MyPortfolioWidget } from "./MyPortfolioWidget";
 
@@ -58,7 +58,7 @@ const defaultState = ({
       ],
     },
   },
-} as unknown) as IAppState;
+} as unknown) as TAppGlobalState;
 
 const stateNoKyc = { ...defaultState, kyc: undefined };
 

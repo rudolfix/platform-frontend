@@ -1224,7 +1224,7 @@
   "settings.submit-your-proposal.publish": "Publish",
   "settings.unsubscription.button": "I want to unsubscribe",
   "settings.unsubscription.confirmation": "Unsubscribe confirmation",
-  "settings.unsubscription.confirmation.description": "We’re sorry to see you go <strong>{email}</strong>!  Please confirm your request to unsubscribe from our Neufund news mailing list.",
+  "settings.unsubscription.confirmation.description": "We’re sorry to see you go {email}!  Please confirm your request to unsubscribe from our Neufund news mailing list.",
   "settings.unsubscription.error": "An error occurred during unsubscription process",
   "settings.unsubscription.invalid": "Invalid unsubscription link",
   "settings.unsubscription.invalid.description": "We're sorry, but your unsubscription link is not valid. Please check it or contact with our {supportDesk}",

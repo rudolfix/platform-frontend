@@ -1,3 +1,4 @@
+import { noopLogger } from "@neufund/shared-modules";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import { noop } from "lodash";
@@ -5,7 +6,6 @@ import * as React from "react";
 import { SinonStub, stub } from "sinon";
 import { object, string } from "yup";
 
-import { noopLogger } from "../../../lib/dependencies/logger/index";
 import * as hooks from "../hooks/useLogger";
 import { Form } from "./Form";
 

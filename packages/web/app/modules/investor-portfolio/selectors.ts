@@ -13,7 +13,7 @@ import { createSelector } from "reselect";
 import { shouldShowToken } from "../../components/portfolio/utils";
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { selectMyPledge } from "../bookbuilding-flow/selectors";
 import {
   selectEtoById,
@@ -40,10 +40,10 @@ import {
   MIMIMUM_RETAIL_TICKET_EUR_ULPS,
 } from "./utils";
 
-const selectInvestorTicketsState = (state: IAppState) => state.investorTickets;
+const selectInvestorTicketsState = (state: TAppGlobalState) => state.investorTickets;
 
 export const selectInvestorTicket = (
-  state: IAppState,
+  state: TAppGlobalState,
   etoId: string,
 ): IInvestorTicket | undefined => {
   const investorState = selectInvestorTicketsState(state);
@@ -51,7 +51,7 @@ export const selectInvestorTicket = (
   return investorState.investorEtoTickets[etoId];
 };
 
-export const selectHasInvestorTicket = (state: IAppState, etoId: string) => {
+export const selectHasInvestorTicket = (state: TAppGlobalState, etoId: string) => {
   const investorState = selectInvestorTicketsState(state);
 
   const investmentTicket = investorState.investorEtoTickets[etoId];
@@ -65,7 +65,7 @@ export const selectHasInvestorTicket = (state: IAppState, etoId: string) => {
 };
 
 export const selectEtoWithInvestorTickets = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): TETOWithInvestorTicket[] | undefined => {
   const etos = selectEtos(state);
   if (etos) {
@@ -83,7 +83,7 @@ export const selectEtoWithInvestorTickets = (
 };
 
 export const selectMyAssets = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): TEtoWithCompanyAndContractReadonly[] | undefined => {
   const etos = selectEtos(state);
 
@@ -98,7 +98,9 @@ export const selectMyAssets = (
   return undefined;
 };
 
-export const selectMyPendingAssets = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
+export const selectMyPendingAssets = (
+  state: TAppGlobalState,
+): TETOWithInvestorTicket[] | undefined => {
   const etos = selectEtoWithInvestorTickets(state);
   if (etos) {
     return etos.filter(eto => !eto.investorTicket.claimedOrRefunded);
@@ -108,7 +110,7 @@ export const selectMyPendingAssets = (state: IAppState): TETOWithInvestorTicket[
 };
 
 export const selectMyInvestorTicketByEtoId = (
-  state: IAppState,
+  state: TAppGlobalState,
   etoId: string,
 ): TETOWithInvestorTicket | undefined => {
   const eto = selectEtoWithCompanyAndContractById(state, etoId);
@@ -121,7 +123,7 @@ export const selectMyInvestorTicketByEtoId = (
   return undefined;
 };
 
-export const selectCalculatedContribution = (state: IAppState, etoId: string) => {
+export const selectCalculatedContribution = (state: TAppGlobalState, etoId: string) => {
   const investorState = selectInvestorTicketsState(state);
 
   return (
@@ -131,7 +133,7 @@ export const selectCalculatedContribution = (state: IAppState, etoId: string) =>
 };
 
 export const selectInitialCalculatedContribution = (
-  state: IAppState,
+  state: TAppGlobalState,
   etoId: string,
 ): ICalculatedContribution | undefined => {
   const investorState = selectInvestorTicketsState(state);
@@ -139,7 +141,7 @@ export const selectInitialCalculatedContribution = (
   return investorState.initialCalculatedContributions[etoId];
 };
 
-export const selectInitialMaxCapExceeded = (state: IAppState, etoId: string): boolean => {
+export const selectInitialMaxCapExceeded = (state: TAppGlobalState, etoId: string): boolean => {
   const initialCalculatedContribution = selectInitialCalculatedContribution(state, etoId);
 
   if (!initialCalculatedContribution) return false;
@@ -147,12 +149,12 @@ export const selectInitialMaxCapExceeded = (state: IAppState, etoId: string): bo
   return initialCalculatedContribution.maxCapExceeded;
 };
 
-export const selectEquityTokenCountByEtoId = (state: IAppState, etoId: string) => {
+export const selectEquityTokenCountByEtoId = (state: TAppGlobalState, etoId: string) => {
   const contrib = selectCalculatedContribution(state, etoId);
   return contrib && contrib.equityTokenInt.toString();
 };
 
-export const selectCalculatedEtoTicketSizesUlpsById = (state: IAppState, etoId: string) => {
+export const selectCalculatedEtoTicketSizesUlpsById = (state: TAppGlobalState, etoId: string) => {
   const eto = selectEtoById(state, etoId);
   const contrib = selectCalculatedContribution(state, etoId);
   const investorTicket = selectInvestorTicket(state, etoId);
@@ -191,18 +193,18 @@ export const selectCalculatedEtoTicketSizesUlpsById = (state: IAppState, etoId: 
   return undefined;
 };
 
-export const selectNeuRewardUlpsByEtoId = (state: IAppState, etoId: string) => {
+export const selectNeuRewardUlpsByEtoId = (state: TAppGlobalState, etoId: string) => {
   const contrib = selectCalculatedContribution(state, etoId);
   return contrib && contrib.neuRewardUlps.toString();
 };
 
-export const selectIsWhitelisted = (state: IAppState, etoId: string) => {
+export const selectIsWhitelisted = (state: TAppGlobalState, etoId: string) => {
   const contrib = selectInitialCalculatedContribution(state, etoId);
 
   return !!contrib && contrib.isWhitelisted;
 };
 
-export const selectIsEligibleToPreEto = (state: IAppState, etoId: string) => {
+export const selectIsEligibleToPreEto = (state: TAppGlobalState, etoId: string) => {
   const isLockedWalletConnected = selectLockedWalletConnected(state);
   // pre-sale eligibility depends on bookbuilding participation which will eventually be committed to smart contract
   const isOnBookbuildingWhitelist = selectMyPledge(state, etoId) !== undefined;
@@ -210,7 +212,7 @@ export const selectIsEligibleToPreEto = (state: IAppState, etoId: string) => {
   return isLockedWalletConnected || isOnBookbuildingWhitelist;
 };
 
-export const selectShouldShowWhitelistDiscount = (state: IAppState, eto: TEtoSpecsData) => {
+export const selectShouldShowWhitelistDiscount = (state: TAppGlobalState, eto: TEtoSpecsData) => {
   const isPreEto =
     (selectEtoOnChainStateById(state, eto.etoId) || EETOStateOnChain.Setup) <=
     EETOStateOnChain.Whitelist;
@@ -218,16 +220,16 @@ export const selectShouldShowWhitelistDiscount = (state: IAppState, eto: TEtoSpe
   return Boolean(eto.whitelistDiscountFraction && isEligibleToPreEto && isPreEto);
 };
 
-export const selectShouldShowPublicDiscount = (state: IAppState, eto: TEtoSpecsData) =>
+export const selectShouldShowPublicDiscount = (state: TAppGlobalState, eto: TEtoSpecsData) =>
   Boolean(!selectShouldShowWhitelistDiscount(state, eto) && eto.publicDiscountFraction);
 
-export const selectTokensDisbursalIsLoading = (state: IAppState) =>
+export const selectTokensDisbursalIsLoading = (state: TAppGlobalState) =>
   state.investorTickets.tokensDisbursal.loading;
 
-export const selectTokensDisbursalNotInitialized = (state: IAppState) =>
+export const selectTokensDisbursalNotInitialized = (state: TAppGlobalState) =>
   state.investorTickets.tokensDisbursal.data === undefined;
 
-export const selectTokensDisbursalError = (state: IAppState) =>
+export const selectTokensDisbursalError = (state: TAppGlobalState) =>
   state.investorTickets.tokensDisbursal.error;
 
 /**
@@ -253,12 +255,14 @@ export const selectTokensDisbursalEurEquivTotal = createSelector(
   },
 );
 
-export const selectPayoutAvailable = (state: IAppState) => {
+export const selectPayoutAvailable = (state: TAppGlobalState) => {
   const tokenDisbursal = selectTokensDisbursal(state);
   return !!tokenDisbursal && tokenDisbursal.length > 0;
 };
 
-export const selectMyAssetsWithTokenData = (state: IAppState): TETOWithTokenData[] | undefined => {
+export const selectMyAssetsWithTokenData = (
+  state: TAppGlobalState,
+): TETOWithTokenData[] | undefined => {
   const myAsssets = selectMyAssets(state);
   if (myAsssets) {
     return myAsssets
@@ -282,16 +286,16 @@ export const selectMyAssetsEurEquivTotal = createSelector(selectMyAssetsWithToke
   return undefined;
 });
 
-export const selectIsIncomingPayoutLoading = (state: IAppState): boolean =>
+export const selectIsIncomingPayoutLoading = (state: TAppGlobalState): boolean =>
   state.investorTickets.incomingPayouts.loading;
 
-export const selectIsIncomingPayoutNotInitialized = (state: IAppState): boolean =>
+export const selectIsIncomingPayoutNotInitialized = (state: TAppGlobalState): boolean =>
   state.investorTickets.incomingPayouts.data === undefined;
 
-export const selectIncomingPayoutError = (state: IAppState): boolean =>
+export const selectIncomingPayoutError = (state: TAppGlobalState): boolean =>
   state.investorTickets.incomingPayouts.error;
 
-export const selectEtherTokenIncomingPayout = (state: IAppState): string => {
+export const selectEtherTokenIncomingPayout = (state: TAppGlobalState): string => {
   const incomingPayout = state.investorTickets.incomingPayouts.data;
 
   if (incomingPayout) {
@@ -303,7 +307,7 @@ export const selectEtherTokenIncomingPayout = (state: IAppState): string => {
   return "0";
 };
 
-export const selectEuroTokenIncomingPayout = (state: IAppState): string => {
+export const selectEuroTokenIncomingPayout = (state: TAppGlobalState): string => {
   const incomingPayout = state.investorTickets.incomingPayouts.data;
 
   if (incomingPayout) {
@@ -315,12 +319,12 @@ export const selectEuroTokenIncomingPayout = (state: IAppState): string => {
   return "0";
 };
 
-export const selectIncomingPayoutSnapshotDate = (state: IAppState): number | undefined => {
+export const selectIncomingPayoutSnapshotDate = (state: TAppGlobalState): number | undefined => {
   const incomingPayout = state.investorTickets.incomingPayouts.data;
   return incomingPayout && incomingPayout.snapshotDate;
 };
 
-export const selectIsIncomingPayoutPending = (state: IAppState): boolean => {
+export const selectIsIncomingPayoutPending = (state: TAppGlobalState): boolean => {
   const etherToken = selectEtherTokenIncomingPayout(state);
   const euroToken = selectEuroTokenIncomingPayout(state);
 
@@ -346,7 +350,9 @@ export const selectIncomingPayoutEurEquiv = createSelector(
     ]),
 );
 
-export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[] | undefined => {
+export const selectPastInvestments = (
+  state: TAppGlobalState,
+): TETOWithInvestorTicket[] | undefined => {
   const etos = selectEtoWithInvestorTickets(state);
   if (etos) {
     return etos
@@ -372,7 +378,7 @@ export const selectPastInvestments = (state: IAppState): TETOWithInvestorTicket[
 };
 
 export const selectTokenPersonalDiscount = (
-  state: IAppState,
+  state: TAppGlobalState,
   etoId: string,
 ): TTokensPersonalDiscount | undefined => {
   const investorState = selectInvestorTicketsState(state);

@@ -1,7 +1,4 @@
-import { EWalletType } from "../../../modules/web3/types";
-import { EUserType } from "../../api/users/interfaces";
-
-export type TUser = { id: string; type: EUserType; walletType: EWalletType };
+export type TUser = { id: string; type: string; walletType: string };
 export type LogArg = string | object;
 export type ErrorArgs = LogArg | Error;
 

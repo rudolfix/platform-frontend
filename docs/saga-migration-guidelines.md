@@ -31,7 +31,7 @@ The `@neufund/sagas` should take care of which type of effect should you use. Ju
 
 ### Migration plan
 
-If you find your self refactoring, changing, editing an untyped saga you are obliged as part of your task as a developer to correctly type the saga. The simplest way is to use `Generator<Any,CorrectType,Any>` as that automatically infers the final return type.
+If you find your self refactoring, changing, editing an untyped saga you are obliged as part of your task as a developer to correctly type the saga. The simplest way is to use `Generator<any, CorrectType, any>` as that automatically infers the final return type.
 
 What is important for now is the final return of the saga.
 

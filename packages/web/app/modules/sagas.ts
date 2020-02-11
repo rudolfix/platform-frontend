@@ -16,7 +16,7 @@ import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investment-flow/sagas";
 import { investorTicketsSagas } from "./investor-portfolio/sagas";
 import { kycSagas } from "./kyc/sagas";
-import { marketingEmailsSagas } from "./marketing-emails/sagas";
+import { marketingUnsubscribeView } from "./marketing-unsubscribe-view/sagas";
 import { nomineeFlowSagas } from "./nominee-flow/sagas";
 import { notificationModalSagas } from "./notification-modal/sagas";
 import { profileSagas } from "./profile/sagas";
@@ -54,7 +54,6 @@ function* allSagas(): Generator<any, any, any> {
     fork(routingSagas),
     fork(tokenPriceSagas),
     fork(notificationModalSagas),
-    fork(marketingEmailsSagas),
     // Sagas that should be restarted immediately when logout occurs
     fork(neuRestartIf, actions.auth.logout, termsOfServiceSagas),
     fork(neuRestartIf, actions.auth.logout, bankTransferFlowSaga),
@@ -81,6 +80,7 @@ function* allSagas(): Generator<any, any, any> {
     fork(neuRestartIf, actions.auth.logout, investmentFlowSagas),
     fork(neuRestartIf, actions.auth.logout, txHistorySaga),
     fork(neuRestartIf, actions.auth.logout, nomineeFlowSagas),
+    fork(neuRestartIf, actions.auth.logout, marketingUnsubscribeView),
   ]);
 }
 

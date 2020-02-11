@@ -5,7 +5,7 @@ import { ProfileMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { accessWalletAndRunEffect } from "../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
@@ -24,7 +24,7 @@ function* addNewEmailEffect(
   { notificationCenter, logger }: TGlobalDependencies,
   email: string,
 ): any {
-  const user = yield select((s: IAppState) => selectUser(s.auth));
+  const user = yield select((s: TAppGlobalState) => selectUser(s.auth));
   const salt = yield select(selectLightWalletSalt);
   logger.info("New Email added");
   yield neuCall(updateUser, { ...user, new_email: email, salt: salt });
@@ -34,7 +34,7 @@ function* addNewEmailEffect(
 }
 
 function* abortEmailUpdateEffect({ notificationCenter, logger }: TGlobalDependencies): any {
-  const user = yield select((s: IAppState) => selectUser(s.auth));
+  const user = yield select((s: TAppGlobalState) => selectUser(s.auth));
   const email = user.verifiedEmail;
   logger.info("Email change aborted");
   yield neuCall(updateUser, { ...user, new_email: email });
@@ -44,7 +44,7 @@ function* abortEmailUpdateEffect({ notificationCenter, logger }: TGlobalDependen
 }
 
 function* resendEmailEffect({ notificationCenter, logger }: TGlobalDependencies): any {
-  const user = yield select((s: IAppState) => selectUser(s.auth));
+  const user = yield select((s: TAppGlobalState) => selectUser(s.auth));
   const salt = yield select(selectLightWalletSalt);
   const email = user.unverifiedEmail;
   if (!email) throw new Error("No unverified email");
@@ -60,13 +60,15 @@ export function* addNewEmail(
 ): Generator<any, any, any> {
   const email = action.payload.email;
 
-  const isEmailAvailable = yield select((s: IAppState) => selectDoesEmailExist(s.auth));
+  const isEmailAvailable = yield select((s: TAppGlobalState) => selectDoesEmailExist(s.auth));
   const emailModalTitle = isEmailAvailable
     ? createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE)
     : createMessage(ProfileMessage.PROFILE_ADD_EMAIL_TITLE);
 
-  const actualVerifiedEmail = yield select((s: IAppState) => selectVerifiedUserEmail(s.auth));
-  const actualUnverifiedEmail = yield select((s: IAppState) => selectUnverifiedUserEmail(s.auth));
+  const actualVerifiedEmail = yield select((s: TAppGlobalState) => selectVerifiedUserEmail(s.auth));
+  const actualUnverifiedEmail = yield select((s: TAppGlobalState) =>
+    selectUnverifiedUserEmail(s.auth),
+  );
 
   if (email === actualVerifiedEmail) {
     notificationCenter.error(createMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_VERIFIED_EXISTS), {

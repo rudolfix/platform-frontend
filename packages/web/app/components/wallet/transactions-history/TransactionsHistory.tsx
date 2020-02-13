@@ -8,22 +8,24 @@ import { branch, compose, renderComponent } from "recompose";
 import { ETransactionDirection } from "../../../lib/api/analytics-api/interfaces";
 import { actions } from "../../../modules/actions";
 import { selectTxHistoryPaginated } from "../../../modules/tx-history/selectors";
+import { selectPlatformMiningTransaction } from "../../../modules/tx/monitor/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
+import { PendingTransactionImage } from "../../layouts/header/PendingTransactionStatus";
 import { ETheme, Money } from "../../shared/formatters/Money";
 import { ENumberOutputFormat } from "../../shared/formatters/utils";
 import { Heading } from "../../shared/Heading";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { Panel } from "../../shared/Panel";
 import { ENewTableTheme, NewTableRow, Table } from "../../shared/table";
-import { TransactionData } from "../../shared/TransactionData";
-import { TransactionName } from "./TransactionName";
+import { Transaction, TransactionData, TransactionName } from "../../shared/transaction";
 
 import * as styles from "./TransactionsHistory.module.scss";
 
 type TStateProps = {
   transactionsHistoryPaginated: ReturnType<typeof selectTxHistoryPaginated>;
+  pendingTransaction: ReturnType<typeof selectPlatformMiningTransaction>;
 };
 
 type TDispatchProps = {
@@ -35,8 +37,18 @@ const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProp
   transactionsHistoryPaginated,
   loadTxHistoryNext,
   showTransactionDetails,
+  pendingTransaction,
 }) => (
   <Panel>
+    {pendingTransaction && (
+      <div className={styles.pendingTransactionWrapper}>
+        <Transaction
+          data-test-id="pending-transactions.transaction-mining"
+          icon={<PendingTransactionImage />}
+          transaction={pendingTransaction}
+        />
+      </div>
+    )}
     {transactionsHistoryPaginated.transactions && (
       <div className={styles.wrapper}>
         <Table
@@ -90,7 +102,6 @@ const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProp
         </Table>
       </div>
     )}
-
     {transactionsHistoryPaginated.canLoadMore && (
       <Button
         data-test-id="transactions-history-load-more"
@@ -118,6 +129,7 @@ const TransactionsList = compose<TStateProps & TDispatchProps, {}>(
   appConnect<TStateProps, TDispatchProps>({
     stateToProps: state => ({
       transactionsHistoryPaginated: selectTxHistoryPaginated(state),
+      pendingTransaction: selectPlatformMiningTransaction(state),
     }),
     dispatchToProps: dispatch => ({
       loadTxHistoryNext: () => dispatch(actions.txHistory.loadNextTransactions()),

@@ -1,3 +1,4 @@
+import { ETransactionType } from "../../lib/api/analytics-api/interfaces";
 import { TClaimAdditionalData } from "./transactions/claim/types";
 import { TEtoSetDateAdditionalData } from "./transactions/eto-flow/types";
 import { TInvestmentAdditionalData } from "./transactions/investment/types";
@@ -122,6 +123,16 @@ export type TAdditionalDataByType<T extends ETxSenderType> = Extract<
   TSpecificTransactionState,
   { type: T }
 >["additionalData"];
+
+export type TPendingTransactionType =
+  | ETransactionType.ETO_INVESTMENT
+  | ETransactionType.NEUR_REDEEM
+  | ETransactionType.ETO_TOKENS_CLAIM
+  | ETransactionType.TRANSFER
+  | ETransactionType.PAYOUT
+  | ETransactionType.ETO_REFUND
+  | ETransactionType.REDISTRIBUTE_PAYOUT
+  | ETransactionType.NOMINEE_CONFIRMED_AGREEMENT;
 
 export enum ETokenType {
   ETHER = "ETHER",

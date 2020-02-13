@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { EthereumAddressWithChecksum, multiplyBigNumbers } from "@neufund/shared";
+import { ETH_DECIMALS, EthereumAddressWithChecksum, multiplyBigNumbers } from "@neufund/shared";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
@@ -60,12 +60,14 @@ function* startRefundGenerator(_: TGlobalDependencies, etoId: string): Generator
   const ethPrice: string = yield select(selectEtherPriceEur);
   const costUlps: string = yield select(selectTxGasCostEthUlps);
   const costEurUlps = multiplyBigNumbers([ethPrice, costUlps]);
+  const tokenDecimals = ETH_DECIMALS;
 
   yield put(
     actions.txSender.txSenderContinueToSummary<ETxSenderType.INVESTOR_REFUND>({
       etoId,
       costUlps,
       costEurUlps,
+      tokenDecimals,
       tokenName: etoData.equityTokenName,
       tokenSymbol: etoData.equityTokenSymbol,
       amountEth: investorTicket.amountEth.toString(),

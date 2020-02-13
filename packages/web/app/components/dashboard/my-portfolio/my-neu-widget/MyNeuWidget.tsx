@@ -29,7 +29,7 @@ import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
-import { ETheme } from "../../../shared/TransactionData";
+import { ETheme } from "../../../shared/transaction/TransactionData";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
 import { MyNeuWidgetPayout } from "./MyNeuWidgetPayout";
 

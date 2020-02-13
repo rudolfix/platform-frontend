@@ -1,4 +1,4 @@
-import { convertToUlps, multiplyBigNumbers, Q18 } from "@neufund/shared";
+import { convertToUlps, ETH_DECIMALS, multiplyBigNumbers, Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 
@@ -91,6 +91,7 @@ export const convertToTokenDisbursal = (
   token,
   amountToBeClaimed: amountToBeClaimed.toString(),
   totalDisbursedAmount: totalDisbursedAmount.toString(),
+  tokenDecimals: ETH_DECIMALS,
   amountEquivEur:
     token === ECurrency.ETH
       ? multiplyBigNumbers([amountToBeClaimed.toString(), etherPrice])

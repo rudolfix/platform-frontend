@@ -1,9 +1,10 @@
-import { toEquityTokenSymbol } from "@neufund/shared";
+import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
+import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import {
   withMockedDate,
   withModalBody,
@@ -31,6 +32,7 @@ const props = {
         equityTokenName: "Quintessence",
       },
     },
+    investmentType: EInvestmentType.NEur,
     investmentEth: "12345678900000000000",
     investmentEur: "12345678900000000000000",
     gasCostEth: "2000000000000000",
@@ -38,6 +40,7 @@ const props = {
     estimatedReward: "40000000000000000000",
     etherPriceEur: "200",
     isIcbm: false,
+    tokenDecimals: ETH_DECIMALS,
   },
   txTimestamp: date.valueOf(),
   goToPortfolio: action("goToPortfolio"),

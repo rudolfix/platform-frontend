@@ -14,7 +14,7 @@ import {
   ESize as ETransactionDataSize,
   ETheme as ETransactionTheme,
   TransactionData,
-} from "../TransactionData";
+} from "../transaction/TransactionData";
 
 import * as styles from "./MoneySuiteWidget.module.scss";
 

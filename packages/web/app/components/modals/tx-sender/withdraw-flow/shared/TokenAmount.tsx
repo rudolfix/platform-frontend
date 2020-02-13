@@ -9,7 +9,7 @@ import {
   MoneySingleSuiteWidget,
   MoneySuiteWidget,
 } from "../../../../shared/MoneySuiteWidget/MoneySuiteWidget";
-import { ESize } from "../../../../shared/TransactionData";
+import { ESize } from "../../../../shared/transaction/TransactionData";
 
 import * as styles from "../Transfer.module.scss";
 

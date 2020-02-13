@@ -6,6 +6,7 @@ import { TTxHistory } from "../../../modules/tx-history/types";
 import { CommonHtmlProps, TTranslatedString } from "../../../types";
 import { EHeadingSize, Heading } from "../../shared/Heading";
 import { EtherscanTxLink } from "../../shared/links/EtherscanLink";
+import { TransactionName } from "../../shared/transaction/TransactionName";
 import { EtoInvestmentTransactionDetails } from "./transaction-modal-content/EtoInvestmentTransactionDetails";
 import { EtoRefundTransactionsDetails } from "./transaction-modal-content/EtoRefundTransactionDetails";
 import { EtoTokensClaimTransactionDetails } from "./transaction-modal-content/EtoTokensClaimTransactionDetails";
@@ -15,7 +16,6 @@ import { NEurRedeemTransactionDetails } from "./transaction-modal-content/NEurRe
 import { PayoutTransactionsDetails } from "./transaction-modal-content/PayoutTransactionDetails";
 import { RedistributePayoutTransactionsDetails } from "./transaction-modal-content/RedistributePayoutTransactionDetails";
 import { TransferTransactionDetails } from "./transaction-modal-content/TransferTransactionDetails";
-import { TransactionName } from "./TransactionName";
 
 import * as styles from "./TransactionDetailsModal.module.scss";
 

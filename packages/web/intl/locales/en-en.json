@@ -1579,6 +1579,7 @@
   "wallet.tx-list.name.neur-destroy": "{currency} Liquidated",
   "wallet.tx-list.name.neur-purchase": "Purchased {currency}",
   "wallet.tx-list.name.neur-redeem": "Redeemed {currency}",
+  "wallet.tx-list.name.nominee-sign-tha": "Token Holder Agreement Signed",
   "wallet.tx-list.name.payout": "Accepted Payout from NEU",
   "wallet.tx-list.name.redistribute-payout": "Redistributed Payout from NEU",
   "wallet.tx-list.name.transfer.received": "Received {currency}",

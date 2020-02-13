@@ -49,12 +49,15 @@ function* startClaimGenerator(_: TGlobalDependencies, etoId: string): any {
     selectMyInvestorTicketByEtoId(state, etoId),
   );
   const costUlps = yield select(selectTxGasCostEthUlps);
+  const tokenDecimals = 0;
 
   yield put(
     actions.txSender.txSenderContinueToSummary<ETxSenderType.USER_CLAIM>({
       etoId,
       costUlps,
+      tokenDecimals,
       tokenName: etoData.equityTokenName,
+      tokenSymbol: etoData.equityTokenSymbol,
       tokenQuantity: etoData.investorTicket.equityTokenInt.toString(),
       neuRewardUlps: etoData.investorTicket.rewardNmkUlps.toString(),
     }),

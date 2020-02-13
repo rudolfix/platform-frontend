@@ -17,7 +17,7 @@ import {
   ESize as ETransactionDataSize,
   ETheme as ETransactionDataTheme,
   TransactionData,
-} from "../../../../shared/TransactionData";
+} from "../../../../shared/transaction/TransactionData";
 import { TxStatusLabel } from "../../shared/TxStatusLabel";
 import { TokenAmount } from "../shared/TokenAmount";
 import { TransferHeader } from "../shared/TransferHeader";

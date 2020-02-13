@@ -1,10 +1,11 @@
-import { toEquityTokenSymbol } from "@neufund/shared";
+import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../../test/testUtils";
+import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { InvestmentTransactionDetails } from "./InvestmentTransactionDetails";
 
 import tokenIcon from "../../../../assets/img/token_icon.svg";
@@ -24,10 +25,12 @@ describe("InvestmentTransactionDetails", () => {
         equityTokenName: "Quintessence",
       },
     },
+    investmentType: EInvestmentType.NEur,
     investmentEth: "194415356251498492",
     investmentEur: "44000000000000000000",
     gasCostEth: "1200000000000000",
     equityTokens: "73",
+    tokenDecimals: ETH_DECIMALS,
     estimatedReward: "130133566632824437863",
     etherPriceEur: "226.319570883490141259",
     isIcbm: false,

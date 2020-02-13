@@ -7,6 +7,10 @@
   margin-top: 0;
 }
 
+.pending-transaction-wrapper {
+  @include remove-panel-padding;
+}
+
 .amount {
   &--in {
     font-weight: bold;

@@ -15,6 +15,7 @@ import {
   selectInvestmentEthValueUlps,
   selectInvestmentEtoId,
   selectInvestmentEurValueUlps,
+  selectInvestmentType,
   selectIsICBMInvestment,
 } from "../../../investment-flow/selectors";
 import {
@@ -142,6 +143,8 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Generator<an
 
   const etherPriceEur: string = yield select(selectEtherPriceEur);
   const isIcbm: boolean = yield select(selectIsICBMInvestment);
+  const investmentType: string = yield select(selectInvestmentType);
+  const tokenDecimals = 18;
 
   if (!eto.investmentCalculatedValues) {
     logger.error("ETO investment calculated values are empty");
@@ -160,6 +163,8 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Generator<an
         equityTokenName: eto.equityTokenName,
       },
     },
+    tokenDecimals,
+    investmentType,
     investmentEth,
     investmentEur,
     gasCostEth,

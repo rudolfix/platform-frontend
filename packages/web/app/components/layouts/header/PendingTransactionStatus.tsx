@@ -125,4 +125,4 @@ const PendingTransactionStatus = compose<IComponentProps, IExternalProps>(
   ),
 )(PendingTransactionStatusLayout);
 
-export { PendingTransactionStatus };
+export { PendingTransactionStatus, PendingTransactionImage };

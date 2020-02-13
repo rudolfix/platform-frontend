@@ -26,7 +26,7 @@ import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared
 import { TokenIcon } from "../../shared/icons/TokenIcon";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
-import { ESize } from "../../shared/TransactionData";
+import { ESize } from "../../shared/transaction/TransactionData";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import styles from "./PortfolioStats.module.scss";

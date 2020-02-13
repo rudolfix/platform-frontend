@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETransactionDirection, ETransactionType } from "../../../lib/api/analytics-api/interfaces";
 import { TTxHistory } from "../../../modules/tx-history/types";
-import { selectUnits } from "../../shared/formatters/utils";
+import { selectUnits } from "../formatters/utils";
 
 type TExternalProps = { transaction: TTxHistory };
 

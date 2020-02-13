@@ -505,7 +505,6 @@ export const InvestmentSelection = compose<IProps, {}>(
           formatMinMaxTickets(etoTicketSizes.maxTicketEurUlps, ERoundingMode.DOWN)) ||
         "0";
       const investmentCurrency = getInvestmentCurrency(investmentType);
-
       return {
         minTicketEur,
         maxTicketEur,

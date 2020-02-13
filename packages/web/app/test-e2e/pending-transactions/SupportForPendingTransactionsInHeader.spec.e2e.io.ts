@@ -2,6 +2,7 @@ import { Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { ETxSenderState } from "../../modules/tx/sender/reducer";
+import { generalPendingTxFixture } from "../../modules/tx/utils";
 import { sendEth } from "../utils/ethRpcUtils";
 import {
   addFailedPendingTransactions,
@@ -16,7 +17,6 @@ import {
   tid,
 } from "../utils/index";
 import { createAndLoginNewUser } from "../utils/userHelpers";
-import { generalPendingTxFixture } from "./generalPendingTxFixture";
 import { assertPendingWithdrawModal, doWithdraw } from "./utils";
 
 describe("Pending Transactions In Header", () => {

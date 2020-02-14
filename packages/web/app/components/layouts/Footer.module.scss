@@ -8,9 +8,9 @@
 
   display: flex;
   grid-area: footer;
-  height: 64px;
+  min-height: 64px;
   width: 100%;
-  padding: px-to-rem(12px) px-to-rem(80px);
+  padding: px-to-rem(12px) px-to-rem(30px);
   margin: auto;
   background-color: $neu-charcoal-grey;
   color: $neu-gull-gray;
@@ -21,14 +21,14 @@
 }
 
 .copyright {
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(xs) {
     flex-basis: 100%;
     order: 1;
   }
 }
 
 .link {
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(xs) {
     &:first-of-type {
       margin: 0;
     }

@@ -26,8 +26,8 @@ export const selectUserEmail = (state: IAuthState): string | undefined =>
 export const selectVerifiedUserEmail = (state: IAuthState): string | undefined =>
   state.user && state.user.verifiedEmail;
 
-export const selectUnverifiedUserEmail = (state: IAuthState): string | undefined =>
-  state.user && state.user.unverifiedEmail;
+export const selectUnverifiedUserEmail = (state: TAppGlobalState): string | undefined =>
+  state.auth.user && state.auth.user.unverifiedEmail;
 
 export const selectUser = (state: IAuthState): IUser | undefined => state.user;
 

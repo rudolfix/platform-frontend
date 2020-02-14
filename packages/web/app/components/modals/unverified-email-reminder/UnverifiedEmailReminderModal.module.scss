@@ -1,0 +1,22 @@
+.modal-body {
+  display: grid;
+  grid-gap: px-to-rem(24);
+
+  align-items: center;
+  justify-items: center;
+  padding: 0 px-to-rem(40) px-to-rem(5);
+}
+
+.modal-title {
+  font-family: $font-family-roboto;
+  font-size: px-to-rem(20px);
+  line-height: 1.4;
+  letter-spacing: .2px;
+
+  margin: 0;
+}
+
+.modal-text {
+  text-align: center;
+  margin: 0;
+}

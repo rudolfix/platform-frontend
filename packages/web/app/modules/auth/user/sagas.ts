@@ -29,6 +29,7 @@ import {
 import { selectUrlUserType } from "../../wallet-selector/selectors";
 import { EWalletSubType, EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
+import { checkForPendingEmailVerification } from "../email/sagas";
 import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
@@ -79,6 +80,7 @@ export function* signInUser({
 
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
+    yield call(checkForPendingEmailVerification);
 
     const userType: EUserType = yield select(selectUserType);
     const storedWalletMetadata: TStoredWalletMetadata = {

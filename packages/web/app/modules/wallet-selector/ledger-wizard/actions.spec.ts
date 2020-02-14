@@ -1,4 +1,4 @@
-import { expectSaga } from "@neufund/sagas";
+import { expectSaga } from "@neufund/sagas/tests";
 import { Dictionary } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
@@ -8,6 +8,7 @@ import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures"
 import { createMock } from "../../../../test/testUtils";
 import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
+import { TGlobalDependencies } from "../../../di/setupBindings";
 import { Neumark } from "../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../lib/web3/ContractsService";
 import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
@@ -15,10 +16,9 @@ import { LedgerWalletConnector } from "../../../lib/web3/ledger-wallet/LedgerCon
 import { LedgerWallet } from "../../../lib/web3/ledger-wallet/LedgerWallet";
 import { IDerivationPathToAddress } from "../../../lib/web3/ledger-wallet/types";
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../web3/types";
-import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
 import {
   finishSettingUpLedgerConnector,
@@ -80,7 +80,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
   describe("loadLedgerAccountsAction", () => {
     it("should load accounts from ledger connector", async () => {
-      const dummyState: Partial<IAppState> = {
+      const dummyState: Partial<TAppGlobalState> = {
         ledgerWizardState: {
           isInitialConnectionInProgress: false,
           index: 1,
@@ -184,7 +184,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
   describe("setDerivationPathPrefixAction", () => {
     const newDP = "test";
-    const dummyState: Partial<IAppState> = {
+    const dummyState: Partial<TAppGlobalState> = {
       ledgerWizardState: {
         isInitialConnectionInProgress: false,
         index: 1,

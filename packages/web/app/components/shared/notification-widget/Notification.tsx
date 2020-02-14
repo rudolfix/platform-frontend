@@ -1,9 +1,10 @@
+import { ButtonBase, ButtonClose } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ENotificationType } from "../../../modules/notifications/types";
 import { CommonHtmlProps, TDataTestId, TTranslatedString } from "../../../types";
-import { ButtonBase, ButtonClose } from "../buttons";
 
 import infoIcon from "../../../assets/img/notifications/info.svg";
 import warningIcon from "../../../assets/img/notifications/warning.svg";
@@ -51,7 +52,12 @@ const Notification: React.FunctionComponent<INotificationProps & TDataTestId & C
     )}
 
     {onClick && (
-      <ButtonClose className={styles.close} data-test-id="notification-close" onClick={onClick} />
+      <ButtonClose
+        className={styles.close}
+        data-test-id="notification-close"
+        onClick={onClick}
+        iconProps={{ alt: <FormattedMessage id="common.close" /> }}
+      />
     )}
   </section>
 );

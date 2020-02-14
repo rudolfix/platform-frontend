@@ -1,9 +1,9 @@
+import { Button, ButtonArrowRight, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button, ButtonArrowRight, EButtonLayout } from "../../../shared/buttons";
 import { Message } from "../../message/Message";
 
 import redistributeIcon from "../../../../assets/img/redistribute.svg";

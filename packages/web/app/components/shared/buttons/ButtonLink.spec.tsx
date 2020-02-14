@@ -1,9 +1,9 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { withMockStore } from "../../../utils/react-connected-components/storeDecorator.unsafe";
-import { Button, EButtonLayout } from "./Button";
 import { ButtonLink } from "./ButtonLink";
 
 describe("<ButtonLink />", () => {

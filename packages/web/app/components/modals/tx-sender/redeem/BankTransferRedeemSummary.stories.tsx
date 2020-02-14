@@ -18,6 +18,7 @@ storiesOf("BankTransferRedeem/Summary", module)
           bankName: "mBank",
           accountNumberLast4: "1234",
         },
+        tokenDecimals: 0,
       }}
     />
   ));

@@ -2,7 +2,9 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { TDataTestId } from "../../types";
+import { InlineIcon } from "./icons/InlineIcon";
 
+import warningIcon from "../../assets/img/inline_icons/warning-circle--solid.svg";
 import * as styles from "./WarningAlert.module.scss";
 
 interface IWarningAlertProps {
@@ -16,7 +18,7 @@ export const WarningAlert: React.FunctionComponent<IWarningAlertProps & TDataTes
 }) => (
   <div className={cn(styles.warningAlert, className)}>
     <span data-test-id={dataTestId}>
-      <i className={cn("fa fa-exclamation-circle mr-2", styles.icon)} aria-hidden="true" />
+      <InlineIcon svgIcon={warningIcon} className={styles.icon} />
       {children}
     </span>
   </div>

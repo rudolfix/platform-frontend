@@ -1,21 +1,31 @@
 import { createSelector } from "reselect";
 
+import { ENumberInputFormat } from "../../../components/shared/formatters/utils";
+import { ETransactionDirection } from "../../../lib/api/analytics-api/interfaces";
 import { TxPendingWithMetadata, TxWithMetadata } from "../../../lib/api/users/interfaces";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
+import { ETransactionStatus } from "../../tx-history/types";
 import { ETxSenderState } from "../sender/reducer";
+import { ETxSenderType } from "../types";
+import {
+  getPendingTransactionAmount,
+  getPendingTransactionCurrency,
+  getPendingTransactionType,
+} from "../utils";
 
-export const selectAreTherePlatformPendingTxs = (state: IAppState): boolean => {
+export const selectAreTherePlatformPendingTxs = (state: TAppGlobalState): boolean => {
   const pendingTransaction = state.txMonitor.txs.pendingTransaction;
   return !!pendingTransaction && pendingTransaction.transactionStatus === ETxSenderState.MINING;
 };
 
 export const selectPlatformPendingTransaction = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): TxPendingWithMetadata | undefined =>
   state.txMonitor.txs.pendingTransaction as TxPendingWithMetadata | undefined;
 
-export const selectExternalPendingTransaction = (state: IAppState): TxWithMetadata | undefined =>
-  state.txMonitor.txs.oooTransactions[0];
+export const selectExternalPendingTransaction = (
+  state: TAppGlobalState,
+): TxWithMetadata | undefined => state.txMonitor.txs.oooTransactions[0];
 
 export const selectAreTherePendingTxs = createSelector(
   selectAreTherePlatformPendingTxs,
@@ -23,3 +33,42 @@ export const selectAreTherePendingTxs = createSelector(
   (areTherePlatformPendingTxs, externalPendingTransaction) =>
     areTherePlatformPendingTxs || !!externalPendingTransaction,
 );
+
+export const selectPlatformMiningTransaction = (
+  state: TAppGlobalState,
+): TxPendingWithMetadata | null => {
+  const pending = selectPlatformPendingTransaction(state);
+  if (pending && pending.transactionStatus === ETxSenderState.MINING) {
+    const additionalData = pending.transactionAdditionalData
+      ? {
+          ...pending.transactionAdditionalData,
+          amount: getPendingTransactionAmount(pending),
+          currency: getPendingTransactionCurrency(pending),
+          companyName:
+            pending.transactionAdditionalData && pending.transactionAdditionalData.eto
+              ? pending.transactionAdditionalData.eto.companyName
+              : pending.transactionAdditionalData.companyName,
+          isICBMInvestment: pending.transactionAdditionalData.isIcbm,
+          amountEur: pending.transactionAdditionalData.investmentEur,
+          equityTokenCurrency:
+            pending.transactionAdditionalData.eto &&
+            pending.transactionAdditionalData.eto.equityTokenSymbol,
+          subType: ETransactionStatus.PENDING,
+          transactionDirection:
+            pending.transactionType === ETxSenderType.WITHDRAW ||
+            pending.transactionType === ETxSenderType.TRANSFER_TOKENS
+              ? ETransactionDirection.OUT
+              : ETransactionDirection.IN,
+          amountFormat: ENumberInputFormat.ULPS,
+          type: getPendingTransactionType(pending),
+        }
+      : null;
+
+    return {
+      ...pending,
+      transactionAdditionalData: additionalData,
+    };
+  } else {
+    return null;
+  }
+};

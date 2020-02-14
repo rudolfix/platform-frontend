@@ -1,11 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as cn from "classnames";
 import { ArrayHelpers, connect, FieldArray, getIn } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps, TFormikConnect, TTranslatedString } from "../../../../types";
-import { Button } from "../../buttons";
-import { EButtonLayout } from "../../buttons/Button";
 import { FormInput } from "./FormInput";
 import { NumberTransformingField } from "./NumberTransformingField";
 

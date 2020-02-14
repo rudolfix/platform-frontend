@@ -1,9 +1,9 @@
+import { ButtonInline } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { toFormValue } from "../../../../../../modules/tx/user-flow/transfer/utils";
-import { ButtonInline } from "../../../../../shared/buttons";
 
 import * as styles from "../../Transfer.module.scss";
 

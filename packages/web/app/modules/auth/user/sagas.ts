@@ -14,7 +14,7 @@ import {
   SignerTimeoutError,
   SignerUnknownError,
 } from "../../../lib/web3/Web3Manager/Web3Manager";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
 import { EInitType } from "../../init/reducer";
 import { loadKycRequestData } from "../../kyc/sagas";
@@ -29,6 +29,7 @@ import {
 import { selectUrlUserType } from "../../wallet-selector/selectors";
 import { EWalletSubType, EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
+import { checkForPendingEmailVerification } from "../email/sagas";
 import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
@@ -73,10 +74,13 @@ export function* signInUser({
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
     // we will try to create with user type from URL but it could happen that account already exists and has different user type
-    const probableUserType: EUserType = yield select((s: IAppState) => selectUrlUserType(s.router));
+    const probableUserType: EUserType = yield select((s: TAppGlobalState) =>
+      selectUrlUserType(s.router),
+    );
 
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
+    yield call(checkForPendingEmailVerification);
 
     const userType: EUserType = yield select(selectUserType);
     const storedWalletMetadata: TStoredWalletMetadata = {
@@ -239,7 +243,7 @@ const NO_UNVERIFIED_EMAIL_REFRESH_DELAY = minutesToMs(5);
 
 function* profileMonitor({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    const isThereUnverifiedEmail = yield select((state: IAppState) =>
+    const isThereUnverifiedEmail = yield select((state: TAppGlobalState) =>
       selectIsThereUnverifiedEmail(state.auth),
     );
 

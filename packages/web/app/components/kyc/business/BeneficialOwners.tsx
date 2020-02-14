@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,7 +9,6 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { Accordion } from "../../shared/Accordion";
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { HorizontalLine } from "../../shared/HorizontalLine";
 import { KYCBeneficialOwner } from "./BeneficialOwner.unsafe";
 

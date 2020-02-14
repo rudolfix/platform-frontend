@@ -1,3 +1,4 @@
+import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import { assertNever, nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -23,8 +24,6 @@ import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
-import { Button, EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
-import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
 import { withDependencies } from "../../shared/hocs/withDependencies";
 import { ExternalLink } from "../../shared/links/ExternalLink";
 import { Notification } from "../../shared/notification-widget/Notification";

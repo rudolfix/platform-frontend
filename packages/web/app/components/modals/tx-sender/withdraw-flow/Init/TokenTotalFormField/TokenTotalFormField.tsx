@@ -2,6 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { DataRow } from "../../../../../shared/DataRow";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -13,7 +14,6 @@ import {
   ETheme,
   MoneySuiteWidget,
 } from "../../../../../shared/MoneySuiteWidget/MoneySuiteWidget";
-import { DataRow } from "../../../shared/DataRow";
 
 import ethIcon from "../../../../../../assets/img/eth_icon.svg";
 import * as styles from "../../Transfer.module.scss";

@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
 import { DAY } from "@neufund/shared";
 import * as moment from "moment";
 import * as React from "react";
@@ -20,7 +21,6 @@ import { ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../modules/tx/types";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout, EButtonWidth } from "../../shared/buttons/index";
 import {
   DashboardLoadingWidget,
   DashboardWidget,

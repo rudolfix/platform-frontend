@@ -21,12 +21,12 @@
 
   padding: 0 $layout-content-padding-sm;
   background-color: $neu-white-two;
-  box-shadow: $shadow-bottom-black;
+  border-bottom: 1px solid $neu-very-light-blue;
 }
 
 @mixin logo {
   grid-area: logo;
-  height: 100%;
+  height: px-to-rem(32px);
   flex-shrink: 0;
   display: flex;
   flex-flow: row;
@@ -46,38 +46,39 @@
   @include media-breakpoint-up(md) {
     grid-template: auto / auto 1fr auto auto;
     grid-template-areas: "logo main-menu transaction-monitor my-account";
-    grid-gap: px-to-rem(35px);
+    grid-gap: px-to-rem(24px);
   }
 
   display: grid;
-  grid-template: auto / 1fr auto 1fr;
-  grid-template-areas: "mobile-menu logo transaction-monitor";
+  grid-template: auto / 1fr auto 1fr auto;
+  grid-gap: px-to-rem(16px);
+  grid-template-areas: "mobile-menu logo transaction-monitor my-account";
 }
 
 .logo-unauth {
   @include logo;
-  @include media-breakpoint-up(md) {
-    height: px-to-rem(32px);
-  }
 
   margin-right: auto;
 }
 
 .logo-auth {
   @include logo;
+
   @include media-breakpoint-up(md) {
-    height: px-to-rem(32px);
     justify-self: start;
   }
+}
+
+.logo-fullscreen {
+  @include logo;
 }
 
 .logo-image {
   @include media-breakpoint-up(md) {
     margin-left: px-to-rem(6px);
-    height: px-to-rem(32px);
   }
 
-  height: px-to-rem(25px);
+  height: px-to-rem(32px);
 }
 
 .logo-title {
@@ -88,6 +89,12 @@
   }
 
   display: none;
+}
+
+.logo-title-fullscreen {
+  display: block;
+  margin-left: px-to-rem(14px);
+  height: px-to-rem(17px);
 }
 
 .logo-title-auth {
@@ -126,13 +133,16 @@
 }
 
 .button {
-  @include media-breakpoint-up(md) {
-    height: 48px;
-  }
-
-  @include media-breakpoint-up (lg) {
-    height: 58px;
-  }
-
   margin-left: 1rem;
+}
+
+.helper-text {
+  @include nds-body-small;
+
+  @include media-breakpoint-up(md) {
+    display: block;
+  }
+
+  display: none;
+  color: $neu-shuttle-gray;
 }

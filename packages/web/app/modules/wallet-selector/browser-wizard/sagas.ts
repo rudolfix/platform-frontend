@@ -6,7 +6,7 @@ import {
   BrowserWallet,
   BrowserWalletAccountApprovalRejectedError,
 } from "../../../lib/web3/browser-wallet/BrowserWallet";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { neuTakeUntil } from "../../sagasUtils";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
@@ -16,7 +16,7 @@ export function* tryConnectingWithBrowserWallet({
   web3Manager,
   logger,
 }: TGlobalDependencies): any {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
 
   if (!state.browserWalletWizardState.approvalRejected) {
     try {

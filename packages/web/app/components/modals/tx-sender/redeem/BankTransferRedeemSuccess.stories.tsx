@@ -22,6 +22,7 @@ const props = {
       bankName: "mBank",
       accountNumberLast4: "1234",
     },
+    tokenDecimals: 0,
   },
   txTimestamp: date.valueOf(),
   goToWallet: action("goToWallet"),

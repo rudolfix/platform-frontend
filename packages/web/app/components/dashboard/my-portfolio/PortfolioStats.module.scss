@@ -1,0 +1,42 @@
+.container {
+  min-height: px-to-rem(262px);
+  display: flex;
+  flex-direction: column;
+  padding: px-to-rem(20px);
+  color: $neu-charcoal-grey;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.title,
+.header {
+  @include nds-headline-4;
+  color: $neu-charcoal-grey;
+}
+
+.header {
+  padding-bottom: px-to-rem(8px);
+  margin-bottom: px-to-rem(24px);
+}
+
+.token {
+  @include rect(32px);
+}
+
+.button {
+  @include flex-stick-bottom;
+}
+
+.no-assets {
+  @include nds-body;
+
+  display: flex;
+  color: $neu-shuttle-gray;
+  margin-bottom: 0;
+  line-height: normal;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}

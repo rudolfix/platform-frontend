@@ -1,8 +1,8 @@
+import { ButtonBase, ButtonGroup } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { ButtonBase, ButtonGroup } from "../../shared/buttons";
 import { Heading } from "../../shared/Heading";
 import { useCopyClipboard } from "../../shared/hooks/useCopyToClipboard";
 import { InlineIcon } from "../../shared/icons/InlineIcon";

@@ -1,26 +1,26 @@
-import { expectSaga } from "@neufund/sagas";
+import { expectSaga } from "@neufund/sagas/tests";
+import { noopLogger } from "@neufund/shared-modules";
 import { expect } from "chai";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
 import { createMock } from "../../../../test/testUtils";
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
-import { noopLogger } from "../../../lib/dependencies/logger";
+import { TGlobalDependencies } from "../../../di/setupBindings";
 import {
   BrowserWallet,
   BrowserWalletLockedError,
 } from "../../../lib/web3/browser-wallet/BrowserWallet";
 import { BrowserWalletConnector } from "../../../lib/web3/browser-wallet/BrowserWalletConnector";
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { EWalletSubType, EWalletType, IBrowserWalletMetadata } from "../../web3/types";
-import { TGlobalDependencies } from "./../../../di/setupBindings";
 import { tryConnectingWithBrowserWallet } from "./sagas";
 
 // tslint:disable: no-object-literal-type-assertion
-const getStateMock: () => IAppState = () =>
-  <IAppState>{
+const getStateMock: () => TAppGlobalState = () =>
+  <TAppGlobalState>{
     browserWalletWizardState: {
       approvalRejected: false,
     },

@@ -19,6 +19,8 @@ $icon-size: 18px;
         display: none;
       }
 
+      display: block;
+
       :global(.inline-icon) {
         height: px-to-rem($icon-size);
         width: px-to-rem($icon-size);

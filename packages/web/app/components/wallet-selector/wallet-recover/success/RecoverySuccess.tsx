@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { withContainer } from "@neufund/shared";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -8,7 +9,6 @@ import { compose } from "redux";
 import { actions } from "../../../../modules/actions";
 import { ELogoutReason } from "../../../../modules/auth/types";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/buttons";
 import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
 import { WalletSelectorContainer } from "../../WalletSelectorContainer";
 import { recoverRoutes } from "../router/recoverRoutes";

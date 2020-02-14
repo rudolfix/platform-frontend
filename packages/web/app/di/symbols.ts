@@ -1,63 +1,63 @@
-import { makeDebugSymbols } from "./symbolsUtils";
+import { coreModuleApi } from "@neufund/shared-modules";
 
-export const symbols = makeDebugSymbols({
+export const symbols = {
   // configs
-  config: Symbol(),
-  ethereumNetworkConfig: Symbol(),
-  backendRootConfig: Symbol(),
+  config: Symbol("config"),
+  ethereumNetworkConfig: Symbol("ethereumNetworkConfig"),
+  backendRootConfig: Symbol("backendRootConfig"),
 
   // apis
-  apiImmutableStorage: Symbol(),
-  jsonHttpClient: Symbol(),
-  binaryHttpClient: Symbol(),
-  authorizedJsonHttpClient: Symbol(),
-  authorizedBinaryHttpClient: Symbol(),
-  signatureAuthApi: Symbol(),
-  vaultApi: Symbol(),
-  analyticsApi: Symbol(),
-  usersApi: Symbol(),
-  apiKycService: Symbol(),
-  apiEtoService: Symbol(),
-  apiEtoPledgeService: Symbol(),
-  apiEtoProductService: Symbol(),
-  apiEtoFileService: Symbol(),
-  apiEtoNomineeService: Symbol(),
-  fileStorageService: Symbol(),
-  gasApi: Symbol(),
-  marketingEmailsApi: Symbol(),
+  apiImmutableStorage: Symbol("apiImmutableStorage"),
+  jsonHttpClient: Symbol("jsonHttpClient"),
+  binaryHttpClient: Symbol("binaryHttpClient"),
+  authorizedJsonHttpClient: Symbol("authorizedJsonHttpClient"),
+  authorizedBinaryHttpClient: Symbol("authorizedBinaryHttpClient"),
+  signatureAuthApi: Symbol("signatureAuthApi"),
+  vaultApi: Symbol("vaultApi"),
+  analyticsApi: Symbol("analyticsApi"),
+  usersApi: Symbol("usersApi"),
+  apiKycService: Symbol("apiKycService"),
+  apiEtoService: Symbol("apiEtoService"),
+  apiEtoPledgeService: Symbol("apiEtoPledgeService"),
+  apiEtoProductService: Symbol("apiEtoProductService"),
+  apiEtoFileService: Symbol("apiEtoFileService"),
+  apiEtoNomineeService: Symbol("apiEtoNomineeService"),
+  fileStorageService: Symbol("fileStorageService"),
+  gasApi: Symbol("gasApi"),
+  marketingEmailsApi: Symbol("marketingEmailsApi"),
 
   // contracts
-  contractsService: Symbol(),
+  contractsService: Symbol("contractsService"),
 
   // wallets
-  lightWalletUtil: Symbol(),
-  lightWalletConnector: Symbol(),
-  ledgerWalletConnector: Symbol(),
-  browserWalletConnector: Symbol(),
-  web3Manager: Symbol(),
-  web3Factory: Symbol(),
-  web3BatchFactory: Symbol(),
+  lightWalletUtil: Symbol("lightWalletUtil"),
+  lightWalletConnector: Symbol("lightWalletConnector"),
+  ledgerWalletConnector: Symbol("ledgerWalletConnector"),
+  browserWalletConnector: Symbol("browserWalletConnector"),
+  web3Manager: Symbol("web3Manager"),
+  web3Factory: Symbol("web3Factory"),
+  web3BatchFactory: Symbol("web3BatchFactory"),
 
   // storages
-  walletStorage: Symbol(),
-  documentsConfidentialityAgreementsStorage: Symbol(),
-  userStorage: Symbol(),
-  jwtStorage: Symbol(),
+  walletStorage: Symbol("walletStorage"),
+  documentsConfidentialityAgreementsStorage: Symbol("documentsConfidentialityAgreementsStorage"),
+  userStorage: Symbol("userStorage"),
+  jwtStorage: Symbol("jwtStorage"),
 
   // utils
-  notificationCenter: Symbol(),
-  logger: Symbol(),
-  storage: Symbol(),
-  asyncIntervalSchedulerFactory: Symbol(),
-  detectBrowser: Symbol(),
-  userActivityChannel: Symbol(),
+  notificationCenter: Symbol("notificationCenter"),
+  logger: coreModuleApi.symbols.logger,
+  storage: Symbol("storage"),
+  asyncIntervalSchedulerFactory: Symbol("asyncIntervalSchedulerFactory"),
+  detectBrowser: Symbol("detectBrowser"),
+  userActivityChannel: Symbol("userActivityChannel"),
 
-  intlWrapper: Symbol(),
+  intlWrapper: Symbol("intlWrapper"),
 
   // external modules
-  cryptoRandomString: Symbol(),
+  cryptoRandomString: Symbol("cryptoRandomString"),
 
   // others
-  richTextEditorUploadAdapter: Symbol(),
-  onfidoSdk: Symbol(),
-});
+  richTextEditorUploadAdapter: Symbol("richTextEditorUploadAdapter"),
+  onfidoSdk: Symbol("onfidoSdk"),
+};

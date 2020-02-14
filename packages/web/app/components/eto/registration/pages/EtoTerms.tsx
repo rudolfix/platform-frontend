@@ -1,4 +1,6 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { DeepReadonly, RequiredByKeys } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 import { FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -15,7 +17,6 @@ import {
   TEtoProduct,
   TEtoProducts,
 } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import { ILogger } from "../../../../lib/dependencies/logger";
 import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import {
@@ -27,7 +28,6 @@ import {
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
   ECheckboxLayout,
   FormField,

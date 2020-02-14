@@ -1,3 +1,4 @@
+import { convertToUlps, ETH_DECIMALS } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
@@ -18,12 +19,16 @@ const data: TPortfolioLayoutProps = {
       amountToBeClaimed: "11200657227385184",
       timeToFirstDisbursalRecycle: 1675062154000,
       totalDisbursedAmount: "364458900000000000",
+      tokenDecimals: ETH_DECIMALS,
+      amountEquivEur: convertToUlps("11200657227385184"),
     },
     {
       token: ECurrency.ETH,
       amountToBeClaimed: "01200657227385184",
       timeToFirstDisbursalRecycle: 1675062154000,
       totalDisbursedAmount: "064458900000000000",
+      tokenDecimals: ETH_DECIMALS,
+      amountEquivEur: convertToUlps("125677344737433"),
     },
   ],
 };
@@ -41,12 +46,16 @@ storiesOf("Portfolio/PortfolioLayout", module)
             amountToBeClaimed: "12",
             timeToFirstDisbursalRecycle: 1675062154000,
             totalDisbursedAmount: "364458900000000000",
+            amountEquivEur: convertToUlps("12"),
+            tokenDecimals: ETH_DECIMALS,
           },
           {
             token: ECurrency.ETH,
             amountToBeClaimed: "12",
             timeToFirstDisbursalRecycle: 1675062154000,
             totalDisbursedAmount: "064458900000000000",
+            amountEquivEur: convertToUlps("123"),
+            tokenDecimals: ETH_DECIMALS,
           },
         ],
       }}

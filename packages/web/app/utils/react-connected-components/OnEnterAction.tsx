@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { compose, withProps } from "recompose";
 
-import { AppDispatch } from "../../store";
+import { AppGlobalDispatch } from "../../store";
 
 interface IOnEnterActionDispatchProps {
   enterAction: Function;
@@ -13,7 +13,7 @@ interface IOnEnterActionStateProps {
 }
 
 interface IOnEnterActionOptions<P = {}> {
-  actionCreator: (dispatch: AppDispatch, props: P) => void;
+  actionCreator: (dispatch: AppGlobalDispatch, props: P) => void;
   pure?: boolean;
 }
 

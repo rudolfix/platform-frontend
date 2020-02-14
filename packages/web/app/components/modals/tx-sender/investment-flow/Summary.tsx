@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -12,7 +13,6 @@ import { TInvestmentAdditionalData } from "../../../../modules/tx/transactions/i
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { ErrorAlert } from "../../../shared/Alerts";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import { DocumentButton } from "../../../shared/DocumentLink";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { InvestmentTransactionDetails } from "./InvestmentTransactionDetails";

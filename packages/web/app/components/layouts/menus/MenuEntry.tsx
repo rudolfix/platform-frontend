@@ -1,10 +1,10 @@
+import { ButtonBase } from "@neufund/design-system";
 import { invariant } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { match, NavLink } from "react-router-dom";
 
 import { TDataTestId, TTranslatedString } from "../../../types";
-import { ButtonBase } from "../../shared/buttons/ButtonBase";
 import { InlineIcon } from "../../shared/icons/InlineIcon";
 import { ExternalLink } from "../../shared/links/index";
 

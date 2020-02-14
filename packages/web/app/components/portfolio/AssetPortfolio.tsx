@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -9,7 +10,6 @@ import { ITokenDisbursal } from "../../modules/investor-portfolio/types";
 import { appConnect } from "../../store";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
-import { Button, EButtonLayout, EButtonSize } from "../shared/buttons";
 import { ETheme } from "../shared/formatters/Money";
 import { MoneyWithLessThan } from "../shared/formatters/MoneyWithLessThan";
 import { ENumberInputFormat, ENumberOutputFormat, selectUnits } from "../shared/formatters/utils";

@@ -1,39 +1,26 @@
-.my-account-button {
-  @include media-breakpoint-up(md) {
-    display: flex;
-    grid-area: my-account;
-  }
+$button-radius: 32px;
+$arrow-margin-right: 1rem;
+$arrow-half-size: 10px;
 
+.my-account-button {
+  display: flex;
+  grid-area: my-account;
   position: relative;
-  display: none;
   flex-flow: row;
   align-items: center;
   justify-content: center;
-  height: 100%;
   cursor: pointer;
-
-  .name {
-    @include media-breakpoint-up(lg) {
-      display: inline;
-    }
-
-    display: none;
-    font-family: $font-family-roboto;
-    font-size: 14px;
-    font-weight: $font-weight-medium;
-    line-height: 1.71;
-    margin-left: .5rem;
-  }
+  background-color: $neu-very-light-blue;
+  border-radius: 50%;
+  padding: 4px;
+  height: $button-radius;
 }
 
 .menu {
-  @include media-breakpoint-up (lg) {
-    top: calc(#{$header-height-lg} - 10px);
-  }
-
   position: absolute;
-  top: calc(#{$header-height-sm} - 10px);
-  right: 0;
+  top: $button-radius + 8px;
+
+  right: calc(-#{$arrow-margin-right} - #{$arrow-half-size} + #{$button-radius/2});
 
   min-width: px-to-rem(200px);
   z-index: 3;
@@ -55,10 +42,9 @@
   position: relative;
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid $neu-white-two;
-  margin-right: 1rem;
+  border-left: $arrow-half-size solid transparent;
+  border-right: $arrow-half-size solid transparent;
+  border-bottom: $arrow-half-size solid $neu-white-two;
+  margin-right: $arrow-margin-right;
   margin-left: auto;
-
 }

@@ -1,4 +1,4 @@
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 
-export const selectPlatformTermsConstants = (state: IAppState) =>
+export const selectPlatformTermsConstants = (state: TAppGlobalState) =>
   state.contracts.platformTermsConstants;

@@ -1,9 +1,9 @@
+import { ILogger } from "@neufund/shared-modules";
 import { EventEmitter } from "events";
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
 import { IntlWrapper } from "../../intl/IntlWrapper";
-import { ILogger } from "../logger";
 import {
   OnfidoSDKError,
   OnfidoSDKInitError,

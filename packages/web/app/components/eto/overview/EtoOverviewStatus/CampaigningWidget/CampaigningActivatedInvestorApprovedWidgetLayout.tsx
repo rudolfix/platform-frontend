@@ -1,10 +1,10 @@
+import { Button, EButtonSize, EButtonWidth } from "@neufund/design-system";
 import * as cn from "classnames";
 import { Formik, FormikConsumer, FormikProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { Button, EButtonSize, EButtonWidth } from "../../../../shared/buttons";
 import { Money } from "../../../../shared/formatters/Money";
 import {
   ECurrency,

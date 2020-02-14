@@ -1,8 +1,9 @@
+import { ButtonArrowRight, ButtonGroup } from "@neufund/design-system";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { appRoutes } from "../../appRoutes";
-import { ButtonArrowRight, ButtonGroup, ButtonLink } from "../buttons";
+import { ButtonLink } from "../buttons/ButtonLink";
 import {
   DashboardCenteredWidget,
   DashboardLinkWidget,

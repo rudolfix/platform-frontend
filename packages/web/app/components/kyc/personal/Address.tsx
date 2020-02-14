@@ -1,3 +1,4 @@
+import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
@@ -21,9 +22,6 @@ import {
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { Button } from "../../shared/buttons";
-import { EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
-import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
 import { boolify, FormDeprecated, FormField, unboolify } from "../../shared/forms";
 import { FormSelectCountryField } from "../../shared/forms/fields/FormSelectCountryField.unsafe";
 import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";

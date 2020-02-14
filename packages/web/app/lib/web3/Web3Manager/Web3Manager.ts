@@ -1,12 +1,13 @@
 import { EthereumAddress, EthereumNetworkId } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 import { BigNumber } from "bignumber.js";
+import PollingBlockTracker from "eth-block-tracker";
 import { EventEmitter } from "events";
 import { decorate, inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../../modules/tx/utils";
-import { ILogger } from "../../dependencies/logger";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
@@ -26,6 +27,8 @@ export class SignerUnknownError extends SignerError {}
 
 export enum EWeb3ManagerEvents {
   NEW_PERSONAL_WALLET_PLUGGED = "web3_manager_new_personal_wallet_plugged",
+  NEW_BLOCK_ARRIVED = "newBlockArrived",
+  ETH_BLOCK_TRACKER_ERROR = "ethBlockTrackerError",
 }
 
 try {
@@ -40,6 +43,7 @@ try {
 export class Web3Manager extends EventEmitter {
   public personalWallet?: IPersonalWallet;
   public networkId!: EthereumNetworkId;
+  public blockTracker!: PollingBlockTracker;
   protected internalWeb3Adapter!: Web3Adapter;
   protected internalTxWeb3Adapter!: Web3Adapter;
 
@@ -57,6 +61,7 @@ export class Web3Manager extends EventEmitter {
       new Web3.providers.HttpProvider(this.ethereumNetworkConfig.rpcUrl),
     );
 
+    //used for some transaction types that are executed on a special proxied node, e.g. gasless transactions
     const txWeb3 = this.web3Factory(
       new Web3.providers.HttpProvider(this.ethereumNetworkConfig.backendRpcUrl),
     );
@@ -65,6 +70,20 @@ export class Web3Manager extends EventEmitter {
     this.internalWeb3Adapter = new Web3Adapter(web3);
 
     this.networkId = await this.internalWeb3Adapter.getNetworkId();
+
+    this.blockTracker = new PollingBlockTracker({
+      provider: this.internalWeb3Adapter.web3.currentProvider,
+    });
+    this.blockTracker.on("latest", blockNumber => {
+      this.emit(EWeb3ManagerEvents.NEW_BLOCK_ARRIVED, {
+        blockNumber,
+      });
+    });
+    this.blockTracker.on("error", error => {
+      this.emit(EWeb3ManagerEvents.ETH_BLOCK_TRACKER_ERROR, {
+        error,
+      });
+    });
   }
 
   public async plugPersonalWallet(personalWallet: IPersonalWallet): Promise<void> {

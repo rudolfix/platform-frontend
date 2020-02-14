@@ -1,3 +1,4 @@
+import { Button, ButtonInline, EButtonLayout } from "@neufund/design-system";
 import {
   addBigNumbers,
   IIntlProps,
@@ -59,7 +60,6 @@ import { isValidFormNumber } from "../../../../modules/tx/validator/transfer/uti
 import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
-import { Button, ButtonInline, EButtonLayout } from "../../../shared/buttons";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
@@ -505,7 +505,6 @@ export const InvestmentSelection = compose<IProps, {}>(
           formatMinMaxTickets(etoTicketSizes.maxTicketEurUlps, ERoundingMode.DOWN)) ||
         "0";
       const investmentCurrency = getInvestmentCurrency(investmentType);
-
       return {
         minTicketEur,
         maxTicketEur,

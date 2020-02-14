@@ -1,10 +1,10 @@
 import { DeepReadonly } from "@neufund/shared";
 import { createSelector } from "reselect";
 
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { IGenericModal, IGenericModalState } from "./reducer";
 
-const selectGenericModal = (state: IAppState) => state.genericModal;
+const selectGenericModal = (state: TAppGlobalState) => state.genericModal;
 
 export const selectGenericModalIsOpen = createSelector(
   selectGenericModal,

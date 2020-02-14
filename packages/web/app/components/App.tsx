@@ -1,4 +1,5 @@
-import { ContainerContext, withRootMetaTag } from "@neufund/shared";
+import { ContainerContext } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 import { Container } from "inversify";
 import * as React from "react";
 import { hot } from "react-hot-loader/root";
@@ -6,7 +7,6 @@ import IdleTimer from "react-idle-timer";
 import { branch, compose, renderComponent } from "recompose";
 
 import { symbols } from "../di/symbols";
-import { ILogger } from "../lib/dependencies/logger";
 import { actions } from "../modules/actions";
 import { INACTIVITY_THROTTLE_THRESHOLD } from "../modules/auth/constants";
 import { EInitType } from "../modules/init/reducer";
@@ -14,6 +14,7 @@ import { selectInitError, selectIsInitInProgress } from "../modules/init/selecto
 import { appConnect } from "../store";
 import { onEnterAction } from "../utils/react-connected-components/OnEnterAction";
 import { ScrollToTop } from "../utils/react-connected-components/ScrollToTop";
+import { withRootMetaTag } from "../utils/withMetaTags.unsafe";
 import { AppRouter } from "./AppRouter";
 import { CriticalError } from "./layouts/CriticalError";
 import { FullPageLoading } from "./modals/full-page-loading/FullPageLoading";

@@ -1,5 +1,6 @@
 import { Q18 } from "@neufund/shared";
 
+import { generalPendingTxFixture, mismatchedPendingTxFixture } from "../../modules/tx/utils";
 import {
   addPendingExternalTransaction,
   goToWallet,
@@ -14,7 +15,6 @@ import {
   clearPendingTransactions,
   createAndLoginNewUser,
 } from "../utils/userHelpers";
-import { generalPendingTxFixture, mismatchedPendingTxFixture } from "./generalPendingTxFixture";
 import { assertDraftWithdrawModal, assertPendingWithdrawModal } from "./utils";
 
 describe("Pending Transactions During TX flow", () => {

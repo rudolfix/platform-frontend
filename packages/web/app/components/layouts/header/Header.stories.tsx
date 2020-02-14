@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { DeepPartial } from "../../../types";
 import { withStore } from "../../../utils/react-connected-components/storeDecorator.unsafe";
 import { HeaderAuthorized, HeaderTransitional, HeaderUnauthorized } from "./Header";
@@ -28,7 +28,7 @@ const authStoreIssuer = {
 };
 
 storiesOf("Layout/Header for investor", module)
-  .addDecorator(withStore(authStoreInvestor as DeepPartial<IAppState>))
+  .addDecorator(withStore(authStoreInvestor as DeepPartial<TAppGlobalState>))
   .add("default", () => (
     <>
       <HeaderAuthorized />
@@ -36,7 +36,7 @@ storiesOf("Layout/Header for investor", module)
   ));
 
 storiesOf("Layout/Header for issuer", module)
-  .addDecorator(withStore(authStoreIssuer as DeepPartial<IAppState>))
+  .addDecorator(withStore(authStoreIssuer as DeepPartial<TAppGlobalState>))
   .add("default", () => (
     <>
       <HeaderAuthorized />
@@ -49,8 +49,14 @@ storiesOf("Layout/Header unauthorized", module).add("default", () => (
   </>
 ));
 
-storiesOf("Layout/Header transitional", module).add("default", () => (
-  <>
-    <HeaderTransitional />
-  </>
-));
+storiesOf("Layout/Header transitional", module)
+  .add("login route", () => (
+    <>
+      <HeaderTransitional isLoginRoute={true} />
+    </>
+  ))
+  .add("register route", () => (
+    <>
+      <HeaderTransitional isLoginRoute={false} />
+    </>
+  ));

@@ -13,6 +13,7 @@ import {
 
 export interface IEtoState {
   etos: { [previewCode: string]: TEtoSpecsData | undefined };
+  etosError: boolean;
   companies: { [companyId: string]: TCompanyEtoData | undefined };
   contracts: { [previewCode: string]: TEtoContractData | undefined };
   displayOrder: string[] | undefined;
@@ -26,6 +27,7 @@ export interface IEtoState {
 
 export const etoFlowInitialState: IEtoState = {
   etos: {},
+  etosError: false,
   companies: {},
   contracts: {},
   displayOrder: undefined,
@@ -53,6 +55,7 @@ export const etoReducer: AppReducer<IEtoState> = (
           ...state.companies,
           ...action.payload.companies,
         },
+        etosError: false,
       };
     case actions.eto.setEto.getType():
       return {
@@ -137,6 +140,12 @@ export const etoReducer: AppReducer<IEtoState> = (
           ...state.signedInvestmentAgreements,
           [action.payload.previewCode]: { isLoading: true, url: undefined },
         },
+      };
+
+    case actions.eto.setEtosError.getType():
+      return {
+        ...state,
+        etosError: true,
       };
   }
 

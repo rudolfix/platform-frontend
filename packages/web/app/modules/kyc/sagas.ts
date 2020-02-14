@@ -18,7 +18,7 @@ import {
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { selectIsUserVerified, selectUser, selectUserType } from "../auth/selectors";
@@ -91,7 +91,7 @@ function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): Generator<any, 
   kycWidgetWatchDelay = 1000;
   while (true) {
     const requestType: EKycRequestType = yield select(selectKycRequestType);
-    const status: EKycRequestStatus | undefined = yield select((s: IAppState) =>
+    const status: EKycRequestStatus | undefined = yield select((s: TAppGlobalState) =>
       selectKycRequestStatus(s),
     );
 
@@ -134,7 +134,7 @@ function* loadIdentityClaim({
   try {
     const identityRegistry: IdentityRegistry = contractsService.identityRegistry;
 
-    const loggedInUser: IUser = yield select((state: IAppState) => selectUser(state.auth));
+    const loggedInUser: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
 
     const claims: string = yield identityRegistry.getClaims(loggedInUser.userId);
 
@@ -665,7 +665,9 @@ function* submitBusinessRequest({
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
     // check whether combined value of beneficial owners percentages is less or equal 100%
-    const ownerShip = yield select((s: IAppState) => selectCombinedBeneficialOwnerOwnership(s.kyc));
+    const ownerShip = yield select((s: TAppGlobalState) =>
+      selectCombinedBeneficialOwnerOwnership(s.kyc),
+    );
     if (ownerShip > 100) {
       yield call(
         displayErrorModalSaga,

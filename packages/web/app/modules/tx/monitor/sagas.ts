@@ -13,7 +13,7 @@ import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
 import { getTransactionOrThrow } from "../event-channel/sagas";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
 import { txMonitorSaga } from "../sender/sagas";
-import { InvestmentAdditionalDataSchema } from "../transactions/investment/types";
+import { typeToSchema } from "../transactions/types";
 import { ETxSenderType, TSpecificTransactionState } from "../types";
 import { TransactionCancelledError } from "./../event-channel/errors";
 import { SchemaMismatchError } from "./errors";
@@ -103,40 +103,13 @@ export function* markTransactionAsPending(
 
 export function* ensurePendingTransactionSchemaIsValid(
   pendingTransaction: TxPendingWithMetadata,
-): Generator<any, any, any> {
-  // THIS IS A TEMPORARY PATCH A GENERAL SOLUTION THAT INCLUDES VERSIONING SHOULD COVER ALL TX TYPES
-  switch (pendingTransaction.transactionType) {
-    case ETxSenderType.WITHDRAW:
-    case ETxSenderType.TRANSFER_TOKENS:
-      if (
-        pendingTransaction.transactionAdditionalData === undefined ||
-        (pendingTransaction.transactionAdditionalData &&
-          (pendingTransaction.transactionAdditionalData.to === undefined ||
-            pendingTransaction.transactionAdditionalData.amount === undefined ||
-            pendingTransaction.transactionAdditionalData.amountEur === undefined ||
-            pendingTransaction.transactionAdditionalData.totalEur === undefined ||
-            pendingTransaction.transactionAdditionalData.total === undefined ||
-            pendingTransaction.transactionAdditionalData.tokenDecimals === undefined ||
-            pendingTransaction.transactionAdditionalData.tokenImage === undefined ||
-            pendingTransaction.transactionAdditionalData.tokenSymbol === undefined))
-      ) {
-        throw new SchemaMismatchError(ETxSenderType.WITHDRAW);
-      }
-      break;
+): Generator<void, void, void> {
+  const schema = typeToSchema[pendingTransaction.transactionType];
 
-    case ETxSenderType.INVEST: {
-      const isValid = yield InvestmentAdditionalDataSchema.toYup().isValid(
-        pendingTransaction.transactionAdditionalData,
-      );
+  const isValid = schema && schema.toYup().isValid(pendingTransaction.transactionAdditionalData);
 
-      if (!isValid) {
-        throw new SchemaMismatchError(ETxSenderType.INVEST);
-      }
-      break;
-    }
-
-    default:
-      return;
+  if (!isValid) {
+    throw new SchemaMismatchError(pendingTransaction.transactionType);
   }
 }
 
@@ -200,6 +173,7 @@ export function* updatePendingTxs({
     }
 
     yield put(actions.txMonitor.setPendingTxs(apiPendingTx));
+    yield put(actions.txHistory.loadTransactions());
   } catch (e) {
     if (e instanceof SchemaMismatchError) {
       logger.warn("Found pending transaction Schema Mismatch", e);

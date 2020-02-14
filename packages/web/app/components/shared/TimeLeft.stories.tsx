@@ -1,16 +1,19 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { FancyRenderTimeLeft, RenderTimeLeft } from "./TimeLeft.unsafe";
+import { FancyRenderTimeLeft, RenderTimeLeft, RenderTimeLeftWithSeconds } from "./TimeLeft.unsafe";
 
 const minute = 60;
 const hour = minute * 60;
 const day = hour * 24;
 
 const daysHours = 5 * day + 3 * hour + 11;
+const daysHoursMinutes = 5 * day + 3 * hour + 3 * minute + 11;
 const daysOnly = 5 * day + 11;
 const hours = 15 * hour + 17 * minute;
+const hoursMinutesSeconds = 15 * hour + 17 * minute + 15;
 const minutes = 5 * minute;
+const minutesSeconds = 5 * minute + 13;
 const seconds = 56;
 const none = 0;
 
@@ -21,6 +24,15 @@ storiesOf("RenderTimeLeft", module)
   .add("minutes", () => <RenderTimeLeft timeLeft={minutes} />)
   .add("seconds", () => <RenderTimeLeft timeLeft={seconds} />)
   .add("none", () => <RenderTimeLeft timeLeft={none} />);
+
+storiesOf("RenderTimeLeftWithSeconds", module)
+  .add("days hours minutes seconds", () => (
+    <RenderTimeLeftWithSeconds timeLeft={daysHoursMinutes} />
+  ))
+  .add("hours minutes seconds", () => <RenderTimeLeftWithSeconds timeLeft={hoursMinutesSeconds} />)
+  .add("minutes seconds", () => <RenderTimeLeftWithSeconds timeLeft={minutesSeconds} />)
+  .add("seconds", () => <RenderTimeLeftWithSeconds timeLeft={seconds} />)
+  .add("none", () => <RenderTimeLeftWithSeconds timeLeft={none} />);
 
 storiesOf("FancyRenderTimeLeft", module)
   .add("days hours", () => <FancyRenderTimeLeft timeLeft={daysHours} />)

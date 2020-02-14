@@ -1,7 +1,7 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons";
 import { StepCard } from "../../shared/StepCard";
 
 import arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";

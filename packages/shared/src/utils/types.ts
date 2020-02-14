@@ -70,6 +70,11 @@ export type TDataTestId = {
 export type TSingleOrArray<T> = T | T[];
 
 /**
+ * Forces an array to have at least one member of a given type T
+ */
+export type ArrayWithAtLeastOneMember<T> = [T, ...T[]];
+
+/**
  * From T, omit a set of properties whose keys are in the union K
  * @example OmitKeys<{ foo: boolean, bar: string }, "foo"> // { bar: string }
  */
@@ -129,11 +134,17 @@ export type XOR<T extends object, U extends object> = (Without<T, U> & U) | (Wit
  */
 export type Values<T> = T[keyof T];
 
-export type ArrayWithAtLeastOneMember<T> = [T, ...T[]];
-
 /**
  * From T, select a union of property names which values extends R
  * @example
  * SelectPropertyNames<{ foo: boolean, bar: string, baz: string }, string> // "bar" | "baz"
  */
 export type SelectPropertyNames<T, R> = { [K in keyof T]: T[K] extends R ? K : never }[keyof T];
+
+/**
+ * Stricter version of build in ReturnType. When T is not a function returns never
+ * @example
+ * ReturnTypeStrict<{}> // never
+ * ReturnTypeStrict<() => string> // string
+ */
+export type ReturnTypeStrict<T> = T extends (...args: any) => infer R ? R : never;

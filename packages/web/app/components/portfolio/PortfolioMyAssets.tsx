@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import { multiplyBigNumbers } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -13,7 +14,7 @@ import { appConnect } from "../../store";
 import { commitmentStatusLink } from "../appRouteUtils";
 import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container } from "../layouts/Container";
-import { Button, ButtonLink, EButtonLayout, EButtonSize } from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
 import { Money } from "../shared/formatters/Money";
 import {

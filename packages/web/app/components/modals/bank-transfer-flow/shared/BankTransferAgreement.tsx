@@ -1,3 +1,4 @@
+import { ButtonArrowRight, ButtonInline } from "@neufund/design-system";
 import { Formik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,7 +8,6 @@ import { externalRoutes } from "../../../../config/externalRoutes";
 import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { ButtonArrowRight, ButtonInline } from "../../../shared/buttons";
 import { ECheckboxLayout, FormDeprecated, FormFieldBoolean } from "../../../shared/forms";
 import { Heading } from "../../../shared/Heading";
 import { ExternalLink } from "../../../shared/links";

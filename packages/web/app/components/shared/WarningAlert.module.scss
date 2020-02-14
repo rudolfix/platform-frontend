@@ -1,15 +1,21 @@
 .warning-alert {
+  @include nds-helper-text;
+
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   width: 100%;
   padding: 0 1.5rem;
-  color: $neu-bright-orange;
-  font-size: $font-size-sm;
+  color: $neu-flamingo-red;
+  text-align: center;
 
   .icon {
-    font-size: 1.4em;
+    @include rect(20px);
+
+    margin: auto;
+    color: $neu-flamingo-red;
     vertical-align: text-bottom;
+    display: block;
   }
 }

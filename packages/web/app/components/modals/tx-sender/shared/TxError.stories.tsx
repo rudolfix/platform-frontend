@@ -2,6 +2,7 @@ import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
@@ -61,6 +62,8 @@ const investTxData: React.ComponentProps<typeof TxErrorLayout> = {
         equityTokenName: "Quintessence",
       },
     },
+    investmentType: EInvestmentType.NEur,
+    tokenDecimals: 18,
     equityTokens: "211",
     estimatedReward: convertToUlps("125"),
     etherPriceEur: "2542.22",

@@ -2,6 +2,7 @@ import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TxSuccessLayout } from "./TxSuccess";
@@ -22,6 +23,7 @@ const txData: React.ComponentProps<typeof TxSuccessLayout> = {
         equityTokenName: "Quintessence",
       },
     },
+    investmentType: EInvestmentType.NEur,
     equityTokens: "211",
     estimatedReward: convertToUlps("125"),
     etherPriceEur: "2542.22",
@@ -29,6 +31,7 @@ const txData: React.ComponentProps<typeof TxSuccessLayout> = {
     investmentEth: convertToUlps("120"),
     investmentEur: convertToUlps("22506"),
     isIcbm: false,
+    tokenDecimals: 18,
   },
   blockId: 4623487932,
   txHash: "af908098b968d7564564362c51836",

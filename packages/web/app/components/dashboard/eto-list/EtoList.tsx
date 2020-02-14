@@ -78,8 +78,8 @@ const EtoListLayout: React.FunctionComponent<TExternalProps & IStateProps> = ({
 const EtoList = compose<IStateProps & TExternalProps, TExternalProps>(
   setDisplayName("EtoList"),
   onEnterAction({
-    actionCreator: d => {
-      d(actions.eto.loadEtos());
+    actionCreator: dispatch => {
+      dispatch(actions.eto.loadEtos());
     },
   }),
   appConnect<IStateProps>({

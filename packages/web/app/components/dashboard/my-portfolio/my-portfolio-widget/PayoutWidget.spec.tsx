@@ -2,7 +2,7 @@ import { setupFakeClock } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { createMemoryHistory } from "history";
-import { createStore } from "redux";
+import { combineReducers, createStore } from "redux";
 
 import { createMount } from "../../../../../test/createMount";
 import {
@@ -11,12 +11,14 @@ import {
   wrapWithProviders,
 } from "../../../../../test/integrationTestUtils.unsafe";
 import { createMock, tid } from "../../../../../test/testUtils";
+import { EUserType } from "../../../../lib/api/users/interfaces";
 import { EtherToken } from "../../../../lib/contracts/EtherToken";
 import { EuroToken } from "../../../../lib/contracts/EuroToken";
 import { FeeDisbursal } from "../../../../lib/contracts/FeeDisbursal";
 import { Neumark } from "../../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../../lib/web3/ContractsService";
-import { generateRootReducer } from "../../../../store";
+import { EWalletSubType, EWalletType } from "../../../../modules/web3/types";
+import { generateRootModuleReducerMap } from "../../../../store";
 import { PayoutWidget } from "./PayoutWidget";
 
 /*
@@ -43,6 +45,9 @@ const initialState = {
   auth: {
     user: {
       userId: "0x353d3030AF583fc0e547Da80700BbD953F330A4b",
+      walletSubtype: EWalletSubType.METAMASK,
+      walletType: EWalletType.BROWSER,
+      type: EUserType.INVESTOR,
     },
   },
   investorTickets: {
@@ -130,13 +135,13 @@ const contractsMock = createMock(ContractsService, {
   feeDisbursal: feeDisbursalMock,
 });
 
-const rootReducer = generateRootReducer(history);
+const rootReducer = combineReducers(generateRootModuleReducerMap(history));
 
 describe("PayoutWidget", () => {
   const clock = setupFakeClock();
 
   it("shows the loading indicator", () => {
-    const store = createStore(rootReducer, initialState);
+    const store = createStore(rootReducer, initialState as any);
     const component = createMount(wrapWithProviders(PayoutWidget, { store }));
 
     expect(component.find(tid("loading-indicator-pulse")).length).to.eq(1);

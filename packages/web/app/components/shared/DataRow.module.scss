@@ -1,0 +1,26 @@
+.section {
+  @include nds-body;
+
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  .value {
+    overflow-wrap: break-word;
+    overflow-y: auto;
+    text-align: right;
+  }
+}
+
+.separated {
+  padding-bottom: px-to-rem(16px);
+  margin-bottom: px-to-rem(16px);
+  align-items: center;
+  vertical-align: top;
+  border-bottom: solid 1px $neu-light-blue-grey-two;
+}
+
+.separator {
+  margin: 1.5rem 0;
+  border-color: $neu-gull-gray;
+}

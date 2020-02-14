@@ -1,3 +1,4 @@
+import { ButtonBase } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,7 +9,6 @@ import { actions } from "../../../modules/actions";
 import { selectPlatformPendingTransaction } from "../../../modules/tx/monitor/selectors";
 import { ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { appConnect } from "../../../store";
-import { ButtonBase } from "../../shared/buttons";
 import { TooltipBase } from "../../shared/tooltips";
 
 import txError from "../../../assets/img/icon_txn_status_error.svg";
@@ -125,4 +125,4 @@ const PendingTransactionStatus = compose<IComponentProps, IExternalProps>(
   ),
 )(PendingTransactionStatusLayout);
 
-export { PendingTransactionStatus };
+export { PendingTransactionStatus, PendingTransactionImage };

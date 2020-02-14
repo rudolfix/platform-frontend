@@ -15,6 +15,8 @@ storiesOf("User Claim Summary", module)
         neuRewardUlps: "5500000000000000000",
         tokenName: "Fifth Force",
         tokenQuantity: 100,
+        tokenSymbol: "FT",
+        tokenDecimals: 0,
       }}
       onAccept={() => {}}
       generateTemplateByEtoId={() => {}}

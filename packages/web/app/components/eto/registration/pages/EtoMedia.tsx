@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -16,7 +17,6 @@ import {
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoMediaProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormFieldBoolean } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";

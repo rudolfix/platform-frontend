@@ -19,6 +19,8 @@ const props = {
     neuRewardUlps: "5500000000000000000",
     tokenName: "Fifth Force",
     tokenQuantity: 100,
+    tokenDecimals: 0,
+    tokenSymbol: "FT",
   },
   txTimestamp: date.valueOf(),
   goToPortfolio: action("goToPortfolio"),

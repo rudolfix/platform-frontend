@@ -1,4 +1,4 @@
-import { ETHEREUM_ZERO_ADDRESS, withMetaTags } from "@neufund/shared";
+import { ETHEREUM_ZERO_ADDRESS } from "@neufund/shared";
 import * as cn from "classnames";
 import { some } from "lodash";
 import * as React from "react";
@@ -25,6 +25,7 @@ import {
 import { isOnChain } from "../../../modules/eto/utils";
 import { appConnect } from "../../../store";
 import { SwitchConnected } from "../../../utils/react-connected-components/connectedRouting";
+import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { PersonProfileModal } from "../../modals/person-profile-modal/PersonProfileModal";

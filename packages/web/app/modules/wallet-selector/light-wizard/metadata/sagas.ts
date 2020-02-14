@@ -2,7 +2,7 @@ import { select } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { LightWalletWrongPassword } from "../../../../lib/web3/light-wallet/LightWallet";
-import { IAppState } from "../../../../store";
+import { TAppGlobalState } from "../../../../store";
 import { neuCall } from "../../../sagasUtils";
 import {
   selectLightWalletFromQueryString,
@@ -46,7 +46,9 @@ export function* getWalletMetadataByURL(
       queryStringWalletInfo.email,
     );
   }
-  const savedMetadata = yield* select((s: IAppState) => selectPreviousConnectedWallet(s.web3));
+  const savedMetadata = yield* select((s: TAppGlobalState) =>
+    selectPreviousConnectedWallet(s.web3),
+  );
   if (savedMetadata && savedMetadata.walletType === EWalletType.LIGHT) {
     return savedMetadata;
   }

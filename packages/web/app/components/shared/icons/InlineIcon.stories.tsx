@@ -38,16 +38,20 @@ import reload from "../../../assets/img/wallet_selector/reload.svg";
 import wallet_confirm_icon from "../../../assets/img/wallet_selector/wallet_confirm_icon.svg";
 import wallet_icon from "../../../assets/img/wallet_selector/wallet_icon.svg";
 
+type TIconModule = {
+  default: string;
+};
+
 // Load all inline icons
 const context = require.context("../../../assets/img/inline_icons/", true, /\.(svg)$/);
-const allInlineIcons: ReadonlyArray<string> = context.keys().map<string>(context);
+const allInlineIcons: ReadonlyArray<TIconModule> = context.keys().map<TIconModule>(context);
 
 storiesOf("Icons", module)
   .add("InlineIcon", () => (
     <>
       {allInlineIcons.map((svg, i) => (
         <span key={i} style={{ display: "inline-block", height: "2em", width: "3em" }}>
-          <InlineIcon svgIcon={svg} />
+          <InlineIcon svgIcon={svg.default} />
         </span>
       ))}
     </>

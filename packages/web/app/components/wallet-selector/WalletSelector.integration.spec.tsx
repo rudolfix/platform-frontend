@@ -43,7 +43,7 @@ import {
   ILedgerWalletMetadata,
 } from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
-import { ButtonLink } from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";
 import { createMessage } from "../translatedMessages/utils";
 import { walletRegisterRoutes } from "./walletRoutes";

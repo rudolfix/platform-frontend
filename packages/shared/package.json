@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "sideEffects": false,
   "private": true,
   "scripts": {
     "build": "tsc",
@@ -33,6 +34,9 @@
     "lolex": "^5.1.1",
     "mocha": "^6.0.2",
     "prettier": "^1.16.4",
+    "react-intl": "^2.4.0",
+    "react-intl-phraseapp": "^0.2.4",
+    "recompose": "^0.30.0",
     "sinon": "^7.3.1",
     "sinon-chai": "^3.2.0",
     "ts-node": "6.2.0",
@@ -44,7 +48,9 @@
   },
   "peerDependencies": {
     "bignumber.js": "^5.0.0",
-    "react-intl-phraseapp": "^0.4.1",
+    "react-intl": "^2.4.0",
+    "react-intl-phraseapp": "^0.2.4",
+    "recompose": "^0.30.0",
     "tslib": "^1.10.0"
   },
   "dependencies": {}

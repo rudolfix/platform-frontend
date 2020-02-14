@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -5,7 +6,6 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { Message } from "../../modals/message/Message";
-import { Button, EButtonLayout } from "../../shared/buttons";
 
 import tosImg from "../../../assets/img/tos.jpg";
 import * as styles from "./DocumentConfidentialityAgreementModal.module.scss";

@@ -1,3 +1,4 @@
+import { ETH_DECIMALS } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
@@ -16,6 +17,8 @@ const ethTokenDisbursal: ITokenDisbursal = {
   amountToBeClaimed: "6.582870355588135389497e+21",
   totalDisbursedAmount: "9.7154607e+22",
   timeToFirstDisbursalRecycle: 1675401473000,
+  tokenDecimals: ETH_DECIMALS,
+  amountEquivEur: "984609705509027210028",
 };
 
 const nEurTokenDisbursal: ITokenDisbursal = {
@@ -23,6 +26,8 @@ const nEurTokenDisbursal: ITokenDisbursal = {
   amountToBeClaimed: "6.582870355588135389497e+21",
   totalDisbursedAmount: "9.7154607e+22",
   timeToFirstDisbursalRecycle: 1675401473000,
+  tokenDecimals: ETH_DECIMALS,
+  amountEquivEur: "97078346877766094590.21980140173352",
 };
 
 const dummyNow = new Date("10/3/2019");

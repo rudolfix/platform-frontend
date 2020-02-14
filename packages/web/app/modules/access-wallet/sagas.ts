@@ -15,7 +15,7 @@ import {
 } from "../../lib/web3/light-wallet/LightWalletUtils";
 import { IPersonalWallet } from "../../lib/web3/PersonalWeb3";
 import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager/Web3Manager";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
 import { neuCall } from "../sagasUtils";
@@ -125,7 +125,7 @@ export function* connectLightWallet(
 export function* connectWallet(): Generator<any, any, any> {
   while (true) {
     try {
-      const walletType: EWalletType | undefined = yield select((state: IAppState) =>
+      const walletType: EWalletType | undefined = yield select((state: TAppGlobalState) =>
         selectWalletType(state.web3),
       );
 
@@ -161,7 +161,7 @@ export function* accessWalletAndRunEffect(
   inputLabel?: TMessage,
 ): Generator<any, any, any> {
   // guard against multiple modals
-  const isSigning: boolean = yield select((s: IAppState) => selectIsSigning(s.accessWallet));
+  const isSigning: boolean = yield select((s: TAppGlobalState) => selectIsSigning(s.accessWallet));
   if (isSigning) {
     throw new Error("Signing already in progress");
   }

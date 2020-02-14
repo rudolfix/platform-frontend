@@ -1,8 +1,15 @@
+$payout-container-color: rgba($neu-white-two, .1);
+
 .wrapper {
+  @include media-breakpoint-down(sm) {
+    min-height: px-to-rem(212px);
+  }
+
   display: flex;
   flex-direction: column;
-  background: $neu-pale-blue;
-  padding: px-to-rem(15px);
+  background: $neu-charcoal-grey;
+  padding: px-to-rem(20px);
+  min-height: px-to-rem(262px);
 }
 
 .icon {
@@ -25,20 +32,57 @@
 }
 
 .title {
-  color: $neu-greyish-brown;
-  font-size: $smaller-font-size;
-  font-weight: $font-weight-bold;
-  font-family: $font-family-base;
-  margin-bottom: px-to-rem(20px);
+  @include nds-headline-4;
+
+  color: $neu-light-blue-grey-two;
+  border-bottom: solid 1px $neu-light-blue-grey-two;
+  padding-bottom: px-to-rem(8px);
+  margin-bottom: px-to-rem(24px);
 }
 
 .content {
   display: flex;
   flex-flow: column;
-  justify-content: space-between;
   flex-grow: 1;
 }
 
 .neu {
   margin-bottom: px-to-rem(10px);
+}
+
+.button {
+  @include flex-stick-bottom;
+
+  justify-self: flex-end;
+}
+
+.payout-container {
+  @include nds-helper-text;
+
+  display: flex;
+  margin-top: px-to-rem(20px);
+  border-radius: px-to-rem(4px);
+  background-color: $payout-container-color;
+  padding: px-to-rem(8px);
+  color: $neu-light-blue-grey-two;
+}
+
+.warning-icon {
+  @include rect(20px);
+
+  color: transparent;
+  margin-right: px-to-rem(10px);
+}
+
+.payout-amount {
+  font-weight: bold;
+
+  &::before {
+    content: "~";
+  }
+}
+
+.button-payout {
+  display: block;
+  margin-top: px-to-rem(8px);
 }

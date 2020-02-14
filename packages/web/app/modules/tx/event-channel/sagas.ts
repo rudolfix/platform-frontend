@@ -8,6 +8,7 @@ import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3A
 import { neuCall } from "../../sagasUtils";
 import { TransactionCancelledError } from "./errors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "./types";
+import { isTransactionMined } from "./utils";
 
 enum TRANSACTION_STATUS {
   REVERTED = "0x0",
@@ -38,8 +39,9 @@ export function* getTransactionOrThrow(
     throw new TransactionCancelledError(pendingTx.pendingTransaction.transaction.failedRpcError);
   }
 
-  // Both requests `getTx` and `getTransactionReceipt` can end up in two separate nodes
-  const isMined = tx && tx.blockNumber && txReceipt && txReceipt.blockNumber;
+  const currentBlockNumber = yield web3Manager.getBlockNumber();
+
+  const isMined = isTransactionMined(tx, txReceipt, currentBlockNumber);
 
   if (!isMined) {
     return null;

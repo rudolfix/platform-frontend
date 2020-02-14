@@ -39,8 +39,8 @@ export const DashboardLayout = () => (
 export const Dashboard = compose<{}, {}>(
   setDisplayName("Dashboard"),
   onEnterAction({
-    actionCreator: d => {
-      d(actions.wallet.loadWalletData());
+    actionCreator: dispatch => {
+      dispatch(actions.eto.loadEtos());
     },
   }),
   withContainer(

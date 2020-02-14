@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { DeepReadonly } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -12,8 +13,7 @@ import {
   selectGenericModalIsOpen,
   selectGenericModalObj,
 } from "../../../modules/generic-modal/selectors";
-import { appConnect, AppDispatch } from "../../../store";
-import { Button } from "../../shared/buttons";
+import { appConnect, AppGlobalDispatch } from "../../../store";
 import { getMessageTranslation } from "../../translatedMessages/messages";
 import { Modal } from "../Modal";
 
@@ -34,7 +34,7 @@ interface IHandlersProps {
 }
 
 interface IReduxProps {
-  dispatch: AppDispatch;
+  dispatch: AppGlobalDispatch;
 }
 
 export const genericModalIcons = {

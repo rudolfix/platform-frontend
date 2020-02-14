@@ -1,3 +1,4 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -9,7 +10,6 @@ import {
 } from "../../../modules/eto-documents/selectors";
 import { appConnect } from "../../../store";
 import { Modal } from "../../modals/Modal";
-import { ButtonArrowRight } from "../../shared/buttons";
 import { ResponsiveImage } from "../../shared/ResponsiveImage";
 
 import ipfsImage from "../../../assets/img/ipfs.png";

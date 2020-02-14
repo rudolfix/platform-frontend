@@ -19,13 +19,14 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { promisify } from "../../lib/contracts/typechain-runtime";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
 import { calculateSnapshotDate } from "../contracts/utils";
 import { InvalidETOStateError } from "../eto/errors";
 import { isOnChain } from "../eto/utils";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
+import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { ITokenDisbursal } from "./types";
 import {
@@ -62,7 +63,7 @@ export function* loadInvestorTicket(
   }
 
   const etoId = action.payload.eto.etoId;
-  const user: IUser = yield select((state: IAppState) => selectUser(state.auth));
+  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
 
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
 
@@ -114,8 +115,9 @@ export function* loadClaimables({
   logger,
   notificationCenter,
 }: TGlobalDependencies): any {
-  const user: IUser = yield select((state: IAppState) => selectUser(state.auth));
+  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
   const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
+  const etherPrice = yield select(selectEtherPriceEur);
 
   const tokens: [ECurrency, EthereumAddress][] = [
     [ECurrency.EUR_TOKEN, euroToken.address as EthereumAddress],
@@ -129,7 +131,7 @@ export function* loadClaimables({
     );
     const tokensDisbursal: ITokenDisbursal[] = yield tokens.map(([token], i) =>
       // claimableMultipeByToken preserves tokens order so it's safe to get exact response by index
-      convertToTokenDisbursal(token, tokensDisbursalRaw[i]),
+      convertToTokenDisbursal(token, tokensDisbursalRaw[i], etherPrice),
     );
 
     yield put(actions.investorEtoTicket.setTokensDisbursal(tokensDisbursal));

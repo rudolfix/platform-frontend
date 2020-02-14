@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,7 +8,6 @@ import * as Yup from "yup";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button } from "../../../shared/buttons";
 import { FormDeprecated, FormField } from "../../../shared/forms";
 import { FormConstantField } from "../../../shared/forms/fields/FormConstantField";
 import { WarningAlert } from "../../../shared/WarningAlert";

@@ -18,6 +18,10 @@ export const InvestmentAdditionalDataSchema = YupTS.object({
   investmentEth: YupTS.string(),
   investmentEur: YupTS.string(),
   isIcbm: YupTS.boolean(),
+  investmentType: YupTS.string(),
+  tokenDecimals: YupTS.number(),
 });
+export const InvestorSignAgreementSchema = YupTS.object({});
 
 export type TInvestmentAdditionalData = YupTS.TypeOf<typeof InvestmentAdditionalDataSchema>;
+export type TInvestmentAdditionalDataYTS = typeof InvestmentAdditionalDataSchema;

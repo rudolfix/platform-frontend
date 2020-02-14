@@ -2,11 +2,11 @@ import BigNumber from "bignumber.js";
 
 import { EUserType } from "../../app/lib/api/users/interfaces";
 import { EWalletSubType, EWalletType } from "../../app/modules/web3/types";
-import { IAppState } from "../../app/store";
+import { TAppGlobalState } from "../../app/store";
 import { DeepPartial } from "../../app/types";
 import { testCompany, testEto } from "../fixtures";
 
-export const mockedStore: DeepPartial<IAppState> = {
+export const mockedStore: DeepPartial<TAppGlobalState> = {
   etoIssuer: {
     eto: testEto,
     company: testCompany,
@@ -42,6 +42,7 @@ export const mockedStore: DeepPartial<IAppState> = {
       latestAcceptedTosIpfs: "qwerty123",
       backupCodesVerified: false,
       userId: "0xqwerty123",
+      verifiedEmail: "storybook@neufund.org",
     },
     currentAgreementHash: "qwerty123",
   },
@@ -90,5 +91,25 @@ export const mockedStore: DeepPartial<IAppState> = {
       },
     },
     pledges: {},
+  },
+  investorTickets: {
+    calculatedContributions: {},
+    initialCalculatedContributions: {},
+    investorEtoTickets: {},
+    tokensDisbursal: {
+      loading: false,
+      error: false,
+      data: [],
+    },
+    incomingPayouts: {
+      loading: false,
+      error: false,
+      data: {
+        euroTokenIncomingPayoutValue: "0",
+        etherTokenIncomingPayoutValue: "0",
+        snapshotDate: 1580688000,
+      },
+    },
+    tokensPersonalDiscounts: {},
   },
 };

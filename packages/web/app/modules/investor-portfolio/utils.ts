@@ -1,4 +1,4 @@
-import { convertToUlps, Q18 } from "@neufund/shared";
+import { convertToUlps, ETH_DECIMALS, multiplyBigNumbers, Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 
@@ -86,10 +86,16 @@ export const convertToTokenDisbursal = (
     BigNumber,
     BigNumber,
   ],
+  etherPrice: string,
 ): ITokenDisbursal => ({
   token,
   amountToBeClaimed: amountToBeClaimed.toString(),
   totalDisbursedAmount: totalDisbursedAmount.toString(),
+  tokenDecimals: ETH_DECIMALS,
+  amountEquivEur:
+    token === ECurrency.ETH
+      ? multiplyBigNumbers([amountToBeClaimed.toString(), etherPrice])
+      : amountToBeClaimed.toString(),
   // convert seconds timestamp to milliseconds
   timeToFirstDisbursalRecycle: timeToFirstDisbursalRecycle.mul("1000").toNumber(),
 });

@@ -14,6 +14,7 @@ export const PLATFORM_ZERO_FEE = 0;
  * We assume common digits for all currencies on our platform.
  */
 export const ETH_DECIMALS = 18;
+export const EURO_DECIMALS = 0;
 
 export const DEFAULT_DECIMAL_PLACES = 4;
 

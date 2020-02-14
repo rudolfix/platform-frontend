@@ -1,5 +1,6 @@
+import { coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
 import * as cryptoRandomString from "crypto-random-string";
-import { Container } from "inversify";
+import { Container, ContainerModule } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";
 import { AnalyticsApi } from "../lib/api/analytics-api/AnalyticsApi";
@@ -22,7 +23,6 @@ import {
 import { GasApi } from "../lib/api/gas/GasApi";
 import { ImmutableStorageApi } from "../lib/api/immutable-storage/ImmutableStorageApi";
 import { KycApi } from "../lib/api/kyc/KycApi";
-import { MarketingEmailsApi } from "../lib/api/users/MarketingEmailsApi";
 import { UsersApi } from "../lib/api/users/UsersApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
 import {
@@ -31,7 +31,6 @@ import {
 } from "../lib/dependencies/broadcast-channel/broadcastChannel";
 import { UserActivityChannelMessage } from "../lib/dependencies/broadcast-channel/types";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
-import { ILogger, Logger } from "../lib/dependencies/logger";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
 import { OnfidoSDK } from "../lib/dependencies/onfido/OnfidoSDK";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
@@ -59,202 +58,183 @@ import {
 } from "../utils/react-connected-components/AsyncIntervalScheduler";
 import { symbols } from "./symbols";
 
-export function setupBindings(config: IConfig): Container {
-  const container = new Container();
+export function setupBindings(config: IConfig): ContainerModule {
+  return new ContainerModule(bind => {
+    // functions
 
-  // functions
-  container
-    .bind<typeof cryptoRandomString>(symbols.cryptoRandomString)
-    .toConstantValue(cryptoRandomString);
-  container.bind<TDetectBrowser>(symbols.detectBrowser).toConstantValue(detectBrowser);
+    bind<typeof cryptoRandomString>(symbols.cryptoRandomString).toConstantValue(cryptoRandomString);
+    bind<TDetectBrowser>(symbols.detectBrowser).toConstantValue(detectBrowser);
 
-  // configs
-  container
-    .bind<IEthereumNetworkConfig>(symbols.ethereumNetworkConfig)
-    .toConstantValue(config.ethereumNetwork);
-  container.bind<IConfig>(symbols.config).toConstantValue(config);
+    // configs
 
-  container.bind<IBackendRoot>(symbols.backendRootConfig).toConstantValue(config.backendRoot);
+    bind<IEthereumNetworkConfig>(symbols.ethereumNetworkConfig).toConstantValue(
+      config.ethereumNetwork,
+    );
+    bind<IConfig>(symbols.config).toConstantValue(config);
 
-  container
-    .bind<ILogger>(symbols.logger)
-    .to(Logger)
-    .inSingletonScope();
+    bind<IBackendRoot>(symbols.backendRootConfig).toConstantValue(config.backendRoot);
 
-  // classes
-  container
-    .bind<IHttpClient>(symbols.jsonHttpClient)
-    .to(JsonHttpClient)
-    .inSingletonScope();
-  container
-    .bind<IHttpClient>(symbols.binaryHttpClient)
-    .to(BinaryHttpClient)
-    .inSingletonScope();
-  container
-    .bind<IHttpClient>(symbols.authorizedJsonHttpClient)
-    .to(AuthorizedJsonHttpClient)
-    .inSingletonScope();
-  container
-    .bind<IHttpClient>(symbols.authorizedBinaryHttpClient)
-    .to(AuthorizedBinaryHttpClient)
-    .inSingletonScope();
+    // classes
 
-  // singletons
-  container
-    .bind<SignatureAuthApi>(symbols.signatureAuthApi)
-    .to(SignatureAuthApi)
-    .inSingletonScope();
+    bind<IHttpClient>(symbols.jsonHttpClient)
+      .to(JsonHttpClient)
+      .inSingletonScope();
 
-  container
-    .bind<VaultApi>(symbols.vaultApi)
-    .to(VaultApi)
-    .inSingletonScope();
+    bind<IHttpClient>(symbols.binaryHttpClient)
+      .to(BinaryHttpClient)
+      .inSingletonScope();
 
-  container
-    .bind<AnalyticsApi>(symbols.analyticsApi)
-    .to(AnalyticsApi)
-    .inSingletonScope();
+    bind<IHttpClient>(symbols.authorizedJsonHttpClient)
+      .to(AuthorizedJsonHttpClient)
+      .inSingletonScope();
 
-  container
-    .bind<UsersApi>(symbols.usersApi)
-    .to(UsersApi)
-    .inSingletonScope();
+    bind<IHttpClient>(symbols.authorizedBinaryHttpClient)
+      .to(AuthorizedBinaryHttpClient)
+      .inSingletonScope();
 
-  container
-    .bind<NotificationCenter>(symbols.notificationCenter)
-    .to(NotificationCenter)
-    .inSingletonScope();
+    // singletons
 
-  container
-    .bind<OnfidoSDK>(symbols.onfidoSdk)
-    .to(OnfidoSDK)
-    .inSingletonScope();
+    bind<SignatureAuthApi>(symbols.signatureAuthApi)
+      .to(SignatureAuthApi)
+      .inSingletonScope();
 
-  container
-    .bind<MarketingEmailsApi>(symbols.marketingEmailsApi)
-    .to(MarketingEmailsApi)
-    .inSingletonScope();
+    bind<VaultApi>(symbols.vaultApi)
+      .to(VaultApi)
+      .inSingletonScope();
 
-  // web3 & blockchain
-  container
-    .bind(symbols.contractsService)
-    .to(ContractsService)
-    .inSingletonScope();
+    bind<AnalyticsApi>(symbols.analyticsApi)
+      .to(AnalyticsApi)
+      .inSingletonScope();
 
-  container
-    .bind<LedgerWalletConnector>(symbols.ledgerWalletConnector)
-    .to(LedgerWalletConnector)
-    .inSingletonScope();
+    bind<UsersApi>(symbols.usersApi)
+      .to(UsersApi)
+      .inSingletonScope();
 
-  container
-    .bind<LightWalletConnector>(symbols.lightWalletConnector)
-    .to(LightWalletConnector)
-    .inSingletonScope();
+    bind<NotificationCenter>(symbols.notificationCenter)
+      .to(NotificationCenter)
+      .inSingletonScope();
 
-  container
-    .bind<BrowserWalletConnector>(symbols.browserWalletConnector)
-    .to(BrowserWalletConnector)
-    .inSingletonScope();
+    bind<OnfidoSDK>(symbols.onfidoSdk)
+      .to(OnfidoSDK)
+      .inSingletonScope();
 
-  container
-    .bind<Web3Manager>(symbols.web3Manager)
-    .to(Web3Manager)
-    .inSingletonScope();
+    // web3 & blockchain
 
-  container
-    .bind<KycApi>(symbols.apiKycService)
-    .to(KycApi)
-    .inSingletonScope();
-  container
-    .bind<EtoApi>(symbols.apiEtoService)
-    .to(EtoApi)
-    .inSingletonScope();
-  container
-    .bind<EtoPledgeApi>(symbols.apiEtoPledgeService)
-    .to(EtoPledgeApi)
-    .inSingletonScope();
-  container
-    .bind<EtoProductApi>(symbols.apiEtoProductService)
-    .to(EtoProductApi)
-    .inSingletonScope();
-  container
-    .bind<EtoFileApi>(symbols.apiEtoFileService)
-    .to(EtoFileApi)
-    .inSingletonScope();
-  container
-    .bind<EtoNomineeApi>(symbols.apiEtoNomineeService)
-    .to(EtoNomineeApi)
-    .inSingletonScope();
-  container
-    .bind(symbols.fileStorageService)
-    .to(FileStorageApi)
-    .inSingletonScope();
-  container
-    .bind(symbols.apiImmutableStorage)
-    .to(ImmutableStorageApi)
-    .inSingletonScope();
-  container
-    .bind(symbols.gasApi)
-    .to(GasApi)
-    .inSingletonScope();
+    bind(symbols.contractsService)
+      .to(ContractsService)
+      .inSingletonScope();
 
-  // persistence storage
-  container.bind<Storage>(symbols.storage).toConstantValue(new Storage(window.localStorage));
-  container
-    .bind<WalletStorage>(symbols.walletStorage)
-    .to(WalletStorage)
-    .inSingletonScope();
-  container
-    .bind<DocumentsConfidentialityAgreementsStorage>(
+    bind<LedgerWalletConnector>(symbols.ledgerWalletConnector)
+      .to(LedgerWalletConnector)
+      .inSingletonScope();
+
+    bind<LightWalletConnector>(symbols.lightWalletConnector)
+      .to(LightWalletConnector)
+      .inSingletonScope();
+
+    bind<BrowserWalletConnector>(symbols.browserWalletConnector)
+      .to(BrowserWalletConnector)
+      .inSingletonScope();
+
+    bind<Web3Manager>(symbols.web3Manager)
+      .to(Web3Manager)
+      .inSingletonScope();
+
+    bind<KycApi>(symbols.apiKycService)
+      .to(KycApi)
+      .inSingletonScope();
+
+    bind<EtoApi>(symbols.apiEtoService)
+      .to(EtoApi)
+      .inSingletonScope();
+
+    bind<EtoPledgeApi>(symbols.apiEtoPledgeService)
+      .to(EtoPledgeApi)
+      .inSingletonScope();
+
+    bind<EtoProductApi>(symbols.apiEtoProductService)
+      .to(EtoProductApi)
+      .inSingletonScope();
+
+    bind<EtoFileApi>(symbols.apiEtoFileService)
+      .to(EtoFileApi)
+      .inSingletonScope();
+
+    bind<EtoNomineeApi>(symbols.apiEtoNomineeService)
+      .to(EtoNomineeApi)
+      .inSingletonScope();
+
+    bind(symbols.fileStorageService)
+      .to(FileStorageApi)
+      .inSingletonScope();
+
+    bind(symbols.apiImmutableStorage)
+      .to(ImmutableStorageApi)
+      .inSingletonScope();
+
+    bind(symbols.gasApi)
+      .to(GasApi)
+      .inSingletonScope();
+
+    // persistence storage
+    bind<Storage>(symbols.storage).toConstantValue(new Storage(window.localStorage));
+
+    bind<WalletStorage>(symbols.walletStorage)
+      .to(WalletStorage)
+      .inSingletonScope();
+
+    bind<DocumentsConfidentialityAgreementsStorage>(
       symbols.documentsConfidentialityAgreementsStorage,
     )
-    .to(DocumentsConfidentialityAgreementsStorage)
-    .inSingletonScope();
-  container
-    .bind<ObjectStorage<string>>(symbols.jwtStorage)
-    .toDynamicValue(
-      ctx =>
-        new ObjectStorage<string>(
-          ctx.container.get(symbols.storage),
-          ctx.container.get(symbols.logger),
-          STORAGE_JWT_KEY,
+      .to(DocumentsConfidentialityAgreementsStorage)
+      .inSingletonScope();
+
+    bind<ObjectStorage<string>>(symbols.jwtStorage)
+      .toDynamicValue(
+        ctx =>
+          new ObjectStorage<string>(
+            ctx.container.get(symbols.storage),
+            ctx.container.get(symbols.logger),
+            STORAGE_JWT_KEY,
+          ),
+      )
+      .inSingletonScope();
+
+    bind<ObjectStorage<string>>(symbols.userStorage)
+      .toDynamicValue(
+        ctx =>
+          new ObjectStorage<string>(
+            ctx.container.get(symbols.storage),
+            ctx.container.get(symbols.logger),
+            USER_JWT_KEY,
+          ),
+      )
+      .inSingletonScope();
+
+    // factories
+
+    bind<AsyncIntervalSchedulerFactoryType>(symbols.asyncIntervalSchedulerFactory).toFactory(
+      AsyncIntervalSchedulerFactory,
+    );
+
+    bind<TRichTextEditorUploadAdapterFactoryType>(symbols.richTextEditorUploadAdapter).toFactory(
+      richTextEditorUploadAdapterFactory,
+    );
+
+    bind<Web3FactoryType>(symbols.web3Factory).toFactory(web3Factory);
+
+    bind<Web3BatchFactoryType>(symbols.web3BatchFactory).toFactory(web3BatchFactory);
+
+    bind(symbols.intlWrapper).toConstantValue(new IntlWrapper());
+
+    bind(symbols.userActivityChannel)
+      .toDynamicValue(() =>
+        createNewBroadcastChannel<UserActivityChannelMessage>(
+          symbols.userActivityChannel.toString(),
         ),
-    )
-    .inSingletonScope();
-  container
-    .bind<ObjectStorage<string>>(symbols.userStorage)
-    .toDynamicValue(
-      ctx =>
-        new ObjectStorage<string>(
-          ctx.container.get(symbols.storage),
-          ctx.container.get(symbols.logger),
-          USER_JWT_KEY,
-        ),
-    )
-    .inSingletonScope();
-
-  // factories
-  container
-    .bind<AsyncIntervalSchedulerFactoryType>(symbols.asyncIntervalSchedulerFactory)
-    .toFactory(AsyncIntervalSchedulerFactory);
-
-  container
-    .bind<TRichTextEditorUploadAdapterFactoryType>(symbols.richTextEditorUploadAdapter)
-    .toFactory(richTextEditorUploadAdapterFactory);
-
-  container.bind<Web3FactoryType>(symbols.web3Factory).toFactory(web3Factory);
-
-  container.bind<Web3BatchFactoryType>(symbols.web3BatchFactory).toFactory(web3BatchFactory);
-
-  container.bind(symbols.intlWrapper).toConstantValue(new IntlWrapper());
-  container
-    .bind(symbols.userActivityChannel)
-    .toDynamicValue(() =>
-      createNewBroadcastChannel<UserActivityChannelMessage>(symbols.userActivityChannel.toString()),
-    )
-    .inSingletonScope();
-
-  return container;
+      )
+      .inSingletonScope();
+  });
 }
 
 /**
@@ -262,7 +242,11 @@ export function setupBindings(config: IConfig): Container {
  */
 export const createGlobalDependencies = (container: Container) => ({
   // misc
-  logger: container.get<ILogger>(symbols.logger),
+
+  logger: container.get<TLibSymbolType<typeof coreModuleApi.symbols.logger>>(
+    coreModuleApi.symbols.logger,
+  ),
+
   notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
 
   cryptoRandomString: container.get<typeof cryptoRandomString>(symbols.cryptoRandomString),
@@ -308,7 +292,6 @@ export const createGlobalDependencies = (container: Container) => ({
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),
   gasApi: container.get<GasApi>(symbols.gasApi),
   apiImmutableStorage: container.get<ImmutableStorageApi>(symbols.apiImmutableStorage),
-  marketingEmailsApi: container.get<MarketingEmailsApi>(symbols.marketingEmailsApi),
 
   intlWrapper: container.get<IntlWrapper>(symbols.intlWrapper),
   userActivityChannel: container.get<BroadcastChannel<UserActivityChannelMessage>>(

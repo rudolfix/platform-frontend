@@ -3,7 +3,7 @@ import { Container } from "inversify";
 import * as React from "react";
 
 import { symbols } from "../../di/symbols";
-import { appConnect, AppDispatch } from "../../store";
+import { appConnect, AppGlobalDispatch } from "../../store";
 import {
   AsyncIntervalScheduler,
   AsyncIntervalSchedulerFactoryType,
@@ -14,7 +14,7 @@ interface IActionWatcherDispatchProps {
 }
 
 interface IWatchActionOptions {
-  actionCreator: (dispatch: AppDispatch) => void;
+  actionCreator: (dispatch: AppGlobalDispatch) => void;
   interval: number;
 }
 

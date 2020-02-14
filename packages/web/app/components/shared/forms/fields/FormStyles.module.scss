@@ -10,6 +10,7 @@
   }
 
   > :global(.input-group-text) {
+    font-size: px-to-rem(14px);
     background-color: transparent;
     padding: 0 0 px-to-rem(4px) px-to-rem(10px);
     border: 0;

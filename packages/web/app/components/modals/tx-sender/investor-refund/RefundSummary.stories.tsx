@@ -24,6 +24,7 @@ const additionalData: TAdditionalDataByType<typeof ETxSenderType.INVESTOR_REFUND
   tokenSymbol: "FT",
   amountEth: Q18.mul("150").toString(),
   amountEurUlps: "0",
+  tokenDecimals: 18,
   companyName: "Storybook Ltd.",
 };
 

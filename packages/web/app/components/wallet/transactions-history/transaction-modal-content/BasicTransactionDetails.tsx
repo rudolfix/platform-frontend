@@ -4,8 +4,8 @@ import { FormattedDate, FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETransactionStatus } from "../../../../modules/tx-history/types";
-import { DataRow, DataRowSeparator } from "../../../modals/tx-sender/shared/DataRow";
-import { ESize, TransactionData } from "../../../shared/TransactionData";
+import { DataRow, DataRowSeparator } from "../../../shared/DataRow";
+import { ESize, TransactionData } from "../../../shared/transaction/TransactionData";
 
 interface IExternalProps {
   date: string;

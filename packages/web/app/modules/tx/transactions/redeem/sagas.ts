@@ -1,5 +1,11 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { compareBigNumbers, convertToUlps, DeepReadonly, ETH_DECIMALS } from "@neufund/shared";
+import {
+  compareBigNumbers,
+  convertToUlps,
+  DeepReadonly,
+  ETH_DECIMALS,
+  EURO_DECIMALS,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
@@ -71,10 +77,12 @@ function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
   }
 
   const bankFee: string = yield select(selectBankFeeUlps);
+  const tokenDecimals = EURO_DECIMALS;
 
   const additionalDetails = {
     bankFee,
     amount: txDataFromUser.value,
+    tokenDecimals,
     bankAccount: {
       bankName: bankAccount.details.bankName,
       accountNumberLast4: bankAccount.details.bankAccountNumberLast4,

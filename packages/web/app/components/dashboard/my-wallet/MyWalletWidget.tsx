@@ -1,9 +1,9 @@
+import { Button, ButtonInline, EButtonLayout, EButtonWidth } from "@neufund/design-system";
+import { withContainer } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { Link } from "react-router-dom";
-import { Col, Row } from "reactstrap";
-import { compose } from "redux";
+import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import {
@@ -17,25 +17,24 @@ import {
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { appRoutes } from "../../appRoutes";
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons";
+import { DataRowSeparated } from "../../shared/DataRow";
 import { Money } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
+import { TokenIcon } from "../../shared/icons/TokenIcon";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
-import { Panel } from "../../shared/Panel";
+import { PanelRounded } from "../../shared/Panel";
 import { ECustomTooltipTextPosition, Tooltip } from "../../shared/tooltips";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import ethIcon from "../../../assets/img/eth_icon.svg";
-import arrowRight from "../../../assets/img/inline_icons/arrow_right.svg";
 import moneyIcon from "../../../assets/img/nEUR_icon.svg";
 import * as styles from "./MyWalletWidget.module.scss";
 
-type StateProps = {
+type TStateProps = {
   isLoading: boolean;
-  error?: string;
+  hasError: boolean;
   data?: {
     euroTokenAmount: string;
     ethAmount: string;
@@ -46,141 +45,156 @@ type StateProps = {
   };
 };
 
-export const MyWalletWidgetComponentBody: React.FunctionComponent<StateProps> = props => {
-  if (props.isLoading) {
-    return (
-      <div>
-        <LoadingIndicator />
-      </div>
-    );
-  } else if (props.error) {
-    return <WarningAlert>{props.error}</WarningAlert>;
-  } else {
-    const {
-      euroTokenAmount,
-      ethAmount,
-      ethEuroAmount,
-      totalAmount,
-      isIcbmWalletConnected,
-      isLockedWalletConnected,
-    } = props.data!;
-
-    return (
-      <>
-        <Row>
-          <Col className={styles.moneySuiteWrapper} xs={12} sm={6} lg={12}>
-            <MoneySuiteWidget
-              currency={ECurrency.EUR_TOKEN}
-              largeNumber={euroTokenAmount}
-              icon={moneyIcon}
-              value={euroTokenAmount}
-              currencyTotal={ECurrency.EUR}
-              data-test-id="my-wallet-widget-eur-token"
-            />
-          </Col>
-          <Col className={styles.moneySuiteWrapper} xs={12} sm={6} lg={12}>
-            <MoneySuiteWidget
-              currency={ECurrency.ETH}
-              largeNumber={ethAmount}
-              icon={ethIcon}
-              value={ethEuroAmount}
-              currencyTotal={ECurrency.EUR}
-              data-test-id="my-wallet-widget-eth-token"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <div className={`${styles.total} mt-3 mb-3 d-flex align-items-center`}>
-              <span className={cn(styles.smallFont)}>
-                <FormattedMessage id="dashboard.my-wallet-widget.total" />
-              </span>
-              <Money
-                value={totalAmount}
-                valueType={ECurrency.EUR}
-                inputFormat={ENumberInputFormat.ULPS}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                className={cn(styles.money, "pl-1 pl-sm-2 m-0")}
-                data-test-id="my-wallet-widget-total"
-              />
-            </div>
-          </Col>
-        </Row>
-        {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
-          process.env.NF_CHECK_LOCKED_WALLET_WIDGET_IN_DASHBOARD === "1" &&
-          !(isIcbmWalletConnected || isLockedWalletConnected) && (
-            <Row data-test-id="my-wallet-widget-icbm-help-text">
-              <Col>
-                <p className={styles.icbmWallet}>
-                  <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />
-                  <br />
-                  <Link to={appRoutes.profile} className={styles.link}>
-                    <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
-                  </Link>
-                  <Tooltip
-                    content={<FormattedMessage id="icbm-wallet.tooltip" />}
-                    textPosition={ECustomTooltipTextPosition.LEFT}
-                  />
-                </p>
-              </Col>
-            </Row>
-          )}
-      </>
-    );
-  }
+type TDispatchProps = {
+  goToWallet: () => void;
+  goToPortfolio: () => void;
 };
 
-export const MyWalletWidgetComponent: React.FunctionComponent<CommonHtmlProps & StateProps> = ({
-  ...props
-}) => (
-  <Panel
-    columnSpan={EColumnSpan.ONE_COL}
-    headerText={
-      <FormattedMessage id="components.dashboard.my-wallet.my-wallet-widget.header-text" />
-    }
-    rightComponent={
-      <ButtonLink
-        to={appRoutes.wallet}
-        layout={EButtonLayout.GHOST}
-        iconPosition={EIconPosition.ICON_AFTER}
-        svgIcon={arrowRight}
-        className={cn(styles.link, "pr-0")}
-      >
-        <FormattedMessage id="dashboard.my-wallet-widget.main-wallet-redirect-button" />
-      </ButtonLink>
-    }
-  >
-    <MyWalletWidgetComponentBody {...props} />
-  </Panel>
+type TComponentProps = TStateProps & TDispatchProps;
+
+export const MyWalletWidgetError: React.FunctionComponent = () => (
+  <WarningAlert data-test-id="my-wallet-error" className="m-auto">
+    <FormattedMessage id="common.error" values={{ separator: <br /> }} />
+  </WarningAlert>
 );
 
-export const MyWalletWidget = compose<React.FunctionComponent<CommonHtmlProps>>(
-  onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
-  appConnect<StateProps>({
-    stateToProps: s => {
-      const isLoading = s.wallet.loading;
-      const error = s.wallet.error;
+export const MyWalletWidgetComponentLayout: React.FunctionComponent<TComponentProps> = props => {
+  const {
+    euroTokenAmount,
+    ethAmount,
+    ethEuroAmount,
+    isIcbmWalletConnected,
+    isLockedWalletConnected,
+  } = props.data!;
 
-      if (!isLoading && !error) {
-        const state = s;
+  return (
+    <>
+      <DataRowSeparated
+        caption={
+          <>
+            <TokenIcon srcSet={{ "1x": moneyIcon }} alt="" className={cn("mr-2", styles.token)} />
+            <span className={styles.tokenName}>
+              <FormattedMessage id="dashboard.my-wallet.neuro" />
+            </span>
+          </>
+        }
+        value={
+          <MoneySuiteWidget
+            currency={ECurrency.EUR_TOKEN}
+            largeNumber={euroTokenAmount}
+            value={euroTokenAmount}
+            currencyTotal={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.FULL}
+            data-test-id="my-wallet-widget-eur-token"
+          />
+        }
+      />
+      <DataRowSeparated
+        caption={
+          <>
+            <TokenIcon srcSet={{ "1x": ethIcon }} alt="" className={cn("mr-2", styles.token)} />
+            <span className={styles.tokenName}>
+              <FormattedMessage id="dashboard.my-wallet.ether" />
+            </span>
+          </>
+        }
+        value={
+          <MoneySuiteWidget
+            currency={ECurrency.ETH}
+            largeNumber={ethAmount}
+            value={ethEuroAmount}
+            currencyTotal={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.FULL}
+            data-test-id="my-wallet-widget-eth-token"
+          />
+        }
+      />
+      {process.env.NF_CHECK_LOCKED_WALLET_WIDGET_ENABLED === "1" &&
+        process.env.NF_CHECK_LOCKED_WALLET_WIDGET_IN_DASHBOARD === "1" &&
+        !(isIcbmWalletConnected || isLockedWalletConnected) && (
+          <section data-test-id="my-wallet-widget-icbm-help-text">
+            <p className={styles.icbmWallet}>
+              <FormattedMessage id="dashboard.my-portfolio-widget.cant-see-your-icbm-wallet" />
+              <br />
+              <ButtonInline onClick={props.goToPortfolio}>
+                <FormattedMessage id="dashboard.my-portfolio-widget.check-it-here" />
+              </ButtonInline>
+              <Tooltip
+                content={<FormattedMessage id="icbm-wallet.tooltip" />}
+                textPosition={ECustomTooltipTextPosition.LEFT}
+              />
+            </p>
+          </section>
+        )}
+      <Button
+        className={styles.button}
+        layout={EButtonLayout.PRIMARY}
+        width={EButtonWidth.NORMAL}
+        onClick={props.goToWallet}
+      >
+        <FormattedMessage id="dashboard.my-wallet.manage-wallet" />
+      </Button>
+    </>
+  );
+};
+
+export const MyWalletWidgetComponentContainer: React.FunctionComponent<CommonHtmlProps &
+  TComponentProps> = ({ children, ...props }) => (
+  <PanelRounded
+    columnSpan={EColumnSpan.ONE_COL}
+    className={styles.container}
+    headerText={<FormattedMessage id="dashboard.my-wallet.title" />}
+    rightComponent={
+      !props.isLoading &&
+      !props.hasError &&
+      props.data && (
+        <Money
+          data-test-id="my-wallet-widget-total"
+          value={props.data.totalAmount}
+          inputFormat={ENumberInputFormat.ULPS}
+          valueType={ECurrency.EUR}
+          outputFormat={ENumberOutputFormat.FULL}
+        />
+      )
+    }
+  >
+    {children}
+  </PanelRounded>
+);
+
+export const MyWalletWidget = compose<TComponentProps, CommonHtmlProps>(
+  onEnterAction({ actionCreator: d => d(actions.wallet.loadWalletData()) }),
+  appConnect<TStateProps, TDispatchProps>({
+    stateToProps: state => {
+      const isLoading = state.wallet.loading;
+      const hasError = !!state.wallet.error;
+
+      if (!isLoading && !hasError) {
         return {
           isLoading,
-          error,
+          hasError,
           data: {
             euroTokenAmount: selectTotalEuroTokenBalance(state),
             ethAmount: selectTotalEtherBalance(state),
             ethEuroAmount: selectTotalEtherBalanceEuroAmount(state),
             totalAmount: selectTotalEuroBalance(state),
-            isIcbmWalletConnected: selectIcbmWalletConnected(s.wallet),
-            isLockedWalletConnected: selectLockedWalletConnected(s),
+            isIcbmWalletConnected: selectIcbmWalletConnected(state.wallet),
+            isLockedWalletConnected: selectLockedWalletConnected(state),
           },
         };
       } else {
         return {
           isLoading,
-          error,
+          hasError,
         };
       }
     },
+    dispatchToProps: dispatch => ({
+      goToWallet: () => dispatch(actions.routing.goToWallet()),
+      goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),
+    }),
   }),
-)(MyWalletWidgetComponent);
+  withContainer(MyWalletWidgetComponentContainer),
+  branch<TStateProps>(state => state.isLoading, renderComponent(LoadingIndicator)),
+  branch<TStateProps>(state => state.hasError, renderComponent(MyWalletWidgetError)),
+)(MyWalletWidgetComponentLayout);

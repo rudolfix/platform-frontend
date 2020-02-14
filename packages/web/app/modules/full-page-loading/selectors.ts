@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
 
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 
-const selectFullPageLoading = (state: IAppState) => state.fullPageLoading;
+const selectFullPageLoading = (state: TAppGlobalState) => state.fullPageLoading;
 
 export const selectFullPageLoadingIsOpen = createSelector(
   selectFullPageLoading,

@@ -1,8 +1,8 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EtoLegalInformationType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { Button, EButtonLayout } from "../../../../shared/buttons/index";
 import {
   ECurrency,
   ENumberInputFormat,

@@ -11,7 +11,7 @@ import {
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { InvalidETOStateError } from "../eto/errors";
@@ -189,7 +189,7 @@ export function* submitEtoData({
 }
 
 function* startSetDateTX(_: TGlobalDependencies): Generator<any, any, any> {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
   if (selectIsNewPreEtoStartDateValid(state)) {
     yield put(actions.txTransactions.startEtoSetDate());
   }

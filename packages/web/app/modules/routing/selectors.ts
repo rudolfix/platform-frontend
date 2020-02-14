@@ -3,10 +3,10 @@ import { isString } from "lodash";
 import * as queryString from "query-string";
 import { createSelector } from "reselect";
 
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { EWalletType } from "../web3/types";
 
-export const selectRouter = (state: IAppState) => state.router;
+export const selectRouter = (state: TAppGlobalState) => state.router;
 
 export const selectRedirectURLFromQueryString = createSelector(selectRouter, (state: RouterState):
   | string

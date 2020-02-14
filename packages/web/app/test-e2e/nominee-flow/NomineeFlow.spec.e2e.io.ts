@@ -1,4 +1,4 @@
-import { goThroughKycCorporateProcess } from "../kyc/utils";
+import { goThroughKycCorporateProcess } from "../investor/kyc/utils";
 import { backupLightWalletSeedFromAccountSetupDashboard } from "../shared/backupLightWalletSeed";
 import {
   assertNomineeDashboard,

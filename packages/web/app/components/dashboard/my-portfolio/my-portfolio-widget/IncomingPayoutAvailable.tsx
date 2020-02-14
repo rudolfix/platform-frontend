@@ -1,3 +1,4 @@
+import { EButtonLayout, EIconPosition } from "@neufund/design-system";
 import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,7 +8,6 @@ import { selectTokensDisbursal } from "../../../../modules/investor-portfolio/se
 import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
-import { EButtonLayout, EIconPosition } from "../../../shared/buttons/Button";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ETheme } from "../../../shared/formatters/Money";
 import { MoneyWithLessThan } from "../../../shared/formatters/MoneyWithLessThan";

@@ -1,5 +1,5 @@
 .text-input {
-  @include nds-input-text;
+  @include nds-body-small;
 
   min-width: px-to-rem(320px);
   height: px-to-rem(40px);

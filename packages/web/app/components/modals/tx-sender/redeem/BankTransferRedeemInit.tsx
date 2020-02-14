@@ -1,3 +1,4 @@
+import { ButtonArrowRight, ButtonInline } from "@neufund/design-system";
 import BigNumber from "bignumber.js";
 import * as cn from "classnames";
 import { FormikConsumer, FormikProps, withFormik } from "formik";
@@ -18,7 +19,6 @@ import { selectLiquidEuroTokenBalance } from "../../../../modules/wallet/selecto
 import { doesUserHaveEnoughNEuro, doesUserWithdrawMinimal } from "../../../../modules/web3/utils";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { ButtonArrowRight, ButtonInline } from "../../../shared/buttons";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
 import {
   ECurrency,

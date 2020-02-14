@@ -27,7 +27,10 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ECurrency } from "../../../shared/formatters/utils";
-import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
+import {
+  ELoadingIndicator,
+  LoadingIndicator,
+} from "../../../shared/loading-indicator/LoadingIndicator";
 import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ETheme } from "../../../shared/transaction/TransactionData";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
@@ -118,5 +121,10 @@ export const MyNeuWidget = compose<TComponentProps, {}>(
   }),
   withContainer(MyNeuWidgetLayoutWrapper),
   branch<TStateProps>(({ error }) => error, renderComponent(MyNeuWidgetError)),
-  branch<TStateProps>(({ isLoading }) => isLoading, renderComponent(LoadingIndicator)),
+  branch<TStateProps>(
+    ({ isLoading }) => isLoading,
+    renderComponent(() => (
+      <LoadingIndicator type={ELoadingIndicator.PULSE_WHITE} className="m-auto" />
+    )),
+  ),
 )(MyNeuWidgetLayout);

@@ -6,7 +6,10 @@ import * as React from "react";
 import { mockedStore } from "../../../../../test/fixtures/mockedStore";
 import { TAppGlobalState } from "../../../../store";
 import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
-import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
+import {
+  ELoadingIndicator,
+  LoadingIndicator,
+} from "../../../shared/loading-indicator/LoadingIndicator";
 import { MyNeuWidgetLayout, MyNeuWidgetLayoutWrapper } from "./MyNeuWidget";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
 
@@ -96,7 +99,7 @@ storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
   )
   .add("loading", () => (
     <MyNeuWidgetLayoutWrapper>
-      <LoadingIndicator />
+      <LoadingIndicator type={ELoadingIndicator.PULSE_WHITE} className="m-auto" />
     </MyNeuWidgetLayoutWrapper>
   ))
   .add("error", () => (

@@ -3,6 +3,7 @@
   flex-direction: column;
   color: $neu-charcoal-grey;
   padding: px-to-rem(20px);
+  min-height: px-to-rem(262px);
 }
 
 .token {

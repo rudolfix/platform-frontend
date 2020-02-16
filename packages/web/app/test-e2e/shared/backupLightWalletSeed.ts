@@ -10,7 +10,7 @@ const extractSeedFromDOM = (seed: string): string[] =>
 const extractRandomWordIndexFromDOM = (indexArray: string): string[] =>
   indexArray.replace(/[a-z]/g, "").split(" ");
 
-export const backupLightWalletSeedBase = (finalCheckTid?: string) => {
+export const backupLightWalletSeedBase = () => {
   confirmAccessModal();
 
   cy.get(tid("backup-seed-intro-button")).awaitedClick();
@@ -33,9 +33,6 @@ export const backupLightWalletSeedBase = (finalCheckTid?: string) => {
 
       cy.get(tid("seed-verify-button-next")).awaitedClick();
       cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
-      if (finalCheckTid) {
-        cy.get(tid(finalCheckTid)).should("exist");
-      }
     });
   });
 };
@@ -43,10 +40,13 @@ export const backupLightWalletSeedBase = (finalCheckTid?: string) => {
 export const backupLightWalletSeed = () => {
   goToProfile();
   cy.get(tid("backup-seed-widget-link-button")).awaitedClick();
-  backupLightWalletSeedBase("backup-seed-verified-section");
+  backupLightWalletSeedBase();
+  goToProfile();
+  cy.get(tid("backup-seed-verified-section")).should("exist");
 };
 
 export const backupLightWalletSeedFromAccountSetupDashboard = () => {
   cy.get(tid("backup-seed-widget-link-button")).awaitedClick();
-  backupLightWalletSeedBase("account-setup-start-kyc-section");
+  backupLightWalletSeedBase();
+  cy.get(tid("account-setup-start-kyc-section")).should("exist");
 };

@@ -2,8 +2,8 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { AccountSetupLayout } from "./accountSetup/AccountSetup";
-import { EAccountSetupStepState } from "./accountSetup/types";
+import { OnboardingMain } from "../dashboard/onboarding/Onboarding";
+import { EOnboardingStepState } from "../dashboard/onboarding/types";
 import { NomineeLinkBankAccountLayout } from "./linkBankAccount/LinkBankAccount";
 import { NomineeRequestContainer } from "./linkToIssuer/LinkToIssuer";
 import { AccountSetupContainer } from "./nomineeDashboardContainer/AccountSetupContainer";
@@ -21,7 +21,7 @@ storiesOf("Nominee tasks", module)
     const steps = [
       {
         key: "step1",
-        stepState: EAccountSetupStepState.DONE,
+        stepState: EOnboardingStepState.DONE,
         title: "Step 1 Title",
         component: "bla",
         number: 1,
@@ -29,7 +29,7 @@ storiesOf("Nominee tasks", module)
       },
       {
         key: "step2",
-        stepState: EAccountSetupStepState.ACTIVE,
+        stepState: EOnboardingStepState.ACTIVE,
         title: "Step 2 Title",
         component: "bla",
         number: 2,
@@ -37,7 +37,7 @@ storiesOf("Nominee tasks", module)
       },
       {
         key: "step3",
-        stepState: EAccountSetupStepState.NOT_DONE,
+        stepState: EOnboardingStepState.NOT_DONE,
         title: "Step 3 Title",
         component: "bla",
         number: 2,
@@ -47,7 +47,7 @@ storiesOf("Nominee tasks", module)
 
     return (
       <AccountSetupContainer>
-        <AccountSetupLayout accountSetupStepsData={steps} />
+        <OnboardingMain accountSetupStepsData={steps} />
       </AccountSetupContainer>
     );
   })

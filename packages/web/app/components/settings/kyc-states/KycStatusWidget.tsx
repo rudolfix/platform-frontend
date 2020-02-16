@@ -39,7 +39,12 @@ const statusTextMap: Record<EKycRequestStatus, React.ReactNode> = {
       values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
-  [EKycRequestStatus.IGNORED]: <FormattedMessage id="settings.kyc-status-widget.status.ignored" />,
+  [EKycRequestStatus.IGNORED]: (
+    <FormattedMessage
+      id="settings.kyc-status-widget.status.ignored"
+      values={{ url: externalRoutes.neufundSupportHome }}
+    />
+  ),
   [EKycRequestStatus.PENDING]: (
     <FormattedHTMLMessage
       tagName="span"

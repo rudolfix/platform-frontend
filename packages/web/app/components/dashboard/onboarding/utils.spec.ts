@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { EAccountSetupStepState } from "./types";
-import { prepareSetupAccountSteps } from "./utils";
+import { EOnboardingStepState } from "./types";
+import { prepareOnboardingSteps } from "./utils";
 
 describe("prepareSetupAccountSteps", () => {
   it("iterates over data and sets the first not done element open", () => {
@@ -31,7 +31,7 @@ describe("prepareSetupAccountSteps", () => {
         key: "a",
         number: 1,
         title: "title 1",
-        stepState: EAccountSetupStepState.DONE,
+        stepState: EOnboardingStepState.DONE,
         component: "component 1",
         isLast: false,
       },
@@ -39,7 +39,7 @@ describe("prepareSetupAccountSteps", () => {
         key: "b",
         number: 2,
         title: "title 2",
-        stepState: EAccountSetupStepState.ACTIVE,
+        stepState: EOnboardingStepState.ACTIVE,
         component: "component 2",
         isLast: false,
       },
@@ -47,12 +47,12 @@ describe("prepareSetupAccountSteps", () => {
         key: "c",
         number: 3,
         title: "title 3",
-        stepState: EAccountSetupStepState.NOT_DONE,
+        stepState: EOnboardingStepState.NOT_DONE,
         component: "component 3",
         isLast: true,
       },
     ];
 
-    expect(prepareSetupAccountSteps(data)).to.deep.eq(expectedData);
+    expect(prepareOnboardingSteps(data)).to.deep.eq(expectedData);
   });
 });

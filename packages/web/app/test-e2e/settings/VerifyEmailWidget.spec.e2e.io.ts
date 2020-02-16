@@ -1,20 +1,19 @@
 import {
   assertDashboard,
+  assertEmailChangeFlow,
+  assertEmailPendingChange,
   assertVerifyEmailWidgetIsInNoEmailState,
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
   closeModal,
   confirmAccessModal,
+  fillForm,
   generateRandomEmailAddress,
+  goToProfile,
   goToUserAccountSettings,
   registerWithLightWallet,
   tid,
-  verifyLatestUserEmail,
-} from "../utils";
-import {
-  assertEmailChangeFlow,
-  assertEmailPendingChange,
-  fillForm,
+  verifyLatestUserEmailAccountSetup,
   verifyLatestUserEmailWithAPI,
 } from "../utils/index";
 
@@ -42,8 +41,10 @@ describe("Verify Email Widget", () => {
 
     // Email server takes time before getting the request
     cy.wait(3000);
-    verifyLatestUserEmail(secondEmail);
+    verifyLatestUserEmailAccountSetup(secondEmail);
 
+    assertDashboard();
+    goToProfile();
     assertVerifyEmailWidgetIsInVerfiedEmailState();
     assertVerifyEmailWidgetIsInUnverifiedEmailState(true);
     assertVerifyEmailWidgetIsInNoEmailState(true);

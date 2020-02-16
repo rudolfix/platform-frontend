@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import { ENomineeEtoSpecificTask, ENomineeTask } from "../../modules/nominee-flow/types";
+import { Onboarding } from "../dashboard/onboarding/Onboarding";
 import { AcceptRAAA, AcceptTHA } from "./AcceptAgreement";
 import { AcceptISHA } from "./AcceptIsha";
-import { AccountSetup } from "./accountSetup/AccountSetup";
 import { LinkBankAccount } from "./linkBankAccount/LinkBankAccount";
 import { LinkToIssuer } from "./linkToIssuer/LinkToIssuer";
 import { NoTasks } from "./NoTasks";
@@ -25,7 +25,7 @@ type TNomineeTasksData = { [key in ENomineeTask]: ITaskData } &
 export const nomineeTasksData: TNomineeTasksData = {
   [ENomineeTask.ACCOUNT_SETUP]: {
     key: ENomineeTask.ACCOUNT_SETUP,
-    taskRootComponent: AccountSetup,
+    taskRootComponent: Onboarding,
   },
   [ENomineeTask.LINK_TO_ISSUER]: {
     key: ENomineeTask.LINK_TO_ISSUER,

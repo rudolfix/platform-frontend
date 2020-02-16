@@ -6,10 +6,11 @@ import {
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
   goToDashboard,
+  goToProfile,
   logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
-} from "../utils";
+} from "../utils/index";
 
 describe("Verify Wallet", () => {
   it("should update login email on activation", () => {
@@ -71,6 +72,8 @@ describe("Verify Wallet", () => {
         },
       });
 
+      assertDashboard();
+      goToProfile();
       // email should be verified
       assertVerifyEmailWidgetIsInVerfiedEmailState();
       cy.get(tid("profile.verify-email-widget.verified-email")).contains(email);

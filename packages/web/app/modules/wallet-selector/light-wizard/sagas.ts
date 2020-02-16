@@ -1,5 +1,6 @@
 import { call, fork, put, select } from "@neufund/sagas";
 import { EJwtPermissions, invariant } from "@neufund/shared";
+import { includes } from "lodash";
 
 import {
   BackupRecoveryMessage,
@@ -8,8 +9,9 @@ import {
   SignInUserErrorMessage,
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
+import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { EUserType, IUser, IUserInput } from "../../../lib/api/users/interfaces";
+import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
 import {
   LightError,
@@ -91,7 +93,7 @@ export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Genera
     const userType = yield select(selectUserType);
     const kycAndEmailVerified = yield select(userHasKycAndEmailVerified);
 
-    if (!kycAndEmailVerified && userType === EUserType.NOMINEE) {
+    if (!kycAndEmailVerified && includes(USERS_WITH_ACCOUNT_SETUP, userType)) {
       yield put(actions.routing.goToDashboard());
     } else {
       yield put(actions.routing.goToProfile());

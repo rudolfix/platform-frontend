@@ -15,7 +15,7 @@ import {
   logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
-  verifyLatestUserEmail,
+  verifyLatestUserEmailAccountSetup,
 } from "../utils/index";
 
 describe("Change Email", function(): void {
@@ -35,8 +35,8 @@ describe("Change Email", function(): void {
 
       registerWithLightWallet(newEmail, DEFAULT_PASSWORD);
 
-      verifyLatestUserEmail(newEmail);
-
+      verifyLatestUserEmailAccountSetup(newEmail);
+      goToProfile();
       assertEmailChangeFlow();
 
       fillForm({

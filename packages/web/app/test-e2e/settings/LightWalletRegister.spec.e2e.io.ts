@@ -10,7 +10,7 @@ import {
   logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
-  verifyLatestUserEmail,
+  verifyLatestUserEmailAccountSetup,
 } from "../utils/index";
 
 describe("Light wallet login / register", () => {
@@ -102,7 +102,7 @@ describe("Light wallet login / register", () => {
     lightWalletTypeRegistrationInfo(email, password);
     assertDashboard();
     acceptTOS();
-    verifyLatestUserEmail(email);
+    verifyLatestUserEmailAccountSetup(email);
     logoutViaAccountMenu();
     cy.clearLocalStorage();
 
@@ -118,7 +118,7 @@ describe("Light wallet login / register", () => {
 
   // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit
   /**
-  it("should recover vault from email", () => {
+   it("should recover vault from email", () => {
     const email = "moe3@test.com";
     const password = "strongpassword";
 

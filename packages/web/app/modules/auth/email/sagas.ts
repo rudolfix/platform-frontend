@@ -1,4 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
+import { includes } from "lodash/fp";
 
 import {
   EUnverifiedEmailReminderModalType,
@@ -6,8 +7,9 @@ import {
 } from "../../../components/modals/unverified-email-reminder/UnverifiedEmailReminderModal";
 import { AuthMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
+import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { EUserType, IVerifyEmailUser } from "../../../lib/api/users/interfaces";
+import { IVerifyEmailUser } from "../../../lib/api/users/interfaces";
 import { EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
 import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import { TAppGlobalState } from "../../../store";
@@ -79,7 +81,7 @@ export function* verifyUserEmail({
   const userType = yield* select((s: TAppGlobalState) => selectUserType(s));
   const kycAndEmailVerified = yield* select((s: TAppGlobalState) => userHasKycAndEmailVerified(s));
 
-  if (!kycAndEmailVerified && userType === EUserType.NOMINEE) {
+  if (!kycAndEmailVerified && includes(userType, USERS_WITH_ACCOUNT_SETUP)) {
     yield put(actions.routing.goToDashboard());
   } else {
     yield put(actions.routing.goToProfile());

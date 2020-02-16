@@ -97,22 +97,10 @@ const PortfolioStatsNoAssetsLayout: React.FunctionComponent<Pick<
   </>
 );
 
-const PortfolioStatsNoKYCLayout: React.FunctionComponent<Pick<TDispatchProps, "goToProfile">> = ({
-  goToProfile,
-}) => (
-  <>
-    <p className={styles.noAssets}>
-      <FormattedMessage id="dashboard.portfolio-stats.no-assets" />
-    </p>
-    <Button
-      className={styles.button}
-      layout={EButtonLayout.PRIMARY}
-      width={EButtonWidth.NORMAL}
-      onClick={goToProfile}
-    >
-      <FormattedMessage id="dashboard.portfolio-stats.complete-account-setup" />
-    </Button>
-  </>
+const PortfolioStatsNoKYCLayout: React.FunctionComponent = () => (
+  <p className={styles.noAssets}>
+    <FormattedMessage id="dashboard.portfolio-stats.no-assets" />
+  </p>
 );
 
 const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<TPortfolioStatsProps, "hasError">> = ({

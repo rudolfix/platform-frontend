@@ -1,8 +1,13 @@
 .section {
+  @include media-breakpoint-up(sm) {
+    grid-template: auto auto / auto 1fr;
+    grid-gap: 1.5rem 1rem;
+    justify-items: flex-start;
+  }
+
   display: grid;
-  grid-template: auto auto auto / auto 1fr;
-  grid-gap: 2rem 1rem;
-  justify-items: flex-start;
+  grid-row-gap: 1rem;
+  justify-items: stretch;
 }
 
 .change-email-form {

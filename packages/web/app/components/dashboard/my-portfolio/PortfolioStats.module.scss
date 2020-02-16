@@ -33,10 +33,10 @@
   @include nds-body;
 
   display: flex;
+  flex-grow: 1;
   color: $neu-shuttle-gray;
   margin-bottom: 0;
   line-height: normal;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
 }

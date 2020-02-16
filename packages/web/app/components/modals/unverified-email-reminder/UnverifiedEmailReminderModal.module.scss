@@ -1,10 +1,17 @@
 .modal-body {
+  @include media-breakpoint-up(sm) {
+
+    padding: 0 px-to-rem(40) px-to-rem(5);
+    justify-items: center;
+  }
+
+
   display: grid;
   grid-gap: px-to-rem(24);
 
+  justify-items: stretch;
   align-items: center;
-  justify-items: center;
-  padding: 0 px-to-rem(40) px-to-rem(5);
+  padding: 0;
 }
 
 .modal-title {

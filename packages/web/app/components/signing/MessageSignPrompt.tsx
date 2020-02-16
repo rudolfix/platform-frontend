@@ -56,7 +56,7 @@ export const MessageSignPromptComponent: React.FunctionComponent<IStateProps> = 
 
 export const MessageSignPrompt = appConnect<IStateProps>({
   stateToProps: s => ({
-    walletType: nonNullable(selectWalletType(s.web3)),
+    walletType: nonNullable(selectWalletType(s)),
     walletSubType: nonNullable(selectWalletSubType(s.web3)),
   }),
 })(MessageSignPromptComponent);

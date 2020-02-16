@@ -1,5 +1,11 @@
 import { kycRoutes } from "../../../components/kyc/routes";
-import { createAndLoginNewUser, fillForm, formField, tid } from "../../utils/index";
+import {
+  confirmAccessModal,
+  createAndLoginNewUser,
+  fillForm,
+  formField,
+  tid,
+} from "../../utils/index";
 import { kycCorporateCompanyForm } from "./fixtures";
 import { goThroughKycCorporateProcess } from "./utils";
 
@@ -26,6 +32,7 @@ describe("KYC", () => {
     cy.get(tid("kyc-start-go-to-business")).awaitedClick();
 
     goThroughKycCorporateProcess();
+    confirmAccessModal();
 
     // panel should now be in pending state
     cy.get(tid("kyc-panel-pending")).should("exist");

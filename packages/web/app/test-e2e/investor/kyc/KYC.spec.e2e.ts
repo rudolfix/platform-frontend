@@ -6,8 +6,12 @@ import {
   formField,
   tid,
 } from "../../utils/index";
-import { kycCorporateCompanyForm } from "./fixtures";
-import { goThroughKycCorporateProcess } from "./utils";
+import { kycCorporateCompanyForm, kycManagingDirectorFormInvalid } from "./fixtures";
+import {
+  assertKYCSuccess,
+  goThroughKycCorporateProcess,
+  goThroughKycCorporateProcessWithSkips,
+} from "./utils";
 
 describe("KYC", () => {
   it("should block kyc flow for Permanent Residence CAMBODIA (KH) region @kyc @p2", () => {
@@ -33,9 +37,20 @@ describe("KYC", () => {
 
     goThroughKycCorporateProcess();
     confirmAccessModal();
+    assertKYCSuccess();
+  });
 
-    // panel should now be in pending state
-    cy.get(tid("kyc-panel-pending")).should("exist");
+  it("should go through business KYC with skips @kyc @p3", () => {
+    createAndLoginNewUser({ type: "investor" });
+
+    // go to corporate start page
+    cy.visit(kycRoutes.start);
+
+    cy.get(tid("kyc-start-go-to-business")).awaitedClick();
+
+    goThroughKycCorporateProcessWithSkips();
+    confirmAccessModal();
+    assertKYCSuccess();
   });
 
   it("should not let user upload unsupported file formats @kyc @files @p3", () => {
@@ -55,5 +70,20 @@ describe("KYC", () => {
       cy.get(tid(`multi-file-upload-file-${validFile}`)).should("exist");
       cy.get(tid(`multi-file-upload-file-${invalidFile}`)).should("not.exist");
     });
+  });
+
+  it("kyc can't save managing director without PEP field @kyc", () => {
+    createAndLoginNewUser({ type: "investor" });
+    cy.visit(kycRoutes.start);
+
+    cy.get(tid("kyc-start-go-to-business")).awaitedClick();
+
+    // company details page
+    fillForm(kycCorporateCompanyForm);
+
+    // managing director page
+    cy.get(tid("kyc.managing-directors.add-new")).click();
+    fillForm(kycManagingDirectorFormInvalid, { submit: false });
+    cy.get(tid("kyc.business.managing-director.save")).should("be.disabled");
   });
 });

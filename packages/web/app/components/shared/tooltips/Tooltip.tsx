@@ -46,7 +46,7 @@ class Tooltip extends React.Component<
         className={cn(
           className,
           styles.tooltipWrapper,
-          children ? styles.tooltipWrapperText : styles.tooltipWrapperIcon,
+          typeof children === "string" ? styles.tooltipWrapperText : styles.tooltipWrapperIcon,
         )}
         onClick={preventDefault ? e => e.preventDefault() : undefined}
       >

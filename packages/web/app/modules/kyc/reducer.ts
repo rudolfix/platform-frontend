@@ -6,6 +6,7 @@ import {
   IKycFileInfo,
   IKycIndividualData,
   IKycLegalRepresentative,
+  IKycManagingDirector,
   KycBankQuintessenceBankAccount,
   TKycStatus,
 } from "../../lib/api/kyc/KycApi.interfaces";
@@ -40,12 +41,21 @@ export interface IKycState {
   businessFilesUploadingCount: number;
   businessFiles: IKycFileInfo[];
 
+  //managing director
+  managingDirector: IKycManagingDirector | undefined;
+  managingDirectorLoading: boolean;
+  managingDirectorFilesLoading: boolean;
+  managingDirectorFilesUploadingCount: number;
+  managingDirectorFiles: IKycFileInfo[];
+  showManagingDirectorModal: boolean;
+
   // legal representatives
   legalRepresentative: IKycLegalRepresentative | undefined;
   legalRepresentativeLoading: boolean;
   legalRepresentativeFilesLoading: boolean;
   legalRepresentativeFilesUploadingCount: number;
   legalRepresentativeFiles: IKycFileInfo[];
+  showLegalRepresentativeModal: boolean;
 
   // beneficial owners
   loadingBeneficialOwners: boolean;
@@ -54,6 +64,8 @@ export interface IKycState {
   beneficialOwnerFilesLoading: Dictionary<boolean>;
   beneficialOwnerFilesUploadingCount: Dictionary<number>;
   beneficialOwnerFiles: Dictionary<IKycFileInfo[]>;
+  showBeneficialOwnerModal: boolean;
+  editingBeneficialOwnerId: string | undefined;
 
   // contract claims
   claims: TClaims | undefined;
@@ -87,11 +99,19 @@ const kycInitialState: IKycState = {
   businessFilesUploadingCount: 0,
   businessFiles: [],
 
+  managingDirector: undefined,
+  managingDirectorLoading: false,
+  managingDirectorFilesLoading: false,
+  managingDirectorFilesUploadingCount: 0,
+  managingDirectorFiles: [],
+  showManagingDirectorModal: false,
+
   legalRepresentative: undefined,
   legalRepresentativeLoading: false,
   legalRepresentativeFilesLoading: false,
   legalRepresentativeFilesUploadingCount: 0,
   legalRepresentativeFiles: [],
+  showLegalRepresentativeModal: false,
 
   loadingBeneficialOwners: false,
   loadingBeneficialOwner: false,
@@ -99,6 +119,8 @@ const kycInitialState: IKycState = {
   beneficialOwnerFiles: {},
   beneficialOwnerFilesLoading: {},
   beneficialOwnerFilesUploadingCount: {},
+  showBeneficialOwnerModal: false,
+  editingBeneficialOwnerId: undefined,
 
   claims: undefined,
 
@@ -157,12 +179,21 @@ export const kycReducer: AppReducer<IKycState> = (
         ),
         individualFiles: appendIfExists(state.individualFiles, action.payload.file),
       };
+
+    /**
+     * business KYC
+     */
+    // data & documents
     case actions.kyc.kycUpdateBusinessData.getType():
     case actions.kyc.kycUpdateBusinessDocuments.getType():
+    case actions.kyc.kycUpdateManagingDirector.getType():
+    case actions.kyc.kycUpdateManagingDirectorDocuments.getType():
     case actions.kyc.kycUpdateLegalRepresentative.getType():
     case actions.kyc.kycUpdateLegalRepresentativeDocuments.getType():
     case actions.kyc.kycUpdateBeneficialOwners.getType():
       return { ...state, ...omitUndefined(action.payload) };
+
+    // single upload
     case actions.kyc.kycUpdateLegalRepresentativeDocument.getType():
       return {
         ...state,
@@ -184,6 +215,19 @@ export const kycReducer: AppReducer<IKycState> = (
         ),
         businessFiles: appendIfExists(state.businessFiles, action.payload.file),
       };
+    case actions.kyc.kycUpdateManagingDirectorDocument.getType():
+      return {
+        ...state,
+        managingDirectorFilesUploadingCount: conditionalCounter(
+          action.payload.managingDirectorFileUploading,
+          state.managingDirectorFilesUploadingCount,
+        ),
+        managingDirectorFiles: appendIfExists(state.managingDirectorFiles, action.payload.file),
+      };
+
+    /**
+     * Beneficial Owner
+     */
     case actions.kyc.kycUpdateBeneficialOwner.getType():
       return {
         ...state,
@@ -222,6 +266,17 @@ export const kycReducer: AppReducer<IKycState> = (
           [boid]: appendIfExists(state.beneficialOwnerFiles[boid], action.payload.file),
         },
       };
+    //modals
+    case actions.kyc.kycToggleManagingDirectorModal.getType():
+      return { ...state, showManagingDirectorModal: action.payload.show };
+    case actions.kyc.kycToggleBeneficialOwnerModal.getType():
+      return {
+        ...state,
+        showBeneficialOwnerModal: action.payload.show,
+        editingBeneficialOwnerId: action.payload.boId,
+      };
+    case actions.kyc.toggleLegalRepresentativeModal.getType():
+      return { ...state, showLegalRepresentativeModal: action.payload.show };
     // contract claims
     case actions.kyc.kycSetClaims.getType():
       return { ...state, claims: action.payload.claims };

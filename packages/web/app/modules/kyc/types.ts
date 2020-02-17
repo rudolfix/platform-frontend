@@ -14,6 +14,7 @@ export type TBankAccount =
     }
   | { hasBankAccount: false };
 
-export type TIdNow = {
-  redirectUrl: string;
-};
+export enum EBeneficialOwnerType {
+  PERSON = "person",
+  BUSINESS = "business",
+}

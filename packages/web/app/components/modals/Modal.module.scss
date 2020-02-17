@@ -3,6 +3,10 @@
   padding-top: 12px;
   overflow: auto;
 
+  &.fixed {
+    box-shadow: none;
+  }
+
   .header {
     @include media-breakpoint-up (sm) {
       margin-bottom: $spacing-vertical-sm-1;

@@ -7,8 +7,9 @@ import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
 import { KYCBeneficialOwners } from "./business/BeneficialOwners";
-import { KycBusinessData } from "./business/BusinessData.unsafe";
-import { KycLegalRepresentative } from "./business/LegalRepresentative.unsafe";
+import { KycBusinessData } from "./business/BusinessData";
+import { KycLegalRepresentative } from "./business/LegalRepresentative";
+import { ManagingDirectors } from "./business/ManagingDirectors";
 import { KYCPersonalAddress } from "./personal/Address";
 import { KycPersonalDocumentVerification } from "./personal/DocumentVerification";
 import { KYCPersonalStart } from "./personal/Start";
@@ -39,9 +40,10 @@ export const NormalKycRouter: React.FunctionComponent = () => (
     )}
 
     {/* Business */}
-    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
     <Route path={kycRoutes.businessData} component={KycBusinessData} />
+    <Route path={kycRoutes.managingDirectors} component={ManagingDirectors} />
     <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
+    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
 
     <Redirect to={kycRoutes.start} />
   </SwitchConnected>
@@ -52,9 +54,10 @@ export const EtoKycRouter: React.FunctionComponent = () => (
     <Route path={kycRoutes.start} component={KycBusinessData} exact />
 
     {/* Business Only*/}
-    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
     <Route path={kycRoutes.businessData} component={KycBusinessData} />
+    <Route path={kycRoutes.managingDirectors} component={ManagingDirectors} />
     <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
+    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
 
     <Redirect to={kycRoutes.legalRepresentative} />
   </SwitchConnected>

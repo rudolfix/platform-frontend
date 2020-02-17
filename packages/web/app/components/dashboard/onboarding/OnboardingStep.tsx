@@ -2,13 +2,13 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { InlineIcon } from "../../shared/icons/InlineIcon";
-import { EAccountSetupStepState, IStepComponentProps } from "./types";
+import { EOnboardingStepState, TStepComponentProps } from "./types";
 
 import checkMark from "../../../assets/img/inline_icons/icon_check.svg";
-import * as styles from "../NomineeDashboard.module.scss";
+import * as styles from "./Onboarding.module.scss";
 
 interface IStepTickerProps {
-  stepState: EAccountSetupStepState;
+  stepState: EOnboardingStepState;
   number: number;
 }
 
@@ -18,21 +18,21 @@ interface IExternalProps {
 
 const StepTicker: React.FunctionComponent<IStepTickerProps> = ({ stepState, number }) => {
   switch (stepState) {
-    case EAccountSetupStepState.ACTIVE:
+    case EOnboardingStepState.ACTIVE:
       return <div className={cn(styles.ticker, styles.active)}>{number}</div>;
-    case EAccountSetupStepState.DONE:
+    case EOnboardingStepState.DONE:
       return (
         <div className={cn(styles.ticker, styles.done)}>
           <InlineIcon svgIcon={checkMark} />
         </div>
       );
-    case EAccountSetupStepState.NOT_DONE:
+    case EOnboardingStepState.NOT_DONE:
     default:
       return <div className={styles.ticker}>{number}</div>;
   }
 };
 
-const AccountSetupStep: React.FunctionComponent<IStepComponentProps & IExternalProps> = ({
+const OnboardingStep: React.FunctionComponent<TStepComponentProps & IExternalProps> = ({
   isLast,
   stepState,
   title,
@@ -45,7 +45,7 @@ const AccountSetupStep: React.FunctionComponent<IStepComponentProps & IExternalP
     <div className={styles.title}>{title}</div>
     {!isLast && <span className={styles.line} />}
 
-    {stepState === EAccountSetupStepState.ACTIVE ? (
+    {stepState === EOnboardingStepState.ACTIVE ? (
       <div className={styles.componentOpen}>{component}</div>
     ) : (
       <div className={cn(styles.componentClosed, { [styles.last]: isLast })} />
@@ -53,4 +53,4 @@ const AccountSetupStep: React.FunctionComponent<IStepComponentProps & IExternalP
   </div>
 );
 
-export { AccountSetupStep };
+export { OnboardingStep };

@@ -1,10 +1,13 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { mockedStore } from "../../../test/fixtures/mockedStore";
-import { withStore } from "../../utils/react-connected-components/storeDecorator.unsafe";
-import { Dashboard } from "./Dashboard";
+import { DashboardLayout } from "./Dashboard";
+import { DashboardTitleLarge, DashboardTitleSmall } from "./DashboardTitle";
 
-storiesOf("Dashboard", module)
-  .addDecorator(withStore(mockedStore))
-  .add("Dashboard", () => <Dashboard />);
+storiesOf("Dashboard", module).add("Dashboard", () => (
+  <DashboardLayout shouldShowOnboarding={false} />
+));
+
+storiesOf("DashboardTitle", module)
+  .add("DashboardTitle small", () => <DashboardTitleSmall firstName="Moe" />)
+  .add("DashboardTitle large", () => <DashboardTitleLarge />);

@@ -151,14 +151,15 @@ export const calculateTarget = (
   totalTokensInt: TBigNumberVariants,
   totalEquivEurUlps: TBigNumberVariants,
 ) => {
+  const targetTokens = multiplyBigNumbers([sharesToIssue, equityTokensPerShare]);
+
   if (totalTokensInt === "0" || totalEquivEurUlps === "0") {
-    return undefined;
+    return targetTokens;
   }
 
   const totalEquivEur = convertFromUlps(totalEquivEurUlps);
-
   const averageTokenPrice = divideBigNumbers(totalEquivEur, totalTokensInt);
-  const targetTokens = multiplyBigNumbers([sharesToIssue, equityTokensPerShare]);
+
   return multiplyBigNumbers([averageTokenPrice, targetTokens]);
 };
 

@@ -211,9 +211,18 @@ export const getInvestmentCalculatedPercentage = (eto: TEtoWithCompanyAndContrac
 };
 
 export const getEtoEurMinTarget = (eto: TEtoWithCompanyAndContractReadonly) => {
-  if (isOnChain(eto)) {
+  if (
+    [
+      EEtoState.LISTED,
+      EEtoState.PROSPECTUS_APPROVED,
+      EEtoState.ON_CHAIN,
+      EEtoState.SUSPENDED,
+    ].includes(eto.state)
+  ) {
     const { minimumNewSharesToIssue, equityTokensPerShare } = eto;
-    const { totalTokensInt, totalEquivEurUlps } = eto.contract.totalInvestment;
+
+    const totalTokensInt = isOnChain(eto) ? eto.contract.totalInvestment.totalTokensInt : "0";
+    const totalEquivEurUlps = isOnChain(eto) ? eto.contract.totalInvestment.totalEquivEurUlps : "0";
 
     return calculateTarget(
       minimumNewSharesToIssue.toString(),

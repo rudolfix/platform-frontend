@@ -48,7 +48,7 @@ export const selectIsLightWallet = (state: IWeb3State): boolean =>
   (state.connected && state.wallet.walletType === EWalletType.LIGHT) ||
   isLightWalletReadyToLogin(state);
 
-export const selectIsExternalWallet = (state: IWeb3State): boolean => {
+export const selectIsExternalWallet = (state: TAppGlobalState): boolean => {
   const walletType = selectWalletType(state);
 
   return walletType === EWalletType.LEDGER || walletType === EWalletType.BROWSER;
@@ -59,10 +59,10 @@ export const selectWalletSubType = (state: IWeb3State): EWalletSubType | undefin
     ? state.wallet.walletSubType
     : state.previousConnectedWallet && state.previousConnectedWallet.walletSubType;
 
-export const selectWalletType = (state: IWeb3State): EWalletType | undefined =>
-  state.connected
-    ? state.wallet.walletType
-    : state.previousConnectedWallet && state.previousConnectedWallet.walletType;
+export const selectWalletType = (state: TAppGlobalState): EWalletType | undefined =>
+  state.web3.connected
+    ? state.web3.wallet.walletType
+    : state.web3.previousConnectedWallet && state.web3.previousConnectedWallet.walletType;
 
 export const selectCurrentLightWalletSalt = (state: TAppGlobalState): string | undefined =>
   (state.web3.connected &&

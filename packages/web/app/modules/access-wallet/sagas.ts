@@ -126,7 +126,7 @@ export function* connectWallet(): Generator<any, any, any> {
   while (true) {
     try {
       const walletType: EWalletType | undefined = yield select((state: TAppGlobalState) =>
-        selectWalletType(state.web3),
+        selectWalletType(state),
       );
 
       if (walletType === EWalletType.LIGHT) {

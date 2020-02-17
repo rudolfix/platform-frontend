@@ -1,5 +1,7 @@
 import { minutesToMs, secondsToMs } from "@neufund/shared";
 
+import { EUserType } from "../lib/api/users/interfaces";
+
 export const AUTH_JWT_TIMING_THRESHOLD = secondsToMs(10);
 
 export const AUTH_INACTIVITY_THRESHOLD =
@@ -28,3 +30,4 @@ export const NOMINEE_BANK_ACCOUNT_WATCHER_DELAY = 1000 * 60 * 5;
 export const PAYOUT_POLLING_DELAY = 1000;
 export const NEXT_ETO_STATE_POLLING_DELAY = 5000;
 export const BOOKBUILDING_WATCHER_DELAY = 6000;
+export const USERS_WITH_ACCOUNT_SETUP = [EUserType.NOMINEE, EUserType.INVESTOR];

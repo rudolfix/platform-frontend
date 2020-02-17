@@ -2,8 +2,8 @@ import { includes, some } from "lodash";
 import { createSelector } from "reselect";
 
 import { appRoutes } from "../../components/appRoutes";
+import { USERS_WITH_ACCOUNT_SETUP } from "../../config/constants";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 import {
   selectBackupCodesVerified,
@@ -39,7 +39,7 @@ export const selectIsVisibleSecurityNotification = (state: TAppGlobalState): boo
   const disallowedViewsPaths = [appRoutes.profile, appRoutes.kyc];
   const userType = selectUserType(state);
 
-  if (userType === EUserType.NOMINEE) {
+  if (includes(USERS_WITH_ACCOUNT_SETUP, userType)) {
     return false;
   }
 

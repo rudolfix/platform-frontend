@@ -24,7 +24,7 @@ function* addNewEmailEffect(
   { notificationCenter, logger }: TGlobalDependencies,
   email: string,
 ): any {
-  const user = yield select((s: TAppGlobalState) => selectUser(s.auth));
+  const user = yield select((s: TAppGlobalState) => selectUser(s));
   const salt = yield select(selectLightWalletSalt);
   logger.info("New Email added");
   yield neuCall(updateUser, { ...user, new_email: email, salt: salt });
@@ -34,7 +34,7 @@ function* addNewEmailEffect(
 }
 
 function* abortEmailUpdateEffect({ notificationCenter, logger }: TGlobalDependencies): any {
-  const user = yield select((s: TAppGlobalState) => selectUser(s.auth));
+  const user = yield select((s: TAppGlobalState) => selectUser(s));
   const email = user.verifiedEmail;
   logger.info("Email change aborted");
   yield neuCall(updateUser, { ...user, new_email: email });
@@ -44,7 +44,7 @@ function* abortEmailUpdateEffect({ notificationCenter, logger }: TGlobalDependen
 }
 
 function* resendEmailEffect({ notificationCenter, logger }: TGlobalDependencies): any {
-  const user = yield select((s: TAppGlobalState) => selectUser(s.auth));
+  const user = yield select((s: TAppGlobalState) => selectUser(s));
   const salt = yield select(selectLightWalletSalt);
   const email = user.unverifiedEmail;
   if (!email) throw new Error("No unverified email");

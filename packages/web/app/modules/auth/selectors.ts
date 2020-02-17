@@ -29,7 +29,7 @@ export const selectVerifiedUserEmail = (state: IAuthState): string | undefined =
 export const selectUnverifiedUserEmail = (state: TAppGlobalState): string | undefined =>
   state.auth.user && state.auth.user.unverifiedEmail;
 
-export const selectUser = (state: IAuthState): IUser | undefined => state.user;
+export const selectUser = (state: TAppGlobalState): IUser | undefined => state.auth.user;
 
 export const selectUserId = (state: TAppGlobalState): EthereumAddressWithChecksum | undefined =>
   state.auth.user && state.auth.user.userId;

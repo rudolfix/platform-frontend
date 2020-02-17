@@ -61,8 +61,8 @@ describe("web3 > selectors", () => {
         isUnlocked: false,
         wallet: getDummyLedgerWalletMetadata(),
       };
-
-      const isExternalWallet = selectIsExternalWallet(state);
+      const appState = { web3: state } as TAppGlobalState;
+      const isExternalWallet = selectIsExternalWallet(appState);
 
       expect(isExternalWallet).to.be.true;
     });
@@ -73,8 +73,9 @@ describe("web3 > selectors", () => {
         isUnlocked: false,
         wallet: getDummyBrowserWalletMetadata(),
       };
+      const appState = { web3: state } as TAppGlobalState;
 
-      const isExternalWallet = selectIsExternalWallet(state);
+      const isExternalWallet = selectIsExternalWallet(appState);
 
       expect(isExternalWallet).to.be.true;
     });
@@ -85,8 +86,9 @@ describe("web3 > selectors", () => {
         isUnlocked: false,
         wallet: getDummyLightWalletMetadata(),
       };
+      const appState = { web3: state } as TAppGlobalState;
 
-      const isExternalWallet = selectIsExternalWallet(state);
+      const isExternalWallet = selectIsExternalWallet(appState);
 
       expect(isExternalWallet).to.be.false;
     });

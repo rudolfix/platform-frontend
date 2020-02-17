@@ -3,6 +3,7 @@ import {
   addBigNumbers,
   convertFromUlps,
   convertToUlps,
+  DataUnavailableError,
   EthereumAddress,
   nonNullable,
   Q18,
@@ -63,8 +64,10 @@ export function* loadInvestorTicket(
   }
 
   const etoId = action.payload.eto.etoId;
-  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
-
+  const user = yield* select(selectUser);
+  if (user === undefined) {
+    throw new DataUnavailableError("user cannot be undefined at this moment!");
+  }
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
 
   const { investorTickerRaw, contribution } = yield all({
@@ -115,7 +118,7 @@ export function* loadClaimables({
   logger,
   notificationCenter,
 }: TGlobalDependencies): any {
-  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
+  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state));
   const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
   const etherPrice = yield select(selectEtherPriceEur);
 

@@ -10,12 +10,11 @@ import {
   loginFixtureAccount,
   registerWithLightWallet,
   tid,
-} from "../utils";
+} from "../utils/index";
 
 describe("Backup Seed and Private Key save and view", function(): void {
   it("should allow to save seed phrase", () => {
     registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD);
-
     backupLightWalletSeed();
   });
 

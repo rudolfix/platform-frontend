@@ -124,7 +124,7 @@ function* txSendProcess(
   extraParam?: any,
 ): any {
   try {
-    const walletType = yield* select((state: TAppGlobalState) => selectWalletType(state.web3));
+    const walletType = yield* select((state: TAppGlobalState) => selectWalletType(state));
     yield put(actions.txSender.txSenderShowModal({ type: transactionType }));
 
     yield neuRepeatIf("TX_SENDER_CHANGE", "TX_SENDER_ACCEPT", transactionFlowGenerator, extraParam);

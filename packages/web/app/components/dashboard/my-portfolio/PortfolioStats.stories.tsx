@@ -83,7 +83,7 @@ storiesOf("NDS|Molecules/Dashboard/PortfolioStats", module)
   ))
   .add("is not verified", () => (
     <PortfolioStatsLayoutContainer myAssetsEurEquivTotal={undefined}>
-      <PortfolioStatsNoKYCLayout goToProfile={action("GO_TO_PROFILE")} />
+      <PortfolioStatsNoKYCLayout />
     </PortfolioStatsLayoutContainer>
   ))
   .add("no assets", () => (

@@ -1,5 +1,5 @@
 import { kycRoutes } from "../../../components/kyc/routes";
-import { confirmAccessModal, tid } from "../../utils";
+import { tid } from "../../utils";
 import { fillForm } from "../../utils/forms";
 import {
   kycCompanyDocsForm,
@@ -50,5 +50,4 @@ export const goThroughKycCorporateProcess = () => {
 
   // submit and accept
   cy.get(tid("kyc-company-legal-representative-upload-and-submit")).awaitedClick();
-  confirmAccessModal();
 };

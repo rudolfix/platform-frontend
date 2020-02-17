@@ -87,7 +87,7 @@ export function* loadClientData({ logger }: TGlobalDependencies): Generator<any,
  */
 let kycWidgetWatchDelay: number = 1000;
 
-function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): Generator<any, any, any> {
+function* kycStatusRefreshSaga({ logger }: TGlobalDependencies): Generator<any, any, any> {
   kycWidgetWatchDelay = 1000;
   while (true) {
     const requestType: EKycRequestType = yield select(selectKycRequestType);
@@ -104,8 +104,8 @@ function* kycRefreshWidgetSaga({ logger }: TGlobalDependencies): Generator<any, 
     }
 
     if (status === EKycRequestStatus.PENDING || status === EKycRequestStatus.OUTSOURCED) {
-      yield put(actions.kyc.kycLoadStatusAndData());
-
+      yield neuCall(loadClientData);
+      yield neuCall(loadIdentityClaim);
       logger.info("KYC refreshed", status, requestType);
     }
 
@@ -134,7 +134,7 @@ function* loadIdentityClaim({
   try {
     const identityRegistry: IdentityRegistry = contractsService.identityRegistry;
 
-    const loggedInUser: IUser = yield select((state: TAppGlobalState) => selectUser(state.auth));
+    const loggedInUser: IUser = yield select((state: TAppGlobalState) => selectUser(state));
 
     const claims: string = yield identityRegistry.getClaims(loggedInUser.userId);
 
@@ -644,7 +644,7 @@ function* submitBusinessRequestEffect({
   yield put(actions.kyc.setStatus(kycStatus));
 
   const buttonAction =
-    !kycAndEmailVerified && userType === EUserType.NOMINEE
+    !kycAndEmailVerified && userType !== EUserType.ISSUER
       ? actions.routing.goToDashboard()
       : actions.routing.goToProfile();
 
@@ -812,7 +812,7 @@ export function* kycSagas(): Generator<any, any, any> {
     neuTakeUntil,
     actions.kyc.kycStartWatching,
     actions.kyc.kycStopWatching,
-    kycRefreshWidgetSaga,
+    kycStatusRefreshSaga,
   );
 
   // sub-sagas

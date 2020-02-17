@@ -2,6 +2,7 @@ import { goThroughKycCorporateProcess } from "../investor/kyc/utils";
 import { backupLightWalletSeedFromAccountSetupDashboard } from "../shared/backupLightWalletSeed";
 import {
   assertNomineeDashboard,
+  confirmAccessModal,
   generateRandomEmailAddress,
   loginWithLightWallet,
   logoutViaAccountMenu,
@@ -34,7 +35,8 @@ describe("Nominee flow", () => {
 
     cy.get(tid("start-kyc-button")).awaitedClick();
     goThroughKycCorporateProcess();
+    confirmAccessModal();
     cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
-    cy.get(tid("nominee-kyc-pending")).should("exist");
+    cy.get(tid("onboarding-kyc-pending")).should("exist");
   });
 });

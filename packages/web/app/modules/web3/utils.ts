@@ -20,6 +20,10 @@ export function makeEthereumAddressChecksummed(
 }
 
 export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);
+export const generateRandomPrivateKey = () => randomHex(32);
+
+// remove 0x prefix from private key
+export const remove0x = (key: string) => key.slice(2).toUpperCase();
 
 export function ethereumNetworkIdToNetworkName(networkId: EthereumNetworkId): string {
   switch (networkId) {

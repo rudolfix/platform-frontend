@@ -14,6 +14,7 @@ $icon-dimensions: px-to-rem(64px);
   border: solid 1px $neu-light-blue-grey-two;
   background-color: $neu-white-two;
   padding: px-to-rem(64px) px-to-rem(24px) px-to-rem(24px);
+  cursor: pointer;
 }
 
 .card-container {

@@ -24,9 +24,11 @@ export const routingActions = {
   goToKYCIndividualDocumentVerification: () => push(kycRoutes.individualDocumentVerification),
   goToKYCIndividualAddress: () => push(kycRoutes.individualAddress),
   goToKYCIndividualUpload: () => push(kycRoutes.individualUpload),
+  goToKYCBusinessUpload: () => push(kycRoutes.businessUpload),
 
   goToKYCLegalRepresentative: () => push(kycRoutes.legalRepresentative),
   goToKYCBusinessData: () => push(kycRoutes.businessData),
+  goToKYCManagingDirectors: () => push(kycRoutes.managingDirectors),
   goToKYCBeneficialOwners: () => push(kycRoutes.beneficialOwners),
 
   // dashboard

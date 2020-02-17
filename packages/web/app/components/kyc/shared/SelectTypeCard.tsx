@@ -52,18 +52,13 @@ const SelectTypeCard: React.FunctionComponent<TProps & TDataTestId> = ({
   "data-test-id": dataTestId,
 }) => (
   <Container columnSpan={EColumnSpan.ONE_COL} className={styles.cardContainer}>
-    <section className={styles.card}>
+    <section className={styles.card} onClick={onClick}>
       {kycType === EKycRequestType.BUSINESS ? (
         <SelectTypeCardCompany />
       ) : (
         <SelectTypeCardPersonal />
       )}
-      <Button
-        className="mt-auto"
-        onClick={onClick}
-        layout={EButtonLayout.PRIMARY}
-        data-test-id={dataTestId}
-      >
+      <Button className="mt-auto" layout={EButtonLayout.PRIMARY} data-test-id={dataTestId}>
         {isStarted ? (
           <FormattedMessage id="shared.kyc.select-type.continue" />
         ) : (

@@ -1,0 +1,30 @@
+.card {
+  @include nds-body;
+
+  justify-content: space-between;
+  padding: px-to-rem(30px);
+  font-weight: normal;
+  color: $neu-shuttle-gray;
+  display: flex;
+  min-height: px-to-rem(82px);
+  margin-bottom: px-to-rem(4px);
+  text-align: left;
+  flex-wrap: nowrap;
+
+  &:disabled {
+    color: $neu-shuttle-gray;
+    opacity: .4;
+    background: $neu-white-two;
+  }
+}
+
+.name {
+  order: 1;
+}
+
+.icon {
+  @include rect(24px);
+  order: 2;
+  color: transparent;
+  margin-left: px-to-rem(20px);
+}

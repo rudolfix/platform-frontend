@@ -2,7 +2,7 @@ import PrivateKeyProvider from "truffle-privatekey-provider";
 
 import { generateRandomPrivateKey, remove0x } from "../../modules/web3/utils";
 import { NODE_ADDRESS } from "../config";
-import { goThroughKycCorporateProcess } from "../investor/kyc/utils";
+import { assertKYCSuccess, goThroughKycCorporateProcess } from "../investor/kyc/utils";
 import { backupLightWalletSeedFromAccountSetupDashboard } from "../shared/backupLightWalletSeed";
 import {
   assertDashboard,
@@ -33,10 +33,10 @@ describe("Onboarding", () => {
 
     cy.get(tid("start-kyc-button")).awaitedClick();
     cy.get(tid("kyc-start-go-to-business")).awaitedClick();
+
     goThroughKycCorporateProcess();
     confirmAccessModal();
-    cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
-    cy.get(tid("onboarding-kyc-pending")).should("exist");
+    assertKYCSuccess();
   });
 
   it("will go throught onboarding process for browser wallet user", () => {
@@ -64,7 +64,6 @@ describe("Onboarding", () => {
     cy.get(tid("kyc-start-go-to-business")).awaitedClick();
 
     goThroughKycCorporateProcess();
-    cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
-    cy.get(tid("onboarding-kyc-pending")).should("exist");
+    assertKYCSuccess();
   });
 });

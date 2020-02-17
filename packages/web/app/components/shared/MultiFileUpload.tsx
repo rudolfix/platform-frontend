@@ -7,17 +7,21 @@ import { EKycRequestType, IKycFileInfo } from "../../lib/api/kyc/KycApi.interfac
 import { Dropzone } from "./Dropzone";
 import { TAcceptedFileType } from "./forms/fields/utils.unsafe";
 import { ResponsiveImage } from "./ResponsiveImage";
+import { Tooltip } from "./tooltips/Tooltip";
+import { ECustomTooltipTextPosition } from "./tooltips/TooltipBase";
 import { UploadedFiles } from "./UploadedFiles";
 
 import documentBothSidesImage from "../../assets/img/document-both-side.jpg";
 import documentBothSidesImage2x from "../../assets/img/document-both-side@2x.jpg";
 import documentBothSidesImage3x from "../../assets/img/document-both-side@3x.jpg";
+import InfoIcon from "../../assets/img/info-outline.svg";
 import * as styles from "./MultiFileUpload.module.scss";
 
 export enum EKycUploadType {
   US_ACCREDITATION = "us_accreditation",
   PROOF_OF_ADDRESS = "proof_of_address",
   ADDITIONAL_INDIVIDUAL = "additional_individual",
+  PROOF_OF_ADDRESS_AND_IDENTITY = "proof_of_address_and_identity",
 }
 
 interface IProps {
@@ -100,9 +104,6 @@ const MultiFileUploadInfo: React.FunctionComponent<{
               id="shared-component.multi-file-upload.requirements.business.documents"
             />
           </div>
-          <h4 className={cn(styles.hint, "mb-3")}>
-            <FormattedMessage id="shared-component.multi-file-upload.requirements.business.documents-note" />
-          </h4>
         </>
       );
     case EKycRequestType.INDIVIDUAL:
@@ -134,6 +135,43 @@ const MultiFileUploadInfo: React.FunctionComponent<{
           id="shared-component.multi-file-upload.additional-upload.info"
         />
       );
+    case EKycUploadType.PROOF_OF_ADDRESS_AND_IDENTITY:
+      return (
+        <div>
+          <FormattedMessage id="shared-component.multi-file-upload.proof-of-address-and-identity.info" />
+          <ul>
+            <li className="d-flex">
+              <FormattedMessage id="shared-component.multi-file-upload.proof-of-address-and-identity.info.identity" />
+              <Tooltip
+                content={
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="shared-component.multi-file-upload.proof-of-address-and-identity.info.identity.tooltip"
+                  />
+                }
+                textPosition={ECustomTooltipTextPosition.LEFT}
+              >
+                <img src={InfoIcon} alt="" className="mt-n1" />
+              </Tooltip>
+            </li>
+            <li className="d-flex">
+              <FormattedMessage id="shared-component.multi-file-upload.proof-of-address-and-identity.info.address" />
+              <Tooltip
+                content={
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="shared-component.multi-file-upload.proof-of-address-and-identity.info.address.tooltip"
+                  />
+                }
+                textPosition={ECustomTooltipTextPosition.LEFT}
+              >
+                <img src={InfoIcon} alt="" className="mt-n1" />
+              </Tooltip>
+            </li>
+          </ul>
+        </div>
+      );
+
     default:
       return null;
   }

@@ -7,7 +7,7 @@ labelPRBasedOnFilePath:
     - packages/sagas/**/*
   "Pkg: shared-modules":
     - packages/shared-modules/**/*
-  "App: wallet":
+  "App: mobile":
     - packages/wallet/**/*
   "App: web":
     - packages/web/**/*

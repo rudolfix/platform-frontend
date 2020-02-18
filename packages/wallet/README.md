@@ -55,3 +55,14 @@ To fix automatically formatting issues use
 ```bash
 yarn format:fix
 ```
+
+#### Run e2e tests on ios or android emulator
+
+Before running e2e tests make sure you have followed [E2E tests setup](./tests/e2e/README.md) guide.
+
+```bash
+yarn e2e:ios-debug
+yarn e2e:ios-release
+yarn e2e:android-debug
+yarn e2e:android-release
+```

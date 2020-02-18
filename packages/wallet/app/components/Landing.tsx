@@ -12,6 +12,7 @@ const Landing: React.FunctionComponent = () => {
       <Text>Landing</Text>
 
       <Button
+        testID="landing.go-to-import-your-wallet"
         title="Import your wallet"
         onPress={() => navigation.navigate(appRoutes.importWallet)}
       />

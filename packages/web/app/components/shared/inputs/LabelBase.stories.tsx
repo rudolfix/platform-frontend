@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { LabelBase } from "./LabelBase";
 
-storiesOf("NDS|Atoms/Inputs/LabelBase", module).add("default", () => (
+storiesOf("NDS/Atoms/Inputs/TextField", module).add("LabelBase", () => (
   <>
     <LabelBase>Lorem ipsum</LabelBase> <br />
     <br />

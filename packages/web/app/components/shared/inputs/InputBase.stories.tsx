@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { InputBase } from "./InputBase";
 
-storiesOf("NDS|Atoms/Inputs/InputBase", module).add("default", () => (
+storiesOf("NDS/Atoms/Inputs/TextField", module).add("InputBase", () => (
   <>
     <InputBase value="Normal input" />
     <br />

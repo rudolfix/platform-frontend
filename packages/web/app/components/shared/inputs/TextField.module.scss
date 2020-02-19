@@ -1,0 +1,29 @@
+.input-wrapper {
+  position: relative;
+}
+
+.input {
+  &.has-adornment {
+    padding-right: px-to-rem(40px);
+  }
+}
+
+.adornment-wrapper {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 2px;
+}
+
+.adornment {
+  height: 100%;
+  background: transparent;
+  outline: 0;
+  border: 0;
+  user-select: none;
+  width: px-to-rem(40px);
+}
+
+.eye-icon {
+  height: px-to-rem(17px);
+}

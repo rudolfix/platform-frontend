@@ -6,5 +6,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false
   },
+  "include": ["./**.spec.*"],
   "exclude": ["node_modules"]
 }

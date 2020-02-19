@@ -1,8 +1,9 @@
 import React from "react";
-import { Text, Button, View } from "react-native";
+import { Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { appRoutes } from "../appRoutes";
+import { Button } from "./common/buttons/Button";
 
 const Landing: React.FunctionComponent = () => {
   const navigation = useNavigation();

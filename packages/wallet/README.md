@@ -24,6 +24,10 @@ cd ./packages/wallet/ios
 pod install
 ```
 
+## Storybook
+
+[Storybook setup](./storybook/README.md)
+
 ## Scripts
 
 #### Start app on **ios** emulator

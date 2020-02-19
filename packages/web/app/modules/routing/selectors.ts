@@ -3,6 +3,7 @@ import { isString } from "lodash";
 import * as queryString from "query-string";
 import { createSelector } from "reselect";
 
+import { appRoutes } from "../../components/appRoutes";
 import { TAppGlobalState } from "../../store";
 import { EWalletType } from "../web3/types";
 
@@ -22,6 +23,16 @@ export const selectRedirectURLFromQueryString = createSelector(selectRouter, (st
 
   return undefined;
 });
+
+// this is a workaround for #3942 (see QA's comment).
+// TODO refactor after we move to route-based sagas
+export const selectIsVerifyEmailRedirect = createSelector(
+  selectRedirectURLFromQueryString,
+  (redirect: string | undefined) => {
+    const regex = new RegExp(`^${appRoutes.verify}`);
+    return redirect !== undefined ? regex.test(redirect) : false;
+  },
+);
 
 export const selectWalletTypeFromQueryString = createSelector(
   selectRouter,

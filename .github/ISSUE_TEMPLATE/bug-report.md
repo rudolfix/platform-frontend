@@ -12,7 +12,7 @@ labels: Bug
 
 **Actual behaviour**
 
-**Expected behavior**
+**Expected behaviour**
 
 **Comments, context, logs**
 

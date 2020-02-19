@@ -17,7 +17,6 @@ const LabelBase = React.forwardRef<
     <label ref={ref} className={cn(styles.label, className)} {...rest} />
     {isOptional && (
       <span className={styles.optionalField}>
-        {" "}
         (<FormattedMessage id="form.label.optional" />)
       </span>
     )}

@@ -4,13 +4,13 @@ import * as React from "react";
 import { TDataTestId } from "../../../types";
 import { InputBase } from "./InputBase";
 
-import styles from "./TextInput.module.scss";
+import styles from "./Input.module.scss";
 
-const TextInput = React.forwardRef<
+const Input = React.forwardRef<
   HTMLInputElement,
   React.ComponentProps<typeof InputBase> & TDataTestId
 >(({ children, className, ...props }, ref) => (
   <InputBase ref={ref} className={cn(styles.textInput, className)} {...props} />
 ));
 
-export { TextInput };
+export { Input };

@@ -25,13 +25,13 @@ export const WalletSelectorLayout: React.FunctionComponent<IExternalProps> = ({
 }) => (
   <>
     {logoutReason === ELogoutReason.SESSION_TIMEOUT && (
-        <div
-          data-test-id="wallet-selector-session-timeout-notification"
-          className={styles.logoutNotification}
-        >
-          <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />
-        </div>
-      )}
+      <div
+        data-test-id="wallet-selector-session-timeout-notification"
+        className={styles.logoutNotification}
+      >
+        <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />
+      </div>
+    )}
     <div className={styles.wrapper}>
       <h1 className={styles.title}>
         {isLoginRoute ? (

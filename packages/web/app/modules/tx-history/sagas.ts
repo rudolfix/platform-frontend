@@ -1,4 +1,4 @@
-import { all, delay, fork, put, select } from "@neufund/sagas";
+import { all, fork, put, select, take } from "@neufund/sagas";
 import { EthereumAddressWithChecksum, subtractBigNumbers } from "@neufund/shared";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
@@ -16,7 +16,7 @@ import { actions, TActionFromCreator } from "../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEurEquivalent } from "../shared/tokenPrice/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import { TX_LIMIT, TX_POLLING_INTERVAL } from "./constants";
+import { TX_LIMIT } from "./constants";
 import { selectLastTransactionId, selectTimestampOfLastChange, selectTXById } from "./selectors";
 import { ETransactionStatus, ETransactionSubType, TTxHistory, TTxHistoryCommon } from "./types";
 import { getCurrencyFromTokenSymbol, getDecimalsFormat, getTxUniqueId } from "./utils";
@@ -365,7 +365,7 @@ export function* watchTransactions({
 }: TGlobalDependencies): Generator<any, any, any> {
   while (true) {
     try {
-      yield delay(TX_POLLING_INTERVAL);
+      yield take(actions.web3.newBlockArrived.getType());
 
       const timestampOfLastChange: number | undefined = yield select(selectTimestampOfLastChange);
 

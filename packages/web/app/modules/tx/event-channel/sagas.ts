@@ -1,11 +1,12 @@
-import { buffers, call, channel, Channel, delay, put, race } from "@neufund/sagas";
-import { BLOCK_MINING_TIME_DELAY, secondsToMs } from "@neufund/shared";
+import { buffers, call, channel, Channel, delay, put, race, take } from "@neufund/sagas";
+import { secondsToMs } from "@neufund/shared";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { neuCall } from "../../sagasUtils";
+import { actions } from "./../../actions";
 import { TransactionCancelledError } from "./errors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "./types";
 import { isTransactionMined } from "./utils";
@@ -95,7 +96,7 @@ export function* watchForTx(
         }
       }
 
-      yield delay(BLOCK_MINING_TIME_DELAY);
+      yield take(actions.web3.newBlockArrived.getType());
     } catch (error) {
       if (error instanceof TransactionCancelledError) {
         yield put(txChannel, { type: EEventEmitterChannelEvents.CANCELLED, error });

@@ -1,4 +1,4 @@
-import { all, delay, fork, put, select } from "@neufund/sagas";
+import { all, fork, put, select, take } from "@neufund/sagas";
 import { Dictionary, InvariantError, nonNullable } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { cloneDeep, isEmpty } from "lodash/fp";
@@ -11,10 +11,6 @@ import {
   EtoMessage,
 } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import {
-  NOMINEE_RECALCULATE_TASKS_DELAY,
-  NOMINEE_REQUESTS_WATCHER_DELAY,
-} from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IssuerIdInvalid, NomineeRequestExists } from "../../lib/api/eto/EtoNomineeApi";
@@ -273,7 +269,7 @@ export function* nomineeViewDataWatcher({ logger }: TGlobalDependencies): Genera
   while (true) {
     logger.info("Getting nominee data and tasks");
     yield neuCall(initNomineeDashboardView);
-    yield delay(NOMINEE_RECALCULATE_TASKS_DELAY);
+    yield take(actions.web3.newBlockArrived.getType());
   }
 }
 
@@ -410,7 +406,7 @@ export function* nomineeRequestsWatcher({ logger }: TGlobalDependencies): Genera
   while (true) {
     logger.info("Getting nominee requests");
     yield put(actions.nomineeFlow.loadNomineeRequests());
-    yield delay(NOMINEE_REQUESTS_WATCHER_DELAY);
+    yield take(actions.web3.newBlockArrived.getType());
   }
 }
 

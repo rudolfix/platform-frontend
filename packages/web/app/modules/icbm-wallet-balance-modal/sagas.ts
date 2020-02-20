@@ -1,5 +1,4 @@
-import { call, delay, fork, put, select } from "@neufund/sagas";
-import { BLOCK_MINING_TIME_DELAY } from "@neufund/shared";
+import { call, fork, put, select, take } from "@neufund/sagas";
 import { BigNumber } from "bignumber.js";
 import { toChecksumAddress } from "ethereumjs-util";
 
@@ -155,7 +154,7 @@ function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDep
       }
       if (isLockedWalletConnected) yield put(actions.icbmWalletBalanceModal.setSecondTxDone());
 
-      yield delay(BLOCK_MINING_TIME_DELAY);
+      yield take(actions.web3.newBlockArrived.getType());
     }
   }
 }

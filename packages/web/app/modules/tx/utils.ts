@@ -16,7 +16,7 @@ export const GAS_PRICE_MULTIPLIER = 1 + parseFloat(process.env.NF_GAS_PRICE_OVER
 
 export const GAS_LIMIT_MULTIPLIER = 1 + parseFloat(process.env.NF_GAS_LIMIT_OVERHEAD || "0");
 
-export const EMPTY_DATA = "";
+export const EMPTY_DATA = "0x";
 
 export const ETH_ADDRESS_SIZE = 42;
 

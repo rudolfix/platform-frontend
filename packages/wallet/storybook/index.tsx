@@ -14,4 +14,4 @@ configure(() => {
 // issue with storybook server https://github.com/storybookjs/react-native/issues/13
 const StorybookUIRoot = getStorybookUI({ asyncStorage: null });
 
-export default StorybookUIRoot;
+export { StorybookUIRoot };

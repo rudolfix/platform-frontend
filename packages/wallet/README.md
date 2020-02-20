@@ -16,12 +16,11 @@ device** (just for android development).
 After environment setup is completed you can start the app in emulator (`yarn start:ios` or
 `yarn start:android`).
 
-_**Note**: For ios before starting the app for the first time `pod`'s should be installed manually._
+\_**Note**: For ios before starting the app for the first time and after any changes to the ios
+native modules `pod`'s should be installed manually.
 
 ```bash
-cd ./packages/wallet/ios
-
-pod install
+yarn install-pods
 ```
 
 ## Storybook
@@ -34,12 +33,17 @@ pod install
 
 ```bash
 yarn start:ios
+
+yarn start:ios:release
 ```
 
 #### Start app on **android** emulator
 
 ```bash
 yarn start:android
+
+yarn start:android:release
+
 ```
 
 #### Start react devtools for component tree debugging
@@ -48,7 +52,7 @@ yarn start:android
 yarn start:devtools
 ```
 
-#### Lint file structure with prettier
+#### Linting
 
 ```bash
 yarn format
@@ -59,6 +63,15 @@ To fix automatically formatting issues use
 ```bash
 yarn format:fix
 ```
+
+To run typescript compiler in no-emit mode use
+
+```bash
+yarn tsc
+```
+
+Given that `react-native` uses under the hood babel to compile typescript it won't throw an error on
+type mismatch therefore always run `yarn tsc` to force type checking.
 
 #### Run e2e tests on ios or android emulator
 

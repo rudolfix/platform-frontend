@@ -81,9 +81,6 @@ export const ADVISORY_BOARD_TEXT_MIN_LENGTH = 1;
 
 export const IPFS_PROTOCOL = "ipfs";
 
-/* WEB3 Related Constants */
-export const BLOCK_MINING_TIME_DELAY = 12000;
-
 export enum EUSState {
   ALABAMA = "AL",
   ALASKA = "AK",

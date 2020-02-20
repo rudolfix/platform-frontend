@@ -136,6 +136,11 @@
   margin-left: 1rem;
 }
 
+.action-button-icon {
+  width: px-to-rem(16px);
+  height: px-to-rem(16px);
+}
+
 .helper-text {
   @include nds-body-small;
 

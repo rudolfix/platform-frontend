@@ -205,11 +205,15 @@ export const goToUserAccountSettings = () => {
     .awaitedClick();
 };
 
-export const lightWalletTypeLoginInfo = (email: string, password: string) => {
-  cy.contains(tid("light-wallet-login-with-email-email-field"), email);
+export const lightWalletTypePasswordAndLogin = (password: string) => {
   cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
   cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
+};
+
+export const lightWalletTypeLoginInfo = (email: string, password: string) => {
+  cy.contains(tid("light-wallet-login-with-email-email-field"), email);
+  lightWalletTypePasswordAndLogin(password);
 };
 
 export const loginWithLightWallet = (email: string, password: string) => {

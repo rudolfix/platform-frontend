@@ -32,7 +32,7 @@ export const WalletSelectorLayout: React.FunctionComponent<IExternalProps> = ({
         <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />
       </div>
     )}
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-test-id="wallet-selector">
       <h1 className={styles.title}>
         {isLoginRoute ? (
           <FormattedMessage id="wallet-selector.log-in" />

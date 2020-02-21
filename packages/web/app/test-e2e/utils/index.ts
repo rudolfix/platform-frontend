@@ -140,7 +140,6 @@ export const registerWithLightWallet = (
 ) => {
   cy.visit(asIssuer ? appRoutes.registerIssuer : appRoutes.register);
 
-  cy.get(tid("wallet-selector-light")).awaitedClick();
   lightWalletTypeRegistrationInfo(email, password);
 
   acceptTOS();
@@ -214,7 +213,6 @@ export const lightWalletTypeLoginInfo = (email: string, password: string) => {
 
 export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("Header-login")).awaitedClick();
-  cy.get(tid("wallet-selector-light")).awaitedClick();
 
   lightWalletTypeLoginInfo(email, password);
 };

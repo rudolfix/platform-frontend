@@ -1,0 +1,91 @@
+//this is to sync the look of virtualizedSelect with NDS
+// Need to disable the linter here because virtualizedSelect uses
+// complex selectors (that have to be overridden with !important)
+// and their style naming doesn't follow  our naming conventions
+
+// sass-lint:disable-all
+
+.Select-control {
+  box-sizing: content-box!important;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.Select-multi-value-wrapper {
+  box-sizing: content-box!important;
+  height: 30px;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: auto;
+  padding-left: 0;
+}
+
+.Select-clear-zone {
+  box-sizing: content-box!important;
+  height: 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Select-arrow-zone {
+  box-sizing: content-box!important;
+  height: 30px;
+  padding-top: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Select-placeholder {
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.Select-value {
+  display: flex;
+  align-items: center;
+  padding-left: 0!important;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.Select-value-label {
+  font-family: Roboto, sans-serif;
+  color: #656b72 !important;
+}
+
+.Select-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Select-input {
+  height: 30px;
+
+  input {
+    box-sizing: content-box!important;
+    height: 30px;
+    line-height: initial;
+    padding: 0;
+  }
+}
+
+.Select.is-pseudo-focused,
+.Select.is-focused:not(.is-open) > .Select-control {
+  outline: none;
+  border: none!important;
+  box-shadow: none;
+}

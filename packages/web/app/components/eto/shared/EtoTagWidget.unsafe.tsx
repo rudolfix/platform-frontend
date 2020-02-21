@@ -1,3 +1,4 @@
+import { VirtualizedSelect } from "@neufund/design-system";
 import * as cn from "classnames";
 import { Field, FieldProps, FormikConsumer } from "formik";
 import { differenceWith } from "lodash/fp";
@@ -8,7 +9,6 @@ import { Creatable as ReactSelectCreatable, Option } from "react-select";
 import { CommonHtmlProps } from "../../../types";
 import { FormFieldError } from "../../shared/forms";
 import { FormFieldLabel } from "../../shared/forms/fields/FormFieldLabel";
-import { VirtualizedSelect } from "../../shared/forms/fields/VirtualizedSelect";
 import { ETagSize, Tag } from "../../shared/Tag";
 
 import checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";

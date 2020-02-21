@@ -1,31 +1,29 @@
-import { Button } from "@neufund/design-system";
-import { range } from "lodash";
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
+import { externalRoutes } from "../../../../config/externalRoutes";
+import { testWalletSeed } from "../../../../lib/web3/light-wallet/LightWalletUtils";
 import { TElementRef } from "../../../../types";
 import { englishMnemonics } from "../../../../utils/englishMnemonics";
+import { FormError } from "../../../shared/forms/fields/FormFieldError";
 import { VirtualizedSelect } from "../../../shared/forms/fields/VirtualizedSelect";
-import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
+
+import * as styles from "./SeedRecovery.unsafe.module.scss";
 
 export const SEED_LENGTH = 24;
-const WORDS_PER_VIEW = 4;
-
 const wordsOptions = englishMnemonics.map((word: string) => ({ value: word, label: word }));
 
 interface ISeedRecoveryProps {
-  startingStep: number;
-  extraSteps: number;
-  sendWords: (words: string) => void;
+  onValidSeed: (words: string) => void;
 }
 
 interface ISeedRecoveryState {
-  words: string[];
-  page: number;
+  words: (string | null)[];
+  seedError: boolean;
 }
 
-export class WalletLightSeedRecoveryComponent extends React.Component<
+export class LightWalletSeedRecoveryComponent extends React.Component<
   ISeedRecoveryProps,
   ISeedRecoveryState
 > {
@@ -34,46 +32,23 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
 
   state = {
     words: Array(SEED_LENGTH).fill(null),
-    page: 0,
+    seedError: false,
   };
 
-  updateValueFactory = (wordNumber: number, index: number) => (newValue: any): void => {
-    const words = this.state.words;
-    words[wordNumber] = newValue;
+  setWord = (index: number) => (newValue: any): void => {
+    const words = [...this.state.words];
+    words[index] = newValue;
+
     this.setState(
-      state => ({
-        words: state.words.map((word, number) => (number === wordNumber ? newValue : word)),
-      }),
+      {
+        words,
+      },
       () => this.focusNext(index),
     );
   };
 
-  generateSelect = (wordNumber: number, index: number): React.ReactNode => (
-    <div data-test-id={`seed-recovery-word-${wordNumber}`}>
-      <VirtualizedSelect
-        options={wordsOptions}
-        simpleValue
-        clearable={true}
-        matchPos="start"
-        matchProp="value"
-        ref={((ref: VirtualizedSelect | null) => (this.verificationSelectRefs[index] = ref)) as any}
-        value={this.state.words[wordNumber]}
-        onChange={this.updateValueFactory(wordNumber, index)}
-        placeholder={(wordNumber + 1).toString(10) + ". Word"}
-        noResultsText="No matching word"
-      />
-    </div>
-  );
-
-  getCurrentWordsSlice = () => {
-    const startIndex = this.state.page * WORDS_PER_VIEW;
-    const endIndex = startIndex + WORDS_PER_VIEW;
-
-    return this.state.words.slice(startIndex, endIndex);
-  };
-
   focusNext = (current: number) => {
-    if (current + 1 < WORDS_PER_VIEW) {
+    if (current + 1 < SEED_LENGTH) {
       this.focusSelect(current + 1);
     } else if (this.nextButtonRef.current) {
       this.nextButtonRef.current.focus();
@@ -90,97 +65,73 @@ export class WalletLightSeedRecoveryComponent extends React.Component<
     }
   };
 
-  handleNextView = () => {
-    this.setState(
-      s => ({
-        page: s.page + 1,
-      }),
-      () => {
-        const startIndex = this.state.page * WORDS_PER_VIEW;
-        const endIndex = startIndex + WORDS_PER_VIEW;
-
-        const firstEmpty = this.state.words
-          .slice(startIndex, endIndex)
-          .findIndex(word => word === null);
-
-        if (firstEmpty !== -1) {
-          this.focusSelect(firstEmpty);
-        }
-      },
-    );
-  };
-
-  handlePreviousView = () => {
-    if (this.state.page > 0) {
-      this.setState(s => ({
-        page: s.page - 1,
-      }));
+  handleSendWords = () => {
+    const words = this.state.words.join(" ");
+    if (testWalletSeed(words)) {
+      this.props.onValidSeed(words);
+    } else {
+      this.setState({
+        seedError: true,
+      });
     }
   };
 
-  handleSendWords = () => {
-    this.props.sendWords(this.state.words.join(" "));
-  };
-
   render(): React.ReactNode {
-    const startIndex = this.state.page * WORDS_PER_VIEW;
-    const endIndex = startIndex + WORDS_PER_VIEW;
-
-    const canAdvance = this.state.words.slice(startIndex, endIndex).every(word => word !== null);
-
     const canSubmit = this.state.words.every(word => word !== null);
-
     return (
       <>
-        <Col className="mt-4 pb-4">
-          <HeaderProgressStepper
-            headerText={<FormattedMessage id="wallet-selector.recover.seed.header" />}
-            descText={<FormattedMessage id="wallet-selector.recover.seed.recover-description" />}
-            currentStep={this.props.startingStep + this.state.page + 1}
-            steps={this.props.extraSteps + SEED_LENGTH / WORDS_PER_VIEW}
-          />
-        </Col>
-        <Row className="my-2">
-          <Col className="text-center">
-            {this.state.words.filter(word => word !== null).join(" , ")}
-          </Col>
-        </Row>
-        <Row>
-          {range(startIndex, endIndex).map((num, i) => (
-            <Col xs={{ size: 6, offset: 3 }} sm={{ size: 3, offset: 0 }} key={num} className="my-3">
-              {this.generateSelect(num, i)}
-            </Col>
-          ))}
-        </Row>
-        <Row className="d-flex justify-content-between my-3">
-          <Button
-            data-test-id="btn-previous"
-            disabled={startIndex === 0}
-            onClick={this.handlePreviousView}
-          >
-            <FormattedMessage id="wallet-selector.recovery.seed.previous-words" />
-          </Button>
-          {this.state.page + 1 < SEED_LENGTH / WORDS_PER_VIEW && (
-            <Button
-              data-test-id="btn-next"
-              disabled={!canAdvance}
-              onClick={this.handleNextView}
-              ref={this.nextButtonRef}
+        <div className={styles.words}>
+          {this.state.words.map((_: string, index: number) => (
+            <div
+              data-test-id={`seed-recovery-word-${index}`}
+              className={styles.word}
+              key={index.toString()}
             >
-              <FormattedMessage
-                id="wallet-selector.recovery.seed.next-words"
-                values={{ words: `${endIndex} / ${SEED_LENGTH}` }}
+              <div className={styles.wordNumber}>{`${(index + 1).toString(10)}. `}</div>
+              <VirtualizedSelect
+                className={styles.select}
+                options={wordsOptions}
+                simpleValue
+                clearable={true}
+                matchPos="start"
+                matchProp="value"
+                ref={
+                  ((ref: VirtualizedSelect | null) =>
+                    (this.verificationSelectRefs[index] = ref)) as any
+                }
+                value={this.state.words[index]}
+                onChange={this.setWord(index)}
+                placeholder={""}
+                noResultsText="No matching word"
               />
-            </Button>
-          )}
-        </Row>
-        <Row className="text-center my-3">
-          <Col>
-            <Button data-test-id="btn-send" disabled={!canSubmit} onClick={this.handleSendWords}>
-              <FormattedMessage id="wallet-selector.recovery.seed.send-words-button" />
-            </Button>
-          </Col>
-        </Row>
+            </div>
+          ))}
+        </div>
+
+        {this.state.seedError && (
+          <FormError
+            message={<FormattedMessage id="account-recovery.seed-error" />}
+            className={styles.seedError}
+            name="account-recovery.seed-error"
+          />
+        )}
+        <Button
+          layout={EButtonLayout.PRIMARY}
+          data-test-id="btn-send"
+          disabled={!canSubmit}
+          onClick={this.handleSendWords}
+          className={styles.button}
+        >
+          <FormattedMessage id="account-recovery.seed-check.verify-button" />
+        </Button>
+        <div className={styles.line} />
+        <p className={styles.help}>
+          <FormattedHTMLMessage
+            tagName="span"
+            id="account-recovery.seed-check.help"
+            values={{ helpUrl: externalRoutes.neufundSupportHome }}
+          />
+        </p>
       </>
     );
   }

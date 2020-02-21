@@ -62,18 +62,11 @@ export const registerWithLightWalletNominee = (
 };
 
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {
-  for (let batch = 0; batch < words.length / 4; batch++) {
-    for (let index = 0; index < 4; index++) {
-      cy.get(`${tid(`seed-recovery-word-${batch * 4 + index}`)} input`)
-        .type(words[batch * 4 + index], { force: true, timeout: 20 })
-        .type("{enter}", { force: true });
-    }
-
-    if (batch + 1 < words.length / 4) {
-      cy.get(tid("btn-next")).awaitedClick();
-    }
-  }
-
+  words.forEach((word: string, index: number) => {
+    cy.get(`${tid(`seed-recovery-word-${index}`)} input`)
+      .type(word, { force: true, timeout: 20 })
+      .type("{enter}", { force: true });
+  });
   cy.get(tid("btn-send")).awaitedClick();
 };
 

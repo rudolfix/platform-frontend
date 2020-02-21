@@ -54,6 +54,7 @@ export const UnverifiedEmailReminderModal: React.ComponentType<TModalProps> = ({
       size={EButtonSize.NORMAL}
       width={EButtonWidth.NORMAL}
       onClick={closeModal}
+      data-test-id="unverified-email-reminder-modal-ok-button"
     >
       <FormattedMessage id="checkUnverifiedEmailModal.button-text" />
     </Button>

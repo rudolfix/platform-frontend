@@ -4,6 +4,7 @@ import { includes } from "lodash";
 
 import {
   BackupRecoveryMessage,
+  ELightWalletRestoreMessage,
   GenericErrorMessage,
   GenericModalMessage,
   SignInUserErrorMessage,
@@ -29,7 +30,8 @@ import { actions, TActionFromCreator } from "../../actions";
 import { checkEmailPromise } from "../../auth/email/sagas";
 import { createJwt } from "../../auth/jwt/sagas";
 import { selectUserType } from "../../auth/selectors";
-import { loadUser, logoutUser, updateUser } from "../../auth/user/external/sagas";
+import { loadUser, updateUser } from "../../auth/user/external/sagas";
+import { signInUser } from "../../auth/user/sagas";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { displayInfoModalSaga } from "../../generic-modal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
@@ -184,9 +186,14 @@ export function* lightWalletRecoverWatch(
       password,
     );
     yield web3Manager.plugPersonalWallet(wallet);
-    yield neuCall(logoutUser);
+    yield neuCall(signInUser);
 
-    yield put(actions.routing.goToSuccessfulRecovery());
+    yield put(
+      actions.genericModal.showInfoModal(
+        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE),
+        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT),
+      ),
+    );
   } catch (e) {
     yield neuCall(handleLightWalletError, e);
   }

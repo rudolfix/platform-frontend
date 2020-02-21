@@ -1,4 +1,4 @@
-import { Button, EButtonLayout } from "@neufund/design-system";
+import { Button, EButtonLayout, VirtualizedSelect } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
@@ -7,7 +7,6 @@ import { testWalletSeed } from "../../../../lib/web3/light-wallet/LightWalletUti
 import { TElementRef } from "../../../../types";
 import { englishMnemonics } from "../../../../utils/englishMnemonics";
 import { FormError } from "../../../shared/forms/fields/FormFieldError";
-import { VirtualizedSelect } from "../../../shared/forms/fields/VirtualizedSelect";
 
 import * as styles from "./SeedRecovery.unsafe.module.scss";
 

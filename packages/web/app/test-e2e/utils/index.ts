@@ -126,23 +126,22 @@ export const verifyLatestUserEmailWithAPI = (email: string) => {
   getLatestVerifyUserEmailLink(email).then(verifyUserEmailCall);
 };
 
-export const registerWithLightWallet = (
-  email: string,
-  password: string,
-  asIssuer: boolean = false,
-) => {
-  cy.visit(asIssuer ? appRoutes.registerIssuer : appRoutes.register);
+export const registerWithLightWallet = (email: string, password: string) => {
+  cy.visit(appRoutes.register);
 
-  cy.get(tid("wallet-selector-light")).awaitedClick();
   lightWalletTypeRegistrationInfo(email, password);
 
   acceptTOS();
+  assertDashboard();
+};
 
-  if (asIssuer) {
-    assertIssuerDashboard();
-  } else {
-    assertDashboard();
-  }
+export const registerWithLightWalletIssuer = (email: string, password: string) => {
+  cy.visit(appRoutes.registerIssuer);
+  cy.get(tid("wallet-selector-light")).click();
+  lightWalletTypeRegistrationInfo(email, password);
+
+  acceptTOS();
+  assertIssuerDashboard();
 };
 
 export const ethereumProvider = (provider: any) =>
@@ -211,7 +210,6 @@ export const lightWalletTypeLoginInfo = (email: string, password: string) => {
 
 export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("Header-login")).awaitedClick();
-  cy.get(tid("wallet-selector-light")).awaitedClick();
 
   lightWalletTypeLoginInfo(email, password);
 };

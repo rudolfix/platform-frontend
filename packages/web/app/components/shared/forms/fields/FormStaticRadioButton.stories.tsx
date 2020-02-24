@@ -1,12 +1,13 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import withFormik from "storybook-formik";
 
 import { FormStaticRadioButton } from "./FormStaticRadioButton";
-import { formWrapper } from "./testingUtils.unsafe";
 
-storiesOf("forms/fields/FormStaticRadioButton", module).add(
-  "default",
-  formWrapper({ name: "foo " })(() => (
-    <FormStaticRadioButton value="bla" label="you have no choice" />
-  )),
-);
+storiesOf("forms/fields/FormStaticRadioButton", module)
+  .addDecorator(withFormik)
+  .add("default", () => <FormStaticRadioButton value="bla" label="you have no choice" />, {
+    formik: {
+      initialValues: { name: "foo " },
+    },
+  });

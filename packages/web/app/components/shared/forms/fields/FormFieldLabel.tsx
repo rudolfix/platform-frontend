@@ -5,24 +5,26 @@ import { compose, shouldUpdate } from "recompose";
 
 import { CommonHtmlProps, TFormikConnect } from "../../../../types";
 import { FormLabel } from "../layouts/FormLabel";
-import { isFieldRequired } from "./utils.unsafe";
+import { isFieldRequired } from "./utils";
 
 import * as styles from "./FormFieldLabel.module.scss";
 
 type FormFieldLabelExternalProps = {
   name: string;
-  inheritFont?: boolean;
-};
+} & Omit<React.ComponentProps<typeof FormLabel>, "for">;
 
 const FormFieldLabelLayout: React.FunctionComponent<CommonHtmlProps &
   FormFieldLabelExternalProps &
-  TFormikConnect> = ({ children, name, formik, inheritFont, ...rawProps }) => {
+  TFormikConnect> = ({ children, name, formik, ...rawProps }) => {
   if (formik.validationSchema) {
     return (
-      <FormLabel for={name} inheritFont={inheritFont} {...rawProps}>
+      <FormLabel for={name} {...rawProps}>
         {children}
         {!isFieldRequired(formik.validationSchema, name, formik) && (
-          <span className={styles.optionalField}>
+          <span
+            className={styles.optionalField}
+            data-test-id="forms.fields.form-field-label.optional"
+          >
             {" "}
             (<FormattedMessage id="form.label.optional" />)
           </span>
@@ -51,4 +53,4 @@ const FormFieldLabel = compose<
   ),
 )(FormFieldLabelLayout);
 
-export { FormFieldLabel };
+export { FormFieldLabel, FormFieldLabelLayout };

@@ -125,7 +125,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
 class ArrayOfKeyValueFieldsBase extends React.Component<
   IProps & IExternalProps & CommonHtmlProps & TFormikConnect
 > {
-  private blankField = this.props.fieldNames.reduce((acc: any, key: string) => {
+  private blankField = this.props.fieldNames.reduce<Record<string, undefined>>((acc, key) => {
     acc[key] = undefined;
     return acc;
   }, {});
@@ -165,9 +165,8 @@ class ArrayOfKeyValueFieldsBase extends React.Component<
     const categoryDistribution = getIn(formik.values, name) || [];
     const formFieldKeys = this.props.fieldNames;
     return (
-      <FieldArray
-        name={name}
-        render={arrayHelpers => (
+      <FieldArray name={name}>
+        {arrayHelpers => (
           <div className={styles.fieldTable}>
             {categoryDistribution.map(
               (_: { description: string; percent: number }, index: number) => {
@@ -197,13 +196,13 @@ class ArrayOfKeyValueFieldsBase extends React.Component<
             )}
           </div>
         )}
-      />
+      </FieldArray>
     );
   }
 }
 
 const KeyValueCompoundField = connect<IProps & IInternalProps>(KeyValueCompoundFieldBase);
 
-export const ArrayOfKeyValueFields = connect<IProps & IExternalProps & CommonHtmlProps, any>(
+export const ArrayOfKeyValueFields = connect<IProps & IExternalProps & CommonHtmlProps, unknown>(
   ArrayOfKeyValueFieldsBase,
 );

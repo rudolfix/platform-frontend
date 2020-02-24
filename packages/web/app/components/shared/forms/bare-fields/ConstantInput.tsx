@@ -2,9 +2,9 @@ import * as cn from "classnames";
 import * as React from "react";
 
 import { TTranslatedString } from "../../../../types";
-import { FormError } from "./FormFieldError";
+import { FormError } from "../layouts/FormError";
 
-import * as styles from "./FormConstantField.module.scss";
+import * as styles from "./ConstantInput.module.scss";
 
 interface IProps {
   value: string;
@@ -12,7 +12,7 @@ interface IProps {
   errorMessage?: TTranslatedString;
 }
 
-export const FormConstantField: React.FunctionComponent<IProps> = ({
+export const ConstantInput: React.FunctionComponent<IProps> = ({
   value,
   className,
   errorMessage,

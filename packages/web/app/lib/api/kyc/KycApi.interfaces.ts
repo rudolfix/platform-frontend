@@ -112,7 +112,7 @@ export const KycAdditionalDataSchema = Yup.object().shape({
 // individual data
 export interface IKycIndividualData extends IKycPerson {
   isHighIncome?: boolean;
-  isAccreditedUsCitizen?: string;
+  isAccreditedUsCitizen?: boolean;
 }
 
 export const KycStatusSchema = YupTS.object({
@@ -185,7 +185,7 @@ export const KycLegalRepresentativeSchema = makeAllRequiredExcept(
 export interface IKycManagingDirector extends IKycPerson {}
 export const KycManagingDirectorSchema = makeAllRequiredExcept(
   KycPersonSchema.concat(
-    Yup.object().shape({
+    Yup.object({
       isPoliticallyExposed: Yup.bool(),
     }),
   ),

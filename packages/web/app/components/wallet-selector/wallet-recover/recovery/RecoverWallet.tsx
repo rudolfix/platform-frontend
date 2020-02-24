@@ -14,7 +14,7 @@ import { HeaderProgressStepper } from "../../../shared/HeaderProgressStepper";
 import { ExternalLink } from "../../../shared/links/ExternalLink";
 import { GenericModalMessage, LightWalletErrorMessage } from "../../../translatedMessages/messages";
 import { createMessage } from "../../../translatedMessages/utils";
-import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet.unsafe";
+import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet";
 import { WalletMessageSigner } from "../../WalletMessageSigner";
 import { WalletSelectorContainer } from "../../WalletSelectorContainer";
 import { recoverRoutes } from "../router/recoverRoutes";

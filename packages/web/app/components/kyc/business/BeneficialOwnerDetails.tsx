@@ -2,6 +2,7 @@ import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import { ECountries } from "@neufund/shared";
 import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
+import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, ModalFooter, Row } from "reactstrap";
@@ -16,18 +17,20 @@ import { EBeneficialOwnerType } from "../../../modules/kyc/types";
 import {
   getBeneficialOwnerCountry,
   getBeneficialOwnerId,
-  getBeneficialOwnerType,
   validateBeneficiaryOwner,
 } from "../../../modules/kyc/utils";
-import { FormField } from "../../shared/forms/fields/FormField";
-import { FormFieldDate } from "../../shared/forms/fields/FormFieldDate";
-import { FormSelectCountryField } from "../../shared/forms/fields/FormSelectCountryField.unsafe";
-import { boolify, FormSelectField, unboolify } from "../../shared/forms/fields/FormSelectField";
-import { FormSelectNationalityField } from "../../shared/forms/fields/FormSelectNationalityField.unsafe";
-import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
-import { FormDeprecated } from "../../shared/forms/FormDeprecated";
-import { ECheckboxLayout, RadioButtonLayout } from "../../shared/forms/layouts/CheckboxLayout";
-import { FormLabel } from "../../shared/forms/layouts/FormLabel";
+import {
+  ECheckboxLayout,
+  FormDeprecated,
+  FormField,
+  FormFieldDate,
+  FormLabel,
+  FormSelectCountryField,
+  FormSelectField,
+  FormSelectNationalityField,
+  FormSelectStateField,
+  RadioButtonLayout,
+} from "../../shared/forms/index";
 import { EKycUploadType, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../shared/tooltips/TooltipBase";
@@ -195,33 +198,32 @@ const BusinessFields: React.FunctionComponent<IFieldsProps> = ({ country }) => (
   </>
 );
 
-const BeneficialOwnerDetails: React.FunctionComponent<FormikProps<IKycBeneficialOwner> &
-  IDetailsModalProps> = props => {
-  const {
-    show,
-    onClose,
-    onSave,
-    currentValues,
-    values,
-    onDropFile,
-    files,
-    filesUploading,
-    onDelete,
-    filesLoading,
-    loading,
-    type,
-    setType,
-  } = props;
-
+const BeneficialOwnerDetailsLayout: React.FunctionComponent<FormikProps<IKycBeneficialOwner> &
+  IDetailsModalProps> = ({
+  show,
+  onClose,
+  onSave,
+  currentValues,
+  values,
+  onDropFile,
+  files,
+  filesUploading,
+  onDelete,
+  filesLoading,
+  loading,
+  type,
+  setType,
+}) => {
   const isFormValid = validateBeneficiaryOwner(type, values);
   const saveDisabled =
     !isFormValid || files.length === 0 || filesUploading || filesLoading || loading;
+
   const transformValuesForSave = (formValues: IKycBeneficialOwner) => ({
-    [type]: boolify({
+    [type]: {
       ...formValues[type],
       // TODO: Remove when not needed. This adds additional fields required by backend
       isHighIncome: false,
-    }),
+    },
   });
   const isSaved = !!(currentValues && getBeneficialOwnerId(currentValues));
 
@@ -312,13 +314,12 @@ const BeneficialOwnerDetails: React.FunctionComponent<FormikProps<IKycBeneficial
   );
 };
 
-export const EnhancedBeneficialOwnerDetails = withFormik<IDetailsModalProps, IKycBeneficialOwner>({
+const defaultEmptyObject = defaultTo<IKycBeneficialOwner | {}>({});
+
+export const BeneficialOwnerDetails = withFormik<IDetailsModalProps, IKycBeneficialOwner>({
   validationSchema: KycBeneficialOwnerSchema,
-  mapPropsToValues: props => unboolify(props.currentValues as IKycBeneficialOwner),
+  validateOnMount: true,
+  mapPropsToValues: props => defaultEmptyObject(props.currentValues),
   enableReinitialize: true,
-  isInitialValid: (props: object): boolean => {
-    const owner = (props as IDetailsModalProps).currentValues;
-    return owner ? validateBeneficiaryOwner(getBeneficialOwnerType(owner), owner) : false;
-  },
   handleSubmit: f => f,
-})(BeneficialOwnerDetails);
+})(BeneficialOwnerDetailsLayout);

@@ -1,8 +1,8 @@
-import { FormInputError } from "@neufund/shared";
+import { FormInputError, TDataTestId } from "@neufund/shared";
 import * as React from "react";
 
-import { DEFAULT_DECIMAL_PLACES } from "../../config/constants";
-import { TTranslatedString } from "../../types";
+import { DEFAULT_DECIMAL_PLACES } from "../../../../config/constants";
+import { TTranslatedString } from "../../../../types";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
@@ -16,37 +16,32 @@ import {
   stripNumberFormatting,
   toFixedPrecision,
   TValueFormat,
-} from "./formatters/utils";
-import { EInputSize, InputLayout } from "./forms/index";
-import { EInputTheme } from "./forms/layouts/InputLayout";
+} from "../../formatters/utils";
+import { EInputSize, EInputTheme, InputLayout } from "./InputLayout";
 
 interface IProps {
   name: string;
   storageFormat: ENumberInputFormat; // how is this value stored in the app state (ULPS or FLOAT)
   outputFormat: ENumberOutputFormat; // how should this value be visualized
   valueType?: TValueFormat;
-  value?: string;
+  value: string;
   onChangeFn: (value: string) => void;
   returnInvalidValues?: boolean;
   setError?: (v: boolean) => void;
   placeholder?: string;
-  "data-test-id"?: string;
   showUnits?: boolean;
-  errorMsg?: TTranslatedString;
-  invalid?: boolean;
+  invalid: boolean;
   disabled?: boolean;
   className?: string;
   theme?: EInputTheme;
   icon?: string;
-  reverseMetaInfo?: boolean;
   prefix?: TTranslatedString;
   suffix?: TTranslatedString;
   size?: EInputSize;
   tokenDecimals?: number;
-  validateOnMount?: boolean; //this is a workaround to validate initial values on mount before we upgraded formik to 2.0. Please do not use it!
 }
 
-export class MaskedNumberInput extends React.Component<IProps> {
+export class MaskedNumberInputLayout extends React.Component<IProps & TDataTestId> {
   private decimals: number;
 
   constructor(props: IProps) {
@@ -143,15 +138,9 @@ export class MaskedNumberInput extends React.Component<IProps> {
 
   hasFocus = (id: string) => !!document.activeElement && document.activeElement.id === id;
 
-  componentDidMount(): void {
-    if (this.props.validateOnMount) {
-      this.changeValue(this.props.value === undefined ? "" : this.props.value);
-    }
-  }
-
   componentDidUpdate(): void {
     if (!(this.props.value === undefined || typeof this.props.value === "string")) {
-      throw new FormInputError("MaskedNumberInput accepts only string|undefined");
+      throw new FormInputError("MaskedNumberInputLayout accepts only string|undefined");
     }
     if (isValidNumber(this.props.value) || isEmptyValue(this.props.value)) {
       const propsValue = this.formatForDisplay(this.props.value, this.props.storageFormat);
@@ -184,7 +173,6 @@ export class MaskedNumberInput extends React.Component<IProps> {
         placeholder={this.props.placeholder}
         prefix={this.props.prefix}
         suffix={this.formatSuffix()}
-        errorMsg={this.props.errorMsg}
         invalid={this.props.invalid}
         onBlur={(e: React.FocusEvent<HTMLInputElement>) => this.onBlur(e.target.value)}
         onFocus={(e: React.FocusEvent<HTMLInputElement>) => this.onFocus(e.target.value)}
@@ -193,11 +181,8 @@ export class MaskedNumberInput extends React.Component<IProps> {
         disabled={this.props.disabled}
         theme={this.props.theme}
         icon={this.props.icon}
-        reverseMetaInfo={this.props.reverseMetaInfo}
         size={this.props.size}
       />
     );
   }
 }
-
-//TODO add api calls error handling

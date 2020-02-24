@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { LightWalletErrorMessage } from "../../../translatedMessages/messages";
 import { createMessage } from "../../../translatedMessages/utils";
-import { RegisterWalletComponent } from "./RegisterLightWallet.unsafe";
+import { RegisterWalletComponent } from "./RegisterLightWallet";
 
 const testData = {
   submitForm: () => {},

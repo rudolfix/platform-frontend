@@ -9,7 +9,7 @@ import { symbols } from "../../../../di/symbols";
 import { CommonHtmlProps } from "../../../../types";
 import { withDependencies } from "../../hocs/withDependencies";
 import { SANITIZER_OPTIONS } from "../../SanitizedHtml";
-import { generateErrorId } from "../fields/FormFieldError";
+import { generateErrorId } from "./FormError";
 import { generateLabelId } from "./FormLabel";
 
 import * as fieldStyles from "../../Field.module.scss";

@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "redux";
+import { compose } from "recompose";
 
 import { EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
@@ -34,7 +34,7 @@ export const KYCAdditionalUploadLayout: React.FunctionComponent<IDispatchProps> 
   </>
 );
 
-export const KYCAdditionalUpload = compose<React.FunctionComponent>(
+export const KYCAdditionalUpload = compose<IDispatchProps, {}>(
   appConnect<{}, IDispatchProps>({
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCSuccess()),

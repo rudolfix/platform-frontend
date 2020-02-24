@@ -1,5 +1,4 @@
 import { NATIONALITIES } from "@neufund/shared";
-import { FieldAttributes } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -10,14 +9,9 @@ const VALUES = {
   ...NATIONALITIES,
 };
 
-interface IFieldGroup {
-  label?: string;
-  "data-test-id"?: string;
-}
+type TExternalProps = Omit<React.ComponentProps<typeof FormSelectField>, "values">;
 
-type FieldGroupProps = IFieldGroup & FieldAttributes<any>;
-
-const FormSelectNationalityField: React.FunctionComponent<FieldGroupProps> = props => (
+const FormSelectNationalityField: React.FunctionComponent<TExternalProps> = props => (
   <FormSelectField {...props} values={VALUES} />
 );
 

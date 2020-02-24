@@ -1,114 +1,87 @@
-import { Button } from "@neufund/design-system";
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { withContainer } from "@neufund/shared";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { Row } from "reactstrap";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { branch, renderComponent } from "recompose";
 import { compose } from "redux";
 
+import { externalRoutes } from "../../../config/externalRoutes";
 import { actions } from "../../../modules/actions";
-import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
+import { selectIsMessageSigning } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { LoadingIndicator } from "../../shared/loading-indicator";
-import { StepCard } from "../../shared/StepCard";
-import { WarningAlert } from "../../shared/WarningAlert";
+import { LoadingIndicator } from "../../shared/loading-indicator/index";
 import { getMessageTranslation } from "../../translatedMessages/messages";
 import { TMessage } from "../../translatedMessages/utils";
-import { resetWalletOnEnter } from "../resetWallet";
 
-import check_metamask from "../../../assets/img/wallet_selector/check_metamask.svg";
-import enter_password from "../../../assets/img/wallet_selector/enter_password.svg";
-import reload from "../../../assets/img/wallet_selector/reload.svg";
+import notificationSign from "../../../assets/img/notifications/warning.svg";
 import * as styles from "./WalletBrowser.module.scss";
 
 interface IWalletBrowserProps {
   errorMessage?: TMessage;
   isLoading: boolean;
-  isLoginRoute: boolean;
-  approvalRejected: boolean;
+  isMessageSigning: boolean;
 }
 
 interface IWalletBrowserDispatchProps {
   tryConnectingWithBrowserWallet: () => void;
 }
 
-export const WalletBrowserComponent: React.FunctionComponent<IWalletBrowserProps &
-  IWalletBrowserDispatchProps> = ({
+type TMetamaskErrorProps = {
+  errorMessage: TMessage;
+  tryConnectingWithBrowserWallet: () => void;
+};
+
+export const WalletLoading = () => <LoadingIndicator className={styles.loadingIndicator} />;
+
+export const MetamaskError: React.FunctionComponent<TMetamaskErrorProps> = ({
   errorMessage,
-  isLoading,
-  isLoginRoute,
-  approvalRejected,
   tryConnectingWithBrowserWallet,
 }) => (
-  <div>
-    <h2 className={styles.title} data-test-id="modals.wallet-selector.wallet-browser.title">
-      {isLoginRoute ? (
-        <FormattedMessage id="wallet-selector.browser.login-prompt" />
-      ) : (
-        <FormattedMessage id="wallet-selector.browser.register-prompt" />
-      )}
-    </h2>
+  <>
+    <div data-test-id="browser-wallet-error-msg" className={styles.notification}>
+      <img src={notificationSign} alt="" />
+      <span> {getMessageTranslation(errorMessage)} </span>
+    </div>
 
-    {isLoading ? (
-      <LoadingIndicator />
-    ) : (
-      <>
-        {errorMessage && (
-          <section className="text-center my-5">
-            <WarningAlert className="mb-4" data-test-id="browser-wallet-error-msg">
-              {getMessageTranslation(errorMessage)}
-            </WarningAlert>
+    <Button
+      layout={EButtonLayout.PRIMARY}
+      onClick={tryConnectingWithBrowserWallet}
+      data-test-id="browser-wallet-init.try-again"
+      className={styles.button}
+    >
+      <FormattedMessage id="common.try-again" />
+    </Button>
+  </>
+);
 
-            <Button
-              onClick={tryConnectingWithBrowserWallet}
-              data-test-id="browser-wallet-init.try-again"
-            >
-              <FormattedMessage id="common.try-again" />
-            </Button>
-          </section>
-        )}
-
-        {approvalRejected && (
-          <>
-            <Row className="justify-content-center mb-4">
-              <div>
-                <FormattedMessage id="wallet-selector.browser.approval-rejected" />
-              </div>
-            </Row>
-            <Row className="justify-content-center mb-4">
-              <Button onClick={tryConnectingWithBrowserWallet}>
-                <FormattedMessage id="wallet-selector.browser.approval-resend" />
-              </Button>
-            </Row>
-          </>
-        )}
-
-        <div className={styles.stepCardWrapper}>
-          <StepCard
-            img={check_metamask}
-            text={<FormattedMessage id="wallet-selector.browser.steps.1" />}
-          />
-          <StepCard
-            img={enter_password}
-            text={<FormattedMessage id="wallet-selector.browser.steps.2" />}
-          />
-          <StepCard img={reload} text={<FormattedMessage id="wallet-selector.browser.steps.3" />} />
-        </div>
-      </>
-    )}
-  </div>
+export const WalletBrowserBase: React.FunctionComponent = ({ children }) => (
+  <section className={styles.wrapper}>
+    <FormattedMessage id="wallet-selector.browser-wallet-provide-signature" />
+    {children}
+    <p className={styles.help}>
+      <FormattedHTMLMessage
+        tagName="span"
+        id="wallet-selector.browser-wallet.help"
+        values={{ metamaskSupportLink: externalRoutes.metamaskSupportLink }}
+      />
+    </p>
+  </section>
 );
 
 export const WalletBrowser = compose<React.FunctionComponent>(
   appConnect<IWalletBrowserProps, IWalletBrowserDispatchProps>({
     stateToProps: state => ({
-      errorMessage: state.browserWalletWizardState.errorMsg as TMessage,
-      isLoading: state.browserWalletWizardState.isLoading,
-      isLoginRoute: selectIsLoginRoute(state.router),
-      approvalRejected: state.browserWalletWizardState.approvalRejected,
+      errorMessage: state.walletSelector.messageSigningError as TMessage,
+      isLoading: state.walletSelector.isLoading,
+      isMessageSigning: selectIsMessageSigning(state),
     }),
     dispatchToProps: dispatch => ({
       tryConnectingWithBrowserWallet: () => {
         dispatch(actions.walletSelector.tryConnectingWithBrowserWallet());
+      },
+      cancelSigning: () => {
+        dispatch(actions.walletSelector.reset());
       },
     }),
   }),
@@ -117,5 +90,13 @@ export const WalletBrowser = compose<React.FunctionComponent>(
       dispatch(actions.walletSelector.tryConnectingWithBrowserWallet());
     },
   }),
-  resetWalletOnEnter(),
-)(WalletBrowserComponent);
+  withContainer(WalletBrowserBase),
+  branch<IWalletBrowserProps>(
+    ({ isLoading, isMessageSigning }) => isLoading || isMessageSigning,
+    renderComponent(WalletLoading),
+  ),
+  branch<IWalletBrowserProps>(
+    ({ errorMessage }) => errorMessage !== undefined,
+    renderComponent(MetamaskError),
+  ),
+)(() => null);

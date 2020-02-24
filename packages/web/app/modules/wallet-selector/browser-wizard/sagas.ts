@@ -17,7 +17,7 @@ export function* tryConnectingWithBrowserWallet({
   logger,
 }: TGlobalDependencies): any {
   const state: TAppGlobalState = yield select();
-
+  // todo sort this logic out
   if (!state.browserWalletWizardState.approvalRejected) {
     try {
       const browserWallet: BrowserWallet = yield browserWalletConnector.connect(
@@ -27,13 +27,15 @@ export function* tryConnectingWithBrowserWallet({
       yield put(actions.walletSelector.connected());
     } catch (e) {
       if (e instanceof BrowserWalletAccountApprovalRejectedError) {
+        // account approval rejected is just a normal error as any other.
+        // but leaving it here for now for backwards compatibility
+        // TODO find who's using it and fix it so that this is not needed anymore
         yield put(actions.walletSelector.browserWalletAccountApprovalRejectedError());
-      } else {
-        const error = mapBrowserWalletErrorToErrorMessage(e);
-        yield put(actions.walletSelector.browserWalletConnectionError(error));
-        if (error.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {
-          logger.error("Error while trying to connect with browser wallet", e);
-        }
+      }
+      const error = mapBrowserWalletErrorToErrorMessage(e);
+      yield put(actions.walletSelector.browserWalletConnectionError(error));
+      if (error.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {
+        logger.error("Error while trying to connect with browser wallet", e);
       }
     }
   }
@@ -42,7 +44,7 @@ export function* tryConnectingWithBrowserWallet({
 export function* browserWalletSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeUntil,
-    "BROWSER_WALLET_TRY_CONNECTING",
+    actions.walletSelector.tryConnectingWithBrowserWallet,
     actions.walletSelector.reset,
     tryConnectingWithBrowserWallet,
   );

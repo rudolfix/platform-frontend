@@ -3,12 +3,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName, withProps } from "recompose";
 
-import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../../modules/auth/selectors";
 import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { TDataTestId } from "../../types";
-import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { Container, EColumnSpan } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
@@ -52,11 +50,6 @@ export const DashboardLayout: React.ComponentType<TDashboardProps> = ({ shouldSh
 
 export const Dashboard = compose<TDashboardProps, {}>(
   setDisplayName("Dashboard"),
-  onEnterAction({
-    actionCreator: dispatch => {
-      dispatch(actions.eto.loadEtos());
-    },
-  }),
   appConnect<TOnboardingStateData>({
     stateToProps: state => ({
       emailVerified: selectIsUserEmailVerified(state.auth),

@@ -3,7 +3,6 @@
   "account-recovery.seed-check.help": "Need help? <a href={helpUrl} target=\"_blank\">Visit Customer Care</a>",
   "account-recovery.seed-check.title": "Account recovery",
   "account-recovery.seed-check.verify-button": "Verify",
-  "account-recovery.seed-error": "Some of the words you have entered are incorrect. Please review the words and try again.",
   "account-recovery.sign-up.description": "Your wallet will be imported to a new Neufund account.",
   "account-recovery.step.cancel": "Cancel",
   "account-recovery.success.text": "A new unique login link has been emailed to you. Please check your inbox and save the link for future logins.",

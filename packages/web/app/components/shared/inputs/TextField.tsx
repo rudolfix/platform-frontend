@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import { Field, useFormikContext } from "formik";
 import * as React from "react";
 
@@ -78,7 +77,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
           )}
 
           <div className={styles.inputWrapper}>
-            <TextInput
+            <Input
               type={overridingType}
               value={transformedValue}
               id={name}

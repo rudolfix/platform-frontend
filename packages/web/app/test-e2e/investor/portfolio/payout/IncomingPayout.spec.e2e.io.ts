@@ -15,13 +15,13 @@ describe("Auto Login", () => {
 // createAndLoginNewUser not reacting to HTTP status codes
 // currently skipped as announe dialogs changes due to new onboarding but tests did not
 describe("Incoming payout", function(): void {
-  it.skip("should show countdown with incoming payout value @payout @p2 @flaky", () => {
+  it("should show countdown with incoming payout value @payout @p2 @flaky", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
       cy.get(tid("my-neu-widget-payout-pending")).should("exist");
 
-      assertMoneyNotEmpty("my-neu-widget-payout-pending-money");
+      assertMoneyNotEmpty("my-neu-widget-payout-pending");
     });
   });
 

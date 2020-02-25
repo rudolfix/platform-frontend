@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { TTranslatedString } from "../../../types";
+import { TTranslatedString } from "../../types";
 
 import styles from "./InputDescription.module.scss";
 

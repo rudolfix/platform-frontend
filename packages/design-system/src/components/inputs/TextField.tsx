@@ -1,18 +1,17 @@
+import { TDataTestId } from "@neufund/shared";
 import { Field, useFormikContext } from "formik";
 import * as React from "react";
 
-import { TDataTestId } from "../../../types";
-import { getSchemaField, getValidationSchema, isRequired } from "../../../utils/yupUtils";
-import { applyCharactersLimit, useFieldMeta } from "../forms/fields/utils";
+import { getSchemaField, getValidationSchema, isRequired } from "../../utils/yupUtils";
 import { InlineIcon } from "../icons/InlineIcon";
+import { eyeStrikedIcon, eyeUnstrikedIcon } from "./icons";
 import { Input } from "./Input";
 import { InputBase } from "./InputBase";
 import { InputDescription } from "./InputDescription";
 import { InputError } from "./InputError";
 import { LabelBase } from "./LabelBase";
+import { applyCharactersLimit, useFieldMeta } from "./utils";
 
-import eyeUnstrikedIcon from "../../../assets/img/inline_icons/password-eye_masked.svg";
-import eyeStrikedIcon from "../../../assets/img/inline_icons/password-eye_unmasked.svg";
 import * as styles from "./TextField.module.scss";
 
 const transform = (value: string) => (value !== undefined ? value : "");

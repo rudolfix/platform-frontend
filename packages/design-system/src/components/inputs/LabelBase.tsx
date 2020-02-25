@@ -10,7 +10,12 @@ type TLabelBaseProps = {
 
 const LabelBase = React.forwardRef<
   HTMLLabelElement,
-  React.DetailedHTMLProps<React.LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement> &
+  React.DetailedHTMLProps<
+    // TODO: Check why is the css property in `LabelHTMLAttributes` problematic
+    // This is a TEMP Fix that omits css as it is causing issues while running yarn `tsc:e2e` in `packages/web`
+    Omit<React.LabelHTMLAttributes<HTMLLabelElement>, "css">,
+    HTMLLabelElement
+  > &
     TLabelBaseProps
 >(({ className, isOptional, ...rest }, ref) => (
   <>

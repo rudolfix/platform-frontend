@@ -8,7 +8,12 @@ import styles from "./InputBase.module.scss";
  */
 const InputBase = React.forwardRef<
   HTMLInputElement,
-  React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+  React.DetailedHTMLProps<
+    // TODO: Check why is the css property in `InputHTMLAttributes` problematic
+    // This is a TEMP Fix that omits css as it is causing issues while running yarn `tsc:e2e` in `packages/web`
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "css">,
+    HTMLInputElement
+  >
 >(({ className, type = "text", ...rest }, ref) => (
   <input type={type} ref={ref} className={cn(styles.inputBase, className)} {...rest} />
 ));

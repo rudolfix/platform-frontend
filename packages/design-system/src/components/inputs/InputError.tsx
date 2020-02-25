@@ -1,6 +1,7 @@
+import { TDataTestId } from "@neufund/shared";
 import * as React from "react";
 
-import { TDataTestId, TTranslatedString } from "../../../types";
+import { TTranslatedString } from "../../types";
 
 import styles from "./InputError.module.scss";
 

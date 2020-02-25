@@ -1,7 +1,7 @@
+import { TDataTestId } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 
-import { TDataTestId } from "../../../types";
 import { InputBase } from "./InputBase";
 
 import styles from "./Input.module.scss";

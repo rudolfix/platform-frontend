@@ -1,4 +1,11 @@
-import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
+import {
+  Button,
+  EButtonLayout,
+  EIconPosition,
+  getSchemaField,
+  getValidationSchema,
+  isRequired,
+} from "@neufund/design-system";
 import * as cn from "classnames";
 import { connect, FieldArray } from "formik";
 import * as React from "react";
@@ -20,7 +27,6 @@ import {
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { TFormikConnect, TTranslatedString } from "../../../../types";
-import { getSchemaField, getValidationSchema, isRequired } from "../../../../utils/yupUtils";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
 import { EMimeType } from "../../../shared/forms/fields/utils";

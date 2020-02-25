@@ -1,7 +1,4 @@
-import { expect } from "chai";
-import * as Yup from "yup";
-
-import { AssertEqual, assertType } from "../../test/testUtils";
+// TODO move file to design-system once it has CI
 import {
   findMax,
   findMin,
@@ -9,7 +6,11 @@ import {
   isRequired,
   makeAllRequired,
   pickSchemaValues,
-} from "./yupUtils";
+} from "@neufund/design-system";
+import { expect } from "chai";
+import * as Yup from "yup";
+
+import { AssertEqual, assertType } from "../../test/testUtils";
 
 describe("yupUtils", () => {
   describe("isRequired", () => {

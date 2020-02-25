@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { ButtonInline } from "./ButtonInline";
 
-storiesOf("NDS|Atoms/ButtonInline", module).add("default", () => (
+storiesOf("NDS|Atoms/Button", module).add("ButtonInline", () => (
   <>
     <ButtonInline>normal</ButtonInline>
     <br />

@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "./Button";
 import { ButtonGroup } from "./ButtonGroup";
 
-storiesOf("ButtonGroup", module).add("default", () => (
+storiesOf("NDS|Atoms/Button", module).add("ButtonGroup", () => (
   <ButtonGroup>
     <Button>First button</Button>
     <Button>Second button</Button>

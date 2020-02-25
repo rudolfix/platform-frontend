@@ -1,3 +1,4 @@
+import { pickSchemaValues } from "@neufund/design-system";
 import { connect } from "formik";
 import * as React from "react";
 import { compose } from "recompose";
@@ -9,7 +10,6 @@ import {
   ProgressCalculator,
 } from "../../../modules/eto-flow/utils";
 import { TDataTestId, TFormikConnect, TTranslatedString } from "../../../types";
-import { pickSchemaValues } from "../../../utils/yupUtils";
 import { Form, TFormProps } from "../../shared/forms";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";

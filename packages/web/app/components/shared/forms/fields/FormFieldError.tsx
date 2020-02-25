@@ -1,7 +1,7 @@
+import { useFieldMeta } from "@neufund/design-system";
 import * as React from "react";
 
 import { FormError } from "../layouts/FormError";
-import { useFieldMeta } from "./utils";
 
 export interface IProps {
   name: string;

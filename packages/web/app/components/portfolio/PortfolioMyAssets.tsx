@@ -12,9 +12,9 @@ import { selectNeuPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { selectNeuBalance, selectNeumarkAddress } from "../../modules/wallet/selectors";
 import { appConnect } from "../../store";
 import { commitmentStatusLink } from "../appRouteUtils";
-import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container } from "../layouts/Container";
 import { ButtonLink } from "../shared/buttons/ButtonLink";
+import { DashboardHeading } from "../shared/DashboardHeading";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
 import { Money } from "../shared/formatters/Money";
 import {

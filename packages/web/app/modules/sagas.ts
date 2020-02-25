@@ -8,6 +8,7 @@ import { bookBuildingFlowSagas } from "./bookbuilding-flow/sagas";
 import { etoDocumentsSagas } from "./eto-documents/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { etoNomineeSagas } from "./eto-nominee/sagas";
+import { etoViewSagas } from "./eto-view/shared/sagas";
 import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
 import { icbmWalletGetDataSagas } from "./icbm-wallet-balance-modal/sagas";
@@ -66,6 +67,7 @@ function* allSagas(): Generator<any, any, any> {
     fork(neuRestartIf, actions.auth.logout, walletSagas),
     fork(neuRestartIf, actions.auth.logout, icbmWalletGetDataSagas),
     fork(neuRestartIf, actions.auth.logout, etoFlowSagas),
+    fork(neuRestartIf, actions.auth.logout, etoViewSagas),
     fork(neuRestartIf, actions.auth.logout, immutableFileSagas),
     fork(neuRestartIf, actions.auth.logout, etoSagas),
     fork(neuRestartIf, actions.auth.logout, etoNomineeSagas),

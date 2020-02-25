@@ -16,8 +16,8 @@ import { compose, keyBy, map, omit } from "lodash/fp";
 
 import { IWindowWithData } from "../../../test/helperTypes";
 import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/documents/utils";
-import { DocumentConfidentialityAgreementModal } from "../../components/eto/public-view/DocumentConfidentialityAgreementModal";
-import { JurisdictionDisclaimerModal } from "../../components/eto/public-view/JurisdictionDisclaimerModal";
+import { DocumentConfidentialityAgreementModal } from "../../components/modals/document-confidentiality-agreement-modal/DocumentConfidentialityAgreementModal";
+import { JurisdictionDisclaimerModal } from "../../components/modals/jurisdiction-disclaimer-modal/JurisdictionDisclaimerModal";
 import { EtoMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -41,7 +41,7 @@ import { EuroToken } from "../../lib/contracts/EuroToken";
 import { ITokenController } from "../../lib/contracts/ITokenController";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
-import { selectIsUserVerified, selectUserId, selectUserType } from "../auth/selectors";
+import { selectIsUserFullyVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuilding-flow/utils";
 import { selectMyAssets } from "../investor-portfolio/selectors";
 import { selectClientJurisdiction } from "../kyc/selectors";
@@ -61,14 +61,20 @@ import {
   selectEtoById,
   selectEtoOnChainNextStateStartDate,
   selectEtoOnChainStateById,
+  selectEtoSubStateEtoEtoWithContract,
   selectFilteredEtosByRestrictedJurisdictions,
   selectInvestorEtoWithCompanyAndContract,
-  selectIsEtoAnOffer,
 } from "./selectors";
-import { EEtoAgreementStatus, EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "./types";
+import {
+  EEtoAgreementStatus,
+  EETOStateOnChain,
+  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
+} from "./types";
 import {
   convertToEtoTotalInvestment,
   convertToStateStartDate,
+  etoIsInOfferState,
   isOnChain,
   isRestrictedEto,
   isUserAssociatedWithEto,
@@ -82,38 +88,7 @@ function* loadEtoPreview(
 
   try {
     const eto: TEtoSpecsData = yield apiEtoService.getEtoPreview(previewCode);
-    const company: TCompanyEtoData = yield apiEtoService.getCompanyById(eto.companyId);
-
-    // Load contract data if eto is already on blockchain
-    if (eto.state === EEtoState.ON_CHAIN) {
-      // load investor tickets
-      const userType: EUserType | undefined = yield select((state: TAppGlobalState) =>
-        selectUserType(state),
-      );
-      if (userType === EUserType.INVESTOR) {
-        yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
-      }
-      yield neuCall(loadEtoContract, eto);
-    }
-
-    // This needs to always be after loadingEtoContract step
-    const onChainState: EETOStateOnChain | undefined = yield select((state: TAppGlobalState) =>
-      selectEtoOnChainStateById(state, eto.etoId),
-    );
-
-    if (shouldLoadPledgeData(eto.state, onChainState)) {
-      yield put(actions.bookBuilding.loadPledge(eto.etoId));
-    }
-
-    if (shouldLoadBookbuildingStats(onChainState)) {
-      eto.isBookbuilding
-        ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
-        : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
-    } else {
-      yield put(actions.bookBuilding.bookBuildingStopWatch(eto.etoId));
-    }
-
-    yield put(actions.eto.setEto({ eto, company }));
+    yield neuCall(loadAdditionalEtoData, eto);
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
 
@@ -130,6 +105,37 @@ function* loadEtoPreview(
 
 function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
   const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
+  yield neuCall(loadAdditionalEtoData, eto);
+}
+
+function* loadEto(
+  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.eto.loadEto>,
+): any {
+  const etoId = action.payload.etoId;
+
+  try {
+    const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
+    yield neuCall(loadAdditionalEtoData, eto);
+  } catch (e) {
+    logger.error("Could not load eto by id", e);
+
+    if (action.payload.widgetView) {
+      yield put(actions.eto.setEtoWidgetError());
+
+      return;
+    }
+
+    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO));
+    yield put(actions.routing.goToDashboard());
+  }
+}
+
+function* loadAdditionalEtoData(
+  //loads and stores data related to eto, e.g. company, contract, bookbuilding stats, pledge data
+  { apiEtoService }: TGlobalDependencies,
+  eto: TEtoSpecsData,
+): Generator<any, any, any> {
   const company: TCompanyEtoData = yield apiEtoService.getCompanyById(eto.companyId);
 
   // Load contract data if eto is already on blockchain
@@ -174,25 +180,34 @@ function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
   yield put(actions.eto.setEto({ eto, company }));
 }
 
-function* loadEto(
-  { notificationCenter, logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.eto.loadEto>,
-): any {
-  try {
-    yield neuCall(fetchEto, action.payload.etoId);
-  } catch (e) {
-    logger.error("Could not load eto by id", e);
+export function* loadEtoWithCompanyAndContract(
+  { apiEtoService }: TGlobalDependencies,
+  previewCode: string,
+): Generator<any, any, any> {
+  const eto: TEtoWithCompanyAndContract = yield apiEtoService.getEtoPreview(previewCode);
+  eto.company = yield apiEtoService.getCompanyById(eto.companyId);
 
-    if (action.payload.widgetView) {
-      yield put(actions.eto.setEtoWidgetError());
-
-      return;
-    }
-
-    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO));
-
-    yield put(actions.routing.goToDashboard());
+  if (eto.state === EEtoState.ON_CHAIN) {
+    eto.contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
   }
+
+  eto.subState = yield select(selectEtoSubStateEtoEtoWithContract, eto);
+  return eto;
+}
+
+export function* loadEtoWithCompanyAndContractById(
+  { apiEtoService }: TGlobalDependencies,
+  etoId: string,
+): Generator<any, any, any> {
+  const eto: TEtoWithCompanyAndContract = yield apiEtoService.getEto(etoId);
+  eto.company = yield apiEtoService.getCompanyById(eto.companyId);
+
+  if (eto.state === EEtoState.ON_CHAIN) {
+    eto.contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
+  }
+
+  eto.subState = yield select(selectEtoSubStateEtoEtoWithContract, eto);
+  return eto;
 }
 
 export function* getEtoContract(
@@ -208,7 +223,6 @@ export function* getEtoContract(
   }
   try {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
-
     const etherTokenContract: EtherToken = contractsService.etherToken;
     const euroTokenContract: EuroToken = contractsService.euroToken;
 
@@ -277,6 +291,7 @@ function* watchEtosSetAction(
 }
 
 const etoNextStateCount: Dictionary<number | undefined> = {};
+
 function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: string): any {
   const nextStartDate: Date | undefined = yield select((state: TAppGlobalState) =>
     selectEtoOnChainNextStateStartDate(state, previewCode),
@@ -456,8 +471,8 @@ function* downloadDocument(
 ): Generator<any, any, any> {
   const { document, eto } = action.payload;
 
-  const isUserFullyVerified: ReturnType<typeof selectIsUserVerified> = yield select(
-    selectIsUserVerified,
+  const isUserFullyVerified: ReturnType<typeof selectIsUserFullyVerified> = yield select(
+    selectIsUserFullyVerified,
   );
 
   invariant(
@@ -636,47 +651,17 @@ function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any,
   }
 }
 
-function* ensureEtoJurisdiction(
-  _: TGlobalDependencies,
-  { payload }: TActionFromCreator<typeof actions.eto.ensureEtoJurisdiction>,
-): Generator<any, any, any> {
-  const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select(
-    (state: TAppGlobalState) => selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
-  );
-
-  if (eto === undefined) {
-    throw new Error(`Can not find eto by preview code ${payload.previewCode}`);
-  }
-  if (eto.product.jurisdiction !== payload.jurisdiction) {
-    // TODO: Add 404 page
-    yield put(actions.routing.goTo404());
-  }
-}
-
 function* verifyEtoAccess(
   _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.eto.verifyEtoAccess>,
 ): Generator<any, any, any> {
-  const eto: ReturnType<typeof selectInvestorEtoWithCompanyAndContract> = yield select(
-    (state: TAppGlobalState) => selectInvestorEtoWithCompanyAndContract(state, payload.previewCode),
-  );
-
-  if (eto === undefined) {
-    throw new Error(`Can not find eto by preview code ${payload.previewCode}`);
-  }
-
-  const isUserLoggedInAndVerified: ReturnType<typeof selectIsUserVerified> = yield select(
-    selectIsUserVerified,
-  );
-
   // Checks if ETO is an Offer based on
   // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
-  const isEtoAnOffer: boolean = yield select((state: TAppGlobalState) =>
-    selectIsEtoAnOffer(state, payload.previewCode, eto.state),
-  );
+  const isEtoAnOffer: boolean = yield !!payload.eto.contract &&
+    etoIsInOfferState(payload.eto.contract.timedState);
 
-  if (isRestrictedEto(eto) && isEtoAnOffer) {
-    if (isUserLoggedInAndVerified) {
+  if (isRestrictedEto(payload.eto) && isEtoAnOffer) {
+    if (payload.userIsFullyVerified) {
       const jurisdiction: ReturnType<typeof selectClientJurisdiction> = yield select(
         selectClientJurisdiction,
       );
@@ -894,7 +879,6 @@ export function* etoSagas(): Generator<any, any, any> {
   );
 
   yield fork(neuTakeLatest, actions.eto.verifyEtoAccess, verifyEtoAccess);
-  yield fork(neuTakeLatest, actions.eto.ensureEtoJurisdiction, ensureEtoJurisdiction);
 
   yield fork(neuTakeUntil, actions.eto.setEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetAction);

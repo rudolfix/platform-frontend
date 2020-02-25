@@ -9,9 +9,9 @@ import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
-import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Layout } from "../layouts/Layout";
 import { CheckYourICBMWalletWidget } from "../settings/icbm-wallet-widget/CheckYourICBMWalletWidget";
+import { DashboardHeading } from "../shared/DashboardHeading";
 
 interface IStateProps {
   userType?: EUserType;

@@ -192,6 +192,7 @@ function* investSaga(
     yield onInvestmentTxModalHide();
     logger.info("Investment cancelled", e);
   } finally {
+    yield put(actions.etoView.reloadEtoView());
     yield put(actions.eto.loadEto(payload.etoId));
   }
 }

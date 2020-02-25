@@ -157,7 +157,6 @@ export const registerWithBrowserWalletAndLogin = (privateKeyProvider: any) => {
 
   cy.get(tid("wallet-selector-browser")).click();
 
-  cy.get(tid("signing.browser-wallet.sign-prompt")).should("exist");
   acceptTOS();
 };
 

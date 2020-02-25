@@ -196,7 +196,7 @@ export const assertUserInRecoveryPage = () => {
 };
 
 export const assertUserInBrowserWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.wallet-browser.title"));
+  cy.get(tid("browser-wallet-error-msg"));
 };
 
 export const assertUserInLedgerWalletLoginPage = () => {

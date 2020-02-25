@@ -99,6 +99,11 @@ module.exports = {
             include: paths.inlineIcons,
           },
           {
+            test: /\.md$/,
+            loader: "raw-loader",
+            include: paths.src,
+          },
+          {
             test: /\.(woff2|woff|ttf|eot|otf)$/,
             loader: "file-loader",
             options: {

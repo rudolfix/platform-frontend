@@ -1,11 +1,13 @@
-import { Field, FieldProps, FormikConsumer } from "formik";
+import { Field, FieldProps } from "formik";
 import * as React from "react";
 
 import { InputLayout } from "../layouts/InputLayout";
-import { applyCharactersLimit, isNonValid } from "./utils.unsafe";
+import { applyCharactersLimit, useFieldMeta } from "./utils";
 
 type TExternalProps = {
   customValidation?: (value: string | undefined) => string | Function | Promise<void> | undefined;
+  charactersLimit?: number;
+  ignoreTouched?: boolean;
 };
 
 export type FormInputProps = React.ComponentProps<typeof InputLayout>;
@@ -33,66 +35,55 @@ export const FormInput: React.FunctionComponent<TExternalProps & FormInputProps>
   suffix,
   className,
   addonStyle,
-  charactersLimit,
-  errorMsg,
   size,
   disabled,
   customValidation,
   onBlur,
-  ignoreTouched,
   icon,
   theme,
   maxLength,
+  charactersLimit,
+  ignoreTouched,
   ...props
-}) => (
-  <FormikConsumer>
-    {({ touched, errors, setFieldTouched, setFieldValue, submitCount }) => {
-      const invalid = isNonValid(touched, errors, name, submitCount, ignoreTouched);
+}) => {
+  const { invalid, changeValue } = useFieldMeta(name, { ignoreTouched: !!ignoreTouched });
 
-      return (
-        <Field
-          name={name}
-          validate={customValidation}
-          render={({ field }: FieldProps) => {
-            const val = transform(field.value);
-            return (
-              <InputLayout
-                name={name}
-                type={type}
-                placeholder={placeholder}
-                className={className}
-                addonStyle={addonStyle}
-                prefix={prefix}
-                suffix={suffix}
-                errorMsg={errorMsg}
-                size={size}
-                value={val}
-                disabled={disabled}
-                maxLength={maxLength}
-                charactersLimit={charactersLimit}
-                onBlur={onBlur}
-                ignoreTouched={ignoreTouched}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setFieldTouched(name);
-                  setFieldValue(
-                    name,
-                    transformBack(
-                      type === "number" && e.target.value !== ""
-                        ? e.target.valueAsNumber
-                        : e.target.value,
-                      charactersLimit,
-                    ),
-                  );
-                }}
-                theme={theme}
-                invalid={invalid}
-                icon={icon}
-                {...props}
-              />
-            );
-          }}
-        />
-      );
-    }}
-  </FormikConsumer>
-);
+  return (
+    <Field name={name} validate={customValidation}>
+      {({ field }: FieldProps) => {
+        const val = transform(field.value);
+
+        return (
+          <InputLayout
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            className={className}
+            addonStyle={addonStyle}
+            prefix={prefix}
+            suffix={suffix}
+            size={size}
+            value={val}
+            disabled={disabled}
+            maxLength={maxLength}
+            onBlur={onBlur}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              changeValue(
+                transformBack(
+                  type === "number" && e.target.value !== ""
+                    ? e.target.valueAsNumber
+                    : e.target.value,
+                  charactersLimit,
+                ),
+              );
+            }}
+            theme={theme}
+            invalid={invalid}
+            icon={icon}
+            {...props}
+          />
+        );
+      }}
+    </Field>
+  );
+};

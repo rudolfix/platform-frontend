@@ -11,16 +11,17 @@ describe("Auto Login", () => {
   });
 });
 
-// TODO: Find why these tests are flaky
+// tests were flaky due to poor behaviour of backend and
+// createAndLoginNewUser not reacting to HTTP status codes
+// currently skipped as announe dialogs changes due to new onboarding but tests did not
 describe("Incoming payout", function(): void {
-  this.retries(2);
   it("should show countdown with incoming payout value @payout @p2 @flaky", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
       cy.get(tid("my-neu-widget-payout-pending")).should("exist");
 
-      assertMoneyNotEmpty("my-neu-widget-payout-pending-money");
+      assertMoneyNotEmpty("my-neu-widget-payout-pending");
     });
   });
 

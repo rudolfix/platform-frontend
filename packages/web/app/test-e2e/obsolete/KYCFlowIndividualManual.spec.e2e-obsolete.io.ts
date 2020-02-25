@@ -66,16 +66,12 @@ describe("KYC Personal flow with manual verification", () => {
   });
 
   it("went through KYC flow with personal data for US investor", function(): void {
-    this.retries(2);
-
     createAndLoginNewUser({ type: "investor" });
 
     fillAndAssert(kycInvidualFormUS, kycInvidualAddressForm, true);
   });
 
   it("went through KYC flow with personal data for US resident", function(): void {
-    this.retries(2);
-
     createAndLoginNewUser({ type: "investor" });
 
     fillAndAssert(kycInvidualFormUSResident, kycInvidualAddressFormUSResident, true);

@@ -7,8 +7,6 @@ import { goToCompanyInformation } from "./EtoRegistrationUtils";
 import { aboutFormRequired, aboutFormSubmit } from "./fixtures";
 
 describe("Eto Company Information Field Validation", function(): void {
-  this.retries(2);
-
   before(() => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" });
     cy.saveLocalStorage();

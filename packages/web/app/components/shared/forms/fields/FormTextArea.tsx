@@ -6,16 +6,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Input } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
-import { CommonHtmlProps, TFormikConnect } from "../../../../types";
-import { FormFieldError, generateErrorId } from "./FormFieldError";
-import {
-  applyCharactersLimit,
-  IFormField,
-  isNonValid,
-  isWysiwyg,
-  withCountedCharacters,
-  withFormField,
-} from "./utils.unsafe";
+import { CommonHtmlProps, TFormikConnect, THocOuterProps, THocProps } from "../../../../types";
+import { generateErrorId } from "../layouts/FormError";
+import { applyCharactersLimit, isWysiwyg, useFieldMeta, withFormField } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 
@@ -42,7 +35,6 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
   name,
   className,
   charactersLimit,
-  formik,
 }) => {
   if (process.env.NODE_ENV === "development") {
     invariant(
@@ -57,9 +49,7 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
     setIsUploading(loading);
   };
 
-  const { touched, errors, submitCount, setFieldTouched, setFieldValue } = formik;
-
-  const invalid = isNonValid(touched, errors, name, submitCount);
+  const { invalid, changeValue } = useFieldMeta(name);
 
   const validate = () => {
     if (isUploading) {
@@ -70,28 +60,20 @@ const RichTextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> =
   };
 
   return (
-    <Field
-      name={name}
-      validate={validate}
-      render={({ field }: FieldProps) => (
-        <>
-          <RichTextAreaLayout
-            invalid={invalid}
-            name={name}
-            placeholder={placeholder}
-            className={className}
-            disabled={disabled}
-            value={field.value}
-            onLoadingData={onLoadingData}
-            onChange={value => {
-              setFieldTouched(name);
-              setFieldValue(name, value);
-            }}
-          />
-          <FormFieldError name={name} />
-        </>
+    <Field name={name} validate={validate}>
+      {({ field }: FieldProps) => (
+        <RichTextAreaLayout
+          invalid={invalid}
+          name={name}
+          placeholder={placeholder}
+          className={className}
+          disabled={disabled}
+          value={field.value}
+          onLoadingData={onLoadingData}
+          onChange={changeValue}
+        />
       )}
-    />
+    </Field>
   );
 };
 
@@ -101,45 +83,36 @@ const TextArea: React.FunctionComponent<TFieldGroupProps & TFormikConnect> = ({
   name,
   className,
   charactersLimit,
-  formik,
 }) => {
-  const { touched, errors, submitCount, setFieldTouched, setFieldValue } = formik;
-
-  const invalid = isNonValid(touched, errors, name, submitCount);
+  const { invalid, changeValue } = useFieldMeta(name);
 
   return (
-    <Field
-      name={name}
-      render={({ field }: FieldProps) => (
-        <>
-          <Input
-            {...field}
-            type="textarea"
-            aria-describedby={generateErrorId(name)}
-            aria-invalid={invalid}
-            invalid={invalid}
-            disabled={disabled}
-            value={field.value === undefined ? "" : field.value}
-            placeholder={placeholder}
-            className={cn(className, styles.inputField)}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setFieldTouched(name);
-              setFieldValue(name, applyCharactersLimit(e.target.value, charactersLimit));
-            }}
-          />
-          <FormFieldError name={name} />
-          {charactersLimit && withCountedCharacters(field.value, charactersLimit)}
-        </>
+    <Field name={name}>
+      {({ field }: FieldProps) => (
+        <Input
+          {...field}
+          type="textarea"
+          aria-describedby={generateErrorId(name)}
+          aria-invalid={invalid}
+          invalid={invalid}
+          disabled={disabled}
+          value={field.value === undefined ? "" : field.value}
+          placeholder={placeholder}
+          className={cn(className, styles.inputField)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            changeValue(applyCharactersLimit(e.target.value, charactersLimit));
+          }}
+        />
       )}
-    />
+    </Field>
   );
 };
 
 export const FormTextArea = compose<
-  TFieldGroupProps & TFormikConnect,
-  TFieldGroupProps & IFormField
+  TFieldGroupProps & TFormikConnect & THocProps<typeof withFormField>,
+  TFieldGroupProps & THocOuterProps<typeof withFormField>
 >(
-  withFormField,
+  withFormField(),
   formikConnect,
   branch<IFieldGroup & TFormikConnect>(
     props => !!props.isWysiwyg || isWysiwyg(props.formik.validationSchema, props.name),

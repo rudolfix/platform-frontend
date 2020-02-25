@@ -1,9 +1,10 @@
 import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
+import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
-import { compose } from "redux";
+import { compose } from "recompose";
 
 import {
   EKycRequestType,
@@ -15,8 +16,12 @@ import { actions } from "../../../modules/actions";
 import { selectBusinessData } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { FormDeprecated, FormField, FormSelectCountryField } from "../../shared/forms";
-import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
+import {
+  FormDeprecated,
+  FormField,
+  FormSelectCountryField,
+  FormSelectStateField,
+} from "../../shared/forms";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { FooterButtons } from "../shared/FooterButtons";
 import { KycStep } from "../shared/KycStep";
@@ -39,18 +44,18 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const KYCForm: React.FunctionComponent<FormikProps<IKycBusinessData> & IProps> = props => {
-  const {
-    values,
-    filesUploading,
-    filesLoading,
-    loadingData,
-    files,
-    onContinue,
-    goBack,
-    submitAndUpload,
-    isValid,
-  } = props;
+const KYCForm: React.FunctionComponent<FormikProps<IKycBusinessData> & IProps> = ({
+  values,
+  filesUploading,
+  filesLoading,
+  loadingData,
+  files,
+  onContinue,
+  goBack,
+  submitAndUpload,
+  isValid,
+  saveAndClose,
+}) => {
   const continueDisabled =
     filesLoading || filesUploading || !isValid || loadingData || files.length === 0;
 
@@ -61,7 +66,7 @@ const KYCForm: React.FunctionComponent<FormikProps<IKycBusinessData> & IProps> =
         allSteps={5}
         title={<FormattedMessage id="kyc.steps.company-details" />}
         description={<FormattedMessage id="kyc.steps.company-details.disclaimer" />}
-        buttonAction={() => props.saveAndClose(values)}
+        buttonAction={() => saveAndClose(values)}
         data-test-id="kyc.panel.business-verification"
       />
       <FormDeprecated>
@@ -133,7 +138,7 @@ const KYCForm: React.FunctionComponent<FormikProps<IKycBusinessData> & IProps> =
           acceptedFiles={AcceptedKYCDocumentTypes}
           data-test-id="kyc-company-business-supporting-documents"
           onDropFile={(file: File) => submitAndUpload(values, file)}
-          files={props.files}
+          files={files}
           filesUploading={filesUploading}
         />
       </div>
@@ -147,15 +152,17 @@ const KYCForm: React.FunctionComponent<FormikProps<IKycBusinessData> & IProps> =
   );
 };
 
+const defaultEmptyObject = defaultTo<IKycBusinessData | {}>({});
+
 const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
   validationSchema: KycBusinessDataSchema,
-  mapPropsToValues: props => props.currentValues as IKycBusinessData,
+  validateOnMount: true,
   enableReinitialize: true,
-  isInitialValid: props => KycBusinessDataSchema.isValidSync((props as IProps).currentValues),
-  handleSubmit: (values, props) => props.props.onContinue(values),
+  mapPropsToValues: props => defaultEmptyObject(props.currentValues),
+  handleSubmit: (values, { props }) => props.onContinue(values),
 })(KYCForm);
 
-export const KycBusinessData = compose<React.FunctionComponent>(
+export const KycBusinessData = compose<IProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => selectBusinessData(state),
     dispatchToProps: dispatch => ({

@@ -1370,7 +1370,7 @@
   "shared-component.multi-file-upload.title": "Required documents",
   "shared-component.multi-file-upload.us-accreditation.info": "Please ensure the document/s follow these guidelines: <ul><li>High-quality, colour copies</li><li>The accreditation period is currently valid</li><ul>",
   "shared-component.neur-wallet-balance.explanation": "This is your nEUR balance. You can use it to invest through Neufund or redeem to your bank account. nEUR represents a Euro equivalent and is issued by {quintessenceHref}.",
-  "shared-component.neur-wallet-balance.restricted-us-state": "Unfortunately, nEUR {allowedStates, select, none {can't be used by US Investors} other {can only be used by US Investors living in the states of {allowedStates}}}. We will notify you via email as soon as nEUR can be purchased in {userState} state.",
+  "shared-component.neur-wallet-balance.restricted-us-state": "Unfortunately, nEUR {allowedStates, select, none {can't be used by US Investors} other {can only be used by US Investors living in the states of {allowedStates}}}. We will notify you via email as soon as nEUR can be purchased in State of {userState}.",
   "shared-component.range.max": "Max",
   "shared-component.range.min": "Min",
   "shared-component.to-human-readable-form.million.long": "million",

@@ -7,8 +7,7 @@ import { branch, compose, renderComponent } from "recompose";
 import * as Yup from "yup";
 
 import { TDataTestId } from "../../../types";
-import { FormField } from "../../shared/forms/fields/FormField";
-import { FormDeprecated } from "../../shared/forms/FormDeprecated";
+import { FormDeprecated, FormField } from "../../shared/forms/index";
 import { connectVerifyEmailComponent } from "./ConnectVerifyEmail";
 
 import * as styles from "./AccountSetupVerifyEmailComponent.module.scss";

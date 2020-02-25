@@ -158,8 +158,8 @@ export const kycActions = {
   kycLoadManagingDirector: createActionFactory("KYC_LOAD_MANAGING_DIRECTOR"),
   kycUpdateManagingDirector: createActionFactory(
     "KYC_UPDATE_MANAGING_DIRECTOR_DATA",
-    (loadingMangingDirector: boolean, managingDirector?: IKycManagingDirector) => ({
-      loadingMangingDirector,
+    (managingDirectorLoading: boolean, managingDirector?: IKycManagingDirector) => ({
+      managingDirectorLoading,
       managingDirector,
     }),
   ),

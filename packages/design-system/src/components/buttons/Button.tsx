@@ -159,4 +159,4 @@ const Button = React.forwardRef<HTMLButtonElement, TButtonProps>(
   },
 );
 
-export { Button, EButtonLayout, EButtonSize, EButtonWidth, EIconPosition };
+export { Button, EButtonLayout, EButtonSize, EButtonWidth, EIconPosition, TButtonProps };

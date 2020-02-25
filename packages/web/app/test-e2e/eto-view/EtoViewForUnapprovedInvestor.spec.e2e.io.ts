@@ -4,7 +4,6 @@ import { createAndLoginNewUser } from "../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
 describe("Eto Unapproved Investor View", function(): void {
-  this.retries(2);
   before(() => {
     createAndLoginNewUser({ type: "investor" });
     cy.saveLocalStorage();

@@ -21,7 +21,7 @@ import { appConnect } from "../../../../store";
 import { FormField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
-import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
+import { EMimeType } from "../../../shared/forms/fields/utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -67,7 +67,7 @@ const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
         placeholder="Token symbol should be a short version of the token name (max. 3-4 characters)"
-        maxLength="4"
+        maxLength={4}
         name="equityTokenSymbol"
         disabled={readonly}
       />

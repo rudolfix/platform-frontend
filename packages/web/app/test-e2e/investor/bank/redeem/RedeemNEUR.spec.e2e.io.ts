@@ -12,7 +12,6 @@ import { loginFixtureAccount } from "../../../utils/userHelpers";
 import { assertBankAccountDetails } from "../assertions";
 
 describe("Redeem", function(): void {
-  this.retries(2);
   beforeEach(() => {
     loginFixtureAccount("demoinvestor2");
     // store actual balance

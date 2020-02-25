@@ -1,9 +1,8 @@
-import { delay, fork, put, select } from "@neufund/sagas";
+import { fork, put, select, take } from "@neufund/sagas";
 import { EJwtPermissions } from "@neufund/shared";
 
 import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { BOOKBUILDING_WATCHER_DELAY } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
@@ -95,7 +94,7 @@ export function* watchBookBuildingStats(
     } catch (e) {
       logger.error("Error getting bookbuilding stats", e);
     }
-    yield delay(BOOKBUILDING_WATCHER_DELAY);
+    yield take(actions.web3.newBlockArrived.getType());
   }
 }
 

@@ -62,18 +62,11 @@ export const registerWithLightWalletNominee = (
 };
 
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {
-  for (let batch = 0; batch < words.length / 4; batch++) {
-    for (let index = 0; index < 4; index++) {
-      cy.get(`${tid(`seed-recovery-word-${batch * 4 + index}`)} input`)
-        .type(words[batch * 4 + index], { force: true, timeout: 20 })
-        .type("{enter}", { force: true });
-    }
-
-    if (batch + 1 < words.length / 4) {
-      cy.get(tid("btn-next")).awaitedClick();
-    }
-  }
-
+  words.forEach((word: string, index: number) => {
+    cy.get(`${tid(`seed-recovery-word-${index}`)} input`)
+      .type(word, { force: true, timeout: 20 })
+      .type("{enter}", { force: true });
+  });
   cy.get(tid("btn-send")).awaitedClick();
 };
 
@@ -133,22 +126,22 @@ export const verifyLatestUserEmailWithAPI = (email: string) => {
   getLatestVerifyUserEmailLink(email).then(verifyUserEmailCall);
 };
 
-export const registerWithLightWallet = (
-  email: string,
-  password: string,
-  asIssuer: boolean = false,
-) => {
-  cy.visit(asIssuer ? appRoutes.registerIssuer : appRoutes.register);
+export const registerWithLightWallet = (email: string, password: string) => {
+  cy.visit(appRoutes.register);
 
   lightWalletTypeRegistrationInfo(email, password);
 
   acceptTOS();
+  assertDashboard();
+};
 
-  if (asIssuer) {
-    assertIssuerDashboard();
-  } else {
-    assertDashboard();
-  }
+export const registerWithLightWalletIssuer = (email: string, password: string) => {
+  cy.visit(appRoutes.registerIssuer);
+  cy.get(tid("wallet-selector-light")).click();
+  lightWalletTypeRegistrationInfo(email, password);
+
+  acceptTOS();
+  assertIssuerDashboard();
 };
 
 export const ethereumProvider = (provider: any) =>
@@ -204,11 +197,15 @@ export const goToUserAccountSettings = () => {
     .awaitedClick();
 };
 
-export const lightWalletTypeLoginInfo = (email: string, password: string) => {
-  cy.contains(tid("light-wallet-login-with-email-email-field"), email);
+export const lightWalletTypePasswordAndLogin = (password: string) => {
   cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
   cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
   cy.get(tid("wallet-selector-nuewallet.login-button")).should("be.disabled");
+};
+
+export const lightWalletTypeLoginInfo = (email: string, password: string) => {
+  cy.contains(tid("light-wallet-login-with-email-email-field"), email);
+  lightWalletTypePasswordAndLogin(password);
 };
 
 export const loginWithLightWallet = (email: string, password: string) => {

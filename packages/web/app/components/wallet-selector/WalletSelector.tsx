@@ -2,7 +2,7 @@ import { withContainer } from "@neufund/shared";
 import { createLocation, Location } from "history";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import { compose, withProps } from "recompose";
+import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
@@ -11,6 +11,7 @@ import { ELogoutReason } from "../../modules/auth/types";
 import { TLoginRouterState } from "../../modules/routing/types";
 import {
   selectIsLoginRoute,
+  selectIsMessageSigning,
   selectRootPath,
   selectUrlUserType,
 } from "../../modules/wallet-selector/selectors";
@@ -21,6 +22,8 @@ import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsaf
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { resetWalletOnLeave } from "./resetWallet";
+import { userMayChooseWallet } from "./utils";
+import { WalletMessageSigner } from "./WalletMessageSigner";
 import { getRedirectionUrl } from "./walletRouterHelpers";
 import { WalletSelectorLayout } from "./WalletSelectorLayout";
 
@@ -58,9 +61,7 @@ export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditional
   }),
   withProps<TAdditionalProps, IStateProps & TRouteLoginProps>(
     ({ userType, rootPath, location }) => ({
-      walletSelectionDisabled:
-        userType === EUserType.NOMINEE ||
-        (userType === EUserType.ISSUER && process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET !== "1"),
+      walletSelectionDisabled: !userMayChooseWallet(userType),
       logoutReason: location.state && location.state.logoutReason,
       redirectLocation: createLocation(getRedirectionUrl(rootPath), location.state),
     }),
@@ -68,5 +69,9 @@ export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditional
   resetWalletOnLeave(),
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
+  ),
+  branch<IStateProps & IDispatchProps>(
+    props => props.isMessageSigning,
+    renderComponent(WalletMessageSigner),
   ),
 )(WalletSelectorLayout);

@@ -64,7 +64,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
               <span className={styles.value}>{companyData.foundingDate}</span>
             </div>
           )}
-          {companyData.registrationNumber && (
+          {!!companyData.registrationNumber && (
             <div className={styles.entry}>
               <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.legal-information.registration-number" />
@@ -72,7 +72,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
               <span className={styles.value}>{companyData.registrationNumber}</span>
             </div>
           )}
-          {companyData.numberOfFounders && (
+          {!!companyData.numberOfFounders && (
             <div className={styles.entry}>
               <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.legal-information.number-of-founders" />
@@ -86,7 +86,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
               </span>
             </div>
           )}
-          {companyData.numberOfEmployees && (
+          {!!companyData.numberOfEmployees && (
             <div className={styles.entry}>
               <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.legal-information.number-of-employees" />
@@ -102,7 +102,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
               <span className={styles.value}>{FUNDING_ROUNDS[companyData.companyStage]}</span>
             </div>
           )}
-          {companyData.lastFundingSizeEur && (
+          {!!companyData.lastFundingSizeEur && (
             <div className={styles.entry}>
               <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.legal-information.last-funding-amount" />
@@ -117,7 +117,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
               </span>
             </div>
           )}
-          {companyData.companyShareCapital && (
+          {!!companyData.companyShareCapital && (
             <div className={styles.entry}>
               <span className={styles.label}>
                 <FormattedMessage id="eto.public-view.legal-information.existing-share-capital" />
@@ -134,7 +134,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
           )}
         </div>
 
-        {companyData.shareholders && companyData.shareholders.length > 0 && (
+        {!!(companyData.shareholders && companyData.shareholders.length > 0) && (
           <ChartDoughnutLazy
             data={{
               datasets: [

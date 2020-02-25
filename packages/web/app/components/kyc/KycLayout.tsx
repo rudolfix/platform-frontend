@@ -10,9 +10,7 @@ import {
 import { KycPanel } from "./KycPanel";
 import { KycSubmitedRouter } from "./KycSubmitedRouter";
 import { KycRouter } from "./Router";
-import { KYCAddDocuments } from "./shared/AddDocuments";
 
-import addFile from "../../assets/img/inline_icons/add_file.svg";
 import arrowLeft from "../../assets/img/inline_icons/arrow_left.svg";
 
 export const personalSteps = [
@@ -63,107 +61,64 @@ type TExternalProps = {
   goToDashboard: () => void;
 };
 
-type TLocalState = {
-  showAdditionalFileUpload: boolean;
-};
+const RequestStateInfo: React.FunctionComponent<TExternalProps> = props => {
+  const steps = props.requestType === EKycRequestType.BUSINESS ? businessSteps : personalSteps;
+  // Kyc is pending when either status `Pending` or
+  // status is `Outsourced` with outsourced verification status set to `Pending`
+  const isKycPending =
+    props.requestStatus === EKycRequestStatus.PENDING ||
+    (props.requestStatus === EKycRequestStatus.OUTSOURCED &&
+      props.instantIdStatus === EKycInstantIdStatus.PENDING);
+  const settingsButton = (
+    <div className="p-4 text-center">
+      <Button
+        layout={EButtonLayout.GHOST}
+        iconPosition={EIconPosition.ICON_BEFORE}
+        svgIcon={arrowLeft}
+        onClick={props.goToProfile}
+      >
+        <FormattedMessage id="kyc.request-state.go-to-profile" />
+      </Button>
+    </div>
+  );
 
-class RequestStateInfo extends React.Component<TExternalProps, TLocalState> {
-  state = {
-    showAdditionalFileUpload: false,
-  };
-
-  render(): React.ReactNode {
-    const steps =
-      this.props.requestType === EKycRequestType.BUSINESS ? businessSteps : personalSteps;
-    // Kyc is pending when either status `Pending` or
-    // status is `Outsourced` with outsourced verification status set to `Pending`
-    const isKycPending =
-      this.props.requestStatus === EKycRequestStatus.PENDING ||
-      (this.props.requestStatus === EKycRequestStatus.OUTSOURCED &&
-        this.props.instantIdStatus === EKycInstantIdStatus.PENDING);
-    const settingsButton = (
-      <div className="p-4 text-center">
-        <Button
-          layout={EButtonLayout.GHOST}
-          iconPosition={EIconPosition.ICON_BEFORE}
-          svgIcon={arrowLeft}
-          onClick={this.props.goToProfile}
-        >
-          <FormattedMessage id="kyc.request-state.go-to-profile" />
-        </Button>
-      </div>
+  if (!props.requestStatus) {
+    return (
+      <KycPanel steps={steps} description={<FormattedMessage id="kyc.request-state.description" />}>
+        {settingsButton}
+      </KycPanel>
     );
-
-    if (!this.props.requestStatus) {
-      return (
-        <KycPanel
-          steps={steps}
-          description={<FormattedMessage id="kyc.request-state.description" />}
-        >
-          {settingsButton}
-        </KycPanel>
-      );
-    }
-    if (isKycPending) {
-      // TODO: Rework for Business flow
-      if (this.props.requestType === EKycRequestType.INDIVIDUAL) {
-        return <KycSubmitedRouter />;
-      } else {
-        // Fallback for non individual user
-        return (
-          <KycPanel
-            title={<FormattedMessage id="kyc.request-state.pending.title" />}
-            steps={steps}
-            description={<FormattedMessage id="kyc.request-state.pending.description" />}
-            data-test-id="kyc-panel-pending"
-          >
-            {!this.state.showAdditionalFileUpload && (
-              <Button
-                layout={EButtonLayout.GHOST}
-                iconPosition={EIconPosition.ICON_BEFORE}
-                svgIcon={addFile}
-                onClick={() => this.setState({ showAdditionalFileUpload: true })}
-              >
-                <FormattedMessage id="kyc.request-state.pending.add-files-button" />
-              </Button>
-            )}
-            {this.props.requestType && this.state.showAdditionalFileUpload && (
-              <KYCAddDocuments uploadType={this.props.requestType} />
-            )}
-            <br /> <br />
-            {settingsButton}
-          </KycPanel>
-        );
-      }
-    }
-
-    if (this.props.requestStatus === EKycRequestStatus.ACCEPTED) {
-      return (
-        <KycPanel
-          title={<FormattedMessage id="kyc.request-state.accepted.title" />}
-          steps={steps}
-          description={<FormattedMessage id="kyc.request-state.accepted.description" />}
-        >
-          {settingsButton}
-        </KycPanel>
-      );
-    }
-
-    if (this.props.requestStatus === EKycRequestStatus.REJECTED) {
-      return (
-        <KycPanel
-          title={<FormattedMessage id="kyc.request-state.rejected.title" />}
-          steps={steps}
-          description={<FormattedMessage id="kyc.request-state.rejected.description" />}
-        >
-          {settingsButton}
-        </KycPanel>
-      );
-    }
-
-    return null;
   }
-}
+  if (isKycPending) {
+    return <KycSubmitedRouter />;
+  }
+
+  if (props.requestStatus === EKycRequestStatus.ACCEPTED) {
+    return (
+      <KycPanel
+        title={<FormattedMessage id="kyc.request-state.accepted.title" />}
+        steps={steps}
+        description={<FormattedMessage id="kyc.request-state.accepted.description" />}
+      >
+        {settingsButton}
+      </KycPanel>
+    );
+  }
+
+  if (props.requestStatus === EKycRequestStatus.REJECTED) {
+    return (
+      <KycPanel
+        title={<FormattedMessage id="kyc.request-state.rejected.title" />}
+        steps={steps}
+        description={<FormattedMessage id="kyc.request-state.rejected.description" />}
+      >
+        {settingsButton}
+      </KycPanel>
+    );
+  }
+
+  return null;
+};
 
 const KycLayout: React.FunctionComponent<TExternalProps> = props => {
   // Kyc is draft when either status `Draft` or

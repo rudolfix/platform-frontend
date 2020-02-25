@@ -2,10 +2,11 @@ import { kycRoutes } from "../../../components/kyc/routes";
 import { tid } from "../../utils";
 import { fillForm } from "../../utils/forms";
 import {
-  kycCompanyDocsForm,
+  kycBeneficialOwnerBusinessForm,
+  kycBeneficialOwnerPersonalForm,
   kycCorporateCompanyForm,
-  kycLegalRepDocsForm,
   kycLegalRepForm,
+  kycManagingDirectorForm,
 } from "./fixtures";
 
 export const goToPersonalVerification = () => {
@@ -35,19 +36,40 @@ export const assertIndividualDocumentVerification = () => {
 };
 
 export const goThroughKycCorporateProcess = () => {
-  // fill out and submit business form
+  // company details page
   fillForm(kycCorporateCompanyForm);
-  fillForm(kycCompanyDocsForm);
 
-  // upload legal rep data
+  // managing director page
+  cy.get(tid("kyc.managing-directors.add-new")).click();
+  fillForm(kycManagingDirectorForm);
+  cy.get(tid("kyc-managing-director-continue")).click();
+
+  // beneficial owner page
+  cy.get(tid("kyc.business.beneficial-owner.add-new-beneficial-owner")).click();
+  fillForm(kycBeneficialOwnerPersonalForm);
+  cy.get(tid("kyc.business.beneficial-owner.add-new-beneficial-owner")).click();
+  fillForm(kycBeneficialOwnerBusinessForm);
+  cy.get(tid("kyc-business-beneficial-owners-continue")).click();
+  // account manager page
+  cy.get(tid("kyc.business.legal-representative.add")).click();
   fillForm(kycLegalRepForm);
-  fillForm(kycLegalRepDocsForm, { submit: false });
+  cy.get(tid("kyc-business-legal-representative-continue")).click();
+};
 
-  // add a new beneficial owner entry
-  cy.get(tid("kyc-beneficial-owner-add-new")).awaitedClick();
-  // remove him again
-  cy.get(tid("kyc-beneficial-owner-delete")).awaitedClick();
+export const assertKYCSuccess = () => cy.get(tid("kyc-success")).should("exist");
 
-  // submit and accept
-  cy.get(tid("kyc-company-legal-representative-upload-and-submit")).awaitedClick();
+export const goThroughKycCorporateProcessWithSkips = () => {
+  // company details page
+  fillForm(kycCorporateCompanyForm);
+
+  // managing director page
+  cy.get(tid("kyc.managing-directors.add-new")).click();
+  fillForm(kycManagingDirectorForm);
+  cy.get(tid("kyc-managing-director-continue")).click();
+
+  // skip beneficial owner page
+  cy.get(tid("kyc-business-beneficial-owners-continue")).click();
+
+  // skip account manager page
+  cy.get(tid("kyc-business-legal-representative-continue")).click();
 };

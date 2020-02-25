@@ -15,6 +15,7 @@ import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
+import { selectIsVerifyEmailRedirect } from "../../routing/selectors";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import {
   selectActivationCodeFromQueryString,
@@ -123,9 +124,13 @@ export function* checkForPendingEmailVerification(): Generator<any, void, any> {
   const tosAccepted = yield* select(selectIsAgreementAccepted);
   const unverifiedEmail = yield* select(selectUnverifiedUserEmail);
 
-  if (unverifiedEmail !== undefined && tosAccepted) {
-    const walletType = yield* select(selectWalletType);
+  // this is a workaround for #3942 (see QA's comment).
+  // this can be done in a much nicer way after implementing route-based saga approach
+  // TODO refactor after we move to route-based sagas
+  const verifyEmailRedirect = yield select(selectIsVerifyEmailRedirect);
 
+  if (!verifyEmailRedirect && unverifiedEmail !== undefined && tosAccepted) {
+    const walletType = yield* select(selectWalletType);
     yield put(
       actions.genericModal.showModal(UnverifiedEmailReminderModal, {
         unverifiedEmail,

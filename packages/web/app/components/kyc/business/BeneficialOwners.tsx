@@ -1,77 +1,158 @@
-import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { IKycBeneficialOwner } from "../../../lib/api/kyc/KycApi.interfaces";
+import {
+  IKycBeneficialOwner,
+  IKYCBeneficialOwnerBusiness,
+  IKYCBeneficialOwnerPerson,
+  IKycFileInfo,
+  IKycManagingDirector,
+} from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
+import { selectBeneficialOwner } from "../../../modules/kyc/selectors";
+import { EBeneficialOwnerType } from "../../../modules/kyc/types";
+import { getBeneficialOwnerType, validateBeneficiaryOwner } from "../../../modules/kyc/utils";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { Accordion } from "../../shared/Accordion";
-import { HorizontalLine } from "../../shared/HorizontalLine";
-import { KYCBeneficialOwner } from "./BeneficialOwner.unsafe";
+import { AddPersonButton } from "../shared/AddPersonButton";
+import { FooterButtons } from "../shared/FooterButtons";
+import { KycStep } from "../shared/KycStep";
+import { Person } from "../shared/Person";
+import { EnhancedBeneficialOwnerDetails } from "./BeneficialOwnerDetails";
 
-import plusIcon from "../../../assets/img/inline_icons/plus.svg";
-import * as styles from "./BeneficialOwners.module.scss";
-
-interface IStateProps {
+export interface IStateProps {
   beneficialOwners: ReadonlyArray<IKycBeneficialOwner>;
   loading: boolean;
+  editingOwner: IKycBeneficialOwner | undefined;
+  files: ReadonlyArray<IKycFileInfo>;
+  filesLoading: boolean;
+  filesUploading: boolean;
+  showModal: boolean;
+  loadingAll: boolean;
+  loadingOne: boolean;
+  editingOwnerId?: string;
 }
 
 interface IDispatchProps {
-  createBeneficialOwner: () => void;
+  goBack: () => void;
+  onContinue: () => void;
+  saveAndClose: () => void;
+  toggleModal: (show: boolean, beneficialOwnerId?: string) => void;
+  onSaveModal: (values: IKycBeneficialOwner, beneficialOwnerId: string) => void;
+  onDropFile: (values: IKycManagingDirector, file: File) => void;
+  onDelete: (beneficialOwnerId: string) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;
 
-export const KYCBeneficialOwnersComponent: React.FunctionComponent<IProps> = props => (
-  <div className={styles.beneficialOwners} data-test-id="kyc-beneficial-owners">
-    <HorizontalLine className={cn("mt-2", "mb-2")} />
-    <h4 className={styles.sectionTitle}>
-      <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />
-    </h4>
-    <p>
-      <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners-disclaimer" />
-    </p>
-    <Accordion>
-      {props.beneficialOwners.map((owner, index) =>
-        owner.id ? (
-          <KYCBeneficialOwner key={owner.id} owner={owner} index={index} id={owner.id} />
-        ) : (
-          <div />
-        ),
-      )}
-    </Accordion>
-    <div className="p-4 text-center">
-      <Button
-        data-test-id="kyc-beneficial-owner-add-new"
-        layout={EButtonLayout.GHOST}
-        iconPosition={EIconPosition.ICON_BEFORE}
-        svgIcon={plusIcon}
-        onClick={props.createBeneficialOwner}
-        disabled={props.loading}
-      >
-        <FormattedMessage id="kyc.business.beneficial-owner.add-new-beneficial-owner" />
-      </Button>
-    </div>
-  </div>
-);
+export const KYCBeneficialOwnersComponent: React.FunctionComponent<IProps> = props => {
+  const {
+    beneficialOwners,
+    filesUploading,
+    filesLoading,
+    files,
+    onDropFile,
+    onContinue,
+    goBack,
+    onSaveModal,
+    showModal,
+    toggleModal,
+    editingOwner,
+    onDelete,
+    loadingAll,
+    loadingOne,
+    editingOwnerId,
+    saveAndClose,
+  } = props;
+
+  const [type, setType] = React.useState(EBeneficialOwnerType.PERSON);
+
+  const continueDisabled =
+    !beneficialOwners ||
+    loadingAll ||
+    !beneficialOwners.every(owner =>
+      validateBeneficiaryOwner(getBeneficialOwnerType(owner), owner),
+    );
+
+  return (
+    <>
+      <KycStep
+        step={4}
+        allSteps={5}
+        title={<FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners" />}
+        description={
+          <FormattedMessage id="kyc.business.beneficial-owner.beneficial-owners-disclaimer" />
+        }
+        buttonAction={saveAndClose}
+        data-test-id="kyc.panel.business-verification"
+      />
+
+      <div data-test-id="kyc-beneficial-owners">
+        {beneficialOwners.map((owner: IKycBeneficialOwner) => {
+          const id = (owner.person
+            ? (owner.person as IKYCBeneficialOwnerPerson)
+            : (owner.business as IKYCBeneficialOwnerBusiness)
+          ).id;
+          const name = owner.person
+            ? `${owner.person.firstName} ${owner.person.lastName}`
+            : (owner.business as IKYCBeneficialOwnerBusiness).name;
+
+          return <Person key={id} onClick={() => toggleModal(true, id)} name={name || ""} />;
+        })}
+
+        <AddPersonButton
+          onClick={() => toggleModal(true)}
+          dataTestId="kyc.business.beneficial-owner.add-new-beneficial-owner"
+        >
+          <FormattedMessage id="kyc.business.beneficial-owner.add-new-beneficial-owner" />
+        </AddPersonButton>
+
+        <FooterButtons
+          onBack={goBack}
+          onContinue={onContinue}
+          continueButtonId="kyc-business-beneficial-owners-continue"
+          skip={beneficialOwners.length === 0}
+          continueDisabled={continueDisabled}
+        />
+
+        <EnhancedBeneficialOwnerDetails
+          type={editingOwner ? getBeneficialOwnerType(editingOwner) : type}
+          setType={setType}
+          show={showModal}
+          onClose={() => toggleModal(false)}
+          onSave={(values: IKycBeneficialOwner) => onSaveModal(values, editingOwnerId as string)}
+          onDropFile={onDropFile}
+          files={files}
+          filesUploading={filesUploading}
+          currentValues={editingOwner}
+          onDelete={() => onDelete(editingOwnerId as string)}
+          filesLoading={filesLoading}
+          loading={loadingOne}
+        />
+      </div>
+    </>
+  );
+};
 
 export const KYCBeneficialOwners = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: state => ({
-      beneficialOwners: state.kyc.beneficialOwners,
-      loading: !!state.kyc.loadingBeneficialOwners || !!state.kyc.loadingBeneficialOwner,
-    }),
+    stateToProps: state => selectBeneficialOwner(state),
     dispatchToProps: dispatch => ({
-      createBeneficialOwner: () => dispatch(actions.kyc.kycAddBeneficialOwner()),
+      goBack: () => dispatch(actions.routing.goToKYCManagingDirectors()),
+      onContinue: () => dispatch(actions.routing.goToKYCLegalRepresentative()),
+      toggleModal: (show, beneficialOwnerId?: string) =>
+        dispatch(actions.kyc.kycToggleBeneficialOwnerModal(show, beneficialOwnerId)),
+      onDropFile: (values: IKycBeneficialOwner, file: File) =>
+        dispatch(actions.kyc.kycUploadBeneficialOwnerDocument(file, values)),
+      onSaveModal: (values: IKycBeneficialOwner, id: string) =>
+        dispatch(actions.kyc.kycSubmitBeneficialOwner(values, id)),
+      onDelete: (beneficialOwnerId: string) =>
+        dispatch(actions.kyc.kycDeleteBeneficialOwner(beneficialOwnerId)),
+      saveAndClose: () => dispatch(actions.routing.goToDashboard()),
     }),
   }),
   onEnterAction({
-    actionCreator: dispatch => {
-      dispatch(actions.kyc.kycLoadBeneficialOwners());
-    },
+    actionCreator: dispatch => dispatch(actions.kyc.kycLoadBeneficialOwners()),
   }),
 )(KYCBeneficialOwnersComponent);

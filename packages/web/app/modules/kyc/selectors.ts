@@ -1,13 +1,19 @@
 import { DeepReadonly } from "@neufund/shared";
 import { createSelector } from "reselect";
 
+import { IStateProps as IBeneficialOwnerStateProps } from "../../components/kyc/business/BeneficialOwners";
+import { IStateProps as IBusinessDataStateProps } from "../../components/kyc/business/BusinessData";
+import { IStateProps as ILegalRepresentativeProps } from "../../components/kyc/business/LegalRepresentative";
+import { IStateProps as IManagingDirectorProps } from "../../components/kyc/business/ManagingDirectors";
 import {
   EKycRequestStatus,
+  IKycFileInfo,
   KycBankQuintessenceBankAccount,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { TAppGlobalState } from "../../store";
 import { IKycState } from "./reducer";
 import { TBankAccount } from "./types";
+import { getBeneficialOwnerId } from "./utils";
 
 export const selectKyc = (state: TAppGlobalState) => state.kyc;
 
@@ -185,3 +191,62 @@ export const selectKycInstantIdProvider = createSelector(
   selectKycStatus,
   kycStatus => kycStatus && kycStatus.instantIdProvider,
 );
+
+export const selectBeneficialOwner = (state: TAppGlobalState): IBeneficialOwnerStateProps => {
+  let editingOwner;
+  let files: ReadonlyArray<IKycFileInfo> = [];
+  const editingBeneficialOwnerId = state.kyc.editingBeneficialOwnerId;
+  let filesLoading = false;
+  let filesUploading = false;
+
+  if (editingBeneficialOwnerId) {
+    editingOwner = state.kyc.beneficialOwners.find(
+      item => getBeneficialOwnerId(item) === editingBeneficialOwnerId,
+    );
+    files = state.kyc.beneficialOwnerFiles[editingBeneficialOwnerId] || [];
+    filesLoading = state.kyc.beneficialOwnerFilesLoading[editingBeneficialOwnerId];
+    filesUploading = selectBeneficialOwnerFilesUploading(state, editingBeneficialOwnerId);
+  }
+
+  return {
+    beneficialOwners: state.kyc.beneficialOwners,
+    editingOwner,
+    loading: !!state.kyc.loadingBeneficialOwners || !!state.kyc.loadingBeneficialOwner,
+    files,
+    filesLoading,
+    filesUploading,
+    showModal: state.kyc.showBeneficialOwnerModal,
+    editingOwnerId: state.kyc.editingBeneficialOwnerId,
+    loadingAll: state.kyc.loadingBeneficialOwners,
+    loadingOne: state.kyc.loadingBeneficialOwner,
+  };
+};
+
+export const selectEditingBeneficiaryId = (state: TAppGlobalState): string | undefined =>
+  state.kyc.editingBeneficialOwnerId;
+
+export const selectBusinessData = (state: TAppGlobalState): IBusinessDataStateProps => ({
+  currentValues: state.kyc.businessData,
+  loadingData: !!state.kyc.businessDataLoading,
+  files: state.kyc.businessFiles,
+  filesLoading: !!state.kyc.businessFilesLoading,
+  filesUploading: selectBusinessFilesUploading(state),
+});
+
+export const selectLegalRepresentative = (state: TAppGlobalState): ILegalRepresentativeProps => ({
+  legalRepresentative: state.kyc.legalRepresentative,
+  loadingData: !!state.kyc.legalRepresentativeLoading,
+  files: state.kyc.legalRepresentativeFiles,
+  filesLoading: !!state.kyc.legalRepresentativeFilesLoading,
+  filesUploading: selectLegalRepFilesUploading(state),
+  showModal: state.kyc.showLegalRepresentativeModal,
+});
+
+export const selectManagingDirector = (state: TAppGlobalState): IManagingDirectorProps => ({
+  currentValues: state.kyc.managingDirector,
+  dataLoading: state.kyc.managingDirectorLoading,
+  files: state.kyc.managingDirectorFiles || [],
+  filesLoading: state.kyc.managingDirectorFilesLoading,
+  filesUploading: state.kyc.managingDirectorFilesUploadingCount > 0,
+  showModal: state.kyc.showManagingDirectorModal,
+});

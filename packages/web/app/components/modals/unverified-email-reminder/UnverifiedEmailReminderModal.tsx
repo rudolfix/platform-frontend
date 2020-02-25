@@ -43,11 +43,8 @@ export const UnverifiedEmailReminderModal: React.ComponentType<TModalProps> = ({
   unverifiedEmail,
   closeModal,
 }) => (
-  <section
-    data-test-id="unverified-email-reminder-modal-browser-ledger"
-    className={styles.modalBody}
-  >
-    <img className={styles.image} src={mailLink} alt="" />
+  <section data-test-id="unverified-email-reminder-modal" className={styles.modalBody}>
+    <img src={mailLink} alt="" />
     <h3 className={styles.modalTitle}>
       <FormattedMessage id="checkUnverifiedEmailModal.title" />
     </h3>
@@ -57,6 +54,7 @@ export const UnverifiedEmailReminderModal: React.ComponentType<TModalProps> = ({
       size={EButtonSize.NORMAL}
       width={EButtonWidth.NORMAL}
       onClick={closeModal}
+      data-test-id="unverified-email-reminder-modal-ok-button"
     >
       <FormattedMessage id="checkUnverifiedEmailModal.button-text" />
     </Button>

@@ -5,7 +5,6 @@ import { LocationDescriptorObject, Path } from "history";
 import { appRoutes } from "../../components/appRoutes";
 import { kycRoutes } from "../../components/kyc/routes";
 import { profileRoutes } from "../../components/settings/routes";
-import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import { walletRoutes } from "../../components/wallet/routes";
 import { TLoginRouterState } from "./types";
 
@@ -24,9 +23,11 @@ export const routingActions = {
   goToKYCIndividualDocumentVerification: () => push(kycRoutes.individualDocumentVerification),
   goToKYCIndividualAddress: () => push(kycRoutes.individualAddress),
   goToKYCIndividualUpload: () => push(kycRoutes.individualUpload),
+  goToKYCBusinessUpload: () => push(kycRoutes.businessUpload),
 
   goToKYCLegalRepresentative: () => push(kycRoutes.legalRepresentative),
   goToKYCBusinessData: () => push(kycRoutes.businessData),
+  goToKYCManagingDirectors: () => push(kycRoutes.managingDirectors),
   goToKYCBeneficialOwners: () => push(kycRoutes.beneficialOwners),
 
   // dashboard
@@ -38,9 +39,6 @@ export const routingActions = {
 
   // login
   goToLogin: (state: TLoginRouterState) => push(appRoutes.login, state),
-
-  // Successful password recovery
-  goToSuccessfulRecovery: () => push(recoverRoutes.success),
 
   // wallet
   goToWallet: () => push(appRoutes.wallet),

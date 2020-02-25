@@ -109,22 +109,16 @@ export const kycInvidualFormUSResident: TFormFixture = {
 
 export const kycLegalRepForm: TFormFixture = {
   ...kycCorporateBaseForm,
+  "kyc-upload-documents-dropzone": {
+    values: ["example.jpg"],
+    type: "multiple-files",
+  },
   "kyc-company-legal-representative-save": {
     type: "submit",
   },
 };
 
-export const kycLegalRepDocsForm: TFormFixture = {
-  "kyc-company-legal-representative-documents": {
-    values: ["example.jpg"],
-    type: "multiple-files",
-  },
-  "kyc-company-legal-representative-upload-and-submit": {
-    type: "submit",
-  },
-};
-
-export const kycCompanyForm: TFormFixture = {
+export const kycCorporateCompanyForm: TFormFixture = {
   name: "Neufund",
   registrationNumber: "123456789",
   legalForm: "UG",
@@ -135,25 +129,97 @@ export const kycCompanyForm: TFormFixture = {
     value: "PL",
     type: "select",
   },
-  "kyc-company-business-data-save": {
-    type: "submit",
-  },
-};
-
-export const kycCorporateCompanyForm: TFormFixture = {
-  ...kycCompanyForm,
   jurisdiction: {
     value: "PL",
     type: "select",
   },
-};
-
-export const kycCompanyDocsForm: TFormFixture = {
   "kyc-company-business-supporting-documents": {
-    values: ["example.jpg", "example.png"],
+    values: ["example.jpg"],
     type: "multiple-files",
   },
   "kyc-company-business-supporting-continue": {
+    type: "submit",
+  },
+};
+
+export const kycManagingDirectorForm: TFormFixture = {
+  ...kycPersonBaseForm,
+  ...kycPersonAddressForm,
+  isPoliticallyExposed: {
+    value: "false",
+    type: "select",
+  },
+  "kyc.business.managing-director.save": {
+    type: "submit",
+  },
+};
+
+export const kycManagingDirectorFormInvalid: TFormFixture = {
+  ...kycPersonBaseForm,
+  ...kycPersonAddressForm,
+  "kyc.business.managing-director.save": {
+    type: "submit",
+  },
+};
+
+export const kycBeneficialOwnerPersonalForm: TFormFixture = {
+  "person.firstName": "John",
+  "person.lastName": "Doe",
+  "person.birthDate": {
+    value: "20/01/1980",
+    type: "date",
+  },
+  "person.country": {
+    value: "LI",
+    type: "select",
+  },
+  "person.placeOfBirth": {
+    value: "AT",
+    type: "select",
+  },
+  "person.nationality": {
+    value: "DE",
+    type: "select",
+  },
+  "person.street": "Cuvrystr. 6",
+  "person.city": "Berlin",
+  "person.zipCode": "10247",
+  "person.isPoliticallyExposed": {
+    value: "false",
+    type: "select",
+  },
+  "kyc-upload-documents-dropzone": {
+    values: ["example.jpg", "example.png"],
+    type: "multiple-files",
+  },
+  "kyc-business-beneficial-owner-save": {
+    type: "submit",
+  },
+};
+
+export const kycBeneficialOwnerBusinessForm: TFormFixture = {
+  beneficialOwnerType: {
+    type: "radio",
+    value: "business",
+  },
+  "business.name": "Neufund",
+  "business.legalForm": "UG",
+  "business.street": "Cuvrystraße 6",
+  "business.city": "Berlin",
+  "business.zipCode": "10247",
+  "business.country": {
+    value: "PL",
+    type: "select",
+  },
+  "business.jurisdiction": {
+    value: "PL",
+    type: "select",
+  },
+  "kyc-upload-documents-dropzone": {
+    values: ["example.jpg"],
+    type: "multiple-files",
+  },
+  "kyc-business-beneficial-owner-save": {
     type: "submit",
   },
 };

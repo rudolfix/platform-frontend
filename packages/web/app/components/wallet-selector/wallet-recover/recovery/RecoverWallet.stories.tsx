@@ -20,15 +20,15 @@ storiesOf("RecoveryProcesses", module)
   )
   .add("Enter Seed", () => (
     <RecoveryProcessesComponent
-      submitForm={action("recover")}
-      onInvalidSeed={action("onInvalidSeed")}
+      submitForm={action("submitForm")}
+      goToDashboard={action("goToDashboard")}
     />
   ))
   .add("Enter Email and Password", () => (
     <RecoveryProcessesComponent
-      submitForm={action("recover")}
+      submitForm={action("submitForm")}
+      goToDashboard={action("goToDashboard")}
       seed="HEHE IAMA SEED PHRASE"
-      onInvalidSeed={action("onInvalidSeed")}
     />
   ));
 

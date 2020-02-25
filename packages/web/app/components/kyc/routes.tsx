@@ -15,7 +15,9 @@ export const kycRoutes = {
   // company
   legalRepresentative: parentRoutePath + "/business/legal-representative",
   businessData: parentRoutePath + "/business/data",
+  managingDirectors: parentRoutePath + "/business/managing-directors",
   beneficialOwners: parentRoutePath + "/business/beneficial-owners",
+  businessUpload: parentRoutePath + "/business/upload",
 
   // other
   pending: parentRoutePath + "/pending",

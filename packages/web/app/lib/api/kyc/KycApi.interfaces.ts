@@ -3,7 +3,7 @@ import * as Yup from "yup";
 
 import { makeAllRequiredExcept } from "../../../utils/yupUtils";
 import * as YupTS from "../../yup-ts.unsafe";
-import { countryCode, percentage, personBirthDate, restrictedCountry } from "../util/customSchemas";
+import { countryCode, personBirthDate, restrictedCountry } from "../util/customSchemas";
 
 export enum EKycRequestType {
   /**
@@ -172,27 +172,69 @@ export const KycBusinessDataSchema = Yup.object<any>().shape({
 
 // legal representative (same as base person)
 export interface IKycLegalRepresentative extends IKycPerson {}
-export const KycLegalRepresentativeSchema = makeAllRequiredExcept(KycPersonSchema, ["id"]);
-export const KycLegalRepresentativeSchemaRequired = makeAllRequiredExcept(KycPersonSchema, [
-  "usState",
-  "id",
-]);
+export const KycLegalRepresentativeSchema = makeAllRequiredExcept(
+  KycPersonalDataSchema.concat(KycPersonalAddressSchema).concat(
+    Yup.object().shape({
+      isPoliticallyExposed: Yup.bool(),
+    }),
+  ),
+  ["isPoliticallyExposed", "id", "additionalInformation", "usState"],
+);
+
+// managing director
+export interface IKycManagingDirector extends IKycPerson {}
+export const KycManagingDirectorSchema = makeAllRequiredExcept(
+  KycPersonSchema.concat(
+    Yup.object().shape({
+      isPoliticallyExposed: Yup.bool(),
+    }),
+  ),
+  ["id", "additionalInformation", "usState"],
+);
 
 // beneficial owner
+export interface IKYCBeneficialOwnerPerson extends IKycPerson {
+  id: string;
+}
+export interface IKYCBeneficialOwnerBusiness extends IKycBusinessData {
+  id: string;
+}
 export interface IKycBeneficialOwner extends IKycPerson {
   ownership?: number;
-  id?: string;
+  person?: IKYCBeneficialOwnerPerson;
+  business?: IKYCBeneficialOwnerBusiness;
 }
 
-export const KycBeneficialOwnerSchema = KycPersonSchema.concat(
-  Yup.object().shape({
-    ownership: percentage,
-    id: Yup.string(),
-  }),
+export const KycBeneficialOwnerPersonSchema = makeAllRequiredExcept(
+  KycPersonalDataSchema.concat(KycPersonalAddressSchema).concat(
+    Yup.object().shape({
+      isPoliticallyExposed: Yup.bool(),
+    }),
+  ),
+  ["additionalInformation", "id", "usState"],
 );
-export const KycBeneficialOwnerSchemaRequired = makeAllRequiredExcept(KycBeneficialOwnerSchema, [
-  "usState",
-]);
+
+export const KycBeneficialOwnerBusinessSchema = makeAllRequiredExcept(
+  Yup.object().shape({
+    name: Yup.string(),
+    registrationNumber: Yup.string(),
+    legalForm: Yup.string(),
+    legalFormType: Yup.string(),
+    street: Yup.string(),
+    id: Yup.string(),
+    city: Yup.string(),
+    zipCode: Yup.string(),
+    country: restrictedCountry,
+    jurisdiction: Yup.string().default("de"),
+    usState: stateSchema,
+  }),
+  ["registrationNumber", "id", "usState", "legalFormType"],
+);
+
+export const KycBeneficialOwnerSchema = Yup.object({
+  person: KycBeneficialOwnerPersonSchema,
+  business: KycBeneficialOwnerBusinessSchema,
+});
 
 // file
 export interface IKycFileInfo {

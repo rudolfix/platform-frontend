@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { Row } from "reactstrap";
 
-import { recoverRoutes } from "../../wallet-recover/router/recoverRoutes";
+import { appRoutes } from "../../../appRoutes";
 
 import mailLink from "../../../../assets/img/mail_link.svg";
 import * as styles from "../WalletLight.module.scss";
@@ -16,7 +16,7 @@ export const MissingEmailLightWallet: React.FunctionComponent<{}> = () => (
       <FormattedHTMLMessage
         tagName="span"
         id="wallet-selector.neuwallet.login-instructions"
-        values={{ url: recoverRoutes.help }}
+        values={{ url: appRoutes.restore }}
       />
     </p>
   </>

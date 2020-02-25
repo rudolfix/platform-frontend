@@ -50,7 +50,8 @@ export type TranslatedMessageType =
   | EEtoNomineeRequestMessages
   | ETxValidationMessages
   | EEtoNomineeActiveEtoNotifications
-  | ENotificationText;
+  | ENotificationText
+  | ELightWalletRestoreMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -59,6 +60,11 @@ export enum GenericErrorMessage {
 
 export enum GenericModalMessage {
   ERROR_TITLE = "errorTitle",
+}
+
+export enum ELightWalletRestoreMessage {
+  LIGHT_WALLET_RESTORE_SUCCESS_TITLE = "LightWalletRestoreSuccessTitle",
+  LIGHT_WALLET_RESTORE_SUCCESS_TEXT = "LightWalletRestoreSuccessText",
 }
 
 export enum SignInUserErrorMessage {
@@ -789,6 +795,12 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.complete-request" />;
     case ENotificationText.COMPLETE_UPDATE_ACCOUNT:
       return <FormattedMessage id="notifications.update-account" />;
+
+    case ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE:
+      return <FormattedMessage id="account-recovery.success.title" />;
+    case ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT:
+      return <FormattedMessage id="account-recovery.success.text" />;
+
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
       return messageData!.message as TTranslatedString;

@@ -3,8 +3,15 @@ import { filter, findIndex, isNil, omitBy } from "lodash";
 
 import { EKycRequestStatusTranslation } from "../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../components/translatedMessages/utils";
-import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
-import { TClaims } from "./types";
+import {
+  EKycRequestStatus,
+  IKycBeneficialOwner,
+  IKYCBeneficialOwnerBusiness,
+  IKYCBeneficialOwnerPerson,
+  KycBeneficialOwnerBusinessSchema,
+  KycBeneficialOwnerPersonSchema,
+} from "../../lib/api/kyc/KycApi.interfaces";
+import { EBeneficialOwnerType, TClaims } from "./types";
 
 export function deserializeClaims(claims: string): TClaims {
   const claimsN = new BigNumber(claims, 16);
@@ -56,15 +63,18 @@ export function appendIfExists<T>(array: ReadonlyArray<T>, item: T | undefined):
   return array;
 }
 
-export function updateArrayItem<T extends { id?: string }>(
-  array: ReadonlyArray<T>,
+/**
+ * Used to update BeneficialOwners array
+ */
+export function updateArrayItem(
+  array: ReadonlyArray<IKycBeneficialOwner>,
   id?: string,
-  item?: T,
-): ReadonlyArray<T> {
+  item?: IKycBeneficialOwner,
+): ReadonlyArray<IKycBeneficialOwner> {
   if (!id) return array; // no changes
-  if (id && !item) return filter(array, i => i.id !== id); // delete item
+  if (id && !item) return filter(array, (i: IKycBeneficialOwner) => getBeneficialOwnerId(i) !== id); // delete item
   if (id && item) {
-    const index = findIndex(array, i => i.id === id);
+    const index = findIndex(array, (i: IKycBeneficialOwner) => getBeneficialOwnerId(i) === id);
     if (index === -1) return [...array, item]; // append
 
     return [...array.slice(0, index), item, ...array.slice(index + 1)];
@@ -81,3 +91,46 @@ export function omitUndefined<T>(obj: T): { [P in keyof T]?: T[P] } {
  */
 export const conditionalCounter = (condition: boolean, value: number): number =>
   condition ? value + 1 : value - 1;
+
+/**
+ * Extract id from BeneficiaryOwner object
+ */
+export const getBeneficialOwnerId = (owner: IKycBeneficialOwner): string =>
+  ((owner.business as IKYCBeneficialOwnerBusiness) || (owner.person as IKYCBeneficialOwnerPerson))
+    .id;
+
+/**
+ * Extract type from BeneficiaryOwner object
+ */
+export const getBeneficialOwnerType = (owner: IKycBeneficialOwner): EBeneficialOwnerType =>
+  owner.person ? EBeneficialOwnerType.PERSON : EBeneficialOwnerType.BUSINESS;
+
+/**
+ * Extract country value from BeneficiaryOwner object
+ */
+export const getBeneficialOwnerCountry = (owner: IKycBeneficialOwner): string | undefined => {
+  if (!owner) {
+    return undefined;
+  }
+
+  const details = owner[EBeneficialOwnerType.BUSINESS] || owner[EBeneficialOwnerType.PERSON];
+  return details ? details.country : undefined;
+};
+
+/**
+ * Validates BeneficiaryOwner based on type
+ */
+export const validateBeneficiaryOwner = (
+  type: EBeneficialOwnerType,
+  owner: IKycBeneficialOwner | undefined,
+): boolean => {
+  if (!owner) {
+    return false;
+  }
+
+  if (type === EBeneficialOwnerType.PERSON) {
+    return KycBeneficialOwnerPersonSchema.isValidSync(owner.person);
+  }
+
+  return KycBeneficialOwnerBusinessSchema.isValidSync(owner.business);
+};

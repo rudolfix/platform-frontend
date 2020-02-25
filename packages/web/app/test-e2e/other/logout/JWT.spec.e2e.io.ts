@@ -4,7 +4,10 @@ import {
   AUTH_INACTIVITY_THRESHOLD,
   AUTH_JWT_TIMING_THRESHOLD,
   AUTH_TOKEN_REFRESH_THRESHOLD,
-} from "../../modules/auth/constants";
+} from "../../../modules/auth/constants";
+import { assertDashboard, assertLogin } from "../../utils/assertions";
+import { cyPromise } from "../../utils/cyPromise";
+import { fillForm } from "../../utils/forms";
 import {
   assertEmailChangeFlow,
   assertLanding,
@@ -13,20 +16,17 @@ import {
   goToDashboard,
   goToProfile,
   tid,
-} from "../utils";
-import { assertDashboard, assertLogin } from "../utils/assertions";
-import { cyPromise } from "../utils/cyPromise";
-import { fillForm } from "../utils/forms";
+} from "../../utils/index";
 import {
   createAndLoginNewUser,
   generateRandomEmailAddress,
   getJwtToken,
   loginFixtureAccount,
-} from "../utils/userHelpers";
-import { keepSessionActive, routeJwtCreate, routeJwtRefresh } from "./utils";
+} from "../../utils/userHelpers";
+import { keepSessionActive, routeJwtCreate, routeJwtRefresh } from "../utils";
 
 describe("JWT Refreshing and Escalation", () => {
-  it("should logout to landing when token is initially expired", () => {
+  it("should logout to landing when token is initially expired @login @logout @jwt @p3", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       const jwtToken = getJwtToken();
 
@@ -47,7 +47,7 @@ describe("JWT Refreshing and Escalation", () => {
     });
   });
 
-  it("should logout with session timeout message when token is already expired", () => {
+  it("should logout with session timeout message when token is already expired @login @logout @jwt @p3", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
@@ -75,7 +75,7 @@ describe("JWT Refreshing and Escalation", () => {
       cy.server();
     });
 
-    it("should refresh jwt token", () => {
+    it("should refresh jwt token @login @logout @jwt @p3", () => {
       createAndLoginNewUser({ type: "investor" }).then(() => {
         goToDashboard();
 
@@ -108,7 +108,7 @@ describe("JWT Refreshing and Escalation", () => {
       });
     });
 
-    it("should not refresh jwt token after logging out due to inactivity", () => {
+    it("should not refresh jwt token after logging out due to inactivity @login @logout @jwt @p3", () => {
       createAndLoginNewUser({ type: "investor" }).then(() => {
         goToDashboard();
 
@@ -144,7 +144,7 @@ describe("JWT Refreshing and Escalation", () => {
       });
     });
 
-    it("should refresh jwt token after logging out due to inactivity and logged in again", () => {
+    it("should refresh jwt token after logging out due to inactivity and logged in again @login @logout @jwt @p3", () => {
       const fixture = "INV_HAS_EUR_HAS_KYC";
 
       loginFixtureAccount(fixture).then(() => {
@@ -195,7 +195,7 @@ describe("JWT Refreshing and Escalation", () => {
       });
     });
 
-    it("should escalate jwt token with new permissions", () => {
+    it("should escalate jwt token with new permissions @login @logout @jwt @p3", () => {
       routeJwtCreate().as("jwtEscalate");
 
       createAndLoginNewUser({ type: "investor" }).then(() => {

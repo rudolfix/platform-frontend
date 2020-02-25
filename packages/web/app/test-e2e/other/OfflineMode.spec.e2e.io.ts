@@ -1,7 +1,7 @@
-import { createAndLoginNewUser, goOffline, goOnline, goToDashboard, tid } from "../utils";
+import { createAndLoginNewUser, goOffline, goOnline, goToDashboard, tid } from "../utils/index";
 
 describe("Offline mode", () => {
-  it("should still be possible to use the app after being offline", () => {
+  it("should still be possible to use the app after being offline @p3", () => {
     createAndLoginNewUser({ type: "investor" });
 
     goToDashboard();

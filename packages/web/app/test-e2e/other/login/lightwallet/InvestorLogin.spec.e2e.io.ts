@@ -3,22 +3,28 @@ import {
   assertButtonIsActive,
   assertDashboard,
   assertErrorModal,
+  assertVerifyEmailWidgetIsInVerfiedEmailState,
   assertWaitForLatestEmailSentWithSalt,
+  createAndLoginNewUser,
+  fillForm,
   generateRandomEmailAddress,
+  getLatestVerifyUserEmailLink,
+  goToDashboard,
+  goToProfile,
   lightWalletTypeRegistrationInfo,
   loginWithLightWallet,
   logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
   verifyLatestUserEmailAccountSetup,
-} from "../utils/index";
+} from "../../../utils/index";
 
-describe("Light wallet login / register", () => {
+describe("Investor", () => {
   beforeEach(() => {
     cy.clearLocalStorage();
   });
 
-  it("should register user with light-wallet and send email", () => {
+  it("should register user with light-wallet and send email @login @p1", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -27,7 +33,7 @@ describe("Light wallet login / register", () => {
     assertWaitForLatestEmailSentWithSalt(email);
   });
 
-  it("should remember light wallet details after logout", () => {
+  it("should remember light wallet details after logout @login @p2", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -40,7 +46,7 @@ describe("Light wallet login / register", () => {
     assertDashboard();
   });
 
-  it("should recognize correctly ETO user and save metadata correctly", () => {
+  it("should recognize ETO user and save metadata correctly @login @p2", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -73,7 +79,7 @@ describe("Light wallet login / register", () => {
     });
   });
 
-  it("should wipe out saved investor wallet when on issuer login", () => {
+  it("should wipe out saved investor wallet when issuer login @login @p3", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -93,7 +99,7 @@ describe("Light wallet login / register", () => {
     });
   });
 
-  it("should return an error when logging with same email", () => {
+  it("should return an error when logging with same email @login @p3", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -116,43 +122,70 @@ describe("Light wallet login / register", () => {
     assertButtonIsActive("wallet-selector-register-button");
   });
 
-  // This test case is commented due to cypressjs bugs which occurs while reusing cy.visit
-  /**
-   it("should recover vault from email", () => {
-    const email = "moe3@test.com";
+  it("should update login email on activation @login @p2", () => {
+    const TEST_LINK =
+      "https://localhost:9090/email-verify?code=b7fb21ea-b248-4bc3-8500-b3f2b8644c17&email=pavloblack%40hotmail.com&user_type=investor&wallet_type=light&wallet_subtype=unknown&salt=XzNJFpdkgjOxrUXPFD6NmzkUGGpUmuA5vjrt1xyMFd4%3D";
+
+    createAndLoginNewUser({
+      type: "investor",
+      kyc: "business",
+    }).then(() => {
+      goToDashboard();
+
+      logoutViaAccountMenu();
+
+      goToDashboard(false);
+
+      cy.get(tid("light-wallet-login-with-email-email-field")).then(registerEmailNode => {
+        const registerEmail = registerEmailNode.text();
+        cy.log("Email used for registering:", registerEmail);
+        // Use activation link
+        cy.visit(TEST_LINK);
+        cy.get(tid("light-wallet-login-with-email-email-field")).then(activationEmailNode => {
+          const activationEmail = activationEmailNode.text();
+          expect(activationEmail).to.not.equal(registerEmail);
+        });
+      });
+    });
+  });
+
+  it("should logout previous user when email activation occurs @login @p3", () => {
+    const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "DELETE" });
-
     registerWithLightWallet(email, password);
+    assertDashboard();
 
-    cy.get(tid("Header-logout")).awaitedClick();
-    cy.clearLocalStorage();
+    getLatestVerifyUserEmailLink(email).then(activationLink => {
+      logoutViaAccountMenu();
 
-    cy.writeFile('/tmp/cypress-outout.log', 'test!')
+      // register another user
+      const newEmail = generateRandomEmailAddress();
+      registerWithLightWallet(newEmail, password);
 
-    cy.request({ url: mockApiUrl + "sendgrid/session/mails", method: "GET" }).then(r => {
-      cy.writeFile('/tmp/cypress-outout.log', 'test2!')
-      cy.writeFile('/tmp/cypress-outout.log', r.body)
+      assertDashboard();
 
-      cy.exec(`echo '${JSON.stringify(r.body)}' > /tmp/test.txt`);
-      cy.log(`echo '${JSON.stringify(r.body)}' > /tmp/test.txt`);
+      // try to activate previous user when second one is logged in
+      cy.visit(activationLink);
 
-      const emailLinkVerification = get(
-        r,
-        `body[0].template_vars.login_link`,
-      );
-      const emailLinkVerificationWithFixedDomain = emailLinkVerification.replace(
-        process.env.NF_REMOTE_BACKEND_PROXY_ROOT!.replace("api/", ""),
-        "https://localhost:9090/",
-      );
+      // Asserts if error toast shows up
+      // @SEE https://github.com/Neufund/platform-frontend/issues/2709
+      cy.get(tid("modules.auth.sagas.verify-user-email.toast.verification-failed")).should("exist");
 
-      cy.visit(emailLinkVerificationWithFixedDomain);
+      cy.get(tid("light-wallet-login-with-email-email-field")).contains(email);
 
-      cy.get(tid("light-wallet-login-with-email-email-field")).should("contain", email);
-      cy.get(tid("light-wallet-login-with-email-password-field")).type(password + "{enter}");
+      fillForm({
+        password,
+        "wallet-selector-nuewallet.login-button": {
+          type: "submit",
+        },
+      });
 
-      cy.url().should("contain", "/dashboard");
+      assertDashboard();
+      goToProfile();
+      // email should be verified
+      assertVerifyEmailWidgetIsInVerfiedEmailState();
+      cy.get(tid("profile.verify-email-widget.verified-email")).contains(email);
     });
-  });*/
+  });
 });

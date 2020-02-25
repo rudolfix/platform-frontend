@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet.unsafe";
+import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet";
 import { RecoveryStep } from "./RecoveryStep";
 
 export interface IRecoveryFormValues {

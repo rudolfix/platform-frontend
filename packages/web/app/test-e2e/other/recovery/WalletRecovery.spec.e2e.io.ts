@@ -1,5 +1,4 @@
-import { appRoutes } from "../../components/appRoutes";
-import { recoverRoutes } from "../../../components/wallet-selector/wallet-recover/router/recoverRoutes";
+import { appRoutes } from "../../../components/appRoutes";
 import { cyPromise } from "../../utils/cyPromise";
 import { generateRandomSeedAndAddress } from "../../utils/generateRandomSeedAndAddress";
 import {
@@ -23,7 +22,7 @@ describe("Wallet recovery", function(): void {
   this.retries(2);
 
   it("should show error modal for invalid recovery phrases @backup @p1", () => {
-    cy.visit(`${recoverRoutes.seed}`);
+    cy.visit(`${appRoutes.restore + "/seed"}`);
 
     const wrongMnemonics = "mutual mutual phone brief hedgehog friend brown actual candy will tank case phone rather program clap scrap dog trouble phrase fit section snack world".split(
       " ",

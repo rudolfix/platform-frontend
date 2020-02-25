@@ -1,4 +1,4 @@
-import { FormikContext, isFunction } from "formik";
+import { FormikContextType, isFunction } from "formik";
 import { compose, includes, mapValues, pick } from "lodash/fp";
 import { MixedSchema, object, ObjectSchema, reach, Schema } from "yup";
 
@@ -13,8 +13,8 @@ const getSchemaFields = <T>(schema: Schema<T>): { [field in keyof T]: Schema<T[f
 export const getSchemaField = <T>(
   name: string,
   schema: Schema<T> | undefined,
-  context?: FormikContext<any>,
-) => schema && reach(schema, name, context ? context.values : undefined);
+  context?: FormikContextType<any>,
+) => (schema ? reach(schema, name, context?.values) : undefined);
 
 export const isRequired = compose(includes("required"), getSchemaTests);
 

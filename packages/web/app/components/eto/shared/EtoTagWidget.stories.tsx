@@ -1,21 +1,28 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import withFormik from "storybook-formik";
 
-import { formWrapper } from "../../shared/forms/fields/testingUtils.unsafe";
 import { EtoTagWidget, generateTagOptions } from "./EtoTagWidget.unsafe";
 
 const tagList = ["Science", "Technology", "Blockchain", "Medical", "Research"];
 
 storiesOf("TagsFormWidget", module)
+  .addDecorator(withFormik)
   .add(
     "Empty",
-    formWrapper({ tags: [] })(() => (
-      <EtoTagWidget selectedTagsLimit={5} options={generateTagOptions(tagList)} name="tags" />
-    )),
+    () => <EtoTagWidget selectedTagsLimit={5} options={generateTagOptions(tagList)} name="tags" />,
+    {
+      formik: {
+        initialValues: { tags: [] },
+      },
+    },
   )
   .add(
     "Already Tags",
-    formWrapper({ tags: ["Fintech", "Black Magic"] })(() => (
-      <EtoTagWidget selectedTagsLimit={5} options={generateTagOptions(tagList)} name="tags" />
-    )),
+    () => <EtoTagWidget selectedTagsLimit={5} options={generateTagOptions(tagList)} name="tags" />,
+    {
+      formik: {
+        initialValues: { tags: ["Fintech", "Black Magic"] },
+      },
+    },
   );

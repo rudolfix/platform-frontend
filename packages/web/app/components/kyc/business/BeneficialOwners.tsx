@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "redux";
+import { compose } from "recompose";
 
 import {
   IKycBeneficialOwner,
@@ -19,7 +19,7 @@ import { AddPersonButton } from "../shared/AddPersonButton";
 import { FooterButtons } from "../shared/FooterButtons";
 import { KycStep } from "../shared/KycStep";
 import { Person } from "../shared/Person";
-import { EnhancedBeneficialOwnerDetails } from "./BeneficialOwnerDetails";
+import { BeneficialOwnerDetails } from "./BeneficialOwnerDetails";
 
 export interface IStateProps {
   beneficialOwners: ReadonlyArray<IKycBeneficialOwner>;
@@ -31,7 +31,7 @@ export interface IStateProps {
   showModal: boolean;
   loadingAll: boolean;
   loadingOne: boolean;
-  editingOwnerId?: string;
+  editingOwnerId: string | undefined;
 }
 
 interface IDispatchProps {
@@ -44,28 +44,26 @@ interface IDispatchProps {
   onDelete: (beneficialOwnerId: string) => void;
 }
 
-type IProps = IStateProps & IDispatchProps;
+type TProps = IStateProps & IDispatchProps;
 
-export const KYCBeneficialOwnersComponent: React.FunctionComponent<IProps> = props => {
-  const {
-    beneficialOwners,
-    filesUploading,
-    filesLoading,
-    files,
-    onDropFile,
-    onContinue,
-    goBack,
-    onSaveModal,
-    showModal,
-    toggleModal,
-    editingOwner,
-    onDelete,
-    loadingAll,
-    loadingOne,
-    editingOwnerId,
-    saveAndClose,
-  } = props;
-
+export const KYCBeneficialOwnersComponent: React.FunctionComponent<TProps> = ({
+  beneficialOwners,
+  filesUploading,
+  filesLoading,
+  files,
+  onDropFile,
+  onContinue,
+  goBack,
+  onSaveModal,
+  showModal,
+  toggleModal,
+  editingOwner,
+  onDelete,
+  loadingAll,
+  loadingOne,
+  editingOwnerId,
+  saveAndClose,
+}) => {
   const [type, setType] = React.useState(EBeneficialOwnerType.PERSON);
 
   const continueDisabled =
@@ -116,7 +114,7 @@ export const KYCBeneficialOwnersComponent: React.FunctionComponent<IProps> = pro
           continueDisabled={continueDisabled}
         />
 
-        <EnhancedBeneficialOwnerDetails
+        <BeneficialOwnerDetails
           type={editingOwner ? getBeneficialOwnerType(editingOwner) : type}
           setType={setType}
           show={showModal}
@@ -135,7 +133,7 @@ export const KYCBeneficialOwnersComponent: React.FunctionComponent<IProps> = pro
   );
 };
 
-export const KYCBeneficialOwners = compose<React.FunctionComponent>(
+export const KYCBeneficialOwners = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => selectBeneficialOwner(state),
     dispatchToProps: dispatch => ({

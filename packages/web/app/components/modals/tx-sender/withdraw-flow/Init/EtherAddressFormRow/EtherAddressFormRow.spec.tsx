@@ -14,7 +14,7 @@ describe("EtherAddressFormRow", () => {
     const successIconTid = tid("input-layout.icon");
 
     it("should render if address is valid", () => {
-      const Component = formWrapper({})(() => (
+      const Component = formWrapper({ formState: {} })(() => (
         <EtherAddressFormRow errors={{}} values={{ to: dummyAddress }} />
       ));
       const component = mount(wrapWithIntl(<Component />));
@@ -22,7 +22,7 @@ describe("EtherAddressFormRow", () => {
     });
 
     it("should not render if address is invalid", () => {
-      const Component = formWrapper({})(() => (
+      const Component = formWrapper({ formState: {} })(() => (
         <EtherAddressFormRow errors={{ to: "failure message" }} values={{ to: dummyAddress }} />
       ));
       const component = mount(wrapWithIntl(<Component />));
@@ -31,7 +31,9 @@ describe("EtherAddressFormRow", () => {
     });
 
     it("should not render if address is not entered", () => {
-      const Component = formWrapper({})(() => <EtherAddressFormRow errors={{}} values={{}} />);
+      const Component = formWrapper({ formState: {} })(() => (
+        <EtherAddressFormRow errors={{}} values={{}} />
+      ));
       const component = mount(wrapWithIntl(<Component />));
       expect(component.find(etherscanAddressLinkTid).exists()).to.be.false;
       expect(component.find(successIconTid).exists()).to.be.false;

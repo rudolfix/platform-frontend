@@ -1,6 +1,5 @@
 import { Button, EButtonSize, EButtonWidth } from "@neufund/design-system";
 import * as cn from "classnames";
-import { Formik, FormikConsumer, FormikProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -11,8 +10,12 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { CheckboxLayout, EInputSize, FormDeprecated } from "../../../../shared/forms";
-import { MaskedNumberInput } from "../../../../shared/MaskedNumberInput";
+import {
+  CheckboxLayout,
+  EInputSize,
+  Form,
+  FormMaskedNumberInput,
+} from "../../../../shared/forms/index";
 import { Tooltip } from "../../../../shared/tooltips";
 
 import * as styles from "../EtoOverviewStatus.module.scss";
@@ -98,49 +101,43 @@ const CampaigningActivatedInvestorApprovedWidgetLayout: React.FunctionComponent<
         </div>
       </div>
     ) : (
-      <Formik<{ amount: string }>
+      <Form<IPledgeData>
         initialValues={{ amount: pledgedAmount }}
         onSubmit={({ amount }) => backNow(Number(amount))}
         validationSchema={generateCampaigningValidation(minPledge, maxPledge)}
-        isInitialValid={!!pledgedAmount}
+        className={cn(styles.group, styles.groupNoPadding)}
       >
-        <FormikConsumer>
-          {({ values, setFieldValue, isValid, setFieldTouched }: FormikProps<IPledgeData>) => (
-            <FormDeprecated className={cn(styles.group, styles.groupNoPadding)}>
-              <div className={cn(styles.label, styles.labelFull)}>
-                <FormattedMessage id="eto-overview.campaigning.indicate-commitment" />
-              </div>
-              <div className={cn(styles.label)}>
-                <MaskedNumberInput
-                  size={EInputSize.SMALL}
-                  storageFormat={ENumberInputFormat.FLOAT}
-                  valueType={ECurrency.EUR}
-                  outputFormat={ENumberOutputFormat.INTEGER}
-                  name="amount"
-                  value={values["amount"]}
-                  onChangeFn={value => {
-                    setFieldValue("amount", value);
-                    setFieldTouched("amount", true);
-                  }}
-                  returnInvalidValues={true}
-                  showUnits={true}
-                />
-              </div>
-              <div className={cn(styles.value, styles.backNow)}>
-                <Button
-                  data-test-id="eto-bookbuilding-commit"
-                  type="submit"
-                  size={EButtonSize.SMALL}
-                  width={EButtonWidth.BLOCK}
-                  disabled={!isValid}
-                >
-                  <FormattedMessage id="shared-component.eto-overview.back-now" />
-                </Button>
-              </div>
-            </FormDeprecated>
-          )}
-        </FormikConsumer>
-      </Formik>
+        {({ isValid }) => (
+          <>
+            <div className={cn(styles.label, styles.labelFull)}>
+              <FormattedMessage id="eto-overview.campaigning.indicate-commitment" />
+            </div>
+            <div className={cn(styles.label)}>
+              <FormMaskedNumberInput
+                wrapperClassName="mb-0"
+                size={EInputSize.SMALL}
+                storageFormat={ENumberInputFormat.FLOAT}
+                valueType={ECurrency.EUR}
+                outputFormat={ENumberOutputFormat.INTEGER}
+                name="amount"
+                returnInvalidValues={true}
+                showUnits={true}
+              />
+            </div>
+            <div className={cn(styles.value, styles.backNow)}>
+              <Button
+                data-test-id="eto-bookbuilding-commit"
+                type="submit"
+                size={EButtonSize.SMALL}
+                width={EButtonWidth.BLOCK}
+                disabled={!isValid}
+              >
+                <FormattedMessage id="shared-component.eto-overview.back-now" />
+              </Button>
+            </div>
+          </>
+        )}
+      </Form>
     )}
   </>
 );

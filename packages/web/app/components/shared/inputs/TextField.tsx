@@ -1,20 +1,14 @@
-import * as cn from "classnames";
-import { Field, FieldProps, FormikConsumer, getIn } from "formik";
+import { Field, useFormikContext } from "formik";
 import * as React from "react";
 
 import { TDataTestId } from "../../../types";
 import { getSchemaField, getValidationSchema, isRequired } from "../../../utils/yupUtils";
-import { applyCharactersLimit, isNonValid } from "../forms/fields/utils.unsafe";
-import { InlineIcon } from "../icons/InlineIcon";
-import { Input } from "./Input";
+import { applyCharactersLimit, useFieldMeta } from "../forms/fields/utils";
 import { InputBase } from "./InputBase";
 import { InputDescription } from "./InputDescription";
 import { InputError } from "./InputError";
 import { LabelBase } from "./LabelBase";
-
-import eyeUnstrikedIcon from "../../../assets/img/inline_icons/password-eye_masked.svg";
-import eyeStrikedIcon from "../../../assets/img/inline_icons/password-eye_unmasked.svg";
-import * as styles from "./TextField.module.scss";
+import { TextInput } from "./TextInput";
 
 const transform = (value: string) => (value !== undefined ? value : "");
 
@@ -50,86 +44,55 @@ export const TextField: React.FunctionComponent<TFieldProps &
   maxLength,
   ignoreTouched,
   autoFocus,
-  className,
   ...props
 }) => {
-  const [unmaskPassword, setUnmaskPassword] = React.useState(false);
-  // right now there's only one type of adornment, password mask icon
-  const hasAdornment = type === "password";
-  const overridingType = hasAdornment && unmaskPassword ? "text" : type;
+  const { setFieldTouched, setFieldValue, validationSchema } = useFormikContext();
+
+  const { invalid, error, value } = useFieldMeta(name, { ignoreTouched: !!ignoreTouched });
+
+  const schema = getValidationSchema(validationSchema);
+  const fieldSchema = getSchemaField(name, schema);
+
+  const transformedValue = transform(value);
 
   return (
-    <FormikConsumer>
-      {({ touched, errors, setFieldTouched, setFieldValue, submitCount, validationSchema }) => {
-        const invalid = isNonValid(touched, errors, name, submitCount, ignoreTouched);
-        const schema = getValidationSchema(validationSchema);
-        const fieldSchema = getSchemaField(name, schema);
-        const error = getIn(errors, name);
+    <Field name={name}>
+      {() => (
+        <div data-test-id={dataTestId}>
+          {label && (
+            <LabelBase htmlFor={name} isOptional={!isRequired(fieldSchema)}>
+              {label}
+            </LabelBase>
+          )}
 
-        return (
-          <div data-test-id={dataTestId}>
-            {label && (
-              <LabelBase htmlFor={name} isOptional={!isRequired(fieldSchema)}>
-                {label}
-              </LabelBase>
-            )}
-            <div className={styles.inputWrapper}>
-              <Field
-                name={name}
-                render={({ field }: FieldProps) => {
-                  const value = transform(field.value);
-                  return (
-                    <Input
-                      type={overridingType}
-                      className={cn(
-                        styles.input,
-                        { [styles.hasAdornment]: hasAdornment },
-                        className,
-                      )}
-                      value={value}
-                      id={field.name}
-                      aria-describedby={description ? `${name}-description` : undefined}
-                      aria-invalid={invalid}
-                      autoFocus={autoFocus}
-                      disabled={disabled}
-                      placeholder={placeholder}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setFieldTouched(name);
-                        setFieldValue(
-                          name,
-                          transformBack(
-                            type === "number" && e.target.value !== ""
-                              ? e.target.valueAsNumber
-                              : e.target.value,
-                            maxLength,
-                          ),
-                        );
-                      }}
-                      {...props}
-                    />
-                  );
-                }}
-              />
-              {hasAdornment && (
-                <div className={styles.adornmentWrapper}>
-                  <button
-                    type="button"
-                    className={styles.adornment}
-                    onClick={() => setUnmaskPassword(!unmaskPassword)}
-                  >
-                    <InlineIcon
-                      className={styles.eyeIcon}
-                      svgIcon={unmaskPassword ? eyeUnstrikedIcon : eyeStrikedIcon}
-                    />
-                  </button>
-                </div>
-              )}
-            </div>
-            {invalid && error && <InputError name={name}>{error}</InputError>}
-            {description && <InputDescription name={name}>{description}</InputDescription>}
-          </div>
-        );
-      }}
-    </FormikConsumer>
+          <TextInput
+            value={transformedValue}
+            id={name}
+            aria-describedby={description ? `${name}-description` : undefined}
+            aria-invalid={invalid}
+            autoFocus={autoFocus}
+            disabled={disabled}
+            placeholder={placeholder}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setFieldTouched(name);
+              setFieldValue(
+                name,
+                transformBack(
+                  type === "number" && e.target.value !== ""
+                    ? e.target.valueAsNumber
+                    : e.target.value,
+                  maxLength,
+                ),
+              );
+            }}
+            {...props}
+          />
+
+          {invalid && error && <InputError name={name}>{error}</InputError>}
+
+          {description && <InputDescription name={name}>{description}</InputDescription>}
+        </div>
+      )}
+    </Field>
   );
 };

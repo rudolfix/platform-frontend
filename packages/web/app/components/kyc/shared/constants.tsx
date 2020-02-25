@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { BOOL_FALSE_KEY, BOOL_TRUE_KEY, NONE_KEY } from "../../shared/forms/fields/FormSelectField";
+import { BOOL_FALSE_KEY, BOOL_TRUE_KEY, NONE_KEY } from "../../shared/forms/index";
 
 export const PEP_VALUES = {
   [NONE_KEY]: <FormattedMessage id="form.select.please-select" />,

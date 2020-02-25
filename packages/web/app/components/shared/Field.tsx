@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Schema } from "yup";
 
-import { isWysiwyg } from "./forms/fields/utils.unsafe";
+import { isWysiwyg } from "./forms/fields/utils";
 import { SanitizedHtml } from "./SanitizedHtml";
 
 import * as styles from "./Field.module.scss";

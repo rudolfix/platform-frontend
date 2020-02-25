@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
+import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -22,9 +23,12 @@ import {
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { boolify, FormDeprecated, FormField, unboolify } from "../../shared/forms";
-import { FormSelectCountryField } from "../../shared/forms/fields/FormSelectCountryField.unsafe";
-import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
+import {
+  FormDeprecated,
+  FormField,
+  FormSelectCountryField,
+  FormSelectStateField,
+} from "../../shared/forms";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { EKycUploadType } from "../../shared/MultiFileUpload";
 import { KYCAddDocuments } from "../shared/AddDocuments";
@@ -146,6 +150,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
             layout={EButtonLayout.PRIMARY}
             size={EButtonSize.HUGE}
             className={styles.button}
+            isLoading={props.isSavingForm}
             disabled={shouldDisableSubmit}
             data-test-id="kyc-personal-address-submit-form"
           >
@@ -157,14 +162,15 @@ const KYCForm: React.FunctionComponent<TProps> = ({
   );
 };
 
+const defaultEmptyObject = defaultTo<IKycIndividualData | {}>({});
+
 const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualData>({
   validationSchema: KycPersonalAddressSchemaRequired,
-  isInitialValid: (props: object) =>
-    KycPersonalAddressSchemaRequired.isValidSync((props as IStateProps).currentValues),
-  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
+  validateOnMount: true,
   enableReinitialize: true,
+  mapPropsToValues: props => defaultEmptyObject(props.currentValues),
   handleSubmit: (values, { props }) => {
-    props.submitForm(boolify(values));
+    props.submitForm(values);
   },
 })(KYCForm);
 

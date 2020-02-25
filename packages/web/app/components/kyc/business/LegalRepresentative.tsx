@@ -1,10 +1,11 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
 import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
+import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, ModalFooter, Row } from "reactstrap";
-import { compose } from "redux";
+import { compose } from "recompose";
 
 import {
   IKycBeneficialOwner,
@@ -18,16 +19,14 @@ import { selectLegalRepresentative } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import {
-  boolify,
   FormDeprecated,
   FormField,
   FormFieldDate,
   FormSelectCountryField,
   FormSelectField,
   FormSelectNationalityField,
-  unboolify,
+  FormSelectStateField,
 } from "../../shared/forms";
-import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
 import { EKycUploadType, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/tooltips";
 import { ECustomTooltipTextPosition } from "../../shared/tooltips/TooltipBase";
@@ -73,19 +72,17 @@ interface IDetailsProps {
 type IProps = IStateProps & IDispatchProps;
 
 const LegalRepresentativeDetails: React.FunctionComponent<FormikProps<IKycLegalRepresentative> &
-  IDetailsProps> = props => {
-  const {
-    show,
-    onClose,
-    onSave,
-    values,
-    onDropFile,
-    files,
-    filesUploading,
-    filesLoading,
-    isValid,
-  } = props;
-
+  IDetailsProps> = ({
+  show,
+  onClose,
+  onSave,
+  values,
+  onDropFile,
+  files,
+  filesUploading,
+  filesLoading,
+  isValid,
+}) => {
   const saveDisabled = !isValid || files.length === 0 || filesLoading;
 
   return (
@@ -174,7 +171,7 @@ const LegalRepresentativeDetails: React.FunctionComponent<FormikProps<IKycLegalR
           label={<FormattedMessage id="form.label.country" />}
           name="country"
         />
-        {props.values.country === ECountries.UNITED_STATES && (
+        {values.country === ECountries.UNITED_STATES && (
           <FormSelectStateField
             label={<FormattedMessage id="form.label.us-state" />}
             name="usState"
@@ -215,31 +212,30 @@ const LegalRepresentativeDetails: React.FunctionComponent<FormikProps<IKycLegalR
   );
 };
 
+const defaultEmptyObject = defaultTo<IKycIndividualData | {}>({});
+
 const EnhancedLegalRepresentativeDetails = withFormik<IDetailsProps, IKycIndividualData>({
   validationSchema: KycLegalRepresentativeSchema,
-  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
+  validateOnMount: true,
   enableReinitialize: true,
-  isInitialValid: props =>
-    KycLegalRepresentativeSchema.isValidSync((props as IDetailsProps).currentValues),
+  mapPropsToValues: props => defaultEmptyObject(props.currentValues),
   handleSubmit: f => f,
 })(LegalRepresentativeDetails);
 
-export const KycLegalRepresentativeComponent = (props: IProps) => {
-  const {
-    filesUploading,
-    filesLoading,
-    files,
-    onDropFile,
-    onContinue,
-    goBack,
-    onSaveModal,
-    showModal,
-    toggleModal,
-    legalRepresentative,
-    saveAndClose,
-    loadingData,
-  } = props;
-
+export const KycLegalRepresentativeLayout: React.FunctionComponent<IProps> = ({
+  filesUploading,
+  filesLoading,
+  files,
+  onDropFile,
+  onContinue,
+  goBack,
+  onSaveModal,
+  showModal,
+  toggleModal,
+  legalRepresentative,
+  saveAndClose,
+  loadingData,
+}) => {
   const continueDisabled =
     loadingData ||
     (legalRepresentative &&
@@ -286,20 +282,20 @@ export const KycLegalRepresentativeComponent = (props: IProps) => {
         onContinue={onContinue}
         continueButtonId="kyc-business-legal-representative-continue"
         continueDisabled={continueDisabled}
-        skip={!props.legalRepresentative || props.files.length === 0}
+        skip={!legalRepresentative || files.length === 0}
       />
     </>
   );
 };
 
-export const KycLegalRepresentative = compose<React.FunctionComponent>(
+export const KycLegalRepresentative = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => selectLegalRepresentative(state),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadLegalRepresentativeDocument(file)),
       onContinue: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),
       onSaveModal: (values: IKycIndividualData) =>
-        dispatch(actions.kyc.kycSubmitLegalRepresentative(boolify(values))),
+        dispatch(actions.kyc.kycSubmitLegalRepresentative(values)),
       goBack: () => dispatch(actions.routing.goToKYCBeneficialOwners()),
       toggleModal: (show: boolean) => dispatch(actions.kyc.toggleLegalRepresentativeModal(show)),
       saveAndClose: () => dispatch(actions.routing.goToDashboard()),
@@ -311,4 +307,4 @@ export const KycLegalRepresentative = compose<React.FunctionComponent>(
       dispatch(actions.kyc.kycLoadLegalRepresentativeDocumentList());
     },
   }),
-)(KycLegalRepresentativeComponent);
+)(KycLegalRepresentativeLayout);

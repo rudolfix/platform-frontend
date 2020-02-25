@@ -1,0 +1,60 @@
+diff --git a/node_modules/formik/dist/formik.cjs.development.js b/node_modules/formik/dist/formik.cjs.development.js
+index a40e31e..eb7fb51 100644
+--- a/node_modules/formik/dist/formik.cjs.development.js
++++ b/node_modules/formik/dist/formik.cjs.development.js
+@@ -1092,6 +1092,8 @@ function Formik(props) {
+   var formikbag = useFormik(props);
+   var component = props.component,
+       children = props.children,
++      validationSchema = props.validationSchema,
++      validate = props.validate,
+       render = props.render,
+       innerRef = props.innerRef; // This allows folks to pass a ref to <Formik />
+ 
+@@ -1105,7 +1107,7 @@ function Formik(props) {
+ 
+   }, []);
+   return React.createElement(FormikProvider, {
+-    value: formikbag
++    value: Object.assign({}, formikbag, { validationSchema: validationSchema, validate: validate })
+   }, component ? React.createElement(component, formikbag) : render ? render(formikbag) : children // children come last, always called
+   ? isFunction(children) ? children(formikbag) : !isEmptyChildren(children) ? React.Children.only(children) : null : null);
+ }
+diff --git a/node_modules/formik/dist/formik.esm.js b/node_modules/formik/dist/formik.esm.js
+index 054f40c..8740f9d 100644
+--- a/node_modules/formik/dist/formik.esm.js
++++ b/node_modules/formik/dist/formik.esm.js
+@@ -1087,6 +1087,8 @@ function Formik(props) {
+   var component = props.component,
+       children = props.children,
+       render = props.render,
++      validationSchema = props.validationSchema,
++      validate = props.validate,
+       innerRef = props.innerRef; // This allows folks to pass a ref to <Formik />
+ 
+   useImperativeHandle(innerRef, function () {
+@@ -1099,7 +1101,7 @@ function Formik(props) {
+ 
+   }, []);
+   return createElement(FormikProvider, {
+-    value: formikbag
++    value: { ...formikbag, validationSchema, validate }
+   }, component ? createElement(component, formikbag) : render ? render(formikbag) : children // children come last, always called
+   ? isFunction(children) ? children(formikbag) : !isEmptyChildren(children) ? Children.only(children) : null : null);
+ }
+diff --git a/node_modules/formik/dist/index.js b/node_modules/formik/dist/index.js
+index 11efb27..cfa4372 100644
+--- a/node_modules/formik/dist/index.js
++++ b/node_modules/formik/dist/index.js
+@@ -1,8 +1,7 @@
+-
+-'use strict'
++'use strict';
+ 
+ if (process.env.NODE_ENV === 'production') {
+-  module.exports = require('./formik.cjs.production.min.js')
++  module.exports = require('./formik.cjs.production.min.js');
+ } else {
+-  module.exports = require('./formik.cjs.development.js')
++  module.exports = require('./formik.cjs.development.js');
+ }

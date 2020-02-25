@@ -1,10 +1,11 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
 import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
+import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, ModalFooter, Row } from "reactstrap";
-import { compose } from "redux";
+import { compose } from "recompose";
 
 import {
   IKycBusinessData,
@@ -16,13 +17,15 @@ import { actions } from "../../../modules/actions";
 import { selectManagingDirector } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { FormField } from "../../shared/forms/fields/FormField";
-import { FormFieldDate } from "../../shared/forms/fields/FormFieldDate";
-import { FormSelectCountryField } from "../../shared/forms/fields/FormSelectCountryField.unsafe";
-import { boolify, FormSelectField, unboolify } from "../../shared/forms/fields/FormSelectField";
-import { FormSelectNationalityField } from "../../shared/forms/fields/FormSelectNationalityField.unsafe";
-import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
-import { FormDeprecated } from "../../shared/forms/FormDeprecated";
+import {
+  FormDeprecated,
+  FormField,
+  FormFieldDate,
+  FormSelectCountryField,
+  FormSelectField,
+  FormSelectNationalityField,
+  FormSelectStateField,
+} from "../../shared/forms/index";
 import { EKycUploadType, MultiFileUpload } from "../../shared/MultiFileUpload";
 import { Tooltip } from "../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../shared/tooltips/TooltipBase";
@@ -58,7 +61,7 @@ interface IDispatchProps {
 type IProps = IStateProps & IDispatchProps;
 
 interface IDetailsModalProps {
-  currentValues: IKycManagingDirector | undefined;
+  currentValues: IKycManagingDirector;
   show: boolean;
   onSave: (values: IKycManagingDirector) => void;
   onClose: () => void;
@@ -68,8 +71,16 @@ interface IDetailsModalProps {
 }
 
 const ManagingDirectorDetails: React.FunctionComponent<FormikProps<IKycBusinessData> &
-  IDetailsModalProps> = props => {
-  const { show, onClose, onSave, values, onDropFile, files, filesUploading, isValid } = props;
+  IDetailsModalProps> = ({
+  show,
+  onClose,
+  onSave,
+  values,
+  onDropFile,
+  files,
+  filesUploading,
+  isValid,
+}) => {
   const saveDisabled = !isValid || files.length === 0 || filesUploading;
 
   return (
@@ -90,7 +101,7 @@ const ManagingDirectorDetails: React.FunctionComponent<FormikProps<IKycBusinessD
           <Button
             layout={EButtonLayout.PRIMARY}
             disabled={saveDisabled}
-            onClick={() => onSave(boolify(values))}
+            onClick={() => onSave(values)}
             data-test-id="kyc.business.managing-director.save"
           >
             <FormattedMessage id="form.button.save" />
@@ -195,7 +206,7 @@ const ManagingDirectorDetails: React.FunctionComponent<FormikProps<IKycBusinessD
         uploadType={EKycUploadType.PROOF_OF_ADDRESS_AND_IDENTITY}
         acceptedFiles={AcceptedKYCDocumentTypes}
         layout="vertical"
-        onDropFile={file => onDropFile(boolify(values), file)}
+        onDropFile={file => onDropFile(values, file)}
         files={files}
         filesUploading={filesUploading}
         data-test-id="kyc-upload-documents-dropzone"
@@ -204,32 +215,31 @@ const ManagingDirectorDetails: React.FunctionComponent<FormikProps<IKycBusinessD
   );
 };
 
+const defaultEmptyObject = defaultTo<IKycManagingDirector | {}>({});
+
 const ManagingDirectorDetailsForm = withFormik<IDetailsModalProps, IKycManagingDirector>({
   validationSchema: KycManagingDirectorSchema,
-  mapPropsToValues: props => unboolify(props.currentValues as IKycManagingDirector),
-  enableReinitialize: true,
-  isInitialValid: props =>
-    KycManagingDirectorSchema.isValidSync((props as IDetailsModalProps).currentValues),
+  validateOnMount: true,
+  mapPropsToValues: props => defaultEmptyObject(props.currentValues),
   handleSubmit: f => f,
 })(ManagingDirectorDetails);
 
-export const ManagingDirectorsComponent: React.FunctionComponent<IProps> = props => {
-  const {
-    currentValues,
-    filesUploading,
-    filesLoading,
-    files,
-    onDropFile,
-    onContinue,
-    goBack,
-    onSaveModal,
-    showModal,
-    setShowModal,
-    saveAndClose,
-    dataLoading,
-  } = props;
-
+export const ManagingDirectorsComponent: React.FunctionComponent<IProps> = ({
+  currentValues,
+  filesUploading,
+  filesLoading,
+  files,
+  onDropFile,
+  onContinue,
+  goBack,
+  onSaveModal,
+  showModal,
+  setShowModal,
+  saveAndClose,
+  dataLoading,
+}) => {
   const isFormValid = KycManagingDirectorSchema.isValidSync(currentValues);
+
   const continueDisabled =
     !currentValues ||
     !isFormValid ||
@@ -237,6 +247,7 @@ export const ManagingDirectorsComponent: React.FunctionComponent<IProps> = props
     filesUploading ||
     filesLoading ||
     dataLoading;
+
   const onModalClose = () => setShowModal(false);
 
   return (
@@ -271,20 +282,22 @@ export const ManagingDirectorsComponent: React.FunctionComponent<IProps> = props
         continueDisabled={continueDisabled}
       />
 
-      <ManagingDirectorDetailsForm
-        show={showModal}
-        onClose={onModalClose}
-        onSave={onSaveModal}
-        onDropFile={onDropFile}
-        files={files}
-        filesUploading={filesUploading}
-        currentValues={currentValues}
-      />
+      {currentValues && (
+        <ManagingDirectorDetailsForm
+          show={showModal}
+          onClose={onModalClose}
+          onSave={onSaveModal}
+          onDropFile={onDropFile}
+          files={files}
+          filesUploading={filesUploading}
+          currentValues={currentValues}
+        />
+      )}
     </>
   );
 };
 
-export const ManagingDirectors = compose<React.FunctionComponent>(
+export const ManagingDirectors = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => selectManagingDirector(state),
     dispatchToProps: dispatch => ({

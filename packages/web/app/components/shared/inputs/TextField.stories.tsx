@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import * as React from "react";
 import * as Yup from "yup";
 
-import { FieldLayout } from "./Field";
+import { TextField } from "./TextField";
 
 const schema = Yup.object().shape({
   field1: Yup.string().required("Field is required"),
@@ -13,11 +13,12 @@ const schema = Yup.object().shape({
   field5: Yup.string(),
   field6: Yup.number().typeError("This is not a number"),
   field7: Yup.string(),
+  field8: Yup.string().required("Field is required"),
 });
 
 let isTouched = false;
 
-storiesOf("NDS|Molecules/Inputs/Field", module).add("default", () => (
+storiesOf("NDS|Molecules/Inputs", module).add("TextField", () => (
   <Formik
     onSubmit={() => {}}
     initialValues={{
@@ -41,20 +42,20 @@ storiesOf("NDS|Molecules/Inputs/Field", module).add("default", () => (
       }
 
       return (
-        <form>
-          <FieldLayout label="Required input" name="field1" placeholder="Input" />
+        <form style={{ width: "400px", padding: "25px" }}>
+          <TextField label="Required" name="field1" placeholder="Input" />
           <br />
           <br />
-          <FieldLayout label="Input focused" name="field2" placeholder="Input" autoFocus={true} />
+          <TextField label="Focused" name="field2" placeholder="Input" autoFocus={true} />
           <br />
           <br />
-          <FieldLayout label="Optional input" name="field3" placeholder="Input" />
+          <TextField label="Optional" name="field3" placeholder="Input" />
           <br />
           <br />
-          <FieldLayout label="Invalid input" name="field4" placeholder="Input" />
+          <TextField label="Invalid" name="field4" placeholder="Input" />
           <br />
           <br />
-          <FieldLayout
+          <TextField
             label="With description"
             name="field5"
             description="Lorem Ipsum Dolor..."
@@ -62,7 +63,7 @@ storiesOf("NDS|Molecules/Inputs/Field", module).add("default", () => (
           />
           <br />
           <br />
-          <FieldLayout
+          <TextField
             label="Invalid With description"
             name="field6"
             description="Lorem Ipsum Dolor..."
@@ -70,7 +71,12 @@ storiesOf("NDS|Molecules/Inputs/Field", module).add("default", () => (
           />
           <br />
           <br />
-          <FieldLayout label="Disabled" name="field7" disabled={true} placeholder="Input" />
+          <TextField label="Disabled" name="field7" disabled={true} placeholder="Input" />
+          <br />
+          <br />
+          <TextField label="Password" type="password" name="field8" placeholder="Password" />
+          <br />
+          <br />
         </form>
       );
     }}

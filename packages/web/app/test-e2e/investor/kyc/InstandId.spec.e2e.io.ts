@@ -1,7 +1,7 @@
 import { fillForm } from "../../utils/forms";
 import { tid } from "../../utils/selectors";
 import { createAndLoginNewUser } from "../../utils/userHelpers";
-import { kycInvidualAddressForm, kycInvidualForm } from "./fixtures";
+import { kycFinancialDisclosureForm, kycInvidualAddressForm, kycInvidualForm } from "./fixtures";
 import {
   assertIndividualAddress,
   assertIndividualDocumentVerification,
@@ -23,9 +23,8 @@ describe("Instant ID Provider", () => {
     });
 
     assertIndividualAddress();
-
     fillForm(kycInvidualAddressForm);
-
+    fillForm(kycFinancialDisclosureForm);
     assertIndividualDocumentVerification();
 
     cy.get(tid("kyc-go-to-outsourced-verification-onfido")).should("exist");

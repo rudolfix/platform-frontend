@@ -29,6 +29,7 @@ export const routingActions = {
   goToKYCIndividualStart: () => push(kycRoutes.individualStart),
   goToKYCIndividualDocumentVerification: () => push(kycRoutes.individualDocumentVerification),
   goToKYCIndividualAddress: () => push(kycRoutes.individualAddress),
+  goToKYCIndividualFinancialDisclosure: () => push(kycRoutes.financialDisclosure),
   goToKYCIndividualUpload: () => push(kycRoutes.individualUpload),
   goToKYCBusinessUpload: () => push(kycRoutes.businessUpload),
 

@@ -3,7 +3,7 @@ import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
@@ -38,9 +38,13 @@ import {
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { EKycUploadType } from "../../shared/MultiFileUpload";
 import { Notification } from "../../shared/notification-widget/Notification";
+import { Tooltip } from "../../shared/tooltips/Tooltip";
+import { ECustomTooltipTextPosition } from "../../shared/tooltips/TooltipBase";
 import { KYCAddDocuments } from "../shared/AddDocuments";
 import { KycStep } from "../shared/KycStep";
+import { TOTAL_STEPS_PERSONAL_KYC } from "./constants";
 
+import InfoIcon from "../../../assets/img/info-outline.svg";
 import * as styles from "./Start.module.scss";
 
 const GENERIC_SHORT_ANSWERS = {
@@ -89,7 +93,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
     <>
       <KycStep
         step={2}
-        allSteps={5}
+        allSteps={TOTAL_STEPS_PERSONAL_KYC}
         title={<FormattedMessage id="kyc.personal.details.title" />}
         description={<FormattedMessage id="kyc.personal.details.description" />}
         buttonAction={() => props.submitAndClose(values)}
@@ -168,6 +172,27 @@ const KYCForm: React.FunctionComponent<TProps> = ({
             )}
           </>
         )}
+        <FormSelectField
+          data-test-id="kyc-personal-pep"
+          values={GENERIC_SHORT_ANSWERS}
+          label={
+            <span className="d-flex">
+              <FormattedMessage id="kyc.business.beneficial-owner.pep" />
+              <Tooltip
+                content={
+                  <FormattedHTMLMessage
+                    id="kyc.personal.politically-exposed.tooltip"
+                    tagName="span"
+                  />
+                }
+                textPosition={ECustomTooltipTextPosition.LEFT}
+              >
+                <img src={InfoIcon} alt="" className="mt-n1" />
+              </Tooltip>
+            </span>
+          }
+          name="isPoliticallyExposed"
+        />
         <ButtonGroup className={styles.buttons}>
           <Button
             layout={EButtonLayout.OUTLINE}

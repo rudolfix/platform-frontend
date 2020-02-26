@@ -9,6 +9,7 @@ export const kycRoutes = {
   // private
   individualStart: parentRoutePath + "/personal/start",
   individualAddress: parentRoutePath + "/personal/address",
+  financialDisclosure: parentRoutePath + "/personal/financial-disclosure",
   individualUpload: parentRoutePath + "/personal/upload",
   individualDocumentVerification: parentRoutePath + "/personal/document-verification",
 

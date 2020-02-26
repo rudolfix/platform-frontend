@@ -6,6 +6,7 @@ import { stubWindow } from "../../utils/index";
 import { tid } from "../../utils/selectors";
 import { createAndLoginNewUser } from "../../utils/userHelpers";
 import {
+  kycFinancialDisclosureForm,
   kycInvidualAddressForm,
   kycInvidualAddressFormUSResident,
   kycInvidualForm,
@@ -53,6 +54,7 @@ const fillAndAssert = (personalData: TFormFixture, addressData: TFormFixture, is
   }
 
   fillForm(addressData);
+  fillForm(kycFinancialDisclosureForm);
 
   assertOutsourcedVerification();
 

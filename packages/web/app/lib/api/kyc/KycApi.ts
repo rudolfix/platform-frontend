@@ -16,7 +16,6 @@ import {
   KycLegalRepresentativeSchema,
   KycOnfidoCheckRequestSchema,
   KycOnfidoUploadRequestSchema,
-  KycPersonSchema,
   KycStatusSchema,
   TKycBankAccount,
   TKycBankTransferPurpose,
@@ -86,7 +85,7 @@ export class KycApi {
     return await this.httpClient.get<IKycBusinessData>({
       baseUrl: BASE_PATH,
       url: INDIVIDUAL_DATA_PATH,
-      responseSchema: KycPersonSchema,
+      responseSchema: KycFullIndividualSchema,
     });
   }
 

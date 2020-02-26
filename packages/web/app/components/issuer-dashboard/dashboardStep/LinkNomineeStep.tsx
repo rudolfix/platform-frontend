@@ -8,9 +8,9 @@ import { compose } from "recompose";
 import { selectUserId } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
 import { etoRegisterRoutes } from "../../eto/registration/routes";
-import { DashboardHeading } from "../../eto/shared/DashboardHeading";
-import { TWithNomineeProps, withNomineeRequests } from "../../eto/shared/hocs/withNomineeRequests";
 import { AccountAddress } from "../../shared/AccountAddress";
+import { DashboardHeading } from "../../shared/DashboardHeading";
+import { TWithNomineeProps, withNomineeRequests } from "../hocs/withNomineeRequests";
 
 type TStateProps = {
   issuerId: string;

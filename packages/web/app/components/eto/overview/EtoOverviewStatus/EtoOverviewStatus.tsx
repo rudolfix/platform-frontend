@@ -1,4 +1,3 @@
-import { XOR } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -9,7 +8,7 @@ import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/type
 import { CommonHtmlProps } from "../../../../types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { Container, EColumnSpan } from "../../../layouts/Container";
-import { ETOInvestorState, ETOIssuerState } from "../../shared/ETOState";
+import { ETOInvestorState, ETOIssuerState } from "../../../shared/eto-state/ETOState";
 import { EtoStats } from "./EtoStats";
 import { EtoStatusManager } from "./EtoStatusManager/EtoStatusManager";
 import { EtoTitle } from "./EtoTitle";
@@ -17,12 +16,11 @@ import { TagsWidget } from "./TagsWidget";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
 
-type TExternalProps = XOR<
-  {
-    isEmbedded: true;
-  },
-  { isEmbedded: false; url: string }
-> & { eto: TEtoWithCompanyAndContractReadonly; publicView: boolean };
+type TExternalProps = {
+  eto: TEtoWithCompanyAndContractReadonly;
+  publicView: boolean;
+  isEmbedded: boolean;
+};
 
 interface IStatusOfEtoProps {
   eto: TEtoWithCompanyAndContractReadonly;

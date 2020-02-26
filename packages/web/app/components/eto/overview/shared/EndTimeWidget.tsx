@@ -4,7 +4,7 @@ import { FormattedRelative, FormattedTime } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps, TDataTestId } from "../../../../types";
-import { TimeBasedComponentSwitcher } from "../../shared/TimeBasedComponentSwitcher";
+import { TimeBasedComponentSwitcher } from "../../../shared/TimeBasedComponentSwitcher";
 
 interface IExternalProps {
   endTime: Date;

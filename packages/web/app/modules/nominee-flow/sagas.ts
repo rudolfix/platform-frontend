@@ -361,24 +361,6 @@ export function* getNomineeTaskLinkToIssuerData(_: TGlobalDependencies): Generat
   };
 }
 
-export function* nomineeEtoView({
-  logger,
-  notificationCenter,
-}: TGlobalDependencies): Generator<any, any, any> {
-  try {
-    const verificationIsComplete = yield select(selectIsUserFullyVerified);
-    if (verificationIsComplete) {
-      yield neuCall(loadActiveNomineeEto);
-    }
-  } catch (e) {
-    logger.error(e);
-    notificationCenter.error(
-      createMessage(ENomineeRequestErrorNotifications.FETCH_NOMINEE_DATA_ERROR),
-    );
-    yield put(actions.nomineeFlow.storeError(ENomineeFlowError.FETCH_DATA_ERROR));
-  }
-}
-
 export function* nomineeDocumentsView({
   logger,
   notificationCenter,
@@ -589,6 +571,7 @@ export function* setActiveNomineeEto({
         );
       } else {
         const firstEto = nonNullable(Object.values(etos)[0]);
+
         yield put(actions.nomineeFlow.setActiveNomineeEtoPreviewCode(firstEto.previewCode));
       }
     }
@@ -640,12 +623,6 @@ export function* nomineeFlowSagas(): Generator<any, any, any> {
     actions.nomineeFlow.nomineeDashboardView,
     "@@router/LOCATION_CHANGE",
     nomineeDashboardView,
-  );
-  yield fork(
-    neuTakeLatestUntil,
-    actions.nomineeFlow.nomineeEtoView,
-    "@@router/LOCATION_CHANGE",
-    nomineeEtoView,
   );
   yield fork(
     neuTakeLatestUntil,

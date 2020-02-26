@@ -11,6 +11,7 @@ import { onEnterAction } from "../../../utils/react-connected-components/OnEnter
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
 import { KycStep } from "../shared/KycStep";
 import { AcceptedKYCDocumentTypes } from "../utils";
+import { TOTAL_STEPS_PERSONAL_KYC } from "./constants";
 
 import * as styles from "./Start.module.scss";
 
@@ -36,8 +37,8 @@ type TComponentProps = IProps & IStateProps & IDispatchProps;
 export const KYCUploadComponent: React.FunctionComponent<TComponentProps> = props => (
   <>
     <KycStep
-      step={4}
-      allSteps={5}
+      step={5}
+      allSteps={TOTAL_STEPS_PERSONAL_KYC}
       title={<FormattedMessage id="kyc.personal.manual-verification.title" />}
       description={<FormattedMessage id="kyc.personal.manual-verification.description" />}
       buttonAction={() => props.goToDashboard()}

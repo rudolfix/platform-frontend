@@ -1,4 +1,4 @@
-import { goToEtoViewById } from "../../eto-view/EtoViewUtils";
+import { goToEtoViewById } from "../../issuer/eto/view/EtoViewUtils";
 import { assertDashboard } from "../../utils/assertions";
 import { etoFixtureAddressByName, goToDashboard } from "../../utils/index";
 import { tid } from "../../utils/selectors";

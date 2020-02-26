@@ -1,6 +1,6 @@
 import { generateRandomEthereumAddress } from "../../../modules/web3/utils";
-import { doWithdraw } from "../../pending-transactions/utils";
 import { goToWallet, loginFixtureAccount, tid } from "../../utils/index";
+import { doWithdraw } from "./pending-transactions/utils";
 
 describe("Transactions History", () => {
   it("should show transaction history @wallet @p2", () => {

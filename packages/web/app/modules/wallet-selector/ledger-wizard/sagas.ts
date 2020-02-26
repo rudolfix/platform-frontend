@@ -8,6 +8,7 @@ import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors"
 import { TAppGlobalState } from "../../../store";
 import { actions, TAction, TActionFromCreator } from "../../actions";
 import { neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
+import { walletSelectorConnect } from "../sagas";
 import { mapLedgerErrorToErrorMessage } from "./errors";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/0'/0", "44'/60'/0'/0/0"]; // TODO this should be taken from config
@@ -113,7 +114,7 @@ export function* finishSettingUpLedgerConnector(
 
     yield web3Manager.plugPersonalWallet(ledgerWallet);
 
-    yield put(actions.walletSelector.connected());
+    yield walletSelectorConnect();
   } catch (e) {
     yield put(
       actions.walletSelector.ledgerConnectionEstablishedError(

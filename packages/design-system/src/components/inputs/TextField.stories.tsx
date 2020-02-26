@@ -46,39 +46,23 @@ storiesOf("NDS|Molecules/Inputs", module).add("TextField", () => (
         return (
           <form style={{ width: "400px", padding: "25px" }}>
             <TextField label="Required" name="field1" placeholder="Input" />
-            <br />
-            <br />
             <TextField label="Focused" name="field2" placeholder="Input" autoFocus={true} />
-            <br />
-            <br />
             <TextField label="Optional" name="field3" placeholder="Input" />
-            <br />
-            <br />
             <TextField label="Invalid" name="field4" placeholder="Input" />
-            <br />
-            <br />
             <TextField
               label="With description"
               name="field5"
               description="Lorem Ipsum Dolor..."
               placeholder="Input"
             />
-            <br />
-            <br />
             <TextField
               label="Invalid With description"
               name="field6"
               description="Lorem Ipsum Dolor..."
               placeholder="Input"
             />
-            <br />
-            <br />
             <TextField label="Disabled" name="field7" disabled={true} placeholder="Input" />
-            <br />
-            <br />
             <TextField label="Password" type="password" name="field8" placeholder="Password" />
-            <br />
-            <br />
           </form>
         );
       }}

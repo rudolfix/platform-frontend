@@ -251,9 +251,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           web3Manager: web3ManagerMock as any,
         } as TGlobalDependencies,
         actions.walletSelector.ledgerFinishSettingUpLedgerConnector(expectedDerivationPath),
-      )
-        .put(actions.walletSelector.connected())
-        .run();
+      ).run();
 
       expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
         expectedDerivationPath,

@@ -39,7 +39,7 @@ function* handleAcceptCurrentAgreementEffect({ apiUserService }: TGlobalDependen
   yield put(actions.auth.setUser(user));
 }
 
-function* handleAcceptCurrentAgreement({
+export function* handleAcceptCurrentAgreement({
   logger,
   notificationCenter,
 }: TGlobalDependencies): Generator<any, any, any> {

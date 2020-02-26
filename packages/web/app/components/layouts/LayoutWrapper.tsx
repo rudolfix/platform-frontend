@@ -1,8 +1,7 @@
-import { CommonHtmlProps } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 
-import { TDataTestId } from "../../types";
+import { CommonHtmlProps, TDataTestId } from "../../types";
 
 import * as styles from "./LayoutWrapper.module.scss";
 

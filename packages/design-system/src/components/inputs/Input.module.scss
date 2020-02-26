@@ -5,9 +5,10 @@
   height: px-to-rem(40px);
   border-radius: px-to-rem(4px);
   border: solid 1px $neu-light-blue-grey-two;
+  border-width: 2px;
   background-color: $neu-white-two;
   text-align: left;
-  padding: px-to-rem(16px) px-to-rem(8px);
+  padding: px-to-rem(16px);
   color: $neu-charcoal-grey;
 
   &::placeholder {
@@ -16,7 +17,6 @@
 
   &:focus {
     border-color: $neu-bitter-lemon;
-    border-width: 2px;
   }
 
   &:disabled {
@@ -27,6 +27,5 @@
   &:invalid,
   &[aria-invalid="true"] {
     border-color: $neu-flamingo-red;
-    border-width: 2px;
   }
 }

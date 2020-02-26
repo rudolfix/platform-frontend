@@ -7,7 +7,6 @@ import { lightWizardActions } from "./light-wizard/actions";
 
 const actions = {
   reset: createActionFactory("WALLET_SELECTOR_RESET"),
-  connected: createActionFactory("WALLET_SELECTOR_CONNECTED"),
   messageSigning: createActionFactory("WALLET_SELECTOR_MESSAGE_SIGNING"),
   messageSigningError: createActionFactory(
     "WALLET_SELECTOR_MESSAGE_SIGNING_ERROR",

@@ -37,6 +37,7 @@ import { displayInfoModalSaga } from "../../generic-modal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectIsUnlocked } from "../../web3/selectors";
 import { EWalletSubType, ILightWalletMetadata } from "../../web3/types";
+import { walletSelectorConnect } from "../sagas";
 import { selectUrlUserType } from "../selectors";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getWalletMetadataByURL } from "./metadata/sagas";
@@ -44,27 +45,30 @@ import { getVaultKey } from "./utils";
 
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 
-export async function setupLightWalletPromise(
+function* setupLightWalletPromise(
   { vaultApi, lightWalletConnector, web3Manager, logger }: TGlobalDependencies,
   email: string,
   password: string,
   seed?: string,
-): Promise<ILightWalletMetadata> {
+): Generator<any, ILightWalletMetadata, any> {
   try {
-    const lightWalletVault = await createLightWalletVault({
+    const lightWalletVault = yield* call(createLightWalletVault, {
       password,
       hdPathString: DEFAULT_HD_PATH,
       recoverSeed: seed,
     });
-    const walletInstance = await deserializeLightWalletVault(
+
+    const walletInstance = yield* call(
+      deserializeLightWalletVault,
       lightWalletVault.walletInstance,
       lightWalletVault.salt,
     );
 
-    const vaultKey = await getVaultKey(lightWalletVault.salt, password);
-    await vaultApi.store(vaultKey, lightWalletVault.walletInstance);
+    const vaultKey = yield* call(getVaultKey, lightWalletVault.salt, password);
+    yield vaultApi.store(vaultKey, lightWalletVault.walletInstance);
 
-    const lightWallet = await lightWalletConnector.connect(
+    const lightWallet = yield* call(
+      lightWalletConnector.connect,
       {
         walletInstance,
         salt: lightWalletVault.salt,
@@ -73,7 +77,7 @@ export async function setupLightWalletPromise(
       password,
     );
 
-    await web3Manager.plugPersonalWallet(lightWallet);
+    yield web3Manager.plugPersonalWallet(lightWallet);
     return lightWallet.getMetadata() as ILightWalletMetadata;
   } catch (e) {
     logger.warn("Error while trying to connect with light wallet: ", e);
@@ -214,7 +218,7 @@ export function* lightWalletRegisterWatch(
     }
 
     yield neuCall(setupLightWalletPromise, email, password);
-    yield put(actions.walletSelector.connected());
+    yield walletSelectorConnect();
   } catch (e) {
     yield neuCall(handleLightWalletError, e);
   }
@@ -257,7 +261,7 @@ export function* lightWalletLoginWatch(
     // TODO-UPDATE-SAGAS: FIX THIS ANOMALY
 
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.walletSelector.connected());
+    yield walletSelectorConnect();
   } catch (e) {
     logger.error("Light Wallet login error", e);
     yield put(actions.walletSelector.reset());

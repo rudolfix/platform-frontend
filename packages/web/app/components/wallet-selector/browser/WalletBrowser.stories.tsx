@@ -4,32 +4,19 @@ import * as React from "react";
 
 import { BrowserWalletErrorMessage } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
-import { WalletBrowserComponent } from "./WalletBrowser";
+import { MetamaskError, WalletBrowserBase, WalletLoading } from "./WalletBrowser";
 
 storiesOf("Wallet selector/Browser", module)
   .add("initial loading state", () => (
-    <WalletBrowserComponent
-      isLoading={true}
-      isLoginRoute={true}
-      approvalRejected={false}
-      tryConnectingWithBrowserWallet={action("tryConnectingWithBrowserWallet")}
-    />
+    <WalletBrowserBase>
+      <WalletLoading />
+    </WalletBrowserBase>
   ))
   .add("error message", () => (
-    <WalletBrowserComponent
-      isLoading={false}
-      errorMessage={createMessage(BrowserWalletErrorMessage.GENERIC_ERROR)}
-      isLoginRoute={true}
-      approvalRejected={false}
-      tryConnectingWithBrowserWallet={action("tryConnectingWithBrowserWallet")}
-    />
-  ))
-  .add("approval rejected", () => (
-    <WalletBrowserComponent
-      isLoading={false}
-      errorMessage={createMessage(BrowserWalletErrorMessage.GENERIC_ERROR)}
-      isLoginRoute={true}
-      approvalRejected={true}
-      tryConnectingWithBrowserWallet={action("tryConnectingWithBrowserWallet")}
-    />
+    <WalletBrowserBase>
+      <MetamaskError
+        errorMessage={createMessage(BrowserWalletErrorMessage.GENERIC_ERROR)}
+        tryConnectingWithBrowserWallet={action("tryConnectingWithBrowserWallet")}
+      />
+    </WalletBrowserBase>
   ));

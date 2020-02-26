@@ -34,8 +34,6 @@ describe("Ethereum Routing", () => {
 
     cy.get(tid("wallet-selector-browser")).click();
 
-    cy.get(tid("signing.browser-wallet.sign-prompt")).should("exist");
-
     assertIssuerDashboard();
 
     goToWallet();
@@ -61,8 +59,6 @@ describe("Ethereum Routing", () => {
     ethereumProvider(ISSUER_SETUP_NODE_PROVIDER);
 
     cy.get(tid("browser-wallet-init.try-again")).click();
-
-    cy.get(tid("signing.browser-wallet.sign-prompt")).should("exist");
 
     assertIssuerDashboard();
   });

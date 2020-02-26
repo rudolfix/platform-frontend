@@ -137,6 +137,7 @@ export const registerWithLightWallet = (email: string, password: string) => {
 
 export const registerWithLightWalletIssuer = (email: string, password: string) => {
   cy.visit(appRoutes.registerIssuer);
+
   cy.get(tid("wallet-selector-light")).click();
   lightWalletTypeRegistrationInfo(email, password);
 
@@ -157,7 +158,6 @@ export const registerWithBrowserWalletAndLogin = (privateKeyProvider: any) => {
 
   cy.get(tid("wallet-selector-browser")).click();
 
-  cy.get(tid("signing.browser-wallet.sign-prompt")).should("exist");
   acceptTOS();
 };
 

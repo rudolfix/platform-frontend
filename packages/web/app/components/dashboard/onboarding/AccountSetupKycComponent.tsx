@@ -3,16 +3,19 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { THocProps } from "../../../types";
+import { connectKycStatusWidget } from "../../settings/kyc-states/connectKycStatus";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { WarningAlert } from "../../shared/WarningAlert";
-import { connectKycStatusWidget } from "./connectKycStatus";
 
 import * as styles from "./AccountSetupKycComponent.module.scss";
 
-export type ConnectKycStatusWidgetProps = THocProps<typeof connectKycStatusWidget>;
+export interface IAccountSetupKycStartLayoutProps {
+  isLoading: boolean;
+  error: boolean;
+  onGoToKycHome: () => void;
+}
 
-export const AccountSetupKycStartLayout: React.FunctionComponent<ConnectKycStatusWidgetProps> = ({
+export const AccountSetupKycStartLayout: React.FunctionComponent<IAccountSetupKycStartLayoutProps> = ({
   isLoading,
   error,
   onGoToKycHome,
@@ -47,7 +50,7 @@ export const AccountSetupKycStartLayout: React.FunctionComponent<ConnectKycStatu
   }
 };
 
-export const AccountSetupKycPendingLayout: React.FunctionComponent<ConnectKycStatusWidgetProps> = ({
+export const AccountSetupKycPendingLayout: React.FunctionComponent<IAccountSetupKycStartLayoutProps> = ({
   onGoToKycHome,
 }) => (
   <>
@@ -62,10 +65,10 @@ export const AccountSetupKycPendingLayout: React.FunctionComponent<ConnectKycSta
   </>
 );
 
-export const AccountSetupKycComponent = compose<ConnectKycStatusWidgetProps, {}>(
+export const AccountSetupKycComponent = compose<IAccountSetupKycStartLayoutProps, {}>(
   connectKycStatusWidget(),
 )(AccountSetupKycStartLayout);
 
-export const AccountSetupKycPendingComponent = compose<ConnectKycStatusWidgetProps, {}>(
+export const AccountSetupKycPendingComponent = compose<IAccountSetupKycStartLayoutProps, {}>(
   connectKycStatusWidget(),
 )(AccountSetupKycPendingLayout);

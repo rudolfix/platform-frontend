@@ -2,8 +2,8 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { AccountSetupBackupSeedComponent } from "../../settings/backup-seed/AccountSetupBackupSeedComponent";
-import { AccountSetupKycComponent } from "../../settings/kyc-states/AccountSetupKycComponent";
 import { SetEmailComponent } from "../../settings/verify-email/AccountSetupVerifyEmailComponent";
+import { AccountSetupKycComponent } from "./AccountSetupKycComponent";
 import { TOnboardingStepData } from "./types";
 
 const setOrVerifyEmailStepData = (emailVerified: boolean) => ({

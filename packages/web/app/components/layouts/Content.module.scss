@@ -21,10 +21,10 @@
   &.small-width {
     @include media-breakpoint-down (sm) {
       width: auto;
-      margin: px-to-rem(24px);
+      margin: px-to-rem(48px) px-to-rem(20px);
     }
 
     width: px-to-rem(560px);
-    margin: px-to-rem(72px) auto;
+    margin: px-to-rem(64px) auto;
   }
 }

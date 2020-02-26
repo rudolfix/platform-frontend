@@ -47,6 +47,12 @@
     }
   }
 
+  h2 {
+    &.heading {
+      @include nds-headline-2;
+    }
+  }
+
   .heading {
     @include font-default;
 

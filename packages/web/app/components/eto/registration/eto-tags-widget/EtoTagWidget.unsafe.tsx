@@ -11,7 +11,7 @@ import { FormFieldError } from "../../../shared/forms/fields/FormFieldError";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { ETagSize, Tag } from "../../../shared/Tag";
 
-import checkIcon from "../../../assets/img/inline_icons/close_no_border.svg";
+import checkIcon from "../../../../assets/img/inline_icons/close_no_border.svg";
 import * as styles from "./EtoTagWidget.module.scss";
 
 type ICombinedProps = IProps & CommonHtmlProps;

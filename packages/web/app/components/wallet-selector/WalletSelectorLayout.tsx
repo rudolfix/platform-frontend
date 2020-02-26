@@ -3,6 +3,8 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { ELogoutReason } from "../../modules/auth/types";
+import { Heading } from "../shared/Heading";
+import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../shared/WarningAlert";
 import { WalletRouter } from "./WalletRouter";
 
 import * as styles from "./WalletSelectorLayout.module.scss";
@@ -16,35 +18,40 @@ interface IExternalProps {
   redirectLocation: Location;
 }
 
-export const WalletSelectorLayout: React.FunctionComponent<IExternalProps> = ({
-  rootPath,
-  redirectLocation,
-  isLoginRoute,
-  walletSelectionDisabled,
-  logoutReason,
-}) => (
+export const WalletSelectorLayoutContainer: React.FunctionComponent<Pick<
+  IExternalProps,
+  "isLoginRoute" | "logoutReason"
+>> = ({ isLoginRoute, logoutReason, children }) => (
   <>
     {logoutReason === ELogoutReason.SESSION_TIMEOUT && (
-      <div
+      <WarningAlert
+        className={styles.logoutNotification}
+        size={EWarningAlertSize.BIG}
+        layout={EWarningAlertLayout.INLINE}
         data-test-id="wallet-selector-session-timeout-notification"
-        className={styles.notification}
       >
         <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />
-      </div>
+      </WarningAlert>
     )}
     <div className={styles.wrapper} data-test-id="wallet-selector">
-      <h1 className={styles.title}>
+      <Heading level={2} decorator={false} className={styles.title} disableTransform={true}>
         {isLoginRoute ? (
           <FormattedMessage id="wallet-selector.log-in" />
         ) : (
           <FormattedMessage id="wallet-selector.sign-up" />
         )}
-      </h1>
-      <WalletRouter
-        rootPath={rootPath}
-        redirectLocation={redirectLocation}
-        walletSelectionDisabled={walletSelectionDisabled}
-      />
+      </Heading>
+      {children}
     </div>
   </>
+);
+
+export const WalletSelectorLayout: React.FunctionComponent<IExternalProps> = props => (
+  <WalletSelectorLayoutContainer {...props}>
+    <WalletRouter
+      rootPath={props.rootPath}
+      redirectLocation={props.redirectLocation}
+      walletSelectionDisabled={props.walletSelectionDisabled}
+    />
+  </WalletSelectorLayoutContainer>
 );

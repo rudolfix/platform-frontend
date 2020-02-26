@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -19,37 +18,30 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
   rootPath,
   activeWallet,
 }) => (
-  <>
-    <div className={styles.line} />
-    <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>
+  <section className={styles.walletChooserContainer}>
+    <p className={styles.walletChooserText}>
       <FormattedMessage id="wallet-selector.wallet-chooser" />
-    </h1>
+    </p>
     <div className={styles.walletChooserButtons}>
       {activeWallet !== EWalletType.LIGHT && (
-        <div>
-          <ButtonLink data-test-id="wallet-selector-light" to={`${rootPath}/light`}>
-            <img src={emailIcon} alt="" className={styles.img} />
-            <FormattedMessage id="wallet-selector.lightwallet" />
-          </ButtonLink>
-        </div>
+        <ButtonLink data-test-id="wallet-selector-light" to={`${rootPath}/light`}>
+          <img src={emailIcon} alt="" className={styles.img} />
+          <FormattedMessage id="wallet-selector.lightwallet" />
+        </ButtonLink>
       )}
 
       {activeWallet !== EWalletType.BROWSER && (
-        <div>
-          <ButtonLink data-test-id="wallet-selector-browser" to={`${rootPath}/browser`}>
-            <img src={metamaskLogo} alt="" className={styles.img} />
-            <FormattedMessage id="wallet-selector.browser-wallet" />
-          </ButtonLink>
-        </div>
+        <ButtonLink data-test-id="wallet-selector-browser" to={`${rootPath}/browser`}>
+          <img src={metamaskLogo} alt="" className={styles.img} />
+          <FormattedMessage id="wallet-selector.browser-wallet" />
+        </ButtonLink>
       )}
       {activeWallet !== EWalletType.LEDGER && (
-        <div>
-          <ButtonLink data-test-id="wallet-selector-ledger" to={`${rootPath}/ledger`}>
-            <img src={ledgerLogo} alt="" className={styles.img} />
-            <FormattedMessage id="wallet-selector.ledger" />
-          </ButtonLink>
-        </div>
+        <ButtonLink data-test-id="wallet-selector-ledger" to={`${rootPath}/ledger`}>
+          <img src={ledgerLogo} alt="" className={styles.img} />
+          <FormattedMessage id="wallet-selector.ledger" />
+        </ButtonLink>
       )}
     </div>
-  </>
+  </section>
 );

@@ -110,4 +110,31 @@ describe("Wallet recovery", function(): void {
       });
     });
   });
+
+  it.skip("should recover existing user with verified email from saved phrases and change email", function(): void {
+    cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
+      createAndLoginNewUser({
+        type: "investor",
+        kyc: "individual",
+        seed: seed.join(" "),
+      }).then(() => {
+        {
+          const email = generateRandomEmailAddress();
+          const password = "strongpassword";
+
+          cy.clearLocalStorage().then(() => {
+            cy.visit(appRoutes.restore);
+
+            typeLightwalletRecoveryPhrase(seed);
+
+            lightWalletTypeRegistrationInfo(email, password);
+            assertWaitForLatestEmailSentWithSalt(email);
+            cy.get(tid("recovery-success-btn-go-to-login")).awaitedClick();
+            cy.visit("/");
+            assertDashboard();
+          });
+        }
+      });
+    });
+  });
 });

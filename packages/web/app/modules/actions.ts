@@ -12,6 +12,7 @@ import { depositModalActions } from "./deposit-eth-modal/actions";
 import { etoDocumentsActions } from "./eto-documents/actions";
 import { etoFlowActions } from "./eto-flow/actions";
 import { etoNomineeActions } from "./eto-nominee/actions";
+import { etoViewActions } from "./eto-view/shared/actions";
 import { etoActions } from "./eto/actions";
 import { fullPageLoadingActions } from "./full-page-loading/actions";
 import { gasActions } from "./gas/actions";
@@ -67,6 +68,7 @@ export const actions = {
   etoFlow: etoFlowActions,
   etoDocuments: etoDocumentsActions,
   etoNominee: etoNomineeActions,
+  etoView: etoViewActions,
   eto: etoActions,
   bookBuilding: bookBuildingFlowActions,
   formSingleFileUpload: formSingleFileUploadActions,

@@ -1,0 +1,71 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  margin-bottom: px-to-rem(20px);
+
+  &.disabled {
+    pointer-events: none;
+  }
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+
+  &:disabled ~ .checkmark {
+    border-color: $neu-light-blue-grey-two;
+
+    &:checked ~ .checkmark {
+      background-color: $neu-light-blue-grey-two;
+    }
+  }
+
+  &:checked ~ .checkmark {
+    background-color: $neu-bitter-lemon;
+    border: 0;
+
+    &::after {
+      display: block;
+    }
+  }
+}
+
+.checkmark {
+  top: 0;
+  left: 0;
+  height: px-to-rem(18px);
+  width: px-to-rem(18px);
+  border: solid 1px $neu-gull-gray;
+  border-radius: px-to-rem(2px);
+  transition: border 200ms ease-out, background-color 200ms ease-out;
+
+  &:hover {
+    border-color: $neu-bitter-lemon;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: px-to-rem(7px);
+    top: px-to-rem(4px);
+    width: px-to-rem(5px);
+    height: px-to-rem(10px);
+    border: solid $neu-white-two;
+    border-width: 0 px-to-rem(1px) px-to-rem(1px) 0;
+    transform: rotate(45deg);
+  }
+}
+
+.label {
+  font-size: $font-size-medium-small;
+  color: $neu-shuttle-gray;
+  margin-left: px-to-rem(10px);
+  white-space: nowrap;
+  cursor: pointer;
+}

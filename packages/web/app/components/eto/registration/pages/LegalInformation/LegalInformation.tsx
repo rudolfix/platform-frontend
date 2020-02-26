@@ -19,7 +19,7 @@ import {
   FormSelectField,
   FormTextArea,
 } from "../../../../shared/forms/index";
-import { FUNDING_ROUNDS } from "../../../constants";
+import { FUNDING_ROUNDS } from "../../../shared/constants";
 import { EtoFormBase } from "../../EtoFormBase";
 import { Section } from "../../Shared";
 import { connectEtoRegistrationLegalInformation, TComponentProps } from "./connectLegalInformation";

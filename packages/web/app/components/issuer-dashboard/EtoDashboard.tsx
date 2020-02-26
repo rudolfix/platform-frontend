@@ -36,14 +36,18 @@ import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
-import { DashboardHeading } from "../eto/shared/DashboardHeading";
-import { EProjectStatusLayout, EProjectStatusSize, ETOIssuerState } from "../eto/shared/ETOState";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
 import { SettingsWidgets } from "../settings/settings-widget/SettingsWidgets";
+import { DashboardHeading } from "../shared/DashboardHeading";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
+import {
+  EProjectStatusLayout,
+  EProjectStatusSize,
+  ETOIssuerState,
+} from "../shared/eto-state/ETOState";
 import { Heading } from "../shared/Heading";
 import { LoadingIndicator } from "../shared/loading-indicator/index";
 import { Tooltip } from "../shared/tooltips/Tooltip";

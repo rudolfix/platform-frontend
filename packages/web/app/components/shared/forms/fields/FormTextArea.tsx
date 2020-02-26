@@ -1,3 +1,4 @@
+import { applyCharactersLimit, useFieldMeta } from "@neufund/design-system";
 import { invariant } from "@neufund/shared";
 import * as cn from "classnames";
 import { connect as formikConnect, Field, FieldProps } from "formik";
@@ -8,7 +9,7 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { CommonHtmlProps, TFormikConnect, THocOuterProps, THocProps } from "../../../../types";
 import { generateErrorId } from "../layouts/FormError";
-import { applyCharactersLimit, isWysiwyg, useFieldMeta, withFormField } from "./utils";
+import { isWysiwyg, withFormField } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 

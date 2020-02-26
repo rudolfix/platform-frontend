@@ -1,7 +1,7 @@
+import { makeAllRequiredExcept } from "@neufund/design-system";
 import { ECountries, EUSState } from "@neufund/shared";
 import * as Yup from "yup";
 
-import { makeAllRequiredExcept } from "../../../utils/yupUtils";
 import * as YupTS from "../../yup-ts.unsafe";
 import { countryCode, personBirthDate, restrictedCountry } from "../util/customSchemas";
 
@@ -92,12 +92,31 @@ export const KycPersonalAddressSchema = KycBaseAddressSchema.concat(
   }),
 );
 
+const PEPSchema = Yup.object().shape({
+  isPoliticallyExposed: Yup.bool(),
+});
+
+const PEPSchemaRequired = Yup.object().shape({
+  isPoliticallyExposed: Yup.bool().required(),
+});
+
+const IncomeDeclarationSchema = Yup.object().shape({
+  isHighIncome: Yup.bool(),
+});
+
+const IncomeDeclarationSchemaRequired = Yup.object().shape({
+  isHighIncome: Yup.bool().required(),
+});
+
 // Schema used for checking responses from API with all fields optional
-export const KycFullIndividualSchema = KycPersonalDataSchema.concat(KycBaseAddressSchema).concat(
-  Yup.object().shape({
-    usState: Yup.string(),
-  }),
-);
+export const KycFullIndividualSchema = KycPersonalDataSchema.concat(KycBaseAddressSchema)
+  .concat(PEPSchema)
+  .concat(
+    Yup.object().shape({
+      usState: Yup.string(),
+    }),
+  )
+  .concat(IncomeDeclarationSchema);
 
 export const KycAdditionalDataSchema = Yup.object().shape({
   // Allow only true value to be saved, do not display any additional message
@@ -141,8 +160,14 @@ export const KycIdNowIdentificationSchema = YupTS.object({
 export type TKycIdNowIdentification = YupTS.TypeOf<typeof KycIdNowIdentificationSchema>;
 
 export const KycPersonalDataSchemaRequiredWithAdditionalData = KycPersonalDataSchemaRequired.concat(
-  KycAdditionalDataSchema,
-);
+  PEPSchemaRequired,
+).concat(KycAdditionalDataSchema);
+
+export const KycPersonalDataSchemaWithFinancialDisclosureRequired = KycPersonalDataSchemaRequired.concat(
+  PEPSchemaRequired,
+)
+  .concat(KycPersonalAddressSchemaRequired)
+  .concat(IncomeDeclarationSchemaRequired);
 
 // business data
 export interface IKycBusinessData {
@@ -173,24 +198,17 @@ export const KycBusinessDataSchema = Yup.object<any>().shape({
 // legal representative (same as base person)
 export interface IKycLegalRepresentative extends IKycPerson {}
 export const KycLegalRepresentativeSchema = makeAllRequiredExcept(
-  KycPersonalDataSchema.concat(KycPersonalAddressSchema).concat(
-    Yup.object().shape({
-      isPoliticallyExposed: Yup.bool(),
-    }),
-  ),
+  KycPersonalDataSchema.concat(KycPersonalAddressSchema).concat(PEPSchema),
   ["isPoliticallyExposed", "id", "additionalInformation", "usState"],
 );
 
 // managing director
 export interface IKycManagingDirector extends IKycPerson {}
-export const KycManagingDirectorSchema = makeAllRequiredExcept(
-  KycPersonSchema.concat(
-    Yup.object({
-      isPoliticallyExposed: Yup.bool(),
-    }),
-  ),
-  ["id", "additionalInformation", "usState"],
-);
+export const KycManagingDirectorSchema = makeAllRequiredExcept(KycPersonSchema.concat(PEPSchema), [
+  "id",
+  "additionalInformation",
+  "usState",
+]);
 
 // beneficial owner
 export interface IKYCBeneficialOwnerPerson extends IKycPerson {
@@ -206,11 +224,7 @@ export interface IKycBeneficialOwner extends IKycPerson {
 }
 
 export const KycBeneficialOwnerPersonSchema = makeAllRequiredExcept(
-  KycPersonalDataSchema.concat(KycPersonalAddressSchema).concat(
-    Yup.object().shape({
-      isPoliticallyExposed: Yup.bool(),
-    }),
-  ),
+  KycPersonalDataSchema.concat(KycPersonalAddressSchema).concat(PEPSchema),
   ["additionalInformation", "id", "usState"],
 );
 

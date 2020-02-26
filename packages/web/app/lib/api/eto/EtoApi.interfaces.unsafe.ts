@@ -234,7 +234,7 @@ export const EtoMediaType = YupTS.object({
   disableTwitterFeed: YupTS.boolean().optional(),
 });
 
-type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
+export type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
 type TEtoCompanyBase = {
   companyId: string;

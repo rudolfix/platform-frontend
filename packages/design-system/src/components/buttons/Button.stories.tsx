@@ -1,9 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import icon from "../../assets/img/inline_icons/download.svg";
 import { BlockWrapper, InlineBlockWrapper, PaddedWrapper } from "../../storybook-decorators";
-
 import {
   Button,
   EButtonLayout,
@@ -13,6 +11,8 @@ import {
   TButtonProps,
 } from "./Button";
 import ButtonReadme from "./Button.md";
+
+import icon from "../../assets/img/inline_icons/download.svg";
 
 type TGenerateStoryProps = {
   title?: string;

@@ -63,6 +63,10 @@ const kycCorporateBaseForm: TFormFixture = {
 
 export const kycInvidualForm: TFormFixture = {
   ...kycPersonBaseForm,
+  isPoliticallyExposed: {
+    value: "false",
+    type: "select",
+  },
   "kyc-personal-start-submit-form": {
     type: "submit",
   },
@@ -84,6 +88,10 @@ export const kycInvidualAddressFormUSResident: TFormFixture = {
 };
 
 export const kycInvidualFormUS: TFormFixture = {
+  isPoliticallyExposed: {
+    value: "false",
+    type: "select",
+  },
   ...kycPersonBaseForm,
   nationality: {
     value: "US",
@@ -96,6 +104,10 @@ export const kycInvidualFormUS: TFormFixture = {
 };
 
 export const kycInvidualFormUSResident: TFormFixture = {
+  isPoliticallyExposed: {
+    value: "false",
+    type: "select",
+  },
   ...kycPersonBaseForm,
   country: {
     value: "US",
@@ -104,6 +116,16 @@ export const kycInvidualFormUSResident: TFormFixture = {
   isAccreditedUsCitizen: {
     value: "true",
     type: "select",
+  },
+};
+
+export const kycFinancialDisclosureForm: TFormFixture = {
+  isHighIncome: {
+    value: "true",
+    type: "select",
+  },
+  "kyc-personal-financial-disclosure-submit-form": {
+    type: "submit",
   },
 };
 

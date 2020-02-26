@@ -33,6 +33,7 @@ import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicato
 import { EKycUploadType } from "../../shared/MultiFileUpload";
 import { KYCAddDocuments } from "../shared/AddDocuments";
 import { KycStep } from "../shared/KycStep";
+import { TOTAL_STEPS_PERSONAL_KYC } from "./constants";
 
 import * as styles from "./Start.module.scss";
 
@@ -71,7 +72,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
     <>
       <KycStep
         step={3}
-        allSteps={5}
+        allSteps={TOTAL_STEPS_PERSONAL_KYC}
         title={<FormattedMessage id="kyc.personal.address.title" />}
         description={<FormattedMessage id="kyc.personal.address.description" />}
         buttonAction={() => props.submitAndClose(values)}

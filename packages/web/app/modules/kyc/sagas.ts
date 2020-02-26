@@ -33,6 +33,7 @@ import {
   toggleBeneficialOwnerModal,
   updateBeneficialOwner,
 } from "./beneficial-owner/sagas";
+import { submitFinancialDisclosure } from "./financial-disclosure/sagas";
 import { kycIdNowSagas } from "./instant-id/id-now/sagas";
 import { kycOnfidoSagas } from "./instant-id/onfido/sagas";
 import {
@@ -181,7 +182,7 @@ function* loadIndividualData({
   }
 }
 
-function* submitPersonalDataSaga(
+export function* submitPersonalDataSaga(
   { apiKycService }: TGlobalDependencies,
   data: IKycIndividualData,
 ): Generator<any, any, any> {
@@ -249,12 +250,7 @@ function* submitPersonalAddressSaga(
   data: IKycIndividualData,
 ): Generator<any, any, any> {
   try {
-    const result: IHttpResponse<IKycIndividualData> = yield apiKycService.putPersonalData({
-      ...data,
-      // TODO: Remove when not needed. This adds additional fields required by backend
-      isHighIncome: false,
-      isPoliticallyExposed: false,
-    });
+    const result: IHttpResponse<IKycIndividualData> = yield apiKycService.putPersonalData(data);
 
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
 
@@ -274,7 +270,7 @@ function* submitPersonalAddress(
   const success = yield neuCall(submitPersonalAddressSaga, data);
 
   if (success) {
-    yield put(actions.routing.goToKYCIndividualDocumentVerification());
+    yield put(actions.routing.goToKYCIndividualFinancialDisclosure());
   }
 }
 
@@ -678,6 +674,8 @@ export function* kycSagas(): Generator<any, any, any> {
   );
   yield fork(neuTakeEvery, actions.kyc.kycUploadIndividualDocument, uploadIndividualFile);
   yield fork(neuTakeEvery, actions.kyc.kycLoadIndividualDocumentList, loadIndividualFiles);
+  yield fork(neuTakeEvery, actions.kyc.kycSubmitFinancialDisclosure, submitFinancialDisclosure);
+
   // Outsourced
   yield fork(neuTakeEvery, actions.kyc.kycSubmitIndividualRequest, submitIndividualRequest);
 

@@ -12,6 +12,7 @@ import { KycLegalRepresentative } from "./business/LegalRepresentative";
 import { ManagingDirectors } from "./business/ManagingDirectors";
 import { KYCPersonalAddress } from "./personal/Address";
 import { KycPersonalDocumentVerification } from "./personal/DocumentVerification";
+import { KYCFinancialDisclosure } from "./personal/FinancialDisclosure";
 import { KYCPersonalStart } from "./personal/Start";
 import { KYCPersonalUpload } from "./personal/Upload";
 import { kycRoutes } from "./routes";
@@ -31,6 +32,7 @@ export const NormalKycRouter: React.FunctionComponent = () => (
     {/* Personal */}
     <Route path={kycRoutes.individualStart} component={KYCPersonalStart} />
     <Route path={kycRoutes.individualAddress} component={KYCPersonalAddress} />
+    <Route path={kycRoutes.financialDisclosure} component={KYCFinancialDisclosure} />
     <Route
       path={kycRoutes.individualDocumentVerification}
       component={KycPersonalDocumentVerification}

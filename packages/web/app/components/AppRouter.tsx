@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
-import { EJurisdiction } from "../lib/api/eto/EtoProductsApi.interfaces";
 import { SwitchConnected } from "../utils/react-connected-components/connectedRouting";
 import { appRoutes } from "./appRoutes";
 import { Dashboard } from "./dashboard/Dashboard";
@@ -9,14 +8,9 @@ import { Documents } from "./documents/issuerDocuments/Documents";
 import { NomineeDocuments } from "./documents/nomineeDocuments/NomineeDocuments";
 import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
 import { UnlockWalletFundsFromLink } from "./edge-cases/UnlockWalletFundsFromLink";
-import { EtoIssuerView } from "./eto/EtoIssuerView";
-import { EtoNomineeView } from "./eto/EtoNomineeView";
-import { EtoPublicView } from "./eto/EtoPublicView";
-import { EtoPublicViewByContractId } from "./eto/EtoPublicViewByContractId";
+import { EtoViewMain } from "./eto/eto-full-view/EtoViewMain";
 import { EtoWidgetView } from "./eto/EtoWidgetView";
 import { EtoRegister } from "./eto/registration/Start";
-import { RedirectEtoById } from "./eto/shared/routing/RedirectToEtoById";
-import { RedirectEtoPublicView } from "./eto/shared/routing/RedirectToEtoLink";
 import { EtoDashboard } from "./issuer-dashboard/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 import { Landing } from "./landing/Landing";
@@ -38,60 +32,19 @@ import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecove
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
 
-// TEMPORARY CONSTANTS -------->
-const GREYP_URL = "/greyp";
-const GREYP_WITH_JURISDICTION = "/:jurisdiction/greyp";
-const GREYP_JURISDICTION = EJurisdiction.LIECHTENSTEIN;
-const GREYP_PREVIEW_CODE = "1eb004fd-c44d-4bed-9e76-0e0858649587";
-// <---------------------------
-
 export const AppRouter: React.FunctionComponent = () => (
   <SwitchConnected>
     {/* HARDCODED TEMP ROUTES! ------> */}
-    <Route
-      path={GREYP_URL}
-      render={() => <Redirect to={`/${GREYP_JURISDICTION}${GREYP_URL}`} />}
-      exact
-    />
-
-    <Route
-      path={GREYP_WITH_JURISDICTION}
-      render={({ match }) => (
-        <EtoPublicView previewCode={GREYP_PREVIEW_CODE} jurisdiction={match.params.jurisdiction} />
-      )}
-    />
+    <Route path={appRoutes.greyp} component={EtoViewMain} />
+    <Route path={appRoutes.greypWithJurisdiction} component={EtoViewMain} />
     {/*<------------------------------- */}
-    {/* routes that are available for all users */}
+    <Route path={appRoutes.etoPublicViewLegacyRoute} component={EtoViewMain} />
+    <Route path={appRoutes.etoPublicViewByIdLegacyRoute} component={EtoViewMain} />
+    <Route path={appRoutes.etoPublicView} component={EtoViewMain} />
+    <Route path={appRoutes.etoPublicViewById} component={EtoViewMain} />
+    <Route path={appRoutes.etoIssuerView} component={EtoViewMain} />
+    <Route path={appRoutes.etoIssuerViewStats} component={EtoViewMain} />
 
-    <Route
-      path={appRoutes.etoPublicView}
-      render={({ match }) => (
-        <EtoPublicView
-          previewCode={match.params.previewCode}
-          jurisdiction={match.params.jurisdiction}
-        />
-      )}
-    />
-    {/* Redirect Legacy ETO link to current link */}
-    <Route
-      path={appRoutes.etoPublicViewLegacyRoute}
-      render={({ match }) => <RedirectEtoPublicView previewCode={match.params.previewCode} />}
-      exact
-    />
-    <Route
-      path={appRoutes.etoPublicViewByIdLegacyRoute}
-      render={({ match }) => <RedirectEtoById etoId={match.params.etoId} />}
-      exact
-    />
-    <Route
-      path={appRoutes.etoPublicViewById}
-      render={({ match }) => (
-        <EtoPublicViewByContractId
-          etoId={match.params.etoId}
-          jurisdiction={match.params.jurisdiction}
-        />
-      )}
-    />
     <Route
       path={appRoutes.etoWidgetView}
       render={({ match }) => <EtoWidgetView previewCode={match.params.previewCode} />}
@@ -172,13 +125,8 @@ export const AppRouter: React.FunctionComponent = () => (
       nomineeComponent={NomineeDocuments}
       exact
     />
-    <OnlyAuthorizedRoute
-      path={appRoutes.etoIssuerView}
-      issuerComponent={EtoIssuerView}
-      nomineeComponent={EtoNomineeView}
-    />
 
-    {/* common routes for both investors and issuers */}
+    {/* common routes for both investors and issuers and nominees */}
     <OnlyAuthorizedRoute
       path={appRoutes.wallet}
       investorComponent={Wallet}

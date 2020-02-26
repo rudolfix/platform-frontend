@@ -129,7 +129,6 @@ export const verifyLatestUserEmailWithAPI = (email: string) => {
 export const registerWithLightWallet = (email: string, password: string) => {
   cy.visit(appRoutes.register);
 
-  cy.get(tid("wallet-selector-light")).awaitedClick();
   lightWalletTypeRegistrationInfo(email, password);
 
   acceptTOS();

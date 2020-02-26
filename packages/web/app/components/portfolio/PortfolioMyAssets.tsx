@@ -1,4 +1,4 @@
-import { Button, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { Button, EButtonLayout, EButtonSize, TokenIcon } from "@neufund/design-system";
 import { multiplyBigNumbers } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -23,7 +23,6 @@ import {
   ENumberOutputFormat,
   EPriceFormat,
 } from "../shared/formatters/utils";
-import { TokenIcon } from "../shared/icons/TokenIcon";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 
 import neuIcon from "../../assets/img/neu_icon.svg";

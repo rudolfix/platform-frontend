@@ -1,3 +1,4 @@
+import { Image, ISrcSet } from "@neufund/design-system";
 import { COMPANY_TAGS_LIMIT } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -5,7 +6,6 @@ import * as React from "react";
 import { EJurisdiction } from "../../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TTranslatedString } from "../../../../../types";
 import { Container, EColumnSpan, EContainerType } from "../../../../layouts/Container";
-import { Image, ISrcSet } from "../../../../shared/Image";
 import { Tag } from "../../../../shared/Tag";
 
 import * as styles from "./Cover.module.scss";

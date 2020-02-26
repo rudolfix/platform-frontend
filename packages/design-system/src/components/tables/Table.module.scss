@@ -1,0 +1,36 @@
+.container {
+  border: 1px solid $neu-light-blue-grey-two;
+  border-radius: 4px;
+  background-color: $neu-white-two;
+
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  @include nds-body-small;
+
+  color: $neu-charcoal-grey;
+
+  & > thead > tr {
+    line-height: px-to-rem(56px);
+    text-transform: uppercase;
+    border-bottom: 1px solid $neu-light-blue-grey-two;
+  }
+
+  & > tbody > tr {
+    height: px-to-rem(64px);
+    border-bottom: 1px solid $neu-light-blue-grey-two;
+  }
+
+  & > tfoot > tr {
+    height: px-to-rem(64px);
+    background-color: $neu-pale-grey-three;
+  }
+
+  td,
+  th {
+    padding: 0 24px;
+  }
+}

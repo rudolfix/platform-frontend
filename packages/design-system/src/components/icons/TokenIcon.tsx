@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import { Image } from "../Image";
+import { Image } from "../shared/Image";
 
 import * as styles from "./TokenIcon.module.scss";
 

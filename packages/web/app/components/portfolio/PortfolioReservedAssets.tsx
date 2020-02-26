@@ -1,3 +1,4 @@
+import { TokenIcon } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
@@ -22,7 +23,6 @@ import {
   EPriceFormat,
 } from "../shared/formatters/utils";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { TokenIcon } from "../shared/icons/TokenIcon";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 import { PortfolioAssetAction } from "./PortfolioAssetAction";
 

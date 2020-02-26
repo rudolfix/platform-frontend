@@ -155,6 +155,9 @@ export const convertToPrecision = (precision: number) => (data: number) => {
 export const setDefaultValueIfUndefined = (defaultValue: any) => (data: any) =>
   data === undefined ? defaultValue : data;
 
+export const removeDefaultValues = (defaultValue: string) => (field: string | undefined) =>
+  field === defaultValue ? undefined : field;
+
 export const removeEmptyField = () => (data: any) => {
   if (
     data === "" ||

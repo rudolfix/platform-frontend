@@ -3,6 +3,7 @@ import {
   convertNumberToString,
   parseStringToFloat,
   parseStringToInteger,
+  removeDefaultValues,
   removeEmptyKeyValueFields,
 } from "../../../utils";
 
@@ -21,6 +22,7 @@ const fromFormState = {
   companyShareCapital: parseStringToInteger(),
   lastFundingSizeEur: parseStringToFloat(),
   numberOfFounders: parseStringToInteger(),
+  companyStage: removeDefaultValues("NONE_KEY"),
 };
 
 export { toFormState, fromFormState };

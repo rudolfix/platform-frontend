@@ -1,6 +1,6 @@
 import { recoverRoutes } from "../../../components/wallet-selector/wallet-recover/router/recoverRoutes";
+import { generateRandomSeedAndAddress } from "../../obsolete/generateRandomSeedAndAddress";
 import { cyPromise } from "../../utils/cyPromise";
-import { generateRandomSeedAndAddress } from "../../utils/generateRandomSeedAndAddress";
 import {
   acceptTOS,
   assertDashboard,

@@ -1,9 +1,8 @@
 import PrivateKeyProvider from "truffle-privatekey-provider";
 
-import { generateRandomPrivateKey, remove0x } from "../../modules/web3/utils";
-import { NODE_ADDRESS } from "../config";
-import { assertKYCSuccess, goThroughKycCorporateProcess } from "../investor/kyc/utils";
-import { backupLightWalletSeedFromAccountSetupDashboard } from "../shared/backupLightWalletSeed";
+import { generateRandomPrivateKey, remove0x } from "../../../modules/web3/utils";
+import { NODE_ADDRESS } from "../../config";
+import { backupLightWalletSeedFromAccountSetupDashboard } from "../../utils/backupLightWalletSeed";
 import {
   assertDashboard,
   confirmAccessModal,
@@ -12,11 +11,12 @@ import {
   registerWithLightWallet,
   tid,
   verifyLatestUserEmailAccountSetup,
-} from "../utils/index";
-import { generateRandomEmailAddress } from "../utils/userHelpers";
+} from "../../utils/index";
+import { generateRandomEmailAddress } from "../../utils/userHelpers";
+import { assertKYCSuccess, goThroughKycCorporateProcess } from "../kyc/utils";
 
 describe("Onboarding", () => {
-  it("will go throught onboarding process for light wallet user", () => {
+  it("should go through onboarding process for light wallet user @onboarding @p2", () => {
     const password = "strongpassword";
     const email = generateRandomEmailAddress();
 
@@ -39,7 +39,7 @@ describe("Onboarding", () => {
     assertKYCSuccess();
   });
 
-  it("will go throught onboarding process for browser wallet user", () => {
+  it("should go through onboarding process for browser wallet user @onboarding @p3", () => {
     const email = generateRandomEmailAddress();
     const privateKey = generateRandomPrivateKey();
     const privateKeyProvider = new PrivateKeyProvider(remove0x(privateKey), NODE_ADDRESS);

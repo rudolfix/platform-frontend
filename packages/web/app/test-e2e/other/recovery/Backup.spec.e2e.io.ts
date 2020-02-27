@@ -1,5 +1,5 @@
 import { LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME } from "../../../config/constants";
-import { backupLightWalletSeed } from "../../shared/backupLightWalletSeed";
+import { backupLightWalletSeed } from "../../utils/backupLightWalletSeed";
 import {
   accountFixturePrivateKey,
   assertLockedAccessModal,

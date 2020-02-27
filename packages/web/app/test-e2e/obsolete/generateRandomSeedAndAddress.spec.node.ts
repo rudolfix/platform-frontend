@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { isAddressValid } from "../../modules/web3/utils";
 import { generateRandomSeedAndAddress } from "./generateRandomSeedAndAddress";
-import { DEFAULT_HD_PATH } from "./userHelpers";
+import { DEFAULT_HD_PATH } from "../utils/userHelpers";
 
 describe("generateRandomSeedAndAddress", () => {
   it("generates seed and password", async () => {

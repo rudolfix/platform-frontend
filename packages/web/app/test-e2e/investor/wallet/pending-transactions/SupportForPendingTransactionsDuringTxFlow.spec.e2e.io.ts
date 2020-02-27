@@ -36,7 +36,7 @@ describe("Pending Transactions During TX flow", () => {
     goToWallet();
   });
 
-  it("external pending transaction should block transaction flow", () => {
+  it("external pending transaction should block transaction flow @wallet @p3", () => {
     addPendingExternalTransaction(userAddress);
 
     cy.get(tid("wallet.eth.withdraw.button")).click();
@@ -49,7 +49,7 @@ describe("Pending Transactions During TX flow", () => {
     removePendingExternalTransaction();
   });
 
-  it("platform pending transaction should block transaction flow", () => {
+  it("platform pending transaction should block transaction flow @wallet @p3", () => {
     addPendingTransactions(generalPendingTxFixture(userAddress));
 
     cy.get(tid("wallet.eth.withdraw.button")).click();
@@ -60,7 +60,7 @@ describe("Pending Transactions During TX flow", () => {
     // this is a mock transaction that doesn't exist on a blockchain
   });
 
-  it("platform pending transaction should show cancelled transaction when transactional node fails", () => {
+  it("platform pending transaction should show cancelled transaction when transactional node fails @wallet @p3", () => {
     const tx = generalPendingTxFixture(userAddress);
     addPendingTransactions(tx);
 
@@ -74,7 +74,7 @@ describe("Pending Transactions During TX flow", () => {
   });
 
   // TODO: Understand and fix flaky behaviour
-  it.skip("platform pending transaction should delete Pending Transaction with version mismatch", () => {
+  it.skip("platform pending transaction should delete Pending Transaction with version mismatch @wallet @p3 @flaky", () => {
     clearPendingTransactions();
     addPendingTransactions(mismatchedPendingTxFixture(userAddress));
     cy.get(tid("wallet.eth.withdraw.button")).click();

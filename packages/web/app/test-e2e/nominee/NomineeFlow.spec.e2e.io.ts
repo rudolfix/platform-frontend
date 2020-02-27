@@ -1,5 +1,5 @@
 import { goThroughKycCorporateProcess } from "../investor/kyc/utils";
-import { backupLightWalletSeedFromAccountSetupDashboard } from "../shared/backupLightWalletSeed";
+import { backupLightWalletSeedFromAccountSetupDashboard } from "../utils/backupLightWalletSeed";
 import {
   assertNomineeDashboard,
   generateRandomEmailAddress,
@@ -14,7 +14,7 @@ describe("Nominee flow", () => {
   const password = "strongpassword";
   const email = generateRandomEmailAddress();
 
-  it("should register nominee with light-wallet, let them logout and login again", () => {
+  it("should register nominee with light-wallet, let them logout and login again @nominee @p2", () => {
     registerWithLightWalletNominee(email, password);
     assertNomineeDashboard();
 

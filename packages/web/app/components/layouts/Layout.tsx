@@ -16,6 +16,8 @@ import { Footer } from "./Footer";
 import { HeaderAuthorized, HeaderTransitional, HeaderUnauthorized } from "./header/Header";
 import { LayoutWrapper } from "./LayoutWrapper";
 
+import * as styles from "./Layout.module.scss";
+
 interface IStateProps {
   userIsAuthorized: boolean;
 }
@@ -90,7 +92,7 @@ const Layout = compose<IStateProps, TDataTestId & TContentExternalProps & ILayou
 const TransitionalLayout: React.FunctionComponent<TDataTestId &
   TContentExternalProps &
   TTransitionalLayoutProps> = ({ children, "data-test-id": dataTestId, ...contentProps }) => (
-  <LayoutWrapper data-test-id={dataTestId}>
+  <LayoutWrapper data-test-id={dataTestId} className={styles.layoutTransitional}>
     <HeaderTransitional isLoginRoute={contentProps.isLoginRoute} />
     <Content {...contentProps}>{children}</Content>
     <Footer />

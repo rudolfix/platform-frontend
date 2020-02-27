@@ -29,7 +29,7 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
         errorMsg: action.payload.errorMsg,
         isLoading: false,
       };
-    case actions.walletSelector.connected.getType():
+    case actions.walletSelector.messageSigning.getType():
     case actions.walletSelector.reset.getType():
       return {
         ...state,

@@ -183,7 +183,7 @@ export const assertEmailChangeAbort = (email: string): void => {
 };
 
 export const assertUserInLightWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.login-light-wallet.title"));
+  cy.get(tid("modals.wallet-selector.login-light-wallet"));
 };
 
 export const assertUserInLightWalletRegisterPage = () => {

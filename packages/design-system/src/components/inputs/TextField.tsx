@@ -68,7 +68,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
   return (
     <Field name={name}>
       {() => (
-        <div data-test-id={dataTestId}>
+        <div data-test-id={dataTestId} className={styles.wrapper}>
           {label && (
             <LabelBase htmlFor={name} isOptional={!isRequired(fieldSchema)}>
               {label}

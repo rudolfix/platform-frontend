@@ -1,23 +1,33 @@
+import { ButtonInline } from "@neufund/design-system";
 import * as React from "react";
-import { FormattedHTMLMessage } from "react-intl-phraseapp";
-import { Row } from "reactstrap";
+import { FormattedMessage } from "react-intl-phraseapp";
 
-import { appRoutes } from "../../../appRoutes";
-
-import mailLink from "../../../../assets/img/mail_link.svg";
+import mailLink from "../../../../assets/img/login-link.svg";
 import * as styles from "../WalletLight.module.scss";
 
-export const MissingEmailLightWallet: React.FunctionComponent<{}> = () => (
-  <>
-    <Row className="justify-content-center mt-5 mb-5">
-      <img src={mailLink} className="text-center" />
-    </Row>
+type TExternalProps = {
+  goToPasswordRecovery: () => void;
+};
+
+export const MissingEmailLightWallet: React.FunctionComponent<TExternalProps> = ({
+  goToPasswordRecovery,
+}) => (
+  <section className="text-center" data-test-id="modals.wallet-selector.login-light-wallet">
+    <img src={mailLink} className={styles.icon} />
     <p className={styles.missingEmail} data-test-id="neuwallet-missing-email">
-      <FormattedHTMLMessage
-        tagName="span"
-        id="wallet-selector.neuwallet.login-instructions"
-        values={{ url: appRoutes.restore }}
+      <FormattedMessage id="wallet-selector.neuwallet.login-instructions" />
+    </p>
+    <p className={styles.forgottenPassword}>
+      <FormattedMessage
+        id="wallet-selector.neuwallet.forgotten-password"
+        values={{
+          link: (
+            <ButtonInline onClick={goToPasswordRecovery}>
+              <FormattedMessage id="wallet-selector.neuwallet.recover-password" />
+            </ButtonInline>
+          ),
+        }}
       />
     </p>
-  </>
+  </section>
 );

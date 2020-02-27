@@ -9,6 +9,7 @@ import {
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { neuTakeUntil } from "../../sagasUtils";
+import { walletSelectorConnect } from "../sagas";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 
 export function* tryConnectingWithBrowserWallet({
@@ -24,7 +25,7 @@ export function* tryConnectingWithBrowserWallet({
         web3Manager.networkId,
       );
       yield web3Manager.plugPersonalWallet(browserWallet);
-      yield put(actions.walletSelector.connected());
+      yield walletSelectorConnect();
     } catch (e) {
       if (e instanceof BrowserWalletAccountApprovalRejectedError) {
         // account approval rejected is just a normal error as any other.

@@ -18,4 +18,15 @@
     vertical-align: text-bottom;
     display: block;
   }
+
+  &.inline {
+    .icon {
+      display: inline-block;
+      margin-right: px-to-rem(8px);
+    }
+  }
+
+  &.big {
+    @include nds-body-small;
+  }
 }

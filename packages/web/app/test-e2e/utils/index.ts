@@ -39,15 +39,11 @@ export const clearEmailServer = () => {
   cy.request({ url: MOCK_API_URL + "sendgrid/session/mails", method: "DELETE" });
 };
 
-export const registerWithLightWalletETO = (
-  email: string,
-  password: string,
-  acceptTos: boolean = true,
-) => {
+export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 
   lightWalletTypeRegistrationInfo(email, password);
-  if (acceptTos) acceptTOS();
+  cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
 };
 
 export const registerWithLightWalletNominee = (
@@ -131,7 +127,7 @@ export const registerWithLightWallet = (email: string, password: string) => {
 
   lightWalletTypeRegistrationInfo(email, password);
 
-  acceptTOS();
+  cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
   assertDashboard();
 };
 
@@ -174,6 +170,7 @@ export const lightWalletTypeRegistrationInfo = (email: string, password: string)
   cy.get(tid("wallet-selector-register-email")).type(email);
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
+  cy.get(tid("wallet-selector-register-tos")).click();
 
   cy.get(tid("wallet-selector-register-button"))
     .should("be.enabled")

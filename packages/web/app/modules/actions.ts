@@ -32,7 +32,7 @@ import { routingActions } from "./routing/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
 import { tokenPriceActions } from "./shared/tokenPrice/actions";
-import { tosModalActions } from "./terms-of-service-modal/actions";
+import { tosModalActions } from "./terms-of-service/actions";
 import { txHistoryActions } from "./tx-history/actions";
 import { txActions } from "./tx/actions";
 import { userAgentActions } from "./user-agent/actions";

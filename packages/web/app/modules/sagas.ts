@@ -26,7 +26,7 @@ import { neuRestartIf } from "./sagasUtils";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
 import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
-import { termsOfServiceSagas } from "./terms-of-service-modal/sagas";
+import { termsOfServiceSagas } from "./terms-of-service/sagas";
 import { txHistorySaga } from "./tx-history/sagas";
 import { txMonitorSagas } from "./tx/monitor/sagas";
 import { txSenderSagasWatcher } from "./tx/sender/sagas";

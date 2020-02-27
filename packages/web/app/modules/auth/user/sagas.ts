@@ -26,6 +26,7 @@ import {
   neuTakeLatestUntil,
   neuTakeUntil,
 } from "../../sagasUtils";
+import { handleAcceptCurrentAgreement } from "../../terms-of-service/sagas";
 import { selectUrlUserType } from "../../wallet-selector/selectors";
 import { EWalletSubType, EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
@@ -80,6 +81,8 @@ export function* signInUser({
 
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield call(loadOrCreateUser, probableUserType);
+    // TODO only light wallet sign in users must sign TOS
+    yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
 
     const userType: EUserType = yield select(selectUserType);

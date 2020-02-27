@@ -54,7 +54,6 @@ describe("Wallet selector > Browser wizard > actions", () => {
         logger: noopLogger as any,
       } as TGlobalDependencies)
         .withState(getStateMock())
-        .put(actions.walletSelector.connected())
         .run();
 
       expect(browserWalletConnectorMock.connect).to.be.calledWithExactly(expectedNetworkId);

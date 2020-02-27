@@ -1,4 +1,4 @@
-import { Button } from "@neufund/design-system";
+import { Button, Checkbox, TextField } from "@neufund/design-system";
 import { IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -7,9 +7,10 @@ import { Col, Row } from "reactstrap";
 import { compose } from "recompose";
 import * as Yup from "yup";
 
+import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Form, FormField } from "../../../shared/forms";
+import { Form } from "../../../shared/forms";
 import { TMessage } from "../../../translatedMessages/utils";
 
 import * as styles from "./RegisterLightWallet.module.scss";
@@ -17,6 +18,7 @@ import * as styles from "./RegisterLightWallet.module.scss";
 const EMAIL = "email";
 const PASSWORD = "password";
 const REPEAT_PASSWORD = "repeatPassword";
+const TOS = "tos";
 
 export interface IFormValues {
   email: string;
@@ -48,6 +50,9 @@ const validationSchema = Yup.object().shape({
       [Yup.ref(PASSWORD)],
       <FormattedMessage id="wallet-selector.neuwallet.passwords-do-not-match" />,
     ),
+  [TOS]: Yup.boolean()
+    .required()
+    .test("tos-is-true", "You must accept the Terms of Use", value => value === true),
 });
 
 const INITIAL_VALUES = {
@@ -66,25 +71,43 @@ const RegisterLightWalletForm: React.FunctionComponent<IStateProps &
     onSubmit={values => submitForm(values)}
     className="my-3"
   >
-    {({ isSubmitting, isValid }) => (
+    {({ isSubmitting, isValid, touched }) => (
       <>
-        <FormField
-          placeholder={intl.formatIntlMessage("wallet-selector.register.email")}
+        <TextField
           type="email"
           name={EMAIL}
+          placeholder={intl.formatIntlMessage("wallet-selector.register.email.placeholder")}
+          label={intl.formatIntlMessage("wallet-selector.register.email")}
           data-test-id="wallet-selector-register-email"
         />
-        <FormField
+        <TextField
           type="password"
-          placeholder={intl.formatIntlMessage("wallet-selector.register.password")}
           name={PASSWORD}
+          placeholder={intl.formatIntlMessage("wallet-selector.register.password.placeholder")}
+          label={intl.formatIntlMessage("wallet-selector.register.password")}
           data-test-id="wallet-selector-register-password"
         />
-        <FormField
-          type="password"
-          placeholder={intl.formatIntlMessage("wallet-selector.register.confirm-password")}
-          name={REPEAT_PASSWORD}
-          data-test-id="wallet-selector-register-confirm-password"
+        {(restore || touched[PASSWORD]) && (
+          <TextField
+            type="password"
+            name={REPEAT_PASSWORD}
+            placeholder={intl.formatIntlMessage(
+              "wallet-selector.register.confirm-password.placeholder",
+            )}
+            label={intl.formatIntlMessage("wallet-selector.register.confirm-password")}
+            data-test-id="wallet-selector-register-confirm-password"
+          />
+        )}
+        <Checkbox
+          label={
+            <FormattedHTMLMessage
+              tagName="span"
+              id="wallet-selector.register.tos"
+              values={{ href: externalRoutes.tos }}
+            />
+          }
+          name={TOS}
+          data-test-id="wallet-selector-register-tos"
         />
         <div className="text-center my-4">
           <Button

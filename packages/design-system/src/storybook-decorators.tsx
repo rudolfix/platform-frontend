@@ -1,7 +1,9 @@
 import * as React from "react";
 
-export const InlineBlockWrapper: React.FunctionComponent = ({ children }) => (
-  <div style={{ display: "inline-block", marginRight: "10px" }}>{children}</div>
+export const InlineBlockWrapper: React.FunctionComponent = ({ children, style }) => (
+  <div style={{ display: "inline-block", marginRight: "10px", ...style }}>
+    {children}
+  </div>
 );
 
 export const BlockWrapper: React.FunctionComponent = ({ children }) => (

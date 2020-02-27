@@ -1,5 +1,5 @@
+import { appRoutes } from "../../../../components/appRoutes";
 import {
-  acceptTOS,
   assertButtonIsActive,
   assertDashboard,
   assertErrorModal,
@@ -20,23 +20,31 @@ import {
 } from "../../../utils/index";
 
 describe("Investor", () => {
+  let email: string;
+  let password: string;
+
   beforeEach(() => {
     cy.clearLocalStorage();
+
+    email = generateRandomEmailAddress();
+    password = "strongpassword";
+  });
+
+  it("can't register without accepting Terms of Use", () => {
+    cy.visit(appRoutes.register);
+    cy.get(tid("wallet-selector-register-email")).type(email);
+    cy.get(tid("wallet-selector-register-password")).type(password);
+    cy.get(tid("wallet-selector-register-confirm-password")).type(password);
+    cy.get(tid("wallet-selector-register-button")).should("be.disabled");
   });
 
   it("should register user with light-wallet and send email @login @p1", () => {
-    const email = generateRandomEmailAddress();
-    const password = "strongpassword";
-
     registerWithLightWallet(email, password);
 
     assertWaitForLatestEmailSentWithSalt(email);
   });
 
   it("should remember light wallet details after logout @login @p2", () => {
-    const email = generateRandomEmailAddress();
-    const password = "strongpassword";
-
     registerWithLightWallet(email, password);
 
     logoutViaAccountMenu();
@@ -47,9 +55,6 @@ describe("Investor", () => {
   });
 
   it("should recognize ETO user and save metadata correctly @login @p2", () => {
-    const email = generateRandomEmailAddress();
-    const password = "strongpassword";
-
     // todo: we should let to register as issuer here so mock is not needed
     registerWithLightWallet(email, password);
 
@@ -80,9 +85,6 @@ describe("Investor", () => {
   });
 
   it("should wipe out saved investor wallet when issuer login @login @p3", () => {
-    const email = generateRandomEmailAddress();
-    const password = "strongpassword";
-
     // todo: we should let to register as issuer here so mock is not needed
     registerWithLightWallet(email, password);
 
@@ -100,14 +102,10 @@ describe("Investor", () => {
   });
 
   it("should return an error when logging with same email @login @p3", () => {
-    const email = generateRandomEmailAddress();
-    const password = "strongpassword";
-
     // register once and then verify email account
     cy.visit("/register");
     lightWalletTypeRegistrationInfo(email, password);
     assertDashboard();
-    acceptTOS();
     verifyLatestUserEmailAccountSetup(email);
     logoutViaAccountMenu();
     cy.clearLocalStorage();
@@ -150,9 +148,6 @@ describe("Investor", () => {
   });
 
   it("should logout previous user when email activation occurs @login @p3", () => {
-    const email = generateRandomEmailAddress();
-    const password = "strongpassword";
-
     registerWithLightWallet(email, password);
     assertDashboard();
 

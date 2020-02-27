@@ -54,6 +54,8 @@ export const routingActions = {
   // login
   goToLogin: (state: TLoginRouterState) => push(appRoutes.login, state),
 
+  goToPasswordRecovery: () => push(appRoutes.restore),
+
   // wallet
   goToWallet: () => push(appRoutes.wallet),
 

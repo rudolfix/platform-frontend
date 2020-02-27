@@ -1,4 +1,3 @@
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -21,36 +20,31 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
 }) => (
   <>
     {console.log("WalletChooser", rootPath)}
-    <div className={styles.line} />
-    <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>
-      <FormattedMessage id="wallet-selector.wallet-chooser" />
-    </h1>
-    <div className={styles.walletChooserButtons}>
-      {activeWallet !== EWalletType.LIGHT && (
-        <div>
+    <section className={styles.walletChooserContainer}>
+      <p className={styles.walletChooserText}>
+        <FormattedMessage id="wallet-selector.wallet-chooser" />
+      </p>
+      <div className={styles.walletChooserButtons}>
+        {activeWallet !== EWalletType.LIGHT && (
           <ButtonLink data-test-id="wallet-selector-light" to={`${rootPath}/light`}>
             <img src={emailIcon} alt="" className={styles.img} />
             <FormattedMessage id="wallet-selector.lightwallet" />
           </ButtonLink>
-        </div>
-      )}
+        )}
 
-      {activeWallet !== EWalletType.BROWSER && (
-        <div>
+        {activeWallet !== EWalletType.BROWSER && (
           <ButtonLink data-test-id="wallet-selector-browser" to={`${rootPath}/browser`}>
             <img src={metamaskLogo} alt="" className={styles.img} />
             <FormattedMessage id="wallet-selector.browser-wallet" />
           </ButtonLink>
-        </div>
-      )}
-      {activeWallet !== EWalletType.LEDGER && (
-        <div>
+        )}
+        {activeWallet !== EWalletType.LEDGER && (
           <ButtonLink data-test-id="wallet-selector-ledger" to={`${rootPath}/ledger`}>
             <img src={ledgerLogo} alt="" className={styles.img} />
             <FormattedMessage id="wallet-selector.ledger" />
           </ButtonLink>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </section>
   </>
 );

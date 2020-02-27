@@ -74,12 +74,6 @@ export function* browserWalletRegister({
 }
 
 export function* walletSelectorSagas(): Generator<any, any, any> {
-  yield fork(
-    neuTakeLatestUntil,
-    actions.walletSelector.connected,
-    actions.walletSelector.reset,
-    walletSelectorConnect,
-  );
   yield fork(neuTakeEvery, actions.walletSelector.reset, walletSelectorReset);
   yield fork(neuTakeEvery, actions.walletSelector.registerRedirect, walletSelectorRegisterRedirect);
   yield fork(neuTakeLatest, actions.walletSelector.registerWithBrowserWallet, browserWalletRegister);

@@ -71,7 +71,7 @@ export function* getCampaignOverviewData(
     showYouTube: yield* call(shouldShowYouTube, eto.company),
     showSlideshare: yield* call(shouldShowSlideshare, eto.company),
     showSocialChannels: yield* call(shouldShowSocialChannels, eto.company),
-    showInvestmentTerms: yield* call(shouldShowInvestmentTerms, eto.product),
+    showInvestmentTerms: yield* call(shouldShowInvestmentTerms, eto.state),
     ...twitterData,
   };
 }

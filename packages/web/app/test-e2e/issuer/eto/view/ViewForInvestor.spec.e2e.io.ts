@@ -1,5 +1,3 @@
-import { ETHEREUM_ZERO_ADDRESS } from "@neufund/shared";
-
 import { etoPublicViewByIdLinkLegacy } from "../../../../components/appRouteUtils";
 import {
   ENumberOutputFormat,
@@ -172,7 +170,8 @@ describe("Eto Investor View", () => {
           "contain",
           getYesOrNo(etoData.enableTransferOnSuccess, true),
         );
-        const isProductSet = etoData.product.id !== ETHEREUM_ZERO_ADDRESS;
+        // TODO using strings here instead of enum because importing EEtoState imports scss
+        const isProductSet = etoData.state !== "pending" && etoData.state !== "preview";
 
         cy.get(tid("eto-public-view-asset-type")).should(
           "contain",
@@ -214,12 +213,11 @@ describe("Eto Investor View", () => {
   });
 
   describe("Fixtures tests", () => {
-    it("should have token terms in coming soon state @eto @p3", () => {
+    it("coming soon state should not have token terms @eto @p3", () => {
       loginFixtureAccount("ISSUER_PREVIEW");
       goToEtoPreview();
 
-      // This ETO has product id set so token terms should be available
-      cy.get(tid("eto-public-view-token-terms")).should("exist");
+      cy.get(tid("eto-public-view-token-terms")).should("not.exist");
     });
 
     it("should have token terms in listed state @eto @p3", () => {

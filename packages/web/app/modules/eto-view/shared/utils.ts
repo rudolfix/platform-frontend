@@ -1,13 +1,13 @@
-import { ETHEREUM_ZERO_ADDRESS, XOR } from "@neufund/shared";
+import { XOR } from "@neufund/shared";
 
 import {
+  EEtoState,
   ESocialChannelType,
   TCompanyEtoData,
   TEtoMediaData,
   TSocialChannelsType,
   TSocialChannelType,
 } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoProduct } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 
 export const getTwitterUrl = (socialChannels: TSocialChannelsType | undefined) => {
   if (!socialChannels) {
@@ -38,5 +38,5 @@ export const shouldShowSlideshare = (companyData: TCompanyEtoData) =>
 export const shouldShowSocialChannels = (companyData: TCompanyEtoData) =>
   !!companyData.socialChannels?.length;
 
-export const shouldShowInvestmentTerms = (product: TEtoProduct) =>
-  product.id !== ETHEREUM_ZERO_ADDRESS;
+export const shouldShowInvestmentTerms = (etoState: EEtoState) =>
+  etoState !== EEtoState.PENDING && etoState !== EEtoState.PREVIEW;

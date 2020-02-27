@@ -1,4 +1,3 @@
-import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -23,7 +22,7 @@ type TExternalProps = {
 type TRangeProps = {
   minTarget: string | undefined;
   maxTarget: string | undefined;
-  investmentCalculatedValues: TEtoInvestmentCalculatedValues;
+  investmentCalculatedValues: TEtoInvestmentCalculatedValues | undefined;
 };
 
 const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
@@ -94,7 +93,7 @@ const InvestmentAmount: React.FunctionComponent<TExternalProps> = ({ eto }) => {
         <InvestmentAmountRange
           minTarget={minTarget}
           maxTarget={maxTarget}
-          investmentCalculatedValues={nonNullable(eto.investmentCalculatedValues)}
+          investmentCalculatedValues={eto.investmentCalculatedValues}
         />
       }
       data-test-id="eto-public-view-investment-amount"

@@ -21,7 +21,7 @@
     "build:prod:prerender": "./scripts/prerender.sh",
     "contract-artifacts:check": "node ./scripts/getShasFromHealthCheck.js --check",
     "contract-artifacts:generate": "node ./scripts/generate-contracts.js",
-    "contract-artifacts:update": "node ./scripts/getShasFromHealthCheck.js",
+    "contract-artifacts:update": "node ./scripts/getShasFromHealthCheck.js && prettier --write health-check-sha.json",
     "format": "prettier --list-different '**/*.{ts,tsx,js,json,md,gql}'",
     "format:fix": "prettier --write '**/*.{ts,tsx,js,json,md,gql}' --loglevel warn",
     "intl:extract": "./scripts/extract-intl-messages.sh",

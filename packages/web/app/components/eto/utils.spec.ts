@@ -14,6 +14,7 @@ import {
   removeEmptyField,
   removeEmptyKeyValueField,
   removeEmptyKeyValueFields,
+  removeIfUrlEmpty,
 } from "./utils";
 
 describe("removeEmptyKeyValueField", () => {
@@ -36,6 +37,18 @@ describe("removeEmptyKeyValueFields", () => {
   it("returns undefined if resulting array is empty", () => {
     const input = [{ a: undefined, b: undefined }, { a: undefined }];
     expect(removeEmptyKeyValueFields()(input)).to.be.undefined;
+  });
+});
+
+describe("removeIfUrlEmpty", () => {
+  it("Removes object if URL is empty", () => {
+    const input = [
+      { type: "twitter" },
+      { type: "facebook", url: "" },
+      { type: "telegram", url: "t.com/ax" },
+    ];
+    const expected = [{ type: "telegram", url: "t.com/ax" }];
+    expect(removeIfUrlEmpty()(input)).to.deep.equal(expected);
   });
 });
 

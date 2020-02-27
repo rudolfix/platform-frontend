@@ -228,7 +228,7 @@ class SocialProfilesEditorLayout extends React.Component<IProps & TFormikConnect
     } = this.props;
     const newSelectedFields = [...this.state.selectedFields];
     newSelectedFields[index] = !this.state.selectedFields[index];
-    setFieldValue(`${name}.${index}url`, "");
+    setFieldValue(`${name}.${index}.url`, "");
     this.setState({ selectedFields: newSelectedFields });
   };
 

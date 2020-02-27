@@ -1298,7 +1298,7 @@
   "shared-component.eto-overview.prospectus-approved": "Prospectus approved",
   "shared-component.eto-overview.refund": "Unsuccessful offering",
   "shared-component.eto-overview.register": "Register",
-  "shared-component.eto-overview.register-cta.summary": "Interested in the company? Register and find out more!",
+  "shared-component.eto-overview.register-cta.summary": "Interested in the company?<br/>Register and find out more!",
   "shared-component.eto-overview.register-cta.summary-pledged": "Interested in taking part in this offering?",
   "shared-component.eto-overview.register-cta.title-pledged": "{totalInvestors, plural, one {# investor} other {# investors}} committed {totalAmount}",
   "shared-component.eto-overview.register-to-invest": "Register to invest",

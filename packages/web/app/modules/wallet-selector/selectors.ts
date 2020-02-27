@@ -34,3 +34,6 @@ export const selectOppositeRootPath = (state: RouterState): string =>
 
 export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
+
+export const selectRegisterWithBrowserWalletData = (state:TAppGlobalState) =>
+  state.walletSelector.data;

@@ -23,6 +23,7 @@ export const browserWalletWizardReducer: AppReducer<IBrowserWalletWizardState> =
 ): IBrowserWalletWizardState => {
   switch (action.type) {
     case actions.walletSelector.tryConnectingWithBrowserWallet.getType():
+      console.log("browserWalletWizardReducer")
       return {
         ...browserWalletWizardInitialState,
         isLoading: true,

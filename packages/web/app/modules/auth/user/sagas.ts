@@ -185,10 +185,9 @@ function* handleLogOutUser(
   yield neuCall(logoutUser);
 
   switch (logoutType) {
-    case ELogoutReason.USER_REQUESTED:
-      {
-        yield put(actions.routing.goHome());
-      }
+    case ELogoutReason.USER_REQUESTED: {
+      yield put(actions.routing.goHome());
+    }
       break;
     case ELogoutReason.SESSION_TIMEOUT:
       yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
@@ -210,31 +209,25 @@ function* handleLogOutUser(
   logger.setUser(null);
 }
 
+export function mapSignInErrors(e: Error):SignInUserErrorMessage { // fixme move to utils
+  if (e instanceof SignerRejectConfirmationError) {
+    return SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED;
+  } else if (e instanceof SignerTimeoutError) {
+    return SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT;
+  } else {
+    return SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE;
+  }
+}
+
 export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(signInUser);
   } catch (e) {
     logger.error("User Sign in error", e);
 
-    if (e instanceof SignerRejectConfirmationError) {
-      yield put(
-        actions.walletSelector.messageSigningError(
-          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED),
-        ),
-      );
-    } else if (e instanceof SignerTimeoutError) {
-      yield put(
-        actions.walletSelector.messageSigningError(
-          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT),
-        ),
-      );
-    } else {
-      yield put(
-        actions.walletSelector.messageSigningError(
-          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
-        ),
-      );
-    }
+    const error = yield mapSignInErrors(e);
+    yield put(actions.walletSelector.messageSigningError(createMessage(error)),
+    )
   }
 }
 

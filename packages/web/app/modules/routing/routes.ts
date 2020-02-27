@@ -38,6 +38,9 @@ export const routes = [
   rootRoute,
   dashboardRoute,
   registerRoute,
+  registerWithLightWalletRoute,
+  registerWithLBrowserWalletRoute,
+  registerWithLedgerRoute,
   loginRoute,
   restoreRoute,
   profileRoute,
@@ -346,10 +349,48 @@ export function* rootRoute(payload: RouterState): Generator<any, any, any> {
 }
 
 export function* registerRoute(payload: RouterState): Generator<any, any, any> {
-  const registerMatch = yield matchPath(payload.location.pathname, {
+  const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.register,
+    exact:true
   });
-  return yield routeAction(registerMatch, {
+  return yield routeAction(routeMatch, {
+    notAuth: put(actions.walletSelector.registerRedirect()),
+    investor: put(actions.routing.goToDashboard()),
+    issuer: put(actions.routing.goToDashboard()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
+}
+
+export function* registerWithLightWalletRoute(payload: RouterState): Generator<any, any, any> {
+  const routeMatch = yield matchPath(payload.location.pathname, {
+    path: appRoutes.registerWithLightWallet,
+  });
+  console.log("registerWithLightWalletRoute match")
+  return yield routeAction(routeMatch, {
+    notAuth: undefined,
+    investor: put(actions.routing.goToDashboard()),
+    issuer: put(actions.routing.goToDashboard()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
+}
+
+export function* registerWithLBrowserWalletRoute(payload: RouterState): Generator<any, any, any> {
+  const routeMatch = yield matchPath(payload.location.pathname, {
+    path: appRoutes.registerWithBrowserWallet,
+  });
+  return yield routeAction(routeMatch, {
+    notAuth: put(actions.walletSelector.registerWithBrowserWallet()),
+    investor: put(actions.routing.goToDashboard()),
+    issuer: put(actions.routing.goToDashboard()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
+}
+
+export function* registerWithLedgerRoute(payload: RouterState): Generator<any, any, any> {
+  const routeMatch = yield matchPath(payload.location.pathname, {
+    path: appRoutes.registerWithLedger,
+  });
+  return yield routeAction(routeMatch, {
     notAuth: undefined,
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),

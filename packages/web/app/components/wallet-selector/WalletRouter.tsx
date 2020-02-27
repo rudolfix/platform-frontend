@@ -63,6 +63,7 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
   walletSelectionDisabled,
 }) => (
   <SwitchConnected>
+    {console.log("WalletRouter",rootPath)}
     <Route
       path={`${rootPath}/light`}
       component={() => (
@@ -94,6 +95,6 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
       exact
     />
     {/* Preserve location state after redirect, otherwise session timeout message won't work */}
-    <Redirect to={redirectLocation} />
+    {/*<Redirect to={redirectLocation} />*/}
   </SwitchConnected>
 );

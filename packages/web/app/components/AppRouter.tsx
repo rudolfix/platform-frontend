@@ -28,8 +28,8 @@ import { EtoSecretProtectedWalletSelector } from "./shared/routing/SecretProtect
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
-import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
-import { WalletSelector } from "./wallet-selector/WalletSelector";
+import { WalletRecovery } from "./wallet-selector/wallet-recover/WalletRecovery";
+import { WalletSelector, WalletSelectorRegister } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
 
 export const AppRouter: React.FunctionComponent = () => (
@@ -62,9 +62,12 @@ export const AppRouter: React.FunctionComponent = () => (
     {/* routes that are available for not logged in users */}
 
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
-    <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
+    <OnlyPublicRoute path={appRoutes.register} component={WalletSelectorRegister} exact />
+    <OnlyPublicRoute path={appRoutes.registerWithLightWallet} component={WalletSelector} exact />
+    <OnlyPublicRoute path={appRoutes.registerWithBrowserWallet} component={WalletSelectorRegister} exact />
+    <OnlyPublicRoute path={appRoutes.registerWithLedger} component={WalletSelector} exact />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
-    <OnlyPublicRoute path={appRoutes.restore} component={WalletRecoverMain} />
+    <OnlyPublicRoute path={appRoutes.restore} component={WalletRecovery} />
     {process.env.NF_ISSUERS_ENABLED === "1" && [
       <OnlyPublicRoute
         key={appRoutes.etoLanding}

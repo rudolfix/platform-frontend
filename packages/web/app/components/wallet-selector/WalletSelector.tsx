@@ -2,15 +2,14 @@ import { withContainer } from "@neufund/shared";
 import { createLocation, Location } from "history";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import { compose, withProps } from "recompose";
+import { branch, compose, renderComponent, renderNothing, withProps } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
-import { selectIsAuthorized } from "../../modules/auth/selectors";
 import { ELogoutReason } from "../../modules/auth/types";
 import { TLoginRouterState } from "../../modules/routing/types";
 import {
-  selectIsLoginRoute,
+  selectIsLoginRoute, selectRegisterWithBrowserWalletData,
   selectRootPath,
   selectUrlUserType,
 } from "../../modules/wallet-selector/selectors";
@@ -23,12 +22,18 @@ import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { resetWalletOnLeave } from "./resetWallet";
 import { userMayChooseWallet } from "./utils";
 import { getRedirectionUrl } from "./walletRouterHelpers";
-import { WalletSelectorLayout } from "./WalletSelectorLayout";
+import { WalletSelectorLoginLayout, WalletSelectorRegisterLayout } from "./WalletSelectorLayout";
+import { shouldNeverHappen } from "../shared/NeverComponent";
+import { EBrowserWalletState, TWalletRegisterData } from "../../modules/wallet-selector/reducer";
+import { BrowserWallet } from "../../lib/web3/browser-wallet/BrowserWallet";
+import { EWalletType } from "../../modules/web3/types";
+import { BrowserWalletComponent, LedgerWalletComponent, LightWalletComponent } from "./WalletRouter";
+import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { MetamaskError, WalletBrowserBase, WalletLoading } from "./browser/WalletBrowser";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
 interface IStateProps {
-  isAuthorized: boolean;
   rootPath: string;
   isLoginRoute: boolean;
   userType: EUserType;
@@ -40,7 +45,7 @@ interface IDispatchProps {
 
 type TAdditionalProps = {
   walletSelectionDisabled: boolean;
-  logoutReason: ELogoutReason | undefined;
+  showLogoutReason: boolean;
   redirectLocation: Location;
 };
 
@@ -48,7 +53,6 @@ export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditional
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      isAuthorized: selectIsAuthorized(s),
       rootPath: selectRootPath(s.router),
       isLoginRoute: selectIsLoginRoute(s.router),
       userType: selectUrlUserType(s.router),
@@ -60,12 +64,37 @@ export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditional
   withProps<TAdditionalProps, IStateProps & TRouteLoginProps>(
     ({ userType, rootPath, location }) => ({
       walletSelectionDisabled: !userMayChooseWallet(userType),
-      logoutReason: location.state && location.state.logoutReason,
+      showLogoutReason: !!(location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT),
       redirectLocation: createLocation(getRedirectionUrl(rootPath), location.state),
     }),
   ),
-  resetWalletOnLeave(),
+  // resetWalletOnLeave(),
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),
-)(WalletSelectorLayout);
+  branch<IStateProps>(({ isLoginRoute }) => isLoginRoute,
+    renderComponent(WalletSelectorLoginLayout),
+    renderComponent(WalletSelectorRegisterLayout)
+  ),
+)(shouldNeverHappen("WalletSelector reached default branch"));
+
+export const WalletSelectorRegister = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
+  createErrorBoundary(ErrorBoundaryLayout),
+  appConnect<TWalletRegisterData, IDispatchProps>({
+    stateToProps: s => ({
+    ...selectRegisterWithBrowserWalletData(s),
+    }),
+  }),
+
+  withContainer(
+    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
+  ),
+  withContainer(
+    withProps(({rootPath,walletSelectionDisabled, ...rest})=> { console.log("withContainer",rootPath, rest);return ({rootPath,walletSelectionDisabled})}
+    )(WalletBrowserBase)
+  ),
+  branch(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_LOADING,
+    renderComponent(WalletLoading)),
+  branch(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_ERROR,
+    renderComponent(MetamaskError)),
+)(LoadingIndicator);

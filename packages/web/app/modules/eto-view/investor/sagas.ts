@@ -44,6 +44,7 @@ export function* loadInvestorEtoView(
     payload: { previewCode, routeMatch },
   }: TActionFromCreator<typeof actions.etoView.loadInvestorEtoView>,
 ): Generator<any, void, any> {
+  yield put(actions.etoView.resetEtoViewData());
   try {
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
       loadEtoWithCompanyAndContract,
@@ -68,6 +69,7 @@ export function* loadInvestorEtoViewById(
     payload: { etoId, routeMatch },
   }: TActionFromCreator<typeof actions.etoView.loadInvestorEtoViewById>,
 ): Generator<any, void, any> {
+  yield put(actions.etoView.resetEtoViewData());
   try {
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
       loadEtoWithCompanyAndContractById,

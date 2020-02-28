@@ -19,6 +19,10 @@ export const etoViewReducer: AppReducer<TEtoViewState> = (
         processState: EProcessState.SUCCESS,
         ...action.payload.etoData,
       };
+    case actions.etoView.resetEtoViewData.getType():
+      return {
+        ...etoViewInitialState,
+      };
     case actions.etoView.setEtoError.getType():
       return {
         processState: EProcessState.ERROR,

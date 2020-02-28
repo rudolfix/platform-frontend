@@ -10,7 +10,7 @@ import { EUserType } from "../../../lib/api/users/interfaces";
 import { EProcessState } from "../../../utils/enums/processStates";
 import { actions } from "../../actions";
 import { selectUserType } from "../../auth/selectors";
-import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../../bookbuilding-flow/utils";
+import { shouldLoadPledgeData } from "../../bookbuilding-flow/utils";
 import { delayEtoRefresh, loadEtoWithCompanyAndContract } from "../../eto/sagas";
 import {
   EETOStateOnChain,
@@ -148,14 +148,8 @@ export function* saveUsersPledge(
 export function* saveBookbuildingStats(
   eto: TEtoWithCompanyAndContractReadonly,
 ): Generator<any, void, any> {
-  const onChainState = eto.contract && eto.contract.timedState;
-
-  if (shouldLoadBookbuildingStats(onChainState)) {
-    eto.isBookbuilding
-      ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
-      : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
-  } else {
-    yield put(actions.bookBuilding.bookBuildingStopWatch(eto.etoId));
+  if (eto.subState === EEtoSubState.WHITELISTING && eto.isBookbuilding) {
+    yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
   }
 }
 

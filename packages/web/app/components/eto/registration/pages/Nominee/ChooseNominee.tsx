@@ -6,8 +6,11 @@ import { branch, compose, renderComponent } from "recompose";
 import { actions } from "../../../../../modules/actions";
 import { INomineeRequest } from "../../../../../modules/nominee-flow/types";
 import { appConnect } from "../../../../../store";
+import {
+  TWithNomineeProps,
+  withNomineeRequests,
+} from "../../../../issuer-dashboard/hocs/withNomineeRequests";
 import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";
-import { TWithNomineeProps, withNomineeRequests } from "../../../shared/hocs/withNomineeRequests";
 import { Section } from "../../Shared";
 import { CopyEtoIdComponent } from "./CopyEtoIdComponent";
 import { nomineeRequestsAreEmpty } from "./utils";
@@ -133,7 +136,7 @@ const PendingNomineesComponent: React.FunctionComponent<TWithNomineeProps & IDis
       <div>
         <FormattedMessage id="eto.form.section.eto-nominee.nominee" />
       </div>
-      {nomineeRequests.map(request => (
+      {nomineeRequests.map((request: INomineeRequest) => (
         <PendingNomineeRequest
           key={request.nomineeId}
           request={request}

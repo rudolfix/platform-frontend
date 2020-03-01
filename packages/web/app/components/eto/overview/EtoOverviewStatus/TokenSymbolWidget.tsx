@@ -1,7 +1,5 @@
+import { ISrcSet, TokenIcon } from "@neufund/design-system";
 import * as React from "react";
-
-import { TokenIcon } from "../../../shared/icons/TokenIcon";
-import { ISrcSet } from "../../../shared/Image";
 
 import * as styles from "./TokenSymbolWidget.module.scss";
 

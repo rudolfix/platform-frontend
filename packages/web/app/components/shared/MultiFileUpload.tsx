@@ -5,7 +5,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { EKycRequestType, IKycFileInfo } from "../../lib/api/kyc/KycApi.interfaces";
 import { Dropzone } from "./Dropzone";
-import { TAcceptedFileType } from "./forms/fields/utils.unsafe";
+import { TAcceptedFileType } from "./forms/fields/utils";
 import { ResponsiveImage } from "./ResponsiveImage";
 import { Tooltip } from "./tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "./tooltips/TooltipBase";

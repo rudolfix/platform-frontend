@@ -1,4 +1,4 @@
-import { delay, fork, put, select } from "@neufund/sagas";
+import { fork, put, select, take } from "@neufund/sagas";
 import { invariant } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
@@ -18,8 +18,6 @@ import { ETxSenderType, TSpecificTransactionState } from "../types";
 import { TransactionCancelledError } from "./../event-channel/errors";
 import { SchemaMismatchError } from "./errors";
 import { selectPlatformPendingTransaction } from "./selectors";
-
-const TX_MONITOR_DELAY = process.env.NF_CYPRESS_RUN === "1" ? 5000 : 30000;
 
 export function* deletePendingTransaction({
   apiUserService,
@@ -196,7 +194,7 @@ function* txMonitor({ logger }: TGlobalDependencies): Generator<any, any, any> {
       logger.error("Error getting pending txs", e);
     }
 
-    yield delay(TX_MONITOR_DELAY);
+    yield take(actions.web3.newBlockArrived.getType());
   }
 }
 

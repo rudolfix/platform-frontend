@@ -1,3 +1,4 @@
+import { TokenIcon } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -7,9 +8,9 @@ import { Link } from "react-router-dom";
 import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
 import { getTokenPrice } from "../../modules/investor-portfolio/utils";
 import { etoPublicViewLink } from "../appRouteUtils";
-import { DashboardHeading } from "../eto/shared/DashboardHeading";
-import { EProjectStatusSize, ETOInvestorState } from "../eto/shared/ETOState";
 import { Container } from "../layouts/Container";
+import { DashboardHeading } from "../shared/DashboardHeading";
+import { EProjectStatusSize, ETOInvestorState } from "../shared/eto-state/ETOState";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
 import { Money } from "../shared/formatters/Money";
 import {
@@ -19,7 +20,6 @@ import {
   EPriceFormat,
 } from "../shared/formatters/utils";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
-import { TokenIcon } from "../shared/icons/TokenIcon";
 import { ENewTableCellLayout, NewTable, NewTableRow } from "../shared/table";
 
 import * as styles from "./PortfolioLayout.module.scss";

@@ -17,7 +17,7 @@ const schema = Yup.object().shape({
 
 let isTouched = false;
 
-storiesOf("NDS|Molecules/Inputs/InputBase", module).add("default", () => (
+storiesOf("NDS|Molecules/Inputs/Field", module).add("default", () => (
   <Formik
     onSubmit={() => {}}
     initialValues={{

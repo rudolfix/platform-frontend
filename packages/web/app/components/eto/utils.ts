@@ -3,7 +3,7 @@ import BigNumber from "bignumber.js";
 import { cloneDeep, flow, get, set } from "lodash";
 
 import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TShareholder } from "./public-view/LegalInformationWidget";
+import { TShareholder } from "./eto-full-view/shared/campaign-overview/legal-information-widget/LegalInformationWidget";
 
 const HUNDRED_PERCENT = new BigNumber("100");
 export const OTHERS_NAME = "Others";

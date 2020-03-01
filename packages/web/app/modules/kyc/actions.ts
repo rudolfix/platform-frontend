@@ -10,6 +10,7 @@ import {
   TKycStatus,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { kycBeneficialOwnerActions } from "./beneficial-owner/actions";
+import { kycFinancialDisclosureActions } from "./financial-disclosure/actions";
 import { kycInstantIdIdNowActions } from "./instant-id/id-now/actions";
 import { kycInstantIdOnfidoActions } from "./instant-id/onfido/actions";
 import { kycLegalRepresentativeActions } from "./legal-representative/actions";
@@ -18,6 +19,7 @@ import { TBankAccount, TClaims } from "./types";
 export const kycActions = {
   ...kycInstantIdOnfidoActions,
   ...kycInstantIdIdNowActions,
+  ...kycFinancialDisclosureActions,
   ...kycBeneficialOwnerActions,
   ...kycLegalRepresentativeActions,
 
@@ -158,8 +160,8 @@ export const kycActions = {
   kycLoadManagingDirector: createActionFactory("KYC_LOAD_MANAGING_DIRECTOR"),
   kycUpdateManagingDirector: createActionFactory(
     "KYC_UPDATE_MANAGING_DIRECTOR_DATA",
-    (loadingMangingDirector: boolean, managingDirector?: IKycManagingDirector) => ({
-      loadingMangingDirector,
+    (managingDirectorLoading: boolean, managingDirector?: IKycManagingDirector) => ({
+      managingDirectorLoading,
       managingDirector,
     }),
   ),

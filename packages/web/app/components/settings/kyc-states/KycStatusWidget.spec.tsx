@@ -4,11 +4,12 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import { EKycRequestStatus, EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { KycStatusWidgetBase } from "./KycStatusWidget";
 
 const defaultProps = {
+  kycRequestType: EKycRequestType.INDIVIDUAL,
   onGoToKycHome: () => {},
   onGoToDashboard: () => {},
   onStartIdNow: () => {},

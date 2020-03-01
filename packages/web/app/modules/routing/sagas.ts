@@ -1,13 +1,25 @@
-import { fork, put, SagaIterator, select } from "@neufund/sagas";
-import { LocationChangeAction } from "connected-react-router";
+import { Effect, fork, put, SagaIterator, select } from "@neufund/sagas";
+import { LocationChangeAction, RouterState } from "connected-react-router";
+import { match } from "react-router";
 
-import { appRoutes } from "../../components/appRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsAuthorized, selectUserType } from "../auth/selectors";
 import { waitForAppInit } from "../init/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
+import { routes } from "./routes";
+
+type TRouteActions = {
+  //"undefined" is for backwards compatibility,
+  // see comments in the ./routeDefinitions.ts
+  notAuth: undefined | Effect;
+  investor: undefined | Effect;
+  issuer: undefined | Effect;
+  nominee: undefined | Effect;
+};
+
+export const GREYP_PREVIEW_CODE = "e2b6949e-951d-4e99-ac11-534fdad86a80";
 
 function* openInNewWindowSaga(
   _: TGlobalDependencies,
@@ -38,23 +50,63 @@ export function* startRouteBasedSagas(
     }`,
   );
 
-  if (appIsReady && userIsAuthorized && userType === EUserType.NOMINEE) {
-    yield neuCall(nomineeRouting, action);
+  if (appIsReady) {
+    yield neuCall(router, action.payload);
   }
 }
 
-export function* nomineeRouting(
-  _: TGlobalDependencies,
-  { payload }: LocationChangeAction,
+export function* router(
+  { logger }: TGlobalDependencies,
+  payload: RouterState,
 ): Generator<any, any, any> {
-  if (payload.location.pathname === appRoutes.dashboard) {
-    yield put(actions.nomineeFlow.nomineeDashboardView());
+  try {
+    for (const route of routes) {
+      const routeMatch = yield route(payload);
+      if (routeMatch) {
+        return;
+      }
+    }
+    return;
+  } catch (e) {
+    logger.error("error in routing saga", e);
+    yield put(actions.routing.goHome());
   }
-  if (payload.location.pathname === appRoutes.etoIssuerView) {
-    yield put(actions.nomineeFlow.nomineeEtoView());
+}
+
+export function* routeInternal(routeActions: TRouteActions): Generator<any, any, any> {
+  // if routeAction is defined, execute it and return true to stop iterating over routes.
+  // If action is undefined, simply return true, this is for backwards
+  // compatibility with our legacy routing
+  const userIsAuthorized = yield select(selectIsAuthorized);
+  const userType = yield select(selectUserType);
+
+  if (!userIsAuthorized) {
+    yield routeActions.notAuth !== undefined ? routeActions.notAuth : undefined;
+    return true;
   }
-  if (payload.location.pathname === appRoutes.documents) {
-    yield put(actions.nomineeFlow.nomineeDocumentsView());
+
+  if (userIsAuthorized && userType === EUserType.INVESTOR) {
+    yield routeActions.investor !== undefined ? routeActions.investor : undefined;
+    return true;
+  }
+
+  if (userIsAuthorized && userType === EUserType.ISSUER) {
+    yield routeActions.issuer !== undefined ? routeActions.issuer : undefined;
+    return true;
+  }
+
+  if (userIsAuthorized && userType === EUserType.NOMINEE) {
+    yield routeActions.nominee !== undefined ? routeActions.nominee : undefined;
+    return true;
+  }
+}
+
+export function* routeAction<P>(
+  routeMatch: match<P> | null,
+  routeActions: TRouteActions,
+): Generator<any, any, any> {
+  if (routeMatch !== null) {
+    return yield routeInternal(routeActions);
   }
 }
 

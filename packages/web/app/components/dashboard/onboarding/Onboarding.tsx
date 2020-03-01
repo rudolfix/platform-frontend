@@ -8,7 +8,7 @@ import {
   selectBackupCodesVerified,
   selectIsUserEmailVerified,
 } from "../../../modules/auth/selectors";
-import { selectKycRequestStatus } from "../../../modules/kyc/selectors";
+import { selectKycRequestStatus, selectKycRequestType } from "../../../modules/kyc/selectors";
 import { selectWalletType } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
@@ -53,6 +53,7 @@ export const Onboarding = compose<TAccountSetupSteps, {}>(
       backupCodesVerified: selectBackupCodesVerified(state),
       kycRequestStatus: nonNullable(selectKycRequestStatus(state)),
       walletType: nonNullable(selectWalletType(state)),
+      kycRequestType: selectKycRequestType(state),
     }),
   }),
   branch<TOnboardingInitData>(

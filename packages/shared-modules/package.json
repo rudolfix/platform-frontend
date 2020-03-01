@@ -26,6 +26,7 @@
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^5.2.6",
+    "@types/react-redux": "^6.0.11",
     "@types/sinon": "^5.0.5",
     "@types/sinon-chai": "^3.2.0",
     "bignumber.js": "^5.0.0",
@@ -36,6 +37,7 @@
     "prettier": "^1.16.4",
     "redux": "^4.0.5",
     "sinon": "^7.3.1",
+    "react-redux": "^6.0.0",
     "sinon-chai": "^3.2.0",
     "ts-node": "6.2.0",
     "tslib": "^1.10.0",
@@ -49,6 +51,7 @@
     "@neufund/shared": "^1.0.0",
     "bignumber.js": "^5.0.0",
     "redux": "^4.0.5",
-    "tslib": "^1.10.0"
+    "tslib": "^1.10.0",
+    "react-redux": "^6.0.0"
   }
 }

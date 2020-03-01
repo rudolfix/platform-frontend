@@ -1,4 +1,10 @@
-import { Button, ButtonInline, EButtonLayout, EButtonWidth } from "@neufund/design-system";
+import {
+  Button,
+  ButtonInline,
+  EButtonLayout,
+  EButtonWidth,
+  TokenIcon,
+} from "@neufund/design-system";
 import { withContainer } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -21,7 +27,6 @@ import { EColumnSpan } from "../../layouts/Container";
 import { DataRowSeparated } from "../../shared/DataRow";
 import { Money } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
-import { TokenIcon } from "../../shared/icons/TokenIcon";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { PanelRounded } from "../../shared/Panel";

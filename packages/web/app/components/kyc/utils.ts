@@ -7,7 +7,7 @@ import {
   TManualIdProvider,
 } from "../../lib/api/kyc/KycApi.interfaces";
 import { OnfidoSDK } from "../../lib/dependencies/onfido/OnfidoSDK";
-import { EMimeType, TAcceptedFileType } from "../shared/forms/fields/utils.unsafe";
+import { EMimeType, TAcceptedFileType } from "../shared/forms/fields/utils";
 
 import id_now from "../../assets/img/instant-id/id_now.svg";
 import onfido from "../../assets/img/instant-id/onfido.svg";

@@ -1,4 +1,4 @@
-import { delay, put, select, takeLatest } from "@neufund/sagas";
+import { put, select, take, takeLatest } from "@neufund/sagas";
 import { Q18 } from "@neufund/shared";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -7,9 +7,6 @@ import { numericValuesToString } from "../../contracts/utils";
 import { selectIsSmartContractInitDone } from "../../init/selectors";
 import { neuCall } from "../../sagasUtils";
 import { ITokenPriceStateData } from "./reducer";
-
-const TOKEN_PRICE_MONITOR_DELAY = 120000;
-const TOKEN_PRICE_MONITOR_SHORT_DELAY = 1000;
 
 export async function loadTokenPriceDataAsync({
   contractsService,
@@ -51,10 +48,8 @@ function* tokenPriceMonitor({ logger }: TGlobalDependencies): any {
       yield put(actions.tokenPrice.saveTokenPrice(tokenPriceData));
     } catch (e) {
       logger.error("Token Price Oracle Failed", e);
-      yield delay(TOKEN_PRICE_MONITOR_SHORT_DELAY);
-      continue;
     }
-    yield delay(TOKEN_PRICE_MONITOR_DELAY);
+    yield take(actions.web3.newBlockArrived.getType());
   }
 }
 

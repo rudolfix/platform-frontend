@@ -1,31 +1,36 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import withFormik from "storybook-formik";
 
 import { FormToggle } from "./FormToggle";
-import { formWrapper } from "./testingUtils.unsafe";
 
 storiesOf("forms/fields/Toggle", module)
-  .add(
-    "on",
-    formWrapper({ toggle: true })(() => (
-      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" />
-    )),
-  )
-  .add(
-    "off",
-    formWrapper({ toggle: false })(() => (
-      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" />
-    )),
-  )
+  .addDecorator(withFormik)
+  .add("on", () => <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" />, {
+    formik: {
+      initialValues: { toggle: true },
+    },
+  })
+  .add("off", () => <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" />, {
+    formik: {
+      initialValues: { toggle: false },
+    },
+  })
   .add(
     "disabled on",
-    formWrapper({ toggle: true })(() => (
-      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" disabled />
-    )),
+    () => <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" disabled />,
+    {
+      formik: {
+        initialValues: { toggle: true },
+      },
+    },
   )
   .add(
     "disabled off",
-    formWrapper({ toggle: false })(() => (
-      <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" disabled />
-    )),
+    () => <FormToggle name="toggle" enabledLabel="on" disabledLabel="off" disabled />,
+    {
+      formik: {
+        initialValues: { toggle: false },
+      },
+    },
   );

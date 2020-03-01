@@ -23,6 +23,7 @@ const ActionButton: React.FunctionComponent<THeaderFullscreenProps & CommonHtmlP
     svgIcon={close}
     iconPosition={EIconPosition.ICON_AFTER}
     onClick={buttonAction}
+    iconProps={{ className: styles.actionButtonIcon }}
   >
     {buttonText}
   </Button>

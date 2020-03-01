@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  @include rect(24px);
+
+  margin-right: px-to-rem(12px);
+}
+
+.token-name {
+  @include nds-body;
+
+  color: $neu-charcoal-grey;
+  text-decoration: underline;
+  margin: 0;
+}

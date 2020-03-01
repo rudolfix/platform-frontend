@@ -1,5 +1,6 @@
 import { expectSaga } from "@neufund/sagas/tests";
 import { LocationChangeAction } from "connected-react-router";
+import { getContext } from "redux-saga-test-plan/matchers";
 
 import { appRoutes } from "../../components/appRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -13,6 +14,10 @@ const globalDependencies = {
   logger: {
     info: (_: string) => {},
     error: (_: string) => {},
+  },
+  apiEtoService: {
+    getEtoPreview: (_: string) => {},
+    getEto: (_: string) => {},
   },
 } as TGlobalDependencies;
 
@@ -50,6 +55,7 @@ describe("startRouteBasedSagas", () => {
   //todo expand to test with different state data
   it("runs nomineeDashboardView when going to /dashboard as Nominee", () =>
     expectSaga(startRouteBasedSagas, globalDependencies, routerAction)
+      .provide([[getContext("deps"), globalDependencies]])
       .withState(state)
       .put(actions.nomineeFlow.nomineeDashboardView())
       .run());
@@ -57,6 +63,7 @@ describe("startRouteBasedSagas", () => {
     routerAction.payload.location.pathname = "/";
 
     return expectSaga(startRouteBasedSagas, globalDependencies, routerAction)
+      .provide([[getContext("deps"), globalDependencies]])
       .withState(state)
       .not.put(actions.nomineeFlow.nomineeDashboardView())
       .run();
@@ -65,14 +72,23 @@ describe("startRouteBasedSagas", () => {
     routerAction.payload.location.pathname = appRoutes.etoIssuerView;
 
     return expectSaga(startRouteBasedSagas, globalDependencies, routerAction)
+      .provide([[getContext("deps"), globalDependencies]])
       .withState(state)
-      .put(actions.nomineeFlow.nomineeEtoView())
+      .put(
+        actions.etoView.loadNomineeEtoView({
+          params: {},
+          path: "/eto/view",
+          isExact: true,
+          url: "/eto/view",
+        }),
+      )
       .run();
   });
   it("runs nomineeDashboardView when going to /documents as Nominee", () => {
     routerAction.payload.location.pathname = appRoutes.documents;
 
     return expectSaga(startRouteBasedSagas, globalDependencies, routerAction)
+      .provide([[getContext("deps"), globalDependencies]])
       .withState(state)
       .put(actions.nomineeFlow.nomineeDocumentsView())
       .run();

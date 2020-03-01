@@ -9,7 +9,7 @@ import { selectNomineeStateIsLoading } from "../../../modules/nominee-flow/selec
 import { appConnect } from "../../../store";
 import { TDataTestId } from "../../../types";
 import { EKeys } from "../../../utils/enums/keysEnum";
-import { FormError } from "../../shared/forms/fields/FormFieldError";
+import { FormError } from "../../shared/forms/layouts/FormError";
 import { EMaskedFormError, getMessageTranslation } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
 import { validateEthAddress, validateEthInput } from "./utils";

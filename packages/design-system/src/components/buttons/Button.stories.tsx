@@ -1,223 +1,161 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Button, EButtonLayout, EButtonSize, EButtonWidth, EIconPosition } from "./Button";
-
 import icon from "../../assets/img/inline_icons/download.svg";
+import { BlockWrapper, InlineBlockWrapper, PaddedWrapper } from "../../storybook-decorators";
+
+import {
+  Button,
+  EButtonLayout,
+  EButtonSize,
+  EButtonWidth,
+  EIconPosition,
+  TButtonProps,
+} from "./Button";
+import ButtonReadme from "./Button.md";
 
 type TGenerateStoryProps = {
-  layout: EButtonLayout;
-  size: EButtonSize;
-  width: EButtonWidth;
+  title?: string;
 };
 
-const GenerateStory: React.FunctionComponent<TGenerateStoryProps> = ({ layout, size, width }) => (
-  <>
-    <Button layout={layout} size={size} width={width}>
-      Normal
-    </Button>
-    <br />
-    <br />
-    <Button layout={layout} isActive={true} size={size} width={width}>
-      Pressed
-    </Button>
-    <br />
-    <br />
-    <Button layout={layout} autoFocus size={size} width={width}>
-      Focused
-    </Button>
-    <br />
-    <br />
-    <Button layout={layout} disabled size={size} width={width}>
-      Disabled
-    </Button>
-    <br />
-    <br />
-    <Button layout={layout} isLoading size={size} width={width}>
-      Loading
-    </Button>
-    <br />
-    <br />
-    <Button
-      layout={layout}
-      svgIcon={icon}
-      size={size}
-      width={width}
-      iconPosition={EIconPosition.ICON_BEFORE}
-    >
-      icon before text
-    </Button>
-    <br />
-    <br />
-    <Button
-      layout={layout}
-      svgIcon={icon}
-      size={size}
-      width={width}
-      iconPosition={EIconPosition.ICON_AFTER}
-    >
-      icon after text
-    </Button>
-    <br />
-    <br />
-    <Button
-      layout={layout}
-      svgIcon={icon}
-      size={size}
-      width={width}
-      iconProps={{ alt: "Do something" }}
-    />
-    <br />
-    <br />
-    <Button
-      layout={layout}
-      svgIcon={icon}
-      size={size}
-      width={width}
-      isLoading={true}
-      iconProps={{ alt: "Do something" }}
-    />
-  </>
-);
+const GenerateStory: React.FunctionComponent<TGenerateStoryProps & TButtonProps> = ({
+  title,
+  ...props
+}) => {
+  const Wrapper = props.width === EButtonWidth.BLOCK ? BlockWrapper : InlineBlockWrapper;
 
-storiesOf("NDS|Atoms/Button", module)
-  .add("primary, normal size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.PRIMARY}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NORMAL}
-    />
+  return (
+    <>
+      {title && <h6>{title}</h6>}
+      <br />
+      <Wrapper>
+        <Button layout={EButtonLayout.PRIMARY} {...props}>
+          Primary
+        </Button>
+      </Wrapper>
+      <Wrapper>
+        <Button layout={EButtonLayout.SECONDARY} {...props}>
+          Secondary
+        </Button>
+      </Wrapper>
+      <Wrapper>
+        <Button layout={EButtonLayout.OUTLINE} {...props}>
+          Outline
+        </Button>
+      </Wrapper>
+      <Wrapper>
+        <Button layout={EButtonLayout.GHOST} {...props}>
+          Ghost
+        </Button>
+      </Wrapper>
+      <br />
+      <br />
+    </>
+  );
+};
+
+storiesOf("NDS|Molecules/Button", module)
+  .addParameters({
+    readme: {
+      sidebar: ButtonReadme,
+    },
+  })
+  .add("Types", () => (
+    <PaddedWrapper>
+      <GenerateStory title="" size={EButtonSize.SMALL} />
+    </PaddedWrapper>
   ))
-  .add("primary, small size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.PRIMARY}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.NORMAL}
-    />
+  .add("Sizes", () => (
+    <PaddedWrapper>
+      <GenerateStory title="Small" size={EButtonSize.SMALL} />
+      <GenerateStory title="Normal" size={EButtonSize.NORMAL} />
+      <GenerateStory title="Huge" size={EButtonSize.HUGE} />
+      <GenerateStory title="Dynamic" size={EButtonSize.DYNAMIC} />
+    </PaddedWrapper>
   ))
-  .add("primary, huge size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.PRIMARY}
-      size={EButtonSize.HUGE}
-      width={EButtonWidth.NORMAL}
-    />
+  .add("Width", () => (
+    <PaddedWrapper>
+      <GenerateStory title="Normal" width={EButtonWidth.NORMAL} />
+      <GenerateStory title="No padding" width={EButtonWidth.NO_PADDING} />
+      <GenerateStory title="Block" width={EButtonWidth.BLOCK} />
+    </PaddedWrapper>
   ))
-  .add("primary, normal size, block width", () => (
-    <GenerateStory
-      layout={EButtonLayout.PRIMARY}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.BLOCK}
-    />
+  .add("States", () => (
+    <PaddedWrapper>
+      <GenerateStory title="Pressed" isActive />
+      <GenerateStory title="Focused" autoFocus />
+      <GenerateStory title="Disabled" disabled />
+      <GenerateStory title="Loading" isLoading />
+    </PaddedWrapper>
   ))
-  .add("primary, normal size, no-padding width", () => (
-    <GenerateStory
-      layout={EButtonLayout.PRIMARY}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NO_PADDING}
-    />
+  .add("With Icon", () => (
+    <PaddedWrapper>
+      <GenerateStory title="Before text" svgIcon={icon} iconPosition={EIconPosition.ICON_BEFORE} />
+      <GenerateStory title="After text" svgIcon={icon} iconPosition={EIconPosition.ICON_AFTER} />
+      <GenerateStory title="Disabled" svgIcon={icon} iconProps={{ alt: "Do something" }} />
+      <GenerateStory
+        title="Loading"
+        svgIcon={icon}
+        isLoading={true}
+        iconProps={{ alt: "Do something" }}
+      />
+    </PaddedWrapper>
   ))
-  .add("secondary, normal size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.SECONDARY}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NORMAL}
-    />
+  .add("With Icon - no padding", () => (
+    <PaddedWrapper>
+      <GenerateStory
+        title="Before text"
+        svgIcon={icon}
+        iconPosition={EIconPosition.ICON_BEFORE}
+        width={EButtonWidth.NO_PADDING}
+      />
+      <GenerateStory
+        title="After text"
+        svgIcon={icon}
+        iconPosition={EIconPosition.ICON_AFTER}
+        width={EButtonWidth.NO_PADDING}
+      />
+      <GenerateStory
+        title="Disabled"
+        svgIcon={icon}
+        iconProps={{ alt: "Do something" }}
+        width={EButtonWidth.NO_PADDING}
+      />
+      <GenerateStory
+        title="Loading"
+        svgIcon={icon}
+        isLoading={true}
+        iconProps={{ alt: "Do something" }}
+        width={EButtonWidth.NO_PADDING}
+      />
+    </PaddedWrapper>
   ))
-  .add("secondary, small size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.SECONDARY}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("secondary, huge size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.SECONDARY}
-      size={EButtonSize.HUGE}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("secondary, normal size, block width", () => (
-    <GenerateStory
-      layout={EButtonLayout.SECONDARY}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.BLOCK}
-    />
-  ))
-  .add("secondary, normal size, no-padding width", () => (
-    <GenerateStory
-      layout={EButtonLayout.SECONDARY}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NO_PADDING}
-    />
-  ))
-  .add("outline, normal size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.OUTLINE}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("outline, small size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.OUTLINE}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("outline, huge size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.OUTLINE}
-      size={EButtonSize.HUGE}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("outline, normal size, block width", () => (
-    <GenerateStory
-      layout={EButtonLayout.OUTLINE}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.BLOCK}
-    />
-  ))
-  .add("outline, normal size, no-padding width", () => (
-    <GenerateStory
-      layout={EButtonLayout.OUTLINE}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NO_PADDING}
-    />
-  ))
-  .add("ghost, normal size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.GHOST}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("ghost, small size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.GHOST}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("ghost, huge size, normal width", () => (
-    <GenerateStory
-      layout={EButtonLayout.GHOST}
-      size={EButtonSize.HUGE}
-      width={EButtonWidth.NORMAL}
-    />
-  ))
-  .add("ghost, normal size, block width", () => (
-    <GenerateStory
-      layout={EButtonLayout.GHOST}
-      size={EButtonSize.SMALL}
-      width={EButtonWidth.BLOCK}
-    />
-  ))
-  .add("ghost, normal size, no-padding width", () => (
-    <GenerateStory
-      layout={EButtonLayout.GHOST}
-      size={EButtonSize.NORMAL}
-      width={EButtonWidth.NO_PADDING}
-    />
+  .add("With Icon - block", () => (
+    <PaddedWrapper>
+      <GenerateStory
+        title="Before text"
+        svgIcon={icon}
+        iconPosition={EIconPosition.ICON_BEFORE}
+        width={EButtonWidth.BLOCK}
+      />
+      <GenerateStory
+        title="After text"
+        svgIcon={icon}
+        iconPosition={EIconPosition.ICON_AFTER}
+        width={EButtonWidth.BLOCK}
+      />
+      <GenerateStory
+        title="Disabled"
+        svgIcon={icon}
+        iconProps={{ alt: "Do something" }}
+        width={EButtonWidth.BLOCK}
+      />
+      <GenerateStory
+        title="Loading"
+        svgIcon={icon}
+        isLoading={true}
+        iconProps={{ alt: "Do something" }}
+        width={EButtonWidth.BLOCK}
+      />
+    </PaddedWrapper>
   ));

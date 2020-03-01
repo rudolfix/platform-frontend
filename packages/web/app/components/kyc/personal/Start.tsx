@@ -1,8 +1,9 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
+import { defaultTo } from "lodash/fp";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
@@ -26,7 +27,6 @@ import { onEnterAction } from "../../../utils/react-connected-components/OnEnter
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
-  boolify,
   FormDeprecated,
   FormField,
   FormFieldDate,
@@ -34,14 +34,17 @@ import {
   FormSelectField,
   FormSelectNationalityField,
   NONE_KEY,
-  unboolify,
-} from "../../shared/forms";
+} from "../../shared/forms/index";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { EKycUploadType } from "../../shared/MultiFileUpload";
 import { Notification } from "../../shared/notification-widget/Notification";
+import { Tooltip } from "../../shared/tooltips/Tooltip";
+import { ECustomTooltipTextPosition } from "../../shared/tooltips/TooltipBase";
 import { KYCAddDocuments } from "../shared/AddDocuments";
 import { KycStep } from "../shared/KycStep";
+import { TOTAL_STEPS_PERSONAL_KYC } from "./constants";
 
+import InfoIcon from "../../../assets/img/info-outline.svg";
 import * as styles from "./Start.module.scss";
 
 const GENERIC_SHORT_ANSWERS = {
@@ -90,10 +93,10 @@ const KYCForm: React.FunctionComponent<TProps> = ({
     <>
       <KycStep
         step={2}
-        allSteps={5}
+        allSteps={TOTAL_STEPS_PERSONAL_KYC}
         title={<FormattedMessage id="kyc.personal.details.title" />}
         description={<FormattedMessage id="kyc.personal.details.description" />}
-        buttonAction={() => props.submitAndClose(boolify(values))}
+        buttonAction={() => props.submitAndClose(values)}
         data-test-id="kyc.individual-start"
       />
       <FormDeprecated>
@@ -152,16 +155,16 @@ const KYCForm: React.FunctionComponent<TProps> = ({
               data-test-id="kyc-personal-start-is-accredited-us-citizen"
             />
 
-            {values.isAccreditedUsCitizen === BOOL_FALSE_KEY && (
+            {values.isAccreditedUsCitizen === false && (
               <Notification
                 className="mb-4"
                 text={<FormattedMessage id="notifications.not-accredited-investor" />}
                 type={ENotificationType.WARNING}
               />
             )}
-            {values.isAccreditedUsCitizen === BOOL_TRUE_KEY && (
+            {values.isAccreditedUsCitizen === true && (
               <KYCAddDocuments
-                onEnter={actions.kyc.kycSubmitPersonalDataNoRedirect(boolify(values))}
+                onEnter={actions.kyc.kycSubmitPersonalDataNoRedirect(values)}
                 uploadType={EKycUploadType.US_ACCREDITATION}
                 // We can skip showing loader if there is a file already uploaded
                 isLoading={props.isSavingForm && uploadedFiles.length === 0}
@@ -169,6 +172,27 @@ const KYCForm: React.FunctionComponent<TProps> = ({
             )}
           </>
         )}
+        <FormSelectField
+          data-test-id="kyc-personal-pep"
+          values={GENERIC_SHORT_ANSWERS}
+          label={
+            <span className="d-flex">
+              <FormattedMessage id="kyc.business.beneficial-owner.pep" />
+              <Tooltip
+                content={
+                  <FormattedHTMLMessage
+                    id="kyc.personal.politically-exposed.tooltip"
+                    tagName="span"
+                  />
+                }
+                textPosition={ECustomTooltipTextPosition.LEFT}
+              >
+                <img src={InfoIcon} alt="" className="mt-n1" />
+              </Tooltip>
+            </span>
+          }
+          name="isPoliticallyExposed"
+        />
         <ButtonGroup className={styles.buttons}>
           <Button
             layout={EButtonLayout.OUTLINE}
@@ -185,6 +209,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
             layout={EButtonLayout.PRIMARY}
             size={EButtonSize.HUGE}
             disabled={shouldDisableSubmit}
+            isLoading={props.isSavingForm}
             data-test-id="kyc-personal-start-submit-form"
           >
             <FormattedMessage id="form.save-and-submit" />
@@ -195,16 +220,15 @@ const KYCForm: React.FunctionComponent<TProps> = ({
   );
 };
 
+const defaultEmptyObject = defaultTo<IKycIndividualData | {}>({});
+
 const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualData>({
   validationSchema: KycPersonalDataSchemaRequiredWithAdditionalData,
-  isInitialValid: (props: object) =>
-    KycPersonalDataSchemaRequiredWithAdditionalData.isValidSync(
-      (props as IStateProps).currentValues,
-    ),
-  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
+  validateOnMount: true,
   enableReinitialize: true,
+  mapPropsToValues: props => defaultEmptyObject(props.currentValues),
   handleSubmit: (values, props) => {
-    props.props.submitForm(boolify(values));
+    props.props.submitForm(values);
   },
 })(KYCForm);
 

@@ -1,7 +1,7 @@
 import { Button } from "@neufund/design-system";
 import { EquityToken } from "@neufund/shared";
 import * as cn from "classnames";
-import { Formik, FormikErrors, FormikProps } from "formik";
+import { FormikErrors, FormikProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -16,7 +16,7 @@ import { isAddressValid } from "../../../../../../modules/web3/utils";
 import { DataRow } from "../../../../../shared/DataRow";
 import { Money } from "../../../../../shared/formatters/Money";
 import { ENumberInputFormat, ENumberOutputFormat } from "../../../../../shared/formatters/utils";
-import { FormDeprecated } from "../../../../../shared/forms";
+import { Form } from "../../../../../shared/forms";
 import { TransferHeader } from "../../shared/TransferHeader";
 import { EtherAddressFormRow } from "../EtherAddressFormRow/EtherAddressFormRow";
 import { ShowAdditionalNotifications } from "../ShowAdditionalNotifications/ShowAdditionalNotifications";
@@ -88,6 +88,14 @@ const AvailableTokenBalance: React.FunctionComponent<{
   />
 );
 
+const getInitialValues = (to: string, value: string) => ({
+  to: isAddressValid(to) ? to : "",
+  value: isValidFormNumber(value) ? value : "",
+  withdrawAll: false,
+  allowNewAddress: false,
+  allowSmartContract: false,
+});
+
 const TransferLayout: React.FunctionComponent<TTransferLayoutProps> = ({
   notifications,
   onAccept,
@@ -101,33 +109,20 @@ const TransferLayout: React.FunctionComponent<TTransferLayoutProps> = ({
   tokenDecimals,
 }) => (
   <TransferHeader tokenSymbol={tokenSymbol} data-test-id="modals.shared.tx-transfer.modal">
-    <Formik<ITransferData>
+    <Form<ITransferData>
       validate={onValidateHandler}
-      enableReinitialize={false}
-      // Cannot enable now until we update formik to version 2
-      // @See https://github.com/jaredpalmer/formik/issues/1439
-      initialValues={{
-        to: isAddressValid(txUserFlowInputData.to) ? txUserFlowInputData.to : "",
-        value: isValidFormNumber(txUserFlowInputData.value) ? txUserFlowInputData.value : "",
-        withdrawAll: false,
-        allowNewAddress: false,
-        allowSmartContract: false,
-      }}
-      isInitialValid={
-        isAddressValid(txUserFlowInputData.to) && isValidFormNumber(txUserFlowInputData.value)
-      }
+      initialValues={getInitialValues(txUserFlowInputData.to, txUserFlowInputData.value)}
       onSubmit={onAccept}
     >
       {({
         isValid,
         isValidating,
         setFieldValue,
-        setFieldTouched,
         values,
         errors,
         touched,
       }: FormikProps<ITransferData>) => (
-        <FormDeprecated>
+        <>
           <EtherAddressFormRow errors={errors} values={values} />
           <ShowAdditionalNotifications errors={errors} notifications={notifications} />
           <AvailableTokenBalance
@@ -136,16 +131,13 @@ const TransferLayout: React.FunctionComponent<TTransferLayoutProps> = ({
             tokenDecimals={tokenDecimals}
           />
           <TransferAllButton
-            setFieldValue={setFieldValue}
+            onClick={amount => setFieldValue("value", amount, true)}
             amount={tokenAmount}
             disabled={validationState === EValidationState.IS_NOT_ACCEPTING_ETHER}
             decimals={tokenDecimals}
           />
           <TokenValueFormRow
-            setFieldValue={setFieldValue}
-            setFieldTouched={setFieldTouched}
             valueEuro={userFlowDetails.inputValueEuro}
-            values={values}
             notifications={notifications}
             errors={errors}
             touched={touched}
@@ -217,9 +209,9 @@ const TransferLayout: React.FunctionComponent<TTransferLayoutProps> = ({
               )}
             </Button>
           </section>
-        </FormDeprecated>
+        </>
       )}
-    </Formik>
+    </Form>
   </TransferHeader>
 );
 

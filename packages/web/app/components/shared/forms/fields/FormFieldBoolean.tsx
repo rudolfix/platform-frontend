@@ -26,10 +26,10 @@ class FormFieldBoolean extends React.Component<TProps> {
   render(): React.ReactNode {
     const { name, checked, disabled, className, ...rest } = this.props;
 
+    // TODO: Test how it will behave if we provide type checkbox
     return (
-      <Field
-        name={name}
-        render={({ field, form }: FieldProps) => (
+      <Field name={name}>
+        {({ field, form }: FieldProps) => (
           <div className={className}>
             <CheckboxLayout
               {...field}
@@ -42,7 +42,7 @@ class FormFieldBoolean extends React.Component<TProps> {
             <FormFieldError name={name} className="text-left" />
           </div>
         )}
-      />
+      </Field>
     );
   }
 }
@@ -51,10 +51,10 @@ class FormRadioButton extends React.Component<TRadioButtonProps> {
   render(): React.ReactNode {
     const { name, checked, disabled, value } = this.props;
 
+    // TODO: Test how it will behave if we provide type radio
     return (
-      <Field
-        name={name}
-        render={({ field, form }: FieldProps) => (
+      <Field name={name}>
+        {({ field, form }: FieldProps) => (
           <RadioButtonLayout
             {...field}
             {...this.props}
@@ -63,7 +63,7 @@ class FormRadioButton extends React.Component<TRadioButtonProps> {
             disabled={disabled}
           />
         )}
-      />
+      </Field>
     );
   }
 }

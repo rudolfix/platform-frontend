@@ -23,7 +23,7 @@ import { TFormikConnect, TTranslatedString } from "../../../../types";
 import { getSchemaField, getValidationSchema, isRequired } from "../../../../utils/yupUtils";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
-import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
+import { EMimeType } from "../../../shared/forms/fields/utils";
 import { FormHighlightGroup } from "../../../shared/forms/FormHighlightGroup";
 import { FormSection } from "../../../shared/forms/FormSection";
 import { SOCIAL_PROFILES_PERSON, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
@@ -178,7 +178,8 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
     const { validationSchema } = formik;
 
     const fieldSchema = getSchemaField(name, getValidationSchema(validationSchema));
-    return isRequired(fieldSchema);
+
+    return fieldSchema ? isRequired(fieldSchema) : false;
   }
 
   componentDidMount(): void {
@@ -197,9 +198,8 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
     const individuals = this.isEmpty() ? [] : values[name].members;
     return (
       <FormSection title={title}>
-        <FieldArray
-          name={`${name}.members`}
-          render={arrayHelpers => (
+        <FieldArray name={`${name}.members`}>
+          {arrayHelpers => (
             <>
               {individuals.map((member: IMemberData, index: number) => {
                 const canRemove = !(index === 0 && this.isRequired());
@@ -227,7 +227,7 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
               </Button>
             </>
           )}
-        />
+        </FieldArray>
       </FormSection>
     );
   }

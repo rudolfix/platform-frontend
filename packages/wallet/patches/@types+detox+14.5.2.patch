@@ -1,0 +1,18 @@
+diff --git a/node_modules/@types/detox/index.d.ts b/node_modules/@types/detox/index.d.ts
+index e2fd202..0aa6757 100644
+--- a/node_modules/@types/detox/index.d.ts
++++ b/node_modules/@types/detox/index.d.ts
+@@ -7,13 +7,6 @@
+ //                 Max Komarychev <https://github.com/maxkomarychev>
+ // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+ declare global {
+-    const device: Detox.Device;
+-    const detox: Detox.Detox;
+-    const element: Detox.Element;
+-    const waitFor: Detox.WaitFor;
+-    const expect: Detox.Expect<Detox.Expect<Promise<void>>>;
+-    const by: Detox.Matchers;
+-
+     namespace Detox {
+         interface Detox {
+             /**

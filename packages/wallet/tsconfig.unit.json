@@ -1,11 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
     "module": "commonjs",
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "types": ["jest"]
   },
-  "include": ["./**.spec.*"],
+  "include": ["./app/**/*.spec.*"],
   "exclude": ["node_modules"]
 }

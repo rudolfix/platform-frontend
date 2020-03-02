@@ -11,8 +11,12 @@
     "start:ios": "react-native run-ios",
     "start:ios:release": "react-native run-ios --configuration Release",
     "start:devtools": "react-devtools",
-    "tsc": "tsc --noEmit",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "tsc": "concurrently -p '[TSC:{name}]' -n 'APP,UNIT,E2E' -c 'bgYellow.bold,bgGreen.bold,bgMagenta.bold' 'yarn tsc:app' 'yarn tsc:unit' 'yarn tsc:e2e'",
+    "tsc:app": "tsc --project ./tsconfig.json",
+    "tsc:e2e": "tsc --project ./tsconfig.e2e.json",
+    "tsc:unit": "tsc --project ./tsconfig.unit.json",
+    "lint": "concurrently -p '[LINT:{name}]' -n 'FORMAT,TDC' -c 'bgYellow.bold,bgGreen.bold' 'yarn format' 'yarn tsc'",
+    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prepare": "echo 'Nothing to prepare for wallet yet...'",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -32,7 +36,8 @@
     "storybook:ios": "ENVFILE=./storybook/.storybook-config react-native run-ios",
     "storybook:ios:release": "ENVFILE=./storybook/.storybook-config react-native run-ios --configuration Release",
     "storybook:android": "ENVFILE=./storybook/.storybook-config react-native run-android",
-    "storybook:android:release": "ENVFILE=./storybook/.storybook-config react-native run-android --variant release"
+    "storybook:android:release": "ENVFILE=./storybook/.storybook-config react-native run-android --variant release",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@neufund/shared": "^1.0.0",
@@ -74,6 +79,7 @@
     "@types/react-redux": "^6.0.11",
     "@typescript-eslint/eslint-plugin": "^2.12.0",
     "@typescript-eslint/parser": "^2.12.0",
+    "concurrently": "^5.1.0",
     "detox": "^15.2.0",
     "eslint": "^6.5.1",
     "jest": "^25.1.0",

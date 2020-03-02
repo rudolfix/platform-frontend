@@ -18,7 +18,9 @@ export const appRoutes = {
   registerIssuer: "/eto/register",
 
   registerNominee: "/nominee/register",
+
   login: "/login",
+  loginBrowserWallet: "/login/browser",
 
   restore: "/restore",
 

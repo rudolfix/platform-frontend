@@ -14,7 +14,7 @@ interface IStateProps {
 }
 
 export const WalletLightComponent: React.FunctionComponent<IStateProps> = ({ isLoginRoute }) => (
-  <section className={styles.section}>
+  <section className={styles.main}>
     {isLoginRoute ? <LoginLightWallet /> : <RegisterLightWallet />}
   </section>
 );

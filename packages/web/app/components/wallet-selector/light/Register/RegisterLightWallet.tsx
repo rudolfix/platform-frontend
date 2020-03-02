@@ -1,16 +1,14 @@
-import { Button, Checkbox, TextField } from "@neufund/design-system";
+import { Button, Checkbox, EButtonWidth, TextField } from "@neufund/design-system";
 import { IIntlProps, injectIntlHelpers } from "@neufund/shared";
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { Col, Row } from "reactstrap";
 import { compose } from "recompose";
 import * as Yup from "yup";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Form } from "../../../shared/forms";
+import { Form } from "../../../shared/forms/index";
 import { TMessage } from "../../../translatedMessages/utils";
 
 import * as styles from "./RegisterLightWallet.module.scss";
@@ -69,7 +67,7 @@ const RegisterLightWalletForm: React.FunctionComponent<IStateProps &
     validationSchema={validationSchema}
     initialValues={INITIAL_VALUES}
     onSubmit={values => submitForm(values)}
-    className="my-3"
+    className={styles.form}
   >
     {({ isSubmitting, isValid, touched }) => (
       <>
@@ -109,12 +107,13 @@ const RegisterLightWalletForm: React.FunctionComponent<IStateProps &
           name={TOS}
           data-test-id="wallet-selector-register-tos"
         />
-        <div className="text-center my-4">
+
           <Button
             type="submit"
             isLoading={isSubmitting || isLoading}
             disabled={!isValid}
             data-test-id="wallet-selector-register-button"
+            width={EButtonWidth.BLOCK}
           >
             {restore ? (
               <FormattedMessage id="wallet-selector.neuwallet.restore" />
@@ -122,7 +121,6 @@ const RegisterLightWalletForm: React.FunctionComponent<IStateProps &
               <FormattedMessage id="wallet-selector.neuwallet.register" />
             )}
           </Button>
-        </div>
       </>
     )}
   </Form>
@@ -133,32 +131,14 @@ const RegisterEnhancedLightWalletForm = compose<
   IStateProps & IDispatchProps & TRegisterWalletExternalProps
 >(injectIntlHelpers)(RegisterLightWalletForm);
 
-export const RegisterWalletComponent: React.FunctionComponent<IDispatchProps &
+export const RegisterWithLightWalletComponent: React.FunctionComponent<IDispatchProps &
   IStateProps &
   TRegisterWalletExternalProps> = props => (
   <>
-    {props.restore ? null : (
-      <>
-        <h2
-          className={cn(styles.title, "text-center mb-4")}
-          data-test-id="modals.wallet-selector.register-restore-light-wallet.title"
-        >
-          <FormattedMessage id="wallet-selector.neuwallet.register-prompt" />
-        </h2>
-        <p className={styles.explanation}>
-          <FormattedMessage tagName="span" id="wallet-selector.neuwallet.explanation-1" />
-        </p>
-      </>
-    )}
-    <Row>
-      <Col md={{ size: 8, offset: 2 }}>
-        <RegisterEnhancedLightWalletForm {...props} />
-      </Col>
-    </Row>
-
-    <p className={styles.note}>
-      <FormattedHTMLMessage tagName="span" id="wallet-selector.neuwallet.explanation-2" />
+    <p className={styles.explanation}>
+      <FormattedMessage id="wallet-selector.neuwallet.explanation" />
     </p>
+    <RegisterEnhancedLightWalletForm {...props} />
   </>
 );
 
@@ -176,4 +156,4 @@ export const RegisterLightWallet = compose<
         dispatch(actions.walletSelector.lightWalletRegister(values.email, values.password)),
     }),
   }),
-)(RegisterWalletComponent);
+)(RegisterWithLightWalletComponent);

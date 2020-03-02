@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { RegisterWalletComponent } from "../../light/Register/RegisterLightWallet";
+import { RegisterWithLightWalletComponent } from "../../light/Register/RegisterLightWallet";
 import { RecoveryStep } from "./RecoveryStep";
 
 export interface IRecoveryFormValues {
@@ -30,7 +30,7 @@ export const LightWalletRecoverySignUp: React.FunctionComponent<TLightWalletReco
       buttonAction={goToDashboard}
       data-test-id="recover-layout"
     />
-    <RegisterWalletComponent
+    <RegisterWithLightWalletComponent
       restore={true}
       submitForm={(values: IRecoveryFormValues) => {
         submitForm(values, seed);

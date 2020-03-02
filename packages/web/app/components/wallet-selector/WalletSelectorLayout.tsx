@@ -2,7 +2,6 @@ import { Location } from "history";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { ELogoutReason } from "../../modules/auth/types";
 import { Heading } from "../shared/Heading";
 import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../shared/WarningAlert";
 import { WalletRouter } from "./WalletRouter";
@@ -24,12 +23,9 @@ interface IExternalRegisterProps {
   redirectLocation: Location;
 }
 
-export const WalletSelectorLayoutContainer: React.FunctionComponent<Pick<
-  IExternalProps,
-  "isLoginRoute" | "logoutReason"
->> = ({ isLoginRoute, logoutReason, children }) => (
+export const WalletSelectorLayoutContainer: React.FunctionComponent<{showLogoutReason:boolean}> = ({  showLogoutReason, children }) => (
   <>
-    {logoutReason === ELogoutReason.SESSION_TIMEOUT && (
+    {showLogoutReason && (
       <WarningAlert
         className={styles.logoutNotification}
         size={EWarningAlertSize.BIG}
@@ -41,11 +37,7 @@ export const WalletSelectorLayoutContainer: React.FunctionComponent<Pick<
     )}
     <div className={styles.wrapper} data-test-id="wallet-selector">
       <Heading level={2} decorator={false} className={styles.title} disableTransform={true}>
-        {isLoginRoute ? (
-          <FormattedMessage id="wallet-selector.log-in" />
-        ) : (
-          <FormattedMessage id="wallet-selector.sign-up" />
-        )}
+        <FormattedMessage id="wallet-selector.log-in" />
       </Heading>
       {children}
     </div>
@@ -68,8 +60,8 @@ export const WalletSelectorLoginLayout: React.FunctionComponent<IExternalProps> 
   walletSelectionDisabled,
   showLogoutReason,
 }) => (
-  <>
-    <WalletSelectorLayoutContainer {...props}>
+
+    <WalletSelectorLayoutContainer showLogoutReason={showLogoutReason}>
     <div className={styles.wrapper} data-test-id="wallet-selector">
       <h1 className={styles.title}>
         <FormattedMessage id="wallet-selector.log-in" />
@@ -80,8 +72,10 @@ export const WalletSelectorLoginLayout: React.FunctionComponent<IExternalProps> 
         walletSelectionDisabled={walletSelectionDisabled}
       />
     </div>
-  </>
+    </WalletSelectorLayoutContainer>
+
 );
+
 
 export const WalletSelectorRegisterLayout: React.FunctionComponent<IExternalRegisterProps> = ({
   rootPath,

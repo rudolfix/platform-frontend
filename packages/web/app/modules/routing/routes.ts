@@ -365,9 +365,8 @@ export function* registerWithLightWalletRoute(payload: RouterState): Generator<a
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerWithLightWallet,
   });
-  console.log("registerWithLightWalletRoute match")
   return yield routeAction(routeMatch, {
-    notAuth: undefined,
+    notAuth: put(actions.walletSelector.registerWithLightWallet()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -391,7 +390,7 @@ export function* registerWithLedgerRoute(payload: RouterState): Generator<any, a
     path: appRoutes.registerWithLedger,
   });
   return yield routeAction(routeMatch, {
-    notAuth: undefined,
+    notAuth:  put(actions.walletSelector.registerWithLedger()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

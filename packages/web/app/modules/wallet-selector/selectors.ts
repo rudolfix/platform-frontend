@@ -1,4 +1,5 @@
 import { RouterState } from "connected-react-router";
+import { createSelector } from "reselect";
 
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
@@ -13,6 +14,12 @@ export const selectUrlUserType = (router: RouterState): EUserType => {
     return EUserType.INVESTOR;
   }
 };
+
+export const selectRouterState = (state: TAppGlobalState) => state.router;
+
+export const selectLocation = createSelector(selectRouterState, router =>
+  router && router.location ? router.location : undefined,
+);
 
 export const selectIsLoginRoute = (state: RouterState): boolean =>
   !!state.location && state.location.pathname.includes("login");
@@ -36,4 +43,11 @@ export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
 
 export const selectRegisterWithBrowserWalletData = (state:TAppGlobalState) =>
-  state.walletSelector.data;
+  state.walletSelector;
+
+export const selectRegisterWalletType = (state:TAppGlobalState) =>
+  state.walletSelector.walletType;
+
+
+export const selectRegisterWithBrowserWalletDefaultFormValues = (state:TAppGlobalState) =>
+  state.walletSelector.defaultFormValues;

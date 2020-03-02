@@ -32,6 +32,15 @@
   }
 }
 
+.title {
+  color: $neu-charcoal-grey;
+  text-align: center;
+  margin: {
+    top: px-to-rem(12px);
+    bottom: px-to-rem(20px);
+  }
+}
+
 .notification {
   display: flex;
   flex-flow: row;

@@ -93,6 +93,8 @@ const Form = <Values extends {}>({
   initialValues,
   validationSchema,
   validate,
+  validateOnMount,
+  enableReinitialize,
   "data-test-id": dataTestId,
   ...props
 }: TFormProps<Values>) => {
@@ -114,8 +116,8 @@ const Form = <Values extends {}>({
         validate={validate}
         validationSchema={validationSchema}
         initialValues={initialValuesMemoized}
-        enableReinitialize={true}
-        validateOnMount={true}
+        enableReinitialize={enableReinitialize !== undefined ?  enableReinitialize : true}
+        validateOnMount={validateOnMount !== undefined  ? validateOnMount : true}
       >
         {formikProps => (
           <FormLayout {...formikProps} className={className} data-test-id={dataTestId}>

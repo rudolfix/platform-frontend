@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { BrowserWalletErrorMessage } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
-import { MetamaskError, WalletBrowserBase, WalletLoading } from "./WalletBrowser";
+import { MetamaskErrorBase, WalletBrowserBase, WalletLoading } from "./WalletBrowser";
 
 storiesOf("Wallet selector/Browser", module)
   .add("initial loading state", () => (

@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { LightWalletErrorMessage } from "../../../translatedMessages/messages";
 import { createMessage } from "../../../translatedMessages/utils";
-import { RegisterWalletComponent } from "./RegisterLightWallet";
+import { RegisterWithLightWalletComponent } from "./RegisterLightWallet";
 
 const testData = {
   submitForm: () => {},
@@ -14,9 +14,9 @@ const testData = {
 storiesOf("Wallet selector/LightWallet", module)
   .add("default", () => {
     const data = { ...testData, restore: false };
-    return <RegisterWalletComponent {...data} />;
+    return <RegisterWithLightWalletComponent {...data} />;
   })
   .add("restore", () => {
     const data = { ...testData, restore: true };
-    return <RegisterWalletComponent {...data} />;
+    return <RegisterWithLightWalletComponent {...data} />;
   });

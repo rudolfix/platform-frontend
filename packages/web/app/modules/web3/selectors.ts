@@ -173,3 +173,5 @@ export const selectEmailFromQueryString = createSelector(selectRouter, (state: R
 
   return getEmailFromQueryString(state.location.search);
 });
+
+export const selectIsWeb3Available = (state: TAppGlobalState) => state.web3.web3Available;

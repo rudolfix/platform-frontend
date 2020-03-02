@@ -2,14 +2,14 @@ import { withContainer } from "@neufund/shared";
 import { createLocation, Location } from "history";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import { branch, compose, renderComponent, renderNothing, withProps } from "recompose";
+import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { ELogoutReason } from "../../modules/auth/types";
 import { TLoginRouterState } from "../../modules/routing/types";
 import {
-  selectIsLoginRoute, selectRegisterWithBrowserWalletData,
+  selectIsLoginRoute, selectRegisterWalletType, selectRegisterWithBrowserWalletData,
   selectRootPath,
   selectUrlUserType,
 } from "../../modules/wallet-selector/selectors";
@@ -19,17 +19,23 @@ import { TContentExternalProps, TransitionalLayout } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
-import { resetWalletOnLeave } from "./resetWallet";
 import { userMayChooseWallet } from "./utils";
 import { getRedirectionUrl } from "./walletRouterHelpers";
 import { WalletSelectorLoginLayout, WalletSelectorRegisterLayout } from "./WalletSelectorLayout";
 import { shouldNeverHappen } from "../shared/NeverComponent";
-import { EBrowserWalletState, TWalletRegisterData } from "../../modules/wallet-selector/reducer";
-import { BrowserWallet } from "../../lib/web3/browser-wallet/BrowserWallet";
-import { EWalletType } from "../../modules/web3/types";
-import { BrowserWalletComponent, LedgerWalletComponent, LightWalletComponent } from "./WalletRouter";
+import {
+  EBrowserWalletState,
+  TBrowserWalletRegisterData,
+  TBrowserWalletRegisterReadyData
+} from "../../modules/wallet-selector/reducer";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
-import { MetamaskError, WalletBrowserBase, WalletLoading } from "./browser/WalletBrowser";
+import {
+  BrowserWalletAskForEmailAndTos, MetamaskError, TWalletBrowserBaseProps,
+  WalletBrowserBase,
+  WalletLoading
+} from "./browser/WalletBrowser";
+import { EWalletType } from "../../modules/web3/types";
+import { RegisterLightWallet } from "./light/Register/RegisterLightWallet";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -40,11 +46,12 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
+  submitForm: (email:string)=> void;
   openICBMModal: () => void;
 }
 
 type TAdditionalProps = {
-  walletSelectionDisabled: boolean;
+  showWalletSelector: boolean;
   showLogoutReason: boolean;
   redirectLocation: Location;
 };
@@ -63,7 +70,7 @@ export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditional
   }),
   withProps<TAdditionalProps, IStateProps & TRouteLoginProps>(
     ({ userType, rootPath, location }) => ({
-      walletSelectionDisabled: !userMayChooseWallet(userType),
+      showWalletSelector: !userMayChooseWallet(userType),
       showLogoutReason: !!(location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT),
       redirectLocation: createLocation(getRedirectionUrl(rootPath), location.state),
     }),
@@ -78,23 +85,52 @@ export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditional
   ),
 )(shouldNeverHappen("WalletSelector reached default branch"));
 
-export const WalletSelectorRegister = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
+
+export const BrowserWalletRegister = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
   createErrorBoundary(ErrorBoundaryLayout),
-  appConnect<TWalletRegisterData, IDispatchProps>({
+  appConnect<TBrowserWalletRegisterData, IDispatchProps>({
     stateToProps: s => ({
-    ...selectRegisterWithBrowserWalletData(s),
+      ...selectRegisterWithBrowserWalletData(s),
+    }),
+    dispatchToProps: dispatch => ({
+      submitForm: (email: string) => dispatch(actions.walletSelector.browserWalletRegisterEmailAndTos(email)),
     }),
   }),
 
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),
+  branch<TBrowserWalletRegisterData>(({browserWalletState}) => { console.log("no props:",browserWalletState);return browserWalletState === EBrowserWalletState.NOT_STARTED},
+    renderComponent(LoadingIndicator)),
   withContainer(
-    withProps(({rootPath,walletSelectionDisabled, ...rest})=> { console.log("withContainer",rootPath, rest);return ({rootPath,walletSelectionDisabled})}
+    withProps<TWalletBrowserBaseProps,TBrowserWalletRegisterReadyData>(({ rootPath, showWalletSelector }) => ({ rootPath, showWalletSelector })
     )(WalletBrowserBase)
   ),
-  branch(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_LOADING,
+  branch<TBrowserWalletRegisterData>(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_ASK_FOR_EMAIL,
+    renderComponent(BrowserWalletAskForEmailAndTos)),
+  branch<TBrowserWalletRegisterData>(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_VERIFYING_EMAIL,
     renderComponent(WalletLoading)),
-  branch(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_ERROR,
+  branch<TBrowserWalletRegisterData>(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_EMAIL_VERIFICATION_ERROR,
+    renderComponent(BrowserWalletAskForEmailAndTos)),
+  branch<TBrowserWalletRegisterData>(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_LOADING,
+    renderComponent(WalletLoading)),
+  branch<TBrowserWalletRegisterData>(({ browserWalletState }) => browserWalletState === EBrowserWalletState.BROWSER_WALLET_ERROR,
     renderComponent(MetamaskError)),
-)(LoadingIndicator);
+)(shouldNeverHappen("WalletSelector reached default branch"));
+
+export const WalletSelectorRegister = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
+  createErrorBoundary(ErrorBoundaryLayout),
+  appConnect<TBrowserWalletRegisterData, IDispatchProps>({
+    stateToProps: s => ({
+      walletType:selectRegisterWalletType(s)
+    }),
+  }),
+
+  withContainer(
+    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
+  ),
+  branch(({walletType}) => walletType === EWalletType.LIGHT,
+    renderComponent(RegisterLightWallet)),
+  branch(({walletType}) => walletType === EWalletType.BROWSER,
+    renderComponent(BrowserWalletRegister))
+)(shouldNeverHappen("WalletSelector reached default branch"));

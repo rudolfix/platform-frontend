@@ -14,12 +14,11 @@
   if (!Cypress.env("Tags")) {
     return;
   }
-  const tags = Cypress.env("Tags").split(",");
+  const tags = Cypress.env("Tags").replace("#", " ");
   let orgIt = it;
   let filterFunction = function(title, fn) {
-    console.log(tags);
-    console.log(title);
-    if (tags.find(t => title.indexOf(t) === -1)) {
+    const splitTitle = title.split(" ");
+    if (!splitTitle.some(t => tags.indexOf(t) !== -1)) {
       fn = null;
     }
     orgIt(title, fn);

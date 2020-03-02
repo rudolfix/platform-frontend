@@ -14,8 +14,8 @@
   "scripts": {
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
     "build:commit-deployment": "cp ./app/config/.env.common .env && cat ./app/config/.env.commit >> .env | webpack --config ./webpack/webpack.config.prod.js",
-    "build:prod:e2e": "cp ./app/config/.env.common .env && NODE_OPTIONS=--max_old_space_size=4096 cat ./app/config/.env.e2e >> .env | webpack --config ./webpack/webpack.config.prod.js",
-    "build:prod:e2e:io": "cp ./app/config/.env.common .env && NODE_OPTIONS=--max_old_space_size=4096 cat ./app/config/.env.e2e.io >> .env | webpack --config ./webpack/webpack.config.prod.js",
+    "build:prod:e2e": "cp ./app/config/.env.common .env && NODE_OPTIONS=--max_old_space_size=4096 cat ./app/config/.env.e2e >> .env | webpack --config ./webpack/webpack.config.ci.prod.js",
+    "build:prod:e2e:io": "cp ./app/config/.env.common .env && NODE_OPTIONS=--max_old_space_size=4096 cat ./app/config/.env.e2e.io >> .env | webpack --config ./webpack/webpack.config.ci.prod.js",
     "build:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack --config ./webpack/webpack.config.prod.js",
     "bundle-analyzer": "(cp -n ./app/config/.env.example .env || true) && NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production webpack --config ./webpack/webpack.config.bundle-analyzer.js",
     "build:prod:prerender": "./scripts/prerender.sh",
@@ -45,9 +45,8 @@
     "test:e2e": "./e2e/setup-e2e.sh",
     "test:e2e:chrome": "./e2e/setup-docker-e2e.sh",
     "test:e2e:vis-reg": "./e2e/setup-vis-reg-e2e.sh",
-    "test:e2e:cypress": "cypress run --config testFiles=\"**/*.spec.e2e.ts\"",
-    "test:e2e:cypress:record": "echo build id $CIRCLE_BUILD_NUM$(echo node) && cypress run --config testFiles=\"**/*.spec.e2e.ts\" --record --parallel --group nodeTests --ci-build-id $CIRCLE_BUILD_NUM$(echo node)",
-    "test:e2e:cypress:io": "echo build id $CIRCLE_BUILD_NUM$(echo io) && cypress run --browser chrome --config testFiles=\"**/*.spec.e2e.io.ts\" --record --parallel --group io --ci-build-id $CIRCLE_BUILD_NUM$(echo io)",
+    "test:e2e:cypress:record": "cypress run --env Tags=$(cat ./e2e-test-tags) --config testFiles=\"**/*.spec.e2e.ts\" --record --parallel --group nodeTests --ci-build-id $CIRCLE_BUILD_NUM$(echo node)",
+    "test:e2e:cypress:io": "cypress run --env Tags=$(cat ./e2e-test-tags) --config testFiles=\"**/*.spec.e2e.io.ts\" --record --parallel --group nodeTests --ci-build-id $CIRCLE_BUILD_NUM$(echo node)",
     "test:e2e:cypress:vis-reg": "echo build id $CIRCLE_BUILD_NUM$(echo visReg) && cypress run --browser chrome --config testFiles=\"**/*.spec.e2e.visreg.ts\" --record --parallel --group io --ci-build-id $CIRCLE_BUILD_NUM$(echo visReg)",
     "test:e2e:dev": "cypress open --config testFiles=\"**/*.spec.e2e.*\"",
     "test:node": "TS_NODE_PROJECT=tsconfig.spec.json mocha --require ts-node/register/transpile-only --require ./test/setupTests.ts './app/**/*.spec.node.ts?(x)'",
@@ -58,7 +57,8 @@
     "tslint": "concurrently -p \"[{name}]\" -n \"APP,E2E\" -c \"bgGreen.bold,bgCyan.bold\" \"yarn tslint:app\" \"yarn tslint:e2e\"",
     "tslint:app": "NODE_OPTIONS=--max_old_space_size=9192 tslint --project ./tsconfig.json --format stylish",
     "tslint:e2e": "tslint --project ./tsconfig.e2e.json --format stylish",
-    "tslint:fix": "concurrently -p \"[{name}]\" -n \"APP,E2E\" -c \"bgGreen.bold,bgCyan.bold\" \"yarn tslint:app --fix\" \"yarn tslint:e2e --fix\""
+    "tslint:fix": "concurrently -p \"[{name}]\" -n \"APP,E2E\" -c \"bgGreen.bold,bgCyan.bold\" \"yarn tslint:app --fix\" \"yarn tslint:e2e --fix\"",
+    "show:tags": "cat ./e2e-test-tags"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
@@ -132,6 +132,7 @@
     "css-loader": "^3.3.0",
     "cypress": "^3.7.0",
     "cypress-plugin-retries": "^1.4.0",
+    "danger": "^9.2.10",
     "dotenv": "^6.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",

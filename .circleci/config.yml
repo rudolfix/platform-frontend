@@ -23,6 +23,8 @@ jobs:
       - run: yarn --frozen-lockfile
       # Confirm Artifact Version
       - run: yarn workspace @neufund/web contract-artifacts:check
+      # Danger
+      - run: yarn workspace @neufund/web danger ci
       # Linting
       - run: yarn workspace @neufund/web lint
       - run: yarn workspace @neufund/shared lint
@@ -35,7 +37,12 @@ jobs:
             - node_modules
             - packages/web/app/lib/contracts
             - /home/circleci/.cache/Cypress
-          key: v31-deps-{{ checksum "package.json" }}
+          key: v33-deps-{{ checksum "package.json" }}
+
+      - persist_to_workspace:
+          root: /home/circleci/app/packages/web
+          paths:
+            - ./e2e-test-tags
 
   build-docker-test-e2e:
     executor: docker-browsers
@@ -43,13 +50,17 @@ jobs:
     parallelism: 4
 
     steps:
-      - checkout
+      - checkout	
       - restore_cache:
           keys:
-            - v31-deps-{{ checksum "package.json" }}
-            - v31-deps-
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
+
+      - attach_workspace:
+          at: /home/circleci/app/packages/web
 
       - run: yarn --frozen-lockfile
+      - run: yarn workspace @neufund/web show:tags
       - run:
           command: yarn workspace @neufund/web build:prod:e2e:io
           no_output_timeout: 10m
@@ -63,12 +74,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v31-deps-{{ checksum "package.json" }}
-            - v31-deps-
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
 
       - run: yarn --frozen-lockfile
       - run:
-          command: yarn workspace @neufund/web build:prod:e2e
+          command: yarn workspace @neufund/web build:prod:e2e:io
           no_output_timeout: 10m
       # If build takes more than 10mins then fail
       - persist_to_workspace:
@@ -95,8 +106,8 @@ jobs:
       - run: ./.circleci/install-yarn.sh
       - restore_cache:
           keys:
-            - v31-deps-{{ checksum "package.json" }}
-            - v31-deps-
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
 
       - run:
           command: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web test:e2e
@@ -109,8 +120,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v31-deps-{{ checksum "package.json" }}
-            - v31-deps-
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn workspace @neufund/web build:commit-deployment
@@ -123,8 +134,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v31-deps-{{ checksum "package.json" }}
-            - v31-deps-
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn workspace @neufund/web storybook:screenshots
@@ -137,8 +148,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v31-deps-{{ checksum "package.json" }}
-            - v31-deps-
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
 
       - run: yarn --frozen-lockfile
       - run:
@@ -155,8 +166,8 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v31-deps-{{ checksum "package.json" }}
-            - v31-deps-
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
 
       - run: yarn --frozen-lockfile
       - run: yarn storybook-to-ghpages --script=storybook:build --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN --packages packages

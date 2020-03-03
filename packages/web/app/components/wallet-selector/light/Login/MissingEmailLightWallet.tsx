@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import mailLink from "../../../../assets/img/login-link.svg";
-import * as styles from "../WalletLight.module.scss";
+import * as styles from "./WalletLight.module.scss";
 
 type TExternalProps = {
   goToPasswordRecovery: () => void;

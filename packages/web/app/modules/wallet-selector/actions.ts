@@ -4,7 +4,7 @@ import { TMessage } from "../../components/translatedMessages/utils";
 import { browserWizardActions } from "./browser-wizard/actions";
 import { ledgerWizardActions } from "./ledger-wizard/actions";
 import { lightWizardActions } from "./light-wizard/actions";
-import { TBrowserWalletRegisterData } from "./reducer";
+import {  TWalletRegisterData } from "./reducer";
 
 const actions = {
   reset: createActionFactory("WALLET_SELECTOR_RESET"),
@@ -19,7 +19,7 @@ const actions = {
   registerWithLedger: createActionFactory("REGISTER_WITH_LEDGER"),
   setWalletRegisterData: createActionFactory(
     "SET_WALLET_REGISTER_DATA",
-    (data:TBrowserWalletRegisterData) => ({data})
+    (data:TWalletRegisterData) => ({data})
   ),
   browserWalletRegisterEmailAndTos: createActionFactory(
     "EMAIL_AND_TOS",
@@ -27,7 +27,11 @@ const actions = {
   ),
   browserWalletSignMessage: createActionFactory(
     "BROWSER_WALLET_SIGN_MESSAGE"
-  )
+  ),
+  lightWalletRegisterFormData: createActionFactory(
+    "LIGHT_WALLET_REGISTER_FORM_DATA",
+    (password: string, email:string) => ({password,email})
+  ),
 };
 
 export const walletSelectorActions = {

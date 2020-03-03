@@ -29,8 +29,9 @@ import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecovery } from "./wallet-selector/wallet-recover/WalletRecovery";
-import { WalletSelector, WalletSelectorRegister } from "./wallet-selector/WalletSelector";
+import { WalletSelector,  } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
+import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister";
 
 export const AppRouter: React.FunctionComponent = () => (
   <SwitchConnected>
@@ -63,9 +64,9 @@ export const AppRouter: React.FunctionComponent = () => (
 
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelectorRegister} exact />
-    <OnlyPublicRoute path={appRoutes.registerWithLightWallet} component={WalletSelector} exact />
+    <OnlyPublicRoute path={appRoutes.registerWithLightWallet} component={WalletSelectorRegister} exact />
     <OnlyPublicRoute path={appRoutes.registerWithBrowserWallet} component={WalletSelectorRegister} exact />
-    <OnlyPublicRoute path={appRoutes.registerWithLedger} component={WalletSelector} exact />
+    <OnlyPublicRoute path={appRoutes.registerWithLedger} component={WalletSelectorRegister} exact />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.restore} component={WalletRecovery} />
     {process.env.NF_ISSUERS_ENABLED === "1" && [

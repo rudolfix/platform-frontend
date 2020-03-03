@@ -23,7 +23,7 @@ import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
-import * as styles from "../WalletLight.module.scss";
+import * as styles from "./WalletLight.module.scss";
 
 interface IFormValues {
   password: string;

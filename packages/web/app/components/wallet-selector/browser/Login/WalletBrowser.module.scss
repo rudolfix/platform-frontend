@@ -8,6 +8,7 @@
   grid-gap: px-to-rem(24);
   grid-auto-flow: row;
   justify-items: center;
+  text-align: center;
 
   font-size: px-to-rem(16);
 
@@ -23,26 +24,6 @@
     top: px-to-rem(12px);
     bottom: px-to-rem(20px);
   }
-}
-
-.explanation {
-  font-family: $headings-font-family;
-  font-size: px-to-rem(16);
-  line-height: 1.5;
-  color: $neu-shuttle-gray;
-  margin: 0;
-  text-align: center;
-}
-
-.note {
-  @include font-button-small;
-  text-align: center;
-}
-
-.form {
-  display:grid;
-  grid-gap: px-to-rem(24);
-  grid-auto-flow: row;
 }
 
 .notification {

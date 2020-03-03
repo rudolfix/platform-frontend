@@ -39,7 +39,7 @@ export const routes = [
   dashboardRoute,
   registerRoute,
   registerWithLightWalletRoute,
-  registerWithLBrowserWalletRoute,
+  registerWithBrowserWalletRoute,
   registerWithLedgerRoute,
   loginRoute,
   restoreRoute,
@@ -364,6 +364,7 @@ export function* registerRoute(payload: RouterState): Generator<any, any, any> {
 export function* registerWithLightWalletRoute(payload: RouterState): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerWithLightWallet,
+    exact:true,
   });
   return yield routeAction(routeMatch, {
     notAuth: put(actions.walletSelector.registerWithLightWallet()),
@@ -373,9 +374,10 @@ export function* registerWithLightWalletRoute(payload: RouterState): Generator<a
   });
 }
 
-export function* registerWithLBrowserWalletRoute(payload: RouterState): Generator<any, any, any> {
+export function* registerWithBrowserWalletRoute(payload: RouterState): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerWithBrowserWallet,
+    exact:true,
   });
   return yield routeAction(routeMatch, {
     notAuth: put(actions.walletSelector.registerWithBrowserWallet()),

@@ -13,7 +13,7 @@ import {
 import { actions, TActionFromCreator } from "../actions";
 import { handleSignInUser, signInUser } from "../auth/user/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
-import { EBrowserWalletState } from "./reducer";
+import { EBrowserWalletState, ELightWalletState, TLightWalletFormValues } from "./types";
 import { BrowserWallet } from "../../lib/web3/browser-wallet/BrowserWallet";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { mapBrowserWalletErrorToErrorMessage } from "./browser-wizard/errors";
@@ -24,6 +24,8 @@ import {
 import { createMessage } from "../../components/translatedMessages/utils";
 import { selectRegisterWithBrowserWalletDefaultFormValues } from "./selectors";
 import { checkEmailPromise } from "../auth/email/sagas";
+import { EWalletType } from "../web3/types";
+import { handleLightWalletError, setupLightWalletPromise } from "./light-wizard/sagas";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
@@ -36,6 +38,7 @@ export function* walletSelectorReset(): Generator<any, any, any> {
 }
 
 export function* walletSelectorRegisterRedirect(): Generator<any, void, any> {
+  console.log("redirecting")
   yield put(actions.routing.goToLightWalletRegister());
 }
 
@@ -45,13 +48,14 @@ export function* registerGetEmailAndTos(
   const defaultFormValues = yield* select(selectRegisterWithBrowserWalletDefaultFormValues);
 
   const baseUiData = { //fixme select this from state
+    walletType: EWalletType.BROWSER,
     showWalletSelector: true,
     rootPath: "/register",
   };
 
   const askForEmailData = {
     ...baseUiData,
-    browserWalletState: EBrowserWalletState.BROWSER_WALLET_ASK_FOR_EMAIL,
+    walletState: EBrowserWalletState.BROWSER_WALLET_ASK_FOR_EMAIL,
     defaultFormValues
   } as const;
   yield put(actions.walletSelector.setWalletRegisterData(askForEmailData));
@@ -61,7 +65,7 @@ export function* registerGetEmailAndTos(
 
     const emailVerifyingData = {
       ...baseUiData,
-      browserWalletState: EBrowserWalletState.BROWSER_WALLET_VERIFYING_EMAIL,
+      walletState: EBrowserWalletState.BROWSER_WALLET_VERIFYING_EMAIL,
       defaultFormValues: {
         ...defaultFormValues,
         email: payload.email
@@ -87,7 +91,7 @@ export function* registerGetEmailAndTos(
 
       const emailErrorData = {
         ...baseUiData,
-        browserWalletState: EBrowserWalletState.BROWSER_WALLET_EMAIL_VERIFICATION_ERROR,
+        walletState: EBrowserWalletState.BROWSER_WALLET_EMAIL_VERIFICATION_ERROR,
         errorMessage: error,
         defaultFormValues
       } as const;
@@ -99,7 +103,7 @@ export function* registerGetEmailAndTos(
   }
 }
 
-export function* browserWalletSignByAction(
+export function* browserWalletSignByAction( //fixme naming
   _: TActionFromCreator<typeof actions.walletSelector.browserWalletSignMessage>
 ) {
   return yield neuCall(browserWalletSign)
@@ -118,7 +122,7 @@ export function* browserWalletSign({
   try {
     const data = {
       ...baseData,
-      browserWalletState: EBrowserWalletState.BROWSER_WALLET_LOADING,
+      walletState: EBrowserWalletState.BROWSER_WALLET_LOADING,
       defaultFormValues: yield* select(selectRegisterWithBrowserWalletDefaultFormValues)
     } as const;
     yield put(actions.walletSelector.setWalletRegisterData(data));
@@ -138,7 +142,7 @@ export function* browserWalletSign({
 
     const errorData = {
       ...baseData,
-      browserWalletState: EBrowserWalletState.BROWSER_WALLET_ERROR,
+      walletState: EBrowserWalletState.BROWSER_WALLET_ERROR,
       errorMessage,
       defaultFormValues: yield* select(selectRegisterWithBrowserWalletDefaultFormValues)
     } as const;
@@ -164,9 +168,105 @@ export function* browserWalletRegister(
   }
 }
 
+export function* lightWalletRegister(
+  _: TGlobalDependencies) {
+  yield console.log("lightWalletRegister start");
+  try {
+    const defaultFormValues:TLightWalletFormValues = {
+      email: "",
+      password: "",
+      repeatPassword: "",
+      tos:false
+    };
+
+    const baseUiData = { //fixme select this from state
+      walletType: EWalletType.LIGHT,
+      showWalletSelector: true,
+      rootPath: "/register",
+    };
+    const data = {
+      ...baseUiData,
+      defaultFormValues,
+      walletState: ELightWalletState.LIGHT_WALLET_REGISTRATION_FORM,
+    } as const;
+    yield put(actions.walletSelector.setWalletRegisterData(data));
+
+    let email: string;
+    let password: string;
+
+    while (true) {
+      const { payload } = yield take(actions.walletSelector.lightWalletRegister);
+      console.log("payload",payload)
+      const emailVerifyingData = {
+        ...baseUiData,
+        walletState: ELightWalletState.LIGHT_WALLET_VERIFYING_EMAIL,
+        defaultFormValues: {
+          ...defaultFormValues,
+          email: payload.email
+        }
+      } as const;
+      yield put(actions.walletSelector.setWalletRegisterData(emailVerifyingData));
+
+
+      let isEmailAvailable = false;
+      try {
+        isEmailAvailable = yield neuCall(checkEmailPromise, payload.email);
+      } catch (e) {
+
+        // fixme failed network call
+      }
+
+      console.log("isEmailAvailable:",isEmailAvailable)
+      if (!isEmailAvailable) {
+        const error = createMessage(GenericErrorMessage.USER_ALREADY_EXISTS);
+
+        const emailErrorData = {
+          ...baseUiData,
+          walletState: ELightWalletState.LIGHT_WALLET_EMAIL_VERIFICATION_ERROR,
+          errorMessage: error,
+          defaultFormValues: {
+            ...defaultFormValues,
+            email: payload.email
+          }
+        } as const;
+        yield put(actions.walletSelector.setWalletRegisterData(emailErrorData));
+
+      } else {
+        email = payload.email;
+        password = payload.password;
+        break;
+      }
+    }
+
+    try {
+      const signingData = {
+        ...baseUiData,
+        walletState: ELightWalletState.LIGHT_WALLET_SIGNING,
+        defaultFormValues
+      } as const;
+      yield put(actions.walletSelector.setWalletRegisterData(signingData));
+
+      yield neuCall(setupLightWalletPromise, email, password);
+      console.log('---walletSelectorConnect')
+      yield neuCall(handleSignInUser);
+    } catch (e) {
+      yield neuCall(handleLightWalletError, e);
+    }
+
+  } finally {
+    if (yield cancelled()) {
+      yield walletSelectorReset();
+      yield console.log("lightWalletRegister finally cancelled")
+    } else {
+      yield console.log("lightWalletRegister finally")
+    }
+  }
+}
+
 export function* walletSelectorSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.walletSelector.reset, walletSelectorReset);
   yield fork(neuTakeEvery, actions.walletSelector.registerRedirect, walletSelectorRegisterRedirect);
   yield fork(neuTakeLatestUntil, actions.walletSelector.registerWithBrowserWallet, "@@router/LOCATION_CHANGE", browserWalletRegister);
+  yield fork(neuTakeLatestUntil, actions.walletSelector.registerWithLightWallet, "@@router/LOCATION_CHANGE", lightWalletRegister);
   yield fork(neuTakeLatest, actions.walletSelector.browserWalletSignMessage, browserWalletSignByAction);
 }

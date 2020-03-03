@@ -9,7 +9,7 @@ import {
   GenericModalMessage,
   SignInUserErrorMessage,
 } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
+import { createMessage, TMessage } from "../../../components/translatedMessages/utils";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
@@ -45,7 +45,7 @@ import { getVaultKey } from "./utils";
 
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 
-function* setupLightWalletPromise(
+export function* setupLightWalletPromise(
   { vaultApi, lightWalletConnector, web3Manager, logger }: TGlobalDependencies,
   email: string,
   password: string,
@@ -224,7 +224,7 @@ export function* lightWalletRegisterWatch(
   }
 }
 
-function* handleLightWalletError({ logger }: TGlobalDependencies, e: Error): any {
+export function* handleLightWalletError({ logger }: TGlobalDependencies, e: Error): any {
   yield put(actions.walletSelector.reset());
 
   let error;
@@ -273,7 +273,7 @@ export function* lightWalletLoginWatch(
 
 export function* lightWalletSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.walletSelector.lightWalletLogin, lightWalletLoginWatch);
-  yield fork(neuTakeEvery, actions.walletSelector.lightWalletRegister, lightWalletRegisterWatch);
+  // yield fork(neuTakeEvery, actions.walletSelector.lightWalletRegister, lightWalletRegisterWatch);
   yield fork(neuTakeEvery, actions.walletSelector.lightWalletBackedUp, lightWalletBackupWatch);
   yield fork(neuTakeEvery, actions.walletSelector.lightWalletRecover, lightWalletRecoverWatch);
   yield fork(neuTakeEvery, "WEB3_FETCH_SEED", loadSeedFromWalletWatch);

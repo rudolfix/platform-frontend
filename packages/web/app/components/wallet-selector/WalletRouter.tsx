@@ -1,12 +1,12 @@
 import { Location } from "history";
 import * as React from "react";
-import { Redirect, Route } from "react-router-dom";
+import {  Route } from "react-router-dom";
 
 import { EWalletType } from "../../modules/web3/types";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
-import { WalletBrowser } from "./browser/WalletBrowser";
+import { WalletBrowser } from "./browser/Login/WalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
-import { WalletLight } from "./light/WalletLight";
+import { WalletLight } from "./light/Login/WalletLight";
 import { WalletChooser } from "./WalletChooser";
 
 type TWalletRouterProps = {
@@ -59,7 +59,7 @@ export const LedgerWalletComponent: React.FunctionComponent<TWalletComponentProp
 
 export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
   rootPath,
-  redirectLocation,
+  // redirectLocation,
   walletSelectionDisabled,
 }) => (
   <SwitchConnected>

@@ -132,15 +132,15 @@ export function* detectWeb3({
     const rootPath = yield select(selectLocation);
 
     // FIXME !!! move this to router
-    // If user trying to access log in route redirect directly to login with browser wallet
-    if (rootPath && rootPath.pathname.includes("/login") && !rootPath.search.includes("salt")) {
-      yield put(actions.routing.goToLoginWithBrowserWalet());
-    }
-
-    // If user trying to access register route redirect directly to register with browser wallet
-    if (rootPath && rootPath.pathname.includes("/register")) {
-      yield put(actions.routing.goToRegisterBrowserWallet());
-    }
+    // // If user trying to access log in route redirect directly to login with browser wallet
+    // if (rootPath && rootPath.pathname.includes("/login") && !rootPath.search.includes("salt")) {
+    //   yield put(actions.routing.goToLoginWithBrowserWalet());
+    // }
+    //
+    // // If user trying to access register route redirect directly to register with browser wallet
+    // if (rootPath && rootPath.pathname.includes("/register")) {
+    //   yield put(actions.routing.goToRegisterBrowserWallet());
+    // }
   }
 }
 

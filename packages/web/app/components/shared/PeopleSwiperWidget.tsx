@@ -79,8 +79,8 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
 
     const newState = {
       isVisible: Boolean(this.swiperRef.current),
-      elementWidth: elementWidth,
-      visibleWidth: visibleWidth,
+      elementWidth,
+      visibleWidth,
     };
 
     this.setState(newState);
@@ -100,9 +100,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
   }
 
   getSlidesPerView(): number {
-    const maxSlidesPerView = this.getMaxSlidesPerView();
-
-    return Math.min(this.props.people.length, maxSlidesPerView);
+    return Math.min(this.props.people.length, this.getMaxSlidesPerView());
   }
 
   getMaxSlidesPerView(): number {
@@ -146,18 +144,20 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
     //how far to the left is can go from the current position
     // (translation is always negative)
     const maxGoLeft = maxTranslation - Math.abs(this.state.translation);
-    return maxGoLeft > 0;
+    // close to 0
+    return maxGoLeft > 0.1;
   };
 
   canGoRight = () =>
     // (translation is always negative)
-    this.state.translation < 0;
+    // close to 0
+    this.state.translation < -0.1;
 
   onWindowResize = () => {
     const [refWidth, elementWidth] = this.getVisibleWidth();
 
     this.setState({
-      elementWidth: elementWidth,
+      elementWidth,
       visibleWidth: refWidth,
       translation: 0,
     });
@@ -211,8 +211,11 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
   };
 
   render(): React.ReactNode {
-    const isHorizontal = this.props.people.length < 3 || this.getSlidesPerView() < 3;
-    const showArrows = this.props.people.length > this.getSlidesPerView();
+    const slidesPerView = this.getSlidesPerView();
+    const isHorizontal = this.props.people.length < 3 || slidesPerView < 3;
+    const showArrows = this.props.people.length > slidesPerView;
+    const canGoLeft = this.canGoLeft();
+    const canGoRight = this.canGoRight();
 
     return (
       <div className={styles.swiperMain}>
@@ -225,9 +228,9 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
               fill: EInlineIconFill.FILL_OUTLINE,
             }}
             size={EButtonSize.HUGE}
-            disabled={!this.canGoRight()}
+            disabled={!canGoRight}
             className={styles.prev}
-            onClick={this.canGoRight() ? this.goRight : undefined}
+            onClick={canGoRight ? this.goRight : undefined}
           />
         )}
         <div className={styles.swiperBase} ref={this.swiperRef}>
@@ -290,9 +293,9 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
               fill: EInlineIconFill.FILL_OUTLINE,
             }}
             size={EButtonSize.HUGE}
-            disabled={!this.canGoLeft()}
+            disabled={!canGoLeft}
             className={styles.next}
-            onClick={this.canGoLeft() ? this.goLeft : undefined}
+            onClick={canGoLeft ? this.goLeft : undefined}
           />
         )}
       </div>

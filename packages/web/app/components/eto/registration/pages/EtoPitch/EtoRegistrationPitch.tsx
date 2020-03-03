@@ -1,8 +1,11 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EtoPitchType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { Button, EButtonLayout } from "../../../../shared/buttons/index";
+import {
+  EtoPitchType,
+  TPartialEtoSpecData,
+} from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";
 import {
   ArrayOfKeyValueFields,
@@ -12,12 +15,15 @@ import {
 } from "../../../../shared/forms/index";
 import { EtoFormBase } from "../../EtoFormBase";
 import { Section } from "../../Shared";
-import { TDispatchProps } from "../EtoVotingRights/EtoVotingRights";
 import { connectEtoRegistrationPitch, TComponentProps } from "./connectEtoRegistrationPitch";
 
 import * as styles from "../../Shared.module.scss";
 
 const distributionSuggestions = ["Development", "Other"];
+
+type TDispatchProps = {
+  saveData: (values: TPartialEtoSpecData) => void;
+};
 
 const EtoRegistrationPitchComponent = ({
   validationFn,

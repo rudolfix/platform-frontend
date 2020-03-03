@@ -1,11 +1,11 @@
+import { ArrayWithAtLeastOneMember } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ArrayWithAtLeastOneMember, CommonHtmlProps, TTranslatedString } from "../../types";
+import { CommonHtmlProps, TTranslatedString } from "../../types";
 import { Dropzone } from "./Dropzone";
 import { DropzoneActionButtons } from "./DropzoneActionButtons";
-import { FormFieldError } from "./forms/fields/FormFieldError";
-import { TAcceptedFileType } from "./forms/fields/utils.unsafe";
+import { TAcceptedFileType } from "./forms/fields/utils";
 
 import * as styles from "./SingleFileUpload.module.scss";
 
@@ -23,6 +23,7 @@ interface IProps {
   file?: string;
   fileFormatInformation: string;
   label: string | React.ReactNode;
+  error?: string | React.ReactNode;
   onDropFile: (file: File) => void;
   "data-test-id"?: string;
   onDownload: () => void;
@@ -57,6 +58,7 @@ export const SingleFileUpload: React.FunctionComponent<IProps & CommonHtmlProps>
   onDownload,
   onRemove,
   uploadRequirements,
+  error,
   onDropFile,
   "data-test-id": dataTestId,
 }) => {
@@ -89,6 +91,7 @@ export const SingleFileUpload: React.FunctionComponent<IProps & CommonHtmlProps>
       )}
       <div className={styles.uploadRequirements}>
         <p className={styles.fieldLabel}>{label}</p>
+
         {uploadRequirements && (
           <p>
             <FormattedMessage
@@ -97,7 +100,8 @@ export const SingleFileUpload: React.FunctionComponent<IProps & CommonHtmlProps>
             />
           </p>
         )}
-        <FormFieldError name={name} className="text-left" />
+
+        {error}
       </div>
     </div>
   );

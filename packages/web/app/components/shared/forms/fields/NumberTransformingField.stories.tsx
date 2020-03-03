@@ -1,15 +1,18 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import withFormik from "storybook-formik";
 
 import { NumberTransformingField } from "./NumberTransformingField";
-import { formWrapper } from "./testingUtils.unsafe";
 
 storiesOf("forms/fields/TransformingField", module)
-  .add(
-    "with ratio",
-    formWrapper({ name: 0.5 })(() => <NumberTransformingField name="name" ratio={100} />),
-  )
-  .add(
-    "no ratio",
-    formWrapper({ name: 0.5 })(() => <NumberTransformingField name="name" />),
-  );
+  .addDecorator(withFormik)
+  .add("with ratio", () => <NumberTransformingField name="name" ratio={100} />, {
+    formik: {
+      initialValues: { name: 0.5 },
+    },
+  })
+  .add("no ratio", () => <NumberTransformingField name="name" />, {
+    formik: {
+      initialValues: { name: 0.5 },
+    },
+  });

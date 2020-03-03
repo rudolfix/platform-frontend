@@ -1,7 +1,11 @@
 import * as React from "react";
 import { branch, compose, renderNothing } from "recompose";
 
-import { EKycInstantIdStatus, EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import {
+  EKycInstantIdStatus,
+  EKycRequestStatus,
+  EKycRequestType,
+} from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectBackupCodesVerified,
@@ -12,13 +16,15 @@ import {
   selectKycInstantIdStatus,
   selectKycIsInitialLoading,
   selectKycRequestStatus,
+  selectKycRequestType,
   selectWidgetError,
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { onLeaveAction } from "../../../utils/OnLeaveAction";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
 
 interface IStateProps {
+  kycRequestType: EKycRequestType | undefined;
   requestStatus: EKycRequestStatus | undefined;
   instantIdStatus: EKycInstantIdStatus | undefined;
   isUserEmailVerified: boolean;
@@ -47,6 +53,7 @@ const connectKycStatusWidget = () => (
         isLoading: selectKycIsInitialLoading(state),
         isKycFlowBlockedByRegion: selectIsKycFlowBlockedByRegion(state),
         error: selectWidgetError(state.kyc),
+        kycRequestType: selectKycRequestType(state),
       }),
       dispatchToProps: dispatch => ({
         onGoToDashboard: () => dispatch(actions.routing.goToDashboard()),

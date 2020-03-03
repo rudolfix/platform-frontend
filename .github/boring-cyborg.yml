@@ -1,0 +1,13 @@
+labelPRBasedOnFilePath:
+  "Pkg: shared":
+    - packages/shared/**/*
+  "Pkg: design-system":
+    - packages/design-system/**/*
+  "Pkg: sagas":
+    - packages/sagas/**/*
+  "Pkg: shared-modules":
+    - packages/shared-modules/**/*
+  "App: mobile":
+    - packages/wallet/**/*
+  "App: web":
+    - packages/web/**/*

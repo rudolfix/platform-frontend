@@ -1,7 +1,6 @@
+import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import * as React from "react";
 import { Helmet } from "react-helmet";
-
-import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "./injectIntlHelpers.unsafe";
 
 type TMetaTags = {
   title: string;

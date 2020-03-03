@@ -1,3 +1,5 @@
+import { Button } from "@neufund/design-system";
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -12,8 +14,6 @@ import {
 import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx/types";
 import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
-import { EthereumAddressWithChecksum } from "../../../../utils/opaque-types/types";
-import { Button } from "../../../shared/buttons/Button";
 import { EthereumIcon } from "../../../shared/ethereum";
 import { Message } from "../../message/Message";
 import { TxDetails } from "../TxDetails.unsafe";

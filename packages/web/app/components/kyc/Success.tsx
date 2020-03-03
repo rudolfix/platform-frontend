@@ -1,25 +1,33 @@
+import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "recompose";
+import { compose } from "redux";
 
+import { EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../modules/actions";
+import { selectKycRequestType } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
-import { withHeaderButton } from "../../utils/withHeaderButton";
-import { withProgress } from "../../utils/withProgress";
-import { Button, EButtonLayout, EButtonSize } from "../shared/buttons/Button";
-import { ButtonGroup } from "../shared/buttons/ButtonGroup";
+import { withHeaderButton } from "../../utils/react-connected-components/withHeaderButton";
+import { withProgress } from "../../utils/react-connected-components/withProgress";
 import { SuccessTick } from "../shared/SuccessTick";
 
 import * as styles from "./Success.module.scss";
 
-type TDispatchProps = {
-  goToDashboard: () => void;
-  goToAddAdditional: () => void;
-};
+interface IStateProps {
+  requestType?: EKycRequestType;
+}
 
-const KycSuccessLayout: React.FunctionComponent<TDispatchProps> = ({
+interface IDispatchProps {
+  goToDashboard: () => void;
+  goToPersonalAddAdditional: () => void;
+  goToBusinessAddAdditional: () => void;
+}
+
+const KycSuccessLayout: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   goToDashboard,
-  goToAddAdditional,
+  goToPersonalAddAdditional,
+  goToBusinessAddAdditional,
+  requestType,
 }) => (
   <>
     <SuccessTick />
@@ -27,7 +35,11 @@ const KycSuccessLayout: React.FunctionComponent<TDispatchProps> = ({
       <FormattedMessage id="kyc.success.title" />
     </h1>
     <p className={styles.text}>
-      <FormattedMessage id="kyc.success.text" />
+      {requestType === EKycRequestType.INDIVIDUAL ? (
+        <FormattedMessage id="kyc.personal.success.text" />
+      ) : (
+        <FormattedMessage id="kyc.business.success.text" />
+      )}
     </p>
 
     <ButtonGroup className={styles.buttons} data-test-id="kyc-success">
@@ -45,7 +57,11 @@ const KycSuccessLayout: React.FunctionComponent<TDispatchProps> = ({
         size={EButtonSize.HUGE}
         className={styles.button}
         data-test-id="kyc-success-go-to-additional-documents"
-        onClick={goToAddAdditional}
+        onClick={
+          requestType === EKycRequestType.INDIVIDUAL
+            ? goToPersonalAddAdditional
+            : goToBusinessAddAdditional
+        }
       >
         <FormattedMessage id="kyc.success.go-to-additional-documents" />
       </Button>
@@ -53,10 +69,14 @@ const KycSuccessLayout: React.FunctionComponent<TDispatchProps> = ({
   </>
 );
 
-const KycSuccess = compose<TDispatchProps, {}>(
-  appConnect<{}, TDispatchProps, {}>({
+const KycSuccess = compose<React.FunctionComponent>(
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => ({
+      requestType: selectKycRequestType(state),
+    }),
     dispatchToProps: dispatch => ({
-      goToAddAdditional: () => dispatch(actions.routing.goToKYCIndividualUpload()),
+      goToPersonalAddAdditional: () => dispatch(actions.routing.goToKYCIndividualUpload()),
+      goToBusinessAddAdditional: () => dispatch(actions.routing.goToKYCBusinessUpload()),
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
     }),
   }),

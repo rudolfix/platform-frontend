@@ -1,8 +1,8 @@
+import { CircleButton, ECircleButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TDataTestId } from "../../types";
-import { CircleButton, ECircleButtonLayout } from "./buttons";
 
 import remove from "../../assets/img/inline_icons/delete.svg";
 import download from "../../assets/img/inline_icons/download.svg";

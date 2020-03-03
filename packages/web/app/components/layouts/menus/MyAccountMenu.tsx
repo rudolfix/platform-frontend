@@ -1,5 +1,4 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
 
 import { actions } from "../../../modules/actions";
@@ -30,9 +29,6 @@ interface IMenuData {
 const ClosedElement: React.FunctionComponent = () => (
   <>
     <img src={userProfile} alt="menu" data-test-id="account-menu-open-button" />
-    <span className={styles.name}>
-      <FormattedMessage id="menu.wallet.my-account" />
-    </span>
   </>
 );
 

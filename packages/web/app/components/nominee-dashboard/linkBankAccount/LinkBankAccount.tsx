@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -5,9 +6,8 @@ import { compose } from "recompose";
 import { NOMINEE_BANK_ACCOUNT_WATCHER_DELAY } from "../../../config/constants";
 import { actions } from "../../../modules/actions";
 import { THocProps } from "../../../types";
-import { withActionWatcher } from "../../../utils/withActionWatcher.unsafe";
+import { withActionWatcher } from "../../../utils/react-connected-components/withActionWatcher.unsafe";
 import { connectLinkBankAccountComponent } from "../../settings/linked-bank-account/ConnectLinkBankAccount";
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons/Button";
 
 import link from "../../../assets/img/inline_icons/social_link.svg";
 

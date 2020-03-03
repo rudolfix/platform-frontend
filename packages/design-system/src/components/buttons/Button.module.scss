@@ -1,0 +1,184 @@
+.button {
+  $button: &;
+
+  @include nds-button-label;
+
+  @include media-breakpoint-up(sm) {
+    min-width: px-to-rem(140px);
+  }
+
+  color: $neu-charcoal-grey;
+  border-radius: $nds-border-radius;
+
+  flex-shrink: 0;
+  padding: px-to-rem(8px) px-to-rem(20px) px-to-rem(7px);
+
+  transition: background-color 200ms ease-out, box-shadow 200ms ease-out, color 200ms ease-out;
+
+  &:disabled {
+    color: $neu-gull-gray;
+  }
+
+  // Layout types (eg. primary, secondary)
+  // @note If we need to add new button design please add it as a separate layout type
+  //       even if it's small change to the existing one that can be done through prop (e.g theme prop)
+
+  &--primary {
+    $hover-box-shadow: rgba(20, 36, 49, .2);
+
+    background: $neu-neon-yellow;
+    border: px-to-rem(1px) solid $neu-neon-yellow;
+
+    &:not(:disabled) {
+      &:hover {
+        box-shadow: 0 5px 10px 0 $hover-box-shadow;
+      }
+
+      &:active,
+      &#{$button}--is-active {
+        background: $neu-bitter-lemon;
+        border-color: $neu-bitter-lemon;
+      }
+    }
+
+    &:disabled {
+      background: $neu-light-blue-grey-two;
+      border-color: $neu-light-blue-grey-two;
+    }
+  }
+
+  &--outline {
+    border: px-to-rem(1px) solid $neu-light-blue-grey-two;
+    background: $neu-white-two;
+
+    &:not(:disabled) {
+      &:hover {
+        border-color: $neu-bitter-lemon;
+      }
+
+      &:active,
+      &#{$button}--is-active {
+        background: $neu-bitter-lemon;
+        border-color: $neu-bitter-lemon;
+      }
+    }
+
+    &:disabled {
+      background-color: $neu-light-blue-grey-two;
+      border-color: $neu-light-blue-grey-two;
+    }
+  }
+
+  &--secondary {
+    border: px-to-rem(1px) solid $neu-very-light-blue;
+    background: $neu-very-light-blue;
+
+    &:not(:disabled) {
+      &:hover {
+        background: transparent;
+        border-color: $neu-bitter-lemon;
+      }
+
+      &:active,
+      &#{$button}--is-active {
+        border-color: $neu-bitter-lemon;
+        background: $neu-bitter-lemon;
+      }
+    }
+
+    &:disabled {
+      background: $neu-light-blue-grey-two;
+    }
+  }
+
+  &--ghost {
+    border: px-to-rem(1px) solid transparent;
+
+    &:not(:disabled) {
+      &:hover {
+        background: $neu-very-light-blue;
+      }
+
+      &:active,
+      &#{$button}--is-active {
+        background: transparent;
+        color: $neu-bitter-lemon;
+      }
+    }
+  }
+
+  // widths
+  &--block {
+    width: 100%;
+  }
+
+  // sizes
+  &--small {
+    @include media-breakpoint-up(sm) {
+      min-width: px-to-rem(110px);
+    }
+
+    padding: px-to-rem(4px) px-to-rem(12px) px-to-rem(3px);
+  }
+
+  &--huge {
+    @include media-breakpoint-up(sm) {
+      min-width: px-to-rem(216px);
+    }
+
+    padding: px-to-rem(12px) px-to-rem(30px) px-to-rem(11px);
+  }
+
+  &--only-icon {
+    padding-left: px-to-rem(14px);
+    padding-right: px-to-rem(14px);
+    min-width: auto;
+
+    &#{$button}--ghost {
+      &:hover {
+        &:not(:disabled) {
+          background: transparent;
+          border-color: transparent;
+          color: $neu-bitter-lemon;
+        }
+      }
+    }
+
+    &#{$button}--small {
+      padding-left: px-to-rem(6px);
+      padding-right: px-to-rem(6px);
+    }
+
+    &#{$button}--huge {
+      padding-left: px-to-rem(14px);
+      padding-right: px-to-rem(14px);
+    }
+  }
+
+  &-icon {
+    height: 1.2em;
+    width: 1.2em;
+
+    &--before {
+      margin-right: .8em;
+    }
+
+    &--after {
+      margin-left: .8em;
+    }
+  }
+
+  &--no-padding {
+    padding: 0;
+  }
+
+  &--dynamic {
+    @include media-breakpoint-up(sm) {
+      min-width: px-to-rem(110px);
+    }
+
+    @include media-breakpoint-down(sm) {
+      padding: px-to-rem(4px) px-to-rem(12px) px-to-rem(3px);
+    }
+  }
+}

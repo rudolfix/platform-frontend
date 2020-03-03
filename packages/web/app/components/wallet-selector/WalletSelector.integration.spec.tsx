@@ -1,3 +1,4 @@
+import { setupFakeClock } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import * as jsonwebtoken from "jsonwebtoken";
@@ -8,7 +9,6 @@ import { createMount, remount } from "../../../test/createMount";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import {
   createIntegrationTestsSetup,
-  setupFakeClock,
   waitForPredicate,
   waitForTid,
   wrapWithProviders,
@@ -43,7 +43,7 @@ import {
   ILedgerWalletMetadata,
 } from "../../modules/web3/types";
 import { appRoutes } from "../appRoutes";
-import { ButtonLink } from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";
 import { createMessage } from "../translatedMessages/utils";
 import { walletRegisterRoutes } from "./walletRoutes";

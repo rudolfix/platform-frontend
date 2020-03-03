@@ -8,6 +8,7 @@ import { bookBuildingFlowSagas } from "./bookbuilding-flow/sagas";
 import { etoDocumentsSagas } from "./eto-documents/sagas";
 import { etoFlowSagas } from "./eto-flow/sagas";
 import { etoNomineeSagas } from "./eto-nominee/sagas";
+import { etoViewSagas } from "./eto-view/shared/sagas";
 import { etoSagas } from "./eto/sagas";
 import { gasApiSagas } from "./gas/sagas";
 import { icbmWalletGetDataSagas } from "./icbm-wallet-balance-modal/sagas";
@@ -16,7 +17,7 @@ import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investment-flow/sagas";
 import { investorTicketsSagas } from "./investor-portfolio/sagas";
 import { kycSagas } from "./kyc/sagas";
-import { marketingEmailsSagas } from "./marketing-emails/sagas";
+import { marketingUnsubscribeView } from "./marketing-unsubscribe-view/sagas";
 import { nomineeFlowSagas } from "./nominee-flow/sagas";
 import { notificationModalSagas } from "./notification-modal/sagas";
 import { profileSagas } from "./profile/sagas";
@@ -54,7 +55,6 @@ function* allSagas(): Generator<any, any, any> {
     fork(routingSagas),
     fork(tokenPriceSagas),
     fork(notificationModalSagas),
-    fork(marketingEmailsSagas),
     // Sagas that should be restarted immediately when logout occurs
     fork(neuRestartIf, actions.auth.logout, termsOfServiceSagas),
     fork(neuRestartIf, actions.auth.logout, bankTransferFlowSaga),
@@ -67,6 +67,7 @@ function* allSagas(): Generator<any, any, any> {
     fork(neuRestartIf, actions.auth.logout, walletSagas),
     fork(neuRestartIf, actions.auth.logout, icbmWalletGetDataSagas),
     fork(neuRestartIf, actions.auth.logout, etoFlowSagas),
+    fork(neuRestartIf, actions.auth.logout, etoViewSagas),
     fork(neuRestartIf, actions.auth.logout, immutableFileSagas),
     fork(neuRestartIf, actions.auth.logout, etoSagas),
     fork(neuRestartIf, actions.auth.logout, etoNomineeSagas),
@@ -81,6 +82,7 @@ function* allSagas(): Generator<any, any, any> {
     fork(neuRestartIf, actions.auth.logout, investmentFlowSagas),
     fork(neuRestartIf, actions.auth.logout, txHistorySaga),
     fork(neuRestartIf, actions.auth.logout, nomineeFlowSagas),
+    fork(neuRestartIf, actions.auth.logout, marketingUnsubscribeView),
   ]);
 }
 

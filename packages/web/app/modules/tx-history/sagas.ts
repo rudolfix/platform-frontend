@@ -1,4 +1,5 @@
-import { all, delay, fork, put, select } from "@neufund/sagas";
+import { all, fork, put, select, take } from "@neufund/sagas";
+import { EthereumAddressWithChecksum, subtractBigNumbers } from "@neufund/shared";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { ETxHistoryMessage } from "../../components/translatedMessages/messages";
@@ -10,14 +11,12 @@ import {
   TAnalyticsTransaction,
   TAnalyticsTransactionsResponse,
 } from "../../lib/api/analytics-api/interfaces";
-import { IAppState } from "../../store";
-import { subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEurEquivalent } from "../shared/tokenPrice/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import { TX_LIMIT, TX_POLLING_INTERVAL } from "./constants";
+import { TX_LIMIT } from "./constants";
 import { selectLastTransactionId, selectTimestampOfLastChange, selectTXById } from "./selectors";
 import { ETransactionStatus, ETransactionSubType, TTxHistory, TTxHistoryCommon } from "./types";
 import { getCurrencyFromTokenSymbol, getDecimalsFormat, getTxUniqueId } from "./utils";
@@ -50,7 +49,7 @@ export function* mapAnalyticsApiTransactionResponse(
       }
 
       const neuReward = transaction.extraData.neumarkReward!.toString();
-      const neuRewardEur: string = yield select((state: IAppState) =>
+      const neuRewardEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, neuReward, ECurrency.NEU),
       );
 
@@ -91,7 +90,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-      const amountEur: string = yield select((state: IAppState) =>
+      const amountEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, common.amount, currency),
       );
 
@@ -129,7 +128,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
         const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-        const amountEur: string = yield select((state: IAppState) =>
+        const amountEur: string = yield select((state: TAppGlobalState) =>
           selectEurEquivalent(state, common.amount, currency),
         );
 
@@ -201,7 +200,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
         const neuReward = transaction.extraData.neumarkReward!.toString();
 
-        const neuRewardEur: string = yield select((state: IAppState) =>
+        const neuRewardEur: string = yield select((state: TAppGlobalState) =>
           selectEurEquivalent(state, neuReward, ECurrency.NEU),
         );
 
@@ -228,7 +227,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-      const amountEur: string = yield select((state: IAppState) =>
+      const amountEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, common.amount, currency),
       );
 
@@ -254,7 +253,7 @@ export function* mapAnalyticsApiTransactionResponse(
 
       const currency = getCurrencyFromTokenSymbol(transaction.extraData.tokenMetadata);
 
-      const amountEur: string = yield select((state: IAppState) =>
+      const amountEur: string = yield select((state: TAppGlobalState) =>
         selectEurEquivalent(state, common.amount, currency),
       );
 
@@ -366,7 +365,7 @@ export function* watchTransactions({
 }: TGlobalDependencies): Generator<any, any, any> {
   while (true) {
     try {
-      yield delay(TX_POLLING_INTERVAL);
+      yield take(actions.web3.newBlockArrived.getType());
 
       const timestampOfLastChange: number | undefined = yield select(selectTimestampOfLastChange);
 
@@ -415,7 +414,9 @@ function* showTransactionDetails(
   _: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.txHistory.showTransactionDetails>,
 ): Generator<any, any, any> {
-  const transaction = yield select((state: IAppState) => selectTXById(action.payload.id, state));
+  const transaction = yield select((state: TAppGlobalState) =>
+    selectTXById(action.payload.id, state),
+  );
 
   if (!transaction) {
     throw new Error(`Transaction should be defined for ${action.payload.id}`);

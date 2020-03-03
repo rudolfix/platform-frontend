@@ -1,5 +1,5 @@
-import { divideBigNumbers, multiplyBigNumbers } from "../../../utils/BigNumberUtils";
-import { convertFromUlps } from "../../../utils/NumberUtils";
+import { convertFromUlps, divideBigNumbers, multiplyBigNumbers } from "@neufund/shared";
+
 import { TBigNumberVariants } from "../../web3/types";
 import { TPartialEtoSpecData } from "./EtoApi.interfaces.unsafe";
 
@@ -151,14 +151,15 @@ export const calculateTarget = (
   totalTokensInt: TBigNumberVariants,
   totalEquivEurUlps: TBigNumberVariants,
 ) => {
+  const targetTokens = multiplyBigNumbers([sharesToIssue, equityTokensPerShare]);
+
   if (totalTokensInt === "0" || totalEquivEurUlps === "0") {
-    return undefined;
+    return targetTokens;
   }
 
   const totalEquivEur = convertFromUlps(totalEquivEurUlps);
-
   const averageTokenPrice = divideBigNumbers(totalEquivEur, totalTokensInt);
-  const targetTokens = multiplyBigNumbers([sharesToIssue, equityTokensPerShare]);
+
   return multiplyBigNumbers([averageTokenPrice, targetTokens]);
 };
 

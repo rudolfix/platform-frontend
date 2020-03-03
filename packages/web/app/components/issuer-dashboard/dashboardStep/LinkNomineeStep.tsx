@@ -1,3 +1,4 @@
+import { nonNullable } from "@neufund/shared";
 import { isEmpty } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -6,11 +7,10 @@ import { compose } from "recompose";
 
 import { selectUserId } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-import { nonNullable } from "../../../utils/nonNullable";
 import { etoRegisterRoutes } from "../../eto/registration/routes";
-import { DashboardHeading } from "../../eto/shared/DashboardHeading";
-import { TWithNomineeProps, withNomineeRequests } from "../../eto/shared/hocs/withNomineeRequests";
 import { AccountAddress } from "../../shared/AccountAddress";
+import { DashboardHeading } from "../../shared/DashboardHeading";
+import { TWithNomineeProps, withNomineeRequests } from "../hocs/withNomineeRequests";
 
 type TStateProps = {
   issuerId: string;

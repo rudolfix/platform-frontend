@@ -5,7 +5,7 @@ import { branch, compose, renderNothing } from "recompose";
 
 import { selectNotificationsWithDerived } from "../../../modules/notifications/selectors";
 import { INotification } from "../../../modules/notifications/types";
-import { appConnect, AppDispatch } from "../../../store";
+import { appConnect, AppGlobalDispatch } from "../../../store";
 import { Notification } from "./Notification";
 
 import * as styles from "./NotificationWidget.module.scss";
@@ -19,7 +19,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  dispatch: AppDispatch;
+  dispatch: AppGlobalDispatch;
 }
 
 type IProps = IStateProps & IDispatchProps;

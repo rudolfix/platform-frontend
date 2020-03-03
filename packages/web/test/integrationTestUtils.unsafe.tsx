@@ -1,13 +1,14 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
+import { dummyIntl, InversifyProvider, simpleDelay } from "@neufund/shared";
+import { noopLogger } from "@neufund/shared-modules";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
 import { Container } from "inversify";
-import * as lolex from "lolex";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
-import { applyMiddleware, createStore, Store } from "redux";
+import { applyMiddleware, combineReducers, createStore, Store } from "redux";
 import { SinonSpy } from "sinon";
 
 import {
@@ -19,7 +20,6 @@ import { symbols } from "../app/di/symbols";
 import { SignatureAuthApi } from "../app/lib/api/auth/SignatureAuthApi";
 import { UsersApi } from "../app/lib/api/users/UsersApi";
 import { BroadcastChannelMock } from "../app/lib/dependencies/broadcast-channel/BroadcastChannel.mock";
-import { noopLogger } from "../app/lib/dependencies/logger";
 import { IntlWrapper } from "../app/lib/intl/IntlWrapper";
 import { Storage } from "../app/lib/persistence/Storage";
 import { createMockStorage } from "../app/lib/persistence/Storage.mock";
@@ -28,11 +28,8 @@ import { ContractsService } from "../app/lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../app/lib/web3/ledger-wallet/LedgerConnector";
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager/Web3Manager.mock";
 import { rootSaga } from "../app/modules/sagas";
-import { generateRootReducer, IAppState } from "../app/store";
+import { generateRootModuleReducerMap, TAppGlobalState } from "../app/store";
 import { DeepPartial } from "../app/types";
-import { dummyIntl } from "../app/utils/injectIntlHelpers.fixtures";
-import { InversifyProvider } from "../app/utils/InversifyProvider";
-import { LolexClockAsync } from "../typings/lolex";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
 import { createMock, tid } from "./testUtils";
@@ -40,7 +37,7 @@ import { createMock, tid } from "./testUtils";
 const defaultTranslations = require("../intl/locales/en-en.json");
 
 interface ICreateIntegrationTestsSetupOptions {
-  initialState?: DeepPartial<IAppState>;
+  initialState?: DeepPartial<TAppGlobalState>;
   browserWalletConnectorMock?: BrowserWalletConnector;
   ledgerWalletConnectorMock?: LedgerWalletConnector;
   storageMock?: Storage;
@@ -51,28 +48,12 @@ interface ICreateIntegrationTestsSetupOptions {
 }
 
 interface ICreateIntegrationTestsSetupOutput {
-  store: Store<IAppState>;
+  store: Store<TAppGlobalState>;
   container: Container;
   dispatchSpy: SinonSpy;
   history: History;
   sagaMiddleware: SagaMiddleware<{ container: Container; deps: TGlobalDependencies }>;
 }
-
-export const setupFakeClock = (now?: number) => {
-  let wrapper: { fakeClock: LolexClockAsync<any> } = {} as any;
-
-  beforeEach(() => {
-    // note: we use custom fork of lolex providing tickAsync function which should be used to await for any async actions triggered by tick. Read more: https://github.com/sinonjs/lolex/pull/105
-    // TODO: check why typings are not accurate here
-    wrapper.fakeClock = lolex.install(now as any);
-  });
-
-  afterEach(() => {
-    wrapper.fakeClock.uninstall();
-  });
-
-  return wrapper;
-};
 
 export function createIntegrationTestsSetup(
   options: ICreateIntegrationTestsSetupOptions = {},
@@ -86,7 +67,9 @@ export function createIntegrationTestsSetup(
   const signatureAuthApiMock = options.signatureAuthApiMock || createMock(SignatureAuthApi, {});
   const contractsMock = options.contractsMock || createMock(ContractsService, {});
 
-  const container = setupBindings(dummyConfig);
+  const container = new Container();
+
+  container.load(setupBindings(dummyConfig));
 
   container.rebind(symbols.userActivityChannel).toConstantValue(new BroadcastChannelMock());
   container.rebind(symbols.ledgerWalletConnector).toConstantValue(ledgerWalletMock);
@@ -95,7 +78,7 @@ export function createIntegrationTestsSetup(
     .rebind(symbols.web3Manager)
     .to(Web3ManagerMock)
     .inSingletonScope();
-  container.rebind(symbols.logger).toConstantValue(noopLogger);
+  container.bind(symbols.logger).toConstantValue(noopLogger);
   container.rebind(symbols.storage).toConstantValue(storageMock);
   container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
   container.rebind(symbols.signatureAuthApi).toConstantValue(signatureAuthApiMock);
@@ -122,7 +105,7 @@ export function createIntegrationTestsSetup(
     sagaMiddleware,
   );
 
-  const rootReducer = generateRootReducer(history);
+  const rootReducer = combineReducers(generateRootModuleReducerMap(history));
 
   const store = createStore(rootReducer, options.initialState as any, middleware);
   context.deps = createGlobalDependencies(container);
@@ -161,8 +144,9 @@ export async function waitForTid(component: ReactWrapper, id: string): Promise<v
 export async function waitForPredicate(predicate: () => boolean, errorMsg: string): Promise<void> {
   // wait until event queue is empty :/ currently we don't have a better way to solve it
   let waitTime = 20;
+
   while (--waitTime > 0 && !predicate()) {
-    await Promise.resolve();
+    await simpleDelay(10);
   }
 
   if (waitTime === 0) {
@@ -171,7 +155,7 @@ export async function waitForPredicate(predicate: () => boolean, errorMsg: strin
 }
 
 export async function waitUntilDoesntThrow(
-  globalFakeClock: LolexClockAsync<any>,
+  globalFakeClock: any /* lolex.InstalledClock<lolex.Clock> */,
   fn: () => any,
   errorMsg: string,
 ): Promise<void> {
@@ -204,7 +188,7 @@ interface ICreateProviderContext {
 export function wrapWithProviders(
   Component: React.ComponentType,
   context: ICreateProviderContext = {},
-): React.ReactElement<any> {
+): React.ReactElement {
   // avoid creating store and container if they were provided
   let setup: ICreateIntegrationTestsSetupOutput | null = null;
   if (!context.store || !context.container) {
@@ -231,7 +215,7 @@ export function wrapWithProviders(
   );
 }
 
-export function wrapWithIntl(component: React.ReactElement<any>): React.ReactElement<any> {
+export function wrapWithIntl(component: React.ReactElement): React.ReactElement<any> {
   return (
     <IntlProvider locale="en-en" messages={defaultTranslations}>
       {component}
@@ -239,16 +223,19 @@ export function wrapWithIntl(component: React.ReactElement<any>): React.ReactEle
   );
 }
 
-const getCurrentSubmitCount = (element: ReactWrapper<any, any>) =>
-  element.find(tid("test-form-submit-count")).text();
+const getCurrentSubmitCount = (element: ReactWrapper): number =>
+  +element.find(tid("test-form-submit-count")).text();
 
-export const submit = async (element: ReactWrapper<any, any>): Promise<void> => {
+const getIsSubmitting = (element: ReactWrapper): boolean =>
+  element.find(tid("test-form-is-submitting")).text() === "true";
+
+export const submit = async (element: ReactWrapper): Promise<void> => {
   const currentCount = getCurrentSubmitCount(element);
 
   clickFirstTid(element, "test-form-submit");
 
   await waitForPredicate(
-    () => currentCount !== getCurrentSubmitCount(element),
+    () => currentCount + 1 === getCurrentSubmitCount(element) && !getIsSubmitting(element),
     "Waiting for form to be submitted",
   );
 };

@@ -1,4 +1,4 @@
-import { Q18 } from "../config/constants";
+import { Q18 } from "@neufund/shared";
 
 import emfluxThumbnail from "../assets/img/eto_offers/investment_thumbnails_emflux_motors.jpg";
 import icbmThumbnail from "../assets/img/eto_offers/investment_thumbnails_icbm_capital_raise.png";

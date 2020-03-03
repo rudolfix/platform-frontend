@@ -1,5 +1,6 @@
+import { EthereumAddress } from "@neufund/shared";
+
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
-import { EthereumAddress } from "../../utils/opaque-types/types";
 
 export const ETO_FIXTURES: any = require("../../../../../git_modules/platform-contracts-artifacts/localhost/eto_fixtures.json");
 export const ETO_TERMS_FIXTURES: any = require("../../../../../git_modules/platform-contracts-artifacts/localhost/eto_terms_contraints_fixtures.json");

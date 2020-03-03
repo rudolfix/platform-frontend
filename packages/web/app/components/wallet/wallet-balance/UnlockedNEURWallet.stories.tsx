@@ -1,11 +1,9 @@
+import { ECountries, EUSState, Q18 } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Q18 } from "../../../config/constants";
 import { ENEURWalletStatus } from "../../../modules/wallet/types";
-import { ECountries } from "../../../utils/enums/countriesEnum";
-import { EUSState } from "../../../utils/enums/usStatesEnum";
 import { UnlockedNEURWallet } from "./UnlockedNEURWallet";
 
 storiesOf("Unlocked EUR Wallet", module)

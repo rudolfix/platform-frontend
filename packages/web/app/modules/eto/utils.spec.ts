@@ -1,9 +1,9 @@
+import { convertToUlps } from "@neufund/shared";
 import { expect } from "chai";
 
 import { testEto } from "../../../test/fixtures";
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { convertToUlps } from "../../utils/NumberUtils";
 import {
   amendEtoToCompatibleFormat,
   getEtoEurMaxTarget,

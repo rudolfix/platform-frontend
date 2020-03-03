@@ -1,35 +1,57 @@
+import { convertToUlps } from "@neufund/shared";
+import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { MyWalletWidgetComponent } from "./MyWalletWidget";
+import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
+import {
+  MyWalletWidgetComponentContainer,
+  MyWalletWidgetComponentLayout,
+  MyWalletWidgetError,
+} from "./MyWalletWidget";
 
 const props = {
   isLoading: false,
+  hasError: false,
   data: {
-    euroTokenAmount: "100",
-    ethAmount: "100",
-    ethEuroAmount: "100",
-    totalAmount: "100",
+    euroTokenAmount: convertToUlps("100"),
+    ethAmount: convertToUlps("100"),
+    ethEuroAmount: convertToUlps("100"),
+    totalAmount: convertToUlps("100"),
     isIcbmWalletConnected: false,
     isLockedWalletConnected: false,
   },
+  goToWallet: action("GO_TO_WALLET"),
+  goToPortfolio: action("GO_TO_PORTFOLIO"),
 };
 
-storiesOf("MyWalletWidget", module)
+storiesOf("NDS|Molecules/Dashboard/MyWalletWidget", module)
   .add("loading", () => {
     const testData = {
       ...props,
       isLoading: true,
     };
-    return <MyWalletWidgetComponent {...testData} />;
+    return (
+      <MyWalletWidgetComponentContainer {...testData}>
+        <LoadingIndicator />
+      </MyWalletWidgetComponentContainer>
+    );
   })
-  .add("default", () => <MyWalletWidgetComponent {...props} />)
+  .add("default", () => (
+    <MyWalletWidgetComponentContainer {...props}>
+      <MyWalletWidgetComponentLayout {...props} />
+    </MyWalletWidgetComponentContainer>
+  ))
   .add("error", () => {
     const testData = {
       ...props,
-      error: "some placeholder long very long error string",
+      hasError: true,
     };
-    return <MyWalletWidgetComponent {...testData} />;
+    return (
+      <MyWalletWidgetComponentContainer {...testData}>
+        <MyWalletWidgetError />
+      </MyWalletWidgetComponentContainer>
+    );
   })
   .add("with icbm wallet", () => {
     const testData = {
@@ -40,5 +62,9 @@ storiesOf("MyWalletWidget", module)
         isLockedWalletConnected: false,
       },
     };
-    return <MyWalletWidgetComponent {...testData} />;
+    return (
+      <MyWalletWidgetComponentContainer {...testData}>
+        <MyWalletWidgetComponentLayout {...testData} />
+      </MyWalletWidgetComponentContainer>
+    );
   });

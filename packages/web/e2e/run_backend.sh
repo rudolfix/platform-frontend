@@ -54,7 +54,7 @@ echo ${REGISTRY_PASS} | docker login ${REGISTRY_HOST} --username ${REGISTRY_USER
 echo "Running backend"
 cd ./platform-backend
 
-make docker-pull tag=dev_fixtures_${BACKEND_SHORT_SHA}
+make docker-pull tag=dev_build_fixtures_${BACKEND_SHORT_SHA}
 echo "Pulling images done."
 
 make prerequisites-dev

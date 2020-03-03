@@ -1,8 +1,8 @@
+import { nonNullable } from "@neufund/shared";
 import { expect } from "chai";
 
 import { dummyEthereumAddress } from "../../../test/fixtures";
-import { IAppState } from "../../store";
-import { nonNullable } from "../../utils/nonNullable";
+import { TAppGlobalState } from "../../store";
 import {
   getDummyBrowserWalletMetadata,
   getDummyLedgerWalletMetadata,
@@ -61,8 +61,8 @@ describe("web3 > selectors", () => {
         isUnlocked: false,
         wallet: getDummyLedgerWalletMetadata(),
       };
-
-      const isExternalWallet = selectIsExternalWallet(state);
+      const appState = { web3: state } as TAppGlobalState;
+      const isExternalWallet = selectIsExternalWallet(appState);
 
       expect(isExternalWallet).to.be.true;
     });
@@ -73,8 +73,9 @@ describe("web3 > selectors", () => {
         isUnlocked: false,
         wallet: getDummyBrowserWalletMetadata(),
       };
+      const appState = { web3: state } as TAppGlobalState;
 
-      const isExternalWallet = selectIsExternalWallet(state);
+      const isExternalWallet = selectIsExternalWallet(appState);
 
       expect(isExternalWallet).to.be.true;
     });
@@ -85,8 +86,9 @@ describe("web3 > selectors", () => {
         isUnlocked: false,
         wallet: getDummyLightWalletMetadata(),
       };
+      const appState = { web3: state } as TAppGlobalState;
 
-      const isExternalWallet = selectIsExternalWallet(state);
+      const isExternalWallet = selectIsExternalWallet(appState);
 
       expect(isExternalWallet).to.be.false;
     });
@@ -104,7 +106,7 @@ describe("web3 > selectors", () => {
           },
           action: "POP",
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       const result = nonNullable(selectActivationCodeFromQueryString(state));
 
@@ -123,7 +125,7 @@ describe("web3 > selectors", () => {
             search: encodeURI(`?redirect=/&email=${email}&salt=${salt}`),
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       const result = nonNullable(selectLightWalletFromQueryString(state));
 
@@ -142,7 +144,7 @@ describe("web3 > selectors", () => {
             search: encodeURI(`?redirect=/&email=${email}`),
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(selectLightWalletFromQueryString(state)).to.be.undefined;
 
@@ -163,7 +165,7 @@ describe("web3 > selectors", () => {
             search: encodeURI(`?redirect=/&email=${email}`),
           },
         },
-      } as IAppState;
+      } as TAppGlobalState;
 
       expect(selectLightWalletEmailFromQueryString(state)).to.be.undefined;
     });

@@ -1,10 +1,10 @@
 import { fork, put, select, take } from "@neufund/sagas";
+import { compareBigNumbers } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
-import { IAppState } from "../../../../store";
-import { compareBigNumbers } from "../../../../utils/BigNumberUtils";
+import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
@@ -15,6 +15,7 @@ import {
   selectInvestmentEthValueUlps,
   selectInvestmentEtoId,
   selectInvestmentEurValueUlps,
+  selectInvestmentType,
   selectIsICBMInvestment,
 } from "../../../investment-flow/selectors";
 import {
@@ -126,22 +127,24 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Generator<an
   yield take(actions.txSender.txSenderAcceptDraft);
 
   const etoId: string = yield select(selectInvestmentEtoId);
-  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: IAppState) =>
+  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: TAppGlobalState) =>
     selectEtoWithCompanyAndContractById(state, etoId),
   );
 
   const investmentEth: string = yield select(selectInvestmentEthValueUlps);
   const investmentEur: string = yield select(selectInvestmentEurValueUlps);
   const gasCostEth: string = yield select(selectTxGasCostEthUlps);
-  const equityTokens: string = yield select((state: IAppState) =>
+  const equityTokens: string = yield select((state: TAppGlobalState) =>
     selectEquityTokenCountByEtoId(state, etoId),
   );
-  const estimatedReward: string = yield select((state: IAppState) =>
+  const estimatedReward: string = yield select((state: TAppGlobalState) =>
     selectNeuRewardUlpsByEtoId(state, etoId),
   );
 
   const etherPriceEur: string = yield select(selectEtherPriceEur);
   const isIcbm: boolean = yield select(selectIsICBMInvestment);
+  const investmentType: string = yield select(selectInvestmentType);
+  const tokenDecimals = 18;
 
   if (!eto.investmentCalculatedValues) {
     logger.error("ETO investment calculated values are empty");
@@ -160,6 +163,8 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Generator<an
         equityTokenName: eto.equityTokenName,
       },
     },
+    tokenDecimals,
+    investmentType,
     investmentEth,
     investmentEur,
     gasCostEth,
@@ -187,6 +192,7 @@ function* investSaga(
     yield onInvestmentTxModalHide();
     logger.info("Investment cancelled", e);
   } finally {
+    yield put(actions.etoView.reloadEtoView());
     yield put(actions.eto.loadEto(payload.etoId));
   }
 }

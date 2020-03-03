@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
-import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { UserClaimSummaryComponent } from "./Summary";
 
 storiesOf("User Claim Summary", module)
@@ -15,6 +15,8 @@ storiesOf("User Claim Summary", module)
         neuRewardUlps: "5500000000000000000",
         tokenName: "Fifth Force",
         tokenQuantity: 100,
+        tokenSymbol: "FT",
+        tokenDecimals: 0,
       }}
       onAccept={() => {}}
       generateTemplateByEtoId={() => {}}

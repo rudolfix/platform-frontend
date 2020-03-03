@@ -1,11 +1,18 @@
+import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { testEto } from "../../../test/fixtures";
 import { EETOStateOnChain } from "../../modules/eto/types";
 import { IInvestorTicket, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { withStore } from "../../utils/storeDecorator.unsafe";
-import { PortfolioPastInvestments } from "./PortfolioPastInvestments";
+import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { WarningAlert } from "../shared/WarningAlert";
+import {
+  PastInvestmentsContainer,
+  PastInvestmentsNoInvestments,
+  PortfolioPastInvestmentsLayout,
+} from "./PortfolioPastInvestments";
 
 const eto = {
   ...testEto,
@@ -27,15 +34,33 @@ const eto = {
   } as IInvestorTicket,
 } as TETOWithInvestorTicket;
 
+const pastInvestments = [eto];
+
 storiesOf("Portfolio/PortfolioPastInvestments", module)
-  .addDecorator(
-    withStore({
-      eto: {
-        etos: { [eto.previewCode]: eto },
-        contracts: { [eto.previewCode]: eto.contract },
-        companies: { [eto.previewCode]: {} },
-      },
-    }),
-  )
-  .add("without past investments", () => <PortfolioPastInvestments pastInvestments={[]} />)
-  .add("with past investments", () => <PortfolioPastInvestments pastInvestments={[eto]} />);
+  .add("default", () => (
+    <PastInvestmentsContainer>
+      <PortfolioPastInvestmentsLayout
+        pastInvestments={pastInvestments}
+        hasError={false}
+        isRetailEto={true}
+        showDownloadAgreementModal={action("SHOW_AGREEMENTS")}
+      />
+    </PastInvestmentsContainer>
+  ))
+  .add("without past investments", () => (
+    <PastInvestmentsContainer>
+      <PastInvestmentsNoInvestments />
+    </PastInvestmentsContainer>
+  ))
+  .add("loading", () => (
+    <PastInvestmentsContainer>
+      <LoadingIndicator className="m-auto" />
+    </PastInvestmentsContainer>
+  ))
+  .add("with error", () => (
+    <PastInvestmentsContainer>
+      <WarningAlert data-test-id="my-neu-widget-error" className="m-auto">
+        <FormattedMessage id="common.error" values={{ separator: " " }} />
+      </WarningAlert>
+    </PastInvestmentsContainer>
+  ));

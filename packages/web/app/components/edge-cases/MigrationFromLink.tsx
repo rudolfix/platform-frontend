@@ -1,3 +1,4 @@
+import { withContainer } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -7,11 +8,10 @@ import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction";
-import { withContainer } from "../../utils/withContainer.unsafe";
-import { DashboardHeading } from "../eto/shared/DashboardHeading";
+import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { Layout } from "../layouts/Layout";
 import { CheckYourICBMWalletWidget } from "../settings/icbm-wallet-widget/CheckYourICBMWalletWidget";
+import { DashboardHeading } from "../shared/DashboardHeading";
 
 interface IStateProps {
   userType?: EUserType;

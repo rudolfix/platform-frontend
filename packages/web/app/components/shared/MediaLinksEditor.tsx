@@ -1,11 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as cn from "classnames";
 import { connect, FieldArray } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps, TFormikConnect } from "../../types";
-import { Button } from "./buttons";
-import { EButtonLayout } from "./buttons/Button";
 import { FormField } from "./forms";
 
 import closeIcon from "../../assets/img/inline_icons/round_close.svg";
@@ -106,9 +105,8 @@ class MediaLinksEditorLayout extends React.Component<IProps & TFormikConnect> {
 
     const mediaLinks: object[] = values[name] || [blankField];
     return (
-      <FieldArray
-        name={name}
-        render={arrayHelpers => (
+      <FieldArray name={name}>
+        {arrayHelpers => (
           <div className={styles.fieldTable}>
             {mediaLinks
               .map((_: object, index: number) => {
@@ -135,7 +133,7 @@ class MediaLinksEditorLayout extends React.Component<IProps & TFormikConnect> {
               .reverse()}
           </div>
         )}
-      />
+      </FieldArray>
     );
   }
 }

@@ -2,26 +2,29 @@ import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { CommonHtmlProps } from "../../types";
 import { calculateTimeLeft, calculateTimeLeftUnits } from "./utils";
 
 import sheep from "../../assets/img/landing/rainbowsheep.gif";
 import test_sheep from "../../assets/img/landing/test_rainbowsheep.png";
 import * as styles from "./TimeLeft.module.scss";
 
-interface ITimeLeftRefresher {
+interface ITimeLeftRefresher extends CommonHtmlProps {
   finalTime: moment.Moment | Date;
   asUtc: boolean;
   renderComponent: React.ComponentType<ITimeLeftProps>;
+  onFinish?: () => void;
+  withSeconds?: boolean;
 }
 
-interface ITimeLeftProps {
+interface ITimeLeftProps extends CommonHtmlProps {
   timeLeft: number;
 }
 
-const RenderTimeLeft: React.ComponentType<ITimeLeftProps> = ({ timeLeft }) => {
+const RenderTimeLeft: React.ComponentType<ITimeLeftProps> = ({ timeLeft, className }) => {
   const [days, hours, minutes] = calculateTimeLeftUnits(timeLeft);
   return (
-    <>
+    <span className={className}>
       {days > 0 && (
         <>
           {days} <FormattedMessage values={{ days }} id="eto.settings.days" />
@@ -50,7 +53,49 @@ const RenderTimeLeft: React.ComponentType<ITimeLeftProps> = ({ timeLeft }) => {
           <FormattedMessage id="eto.settings.time-left-none" />
         </>
       )}
-    </>
+    </span>
+  );
+};
+
+const RenderTimeLeftWithSeconds: React.ComponentType<ITimeLeftProps> = ({
+  timeLeft,
+  className,
+}) => {
+  const [days, hours, minutes, seconds] = calculateTimeLeftUnits(timeLeft);
+  return (
+    <span className={className}>
+      {days > 0 && (
+        <span className={styles.time}>
+          {days}
+          <FormattedMessage id="common.days.short" />
+        </span>
+      )}
+      {hours > 0 && (
+        <span className={styles.time}>
+          {hours}
+          <FormattedMessage id="common.hours.short" />
+        </span>
+      )}
+      {minutes > 0 && (
+        <span className={styles.time}>
+          {minutes}
+          <FormattedMessage id="common.minutes.short" />
+        </span>
+      )}
+
+      {seconds > 0 && (
+        <span className={styles.time}>
+          {seconds}
+          <FormattedMessage id="common.seconds.short" />
+        </span>
+      )}
+
+      {timeLeft <= 0 && (
+        <>
+          <FormattedMessage id="common.time-left-less-than-second" />
+        </>
+      )}
+    </span>
   );
 };
 
@@ -126,12 +171,17 @@ class TimeLeftRefresher extends React.PureComponent<ITimeLeftRefresher, { timeLe
     this.timeout = window.setTimeout(
       () => {
         window.clearTimeout(this.timeout);
+
+        if (this.state.timeLeft <= 0 && this.props.onFinish) {
+          this.props.onFinish();
+        }
+
         if (this.state.timeLeft > 0) {
           this.doRefresh();
         }
         this.setState({ timeLeft: calculateTimeLeft(this.props.finalTime, this.props.asUtc) });
       },
-      this.state.timeLeft > 3600 ? 60000 : 1000,
+      this.props.withSeconds ? 1000 : this.state.timeLeft > 3600 ? 60000 : 1000,
     );
   };
 
@@ -146,7 +196,9 @@ class TimeLeftRefresher extends React.PureComponent<ITimeLeftRefresher, { timeLe
   }
 
   render(): React.ReactNode {
-    return <this.props.renderComponent timeLeft={this.state.timeLeft} />;
+    return (
+      <this.props.renderComponent className={this.props.className} timeLeft={this.state.timeLeft} />
+    );
   }
 }
 
@@ -164,4 +216,25 @@ const TimeLeft = ({ finalTime, asUtc, refresh }: any) =>
     <RenderTimeLeft timeLeft={calculateTimeLeft(finalTime, true)} />
   );
 
-export { FancyTimeLeft, TimeLeft, RenderTimeLeft, FancyRenderTimeLeft };
+const TimeLeftWithSeconds = ({ className, finalTime, asUtc, refresh, onFinish }: any) =>
+  refresh && process.env.STORYBOOK_RUN !== "1" ? (
+    <TimeLeftRefresher
+      className={className}
+      finalTime={finalTime}
+      asUtc={asUtc}
+      withSeconds={true}
+      renderComponent={RenderTimeLeftWithSeconds}
+      onFinish={onFinish}
+    />
+  ) : (
+    <RenderTimeLeftWithSeconds timeLeft={calculateTimeLeft(finalTime, true)} />
+  );
+
+export {
+  FancyTimeLeft,
+  TimeLeft,
+  RenderTimeLeft,
+  FancyRenderTimeLeft,
+  TimeLeftWithSeconds,
+  RenderTimeLeftWithSeconds,
+};

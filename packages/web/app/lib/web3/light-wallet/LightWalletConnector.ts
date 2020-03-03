@@ -1,3 +1,5 @@
+import { EthereumAddress } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
@@ -10,12 +12,10 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { symbols } from "../../../di/symbols";
 import { EWalletType } from "../../../modules/web3/types";
-import { EthereumAddress } from "../../../utils/opaque-types/types";
-import { ILogger } from "../../dependencies/logger";
+import { STIPEND_ELIGIBLE_WALLETS } from "../constants";
 import { IPersonalWallet } from "../PersonalWeb3";
-import { STIPEND_ELIGIBLE_WALLETS } from "./../constants";
-import { IEthereumNetworkConfig } from "./../types";
-import { Web3Adapter } from "./../Web3Adapter";
+import { IEthereumNetworkConfig } from "../types";
+import { Web3Adapter } from "../Web3Adapter";
 import {
   IVault,
   LightError,

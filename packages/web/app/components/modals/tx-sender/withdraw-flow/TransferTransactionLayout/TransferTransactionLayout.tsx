@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate, FormattedRelative } from "react-intl";
@@ -9,15 +10,14 @@ import {
   toFixedPrecisionGasCostEur,
 } from "../../../../../modules/tx/user-flow/transfer/utils";
 import { ErrorAlert } from "../../../../shared/Alerts";
-import { Button } from "../../../../shared/buttons";
+import { DataRow, DataRowSeparator } from "../../../../shared/DataRow";
 import { EtherscanTxLink } from "../../../../shared/links/EtherscanLink";
 import { ExternalLink } from "../../../../shared/links/ExternalLink";
 import {
   ESize as ETransactionDataSize,
   ETheme as ETransactionDataTheme,
   TransactionData,
-} from "../../../../shared/TransactionData";
-import { DataRow, DataRowSeparator } from "../../shared/DataRow";
+} from "../../../../shared/transaction/TransactionData";
 import { TxStatusLabel } from "../../shared/TxStatusLabel";
 import { TokenAmount } from "../shared/TokenAmount";
 import { TransferHeader } from "../shared/TransferHeader";
@@ -116,15 +116,12 @@ export const TransferTransactionWrapperLayout: React.FunctionComponent<TTransfer
   gasCost,
   gasCostEur,
   onClick,
-  tokenImage,
-  tokenSymbol,
-  tokenDecimals,
   status,
   isMined,
   amountCaption,
   "data-test-id": dataTestId,
 }) => (
-  <TransferHeader tokenSymbol={tokenSymbol} data-test-id={dataTestId}>
+  <TransferHeader tokenSymbol={additionalData.tokenSymbol} data-test-id={dataTestId}>
     <DataRow
       className={cn({ [styles.noSpacing]: !!blockId })}
       caption={<FormattedMessage id="modal.sent-eth.transaction-status" />}
@@ -172,9 +169,9 @@ export const TransferTransactionWrapperLayout: React.FunctionComponent<TTransfer
     <TokenAmount
       amount={error ? "0" : additionalData.amount}
       amountEur={error ? "0" : additionalData.amountEur}
-      tokenImage={tokenImage}
-      tokenSymbol={tokenSymbol}
-      tokenDecimals={tokenDecimals}
+      tokenImage={additionalData.tokenImage}
+      tokenSymbol={additionalData.tokenSymbol}
+      tokenDecimals={additionalData.tokenDecimals}
       caption={amountCaption}
     />
     {(!error || (error && isMined)) && (

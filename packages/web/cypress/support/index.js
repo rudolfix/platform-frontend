@@ -1,4 +1,10 @@
+// Polyfills
+import "reflect-metadata";
+
+// External plugins
 import "cypress-plugin-retries";
+
+import "./filterTestsByTags";
 import "./commands";
 import "./fetch-support";
 

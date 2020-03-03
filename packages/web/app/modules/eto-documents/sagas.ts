@@ -1,8 +1,8 @@
 import { all, call, fork, put, select } from "@neufund/sagas";
+import { EJwtPermissions, nonNullable } from "@neufund/shared";
 
 import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
@@ -11,7 +11,6 @@ import {
   TEtoDocumentTemplates,
   TStateInfo,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { nonNullable } from "../../utils/nonNullable";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { loadIssuerEto } from "../eto-flow/sagas";

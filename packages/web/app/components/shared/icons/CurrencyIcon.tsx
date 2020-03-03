@@ -1,9 +1,9 @@
+import { TokenIcon } from "@neufund/design-system";
+import { assertNever } from "@neufund/shared";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../../types";
-import { assertNever } from "../../../utils/assertNever";
 import { ECurrency, selectUnits } from "../formatters/utils";
-import { TokenIcon } from "./TokenIcon";
 
 import ethIcon from "../../../assets/img/eth_icon.svg";
 import eurIcon from "../../../assets/img/euro_icon.svg";

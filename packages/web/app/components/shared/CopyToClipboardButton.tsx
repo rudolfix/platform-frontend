@@ -1,9 +1,8 @@
+import { Button, EButtonLayout, EButtonSize, EButtonWidth } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { CommonHtmlProps, TDataTestId, TTranslatedString } from "../../types";
-import { Button } from "./buttons";
-import { EButtonLayout, EButtonSize, EButtonWidth } from "./buttons/Button";
 import { useCopyClipboard } from "./hooks/useCopyToClipboard";
 
 import clipboardIcon from "../../assets/img/inline_icons/icon-clipboard.svg";

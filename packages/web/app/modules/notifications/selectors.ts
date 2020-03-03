@@ -2,9 +2,9 @@ import { includes, some } from "lodash";
 import { createSelector } from "reselect";
 
 import { appRoutes } from "../../components/appRoutes";
+import { USERS_WITH_ACCOUNT_SETUP } from "../../config/constants";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
-import { EUserType } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import {
   selectBackupCodesVerified,
   selectIsInvestor,
@@ -15,10 +15,10 @@ import { selectKycIsLoading, selectKycRequestStatus } from "../kyc/selectors";
 import { settingsNotificationInvestor, settingsNotificationIssuer } from "./reducer";
 import { INotification } from "./types";
 
-export const selectNotifications = (state: IAppState): ReadonlyArray<INotification> =>
+export const selectNotifications = (state: TAppGlobalState): ReadonlyArray<INotification> =>
   state.notifications.notifications;
 
-export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
+export const selectIsActionRequiredSettings = (state: TAppGlobalState): boolean => {
   if (selectKycIsLoading(state)) {
     return false;
   }
@@ -35,11 +35,11 @@ export const selectIsActionRequiredSettings = (state: IAppState): boolean => {
 /**
  * Hides notification on blacklisted routes.
  */
-export const selectIsVisibleSecurityNotification = (state: IAppState): boolean => {
+export const selectIsVisibleSecurityNotification = (state: TAppGlobalState): boolean => {
   const disallowedViewsPaths = [appRoutes.profile, appRoutes.kyc];
   const userType = selectUserType(state);
 
-  if (userType === EUserType.NOMINEE) {
+  if (includes(USERS_WITH_ACCOUNT_SETUP, userType)) {
     return false;
   }
 
@@ -57,7 +57,7 @@ export const selectSettingsNotificationType = createSelector(selectIsInvestor, i
   isInvestor ? settingsNotificationInvestor() : settingsNotificationIssuer(),
 );
 
-export const selectSettingsNotification = (state: IAppState) =>
+export const selectSettingsNotification = (state: TAppGlobalState) =>
   selectIsVisibleSecurityNotification(state) ? selectSettingsNotificationType(state) : undefined;
 
 export const selectNotificationsWithDerived = createSelector(

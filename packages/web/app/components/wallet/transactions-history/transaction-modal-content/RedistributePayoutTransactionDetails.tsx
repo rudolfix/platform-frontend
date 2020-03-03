@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETransactionType } from "../../../../lib/api/analytics-api/interfaces";
 import { TExtractTxHistoryFromType } from "../../../../modules/tx-history/types";
-import { DataRow } from "../../../modals/tx-sender/shared/DataRow";
+import { DataRow } from "../../../shared/DataRow";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { getIconForCurrency } from "../../../shared/icons/CurrencyIcon";
 import {

@@ -1,4 +1,7 @@
+import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { ECountries } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
+import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
@@ -14,23 +17,23 @@ import {
   selectIndividualDataLoading,
   selectIndividualFiles,
   selectIndividualFilesLoading,
-  selectIndividualFileUploading,
+  selectIndividualFilesUploading,
   selectIsSavingKycForm,
   selectKycUploadedFiles,
 } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
-import { ECountries } from "../../../utils/enums/countriesEnum";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/buttons";
-import { EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
-import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
-import { boolify, FormDeprecated, FormField, unboolify } from "../../shared/forms";
-import { FormSelectCountryField } from "../../shared/forms/fields/FormSelectCountryField.unsafe";
-import { FormSelectStateField } from "../../shared/forms/fields/FormSelectStateField.unsafe";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import {
+  FormDeprecated,
+  FormField,
+  FormSelectCountryField,
+  FormSelectStateField,
+} from "../../shared/forms";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { EKycUploadType } from "../../shared/MultiFileUpload";
 import { KYCAddDocuments } from "../shared/AddDocuments";
 import { KycStep } from "../shared/KycStep";
+import { TOTAL_STEPS_PERSONAL_KYC } from "./constants";
 
 import * as styles from "./Start.module.scss";
 
@@ -40,7 +43,7 @@ interface IStateProps {
   isSavingForm: boolean;
   uploadedFiles: ReturnType<typeof selectKycUploadedFiles>;
   uploadedFilesLoading: ReturnType<typeof selectIndividualFilesLoading>;
-  individualFileUploading: ReturnType<typeof selectIndividualFileUploading>;
+  individualFilesUploading: ReturnType<typeof selectIndividualFilesUploading>;
 }
 
 interface IDispatchProps {
@@ -55,7 +58,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
   uploadedFiles,
   values,
   uploadedFilesLoading,
-  individualFileUploading,
+  individualFilesUploading,
   ...props
 }) => {
   const shouldDisableSubmit =
@@ -63,13 +66,13 @@ const KYCForm: React.FunctionComponent<TProps> = ({
     !props.isValid ||
     props.loadingData ||
     uploadedFiles.length === 0 ||
-    individualFileUploading;
+    individualFilesUploading;
 
   return (
     <>
       <KycStep
         step={3}
-        allSteps={5}
+        allSteps={TOTAL_STEPS_PERSONAL_KYC}
         title={<FormattedMessage id="kyc.personal.address.title" />}
         description={<FormattedMessage id="kyc.personal.address.description" />}
         buttonAction={() => props.submitAndClose(values)}
@@ -148,6 +151,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
             layout={EButtonLayout.PRIMARY}
             size={EButtonSize.HUGE}
             className={styles.button}
+            isLoading={props.isSavingForm}
             disabled={shouldDisableSubmit}
             data-test-id="kyc-personal-address-submit-form"
           >
@@ -159,14 +163,15 @@ const KYCForm: React.FunctionComponent<TProps> = ({
   );
 };
 
+const defaultEmptyObject = defaultTo<IKycIndividualData | {}>({});
+
 const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualData>({
   validationSchema: KycPersonalAddressSchemaRequired,
-  isInitialValid: (props: object) =>
-    KycPersonalAddressSchemaRequired.isValidSync((props as IStateProps).currentValues),
-  mapPropsToValues: props => unboolify(props.currentValues as IKycIndividualData),
+  validateOnMount: true,
   enableReinitialize: true,
+  mapPropsToValues: props => defaultEmptyObject(props.currentValues),
   handleSubmit: (values, { props }) => {
-    props.submitForm(boolify(values));
+    props.submitForm(values);
   },
 })(KYCForm);
 
@@ -178,7 +183,7 @@ export const KYCPersonalAddress = compose<IStateProps & IDispatchProps, {}>(
       isSavingForm: selectIsSavingKycForm(state),
       uploadedFiles: selectIndividualFiles(state),
       uploadedFilesLoading: selectIndividualFilesLoading(state),
-      individualFileUploading: selectIndividualFileUploading(state),
+      individualFilesUploading: selectIndividualFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCIndividualStart()),

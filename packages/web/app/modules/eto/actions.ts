@@ -1,8 +1,7 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory, Dictionary } from "@neufund/shared";
 
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { Dictionary } from "../../types";
 import {
   IEtoTokenData,
   IEtoTokenGeneralDiscounts,
@@ -48,18 +47,15 @@ export const etoActions = {
       eto,
     }),
   ),
-  ensureEtoJurisdiction: createActionFactory(
-    "ETO_VERIFY_ETO_JURISDICTION",
-    (previewCode: string, jurisdiction: string) => ({
-      previewCode,
-      jurisdiction,
-    }),
-  ),
   confirmJurisdictionDisclaimer: createActionFactory("ETO_CONFIRM_JURISDICTION_DISCLAIMER"),
   confirmConfidentialityAgreement: createActionFactory("ETO_CONFIRM_CONFIDENTIALITY_AGREEMENT"),
-  verifyEtoAccess: createActionFactory("ETO_VERIFY_ETO_ACCESS", (previewCode: string) => ({
-    previewCode,
-  })),
+  verifyEtoAccess: createActionFactory(
+    "ETO_VERIFY_ETO_ACCESS",
+    (eto: TEtoWithCompanyAndContractReadonly, userIsFullyVerified: boolean) => ({
+      eto,
+      userIsFullyVerified,
+    }),
+  ),
 
   // state mutations
   setEtos: createActionFactory(
@@ -117,4 +113,5 @@ export const etoActions = {
     "ETO_LOAD_CAPITAL_INCREASE",
     (etoId: string, previewCode: string) => ({ etoId, previewCode }),
   ),
+  setEtosError: createActionFactory("ETO_SET_ETOS_ERROR"),
 };

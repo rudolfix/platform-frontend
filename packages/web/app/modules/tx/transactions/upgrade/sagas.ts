@@ -1,9 +1,9 @@
 import { fork, put, select } from "@neufund/sagas";
+import { EthereumAddress } from "@neufund/shared";
 import { addHexPrefix } from "ethereumjs-util";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
-import { EthereumAddress } from "../../../../utils/opaque-types/types";
 import { actions, TAction } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";

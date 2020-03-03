@@ -3,9 +3,9 @@ import * as React from "react";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { DeepPartial } from "../../types";
-import { withStore } from "../../utils/storeDecorator.unsafe";
+import { withStore } from "../../utils/react-connected-components/storeDecorator.unsafe";
 import { EContentWidth } from "./Content";
 import { LayoutComponent, TransitionalLayout } from "./Layout";
 
@@ -13,7 +13,7 @@ const FakeContent = () => (
   <div style={{ height: "20rem", backgroundColor: "gray" }}>dummy content</div>
 );
 
-const authStore: DeepPartial<IAppState> = {
+const authStore: DeepPartial<TAppGlobalState> = {
   auth: {
     jwt: "asdf",
     user: {
@@ -34,7 +34,7 @@ const authStore: DeepPartial<IAppState> = {
   },
 };
 
-const unauthStore: DeepPartial<IAppState> = {
+const unauthStore: DeepPartial<TAppGlobalState> = {
   auth: {
     user: {
       type: EUserType.ISSUER,
@@ -91,7 +91,7 @@ storiesOf("Templates|Layouts/Layout", module)
   .add(
     "TransitionalLayout",
     () => (
-      <TransitionalLayout>
+      <TransitionalLayout isLoginRoute={true}>
         <FakeContent />
       </TransitionalLayout>
     ),

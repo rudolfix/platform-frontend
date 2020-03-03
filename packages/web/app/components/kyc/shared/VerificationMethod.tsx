@@ -1,8 +1,8 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 
 import { ENotificationType } from "../../../modules/notifications/types";
 import { TDataTestId, TTranslatedString } from "../../../types";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { InlineIcon } from "../../shared/icons/InlineIcon";
 import { Notification } from "../../shared/notification-widget/Notification";
 

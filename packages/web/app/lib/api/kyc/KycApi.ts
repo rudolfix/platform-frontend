@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
+import { getBeneficialOwnerId } from "../../../modules/kyc/utils";
 import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
   IKycBeneficialOwner,
@@ -8,13 +9,13 @@ import {
   IKycFileInfo,
   IKycIndividualData,
   IKycLegalRepresentative,
+  IKycManagingDirector,
   KycFileInfoShape,
   KycFullIndividualSchema,
   KycIdNowIdentificationSchema,
-  KycLegalRepresentativeSchemaRequired,
+  KycLegalRepresentativeSchema,
   KycOnfidoCheckRequestSchema,
   KycOnfidoUploadRequestSchema,
-  KycPersonSchema,
   KycStatusSchema,
   TKycBankAccount,
   TKycBankTransferPurpose,
@@ -36,6 +37,10 @@ const INDIVIDUAL_DOCUMENT_PATH = "/individual/document";
 const BUSINESS_REQUEST_PATH = "/business/request";
 const BUSINESS_DATA_PATH = "/business/data";
 const BUSINESS_DOCUMENT_PATH = "/business/document";
+
+const MANAGING_DIRECTORS_PATH = "/business/managing-director";
+const MANAGING_DIRECTORS_DOCUMENT_PATH = "/business/managing-director/document";
+
 const LEGAL_REPRESENTATIVE_PATH = "/business/legal-representative";
 const LEGAL_REPRESENTATIVE_DOCUMENT_PATH = "/business/legal-representative/document";
 
@@ -80,7 +85,7 @@ export class KycApi {
     return await this.httpClient.get<IKycBusinessData>({
       baseUrl: BASE_PATH,
       url: INDIVIDUAL_DATA_PATH,
-      responseSchema: KycPersonSchema,
+      responseSchema: KycFullIndividualSchema,
     });
   }
 
@@ -145,7 +150,7 @@ export class KycApi {
     return await this.httpClient.get<IKycLegalRepresentative>({
       baseUrl: BASE_PATH,
       url: LEGAL_REPRESENTATIVE_PATH,
-      responseSchema: KycLegalRepresentativeSchemaRequired,
+      responseSchema: KycLegalRepresentativeSchema,
     });
   }
 
@@ -156,7 +161,7 @@ export class KycApi {
       baseUrl: BASE_PATH,
       url: LEGAL_REPRESENTATIVE_PATH,
       body: data,
-      responseSchema: KycLegalRepresentativeSchemaRequired,
+      responseSchema: KycLegalRepresentativeSchema,
     });
   }
 
@@ -214,6 +219,43 @@ export class KycApi {
     });
   }
 
+  // managing directors
+  public async getManagingDirectors(): Promise<IHttpResponse<IKycManagingDirector[]>> {
+    return await this.httpClient.get<IKycManagingDirector[]>({
+      baseUrl: BASE_PATH,
+      url: MANAGING_DIRECTORS_PATH,
+    });
+  }
+
+  public async getManagingDirectorDocuments(): Promise<IHttpResponse<IKycFileInfo[]>> {
+    return await this.httpClient.get<IKycFileInfo[]>({
+      baseUrl: BASE_PATH,
+      url: MANAGING_DIRECTORS_DOCUMENT_PATH,
+    });
+  }
+
+  public async putManagingDirector(
+    managingDirector: IKycManagingDirector,
+  ): Promise<IHttpResponse<IKycManagingDirector>> {
+    return await this.httpClient.put<IKycManagingDirector>({
+      baseUrl: BASE_PATH,
+      url: MANAGING_DIRECTORS_PATH,
+      body: managingDirector,
+    });
+  }
+
+  public async uploadManagingDirectorDocument(file: File): Promise<IHttpResponse<IKycFileInfo>> {
+    let data = new FormData();
+    data.append("file", file);
+
+    return await this.httpClient.post<IKycFileInfo>({
+      baseUrl: BASE_PATH,
+      url: MANAGING_DIRECTORS_DOCUMENT_PATH,
+      formData: data,
+      responseSchema: KycFileInfoShape,
+    });
+  }
+
   // beneficial owners
   public async getBeneficialOwners(): Promise<IHttpResponse<IKycBeneficialOwner[]>> {
     return await this.httpClient.get<IKycBeneficialOwner[]>({
@@ -237,7 +279,7 @@ export class KycApi {
   ): Promise<IHttpResponse<IKycBeneficialOwner>> {
     return await this.httpClient.put<IKycBeneficialOwner>({
       baseUrl: BASE_PATH,
-      url: BENEFICIAL_OWNER_ENTRY_PATH + (beneficialOwner.id || ""),
+      url: BENEFICIAL_OWNER_ENTRY_PATH + (getBeneficialOwnerId(beneficialOwner) || ""),
       body: beneficialOwner,
     });
   }

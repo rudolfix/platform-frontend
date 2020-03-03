@@ -1,9 +1,12 @@
+import {
+  compareBigNumbers,
+  convertToUlps,
+  ETH_DECIMALS,
+  subtractBigNumbers,
+} from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 
-import { ETH_DECIMALS } from "../../../../config/constants";
-import { IAppState } from "../../../../store";
-import { compareBigNumbers, subtractBigNumbers } from "../../../../utils/BigNumberUtils";
-import { convertToUlps } from "../../../../utils/NumberUtils";
+import { TAppGlobalState } from "../../../../store";
 import { EInvestmentType } from "../../../investment-flow/reducer";
 import {
   selectLiquidEtherBalance,
@@ -13,7 +16,7 @@ import {
 } from "../../../wallet/selectors";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 
-export const selectWalletBalance = (state: IAppState): string => {
+export const selectWalletBalance = (state: TAppGlobalState): string => {
   const investmentState = state.investmentFlow;
 
   // Select wallet balance based on investment type
@@ -47,7 +50,7 @@ export const isEther = (investmentType: EInvestmentType | undefined) => {
   }
 };
 
-export const selectMaximumInvestment = (state: IAppState): string => {
+export const selectMaximumInvestment = (state: TAppGlobalState): string => {
   // Select investment state
   const investmentState = state.investmentFlow;
   const investmentType = investmentState.investmentType;

@@ -1,9 +1,9 @@
 import { fork, put } from "@neufund/sagas";
+import { EJwtPermissions } from "@neufund/shared";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { AuthMessage, ToSMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";

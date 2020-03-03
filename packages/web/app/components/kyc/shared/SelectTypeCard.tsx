@@ -1,10 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { TDataTestId } from "../../../types";
 import { Container, EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { InlineIcon } from "../../shared/icons/InlineIcon";
 
 import company from "../../../assets/img/inline_icons/company.svg";
@@ -52,18 +52,13 @@ const SelectTypeCard: React.FunctionComponent<TProps & TDataTestId> = ({
   "data-test-id": dataTestId,
 }) => (
   <Container columnSpan={EColumnSpan.ONE_COL} className={styles.cardContainer}>
-    <section className={styles.card}>
+    <section className={styles.card} onClick={onClick}>
       {kycType === EKycRequestType.BUSINESS ? (
         <SelectTypeCardCompany />
       ) : (
         <SelectTypeCardPersonal />
       )}
-      <Button
-        className="mt-auto"
-        onClick={onClick}
-        layout={EButtonLayout.PRIMARY}
-        data-test-id={dataTestId}
-      >
+      <Button className="mt-auto" layout={EButtonLayout.PRIMARY} data-test-id={dataTestId}>
         {isStarted ? (
           <FormattedMessage id="shared.kyc.select-type.continue" />
         ) : (

@@ -1,3 +1,4 @@
+import { DataUnavailableError, DeepReadonly, nonNullable } from "@neufund/shared";
 import { find } from "lodash/fp";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
@@ -10,10 +11,7 @@ import {
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { calcShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
-import { DataUnavailableError } from "../../utils/errors";
-import { nonNullable } from "../../utils/nonNullable";
+import { TAppGlobalState } from "../../store";
 import { selectUserType } from "../auth/selectors";
 import { selectIssuerEto, selectIssuerEtoWithCompanyAndContract } from "../eto-flow/selectors";
 import { selectIsEligibleToPreEto } from "../investor-portfolio/selectors";
@@ -26,11 +24,11 @@ import {
   TEtoStartOfStates,
   TEtoWithCompanyAndContractReadonly,
 } from "./types";
-import { getEtoNextStateStartDate, getEtoSubState } from "./utils";
+import { etoIsInOfferState, getEtoNextStateStartDate, getEtoSubState } from "./utils";
 
-const selectEtoState = (state: IAppState) => state.eto;
+const selectEtoState = (state: TAppGlobalState) => state.eto;
 
-const selectEtoPreviewCode = (state: IAppState, etoId: string) => {
+const selectEtoPreviewCode = (state: TAppGlobalState, etoId: string) => {
   const eto = find(e => e!.etoId === etoId, state.eto.etos);
 
   if (eto) {
@@ -40,7 +38,7 @@ const selectEtoPreviewCode = (state: IAppState, etoId: string) => {
   return undefined;
 };
 
-export const selectEtoTokenName = (state: IAppState, etoId: string) => {
+export const selectEtoTokenName = (state: TAppGlobalState, etoId: string) => {
   const eto = find(e => e!.etoId === etoId, state.eto.etos);
 
   if (eto) {
@@ -52,21 +50,21 @@ export const selectEtoTokenName = (state: IAppState, etoId: string) => {
 
 export const selectEto = createSelector(
   selectEtoState,
-  (_: IAppState, previewCode: string) => previewCode,
+  (_: TAppGlobalState, previewCode: string) => previewCode,
   (etoState: DeepReadonly<IEtoState>, previewCode: string) => etoState.etos[previewCode],
 );
 
 export const selectCompany = createSelector(
   selectEtoState,
-  (_: IAppState, companyId: string) => companyId,
+  (_: TAppGlobalState, companyId: string) => companyId,
   (etoState: DeepReadonly<IEtoState>, companyId: string) => etoState.companies[companyId],
 );
 
-export const selectEtoContract = (state: IAppState, previewCode: string) =>
+export const selectEtoContract = (state: TAppGlobalState, previewCode: string) =>
   state.eto.contracts[previewCode];
 
 // TODO: Check why the type is inferred as `any` without explicit return type information
-export const selectEtoById = (state: IAppState, etoId: string): TEtoSpecsData | undefined => {
+export const selectEtoById = (state: TAppGlobalState, etoId: string): TEtoSpecsData | undefined => {
   const previewCode = selectEtoPreviewCode(state, etoId);
 
   if (previewCode) {
@@ -78,36 +76,36 @@ export const selectEtoById = (state: IAppState, etoId: string): TEtoSpecsData | 
 
 export const selectEtoSubState = createCachedSelector(
   // forward eto param to combiner
-  (_: IAppState, eto: TEtoSpecsData) => eto,
-  (state: IAppState, eto: TEtoSpecsData) => selectIsEligibleToPreEto(state, eto.etoId),
-  (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
+  (_: TAppGlobalState, eto: TEtoSpecsData) => eto,
+  (state: TAppGlobalState, eto: TEtoSpecsData) => selectIsEligibleToPreEto(state, eto.etoId),
+  (state: TAppGlobalState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
   (eto, isEligibleToPreEto, contract) => getEtoSubState({ eto, contract, isEligibleToPreEto }),
-)((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
+)((_: TAppGlobalState, eto: TEtoSpecsData) => eto.previewCode);
 
 //todo this is a workaround, remove it when etos are stored consistently across apis
 export const selectEtoSubStateEtoEtoWithContract = createCachedSelector(
   // forward eto param to combiner
-  (_: IAppState, eto: TEtoWithCompanyAndContractReadonly) => eto,
-  (state: IAppState, eto: TEtoWithCompanyAndContractReadonly) =>
+  (_: TAppGlobalState, eto: TEtoWithCompanyAndContractReadonly) => eto,
+  (state: TAppGlobalState, eto: TEtoWithCompanyAndContractReadonly) =>
     selectIsEligibleToPreEto(state, eto.etoId),
   (eto, isEligibleToPreEto) => getEtoSubState({ eto, contract: eto.contract, isEligibleToPreEto }),
-)((_: IAppState, eto: TEtoWithCompanyAndContractReadonly) => eto.previewCode);
+)((_: TAppGlobalState, eto: TEtoWithCompanyAndContractReadonly) => eto.previewCode);
 
 const selectEtoWithCompanyAndContractInternal = createCachedSelector(
   // forward eto param to combiner
-  (_: IAppState, eto: TEtoSpecsData) => eto,
-  (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
-  (state: IAppState, eto: TEtoSpecsData) => nonNullable(selectCompany(state, eto.companyId)),
-  (state: IAppState, eto: TEtoSpecsData) => selectEtoSubState(state, eto),
+  (_: TAppGlobalState, eto: TEtoSpecsData) => eto,
+  (state: TAppGlobalState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
+  (state: TAppGlobalState, eto: TEtoSpecsData) => nonNullable(selectCompany(state, eto.companyId)),
+  (state: TAppGlobalState, eto: TEtoSpecsData) => selectEtoSubState(state, eto),
   (eto, contract, company, subState) => ({
     ...eto,
     contract,
     company,
     subState,
   }),
-)((_: IAppState, eto: TEtoSpecsData) => eto.previewCode);
+)((_: TAppGlobalState, eto: TEtoSpecsData) => eto.previewCode);
 
-export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode?: string) => {
+export const selectEtoWithCompanyAndContract = (state: TAppGlobalState, previewCode?: string) => {
   const userType = selectUserType(state);
   switch (userType) {
     case EUserType.NOMINEE:
@@ -128,7 +126,7 @@ export const selectEtoWithCompanyAndContract = (state: IAppState, previewCode?: 
 };
 
 export const selectInvestorEtoWithCompanyAndContract = (
-  state: IAppState,
+  state: TAppGlobalState,
   previewCode: string,
 ): TEtoWithCompanyAndContractReadonly | undefined => {
   const eto = selectEto(state, previewCode);
@@ -140,7 +138,7 @@ export const selectInvestorEtoWithCompanyAndContract = (
 };
 
 export const selectEtoWithCompanyAndContractById = (
-  state: IAppState,
+  state: TAppGlobalState,
   etoId: string,
 ): TEtoWithCompanyAndContractReadonly | undefined => {
   const previewCode = selectEtoPreviewCode(state, etoId);
@@ -152,7 +150,9 @@ export const selectEtoWithCompanyAndContractById = (
   return undefined;
 };
 
-export const selectEtos = (state: IAppState): TEtoWithCompanyAndContractReadonly[] | undefined => {
+export const selectEtos = (
+  state: TAppGlobalState,
+): TEtoWithCompanyAndContractReadonly[] | undefined => {
   const etoState = selectEtoState(state);
 
   if (etoState.displayOrder) {
@@ -165,7 +165,7 @@ export const selectEtos = (state: IAppState): TEtoWithCompanyAndContractReadonly
 };
 
 export const selectEtoOnChainState = (
-  state: IAppState,
+  state: TAppGlobalState,
   previewCode: string,
 ): EETOStateOnChain | undefined => {
   const contract = state.eto.contracts[previewCode];
@@ -174,7 +174,7 @@ export const selectEtoOnChainState = (
 };
 
 export const selectEtoStartOfStates = (
-  state: IAppState,
+  state: TAppGlobalState,
   previewCode: string,
 ): TEtoStartOfStates | undefined => {
   const contract = state.eto.contracts[previewCode];
@@ -183,7 +183,7 @@ export const selectEtoStartOfStates = (
 };
 
 export const selectEtoOnChainNextStateStartDate = (
-  state: IAppState,
+  state: TAppGlobalState,
   previewCode: string,
 ): Date | undefined => {
   const eto = selectInvestorEtoWithCompanyAndContract(state, previewCode);
@@ -195,7 +195,7 @@ export const selectEtoWidgetError = (state: DeepReadonly<IEtoState>): boolean | 
   state.etoWidgetError;
 
 export const selectEtoOnChainStateById = (
-  state: IAppState,
+  state: TAppGlobalState,
   etoId: string,
 ): EETOStateOnChain | undefined => {
   const code = selectEtoPreviewCode(state, etoId);
@@ -208,21 +208,20 @@ export const selectTokenData = (
   previewCode: string,
 ): IEtoTokenData | undefined => state.tokenData[previewCode];
 
-export const selectIsEtoAnOffer = (state: IAppState, previewCode: string, etoState: EEtoState) => {
+export const selectIsEtoAnOffer = (
+  state: TAppGlobalState,
+  previewCode: string,
+  etoState: EEtoState,
+) => {
   if (etoState !== EEtoState.ON_CHAIN) {
     return true;
   }
   const onChainState = selectEtoOnChainState(state, previewCode);
-  return [
-    EETOStateOnChain.Setup,
-    EETOStateOnChain.Public,
-    EETOStateOnChain.Signing,
-    EETOStateOnChain.Whitelist,
-  ].some(offerState => offerState === onChainState);
+  return etoIsInOfferState(onChainState);
 };
 
 export const selectFilteredEtosByRestrictedJurisdictions = (
-  state: IAppState,
+  state: TAppGlobalState,
   etos: TEtoDataWithCompany[],
   jurisdiction: string | undefined,
 ) =>
@@ -244,14 +243,14 @@ export const selectFilteredEtosByRestrictedJurisdictions = (
 
 export const selectAgreementsStatus = createSelector(
   selectEtoState,
-  (_: IAppState, previewCode: string) => previewCode,
+  (_: TAppGlobalState, previewCode: string) => previewCode,
   (etoState: DeepReadonly<IEtoState>, previewCode: string) =>
     etoState.offeringAgreementsStatus[previewCode],
 );
 
 export const selectEtoTokenGeneralDiscounts = createSelector(
   selectEtoState,
-  (_: IAppState, etoId: string) => etoId,
+  (_: TAppGlobalState, etoId: string) => etoId,
   (etoState: DeepReadonly<IEtoState>, etoId: string) => etoState.tokenGeneralDiscounts[etoId],
 );
 
@@ -268,7 +267,7 @@ export const selectEtoTokenStandardPrice = createSelector(
   },
 );
 
-export const selectInvestmentAgreement = (state: IAppState, previewCode: string) => {
+export const selectInvestmentAgreement = (state: TAppGlobalState, previewCode: string) => {
   const eto = selectEtoState(state);
 
   return eto.signedInvestmentAgreements[previewCode];
@@ -297,14 +296,14 @@ export const selectSignedInvestmentAgreementHash = createSelector(
 );
 
 export const selectIssuerEtoInvestmentCalculatedValues = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): TEtoInvestmentCalculatedValues | undefined => {
   const eto = selectIssuerEto(state);
   return eto && eto.investmentCalculatedValues;
 };
 
 export const selectStartOfOnchainState = (
-  state: IAppState,
+  state: TAppGlobalState,
   previewCode: string,
   onChainState: EETOStateOnChain,
 ) => {
@@ -314,3 +313,5 @@ export const selectStartOfOnchainState = (
 
   return startOfStates && startOfStates[onChainState];
 };
+
+export const selectEtosError = createSelector(selectEtoState, eto => eto.etosError);

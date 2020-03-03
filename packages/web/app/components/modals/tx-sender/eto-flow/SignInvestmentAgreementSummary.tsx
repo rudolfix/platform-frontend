@@ -1,10 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import { ResponsiveImage } from "../../../shared/ResponsiveImage";
 
 import signGraphic from "../../../../assets/img/sign-agreement.svg";

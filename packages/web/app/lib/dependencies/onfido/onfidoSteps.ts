@@ -1,5 +1,5 @@
-import { IIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
-import { ILogger } from "../logger";
+import { IIntlHelpers } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 
 const getOnfidoSteps = (logger: ILogger, intl: IIntlHelpers) => {
   if (!intl.locale.startsWith("en")) {

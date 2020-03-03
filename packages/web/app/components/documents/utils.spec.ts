@@ -1,6 +1,6 @@
+import { IPFS_PROTOCOL } from "@neufund/shared";
 import { expect } from "chai";
 
-import { IPFS_PROTOCOL } from "../../config/constants";
 import { hashFromIpfsLink, ipfsLinkFromHash } from "./utils";
 
 describe("ipfs link functions", () => {

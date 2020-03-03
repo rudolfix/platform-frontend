@@ -1,3 +1,4 @@
+import { assertNever, Dictionary, divideBigNumbers } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 import * as React from "react";
@@ -21,10 +22,8 @@ import {
   selectLockedEtherBalanceEuroAmount,
   selectLockedEuroTokenBalance,
 } from "../../../../modules/wallet/selectors";
-import { IAppState } from "../../../../store";
-import { Dictionary, TTranslatedString } from "../../../../types";
-import { assertNever } from "../../../../utils/assertNever";
-import { divideBigNumbers } from "../../../../utils/BigNumberUtils";
+import { TAppGlobalState } from "../../../../store";
+import { TTranslatedString } from "../../../../types";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
@@ -60,7 +59,7 @@ function isICBMWallet(type: EInvestmentType): boolean {
   return includes(type, [EInvestmentType.ICBMnEuro, EInvestmentType.ICBMEth]);
 }
 
-export function createWallets(state: IAppState): WalletSelectionData[] {
+export function createWallets(state: TAppGlobalState): WalletSelectionData[] {
   const icbmNeuro = selectLockedEuroTokenBalance(state);
   const balanceNEur = selectLiquidEuroTokenBalance(state);
   const lockedBalanceNEur = selectICBMLockedEuroTokenBalance(state);

@@ -1,3 +1,4 @@
+import { ButtonArrowRight, EButtonLayout } from "@neufund/design-system";
 import React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -5,7 +6,6 @@ import { compose } from "recompose";
 import { actions } from "../../../../modules/actions";
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
-import { ButtonArrowRight, EButtonLayout } from "../../../shared/buttons";
 
 interface IExternalProps {
   type: ETxSenderType;

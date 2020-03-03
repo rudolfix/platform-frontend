@@ -14,7 +14,10 @@ import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { addLocaleData } from "react-intl";
 import enLocaleData from "react-intl/locale-data/en";
 
-import { withStore, withSuspense } from "../app/utils/storeDecorator.unsafe";
+import {
+  withStore,
+  withSuspense,
+} from "../app/utils/react-connected-components/storeDecorator.unsafe";
 
 import languageEn from "../intl/locales/en-en.json";
 

@@ -5,31 +5,42 @@ import { updateArrayItem } from "./utils";
 describe("KYC reducer", () => {
   describe("updateArrayItem", () => {
     it("should update item on given position", () => {
-      const input = [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }, { id: "5" }];
-
-      const actualArray = updateArrayItem(input, "3", { id: "NEW" });
+      const input = [
+        { person: { id: "1" } },
+        { business: { id: "2" } },
+        { person: { id: "3" } },
+        { business: { id: "4" } },
+        { person: { id: "5" } },
+      ];
+      const actualArray = updateArrayItem(input, "3", { person: { id: "NEW" } });
 
       expect(actualArray).to.be.deep.eq([
-        { id: "1" },
-        { id: "2" },
-        { id: "NEW" },
-        { id: "4" },
-        { id: "5" },
+        { person: { id: "1" } },
+        { business: { id: "2" } },
+        { person: { id: "NEW" } },
+        { business: { id: "4" } },
+        { person: { id: "5" } },
       ]);
     });
 
     it("should append item when searched item doesnt exist", () => {
-      const input = [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }, { id: "5" }];
+      const input = [
+        { person: { id: "1" } },
+        { business: { id: "2" } },
+        { person: { id: "3" } },
+        { business: { id: "4" } },
+        { person: { id: "5" } },
+      ];
 
-      const actualArray = updateArrayItem(input, "NEW", { id: "NEW" });
+      const actualArray = updateArrayItem(input, "NEW", { person: { id: "NEW" } });
 
       expect(actualArray).to.be.deep.eq([
-        { id: "1" },
-        { id: "2" },
-        { id: "3" },
-        { id: "4" },
-        { id: "5" },
-        { id: "NEW" },
+        { person: { id: "1" } },
+        { business: { id: "2" } },
+        { person: { id: "3" } },
+        { business: { id: "4" } },
+        { person: { id: "5" } },
+        { person: { id: "NEW" } },
       ]);
     });
   });

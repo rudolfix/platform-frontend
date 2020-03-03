@@ -1,7 +1,7 @@
+import { withContainer } from "@neufund/shared";
 import * as React from "react";
 import { compose } from "redux";
 
-import { withContainer } from "../../utils/withContainer.unsafe";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";

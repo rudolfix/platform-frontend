@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
 import { map } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -18,8 +19,6 @@ import { TClaimAdditionalData } from "../../../../modules/tx/transactions/claim/
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { getInvestorDocumentTitles } from "../../../documents/utils";
-import { Button, EButtonLayout } from "../../../shared/buttons";
-import { EButtonWidth } from "../../../shared/buttons/Button";
 import { DocumentLabel } from "../../../shared/DocumentLink";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { InfoRow } from "../shared/InfoRow";

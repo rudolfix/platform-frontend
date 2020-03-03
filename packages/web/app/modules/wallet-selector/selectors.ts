@@ -2,7 +2,7 @@ import { RouterState } from "connected-react-router";
 
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {
@@ -32,5 +32,5 @@ export const selectRootPath = (state: RouterState): string => {
 export const selectOppositeRootPath = (state: RouterState): string =>
   selectIsLoginRoute(state) ? appRoutes.register : appRoutes.login;
 
-export const selectIsMessageSigning = (state: IAppState): boolean =>
+export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;

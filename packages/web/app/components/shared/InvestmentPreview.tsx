@@ -1,8 +1,9 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedPlural } from "react-intl";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { Button, ButtonLink, EButtonLayout } from "./buttons";
+import { ButtonLink } from "./buttons/ButtonLink";
 import { ETheme, Money } from "./formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "./formatters/utils";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";

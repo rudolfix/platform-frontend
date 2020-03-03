@@ -1,3 +1,4 @@
+import { Button } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Row } from "reactstrap";
@@ -6,8 +7,7 @@ import { compose } from "redux";
 import { actions } from "../../../modules/actions";
 import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
-import { onEnterAction } from "../../../utils/OnEnterAction";
-import { Button } from "../../shared/buttons";
+import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { StepCard } from "../../shared/StepCard";
 import { WarningAlert } from "../../shared/WarningAlert";

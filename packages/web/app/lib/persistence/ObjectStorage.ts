@@ -1,7 +1,7 @@
+import { ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../di/symbols";
-import { ILogger } from "../dependencies/logger";
 import { Storage } from "./Storage";
 
 @injectable()

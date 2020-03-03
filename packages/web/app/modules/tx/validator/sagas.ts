@@ -1,4 +1,11 @@
 import { fork, put, select } from "@neufund/sagas";
+import {
+  addBigNumbers,
+  compareBigNumbers,
+  isGaslessTxEnabled,
+  multiplyBigNumbers,
+  subtractBigNumbers,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { ETxValidationMessages } from "../../../components/translatedMessages/messages";
@@ -6,13 +13,7 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
-import { IAppState } from "../../../store";
-import {
-  addBigNumbers,
-  compareBigNumbers,
-  multiplyBigNumbers,
-  subtractBigNumbers,
-} from "../../../utils/BigNumberUtils";
+import { TAppGlobalState } from "../../../store";
 import { actions, TAction } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
@@ -21,7 +22,6 @@ import { generateInvestmentTransaction } from "../transactions/investment/sagas"
 import { selectMaximumInvestment } from "../transactions/investment/selectors";
 import { ETxSenderType } from "../types";
 import { STIPEND_ELIGIBLE_WALLETS } from "./../../../lib/web3/constants";
-import { isGaslessTxEnabled } from "./../../../utils/isGaslessTxEnabled";
 import { EValidationState } from "./reducer";
 import { selectInvestmentFLow } from "./selectors";
 import { txValidateTokenTransfer } from "./transfer/token-transfer/sagas";
@@ -89,7 +89,7 @@ export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails:
   const valueUlps = subtractBigNumbers([maxEtherUlps, costUlps]);
 
   if (compareBigNumbers(txDetails.value, valueUlps) > 0) {
-    const walletType = yield select((state: IAppState) => selectWalletType(state.web3));
+    const walletType = yield select((state: TAppGlobalState) => selectWalletType(state));
     if (isGaslessTxEnabled && STIPEND_ELIGIBLE_WALLETS.includes(walletType)) {
       // @SEE https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2015.md
       // @SEE https://github.com/MetaMask/metamask-extension/issues/5101

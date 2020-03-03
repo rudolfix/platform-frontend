@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
-import { EMimeType } from "./forms/fields/utils.unsafe";
+import { AcceptedKYCDocumentTypes } from "../kyc/utils";
 import { MultiFileUpload } from "./MultiFileUpload";
 
 const files = [
@@ -20,48 +20,48 @@ storiesOf("Upload/MultiFileUpload", module)
   .add("individual", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.INDIVIDUAL}
-      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+      acceptedFiles={AcceptedKYCDocumentTypes}
       onDropFile={() => {}}
       files={[]}
-      fileUploading={false}
+      filesUploading={false}
       layout="vertical"
     />
   ))
   .add("business layout: vertical", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+      acceptedFiles={AcceptedKYCDocumentTypes}
       onDropFile={() => {}}
       files={[]}
       layout="vertical"
-      fileUploading={false}
+      filesUploading={false}
     />
   ))
   .add("business layout: horizontal", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+      acceptedFiles={AcceptedKYCDocumentTypes}
       onDropFile={() => {}}
       files={[]}
       layout="horizontal"
-      fileUploading={false}
+      filesUploading={false}
     />
   ))
   .add("business state: uploading", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+      acceptedFiles={AcceptedKYCDocumentTypes}
       onDropFile={() => {}}
       files={[]}
-      fileUploading={true}
+      filesUploading
     />
   ))
   .add("business state: with files", () => (
     <MultiFileUpload
       uploadType={EKycRequestType.BUSINESS}
-      acceptedFiles={[EMimeType.ANY_IMAGE_TYPE, EMimeType.PDF]}
+      acceptedFiles={AcceptedKYCDocumentTypes}
       onDropFile={() => {}}
       files={files}
-      fileUploading={false}
+      filesUploading={false}
     />
   ));

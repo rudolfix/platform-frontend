@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -28,7 +29,6 @@ import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import {
   ECurrency,
   ENumberFormat,
@@ -41,8 +41,7 @@ import {
   THumanReadableFormat,
   TValueFormat,
 } from "../../../shared/formatters/utils";
-import { FormFieldLayout, FormHighlightGroup, FormMaskedNumberInput } from "../../../shared/forms";
-import { FormField } from "../../../shared/forms/fields/FormField";
+import { FormField, FormHighlightGroup, FormMaskedNumberInput, Input } from "../../../shared/forms";
 import {
   convert,
   convertFractionToPercentage,
@@ -91,7 +90,7 @@ const CalculatorField: React.FunctionComponent<ICalculatorField> = ({
   valueType,
   outputFormat,
 }) => (
-  <FormFieldLayout
+  <Input
     label={label}
     suffix={selectUnits(valueType)}
     name={name}

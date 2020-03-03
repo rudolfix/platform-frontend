@@ -1,4 +1,5 @@
-import { delay, fork, put, select } from "@neufund/sagas";
+import { fork, put, select, take } from "@neufund/sagas";
+import { invariant } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import * as Web3 from "web3";
@@ -7,19 +8,16 @@ import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs, TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
 import { ITxData } from "../../../lib/web3/types";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
-import { invariant } from "../../../utils/invariant";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
 import { getTransactionOrThrow } from "../event-channel/sagas";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
 import { txMonitorSaga } from "../sender/sagas";
-import { InvestmentAdditionalDataSchema } from "../transactions/investment/types";
+import { typeToSchema } from "../transactions/types";
 import { ETxSenderType, TSpecificTransactionState } from "../types";
 import { TransactionCancelledError } from "./../event-channel/errors";
 import { SchemaMismatchError } from "./errors";
 import { selectPlatformPendingTransaction } from "./selectors";
-
-const TX_MONITOR_DELAY = process.env.NF_CYPRESS_RUN === "1" ? 5000 : 30000;
 
 export function* deletePendingTransaction({
   apiUserService,
@@ -103,36 +101,13 @@ export function* markTransactionAsPending(
 
 export function* ensurePendingTransactionSchemaIsValid(
   pendingTransaction: TxPendingWithMetadata,
-): Generator<any, any, any> {
-  // THIS IS A TEMPORARY PATCH A GENERAL SOLUTION THAT INCLUDES VERSIONING SHOULD COVER ALL TX TYPES
-  switch (pendingTransaction.transactionType) {
-    case ETxSenderType.WITHDRAW:
-      if (
-        pendingTransaction.transactionAdditionalData === undefined ||
-        (pendingTransaction.transactionAdditionalData &&
-          (pendingTransaction.transactionAdditionalData.to === undefined ||
-            pendingTransaction.transactionAdditionalData.amount === undefined ||
-            pendingTransaction.transactionAdditionalData.amountEur === undefined ||
-            pendingTransaction.transactionAdditionalData.totalEur === undefined ||
-            pendingTransaction.transactionAdditionalData.total === undefined))
-      ) {
-        throw new SchemaMismatchError(ETxSenderType.WITHDRAW);
-      }
-      break;
+): Generator<void, void, void> {
+  const schema = typeToSchema[pendingTransaction.transactionType];
 
-    case ETxSenderType.INVEST: {
-      const isValid = yield InvestmentAdditionalDataSchema.toYup().isValid(
-        pendingTransaction.transactionAdditionalData,
-      );
+  const isValid = schema && schema.toYup().isValid(pendingTransaction.transactionAdditionalData);
 
-      if (!isValid) {
-        throw new SchemaMismatchError(ETxSenderType.INVEST);
-      }
-      break;
-    }
-
-    default:
-      return;
+  if (!isValid) {
+    throw new SchemaMismatchError(pendingTransaction.transactionType);
   }
 }
 
@@ -196,6 +171,7 @@ export function* updatePendingTxs({
     }
 
     yield put(actions.txMonitor.setPendingTxs(apiPendingTx));
+    yield put(actions.txHistory.loadTransactions());
   } catch (e) {
     if (e instanceof SchemaMismatchError) {
       logger.warn("Found pending transaction Schema Mismatch", e);
@@ -218,7 +194,7 @@ function* txMonitor({ logger }: TGlobalDependencies): Generator<any, any, any> {
       logger.error("Error getting pending txs", e);
     }
 
-    yield delay(TX_MONITOR_DELAY);
+    yield take(actions.web3.newBlockArrived.getType());
   }
 }
 

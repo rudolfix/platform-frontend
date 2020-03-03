@@ -1,13 +1,14 @@
-import { delay, expectSaga } from "@neufund/sagas";
+import { delay } from "@neufund/sagas";
+import { expectSaga } from "@neufund/sagas/tests";
+import { noopLogger } from "@neufund/shared-modules";
 import { expect } from "chai";
 import { EventEmitter } from "events";
 
 import { createMock } from "../../../test/testUtils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
-import { noopLogger } from "../../lib/dependencies/logger";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import { EWeb3ManagerEvents, Web3Manager } from "../../lib/web3/Web3Manager/Web3Manager";
 import { actions } from "../actions";
-import { TGlobalDependencies } from "./../../di/setupBindings";
 import { autoLockLightWallet, initWeb3ManagerEvents } from "./sagas";
 
 describe("Web3 sagas", () => {

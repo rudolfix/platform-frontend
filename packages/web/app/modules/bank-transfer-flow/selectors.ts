@@ -1,12 +1,12 @@
+import { DeepReadonly } from "@neufund/shared";
 import { createSelector } from "reselect";
 
-import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
+import { TAppGlobalState } from "../../store";
 import { selectBankAccount, selectClaims } from "../kyc/selectors";
 import { TBankAccount, TClaims } from "../kyc/types";
 import { EBankTransferFlowState } from "./reducer";
 
-export const selectBankTransferFlow = (state: IAppState) => state.bankTransferFLow;
+export const selectBankTransferFlow = (state: TAppGlobalState) => state.bankTransferFLow;
 
 export const selectBankTransferFlowState = createSelector(
   selectBankTransferFlow,
@@ -37,7 +37,7 @@ export const selectBankRedeemMinAmount = createSelector(selectBankTransferFlow, 
   bankTransferFlow.redeem ? bankTransferFlow.redeem.minEuroUlps : "0",
 );
 
-export const selectInitialAmount = (state: IAppState) => state.txUserFlowRedeem.initialValue;
+export const selectInitialAmount = (state: TAppGlobalState) => state.txUserFlowRedeem.initialValue;
 
 export const selectBankFeeUlps = createSelector(
   selectBankTransferFlow,
@@ -56,7 +56,7 @@ export const selectRedeemFeeUlps = createSelector(selectBankTransferFlow, bankTr
  * 3. User has bank account in contract (IdentityRegistry)
  */
 export const selectIsBankAccountVerified = createSelector<
-  IAppState,
+  TAppGlobalState,
   DeepReadonly<TBankAccount> | undefined,
   TClaims | undefined,
   boolean

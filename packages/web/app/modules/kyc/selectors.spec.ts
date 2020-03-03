@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { DeepPartial } from "../../types";
 import { selectKycRequestStatus } from "./selectors";
 
@@ -16,7 +16,7 @@ describe("selectKycRequestStatus", () => {
   };
 
   it("should return pending if kyc is approved and on chain claim is false", () => {
-    const appState: DeepPartial<IAppState> = {
+    const appState: DeepPartial<TAppGlobalState> = {
       kyc: {
         statusLoading: true,
         status: { status: EKycRequestStatus.ACCEPTED },
@@ -30,7 +30,7 @@ describe("selectKycRequestStatus", () => {
     expect(actual).to.be.equal(EKycRequestStatus.PENDING);
   });
   it("should return approved if kyc is approved and on chain claim is true", () => {
-    const appState: DeepPartial<IAppState> = {
+    const appState: DeepPartial<TAppGlobalState> = {
       kyc: {
         statusLoading: true,
         status: { status: EKycRequestStatus.DRAFT },
@@ -44,7 +44,7 @@ describe("selectKycRequestStatus", () => {
     expect(actual).to.be.equal(EKycRequestStatus.DRAFT);
   });
   it("should return approved if kyc is approved and on chain claim is true", () => {
-    const appState: DeepPartial<IAppState> = {
+    const appState: DeepPartial<TAppGlobalState> = {
       kyc: {
         statusLoading: true,
         status: { status: EKycRequestStatus.ACCEPTED },

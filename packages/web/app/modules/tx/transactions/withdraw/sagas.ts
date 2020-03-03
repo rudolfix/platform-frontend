@@ -1,13 +1,12 @@
 import { fork, put, select, take } from "@neufund/sagas";
+import { ETH_DECIMALS, toEthereumAddress } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { IWindowWithData } from "../../../../../test/helperTypes";
 import { ECurrency } from "../../../../components/shared/formatters/utils";
-import { ETH_DECIMALS } from "../../../../config/constants";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ITxData } from "../../../../lib/web3/types";
 import { DEFAULT_UPPER_GAS_LIMIT } from "../../../../lib/web3/Web3Manager/Web3Manager";
-import { toEthereumAddress } from "../../../../utils/opaque-types/utils";
 import { actions } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuTakeLatest } from "../../../sagasUtils";
@@ -23,6 +22,7 @@ import { selectUserFlowTxDetails, selectUserFlowTxInput } from "../../user-flow/
 import { TxUserFlowInputData, TxUserFlowTransferDetails } from "../../user-flow/transfer/types";
 import { calculateGasLimitWithOverhead, EMPTY_DATA } from "../../utils";
 import { WrongValuesError } from "../errors";
+import { selectUserFlowTokenData } from "./../../user-flow/transfer/selectors";
 import { TWithdrawAdditionalData } from "./types";
 
 import ethImage from "../../../../assets/img/eth_icon.svg";
@@ -110,6 +110,7 @@ function* ethWithdrawFlow(_: TGlobalDependencies): Generator<any, any, any> {
 
   const txUserFlowData: TxUserFlowTransferDetails = yield select(selectUserFlowTxDetails);
   const txUserFlowInput: TxUserFlowInputData = yield select(selectUserFlowTxInput);
+  const tokenData = yield* select(selectUserFlowTokenData);
 
   // Internally we represent eth withdraw in two different modes (normal ether withdrawal and ether token withdrawal)
   // in case of ether token withdrawal `to` points to contract address and `value` is empty
@@ -120,6 +121,9 @@ function* ethWithdrawFlow(_: TGlobalDependencies): Generator<any, any, any> {
     amountEur: txUserFlowData.inputValueEuro,
     total: txUserFlowData.totalValue,
     totalEur: txUserFlowData.totalValueEur,
+    tokenSymbol: tokenData.tokenSymbol,
+    tokenImage: tokenData.tokenImage,
+    tokenDecimals: tokenData.tokenDecimals,
   };
 
   yield put(actions.txSender.txSenderContinueToSummary<ETxSenderType.WITHDRAW>(additionalData));

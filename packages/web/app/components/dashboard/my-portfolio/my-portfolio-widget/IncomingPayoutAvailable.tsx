@@ -1,3 +1,5 @@
+import { EButtonLayout, EIconPosition } from "@neufund/design-system";
+import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -5,11 +7,10 @@ import { compose } from "recompose";
 import { selectTokensDisbursal } from "../../../../modules/investor-portfolio/selectors";
 import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import { appConnect } from "../../../../store";
-import { nonNullable } from "../../../../utils/nonNullable";
 import { appRoutes } from "../../../appRoutes";
-import { EButtonLayout, EIconPosition } from "../../../shared/buttons/Button";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
-import { ETheme, Money } from "../../../shared/formatters/Money";
+import { ETheme } from "../../../shared/formatters/Money";
+import { MoneyWithLessThan } from "../../../shared/formatters/MoneyWithLessThan";
 import { ENumberInputFormat, ENumberOutputFormat } from "../../../shared/formatters/utils";
 
 import arrowRight from "../../../../assets/img/inline_icons/arrow_right.svg";
@@ -30,7 +31,7 @@ export const IncomingPayoutAvailableBase: React.FunctionComponent<TIncomingPayou
       <>
         {tokensDisbursal
           .map(t => (
-            <Money
+            <MoneyWithLessThan
               value={t.amountToBeClaimed}
               valueType={t.token}
               inputFormat={ENumberInputFormat.ULPS}

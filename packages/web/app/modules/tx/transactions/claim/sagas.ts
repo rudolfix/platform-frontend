@@ -3,7 +3,7 @@ import { fork, put, select } from "@neufund/sagas";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
-import { IAppState } from "../../../../store";
+import { TAppGlobalState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { selectMyInvestorTicketByEtoId } from "../../../investor-portfolio/selectors";
@@ -45,14 +45,19 @@ function* startClaimGenerator(_: TGlobalDependencies, etoId: string): any {
   const generatedTxDetails: ITxData = yield neuCall(generateGetClaimTransaction, etoId);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
-  const etoData = yield select((state: IAppState) => selectMyInvestorTicketByEtoId(state, etoId));
+  const etoData = yield select((state: TAppGlobalState) =>
+    selectMyInvestorTicketByEtoId(state, etoId),
+  );
   const costUlps = yield select(selectTxGasCostEthUlps);
+  const tokenDecimals = 0;
 
   yield put(
     actions.txSender.txSenderContinueToSummary<ETxSenderType.USER_CLAIM>({
       etoId,
       costUlps,
+      tokenDecimals,
       tokenName: etoData.equityTokenName,
+      tokenSymbol: etoData.equityTokenSymbol,
       tokenQuantity: etoData.investorTicket.equityTokenInt.toString(),
       neuRewardUlps: etoData.investorTicket.rewardNmkUlps.toString(),
     }),
@@ -74,9 +79,6 @@ function* userClaimSaga(
     logger.info("User claim successful");
   } catch (e) {
     logger.info("User claim cancelled", e);
-  } finally {
-    yield put(actions.eto.loadEto(etoId));
-    yield put(actions.eto.loadTokensData());
   }
 }
 

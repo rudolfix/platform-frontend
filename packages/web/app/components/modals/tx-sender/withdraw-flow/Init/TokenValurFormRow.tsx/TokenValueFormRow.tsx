@@ -1,19 +1,22 @@
+import { EquityToken } from "@neufund/shared";
 import * as cn from "classnames";
-import { FormikErrors, FormikTouched, FormikValues } from "formik";
+import { FormikErrors, FormikTouched } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EAdditionalValidationDataNotifications } from "../../../../../../modules/tx/validator/reducer";
 import { isValidFormNumber } from "../../../../../../modules/tx/validator/transfer/utils";
-import { EquityToken } from "../../../../../../utils/opaque-types/types";
 import { Money } from "../../../../../shared/formatters/Money";
 import {
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../../shared/formatters/utils";
-import { EInputTheme, FormFieldBoolean, FormLabel } from "../../../../../shared/forms";
-import { MaskedNumberInput } from "../../../../../shared/MaskedNumberInput";
+import {
+  EInputTheme,
+  FormFieldBoolean,
+  FormMaskedNumberInput,
+} from "../../../../../shared/forms/index";
 import { hasNotification } from "../utils";
 
 import * as styles from "../../Transfer.module.scss";
@@ -21,9 +24,6 @@ import * as styles from "../../Transfer.module.scss";
 const TokenValueFormRow: React.FunctionComponent<{
   disabled?: boolean;
   valueEuro: string;
-  setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void;
-  setFieldTouched: (field: string, touched?: boolean, shouldValidate?: boolean) => void;
-  values: FormikValues;
   notifications: ReadonlyArray<EAdditionalValidationDataNotifications>;
   errors: FormikErrors<{ value: string }>;
   touched: FormikTouched<{ value: boolean }>;
@@ -31,10 +31,7 @@ const TokenValueFormRow: React.FunctionComponent<{
   tokenSymbol: EquityToken;
   decimals: number;
 }> = ({
-  setFieldValue,
-  setFieldTouched,
-  values,
-  notifications: warnings,
+  notifications,
   valueEuro,
   errors,
   disabled,
@@ -44,31 +41,25 @@ const TokenValueFormRow: React.FunctionComponent<{
   decimals,
 }) => (
   <>
-    <section>
-      <FormLabel for="value" className={styles.label}>
-        <FormattedMessage id="modal.transfer.sent.amount" />
-      </FormLabel>
-      <MaskedNumberInput
-        className="text-right"
-        storageFormat={ENumberInputFormat.FLOAT}
-        valueType={tokenSymbol}
-        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
-        name="value"
-        reverseMetaInfo={true}
-        value={values.value}
-        onChangeFn={value => {
-          setFieldValue("value", value);
-          setFieldTouched("value", true);
-        }}
-        returnInvalidValues={true}
-        disabled={disabled}
-        showUnits={true}
-        theme={EInputTheme.BOX}
-        icon={tokenImage}
-        tokenDecimals={decimals}
-      />
-    </section>
+    <FormMaskedNumberInput
+      label={<FormattedMessage id="modal.transfer.sent.amount" />}
+      labelClassName={styles.label}
+      className="text-right"
+      storageFormat={ENumberInputFormat.FLOAT}
+      valueType={tokenSymbol}
+      outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+      data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.value"
+      name="value"
+      reverseMetaInfo={true}
+      returnInvalidValues={true}
+      disabled={disabled}
+      showUnits={true}
+      theme={EInputTheme.BOX}
+      icon={tokenImage}
+      tokenDecimals={decimals}
+    />
+
+    {/* TODO: Replace error.values and touched.values by `useIsFieldInvalid` hook */}
     <section
       className={cn(styles.withSpacing, "text-right", {
         [styles.compensateSpacing]: errors.value && touched.value,
@@ -90,7 +81,8 @@ const TokenValueFormRow: React.FunctionComponent<{
         </small>
       )}
     </section>
-    {hasNotification(EAdditionalValidationDataNotifications.WILL_EMPTY_WALLET, warnings) && (
+
+    {hasNotification(EAdditionalValidationDataNotifications.WILL_EMPTY_WALLET, notifications) && (
       <FormFieldBoolean
         className={styles.withSpacing}
         data-test-id="modals.tx-sender.withdraw-flow.withdraw-component.will-empty-wallet"

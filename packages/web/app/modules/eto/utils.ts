@@ -1,3 +1,4 @@
+import { EthereumAddressWithChecksum, Overwrite } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import {
@@ -10,8 +11,7 @@ import {
   calculateCurrentInvestmentProgressPercentage,
   calculateTarget,
 } from "../../lib/api/eto/EtoUtils";
-import { DeepPartial, Overwrite } from "../../types";
-import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
+import { DeepPartial } from "../../types";
 import { isPastInvestment } from "../investor-portfolio/utils";
 import {
   EETOStateOnChain,
@@ -211,9 +211,18 @@ export const getInvestmentCalculatedPercentage = (eto: TEtoWithCompanyAndContrac
 };
 
 export const getEtoEurMinTarget = (eto: TEtoWithCompanyAndContractReadonly) => {
-  if (isOnChain(eto)) {
+  if (
+    [
+      EEtoState.LISTED,
+      EEtoState.PROSPECTUS_APPROVED,
+      EEtoState.ON_CHAIN,
+      EEtoState.SUSPENDED,
+    ].includes(eto.state)
+  ) {
     const { minimumNewSharesToIssue, equityTokensPerShare } = eto;
-    const { totalTokensInt, totalEquivEurUlps } = eto.contract.totalInvestment;
+
+    const totalTokensInt = isOnChain(eto) ? eto.contract.totalInvestment.totalTokensInt : "0";
+    const totalEquivEurUlps = isOnChain(eto) ? eto.contract.totalInvestment.totalEquivEurUlps : "0";
 
     return calculateTarget(
       minimumNewSharesToIssue.toString(),
@@ -253,3 +262,11 @@ export const getEtoNextStateStartDate = (eto: TEtoWithCompanyAndContractReadonly
 
   return undefined;
 };
+
+export const etoIsInOfferState = (onChainState: EETOStateOnChain | undefined) =>
+  [
+    EETOStateOnChain.Setup,
+    EETOStateOnChain.Public,
+    EETOStateOnChain.Signing,
+    EETOStateOnChain.Whitelist,
+  ].some(offerState => offerState === onChainState);

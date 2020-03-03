@@ -1,3 +1,4 @@
+import { withContainer } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
@@ -13,13 +14,12 @@ import {
 } from "../../modules/wallet/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/OnEnterAction";
-import { withContainer } from "../../utils/withContainer.unsafe";
+import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
-import { DashboardHeading } from "../eto/shared/DashboardHeading";
 import { Container, EColumnSpan } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
+import { DashboardHeading } from "../shared/DashboardHeading";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";

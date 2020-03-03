@@ -1,8 +1,9 @@
+import { ETH_DECIMALS } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { withStore } from "../../../../utils/storeDecorator.unsafe";
+import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { IncomingPayoutAvailableBase } from "./IncomingPayoutAvailable";
 import { IncomingPayoutPendingLayout } from "./IncomingPayoutPending";
@@ -54,15 +55,74 @@ storiesOf("IncomingPayoutWidget", module)
             amountToBeClaimed: "11200657227385184",
             timeToFirstDisbursalRecycle: 1675062154000,
             totalDisbursedAmount: "364458900000000000",
+            tokenDecimals: ETH_DECIMALS,
+            amountEquivEur: "984609705509027210028",
           },
           {
             token: ECurrency.ETH,
             amountToBeClaimed: "01200657227385184",
             timeToFirstDisbursalRecycle: 1675062154000,
             totalDisbursedAmount: "064458900000000000",
+            tokenDecimals: ETH_DECIMALS,
+            amountEquivEur: "97078346877766094590.21980140173352",
           },
         ]}
       />
     ),
+
+    { decorators: [withStore(testStore)] },
+  )
+  .add(
+    "IncomingPayoutAvailable-MinimalAmount",
+    () => (
+      <IncomingPayoutAvailableBase
+        tokensDisbursal={[
+          {
+            token: ECurrency.EUR_TOKEN,
+            amountToBeClaimed: "00000657227385184",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "364458900000000000",
+            tokenDecimals: ETH_DECIMALS,
+            amountEquivEur: "984609705509027210028",
+          },
+          {
+            token: ECurrency.ETH,
+            amountToBeClaimed: "00000657227385184",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "064458900000000000",
+            tokenDecimals: ETH_DECIMALS,
+            amountEquivEur: "97078346877766094590.21980140173352",
+          },
+        ]}
+      />
+    ),
+
+    { decorators: [withStore(testStore)] },
+  )
+  .add(
+    "IncomingPayoutAvailable-ZeroAmount",
+    () => (
+      <IncomingPayoutAvailableBase
+        tokensDisbursal={[
+          {
+            token: ECurrency.EUR_TOKEN,
+            amountToBeClaimed: "0",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "364458900000000000",
+            tokenDecimals: ETH_DECIMALS,
+            amountEquivEur: "0",
+          },
+          {
+            token: ECurrency.ETH,
+            amountToBeClaimed: "0",
+            timeToFirstDisbursalRecycle: 1675062154000,
+            totalDisbursedAmount: "064458900000000000",
+            tokenDecimals: ETH_DECIMALS,
+            amountEquivEur: "0",
+          },
+        ]}
+      />
+    ),
+
     { decorators: [withStore(testStore)] },
   );

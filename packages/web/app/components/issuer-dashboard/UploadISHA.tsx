@@ -1,9 +1,10 @@
+import { ButtonArrowRight, ButtonGroup } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { appRoutes } from "../appRoutes";
 import { EColumnSpan } from "../layouts/Container";
-import { ButtonArrowRight, ButtonGroup, ButtonLink } from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { DashboardCenteredWidget } from "../shared/dashboard-widget/DashboardWidget";
 
 interface IExternalProps {

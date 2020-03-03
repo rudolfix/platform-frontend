@@ -1,3 +1,4 @@
+import { promisify, toCamelCase } from "@neufund/shared";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
@@ -6,9 +7,7 @@ import { toChecksumAddress } from "web3-utils";
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
-import { promisify } from "../../utils/PromiseUtils";
-import { toCamelCase } from "../../utils/transformObjectKeys";
-import { assertIsUserVerifiedOnBlockchain, assertLanding } from "./assertions";
+import { assertLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";
 import { accountFixtureByName, removePendingExternalTransaction } from "./index";
 import { tid } from "./selectors";
@@ -86,12 +85,14 @@ export const createAndLoginNewUser = ({
 
     // fetch a token and store it in local storage
     const jwt = await getJWT(address, lightWalletInstance, walletKey, permissions);
+
     ls.setItem(JWT_KEY, `"${jwt}"`);
+
     await createVaultApi(salt, DEFAULT_PASSWORD, lightWalletInstance.serialize());
 
     if (!skipCreatingNewUser) {
       // create a user object on the backend
-      await createUser(type, privateKey, kyc);
+      await createUser(type, privateKey, kyc, 4);
     }
 
     if (!skipBackupCodesVerification) {
@@ -106,12 +107,6 @@ export const createAndLoginNewUser = ({
     if (!skipSigningTOS) {
       // This was done to maintain `signTosAgreement` without changing the interface of existing tests
       await setCorrectAgreement(jwt);
-    }
-
-    if (kyc) {
-      // wait for kyc to be properly set as verified on blockchain
-      // otherwise UI is not deterministically stable
-      assertIsUserVerifiedOnBlockchain(address);
     }
 
     cy.log(`Logged in as ${type}`, `KYC: ${kyc}, seed: ${seed}`);
@@ -202,7 +197,12 @@ const CREATE_USER_PATH = "/api/external-services-mock/e2e-tests/user/";
 
 type TUserType = "investor" | "issuer" | "nominee";
 
-export const createUser = (userType: TUserType, privateKey?: string, kyc?: TKycType) => {
+export const createUser = (
+  userType: TUserType,
+  privateKey?: string,
+  kyc?: TKycType,
+  timeoutInSeconds?: number,
+) => {
   let path = `${CREATE_USER_PATH}?user_type=${userType}`;
 
   if (kyc) {
@@ -211,6 +211,10 @@ export const createUser = (userType: TUserType, privateKey?: string, kyc?: TKycT
 
   if (privateKey) {
     path += `&private_key=0x${privateKey}`;
+  }
+
+  if (timeoutInSeconds) {
+    path += `&max_verification_wait=${timeoutInSeconds}`;
   }
 
   return fetch(path, {

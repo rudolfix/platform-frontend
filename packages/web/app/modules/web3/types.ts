@@ -1,4 +1,4 @@
-import { EthereumAddress } from "../../utils/opaque-types/types";
+import { EthereumAddress } from "@neufund/shared";
 
 // normalized information about all possible types of personal wallets
 export enum EWalletType {

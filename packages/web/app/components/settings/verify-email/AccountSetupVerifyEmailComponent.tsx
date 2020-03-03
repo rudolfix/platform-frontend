@@ -1,13 +1,13 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { injectIntlHelpers } from "@neufund/shared";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { branch, compose, renderComponent } from "recompose";
 import * as Yup from "yup";
 
 import { TDataTestId } from "../../../types";
-import { injectIntlHelpers } from "../../../utils/injectIntlHelpers.unsafe";
-import { Button, ButtonInline, EButtonLayout } from "../../shared/buttons";
-import { FormField } from "../../shared/forms/fields/FormField";
-import { FormDeprecated } from "../../shared/forms/FormDeprecated";
+import { FormDeprecated, FormField } from "../../shared/forms/index";
 import { connectVerifyEmailComponent } from "./ConnectVerifyEmail";
 
 import * as styles from "./AccountSetupVerifyEmailComponent.module.scss";
@@ -50,6 +50,11 @@ interface INoEMailUser {
 interface IUnverifiedEmailWidgetProps {
   resendEmail: () => void;
   unverifiedEmail: string;
+  cancelEmail: () => void;
+  abortEmailUpdate: () => void;
+}
+
+interface INoEmailWidgetProps {
   cancelEmail: () => void;
   abortEmailUpdate: () => void;
 }
@@ -128,15 +133,11 @@ const UnverifiedEmail: React.FunctionComponent<IUnverifiedEmailWidgetProps & TDa
   resendEmail,
   unverifiedEmail,
   cancelEmail,
-  "data-test-id": dataTestId,
 }) => (
-  <section className={styles.section} data-test-id={dataTestId}>
+  <section className={styles.section} data-test-id="account-setup-email-unverified-section">
     <p className={styles.text}>
-      <FormattedMessage id="account-setup.verify-email-widget.text-1" />
-      <strong data-test-id="profile.verify-email-widget.unverified-email">{unverifiedEmail}</strong>
-    </p>
-    <p className={styles.text}>
-      <FormattedMessage id="account-setup.verify-email-widget.text-2" />
+      <FormattedMessage id="account-setup.verify-email-widget.text" />
+      <span data-test-id="profile.verify-email-widget.unverified-email">{unverifiedEmail}</span>
     </p>
     <Button
       layout={EButtonLayout.PRIMARY}
@@ -145,40 +146,43 @@ const UnverifiedEmail: React.FunctionComponent<IUnverifiedEmailWidgetProps & TDa
     >
       <FormattedMessage id="account-setup.verify-email-widget.change-email" />
     </Button>
-    <ButtonInline onClick={resendEmail} data-test-id="resend-link">
-      <FormattedMessage id="account-setup.verify-email-widget.resend-link" />
-    </ButtonInline>
+    {unverifiedEmail && (
+      <Button layout={EButtonLayout.OUTLINE} onClick={resendEmail} data-test-id="resend-link">
+        <FormattedMessage id="account-setup.verify-email-widget.resend-link" />
+      </Button>
+    )}
   </section>
 );
 
-const AccountSetupVerifyEmailWidgetLayout: React.FunctionComponent<IStateProps &
-  IDispatchProps> = ({
-  resendEmail,
-  unverifiedEmail,
-  cancelEmail,
-  isEmailTemporaryCancelled,
-  revertCancelEmail,
-  abortEmailUpdate,
-  addNewEmail,
-  isLocked,
-}) => (
-  <>
-    {isEmailTemporaryCancelled ? (
-      <ChangeEmailForm {...{ addNewEmail, isLocked, revertCancelEmail }} />
-    ) : (
-      <UnverifiedEmail
-        {...{
-          resendEmail,
-          cancelEmail,
-          abortEmailUpdate,
-        }}
-        unverifiedEmail={unverifiedEmail!}
-        data-test-id="account-setup-email-unverified-section"
-      />
-    )}
-  </>
+const NoEmail: React.FunctionComponent<INoEmailWidgetProps & TDataTestId> = ({ cancelEmail }) => (
+  <section className={styles.section} data-test-id="account-setup-no-email-section">
+    <p className={styles.text}>
+      <FormattedMessage id="account-setup.set-email-widget.text" />
+    </p>
+    <Button
+      layout={EButtonLayout.PRIMARY}
+      onClick={cancelEmail}
+      data-test-id="verify-email-widget.set-email.button"
+    >
+      <FormattedMessage id="account-setup.verify-email-widget.set-email" />
+    </Button>
+  </section>
 );
 
-const VerifyEmailComponent = connectVerifyEmailComponent<{}>(AccountSetupVerifyEmailWidgetLayout);
+const AccountSetupSetEmailWidget = compose<
+  IStateProps & IDispatchProps,
+  IStateProps & IDispatchProps
+>(
+  branch(
+    ({ isEmailTemporaryCancelled }: IStateProps) => isEmailTemporaryCancelled,
+    renderComponent(ChangeEmailForm),
+  ),
+  branch(
+    ({ unverifiedEmail }: IStateProps) => unverifiedEmail !== undefined,
+    renderComponent(UnverifiedEmail),
+  ),
+)(NoEmail);
 
-export { AccountSetupVerifyEmailWidgetLayout, VerifyEmailComponent };
+const SetEmailComponent = connectVerifyEmailComponent<{}>(AccountSetupSetEmailWidget);
+
+export { SetEmailComponent, AccountSetupSetEmailWidget };

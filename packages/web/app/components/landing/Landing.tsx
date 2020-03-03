@@ -1,3 +1,5 @@
+import { ButtonGroup, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
+import { withContainer } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -5,20 +7,13 @@ import { compose, withProps } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { etoMockCompanies } from "../../data/etoCompanies";
-import { withContainer } from "../../utils/withContainer.unsafe";
 import { appRoutes } from "../appRoutes";
 import { EtoList } from "../dashboard/eto-list/EtoList";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Content, EContentWidth } from "../layouts/Content";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
-import {
-  ButtonGroup,
-  ButtonLink,
-  EButtonLayout,
-  EButtonSize,
-  EIconPosition,
-} from "../shared/buttons";
+import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 

@@ -1,7 +1,7 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { Button, EButtonLayout } from "../../shared/buttons/Button";
 import { connectBackupSeedWidget } from "./ConnectSetupWidget";
 
 import * as styles from "./AccountSetupBackupSeedComponent.module.scss";
@@ -18,13 +18,7 @@ export const AccountSetupBackupWidgetLayout: React.FunctionComponent<IStateProps
   IDispatchProps> = ({ startBackupProcess }) => (
   <section data-test-id="account-setup-backup-seed-section" className={styles.accountSetupSection}>
     <p className={styles.accountSetupText}>
-      <FormattedMessage id="account-setup.backup-seed-widget.text-1" />
-    </p>
-    <p className={styles.accountSetupText}>
-      <FormattedMessage id="account-setup.backup-seed-widget.text-2" />
-    </p>
-    <p className={styles.accountSetupText}>
-      <FormattedMessage id="account-setup.backup-seed-widget.text-3" />
+      <FormattedHTMLMessage tagName="span" id="account-setup.backup-seed-widget.text" />
     </p>
 
     <Button

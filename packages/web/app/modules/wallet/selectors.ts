@@ -1,12 +1,17 @@
+import {
+  addBigNumbers,
+  ECountries,
+  ETHEREUM_ZERO_ADDRESS,
+  multiplyBigNumbers,
+  NEUR_ALLOWED_US_STATES,
+  subtractBigNumbers,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { createSelector } from "reselect";
 import * as Web3Utils from "web3-utils";
 
-import { ETHEREUM_ZERO_ADDRESS, NEUR_ALLOWED_US_STATES } from "../../config/constants";
 import { EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
-import { IAppState } from "../../store";
-import { addBigNumbers, multiplyBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { ECountries } from "../../utils/enums/countriesEnum";
+import { TAppGlobalState } from "../../store";
 import { selectIsUserFullyVerified } from "../auth/selectors";
 import { selectIndividualAddress, selectKycRequestType } from "../kyc/selectors";
 import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
@@ -14,31 +19,37 @@ import { selectTxGasCostEthUlps } from "../tx/sender/selectors";
 import { IWalletState, IWalletStateData } from "./reducer";
 import { ENEURWalletStatus } from "./types";
 
-export const selectWalletData = (state: IAppState): IWalletStateData | undefined =>
+export const selectWalletData = (state: TAppGlobalState): IWalletStateData | undefined =>
   state.wallet.data;
 
 /**
  * Simple State Selectors
  */
-export const selectNeuBalanceEuroAmount = (state: IAppState): string =>
+export const selectNeuBalanceEuroAmount = (state: TAppGlobalState): string =>
   multiplyBigNumbers([selectNeuPriceEur(state), selectNeuBalance(state)]);
 
-export const selectNeuBalance = (state: IAppState): string =>
+export const selectNeuBalance = (state: TAppGlobalState): string =>
   (state.wallet.data && state.wallet.data.neuBalance) || "0";
 
-export const selectNeumarkAddress = (state: IAppState): string =>
+export const selectNeuBalanceEurEquiv = createSelector(
+  selectNeuBalance,
+  selectNeuPriceEur,
+  (neuBalance, neuPriceEur) => multiplyBigNumbers([neuBalance, neuPriceEur]),
+);
+
+export const selectNeumarkAddress = (state: TAppGlobalState): string =>
   (state.wallet.data && state.wallet.data.neumarkAddress) || "0x";
 
-export const selectEtherTokenBalance = (state: IAppState): string =>
+export const selectEtherTokenBalance = (state: TAppGlobalState): string =>
   (state.wallet.data && state.wallet.data.etherTokenBalance) || "0";
 
-export const selectEtherTokenBalanceAsBigNumber = (state: IAppState): BigNumber =>
+export const selectEtherTokenBalanceAsBigNumber = (state: TAppGlobalState): BigNumber =>
   new BigNumber(selectEtherTokenBalance(state));
 
-export const selectEtherBalance = (state: IAppState): string =>
+export const selectEtherBalance = (state: TAppGlobalState): string =>
   (state.wallet.data && state.wallet.data.etherBalance) || "0";
 
-export const selectEtherBalanceAsBigNumber = (state: IAppState): BigNumber =>
+export const selectEtherBalanceAsBigNumber = (state: TAppGlobalState): BigNumber =>
   new BigNumber(selectEtherBalance(state));
 
 /**
@@ -50,7 +61,7 @@ export const selectLiquidEtherBalance = createSelector(
     data ? addBigNumbers([data.etherBalance, data.etherTokenBalance]) : "0",
 );
 
-export const selectLiquidEtherBalanceEuroAmount = (state: IAppState) =>
+export const selectLiquidEtherBalanceEuroAmount = (state: TAppGlobalState) =>
   multiplyBigNumbers([selectEtherPriceEur(state), selectLiquidEtherBalance(state)]);
 
 export const selectLiquidEuroTokenBalance = createSelector(
@@ -58,25 +69,25 @@ export const selectLiquidEuroTokenBalance = createSelector(
   (data: IWalletStateData | undefined) => (data && data.euroTokenBalance) || "0",
 );
 
-export const selectLiquidEuroTotalAmount = (state: IAppState) =>
+export const selectLiquidEuroTotalAmount = (state: TAppGlobalState) =>
   addBigNumbers([selectLiquidEuroTokenBalance(state), selectLiquidEtherBalanceEuroAmount(state)]);
 
 /**
  * Locked Wallet Assets
  */
-export const selectLockedEtherBalance = (state: IAppState) =>
+export const selectLockedEtherBalance = (state: TAppGlobalState) =>
   (state.wallet.data &&
     state.wallet.data.etherTokenLockedWallet &&
     state.wallet.data.etherTokenLockedWallet.LockedBalance) ||
   "0";
 
-export const selectLockedEtherUnlockDate = (state: IAppState) =>
+export const selectLockedEtherUnlockDate = (state: TAppGlobalState) =>
   (state.wallet.data &&
     state.wallet.data.etherTokenLockedWallet &&
     state.wallet.data.etherTokenLockedWallet.unlockDate) ||
   "0";
 
-export const selectLockedEtherBalanceEuroAmount = (state: IAppState) =>
+export const selectLockedEtherBalanceEuroAmount = (state: TAppGlobalState) =>
   multiplyBigNumbers([selectEtherPriceEur(state), selectLockedEtherBalance(state)]);
 
 export const selectLockedEuroTokenBalance = createSelector(
@@ -85,7 +96,7 @@ export const selectLockedEuroTokenBalance = createSelector(
     (data && data.euroTokenLockedWallet && data.euroTokenLockedWallet.LockedBalance) || "0",
 );
 
-export const selectLockedEuroTotalAmount = (state: IAppState) =>
+export const selectLockedEuroTotalAmount = (state: TAppGlobalState) =>
   addBigNumbers([selectLockedEtherBalanceEuroAmount(state), selectLockedEuroTokenBalance(state)]);
 
 export const selectEtherLockedWalletHasFunds = createSelector(
@@ -93,74 +104,74 @@ export const selectEtherLockedWalletHasFunds = createSelector(
   etherLockedBalance => etherLockedBalance !== "0",
 );
 
-export const selectLockedWalletHasFunds = (state: IAppState): boolean =>
+export const selectLockedWalletHasFunds = (state: TAppGlobalState): boolean =>
   selectLockedEuroTotalAmount(state) !== "0";
 
 /**
  * ICBM Wallet Assets
  */
-export const selectICBMLockedEtherBalance = (state: IAppState): string =>
+export const selectICBMLockedEtherBalance = (state: TAppGlobalState): string =>
   (state.wallet.data &&
     state.wallet.data.etherTokenICBMLockedWallet &&
     state.wallet.data.etherTokenICBMLockedWallet.LockedBalance) ||
   "0";
 
-export const selectICBMLockedEtherBalanceEuroAmount = (state: IAppState) =>
+export const selectICBMLockedEtherBalanceEuroAmount = (state: TAppGlobalState) =>
   multiplyBigNumbers([selectEtherPriceEur(state), selectICBMLockedEtherBalance(state)]);
 
-export const selectICBMLockedEuroTokenBalance = (state: IAppState) =>
+export const selectICBMLockedEuroTokenBalance = (state: TAppGlobalState) =>
   (state.wallet &&
     state.wallet.data &&
     state.wallet.data.euroTokenICBMLockedWallet &&
     state.wallet.data.euroTokenICBMLockedWallet.LockedBalance) ||
   "0";
 
-export const selectICBMLockedEuroTotalAmount = (state: IAppState) =>
+export const selectICBMLockedEuroTotalAmount = (state: TAppGlobalState) =>
   addBigNumbers([
     selectICBMLockedEtherBalanceEuroAmount(state),
     selectICBMLockedEuroTokenBalance(state),
   ]);
 
-export const selectICBMLockedWalletHasFunds = (state: IAppState): boolean =>
+export const selectICBMLockedWalletHasFunds = (state: TAppGlobalState): boolean =>
   addBigNumbers([selectICBMLockedEuroTokenBalance(state), selectICBMLockedEtherBalance(state)]) !==
   "0";
 
 /**
  * Total wallet assets value
  */
-export const selectTotalEtherBalance = (state: IAppState) =>
+export const selectTotalEtherBalance = (state: TAppGlobalState) =>
   addBigNumbers([
     selectLiquidEtherBalance(state),
     selectLockedEtherBalance(state),
     selectICBMLockedEtherBalance(state),
   ]);
 
-export const selectTotalEtherBalanceEuroAmount = (state: IAppState) =>
+export const selectTotalEtherBalanceEuroAmount = (state: TAppGlobalState) =>
   addBigNumbers([
     selectLiquidEtherBalanceEuroAmount(state),
     selectLockedEtherBalanceEuroAmount(state),
     selectICBMLockedEtherBalanceEuroAmount(state),
   ]);
-export const selectTotalEuroTokenBalance = (state: IAppState) =>
+export const selectTotalEuroTokenBalance = (state: TAppGlobalState) =>
   addBigNumbers([
     selectLiquidEuroTokenBalance(state),
     selectLockedEuroTokenBalance(state),
     selectICBMLockedEuroTokenBalance(state),
   ]);
-export const selectTotalEuroBalance = (state: IAppState) =>
+export const selectTotalEuroBalance = (state: TAppGlobalState) =>
   addBigNumbers([
     selectLiquidEuroTotalAmount(state),
     selectLockedEuroTotalAmount(state),
     selectICBMLockedEuroTotalAmount(state),
   ]);
 
-export const selectEtherLockedNeumarksDue = (state: IAppState): string =>
+export const selectEtherLockedNeumarksDue = (state: TAppGlobalState): string =>
   (state.wallet.data &&
     state.wallet.data.etherTokenLockedWallet &&
     state.wallet.data.etherTokenLockedWallet.neumarksDue) ||
   "0";
 
-export const selectEuroLockedNeumarksDue = (state: IAppState): string =>
+export const selectEuroLockedNeumarksDue = (state: TAppGlobalState): string =>
   (state.wallet.data &&
     state.wallet.data.euroTokenLockedWallet &&
     state.wallet.data.euroTokenLockedWallet.neumarksDue) ||
@@ -184,17 +195,17 @@ export const selectIcbmWalletConnected = (state: IWalletState): boolean =>
     (state.data && state.data.euroTokenICBMLockedWallet.unlockDate !== "0")
   );
 
-export const selectLockedWalletConnected = (state: IAppState): boolean =>
+export const selectLockedWalletConnected = (state: TAppGlobalState): boolean =>
   !!(
     (state.wallet.data && state.wallet.data.etherTokenLockedWallet.unlockDate !== "0") ||
     (state.wallet.data && state.wallet.data.euroTokenLockedWallet.unlockDate !== "0")
   );
 
-export const selectIsLoading = (state: IAppState): boolean => state.wallet.loading;
+export const selectIsLoading = (state: TAppGlobalState): boolean => state.wallet.loading;
 
-export const selectWalletError = (state: IAppState): string | undefined => state.wallet.error;
+export const selectWalletError = (state: TAppGlobalState): string | undefined => state.wallet.error;
 
-export const selectIsEtherUpgradeTargetSet = (state: IAppState): boolean =>
+export const selectIsEtherUpgradeTargetSet = (state: TAppGlobalState): boolean =>
   !!(
     state.wallet.data &&
     state.wallet.data.etherTokenUpgradeTarget &&
@@ -202,7 +213,7 @@ export const selectIsEtherUpgradeTargetSet = (state: IAppState): boolean =>
     state.wallet.data.etherTokenUpgradeTarget !== ETHEREUM_ZERO_ADDRESS
   );
 
-export const selectIsEuroUpgradeTargetSet = (state: IAppState): boolean =>
+export const selectIsEuroUpgradeTargetSet = (state: TAppGlobalState): boolean =>
   !!(
     state.wallet.data &&
     state.wallet.data.euroTokenUpgradeTarget &&
@@ -211,10 +222,10 @@ export const selectIsEuroUpgradeTargetSet = (state: IAppState): boolean =>
   );
 
 /* General State Selectors */
-export const selectMaxAvailableEther = (state: IAppState): string =>
+export const selectMaxAvailableEther = (state: TAppGlobalState): string =>
   subtractBigNumbers([selectLiquidEtherBalance(state), selectTxGasCostEthUlps(state)]);
 
-export const selectNEURStatus = (state: IAppState): ENEURWalletStatus => {
+export const selectNEURStatus = (state: TAppGlobalState): ENEURWalletStatus => {
   const isUserFullyVerified = selectIsUserFullyVerified(state);
 
   if (!isUserFullyVerified) {

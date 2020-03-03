@@ -1,6 +1,6 @@
+import { ButtonArrowRight, ButtonInline } from "@neufund/design-system";
 import BigNumber from "bignumber.js";
 import * as cn from "classnames";
-import { FormikConsumer, FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -17,8 +17,7 @@ import {
 import { selectLiquidEuroTokenBalance } from "../../../../modules/wallet/selectors";
 import { doesUserHaveEnoughNEuro, doesUserWithdrawMinimal } from "../../../../modules/web3/utils";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { ButtonArrowRight, ButtonInline } from "../../../shared/buttons";
+import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
 import {
   ECurrency,
@@ -28,10 +27,8 @@ import {
   formatNumber,
   selectDecimalPlaces,
 } from "../../../shared/formatters/utils";
-import { FormDeprecated } from "../../../shared/forms/FormDeprecated";
-import { FormLabel } from "../../../shared/forms/layouts/FormLabel";
+import { Form, FormLabel, FormMaskedNumberInput } from "../../../shared/forms/index";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { ETheme, MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { Tooltip } from "../../../shared/tooltips/Tooltip";
 import { formatEuroValueToString } from "../../../shared/utils";
@@ -55,14 +52,7 @@ interface IDispatchProps {
   verifyBankAccount: () => void;
 }
 
-type TComponentProps = {
-  minAmount: string;
-  neuroAmount: string;
-  neuroEuroAmount: string;
-  bankFee: string;
-  confirm: (tx: Partial<ITxData>) => void;
-  verifyBankAccount: () => void;
-};
+type TComponentProps = IStateProps & IDispatchProps;
 
 export interface IReedemData {
   amount: string | undefined;
@@ -104,11 +94,18 @@ const getValidators = (minAmount: string, neuroAmount: string) =>
     ),
   }).toYup();
 
+const getInitialValues = (amount: string | undefined) => ({
+  amount: amount ? formatEuroValueToString(amount) : "",
+});
+
 const BankTransferRedeemLayout: React.FunctionComponent<TComponentProps> = ({
   neuroAmount,
   neuroEuroAmount,
   verifyBankAccount,
   bankFee,
+  confirm,
+  initialAmount,
+  minAmount,
 }) => (
   <>
     <Heading size={EHeadingSize.SMALL} level={4} className="mb-4">
@@ -137,8 +134,12 @@ const BankTransferRedeemLayout: React.FunctionComponent<TComponentProps> = ({
       />
     </section>
 
-    <FormikConsumer>
-      {({ values, setFieldValue, isValid, setFieldTouched }: FormikProps<IReedemData>) => (
+    <Form<IReedemData>
+      initialValues={getInitialValues(initialAmount)}
+      onSubmit={values => confirm({ value: values.amount })}
+      validationSchema={getValidators(minAmount, neuroAmount)}
+    >
+      {({ values, setFieldValue, isValid, setFieldTouched }) => (
         <>
           <section className={styles.section}>
             <FormLabel for="amount" className={styles.label}>
@@ -149,8 +150,11 @@ const BankTransferRedeemLayout: React.FunctionComponent<TComponentProps> = ({
                 data-test-id="bank-transfer.reedem-init.redeem-whole-balance"
                 className={styles.linkButton}
                 onClick={() => {
+                  // do not run validation twice here, just only when changing the value
+                  // also it's important to do touch field before changing the value
+                  // as otherwise validation gonna be called with previous value
+                  setFieldTouched("amount", true, false);
                   setFieldValue("amount", formatEuroValueToString(neuroAmount), true);
-                  setFieldTouched("amount", true, true);
                 }}
               >
                 <FormattedMessage id="bank-transfer.redeem.init.entire-wallet" />
@@ -158,88 +162,80 @@ const BankTransferRedeemLayout: React.FunctionComponent<TComponentProps> = ({
             </small>
           </section>
 
-          <FormDeprecated>
-            <MaskedNumberInput
-              storageFormat={ENumberInputFormat.FLOAT}
-              valueType={ECurrency.EUR}
-              outputFormat={ENumberOutputFormat.FULL}
-              name="amount"
-              value={values["amount"]}
-              onChangeFn={value => {
-                setFieldValue("amount", value);
-                setFieldTouched("amount", true);
-              }}
-              returnInvalidValues={true}
-              showUnits={true}
-              validateOnMount={true}
-            />
+          <FormMaskedNumberInput
+            storageFormat={ENumberInputFormat.FLOAT}
+            valueType={ECurrency.EUR}
+            outputFormat={ENumberOutputFormat.FULL}
+            name="amount"
+            returnInvalidValues={true}
+            showUnits={true}
+          />
 
-            <section className={cn(styles.section, "mt-4")}>
-              <Tooltip
-                content={
-                  <FormattedMessage
-                    id="bank-transfer.redeem.init.redeem-fee.tooltip"
-                    values={{
-                      //  value is stored as decimal fraction Ulps formatted number
-                      // to get percentage value we have to multiply ba 100
-                      // ex value, convertToBigNumber(0.005) * 100 = 0.5%
-                      fee: (
-                        <FormatNumber
-                          value={new BigNumber(bankFee).mul("100")}
-                          inputFormat={ENumberInputFormat.ULPS}
-                          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                          roundingMode={ERoundingMode.DOWN}
-                          decimalPlaces={1}
-                        />
-                      ),
-                    }}
-                  />
-                }
-              >
-                <Heading level={3} decorator={false} size={EHeadingSize.SMALL}>
-                  <FormattedMessage id="bank-transfer.redeem.init.redeem-fee" />
-                </Heading>
-              </Tooltip>
-              <span className="text-warning">
-                {"-"}{" "}
-                {values.amount && isValid && (
-                  <CalculatedFee bankFee={bankFee} amount={values.amount} />
-                )}
-              </span>
-            </section>
-
-            <section className={styles.section}>
+          <section className={cn(styles.section, "mt-4")}>
+            <Tooltip
+              content={
+                <FormattedMessage
+                  id="bank-transfer.redeem.init.redeem-fee.tooltip"
+                  values={{
+                    // value is stored as decimal fraction Ulps formatted number
+                    // to get percentage value we have to multiply by 100
+                    // ex value, convertToBigNumber(0.005) * 100 = 0.5%
+                    fee: (
+                      <FormatNumber
+                        value={new BigNumber(bankFee).mul("100")}
+                        inputFormat={ENumberInputFormat.ULPS}
+                        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                        roundingMode={ERoundingMode.DOWN}
+                        decimalPlaces={1}
+                      />
+                    ),
+                  }}
+                />
+              }
+            >
               <Heading level={3} decorator={false} size={EHeadingSize.SMALL}>
-                <FormattedMessage id="bank-transfer.redeem.init.total-redeemed" />
+                <FormattedMessage id="bank-transfer.redeem.init.redeem-fee" />
               </Heading>
-              <span className="text-success">
-                {values.amount && isValid ? (
-                  <TotalRedeemed bankFee={bankFee} amount={values.amount} />
-                ) : (
-                  "-"
-                )}
-              </span>
-            </section>
+            </Tooltip>
+            <span className="text-warning">
+              {"-"}{" "}
+              {values.amount && isValid && (
+                <CalculatedFee bankFee={bankFee} amount={values.amount} />
+              )}
+            </span>
+          </section>
 
-            <VerifiedBankAccount withBorder={true} onVerify={verifyBankAccount} />
+          <section className={styles.section}>
+            <Heading level={3} decorator={false} size={EHeadingSize.SMALL}>
+              <FormattedMessage id="bank-transfer.redeem.init.total-redeemed" />
+            </Heading>
+            <span className="text-success">
+              {values.amount && isValid ? (
+                <TotalRedeemed bankFee={bankFee} amount={values.amount} />
+              ) : (
+                "-"
+              )}
+            </span>
+          </section>
 
-            <p className="text-warning mx-4 text-center">
-              <FormattedMessage id="bank-transfer.redeem.init.note" />
-            </p>
+          <VerifiedBankAccount withBorder={true} onVerify={verifyBankAccount} />
 
-            <section className="text-center">
-              <ButtonArrowRight
-                data-test-id="bank-transfer.reedem-init.continue"
-                disabled={!isValid}
-                type="submit"
-              >
-                <FormattedMessage id="bank-transfer.redeem.init.continue" />
-              </ButtonArrowRight>
-            </section>
-          </FormDeprecated>
+          <p className="text-warning mx-4 text-center">
+            <FormattedMessage id="bank-transfer.redeem.init.note" />
+          </p>
+
+          <section className="text-center">
+            <ButtonArrowRight
+              data-test-id="bank-transfer.reedem-init.continue"
+              disabled={!isValid}
+              type="submit"
+            >
+              <FormattedMessage id="bank-transfer.redeem.init.continue" />
+            </ButtonArrowRight>
+          </section>
         </>
       )}
-    </FormikConsumer>
+    </Form>
   </>
 );
 
@@ -262,22 +258,6 @@ const BankTransferRedeemInit = compose<TComponentProps, {}>(
         dispatch(actions.bankTransferFlow.startBankTransfer(EBankTransferType.VERIFY)),
       confirm: (tx: Partial<ITxData>) => dispatch(actions.txSender.txSenderAcceptDraft(tx)),
     }),
-  }),
-  withFormik<IStateProps & IDispatchProps, IReedemData>({
-    mapPropsToValues: props => ({
-      ...props,
-      amount: props.initialAmount && formatEuroValueToString(props.initialAmount),
-    }),
-    validationSchema: (props: IStateProps) => getValidators(props.minAmount, props.neuroAmount),
-    isInitialValid: props =>
-      //casting is necessary because formik has incorrect typings for isInitialValid()
-      !!(props as IStateProps).initialAmount &&
-      new BigNumber((props as IStateProps).initialAmount!).lessThanOrEqualTo(
-        (props as IStateProps).neuroAmount,
-      ),
-    handleSubmit: (values, { props }) => {
-      props.confirm({ value: values.amount });
-    },
   }),
 )(BankTransferRedeemLayout);
 

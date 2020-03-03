@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  @include rect(24px);
+
+  margin-right: px-to-rem(12px);
+}
+
+.link,
+.token-name {
+  @include nds-body;
+
+  margin: 0;
+  color: $neu-charcoal-grey;
+
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.additional-data {
+  @include nds-helper-text;
+
+  color: $neu-shuttle-gray;
+}

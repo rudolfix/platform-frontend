@@ -1,9 +1,9 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { ButtonArrowRight } from "../../../shared/buttons";
 import { Confetti, EConfettiTheme } from "../../../shared/Confetti";
 import { Message } from "../../message/Message";
 

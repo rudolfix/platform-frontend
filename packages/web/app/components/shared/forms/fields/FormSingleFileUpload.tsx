@@ -1,3 +1,4 @@
+import { ArrayWithAtLeastOneMember } from "@neufund/shared";
 import { connect as formikConnect, Field, FieldProps } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -5,13 +6,14 @@ import { compose } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
-import { ArrayWithAtLeastOneMember, CommonHtmlProps, TFormikConnect } from "../../../../types";
+import { CommonHtmlProps, TFormikConnect } from "../../../../types";
 import { IUploadRequirements, SingleFileUpload } from "../../SingleFileUpload";
+import { FormFieldError } from "./FormFieldError";
 import {
   generateFileInformationDescription,
   readImageAndGetDimensions,
   TAcceptedFileType,
-} from "./utils.unsafe";
+} from "./utils";
 
 interface IOwnProps {
   disabled?: boolean;
@@ -142,13 +144,20 @@ export class FormSingleFileUploadComponent extends React.Component<
     setFieldValue(name, value);
   }
 
+  private validate = () => {
+    if (this.state.isUploading) {
+      return <FormattedMessage id="shared.dropzone.upload.image.errors.is-uploading" />;
+    }
+
+    return undefined;
+  };
+
   render(): React.ReactChild {
     const { label, name, acceptedFiles, className, style, disabled } = this.props;
 
     return (
-      <Field
-        name={name}
-        render={({ field }: FieldProps) => (
+      <Field name={name} validate={this.validate}>
+        {({ field }: FieldProps) => (
           <SingleFileUpload
             name={name}
             data-test-id={this.props["data-test-id"]}
@@ -160,6 +169,7 @@ export class FormSingleFileUploadComponent extends React.Component<
             }
             uploadRequirements={this.props.uploadRequirements}
             label={label}
+            error={<FormFieldError name={name} className="text-left" />}
             file={field.value}
             onDropFile={this.onDropFile}
             className={className}
@@ -171,11 +181,12 @@ export class FormSingleFileUploadComponent extends React.Component<
             }}
           />
         )}
-      />
+      </Field>
     );
   }
 }
 
+// TODO: Disconnect from the store
 export const FormSingleFileUpload = compose<
   IOwnProps & IDispatchProps & CommonHtmlProps & TFormikConnect,
   IOwnProps & CommonHtmlProps

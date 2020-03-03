@@ -1,1 +1,2 @@
 *.svg -diff
+yarn.lock linguist-generated=true

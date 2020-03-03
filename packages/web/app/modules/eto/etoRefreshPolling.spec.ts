@@ -1,11 +1,9 @@
+import { setupFakeClock } from "@neufund/shared";
 import { expect } from "chai";
 import { spy } from "sinon";
 
 import { testCompany, testContract, testEto } from "../../../test/fixtures";
-import {
-  createIntegrationTestsSetup,
-  setupFakeClock,
-} from "../../../test/integrationTestUtils.unsafe";
+import { createIntegrationTestsSetup } from "../../../test/integrationTestUtils.unsafe";
 import { actions } from "../actions";
 import { neuCall } from "../sagasUtils";
 import { watchEto } from "./sagas";

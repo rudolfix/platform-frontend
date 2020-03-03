@@ -1,11 +1,12 @@
-import { IAppState } from "../../../../store";
-import { EquityToken } from "../../../../utils/opaque-types/types";
-import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
+import { EquityToken, toEquityTokenSymbol } from "@neufund/shared";
+import { createSelector } from "reselect";
+
+import { TAppGlobalState } from "../../../../store";
 import { TxUserFlowInputData, TxUserFlowTransferDetails } from "./types";
 
 export type TSelectUserFlowDetails = Required<TxUserFlowTransferDetails>;
 
-export const selectUserFlowTxDetails = (state: IAppState): TSelectUserFlowDetails => {
+export const selectUserFlowTxDetails = (state: TAppGlobalState): TSelectUserFlowDetails => {
   const txUserFlowDetails = state.txUserFlowTransfer.txUserFlowDetails;
   return {
     transferAllValue: txUserFlowDetails.transferAllValue || "0",
@@ -19,20 +20,31 @@ export const selectUserFlowTxDetails = (state: IAppState): TSelectUserFlowDetail
   };
 };
 
-export const selectUserFlowUserBalance = (state: IAppState): string =>
+export const selectUserFlowUserBalance = (state: TAppGlobalState): string =>
   state.txUserFlowTransfer.txUserTokenData.userBalance;
 
-export const selectUserFlowTokenImage = (state: IAppState): string =>
+export const selectUserFlowTokenImage = (state: TAppGlobalState): string =>
   state.txUserFlowTransfer.txUserTokenData.tokenImage;
 
-export const selectUserFlowTokenSymbol = (state: IAppState): EquityToken =>
+export const selectUserFlowTokenSymbol = (state: TAppGlobalState): EquityToken =>
   toEquityTokenSymbol(state.txUserFlowTransfer.txUserTokenData.tokenSymbol);
 
-export const selectUserFlowTxInput = (state: IAppState): TxUserFlowInputData =>
+export const selectUserFlowTxInput = (state: TAppGlobalState): TxUserFlowInputData =>
   state.txUserFlowTransfer.txUserFlowInputData;
 
-export const selectUserFlowTokenAddress = (state: IAppState) =>
+export const selectUserFlowTokenAddress = (state: TAppGlobalState) =>
   state.txUserFlowTransfer.txUserTokenData.tokenAddress;
 
-export const selectUserFlowTokenDecimals = (state: IAppState) =>
+export const selectUserFlowTokenDecimals = (state: TAppGlobalState) =>
   state.txUserFlowTransfer.txUserTokenData.tokenDecimals;
+
+export const selectUserFlowTokenData = createSelector(
+  selectUserFlowTokenImage,
+  selectUserFlowTokenSymbol,
+  selectUserFlowTokenDecimals,
+  (tokenImage, tokenSymbol, tokenDecimals) => ({
+    tokenImage,
+    tokenSymbol,
+    tokenDecimals,
+  }),
+);

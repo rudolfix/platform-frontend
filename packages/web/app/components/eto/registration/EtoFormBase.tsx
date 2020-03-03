@@ -10,7 +10,7 @@ import {
 } from "../../../modules/eto-flow/utils";
 import { TDataTestId, TFormikConnect, TTranslatedString } from "../../../types";
 import { pickSchemaValues } from "../../../utils/yupUtils";
-import { Form, TFormProps } from "../../shared/forms/index";
+import { Form, TFormProps } from "../../shared/forms";
 import { PercentageIndicatorBar } from "../../shared/PercentageIndicatorBar";
 import { Section } from "./Shared";
 

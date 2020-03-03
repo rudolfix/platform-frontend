@@ -13,7 +13,7 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { InvestmentProgress } from "../../InvestmentProgress";
+import { InvestmentProgress } from "../../../shared/InvestmentProgress";
 import { InvestmentProgressPercentage } from "../../InvestmentProgressPercentage";
 import { InvestmentTarget } from "./InvestmentTarget";
 

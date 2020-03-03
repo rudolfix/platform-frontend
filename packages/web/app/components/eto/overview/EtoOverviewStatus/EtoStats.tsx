@@ -61,7 +61,6 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
         </span>
         <span className={styles.value}>
           <Money
-            className={styles.value}
             value={eto.preMoneyValuationEur ? eto.preMoneyValuationEur.toString() : undefined}
             inputFormat={ENumberInputFormat.FLOAT}
             valueType={ECurrency.EUR}

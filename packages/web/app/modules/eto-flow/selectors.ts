@@ -1,3 +1,4 @@
+import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
@@ -18,10 +19,7 @@ import {
   TEtoProduct,
 } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
-import { IAppState } from "../../store";
-import { DeepReadonly } from "../../types";
-import { nonNullable } from "../../utils/nonNullable";
-import { objectToFilteredArray } from "../../utils/objectToFilteredArray";
+import { TAppGlobalState } from "../../store";
 import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
 import { selectAgreementsStatus, selectEtoContract, selectEtoSubState } from "../eto/selectors";
@@ -37,19 +35,23 @@ import { EAgreementType } from "../tx/transactions/nominee/sign-agreement/types"
 import { IEtoFlowState } from "./types";
 import { isValidEtoStartDate, sortProducts } from "./utils";
 
-export const selectIssuerEtoFlow = (state: IAppState) => state.etoIssuer;
+export const selectIssuerEtoFlow = (state: TAppGlobalState) => state.etoIssuer;
 
-export const selectIssuerEto: (state: IAppState) => TEtoSpecsData | undefined = createSelector(
+export const selectIssuerEto: (
+  state: TAppGlobalState,
+) => TEtoSpecsData | undefined = createSelector(
   selectIssuerEtoFlow,
   (state: DeepReadonly<IEtoFlowState>) => state.eto,
 );
 
-export const selectEtoNominee: (state: IAppState) => string | undefined = createSelector(
+export const selectEtoNominee: (state: TAppGlobalState) => string | undefined = createSelector(
   selectIssuerEtoFlow,
   (state: DeepReadonly<IEtoFlowState>) => state.eto && state.eto.nominee,
 );
 
-export const selectEtoNomineeDisplayName: (state: IAppState) => string | undefined = createSelector(
+export const selectEtoNomineeDisplayName: (
+  state: TAppGlobalState,
+) => string | undefined = createSelector(
   selectIssuerEtoFlow,
   (state: DeepReadonly<IEtoFlowState>) => state.eto && state.eto.nomineeDisplayName,
 );
@@ -66,10 +68,10 @@ export const selectIssuerCompany = createSelector(
 
 const selectIssuerEtoWithCompanyAndContractInternal = createSelector(
   // forward eto param to combiner
-  (_: IAppState, eto: TEtoSpecsData) => eto,
-  (state: IAppState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
-  (state: IAppState) => nonNullable(selectIssuerCompany(state)),
-  (state: IAppState, eto: TEtoSpecsData) => selectEtoSubState(state, eto),
+  (_: TAppGlobalState, eto: TEtoSpecsData) => eto,
+  (state: TAppGlobalState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
+  (state: TAppGlobalState) => nonNullable(selectIssuerCompany(state)),
+  (state: TAppGlobalState, eto: TEtoSpecsData) => selectEtoSubState(state, eto),
   (eto, contract, company, subState) => ({
     ...eto,
     contract,
@@ -79,7 +81,7 @@ const selectIssuerEtoWithCompanyAndContractInternal = createSelector(
 );
 
 export const selectIssuerEtoWithCompanyAndContract = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): TEtoWithCompanyAndContractReadonly | undefined => {
   const eto = selectIssuerEto(state);
 
@@ -90,7 +92,7 @@ export const selectIssuerEtoWithCompanyAndContract = (
   return undefined;
 };
 
-export const selectIsBookBuilding = (state: IAppState): boolean => {
+export const selectIsBookBuilding = (state: TAppGlobalState): boolean => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
@@ -100,13 +102,13 @@ export const selectIsBookBuilding = (state: IAppState): boolean => {
   return false;
 };
 
-export const selectMaxPledges = (state: IAppState) => {
+export const selectMaxPledges = (state: TAppGlobalState) => {
   const eto = selectIssuerEto(state);
 
   return eto !== undefined ? eto.maxPledges : null;
 };
 
-export const selectIssuerEtoId = (state: IAppState): string | undefined => {
+export const selectIssuerEtoId = (state: TAppGlobalState): string | undefined => {
   const eto = selectIssuerEto(state);
   if (eto) {
     return eto.etoId;
@@ -114,7 +116,7 @@ export const selectIssuerEtoId = (state: IAppState): string | undefined => {
   return undefined;
 };
 
-export const selectCanEnableBookBuilding = (state: IAppState): boolean => {
+export const selectCanEnableBookBuilding = (state: TAppGlobalState): boolean => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
@@ -124,7 +126,7 @@ export const selectCanEnableBookBuilding = (state: IAppState): boolean => {
   return false;
 };
 
-export const selectIssuerEtoState = (state: IAppState): EEtoState | undefined => {
+export const selectIssuerEtoState = (state: TAppGlobalState): EEtoState | undefined => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
@@ -134,7 +136,7 @@ export const selectIssuerEtoState = (state: IAppState): EEtoState | undefined =>
   return undefined;
 };
 
-export const selectIssuerEtoProduct = (state: IAppState): TEtoProduct | undefined => {
+export const selectIssuerEtoProduct = (state: TAppGlobalState): TEtoProduct | undefined => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
@@ -145,7 +147,7 @@ export const selectIssuerEtoProduct = (state: IAppState): TEtoProduct | undefine
 };
 
 export const selectIssuerEtoOfferingDocumentType = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): EOfferingDocumentType | undefined => {
   const eto = selectIssuerEto(state);
 
@@ -156,14 +158,15 @@ export const selectIssuerEtoOfferingDocumentType = (
   return undefined;
 };
 
-export const selectIssuerEtoDateToWhitelistMinDuration = (state: IAppState): number => {
+export const selectIssuerEtoDateToWhitelistMinDuration = (state: TAppGlobalState): number => {
   const eto = selectIssuerEto(state);
   return eto!.product.dateToWhitelistMinDuration;
 };
 
-export const selectIssuerEtoLoading = (state: IAppState): boolean => state.etoIssuer.loading;
+export const selectIssuerEtoLoading = (state: TAppGlobalState): boolean => state.etoIssuer.loading;
 
-export const selectNewEtoDateSaving = (state: IAppState): boolean => state.etoIssuer.etoDateSaving;
+export const selectNewEtoDateSaving = (state: TAppGlobalState): boolean =>
+  state.etoIssuer.etoDateSaving;
 
 export const selectCombinedEtoCompanyData = createSelector(
   selectIssuerCompany,
@@ -174,7 +177,9 @@ export const selectCombinedEtoCompanyData = createSelector(
   }),
 );
 
-export const selectIssuerEtoTemplates = (state: IAppState): TEtoDocumentTemplates | undefined => {
+export const selectIssuerEtoTemplates = (
+  state: TAppGlobalState,
+): TEtoDocumentTemplates | undefined => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
@@ -184,7 +189,7 @@ export const selectIssuerEtoTemplates = (state: IAppState): TEtoDocumentTemplate
   return undefined;
 };
 
-export const selectFilteredIssuerEtoTemplatesArray = (state: IAppState): IEtoDocument[] => {
+export const selectFilteredIssuerEtoTemplatesArray = (state: TAppGlobalState): IEtoDocument[] => {
   const templates = selectIssuerEtoTemplates(state);
   const filterFunction = (key: string) =>
     !ignoredTemplates.some(templateKey => templateKey === key);
@@ -192,7 +197,9 @@ export const selectFilteredIssuerEtoTemplatesArray = (state: IAppState): IEtoDoc
   return templates ? objectToFilteredArray(filterFunction, templates) : [];
 };
 
-export const selectIssuerEtoDocuments = (state: IAppState): TEtoDocumentTemplates | undefined => {
+export const selectIssuerEtoDocuments = (
+  state: TAppGlobalState,
+): TEtoDocumentTemplates | undefined => {
   const eto = selectIssuerEto(state);
 
   if (eto) {
@@ -202,7 +209,7 @@ export const selectIssuerEtoDocuments = (state: IAppState): TEtoDocumentTemplate
   return undefined;
 };
 
-export const selectIsTermSheetSubmitted = (state: IAppState): boolean | undefined => {
+export const selectIsTermSheetSubmitted = (state: TAppGlobalState): boolean | undefined => {
   const documents = selectIssuerEtoDocuments(state);
 
   if (documents) {
@@ -211,7 +218,7 @@ export const selectIsTermSheetSubmitted = (state: IAppState): boolean | undefine
   return undefined;
 };
 
-export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | undefined => {
+export const selectIsOfferingDocumentSubmitted = (state: TAppGlobalState): boolean | undefined => {
   const documents = selectIssuerEtoDocuments(state);
 
   if (documents) {
@@ -223,7 +230,7 @@ export const selectIsOfferingDocumentSubmitted = (state: IAppState): boolean | u
   return undefined;
 };
 
-export const selectIsISHAPreviewSubmitted = (state: IAppState): boolean | undefined => {
+export const selectIsISHAPreviewSubmitted = (state: TAppGlobalState): boolean | undefined => {
   const documents = selectIssuerEtoDocuments(state);
 
   if (documents) {
@@ -237,7 +244,7 @@ export const selectIsISHAPreviewSubmitted = (state: IAppState): boolean | undefi
 };
 
 export const selectUploadedInvestmentAgreement = (
-  state: DeepReadonly<IAppState>,
+  state: DeepReadonly<TAppGlobalState>,
 ): IEtoDocument | undefined => {
   const etoDocuments = selectIssuerEtoDocuments(state)!;
 
@@ -247,16 +254,16 @@ export const selectUploadedInvestmentAgreement = (
   );
 };
 
-export const userHasKycAndEmailVerified = (state: IAppState) =>
+export const userHasKycAndEmailVerified = (state: TAppGlobalState) =>
   selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED &&
   selectIsUserEmailVerified(state.auth);
 
-export const selectIsGeneralEtoLoading = (state: IAppState) =>
+export const selectIsGeneralEtoLoading = (state: TAppGlobalState) =>
   selectIssuerEtoLoading(state) && selectEtoDocumentsLoading(state.etoDocuments);
 
-export const selectNewPreEtoStartDate = (state: IAppState) => state.etoIssuer.newStartDate;
+export const selectNewPreEtoStartDate = (state: TAppGlobalState) => state.etoIssuer.newStartDate;
 
-export const selectPreEtoStartDateFromContract = (state: IAppState) => {
+export const selectPreEtoStartDateFromContract = (state: TAppGlobalState) => {
   const eto = selectIssuerEtoWithCompanyAndContract(state);
 
   if (eto && isOnChain(eto)) {
@@ -266,7 +273,7 @@ export const selectPreEtoStartDateFromContract = (state: IAppState) => {
   return undefined;
 };
 
-export const selectIssuerEtoOnChainState = (state: IAppState) => {
+export const selectIssuerEtoOnChainState = (state: TAppGlobalState) => {
   const eto = selectIssuerEtoWithCompanyAndContract(state);
 
   if (eto && isOnChain(eto)) {
@@ -276,16 +283,16 @@ export const selectIssuerEtoOnChainState = (state: IAppState) => {
   return undefined;
 };
 
-export const selectPreEtoStartDate = (state: IAppState) =>
+export const selectPreEtoStartDate = (state: TAppGlobalState) =>
   selectNewPreEtoStartDate(state) || selectPreEtoStartDateFromContract(state);
 
-export const selectCanChangePreEtoStartDate = (state: IAppState) => {
+export const selectCanChangePreEtoStartDate = (state: TAppGlobalState) => {
   const minDuration = selectIssuerEtoDateToWhitelistMinDuration(state);
   const date = selectPreEtoStartDateFromContract(state);
   return !date || isValidEtoStartDate(date, minDuration);
 };
 
-export const selectIsNewPreEtoStartDateValid = (state: IAppState) => {
+export const selectIsNewPreEtoStartDateValid = (state: TAppGlobalState) => {
   const minDuration = selectIssuerEtoDateToWhitelistMinDuration(state);
   const date = selectNewPreEtoStartDate(state);
   return date && isValidEtoStartDate(date, minDuration);
@@ -299,13 +306,14 @@ const recognizedProductTypes = [
   EProductName.RETAIL_ETO_LI_SECURITY,
   EProductName.RETAIL_ETO_LI_VMA,
   EProductName.FIFTH_FORCE_ETO,
+  EProductName.RETAIL_EU_SME_ETO_LI_SECURITY,
 ];
 
 export const selectAvailableProducts = createSelector(selectIssuerEtoFlow, ({ products }) => {
   if (products !== undefined) {
     const availableProducts = products
       .filter(product => product.available)
-      // TODO: remove after platform-backend/#1550 is done
+      // remove fifth force as it's enabled on dev
       .filter(product => product.name !== EProductName.FIFTH_FORCE_ETO)
       // Remove unrecognized product types
       .filter(product =>
@@ -326,7 +334,7 @@ export const selectIsMarketingDataVisibleInPreview = createSelector(
 );
 
 export const selectIssuerEtoAgreementsStatus = (
-  state: IAppState,
+  state: TAppGlobalState,
 ): TOfferingAgreementsStatus | undefined => {
   const previewCode = selectIssuerEtoPreviewCode(state);
 

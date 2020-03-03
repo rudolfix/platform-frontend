@@ -1,9 +1,10 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { ArrayWithAtLeastOneMember, COMPANY_TAGS_LIMIT } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import { COMPANY_TAGS_LIMIT } from "../../../../config/constants";
 import {
   EtoCompanyInformationType,
   TPartialCompanyEtoData,
@@ -16,12 +17,10 @@ import {
 } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
-import { ArrayWithAtLeastOneMember } from "../../../../types";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField, FormTextArea } from "../../../shared/forms";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
-import { EMimeType, TAcceptedFileType } from "../../../shared/forms/fields/utils.unsafe";
-import { EtoTagWidget, generateTagOptions } from "../../shared/EtoTagWidget.unsafe";
+import { EMimeType, TAcceptedFileType } from "../../../shared/forms/fields/utils";
+import { EtoTagWidget, generateTagOptions } from "../eto-tags-widget/EtoTagWidget.unsafe";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 

@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { ENomineeRequestComponentState } from "../../components/nominee-dashboard/linkToIssuer/types";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
 import {

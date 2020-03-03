@@ -1,10 +1,9 @@
+import { formatFlexiPrecision, invariant } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { cloneDeep, flow, get, set } from "lodash";
 
 import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { invariant } from "../../utils/invariant";
-import { formatFlexiPrecision } from "../../utils/NumberUtils";
-import { TShareholder } from "./public-view/LegalInformationWidget";
+import { TShareholder } from "./eto-full-view/shared/campaign-overview/legal-information-widget/LegalInformationWidget";
 
 const HUNDRED_PERCENT = new BigNumber("100");
 export const OTHERS_NAME = "Others";
@@ -74,6 +73,18 @@ export const removeEmptyKeyValueFields = () => (data: ICompoundField[] | undefin
   } else {
     return undefined;
   }
+};
+
+/**
+ * Removes object if object.url is undefined
+ */
+export const removeIfUrlEmpty = () => (data: ICompoundField[] | undefined) => {
+  if (data) {
+    const cleanData = data.filter(datum => !!datum.url);
+    return cleanData.length ? cleanData : undefined;
+  }
+
+  return undefined;
 };
 
 //removes empty key-value fields, e.g. {key:undefined,value:undefined}
@@ -155,6 +166,9 @@ export const convertToPrecision = (precision: number) => (data: number) => {
 
 export const setDefaultValueIfUndefined = (defaultValue: any) => (data: any) =>
   data === undefined ? defaultValue : data;
+
+export const removeDefaultValues = (defaultValue: string) => (field: string | undefined) =>
+  field === defaultValue ? undefined : field;
 
 export const removeEmptyField = () => (data: any) => {
   if (

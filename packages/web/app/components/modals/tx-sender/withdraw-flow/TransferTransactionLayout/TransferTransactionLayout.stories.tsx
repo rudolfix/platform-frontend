@@ -1,10 +1,13 @@
+import { toEquityTokenSymbol } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { toEquityTokenSymbol } from "../../../../../utils/opaque-types/utils";
-import { withMockedDate, withModalBody } from "../../../../../utils/storybookHelpers.unsafe";
+import {
+  withMockedDate,
+  withModalBody,
+} from "../../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { ETxStatus } from "../../types";
 import { TransferTransactionWrapperLayout } from "./TransferTransactionLayout";
 
@@ -23,14 +26,14 @@ const props = {
     amountEur: "5500000000000000000",
     total: "313131232312331212",
     totalEur: "313131232312331212",
+    tokenImage: ethImage,
+    tokenSymbol: toEquityTokenSymbol("ETH"),
+    tokenDecimals: 18,
   },
   walletAddress: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
   gasCost: "023",
   gasCostEur: "123",
   onClick: action("Close Summary"),
-  tokenImage: ethImage,
-  tokenSymbol: toEquityTokenSymbol("ETH"),
-  tokenDecimals: 18,
   isMined: true,
   amountCaption: "Amount",
 };

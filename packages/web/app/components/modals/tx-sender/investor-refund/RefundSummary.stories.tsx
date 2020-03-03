@@ -1,11 +1,11 @@
+import { Q18 } from "@neufund/shared";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Q18 } from "../../../../config/constants";
 import { ITxData } from "../../../../lib/web3/types";
 import { ETxSenderType, TAdditionalDataByType } from "../../../../modules/tx/types";
-import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { RefundSummaryLayout } from "./RefundSummary";
 
 const txData: ITxData = {
@@ -24,6 +24,7 @@ const additionalData: TAdditionalDataByType<typeof ETxSenderType.INVESTOR_REFUND
   tokenSymbol: "FT",
   amountEth: Q18.mul("150").toString(),
   amountEurUlps: "0",
+  tokenDecimals: 18,
   companyName: "Storybook Ltd.",
 };
 

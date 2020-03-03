@@ -1,3 +1,5 @@
+import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
+import { InvariantError } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -5,11 +7,13 @@ import { Col, Row } from "reactstrap";
 import { compose } from "recompose";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { EKycInstantIdStatus, EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import {
+  EKycInstantIdStatus,
+  EKycRequestStatus,
+  EKycRequestType,
+} from "../../../lib/api/kyc/KycApi.interfaces";
 import { THocProps } from "../../../types";
-import { InvariantError } from "../../../utils/invariant";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout, EIconPosition } from "../../shared/buttons/index";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -28,7 +32,9 @@ interface IExternalProps {
 
 export type IKycStatusWidgetProps = THocProps<typeof connectKycStatusWidget> & IExternalProps;
 
-const statusTextMap: Record<EKycRequestStatus, React.ReactNode> = {
+const statusTextMap = (
+  kycRequestType: EKycRequestType | undefined,
+): Record<EKycRequestStatus, React.ReactNode> => ({
   [EKycRequestStatus.ACCEPTED]: (
     <FormattedMessage id="settings.kyc-status-widget.status.accepted" />
   ),
@@ -39,14 +45,26 @@ const statusTextMap: Record<EKycRequestStatus, React.ReactNode> = {
       values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
-  [EKycRequestStatus.IGNORED]: <FormattedMessage id="settings.kyc-status-widget.status.ignored" />,
-  [EKycRequestStatus.PENDING]: (
-    <FormattedHTMLMessage
-      tagName="span"
-      id="settings.kyc-status-widget.status.pending"
+  [EKycRequestStatus.IGNORED]: (
+    <FormattedMessage
+      id="settings.kyc-status-widget.status.ignored"
       values={{ url: externalRoutes.neufundSupportHome }}
     />
   ),
+  [EKycRequestStatus.PENDING]:
+    kycRequestType === "business" ? (
+      <FormattedHTMLMessage
+        tagName="span"
+        id="settings.kyc-status-widget.status.pending.business"
+        values={{ url: externalRoutes.neufundSupportHome }}
+      />
+    ) : (
+      <FormattedHTMLMessage
+        tagName="span"
+        id="settings.kyc-status-widget.status.pending.individual"
+        values={{ url: externalRoutes.neufundSupportHome }}
+      />
+    ),
   [EKycRequestStatus.DRAFT]: (
     <FormattedHTMLMessage
       tagName="span"
@@ -57,13 +75,14 @@ const statusTextMap: Record<EKycRequestStatus, React.ReactNode> = {
   [EKycRequestStatus.OUTSOURCED]: (
     <FormattedMessage id="settings.kyc-status-widget.status.outsourced.started" />
   ),
-};
+});
 
 const getStatus = ({
   isUserEmailVerified,
   isKycFlowBlockedByRegion,
   requestStatus,
   instantIdStatus,
+  kycRequestType,
 }: IKycStatusWidgetProps): React.ReactNode => {
   if (!requestStatus) {
     throw new InvariantError("Request status should be defined at this point");
@@ -86,10 +105,18 @@ const getStatus = ({
     requestStatus === EKycRequestStatus.OUTSOURCED &&
     instantIdStatus === EKycInstantIdStatus.PENDING
   ) {
-    return <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending" />;
+    if (kycRequestType === EKycRequestType.BUSINESS) {
+      return (
+        <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending.business" />
+      );
+    }
+
+    return (
+      <FormattedMessage id="settings.kyc-status-widget.status.outsourced.review_pending.individual" />
+    );
   }
 
-  return statusTextMap[requestStatus];
+  return statusTextMap(kycRequestType)[requestStatus];
 };
 
 const ActionButton = ({

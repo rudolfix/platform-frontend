@@ -1,12 +1,8 @@
-import { NumberSchema, StringSchema } from "yup";
-
-import { ECurrency } from "../../../components/shared/formatters/utils";
 import {
-  getMessageTranslation,
-  ValidationMessage,
-} from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
-import {
+  DeepReadonly,
+  Dictionary,
+  EquityToken,
+  EthereumAddressWithChecksum,
   MAX_PERCENTAGE,
   MAX_RESTRICTED_ACT_VOTING_DURATION,
   MAX_VOTING_DURATION,
@@ -25,9 +21,16 @@ import {
   MIN_VOTING_QUORUM,
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
-} from "../../../config/constants";
-import { DeepPartial, DeepReadonly, Dictionary } from "../../../types";
-import { EquityToken, EthereumAddressWithChecksum } from "../../../utils/opaque-types/types";
+} from "@neufund/shared";
+import { NumberSchema, StringSchema } from "yup";
+
+import { ECurrency } from "../../../components/shared/formatters/utils";
+import {
+  getMessageTranslation,
+  ValidationMessage,
+} from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
+import { DeepPartial } from "../../../types";
 import * as YupTS from "../../yup-ts.unsafe";
 import { currencyCodeSchema, dateSchema, percentage } from "../util/customSchemas";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
@@ -231,7 +234,7 @@ export const EtoMediaType = YupTS.object({
   disableTwitterFeed: YupTS.boolean().optional(),
 });
 
-type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
+export type TEtoMediaData = YupTS.TypeOf<typeof EtoMediaType>;
 
 type TEtoCompanyBase = {
   companyId: string;

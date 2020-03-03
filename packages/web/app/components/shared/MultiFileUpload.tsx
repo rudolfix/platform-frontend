@@ -1,29 +1,33 @@
+import { ArrayWithAtLeastOneMember } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { EKycRequestType, IKycFileInfo } from "../../lib/api/kyc/KycApi.interfaces";
-import { ArrayWithAtLeastOneMember } from "../../types";
 import { Dropzone } from "./Dropzone";
-import { TAcceptedFileType } from "./forms/fields/utils.unsafe";
+import { TAcceptedFileType } from "./forms/fields/utils";
 import { ResponsiveImage } from "./ResponsiveImage";
+import { Tooltip } from "./tooltips/Tooltip";
+import { ECustomTooltipTextPosition } from "./tooltips/TooltipBase";
 import { UploadedFiles } from "./UploadedFiles";
 
 import documentBothSidesImage from "../../assets/img/document-both-side.jpg";
 import documentBothSidesImage2x from "../../assets/img/document-both-side@2x.jpg";
 import documentBothSidesImage3x from "../../assets/img/document-both-side@3x.jpg";
+import InfoIcon from "../../assets/img/info-outline.svg";
 import * as styles from "./MultiFileUpload.module.scss";
 
 export enum EKycUploadType {
   US_ACCREDITATION = "us_accreditation",
   PROOF_OF_ADDRESS = "proof_of_address",
   ADDITIONAL_INDIVIDUAL = "additional_individual",
+  PROOF_OF_ADDRESS_AND_IDENTITY = "proof_of_address_and_identity",
 }
 
 interface IProps {
   uploadType: EKycRequestType | EKycUploadType;
   acceptedFiles: ArrayWithAtLeastOneMember<TAcceptedFileType>;
-  fileUploading: boolean;
+  filesUploading: boolean;
   onDropFile: (file: File) => void;
   layout?: "horizontal" | "vertical";
   files?: ReadonlyArray<IKycFileInfo>;
@@ -43,7 +47,7 @@ const selectTitle = (uploadType: EKycRequestType | EKycUploadType) => {
 
 const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   acceptedFiles,
-  fileUploading,
+  filesUploading,
   files,
   layout,
   onDropFile,
@@ -51,7 +55,7 @@ const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   "data-test-id": dataTestId,
   ...props
 }) => {
-  const onDrop = (accepted: File[]) => accepted[0] && onDropFile(accepted[0]);
+  const onDrop = (accepted: File[]) => accepted.forEach(onDropFile);
 
   return (
     <div className={cn(styles.multiFileUpload, layout)} data-test-id={dataTestId}>
@@ -62,8 +66,8 @@ const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
             data-test-id="multi-file-upload-dropzone"
             accept={acceptedFiles}
             onDrop={onDrop}
-            disabled={fileUploading}
-            isUploading={fileUploading}
+            disabled={filesUploading}
+            isUploading={filesUploading}
             name={uploadType}
             {...props}
           />
@@ -100,9 +104,6 @@ const MultiFileUploadInfo: React.FunctionComponent<{
               id="shared-component.multi-file-upload.requirements.business.documents"
             />
           </div>
-          <h4 className={cn(styles.hint, "mb-3")}>
-            <FormattedMessage id="shared-component.multi-file-upload.requirements.business.documents-note" />
-          </h4>
         </>
       );
     case EKycRequestType.INDIVIDUAL:
@@ -134,6 +135,43 @@ const MultiFileUploadInfo: React.FunctionComponent<{
           id="shared-component.multi-file-upload.additional-upload.info"
         />
       );
+    case EKycUploadType.PROOF_OF_ADDRESS_AND_IDENTITY:
+      return (
+        <div>
+          <FormattedMessage id="shared-component.multi-file-upload.proof-of-address-and-identity.info" />
+          <ul>
+            <li className="d-flex">
+              <FormattedMessage id="shared-component.multi-file-upload.proof-of-address-and-identity.info.identity" />
+              <Tooltip
+                content={
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="shared-component.multi-file-upload.proof-of-address-and-identity.info.identity.tooltip"
+                  />
+                }
+                textPosition={ECustomTooltipTextPosition.LEFT}
+              >
+                <img src={InfoIcon} alt="" className="mt-n1" />
+              </Tooltip>
+            </li>
+            <li className="d-flex">
+              <FormattedMessage id="shared-component.multi-file-upload.proof-of-address-and-identity.info.address" />
+              <Tooltip
+                content={
+                  <FormattedHTMLMessage
+                    tagName="span"
+                    id="shared-component.multi-file-upload.proof-of-address-and-identity.info.address.tooltip"
+                  />
+                }
+                textPosition={ECustomTooltipTextPosition.LEFT}
+              >
+                <img src={InfoIcon} alt="" className="mt-n1" />
+              </Tooltip>
+            </li>
+          </ul>
+        </div>
+      );
+
     default:
       return null;
   }
@@ -177,7 +215,7 @@ export const MultiFileUploadGuide: React.FunctionComponent<{
 // TODO: MultiFileUpload should not contain any information about upload type
 export const MultiFileUpload: React.FunctionComponent<IProps> = ({
   acceptedFiles,
-  fileUploading,
+  filesUploading,
   files,
   onDropFile,
   uploadType,
@@ -191,7 +229,7 @@ export const MultiFileUpload: React.FunctionComponent<IProps> = ({
         acceptedFiles={acceptedFiles}
         onDropFile={onDropFile}
         files={files}
-        fileUploading={fileUploading}
+        filesUploading={filesUploading}
         uploadType={uploadType}
         layout={layout}
         data-test-id={dataTestId}

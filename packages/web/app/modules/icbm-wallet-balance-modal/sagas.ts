@@ -1,4 +1,4 @@
-import { call, delay, fork, put, select } from "@neufund/sagas";
+import { call, fork, put, select, take } from "@neufund/sagas";
 import { BigNumber } from "bignumber.js";
 import { toChecksumAddress } from "ethereumjs-util";
 
@@ -14,7 +14,6 @@ import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
 import { selectLockedWalletConnected } from "../wallet/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
-import { BLOCK_MINING_TIME_DELAY } from "./../../config/constants";
 import { IWalletMigrationData } from "./reducer";
 import { selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress } from "./selectors";
 
@@ -155,7 +154,7 @@ function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDep
       }
       if (isLockedWalletConnected) yield put(actions.icbmWalletBalanceModal.setSecondTxDone());
 
-      yield delay(BLOCK_MINING_TIME_DELAY);
+      yield take(actions.web3.newBlockArrived.getType());
     }
   }
 }

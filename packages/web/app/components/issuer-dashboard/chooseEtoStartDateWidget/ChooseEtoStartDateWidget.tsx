@@ -1,10 +1,11 @@
+import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
+import { DAY } from "@neufund/shared";
 import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { FormGroup } from "reactstrap";
 import { branch, compose, lifecycle, renderComponent, renderNothing } from "recompose";
 
-import { DAY } from "../../../config/constants";
 import { actions } from "../../../modules/actions";
 import {
   selectAreAgreementsSignedByNominee,
@@ -20,15 +21,13 @@ import { ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../modules/tx/types";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
-import { Button, EButtonLayout, EButtonWidth } from "../../shared/buttons/index";
 import {
   DashboardLoadingWidget,
   DashboardWidget,
 } from "../../shared/dashboard-widget/DashboardWidget";
-import { DatePicker } from "../../shared/DatePicker";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
-import { FormError } from "../../shared/forms/index";
+import { DatePickerLayout, FormError } from "../../shared/forms";
 import { TimeLeft } from "../../shared/TimeLeft.unsafe";
 import { TimeLeftWithUTC } from "../../shared/TimeLeftWithUTC";
 import { calculateTimeLeft } from "../../shared/utils";
@@ -134,7 +133,7 @@ const DateChooserOpen = ({
   return (
     <>
       <FormGroup className="justify-content-center mb-0">
-        <DatePicker
+        <DatePickerLayout
           value={newEtoDate || etoDate}
           onChange={setNewEtoDate}
           onTestInputChange={onTestInputChange}

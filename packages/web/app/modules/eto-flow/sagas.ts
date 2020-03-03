@@ -1,8 +1,8 @@
-import { fork, put, select } from "@neufund/sagas";
+import { call, fork, put, select } from "@neufund/sagas";
+import { EJwtPermissions } from "@neufund/shared";
 
 import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { EJwtPermissions } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
@@ -11,7 +11,7 @@ import {
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { InvalidETOStateError } from "../eto/errors";
@@ -21,7 +21,6 @@ import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { etoFlowActions } from "./actions";
 import {
   selectIsNewPreEtoStartDateValid,
-  selectIssuerEto,
   selectIssuerEtoWithCompanyAndContract,
   selectNewPreEtoStartDate,
   selectPreEtoStartDateFromContract,
@@ -108,7 +107,9 @@ export function* saveCompany(
   action: TActionFromCreator<typeof etoFlowActions.saveCompanyStart>,
 ): Generator<any, any, any> {
   try {
-    yield apiEtoService.patchCompany(action.payload.company);
+    const currentIssuerCompany = yield* call(() => apiEtoService.getCompany());
+
+    yield apiEtoService.putCompany({ ...currentIssuerCompany, ...action.payload.company });
 
     yield put(actions.routing.goToDashboard());
   } catch (e) {
@@ -126,24 +127,17 @@ export function* saveEto(
   action: TActionFromCreator<typeof etoFlowActions.saveEtoStart>,
 ): Generator<any, any, any> {
   try {
-    const currentEto: TEtoSpecsData = yield select(selectIssuerEto);
+    const currentEto = yield* call(() => apiEtoService.getMyEto());
 
     // Eto is only allowed to be modified during PREVIEW state
-    if (currentEto.state !== EEtoState.PREVIEW) {
+    if (currentEto.state && currentEto.state !== EEtoState.PREVIEW) {
       throw new InvalidETOStateError(currentEto.state, EEtoState.PREVIEW);
     }
 
-    if (action.payload.options.patch) {
-      yield apiEtoService.patchMyEto(action.payload.eto);
-    } else {
-      // It's a fix for Shareholder Agreement form
-      // as right now `patch` is not working properly for `Advisory Board`
-      // TODO: Remove `options` after `Advisory Board` gets fixed on the API side
-      yield apiEtoService.putMyEto({
-        ...currentEto,
-        ...action.payload.eto,
-      });
-    }
+    yield apiEtoService.putMyEto({
+      ...currentEto,
+      ...action.payload.eto,
+    });
 
     yield put(actions.routing.goToDashboard());
   } catch (e) {
@@ -189,7 +183,7 @@ export function* submitEtoData({
 }
 
 function* startSetDateTX(_: TGlobalDependencies): Generator<any, any, any> {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
   if (selectIsNewPreEtoStartDateValid(state)) {
     yield put(actions.txTransactions.startEtoSetDate());
   }

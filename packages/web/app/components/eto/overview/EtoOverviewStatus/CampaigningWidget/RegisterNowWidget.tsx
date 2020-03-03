@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { appRoutes } from "../../../../appRoutes";
 import { ButtonLink } from "../../../../shared/buttons/ButtonLink";
@@ -51,7 +51,10 @@ const RegisterNowWidget: React.FunctionComponent<TExternalProps> = ({
         wasPledged ? (
           <FormattedMessage id="shared-component.eto-overview.register-cta.summary-pledged" />
         ) : (
-          <FormattedMessage id="shared-component.eto-overview.register-cta.summary" />
+          <FormattedHTMLMessage
+            id="shared-component.eto-overview.register-cta.summary"
+            tagName="span"
+          />
         )
       }
     >

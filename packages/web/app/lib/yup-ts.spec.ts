@@ -1,8 +1,8 @@
+import { DeepReadonly } from "@neufund/shared";
 import { expect } from "chai";
 import { NumberSchema } from "yup";
 
 import { AssertEqual } from "../../test/testUtils";
-import { DeepReadonly } from "../types";
 import * as YupTS from "./yup-ts.unsafe";
 
 describe("Yup-ts", () => {

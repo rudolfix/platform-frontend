@@ -1,14 +1,10 @@
+import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { compose } from "redux";
 
-import {
-  IIntlHelpers,
-  IIntlProps,
-  injectIntlHelpers,
-} from "../../../utils/injectIntlHelpers.unsafe";
-import { DEFAULT_CHART_COLOR } from "../../eto/shared/EtoView";
+import { DEFAULT_CHART_COLOR } from "../../eto/shared/constants";
 import { OTHERS_NAME } from "../../eto/utils";
 import { ChartLegend } from "./ChartLegend";
 

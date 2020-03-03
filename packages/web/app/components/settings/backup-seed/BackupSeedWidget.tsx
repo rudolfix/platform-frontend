@@ -1,9 +1,10 @@
+import { EButtonLayout, EIconPosition } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EColumnSpan } from "../../layouts/Container";
-import { ButtonLink, EButtonLayout, EIconPosition } from "../../shared/buttons/index";
+import { ButtonLink } from "../../shared/buttons/ButtonLink";
 import { Panel } from "../../shared/Panel";
 import { profileRoutes } from "../routes";
 import { connectBackupSeedWidget } from "./ConnectSetupWidget";

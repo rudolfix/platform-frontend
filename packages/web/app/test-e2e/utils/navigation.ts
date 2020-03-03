@@ -1,5 +1,5 @@
 import { IWindowData, IWindowWithData } from "../../../test/helperTypes";
-import { assertIssuerEtoView } from "../eto-view/EtoViewUtils";
+import { assertIssuerEtoView } from "../issuer/eto/view/EtoViewUtils";
 import {
   assertDashboard,
   assertEtoDocuments,

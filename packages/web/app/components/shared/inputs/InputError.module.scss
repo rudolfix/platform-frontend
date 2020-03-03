@@ -1,0 +1,7 @@
+.error-message {
+  @include nds-input-label-small;
+
+  color: $neu-flamingo-red;
+  text-transform: none;
+  margin: px-to-rem(4px) 0;
+}

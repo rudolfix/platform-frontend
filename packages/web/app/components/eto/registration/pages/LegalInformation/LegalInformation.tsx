@@ -1,23 +1,25 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EtoLegalInformationType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { Button, EButtonLayout } from "../../../../shared/buttons/index";
 import {
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { ArrayOfKeyValueFields } from "../../../../shared/forms/fields/FormCategoryDistribution.unsafe";
-import { FormField } from "../../../../shared/forms/fields/FormField";
-import { FormFieldDate } from "../../../../shared/forms/fields/FormFieldDate";
-import { FormFieldError } from "../../../../shared/forms/fields/FormFieldError";
-import { FormFieldLabel } from "../../../../shared/forms/fields/FormFieldLabel";
-import { FormMaskedNumberInput } from "../../../../shared/forms/fields/FormMaskedNumberInput";
-import { FormSelectField } from "../../../../shared/forms/fields/FormSelectField";
-import { FormTextArea } from "../../../../shared/forms/fields/FormTextArea";
-import { FormHighlightGroup } from "../../../../shared/forms/FormHighlightGroup";
-import { FUNDING_ROUNDS } from "../../../constants";
+import { ArrayOfKeyValueFields } from "../../../../shared/forms/fields/FormCategoryDistribution";
+import {
+  FormField,
+  FormFieldDate,
+  FormFieldError,
+  FormFieldLabel,
+  FormHighlightGroup,
+  FormMaskedNumberInput,
+  FormSelectField,
+  FormTextArea,
+} from "../../../../shared/forms/index";
+import { FUNDING_ROUNDS } from "../../../shared/constants";
 import { EtoFormBase } from "../../EtoFormBase";
 import { Section } from "../../Shared";
 import { connectEtoRegistrationLegalInformation, TComponentProps } from "./connectLegalInformation";

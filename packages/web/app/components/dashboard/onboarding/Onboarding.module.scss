@@ -1,0 +1,135 @@
+.account-setup-wrapper {
+  max-width: px-to-rem(748);
+  margin: 0 auto;
+}
+
+.account-setup-container {
+  @include media-breakpoint-up(md) {
+    grid-template: auto / 2fr 1fr;
+  }
+
+  display: grid;
+  grid-template: auto / auto;
+}
+
+.account-setup-container-inner {
+  @include media-breakpoint-up(lg) {
+    padding: px-to-rem(48px) 0 px-to-rem(48px) px-to-rem(64px);
+  }
+
+  display: grid;
+  grid-gap: px-to-rem(5px);
+  grid-template: auto / auto;
+  padding: 1.25rem;
+}
+
+.account-setup-text {
+  margin-bottom: px-to-rem(20);
+  font-size: px-to-rem(16px);
+}
+
+.status {
+  height: 1.5rem;
+  padding: 3px 12px;
+  border: 1px solid $neu-bright-orange;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: px-to-rem(16px);
+  font-size: px-to-rem(12px);
+  color: $neu-bright-orange;
+  text-transform: uppercase;
+}
+
+.account-setup-step-wrapper {
+  @include nds-body;
+
+  display: grid;
+  grid-template: auto auto / auto 1fr;
+  grid-template-areas: "ticker title" "line component";
+  grid-row-gap: px-to-rem(5px);
+  grid-column-gap: px-to-rem(8px);
+  grid-column: 1;
+}
+
+.account-setup-kyc-pending-wrapper {
+  @include nds-body;
+
+  display: grid;
+  grid-row-gap: px-to-rem(20);
+  grid-column: 1;
+
+  justify-items: flex-start;
+}
+
+.ticker {
+  @include nds-body;
+
+  grid-area: ticker;
+  width: px-to-rem(24px);
+  height: px-to-rem(24px);
+
+  background-color: $text-gray;
+  border-radius: 12px;
+
+  text-align: center;
+  color: $neu-pale-grey-two;
+  font-weight: 500;
+
+  &.active,
+  &.done {
+    background-color: $neu-bitter-lemon;
+  }
+}
+
+.title {
+  grid-area: title;
+  font-size: px-to-rem(16px);
+  font-weight: 500;
+}
+
+.title-large {
+  font-size: px-to-rem(24px);
+  font-weight: 500;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.component-open {
+  @include media-breakpoint-up(sm) {
+    margin: px-to-rem(15px) px-to-rem(20px) px-to-rem(27px) 0;
+
+  }
+
+  grid-area: component;
+  margin-bottom: px-to-rem(27px);
+}
+
+.component-closed {
+  height: px-to-rem(16px);
+
+  &.last {
+    display: none;
+  }
+}
+
+.line {
+  width: 2px;
+  height: 100%;
+  background-color: $new-gray-two;
+  margin: 0 auto;
+}
+
+.onboarding-image {
+  @include media-breakpoint-up(md) {
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+    background-image: url("../../../assets/img/nds_illustrations_2_fish_on_a_bicycle__on-white.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: px-to-rem(48px) px-to-rem(64px);
+  }
+
+  display: none;
+}

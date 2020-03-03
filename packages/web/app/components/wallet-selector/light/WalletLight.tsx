@@ -5,7 +5,7 @@ import { selectIsLoginRoute } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { resetWalletOnEnter } from "../resetWallet";
 import { LoginLightWallet } from "./Login/LoginLightWallet";
-import { RegisterLightWallet } from "./Register/RegisterLightWallet.unsafe";
+import { RegisterLightWallet } from "./Register/RegisterLightWallet";
 
 import * as styles from "./WalletLight.module.scss";
 

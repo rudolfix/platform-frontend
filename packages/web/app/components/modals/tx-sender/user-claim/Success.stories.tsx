@@ -3,7 +3,10 @@ import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { withMockedDate, withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import {
+  withMockedDate,
+  withModalBody,
+} from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { UserClaimSuccessComponent } from "./Success";
 
 const dummyNow = new Date("10/3/2019");
@@ -16,6 +19,8 @@ const props = {
     neuRewardUlps: "5500000000000000000",
     tokenName: "Fifth Force",
     tokenQuantity: 100,
+    tokenDecimals: 0,
+    tokenSymbol: "FT",
   },
   txTimestamp: date.valueOf(),
   goToPortfolio: action("goToPortfolio"),

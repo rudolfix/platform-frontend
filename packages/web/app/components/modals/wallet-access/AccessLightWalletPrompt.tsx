@@ -1,9 +1,9 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TTranslatedString } from "../../../types";
-import { Button, EButtonLayout } from "../../shared/buttons";
 import { FormDeprecated, FormField } from "../../shared/forms";
 
 interface IStateProps {

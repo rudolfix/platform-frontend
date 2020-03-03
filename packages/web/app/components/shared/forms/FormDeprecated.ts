@@ -1,12 +1,12 @@
+import { omitProps } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 // tslint:disable-next-line:import-blacklist
 import { connect as formikConnect, Form as FormikForm } from "formik";
 import * as React from "react";
 import { compose, lifecycle } from "recompose";
 
 import { symbols } from "../../../di/symbols";
-import { ILogger } from "../../../lib/dependencies/logger";
 import { TFormikConnect } from "../../../types";
-import { omitProps } from "../../../utils/omitProps";
 import { withDependencies } from "../hocs/withDependencies";
 
 type TProps = React.ComponentProps<typeof FormikForm>;

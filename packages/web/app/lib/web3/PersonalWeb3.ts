@@ -1,7 +1,7 @@
+import { EthereumAddress, EthereumNetworkId } from "@neufund/shared";
 import { TxData } from "web3";
 
 import { EWalletSubType, EWalletType, TWalletMetadata } from "../../modules/web3/types";
-import { EthereumAddress, EthereumNetworkId } from "../../utils/opaque-types/types";
 import { Web3Adapter } from "./Web3Adapter";
 
 // strings should match signer types on backend

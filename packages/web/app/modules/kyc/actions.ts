@@ -2,21 +2,26 @@ import { createActionFactory } from "@neufund/shared";
 
 import {
   EKycBusinessType,
-  IKycBeneficialOwner,
   IKycBusinessData,
   IKycFileInfo,
   IKycIndividualData,
-  IKycLegalRepresentative,
+  IKycManagingDirector,
   KycBankQuintessenceBankAccount,
   TKycStatus,
 } from "../../lib/api/kyc/KycApi.interfaces";
+import { kycBeneficialOwnerActions } from "./beneficial-owner/actions";
+import { kycFinancialDisclosureActions } from "./financial-disclosure/actions";
 import { kycInstantIdIdNowActions } from "./instant-id/id-now/actions";
 import { kycInstantIdOnfidoActions } from "./instant-id/onfido/actions";
+import { kycLegalRepresentativeActions } from "./legal-representative/actions";
 import { TBankAccount, TClaims } from "./types";
 
 export const kycActions = {
   ...kycInstantIdOnfidoActions,
   ...kycInstantIdIdNowActions,
+  ...kycFinancialDisclosureActions,
+  ...kycBeneficialOwnerActions,
+  ...kycLegalRepresentativeActions,
 
   /**
    * General
@@ -118,7 +123,7 @@ export const kycActions = {
   // business data
   kycSubmitBusinessData: createActionFactory(
     "KYC_SUBMIT_BUSINESS_DATA",
-    (data: IKycBusinessData) => ({ data }),
+    (data: IKycBusinessData, file?: File, close?: boolean) => ({ data, file, close }),
   ),
 
   kycLoadBusinessData: createActionFactory("KYC_LOAD_BUSINESS_DATA"),
@@ -151,106 +156,46 @@ export const kycActions = {
     (businessFileUploading: boolean, file?: IKycFileInfo) => ({ businessFileUploading, file }),
   ),
 
-  // legal representative data
-  kycSubmitLegalRepresentative: createActionFactory(
-    "KYC_SUBMIT_LEGAL_REPRESENTATIVE",
-    (data: IKycLegalRepresentative) => ({ data }),
-  ),
-
-  kycLoadLegalRepresentative: createActionFactory("KYC_LOAD_LEGAL_REPRESENTATIVE"),
-
-  kycUpdateLegalRepresentative: createActionFactory(
-    "KYC_UPDATE_LEGAL_REPRESENTATIVE",
-    (legalRepresentativeLoading?: boolean, legalRepresentative?: IKycLegalRepresentative) => ({
-      legalRepresentative,
-      legalRepresentativeLoading,
+  // managing directors
+  kycLoadManagingDirector: createActionFactory("KYC_LOAD_MANAGING_DIRECTOR"),
+  kycUpdateManagingDirector: createActionFactory(
+    "KYC_UPDATE_MANAGING_DIRECTOR_DATA",
+    (managingDirectorLoading: boolean, managingDirector?: IKycManagingDirector) => ({
+      managingDirectorLoading,
+      managingDirector,
     }),
   ),
-
-  // legal representative documents
-  kycLoadLegalRepresentativeDocumentList: createActionFactory(
-    "KYC_LOAD_LEGAL_REPRESENTATIVE_FILE_LIST",
+  kycSubmitManagingDirector: createActionFactory(
+    "KYC_SUBMIT_MANAGING_DIRECTOR_DATA",
+    (data: IKycManagingDirector) => ({ data }),
+  ),
+  kycSubmitAndUploadManagingDirector: createActionFactory(
+    "KYC_SUBMIT_AND_UPLOAD_MANAGING_DIRECTOR",
+    (data: IKycManagingDirector, file: File) => ({ data, file }),
   ),
 
-  kycUploadLegalRepresentativeDocument: createActionFactory(
-    "KYC_UPLOAD_LEGAL_REPRESENTATIVE_FILE",
-    (file: File) => ({ file }),
-  ),
-
-  kycUpdateLegalRepresentativeDocuments: createActionFactory(
-    "KYC_UPDATE_LEGAL_REPRESENTATIVE_FILES_INFO",
-    (legalRepresentativeFilesLoading: boolean, legalRepresentativeFiles: IKycFileInfo[] = []) => ({
-      legalRepresentativeFilesLoading,
-      legalRepresentativeFiles,
+  // managing directors documents
+  kycLoadManagingDirectorDocumentList: createActionFactory("KYC_LOAD_MANAGING_DIRECTOR_FILE_LIST"),
+  kycUpdateManagingDirectorDocuments: createActionFactory(
+    "KYC_UPDATE_MANAGING_DIRECTOR_FILES_INFO",
+    (managingDirectorFilesLoading: boolean, managingDirectorFiles: IKycFileInfo[] = []) => ({
+      managingDirectorFilesLoading,
+      managingDirectorFiles,
     }),
   ),
-
-  kycUpdateLegalRepresentativeDocument: createActionFactory(
-    "KYC_UPDATE_LEGAL_REPRESENTATIVE_FILE_INFO",
-    (legalRepresentativeUploading: boolean, file?: IKycFileInfo) => ({
-      legalRepresentativeUploading,
+  kycUpdateManagingDirectorDocument: createActionFactory(
+    "KYC_UPDATE_MANAGING_DIRECTOR_FILE_INFO",
+    (managingDirectorFileUploading: boolean, file?: IKycFileInfo) => ({
+      managingDirectorFileUploading,
       file,
     }),
   ),
 
-  // beneficial owners
-  kycLoadBeneficialOwners: createActionFactory("KYC_LOAD_BENEFICIAL_OWNERS"),
-  kycUpdateBeneficialOwners: createActionFactory(
-    "KYC_UPDATE_BENEFICIAL_OWNERS",
-    (loadingBeneficialOwners: boolean, beneficialOwners: IKycBeneficialOwner[] = []) => ({
-      loadingBeneficialOwners,
-      beneficialOwners,
-    }),
-  ),
-  kycAddBeneficialOwner: createActionFactory("KYC_ADD_BENEFICIAL_OWNER"),
-  kycDeleteBeneficialOwner: createActionFactory("KYC_DELETE_BENEFICIAL_OWNER", (id: string) => ({
-    id,
-  })),
-  kycSubmitBeneficialOwner: createActionFactory(
-    "KYC_SUBMIT_BENEFICIAL_OWNER",
-    (owner: IKycBeneficialOwner) => ({ owner }),
-  ),
-  kycUpdateBeneficialOwner: createActionFactory(
-    "KYC_UPDATE_BENEFICIAL_OWNER",
-    (loadingBeneficialOwner: boolean, id?: string, beneficialOwner?: IKycBeneficialOwner) => ({
-      loadingBeneficialOwner,
-      id,
-      beneficialOwner,
-    }),
+  kycToggleManagingDirectorModal: createActionFactory(
+    "KYC_TOGGLE_MANAGING_DIRECTOR_MODAL",
+    (show: boolean) => ({ show }),
   ),
 
-  // beneficial owners documents
-  kycLoadBeneficialOwnerDocumentList: createActionFactory(
-    "KYC_LOAD_BENEFICIAL_OWNER_FILE_LIST",
-    (boid: string) => ({ boid }),
-  ),
-
-  kycUploadBeneficialOwnerDocument: createActionFactory(
-    "KYC_UPLOAD_BENEFICIAL_OWNER_FILE",
-    (boid: string, file: File) => ({ boid, file }),
-  ),
-
-  kycUpdateBeneficialOwnerDocuments: createActionFactory(
-    "KYC_UPDATE_BENEFICIAL_OWNER_FILES_INFO",
-    (
-      boid: string,
-      beneficialOwnerFilesLoading: boolean,
-      beneficialOwnerFiles: IKycFileInfo[] = [],
-    ) => ({
-      boid,
-      beneficialOwnerFilesLoading,
-      beneficialOwnerFiles,
-    }),
-  ),
-
-  kycUpdateBeneficialOwnerDocument: createActionFactory(
-    "KYC_UPDATE_BENEFICIAL_OWNER_FILE_INFO",
-    (boid: string, beneficialOwnerFileUploading: boolean, file?: IKycFileInfo) => ({
-      boid,
-      beneficialOwnerFileUploading,
-      file,
-    }),
-  ),
   // request
   kycLoadBusinessRequest: createActionFactory(
     "KYC_LOAD_BUSINESS_REQUEST_STATE",

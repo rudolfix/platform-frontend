@@ -1,14 +1,14 @@
-import { expectSaga } from "@neufund/sagas";
+import { expectSaga } from "@neufund/sagas/tests";
+import { EthereumAddressWithChecksum, EthereumTxHash } from "@neufund/shared";
+import { noopLogger } from "@neufund/shared-modules";
 
 import { ECurrency, ENumberInputFormat } from "../../components/shared/formatters/utils";
+import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   ETransactionDirection,
   ETransactionType,
   TAnalyticsTransaction,
 } from "../../lib/api/analytics-api/interfaces";
-import { noopLogger } from "../../lib/dependencies/logger";
-import { EthereumAddressWithChecksum, EthereumTxHash } from "../../utils/opaque-types/types";
-import { TGlobalDependencies } from "./../../di/setupBindings";
 import { mapAnalyticsApiTransactionResponse } from "./sagas";
 import { ETransactionStatus } from "./types";
 

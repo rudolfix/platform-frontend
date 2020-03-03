@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
@@ -17,11 +18,10 @@ import {
 } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
-import { Button, EButtonLayout } from "../../../shared/buttons";
 import { FormField } from "../../../shared/forms";
 import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { FormSingleFileUpload } from "../../../shared/forms/fields/FormSingleFileUpload";
-import { EMimeType } from "../../../shared/forms/fields/utils.unsafe";
+import { EMimeType } from "../../../shared/forms/fields/utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -39,6 +39,8 @@ interface IStateProps {
 
 interface IDispatchProps {
   saveData: (values: TPartialEtoSpecData) => void;
+  setUploadStart: () => void;
+  setUploadDone: () => void;
 }
 
 type IProps = IExternalProps & IStateProps & IDispatchProps;
@@ -65,7 +67,7 @@ const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({
       <FormField
         label={<FormattedMessage id="eto.form.section.equity-token-information.token-symbol" />}
         placeholder="Token symbol should be a short version of the token name (max. 3-4 characters)"
-        maxLength="4"
+        maxLength={4}
         name="equityTokenSymbol"
         disabled={readonly}
       />
@@ -114,6 +116,12 @@ const EtoEquityTokenInfo = compose<React.FunctionComponent<IExternalProps>>(
     dispatchToProps: dispatch => ({
       saveData: (eto: TPartialEtoSpecData) => {
         dispatch(actions.etoFlow.saveEtoStart(eto));
+      },
+      setUploadStart: () => {
+        dispatch(actions.etoFlow.setSaving(true));
+      },
+      setUploadDone: () => {
+        dispatch(actions.etoFlow.setSaving(false));
       },
     }),
   }),

@@ -1,3 +1,4 @@
+import { DeepWritable } from "@neufund/shared";
 import { expect } from "chai";
 import { render } from "enzyme";
 import { cloneDeep } from "lodash";
@@ -7,7 +8,6 @@ import { testEto } from "../../../../../../test/fixtures";
 import { wrapWithIntl } from "../../../../../../test/integrationTestUtils.unsafe";
 import { tid } from "../../../../../../test/testUtils";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
-import { DeepWritable } from "../../../../../types";
 import { InvestmentLayout } from "./InvestmentStatus";
 
 describe("InvestmentStatus", () => {
@@ -18,7 +18,6 @@ describe("InvestmentStatus", () => {
     initialEnv = process.env.NF_MAY_SHOW_INVESTOR_STATS;
     process.env.NF_MAY_SHOW_INVESTOR_STATS = "1";
 
-    // tslint:disable-next-line:no-useless-cast
     testData = cloneDeep(testEto) as DeepWritable<TEtoWithCompanyAndContractReadonly>;
   });
 

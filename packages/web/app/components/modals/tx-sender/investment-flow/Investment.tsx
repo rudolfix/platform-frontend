@@ -1,3 +1,11 @@
+import { Button, ButtonInline, EButtonLayout } from "@neufund/design-system";
+import {
+  addBigNumbers,
+  IIntlProps,
+  injectIntlHelpers,
+  multiplyBigNumbers,
+  nonNullable,
+} from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
@@ -50,12 +58,8 @@ import { EValidationState } from "../../../../modules/tx/validator/reducer";
 import { selectTxValidationState } from "../../../../modules/tx/validator/selectors";
 import { isValidFormNumber } from "../../../../modules/tx/validator/transfer/utils";
 import { appConnect } from "../../../../store";
-import { addBigNumbers, multiplyBigNumbers } from "../../../../utils/BigNumberUtils";
-import { IIntlProps, injectIntlHelpers } from "../../../../utils/injectIntlHelpers.unsafe";
-import { nonNullable } from "../../../../utils/nonNullable";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
-import { Button, ButtonInline, EButtonLayout } from "../../../shared/buttons";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
@@ -66,8 +70,8 @@ import {
   formatThousands,
   selectDecimalPlaces,
 } from "../../../shared/formatters/utils";
+import { MaskedNumberInput } from "../../../shared/forms";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { MaskedNumberInput } from "../../../shared/MaskedNumberInput";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 import {
@@ -231,6 +235,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
             <Col className="text-right">
               {investmentCurrency === EInvestmentCurrency.EUR_TOKEN && (
                 <MaskedNumberInput
+                  wrapperClassName="mb-0"
                   name="euroValue"
                   value={this.props.euroValue}
                   storageFormat={ENumberInputFormat.ULPS}
@@ -250,6 +255,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
               {investmentCurrency === EInvestmentCurrency.ETH && (
                 <>
                   <MaskedNumberInput
+                    wrapperClassName="mb-0"
                     name="ethValue"
                     valueType={ECurrency.ETH}
                     storageFormat={ENumberInputFormat.ULPS}
@@ -501,7 +507,6 @@ export const InvestmentSelection = compose<IProps, {}>(
           formatMinMaxTickets(etoTicketSizes.maxTicketEurUlps, ERoundingMode.DOWN)) ||
         "0";
       const investmentCurrency = getInvestmentCurrency(investmentType);
-
       return {
         minTicketEur,
         maxTicketEur,

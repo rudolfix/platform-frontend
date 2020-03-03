@@ -1,9 +1,8 @@
+import { Button, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
+import { makeTid } from "@neufund/shared";
 import * as React from "react";
 
 import { TDataTestId, TTranslatedString } from "../../types";
-import { makeTid } from "../../utils/tidUtils";
-import { Button, EButtonLayout, EIconPosition } from "./buttons";
-import { EButtonSize } from "./buttons/Button";
 import { IMoneySuiteWidgetProps, MoneySuiteWidget } from "./MoneySuiteWidget/MoneySuiteWidget";
 
 import arrowRightIcon from "../../assets/img/inline_icons/arrow_right.svg";

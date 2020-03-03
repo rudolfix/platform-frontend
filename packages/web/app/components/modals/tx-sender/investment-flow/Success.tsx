@@ -1,3 +1,4 @@
+import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -7,7 +8,6 @@ import { TInvestmentAdditionalData } from "../../../../modules/tx/transactions/i
 import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
-import { ButtonArrowRight } from "../../../shared/buttons";
 import { ConfettiEthereum } from "../../../shared/ethereum";
 import { EtherscanTxLink } from "../../../shared/links";
 import { Message } from "../../message/Message";

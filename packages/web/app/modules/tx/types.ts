@@ -1,3 +1,4 @@
+import { ETransactionType } from "../../lib/api/analytics-api/interfaces";
 import { TClaimAdditionalData } from "./transactions/claim/types";
 import { TEtoSetDateAdditionalData } from "./transactions/eto-flow/types";
 import { TInvestmentAdditionalData } from "./transactions/investment/types";
@@ -5,6 +6,7 @@ import { TAcceptPayoutAdditionalData } from "./transactions/payout/accept/types"
 import { TRedistributePayoutAdditionalData } from "./transactions/payout/redistribute/types";
 import { TNEurRedeemAdditionalDetails } from "./transactions/redeem/types";
 import { TRefundAdditionalData } from "./transactions/refund/types";
+import { TTokenTransferAdditionalData } from "./transactions/token-transfer/types";
 import { TUnlockAdditionalData } from "./transactions/unlock/types";
 import { TUpgradeAdditionalData } from "./transactions/upgrade/types";
 import { TWithdrawAdditionalData } from "./transactions/withdraw/types";
@@ -52,9 +54,8 @@ export interface ITxTypeWithData<T extends ETxSenderType | undefined, P> {
 
 type TTxSenderTokenTransferState = ITxTypeWithData<
   ETxSenderType.TRANSFER_TOKENS,
-  TWithdrawAdditionalData
+  TTokenTransferAdditionalData
 >;
-// THINK ABOUT WHAT TO ADD UP
 
 type TTxSenderWithdrawState = ITxTypeWithData<ETxSenderType.WITHDRAW, TWithdrawAdditionalData>;
 
@@ -122,6 +123,16 @@ export type TAdditionalDataByType<T extends ETxSenderType> = Extract<
   TSpecificTransactionState,
   { type: T }
 >["additionalData"];
+
+export type TPendingTransactionType =
+  | ETransactionType.ETO_INVESTMENT
+  | ETransactionType.NEUR_REDEEM
+  | ETransactionType.ETO_TOKENS_CLAIM
+  | ETransactionType.TRANSFER
+  | ETransactionType.PAYOUT
+  | ETransactionType.ETO_REFUND
+  | ETransactionType.REDISTRIBUTE_PAYOUT
+  | ETransactionType.NOMINEE_CONFIRMED_AGREEMENT;
 
 export enum ETokenType {
   ETHER = "ETHER",

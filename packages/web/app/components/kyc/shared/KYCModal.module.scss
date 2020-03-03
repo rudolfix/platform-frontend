@@ -1,0 +1,25 @@
+.title {
+  font-family: $font-family-montserrat;
+  font-size: 32px;
+  font-weight: $font-weight-bold;
+  margin-bottom: 2rem;
+}
+
+.body {
+  @include media-breakpoint-down(sm) {
+    padding-left: px-to-rem(12px);
+    padding-right: px-to-rem(12px);
+  }
+
+  padding-left: px-to-rem(55px);
+  padding-right: px-to-rem(55px);
+}
+
+.cancel-button {
+  @include media-breakpoint-down(sm) {
+    margin-right: px-to-rem(4px);
+  }
+
+
+  margin-right: px-to-rem(16px);
+}

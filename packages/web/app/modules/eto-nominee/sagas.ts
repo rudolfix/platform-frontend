@@ -1,11 +1,11 @@
-import { delay, fork, put, select } from "@neufund/sagas";
+import { fork, put, select, take } from "@neufund/sagas";
+import { EJwtPermissions } from "@neufund/shared";
 
 import {
   EEtoNomineeRequestMessages,
   EEtoNomineeRequestNotifications,
 } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { EJwtPermissions, NOMINEE_REQUESTS_WATCHER_DELAY } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions, TActionFromCreator } from "../actions";
@@ -45,7 +45,7 @@ export function* etoNomineeRequestsWatcher({
       logger.error("Error getting nominee requests", e);
     }
 
-    yield delay(NOMINEE_REQUESTS_WATCHER_DELAY);
+    yield take(actions.web3.newBlockArrived.getType());
   }
 }
 

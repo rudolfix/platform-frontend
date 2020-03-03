@@ -1,28 +1,33 @@
 import { all, fork, put, select } from "@neufund/sagas";
+import {
+  addBigNumbers,
+  convertFromUlps,
+  convertToUlps,
+  DataUnavailableError,
+  EthereumAddress,
+  nonNullable,
+  Q18,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { Q18 } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { promisify } from "../../lib/contracts/typechain-runtime";
-import { IAppState } from "../../store";
-import { addBigNumbers } from "../../utils/BigNumberUtils";
-import { nonNullable } from "../../utils/nonNullable";
-import { convertFromUlps, convertToUlps } from "../../utils/NumberUtils";
-import { EthereumAddress } from "../../utils/opaque-types/types";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
 import { calculateSnapshotDate } from "../contracts/utils";
 import { InvalidETOStateError } from "../eto/errors";
 import { isOnChain } from "../eto/utils";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
+import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { ITokenDisbursal } from "./types";
 import {
@@ -59,8 +64,10 @@ export function* loadInvestorTicket(
   }
 
   const etoId = action.payload.eto.etoId;
-  const user: IUser = yield select((state: IAppState) => selectUser(state.auth));
-
+  const user = yield* select(selectUser);
+  if (user === undefined) {
+    throw new DataUnavailableError("user cannot be undefined at this moment!");
+  }
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);
 
   const { investorTickerRaw, contribution } = yield all({
@@ -111,8 +118,9 @@ export function* loadClaimables({
   logger,
   notificationCenter,
 }: TGlobalDependencies): any {
-  const user: IUser = yield select((state: IAppState) => selectUser(state.auth));
+  const user: IUser = yield select((state: TAppGlobalState) => selectUser(state));
   const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
+  const etherPrice = yield select(selectEtherPriceEur);
 
   const tokens: [ECurrency, EthereumAddress][] = [
     [ECurrency.EUR_TOKEN, euroToken.address as EthereumAddress],
@@ -126,7 +134,7 @@ export function* loadClaimables({
     );
     const tokensDisbursal: ITokenDisbursal[] = yield tokens.map(([token], i) =>
       // claimableMultipeByToken preserves tokens order so it's safe to get exact response by index
-      convertToTokenDisbursal(token, tokensDisbursalRaw[i]),
+      convertToTokenDisbursal(token, tokensDisbursalRaw[i], etherPrice),
     );
 
     yield put(actions.investorEtoTicket.setTokensDisbursal(tokensDisbursal));
@@ -158,6 +166,7 @@ export function* getIncomingPayouts({
         neumark.address,
       ),
     });
+    // TODO: Recheck the code here
     const snapshotDate = calculateSnapshotDate(yield neumark.currentSnapshotId);
     const euroTokenIncomingPayoutValue = addBigNumbers(
       euroTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
@@ -165,7 +174,7 @@ export function* getIncomingPayouts({
     const etherTokenIncomingPayoutValue = addBigNumbers(
       etherTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
     );
-
+    // TODO: Recheck the code here
     if (euroTokenIncomingPayoutValue || etherTokenIncomingPayoutValue) {
       yield put(
         actions.investorEtoTicket.setIncomingPayouts({

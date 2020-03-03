@@ -1,3 +1,4 @@
+import { Button, Image, ISrcSet } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -12,8 +13,6 @@ import {
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { Button } from "../../shared/buttons";
-import { Image, ISrcSet } from "../../shared/Image";
 import { WarningAlert } from "../../shared/WarningAlert";
 import { getMessageTranslation } from "../../translatedMessages/messages";
 import { Modal } from "../Modal";
@@ -139,7 +138,7 @@ export const AccessWalletContainer = appConnect<IStateProps, IDispatchProps, IEx
       ? props.message
       : s.accessWallet.modalMessage && getMessageTranslation(s.accessWallet.modalMessage),
     inputLabel: s.accessWallet.inputLabel && getMessageTranslation(s.accessWallet.inputLabel),
-    walletType: selectWalletType(s.web3),
+    walletType: selectWalletType(s),
     walletSubType: selectWalletSubType(s.web3),
     isUnlocked: selectIsUnlocked(s.web3),
   }),

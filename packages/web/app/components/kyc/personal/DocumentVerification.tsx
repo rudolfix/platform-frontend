@@ -1,3 +1,5 @@
+import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { assertNever, nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -21,11 +23,7 @@ import {
 import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { assertNever } from "../../../utils/assertNever";
-import { nonNullable } from "../../../utils/nonNullable";
-import { onLeaveAction } from "../../../utils/OnLeaveAction";
-import { Button, EButtonLayout, EButtonSize } from "../../shared/buttons/Button";
-import { ButtonGroup } from "../../shared/buttons/ButtonGroup";
+import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
 import { withDependencies } from "../../shared/hocs/withDependencies";
 import { ExternalLink } from "../../shared/links/ExternalLink";
 import { Notification } from "../../shared/notification-widget/Notification";
@@ -38,6 +36,7 @@ import {
   selectIsDisabled,
   selectProviderLogo,
 } from "../utils";
+import { TOTAL_STEPS_PERSONAL_KYC } from "./constants";
 
 import * as styles from "./DocumentVerification.module.scss";
 
@@ -194,8 +193,8 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
   return (
     <>
       <KycStep
-        step={4}
-        allSteps={5}
+        step={5}
+        allSteps={TOTAL_STEPS_PERSONAL_KYC}
         title={<FormattedMessage id="kyc.personal.verify.title" />}
         description={<FormattedMessage id="kyc.personal.verify.description" />}
         buttonAction={() => goToDashboard()}
@@ -296,7 +295,7 @@ export const KycPersonalDocumentVerification = compose<
       onStartIdNow: () => dispatch(actions.kyc.startIdNowRequest()),
       onStartOnfido: () => dispatch(actions.kyc.startOnfidoRequest()),
       onManualVerification: () => dispatch(actions.routing.goToKYCIndividualUpload()),
-      goBack: () => dispatch(actions.routing.goToKYCIndividualAddress()),
+      goBack: () => dispatch(actions.routing.goToKYCIndividualFinancialDisclosure()),
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
     }),
   }),

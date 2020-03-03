@@ -1,8 +1,7 @@
+import { Button, ButtonInline, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 
 import { TDataTestId, TTranslatedString } from "../../types";
-import { Button, EButtonLayout } from "./buttons";
-import { ButtonInline } from "./buttons/ButtonInline";
 import { Document } from "./Document";
 import { ExternalLink } from "./links";
 

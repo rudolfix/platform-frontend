@@ -1,8 +1,8 @@
+import { makeTid } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 
 import { CommonHtmlProps, TDataTestId, TTranslatedString } from "../../../types";
-import { makeTid } from "../../../utils/tidUtils";
 import { InlineIcon } from "../icons";
 import { TooltipBase } from "./TooltipBase";
 
@@ -46,7 +46,7 @@ class Tooltip extends React.Component<
         className={cn(
           className,
           styles.tooltipWrapper,
-          children ? styles.tooltipWrapperText : styles.tooltipWrapperIcon,
+          typeof children === "string" ? styles.tooltipWrapperText : styles.tooltipWrapperIcon,
         )}
         onClick={preventDefault ? e => e.preventDefault() : undefined}
       >

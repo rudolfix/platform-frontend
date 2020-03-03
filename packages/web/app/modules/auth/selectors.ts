@@ -1,10 +1,9 @@
+import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared";
 import { createSelector } from "reselect";
 
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
-import { IAppState } from "../../store";
-import { ECountries } from "../../utils/enums/countriesEnum";
-import { EthereumAddressWithChecksum } from "../../utils/opaque-types/types";
+import { TAppGlobalState } from "../../store";
 import {
   selectClientCountry,
   selectIsUserVerifiedOnBlockchain,
@@ -13,12 +12,12 @@ import {
 import { selectIsLightWallet } from "../web3/selectors";
 import { EAuthStatus, IAuthState } from "./reducer";
 
-export const selectIsAuthorized = (state: IAppState): boolean =>
+export const selectIsAuthorized = (state: TAppGlobalState): boolean =>
   !!(state.auth.jwt && state.auth.user && state.auth.status === EAuthStatus.AUTHORIZED);
 
-export const selectJwt = (state: IAppState): string | undefined => state.auth.jwt;
+export const selectJwt = (state: TAppGlobalState): string | undefined => state.auth.jwt;
 
-export const selectUserType = (state: IAppState): EUserType | undefined =>
+export const selectUserType = (state: TAppGlobalState): EUserType | undefined =>
   state.auth.user && state.auth.user.type;
 
 export const selectUserEmail = (state: IAuthState): string | undefined =>
@@ -27,15 +26,15 @@ export const selectUserEmail = (state: IAuthState): string | undefined =>
 export const selectVerifiedUserEmail = (state: IAuthState): string | undefined =>
   state.user && state.user.verifiedEmail;
 
-export const selectUnverifiedUserEmail = (state: IAuthState): string | undefined =>
-  state.user && state.user.unverifiedEmail;
+export const selectUnverifiedUserEmail = (state: TAppGlobalState): string | undefined =>
+  state.auth.user && state.auth.user.unverifiedEmail;
 
-export const selectUser = (state: IAuthState): IUser | undefined => state.user;
+export const selectUser = (state: TAppGlobalState): IUser | undefined => state.auth.user;
 
-export const selectUserId = (state: IAppState): EthereumAddressWithChecksum | undefined =>
+export const selectUserId = (state: TAppGlobalState): EthereumAddressWithChecksum | undefined =>
   state.auth.user && state.auth.user.userId;
 
-export const selectBackupCodesVerified = (state: IAppState): boolean =>
+export const selectBackupCodesVerified = (state: TAppGlobalState): boolean =>
   !!(state.auth.user && state.auth.user.backupCodesVerified) || !selectIsLightWallet(state.web3);
 
 export const selectIsUserEmailVerified = (state: IAuthState): boolean =>
@@ -50,20 +49,20 @@ export const selectDoesEmailExist = (state: IAuthState): boolean =>
 /**
  * Check if user has verified email and KYC
  */
-export const selectIsUserVerified = (state: IAppState): boolean =>
+export const selectIsUserVerified = (state: TAppGlobalState): boolean =>
   selectIsUserEmailVerified(state.auth) &&
   selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED;
 
 /**
  * Check if user is verified by API and Contract
  */
-export const selectIsUserFullyVerified = (state: IAppState): boolean =>
+export const selectIsUserFullyVerified = (state: TAppGlobalState): boolean =>
   selectIsUserVerified(state) && selectIsUserVerifiedOnBlockchain(state);
 
-export const selectIsInvestor = (state: IAppState): boolean =>
+export const selectIsInvestor = (state: TAppGlobalState): boolean =>
   selectUserType(state) === EUserType.INVESTOR;
 
-export const selectIsUSInvestor = (state: IAppState): boolean => {
+export const selectIsUSInvestor = (state: TAppGlobalState): boolean => {
   const isInvestor = selectIsInvestor(state);
   const country = selectClientCountry(state);
 
@@ -90,7 +89,7 @@ export const selectIsRestrictedInvestor = createSelector(
   },
 );
 
-export const selectIsIssuer = (state: IAppState): boolean =>
+export const selectIsIssuer = (state: TAppGlobalState): boolean =>
   selectUserType(state) === EUserType.ISSUER;
 
 export const selectIsVerifiedInvestor = createSelector(
@@ -101,8 +100,8 @@ export const selectIsVerifiedInvestor = createSelector(
 
 // TOS Related Selectors
 
-export const selectIsAgreementAccepted = (state: IAppState): boolean =>
+export const selectIsAgreementAccepted = (state: TAppGlobalState): boolean =>
   Boolean(state.auth.user && state.auth.user.latestAcceptedTosIpfs);
 
-export const selectCurrentAgreementHash = (state: IAppState): string | undefined =>
+export const selectCurrentAgreementHash = (state: TAppGlobalState): string | undefined =>
   state.auth.currentAgreementHash;

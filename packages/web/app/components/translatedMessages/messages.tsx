@@ -1,10 +1,10 @@
+import { assertNever } from "@neufund/shared";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { EWalletSubType } from "../../modules/web3/types";
 import { TTranslatedString } from "../../types";
-import { assertNever } from "../../utils/assertNever";
 import { Money } from "../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { formatMatchingFieldNames, TMessage } from "./utils";
@@ -197,8 +197,6 @@ export enum KycFlowMessage {
   KYC_SUBMIT_FAILED = "kycSubmitFailed",
   KYC_SUBMIT_TITLE = "kycSubmitTitle",
   KYC_SUBMIT_DESCRIPTION = "kycSubmitDescription",
-  KYC_VERIFICATION_TITLE = "kycVerificationTitle",
-  KYC_VERIFICATION_DESCRIPTION = "kycVerificationDescription",
   KYC_SETTINGS_BUTTON = "kycSettingsButton",
   KYC_ERROR = "kycError",
   KYC_BENEFICIAL_OWNERS = "kycBeneficialOwners",
@@ -533,10 +531,6 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="kyc.modal.submit-title" />;
     case KycFlowMessage.KYC_SUBMIT_DESCRIPTION:
       return <FormattedMessage id="kyc.modal.submit-description" />;
-    case KycFlowMessage.KYC_VERIFICATION_TITLE:
-      return <FormattedMessage id="kyc.modal.verification.title" />;
-    case KycFlowMessage.KYC_VERIFICATION_DESCRIPTION:
-      return <FormattedMessage id="kyc.modal.verification.description" />;
     case KycFlowMessage.KYC_SETTINGS_BUTTON:
       return <FormattedMessage id="kyc.modal.verification.settings-button" />;
     case KycFlowMessage.KYC_ERROR:

@@ -1,11 +1,11 @@
 import { fork, put, select } from "@neufund/sagas";
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 
 import { ipfsLinkFromHash } from "../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../../../lib/web3/types";
-import { IAppState } from "../../../../store";
-import { EthereumAddressWithChecksum } from "../../../../utils/opaque-types/types";
+import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { etoFlowActions } from "../../../eto-flow/actions";
 import {
@@ -25,7 +25,7 @@ function* generateSetStartDateTransaction({
   contractsService,
   web3Manager,
 }: TGlobalDependencies): any {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
   const userAddress = selectEthereumAddressWithChecksum(state);
   const gasPriceWithOverhead = selectStandardGasPriceWithOverHead(state);
   const eto = selectIssuerEto(state);
@@ -66,7 +66,7 @@ function* generateSignInvestmentAgreementTx(
   extraParam: TExtraParams,
 ): any {
   const { eto, agreementHash } = extraParam;
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
 
   if (eto && agreementHash) {
     const userAddress: EthereumAddressWithChecksum = yield selectEthereumAddressWithChecksum(state);

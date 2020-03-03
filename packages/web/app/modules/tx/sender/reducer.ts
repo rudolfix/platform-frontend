@@ -1,6 +1,7 @@
+import { Overwrite } from "@neufund/shared";
+
 import { ITxData } from "../../../lib/web3/types";
 import { AppReducer } from "../../../store";
-import { Overwrite } from "../../../types";
 import { actions } from "../../actions";
 import { ITxTypeWithData, TSpecificTransactionState } from "../types";
 
@@ -34,6 +35,7 @@ export enum ETxSenderState {
   MINING = "MINING",
   DONE = "DONE",
   ERROR_SIGN = "ERROR_SIGN",
+  LOADING = "LOADING",
 }
 
 type ITxSenderDefaultState = ITxTypeWithData<undefined, undefined>;
@@ -95,10 +97,15 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...state,
         txDetails: action.payload.txData,
       };
-    case "TX_SENDER_WALLET_PLUGGED":
+    case "TX_SENDER_WALLET_SIGNING":
       return {
         ...state,
         state: ETxSenderState.SIGNING,
+      };
+    case "TX_SENDER_LOADING":
+      return {
+        ...state,
+        state: ETxSenderState.LOADING,
       };
     case "TX_SENDER_SIGNED":
       return {

@@ -1,8 +1,8 @@
+import { assertNever } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../../types";
-import { assertNever } from "../../../utils/assertNever";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { InlineIcon } from "../icons/InlineIcon";
 import { LoadingIndicatorHexagon } from "./LoadingIndicatorHexagon";
@@ -34,15 +34,13 @@ const LoadingIndicator: React.FunctionComponent<ILoadingIndicatorProps & CommonH
     case ELoadingIndicator.PULSE:
     case ELoadingIndicator.PULSE_WHITE:
       return (
-        <div>
-          <div
-            data-test-id="loading-indicator-pulse"
-            className={cn(className, styles.pulse, {
-              [styles.pulseLight]: light,
-              [styles.pulseWhite]: type === ELoadingIndicator.PULSE_WHITE,
-            })}
-          />
-        </div>
+        <div
+          data-test-id="loading-indicator-pulse"
+          className={cn(className, styles.pulse, {
+            [styles.pulseLight]: light,
+            [styles.pulseWhite]: type === ELoadingIndicator.PULSE_WHITE,
+          })}
+        />
       );
 
     case ELoadingIndicator.BLOCKS:

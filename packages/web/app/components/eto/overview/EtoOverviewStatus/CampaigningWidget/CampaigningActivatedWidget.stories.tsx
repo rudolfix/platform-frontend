@@ -5,7 +5,7 @@ import * as React from "react";
 import { testEto } from "../../../../../../test/fixtures";
 import { EWhitelistingState } from "../../../../../modules/bookbuilding-flow/utils";
 import { EETOStateOnChain } from "../../../../../modules/eto/types";
-import { withMockedDate } from "../../../../../utils/storybookHelpers.unsafe";
+import { withMockedDate } from "../../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { ECurrency } from "../../../../shared/formatters/utils";
 import { Panel } from "../../../../shared/Panel";
 import { CampaigningActivatedWidgetLayout } from "./CampaigningActivatedWidget";

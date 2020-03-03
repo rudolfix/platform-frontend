@@ -1,21 +1,22 @@
 {
   "private": true,
   "workspaces": [
-    "packages/**"
+    "packages/*"
   ],
   "engines": {
     "node": ">=10.0.0 <12.0.0"
   },
   "scripts": {
-    "lint": "yarn workspaces run lint",
-    "test": "yarn workspaces run test",
+    "lint": "wsrun lint",
+    "test": "wsrun test",
     "update-artifacts": "git submodule update --init --recursive",
-    "prepare": "yarn update-artifacts && yarn workspaces run prepare",
+    "prepare": "yarn update-artifacts && wsrun --stages prepare",
     "deduplicate": "yarn-deduplicate",
     "postinstall": "patch-package"
   },
   "devDependencies": {
     "yarn-deduplicate": "^1.1.1",
-    "patch-package": "^6.1.0"
+    "patch-package": "^6.1.0",
+    "wsrun": "^5.2.0"
   }
 }

@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { AccountSetupVerifyEmailWidgetLayout } from "./AccountSetupVerifyEmailComponent";
+import { AccountSetupSetEmailWidget } from "./AccountSetupVerifyEmailComponent";
 
 const data = {
   isUserEmailVerified: false,
@@ -16,8 +16,8 @@ const data = {
 
 storiesOf("AccountSetupVerifyEmailWidget", module)
   .add("initial state", () => (
-    <AccountSetupVerifyEmailWidgetLayout {...data} isEmailTemporaryCancelled={false} />
+    <AccountSetupSetEmailWidget {...data} isEmailTemporaryCancelled={false} />
   ))
   .add("email input state", () => (
-    <AccountSetupVerifyEmailWidgetLayout {...data} isEmailTemporaryCancelled={true} />
+    <AccountSetupSetEmailWidget {...data} isEmailTemporaryCancelled={true} />
   ));

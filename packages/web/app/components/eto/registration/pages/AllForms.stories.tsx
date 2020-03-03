@@ -25,6 +25,9 @@ const loadingState = {
   initialValues: eto,
   company,
   saveData: action("saveData"),
+  setUploadStart: action("setSaving"),
+  setUploadDone: action("setSaving"),
+  setSaving: action("setSaving"),
   validationFn: (_: FormikValues) => {},
 };
 

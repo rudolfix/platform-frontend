@@ -1,3 +1,4 @@
+import { EthereumAddress } from "@neufund/shared";
 import { BigNumber } from "bignumber.js";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
@@ -5,7 +6,6 @@ import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
 
 import { EWalletSubType, EWalletType, ILightWalletMetadata } from "../../../modules/web3/types";
-import { EthereumAddress } from "../../../utils/opaque-types/types";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { IRawTxData } from "./../types";
 import { Web3Adapter } from "./../Web3Adapter";

@@ -1,3 +1,5 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -11,8 +13,6 @@ import {
 } from "../../../../../modules/nominee-flow/selectors";
 import { appConnect } from "../../../../../store";
 import { EProcessState } from "../../../../../utils/enums/processStates";
-import { nonNullable } from "../../../../../utils/nonNullable";
-import { Button, EButtonLayout } from "../../../../shared/buttons/Button";
 import { DocumentUploadableTile } from "../../../../shared/DocumentUploadable";
 import { EHeadingSize, Heading } from "../../../../shared/Heading";
 

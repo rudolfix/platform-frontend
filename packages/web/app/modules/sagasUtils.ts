@@ -1,4 +1,5 @@
 import {
+  ActionPattern,
   call,
   delay,
   fork,
@@ -14,25 +15,22 @@ import {
 import { isMatch } from "lodash/fp";
 
 import { TGlobalDependencies } from "../di/setupBindings";
-import { TSingleOrArray } from "../types";
 import { TActionPayload, TPattern } from "./actions";
 
 type TSagaWithDeps = (deps: TGlobalDependencies, ...args: any[]) => any;
 type TSagaWithDepsAndArgs<R, T extends any[]> = (deps: TGlobalDependencies, ...args: T) => R;
-
-type TType = TSingleOrArray<TPattern>;
 
 function* neuGetContext(): Generator<any, TGlobalDependencies, any> {
   const deps: unknown = yield getContext("deps");
   return deps as TGlobalDependencies;
 }
 
-export function* neuTakeLatest(type: TType, saga: TSagaWithDeps): Generator<any, any, any> {
+export function* neuTakeLatest(type: ActionPattern, saga: TSagaWithDeps): Generator<any, any, any> {
   const deps = yield* neuGetContext();
   yield takeLatest(type, saga, deps);
 }
 
-export function* neuTakeEvery(type: TType, saga: TSagaWithDeps): Generator<any, any, any> {
+export function* neuTakeEvery(type: ActionPattern, saga: TSagaWithDeps): Generator<any, any, any> {
   const deps = yield* neuGetContext();
   yield takeEvery(type, saga, deps);
 }
@@ -69,7 +67,11 @@ export function* neuCall<Args extends any[], R>(
 /**
  * Starts saga on `startAction`, cancels on `stopAction`, loops...
  */
-export function* neuTakeUntil(startAction: TType, stopAction: TType, saga: TSagaWithDeps): any {
+export function* neuTakeUntil(
+  startAction: ActionPattern,
+  stopAction: ActionPattern,
+  saga: TSagaWithDeps,
+): any {
   while (true) {
     const action = yield take(startAction);
     // No direct concurrent requests like `fork` or `spawn` should be in the loop
@@ -84,8 +86,8 @@ export function* neuTakeUntil(startAction: TType, stopAction: TType, saga: TSaga
  * Starts saga on `startAction`, cancels on `stopAction`, loops...
  */
 export function* neuTakeLatestUntil(
-  startAction: TType,
-  stopAction: TType,
+  startAction: ActionPattern,
+  stopAction: ActionPattern,
   saga: TSagaWithDeps,
 ): any {
   yield takeLatest(startAction, function*(payload): Generator<any, any, any> {
@@ -120,8 +122,8 @@ export function* neuTakeOnly<T extends TPattern>(
  *  is dispatched.
  */
 export function* neuRepeatIf<R, T extends any[]>(
-  repeatAction: TType,
-  endAction: TType,
+  repeatAction: ActionPattern,
+  endAction: ActionPattern,
   saga: TSagaWithDepsAndArgs<R, T>,
   ...args: T
 ): any {
@@ -145,7 +147,7 @@ export function* neuRepeatIf<R, T extends any[]>(
  *  Executes the generator and restarts running job if a specific actions is fired
  */
 export function* neuRestartIf<R, T extends any[]>(
-  cancelAction: TType,
+  cancelAction: ActionPattern,
   saga: TSagaWithDepsAndArgs<R, T>,
   ...args: T
 ): any {
@@ -163,7 +165,7 @@ export function* neuRestartIf<R, T extends any[]>(
  */
 export function* neuThrottle(
   ms: number,
-  type: TType,
+  type: ActionPattern,
   saga: TSagaWithDeps,
 ): Generator<any, any, any> {
   const deps = yield* neuGetContext();
@@ -182,7 +184,7 @@ function* next<R, T extends any[]>(
 // TODO: Add tests for debounce
 export function* neuDebounce<R, T extends any[]>(
   ms: number,
-  pattern: TType,
+  pattern: ActionPattern,
   saga: TSagaWithDepsAndArgs<R, T>,
   ...args: T
 ): Generator<any, any, any> {

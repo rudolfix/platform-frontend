@@ -18,12 +18,14 @@ import {
   UnknownEthNodeError,
 } from "../../../lib/web3/Web3Adapter";
 import { SignerError } from "../../../lib/web3/Web3Manager/Web3Manager";
-import { IAppState } from "../../../store";
+import { TAppGlobalState } from "../../../store";
 import { connectWallet } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
 import { IGasState } from "../../gas/reducer";
 import { selectGasPrice } from "../../gas/selectors";
 import { neuCall, neuRepeatIf, neuSpawn } from "../../sagasUtils";
+import { selectWalletType } from "../../web3/selectors";
+import { EWalletType } from "../../web3/types";
 import { createWatchTxChannel } from "../event-channel/sagas";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "../event-channel/types";
 import {
@@ -57,7 +59,7 @@ export function* txMonitorSaga(): any {
 }
 
 function* txMonitor(_: TGlobalDependencies): Generator<any, any, any> {
-  const txs: TPendingTxs = yield select((s: IAppState) => s.txMonitor.txs);
+  const txs: TPendingTxs = yield select((s: TAppGlobalState) => s.txMonitor.txs);
 
   if (txs.pendingTransaction) {
     const pendingTransaction = txs.pendingTransaction as TxPendingWithMetadata;
@@ -122,6 +124,7 @@ function* txSendProcess(
   extraParam?: any,
 ): any {
   try {
+    const walletType = yield* select((state: TAppGlobalState) => selectWalletType(state));
     yield put(actions.txSender.txSenderShowModal({ type: transactionType }));
 
     yield neuRepeatIf("TX_SENDER_CHANGE", "TX_SENDER_ACCEPT", transactionFlowGenerator, extraParam);
@@ -133,7 +136,12 @@ function* txSendProcess(
     // accept transaction on wallet
     yield call(connectWallet);
 
-    yield put(actions.txSender.txSenderWalletPlugged());
+    // TODO: Use is wallet unlocked from WalletMeta instead of asserting the wallet type directly
+    if (walletType === EWalletType.LIGHT) {
+      yield put(actions.txSender.txSenderLoading());
+    } else {
+      yield put(actions.txSender.txSenderWalletSigning());
+    }
 
     // send transaction
     const txHash = yield neuCall(sendTxSubSaga);
@@ -194,8 +202,8 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
     throw new Error("Tx data is not defined");
   }
 
-  const txAdditionalData: TAdditionalDataByType<typeof type> = yield select((state: IAppState) =>
-    selectTxAdditionalData<typeof type>(state),
+  const txAdditionalData: TAdditionalDataByType<typeof type> = yield select(
+    (state: TAppGlobalState) => selectTxAdditionalData<typeof type>(state),
   );
 
   try {

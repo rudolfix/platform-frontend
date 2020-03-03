@@ -26,11 +26,19 @@ const getApiSha = async () => {
 
       if (response.artifacts_sha !== oldCommits.artifactsSha) {
         console.error(
-          "The Artifacts Commit does not match the artifacts SHA in the health check API. Please run yarn prepare locally",
+          `The Artifacts Commit ${oldCommits.artifactsSha} does not match the artifacts SHA in the health check API ${response.artifacts_sha}. Please re-run without --check flag`,
         );
         process.exit(1);
       } else {
         console.log("Contract Artifacts SHA up to date");
+      }
+      if (response.commit_sha !== oldCommits.commitSha) {
+        console.error(
+          `The Backend Commit ${oldCommits.commitSha} does not match the declared SHA in the health check API ${response.commit_sha}. Please re-run without --check flag`,
+        );
+        process.exit(1);
+      } else {
+        console.log("Backend Commit SHA up to date");
       }
     } else {
       fs.writeFileSync(

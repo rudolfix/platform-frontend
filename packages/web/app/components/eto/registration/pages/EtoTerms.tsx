@@ -1,3 +1,6 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { DeepReadonly, RequiredByKeys } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 import { FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -14,7 +17,6 @@ import {
   TEtoProduct,
   TEtoProducts,
 } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import { ILogger } from "../../../../lib/dependencies/logger";
 import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import {
@@ -25,20 +27,18 @@ import {
 } from "../../../../modules/eto-flow/selectors";
 import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
-import { DeepReadonly, RequiredByKeys } from "../../../../types";
-import { onEnterAction } from "../../../../utils/OnEnterAction";
-import { Button, EButtonLayout } from "../../../shared/buttons";
+import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import {
   ECheckboxLayout,
   FormField,
   FormFieldCheckbox,
   FormFieldCheckboxGroup,
   FormFieldLabel,
-  FormFieldLayout,
   FormHighlightGroup,
   FormLabel,
   FormRange,
   FormToggle,
+  Input,
   RadioButtonLayout,
 } from "../../../shared/forms/index";
 import { withDependencies } from "../../../shared/hocs/withDependencies";
@@ -343,7 +343,7 @@ const EtoRegistrationProductType: React.FunctionComponent<IProps> = ({
           </div>
 
           {values.product.maxInvestmentAmount === 0 ? (
-            <FormFieldLayout
+            <Input
               name="product.maxInvestmentAmount"
               disabled={true}
               label={<FormattedMessage id="eto.form.section.eto-terms.product.max-amount.label" />}

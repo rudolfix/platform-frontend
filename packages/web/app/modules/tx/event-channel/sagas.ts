@@ -1,14 +1,15 @@
-import { buffers, call, channel, Channel, delay, put, race } from "@neufund/sagas";
+import { buffers, call, channel, Channel, delay, put, race, take } from "@neufund/sagas";
+import { secondsToMs } from "@neufund/shared";
 import * as Web3 from "web3";
 
-import { BLOCK_MINING_TIME_DELAY } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
-import { secondsToMs } from "../../../utils/DateUtils";
 import { neuCall } from "../../sagasUtils";
+import { actions } from "./../../actions";
 import { TransactionCancelledError } from "./errors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "./types";
+import { isTransactionMined } from "./utils";
 
 enum TRANSACTION_STATUS {
   REVERTED = "0x0",
@@ -39,8 +40,9 @@ export function* getTransactionOrThrow(
     throw new TransactionCancelledError(pendingTx.pendingTransaction.transaction.failedRpcError);
   }
 
-  // Both requests `getTx` and `getTransactionReceipt` can end up in two separate nodes
-  const isMined = tx && tx.blockNumber && txReceipt && txReceipt.blockNumber;
+  const currentBlockNumber = yield web3Manager.getBlockNumber();
+
+  const isMined = isTransactionMined(tx, txReceipt, currentBlockNumber);
 
   if (!isMined) {
     return null;
@@ -94,7 +96,7 @@ export function* watchForTx(
         }
       }
 
-      yield delay(BLOCK_MINING_TIME_DELAY);
+      yield take(actions.web3.newBlockArrived.getType());
     } catch (error) {
       if (error instanceof TransactionCancelledError) {
         yield put(txChannel, { type: EEventEmitterChannelEvents.CANCELLED, error });

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
+import withFormik from "storybook-formik";
 
-import { formWrapper } from "./forms/fields/testingUtils.unsafe";
 import { SocialProfilesEditor } from "./SocialProfilesEditor";
 
 import githubIcon from "../../assets/img/inline_icons/social_github.svg";
@@ -72,9 +72,10 @@ const socialProfiles = [
   },
 ];
 
-storiesOf("SocialProfiles/SocialProfilesEditor", module).add(
-  "default",
-  formWrapper({ name: [{ type: "twitter", url: "fufu" }] })(() => (
-    <SocialProfilesEditor profiles={socialProfiles} name="name" />
-  )),
-);
+storiesOf("SocialProfiles/SocialProfilesEditor", module)
+  .addDecorator(withFormik)
+  .add("default", () => <SocialProfilesEditor profiles={socialProfiles} name="name" />, {
+    formik: {
+      initialValues: { name: [{ type: "twitter", url: "fufu" }] },
+    },
+  });

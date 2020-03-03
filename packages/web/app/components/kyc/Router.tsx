@@ -1,16 +1,18 @@
+import { invariant } from "@neufund/shared";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
-import { SwitchConnected } from "../../utils/connectedRouting";
-import { invariant } from "../../utils/invariant";
+import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
 import { KYCBeneficialOwners } from "./business/BeneficialOwners";
-import { KycBusinessData } from "./business/BusinessData.unsafe";
-import { KycLegalRepresentative } from "./business/LegalRepresentative.unsafe";
+import { KycBusinessData } from "./business/BusinessData";
+import { KycLegalRepresentative } from "./business/LegalRepresentative";
+import { ManagingDirectors } from "./business/ManagingDirectors";
 import { KYCPersonalAddress } from "./personal/Address";
 import { KycPersonalDocumentVerification } from "./personal/DocumentVerification";
+import { KYCFinancialDisclosure } from "./personal/FinancialDisclosure";
 import { KYCPersonalStart } from "./personal/Start";
 import { KYCPersonalUpload } from "./personal/Upload";
 import { kycRoutes } from "./routes";
@@ -30,6 +32,7 @@ export const NormalKycRouter: React.FunctionComponent = () => (
     {/* Personal */}
     <Route path={kycRoutes.individualStart} component={KYCPersonalStart} />
     <Route path={kycRoutes.individualAddress} component={KYCPersonalAddress} />
+    <Route path={kycRoutes.financialDisclosure} component={KYCFinancialDisclosure} />
     <Route
       path={kycRoutes.individualDocumentVerification}
       component={KycPersonalDocumentVerification}
@@ -39,9 +42,10 @@ export const NormalKycRouter: React.FunctionComponent = () => (
     )}
 
     {/* Business */}
-    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
     <Route path={kycRoutes.businessData} component={KycBusinessData} />
+    <Route path={kycRoutes.managingDirectors} component={ManagingDirectors} />
     <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
+    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
 
     <Redirect to={kycRoutes.start} />
   </SwitchConnected>
@@ -52,9 +56,10 @@ export const EtoKycRouter: React.FunctionComponent = () => (
     <Route path={kycRoutes.start} component={KycBusinessData} exact />
 
     {/* Business Only*/}
-    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
     <Route path={kycRoutes.businessData} component={KycBusinessData} />
+    <Route path={kycRoutes.managingDirectors} component={ManagingDirectors} />
     <Route path={kycRoutes.beneficialOwners} component={KYCBeneficialOwners} />
+    <Route path={kycRoutes.legalRepresentative} component={KycLegalRepresentative} />
 
     <Redirect to={kycRoutes.legalRepresentative} />
   </SwitchConnected>

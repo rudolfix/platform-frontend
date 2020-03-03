@@ -1,6 +1,7 @@
+import { DeepReadonly } from "@neufund/shared";
+
 import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { AppReducer } from "../../store";
-import { DeepReadonly } from "../../types";
 
 export interface IPersonProfileModalState {
   isOpen: boolean;

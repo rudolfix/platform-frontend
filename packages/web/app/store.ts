@@ -1,97 +1,73 @@
+import { DeepReadonly } from "@neufund/shared";
+import {
+  appConnect as sharedAppConnect,
+  TAppConnectOptions,
+  TModuleSetup,
+} from "@neufund/shared-modules";
 import { connectRouter, LocationChangeAction, RouterState } from "connected-react-router";
 import { History } from "history";
-import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
-import { combineReducers, Reducer } from "redux";
+import { InferableComponentEnhancerWithProps } from "react-redux";
+import { Reducer, ReducersMapObject } from "redux";
 
-import { actions, TAction } from "./modules/actions";
+import { TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
 import { appReducers } from "./modules/reducer";
-import { DeepReadonly } from "./types";
-
-export interface IAppAction {
-  type: string;
-  payload?: any;
-}
-export type ActionType<T extends IAppAction> = T["type"];
-export type ActionPayload<T extends IAppAction> = T["payload"];
-
-export type AppDispatch = (a: AppActionTypes) => void;
-
-export type AppReducer<S> = Reducer<DeepReadonly<S>, AppActionTypes>;
 
 // add new external actions here
 export type AppActionTypes = DeepReadonly<TAction | LocationChangeAction>;
 
+export type AppReducer<S> = Reducer<DeepReadonly<S>, AppActionTypes>;
+
+export type AppGlobalDispatch = (a: AppActionTypes) => void;
+
 // base on reducers we can infer type of app state
-type TReducersMapToReturnTypes<T extends Record<string, (...args: any[]) => any>> = {
-  [P in keyof T]: ReturnType<T[P]>;
-};
+type TReducersMapToReturnTypes<T extends ReducersMapObject<any, any>> = T extends ReducersMapObject<
+  infer S,
+  any
+>
+  ? S
+  : never;
 
-export type IAppState = TReducersMapToReturnTypes<typeof appReducers> & {
-  router: RouterState;
-};
+export const generateRootModuleReducerMap = (history: History) => ({
+  ...appReducers,
+  router: connectRouter(history) as Reducer<RouterState>,
+});
 
-const generateAppReducer = (history: History) =>
-  combineReducers<IAppState>({
-    ...appReducers,
-    router: connectRouter(history),
-  });
+export type TAppGlobalState = TReducersMapToReturnTypes<
+  ReturnType<typeof generateRootModuleReducerMap>
+>;
 
 // All states that should remain even after logout
-const staticValues = (state: IAppState | undefined): Partial<IAppState> | undefined => {
+export const staticValues = (
+  state: TAppGlobalState | undefined,
+): Partial<TAppGlobalState> | undefined => {
   if (state) {
     return {
       router: state.router,
-      init: { ...initInitialState, smartcontractsInit: state.init.smartcontractsInit },
-      contracts: { ...state.contracts },
       // TODO: Think about the state and where smart contracts should be
+      contracts: state.contracts,
+      init: { ...initInitialState, smartcontractsInit: state.init.smartcontractsInit },
     };
   }
 
   return undefined;
 };
 
-export const generateRootReducer = (history: History) => {
-  const appReducer = generateAppReducer(history);
-
-  return (state: IAppState | undefined, action: TAction) => {
-    switch (action.type) {
-      case actions.auth.logout.getType():
-        return appReducer(staticValues(state) as IAppState, action);
-    }
-    return appReducer(state, action);
-  };
-};
-
-/**
- * If react-redux connection function receive `undefined` as a `dispatchToProps` method it then pass `dispatch` method to wrapped component.
- * Often it's not needed as it leads to problems when wrapped component spread all props to any dom element
- * @param omitDispatch
- */
-const getDispatchToProps = (omitDispatch: boolean) => (omitDispatch ? () => ({}) : undefined);
-
-type TCustomOptions = {
-  omitDispatch?: boolean;
-};
-
-interface IAppConnectOptions<S, D, O> {
-  stateToProps?: (state: IAppState, ownProps: O) => S;
-  dispatchToProps?: (dispatch: AppDispatch, ownProps: O) => D;
-  options?: Options<IAppState, S, O> & TCustomOptions;
-}
-
 // helper to use instead of redux connect. It's bound with our app state and it uses dictionary to pass arguments
-export function appConnect<S = {}, D = {}, O = {}>({
-  stateToProps,
-  dispatchToProps,
-  options = {},
-}: IAppConnectOptions<S, D, O>): InferableComponentEnhancerWithProps<S & D, O> {
-  const { omitDispatch = false, ...connectOptions } = options;
-
-  return connect<S, D, O, IAppState>(
-    stateToProps,
-    dispatchToProps || (getDispatchToProps(omitDispatch) as any),
-    undefined,
-    connectOptions,
-  );
+export function appConnect<
+  StateToProps = {},
+  DispatchToProps = {},
+  Props = {},
+  Module extends TModuleSetup<any, any> | never = never
+>(
+  options: TAppConnectOptions<
+    StateToProps,
+    DispatchToProps,
+    Props,
+    AppActionTypes,
+    TAppGlobalState,
+    Module
+  >,
+): InferableComponentEnhancerWithProps<StateToProps & DispatchToProps, Props> {
+  return sharedAppConnect(options);
 }

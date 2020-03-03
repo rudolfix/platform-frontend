@@ -1,9 +1,9 @@
 import { createSelector } from "reselect";
 
-import { IAppState } from "../../store";
+import { TAppGlobalState } from "../../store";
 import { EModuleStatus } from "./reducer";
 
-export const selectTxHistoryState = (state: IAppState) => state.txHistory;
+export const selectTxHistoryState = (state: TAppGlobalState) => state.txHistory;
 
 export const selectLastTransactionId = createSelector(
   selectTxHistoryState,
@@ -17,7 +17,7 @@ export const selectTimestampOfLastChange = createSelector(
 
 export const selectModuleStatus = createSelector(selectTxHistoryState, state => state.status);
 
-export const selectTXById = (id: string, state: IAppState) => {
+export const selectTXById = (id: string, state: TAppGlobalState) => {
   const txHistoryRoot = selectTxHistoryState(state);
 
   if (txHistoryRoot.transactionsByHash) {

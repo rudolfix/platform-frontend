@@ -6,8 +6,6 @@
 
 .panel {
   background-color: $neu-white-two;
-  box-shadow: $shadow-bottom-black;
-  padding: $padding;
   height: 100%;
   align-items: stretch;
   grid-auto-rows: 1fr auto;
@@ -25,4 +23,25 @@
   width: 100%;
 
   align-self: start;
+}
+
+.default-panel {
+  box-shadow: $shadow-bottom-black;
+  padding: $padding;
+}
+
+.rounded {
+  border-radius: px-to-rem(4px);
+  border: solid 1px $neu-light-blue-grey-two;
+  box-shadow: none;
+  overflow: hidden;
+
+  .header {
+    @include nds-headline-4;
+
+    color: $neu-charcoal-grey;
+    padding-bottom: px-to-rem(8px);
+    margin-bottom: px-to-rem(24px);
+    border-bottom: solid 1px $neu-light-blue-grey-two;
+  }
 }

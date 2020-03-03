@@ -1,4 +1,5 @@
-import { Formik } from "formik";
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { RequiredByKeys } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, withProps } from "recompose";
@@ -12,11 +13,8 @@ import { selectActiveNomineeEto } from "../../../../../modules/nominee-flow/sele
 import { selectTxType } from "../../../../../modules/tx/sender/selectors";
 import { ETxSenderType } from "../../../../../modules/tx/types";
 import { appConnect } from "../../../../../store";
-import { RequiredByKeys } from "../../../../../types";
-import { Button, EButtonLayout } from "../../../../shared/buttons/Button";
 import { DocumentButton } from "../../../../shared/DocumentLink";
-import { FormFieldBoolean } from "../../../../shared/forms/fields/FormFieldBoolean";
-import { FormDeprecated } from "../../../../shared/forms/FormDeprecated";
+import { Form, FormFieldBoolean } from "../../../../shared/forms";
 import { EHeadingSize, Heading } from "../../../../shared/Heading";
 import { InlineIcon } from "../../../../shared/icons/InlineIcon";
 import { isRAASign, selectDocument } from "./utils";
@@ -97,13 +95,13 @@ const SignNomineeAgreementSummaryLayout: React.FunctionComponent<TComponentProps
       altIcon={<InlineIcon svgIcon={link} />}
     />
 
-    <Formik<IFormikProps>
+    <Form<IFormikProps>
       initialValues={{ acceptAgreement: false }}
       onSubmit={onAccept}
       validationSchema={SignFormSchema.toYup()}
     >
       {({ isValid }) => (
-        <FormDeprecated>
+        <>
           <FormFieldBoolean
             className="my-4"
             label={
@@ -125,9 +123,9 @@ const SignNomineeAgreementSummaryLayout: React.FunctionComponent<TComponentProps
           >
             <FormattedMessage id="nominee.sign-agreement.sign" />
           </Button>
-        </FormDeprecated>
+        </>
       )}
-    </Formik>
+    </Form>
   </section>
 );
 

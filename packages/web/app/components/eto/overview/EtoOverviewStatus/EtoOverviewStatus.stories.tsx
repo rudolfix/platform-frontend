@@ -1,3 +1,4 @@
+import { toEquityTokenSymbol } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
@@ -10,9 +11,8 @@ import {
   TEtoContractData,
   TEtoWithCompanyAndContractReadonly,
 } from "../../../../modules/eto/types";
-import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
-import { withStore } from "../../../../utils/storeDecorator.unsafe";
-import { withMockedDate } from "../../../../utils/storybookHelpers.unsafe";
+import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
+import { withMockedDate } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { ECurrency } from "../../../shared/formatters/utils";
 import { EtoOverviewStatus } from "./EtoOverviewStatus";
 
@@ -115,9 +115,7 @@ storiesOf("ETO/EtoOverviewStatus", module)
   )
   .addDecorator(withMockedDate(dummyNow))
   .add("default", () => <EtoOverviewStatus eto={eto} publicView={false} isEmbedded={true} />)
-  .add("not public", () => (
-    <EtoOverviewStatus eto={eto} isEmbedded={false} publicView={false} url="eto" />
-  ))
+  .add("not public", () => <EtoOverviewStatus eto={eto} isEmbedded={false} publicView={false} />)
   .add("with whitelist discount", () => (
     <EtoOverviewStatus eto={eto} isEmbedded={true} publicView={false} />
   ))

@@ -1,12 +1,12 @@
+import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../../modules/tx/types";
-import { convertToUlps } from "../../../../utils/NumberUtils";
-import { toEquityTokenSymbol } from "../../../../utils/opaque-types/utils";
-import { withStore } from "../../../../utils/storeDecorator.unsafe";
-import { withModalBody } from "../../../../utils/storybookHelpers.unsafe";
+import { withStore } from "../../../../utils/react-connected-components/storeDecorator.unsafe";
+import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TxErrorLayout } from "./TxError";
 
 import tokenIcon from "../../../../assets/img/token_icon.svg";
@@ -41,6 +41,9 @@ const txData: React.ComponentProps<typeof TxErrorLayout> = {
     amountEur: "5500000000000000000",
     total: "313131232312331212",
     totalEur: "313131232312331212",
+    tokenSymbol: toEquityTokenSymbol("QTT"),
+    tokenImage: tokenIcon,
+    tokenDecimals: 18,
   },
   ...baseTxData,
 };
@@ -59,6 +62,8 @@ const investTxData: React.ComponentProps<typeof TxErrorLayout> = {
         equityTokenName: "Quintessence",
       },
     },
+    investmentType: EInvestmentType.NEur,
+    tokenDecimals: 18,
     equityTokens: "211",
     estimatedReward: convertToUlps("125"),
     etherPriceEur: "2542.22",

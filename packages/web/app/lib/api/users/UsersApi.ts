@@ -1,3 +1,5 @@
+import { toEthereumAddress } from "@neufund/shared";
+import { ILogger } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
@@ -5,10 +7,8 @@ import { inject, injectable } from "inversify";
 import { symbols } from "../../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
-import { toEthereumAddress } from "../../../utils/opaque-types/utils";
-import { ILogger } from "../../dependencies/logger";
+import { ITxData } from "../../web3/types";
 import { IHttpClient } from "../client/IHttpClient";
-import { ITxData } from "./../../web3/types";
 import {
   emailStatus,
   GasStipendValidator,

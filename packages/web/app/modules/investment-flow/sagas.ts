@@ -1,15 +1,19 @@
 import { all, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
+import {
+  addBigNumbers,
+  compareBigNumbers,
+  convertToUlps,
+  extractNumber,
+  nonNullable,
+  subtractBigNumbers,
+} from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ITxData } from "../../lib/web3/types";
-import { IAppState } from "../../store";
-import { addBigNumbers, compareBigNumbers, subtractBigNumbers } from "../../utils/BigNumberUtils";
-import { nonNullable } from "../../utils/nonNullable";
-import { convertToUlps } from "../../utils/NumberUtils";
-import { extractNumber } from "../../utils/StringUtils";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import {
   selectEtoById,
@@ -52,7 +56,7 @@ import { getCurrencyByInvestmentType } from "./utils";
 function* processCurrencyValue(
   action: TActionFromCreator<typeof actions.investmentFlow.submitCurrencyValue>,
 ): Generator<any, any, any> {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
 
   const value = action.payload.value && convertToUlps(extractNumber(action.payload.value));
   const curr = action.payload.currency;
@@ -71,7 +75,7 @@ function* processCurrencyValue(
 }
 
 function* computeAndSetCurrencies(value: string, currency: ECurrency): any {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
   const etherPriceEur = selectEtherPriceEur(state);
   const eurPriceEther = selectEurPriceEther(state);
   if (!value) {
@@ -100,7 +104,7 @@ function* computeAndSetCurrencies(value: string, currency: ECurrency): any {
 
 function* investEntireBalance(): any {
   yield setTransactionWithPresetGas();
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
 
   const type = selectInvestmentType(state);
 
@@ -134,7 +138,7 @@ function* investEntireBalance(): any {
   }
 }
 
-function validateInvestment(state: IAppState): EInvestmentErrorState | undefined {
+function validateInvestment(state: TAppGlobalState): EInvestmentErrorState | undefined {
   const investmentFlow = state.investmentFlow;
 
   const euroValue = investmentFlow.euroValueUlps;
@@ -194,7 +198,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   yield delay(300);
 
   yield put(actions.investmentFlow.setErrorState());
-  let state: IAppState = yield select();
+  let state: TAppGlobalState = yield select();
   const eto = selectEtoById(state, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
 
@@ -232,7 +236,7 @@ function* start(
 ): Generator<any, any, any> {
   const etoId = action.payload.etoId;
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
-    yield select((state: IAppState) => selectEtoWithCompanyAndContractById(state, etoId)),
+    yield select((state: TAppGlobalState) => selectEtoWithCompanyAndContractById(state, etoId)),
   );
 
   yield put(actions.investmentFlow.resetInvestment());
@@ -261,7 +265,7 @@ export function* onInvestmentTxModalHide(): any {
 }
 
 function* getActiveInvestmentTypes(): Generator<any, any, any> {
-  const state: IAppState = yield select();
+  const state: TAppGlobalState = yield select();
   const etoId = selectInvestmentEtoId(state);
   const etoOnChainState = selectEtoOnChainStateById(state, etoId);
   const neurStatus = selectNEURStatus(state);
@@ -297,7 +301,7 @@ function* getActiveInvestmentTypes(): Generator<any, any, any> {
 
 function* recalculateCurrencies(): any {
   yield delay(100); // wait for new token price to be available
-  const s: IAppState = yield select();
+  const s: TAppGlobalState = yield select();
   const type = selectInvestmentType(s);
 
   if (type === undefined) {

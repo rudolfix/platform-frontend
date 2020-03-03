@@ -8,8 +8,7 @@
 }
 
 .token-name {
-  text-transform: uppercase;
-  white-space: nowrap;
+  @include nds-body;
 }
 
 .document-link {
@@ -23,4 +22,18 @@
 
 .end-time {
   margin-left: px-to-rem(33px);
+}
+
+.wrapper {
+  grid-row-gap: px-to-rem(32px);
+}
+
+.container {
+  grid-row-gap: px-to-rem(12px);
+}
+
+.table-container {
+  display: flex;
+  min-height: px-to-rem(128px);
+  align-items: center;
 }

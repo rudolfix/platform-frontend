@@ -1,8 +1,8 @@
 import { fork, put, select } from "@neufund/sagas";
+import { isJwtExpiringLateEnough } from "@neufund/shared";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IAppState } from "../../store";
-import { isJwtExpiringLateEnough } from "../../utils/JWTUtils";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { loadJwt, setJwt } from "../auth/jwt/sagas";
 import { loadUser } from "../auth/user/external/sagas";
@@ -53,8 +53,6 @@ function* initApp({ logger }: TGlobalDependencies): any {
       yield neuCall(makeSureWalletMetaDataExists);
       if (isJwtExpiringLateEnough(jwt)) {
         try {
-          yield waitUntilSmartContractsAreInitialized();
-
           yield neuCall(setJwt, jwt);
           yield neuCall(loadUser);
           yield put(actions.auth.finishSigning());
@@ -70,6 +68,7 @@ function* initApp({ logger }: TGlobalDependencies): any {
       }
     }
 
+    yield waitUntilSmartContractsAreInitialized();
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
     if (e instanceof WalletMetadataNotFoundError) {
@@ -100,7 +99,7 @@ export function* initStartSaga(
 
 export function* checkIfSmartcontractsInitNeeded(): any {
   const isDoneOrInProgress: boolean = yield select(
-    (s: IAppState) => s.init.smartcontractsInit.done || s.init.smartcontractsInit.inProgress,
+    (s: TAppGlobalState) => s.init.smartcontractsInit.done || s.init.smartcontractsInit.inProgress,
   );
 
   return !isDoneOrInProgress;

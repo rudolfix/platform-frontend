@@ -24,6 +24,10 @@ interface ILayoutUnauthProps {
   hideHeaderCtaButtons?: boolean;
 }
 
+type TTransitionalLayoutProps = {
+  isLoginRoute: boolean;
+} & ILayoutUnauthProps;
+
 type TContentExternalProps = React.ComponentProps<typeof Content>;
 
 const LayoutUnauthorized: React.FunctionComponent<ILayoutUnauthProps & TContentExternalProps> = ({
@@ -85,9 +89,9 @@ const Layout = compose<IStateProps, TDataTestId & TContentExternalProps & ILayou
 
 const TransitionalLayout: React.FunctionComponent<TDataTestId &
   TContentExternalProps &
-  ILayoutUnauthProps> = ({ children, "data-test-id": dataTestId, ...contentProps }) => (
+  TTransitionalLayoutProps> = ({ children, "data-test-id": dataTestId, ...contentProps }) => (
   <LayoutWrapper data-test-id={dataTestId}>
-    <HeaderTransitional />
+    <HeaderTransitional isLoginRoute={contentProps.isLoginRoute} />
     <Content {...contentProps}>{children}</Content>
     <Footer />
   </LayoutWrapper>

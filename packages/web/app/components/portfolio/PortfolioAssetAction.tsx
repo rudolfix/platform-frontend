@@ -1,17 +1,16 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
+import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { nonNullable } from "../../../../shared/dist/utils/nonNullable";
 import { actions } from "../../modules/actions";
 import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
+import { getInvestmentCalculatedPercentage } from "../../modules/eto/utils";
 import { appConnect } from "../../store";
-import {
-  EInvestmentStatusSize,
-  InvestmentStatusWidget,
-} from "../eto/overview/EtoOverviewStatus/InvestmentWidget/InvestmentStatusWidget";
-import { Button, EButtonLayout, EButtonSize, EIconPosition } from "../shared/buttons";
-
-import arrowRight from "../../assets/img/inline_icons/arrow_right.svg";
+import { FormatNumber } from "../shared/formatters/FormatNumber";
+import { ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 
 type TExternalProps = {
   state: EETOStateOnChain;
@@ -36,37 +35,56 @@ const PortfolioAssetActionComponent: React.FunctionComponent<TExternalProps &
       return (
         <Button
           onClick={() => onClaim(etoId)}
-          layout={EButtonLayout.GHOST}
-          iconPosition={EIconPosition.ICON_AFTER}
-          svgIcon={arrowRight}
+          layout={EButtonLayout.PRIMARY}
           data-test-id={"modals.portfolio.portfolio-asset-action.claim-" + etoId}
-          size={EButtonSize.SMALL}
         >
           <FormattedMessage id="portfolio.section.reserved-assets.claim-tokens" />
         </Button>
       );
     case EETOStateOnChain.Refund:
       return (
-        <Button
-          onClick={() => onRefund(etoId)}
-          layout={EButtonLayout.GHOST}
-          iconPosition={EIconPosition.ICON_AFTER}
-          svgIcon={arrowRight}
-          size={EButtonSize.SMALL}
-        >
+        <Button onClick={() => onRefund(etoId)} layout={EButtonLayout.PRIMARY}>
           <FormattedMessage id="portfolio.section.reserved-assets.refund" />
         </Button>
       );
     case EETOStateOnChain.Signing:
       return (
-        <Button layout={EButtonLayout.GHOST} size={EButtonSize.SMALL} disabled>
+        <Button layout={EButtonLayout.OUTLINE} disabled>
           <FormattedMessage id="portfolio.section.reserved-assets.wait-for-update" />
         </Button>
       );
 
     case EETOStateOnChain.Public:
     case EETOStateOnChain.Whitelist:
-      return <InvestmentStatusWidget eto={eto} size={EInvestmentStatusSize.SMALL} />;
+      const currentInvestmentProgressPercentage = nonNullable(
+        getInvestmentCalculatedPercentage(eto),
+      );
+
+      return (
+        <FormattedMessage
+          id="portfolio.section.reserved-assets.ends-in"
+          values={{
+            percentageFunded: (
+              <strong>
+                <FormatNumber
+                  value={currentInvestmentProgressPercentage}
+                  inputFormat={ENumberInputFormat.FLOAT}
+                  outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                  decimalPlaces={2}
+                />
+                %
+              </strong>
+            ),
+            endsIn: (
+              <FormattedRelative
+                value={eto.contract!.startOfStates[EETOStateOnChain.Signing]!}
+                style="numeric"
+                initialNow={new Date()}
+              />
+            ),
+          }}
+        />
+      );
 
     default:
       return null;

@@ -1,3 +1,5 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -9,8 +11,6 @@ import {
   selectNomineeActiveEtoCompanyName,
 } from "../../modules/nominee-flow/selectors";
 import { appConnect } from "../../store";
-import { nonNullable } from "../../utils/nonNullable";
-import { Button, EButtonLayout } from "../shared/buttons/Button";
 
 import * as styles from "./NomineeDashboard.module.scss";
 

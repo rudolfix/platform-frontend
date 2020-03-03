@@ -1,5 +1,6 @@
+import { Dictionary } from "@neufund/shared";
+
 import { EEtoFormTypes } from "../../../modules/eto-flow/types";
-import { Dictionary } from "../../../types";
 import { EEtoState, EFundingRound } from "./EtoApi.interfaces.unsafe";
 
 export const etoFormIsReadonly = (formName: EEtoFormTypes, etoState?: EEtoState) => {

@@ -28,6 +28,7 @@ export enum EProductName {
   RETAIL_ETO_LI_SECURITY = "retail eto li security",
   RETAIL_ETO_LI_VMA = "retail eto li vma",
   FIFTH_FORCE_ETO = "hnwi eto de security",
+  RETAIL_EU_SME_ETO_LI_SECURITY = "retail EU-SME eto li security",
 }
 
 export const EtoProductSchema = YupTS.object({

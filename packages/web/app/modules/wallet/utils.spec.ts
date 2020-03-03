@@ -1,6 +1,6 @@
+import { Q18 } from "@neufund/shared";
 import { expect } from "chai";
 
-import { Q18 } from "../../config/constants";
 import { getUnlockedWalletEtherAmountAfterFee } from "./utils";
 
 describe("should calculate unlock fee when", () => {

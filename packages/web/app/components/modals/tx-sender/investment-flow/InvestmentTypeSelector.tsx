@@ -1,3 +1,4 @@
+import { Button, EButtonLayout, EButtonSize, EButtonWidth } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -6,8 +7,6 @@ import { Col, FormGroup } from "reactstrap";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { getCurrencyByInvestmentType } from "../../../../modules/investment-flow/utils";
 import { ETokenType } from "../../../../modules/tx/types";
-import { Button, EButtonLayout, EButtonWidth } from "../../../shared/buttons";
-import { EButtonSize } from "../../../shared/buttons/Button";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,

@@ -1,0 +1,72 @@
+.transaction-data {
+  &.huge {
+    .top {
+      @include nds-headline-4;
+    }
+
+    .bottom {
+      @include nds-body;
+    }
+  }
+
+  &.large {
+    .top {
+      @include font-large-roboto;
+    }
+  }
+
+  &.medium {
+    .top {
+      @include nds-body;
+    }
+  }
+
+  &.black {
+    .top {
+      font-weight: bold;
+      color: $neu-charcoal-grey;
+    }
+
+    .bottom {
+      color: $neu-shuttle-gray;
+    }
+  }
+
+  &.black-thin {
+    .top {
+      color: $neu-charcoal-grey;
+    }
+
+    .bottom {
+      color: $neu-shuttle-gray;
+    }
+  }
+
+  &.silver {
+    .top {
+      color: $neu-charcoal-grey;
+    }
+
+    .bottom {
+      color: $neu-gull-gray;
+    }
+  }
+
+  &.silver-light {
+    .top {
+      color: $neu-light-blue-grey-two;
+    }
+
+    .bottom {
+      color: $neu-light-blue-grey-two;
+    }
+  }
+
+  .top {
+    @include font-default;
+  }
+
+  .bottom {
+    @include font-tab;
+  }
+}

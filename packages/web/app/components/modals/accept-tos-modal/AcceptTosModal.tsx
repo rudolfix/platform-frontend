@@ -1,3 +1,4 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -5,7 +6,6 @@ import { externalRoutes } from "../../../config/externalRoutes";
 import { actions } from "../../../modules/actions";
 import { selectIsAgreementAccepted } from "../../../modules/auth/selectors";
 import { appConnect } from "../../../store";
-import { Button, EButtonLayout } from "../../shared/buttons/index";
 import { ExternalLink } from "../../shared/links/ExternalLink";
 import { Message } from "../message/Message";
 import { Modal } from "../Modal";

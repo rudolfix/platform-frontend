@@ -1,0 +1,9 @@
+.button-inline {
+  text-decoration: underline;
+
+  &:hover,
+  &:focus,
+  &.is-active {
+    text-decoration: none;
+  }
+}

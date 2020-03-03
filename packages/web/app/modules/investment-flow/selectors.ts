@@ -1,36 +1,39 @@
-import { IAppState } from "../../store";
-import { compareBigNumbers } from "../../utils/BigNumberUtils";
+import { compareBigNumbers } from "@neufund/shared";
+
+import { TAppGlobalState } from "../../store";
 import { EValidationState } from "../tx/validator/reducer";
 import { selectTxValidationState } from "../tx/validator/selectors";
 import { EInvestmentType } from "./reducer";
 
 // State Selectors
 
-export const selectInvestmentEthValueUlps = (state: IAppState) => state.investmentFlow.ethValueUlps;
+export const selectInvestmentEthValueUlps = (state: TAppGlobalState) =>
+  state.investmentFlow.ethValueUlps;
 
-export const selectInvestmentEurValueUlps = (state: IAppState) =>
+export const selectInvestmentEurValueUlps = (state: TAppGlobalState) =>
   state.investmentFlow.euroValueUlps;
 
-export const selectInvestmentErrorState = (state: IAppState) => state.investmentFlow.errorState;
+export const selectInvestmentErrorState = (state: TAppGlobalState) =>
+  state.investmentFlow.errorState;
 
-export const selectInvestmentType = (state: IAppState) => state.investmentFlow.investmentType;
+export const selectInvestmentType = (state: TAppGlobalState) => state.investmentFlow.investmentType;
 
-export const selectInvestmentEtoId = (state: IAppState) => state.investmentFlow.etoId;
+export const selectInvestmentEtoId = (state: TAppGlobalState) => state.investmentFlow.etoId;
 
-export const selectIsInvestmentInputValidated = (state: IAppState) =>
+export const selectIsInvestmentInputValidated = (state: TAppGlobalState) =>
   state.investmentFlow.isValidatedInput;
 
-export const selectInvestmentActiveTypes = (state: IAppState) =>
+export const selectInvestmentActiveTypes = (state: TAppGlobalState) =>
   state.investmentFlow.activeInvestmentTypes;
 
 // Derived Values
 
-export const selectIsICBMInvestment = (state: IAppState) => {
+export const selectIsICBMInvestment = (state: TAppGlobalState) => {
   const type = selectInvestmentType(state);
   return type === EInvestmentType.ICBMEth || type === EInvestmentType.ICBMnEuro;
 };
 
-export const selectIsReadyToInvest = (state: IAppState) => {
+export const selectIsReadyToInvest = (state: TAppGlobalState) => {
   const ethValue = selectInvestmentEthValueUlps(state);
 
   return !!(

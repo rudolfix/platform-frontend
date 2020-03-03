@@ -1,6 +1,9 @@
+import { Button, ButtonArrowLeft, EButtonWidth } from "@neufund/design-system";
+import { addBigNumbers, RequiredByKeys, toEquityTokenSymbol } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { TTokenTransferAdditionalData } from "../../../../../../modules/tx/transactions/token-transfer/types";
 import { TWithdrawAdditionalData } from "../../../../../../modules/tx/transactions/withdraw/types";
 import {
   toFixedPrecisionAmountEth,
@@ -8,13 +11,9 @@ import {
   toFixedPrecisionGasCostEth,
   toFixedPrecisionGasCostEur,
 } from "../../../../../../modules/tx/user-flow/transfer/utils";
-import { RequiredByKeys } from "../../../../../../types";
-import { addBigNumbers } from "../../../../../../utils/BigNumberUtils";
-import { toEquityTokenSymbol } from "../../../../../../utils/opaque-types/utils";
-import { Button, ButtonArrowLeft, EButtonWidth } from "../../../../../shared/buttons";
+import { DataRow, DataRowSeparator } from "../../../../../shared/DataRow";
 import { ECurrency } from "../../../../../shared/formatters/utils";
 import { EtherscanTxLink } from "../../../../../shared/links";
-import { DataRow, DataRowSeparator } from "../../../shared/DataRow";
 import { TokenTotalFormField } from "../../Init/TokenTotalFormField/TokenTotalFormField";
 import { TokenAmount } from "../../shared/TokenAmount";
 import { TransferHeader } from "../../shared/TransferHeader";
@@ -23,13 +22,10 @@ import { TransactionFeeWidget } from "../../TransferTransactionLayout/Transactio
 import * as styles from "../../Transfer.module.scss";
 
 export interface ITransferSummaryStateProps {
-  additionalData?: TWithdrawAdditionalData;
+  additionalData?: TWithdrawAdditionalData | TTokenTransferAdditionalData;
   walletAddress: string;
   gasCost: string;
   gasCostEur: string;
-  tokenSymbol: string;
-  tokenImage: string;
-  tokenDecimals: number;
 }
 
 export interface ITransferSummaryDispatchProps {
@@ -47,9 +43,6 @@ export const TransferSummaryLayout: React.FunctionComponent<TTransferSummaryProp
   walletAddress,
   gasCost,
   gasCostEur,
-  tokenSymbol,
-  tokenImage,
-  tokenDecimals,
 }) => {
   const gasCostAsViewed = toFixedPrecisionGasCostEth(gasCost);
   const gasCostAsViewedEur = toFixedPrecisionGasCostEur(gasCostEur);
@@ -59,7 +52,10 @@ export const TransferSummaryLayout: React.FunctionComponent<TTransferSummaryProp
   const totalEur = addBigNumbers([gasCostAsViewedEur, amountAsViewedEur]);
 
   return (
-    <TransferHeader tokenSymbol={tokenSymbol} data-test-id="modals.shared.tx-transfer.modal">
+    <TransferHeader
+      tokenSymbol={additionalData.tokenSymbol}
+      data-test-id="modals.shared.tx-transfer.modal"
+    >
       <ButtonArrowLeft
         className={styles.withSpacing}
         onClick={onChange}
@@ -88,9 +84,9 @@ export const TransferSummaryLayout: React.FunctionComponent<TTransferSummaryProp
       <TokenAmount
         amount={additionalData.amount}
         amountEur={additionalData.amountEur}
-        tokenSymbol={toEquityTokenSymbol(tokenSymbol)}
-        tokenImage={tokenImage}
-        tokenDecimals={tokenDecimals}
+        tokenSymbol={toEquityTokenSymbol(additionalData.tokenSymbol)}
+        tokenImage={additionalData.tokenImage}
+        tokenDecimals={additionalData.tokenDecimals}
         caption={<FormattedMessage id="modal.transfer.amount-to-send" />}
       />
 
@@ -100,7 +96,7 @@ export const TransferSummaryLayout: React.FunctionComponent<TTransferSummaryProp
         value={<TransactionFeeWidget cost={gasCostAsViewed} costEur={gasCostAsViewedEur} />}
       />
 
-      {tokenSymbol === ECurrency.ETH && (
+      {additionalData.tokenSymbol === ECurrency.ETH && (
         <>
           <DataRowSeparator />
           <TokenTotalFormField total={total} totalEur={totalEur} />

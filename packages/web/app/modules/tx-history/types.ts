@@ -1,10 +1,7 @@
+import { EquityToken, EthereumAddressWithChecksum, EthereumTxHash } from "@neufund/shared";
+
 import { ECurrency, ENumberInputFormat } from "../../components/shared/formatters/utils";
 import { ETransactionDirection, ETransactionType } from "../../lib/api/analytics-api/interfaces";
-import {
-  EquityToken,
-  EthereumAddressWithChecksum,
-  EthereumTxHash,
-} from "../../utils/opaque-types/types";
 
 export enum ETransactionSubType {
   TRANSFER_EQUITY_TOKEN = "tokenTransfer",

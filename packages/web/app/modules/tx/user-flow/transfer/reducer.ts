@@ -1,6 +1,7 @@
+import { EthereumAddress } from "@neufund/shared";
+
 import { AppReducer } from "../../../../store";
 import { actions } from "../../../actions";
-import { EthereumAddress } from "./../../../../utils/opaque-types/types";
 import { TxUserFlowInputData, TxUserFlowTransferDetails } from "./types";
 
 export type TTransferInitialValues = {
@@ -29,6 +30,7 @@ const initialState: ITxUserFlowState = {
   txUserFlowDetails: {
     inputValue: "0",
     inputValueEuro: "0",
+    inputTo: "",
     totalValue: "0",
     totalValueEur: "0",
     transactionCost: "0",

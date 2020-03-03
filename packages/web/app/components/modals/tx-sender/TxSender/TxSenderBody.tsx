@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
 import { AccessWalletContainer } from "../../wallet-access/AccessWalletModal";
+import { LoadingMessage } from "../shared/LoadingMessage";
 import { SigningMessage } from "../shared/SigningMessage";
 import { TxError } from "../shared/TxError";
 import { TxExternalPending } from "../shared/TxExternalPending";
@@ -67,6 +68,13 @@ const TxSenderBody: React.FunctionComponent<TxSenderProps> = ({
       }
 
       return <TxError blockId={blockId} txHash={txHash!} type={type} error={error} />;
+
+    case ETxSenderState.LOADING:
+      if (!type) {
+        throw new Error("Transaction type needs to be set at transaction loading state");
+      }
+
+      return <LoadingMessage />;
 
     default:
       return null;

@@ -31,6 +31,11 @@ const data: TPortfolioLayoutProps = {
       amountEquivEur: convertToUlps("125677344737433"),
     },
   ],
+  tokenDisbursalIsLoading: false,
+  tokenDisbursalError: false,
+  tokensDisbursalEurEquivTotal: convertToUlps("123"),
+  tokensDisbursalEurEquivTotalDisbursed: convertToUlps("4521"),
+  etosError: false,
 };
 
 storiesOf("Portfolio/PortfolioLayout", module)

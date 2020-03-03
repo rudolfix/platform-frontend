@@ -41,10 +41,10 @@ const validationSchema = Yup.object().shape({
 export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
   TDispatchProps &
   IIntlProps &
-  TRegisterWalletExternalProps> = ({ intl, submitForm, defaultFormValues,errorMessage, restore }) => (
+  TRegisterWalletExternalProps> = ({ intl, submitForm, initialFormValues,errorMessage, restore }) => (
   <Form<TLightWalletFormValues>
     validationSchema={validationSchema}
-    initialValues={defaultFormValues}
+    initialValues={initialFormValues}
     initialErrors={{ email: errorMessage && getMessageTranslation(errorMessage) } as FormikErrors<TLightWalletFormValues>}
     initialTouched={{ email: !!errorMessage }}
     validateOnMount={!errorMessage}

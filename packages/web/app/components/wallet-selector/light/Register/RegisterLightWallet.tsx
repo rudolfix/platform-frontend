@@ -4,7 +4,7 @@ import { branch, compose, renderComponent } from "recompose";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { TMessage } from "../../../translatedMessages/utils";
-import { selectRegisterWithBrowserWalletData } from "../../../../modules/wallet-selector/selectors";
+import { selectWalletSelectorData } from "../../../../modules/wallet-selector/selectors";
 import {
   ELightWalletState,
   TCommonWalletRegisterData,
@@ -19,7 +19,7 @@ import { WalletLoading } from "../../shared/WalletLoading";
 
 export type TStateProps = {
   errorMessage: TMessage | undefined
-  defaultFormValues: TLightWalletFormValues
+  initialFormValues: TLightWalletFormValues
 } & TCommonWalletRegisterData;
 
 export type TRegisterWalletExternalProps = { restore?: boolean };
@@ -33,12 +33,12 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
   appConnect<TWalletRegisterData, TDispatchProps>({
     stateToProps: state => {
       return ({
-        ...selectRegisterWithBrowserWalletData(state),
+        ...selectWalletSelectorData(state),
       })
     },
     dispatchToProps: dispatch => ({
       submitForm: (values: TLightWalletFormValues) =>
-        dispatch(actions.walletSelector.lightWalletRegister(values.email, values.password)),
+        dispatch(actions.walletSelector.lightWalletRegisterFormData(values.email, values.password)),
     }),
   }),
   branch<TWalletRegisterData>(({ walletState }) => {
@@ -47,11 +47,11 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
     },
     renderComponent(LoadingIndicator)),
   withContainer(RegisterLightWalletBase),
-  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ELightWalletState.LIGHT_WALLET_REGISTRATION_FORM,
+  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_FORM,
     renderComponent(RegisterEnhancedLightWalletForm)),
-  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ELightWalletState.LIGHT_WALLET_VERIFYING_EMAIL,
+  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_VERIFYING_EMAIL,
     renderComponent(WalletLoading)),
-  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ELightWalletState.LIGHT_WALLET_EMAIL_VERIFICATION_ERROR,
+  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
     renderComponent(RegisterEnhancedLightWalletForm)),
   branch<TLightWalletRegisterData>(({ walletState }) => walletState === ELightWalletState.LIGHT_WALLET_SIGNING,
     renderComponent(WalletLoading)),

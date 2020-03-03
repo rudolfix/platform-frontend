@@ -21,7 +21,7 @@ type TEmailTosFormProps = {
   intl: IIntlHelpers,
   isLoading: boolean,
   submitForm: (email: string) => void,
-  defaultFormValues: TBrowserWalletFormValues,
+  initialFormValues: TBrowserWalletFormValues,
   errorMessage: TMessage | undefined
 }
 
@@ -42,12 +42,12 @@ export const BrowserWalletAskForEmailAndTosForm: React.FunctionComponent<TEmailT
   intl,
   isLoading,
   submitForm,
-  defaultFormValues,
+  initialFormValues,
   errorMessage
 }) => (
   <Form<TBrowserWalletFormValues>
     validationSchema={validationSchema}
-    initialValues={defaultFormValues}
+    initialValues={initialFormValues}
     initialErrors={{ email: errorMessage && getMessageTranslation(errorMessage) } as FormikErrors<TBrowserWalletFormValues>}
     initialTouched={{ email: !!errorMessage }}
     validateOnMount={!errorMessage}

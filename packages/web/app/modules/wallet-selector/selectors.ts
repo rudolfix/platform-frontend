@@ -4,6 +4,7 @@ import { createSelector } from "reselect";
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
+import { ECommonWalletState } from "./types";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {
@@ -42,12 +43,12 @@ export const selectOppositeRootPath = (state: RouterState): string =>
 export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
 
-export const selectRegisterWithBrowserWalletData = (state:TAppGlobalState) =>
+export const selectWalletSelectorData = (state:TAppGlobalState) =>
   state.walletSelector;
 
 export const selectRegisterWalletType = (state:TAppGlobalState) =>
   state.walletSelector.walletType;
 
 
-export const selectRegisterWithBrowserWalletDefaultFormValues = (state:TAppGlobalState) =>
-  state.walletSelector.defaultFormValues;
+export const selectRegisterWalletDefaultFormValues = (state:TAppGlobalState) =>
+  state.walletSelector.walletState !== ECommonWalletState.NOT_STARTED ? state.walletSelector.initialFormValues : undefined;

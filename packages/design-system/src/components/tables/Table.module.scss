@@ -1,8 +1,4 @@
 .container {
-  border: 1px solid $neu-light-blue-grey-two;
-  border-radius: 4px;
-  background-color: $neu-white-two;
-
   display: block;
   width: 100%;
   overflow-x: auto;
@@ -17,20 +13,40 @@
     line-height: px-to-rem(56px);
     text-transform: uppercase;
     border-bottom: 1px solid $neu-light-blue-grey-two;
+
+    & > th {
+      font-weight: 500;
+    }
   }
 
   & > tbody > tr {
     height: px-to-rem(64px);
     border-bottom: 1px solid $neu-light-blue-grey-two;
+
+    &:last-of-type {
+      border: none;
+    }
   }
 
   & > tfoot > tr {
     height: px-to-rem(64px);
+    text-transform: uppercase;
     background-color: $neu-pale-grey-three;
+    border-top: 1px solid $neu-light-blue-grey-two;
+
+    & > td {
+      font-weight: 500;
+    }
   }
 
   td,
   th {
     padding: 0 24px;
+    text-align: right;
+    white-space: nowrap;
+
+    &:first-of-type {
+      text-align: left;
+    }
   }
 }

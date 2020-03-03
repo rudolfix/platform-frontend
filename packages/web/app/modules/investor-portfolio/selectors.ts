@@ -25,7 +25,7 @@ import {
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
 import { isOnChain } from "../eto/utils";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { selectLockedWalletConnected } from "../wallet/selectors";
+import { selectLockedWalletConnected, selectNeuBalanceEurEquiv } from "../wallet/selectors";
 import {
   ICalculatedContribution,
   IInvestorTicket,
@@ -108,6 +108,18 @@ export const selectMyPendingAssets = (
 
   return undefined;
 };
+
+export const selectMyPendingAssetsInvestedTotal = createSelector(selectMyPendingAssets, myAssets =>
+  myAssets
+    ? addBigNumbers(myAssets.map(({ investorTicket }) => investorTicket.equivEurUlps))
+    : undefined,
+);
+
+export const selectMyPendingAssetsRewardTotal = createSelector(selectMyPendingAssets, myAssets =>
+  myAssets
+    ? addBigNumbers(myAssets.map(({ investorTicket }) => investorTicket.rewardNmkUlps.toString()))
+    : undefined,
+);
 
 export const selectMyInvestorTicketByEtoId = (
   state: TAppGlobalState,
@@ -255,6 +267,24 @@ export const selectTokensDisbursalEurEquivTotal = createSelector(
   },
 );
 
+export const selectTokensDisbursalEurEquivTotalDisbursed = createSelector(
+  selectTokensDisbursal,
+  selectEtherPriceEur,
+  (tokensDisbursal, etherPriceEur) => {
+    if (tokensDisbursal) {
+      return addBigNumbers(
+        [...tokensDisbursal].map(t =>
+          t.token === ECurrency.ETH
+            ? multiplyBigNumbers([t.totalDisbursedAmount, etherPriceEur])
+            : t.totalDisbursedAmount,
+        ),
+      );
+    }
+
+    return undefined;
+  },
+);
+
 export const selectPayoutAvailable = (state: TAppGlobalState) => {
   const tokenDisbursal = selectTokensDisbursal(state);
   return !!tokenDisbursal && tokenDisbursal.length > 0;
@@ -270,7 +300,7 @@ export const selectMyAssetsWithTokenData = (
         ...asset,
         tokenData: selectTokenData(state.eto, asset.previewCode)!,
       }))
-      .filter(asset => asset.tokenData && asset.tokenData.balance !== "0");
+      .filter(asset => asset.tokenData && !new BigNumber(asset.tokenData.balance).isZero());
   }
 
   return undefined;
@@ -285,6 +315,13 @@ export const selectMyAssetsEurEquivTotal = createSelector(selectMyAssetsWithToke
 
   return undefined;
 });
+
+export const selectMyAssetsEurEquivTotalWithNeu = createSelector(
+  selectMyAssetsEurEquivTotal,
+  selectNeuBalanceEurEquiv,
+  (myAssetsEurEquivTotal, neuValue) =>
+    myAssetsEurEquivTotal ? addBigNumbers([myAssetsEurEquivTotal, neuValue]) : neuValue,
+);
 
 export const selectIsIncomingPayoutLoading = (state: TAppGlobalState): boolean =>
   state.investorTickets.incomingPayouts.loading;

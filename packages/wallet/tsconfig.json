@@ -21,13 +21,14 @@
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "types": ["react-native"]
   },
   "exclude": [
     "node_modules",
     "./babel.config.js",
     "./metro.config.js",
     "./tests/e2e",
-    "./**/*.spec.*"
+    "./app/**/*.spec.*"
   ]
 }

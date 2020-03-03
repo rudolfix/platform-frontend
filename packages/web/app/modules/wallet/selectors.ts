@@ -31,6 +31,12 @@ export const selectNeuBalanceEuroAmount = (state: TAppGlobalState): string =>
 export const selectNeuBalance = (state: TAppGlobalState): string =>
   (state.wallet.data && state.wallet.data.neuBalance) || "0";
 
+export const selectNeuBalanceEurEquiv = createSelector(
+  selectNeuBalance,
+  selectNeuPriceEur,
+  (neuBalance, neuPriceEur) => multiplyBigNumbers([neuBalance, neuPriceEur]),
+);
+
 export const selectNeumarkAddress = (state: TAppGlobalState): string =>
   (state.wallet.data && state.wallet.data.neumarkAddress) || "0x";
 

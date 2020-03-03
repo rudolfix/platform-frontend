@@ -1,4 +1,4 @@
-import { cancel, delay, END, eventChannel, fork, put, select, take, Task } from "@neufund/sagas";
+import { cancel, delay, END, eventChannel, fork, put,  take, Task } from "@neufund/sagas";
 
 import {
   LIGHT_WALLET_PASSWORD_CACHE_TIME,
@@ -9,7 +9,6 @@ import { LightWallet } from "../../lib/web3/light-wallet/LightWallet";
 import { EWeb3ManagerEvents } from "../../lib/web3/Web3Manager/Web3Manager";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { selectLocation } from "../wallet-selector/selectors";
 import { EWalletType, TWalletMetadata } from "./types";
 
 let lockWalletTask: Task | undefined;
@@ -129,9 +128,9 @@ export function* detectWeb3({
   yield put(actions.web3.setWeb3Status(!!browserWallet.injectedWeb3Provider));
 
   if (browserWallet.injectedWeb3Provider !== undefined) {
-    const rootPath = yield select(selectLocation);
 
     // FIXME !!! move this to router
+    // const rootPath = yield select(selectLocation);
     // // If user trying to access log in route redirect directly to login with browser wallet
     // if (rootPath && rootPath.pathname.includes("/login") && !rootPath.search.includes("salt")) {
     //   yield put(actions.routing.goToLoginWithBrowserWalet());

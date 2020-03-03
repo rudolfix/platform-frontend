@@ -5,7 +5,7 @@ import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary
 import { ErrorBoundaryLayout } from "../../../shared/errorBoundary/ErrorBoundaryLayout";
 import { appConnect } from "../../../../store";
 import {
-  EBrowserWalletState, ECommonWalletState,
+  EBrowserWalletRegistrationFlowState, ECommonWalletRegistrationFlowState,
   TBrowserWalletRegisterData, TCommonWalletRegisterData, TWalletRegisterData,
 } from "../../../../modules/wallet-selector/types";
 import { selectWalletSelectorData } from "../../../../modules/wallet-selector/selectors";
@@ -46,20 +46,20 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     }),
   }),
 
-  branch<TWalletRegisterData>(({walletState}) => { console.log("no props:",walletState);return walletState === ECommonWalletState.NOT_STARTED},
+  branch<TWalletRegisterData>(({walletState}) => { console.log("no props:",walletState);return walletState === ECommonWalletRegistrationFlowState.NOT_STARTED},
     renderComponent(LoadingIndicator)),
   withContainer(
     withProps<TWalletBrowserBaseProps,TCommonWalletRegisterData>(({ rootPath, showWalletSelector }) => ({ rootPath, showWalletSelector })
     )(RegisterBrowserWalletBase)
   ),
-  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_FORM,
+  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
     renderComponent(BrowserWalletAskForEmailAndTos)),
-  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_VERIFYING_EMAIL,
+  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
     renderComponent(WalletLoading)),
-  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
+  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
     renderComponent(BrowserWalletAskForEmailAndTos)),
-  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === EBrowserWalletState.BROWSER_WALLET_LOADING,
+  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
     renderComponent(WalletLoading)),
-  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === EBrowserWalletState.BROWSER_WALLET_ERROR,
+  branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
     renderComponent(RegisterBrowserWalletError)),
 )(shouldNeverHappen("WalletSelector reached default branch"));

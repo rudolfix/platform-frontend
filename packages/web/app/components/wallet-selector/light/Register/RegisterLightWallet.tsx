@@ -6,12 +6,11 @@ import { appConnect } from "../../../../store";
 import { TMessage } from "../../../translatedMessages/utils";
 import { selectWalletSelectorData } from "../../../../modules/wallet-selector/selectors";
 import {
-  ELightWalletState,
   TCommonWalletRegisterData,
   TLightWalletFormValues, TLightWalletRegisterData
 } from "../../../../modules/wallet-selector/types";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
-import { ECommonWalletState, TWalletRegisterData } from "../../../../modules/wallet-selector/types";
+import { ECommonWalletRegistrationFlowState, TWalletRegisterData } from "../../../../modules/wallet-selector/types";
 import { RegisterLightWalletBase } from "./RegisterLightWalletBase";
 import { RegisterEnhancedLightWalletForm } from "./RegisterLightWalletForm";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
@@ -43,16 +42,16 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
   }),
   branch<TWalletRegisterData>(({ walletState }) => {
       console.log("no props:", walletState);
-      return walletState === ECommonWalletState.NOT_STARTED
+      return walletState === ECommonWalletRegistrationFlowState.NOT_STARTED
     },
     renderComponent(LoadingIndicator)),
   withContainer(RegisterLightWalletBase),
-  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_FORM,
+  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
     renderComponent(RegisterEnhancedLightWalletForm)),
-  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_VERIFYING_EMAIL,
+  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
     renderComponent(WalletLoading)),
-  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
+  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
     renderComponent(RegisterEnhancedLightWalletForm)),
-  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ELightWalletState.LIGHT_WALLET_SIGNING,
+  branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
     renderComponent(WalletLoading)),
 )(shouldNeverHappen("RegisterLightWallet reached default branch"));

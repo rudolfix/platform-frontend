@@ -4,7 +4,7 @@ import { createSelector } from "reselect";
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
-import { ECommonWalletState } from "./types";
+import { ECommonWalletRegistrationFlowState } from "./types";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {
@@ -51,4 +51,4 @@ export const selectRegisterWalletType = (state:TAppGlobalState) =>
 
 
 export const selectRegisterWalletDefaultFormValues = (state:TAppGlobalState) =>
-  state.walletSelector.walletState !== ECommonWalletState.NOT_STARTED ? state.walletSelector.initialFormValues : undefined;
+  state.walletSelector.walletState !== ECommonWalletRegistrationFlowState.NOT_STARTED ? state.walletSelector.initialFormValues : undefined;

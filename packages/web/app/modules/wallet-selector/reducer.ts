@@ -1,7 +1,7 @@
 import { AppReducer } from "../../store";
 import { actions } from "../actions";
 import { EWalletType } from "../web3/types";
-import { ECommonWalletState, IWalletSelectorState, TWalletRegisterData } from "./types";
+import { ECommonWalletRegistrationFlowState, IWalletSelectorState, TWalletRegisterData } from "./types";
 
 const walletSelectorInitialState: IWalletSelectorState & TWalletRegisterData = {
   isMessageSigning: false,
@@ -9,7 +9,7 @@ const walletSelectorInitialState: IWalletSelectorState & TWalletRegisterData = {
   isLoading: false,
 
   walletType: EWalletType.LIGHT,
-  walletState: ECommonWalletState.NOT_STARTED,
+  walletState: ECommonWalletRegistrationFlowState.NOT_STARTED,
 
 };
 
@@ -32,7 +32,7 @@ export const walletSelectorReducer: AppReducer<IWalletSelectorState & TWalletReg
         messageSigningError: undefined,
         isLoading: false,
         walletType: state.walletType,
-        walletState: ECommonWalletState.NOT_STARTED,
+        walletState: ECommonWalletRegistrationFlowState.NOT_STARTED,
       };
     //backwards compatibility only
       case actions.walletSelector.browserWalletConnectionError.getType():
@@ -41,7 +41,7 @@ export const walletSelectorReducer: AppReducer<IWalletSelectorState & TWalletReg
         messageSigningError: action.payload.errorMsg,
         isLoading: false,
         walletType: state.walletType,
-        walletState: ECommonWalletState.NOT_STARTED,
+        walletState: ECommonWalletRegistrationFlowState.NOT_STARTED,
       };
     //backwards compatibility only
       case actions.walletSelector.messageSigningError.getType():

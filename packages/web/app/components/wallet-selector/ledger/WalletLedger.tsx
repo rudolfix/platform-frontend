@@ -38,7 +38,7 @@ export const WalletLedger = compose<IWalletLedgerStateProps, {}>(
   appConnect<IWalletLedgerStateProps>({
     stateToProps: state => ({
       isConnectionEstablished: state.ledgerWizardState.isConnectionEstablished,
-      isLedgerSupported: isSupportingLedger(state.browser),
+      isLedgerSupported: isSupportingLedger(state),
     }),
   }),
 )(WalletLedgerComponent);

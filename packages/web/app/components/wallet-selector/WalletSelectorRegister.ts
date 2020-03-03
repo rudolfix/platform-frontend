@@ -11,6 +11,7 @@ import { EContentWidth } from "../layouts/Content";
 import { RegisterLightWallet } from "./light/Register/RegisterLightWallet";
 import { RegisterBrowserWallet } from "./browser/Register/RegisterBrowserWallet";
 import { shouldNeverHappen } from "../shared/NeverComponent";
+import { RegisterLedger } from "./ledger/Register/RegisterLedger";
 
 type TStateProps = {walletType:EWalletType}
 
@@ -28,6 +29,6 @@ export const WalletSelectorRegister = compose<TStateProps, {}>(
     renderComponent(RegisterLightWallet)),
   branch<TStateProps>(({walletType}) => walletType === EWalletType.BROWSER,
     renderComponent(RegisterBrowserWallet)),
-// branch<TStateProps>(({walletType}) => walletType === EWalletType.LEDGER,
-//   renderComponent(BrowserWalletRegister))
+branch<TStateProps>(({walletType}) => walletType === EWalletType.LEDGER,
+  renderComponent(RegisterLedger))
 )(shouldNeverHappen("WalletSelectorRegister reached default branch"));

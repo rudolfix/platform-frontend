@@ -123,9 +123,11 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
       const style = window.getComputedStyle(element);
       const paddingLeft = parseFloat(style.paddingLeft || "0");
       const paddingRight = parseFloat(style.paddingRight || "0");
+      console.log(element.getBoundingClientRect().width);
       const visibleWidth = element.getBoundingClientRect().width - paddingLeft - paddingRight;
       const elementWidth =
         (visibleWidth - this.columnGap * (this.getSlidesPerView() - 1)) / this.getSlidesPerView();
+      console.log(visibleWidth, elementWidth);
       return [visibleWidth, elementWidth];
     } else {
       return [0, 0];
@@ -145,13 +147,13 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
     // (translation is always negative)
     const maxGoLeft = maxTranslation - Math.abs(this.state.translation);
     // close to 0
-    return maxGoLeft > 0.1;
+    return maxGoLeft > 0;
   };
 
   canGoRight = () =>
     // (translation is always negative)
     // close to 0
-    this.state.translation < -0.1;
+    this.state.translation < 0;
 
   onWindowResize = () => {
     const [refWidth, elementWidth] = this.getVisibleWidth();
@@ -296,6 +298,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
             disabled={!canGoLeft}
             className={styles.next}
             onClick={canGoLeft ? this.goLeft : undefined}
+            data-test-id="people-swiper-widget.next"
           />
         )}
       </div>

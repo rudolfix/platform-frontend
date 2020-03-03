@@ -8,6 +8,10 @@ module.exports = {
     __dirname,
     "../../../node_modules/@neufund/design-system/dist/styles/neufund-theme.scss",
   ),
+  neufundStyles: path.join(
+    __dirname,
+    "../../../node_modules/@neufund/design-system/dist/styles",
+  ),
   root: path.join(__dirname, ".."),
   favicon: path.join(__dirname, "../app/assets/favicon_neufund.ico"),
   inlineIcons: path.join(__dirname, "../app/assets/img/inline_icons"),

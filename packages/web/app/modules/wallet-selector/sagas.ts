@@ -15,20 +15,27 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { mapBrowserWalletErrorToErrorMessage } from "./browser-wizard/errors";
 import {
   AuthMessage,
-  BrowserWalletErrorMessage,
+  BrowserWalletErrorMessage, ELightWalletRestoreMessage,
   GenericErrorMessage,
 } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { selectRegisterWalletDefaultFormValues } from "./selectors";
+import { selectRegisterWalletDefaultFormValues, selectUrlUserType } from "./selectors";
 import { checkEmailPromise } from "../auth/email/sagas";
-import { EWalletType } from "../web3/types";
+import { EWalletSubType, EWalletType } from "../web3/types";
 import { handleLightWalletError, setupLightWalletPromise } from "./light-wizard/sagas";
 import { isSupportingLedger } from "../user-agent/reducer";
 import { mapLedgerErrorToErrorMessage } from "./ledger-wizard/errors";
 import { walletSelectorInitialState } from "./reducer";
 import { loadLedgerAccounts } from "./ledger-wizard/sagas";
-import { EUserType } from "../../lib/api/users/interfaces";
+import { EUserType, IUserInput } from "../../lib/api/users/interfaces";
 import { userMayChooseWallet } from "../../components/wallet-selector/utils";
+import { TAppGlobalState } from "../../store";
+import { createJwt } from "../auth/jwt/sagas";
+import { EJwtPermissions } from "../../../../shared/dist/utils/constants";
+import { call } from "../../../../sagas/dist/index";
+import { EmailAlreadyExists, UserNotExisting } from "../../lib/api/users/UsersApi";
+import { IPersonalWallet } from "../../lib/web3/PersonalWeb3";
+import { connectLightWallet } from "../access-wallet/sagas";
 
 type TBaseUiData = {
   walletType: EWalletType,
@@ -267,7 +274,6 @@ export function* lightWalletRegisterForm(
     tos: false
   };
 
-
   yield put(actions.walletSelector.setWalletRegisterData({
     ...baseUiData,
     initialFormValues,
@@ -297,6 +303,93 @@ export function* lightWalletRegister(
     const { email, password } = yield neuCall(lightWalletRegisterForm, baseUiData);
     yield neuCall(lightWalletConnectAndSign, baseUiData, email, password);
     yield neuCall(handleSignInUser);
+  } finally {
+    yield walletSelectorReset();
+  }
+}
+
+export function* lightWalletRecover(
+  { lightWalletConnector, web3Manager, apiUserService }: TGlobalDependencies,
+  password:string,
+  email:string,
+  seed:string
+): Generator<any, any, any> {
+
+  try {
+    const userType = yield* select((state: TAppGlobalState) => selectUrlUserType(state.router));
+    const walletMetadata = yield* neuCall(setupLightWalletPromise, email, password, seed);
+    yield neuCall(createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
+
+
+
+    const userUpdate: IUserInput = {
+      salt: walletMetadata.salt,
+      backupCodesVerified: true,
+      type: userType,
+      walletType: walletMetadata.walletType,
+      walletSubtype: EWalletSubType.UNKNOWN,
+    };
+
+    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
+
+    try {
+      const user = yield* call(() => apiUserService.me());
+
+      if (isEmailAvailable) {
+        userUpdate.newEmail = walletMetadata.email;
+      } else if (user.verifiedEmail !== email.toLowerCase()) {
+        yield neuCall(handleLightWalletError, new EmailAlreadyExists());
+        return;
+      }
+
+      yield apiUserService.updateUser(userUpdate);
+    } catch (e) {
+      if (e instanceof UserNotExisting) {
+
+        userUpdate.newEmail = walletMetadata.email;
+        yield apiUserService.createAccount(userUpdate);
+      } else {
+        yield neuCall(handleLightWalletError, e);
+        return;
+      }
+    }
+
+    const wallet: IPersonalWallet = yield connectLightWallet(
+      lightWalletConnector,
+      walletMetadata,
+      password,
+    );
+    yield web3Manager.plugPersonalWallet(wallet);
+    yield neuCall(signInUser);
+
+    yield put(
+      actions.genericModal.showInfoModal(
+        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE),
+        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT),
+      ),
+    );
+  } catch (e) {
+    yield neuCall(handleLightWalletError, e);
+  }
+}
+
+export function* lightWalletRestore(
+  _: TGlobalDependencies,
+): Generator<any, void, any> {
+  const baseUiData = {
+    walletType: EWalletType.LIGHT,
+    showWalletSelector: false,
+    rootPath: "/restore",
+  };
+
+  yield neuCall(resetWalletSelectorState);
+  const {payload:{seed}} = yield take(actions.walletSelector.submitSeed);
+  console.log("seed:",seed)
+
+  try {
+    const { email, password } = yield neuCall(lightWalletRegisterForm, baseUiData);
+    yield neuCall(lightWalletConnectAndSign, baseUiData, email, password);
+    yield neuCall(lightWalletRecover, password, email, seed);
   } finally {
     yield walletSelectorReset();
   }
@@ -412,4 +505,5 @@ export function* walletSelectorSagas(): Generator<any, any, any> {
   yield fork(neuTakeLatestUntil, actions.walletSelector.registerWithBrowserWallet, "@@router/LOCATION_CHANGE", browserWalletRegister);
   yield fork(neuTakeLatestUntil, actions.walletSelector.registerWithLightWallet, "@@router/LOCATION_CHANGE", lightWalletRegister);
   yield fork(neuTakeLatestUntil, actions.walletSelector.registerWithLedger, "@@router/LOCATION_CHANGE", ledgerRegister);
+  yield fork(neuTakeLatestUntil, actions.walletSelector.restoreLightWallet, "@@router/LOCATION_CHANGE", lightWalletRestore);
 }

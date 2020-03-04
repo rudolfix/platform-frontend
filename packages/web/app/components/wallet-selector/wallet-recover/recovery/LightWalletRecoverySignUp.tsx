@@ -1,8 +1,8 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { RegisterWithLightWalletComponent } from "../../light/Register/RegisterLightWallet";
 import { RecoveryStep } from "./RecoveryStep";
+import { RestoreLightWallet } from "../../light/Register/RestoreLightWallet";
 
 export interface IRecoveryFormValues {
   email: string;
@@ -12,13 +12,11 @@ export interface IRecoveryFormValues {
 
 type TLightWalletRecoverySignUpProps = {
   goToDashboard: () => void;
-  submitForm: (values: IRecoveryFormValues, seed: string) => void;
   seed: string;
 };
 
 export const LightWalletRecoverySignUp: React.FunctionComponent<TLightWalletRecoverySignUpProps> = ({
   goToDashboard,
-  submitForm,
   seed,
 }) => (
   <>
@@ -30,11 +28,6 @@ export const LightWalletRecoverySignUp: React.FunctionComponent<TLightWalletReco
       buttonAction={goToDashboard}
       data-test-id="recover-layout"
     />
-    <RegisterWithLightWalletComponent
-      restore={true}
-      submitForm={(values: IRecoveryFormValues) => {
-        submitForm(values, seed);
-      }}
-    />
+    <RestoreLightWallet seed={seed}/>
   </>
 );

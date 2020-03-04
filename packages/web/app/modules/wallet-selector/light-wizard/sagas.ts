@@ -138,91 +138,91 @@ export function* loadSeedFromWalletWatch({
   }
 }
 
-export function* lightWalletRecoverWatch(
-  { lightWalletConnector, web3Manager, apiUserService }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.walletSelector.lightWalletRecover>,
-): Generator<any, any, any> {
-  const { password, email, seed } = action.payload;
-
-  try {
-    const userType = yield* select((state: TAppGlobalState) => selectUrlUserType(state.router));
-    const walletMetadata = yield* neuCall(setupLightWalletPromise, email, password, seed);
-    yield neuCall(createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
-
-    const userUpdate: IUserInput = {
-      salt: walletMetadata.salt,
-      backupCodesVerified: true,
-      type: userType,
-      walletType: walletMetadata.walletType,
-      walletSubtype: EWalletSubType.UNKNOWN,
-    };
-
-    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
-
-    try {
-      const user = yield* call(() => apiUserService.me());
-
-      if (isEmailAvailable) {
-        userUpdate.newEmail = walletMetadata.email;
-      } else if (user.verifiedEmail !== email.toLowerCase()) {
-        yield neuCall(handleLightWalletError, new EmailAlreadyExists());
-        return;
-      }
-
-      yield apiUserService.updateUser(userUpdate);
-    } catch (e) {
-      if (e instanceof UserNotExisting) {
-        if (!isEmailAvailable) {
-          yield neuCall(handleLightWalletError, new EmailAlreadyExists());
-          return;
-        }
-        userUpdate.newEmail = walletMetadata.email;
-        yield apiUserService.createAccount(userUpdate);
-      } else {
-        yield neuCall(handleLightWalletError, e);
-        return;
-      }
-    }
-
-    const wallet: IPersonalWallet = yield connectLightWallet(
-      lightWalletConnector,
-      walletMetadata,
-      password,
-    );
-    yield web3Manager.plugPersonalWallet(wallet);
-    yield neuCall(signInUser);
-
-    yield put(
-      actions.genericModal.showInfoModal(
-        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE),
-        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT),
-      ),
-    );
-  } catch (e) {
-    yield neuCall(handleLightWalletError, e);
-  }
-}
-
-export function* lightWalletRegisterWatch(
-  _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.walletSelector.lightWalletRegister>,
-): Generator<any, any, any> {
-  const { password, email } = action.payload;
-
-  try {
-    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
-
-    if (!isEmailAvailable) {
-      yield neuCall(handleLightWalletError, new EmailAlreadyExists());
-      return;
-    }
-
-    yield neuCall(setupLightWalletPromise, email, password);
-    yield walletSelectorConnect();
-  } catch (e) {
-    yield neuCall(handleLightWalletError, e);
-  }
-}
+// export function* lightWalletRecoverWatch(
+//   { lightWalletConnector, web3Manager, apiUserService }: TGlobalDependencies,
+//   action: TActionFromCreator<typeof actions.walletSelector.lightWalletRecover>,
+// ): Generator<any, any, any> {
+//   const { password, email, seed } = action.payload;
+//
+//   try {
+//     const userType = yield* select((state: TAppGlobalState) => selectUrlUserType(state.router));
+//     const walletMetadata = yield* neuCall(setupLightWalletPromise, email, password, seed);
+//     yield neuCall(createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
+//
+//     const userUpdate: IUserInput = {
+//       salt: walletMetadata.salt,
+//       backupCodesVerified: true,
+//       type: userType,
+//       walletType: walletMetadata.walletType,
+//       walletSubtype: EWalletSubType.UNKNOWN,
+//     };
+//
+//     const isEmailAvailable = yield neuCall(checkEmailPromise, email);
+//
+//     try {
+//       const user = yield* call(() => apiUserService.me());
+//
+//       if (isEmailAvailable) {
+//         userUpdate.newEmail = walletMetadata.email;
+//       } else if (user.verifiedEmail !== email.toLowerCase()) {
+//         yield neuCall(handleLightWalletError, new EmailAlreadyExists());
+//         return;
+//       }
+//
+//       yield apiUserService.updateUser(userUpdate);
+//     } catch (e) {
+//       if (e instanceof UserNotExisting) {
+//         if (!isEmailAvailable) {
+//           yield neuCall(handleLightWalletError, new EmailAlreadyExists());
+//           return;
+//         }
+//         userUpdate.newEmail = walletMetadata.email;
+//         yield apiUserService.createAccount(userUpdate);
+//       } else {
+//         yield neuCall(handleLightWalletError, e);
+//         return;
+//       }
+//     }
+//
+//     const wallet: IPersonalWallet = yield connectLightWallet(
+//       lightWalletConnector,
+//       walletMetadata,
+//       password,
+//     );
+//     yield web3Manager.plugPersonalWallet(wallet);
+//     yield neuCall(signInUser);
+//
+//     yield put(
+//       actions.genericModal.showInfoModal(
+//         createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE),
+//         createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT),
+//       ),
+//     );
+//   } catch (e) {
+//     yield neuCall(handleLightWalletError, e);
+//   }
+// }
+//
+// export function* lightWalletRegisterWatch(
+//   _: TGlobalDependencies,
+//   action: TActionFromCreator<typeof actions.walletSelector.lightWalletRegister>,
+// ): Generator<any, any, any> {
+//   const { password, email } = action.payload;
+//
+//   try {
+//     const isEmailAvailable = yield neuCall(checkEmailPromise, email);
+//
+//     if (!isEmailAvailable) {
+//       yield neuCall(handleLightWalletError, new EmailAlreadyExists());
+//       return;
+//     }
+//
+//     yield neuCall(setupLightWalletPromise, email, password);
+//     yield walletSelectorConnect();
+//   } catch (e) {
+//     yield neuCall(handleLightWalletError, e);
+//   }
+// }
 
 export function* handleLightWalletError({ logger }: TGlobalDependencies, e: Error): any {
   yield put(actions.walletSelector.reset());
@@ -273,8 +273,7 @@ export function* lightWalletLoginWatch(
 
 export function* lightWalletSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.walletSelector.lightWalletLogin, lightWalletLoginWatch);
-  // yield fork(neuTakeEvery, actions.walletSelector.lightWalletRegister, lightWalletRegisterWatch);
   yield fork(neuTakeEvery, actions.walletSelector.lightWalletBackedUp, lightWalletBackupWatch);
-  yield fork(neuTakeEvery, actions.walletSelector.lightWalletRecover, lightWalletRecoverWatch);
+  // yield fork(neuTakeEvery, actions.walletSelector.lightWalletRecover, lightWalletRecoverWatch);
   yield fork(neuTakeEvery, "WEB3_FETCH_SEED", loadSeedFromWalletWatch);
 }

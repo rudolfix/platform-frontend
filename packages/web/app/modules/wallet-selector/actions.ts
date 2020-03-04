@@ -42,6 +42,11 @@ const actions = {
   ),
   ledgerCloseAccountChooser: createActionFactory(
     "LEDGER_CLOSE_ACCOUNT_CHOOSER"
+  ),
+  restoreLightWallet: createActionFactory("RESTORE_LIGHT_WALLET"),
+  submitSeed: createActionFactory(
+    "SUBMIT_SEED",
+    (seed:string)=>({seed})
   )
 };
 

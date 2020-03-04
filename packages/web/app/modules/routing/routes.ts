@@ -423,7 +423,7 @@ export function* restoreRoute(payload: RouterState): Generator<any, any, any> {
     path: appRoutes.restore,
   });
   return yield routeAction(restoreMatch, {
-    notAuth: undefined,
+    notAuth: put(actions.walletSelector.restoreLightWallet()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

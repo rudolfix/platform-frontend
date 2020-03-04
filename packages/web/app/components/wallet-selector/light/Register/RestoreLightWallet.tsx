@@ -1,5 +1,5 @@
 import { withContainer } from "@neufund/shared";
-import { branch, compose, renderComponent, withProps } from "recompose";
+import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
@@ -15,24 +15,21 @@ import { RegisterLightWalletBase } from "./RegisterLightWalletBase";
 import { RegisterEnhancedLightWalletForm } from "./RegisterLightWalletForm";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
-import { EContentWidth } from "../../../layouts/Content";
 
 export type TStateProps = {
   errorMessage: TMessage | undefined
   initialFormValues: TLightWalletFormValues
 } & TCommonWalletRegisterData;
 
-export type TRegisterWalletExternalProps = {
-  restore?: boolean
-};
-
 export type  TDispatchProps = {
   submitForm: (values: TLightWalletFormValues) => void;
 }
 
-export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
-  TRegisterWalletExternalProps>(
+export type TExternalProps = {
+  seed: string
+}
+
+export const RestoreLightWallet = compose<TStateProps & TDispatchProps, TExternalProps>(
   appConnect<TWalletRegisterData, TDispatchProps>({
     stateToProps: state => {
       return ({
@@ -44,9 +41,7 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
         dispatch(actions.walletSelector.lightWalletRegisterFormData(values.email, values.password)),
     }),
   }),
-  withContainer(
-    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
-  ),
+
   branch<TWalletRegisterData>(({ walletState }) => {
       console.log("no props:", walletState);
       return walletState === ECommonWalletRegistrationFlowState.NOT_STARTED
@@ -61,4 +56,4 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
     renderComponent(RegisterEnhancedLightWalletForm)),
   branch<TLightWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
     renderComponent(WalletLoading)),
-)(shouldNeverHappen("RegisterLightWallet reached default branch"));
+)(shouldNeverHappen("RestoreLightWallet reached default branch"));

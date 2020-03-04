@@ -5,11 +5,10 @@ import { actions } from "../../../../modules/actions";
 import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
 import { WalletMessageSigner } from "../../WalletMessageSigner/WalletMessageSigner";
-import { IRecoveryFormValues, LightWalletRecoverySignUp } from "./LightWalletRecoverySignUp";
+import { LightWalletRecoverySignUp } from "./LightWalletRecoverySignUp";
 import { LightWalletRecoverySeedCheck } from "./RecoverWalletCheckSeed";
 
 interface IDispatchProps {
-  submitForm: (values: IRecoveryFormValues, seed: string) => void;
   goToDashboard: () => void;
 }
 
@@ -20,6 +19,7 @@ interface IStateProps {
 interface IMainRecoveryProps {
   // For testing purposes
   seed?: string;
+  submitSeed: (seed:string) => void;
 }
 
 interface IMainRecoveryState {
@@ -37,16 +37,16 @@ class RecoveryProcessesComponent extends React.Component<
 
   onValidSeed = (words: string): void => {
     this.setState({ seed: words });
+    this.props.submitSeed(words)
   };
 
   render(): React.ReactNode {
-    const { goToDashboard, submitForm } = this.props;
+    const { goToDashboard } = this.props;
     return (
       <>
         {this.state.seed ? (
           <LightWalletRecoverySignUp
             goToDashboard={goToDashboard}
-            submitForm={submitForm}
             seed={this.state.seed}
           />
         ) : (
@@ -67,9 +67,7 @@ const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps, {}>(
     }),
     dispatchToProps: dispatch => ({
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
-      submitForm: (values: IRecoveryFormValues, seed: string) => {
-        dispatch(actions.walletSelector.lightWalletRecover(values.email, values.password, seed));
-      },
+      submitSeed: (seed:string) => dispatch(actions.walletSelector.submitSeed(seed))
     }),
   }),
   branch<IStateProps>(

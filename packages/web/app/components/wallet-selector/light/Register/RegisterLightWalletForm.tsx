@@ -92,7 +92,7 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
           name={TOS}
           data-test-id="wallet-selector-register-tos"
         />
-
+        {console.log(isSubmitting)}
         <Button
           type="submit"
           isLoading={isSubmitting}

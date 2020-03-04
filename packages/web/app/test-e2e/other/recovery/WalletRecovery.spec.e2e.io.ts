@@ -2,7 +2,6 @@ import { appRoutes } from "../../../components/appRoutes";
 import { cyPromise } from "../../utils/cyPromise";
 import { generateRandomSeedAndAddress } from "../../utils/generateRandomSeedAndAddress";
 import {
-  acceptTOS,
   assertDashboard,
   assertErrorModal,
   assertWaitForLatestEmailSentWithSalt,
@@ -32,7 +31,7 @@ describe("Wallet recovery", function(): void {
     cy.get(tid("form.account-recovery.seed-error.error-message")).should("exist");
   });
 
-  it("should recover wallet from saved phrases @backup @p2", () => {
+  it.only("should recover wallet from saved phrases @backup @p2", () => {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";
@@ -53,7 +52,7 @@ describe("Wallet recovery", function(): void {
         );
         cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
 
-        acceptTOS();
+        // acceptTOS();
 
         cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
         cy.contains(tid("my-wallet-widget-eur-token.large-value"), "0 nEUR");

@@ -21,7 +21,6 @@ import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { getRedirectionUrl, userMayChooseWallet } from "./utils";
 import { WalletSelectorLoginLayout } from "./WalletSelectorLayout";
-import { resetWalletOnLeave } from "./resetWallet";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 

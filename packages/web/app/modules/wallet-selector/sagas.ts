@@ -1,6 +1,6 @@
 import { fork, neuCall, neuTakeEvery, neuTakeLatestUntil, put, race, select, take, } from "@neufund/sagas";
 
-import { actions, } from "../actions";
+import { actions, TActionFromCreator, } from "../actions";
 import { handleSignInUser, signInUser } from "../auth/user/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
 import {
@@ -28,6 +28,7 @@ import { mapLedgerErrorToErrorMessage } from "./ledger-wizard/errors";
 import { walletSelectorInitialState } from "./reducer";
 import { loadLedgerAccounts } from "./ledger-wizard/sagas";
 import { EUserType } from "../../lib/api/users/interfaces";
+import { userMayChooseWallet } from "../../components/wallet-selector/utils";
 
 type TBaseUiData = {
   walletType: EWalletType,
@@ -45,8 +46,22 @@ export function* walletSelectorReset(): Generator<any, any, any> {
   yield neuCall(loadPreviousWallet);
 }
 
-export function* walletSelectorRegisterRedirect(): Generator<any, void, any> {
-  yield put(actions.routing.goToLightWalletRegister());
+export function* walletSelectorRegisterRedirect(
+  _: TGlobalDependencies,
+  {payload}: TActionFromCreator<typeof actions.walletSelector.registerRedirect>
+): Generator<any, void, any> {
+  console.log("walletSelectorRegisterRedirect", payload.userType)
+  switch (payload.userType) {
+    case EUserType.INVESTOR:
+      yield put(actions.routing.goToLightWalletRegister());
+      break;
+    case EUserType.ISSUER:
+      yield put(actions.routing.goToIssuerLightWalletRegister());
+      break;
+    case EUserType.NOMINEE:
+      yield put(actions.routing.goToNomineeLightWalletRegister());
+      break;
+  }
 }
 
 export function* browserWalletConnectAndSign({
@@ -230,7 +245,8 @@ export function* browserLedgerRegisterForm(
   yield put(actions.walletSelector.setWalletRegisterData({
     ...baseUiData,
     walletState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-    initialFormValues
+    initialFormValues,
+    errorMessage: undefined
   } as const));
 
   return yield neuCall(getEmailVerification,
@@ -266,12 +282,14 @@ export function* lightWalletRegisterForm(
 }
 
 export function* lightWalletRegister(
-  _: TGlobalDependencies): Generator<any, void, any> {
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.walletSelector.registerWithLightWallet>
+): Generator<any, void, any> {
   yield neuCall(resetWalletSelectorState);
 
   const baseUiData = {
     walletType: EWalletType.LIGHT,
-    showWalletSelector: true,
+    showWalletSelector: userMayChooseWallet(payload.userType),
     rootPath: "/register",
   };
 
@@ -281,17 +299,19 @@ export function* lightWalletRegister(
     yield neuCall(handleSignInUser);
   } finally {
     yield walletSelectorReset();
-    yield neuCall(resetWalletSelectorState);
   }
 }
 
 export function* browserWalletRegister(
-  _: TGlobalDependencies): Generator<any, void, any> {
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.walletSelector.registerWithBrowserWallet>
+): Generator<any, void, any> {
+  yield neuCall(resetWalletSelectorState);
 
-  const userType = EUserType.INVESTOR;
+  const userType = payload.userType;
   const baseUiData = {
     walletType: EWalletType.BROWSER,
-    showWalletSelector: true,
+    showWalletSelector: userMayChooseWallet(userType),
     rootPath: "/register",
   };
   const initialFormValues: TBrowserWalletFormValues = {
@@ -319,7 +339,6 @@ export function* browserWalletRegister(
     }
   } finally {
     yield walletSelectorReset();
-    yield neuCall(resetWalletSelectorState);
   }
 }
 
@@ -343,11 +362,15 @@ export function* ensureLedgerIsSupported(
 }
 
 export function* ledgerRegister(
-  _: TGlobalDependencies): Generator<any, void, any> {
-  const userType = EUserType.INVESTOR;
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.walletSelector.registerWithLedger>
+): Generator<any, void, any> {
+  yield neuCall(resetWalletSelectorState);
+
+  const userType = payload.userType;
   const baseUiData = {
     walletType: EWalletType.LEDGER,
-    showWalletSelector: true,
+    showWalletSelector: userMayChooseWallet(userType),
     rootPath: "/register",
   };
 
@@ -376,7 +399,6 @@ export function* ledgerRegister(
 
   } finally {
     yield walletSelectorReset();
-    yield neuCall(resetWalletSelectorState);
   }
 }
 

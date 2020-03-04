@@ -2,7 +2,7 @@ import { withContainer } from "@neufund/shared";
 import { createLocation, Location } from "history";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import { branch, compose, renderComponent, withProps } from "recompose";
+import {  compose, withProps } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
@@ -19,11 +19,9 @@ import { TContentExternalProps, TransitionalLayout } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
-import { userMayChooseWallet } from "./utils";
-import { getRedirectionUrl } from "./walletRouterHelpers";
-import { WalletSelectorLoginLayout, WalletSelectorRegisterLayout } from "./WalletSelectorLayout";
-import { shouldNeverHappen } from "../shared/NeverComponent";
-
+import { getRedirectionUrl, userMayChooseWallet } from "./utils";
+import { WalletSelectorLoginLayout } from "./WalletSelectorLayout";
+import { resetWalletOnLeave } from "./resetWallet";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -43,7 +41,7 @@ type TAdditionalProps = {
   redirectLocation: Location;
 };
 
-export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
+export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
@@ -57,17 +55,12 @@ export const WalletSelector = compose<IStateProps & IDispatchProps & TAdditional
   }),
   withProps<TAdditionalProps, IStateProps & TRouteLoginProps>(
     ({ userType, rootPath, location }) => ({
-      showWalletSelector: !userMayChooseWallet(userType),
+      showWalletSelector: userMayChooseWallet(userType),
       showLogoutReason: !!(location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT),
       redirectLocation: createLocation(getRedirectionUrl(rootPath), location.state),
     }),
   ),
-  // resetWalletOnLeave(),
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),
-  branch<IStateProps>(({ isLoginRoute }) => isLoginRoute,
-    renderComponent(WalletSelectorLoginLayout),
-    renderComponent(WalletSelectorRegisterLayout)
-  ),
-)(shouldNeverHappen("WalletSelector reached default branch"));
+)(WalletSelectorLoginLayout);

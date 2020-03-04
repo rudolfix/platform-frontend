@@ -24,12 +24,11 @@ import { Unsubscription } from "./settings/unsubscription/Unsubscription";
 import { UnsubscriptionSuccess } from "./settings/unsubscription/UnsubscriptionSuccess";
 import { OnlyAuthorizedRoute } from "./shared/routing/OnlyAuthorizedRoute";
 import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
-import { EtoSecretProtectedWalletSelector } from "./shared/routing/SecretProtected";
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecovery } from "./wallet-selector/wallet-recover/WalletRecovery";
-import { WalletSelector,  } from "./wallet-selector/WalletSelector";
+import { WalletSelectorLogin,  } from "./wallet-selector/WalletSelectorLogin";
 import { Wallet } from "./wallet/Wallet";
 import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister";
 
@@ -67,45 +66,20 @@ export const AppRouter: React.FunctionComponent = () => (
     <OnlyPublicRoute path={appRoutes.registerWithLightWallet} component={WalletSelectorRegister} exact />
     <OnlyPublicRoute path={appRoutes.registerWithBrowserWallet} component={WalletSelectorRegister} exact />
     <OnlyPublicRoute path={appRoutes.registerWithLedger} component={WalletSelectorRegister} exact />
-    <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
+    <OnlyPublicRoute path={appRoutes.login} component={WalletSelectorLogin} />
     <OnlyPublicRoute path={appRoutes.restore} component={WalletRecovery} />
     {process.env.NF_ISSUERS_ENABLED === "1" && [
       <OnlyPublicRoute
-        key={appRoutes.etoLanding}
-        path={appRoutes.etoLanding}
-        component={() => <Redirect to={appRoutes.root} />}
-      />,
-      <OnlyPublicRoute
         key={appRoutes.registerIssuer}
         path={appRoutes.registerIssuer}
-        component={EtoSecretProtectedWalletSelector}
-      />,
-      <OnlyPublicRoute
-        key={appRoutes.loginIssuer}
-        path={appRoutes.loginIssuer}
-        component={() => <Redirect to={appRoutes.login} />}
-      />,
-      <OnlyPublicRoute
-        key={appRoutes.restoreIssuer}
-        path={appRoutes.restoreIssuer}
-        component={() => <Redirect to={appRoutes.restore} />}
+        component={WalletSelectorRegister}
       />,
     ]}
     {process.env.NF_NOMINEE_ENABLED === "1" && [
       <OnlyPublicRoute
         key={appRoutes.registerNominee}
         path={appRoutes.registerNominee}
-        component={WalletSelector}
-      />,
-      <OnlyPublicRoute
-        key={appRoutes.loginNominee}
-        path={appRoutes.loginNominee}
-        component={() => <Redirect to={appRoutes.login} />}
-      />,
-      <OnlyPublicRoute
-        key={appRoutes.restoreNominee}
-        path={appRoutes.restoreNominee}
-        component={() => <Redirect to={appRoutes.restore} />}
+        component={WalletSelectorRegister}
       />,
     ]}
 

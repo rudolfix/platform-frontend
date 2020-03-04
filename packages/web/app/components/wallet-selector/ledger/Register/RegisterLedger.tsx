@@ -1,10 +1,8 @@
-import * as React from "react";
 import { branch, compose, nest, renderComponent, withProps } from "recompose";
 import { WalletLedgerNotSupported } from "../WalletLedgerNotSupportedComponent";
 import { WalletLedgerChooser } from "../WalletLedgerChooser";
-import { LedgerError, WalletLedgerInit } from "../WalletLedgerInitComponent";
+import { LedgerError } from "../WalletLedgerInitComponent";
 import { appConnect } from "../../../../store";
-import { isSupportingLedger } from "../../../../modules/user-agent/reducer";
 import { selectWalletSelectorData } from "../../../../modules/wallet-selector/selectors";
 import {
   ECommonWalletRegistrationFlowState, ELedgerRegistrationFlowState, TBrowserWalletRegisterData,
@@ -13,7 +11,7 @@ import {
 } from "../../../../modules/wallet-selector/types";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { withContainer } from "../../../../../../shared/dist/utils/withContainer.unsafe";
-import { RegisterBrowserWalletBase, TWalletBrowserBaseProps } from "../../browser/Register/RegisterBrowserWalletBase";
+import {  TWalletBrowserBaseProps } from "../../browser/Register/RegisterBrowserWalletBase";
 import { BrowserWalletAskForEmailAndTos } from "../../browser/Register/RegisterBrowserWalletForm";
 import { RegisterLedgerBase } from "./RegisterLedgerBase";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
@@ -25,26 +23,8 @@ import { EContentWidth } from "../../../layouts/Content";
 import { FullscreenProgressLayout } from "../../../layouts/FullscreenProgressLayout";
 
 
-interface IWalletLedgerStateProps {
-  isConnectionEstablished: boolean;
-  isLedgerSupported: boolean;
-}
-
-export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStateProps> = ({
-  isConnectionEstablished,
-  isLedgerSupported,
-}) => {
-  if (!isLedgerSupported) {
-    return <WalletLedgerNotSupported />;
-  } else if (isConnectionEstablished) {
-    return <WalletLedgerChooser />;
-  } else {
-    return <WalletLedgerInit />;
-  }
-};
-
-export const RegisterLedger = compose<IWalletLedgerStateProps, {}>(
-  appConnect<IWalletLedgerStateProps>({
+export const RegisterLedger = compose<TWalletRegisterData, {}>(
+  appConnect<TWalletRegisterData>({
     stateToProps: state => ({
       ...selectWalletSelectorData(state),
     }),
@@ -78,17 +58,15 @@ export const RegisterLedger = compose<IWalletLedgerStateProps, {}>(
     )(RegisterLedgerBase)
   ),
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED,
-    renderComponent(WalletLedgerNotSupported)), //fixme move to shared
+    renderComponent(WalletLedgerNotSupported)),
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-    renderComponent(BrowserWalletAskForEmailAndTos)), //fixme move to shared
+    renderComponent(BrowserWalletAskForEmailAndTos)),
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
-    renderComponent(WalletLoading)), //fixme move to shared
+    renderComponent(WalletLoading)),
   branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
     renderComponent(BrowserWalletAskForEmailAndTos)),
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ELedgerRegistrationFlowState.LEDGER_INIT,
-    renderComponent(WalletLoading)), //fixme move to shared
+    renderComponent(WalletLoading)),
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ELedgerRegistrationFlowState.LEDGER_INIT_ERROR,
-    renderComponent(LedgerError)), //fixme move to shared
-
-  //fixme unsupported version!!!!
+    renderComponent(LedgerError)),
 )(shouldNeverHappen("RegisterLedger reached default branch"));

@@ -69,3 +69,35 @@
 .help {
   font-size: px-to-rem(14);
 }
+
+.wallet-chooser {
+  &-container {
+    border-top: 1px solid $neu-light-blue-grey-two;
+    padding-top: px-to-rem(24px);
+    margin-top: px-to-rem(24px);
+  }
+
+  &-text {
+    @include nds-helper-text-bold;
+
+    color: $neu-charcoal-grey2;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: px-to-rem(12px);
+    letter-spacing: 1.2px;
+  }
+
+  &-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+.img {
+  margin-right: px-to-rem(10);
+}
+
+.logout-notification {
+  margin-bottom: px-to-rem(64px);
+}

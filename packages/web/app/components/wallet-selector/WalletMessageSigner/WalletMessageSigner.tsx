@@ -5,15 +5,15 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
-import { actions } from "../../modules/actions";
-import { selectWalletType } from "../../modules/web3/selectors";
-import { EWalletType } from "../../modules/web3/types";
-import { appConnect } from "../../store";
-import { LoadingIndicator } from "../shared/loading-indicator";
-import { WarningAlert } from "../shared/WarningAlert";
-import { MessageSignPrompt } from "../signing/MessageSignPrompt";
-import { getMessageTranslation } from "../translatedMessages/messages";
-import { TMessage } from "../translatedMessages/utils";
+import { actions } from "../../../modules/actions";
+import { selectWalletType } from "../../../modules/web3/selectors";
+import { EWalletType } from "../../../modules/web3/types";
+import { appConnect } from "../../../store";
+import { LoadingIndicator } from "../../shared/loading-indicator/index";
+import { WarningAlert } from "../../shared/WarningAlert";
+import { MessageSignPrompt } from "../../signing/MessageSignPrompt";
+import { getMessageTranslation } from "../../translatedMessages/messages";
+import { TMessage } from "../../translatedMessages/utils";
 import { WalletSelectorContainer } from "./WalletSelectorContainer";
 
 import * as styles from "./WalletMessageSigner.module.scss";

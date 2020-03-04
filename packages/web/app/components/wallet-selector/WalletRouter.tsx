@@ -1,33 +1,33 @@
 import { Location } from "history";
 import * as React from "react";
-import {  Route } from "react-router-dom";
+import {Redirect,  Route } from "react-router-dom";
 
 import { EWalletType } from "../../modules/web3/types";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
 import { WalletBrowser } from "./browser/Login/WalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
-import { WalletLight } from "./light/Login/WalletLight";
 import { WalletChooser } from "./WalletChooser";
+import { LoginLightWallet } from "./light/Login/LoginLightWallet";
 
 type TWalletRouterProps = {
   rootPath: string;
-  walletSelectionDisabled: boolean;
+  showWalletSelector: boolean;
   // we don't care here about exact type
   redirectLocation: Location;
 };
 
 type TWalletComponentProps = {
   rootPath: string;
-  walletSelectionDisabled: boolean;
+  showWalletSelector: boolean;
 };
 
 export const LightWalletComponent: React.FunctionComponent<TWalletComponentProps> = ({
   rootPath,
-  walletSelectionDisabled,
+  showWalletSelector,
 }) => (
   <>
-    <WalletLight />
-    {!walletSelectionDisabled && (
+    <LoginLightWallet />
+    {showWalletSelector && (
       <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />
     )}
   </>
@@ -35,11 +35,11 @@ export const LightWalletComponent: React.FunctionComponent<TWalletComponentProps
 
 export const BrowserWalletComponent: React.FunctionComponent<TWalletComponentProps> = ({
   rootPath,
-  walletSelectionDisabled,
+  showWalletSelector,
 }) => (
   <>
     <WalletBrowser />
-    {!walletSelectionDisabled && (
+    {showWalletSelector && (
       <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />
     )}
   </>
@@ -47,11 +47,11 @@ export const BrowserWalletComponent: React.FunctionComponent<TWalletComponentPro
 
 export const LedgerWalletComponent: React.FunctionComponent<TWalletComponentProps> = ({
   rootPath,
-  walletSelectionDisabled,
+  showWalletSelector,
 }) => (
   <>
     <WalletLedger />
-    {!walletSelectionDisabled && (
+    {showWalletSelector && (
       <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />
     )}
   </>
@@ -59,16 +59,15 @@ export const LedgerWalletComponent: React.FunctionComponent<TWalletComponentProp
 
 export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
   rootPath,
-  // redirectLocation,
-  walletSelectionDisabled,
+  redirectLocation,
+  showWalletSelector,
 }) => (
   <SwitchConnected>
-    {console.log("WalletRouter",rootPath)}
     <Route
       path={`${rootPath}/light`}
       component={() => (
         <LightWalletComponent
-          walletSelectionDisabled={walletSelectionDisabled}
+          showWalletSelector={showWalletSelector}
           rootPath={rootPath}
         />
       )}
@@ -78,7 +77,7 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
       path={`${rootPath}/browser`}
       component={() => (
         <BrowserWalletComponent
-          walletSelectionDisabled={walletSelectionDisabled}
+          showWalletSelector={showWalletSelector}
           rootPath={rootPath}
         />
       )}
@@ -88,13 +87,13 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
       path={`${rootPath}/ledger`}
       component={() => (
         <LedgerWalletComponent
-          walletSelectionDisabled={walletSelectionDisabled}
+          showWalletSelector={showWalletSelector}
           rootPath={rootPath}
         />
       )}
       exact
     />
     {/* Preserve location state after redirect, otherwise session timeout message won't work */}
-    {/*<Redirect to={redirectLocation} />*/}
+    <Redirect to={redirectLocation} />
   </SwitchConnected>
 );

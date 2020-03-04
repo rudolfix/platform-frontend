@@ -16,8 +16,14 @@ export const appRoutes = {
   registerWithLedger: "/register/ledger",
 
   registerIssuer: "/eto/register",
+  registerIssuerWithLightWallet: "/eto/register/light",
+  registerIssuerWithBrowserWallet: "/eto/register/browser",
+  registerIssuerWithLedger: "/eto/register/ledger",
 
   registerNominee: "/nominee/register",
+  registerNomineeWithLightWallet: "/nominee/register/light",
+  registerNomineeWithBrowserWallet: "/nominee/register/browser",
+  registerNomineeWithLedger: "/nominee/register/ledger",
 
   login: "/login",
   loginBrowserWallet: "/login/browser",

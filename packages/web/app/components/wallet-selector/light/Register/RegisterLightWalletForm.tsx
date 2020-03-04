@@ -1,18 +1,20 @@
 import * as React from "react";
+import { FormikErrors } from "formik";
+import { compose } from "recompose";
+import * as Yup from "yup";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+
 import { IIntlProps, injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
 import { Form } from "../../../shared/forms/Form";
 import { TLightWalletFormValues } from "../../../../modules/wallet-selector/types";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
-import { FormikErrors } from "formik";
-import * as styles from "./RegisterLightWallet.module.scss";
 import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
 import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { Button, EButtonWidth } from "../../../../../../design-system/dist/components/buttons/Button";
 import { TDispatchProps, TRegisterWalletExternalProps, TStateProps } from "./RegisterLightWallet";
-import * as Yup from "yup";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "recompose";
+
+import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 const EMAIL = "email";
 const PASSWORD = "password";

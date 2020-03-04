@@ -3,7 +3,8 @@ import * as React from "react";
 import { Redirect } from "react-router";
 
 import { appRoutes } from "../../appRoutes";
-import { WalletSelector } from "../../wallet-selector/WalletSelector";
+import { WalletSelectorLogin } from "../../wallet-selector/WalletSelectorLogin";
+import { WalletSelectorRegister } from "../../wallet-selector/WalletSelectorRegister";
 
 const SecretProtected = <T extends {}>(Component: React.ComponentType<T>): React.ComponentType<T> =>
   class extends React.Component<T> {
@@ -23,6 +24,7 @@ const SecretProtected = <T extends {}>(Component: React.ComponentType<T>): React
     }
   };
 
-const EtoSecretProtectedWalletSelector = SecretProtected(WalletSelector);
+const EtoSecretProtectedLogin = SecretProtected(WalletSelectorLogin);
+const EtoSecretProtectedRegistration = SecretProtected(WalletSelectorRegister);
 
-export { EtoSecretProtectedWalletSelector };
+export { EtoSecretProtectedLogin, EtoSecretProtectedRegistration };

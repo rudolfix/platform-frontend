@@ -5,6 +5,7 @@ import { browserWizardActions } from "./browser-wizard/actions";
 import { ledgerWizardActions } from "./ledger-wizard/actions";
 import { lightWizardActions } from "./light-wizard/actions";
 import {  TWalletRegisterData } from "./types";
+import { EUserType } from "../../lib/api/users/interfaces";
 
 const actions = {
   reset: createActionFactory("WALLET_SELECTOR_RESET"),
@@ -13,10 +14,14 @@ const actions = {
     "WALLET_SELECTOR_MESSAGE_SIGNING_ERROR",
     (errorMessage: TMessage) => ({ errorMessage }),
   ),
-  registerRedirect: createActionFactory("REGISTER_REDIRECT"),
-  registerWithBrowserWallet: createActionFactory("REGISTER_WITH_BROWSER_WALLET"),
-  registerWithLightWallet: createActionFactory("REGISTER_WITH_LIGHT_WALLET"),
-  registerWithLedger: createActionFactory("REGISTER_WITH_LEDGER"),
+  registerRedirect: createActionFactory("REGISTER_REDIRECT",
+    (userType: EUserType) => ({userType})),
+  registerWithBrowserWallet: createActionFactory("REGISTER_WITH_BROWSER_WALLET",
+    (userType: EUserType) => ({userType})),
+  registerWithLightWallet: createActionFactory("REGISTER_WITH_LIGHT_WALLET",
+    (userType: EUserType) => ({userType})),
+  registerWithLedger: createActionFactory("REGISTER_WITH_LEDGER",
+    (userType: EUserType) => ({userType})),
   setWalletRegisterData: createActionFactory(
     "SET_WALLET_REGISTER_DATA",
     (data:TWalletRegisterData) => ({data})

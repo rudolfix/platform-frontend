@@ -18,12 +18,13 @@ import {
   selectPreviousLightWalletEmail,
 } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
-import { FormDeprecated } from "../../../shared/forms";
+import { FormDeprecated } from "../../../shared/forms/index";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
+import { resetWalletOnEnter } from "../../resetWallet";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
-import * as styles from "./WalletLight.module.scss";
+import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 interface IFormValues {
   password: string;
@@ -63,7 +64,7 @@ const LoginLightWalletForm: React.FunctionComponent<TProps & FormikProps<IFormVa
   }, [props.errorMsg]);
 
   return (
-    <FormDeprecated>
+    <FormDeprecated className={styles.form}>
       <TextField
         type="password"
         placeholder={props.intl.formatIntlMessage("wallet-selector.neuwallet.login.placeholder")}
@@ -105,7 +106,7 @@ const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
 })(LoginLightWalletForm);
 
 export const LoginLightWalletLayout: React.FunctionComponent<TProps> = props => (
-  <section className={styles.section}>
+  <section className={styles.main}>
     <p data-test-id={"modals.wallet-selector.login-light-wallet"}>
       <FormattedMessage
         id="wallet-selector.neuwallet.login.prompt"
@@ -120,6 +121,7 @@ export const LoginLightWalletLayout: React.FunctionComponent<TProps> = props => 
 );
 
 export const LoginLightWallet = compose<TProps, {}>(
+  resetWalletOnEnter(),
   appConnect<IStateProps, TDispatchProps, Required<IStateProps>>({
     stateToProps: state => ({
       email:

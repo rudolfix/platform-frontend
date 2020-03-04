@@ -4,7 +4,7 @@ import { branch, compose, renderComponent } from "recompose";
 import { actions } from "../../../../modules/actions";
 import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
-import { WalletMessageSigner } from "../../WalletMessageSigner";
+import { WalletMessageSigner } from "../../WalletMessageSigner/WalletMessageSigner";
 import { IRecoveryFormValues, LightWalletRecoverySignUp } from "./LightWalletRecoverySignUp";
 import { LightWalletRecoverySeedCheck } from "./RecoverWalletCheckSeed";
 

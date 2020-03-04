@@ -66,4 +66,4 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     renderComponent(WalletLoading)),
   branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
     renderComponent(RegisterBrowserWalletError)),
-)(shouldNeverHappen("WalletSelector reached default branch"));
+)(shouldNeverHappen("WalletSelectorLogin reached default branch"));

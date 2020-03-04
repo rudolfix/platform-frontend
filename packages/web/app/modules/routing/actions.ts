@@ -51,6 +51,8 @@ export const routingActions = {
   goToRegister: () => push(appRoutes.register),
   goToRegisterBrowserWallet: () => push(appRoutes.registerWithBrowserWallet),
   goToLightWalletRegister: () => push(appRoutes.registerWithLightWallet),
+  goToIssuerLightWalletRegister: () => push(appRoutes.registerIssuerWithLightWallet),
+  goToNomineeLightWalletRegister: () => push(appRoutes.registerNomineeWithLightWallet),
 
   // login
   goToLogin: (state: TLoginRouterState) => push(appRoutes.login, state),

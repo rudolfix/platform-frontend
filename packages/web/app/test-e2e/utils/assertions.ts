@@ -3,7 +3,6 @@ import { find, get } from "lodash";
 import { appRoutes } from "../../components/appRoutes";
 import {
   walletLoginRoutes,
-  walletRegisterRoutes,
 } from "../../components/wallet-selector/walletRoutes";
 import { MOCK_API_URL } from "../config";
 import { getIsUserVerifiedOnBlockchain } from "./ethRpcUtils";
@@ -39,7 +38,7 @@ export const assertLanding = () => {
 
 export const assertRegister = () => {
   cy.get(tid("wallet-selector")).should("exist");
-  cy.url().should("contain", walletRegisterRoutes.light);
+  cy.url().should("contain", appRoutes.registerWithLightWallet);
 };
 
 export const assertLogin = () => {

@@ -1,9 +1,10 @@
 import * as React from "react";
-import * as styles from "./RegisterLightWallet.module.scss";
 import {  FormattedMessage } from "react-intl-phraseapp";
 import { WalletChooser } from "../../WalletChooser";
 import { EWalletType } from "../../../../modules/web3/types";
 import { TStateProps } from "./RegisterLightWallet";
+
+import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 export const RegisterLightWalletBase: React.FunctionComponent<TStateProps> = ({
   rootPath,

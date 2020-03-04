@@ -6,20 +6,13 @@ import { Heading } from "../shared/Heading";
 import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../shared/WarningAlert";
 import { WalletRouter } from "./WalletRouter";
 
-import * as styles from "./WalletSelectorLayout.module.scss";
+import * as styles from "./shared/RegisterWalletSelector.module.scss";
 
 interface IExternalProps {
   rootPath: string;
   openICBMModal: () => void;
-  walletSelectionDisabled: boolean;
+  showWalletSelector: boolean;
   showLogoutReason: boolean;
-  redirectLocation: Location;
-}
-
-interface IExternalRegisterProps {
-  rootPath: string;
-  openICBMModal: () => void;
-  walletSelectionDisabled: boolean;
   redirectLocation: Location;
 }
 
@@ -44,55 +37,20 @@ export const WalletSelectorLayoutContainer: React.FunctionComponent<{showLogoutR
   </>
 );
 
-export const WalletSelectorLayout: React.FunctionComponent<IExternalProps> = props => (
-  <WalletSelectorLayoutContainer {...props}>
-    <WalletRouter
-      rootPath={props.rootPath}
-      redirectLocation={props.redirectLocation}
-      walletSelectionDisabled={props.walletSelectionDisabled}
-    />
-  </WalletSelectorLayoutContainer>
-);
-
 export const WalletSelectorLoginLayout: React.FunctionComponent<IExternalProps> = ({
   rootPath,
   redirectLocation,
-  walletSelectionDisabled,
+  showWalletSelector,
   showLogoutReason,
 }) => (
-
     <WalletSelectorLayoutContainer showLogoutReason={showLogoutReason}>
+      {console.log("WalletSelectorLoginLayout")}
     <div className={styles.wrapper} data-test-id="wallet-selector">
-      <h1 className={styles.title}>
-        <FormattedMessage id="wallet-selector.log-in" />
-      </h1>
       <WalletRouter
         rootPath={rootPath}
         redirectLocation={redirectLocation}
-        walletSelectionDisabled={walletSelectionDisabled}
+        showWalletSelector={showWalletSelector}
       />
     </div>
     </WalletSelectorLayoutContainer>
-
 );
-
-
-export const WalletSelectorRegisterLayout: React.FunctionComponent<IExternalRegisterProps> = ({
-  rootPath,
-  redirectLocation,
-  walletSelectionDisabled,
-}) => (
-  <>
-    <div className={styles.wrapper} data-test-id="wallet-selector">
-      <h1 className={styles.title}>
-        <FormattedMessage id="wallet-selector.sign-up" />
-      </h1>
-      <WalletRouter
-        rootPath={rootPath}
-        redirectLocation={redirectLocation}
-        walletSelectionDisabled={walletSelectionDisabled}
-      />
-    </div>
-  </>
-);
-

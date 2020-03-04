@@ -7,7 +7,7 @@ import { ButtonLink } from "../shared/buttons/ButtonLink";
 import emailIcon from "../../assets/img/wallet_selector/email-alt.svg";
 import ledgerLogo from "../../assets/img/wallet_selector/ledger.svg";
 import metamaskLogo from "../../assets/img/wallet_selector/metamask.svg";
-import * as styles from "./WalletSelectorLayout.module.scss";
+import * as styles from "./shared/RegisterWalletSelector.module.scss";
 
 type TWalletChooserProps = {
   rootPath: string;

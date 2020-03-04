@@ -28,6 +28,7 @@ module.exports = merge.smart(configCommon, {
       filename: "[contenthash].[name].css",
     }),
   ],
+  minimizer: [],
   module: {
     rules: [
       {

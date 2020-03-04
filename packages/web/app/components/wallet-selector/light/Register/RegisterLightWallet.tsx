@@ -1,5 +1,5 @@
 import { withContainer } from "@neufund/shared";
-import { branch, compose, renderComponent } from "recompose";
+import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
@@ -15,6 +15,8 @@ import { RegisterLightWalletBase } from "./RegisterLightWalletBase";
 import { RegisterEnhancedLightWalletForm } from "./RegisterLightWalletForm";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { WalletLoading } from "../../shared/WalletLoading";
+import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
+import { EContentWidth } from "../../../layouts/Content";
 
 export type TStateProps = {
   errorMessage: TMessage | undefined
@@ -40,6 +42,9 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
         dispatch(actions.walletSelector.lightWalletRegisterFormData(values.email, values.password)),
     }),
   }),
+  withContainer(
+    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
+  ),
   branch<TWalletRegisterData>(({ walletState }) => {
       console.log("no props:", walletState);
       return walletState === ECommonWalletRegistrationFlowState.NOT_STARTED

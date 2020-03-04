@@ -22,9 +22,8 @@ export const WalletSelectorRegister = compose<TStateProps, {}>(
       walletType:selectRegisterWalletType(s)
     }),
   }),
-  withContainer(
-    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
-  ),
+
+
   branch<TStateProps>(({walletType}) => walletType === EWalletType.LIGHT,
     renderComponent(RegisterLightWallet)),
   branch<TStateProps>(({walletType}) => walletType === EWalletType.BROWSER,

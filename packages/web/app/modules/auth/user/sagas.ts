@@ -26,7 +26,7 @@ import {
   neuTakeLatestUntil,
   neuTakeUntil,
 } from "../../sagasUtils";
-import { handleAcceptCurrentAgreement } from "../../terms-of-service/sagas";
+import { getCurrentAgreementHash, handleAcceptCurrentAgreement } from "../../terms-of-service/sagas";
 import { selectUrlUserType } from "../../wallet-selector/selectors";
 import { EWalletSubType, EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
@@ -72,24 +72,28 @@ export function* signInUser({
   walletStorage,
   web3Manager,
   userStorage,
-}: TGlobalDependencies): Generator<any, any, any> {
+}: TGlobalDependencies,
+  userType?:EUserType,
+  email?:string,
+  tos:boolean = false
+): Generator<any, any, any> {
   try {
     // we will try to create with user type from URL but it could happen that account already exists and has different user type
-    const probableUserType: EUserType = yield select((s: TAppGlobalState) =>
+    const probableUserType: EUserType = userType ? userType : yield select((s: TAppGlobalState) =>
       selectUrlUserType(s.router),
     );
 
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
-    yield call(loadOrCreateUser, probableUserType);
+    yield call(loadOrCreateUser, probableUserType, email,tos);
     // TODO only light wallet sign in users must sign TOS
     yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
 
-    const userType: EUserType = yield select(selectUserType);
+    const walletMetadataUserType:EUserType = userType ? userType : yield select(selectUserType);
     const storedWalletMetadata: TStoredWalletMetadata = {
       // tslint:disable-next-line
       ...web3Manager.personalWallet!.getMetadata(),
-      userType,
+      userType: walletMetadataUserType,
     };
     walletStorage.set(storedWalletMetadata);
 
@@ -114,35 +118,48 @@ export function* signInUser({
   }
 }
 
-export function* loadOrCreateUser(userType: EUserType): Generator<any, any, any> {
-  const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
+export function* loadOrCreateUser(userType: EUserType, email?:string, tos:boolean = false): Generator<any, any, any> {
+  const user: IUser = yield neuCall(loadOrCreateUserInternal, userType, email, tos);
 
   yield put(actions.auth.setUser(user));
 
   yield neuCall(loadKycRequestData);
 }
 
-export async function loadOrCreateUserPromise(
+export function* loadOrCreateUserInternal(
   { apiUserService, web3Manager }: TGlobalDependencies,
   userType: EUserType,
-): Promise<IUser> {
+  email?: string,
+  tos:boolean = false
+): Generator<any,IUser,any> {
   // tslint:disable-next-line
   const walletMetadata = web3Manager.personalWallet!.getMetadata();
 
   try {
-    const user = await apiUserService.me();
+    const user = yield apiUserService.me();
     if (
       user.walletType === walletMetadata.walletType &&
-      user.walletSubtype === walletMetadata.walletSubType
+      user.walletSubtype === walletMetadata.walletSubType &&
+      !email &&
+      !tos
     ) {
       return user;
     }
     // if wallet type changed send correct wallet type to the backend
-    return await apiUserService.updateUser({
+    const userUpdate = {
       ...user,
       walletType: walletMetadata.walletType,
       walletSubtype: walletMetadata.walletSubType,
-    });
+    };
+    if(email){
+      userUpdate.newEmail = email;
+    }
+    const updatedUser = yield apiUserService.updateUser(userUpdate);
+    if(tos){
+      const currentAgreementHash: string = yield neuCall(getCurrentAgreementHash);
+      yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
+    }
+    return updatedUser;
   } catch (e) {
     if (!(e instanceof UserNotExisting)) {
       throw e;
@@ -150,7 +167,7 @@ export async function loadOrCreateUserPromise(
   }
   // for light wallet we need to send slightly different request
   if (walletMetadata && walletMetadata.walletType === EWalletType.LIGHT) {
-    return apiUserService.createAccount({
+    return yield apiUserService.createAccount({
       newEmail: walletMetadata.email,
       salt: walletMetadata.salt,
       backupCodesVerified: false,
@@ -159,7 +176,8 @@ export async function loadOrCreateUserPromise(
       walletSubtype: EWalletSubType.UNKNOWN,
     });
   } else {
-    return apiUserService.createAccount({
+    const newUser = yield apiUserService.createAccount({
+      newEmail:email,
       backupCodesVerified: true,
       type: userType,
       walletType: walletMetadata.walletType,
@@ -168,6 +186,12 @@ export async function loadOrCreateUserPromise(
           ? walletMetadata.walletSubType
           : EWalletSubType.UNKNOWN,
     });
+    if(tos){
+      const currentAgreementHash: string = yield neuCall(getCurrentAgreementHash);
+      yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
+    }
+
+    return newUser;
   }
 }
 
@@ -212,7 +236,7 @@ function* handleLogOutUser(
   logger.setUser(null);
 }
 
-export function mapSignInErrors(e: Error):SignInUserErrorMessage { // fixme move to utils
+export function mapSignInErrors(e: Error): SignInUserErrorMessage { // fixme move to utils
   if (e instanceof SignerRejectConfirmationError) {
     return SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED;
   } else if (e instanceof SignerTimeoutError) {

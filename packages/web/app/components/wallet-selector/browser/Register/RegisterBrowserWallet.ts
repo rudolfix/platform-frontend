@@ -18,6 +18,8 @@ import { RegisterBrowserWalletBase, TWalletBrowserBaseProps } from "./RegisterBr
 import { BrowserWalletAskForEmailAndTos } from "./RegisterBrowserWalletForm";
 import { WalletLoading } from "../../shared/WalletLoading";
 import { RegisterBrowserWalletError } from "./RegisterBrowserWalletError";
+import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
+import { EContentWidth } from "../../../layouts/Content";
 
 interface IStateProps {
   rootPath: string;
@@ -45,7 +47,9 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
       submitForm: (email: string) => dispatch(actions.walletSelector.browserWalletRegisterFormData(email)),
     }),
   }),
-
+  withContainer(
+    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
+  ),
   branch<TWalletRegisterData>(({walletState}) => { console.log("no props:",walletState);return walletState === ECommonWalletRegistrationFlowState.NOT_STARTED},
     renderComponent(LoadingIndicator)),
   withContainer(

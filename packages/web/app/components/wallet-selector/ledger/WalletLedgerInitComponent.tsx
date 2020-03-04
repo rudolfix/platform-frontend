@@ -86,7 +86,7 @@ interface IDispatchProps {
   tryToEstablishConnectionWithLedger: () => void;
 }
 
-export const LedgerError = ({ errorMessage, tryToEstablishConnectionWithLedger }) => (
+export const LedgerErrorBase = ({ errorMessage, tryToEstablishConnectionWithLedger }) => (
   <section className="text-center my-5">
     <WarningAlert className="mb-4">
       <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
@@ -125,16 +125,19 @@ export const LedgerNotSupported = ({}) => (
   </div>
 )
 
+
+
 export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   errorMessage,
   isInitialConnectionInProgress,
   tryToEstablishConnectionWithLedger,
 }) => (
   <>
+    {console.log('WalletLedgerInitComponent')}
     <LedgerHeader />
 
     {isInitialConnectionInProgress && <LoadingIndicator />}
-    {errorMessage && <LedgerError
+    {errorMessage && <LedgerErrorBase
       errorMessage={errorMessage}
       tryToEstablishConnectionWithLedger={tryToEstablishConnectionWithLedger}
     />}
@@ -159,3 +162,12 @@ export const WalletLedgerInit = compose<IStateProps & IDispatchProps, {}>(
     }),
   }),
 )(WalletLedgerInitComponent);
+
+export const LedgerError = compose(
+  appConnect<IStateProps, IDispatchProps>({
+    dispatchToProps: dispatch => ({
+      tryToEstablishConnectionWithLedger: () =>
+        dispatch(actions.walletSelector.ledgerReconnect()),
+    }),
+  }),
+)(LedgerErrorBase);

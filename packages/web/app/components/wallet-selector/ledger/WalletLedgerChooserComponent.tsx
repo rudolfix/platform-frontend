@@ -26,6 +26,97 @@ export interface IWalletLedgerChooserComponentDispatchProps {
   handleAdvanced: () => void;
 }
 
+const LedgerAccountChooserAdvanced = ({
+  onDerivationPathPrefixChange,
+  onDerivationPathPrefixError,
+  accounts,
+  handleAddressChosen,
+  hasPreviousAddress,
+  showPrevAddresses,
+  showNextAddresses,
+  handleAdvanced
+}) => (
+  <>
+    <WalletLedgerDPChooser
+      onDerivationPathPrefixChange={onDerivationPathPrefixChange}
+      onDerivationPathPrefixError={onDerivationPathPrefixError}
+    />
+    {accounts.length > 1 && (
+      <>
+        <h6 className={styles.explanation}>
+          <FormattedHTMLMessage tagName="span" id="wallet-selector.ledger.select-address" />
+        </h6>
+        <WalletLedgerChooserTableAdvanced
+          accounts={accounts}
+          handleAddressChosen={handleAddressChosen}
+          hasPreviousAddress={hasPreviousAddress}
+          showPrevAddresses={showPrevAddresses}
+          showNextAddresses={showNextAddresses}
+        />
+      </>
+    )}
+    <div className="mt-5 d-flex flex-row justify-content-between align-items-center">
+
+      <button
+        className={styles.back}
+        onClick={handleAdvanced}
+        data-test-id="btn-advanced-advanced"
+      >
+        <i className={cn("fa fa-chevron-left mr-2", styles.left)} aria-hidden="true" />
+        <FormattedMessage id="form.button.back" />
+      </button>
+
+    </div>
+  </>
+);
+
+const LoadingAdvanced = ({
+  onDerivationPathPrefixChange,
+  onDerivationPathPrefixError
+}) => (
+  <>
+    <WalletLedgerDPChooser
+      onDerivationPathPrefixChange={onDerivationPathPrefixChange}
+      onDerivationPathPrefixError={onDerivationPathPrefixError}
+    />
+    <LoadingIndicator />
+  </>
+);
+
+const Loading = () => (
+  <>
+    <LoadingIndicator />
+  </>
+);
+
+const LedgerAccountChooser = ({
+  accounts,
+  handleAddressChosen,
+  handleAdvanced
+}) => (
+  <>
+    {accounts.length > 1 && (
+      <>
+        <h6 className={styles.explanation}>
+          <FormattedHTMLMessage tagName="span" id="wallet-selector.ledger.select-address" />
+        </h6>
+        <WalletLedgerChooserTableSimple
+          accounts={accounts}
+          handleAddressChosen={handleAddressChosen}
+        />
+      </>
+    )}=
+    <button
+      className={styles.advanced}
+      onClick={handleAdvanced}
+      data-test-id="btn-advanced-simple"
+    >
+      <FormattedMessage id="wallet-selector.ledger.advanced-options" />
+      <i className="fa fa-chevron-down ml-2" aria-hidden="true" />
+    </button>
+  </>
+);
+
 export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedgerChooserComponent &
   IWalletLedgerChooserComponentDispatchProps> = ({
   accounts,
@@ -40,10 +131,6 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
   handleAdvanced,
 }) => (
   <>
-    <h1 className="text-center mb-4">
-      <FormattedMessage id="wallet-selector.ledger.select-wallet" />
-    </h1>
-
     {advanced && (
       <WalletLedgerDPChooser
         onDerivationPathPrefixChange={onDerivationPathPrefixChange}
@@ -60,20 +147,20 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
           </h6>
         )}
         {accounts.length > 0 &&
-          (advanced ? (
-            <WalletLedgerChooserTableAdvanced
-              accounts={accounts}
-              handleAddressChosen={handleAddressChosen}
-              hasPreviousAddress={hasPreviousAddress}
-              showPrevAddresses={showPrevAddresses}
-              showNextAddresses={showNextAddresses}
-            />
-          ) : (
-            <WalletLedgerChooserTableSimple
-              accounts={accounts}
-              handleAddressChosen={handleAddressChosen}
-            />
-          ))}
+        (advanced ? (
+          <WalletLedgerChooserTableAdvanced
+            accounts={accounts}
+            handleAddressChosen={handleAddressChosen}
+            hasPreviousAddress={hasPreviousAddress}
+            showPrevAddresses={showPrevAddresses}
+            showNextAddresses={showNextAddresses}
+          />
+        ) : (
+          <WalletLedgerChooserTableSimple
+            accounts={accounts}
+            handleAddressChosen={handleAddressChosen}
+          />
+        ))}
         {!advanced && (
           <button
             className={styles.advanced}

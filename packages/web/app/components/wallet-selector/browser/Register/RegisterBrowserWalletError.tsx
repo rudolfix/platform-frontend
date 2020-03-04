@@ -1,5 +1,6 @@
 import { compose } from "recompose";
 import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { appConnect } from "../../../../store";
 import { actions } from "../../../../modules/actions";
@@ -7,7 +8,6 @@ import notificationSign from "../../../../assets/img/notifications/warning.svg";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { Button, EButtonLayout } from "../../../../../../design-system/dist/components/buttons/Button";
 import { TMessage } from "../../../translatedMessages/utils";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { TWalletBrowserDispatchProps, TWalletBrowserProps } from "../Login/WalletBrowser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";

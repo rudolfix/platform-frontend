@@ -1,5 +1,5 @@
 import * as React from "react";
-import { branch, compose, renderComponent, withProps } from "recompose";
+import { branch, compose, nest, renderComponent, withProps } from "recompose";
 import { WalletLedgerNotSupported } from "../WalletLedgerNotSupportedComponent";
 import { WalletLedgerChooser } from "../WalletLedgerChooser";
 import { LedgerError, WalletLedgerInit } from "../WalletLedgerInitComponent";
@@ -20,6 +20,9 @@ import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { actions } from "../../../../modules/actions";
 
 import { WalletLoading } from "../../shared/WalletLoading";
+import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
+import { EContentWidth } from "../../../layouts/Content";
+import { FullscreenProgressLayout } from "../../../layouts/FullscreenProgressLayout";
 
 
 interface IWalletLedgerStateProps {
@@ -47,12 +50,31 @@ export const RegisterLedger = compose<IWalletLedgerStateProps, {}>(
     }),
     dispatchToProps: dispatch => ({
       submitForm: (email: string) => dispatch(actions.walletSelector.browserWalletRegisterFormData(email)),
+      closeAccountChooser: () => dispatch(actions.walletSelector.ledgerCloseAccountChooser())
     }),
   }),
-  branch<TWalletRegisterData>(({walletState}) => { console.log("no props:",walletState);return walletState === ECommonWalletRegistrationFlowState.NOT_STARTED},
+
+  branch<TLedgerRegisterData>(({ walletState }) => walletState === ELedgerRegistrationFlowState.LEDGER_ACCOUNT_CHOOSER,
+    renderComponent(
+      nest(
+        withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(FullscreenProgressLayout),
+        WalletLedgerChooser
+      )
+    )),
+
+  withContainer(
+    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
+  ),
+  branch<TWalletRegisterData>(({ walletState }) => {
+      console.log("no props:", walletState);
+      return walletState === ECommonWalletRegistrationFlowState.NOT_STARTED
+    },
     renderComponent(LoadingIndicator)),
   withContainer(
-    withProps<TWalletBrowserBaseProps,TCommonWalletRegisterData>(({ rootPath, showWalletSelector }) => ({ rootPath, showWalletSelector })
+    withProps<TWalletBrowserBaseProps, TCommonWalletRegisterData>(({ rootPath, showWalletSelector }) => ({
+        rootPath,
+        showWalletSelector
+      })
     )(RegisterLedgerBase)
   ),
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED,
@@ -60,11 +82,13 @@ export const RegisterLedger = compose<IWalletLedgerStateProps, {}>(
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
     renderComponent(BrowserWalletAskForEmailAndTos)), //fixme move to shared
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
-    renderComponent(WalletLedgerInit)), //fixme move to shared
+    renderComponent(WalletLoading)), //fixme move to shared
   branch<TBrowserWalletRegisterData>(({ walletState }) => walletState === ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
     renderComponent(BrowserWalletAskForEmailAndTos)),
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ELedgerRegistrationFlowState.LEDGER_INIT,
     renderComponent(WalletLoading)), //fixme move to shared
   branch<TLedgerRegisterData>(({ walletState }) => walletState === ELedgerRegistrationFlowState.LEDGER_INIT_ERROR,
     renderComponent(LedgerError)), //fixme move to shared
+
+  //fixme unsupported version!!!!
 )(shouldNeverHappen("RegisterLedger reached default branch"));

@@ -3,7 +3,7 @@ import { actions } from "../actions";
 import { EWalletType } from "../web3/types";
 import { ECommonWalletRegistrationFlowState, IWalletSelectorState, TWalletRegisterData } from "./types";
 
-const walletSelectorInitialState: IWalletSelectorState & TWalletRegisterData = {
+export const walletSelectorInitialState: IWalletSelectorState & TWalletRegisterData = {
   isMessageSigning: false,
   messageSigningError: undefined,
   isLoading: false,

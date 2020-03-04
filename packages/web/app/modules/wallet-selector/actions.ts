@@ -28,10 +28,16 @@ const actions = {
   browserWalletSignMessage: createActionFactory(
     "BROWSER_WALLET_SIGN_MESSAGE"
   ),
+  ledgerReconnect: createActionFactory(
+    "LEDGER_RECONNECT"
+  ),
   lightWalletRegisterFormData: createActionFactory(
     "LIGHT_WALLET_REGISTER_FORM_DATA",
     (email:string,password: string) => ({email,password})
   ),
+  ledgerCloseAccountChooser: createActionFactory(
+    "LEDGER_CLOSE_ACCOUNT_CHOOSER"
+  )
 };
 
 export const walletSelectorActions = {

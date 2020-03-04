@@ -1,5 +1,5 @@
-import { TMessage } from "../../components/translatedMessages/utils";
 import { DeepReadonly } from "../../../../shared/dist/utils/types";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { EWalletType } from "../web3/types";
 
 export enum EBrowserWalletRegistrationFlowState {

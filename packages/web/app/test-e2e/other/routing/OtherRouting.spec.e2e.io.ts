@@ -11,7 +11,7 @@ import {
 import { createAndLoginNewUser } from "../../utils/userHelpers";
 
 describe("Other routing", () => {
-  it("should redirect to dashboard for unsupported routes @routing @p3", () => {
+  it("should redirect to dashboard for unsupported routes #routing #p3", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       // redirect from root
       cy.visit("/");
@@ -23,7 +23,7 @@ describe("Other routing", () => {
     });
   });
 
-  it("should redirect from locked routes to Profile if user's email is not verified yet @routing @p3", () => {
+  it("should redirect from locked routes to Profile if user's email is not verified yet #routing #p3", () => {
     registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD, true);
 
     cy.visit(kycRoutes.start);
@@ -33,7 +33,7 @@ describe("Other routing", () => {
     cy.url().should("contain", appRoutes.profile);
   });
 
-  it("should batch Ethereum Node RPC Web3 requests @routing @p3", () => {
+  it("should batch Ethereum Node RPC Web3 requests #routing #p3", () => {
     cy.server();
     cy.route({
       method: "POST",

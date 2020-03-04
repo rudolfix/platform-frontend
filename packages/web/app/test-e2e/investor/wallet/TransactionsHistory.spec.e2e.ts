@@ -3,7 +3,7 @@ import { goToWallet, loginFixtureAccount, tid } from "../../utils/index";
 import { doWithdraw } from "./pending-transactions/utils";
 
 describe("Transactions History", () => {
-  it("should show transaction history @wallet @p2", () => {
+  it("should show transaction history #wallet #p2", () => {
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC");
 
     goToWallet();
@@ -19,7 +19,7 @@ describe("Transactions History", () => {
     });
   });
 
-  it("should open transaction history modal @wallet @p3", () => {
+  it("should open transaction history modal #wallet #p3", () => {
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC");
 
     goToWallet();
@@ -31,7 +31,7 @@ describe("Transactions History", () => {
     cy.get(tid("transaction-history-details-modal")).should("exist");
   });
 
-  it("should watch for new transactions @wallet @p3", () => {
+  it("should watch for new transactions #wallet #p3", () => {
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC");
 
     // generate withdraw transaction to have new item in tx history list

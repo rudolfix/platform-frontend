@@ -5,7 +5,7 @@ import { tid } from "../../utils/selectors";
 import { loginFixtureAccount } from "../../utils/userHelpers";
 
 describe("Invest", () => {
-  it("should block investment flow for US investors @investment @p3", () => {
+  it("should block investment flow for US investors #investment #p3", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
     loginFixtureAccount("demoinvestor10");
@@ -21,7 +21,7 @@ describe("Invest", () => {
     assertDashboard();
   });
 
-  it("should start wallet upgrade from investment column @investment @p3", () => {
+  it("should start wallet upgrade from investment column #investment #p3", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     // TODO: you need another fixture that has ICBM wallet but is not upgraded in any other test
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC");

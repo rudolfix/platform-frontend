@@ -4,7 +4,7 @@ import { formField, tid } from "../../../utils/selectors";
 import { loginFixtureAccount } from "../../../utils/userHelpers";
 
 describe("Eto Terms", () => {
-  it("should show 7 available products @eto @p3", () => {
+  it("should show 7 available products #eto #p3", () => {
     loginFixtureAccount("ISSUER_PREVIEW");
 
     goToIssuerDashboard();
@@ -14,7 +14,7 @@ describe("Eto Terms", () => {
     cy.get(formField("productId")).should("have.length", 7);
   });
 
-  it("should show product details on hover @eto @p3", () => {
+  it("should show product details on hover #eto #p3", () => {
     loginFixtureAccount("ISSUER_PREVIEW");
 
     goToIssuerDashboard();
@@ -26,7 +26,7 @@ describe("Eto Terms", () => {
     cy.get(tid("eto-terms.product.hnwi-eto-de-vma.tooltip.popover")).should("exist");
   });
 
-  it("should hide and show transferable toggle @eto @p3", () => {
+  it("should hide and show transferable toggle #eto #p3", () => {
     loginFixtureAccount("ISSUER_PREVIEW");
 
     goToIssuerDashboard();

@@ -16,11 +16,11 @@ describe("Key Individuals", () => {
     goToIssuerDashboard();
   });
 
-  it("should submit form without changes @eto @p3", () => {
+  it("should submit form without changes #eto #p3", () => {
     fillAndAssertFull("eto-progress-widget-key-individuals", etoKeyIndividualsFormSubmit);
   });
 
-  it("should fill and submit key individuals @eto @p3", () => {
+  it("should fill and submit key individuals #eto #p3", () => {
     fillAndAssertFull("eto-progress-widget-key-individuals", () => {
       cy.get(tid("key-individuals-group-button-team")).click();
       cy.get(tid("key-individuals-group-button-advisors")).awaitedClick();

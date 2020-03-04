@@ -22,7 +22,7 @@ const assertNoFundraisingStatisticsTab = (etoId: string) => {
 
 describe("ETO Fundraising Statistics", () => {
   describe("ETO Investor view", () => {
-    it("should show fundraising statistics for whitelisted investor @eto @p2", () => {
+    it("should show fundraising statistics for whitelisted investor #eto #p2", () => {
       const etoId = etoFixtureAddressByName("ETOInWhitelistState");
 
       loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
@@ -30,7 +30,7 @@ describe("ETO Fundraising Statistics", () => {
       assertFundraisingStatisticsTab(etoId);
     });
 
-    it("should not show fundraising statistics for not whitelisted investor @eto @p3", () => {
+    it("should not show fundraising statistics for not whitelisted investor #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInWhitelistState");
 
       loginFixtureAccount("INV_EMPTY_HAS_KYC");
@@ -39,43 +39,43 @@ describe("ETO Fundraising Statistics", () => {
     });
   });
   describe("ETO Public view", () => {
-    it("should not show statistics for ETO in Setup state @eto @p3", () => {
+    it("should not show statistics for ETO in Setup state #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInSetupState");
 
       assertNoFundraisingStatisticsTab(etoId);
     });
 
-    it("should not show statistics for ETO in Whitelist state @eto @p3", () => {
+    it("should not show statistics for ETO in Whitelist state #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInWhitelistState");
 
       assertNoFundraisingStatisticsTab(etoId);
     });
 
-    it("should show statistics for ETO in Public state @eto @p2", () => {
+    it("should show statistics for ETO in Public state #eto #p2", () => {
       const etoId = etoFixtureAddressByName("ETOInPublicState");
 
       assertFundraisingStatisticsTab(etoId);
     });
 
-    it("should show statistics for ETO in Signing state @eto @p3", () => {
+    it("should show statistics for ETO in Signing state #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInSigningState");
 
       assertFundraisingStatisticsTab(etoId);
     });
 
-    it("should show statistics for ETO in Claim state @eto @p3", () => {
+    it("should show statistics for ETO in Claim state #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInClaimState");
 
       assertFundraisingStatisticsTab(etoId);
     });
 
-    it("should show statistics for ETO in Payout state @eto @p3", () => {
+    it("should show statistics for ETO in Payout state #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInPayoutState");
 
       assertFundraisingStatisticsTab(etoId);
     });
 
-    it("should show statistics for ETO in Refund state @eto @p3", () => {
+    it("should show statistics for ETO in Refund state #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInRefundState");
 
       assertFundraisingStatisticsTab(etoId);

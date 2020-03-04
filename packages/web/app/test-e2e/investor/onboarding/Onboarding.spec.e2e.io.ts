@@ -16,7 +16,7 @@ import { generateRandomEmailAddress } from "../../utils/userHelpers";
 import { assertKYCSuccess, goThroughKycCorporateProcess } from "../kyc/utils";
 
 describe("Onboarding", () => {
-  it("should go through onboarding process for light wallet user @onboarding @p2", () => {
+  it("should go through onboarding process for light wallet user #onboarding #p2", () => {
     const password = "strongpassword";
     const email = generateRandomEmailAddress();
 
@@ -39,7 +39,7 @@ describe("Onboarding", () => {
     assertKYCSuccess();
   });
 
-  it("should go through onboarding process for browser wallet user @onboarding @p3", () => {
+  it("should go through onboarding process for browser wallet user #onboarding #p3", () => {
     const email = generateRandomEmailAddress();
     const privateKey = generateRandomPrivateKey();
     const privateKeyProvider = new PrivateKeyProvider(remove0x(privateKey), NODE_ADDRESS);

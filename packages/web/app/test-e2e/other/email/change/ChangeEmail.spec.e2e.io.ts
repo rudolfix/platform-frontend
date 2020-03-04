@@ -28,7 +28,7 @@ describe("Change Email", function(): void {
     });
   });
 
-  it("should not allow to change email if it's already used by different account @emailing @p3", () => {
+  it("should not allow to change email if it's already used by different account #emailing #p3", () => {
     const newEmail = generateRandomEmailAddress();
     cy.clearLocalStorage();
 
@@ -49,7 +49,7 @@ describe("Change Email", function(): void {
     cy.get(tid("profile-email-exists")).should("exist");
   });
 
-  it("should not allow to change email to the same as verified @changing @p3", () => {
+  it("should not allow to change email to the same as verified #changing #p3", () => {
     goToProfile();
     assertEmailChangeFlow();
 
@@ -63,7 +63,7 @@ describe("Change Email", function(): void {
     cy.get(tid("profile.verify-email-widget.unverified-email")).should("not.exist");
   });
 
-  it("should allow to change email @emailing @p2 @flaky", () => {
+  it("should allow to change email #emailing #p2 #flaky", () => {
     goToProfile();
     assertEmailChangeFlow();
 
@@ -90,7 +90,7 @@ describe("Change Email", function(): void {
     assertDashboard();
   });
 
-  it("should allow to abort email change flow @emailing @p3", () => {
+  it("should allow to abort email change flow #emailing #p3", () => {
     const newEmail = generateRandomEmailAddress();
 
     goToProfile();
@@ -112,7 +112,7 @@ describe("Change Email", function(): void {
     assertEmailChangeAbort(email);
   });
 
-  it("should not show unverified email reminder when user is verifying their email @emailing @p3", () => {
+  it("should not show unverified email reminder when user is verifying their email #emailing #p3", () => {
     goToProfile();
     assertEmailChangeFlow();
 

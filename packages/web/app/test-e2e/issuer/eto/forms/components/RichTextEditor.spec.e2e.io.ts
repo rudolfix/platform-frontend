@@ -17,7 +17,7 @@ describe("Eto Company Information Rich Text Editor", () => {
     goToCompanyInformation();
   });
 
-  it("should render field as rich-text @eto @p3", () => {
+  it("should render field as rich-text #eto #p3", () => {
     fillForm(
       {
         ...aboutFormRequired,
@@ -40,7 +40,7 @@ describe("Eto Company Information Rich Text Editor", () => {
       .contains("This is a bold text");
   });
 
-  it("should add aria attributes @eto @p3", () => {
+  it("should add aria attributes #eto #p3", () => {
     const companyDescriptionName = "companyDescription";
 
     cy.get(formField(companyDescriptionName)).then($richTextEditor => {
@@ -70,7 +70,7 @@ describe("Eto Company Information Rich Text Editor", () => {
     });
   });
 
-  it("should allow to add images @eto @p3 @flaky", () => {
+  it("should allow to add images #eto #p3 #flaky", () => {
     cy.get(tid("companyPreviewCardBanner.uploaded.remove-confirm")).click();
     cy.get(tid("companyPreviewCardBanner.uploaded.remove")).click();
 

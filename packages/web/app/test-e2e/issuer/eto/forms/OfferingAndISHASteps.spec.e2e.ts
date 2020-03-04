@@ -59,7 +59,7 @@ const assertUploadOfferingDocumentFlow = () => {
 };
 
 describe("Eto Forms upload offering document and ISHA steps", () => {
-  it(`should upload offering document and isha document and assert waiting for contracts step @eto @p3`, () => {
+  it(`should upload offering document and isha document and assert waiting for contracts step #eto #p3`, () => {
     loginFixtureAccount("ISSUER_LISTED");
 
     assertUploadOfferingDocumentFlow();

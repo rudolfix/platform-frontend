@@ -26,7 +26,7 @@ import {
 import { keepSessionActive, routeJwtCreate, routeJwtRefresh } from "../utils";
 
 describe("JWT Refreshing and Escalation", () => {
-  it("should logout to landing when token is initially expired @login @logout @jwt @p3", () => {
+  it("should logout to landing when token is initially expired #login #logout #jwt #p3", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       const jwtToken = getJwtToken();
 
@@ -47,7 +47,7 @@ describe("JWT Refreshing and Escalation", () => {
     });
   });
 
-  it("should logout with session timeout message when token is already expired @login @logout @jwt @p3", () => {
+  it("should logout with session timeout message when token is already expired #login #logout #jwt #p3", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
@@ -75,7 +75,7 @@ describe("JWT Refreshing and Escalation", () => {
       cy.server();
     });
 
-    it("should refresh jwt token @login @logout @jwt @p3", () => {
+    it("should refresh jwt token #login #logout #jwt #p3", () => {
       createAndLoginNewUser({ type: "investor" }).then(() => {
         goToDashboard();
 
@@ -108,7 +108,7 @@ describe("JWT Refreshing and Escalation", () => {
       });
     });
 
-    it("should not refresh jwt token after logging out due to inactivity @login @logout @jwt @p3", () => {
+    it("should not refresh jwt token after logging out due to inactivity #login #logout #jwt #p3", () => {
       createAndLoginNewUser({ type: "investor" }).then(() => {
         goToDashboard();
 
@@ -144,7 +144,7 @@ describe("JWT Refreshing and Escalation", () => {
       });
     });
 
-    it("should refresh jwt token after logging out due to inactivity and logged in again @login @logout @jwt @p3", () => {
+    it("should refresh jwt token after logging out due to inactivity and logged in again #login #logout #jwt #p3", () => {
       const fixture = "INV_HAS_EUR_HAS_KYC";
 
       loginFixtureAccount(fixture).then(() => {
@@ -195,7 +195,7 @@ describe("JWT Refreshing and Escalation", () => {
       });
     });
 
-    it("should escalate jwt token with new permissions @login @logout @jwt @p3", () => {
+    it("should escalate jwt token with new permissions #login #logout #jwt #p3", () => {
       routeJwtCreate().as("jwtEscalate");
 
       createAndLoginNewUser({ type: "investor" }).then(() => {

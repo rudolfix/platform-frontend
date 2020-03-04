@@ -18,7 +18,7 @@ import {
 } from "../../../utils/index";
 
 describe("NEur", () => {
-  it("should invest NEur and check whether UI is refreshed with invested amount @investment @p1", () => {
+  it("should invest NEur and check whether UI is refreshed with invested amount #investment #p1", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     const INVESTED_NEUR_AMOUNT = 99.99;
 

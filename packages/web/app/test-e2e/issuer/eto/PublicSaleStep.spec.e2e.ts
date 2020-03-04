@@ -2,7 +2,7 @@ import { goToIssuerDashboard, loginFixtureAccount, tid } from "../../utils/index
 import { assertPublicStep } from "./EtoRegistrationUtils";
 
 describe("Eto public state", () => {
-  it("should not show bookbuilding stats after presale @eto @p3", () => {
+  it("should not show bookbuilding stats after presale #eto #p3", () => {
     loginFixtureAccount("ISSUER_PUBLIC");
 
     goToIssuerDashboard();

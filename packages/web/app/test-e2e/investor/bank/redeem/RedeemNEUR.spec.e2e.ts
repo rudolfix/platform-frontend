@@ -28,7 +28,7 @@ describe("Redeem", function(): void {
     cy.get(tid("wallet-balance.neur.redeem-button")).click();
   });
 
-  it("should withdraw whole balance @banking @p1 @flaky", () => {
+  it("should withdraw whole balance #banking #p1 #flaky", () => {
     // click redeem whole balance button
     cy.get(tid("bank-transfer.reedem-init.redeem-whole-balance")).click();
 

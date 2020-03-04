@@ -18,7 +18,7 @@ const etoPreviewLink = (previewCode: string, jurisdiction: string) =>
   );
 
 describe("Eto widget page", () => {
-  it("should show basic widget view @eto @widget @p2", () => {
+  it("should show basic widget view #eto #widget #p2", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
       cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));
@@ -61,7 +61,7 @@ describe("Eto widget page", () => {
     });
   });
 
-  it("should show widget in setup state @eto @widget @p3", () => {
+  it("should show widget in setup state #eto #widget #p3", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
 
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
@@ -75,7 +75,7 @@ describe("Eto widget page", () => {
     });
   });
 
-  it("should show widget in whitelisting state @eto @widget @p2", () => {
+  it("should show widget in whitelisting state #eto #widget #p2", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
       cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));
@@ -84,7 +84,7 @@ describe("Eto widget page", () => {
     });
   });
 
-  it("should show widget in public state @eto @widget @p3", () => {
+  it("should show widget in public state #eto #widget #p3", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {
       cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode: eto.previewCode }));
@@ -101,7 +101,7 @@ describe("Eto widget page", () => {
     });
   });
 
-  it("should show widget error when wrong url @eto @widget @p3", () => {
+  it("should show widget error when wrong url #eto #widget #p3", () => {
     const previewCode = "wrong-eto-id";
 
     cy.visit(withParams(e2eRoutes.embeddedWidget, { previewCode }));

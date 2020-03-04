@@ -48,7 +48,7 @@ const deleteBookBuilding = () => {
 const PLEDGE_AMOUNT = "1000";
 
 describe("Eto campaigning state", () => {
-  it("should allow to pledge by investor @eto @p2", () => {
+  it("should allow to pledge by investor #eto #p2", () => {
     // eto ID must match issuer SEED below
     const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
 
@@ -114,7 +114,7 @@ describe("Eto campaigning state", () => {
     );
   });
 
-  it("should allow to change pledge by investor @eto @p3", () => {
+  it("should allow to change pledge by investor #eto #p3", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
 
     const ETO_ID = etoFixtureAddressByName("ETOInSetupState");
@@ -127,7 +127,7 @@ describe("Eto campaigning state", () => {
     deleteBookBuilding();
   });
 
-  it("should load pledge data correctly @eto @p3", () => {
+  it("should load pledge data correctly #eto #p3", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
 
     const amount = "200";

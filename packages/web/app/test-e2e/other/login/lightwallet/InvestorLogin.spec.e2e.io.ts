@@ -24,7 +24,7 @@ describe("Investor", () => {
     cy.clearLocalStorage();
   });
 
-  it("should register user with light-wallet and send email @login @p1", () => {
+  it("should register user with light-wallet and send email #login #p1", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -33,7 +33,7 @@ describe("Investor", () => {
     assertWaitForLatestEmailSentWithSalt(email);
   });
 
-  it("should remember light wallet details after logout @login @p2", () => {
+  it("should remember light wallet details after logout #login #p2", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -46,7 +46,7 @@ describe("Investor", () => {
     assertDashboard();
   });
 
-  it("should recognize ETO user and save metadata correctly @login @p2", () => {
+  it("should recognize ETO user and save metadata correctly #login #p2", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -79,7 +79,7 @@ describe("Investor", () => {
     });
   });
 
-  it("should wipe out saved investor wallet when issuer login @login @p3", () => {
+  it("should wipe out saved investor wallet when issuer login #login #p3", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -99,7 +99,7 @@ describe("Investor", () => {
     });
   });
 
-  it("should return an error when logging with same email @login @p3", () => {
+  it("should return an error when logging with same email #login #p3", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 
@@ -122,7 +122,7 @@ describe("Investor", () => {
     assertButtonIsActive("wallet-selector-register-button");
   });
 
-  it("should update login email on activation @login @p2", () => {
+  it("should update login email on activation #login #p2", () => {
     const TEST_LINK =
       "https://localhost:9090/email-verify?code=b7fb21ea-b248-4bc3-8500-b3f2b8644c17&email=pavloblack%40hotmail.com&user_type=investor&wallet_type=light&wallet_subtype=unknown&salt=XzNJFpdkgjOxrUXPFD6NmzkUGGpUmuA5vjrt1xyMFd4%3D";
 
@@ -149,7 +149,7 @@ describe("Investor", () => {
     });
   });
 
-  it("should logout previous user when email activation occurs @login @p3", () => {
+  it("should logout previous user when email activation occurs #login #p3", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 

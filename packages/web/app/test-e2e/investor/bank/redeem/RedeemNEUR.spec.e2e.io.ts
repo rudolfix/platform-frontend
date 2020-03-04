@@ -26,7 +26,7 @@ describe("Redeem", function(): void {
     cy.get(tid("wallet-balance.neur.redeem-button")).click();
   });
 
-  it("should not allow to use value below 5 NEur @banking @p3 @flaky", () => {
+  it("should not allow to use value below 5 NEur #banking #p3 #flaky", () => {
     fillForm(
       {
         amount: "2.22",
@@ -37,7 +37,7 @@ describe("Redeem", function(): void {
     cy.get(tid("bank-transfer.reedem-init.continue")).should("be.disabled");
   });
 
-  it("should not allow to use value above NEur balance @banking @p3 @flaky", () => {
+  it("should not allow to use value above NEur balance #banking #p3 #flaky", () => {
     fillForm(
       {
         amount: "9999999999.99",
@@ -48,7 +48,7 @@ describe("Redeem", function(): void {
     cy.get(tid("bank-transfer.reedem-init.continue")).should("be.disabled");
   });
 
-  it("should correctly format input @banking @p3 @flaky", () => {
+  it("should correctly format input #banking #p3 #flaky", () => {
     const value = "-3s32aa@fax2.24@#2535%s9sf92";
 
     fillForm(
@@ -79,7 +79,7 @@ describe("Redeem", function(): void {
     cy.get(formField("amount")).should("have.value", nextExpectedValue);
   });
 
-  it("should work correctly on redeem modal after initializing new bank account @banking @p3 @flaky", () => {
+  it("should work correctly on redeem modal after initializing new bank account #banking #p3 #flaky", () => {
     fillForm(
       {
         amount: "124",

@@ -9,19 +9,19 @@ const assertFoundersQuote = () => {
 
 describe("ETO founders quote", () => {
   // TODO: Find why default hdPath is not a valid one
-  it.skip("should display founders quote for eto in draft state for both issuer and investor @eto @p3 @flaky", () => {
+  it.skip("should display founders quote for eto in draft state for both issuer and investor #eto #p3 #flaky", () => {
     loginFixtureAccount("ISSUER_HAS_KYC_AND_FILLED_COMPANY_DATA");
 
     assertFoundersQuote();
   });
 
-  it("should display founders quote for eto in campaign state for both issuer and investor @eto @p3", () => {
+  it("should display founders quote for eto in campaign state for both issuer and investor #eto #p3", () => {
     loginFixtureAccount("ISSUER_LISTED");
 
     assertFoundersQuote();
   });
 
-  it("should display founders quote for eto in pending state for both issuer and investor @eto @p3", () => {
+  it("should display founders quote for eto in pending state for both issuer and investor #eto #p3", () => {
     loginFixtureAccount("ISSUER_PENDING");
 
     assertFoundersQuote();

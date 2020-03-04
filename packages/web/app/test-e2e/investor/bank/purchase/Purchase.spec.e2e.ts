@@ -50,7 +50,7 @@ describe("Purchase", () => {
     clearEmailServer();
   });
 
-  it("should start purchase without agreement approval when bank account is verified @banking @p3", () => {
+  it("should start purchase without agreement approval when bank account is verified #banking #p3", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC_DUP");
     goToWallet();
 
@@ -61,7 +61,7 @@ describe("Purchase", () => {
     });
   });
 
-  it("should show bank account details @banking @p2", () => {
+  it("should show bank account details #banking #p2", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC_DUP");
     // On wallet
     goToWallet();

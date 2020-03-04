@@ -19,17 +19,18 @@ function checkPackageLock(): void {
 }
 
 // We will always run these tests
-const alwaysRunningTests: string = "@p1#@p2";
+const alwaysRunningTests: string = "#p1&#p2";
 
 function getE2ETestTags(): void {
   const prBody = danger.github.pr.body;
-
   // Replacing `,` with ` ` is done for readability purposes only
-  const tags = [...new Set(prBody.replace(",", " ").match(/@\w+/g))].join("#");
+  const tags = [...new Set(prBody.replace(",", " ").match(/#\w+/g))].join("&");
 
-  writeFileSync("./e2e-test-tags", alwaysRunningTests + tags);
+  let resultTags = tags ? [alwaysRunningTests, tags].join("&") : alwaysRunningTests;
 
-  message("Tags written to to file");
+  writeFileSync("./e2e-test-tags", resultTags);
+
+  message("Tags written to the file");
 }
 
 main();

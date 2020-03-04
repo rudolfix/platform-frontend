@@ -25,7 +25,7 @@ const ISSUER_SETUP_MAIN_NODE_PROVIDER = new PrivateKeyProvider(
 );
 
 describe("Ethereum Routing", () => {
-  it("should login as issuer with browser wallet @routing @p3", () => {
+  it("should login as issuer with browser wallet #routing #p3", () => {
     goToLanding();
 
     ethereumProvider(ISSUER_SETUP_NODE_PROVIDER);
@@ -47,7 +47,7 @@ describe("Ethereum Routing", () => {
       });
   });
 
-  it("should show error message when node doesn't match platform node @routing @p3", () => {
+  it("should show error message when node doesn't match platform node #routing #p3", () => {
     goToLanding();
 
     ethereumProvider(ISSUER_SETUP_MAIN_NODE_PROVIDER);

@@ -51,7 +51,7 @@ describe("Bank Verification", () => {
     clearEmailServer();
   });
 
-  it("should start new verification process from wallet @banking @p3", () => {
+  it("should start new verification process from wallet #banking #p3", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC_DUP");
     goToWallet();
 
@@ -62,7 +62,7 @@ describe("Bank Verification", () => {
     });
   });
 
-  it("should start new verification process from profile @banking @p2", () => {
+  it("should start new verification process from profile #banking #p2", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC_DUP");
     goToProfile();
 
@@ -73,7 +73,7 @@ describe("Bank Verification", () => {
     });
   });
 
-  it("should disable all action buttons related to bank transfer when not verified @banking @p3", () => {
+  it("should disable all action buttons related to bank transfer when not verified #banking #p3", () => {
     createAndLoginNewUser({
       type: "investor",
     });
@@ -86,7 +86,7 @@ describe("Bank Verification", () => {
     cy.get(tid("locked-wallet.neur.bank-account.link-account")).should("be.disabled");
   });
 
-  it("should not allow to use neur in case user is from US, Alabama @banking @p3", () => {
+  it("should not allow to use neur in case user is from US, Alabama #banking #p3", () => {
     loginFixtureAccount("demoinvestor10");
     // assert on wallet
 

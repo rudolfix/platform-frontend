@@ -2,7 +2,7 @@ import { goOffline, goOnline, loginFixtureAccount, tid } from "../../../utils/in
 import { assertPendingWithdrawModal, assertSuccessWithdrawModal, doWithdraw } from "./utils";
 
 describe("Pending transaction network errors recovering", () => {
-  it("should recover pending transaction watcher opened from header @wallet @p3", () => {
+  it("should recover pending transaction watcher opened from header #wallet #p3", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
     const address = "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988";
     const amount = "10";
@@ -24,7 +24,7 @@ describe("Pending transaction network errors recovering", () => {
     assertSuccessWithdrawModal(address, amount);
   });
 
-  it("should still watch for a pending transaction after being offline for a while @wallet @p3", () => {
+  it("should still watch for a pending transaction after being offline for a while #wallet #p3", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
     const address = "0x16cd5aC5A1b77FB72032E3A09E91A98bB21D8988";
     const amount = "10";

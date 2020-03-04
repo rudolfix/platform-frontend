@@ -52,7 +52,7 @@ jobs:
     parallelism: 4
 
     steps:
-      - checkout	
+      - checkout
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}

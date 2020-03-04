@@ -13,7 +13,7 @@ const assertIsNonClickableTag = (testId: string) =>
   cy.get(tid(testId) + tid("tag.non-clickable")).should("exist");
 
 describe("Eto view widget", () => {
-  it("should render tags correctly when all documents are available and eto is on chain @eto @widget @p3", () => {
+  it("should render tags correctly when all documents are available and eto is on chain #eto #widget #p3", () => {
     const etoId = etoFixtureAddressByName("ETOInSetupState");
 
     goToEtoViewById(etoId);
@@ -40,7 +40,7 @@ describe("Eto view widget", () => {
 
   it(
     "should render tags as non clickable when documents and pitch are not available " +
-      "and eto is not on chain @eto @widget @p3",
+      "and eto is not on chain #eto #widget #p3",
     () => {
       createAndLoginNewUser({ type: "issuer", kyc: "business" });
 
@@ -56,7 +56,7 @@ describe("Eto view widget", () => {
     },
   );
 
-  it("should render eto stats for eto in pre-sale @eto @widget @p2", () => {
+  it("should render eto stats for eto in pre-sale #eto #widget #p2", () => {
     const etoId = etoFixtureAddressByName("ETOInWhitelistState");
 
     goToEtoViewById(etoId);
@@ -68,7 +68,7 @@ describe("Eto view widget", () => {
     cy.get(tid("eto-overview.stats.equity-token-price-whitelist-discount")).contains("20%");
   });
 
-  it.skip("should render eto stats for eto in public-sale @eto @widget @p3", () => {
+  it.skip("should render eto stats for eto in public-sale #eto #widget #p3", () => {
     const etoId = etoFixtureAddressByName("ETOInPublicState");
 
     goToEtoViewById(etoId);
@@ -80,7 +80,7 @@ describe("Eto view widget", () => {
     cy.get(tid("eto-overview.stats.equity-token-price-public-discount")).should("not.exist");
   });
 
-  it("should render TBA for coming soon state @eto @widget @p3", () => {
+  it("should render TBA for coming soon state #eto #widget #p3", () => {
     const etoId = accountFixtureAddress("ISSUER_PREVIEW");
 
     goToEtoViewById(etoId);

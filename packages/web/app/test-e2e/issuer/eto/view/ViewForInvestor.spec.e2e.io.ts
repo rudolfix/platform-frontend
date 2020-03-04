@@ -23,7 +23,7 @@ describe("Eto Investor View", () => {
   describe("Default account tests", () => {
     beforeEach(() => createAndLoginNewUser({ type: "investor", kyc: "business" }));
 
-    it.skip("should display correct eto investment terms @eto @p3 @flaky", () => {
+    it.skip("should display correct eto investment terms #eto #p3 #flaky", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
       assertEtoView(ETO_ID);
 
@@ -192,7 +192,7 @@ describe("Eto Investor View", () => {
       });
     });
 
-    it("should be tradable when transferability is set to true @eto @p2", () => {
+    it("should be tradable when transferability is set to true #eto #p2", () => {
       const ETO_ID_WITH_TRANSFERABILITY_ALLOWED = etoFixtureAddressByName("ETOInWhitelistState");
 
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID_WITH_TRANSFERABILITY_ALLOWED));
@@ -213,14 +213,14 @@ describe("Eto Investor View", () => {
   });
 
   describe("Fixtures tests", () => {
-    it("coming soon state should not have token terms @eto @p3", () => {
+    it("coming soon state should not have token terms #eto #p3", () => {
       loginFixtureAccount("ISSUER_PREVIEW");
       goToEtoPreview();
 
       cy.get(tid("eto-public-view-token-terms")).should("not.exist");
     });
 
-    it("should have token terms in listed state @eto @p3", () => {
+    it("should have token terms in listed state #eto #p3", () => {
       loginFixtureAccount("ISSUER_LISTED");
       goToEtoPreview();
 

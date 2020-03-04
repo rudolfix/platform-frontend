@@ -14,7 +14,7 @@ import { createAndLoginNewUser, loginFixtureAccount } from "../../../utils/userH
 import { assertInvestmentModal } from "../utils";
 
 describe("ETH", () => {
-  it("should invest ETH @investment @p1", () => {
+  it("should invest ETH #investment #p1", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
@@ -58,7 +58,7 @@ describe("ETH", () => {
     });
   });
 
-  it.skip("should invest all ETH balance @investment @p3 @flaky", () => {
+  it.skip("should invest all ETH balance #investment #p3 #flaky", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
     const value = "2";
@@ -105,7 +105,7 @@ describe("ETH", () => {
     });
   });
 
-  it("should invest into public sale @investment @p3", () => {
+  it("should invest into public sale #investment #p3", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
     goToDashboard();
@@ -135,7 +135,7 @@ describe("ETH", () => {
     // TODO check smart contracts balances
   });
 
-  it("should not show non ICBM wallets when it's not allowed by investment @investment @p3", () => {
+  it("should not show non ICBM wallets when it's not allowed by investment #investment #p3", () => {
     const WHITELIST_ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
@@ -169,7 +169,7 @@ describe("ETH", () => {
     cy.get(tid("investment-type.selector.ETH.enable-wallet")).should("not.exist");
   });
 
-  it("should not show non ICBM wallets in presale after calculating contribution and refreshing modal @investment @p3", () => {
+  it("should not show non ICBM wallets in presale after calculating contribution and refreshing modal #investment #p3", () => {
     const WHITELIST_ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
 
     loginFixtureAccount("INV_ICBM_ETH_M_HAS_KYC_DUP");

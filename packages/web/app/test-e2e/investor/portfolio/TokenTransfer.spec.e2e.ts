@@ -41,7 +41,7 @@ describe("Token Transfer", () => {
   const testAddress = "0x00b30CC2cc22c9820d47a4E0C9E1A54455bA0883";
   const tokenAddress = etoFixtureByName("ETOInClaimState").equityToken;
   const testValue = "5";
-  it("should transfer tokens to new wallet @portfolio @assets @p1", () => {
+  it("should transfer tokens to new wallet #portfolio #assets #p1", () => {
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC").then(({ address }) => {
       getTokenBalance(tokenAddress, address).then(tokenBalance => {
         const etoId = etoFixtureAddressByName("ETOInClaimState");
@@ -59,7 +59,7 @@ describe("Token Transfer", () => {
       });
     });
   });
-  it("should transfer all tokens to new wallet @portfolio @assets @flaky @p3", () => {
+  it("should transfer all tokens to new wallet #portfolio #assets #flaky #p3", () => {
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC").then(({ address }) => {
       const zeroAmount = "0";
       const etoId = etoFixtureAddressByName("ETOInClaimState");

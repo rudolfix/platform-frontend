@@ -12,12 +12,14 @@ import { createGlobalDependencies, TGlobalDependencies } from "../di/setupBindin
 import { appReducers } from "../modules/reducers";
 import { rootSaga } from "../modules/sagas";
 import { TAppGlobalState } from "./types";
+import { setupStorageModule } from "../modules/storage/module";
 
 export const createAppStore = (container: Container) => {
   const appModule: INeuModule<TAppGlobalState> = {
     id: "app",
     reducerMap: appReducers,
     sagas: [rootSaga],
+    libs: [],
   };
 
   const context: { container: Container; deps?: TGlobalDependencies } = {
@@ -33,6 +35,7 @@ export const createAppStore = (container: Container) => {
       ],
     },
     setupCoreModule({ backendRootUrl: Config.NF_BACKEND_URL }),
+    setupStorageModule(),
     appModule,
   );
 };

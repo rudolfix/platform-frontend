@@ -13,7 +13,7 @@
   "private": true,
   "scripts": {
     "build:prod": "(cp -n ./app/config/.env.example .env || true) && NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production webpack --config ./webpack/webpack.config.prod.js",
-    "build:commit-deployment": "cp ./app/config/.env.common .env && cat ./app/config/.env.commit >> .env | webpack --config ./webpack/webpack.config.prod.js",
+    "build:commit-deployment": "cp ./app/config/.env.common .env && cat ./app/config/.env.commit >> .env | webpack --config ./webpack/webpack.config.ci.prod.js",
     "build:prod:e2e": "cp ./app/config/.env.common .env && NODE_OPTIONS=--max_old_space_size=4096 cat ./app/config/.env.e2e >> .env | webpack --config ./webpack/webpack.config.ci.prod.js",
     "build:prod:e2e:io": "cp ./app/config/.env.common .env && NODE_OPTIONS=--max_old_space_size=4096 cat ./app/config/.env.e2e.io >> .env | webpack --config ./webpack/webpack.config.ci.prod.js",
     "build:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=production && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack --config ./webpack/webpack.config.prod.js",

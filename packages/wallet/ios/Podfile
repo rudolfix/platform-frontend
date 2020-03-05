@@ -42,12 +42,4 @@ target 'wallet' do
   use_native_modules!
 end
 
-target 'wallet-tvOS' do
-  # Pods for wallet-tvOS
 
-  target 'wallet-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end

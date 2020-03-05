@@ -2,6 +2,7 @@ import { neuTakeLatest, put, fork, getContext } from "@neufund/sagas";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { initActions } from "./actions";
 import * as yup from "yup";
+import {Notification, NotificationResponse, Notifications} from 'react-native-notifications';
 
 // TODO: Remove after testing. Test setting some data.
 // We can use Yup as both: schema and a type
@@ -23,6 +24,7 @@ const testWallet: any = {
 };
 // remove after testing end
 
+
 export function* initStartSaga({
   logger,
 }: TGlobalDependencies): Generator<any, void, TGlobalDependencies> {
@@ -35,6 +37,40 @@ export function* initStartSaga({
 
     yield appStorage.setItem("test", JohnDoe);
     yield singleKeyAppStorage.setItem(testWallet);
+
+    // Notifications
+
+    Notifications.registerRemoteNotifications();
+
+    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
+      console.log(`Notification received in foreground `, notification);
+      completion({alert: true, sound: true, badge: false});
+    });
+
+    Notifications.events().registerNotificationReceivedBackground((notification: Notification, completion) => {
+      console.log(`Notification received in background AAAAA `, notification);
+      completion({alert: true, sound: true, badge: false});
+    });
+
+    Notifications.events().registerNotificationOpened((response: NotificationResponse, completion) => {
+      console.log(`Notification opened`, response);
+      completion();
+    });
+
+
+    setTimeout(() => {
+      Notifications.postLocalNotification({
+        body: "Local notificiation!",
+        title: "Welcome to Neufund",
+        sound: "chime.aiff",
+        thread: "test",
+        badge: 1,
+        payload: null,
+        type: "test"
+      }, 22);
+    }, 10000)
+
+    // Notifications
 
     yield put(initActions.done());
   } catch (e) {

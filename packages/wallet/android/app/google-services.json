@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "985793551965",
+    "firebase_url": "https://neudev-31fcd.firebaseio.com",
+    "project_id": "neudev-31fcd",
+    "storage_bucket": "neudev-31fcd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985793551965:android:301f8523cea6fce93a77b4",
+        "android_client_info": {
+          "package_name": "org.neufund.neufundfirebasedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985793551965-1ifhaej0g90kaqsiev1260h3t6da41ql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL-CJnv7JtV2XmvK8K6900tlNRoy5x4Jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985793551965-1ifhaej0g90kaqsiev1260h3t6da41ql.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "985793551965-aqie5r735rt1hoc77vfh6pk1utsk42fg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.neufund.NeufundFirebaseDemo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,7 +7,7 @@ import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { resetWalletOnEnter } from "../resetWallet";
 import { WalletLedgerChooser } from "./WalletLedgerChooser";
-import { WalletLedgerInit } from "./WalletLedgerInitComponent";
+import { LedgerInit } from "./WalletLedgerInitComponent";
 import { WalletLedgerNotSupported } from "./WalletLedgerNotSupportedComponent";
 
 interface IWalletLedgerStateProps {
@@ -24,7 +24,7 @@ export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStatePr
   } else if (isConnectionEstablished) {
     return <WalletLedgerChooser />;
   } else {
-    return <WalletLedgerInit />;
+    return <LedgerInit />;
   }
 };
 

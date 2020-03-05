@@ -1,14 +1,14 @@
-import { EWalletType } from "../../modules/web3/types";
 import { branch, compose, renderComponent } from "recompose";
 
+import { selectRegisterWalletType } from "../../modules/wallet-selector/selectors";
+import { EWalletType } from "../../modules/web3/types";
+import { appConnect } from "../../store";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
-import { appConnect } from "../../store";
-import { selectRegisterWalletType } from "../../modules/wallet-selector/selectors";
-import { RegisterLightWallet } from "./light/Register/RegisterLightWallet";
-import { RegisterBrowserWallet } from "./browser/Register/RegisterBrowserWallet";
 import { shouldNeverHappen } from "../shared/NeverComponent";
+import { RegisterBrowserWallet } from "./browser/Register/RegisterBrowserWallet";
 import { RegisterLedger } from "./ledger/Register/RegisterLedger";
+import { RegisterLightWallet } from "./light/register/RegisterLightWallet";
 
 type TStateProps = { walletType: EWalletType }
 

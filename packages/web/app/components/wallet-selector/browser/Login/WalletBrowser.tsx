@@ -1,15 +1,14 @@
 import {  withContainer } from "@neufund/shared";
-import { branch, renderComponent } from "recompose";
-import { compose } from "recompose";
+import { branch,compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
-import { TMessage } from "../../../translatedMessages/utils";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { BrowserWalletErrorBase } from "../Register/RegisterBrowserWalletError";
-import { RegisterBrowserWalletBase } from "../Register/RegisterBrowserWalletBase";
+import { TMessage } from "../../../translatedMessages/utils";
 import { WalletLoading } from "../../shared/WalletLoading";
+import { BrowserWalletBase } from "../Register/BrowserWalletBase";
+import { BrowserWalletErrorBase } from "../Register/RegisterBrowserWalletError";
 
 export type TWalletBrowserProps = {
   errorMessage?: TMessage;
@@ -42,7 +41,7 @@ export const WalletBrowser = compose(
       dispatch(actions.walletSelector.tryConnectingWithBrowserWallet());
     },
   }),
-  withContainer(RegisterBrowserWalletBase),
+  withContainer(BrowserWalletBase),
   branch<TWalletBrowserProps>(
     ({ isLoading, isMessageSigning }) => isLoading || isMessageSigning,
     renderComponent(WalletLoading),

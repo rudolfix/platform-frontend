@@ -2,6 +2,13 @@ import { DeepReadonly } from "../../../../shared/dist/utils/types";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { EWalletType } from "../web3/types";
 
+export enum EFlowType {
+  REGISTER = "register",
+  RESTORE_WALLET = "restoreWallet",
+  IMPORT_WALLET = "importWallet",
+  LOGIN = "login", //not used yet
+}
+
 export enum EBrowserWalletRegistrationFlowState {
   BROWSER_WALLET_LOADING = "browserWalletLoading",
   BROWSER_WALLET_ERROR = "browserWalletError",
@@ -22,8 +29,10 @@ export enum ELedgerRegistrationFlowState {
 export enum ECommonWalletRegistrationFlowState {
   NOT_STARTED = "walletFlowNotStarted",
   REGISTRATION_FORM = "registrationForm",
+  RECOVERY_FORM = "recoverForm",
   REGISTRATION_VERIFYING_EMAIL = "registrationVerifyingEmail",
   REGISTRATION_EMAIL_VERIFICATION_ERROR = "registrationEmailVerificationError",
+  RECOVERY_EMAIL_VERIFICATION_ERROR = "recoveryEmailVerificationError",
   REGISTRATION_WALLET_LOADING = "REGISTRATION_WALLET_LOADING",
   REGISTRATION_WALLET_SIGNING = "REGISTRATION_WALLET_SIGNING"
 }
@@ -48,42 +57,44 @@ export type TCommonWalletRegisterData = {
 
 export type TBrowserWalletRegisterData = (
   TCommonWalletRegisterData &
-  ({ walletState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR, errorMessage: TMessage } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR, errorMessage: TMessage }
+  ({ uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR, errorMessage: TMessage } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR, errorMessage: TMessage }
     )
   )
 
 export type TLightWalletRegisterData = (
   TCommonWalletRegisterData &
-  ({ walletState: ELightWalletRegistrationFlowState.LIGHT_WALLET_ERROR, errorMessage: TMessage } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR, errorMessage: TMessage }
+  ({ uiState: ELightWalletRegistrationFlowState.LIGHT_WALLET_ERROR, errorMessage: TMessage } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM } |
+    { uiState: ECommonWalletRegistrationFlowState.RECOVERY_FORM } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR, errorMessage: TMessage } |
+    { uiState: ECommonWalletRegistrationFlowState.RECOVERY_EMAIL_VERIFICATION_ERROR, errorMessage: TMessage }
     )
   )
 
 export type TLedgerRegisterData = (
   TCommonWalletRegisterData &
-  ({ walletState: ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED } |
-    { walletState: ELedgerRegistrationFlowState.LEDGER_INIT } |
-    { walletState: ELedgerRegistrationFlowState.LEDGER_INIT_ERROR, errorMessage: TMessage } |
-    { walletState: ELedgerRegistrationFlowState.LEDGER_ACCOUNT_CHOOSER } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL } |
-    { walletState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR, errorMessage: TMessage }
+  ({ uiState: ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED } |
+    { uiState: ELedgerRegistrationFlowState.LEDGER_INIT } |
+    { uiState: ELedgerRegistrationFlowState.LEDGER_INIT_ERROR, errorMessage: TMessage } |
+    { uiState: ELedgerRegistrationFlowState.LEDGER_ACCOUNT_CHOOSER } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL } |
+    { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR, errorMessage: TMessage }
     )
   )
 
 export type TInitialRegisterData = {
-  walletState: ECommonWalletRegistrationFlowState.NOT_STARTED;
+  uiState: ECommonWalletRegistrationFlowState.NOT_STARTED;
 }
 
 export type TWalletRegisterData =
@@ -92,10 +103,14 @@ export type TWalletRegisterData =
   | TBrowserWalletRegisterData
   | TLedgerRegisterData
 
-export interface IWalletSelectorState {
+
+
+export type TWalletSelectorState = {
+  walletType: EWalletType,
+  flowType: EFlowType
+
+  //backwards compatibility only
   isMessageSigning: boolean;
   messageSigningError: DeepReadonly<TMessage> | undefined;
   isLoading: boolean;
-
-  walletType: EWalletType
 }

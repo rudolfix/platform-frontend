@@ -3,7 +3,6 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ELogoutReason } from "../../../../modules/auth/types";
 import { TMessage } from "../../../translatedMessages/utils";
 import { WalletSelectorLayoutContainer } from "../../WalletSelectorLayout";
 import { LoginLightWalletLayout } from "./LoginLightWallet";
@@ -11,12 +10,12 @@ import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
 storiesOf("LoginLightWallet", module)
   .add("Without email set", () => (
-    <WalletSelectorLayoutContainer isLoginRoute={true} logoutReason={undefined}>
+    <WalletSelectorLayoutContainer showLogoutReason={false}>
       <MissingEmailLightWallet goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")} />
     </WalletSelectorLayoutContainer>
   ))
   .add("With valid mail set", () => (
-    <WalletSelectorLayoutContainer isLoginRoute={true} logoutReason={undefined}>
+    <WalletSelectorLayoutContainer showLogoutReason={false}>
       <LoginLightWalletLayout
         isLoading={false}
         errorMsg={undefined}
@@ -28,7 +27,7 @@ storiesOf("LoginLightWallet", module)
     </WalletSelectorLayoutContainer>
   ))
   .add("With logout reason", () => (
-    <WalletSelectorLayoutContainer isLoginRoute={true} logoutReason={ELogoutReason.SESSION_TIMEOUT}>
+    <WalletSelectorLayoutContainer showLogoutReason={true}>
       <LoginLightWalletLayout
         isLoading={false}
         errorMsg={undefined}
@@ -40,7 +39,7 @@ storiesOf("LoginLightWallet", module)
     </WalletSelectorLayoutContainer>
   ))
   .add("With password error", () => (
-    <WalletSelectorLayoutContainer isLoginRoute={true} logoutReason={undefined}>
+    <WalletSelectorLayoutContainer showLogoutReason={false}>
       <LoginLightWalletLayout
         isLoading={false}
         errorMsg={{ messageType: "lightWalletWrongPassword" } as TMessage}

@@ -1,11 +1,11 @@
 import { createActionFactory } from "@neufund/shared";
 
 import { TMessage } from "../../components/translatedMessages/utils";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { browserWizardActions } from "./browser-wizard/actions";
 import { ledgerWizardActions } from "./ledger-wizard/actions";
 import { lightWizardActions } from "./light-wizard/actions";
 import {  TWalletRegisterData } from "./types";
-import { EUserType } from "../../lib/api/users/interfaces";
 
 const actions = {
   reset: createActionFactory("WALLET_SELECTOR_RESET"),

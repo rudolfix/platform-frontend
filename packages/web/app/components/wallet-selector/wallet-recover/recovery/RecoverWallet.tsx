@@ -1,19 +1,13 @@
 import * as React from "react";
-import { branch, compose, renderComponent } from "recompose";
+import { compose } from "recompose";
 
 import { actions } from "../../../../modules/actions";
-import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
-import { WalletMessageSigner } from "../../WalletMessageSigner/WalletMessageSigner";
 import { LightWalletRecoverySignUp } from "./LightWalletRecoverySignUp";
 import { LightWalletRecoverySeedCheck } from "./RecoverWalletCheckSeed";
 
 interface IDispatchProps {
   goToDashboard: () => void;
-}
-
-interface IStateProps {
-  isMessageSigning: boolean;
 }
 
 interface IMainRecoveryProps {
@@ -61,19 +55,12 @@ class RecoveryProcessesComponent extends React.Component<
 }
 
 const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps, {}>(
-  appConnect<IStateProps, IDispatchProps>({
-    stateToProps: s => ({
-      isMessageSigning: selectIsMessageSigning(s),
-    }),
+  appConnect<{}, IDispatchProps>({
     dispatchToProps: dispatch => ({
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
       submitSeed: (seed:string) => dispatch(actions.walletSelector.submitSeed(seed))
     }),
   }),
-  branch<IStateProps>(
-    props => props.isMessageSigning,
-    renderComponent(() => <WalletMessageSigner rootPath={"/"} />),
-  ),
 )(RecoveryProcessesComponent);
 
 export { RecoverWallet, RecoveryProcessesComponent };

@@ -51,4 +51,4 @@ export const selectRegisterWalletType = (state:TAppGlobalState) =>
 
 
 export const selectRegisterWalletDefaultFormValues = (state:TAppGlobalState) =>
-  state.walletSelector.walletState !== ECommonWalletRegistrationFlowState.NOT_STARTED ? state.walletSelector.initialFormValues : undefined;
+  state.walletSelector.uiState !== ECommonWalletRegistrationFlowState.NOT_STARTED ? state.walletSelector.initialFormValues : undefined;

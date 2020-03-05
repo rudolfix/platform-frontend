@@ -1,17 +1,17 @@
-import * as React from "react";
 import { FormikErrors } from "formik";
+import * as React from "react";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 import * as Yup from "yup";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { IIntlProps, injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
-import { Form } from "../../../shared/forms/Form";
-import { TLightWalletFormValues } from "../../../../modules/wallet-selector/types";
-import { getMessageTranslation } from "../../../translatedMessages/messages";
-import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
-import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
-import { externalRoutes } from "../../../../config/externalRoutes";
 import { Button, EButtonWidth } from "../../../../../../design-system/dist/components/buttons/Button";
+import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
+import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
+import { IIntlProps, injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
+import { externalRoutes } from "../../../../config/externalRoutes";
+import { TLightWalletFormValues } from "../../../../modules/wallet-selector/types";
+import { Form } from "../../../shared/forms/Form";
+import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TDispatchProps, TRegisterWalletExternalProps, TStateProps } from "./RegisterLightWallet";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
@@ -92,7 +92,6 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
           name={TOS}
           data-test-id="wallet-selector-register-tos"
         />
-        {console.log(isSubmitting)}
         <Button
           type="submit"
           isLoading={isSubmitting}

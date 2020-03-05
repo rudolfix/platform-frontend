@@ -86,7 +86,12 @@ interface IDispatchProps {
   tryToEstablishConnectionWithLedger: () => void;
 }
 
-export const LedgerErrorBase = ({ errorMessage, tryToEstablishConnectionWithLedger }) => (
+type TLedgerErrorProps = {
+  errorMessage:TMessage,
+  tryToEstablishConnectionWithLedger: () => void;
+}
+
+export const LedgerErrorBase:React.FunctionComponent<TLedgerErrorProps> = ({ errorMessage, tryToEstablishConnectionWithLedger }) => (
   <section className="text-center my-5">
     <WarningAlert className="mb-4">
       <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
@@ -100,9 +105,9 @@ export const LedgerErrorBase = ({ errorMessage, tryToEstablishConnectionWithLedg
       <FormattedMessage id="common.try-again" />
     </Button>
   </section>
-)
+);
 
-export const LedgerNotSupported = ({}) => (
+export const LedgerNotSupported = () => (
   <div className={cn(styles.step, "mx-md-5")}>
     <p>
       <FormattedMessage
@@ -123,9 +128,7 @@ export const LedgerNotSupported = ({}) => (
       />
     </p>
   </div>
-)
-
-
+);
 
 export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   errorMessage,
@@ -133,7 +136,6 @@ export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & ID
   tryToEstablishConnectionWithLedger,
 }) => (
   <>
-    {console.log('WalletLedgerInitComponent')}
     <LedgerHeader />
 
     {isInitialConnectionInProgress && <LoadingIndicator />}
@@ -150,7 +152,7 @@ export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & ID
   </>
 );
 
-export const WalletLedgerInit = compose<IStateProps & IDispatchProps, {}>(
+export const LedgerInit = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       isInitialConnectionInProgress: state.ledgerWizardState.isInitialConnectionInProgress,
@@ -163,7 +165,7 @@ export const WalletLedgerInit = compose<IStateProps & IDispatchProps, {}>(
   }),
 )(WalletLedgerInitComponent);
 
-export const LedgerError = compose(
+export const LedgerError = compose<TLedgerErrorProps,{}>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: dispatch => ({
       tryToEstablishConnectionWithLedger: () =>

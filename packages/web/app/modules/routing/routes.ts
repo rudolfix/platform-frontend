@@ -7,6 +7,7 @@ import { appRoutes } from "../../components/appRoutes";
 import { profileRoutes } from "../../components/settings/routes";
 import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { TEtoWithCompanyAndContract } from "../eto/types";
 import { neuCall } from "../sagasUtils";
@@ -17,7 +18,6 @@ import {
   TEtoViewByIdMatch,
   TEtoViewByPreviewCodeMatch,
 } from "./types";
-import { EUserType } from "../../lib/api/users/interfaces";
 
 export const routes = [
   // most routes here are stubbed until we move them all to sagas
@@ -435,7 +435,7 @@ export function* etoLandingRoute(payload: RouterState): Generator<any, any, any>
     path: appRoutes.etoLanding,
   });
   return yield routeAction(etoLandingMatch, {
-    notAuth: process.env.NF_ISSUERS_ENABLED === "1" ? put(actions.routing.goHome()) : put(actions.routing.goHome()),
+    notAuth: put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

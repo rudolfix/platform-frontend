@@ -1,5 +1,4 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 
 import { RecoveryStep } from "./RecoveryStep";
 import { LightWalletSeedRecoveryComponent } from "./SeedRecovery.unsafe";
@@ -13,15 +12,15 @@ export const LightWalletRecoverySeedCheck: React.FunctionComponent<TLightWalletR
   goToDashboard,
   onValidSeed,
 }) => (
-  <>
-    <RecoveryStep
-      step={1}
-      allSteps={2}
-      title={<FormattedMessage id="account-recovery.seed-check.title" />}
-      description={<FormattedMessage id="account-recovery.seed-check.description" />}
-      buttonAction={goToDashboard}
-      data-test-id="recover-layout"
-    />
+  <RecoveryStep
+    step={1}
+    allSteps={2}
+    buttonAction={goToDashboard}
+    data-test-id="recover-layout"
+  >
     <LightWalletSeedRecoveryComponent onValidSeed={onValidSeed} />
-  </>
+  </RecoveryStep>
+
 );
+
+

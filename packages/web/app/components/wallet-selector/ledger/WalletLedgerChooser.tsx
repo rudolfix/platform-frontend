@@ -1,6 +1,6 @@
 import * as React from "react";
-import { compose } from "redux";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { compose } from "redux";
 
 import { actions } from "../../../modules/actions";
 import {
@@ -9,12 +9,12 @@ import {
 } from "../../../modules/wallet-selector/ledger-wizard/reducer";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import { withHeaderButton } from "../../../utils/react-connected-components/withHeaderButton";
 import {
   IWalletLedgerChooserComponent,
   IWalletLedgerChooserComponentDispatchProps,
   WalletLedgerChooserComponent,
 } from "./WalletLedgerChooserComponent";
-import { withHeaderButton } from "../../../utils/react-connected-components/withHeaderButton";
 
 export const WalletLedgerChooser = compose<React.FunctionComponent>(
   appConnect<IWalletLedgerChooserComponent, IWalletLedgerChooserComponentDispatchProps>({

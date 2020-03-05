@@ -6,8 +6,8 @@ import { EWalletType } from "../../modules/web3/types";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
 import { WalletBrowser } from "./browser/Login/WalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
+import { LoginLightWallet } from "./light/login/LoginLightWallet";
 import { WalletChooser } from "./WalletChooser";
-import { LoginLightWallet } from "./light/Login/LoginLightWallet";
 
 type TWalletRouterProps = {
   rootPath: string;

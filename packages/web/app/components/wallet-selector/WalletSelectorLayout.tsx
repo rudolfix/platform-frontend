@@ -16,7 +16,7 @@ interface IExternalProps {
   redirectLocation: Location;
 }
 
-export const WalletSelectorLayoutContainer: React.FunctionComponent<{showLogoutReason:boolean}> = ({  showLogoutReason, children }) => (
+export const WalletSelectorLayoutContainer: React.FunctionComponent<{ showLogoutReason: boolean }> = ({ showLogoutReason, children }) => (
   <>
     {showLogoutReason && (
       <WarningAlert
@@ -43,8 +43,7 @@ export const WalletSelectorLoginLayout: React.FunctionComponent<IExternalProps> 
   showWalletSelector,
   showLogoutReason,
 }) => (
-    <WalletSelectorLayoutContainer showLogoutReason={showLogoutReason}>
-      {console.log("WalletSelectorLoginLayout")}
+  <WalletSelectorLayoutContainer showLogoutReason={showLogoutReason}>
     <div className={styles.wrapper} data-test-id="wallet-selector">
       <WalletRouter
         rootPath={rootPath}
@@ -52,5 +51,5 @@ export const WalletSelectorLoginLayout: React.FunctionComponent<IExternalProps> 
         showWalletSelector={showWalletSelector}
       />
     </div>
-    </WalletSelectorLayoutContainer>
+  </WalletSelectorLayoutContainer>
 );

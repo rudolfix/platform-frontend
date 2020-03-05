@@ -19,7 +19,6 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
   activeWallet,
 }) => (
   <>
-    {console.log("WalletChooser", rootPath)}
     <section className={styles.walletChooserContainer}>
       <p className={styles.walletChooserText}>
         <FormattedMessage id="wallet-selector.wallet-chooser" />

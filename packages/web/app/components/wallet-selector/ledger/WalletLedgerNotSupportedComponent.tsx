@@ -3,6 +3,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { WarningAlert } from "../../shared/WarningAlert";
+
 import arrowIcon from "../../../assets/img/inline_icons/link_arrow.svg";
 import logoChrome from "../../../assets/img/wallet_selector/logo_chrome.svg";
 import * as styles from "./WalletLedgerNotSupportedComponent.module.scss";

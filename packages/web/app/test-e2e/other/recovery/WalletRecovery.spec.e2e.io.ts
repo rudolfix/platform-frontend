@@ -52,8 +52,6 @@ describe("Wallet recovery", function(): void {
         );
         cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
 
-        // acceptTOS();
-
         cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
         cy.contains(tid("my-wallet-widget-eur-token.large-value"), "0 nEUR");
         cy.contains(tid("my-wallet-widget-eur-token.value"), "0 EUR");

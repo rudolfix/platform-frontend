@@ -79,6 +79,12 @@ export class LightWalletSeedRecoveryComponent extends React.Component<
     const canSubmit = this.state.words.every(word => word !== null);
     return (
       <>
+        <h1 className={styles.title}>
+          <FormattedMessage id="account-recovery.seed-check.title" />
+        </h1>
+        <p className={styles.description}>
+          <FormattedMessage id="account-recovery.seed-check.description" />
+        </p>
         <div className={styles.words}>
           {this.state.words.map((_: string, index: number) => (
             <div

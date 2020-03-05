@@ -29,8 +29,8 @@ import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecovery } from "./wallet-selector/wallet-recover/WalletRecovery";
 import { WalletSelectorLogin,  } from "./wallet-selector/WalletSelectorLogin";
-import { Wallet } from "./wallet/Wallet";
 import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister";
+import { Wallet } from "./wallet/Wallet";
 
 export const AppRouter: React.FunctionComponent = () => (
   <SwitchConnected>

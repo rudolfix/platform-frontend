@@ -20,13 +20,13 @@ storiesOf("RecoveryProcesses", module)
   )
   .add("Enter Seed", () => (
     <RecoveryProcessesComponent
-      submitForm={action("submitForm")}
+      submitSeed={action("submitSeed")}
       goToDashboard={action("goToDashboard")}
     />
   ))
   .add("Enter Email and Password", () => (
     <RecoveryProcessesComponent
-      submitForm={action("submitForm")}
+      submitSeed={action("submitSeed")}
       goToDashboard={action("goToDashboard")}
       seed="HEHE IAMA SEED PHRASE"
     />

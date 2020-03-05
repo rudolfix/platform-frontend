@@ -1,12 +1,13 @@
 import * as React from "react";
 import {  FormattedMessage } from "react-intl-phraseapp";
-import { WalletChooser } from "../../WalletChooser";
+
 import { EWalletType } from "../../../../modules/web3/types";
-import { TStateProps } from "./RegisterLightWallet";
+import { WalletChooser } from "../../WalletChooser";
+import { TStateProps } from "./RestoreLightWallet";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
-export const RegisterLightWalletBase: React.FunctionComponent<TStateProps> = ({
+export const ImportLightWalletBase: React.FunctionComponent<TStateProps> = ({
   rootPath,
   showWalletSelector,
   children
@@ -18,7 +19,7 @@ export const RegisterLightWalletBase: React.FunctionComponent<TStateProps> = ({
       </h1>
       <section className={styles.main}>
         <p className={styles.explanation}>
-          <FormattedMessage id="wallet-selector.neuwallet.explanation" />
+          <FormattedMessage id="account-recovery.sign-up.description" />
         </p>
         {children}
       </section>

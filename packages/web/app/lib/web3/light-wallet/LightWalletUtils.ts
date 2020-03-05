@@ -1,8 +1,11 @@
 import { promisify } from "@neufund/shared";
 import { isValid as isMnemonicValid } from "bitcore-mnemonic";
 import * as LightWalletProvider from "eth-lightwallet";
+import * as ethSig from "eth-sig-util";
+import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import * as nacl from "tweetnacl";
 import * as naclUtil from "tweetnacl-util";
+import * as Web3Utils from "web3-utils";
 
 import { ICreateVault } from "./LightWallet";
 
@@ -140,6 +143,34 @@ export const testWalletPassword = async (
   return lightWalletInstance.isDerivedKeyCorrect(key);
 };
 
+export const signMessage = async (
+  hdPathString: string,
+  recoverSeed: string,
+  data: string,
+): Promise<boolean> => {
+  const customSalt: string = LightWalletProvider.keystore.generateSalt(32);
+  const password = LightWalletProvider.keystore.generateSalt(32);
+
+  const { walletInstance } = await createLightWalletVault({
+    password,
+    hdPathString,
+    recoverSeed,
+    customSalt,
+  });
+
+  const deserializedInstance = await deserializeLightWalletVault(walletInstance, customSalt);
+  const addresses = deserializedInstance.getAddresses();
+  const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
+  const rawSignedMsg = await LightWalletProvider.signing.signMsgHash(
+    deserializedInstance,
+    await getWalletKey(deserializedInstance, password),
+    msgHash.toString("hex"),
+    addresses[0],
+  );
+
+  return ethSig.concatSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
+};
+
 export const getWalletPrivKey = async (
   lightWalletInstance: ILightWalletInstance,
   password: string,
@@ -157,6 +188,30 @@ export const getWalletPrivKey = async (
   } catch (e) {
     throw new LightWrongPasswordSaltError();
   }
+};
+
+export const getWalletAddress = async (
+  recoverSeed: string,
+  hdPathString: string
+): Promise<string> => {
+  try {
+    // Take first address only
+    const customSalt: string = LightWalletProvider.keystore.generateSalt(32);
+    const password = LightWalletProvider.keystore.generateSalt(32);
+
+    const { walletInstance } = await createLightWalletVault({
+      password,
+      hdPathString,
+      recoverSeed,
+      customSalt,
+    });
+    const deserializedVault =  await deserializeLightWalletVault(walletInstance, customSalt);
+    return Web3Utils.toChecksumAddress(`0x${deserializedVault.addresses[0]}`)
+
+  } catch (e) {
+    throw new LightWrongPasswordSaltError();
+  }
+
 };
 
 export const testWalletSeed = (seed: string): boolean => isMnemonicValid(seed);

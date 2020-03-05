@@ -1,18 +1,18 @@
-import * as Yup from "yup";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import * as React from "react";
 import { FormikErrors } from "formik";
+import * as React from "react";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
+import * as Yup from "yup";
 
-import { Form } from "../../../shared/forms/Form";
-import { getMessageTranslation } from "../../../translatedMessages/messages";
-import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
-import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
-import { externalRoutes } from "../../../../config/externalRoutes";
 import { Button, EButtonWidth } from "../../../../../../design-system/dist/components/buttons/Button";
+import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
+import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
 import { injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
 import { IIntlHelpers } from "../../../../../../shared/src/utils/injectIntlHelpers.unsafe";
+import { externalRoutes } from "../../../../config/externalRoutes";
 import { TBrowserWalletFormValues } from "../../../../modules/wallet-selector/types";
+import { Form } from "../../../shared/forms/Form";
+import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";

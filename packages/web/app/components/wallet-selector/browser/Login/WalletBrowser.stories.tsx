@@ -4,17 +4,23 @@ import * as React from "react";
 
 import { BrowserWalletErrorMessage } from "../../../translatedMessages/messages";
 import { createMessage } from "../../../translatedMessages/utils";
-import { MetamaskErrorBase, RegisterBrowserWalletBase, WalletLoading } from "./WalletBrowser";
+import { WalletLoading } from "../../shared/WalletLoading";
+import { BrowserWalletBase } from "../Register/BrowserWalletBase";
+import { RegisterBrowserWalletError } from "../Register/RegisterBrowserWalletError";
 
 storiesOf("Wallet selector/Browser", module)
   .add("initial loading state", () => (
-    <BrowserWalletBase>
+    <BrowserWalletBase
+    showWalletSelector={true}
+    rootPath="/register">
       <WalletLoading />
     </BrowserWalletBase>
   ))
   .add("error message", () => (
-    <BrowserWalletBase>
-      <MetamaskError
+    <BrowserWalletBase
+    showWalletSelector={true}
+    rootPath="/register">
+      <RegisterBrowserWalletError
         errorMessage={createMessage(BrowserWalletErrorMessage.GENERIC_ERROR)}
         tryConnectingWithBrowserWallet={action("tryConnectingWithBrowserWallet")}
       />

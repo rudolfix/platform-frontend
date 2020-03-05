@@ -52,7 +52,7 @@ describe("Invest without money", () => {
 
     cy.get(tid("invest-modal-eur-field"))
       .clear()
-      .type("1000");
+      .type("10");
 
     cy.get(tid("invest-modal-invest-now-button"))
       .should("be.enabled")
@@ -94,7 +94,7 @@ describe("Invest without money", () => {
 
         cy.get(tid("invest-modal-eur-field"))
           .clear()
-          .type("1000");
+          .type("10");
 
         cy.get(tid("form.euroValue.error-message")).should("exist");
         cy.get(tid("invest-modal-invest-now-button")).should("be.disabled");

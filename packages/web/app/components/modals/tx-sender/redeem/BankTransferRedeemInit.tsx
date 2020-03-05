@@ -167,6 +167,7 @@ const BankTransferRedeemLayout: React.FunctionComponent<TComponentProps> = ({
             valueType={ECurrency.EUR}
             outputFormat={ENumberOutputFormat.FULL}
             name="amount"
+            data-test-id="bank-transfer.reedem-init.redeem-form-label"
             returnInvalidValues={true}
             showUnits={true}
           />

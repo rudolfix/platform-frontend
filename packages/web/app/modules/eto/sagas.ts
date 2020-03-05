@@ -410,15 +410,12 @@ function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDepende
     if (userType === EUserType.INVESTOR) {
       yield put(actions.investorEtoTicket.loadInvestorTickets(etosByPreviewCode));
 
-      yield all(
-        etosWithContract
-          .filter(
-            eto =>
-              eto.contract &&
-              [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(eto.contract.timedState),
-          )
-          .map(eto => neuCall(loadToken, eto)),
+      const myAssets = etosWithContract.filter(
+        eto =>
+          eto.contract &&
+          [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(eto.contract.timedState),
       );
+      yield loadTokens(myAssets);
     }
     yield put(actions.eto.setEtos({ etos: etosByPreviewCode, companies }));
     yield put(actions.eto.setEtosDisplayOrder(order));
@@ -622,14 +619,20 @@ function* loadToken(
   yield put(actions.eto.setTokenData(eto.previewCode, tokenData));
 }
 
-function* loadTokensData(): any {
-  const myAssets = yield select(selectMyAssets);
-
-  if (!myAssets) {
+function* loadTokens(etos: TEtoWithCompanyAndContractReadonly[]): Generator<any, any, any> {
+  if (!etos) {
     return;
   }
 
-  yield all(myAssets.map((eto: TEtoWithCompanyAndContractReadonly) => neuCall(loadToken, eto)));
+  yield all(etos.map((eto: TEtoWithCompanyAndContractReadonly) => neuCall(loadToken, eto)));
+
+  yield put(actions.eto.setTokensLoadingDone());
+}
+
+function* loadTokensData(): any {
+  const myAssets = yield select(selectMyAssets);
+
+  yield loadTokens(myAssets);
 }
 
 function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any, any, any> {

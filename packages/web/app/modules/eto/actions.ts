@@ -114,4 +114,5 @@ export const etoActions = {
     (etoId: string, previewCode: string) => ({ etoId, previewCode }),
   ),
   setEtosError: createActionFactory("ETO_SET_ETOS_ERROR"),
+  setTokensLoadingDone: createActionFactory("ETO_TOKENS_LOADING_DONE"),
 };

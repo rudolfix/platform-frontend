@@ -3,6 +3,8 @@ import { isValid as isMnemonicValid } from "bitcore-mnemonic";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as nacl from "tweetnacl";
 import * as naclUtil from "tweetnacl-util";
+import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
+import * as ethSig from "eth-sig-util";
 
 import { ICreateVault } from "./LightWallet";
 
@@ -138,6 +140,33 @@ export const testWalletPassword = async (
 ): Promise<boolean> => {
   const key = await getWalletKey(lightWalletInstance, password);
   return lightWalletInstance.isDerivedKeyCorrect(key);
+};
+
+export const signMessage = async (
+  { hdPathString, recoverSeed }: ICreateVault,
+  data: string,
+): Promise<boolean> => {
+  const customSalt: string = LightWalletProvider.keystore.generateSalt(32);
+  const password = LightWalletProvider.keystore.generateSalt(32);
+
+  const { walletInstance } = await createLightWalletVault({
+    password,
+    hdPathString,
+    recoverSeed,
+    customSalt,
+  });
+
+  const deserializedInstance = await deserializeLightWalletVault(walletInstance, customSalt);
+  const addresses = deserializedInstance.getAddresses();
+  const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
+  const rawSignedMsg = await LightWalletProvider.signing.signMsgHash(
+    deserializedInstance,
+    await getWalletKey(deserializedInstance, password),
+    msgHash.toString("hex"),
+    addresses[0],
+  );
+
+  return ethSig.concatSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
 };
 
 export const getWalletPrivKey = async (

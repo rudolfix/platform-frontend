@@ -8,18 +8,25 @@ import {
 import { Container } from "inversify";
 import Config from "react-native-config";
 
-import { createGlobalDependencies, TGlobalDependencies } from "../di/setupBindings";
+import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "../di/setupBindings";
+import { TConfig } from "../di/types";
+import { setupWalletEthModule } from "../modules/eth/module";
 import { appReducers } from "../modules/reducers";
 import { rootSaga } from "../modules/sagas";
 import { TAppGlobalState } from "./types";
-import { setupStorageModule } from "../modules/storage/module";
+import { setupStorageModule } from "../modules/storage";
 
 export const createAppStore = (container: Container) => {
+  const config: TConfig = {
+    backendRootUrl: Config.NF_BACKEND_URL,
+    rpcUrl: Config.NF_NODE_RPC_URL,
+  };
+
   const appModule: INeuModule<TAppGlobalState> = {
     id: "app",
     reducerMap: appReducers,
+    libs: [setupBindings(config)],
     sagas: [rootSaga],
-    libs: [],
   };
 
   const context: { container: Container; deps?: TGlobalDependencies } = {
@@ -34,8 +41,9 @@ export const createAppStore = (container: Container) => {
         getSagaExtension(context),
       ],
     },
-    setupCoreModule({ backendRootUrl: Config.NF_BACKEND_URL }),
+    setupCoreModule({ backendRootUrl: config.backendRootUrl }),
     setupStorageModule(),
+    setupWalletEthModule({ rpcUrl: config.rpcUrl }),
     appModule,
   );
 };

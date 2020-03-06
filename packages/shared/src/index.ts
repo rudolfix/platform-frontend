@@ -21,7 +21,6 @@ export * from "./utils/errors";
 export * from "./utils/injectIntlHelpers.unsafe";
 export * from "./utils/BigNumberUtils";
 export * from "./utils/StringUtils";
-export * from "./utils/test/setupFakeClock";
 export * from "./utils/myEtherWallet";
 export * from "./utils/Validators";
 export * from "./utils/omitProps";

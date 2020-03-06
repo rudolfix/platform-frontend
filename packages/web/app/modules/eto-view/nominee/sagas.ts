@@ -18,6 +18,7 @@ export function* loadNomineeEtoView({
   logger,
   notificationCenter,
 }: TGlobalDependencies): Generator<any, void, any> {
+  yield put(actions.etoView.resetEtoViewData());
   try {
     let activeNomineeEtoPreviewCode = yield select(selectNomineeActiveEtoPreviewCode);
 

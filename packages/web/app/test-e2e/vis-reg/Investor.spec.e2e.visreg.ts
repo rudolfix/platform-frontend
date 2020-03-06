@@ -23,7 +23,7 @@ describe("Investor", () => {
   it("should render portfolio", () => {
     goToPortfolio();
 
-    cy.get(tid("past-investments-token-name")).should("contain", "NOMERA (NOM)");
+    cy.get(tid("token-details-NOMERA-view-profile")).should("exist");
 
     cy.screenshot();
   });

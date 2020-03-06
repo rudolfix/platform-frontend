@@ -1,13 +1,18 @@
 import { withContainer } from "@neufund/shared";
-import { branch, compose, renderComponent } from "recompose";
+import { compose } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { selectIsVerifiedInvestor } from "../../modules/auth/selectors";
+import { selectEtosError } from "../../modules/eto/selectors";
 import {
   selectMyAssets,
   selectMyPendingAssets,
   selectPastInvestments,
   selectTokensDisbursal,
+  selectTokensDisbursalError,
+  selectTokensDisbursalEurEquivTotal,
+  selectTokensDisbursalEurEquivTotalDisbursed,
+  selectTokensDisbursalIsLoading,
 } from "../../modules/investor-portfolio/selectors";
 import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
@@ -16,7 +21,6 @@ import { withMetaTags } from "../../utils/withMetaTags.unsafe";
 import { Layout } from "../layouts/Layout";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
-import { LoadingIndicator } from "../shared/loading-indicator";
 import { IPortfolioDispatchProps, PortfolioLayout, TPortfolioLayoutProps } from "./PortfolioLayout";
 
 export type TStateProps = Partial<TPortfolioLayoutProps>;
@@ -38,14 +42,15 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
       pendingAssets: selectMyPendingAssets(state),
       walletAddress: selectEthereumAddressWithChecksum(state),
       tokensDisbursal: selectTokensDisbursal(state),
+      tokenDisbursalIsLoading: selectTokensDisbursalIsLoading(state),
+      tokenDisbursalError: selectTokensDisbursalError(state),
+      tokensDisbursalEurEquivTotal: selectTokensDisbursalEurEquivTotal(state),
+      tokensDisbursalEurEquivTotalDisbursed: selectTokensDisbursalEurEquivTotalDisbursed(state),
       isVerifiedInvestor: selectIsVerifiedInvestor(state),
       pastInvestments: selectPastInvestments(state),
+      etosError: selectEtosError(state),
     }),
   }),
   withContainer(Layout),
-  branch(
-    (props: TStateProps) => !props.myAssets && !props.pendingAssets,
-    renderComponent(LoadingIndicator),
-  ),
   withMetaTags((_, intl) => ({ title: intl.formatIntlMessage("menu.portfolio") })),
 )(PortfolioLayout);

@@ -1,6 +1,6 @@
 import { appRoutes } from "../../../components/appRoutes";
+import { generateRandomSeedAndAddress } from "../../obsolete/generateRandomSeedAndAddress";
 import { cyPromise } from "../../utils/cyPromise";
-import { generateRandomSeedAndAddress } from "../../utils/generateRandomSeedAndAddress";
 import {
   acceptTOS,
   assertDashboard,
@@ -21,7 +21,7 @@ import {
 describe("Wallet recovery", function(): void {
   this.retries(2);
 
-  it("should show error modal for invalid recovery phrases @backup @p1", () => {
+  it("should show error modal for invalid recovery phrases #backup #p1", () => {
     cy.visit(`${appRoutes.restore + "/seed"}`);
 
     const wrongMnemonics = "mutual mutual phone brief hedgehog friend brown actual candy will tank case phone rather program clap scrap dog trouble phrase fit section snack world".split(
@@ -32,7 +32,7 @@ describe("Wallet recovery", function(): void {
     cy.get(tid("form.account-recovery.seed-error.error-message")).should("exist");
   });
 
-  it("should recover wallet from saved phrases @backup @p2", () => {
+  it("should recover wallet from saved phrases #backup #p2", () => {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";
@@ -67,7 +67,7 @@ describe("Wallet recovery", function(): void {
     );
   });
 
-  it("should return an error when recovering seed and using an already verified email @backup @p3", () => {
+  it("should return an error when recovering seed and using an already verified email #backup #p3", () => {
     createAndLoginNewUser({
       type: "investor",
       kyc: "individual",
@@ -85,7 +85,7 @@ describe("Wallet recovery", function(): void {
     });
   });
 
-  it("should recover user with same email if its the same user @backup @p3", function(): void {
+  it("should recover user with same email if its the same user #backup #p3", function(): void {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",

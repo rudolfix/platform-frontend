@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { appRoutes } from "../appRoutes";
 import { Button } from "./common/buttons/Button";
 import { initActions } from "../modules/init/actions";
-import { selectInitStatus } from "../modules/init/selectors";
+import { selectInitStatus, selectTest } from "../modules/init/selectors";
 import { appConnect } from "../store/utils";
 
 type TDispatchProps = {
@@ -14,11 +14,13 @@ type TDispatchProps = {
 
 type TStateProps = {
   initStatus: ReturnType<typeof selectInitStatus>;
+  test: ReturnType<typeof selectTest>;
 };
 
 const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
   init,
   initStatus,
+  test,
 }) => {
   const navigation = useNavigation();
 
@@ -28,7 +30,7 @@ const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
 
   return (
     <View>
-      <Text>Landing</Text>
+      <Text>Landing {test && test.name}</Text>
 
       <Text>Init status: {initStatus}</Text>
 
@@ -44,6 +46,7 @@ const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
 const Landing = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     initStatus: selectInitStatus(state),
+    test: selectTest(state),
   }),
   dispatchToProps: dispatch => ({
     init: () => dispatch(initActions.start()),

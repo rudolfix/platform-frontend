@@ -62,15 +62,15 @@ const fillAndAssert = (personalData: TFormFixture, addressData: TFormFixture, is
 };
 
 describe("IDNow", () => {
-  it("should go through ID Now @kyc @p2 @flaky", function(): void {
+  it("should go through ID Now #kyc #p2 #flaky", function(): void {
     fillAndAssert(kycInvidualForm, kycInvidualAddressForm, false);
   });
 
-  it("should go through ID Now for US investor @kyc @p3 @flaky", function(): void {
+  it("should go through ID Now for US investor #kyc #p3 #flaky", function(): void {
     fillAndAssert(kycInvidualFormUS, kycInvidualAddressForm, true);
   });
 
-  it("should go through ID Now for US resident @kyc @p3 @flaky", function(): void {
+  it("should go through ID Now for US resident #kyc #p3 #flaky", function(): void {
     fillAndAssert(kycInvidualFormUSResident, kycInvidualAddressFormUSResident, true);
   });
 });

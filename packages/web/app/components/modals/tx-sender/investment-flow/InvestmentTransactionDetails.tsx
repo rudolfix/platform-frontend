@@ -1,3 +1,4 @@
+import { TokenIcon } from "@neufund/design-system";
 import { addBigNumbers, divideBigNumbers, multiplyBigNumbers } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -13,7 +14,6 @@ import {
   EPriceFormat,
 } from "../../../shared/formatters/utils";
 import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
-import { TokenIcon } from "../../../shared/icons/TokenIcon";
 import { TooltipBase } from "../../../shared/tooltips";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";

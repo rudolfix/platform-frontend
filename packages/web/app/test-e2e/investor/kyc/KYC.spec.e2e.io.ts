@@ -14,7 +14,7 @@ import {
 } from "./utils";
 
 describe("KYC", () => {
-  it("should block kyc flow for Permanent Residence CAMBODIA (KH) region @kyc @p2", () => {
+  it("should block kyc flow for Permanent Residence CAMBODIA (KH) region #kyc #p2", () => {
     const BLOCKED_COUNTRY = "Cambodia";
 
     createAndLoginNewUser({ type: "investor" });
@@ -27,7 +27,7 @@ describe("KYC", () => {
     cy.get(tid("form.country.error-message")).should("exist");
   });
 
-  it("should go through business KYC @kyc @p2", () => {
+  it("should go through business KYC #kyc #p2", () => {
     createAndLoginNewUser({ type: "investor" });
 
     // go to corporate start page
@@ -40,7 +40,7 @@ describe("KYC", () => {
     assertKYCSuccess();
   });
 
-  it("should go through business KYC with skips @kyc @p3", () => {
+  it("should go through business KYC with skips #kyc #p3", () => {
     createAndLoginNewUser({ type: "investor" });
 
     // go to corporate start page
@@ -53,7 +53,7 @@ describe("KYC", () => {
     assertKYCSuccess();
   });
 
-  it("should not let user upload unsupported file formats @kyc @files @p3", () => {
+  it("should not let user upload unsupported file formats #kyc #files #p3", () => {
     createAndLoginNewUser({ type: "investor" });
 
     // go to corporate start page
@@ -72,7 +72,7 @@ describe("KYC", () => {
     });
   });
 
-  it("kyc can't save managing director without PEP field @kyc", () => {
+  it("kyc can't save managing director without PEP field #kyc #p3", () => {
     createAndLoginNewUser({ type: "investor" });
     cy.visit(kycRoutes.start);
 

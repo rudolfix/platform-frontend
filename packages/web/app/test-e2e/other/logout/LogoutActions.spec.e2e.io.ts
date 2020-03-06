@@ -45,7 +45,7 @@ const setKeyFromStorageWithEvents = (Window: Window, key: string, newValue: stri
 
 describe("Login/Logout", () => {
   describe("Automatic Actions", () => {
-    it("should logout automatically when a user has no activity @login @logout @p2", () => {
+    it("should logout automatically when a user has no activity #login #logout #p2", () => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",
@@ -61,7 +61,7 @@ describe("Login/Logout", () => {
       });
     });
 
-    it("should not logout automatically when a user has activity @login @logout @p3", () => {
+    it("should not logout automatically when a user has activity #login #logout #p3", () => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",
@@ -81,7 +81,7 @@ describe("Login/Logout", () => {
       });
     });
 
-    it("should not logout automatically when a user has activity in another tab @login @logout @p3", () => {
+    it("should not logout automatically when a user has activity in another tab #login #logout #p3", () => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",
@@ -98,7 +98,7 @@ describe("Login/Logout", () => {
     });
   });
   describe("User Driven Actions", () => {
-    it("should logout automatically when a user logs out from another tab @login @logout @p3", () => {
+    it("should logout automatically when a user logs out from another tab #login #logout #p3", () => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",
@@ -111,7 +111,7 @@ describe("Login/Logout", () => {
         });
       });
     });
-    it("should login automatically when a user logs-in from another tab @login @logout @p3", () => {
+    it("should login automatically when a user logs-in from another tab #login #logout #p3", () => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",
@@ -128,7 +128,7 @@ describe("Login/Logout", () => {
         });
       });
     });
-    it("should logout automatically when wallet Metadata is not present @login @logout @p3", () => {
+    it("should logout automatically when wallet Metadata is not present #login #logout #p3", () => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",
@@ -140,7 +140,7 @@ describe("Login/Logout", () => {
         });
       });
     });
-    it("should redirect to landing page when NF_WALLET_METADATA is not present in the local storage @login @logout @p3", () => {
+    it("should redirect to landing page when NF_WALLET_METADATA is not present in the local storage #login #logout #p3", () => {
       createAndLoginNewUser({
         type: "investor",
         kyc: "business",

@@ -20,7 +20,7 @@ describe("Verify Email Widget", () => {
   beforeEach(() => {
     cy.clearLocalStorage();
   });
-  it("should change user email after register @emailing @p3", () => {
+  it("should change user email after register #emailing #p3", () => {
     const firstEmail = generateRandomEmailAddress();
     const secondEmail = generateRandomEmailAddress();
     const password = "strongpassword";
@@ -49,7 +49,7 @@ describe("Verify Email Widget", () => {
     assertVerifyEmailWidgetIsInNoEmailState(true);
   });
 
-  it("should automatically update email after change @emailing @p3", () => {
+  it("should automatically update email after change #emailing #p3", () => {
     const email = generateRandomEmailAddress();
     const password = "strongpassword";
 

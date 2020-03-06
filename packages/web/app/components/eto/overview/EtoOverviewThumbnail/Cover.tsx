@@ -1,3 +1,4 @@
+import { ISrcSet } from "@neufund/design-system";
 import { assertNever } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
@@ -5,7 +6,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EJurisdiction } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { CommonHtmlProps, TTranslatedString } from "../../../../types";
-import { ISrcSet } from "../../../shared/Image";
 import { EImageFit, ResponsiveImage } from "../../../shared/ResponsiveImage";
 import { Tag } from "../../../shared/Tag";
 

@@ -4,7 +4,7 @@ import { tid } from "../../utils/selectors";
 import { loginFixtureAccount } from "../../utils/userHelpers";
 
 describe("Download documents from portfolio", () => {
-  it("should download available documents @portfolio @p3", () => {
+  it("should download available documents #portfolio #p3", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPayoutState");
     loginFixtureAccount("INV_ICBM_ETH_M_HAS_KYC_DUP");
     goToPortfolio();

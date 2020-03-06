@@ -9,7 +9,7 @@ import {
 } from "./utils";
 
 describe("Instant ID Provider", () => {
-  it("should show only onfido as supported provider when individual nationality is Zimbabwe @kyc @p3", () => {
+  it("should show only onfido as supported provider when individual nationality is Zimbabwe #kyc #p3", () => {
     createAndLoginNewUser({ type: "investor" });
 
     goToPersonalVerification();

@@ -3,47 +3,58 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import { EKycRequestStatus, EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { kycStatusToTranslationMessage } from "../../../modules/kyc/utils";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
-import { AccountSetupKycPendingComponent } from "../../settings/kyc-states/AccountSetupKycComponent";
 import { getMessageTranslation } from "../../translatedMessages/messages";
+import { AccountSetupKycPendingComponent } from "./AccountSetupKycComponent";
 
 import * as styles from "./Onboarding.module.scss";
 
 interface IKycPendingProps {
   kycRequestStatus: EKycRequestStatus;
+  kycRequestType: EKycRequestType;
 }
 
 const OnboardingKycPendingBase: React.FunctionComponent<IKycPendingProps> = ({
   kycRequestStatus,
+  kycRequestType,
 }) => (
   <div className={styles.accountSetupKycPendingWrapper} data-test-id="onboarding-kyc-pending">
     <h1 className={styles.titleLarge}>
-      <FormattedMessage id="account-setup.pending-kyc.title" />{" "}
+      <FormattedMessage id="account-setup.pending-kyc.title" />
       <span className={styles.status}>
         {getMessageTranslation(kycStatusToTranslationMessage(kycRequestStatus))}
       </span>
     </h1>
     <p>
-      <FormattedHTMLMessage
-        tagName="span"
-        id="account-setup.pending-kyc.text"
-        values={{ href: externalRoutes.neufundSupportHome }}
-      />
+      {kycRequestType === EKycRequestType.BUSINESS ? (
+        <FormattedHTMLMessage
+          tagName="span"
+          id="account-setup.pending-kyc.text.business"
+          values={{ href: externalRoutes.neufundSupportHome }}
+        />
+      ) : (
+        <FormattedHTMLMessage
+          tagName="span"
+          id="account-setup.pending-kyc.text.individual"
+          values={{ href: externalRoutes.neufundSupportHome }}
+        />
+      )}
     </p>
     <AccountSetupKycPendingComponent />
   </div>
 );
 
-const OnboardingKycRejectedBase: React.FunctionComponent<IKycPendingProps> = ({
-  kycRequestStatus,
-}) => (
+const OnboardingKycRejectedBase: React.FunctionComponent<Omit<
+  IKycPendingProps,
+  "kycRequestType"
+>> = ({ kycRequestStatus }) => (
   <div className={styles.accountSetupKycPendingWrapper} data-test-id="onboarding-kyc-pending">
     <h1 className={styles.titleLarge}>
-      <FormattedMessage id="account-setup.pending-kyc.title" />{" "}
+      <FormattedMessage id="account-setup.pending-kyc.title" />
       <span className={styles.status}>
         {getMessageTranslation(kycStatusToTranslationMessage(kycRequestStatus))}
       </span>

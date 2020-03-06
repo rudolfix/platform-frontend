@@ -1,7 +1,7 @@
+import { Image, ISrcSet } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 
-import { Image, ISrcSet } from "./Image";
 import { Proportion } from "./Proportion";
 
 import * as styles from "./ResponsiveImage.module.scss";

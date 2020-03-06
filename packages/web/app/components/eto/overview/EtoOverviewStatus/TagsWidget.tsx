@@ -22,7 +22,7 @@ interface IExternalProps {
 
 interface IWithProps {
   termSheet: IEtoDocument;
-  prospectusApproved: IEtoDocument;
+  prospectusApproved?: IEtoDocument;
   smartContractOnChain: boolean;
 }
 
@@ -30,13 +30,19 @@ interface IDispatchProps {
   downloadDocument: (document: IEtoDocument) => void;
 }
 
-const hasDocument = (document: IEtoDocument): boolean =>
+const hasDocument = (document: IEtoDocument | undefined): boolean =>
   Boolean(document && document.name && document.name.length);
 
-const getApprovedDocumentTitle = (offeringDocumentType: EOfferingDocumentType) => {
+const getApprovedDocumentTitle = (
+  offeringDocumentType: EOfferingDocumentType,
+  hasProspectusDocument: boolean,
+) => {
   switch (offeringDocumentType) {
     case EOfferingDocumentType.PROSPECTUS:
-      return <FormattedMessage id="shared-component.eto-overview.prospectus-approved" />;
+      if (hasProspectusDocument) {
+        return <FormattedMessage id="shared-component.eto-overview.prospectus-approved" />;
+      }
+      return <FormattedMessage id="shared-component.eto-overview.prospectus" />;
 
     case EOfferingDocumentType.MEMORANDUM:
       return <FormattedMessage id="shared-component.eto-overview.investment-memorandum" />;
@@ -62,10 +68,14 @@ const TagsWidgetLayout: React.FunctionComponent<IWithProps & IExternalProps & ID
     "data-test-id": "eto-overview-term-sheet-button",
   };
 
+  const approvedDocumentTagCondition = hasDocument(prospectusApproved);
   const approvedDocumentTagCommonProps = {
     innerClass,
-    condition: hasDocument(prospectusApproved),
-    textElement: getApprovedDocumentTitle(eto.product.offeringDocumentType),
+    condition: approvedDocumentTagCondition,
+    textElement: getApprovedDocumentTitle(
+      eto.product.offeringDocumentType,
+      approvedDocumentTagCondition,
+    ),
     "data-test-id": "eto-overview-prospectus-approved-button",
   };
 
@@ -99,9 +109,7 @@ const TagsWidgetLayout: React.FunctionComponent<IWithProps & IExternalProps & ID
       ) : (
         <TagWithFallback
           {...approvedDocumentTagCommonProps}
-          onClick={() => {
-            downloadDocument(prospectusApproved);
-          }}
+          onClick={() => prospectusApproved && downloadDocument(prospectusApproved)}
         />
       )}
 

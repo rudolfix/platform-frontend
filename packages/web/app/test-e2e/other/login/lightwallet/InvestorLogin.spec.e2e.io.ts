@@ -1,4 +1,3 @@
-import { appRoutes } from "../../../../components/appRoutes";
 import {
   assertButtonIsActive,
   assertDashboard,
@@ -31,20 +30,18 @@ describe("Investor", () => {
   });
 
   it("can't register without accepting Terms of Use", () => {
-    cy.visit(appRoutes.register);
-    cy.get(tid("wallet-selector-register-email")).type(email);
-    cy.get(tid("wallet-selector-register-password")).type(password);
-    cy.get(tid("wallet-selector-register-confirm-password")).type(password);
+    registerWithLightWallet(email, password);
+
     cy.get(tid("wallet-selector-register-button")).should("be.disabled");
   });
 
-  it("should register user with light-wallet and send email @login @p1", () => {
+  it("should register user with light-wallet and send email #login #p1", () => {
     registerWithLightWallet(email, password);
 
     assertWaitForLatestEmailSentWithSalt(email);
   });
 
-  it("should remember light wallet details after logout @login @p2", () => {
+  it("should remember light wallet details after logout #login #p2", () => {
     registerWithLightWallet(email, password);
 
     logoutViaAccountMenu();
@@ -54,7 +51,7 @@ describe("Investor", () => {
     assertDashboard();
   });
 
-  it("should recognize ETO user and save metadata correctly @login @p2", () => {
+  it("should recognize ETO user and save metadata correctly #login #p2", () => {
     // todo: we should let to register as issuer here so mock is not needed
     registerWithLightWallet(email, password);
 
@@ -84,7 +81,7 @@ describe("Investor", () => {
     });
   });
 
-  it("should wipe out saved investor wallet when issuer login @login @p3", () => {
+  it("should wipe out saved investor wallet when issuer login #login #p3", () => {
     // todo: we should let to register as issuer here so mock is not needed
     registerWithLightWallet(email, password);
 
@@ -101,7 +98,7 @@ describe("Investor", () => {
     });
   });
 
-  it("should return an error when logging with same email @login @p3", () => {
+  it("should return an error when logging with same email #login #p3", () => {
     // register once and then verify email account
     cy.visit("/register");
     lightWalletTypeRegistrationInfo(email, password);
@@ -120,7 +117,7 @@ describe("Investor", () => {
     assertButtonIsActive("wallet-selector-register-button");
   });
 
-  it("should update login email on activation @login @p2", () => {
+  it("should update login email on activation #login #p2", () => {
     const TEST_LINK =
       "https://localhost:9090/email-verify?code=b7fb21ea-b248-4bc3-8500-b3f2b8644c17&email=pavloblack%40hotmail.com&user_type=investor&wallet_type=light&wallet_subtype=unknown&salt=XzNJFpdkgjOxrUXPFD6NmzkUGGpUmuA5vjrt1xyMFd4%3D";
 
@@ -147,7 +144,7 @@ describe("Investor", () => {
     });
   });
 
-  it("should logout previous user when email activation occurs @login @p3", () => {
+  it("should logout previous user when email activation occurs #login #p3", () => {
     registerWithLightWallet(email, password);
     assertDashboard();
 

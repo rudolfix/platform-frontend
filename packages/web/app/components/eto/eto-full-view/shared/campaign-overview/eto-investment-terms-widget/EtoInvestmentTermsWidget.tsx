@@ -1,4 +1,4 @@
-import { divideBigNumbers, ETHEREUM_ZERO_ADDRESS } from "@neufund/shared";
+import { divideBigNumbers } from "@neufund/shared";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -48,6 +48,11 @@ const DownloadIshaOrTermsheetLink: React.FunctionComponent<TExternalProps & TDis
   downloadDocument,
   isUserFullyVerified,
 }) => {
+  // TODO remove once server sends empty collection
+  if (!eto.documents) {
+    return null;
+  }
+
   const getDocument = getDocumentByType(eto.documents);
 
   const signedIshaDoc = getDocument(EEtoDocumentType.SIGNED_INVESTMENT_AND_SHAREHOLDER_AGREEMENT);
@@ -89,7 +94,6 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
   downloadDocument,
   isUserFullyVerified,
 }) => {
-  const isProductSet = eto.product.id !== ETHEREUM_ZERO_ADDRESS;
   const newSharePrice = eto.investmentCalculatedValues
     ? eto.investmentCalculatedValues.sharePrice
     : undefined;
@@ -230,7 +234,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.tokens-per-share" />}
               value={
                 <FormatNumber
-                  value={eto.equityTokensPerShare.toString()}
+                  value={eto.equityTokensPerShare ? eto.equityTokensPerShare.toString() : undefined}
                   outputFormat={ENumberOutputFormat.INTEGER}
                   inputFormat={ENumberInputFormat.FLOAT}
                   defaultValue={<ToBeAnnounced />}
@@ -276,7 +280,7 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               label={<FormattedMessage id="eto.public-view.token-terms.ticket-size" />}
               value={
                 <MoneyRange
-                  valueFrom={eto.minTicketEur.toString()}
+                  valueFrom={eto.minTicketEur ? eto.minTicketEur.toString() : undefined}
                   valueUpto={
                     eto.maxTicketEur ? eto.maxTicketEur.toString() : ESpecialNumber.UNLIMITED
                   }
@@ -328,22 +332,18 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
                 <FormattedMessage id="eto.public-view.token-terms.public-eto.product.jurisdiction" />
               }
               value={
-                isProductSet ? (
-                  <>
-                    {eto.product.jurisdiction === EJurisdiction.GERMANY && (
-                      <FormattedMessage
-                        id={`eto.public-view.token-terms.public-eto.product.jurisdiction.de`}
-                      />
-                    )}
-                    {eto.product.jurisdiction === EJurisdiction.LIECHTENSTEIN && (
-                      <FormattedMessage
-                        id={`eto.public-view.token-terms.public-eto.product.jurisdiction.li`}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <ToBeAnnounced />
-                )
+                <>
+                  {eto.product.jurisdiction === EJurisdiction.GERMANY && (
+                    <FormattedMessage
+                      id={`eto.public-view.token-terms.public-eto.product.jurisdiction.de`}
+                    />
+                  )}
+                  {eto.product.jurisdiction === EJurisdiction.LIECHTENSTEIN && (
+                    <FormattedMessage
+                      id={`eto.public-view.token-terms.public-eto.product.jurisdiction.li`}
+                    />
+                  )}
+                </>
               }
               data-test-id="eto-public-view-public-eto-duration"
             />
@@ -418,14 +418,10 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
             <Entry
               label={<FormattedMessage id="eto.public-view.asset-type" />}
               value={
-                isProductSet ? (
-                  eto.product.assetType === EAssetType.SECURITY ? (
-                    <FormattedMessage id={`eto.public-view.asset-type.security`} />
-                  ) : (
-                    <FormattedMessage id={`eto.public-view.asset-type.vma`} />
-                  )
+                eto.product.assetType === EAssetType.SECURITY ? (
+                  <FormattedMessage id={`eto.public-view.asset-type.security`} />
                 ) : (
-                  <ToBeAnnounced />
+                  <FormattedMessage id={`eto.public-view.asset-type.vma`} />
                 )
               }
               data-test-id="eto-public-view-asset-type"

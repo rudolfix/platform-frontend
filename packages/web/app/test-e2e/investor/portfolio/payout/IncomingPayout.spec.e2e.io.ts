@@ -15,7 +15,7 @@ describe("Auto Login", () => {
 // createAndLoginNewUser not reacting to HTTP status codes
 // currently skipped as announe dialogs changes due to new onboarding but tests did not
 describe("Incoming payout", function(): void {
-  it("should show countdown with incoming payout value @payout @p2 @flaky", () => {
+  it("should show countdown with incoming payout value #payout #p2 #flaky", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       goToDashboard();
 
@@ -25,7 +25,7 @@ describe("Incoming payout", function(): void {
     });
   });
 
-  it.skip("should change view after incoming payout complete @payout @p3 @flaky", () => {
+  it.skip("should change view after incoming payout complete #payout #p3 #flaky", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       let clock: any = null;
       goToDashboard();

@@ -92,8 +92,8 @@ describe("Redeem", function(): void {
       cy.get(tid("locked-wallet.neur.bank-account.link-account")).click();
     });
 
-    // close bank account link modal
-    cy.get(tid("bank-transfer.summary.transfer-completed")).click();
+    it("should withdraw successfully #banking #p1 #flaky", () => {
+      cy.get(tid("bank-transfer.reedem-init.redeem-form-label")).type(redeemAmount);
 
     cy.get(tid("modal-close-button"))
       .last()

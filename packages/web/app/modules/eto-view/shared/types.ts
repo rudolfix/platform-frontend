@@ -47,6 +47,8 @@ export type TCampaignOverviewParams = {
   showSlideshare: boolean;
   showSocialChannels: boolean;
   showInvestmentTerms: boolean;
+  showTimeline: boolean;
+  showDisclaimer: boolean;
 } & XOR<{ showTwitterFeed: true; twitterUrl: string }, { showTwitterFeed: false }>;
 
 export type TCampaignOverviewData = TCampaignOverviewParams &

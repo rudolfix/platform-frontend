@@ -12,6 +12,7 @@ import { Slides } from "../../../../shared/Slides";
 import { SocialProfilesList } from "../../../../shared/SocialProfilesList";
 import { TwitterTimelineEmbed } from "../../../../shared/TwitterTimeline";
 import { Video } from "../../../../shared/Video";
+import { Disclaimer } from "../Disclaimer/Disclaimer";
 import { EtoAccordionElements } from "../EtoAccordionElements";
 import { CompanyDescription } from "./CompanyDescription";
 import { DocumentsWidget } from "./documents-widget/DocumentsWidget";
@@ -31,6 +32,8 @@ export const CampaignOverviewLayout: React.FunctionComponent<TEtoViewData> = ({
     showSlideshare,
     showSocialChannels,
     showInvestmentTerms,
+    showTimeline,
+    showDisclaimer,
   },
   eto,
   userIsFullyVerified,
@@ -51,7 +54,7 @@ export const CampaignOverviewLayout: React.FunctionComponent<TEtoViewData> = ({
 
   return (
     <>
-      <ETOTimeline eto={eto} />
+      {showTimeline && <ETOTimeline eto={eto} />}
 
       <Container columnSpan={shouldSplitGrid}>
         <CompanyDescription eto={eto} />
@@ -71,12 +74,16 @@ export const CampaignOverviewLayout: React.FunctionComponent<TEtoViewData> = ({
             <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
           </Container>
         )}
-        <Container>
-          <div className={cn((showSlideshare || showYouTube) && "mt-4")}>
-            <SocialProfilesList profiles={(socialChannels as TSocialChannelsType) || []} />
-          </div>
-        </Container>
+        {showSocialChannels && (
+          <Container>
+            <div className={cn((showSlideshare || showYouTube) && "mt-4")}>
+              <SocialProfilesList profiles={(socialChannels as TSocialChannelsType) || []} />
+            </div>
+          </Container>
+        )}
       </Container>
+      {showDisclaimer && <Disclaimer />}
+
       <MarketingDocumentsWidget
         columnSpan={EColumnSpan.THREE_COL}
         companyMarketingLinks={marketingLinks}

@@ -25,7 +25,7 @@ describe("Eto view widget", () => {
     shouldDownloadDocument("eto-overview-term-sheet-button", "Signed Termsheet.pdf");
 
     shouldDownloadDocument(
-      "eto-overview-prospectus-approved-button",
+      "eto-overview-investment-memorandum-button",
       "Approved Offering Document.pdf",
     );
 
@@ -50,7 +50,7 @@ describe("Eto view widget", () => {
 
       assertIsNonClickableTag("eto-overview-term-sheet-button");
 
-      assertIsNonClickableTag("eto-overview-prospectus-approved-button");
+      assertIsNonClickableTag("eto-overview-investment-memorandum-button");
 
       assertIsNonClickableTag("eto-overview-smart-contract-on-chain-button");
     },

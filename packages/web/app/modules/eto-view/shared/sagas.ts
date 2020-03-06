@@ -33,8 +33,10 @@ import {
 import {
   getTwitterData,
   shouldShowInvestmentTerms,
+  shouldShowProspectusDisclaimer,
   shouldShowSlideshare,
   shouldShowSocialChannels,
+  shouldShowTimeline,
   shouldShowYouTube,
 } from "./utils";
 
@@ -64,14 +66,17 @@ export function* calculateEtoViewCampaignOverviewType(
 
 export function* getCampaignOverviewData(
   eto: TEtoWithCompanyAndContractReadonly,
+  viewAsUserType: EUserType,
 ): Generator<any, TCampaignOverviewParams, any> {
   const twitterData = yield* call(getTwitterData, eto.company);
 
   return {
+    showTimeline: yield* call(shouldShowTimeline, eto),
+    showDisclaimer: yield* call(shouldShowProspectusDisclaimer, eto),
     showYouTube: yield* call(shouldShowYouTube, eto.company),
     showSlideshare: yield* call(shouldShowSlideshare, eto.company),
     showSocialChannels: yield* call(shouldShowSocialChannels, eto.company),
-    showInvestmentTerms: yield* call(shouldShowInvestmentTerms, eto.state),
+    showInvestmentTerms: yield* call(shouldShowInvestmentTerms, eto, viewAsUserType),
     ...twitterData,
   };
 }
@@ -83,7 +88,7 @@ export function* calculateCampaignOverviewDataIssuerNominee(
     calculateEtoViewCampaignOverviewType,
     eto,
   );
-  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto);
+  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto, EUserType.ISSUER);
 
   if (campaignOverviewType === EEtoViewCampaignOverviewType.WITH_STATS) {
     return {
@@ -110,7 +115,7 @@ export function* calculateCampaignOverviewData(
     eto,
   );
 
-  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto);
+  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto, EUserType.INVESTOR);
 
   if (campaignOverviewType === EEtoViewCampaignOverviewType.WITH_STATS) {
     return {

@@ -43,10 +43,10 @@ describe("Eto widget page", () => {
           .should("have.attr", "href")
           .and("match", etoPreviewLink(eto.previewCode, eto.product.jurisdiction));
 
-        assertIsExternalLink("eto-overview-prospectus-approved-button", cy.wrap($iframe));
+        assertIsExternalLink("eto-overview-investment-memorandum-button", cy.wrap($iframe));
 
         cy.wrap($iframe)
-          .find(tid("eto-overview-prospectus-approved-button"))
+          .find(tid("eto-overview-investment-memorandum-button"))
           .should("have.attr", "href")
           .and("match", etoPreviewLink(eto.previewCode, eto.product.jurisdiction));
 

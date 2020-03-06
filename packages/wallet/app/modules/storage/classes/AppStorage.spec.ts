@@ -1,10 +1,10 @@
+import * as yup from "yup";
+import { ILogger, noopLogger } from "@neufund/shared-modules";
+
 import { AppStorage } from "./AppStorage";
 import { AsyncStorageProvider } from "./AsyncStorageProvider";
-import * as yup from "yup";
 import { StorageSchema } from "./StorageSchema";
 import { StorageItem } from "./StorageItem";
-import { ILogger } from "@neufund/shared-modules";
-import { Logger } from "@neufund/shared-modules/dist/modules/core/lib/logger";
 
 describe("AppStorage", () => {
   const PersonSchema = yup.object().shape({
@@ -23,7 +23,7 @@ describe("AppStorage", () => {
 
   beforeEach(() => {
     storageProvider = new AsyncStorageProvider();
-    logger = new Logger();
+    logger = noopLogger;
     storage = new AppStorage(storageProvider, logger, testKey, personSchema);
     storage.clear();
   });

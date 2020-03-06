@@ -37,7 +37,7 @@ describe("Transactions History", () => {
     // generate withdraw transaction to have new item in tx history list
     const randomAddress: string = generateRandomEthereumAddress();
 
-    doWithdraw(randomAddress, "1", { closeWhen: "pending" }).then(txHash => {
+    doWithdraw(randomAddress, "0.0001", { closeWhen: "pending" }).then(txHash => {
       goToWallet();
 
       cy.get(tid(`transactions-history-${txHash}`)).should("exist");

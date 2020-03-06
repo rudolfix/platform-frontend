@@ -1,5 +1,4 @@
 import { Q18 } from "@neufund/shared";
-import BigNumber from "bignumber.js";
 
 import { sendEth } from "../../../utils/ethRpcUtils";
 import {
@@ -45,23 +44,12 @@ describe("ETH", () => {
     cy.get(tid("investment-flow.success.title")).should("exist");
 
     cy.get(tid("investment-flow.success.view-your-portfolio")).click();
-
-    cy.get(tid("portfolio-reserved-asset-neu-reward")).then($element => {
-      const neuReward = parseAmount($element.text());
-      // TODO: this will be super flaky, read NEU balance before test and then add to estimatedReward
-      cy.get<BigNumber>("@estimatedReward").then(estimatedReward => {
-        // estimated and actual NEU reward can be a little bit different
-        // we allow neu reward to differ from estimated 5%
-        // TODO: where is the abs() used, it can be negative
-        expect(neuReward.minus(estimatedReward)).to.be.bignumber.lessThan(0.05);
-      });
-    });
   });
 
   it.skip("should invest all ETH balance #investment #p3 #flaky", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
-    const value = "2";
+    const value = "0.5";
     createAndLoginNewUser({
       type: "investor",
       kyc: "individual",
@@ -91,17 +79,6 @@ describe("ETH", () => {
       cy.get(tid("investment-flow.success.title")).should("exist");
 
       cy.get(tid("investment-flow.success.view-your-portfolio")).click();
-
-      cy.get(tid("portfolio-reserved-asset-neu-reward")).then($element => {
-        const neuReward = parseAmount($element.text());
-        // TODO: this will be super flaky, read NEU balance before test and then add to estimatedReward
-        cy.get<BigNumber>("@estimatedReward").then(estimatedReward => {
-          // estimated and actual NEU reward can be a little bit different
-          // we allow neu reward to differ from estimated 5%
-          // TODO: where is the abs() used, it can be negative
-          expect(neuReward.minus(estimatedReward)).to.be.bignumber.lessThan(0.05);
-        });
-      });
     });
   });
 

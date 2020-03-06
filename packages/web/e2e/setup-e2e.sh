@@ -29,7 +29,7 @@ else
     run_frontend
 fi
 
-yarn test:e2e:cypress:record&
+yarn test:e2e:cypress:vm&
 sudo renice -n -19 $!
 fg
 

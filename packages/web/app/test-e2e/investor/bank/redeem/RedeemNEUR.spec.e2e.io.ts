@@ -138,7 +138,7 @@ describe("Redeem", function(): void {
       cy.get(tid("wallet-balance.neur.redeem-button")).click();
     });
 
-    it("should withdraw whole balance #banking #p1 #flaky", () => {
+    it("should withdraw successfully #banking #p1 #flaky", () => {
       cy.get(tid("bank-transfer.reedem-init.redeem-form-label")).type(redeemAmount);
 
       fillForm({

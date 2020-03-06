@@ -1,7 +1,20 @@
 import { expect } from "chai";
 
 import { ESocialChannelType } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { getTwitterData, getTwitterUrl } from "./utils";
+import { EEtoState } from "./../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import {
+  EJurisdiction,
+  EOfferingDocumentType,
+} from "./../../../lib/api/eto/EtoProductsApi.interfaces";
+import { EUserType } from "./../../../lib/api/users/interfaces";
+import { TEtoWithCompanyAndContractReadonly } from "./../../eto/types";
+import {
+  getTwitterData,
+  getTwitterUrl,
+  shouldShowInvestmentTerms,
+  shouldShowProspectusDisclaimer,
+  shouldShowTimeline,
+} from "./utils";
 
 const socialChannels = [
   {
@@ -56,20 +69,85 @@ describe("eto view utils", () => {
 
     expect(getTwitterData(companyData)).to.deep.eq({ showTwitterFeed: false });
   });
-  it("getTwitterData: socialChannels include twitter, twitter feed enabled", () => {
-    const companyData = {
-      companyVideo: undefined,
-      companySlideshare: undefined,
-      companyPitchdeckUrl: undefined,
-      companyNews: undefined,
-      marketingLinks: undefined,
-      socialChannels: [...socialChannels, twitter],
-      disableTwitterFeed: false,
-    };
-
-    expect(getTwitterData(companyData)).to.deep.eq({
-      showTwitterFeed: true,
-      twitterUrl: "twitter_url",
-    });
+  it("shouldShowInvestmentTerms", () => {
+    expect(
+      shouldShowInvestmentTerms(
+        {
+          state: EEtoState.ON_CHAIN,
+        } as TEtoWithCompanyAndContractReadonly,
+        EUserType.INVESTOR,
+      ),
+    ).to.deep.eq(true);
+    expect(
+      shouldShowInvestmentTerms(
+        {
+          state: EEtoState.PREVIEW,
+        } as TEtoWithCompanyAndContractReadonly,
+        EUserType.INVESTOR,
+      ),
+    ).to.deep.eq(false);
+    expect(
+      shouldShowInvestmentTerms(
+        {
+          state: EEtoState.ON_CHAIN,
+        } as TEtoWithCompanyAndContractReadonly,
+        EUserType.ISSUER,
+      ),
+    ).to.deep.eq(true);
+  });
+  it("shouldShowTimeline", () => {
+    expect(
+      shouldShowTimeline({
+        state: EEtoState.ON_CHAIN,
+      } as TEtoWithCompanyAndContractReadonly),
+    ).to.deep.eq(true);
+    expect(
+      shouldShowTimeline({
+        state: EEtoState.PENDING,
+      } as TEtoWithCompanyAndContractReadonly),
+    ).to.deep.eq(false);
+    expect(
+      shouldShowTimeline({
+        state: EEtoState.PREVIEW,
+      } as TEtoWithCompanyAndContractReadonly),
+    ).to.deep.eq(false);
+  });
+  it("shouldShowProspectusDisclaimer", () => {
+    expect(
+      shouldShowProspectusDisclaimer({
+        product: {
+          jurisdiction: EJurisdiction.GERMANY,
+          offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
+        },
+        state: EEtoState.PREVIEW,
+      } as TEtoWithCompanyAndContractReadonly),
+    ).to.be.equal(true);
+    expect(
+      shouldShowProspectusDisclaimer({
+        product: {
+          jurisdiction: EJurisdiction.GERMANY,
+          offeringDocumentType: EOfferingDocumentType.MEMORANDUM,
+        },
+        state: EEtoState.ON_CHAIN,
+      } as TEtoWithCompanyAndContractReadonly),
+    ).to.be.equal(false);
+    expect(
+      shouldShowProspectusDisclaimer({
+        product: {
+          jurisdiction: EJurisdiction.GERMANY,
+          offeringDocumentType: EOfferingDocumentType.MEMORANDUM,
+        },
+        state: EEtoState.PREVIEW,
+      } as TEtoWithCompanyAndContractReadonly),
+    ).to.be.equal(true);
+    expect(
+      shouldShowProspectusDisclaimer({
+        product: {
+          jurisdiction: EJurisdiction.GERMANY,
+          offeringDocumentType: EOfferingDocumentType.PROSPECTUS,
+        },
+        state: EEtoState.LISTED,
+      } as TEtoWithCompanyAndContractReadonly),
+    ).to.be.equal(true);
   });
 });

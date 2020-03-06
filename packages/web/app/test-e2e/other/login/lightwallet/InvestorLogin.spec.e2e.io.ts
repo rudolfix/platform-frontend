@@ -113,11 +113,8 @@ describe("Investor", () => {
     // register again with the same email, this should show a warning
     cy.visit("/register");
     lightWalletTypeRegistrationInfo(email, password);
-    assertErrorModal();
-
-    //dismiss warning, register button must be enabled
-    cy.get(tid("generic-modal-dismiss-button")).awaitedClick();
-    assertButtonIsActive("wallet-selector-register-button");
+    cy.get(tid("email-error")).contains("Sorry. This email address is already in use");
+    cy.get(tid("wallet-selector-register-button")).should("be.disabled");
   });
 
   it("should update login email on activation @login @p2", () => {
@@ -168,13 +165,8 @@ describe("Investor", () => {
       cy.get(tid("modules.auth.sagas.verify-user-email.toast.verification-failed")).should("exist");
 
       cy.get(tid("light-wallet-login-with-email-email-field")).contains(email);
-
-      fillForm({
-        password,
-        "wallet-selector-nuewallet.login-button": {
-          type: "submit",
-        },
-      });
+      cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
+      cy.get(tid("wallet-selector-nuewallet.login-button")).click();
 
       assertDashboard();
       goToProfile();

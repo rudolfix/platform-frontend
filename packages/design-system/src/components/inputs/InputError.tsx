@@ -11,7 +11,11 @@ type TErrorProps = {
 };
 
 const InputError: React.FunctionComponent<TErrorProps & TDataTestId> = ({ name, children }) => (
-  <p className={styles.errorMessage} id={`${name}-error`} role="alert">
+  <p
+    className={styles.errorMessage}
+    data-test-id={`${name}-error`}
+    role="alert"
+  >
     {children}
   </p>
 );

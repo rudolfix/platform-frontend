@@ -172,10 +172,7 @@ export const lightWalletTypeRegistrationInfo = (email: string, password: string)
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-tos")).click();
 
-  cy.get(tid("wallet-selector-register-button"))
-    .should("be.enabled")
-    .awaitedClick()
-    .should("be.disabled");
+  cy.get(tid("wallet-selector-register-button")).click();
 };
 
 export const logoutViaAccountMenu = () => {

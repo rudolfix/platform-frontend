@@ -47,7 +47,7 @@ export const WalletLedgerChooser = compose<React.FunctionComponent>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.walletSelector.ledgerLoadAccounts()),
   }),
-  withHeaderButton<{closeAccountChooser:()=>void}>((props) => ({
+  withHeaderButton<{ closeAccountChooser: () => void }>(props => ({
     buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
     buttonAction: props.closeAccountChooser,
   })),

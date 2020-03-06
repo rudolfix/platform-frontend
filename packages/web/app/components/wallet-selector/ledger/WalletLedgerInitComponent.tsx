@@ -87,11 +87,14 @@ interface IDispatchProps {
 }
 
 type TLedgerErrorProps = {
-  errorMessage:TMessage,
+  errorMessage: TMessage;
   tryToEstablishConnectionWithLedger: () => void;
-}
+};
 
-export const LedgerErrorBase:React.FunctionComponent<TLedgerErrorProps> = ({ errorMessage, tryToEstablishConnectionWithLedger }) => (
+export const LedgerErrorBase: React.FunctionComponent<TLedgerErrorProps> = ({
+  errorMessage,
+  tryToEstablishConnectionWithLedger,
+}) => (
   <section className="text-center my-5">
     <WarningAlert className="mb-4">
       <FormattedMessage id="wallet-selector.ledger.start.connection-status" />{" "}
@@ -139,16 +142,19 @@ export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & ID
     <LedgerHeader />
 
     {isInitialConnectionInProgress && <LoadingIndicator />}
-    {errorMessage && <LedgerErrorBase
-      errorMessage={errorMessage}
-      tryToEstablishConnectionWithLedger={tryToEstablishConnectionWithLedger}
-    />}
+    {errorMessage && (
+      <LedgerErrorBase
+        errorMessage={errorMessage}
+        tryToEstablishConnectionWithLedger={tryToEstablishConnectionWithLedger}
+      />
+    )}
 
     {/* If there is a need for more visual cases then we will need to implement a full solution */}
-    {errorMessage && errorMessage.messageType === LedgerErrorMessage.NOT_SUPPORTED
-      ? <LedgerNotSupported />
-      : <LedgerConnectionSteps />
-    }
+    {errorMessage && errorMessage.messageType === LedgerErrorMessage.NOT_SUPPORTED ? (
+      <LedgerNotSupported />
+    ) : (
+      <LedgerConnectionSteps />
+    )}
   </>
 );
 
@@ -165,11 +171,10 @@ export const LedgerInit = compose<IStateProps & IDispatchProps, {}>(
   }),
 )(WalletLedgerInitComponent);
 
-export const LedgerError = compose<TLedgerErrorProps,{}>(
+export const LedgerError = compose<TLedgerErrorProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: dispatch => ({
-      tryToEstablishConnectionWithLedger: () =>
-        dispatch(actions.walletSelector.ledgerReconnect()),
+      tryToEstablishConnectionWithLedger: () => dispatch(actions.walletSelector.ledgerReconnect()),
     }),
   }),
 )(LedgerErrorBase);

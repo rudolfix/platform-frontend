@@ -1,4 +1,4 @@
-import { cancel, delay, END, eventChannel, fork, put,  take, Task } from "@neufund/sagas";
+import { cancel, delay, END, eventChannel, fork, put, take, Task } from "@neufund/sagas";
 
 import {
   LIGHT_WALLET_PASSWORD_CACHE_TIME,
@@ -128,7 +128,6 @@ export function* detectWeb3({
   yield put(actions.web3.setWeb3Status(!!browserWallet.injectedWeb3Provider));
 
   if (browserWallet.injectedWeb3Provider !== undefined) {
-
     // FIXME !!! move this to router
     // const rootPath = yield select(selectLocation);
     // // If user trying to access log in route redirect directly to login with browser wallet

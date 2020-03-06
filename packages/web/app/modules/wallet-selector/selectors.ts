@@ -43,12 +43,11 @@ export const selectOppositeRootPath = (state: RouterState): string =>
 export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
 
-export const selectWalletSelectorData = (state:TAppGlobalState) =>
-  state.walletSelector;
+export const selectWalletSelectorData = (state: TAppGlobalState) => state.walletSelector;
 
-export const selectRegisterWalletType = (state:TAppGlobalState) =>
-  state.walletSelector.walletType;
+export const selectRegisterWalletType = (state: TAppGlobalState) => state.walletSelector.walletType;
 
-
-export const selectRegisterWalletDefaultFormValues = (state:TAppGlobalState) =>
-  state.walletSelector.uiState !== ECommonWalletRegistrationFlowState.NOT_STARTED ? state.walletSelector.initialFormValues : undefined;
+export const selectRegisterWalletDefaultFormValues = (state: TAppGlobalState) =>
+  state.walletSelector.uiState !== ECommonWalletRegistrationFlowState.NOT_STARTED
+    ? state.walletSelector.initialFormValues
+    : undefined;

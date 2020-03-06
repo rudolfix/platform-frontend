@@ -12,15 +12,7 @@ export const LightWalletRecoverySeedCheck: React.FunctionComponent<TLightWalletR
   goToDashboard,
   onValidSeed,
 }) => (
-  <RecoveryStep
-    step={1}
-    allSteps={2}
-    buttonAction={goToDashboard}
-    data-test-id="recover-layout"
-  >
+  <RecoveryStep step={1} allSteps={2} buttonAction={goToDashboard} data-test-id="recover-layout">
     <LightWalletSeedRecoveryComponent onValidSeed={onValidSeed} />
   </RecoveryStep>
-
 );
-
-

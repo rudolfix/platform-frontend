@@ -5,7 +5,6 @@ export const userMayChooseWallet = (userType: EUserType) =>
   userType !== EUserType.NOMINEE &&
   !(userType === EUserType.ISSUER && process.env.NF_ISSUERS_CAN_LOGIN_WITH_ANY_WALLET !== "1");
 
-
 export function getRedirectionUrl(rootPath: string): string {
   const { loginIssuer, registerIssuer, registerNominee } = appRoutes;
 

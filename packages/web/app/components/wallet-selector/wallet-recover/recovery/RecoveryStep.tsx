@@ -11,17 +11,17 @@ type TRecoveryStepProps = {
   buttonAction: () => void;
 };
 
-export const RecoveryStepBase: React.FunctionComponent<TRecoveryStepProps> = ({
-  children,
-}) => (<>{children}</>);
+export const RecoveryStepBase: React.FunctionComponent<TRecoveryStepProps> = ({ children }) => (
+  <>{children}</>
+);
 
 export const RecoveryStep = compose<TRecoveryStepProps, TRecoveryStepProps>(
-    withProgress<TRecoveryStepProps>((props: TRecoveryStepProps) => ({
-      step: props.step,
-      allSteps: props.allSteps,
-    })),
-    withHeaderButton<TRecoveryStepProps>((props: TRecoveryStepProps) => ({
-      buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
-      buttonAction: props.buttonAction,
-    })),
-  )(RecoveryStepBase);
+  withProgress<TRecoveryStepProps>((props: TRecoveryStepProps) => ({
+    step: props.step,
+    allSteps: props.allSteps,
+  })),
+  withHeaderButton<TRecoveryStepProps>((props: TRecoveryStepProps) => ({
+    buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
+    buttonAction: props.buttonAction,
+  })),
+)(RecoveryStepBase);

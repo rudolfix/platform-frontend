@@ -8,7 +8,7 @@ import {
   GenericModalMessage,
   SignInUserErrorMessage,
 } from "../../../components/translatedMessages/messages";
-import { createMessage, } from "../../../components/translatedMessages/utils";
+import { createMessage } from "../../../components/translatedMessages/utils";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IUser } from "../../../lib/api/users/interfaces";

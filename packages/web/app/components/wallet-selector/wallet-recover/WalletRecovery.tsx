@@ -16,6 +16,9 @@ const WalletRecoveryMain = React.lazy(() =>
 export const WalletRecovery: React.FunctionComponent = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayout),
   withContainer(
-    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL, 'data-test-id':"recover-layout" })(FullscreenProgressLayout),
+    withProps<TContentExternalProps, {}>({
+      width: EContentWidth.SMALL,
+      "data-test-id": "recover-layout",
+    })(FullscreenProgressLayout),
   ),
 )(WalletRecoveryMain);

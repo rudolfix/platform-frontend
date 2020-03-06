@@ -18,12 +18,7 @@ export const LightWalletRecoverySignUp: React.FunctionComponent<TLightWalletReco
   goToDashboard,
   seed,
 }) => (
-  <RecoveryStep
-    step={2}
-    allSteps={2}
-    buttonAction={goToDashboard}
-    data-test-id="recover-layout"
-  >
+  <RecoveryStep step={2} allSteps={2} buttonAction={goToDashboard} data-test-id="recover-layout">
     <RestoreLightWallet seed={seed} />
   </RecoveryStep>
 );

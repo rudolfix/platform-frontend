@@ -4,10 +4,16 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 import * as Yup from "yup";
 
-import { Button, EButtonWidth } from "../../../../../../design-system/dist/components/buttons/Button";
+import {
+  Button,
+  EButtonWidth,
+} from "../../../../../../design-system/dist/components/buttons/Button";
 import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
 import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
-import { IIntlProps, injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
+import {
+  IIntlProps,
+  injectIntlHelpers,
+} from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { TLightWalletFormValues } from "../../../../modules/wallet-selector/types";
 import { Form } from "../../../shared/forms/Form";
@@ -39,15 +45,24 @@ const validationSchema = Yup.object().shape({
     .test("tos-is-true", "You must accept the Terms of Use", value => value === true),
 });
 
-
 export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
   TDispatchProps &
   IIntlProps &
-  TRegisterWalletExternalProps> = ({ intl, submitForm, initialFormValues,errorMessage, restore }) => (
+  TRegisterWalletExternalProps> = ({
+  intl,
+  submitForm,
+  initialFormValues,
+  errorMessage,
+  restore,
+}) => (
   <Form<TLightWalletFormValues>
     validationSchema={validationSchema}
     initialValues={initialFormValues}
-    initialErrors={{ email: errorMessage && getMessageTranslation(errorMessage) } as FormikErrors<TLightWalletFormValues>}
+    initialErrors={
+      { email: errorMessage && getMessageTranslation(errorMessage) } as FormikErrors<
+        TLightWalletFormValues
+      >
+    }
     initialTouched={{ email: !!errorMessage }}
     validateOnMount={!errorMessage}
     validateOnBlur={false}
@@ -113,4 +128,4 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
 export const RegisterEnhancedLightWalletForm = compose<
   IIntlProps & TStateProps & TDispatchProps & TRegisterWalletExternalProps,
   TStateProps & TDispatchProps & TRegisterWalletExternalProps
-  >(injectIntlHelpers)(RegisterLightWalletForm);
+>(injectIntlHelpers)(RegisterLightWalletForm);

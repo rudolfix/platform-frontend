@@ -15,7 +15,6 @@ import {
   WalletLedgerChooserComponent,
 } from "../WalletLedgerChooserComponent";
 
-
 export const WalletLedgerChooser = compose<React.FunctionComponent>(
   appConnect<IWalletLedgerChooserComponent, IWalletLedgerChooserComponentDispatchProps>({
     stateToProps: state => ({
@@ -44,7 +43,7 @@ export const WalletLedgerChooser = compose<React.FunctionComponent>(
       },
     }),
   }),
-  withHeaderButton<{closeAccountChooser:()=>void}>((props) => ({
+  withHeaderButton<{ closeAccountChooser: () => void }>(props => ({
     buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
     buttonAction: props.closeAccountChooser,
   })),

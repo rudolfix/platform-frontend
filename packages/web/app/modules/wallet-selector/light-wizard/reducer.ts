@@ -17,7 +17,7 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
 ): ILightWalletWizardState => {
   switch (action.type) {
     case actions.walletSelector.lightWalletLogin.getType():
-    // case actions.walletSelector.lightWalletRegister.getType():
+      // case actions.walletSelector.lightWalletRegister.getType():
       return {
         ...state,
         errorMsg: undefined,

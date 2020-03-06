@@ -2,7 +2,7 @@ import { withContainer } from "@neufund/shared";
 import { createLocation, Location } from "history";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import {  compose, withProps } from "recompose";
+import { compose, withProps } from "recompose";
 
 import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
@@ -55,7 +55,9 @@ export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAddit
   withProps<TAdditionalProps, IStateProps & TRouteLoginProps>(
     ({ userType, rootPath, location }) => ({
       showWalletSelector: userMayChooseWallet(userType),
-      showLogoutReason: !!(location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT),
+      showLogoutReason: !!(
+        location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT
+      ),
       redirectLocation: createLocation(getRedirectionUrl(rootPath), location.state),
     }),
   ),

@@ -16,7 +16,9 @@ interface IExternalProps {
   redirectLocation: Location;
 }
 
-export const WalletSelectorLayoutContainer: React.FunctionComponent<{ showLogoutReason: boolean }> = ({ showLogoutReason, children }) => (
+export const WalletSelectorLayoutContainer: React.FunctionComponent<{
+  showLogoutReason: boolean;
+}> = ({ showLogoutReason, children }) => (
   <>
     {showLogoutReason && (
       <WarningAlert

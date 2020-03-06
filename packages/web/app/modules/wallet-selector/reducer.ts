@@ -1,7 +1,12 @@
 import { AppReducer } from "../../store";
 import { actions } from "../actions";
 import { EWalletType } from "../web3/types";
-import { ECommonWalletRegistrationFlowState, EFlowType, TWalletRegisterData, TWalletSelectorState } from "./types";
+import {
+  ECommonWalletRegistrationFlowState,
+  EFlowType,
+  TWalletRegisterData,
+  TWalletSelectorState,
+} from "./types";
 
 export const walletSelectorInitialState: TWalletSelectorState & TWalletRegisterData = {
   isMessageSigning: false,
@@ -17,7 +22,7 @@ export const walletSelectorInitialState: TWalletSelectorState & TWalletRegisterD
 export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletRegisterData> = (
   state = walletSelectorInitialState,
   action,
-): TWalletSelectorState &  TWalletRegisterData => {
+): TWalletSelectorState & TWalletRegisterData => {
   switch (action.type) {
     //backwards compatibility only
     case actions.walletSelector.tryConnectingWithBrowserWallet.getType():
@@ -26,7 +31,7 @@ export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletReg
         isLoading: true,
       };
     //backwards compatibility only
-      case actions.walletSelector.messageSigning.getType():
+    case actions.walletSelector.messageSigning.getType():
       return {
         flowType: state.flowType,
         isMessageSigning: true,
@@ -36,7 +41,7 @@ export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletReg
         uiState: ECommonWalletRegistrationFlowState.NOT_STARTED,
       };
     //backwards compatibility only
-      case actions.walletSelector.browserWalletConnectionError.getType():
+    case actions.walletSelector.browserWalletConnectionError.getType():
       return {
         flowType: state.flowType,
         isMessageSigning: false,
@@ -46,7 +51,7 @@ export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletReg
         uiState: ECommonWalletRegistrationFlowState.NOT_STARTED,
       };
     //backwards compatibility only
-      case actions.walletSelector.messageSigningError.getType():
+    case actions.walletSelector.messageSigningError.getType():
       return {
         ...state,
         isMessageSigning: false,
@@ -61,8 +66,8 @@ export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletReg
     case actions.walletSelector.setWalletRegisterData.getType():
       return {
         ...state,
-        ...action.payload.data
-      }
+        ...action.payload.data,
+      };
   }
 
   return state;

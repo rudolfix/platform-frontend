@@ -1,5 +1,5 @@
-import {  withContainer } from "@neufund/shared";
-import { branch,compose, renderComponent } from "recompose";
+import { withContainer } from "@neufund/shared";
+import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../../modules/actions";
 import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
@@ -14,11 +14,11 @@ export type TWalletBrowserProps = {
   errorMessage?: TMessage;
   isLoading: boolean;
   isMessageSigning: boolean;
-}
+};
 
-export type TWalletBrowserDispatchProps  = {
+export type TWalletBrowserDispatchProps = {
   tryConnectingWithBrowserWallet: () => void;
-}
+};
 
 export const WalletBrowser = compose(
   appConnect<TWalletBrowserProps, TWalletBrowserDispatchProps>({

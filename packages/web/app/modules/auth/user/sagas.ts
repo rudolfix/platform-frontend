@@ -26,7 +26,10 @@ import {
   neuTakeLatestUntil,
   neuTakeUntil,
 } from "../../sagasUtils";
-import { getCurrentAgreementHash, handleAcceptCurrentAgreement } from "../../terms-of-service/sagas";
+import {
+  getCurrentAgreementHash,
+  handleAcceptCurrentAgreement,
+} from "../../terms-of-service/sagas";
 import { selectUrlUserType } from "../../wallet-selector/selectors";
 import { EWalletSubType, EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
@@ -68,28 +71,25 @@ export function* waitForUserActiveOrLogout({
   }
 }
 
-export function* signInUser({
-  walletStorage,
-  web3Manager,
-  userStorage,
-}: TGlobalDependencies,
-  userType?:EUserType,
-  email?:string,
-  tos:boolean = false
+export function* signInUser(
+  { walletStorage, web3Manager, userStorage }: TGlobalDependencies,
+  userType?: EUserType,
+  email?: string,
+  tos: boolean = false,
 ): Generator<any, any, any> {
   try {
     // we will try to create with user type from URL but it could happen that account already exists and has different user type
-    const probableUserType: EUserType = userType ? userType : yield select((s: TAppGlobalState) =>
-      selectUrlUserType(s.router),
-    );
+    const probableUserType: EUserType = userType
+      ? userType
+      : yield select((s: TAppGlobalState) => selectUrlUserType(s.router));
 
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
-    yield call(loadOrCreateUser, probableUserType, email,tos);
+    yield call(loadOrCreateUser, probableUserType, email, tos);
     // TODO only light wallet sign in users must sign TOS
     yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
 
-    const walletMetadataUserType:EUserType = userType ? userType : yield select(selectUserType);
+    const walletMetadataUserType: EUserType = userType ? userType : yield select(selectUserType);
     const storedWalletMetadata: TStoredWalletMetadata = {
       // tslint:disable-next-line
       ...web3Manager.personalWallet!.getMetadata(),
@@ -118,7 +118,11 @@ export function* signInUser({
   }
 }
 
-export function* loadOrCreateUser(userType: EUserType, email?:string, tos:boolean = false): Generator<any, any, any> {
+export function* loadOrCreateUser(
+  userType: EUserType,
+  email?: string,
+  tos: boolean = false,
+): Generator<any, any, any> {
   const user: IUser = yield neuCall(loadOrCreateUserInternal, userType, email, tos);
 
   yield put(actions.auth.setUser(user));
@@ -130,8 +134,8 @@ export function* loadOrCreateUserInternal(
   { apiUserService, web3Manager }: TGlobalDependencies,
   userType: EUserType,
   email?: string,
-  tos:boolean = false
-): Generator<any,IUser,any> {
+  tos: boolean = false,
+): Generator<any, IUser, any> {
   // tslint:disable-next-line
   const walletMetadata = web3Manager.personalWallet!.getMetadata();
 
@@ -151,11 +155,11 @@ export function* loadOrCreateUserInternal(
       walletType: walletMetadata.walletType,
       walletSubtype: walletMetadata.walletSubType,
     };
-    if(email){
+    if (email) {
       userUpdate.newEmail = email;
     }
     const updatedUser = yield apiUserService.updateUser(userUpdate);
-    if(tos){
+    if (tos) {
       const currentAgreementHash: string = yield neuCall(getCurrentAgreementHash);
       yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
     }
@@ -177,7 +181,7 @@ export function* loadOrCreateUserInternal(
     });
   } else {
     const newUser = yield apiUserService.createAccount({
-      newEmail:email,
+      newEmail: email,
       backupCodesVerified: true,
       type: userType,
       walletType: walletMetadata.walletType,
@@ -186,7 +190,7 @@ export function* loadOrCreateUserInternal(
           ? walletMetadata.walletSubType
           : EWalletSubType.UNKNOWN,
     });
-    if(tos){
+    if (tos) {
       const currentAgreementHash: string = yield neuCall(getCurrentAgreementHash);
       yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
     }
@@ -212,9 +216,10 @@ function* handleLogOutUser(
   yield neuCall(logoutUser);
 
   switch (logoutType) {
-    case ELogoutReason.USER_REQUESTED: {
-      yield put(actions.routing.goHome());
-    }
+    case ELogoutReason.USER_REQUESTED:
+      {
+        yield put(actions.routing.goHome());
+      }
       break;
     case ELogoutReason.SESSION_TIMEOUT:
       yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
@@ -236,7 +241,8 @@ function* handleLogOutUser(
   logger.setUser(null);
 }
 
-export function mapSignInErrors(e: Error): SignInUserErrorMessage { // fixme move to utils
+export function mapSignInErrors(e: Error): SignInUserErrorMessage {
+  // fixme move to utils
   if (e instanceof SignerRejectConfirmationError) {
     return SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED;
   } else if (e instanceof SignerTimeoutError) {
@@ -253,8 +259,7 @@ export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<an
     logger.error("User Sign in error", e);
 
     const error = yield mapSignInErrors(e);
-    yield put(actions.walletSelector.messageSigningError(createMessage(error)),
-    )
+    yield put(actions.walletSelector.messageSigningError(createMessage(error)));
   }
 }
 

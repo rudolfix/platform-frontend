@@ -13,7 +13,7 @@ interface IDispatchProps {
 interface IMainRecoveryProps {
   // For testing purposes
   seed?: string;
-  submitSeed: (seed:string) => void;
+  submitSeed: (seed: string) => void;
 }
 
 interface IMainRecoveryState {
@@ -31,7 +31,7 @@ class RecoveryProcessesComponent extends React.Component<
 
   onValidSeed = (words: string): void => {
     this.setState({ seed: words });
-    this.props.submitSeed(words)
+    this.props.submitSeed(words);
   };
 
   render(): React.ReactNode {
@@ -39,10 +39,7 @@ class RecoveryProcessesComponent extends React.Component<
     return (
       <>
         {this.state.seed ? (
-          <LightWalletRecoverySignUp
-            goToDashboard={goToDashboard}
-            seed={this.state.seed}
-          />
+          <LightWalletRecoverySignUp goToDashboard={goToDashboard} seed={this.state.seed} />
         ) : (
           <LightWalletRecoverySeedCheck
             goToDashboard={goToDashboard}
@@ -58,7 +55,7 @@ const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps, {}>(
   appConnect<{}, IDispatchProps>({
     dispatchToProps: dispatch => ({
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
-      submitSeed: (seed:string) => dispatch(actions.walletSelector.submitSeed(seed))
+      submitSeed: (seed: string) => dispatch(actions.walletSelector.submitSeed(seed)),
     }),
   }),
 )(RecoveryProcessesComponent);

@@ -10,16 +10,12 @@ import { RegisterBrowserWalletError } from "../Register/RegisterBrowserWalletErr
 
 storiesOf("Wallet selector/Browser", module)
   .add("initial loading state", () => (
-    <RegisterBrowserWalletContainer
-    showWalletSelector={true}
-    rootPath="/register">
+    <RegisterBrowserWalletContainer showWalletSelector={true} rootPath="/register">
       <WalletLoading />
     </RegisterBrowserWalletContainer>
   ))
   .add("error message", () => (
-    <RegisterBrowserWalletContainer
-    showWalletSelector={true}
-    rootPath="/register">
+    <RegisterBrowserWalletContainer showWalletSelector={true} rootPath="/register">
       <RegisterBrowserWalletError
         errorMessage={createMessage(BrowserWalletErrorMessage.GENERIC_ERROR)}
         tryConnectingWithBrowserWallet={action("tryConnectingWithBrowserWallet")}

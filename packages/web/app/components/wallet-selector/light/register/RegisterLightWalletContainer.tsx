@@ -10,7 +10,7 @@ import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 export const RegisterLightWalletContainer: React.FunctionComponent<TStateProps> = ({
   rootPath,
   showWalletSelector,
-  children
+  children,
 }) => (
   <>
     <div className={styles.wrapper} data-test-id="wallet-selector">
@@ -23,9 +23,7 @@ export const RegisterLightWalletContainer: React.FunctionComponent<TStateProps> 
         </p>
         {children}
       </section>
-      {showWalletSelector && (
-        <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />
-      )}
+      {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />}
     </div>
   </>
 );

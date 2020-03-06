@@ -4,7 +4,10 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 import * as Yup from "yup";
 
-import { Button, EButtonWidth } from "../../../../../../design-system/dist/components/buttons/Button";
+import {
+  Button,
+  EButtonWidth,
+} from "../../../../../../design-system/dist/components/buttons/Button";
 import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
 import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
 import { injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
@@ -18,13 +21,12 @@ import { TMessage } from "../../../translatedMessages/utils";
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 type TEmailTosFormProps = {
-  intl: IIntlHelpers,
-  isLoading: boolean,
-  submitForm: (email: string) => void,
-  initialFormValues: TBrowserWalletFormValues,
-  errorMessage: TMessage | undefined
-}
-
+  intl: IIntlHelpers;
+  isLoading: boolean;
+  submitForm: (email: string) => void;
+  initialFormValues: TBrowserWalletFormValues;
+  errorMessage: TMessage | undefined;
+};
 
 const EMAIL = "email";
 const TOS = "tos";
@@ -35,7 +37,11 @@ const validationSchema = Yup.object().shape({
     .email(),
   [TOS]: Yup.boolean()
     .required()
-    .test("tos-is-true", <FormattedMessage id="wallet-selector.register.accept.tos" />, value => value === true)
+    .test(
+      "tos-is-true",
+      <FormattedMessage id="wallet-selector.register.accept.tos" />,
+      value => value === true,
+    ),
 });
 
 export const BrowserWalletAskForEmailAndTosForm: React.FunctionComponent<TEmailTosFormProps> = ({
@@ -43,12 +49,16 @@ export const BrowserWalletAskForEmailAndTosForm: React.FunctionComponent<TEmailT
   isLoading,
   submitForm,
   initialFormValues,
-  errorMessage
+  errorMessage,
 }) => (
   <Form<TBrowserWalletFormValues>
     validationSchema={validationSchema}
     initialValues={initialFormValues}
-    initialErrors={{ email: errorMessage && getMessageTranslation(errorMessage) } as FormikErrors<TBrowserWalletFormValues>}
+    initialErrors={
+      { email: errorMessage && getMessageTranslation(errorMessage) } as FormikErrors<
+        TBrowserWalletFormValues
+      >
+    }
     initialTouched={{ email: !!errorMessage }}
     validateOnMount={!errorMessage}
     validateOnBlur={false}
@@ -91,5 +101,5 @@ export const BrowserWalletAskForEmailAndTosForm: React.FunctionComponent<TEmailT
 );
 
 export const BrowserWalletAskForEmailAndTos = compose<TEmailTosFormProps, TEmailTosFormProps>(
-  injectIntlHelpers
+  injectIntlHelpers,
 )(BrowserWalletAskForEmailAndTosForm);

@@ -192,7 +192,7 @@ export const getWalletPrivKey = async (
 
 export const getWalletAddress = async (
   recoverSeed: string,
-  hdPathString: string
+  hdPathString: string,
 ): Promise<string> => {
   try {
     // Take first address only
@@ -205,13 +205,11 @@ export const getWalletAddress = async (
       recoverSeed,
       customSalt,
     });
-    const deserializedVault =  await deserializeLightWalletVault(walletInstance, customSalt);
-    return Web3Utils.toChecksumAddress(`0x${deserializedVault.addresses[0]}`)
-
+    const deserializedVault = await deserializeLightWalletVault(walletInstance, customSalt);
+    return Web3Utils.toChecksumAddress(`0x${deserializedVault.addresses[0]}`);
   } catch (e) {
     throw new LightWrongPasswordSaltError();
   }
-
 };
 
 export const testWalletSeed = (seed: string): boolean => isMnemonicValid(seed);

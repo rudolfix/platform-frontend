@@ -1,6 +1,6 @@
 import { Location } from "history";
 import * as React from "react";
-import {Redirect,  Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
 import { EWalletType } from "../../modules/web3/types";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
@@ -27,9 +27,7 @@ export const LightWalletComponent: React.FunctionComponent<TWalletComponentProps
 }) => (
   <>
     <LoginLightWallet />
-    {showWalletSelector && (
-      <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />
-    )}
+    {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />}
   </>
 );
 
@@ -39,9 +37,7 @@ export const BrowserWalletComponent: React.FunctionComponent<TWalletComponentPro
 }) => (
   <>
     <WalletBrowser />
-    {showWalletSelector && (
-      <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />
-    )}
+    {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />}
   </>
 );
 
@@ -51,9 +47,7 @@ export const LedgerWalletComponent: React.FunctionComponent<TWalletComponentProp
 }) => (
   <>
     <WalletLedger />
-    {showWalletSelector && (
-      <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />
-    )}
+    {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />}
   </>
 );
 
@@ -66,30 +60,21 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
     <Route
       path={`${rootPath}/light`}
       component={() => (
-        <LightWalletComponent
-          showWalletSelector={showWalletSelector}
-          rootPath={rootPath}
-        />
+        <LightWalletComponent showWalletSelector={showWalletSelector} rootPath={rootPath} />
       )}
       exact
     />
     <Route
       path={`${rootPath}/browser`}
       component={() => (
-        <BrowserWalletComponent
-          showWalletSelector={showWalletSelector}
-          rootPath={rootPath}
-        />
+        <BrowserWalletComponent showWalletSelector={showWalletSelector} rootPath={rootPath} />
       )}
       exact
     />
     <Route
       path={`${rootPath}/ledger`}
       component={() => (
-        <LedgerWalletComponent
-          showWalletSelector={showWalletSelector}
-          rootPath={rootPath}
-        />
+        <LedgerWalletComponent showWalletSelector={showWalletSelector} rootPath={rootPath} />
       )}
       exact
     />

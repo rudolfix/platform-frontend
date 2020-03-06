@@ -358,7 +358,7 @@ export function* rootRoute(payload: RouterState): Generator<any, any, any> {
 export function* registerRoute(payload: RouterState): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.register,
-    exact: true
+    exact: true,
   });
   return yield routeAction(routeMatch, {
     notAuth: put(actions.walletSelector.registerRedirect(EUserType.INVESTOR)),
@@ -445,34 +445,47 @@ export function* etoLandingRoute(payload: RouterState): Generator<any, any, any>
 export function* registerIssuerRoute(payload: RouterState): Generator<any, any, any> {
   const registerIssuerMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerIssuer,
-    exact:true
+    exact: true,
   });
   return yield routeAction(registerIssuerMatch, {
-    notAuth: process.env.NF_ISSUERS_ENABLED === "1" ? put(actions.walletSelector.registerRedirect(EUserType.ISSUER)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_ISSUERS_ENABLED === "1"
+        ? put(actions.walletSelector.registerRedirect(EUserType.ISSUER))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
 }
 
-export function* registerIssuerWithLightWalletRoute(payload: RouterState): Generator<any, any, any> {
+export function* registerIssuerWithLightWalletRoute(
+  payload: RouterState,
+): Generator<any, any, any> {
   const registerIssuerMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerIssuerWithLightWallet,
   });
   return yield routeAction(registerIssuerMatch, {
-    notAuth: process.env.NF_ISSUERS_ENABLED === "1" ? put(actions.walletSelector.registerWithLightWallet(EUserType.ISSUER)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_ISSUERS_ENABLED === "1"
+        ? put(actions.walletSelector.registerWithLightWallet(EUserType.ISSUER))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
 }
 
-export function* registerIssuerWithBrowserWalletRoute(payload: RouterState): Generator<any, any, any> {
+export function* registerIssuerWithBrowserWalletRoute(
+  payload: RouterState,
+): Generator<any, any, any> {
   const registerIssuerMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerIssuerWithBrowserWallet,
   });
   return yield routeAction(registerIssuerMatch, {
-    notAuth: process.env.NF_ISSUERS_ENABLED === "1" ? put(actions.walletSelector.registerWithBrowserWallet(EUserType.ISSUER)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_ISSUERS_ENABLED === "1"
+        ? put(actions.walletSelector.registerWithBrowserWallet(EUserType.ISSUER))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -484,7 +497,10 @@ export function* registerIssuerWithLedgerRoute(payload: RouterState): Generator<
     path: appRoutes.registerIssuerWithLedger,
   });
   return yield routeAction(registerIssuerMatch, {
-    notAuth: process.env.NF_ISSUERS_ENABLED === "1" ? put(actions.walletSelector.registerWithLedger(EUserType.ISSUER)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_ISSUERS_ENABLED === "1"
+        ? put(actions.walletSelector.registerWithLedger(EUserType.ISSUER))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -496,7 +512,10 @@ export function* loginIssuerRoute(payload: RouterState): Generator<any, any, any
     path: appRoutes.loginIssuer,
   });
   return yield routeAction(loginIssuerMatch, {
-    notAuth: process.env.NF_ISSUERS_ENABLED === "1" ? put(actions.routing.goToLogin(undefined)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_ISSUERS_ENABLED === "1"
+        ? put(actions.routing.goToLogin(undefined))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -508,7 +527,10 @@ export function* restoreIssuerRoute(payload: RouterState): Generator<any, any, a
     path: appRoutes.restoreIssuer,
   });
   return yield routeAction(restoreIssuerMatch, {
-    notAuth: process.env.NF_ISSUERS_ENABLED === "1" ? put(actions.routing.goToPasswordRecovery()) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_ISSUERS_ENABLED === "1"
+        ? put(actions.routing.goToPasswordRecovery())
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -518,34 +540,47 @@ export function* restoreIssuerRoute(payload: RouterState): Generator<any, any, a
 export function* registerNomineeRoute(payload: RouterState): Generator<any, any, any> {
   const registerNomineeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerNominee,
-    exact:true
+    exact: true,
   });
   return yield routeAction(registerNomineeMatch, {
-    notAuth: process.env.NF_NOMINEE_ENABLED === "1" ? put(actions.walletSelector.registerRedirect(EUserType.NOMINEE)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_NOMINEE_ENABLED === "1"
+        ? put(actions.walletSelector.registerRedirect(EUserType.NOMINEE))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
 }
 
-export function* registerNomineeWithLightWalletRoute(payload: RouterState): Generator<any, any, any> {
+export function* registerNomineeWithLightWalletRoute(
+  payload: RouterState,
+): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerNomineeWithLightWallet,
   });
   return yield routeAction(routeMatch, {
-    notAuth: process.env.NF_NOMINEE_ENABLED === "1" ? put(actions.walletSelector.registerWithLightWallet(EUserType.NOMINEE)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_NOMINEE_ENABLED === "1"
+        ? put(actions.walletSelector.registerWithLightWallet(EUserType.NOMINEE))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
 }
 
-export function* registerNomineeWithBrowserWalletRoute(payload: RouterState): Generator<any, any, any> {
+export function* registerNomineeWithBrowserWalletRoute(
+  payload: RouterState,
+): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.registerNomineeWithBrowserWallet,
   });
   return yield routeAction(routeMatch, {
-    notAuth: process.env.NF_NOMINEE_ENABLED === "1" ? put(actions.walletSelector.registerWithBrowserWallet(EUserType.NOMINEE)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_NOMINEE_ENABLED === "1"
+        ? put(actions.walletSelector.registerWithBrowserWallet(EUserType.NOMINEE))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -557,20 +592,25 @@ export function* registerNomineeWithLedgerRoute(payload: RouterState): Generator
     path: appRoutes.registerNomineeWithLedger,
   });
   return yield routeAction(routeMatch, {
-    notAuth: process.env.NF_NOMINEE_ENABLED === "1" ? put(actions.walletSelector.registerWithLedger(EUserType.NOMINEE)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_NOMINEE_ENABLED === "1"
+        ? put(actions.walletSelector.registerWithLedger(EUserType.NOMINEE))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
 }
 
-
 export function* loginNomineeRoute(payload: RouterState): Generator<any, any, any> {
   const loginNomineeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.loginNominee,
   });
   return yield routeAction(loginNomineeMatch, {
-    notAuth: process.env.NF_NOMINEE_ENABLED === "1" ? put(actions.routing.goToLogin(undefined)) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_NOMINEE_ENABLED === "1"
+        ? put(actions.routing.goToLogin(undefined))
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -582,7 +622,10 @@ export function* restoreNomineeRoute(payload: RouterState): Generator<any, any, 
     path: appRoutes.restoreNominee,
   });
   return yield routeAction(restoreNomineeMatch, {
-    notAuth: process.env.NF_NOMINEE_ENABLED === "1" ? put(actions.routing.goToPasswordRecovery()) : put(actions.routing.goHome()),
+    notAuth:
+      process.env.NF_NOMINEE_ENABLED === "1"
+        ? put(actions.routing.goToPasswordRecovery())
+        : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

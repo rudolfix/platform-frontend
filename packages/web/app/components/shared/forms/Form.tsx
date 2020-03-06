@@ -116,8 +116,8 @@ const Form = <Values extends {}>({
         validate={validate}
         validationSchema={validationSchema}
         initialValues={initialValuesMemoized}
-        enableReinitialize={enableReinitialize !== undefined ?  enableReinitialize : true}
-        validateOnMount={validateOnMount !== undefined  ? validateOnMount : true}
+        enableReinitialize={enableReinitialize !== undefined ? enableReinitialize : true}
+        validateOnMount={validateOnMount !== undefined ? validateOnMount : true}
       >
         {formikProps => (
           <FormLayout {...formikProps} className={className} data-test-id={dataTestId}>

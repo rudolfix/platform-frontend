@@ -7,7 +7,8 @@ import {
   ECommonWalletRegistrationFlowState,
   TCommonWalletRegisterData,
   TLightWalletFormValues,
-  TLightWalletRegisterData, TWalletRegisterData
+  TLightWalletRegisterData,
+  TWalletRegisterData,
 } from "../../../../modules/wallet-selector/types";
 import { appConnect } from "../../../../store";
 import { EContentWidth } from "../../../layouts/Content";
@@ -20,25 +21,26 @@ import { RegisterLightWalletContainer } from "./RegisterLightWalletContainer";
 import { RegisterEnhancedLightWalletForm } from "./RegisterLightWalletForm";
 
 export type TStateProps = {
-  errorMessage: TMessage | undefined
-  initialFormValues: TLightWalletFormValues
+  errorMessage: TMessage | undefined;
+  initialFormValues: TLightWalletFormValues;
 } & TCommonWalletRegisterData;
 
 export type TRegisterWalletExternalProps = {
-  restore?: boolean
+  restore?: boolean;
 };
 
-export type  TDispatchProps = {
+export type TDispatchProps = {
   submitForm: (values: TLightWalletFormValues) => void;
-}
+};
 
-export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
-  TRegisterWalletExternalProps>(
+export const RegisterLightWallet = compose<
+  TStateProps & TDispatchProps,
+  TRegisterWalletExternalProps
+>(
   appConnect<TWalletRegisterData, TDispatchProps>({
-    stateToProps: state =>
-      ({
-        ...selectWalletSelectorData(state),
-      }),
+    stateToProps: state => ({
+      ...selectWalletSelectorData(state),
+    }),
     dispatchToProps: dispatch => ({
       submitForm: (values: TLightWalletFormValues) =>
         dispatch(actions.walletSelector.lightWalletRegisterFormData(values.email, values.password)),
@@ -47,15 +49,26 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),
-  branch<TWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
-    renderComponent(LoadingIndicator)),
+  branch<TWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
+    renderComponent(LoadingIndicator),
+  ),
   withContainer(RegisterLightWalletContainer),
-  branch<TLightWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-    renderComponent(RegisterEnhancedLightWalletForm)),
-  branch<TLightWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
-    renderComponent(WalletLoading)),
-  branch<TLightWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
-    renderComponent(RegisterEnhancedLightWalletForm)),
-  branch<TLightWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
-    renderComponent(WalletLoading)),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
+    renderComponent(RegisterEnhancedLightWalletForm),
+  ),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
+    renderComponent(WalletLoading),
+  ),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) =>
+      uiState === ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
+    renderComponent(RegisterEnhancedLightWalletForm),
+  ),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+    renderComponent(WalletLoading),
+  ),
 )(shouldNeverHappen("RegisterLightWallet reached default branch"));

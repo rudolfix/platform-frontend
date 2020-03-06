@@ -10,20 +10,26 @@ import { RegisterBrowserWallet } from "./browser/Register/RegisterBrowserWallet"
 import { RegisterLedger } from "./ledger/Register/RegisterLedger";
 import { RegisterLightWallet } from "./light/register/RegisterLightWallet";
 
-type TStateProps = { walletType: EWalletType }
+type TStateProps = { walletType: EWalletType };
 
 export const WalletSelectorRegister = compose<TStateProps, {}>(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<TStateProps>({
     stateToProps: s => ({
-      walletType: selectRegisterWalletType(s)
+      walletType: selectRegisterWalletType(s),
     }),
   }),
 
-  branch<TStateProps>(({ walletType }) => walletType === EWalletType.LIGHT,
-    renderComponent(RegisterLightWallet)),
-  branch<TStateProps>(({ walletType }) => walletType === EWalletType.BROWSER,
-    renderComponent(RegisterBrowserWallet)),
-  branch<TStateProps>(({ walletType }) => walletType === EWalletType.LEDGER,
-    renderComponent(RegisterLedger))
+  branch<TStateProps>(
+    ({ walletType }) => walletType === EWalletType.LIGHT,
+    renderComponent(RegisterLightWallet),
+  ),
+  branch<TStateProps>(
+    ({ walletType }) => walletType === EWalletType.BROWSER,
+    renderComponent(RegisterBrowserWallet),
+  ),
+  branch<TStateProps>(
+    ({ walletType }) => walletType === EWalletType.LEDGER,
+    renderComponent(RegisterLedger),
+  ),
 )(shouldNeverHappen("WalletSelectorRegister reached default branch"));

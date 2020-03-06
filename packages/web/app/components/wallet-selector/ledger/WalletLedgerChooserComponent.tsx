@@ -56,20 +56,20 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
           </h6>
         )}
         {accounts.length > 0 &&
-        (advanced ? (
-          <WalletLedgerChooserTableAdvanced
-            accounts={accounts}
-            handleAddressChosen={handleAddressChosen}
-            hasPreviousAddress={hasPreviousAddress}
-            showPrevAddresses={showPrevAddresses}
-            showNextAddresses={showNextAddresses}
-          />
-        ) : (
-          <WalletLedgerChooserTableSimple
-            accounts={accounts}
-            handleAddressChosen={handleAddressChosen}
-          />
-        ))}
+          (advanced ? (
+            <WalletLedgerChooserTableAdvanced
+              accounts={accounts}
+              handleAddressChosen={handleAddressChosen}
+              hasPreviousAddress={hasPreviousAddress}
+              showPrevAddresses={showPrevAddresses}
+              showNextAddresses={showNextAddresses}
+            />
+          ) : (
+            <WalletLedgerChooserTableSimple
+              accounts={accounts}
+              handleAddressChosen={handleAddressChosen}
+            />
+          ))}
         {!advanced && (
           <button
             className={styles.advanced}

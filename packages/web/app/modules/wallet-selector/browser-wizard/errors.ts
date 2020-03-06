@@ -1,11 +1,16 @@
-import { BrowserWalletErrorMessage, SignInUserErrorMessage, } from "../../../components/translatedMessages/messages";
+import {
+  BrowserWalletErrorMessage,
+  SignInUserErrorMessage,
+} from "../../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../../components/translatedMessages/utils";
 import {
   BrowserWalletAccountApprovalPendingError,
-  BrowserWalletAccountApprovalRejectedError, BrowserWalletConfirmationRejectedError,
+  BrowserWalletAccountApprovalRejectedError,
+  BrowserWalletConfirmationRejectedError,
   BrowserWalletLockedError,
   BrowserWalletMismatchedNetworkError,
-  BrowserWalletMissingError, BrowserWalletUnknownError,
+  BrowserWalletMissingError,
+  BrowserWalletUnknownError,
 } from "../../../lib/web3/browser-wallet/BrowserWallet";
 import { mapSignInErrors } from "../../auth/user/sagas";
 
@@ -27,7 +32,7 @@ export function mapBrowserWalletErrorToErrorMessage(e: Error): TMessage {
   } else if (e instanceof BrowserWalletUnknownError) {
     messageType = BrowserWalletErrorMessage.GENERIC_ERROR;
   } else {
-    messageType = mapSignInErrors(e)
+    messageType = mapSignInErrors(e);
   }
 
   return createMessage(messageType);

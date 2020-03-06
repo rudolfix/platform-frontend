@@ -28,7 +28,7 @@ import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecovery } from "./wallet-selector/wallet-recover/WalletRecovery";
-import { WalletSelectorLogin,  } from "./wallet-selector/WalletSelectorLogin";
+import { WalletSelectorLogin } from "./wallet-selector/WalletSelectorLogin";
 import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister";
 import { Wallet } from "./wallet/Wallet";
 
@@ -63,8 +63,16 @@ export const AppRouter: React.FunctionComponent = () => (
 
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelectorRegister} exact />
-    <OnlyPublicRoute path={appRoutes.registerWithLightWallet} component={WalletSelectorRegister} exact />
-    <OnlyPublicRoute path={appRoutes.registerWithBrowserWallet} component={WalletSelectorRegister} exact />
+    <OnlyPublicRoute
+      path={appRoutes.registerWithLightWallet}
+      component={WalletSelectorRegister}
+      exact
+    />
+    <OnlyPublicRoute
+      path={appRoutes.registerWithBrowserWallet}
+      component={WalletSelectorRegister}
+      exact
+    />
     <OnlyPublicRoute path={appRoutes.registerWithLedger} component={WalletSelectorRegister} exact />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelectorLogin} />
     <OnlyPublicRoute path={appRoutes.restore} component={WalletRecovery} />

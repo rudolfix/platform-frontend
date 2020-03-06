@@ -49,18 +49,17 @@ export function* initStartSaga({
     // Notifications
 
     yield registerAppWithFCM();
-    messaging().hasPermission()
-      .then(async (enabled) => {
-        const token = await getToken();
 
-        console.log(enabled);
+        const token = yield getToken();
+
 
         console.log("-------------", token);
 
-      });
+
+
 
     //Notifications.registerRemoteNotifications();
-/*
+
     Notifications.events().registerRemoteNotificationsRegistered((event) => {
       console.log(event);
     })
@@ -75,12 +74,8 @@ export function* initStartSaga({
       completion({alert: true, sound: true, badge: false});
     });
 
-    Notifications.events().registerNotificationOpened((response: NotificationResponse, completion) => {
-      console.log(`Notification opened`, response);
-      completion();
-    });
 
-*/
+
     messaging().onTokenRefresh(fcmToken => {
       console.log("-----new tokken------", fcmToken);
     });

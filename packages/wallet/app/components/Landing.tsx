@@ -1,16 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import { Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-import { appRoutes } from "../appRoutes";
-import { Button } from "./common/buttons/Button";
 import { initActions } from "../modules/init/actions";
 import { selectInitStatus, selectTest } from "../modules/init/selectors";
 import { appConnect } from "../store/utils";
-import {Notifications} from "react-native-notifications";
+import {NotificationResponse, Notifications} from "react-native-notifications";
+
+
 
 type TDispatchProps = {
-  init: () => void;
+  init: () => {
+
+  };
 };
 
 type TStateProps = {
@@ -32,42 +33,26 @@ const send = () => {
 
 const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
   init,
-  initStatus,
-  test,
 }) => {
-  const navigation = useNavigation();
+
+  const [text, setText] = useState("");
+
+  Notifications.events().registerNotificationOpened((response: any, completion) => {
+    console.log("---------response.notification.payload-----", response.payload.title);
+    setText(response.payload.body);
+    completion();
+  });
 
   React.useEffect(() => {
     init();
   }, []);
 
-  Notifications.postLocalNotification({
-    body: "Local notificiation!",
-    title: "Local Notification Title",
-    sound: "chime.aiff",
-    thread: "test",
-    badge: 1,
-    payload: null,
-    type: "test"
-  }, 22);
 
   return (
     <View>
-      <Text>Landing {test && test.name}</Text>
+      <Text style={{fontWeight:"bold", textAlign:"center", padding: 20, fontSize: 33 }}> Transactions</Text>
+      <Text style={{fontWeight:"normal", textAlign:"center", padding: 20, fontSize: 22 }}>{text || "No transaction to sign"}</Text>
 
-      <Text>Init status: {initStatus}</Text>
-
-      <Button onPress={() => {
-        send()
-      }}
-       title="Send"
-      />
-
-      <Button
-        testID="landing.go-to-import-your-wallet"
-        title="Import your wallet"
-        onPress={() => navigation.navigate(appRoutes.importWallet)}
-      />
     </View>
   );
 };

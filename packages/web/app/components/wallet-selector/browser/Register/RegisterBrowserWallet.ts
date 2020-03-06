@@ -17,7 +17,7 @@ import { ErrorBoundaryLayout } from "../../../shared/errorBoundary/ErrorBoundary
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { BrowserWalletBase, TWalletBrowserBaseProps } from "./BrowserWalletBase";
+import { RegisterBrowserWalletContainer, TWalletBrowserBaseProps } from "./RegisterBrowserWalletContainer";
 import { RegisterBrowserWalletError } from "./RegisterBrowserWalletError";
 import { BrowserWalletAskForEmailAndTos } from "./RegisterBrowserWalletForm";
 
@@ -54,7 +54,7 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     renderComponent(LoadingIndicator)),
   withContainer(
     withProps<TWalletBrowserBaseProps,TCommonWalletRegisterData>(({ rootPath, showWalletSelector }) => ({ rootPath, showWalletSelector })
-    )(BrowserWalletBase)
+    )(RegisterBrowserWalletContainer)
   ),
   branch<TBrowserWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
     renderComponent(BrowserWalletAskForEmailAndTos)),

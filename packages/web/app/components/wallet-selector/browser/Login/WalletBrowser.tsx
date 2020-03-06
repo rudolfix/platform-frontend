@@ -7,7 +7,7 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { TMessage } from "../../../translatedMessages/utils";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { BrowserWalletBase } from "../Register/BrowserWalletBase";
+import { RegisterBrowserWalletContainer } from "../Register/RegisterBrowserWalletContainer";
 import { BrowserWalletErrorBase } from "../Register/RegisterBrowserWalletError";
 
 export type TWalletBrowserProps = {
@@ -41,7 +41,7 @@ export const WalletBrowser = compose(
       dispatch(actions.walletSelector.tryConnectingWithBrowserWallet());
     },
   }),
-  withContainer(BrowserWalletBase),
+  withContainer(RegisterBrowserWalletContainer),
   branch<TWalletBrowserProps>(
     ({ isLoading, isMessageSigning }) => isLoading || isMessageSigning,
     renderComponent(WalletLoading),

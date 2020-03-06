@@ -83,7 +83,7 @@ export const BrowserWalletAskForEmailAndTosForm: React.FunctionComponent<TEmailT
           data-test-id="wallet-selector-register-button"
           width={EButtonWidth.BLOCK}
         >
-          <FormattedMessage id="wallet-selector.neuwallet.register" />
+          <FormattedMessage id="wallet-selector.sign-up" />
         </Button>
       </>
     )}

@@ -2,7 +2,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { Button, EButtonLayout } from "../../../../../../design-system/dist/components/buttons/Button";
+import {
+  Button,
+  EButtonLayout,
+} from "../../../../../../design-system/dist/components/buttons/Button";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
@@ -38,7 +41,10 @@ export const BrowserWalletErrorBase: React.FunctionComponent<TBrowserWalletError
   </>
 );
 
-export const RegisterBrowserWalletError = compose<TBrowserWalletErrorProps,TBrowserWalletErrorProps>(
+export const RegisterBrowserWalletError = compose<
+  TBrowserWalletErrorProps,
+  TBrowserWalletErrorProps
+>(
   appConnect<TWalletBrowserProps, TWalletBrowserDispatchProps>({
     dispatchToProps: dispatch => ({
       tryConnectingWithBrowserWallet: () => {
@@ -46,4 +52,4 @@ export const RegisterBrowserWalletError = compose<TBrowserWalletErrorProps,TBrow
       },
     }),
   }),
-)( BrowserWalletErrorBase);
+)(BrowserWalletErrorBase);

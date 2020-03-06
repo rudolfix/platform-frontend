@@ -5,24 +5,24 @@ import * as React from "react";
 import { BrowserWalletErrorMessage } from "../../../translatedMessages/messages";
 import { createMessage } from "../../../translatedMessages/utils";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { BrowserWalletBase } from "../Register/BrowserWalletBase";
+import { RegisterBrowserWalletContainer } from "../Register/RegisterBrowserWalletContainer";
 import { RegisterBrowserWalletError } from "../Register/RegisterBrowserWalletError";
 
 storiesOf("Wallet selector/Browser", module)
   .add("initial loading state", () => (
-    <BrowserWalletBase
+    <RegisterBrowserWalletContainer
     showWalletSelector={true}
     rootPath="/register">
       <WalletLoading />
-    </BrowserWalletBase>
+    </RegisterBrowserWalletContainer>
   ))
   .add("error message", () => (
-    <BrowserWalletBase
+    <RegisterBrowserWalletContainer
     showWalletSelector={true}
     rootPath="/register">
       <RegisterBrowserWalletError
         errorMessage={createMessage(BrowserWalletErrorMessage.GENERIC_ERROR)}
         tryConnectingWithBrowserWallet={action("tryConnectingWithBrowserWallet")}
       />
-    </BrowserWalletBase>
+    </RegisterBrowserWalletContainer>
   ));

@@ -14,14 +14,13 @@ import { FullscreenProgressLayout } from "../../../layouts/FullscreenProgressLay
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
-import {  TWalletBrowserBaseProps } from "../../browser/Register/BrowserWalletBase";
+import {  TWalletBrowserBaseProps } from "../../browser/Register/RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "../../browser/Register/RegisterBrowserWalletForm";
 import { WalletLoading } from "../../shared/WalletLoading";
 import { WalletLedgerChooser } from "../WalletLedgerChooser";
 import { LedgerError } from "../WalletLedgerInitComponent";
 import { WalletLedgerNotSupported } from "../WalletLedgerNotSupportedComponent";
 import { RegisterLedgerBase } from "./RegisterLedgerBase";
-
 
 export const RegisterLedger = compose<TWalletRegisterData, {}>(
   appConnect<TWalletRegisterData>({
@@ -33,7 +32,6 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
       closeAccountChooser: () => dispatch(actions.walletSelector.ledgerCloseAccountChooser())
     }),
   }),
-
   branch<TLedgerRegisterData>(({ uiState }) => uiState === ELedgerRegistrationFlowState.LEDGER_ACCOUNT_CHOOSER,
     renderComponent(
       nest(
@@ -41,7 +39,6 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
         WalletLedgerChooser
       )
     )),
-
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),

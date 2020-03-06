@@ -10,7 +10,11 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+// Firebase services
+#import <Firebase.h>
+// Package to manage notifications
 #import "RNNotifications.h"
+
 
 @implementation AppDelegate
 
@@ -28,6 +32,11 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  // Initialize firebase
+  if ([FIRApp defaultApp] == nil) {
+        [FIRApp configure];
+  }
 
   // Push notifications
   [RNNotifications startMonitorNotifications];

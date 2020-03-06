@@ -37,6 +37,15 @@
 
 // Remote push notifications registration
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  //TODO: REMOVE AFTER TESTING!!!!!
+  printf("Hell from IOS devic11eToken @s \n", deviceToken);
+
+  NSString *token = [[[[deviceToken description]
+                      stringByReplacingOccurrencesOfString:@" " withString:@""]
+                      stringByReplacingOccurrencesOfString:@"<" withString:@""]
+                      stringByReplacingOccurrencesOfString:@">" withString:@""];
+   NSLog(token);
+
   [RNNotifications didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 

@@ -42,6 +42,10 @@ export function* initStartSaga({
 
     Notifications.registerRemoteNotifications();
 
+    Notifications.events().registerRemoteNotificationsRegistered((event) => {
+      console.log(event);
+    })
+
     Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
       console.log(`Notification received in foreground `, notification);
       completion({alert: true, sound: true, badge: false});

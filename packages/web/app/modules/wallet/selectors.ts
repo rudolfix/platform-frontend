@@ -16,7 +16,7 @@ import { selectIsUserFullyVerified } from "../auth/selectors";
 import { selectIndividualAddress, selectKycRequestType } from "../kyc/selectors";
 import { selectEtherPriceEur, selectNeuPriceEur } from "../shared/tokenPrice/selectors";
 import { selectTxGasCostEthUlps } from "../tx/sender/selectors";
-import { IWalletStateData } from "./reducer";
+import { IWalletState, IWalletStateData } from "./reducer";
 import { ENEURWalletStatus } from "./types";
 
 export const selectWalletData = (state: TAppGlobalState): IWalletStateData | undefined =>

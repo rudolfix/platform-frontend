@@ -16,7 +16,7 @@ import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndic
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { TMessage } from "../../../translatedMessages/utils";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { RegisterLightWalletBase } from "./RegisterLightWalletBase";
+import { RegisterLightWalletContainer } from "./RegisterLightWalletContainer";
 import { RegisterEnhancedLightWalletForm } from "./RegisterLightWalletForm";
 
 export type TStateProps = {
@@ -49,7 +49,7 @@ export const RegisterLightWallet = compose<TStateProps & TDispatchProps,
   ),
   branch<TWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
     renderComponent(LoadingIndicator)),
-  withContainer(RegisterLightWalletBase),
+  withContainer(RegisterLightWalletContainer),
   branch<TLightWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
     renderComponent(RegisterEnhancedLightWalletForm)),
   branch<TLightWalletRegisterData>(({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,

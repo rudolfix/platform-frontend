@@ -2,6 +2,7 @@ import { neuTakeLatest, put, fork, getContext } from "@neufund/sagas";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { initActions } from "./actions";
 import * as yup from "yup";
+import messaging from '@react-native-firebase/messaging';
 import {Notification, NotificationResponse, Notifications} from 'react-native-notifications';
 
 // TODO: Remove after testing. Test setting some data.
@@ -24,6 +25,13 @@ const testWallet: any = {
 };
 // remove after testing end
 
+async function registerAppWithFCM() {
+  await messaging().registerForRemoteNotifications();
+}
+
+async function getToken() {
+  await messaging().getAPNSToken();
+}
 
 export function* initStartSaga({
   logger,
@@ -40,8 +48,19 @@ export function* initStartSaga({
 
     // Notifications
 
-    Notifications.registerRemoteNotifications();
+    yield registerAppWithFCM();
+    messaging().hasPermission()
+      .then(async (enabled) => {
+        const token = await getToken();
 
+        console.log(enabled);
+
+        console.log("-------------", token);
+
+      });
+
+    //Notifications.registerRemoteNotifications();
+/*
     Notifications.events().registerRemoteNotificationsRegistered((event) => {
       console.log(event);
     })
@@ -61,7 +80,12 @@ export function* initStartSaga({
       completion();
     });
 
+*/
+    messaging().onTokenRefresh(fcmToken => {
+      console.log("-----new tokken------", fcmToken);
+    });
 
+/*
     setTimeout(() => {
       Notifications.postLocalNotification({
         body: "Local notificiation!",
@@ -73,7 +97,7 @@ export function* initStartSaga({
         type: "test"
       }, 22);
     }, 10000)
-
+*/
     // Notifications
 
     yield put(initActions.done());

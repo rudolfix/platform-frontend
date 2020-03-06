@@ -3,6 +3,7 @@ import { TGlobalDependencies } from "../di/setupBindings";
 import { initSaga } from "./init/sagas";
 import { initActions } from "./init/actions";
 
+
 function* allSagas(): Generator<any, any, any> {
   yield all([fork(initSaga)]);
   // TODO: replace with real wallet storage

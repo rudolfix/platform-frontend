@@ -6,10 +6,11 @@ const MODULE_ID = "storage";
 const setupStorageModule = () => ({
   id: MODULE_ID,
   libs: [setupBindings()],
+  api: storageModuleApi,
 });
 
-const storageSymbols = {
+const storageModuleApi = {
   symbols,
 };
 
-export { setupStorageModule, storageSymbols };
+export { setupStorageModule, storageModuleApi };

@@ -99,7 +99,7 @@ describe("Payouts", () => {
 
     goToPortfolio();
 
-    cy.get(tid(`modals.portfolio.portfolio-asset-action.claim-${ETO_ID}`)).click();
+    cy.get(tid(`modals.portfolio.portfolio-asset-action.claim-${ETO_ID}`)).click({ force: true });
 
     fillForm(
       {

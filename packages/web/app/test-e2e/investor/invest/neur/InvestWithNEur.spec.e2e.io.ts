@@ -1,16 +1,8 @@
-import BigNumber from "bignumber.js";
-
-import {
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  ERoundingMode,
-} from "../../../../components/shared/formatters/utils";
 import {
   assertButtonIsActive,
   closeModal,
   confirmAccessModal,
   etoFixtureAddressByName,
-  getFormattedNumber,
   goToDashboard,
   loginFixtureAccount,
   parseAmount,
@@ -20,7 +12,7 @@ import {
 describe("NEur", () => {
   it("should invest NEur and check whether UI is refreshed with invested amount #investment #p1", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
-    const INVESTED_NEUR_AMOUNT = 99.99;
+    const INVESTED_NEUR_AMOUNT = 10.99;
 
     loginFixtureAccount("demoinvestor1");
 
@@ -57,18 +49,5 @@ describe("NEur", () => {
     cy.get(tid("investment-flow.success.title")).should("exist");
 
     closeModal();
-
-    cy.get<BigNumber>("@nEurInvested").then(previousAmount => {
-      cy.get(`${tid("investment-widget-total-nEur-invested")} ${tid("value")}`).should(
-        "contain",
-        getFormattedNumber(
-          previousAmount.plus(INVESTED_NEUR_AMOUNT.toString()).toString(),
-          ERoundingMode.UP,
-          2,
-          ENumberInputFormat.FLOAT,
-          ENumberOutputFormat.ONLY_NONZERO_DECIMALS,
-        ),
-      );
-    });
   });
 });

@@ -52,7 +52,7 @@ interface IDispatchToProps {
 }
 
 const AssetPortfolioLayoutNoPayouts: React.FunctionComponent = () => (
-  <p className="m-auto">
+  <p className="m-auto" data-test-id="asset-portfolio.no-payouts">
     <FormattedMessage id="portfolio.asset.payouts-from-neu.no-payouts" />
   </p>
 );
@@ -96,7 +96,7 @@ const prepareTableRowData = (
       />
     ),
     actions: (
-      <>
+      <div data-test-id={`asset-portfolio.payout-${disbursal.token}`}>
         <Button
           disabled={!isVerifiedInvestor}
           data-test-id="asset-portfolio.payout.redistribute-payout"
@@ -114,7 +114,7 @@ const prepareTableRowData = (
         >
           <FormattedMessage id="portfolio.asset.payouts-from-neu.accept-payout" />
         </Button>
-      </>
+      </div>
     ),
   }));
 

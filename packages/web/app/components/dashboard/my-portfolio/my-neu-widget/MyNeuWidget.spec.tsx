@@ -1,4 +1,4 @@
-import { setupFakeClock } from "@neufund/shared";
+import { setupFakeClock } from "@neufund/shared/tests";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { createMemoryHistory } from "history";

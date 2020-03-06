@@ -1,11 +1,14 @@
 import { injectable, inject } from "inversify";
-import { AsyncStorageProvider, SchemaMismatchError, StorageItem } from "../index";
-import { symbols } from "../../../di/symbols";
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+
+import { symbols } from "../symbols";
 import { IStorageItem } from "../types/IStorageItem";
+import { AsyncStorageProvider } from "./AsyncStorageProvider";
+import { SchemaMismatchError } from "./SchemaMismatchError";
+import { StorageItem } from "./StorageItem";
 import { StorageMetaData } from "./StorageMetaData";
 import { ApplicationStorageError } from "./ApplicationStorageError";
 import { IStorageSchema } from "../types/IStorageSchema";
-import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 
 /**
  * A class representing an application storage
@@ -134,9 +137,9 @@ class AppStorage<DataType> {
     } = deserialized.metadata;
 
     // always run migrate function to ensure proper data version according to the schema
-    let migrated: DataType = await schema.migrate(deserialized.data);
+    const migrated: DataType = await schema.migrate(storedSchemaVersion, deserialized.data);
 
-    let storageItem: StorageItem<DataType> = new StorageItem<DataType>(
+    const storageItem: StorageItem<DataType> = new StorageItem<DataType>(
       migrated,
       new StorageMetaData(created, lastUpdated, schemaId, storedSchemaVersion),
     );
@@ -148,7 +151,7 @@ class AppStorage<DataType> {
    * Remove item from storage.
    * @param {string} key - Key to remove the value.
    */
-  async removeItem(key: string) {
+  async removeItem(key: string): Promise<void> {
     this.logger.info(`Removing a storage item for: ${key}`);
 
     try {
@@ -160,9 +163,8 @@ class AppStorage<DataType> {
 
   /**
    * Remove all data from storage.
-   * @param {string} key - Key to remove the value.
    */
-  async clear() {
+  async clear(): Promise<void> {
     this.logger.info(`Cleaning the storage`);
 
     try {

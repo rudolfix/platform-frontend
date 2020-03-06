@@ -1,6 +1,6 @@
 class AppError extends Error {
   constructor(message: string) {
-    super(message);
+    super(`Wallet: ${message}`);
   }
 }
 export { AppError };

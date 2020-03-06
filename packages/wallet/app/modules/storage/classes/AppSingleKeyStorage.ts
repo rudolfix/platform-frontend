@@ -1,10 +1,11 @@
 import { inject, injectable } from "inversify";
-import { AsyncStorageProvider } from "../index";
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+
 import { IStorageItem } from "../types/IStorageItem";
 import { IStorageSchema } from "../types/IStorageSchema";
 import { AppStorage } from "./AppStorage";
-import { coreModuleApi, ILogger } from "@neufund/shared-modules";
-import { symbols } from "../../../di/symbols";
+import { symbols } from "../symbols";
+import { AsyncStorageProvider } from "./AsyncStorageProvider";
 
 /**
  * A class representing a single key application storage
@@ -25,20 +26,22 @@ class AppSingleKeyStorage<DataType> {
     this.key = storageKey;
   }
 
-  async setItem(value: DataType): Promise<IStorageItem<DataType>> {
+  async set(value: DataType): Promise<IStorageItem<DataType>> {
     return this.storage.setItem(this.key, value);
   }
 
-  async getItem(): Promise<IStorageItem<DataType> | null> {
+  async getStorageItem(): Promise<IStorageItem<DataType> | null> {
     return this.storage.getItem(this.key);
   }
 
-  async removeItem() {
-    return this.storage.removeItem(this.key);
+  async get(): Promise<DataType | null> {
+    const storageItem = await this.getStorageItem();
+
+    return storageItem ? storageItem.data : null;
   }
 
-  async clear(): Promise<void> {
-    return this.storage.clear();
+  async remove(): Promise<void> {
+    await this.storage.removeItem(this.key);
   }
 }
 

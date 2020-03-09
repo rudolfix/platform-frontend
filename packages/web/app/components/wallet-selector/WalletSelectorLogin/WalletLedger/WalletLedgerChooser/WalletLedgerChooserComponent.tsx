@@ -1,14 +1,15 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
+
+import * as styles from "./WalletLedgerChooserComponent.module.scss";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
-
-import * as styles from "./WalletLedgerChooserComponent.module.scss";
 
 export interface IWalletLedgerChooserComponent {
   accounts: ReadonlyArray<ILedgerAccount>;
@@ -51,9 +52,17 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
     ) : (
       <>
         {accounts.length > 1 && (
-          <h6 className={styles.explanation}>
-            <FormattedHTMLMessage tagName="span" id="wallet-selector.ledger.select-address" />
-          </h6>
+          <>
+            <h1 class={styles.title}>
+              <FormattedMessage id="wallet-selector.ledger.select-address.title" />
+            </h1>
+            <p className={styles.explanation}>
+              <FormattedHTMLMessage
+                tagName="span"
+                id="wallet-selector.ledger.select-address.description"
+              />
+            </p>
+          </>
         )}
         {accounts.length > 0 &&
           (advanced ? (

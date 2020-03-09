@@ -16,9 +16,11 @@ export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/0'/0", "44'/60'/0
 export function* tryEstablishingConnectionWithLedger({
   ledgerWalletConnector,
 }: TGlobalDependencies): Generator<any, any, any> {
+  console.log("LEDGER_TRY_ESTABLISHING_CONNECTION");
   try {
-    yield ledgerWalletConnector.connect();
-
+    console.log(ledgerWalletConnector);
+    yield call(ledgerWalletConnector.connect);
+    console.log("LEDGER_TRY_ESTABLISHING_CONNECTION xxx");
     yield put(actions.walletSelector.ledgerConnectionEstablished());
   } catch (e) {
     yield put(
@@ -127,7 +129,7 @@ export function* finishSettingUpLedgerConnector(
 export function* ledgerSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
-    "LEDGER_TRY_ESTABLISHING_CONNECTION",
+    actions.walletSelector.ledgerTryEstablishingConnectionWithLedger,
     actions.walletSelector.reset,
     tryEstablishingConnectionWithLedger,
   );

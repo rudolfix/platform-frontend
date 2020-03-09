@@ -26,7 +26,13 @@
 
 .explanation {
   width: 100%;
-  text-align: center;
-  line-height: 150%;
   margin: px-to-rem(40px) 0 px-to-rem(20px);
+  font-family: $font-family-roboto;
+  font-size: px-to-rem(16px);
+}
+
+.title {
+  font-family: $font-family-montserrat;
+  font-size: px-to-rem(32px);
+  font-weight: 600;
 }

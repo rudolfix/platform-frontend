@@ -42,7 +42,7 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
   action,
 ): DeepReadonly<ILedgerWizardState> => {
   switch (action.type) {
-    case "LEDGER_TRY_ESTABLISHING_CONNECTION":
+    case actions.walletSelector.ledgerTryEstablishingConnectionWithLedger.getType():
       return {
         ...ledgerWizardInitialState,
         isInitialConnectionInProgress: true,

@@ -23,9 +23,9 @@ export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStatePr
     return <WalletLedgerNotSupported />;
   } else if (isConnectionEstablished) {
     return <WalletLedgerChooser />;
-  } else {
-    return <LedgerInit />;
   }
+
+  return <LedgerInit />;
 };
 
 export const WalletLedger = compose<IWalletLedgerStateProps, {}>(

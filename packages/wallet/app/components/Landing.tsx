@@ -1,17 +1,14 @@
 import React, {useState} from "react";
 import { Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { initActions } from "../modules/init/actions";
 import { selectInitStatus, selectTest } from "../modules/init/selectors";
 import { appConnect } from "../store/utils";
-import {NotificationResponse, Notifications} from "react-native-notifications";
+import { Notifications } from "react-native-notifications";
 
 
 
 type TDispatchProps = {
-  init: () => {
-
-  };
+  init: () => void;
 };
 
 type TStateProps = {

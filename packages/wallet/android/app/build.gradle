@@ -191,8 +191,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0-rc01"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"
 
-    // google push notifications services init
-    classpath 'com.google.gms:google-services:4.2.0'
 
     // google firebase core for push notifications
     implementation project(':react-native-notifications')
@@ -222,4 +220,3 @@ apply from: file("../../node_modules/@react-native-community/cli-platform-androi
 
 // apply google push notifications
 apply plugin: 'com.google.gms.google-services'
-

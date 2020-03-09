@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import { Text, View } from "react-native";
+import {Button, Text, View} from "react-native";
 import { initActions } from "../modules/init/actions";
 import { selectInitStatus, selectTest } from "../modules/init/selectors";
 import { appConnect } from "../store/utils";
 import { Notifications } from "react-native-notifications";
 
-
+import messaging from '@react-native-firebase/messaging';
 
 type TDispatchProps = {
   init: () => void;
@@ -26,6 +26,18 @@ const send = () => {
     payload: null,
     type: "test"
   }, 22);
+}
+
+const deleteToken = async () => {
+  console.log("Deleting the token");
+  const deleted = await messaging().deleteToken();
+  console.log("----------deleting  token----------", deleted);
+  const newT = await getToken();
+  console.log("----------getting new token----------", newT);
+}
+
+async function getToken() {
+  return messaging().getToken();
 }
 
 const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
@@ -49,7 +61,7 @@ const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
     <View>
       <Text style={{fontWeight:"bold", textAlign:"center", padding: 20, fontSize: 33 }}> Transactions</Text>
       <Text style={{fontWeight:"normal", textAlign:"center", padding: 20, fontSize: 22 }}>{text || "No transaction to sign"}</Text>
-
+      <Button onPress={() => { deleteToken() }}   title={"Delete the token"} />
     </View>
   );
 };

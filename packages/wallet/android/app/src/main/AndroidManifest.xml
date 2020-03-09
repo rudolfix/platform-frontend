@@ -2,6 +2,7 @@
   package="org.neufund.neufundfirebasedemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
 
     <!--
       `usesCleartextTraffic` is needed for now to unblock release tests in detox

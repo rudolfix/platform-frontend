@@ -4,7 +4,7 @@ import { Redirect, Route } from "react-router-dom";
 
 import { EWalletType } from "../../modules/web3/types";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
-import { LoginWalletBrowser } from "./browser/Login/LoginWalletBrowser";
+import { LoginWalletBrowser } from "./browser/login/LoginWalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
 import { LoginLightWallet } from "./light/login/LoginLightWallet";
 import { WalletChooser } from "./WalletChooser";

@@ -43,7 +43,7 @@ const setKeyFromStorageWithEvents = (Window: Window, key: string, newValue: stri
   );
 };
 
-describe("Login/Logout", () => {
+describe("login/Logout", () => {
   describe("Automatic Actions", () => {
     it("should logout automatically when a user has no activity @login @logout @p2", () => {
       createAndLoginNewUser({

@@ -6,7 +6,7 @@ import { appConnect } from "../../store";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { shouldNeverHappen } from "../shared/NeverComponent";
-import { RegisterBrowserWallet } from "./browser/Register/RegisterBrowserWallet";
+import { RegisterBrowserWallet } from "./browser/register/RegisterBrowserWallet";
 import { RegisterLedger } from "./ledger/register/RegisterLedger";
 import { RegisterLightWallet } from "./light/register/RegisterLightWallet";
 

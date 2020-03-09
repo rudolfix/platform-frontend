@@ -17,8 +17,8 @@ import { FullscreenProgressLayout } from "../../../layouts/FullscreenProgressLay
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
-import { TWalletBrowserBaseProps } from "../../browser/Register/RegisterBrowserWalletContainer";
-import { BrowserWalletAskForEmailAndTos } from "../../browser/Register/RegisterBrowserWalletForm";
+import { TWalletBrowserBaseProps } from "../../browser/register/RegisterBrowserWalletContainer";
+import { BrowserWalletAskForEmailAndTos } from "../../browser/register/RegisterBrowserWalletForm";
 import { WalletLoading } from "../../shared/WalletLoading";
 import { WalletLedgerChooser } from "../WalletLedgerChooser";
 import { LedgerError } from "../WalletLedgerInitComponent";

@@ -5,8 +5,8 @@ import * as React from "react";
 import { BrowserWalletErrorMessage } from "../../../translatedMessages/messages";
 import { createMessage } from "../../../translatedMessages/utils";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { RegisterBrowserWalletContainer } from "../Register/RegisterBrowserWalletContainer";
-import { RegisterBrowserWalletError } from "../Register/RegisterBrowserWalletError";
+import { RegisterBrowserWalletContainer } from "../register/RegisterBrowserWalletContainer";
+import { RegisterBrowserWalletError } from "../register/RegisterBrowserWalletError";
 
 storiesOf("Wallet selector/Browser", module)
   .add("initial loading state", () => (

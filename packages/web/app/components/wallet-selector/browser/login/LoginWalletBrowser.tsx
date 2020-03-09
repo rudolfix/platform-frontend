@@ -7,8 +7,8 @@ import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { TMessage } from "../../../translatedMessages/utils";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { RegisterBrowserWalletContainer } from "../Register/RegisterBrowserWalletContainer";
-import { BrowserWalletErrorBase } from "../Register/RegisterBrowserWalletError";
+import { RegisterBrowserWalletContainer } from "../register/RegisterBrowserWalletContainer";
+import { BrowserWalletErrorBase } from "../register/RegisterBrowserWalletError";
 
 export type TWalletBrowserProps = {
   errorMessage?: TMessage;

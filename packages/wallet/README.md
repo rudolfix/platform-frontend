@@ -29,6 +29,12 @@ yarn install-pods
 
 ## Scripts
 
+#### Start the server that communicates with connected devices
+
+```bash
+yarn start
+```
+
 #### Start app on **ios** emulator
 
 ```bash
@@ -50,6 +56,24 @@ yarn start:android:release
 
 ```bash
 yarn start:devtools
+```
+
+#### Cleaning
+
+Often it's required to clean app artifacts (metro bundler cache, watchman cache, ios build folder /
+pods, etc.) to make the app building again. To avoid repeating commands manually two scripts are
+available.
+
+To clean automatically and reinstall dependencies use
+
+```bash
+yarn clean
+```
+
+For a more fine-grained control use manual mode
+
+```bash
+yarn clean:manual
 ```
 
 #### Linting

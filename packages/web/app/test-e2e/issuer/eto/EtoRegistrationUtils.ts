@@ -88,9 +88,9 @@ const COMPANIES_ME_PATH = "/api/eto-listing/companies/me";
 /**
  * Send a patch request to issuer company
  */
-export const patchIssuerCompany = (company: TPartialCompanyEtoData): Promise<string> =>
+export const putIssuerCompany = (company: TPartialCompanyEtoData): Promise<string> =>
   makeAuthenticatedCall(COMPANIES_ME_PATH, {
-    method: "PATCH",
+    method: "put",
     body: JSON.stringify(toSnakeCase(company)),
   }).then(toCamelCase);
 

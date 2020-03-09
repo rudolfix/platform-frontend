@@ -1,7 +1,6 @@
-import { StorageSchema } from "./StorageSchema";
 import * as yup from "yup";
-import { StorageItem } from "./StorageItem";
-import { StorageMetaData } from "./StorageMetaData";
+
+import { StorageSchema } from "./StorageSchema";
 
 describe("StorageSchema", () => {
   it("should return schema properties", () => {

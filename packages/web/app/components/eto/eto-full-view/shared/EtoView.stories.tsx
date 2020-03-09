@@ -35,6 +35,8 @@ const campaignOverviewData: TCampaignOverviewData = {
   showSocialChannels: true,
   showInvestmentTerms: true,
   showTwitterFeed: true,
+  showDisclaimer: true,
+  showTimeline: true,
   twitterUrl: "twitter_url",
 };
 

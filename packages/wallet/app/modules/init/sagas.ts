@@ -1,101 +1,45 @@
-import { neuTakeLatest, put, fork, getContext } from "@neufund/sagas";
+import { neuTakeLatest, put, fork } from "@neufund/sagas";
+import { toEthereumAddress, toEthereumPrivateKey } from "@neufund/shared";
+import { utils } from "ethers";
+
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { initActions } from "./actions";
-import * as yup from "yup";
-import messaging from '@react-native-firebase/messaging';
-import {Notification, NotificationResponse, Notifications} from 'react-native-notifications';
 
-// TODO: Remove after testing. Test setting some data.
-// We can use Yup as both: schema and a type
-const PersonSchema = yup.object().shape({
-  name: yup.string(),
-  age: yup.number(),
-});
-
-// get a type for TS from Yup object
-type Person = yup.InferType<typeof PersonSchema>;
-
-const JohnDoe: Person = {
-  name: "John Doe",
-  age: 22,
-};
-
-const testWallet: any = {
-  wallets: ["cd2a3d9f938e13cd947ec05abc7fe734df8dd826", "cd2a3d9f938e13cd947ec05abc7fe734df8dd826"],
-};
-// remove after testing end
-
-async function registerAppWithFCM() {
-  await messaging().registerForRemoteNotifications();
-}
-
-async function getToken() {
-  await messaging().getAPNSToken();
-}
-
-export function* initStartSaga({
-  logger,
-}: TGlobalDependencies): Generator<any, void, TGlobalDependencies> {
+function* initStartSaga({ logger, ethManager }: TGlobalDependencies): Generator<any, void, any> {
   try {
     // TODO: Provide a proper init flow
 
-    // TODO: Remove after testing. Test setting some data.
-    const { appStorage }: TGlobalDependencies = yield getContext("deps");
-    const { singleKeyAppStorage }: TGlobalDependencies = yield getContext("deps");
+    const balance = yield ethManager.getBalance(
+      toEthereumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
+    );
 
-    yield appStorage.setItem("test", JohnDoe);
-    yield singleKeyAppStorage.setItem(testWallet);
+    const etherString = utils.formatEther(balance);
 
-    // Notifications
+    console.log("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3 balance", etherString);
 
+    if (yield ethManager.hasExistingWallet()) {
+      yield ethManager.plugExistingWallet();
 
-    setTimeout(async () => {
-      const t = await registerAppWithFCM();
+      yield ethManager.unsafeDeleteWallet();
+    }
 
-      console.log("----------------", t);
+    // yield ethManager.plugNewRandomWallet();
 
-      const token = await getToken();
+    yield ethManager.plugNewWalletFromPrivateKey(
+      toEthereumPrivateKey("0x79177f5833b64c8fdcc9862f5a779b8ff0e1853bf6e9e4748898d4b6de7e8c93"),
+    );
 
+    // yield ethManager.plugNewWalletFromMnemonic(
+    //   "timber rely gap brown useful craft level lounge volume vote flush punch vanish casino fold cliff hollow maximum flip coast barrel copy quit globe",
+    // );
 
-      console.log("-------------", token);
-    }, 6000)
-
-    //Notifications.registerRemoteNotifications();
-
-    Notifications.events().registerRemoteNotificationsRegistered((event) => {
-      console.log(event);
-    })
-
-    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
-      console.log(`Notification received in foreground `, notification);
-      completion({alert: true, sound: true, badge: false});
+    yield ethManager.sendTransaction({
+      to: toEthereumAddress("0x7824e49353BD72E20B61717cf82a06a4EEE209e8"),
+      gasLimit: utils.bigNumberify("21000"),
+      gasPrice: utils.bigNumberify("20000000000"),
+      from: toEthereumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
+      value: utils.parseEther("1.0"),
     });
-
-    Notifications.events().registerNotificationReceivedBackground((notification: Notification, completion) => {
-      console.log(`Notification received in background AAAAA `, notification);
-      completion({alert: true, sound: true, badge: false});
-    });
-
-
-
-    messaging().onTokenRefresh(fcmToken => {
-      console.log("-----new tokken------", fcmToken);
-    });
-
-/*
-    setTimeout(() => {
-      Notifications.postLocalNotification({
-        body: "Local notificiation!",
-        title: "Welcome to Neufund",
-        sound: "chime.aiff",
-        thread: "test",
-        badge: 1,
-        payload: null,
-        type: "test"
-      }, 22);
-    }, 10000)
-*/
-    // Notifications
 
     yield put(initActions.done());
   } catch (e) {

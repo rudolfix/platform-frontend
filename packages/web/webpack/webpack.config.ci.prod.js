@@ -21,6 +21,7 @@ module.exports = merge.smart(configCommon, {
       chunks: "all",
     },
     runtimeChunk: true,
+    minimize: false,
   },
   output: {
     filename: "[chunkhash].[name].min.js",

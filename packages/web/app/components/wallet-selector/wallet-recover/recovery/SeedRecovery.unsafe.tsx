@@ -6,7 +6,6 @@ import { externalRoutes } from "../../../../config/externalRoutes";
 import { testWalletSeed } from "../../../../lib/web3/light-wallet/LightWalletUtils";
 import { TElementRef } from "../../../../types";
 import { englishMnemonics } from "../../../../utils/englishMnemonics";
-import { FormFieldError } from "../../../shared/forms/fields/FormFieldError";
 
 import * as styles from "./SeedRecovery.unsafe.module.scss";
 
@@ -114,7 +113,9 @@ export class LightWalletSeedRecoveryComponent extends React.Component<
         </div>
 
         {this.state.seedError && (
-          <FormFieldError className={styles.seedError} name="account-recovery.seed-error" />
+          <p data-test-id="account-recovery.seed-error" className={styles.seedError}>
+            <FormattedMessage id="account-recovery.seed-error" />
+          </p>
         )}
         <Button
           layout={EButtonLayout.PRIMARY}

@@ -1508,6 +1508,7 @@
   "wallet.deposit-funds.eur.eur-value": "nEUR value",
   "wallet.deposit-funds.eur.header": "Transfer {icon} nEUR to your Light Wallet",
   "wallet.deposit-funds.eur.iban": "IBAN",
+  "account-recovery.seed-error": "Some of the words you have entered are incorrect. Please review the words and try again.",
   "wallet.deposit-funds.eur.reference": "Reference",
   "wallet.deposit-funds.menu.eth": "Receive ETH",
   "wallet.deposit-funds.menu.eur": "Transfer nEUR",

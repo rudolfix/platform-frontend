@@ -97,6 +97,7 @@ describe("Login/Logout", () => {
       });
     });
   });
+
   describe("User Driven Actions", () => {
     it("should logout automatically when a user logs out from another tab @login @logout @p3", () => {
       createAndLoginNewUser({

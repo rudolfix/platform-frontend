@@ -28,20 +28,20 @@ export interface IVault {
   salt: string;
 }
 
-export interface ILightWallet {
-  addresses: Array<string>;
-  encHdRootPriv: object;
-  encPrivKeys: object;
-  encSeed: object;
-  hdIndex: number;
-  hdPathString: string;
-  salt: string;
-  version: number;
-  getSeed: (walletKey: object) => string;
-  signTransaction: (txParams: object) => void;
-  getAddresses: () => Array<string>;
-  exportPrivateKey: (address: string, walletKey: object) => string;
-}
+// export interface ILightWallet {
+//   addresses: Array<string>;
+//   encHdRootPriv: object;
+//   encPrivKeys: object;
+//   encSeed: object;
+//   hdIndex: number;
+//   hdPathString: string;
+//   salt: string;
+//   version: number;
+//   getSeed: (walletKey: object) => string;
+//   signTransaction: (txParams: object) => void;
+//   getAddresses: () => Array<string>;
+//   exportPrivateKey: (address: string, walletKey: object) => string;
+// }
 
 export class LightError extends Error {}
 export class LightWalletConnectorError extends LightError {}

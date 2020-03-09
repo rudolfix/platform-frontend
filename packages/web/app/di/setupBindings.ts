@@ -57,6 +57,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/react-connected-components/AsyncIntervalScheduler";
 import { symbols } from "./symbols";
+import { WalletConnectConnector } from "../lib/web3/wallet-connect/WalletConnectConnector";
 
 export function setupBindings(config: IConfig): ContainerModule {
   return new ContainerModule(bind => {
@@ -134,6 +135,10 @@ export function setupBindings(config: IConfig): ContainerModule {
 
     bind<BrowserWalletConnector>(symbols.browserWalletConnector)
       .to(BrowserWalletConnector)
+      .inSingletonScope();
+
+    bind<WalletConnectConnector>(symbols.walletConnectConnector)
+      .to(WalletConnectConnector)
       .inSingletonScope();
 
     bind<Web3Manager>(symbols.web3Manager)
@@ -259,6 +264,7 @@ export const createGlobalDependencies = (container: Container) => ({
   lightWalletConnector: container.get<LightWalletConnector>(symbols.lightWalletConnector),
   browserWalletConnector: container.get<BrowserWalletConnector>(symbols.browserWalletConnector),
   ledgerWalletConnector: container.get<LedgerWalletConnector>(symbols.ledgerWalletConnector),
+  walletConnectConnector: container.get<WalletConnectConnector>(symbols.walletConnectConnector),
 
   // storage
   jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),

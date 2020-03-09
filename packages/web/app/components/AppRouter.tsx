@@ -31,6 +31,7 @@ import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
+import { WalletConnect } from "./wallet-selector/WalletConnect";
 
 export const AppRouter: React.FunctionComponent = () => (
   <SwitchConnected>
@@ -64,6 +65,7 @@ export const AppRouter: React.FunctionComponent = () => (
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
+    <OnlyPublicRoute path={appRoutes.loginWalletConnect} component={WalletConnect} />
     <OnlyPublicRoute path={appRoutes.restore} component={WalletRecoverMain} />
     {process.env.NF_ISSUERS_ENABLED === "1" && [
       <OnlyPublicRoute

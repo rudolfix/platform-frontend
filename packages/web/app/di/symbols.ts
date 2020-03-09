@@ -34,6 +34,7 @@ export const symbols = {
   lightWalletConnector: Symbol("lightWalletConnector"),
   ledgerWalletConnector: Symbol("ledgerWalletConnector"),
   browserWalletConnector: Symbol("browserWalletConnector"),
+  walletConnectConnector: Symbol("walletConnectConnector"),
   web3Manager: Symbol("web3Manager"),
   web3Factory: Symbol("web3Factory"),
   web3BatchFactory: Symbol("web3BatchFactory"),

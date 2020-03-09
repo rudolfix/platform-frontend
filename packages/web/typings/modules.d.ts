@@ -13,6 +13,8 @@ declare module "@ledgerhq/web3-subprovider";
 declare module "@ledgerhq/hw-transport-u2f";
 declare module "@ledgerhq/hw-app-eth";
 
+declare module '@walletconnect/web3-provider'
+
 declare module "eth-sig-util";
 declare module "tweetnacl";
 

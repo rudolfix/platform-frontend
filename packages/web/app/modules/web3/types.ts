@@ -3,6 +3,7 @@ import { EthereumAddress } from "@neufund/shared";
 // normalized information about all possible types of personal wallets
 export enum EWalletType {
   LEDGER = "LEDGER",
+  WALLET_CONNECT = "WALLET_CONNECT",
   BROWSER = "BROWSER",
   LIGHT = "LIGHT",
   UNKNOWN = "UNKNOWN",
@@ -14,7 +15,11 @@ export enum EWalletSubType {
   UNKNOWN = "UNKNOWN",
 }
 
-export type TWalletMetadata = ILightWalletMetadata | IBrowserWalletMetadata | ILedgerWalletMetadata;
+export type TWalletMetadata =
+  | ILightWalletMetadata
+  | IBrowserWalletMetadata
+  | ILedgerWalletMetadata
+  | IWalletConnectMetadata;
 
 export interface ICommonWalletMetadata {
   address: EthereumAddress;
@@ -46,4 +51,8 @@ export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.LEDGER;
   walletSubType: EWalletSubType.UNKNOWN;
   derivationPath: string;
+}
+
+export interface IWalletConnectMetadata extends ICommonWalletMetadata {
+  walletType: EWalletType.WALLET_CONNECT;
 }

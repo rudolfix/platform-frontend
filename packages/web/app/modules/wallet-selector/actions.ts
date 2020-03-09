@@ -13,6 +13,8 @@ const actions = {
     "WALLET_SELECTOR_MESSAGE_SIGNING_ERROR",
     (errorMessage: TMessage) => ({ errorMessage }),
   ),
+  walletConnectInit: createActionFactory("WALLET_CONNECT_INIT"),
+  connectToBridge: createActionFactory("CONNECT_TO_BRIDGE")
 };
 
 export const walletSelectorActions = {

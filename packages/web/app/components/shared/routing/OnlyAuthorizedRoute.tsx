@@ -11,7 +11,7 @@ import { selectWalletTypeFromQueryString } from "../../../modules/routing/select
 import { EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
-import { walletLoginRoutes } from "../../wallet-selector/wallet-routes";
+import { walletLoginRoutes } from "../../wallet-selector/WalletSelectorLogin/wallet-routes";
 
 interface IStateProps {
   isAuthorized: boolean;

@@ -46,7 +46,7 @@ import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";
 import { createMessage } from "../translatedMessages/utils";
-import { WalletSelectorLogin } from "./WalletSelectorLogin";
+import { WalletSelectorLogin } from "./WalletSelectorLogin/WalletSelectorLogin";
 
 // TODO: Fix broken kyc mocks
 describe.skip("Wallet selector integration", () => {

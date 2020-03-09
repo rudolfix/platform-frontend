@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { appRoutes } from "../../appRoutes";
 import { ButtonLink } from "../../shared/buttons/ButtonLink";
-import { walletLoginRoutes } from "../../wallet-selector/wallet-routes";
+import { walletLoginRoutes } from "../../wallet-selector/WalletSelectorLogin/wallet-routes";
 import { Menu } from "../menus/menu/Menu";
 import { MobileMenu } from "../menus/mobileMenu/MobileMenu";
 import { MyAccountMenu } from "../menus/MyAccountMenu";

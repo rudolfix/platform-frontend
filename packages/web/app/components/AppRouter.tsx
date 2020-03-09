@@ -27,9 +27,9 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
-import { WalletRecovery } from "./wallet-selector/wallet-recover/WalletRecovery";
-import { WalletSelectorLogin } from "./wallet-selector/WalletSelectorLogin";
-import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister";
+import { WalletRecovery } from "./wallet-selector/WalletRecovery/WalletRecovery";
+import { WalletSelectorLogin } from "./wallet-selector/WalletSelectorLogin/WalletSelectorLogin";
+import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister/WalletSelectorRegister";
 import { Wallet } from "./wallet/Wallet";
 
 export const AppRouter: React.FunctionComponent = () => (

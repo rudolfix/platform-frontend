@@ -3,8 +3,8 @@ import * as React from "react";
 import { Redirect } from "react-router";
 
 import { appRoutes } from "../../appRoutes";
-import { WalletSelectorLogin } from "../../wallet-selector/WalletSelectorLogin";
-import { WalletSelectorRegister } from "../../wallet-selector/WalletSelectorRegister";
+import { WalletSelectorLogin } from "../../wallet-selector/WalletSelectorLogin/WalletSelectorLogin";
+import { WalletSelectorRegister } from "../../wallet-selector/WalletSelectorRegister/WalletSelectorRegister";
 
 const SecretProtected = <T extends {}>(Component: React.ComponentType<T>): React.ComponentType<T> =>
   class extends React.Component<T> {

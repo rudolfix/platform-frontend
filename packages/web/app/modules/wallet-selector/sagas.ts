@@ -19,7 +19,7 @@ import {
   GenericErrorMessage,
 } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
-import { userMayChooseWallet } from "../../components/wallet-selector/utils";
+import { userMayChooseWallet } from "../../components/wallet-selector/WalletSelectorLogin/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../lib/api/users/UsersApi";

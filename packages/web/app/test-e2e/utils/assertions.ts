@@ -1,7 +1,7 @@
 import { find, get } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
-import { walletLoginRoutes } from "../../components/wallet-selector/wallet-routes";
+import { walletLoginRoutes } from "../../components/wallet-selector/WalletSelectorLogin/wallet-routes";
 import { MOCK_API_URL } from "../config";
 import { getIsUserVerifiedOnBlockchain } from "./ethRpcUtils";
 import { tid } from "./selectors";

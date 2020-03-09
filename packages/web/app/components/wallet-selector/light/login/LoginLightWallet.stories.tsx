@@ -4,49 +4,45 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { TMessage } from "../../../translatedMessages/utils";
-import { WalletSelectorLayoutContainer } from "../../WalletSelectorLayout";
-import { LoginLightWalletLayout } from "./LoginLightWallet";
+import { LoginLightWalletComponent } from "./LoginLightWallet";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
-storiesOf("LoginLightWallet", module)
+storiesOf("Wallet selector/light/login", module)
   .add("Without email set", () => (
-    <WalletSelectorLayoutContainer showLogoutReason={false}>
-      <MissingEmailLightWallet goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")} />
-    </WalletSelectorLayoutContainer>
+    <MissingEmailLightWallet
+      goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
+    />
   ))
   .add("With valid mail set", () => (
-    <WalletSelectorLayoutContainer showLogoutReason={false}>
-      <LoginLightWalletLayout
-        isLoading={false}
-        errorMsg={undefined}
-        email="mail@neufund.org"
-        goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
-        submitForm={action("SUBMIT_FORM")}
-        intl={{} as IIntlHelpers}
-      />
-    </WalletSelectorLayoutContainer>
+    <LoginLightWalletComponent
+      showLogoutReason={false}
+      isLoading={false}
+      errorMsg={undefined}
+      email="mail@neufund.org"
+      goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
+      submitForm={action("SUBMIT_FORM")}
+      intl={{} as IIntlHelpers}
+    />
   ))
   .add("With logout reason", () => (
-    <WalletSelectorLayoutContainer showLogoutReason={true}>
-      <LoginLightWalletLayout
-        isLoading={false}
-        errorMsg={undefined}
-        email="mail@neufund.org"
-        goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
-        submitForm={action("SUBMIT_FORM")}
-        intl={{} as IIntlHelpers}
-      />
-    </WalletSelectorLayoutContainer>
+    <LoginLightWalletComponent
+      showLogoutReason={true}
+      isLoading={false}
+      errorMsg={undefined}
+      email="mail@neufund.org"
+      goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
+      submitForm={action("SUBMIT_FORM")}
+      intl={{} as IIntlHelpers}
+    />
   ))
   .add("With password error", () => (
-    <WalletSelectorLayoutContainer showLogoutReason={false}>
-      <LoginLightWalletLayout
-        isLoading={false}
-        errorMsg={{ messageType: "lightWalletWrongPassword" } as TMessage}
-        email="mail@neufund.org"
-        goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
-        submitForm={action("SUBMIT_FORM")}
-        intl={{} as IIntlHelpers}
-      />
-    </WalletSelectorLayoutContainer>
+    <LoginLightWalletComponent
+      showLogoutReason={false}
+      isLoading={false}
+      errorMsg={{ messageType: "lightWalletWrongPassword" } as TMessage}
+      email="mail@neufund.org"
+      goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
+      submitForm={action("SUBMIT_FORM")}
+      intl={{} as IIntlHelpers}
+    />
   ));

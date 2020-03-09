@@ -4,7 +4,7 @@ import { Redirect, Route } from "react-router-dom";
 
 import { EWalletType } from "../../modules/web3/types";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";
-import { WalletBrowser } from "./browser/Login/WalletBrowser";
+import { LoginWalletBrowser } from "./browser/Login/LoginWalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
 import { LoginLightWallet } from "./light/login/LoginLightWallet";
 import { WalletChooser } from "./WalletChooser";
@@ -16,7 +16,7 @@ type TWalletRouterProps = {
   redirectLocation: Location;
 };
 
-export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
+export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
   rootPath,
   redirectLocation,
   showWalletSelector,
@@ -36,7 +36,7 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
       path={`${rootPath}/browser`}
       component={() => (
         <>
-          <WalletBrowser />
+          <LoginWalletBrowser />
           {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />}
         </>
       )}

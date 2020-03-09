@@ -7,7 +7,7 @@ import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsaf
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { shouldNeverHappen } from "../shared/NeverComponent";
 import { RegisterBrowserWallet } from "./browser/Register/RegisterBrowserWallet";
-import { RegisterLedger } from "./ledger/Register/RegisterLedger";
+import { RegisterLedger } from "./ledger/register/RegisterLedger";
 import { RegisterLightWallet } from "./light/register/RegisterLightWallet";
 
 type TStateProps = { walletType: EWalletType };

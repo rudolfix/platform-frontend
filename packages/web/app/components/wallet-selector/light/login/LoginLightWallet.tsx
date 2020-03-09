@@ -105,9 +105,12 @@ const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
   validationSchema: LoginValidator,
 })(LoginLightWalletForm);
 
-export const LoginLightWalletLayout: React.FunctionComponent<TProps> = props => (
+export const LoginLightWalletComponent: React.FunctionComponent<TProps> = props => (
   <section className={styles.main}>
-    <p data-test-id={"modals.wallet-selector.login-light-wallet"}>
+    <h1 className={styles.title}>
+      <FormattedMessage id="wallet-selector.log-in" />
+    </h1>
+    <p data-test-id="modals.wallet-selector.login-light-wallet">
       <FormattedMessage
         id="wallet-selector.neuwallet.login.prompt"
         values={{
@@ -138,4 +141,4 @@ export const LoginLightWallet = compose<TProps, {}>(
   }),
   injectIntlHelpers,
   branch<IStateProps>(({ email }) => !email, renderComponent(MissingEmailLightWallet)),
-)(LoginLightWalletLayout);
+)(LoginLightWalletComponent);

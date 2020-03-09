@@ -20,7 +20,7 @@ export type TWalletBrowserDispatchProps = {
   tryConnectingWithBrowserWallet: () => void;
 };
 
-export const WalletBrowser = compose(
+export const LoginWalletBrowser = compose(
   appConnect<TWalletBrowserProps, TWalletBrowserDispatchProps>({
     stateToProps: state => ({
       errorMessage: state.walletSelector.messageSigningError as TMessage,

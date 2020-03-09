@@ -1,9 +1,9 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import { noop } from "lodash";
 import * as React from "react";
 
-import { tid } from "../../../../test/testUtils";
 import { BackupSeedDisplay } from "./BackupSeedDisplay";
 
 const WalletPrivateData = {

@@ -1,7 +1,7 @@
+import { AssertEqual, assertType } from "@neufund/shared/tests";
 import { expect } from "chai";
 import * as Yup from "yup";
 
-import { AssertEqual, assertType } from "../../test/testUtils";
 import {
   findMax,
   findMin,

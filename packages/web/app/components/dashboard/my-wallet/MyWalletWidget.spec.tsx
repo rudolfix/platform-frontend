@@ -1,11 +1,11 @@
 import { convertToUlps } from "@neufund/shared";
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import { createMemoryHistory } from "history";
 import { combineReducers, createStore } from "redux";
 
 import { wrapWithProviders } from "../../../../test/integrationTestUtils.unsafe";
-import { tid } from "../../../../test/testUtils";
 import { generateRootModuleReducerMap } from "../../../store";
 import { MyWalletWidget } from "./MyWalletWidget";
 

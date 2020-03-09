@@ -48,15 +48,17 @@ export function* initStartSaga({
 
     // Notifications
 
-    yield registerAppWithFCM();
 
-        const token = yield getToken();
+    setTimeout(async () => {
+      const t = await registerAppWithFCM();
+
+      console.log("----------------", t);
+
+      const token = await getToken();
 
 
-        console.log("-------------", token);
-
-
-
+      console.log("-------------", token);
+    }, 6000)
 
     //Notifications.registerRemoteNotifications();
 

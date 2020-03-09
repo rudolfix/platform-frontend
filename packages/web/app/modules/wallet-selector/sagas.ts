@@ -397,7 +397,7 @@ export function* walletRecoverForm(
       tos: false,
     };
 
-    const { email, password } = yield neuCall(recoveryVerifyEmail, baseUiData, initialFormValues);
+    const { email, password } = yield neuCall(recoveryVerifyEmail, baseUiData, initialFormValues,);
     return { userType: user.type, email, password };
   }
 }
@@ -434,53 +434,6 @@ export function* lightWalletRegister(
   } finally {
     yield walletSelectorReset();
   }
-}
-
-export function* lightWalletRecoverWalletAndSignIn(
-  { lightWalletConnector, web3Manager }: TGlobalDependencies,
-  password: string,
-  walletMetadata: ILightWalletMetadata,
-): Generator<any, any, any> {
-  try {
-    const wallet: IPersonalWallet = yield connectLightWallet(
-      lightWalletConnector,
-      walletMetadata,
-      password,
-    );
-    yield web3Manager.plugPersonalWallet(wallet);
-    yield neuCall(signInUser);
-
-    yield put(
-      actions.genericModal.showInfoModal(
-        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE),
-        createMessage(ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT),
-      ),
-    );
-  } catch (e) {
-    yield neuCall(handleLightWalletError, e);
-  }
-}
-
-export function* createUserObject(
-  _: TGlobalDependencies,
-  email: string,
-  password: string,
-  seed: string,
-  userType: EUserType,
-) {
-  const walletMetadata = yield* neuCall(setupLightWallet, email, password, seed);
-  yield neuCall(createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
-
-  const newUser = {
-    salt: walletMetadata.salt,
-    backupCodesVerified: true,
-    type: userType,
-    walletType: walletMetadata.walletType,
-    walletSubtype: EWalletSubType.UNKNOWN,
-    newEmail: email,
-  };
-
-  return { walletMetadata, newUser };
 }
 
 export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void, any> {

@@ -21,7 +21,7 @@ type TWalletComponentProps = {
   showWalletSelector: boolean;
 };
 
-export const LightWalletComponent: React.FunctionComponent<TWalletComponentProps> = ({
+const LightWallet: React.FunctionComponent<TWalletComponentProps> = ({
   rootPath,
   showWalletSelector,
 }) => (
@@ -31,7 +31,7 @@ export const LightWalletComponent: React.FunctionComponent<TWalletComponentProps
   </>
 );
 
-export const BrowserWalletComponent: React.FunctionComponent<TWalletComponentProps> = ({
+const BrowserWallet: React.FunctionComponent<TWalletComponentProps> = ({
   rootPath,
   showWalletSelector,
 }) => (
@@ -41,7 +41,7 @@ export const BrowserWalletComponent: React.FunctionComponent<TWalletComponentPro
   </>
 );
 
-export const LedgerWalletComponent: React.FunctionComponent<TWalletComponentProps> = ({
+const LedgerWallet: React.FunctionComponent<TWalletComponentProps> = ({
   rootPath,
   showWalletSelector,
 }) => (
@@ -60,21 +60,21 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
     <Route
       path={`${rootPath}/light`}
       component={() => (
-        <LightWalletComponent showWalletSelector={showWalletSelector} rootPath={rootPath} />
+        <LightWallet showWalletSelector={showWalletSelector} rootPath={rootPath} />
       )}
       exact
     />
     <Route
       path={`${rootPath}/browser`}
       component={() => (
-        <BrowserWalletComponent showWalletSelector={showWalletSelector} rootPath={rootPath} />
+        <BrowserWallet showWalletSelector={showWalletSelector} rootPath={rootPath} />
       )}
       exact
     />
     <Route
       path={`${rootPath}/ledger`}
       component={() => (
-        <LedgerWalletComponent showWalletSelector={showWalletSelector} rootPath={rootPath} />
+        <LedgerWallet showWalletSelector={showWalletSelector} rootPath={rootPath} />
       )}
       exact
     />

@@ -16,41 +16,6 @@ type TWalletRouterProps = {
   redirectLocation: Location;
 };
 
-type TWalletComponentProps = {
-  rootPath: string;
-  showWalletSelector: boolean;
-};
-
-const LightWallet: React.FunctionComponent<TWalletComponentProps> = ({
-  rootPath,
-  showWalletSelector,
-}) => (
-  <>
-    <LoginLightWallet />
-    {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />}
-  </>
-);
-
-const BrowserWallet: React.FunctionComponent<TWalletComponentProps> = ({
-  rootPath,
-  showWalletSelector,
-}) => (
-  <>
-    <WalletBrowser />
-    {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />}
-  </>
-);
-
-const LedgerWallet: React.FunctionComponent<TWalletComponentProps> = ({
-  rootPath,
-  showWalletSelector,
-}) => (
-  <>
-    <WalletLedger />
-    {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />}
-  </>
-);
-
 export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
   rootPath,
   redirectLocation,
@@ -60,21 +25,30 @@ export const WalletRouter: React.FunctionComponent<TWalletRouterProps> = ({
     <Route
       path={`${rootPath}/light`}
       component={() => (
-        <LightWallet showWalletSelector={showWalletSelector} rootPath={rootPath} />
+        <>
+          <LoginLightWallet />
+          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />}
+        </>
       )}
       exact
     />
     <Route
       path={`${rootPath}/browser`}
       component={() => (
-        <BrowserWallet showWalletSelector={showWalletSelector} rootPath={rootPath} />
+        <>
+          <WalletBrowser />
+          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />}
+        </>
       )}
       exact
     />
     <Route
       path={`${rootPath}/ledger`}
       component={() => (
-        <LedgerWallet showWalletSelector={showWalletSelector} rootPath={rootPath} />
+        <>
+          <WalletLedger />
+          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />}
+        </>
       )}
       exact
     />

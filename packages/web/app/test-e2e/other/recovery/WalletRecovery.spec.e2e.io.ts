@@ -46,7 +46,6 @@ describe("Wallet recovery", function(): void {
         assertDashboard();
         assertWaitForLatestEmailSentWithSalt(email);
 
-
         cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
 
         cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
@@ -80,7 +79,7 @@ describe("Wallet recovery", function(): void {
     });
   });
 
-  it("should recover user with same email if its the same user @backup @p3", function(): void {
+  it.only("should recover user with same email if its the same user @backup @p3", function(): void {
     // TODO failing
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
@@ -88,8 +87,8 @@ describe("Wallet recovery", function(): void {
         kyc: "individual",
         seed: seed.join(" "),
       }).then(() => {
-        const email = generateRandomEmailAddress();
         const password = "strongpassword";
+        const { email } = getWalletMetaData();
         cy.clearLocalStorage();
         cy.visit(appRoutes.restore);
 

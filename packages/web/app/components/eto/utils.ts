@@ -75,6 +75,18 @@ export const removeEmptyKeyValueFields = () => (data: ICompoundField[] | undefin
   }
 };
 
+/**
+ * Removes object if object.url is undefined
+ */
+export const removeIfUrlEmpty = () => (data: ICompoundField[] | undefined) => {
+  if (data) {
+    const cleanData = data.filter(datum => !!datum.url);
+    return cleanData.length ? cleanData : undefined;
+  }
+
+  return undefined;
+};
+
 //removes empty key-value fields, e.g. {key:undefined,value:undefined}
 export const removeEmptyKeyValueField = () => (data: ICompoundField | undefined) =>
   findNonEmptyKeyValueField(data) ? data : undefined;
@@ -154,6 +166,9 @@ export const convertToPrecision = (precision: number) => (data: number) => {
 
 export const setDefaultValueIfUndefined = (defaultValue: any) => (data: any) =>
   data === undefined ? defaultValue : data;
+
+export const removeDefaultValues = (defaultValue: string) => (field: string | undefined) =>
+  field === defaultValue ? undefined : field;
 
 export const removeEmptyField = () => (data: any) => {
   if (

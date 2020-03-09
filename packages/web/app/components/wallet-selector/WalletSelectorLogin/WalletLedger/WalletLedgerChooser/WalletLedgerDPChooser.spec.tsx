@@ -1,10 +1,10 @@
 import { dummyIntl } from "@neufund/shared";
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { tid } from "../../../../../../test/testUtils";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { DPChooserComponent } from "./WalletLedgerDPChooser";
 

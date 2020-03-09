@@ -1,6 +1,6 @@
+import { expectToBeRejected } from "@neufund/shared/tests";
 import { expect } from "chai";
 
-import { expectToBeRejected } from "../../../../test/testUtils";
 import {
   createLightWalletVault,
   deserializeLightWalletVault,

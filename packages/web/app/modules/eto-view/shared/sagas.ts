@@ -10,7 +10,7 @@ import { EUserType } from "../../../lib/api/users/interfaces";
 import { EProcessState } from "../../../utils/enums/processStates";
 import { actions } from "../../actions";
 import { selectUserType } from "../../auth/selectors";
-import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../../bookbuilding-flow/utils";
+import { shouldLoadPledgeData } from "../../bookbuilding-flow/utils";
 import { delayEtoRefresh, loadEtoWithCompanyAndContract } from "../../eto/sagas";
 import {
   EETOStateOnChain,
@@ -33,8 +33,10 @@ import {
 import {
   getTwitterData,
   shouldShowInvestmentTerms,
+  shouldShowProspectusDisclaimer,
   shouldShowSlideshare,
   shouldShowSocialChannels,
+  shouldShowTimeline,
   shouldShowYouTube,
 } from "./utils";
 
@@ -64,14 +66,17 @@ export function* calculateEtoViewCampaignOverviewType(
 
 export function* getCampaignOverviewData(
   eto: TEtoWithCompanyAndContractReadonly,
+  viewAsUserType: EUserType,
 ): Generator<any, TCampaignOverviewParams, any> {
   const twitterData = yield* call(getTwitterData, eto.company);
 
   return {
+    showTimeline: yield* call(shouldShowTimeline, eto),
+    showDisclaimer: yield* call(shouldShowProspectusDisclaimer, eto),
     showYouTube: yield* call(shouldShowYouTube, eto.company),
     showSlideshare: yield* call(shouldShowSlideshare, eto.company),
     showSocialChannels: yield* call(shouldShowSocialChannels, eto.company),
-    showInvestmentTerms: yield* call(shouldShowInvestmentTerms, eto.product),
+    showInvestmentTerms: yield* call(shouldShowInvestmentTerms, eto, viewAsUserType),
     ...twitterData,
   };
 }
@@ -83,7 +88,7 @@ export function* calculateCampaignOverviewDataIssuerNominee(
     calculateEtoViewCampaignOverviewType,
     eto,
   );
-  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto);
+  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto, EUserType.ISSUER);
 
   if (campaignOverviewType === EEtoViewCampaignOverviewType.WITH_STATS) {
     return {
@@ -110,7 +115,7 @@ export function* calculateCampaignOverviewData(
     eto,
   );
 
-  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto);
+  const campaignOverviewCommonData = yield call(getCampaignOverviewData, eto, EUserType.INVESTOR);
 
   if (campaignOverviewType === EEtoViewCampaignOverviewType.WITH_STATS) {
     return {
@@ -148,14 +153,8 @@ export function* saveUsersPledge(
 export function* saveBookbuildingStats(
   eto: TEtoWithCompanyAndContractReadonly,
 ): Generator<any, void, any> {
-  const onChainState = eto.contract && eto.contract.timedState;
-
-  if (shouldLoadBookbuildingStats(onChainState)) {
-    eto.isBookbuilding
-      ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
-      : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
-  } else {
-    yield put(actions.bookBuilding.bookBuildingStopWatch(eto.etoId));
+  if (eto.subState === EEtoSubState.WHITELISTING && eto.isBookbuilding) {
+    yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
   }
 }
 

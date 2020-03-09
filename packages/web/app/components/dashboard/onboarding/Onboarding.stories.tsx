@@ -2,12 +2,12 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import { EKycRequestStatus, EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { AccountSetupBackupSeedComponent } from "../../settings/backup-seed/AccountSetupBackupSeedComponent";
-import { AccountSetupKycComponent } from "../../settings/kyc-states/AccountSetupKycComponent";
 import { SetEmailComponent } from "../../settings/verify-email/AccountSetupVerifyEmailComponent";
+import { AccountSetupKycComponent } from "./AccountSetupKycComponent";
 import { OnboardingLayout, OnboardingMain } from "./Onboarding";
-import { OnboardingKycPendingBase } from "./OnboardingKycPending";
+import { OnboardingKycPending } from "./OnboardingKycPending";
 import { EOnboardingStepState } from "./types";
 
 const steps = [
@@ -43,6 +43,27 @@ storiesOf("Onboarding", module)
       <OnboardingMain accountSetupStepsData={steps} />
     </OnboardingLayout>
   ))
-  .add("kyc pending", () => (
-    <OnboardingKycPendingBase kycRequestStatus={EKycRequestStatus.PENDING} />
+  .add("kyc pending - individual", () => (
+    <OnboardingKycPending
+      kycRequestStatus={EKycRequestStatus.PENDING}
+      kycRequestType={EKycRequestType.INDIVIDUAL}
+    />
+  ))
+  .add("kyc pending - business", () => (
+    <OnboardingKycPending
+      kycRequestStatus={EKycRequestStatus.PENDING}
+      kycRequestType={EKycRequestType.BUSINESS}
+    />
+  ))
+  .add("kyc rejected/ignored - individual", () => (
+    <OnboardingKycPending
+      kycRequestStatus={EKycRequestStatus.REJECTED}
+      kycRequestType={EKycRequestType.INDIVIDUAL}
+    />
+  ))
+  .add("kyc rejected/ignored - business", () => (
+    <OnboardingKycPending
+      kycRequestStatus={EKycRequestStatus.REJECTED}
+      kycRequestType={EKycRequestType.BUSINESS}
+    />
   ));

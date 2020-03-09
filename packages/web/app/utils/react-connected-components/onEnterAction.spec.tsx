@@ -1,9 +1,9 @@
+import { createMount } from "@neufund/shared/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { spy } from "sinon";
 
-import { createMount } from "../../../test/createMount";
 import { createDummyStore } from "../../../test/fixtures";
 import { onEnterAction } from "./OnEnterAction";
 

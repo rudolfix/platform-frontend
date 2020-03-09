@@ -22,7 +22,7 @@ import { FormFieldLabel } from "../../../shared/forms/fields/FormFieldLabel";
 import { MediaLinksEditor } from "../../../shared/MediaLinksEditor";
 import { SOCIAL_PROFILES_ICONS, SocialProfilesEditor } from "../../../shared/SocialProfilesEditor";
 import { Tooltip } from "../../../shared/tooltips";
-import { convert, removeEmptyKeyValueField, removeEmptyKeyValueFields } from "../../utils";
+import { convert, removeEmptyKeyValueFields, removeIfUrlEmpty } from "../../utils";
 import { EtoFormBase } from "../EtoFormBase";
 import { Section } from "../Shared";
 
@@ -140,10 +140,10 @@ const addTitleIfUrlNotEmpty = (titleValue: string = "") => (data: {
   url?: string;
   title?: string;
 }) => {
-  if (data.url !== undefined) {
+  if (data.url !== undefined && data.url !== "") {
     return { ...data, title: titleValue };
   } else {
-    return removeEmptyKeyValueField()(data);
+    return undefined;
   }
 };
 
@@ -151,7 +151,7 @@ const fromFormState = {
   companyPitchdeckUrl: addTitleIfUrlNotEmpty("Pitch Deck"),
   companyVideo: addTitleIfUrlNotEmpty(),
   companySlideshare: addTitleIfUrlNotEmpty(),
-  socialChannels: removeEmptyKeyValueFields(),
+  socialChannels: removeIfUrlEmpty(),
   companyNews: removeEmptyKeyValueFields(),
   marketingLinks: removeEmptyKeyValueFields(),
 };

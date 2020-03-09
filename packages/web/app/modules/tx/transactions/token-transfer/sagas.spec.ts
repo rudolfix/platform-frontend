@@ -1,7 +1,7 @@
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { toEthereumAddress } from "@neufund/shared";
+import { createMock } from "@neufund/shared/tests";
 
-import { createMock } from "../../../../../test/testUtils";
 import { EtherToken } from "../../../../lib/contracts/EtherToken";
 import { IERC223Token } from "../../../../lib/contracts/IERC223Token";
 import { ContractsService } from "../../../../lib/web3/ContractsService";

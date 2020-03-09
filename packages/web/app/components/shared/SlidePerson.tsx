@@ -1,8 +1,8 @@
+import { ISrcSet } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 
 import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { ISrcSet } from "./Image";
 import { ResponsiveImage } from "./ResponsiveImage";
 import { SocialProfilesList } from "./SocialProfilesList";
 

@@ -1,9 +1,9 @@
-import { safeDelay, setupFakeClock } from "@neufund/shared";
+import { safeDelay } from "@neufund/shared";
+import { createMount, setupFakeClock } from "@neufund/shared/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { createMount } from "../../../test/createMount";
 import { wrapWithProviders } from "../../../test/integrationTestUtils.unsafe";
 import { withActionWatcher } from "./withActionWatcher.unsafe";
 

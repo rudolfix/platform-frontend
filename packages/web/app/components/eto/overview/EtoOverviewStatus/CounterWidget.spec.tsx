@@ -1,16 +1,14 @@
-import { setupFakeClock } from "@neufund/shared";
+import { createMount, setupFakeClock, tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { cloneDeep } from "lodash";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { createMount } from "../../../../../test/createMount";
 import { testCompany, testContract, testEto } from "../../../../../test/fixtures";
 import {
   createIntegrationTestsSetup,
   wrapWithProviders,
 } from "../../../../../test/integrationTestUtils.unsafe";
-import { tid } from "../../../../../test/testUtils";
 import { EUserType } from "../../../../lib/api/users/interfaces";
 import { actions } from "../../../../modules/actions";
 import { EAuthStatus } from "../../../../modules/auth/reducer";

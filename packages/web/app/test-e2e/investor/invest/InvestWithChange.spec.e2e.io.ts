@@ -4,7 +4,7 @@ import { tid } from "../../utils/selectors";
 import { loginFixtureAccount } from "../../utils/userHelpers";
 
 describe("Invest with change", () => {
-  it("should change investment amount @investment @p3", () => {
+  it("should change investment amount #investment #p3", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
 

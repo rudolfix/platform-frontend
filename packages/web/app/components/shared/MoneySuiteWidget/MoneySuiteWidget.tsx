@@ -1,3 +1,4 @@
+import { TokenIcon } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 
@@ -9,7 +10,6 @@ import {
   THumanReadableFormat,
   TValueFormat,
 } from "../formatters/utils";
-import { TokenIcon } from "../icons/TokenIcon";
 import {
   ESize as ETransactionDataSize,
   ETheme as ETransactionTheme,

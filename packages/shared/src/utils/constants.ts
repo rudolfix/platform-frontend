@@ -31,6 +31,7 @@ export enum EJwtPermissions {
   SIGN_TOS = "sign-tos",
   ISSUER_UPDATE_NOMINEE_REQUEST = "update-nominee-request",
   ISSUER_REMOVE_NOMINEE = "issuer-remove-nominee",
+  MANAGE_USER_WALLET = "manage-user-wallet",
 }
 
 /**

@@ -15,7 +15,7 @@ import { tid } from "../../../utils/selectors";
 import { loginFixtureAccount } from "../../../utils/userHelpers";
 
 describe("Payouts", () => {
-  it("should correctly accept all payouts @portfolio @payout @p3", () => {
+  it("should correctly accept all payouts #portfolio #payout #p3", () => {
     loginFixtureAccount("INV_ICBM_ETH_M_HAS_KYC_DUP");
     getWalletEthAmount().as("balanceEthBefore");
     getWalletNEurAmount().as("balanceNEurBefore");
@@ -67,7 +67,7 @@ describe("Payouts", () => {
     });
   });
 
-  it("should disable payout when account is not verified @portfolio @payout @p2", () => {
+  it("should disable payout when account is not verified #portfolio #payout #p2", () => {
     loginFixtureAccount("INV_ETH_ICBM_NO_KYC");
 
     goToPortfolio();
@@ -85,21 +85,21 @@ describe("Payouts", () => {
     cy.get(tid("asset-portfolio.payout.accept-all-payouts")).should("be.disabled");
   });
 
-  it("should show message that there are no payouts @portfolio @payout @p3", () => {
+  it("should show message that there are no payouts #portfolio #payout #p3", () => {
     loginFixtureAccount("INV_EMPTY_HAS_KYC");
     goToPortfolio();
 
     cy.get(tid(`asset-portfolio.no-payouts`)).should("exist");
   });
 
-  it("should show claimed token in My Assets table @portfolio @p2 @flaky", () => {
+  it("should show claimed token in My Assets table #portfolio #p2 #flaky", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInPayoutState");
 
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC");
 
     goToPortfolio();
 
-    cy.get(tid(`modals.portfolio.portfolio-asset-action.claim-${ETO_ID}`)).click();
+    cy.get(tid(`modals.portfolio.portfolio-asset-action.claim-${ETO_ID}`)).click({ force: true });
 
     fillForm(
       {

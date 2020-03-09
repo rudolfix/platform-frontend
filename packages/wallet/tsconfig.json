@@ -11,7 +11,7 @@
     "incremental": true,
     "isolatedModules": true,
     "jsx": "react-native",
-    "lib": ["es6"],
+    "lib": ["es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": true,
@@ -21,13 +21,20 @@
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "types": ["react-native"]
+  },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
   },
   "exclude": [
     "node_modules",
     "./babel.config.js",
     "./metro.config.js",
     "./tests/e2e",
-    "./**/*.spec.*"
+    "./app/**/*.spec.*",
+    "./app/**/*.specUtils.*",
+    "./**/__mocks__/**/*"
   ]
 }

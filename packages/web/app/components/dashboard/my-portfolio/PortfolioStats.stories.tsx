@@ -10,7 +10,6 @@ import {
   PortfolioStatsLayout,
   PortfolioStatsLayoutContainer,
   PortfolioStatsNoAssetsLayout,
-  PortfolioStatsNoKYCLayout,
 } from "./PortfolioStats";
 
 import tokenIcon from "../../../assets/img/nEUR_icon.svg";
@@ -79,11 +78,6 @@ storiesOf("NDS|Molecules/Dashboard/PortfolioStats", module)
         goToPortfolio={action("GO_TO_PORTFOLIO")}
         goToProfile={action("GO_TO_PROFILE")}
       />
-    </PortfolioStatsLayoutContainer>
-  ))
-  .add("is not verified", () => (
-    <PortfolioStatsLayoutContainer myAssetsEurEquivTotal={undefined}>
-      <PortfolioStatsNoKYCLayout />
     </PortfolioStatsLayoutContainer>
   ))
   .add("no assets", () => (

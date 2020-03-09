@@ -1,4 +1,4 @@
-import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
+import { Button, EButtonLayout, EButtonWidth, TokenIcon } from "@neufund/design-system";
 import {
   convertToUlps,
   multiplyBigNumbers,
@@ -23,7 +23,6 @@ import { appConnect } from "../../../store";
 import { DataRowSeparated } from "../../shared/DataRow";
 import { Money } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
-import { TokenIcon } from "../../shared/icons/TokenIcon";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ESize } from "../../shared/transaction/TransactionData";
@@ -97,12 +96,6 @@ const PortfolioStatsNoAssetsLayout: React.FunctionComponent<Pick<
   </>
 );
 
-const PortfolioStatsNoKYCLayout: React.FunctionComponent = () => (
-  <p className={styles.noAssets}>
-    <FormattedMessage id="dashboard.portfolio-stats.no-assets" />
-  </p>
-);
-
 const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<TPortfolioStatsProps, "hasError">> = ({
   myAssets,
   goToPortfolio,
@@ -171,10 +164,6 @@ const PortfolioStats = compose<TPortfolioStatsProps, {}>(
   branch<TStateProps>(state => state.hasError, renderComponent(PortfolioStatsErrorLayout)),
   branch<TStateProps>(state => !state.myAssets, renderComponent(LoadingIndicator)),
   branch<TStateProps>(
-    state => !state.isVerifiedInvestor,
-    renderComponent(PortfolioStatsNoKYCLayout),
-  ),
-  branch<TStateProps>(
     state => !!state.myAssets && state.myAssets.length === 0,
     renderComponent(PortfolioStatsNoAssetsLayout),
   ),
@@ -185,6 +174,5 @@ export {
   PortfolioStats,
   PortfolioStatsNoAssetsLayout,
   PortfolioStatsErrorLayout,
-  PortfolioStatsNoKYCLayout,
   PortfolioStatsLayoutContainer,
 };

@@ -1,5 +1,5 @@
 import { LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME } from "../../../config/constants";
-import { backupLightWalletSeed } from "../../shared/backupLightWalletSeed";
+import { backupLightWalletSeed } from "../../utils/backupLightWalletSeed";
 import {
   accountFixturePrivateKey,
   assertLockedAccessModal,
@@ -13,12 +13,12 @@ import {
 } from "../../utils/index";
 
 describe("Backup Seed and Private Key save and view", function(): void {
-  it("should allow to save seed phrase @backup @p3", () => {
+  it("should allow to save seed phrase #backup #p3", () => {
     registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD);
     backupLightWalletSeed();
   });
 
-  it("should prompt for an access after password cache expire @backup @p3", () => {
+  it("should prompt for an access after password cache expire #backup #p3", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
     goToProfile();
 
@@ -31,7 +31,7 @@ describe("Backup Seed and Private Key save and view", function(): void {
     assertLockedAccessModal();
   });
 
-  it.skip("should allow to copy private key @backup @p3", () => {
+  it.skip("should allow to copy private key #backup #p3", () => {
     // Temporary skip this test, due of issues related to Cypress run on top of Chrome
     // https://github.com/cypress-io/cypress/issues/2752
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
@@ -49,7 +49,7 @@ describe("Backup Seed and Private Key save and view", function(): void {
     cy.get(tid("private-key-display-copied-to-clipboard"));
   });
 
-  it("should allow to view private key @backup @p3", () => {
+  it("should allow to view private key #backup #p3", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
     goToProfile();
 

@@ -1,4 +1,4 @@
-import { goToEtoViewById } from "../../eto-view/EtoViewUtils";
+import { goToEtoViewById } from "../../issuer/eto/view/EtoViewUtils";
 import { tid } from "../../utils";
 
 export const assertInvestmentModal = () => {

@@ -39,6 +39,7 @@ export function* loadNotAuthorizedEtoView(
   { logger, notificationCenter }: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.etoView.loadInvestorEtoView>,
 ): Generator<any, void, any> {
+  yield put(actions.etoView.resetEtoViewData());
   try {
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
       loadEtoWithCompanyAndContract,
@@ -59,6 +60,7 @@ export function* loadNotAuthorizedEtoViewById(
   { logger, notificationCenter }: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.etoView.loadNotAuthorizedEtoViewById>,
 ): Generator<any, void, any> {
+  yield put(actions.etoView.resetEtoViewData());
   try {
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
       loadEtoWithCompanyAndContractById,

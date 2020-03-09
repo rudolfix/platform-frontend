@@ -1,13 +1,19 @@
-import { ETHEREUM_ZERO_ADDRESS, XOR } from "@neufund/shared";
+import { XOR } from "@neufund/shared";
 
 import {
+  EEtoState,
   ESocialChannelType,
   TCompanyEtoData,
   TEtoMediaData,
   TSocialChannelsType,
   TSocialChannelType,
 } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoProduct } from "../../../lib/api/eto/EtoProductsApi.interfaces";
+import {
+  EJurisdiction,
+  EOfferingDocumentType,
+} from "../../../lib/api/eto/EtoProductsApi.interfaces";
+import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
+import { EUserType } from "./../../../lib/api/users/interfaces";
 
 export const getTwitterUrl = (socialChannels: TSocialChannelsType | undefined) => {
   if (!socialChannels) {
@@ -38,5 +44,22 @@ export const shouldShowSlideshare = (companyData: TCompanyEtoData) =>
 export const shouldShowSocialChannels = (companyData: TCompanyEtoData) =>
   !!companyData.socialChannels?.length;
 
-export const shouldShowInvestmentTerms = (product: TEtoProduct) =>
-  product.id !== ETHEREUM_ZERO_ADDRESS;
+export const shouldShowInvestmentTerms = (
+  eto: TEtoWithCompanyAndContractReadonly,
+  userType: EUserType | undefined,
+) => ![EEtoState.PENDING, EEtoState.PREVIEW].includes(eto.state) || userType === EUserType.ISSUER;
+
+export const shouldShowTimeline = (eto: TEtoWithCompanyAndContractReadonly) =>
+  [EEtoState.LISTED, EEtoState.PROSPECTUS_APPROVED, EEtoState.ON_CHAIN].includes(eto.state);
+
+export const shouldShowProspectusDisclaimer = (eto: TEtoWithCompanyAndContractReadonly) => {
+  const isSupportedJurisdiction = [EJurisdiction.GERMANY, EJurisdiction.LIECHTENSTEIN].includes(
+    eto.product.jurisdiction,
+  );
+
+  return (
+    isSupportedJurisdiction &&
+    ([EEtoState.PREVIEW, EEtoState.PENDING].includes(eto.state) ||
+      eto.product.offeringDocumentType === EOfferingDocumentType.PROSPECTUS)
+  );
+};

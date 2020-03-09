@@ -1,10 +1,10 @@
 import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared";
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../../test/integrationTestUtils.unsafe";
-import { tid } from "../../../../../test/testUtils";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { InvestmentTransactionDetails } from "./InvestmentTransactionDetails";
 

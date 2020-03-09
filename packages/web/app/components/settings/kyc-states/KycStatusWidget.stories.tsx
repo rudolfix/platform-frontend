@@ -2,10 +2,15 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EKycInstantIdStatus, EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
+import {
+  EKycInstantIdStatus,
+  EKycRequestStatus,
+  EKycRequestType,
+} from "../../../lib/api/kyc/KycApi.interfaces";
 import { KycStatusWidgetBase } from "./KycStatusWidget";
 
 const commonProps = {
+  kycRequestType: EKycRequestType.INDIVIDUAL,
   isUserEmailVerified: true,
   backupCodesVerified: true,
   isKycFlowBlockedByRegion: false,
@@ -47,6 +52,16 @@ storiesOf("KYC/StatusWidget", module)
   .add("pending", () => (
     <KycStatusWidgetBase {...commonProps} requestStatus={EKycRequestStatus.PENDING} />
   ))
+  .add("pending - business", () => (
+    <KycStatusWidgetBase
+      {...commonProps}
+      requestStatus={EKycRequestStatus.PENDING}
+      kycRequestType={EKycRequestType.BUSINESS}
+    />
+  ))
+  .add("pending - individual", () => (
+    <KycStatusWidgetBase {...commonProps} requestStatus={EKycRequestStatus.PENDING} />
+  ))
   .add("rejected", () => (
     <KycStatusWidgetBase {...commonProps} requestStatus={EKycRequestStatus.REJECTED} />
   ))
@@ -60,7 +75,15 @@ storiesOf("KYC/StatusWidget", module)
       instantIdStatus={EKycInstantIdStatus.DRAFT}
     />
   ))
-  .add("outsourced - pending", () => (
+  .add("outsourced - pending - business", () => (
+    <KycStatusWidgetBase
+      {...commonProps}
+      requestStatus={EKycRequestStatus.OUTSOURCED}
+      instantIdStatus={EKycInstantIdStatus.PENDING}
+      kycRequestType={EKycRequestType.BUSINESS}
+    />
+  ))
+  .add("outsourced - pending - individual", () => (
     <KycStatusWidgetBase
       {...commonProps}
       requestStatus={EKycRequestStatus.OUTSOURCED}

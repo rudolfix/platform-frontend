@@ -62,7 +62,7 @@ const assertRefundClaimed = (etoID: string) => {
 };
 
 describe("Refund", () => {
-  it("should refund ETH and NEur from ETO Page with wallet investment @refund @p3", () => {
+  it("should refund ETH and NEur from ETO Page with wallet investment #refund #p3", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInRefundState");
 
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC");

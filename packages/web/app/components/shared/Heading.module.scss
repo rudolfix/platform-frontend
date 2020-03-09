@@ -53,13 +53,24 @@
     }
   }
 
+  h3 {
+    &.heading {
+      @include nds-headline-3;
+    }
+  }
+
+  h4 {
+    &.heading {
+      @include nds-headline-4;
+    }
+  }
+
   .heading {
     @include font-default;
 
     position: relative;
 
     font-weight: bold;
-    text-transform: uppercase;
     margin-bottom: 0;
 
     &.has-icon {

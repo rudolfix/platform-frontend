@@ -22,14 +22,14 @@ import { createAndLoginNewUser, loginFixtureAccount } from "../../../utils/userH
 const FIXTURE_DIV_CONSTANT = 100000000000000;
 
 describe("Wallet Migration", () => {
-  it("should check icbm migration wallet when user has locked wallet @wallet @p3", () => {
+  it("should check icbm migration wallet when user has locked wallet #wallet #p3", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
     cy.visit(appRoutes.icbmMigration);
     cy.get(tid("models.profile.icbm-wallet-widget.check-your-icbm-wallet-widget"));
   });
 
   //Check only the migration happens and assets are there as well
-  it.skip("It will migrate an ICBM wallet into a new user @wallet @p3", () => {
+  it.skip("It will migrate an ICBM wallet into a new user #wallet #p3", () => {
     const INV_ETH_ICBM_NO_KYC_ADDRESS = accountFixtureAddress("INV_ETH_ICBM_NO_KYC");
 
     createAndLoginNewUser({

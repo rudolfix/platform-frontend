@@ -11,6 +11,7 @@ export const etoViewActions = {
   setEtoViewData: createActionFactory("ETO_VIEW_SET_ETO_DATA", (etoData: TReadyEtoViewData) => ({
     etoData,
   })),
+  resetEtoViewData: createActionFactory("ETO_VIEW_RESET_ETO_DATA"),
   setEtoData: createActionFactory(
     "ETO_SET_ETO_DATA",
     (etoData: TEtoWithCompanyAndContractReadonly) => ({

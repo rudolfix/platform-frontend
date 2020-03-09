@@ -1,16 +1,15 @@
-import { assertNever } from "@neufund/shared";
 import { keyBy } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
 
 import { EEtoDocumentType, IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
-import { EOfferingDocumentType } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
 import { appConnect } from "../../../../store";
 import { etherscanAddressLink, etoPublicViewLink } from "../../../appRouteUtils";
 import { TagWithFallback } from "../../../shared/Tag";
+import { getDocumentTagProps } from "./utils";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
 
@@ -22,7 +21,7 @@ interface IExternalProps {
 
 interface IWithProps {
   termSheet: IEtoDocument;
-  prospectusApproved: IEtoDocument;
+  investorOfferingDocumentApproved?: IEtoDocument;
   smartContractOnChain: boolean;
 }
 
@@ -30,26 +29,13 @@ interface IDispatchProps {
   downloadDocument: (document: IEtoDocument) => void;
 }
 
-const hasDocument = (document: IEtoDocument): boolean =>
+const hasDocument = (document: IEtoDocument | undefined): boolean =>
   Boolean(document && document.name && document.name.length);
-
-const getApprovedDocumentTitle = (offeringDocumentType: EOfferingDocumentType) => {
-  switch (offeringDocumentType) {
-    case EOfferingDocumentType.PROSPECTUS:
-      return <FormattedMessage id="shared-component.eto-overview.prospectus-approved" />;
-
-    case EOfferingDocumentType.MEMORANDUM:
-      return <FormattedMessage id="shared-component.eto-overview.investment-memorandum" />;
-
-    default:
-      return assertNever(offeringDocumentType);
-  }
-};
 
 const TagsWidgetLayout: React.FunctionComponent<IWithProps & IExternalProps & IDispatchProps> = ({
   eto,
   termSheet,
-  prospectusApproved,
+  investorOfferingDocumentApproved,
   smartContractOnChain,
   downloadDocument,
   innerClass,
@@ -62,11 +48,11 @@ const TagsWidgetLayout: React.FunctionComponent<IWithProps & IExternalProps & ID
     "data-test-id": "eto-overview-term-sheet-button",
   };
 
+  const approvedDocumentTagCondition = hasDocument(investorOfferingDocumentApproved);
   const approvedDocumentTagCommonProps = {
     innerClass,
-    condition: hasDocument(prospectusApproved),
-    textElement: getApprovedDocumentTitle(eto.product.offeringDocumentType),
-    "data-test-id": "eto-overview-prospectus-approved-button",
+    condition: approvedDocumentTagCondition,
+    ...getDocumentTagProps(eto.product.offeringDocumentType, approvedDocumentTagCondition),
   };
 
   return (
@@ -99,9 +85,9 @@ const TagsWidgetLayout: React.FunctionComponent<IWithProps & IExternalProps & ID
       ) : (
         <TagWithFallback
           {...approvedDocumentTagCommonProps}
-          onClick={() => {
-            downloadDocument(prospectusApproved);
-          }}
+          onClick={() =>
+            investorOfferingDocumentApproved && downloadDocument(investorOfferingDocumentApproved)
+          }
         />
       )}
 
@@ -131,7 +117,8 @@ const TagsWidget = compose<IDispatchProps & IWithProps & IExternalProps, IExtern
     return {
       smartContractOnChain: Boolean(props.eto.contract),
       termSheet: documentsByType[EEtoDocumentType.SIGNED_TERMSHEET],
-      prospectusApproved: documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT],
+      investorOfferingDocumentApproved:
+        documentsByType[EEtoDocumentType.APPROVED_INVESTOR_OFFERING_DOCUMENT],
     };
   }),
 )(TagsWidgetLayout);

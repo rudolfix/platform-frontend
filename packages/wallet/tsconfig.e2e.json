@@ -1,7 +1,8 @@
 {
-  "extends": "./tsconfig.spec.json",
+  "extends": "./tsconfig.unit.json",
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "types": ["jest"]
   },
   "include": ["./tests/e2e"]
 }

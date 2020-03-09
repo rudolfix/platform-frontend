@@ -51,6 +51,7 @@ export function* loadIssuerEtoView(
   { logger, notificationCenter }: TGlobalDependencies,
   _: TActionFromCreator<typeof actions.etoView.loadIssuerEtoView>,
 ): Generator<any, void, any> {
+  yield put(actions.etoView.resetEtoViewData());
   try {
     const eto: TEtoWithCompanyAndContractReadonly | undefined = yield call(selectOrLoadEto);
 
@@ -85,6 +86,7 @@ export function* loadIssuerEtoPreview(
   { logger, notificationCenter }: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.etoView.loadIssuerPreviewEtoView>,
 ): Generator<any, void, any> {
+  yield put(actions.etoView.resetEtoViewData());
   try {
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
       loadEtoWithCompanyAndContract,

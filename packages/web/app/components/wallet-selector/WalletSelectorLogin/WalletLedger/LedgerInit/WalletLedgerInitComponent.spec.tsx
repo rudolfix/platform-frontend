@@ -1,9 +1,9 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import noop from "lodash/noop";
 import * as React from "react";
 
-import { tid } from "../../../../../../test/testUtils";
 import { getMessageTranslation, LedgerErrorMessage } from "../../../../translatedMessages/messages";
 import { createMessage } from "../../../../translatedMessages/utils";
 import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";

@@ -2,6 +2,7 @@ import { ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
+import { AuthorizedHttpClient } from "../client/AuthHttpClient";
 import { IHttpClient } from "../client/IHttpClient";
 import { IVault, VaultValidator } from "./interfaces";
 
@@ -11,6 +12,7 @@ const VAULT_API_ROOT = "/api/wallet";
 export class VaultApi {
   constructor(
     @inject(symbols.jsonHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authorizedJsonHttpClient) private authJsonHttpClient: AuthorizedHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 
@@ -35,5 +37,18 @@ export class VaultApi {
     });
 
     return response.body.wallet;
+  }
+
+  public async confirm(key: string): Promise<number> {
+    this.logger.info("confirming vault with Key: ", key);
+
+    const response = await this.authJsonHttpClient.put<void>({
+      baseUrl: VAULT_API_ROOT,
+      url: `/vault/${key}/confirmation`,
+      responseSchema: VaultValidator,
+      body: { vault_id: key },
+    });
+
+    return response.statusCode;
   }
 }

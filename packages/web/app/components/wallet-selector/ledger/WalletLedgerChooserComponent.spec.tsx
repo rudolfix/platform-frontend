@@ -1,9 +1,9 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { tid } from "../../../../test/testUtils";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { WalletLedgerChooserComponent } from "./WalletLedgerChooserComponent";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";

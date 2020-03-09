@@ -7,10 +7,9 @@ import {
   makeAllRequired,
   pickSchemaValues,
 } from "@neufund/design-system";
+import { AssertEqual, assertType } from "@neufund/shared/tests";
 import { expect } from "chai";
 import * as Yup from "yup";
-
-import { AssertEqual, assertType } from "../../test/testUtils";
 
 describe("yupUtils", () => {
   describe("isRequired", () => {

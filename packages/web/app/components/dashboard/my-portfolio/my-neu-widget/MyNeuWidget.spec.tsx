@@ -1,16 +1,14 @@
-import { setupFakeClock } from "@neufund/shared/tests";
+import { createMock, createMount, setupFakeClock, tid } from "@neufund/shared/tests";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { createMemoryHistory } from "history";
 import { combineReducers, createStore } from "redux";
 
-import { createMount } from "../../../../../test/createMount";
 import {
   createIntegrationTestsSetup,
   waitForTid,
   wrapWithProviders,
 } from "../../../../../test/integrationTestUtils.unsafe";
-import { createMock, tid } from "../../../../../test/testUtils";
 import { EtherToken } from "../../../../lib/contracts/EtherToken";
 import { EuroToken } from "../../../../lib/contracts/EuroToken";
 import { FeeDisbursal } from "../../../../lib/contracts/FeeDisbursal";

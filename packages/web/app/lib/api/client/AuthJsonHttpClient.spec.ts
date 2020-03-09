@@ -1,7 +1,7 @@
+import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 import * as fetchMock from "fetch-mock";
 
-import { createMock } from "../../../../test/testUtils";
 import { ObjectStorage } from "../../persistence/ObjectStorage";
 import { AuthorizedJsonHttpClient } from "./AuthJsonHttpClient";
 import { JsonHttpClient } from "./JsonHttpClient";

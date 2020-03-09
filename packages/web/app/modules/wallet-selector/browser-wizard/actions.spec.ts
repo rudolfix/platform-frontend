@@ -1,9 +1,9 @@
 import { expectSaga } from "@neufund/sagas/tests";
 import { noopLogger } from "@neufund/shared-modules";
+import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
-import { createMock } from "../../../../test/testUtils";
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";

@@ -12,6 +12,7 @@ import { Slides } from "../../../../shared/Slides";
 import { SocialProfilesList } from "../../../../shared/SocialProfilesList";
 import { TwitterTimelineEmbed } from "../../../../shared/TwitterTimeline";
 import { Video } from "../../../../shared/Video";
+import { Disclaimer } from "../Disclaimer/Disclaimer";
 import { EtoAccordionElements } from "../EtoAccordionElements";
 import { CompanyDescription } from "./CompanyDescription";
 import { DocumentsWidget } from "./documents-widget/DocumentsWidget";
@@ -31,6 +32,8 @@ export const CampaignOverviewLayout: React.FunctionComponent<TEtoViewData> = ({
     showSlideshare,
     showSocialChannels,
     showInvestmentTerms,
+    showTimeline,
+    showDisclaimer,
   },
   eto,
   userIsFullyVerified,
@@ -51,43 +54,57 @@ export const CampaignOverviewLayout: React.FunctionComponent<TEtoViewData> = ({
 
   return (
     <>
-      <ETOTimeline eto={eto} />
+      {showTimeline && <ETOTimeline eto={eto} />}
 
       <Container columnSpan={shouldSplitGrid}>
         <CompanyDescription eto={eto} />
         <LegalInformationWidget companyData={eto.company} columnSpan={EColumnSpan.THREE_COL} />
       </Container>
-      <Container columnSpan={EColumnSpan.ONE_COL}>
-        {showSlideshare && (
-          <Container>
-            <DashboardHeading title={<FormattedMessage id="eto.public-view.pitch-deck" />} />
-            <Slides slideShareUrl={companySlideshare && companySlideshare.url} />
-          </Container>
-        )}
 
-        {showYouTube && (
-          <Container>
-            <DashboardHeading title={<FormattedMessage id="eto.public-view.video" />} />
-            <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
-          </Container>
-        )}
-        <Container>
-          <div className={cn((showSlideshare || showYouTube) && "mt-4")}>
-            <SocialProfilesList profiles={(socialChannels as TSocialChannelsType) || []} />
-          </div>
+      {(showSlideshare || showYouTube || showSocialChannels) && (
+        <Container columnSpan={EColumnSpan.ONE_COL}>
+          {showSlideshare && (
+            <Container>
+              <DashboardHeading title={<FormattedMessage id="eto.public-view.pitch-deck" />} />
+              <Slides slideShareUrl={companySlideshare && companySlideshare.url} />
+            </Container>
+          )}
+
+          {showYouTube && (
+            <Container>
+              <DashboardHeading title={<FormattedMessage id="eto.public-view.video" />} />
+              <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
+            </Container>
+          )}
+
+          {showSocialChannels && (
+            <Container>
+              <div className={cn((showSlideshare || showYouTube) && "mt-4")}>
+                <SocialProfilesList profiles={(socialChannels as TSocialChannelsType) || []} />
+              </div>
+            </Container>
+          )}
         </Container>
-      </Container>
-      <MarketingDocumentsWidget
-        columnSpan={EColumnSpan.THREE_COL}
-        companyMarketingLinks={marketingLinks}
-      />
+      )}
+
+      {showDisclaimer && <Disclaimer />}
+
+      {marketingLinks && (
+        <MarketingDocumentsWidget
+          columnSpan={EColumnSpan.THREE_COL}
+          companyMarketingLinks={marketingLinks}
+        />
+      )}
+
       {showInvestmentTerms && (
         <Container columnSpan={EColumnSpan.THREE_COL}>
           <DashboardHeading title={<FormattedMessage id="eto.public-view.token-terms.title" />} />
           <EtoInvestmentTermsWidget eto={eto} isUserFullyVerified={userIsFullyVerified} />
         </Container>
       )}
+
       <Individuals eto={eto} />
+
       <EtoAccordionElements eto={eto} />
 
       <Container columnSpan={EColumnSpan.ONE_COL} type={EContainerType.INHERIT_GRID}>

@@ -1497,6 +1497,7 @@
   "wallet-selector.sign-up": "Sign up",
   "wallet-selector.sign-up.ledger": "Sign up with Ledger Nano",
   "wallet-selector.sign-up.metamask": "Sign up with MetaMask",
+  "wallet-selector.login.metamask": "Log in with MetaMask",
   "wallet-selector.wallet-chooser": "or connect with",
   "wallet.deposit-funds.eth.email-notification": "You will receive an e-mail notification once your funds have been successfully transferred.",
   "wallet.deposit-funds.eth.header": "Send {icon} ETH to your Light Wallet",

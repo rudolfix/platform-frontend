@@ -19358,6 +19358,11 @@ react-native-notifications@^3.1.2:
   resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-3.1.2.tgz#fb679e40e81b121041604a6f7403878ed48e099f"
   integrity sha512-2v2hhXysHWmf87kinVJwaF6bfBVIWCHWho4FudxuK2s4JzS/3zjOUHFnErrYv9YcudGi+U2IwZAHKqMF0wYn1A==
 
+react-native-permissions@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-2.0.9.tgz#5eabdaa952dd099d14e3790af691f49ff2de0895"
+  integrity sha512-64F95x4Y1RqsQiPco+Qs+OAm3rKUTRfWDMpp1f0If9YfRXOxxVFJqf7mSlVvlSY4pZAhZgLVydOmA7aTTduPUw==
+
 react-native-randombytes@^3.0.0:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/react-native-randombytes/-/react-native-randombytes-3.5.3.tgz#b3bdcd11473cce106551a586244b98855e443cd1"

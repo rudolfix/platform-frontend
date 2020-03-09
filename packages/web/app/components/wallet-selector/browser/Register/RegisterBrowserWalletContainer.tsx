@@ -3,9 +3,9 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { EWalletType } from "../../../../modules/web3/types";
-import { WalletChooser } from "../../WalletChooser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
+import { WalletChooser } from "../../WalletChooser";
 
 export type TWalletBrowserBaseProps = {
   rootPath: string;
@@ -23,7 +23,7 @@ export const RegisterBrowserWalletContainer: React.FunctionComponent<TWalletBrow
         <FormattedMessage id="wallet-selector.sign-up.metamask" />
       </h1>
       <section className={styles.main}>
-        <span className="text-center">
+        <span className={styles.explanation}>
           <FormattedMessage id="wallet-selector.browser-wallet-provide-signature" />
         </span>
         {children}

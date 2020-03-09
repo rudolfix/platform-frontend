@@ -1,6 +1,6 @@
 import { ButtonInline } from "@neufund/design-system";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import mailLink from "../../../../assets/img/login-link.svg";
 import * as styles from "./WalletLight.module.scss";
@@ -15,7 +15,7 @@ export const MissingEmailLightWallet: React.FunctionComponent<TExternalProps> = 
   <section className="text-center" data-test-id="modals.wallet-selector.login-light-wallet">
     <img src={mailLink} className={styles.icon} />
     <p className={styles.missingEmail} data-test-id="neuwallet-missing-email">
-      <FormattedMessage id="wallet-selector.neuwallet.login-instructions" />
+      <FormattedHTMLMessage id="wallet-selector.neuwallet.login-instructions" tagName="span" />
     </p>
     <p className={styles.forgottenPassword}>
       <FormattedMessage

@@ -23,7 +23,7 @@ export const RegisterLedgerBase: React.FunctionComponent<TWalletBrowserBaseProps
         <FormattedMessage id="wallet-selector.sign-up.ledger" />
       </h1>
       <section className={styles.main}>
-        <span className="text-center">
+        <span className={styles.explanation}>
           <FormattedMessage id="wallet-selector.ledger.provide-signature" />
         </span>
         {children}

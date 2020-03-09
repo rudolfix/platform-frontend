@@ -28,7 +28,7 @@
 }
 
 .explanation {
-  font-family: $headings-font-family;
+  font-family: $font-family-roboto;
   font-size: px-to-rem(16);
   line-height: 1.5;
   color: $neu-shuttle-gray;
@@ -69,6 +69,7 @@
 }
 
 .help {
+  font-family: $font-family-roboto;
   font-size: px-to-rem(14);
 }
 

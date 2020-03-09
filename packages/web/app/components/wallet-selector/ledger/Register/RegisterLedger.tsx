@@ -62,6 +62,7 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
       }),
     )(RegisterLedgerBase),
   ),
+  // TODO fixme rename to browser not supported and add ledger version not supported
   branch<TLedgerRegisterData>(
     ({ uiState }) => uiState === ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED,
     renderComponent(WalletLedgerNotSupported),

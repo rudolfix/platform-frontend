@@ -65,7 +65,7 @@ export class Notifications {
     }
   }
 
-  onReceivNotificationInForeground(listener: (notification: Notification) => any) {
+  onReceivedNotificationInForeground(listener: (notification: Notification) => any) {
     if (!this.events) return;
 
     this.events.registerNotificationReceivedForeground((notification: Notification, completion) => {

@@ -48,7 +48,7 @@ function* initStartSaga({
     yield notifications.init();
 
     // subscribe for notifications test
-    notifications.onReceivNotificationInForeground(notification => {
+    notifications.onReceivedNotificationInForeground(notification => {
       console.log("------event work--------", notification);
     });
 

@@ -117,6 +117,8 @@
       "**/react-native/**",
       "**/react-native-*",
       "**/react-native-*/**",
+      "**/@react-native-firebase/",
+      "**/@react-native-firebase/**",
       "**/detox",
       "**/yup",
       "**/detox/**",

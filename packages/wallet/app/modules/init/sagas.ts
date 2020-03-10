@@ -4,7 +4,11 @@ import { utils } from "ethers";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { initActions } from "./actions";
 
-function* initStartSaga({ logger, ethManager, notifications }: TGlobalDependencies): Generator<any, void, any> {
+function* initStartSaga({
+  logger,
+  ethManager,
+  notifications,
+}: TGlobalDependencies): Generator<any, void, any> {
   try {
     // TODO: Provide a proper init flow
 
@@ -41,7 +45,12 @@ function* initStartSaga({ logger, ethManager, notifications }: TGlobalDependenci
     });
 
     // init push notifications
-    yield  notifications.init();
+    yield notifications.init();
+
+    // subscribe for notifications test
+    notifications.onReceivNotificationInForeground(notification => {
+      console.log("------event work--------", notification);
+    });
 
     yield put(initActions.done());
   } catch (e) {

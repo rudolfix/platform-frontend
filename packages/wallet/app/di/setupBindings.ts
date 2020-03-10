@@ -10,7 +10,9 @@ import { Permissions } from "../modules/permissions/Permissions";
 export function setupBindings(config: TConfig): ContainerModule {
   return new ContainerModule(bind => {
     bind<TLibSymbolType<typeof symbols.config>>(symbols.config).toConstantValue(config);
-    bind<TLibSymbolType<typeof symbols.permissions>>(symbols.permissions).to(Permissions).inSingletonScope();
+    bind<TLibSymbolType<typeof symbols.permissions>>(symbols.permissions)
+      .to(Permissions)
+      .inSingletonScope();
   });
 }
 
@@ -34,7 +36,9 @@ export const createGlobalDependencies = (container: Container) => ({
 
   permissions: container.get<TLibSymbolType<typeof symbols.permissions>>(symbols.permissions),
 
-  notifications: container.get<TLibSymbolType<typeof notificationModuleApi.symbols.notifications>>(notificationModuleApi.symbols.notifications),
+  notifications: container.get<TLibSymbolType<typeof notificationModuleApi.symbols.notifications>>(
+    notificationModuleApi.symbols.notifications,
+  ),
 });
 
 export type TGlobalDependencies = ReturnType<typeof createGlobalDependencies>;

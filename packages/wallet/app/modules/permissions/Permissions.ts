@@ -1,5 +1,15 @@
 import { requestNotifications } from "react-native-permissions";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
+import { symbols as globalSymbols } from "../../di/symbols";
+import { ILogger } from "@neufund/shared-modules";
+
+export enum permissionsStatuses {
+  unavailable = "unavailable",
+  denied = "denied",
+  blocked = "blocked",
+  granted = "granted",
+}
+
 export type PermissionStatus = "unavailable" | "denied" | "blocked" | "granted";
 
 export interface NotificationSettings {
@@ -21,10 +31,17 @@ export type NotificationsPermissions = {
 
 @injectable()
 export class Permissions {
+  private readonly logger: ILogger;
+  constructor(@inject(globalSymbols.logger) logger: ILogger) {
+    this.logger = logger;
+
+    this.logger.info("Setup permissions module");
+  }
   requestNotificationsPermissions(): Promise<{
     status: PermissionStatus;
     settings: NotificationSettings;
   }> {
+    this.logger.info("Request for push notification permissions");
     return requestNotifications([]);
   }
 }

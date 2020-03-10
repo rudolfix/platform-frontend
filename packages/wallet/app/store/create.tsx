@@ -15,7 +15,7 @@ import { appReducers } from "../modules/reducers";
 import { rootSaga } from "../modules/sagas";
 import { TAppGlobalState } from "./types";
 import { setupStorageModule } from "../modules/storage";
-import {setupNotificationsModule} from "../modules/notifications/module";
+import { setupNotificationsModule } from "../modules/notifications/module";
 
 export const createAppStore = (container: Container) => {
   const config: TConfig = {

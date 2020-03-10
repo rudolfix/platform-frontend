@@ -1,3 +1,11 @@
+.wrapper {
+  max-width: 960px;
+  margin: px-to-rem(65px) auto;
+  padding: 0 px-to-rem(24px);
+  grid-area: content;
+  width: 100%;
+}
+
 @mixin button-text {
   font-weight: bold;
   cursor: pointer;

@@ -6,14 +6,14 @@ import * as React from "react";
 
 import { getMessageTranslation, LedgerErrorMessage } from "../../../../translatedMessages/messages";
 import { createMessage } from "../../../../translatedMessages/utils";
-import { WalletLedgerInitComponent } from "./WalletLedgerInitComponent";
+import { WalletLedgerInit } from "./WalletLedgerInit";
 
 describe("<WalletLedgerInitComponent />", () => {
   it("should render error message", () => {
     const errorMsg = createMessage(LedgerErrorMessage.GENERIC_ERROR);
     const expectedResult = getMessageTranslation(errorMsg);
     const component = shallow(
-      <WalletLedgerInitComponent
+      <WalletLedgerInit
         errorMessage={errorMsg}
         isInitialConnectionInProgress={false}
         tryToEstablishConnectionWithLedger={noop}

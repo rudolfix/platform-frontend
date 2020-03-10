@@ -5,7 +5,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
-import { WalletLedgerChooserComponent } from "./WalletLedgerChooserComponent";
+import { WalletLedgerChooserBase } from "./WalletLedgerChooserBase";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
@@ -48,19 +48,19 @@ const defaultProps = () => ({
   handleAdvanced: spy(),
 });
 
-describe("<WalletLedgerChooserComponent />", () => {
+describe("<WalletLedgerChooserBase />", () => {
   it("should render LoadingIndicator for loading attribute", () => {
     const props = {
       ...defaultProps(),
       loading: true,
     };
-    const component = shallow(<WalletLedgerChooserComponent {...props} />);
+    const component = shallow(<WalletLedgerChooserBase {...props} />);
 
     expect(component.contains(<LoadingIndicator />)).to.be.true;
   });
 
   it("should render WalletLedgerDPChooser for advanced use case", () => {
-    const component = shallow(<WalletLedgerChooserComponent {...defaultProps()} />);
+    const component = shallow(<WalletLedgerChooserBase {...defaultProps()} />);
     expect(
       component.find(WalletLedgerDPChooser),
       "doesn't contain WalletLedgerDPChooser",
@@ -73,7 +73,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: true,
     };
 
-    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    const componentAdvanced = shallow(<WalletLedgerChooserBase {...propsAdvanced} />);
     expect(
       componentAdvanced.find(WalletLedgerChooserTableAdvanced),
       "doesn't contain WalletLedgerChooserTableAdvanced",
@@ -84,7 +84,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: false,
     };
 
-    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    const componentSimple = shallow(<WalletLedgerChooserBase {...propsSimple} />);
     expect(
       componentSimple.find(WalletLedgerChooserTableSimple),
       "doesn't contain WalletLedgerChooserTableSimple",
@@ -97,7 +97,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: true,
       accounts: [],
     };
-    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    const componentAdvanced = shallow(<WalletLedgerChooserBase {...propsAdvanced} />);
     expect(componentAdvanced.find(WalletLedgerChooserTableAdvanced)).to.have.length(0);
 
     const propsSimple = {
@@ -105,7 +105,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: false,
       accounts: [],
     };
-    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    const componentSimple = shallow(<WalletLedgerChooserBase {...propsSimple} />);
     expect(componentSimple.find(WalletLedgerChooserTableSimple)).to.have.length(0);
   });
 
@@ -115,7 +115,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: true,
     };
 
-    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    const componentAdvanced = shallow(<WalletLedgerChooserBase {...propsAdvanced} />);
     expect(
       componentAdvanced.find(tid("btn-advanced-advanced")),
       'doesn\'t contain "back" button',
@@ -126,7 +126,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: false,
     };
 
-    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    const componentSimple = shallow(<WalletLedgerChooserBase {...propsSimple} />);
     expect(
       componentSimple.find(tid("btn-advanced-simple")),
       'doesn\'t contain "advanced selection" button',
@@ -139,7 +139,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: true,
     };
 
-    const componentAdvanced = shallow(<WalletLedgerChooserComponent {...propsAdvanced} />);
+    const componentAdvanced = shallow(<WalletLedgerChooserBase {...propsAdvanced} />);
     componentAdvanced.find(tid("btn-advanced-advanced")).simulate("click");
     expect(propsAdvanced.handleAdvanced).to.be.calledOnce;
 
@@ -148,7 +148,7 @@ describe("<WalletLedgerChooserComponent />", () => {
       advanced: false,
     };
 
-    const componentSimple = shallow(<WalletLedgerChooserComponent {...propsSimple} />);
+    const componentSimple = shallow(<WalletLedgerChooserBase {...propsSimple} />);
     componentSimple.find(tid("btn-advanced-simple")).simulate("click");
     expect(propsSimple.handleAdvanced).to.be.calledOnce;
   });

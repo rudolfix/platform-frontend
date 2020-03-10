@@ -17,9 +17,9 @@ import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIn
 import { WarningAlert } from "../../../../shared/WarningAlert";
 import { getMessageTranslation, LedgerErrorMessage } from "../../../../translatedMessages/messages";
 import { TMessage } from "../../../../translatedMessages/utils";
-import { LedgerHeader } from "./LedgerHeader";
+import { WalletLedgerInitHeader } from "./WalletLedgerInitHeader";
 
-import * as styles from "./WalletLedgerInitComponent.module.scss";
+import * as styles from "./WalletLedgerInit.module.scss";
 
 interface IStateProps {
   isInitialConnectionInProgress: boolean;
@@ -35,7 +35,7 @@ type TLedgerErrorProps = {
   tryToEstablishConnectionWithLedger: () => void;
 };
 
-export const LedgerErrorBase: React.FunctionComponent<TLedgerErrorProps> = ({
+const WalletLedgerInitErrorBase: React.FunctionComponent<TLedgerErrorProps> = ({
   errorMessage,
   tryToEstablishConnectionWithLedger,
 }) => (
@@ -54,7 +54,7 @@ export const LedgerErrorBase: React.FunctionComponent<TLedgerErrorProps> = ({
   </section>
 );
 
-export const LedgerNotSupported = () => (
+const LedgerNotSupported = () => (
   <div className={cn(styles.step, "mx-md-5")}>
     <p>
       <FormattedMessage
@@ -77,18 +77,18 @@ export const LedgerNotSupported = () => (
   </div>
 );
 
-export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & IDispatchProps> = ({
+export const LedgerInitBase: React.FunctionComponent<IStateProps & IDispatchProps> = ({
   errorMessage,
   isInitialConnectionInProgress,
   tryToEstablishConnectionWithLedger,
 }) => (
   <>
-    <LedgerHeader />
+    <WalletLedgerInitHeader />
 
     {isInitialConnectionInProgress && <LoadingIndicator />}
 
     {errorMessage && (
-      <LedgerErrorBase
+      <WalletLedgerInitErrorBase
         errorMessage={errorMessage}
         tryToEstablishConnectionWithLedger={tryToEstablishConnectionWithLedger}
       />
@@ -101,7 +101,7 @@ export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & ID
   </>
 );
 
-export const LedgerInit = compose<IStateProps & IDispatchProps, {}>(
+export const WalletLedgerInit = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
       isInitialConnectionInProgress: selectLedgerIsInitialConnectionInProgress(state),
@@ -112,12 +112,12 @@ export const LedgerInit = compose<IStateProps & IDispatchProps, {}>(
         dispatch(actions.walletSelector.ledgerTryEstablishingConnectionWithLedger()),
     }),
   }),
-)(WalletLedgerInitComponent);
+)(LedgerInitBase);
 
-export const LedgerError = compose<TLedgerErrorProps, {}>(
+export const WalletLedgerInitError = compose<TLedgerErrorProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     dispatchToProps: dispatch => ({
       tryToEstablishConnectionWithLedger: () => dispatch(actions.walletSelector.ledgerReconnect()),
     }),
   }),
-)(LedgerErrorBase);
+)(WalletLedgerInitErrorBase);

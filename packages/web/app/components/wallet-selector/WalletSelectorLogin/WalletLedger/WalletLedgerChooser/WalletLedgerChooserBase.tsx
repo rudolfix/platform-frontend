@@ -4,11 +4,12 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
+import { WalletLedgerInitHeader } from "../WalletLedgerInit/WalletLedgerInitHeader";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
 
-import * as styles from "./WalletLedgerChooserComponent.module.scss";
+import * as styles from "./WalletLedgerChooserBase.module.scss";
 
 export interface IWalletLedgerChooserComponent {
   accounts: ReadonlyArray<ILedgerAccount>;
@@ -26,7 +27,7 @@ export interface IWalletLedgerChooserComponentDispatchProps {
   handleAdvanced: () => void;
 }
 
-export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedgerChooserComponent &
+export const WalletLedgerChooserBase: React.FunctionComponent<IWalletLedgerChooserComponent &
   IWalletLedgerChooserComponentDispatchProps> = ({
   accounts,
   handleAddressChosen,
@@ -39,7 +40,7 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
   onDerivationPathPrefixError,
   handleAdvanced,
 }) => (
-  <>
+  <div className={styles.wrapper}>
     {advanced && (
       <WalletLedgerDPChooser
         onDerivationPathPrefixChange={onDerivationPathPrefixChange}
@@ -47,7 +48,10 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
       />
     )}
     {loading ? (
-      <LoadingIndicator />
+      <>
+        <WalletLedgerInitHeader />
+        <LoadingIndicator />
+      </>
     ) : (
       <>
         {accounts.length > 1 && (
@@ -63,6 +67,7 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
             </p>
           </>
         )}
+
         {accounts.length > 0 &&
           (advanced ? (
             <WalletLedgerChooserTableAdvanced
@@ -78,6 +83,7 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
               handleAddressChosen={handleAddressChosen}
             />
           ))}
+
         {!advanced && (
           <button
             className={styles.advanced}
@@ -90,6 +96,7 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
         )}
       </>
     )}
+
     <div className="mt-5 d-flex flex-row justify-content-between align-items-center">
       {advanced && !loading && (
         <button
@@ -102,5 +109,5 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
         </button>
       )}
     </div>
-  </>
+  </div>
 );

@@ -7,13 +7,15 @@ import {
   selectLedgerErrorMessage,
 } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
-import { LedgerInit } from "./LedgerInit/WalletLedgerInitComponent";
+import { WalletLedgerInit } from "./WalletLedgerInit/WalletLedgerInit";
 import { WalletLedgerChooser } from "./WalletLedgerChooser/WalletLedgerChooser";
-import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedgerNotSupportedComponent";
+import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedgerNotSupported";
 
 interface IWalletLedgerStateProps {
   isConnectionEstablished: boolean;
   isLedgerSupported: boolean;
+  tryEstablishingConnectionWithLedger: () => void;
+  resetWallet: () => void;
 }
 
 export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStateProps> = ({
@@ -36,7 +38,7 @@ export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStatePr
     return <WalletLedgerChooser />;
   }
 
-  return <LedgerInit />;
+  return <WalletLedgerInit />;
 };
 
 export const WalletLedger = compose<IWalletLedgerStateProps, {}>(

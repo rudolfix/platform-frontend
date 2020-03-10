@@ -105,6 +105,7 @@
     "prettier": "^1.19.1",
     "react-devtools": "^3.6.3",
     "react-native-clean-project": "^3.3.0",
+    "react-native-device-info": "^5.5.3",
     "react-native-permissions": "^2.0.9",
     "react-test-renderer": "16.9.0",
     "ts-jest": "^25.2.1",

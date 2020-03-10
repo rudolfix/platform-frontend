@@ -308,6 +308,8 @@ PODS:
     - React
   - RNCMaskedView (0.1.6):
     - React
+  - RNDeviceInfo (5.5.3):
+    - React
   - RNFBApp (6.3.4):
     - Firebase/Core (~> 6.13.0)
     - React
@@ -360,6 +362,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -449,6 +452,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
@@ -511,6 +516,7 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
+  RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
   RNFBApp: 7d4006751de8bb5cafa2e8d2e7d94ee250df81db
   RNFBMessaging: 51cc7f6beaf4c4feac6f18ea941bba5854e3d9c6
   RNGestureHandler: 911d3b110a7a233a34c4f800e7188a84b75319c6
@@ -519,6 +525,6 @@ SPEC CHECKSUMS:
   RNScreens: 5e4758109c6d35f9a009ce72af873df907548020
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: c40456056c3ded0642fa3fa69301918f2163920f
+PODFILE CHECKSUM: c3d30036e0e8307a453f05c3a9cdfa122e4e2add
 
 COCOAPODS: 1.9.0

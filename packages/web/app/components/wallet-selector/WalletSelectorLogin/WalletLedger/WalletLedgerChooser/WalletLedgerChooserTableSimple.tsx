@@ -1,7 +1,10 @@
-import { Button, EButtonLayout } from "@neufund/design-system";
+import { Button, EButtonLayout, Table } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
+import { TokenIcon } from "@neufund/design-system";
+import ethIcon from "../../../../../assets/img/eth_icon.svg";
+import neuIcon from "../../../../../assets/img/neu_icon.svg";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Money } from "../../../../shared/formatters/Money";
@@ -10,6 +13,7 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
+import { PanelRounded } from "../../../../shared/Panel";
 
 import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
 
@@ -18,75 +22,82 @@ interface IAccountRow {
   handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
 }
 
-export class AccountRow extends React.Component<IAccountRow> {
-  handleClick = () => {
-    this.props.handleAddressChosen(this.props.ledgerAccount);
-  };
-
-  render(): React.ReactNode {
-    return (
-      <tr data-test-id="account-row">
-        <td data-test-id="account-address" className={styles.publicKey}>
-          {this.props.ledgerAccount.address}
-        </td>
-        <td data-test-id="account-balance-eth" className={cn(styles.currencyCol, styles.ethCol)}>
-          <Money
-            value={this.props.ledgerAccount.balanceETH}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.ETH}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
-        </td>
-        <td data-test-id="account-balance-neu" className={cn(styles.currencyCol, styles.neuCol)}>
-          <Money
-            value={this.props.ledgerAccount.balanceNEU}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.NEU}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
-        </td>
-        <td className={styles.select}>
-          <Button
-            layout={EButtonLayout.GHOST}
-            data-test-id="button-select"
-            onClick={this.handleClick}
-          >
-            <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.row.select-button" />
-          </Button>
-        </td>
-      </tr>
-    );
-  }
-}
-
 export interface IWalletLedgerChooserTableSimple {
   accounts: ReadonlyArray<ILedgerAccount>;
   handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
 }
 
+const columns = [
+  {
+    Header: (
+      <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.derivation-path" />
+    ),
+    accessor: "derivationPath",
+  },
+  {
+    Header: (
+      <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.address" />
+    ),
+    accessor: "address",
+  },
+  {
+    Header: (
+      <span>
+        <TokenIcon srcSet={{ "1x": ethIcon }} alt="" className={cn("mr-2", styles.token)} />
+        <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.eth" />
+      </span>
+    ),
+    accessor: "balanceETH",
+  },
+  {
+    Header: (
+      <span>
+        <TokenIcon srcSet={{ "1x": neuIcon }} alt="" className={cn("mr-2", styles.token)} />
+        <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.neu" />
+      </span>
+    ),
+    accessor: "balanceNEU",
+  },
+  { Header: "", accessor: "actions" },
+];
+
+const prepareRows = (accounts, handleAddressChosen) =>
+  accounts.map(account => ({
+    key: account.derivationPath,
+    address: account.address,
+    derivationPath: account.derivationPath,
+    balanceETH: (
+      <Money
+        value={account.balanceETH}
+        inputFormat={ENumberInputFormat.ULPS}
+        valueType={ECurrency.ETH}
+        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+      />
+    ),
+    balanceNEU: (
+      <Money
+        value={account.balanceNEU}
+        inputFormat={ENumberInputFormat.ULPS}
+        valueType={ECurrency.NEU}
+        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+      />
+    ),
+    actions: (
+      <Button
+        layout={EButtonLayout.GHOST}
+        data-test-id="button-select"
+        onClick={handleAddressChosen(account)}
+      >
+        <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.row.select-button" />
+      </Button>
+    ),
+  }));
+
 export const WalletLedgerChooserTableSimple: React.FunctionComponent<IWalletLedgerChooserTableSimple> = ({
   accounts,
   handleAddressChosen,
 }) => (
-  <table className={styles.table}>
-    <thead>
-      <tr>
-        <th className="py-3">
-          <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.public-wallet" />
-        </th>
-        <th colSpan={3}>
-          <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.header.balance" />
-        </th>
-      </tr>
-    </thead>
-    <tbody data-test-id="wallet-ledger-accounts-table-body">
-      {accounts.map(a => (
-        <AccountRow
-          key={a.derivationPath}
-          ledgerAccount={a}
-          handleAddressChosen={handleAddressChosen}
-        />
-      ))}
-    </tbody>
-  </table>
+  <PanelRounded>
+    <Table data={prepareRows(accounts, handleAddressChosen)} columns={columns} />
+  </PanelRounded>
 );

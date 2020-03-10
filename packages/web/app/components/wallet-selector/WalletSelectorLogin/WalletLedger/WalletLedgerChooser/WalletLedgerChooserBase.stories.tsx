@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { WalletLedgerChooserComponent } from "./WalletLedgerChooserComponent";
+import { WalletLedgerChooserBase } from "./WalletLedgerChooserBase";
 
 const account1 = {
   derivationPath: "44'/60'/0'/0",
@@ -32,17 +32,17 @@ const testData = {
 storiesOf("Wallet selector/Ledger", module)
   .add("multiple addresses", () => {
     const data = { ...testData, accounts: [account1, account2] };
-    return <WalletLedgerChooserComponent {...data} />;
+    return <WalletLedgerChooserBase {...data} />;
   })
   .add("single address", () => {
     const data = { ...testData, accounts: [account1] };
-    return <WalletLedgerChooserComponent {...data} />;
+    return <WalletLedgerChooserBase {...data} />;
   })
   .add("multiple addresses advanced", () => {
     const data = { ...testData, accounts: [account1, account2] };
-    return <WalletLedgerChooserComponent {...data} advanced={true} />;
+    return <WalletLedgerChooserBase {...data} advanced={true} />;
   })
   .add("single address advanced", () => {
     const data = { ...testData, accounts: [account1] };
-    return <WalletLedgerChooserComponent {...data} advanced={true} />;
+    return <WalletLedgerChooserBase {...data} advanced={true} />;
   });

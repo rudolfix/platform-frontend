@@ -8,8 +8,8 @@ import { onEnterAction } from "../../../../../utils/react-connected-components/O
 import {
   IWalletLedgerChooserComponent,
   IWalletLedgerChooserComponentDispatchProps,
-  WalletLedgerChooserComponent,
-} from "./WalletLedgerChooserComponent";
+  WalletLedgerChooserBase,
+} from "./WalletLedgerChooserBase";
 
 export const WalletLedgerChooser = compose<React.FunctionComponent>(
   appConnect<IWalletLedgerChooserComponent, IWalletLedgerChooserComponentDispatchProps>({
@@ -42,4 +42,4 @@ export const WalletLedgerChooser = compose<React.FunctionComponent>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.walletSelector.ledgerLoadAccounts()),
   }),
-)(WalletLedgerChooserComponent);
+)(WalletLedgerChooserBase);

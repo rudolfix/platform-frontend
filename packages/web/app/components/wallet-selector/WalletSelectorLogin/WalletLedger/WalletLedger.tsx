@@ -14,6 +14,8 @@ import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedge
 interface IWalletLedgerStateProps {
   isConnectionEstablished: boolean;
   isLedgerSupported: boolean;
+  tryEstablishingConnectionWithLedger: () => void;
+  resetWallet: () => void;
 }
 
 export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStateProps> = ({

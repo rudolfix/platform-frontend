@@ -1,11 +1,9 @@
-import { withContainer } from "@neufund/shared";
 import { createLocation, Location } from "history";
 import * as React from "react";
-import { FormattedHTMLMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
 import { compose, withProps } from "recompose";
-import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
@@ -13,23 +11,23 @@ import { ELogoutReason } from "../../../modules/auth/types";
 import { TLoginRouterState } from "../../../modules/routing/types";
 import {
   selectIsLoginRoute,
+  selectLedgerConnectionEstablished,
   selectRootPath,
   selectUrlUserType,
-  selectLedgerConnectionEstablished,
 } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { EContentWidth } from "../../layouts/Content";
 import { FullscreenProgressLayout } from "../../layouts/FullscreenProgressLayout";
-import { TContentExternalProps, TransitionalLayout } from "../../layouts/Layout";
+import { TransitionalLayout } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../../shared/WarningAlert";
 import { LedgerErrorMessage } from "../../translatedMessages/messages";
+
+import * as styles from "../shared/RegisterWalletSelector.module.scss";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { getRedirectionUrl, userMayChooseWallet } from "./utils";
 import { WalletLoginRouter } from "./WalletLoginRouter";
-
-import * as styles from "../shared/RegisterWalletSelector.module.scss";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -62,47 +60,52 @@ export const WalletSelectorLoginBase: React.FunctionComponent<IExternalProps> = 
   redirectLocation,
   showWalletSelector,
   showLogoutReason,
-}) => (
-  <>
-    {showLogoutReason && (
-      <WarningAlert
-        className={styles.logoutNotification}
-        size={EWarningAlertSize.BIG}
-        layout={EWarningAlertLayout.INLINE}
-        data-test-id="wallet-selector-session-timeout-notification"
-      >
-        <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />
-      </WarningAlert>
-    )}
-    <div className={styles.wrapper} data-test-id="wallet-selector">
-      <div className={styles.wrapper} data-test-id="wallet-selector">
-        <WalletLoginRouter
-          rootPath={rootPath}
-          redirectLocation={redirectLocation}
-          showWalletSelector={showWalletSelector}
-        />
-      </div>
-    </div>
-  </>
-);
-
-const Container = ({ ledgerConnectionEstablished, closeAccountChooser, children, ...props }) =>
-  !ledgerConnectionEstablished ? (
-    <TransitionalLayout width={EContentWidth.SMALL} {...props}>
-      {children}
-    </TransitionalLayout>
-  ) : (
-    <FullscreenProgressLayout
-      width={EContentWidth.SMALL}
-      buttonProps={{
-        buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
-        buttonAction: closeAccountChooser,
-      }}
-      {...props}
-    >
-      {children}
-    </FullscreenProgressLayout>
+  ledgerConnectionEstablished,
+  closeAccountChooser,
+  ...props
+}) => {
+  const routes = (
+    <WalletLoginRouter
+      rootPath={rootPath}
+      redirectLocation={redirectLocation}
+      showWalletSelector={showWalletSelector}
+    />
   );
+
+  if (ledgerConnectionEstablished) {
+    return (
+      <FullscreenProgressLayout
+        wrapperClass={styles.fullscreenProgressLayout}
+        width={EContentWidth.FULL}
+        buttonProps={{
+          buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
+          buttonAction: closeAccountChooser,
+        }}
+        {...props}
+      >
+        {routes}
+      </FullscreenProgressLayout>
+    );
+  }
+
+  return (
+    <TransitionalLayout width={EContentWidth.SMALL} {...props}>
+      {showLogoutReason && (
+        <WarningAlert
+          className={styles.logoutNotification}
+          size={EWarningAlertSize.BIG}
+          layout={EWarningAlertLayout.INLINE}
+          data-test-id="wallet-selector-session-timeout-notification"
+        >
+          <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />
+        </WarningAlert>
+      )}
+      <div className={styles.wrapper} data-test-id="wallet-selector">
+        {routes}
+      </div>
+    </TransitionalLayout>
+  );
+};
 
 export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
   createErrorBoundary(ErrorBoundaryLayout),
@@ -135,5 +138,4 @@ export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAddit
       redirectLocation: createLocation(getRedirectionUrl(rootPath), location.state),
     }),
   ),
-  withContainer(Container),
 )(WalletSelectorLoginBase);

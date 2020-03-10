@@ -41,14 +41,6 @@
     }
   }
 
-  .eth-col {
-    background-image: url("../../../../../assets/img/eth_icon.svg");
-  }
-
-  .neu-col {
-    background-image: url("../../../../../assets/img/neu_icon.svg");
-  }
-
   .select {
     cursor: pointer;
     font-weight: $font-weight-bold;
@@ -103,3 +95,9 @@
     }
   }
 }
+
+.token {
+  @include rect(24px);
+}
+
+

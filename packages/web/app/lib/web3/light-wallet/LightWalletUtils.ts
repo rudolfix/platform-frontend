@@ -143,6 +143,14 @@ export const testWalletPassword = async (
   return lightWalletInstance.isDerivedKeyCorrect(key);
 };
 
+/**
+ * A utility method that signs messages from a hd path and seed
+ *
+ * @param data a string that represents the data that is required to sign
+ *
+ * @note this method creates a temporary lightwallet that will be used only for the signing the message
+ * The light wallet is discarded later on
+ */
 export const signMessage = async (
   hdPathString: string,
   recoverSeed: string,
@@ -171,6 +179,13 @@ export const signMessage = async (
   return ethSig.concatSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
 };
 
+/**
+ * a method that returns a wallets private key
+ * @param lightWalletInstance an already initialized lightwallet instance
+ *
+ * @param password a string that decrypts the instance
+ */
+
 export const getWalletPrivKey = async (
   lightWalletInstance: ILightWalletInstance,
   password: string,
@@ -190,6 +205,7 @@ export const getWalletPrivKey = async (
   }
 };
 
+/** a method that returns the first ethereum address from a seed and a derivation path */
 export const getWalletAddress = async (
   recoverSeed: string,
   hdPathString: string,

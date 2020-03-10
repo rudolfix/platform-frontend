@@ -8,11 +8,11 @@ import { EUserType, IUser } from "../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../lib/api/users/UsersApi";
 import { EUserActivityMessage } from "../../../lib/dependencies/broadcast-channel/types";
 import { REGISTRATION_LOGIN_DONE } from "../../../lib/persistence/UserStorage";
-import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import {
   SignerRejectConfirmationError,
   SignerTimeoutError,
   SignerUnknownError,
+  WalletNotConnectedError,
 } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
@@ -73,26 +73,28 @@ export function* waitForUserActiveOrLogout({
 
 export function* signInUser(
   { walletStorage, web3Manager, userStorage }: TGlobalDependencies,
-  userType?: EUserType,
+  userType: EUserType,
   email?: string,
   tos: boolean = false,
 ): Generator<any, any, any> {
   try {
-    // we will try to create with user type from URL but it could happen that account already exists and has different user type
-    const probableUserType: EUserType = userType
-      ? userType
-      : yield select((s: TAppGlobalState) => selectUrlUserType(s.router));
-
-    yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS, EJwtPermissions.CHANGE_EMAIL_PERMISSION]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
-    yield call(loadOrCreateUser, probableUserType, email, tos);
-    // TODO only light wallet sign in users must sign TOS
-    yield neuCall(handleAcceptCurrentAgreement);
+    yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS, EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
+    yield neuCall(loadOrCreateUser, userType, email, tos);
+    if (tos) yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
 
-    const walletMetadataUserType: EUserType = userType ? userType : yield select(selectUserType);
-    const storedWalletMetadata: TStoredWalletMetadata = {
-      // tslint:disable-next-line
-      ...web3Manager.personalWallet!.getMetadata(),
+    const walletMetadataUserType = yield* select(selectUserType);
+
+    if (!walletMetadataUserType) {
+      throw new Error("User must be defined at this moment");
+    }
+
+    if (!web3Manager.personalWallet) {
+      throw new WalletNotConnectedError(web3Manager.personalWallet!);
+    }
+
+    const storedWalletMetadata = {
+      ...web3Manager.personalWallet.getMetadata(),
       userType: walletMetadataUserType,
     };
     walletStorage.set(storedWalletMetadata);
@@ -118,67 +120,80 @@ export function* signInUser(
   }
 }
 
-export function* loadOrCreateUser(
-  userType: EUserType,
-  email?: string,
-  tos: boolean = false,
-): Generator<any, any, any> {
-  const user = yield* neuCall(loadOrCreateUserInternal, userType, email, tos);
-
-  yield put(actions.auth.setUser(user));
-
-  yield neuCall(loadKycRequestData);
+/**
+ * A wrapper around UsersApi me method
+ *
+ * @returns IUser if the user exists and undefined if the user doesn't exist
+ *
+ * @note This is used when `UserNotExisting` is expected to happen and relying on catch as
+ * a regular flow disrupts the linear flow of the saga
+ *
+ * @see loadOrCreateUser
+ */
+function* getUsersMeFromApi({
+  apiUserService,
+}: TGlobalDependencies): Generator<any, IUser | undefined, any> {
+  try {
+    const user = yield* call(() => apiUserService.me());
+    return user;
+  } catch (error) {
+    if (error instanceof UserNotExisting) {
+      return undefined;
+    } else {
+      throw error;
+    }
+  }
 }
 
-export function* loadOrCreateUserInternal(
+/**
+ * @generator create or load the user depending on the response coming from `usersApi/me` method
+ */
+export function* loadOrCreateUser(
   { apiUserService, web3Manager }: TGlobalDependencies,
   userType: EUserType,
   email?: string,
   tos: boolean = false,
-): Generator<any, IUser, any> {
+): Generator<any, void, any> {
   if (!web3Manager.personalWallet) {
     throw new Error("Personal Wallet must be plugged");
   }
   const walletMetadata = web3Manager.personalWallet.getMetadata();
 
-  try {
-    const user = yield apiUserService.me();
-    if (
-      user.walletType === walletMetadata.walletType &&
-      user.walletSubtype === walletMetadata.walletSubType &&
-      !email &&
-      !tos
-    ) {
-      return user;
+  const userFromApi = yield* neuCall(getUsersMeFromApi);
+  let user;
+
+  if (userFromApi) {
+    if (!email && !tos) {
+      user = userFromApi;
+    } else {
+      user = yield* call(() =>
+        apiUserService.updateUser({
+          ...userFromApi,
+          newEmail: email,
+        }),
+      );
     }
-    const updatedUser = yield apiUserService.updateUser({
-      ...user,
-      newEmail: email,
-    });
-    if (tos) {
-      const currentAgreementHash = yield* neuCall(getCurrentAgreementHash);
-      yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
-    }
-    return updatedUser;
-  } catch (e) {
-    if (!(e instanceof UserNotExisting)) {
-      throw e;
-    }
+  } else {
+    user = yield* call(() =>
+      apiUserService.createAccount({
+        newEmail: email || walletMetadata?.email,
+        backupCodesVerified: walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
+        salt: walletMetadata?.salt,
+        type: userType,
+        walletType: walletMetadata.walletType,
+        walletSubtype: walletMetadata.walletSubType,
+      }),
+    );
   }
-  const newUser = yield apiUserService.createAccount({
-    newEmail: email || walletMetadata?.email,
-    backupCodesVerified: walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
-    salt: walletMetadata?.salt,
-    type: userType,
-    walletType: walletMetadata.walletType,
-    walletSubtype: walletMetadata.walletSubType,
-  });
+
   if (tos) {
-    const currentAgreementHash: string = yield neuCall(getCurrentAgreementHash);
+    const currentAgreementHash = yield* neuCall(getCurrentAgreementHash);
     yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
   }
 
-  return newUser;
+  yield put(actions.auth.setUser(user));
+
+  yield neuCall(loadKycRequestData);
 }
 
 export function* setUser(
@@ -236,7 +251,8 @@ export function mapSignInErrors(e: Error): SignInUserErrorMessage {
 
 export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    yield neuCall(signInUser);
+    const userType = yield* select((s: TAppGlobalState) => selectUrlUserType(s.router));
+    yield neuCall(signInUser, userType);
   } catch (e) {
     logger.error("User Sign in error", e);
 

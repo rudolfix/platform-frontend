@@ -69,8 +69,11 @@ export class UsersApi {
     return ensureWalletTypesInUser(response.body);
   }
 
-  // Use this method with caution it is only for special cases where we need to
-  // Access a user without
+  /** An API call similar to me that uses JWT as a prop instead of the conventional JWT from local storage
+   *
+   *  @note This method should only be used only when you want to access the users/me endpoint before the
+   *  user signs in
+   **/
   public async meWithJWT(jwt: string): Promise<IUser> {
     const response = await this.httpClient.get<IUser>(
       {
@@ -88,6 +91,11 @@ export class UsersApi {
     return ensureWalletTypesInUser(response.body);
   }
 
+  /**
+   * An API method that gets the user information
+   *
+   * @note When in doubt always use this method instead of `meWithJWT`
+   **/
   public async me(): Promise<IUser> {
     const response = await this.httpClient.get<IUser>({
       baseUrl: USER_API_ROOT,

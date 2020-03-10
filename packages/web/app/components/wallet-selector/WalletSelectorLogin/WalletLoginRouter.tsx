@@ -12,9 +12,17 @@ import { WalletLedger } from "./WalletLedger/WalletLedger";
 type TWalletRouterProps = {
   rootPath: string;
   showWalletSelector: boolean;
-  // we don't care here about exact type
   redirectLocation: Location;
 };
+
+// This is used internally by `WalletLoginRouter`
+const InternalWalletSelector: React.FunctionComponent<Pick<
+  TWalletRouterProps,
+  "rootPath" | "showWalletSelector"
+>> = ({ showWalletSelector, rootPath }) =>
+  showWalletSelector ? (
+    <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />
+  ) : null;
 
 export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
   rootPath,
@@ -27,9 +35,7 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <LoginLightWallet />
-          {showWalletSelector && (
-            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />
-          )}
+          <InternalWalletSelector rootPath={rootPath} showWalletSelector={showWalletSelector} />
         </>
       )}
       exact
@@ -39,9 +45,7 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <LoginBrowserWallet />
-          {showWalletSelector && (
-            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />
-          )}
+          <InternalWalletSelector rootPath={rootPath} showWalletSelector={showWalletSelector} />
         </>
       )}
       exact
@@ -51,9 +55,7 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <WalletLedger />
-          {showWalletSelector && (
-            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />
-          )}
+          <InternalWalletSelector rootPath={rootPath} showWalletSelector={showWalletSelector} />
         </>
       )}
       exact

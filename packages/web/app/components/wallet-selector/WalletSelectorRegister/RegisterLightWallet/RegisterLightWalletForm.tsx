@@ -69,59 +69,62 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
     onSubmit={values => submitForm(values)}
     className={styles.form}
   >
-    {({ isSubmitting, isValid, touched }) => (
-      <>
-        <TextField
-          type="email"
-          name={EMAIL}
-          placeholder={intl.formatIntlMessage("wallet-selector.register.email.placeholder")}
-          label={intl.formatIntlMessage("wallet-selector.register.email")}
-          data-test-id="wallet-selector-register-email"
-        />
-        <TextField
-          type="password"
-          name={PASSWORD}
-          placeholder={intl.formatIntlMessage("wallet-selector.register.password.placeholder")}
-          label={intl.formatIntlMessage("wallet-selector.register.password")}
-          data-test-id="wallet-selector-register-password"
-        />
-        {(restore || touched[PASSWORD]) && (
+    {({ isSubmitting, isValid, touched }) => {
+      const shouldShowSecondPasswordField = !!(restore || touched[PASSWORD]);
+      return (
+        <>
+          <TextField
+            type="email"
+            name={EMAIL}
+            placeholder={intl.formatIntlMessage("wallet-selector.register.email.placeholder")}
+            label={intl.formatIntlMessage("wallet-selector.register.email")}
+            data-test-id="wallet-selector-register-email"
+          />
           <TextField
             type="password"
-            name={REPEAT_PASSWORD}
-            placeholder={intl.formatIntlMessage(
-              "wallet-selector.register.confirm-password.placeholder",
-            )}
-            label={intl.formatIntlMessage("wallet-selector.register.confirm-password")}
-            data-test-id="wallet-selector-register-confirm-password"
+            name={PASSWORD}
+            placeholder={intl.formatIntlMessage("wallet-selector.register.password.placeholder")}
+            label={intl.formatIntlMessage("wallet-selector.register.password")}
+            data-test-id="wallet-selector-register-password"
           />
-        )}
-        <Checkbox
-          label={
-            <FormattedHTMLMessage
-              tagName="span"
-              id="wallet-selector.register.tos"
-              values={{ href: externalRoutes.tos }}
+          {shouldShowSecondPasswordField && (
+            <TextField
+              type="password"
+              name={REPEAT_PASSWORD}
+              placeholder={intl.formatIntlMessage(
+                "wallet-selector.register.confirm-password.placeholder",
+              )}
+              label={intl.formatIntlMessage("wallet-selector.register.confirm-password")}
+              data-test-id="wallet-selector-register-confirm-password"
             />
-          }
-          name={TOS}
-          data-test-id="wallet-selector-register-tos"
-        />
-        <Button
-          type="submit"
-          isLoading={isSubmitting}
-          disabled={!isValid}
-          data-test-id="wallet-selector-register-button"
-          width={EButtonWidth.BLOCK}
-        >
-          {restore ? (
-            <FormattedMessage id="wallet-selector.neuwallet.restore" />
-          ) : (
-            <FormattedMessage id="wallet-selector.neuwallet.register" />
           )}
-        </Button>
-      </>
-    )}
+          <Checkbox
+            label={
+              <FormattedHTMLMessage
+                tagName="span"
+                id="wallet-selector.register.tos"
+                values={{ href: externalRoutes.tos }}
+              />
+            }
+            name={TOS}
+            data-test-id="wallet-selector-register-tos"
+          />
+          <Button
+            type="submit"
+            isLoading={isSubmitting}
+            disabled={!isValid}
+            data-test-id="wallet-selector-register-button"
+            width={EButtonWidth.BLOCK}
+          >
+            {restore ? (
+              <FormattedMessage id="wallet-selector.neuwallet.restore" />
+            ) : (
+              <FormattedMessage id="wallet-selector.neuwallet.register" />
+            )}
+          </Button>
+        </>
+      );
+    }}
   </Form>
 );
 

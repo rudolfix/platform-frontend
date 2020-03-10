@@ -87,7 +87,7 @@ export enum LedgerErrorMessage {
   GENERIC_ERROR = "ledgerGenericError",
   NOT_SUPPORTED = "ledgerNotSupported",
   CONTRACT_DISABLED = "ledgerContractDataDisabled",
-  USER_CANCELLED = "ledgerConnectionCancelledByUser"
+  USER_CANCELLED = "ledgerConnectionCancelledByUser",
 }
 
 export enum LightWalletErrorMessage {

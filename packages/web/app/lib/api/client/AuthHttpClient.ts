@@ -1,7 +1,3 @@
-/**
- * Wraps the general http api with authorization header injection
- * collected from localstorage
- */
 import { injectable } from "inversify";
 
 import { ObjectStorage } from "../../persistence/ObjectStorage";
@@ -17,6 +13,15 @@ export interface IAuthHttpClient extends IHttpClient {
   get<T>(config: IHttpGetRequest, jwt?: string): Promise<IHttpResponse<T>>;
 }
 
+/**
+ * An Abstract class that wraps the general http api `httpClient` and adds authorization header injection
+ *
+ * @param jwt - This is an optional jwt that should be used only on rare occasions when the JWT doesn't exist
+ * in the local storage (When the user is not logged in). This should be used with caution
+ *
+ * @note in the `IAuthHttpClient` interface only `get` method has the jwt optional typing. In order to limit the
+ * use of passing JWT as props directly
+ */
 @injectable()
 export abstract class AuthorizedHttpClient implements IAuthHttpClient {
   protected abstract httpClient: IHttpClient;

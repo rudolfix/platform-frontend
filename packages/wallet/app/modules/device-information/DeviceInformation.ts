@@ -1,4 +1,5 @@
 import { getUniqueId, isEmulator } from 'react-native-device-info';
+import { Platform } from 'react-native';
 import { injectable } from "inversify";
 
 @injectable()
@@ -9,5 +10,9 @@ export class DeviceInformation {
 
   async isEmulator(): Promise<boolean> {
     return isEmulator();
+  }
+
+  getPlatform(): Platform {
+    return Platform.OS;
   }
 }

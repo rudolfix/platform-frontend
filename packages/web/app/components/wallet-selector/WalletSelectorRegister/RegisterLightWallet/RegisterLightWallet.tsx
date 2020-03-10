@@ -43,7 +43,13 @@ export const RegisterLightWallet = compose<
     }),
     dispatchToProps: dispatch => ({
       submitForm: (values: TLightWalletFormValues) =>
-        dispatch(actions.walletSelector.lightWalletRegisterFormData(values.email, values.password)),
+        dispatch(
+          actions.walletSelector.lightWalletRegisterFormData(
+            values.email,
+            values.password,
+            values.tos,
+          ),
+        ),
     }),
   }),
   withContainer(

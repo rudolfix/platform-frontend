@@ -163,16 +163,7 @@ export function* loadOrCreateUser(
   let user;
 
   if (userFromApi) {
-    if (!email && !tos) {
-      user = userFromApi;
-    } else {
-      user = yield* call(() =>
-        apiUserService.updateUser({
-          ...userFromApi,
-          newEmail: email,
-        }),
-      );
-    }
+    user = userFromApi;
   } else {
     user = yield* call(() =>
       apiUserService.createAccount({
@@ -249,10 +240,14 @@ export function mapSignInErrors(e: Error): SignInUserErrorMessage {
   }
 }
 
-export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {
+export function* handleSignInUser(
+  { logger }: TGlobalDependencies,
+  email?: string,
+  tos = false,
+): Generator<any, any, any> {
   try {
     const userType = yield* select((s: TAppGlobalState) => selectUrlUserType(s.router));
-    yield neuCall(signInUser, userType);
+    yield neuCall(signInUser, userType, email, tos);
   } catch (e) {
     logger.error("User Sign in error", e);
 

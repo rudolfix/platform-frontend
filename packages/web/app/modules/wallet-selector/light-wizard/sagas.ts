@@ -368,14 +368,14 @@ export function* lightWalletRegister(
   };
 
   try {
-    const { email, password } = yield neuCall(
+    const { email, password, tos } = yield neuCall(
       registerForm,
       actions.walletSelector.lightWalletRegisterFormData,
       initialFormValues,
       baseUiData,
     );
     yield neuCall(lightWalletConnectAndSign, baseUiData, email, password);
-    yield neuCall(handleSignInUser);
+    yield neuCall(handleSignInUser, email, tos);
   } finally {
     yield walletSelectorReset();
   }

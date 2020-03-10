@@ -12,7 +12,7 @@
 
   display: grid;
   grid-template-rows: auto 1fr;
-  margin-bottom: 15px;
+  margin-bottom: px-to-rem(16px);
 
   .label,
   .value {

@@ -29,7 +29,7 @@ describe("Investor", () => {
 
   it("can't register without accepting Terms of Use", () => {
     cy.visit(appRoutes.register);
-    
+
     cy.get(tid("wallet-selector-register-email"))
       .type("{selectall}{backspace}")
       .type(email);

@@ -163,7 +163,11 @@ export function* loadOrCreateUser(
   let user;
 
   if (userFromApi) {
-    user = userFromApi;
+    if (email) {
+      user = yield* call(() => apiUserService.updateUser({ ...userFromApi, newEmail: email }));
+    } else {
+      user = userFromApi;
+    }
   } else {
     user = yield* call(() =>
       apiUserService.createAccount({

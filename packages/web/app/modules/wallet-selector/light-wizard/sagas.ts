@@ -259,11 +259,15 @@ export function* recoveryVerifyEmail(
   }
 }
 
-export function* walletRecoverForm(
+/**
+ *
+ * @returns IUser or undefined depending on if the user exists or not
+ * @param seed
+ */
+export function* getUserMeWithoutLogin(
   { apiUserService, signatureAuthApi }: TGlobalDependencies,
-  baseUiData: TBaseUiData,
   seed: string,
-): Generator<any, { userType: EUserType; email: string; password: string }, any> {
+): Generator<any, IUser | undefined, any> {
   const salt = cryptoRandomString({ length: 64 });
   const address = yield getWalletAddress(seed, DEFAULT_HD_PATH);
 
@@ -280,45 +284,42 @@ export function* walletRecoverForm(
     signatureAuthApi.createJwt(challenge, signedChallenge, SignerType.ETH_SIGN),
   );
 
-  let user: IUser | undefined;
   try {
-    user = yield* call(() => apiUserService.meWithJWT(jwt));
+    const user = yield* call(() => apiUserService.meWithJWT(jwt));
+    return user;
   } catch (e) {
     if (e instanceof UserNotExisting) {
-      user = undefined;
+      return undefined;
     } else {
-      //fixme return to dashboard, show notification
+      throw e;
     }
   }
-  if (!user) {
-    // Start Wallet Import Flow if the user doesn't exist
-    baseUiData.flowType = EFlowType.IMPORT_WALLET;
-    const userType = yield* select((state: TAppGlobalState) => selectUrlUserType(state.router));
+}
 
-    const { email, password } = yield neuCall(recoveryVerifyEmail, baseUiData, {
-      email: "",
+export function* walletRecoverForm(
+  _: TGlobalDependencies,
+  baseUiData: TBaseUiData,
+  seed: string,
+): Generator<any, { userType: EUserType; email: string; password: string }, any> {
+  const userTypeFromUrl = yield* select((state: TAppGlobalState) =>
+    selectUrlUserType(state.router),
+  );
+
+  const user = yield* neuCall(getUserMeWithoutLogin, seed);
+  const userEmail = user?.verifiedEmail || user?.unverifiedEmail || "";
+
+  const { email, password } = yield neuCall(
+    recoveryVerifyEmail,
+    { ...baseUiData, flowType: user ? EFlowType.RESTORE_WALLET : EFlowType.IMPORT_WALLET },
+    {
+      email: userEmail,
       password: "",
       repeatPassword: "",
       tos: false,
-    });
-    return { userType, email, password };
-  } else {
-    const userEmail = user.verifiedEmail || user.unverifiedEmail || "";
-    // Start Wallet Recover Flow if the user exists
-    baseUiData.flowType = EFlowType.RESTORE_WALLET;
-    const { email, password } = yield neuCall(
-      recoveryVerifyEmail,
-      baseUiData,
-      {
-        email: user.verifiedEmail || user.unverifiedEmail || "",
-        password: "",
-        repeatPassword: "",
-        tos: false,
-      },
-      userEmail,
-    );
-    return { userType: user.type, email, password };
-  }
+    },
+    userEmail,
+  );
+  return { userType: user?.type || userTypeFromUrl, email, password };
 }
 
 export function* lightWalletConnectAndSign(

@@ -18,9 +18,9 @@ import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layo
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { LedgerError } from "../../WalletSelectorLogin/WalletLedger/LedgerInit/WalletLedgerInitComponent";
+import { WalletLedgerInitError } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerInit/WalletLedgerInit";
 import { WalletLedgerChooser } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerChooser/WalletLedgerChooser";
-import { WalletLedgerNotSupported } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerNotSupported/WalletLedgerNotSupportedComponent";
+import { WalletLedgerNotSupported } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerNotSupported/WalletLedgerNotSupported";
 import { TWalletBrowserBaseProps } from "../RegisterBrowserWallet/RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "../RegisterBrowserWallet/RegisterBrowserWalletForm";
 import { RegisterLedgerBase } from "./RegisterLedgerBase";
@@ -85,6 +85,6 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
   ),
   branch<TLedgerRegisterData>(
     ({ uiState }) => uiState === ELedgerRegistrationFlowState.LEDGER_INIT_ERROR,
-    renderComponent(LedgerError),
+    renderComponent(WalletLedgerInitError),
   ),
 )(shouldNeverHappen("RegisterLedger reached default branch"));

@@ -94,11 +94,11 @@ const Container = ({ ledgerConnectionEstablished, closeAccountChooser, children,
   ) : (
     <FullscreenProgressLayout
       width={EContentWidth.SMALL}
-      {...props}
       buttonProps={{
         buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
         buttonAction: closeAccountChooser,
       }}
+      {...props}
     >
       {children}
     </FullscreenProgressLayout>

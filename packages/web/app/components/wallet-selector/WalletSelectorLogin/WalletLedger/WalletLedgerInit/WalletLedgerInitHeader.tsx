@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { selectIsLoginRoute } from "../../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../../store";
 
-import * as styles from "./LedgerHeader.module.scss";
+import * as styles from "./WalletLedgerInitHeader.module.scss";
 
 interface IStateProps {
   isLoginRoute: boolean;
@@ -22,7 +22,7 @@ export const LedgerHeaderComponent: React.FunctionComponent<IStateProps> = ({ is
   </h2>
 );
 
-export const LedgerHeader = appConnect({
+export const WalletLedgerInitHeader = appConnect({
   stateToProps: s => ({
     isLoginRoute: selectIsLoginRoute(s.router),
   }),

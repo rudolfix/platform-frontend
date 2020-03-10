@@ -15,6 +15,8 @@ import {
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
 import { PanelRounded } from "../../../../shared/Panel";
+import { Tooltip } from "../../../../shared/tooltips/Tooltip";
+import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
 
 import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
 
@@ -65,7 +67,11 @@ const columns = [
 const prepareRows = (accounts, handleAddressChosen) =>
   accounts.map(account => ({
     key: account.derivationPath,
-    address: trimAddress(account.address),
+    address: (
+      <Tooltip content={account.address} textPosition={ECustomTooltipTextPosition.CENTER}>
+        {trimAddress(account.address)}
+      </Tooltip>
+    ),
     derivationPath: account.derivationPath,
     balanceETH: (
       <Money

@@ -105,6 +105,7 @@ export class Notifications {
   async registerTokenInUserService() {
     const token = await this.notificationsProvider.getRegistrationToken();
     const deviceId = await this.deviceInformation.getUniqueId();
+    //TODO: add a call user API when it's moved to shared
     console.log("---_Device id and token------", deviceId, token);
   }
 

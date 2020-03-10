@@ -57,31 +57,9 @@ export const AppRouter: React.FunctionComponent = () => (
     />
     {/* routes that are available for not logged in users */}
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
-    <OnlyPublicRoute path={appRoutes.register} component={WalletSelectorRegister} exact />
-    <OnlyPublicRoute path={appRoutes.registerWithLedger} component={WalletSelectorRegister} exact />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelectorLogin} />
-    <OnlyPublicRoute path={appRoutes.restore} component={WalletRecovery} />
-    <OnlyPublicRoute
-      path={appRoutes.registerWithLightWallet}
-      component={WalletSelectorRegister}
-      exact
-    />
-    <OnlyPublicRoute
-      path={appRoutes.registerWithBrowserWallet}
-      component={WalletSelectorRegister}
-      exact
-    />
-    <OnlyPublicRoute
-      key={appRoutes.registerIssuer}
-      path={appRoutes.registerIssuer}
-      component={WalletSelectorRegister}
-    />
-    <OnlyPublicRoute
-      key={appRoutes.registerNominee}
-      path={appRoutes.registerNominee}
-      component={WalletSelectorRegister}
-    />
-    ,{/* only investors routes */}
+    <OnlyPublicRoute path={appRoutes.restore} component={WalletRecovery} />,
+    {/* only investors routes */}
     {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
       <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
     )}
@@ -149,6 +127,29 @@ export const AppRouter: React.FunctionComponent = () => (
       />,
       <Route key={2} path={e2eRoutes.criticalError} render={() => <TestCriticalError />} exact />,
     ]}
+    {/*Components that render WalletSelectorRegister*/}
+    <OnlyPublicRoute path={appRoutes.register} component={WalletSelectorRegister} exact />
+    <OnlyPublicRoute path={appRoutes.registerWithLedger} component={WalletSelectorRegister} exact />
+    <OnlyPublicRoute
+      path={appRoutes.registerWithLightWallet}
+      component={WalletSelectorRegister}
+      exact
+    />
+    <OnlyPublicRoute
+      path={appRoutes.registerWithBrowserWallet}
+      component={WalletSelectorRegister}
+      exact
+    />
+    <OnlyPublicRoute
+      key={appRoutes.registerIssuer}
+      path={appRoutes.registerIssuer}
+      component={WalletSelectorRegister}
+    />
+    <OnlyPublicRoute
+      key={appRoutes.registerNominee}
+      path={appRoutes.registerNominee}
+      component={WalletSelectorRegister}
+    />
     <Redirect to={appRoutes.root} />
   </SwitchConnected>
 );

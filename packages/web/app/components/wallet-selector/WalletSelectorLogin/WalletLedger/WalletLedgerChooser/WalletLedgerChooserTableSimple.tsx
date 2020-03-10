@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { TokenIcon } from "@neufund/design-system";
 import ethIcon from "../../../../../assets/img/eth_icon.svg";
 import neuIcon from "../../../../../assets/img/neu_icon.svg";
+import { trimAddress } from "@neufund/shared";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Money } from "../../../../shared/formatters/Money";
@@ -64,7 +65,7 @@ const columns = [
 const prepareRows = (accounts, handleAddressChosen) =>
   accounts.map(account => ({
     key: account.derivationPath,
-    address: account.address,
+    address: trimAddress(account.address),
     derivationPath: account.derivationPath,
     balanceETH: (
       <Money
@@ -84,7 +85,7 @@ const prepareRows = (accounts, handleAddressChosen) =>
     ),
     actions: (
       <Button
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.OUTLINE}
         data-test-id="button-select"
         onClick={handleAddressChosen(account)}
       >

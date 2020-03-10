@@ -1,4 +1,5 @@
 import * as React from "react";
+import { trimAddress } from "@neufund/shared";
 
 import { CommonHtmlProps } from "../../../types";
 import { etherscanAddressLink, etherscanTxLink } from "../../appRouteUtils";
@@ -7,8 +8,6 @@ import { ExternalLink } from "./ExternalLink";
 interface IEtherscanTxLink {
   txHash: string;
 }
-
-const trimEthereumHash = (hash: string) => `${hash.slice(0, 10)}...${hash.slice(-4)}`;
 
 const EtherscanTxLink: React.FunctionComponent<IEtherscanTxLink & CommonHtmlProps> = ({
   txHash,
@@ -39,7 +38,7 @@ const EtherscanAddressLink: React.FunctionComponent<IEtherscanAddressLink & Comm
     data-test-id={`etherscan-address.${address}`}
     {...props}
   >
-    {children || trimEthereumHash(address)}
+    {children || trimAddress(address)}
   </ExternalLink>
 );
 

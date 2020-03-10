@@ -1,13 +1,14 @@
 import * as React from "react";
 import { compose } from "recompose";
-
 import { actions } from "../../../../modules/actions";
 import { isSupportingLedger } from "../../../../modules/user-agent/reducer";
+import {
+  selectLedgerConnectionEstablished,
+  selectLedgerErrorMessage,
+} from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { resetWalletOnEnter } from "../../shared/reset-wallet";
-import { WalletLedgerChooser } from "./WalletLedgerChooser/WalletLedgerChooser";
 import { LedgerInit } from "./LedgerInit/WalletLedgerInitComponent";
+import { WalletLedgerChooser } from "./WalletLedgerChooser/WalletLedgerChooser";
 import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedgerNotSupportedComponent";
 
 interface IWalletLedgerStateProps {
@@ -18,7 +19,17 @@ interface IWalletLedgerStateProps {
 export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStateProps> = ({
   isConnectionEstablished,
   isLedgerSupported,
+  resetWallet,
+  tryEstablishingConnectionWithLedger,
+  error,
 }) => {
+  React.useEffect(() => {
+    if (!isConnectionEstablished && !error) {
+      resetWallet();
+      tryEstablishingConnectionWithLedger();
+    }
+  }, []);
+
   if (!isLedgerSupported) {
     return <WalletLedgerNotSupported />;
   } else if (isConnectionEstablished) {
@@ -29,16 +40,16 @@ export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStatePr
 };
 
 export const WalletLedger = compose<IWalletLedgerStateProps, {}>(
-  onEnterAction({
-    actionCreator: dispatch => {
-      dispatch(actions.walletSelector.ledgerTryEstablishingConnectionWithLedger());
-    },
-  }),
-  resetWalletOnEnter(),
   appConnect<IWalletLedgerStateProps>({
     stateToProps: state => ({
-      isConnectionEstablished: state.ledgerWizardState.isConnectionEstablished,
+      isConnectionEstablished: selectLedgerConnectionEstablished(state),
       isLedgerSupported: isSupportingLedger(state),
+      error: selectLedgerErrorMessage(state),
+    }),
+    dispatchToProps: dispatch => ({
+      resetWallet: () => dispatch(actions.walletSelector.reset()),
+      tryEstablishingConnectionWithLedger: () =>
+        dispatch(actions.walletSelector.ledgerTryEstablishingConnectionWithLedger()),
     }),
   }),
 )(WalletLedgerComponent);

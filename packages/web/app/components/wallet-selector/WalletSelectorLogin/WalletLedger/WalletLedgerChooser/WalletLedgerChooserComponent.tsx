@@ -53,7 +53,7 @@ export const WalletLedgerChooserComponent: React.FunctionComponent<IWalletLedger
       <>
         {accounts.length > 1 && (
           <>
-            <h1 class={styles.title}>
+            <h1 className={styles.title}>
               <FormattedMessage id="wallet-selector.ledger.select-address.title" />
             </h1>
             <p className={styles.explanation}>

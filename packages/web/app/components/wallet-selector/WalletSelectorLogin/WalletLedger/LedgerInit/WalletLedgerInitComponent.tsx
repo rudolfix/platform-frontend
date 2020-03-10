@@ -7,6 +7,10 @@ import { compose } from "recompose";
 import { externalRoutes } from "../../../../../config/externalRoutes";
 import { minimumLedgerVersion } from "../../../../../lib/web3/ledger-wallet/ledgerUtils";
 import { actions } from "../../../../../modules/actions";
+import {
+  selectLedgerErrorMessage,
+  selectLedgerIsInitialConnectionInProgress,
+} from "../../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../../store";
 import { ExternalLink } from "../../../../shared/links/index";
 import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
@@ -100,8 +104,8 @@ export const WalletLedgerInitComponent: React.FunctionComponent<IStateProps & ID
 export const LedgerInit = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      isInitialConnectionInProgress: state.ledgerWizardState.isInitialConnectionInProgress,
-      errorMessage: state.ledgerWizardState.errorMsg,
+      isInitialConnectionInProgress: selectLedgerIsInitialConnectionInProgress(state),
+      errorMessage: selectLedgerErrorMessage(state),
     }),
     dispatchToProps: dispatch => ({
       tryToEstablishConnectionWithLedger: () =>

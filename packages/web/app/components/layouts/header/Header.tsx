@@ -86,7 +86,6 @@ const HeaderTransitional: React.FunctionComponent<{ isLoginRoute: boolean }> = (
       </>
     ) : (
       <>
-        {" "}
         <span className={styles.helperText}>
           <FormattedMessage id="header.already-have-an-account" />
         </span>

@@ -25,6 +25,15 @@ export const selectLocation = createSelector(selectRouterState, router =>
 export const selectIsLoginRoute = (state: RouterState): boolean =>
   !!state.location && state.location.pathname.includes("login");
 
+export const selectLedgerConnectionEstablished = (state: TAppGlobalState): boolean =>
+  state.ledgerWizardState.isConnectionEstablished;
+
+export const selectLedgerIsInitialConnectionInProgress = (state: TAppGlobalState): boolean =>
+  state.ledgerWizardState.isInitialConnectionInProgress;
+
+export const selectLedgerErrorMessage = (state: TAppGlobalState): boolean =>
+  state.ledgerWizardState.errorMsg;
+
 export const selectRootPath = (state: RouterState): string => {
   switch (selectUrlUserType(state)) {
     case EUserType.ISSUER:

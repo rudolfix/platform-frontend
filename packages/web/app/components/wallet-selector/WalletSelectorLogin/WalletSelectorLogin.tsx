@@ -10,9 +10,15 @@ import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import { ELogoutReason } from "../../../modules/auth/types";
 import { TLoginRouterState } from "../../../modules/routing/types";
-import { selectIsLoginRoute, selectRootPath, selectUrlUserType } from "../../../modules/wallet-selector/selectors";
+import {
+  selectIsLoginRoute,
+  selectRootPath,
+  selectUrlUserType,
+  selectLedgerConnectionEstablished,
+} from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { EContentWidth } from "../../layouts/Content";
+import { FullscreenProgressLayout } from "../../layouts/FullscreenProgressLayout";
 import { TContentExternalProps, TransitionalLayout } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
@@ -77,6 +83,17 @@ export const WalletSelectorLoginBase: React.FunctionComponent<IExternalProps> = 
   </>
 );
 
+const Container = ({ ledgerConnectionEstablished, children, ...props }) =>
+  !ledgerConnectionEstablished ? (
+    <TransitionalLayout width={EContentWidth.SMALL} {...props}>
+      {children}
+    </TransitionalLayout>
+  ) : (
+    <FullscreenProgressLayout width={EContentWidth.SMALL} {...props}>
+      {children}
+    </FullscreenProgressLayout>
+  );
+
 export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAdditionalProps, {}>(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
@@ -84,21 +101,20 @@ export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAddit
       rootPath: selectRootPath(s.router),
       isLoginRoute: selectIsLoginRoute(s.router),
       userType: selectUrlUserType(s.router),
+      ledgerConnectionEstablished: selectLedgerConnectionEstablished(s),
     }),
     dispatchToProps: dispatch => ({
       openICBMModal: () => dispatch(actions.genericModal.showModal(ICBMWalletHelpTextModal)),
     }),
   }),
   withProps<TAdditionalProps, IStateProps & TRouteLoginProps>(
-    ({ userType, rootPath, location }) => ({
-      showWalletSelector: userMayChooseWallet(userType),
+    ({ userType, ledgerConnectionEstablished, rootPath, location }) => ({
+      showWalletSelector: userMayChooseWallet(userType) && !ledgerConnectionEstablished,
       showLogoutReason: !!(
         location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT
       ),
       redirectLocation: createLocation(getRedirectionUrl(rootPath), location.state),
     }),
   ),
-  withContainer(
-    withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
-  ),
+  withContainer(Container),
 )(WalletSelectorLoginBase);

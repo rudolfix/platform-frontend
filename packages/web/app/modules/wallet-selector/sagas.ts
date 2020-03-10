@@ -9,34 +9,29 @@ import {
   take,
 } from "@neufund/sagas";
 
-import {
-  AuthMessage,
-  BrowserWalletErrorMessage,
-  GenericErrorMessage,
-} from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import { BrowserWalletErrorMessage } from "../../components/translatedMessages/messages";
 import { userMayChooseWallet } from "../../components/wallet-selector/WalletSelectorLogin/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { BrowserWallet } from "../../lib/web3/browser-wallet/BrowserWallet";
 import { actions, TActionFromCreator } from "../actions";
-import { checkEmailPromise } from "../auth/email/sagas";
 import { handleSignInUser, signInUser } from "../auth/user/sagas";
 import { isSupportingLedger } from "../user-agent/reducer";
 import { loadPreviousWallet } from "../web3/sagas";
 import { EWalletType } from "../web3/types";
+import { TAppGlobalState } from "./../../store";
 import { mapBrowserWalletErrorToErrorMessage } from "./browser-wizard/errors";
+import { registerForm } from "./forms/sagas";
 import { mapLedgerErrorToErrorMessage } from "./ledger-wizard/errors";
 import { loadLedgerAccounts } from "./ledger-wizard/sagas";
 import { walletSelectorInitialState } from "./reducer";
-import { selectRegisterWalletDefaultFormValues } from "./selectors";
+import { selectRegisterWalletDefaultFormValues, selectUrlUserType } from "./selectors";
 import {
   EBrowserWalletRegistrationFlowState,
   ECommonWalletRegistrationFlowState,
   EFlowType,
   ELedgerRegistrationFlowState,
   TBrowserWalletFormValues,
-  TLightWalletFormValues,
 } from "./types";
 
 export type TBaseUiData = {
@@ -49,7 +44,9 @@ export type TBaseUiData = {
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
 
-  yield neuCall(handleSignInUser);
+  const userType = yield* select((s: TAppGlobalState) => selectUrlUserType(s.router));
+
+  yield neuCall(handleSignInUser, userType);
 }
 
 export function* walletSelectorReset(): Generator<any, any, any> {
@@ -183,74 +180,6 @@ export function* ledgerConnectAndSign(
       } as const),
     );
     return false;
-  }
-}
-
-export function* registerForm(
-  { notificationCenter }: TGlobalDependencies,
-  expectedAction:
-    | typeof actions.walletSelector.lightWalletRegisterFormData
-    | typeof actions.walletSelector.browserWalletRegisterFormData,
-  initialFormValues: TBrowserWalletFormValues | TLightWalletFormValues,
-  baseUiData: TBaseUiData,
-): Generator<any, { email: string; password: string } | undefined, any> {
-  yield put(
-    actions.walletSelector.setWalletRegisterData({
-      ...baseUiData,
-      initialFormValues,
-      uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-    } as const),
-  );
-
-  while (true) {
-    const { payload } = yield take(expectedAction);
-
-    yield put(
-      actions.walletSelector.setWalletRegisterData({
-        ...baseUiData,
-        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
-        initialFormValues: {
-          ...initialFormValues,
-          email: payload.email,
-        },
-      } as const),
-    );
-
-    let isEmailAvailable = false;
-    try {
-      isEmailAvailable = yield neuCall(checkEmailPromise, payload.email);
-    } catch (e) {
-      yield put(
-        actions.walletSelector.setWalletRegisterData({
-          ...baseUiData,
-          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-          initialFormValues: {
-            ...initialFormValues,
-            email: payload.email,
-          },
-        } as const),
-      );
-
-      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED));
-      return;
-    }
-
-    if (!isEmailAvailable) {
-      const error = createMessage(GenericErrorMessage.USER_ALREADY_EXISTS);
-      yield put(
-        actions.walletSelector.setWalletRegisterData({
-          ...baseUiData,
-          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
-          errorMessage: error,
-          initialFormValues: {
-            ...initialFormValues,
-            email: payload.email,
-          },
-        } as const),
-      );
-    } else {
-      return payload;
-    }
   }
 }
 

@@ -1,11 +1,11 @@
-import React, {useState} from "react";
-import {Button, Text, View} from "react-native";
+import React, { useState } from "react";
+import { Button, Text, View } from "react-native";
 import { initActions } from "../modules/init/actions";
 import { selectInitStatus, selectTest } from "../modules/init/selectors";
 import { appConnect } from "../store/utils";
 import { Notifications } from "react-native-notifications";
 
-import messaging from '@react-native-firebase/messaging';
+import messaging from "@react-native-firebase/messaging";
 
 type TDispatchProps = {
   init: () => void;
@@ -17,16 +17,19 @@ type TStateProps = {
 };
 
 const send = () => {
-  Notifications.postLocalNotification({
-    body: "Local notificiation!",
-    title: "Local Notification Title",
-    sound: "chime.aiff",
-    thread: "test",
-    badge: 1,
-    payload: null,
-    type: "test"
-  }, 22);
-}
+  Notifications.postLocalNotification(
+    {
+      body: "Local notificiation!",
+      title: "Local Notification Title",
+      sound: "chime.aiff",
+      thread: "test",
+      badge: 1,
+      payload: null,
+      type: "test",
+    },
+    22,
+  );
+};
 
 const deleteToken = async () => {
   console.log("Deleting the token");
@@ -34,16 +37,13 @@ const deleteToken = async () => {
   console.log("----------deleting  token----------", deleted);
   const newT = await getToken();
   console.log("----------getting new token----------", newT);
-}
+};
 
 async function getToken() {
   return messaging().getToken();
 }
 
-const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
-  init,
-}) => {
-
+const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({ init }) => {
   const [text, setText] = useState("");
 
   Notifications.events().registerNotificationOpened((response: any, completion) => {
@@ -56,12 +56,21 @@ const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
     init();
   }, []);
 
-
   return (
     <View>
-      <Text style={{fontWeight:"bold", textAlign:"center", padding: 20, fontSize: 33 }}> Transactions</Text>
-      <Text style={{fontWeight:"normal", textAlign:"center", padding: 20, fontSize: 22 }}>{text || "No transaction to sign"}</Text>
-      <Button onPress={() => { deleteToken() }}   title={"Delete the token"} />
+      <Text style={{ fontWeight: "bold", textAlign: "center", padding: 20, fontSize: 33 }}>
+        {" "}
+        Transactions
+      </Text>
+      <Text style={{ fontWeight: "normal", textAlign: "center", padding: 20, fontSize: 22 }}>
+        {text || "No transaction to sign"}
+      </Text>
+      <Button
+        onPress={() => {
+          deleteToken();
+        }}
+        title={"Delete the token"}
+      />
     </View>
   );
 };

@@ -12,7 +12,7 @@ import { AppError } from "../../classes/AppError";
 import { Notification, Notifications as NotificationsHandler } from "react-native-notifications";
 import { NotificationResponse } from "react-native-notifications/lib/src/interfaces/NotificationEvents";
 import { EventsRegistry } from "react-native-notifications/lib/dist/events/EventsRegistry";
-import {DeviceInformation} from "../device-information/DeviceInformation";
+import { DeviceInformation } from "../device-information/DeviceInformation";
 
 class NotificationsError extends AppError {
   constructor(message: string) {
@@ -33,7 +33,7 @@ export class Notifications {
     @inject(symbols.notificationsProvider) notificationsProvider: INotificationsProvider,
     @inject(globalSymbols.permissions) permissions: Permissions,
     @inject(globalSymbols.logger) logger: ILogger,
-    @inject(globalSymbols.deviceInformation) deviceInformation: DeviceInformation
+    @inject(globalSymbols.deviceInformation) deviceInformation: DeviceInformation,
   ) {
     this.notificationsProvider = notificationsProvider;
     this.permissions = permissions;
@@ -70,23 +70,27 @@ export class Notifications {
   onReceivedNotificationInForeground(listener: (notification: Notification) => any) {
     if (!this.events) return;
 
-    return this.events.registerNotificationReceivedForeground((notification: Notification, completion) => {
-      this.logger.info("Notification received in foreground");
+    return this.events.registerNotificationReceivedForeground(
+      (notification: Notification, completion) => {
+        this.logger.info("Notification received in foreground");
 
-      listener(notification);
-      completion({ alert: false, sound: false, badge: false });
-    });
+        listener(notification);
+        completion({ alert: false, sound: false, badge: false });
+      },
+    );
   }
 
   onReceiveNotificationIndBackground(listener: (notification: Notification) => any) {
     if (!this.events) return;
 
-    return this.events.registerNotificationReceivedBackground((notification: Notification, completion) => {
-      this.logger.info("Notification received in background");
+    return this.events.registerNotificationReceivedBackground(
+      (notification: Notification, completion) => {
+        this.logger.info("Notification received in background");
 
-      listener(notification);
-      completion({ alert: false, sound: false, badge: false });
-    });
+        listener(notification);
+        completion({ alert: false, sound: false, badge: false });
+      },
+    );
   }
 
   onNotificationOpened(listener: (notification: NotificationResponse) => void) {
@@ -107,12 +111,15 @@ export class Notifications {
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
 
-    //TODO: add a call user API when it's moved to shared
+    //TODO: add a put call user API when it's moved to shared https://platform.neufund.io/api/user/ui/#!/Firebase/api_firebase_put_registration_id
     console.log("---deviceId, token, platform------", deviceId, token, platform);
+  }
+
+  async unRegisterTokenInUserService() {
+    //TODO: add a delete call user API when it's moved to shared https://platform.neufund.io/api/user/ui/#!/Firebase/api_firebase_delete_registration_id
   }
 
   postLocalNotification(notification: Notification, id: number) {
     return NotificationsHandler.postLocalNotification(notification, id);
   }
-
 }

@@ -15,8 +15,8 @@ export function setupBindings(config: TConfig): ContainerModule {
       .to(Permissions)
       .inSingletonScope();
     bind<TLibSymbolType<typeof symbols.deviceInformation>>(symbols.deviceInformation)
-        .to(DeviceInformation)
-        .inSingletonScope();
+      .to(DeviceInformation)
+      .inSingletonScope();
   });
 }
 
@@ -39,7 +39,9 @@ export const createGlobalDependencies = (container: Container) => ({
   ),
 
   permissions: container.get<TLibSymbolType<typeof symbols.permissions>>(symbols.permissions),
-  deviceInformation: container.get<TLibSymbolType<typeof symbols.deviceInformation>>(symbols.deviceInformation),
+  deviceInformation: container.get<TLibSymbolType<typeof symbols.deviceInformation>>(
+    symbols.deviceInformation,
+  ),
 
   notifications: container.get<TLibSymbolType<typeof notificationModuleApi.symbols.notifications>>(
     notificationModuleApi.symbols.notifications,

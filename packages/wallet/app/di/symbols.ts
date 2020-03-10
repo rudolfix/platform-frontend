@@ -9,5 +9,5 @@ export const symbols = {
   logger: coreModuleApi.symbols.logger,
   config: createLibSymbol<TConfig>("config"),
   permissions: createLibSymbol<Permissions>("permissions"),
-  deviceInformation: createLibSymbol<DeviceInformation>("deviceInformation")
+  deviceInformation: createLibSymbol<DeviceInformation>("deviceInformation"),
 };

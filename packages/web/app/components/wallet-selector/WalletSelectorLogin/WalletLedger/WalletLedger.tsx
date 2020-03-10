@@ -6,8 +6,8 @@ import { isSupportingLedger } from "../../../../modules/user-agent/reducer";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { resetWalletOnEnter } from "../../shared/reset-wallet";
-import { WalletLedgerChooser } from "./WalletLedgerChooser/WalletLedgerChooser";
 import { LedgerInit } from "./LedgerInit/WalletLedgerInitComponent";
+import { WalletLedgerChooser } from "./WalletLedgerChooser/WalletLedgerChooser";
 import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedgerNotSupportedComponent";
 
 interface IWalletLedgerStateProps {

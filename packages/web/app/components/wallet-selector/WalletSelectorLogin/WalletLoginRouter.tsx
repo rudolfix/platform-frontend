@@ -4,10 +4,10 @@ import { Redirect, Route } from "react-router-dom";
 
 import { EWalletType } from "../../../modules/web3/types";
 import { SwitchConnected } from "../../../utils/react-connected-components/connectedRouting";
-import { LoginBrowserWallet } from "./LoginBrowserWallet/LoginBrowserWallet";
-import { WalletLedger } from "./WalletLedger/WalletLedger";
-import { LoginLightWallet } from "./LoginLightWallet/LoginLightWallet";
 import { WalletChooser } from "../shared/WalletChooser";
+import { LoginBrowserWallet } from "./LoginBrowserWallet/LoginBrowserWallet";
+import { LoginLightWallet } from "./LoginLightWallet/LoginLightWallet";
+import { WalletLedger } from "./WalletLedger/WalletLedger";
 
 type TWalletRouterProps = {
   rootPath: string;

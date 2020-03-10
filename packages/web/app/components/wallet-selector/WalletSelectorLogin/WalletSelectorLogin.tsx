@@ -18,9 +18,10 @@ import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.un
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../../shared/WarningAlert";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
-import * as styles from "../shared/RegisterWalletSelector.module.scss";
 import { getRedirectionUrl, userMayChooseWallet } from "./utils";
 import { WalletLoginRouter } from "./WalletLoginRouter";
+
+import * as styles from "../shared/RegisterWalletSelector.module.scss";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 

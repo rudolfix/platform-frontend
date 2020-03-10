@@ -17,12 +17,12 @@ import { FullscreenProgressLayout } from "../../../layouts/FullscreenProgressLay
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
+import { WalletLoading } from "../../shared/WalletLoading";
+import { LedgerError } from "../../WalletSelectorLogin/WalletLedger/LedgerInit/WalletLedgerInitComponent";
+import { WalletLedgerChooser } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerChooser/WalletLedgerChooser";
+import { WalletLedgerNotSupported } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerNotSupported/WalletLedgerNotSupportedComponent";
 import { TWalletBrowserBaseProps } from "../RegisterBrowserWallet/RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "../RegisterBrowserWallet/RegisterBrowserWalletForm";
-import { WalletLoading } from "../../shared/WalletLoading";
-import { WalletLedgerChooser } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerChooser/WalletLedgerChooser";
-import { LedgerError } from "../../WalletSelectorLogin/WalletLedger/LedgerInit/WalletLedgerInitComponent";
-import { WalletLedgerNotSupported } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerNotSupported/WalletLedgerNotSupportedComponent";
 import { RegisterLedgerBase } from "./RegisterLedgerBase";
 
 export const RegisterLedger = compose<TWalletRegisterData, {}>(

@@ -14,6 +14,7 @@ import * as Yup from "yup";
 
 import { actions } from "../../../../modules/actions";
 import {
+  selectCurrentLightWalletEmail,
   selectLightWalletEmailFromQueryString,
   selectPreviousLightWalletEmail,
 } from "../../../../modules/web3/selectors";
@@ -22,6 +23,7 @@ import { FormDeprecated } from "../../../shared/forms/index";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
 import { resetWalletOnEnter } from "../../shared/reset-wallet";
+import { WalletLoading } from "../../shared/WalletLoading";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
@@ -34,6 +36,7 @@ interface IStateProps {
   email?: string;
   isLoading: boolean;
   errorMsg?: TMessage;
+  currentEmail?: string;
 }
 
 type TDispatchProps = {
@@ -130,6 +133,7 @@ export const LoginLightWallet = compose<TProps, {}>(
       email:
         selectLightWalletEmailFromQueryString(state) || selectPreviousLightWalletEmail(state.web3),
       errorMsg: state.lightWalletWizard.errorMsg as TMessage,
+      currentEmail: selectCurrentLightWalletEmail(state.web3),
       isLoading: state.lightWalletWizard.isLoading,
     }),
     dispatchToProps: (dispatch, ownProps) => ({
@@ -140,5 +144,6 @@ export const LoginLightWallet = compose<TProps, {}>(
     }),
   }),
   injectIntlHelpers,
+  branch<IStateProps>(({ currentEmail }) => !!currentEmail, renderComponent(WalletLoading)),
   branch<IStateProps>(({ email }) => !email, renderComponent(MissingEmailLightWallet)),
 )(LoginLightWalletComponent);

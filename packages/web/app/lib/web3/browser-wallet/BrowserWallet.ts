@@ -92,6 +92,8 @@ export class BrowserWallet implements IPersonalWallet {
     address: this.ethereumAddress,
     walletType: EWalletType.BROWSER,
     walletSubType: this.walletSubType,
+    salt: undefined,
+    email: undefined,
   });
 
   public isUnlocked = (): boolean => true;

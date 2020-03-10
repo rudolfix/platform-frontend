@@ -8,7 +8,7 @@ import { symbols } from "../../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { ITxData } from "../../web3/types";
-import { IHttpClient } from "../client/IHttpClient";
+import { IAuthHttpClient } from './../client/AuthHttpClient';
 import {
   emailStatus,
   GasStipendValidator,
@@ -42,7 +42,7 @@ const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authorizedJsonHttpClient) private httpClient: IAuthHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 
@@ -65,6 +65,25 @@ export class UsersApi {
     });
     if (response.statusCode === 409) {
       throw new EmailAlreadyExists();
+    }
+    return ensureWalletTypesInUser(response.body);
+  }
+
+  // Use this method with caution it is only for special cases where we need to
+  // Access a user without
+  public async meWithJWT(jwt: string): Promise<IUser> {
+    const response = await this.httpClient.get<IUser>(
+      {
+        baseUrl: USER_API_ROOT,
+        url: "/user/me",
+        responseSchema: UserValidator,
+        allowedStatusCodes: [404],
+      },
+      jwt,
+    );
+
+    if (response.statusCode === 404) {
+      throw new UserNotExisting();
     }
     return ensureWalletTypesInUser(response.body);
   }

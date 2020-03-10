@@ -1,15 +1,10 @@
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { actions } from "../../../../../modules/actions";
-import {
-  ILedgerAccount,
-  selectHasPreviousPage,
-} from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
+import { ILedgerAccount, selectHasPreviousPage } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { appConnect } from "../../../../../store";
 import { onEnterAction } from "../../../../../utils/react-connected-components/OnEnterAction";
-import { withHeaderButton } from "../../../../../utils/react-connected-components/withHeaderButton";
 import {
   IWalletLedgerChooserComponent,
   IWalletLedgerChooserComponentDispatchProps,
@@ -47,8 +42,4 @@ export const WalletLedgerChooser = compose<React.FunctionComponent>(
   onEnterAction({
     actionCreator: dispatch => dispatch(actions.walletSelector.ledgerLoadAccounts()),
   }),
-  withHeaderButton<{ closeAccountChooser: () => void }>(props => ({
-    buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
-    buttonAction: props.closeAccountChooser,
-  })),
 )(WalletLedgerChooserComponent);

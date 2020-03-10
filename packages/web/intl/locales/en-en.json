@@ -193,6 +193,7 @@
   "error-message.ledger.contract-disabled": "Please enable Contract Support on your Ledger",
   "error-message.ledger.accounts-unavailable": "Please enable Contract Support on your Ledger",
   "error-message.ledger.generic-error": "Ledger Nano S is not available",
+  "error-message.ledger.user-cancelled": "User cancelled operation",
   "error-message.ledger.ledger-locked": "Please unlock your Ledger Nano S by entering your PIN code on the device.",
   "error-message.ledger.ledger-not-supported": "Your Ledger Nano firmware is unsupported",
   "error-message.light-wallet.creation-error": "Cannot create new Light Wallet",

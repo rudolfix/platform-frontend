@@ -33,7 +33,6 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
     dispatchToProps: dispatch => ({
       submitForm: (email: string) =>
         dispatch(actions.walletSelector.browserWalletRegisterFormData(email)),
-      closeAccountChooser: () => dispatch(actions.walletSelector.ledgerCloseAccountChooser()),
     }),
   }),
   branch<TLedgerRegisterData>(

@@ -5,6 +5,7 @@ import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
 import { compose, withProps } from "recompose";
+import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
@@ -23,6 +24,7 @@ import { TContentExternalProps, TransitionalLayout } from "../../layouts/Layout"
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../../shared/WarningAlert";
+import { LedgerErrorMessage } from "../../translatedMessages/messages";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import * as styles from "../shared/RegisterWalletSelector.module.scss";
 import { getRedirectionUrl, userMayChooseWallet } from "./utils";
@@ -83,13 +85,20 @@ export const WalletSelectorLoginBase: React.FunctionComponent<IExternalProps> = 
   </>
 );
 
-const Container = ({ ledgerConnectionEstablished, children, ...props }) =>
+const Container = ({ ledgerConnectionEstablished, closeAccountChooser, children, ...props }) =>
   !ledgerConnectionEstablished ? (
     <TransitionalLayout width={EContentWidth.SMALL} {...props}>
       {children}
     </TransitionalLayout>
   ) : (
-    <FullscreenProgressLayout width={EContentWidth.SMALL} {...props}>
+    <FullscreenProgressLayout
+      width={EContentWidth.SMALL}
+      {...props}
+      buttonProps={{
+        buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
+        buttonAction: closeAccountChooser,
+      }}
+    >
       {children}
     </FullscreenProgressLayout>
   );
@@ -105,6 +114,15 @@ export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAddit
     }),
     dispatchToProps: dispatch => ({
       openICBMModal: () => dispatch(actions.genericModal.showModal(ICBMWalletHelpTextModal)),
+      closeAccountChooser: () => {
+        dispatch(actions.walletSelector.ledgerCloseAccountChooser());
+        dispatch(
+          actions.walletSelector.ledgerConnectionEstablishedError({
+            messageData: "canceleed",
+            messageType: LedgerErrorMessage.USER_CANCELLED,
+          }),
+        );
+      },
     }),
   }),
   withProps<TAdditionalProps, IStateProps & TRouteLoginProps>(

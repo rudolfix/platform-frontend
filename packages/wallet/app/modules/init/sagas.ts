@@ -94,13 +94,13 @@ function* initStartSaga({ logger, ethManager }: TGlobalDependencies): Generator<
 
     const notificationsAllowed = yield requestNotifications(['alert', 'sound']);
 
-    if(notificationsAllowed.string === "granted") {
+    if(notificationsAllowed.status === "granted") {
       yield registerAppWithFCM();
       console.log("----Notification permissions------", notificationsAllowed);
       //yield requestPermission();
       const t = yield getToken();
 
-      console.log("----------11FCMTo1111ken11111s1----------", t);
+      console.log("----------11FCMTo1111ken11111s1--11111--------", t);
 
 
       messaging().onTokenRefresh(async (fcmToken) => {

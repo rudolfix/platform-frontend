@@ -20,12 +20,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
   // Initialize firebase
-
   [FIRApp configure];
-
-  [FIRMessaging messaging].delegate = self;
-
+  
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"wallet"
@@ -42,14 +40,16 @@
   // Push notifications
   [RNNotifications startMonitorNotifications];
 
-
-
   return YES;
 }
 
 - (void)application:(UIApplication *)application
     didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  
+  // receive APSN token and use it to get registration token
+  if(deviceToken!=nil) {
     [FIRMessaging messaging].APNSToken = deviceToken;
+  }
 }
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
@@ -59,7 +59,6 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-  NSLog(error);
   [RNNotifications didFailToRegisterForRemoteNotificationsWithError:error];
 }
 

@@ -167,7 +167,9 @@ export const acceptTOS = () => {
 };
 
 export const lightWalletTypeRegistrationInfo = (email: string, password: string) => {
-  cy.get(tid("wallet-selector-register-email")).type("{selectall}{backspace}").type(email);
+  cy.get(tid("wallet-selector-register-email"))
+    .type("{selectall}{backspace}")
+    .type(email);
   lightWalletTypePasswordRegistration(password);
 };
 

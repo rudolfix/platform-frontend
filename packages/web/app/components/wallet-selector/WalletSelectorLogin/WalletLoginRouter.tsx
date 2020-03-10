@@ -27,7 +27,9 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <LoginLightWallet />
-          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />}
+          {showWalletSelector && (
+            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />
+          )}
         </>
       )}
       exact
@@ -37,7 +39,9 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <LoginBrowserWallet />
-          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />}
+          {showWalletSelector && (
+            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />
+          )}
         </>
       )}
       exact
@@ -47,7 +51,9 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <WalletLedger />
-          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />}
+          {showWalletSelector && (
+            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />
+          )}
         </>
       )}
       exact

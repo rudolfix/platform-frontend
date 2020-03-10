@@ -8,7 +8,7 @@ import { symbols } from "../../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { ITxData } from "../../web3/types";
-import { IAuthHttpClient } from './../client/AuthHttpClient';
+import { IAuthHttpClient } from "./../client/AuthHttpClient";
 import {
   emailStatus,
   GasStipendValidator,

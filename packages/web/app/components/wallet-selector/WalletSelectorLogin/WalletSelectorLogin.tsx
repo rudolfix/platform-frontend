@@ -10,7 +10,11 @@ import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../../modules/actions";
 import { ELogoutReason } from "../../../modules/auth/types";
 import { TLoginRouterState } from "../../../modules/routing/types";
-import { selectIsLoginRoute, selectRootPath, selectUrlUserType } from "../../../modules/wallet-selector/selectors";
+import {
+  selectIsLoginRoute,
+  selectRootPath,
+  selectUrlUserType,
+} from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { EContentWidth } from "../../layouts/Content";
 import { TContentExternalProps, TransitionalLayout } from "../../layouts/Layout";

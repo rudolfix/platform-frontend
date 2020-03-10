@@ -74,7 +74,6 @@ export type TLightWalletRegisterData = TCommonWalletRegisterData &
     | { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING }
     | { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING }
     | { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM }
-    | { uiState: ECommonWalletRegistrationFlowState.RECOVERY_FORM }
     | { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL }
     | {
         uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR;

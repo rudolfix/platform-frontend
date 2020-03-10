@@ -5,9 +5,9 @@ import { externalRoutes } from "../../../../config/externalRoutes";
 import { selectIsLoginRoute } from "../../../../modules/wallet-selector/selectors";
 import { EWalletType } from "../../../../modules/web3/types";
 import { appConnect } from "../../../../store";
+import { WalletChooser } from "../../shared/WalletChooser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
-import { WalletChooser } from "../../shared/WalletChooser";
 
 export type TWalletBrowserBaseProps = {
   rootPath: string;

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { RestoreLightWallet } from "./RestoreLightWallet";
 import { RecoveryStep } from "../RecoveryStep";
+import { RestoreLightWallet } from "./RestoreLightWallet";
 
 export interface IRecoveryFormValues {
   email: string;

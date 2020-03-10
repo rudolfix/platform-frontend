@@ -9,9 +9,7 @@ import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
 storiesOf("Wallet selector/light/login", module)
   .add("Without email set", () => (
-    <MissingEmailLightWallet
-      goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
-    />
+    <MissingEmailLightWallet goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")} />
   ))
   .add("With valid mail set", () => (
     <LoginLightWalletComponent

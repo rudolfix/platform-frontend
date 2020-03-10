@@ -43,8 +43,6 @@ describe("Change Email", function(): void {
       "verify-email-widget-form-submit": { type: "submit" },
     });
 
-    confirmAccessModal();
-
     // assert if error message has popped in
     cy.get(tid("profile-email-exists")).should("exist");
   });

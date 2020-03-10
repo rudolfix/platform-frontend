@@ -10,7 +10,10 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
-import { TWalletBrowserDispatchProps, TWalletBrowserProps } from "../../WalletSelectorLogin/LoginBrowserWallet/LoginBrowserWallet";
+import {
+  TWalletBrowserDispatchProps,
+  TWalletBrowserProps,
+} from "../../WalletSelectorLogin/LoginBrowserWallet/LoginBrowserWallet";
 
 import notificationSign from "../../../../assets/img/notifications/warning.svg";
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";

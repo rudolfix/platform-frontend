@@ -4,10 +4,10 @@ import { Redirect, Route } from "react-router-dom";
 
 import { EWalletType } from "../../../modules/web3/types";
 import { SwitchConnected } from "../../../utils/react-connected-components/connectedRouting";
-import { LoginBrowserWallet } from "./LoginBrowserWallet/LoginBrowserWallet";
-import { WalletLedger } from "./WalletLedger/WalletLedger";
-import { LoginLightWallet } from "./LoginLightWallet/LoginLightWallet";
 import { WalletChooser } from "../shared/WalletChooser";
+import { LoginBrowserWallet } from "./LoginBrowserWallet/LoginBrowserWallet";
+import { LoginLightWallet } from "./LoginLightWallet/LoginLightWallet";
+import { WalletLedger } from "./WalletLedger/WalletLedger";
 
 type TWalletRouterProps = {
   rootPath: string;
@@ -27,7 +27,9 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <LoginLightWallet />
-          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />}
+          {showWalletSelector && (
+            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />
+          )}
         </>
       )}
       exact
@@ -37,7 +39,9 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <LoginBrowserWallet />
-          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />}
+          {showWalletSelector && (
+            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />
+          )}
         </>
       )}
       exact
@@ -47,7 +51,9 @@ export const WalletLoginRouter: React.FunctionComponent<TWalletRouterProps> = ({
       component={() => (
         <>
           <WalletLedger />
-          {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />}
+          {showWalletSelector && (
+            <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />
+          )}
         </>
       )}
       exact

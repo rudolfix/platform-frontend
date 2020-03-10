@@ -1,11 +1,8 @@
 import {
-  assertButtonIsActive,
   assertDashboard,
-  assertErrorModal,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
-  fillForm,
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
   goToDashboard,

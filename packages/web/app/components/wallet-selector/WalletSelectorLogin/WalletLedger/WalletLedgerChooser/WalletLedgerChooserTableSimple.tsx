@@ -5,7 +5,11 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Money } from "../../../../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../../../shared/formatters/utils";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "../../../../shared/formatters/utils";
 
 import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
 

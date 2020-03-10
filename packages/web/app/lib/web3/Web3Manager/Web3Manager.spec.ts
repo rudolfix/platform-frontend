@@ -26,6 +26,8 @@ describe("Web3Manager", () => {
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
         address: dummyEthereumAddress,
+        salt: undefined,
+        email: undefined,
       }),
       isUnlocked: () => true,
     });

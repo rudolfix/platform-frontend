@@ -230,6 +230,8 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         derivationPath: expectedDerivationPath,
         walletType: EWalletType.LEDGER,
         walletSubType: EWalletSubType.UNKNOWN,
+        salt: undefined,
+        email: undefined,
       };
 
       const ledgerWalletMock = createMock(LedgerWallet, {

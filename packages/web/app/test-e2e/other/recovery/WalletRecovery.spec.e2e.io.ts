@@ -3,7 +3,6 @@ import { generateRandomSeedAndAddress } from "../../obsolete/generateRandomSeedA
 import { cyPromise } from "../../utils/cyPromise";
 import {
   assertDashboard,
-  assertErrorModal,
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
   DEFAULT_HD_PATH,
@@ -11,6 +10,7 @@ import {
   getWalletMetaData,
   goToUserAccountSettings,
   lightWalletTypeLoginInfo,
+  lightWalletTypePasswordRegistration,
   lightWalletTypeRegistrationInfo,
   logoutViaAccountMenu,
   tid,
@@ -18,9 +18,7 @@ import {
 } from "../../utils/index";
 
 describe("Wallet recovery", function(): void {
-  this.retries(2);
-
-  it("should show error modal for invalid recovery phrases #backup #p1", () => {
+  it("should show error modal for invalid recovery phrases @backup @p1", () => {
     cy.visit(`${appRoutes.restore + "/seed"}`);
 
     const wrongMnemonics = "mutual mutual phone brief hedgehog friend brown actual candy will tank case phone rather program clap scrap dog trouble phrase fit section snack world".split(
@@ -80,7 +78,6 @@ describe("Wallet recovery", function(): void {
   });
 
   it("should recover user with same email if its the same user #backup #p3", function(): void {
-      // TODO fixme failing
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",
@@ -93,10 +90,8 @@ describe("Wallet recovery", function(): void {
         cy.visit(appRoutes.restore);
 
         typeLightwalletRecoveryPhrase(seed);
-        lightWalletTypeRegistrationInfo(email, password);
+        lightWalletTypePasswordRegistration(password);
 
-        cy.wait(4000);
-        cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
         logoutViaAccountMenu();
 
         cy.visit(appRoutes.login);
@@ -106,7 +101,7 @@ describe("Wallet recovery", function(): void {
     });
   });
 
-  it.skip("should recover existing user with verified email from saved phrases and change email", function(): void {
+  it("should recover existing user with verified email from saved phrases and change email #recover #p3 ", function(): void {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",
@@ -117,17 +112,15 @@ describe("Wallet recovery", function(): void {
           const email = generateRandomEmailAddress();
           const password = "strongpassword";
 
-          cy.clearLocalStorage().then(() => {
-            cy.visit(appRoutes.restore);
+          cy.clearLocalStorage();
+          cy.visit(appRoutes.restore);
 
-            typeLightwalletRecoveryPhrase(seed);
+          typeLightwalletRecoveryPhrase(seed);
 
-            lightWalletTypeRegistrationInfo(email, password);
-            assertWaitForLatestEmailSentWithSalt(email);
-            cy.get(tid("recovery-success-btn-go-to-login")).awaitedClick();
-            cy.visit("/");
-            assertDashboard();
-          });
+          lightWalletTypeRegistrationInfo(email, password);
+          cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
+          cy.visit("/");
+          assertDashboard();
         }
       });
     });

@@ -44,7 +44,7 @@ export const createLightWalletVault = async ({
   hdPathString,
   recoverSeed,
   customSalt,
-}: ICreateVault): Promise<{ walletInstance: string; salt: string }> => {
+}: ICreateVault): Promise<{ serializedLightWallet: string; salt: string }> => {
   try {
     const create = promisify<ILightWalletInstance>(LightWalletProvider.keystore.createVault);
     //256bit strength generates a 24 word mnemonic
@@ -64,7 +64,7 @@ export const createLightWalletVault = async ({
     });
     const unlockedWallet = await getWalletKey(lightWalletInstance, password);
     lightWalletInstance.generateNewAddress(unlockedWallet, 1);
-    return { walletInstance: lightWalletInstance.serialize(), salt };
+    return { serializedLightWallet: lightWalletInstance.serialize(), salt };
   } catch (e) {
     if (e instanceof LightWalletWrongMnemonic) throw new LightWalletWrongMnemonic();
     throw new LightCreationError();
@@ -147,11 +147,11 @@ export const signMessage = async (
   hdPathString: string,
   recoverSeed: string,
   data: string,
-): Promise<boolean> => {
+): Promise<string> => {
   const customSalt: string = LightWalletProvider.keystore.generateSalt(32);
   const password = LightWalletProvider.keystore.generateSalt(32);
 
-  const { walletInstance } = await createLightWalletVault({
+  const { serializedLightWallet: walletInstance } = await createLightWalletVault({
     password,
     hdPathString,
     recoverSeed,
@@ -199,7 +199,7 @@ export const getWalletAddress = async (
     const customSalt: string = LightWalletProvider.keystore.generateSalt(32);
     const password = LightWalletProvider.keystore.generateSalt(32);
 
-    const { walletInstance } = await createLightWalletVault({
+    const { serializedLightWallet: walletInstance } = await createLightWalletVault({
       password,
       hdPathString,
       recoverSeed,

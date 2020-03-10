@@ -1,15 +1,14 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { FormattedHTMLMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
-
-import * as styles from "./WalletLedgerChooserComponent.module.scss";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
+
+import * as styles from "./WalletLedgerChooserComponent.module.scss";
 
 export interface IWalletLedgerChooserComponent {
   accounts: ReadonlyArray<ILedgerAccount>;

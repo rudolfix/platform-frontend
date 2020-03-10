@@ -35,6 +35,8 @@ describe("Wallet selector > Browser wizard > actions", () => {
         address: dummyEthereumAddress,
         walletType: EWalletType.BROWSER,
         walletSubType: EWalletSubType.METAMASK,
+        salt: undefined,
+        email: undefined,
       };
 
       const browserWalletMock = createMock(BrowserWallet, {

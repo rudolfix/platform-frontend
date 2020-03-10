@@ -18,8 +18,8 @@ import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layo
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { WalletLedgerInitError } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerInit/WalletLedgerInit";
 import { WalletLedgerChooser } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerChooser/WalletLedgerChooser";
+import { WalletLedgerInitError } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerInit/WalletLedgerInit";
 import { WalletLedgerNotSupported } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerNotSupported/WalletLedgerNotSupported";
 import { TWalletBrowserBaseProps } from "../RegisterBrowserWallet/RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "../RegisterBrowserWallet/RegisterBrowserWalletForm";

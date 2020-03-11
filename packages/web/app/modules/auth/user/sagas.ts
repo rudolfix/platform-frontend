@@ -30,13 +30,13 @@ import {
   getCurrentAgreementHash,
   handleAcceptCurrentAgreement,
 } from "../../terms-of-service/sagas";
-import { selectUrlUserType } from "../../wallet-selector/selectors";
 import { EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
 import { checkForPendingEmailVerification } from "../email/sagas";
 import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
+import { EUserType } from "./../../../lib/api/users/interfaces";
 import { loadUser, logoutUser } from "./external/sagas";
 
 /**
@@ -163,15 +163,10 @@ export function* loadOrCreateUser(
   let user;
 
   if (userFromApi) {
-    if (!email && !tos) {
-      user = userFromApi;
+    if (email) {
+      user = yield* call(() => apiUserService.updateUser({ ...userFromApi, newEmail: email }));
     } else {
-      user = yield* call(() =>
-        apiUserService.updateUser({
-          ...userFromApi,
-          newEmail: email,
-        }),
-      );
+      user = userFromApi;
     }
   } else {
     user = yield* call(() =>
@@ -249,14 +244,19 @@ export function mapSignInErrors(e: Error): SignInUserErrorMessage {
   }
 }
 
-export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {
+export function* handleSignInUser(
+  { logger }: TGlobalDependencies,
+  userType: EUserType,
+  email?: string,
+  tos = false,
+): Generator<any, void, any> {
   try {
-    const userType = yield* select((s: TAppGlobalState) => selectUrlUserType(s.router));
-    yield neuCall(signInUser, userType);
+    yield neuCall(signInUser, userType, email, tos);
   } catch (e) {
     logger.error("User Sign in error", e);
 
     const error = yield mapSignInErrors(e);
+    
     yield put(actions.walletSelector.messageSigningError(createMessage(error)));
   }
 }

@@ -23,11 +23,11 @@ import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.un
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../../shared/WarningAlert";
 import { LedgerErrorMessage } from "../../translatedMessages/messages";
-
-import * as styles from "../shared/RegisterWalletSelector.module.scss";
 import { ICBMWalletHelpTextModal } from "./ICBMWalletHelpTextModal";
 import { getRedirectionUrl, userMayChooseWallet } from "./utils";
 import { WalletLoginRouter } from "./WalletLoginRouter";
+
+import * as styles from "../shared/RegisterWalletSelector.module.scss";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 

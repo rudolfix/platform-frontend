@@ -1,3 +1,4 @@
+import { appRoutes } from "../../../../components/appRoutes";
 import {
   assertDashboard,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
@@ -27,7 +28,13 @@ describe("Investor", () => {
   });
 
   it("can't register without accepting Terms of Use", () => {
-    registerWithLightWallet(email, password);
+    cy.visit(appRoutes.register);
+
+    cy.get(tid("wallet-selector-register-email"))
+      .type("{selectall}{backspace}")
+      .type(email);
+    cy.get(tid("wallet-selector-register-password")).type(password);
+    cy.get(tid("wallet-selector-register-confirm-password")).type(password);
 
     cy.get(tid("wallet-selector-register-button")).should("be.disabled");
   });

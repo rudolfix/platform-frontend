@@ -40,7 +40,7 @@ const actions = {
   ledgerReconnect: createActionFactory("LEDGER_RECONNECT"),
   lightWalletRegisterFormData: createActionFactory(
     "LIGHT_WALLET_REGISTER_FORM_DATA",
-    (email: string, password: string) => ({ email, password }),
+    (email: string, password: string, tos: boolean) => ({ email, password, tos }),
   ),
   ledgerCloseAccountChooser: createActionFactory("LEDGER_CLOSE_ACCOUNT_CHOOSER"),
   restoreLightWallet: createActionFactory("RESTORE_LIGHT_WALLET"),

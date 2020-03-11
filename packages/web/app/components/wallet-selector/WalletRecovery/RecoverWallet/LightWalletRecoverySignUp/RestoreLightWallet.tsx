@@ -41,7 +41,13 @@ export const RestoreLightWallet = compose<TStateProps & TDispatchProps, TExterna
     }),
     dispatchToProps: dispatch => ({
       submitForm: (values: TLightWalletFormValues) =>
-        dispatch(actions.walletSelector.lightWalletRegisterFormData(values.email, values.password)),
+        dispatch(
+          actions.walletSelector.lightWalletRegisterFormData(
+            values.email,
+            values.password,
+            values.tos,
+          ),
+        ),
     }),
   }),
   withProps({ restore: true }),

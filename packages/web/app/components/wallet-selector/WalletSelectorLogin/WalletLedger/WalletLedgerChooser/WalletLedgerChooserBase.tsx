@@ -15,7 +15,7 @@ import {
 } from "../../../../shared/WarningAlert";
 
 import * as styles from "./WalletLedgerChooserBase.module.scss";
-import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
+import { AddressTable } from "./AddressTable";
 import { TableControls } from "./TableControls";
 
 export interface IWalletLedgerChooserComponent {
@@ -69,7 +69,7 @@ export const WalletLedgerChooserBase: React.FunctionComponent<IWalletLedgerChoos
     );
   } else if (accounts.length > 0) {
     content = (
-      <WalletLedgerChooserTableSimple
+      <AddressTable
         accounts={accounts}
         handleAddressChosen={handleAddressChosen}
       />

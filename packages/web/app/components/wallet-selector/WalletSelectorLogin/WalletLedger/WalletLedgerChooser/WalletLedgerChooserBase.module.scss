@@ -20,7 +20,7 @@
 }
 
 .advanced {
-  margin-top: map-get($spacers, 3);
+  margin-top: px-to-rem(24px);
 }
 
 .explanation {

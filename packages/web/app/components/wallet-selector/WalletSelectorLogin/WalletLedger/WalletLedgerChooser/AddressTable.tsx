@@ -14,11 +14,10 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { PanelRounded } from "../../../../shared/Panel";
 import { Tooltip } from "../../../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
 
-import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
+import * as styles from "./AddressTable.module.scss";
 
 interface IAccountRow {
   ledgerAccount: ILedgerAccount;
@@ -100,7 +99,7 @@ const prepareRows = (accounts, handleAddressChosen) =>
     ),
   }));
 
-export const WalletLedgerChooserTableSimple: React.FunctionComponent<IWalletLedgerChooserTableSimple> = ({
+export const AddressTable: React.FunctionComponent<IWalletLedgerChooserTableSimple> = ({
   accounts,
   handleAddressChosen,
 }) => <Table data={prepareRows(accounts, handleAddressChosen)} columns={columns} />;

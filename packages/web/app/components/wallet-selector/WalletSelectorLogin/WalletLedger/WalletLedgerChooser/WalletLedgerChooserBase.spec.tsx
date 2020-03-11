@@ -7,7 +7,7 @@ import { spy } from "sinon";
 import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
 import { WalletLedgerChooserBase } from "./WalletLedgerChooserBase";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
-import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
+import { AddressTable } from "./AddressTable";
 import { TableControls } from "./TableControls";
 
 const defaultProps = () => ({
@@ -86,8 +86,8 @@ describe("<WalletLedgerChooserBase />", () => {
 
     const componentSimple = shallow(<WalletLedgerChooserBase {...propsSimple} />);
     expect(
-      componentSimple.find(WalletLedgerChooserTableSimple),
-      "doesn't contain WalletLedgerChooserTableSimple",
+      componentSimple.find(AddressTable),
+      "doesn't contain AddressTable",
     ).to.be.length(1);
   });
 
@@ -106,7 +106,7 @@ describe("<WalletLedgerChooserBase />", () => {
       accounts: [],
     };
     const componentSimple = shallow(<WalletLedgerChooserBase {...propsSimple} />);
-    expect(componentSimple.find(WalletLedgerChooserTableSimple)).to.have.length(0);
+    expect(componentSimple.find(AddressTable)).to.have.length(0);
   });
 
   it("should render correct advanced / back buttons according to advanced parameter", () => {

@@ -7,7 +7,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { wrapWithIntl } from "../../../../../../test/integrationTestUtils.unsafe";
-import { AccountRow, WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
+import { AccountRow, AddressTable } from "./AddressTable";
 
 const weiBalance = new BigNumber("1.6495").mul(Q18).toString();
 const neuWeiBalance = new BigNumber("10.6495").mul(Q18).toString();
@@ -42,10 +42,10 @@ const defaultProps = () => ({
   handleAddressChosen: spy(),
 });
 
-describe("<WalletLedgerChooserTableSimple />", () => {
+describe("<AddressTable />", () => {
   it("should render all provided accounts", () => {
     const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserTableSimple {...props} />);
+    const component = shallow(<AddressTable {...props} />);
     expect(component.find(AccountRow)).to.be.length(props.accounts.length);
     component.find(AccountRow).forEach((row, index) => {
       expect(

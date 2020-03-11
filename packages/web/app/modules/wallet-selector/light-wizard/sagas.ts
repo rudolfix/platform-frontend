@@ -31,13 +31,13 @@ import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectIsUnlocked } from "../../web3/selectors";
 import { EWalletType, ILightWalletMetadata } from "../../web3/types";
 import { registerForm, walletRecoverForm } from "../forms/sagas";
-import { resetWalletSelectorState, walletSelectorConnect, walletSelectorReset } from "../sagas";
-import { EFlowType, TLightWalletFormValues, ECommonWalletRegistrationFlowState } from "./../types";
+import { resetWalletSelectorState, walletSelectorConnect } from "../sagas";
+import { selectRegisterWalletDefaultFormValues } from "../selectors";
+import { ECommonWalletRegistrationFlowState, EFlowType, TLightWalletFormValues } from "./../types";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getWalletMetadataByURL } from "./metadata/sagas";
-import { setupLightWallet } from "./signing/sagas";
-import { selectRegisterWalletDefaultFormValues } from "../selectors";
 import { ERecoveryPhase } from "./reducer";
+import { setupLightWallet } from "./signing/sagas";
 
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 

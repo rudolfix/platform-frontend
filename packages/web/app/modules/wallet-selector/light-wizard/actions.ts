@@ -1,7 +1,7 @@
-import { ERecoveryPhase } from "./reducer";
 import { createActionFactory } from "@neufund/shared";
 
 import { TMessage } from "../../../components/translatedMessages/utils";
+import { ERecoveryPhase } from "./reducer";
 
 export const lightWizardActions = {
   lightWalletConnectionError: createActionFactory(

@@ -256,7 +256,7 @@ export function* handleSignInUser(
     logger.error("User Sign in error", e);
 
     const error = yield mapSignInErrors(e);
-    
+
     yield put(actions.walletSelector.messageSigningError(createMessage(error)));
   }
 }

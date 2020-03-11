@@ -11,6 +11,7 @@ import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { TEtoWithCompanyAndContract } from "../eto/types";
 import { neuCall } from "../sagasUtils";
+import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
 import { GREYP_PREVIEW_CODE, routeAction, routeInternal } from "./sagas";
 import {
   TEtoPublicViewByIdLegacyRoute,
@@ -373,12 +374,21 @@ export function* registerWithLightWalletRoute(payload: RouterState): Generator<a
     path: appRoutes.registerWithLightWallet,
     exact: true,
   });
-  return yield routeAction(routeMatch, {
-    notAuth: put(actions.walletSelector.registerWithLightWallet(EUserType.INVESTOR)),
-    investor: put(actions.routing.goToDashboard()),
-    issuer: put(actions.routing.goToDashboard()),
-    nominee: put(actions.routing.goToDashboard()),
-  });
+
+  return yield redirectIfBrowserWalletExists(
+    routeAction(routeMatch, {
+      notAuth: put(actions.routing.goToRegisterBrowserWallet()),
+      investor: put(actions.routing.goToDashboard()),
+      issuer: put(actions.routing.goToDashboard()),
+      nominee: put(actions.routing.goToDashboard()),
+    }),
+    routeAction(routeMatch, {
+      notAuth: put(actions.walletSelector.registerWithLightWallet(EUserType.INVESTOR)),
+      investor: put(actions.routing.goToDashboard()),
+      issuer: put(actions.routing.goToDashboard()),
+      nominee: put(actions.routing.goToDashboard()),
+    }),
+  );
 }
 
 export function* registerWithBrowserWalletRoute(payload: RouterState): Generator<any, any, any> {
@@ -410,6 +420,7 @@ export function* loginRoute(payload: RouterState): Generator<any, any, any> {
   const loginMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.login,
   });
+
   return yield routeAction(loginMatch, {
     notAuth: undefined,
     investor: put(actions.routing.goToDashboard()),

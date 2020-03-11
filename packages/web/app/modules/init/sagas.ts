@@ -9,7 +9,7 @@ import { loadUser } from "../auth/user/external/sagas";
 import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
-import { detectWeb3, initWeb3ManagerEvents } from "../web3/sagas";
+import { initWeb3ManagerEvents } from "../web3/sagas";
 import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
@@ -69,8 +69,6 @@ function* initApp({ logger }: TGlobalDependencies): any {
     }
 
     yield waitUntilSmartContractsAreInitialized();
-
-    yield neuCall(detectWeb3);
 
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {

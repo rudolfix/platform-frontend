@@ -2,11 +2,11 @@ import * as React from "react";
 import { compose } from "recompose";
 
 import { actions } from "../../../../modules/actions";
+import { ERecoveryPhase } from "../../../../modules/wallet-selector/light-wizard/reducer";
+import { selectLightWalletRecoveryPhase } from "../../../../modules/wallet-selector/light-wizard/selectors";
 import { appConnect } from "../../../../store";
 import { LightWalletRecoverySignUp } from "./LightWalletRecoverySignUp/LightWalletRecoverySignUp";
 import { LightWalletRecoverySeedCheck } from "./RecoverWalletCheckSeed/RecoverWalletCheckSeed";
-import { selectLightWalletRecoveryPhase } from "../../../../modules/wallet-selector/light-wizard/selectors";
-import { ERecoveryPhase } from "../../../../modules/wallet-selector/light-wizard/reducer";
 
 interface IDispatchProps {
   goToDashboard: () => void;

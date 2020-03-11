@@ -9,7 +9,7 @@ import {
 } from "../../../lib/web3/browser-wallet/BrowserWallet";
 import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
-import { handleSignInUser, signInUser } from "../../auth/user/sagas";
+import { signInUser } from "../../auth/user/sagas";
 import { neuTakeUntil } from "../../sagasUtils";
 import { EWalletType } from "../../web3/types";
 import { registerForm } from "../forms/sagas";

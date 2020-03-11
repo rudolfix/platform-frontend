@@ -6,7 +6,8 @@ import {
   goToRegisterWithMockedWeb3,
 } from "../utils/navigation";
 
-describe("Redirect user with browser wallet #redirect #p3", () => {
+describe.skip("Redirect user with browser wallet #redirect #p3", () => {
+  // This feature is still not fully done
   it("should redirect to /login/browser", () => {
     goToLoginWithMockedWeb3();
 

@@ -3,21 +3,15 @@ import { derivationPathPrefixValidator, IIntlProps, injectIntlHelpers } from "@n
 import { debounce } from "lodash";
 import * as React from "react";
 
-import arrowLeft from "../../../../../assets/img/inline_icons/arrow_left.svg";
-import arrowRight from "../../../../../assets/img/inline_icons/arrow_right.svg";
 import { InlineIcon } from "../../../../shared/icons/InlineIcon";
 
+import arrowLeft from "../../../../../assets/img/inline_icons/arrow_left.svg";
+import arrowRight from "../../../../../assets/img/inline_icons/arrow_right.svg";
 import * as styles from "./TableControls.module.scss";
 
 const DEBOUNCE_DELAY = 200;
 
-interface IDPChooserComponent {
-  derivationPathPrefix: string;
-  onDerivationPathPrefixChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  errorMessage: string | null;
-}
-
-interface TableControlsBaseProps {
+interface ITableControlsBaseProps {
   showNavigation: boolean;
   onDerivationPathPrefixChange: (derivationPathPrefix: string) => void;
   onDerivationPathPrefixError: () => void;
@@ -27,7 +21,7 @@ interface TableControlsBaseProps {
   errorMessage: string | null;
 }
 
-class TableControlsBase extends React.Component<TableControlsBaseProps & IIntlProps, {}> {
+class TableControlsBase extends React.Component<ITableControlsBaseProps & IIntlProps, {}> {
   debouncedOnChange = debounce((derivationPathPrefix: string): void => {
     const fixedDp = derivationPathPrefix.endsWith("/")
       ? derivationPathPrefix
@@ -55,7 +49,7 @@ class TableControlsBase extends React.Component<TableControlsBaseProps & IIntlPr
       hasPreviousAddress,
       showPrevAddresses,
       showNextAddresses,
-      showNavigation
+      showNavigation,
     } = this.props;
 
     return (
@@ -70,23 +64,29 @@ class TableControlsBase extends React.Component<TableControlsBaseProps & IIntlPr
           )}
         />
 
-       {showNavigation && <div className={styles.navButtons}>
-          <button
-            className={styles.navButton}
-            disabled={!hasPreviousAddress}
-            onClick={showPrevAddresses}
-            data-test-id="btn-previous"
-          >
-            <InlineIcon svgIcon={arrowLeft} />
-          </button>
+        {showNavigation && (
+          <div className={styles.navButtons}>
+            <button
+              className={styles.navButton}
+              disabled={!hasPreviousAddress}
+              onClick={showPrevAddresses}
+              data-test-id="btn-previous"
+            >
+              <InlineIcon svgIcon={arrowLeft} />
+            </button>
 
-          <button className={styles.navButton} onClick={showNextAddresses} data-test-id="btn-next">
-            <InlineIcon svgIcon={arrowRight} />
-          </button>
-        </div>}
+            <button
+              className={styles.navButton}
+              onClick={showNextAddresses}
+              data-test-id="btn-next"
+            >
+              <InlineIcon svgIcon={arrowRight} />
+            </button>
+          </div>
+        )}
       </div>
     );
   }
 }
 
-export const TableControls = injectIntlHelpers<IDPChooserComponent>(TableControlsBase);
+export const TableControls = injectIntlHelpers<ITableControlsBaseProps>(TableControlsBase);

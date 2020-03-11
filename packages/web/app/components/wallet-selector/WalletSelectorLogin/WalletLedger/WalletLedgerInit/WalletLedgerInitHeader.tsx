@@ -10,7 +10,9 @@ interface IStateProps {
   isLoginRoute: boolean;
 }
 
-export const WalletLedgerInitHeaderBase: React.FunctionComponent<IStateProps> = ({ isLoginRoute }) => (
+export const WalletLedgerInitHeaderBase: React.FunctionComponent<IStateProps> = ({
+  isLoginRoute,
+}) => (
   <h2 className="text-center" data-test-id="modals.wallet-selector.ledger-wallet.title">
     <span className={styles.title}>
       {isLoginRoute ? (

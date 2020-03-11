@@ -163,11 +163,9 @@ export function* loadOrCreateUser(
   let user;
 
   if (userFromApi) {
-    if (email) {
-      user = yield* call(() => apiUserService.updateUser({ ...userFromApi, newEmail: email }));
-    } else {
-      user = userFromApi;
-    }
+    user = email
+      ? yield* call(() => apiUserService.updateUser({ ...userFromApi, newEmail: email }))
+      : userFromApi;
   } else {
     user = yield* call(() =>
       apiUserService.createAccount({
@@ -256,7 +254,7 @@ export function* handleSignInUser(
     logger.error("User Sign in error", e);
 
     const error = yield mapSignInErrors(e);
-    
+
     yield put(actions.walletSelector.messageSigningError(createMessage(error)));
   }
 }

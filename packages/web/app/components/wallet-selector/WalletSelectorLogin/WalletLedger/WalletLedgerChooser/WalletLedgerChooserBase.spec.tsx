@@ -5,10 +5,10 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
-import { WalletLedgerChooserBase } from "./WalletLedgerChooserBase";
-import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { AddressTable } from "./AddressTable";
 import { TableControls } from "./TableControls";
+import { WalletLedgerChooserBase } from "./WalletLedgerChooserBase";
+import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 
 const defaultProps = () => ({
   loading: false,
@@ -61,10 +61,7 @@ describe("<WalletLedgerChooserBase />", () => {
 
   it("should render TableControls for advanced use case", () => {
     const component = shallow(<WalletLedgerChooserBase {...defaultProps()} />);
-    expect(
-      component.find(TableControls),
-      "doesn't contain TableControls",
-    ).to.be.length(1);
+    expect(component.find(TableControls), "doesn't contain TableControls").to.be.length(1);
   });
 
   it("should render correct advanced / simple data table according do advanced parameter ", () => {
@@ -85,10 +82,7 @@ describe("<WalletLedgerChooserBase />", () => {
     };
 
     const componentSimple = shallow(<WalletLedgerChooserBase {...propsSimple} />);
-    expect(
-      componentSimple.find(AddressTable),
-      "doesn't contain AddressTable",
-    ).to.be.length(1);
+    expect(componentSimple.find(AddressTable), "doesn't contain AddressTable").to.be.length(1);
   });
 
   it("should not render accounts table if there are no accounts to show", () => {

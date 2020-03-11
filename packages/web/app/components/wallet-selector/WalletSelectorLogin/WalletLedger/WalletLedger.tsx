@@ -1,5 +1,6 @@
 import * as React from "react";
 import { compose } from "recompose";
+
 import { actions } from "../../../../modules/actions";
 import { isSupportingLedger } from "../../../../modules/user-agent/reducer";
 import {
@@ -7,8 +8,8 @@ import {
   selectLedgerErrorMessage,
 } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
-import { WalletLedgerInit } from "./WalletLedgerInit/WalletLedgerInit";
 import { WalletLedgerChooser } from "./WalletLedgerChooser/WalletLedgerChooser";
+import { WalletLedgerInit } from "./WalletLedgerInit/WalletLedgerInit";
 import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedgerNotSupported";
 
 interface IWalletLedgerStateProps {

@@ -23,11 +23,7 @@ import { mapLedgerErrorToErrorMessage } from "./ledger-wizard/errors";
 import { loadLedgerAccounts } from "./ledger-wizard/sagas";
 import { walletSelectorInitialState } from "./reducer";
 import { selectRegisterWalletDefaultFormValues, selectUrlUserType } from "./selectors";
-import {
-  EFlowType,
-  ELedgerRegistrationFlowState,
-  TBrowserWalletFormValues,
-} from "./types";
+import { EFlowType, ELedgerRegistrationFlowState, TBrowserWalletFormValues } from "./types";
 
 export type TBaseUiData = {
   flowType: EFlowType;

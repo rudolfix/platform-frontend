@@ -1,11 +1,8 @@
-import { Button, EButtonLayout, Table } from "@neufund/design-system";
+import { Button, EButtonLayout, Table, TokenIcon } from "@neufund/design-system";
+import { trimAddress } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { TokenIcon } from "@neufund/design-system";
-import ethIcon from "../../../../../assets/img/eth_icon.svg";
-import neuIcon from "../../../../../assets/img/neu_icon.svg";
-import { trimAddress } from "@neufund/shared";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Money } from "../../../../shared/formatters/Money";
@@ -17,14 +14,11 @@ import {
 import { Tooltip } from "../../../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
 
+import ethIcon from "../../../../../assets/img/eth_icon.svg";
+import neuIcon from "../../../../../assets/img/neu_icon.svg";
 import * as styles from "./AddressTable.module.scss";
 
-interface IAccountRow {
-  ledgerAccount: ILedgerAccount;
-  handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
-}
-
-export interface IWalletLedgerChooserTableSimple {
+export interface IAddressTableProps {
   accounts: ReadonlyArray<ILedgerAccount>;
   handleAddressChosen: (ledgerAccount: ILedgerAccount) => void;
 }
@@ -92,14 +86,14 @@ const prepareRows = (accounts, handleAddressChosen) =>
       <Button
         layout={EButtonLayout.OUTLINE}
         data-test-id="button-select"
-        onClick={handleAddressChosen(account)}
+        onClick={() => handleAddressChosen(account)}
       >
         <FormattedMessage id="wallet-selector.ledger.derivation-path-selector.list.row.select-button" />
       </Button>
     ),
   }));
 
-export const AddressTable: React.FunctionComponent<IWalletLedgerChooserTableSimple> = ({
+export const AddressTable: React.FunctionComponent<IAddressTableProps> = ({
   accounts,
   handleAddressChosen,
 }) => <Table data={prepareRows(accounts, handleAddressChosen)} columns={columns} />;

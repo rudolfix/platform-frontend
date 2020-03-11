@@ -13,10 +13,10 @@ import {
   EWarningAlertSize,
   WarningAlert,
 } from "../../../../shared/WarningAlert";
-
-import * as styles from "./WalletLedgerChooserBase.module.scss";
 import { AddressTable } from "./AddressTable";
 import { TableControls } from "./TableControls";
+
+import * as styles from "./WalletLedgerChooserBase.module.scss";
 
 export interface IWalletLedgerChooserComponent {
   accounts: ReadonlyArray<ILedgerAccount>;
@@ -68,12 +68,7 @@ export const WalletLedgerChooserBase: React.FunctionComponent<IWalletLedgerChoos
       </WarningAlert>
     );
   } else if (accounts.length > 0) {
-    content = (
-      <AddressTable
-        accounts={accounts}
-        handleAddressChosen={handleAddressChosen}
-      />
-    );
+    content = <AddressTable accounts={accounts} handleAddressChosen={handleAddressChosen} />;
   }
 
   return (

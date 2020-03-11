@@ -1,5 +1,5 @@
-import * as React from "react";
 import { trimAddress } from "@neufund/shared";
+import * as React from "react";
 
 import { CommonHtmlProps } from "../../../types";
 import { etherscanAddressLink, etherscanTxLink } from "../../appRouteUtils";
@@ -20,7 +20,7 @@ const EtherscanTxLink: React.FunctionComponent<IEtherscanTxLink & CommonHtmlProp
     data-test-hash={txHash}
     {...props}
   >
-    {children || trimEthereumHash(txHash)}
+    {children || trimAddress(txHash)}
   </ExternalLink>
 );
 

@@ -7,13 +7,12 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { wrapWithIntl } from "../../../../../../test/integrationTestUtils.unsafe";
-import { AccountRow, WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
+import { AccountRow, AddressTable } from "./AddressTable";
 
 const weiBalance = new BigNumber("1.6495").mul(Q18).toString();
 const neuWeiBalance = new BigNumber("10.6495").mul(Q18).toString();
 
 const defaultProps = () => ({
-  loading: false,
   accounts: [
     {
       address: "0x6C1086C292a7E1FdF66C68776eA972038467A370",
@@ -36,24 +35,17 @@ const defaultProps = () => ({
     {
       address: "0x3cC2ef578f6Eb7ff63f9CA8f5a54cfe40339256A",
       derivationPath: "44'/60'/0'/3",
-      balanceETH: weiBalance,
+      balanceETH: "1.6495",
       balanceNEU: "0",
     },
   ],
   handleAddressChosen: spy(),
-  hasPreviousAddress: true,
-  showPrevAddresses: spy(),
-  showNextAddresses: spy(),
-  onDerivationPathPrefixChange: spy(),
-  onDerivationPathPrefixError: spy(),
-  advanced: true,
-  handleAdvanced: spy(),
 });
 
-describe("<WalletLedgerChooserTableAdvanced />", () => {
+describe("<AddressTable />", () => {
   it("should render all provided accounts", () => {
     const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserTableAdvanced {...props} />);
+    const component = shallow(<AddressTable {...props} />);
     expect(component.find(AccountRow)).to.be.length(props.accounts.length);
     component.find(AccountRow).forEach((row, index) => {
       expect(
@@ -67,36 +59,6 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
     });
   });
 
-  it("previous address button should be disabled regarding hasPreviousAddress property", () => {
-    const propsWithPrevAddr = defaultProps();
-    const componentWithPrevAddr = shallow(
-      <WalletLedgerChooserTableAdvanced {...propsWithPrevAddr} />,
-    );
-    const propsWithoutPrevAddr = {
-      ...defaultProps(),
-      hasPreviousAddress: false,
-    };
-    const componentWithoutPrevAddr = shallow(
-      <WalletLedgerChooserTableAdvanced {...propsWithoutPrevAddr} />,
-    );
-    expect(componentWithPrevAddr.find(tid("btn-previous")).prop("disabled")).to.be.false;
-    expect(componentWithoutPrevAddr.find(tid("btn-previous")).prop("disabled")).to.be.true;
-  });
-
-  it("should call correct click handlers for prev button", () => {
-    const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserTableAdvanced {...props} />);
-    component.find(tid("btn-previous")).simulate("click");
-    expect(props.showPrevAddresses).to.be.calledOnce;
-  });
-
-  it("should call correct click handlers for next button", () => {
-    const props = defaultProps();
-    const component = shallow(<WalletLedgerChooserTableAdvanced {...props} />);
-    component.find(tid("btn-next")).simulate("click");
-    expect(props.showNextAddresses).to.be.calledOnce;
-  });
-
   describe("<AccountRow />", () => {
     it("should render correct account data and handle click", () => {
       const props = defaultProps();
@@ -108,15 +70,11 @@ describe("<WalletLedgerChooserTableAdvanced />", () => {
       );
       const ethBalance = new BigNumber(weiBalance).div(Q18).toString();
       const neuBalance = new BigNumber(neuWeiBalance).div(Q18).toString();
-      const renderedDerivationPath = accountRow.find(tid("account-derivation-path"));
-      expect(renderedDerivationPath.text()).to.be.eq(account.derivationPath);
 
       const renderedAddress = accountRow.find(tid("account-address"));
       expect(renderedAddress.text()).to.be.eq(account.address);
-
       const renderedBalanceETH = accountRow.find(tid("account-balance-eth"));
       expect(renderedBalanceETH.text()).to.be.eq(`${ethBalance} ETH`);
-
       const renderedBalanceNEU = accountRow.find(tid("account-balance-neu"));
       expect(renderedBalanceNEU.text()).to.be.eq(`${neuBalance} NEU`);
     });

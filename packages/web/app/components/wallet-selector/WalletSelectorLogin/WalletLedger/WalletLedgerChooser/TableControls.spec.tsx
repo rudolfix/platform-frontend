@@ -6,7 +6,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
-import { DPChooserComponent } from "./WalletLedgerDPChooser";
+import { DPChooserComponent } from "./TableControls";
 
 describe("<DPChooserComponent />", () => {
   const errorMessage = "errorMessage";

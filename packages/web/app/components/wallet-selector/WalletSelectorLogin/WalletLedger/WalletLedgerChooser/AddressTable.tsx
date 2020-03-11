@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { TokenIcon } from "@neufund/design-system";
 import ethIcon from "../../../../../assets/img/eth_icon.svg";
 import neuIcon from "../../../../../assets/img/neu_icon.svg";
+import { trimAddress } from "@neufund/shared";
 
 import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { Money } from "../../../../shared/formatters/Money";
@@ -13,9 +14,10 @@ import {
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../../shared/formatters/utils";
-import { PanelRounded } from "../../../../shared/Panel";
+import { Tooltip } from "../../../../shared/tooltips/Tooltip";
+import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
 
-import * as styles from "./WalletLedgerChooserTableSimple.module.scss";
+import * as styles from "./AddressTable.module.scss";
 
 interface IAccountRow {
   ledgerAccount: ILedgerAccount;
@@ -64,7 +66,11 @@ const columns = [
 const prepareRows = (accounts, handleAddressChosen) =>
   accounts.map(account => ({
     key: account.derivationPath,
-    address: account.address,
+    address: (
+      <Tooltip content={account.address} textPosition={ECustomTooltipTextPosition.CENTER}>
+        {trimAddress(account.address)}
+      </Tooltip>
+    ),
     derivationPath: account.derivationPath,
     balanceETH: (
       <Money
@@ -84,7 +90,7 @@ const prepareRows = (accounts, handleAddressChosen) =>
     ),
     actions: (
       <Button
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.OUTLINE}
         data-test-id="button-select"
         onClick={handleAddressChosen(account)}
       >
@@ -93,11 +99,7 @@ const prepareRows = (accounts, handleAddressChosen) =>
     ),
   }));
 
-export const WalletLedgerChooserTableSimple: React.FunctionComponent<IWalletLedgerChooserTableSimple> = ({
+export const AddressTable: React.FunctionComponent<IWalletLedgerChooserTableSimple> = ({
   accounts,
   handleAddressChosen,
-}) => (
-  <PanelRounded>
-    <Table data={prepareRows(accounts, handleAddressChosen)} columns={columns} />
-  </PanelRounded>
-);
+}) => <Table data={prepareRows(accounts, handleAddressChosen)} columns={columns} />;

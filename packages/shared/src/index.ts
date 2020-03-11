@@ -1,4 +1,5 @@
 export * from "./utils/actionsUtils";
+export * from "./utils/address-utils";
 export * from "./utils/assertNever";
 export * from "./utils/DateUtils";
 export * from "./utils/NumberUtils";

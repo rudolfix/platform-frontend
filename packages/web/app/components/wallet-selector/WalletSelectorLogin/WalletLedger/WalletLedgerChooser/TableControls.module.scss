@@ -1,13 +1,33 @@
 .wrapper {
   height: 56px;
   background: #f9fafb;
-  display: flex;
   align-items: center;
   padding: 0 px-to-rem(8px);
   border-bottom: 1px solid #cfd7dd;
+  display: flex;
+  justify-content: space-between;
 }
 
 .input {
   border-width: 1px;
   width: px-to-rem(320px);
+}
+
+.nav-buttons {
+  display: grid;
+  grid-gap: 4px;
+  grid-auto-flow: column;
+}
+
+.nav-button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #cfd7dd;
+  background: white;
+  border-radius: 4px;
+  color: #94a5b3;
+
+  &:disabled {
+    background: #f3f5f7;
+  }
 }

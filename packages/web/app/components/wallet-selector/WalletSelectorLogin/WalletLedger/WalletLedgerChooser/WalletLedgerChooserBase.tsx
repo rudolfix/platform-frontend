@@ -1,5 +1,4 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
@@ -16,7 +15,6 @@ import {
 } from "../../../../shared/WarningAlert";
 
 import * as styles from "./WalletLedgerChooserBase.module.scss";
-import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
 import { TableControls } from "./TableControls";
 
@@ -110,6 +108,7 @@ export const WalletLedgerChooserBase: React.FunctionComponent<IWalletLedgerChoos
             hasPreviousAddress={hasPreviousAddress}
             showPrevAddresses={showPrevAddresses}
             showNextAddresses={showNextAddresses}
+            showNavigation={advanced}
           />
 
           {content}

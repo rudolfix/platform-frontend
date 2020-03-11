@@ -2,7 +2,10 @@ import { Input } from "@neufund/design-system";
 import { derivationPathPrefixValidator, IIntlProps, injectIntlHelpers } from "@neufund/shared";
 import { debounce } from "lodash";
 import * as React from "react";
-import { FormFeedback } from "reactstrap";
+
+import arrowLeft from "../../../../../assets/img/inline_icons/arrow_left.svg";
+import arrowRight from "../../../../../assets/img/inline_icons/arrow_right.svg";
+import { InlineIcon } from "../../../../shared/icons/InlineIcon";
 
 import * as styles from "./TableControls.module.scss";
 
@@ -15,6 +18,7 @@ interface IDPChooserComponent {
 }
 
 interface TableControlsBaseProps {
+  showNavigation: boolean;
   onDerivationPathPrefixChange: (derivationPathPrefix: string) => void;
   onDerivationPathPrefixError: () => void;
   setDerivationPathPrefix: (derivationPathPrefix: string) => void;
@@ -47,8 +51,11 @@ class TableControlsBase extends React.Component<TableControlsBaseProps & IIntlPr
   render(): React.ReactNode {
     const {
       derivationPathPrefix,
-      errorMessage,
       intl: { formatIntlMessage },
+      hasPreviousAddress,
+      showPrevAddresses,
+      showNextAddresses,
+      showNavigation
     } = this.props;
 
     return (
@@ -61,9 +68,22 @@ class TableControlsBase extends React.Component<TableControlsBaseProps & IIntlPr
           placeholder={formatIntlMessage(
             "wallet-selector.ledger.derivation-path-selector.placeholder",
           )}
-          invalid={errorMessage !== null}
         />
-        <FormFeedback data-test-id="dpChooser-error-msg">{errorMessage}</FormFeedback>
+
+       {showNavigation && <div className={styles.navButtons}>
+          <button
+            className={styles.navButton}
+            disabled={!hasPreviousAddress}
+            onClick={showPrevAddresses}
+            data-test-id="btn-previous"
+          >
+            <InlineIcon svgIcon={arrowLeft} />
+          </button>
+
+          <button className={styles.navButton} onClick={showNextAddresses} data-test-id="btn-next">
+            <InlineIcon svgIcon={arrowRight} />
+          </button>
+        </div>}
       </div>
     );
   }

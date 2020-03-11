@@ -57,8 +57,11 @@ const columns = [
   { Header: "", accessor: "actions" },
 ];
 
-const prepareRows = (accounts, handleAddressChosen) =>
-  accounts.map(account => ({
+const prepareRows = (
+  accounts: ReadonlyArray<ILedgerAccount>,
+  handleAddressChosen: (account: ILedgerAccount) => void,
+) =>
+  accounts.map((account: ILedgerAccount) => ({
     key: account.derivationPath,
     address: (
       <Tooltip content={account.address} textPosition={ECustomTooltipTextPosition.CENTER}>

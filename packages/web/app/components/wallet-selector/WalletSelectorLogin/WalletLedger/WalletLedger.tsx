@@ -8,6 +8,7 @@ import {
   selectLedgerErrorMessage,
 } from "../../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../../store";
+import { TMessage } from "../../../translatedMessages/utils";
 import { WalletLedgerChooser } from "./WalletLedgerChooser/WalletLedgerChooser";
 import { WalletLedgerInit } from "./WalletLedgerInit/WalletLedgerInit";
 import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedgerNotSupported";
@@ -15,11 +16,16 @@ import { WalletLedgerNotSupported } from "./WalletLedgerNotSupported/WalletLedge
 interface IWalletLedgerStateProps {
   isConnectionEstablished: boolean;
   isLedgerSupported: boolean;
+  error: TMessage | undefined;
+}
+
+interface IWalletLedgerDispatchProps {
   tryEstablishingConnectionWithLedger: () => void;
   resetWallet: () => void;
 }
 
-export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStateProps> = ({
+export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStateProps &
+  IWalletLedgerDispatchProps> = ({
   isConnectionEstablished,
   isLedgerSupported,
   resetWallet,
@@ -42,8 +48,8 @@ export const WalletLedgerComponent: React.FunctionComponent<IWalletLedgerStatePr
   return <WalletLedgerInit />;
 };
 
-export const WalletLedger = compose<IWalletLedgerStateProps, {}>(
-  appConnect<IWalletLedgerStateProps>({
+export const WalletLedger = compose<IWalletLedgerStateProps & IWalletLedgerDispatchProps, {}>(
+  appConnect<IWalletLedgerStateProps, IWalletLedgerDispatchProps>({
     stateToProps: state => ({
       isConnectionEstablished: selectLedgerConnectionEstablished(state),
       isLedgerSupported: isSupportingLedger(state),

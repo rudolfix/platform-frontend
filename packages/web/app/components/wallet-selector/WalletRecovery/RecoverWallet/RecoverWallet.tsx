@@ -22,11 +22,15 @@ interface IMainRecoveryState {
   seed?: string;
 }
 
+interface IStateProps {
+  recoveryPhase: ERecoveryPhase;
+}
+
 class RecoveryProcessesComponent extends React.Component<
   IMainRecoveryProps & IDispatchProps & IStateProps,
   IMainRecoveryState
 > {
-  constructor(props: IMainRecoveryProps & IDispatchProps) {
+  constructor(props: IMainRecoveryProps & IDispatchProps & IStateProps) {
     super(props);
     this.state = { seed: props.seed };
   }
@@ -53,11 +57,7 @@ class RecoveryProcessesComponent extends React.Component<
   }
 }
 
-interface IStateProps {
-  recoveryPhase: ERecoveryPhase;
-}
-
-const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps, {}>(
+const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps & IStateProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({ recoveryPhase: selectLightWalletRecoveryPhase(state) }),
     dispatchToProps: dispatch => ({

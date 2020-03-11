@@ -2,6 +2,7 @@ import { RouterState } from "connected-react-router";
 import { createSelector } from "reselect";
 
 import { appRoutes } from "../../components/appRoutes";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 import { ECommonWalletRegistrationFlowState } from "./types";
@@ -31,7 +32,7 @@ export const selectLedgerConnectionEstablished = (state: TAppGlobalState): boole
 export const selectLedgerIsInitialConnectionInProgress = (state: TAppGlobalState): boolean =>
   state.ledgerWizardState.isInitialConnectionInProgress;
 
-export const selectLedgerErrorMessage = (state: TAppGlobalState): boolean =>
+export const selectLedgerErrorMessage = (state: TAppGlobalState): TMessage | undefined =>
   state.ledgerWizardState.errorMsg;
 
 export const selectRootPath = (state: RouterState): string => {

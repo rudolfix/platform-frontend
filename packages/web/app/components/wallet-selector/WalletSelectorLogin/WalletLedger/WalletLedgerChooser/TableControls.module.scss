@@ -1,9 +1,9 @@
 .wrapper {
   height: 56px;
-  background: #f9fafb;
+  background: $neu-pale-grey-two;
   align-items: center;
   padding: 0 px-to-rem(8px);
-  border-bottom: 1px solid #cfd7dd;
+  border-bottom: 1px solid $neu-light-blue-grey-two;
   display: flex;
   justify-content: space-between;
 }
@@ -22,12 +22,12 @@
 .nav-button {
   width: 32px;
   height: 32px;
-  border: 1px solid #cfd7dd;
-  background: white;
+  border: 1px solid $neu-light-blue-grey-two;
+  background: $neu-white-two;
   border-radius: 4px;
-  color: #94a5b3;
+  color: $neu-gull-gray;
 
   &:disabled {
-    background: #f3f5f7;
+    background: $neu-pale-grey-three;
   }
 }

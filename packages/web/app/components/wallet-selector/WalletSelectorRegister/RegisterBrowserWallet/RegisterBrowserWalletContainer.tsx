@@ -9,18 +9,20 @@ import { WalletChooser } from "../../shared/WalletChooser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
-export type TWalletBrowserBaseProps = {
+export type TWalletBrowserBaseExternalProps = {
   rootPath: string;
   showWalletSelector: boolean;
+};
+
+type TWalletBrowserBaseStateProps = {
   isLoginRoute: boolean;
 };
 
-export const RegisterBrowserWalletContainerComponent: React.FunctionComponent<TWalletBrowserBaseProps> = ({
-  rootPath,
-  showWalletSelector,
-  children,
-  isLoginRoute,
-}) => (
+export type TWalletBrowserBaseProps = TWalletBrowserBaseExternalProps &
+  TWalletBrowserBaseStateProps;
+
+export const RegisterBrowserWalletContainerComponent: React.FunctionComponent<TWalletBrowserBaseExternalProps &
+  TWalletBrowserBaseStateProps> = ({ rootPath, showWalletSelector, children, isLoginRoute }) => (
   <>
     <div className={styles.wrapper} data-test-id="wallet-selector">
       <h1 className={styles.title}>
@@ -50,7 +52,7 @@ export const RegisterBrowserWalletContainerComponent: React.FunctionComponent<TW
   </>
 );
 
-export const RegisterBrowserWalletContainer = appConnect({
+export const RegisterBrowserWalletContainer = appConnect<TWalletBrowserBaseStateProps>({
   stateToProps: s => ({
     isLoginRoute: selectIsLoginRoute(s.router),
   }),

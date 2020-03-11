@@ -16,7 +16,10 @@ interface ITableControlsBaseProps {
   onDerivationPathPrefixChange: (derivationPathPrefix: string) => void;
   onDerivationPathPrefixError: () => void;
   setDerivationPathPrefix: (derivationPathPrefix: string) => void;
-  setErrorMessage: (errorMessage: string) => void;
+  setErrorMessage: (errorMessage: string | null) => void;
+  showPrevAddresses: () => void;
+  showNextAddresses: () => void;
+  hasPreviousAddress: boolean;
   derivationPathPrefix: string;
   errorMessage: string | null;
 }

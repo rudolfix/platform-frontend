@@ -13,18 +13,6 @@ storiesOf("Wallet selector/light/login", module)
   ))
   .add("With valid mail set", () => (
     <LoginLightWalletComponent
-      showLogoutReason={false}
-      isLoading={false}
-      errorMsg={undefined}
-      email="mail@neufund.org"
-      goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
-      submitForm={action("SUBMIT_FORM")}
-      intl={{} as IIntlHelpers}
-    />
-  ))
-  .add("With logout reason", () => (
-    <LoginLightWalletComponent
-      showLogoutReason={true}
       isLoading={false}
       errorMsg={undefined}
       email="mail@neufund.org"
@@ -35,7 +23,6 @@ storiesOf("Wallet selector/light/login", module)
   ))
   .add("With password error", () => (
     <LoginLightWalletComponent
-      showLogoutReason={false}
       isLoading={false}
       errorMsg={{ messageType: "lightWalletWrongPassword" } as TMessage}
       email="mail@neufund.org"

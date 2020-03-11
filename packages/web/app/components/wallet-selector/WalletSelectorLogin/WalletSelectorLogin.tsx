@@ -36,10 +36,10 @@ interface IStateProps {
   isLoginRoute: boolean;
   userType: EUserType;
   ledgerConnectionEstablished: boolean;
-  closeAccountChooser: () => void;
 }
 
 interface IDispatchProps {
+  closeAccountChooser: () => void;
   openICBMModal: () => void;
 }
 
@@ -57,7 +57,10 @@ interface IExternalProps {
   redirectLocation: Location;
 }
 
-export const WalletSelectorLoginBase: React.FunctionComponent<IExternalProps> = ({
+export const WalletSelectorLoginBase: React.FunctionComponent<IStateProps &
+  IDispatchProps &
+  TAdditionalProps &
+  IExternalProps> = ({
   rootPath,
   redirectLocation,
   showWalletSelector,

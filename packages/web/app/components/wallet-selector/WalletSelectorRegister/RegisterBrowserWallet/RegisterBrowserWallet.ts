@@ -9,7 +9,6 @@ import {
   EBrowserWalletRegistrationFlowState,
   ECommonWalletRegistrationFlowState,
   TBrowserWalletRegisterData,
-  TCommonWalletRegisterData,
   TWalletRegisterData,
 } from "../../../../modules/wallet-selector/types";
 import { appConnect } from "../../../../store";
@@ -22,7 +21,7 @@ import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { WalletLoading } from "../../shared/WalletLoading";
 import {
   RegisterBrowserWalletContainer,
-  TWalletBrowserBaseProps,
+  TWalletBrowserBaseExternalProps,
 } from "./RegisterBrowserWalletContainer";
 import { RegisterBrowserWalletError } from "./RegisterBrowserWalletError";
 import { BrowserWalletAskForEmailAndTos } from "./RegisterBrowserWalletForm";
@@ -62,8 +61,14 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     renderComponent(LoadingIndicator),
   ),
   withContainer(
-    withProps<TWalletBrowserBaseProps, TCommonWalletRegisterData>(
-      ({ rootPath, showWalletSelector }) => ({ rootPath, showWalletSelector }),
+    withProps<TWalletBrowserBaseExternalProps, TWalletBrowserBaseExternalProps>(
+      ({
+        rootPath,
+        showWalletSelector,
+      }: TWalletBrowserBaseExternalProps): TWalletBrowserBaseExternalProps => ({
+        rootPath,
+        showWalletSelector,
+      }),
     )(RegisterBrowserWalletContainer),
   ),
   branch<TBrowserWalletRegisterData>(

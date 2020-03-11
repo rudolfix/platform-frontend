@@ -47,10 +47,10 @@ export const WalletLedgerChooserBase: React.FunctionComponent<IWalletLedgerChoos
   onDerivationPathPrefixError,
   handleAdvanced,
 }) => {
-  const [derivationPathPrefix, setDerivationPathPrefix] = React.useState(
+  const [derivationPathPrefix, setDerivationPathPrefix] = React.useState<string>(
     DEFAULT_DERIVATION_PATH_PREFIX,
   );
-  const [errorMessage, setErrorMessage] = React.useState(null);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   let content;
 

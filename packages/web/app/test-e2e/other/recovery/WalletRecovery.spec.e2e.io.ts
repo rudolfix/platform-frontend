@@ -101,7 +101,7 @@ describe("Wallet recovery", function(): void {
     });
   });
 
-  it.only("should recover existing user with verified email from saved phrases and change email #recover #p3 ", function(): void {
+  it("should recover existing user with verified email from saved phrases and change email #recover #p3 ", function(): void {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",

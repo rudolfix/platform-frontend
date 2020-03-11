@@ -19,6 +19,7 @@ export class DeviceInformation {
    * @returns {string} Unique device identifier
    */
   getUniqueId(): string {
+    console.log(typeof getUniqueId);
     return getUniqueId();
   }
 

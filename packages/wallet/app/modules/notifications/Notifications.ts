@@ -13,7 +13,7 @@ import { Notification, Notifications as NotificationsHandler } from "react-nativ
 import { NotificationResponse } from "react-native-notifications/lib/src/interfaces/NotificationEvents";
 import { EventsRegistry } from "react-native-notifications/lib/dist/events/EventsRegistry";
 import { DeviceInformation } from "../device-information/DeviceInformation";
-import {NotificationCompletion} from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
+import { NotificationCompletion } from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
 import Config from "react-native-config";
 
 class NotificationsError extends AppError {
@@ -86,7 +86,10 @@ export class Notifications {
    * @param {function} listener Callback function to call when a notification is received
    * @param {NotificationCompletion} notificationShowSettings Settings around how to show notification, badge, sound etc.
    */
-  onReceivedNotificationInForeground(listener: (notification: Notification) => any, notificationShowSettings: NotificationCompletion) {
+  onReceivedNotificationInForeground(
+    listener: (notification: Notification) => any,
+    notificationShowSettings: NotificationCompletion,
+  ) {
     if (!this.events) return;
 
     return this.events.registerNotificationReceivedForeground(
@@ -106,7 +109,10 @@ export class Notifications {
    * @param {function} listener Callback function to call when a notification is received.
    * @param {NotificationCompletion} notificationShowSettings Settings around how to show notification, badge, sound etc.
    */
-  onReceiveNotificationIndBackground(listener: (notification: Notification) => any, notificationShowSettings: NotificationCompletion) {
+  onReceiveNotificationIndBackground(
+    listener: (notification: Notification) => any,
+    notificationShowSettings: NotificationCompletion,
+  ) {
     if (!this.events) return;
 
     return this.events.registerNotificationReceivedBackground(
@@ -153,16 +159,16 @@ export class Notifications {
       device_id: deviceId,
       platform: platform,
       registration_id: token,
-      user_id: "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"
+      user_id: "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3",
     };
 
     await fetch("https://platform.neufund.io/api/user/firebase-registrations/me", {
       body: JSON.stringify(request),
       method: "PUT",
       headers: {
-        "Authorization": `Bearer ${jwtToken}`,
-        "Content-Type": "application/json"
-      }
+        Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "application/json",
+      },
     });
   }
 
@@ -171,14 +177,15 @@ export class Notifications {
    * Unregister a notification provider token in a backend service.
    */
   async unRegisterTokenInUserService() {
+    const token = await this.notificationsProvider.getRegistrationToken();
     //TODO replace the mocked call to BE with a proper HTTP client
     const jwtToken = Config.NF_JWT;
-    await fetch("https://platform.neufund.io/api/user/firebase-registrations/me", {
-      method: "ВУДУЕУ",
+    await fetch(`https://platform.neufund.io/api/user/firebase-registrations/me/${token}`, {
+      method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${jwtToken}`,
-        "Content-Type": "application/json"
-      }
+        Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "application/json",
+      },
     });
   }
 

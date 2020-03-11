@@ -10,7 +10,6 @@ import { injectable } from "inversify";
  */
 @injectable()
 export class DeviceInformation {
-
   /**
    * Get unique device ID
    * On Android devices that have multiple users, each user appears as a completely separate device, so the ANDROID_ID value is unique to each user.

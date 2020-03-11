@@ -1,3 +1,5 @@
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, nest, renderComponent, withProps } from "recompose";
 
 import { withContainer } from "../../../../../../shared/dist/utils/withContainer.unsafe";
@@ -17,6 +19,7 @@ import { FullscreenProgressLayout } from "../../../layouts/FullscreenProgressLay
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
+import { LedgerErrorMessage } from "../../../translatedMessages/messages";
 import { WalletLoading } from "../../shared/WalletLoading";
 import { WalletLedgerChooser } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerChooser/WalletLedgerChooser";
 import { WalletLedgerInitError } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerInit/WalletLedgerInit";
@@ -33,15 +36,29 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
     dispatchToProps: dispatch => ({
       submitForm: (email: string) =>
         dispatch(actions.walletSelector.browserWalletRegisterFormData(email)),
+      closeAccountChooser: () => {
+        dispatch(actions.walletSelector.ledgerCloseAccountChooser());
+        dispatch(
+          actions.walletSelector.ledgerConnectionEstablishedError({
+            messageType: LedgerErrorMessage.USER_CANCELLED,
+          }),
+        );
+      },
     }),
   }),
   branch<TLedgerRegisterData>(
     ({ uiState }) => uiState === ELedgerRegistrationFlowState.LEDGER_ACCOUNT_CHOOSER,
     renderComponent(
       nest(
-        withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(
-          FullscreenProgressLayout,
-        ),
+        withProps<TContentExternalProps, { closeAccountChooser: () => void }>(
+          ({ closeAccountChooser }) => ({
+            width: EContentWidth.FULL,
+            buttonProps: {
+              buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
+              buttonAction: closeAccountChooser,
+            },
+          }),
+        )(FullscreenProgressLayout),
         WalletLedgerChooser,
       ),
     ),

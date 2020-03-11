@@ -7,6 +7,8 @@ import { InlineIcon } from "../../../../shared/icons/InlineIcon";
 
 import arrowLeft from "../../../../../assets/img/inline_icons/arrow_left.svg";
 import arrowRight from "../../../../../assets/img/inline_icons/arrow_right.svg";
+import magnifyingGlass from "../../../../../assets/img/inline_icons/magnifying-glass.svg";
+import searchClear from "../../../../../assets/img/inline_icons/search-clear.svg";
 import * as styles from "./TableControls.module.scss";
 
 const DEBOUNCE_DELAY = 200;
@@ -53,19 +55,33 @@ class TableControlsBase extends React.Component<ITableControlsBaseProps & IIntlP
       showPrevAddresses,
       showNextAddresses,
       showNavigation,
+      setDerivationPathPrefix,
     } = this.props;
 
     return (
       <div className={styles.wrapper}>
-        <Input
-          className={styles.input}
-          name="derivationPathPrefix"
-          value={derivationPathPrefix}
-          onChange={this.onDerivationPathPrefixChange}
-          placeholder={formatIntlMessage(
-            "wallet-selector.ledger.derivation-path-selector.placeholder",
+        <div className={styles.inputWrapper}>
+          <InlineIcon svgIcon={magnifyingGlass} className={styles.searchIcon} />
+          <Input
+            className={styles.input}
+            name="derivationPathPrefix"
+            value={derivationPathPrefix}
+            onChange={this.onDerivationPathPrefixChange}
+            placeholder={formatIntlMessage(
+              "wallet-selector.ledger.derivation-path-selector.placeholder",
+            )}
+          />
+          {derivationPathPrefix && (
+            <InlineIcon
+              svgIcon={searchClear}
+              className={styles.searchClearIcon}
+              onClick={() => {
+                setDerivationPathPrefix("");
+                this.debouncedOnChange("");
+              }}
+            />
           )}
-        />
+        </div>
 
         {showNavigation && (
           <div className={styles.navButtons}>

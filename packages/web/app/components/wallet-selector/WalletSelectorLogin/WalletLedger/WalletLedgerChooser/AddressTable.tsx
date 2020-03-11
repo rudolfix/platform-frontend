@@ -4,18 +4,14 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
-import { Tooltip } from "../../../../shared/tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
-
 import ethIcon from "../../../../../assets/img/eth_icon.svg";
 import neuIcon from "../../../../../assets/img/neu_icon.svg";
+
+import { ILedgerAccount } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
+import { Money } from "../../../../shared/formatters/Money";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../../../shared/formatters/utils";
+import { Tooltip } from "../../../../shared/tooltips/Tooltip";
+import { ECustomTooltipTextPosition } from "../../../../shared/tooltips/TooltipBase";
 import * as styles from "./AddressTable.module.scss";
 
 export interface IAddressTableProps {
@@ -64,7 +60,7 @@ const prepareRows = (
   accounts.map((account: ILedgerAccount) => ({
     key: account.derivationPath,
     address: (
-      <Tooltip content={account.address} textPosition={ECustomTooltipTextPosition.CENTER}>
+      <Tooltip content={account.address} textPosition={ECustomTooltipTextPosition.CENTER} className="mt-1">
         {trimAddress(account.address)}
       </Tooltip>
     ),

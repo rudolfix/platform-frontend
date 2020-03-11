@@ -1,5 +1,5 @@
 .wrapper {
-  height: 56px;
+  height: px-to-rem(56px);
   background: $neu-pale-grey-two;
   align-items: center;
   padding: 0 px-to-rem(8px);
@@ -11,6 +11,8 @@
 .input {
   border-width: 1px;
   width: px-to-rem(320px);
+  padding-left: px-to-rem(40px);
+  padding-right: px-to-rem(40px);
 }
 
 .nav-buttons {
@@ -30,4 +32,29 @@
   &:disabled {
     background: $neu-pale-grey-three;
   }
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  width: px-to-rem(24px);
+  height: px-to-rem(24px);
+  position: absolute;
+  top: px-to-rem(8px);
+  left: px-to-rem(10px);
+  z-index: 1;
+  color: transparent;
+}
+
+.search-clear-icon {
+  width: px-to-rem(15px);
+  height: px-to-rem(15px);
+  position: absolute;
+  top: px-to-rem(12px);
+  right: px-to-rem(12px);
+  z-index: 1;
+  color: $neu-light-blue-grey-two;
+  cursor: pointer;
 }

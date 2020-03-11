@@ -13,6 +13,7 @@ import { Notification, Notifications as NotificationsHandler } from "react-nativ
 import { NotificationResponse } from "react-native-notifications/lib/src/interfaces/NotificationEvents";
 import { EventsRegistry } from "react-native-notifications/lib/dist/events/EventsRegistry";
 import { DeviceInformation } from "../device-information/DeviceInformation";
+import {NotificationCompletion} from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
 
 class NotificationsError extends AppError {
   constructor(message: string) {
@@ -20,6 +21,12 @@ class NotificationsError extends AppError {
   }
 }
 
+/**
+ * @class Notifications
+ * Class to manage (push notifications.
+ * @note Manages push notifications subscription, tokens, events.
+ *
+ */
 @injectable()
 export class Notifications {
   private readonly notificationsProvider: INotificationsProvider;
@@ -45,6 +52,11 @@ export class Notifications {
     this.logger.info("Setup push notifications");
   }
 
+  /**
+   * @method init
+   * Initializes push notifications
+   * @note this method will ask for a push notifications permission, register in firebase ans sync with backend.
+   */
   async init() {
     this.logger.info("Init push notifications");
 
@@ -67,7 +79,13 @@ export class Notifications {
     }
   }
 
-  onReceivedNotificationInForeground(listener: (notification: Notification) => any) {
+  /**
+   * @event onReceivedNotificationInForeground
+   * Fires when notification is received in foreground (the application is currently open).
+   * @param {function} listener Callback function to call when a notification is received
+   * @param {NotificationCompletion} notificationShowSettings Settings around how to show notification, badge, sound etc.
+   */
+  onReceivedNotificationInForeground(listener: (notification: Notification) => any, notificationShowSettings: NotificationCompletion) {
     if (!this.events) return;
 
     return this.events.registerNotificationReceivedForeground(
@@ -75,12 +93,19 @@ export class Notifications {
         this.logger.info("Notification received in foreground");
 
         listener(notification);
-        completion({ alert: false, sound: false, badge: false });
+        completion(notificationShowSettings);
       },
     );
   }
 
-  onReceiveNotificationIndBackground(listener: (notification: Notification) => any) {
+  /**
+   * @event onReceiveNotificationIndBackground
+   * Fires when notification is received in background (the application is closed).
+   * @note A notification will be shown in a system specific way, e.g. locks screen, notifications screen etc.
+   * @param {function} listener Callback function to call when a notification is received.
+   * @param {NotificationCompletion} notificationShowSettings Settings around how to show notification, badge, sound etc.
+   */
+  onReceiveNotificationIndBackground(listener: (notification: Notification) => any, notificationShowSettings: NotificationCompletion) {
     if (!this.events) return;
 
     return this.events.registerNotificationReceivedBackground(
@@ -88,11 +113,17 @@ export class Notifications {
         this.logger.info("Notification received in background");
 
         listener(notification);
-        completion({ alert: false, sound: false, badge: false });
+        //{ alert: false, sound: false, badge: false }
+        completion(notificationShowSettings);
       },
     );
   }
 
+  /**
+   * @event onNotificationOpened
+   * Fires when use taps on a system notification.
+   * @param {function} listener Callback function to call when a notification is opened
+   */
   onNotificationOpened(listener: (notification: NotificationResponse) => void) {
     if (!this.events) return;
 
@@ -106,6 +137,10 @@ export class Notifications {
     );
   }
 
+  /**
+   * @method registerTokenInUserService
+   * Register a notification provider token in a backend service.
+   */
   async registerTokenInUserService() {
     const token = await this.notificationsProvider.getRegistrationToken();
     const deviceId = await this.deviceInformation.getUniqueId();
@@ -115,10 +150,20 @@ export class Notifications {
     console.log("---deviceId, token, platform------", deviceId, token, platform);
   }
 
+  /**
+   * @method unRegisterTokenInUserService
+   * Unregister a notification provider token in a backend service.
+   */
   async unRegisterTokenInUserService() {
     //TODO: add a delete call user API when it's moved to shared https://platform.neufund.io/api/user/ui/#!/Firebase/api_firebase_delete_registration_id
   }
 
+  /**
+   * @method postLocalNotification
+   * Post a local notification.
+   * @param {Notification} notification A notification to send.
+   * @note Local notification never leave the device and used fow a user interaction.
+   */
   postLocalNotification(notification: Notification, id: number) {
     return NotificationsHandler.postLocalNotification(notification, id);
   }

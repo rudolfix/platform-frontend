@@ -29,6 +29,12 @@ export type NotificationsPermissions = {
   settings: NotificationSettings;
 };
 
+/**
+ * @class Permissions
+ * Class to manage (request) device permissions e.g. camera, push notifications, location etc.
+ * @note to add more permissions follow https://github.com/react-native-community/react-native-permissions
+ *
+ */
 @injectable()
 export class Permissions {
   private readonly logger: ILogger;
@@ -37,11 +43,16 @@ export class Permissions {
 
     this.logger.info("Setup permissions module");
   }
-  requestNotificationsPermissions(): Promise<{
-    status: PermissionStatus;
-    settings: NotificationSettings;
-  }> {
+
+  /**
+   * @method requestNotificationsPermissions
+   * Request push notifications permission
+   * @note show platform specific confirmation dialog for a permission request.
+   * @returns {Promise} NotificationsPermissions
+   */
+  requestNotificationsPermissions(): Promise<NotificationsPermissions> {
     this.logger.info("Request for push notification permissions");
+
     return requestNotifications([]);
   }
 }

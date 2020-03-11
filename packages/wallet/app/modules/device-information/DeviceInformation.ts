@@ -2,6 +2,12 @@ import { getUniqueId, isEmulator } from "react-native-device-info";
 import { Platform } from "react-native";
 import { injectable } from "inversify";
 
+/**
+ * @class DeviceInformation
+ * Layer on top of react-native-device-info
+ * Provides access to a device information, thought the API. Available methods are here https://github.com/react-native-community/react-native-device-info#api.
+ *
+ */
 @injectable()
 export class DeviceInformation {
 

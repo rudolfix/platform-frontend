@@ -49,9 +49,14 @@ export const routingActions = {
 
   // registration
   goToRegister: () => push(appRoutes.register),
+  goToRegisterBrowserWallet: () => push(appRoutes.registerWithBrowserWallet),
+  goToLightWalletRegister: () => push(appRoutes.registerWithLightWallet),
+  goToIssuerLightWalletRegister: () => push(appRoutes.registerIssuerWithLightWallet),
+  goToNomineeLightWalletRegister: () => push(appRoutes.registerNomineeWithLightWallet),
 
   // login
   goToLogin: (state: TLoginRouterState) => push(appRoutes.login, state),
+  goToLoginWithBrowserWalet: () => push(appRoutes.loginBrowserWallet),
 
   goToPasswordRecovery: () => push(appRoutes.restore),
 
@@ -77,4 +82,12 @@ export const routingActions = {
   // other...
   // TODO: Replace with a dedicated 404 page
   goTo404: () => push(appRoutes.root),
+
+  /* Regular Actions */
+  setBrowserAutoRedirect: createActionFactory(
+    "ROUTING_SET_BROWSER_AUTO_REDIRECT",
+    (hasRedirectedToBrowserAlready: boolean) => ({
+      hasRedirectedToBrowserAlready,
+    }),
+  ),
 };

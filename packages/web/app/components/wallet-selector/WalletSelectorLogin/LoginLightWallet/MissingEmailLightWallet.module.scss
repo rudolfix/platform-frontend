@@ -1,0 +1,32 @@
+.title {
+  color: $neu-charcoal-grey;
+  font-family: $font-family-montserrat;
+  font-weight: 600;
+  font-size: px-to-rem(32px);
+  text-align: center;
+  margin: {
+    top: px-to-rem(12px);
+    bottom: px-to-rem(20px);
+  }
+}
+
+.icon {
+  @include rect(72px);
+
+  background-color: $neu-pale-grey-three;
+  border-radius: 50%;
+  margin-bottom: px-to-rem(20px);
+  margin-top: px-to-rem(16px);
+}
+
+.missing-email {
+  font-family: $font-family-roboto;
+  font-size: px-to-rem(14px);
+}
+
+.forgotten-password {
+  @include nds-body-small;
+
+  margin-top: 1rem;
+  margin-bottom: px-to-rem(24px);
+}

@@ -80,6 +80,9 @@ export const selectPreviousLightWalletEmail = (state: IWeb3State): string | unde
     state.previousConnectedWallet.email) ||
   undefined;
 
+export const selectCurrentLightWalletEmail = (state: IWeb3State): string | undefined =>
+  (state.connected && state.wallet?.email) || undefined;
+
 export const selectPreviousLightWalletSalt = (state: TAppGlobalState): string | undefined =>
   (!state.web3.connected &&
     state.web3.previousConnectedWallet &&
@@ -173,3 +176,5 @@ export const selectEmailFromQueryString = createSelector(selectRouter, (state: R
 
   return getEmailFromQueryString(state.location.search);
 });
+
+export const selectIsWeb3Available = (state: TAppGlobalState) => state.web3.web3Available;

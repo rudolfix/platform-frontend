@@ -1,8 +1,11 @@
 import { RouterState } from "connected-react-router";
+import { createSelector } from "reselect";
 
 import { appRoutes } from "../../components/appRoutes";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
+import { ECommonWalletRegistrationFlowState } from "./types";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {
@@ -14,8 +17,23 @@ export const selectUrlUserType = (router: RouterState): EUserType => {
   }
 };
 
+export const selectRouterState = (state: TAppGlobalState) => state.router;
+
+export const selectLocation = createSelector(selectRouterState, router =>
+  router && router.location ? router.location : undefined,
+);
+
 export const selectIsLoginRoute = (state: RouterState): boolean =>
   !!state.location && state.location.pathname.includes("login");
+
+export const selectLedgerConnectionEstablished = (state: TAppGlobalState): boolean =>
+  state.ledgerWizardState.isConnectionEstablished;
+
+export const selectLedgerIsInitialConnectionInProgress = (state: TAppGlobalState): boolean =>
+  state.ledgerWizardState.isInitialConnectionInProgress;
+
+export const selectLedgerErrorMessage = (state: TAppGlobalState): TMessage | undefined =>
+  state.ledgerWizardState.errorMsg;
 
 export const selectRootPath = (state: RouterState): string => {
   switch (selectUrlUserType(state)) {
@@ -34,3 +52,12 @@ export const selectOppositeRootPath = (state: RouterState): string =>
 
 export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
+
+export const selectWalletSelectorData = (state: TAppGlobalState) => state.walletSelector;
+
+export const selectRegisterWalletType = (state: TAppGlobalState) => state.walletSelector.walletType;
+
+export const selectRegisterWalletDefaultFormValues = (state: TAppGlobalState) =>
+  state.walletSelector.uiState !== ECommonWalletRegistrationFlowState.NOT_STARTED
+    ? state.walletSelector.initialFormValues
+    : undefined;

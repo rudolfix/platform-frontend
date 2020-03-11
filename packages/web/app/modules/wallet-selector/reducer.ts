@@ -1,53 +1,72 @@
-import { DeepReadonly } from "@neufund/shared";
-
-import { TMessage } from "../../components/translatedMessages/utils";
 import { AppReducer } from "../../store";
 import { actions } from "../actions";
+import { EWalletType } from "../web3/types";
+import {
+  ECommonWalletRegistrationFlowState,
+  EFlowType,
+  TWalletRegisterData,
+  TWalletSelectorState,
+} from "./types";
 
-export interface IWalletSelectorState {
-  isMessageSigning: boolean;
-  messageSigningError: DeepReadonly<TMessage> | undefined;
-  isLoading: boolean;
-}
-
-const walletSelectorInitialState: IWalletSelectorState = {
+export const walletSelectorInitialState: TWalletSelectorState & TWalletRegisterData = {
   isMessageSigning: false,
   messageSigningError: undefined,
   isLoading: false,
+
+  walletType: EWalletType.LIGHT,
+  uiState: ECommonWalletRegistrationFlowState.NOT_STARTED,
+  flowType: EFlowType.REGISTER, //todo remove those values
 };
 
 // TODO merge error fields, make one enum for all signer/wallet related errors
-export const walletSelectorReducer: AppReducer<IWalletSelectorState> = (
+export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletRegisterData> = (
   state = walletSelectorInitialState,
   action,
-): IWalletSelectorState => {
+): TWalletSelectorState & TWalletRegisterData => {
   switch (action.type) {
+    //backwards compatibility only
     case actions.walletSelector.tryConnectingWithBrowserWallet.getType():
       return {
         ...walletSelectorInitialState,
         isLoading: true,
       };
+    //backwards compatibility only
     case actions.walletSelector.messageSigning.getType():
       return {
+        flowType: state.flowType,
         isMessageSigning: true,
         messageSigningError: undefined,
         isLoading: false,
+        walletType: state.walletType,
+        uiState: ECommonWalletRegistrationFlowState.NOT_STARTED,
       };
+    //backwards compatibility only
     case actions.walletSelector.browserWalletConnectionError.getType():
       return {
+        flowType: state.flowType,
         isMessageSigning: false,
         messageSigningError: action.payload.errorMsg,
         isLoading: false,
+        walletType: state.walletType,
+        uiState: ECommonWalletRegistrationFlowState.NOT_STARTED,
       };
+    //backwards compatibility only
     case actions.walletSelector.messageSigningError.getType():
       return {
+        ...state,
         isMessageSigning: false,
         messageSigningError: action.payload.errorMessage,
         isLoading: false,
       };
+    //backwards compatibility only
     case actions.walletSelector.reset.getType():
       return {
         ...walletSelectorInitialState,
+      };
+    case actions.walletSelector.setWalletRegisterData.getType():
+      return {
+        ...state,
+        ...action.payload.data,
       };
   }
 

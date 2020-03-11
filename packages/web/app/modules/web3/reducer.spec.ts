@@ -29,6 +29,8 @@ describe("Web3 > reducer", () => {
           walletType: EWalletType.BROWSER,
           address: dummyEthereumAddress,
           walletSubType: EWalletSubType.METAMASK,
+          salt: undefined,
+          email: undefined,
         },
         actionPayload.isUnlocked,
       ),
@@ -40,8 +42,11 @@ describe("Web3 > reducer", () => {
         walletType: EWalletType.BROWSER,
         walletSubType: EWalletSubType.METAMASK,
         address: dummyEthereumAddress,
+        salt: undefined,
+        email: undefined,
       },
       isUnlocked: true,
+      web3Available: false,
     });
   });
 
@@ -52,8 +57,11 @@ describe("Web3 > reducer", () => {
         walletType: EWalletType.BROWSER,
         address: dummyEthereumAddress,
         walletSubType: EWalletSubType.METAMASK,
+        salt: undefined,
+        email: undefined,
       },
       isUnlocked: true,
+      web3Available: true,
     };
 
     const actualNewState = web3Reducer(initialState, actions.web3.personalWalletDisconnected());
@@ -64,7 +72,10 @@ describe("Web3 > reducer", () => {
         walletType: EWalletType.BROWSER,
         walletSubType: EWalletSubType.METAMASK,
         address: dummyEthereumAddress,
+        salt: undefined,
+        email: undefined,
       },
+      web3Available: true,
     });
   });
 
@@ -76,6 +87,7 @@ describe("Web3 > reducer", () => {
     expect(actualNewState).to.be.deep.eq({
       connected: false,
       previousConnectedWallet: undefined,
+      web3Available: false,
     });
   });
 
@@ -87,8 +99,11 @@ describe("Web3 > reducer", () => {
           walletType: EWalletType.BROWSER,
           address: dummyEthereumAddress,
           walletSubType: EWalletSubType.METAMASK,
+          salt: undefined,
+          email: undefined,
         },
         isUnlocked: true,
+        web3Available: true,
       };
 
       const actualNewState = web3Reducer(initialState, actions.web3.walletLocked());
@@ -99,14 +114,18 @@ describe("Web3 > reducer", () => {
           walletType: EWalletType.BROWSER,
           walletSubType: EWalletSubType.METAMASK,
           address: dummyEthereumAddress,
+          salt: undefined,
+          email: undefined,
         },
         isUnlocked: false,
+        web3Available: true,
       });
     });
 
     it("should do nothing when not connected", () => {
       const initialState: IDisconnectedWeb3State = {
         connected: false,
+        web3Available: true,
       };
 
       const actualNewState = web3Reducer(initialState, actions.web3.walletLocked());

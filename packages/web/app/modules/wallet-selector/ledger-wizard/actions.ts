@@ -5,8 +5,9 @@ import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ILedgerAccount } from "./reducer";
 
 export const ledgerWizardActions = {
-  ledgerTryEstablishingConnectionWithLedger: () =>
-    createSimpleAction("LEDGER_TRY_ESTABLISHING_CONNECTION"),
+  ledgerTryEstablishingConnectionWithLedger: createActionFactory(
+    "LEDGER_TRY_ESTABLISHING_CONNECTION",
+  ),
 
   ledgerLoadAccounts: createActionFactory("LEDGER_LOAD_ACCOUNTS"),
 

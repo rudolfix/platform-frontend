@@ -19,6 +19,8 @@ export const getDummyBrowserWalletMetadata = (): IBrowserWalletMetadata => ({
   walletType: EWalletType.BROWSER,
   address: dummyEthereumAddress,
   walletSubType: EWalletSubType.METAMASK,
+  salt: undefined,
+  email: undefined,
 });
 
 export const getDummyLedgerWalletMetadata = (): ILedgerWalletMetadata => ({
@@ -26,4 +28,6 @@ export const getDummyLedgerWalletMetadata = (): ILedgerWalletMetadata => ({
   walletSubType: EWalletSubType.UNKNOWN,
   derivationPath: "derivationPath",
   address: dummyEthereumAddress,
+  salt: undefined,
+  email: undefined,
 });

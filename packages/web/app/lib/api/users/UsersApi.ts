@@ -8,7 +8,7 @@ import { symbols } from "../../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { ITxData } from "../../web3/types";
-import { IHttpClient } from "../client/IHttpClient";
+import { IAuthHttpClient } from "./../client/AuthHttpClient";
 import {
   emailStatus,
   GasStipendValidator,
@@ -42,7 +42,7 @@ const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authorizedJsonHttpClient) private httpClient: IAuthHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 
@@ -69,6 +69,33 @@ export class UsersApi {
     return ensureWalletTypesInUser(response.body);
   }
 
+  /** An API call similar to me that uses JWT as a prop instead of the conventional JWT from local storage
+   *
+   *  @note This method should only be used only when you want to access the users/me endpoint before the
+   *  user signs in
+   **/
+  public async meWithJWT(jwt: string): Promise<IUser> {
+    const response = await this.httpClient.get<IUser>(
+      {
+        baseUrl: USER_API_ROOT,
+        url: "/user/me",
+        responseSchema: UserValidator,
+        allowedStatusCodes: [404],
+      },
+      jwt,
+    );
+
+    if (response.statusCode === 404) {
+      throw new UserNotExisting();
+    }
+    return ensureWalletTypesInUser(response.body);
+  }
+
+  /**
+   * An API method that gets the user information
+   *
+   * @note When in doubt always use this method instead of `meWithJWT`
+   **/
   public async me(): Promise<IUser> {
     const response = await this.httpClient.get<IUser>({
       baseUrl: USER_API_ROOT,

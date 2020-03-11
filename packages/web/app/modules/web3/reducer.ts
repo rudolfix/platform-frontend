@@ -5,6 +5,7 @@ import { TWalletMetadata } from "./types";
 export interface IDisconnectedWeb3State {
   connected: false;
   previousConnectedWallet?: TWalletMetadata;
+  web3Available: boolean;
 }
 
 export interface IWalletPrivateData {
@@ -19,12 +20,14 @@ export interface IConnectedWeb3State {
     seed: string;
     privateKey: string;
   };
+  web3Available: boolean;
 }
 
 export type IWeb3State = IDisconnectedWeb3State | IConnectedWeb3State;
 
 export const web3InitialState: IWeb3State = {
   connected: false,
+  web3Available: false,
 };
 
 export const web3Reducer: AppReducer<IWeb3State> = (
@@ -37,11 +40,13 @@ export const web3Reducer: AppReducer<IWeb3State> = (
         connected: true,
         wallet: action.payload.walletMetadata,
         isUnlocked: action.payload.isUnlocked,
+        web3Available: state.web3Available,
       };
     case actions.web3.personalWalletDisconnected.getType():
       return {
         connected: false,
         previousConnectedWallet: state.connected ? state.wallet : state.previousConnectedWallet,
+        web3Available: state.web3Available,
       };
     case "WEB3_WALLET_UNLOCKED":
       if (state.connected) {
@@ -91,6 +96,11 @@ export const web3Reducer: AppReducer<IWeb3State> = (
       } else {
         return state;
       }
+    case actions.web3.setWeb3Status.getType():
+      return {
+        ...state,
+        web3Available: action.payload.web3Available,
+      };
   }
   return state;
 };

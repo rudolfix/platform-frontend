@@ -2,7 +2,7 @@ import { TDataTestId } from "@neufund/shared";
 import { Field, useFormikContext } from "formik";
 import * as React from "react";
 
-import { getSchemaField, getValidationSchema, isRequired } from "../../utils/yupUtils";
+import { getSchemaField, getValidationSchema, isRequired as isFieldRequired } from "../../utils/yupUtils";
 import { InlineIcon } from "../icons/InlineIcon";
 import { eyeStrikedIcon, eyeUnstrikedIcon } from "./icons";
 import { Input } from "./Input";
@@ -33,6 +33,7 @@ type TFieldProps = {
   disabled?: boolean;
   placeholder?: string;
   ignoreTouched?: boolean;
+  isRequired?:boolean
 };
 
 export const TextField: React.FunctionComponent<TFieldProps &
@@ -49,6 +50,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
   ignoreTouched,
   autoFocus,
   className,
+  isRequired,
   ...props
 }) => {
   const [unmaskPassword, setUnmaskPassword] = React.useState(false);
@@ -60,8 +62,8 @@ export const TextField: React.FunctionComponent<TFieldProps &
 
   const { invalid, error, value } = useFieldMeta(name, { ignoreTouched: !!ignoreTouched });
 
-  const schema = getValidationSchema(validationSchema);
-  const fieldSchema = getSchemaField(name, schema);
+  const schema = validationSchema ? getValidationSchema(validationSchema) : undefined;
+  const fieldSchema = schema ? getSchemaField(name, schema) : undefined;
 
   const transformedValue = transform(value);
 
@@ -70,7 +72,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
       {() => (
         <div data-test-id={dataTestId} className={styles.wrapper}>
           {label && (
-            <LabelBase htmlFor={name} isOptional={!isRequired(fieldSchema)}>
+            <LabelBase htmlFor={name} isOptional={!(isRequired || (fieldSchema && isFieldRequired(fieldSchema)))}>
               {label}
             </LabelBase>
           )}

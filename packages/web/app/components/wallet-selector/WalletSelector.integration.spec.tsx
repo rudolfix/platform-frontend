@@ -44,8 +44,7 @@ import { appRoutes } from "../appRoutes";
 import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { getMessageTranslation, LedgerErrorMessage } from "../translatedMessages/messages";
 import { createMessage } from "../translatedMessages/utils";
-import { walletRegisterRoutes } from "./walletRoutes";
-import { WalletSelector } from "./WalletSelector";
+import { WalletSelectorLogin } from "./WalletSelectorLogin/WalletSelectorLogin";
 
 // TODO: Fix broken kyc mocks
 describe.skip("Wallet selector integration", () => {
@@ -67,6 +66,8 @@ describe.skip("Wallet selector integration", () => {
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
         address: expectedAddress,
+        salt: undefined,
+        email: undefined,
       }),
       isUnlocked: () => true,
     });
@@ -127,7 +128,7 @@ describe.skip("Wallet selector integration", () => {
           },
         },
       },
-      initialRoute: walletRegisterRoutes.light,
+      initialRoute: appRoutes.registerWithLightWallet,
     });
     // need to manually initialize, since contract setup is omitted
     sagaMiddleware.run(function*(): any {
@@ -139,7 +140,7 @@ describe.skip("Wallet selector integration", () => {
       .initializeMock(internalWeb3AdapterMock, dummyNetworkId);
     const error = createMessage(LedgerErrorMessage.GENERIC_ERROR);
     const mountedComponent = createMount(
-      wrapWithProviders(() => <Route component={WalletSelector} />, {
+      wrapWithProviders(() => <Route component={WalletSelectorLogin} />, {
         container,
         store,
         history,
@@ -206,6 +207,8 @@ describe.skip("Wallet selector integration", () => {
           walletSubType: EWalletSubType.UNKNOWN,
           derivationPath: expectedDerivationPath,
           address: expectedAddress,
+          salt: undefined,
+          email: undefined,
         },
         true,
       ),
@@ -232,6 +235,8 @@ describe.skip("Wallet selector integration", () => {
         walletType: EWalletType.BROWSER,
         address: expectedAddress,
         walletSubType: EWalletSubType.METAMASK,
+        salt: undefined,
+        email: undefined,
       }),
       isUnlocked: () => true,
     });
@@ -300,7 +305,7 @@ describe.skip("Wallet selector integration", () => {
       .initializeMock(internalWeb3AdapterMock, dummyNetworkId);
 
     const mountedComponent = createMount(
-      wrapWithProviders(() => <Route component={WalletSelector} />, {
+      wrapWithProviders(() => <Route component={WalletSelectorLogin} />, {
         container,
         store,
         history,
@@ -368,6 +373,8 @@ describe.skip("Wallet selector integration", () => {
           walletType: EWalletType.BROWSER,
           address: expectedAddress,
           walletSubType: EWalletSubType.METAMASK,
+          salt: undefined,
+          email: undefined,
         },
         true,
       ),

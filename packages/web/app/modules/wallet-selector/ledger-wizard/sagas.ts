@@ -17,8 +17,7 @@ export function* tryEstablishingConnectionWithLedger({
   ledgerWalletConnector,
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    yield ledgerWalletConnector.connect();
-
+    yield call(ledgerWalletConnector.connect);
     yield put(actions.walletSelector.ledgerConnectionEstablished());
   } catch (e) {
     yield put(
@@ -127,7 +126,7 @@ export function* finishSettingUpLedgerConnector(
 export function* ledgerSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
-    "LEDGER_TRY_ESTABLISHING_CONNECTION",
+    actions.walletSelector.ledgerTryEstablishingConnectionWithLedger,
     actions.walletSelector.reset,
     tryEstablishingConnectionWithLedger,
   );

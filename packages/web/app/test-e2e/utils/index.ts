@@ -167,15 +167,18 @@ export const acceptTOS = () => {
 };
 
 export const lightWalletTypeRegistrationInfo = (email: string, password: string) => {
-  cy.get(tid("wallet-selector-register-email")).type(email);
+  cy.get(tid("wallet-selector-register-email"))
+    .type("{selectall}{backspace}")
+    .type(email);
+  lightWalletTypePasswordRegistration(password);
+};
+
+export const lightWalletTypePasswordRegistration = (password: string) => {
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
   cy.get(tid("wallet-selector-register-tos")).click();
 
-  cy.get(tid("wallet-selector-register-button"))
-    .should("be.enabled")
-    .awaitedClick()
-    .should("be.disabled");
+  cy.get(tid("wallet-selector-register-button")).click();
 };
 
 export const logoutViaAccountMenu = () => {

@@ -4,6 +4,11 @@ import { INotificationsProvider } from "./INotificationsProvider";
 import { symbols as globalSymbols } from "../../di/symbols";
 import { ILogger } from "@neufund/shared-modules";
 
+/**
+ * @class FirebaseProvider
+ * A class to manage subscription with a remote notification provider, e.g. Firebase.
+ * @note this works together with a native code in AppDelegate.m on IOS.
+ */
 @injectable()
 class FirebaseProvider implements INotificationsProvider {
   private readonly app: any;
@@ -14,30 +19,52 @@ class FirebaseProvider implements INotificationsProvider {
     this.logger = logger;
   }
 
+  /**
+   * @method subscribeForNotifications
+   * Subscribes for a remote notifications service.
+   */
   async subscribeForNotifications(): Promise<void> {
     this.logger.info("Subscribe for remote notifications");
 
     return this.app.registerForRemoteNotifications();
   }
 
+  /**
+   * @method unsubscribeForNotifications
+   * Unsubscribes from a remote notifications service.
+   */
   async unsubscribeForNotifications(): Promise<void> {
     this.logger.info("Unsubscribe for remote notifications");
 
     return this.app.unregisterForRemoteNotifications();
   }
 
+  /**
+   * @method getRegistrationToken
+   * Get a registration token from the provider.
+   * @returns {string} Registration (FCM) token.
+   */
   async getRegistrationToken(): Promise<string> {
     this.logger.info("Get registration token");
 
     return this.app.getToken();
   }
 
+  /**
+   * @method deleteRegistrationToken
+   * Deletes a registration token from the provider.
+   */
   async deleteRegistrationToken(): Promise<void> {
     this.logger.info("Delete registration token");
 
     return this.app.deleteToken();
   }
 
+  /**
+   * @method refreshRegistrationToken
+   * Manually enforces a new token.
+   * @note this method makes sure that a new registration token is returned upon a request, as a getToken method might return an old token, depending if it is still valid or not expired.
+   */
   async refreshRegistrationToken(): Promise<string> {
     this.logger.info("Refresh registration token");
 
@@ -47,7 +74,12 @@ class FirebaseProvider implements INotificationsProvider {
     return newRegistrationToken;
   }
 
-  onTokenRefresh(listener: (token: string) => any) {
+  /**
+   * @event onTokenRemoteRefresh
+   * Fires when token is refreshed in a native code or remotely.
+   * @param {function} A callback to call when token is refreshed.
+   */
+  onTokenRemoteRefresh(listener: (token: string) => any) {
     this.app.onTokenRefresh(listener);
   }
 }

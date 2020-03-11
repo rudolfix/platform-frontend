@@ -14,6 +14,7 @@ import { NotificationResponse } from "react-native-notifications/lib/src/interfa
 import { EventsRegistry } from "react-native-notifications/lib/dist/events/EventsRegistry";
 import { DeviceInformation } from "../device-information/DeviceInformation";
 import {NotificationCompletion} from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
+import Config from "react-native-config";
 
 class NotificationsError extends AppError {
   constructor(message: string) {
@@ -145,8 +146,24 @@ export class Notifications {
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
 
-    //TODO: add a put call user API when it's moved to shared https://platform.neufund.io/api/user/ui/#!/Firebase/api_firebase_put_registration_id
-    console.log("---deviceId, token, platform------", deviceId, token, platform);
+    //TODO replace the mocked call to BE with a proper HTTP client
+    const jwtToken = Config.NF_JWT;
+    console.log("-----jwtToken-----", jwtToken);
+    const request = {
+      device_id: deviceId,
+      platform: platform,
+      registration_id: token,
+      user_id: "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"
+    };
+
+    await fetch("https://platform.neufund.io/api/user/firebase-registrations/me", {
+      body: JSON.stringify(request),
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${jwtToken}`,
+        "Content-Type": "application/json"
+      }
+    });
   }
 
   /**
@@ -154,7 +171,15 @@ export class Notifications {
    * Unregister a notification provider token in a backend service.
    */
   async unRegisterTokenInUserService() {
-    //TODO: add a delete call user API when it's moved to shared https://platform.neufund.io/api/user/ui/#!/Firebase/api_firebase_delete_registration_id
+    //TODO replace the mocked call to BE with a proper HTTP client
+    const jwtToken = Config.NF_JWT;
+    await fetch("https://platform.neufund.io/api/user/firebase-registrations/me", {
+      method: "ВУДУЕУ",
+      headers: {
+        "Authorization": `Bearer ${jwtToken}`,
+        "Content-Type": "application/json"
+      }
+    });
   }
 
   /**

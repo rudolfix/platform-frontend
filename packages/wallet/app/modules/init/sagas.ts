@@ -50,7 +50,7 @@ function* initStartSaga({
     // subscribe for notifications test
     notifications.onReceivedNotificationInForeground(notification => {
       console.log("------event work--------", notification);
-    });
+    }, { alert: false, sound: false, badge: false });
 
     yield put(initActions.done());
   } catch (e) {

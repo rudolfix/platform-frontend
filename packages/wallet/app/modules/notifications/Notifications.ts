@@ -113,7 +113,6 @@ export class Notifications {
         this.logger.info("Notification received in background");
 
         listener(notification);
-        //{ alert: false, sound: false, badge: false }
         completion(notificationShowSettings);
       },
     );

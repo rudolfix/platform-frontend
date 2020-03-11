@@ -6,7 +6,7 @@ import {
   goToRegisterWithMockedWeb3,
 } from "../utils/navigation";
 
-describe("Redirect user with browser wallet", () => {
+describe("Redirect user with browser wallet #redirect #p3", () => {
   it("should redirect to /login/browser", () => {
     goToLoginWithMockedWeb3();
 
@@ -17,7 +17,7 @@ describe("Redirect user with browser wallet", () => {
     assertUserInBrowserWalletLoginPage();
   });
 
-  it("should redirect to /register/browser", () => {
+  it("should redirect to /register/browser #redirect #p3", () => {
     goToRegisterWithMockedWeb3();
 
     // This asserts browser wallet error msg

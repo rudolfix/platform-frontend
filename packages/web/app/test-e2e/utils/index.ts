@@ -46,15 +46,11 @@ export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
 };
 
-export const registerWithLightWalletNominee = (
-  email: string,
-  password: string,
-  acceptTos: boolean = true,
-) => {
+export const registerWithLightWalletNominee = (email: string, password: string) => {
   cy.visit("nominee/register");
 
   lightWalletTypeRegistrationInfo(email, password);
-  if (acceptTos) acceptTOS();
+  cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
 };
 
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {
@@ -134,10 +130,8 @@ export const registerWithLightWallet = (email: string, password: string) => {
 export const registerWithLightWalletIssuer = (email: string, password: string) => {
   cy.visit(appRoutes.registerIssuer);
 
-  cy.get(tid("wallet-selector-light")).click();
   lightWalletTypeRegistrationInfo(email, password);
 
-  acceptTOS();
   assertIssuerDashboard();
 };
 

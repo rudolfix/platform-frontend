@@ -58,6 +58,7 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
       ({ rootPath, showWalletSelector }) => ({
         rootPath,
         showWalletSelector,
+        isLoginRoute: false,
       }),
     )(RegisterLedgerBase),
   ),

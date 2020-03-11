@@ -35,6 +35,8 @@ interface IStateProps {
   rootPath: string;
   isLoginRoute: boolean;
   userType: EUserType;
+  ledgerConnectionEstablished: boolean;
+  closeAccountChooser: () => void;
 }
 
 interface IDispatchProps {
@@ -89,7 +91,7 @@ export const WalletSelectorLoginBase: React.FunctionComponent<IExternalProps> = 
   }
 
   return (
-    <TransitionalLayout width={EContentWidth.SMALL} {...props}>
+    <TransitionalLayout isLoginRoute width={EContentWidth.SMALL} {...props}>
       {showLogoutReason && (
         <WarningAlert
           className={styles.logoutNotification}
@@ -122,7 +124,6 @@ export const WalletSelectorLogin = compose<IStateProps & IDispatchProps & TAddit
         dispatch(actions.walletSelector.ledgerCloseAccountChooser());
         dispatch(
           actions.walletSelector.ledgerConnectionEstablishedError({
-            messageData: "canceleed",
             messageType: LedgerErrorMessage.USER_CANCELLED,
           }),
         );

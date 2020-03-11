@@ -36,7 +36,6 @@ import { checkForPendingEmailVerification } from "../email/sagas";
 import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
-import { EUserType } from "./../../../lib/api/users/interfaces";
 import { loadUser, logoutUser } from "./external/sagas";
 
 /**

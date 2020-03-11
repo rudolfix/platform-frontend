@@ -24,7 +24,7 @@ import { connectLightWallet } from "../../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../../actions";
 import { selectUserType } from "../../auth/selectors";
 import { loadUser, updateUser } from "../../auth/user/external/sagas";
-import { signInUser, signInUser } from "../../auth/user/sagas";
+import { signInUser } from "../../auth/user/sagas";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { displayInfoModalSaga } from "../../generic-modal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";

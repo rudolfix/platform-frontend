@@ -20,21 +20,12 @@
 }
 
 .advanced {
-  @include button-text;
-  @include button;
   margin-top: map-get($spacers, 3);
-  text-align: center;
-}
-
-.back {
-  @include button-text;
-  @include button;
-  font-size: px-to-rem(15px);
 }
 
 .explanation {
   width: 100%;
-  margin: px-to-rem(40px) 0 px-to-rem(20px);
+  margin: px-to-rem(20px) 0 px-to-rem(24px);
   font-family: $font-family-roboto;
   font-size: px-to-rem(16px);
 }
@@ -43,4 +34,8 @@
   font-family: $font-family-montserrat;
   font-size: px-to-rem(32px);
   font-weight: 600;
+}
+
+.error-message {
+  padding: px-to-rem(20px);
 }

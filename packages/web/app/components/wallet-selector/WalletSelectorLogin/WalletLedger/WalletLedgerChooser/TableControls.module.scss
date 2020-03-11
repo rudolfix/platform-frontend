@@ -1,0 +1,13 @@
+.wrapper {
+  height: 56px;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  padding: 0 px-to-rem(8px);
+  border-bottom: 1px solid #cfd7dd;
+}
+
+.input {
+  border-width: 1px;
+  width: px-to-rem(320px);
+}

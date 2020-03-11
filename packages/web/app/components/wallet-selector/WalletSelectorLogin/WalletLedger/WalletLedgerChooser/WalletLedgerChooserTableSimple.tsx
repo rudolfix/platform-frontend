@@ -103,8 +103,4 @@ const prepareRows = (accounts, handleAddressChosen) =>
 export const WalletLedgerChooserTableSimple: React.FunctionComponent<IWalletLedgerChooserTableSimple> = ({
   accounts,
   handleAddressChosen,
-}) => (
-  <PanelRounded>
-    <Table data={prepareRows(accounts, handleAddressChosen)} columns={columns} />
-  </PanelRounded>
-);
+}) => <Table data={prepareRows(accounts, handleAddressChosen)} columns={columns} />;

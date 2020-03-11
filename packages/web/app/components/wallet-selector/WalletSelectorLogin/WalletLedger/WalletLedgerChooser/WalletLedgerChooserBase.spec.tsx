@@ -8,7 +8,7 @@ import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
 import { WalletLedgerChooserBase } from "./WalletLedgerChooserBase";
 import { WalletLedgerChooserTableAdvanced } from "./WalletLedgerChooserTableAdvanced";
 import { WalletLedgerChooserTableSimple } from "./WalletLedgerChooserTableSimple";
-import { WalletLedgerDPChooser } from "./WalletLedgerDPChooser";
+import { TableControls } from "./TableControls";
 
 const defaultProps = () => ({
   loading: false,
@@ -59,11 +59,11 @@ describe("<WalletLedgerChooserBase />", () => {
     expect(component.contains(<LoadingIndicator />)).to.be.true;
   });
 
-  it("should render WalletLedgerDPChooser for advanced use case", () => {
+  it("should render TableControls for advanced use case", () => {
     const component = shallow(<WalletLedgerChooserBase {...defaultProps()} />);
     expect(
-      component.find(WalletLedgerDPChooser),
-      "doesn't contain WalletLedgerDPChooser",
+      component.find(TableControls),
+      "doesn't contain TableControls",
     ).to.be.length(1);
   });
 

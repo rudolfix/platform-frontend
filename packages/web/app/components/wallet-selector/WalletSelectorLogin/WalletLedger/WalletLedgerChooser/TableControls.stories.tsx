@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
-import { DPChooserComponent } from "./WalletLedgerDPChooser";
+import { DPChooserComponent } from "./TableControls";
 
 const initialState = {
   derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
@@ -19,6 +19,6 @@ const errorState = {
   errorMessage: "visible error",
 };
 
-storiesOf("Ledger/WalletLedgerDPChooser", module)
+storiesOf("Ledger/TableControls", module)
   .add("initial", () => <DPChooserComponent {...initialState} />)
   .add("visible error", () => <DPChooserComponent {...errorState} />);

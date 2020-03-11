@@ -5,7 +5,7 @@ import { generateRandomSeedAndAddress } from "./generateRandomSeedAndAddress";
 import { DEFAULT_HD_PATH } from "../utils/userHelpers";
 
 describe("generateRandomSeedAndAddress", () => {
-  it("generates seed and password", async () => {
+  it("generates random seed and password", async () => {
     const { seed, address } = await generateRandomSeedAndAddress(DEFAULT_HD_PATH);
 
     expect(seed.length).to.eq(24);

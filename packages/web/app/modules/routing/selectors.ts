@@ -6,6 +6,7 @@ import { createSelector } from "reselect";
 import { appRoutes } from "../../components/appRoutes";
 import { TAppGlobalState } from "../../store";
 import { EWalletType } from "../web3/types";
+import { TAppGlobalState } from "./../../store";
 
 export const selectRouter = (state: TAppGlobalState) => state.router;
 
@@ -57,3 +58,6 @@ export const selectWalletTypeFromQueryString = createSelector(
     }
   },
 );
+
+export const selectHasRedirectedToBrowserAlready = (state: TAppGlobalState) =>
+  state.routing.hasRedirectedToBrowserAlready;

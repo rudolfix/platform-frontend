@@ -16,8 +16,12 @@ import {
   BrowserWalletUnknownError,
 } from "./BrowserWallet";
 
+type Web3Provider = Web3.Provider & {
+  enable: () => Promise<void>;
+};
+
 type TWeb3Provider = {
-  injectedWeb3Provider: any;
+  injectedWeb3Provider: Web3Provider | undefined;
   isLatestMetaMask: boolean;
 };
 

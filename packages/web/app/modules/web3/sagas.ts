@@ -120,28 +120,6 @@ export function* initWeb3ManagerEvents({ web3Manager }: TGlobalDependencies): an
   }
 }
 
-export function* detectWeb3({
-  browserWalletConnector,
-}: TGlobalDependencies): Generator<any, any, any> {
-  const browserWallet = browserWalletConnector.detectWeb3();
-
-  yield put(actions.web3.setWeb3Status(!!browserWallet.injectedWeb3Provider));
-
-  if (browserWallet.injectedWeb3Provider !== undefined) {
-    // FIXME !!! move this to router
-    // const rootPath = yield select(selectLocation);
-    // // If user trying to access log in route redirect directly to login with browser wallet
-    // if (rootPath && rootPath.pathname.includes("/login") && !rootPath.search.includes("salt")) {
-    //   yield put(actions.routing.goToLoginWithBrowserWalet());
-    // }
-    //
-    // // If user trying to access register route redirect directly to register with browser wallet
-    // if (rootPath && rootPath.pathname.includes("/register")) {
-    //   yield put(actions.routing.goToRegisterBrowserWallet());
-    // }
-  }
-}
-
 export const web3Sagas = function*(): Generator<any, any, any> {
   yield fork(
     neuTakeEvery,

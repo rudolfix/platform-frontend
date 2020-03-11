@@ -82,4 +82,12 @@ export const routingActions = {
   // other...
   // TODO: Replace with a dedicated 404 page
   goTo404: () => push(appRoutes.root),
+
+  /* Regular Actions */
+  setBrowserAutoRedirect: createActionFactory(
+    "ROUTING_SET_BROWSER_AUTO_REDIRECT",
+    (hasRedirectedToBrowserAlready: boolean) => ({
+      hasRedirectedToBrowserAlready,
+    }),
+  ),
 };

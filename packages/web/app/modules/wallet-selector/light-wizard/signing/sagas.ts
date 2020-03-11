@@ -13,8 +13,8 @@ import { SignerType } from "../../../../lib/web3/PersonalWeb3";
 import { getVaultKey } from "../utils";
 import { TGlobalDependencies } from "./../../../../di/setupBindings";
 import { IUser } from "./../../../../lib/api/users/interfaces";
-import { DEFAULT_HD_PATH } from "./../../../../test-e2e/utils/userHelpers";
 import { ILightWalletMetadata } from "./../../../web3/types";
+import { DEFAULT_HD_PATH } from "./../sagas";
 
 /**
  * Signs a challange and returns a user object without logging the user in

@@ -5,6 +5,8 @@ import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { LightWalletRecoverySignUp } from "./LightWalletRecoverySignUp/LightWalletRecoverySignUp";
 import { LightWalletRecoverySeedCheck } from "./RecoverWalletCheckSeed/RecoverWalletCheckSeed";
+import { selectLightWalletRecoveryPhase } from "../../../../modules/wallet-selector/light-wizard/selectors";
+import { ERecoveryPhase } from "../../../../modules/wallet-selector/light-wizard/reducer";
 
 interface IDispatchProps {
   goToDashboard: () => void;
@@ -21,7 +23,7 @@ interface IMainRecoveryState {
 }
 
 class RecoveryProcessesComponent extends React.Component<
-  IMainRecoveryProps & IDispatchProps,
+  IMainRecoveryProps & IDispatchProps & IStateProps,
   IMainRecoveryState
 > {
   constructor(props: IMainRecoveryProps & IDispatchProps) {
@@ -38,7 +40,7 @@ class RecoveryProcessesComponent extends React.Component<
     const { goToDashboard } = this.props;
     return (
       <>
-        {this.state.seed ? (
+        {this.state.seed && this.props.recoveryPhase === ERecoveryPhase.FORM_ENTRY_COMPONENT ? (
           <LightWalletRecoverySignUp goToDashboard={goToDashboard} seed={this.state.seed} />
         ) : (
           <LightWalletRecoverySeedCheck
@@ -51,8 +53,13 @@ class RecoveryProcessesComponent extends React.Component<
   }
 }
 
+interface IStateProps {
+  recoveryPhase: ERecoveryPhase;
+}
+
 const RecoverWallet = compose<IMainRecoveryProps & IDispatchProps, {}>(
-  appConnect<{}, IDispatchProps>({
+  appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => ({ recoveryPhase: selectLightWalletRecoveryPhase(state) }),
     dispatchToProps: dispatch => ({
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
       submitSeed: (seed: string) => dispatch(actions.walletSelector.submitSeed(seed)),

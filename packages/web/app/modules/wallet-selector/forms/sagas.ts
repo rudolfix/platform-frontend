@@ -9,7 +9,7 @@ import { actions } from "../../actions";
 import { checkEmailPromise } from "../../auth/email/sagas";
 import { getUserMeWithSeedOnly } from "../light-wizard/signing/sagas";
 import { TBaseUiData } from "../sagas";
-import { selectRegisterWalletDefaultFormValues, selectUrlUserType } from "../selectors";
+import { selectUrlUserType } from "../selectors";
 import {
   ECommonWalletRegistrationFlowState,
   EFlowType,
@@ -71,18 +71,6 @@ export function* registerForm(
         } as const),
       );
     } else {
-      const registerFormDefaultValues = yield* select(selectRegisterWalletDefaultFormValues);
-
-      if (!registerFormDefaultValues) {
-        throw new Error("registerFormDefaultValues should be defined at this stage");
-      }
-      yield put(
-        actions.walletSelector.setWalletRegisterData({
-          ...baseUiData,
-          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
-          initialFormValues: registerFormDefaultValues,
-        }),
-      );
       return payload;
     }
   }

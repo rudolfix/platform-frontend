@@ -1,3 +1,4 @@
+import { ERecoveryPhase } from "./reducer";
 import { createActionFactory } from "@neufund/shared";
 
 import { TMessage } from "../../../components/translatedMessages/utils";
@@ -20,5 +21,11 @@ export const lightWizardActions = {
   lightWalletRegister: createActionFactory(
     "LIGHT_WALLET_REGISTER",
     (email: string, password: string) => ({ email, password }),
+  ),
+  setRecoveryPhase: createActionFactory(
+    "SET_LIGHT_WALLET_RECOVERY_PHASE",
+    (RecoveryPhase: ERecoveryPhase) => ({
+      RecoveryPhase,
+    }),
   ),
 };

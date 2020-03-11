@@ -4,12 +4,21 @@ import { TMessage } from "../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../store";
 import { actions } from "../../actions";
 
+export enum ERecoveryPhase {
+  SEED_ENTRY_COMPONENT,
+  FORM_ENTRY_COMPONENT,
+}
+
 export interface ILightWalletWizardState {
   errorMsg?: DeepReadonly<TMessage>;
   isLoading: boolean;
+  recoveryPhase: ERecoveryPhase;
 }
 
-export const lightWalletWizardInitialState: ILightWalletWizardState = { isLoading: false };
+export const lightWalletWizardInitialState: ILightWalletWizardState = {
+  isLoading: false,
+  recoveryPhase: ERecoveryPhase.FORM_ENTRY_COMPONENT,
+};
 
 export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
   state = lightWalletWizardInitialState,
@@ -17,7 +26,6 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
 ): ILightWalletWizardState => {
   switch (action.type) {
     case actions.walletSelector.lightWalletLogin.getType():
-      // case actions.walletSelector.lightWalletRegister.getType():
       return {
         ...state,
         errorMsg: undefined,
@@ -36,6 +44,8 @@ export const lightWalletWizardReducer: AppReducer<ILightWalletWizardState> = (
         isLoading: false,
         errorMsg: undefined,
       };
+    case actions.walletSelector.setRecoveryPhase.getType():
+      return { ...state, recoveryPhase: action.payload.RecoveryPhase };
   }
   return state;
 };

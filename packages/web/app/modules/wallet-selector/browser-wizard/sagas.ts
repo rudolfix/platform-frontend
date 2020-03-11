@@ -9,7 +9,7 @@ import {
 } from "../../../lib/web3/browser-wallet/BrowserWallet";
 import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
-import { handleSignInUser } from "../../auth/user/sagas";
+import { handleSignInUser, signInUser } from "../../auth/user/sagas";
 import { neuTakeUntil } from "../../sagasUtils";
 import { EWalletType } from "../../web3/types";
 import { registerForm } from "../forms/sagas";
@@ -76,6 +76,7 @@ export function* browserWalletConnectAndSign(
       web3Manager.networkId,
     );
     yield web3Manager.plugPersonalWallet(browserWallet);
+
     return true;
   } catch (e) {
     const errorMessage = mapBrowserWalletErrorToErrorMessage(e);
@@ -127,9 +128,20 @@ export function* browserWalletRegister(
         yield take(actions.walletSelector.browserWalletSignMessage);
       }
     }
-    yield neuCall(handleSignInUser, userType, email, true);
+    yield neuCall(signInUser, userType, email, true);
   } catch (e) {
-    logger.error(new Error("An error while registering with a browser wallet", e));
+    logger.error(new Error("An error while registering with a browser wallet"), e);
+    const errorMessage = yield mapBrowserWalletErrorToErrorMessage(e);
+    yield put(
+      actions.walletSelector.setWalletRegisterData({
+        ...baseUiData,
+        uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
+        errorMessage,
+        initialFormValues: (yield* select(
+          selectRegisterWalletDefaultFormValues,
+        )) as TBrowserWalletFormValues,
+      } as const),
+    );
     yield walletSelectorReset();
   }
 }

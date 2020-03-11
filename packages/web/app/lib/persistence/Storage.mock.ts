@@ -1,4 +1,5 @@
-import { createMock } from "../../../test/testUtils";
+import { createMock } from "@neufund/shared/tests";
+
 import { Storage } from "./Storage";
 
 // dummy storage storing everything in local object

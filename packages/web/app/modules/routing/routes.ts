@@ -38,6 +38,7 @@ export const routes = [
   etoViewByIdRoute,
 
   rootRoute,
+  documentsRoute,
   dashboardRoute,
   registerRoute,
   registerWithLightWalletRoute,
@@ -52,7 +53,6 @@ export const routes = [
   icbmMigrationRoute,
   walletUnlockRoute,
   walletRoute,
-  documentsRoute,
   verifyEmailRoute,
   seedBackupRoute,
   kycRoute,

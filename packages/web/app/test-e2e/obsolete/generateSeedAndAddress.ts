@@ -19,7 +19,7 @@ export const generateSeedAndAddress = async (
   });
 
   const deserializedInstance = await deserializeLightWalletVault(
-    serializedLightWallet.walletInstance,
+    serializedLightWallet.serializedLightWallet,
     serializedLightWallet.salt,
   );
 

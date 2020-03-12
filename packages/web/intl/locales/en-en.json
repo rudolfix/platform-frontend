@@ -1067,6 +1067,7 @@
   "portfolio.asset.payouts-from-neu.accept-all-payout": "Accept all",
   "portfolio.asset.payouts-from-neu.accept-payout": "Accept payout",
   "portfolio.asset.payouts-from-neu.claim-by": "Accept by",
+  "portfolio.asset.payouts-from-neu.community-link": "neufund.org/community",
   "portfolio.asset.payouts-from-neu.no-payouts": "There are no pending payouts.",
   "portfolio.asset.payouts-from-neu.notification.failed-to-load-incoming-payouts": "There was a problem while loading incoming payouts.",
   "portfolio.asset.payouts-from-neu.notification.failed-to-load-payouts": "There was a problem while loading payouts.",

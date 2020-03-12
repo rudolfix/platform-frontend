@@ -6,6 +6,7 @@ import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
+import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
 import { ITokenDisbursal } from "../../modules/investor-portfolio/types";
 import { appConnect } from "../../store";
@@ -186,13 +187,17 @@ const AssetPortfolioLayoutContainer: React.FunctionComponent = ({ children }) =>
       <Heading level={4} decorator={false}>
         <FormattedMessage id="portfolio.section.asset-portfolio.title" />
         <Tooltip
+          data-test-id="asset-portfolio.payout.community-tooltip"
           content={
             <FormattedMessage
               id="portfolio.section.asset-portfolio.tooltip"
               values={{
                 link: (
-                  <ExternalLink href="https://neufund.org/community">
-                    neufund.org/community{" "}
+                  <ExternalLink
+                    href={externalRoutes.neufundCommunity}
+                    data-test-id="asset-portfolio.payout.community-link"
+                  >
+                    <FormattedMessage id="portfolio.asset.payouts-from-neu.community-link" />
                   </ExternalLink>
                 ),
               }}

@@ -29,6 +29,7 @@ import {
 } from "../../../../../shared/formatters/utils";
 import { Panel } from "../../../../../shared/Panel";
 import { Percentage } from "../../../../../shared/Percentage";
+import { Tooltip } from "../../../../../shared/tooltips/Tooltip";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../../../shared/ToBeAnnouncedTooltip";
 import { InvestmentAmount } from "./InvestmentAmount";
 
@@ -277,7 +278,16 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               />
             )}
             <Entry
-              label={<FormattedMessage id="eto.public-view.token-terms.ticket-size" />}
+              label={
+                <>
+                  <FormattedMessage id="eto.public-view.token-terms.ticket-size" />
+                  <Tooltip
+                    content={
+                      <FormattedMessage id="eto.public-view.token-terms.ticket-size.tooltip" />
+                    }
+                  />
+                </>
+              }
               value={
                 <MoneyRange
                   valueFrom={eto.minTicketEur ? eto.minTicketEur.toString() : undefined}
@@ -398,22 +408,6 @@ const EtoInvestmentTermsWidgetLayout: React.FunctionComponent<TExternalProps & T
               }
               data-test-id="eto-public-view-token-transferability"
             />
-
-            {eto.enableTransferOnSuccess && (
-              <Entry
-                label={<FormattedMessage id="eto.public-view.token-terms.token-tradability" />}
-                value={
-                  <>
-                    {eto.tokenTradeableOnSuccess ? (
-                      <FormattedMessage id="eto.public-view.token-terms.enabled" />
-                    ) : (
-                      <FormattedMessage id="eto.public-view.token-terms.disabled" />
-                    )}
-                  </>
-                }
-                data-test-id="eto-public-view-token-tradability"
-              />
-            )}
 
             <Entry
               label={<FormattedMessage id="eto.public-view.asset-type" />}

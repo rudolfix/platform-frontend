@@ -39,6 +39,7 @@ import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { walletSagas } from "./wallet/sagas";
 import { web3Sagas } from "./web3/sagas";
+import { walletConnectSagas } from "./wallet-selector/walletConnect/sagas";
 
 /**
  * Restart all sagas on error and report error to sentry
@@ -50,6 +51,7 @@ function* allSagas(): Generator<any, any, any> {
     fork(authSagas),
     fork(walletSelectorSagas),
     fork(lightWalletSagas),
+    fork(walletConnectSagas),
     fork(browserWalletSagas),
     fork(ledgerSagas),
     fork(routingSagas),

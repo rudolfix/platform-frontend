@@ -29,7 +29,7 @@ import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
 import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
-import { WalletConnect } from "./wallet-selector/WalletConnect";
+import { WalletConnect } from "./wallet-selector/wallet-connect/WalletConnect";
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
 

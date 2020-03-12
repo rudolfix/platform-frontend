@@ -57,12 +57,13 @@ export class WalletConnectConnector extends EventEmitter {
     this.provider.on("accountsChanged", this.accountsChangedHandler);
     this.provider.on("chainChanged", this.chainChangedHandler);
     this.provider.on("networkChanged", this.networkChangedHandler);
-    this.provider.on("open", this.openHandler);
-    this.provider.on("close", this.closeHandler);
+    this.provider.on("open", this.openHandler); //not sure if those are used
+    this.provider.on("close", this.closeHandler);//not sure if those are used
     this.provider.on("connect", this.connectHandler);
     this.provider.on("disconnect", this.disconnectHandler);
     this.provider.on("reject", this.rejectHandler);
     this.provider.on("error", this.errorHandler);
+    this.provider.on("payload", this.payloadHandler);
 
     try {
       await this.provider.enable();
@@ -141,5 +142,9 @@ export class WalletConnectConnector extends EventEmitter {
   private errorHandler = (error:Error) => {
     console.log("error event", error);
     this.emit(EWalletConnectEventTypes.ERROR,{error} )
+  };
+
+  private payloadHandler = (payload:any) => {
+    console.log("paylaod event", payload);
   };
 }

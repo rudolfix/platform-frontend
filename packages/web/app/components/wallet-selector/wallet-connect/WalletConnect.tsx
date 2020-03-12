@@ -3,15 +3,16 @@ import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
 import {  compose } from "recompose";
 
-import { actions } from "../../modules/actions";
-import { ELogoutReason } from "../../modules/auth/types";
-import { TLoginRouterState } from "../../modules/routing/types";
-import { appConnect } from "../../store";
-import { TransitionalLayout } from "../layouts/Layout";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
-import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
-import { resetWalletOnLeave } from "./resetWallet";
+import { actions } from "../../../modules/actions";
+import { ELogoutReason } from "../../../modules/auth/types";
+import { TLoginRouterState } from "../../../modules/routing/types";
+import { appConnect } from "../../../store";
+import { TransitionalLayout } from "../../layouts/Layout";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { resetWalletOnLeave } from "../resetWallet";
 import { WalletConnectLayout } from "./WalletConnectLayout";
+import { selectMessageSigningError } from "../../../modules/wallet-selector/selectors";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -47,6 +48,9 @@ export const WalletConnect = compose<
 >(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
+    stateToProps: state => ({
+      error: selectMessageSigningError(state)
+    }),
     dispatchToProps: dispatch => ({
       walletConnectStart: () => dispatch(actions.walletSelector.walletConnectStart()),
       walletConnectStop: () => dispatch(actions.walletSelector.walletConnectStop()),

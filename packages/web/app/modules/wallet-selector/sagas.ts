@@ -9,7 +9,7 @@ import { loadPreviousWallet } from "../web3/sagas";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
-
+  console.log("walletSelectorConnect");
   yield neuCall(handleSignInUser);
 }
 
@@ -36,6 +36,8 @@ export function* walletConnectInit(
     return () => {walletConnectConnector.removeAllListeners()}
   });
 
+  yield put(actions.walletSelector.walletConnectStart());
+
   while (true) {
     const event: TWalletConnectEvents | END = yield take(channel);
     switch (event.type) {
@@ -43,7 +45,7 @@ export function* walletConnectInit(
         yield put(actions.walletSelector.walletConnectReady());
         break;
       case EWalletConnectEventTypes.REJECT:
-        yield put(actions.walletSelector.walletConnectReady());
+        yield put(actions.walletSelector.walletConnectRejected());
         break;
       case EWalletConnectEventTypes.DISCONNECT:
         yield put(actions.walletSelector.walletConnectDisconnected());
@@ -61,6 +63,7 @@ export function* walletConnectStart(
   try {
     const wc = yield walletConnectConnector.connect();
     yield web3Manager.plugPersonalWallet(wc);
+    yield put(actions.walletSelector.walletConnectLogin())
     return true
   } catch (e) {
     console.log("walletConnectStart error:", e);

@@ -13,6 +13,7 @@ const actions = {
     "WALLET_SELECTOR_MESSAGE_SIGNING_ERROR",
     (errorMessage: TMessage) => ({ errorMessage }),
   ),
+  walletConnectLogin: createActionFactory("WALLET_CONNECT_LOGIN"),
   walletConnectInit: createActionFactory("WALLET_CONNECT_INIT"),
   walletConnectStop: createActionFactory("WALLET_CONNECT_STOP"),
   walletConnectStart: createActionFactory("WALLET_CONNECT_START"),

@@ -3,6 +3,8 @@ import { RouterState } from "connected-react-router";
 import { appRoutes } from "../../components/appRoutes";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
+import { DeepReadonly } from "../../../../shared/dist/utils/types";
+import { TMessage } from "../../components/translatedMessages/utils";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {
@@ -34,3 +36,6 @@ export const selectOppositeRootPath = (state: RouterState): string =>
 
 export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
+
+export const selectMessageSigningError = (state: TAppGlobalState): DeepReadonly<TMessage> | undefined =>
+  state.walletSelector.messageSigningError;

@@ -1,13 +1,10 @@
 import { TxData } from "web3";
 
 import { EthereumAddress } from "../../../../../shared/dist/utils/opaque-types/types";
-import {
-  EWalletSubType,
-  EWalletType,
-  IWalletConnectMetadata
-} from "../../../modules/web3/types";
+import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
+import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 
 export class WalletConnectError extends Error {}
 
@@ -18,16 +15,19 @@ export class WalletConnectWallet implements IPersonalWallet {
   ) {
   }
 
-  public readonly walletType = EWalletType.WALLET_CONNECT;
+  public readonly walletType = EWalletType.UNKNOWN;
   public readonly walletSubType = EWalletSubType.UNKNOWN;
+  public readonly sendTransactionMethod ='eth_sendTransaction';
+  public readonly signerType = SignerType.ETH_SIGN;
+  public readonly sessionTimeout = 10 * 60 * 1000;
+  public readonly signTimeout = 2 * 60 * 1000;
 
   public getSignerType(): SignerType {
     console.log("getSignerType");
-    return SignerType.ETH_SIGN;
+    return this.signerType;
   }
 
   public async testConnection(networkId: string): Promise<boolean> {
-    console.log("testConnection");
     const currentNetworkId = await this.web3Adapter.getNetworkId();
     if (currentNetworkId !== networkId) {
       return false;
@@ -36,14 +36,10 @@ export class WalletConnectWallet implements IPersonalWallet {
   }
 
   public async signMessage(data: string): Promise<string> {
-    console.log("signMessage", data);
-    const dataDecoded = [{
-      type: "",
-      name: "",
-      value: "",
-    }];
+    const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
+    const dataToSign = addHexPrefix(msgHash.toString("hex"));
 
-    return await this.web3Adapter.signTypedData(this.ethereumAddress, dataDecoded)
+    return await this.web3Adapter.ethSign(this.ethereumAddress,dataToSign)
   }
 
   public async sendTransaction(txData: TxData): Promise<string> {
@@ -57,16 +53,18 @@ export class WalletConnectWallet implements IPersonalWallet {
   }
 
   public getMetadata(): IWalletConnectMetadata {
-    console.log("getMetadata");
     return {
       address: this.ethereumAddress,
       walletType: this.walletType,
-
+      walletSubType: this.walletSubType,
+      sendTransactionMethod: this.sendTransactionMethod,
+      signerType: this.signerType,
+      sessionTimeout: this.sessionTimeout,
+      signTimeout: this.signTimeout
     }
   }
 
   public isUnlocked(): boolean {
-    console.log("isUnlocked");
     return true;
   }
 }

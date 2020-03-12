@@ -182,7 +182,8 @@ function* handleLogOutUser(
 ): Generator<any, any, any> {
   const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
 
-  yield neuCall(logoutUser);
+  yield put(actions.walletSelector.walletConnectStop())
+  // yield neuCall(logoutUser); //TODO need to decide how logout is initiated (by wallet or saga)
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:

@@ -14,7 +14,15 @@ const actions = {
     (errorMessage: TMessage) => ({ errorMessage }),
   ),
   walletConnectInit: createActionFactory("WALLET_CONNECT_INIT"),
-  connectToBridge: createActionFactory("CONNECT_TO_BRIDGE")
+  walletConnectStop: createActionFactory("WALLET_CONNECT_STOP"),
+  walletConnectStart: createActionFactory("WALLET_CONNECT_START"),
+  walletConnectReady: createActionFactory("WALLET_CONNECT_READY"),
+  walletConnectDisconnected: createActionFactory("WALLET_CONNECT_DISCONNECTED"),
+  walletConnectRejected: createActionFactory("WALLET_CONNECT_REJECTED"),
+  walletConnectError: createActionFactory(
+    "WALLET_CONNECT_ERROR",
+    (error: Error) => ({error})
+  ),
 };
 
 export const walletSelectorActions = {

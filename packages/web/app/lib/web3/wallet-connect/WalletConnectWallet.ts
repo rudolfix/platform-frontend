@@ -1,12 +1,13 @@
-import { IPersonalWallet, SignerType } from "../PersonalWeb3";
+import { TxData } from "web3";
+
+import { EthereumAddress } from "../../../../../shared/dist/utils/opaque-types/types";
 import {
   EWalletSubType,
   EWalletType,
   IWalletConnectMetadata
 } from "../../../modules/web3/types";
+import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
-import { EthereumAddress } from "../../../../../shared/dist/utils/opaque-types/types";
-import { TxData } from "web3";
 
 export class WalletConnectError extends Error {}
 
@@ -17,7 +18,7 @@ export class WalletConnectWallet implements IPersonalWallet {
   ) {
   }
 
-  public readonly walletType = EWalletType.LIGHT;
+  public readonly walletType = EWalletType.WALLET_CONNECT;
   public readonly walletSubType = EWalletSubType.UNKNOWN;
 
   public getSignerType(): SignerType {
@@ -51,7 +52,7 @@ export class WalletConnectWallet implements IPersonalWallet {
       return await this.web3Adapter.sendTransaction(txData);
     } catch (e) {
       console.log("walletConnect.sendTransaction error:", e);
-      throw e; //fixme
+      throw e; //todo add errors
     }
   }
 
@@ -59,7 +60,8 @@ export class WalletConnectWallet implements IPersonalWallet {
     console.log("getMetadata");
     return {
       address: this.ethereumAddress,
-      walletType: EWalletType.WALLET_CONNECT,
+      walletType: this.walletType,
+
     }
   }
 

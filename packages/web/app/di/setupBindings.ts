@@ -45,6 +45,7 @@ import { ContractsService } from "../lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../lib/web3/ledger-wallet/LedgerConnector";
 import { LightWalletConnector } from "../lib/web3/light-wallet/LightWalletConnector";
 import { IEthereumNetworkConfig } from "../lib/web3/types";
+import { WalletConnectConnector } from "../lib/web3/wallet-connect/WalletConnectConnector";
 import {
   web3BatchFactory,
   Web3BatchFactoryType,
@@ -57,7 +58,6 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/react-connected-components/AsyncIntervalScheduler";
 import { symbols } from "./symbols";
-import { WalletConnectConnector } from "../lib/web3/wallet-connect/WalletConnectConnector";
 
 export function setupBindings(config: IConfig): ContainerModule {
   return new ContainerModule(bind => {

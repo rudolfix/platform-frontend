@@ -55,4 +55,5 @@ export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
 
 export interface IWalletConnectMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.WALLET_CONNECT;
+  walletSubType: EWalletSubType.UNKNOWN;
 }

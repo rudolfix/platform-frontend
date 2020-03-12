@@ -1,17 +1,14 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
 import { StaticContext } from "react-router";
-import { Link, RouteComponentProps } from "react-router-dom";
-import { Col, Row } from "reactstrap";
+import { RouteComponentProps } from "react-router-dom";
 
 import { ELogoutReason } from "../../modules/auth/types";
 import { TLoginRouterState } from "../../modules/routing/types";
-import { appRoutes } from "../appRoutes";
 import { WalletSelectorContainer } from "./WalletSelectorContainer";
 
 import * as styles from "./WalletSelectorLayout.module.scss";
-import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -20,15 +17,19 @@ interface IExternalProps {
   isLoginRoute: boolean;
   oppositeRoute: string;
   userType: string;
-  openICBMModal: () => void;
+  walletConnectStart: () => void;
+  walletConnectStop: () => void;
   isSecretProtected: boolean;
   logoutReason: ELogoutReason | undefined;
   hideLogoutReason: () => Partial<{ logoutReason: ELogoutReason | undefined }> | undefined;
 }
 
-export const WalletConnectLayout: React.FunctionComponent<IExternalProps & TRouteLoginProps> = ({ connectToBridge }) => {
+export const WalletConnectLayout: React.FunctionComponent<IExternalProps & TRouteLoginProps> = ({
+  walletConnectStop,
+  walletConnectStart
+}) =>
 
-  return (
+  (
     <WalletSelectorContainer data-test-id="wallet-selector">
 
       <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>
@@ -36,10 +37,15 @@ export const WalletConnectLayout: React.FunctionComponent<IExternalProps & TRout
       </h1>
       <Button
         layout={EButtonLayout.PRIMARY}
-        onClick={connectToBridge}
+        onClick={walletConnectStart}
       >
         start connection
       </Button>
+      <Button
+        layout={EButtonLayout.PRIMARY}
+        onClick={walletConnectStop}
+      >
+        stop connection
+      </Button>
     </WalletSelectorContainer>
   );
-};

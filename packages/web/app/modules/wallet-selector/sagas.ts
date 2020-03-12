@@ -1,10 +1,11 @@
-import { fork, put , take} from "@neufund/sagas";
+import { END, eventChannel, fork, put, take } from "@neufund/sagas";
 
+import { TGlobalDependencies } from "../../di/setupBindings";
+import { EWalletConnectEventTypes, TWalletConnectEvents } from "../../lib/web3/wallet-connect/WalletConnectConnector";
 import { actions } from "../actions";
 import { handleSignInUser } from "../auth/user/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../sagasUtils";
 import { loadPreviousWallet } from "../web3/sagas";
-import { TGlobalDependencies } from "../../di/setupBindings";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
@@ -16,28 +17,66 @@ export function* walletSelectorReset(): Generator<any, any, any> {
   yield neuCall(loadPreviousWallet);
 }
 
+
 export function* walletConnectInit(
-  _:TGlobalDependencies
-):Generator<any,void,any>{
+  { walletConnectConnector }: TGlobalDependencies
+): Generator<any, void, any> {
   yield console.log("walletConnectInit started");
 
-  while (true){
-    console.log('loop');
-    yield take(actions.walletSelector.connectToBridge);
-    yield neuCall(walletConnectStart);
+  const channel = eventChannel<TWalletConnectEvents>(emit => {
+    walletConnectConnector.on(EWalletConnectEventTypes.CONNECT, () =>
+      emit({ type: EWalletConnectEventTypes.CONNECT }));
+    walletConnectConnector.on(EWalletConnectEventTypes.DISCONNECT, () =>
+      emit({ type: EWalletConnectEventTypes.DISCONNECT }));
+    walletConnectConnector.on(EWalletConnectEventTypes.REJECT, () =>
+      emit({ type: EWalletConnectEventTypes.REJECT }));
+    walletConnectConnector.on(EWalletConnectEventTypes.ERROR, error =>
+      emit({ type: EWalletConnectEventTypes.ERROR, payload: { error } }));
+
+    return () => {walletConnectConnector.removeAllListeners()}
+  });
+
+  while (true) {
+    const event: TWalletConnectEvents | END = yield take(channel);
+    switch (event.type) {
+      case EWalletConnectEventTypes.CONNECT:
+        yield put(actions.walletSelector.walletConnectReady());
+        break;
+      case EWalletConnectEventTypes.REJECT:
+        yield put(actions.walletSelector.walletConnectReady());
+        break;
+      case EWalletConnectEventTypes.DISCONNECT:
+        yield put(actions.walletSelector.walletConnectDisconnected());
+        break;
+      case EWalletConnectEventTypes.ERROR:
+        yield put(actions.walletSelector.walletConnectError(event.payload.error));
+        break;
+    }
   }
 }
 
 export function* walletConnectStart(
-  {web3Manager,walletConnectConnector }:TGlobalDependencies
-) {
+  { web3Manager, walletConnectConnector }: TGlobalDependencies
+): Generator<any, boolean, any> {
   try {
     const wc = yield walletConnectConnector.connect();
+    yield web3Manager.plugPersonalWallet(wc);
+    return true
+  } catch (e) {
+    console.log("walletConnectStart error:", e);
+    return false
+  }
+}
 
-    console.log("wc", wc)
-    yield web3Manager.plugPersonalWallet(wc)
-  }catch(e){
-    console.log(e)
+export function* walletConnectStop(
+  { walletConnectConnector }: TGlobalDependencies
+): Generator<any, void, any> {
+  console.log("disconnecting...");
+  try {
+    const result = yield walletConnectConnector.disconnect();
+    console.log(result)
+  } catch (e) {
+    console.log("walletConnectStop error:",e)
   }
 }
 
@@ -50,4 +89,6 @@ export function* walletSelectorSagas(): Generator<any, any, any> {
   );
   yield fork(neuTakeEvery, actions.walletSelector.reset, walletSelectorReset);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectInit, walletConnectInit);
+  yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);
+  yield fork(neuTakeEvery, actions.walletSelector.walletConnectStop, walletConnectStop);
 }

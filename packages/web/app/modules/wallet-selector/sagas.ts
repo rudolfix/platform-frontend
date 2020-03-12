@@ -202,6 +202,7 @@ export function* ledgerRegister(
 }
 
 export function* resetWalletSelectorState(): Generator<any, void, any> {
+  yield put(actions.walletSelector.reset());
   yield put(actions.walletSelector.setWalletRegisterData(walletSelectorInitialState));
 }
 

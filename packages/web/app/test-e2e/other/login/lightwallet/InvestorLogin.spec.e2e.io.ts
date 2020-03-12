@@ -1,4 +1,5 @@
 import { appRoutes } from "../../../../components/appRoutes";
+import { stubChallengeApiRequest } from "../../../utils/apiStubs";
 import {
   assertDashboard,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
@@ -43,6 +44,19 @@ describe("Investor", () => {
     registerWithLightWallet(email, password);
 
     assertWaitForLatestEmailSentWithSalt(email);
+  });
+
+  it("should show network error #login #p2", () => {
+    cy.server();
+    stubChallengeApiRequest({}, 400);
+    cy.visit(appRoutes.register);
+    lightWalletTypeRegistrationInfo(email, password);
+    cy.get(tid("generic-modal-dismiss-button")).click();
+
+    // Should be able to register again once we hit an error
+
+    lightWalletTypeRegistrationInfo(email, password);
+    cy.get(tid("generic-modal-dismiss-button")).click();
   });
 
   it("should remember light wallet details after logout #login #p2", () => {

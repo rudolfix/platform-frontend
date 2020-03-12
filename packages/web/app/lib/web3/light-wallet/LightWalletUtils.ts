@@ -59,7 +59,7 @@ export const createLightWalletVault = async ({
       seedPhrase: seed,
       hdPathString,
       salt,
-    }).catch((e) => {
+    }).catch(e => {
       throw new LightWalletWrongMnemonic(e);
     });
     const unlockedWallet = await getWalletKey(lightWalletInstance, password);

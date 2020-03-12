@@ -163,40 +163,42 @@ export function* lightWalletRegister(
     repeatPassword: "",
     tos: false,
   };
+  while (true) {
+    try {
+      const { email, password, tos } = yield neuCall(
+        registerForm,
+        actions.walletSelector.lightWalletRegisterFormData,
+        initialFormValues,
+        baseUiData,
+      );
 
-  try {
-    const { email, password, tos } = yield neuCall(
-      registerForm,
-      actions.walletSelector.lightWalletRegisterFormData,
-      initialFormValues,
-      baseUiData,
-    );
+      const registerFormDefaultValues = yield* select(selectRegisterWalletDefaultFormValues);
 
-    const registerFormDefaultValues = yield* select(selectRegisterWalletDefaultFormValues);
+      if (!registerFormDefaultValues) {
+        throw new Error("registerFormDefaultValues should be defined at this stage");
+      }
+      yield put(
+        actions.walletSelector.setWalletRegisterData({
+          ...baseUiData,
+          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+          initialFormValues: registerFormDefaultValues,
+        }),
+      );
+      yield neuCall(setupLightWallet, email, password, undefined);
+      yield neuCall(signInUser, userType, email, tos);
+      return;
+    } catch (e) {
+      yield neuCall(handleLightWalletError, e);
+      const registerFormDefaultValues = yield* select(selectRegisterWalletDefaultFormValues);
 
-    if (!registerFormDefaultValues) {
-      throw new Error("registerFormDefaultValues should be defined at this stage");
+      yield put(
+        actions.walletSelector.setWalletRegisterData({
+          ...baseUiData,
+          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
+          initialFormValues: registerFormDefaultValues || initialFormValues,
+        }),
+      );
     }
-    yield put(
-      actions.walletSelector.setWalletRegisterData({
-        ...baseUiData,
-        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
-        initialFormValues: registerFormDefaultValues,
-      }),
-    );
-    yield neuCall(setupLightWallet, email, password, undefined);
-    yield neuCall(signInUser, userType, email, tos);
-  } catch (e) {
-    yield neuCall(handleLightWalletError, e);
-    const registerFormDefaultValues = yield* select(selectRegisterWalletDefaultFormValues);
-
-    yield put(
-      actions.walletSelector.setWalletRegisterData({
-        ...baseUiData,
-        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-        initialFormValues: registerFormDefaultValues || initialFormValues,
-      }),
-    );
   }
 }
 

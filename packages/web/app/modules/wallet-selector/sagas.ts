@@ -192,10 +192,17 @@ export function* ledgerRegister(
         return;
       }
     }
-
-    yield neuCall(signInUser, userType, initialFormValues.email, true);
   } catch (e) {
-    //fixme error handling
+    yield put(
+      actions.walletSelector.setWalletRegisterData({
+        ...baseUiData,
+        initialFormValues: {
+          email: "",
+          tos: false,
+        },
+        uiState: ELedgerRegistrationFlowState.LEDGER_INIT_ERROR,
+      } as const),
+    );
   } finally {
     yield walletSelectorReset();
   }

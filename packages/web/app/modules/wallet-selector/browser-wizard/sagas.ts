@@ -96,6 +96,8 @@ export function* browserWalletConnectAndSign(
     return false;
   }
 }
+
+// TODO: Clean `browserWalletRegister` and connect the login flow with `tryConnectingWithBrowserWallet`
 export function* browserWalletRegister(
   { logger }: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.walletSelector.registerWithBrowserWallet>,
@@ -123,12 +125,25 @@ export function* browserWalletRegister(
     while (true) {
       const connectionEstablished = yield neuCall(browserWalletConnectAndSign, baseUiData);
       if (connectionEstablished) {
-        break;
-      } else {
+        try {
+          yield neuCall(signInUser, userType, email, true);
+          return;
+        } catch (e) {
+          const errorMessage = yield mapBrowserWalletErrorToErrorMessage(e);
+          yield put(
+            actions.walletSelector.setWalletRegisterData({
+              ...baseUiData,
+              uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
+              errorMessage,
+              initialFormValues: (yield* select(
+                selectRegisterWalletDefaultFormValues,
+              )) as TBrowserWalletFormValues,
+            } as const),
+          );
+        }
         yield take(actions.walletSelector.browserWalletSignMessage);
       }
     }
-    yield neuCall(signInUser, userType, email, true);
   } catch (e) {
     logger.error(new Error("An error while registering with a browser wallet"), e);
     const errorMessage = yield mapBrowserWalletErrorToErrorMessage(e);

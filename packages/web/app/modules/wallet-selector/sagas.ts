@@ -12,12 +12,12 @@ import {
 import { userMayChooseWallet } from "../../components/wallet-selector/WalletSelectorLogin/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EUserType } from "../../lib/api/users/interfaces";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
-import { handleSignInUser, signInUser } from "../auth/user/sagas";
+import { handleSignInUser } from "../auth/user/sagas";
 import { isSupportingLedger } from "../user-agent/reducer";
 import { loadPreviousWallet } from "../web3/sagas";
 import { EWalletType } from "../web3/types";
-import { TAppGlobalState } from "./../../store";
 import { registerForm } from "./forms/sagas";
 import { mapLedgerErrorToErrorMessage } from "./ledger-wizard/errors";
 import { loadLedgerAccounts } from "./ledger-wizard/sagas";
@@ -200,8 +200,9 @@ export function* ledgerRegister(
           email: "",
           tos: false,
         },
+        errorMessage: mapLedgerErrorToErrorMessage(e),
         uiState: ELedgerRegistrationFlowState.LEDGER_INIT_ERROR,
-      } as const),
+      }),
     );
   } finally {
     yield walletSelectorReset();

@@ -10,6 +10,7 @@ describe("DeviceInformation", () => {
 
   it('should return device ID', () => {
     const testDeviceId = deviceInformation.getUniqueId();
+
     expect(testDeviceId).toBe(deviceId);
   });
 

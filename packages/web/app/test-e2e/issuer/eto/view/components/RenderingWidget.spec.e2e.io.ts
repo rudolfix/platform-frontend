@@ -1,4 +1,7 @@
-import { etherscanAddressLink } from "../../../../../components/appRouteUtils";
+import {
+  etherscanAddressLink,
+  etoPublicViewByIdLinkLegacy,
+} from "../../../../../components/appRouteUtils";
 import { assertIsExternalLink } from "../../../../utils/assertions";
 import {
   accountFixtureAddress,
@@ -7,7 +10,12 @@ import {
   shouldDownloadDocument,
   tid,
 } from "../../../../utils/index";
-import { goToEtoViewById, goToIssuerEtoView } from "../EtoViewUtils";
+import {
+  assertAndConfirmJurisdictionDisclaimer,
+  assertEtoView,
+  goToEtoViewById,
+  goToIssuerEtoView,
+} from "../EtoViewUtils";
 
 const assertIsNonClickableTag = (testId: string) =>
   cy.get(tid(testId) + tid("tag.non-clickable")).should("exist");
@@ -59,7 +67,9 @@ describe("Eto view widget", () => {
   it("should render eto stats for eto in pre-sale #eto #widget #p2", () => {
     const etoId = etoFixtureAddressByName("ETOInWhitelistState");
 
-    goToEtoViewById(etoId);
+    cy.visit(etoPublicViewByIdLinkLegacy(etoId));
+    assertAndConfirmJurisdictionDisclaimer();
+    assertEtoView(etoId);
 
     cy.get(tid("eto-overview.stats.pre-money-valuation")).contains("177 878 291 EUR");
     cy.get(tid("eto-overview.stats.target-investment-amount")).contains("2 966 338 EUR");

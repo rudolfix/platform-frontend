@@ -20,10 +20,6 @@ describe("Eto Investor View", () => {
           "contain",
           getYesOrNo(etoData.enableTransferOnSuccess, true),
         );
-        cy.get(tid("eto-public-view-token-tradability")).should(
-          "contain",
-          etoData.tokenTradeableOnSuccess ? "Immediately after ETO" : "In the future",
-        );
       });
     });
     it("should show disclaimer when eto product type is prospectus #eto #p2", () => {
@@ -37,10 +33,6 @@ describe("Eto Investor View", () => {
         cy.get(tid("eto-public-view-token-transferability")).should(
           "contain",
           getYesOrNo(etoData.enableTransferOnSuccess, true),
-        );
-        cy.get(tid("eto-public-view-token-tradability")).should(
-          "contain",
-          etoData.tokenTradeableOnSuccess ? "Immediately after ETO" : "In the future",
         );
       });
     });

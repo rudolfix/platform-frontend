@@ -40,6 +40,7 @@ import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { ITokenController } from "../../lib/contracts/ITokenController";
 import { TAppGlobalState } from "../../store";
+import { TTranslatedString } from "../../types";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuilding-flow/utils";
@@ -74,7 +75,6 @@ import {
 import {
   convertToEtoTotalInvestment,
   convertToStateStartDate,
-  etoIsInOfferState,
   isOnChain,
   isRestrictedEto,
   isUserAssociatedWithEto,
@@ -502,7 +502,9 @@ function* downloadDocument(
     // agreement not yet accepted
     !isAgreementAlreadyAccepted
   ) {
-    const documentTitles = getInvestorDocumentTitles(eto.product.offeringDocumentType);
+    const documentTitles: { [key: string]: TTranslatedString } = getInvestorDocumentTitles(
+      eto.product.offeringDocumentType,
+    );
 
     yield put(
       actions.genericModal.showModal(DocumentConfidentialityAgreementModal, {
@@ -651,17 +653,15 @@ function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any,
   }
 }
 
-function* verifyEtoAccess(
+export function* verifyEtoAccess(
   _: TGlobalDependencies,
-  { payload }: TActionFromCreator<typeof actions.eto.verifyEtoAccess>,
+  eto: TEtoWithCompanyAndContractReadonly,
+  userIsFullyVerified: boolean,
 ): Generator<any, any, any> {
   // Checks if ETO is an Offer based on
   // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
-  const isEtoAnOffer: boolean = yield !!payload.eto.contract &&
-    etoIsInOfferState(payload.eto.contract.timedState);
-
-  if (isRestrictedEto(payload.eto) && isEtoAnOffer) {
-    if (payload.userIsFullyVerified) {
+  if (isRestrictedEto(eto)) {
+    if (userIsFullyVerified) {
       const jurisdiction: ReturnType<typeof selectClientJurisdiction> = yield select(
         selectClientJurisdiction,
       );
@@ -877,8 +877,6 @@ export function* etoSagas(): Generator<any, any, any> {
     actions.eto.loadSignedInvestmentAgreement,
     issuerFlowLoadInvestmentAgreement,
   );
-
-  yield fork(neuTakeLatest, actions.eto.verifyEtoAccess, verifyEtoAccess);
 
   yield fork(neuTakeUntil, actions.eto.setEto, LOCATION_CHANGE, watchEtoSetAction);
   yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetAction);

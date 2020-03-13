@@ -6,7 +6,11 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions, TActionFromCreator } from "../../actions";
-import { loadEtoWithCompanyAndContract, loadEtoWithCompanyAndContractById } from "../../eto/sagas";
+import {
+  loadEtoWithCompanyAndContract,
+  loadEtoWithCompanyAndContractById,
+  verifyEtoAccess,
+} from "../../eto/sagas";
 import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
 import { ensureEtoJurisdiction } from "../../routing/eto-view/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
@@ -19,7 +23,7 @@ function* loadNotAuthorizedEtoViewInternal(
 ): Generator<any, TReadyEtoViewData, any> {
   yield call(ensureEtoJurisdiction, eto.product.jurisdiction, routeMatch.params.jurisdiction);
 
-  yield put(actions.eto.verifyEtoAccess(eto, false));
+  yield neuCall(verifyEtoAccess, eto, false);
 
   const campaignOverviewData: TCampaignOverviewData = yield call(
     calculateCampaignOverviewData,
@@ -52,7 +56,7 @@ export function* loadNotAuthorizedEtoView(
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
     notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW));
-    yield put(actions.routing.goToDashboard());
+    yield put(actions.routing.goHome());
   }
 }
 
@@ -73,7 +77,7 @@ export function* loadNotAuthorizedEtoViewById(
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
     notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO));
-    yield put(actions.routing.goToDashboard());
+    yield put(actions.routing.goHome());
   }
 }
 

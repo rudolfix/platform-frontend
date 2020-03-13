@@ -17,7 +17,7 @@ import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEurEquivalent } from "../shared/tokenPrice/selectors";
 import { selectEthereumAddressWithChecksum } from "../web3/selectors";
 import { TX_LIMIT } from "./constants";
-import { selectLastTransactionId, selectTimestampOfLastChange, selectTXById } from "./selectors";
+import { selectTimestampOfLastChange, selectTXById } from "./selectors";
 import { ETransactionStatus, ETransactionSubType, TTxHistory, TTxHistoryCommon } from "./types";
 import { getCurrencyFromTokenSymbol, getDecimalsFormat, getTxUniqueId } from "./utils";
 
@@ -304,15 +304,10 @@ export function* loadTransactionsHistoryNext({
   analyticsApi,
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    const lastTransactionId: string | undefined = yield select(selectLastTransactionId);
-
     const {
       transactions,
       beforeTransaction: newLastTransactionId,
-    }: TAnalyticsTransactionsResponse = yield analyticsApi.getTransactionsList(
-      TX_LIMIT,
-      lastTransactionId,
-    );
+    }: TAnalyticsTransactionsResponse = yield analyticsApi.getUpdatedTransactions(TX_LIMIT);
 
     const processedTransactions: TTxHistory[] = yield neuCall(
       mapAnalyticsApiTransactionsResponse,

@@ -10,6 +10,11 @@ const ANALYTICS_API_ROOT = "/api/analytics-api";
 export class AnalyticsApi {
   constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
 
+  /**
+   * @method getTransactionsList An API method thats gets an initial transaction history list
+   *
+   * @note this shouldn't be used for data polling
+   */
   getTransactionsList(
     limit: number,
     lastTransactionId?: string,
@@ -26,6 +31,11 @@ export class AnalyticsApi {
       .then(r => r.body);
   }
 
+  /**
+   * @method getTransactionsList An API method thats returns an updated transaction list
+   *
+   * @note this should be used for data polling
+   */
   getUpdatedTransactions(timestampOfLastChange: number): Promise<TAnalyticsTransactionsResponse> {
     return this.httpClient
       .get<TAnalyticsTransactionsResponse>({

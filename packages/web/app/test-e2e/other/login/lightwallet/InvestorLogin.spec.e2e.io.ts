@@ -28,7 +28,7 @@ describe("Investor", () => {
     password = "strongpassword";
   });
 
-  it("can't register without accepting Terms of Use", () => {
+  it("should not register without accepting Terms of Use", () => {
     cy.visit(appRoutes.register);
 
     cy.get(tid("wallet-selector-register-email"))

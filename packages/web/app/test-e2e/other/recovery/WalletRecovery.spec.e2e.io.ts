@@ -18,7 +18,7 @@ import {
 } from "../../utils/index";
 
 describe("Wallet recovery", function(): void {
-  it("should show error modal for invalid recovery phrases @backup @p1", () => {
+  it("should show error modal for invalid recovery phrases #backup #p1", () => {
     cy.visit(`${appRoutes.restore + "/seed"}`);
 
     const wrongMnemonics = "mutual mutual phone brief hedgehog friend brown actual candy will tank case phone rather program clap scrap dog trouble phrase fit section snack world".split(
@@ -101,7 +101,7 @@ describe("Wallet recovery", function(): void {
     });
   });
 
-  it("should recover existing user with verified email from saved phrases and change email #recover #p3 ", function(): void {
+  it("should recover existing user with verified email from saved phrases and change email #backup #p3 ", function(): void {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(({ seed }) => {
       createAndLoginNewUser({
         type: "investor",

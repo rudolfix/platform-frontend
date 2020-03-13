@@ -121,7 +121,7 @@ describe("Eto Forms link nominee", () => {
     },
   );
 
-  it.only(
+  it(
     "should move from Publish Listing Page to Link nominee step " +
       "after filling required fields from Eto Terms and Investment Terms forms " +
       "and then nominee request approval and issuer approves but later cancels it #eto #nominee #p3",

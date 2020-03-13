@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
 import {  compose } from "recompose";
@@ -7,12 +6,11 @@ import { actions } from "../../../modules/actions";
 import { ELogoutReason } from "../../../modules/auth/types";
 import { TLoginRouterState } from "../../../modules/routing/types";
 import { appConnect } from "../../../store";
-import { TransitionalLayout } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
-import { resetWalletOnLeave } from "../resetWallet";
 import { WalletConnectLayout } from "./WalletConnectLayout";
-import { selectMessageSigningError } from "../../../modules/wallet-selector/selectors";
+import { selectMessageSigningError, selectWalletConnectError } from "../../../modules/wallet-selector/selectors";
+import { TMessage } from "../../translatedMessages/utils";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -21,12 +19,7 @@ type TExternalProps = {
 } & TRouteLoginProps;
 
 interface IStateProps {
-  isAuthorized: boolean;
-  isMessageSigning: boolean;
-  rootPath: string;
-  isLoginRoute: boolean;
-  oppositeRoute: string;
-  userType: string;
+  error: TMessage | undefined
 }
 
 interface IDispatchProps {
@@ -49,13 +42,11 @@ export const WalletConnect = compose<
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      error: selectMessageSigningError(state)
+      error: selectWalletConnectError(state) || selectMessageSigningError(state)
     }),
     dispatchToProps: dispatch => ({
       walletConnectStart: () => dispatch(actions.walletSelector.walletConnectStart()),
       walletConnectStop: () => dispatch(actions.walletSelector.walletConnectStop()),
     }),
   }),
-  resetWalletOnLeave(),
-  withContainer(TransitionalLayout),
 )(WalletConnectLayout);

@@ -8,7 +8,7 @@ import { symbols } from "../../../di/symbols";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
-import { WalletConnectError, WalletConnectWallet } from "./WalletConnectWallet";
+import { WalletConnectSessionRejectedError, WalletConnectWallet } from "./WalletConnectWallet";
 
 export type TWalletConnectEvents =
   | {type: EWalletConnectEventTypes.DISCONNECT}
@@ -72,7 +72,7 @@ export class WalletConnectConnector extends EventEmitter {
       this.web3 = undefined;
 
       console.log('could not enable wc,', e);
-      throw new WalletConnectError("subscription failed")
+      throw new WalletConnectSessionRejectedError("subscription failed")
     }
 
     this.web3 = new Web3(this.provider as any); //todo fix typings in walletConnect

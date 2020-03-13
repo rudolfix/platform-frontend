@@ -22,7 +22,7 @@ const actions = {
   walletConnectRejected: createActionFactory("WALLET_CONNECT_REJECTED"),
   walletConnectError: createActionFactory(
     "WALLET_CONNECT_ERROR",
-    (error: Error) => ({error})
+    (error: TMessage) => ({error})
   ),
 };
 

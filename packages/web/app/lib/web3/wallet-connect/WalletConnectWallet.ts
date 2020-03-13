@@ -6,7 +6,8 @@ import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 
-export class WalletConnectError extends Error {}
+export class WalletConnectGenericError extends Error {}
+export class WalletConnectSessionRejectedError extends Error {}
 
 export class WalletConnectWallet implements IPersonalWallet {
   constructor(

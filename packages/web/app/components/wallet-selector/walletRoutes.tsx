@@ -12,4 +12,5 @@ export const walletLoginRoutes = {
   light: parentLoginRoutePath + "/light",
   browser: parentLoginRoutePath + "/browser",
   ledger: parentLoginRoutePath + "/ledger",
+  walletConnect: parentLoginRoutePath + "/wc",
 };

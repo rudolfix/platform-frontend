@@ -38,8 +38,8 @@ export const routes = [
   rootRoute,
   dashboardRoute,
   registerRoute,
-  loginRoute,
   loginWalletConnectRoute,
+  loginRoute,
   restoreRoute,
   profileRoute,
   etoRegister,
@@ -358,18 +358,6 @@ export function* registerRoute(payload: RouterState): Generator<any, any, any> {
   });
 }
 
-export function* loginRoute(payload: RouterState): Generator<any, any, any> {
-  const loginMatch = yield matchPath(payload.location.pathname, {
-    path: appRoutes.login,
-  });
-  return yield routeAction(loginMatch, {
-    notAuth: undefined,
-    investor: put(actions.routing.goToDashboard()),
-    issuer: put(actions.routing.goToDashboard()),
-    nominee: put(actions.routing.goToDashboard()),
-  });
-}
-
 export function* loginWalletConnectRoute(payload: RouterState): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.loginWalletConnect,
@@ -377,6 +365,18 @@ export function* loginWalletConnectRoute(payload: RouterState): Generator<any, a
   });
   return yield routeAction(routeMatch, {
     notAuth: put(actions.walletSelector.walletConnectInit()),
+    investor: put(actions.routing.goToDashboard()),
+    issuer: put(actions.routing.goToDashboard()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
+}
+
+export function* loginRoute(payload: RouterState): Generator<any, any, any> {
+  const loginMatch = yield matchPath(payload.location.pathname, {
+    path: appRoutes.login,
+  });
+  return yield routeAction(loginMatch, {
+    notAuth: undefined,
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

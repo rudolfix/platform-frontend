@@ -116,6 +116,13 @@ export const WalletSelectorLayout: React.FunctionComponent<IExternalProps & TRou
                   )}
                 </ButtonLink>
               </div>
+              {isLoginRoute &&
+              <div className="m-3">
+                <ButtonLink data-test-id="wallet-selector-ledger" to={`${rootPath}/wc`}>
+                  WALLET CONNECT
+                </ButtonLink>
+              </div>
+              }
             </div>
           )}
 

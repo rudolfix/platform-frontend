@@ -7,11 +7,13 @@ import { actions } from "../actions";
 export interface IWalletSelectorState {
   isMessageSigning: boolean;
   messageSigningError: DeepReadonly<TMessage> | undefined;
+  walletConnectError:DeepReadonly<TMessage> | undefined;
 }
 
 const walletSelectorInitialState: IWalletSelectorState = {
   isMessageSigning: false,
   messageSigningError: undefined,
+  walletConnectError:undefined
 };
 
 export const walletSelectorReducer: AppReducer<IWalletSelectorState> = (
@@ -35,6 +37,13 @@ export const walletSelectorReducer: AppReducer<IWalletSelectorState> = (
         ...state,
         isMessageSigning: false,
         messageSigningError: undefined,
+      };
+    case actions.walletSelector.walletConnectError.getType():
+      return {
+        ...state,
+        isMessageSigning: false,
+        messageSigningError: undefined,
+        walletConnectError: action.payload.error
       };
   }
 

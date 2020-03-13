@@ -7,6 +7,7 @@ import { WalletBrowser } from "./browser/WalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
 import { WalletLight } from "./light/WalletLight";
 import { getRedirectionUrl } from "./walletRouterHelpers";
+import { WalletConnect } from "./wallet-connect/WalletConnect";
 
 interface IProps {
   rootPath: string;
@@ -19,6 +20,7 @@ export const WalletRouter: React.FunctionComponent<IProps> = ({ rootPath, locati
     <Route path={`${rootPath}/light`} component={WalletLight} exact />
     <Route path={`${rootPath}/browser`} component={WalletBrowser} exact />
     <Route path={`${rootPath}/ledger`} component={WalletLedger} exact />
+    <Route path={`${rootPath}/wc`} component={WalletConnect} exact />
     {/* Preserve location state after redirect, otherwise session timeout message won't work */}
     <Redirect to={createLocation(getRedirectionUrl(rootPath), locationState)} />
   </SwitchConnected>

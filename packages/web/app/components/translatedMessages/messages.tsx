@@ -50,11 +50,17 @@ export type TranslatedMessageType =
   | EEtoNomineeRequestMessages
   | ETxValidationMessages
   | EEtoNomineeActiveEtoNotifications
-  | ENotificationText;
+  | ENotificationText
+  | WalletConnectErrorMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
   USER_ALREADY_EXISTS = "userAlreadyExists",
+}
+
+export enum WalletConnectErrorMessage {
+  WC_GENERIC_ERROR = "wcGenericError",
+  WC_SESSION_REJECTED_ERROR = "wcSessionRejectedError",
 }
 
 export enum GenericModalMessage {
@@ -787,6 +793,10 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case TestMessage.TEST_MESSAGE:
       return messageData!.message as TTranslatedString;
 
+    case WalletConnectErrorMessage.WC_GENERIC_ERROR:
+      return <FormattedMessage id="wallet-connect.generic-error" values={{error: (messageData as Error).toString()}}/>;
+    case WalletConnectErrorMessage.WC_SESSION_REJECTED_ERROR:
+      return <FormattedMessage id="wallet-connect.session-rejected-error"/>;
     default:
       return assertNever(messageType, `Message not provided for ${messageType}`);
   }

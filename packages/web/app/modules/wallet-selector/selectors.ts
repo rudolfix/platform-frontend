@@ -39,3 +39,6 @@ export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
 
 export const selectMessageSigningError = (state: TAppGlobalState): DeepReadonly<TMessage> | undefined =>
   state.walletSelector.messageSigningError;
+
+export const selectWalletConnectError = (state: TAppGlobalState) =>
+  state.walletSelector.walletConnectError;

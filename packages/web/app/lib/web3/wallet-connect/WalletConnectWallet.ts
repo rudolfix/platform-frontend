@@ -5,9 +5,14 @@ import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../mo
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
+import { SignerTimeoutError } from "../Web3Manager/Web3Manager";
 
-export class WalletConnectGenericError extends Error {}
-export class WalletConnectSessionRejectedError extends Error {}
+export class WalletConnectGenericError extends Error {
+}
+
+export class WalletConnectSessionRejectedError extends Error {
+}
+
 
 export class WalletConnectWallet implements IPersonalWallet {
   constructor(
@@ -18,7 +23,7 @@ export class WalletConnectWallet implements IPersonalWallet {
 
   public readonly walletType = EWalletType.UNKNOWN;
   public readonly walletSubType = EWalletSubType.UNKNOWN;
-  public readonly sendTransactionMethod ='eth_sendTransaction';
+  public readonly sendTransactionMethod = 'eth_sendTransaction';
   public readonly signerType = SignerType.ETH_SIGN;
   public readonly sessionTimeout = 10 * 60 * 1000;
   public readonly signTimeout = 2 * 60 * 1000;
@@ -40,7 +45,14 @@ export class WalletConnectWallet implements IPersonalWallet {
     const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
     const dataToSign = addHexPrefix(msgHash.toString("hex"));
 
-    return await this.web3Adapter.ethSign(this.ethereumAddress,dataToSign)
+    const timeout:Promise<string> = new Promise(function (_, rej) {
+      setTimeout(rej, 5000, new SignerTimeoutError()); //fixme this.signTimeout
+    });
+
+    return await Promise.race([
+      this.web3Adapter.ethSign(this.ethereumAddress, dataToSign),
+      timeout
+    ]);
   }
 
   public async sendTransaction(txData: TxData): Promise<string> {
@@ -49,7 +61,7 @@ export class WalletConnectWallet implements IPersonalWallet {
       return await this.web3Adapter.sendTransaction(txData);
     } catch (e) {
       console.log("walletConnect.sendTransaction error:", e);
-      throw e; //todo add errors
+      throw e; //fixme add normal TMessage errors
     }
   }
 

@@ -68,10 +68,8 @@ export class WalletConnectConnector extends EventEmitter {
     try {
       await this.provider.enable();
     } catch (e) {
-      this.provider = undefined;
-      this.web3 = undefined;
-
       console.log('could not enable wc,', e);
+      this.cleanUpSession();
       throw new WalletConnectSessionRejectedError("subscription failed")
     }
 

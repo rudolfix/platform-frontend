@@ -83,7 +83,7 @@ export function* walletConnectStart(
   try {
     const wc = yield walletConnectConnector.connect();
     yield web3Manager.plugPersonalWallet(wc);
-    yield put(actions.walletSelector.connected());
+    yield* neuCall(walletSelectorConnect)
   } catch (e) {
     const message = mapWalletConnectErrorsToMessages(e);
     yield put(actions.walletSelector.walletConnectError(message));

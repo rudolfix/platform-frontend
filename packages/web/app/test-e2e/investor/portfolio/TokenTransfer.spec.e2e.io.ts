@@ -15,7 +15,6 @@ describe("Token Transfer", () => {
 
   const tokenAddress = etoFixtureByName("ETOInClaimState").equityToken;
   const testValue = "2";
-
   before(() => {
     createAndLoginNewUser({
       type: "investor",

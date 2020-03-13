@@ -20,6 +20,11 @@ export function makeEthereumAddressChecksummed(
 }
 
 export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);
+
+/**
+ * @method generateRandomPrivateKey
+ * Generates random private key
+ */
 export const generateRandomPrivateKey = () => randomHex(32);
 
 // remove 0x prefix from private key

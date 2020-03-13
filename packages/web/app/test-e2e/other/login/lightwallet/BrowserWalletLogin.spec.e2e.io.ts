@@ -13,26 +13,28 @@ import {
 } from "../../../utils/index";
 import { goToLanding } from "../../../utils/navigation";
 import { stubChallengeApiRequest } from "./../../../utils/apiStubs";
+import { assertDashboard } from "./../../../utils/assertions";
 import { generateRandomPrivateKey } from "./../../../utils/e2eWeb3Utils";
 
 const ISSUER_SETUP = "ISSUER_SETUP";
 
 const ISSUER_SETUP_NODE_PROVIDER = new PrivateKeyProvider(
-  remove0x(generateRandomPrivateKey()),
+  remove0x(accountFixturePrivateKey(ISSUER_SETUP)),
   NODE_ADDRESS,
 );
+
+const NEW_INVESTOR_NODE_PROVIDER = () =>
+  new PrivateKeyProvider(remove0x(generateRandomPrivateKey()), NODE_ADDRESS);
 
 const ISSUER_SETUP_MAIN_NODE_PROVIDER = new PrivateKeyProvider(
   remove0x(accountFixturePrivateKey(ISSUER_SETUP)),
   "https://mainnet.infura.io/v3/ddfed355869142b09396d38dfe4c886d",
 );
-
 describe("Ethereum Routing", () => {
   it("should register as issuer with browser wallet #browserWallet #p3", () => {
     goToLanding();
-
-    ethereumProvider(ISSUER_SETUP_NODE_PROVIDER);
-
+    const test = NEW_INVESTOR_NODE_PROVIDER();
+    ethereumProvider(test);
     cy.get(tid("Header-register")).click();
 
     cy.get(tid("wallet-selector-register-email")).type(generateRandomEmailAddress());
@@ -40,14 +42,14 @@ describe("Ethereum Routing", () => {
     cy.get(tid("wallet-selector-register-button")).click();
     cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
 
-    assertIssuerDashboard();
+    assertDashboard();
 
     goToWallet();
 
     cy.get(tid("account-address.your.ether-address.from-div"))
       .invoke("text")
       .then(value => {
-        expect(value).to.equal(accountFixtureAddress(ISSUER_SETUP));
+        expect(value.toLowerCase()).to.equal(test.address.toLowerCase());
       });
   });
 
@@ -76,7 +78,7 @@ describe("Ethereum Routing", () => {
     stubChallengeApiRequest({}, 405);
     goToLanding();
 
-    ethereumProvider(ISSUER_SETUP_NODE_PROVIDER);
+    ethereumProvider(NEW_INVESTOR_NODE_PROVIDER());
 
     cy.get(tid("Header-login")).click();
 

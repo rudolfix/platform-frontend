@@ -25,7 +25,7 @@ export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LE
  * @method generateRandomPrivateKey
  * Generates random private key
  */
-export const generateRandomPrivateKey = () => randomHex(32);
+export const generateRandomPrivateKey = () => randomHex(64);
 
 // remove 0x prefix from private key
 export const remove0x = (key: string) => key.slice(2).toUpperCase();

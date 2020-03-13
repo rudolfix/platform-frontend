@@ -29,7 +29,7 @@ import {
 } from "../fixtures";
 
 describe("Eto Forms", () => {
-  it("should fill required fields and submit @eto @p1", function(): void {
+  it("should fill required fields and submit #eto #p1", function(): void {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(async () => {
       goToIssuerDashboard();
 
@@ -93,7 +93,7 @@ describe("Eto Forms", () => {
     });
   });
 
-  it("should fill all fields in eto @eto @p3", () => {
+  it("should fill all fields in eto #eto #p3", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" });
     goToIssuerDashboard();
 

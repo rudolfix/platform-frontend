@@ -1,5 +1,4 @@
 import { Q18 } from "@neufund/shared";
-import BigNumber from "bignumber.js";
 
 import { sendEth } from "../../../utils/ethRpcUtils";
 import {
@@ -14,7 +13,7 @@ import { createAndLoginNewUser, loginFixtureAccount } from "../../../utils/userH
 import { assertInvestmentModal } from "../utils";
 
 describe("ETH", () => {
-  it("should invest ETH @investment @p1", () => {
+  it("should invest ETH #investment #p1", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
@@ -45,23 +44,12 @@ describe("ETH", () => {
     cy.get(tid("investment-flow.success.title")).should("exist");
 
     cy.get(tid("investment-flow.success.view-your-portfolio")).click();
-
-    cy.get(tid("portfolio-reserved-asset-neu-reward")).then($element => {
-      const neuReward = parseAmount($element.text());
-      // TODO: this will be super flaky, read NEU balance before test and then add to estimatedReward
-      cy.get<BigNumber>("@estimatedReward").then(estimatedReward => {
-        // estimated and actual NEU reward can be a little bit different
-        // we allow neu reward to differ from estimated 5%
-        // TODO: where is the abs() used, it can be negative
-        expect(neuReward.minus(estimatedReward)).to.be.bignumber.lessThan(0.05);
-      });
-    });
   });
 
-  it.skip("should invest all ETH balance @investment @p3 @flaky", () => {
+  it.skip("should invest all ETH balance #investment #p3 #flaky", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
-    const value = "2";
+    const value = "0.5";
     createAndLoginNewUser({
       type: "investor",
       kyc: "individual",
@@ -91,21 +79,10 @@ describe("ETH", () => {
       cy.get(tid("investment-flow.success.title")).should("exist");
 
       cy.get(tid("investment-flow.success.view-your-portfolio")).click();
-
-      cy.get(tid("portfolio-reserved-asset-neu-reward")).then($element => {
-        const neuReward = parseAmount($element.text());
-        // TODO: this will be super flaky, read NEU balance before test and then add to estimatedReward
-        cy.get<BigNumber>("@estimatedReward").then(estimatedReward => {
-          // estimated and actual NEU reward can be a little bit different
-          // we allow neu reward to differ from estimated 5%
-          // TODO: where is the abs() used, it can be negative
-          expect(neuReward.minus(estimatedReward)).to.be.bignumber.lessThan(0.05);
-        });
-      });
     });
   });
 
-  it("should invest into public sale @investment @p3", () => {
+  it("should invest into public sale #investment #p3", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
     goToDashboard();
@@ -135,7 +112,7 @@ describe("ETH", () => {
     // TODO check smart contracts balances
   });
 
-  it("should not show non ICBM wallets when it's not allowed by investment @investment @p3", () => {
+  it("should not show non ICBM wallets when it's not allowed by investment #investment #p3", () => {
     const WHITELIST_ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
@@ -169,7 +146,7 @@ describe("ETH", () => {
     cy.get(tid("investment-type.selector.ETH.enable-wallet")).should("not.exist");
   });
 
-  it("should not show non ICBM wallets in presale after calculating contribution and refreshing modal @investment @p3", () => {
+  it("should not show non ICBM wallets in presale after calculating contribution and refreshing modal #investment #p3", () => {
     const WHITELIST_ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
 
     loginFixtureAccount("INV_ICBM_ETH_M_HAS_KYC_DUP");

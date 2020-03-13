@@ -60,41 +60,51 @@ export const CampaignOverviewLayout: React.FunctionComponent<TEtoViewData> = ({
         <CompanyDescription eto={eto} />
         <LegalInformationWidget companyData={eto.company} columnSpan={EColumnSpan.THREE_COL} />
       </Container>
-      <Container columnSpan={EColumnSpan.ONE_COL}>
-        {showSlideshare && (
-          <Container>
-            <DashboardHeading title={<FormattedMessage id="eto.public-view.pitch-deck" />} />
-            <Slides slideShareUrl={companySlideshare && companySlideshare.url} />
-          </Container>
-        )}
 
-        {showYouTube && (
-          <Container>
-            <DashboardHeading title={<FormattedMessage id="eto.public-view.video" />} />
-            <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
-          </Container>
-        )}
-        {showSocialChannels && (
-          <Container>
-            <div className={cn((showSlideshare || showYouTube) && "mt-4")}>
-              <SocialProfilesList profiles={(socialChannels as TSocialChannelsType) || []} />
-            </div>
-          </Container>
-        )}
-      </Container>
+      {(showSlideshare || showYouTube || showSocialChannels) && (
+        <Container columnSpan={EColumnSpan.ONE_COL}>
+          {showSlideshare && (
+            <Container>
+              <DashboardHeading title={<FormattedMessage id="eto.public-view.pitch-deck" />} />
+              <Slides slideShareUrl={companySlideshare && companySlideshare.url} />
+            </Container>
+          )}
+
+          {showYouTube && (
+            <Container>
+              <DashboardHeading title={<FormattedMessage id="eto.public-view.video" />} />
+              <Video youTubeUrl={companyVideo && companyVideo.url} hasModal />
+            </Container>
+          )}
+
+          {showSocialChannels && (
+            <Container>
+              <div className={cn((showSlideshare || showYouTube) && "mt-4")}>
+                <SocialProfilesList profiles={(socialChannels as TSocialChannelsType) || []} />
+              </div>
+            </Container>
+          )}
+        </Container>
+      )}
+
       {showDisclaimer && <Disclaimer />}
 
-      <MarketingDocumentsWidget
-        columnSpan={EColumnSpan.THREE_COL}
-        companyMarketingLinks={marketingLinks}
-      />
+      {marketingLinks && (
+        <MarketingDocumentsWidget
+          columnSpan={EColumnSpan.THREE_COL}
+          companyMarketingLinks={marketingLinks}
+        />
+      )}
+
       {showInvestmentTerms && (
         <Container columnSpan={EColumnSpan.THREE_COL}>
           <DashboardHeading title={<FormattedMessage id="eto.public-view.token-terms.title" />} />
           <EtoInvestmentTermsWidget eto={eto} isUserFullyVerified={userIsFullyVerified} />
         </Container>
       )}
+
       <Individuals eto={eto} />
+
       <EtoAccordionElements eto={eto} />
 
       <Container columnSpan={EColumnSpan.ONE_COL} type={EContainerType.INHERIT_GRID}>

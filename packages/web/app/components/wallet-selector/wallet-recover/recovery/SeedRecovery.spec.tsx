@@ -1,9 +1,9 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { tid } from "../../../../../test/testUtils";
 import { SEED_LENGTH, WalletLightSeedRecoveryComponent } from "./SeedRecovery.unsafe";
 
 const defaultProps = () => ({

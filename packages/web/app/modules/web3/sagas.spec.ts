@@ -1,10 +1,10 @@
 import { delay } from "@neufund/sagas";
 import { expectSaga } from "@neufund/sagas/tests";
 import { noopLogger } from "@neufund/shared-modules";
+import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { EventEmitter } from "events";
 
-import { createMock } from "../../../test/testUtils";
 import { LIGHT_WALLET_PASSWORD_CACHE_TIME } from "../../config/constants";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EWeb3ManagerEvents, Web3Manager } from "../../lib/web3/Web3Manager/Web3Manager";

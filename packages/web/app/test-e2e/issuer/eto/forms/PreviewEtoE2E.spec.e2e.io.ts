@@ -4,7 +4,7 @@ import { createAndLoginNewUser } from "../../../utils/userHelpers";
 import { fillRequiredCompanyInformation, submitPreview } from "../EtoRegistrationUtils";
 
 describe("Eto Forms submit preview", function(): void {
-  it("should fill required fields and submit preview @eto @p3 @flaky", () => {
+  it("should fill required fields and submit preview #eto #p3 #flaky", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(() => {
       fillRequiredCompanyInformation();
 

@@ -217,10 +217,22 @@ export const createUser = (
     path += `&max_verification_wait=${timeoutInSeconds}`;
   }
 
-  return fetch(path, {
+  return wrappedFetch(path, {
     method: "POST",
   }).then(r => r.json());
 };
+
+/**
+ * A wrapper around fetch that throws when the response is an error status
+ * @See https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+ */
+const wrappedFetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> =>
+  fetch(input, init).then(response => {
+    cy.log("request URL:", input);
+    cy.log("response status code:", response.status);
+    if (response.ok) return response;
+    throw new Error(response.statusText);
+  });
 
 /**
  * Get a jwt from the server
@@ -245,7 +257,7 @@ export const getJWT = async (
     signer_type: "eth_sign",
     permissions: ["sign-tos", ...permissions],
   };
-  const ch_response = await fetch(CHALLENGE_PATH, {
+  const ch_response = await wrappedFetch(CHALLENGE_PATH, {
     headers,
     method: "POST",
     body: JSON.stringify(challenge_body),
@@ -269,7 +281,7 @@ export const getJWT = async (
     response: signedChallenge,
     signer_type: "eth_sign",
   };
-  const sig_response = await fetch(JWT_PATH, {
+  const sig_response = await wrappedFetch(JWT_PATH, {
     headers,
     method: "POST",
     body: JSON.stringify(signed_body),
@@ -290,7 +302,7 @@ export const getUserData = async (jwt: string) => {
     authorization: `Bearer ${jwt}`,
   };
   return (
-    await fetch(USER_PATH, {
+    await wrappedFetch(USER_PATH, {
       headers,
       method: "GET",
     })
@@ -303,7 +315,7 @@ export const getKycStatus = async (jwt: string) => {
     authorization: `Bearer ${jwt}`,
   };
 
-  const statusResponse = await fetch(KYC_PATH + KYC_STATUS_PATH, {
+  const statusResponse = await wrappedFetch(KYC_PATH + KYC_STATUS_PATH, {
     headers,
     method: "GET",
   });
@@ -322,7 +334,7 @@ export const markBackupCodesVerified = async (jwt: string) => {
   const userJson = await getUserData(jwt);
 
   userJson.backup_codes_verified = true;
-  await fetch(USER_PATH, {
+  await wrappedFetch(USER_PATH, {
     headers,
     method: "PUT",
     body: JSON.stringify(userJson),
@@ -337,7 +349,7 @@ export const setCorrectAgreement = async (jwt: string) => {
 
   const TosAgreementFromUniverse = await getAgreementHash();
 
-  await fetch(USER_TOS_PATH, {
+  await wrappedFetch(USER_TOS_PATH, {
     headers,
     method: "PUT",
     body: JSON.stringify({
@@ -430,7 +442,7 @@ export const getPendingTransactions = (): Cypress.Chainable<ReadonlyArray<{
     .then(response => response.body);
 
 export const makeAuthenticatedCall = (path: string, config: RequestInit = {}) =>
-  fetch(path, {
+  wrappedFetch(path, {
     ...config,
     headers: {
       ...config.headers,
@@ -461,7 +473,7 @@ export const createVaultApi = async (
 
   const path = `${VAULT_API_ROOT}/vault/${vaultKey}`;
   const payload = { wallet: serializedVault };
-  return fetch(path, {
+  return wrappedFetch(path, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {

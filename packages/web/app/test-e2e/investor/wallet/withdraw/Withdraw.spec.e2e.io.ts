@@ -48,7 +48,7 @@ describe("Wallet Withdraw", () => {
     goToWallet();
   });
   describe("checks:", () => {
-    it("should show gas reserve message @wallet @withdraw @p3", () => {
+    it("should show gas reserve message #wallet #withdraw #p3", () => {
       continueWithdrawFlow(testAddress, new BigNumber(testValue).mul("5").toString());
 
       cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.will-empty-wallet")).should(
@@ -87,7 +87,7 @@ describe("Wallet Withdraw", () => {
       assertWithdrawButtonIsDisabled();
     });
 
-    it("should not break when address is not provided first @wallet @withdraw @p3", () => {
+    it("should not break when address is not provided first #wallet #withdraw #p3", () => {
       cy.get(tid("wallet.eth.withdraw.button")).awaitedClick();
 
       cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).type(
@@ -111,7 +111,7 @@ describe("Wallet Withdraw", () => {
       ).should("be.enabled");
     });
 
-    it("should not allow to withdraw to smart contract not accepting ether @wallet @withdraw @p3", () => {
+    it("should not allow to withdraw to smart contract not accepting ether #wallet #withdraw #p3", () => {
       const smartContractAddress = EuroTokenContract.networks["17"].address;
 
       continueWithdrawFlow(smartContractAddress, testValue);
@@ -122,7 +122,7 @@ describe("Wallet Withdraw", () => {
       assertWithdrawButtonIsDisabled();
     });
 
-    it("should not allow to withdraw to smart contract not accepting ether when user has no ETH-T @wallet @withdraw @p3", () => {
+    it("should not allow to withdraw to smart contract not accepting ether when user has no ETH-T #wallet #withdraw #p3", () => {
       const smartContractAddress = EuroTokenContract.networks["17"].address;
 
       cy.get(tid("wallet.eth.withdraw.button")).awaitedClick();
@@ -140,7 +140,7 @@ describe("Wallet Withdraw", () => {
       assertWithdrawButtonIsDisabled();
     });
 
-    it("should allow to withdraw all for specific available amount @wallet @withdraw @p3", () => {
+    it("should allow to withdraw all for specific available amount #wallet #withdraw #p3", () => {
       const verifiedAddress = accountFixtureAddress("ISSUER_BLANK_QA_HAS_KYC");
 
       continueWithdrawFlow(verifiedAddress, testValue);
@@ -171,7 +171,7 @@ describe("Wallet Withdraw", () => {
   });
 
   describe("withdraw", () => {
-    it("should withdraw to new wallet @wallet @withdraw @p1", () => {
+    it("should withdraw to new wallet #wallet #withdraw #p1", () => {
       const expectedInput = `0x`;
 
       continueWithdrawFlow(testAddress, testValue);
@@ -197,7 +197,7 @@ describe("Wallet Withdraw", () => {
       assertWithdrawFlow(testAddress, testValue, expectedInput, testValue);
     });
 
-    it("should show warning when withdraw to not used wallet @wallet @withdraw @p3", () => {
+    it("should show warning when withdraw to not used wallet #wallet #withdraw #p3", () => {
       const expectedInput = `0x`;
       const randomAddress = generateRandomEthereumAddress();
 
@@ -230,7 +230,7 @@ describe("Wallet Withdraw", () => {
       ).should("exist");
     });
 
-    it("should show message when withdraw to verified platform address @wallet @withdraw @p3", () => {
+    it("should show message when withdraw to verified platform address #wallet #withdraw #p3", () => {
       const verifiedAddress = accountFixtureAddress("INV_EUR_ICBM_HAS_KYC_SEED");
 
       goToWallet();
@@ -248,7 +248,7 @@ describe("Wallet Withdraw", () => {
         .click();
     });
 
-    it("should allow to withdraw ETH to smart contract accepting ETH @wallet @withdraw @p2", () => {
+    it("should allow to withdraw ETH to smart contract accepting ETH #wallet #withdraw #p2", () => {
       const smartContractThatAcceptsEther = SimpleExchangeContract.networks["17"].address;
 
       const expectedInput = `0x`;
@@ -278,7 +278,7 @@ describe("Wallet Withdraw", () => {
       assertWithdrawFlow(smartContractThatAcceptsEther, testValue, expectedInput, testValue);
     });
 
-    it("should withdraw all @wallet @withdraw @p3", () => {
+    it("should withdraw all #wallet #withdraw #p3", () => {
       goToWallet();
       continueWithdrawFlow(testAddress, "5");
 
@@ -321,7 +321,7 @@ describe("Wallet Withdraw", () => {
   });
 
   describe("failed", () => {
-    it("should show transaction error with cost for mined transaction @wallet @p3", () => {
+    it("should show transaction error with cost for mined transaction #wallet #p3", () => {
       loginFixtureAccount("INV_EUR_ICBM_HAS_KYC");
       goToDashboard();
 
@@ -344,7 +344,7 @@ describe("Wallet Withdraw", () => {
       assertTxErrorDialogueWithCost();
     });
 
-    it("should show transaction error with no cost for not mined transaction @wallet @p3", () => {
+    it("should show transaction error with no cost for not mined transaction #wallet #p3", () => {
       loginFixtureAccount("INV_EUR_ICBM_HAS_KYC");
       goToWalletWithParams({
         forceLowGas: true,
@@ -372,7 +372,7 @@ describe("Wallet Withdraw", () => {
       assertTxErrorDialogueNoCost();
     });
 
-    it.skip("should show transaction error with cost for a reverted transaction due to out of gas @wallet @p3 @flaky", () => {
+    it.skip("should show transaction error with cost for a reverted transaction due to out of gas #wallet #p3 #flaky", () => {
       // Web3 Throws when using light wallet due to gas limit checks done before broadcasting the transaction
       loginFixtureAccount("INV_EUR_ICBM_HAS_KYC");
       goToDashboard();

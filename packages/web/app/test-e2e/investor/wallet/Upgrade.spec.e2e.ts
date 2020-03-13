@@ -6,7 +6,7 @@ import { tid } from "../../utils/selectors";
 import { loginFixtureAccount } from "../../utils/userHelpers";
 
 describe("Upgrade ICBM wallet", () => {
-  it("should upgrade EUR wallet @wallet @p3", () => {
+  it("should upgrade EUR wallet #wallet #p3", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_2");
     let icbmBalance: number;
 
@@ -32,7 +32,7 @@ describe("Upgrade ICBM wallet", () => {
     });
   });
 
-  it("should upgrade ETH wallet @wallet @p3", () => {
+  it("should upgrade ETH wallet #wallet #p3", () => {
     loginFixtureAccount("INV_ETH_ICBM_NO_KYC_2");
     let icbmBalance: number;
 

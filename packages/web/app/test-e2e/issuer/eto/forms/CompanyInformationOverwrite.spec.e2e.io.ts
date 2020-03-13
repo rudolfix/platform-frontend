@@ -26,7 +26,7 @@ const assertCompanyLegalDescriptionValue = () => {
 };
 
 describe("Eto Company Information Field Submission", function(): void {
-  it("should not overwrite whole company profile @eto @p3", () => {
+  it("should not overwrite whole company profile #eto #p3", () => {
     createAndLoginNewUser({ type: "issuer", kyc: "business" });
 
     goToCompanyInformation();

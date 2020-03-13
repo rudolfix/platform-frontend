@@ -13,7 +13,7 @@ import {
 } from "../../utils/index";
 
 describe("Invest without money", () => {
-  it.skip("should keep invest button disabled @investment @p2 @flaky", () => {
+  it.skip("should keep invest button disabled #investment #p2 #flaky", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     createAndLoginNewUser({
       type: "investor",
@@ -35,7 +35,7 @@ describe("Invest without money", () => {
     cy.get(tid("invest-modal-invest-now-button")).should("be.disabled");
   });
 
-  it("should invest when user has no ether Gasless Transaction in light wallet @investment @p3", () => {
+  it("should invest when user has no ether Gasless Transaction in light wallet #investment #p3", () => {
     const fixture = "INV_ETH_EUR_ICBM_M_HAS_KYC_DUP_HAS_NEUR_AND_NO_ETH";
 
     sendEth(fixture, ETHEREUM_ZERO_ADDRESS, "all");
@@ -52,7 +52,7 @@ describe("Invest without money", () => {
 
     cy.get(tid("invest-modal-eur-field"))
       .clear()
-      .type("1000");
+      .type("10");
 
     cy.get(tid("invest-modal-invest-now-button"))
       .should("be.enabled")
@@ -66,7 +66,7 @@ describe("Invest without money", () => {
 
   it(
     "should show error message when there is no enough ether for gas during neur investment NO GAS STIPEND in " +
-      "metamask @investment @p2",
+      "metamask #investment #p2",
     () => {
       const fixture = "INV_ETH_EUR_ICBM_M_HAS_KYC_DUP_HAS_NEUR_AND_NO_ETH";
 
@@ -94,7 +94,7 @@ describe("Invest without money", () => {
 
         cy.get(tid("invest-modal-eur-field"))
           .clear()
-          .type("1000");
+          .type("10");
 
         cy.get(tid("form.euroValue.error-message")).should("exist");
         cy.get(tid("invest-modal-invest-now-button")).should("be.disabled");

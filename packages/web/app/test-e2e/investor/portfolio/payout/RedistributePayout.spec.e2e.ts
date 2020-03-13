@@ -5,7 +5,7 @@ import { loginFixtureAccount } from "../../../utils/userHelpers";
 describe("Redistribute payout", () => {
   beforeEach(() => loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC_DUP"));
 
-  it("should redistribute payout ETH @payout", () => {
+  it("should redistribute payout ETH #payout", () => {
     goToPortfolio();
 
     cy.get(tid(`asset-portfolio.payout-eth`)).within(() => {
@@ -28,7 +28,7 @@ describe("Redistribute payout", () => {
     cy.get(tid(`asset-portfolio.payout-eth`)).should("not.exist");
   });
 
-  it("should redistribute payout NEur @payout", () => {
+  it("should redistribute payout NEur #payout", () => {
     goToPortfolio();
 
     cy.get(tid(`asset-portfolio.payout-eur_t`)).within(() => {

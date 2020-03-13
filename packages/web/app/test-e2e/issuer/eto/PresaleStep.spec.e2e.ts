@@ -2,7 +2,7 @@ import { goToIssuerDashboard, loginFixtureAccount, tid } from "../../utils/index
 import { assertPresaleStep } from "./EtoRegistrationUtils";
 
 describe("Eto presale state", () => {
-  it("should show bookbuilding stats @eto @p3", () => {
+  it("should show bookbuilding stats #eto #p3", () => {
     loginFixtureAccount("ISSUER_WHITELIST");
 
     goToIssuerDashboard();

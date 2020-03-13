@@ -69,7 +69,7 @@ const assertSignISHAOnChainFlow = () => {
 };
 
 describe("Eto in SIGNING state: Nominee and Issuer flow", () => {
-  it("should let nominee redeems share capital @eto @nominee @p2 @flaky", () => {
+  it("should let nominee redeems share capital #eto #nominee #p2 #flaky", () => {
     loginFixtureAccount("NOMINEE_SIGNING", {
       hdPath: "m/44'/60'/0'/0",
     });
@@ -95,7 +95,7 @@ describe("Eto in SIGNING state: Nominee and Issuer flow", () => {
     });
   });
 
-  it(`should let issuer to upload signed ISHA and then to sign ISHA on-chain @eto @nominee @p3 @flaky`, () => {
+  it(`should let issuer to upload signed ISHA and then to sign ISHA on-chain #eto #nominee #p3 #flaky`, () => {
     loginFixtureAccount("ISSUER_SIGNING");
 
     assertUploadSignedISHAFlow();
@@ -104,7 +104,7 @@ describe("Eto in SIGNING state: Nominee and Issuer flow", () => {
   });
 
   // Unskip when the issue with lazy loading and cypress is solved.
-  it.skip("should let issuer to upload signed ISHA and then to sign ISHA on-chain @eto @nominee @p3", () => {
+  it.skip("should let issuer to upload signed ISHA and then to sign ISHA on-chain #eto #nominee #p3", () => {
     loginFixtureAccount("NOMINEE_SIGNING", {
       hdPath: "m/44'/60'/0'/0",
     });

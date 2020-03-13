@@ -1,24 +1,31 @@
 import { fillForm } from "../../../utils/forms";
 import { goToIssuerDashboard } from "../../../utils/navigation";
 import { formField, tid } from "../../../utils/selectors";
-import { loginFixtureAccount } from "../../../utils/userHelpers";
+import { createAndLoginNewUser } from "../../../utils/userHelpers";
+import { pushEtoDataToAPI, pushEtoToAPI } from "../utils";
 
 describe("Eto Terms", () => {
-  it("should show 7 available products @eto @p3", () => {
-    loginFixtureAccount("ISSUER_PREVIEW");
-
+  before(() => {
+    createAndLoginNewUser({
+      type: "issuer",
+      kyc: "business",
+    }).then(() => {
+      cy.saveLocalStorage();
+      pushEtoToAPI();
+      pushEtoDataToAPI();
+    });
+  });
+  beforeEach(() => {
+    cy.restoreLocalStorage();
     goToIssuerDashboard();
-
+  });
+  it("should show 7 available products #eto #p3", () => {
     cy.get(`${tid("eto-progress-widget-eto-terms")} button`).click();
 
     cy.get(formField("productId")).should("have.length", 7);
   });
 
-  it("should show product details on hover @eto @p3", () => {
-    loginFixtureAccount("ISSUER_PREVIEW");
-
-    goToIssuerDashboard();
-
+  it("should show product details on hover #eto #p3", () => {
     cy.get(`${tid("eto-progress-widget-eto-terms")} button`).click();
 
     cy.get(tid("eto-terms.product.hnwi-eto-de-vma.tooltip.trigger")).trigger("mouseover");
@@ -26,11 +33,7 @@ describe("Eto Terms", () => {
     cy.get(tid("eto-terms.product.hnwi-eto-de-vma.tooltip.popover")).should("exist");
   });
 
-  it("should hide and show transferable toggle @eto @p3", () => {
-    loginFixtureAccount("ISSUER_PREVIEW");
-
-    goToIssuerDashboard();
-
+  it("should hide and show transferable toggle #eto #p3", () => {
     cy.get(`${tid("eto-progress-widget-eto-terms")} button`).click();
 
     // should not show transferable toggle

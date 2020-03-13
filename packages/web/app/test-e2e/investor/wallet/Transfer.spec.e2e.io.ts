@@ -3,7 +3,7 @@ import { tid } from "../../utils/selectors";
 import { loginFixtureAccount } from "../../utils/userHelpers";
 
 describe("Wallet Transfer", () => {
-  it("should generate correct qr-code and address @wallet @p2", () => {
+  it("should generate correct qr-code and address #wallet #p2", () => {
     loginFixtureAccount("INV_EUR_ICBM_HAS_KYC_SEED");
     goToDashboard();
 

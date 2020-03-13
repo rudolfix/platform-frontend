@@ -1,4 +1,5 @@
 import { DeepWritable } from "@neufund/shared";
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { render } from "enzyme";
 import { cloneDeep } from "lodash";
@@ -6,7 +7,6 @@ import * as React from "react";
 
 import { testEto } from "../../../../../../test/fixtures";
 import { wrapWithIntl } from "../../../../../../test/integrationTestUtils.unsafe";
-import { tid } from "../../../../../../test/testUtils";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { InvestmentLayout } from "./InvestmentStatus";
 

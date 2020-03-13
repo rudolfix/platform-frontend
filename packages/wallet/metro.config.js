@@ -9,6 +9,7 @@ const symlinkedModules = {
   "@neufund/shared": path.resolve(projectRoot, "../shared"),
   "@neufund/shared-modules": path.resolve(projectRoot, "../shared-modules"),
   "@neufund/sagas": path.resolve(projectRoot, "../sagas"),
+  crypto: require.resolve("react-native-crypto"),
 };
 
 module.exports = {

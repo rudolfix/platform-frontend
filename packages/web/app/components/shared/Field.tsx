@@ -1,3 +1,4 @@
+import * as cn from "classnames";
 import * as React from "react";
 import { Schema } from "yup";
 
@@ -27,7 +28,7 @@ const Field: React.FunctionComponent<TProps> = ({ name, value, schema }) => {
 
     // Only render html when needed to not add performance/security overhead
     if (renderHtml) {
-      return <SanitizedHtml className={styles.richField} unsafeHtml={value} />;
+      return <SanitizedHtml className={cn(styles.richField, "clearfix")} unsafeHtml={value} />;
     }
   }
 

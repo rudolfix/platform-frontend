@@ -2,7 +2,7 @@ import { etoFixtureAddressByName, loginFixtureAccount, tid } from "../../utils/i
 import { startInvestmentFlow } from "./utils";
 
 describe("Investment modal token price", () => {
-  it("should show correct token price without discount @investment @p3", () => {
+  it("should show correct token price without discount #investment #p3", () => {
     const PUBLIC_ETO_ID = etoFixtureAddressByName("ETOInPublicState");
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
 
@@ -18,7 +18,7 @@ describe("Investment modal token price", () => {
     cy.get(tid("invest-modal.est-equity-tokens")).contains("16 BLKK");
   });
 
-  it("should show correct token price with personal and whitelist discount @investment @p3", () => {
+  it("should show correct token price with personal and whitelist discount #investment #p3", () => {
     const PRESALE_ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC");
 
@@ -37,7 +37,7 @@ describe("Investment modal token price", () => {
     );
   });
 
-  it("should show correct token price with whitelist discount @investment @p3 @flaky", () => {
+  it("should show correct token price with whitelist discount #investment #p3 #flaky", () => {
     const PRESALE_ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
     loginFixtureAccount("INV_HAS_EUR_HAS_KYC");
 

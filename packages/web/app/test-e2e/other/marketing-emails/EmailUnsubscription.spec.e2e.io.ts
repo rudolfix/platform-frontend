@@ -26,13 +26,13 @@ const FAKE_CONFIRMATION_URL =
   "https://localhost:9090/api/newsletter/subscriptions/subs_id/topics/news?signature=subs_sig&timestamp=1581216267";
 
 describe("Email Unsubscription", () => {
-  it("should show invalid unsubscription link @emailing @p3", () => {
+  it("should show invalid unsubscription link #emailing #p3", () => {
     goToEmailUnsubscription(FAKE_EMAIL, "invalid unsubscription link");
 
     cy.get(tid("unsubscription.invalid-confirmation-url")).should("exist");
   });
 
-  it("should go through unsubscription success flow @emailing @p3", () => {
+  it("should go through unsubscription success flow #emailing #p3", () => {
     // stub confirmation request so we can control the response
     cy.server();
     cy.route({
@@ -51,7 +51,7 @@ describe("Email Unsubscription", () => {
     assertUnsubscriptionSuccess();
   });
 
-  it("should handle properly unsubscription api failure flow @emailing @p3", () => {
+  it("should handle properly unsubscription api failure flow #emailing #p3", () => {
     // stub confirmation request so we can control the response
     cy.server();
     cy.route({

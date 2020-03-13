@@ -6,8 +6,14 @@ import { assertEtoView, getYesOrNo } from "./EtoViewUtils";
 
 describe("Eto Investor View", () => {
   describe("Default account tests", () => {
-    before(() => createAndLoginNewUser({ type: "investor", kyc: "business" }));
-
+    before(() =>
+      createAndLoginNewUser({ type: "investor", kyc: "business" }).then(() => {
+        cy.saveLocalStorage();
+      }),
+    );
+    beforeEach(() => {
+      cy.restoreLocalStorage();
+    });
     it("should be tradable when transferability is set to true #eto #p2", () => {
       const ETO_ID_WITH_TRANSFERABILITY_ALLOWED = etoFixtureAddressByName("ETOInWhitelistState");
 
@@ -19,10 +25,6 @@ describe("Eto Investor View", () => {
         cy.get(tid("eto-public-view-token-transferability")).should(
           "contain",
           getYesOrNo(etoData.enableTransferOnSuccess, true),
-        );
-        cy.get(tid("eto-public-view-token-tradability")).should(
-          "contain",
-          etoData.tokenTradeableOnSuccess ? "Immediately after ETO" : "In the future",
         );
       });
     });
@@ -38,16 +40,12 @@ describe("Eto Investor View", () => {
           "contain",
           getYesOrNo(etoData.enableTransferOnSuccess, true),
         );
-        cy.get(tid("eto-public-view-token-tradability")).should(
-          "contain",
-          etoData.tokenTradeableOnSuccess ? "Immediately after ETO" : "In the future",
-        );
       });
     });
   });
 
   describe("Fixtures tests", () => {
-    it("coming soon state should not have token terms @eto @p3", () => {
+    it("coming soon state should not have token terms #eto #p3", () => {
       loginFixtureAccount("ISSUER_PREVIEW");
       goToEtoPreview();
 
@@ -60,7 +58,7 @@ describe("Eto Investor View", () => {
       cy.get(tid("eto-public-view-token-terms")).should("not.exist");
     });
 
-    it("should have token terms in listed state @eto @p3", () => {
+    it("should have token terms in listed state #eto #p3", () => {
       loginFixtureAccount("ISSUER_LISTED");
       goToEtoPreview();
 

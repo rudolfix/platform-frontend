@@ -38,11 +38,11 @@ describe("Pending Transactions In Header", () => {
     goToWallet();
   });
   describe("Tests that Mock the Pending Transactions", () => {
-    it("should show no pending transaction icon @wallet @p3", () => {
+    it("should show no pending transaction icon #wallet #p3", () => {
       cy.get(tid("pending-transactions-status.no-pending-transactions")).should("exist");
     });
 
-    it("should open pending transaction monitor when there is a pending transaction and Keep pending @wallet @p3", () => {
+    it("should open pending transaction monitor when there is a pending transaction and Keep pending #wallet #p3", () => {
       addPendingTransactions(generalPendingTxFixture(userAddress));
 
       cy.get(tid("pending-transactions-status.mining")).click();
@@ -50,7 +50,7 @@ describe("Pending Transactions In Header", () => {
       assertPendingWithdrawModal(testAddress, amount);
     });
 
-    it("should not remove transaction that's still pending from the list @wallet @p3", () => {
+    it("should not remove transaction that's still pending from the list #wallet #p3", () => {
       addPendingTransactions(generalPendingTxFixture(userAddress));
 
       cy.get(tid("pending-transactions-status.mining")).click();
@@ -62,7 +62,7 @@ describe("Pending Transactions In Header", () => {
       cy.get(tid("pending-transactions-status.mining")).should("exist");
     });
 
-    it("should not remove transaction from pending list after reload when success modal is opened @wallet @p3", () => {
+    it("should not remove transaction from pending list after reload when success modal is opened #wallet #p3", () => {
       addPendingTransactions(generalPendingTxFixture(userAddress, ETxSenderState.DONE));
       cy.get(tid("pending-transactions-status.success")).click();
 
@@ -71,7 +71,7 @@ describe("Pending Transactions In Header", () => {
       cy.get(tid("pending-transactions-status.success")).click();
     });
 
-    it("should open pending transaction monitor when there is a success transaction @wallet @p3", () => {
+    it("should open pending transaction monitor when there is a success transaction #wallet #p3", () => {
       addPendingTransactions(generalPendingTxFixture(userAddress, ETxSenderState.DONE));
 
       cy.get(tid("pending-transactions-status.mining")).should("not.exist");
@@ -83,7 +83,7 @@ describe("Pending Transactions In Header", () => {
       cy.get(tid("pending-transactions-status.no-pending-transactions")).should("exist");
     });
 
-    it("should open pending transaction monitor when there is a failed transaction @wallet @p3", () => {
+    it("should open pending transaction monitor when there is a failed transaction #wallet #p3", () => {
       addPendingTransactions(generalPendingTxFixture(userAddress, ETxSenderState.ERROR_SIGN));
 
       cy.get(tid("pending-transactions-status.mining")).should("not.exist");
@@ -95,7 +95,7 @@ describe("Pending Transactions In Header", () => {
       cy.get(tid("pending-transactions-status.no-pending-transactions")).should("exist");
     });
 
-    it("should test failed transaction @wallet @p3", () => {
+    it("should test failed transaction #wallet #p3", () => {
       const txHash = "0x0000000000000000000000000000000000000000000000000000000000000000";
       const tx = generalPendingTxFixture(userAddress);
 
@@ -116,7 +116,7 @@ describe("Pending Transactions In Header", () => {
       assertTxErrorDialogueNoCost();
     });
 
-    it("external pending transaction should not affect header icon @wallet @p3", () => {
+    it("external pending transaction should not affect header icon #wallet #p3", () => {
       clearPendingTransactions();
 
       addPendingExternalTransaction(userAddress);
@@ -130,7 +130,7 @@ describe("Pending Transactions In Header", () => {
   });
 
   describe("Tests that conduct a real transaction", () => {
-    it("should remove transaction from pending list after success @wallet @p2", () => {
+    it("should remove transaction from pending list after success #wallet #p2", () => {
       removePendingExternalTransaction();
       doWithdraw(testAddress, new BigNumber(amount).div("2").toString(), {
         closeWhen: "success",

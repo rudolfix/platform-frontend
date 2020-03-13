@@ -1,11 +1,11 @@
 import { expectSaga } from "@neufund/sagas/tests";
 import { Dictionary } from "@neufund/shared";
+import { createMock } from "@neufund/shared/tests";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
 
 import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
-import { createMock } from "../../../../test/testUtils";
 import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";

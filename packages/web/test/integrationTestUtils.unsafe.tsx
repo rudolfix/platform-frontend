@@ -1,6 +1,7 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
 import { dummyIntl, InversifyProvider, simpleDelay } from "@neufund/shared";
 import { noopLogger } from "@neufund/shared-modules";
+import { createMock, tid } from "@neufund/shared/tests";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
@@ -32,7 +33,6 @@ import { generateRootModuleReducerMap, TAppGlobalState } from "../app/store";
 import { DeepPartial } from "../app/types";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
-import { createMock, tid } from "./testUtils";
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 

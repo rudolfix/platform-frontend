@@ -23,7 +23,7 @@ describe("Pending Transactions In Header", () => {
     goToWallet();
   });
   describe("Pending transactions component in transactions history", () => {
-    it("should show pending transaction component when there is pending transaction @wallet @p3", () => {
+    it("should show pending transaction component when there is pending transaction #wallet #p3", () => {
       cy.get(tid("pending-transactions.transaction-mining")).should("not.exist");
 
       addPendingTransactions(generalPendingTxFixture(userAddress));

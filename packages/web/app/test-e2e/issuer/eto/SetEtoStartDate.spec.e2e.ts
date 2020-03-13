@@ -35,7 +35,7 @@ const setStartDay = (startDate: moment.Moment, textToCheck: RegExp) => {
 };
 
 describe("Eto start date setup", function(): void {
-  it.skip("should setup an eto start date @eto @p3 @flaky", () => {
+  it.skip("should setup an eto start date #eto #p3 #flaky", () => {
     // enable after
     loginFixtureAccount("ISSUER_SETUP");
 

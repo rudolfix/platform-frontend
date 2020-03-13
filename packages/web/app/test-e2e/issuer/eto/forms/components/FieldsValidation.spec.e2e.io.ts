@@ -17,7 +17,7 @@ describe("Eto Company Information Field Validation", function(): void {
     goToCompanyInformation();
   });
 
-  it("should focus first invalid input field @eto @p3", () => {
+  it("should focus first invalid input field #eto #p3", () => {
     fillForm({
       ...aboutFormSubmit,
     });
@@ -25,7 +25,7 @@ describe("Eto Company Information Field Validation", function(): void {
     cy.focused().should("have.attr", "name", "brandName");
   });
 
-  it("should focus first invalid textarea field @eto @p3", () => {
+  it("should focus first invalid textarea field #eto #p3", () => {
     const requiredInputFields = pick(
       ["brandName", "companyWebsite", "companyOneliner", "companyDescription"],
       aboutFormRequired,
@@ -39,7 +39,7 @@ describe("Eto Company Information Field Validation", function(): void {
     cy.focused().should("have.attr", "name", "keyQuoteFounder");
   });
 
-  it("should focus first invalid rich text field @eto @p3", () => {
+  it("should focus first invalid rich text field #eto #p3", () => {
     const requiredInputFields = pick(
       ["brandName", "companyWebsite", "companyOneliner"],
       aboutFormRequired,
@@ -53,7 +53,7 @@ describe("Eto Company Information Field Validation", function(): void {
     cy.focused().should("match", formField("companyDescription"));
   });
 
-  it("should correctly validate required fields @eto @p3", () => {
+  it("should correctly validate required fields #eto #p3", () => {
     const requiredFields = Object.keys(aboutFormRequired);
 
     requiredFields.forEach(key => {

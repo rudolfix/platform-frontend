@@ -23,7 +23,7 @@ const ExternalLink: React.FunctionComponent<TProps & TDataTestId> = ({
     href={href}
     target={process.env.NF_CYPRESS_RUN === "1" ? undefined : "_blank"}
     rel="noopener noreferrer"
-    data-test-id={`${dataTestId} shared.links.external-link`}
+    data-test-id={`${dataTestId || ""} shared.links.external-link`}
     {...rest}
   >
     {children || href}

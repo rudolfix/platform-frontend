@@ -2,7 +2,7 @@ import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { tid } from "../utils/index";
 
 describe("Critical error page", () => {
-  it("should exist when component throws during rendering @p3", () => {
+  it("should exist when component throws during rendering #p3", () => {
     // allow unhandled exceptions
     cy.on("uncaught:exception", () => false);
 

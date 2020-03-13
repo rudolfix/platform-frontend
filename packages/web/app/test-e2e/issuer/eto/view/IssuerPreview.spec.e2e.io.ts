@@ -2,7 +2,7 @@ import { accountFixtureAddress, loginFixtureAccount, tid } from "../../../utils/
 import { assertEtoView, goToIssuerEtoView } from "./EtoViewUtils";
 
 describe("Eto Preview For Issuer", () => {
-  it("should change state depending whether it's issuer view or investor view @eto @p3", () => {
+  it("should change state depending whether it's issuer view or investor view #eto #p3", () => {
     const etoId = accountFixtureAddress("ISSUER_PREVIEW");
 
     loginFixtureAccount("ISSUER_PREVIEW");

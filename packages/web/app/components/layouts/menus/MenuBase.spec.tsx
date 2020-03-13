@@ -1,8 +1,8 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { tid } from "../../../../test/testUtils";
 import { MenuBase } from "./MenuBase";
 
 describe("Dropdown menu", () => {

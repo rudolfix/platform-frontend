@@ -11,7 +11,7 @@ import { assertEtoView } from "./EtoViewUtils";
 describe("Eto LI Investor View", () => {
   beforeEach(() => loginFixtureAccount("SPARE_1"));
 
-  describe("for ETO with LI jurisdiction @eto @p3", () => {
+  describe("for ETO with LI jurisdiction #eto #p3", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInPublicState");
 
     it("should allow to visit ", () => {
@@ -19,7 +19,7 @@ describe("Eto LI Investor View", () => {
       assertEtoView(ETO_ID);
     });
 
-    it("should not allow link with wrong jurisdiction @eto @p3", () => {
+    it("should not allow link with wrong jurisdiction #eto #p3", () => {
       cy.visit(etoPublicViewByIdLink(ETO_ID, EJurisdiction.GERMANY));
       assertDashboard();
     });
@@ -28,7 +28,7 @@ describe("Eto LI Investor View", () => {
   describe("for ETO with GE jurisdiction", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInWhitelistState");
 
-    it("should not allow to visit @eto @p3", () => {
+    it("should not allow to visit #eto #p3", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
 
       assertDashboard();

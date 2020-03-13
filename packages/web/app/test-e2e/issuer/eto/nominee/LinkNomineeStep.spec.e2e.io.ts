@@ -24,146 +24,148 @@ const fillEtoToLinkNomineeStep = (issuerAddress: string) => {
 };
 
 describe("Eto Forms link nominee", () => {
-  it(`
-    should move from "Publish Listing Page" to "Link nominee" step
-    after filling required fields from "Eto Terms" and "Investment Terms" forms
-    and then go through nominee linking process on both issuer and nominee side
-    @eto @nominee @p2
-  `, () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(
-      ({ address: issuerAddress }) => {
-        cy.saveLocalStorage(issuerAddress);
+  it(
+    "should move from Publish Listing Page to Link nominee step " +
+      "after filling required fields from Eto Terms and Investment Terms forms " +
+      "and then go through nominee linking process on both issuer and nominee side " +
+      "#eto #nominee #p2",
+    () => {
+      createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(
+        ({ address: issuerAddress }) => {
+          cy.saveLocalStorage(issuerAddress);
 
-        fillEtoToLinkNomineeStep(issuerAddress);
-        logoutViaAccountMenu();
-        cy.log("-----nominee-----");
-        createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
-          ({ address: nomineeAddress }) => {
-            cy.saveLocalStorage(nomineeAddress);
+          fillEtoToLinkNomineeStep(issuerAddress);
+          logoutViaAccountMenu();
+          cy.log("-----nominee-----");
+          createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
+            ({ address: nomineeAddress }) => {
+              cy.saveLocalStorage(nomineeAddress);
 
-            linkEtoToNominee(issuerAddress);
+              linkEtoToNominee(issuerAddress);
 
-            // get back issuer
-            cy.log("-----issuer-----");
-            cy.restoreLocalStorage(issuerAddress);
+              // get back issuer
+              cy.log("-----issuer-----");
+              cy.restoreLocalStorage(issuerAddress);
 
-            // should await nominee acceptation on dashboard
-            goToIssuerDashboard();
-            assertLinkNomineeStepAwaitingApprovalState();
+              // should await nominee acceptation on dashboard
+              goToIssuerDashboard();
+              assertLinkNomineeStepAwaitingApprovalState();
 
-            acceptNominee(nomineeAddress);
+              acceptNominee(nomineeAddress);
 
-            // should move to setup eto state after nominee was accepted
-            goToIssuerDashboard();
+              // should move to setup eto state after nominee was accepted
+              goToIssuerDashboard();
 
-            assertUploadSignedTermsheetStep();
+              assertUploadSignedTermsheetStep();
 
-            // get back to nominee
-            cy.log("-----nominee-----");
-            cy.restoreLocalStorage(nomineeAddress);
+              // get back to nominee
+              cy.log("-----nominee-----");
+              cy.restoreLocalStorage(nomineeAddress);
 
-            // should have eto linked
-            goToIssuerEtoView();
-          },
-        );
-      },
-    );
-  });
+              // should have eto linked
+              goToIssuerEtoView();
+            },
+          );
+        },
+      );
+    },
+  );
 
-  it(`
-    should move from "Publish Listing Page" to "Link nominee" step
-    after filling required fields from "Eto Terms" and "Investment Terms" forms
-    and then nominee request approval and issuer rejects it @eto @nominee @p3
-  `, () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(
-      ({ address: issuerAddress }) => {
-        cy.log("-----issuer-----");
-        cy.saveLocalStorage(issuerAddress);
+  it(
+    "should move from Publish Listing Page to Link nominee step " +
+      "after filling required fields from Eto Terms and Investment Terms forms " +
+      "and then nominee request approval and issuer rejects it #eto #nominee #p3",
+    () => {
+      createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(
+        ({ address: issuerAddress }) => {
+          cy.log("-----issuer-----");
+          cy.saveLocalStorage(issuerAddress);
 
-        fillEtoToLinkNomineeStep(issuerAddress);
-        logoutViaAccountMenu();
+          fillEtoToLinkNomineeStep(issuerAddress);
+          logoutViaAccountMenu();
 
-        cy.log("-----nominee-----");
-        createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
-          ({ address: nomineeAddress }) => {
-            cy.saveLocalStorage(nomineeAddress);
+          cy.log("-----nominee-----");
+          createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
+            ({ address: nomineeAddress }) => {
+              cy.saveLocalStorage(nomineeAddress);
 
-            linkEtoToNominee(issuerAddress);
-            logoutViaAccountMenu();
+              linkEtoToNominee(issuerAddress);
+              logoutViaAccountMenu();
 
-            // get back issuer
-            cy.log("-----issuer-----");
-            cy.restoreLocalStorage(issuerAddress);
+              // get back issuer
+              cy.log("-----issuer-----");
+              cy.restoreLocalStorage(issuerAddress);
 
-            // should await nominee acceptation on dashboard
-            goToIssuerDashboard();
-            assertLinkNomineeStepAwaitingApprovalState();
+              // should await nominee acceptation on dashboard
+              goToIssuerDashboard();
+              assertLinkNomineeStepAwaitingApprovalState();
 
-            rejectNominee();
+              rejectNominee();
 
-            // should move back to link nominee step
-            goToIssuerDashboard();
-            assertLinkNomineeStepAwaitingRequestState(issuerAddress);
-            logoutViaAccountMenu();
+              // should move back to link nominee step
+              goToIssuerDashboard();
+              assertLinkNomineeStepAwaitingRequestState(issuerAddress);
+              logoutViaAccountMenu();
 
-            // get back to nominee
-            cy.log("-----nominee-----");
-            cy.restoreLocalStorage(nomineeAddress);
+              // get back to nominee
+              cy.log("-----nominee-----");
+              cy.restoreLocalStorage(nomineeAddress);
 
-            // should show rejected request information
-            goToNomineeDashboard();
-            cy.get(tid(`nominee-dashboard-request-rejected-${issuerAddress}`));
-          },
-        );
-      },
-    );
-  });
+              // should show rejected request information
+              goToNomineeDashboard();
+              cy.get(tid(`nominee-dashboard-request-rejected-${issuerAddress}`));
+            },
+          );
+        },
+      );
+    },
+  );
 
-  it(`
-    should move from "Publish Listing Page" to "Link nominee" step
-    after filling required fields from "Eto Terms" and "Investment Terms" forms
-    and then nominee request approval and issuer approves but later cancels it
-    @eto @nominee @p3
-  `, () => {
-    createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(
-      ({ address: issuerAddress }) => {
-        cy.saveLocalStorage(issuerAddress);
+  it(
+    "should move from Publish Listing Page to Link nominee step " +
+      "after filling required fields from Eto Terms and Investment Terms forms " +
+      "and then nominee request approval and issuer approves but later cancels it #eto #nominee #p3",
+    () => {
+      createAndLoginNewUser({ type: "issuer", kyc: "business" }).then(
+        ({ address: issuerAddress }) => {
+          cy.saveLocalStorage(issuerAddress);
 
-        fillEtoToLinkNomineeStep(issuerAddress);
-        logoutViaAccountMenu();
+          fillEtoToLinkNomineeStep(issuerAddress);
+          logoutViaAccountMenu();
 
-        createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
-          ({ address: nomineeAddress }) => {
-            cy.saveLocalStorage(nomineeAddress);
+          createAndLoginNewUser({ type: "nominee", kyc: "business" }).then(
+            ({ address: nomineeAddress }) => {
+              cy.saveLocalStorage(nomineeAddress);
 
-            linkEtoToNominee(issuerAddress);
-            logoutViaAccountMenu();
+              linkEtoToNominee(issuerAddress);
+              logoutViaAccountMenu();
 
-            // get back issuer
-            cy.restoreLocalStorage(issuerAddress);
+              // get back issuer
+              cy.restoreLocalStorage(issuerAddress);
 
-            // should await nominee acceptation on dashboard
-            goToIssuerDashboard();
-            cy.get(tid("eto-dashboard-accept-nominee")).should("exist");
+              // should await nominee acceptation on dashboard
+              goToIssuerDashboard();
+              cy.get(tid("eto-dashboard-accept-nominee")).should("exist");
 
-            acceptNominee(nomineeAddress);
+              acceptNominee(nomineeAddress);
 
-            cancelNominee(nomineeAddress);
+              cancelNominee(nomineeAddress);
 
-            // should move back to link nominee step
-            goToIssuerDashboard();
-            assertLinkNomineeStep();
-            logoutViaAccountMenu();
+              // should move back to link nominee step
+              goToIssuerDashboard();
+              assertLinkNomineeStep();
+              logoutViaAccountMenu();
 
-            // get back to nominee
-            cy.restoreLocalStorage(nomineeAddress);
+              // get back to nominee
+              cy.restoreLocalStorage(nomineeAddress);
 
-            // should show rejected request information
-            goToNomineeDashboard();
-            cy.get(tid(`nominee-dashboard-request-rejected-${issuerAddress}`));
-          },
-        );
-      },
-    );
-  });
+              // should show rejected request information
+              goToNomineeDashboard();
+              cy.get(tid(`nominee-dashboard-request-rejected-${issuerAddress}`));
+            },
+          );
+        },
+      );
+    },
+  );
 });

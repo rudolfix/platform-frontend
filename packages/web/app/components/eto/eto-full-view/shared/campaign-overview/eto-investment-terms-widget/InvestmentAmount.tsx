@@ -43,14 +43,14 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
   return (
     <>
       <MoneyRange
-        valueFrom={minTargetAmount ? minTargetAmount.toString() : undefined}
-        valueUpto={maxTargetAmount ? maxTargetAmount.toString() : undefined}
+        valueFrom={minInvestmentAmount ? minInvestmentAmount.toString() : undefined}
+        valueUpto={maxInvestmentAmount ? maxInvestmentAmount.toString() : undefined}
         inputFormat={ENumberInputFormat.FLOAT}
         valueType={ECurrency.EUR}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         defaultValue={<ToBeAnnounced />}
       />
-      {minTarget && minInvestmentAmount && maxInvestmentAmount && (
+      {minTarget && (
         <Tooltip
           textPosition={ECustomTooltipTextPosition.LEFT}
           content={
@@ -60,8 +60,8 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
                 lineBreak: <br />,
                 target: (
                   <MoneyRange
-                    valueFrom={minInvestmentAmount.toString()}
-                    valueUpto={maxInvestmentAmount.toString()}
+                    valueFrom={minTargetAmount ? minTargetAmount.toString() : undefined}
+                    valueUpto={maxTargetAmount ? maxTargetAmount.toString() : undefined}
                     inputFormat={ENumberInputFormat.FLOAT}
                     valueType={ECurrency.EUR}
                     outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
@@ -82,13 +82,7 @@ const InvestmentAmount: React.FunctionComponent<TExternalProps> = ({ eto }) => {
 
   return (
     <Entry
-      label={
-        minTarget ? (
-          <FormattedMessage id="eto.public-view.token-terms.investment-amount-with-discount" />
-        ) : (
-          <FormattedMessage id="eto.public-view.token-terms.investment-amount" />
-        )
-      }
+      label={<FormattedMessage id="eto.public-view.token-terms.investment-amount" />}
       value={
         <InvestmentAmountRange
           minTarget={minTarget}

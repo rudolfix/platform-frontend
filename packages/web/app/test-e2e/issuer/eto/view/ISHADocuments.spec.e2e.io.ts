@@ -43,7 +43,7 @@ const assertISHAConfidentialityAgreement = () => {
 };
 
 describe("Eto ISHA documents", () => {
-  it("should hide ISHA documents from unauthorized and unverified user @eto @p3", () => {
+  it("should hide ISHA documents from unauthorized and unverified user #eto #p3", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInClaimState");
 
     // assert for unauthorized user
@@ -57,7 +57,7 @@ describe("Eto ISHA documents", () => {
     asserISHADocumentsHidden();
   });
 
-  it("should ask for ISHA confidentiality agreement once when downloading from eto investment terms section @eto @p3", () => {
+  it("should ask for ISHA confidentiality agreement once when downloading from eto investment terms section #eto #p3", () => {
     createAndLoginNewUser({ type: "investor", kyc: "business" });
 
     getEto(etoFixtureAddressByName("ETOInSigningState")).then((eto: TEtoSpecsData) => {
@@ -86,7 +86,7 @@ describe("Eto ISHA documents", () => {
     });
   });
 
-  it("should ask for ISHA confidentiality agreement once when downloading from legal documents section @eto @p3", () => {
+  it("should ask for ISHA confidentiality agreement once when downloading from legal documents section #eto #p3", () => {
     createAndLoginNewUser({ type: "investor", kyc: "business" });
 
     getEto(etoFixtureAddressByName("ETOInClaimState")).then((eto: TEtoSpecsData) => {
@@ -96,7 +96,7 @@ describe("Eto ISHA documents", () => {
     assertISHAConfidentialityAgreement();
   });
 
-  it("should not as for for ISHA confidentiality agreement when user is an owner (nominee or issuer) @eto @p3", () => {
+  it("should not as for for ISHA confidentiality agreement when user is an owner (nominee or issuer) #eto #p3", () => {
     const ETO_ID = etoFixtureAddressByName("ETOInPayoutState");
 
     getEto(ETO_ID).then((eto: TEtoSpecsData) => {

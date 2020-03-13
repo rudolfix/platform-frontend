@@ -49,7 +49,7 @@ describe("Ethereum Routing", () => {
     cy.get(tid("account-address.your.ether-address.from-div"))
       .invoke("text")
       .then(value => {
-        expect(value.toLowerCase()).to.equal(test.address.toLowerCase());
+        expect(((value as unknown) as string).toLowerCase()).to.equal(test.address.toLowerCase());
       });
   });
 

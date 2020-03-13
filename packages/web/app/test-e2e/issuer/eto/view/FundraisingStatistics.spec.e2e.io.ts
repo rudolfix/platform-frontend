@@ -3,6 +3,7 @@ import { withParams } from "@neufund/shared";
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { etoFixtureAddressByName, tid } from "../../../utils/index";
 import { loginFixtureAccount } from "../../../utils/userHelpers";
+import { etoPublicViewByIdLinkLegacy } from "./../../../../components/appRouteUtils";
 import { goToEtoViewById } from "./EtoViewUtils";
 
 const assertFundraisingStatisticsTab = (etoId: string) => {
@@ -47,8 +48,9 @@ describe("ETO Fundraising Statistics", () => {
 
     it("should not show statistics for ETO in Whitelist state #eto #p3", () => {
       const etoId = etoFixtureAddressByName("ETOInWhitelistState");
-
-      assertNoFundraisingStatisticsTab(etoId);
+      cy.visit(etoPublicViewByIdLinkLegacy(etoId));
+      cy.get(tid("jurisdiction-disclaimer-modal.confirm")).click();
+      cy.get(tid("eto.public-view.fundraising-statistics")).should("not.exist");
     });
 
     it("should show statistics for ETO in Public state #eto #p2", () => {

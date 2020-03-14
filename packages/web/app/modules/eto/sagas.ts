@@ -44,7 +44,6 @@ import { TTranslatedString } from "../../types";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuilding-flow/utils";
-import { selectMyAssets } from "../investor-portfolio/selectors";
 import { selectClientJurisdiction } from "../kyc/selectors";
 import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectTxAdditionalData, selectTxType } from "../tx/sender/selectors";
@@ -631,12 +630,6 @@ function* loadTokens(etos: TEtoWithCompanyAndContractReadonly[]): Generator<any,
   yield put(actions.eto.setTokensLoadingDone());
 }
 
-function* loadTokensData(): any {
-  const myAssets = yield select(selectMyAssets);
-
-  yield loadTokens(myAssets);
-}
-
 function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any, any, any> {
   const txType = yield select(selectTxType);
 
@@ -868,7 +861,6 @@ export function* etoSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.eto.loadEtoPreview, loadEtoPreview);
   yield fork(neuTakeEvery, actions.eto.loadEto, loadEto);
   yield fork(neuTakeEvery, actions.eto.loadEtos, loadEtos);
-  yield fork(neuTakeEvery, actions.eto.loadTokensData, loadTokensData);
   yield fork(neuTakeEvery, actions.eto.loadEtoAgreementsStatus, issuerFlowLoadAgreementsStatus);
   yield fork(neuTakeLatest, actions.eto.loadTokenTerms, loadEtoGeneralTokenDiscounts);
 

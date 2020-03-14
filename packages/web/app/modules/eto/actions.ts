@@ -40,7 +40,6 @@ export const etoActions = {
     "ETO_DOWNLOAD_TEMPLATE_BY_TYPE",
     (etoId: string, documentType: EEtoDocumentType) => ({ etoId, documentType }),
   ),
-  loadTokensData: createActionFactory("ETO_LOAD_TOKENS_DATA"),
   loadEtoAgreementsStatus: createActionFactory(
     "ETO_LOAD_AGREEMENTS_STATUS",
     (eto: TEtoWithCompanyAndContractReadonly) => ({

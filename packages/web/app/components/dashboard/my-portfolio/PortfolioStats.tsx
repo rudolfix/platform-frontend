@@ -28,7 +28,7 @@ import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget
 import { ESize } from "../../shared/transaction/TransactionData";
 import { WarningAlert } from "../../shared/WarningAlert";
 
-import styles from "./PortfolioStats.module.scss";
+import * as styles from "./PortfolioStats.module.scss";
 
 type TStateProps = {
   myAssets: TETOWithTokenData[] | undefined;

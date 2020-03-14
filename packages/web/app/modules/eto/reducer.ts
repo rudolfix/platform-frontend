@@ -150,7 +150,6 @@ export const etoReducer: AppReducer<IEtoState> = (
         etosError: true,
       };
 
-    case actions.eto.loadTokensData.getType():
     case actions.eto.loadEtos.getType():
       return {
         ...state,

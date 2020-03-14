@@ -1,9 +1,9 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
 import { wrapWithIntl } from "../../../../../../../test/integrationTestUtils.unsafe";
-import { tid } from "../../../../../../../test/testUtils";
 import { formWrapper } from "../../../../../shared/forms/fields/testingUtils.unsafe";
 import { EtherAddressFormRow } from "./EtherAddressFormRow";
 

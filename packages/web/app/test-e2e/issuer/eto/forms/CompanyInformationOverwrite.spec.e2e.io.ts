@@ -5,7 +5,7 @@ import { createAndLoginNewUser } from "../../../utils/userHelpers";
 import {
   goToCompanyInformation,
   goToLegalInformation,
-  patchIssuerCompany,
+  putIssuerCompany,
 } from "../EtoRegistrationUtils";
 import { aboutFormRequired, aboutFormSubmit } from "../fixtures";
 
@@ -13,7 +13,7 @@ const companyLegalDescriptionExpectedValue = "Sunt elogiumes fallere camerarius,
 
 const simulateCompanyLegalDescriptionModification = () => {
   cyPromise(() =>
-    patchIssuerCompany({
+    putIssuerCompany({
       companyLegalDescription: companyLegalDescriptionExpectedValue,
     }),
   );

@@ -133,7 +133,7 @@ export function* loadSeedFromWalletWatch({
 }
 
 export function* lightWalletRecoverWatch(
-  { lightWalletConnector, web3Manager, apiUserService }: TGlobalDependencies,
+  { lightWalletConnector, web3Manager, apiUserService, vaultApi }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.walletSelector.lightWalletRecover>,
 ): Generator<any, any, any> {
   const { password, email, seed } = action.payload;
@@ -184,6 +184,10 @@ export function* lightWalletRecoverWatch(
       password,
     );
     yield web3Manager.plugPersonalWallet(wallet);
+
+    const vaultKey = yield* call(getVaultKey, walletMetadata.salt, password);
+    yield vaultApi.confirm(vaultKey);
+
     yield neuCall(logoutUser);
 
     yield put(actions.routing.goToSuccessfulRecovery());

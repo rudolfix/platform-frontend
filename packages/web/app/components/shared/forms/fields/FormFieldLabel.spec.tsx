@@ -1,10 +1,10 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import { object, string } from "yup";
 
 import { wrapWithIntl } from "../../../../../test/integrationTestUtils.unsafe";
-import { tid } from "../../../../../test/testUtils";
 import { FormFieldLabel } from "./FormFieldLabel";
 import { formWrapper } from "./testingUtils.unsafe";
 

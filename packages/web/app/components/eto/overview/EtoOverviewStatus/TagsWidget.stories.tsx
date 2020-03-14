@@ -36,7 +36,7 @@ storiesOf("ETO/TagsWidget", module)
       <TagsWidgetLayout
         {...defaultProps}
         isEmbedded={false}
-        prospectusApproved={prospectusDocument}
+        investorOfferingDocumentApproved={prospectusDocument}
       />
       <h6>Offering Document Type Prospectus</h6>
       <TagsWidgetLayout {...defaultProps} isEmbedded={false} eto={prospectusEto} />
@@ -45,7 +45,7 @@ storiesOf("ETO/TagsWidget", module)
         {...defaultProps}
         isEmbedded={false}
         eto={prospectusEto}
-        prospectusApproved={prospectusDocument}
+        investorOfferingDocumentApproved={prospectusDocument}
       />
     </div>
   ))
@@ -54,7 +54,11 @@ storiesOf("ETO/TagsWidget", module)
       <h6>Offering Document Type Memorandum</h6>
       <TagsWidgetLayout {...defaultProps} isEmbedded />
       <h6>Offering Document Type Memorandum (uploaded)</h6>
-      <TagsWidgetLayout {...defaultProps} isEmbedded prospectusApproved={prospectusDocument} />
+      <TagsWidgetLayout
+        {...defaultProps}
+        isEmbedded
+        investorOfferingDocumentApproved={prospectusDocument}
+      />
       <h6>Offering Document Type Prospectus</h6>
       <TagsWidgetLayout {...defaultProps} eto={prospectusEto} isEmbedded />
       <h6>Offering Document Type Prospectus Approved</h6>
@@ -62,7 +66,7 @@ storiesOf("ETO/TagsWidget", module)
         {...defaultProps}
         eto={prospectusEto}
         isEmbedded
-        prospectusApproved={prospectusDocument}
+        investorOfferingDocumentApproved={prospectusDocument}
       />
     </div>
   ));

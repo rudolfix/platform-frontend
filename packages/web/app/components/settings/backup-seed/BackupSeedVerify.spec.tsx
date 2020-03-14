@@ -1,9 +1,9 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import { difference, noop } from "lodash";
 import * as React from "react";
 
-import { tid } from "../../../../test/testUtils";
 import { englishMnemonics } from "../../../utils/englishMnemonics";
 import { BackupSeedVerify, IBackupSeedVerifyState } from "./BackupSeedVerify.unsafe";
 

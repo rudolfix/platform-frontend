@@ -9,31 +9,12 @@ import {
 } from "../../utils/userHelpers";
 import { assertWithdrawButtonIsDisabled, typeWithdrawForm } from "../wallet/utils";
 
-export const NeumarkContract: any = require("../../../../../../git_modules/platform-contracts-artifacts/localhost/contracts/Neumark.json");
-
-const continueTokenFlow = (etoId: string, uniqueFlowSteps: () => void) => {
-  cy.get(tid(`modals.portfolio.portfolio-assets.send-token-${etoId}`)).click();
-  uniqueFlowSteps();
-  assertWithdrawButtonIsDisabled();
-  cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"))
-    .should("be.enabled")
-    .click();
-
-  cy.get(tid("modals.tx-sender.withdraw-flow.summary.accept")).awaitedClick();
-
-  confirmAccessModal(DEFAULT_PASSWORD);
-
-  cy.get(tid("modals.shared.signing-message.modal")).should("exist");
-  cy.get(tid("modals.shared.tx-success.modal")).should("exist");
-};
-
 describe("Token Transfer", () => {
   // todo: generate random address for new wallet
   let testAddress: string;
 
   const tokenAddress = etoFixtureByName("ETOInClaimState").equityToken;
   const testValue = "2";
-
   before(() => {
     createAndLoginNewUser({
       type: "investor",
@@ -50,9 +31,20 @@ describe("Token Transfer", () => {
 
         goToPortfolio();
 
-        continueTokenFlow(etoId, () => {
-          typeWithdrawForm(testAddress, testValue);
-        });
+        cy.get(tid(`modals.portfolio.portfolio-assets.send-token-${etoId}`)).click();
+        typeWithdrawForm(testAddress, testValue);
+        assertWithdrawButtonIsDisabled();
+
+        cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button"))
+          .should("be.enabled")
+          .click();
+
+        cy.get(tid("modals.tx-sender.withdraw-flow.summary.accept")).awaitedClick();
+
+        confirmAccessModal(DEFAULT_PASSWORD);
+
+        cy.get(tid("modals.shared.signing-message.modal")).should("exist");
+        cy.get(tid("modals.shared.tx-success.modal")).should("exist");
 
         getTokenBalance(tokenAddress, address).then(balance2 => {
           const transferedAmount = tokenBalance.sub(balance2).toString();
@@ -61,19 +53,42 @@ describe("Token Transfer", () => {
       });
     });
   });
-  it("should transfer all tokens to new wallet #portfolio #assets #flaky #p3", () => {
-    const zeroAmount = "0";
+
+  // There is a bug: https://github.com/Neufund/platform-frontend/issues/4179
+  it.skip("should allow to transfer all tokens to not verified wallet #portfolio #assets #p3", () => {
     const toAddress = "0x00b30CC2cc22c9820d47a4E0C9E1A54455bA0883";
     const etoId = etoFixtureAddressByName("ETOInClaimState");
-    cy.restoreLocalStorage();
 
+    loginFixtureAccount("INV_HAS_EUR_HAS_KYC_2");
     goToPortfolio();
-    continueTokenFlow(etoId, () => {
-      typeWithdrawForm(toAddress, testValue);
-      cy.get(tid("modals.tx-sender.transfer-flow.transfer-component.whole-balance")).click();
-    });
-    getTokenBalance(tokenAddress, testAddress).then(balance => {
-      expect(balance.toString()).to.be.equal(zeroAmount);
-    });
+
+    cy.get(tid(`modals.portfolio.portfolio-assets.send-token-${etoId}`)).click();
+
+    cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.to-address"))
+      .type(toAddress)
+      .blur();
+
+    cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.new-address-with-balance"))
+      .should("exist")
+      .then($newAddress => {
+        $newAddress.click();
+      });
+
+    cy.get(tid("modals.shared.tx-transfer.modal"))
+      .find(tid("value"))
+      .then($span => {
+        const balance = $span.text();
+
+        cy.get(tid("modals.tx-sender.transfer-flow.transfer-component.whole-balance")).click();
+
+        cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.value")).should(
+          "have.value",
+          balance,
+        );
+      });
+
+    cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.send-transaction-button")).should(
+      "be.enabled",
+    );
   });
 });

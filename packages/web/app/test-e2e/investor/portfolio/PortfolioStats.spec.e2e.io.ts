@@ -4,7 +4,7 @@ import { tid } from "../../utils/selectors";
 import { DEFAULT_PASSWORD, loginFixtureAccount } from "../../utils/userHelpers";
 
 describe("Portfolio Stats", () => {
-  it("should show loading without no assets message when logged in starting from landing @dashboard @portfolio-stats @p3", () => {
+  it("should show loading without no assets message when logged in starting from landing @dashboard #portfolio-stats #p3", () => {
     cy.visit(appRoutes.root);
 
     cy.get(tid("dashboard-eto-list")).should("exist");

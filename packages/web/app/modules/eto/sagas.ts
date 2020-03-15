@@ -370,7 +370,7 @@ export function* watchEto(_: TGlobalDependencies, previewCode: string): any {
   }
 }
 
-function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
+export function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
   try {
     const etos: TEtoDataWithCompany[] = yield apiEtoService.getEtos();
     const jurisdiction: string | undefined = yield select(selectClientJurisdiction);

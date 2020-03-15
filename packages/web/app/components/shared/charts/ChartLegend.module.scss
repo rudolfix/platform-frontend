@@ -1,4 +1,6 @@
 .chart-legend {
+  @include nds-body-small;
+
   align-items: center;
   display: flex;
 

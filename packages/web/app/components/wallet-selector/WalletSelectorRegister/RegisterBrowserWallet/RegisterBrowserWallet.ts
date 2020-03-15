@@ -49,8 +49,8 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
       ...selectWalletSelectorData(s),
     }),
     dispatchToProps: dispatch => ({
-      submitForm: (email: string) =>
-        dispatch(actions.walletSelector.browserWalletRegisterFormData(email)),
+      submitForm: (email: string, tos: boolean) =>
+        dispatch(actions.walletSelector.browserWalletRegisterFormData(email, tos)),
     }),
   }),
   withContainer(

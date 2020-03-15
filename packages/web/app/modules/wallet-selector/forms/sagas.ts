@@ -71,6 +71,16 @@ export function* registerForm(
         } as const),
       );
     } else {
+      yield put(
+        actions.walletSelector.setWalletRegisterData({
+          ...baseUiData,
+          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
+          initialFormValues: {
+            ...initialFormValues,
+            ...payload,
+          },
+        } as const),
+      );
       return payload;
     }
   }

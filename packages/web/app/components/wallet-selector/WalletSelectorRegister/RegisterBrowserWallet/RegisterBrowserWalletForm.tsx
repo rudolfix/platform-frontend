@@ -23,7 +23,7 @@ import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 type TEmailTosFormProps = {
   intl: IIntlHelpers;
   isLoading: boolean;
-  submitForm: (email: string) => void;
+  submitForm: (email: string, tos: boolean) => void;
   initialFormValues: TBrowserWalletFormValues;
   errorMessage: TMessage | undefined;
 };
@@ -62,7 +62,7 @@ export const BrowserWalletAskForEmailAndTosForm: React.FunctionComponent<TEmailT
     initialTouched={{ email: !!errorMessage }}
     validateOnMount={!errorMessage}
     validateOnBlur={false}
-    onSubmit={values => submitForm(values.email)}
+    onSubmit={values => submitForm(values.email, values.tos)}
     className={styles.form}
   >
     {({ isSubmitting, isValid }) => (

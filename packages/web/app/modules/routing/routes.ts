@@ -12,6 +12,7 @@ import { actions } from "../actions";
 import { TEtoWithCompanyAndContract } from "../eto/types";
 import { neuCall } from "../sagasUtils";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
+import { walletSelectorRegisterRedirect } from "./redirects/utils";
 import { GREYP_PREVIEW_CODE, routeAction, routeInternal } from "./sagas";
 import {
   TEtoPublicViewByIdLegacyRoute,
@@ -362,7 +363,7 @@ export function* registerRoute(payload: RouterState): Generator<any, any, any> {
     exact: true,
   });
   return yield routeAction(routeMatch, {
-    notAuth: put(actions.walletSelector.registerRedirect(EUserType.INVESTOR)),
+    notAuth: put(walletSelectorRegisterRedirect(EUserType.INVESTOR)),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
@@ -461,7 +462,7 @@ export function* registerIssuerRoute(payload: RouterState): Generator<any, any, 
   return yield routeAction(registerIssuerMatch, {
     notAuth:
       process.env.NF_ISSUERS_ENABLED === "1"
-        ? put(actions.walletSelector.registerRedirect(EUserType.ISSUER))
+        ? put(walletSelectorRegisterRedirect(EUserType.ISSUER))
         : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
@@ -556,7 +557,7 @@ export function* registerNomineeRoute(payload: RouterState): Generator<any, any,
   return yield routeAction(registerNomineeMatch, {
     notAuth:
       process.env.NF_NOMINEE_ENABLED === "1"
-        ? put(actions.walletSelector.registerRedirect(EUserType.NOMINEE))
+        ? put(walletSelectorRegisterRedirect(EUserType.NOMINEE))
         : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),

@@ -49,10 +49,11 @@ export type TLightWalletFormValues = {
   repeatPassword: string;
 };
 
+// TODO: Setup the types in a way where only 
 export type TCommonWalletRegisterData = {
-  showWalletSelector: boolean;
-  rootPath: string;
-  initialFormValues: TBrowserWalletFormValues | TLightWalletFormValues;
+  showWalletSelector?: boolean;
+  rootPath?: string;
+  initialFormValues?: TBrowserWalletFormValues | TLightWalletFormValues;
 };
 
 export type TBrowserWalletRegisterData = TCommonWalletRegisterData &

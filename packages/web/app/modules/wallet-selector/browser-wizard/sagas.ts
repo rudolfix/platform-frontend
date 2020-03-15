@@ -1,3 +1,4 @@
+import { selectUrlUserType } from "./../selectors";
 import { fork, neuCall, neuTakeLatestUntil, put, select, take } from "@neufund/sagas";
 
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
@@ -13,12 +14,7 @@ import { signInUser } from "../../auth/user/sagas";
 import { neuTakeUntil } from "../../sagasUtils";
 import { EWalletType } from "../../web3/types";
 import { registerForm } from "../forms/sagas";
-import {
-  resetWalletSelectorState,
-  TBaseUiData,
-  walletSelectorConnect,
-  walletSelectorReset,
-} from "../sagas";
+import { resetWalletSelectorState, TBaseUiData, walletSelectorConnect } from "../sagas";
 import { selectRegisterWalletDefaultFormValues } from "../selectors";
 import {
   EBrowserWalletRegistrationFlowState,
@@ -28,6 +24,15 @@ import {
 } from "../types";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 
+/**
+ * @deprecated
+ * @generator Legacy generator that is still used with the login flow for the browser wallet
+ * All browser wallet operations should be moved to `browserWalletConnectAndSign` once the
+ * reducer is unified.
+ *
+ * @note browserWalletLogin is the only flow that uses this generator
+ *
+ */
 export function* tryConnectingWithBrowserWallet({
   browserWalletConnector,
   web3Manager,
@@ -58,26 +63,34 @@ export function* tryConnectingWithBrowserWallet({
   }
 }
 
-export function* browserWalletConnectAndSign(
-  { browserWalletConnector, web3Manager, logger }: TGlobalDependencies,
-  baseUiData: TBaseUiData,
-): Generator<any, boolean, any> {
+/**
+ * @generator connects a browser wallet and signs in the user once the browser wallet is connected
+ *
+ * @note `browserWalletConnectAndSign` assumes that the flow data is available already
+ * in the state if the values are not in state the generator will throw
+ *
+ */
+export function* browserWalletConnectAndSign({
+  browserWalletConnector,
+  web3Manager,
+  logger,
+}: TGlobalDependencies): Generator<any, void, any> {
+  const initialFormValues = yield* select(selectRegisterWalletDefaultFormValues);
+  if (!initialFormValues) throw new Error();
   try {
+    const userType = yield* select(selectUrlUserType);
+
     yield put(
       actions.walletSelector.setWalletRegisterData({
-        ...baseUiData,
         uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
-        initialFormValues: (yield* select(
-          selectRegisterWalletDefaultFormValues,
-        )) as TBrowserWalletFormValues,
-      } as const),
+      }),
     );
     const browserWallet: BrowserWallet = yield browserWalletConnector.connect(
       web3Manager.networkId,
     );
-    yield web3Manager.plugPersonalWallet(browserWallet);
 
-    return true;
+    yield web3Manager.plugPersonalWallet(browserWallet);
+    yield neuCall(signInUser, userType, initialFormValues.email, initialFormValues.tos);
   } catch (e) {
     const errorMessage = mapBrowserWalletErrorToErrorMessage(e);
     if (errorMessage.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {
@@ -85,25 +98,20 @@ export function* browserWalletConnectAndSign(
     }
     yield put(
       actions.walletSelector.setWalletRegisterData({
-        ...baseUiData,
         uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
         errorMessage,
-        initialFormValues: (yield* select(
-          selectRegisterWalletDefaultFormValues,
-        )) as TBrowserWalletFormValues,
-      } as const),
+      }),
     );
-    return false;
   }
 }
 
 // TODO: Clean `browserWalletRegister` and connect the login flow with `tryConnectingWithBrowserWallet`
 export function* browserWalletRegister(
-  { logger }: TGlobalDependencies,
+  _: TGlobalDependencies,
   { payload }: TActionFromCreator<typeof actions.walletSelector.registerWithBrowserWallet>,
 ): Generator<any, void, any> {
-  yield neuCall(resetWalletSelectorState);
   const userType = payload.userType;
+
   const baseUiData = {
     walletType: EWalletType.BROWSER,
     showWalletSelector: userMayChooseWallet(userType),
@@ -115,50 +123,13 @@ export function* browserWalletRegister(
     tos: false,
   };
   yield neuCall(resetWalletSelectorState);
-  try {
-    const { email } = yield neuCall(
-      registerForm,
-      actions.walletSelector.browserWalletRegisterFormData,
-      initialFormValues,
-      baseUiData,
-    );
-    while (true) {
-      const connectionEstablished = yield neuCall(browserWalletConnectAndSign, baseUiData);
-      if (connectionEstablished) {
-        try {
-          yield neuCall(signInUser, userType, email, true);
-          return;
-        } catch (e) {
-          const errorMessage = yield mapBrowserWalletErrorToErrorMessage(e);
-          yield put(
-            actions.walletSelector.setWalletRegisterData({
-              ...baseUiData,
-              uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
-              errorMessage,
-              initialFormValues: (yield* select(
-                selectRegisterWalletDefaultFormValues,
-              )) as TBrowserWalletFormValues,
-            } as const),
-          );
-        }
-        yield take(actions.walletSelector.browserWalletSignMessage);
-      }
-    }
-  } catch (e) {
-    logger.error(new Error("An error while registering with a browser wallet"), e);
-    const errorMessage = yield mapBrowserWalletErrorToErrorMessage(e);
-    yield put(
-      actions.walletSelector.setWalletRegisterData({
-        ...baseUiData,
-        uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
-        errorMessage,
-        initialFormValues: (yield* select(
-          selectRegisterWalletDefaultFormValues,
-        )) as TBrowserWalletFormValues,
-      } as const),
-    );
-    yield walletSelectorReset();
-  }
+  yield neuCall(
+    registerForm,
+    actions.walletSelector.browserWalletRegisterFormData,
+    initialFormValues,
+    baseUiData,
+  );
+  yield neuCall(browserWalletConnectAndSign);
 }
 
 export function* browserWalletSagas(): Generator<any, any, any> {
@@ -167,6 +138,13 @@ export function* browserWalletSagas(): Generator<any, any, any> {
     actions.walletSelector.registerWithBrowserWallet,
     "@@router/LOCATION_CHANGE",
     browserWalletRegister,
+  );
+
+  yield fork(
+    neuTakeUntil,
+    actions.walletSelector.browserWalletSignMessage,
+    actions.walletSelector.reset,
+    browserWalletConnectAndSign,
   );
 
   yield fork(

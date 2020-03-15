@@ -38,22 +38,6 @@ export function* walletSelectorReset(): Generator<any, any, any> {
   yield neuCall(loadPreviousWallet);
 }
 
-export function* walletSelectorRegisterRedirect(
-  _: TGlobalDependencies,
-  { payload }: TActionFromCreator<typeof actions.walletSelector.registerRedirect>,
-): Generator<any, void, any> {
-  switch (payload.userType) {
-    case EUserType.INVESTOR:
-      yield put(actions.routing.goToLightWalletRegister());
-      break;
-    case EUserType.ISSUER:
-      yield put(actions.routing.goToIssuerLightWalletRegister());
-      break;
-    case EUserType.NOMINEE:
-      yield put(actions.routing.goToNomineeLightWalletRegister());
-      break;
-  }
-}
 
 export function* resetWalletSelectorState(): Generator<any, void, any> {
   yield put(actions.walletSelector.reset());
@@ -62,7 +46,6 @@ export function* resetWalletSelectorState(): Generator<any, void, any> {
 
 export function* walletSelectorSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.walletSelector.reset, walletSelectorReset);
-  yield fork(neuTakeEvery, actions.walletSelector.registerRedirect, walletSelectorRegisterRedirect);
   yield fork(
     neuTakeLatestUntil,
     actions.walletSelector.registerWithLedger,

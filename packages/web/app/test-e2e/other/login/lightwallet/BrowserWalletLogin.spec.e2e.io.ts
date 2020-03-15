@@ -110,4 +110,19 @@ describe("Ethereum Routing", () => {
 
     assertIssuerDashboard();
   });
+
+  it("should show error #browserWallet #p3", () => {
+    cy.window().then(win => {
+      (win as any).ethereum = undefined;
+
+      goToLanding();
+
+      cy.get(tid("Header-login")).click();
+
+      cy.get(tid("wallet-selector-browser")).click();
+
+      cy.get(tid("browser-wallet-error-msg")).should("exist");
+
+    });
+  });
 });

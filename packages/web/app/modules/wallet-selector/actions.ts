@@ -14,9 +14,6 @@ const actions = {
     "WALLET_SELECTOR_MESSAGE_SIGNING_ERROR",
     (errorMessage: TMessage) => ({ errorMessage }),
   ),
-  registerRedirect: createActionFactory("REGISTER_REDIRECT", (userType: EUserType) => ({
-    userType,
-  })),
   registerWithBrowserWallet: createActionFactory(
     "REGISTER_WITH_BROWSER_WALLET",
     (userType: EUserType) => ({ userType }),
@@ -34,7 +31,7 @@ const actions = {
   ),
   browserWalletRegisterFormData: createActionFactory(
     "BROWSER_WALLET_REGISTER_FORM_DATA",
-    (email: string) => ({ email }),
+    (email: string, tos: boolean) => ({ email, tos }),
   ),
   browserWalletSignMessage: createActionFactory("BROWSER_WALLET_SIGN_MESSAGE"),
   ledgerReconnect: createActionFactory("LEDGER_RECONNECT"),

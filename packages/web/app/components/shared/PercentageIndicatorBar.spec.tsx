@@ -1,8 +1,8 @@
+import { tid } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { tid } from "../../../test/testUtils";
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 
 describe("<PercentageIndicatorBar />", () => {

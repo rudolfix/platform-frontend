@@ -1,11 +1,10 @@
-import { setupFakeClock } from "@neufund/shared/tests";
+import { createMock, createMount, remount, setupFakeClock, tid } from "@neufund/shared/tests";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import * as jsonwebtoken from "jsonwebtoken";
 import * as React from "react";
 import { Route } from "react-router";
 
-import { createMount, remount } from "../../../test/createMount";
 import { dummyEthereumAddress, dummyNetworkId } from "../../../test/fixtures";
 import {
   createIntegrationTestsSetup,
@@ -13,7 +12,6 @@ import {
   waitForTid,
   wrapWithProviders,
 } from "../../../test/integrationTestUtils.unsafe";
-import { createMock, tid } from "../../../test/testUtils";
 import { symbols } from "../../di/symbols";
 import { SignatureAuthApi } from "../../lib/api/auth/SignatureAuthApi";
 import { getDummyUser } from "../../lib/api/users/fixtures";

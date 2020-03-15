@@ -1,10 +1,10 @@
 import { noopLogger } from "@neufund/shared-modules";
+import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 import { spy } from "sinon";
 import * as Web3 from "web3";
 
 import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
-import { createMock } from "../../../../test/testUtils";
 import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../../modules/web3/types";
 import { LedgerWallet } from "../ledger-wallet/LedgerWallet";
 import { EWeb3ManagerEvents, Web3Manager } from "./Web3Manager";

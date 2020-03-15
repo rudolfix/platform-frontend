@@ -1,9 +1,9 @@
+import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 
 import { dummyEthereumAddress } from "../../../../test/fixtures";
-import { createMock } from "../../../../test/testUtils";
-import { IVault, LightWallet } from "../light-wallet/LightWallet";
 import { Web3Adapter } from "../Web3Adapter";
+import { IVault, LightWallet } from "./LightWallet";
 
 describe("Light Wallet", () => {
   it("should generate correct metadata", () => {

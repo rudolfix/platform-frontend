@@ -48,7 +48,11 @@ const EtoAccordionElements: React.FunctionComponent<{
     targetMarketAndIndustry ||
     keyBenefitsForInvestors;
 
-  return shouldShowComponent ? (
+  if (!shouldShowComponent) {
+    return null;
+  }
+
+  return (
     <Container columnSpan={EColumnSpan.TWO_COL} type={EContainerType.INHERIT_GRID}>
       <Container columnSpan={EColumnSpan.TWO_COL}>
         <>
@@ -56,7 +60,7 @@ const EtoAccordionElements: React.FunctionComponent<{
             title={<FormattedMessage id="eto.public-view.product-vision.title" />}
           />
           <Panel>
-            <Accordion openFirst={true}>
+            <Accordion openFirst>
               {inspiration ? (
                 <AccordionField
                   name="inspiration"
@@ -203,7 +207,7 @@ const EtoAccordionElements: React.FunctionComponent<{
         </>
       </Container>
     </Container>
-  ) : null;
+  );
 };
 
 export { EtoAccordionElements };

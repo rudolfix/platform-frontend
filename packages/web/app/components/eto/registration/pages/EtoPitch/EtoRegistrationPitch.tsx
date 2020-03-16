@@ -125,6 +125,13 @@ const EtoRegistrationPitchComponent = ({
 
       <FormTextArea
         className="my-2"
+        label={<FormattedMessage id="eto.form.product-vision.impact" />}
+        placeholder="Describe"
+        name="impact"
+      />
+
+      <FormTextArea
+        className="my-2"
         label={<FormattedMessage id="eto.form.product-vision.roadmap" />}
         placeholder="Describe"
         name="roadmap"

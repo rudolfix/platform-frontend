@@ -33,8 +33,8 @@ interface IProps {
 
 const SingleFileUploadUploaded: React.FunctionComponent<Pick<
   IProps,
-  "file" | "onRemove" | "onDownload" | "data-test-id"
->> = ({ file, onRemove, onDownload, "data-test-id": dataTestId }) => (
+  "file" | "onRemove" | "onDownload" | "data-test-id" | "disabled"
+>> = ({ file, onRemove, onDownload, "data-test-id": dataTestId, disabled }) => (
   <div className={styles.fileUploaded}>
     <img src={file} alt="File uploaded" data-test-id={`${dataTestId}.image`} />
     <DropzoneActionButtons
@@ -42,6 +42,7 @@ const SingleFileUploadUploaded: React.FunctionComponent<Pick<
       className={styles.buttons}
       onRemove={onRemove}
       onDownload={onDownload}
+      disableRemove={disabled}
     />
   </div>
 );
@@ -72,6 +73,7 @@ export const SingleFileUpload: React.FunctionComponent<IProps & CommonHtmlProps>
           onDownload={onDownload}
           onRemove={onRemove}
           data-test-id={`${dataTestId}.uploaded`}
+          disabled={disabled}
         />
       ) : (
         <Dropzone

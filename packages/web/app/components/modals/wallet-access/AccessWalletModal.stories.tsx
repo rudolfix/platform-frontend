@@ -57,6 +57,28 @@ storiesOf("AccessWalletModal", module)
       />
     );
   })
+  .add("gnosis", () => (
+    <AccessWalletContainerComponent
+      {...props}
+      walletType={EWalletType.BROWSER}
+      walletSubType={EWalletSubType.GNOSIS}
+    />
+  ))
+  .add("gnosis with error", () => {
+    const data = {
+      ...props,
+      errorMessage: getMessageTranslation(
+        createMessage(BrowserWalletErrorMessage.ACCOUNT_APPROVAL_REJECTED),
+      ),
+    };
+    return (
+      <AccessWalletContainerComponent
+        {...data}
+        walletType={EWalletType.BROWSER}
+        walletSubType={EWalletSubType.GNOSIS}
+      />
+    );
+  })
   .add("ledger", () => (
     <AccessWalletContainerComponent {...props} walletType={EWalletType.LEDGER} />
   ))

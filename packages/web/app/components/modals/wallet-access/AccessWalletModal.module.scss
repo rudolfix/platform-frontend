@@ -13,3 +13,9 @@
     margin-top: px-to-rem(38px);
   }
 }
+
+.wallet-icon {
+  @include rect(64px);
+
+  margin: px-to-rem(16px) auto;
+}

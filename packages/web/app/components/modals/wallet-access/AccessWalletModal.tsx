@@ -99,7 +99,7 @@ export const AccessWalletContainerComponent: React.FunctionComponent<IStateProps
           srcSet={walletSubType === EWalletSubType.GNOSIS ? logoGnosisSrcSet : logoMetamaskSrcSet}
           alt={walletSubType || ""}
           title={walletSubType}
-          className="mt-3 mb-3"
+          className={styles.walletIcon}
         />
         <div className={cn("mt-2", styles.info)}>
           {walletSubType === EWalletSubType.GNOSIS ? (

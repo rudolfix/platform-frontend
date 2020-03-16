@@ -297,7 +297,7 @@
   "eto.documents.reservation-and-acquisition-agreement": "Reservation and Acquisition Agreement",
   "eto.documents.reservation-and-acquisition-agreement-template": "Reservation and Acquisition Agreement Template",
   "eto.documents.signed-investment-and-shareholder-agreement": "Signed Investment and Shareholders Agreement",
-  "eto.documents.signed-investment-and-shareholder-agreement.hashes-dont-match": "There is a problem with the ISHA you uploaded.<br>File {uploadedFileName} doesn't match the copy the Issuer uploaded. Please try again.",
+  "eto.documents.signed-investment-and-shareholder-agreement.hashes-dont-match": "There is a problem with the ISHA you uploaded.{breakLine}File {uploadedFileName} doesn't match the copy the Issuer uploaded. Please try again.",
   "eto.documents.signed-termsheet": "Signed Term Sheet",
   "eto.documents.termsheet": "Term Sheet",
   "eto.documents.termsheet-template": "Term Sheet Template",

@@ -6,4 +6,8 @@
 
 .hash-error {
   color: $neu-bright-orange;
+
+  .file-name {
+    word-break: break-all;
+  }
 }

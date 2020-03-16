@@ -1,7 +1,7 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
 import { nonNullable } from "@neufund/shared";
 import * as React from "react";
-import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { EEtoDocumentType } from "../../../../../lib/api/eto/EtoFileApi.interfaces";
@@ -68,10 +68,12 @@ const SignNomineeISHASummaryLayout: React.FunctionComponent<TComponentProps> = (
       />
       <p className={styles.hashError} data-test-id="nominee-sign-agreement.hashes-dont-match">
         {uploadState === EProcessState.ERROR && (
-          <FormattedHTMLMessage
-            tagName="span"
+          <FormattedMessage
             id="eto.documents.signed-investment-and-shareholder-agreement.hashes-dont-match"
-            values={{ uploadedFileName }}
+            values={{
+              uploadedFileName: <span className={styles.fileName}>{uploadedFileName}</span>,
+              breakLine: <br />,
+            }}
           />
         )}
       </p>

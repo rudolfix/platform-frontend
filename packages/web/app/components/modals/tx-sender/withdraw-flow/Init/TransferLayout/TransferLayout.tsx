@@ -73,7 +73,12 @@ const AvailableTokenBalance: React.FunctionComponent<{
 }> = ({ value, tokenSymbol, tokenDecimals }) => (
   <DataRow
     className={cn(styles.noSpacing, styles.withTopSpacing)}
-    caption={<FormattedMessage id="modal.sent-eth.available-balance" values={{ tokenSymbol: tokenSymbol.toUpperCase() }} />}
+    caption={
+      <FormattedMessage
+        id="modal.sent-eth.available-balance"
+        values={{ tokenSymbol: tokenSymbol.toUpperCase() }}
+      />
+    }
     value={
       <Money
         data-test-id="modals.tx-sender.withdraw-flow.summary.balance"

@@ -68,7 +68,12 @@ const SocialProfilesList: React.FunctionComponent<IProps> = ({
       profile =>
         isSocialProfileAvailable(profile) && (
           <div className={styles.profile} key={`${profile.type}-${profile.url}`}>
-            <ExternalLink href={profile.url} title={profile.type} className={styles.icon}>
+            <ExternalLink
+              href={profile.url}
+              title={profile.type}
+              className={styles.icon}
+              onClick={(event: React.MouseEvent) => event.stopPropagation()}
+            >
               <InlineIcon svgIcon={SOCIAL_PROFILE_ICONS[profile.type]} alt={profile.type} />
             </ExternalLink>
           </div>

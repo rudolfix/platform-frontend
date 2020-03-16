@@ -72,6 +72,7 @@ export const testCompany: TCompanyEtoData = {
   keyCompetitors: undefined,
   keyQuoteInvestor: undefined,
   marketTraction: undefined,
+  impact: undefined,
   marketingApproach: undefined,
   problemSolved: undefined,
   riskBusinessModelDescription: undefined,

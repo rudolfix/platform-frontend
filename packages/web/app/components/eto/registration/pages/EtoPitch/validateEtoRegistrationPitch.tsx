@@ -69,6 +69,7 @@ const validator = Yup.object().shape({
   keyBenefitsForInvestors: Yup.string(),
   keyCompetitors: Yup.string(),
   marketTraction: Yup.string(),
+  impact: Yup.string(),
   businessModel: Yup.string(),
 });
 

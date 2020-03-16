@@ -3,6 +3,10 @@
     top: $header-height-md;
   }
 
+  @include media-breakpoint-down(sm) {
+    top: $header-height-sm;
+  }
+
   grid-area: progress;
   margin: 0;
   top: $header-height-lg;

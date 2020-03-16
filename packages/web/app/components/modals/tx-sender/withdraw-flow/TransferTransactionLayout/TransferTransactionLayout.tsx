@@ -79,7 +79,7 @@ const AddressFields: React.FunctionComponent<{
 const TxErrorMessage: React.FunctionComponent<{
   isMined: boolean | undefined;
 }> = ({ isMined }) => (
-  <ErrorAlert>
+  <ErrorAlert className="mb-4">
     {isMined ? (
       <FormattedMessage
         id="withdraw-flow.error.mined"

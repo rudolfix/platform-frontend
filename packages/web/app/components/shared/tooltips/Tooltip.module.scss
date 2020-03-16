@@ -9,7 +9,7 @@ $icon-size: 18px;
   display: inline-block;
 
   position: relative;
-  vertical-align: text-bottom;
+  vertical-align: middle;
 
   &--icon {
     margin-left: px-to-rem(10px);
@@ -19,7 +19,7 @@ $icon-size: 18px;
         display: none;
       }
 
-      display: block;
+      display: inline-block;
 
       :global(.inline-icon) {
         height: px-to-rem($icon-size);

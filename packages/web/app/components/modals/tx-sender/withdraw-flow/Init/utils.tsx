@@ -1,5 +1,7 @@
 import { yupToFormErrors } from "formik";
 import { memoize } from "lodash";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { NumberSchema } from "yup";
 
 import * as YupTS from "../../../../../lib/yup-ts.unsafe";
@@ -15,7 +17,9 @@ export const hasNotification = (
 const getWithdrawFormSchema = () =>
   YupTS.object({
     to: ethereumAddressFormValidation,
-    value: YupTS.number().enhance((v: NumberSchema) => v.moreThan(0)),
+    value: YupTS.number()
+      .typeError(<FormattedMessage id="modal.transfer.validation-error" />)
+      .enhance((v: NumberSchema) => v.moreThan(0)),
   }).toYup();
 
 export const onTransferValidateHandler = memoize(

@@ -930,6 +930,7 @@
   "modal.transfer.amount-to-send": "Amount to send:",
   "modal.transfer.sending.amount": "Sending amount:",
   "modal.transfer.sent.amount": "Sent amount:",
+  "modal.transfer.validation-error": "Please provide a valid amount",
   "modal.txsender.error-message.error-not-enough-neu-to-unlock.message": "It seems that you don't have enough neumarks in this wallet to unlock the funds. Please transfer all the neumarks taken from the ICBM to this wallet and conduct the operation again",
   "modal.txsender.error-message.error-not-enough-neu-to-unlock.title": "Unlocking Funds Error",
   "modal.txsender.error-message.error-while-watching-tx": "Error while watching transaction.",

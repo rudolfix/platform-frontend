@@ -42,6 +42,7 @@ const TokenValueFormRow: React.FunctionComponent<{
 }) => (
   <>
     <FormMaskedNumberInput
+      wrapperClassName="mb-0"
       label={<FormattedMessage id="modal.transfer.sent.amount" />}
       labelClassName={styles.label}
       className="text-right"

@@ -54,6 +54,10 @@ class YTS<T> {
   optional(): YTS<T | undefined> {
     return new YTS(this.validator, false);
   }
+
+  typeError(message: TTranslatedString): YTS<T> {
+    return new YTS(this.validator.typeError(message));
+  }
 }
 
 class ObjectYTS<T> extends YTS<TypeOfProps<T>> {

@@ -1,4 +1,8 @@
 .step-card-wrapper {
+  @include media-breakpoint-down(sm) {
+    grid-template: repeat(3, auto) / auto;
+  }
+
   display: grid;
   grid-template: auto / 1fr 1fr;
   grid-gap: 1.5rem;

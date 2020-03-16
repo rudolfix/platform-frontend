@@ -37,7 +37,11 @@ const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
   return (
     <>
       {showTeam && (
-        <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
+        <Container
+          columnSpan={EColumnSpan.THREE_COL}
+          type={EContainerType.INHERIT_GRID}
+          data-test-id="eto.individuals.team"
+        >
           <DashboardHeading title={<FormattedMessage id="eto.public-view.carousel.team" />} />
           <Panel>
             <PeopleSwiperWidget people={team!.members as IPerson[]} key={"team"} />
@@ -46,7 +50,11 @@ const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
       )}
 
       {showPartners && (
-        <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
+        <Container
+          columnSpan={EColumnSpan.THREE_COL}
+          type={EContainerType.INHERIT_GRID}
+          data-test-id="eto.individuals.partners"
+        >
           <DashboardHeading
             title={<FormattedMessage id="eto.public-view.carousel.tab.partners" />}
           />
@@ -57,7 +65,11 @@ const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
       )}
 
       {showNotableInvestors && (
-        <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
+        <Container
+          columnSpan={EColumnSpan.THREE_COL}
+          type={EContainerType.INHERIT_GRID}
+          data-test-id="eto.individuals.notable-investors"
+        >
           <DashboardHeading
             title={<FormattedMessage id="eto.public-view.carousel.tab.investors" />}
           />
@@ -79,7 +91,10 @@ const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
             selectedIndex={selectedTabIndex}
           >
             {showAdvisors && (
-              <TabContent tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}>
+              <TabContent
+                tab={<FormattedMessage id="eto.public-view.carousel.tab.advisors" />}
+                data-test-id="eto.individuals.advisors"
+              >
                 <Panel>
                   <PeopleSwiperWidget people={advisors!.members as IPerson[]} key="team" />
                 </Panel>
@@ -88,6 +103,7 @@ const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
             {showKeyCustomers && (
               <TabContent
                 tab={<FormattedMessage id="eto.public-view.carousel.tab.key-customers" />}
+                data-test-id="eto.individuals.key-customers"
               >
                 <Panel>
                   <PeopleSwiperWidget
@@ -100,6 +116,7 @@ const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
             {showBoardMembers && (
               <TabContent
                 tab={<FormattedMessage id="eto.public-view.carousel.tab.board-members" />}
+                data-test-id="eto.individuals.board-members"
               >
                 <Panel>
                   <PeopleSwiperWidget
@@ -112,6 +129,7 @@ const Individuals: React.FunctionComponent<{ eto: TEtoWithCompanyAndContractRead
             {showKeyAlliances && (
               <TabContent
                 tab={<FormattedMessage id="eto.public-view.carousel.tab.key-alliances" />}
+                data-test-id="eto.individuals.key-alliances"
               >
                 <Panel>
                   <PeopleSwiperWidget

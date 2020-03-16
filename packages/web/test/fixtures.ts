@@ -43,6 +43,9 @@ export const dummyConfig: IConfig = {
   contractsAddresses: {
     universeContractAddress: "UNIVERSE_ADDRESS",
   },
+  externalResources: {
+    etoStatisticsIframeURL: "https://test.icomonitor.io/#/eto-stats/:etoId",
+  },
   backendRoot: {
     url: "",
   },

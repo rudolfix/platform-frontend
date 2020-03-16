@@ -27,7 +27,7 @@ const actions = {
   })),
   setWalletRegisterData: createActionFactory(
     "SET_WALLET_REGISTER_DATA",
-    (data: TWalletRegisterData) => ({ data }),
+    (data: TWalletRegisterData) => ({ data } as const),
   ),
   browserWalletRegisterFormData: createActionFactory(
     "BROWSER_WALLET_REGISTER_FORM_DATA",
@@ -37,7 +37,11 @@ const actions = {
   ledgerReconnect: createActionFactory("LEDGER_RECONNECT"),
   lightWalletRegisterFormData: createActionFactory(
     "LIGHT_WALLET_REGISTER_FORM_DATA",
-    (email: string, password: string, tos: boolean) => ({ email, password, tos }),
+    (email: string, password: string, tos: boolean) => ({
+      email,
+      password,
+      tos,
+    }),
   ),
   ledgerCloseAccountChooser: createActionFactory("LEDGER_CLOSE_ACCOUNT_CHOOSER"),
   restoreLightWallet: createActionFactory("RESTORE_LIGHT_WALLET"),

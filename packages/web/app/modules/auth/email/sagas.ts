@@ -112,7 +112,7 @@ export async function verifyUserEmailPromise(
   }
 }
 
-export async function checkEmailPromise(
+export async function isEmailAvailablePromise(
   { apiUserService }: TGlobalDependencies,
   email: string,
 ): Promise<boolean> {

@@ -8,7 +8,6 @@ export const lightWizardActions = {
     "LIGHT_WALLET_CONNECTION_ERROR",
     (errorMsg: TMessage) => ({ errorMsg }),
   ),
-  lightWalletReset: createActionFactory("LIGHT_WALLET_RESET"),
   lightWalletLogin: createActionFactory(
     "LIGHT_WALLET_LOGIN",
     (email: string, password: string) => ({ email, password }),

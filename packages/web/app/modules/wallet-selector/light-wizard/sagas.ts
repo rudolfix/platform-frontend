@@ -1,3 +1,4 @@
+import { selectUrlUserType } from "./../selectors";
 import { call, fork, neuTakeLatestUntil, put, select, take } from "@neufund/sagas";
 import { invariant } from "@neufund/shared";
 import { includes } from "lodash";
@@ -9,7 +10,6 @@ import {
   SignInUserErrorMessage,
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
-import { userMayChooseWallet } from "../../../components/wallet-selector/WalletSelectorLogin/utils";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IUser } from "../../../lib/api/users/interfaces";
@@ -30,14 +30,15 @@ import { displayInfoModalSaga } from "../../generic-modal/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectIsUnlocked } from "../../web3/selectors";
 import { EWalletType, ILightWalletMetadata } from "../../web3/types";
-import { registerForm, walletRecoverForm } from "../forms/sagas";
+import { registerForm } from "../forms/sagas";
 import { resetWalletSelectorState, walletSelectorConnect } from "../sagas";
 import { selectRegisterWalletDefaultFormValues } from "../selectors";
-import { ECommonWalletRegistrationFlowState, EFlowType, TLightWalletFormValues } from "./../types";
+import { EFlowType, TLightWalletFormValues } from "./../types";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getWalletMetadataByURL } from "./metadata/sagas";
 import { ERecoveryPhase } from "./reducer";
-import { setupLightWallet } from "./signing/sagas";
+import { setupLightWallet, getUserMeWithSeedOnly } from "./signing/sagas";
+import { lightWalletRegister } from "./register/sagas";
 
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 
@@ -142,66 +143,6 @@ export function* lightWalletLoginWatch(
   }
 }
 
-export function* lightWalletRegister(
-  _: TGlobalDependencies,
-  {
-    payload: { userType },
-  }: TActionFromCreator<typeof actions.walletSelector.registerWithLightWallet>,
-): Generator<any, void, any> {
-  yield neuCall(resetWalletSelectorState);
-
-  const baseUiData = {
-    walletType: EWalletType.LIGHT,
-    showWalletSelector: userMayChooseWallet(userType),
-    rootPath: "/register",
-    flowType: EFlowType.REGISTER,
-  };
-
-  const initialFormValues: TLightWalletFormValues = {
-    email: "",
-    password: "",
-    repeatPassword: "",
-    tos: false,
-  };
-  while (true) {
-    try {
-      const { email, password, tos } = yield neuCall(
-        registerForm,
-        actions.walletSelector.lightWalletRegisterFormData,
-        initialFormValues,
-        baseUiData,
-      );
-
-      const registerFormDefaultValues = yield* select(selectRegisterWalletDefaultFormValues);
-
-      if (!registerFormDefaultValues) {
-        throw new Error("registerFormDefaultValues should be defined at this stage");
-      }
-      yield put(
-        actions.walletSelector.setWalletRegisterData({
-          ...baseUiData,
-          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
-          initialFormValues: registerFormDefaultValues,
-        }),
-      );
-      yield neuCall(setupLightWallet, email, password, undefined);
-      yield neuCall(signInUser, userType, email, tos);
-      return;
-    } catch (e) {
-      yield neuCall(handleLightWalletError, e);
-      const registerFormDefaultValues = yield* select(selectRegisterWalletDefaultFormValues);
-
-      yield put(
-        actions.walletSelector.setWalletRegisterData({
-          ...baseUiData,
-          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-          initialFormValues: registerFormDefaultValues || initialFormValues,
-        }),
-      );
-    }
-  }
-}
-
 export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void, any> {
   const baseUiData = {
     walletType: EWalletType.LIGHT,
@@ -216,9 +157,44 @@ export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void
   } = yield take(actions.walletSelector.submitSeed);
   yield put(actions.walletSelector.setRecoveryPhase(ERecoveryPhase.FORM_ENTRY_COMPONENT));
   try {
-    const { userType, email, password } = yield neuCall(walletRecoverForm, baseUiData, seed);
-    yield* neuCall(setupLightWallet, email, password, seed);
-    yield neuCall(signInUser, userType, email, true);
+    const userTypeFromUrl = yield* select((state: TAppGlobalState) =>
+      selectUrlUserType(state.router),
+    );
+
+    const user = yield* neuCall(getUserMeWithSeedOnly, seed);
+    const userEmail = user?.verifiedEmail || user?.unverifiedEmail || "";
+
+    yield neuCall(registerForm, {
+      afterRegistrationGenerator: function*(): any {
+        const registerFormDefaultValues: TLightWalletFormValues = yield select(
+          selectRegisterWalletDefaultFormValues,
+        );
+
+        if (!registerFormDefaultValues) {
+          throw new Error("registerFormDefaultValues should be defined at this stage");
+        }
+
+        yield* neuCall(
+          setupLightWallet,
+          registerFormDefaultValues.email,
+          registerFormDefaultValues.password,
+          seed,
+        );
+        yield neuCall(signInUser, userTypeFromUrl, registerFormDefaultValues.email, true);
+      },
+      expectedAction: actions.walletSelector.lightWalletRegisterFormData,
+      initialFormValues: {
+        email: userEmail,
+        password: "",
+        repeatPassword: "",
+        tos: false,
+      },
+      baseUiData: {
+        ...baseUiData,
+        flowType: user ? EFlowType.RESTORE_WALLET : EFlowType.IMPORT_WALLET,
+      },
+      userEmail,
+    });
   } catch (e) {
     yield neuCall(handleLightWalletError, e);
     yield neuCall(resetWalletSelectorState);

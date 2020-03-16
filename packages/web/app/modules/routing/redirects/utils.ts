@@ -1,14 +1,15 @@
-import { EUserType } from "../../../lib/api/users/interfaces";
-import { put, PutEffect } from "@neufund/sagas";
-import { actions } from "../../actions";
 import { CallHistoryMethodAction } from "connected-react-router";
-export function walletSelectorRegisterRedirect(userType: EUserType): PutEffect<CallHistoryMethodAction> {
+
+import { EUserType } from "../../../lib/api/users/interfaces";
+import { actions } from "../../actions";
+
+export function walletSelectorRegisterRedirect(userType: EUserType): CallHistoryMethodAction {
   switch (userType) {
     case EUserType.INVESTOR:
-      return put(actions.routing.goToLightWalletRegister());
+      return actions.routing.goToLightWalletRegister();
     case EUserType.ISSUER:
-      return put(actions.routing.goToIssuerLightWalletRegister());
+      return actions.routing.goToIssuerLightWalletRegister();
     case EUserType.NOMINEE:
-      return put(actions.routing.goToNomineeLightWalletRegister());
+      return actions.routing.goToNomineeLightWalletRegister();
   }
 }

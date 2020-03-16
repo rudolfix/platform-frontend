@@ -29,10 +29,8 @@ export enum ELedgerRegistrationFlowState {
 export enum ECommonWalletRegistrationFlowState {
   NOT_STARTED = "walletFlowNotStarted",
   REGISTRATION_FORM = "registrationForm",
-  RECOVERY_FORM = "recoverForm",
   REGISTRATION_VERIFYING_EMAIL = "registrationVerifyingEmail",
   REGISTRATION_EMAIL_VERIFICATION_ERROR = "registrationEmailVerificationError",
-  RECOVERY_EMAIL_VERIFICATION_ERROR = "recoveryEmailVerificationError",
   REGISTRATION_WALLET_LOADING = "REGISTRATION_WALLET_LOADING",
   REGISTRATION_WALLET_SIGNING = "REGISTRATION_WALLET_SIGNING",
 }
@@ -49,7 +47,7 @@ export type TLightWalletFormValues = {
   repeatPassword: string;
 };
 
-// TODO: Setup the types in a way where only 
+// TODO: Setup the types in a way where only
 export type TCommonWalletRegisterData = {
   showWalletSelector?: boolean;
   rootPath?: string;
@@ -78,10 +76,6 @@ export type TLightWalletRegisterData = TCommonWalletRegisterData &
     | { uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL }
     | {
         uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR;
-        errorMessage: TMessage;
-      }
-    | {
-        uiState: ECommonWalletRegistrationFlowState.RECOVERY_EMAIL_VERIFICATION_ERROR;
         errorMessage: TMessage;
       }
   );

@@ -1,3 +1,4 @@
+import { DeepReadonlyObject } from "@neufund/shared";
 import { RouterState } from "connected-react-router";
 import { createSelector } from "reselect";
 
@@ -5,7 +6,7 @@ import { appRoutes } from "../../components/appRoutes";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
-import { ECommonWalletRegistrationFlowState } from "./types";
+import { ECommonWalletRegistrationFlowState, TBrowserWalletFormValues, TLightWalletFormValues } from "./types";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {
@@ -57,7 +58,12 @@ export const selectWalletSelectorData = (state: TAppGlobalState) => state.wallet
 
 export const selectRegisterWalletType = (state: TAppGlobalState) => state.walletSelector.walletType;
 
-export const selectRegisterWalletDefaultFormValues = (state: TAppGlobalState) =>
+export const selectRegisterWalletDefaultFormValues = (
+  state: TAppGlobalState,
+):
+  | DeepReadonlyObject<TBrowserWalletFormValues>
+  | DeepReadonlyObject<TLightWalletFormValues>
+  | undefined =>
   state.walletSelector.uiState !== ECommonWalletRegistrationFlowState.NOT_STARTED
     ? state.walletSelector.initialFormValues
     : undefined;

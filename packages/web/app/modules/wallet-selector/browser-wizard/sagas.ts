@@ -1,4 +1,3 @@
-import { selectUrlUserType } from "./../selectors";
 import { fork, neuCall, neuTakeLatestUntil, put, select, take } from "@neufund/sagas";
 
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
@@ -22,6 +21,7 @@ import {
   EFlowType,
   TBrowserWalletFormValues,
 } from "../types";
+import { selectUrlUserType } from "./../selectors";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 
 /**
@@ -123,13 +123,14 @@ export function* browserWalletRegister(
     tos: false,
   };
   yield neuCall(resetWalletSelectorState);
-  yield neuCall(
-    registerForm,
-    actions.walletSelector.browserWalletRegisterFormData,
+  yield neuCall(registerForm, {
+    afterRegistrationGenerator: function*(): void {
+      yield neuCall(browserWalletConnectAndSign);
+    },
+    expectedAction: actions.walletSelector.browserWalletRegisterFormData,
     initialFormValues,
     baseUiData,
-  );
-  yield neuCall(browserWalletConnectAndSign);
+  });
 }
 
 export function* browserWalletSagas(): Generator<any, any, any> {

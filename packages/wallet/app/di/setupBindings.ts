@@ -5,18 +5,12 @@ import { storageModuleApi } from "../modules/storage";
 import { notificationModuleApi } from "../modules/notifications/module";
 import { symbols } from "./symbols";
 import { TConfig } from "./types";
-import { Permissions } from "../modules/permissions/Permissions";
-import { DeviceInformation } from "../modules/device-information/DeviceInformation";
+import { permissionsModuleApi } from "../modules/permissions/module";
+import { setupDeviceInformationModuleApi } from "../modules/device-information/module";
 
 export function setupBindings(config: TConfig): ContainerModule {
   return new ContainerModule(bind => {
     bind<TLibSymbolType<typeof symbols.config>>(symbols.config).toConstantValue(config);
-    bind<TLibSymbolType<typeof symbols.permissions>>(symbols.permissions)
-      .to(Permissions)
-      .inSingletonScope();
-    bind<TLibSymbolType<typeof symbols.deviceInformation>>(symbols.deviceInformation)
-      .to(DeviceInformation)
-      .inSingletonScope();
   });
 }
 
@@ -38,10 +32,12 @@ export const createGlobalDependencies = (container: Container) => ({
     walletEthModuleApi.symbols.ethManager,
   ),
 
-  permissions: container.get<TLibSymbolType<typeof symbols.permissions>>(symbols.permissions),
-  deviceInformation: container.get<TLibSymbolType<typeof symbols.deviceInformation>>(
-    symbols.deviceInformation,
+  permissions: container.get<TLibSymbolType<typeof permissionsModuleApi.symbols.permissions>>(
+    permissionsModuleApi.symbols.permissions,
   ),
+  deviceInformation: container.get<
+    TLibSymbolType<typeof setupDeviceInformationModuleApi.symbols.deviceInformation>
+  >(setupDeviceInformationModuleApi.symbols.deviceInformation),
 
   notifications: container.get<TLibSymbolType<typeof notificationModuleApi.symbols.notifications>>(
     notificationModuleApi.symbols.notifications,

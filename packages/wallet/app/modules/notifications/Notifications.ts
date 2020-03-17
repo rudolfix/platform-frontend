@@ -15,6 +15,8 @@ import { EventsRegistry } from "react-native-notifications/lib/dist/events/Event
 import { DeviceInformation } from "../device-information/DeviceInformation";
 import { NotificationCompletion } from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
 import Config from "react-native-config";
+import { permissionsModuleApi } from "../permissions/module";
+import { setupDeviceInformationModuleApi } from "../device-information/module";
 
 class NotificationsError extends AppError {
   constructor(message: string) {
@@ -39,9 +41,10 @@ export class Notifications {
 
   constructor(
     @inject(symbols.notificationsProvider) notificationsProvider: INotificationsProvider,
-    @inject(globalSymbols.permissions) permissions: Permissions,
+    @inject(permissionsModuleApi.symbols.permissions) permissions: Permissions,
     @inject(globalSymbols.logger) logger: ILogger,
-    @inject(globalSymbols.deviceInformation) deviceInformation: DeviceInformation,
+    @inject(setupDeviceInformationModuleApi.symbols.deviceInformation)
+    deviceInformation: DeviceInformation,
   ) {
     this.notificationsProvider = notificationsProvider;
     this.permissions = permissions;
@@ -147,12 +150,14 @@ export class Notifications {
    * Register a notification provider token in a backend service.
    */
   async registerTokenInUserService() {
-    const token = await this.notificationsProvider.getRegistrationToken();
+    //TODO replace the mocked call to BE with a proper HTTP client
+    const deviceId = await this.deviceInformation.getUniqueId();
+    console.log("------deviceId-----", deviceId);
+    /*
+        const token = await this.notificationsProvider.getRegistrationToken();
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
     console.log("------token test---", token);
-    //TODO replace the mocked call to BE with a proper HTTP client
-    /*
     const jwtToken = Config.NF_JWT;
     console.log("-----jwtToken-----", jwtToken);
     const request = {
@@ -171,7 +176,6 @@ export class Notifications {
       },
     });
     */
-
   }
 
   /**

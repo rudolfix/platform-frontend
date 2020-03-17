@@ -16,6 +16,8 @@ import { rootSaga } from "../modules/sagas";
 import { TAppGlobalState } from "./types";
 import { setupStorageModule } from "../modules/storage";
 import { setupNotificationsModule } from "../modules/notifications/module";
+import { setupPermissionsModule } from "../modules/permissions/module";
+import { setupDeviceInformationModule } from "../modules/device-information/module";
 
 export const createAppStore = (container: Container) => {
   const config: TConfig = {
@@ -46,6 +48,8 @@ export const createAppStore = (container: Container) => {
     setupStorageModule(),
     setupNotificationsModule(),
     setupWalletEthModule({ rpcUrl: config.rpcUrl }),
+    setupPermissionsModule(),
+    setupDeviceInformationModule(),
     appModule,
   );
 };

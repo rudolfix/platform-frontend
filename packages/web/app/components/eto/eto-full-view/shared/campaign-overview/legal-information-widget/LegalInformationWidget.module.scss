@@ -1,38 +1,34 @@
 .legal-information {
-  @include media-breakpoint-up (sm) {
+  @include media-breakpoint-up(sm) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.group {
-  flex-shrink: 0;
-  width: 100%;
+.entry {
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: 1fr;
+  }
 
-  .entry {
-    @include media-breakpoint-up (xl) {
-      flex-direction: row;
-    }
+  display: grid;
+  grid-template-rows: auto 1fr;
+  margin-bottom: px-to-rem(16px);
 
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
+  .label,
+  .value {
+    @include nds-body-small;
 
-    .label,
-    .value {
-      flex-basis: 60%;
-      overflow-wrap: break-word;
-      word-break: break-all;
-    }
+    width: 100%;
+    overflow-wrap: break-word;
+  }
 
-    .label {
-      text-transform: uppercase;
-    }
+  .label {
+    text-transform: uppercase;
+  }
 
-    .value {
-      @include media-breakpoint-up (xl) {
-        flex-basis: 40%;
-        padding-left: 20px;
-      }
+  .value {
+    @include media-breakpoint-up(xl) {
+      padding-left: px-to-rem(20px);
     }
   }
 }

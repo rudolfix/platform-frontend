@@ -7,6 +7,7 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EUserType } from "../../../lib/api/users/interfaces";
+import { TAppGlobalState } from "../../../store";
 import { EProcessState } from "../../../utils/enums/processStates";
 import { actions } from "../../actions";
 import { selectUserType } from "../../auth/selectors";
@@ -203,7 +204,11 @@ export function* performLoadEtoSideEffects(
 ): Generator<any, void, any> {
   yield* etoFlowBackwardsCompat(eto);
 
-  if (eto.state === EEtoState.ON_CHAIN) {
+  const userType: EUserType | undefined = yield select((state: TAppGlobalState) =>
+    selectUserType(state),
+  );
+
+  if (userType === EUserType.INVESTOR && eto.state === EEtoState.ON_CHAIN) {
     yield put(actions.investorEtoTicket.loadEtoInvestorTicket(eto));
   }
 }

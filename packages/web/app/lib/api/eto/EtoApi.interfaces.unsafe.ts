@@ -88,6 +88,7 @@ export const EtoPitchType = YupTS.object({
   keyBenefitsForInvestors: YupTS.wysiwygString().optional(),
   keyCompetitors: YupTS.wysiwygString().optional(),
   marketTraction: YupTS.wysiwygString().optional(),
+  impact: YupTS.wysiwygString().optional(),
   businessModel: YupTS.wysiwygString().optional(),
 });
 

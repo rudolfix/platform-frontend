@@ -13,6 +13,9 @@ export interface IConfig {
   contractsAddresses: {
     universeContractAddress: string;
   };
+  externalResources: {
+    etoStatisticsIframeURL: string;
+  };
   backendRoot: IBackendRoot;
   isMochaRunning?: boolean;
 }
@@ -30,6 +33,9 @@ export function getConfig(env: NodeJS.ProcessEnv): IConfig {
     },
     contractsAddresses: {
       universeContractAddress: getRequiredEnv(env, "NF_UNIVERSE_CONTRACT_ADDRESS"),
+    },
+    externalResources: {
+      etoStatisticsIframeURL: getRequiredEnv(env, "NF_ETO_STATS_URL"),
     },
     backendRoot: {
       url: getOptionalEnv(env, "NF_BACKEND_ROOT") || "",

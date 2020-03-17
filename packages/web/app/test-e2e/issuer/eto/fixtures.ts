@@ -348,10 +348,13 @@ export const productVisionForm: TFormFixture = {
     type: "rich-text",
     value: "Benefits for our investors",
   },
-
   marketTraction: {
     type: "rich-text",
     value: "Something about the market traction",
+  },
+  impact: {
+    type: "rich-text",
+    value: "Something about impact",
   },
   roadmap: {
     type: "rich-text",

@@ -34,6 +34,16 @@ export const goToEtoViewById = (
   assertEtoView(etoId);
 };
 
+export const assertAndConfirmJurisdictionDisclaimer = () => {
+  cy.get(tid("jurisdiction-disclaimer-modal")).should("exist");
+  cy.get(tid("jurisdiction-disclaimer-modal.confirm")).click();
+};
+
+export const assertAndRejectJurisdictionDisclaimer = () => {
+  cy.get(tid("jurisdiction-disclaimer-modal")).should("exist");
+  cy.get(tid("jurisdiction-disclaimer-modal.deny")).click();
+};
+
 export const goToIssuerEtoView = () => {
   cy.visit(appRoutes.etoIssuerView);
 

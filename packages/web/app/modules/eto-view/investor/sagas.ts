@@ -6,7 +6,11 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions, TActionFromCreator } from "../../actions";
-import { loadEtoWithCompanyAndContract, loadEtoWithCompanyAndContractById } from "../../eto/sagas";
+import {
+  loadEtoWithCompanyAndContract,
+  loadEtoWithCompanyAndContractById,
+  verifyEtoAccess,
+} from "../../eto/sagas";
 import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
 import { selectIsUserVerifiedOnBlockchain } from "../../kyc/selectors";
 import { ensureEtoJurisdiction } from "../../routing/eto-view/sagas";
@@ -22,7 +26,7 @@ function* loadInvestorEtoViewInternal(
 
   const userIsFullyVerified = yield select(selectIsUserVerifiedOnBlockchain);
 
-  yield put(actions.eto.verifyEtoAccess(eto, userIsFullyVerified));
+  yield neuCall(verifyEtoAccess, eto, userIsFullyVerified);
 
   const campaignOverviewData: TCampaignOverviewData = yield call(
     calculateCampaignOverviewData,

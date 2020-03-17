@@ -24,6 +24,7 @@ const EtoAccordionElements: React.FunctionComponent<{
     inspiration,
     companyMission,
     marketTraction,
+    impact,
     problemSolved,
     productVision,
     customerGroup,
@@ -40,6 +41,7 @@ const EtoAccordionElements: React.FunctionComponent<{
     productVision ||
     problemSolved ||
     marketTraction ||
+    impact ||
     keyCompetitors ||
     sellingProposition ||
     useOfCapitalList ||
@@ -176,6 +178,14 @@ const EtoAccordionElements: React.FunctionComponent<{
                   name="marketTraction"
                   title={<FormattedMessage id="eto.form.product-vision.market-traction" />}
                   value={marketTraction}
+                />
+              ) : null}
+
+              {impact ? (
+                <AccordionField
+                  name="impact"
+                  title={<FormattedMessage id="eto.form.product-vision.impact" />}
+                  value={impact}
                 />
               ) : null}
 

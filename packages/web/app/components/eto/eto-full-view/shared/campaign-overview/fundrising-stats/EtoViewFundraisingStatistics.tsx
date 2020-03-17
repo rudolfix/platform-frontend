@@ -1,17 +1,18 @@
 import { withParams } from "@neufund/shared";
 import * as React from "react";
 
-import { externalRoutes } from "../../../../../../config/externalRoutes";
+import { getConfig } from "../../../../../../config/getConfig";
 import { LoadingIndicatorHexagon } from "../../../../../shared/loading-indicator/LoadingIndicatorHexagon";
 
 import * as styles from "./EtoViewFundraisingStatistics.module.scss";
 
 const EtoViewFundraisingStatistics: React.FunctionComponent<{ etoId: string }> = ({ etoId }) => {
-  let statsUrl = withParams(externalRoutes.icoMonitorStats, { etoId });
+  const { externalResources } = getConfig(process.env);
+  let statsUrl = withParams(externalResources.etoStatisticsIframeURL, { etoId });
 
   if (process.env.NF_USE_FAKE_ETO_STATS === "1") {
     // hardcode url if is .io or .net or localhost, ignore for cypress run
-    statsUrl = "https://test.icomonitor.io/#/stats/0x01A1f17808edAE0B004A4F11a03620D3d804b997";
+    statsUrl = "https://test.icomonitor.io/#/eto-stats/0x7fa12D095A080b364Cb9A7ad9cA622939873d1e8";
   }
 
   const iframeRef = React.useRef<HTMLIFrameElement>(null);

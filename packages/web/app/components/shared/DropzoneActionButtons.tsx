@@ -4,6 +4,8 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TDataTestId } from "../../types";
 
+import * as styles from "./Dropzone.module.scss";
+
 import remove from "../../assets/img/inline_icons/delete.svg";
 import download from "../../assets/img/inline_icons/download.svg";
 
@@ -29,6 +31,7 @@ const DropzoneActionButtons: React.FunctionComponent<IProps & TDataTestId> = ({
     <div className={className}>
       {onDownload && (
         <CircleButton
+          className={styles.actionButton}
           layout={ECircleButtonLayout.SECONDARY}
           data-test-id={`${dataTestId}.download`}
           onClick={onDownload}
@@ -42,6 +45,7 @@ const DropzoneActionButtons: React.FunctionComponent<IProps & TDataTestId> = ({
       {onRemove && !disableRemove ? (
         confirmRemove ? (
           <CircleButton
+            className={styles.actionButton}
             layout={ECircleButtonLayout.DANGER}
             data-test-id={`${dataTestId}.remove`}
             onClick={onRemove}
@@ -50,6 +54,7 @@ const DropzoneActionButtons: React.FunctionComponent<IProps & TDataTestId> = ({
           </CircleButton>
         ) : (
           <CircleButton
+            className={styles.actionButton}
             layout={ECircleButtonLayout.SECONDARY}
             data-test-id={`${dataTestId}.remove-confirm`}
             onClick={() => toggleConfirmRemove(!confirmRemove)}

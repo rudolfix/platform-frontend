@@ -44,3 +44,9 @@ $border-radius: $nds-border-radius;
   align-items: center;
   border-radius: $border-radius;
 }
+
+.action-button {
+  &:last-of-type {
+    margin-left: px-to-rem(4px)
+  }
+}

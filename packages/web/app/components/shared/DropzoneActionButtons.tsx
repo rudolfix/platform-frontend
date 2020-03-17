@@ -4,10 +4,9 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TDataTestId } from "../../types";
 
-import * as styles from "./Dropzone.module.scss";
-
 import remove from "../../assets/img/inline_icons/delete.svg";
 import download from "../../assets/img/inline_icons/download.svg";
+import * as styles from "./Dropzone.module.scss";
 
 interface IProps {
   className?: string;

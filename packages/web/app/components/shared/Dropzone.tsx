@@ -1,12 +1,12 @@
-import {Button, EButtonLayout, EButtonSize, EIconPosition} from "@neufund/design-system";
+import { Button, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
-import ReactDropzone, {DropzoneProps, ImageFile} from "react-dropzone";
-import {FormattedMessage} from "react-intl-phraseapp";
+import ReactDropzone, { DropzoneProps, ImageFile } from "react-dropzone";
+import { FormattedMessage } from "react-intl-phraseapp";
 
-import {TDataTestId} from "../../types";
-import {EInlineIconFill} from "./icons/InlineIcon";
-import {ELoadingIndicator, LoadingIndicator} from "./loading-indicator/LoadingIndicator";
+import { TDataTestId } from "../../types";
+import { EInlineIconFill } from "./icons/InlineIcon";
+import { ELoadingIndicator, LoadingIndicator } from "./loading-indicator/LoadingIndicator";
 
 import upload from "../../assets/img/inline_icons/upload.svg";
 import * as styles from "./Dropzone.module.scss";

@@ -136,9 +136,10 @@ export const InvestmentTypeSelector: React.FunctionComponent<IProps> = ({
                   {wallet.name}
                   {!wallet.enabled && (
                     <Button
-                      layout={EButtonLayout.PRIMARY}
+                      className={"text-left"}
+                      layout={EButtonLayout.GHOST}
                       size={EButtonSize.SMALL}
-                      width={EButtonWidth.BLOCK}
+                      width={EButtonWidth.NO_PADDING}
                       onClick={() => startUpgradeFlow(token)}
                       data-test-id={`investment-type.selector.${wallet.type}.enable-wallet`}
                     >

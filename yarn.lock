@@ -3751,6 +3751,13 @@
   resolved "https://registry.yarnpkg.com/@types/react-intl/-/react-intl-2.3.7.tgz#40bae586f11d19894621ed40170dd75c3e0f5708"
   integrity sha512-FbuCZVE58pvtWWcXQTYaSgxnWGZ2Z6O3OyJa/YVSNVFI/mAGd07nLj5Ohb0OFZqp+UWgpon7hoUwIN9ovVU+HQ==
 
+"@types/react-native-permissions@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-permissions/-/react-native-permissions-2.0.0.tgz#075c9b059f50a70b3737202d9a7b8835883100f1"
+  integrity sha512-ep9/98sjBm8h3FE1TAbBkPPk7mzqRFnKNDSwLg5o6pN395ooZq73zRvE27Ybf7UrLwdP3r8b+rrhk/5xKcTXCg==
+  dependencies:
+    react-native-permissions "*"
+
 "@types/react-native@^0.60.25":
   version "0.60.27"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.60.27.tgz#d6313256f3cf9a685bd8885efddb86b85b9a4820"
@@ -19362,6 +19369,11 @@ react-native-notifications@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-3.1.2.tgz#fb679e40e81b121041604a6f7403878ed48e099f"
   integrity sha512-2v2hhXysHWmf87kinVJwaF6bfBVIWCHWho4FudxuK2s4JzS/3zjOUHFnErrYv9YcudGi+U2IwZAHKqMF0wYn1A==
+
+react-native-permissions@*:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-2.0.10.tgz#d01f5ce7cc48f99d33f2f7ed32bb70abe5ea03dd"
+  integrity sha512-oQmWgm4tqUYyWmMNtYzNO7U/+6+WHyKiRd5cwNeE1FCJTGh8cJ5HapjHw3d6ZVfhSLzNwWqgJy1P4NpTANYa/g==
 
 react-native-permissions@^2.0.9:
   version "2.0.9"

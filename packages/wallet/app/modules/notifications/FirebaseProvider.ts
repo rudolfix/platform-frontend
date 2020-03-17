@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import messaging from "@react-native-firebase/messaging";
+import messaging, { FirebaseMessagingTypes } from "@react-native-firebase/messaging";
 import { INotificationsProvider } from "./INotificationsProvider";
 import { symbols as globalSymbols } from "../../di/symbols";
 import { ILogger } from "@neufund/shared-modules";
@@ -11,7 +11,7 @@ import { ILogger } from "@neufund/shared-modules";
  */
 @injectable()
 class FirebaseProvider implements INotificationsProvider {
-  private readonly app: any;
+  private readonly app: FirebaseMessagingTypes.Module;
   private readonly logger: ILogger;
 
   constructor(@inject(globalSymbols.logger) logger: ILogger) {
@@ -79,7 +79,7 @@ class FirebaseProvider implements INotificationsProvider {
    * Fires when token is refreshed in a native code or remotely.
    * @param {function} A callback to call when token is refreshed.
    */
-  onTokenRemoteRefresh(listener: (token: string) => any) {
+  onTokenRemoteRefresh(listener: (token: string) => void) {
     this.app.onTokenRefresh(listener);
   }
 }

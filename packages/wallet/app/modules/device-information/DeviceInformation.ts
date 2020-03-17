@@ -1,6 +1,8 @@
 import { getUniqueId, isEmulator } from "react-native-device-info";
-import { Platform } from "react-native";
-import { injectable } from "inversify";
+import { Platform, PlatformOSType } from "react-native";
+import { inject, injectable } from "inversify";
+import { symbols as globalSymbols } from "../../di/symbols";
+import { ILogger } from "@neufund/shared-modules";
 
 /**
  * @class DeviceInformation
@@ -10,6 +12,12 @@ import { injectable } from "inversify";
  */
 @injectable()
 export class DeviceInformation {
+  protected readonly logger: ILogger;
+
+  constructor(@inject(globalSymbols.logger) logger: ILogger) {
+    this.logger = logger;
+  }
+
   /**
    * Get unique device ID
    * On Android devices that have multiple users, each user appears as a completely separate device, so the ANDROID_ID value is unique to each user.
@@ -19,7 +27,8 @@ export class DeviceInformation {
    * @returns {string} Unique device identifier
    */
   getUniqueId(): string {
-    console.log(typeof getUniqueId);
+    this.logger.info("Get the device ID");
+
     return getUniqueId();
   }
 
@@ -28,6 +37,8 @@ export class DeviceInformation {
    * @returns {Promise<boolean>} if emulator
    */
   async isEmulator(): Promise<boolean> {
+    this.logger.info("Check id emulator/simulator");
+
     return isEmulator();
   }
 
@@ -35,7 +46,9 @@ export class DeviceInformation {
    * Returns device platform
    * @returns {string} ios or android
    */
-  getPlatform(): string {
+  getPlatform(): PlatformOSType {
+    this.logger.info("Get the device platform");
+
     return Platform.OS;
   }
 }

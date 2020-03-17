@@ -2,21 +2,20 @@ import { inject, injectable } from "inversify";
 import { INotificationsProvider } from "./INotificationsProvider";
 import { symbols } from "./symbols";
 import { symbols as globalSymbols } from "../../di/symbols";
-import {
-  NotificationsPermissions,
-  Permissions,
-  permissionsStatuses,
-} from "../permissions/Permissions";
+import { Permissions } from "../permissions/Permissions";
 import { ILogger } from "@neufund/shared-modules";
 import { AppError } from "../../classes/AppError";
-import { Notification, Notifications as NotificationsHandler } from "react-native-notifications";
-import { NotificationResponse } from "react-native-notifications/lib/src/interfaces/NotificationEvents";
+import {
+  Notification,
+  NotificationResponse,
+  Notifications as NotificationsHandler,
+} from "react-native-notifications";
 import { EventsRegistry } from "react-native-notifications/lib/dist/events/EventsRegistry";
 import { DeviceInformation } from "../device-information/DeviceInformation";
 import { NotificationCompletion } from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
-import Config from "react-native-config";
 import { permissionsModuleApi } from "../permissions/module";
 import { setupDeviceInformationModuleApi } from "../device-information/module";
+import { NotificationsResponse, RESULTS } from "react-native-permissions";
 
 class NotificationsError extends AppError {
   constructor(message: string) {
@@ -26,7 +25,7 @@ class NotificationsError extends AppError {
 
 /**
  * @class Notifications
- * Class to manage (push notifications.
+ * Class to manage push notifications.
  * @note Manages push notifications subscription, tokens, events.
  *
  */
@@ -36,7 +35,7 @@ export class Notifications {
   private readonly permissions: Permissions;
   private readonly logger: ILogger;
   private readonly deviceInformation: DeviceInformation;
-  private notificationsAllowed: NotificationsPermissions | null;
+  private notificationsAllowed: NotificationsResponse | null;
   private events: EventsRegistry | null;
 
   constructor(
@@ -59,7 +58,7 @@ export class Notifications {
   /**
    * @method init
    * Initializes push notifications
-   * @note this method will ask for a push notifications permission, register in firebase ans sync with backend.
+   * @note this method will ask for a push notifications permission, register in firebase and sync with backend.
    */
   async init() {
     this.logger.info("Init push notifications");
@@ -71,13 +70,13 @@ export class Notifications {
     }
 
     // only subscribe to notification provider if notifications are allowed
-    if (this.notificationsAllowed.status === permissionsStatuses.granted) {
+    if (this.notificationsAllowed.status === RESULTS.GRANTED) {
       try {
         await this.notificationsProvider.subscribeForNotifications();
 
         await this.registerTokenInUserService();
       } catch (e) {
-        throw new NotificationsError(e);
+        throw new NotificationsError(e.message);
       }
     }
   }
@@ -150,31 +149,15 @@ export class Notifications {
    * Register a notification provider token in a backend service.
    */
   async registerTokenInUserService() {
-    //TODO replace the mocked call to BE with a proper HTTP client
+    //TODO replace the mocked call to BE with a proper HTTP client. Check the ticket https://github.com/Neufund/platform-frontend/issues/4202
     const deviceId = await this.deviceInformation.getUniqueId();
-    console.log("------deviceId-----", deviceId);
+    console.log(deviceId);
     /*
-        const token = await this.notificationsProvider.getRegistrationToken();
+    const token = await this.notificationsProvider.getRegistrationToken();
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
-    console.log("------token test---", token);
-    const jwtToken = Config.NF_JWT;
-    console.log("-----jwtToken-----", jwtToken);
-    const request = {
-      device_id: deviceId,
-      platform: platform,
-      registration_id: token,
-      user_id: "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3",
-    };
 
-    await fetch("https://platform.neufund.io/api/user/firebase-registrations/me", {
-      body: JSON.stringify(request),
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    send request to the user service
     */
   }
 
@@ -183,16 +166,11 @@ export class Notifications {
    * Unregister a notification provider token in a backend service.
    */
   async unRegisterTokenInUserService() {
+    //TODO replace the mocked call to BE with a proper HTTP client. Check the ticket https://github.com/Neufund/platform-frontend/issues/4202
+    /*
     const token = await this.notificationsProvider.getRegistrationToken();
-    //TODO replace the mocked call to BE with a proper HTTP client
     const jwtToken = Config.NF_JWT;
-    await fetch(`https://platform.neufund.io/api/user/firebase-registrations/me/${token}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    */
   }
 
   /**

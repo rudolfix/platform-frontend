@@ -1,13 +1,11 @@
 import { Permissions, permissionsStatuses } from "./Permissions";
-import { ILogger, noopLogger } from "@neufund/shared-modules";
+import { noopLogger } from "@neufund/shared-modules";
 
 describe("Permissions", () => {
   let permissions: Permissions;
-  let logger: ILogger;
 
   beforeEach(() => {
-    logger = noopLogger;
-    permissions = new Permissions(logger);
+    permissions = new Permissions(noopLogger);
   });
 
   it("should ask for push notifications permissions", async () => {

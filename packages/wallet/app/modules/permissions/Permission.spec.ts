@@ -1,5 +1,6 @@
-import { Permissions, permissionsStatuses } from "./Permissions";
+import { Permissions } from "./Permissions";
 import { noopLogger } from "@neufund/shared-modules";
+import { RESULTS } from "react-native-permissions/lib/commonjs/constants";
 
 describe("Permissions", () => {
   let permissions: Permissions;
@@ -10,6 +11,8 @@ describe("Permissions", () => {
 
   it("should ask for push notifications permissions", async () => {
     const notificationsAllowed = await permissions.requestNotificationsPermissions();
-    expect(notificationsAllowed.status).toBe(permissionsStatuses.granted);
+    console.log(RESULTS);
+    console.log(notificationsAllowed);
+    expect(notificationsAllowed.status).toBe(RESULTS.GRANTED);
   });
 });

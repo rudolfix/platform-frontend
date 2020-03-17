@@ -52,7 +52,7 @@ function* initStartSaga({
       notification => {
         console.log("------event work--------", notification);
       },
-      { alert: false, sound: false, badge: false },
+      { alert: true, sound: true, badge: false },
     );
 
     yield put(initActions.done());

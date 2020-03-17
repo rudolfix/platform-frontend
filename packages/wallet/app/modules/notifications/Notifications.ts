@@ -60,7 +60,6 @@ export class Notifications {
    */
   async init() {
     this.logger.info("Init push notifications");
-
     try {
       this.notificationsAllowed = await this.permissions.requestNotificationsPermissions();
       this.events = NotificationsHandler.events();
@@ -151,8 +150,9 @@ export class Notifications {
     const token = await this.notificationsProvider.getRegistrationToken();
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
-
+    console.log("------token test---", token);
     //TODO replace the mocked call to BE with a proper HTTP client
+    /*
     const jwtToken = Config.NF_JWT;
     console.log("-----jwtToken-----", jwtToken);
     const request = {
@@ -170,6 +170,8 @@ export class Notifications {
         "Content-Type": "application/json",
       },
     });
+    */
+
   }
 
   /**

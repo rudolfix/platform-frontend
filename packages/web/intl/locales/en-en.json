@@ -65,7 +65,7 @@
   "bank-verification.agreement.text": "Neufund has partnered with Quintessence PLC for the issuance of the nEUR token. Quintessence PLC operates a blockchain-based technology that provides for the purchase of nEUR tokens for a specific amount of EUR. To purchase nEUR tokens you agree to the terms of the nEUR Purchase Agreement.",
   "bank-verification.agreement.title": "nEUR token Partner",
   "bank-verification.info.download-neur-token-agreement.file-name": "nEUR Purchase Agreement",
-  "bank-verification.info.link-now": "link now",
+  "bank-verification.info.link-now": "Link now",
   "bank-verification.info.text": "To link your bank account, please complete wire transfer with a minimum of {min} from a bank account that matches your verified identity. Once we’ve received the transfer, your bank account will be linked to your profile and used for future redeem requests. You will also receive the equivalent amount of nEUR in your wallet.",
   "bank-verification.info.title": "Link your bank account",
   "bank-verification.success.text": "Thank you for your wire transfer, the bank account verification takes around 1 to 3 business days. For your convenience we have sent you an email once your request was processed and your account verifed.",

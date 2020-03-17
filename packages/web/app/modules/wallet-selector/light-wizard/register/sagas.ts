@@ -11,8 +11,8 @@ import { registerForm } from "../../forms/sagas";
 import { resetWalletSelectorState } from "../../sagas";
 import { selectRegisterWalletDefaultFormValues } from "../../selectors";
 import { EFlowType, TLightWalletFormValues } from "../../types";
-import { setupLightWallet } from "../signing/sagas";
 import { handleLightWalletError } from "../sagas";
+import { setupLightWallet } from "../signing/sagas";
 
 function* connectLightWalletAndSignUser(userType: EUserType): Generator<any, boolean, any> {
   try {

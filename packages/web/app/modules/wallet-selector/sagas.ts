@@ -7,10 +7,8 @@ import {
   select,
 } from "@neufund/sagas";
 
-import { TGlobalDependencies } from "../../di/setupBindings";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
-import { actions, TActionFromCreator } from "../actions";
+import { actions } from "../actions";
 import { handleSignInUser } from "../auth/user/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
 import { EWalletType } from "../web3/types";

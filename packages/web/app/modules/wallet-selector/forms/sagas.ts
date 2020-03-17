@@ -41,12 +41,13 @@ export function* registerForm(
     userEmail?: string;
   },
 ): Generator<any, void, any> {
+  
   yield put(
     actions.walletSelector.setWalletRegisterData({
       ...baseUiData,
       initialFormValues,
       uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-    } as const),
+    }),
   );
   while (true) {
     const { payload } = yield take(expectedAction);
@@ -81,7 +82,7 @@ export function* registerForm(
             ...initialFormValues,
             ...payload,
           },
-        } as const),
+        }),
       );
       if (!afterRegistrationGenerator) return;
       const result = yield* call(afterRegistrationGenerator);

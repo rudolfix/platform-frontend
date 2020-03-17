@@ -29,7 +29,7 @@ describe("Wallet recovery", function(): void {
     cy.get(tid("account-recovery.seed-error")).should("exist");
   });
 
-  it("should recover wallet from saved phrases #backup #p2", () => {
+  it.only("should recover wallet from saved phrases #backup #p2", () => {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";

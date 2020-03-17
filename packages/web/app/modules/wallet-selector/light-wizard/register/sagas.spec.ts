@@ -1,25 +1,25 @@
-import { combineReducers } from "redux";
-import { EFlowType, ECommonWalletRegistrationFlowState } from "../../types";
 import { expectSaga, matchers, providers as sagaProvider } from "@neufund/sagas/tests";
+import { combineReducers } from "redux";
 
-import { walletSelectorReducer, walletSelectorInitialState } from "../../reducer";
-import { handleLightWalletError } from "../sagas";
-import { lightWalletRegister } from "./sagas";
 import { EUserType } from "../../../../lib/api/users/interfaces";
 import { actions } from "../../../actions";
-import { setupLightWallet } from "../signing/sagas";
 import { isEmailAvailablePromise } from "../../../auth/email/sagas";
 import { signInUser } from "../../../auth/user/sagas";
 import { EWalletType } from "../../../web3/types";
+import { walletSelectorInitialState, walletSelectorReducer } from "../../reducer";
+import { ECommonWalletRegistrationFlowState, EFlowType } from "../../types";
+import { handleLightWalletError } from "../sagas";
+import { setupLightWallet } from "../signing/sagas";
+import { lightWalletRegister } from "./sagas";
 
-describe("Wallet selector - Light Wizard", () => {
+describe("Wallet selector - Light Wallet Register", () => {
   const payload = {
     email: "ilovemom@test.com",
     password: "bass",
     tos: true,
   };
 
-  describe.only("lightWalletRegister", () => {
+  describe("lightWalletRegister", () => {
     const baseUiData = {
       walletType: EWalletType.LIGHT,
       showWalletSelector: true,

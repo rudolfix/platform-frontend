@@ -26,11 +26,13 @@ export function* updateUser(
 export function* logoutUser({
   web3Manager,
   jwtStorage,
+  walletStorage,
   logger,
   userStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
   userStorage.clear();
   jwtStorage.clear();
+  walletStorage.clear();
 
   yield web3Manager.unplugPersonalWallet();
 

@@ -78,6 +78,7 @@ export function* signInUser(
 ): Generator<any, any, any> {
   try {
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS, EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
+    yield neuCall(loadOrCreateUser, userType, email, tos);
     if (tos) yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
 
@@ -97,8 +98,6 @@ export function* signInUser(
     };
     walletStorage.set(storedWalletMetadata);
 
-    yield neuCall(loadOrCreateUser, userType, email, tos);
-
     // For other open browser pages
     yield userStorage.set(REGISTRATION_LOGIN_DONE);
 
@@ -110,6 +109,8 @@ export function* signInUser(
       redirectionUrl ? actions.routing.push(redirectionUrl) : actions.routing.goToDashboard(),
     );
   } catch (e) {
+    debugger;
+
     yield neuCall(logoutUser);
     if (e instanceof SignerRejectConfirmationError || e instanceof SignerTimeoutError) {
       throw e;

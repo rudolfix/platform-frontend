@@ -1,14 +1,14 @@
-import { EFlowType } from "./../types";
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 
-import { registerForm } from "./sagas";
-import { actions } from "../../actions";
-import { EWalletType } from "../../web3/types";
 import { userMayChooseWallet } from "../../../components/wallet-selector/WalletSelectorLogin/utils";
 import { EUserType } from "../../../lib/api/users/interfaces";
+import { actions } from "../../actions";
 import { isEmailAvailablePromise } from "../../auth/email/sagas";
-import { walletSelectorReducer, walletSelectorInitialState } from "../reducer";
+import { EWalletType } from "../../web3/types";
+import { walletSelectorInitialState, walletSelectorReducer } from "../reducer";
 import { ECommonWalletRegistrationFlowState } from "../types";
+import { EFlowType } from "./../types";
+import { registerForm } from "./sagas";
 
 describe("Wallet selector form sagas", () => {
   const baseUiData = {

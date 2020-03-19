@@ -19,11 +19,9 @@ interface IProps {
 }
 
 export const normalizedUrl = (url: string) => {
-  const cleanUrl = decodeURIComponent(url)
-    .trim()
-    .toLowerCase();
+  const cleanUrl = decodeURIComponent(url).trim();
 
-  return cleanUrl.startsWith("http") ? cleanUrl : `http://${cleanUrl}`;
+  return cleanUrl.toLowerCase().startsWith("http") ? cleanUrl : `http://${cleanUrl}`;
 };
 
 export const MediaLinksWidget: React.FunctionComponent<IProps> = ({ links, columnSpan }) => {
@@ -38,7 +36,7 @@ export const MediaLinksWidget: React.FunctionComponent<IProps> = ({ links, colum
           url &&
           title && (
             <div className={styles.link} key={i}>
-              <ExternalLink href={normalizedUrl(url)}>
+              <ExternalLink href={normalizedUrl(url)} data-test-id="eto.media-link">
                 {publication}: {title}
               </ExternalLink>
             </div>

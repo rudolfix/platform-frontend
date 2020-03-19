@@ -90,7 +90,8 @@ export function isOnChain(
 }
 
 export const isRestrictedEto = (eto: TEtoWithCompanyAndContractReadonly): boolean =>
-  eto.product.jurisdiction === EJurisdiction.GERMANY && !isPastInvestment(eto.contract!.timedState);
+  eto.product.jurisdiction === EJurisdiction.GERMANY &&
+  !(eto.contract && isPastInvestment(eto.contract.timedState));
 
 /**
  * Check if user is associated with given eto

@@ -42,7 +42,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
     <Container columnSpan={EColumnSpan.TWO_COL}>
       <DashboardHeading title={<FormattedMessage id="eto.public-view.legal-information.title" />} />
       <Panel className={styles.legalInformation} columnSpan={columnSpan}>
-        <div className={styles.group}>
+        <section>
           {companyData.name && (
             <div className={styles.entry}>
               <span className={styles.label}>
@@ -135,7 +135,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
               </span>
             </div>
           )}
-        </div>
+        </section>
 
         {!!(companyData.shareholders && companyData.shareholders.length > 0) && (
           <ChartDoughnutLazy

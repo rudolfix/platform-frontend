@@ -1,3 +1,4 @@
+import { EthereumAddressWithChecksum } from "./../../../../shared/src/utils/opaque-types/types";
 import { EJwtPermissions } from "./../../../../shared/src/utils/constants";
 import { promisify, toCamelCase } from "@neufund/shared";
 import * as LightWalletProvider from "eth-lightwallet";
@@ -53,21 +54,31 @@ type TCreateAndLoginParams = {
  * @param param0
  */
 
-export const createUserT = async (
+export const setTestJWT = async (
   baseUrl: string,
   permissions: EJwtPermissions[],
   hdPath?: string,
   seed?: string,
 ) => {
-  const { lightWalletInstance, salt, address, walletKey } = await createLightWalletWithKeyPair(
-    seed,
-    hdPath,
-  );
+  const {
+    lightWalletInstance,
+    salt,
+    address,
+    privateKey,
+    walletKey,
+  } = await createLightWalletWithKeyPair(seed, hdPath);
 
   const jwt = await getJWT(address, lightWalletInstance, walletKey, permissions, baseUrl);
 
-  return { jwt, salt, address };
+  return {
+    jwt,
+    salt,
+    address: toChecksumAddress(address) as EthereumAddressWithChecksum,
+    privateKey,
+    email: `${address.slice(0, 7).toLowerCase()}@neufund.org`,
+  };
 };
+
 /*
  * Pre-login user for faster tests
  */
@@ -221,12 +232,12 @@ type TUserType = "investor" | "issuer" | "nominee";
 
 export const createUser = (
   userType: TUserType,
-  walletType: EWalletType,
   privateKey?: string,
   kyc?: TKycType,
   timeoutInSeconds?: number,
+  basePath = "",
 ) => {
-  let path = `${CREATE_USER_PATH}?user_type=${userType}`;
+  let path = `${basePath}${CREATE_USER_PATH}?user_type=${userType}`;
 
   if (kyc) {
     path += `&kyc=${kyc}`;

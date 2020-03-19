@@ -162,20 +162,22 @@ export function* loadOrCreateUser(
   const userFromApi = yield* neuCall(getUsersMeFromApi);
   let user;
   if (userFromApi) {
-    user = yield* call(() =>
-      apiUserService.updateUser({ ...userFromApi, ...walletMetadata, newEmail: email }),
-    );
+    user = yield* call(apiUserService.updateUser, {
+      ...userFromApi,
+      salt: walletMetadata.salt,
+      walletType: walletMetadata.walletType,
+      walletSubtype: walletMetadata.walletSubType,
+      newEmail: userFromApi.email,
+    });
   } else {
-    user = yield* call(() =>
-      apiUserService.createAccount({
-        newEmail: email || walletMetadata?.email,
-        backupCodesVerified: walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
-        salt: walletMetadata?.salt,
-        type: userType,
-        walletType: walletMetadata.walletType,
-        walletSubtype: walletMetadata.walletSubType,
-      }),
-    );
+    user = yield* call(apiUserService.createAccount, {
+      newEmail: email || walletMetadata?.email,
+      backupCodesVerified: walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
+      salt: walletMetadata?.salt,
+      type: userType,
+      walletType: walletMetadata.walletType,
+      walletSubtype: walletMetadata.walletSubType,
+    });
   }
 
   if (tos) {

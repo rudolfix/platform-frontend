@@ -1,4 +1,5 @@
 import { EthereumAddress } from "@neufund/shared";
+
 import { SignerType } from "../../lib/web3/PersonalWeb3";
 
 // normalized information about all possible types of personal wallets

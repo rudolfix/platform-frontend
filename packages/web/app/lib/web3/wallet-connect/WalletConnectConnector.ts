@@ -2,22 +2,20 @@ import WalletConnectSubprovider from "@walletconnect/packages/providers/web3-sub
 import { EventEmitter } from "events";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
+import * as Web3ProviderEngine from "web3-provider-engine";
+import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { ILogger } from "../../../../../shared-modules/dist/modules/core/lib/logger/ILogger";
 import { symbols } from "../../../di/symbols";
+import { NullBlockTracker } from "../../api/nullBlockTracker";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
 import {
   WalletConnectSessionRejectedError,
   WalletConnectWallet,
-  WC_SESSION_REQUEST_TIMEOUT
+  WC_DEFAULT_SESSION_REQUEST_TIMEOUT
 } from "./WalletConnectWallet";
-import * as Web3ProviderEngine from "web3-provider-engine";
-import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
-import { NullBlockTracker } from "../../api/nullBlockTracker";
-
-
 
 export type TWalletConnectEvents =
   | { type: EWalletConnectEventTypes.SESSION_REQUEST, payload: { uri: string } }
@@ -42,7 +40,7 @@ export enum EWalletConnectEventTypes {
 }
 
 //todo move to config
-const devBridgeUrl = "ws://localhost:5021";
+const devBridgeUrl = "https://platform.neufund.io/api/wc-bridge-socket/";
 
 @injectable()
 export class WalletConnectConnector extends EventEmitter {
@@ -64,7 +62,7 @@ export class WalletConnectConnector extends EventEmitter {
 
     this.walletConnectProvider = new WalletConnectSubprovider({
       bridge: devBridgeUrl,
-      qrcode: false,
+      qrcode: true,
       rpc: { 14: this.web3Config.rpcUrl },
       chainId: 14
     });
@@ -80,6 +78,7 @@ export class WalletConnectConnector extends EventEmitter {
     this.walletConnectProvider.on("open", this.openHandler); //not sure if those are used
     this.walletConnectProvider.on("close", this.closeHandler);//not sure if those are used
     this.walletConnectProvider.on("payload", this.payloadHandler);//not sure if those are used
+
     try {
       engine = new Web3ProviderEngine({ blockTracker: new NullBlockTracker() });
 
@@ -105,9 +104,9 @@ export class WalletConnectConnector extends EventEmitter {
     return new WalletConnectWallet(web3Adapter, ethereumAddress)
   };
 
-  public disconnect = () => {
+  public disconnect = async () => {
     if (this.walletConnectProvider) {
-      this.walletConnectProvider.close();
+      await this.walletConnectProvider.close();
       this.cleanUpSession();
       return "disconnected"
     } else {
@@ -175,7 +174,7 @@ export class WalletConnectConnector extends EventEmitter {
     console.log("session request event", uri);
     this.sessionRequestTimeout = window.setTimeout(
       this.sessionRequestTimeoutHandler,
-      WC_SESSION_REQUEST_TIMEOUT
+      WC_DEFAULT_SESSION_REQUEST_TIMEOUT
     );
 
     this.emit(EWalletConnectEventTypes.SESSION_REQUEST, uri)

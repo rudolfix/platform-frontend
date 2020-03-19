@@ -1,16 +1,16 @@
-import { END, eventChannel, EventChannel, fork, put, take ,neuTakeLatest} from "@neufund/sagas";
+import { END, eventChannel, EventChannel, fork, neuTakeLatest, put ,take} from "@neufund/sagas";
 
+import { WalletConnectErrorMessage } from "../../components/translatedMessages/messages";
+import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EWalletConnectEventTypes, TWalletConnectEvents } from "../../lib/web3/wallet-connect/WalletConnectConnector";
+import { WalletConnectSessionRejectedError } from "../../lib/web3/wallet-connect/WalletConnectWallet";
 import { actions } from "../actions";
+import { logoutUser } from "../auth/user/external/sagas";
 import { handleSignInUser } from "../auth/user/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../sagasUtils";
 import { loadPreviousWallet } from "../web3/sagas";
-import { logoutUser } from "../auth/user/external/sagas";
 import { mapLightWalletErrorToErrorMessage } from "./light-wizard/errors";
-import { WalletConnectSessionRejectedError } from "../../lib/web3/wallet-connect/WalletConnectWallet";
-import { createMessage } from "../../components/translatedMessages/utils";
-import { WalletConnectErrorMessage } from "../../components/translatedMessages/messages";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
@@ -111,7 +111,7 @@ export function* walletConnectStop(
 
 export function* walletConnectLogout(
   { logger }: TGlobalDependencies
-) {
+): Generator<any, void, any> {
   console.log("walletConnectLogout");
   try {
     yield neuCall(logoutUser)

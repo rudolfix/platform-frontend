@@ -6,8 +6,8 @@ import { SwitchConnected } from "../../utils/react-connected-components/connecte
 import { WalletBrowser } from "./browser/WalletBrowser";
 import { WalletLedger } from "./ledger/WalletLedger";
 import { WalletLight } from "./light/WalletLight";
-import { getRedirectionUrl } from "./walletRouterHelpers";
 import { WalletConnect } from "./wallet-connect/WalletConnect";
+import { getRedirectionUrl } from "./walletRouterHelpers";
 
 interface IProps {
   rootPath: string;

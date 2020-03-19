@@ -5,12 +5,12 @@ import {  compose } from "recompose";
 import { actions } from "../../../modules/actions";
 import { ELogoutReason } from "../../../modules/auth/types";
 import { TLoginRouterState } from "../../../modules/routing/types";
+import { selectMessageSigningError, selectWalletConnectError } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
-import { WalletConnectLayout } from "./WalletConnectLayout";
-import { selectMessageSigningError, selectWalletConnectError } from "../../../modules/wallet-selector/selectors";
 import { TMessage } from "../../translatedMessages/utils";
+import { WalletConnectLayout } from "./WalletConnectLayout";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 

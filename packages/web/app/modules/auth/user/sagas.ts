@@ -33,7 +33,7 @@ import { checkForPendingEmailVerification } from "../email/sagas";
 import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
-import { loadUser, logoutUser } from "./external/sagas";
+import { loadUser } from "./external/sagas";
 
 /**
  * Waits for user to conduct activity before a
@@ -182,8 +182,8 @@ function* handleLogOutUser(
 ): Generator<any, any, any> {
   const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
 
-  yield put(actions.walletSelector.walletConnectStop())
-  // yield neuCall(logoutUser); //TODO need to decide how logout is initiated (by wallet or saga)
+  yield put(actions.walletSelector.walletConnectStop());
+  //TODO need to decide how logout is initiated (by wallet or saga) // yield neuCall(logoutUser);
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:

@@ -39,6 +39,7 @@ import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import { Storage } from "../lib/persistence/Storage";
 import { USER_JWT_KEY } from "../lib/persistence/UserStorage";
+import { WalletConnectStorage } from "../lib/persistence/WalletConnectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { BrowserWalletConnector } from "../lib/web3/browser-wallet/BrowserWalletConnector";
 import { ContractsService } from "../lib/web3/ContractsService";
@@ -58,7 +59,6 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/react-connected-components/AsyncIntervalScheduler";
 import { symbols } from "./symbols";
-import { WalletConnectStorage } from "../lib/persistence/WalletConnectStorage";
 
 export function setupBindings(config: IConfig): ContainerModule {
   return new ContainerModule(bind => {

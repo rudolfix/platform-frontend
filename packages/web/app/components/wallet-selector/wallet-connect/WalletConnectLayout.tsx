@@ -1,5 +1,5 @@
-import * as React from "react";
 import { Button, EButtonLayout } from "@neufund/design-system";
+import * as React from "react";
 
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { getMessageTranslation } from "../../translatedMessages/messages";

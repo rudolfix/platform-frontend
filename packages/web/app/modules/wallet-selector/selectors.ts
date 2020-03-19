@@ -1,10 +1,10 @@
 import { RouterState } from "connected-react-router";
 
+import { DeepReadonly } from "../../../../shared/dist/utils/types";
 import { appRoutes } from "../../components/appRoutes";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
-import { DeepReadonly } from "../../../../shared/dist/utils/types";
-import { TMessage } from "../../components/translatedMessages/utils";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {

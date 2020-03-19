@@ -41,6 +41,7 @@ export const symbols = {
 
   // storages
   walletStorage: Symbol("walletStorage"),
+  walletConnectStorage: Symbol("walletConnectStorage"),
   documentsConfidentialityAgreementsStorage: Symbol("documentsConfidentialityAgreementsStorage"),
   userStorage: Symbol("userStorage"),
   jwtStorage: Symbol("jwtStorage"),

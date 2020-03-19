@@ -59,6 +59,6 @@ export interface IWalletConnectMetadata extends ICommonWalletMetadata {
   walletSubType: EWalletSubType.UNKNOWN;
   sendTransactionMethod: string, //todo move to enum
   signerType: SignerType;
-  sessionTimeout: number;
+  sessionRequestTimeout: number;
   signTimeout: number;
 }

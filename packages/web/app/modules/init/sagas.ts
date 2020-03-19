@@ -43,10 +43,19 @@ function* makeSureWalletMetaDataExists({
   }
 }
 
+function* detectWalletConnect({
+  walletConnectStorage
+}: TGlobalDependencies) {
+  const walletConnectData = walletConnectStorage.get();
+  if(walletConnectData){
+    console.log("walletConnectData", walletConnectData)
+  }
+}
+
 function* initApp({ logger }: TGlobalDependencies): any {
   try {
     yield neuCall(detectUserAgent);
-
+    yield neuCall(detectWalletConnect);
     const jwt = yield neuCall(loadJwt);
 
     if (jwt) {

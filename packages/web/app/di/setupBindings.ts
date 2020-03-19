@@ -58,6 +58,7 @@ import {
   AsyncIntervalSchedulerFactoryType,
 } from "../utils/react-connected-components/AsyncIntervalScheduler";
 import { symbols } from "./symbols";
+import { WalletConnectStorage } from "../lib/persistence/WalletConnectStorage";
 
 export function setupBindings(config: IConfig): ContainerModule {
   return new ContainerModule(bind => {
@@ -188,6 +189,10 @@ export function setupBindings(config: IConfig): ContainerModule {
       .to(WalletStorage)
       .inSingletonScope();
 
+    bind<WalletConnectStorage>(symbols.walletConnectStorage)
+      .to(WalletConnectStorage)
+      .inSingletonScope();
+
     bind<DocumentsConfidentialityAgreementsStorage>(
       symbols.documentsConfidentialityAgreementsStorage,
     )
@@ -269,6 +274,7 @@ export const createGlobalDependencies = (container: Container) => ({
   // storage
   jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
   walletStorage: container.get<WalletStorage>(symbols.walletStorage),
+  walletConnectStorage: container.get<WalletConnectStorage>(symbols.walletConnectStorage),
   documentsConfidentialityAgreementsStorage: container.get<
     DocumentsConfidentialityAgreementsStorage
   >(symbols.documentsConfidentialityAgreementsStorage),

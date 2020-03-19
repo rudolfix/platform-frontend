@@ -7,6 +7,9 @@ import { Web3Adapter } from "../Web3Adapter";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { SignerTimeoutError } from "../Web3Manager/Web3Manager";
 
+export const WC_SESSION_REQUEST_TIMEOUT = 10000;//10 * 60 * 1000;//todo move those two to config
+export const WC_SIGN_TIMEOUT = 10000;//2 * 60 * 1000; //fixme
+
 export class WalletConnectGenericError extends Error {
 }
 
@@ -25,8 +28,6 @@ export class WalletConnectWallet implements IPersonalWallet {
   public readonly walletSubType = EWalletSubType.UNKNOWN;
   public readonly sendTransactionMethod = 'eth_sendTransaction';
   public readonly signerType = SignerType.ETH_SIGN;
-  public readonly sessionTimeout = 10 * 60 * 1000;
-  public readonly signTimeout = 2 * 60 * 1000;
 
   public getSignerType(): SignerType {
     console.log("getSignerType");
@@ -45,13 +46,13 @@ export class WalletConnectWallet implements IPersonalWallet {
     const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
     const dataToSign = addHexPrefix(msgHash.toString("hex"));
 
-    const timeout:Promise<string> = new Promise(function (_, rej) {
-      setTimeout(rej, 5000, new SignerTimeoutError()); //fixme this.signTimeout
+    const signingTimeout:Promise<string> = new Promise(function (_, rej) {
+      setTimeout(rej, WC_SIGN_TIMEOUT, new SignerTimeoutError());
     });
 
     return await Promise.race([
       this.web3Adapter.ethSign(this.ethereumAddress, dataToSign),
-      timeout
+      signingTimeout
     ]);
   }
 
@@ -72,8 +73,8 @@ export class WalletConnectWallet implements IPersonalWallet {
       walletSubType: this.walletSubType,
       sendTransactionMethod: this.sendTransactionMethod,
       signerType: this.signerType,
-      sessionTimeout: this.sessionTimeout,
-      signTimeout: this.signTimeout
+      sessionRequestTimeout: WC_SESSION_REQUEST_TIMEOUT,
+      signTimeout: WC_SIGN_TIMEOUT
     }
   }
 

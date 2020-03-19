@@ -794,7 +794,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return messageData!.message as TTranslatedString;
 
     case WalletConnectErrorMessage.WC_GENERIC_ERROR:
-      return <FormattedMessage id="wallet-connect.generic-error" values={{error: (messageData as Error).toString()}}/>;
+      return <FormattedMessage id="wallet-connect.generic-error" values={{error: messageData ? (messageData as Error).toString() : ""}}/>;
     case WalletConnectErrorMessage.WC_SESSION_REJECTED_ERROR:
       return <FormattedMessage id="wallet-connect.session-rejected-error"/>;
     default:

@@ -1,4 +1,4 @@
-import { END, eventChannel, fork, put, take ,neuTakeLatest} from "@neufund/sagas";
+import { END, eventChannel, EventChannel, fork, put, take ,neuTakeLatest} from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EWalletConnectEventTypes, TWalletConnectEvents } from "../../lib/web3/wallet-connect/WalletConnectConnector";
@@ -22,32 +22,13 @@ export function* walletSelectorReset(): Generator<any, any, any> {
   yield neuCall(loadPreviousWallet);
 }
 
-
-export function* walletConnectInit(
-  { walletConnectConnector }: TGlobalDependencies
-): Generator<any, void, any> {
-  yield console.log("walletConnectInit started");
-
-  const channel = eventChannel<TWalletConnectEvents>(emit => {
-    walletConnectConnector.on(EWalletConnectEventTypes.CONNECT, () =>
-      emit({ type: EWalletConnectEventTypes.CONNECT }));
-    walletConnectConnector.on(EWalletConnectEventTypes.DISCONNECT, () =>
-      emit({ type: EWalletConnectEventTypes.DISCONNECT }));
-    walletConnectConnector.on(EWalletConnectEventTypes.REJECT, () =>
-      emit({ type: EWalletConnectEventTypes.REJECT }));
-    walletConnectConnector.on(EWalletConnectEventTypes.ERROR, error =>
-      emit({ type: EWalletConnectEventTypes.ERROR, payload: { error } }));
-
-    return () => {
-      walletConnectConnector.removeAllListeners()
-    }
-  });
-
-  yield put(actions.walletSelector.walletConnectStart());
-
+function* startWcActions(channel: EventChannel<TWalletConnectEvents>) {
   while (true) {
     const event: TWalletConnectEvents | END = yield take(channel);
     switch (event.type) {
+      case EWalletConnectEventTypes.SESSION_REQUEST:
+        yield put(actions.walletSelector.walletConnectSessionRequest(event.payload.uri));
+        break;
       case EWalletConnectEventTypes.CONNECT:
         yield put(actions.walletSelector.walletConnectReady());
         break;
@@ -66,6 +47,31 @@ export function* walletConnectInit(
         break;
     }
   }
+}
+
+export function* walletConnectInit(
+  { walletConnectConnector }: TGlobalDependencies
+): Generator<any, void, any> {
+  yield console.log("walletConnectInit started");
+
+  const channel = eventChannel<TWalletConnectEvents>(emit => {
+    walletConnectConnector.on(EWalletConnectEventTypes.SESSION_REQUEST, uri =>
+      emit({ type: EWalletConnectEventTypes.SESSION_REQUEST, payload: {uri} }));
+    walletConnectConnector.on(EWalletConnectEventTypes.CONNECT, () =>
+      emit({ type: EWalletConnectEventTypes.CONNECT }));
+    walletConnectConnector.on(EWalletConnectEventTypes.DISCONNECT, () =>
+      emit({ type: EWalletConnectEventTypes.DISCONNECT }));
+    walletConnectConnector.on(EWalletConnectEventTypes.REJECT, () =>
+      emit({ type: EWalletConnectEventTypes.REJECT }));
+    walletConnectConnector.on(EWalletConnectEventTypes.ERROR, error =>
+      emit({ type: EWalletConnectEventTypes.ERROR, payload: { error } }));
+
+    return () => {
+      walletConnectConnector.removeAllListeners()
+    }
+  });
+  yield fork(startWcActions, channel);
+  yield* neuCall(walletConnectStart);
 }
 
 //todo move to utils
@@ -106,12 +112,12 @@ export function* walletConnectStop(
 export function* walletConnectLogout(
   { logger }: TGlobalDependencies
 ) {
-  console.log("walletConnectLogout")
+  console.log("walletConnectLogout");
   try {
     yield neuCall(logoutUser)
   } catch (e) {
     logger.error("wallet connect logout error", e);
-    console.log("wallet connect logout error")
+    console.log("wallet connect logout error");
     yield put(actions.walletSelector.reset());
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),

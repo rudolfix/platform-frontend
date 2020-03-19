@@ -47,7 +47,7 @@ module.exports = merge.smart(configCommon, {
         "media-src 'self' blob:; " +
         "img-src 'self' blob: data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net https://lipis.github.io/flag-icon-css/flags " +
         "*; " + // this should be only enabled for twitter-iframe.html
-        "connect-src 'self' https://*.neufund.io https://*.onfido.com wss://*.onfido.com wss://localhost:9090 wss://localhost:5021 ws://localhost:5021" , // needed for hot reload
+        "connect-src 'self' https://*.neufund.io https://*.onfido.com wss://*.onfido.com wss://localhost:9090 wss://localhost:5021 ws://localhost:5021 wss://192.168.105.147:5021 ws://192.168.105.147:5021" , // needed for hot reload
     },
     proxy: generateProxyConfig(
       `http://${targetAddress}`,

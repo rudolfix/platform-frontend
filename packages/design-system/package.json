@@ -1,6 +1,11 @@
 {
   "name": "@neufund/design-system",
   "description": "Design System",
+  "sideEffects": [
+    "*.sideEffect.*",
+    "*.scss",
+    "*.css"
+  ],
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -67,6 +72,7 @@
     "react-intl-phraseapp": "^0.2.4"
   },
   "dependencies": {
-    "react-table": "^7.0.0-rc.16"
+    "react-table": "^7.0.0-rc.16",
+    "focus-visible": "^5.0.2"
   }
 }

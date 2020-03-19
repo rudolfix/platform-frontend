@@ -1,3 +1,4 @@
+import { EJwtPermissions } from "./../../../../shared/src/utils/constants";
 import { promisify, toCamelCase } from "@neufund/shared";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
@@ -7,6 +8,7 @@ import { toChecksumAddress } from "web3-utils";
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
+import { EWalletType } from "../../modules/web3/types";
 import { assertLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";
 import { accountFixtureByName, removePendingExternalTransaction } from "./index";
@@ -46,6 +48,26 @@ type TCreateAndLoginParams = {
   skipBackupCodesVerification?: boolean;
 };
 
+/**
+ *
+ * @param param0
+ */
+
+export const createUserT = async (
+  baseUrl: string,
+  permissions: EJwtPermissions[],
+  hdPath?: string,
+  seed?: string,
+) => {
+  const { lightWalletInstance, salt, address, walletKey } = await createLightWalletWithKeyPair(
+    seed,
+    hdPath,
+  );
+
+  const jwt = await getJWT(address, lightWalletInstance, walletKey, permissions, baseUrl);
+
+  return { jwt, salt, address };
+};
 /*
  * Pre-login user for faster tests
  */
@@ -92,7 +114,7 @@ export const createAndLoginNewUser = ({
 
     if (!skipCreatingNewUser) {
       // create a user object on the backend
-      await createUser(type, privateKey, kyc, 4);
+      await createUser(type, EWalletType.LIGHT, privateKey, kyc, 4);
     }
 
     if (!skipBackupCodesVerification) {
@@ -199,6 +221,7 @@ type TUserType = "investor" | "issuer" | "nominee";
 
 export const createUser = (
   userType: TUserType,
+  walletType: EWalletType,
   privateKey?: string,
   kyc?: TKycType,
   timeoutInSeconds?: number,
@@ -246,6 +269,7 @@ export const getJWT = async (
   lightWalletInstance: any,
   walletKey: any,
   permissions: string[] = [],
+  baseUrlPath: string = "",
 ): Promise<string> => {
   // first get a challenge
   const headers = {
@@ -257,7 +281,7 @@ export const getJWT = async (
     signer_type: "eth_sign",
     permissions: ["sign-tos", ...permissions],
   };
-  const ch_response = await wrappedFetch(CHALLENGE_PATH, {
+  const ch_response = await wrappedFetch(baseUrlPath + CHALLENGE_PATH, {
     headers,
     method: "POST",
     body: JSON.stringify(challenge_body),
@@ -281,7 +305,7 @@ export const getJWT = async (
     response: signedChallenge,
     signer_type: "eth_sign",
   };
-  const sig_response = await wrappedFetch(JWT_PATH, {
+  const sig_response = await wrappedFetch(baseUrlPath + JWT_PATH, {
     headers,
     method: "POST",
     body: JSON.stringify(signed_body),

@@ -161,11 +161,10 @@ export function* loadOrCreateUser(
 
   const userFromApi = yield* neuCall(getUsersMeFromApi);
   let user;
-
   if (userFromApi) {
-    user = email
-      ? yield* call(() => apiUserService.updateUser({ ...userFromApi, newEmail: email }))
-      : userFromApi;
+    user = yield* call(() =>
+      apiUserService.updateUser({ ...userFromApi, ...walletMetadata, newEmail: email }),
+    );
   } else {
     user = yield* call(() =>
       apiUserService.createAccount({

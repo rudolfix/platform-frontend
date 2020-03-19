@@ -9,7 +9,7 @@ import * as sinonChai from "sinon-chai";
 
 interface IGlobalWithWindow extends NodeJS.Global {
   window: Window;
-  // Winodw object is injected later
+  // Window object is injected later
 }
 
 chai.use(chaiAsPromised);

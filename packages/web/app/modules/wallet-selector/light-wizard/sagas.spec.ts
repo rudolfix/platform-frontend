@@ -20,7 +20,7 @@ describe("Wallet selector - Light Wallet Restore", () => {
     tos: true,
   };
 
-  describe.only("lightWalletRestore", () => {
+  describe("lightWalletRestore", () => {
     const baseUiData = {
       walletType: EWalletType.LIGHT,
       flowType: EFlowType.IMPORT_WALLET,
@@ -56,7 +56,7 @@ describe("Wallet selector - Light Wallet Restore", () => {
         )
         .silentRun();
     });
-    it.only("should yield the restore wallet flow with the already available email", async () => {
+    it("should yield the restore wallet flow with the already available email", async () => {
       await expectSaga(lightWalletRestore, {} as any)
         .provide([
           [matchers.call.fn(isEmailAvailablePromise), true],

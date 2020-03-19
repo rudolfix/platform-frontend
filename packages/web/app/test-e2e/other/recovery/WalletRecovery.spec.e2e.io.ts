@@ -9,10 +9,8 @@ import {
   generateRandomEmailAddress,
   getWalletMetaData,
   goToUserAccountSettings,
-  lightWalletTypeLoginInfo,
   lightWalletTypePasswordRegistration,
   lightWalletTypeRegistrationInfo,
-  logoutViaAccountMenu,
   tid,
   typeLightwalletRecoveryPhrase,
 } from "../../utils/index";
@@ -29,7 +27,7 @@ describe("Wallet recovery", function(): void {
     cy.get(tid("account-recovery.seed-error")).should("exist");
   });
 
-  it.only("should recover wallet from saved phrases #backup #p2", () => {
+  it("should recover wallet from saved phrases #backup #p2", () => {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";
@@ -91,12 +89,8 @@ describe("Wallet recovery", function(): void {
 
         typeLightwalletRecoveryPhrase(seed);
         lightWalletTypePasswordRegistration(password);
-
-        logoutViaAccountMenu();
-
-        cy.visit(appRoutes.login);
-        lightWalletTypeLoginInfo(email, password);
         assertDashboard();
+        assertWaitForLatestEmailSentWithSalt(email);
       });
     });
   });

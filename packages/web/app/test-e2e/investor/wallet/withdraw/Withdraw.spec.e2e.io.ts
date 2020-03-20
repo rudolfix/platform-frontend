@@ -1,3 +1,4 @@
+import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 import { Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
@@ -14,11 +15,7 @@ import {
 } from "../../../utils/index";
 import { goToWallet, goToWalletWithParams } from "../../../utils/navigation";
 import { tid } from "../../../utils/selectors";
-import {
-  createAndLoginNewUser,
-  DEFAULT_PASSWORD,
-  loginFixtureAccount,
-} from "../../../utils/userHelpers";
+import { createAndLoginNewUser, loginFixtureAccount } from "../../../utils/userHelpers";
 import {
   assertWithdrawButtonIsDisabled,
   assertWithdrawFlow,

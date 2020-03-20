@@ -29,5 +29,3 @@ export function* redirectToBrowserWallet(
     return yield fallBackGenerator;
   }
 }
-
-

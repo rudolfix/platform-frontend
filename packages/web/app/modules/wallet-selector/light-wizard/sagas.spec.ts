@@ -8,18 +8,11 @@ import { signInUser } from "../../auth/user/sagas";
 import { EWalletType } from "../../web3/types";
 import { walletSelectorReducer } from "../reducer";
 import { ECommonWalletRegistrationFlowState, EFlowType } from "../types";
-import { EFlowType } from "./../types";
 import { ERecoveryPhase } from "./reducer";
 import { lightWalletRestore } from "./sagas";
 import { getUserMeWithSeedOnly, setupLightWallet } from "./signing/sagas";
 
 describe("Wallet selector - Light Wallet Restore", () => {
-  const payload = {
-    email: "ilovemom@test.com",
-    password: "bass",
-    tos: true,
-  };
-
   describe("lightWalletRestore", () => {
     const baseUiData = {
       walletType: EWalletType.LIGHT,

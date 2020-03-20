@@ -41,7 +41,6 @@ export function* registerForm(
     userEmail?: string;
   },
 ): Generator<any, void, any> {
-  
   yield put(
     actions.walletSelector.setWalletRegisterData({
       ...baseUiData,

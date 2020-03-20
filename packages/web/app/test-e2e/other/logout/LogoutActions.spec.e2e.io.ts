@@ -1,3 +1,4 @@
+import { JWT_KEY, NF_USER_KEY, WALLET_STORAGE_KEY } from "./../../utils/constants";
 import { cyPromise } from "../../utils/cyPromise";
 import {
   assertDashboard,
@@ -7,14 +8,7 @@ import {
   goToLanding,
   tid,
 } from "../../utils/index";
-import {
-  createAndLoginNewUser,
-  getJwtToken,
-  getWalletMetaData,
-  JWT_KEY,
-  NF_USER_KEY,
-  WALLET_STORAGE_KEY,
-} from "../../utils/userHelpers";
+import { createAndLoginNewUser, getJwtToken, getWalletMetaData } from "../../utils/userHelpers";
 import { keepSessionActive } from "../utils";
 
 const REGISTRATION_LOGIN_DONE = "logged_in";

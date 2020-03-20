@@ -1,3 +1,4 @@
+import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 import { fillForm } from "../../../utils/forms";
 import {
   assertDashboard,
@@ -6,7 +7,6 @@ import {
   assertEmailPendingChange,
   confirmAccessModal,
   createAndLoginNewUser,
-  DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
   getWalletMetaData,

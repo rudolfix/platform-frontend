@@ -37,6 +37,7 @@ import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
 import { loadUser, logoutUser } from "./external/sagas";
+import { getUsersNewEmailValue } from "./utils";
 
 /**
  * Waits for user to conduct activity before a
@@ -109,8 +110,6 @@ export function* signInUser(
       redirectionUrl ? actions.routing.push(redirectionUrl) : actions.routing.goToDashboard(),
     );
   } catch (e) {
-    debugger;
-
     yield neuCall(logoutUser);
     if (e instanceof SignerRejectConfirmationError || e instanceof SignerTimeoutError) {
       throw e;
@@ -167,7 +166,7 @@ export function* loadOrCreateUser(
       salt: walletMetadata.salt,
       walletType: walletMetadata.walletType,
       walletSubtype: walletMetadata.walletSubType,
-      newEmail: userFromApi.email,
+      newEmail: getUsersNewEmailValue(userFromApi.verifiedEmail, email),
     });
   } else {
     user = yield* call(apiUserService.createAccount, {

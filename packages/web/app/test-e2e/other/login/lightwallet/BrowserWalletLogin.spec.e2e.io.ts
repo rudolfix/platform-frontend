@@ -122,7 +122,6 @@ describe("Ethereum Routing", () => {
       cy.get(tid("wallet-selector-browser")).click();
 
       cy.get(tid("browser-wallet-error-msg")).should("exist");
-
     });
   });
 });

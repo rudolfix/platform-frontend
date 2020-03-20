@@ -1,9 +1,9 @@
+import { DEFAULT_PASSWORD } from "./../../utils/constants";
 import { appRoutes } from "../../../components/appRoutes";
 import { kycRoutes } from "../../../components/kyc/routes";
 import { NODE_ADDRESS } from "../../config";
 import {
   assertDashboard,
-  DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   goToDashboard,
   registerWithLightWalletIssuer,

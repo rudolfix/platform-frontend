@@ -1,3 +1,4 @@
+import { DEFAULT_PASSWORD } from "./constants";
 import BigNumber from "bignumber.js";
 import { floor, get } from "lodash";
 
@@ -23,7 +24,7 @@ import {
 } from "./assertions";
 import { goToLanding, goToWallet } from "./navigation";
 import { tid } from "./selectors";
-import { DEFAULT_PASSWORD, verifyUserEmailCall } from "./userHelpers";
+import { verifyUserEmailCall } from "./userHelpers";
 
 export const LONG_WAIT_TIME = 60000;
 

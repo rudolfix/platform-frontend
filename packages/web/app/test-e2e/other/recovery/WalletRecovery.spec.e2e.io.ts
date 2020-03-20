@@ -1,3 +1,4 @@
+import { DEFAULT_HD_PATH } from "./../../utils/constants";
 import { appRoutes } from "../../../components/appRoutes";
 import { generateRandomSeedAndAddress } from "../../obsolete/generateRandomSeedAndAddress";
 import { cyPromise } from "../../utils/cyPromise";
@@ -5,7 +6,6 @@ import {
   assertDashboard,
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
-  DEFAULT_HD_PATH,
   generateRandomEmailAddress,
   getWalletMetaData,
   goToUserAccountSettings,

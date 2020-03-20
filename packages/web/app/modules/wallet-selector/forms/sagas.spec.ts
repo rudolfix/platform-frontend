@@ -59,9 +59,7 @@ describe("Wallet selector form sagas", () => {
         initialFormValues,
         baseUiData,
       })
-        .withReducer({ walletSelectorReducer } as any, {
-          walletSelectorReducer: walletSelectorInitialState,
-        })
+        .withReducer(walletSelectorReducer)
         .provide([[matchers.call.fn(isEmailAvailablePromise), true]])
         .take(actions.walletSelector.lightWalletRegisterFormData)
         .dispatch(

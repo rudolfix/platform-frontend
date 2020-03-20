@@ -6,7 +6,11 @@ import { appRoutes } from "../../components/appRoutes";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
-import { ECommonWalletRegistrationFlowState, TBrowserWalletFormValues, TLightWalletFormValues } from "./types";
+import {
+  ECommonWalletRegistrationFlowState,
+  TBrowserWalletFormValues,
+  TLightWalletFormValues,
+} from "./types";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {
   if (router.location && router.location.pathname.includes("eto")) {

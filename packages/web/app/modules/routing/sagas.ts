@@ -40,10 +40,12 @@ export function* startRouteBasedSagas(
   { logger }: TGlobalDependencies,
   action: LocationChangeAction,
 ): Generator<any, any, any> {
+  console.log("startRouteBasedSagas")
   const appIsReady = yield waitForAppInit();
   const userIsAuthorized = yield* select(selectIsAuthorized);
   const userType = yield* select(selectUserType);
 
+  console.log("startRouteBasedSagas:",appIsReady, userIsAuthorized, userType)
   logger.info(
     `userIsAuthorized: ${userIsAuthorized.toString()}, userType: ${userType}, route: ${
       action.payload.location.pathname

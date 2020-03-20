@@ -91,7 +91,6 @@ export class WalletConnectConnector extends EventEmitter {
       await  this.walletConnectProvider.enable();
       engine.start();
     } catch (e) {
-      console.log('could not enable wc,', e);
       this.cleanUpSession();
       engine.stop();
       throw new WalletConnectSessionRejectedError("bridge subscription failed");
@@ -100,7 +99,6 @@ export class WalletConnectConnector extends EventEmitter {
     this.web3 = new Web3(engine); //todo fix typings in walletConnect
     const web3Adapter = new Web3Adapter(this.web3);
     const ethereumAddress = await web3Adapter.getAccountAddress();
-
     return new WalletConnectWallet(web3Adapter, ethereumAddress)
   };
 
@@ -122,56 +120,45 @@ export class WalletConnectConnector extends EventEmitter {
   };
 
   private accountsChangedHandler = (accounts: string[]) => {
-    console.log("accountsChanged event", accounts);
     this.emit(EWalletConnectEventTypes.ACCOUNTS_CHANGED, { accounts })
   };
 
   private chainChangedHandler = (chainId: number) => {
-    console.log("chainChanged event", chainId);
     this.emit(EWalletConnectEventTypes.CHAIN_CHANGED, { chainId })
   };
   private networkChangedHandler = (networkId: number) => {
-    console.log("networkChanged event", networkId);
     this.emit(EWalletConnectEventTypes.NETWORK_CHANGED, { networkId })
   };
 
   private openHandler = () => {
-    console.log("open event");
     this.emit(EWalletConnectEventTypes.OPEN)
   };
 
   private closeHandler = (code: number, reason: string) => {
-    console.log("close event", code, reason);
     this.emit(EWalletConnectEventTypes.CLOSE, { code, reason })
   };
 
   private connectHandler = () => {
-    console.log("connect event");
     this.emit(EWalletConnectEventTypes.CONNECT,)
   };
 
   private disconnectHandler = () => {
-    console.log("disconnect event");
     this.cleanUpSession();
     this.emit(EWalletConnectEventTypes.DISCONNECT,)
   };
 
   private rejectHandler = () => {
-    console.log("reject event");
     this.emit(EWalletConnectEventTypes.REJECT,)
   };
 
   private errorHandler = (error: Error) => {
-    console.log("error event", error);
     this.emit(EWalletConnectEventTypes.ERROR, { error })
   };
 
-  private payloadHandler = (payload: any) => {
-    console.log("paylaod event", payload);
+  private payloadHandler = (_: any) => {
   };
 
   private sessionRequestHandler = (uri: any) => {
-    console.log("session request event", uri);
     this.sessionRequestTimeout = window.setTimeout(
       this.sessionRequestTimeoutHandler,
       WC_DEFAULT_SESSION_REQUEST_TIMEOUT
@@ -181,7 +168,6 @@ export class WalletConnectConnector extends EventEmitter {
   };
 
   private sessionRequestTimeoutHandler = () => {
-    console.log("session request timeout event");
     window.clearTimeout(this.sessionRequestTimeout);
     this.emit(EWalletConnectEventTypes.SESSION_REQUEST_TIMEOUT);
   };

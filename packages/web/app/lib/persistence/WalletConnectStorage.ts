@@ -42,10 +42,6 @@ export class WalletConnectStorage {
       STORAGE_WALLET_CONNECT_KEY,
     );
   }
-  // fixme shouldn't it be read-only?
-  // public set(value: TStoredWalletConnectData): void {
-  //   this.walletMetadataStorage.set(value);
-  // }
 
   public get(): TStoredWalletConnectData | undefined {
     return this.walletMetadataStorage.get();

@@ -1,4 +1,4 @@
-import { call, delay, fork, put, race, select, take } from "@neufund/sagas";
+import { call, delay, fork, put, race, select, take,all } from "@neufund/sagas";
 import { assertNever, EJwtPermissions, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
@@ -34,6 +34,7 @@ import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
 import { loadUser } from "./external/sagas";
+import { walletConnectStop } from "../../wallet-selector/sagas";
 
 /**
  * Waits for user to conduct activity before a
@@ -182,8 +183,12 @@ function* handleLogOutUser(
 ): Generator<any, any, any> {
   const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
 
-  yield put(actions.walletSelector.walletConnectStop());
-  //TODO need to decide how logout is initiated (by wallet or saga) // yield neuCall(logoutUser);
+  yield all([
+    neuCall(walletConnectStop),
+    take(actions.auth.reset)
+  ]);
+  console.log("handleLogOutUser reset")
+  //TODO need to decide how logout is initiated (by wallet or saga); //yield neuCall(logoutUser);
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:

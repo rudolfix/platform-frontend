@@ -22,7 +22,7 @@ import { selectJwt } from "../selectors";
 /**
  * Load to store jwt from browser storage
  */
-export function* loadJwt({ jwtStorage }: TGlobalDependencies): Generator<any, any, any> {
+export function* loadJwt({ jwtStorage }: TGlobalDependencies): Generator<any, string | undefined, any> {
   return jwtStorage.get();
 }
 

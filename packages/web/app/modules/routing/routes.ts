@@ -363,8 +363,9 @@ export function* loginWalletConnectRoute(payload: RouterState): Generator<any, a
     path: appRoutes.loginWalletConnect,
     exact: true
   });
+  console.log("routeMatch",routeMatch)
   return yield routeAction(routeMatch, {
-    notAuth: put(actions.walletSelector.walletConnectInit()),
+    notAuth: put(actions.walletSelector.walletConnectStart()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

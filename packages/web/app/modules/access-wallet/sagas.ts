@@ -6,7 +6,7 @@ import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { BrowserWalletConnector } from "../../lib/web3/browser-wallet/BrowserWalletConnector";
 import { LedgerWalletConnector } from "../../lib/web3/ledger-wallet/LedgerConnector";
-import { LightWalletWrongPassword } from "../../lib/web3/light-wallet/LightWallet";
+import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/light-wallet/LightWallet";
 import { LightWalletConnector } from "../../lib/web3/light-wallet/LightWalletConnector";
 import {
   deserializeLightWalletVault,
@@ -27,7 +27,6 @@ import {
   ILightWalletMetadata,
   ILightWalletRetrieveMetadata,
 } from "../web3/types";
-import { LightWallet } from "./../../lib/web3/light-wallet/LightWallet";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
 import { selectIsSigning } from "./reducer";
 

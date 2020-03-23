@@ -23030,10 +23030,10 @@ typechain@^0.2.7:
     glob "^7.1.2"
     prettier "^1.9.1"
 
-typed-redux-saga@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/typed-redux-saga/-/typed-redux-saga-0.4.0.tgz#65e5c0f8215e727094c8d0421097f89fe29c6628"
-  integrity sha512-oYt/bfSkvuw+EqyFvRl0WwPt8Py3dSXOpBk+ESHXfbvXqJxmx0LjtsfnDJ75ZM2X1iEi4ksAuO5GxdIikyLrOQ==
+typed-redux-saga@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/typed-redux-saga/-/typed-redux-saga-1.0.6.tgz#b11198ff2cf464ca674cf3f62f2791000c7ff112"
+  integrity sha512-APOGFJup6cKD2VUngnGGi73nlPCRKZUl3E/OIYIv8ZHm3EZBgx8d84Y5aI2D1IT3kEKtstp6ONWJh6xTJWZ6rA==
 
 typed-styles@^0.0.7:
   version "0.0.7"

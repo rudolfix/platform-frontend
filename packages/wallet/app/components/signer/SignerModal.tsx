@@ -1,14 +1,14 @@
 import * as React from "react";
-import { Modal, View, Text } from "react-native";
+import { Modal, Text, View } from "react-native";
 import { compose } from "recompose";
 
 import {
+  ESignerUIState,
   setupSignerUIModule,
   signerUIModuleApi,
-  ESignerUIState,
 } from "../../modules/signer-ui/module";
 import { appConnect } from "../../store/utils";
-import { Button } from "../shared/buttons/Button";
+import { Button, EButtonLayout } from "../shared/buttons/Button";
 
 type TStateProps = {
   state: ReturnType<typeof signerUIModuleApi.selectors.selectSignerUIState>;
@@ -34,8 +34,12 @@ const SignerModalLayout: React.FunctionComponent<TStateProps & TDispatchProps> =
         Signing data: {JSON.stringify(data, undefined, 2)}
       </Text>
 
-      <Button title="Accept" onPress={approve} />
-      <Button title="Reject" onPress={reject} />
+      <Button layout={EButtonLayout.PRIMARY} onPress={approve}>
+        Accept
+      </Button>
+      <Button layout={EButtonLayout.TEXT} onPress={reject}>
+        Reject
+      </Button>
     </View>
   </Modal>
 );

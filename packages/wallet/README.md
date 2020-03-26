@@ -13,6 +13,10 @@ Setup differs between platform therefore the best place to follow is
 `React Native CLI Quickstart` (sections **Installing dependencies** and **Preparing the Android
 device** (just for android development).
 
+Also a proper environment variables should be provided. Create a file at the app root named `.env`
+and provide a proper env specific variables (variables in `.env.example` can be used as a default to
+run on the `dev` environment).
+
 After environment setup is completed you can start the app in emulator (`yarn start:ios` or
 `yarn start:android`).
 

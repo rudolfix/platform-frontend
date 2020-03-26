@@ -1,13 +1,13 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 import { appRoutes } from "../appRoutes";
-import { walletConnectModuleApi } from "../modules/wallet-connect/module";
-import { Button } from "./shared/buttons/Button";
 import { initActions } from "../modules/init/actions";
 import { selectInitStatus, selectTest } from "../modules/init/selectors";
+import { walletConnectModuleApi } from "../modules/wallet-connect/module";
 import { appConnect } from "../store/utils";
+import { Button, EButtonLayout } from "./shared/buttons/Button";
 
 type TDispatchProps = {
   init: () => void;
@@ -44,25 +44,31 @@ const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
         <>
           <Text>{JSON.stringify(walletConnectPeer, undefined, 2)}</Text>
           <Button
-            title="Disconnect"
+            layout={EButtonLayout.PRIMARY}
             onPress={() => walletConnectDisconnect(walletConnectPeer.id)}
-          />
+          >
+            Disconnect
+          </Button>
         </>
       ) : (
         <Text>not connected</Text>
       )}
 
       <Button
+        layout={EButtonLayout.PRIMARY}
         testID="landing.go-to-import-your-wallet"
-        title="Import your wallet"
         onPress={() => navigation.navigate(appRoutes.importWallet)}
-      />
+      >
+        Import your wallet
+      </Button>
 
       <Button
+        layout={EButtonLayout.PRIMARY}
         testID="landing.go-to-qr-code-scanner"
-        title="Scan QR code"
         onPress={() => navigation.navigate(appRoutes.qrCode)}
-      />
+      >
+        Scan QR code
+      </Button>
     </View>
   );
 };

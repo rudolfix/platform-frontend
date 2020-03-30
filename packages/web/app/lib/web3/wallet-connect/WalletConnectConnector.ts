@@ -23,6 +23,9 @@ export type TWalletConnectEvents =
   | { type: EWalletConnectEventTypes.REJECT }
   | { type: EWalletConnectEventTypes.CONNECT }
   | { type: EWalletConnectEventTypes.ERROR, payload: { error: Error } }
+  | { type: EWalletConnectEventTypes.ACCOUNTS_CHANGED, payload: {account: string} }
+  | { type: EWalletConnectEventTypes.NETWORK_CHANGED, payload: {networkId: number} }
+  | { type: EWalletConnectEventTypes.CHAIN_CHANGED, payload: {chainId: number} }
 
 export enum EWalletConnectEventTypes {
   CONNECT = "connect",
@@ -38,9 +41,6 @@ export enum EWalletConnectEventTypes {
   SESSION_REQUEST = "sessionRequest",
   SESSION_REQUEST_TIMEOUT = "sessionRequestTimeout",
 }
-
-//todo move to config
-const devBridgeUrl = "https://platform.neufund.io/api/wc-bridge-socket/";
 
 @injectable()
 export class WalletConnectConnector extends EventEmitter {
@@ -61,13 +61,11 @@ export class WalletConnectConnector extends EventEmitter {
     let engine: any;
 
     this.walletConnectProvider = new WalletConnectSubprovider({
-      bridge: devBridgeUrl,
+      bridge: this.web3Config.bridgeUrl,
       qrcode: true,
-      rpc: { 14: this.web3Config.rpcUrl },
-      chainId: 14
     });
 
-    this.walletConnectProvider.on("session_request", this.sessionRequestHandler);
+    this.walletConnectProvider.on("sessionRequest", this.sessionRequestHandler);
     this.walletConnectProvider.on('connect', this.connectHandler);
     this.walletConnectProvider.on("disconnect", this.disconnectHandler);
     this.walletConnectProvider.on("reject", this.rejectHandler);
@@ -91,13 +89,14 @@ export class WalletConnectConnector extends EventEmitter {
       await  this.walletConnectProvider.enable();
       engine.start();
     } catch (e) {
+      this.logger.error("could not enable wc", e);
       console.log('could not enable wc,', e);
       this.cleanUpSession();
       engine.stop();
-      throw new WalletConnectSessionRejectedError("bridge subscription failed");
+      throw new WalletConnectSessionRejectedError("subscription failed");
     }
 
-    this.web3 = new Web3(engine); //todo fix typings in walletConnect
+    this.web3 = new Web3(engine);
     const web3Adapter = new Web3Adapter(this.web3);
     const ethereumAddress = await web3Adapter.getAccountAddress();
 
@@ -117,6 +116,8 @@ export class WalletConnectConnector extends EventEmitter {
   private cleanUpSession = () => {
     if (this.walletConnectProvider) {
       this.walletConnectProvider = undefined;
+    }
+    if (this.web3) {
       this.web3 = undefined
     }
   };

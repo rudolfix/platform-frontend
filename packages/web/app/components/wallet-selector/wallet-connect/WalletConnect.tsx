@@ -1,6 +1,7 @@
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
-import {  compose } from "recompose";
+import { branch, compose, renderComponent } from "recompose";
+import { withContainer } from "@neufund/shared";
 
 import { actions } from "../../../modules/actions";
 import { ELogoutReason } from "../../../modules/auth/types";
@@ -10,7 +11,9 @@ import { appConnect } from "../../../store";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { TMessage } from "../../translatedMessages/utils";
-import { WalletConnectLayout } from "./WalletConnectLayout";
+import { WalletConnectContainer, WalletConnectError } from "./WalletConnectLayout";
+import { shouldNeverHappen } from "../../shared/NeverComponent";
+import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -18,11 +21,11 @@ type TExternalProps = {
   isSecretProtected: boolean;
 } & TRouteLoginProps;
 
-interface IStateProps {
+type TStateProps = {
   error: TMessage | undefined
 }
 
-interface IDispatchProps {
+type TDispatchProps = {
   walletConnectStart: () => void;
   walletConnectStop: () => void;
 }
@@ -36,11 +39,11 @@ type TLocalStateHandlersProps = {
 };
 
 export const WalletConnect = compose<
-  TExternalProps & IStateProps & IDispatchProps & TLocalStateHandlersProps & TLocalStateProps,
+  TExternalProps & TStateProps & TDispatchProps & TLocalStateHandlersProps & TLocalStateProps,
   {}
 >(
   createErrorBoundary(ErrorBoundaryLayout),
-  appConnect<IStateProps, IDispatchProps>({
+  appConnect<TStateProps, TDispatchProps>({
     stateToProps: state => ({
       error: selectWalletConnectError(state) || selectMessageSigningError(state)
     }),
@@ -49,4 +52,9 @@ export const WalletConnect = compose<
       walletConnectStop: () => dispatch(actions.walletSelector.walletConnectStop()),
     }),
   }),
-)(WalletConnectLayout);
+  withContainer(WalletConnectContainer),
+  branch<TStateProps>(({error}) => error === undefined,
+    renderComponent(LoadingIndicator),
+    renderComponent(WalletConnectError)
+    )
+)(shouldNeverHappen("WalletConnect reached default branch"));

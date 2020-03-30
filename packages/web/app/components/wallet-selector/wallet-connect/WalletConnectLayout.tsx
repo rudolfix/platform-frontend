@@ -1,22 +1,15 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 
-import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { getMessageTranslation } from "../../translatedMessages/messages";
 import { TMessage } from "../../translatedMessages/utils";
 
-
-interface IExternalProps {
-  error: TMessage | undefined,
-  walletConnectStart: () => void
-}
-
-interface IErrorProps {
+type TErrorProps = {
   error: TMessage,
   walletConnectStart: () => void
 }
 
-export const WalletConnectError: React.FunctionComponent<IErrorProps> = ({ error, walletConnectStart }) =>
+export const WalletConnectError: React.FunctionComponent<TErrorProps> = ({ error, walletConnectStart }) =>
   <>
     <div>{getMessageTranslation(error)}</div>
     <Button
@@ -29,16 +22,8 @@ export const WalletConnectError: React.FunctionComponent<IErrorProps> = ({ error
     </Button>
   </>;
 
-export const WalletConnectLayout: React.FunctionComponent<IExternalProps> = ({
-  error,
-  walletConnectStart
-}) =>
-  <>
-    <div className="justify-content-center text-center">
-      {error
-        ? <WalletConnectError error={error} walletConnectStart={walletConnectStart} />
-        : <LoadingIndicator />
-      }
-    </div>
-  </>;
 
+export const WalletConnectContainer: React.FunctionComponent = ({ children }) =>
+  <div className="justify-content-center text-center">
+    {children}
+  </div>;

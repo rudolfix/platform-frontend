@@ -1,19 +1,33 @@
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
+import { clearSafeTimeout, safeSetTimeout, secondsToMs } from "@neufund/shared";
 
 import { EthereumAddress } from "../../../../../shared/dist/utils/opaque-types/types";
 import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerTimeoutError } from "../Web3Manager/Web3Manager";
+import { WalletError } from "../errors";
 
-export const WC_DEFAULT_SESSION_REQUEST_TIMEOUT = 10000;//todo move those two to config //10 * 60 * 1000;
-export const WC_DEFAULT_SIGN_TIMEOUT = 10000; //fixme //2 * 60 * 1000;
+export const WC_DEFAULT_SESSION_REQUEST_TIMEOUT = secondsToMs(10);//todo move those two to config //minutesToMs(10);
+export const WC_DEFAULT_SIGN_TIMEOUT = secondsToMs(10); //fixme //minutesToMs(2);
 
-export class WalletConnectGenericError extends Error {
+export class WalletConnectGenericError extends WalletError {
+  constructor(message: string) {
+    super(`WalletConnect: ${message}`);
+  }
 }
 
-export class WalletConnectSessionRejectedError extends Error {
+export class WalletConnectSessionRejectedError extends WalletError {
+  constructor(message: string) {
+    super(`WalletConnect: sessionRequest rejected. ${message}`);
+  }
+}
+
+export class WalletConnectSessionTransactionError extends WalletError {
+  constructor(message: string) {
+    super(`WalletConnect: transaction error. ${message}`);
+  }
 }
 
 export class WalletConnectWallet implements IPersonalWallet {
@@ -23,7 +37,7 @@ export class WalletConnectWallet implements IPersonalWallet {
   ) {
   }
 
-  public readonly walletType = EWalletType.UNKNOWN;
+  public readonly walletType = EWalletType.WALLET_CONNECT;
   public readonly walletSubType = EWalletSubType.UNKNOWN;
   public readonly sendTransactionMethod = 'eth_sendTransaction';
   public readonly signerType = SignerType.ETH_SIGN;
@@ -47,14 +61,14 @@ export class WalletConnectWallet implements IPersonalWallet {
     const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
     const dataToSign = addHexPrefix(msgHash.toString("hex"));
 
-    const signingTimeoutPromise = (singingTimeout: number): Promise<string> => new Promise(
+    const signingTimeoutPromise = (signingTimeout: number): Promise<string> => new Promise(
       (_, reject) => {
-        const timeout = window.setTimeout(() => {
-          window.clearTimeout(timeout);
+        const timeout = safeSetTimeout(() => {
+          clearSafeTimeout(timeout);
           reject(new SignerTimeoutError())
-        }, singingTimeout,);
-      });
-
+        }, signingTimeout)
+      }
+    );
     return await Promise.race([
       this.web3Adapter.ethSign(this.ethereumAddress, dataToSign),
       signingTimeoutPromise(this.singingTimeout)
@@ -67,7 +81,7 @@ export class WalletConnectWallet implements IPersonalWallet {
       return await this.web3Adapter.sendTransaction(txData);
     } catch (e) {
       console.log("walletConnect.sendTransaction error:", e);
-      throw e; //fixme add normal TMessage errors
+      throw new WalletConnectSessionTransactionError(`Could not send transaction. ${e.toString()}`)
     }
   }
 

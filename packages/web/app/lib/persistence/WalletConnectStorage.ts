@@ -16,7 +16,7 @@ export type TStoredWalletConnectData = {
   connected:boolean,
   accounts:string[],
   chainId:number,
-  bridge:string,
+  bridge:string, //bridge url
   key:string,
   clientId:string,
   clientMeta:TPeerMeta,
@@ -42,10 +42,6 @@ export class WalletConnectStorage {
       STORAGE_WALLET_CONNECT_KEY,
     );
   }
-  // fixme shouldn't it be read-only?
-  // public set(value: TStoredWalletConnectData): void {
-  //   this.walletMetadataStorage.set(value);
-  // }
 
   public get(): TStoredWalletConnectData | undefined {
     return this.walletMetadataStorage.get();

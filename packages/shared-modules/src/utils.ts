@@ -1,6 +1,16 @@
+import { neuGetContainer } from "@neufund/sagas";
+import { Dictionary } from "@neufund/shared";
+import mapValues from "lodash/fp/mapValues";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
 
-import { TLibSymbol, TModuleActions, TModuleSetup, TModuleState } from "./types";
+import {
+  TLibSymbol,
+  TLibSymbolType,
+  TModuleActions,
+  TModuleSetup,
+  TModuleState,
+  TSymbols,
+} from "./types";
 
 const createLibSymbol = <T>(name: string) => Symbol(name) as TLibSymbol<T>;
 
@@ -82,4 +92,12 @@ function appConnect<
   );
 }
 
-export { createLibSymbol, appConnect, TAppConnectOptions };
+function* neuGetBindings<B extends Dictionary<TLibSymbol<unknown>>>(
+  bindings: B,
+): Generator<unknown, TSymbols<B>> {
+  const container = yield* neuGetContainer();
+
+  return mapValues(v => container.get<TLibSymbolType<typeof v>>(v), bindings) as TSymbols<B>;
+}
+
+export { createLibSymbol, appConnect, TAppConnectOptions, neuGetBindings };

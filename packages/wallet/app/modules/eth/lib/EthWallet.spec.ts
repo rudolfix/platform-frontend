@@ -27,6 +27,28 @@ describe("EthWallet", () => {
     derivationPath: toEthereumHDPath("m/44'/60'/0'"),
   } as const;
 
+  describe("signMessageHash", () => {
+    it("should sign a message with a given private key reference", async () => {
+      const messageHash = "0xc7595adb6684bd03eb6ee54f10b0224e4bcfdaa5d393187583eb1777ae169d80";
+      const expectedSignedMessage =
+        "0x96a06a251fe4e064c8e094613879fea327023dc4937ead182e83697b…91cdfd86d14a1845b5a2231529f1355c1a9f5f85bee657a91a700d01b";
+
+      const ethSecureEnclaveMock = createMock(EthSecureEnclave, {
+        signDigest: () => Promise.resolve(expectedSignedMessage),
+      });
+
+      const ethWallet = new EthWallet(hdWalletMetadata, ethSecureEnclaveMock, noopLogger);
+
+      const signedMessage = await ethWallet.signMessageHash(messageHash);
+
+      expect(ethSecureEnclaveMock.signDigest).toBeCalledWith(
+        hdWalletMetadata.privateKeyReference,
+        messageHash,
+      );
+      expect(signedMessage).toBe(expectedSignedMessage);
+    });
+  });
+
   describe("signMessage", () => {
     it("should sign a message with a given private key reference", async () => {
       const message = "A message to sign";

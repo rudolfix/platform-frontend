@@ -148,3 +148,10 @@ export type SelectPropertyNames<T, R> = { [K in keyof T]: T[K] extends R ? K : n
  * ReturnTypeStrict<() => string> // string
  */
 export type ReturnTypeStrict<T> = T extends (...args: any) => infer R ? R : never;
+
+/**
+ * Forces a tuple type over array
+ * @example
+ * Tuple<[string, number]> // [string, number]
+ */
+export type Tuple<T = any> = [T] | T[];

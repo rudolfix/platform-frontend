@@ -1,4 +1,7 @@
+import { utils as ethersUtils } from "ethers";
+
 import { setupBindings } from "./lib/bindings";
+import { ethereumAddress, ethereumHdPath } from "./lib/schemas";
 import { symbols } from "./lib/symbols";
 import { isAddress, isMnemonic, isPrivateKey } from "./lib/utils";
 
@@ -12,6 +15,9 @@ const utils = {
   isAddress,
   isMnemonic,
   isPrivateKey,
+  ethereumAddress,
+  ethereumHdPath,
+  BigNumber: ethersUtils.BigNumber,
 };
 
 const setupWalletEthModule = (config: TEthModuleConfig) => ({

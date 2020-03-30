@@ -10,8 +10,8 @@ import { WalletChooser } from "../../shared/WalletChooser";
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 export type TWalletBrowserBaseExternalProps = {
-  rootPath: string;
-  showWalletSelector: boolean;
+  rootPath?: string | undefined;
+  showWalletSelector: boolean | undefined;
 };
 
 type TWalletBrowserBaseStateProps = {
@@ -46,7 +46,7 @@ export const RegisterBrowserWalletContainerComponent: React.FunctionComponent<TW
         </p>
       </section>
       {showWalletSelector && (
-        <WalletChooser rootPath={rootPath} activeWallet={EWalletType.BROWSER} />
+        <WalletChooser rootPath={rootPath!} activeWallet={EWalletType.BROWSER} />
       )}
     </div>
   </>

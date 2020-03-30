@@ -1,8 +1,7 @@
-import { find, get } from "lodash";
+import { find } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
 import { walletLoginRoutes } from "../../components/wallet-selector/WalletSelectorLogin/wallet-routes";
-import { MOCK_API_URL } from "../config";
 import { getIsUserVerifiedOnBlockchain } from "./ethRpcUtils";
 import { tid } from "./selectors";
 import { getPendingTransactions } from "./userHelpers";
@@ -60,27 +59,6 @@ export const assertProfile = () => {
 };
 
 export const getLatestEmailByUser = (r: any, email: string) => find(r.body, ["to", email]);
-
-export const assertWaitForLatestEmailSentWithSalt = (
-  userEmail: string,
-  timeout: number = 20000,
-) => {
-  expect(timeout, `Email not received in ${timeout} ms`).to.be.gt(0);
-
-  cy.wait(1000);
-
-  cy.request({ url: MOCK_API_URL + `sendgrid/session/mails?to=${userEmail}`, method: "GET" }).then(
-    r => {
-      if (r.status === 200 && getLatestEmailByUser(r, userEmail)) {
-        const loginLink = get(getLatestEmailByUser(r, userEmail), "template_vars.login_link");
-
-        expect(loginLink).to.contain("salt");
-        return;
-      }
-      assertWaitForLatestEmailSentWithSalt(userEmail, timeout - 1000);
-    },
-  );
-};
 
 export const assertVerifyEmailWidgetIsInUnverifiedEmailState = (shouldNotExist?: boolean) => {
   cy.get(tid("profile.verify-email-widget.unverified-email-state")).should(

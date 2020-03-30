@@ -45,7 +45,7 @@ describe("Wallet selector - Light Wallet Restore", () => {
             initialFormValues,
             flowType: EFlowType.IMPORT_WALLET,
             uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-          }),
+          } as any),
         )
         .silentRun();
     });
@@ -66,10 +66,10 @@ describe("Wallet selector - Light Wallet Restore", () => {
         .put(
           actions.walletSelector.setWalletRegisterData({
             ...baseUiData,
-            initialFormValues: { ...initialFormValues, email: "mommyIloveyou@super.com" },
             flowType: EFlowType.RESTORE_WALLET,
+            initialFormValues: { ...initialFormValues, email: "mommyIloveyou@super.com" },
             uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-          }),
+          } as any),
         )
         .silentRun();
     });

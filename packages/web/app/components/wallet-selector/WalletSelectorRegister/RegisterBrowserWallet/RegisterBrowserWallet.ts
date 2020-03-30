@@ -33,7 +33,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  submitForm: (email: string) => void;
+  submitForm: (email: string, tos: boolean) => void;
 }
 
 type TAdditionalProps = {

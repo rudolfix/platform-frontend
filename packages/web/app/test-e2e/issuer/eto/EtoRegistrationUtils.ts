@@ -1,7 +1,6 @@
 import { toCamelCase, toSnakeCase, withParams } from "@neufund/shared";
 import { isFunction } from "lodash/fp";
 
-import { createUser } from "./../../utils/createUser";
 import { etoRegisterRoutes } from "../../../components/eto/registration/routes";
 import { TPartialCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { confirmAccessModal } from "../../utils";
@@ -11,6 +10,7 @@ import { checkForm, fillForm, TFormFixture, TFormFixtureExpectedValues } from ".
 import { goToIssuerDashboard } from "../../utils/navigation";
 import { tid } from "../../utils/selectors";
 import { makeAuthenticatedCall } from "../../utils/userHelpers";
+import { createUser } from "./../../utils/createUser";
 import {
   aboutFormRequired,
   aboutFormSubmit,

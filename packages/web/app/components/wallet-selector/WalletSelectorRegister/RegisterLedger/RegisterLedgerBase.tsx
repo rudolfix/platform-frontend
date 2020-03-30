@@ -8,8 +8,8 @@ import { WalletChooser } from "../../shared/WalletChooser";
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 export type TWalletBrowserBaseProps = {
-  rootPath: string;
-  showWalletSelector: boolean;
+  rootPath?: string | undefined;
+  showWalletSelector: boolean | undefined;
 };
 
 export const RegisterLedgerBase: React.FunctionComponent<TWalletBrowserBaseProps> = ({
@@ -36,7 +36,7 @@ export const RegisterLedgerBase: React.FunctionComponent<TWalletBrowserBaseProps
         </p>
       </section>
       {showWalletSelector && (
-        <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />
+        <WalletChooser rootPath={rootPath!} activeWallet={EWalletType.LEDGER} />
       )}
     </div>
   </>

@@ -15,11 +15,15 @@ interface IGlobalWithWindow extends NodeJS.Global {
 }
 
 // Adds random bytes for lightwallet generation
-(global as any).crypto = { getRandomValues: crypto.randomBytes };
+(self as any).crypto = {
+  getRandomValues: (n: Uint8Array) => {
+    const length = n.length;
+    crypto.randomBytes(length);
+  },
+};
+
 // Adds fetch to our unit/integration tests
 (global as any).fetch = fetch;
-// Overrides cy for the methods that use `cy.log` until we find a better solution
-(global as any) = { log: () => {} };
 
 chai.use(chaiAsPromised);
 chai.use(chaiBignumber(BigNumber));

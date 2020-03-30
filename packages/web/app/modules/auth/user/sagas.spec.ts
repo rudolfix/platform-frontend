@@ -66,7 +66,7 @@ describe("Auth - User - Integration Test", () => {
             walletType: EWalletType.LIGHT,
           }),
         )
-        .run(true);
+        .run(true as any);
     });
 
     it("should update the user with the correct data", async () => {
@@ -121,7 +121,7 @@ describe("Auth - User - Integration Test", () => {
             walletType: EWalletType.LIGHT,
           }),
         )
-        .run(true);
+        .run(true as any);
     });
     it("should update the user with the correct data when a new email is entered on recovery", async () => {
       const newEmail = "mommy@love.com";
@@ -178,7 +178,7 @@ describe("Auth - User - Integration Test", () => {
             walletType: EWalletType.LIGHT,
           }),
         )
-        .run(true);
+        .run(true as any);
     });
 
     it("should update the user with the correct data when a new email is entered similar to verified email", async () => {
@@ -234,7 +234,7 @@ describe("Auth - User - Integration Test", () => {
             walletType: EWalletType.LIGHT,
           }),
         )
-        .run(true);
+        .run(true as any);
     });
   });
 });

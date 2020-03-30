@@ -1,4 +1,3 @@
-import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 import { Q18 } from "@neufund/shared";
 import BigNumber from "bignumber.js";
 
@@ -22,6 +21,7 @@ import {
   checkTransactionWithRPCNode,
   continueWithdrawFlow,
 } from "../utils";
+import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 
 export const SimpleExchangeContract: any = require("../../../../../../../git_modules/platform-contracts-artifacts/localhost/contracts/SimpleExchange.json");
 export const EuroTokenContract: any = require("../../../../../../../git_modules/platform-contracts-artifacts/localhost/contracts/EuroToken.json");

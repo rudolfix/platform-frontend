@@ -120,17 +120,18 @@ export function* ledgerRegister(
       return;
     }
     while (true) {
-      const { email } = yield neuCall(
-        registerForm,
-        actions.walletSelector.browserWalletRegisterFormData,
+      yield neuCall(registerForm, {
+        afterRegistrationGenerator: function*(): Generator<any, boolean, any> {
+          const success = yield* neuCall(ledgerConnectAndSign, baseUiData);
+          if (success) {
+            return true;
+          }
+          return false;
+        },
+        expectedAction: actions.walletSelector.browserWalletRegisterFormData,
         initialFormValues,
         baseUiData,
-      );
-      initialFormValues.email = email;
-      const success = yield neuCall(ledgerConnectAndSign, baseUiData);
-      if (success) {
-        return;
-      }
+      });
     }
   } catch (e) {
     yield put(

@@ -1,5 +1,5 @@
-import * as ethSig from "eth-sig-util";
 import * as LightWalletProvider from "eth-lightwallet";
+import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 
 import { wrappedFetch } from "./wrappedFetch";
@@ -10,6 +10,7 @@ import { wrappedFetch } from "./wrappedFetch";
  */
 const CHALLENGE_PATH = "/api/signature/jwt/challenge";
 const JWT_PATH = "/api/signature/jwt/create";
+
 export const getJWT = async (
   address: string,
   lightWalletInstance: any,

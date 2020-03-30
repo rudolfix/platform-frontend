@@ -4,7 +4,6 @@ import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe"
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { assertLanding } from "./assertions";
-import { getJWT } from "./CHALLENGE_PATH";
 import {
   DEFAULT_PASSWORD,
   JWT_KEY,
@@ -15,6 +14,7 @@ import {
 import { createLightWalletWithKeyPair } from "./createLightWalletWithKeyPair";
 import { createUser, TUserType } from "./createUser";
 import { getAgreementHash } from "./getAgreementHash";
+import { getJWT } from "./getJWT";
 import { accountFixtureByName, removePendingExternalTransaction } from "./index";
 import { tid } from "./selectors";
 import { wrappedFetch } from "./wrappedFetch";

@@ -7,10 +7,10 @@ import {
   createAndLoginNewUser,
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
+  getWalletMetaData,
   goToDashboard,
   goToProfile,
   lightWalletTypeRegistrationInfo,
-  loginWithLightWallet,
   logoutViaAccountMenu,
   registerWithLightWallet,
   tid,
@@ -59,64 +59,17 @@ describe("Investor", () => {
     cy.get(tid("generic-modal-dismiss-button")).click();
   });
 
-  it("should remember light wallet details after logout #login #p2", () => {
+  it("should forget light wallet details after logout #login #p2", () => {
     registerWithLightWallet(email, password);
 
     logoutViaAccountMenu();
 
-    loginWithLightWallet(email, password);
+    cy.visit(appRoutes.login);
 
-    assertDashboard();
+    cy.get(tid("neuwallet-missing-email"));
   });
 
-  it("should recognize ETO user and save metadata correctly #login #p2", () => {
-    // todo: we should let to register as issuer here so mock is not needed
-    registerWithLightWallet(email, password);
-
-    logoutViaAccountMenu();
-
-    loginWithLightWallet(email, password);
-
-    assertDashboard().then(() => {
-      const savedMetadata = (window.localStorage as any).NF_WALLET_METADATA;
-      cy.clearLocalStorage().then(() => {
-        // mock issuer metadata
-        const mockedMetadata = JSON.parse(savedMetadata);
-        mockedMetadata.userType = "issuer";
-        (window.localStorage as any).NF_WALLET_METADATA = JSON.stringify(mockedMetadata);
-
-        cy.visit("eto/login/light");
-        // investor metadata woud be cleared here
-        cy.contains(tid("light-wallet-login-with-email-email-field"), email);
-        cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
-        cy.get(tid("wallet-selector-nuewallet.login-button")).awaitedClick();
-
-        assertDashboard().then(() => {
-          //after login investor metadata are again saved into local storage
-          expect((window.localStorage as any).NF_WALLET_METADATA).to.be.deep.eq(savedMetadata);
-        });
-      });
-    });
-  });
-
-  it("should wipe out saved investor wallet when issuer login #login #p3", () => {
-    // todo: we should let to register as issuer here so mock is not needed
-    registerWithLightWallet(email, password);
-
-    logoutViaAccountMenu();
-
-    loginWithLightWallet(email, password);
-
-    assertDashboard().then(() => {
-      cy.clearLocalStorage().then(() => {
-        cy.visit("eto/login/light");
-        // investor metadata woud be cleared here
-        expect((window.localStorage as any).NF_WALLET_METADATA).to.not.exist;
-      });
-    });
-  });
-
-  it("should return an error when logging with same email #login #p3", () => {
+  it("should return an error when registering with same email #login #p2", () => {
     // register once and then verify email account
     cy.visit("/register");
     lightWalletTypeRegistrationInfo(email, password);
@@ -142,19 +95,18 @@ describe("Investor", () => {
     }).then(() => {
       goToDashboard();
 
+      const walletMetadata = getWalletMetaData();
       logoutViaAccountMenu();
 
       goToDashboard(false);
 
-      cy.get(tid("light-wallet-login-with-email-email-field")).then(registerEmailNode => {
-        const registerEmail = registerEmailNode.text();
-        cy.log("Email used for registering:", registerEmail);
-        // Use activation link
-        cy.visit(TEST_LINK);
-        cy.get(tid("light-wallet-login-with-email-email-field")).then(activationEmailNode => {
-          const activationEmail = activationEmailNode.text();
-          expect(activationEmail).to.not.equal(registerEmail);
-        });
+      const registerEmail = walletMetadata.email;
+      cy.log("Email used for registering:", registerEmail);
+      // Use activation link
+      cy.visit(TEST_LINK);
+      cy.get(tid("light-wallet-login-with-email-email-field")).then(activationEmailNode => {
+        const activationEmail = activationEmailNode.text();
+        expect(activationEmail).to.not.equal(registerEmail);
       });
     });
   });

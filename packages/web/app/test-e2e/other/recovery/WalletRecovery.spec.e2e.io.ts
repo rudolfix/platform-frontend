@@ -1,4 +1,3 @@
-import { DEFAULT_HD_PATH } from "./../../utils/constants";
 import { appRoutes } from "../../../components/appRoutes";
 import { generateRandomSeedAndAddress } from "../../obsolete/generateRandomSeedAndAddress";
 import { cyPromise } from "../../utils/cyPromise";
@@ -7,6 +6,7 @@ import {
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
   generateRandomEmailAddress,
+  getLatestVerifyUserEmailLink,
   getWalletMetaData,
   goToUserAccountSettings,
   lightWalletTypePasswordRegistration,
@@ -14,6 +14,7 @@ import {
   tid,
   typeLightwalletRecoveryPhrase,
 } from "../../utils/index";
+import { DEFAULT_HD_PATH } from "./../../utils/constants";
 
 describe("Wallet recovery", function(): void {
   it("should show error modal for invalid recovery phrases #backup #p1", () => {
@@ -90,7 +91,7 @@ describe("Wallet recovery", function(): void {
         typeLightwalletRecoveryPhrase(seed);
         lightWalletTypePasswordRegistration(password);
         assertDashboard();
-        assertWaitForLatestEmailSentWithSalt(email);
+        getLatestVerifyUserEmailLink(email);
       });
     });
   });

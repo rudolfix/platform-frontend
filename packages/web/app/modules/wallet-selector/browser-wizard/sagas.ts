@@ -124,8 +124,9 @@ export function* browserWalletRegister(
   };
   yield neuCall(resetWalletSelectorState);
   yield neuCall(registerForm, {
-    afterRegistrationGenerator: function*(): void {
+    afterRegistrationGenerator: function*(): Generator<any, boolean, any> {
       yield neuCall(browserWalletConnectAndSign);
+      return true;
     },
     expectedAction: actions.walletSelector.browserWalletRegisterFormData,
     initialFormValues,

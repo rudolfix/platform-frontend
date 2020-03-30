@@ -72,7 +72,7 @@ describe("Wallet selector - Light Wallet Register", () => {
       )
         .provide([
           [matchers.call.fn(isEmailAvailablePromise), true],
-          [matchers.call.fn(setupLightWallet), sagaProvider.throwError()],
+          [matchers.call.fn(setupLightWallet), sagaProvider.throwError(new Error("error"))],
           [matchers.call.fn(signInUser), undefined],
           [matchers.call.fn(handleLightWalletError), undefined],
         ])

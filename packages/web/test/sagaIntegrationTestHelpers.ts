@@ -6,6 +6,7 @@ import { toChecksumAddress } from "web3-utils";
 
 import { symbols } from "../app/di/symbols";
 import { createLightWalletWithKeyPair } from "../app/test-e2e/utils/createLightWalletWithKeyPair";
+import { getJWT } from "../app/test-e2e/utils/getJWT";
 import { IBackendRoot } from "./../app/config/getConfig";
 import { AuthorizedJsonHttpClient } from "./../app/lib/api/client/AuthJsonHttpClient";
 import { IHttpClient } from "./../app/lib/api/client/IHttpClient";
@@ -14,7 +15,6 @@ import { UsersApi } from "./../app/lib/api/users/UsersApi";
 import { STORAGE_JWT_KEY } from "./../app/lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "./../app/lib/persistence/ObjectStorage";
 import { Storage } from "./../app/lib/persistence/Storage";
-import { getJWT } from "./../app/test-e2e/utils/CHALLENGE_PATH";
 
 export const BACKEND_BASE_URL = "https://platform.neufund.io";
 

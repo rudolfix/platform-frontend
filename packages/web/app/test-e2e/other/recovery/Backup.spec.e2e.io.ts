@@ -1,4 +1,3 @@
-import { DEFAULT_PASSWORD } from "./../../utils/constants";
 import { LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME } from "../../../config/constants";
 import { backupLightWalletSeed } from "../../utils/backupLightWalletSeed";
 import {
@@ -11,6 +10,7 @@ import {
   registerWithLightWallet,
   tid,
 } from "../../utils/index";
+import { DEFAULT_PASSWORD } from "./../../utils/constants";
 
 describe("Backup Seed and Private Key save and view", function(): void {
   it("should allow to save seed phrase #backup #p3", () => {

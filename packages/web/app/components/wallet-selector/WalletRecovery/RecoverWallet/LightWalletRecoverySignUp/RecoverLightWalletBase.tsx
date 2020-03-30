@@ -23,7 +23,9 @@ export const RecoverLightWalletBase: React.FunctionComponent<TStateProps> = ({
         </p>
         {children}
       </section>
-      {showWalletSelector && <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LIGHT} />}
+      {showWalletSelector && (
+        <WalletChooser rootPath={rootPath!} activeWallet={EWalletType.LIGHT} />
+      )}
     </div>
   </>
 );

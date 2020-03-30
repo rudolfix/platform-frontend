@@ -12,15 +12,25 @@ const fonts = Platform.select({
 });
 
 const typographyStyles = StyleSheet.create({
-  button: {
+  label: {
     ...fonts.robotoMedium,
     fontSize: 16,
     lineHeight: 24,
+  },
+  textInput: {
+    ...fonts.robotoRegular,
+    fontSize: 16,
+    lineHeight: 20,
   },
   text: {
     ...fonts.robotoRegular,
     fontSize: 14,
     lineHeight: 24,
+  },
+  helperText: {
+    ...fonts.robotoRegular,
+    fontSize: 12,
+    lineHeight: 16,
   },
 });
 

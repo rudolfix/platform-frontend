@@ -135,6 +135,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        missingDimensionStrategy 'react-native-camera', 'general'
+
         // the next two lines are used to setup `detox`
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

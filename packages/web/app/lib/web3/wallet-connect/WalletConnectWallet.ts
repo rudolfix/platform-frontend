@@ -37,7 +37,7 @@ export class WalletConnectWallet implements IPersonalWallet {
   ) {
   }
 
-  public readonly walletType = EWalletType.WALLET_CONNECT;
+  public readonly walletType = EWalletType.WALLETCONNECT;
   public readonly walletSubType = EWalletSubType.UNKNOWN;
   public readonly sendTransactionMethod = 'eth_sendTransaction';
   public readonly signerType = SignerType.ETH_SIGN;

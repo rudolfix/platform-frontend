@@ -5,7 +5,7 @@ import { SignerType } from "../../lib/web3/PersonalWeb3";
 // normalized information about all possible types of personal wallets
 export enum EWalletType {
   LEDGER = "LEDGER",
-  WALLET_CONNECT = "WALLETCONNECT",
+  WALLETCONNECT = "WALLETCONNECT",
   BROWSER = "BROWSER",
   LIGHT = "LIGHT",
   UNKNOWN = "UNKNOWN",
@@ -56,7 +56,7 @@ export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
 }
 
 export interface IWalletConnectMetadata extends ICommonWalletMetadata {
-  walletType: EWalletType.WALLET_CONNECT;
+  walletType: EWalletType.WALLETCONNECT;
   walletSubType: EWalletSubType.UNKNOWN;
   sendTransactionMethod: string, //todo move to enum
   signerType: SignerType;

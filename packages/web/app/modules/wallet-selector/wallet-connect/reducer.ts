@@ -1,7 +1,7 @@
-import { AppReducer } from "../../../store";
-import { actions } from "../../actions";
 import { DeepReadonly } from "../../../../../shared/dist/utils/types";
 import { TMessage } from "../../../components/translatedMessages/utils";
+import { AppReducer } from "../../../store";
+import { actions } from "../../actions";
 
 export interface IWalletConnectState {
   walletConnectError:DeepReadonly<TMessage> | undefined;

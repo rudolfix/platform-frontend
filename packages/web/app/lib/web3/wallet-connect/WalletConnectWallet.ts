@@ -1,16 +1,14 @@
+import { clearSafeTimeout, safeSetTimeout } from "@neufund/shared";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
-import { clearSafeTimeout, safeSetTimeout, secondsToMs } from "@neufund/shared";
 
 import { EthereumAddress } from "../../../../../shared/dist/utils/opaque-types/types";
+import { WC_DEFAULT_SESSION_REQUEST_TIMEOUT, WC_DEFAULT_SIGN_TIMEOUT } from "../../../config/constants";
 import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
+import { WalletError } from "../errors";
 import { IPersonalWallet, SignerType } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerTimeoutError } from "../Web3Manager/Web3Manager";
-import { WalletError } from "../errors";
-
-export const WC_DEFAULT_SESSION_REQUEST_TIMEOUT = secondsToMs(10);//todo move those two to config //minutesToMs(10);
-export const WC_DEFAULT_SIGN_TIMEOUT = secondsToMs(10); //fixme //minutesToMs(2);
 
 export class WalletConnectGenericError extends WalletError {
   constructor(message: string) {
@@ -45,7 +43,6 @@ export class WalletConnectWallet implements IPersonalWallet {
   public readonly sessionRequestTimeout = WC_DEFAULT_SESSION_REQUEST_TIMEOUT;
 
   public getSignerType(): SignerType {
-    console.log("getSignerType");
     return this.signerType;
   }
 
@@ -76,7 +73,6 @@ export class WalletConnectWallet implements IPersonalWallet {
   }
 
   public async sendTransaction(txData: TxData): Promise<string> {
-    console.log("sendTransaction", txData);
     try {
       return await this.web3Adapter.sendTransaction(txData);
     } catch (e) {

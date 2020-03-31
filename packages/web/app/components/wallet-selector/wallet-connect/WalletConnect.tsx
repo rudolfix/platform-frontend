@@ -1,7 +1,7 @@
+import { withContainer } from "@neufund/shared";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
 import { branch, compose, renderComponent } from "recompose";
-import { withContainer } from "@neufund/shared";
 
 import { actions } from "../../../modules/actions";
 import { ELogoutReason } from "../../../modules/auth/types";
@@ -10,10 +10,10 @@ import { selectMessageSigningError, selectWalletConnectError } from "../../../mo
 import { appConnect } from "../../../store";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
+import { shouldNeverHappen } from "../../shared/NeverComponent";
 import { TMessage } from "../../translatedMessages/utils";
 import { WalletConnectContainer, WalletConnectError } from "./WalletConnectLayout";
-import { shouldNeverHappen } from "../../shared/NeverComponent";
-import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 

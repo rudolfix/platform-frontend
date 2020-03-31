@@ -33,9 +33,9 @@ import { browserWalletWizardReducer } from "./wallet-selector/browser-wizard/red
 import { ledgerWizardReducer } from "./wallet-selector/ledger-wizard/reducer";
 import { lightWalletWizardReducer } from "./wallet-selector/light-wizard/reducer";
 import { walletSelectorReducer } from "./wallet-selector/reducer";
+import { walletConnectReducer } from "./wallet-selector/wallet-connect/reducer";
 import { walletReducer } from "./wallet/reducer";
 import { web3Reducer } from "./web3/reducer";
-import { walletConnectReducer } from "./wallet-selector/wallet-connect/reducer";
 
 // add new app reducers here. They must be AppReducer<T> type
 export const appReducers = {

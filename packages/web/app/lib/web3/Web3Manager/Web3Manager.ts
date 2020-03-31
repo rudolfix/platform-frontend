@@ -57,7 +57,6 @@ export class Web3Manager extends EventEmitter {
   }
 
   public async initialize(): Promise<void> {
-    console.log("this.ethereumNetworkConfig.rpcUrl", this.ethereumNetworkConfig.rpcUrl)
     const web3 = this.web3Factory(
       new Web3.providers.HttpProvider(this.ethereumNetworkConfig.rpcUrl),
     );

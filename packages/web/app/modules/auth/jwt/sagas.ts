@@ -85,7 +85,7 @@ export function* createJwt(
   const { signedChallenge, challenge, signerType } = yield neuCall(signChallenge, permissions);
 
   logger.info("Sending signed challenge back to api");
-  console.log("-->challenge signed")
+  console.log("challenge signed")
   const { jwt }: ICreateJwtEndpointResponse = yield signatureAuthApi.createJwt(
     challenge,
     signedChallenge,

@@ -1,19 +1,20 @@
 import { END, eventChannel, EventChannel, fork, neuTakeLatest, put, take } from "@neufund/sagas";
+
+import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
+import { createMessage } from "../../../components/translatedMessages/utils";
+import { TGlobalDependencies } from "../../../di/setupBindings";
 import {
   EWalletConnectEventTypes,
   TWalletConnectEvents
 } from "../../../lib/web3/wallet-connect/WalletConnectConnector";
-import { actions } from "../../actions";
-import { createMessage } from "../../../components/translatedMessages/utils";
-import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
-import { TGlobalDependencies } from "../../../di/setupBindings";
-import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { WalletConnectSessionRejectedError } from "../../../lib/web3/wallet-connect/WalletConnectWallet";
+import { actions } from "../../actions";
 import { logoutUser } from "../../auth/user/external/sagas";
+import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { mapLightWalletErrorToErrorMessage } from "../light-wizard/errors";
 import { walletSelectorConnect } from "../sagas";
 
-function* startWcActions(channel: EventChannel<TWalletConnectEvents>) {
+function* startWcActions(channel: EventChannel<TWalletConnectEvents>):Generator<any,void,any> {
   while (true) {
     const event: TWalletConnectEvents | END = yield take(channel);
     switch (event.type) {

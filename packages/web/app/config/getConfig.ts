@@ -23,7 +23,6 @@ export interface IConfig {
 
 export function getConfig(env: NodeJS.ProcessEnv): IConfig {
   verifyFeatureFlags(env);
-  console.log("getRequiredEnv(env, \"NF_RPC_PROVIDER\")", getRequiredEnv(env, "NF_RPC_PROVIDER"))
   return {
     ethereumNetwork: {
       rpcUrl: getRequiredEnv(env, "NF_RPC_PROVIDER"),

@@ -236,5 +236,72 @@ describe("Auth - User - Integration Test", () => {
         )
         .run(true as any);
     });
+
+    it("should update the user with the correct data when a new email is entered similar to unverified email", async () => {
+      const { email, jwt, salt, address, privateKey } = await setTestJWT(BACKEND_BASE_URL, []);
+      await createUser(EUserType.INVESTOR, privateKey, undefined, 4, BACKEND_BASE_URL);
+
+      const newEmail = "mommy@love.test";
+
+      const walletMetaData = {
+        walletType: EWalletType.LIGHT,
+        walletSubType: EWalletSubType.UNKNOWN,
+        salt,
+        email,
+      };
+      jwtStorage.set(jwt);
+
+      const currentUser = await apiUserService.me();
+
+      await apiUserService.updateUser({
+        ...currentUser,
+        newEmail,
+      });
+
+      await expectSaga(
+        loadOrCreateUser,
+        {
+          web3Manager: {
+            personalWallet: {
+              getMetadata: () => walletMetaData,
+            } as any,
+          },
+          apiUserService,
+        } as any,
+        EUserType.INVESTOR,
+        newEmail,
+      )
+        .provide([
+          [getContext("deps"), { apiUserService, jwtStorage }],
+          [matchers.call.fn(loadKycRequestData), undefined],
+        ])
+        .call(apiUserService.updateUser, {
+          backupCodesVerified: false,
+          language: "en",
+          userId: address,
+          latestAcceptedTosIpfs: "",
+          salt: salt,
+          type: EUserType.INVESTOR,
+          walletType: walletMetaData.walletType,
+          walletSubtype: walletMetaData.walletSubType,
+          verifiedEmail: email,
+          unverifiedEmail: newEmail,
+          newEmail: undefined,
+        })
+        .put(
+          actions.auth.setUser({
+            backupCodesVerified: false,
+            language: "en",
+            latestAcceptedTosIpfs: "",
+            type: EUserType.INVESTOR,
+            verifiedEmail: email,
+            unverifiedEmail: newEmail,
+            userId: address,
+            walletSubtype: EWalletSubType.UNKNOWN,
+            walletType: EWalletType.LIGHT,
+          }),
+        )
+        .run(true as any);
+    });
   });
 });

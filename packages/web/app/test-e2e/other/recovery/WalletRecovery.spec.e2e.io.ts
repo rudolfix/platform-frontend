@@ -13,6 +13,7 @@ import {
   lightWalletTypeRegistrationInfo,
   tid,
   typeLightwalletRecoveryPhrase,
+  logoutViaAccountMenu,
 } from "../../utils/index";
 import { DEFAULT_HD_PATH } from "./../../utils/constants";
 
@@ -33,6 +34,57 @@ describe("Wallet recovery", function(): void {
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";
         const email = generateRandomEmailAddress();
+
+        cy.visit(`${appRoutes.restore}`);
+
+        typeLightwalletRecoveryPhrase(words);
+
+        lightWalletTypeRegistrationInfo(email, password);
+
+        assertDashboard();
+        assertWaitForLatestEmailSentWithSalt(email);
+
+        cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
+
+        cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
+        cy.contains(tid("my-wallet-widget-eur-token.large-value"), "0 nEUR");
+        cy.contains(tid("my-wallet-widget-eur-token.value"), "0 EUR");
+
+        goToUserAccountSettings();
+        cy.get(tid("account-address.your.ether-address.from-div")).then(value => {
+          expect(value[0].innerText.toLowerCase()).to.equal(expectedGeneratedAddress);
+        });
+      },
+    );
+  });
+
+  it.only("should recover the same account twice #backup #p2", () => {
+    cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
+      ({ seed: words, address: expectedGeneratedAddress }) => {
+        const password = "strongpassword";
+        const email = generateRandomEmailAddress();
+
+        cy.visit(`${appRoutes.restore}`);
+
+        typeLightwalletRecoveryPhrase(words);
+
+        lightWalletTypeRegistrationInfo(email, password);
+
+        assertDashboard();
+        assertWaitForLatestEmailSentWithSalt(email);
+
+        cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
+
+        cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
+        cy.contains(tid("my-wallet-widget-eur-token.large-value"), "0 nEUR");
+        cy.contains(tid("my-wallet-widget-eur-token.value"), "0 EUR");
+
+        goToUserAccountSettings();
+        cy.get(tid("account-address.your.ether-address.from-div")).then(value => {
+          expect(value[0].innerText.toLowerCase()).to.equal(expectedGeneratedAddress);
+        });
+
+        logoutViaAccountMenu();
 
         cy.visit(`${appRoutes.restore}`);
 

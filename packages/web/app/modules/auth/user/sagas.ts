@@ -166,7 +166,11 @@ export function* loadOrCreateUser(
       salt: walletMetadata.salt,
       walletType: walletMetadata.walletType,
       walletSubtype: walletMetadata.walletSubType,
-      newEmail: getUsersNewEmailValue(userFromApi.verifiedEmail, email),
+      newEmail: getUsersNewEmailValue(
+        userFromApi.verifiedEmail,
+        userFromApi.unverifiedEmail,
+        email,
+      ),
     });
   } else {
     user = yield* call(apiUserService.createAccount, {

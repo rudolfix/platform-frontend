@@ -9,6 +9,7 @@ export interface IConfig {
   ethereumNetwork: {
     rpcUrl: string;
     backendRpcUrl: string;
+    bridgeUrl: string;
   };
   contractsAddresses: {
     universeContractAddress: string;
@@ -22,7 +23,6 @@ export interface IConfig {
 
 export function getConfig(env: NodeJS.ProcessEnv): IConfig {
   verifyFeatureFlags(env);
-
   return {
     ethereumNetwork: {
       rpcUrl: getRequiredEnv(env, "NF_RPC_PROVIDER"),
@@ -30,6 +30,7 @@ export function getConfig(env: NodeJS.ProcessEnv): IConfig {
       backendRpcUrl: isGaslessTxEnabled
         ? getRequiredEnv(env, "NF_TRANSACTIONAL_RPC_PROVIDER")
         : getRequiredEnv(env, "NF_RPC_PROVIDER"),
+      bridgeUrl: getRequiredEnv(env, "NF_BRIDGE_URL"),
     },
     contractsAddresses: {
       universeContractAddress: getRequiredEnv(env, "NF_UNIVERSE_CONTRACT_ADDRESS"),

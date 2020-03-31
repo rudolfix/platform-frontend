@@ -27,3 +27,6 @@ export const BROWSER_WALLET_RECONNECT_INTERVAL = 1000;
 export const NOMINEE_BANK_ACCOUNT_WATCHER_DELAY = 1000 * 60 * 5;
 export const PAYOUT_POLLING_DELAY = 1000;
 export const USERS_WITH_ACCOUNT_SETUP = [EUserType.NOMINEE, EUserType.INVESTOR];
+
+export const WC_DEFAULT_SESSION_REQUEST_TIMEOUT = secondsToMs(10);//fixme minutesToMs(10);
+export const WC_DEFAULT_SIGN_TIMEOUT = secondsToMs(10); //fixme minutesToMs(2);

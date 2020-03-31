@@ -16,7 +16,7 @@ export type TStoredWalletConnectData = {
   connected:boolean,
   accounts:string[],
   chainId:number,
-  bridge:string,
+  bridge:string, //bridge url
   key:string,
   clientId:string,
   clientMeta:TPeerMeta,

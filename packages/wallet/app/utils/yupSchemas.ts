@@ -1,7 +1,8 @@
 // TODO: When web migrates to the newest formik move `yupSchemas` to the shared
 
-import { Primitive } from "@neufund/shared";
+import { Primitive, Tuple } from "@neufund/shared";
 import * as yup from "yup";
+import isArray from "lodash/fp/isArray";
 
 const isAbsent = <T>(value: T) => value === undefined || value === null;
 
@@ -52,6 +53,50 @@ const oneOfSchema = <T extends yup.Schema<any>>(schemas: T[]) =>
     },
   });
 
+type ObjectInferTypeWithPrimitive<T extends object> = {
+  [P in keyof T]: InferTypeWithPrimitive<T[P]>;
+};
+
+/**
+ * A tuple schema
+ *
+ * @param schemas - A schemas where all should match at the given index for a schema to be valid
+ *
+ * @example
+ * const schema1 = yup.number();
+ * const schema2 = yup.object({ foo: yup.string().required() });
+ *
+ * const schema = tupleSchema([schema1, schema2]);
+ *
+ * schema.isValidSync([100, { foo: "bar" }]); // true
+ * schema.isValidSync(["baz", { foo: "bar" }); // false
+ * schema.isValidSync([100, 100, 100]); // false
+ */
+const tupleSchema = <T extends Tuple<yup.Schema<any>>>(schemas: T) =>
+  yup.mixed<ObjectInferTypeWithPrimitive<T>>().test({
+    name: "tupleSchema",
+    exclusive: true,
+    message: "${path} must be a valid tuple",
+    test: values => {
+      // always allow undefined and null
+      if (isAbsent(values)) {
+        return true;
+      }
+
+      // non array items invalid
+      if (!isArray(values)) {
+        return false;
+      }
+
+      // array with more elements than schema requires
+      if (values.length > schemas.length) {
+        return false;
+      }
+
+      return schemas.every((schema, i) => schema.isValidSync(values[i]));
+    },
+  });
+
 /**
  * A schema that support just single value by reference equality.
  *
@@ -94,4 +139,4 @@ const typedValue = <T>(isValid: (value: unknown) => value is T) =>
     },
   });
 
-export { singleValue, oneOfSchema, typedValue };
+export { singleValue, oneOfSchema, typedValue, tupleSchema };

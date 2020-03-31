@@ -1,4 +1,4 @@
-import { Effect, fork, put, SagaIterator, select } from "@neufund/sagas";
+import { Effect, fork, put, select } from "@neufund/sagas";
 import { LocationChangeAction, RouterState } from "connected-react-router";
 import { match } from "react-router";
 
@@ -11,7 +11,7 @@ import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { routes } from "./routes";
 
 type TRouteActions = {
-  //"undefined" is for backwards compatibility,
+  // "undefined" is for backwards compatibility,
   // see comments in the ./routeDefinitions.ts
   notAuth: undefined | Effect;
   investor: undefined | Effect;
@@ -112,7 +112,7 @@ export function* routeAction<P>(
   }
 }
 
-export function* routingSagas(): SagaIterator<void> {
+export function* routingSagas(): Generator<unknown, void> {
   yield fork(neuTakeEvery, actions.routing.openInNewWindow, openInNewWindowSaga);
   yield fork(neuTakeEvery, "@@router/LOCATION_CHANGE", startRouteBasedSagas);
 }

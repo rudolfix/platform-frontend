@@ -789,12 +789,13 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.complete-request" />;
     case ENotificationText.COMPLETE_UPDATE_ACCOUNT:
       return <FormattedMessage id="notifications.update-account" />;
-    // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
+
+      // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
-      return messageData!.message as TTranslatedString;
+      return (messageData as {message: TTranslatedString}).message;
 
     case WalletConnectErrorMessage.WC_GENERIC_ERROR:
-      return <FormattedMessage id="wallet-connect.generic-error" values={{error: messageData ? (messageData as Error).toString() : ""}}/>;
+      return <FormattedMessage id="wallet-connect.generic-error" values={{error: messageData ? messageData.toString() : ""}}/>;
     case WalletConnectErrorMessage.WC_SESSION_REJECTED_ERROR:
       return <FormattedMessage id="wallet-connect.session-rejected-error"/>;
     default:

@@ -1,11 +1,13 @@
 import {
   ActionPattern,
   call,
+  CallEffect,
   delay,
   fork,
   getContext,
   race,
   SagaGenerator,
+  SagaReturnType,
   spawn,
   take,
   takeEvery,
@@ -50,18 +52,14 @@ export function* neuSpawn<R, T extends any[]>(
   const deps = yield* neuGetContext();
   return yield (spawn as any)(saga, deps, ...args);
 }
-declare type UnwrapReturnType<R> = R extends SagaGenerator<infer RT>
-  ? RT
-  : R extends Promise<infer PromiseValue>
-  ? PromiseValue
-  : R;
 
-export function* neuCall<Args extends any[], R>(
-  fn: (deps: TGlobalDependencies, ...args: Args) => R,
-  ...args: Args
-): SagaGenerator<UnwrapReturnType<R>> {
+export function* neuCall<
+  Args extends any[],
+  FN extends (deps: TGlobalDependencies, ...args: Args) => any
+>(fn: FN, ...args: Args): SagaGenerator<SagaReturnType<FN>, CallEffect<SagaReturnType<FN>>> {
   const deps = yield* neuGetContext();
-  return yield* call(fn as (...args: any) => R, deps, ...args);
+
+  return yield* call(fn, ...([deps, ...args] as Parameters<typeof fn>));
 }
 
 /**

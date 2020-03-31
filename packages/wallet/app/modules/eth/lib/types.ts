@@ -6,23 +6,36 @@ export enum EBlockTag {
   LATEST = "latest",
 }
 
-/**
- * Only allows string and BigNumber
- * We found that working with numbers is quite error prone due to overflows.
- */
-export type TBigNumberVariants = string | utils.BigNumber;
-
 export type TTransactionRequestRequired = {
   to: EthereumAddress | EthereumName;
   // TODO: Validate whether from is equal to the address associated with EthWallet
   from: EthereumAddress;
   // TODO: hide under `EthManager` so there is not need to pass it from saga
-  gasLimit: TBigNumberVariants;
+  gasLimit: string;
   // TODO: hide under `EthManager` so there is not need to pass it from saga
-  gasPrice: TBigNumberVariants;
+  gasPrice: string;
   data?: string;
-  value?: TBigNumberVariants;
+  value?: string;
 };
+
+export type TUnsignedTransaction = {
+  to?: EthereumAddress;
+  nonce?: number;
+  gasLimit?: string;
+  gasPrice?: string;
+  data?: string;
+  value?: string;
+  chainId?: number;
+};
+
+export interface ITransactionResponse extends utils.Transaction {
+  blockNumber?: number;
+  blockHash?: string;
+  timestamp?: number;
+  confirmations: number;
+  from: string;
+  raw?: string;
+}
 
 export enum EWalletType {
   HD_WALLET = "HD_WALLET",

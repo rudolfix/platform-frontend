@@ -13,7 +13,7 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import { selectIsVerifiedInvestor } from "../../../modules/auth/selectors";
-import { selectEtosError } from "../../../modules/eto/selectors";
+import { selectEtosError, selectTokensLoading } from "../../../modules/eto/selectors";
 import {
   selectMyAssetsEurEquivTotal,
   selectMyAssetsWithTokenData,
@@ -28,13 +28,14 @@ import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget
 import { ESize } from "../../shared/transaction/TransactionData";
 import { WarningAlert } from "../../shared/WarningAlert";
 
-import styles from "./PortfolioStats.module.scss";
+import * as styles from "./PortfolioStats.module.scss";
 
 type TStateProps = {
   myAssets: TETOWithTokenData[] | undefined;
   myAssetsEurEquivTotal: string | undefined;
   hasError: boolean;
   isVerifiedInvestor: boolean;
+  isLoading: boolean;
 };
 
 type TDispatchProps = {
@@ -82,7 +83,7 @@ const PortfolioStatsNoAssetsLayout: React.FunctionComponent<Pick<
   "goToPortfolio"
 >> = ({ goToPortfolio }) => (
   <>
-    <p className={styles.noAssets}>
+    <p className={styles.noAssets} data-test-id="dashboard.portfolio-stats.no-assets">
       <FormattedMessage id="dashboard.portfolio-stats.no-assets" />
     </p>
     <Button
@@ -96,10 +97,10 @@ const PortfolioStatsNoAssetsLayout: React.FunctionComponent<Pick<
   </>
 );
 
-const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<TPortfolioStatsProps, "hasError">> = ({
-  myAssets,
-  goToPortfolio,
-}) => {
+const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<
+  TPortfolioStatsProps,
+  "hasError" | "isLoading"
+>> = ({ myAssets, goToPortfolio }) => {
   const assets = nonNullable(myAssets);
 
   return (
@@ -108,6 +109,7 @@ const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<TPortfolioStatsProp
         <DataRowSeparated
           key={eto.equityTokenName}
           className={styles.row}
+          data-test-id={`portfolio.stats.token-${eto.equityTokenName}`}
           caption={
             <>
               <TokenIcon
@@ -154,6 +156,7 @@ const PortfolioStats = compose<TPortfolioStatsProps, {}>(
       myAssetsEurEquivTotal: selectMyAssetsEurEquivTotal(state),
       hasError: selectEtosError(state),
       isVerifiedInvestor: selectIsVerifiedInvestor(state),
+      isLoading: selectTokensLoading(state),
     }),
     dispatchToProps: dispatch => ({
       goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),
@@ -162,9 +165,9 @@ const PortfolioStats = compose<TPortfolioStatsProps, {}>(
   }),
   withContainer(PortfolioStatsLayoutContainer),
   branch<TStateProps>(state => state.hasError, renderComponent(PortfolioStatsErrorLayout)),
-  branch<TStateProps>(state => !state.myAssets, renderComponent(LoadingIndicator)),
+  branch<TStateProps>(state => state.isLoading, renderComponent(LoadingIndicator)),
   branch<TStateProps>(
-    state => !!state.myAssets && state.myAssets.length === 0,
+    state => !state.myAssets || state.myAssets.length === 0,
     renderComponent(PortfolioStatsNoAssetsLayout),
   ),
 )(PortfolioStatsLayout);

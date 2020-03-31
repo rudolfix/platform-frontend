@@ -19,7 +19,6 @@ import { actions, TActionFromCreator } from "../actions";
 import { logoutUser } from "../auth/user/external/sagas";
 import { handleSignInUser } from "../auth/user/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
-import { mapLightWalletErrorToErrorMessage } from "./light-wizard/errors";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());

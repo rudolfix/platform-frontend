@@ -360,7 +360,7 @@ export function* registerRoute(payload: RouterState): Generator<any, any, any> {
 
 export function* loginWalletConnectRoute(payload: RouterState): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
-    path: appRoutes.loginWalletConnect,
+    path: appRoutes.walletconnect,
     exact: true
   });
   console.log("routeMatch",routeMatch)

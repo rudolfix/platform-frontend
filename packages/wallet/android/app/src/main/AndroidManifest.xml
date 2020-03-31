@@ -4,7 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.VIBRATE"/>
-  
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
   <!--
     `usesCleartextTraffic` is needed for now to unblock release tests in detox
     TODO: Find a way to apply `usesCleartextTraffic` only for detox release build

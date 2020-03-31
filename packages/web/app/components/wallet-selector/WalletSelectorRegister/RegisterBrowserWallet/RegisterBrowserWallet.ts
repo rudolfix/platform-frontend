@@ -80,16 +80,20 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     renderComponent(WalletLoading),
   ),
   branch<TBrowserWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(WalletLoading),
+  ),
+  branch<TBrowserWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+    renderComponent(WalletLoading),
+  ),
+  branch<TBrowserWalletRegisterData>(
     ({ uiState }) =>
       uiState === ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
     renderComponent(BrowserWalletAskForEmailAndTos),
   ),
   branch<TBrowserWalletRegisterData>(
-    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
-    renderComponent(WalletLoading),
-  ),
-  branch<TBrowserWalletRegisterData>(
     ({ uiState }) => uiState === EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
     renderComponent(RegisterBrowserWalletError),
   ),
-)(shouldNeverHappen("WalletSelectorLogin reached default branch"));
+)(shouldNeverHappen("RegisterBrowserWallet reached default branch"));

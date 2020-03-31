@@ -180,7 +180,7 @@
   "error-boundary.main-error-message": "An error occured",
   "error-boundary.widget-error-message": "There was an error while loading this widget",
   "error-message.browser-wallet.account-approval-pending": "Please check MetaMask to confirm this action.",
-  "error-message.browser-wallet.account-approval-rejected": "You need to approve access to you wallet in order to use our platform",
+  "error-message.browser-wallet.account-approval-rejected": "You need to approve access to your wallet in order to use our platform",
   "error-message.browser-wallet.generic-error": "Web3 wallet not available",
   "error-message.browser-wallet.wallet-connected-to-wrong-network": "Please connect your wallet to the \"Main Ethereum Network\" by selecting from the \"Networks\" drop-down menu in MetaMask.",
   "error-message.browser-wallet.wallet-locked": "Your wallet seems to be locked — we can't access any accounts",

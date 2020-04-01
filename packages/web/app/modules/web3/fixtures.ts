@@ -1,4 +1,4 @@
-import { dummyEthereumAddress } from "../../../test/fixtures";
+import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
 import {
   EWalletSubType,
   EWalletType,
@@ -10,14 +10,14 @@ import {
 export const getDummyLightWalletMetadata = (): ILightWalletMetadata => ({
   walletType: EWalletType.LIGHT,
   walletSubType: EWalletSubType.UNKNOWN,
-  address: dummyEthereumAddress,
+  address: dummyEthereumAddressWithChecksum,
   email: "test@example.com",
   salt: "salt",
 });
 
 export const getDummyBrowserWalletMetadata = (): IBrowserWalletMetadata => ({
   walletType: EWalletType.BROWSER,
-  address: dummyEthereumAddress,
+  address: dummyEthereumAddressWithChecksum,
   walletSubType: EWalletSubType.METAMASK,
 });
 
@@ -25,5 +25,5 @@ export const getDummyLedgerWalletMetadata = (): ILedgerWalletMetadata => ({
   walletType: EWalletType.LEDGER,
   walletSubType: EWalletSubType.UNKNOWN,
   derivationPath: "derivationPath",
-  address: dummyEthereumAddress,
+  address: dummyEthereumAddressWithChecksum,
 });

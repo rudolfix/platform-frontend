@@ -1,8 +1,7 @@
+import { authModuleAPI, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
 import { getBeneficialOwnerId } from "../../../modules/kyc/utils";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
   IKycBeneficialOwner,
   IKycBusinessData,
@@ -60,7 +59,7 @@ export class BankAccountNotFound extends KycApiError {}
 
 @injectable()
 export class KycApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient) {}
 
   /**
    * Returns a status of a kyc for a currently logged user
@@ -72,7 +71,7 @@ export class KycApi {
       .get<TKycStatus>({
         baseUrl: BASE_PATH,
         url: STATUS_PATH,
-        responseSchema: KycStatusSchema,
+        responseSchema: KycStatusSchema.toYup(),
       })
       .then(response => response.body);
   }
@@ -126,7 +125,7 @@ export class KycApi {
       .put<TKycStatus>({
         baseUrl: BASE_PATH,
         url: INDIVIDUAL_REQUEST_PATH,
-        responseSchema: KycStatusSchema,
+        responseSchema: KycStatusSchema.toYup(),
       })
       .then(response => response.body);
   }
@@ -136,7 +135,7 @@ export class KycApi {
       .put<TKycIdNowIdentification>({
         baseUrl: BASE_PATH,
         url: ID_NOW_REQUEST_PATH,
-        responseSchema: KycIdNowIdentificationSchema,
+        responseSchema: KycIdNowIdentificationSchema.toYup(),
       })
       .then(response => response.body);
   }
@@ -319,7 +318,7 @@ export class KycApi {
       .put<TKycStatus>({
         baseUrl: BASE_PATH,
         url: BUSINESS_REQUEST_PATH,
-        responseSchema: KycStatusSchema,
+        responseSchema: KycStatusSchema.toYup(),
       })
       .then(response => response.body);
   }
@@ -333,7 +332,7 @@ export class KycApi {
       baseUrl: BASE_PATH,
       url: BANK_ACCOUNT_PATH,
       // TODO test why `optional` is not working
-      // responseSchema: KycBankAccountSchema,
+      // responseSchema: KycBankAccountSchema.toYup(),
     });
 
     return response.body;
@@ -375,7 +374,7 @@ export class KycApi {
       body: {
         referrer,
       },
-      responseSchema: KycOnfidoUploadRequestSchema,
+      responseSchema: KycOnfidoUploadRequestSchema.toYup(),
     });
 
     return response.body;
@@ -385,7 +384,7 @@ export class KycApi {
     const response = await this.httpClient.put<TKycOnfidoCheckRequest>({
       baseUrl: BASE_PATH,
       url: ONFIDO_CHECK_REQUEST_PATH,
-      responseSchema: KycOnfidoCheckRequestSchema,
+      responseSchema: KycOnfidoCheckRequestSchema.toYup(),
     });
 
     return response.body;

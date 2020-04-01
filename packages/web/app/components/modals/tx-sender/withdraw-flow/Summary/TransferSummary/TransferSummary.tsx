@@ -6,7 +6,7 @@ import {
   selectTxGasCostEthUlps,
 } from "../../../../../../modules/tx/sender/selectors";
 import { ETxSenderType } from "../../../../../../modules/tx/types";
-import { selectEthereumAddressWithChecksum } from "../../../../../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../../../../../modules/web3/selectors";
 import { appConnect } from "../../../../../../store";
 import {
   ITransferSummaryDispatchProps,
@@ -24,7 +24,7 @@ export const TransferSummary = compose<TTransferSummaryProps, {}>(
       additionalData: selectTxAdditionalData<
         ETxSenderType.TRANSFER_TOKENS | ETxSenderType.WITHDRAW
       >(state),
-      walletAddress: selectEthereumAddressWithChecksum(state),
+      walletAddress: selectEthereumAddress(state),
       gasCost: selectTxGasCostEthUlps(state),
       gasCostEur: selectTxGasCostEthUlps(state),
     }),

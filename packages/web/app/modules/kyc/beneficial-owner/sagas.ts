@@ -1,9 +1,9 @@
 import { actionChannel, put, select, take } from "@neufund/sagas";
+import { IHttpResponse } from "@neufund/shared-modules";
 
 import { KycFlowMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IHttpResponse } from "../../../lib/api/client/IHttpClient";
 import {
   IKycBeneficialOwner,
   IKYCBeneficialOwnerBusiness,

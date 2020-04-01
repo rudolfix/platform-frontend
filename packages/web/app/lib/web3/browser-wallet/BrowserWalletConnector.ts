@@ -65,7 +65,8 @@ export class BrowserWalletConnector {
       }
     }
     const walletType = await this.getBrowserWalletType(web3Adapter.web3);
-    const ethereumAddress = await web3Adapter.getAccountAddress();
+    const ethereumAddress = await web3Adapter.getAccountAddressWithChecksum();
+
     return new BrowserWallet(web3Adapter, walletType, ethereumAddress);
   };
   private getBrowserWalletType = async (web3: Web3): Promise<EWalletSubType> => {

@@ -1,5 +1,6 @@
 import { all, call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions, nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared";
+import { EJwtPermissions } from "@neufund/shared-modules";
 
 import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
@@ -23,7 +24,7 @@ import {
 import { TEtoWithCompanyAndContractReadonly } from "../eto/types";
 import { downloadLink } from "../immutable-file/utils";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEthereumAddress } from "../web3/selectors";
 import { selectEtoState } from "./selectors";
 import { getDocumentByType } from "./utils";
 
@@ -79,7 +80,7 @@ export function* generateDocumentFromTemplateByEtoId(
   action: TActionFromCreator<typeof actions.etoDocuments.generateTemplateByEtoId>,
 ): Generator<any, any, any> {
   try {
-    const userEthAddress = yield select(selectEthereumAddressWithChecksum);
+    const userEthAddress = yield select(selectEthereumAddress);
     const document = action.payload.document;
     const etoId = action.payload.etoId;
     const extension = document.asPdf ? ".pdf" : ".doc";

@@ -1,9 +1,10 @@
-import { EthereumAddress, EthereumNetworkId } from "@neufund/shared";
+import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared";
+import { ESignerType } from "@neufund/shared-modules";
 import * as hex2ascii from "hex2ascii";
 import * as Web3 from "web3";
 
 import { EWalletSubType, EWalletType, IBrowserWalletMetadata } from "../../../modules/web3/types";
-import { IPersonalWallet, SignerType } from "../PersonalWeb3";
+import { IPersonalWallet } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError } from "../Web3Manager/Web3Manager";
 import { parseBrowserWalletError } from "./BrowserWalletConnector";
@@ -30,17 +31,17 @@ export class BrowserWallet implements IPersonalWallet {
   constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly walletSubType: EWalletSubType,
-    public readonly ethereumAddress: EthereumAddress,
+    public readonly ethereumAddress: EthereumAddressWithChecksum,
   ) {}
 
-  public getSignerType = (): SignerType => {
+  public getSignerType = (): ESignerType => {
     switch (this.walletSubType) {
       case EWalletSubType.METAMASK:
-        return SignerType.ETH_SIGN_TYPED_DATA;
+        return ESignerType.ETH_SIGN_TYPED_DATA;
       case EWalletSubType.GNOSIS:
-        return SignerType.ETH_SIGN_GNOSIS_SAFE;
+        return ESignerType.ETH_SIGN_GNOSIS_SAFE;
       default:
-        return SignerType.ETH_SIGN;
+        return ESignerType.ETH_SIGN;
     }
   };
 

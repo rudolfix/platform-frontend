@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 
 import { SignerType } from "../../lib/web3/PersonalWeb3";
 
@@ -24,7 +24,7 @@ export type TWalletMetadata =
   | IWalletConnectMetadata;
 
 export interface ICommonWalletMetadata {
-  address: EthereumAddress;
+  address: EthereumAddressWithChecksum;
 }
 
 export interface ILightWalletMetadata extends ICommonWalletMetadata {

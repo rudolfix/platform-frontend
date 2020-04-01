@@ -20,6 +20,9 @@
     "tslint": "tslint --project ./tsconfig.json --format stylish",
     "tslint:fix": "yarn tslint --fix"
   },
+  "dependencies": {
+    "crypto-random-string": "^3.0.1"
+  },
   "devDependencies": {
     "@neufund/sagas": "^1.0.0",
     "@neufund/shared": "^1.0.0",

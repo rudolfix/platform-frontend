@@ -12,7 +12,7 @@ import {
   selectTxTimestamp,
 } from "../../../../modules/tx/sender/selectors";
 import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx/types";
-import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { EthereumIcon } from "../../../shared/ethereum";
 import { Message } from "../../message/Message";
@@ -101,7 +101,7 @@ const TxPending = compose<TTxPendingLayoutProps, ITxPendingProps>(
       txData: selectTxDetails(state),
       txTimestamp: selectTxTimestamp(state),
       additionalData: selectTxAdditionalData(state),
-      walletAddress: selectEthereumAddressWithChecksum(state),
+      walletAddress: selectEthereumAddress(state),
     }),
   }),
 )(TxPendingLayout);

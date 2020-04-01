@@ -17,7 +17,7 @@ import {
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 
@@ -26,7 +26,7 @@ function* generateSetStartDateTransaction({
   web3Manager,
 }: TGlobalDependencies): any {
   const state: TAppGlobalState = yield select();
-  const userAddress = selectEthereumAddressWithChecksum(state);
+  const userAddress = selectEthereumAddress(state);
   const gasPriceWithOverhead = selectStandardGasPriceWithOverHead(state);
   const eto = selectIssuerEto(state);
 
@@ -69,7 +69,7 @@ function* generateSignInvestmentAgreementTx(
   const state: TAppGlobalState = yield select();
 
   if (eto && agreementHash) {
-    const userAddress: EthereumAddressWithChecksum = yield selectEthereumAddressWithChecksum(state);
+    const userAddress: EthereumAddressWithChecksum = yield selectEthereumAddress(state);
     const gasPriceWithOverhead: string = yield selectStandardGasPriceWithOverHead(state);
 
     const contract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);

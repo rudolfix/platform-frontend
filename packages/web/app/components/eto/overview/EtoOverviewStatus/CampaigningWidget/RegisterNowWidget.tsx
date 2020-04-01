@@ -48,14 +48,10 @@ const RegisterNowWidget: React.FunctionComponent<TExternalProps> = ({
         )
       }
       summary={
-        wasPledged ? (
-          <FormattedMessage id="shared-component.eto-overview.register-cta.summary-pledged" />
-        ) : (
-          <FormattedHTMLMessage
-            id="shared-component.eto-overview.register-cta.summary"
-            tagName="span"
-          />
-        )
+        <FormattedHTMLMessage
+          id="shared-component.eto-overview.register-cta.summary"
+          tagName="span"
+        />
       }
     >
       <ButtonLink

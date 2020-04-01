@@ -11,7 +11,7 @@ import { selectStandardGasPriceWithOverHead } from "../../../../gas/selectors";
 import { ITokenDisbursal } from "../../../../investor-portfolio/types";
 import { neuCall } from "../../../../sagasUtils";
 import { getTokenAddress } from "../../../../shared/sagas";
-import { selectEthereumAddressWithChecksum } from "../../../../web3/selectors";
+import { selectEthereumAddress } from "../../../../web3/selectors";
 import { ETxSenderType } from "../../../types";
 
 // Use highest possible solidity uint256 to accept all disbursals for token
@@ -22,7 +22,7 @@ function* generatePayoutAcceptSingleTokenTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   tokenDisbursal: ITokenDisbursal,
 ): any {
-  const userAddress = yield select(selectEthereumAddressWithChecksum);
+  const userAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   const { feeDisbursal } = contractsService;
@@ -55,7 +55,7 @@ function* generatePayoutAcceptMultipleTokenTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   tokensDisbursal: ReadonlyArray<ITokenDisbursal>,
 ): any {
-  const userAddress = yield select(selectEthereumAddressWithChecksum);
+  const userAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   const { feeDisbursal } = contractsService;

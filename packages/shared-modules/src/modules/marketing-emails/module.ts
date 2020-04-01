@@ -1,3 +1,4 @@
+import { generateSharedModuleId } from "../../utils";
 import { actions } from "./actions";
 import { setupContainerModule } from "./lib/bindings";
 import { symbols } from "./lib/symbols";
@@ -5,7 +6,7 @@ import { setupMarketingEmailsSagas } from "./sagas";
 import * as selectors from "./selectors";
 import * as utils from "./utils";
 
-const MODULE_ID = "marketing-emails";
+const MODULE_ID = generateSharedModuleId("marketing-emails");
 
 const setupMarketingEmailsModule = () => ({
   id: MODULE_ID,

@@ -37,12 +37,14 @@ const eto = {
 };
 
 const initialStateBase = {
+  jwt: {
+    token: "jwt token",
+  },
   auth: {
     user: {
       userId: "0x353d3030AF583fc0e547Da80700BbD953F330A4b",
       type: EUserType.INVESTOR,
     },
-    jwt: "blabla",
     status: EAuthStatus.AUTHORIZED,
   },
   eto,
@@ -304,7 +306,7 @@ describe("EtoStatusManager state change", () => {
   it("shows the countdown and then calls the final function", async () => {
     const initialState = cloneDeep(initialStateBase);
     initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Public;
-    (initialState.auth.jwt as unknown) = undefined; //set user to not authorized to be able to test the counter
+    (initialState.jwt as unknown) = undefined; //set user to not authorized to be able to test the counter
     props.eto.contract.timedState = EETOStateOnChain.Public;
 
     clock.fakeClock.setSystemTime(

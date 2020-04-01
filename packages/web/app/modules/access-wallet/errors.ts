@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 
 import {
   GenericErrorMessage,
@@ -16,8 +16,8 @@ import { mapLightWalletErrorToErrorMessage } from "../wallet-selector/light-wiza
 
 export class MismatchedWalletAddressError extends Error {
   constructor(
-    public readonly desiredAddress: EthereumAddress,
-    public readonly actualAddress: EthereumAddress,
+    public readonly desiredAddress: EthereumAddressWithChecksum,
+    public readonly actualAddress: EthereumAddressWithChecksum,
   ) {
     super(
       `Plugged wallet address is: ${actualAddress}, expected wallet address is: ${desiredAddress}`,

@@ -2,21 +2,28 @@ import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 import * as fetchMock from "fetch-mock";
 
-import { ObjectStorage } from "../../persistence/ObjectStorage";
-import { AuthorizedJsonHttpClient } from "./AuthJsonHttpClient";
-import { JsonHttpClient } from "./JsonHttpClient";
+import { ISingleKeyStorage, JsonHttpClient } from "../../core/module";
+import { AuthJsonHttpClient } from "./AuthJsonHttpClient";
 
 const TOKEN = "1234ABCD";
 
-describe("AuthorizedHttpClient", () => {
+class DummyStorage implements ISingleKeyStorage<string> {
+  async clear(): Promise<void> {}
+  async get(): Promise<string | undefined> {
+    return "foo";
+  }
+  async set(): Promise<void> {}
+}
+
+describe("AuthHttpClient", () => {
   it(`Should insert correct authorization header on requests`, async () => {
-    const objectStorage: ObjectStorage<string> = createMock(ObjectStorage, {
-      get: () => TOKEN,
-    }) as any;
+    const jwtStorage: ISingleKeyStorage<string> = createMock(DummyStorage, {
+      get: async () => TOKEN,
+    });
 
-    const backendRootMock = { url: "" };
+    const backendRootUrlMock = "";
 
-    const httpClient = new JsonHttpClient(backendRootMock);
+    const httpClient = new JsonHttpClient(backendRootUrlMock);
 
     let receivedHeaders: any;
 
@@ -28,7 +35,7 @@ describe("AuthorizedHttpClient", () => {
 
     fetchMock.once(requestMatcher, {});
 
-    const authClient = new AuthorizedJsonHttpClient(objectStorage, httpClient);
+    const authClient = new AuthJsonHttpClient(jwtStorage, httpClient);
 
     await authClient.get<{}>({
       baseUrl: "/",

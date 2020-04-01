@@ -13,7 +13,7 @@ import { ETokenType } from "../tx/types";
 import { ILockedWallet, IWalletStateData } from "../wallet/reducer";
 import { loadWalletDataAsync } from "../wallet/sagas";
 import { selectLockedWalletConnected } from "../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEthereumAddress } from "../web3/selectors";
 import { IWalletMigrationData } from "./reducer";
 import { selectIcbmModalIsFirstTransactionDone, selectIcbmWalletEthAddress } from "./selectors";
 
@@ -42,7 +42,7 @@ function* loadIcbmWalletMigrationTransactionSaga({
   contractsService,
 }: TGlobalDependencies): any {
   try {
-    const currentEthAddress: string = yield select(selectEthereumAddressWithChecksum);
+    const currentEthAddress: string = yield select(selectEthereumAddress);
     const icbmEthAddress: string = yield select(selectIcbmWalletEthAddress);
     const isFirstTxDone: boolean = yield select(selectIcbmModalIsFirstTransactionDone);
 
@@ -91,7 +91,7 @@ function* loadIcbmWalletMigrationSaga({ logger, notificationCenter }: TGlobalDep
   const ethAddress = yield select(selectIcbmWalletEthAddress);
 
   try {
-    const userAddress = yield select(selectEthereumAddressWithChecksum);
+    const userAddress = yield select(selectEthereumAddress);
     if (userAddress === ethAddress) throw new SameUserError();
 
     const migrationWalletData: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
@@ -125,7 +125,7 @@ function* loadIcbmWalletMigrationSaga({ logger, notificationCenter }: TGlobalDep
 }
 
 function* icbmWalletMigrationTransactionWatcher({ contractsService }: TGlobalDependencies): any {
-  const currentEthAddress = yield select(selectEthereumAddressWithChecksum);
+  const currentEthAddress = yield select(selectEthereumAddress);
   const icbmEthAddress = yield select(selectIcbmWalletEthAddress);
   if (currentEthAddress === icbmEthAddress) return;
   let isFirstRun = true;

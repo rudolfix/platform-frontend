@@ -26,15 +26,15 @@ export class WalletStorage {
     );
   }
 
-  public set(value: TStoredWalletMetadata): void {
-    this.walletMetadataStorage.set(value);
+  public async set(value: TStoredWalletMetadata): Promise<void> {
+    await this.walletMetadataStorage.set(value);
   }
 
-  public get(): TStoredWalletMetadata | undefined {
+  public get(): Promise<TStoredWalletMetadata | undefined> {
     return this.walletMetadataStorage.get();
   }
 
-  public clear(): void {
-    return this.walletMetadataStorage.clear();
+  public async clear(): Promise<void> {
+    await this.walletMetadataStorage.clear();
   }
 }

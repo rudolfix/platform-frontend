@@ -25,7 +25,7 @@ import {
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../shared/tokenPrice/selectors";
 import { selectEtherTokenBalance } from "../../../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import { ETxSenderType, TAdditionalDataByType } from "../../types";
@@ -75,7 +75,7 @@ export function* generateInvestmentTransaction(
     investAmountUlps,
   }: { investmentType: EInvestmentType; etoId: string; investAmountUlps: BigNumber },
 ): Generator<any, any, any> {
-  const from: string = yield select(selectEthereumAddressWithChecksum);
+  const from: string = yield select(selectEthereumAddress);
   const gasPrice: string = yield select(selectStandardGasPriceWithOverHead);
   let data;
   let to;

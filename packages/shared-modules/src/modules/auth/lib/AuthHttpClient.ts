@@ -1,55 +1,57 @@
-/**
- * Wraps the general http api with authorization header injection
- * collected from localstorage
- */
 import { injectable } from "inversify";
 
-import { ObjectStorage } from "../../persistence/ObjectStorage";
 import {
   IHttpClient,
   IHttpGetRequest,
   IHttpPostRequest,
   IHttpRequestCommon,
   IHttpResponse,
-} from "./IHttpClient";
+  ISingleKeyStorage,
+} from "../../core/module";
 
+/**
+ * Wraps the general http api with authorization header injection
+ * collected from provided storage
+ */
 @injectable()
-export abstract class AuthorizedHttpClient implements IHttpClient {
+export abstract class AuthHttpClient implements IHttpClient {
   protected abstract httpClient: IHttpClient;
-  protected abstract objectStorage: ObjectStorage<string>;
+  protected abstract jwtStorage: ISingleKeyStorage<string>;
 
-  private insertAuthHeader<T extends IHttpRequestCommon>(config: any): T {
+  private async insertAuthHeader<T extends IHttpRequestCommon>(config: T): Promise<T> {
+    const JWT = await this.jwtStorage.get();
+
     return {
       ...config,
       headers: {
         ...config.headers,
-        Authorization: `Bearer ${this.objectStorage.get()}`,
+        Authorization: `Bearer ${JWT}`,
         /*
          * Additional custom header required due authorization issues on iOS12/Safari
          * https://github.com/Neufund/platform-frontend/issues/2425
          */
-        "X-NF-Authorization": `Bearer ${this.objectStorage.get()}`,
+        "X-NF-Authorization": `Bearer ${JWT}`,
       },
     };
   }
 
   public async get<T>(config: IHttpGetRequest): Promise<IHttpResponse<T>> {
-    return this.httpClient.get<T>(this.insertAuthHeader(config));
+    return this.httpClient.get<T>(await this.insertAuthHeader(config));
   }
 
   public async post<T>(config: IHttpPostRequest): Promise<IHttpResponse<T>> {
-    return this.httpClient.post<T>(this.insertAuthHeader(config));
+    return this.httpClient.post<T>(await this.insertAuthHeader(config));
   }
 
   public async put<T>(config: IHttpPostRequest): Promise<IHttpResponse<T>> {
-    return this.httpClient.put<T>(this.insertAuthHeader(config));
+    return this.httpClient.put<T>(await this.insertAuthHeader(config));
   }
 
   public async patch<T>(config: IHttpPostRequest): Promise<IHttpResponse<T>> {
-    return this.httpClient.patch<T>(this.insertAuthHeader(config));
+    return this.httpClient.patch<T>(await this.insertAuthHeader(config));
   }
 
   public async delete(config: IHttpPostRequest): Promise<IHttpResponse<any>> {
-    return this.httpClient.delete(this.insertAuthHeader(config));
+    return this.httpClient.delete(await this.insertAuthHeader(config));
   }
 }

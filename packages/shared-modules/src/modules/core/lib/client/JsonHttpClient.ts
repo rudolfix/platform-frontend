@@ -11,7 +11,6 @@ import { Dictionary, toCamelCase } from "@neufund/shared";
 import { injectable } from "inversify";
 import * as Yup from "yup";
 
-import { isYTS, Schema } from "../../yup-ts.unsafe";
 import { HttpClient, ResponseParsingError } from "./HttpClient";
 import { HttpMethod, IHttpRequestCommon, IHttpResponse } from "./IHttpClient";
 
@@ -38,7 +37,7 @@ export class JsonHttpClient extends HttpClient {
 
     if (!config.expectsNoResponse) {
       responseJson = await response.json().catch(() => {
-        throw new ResponseParsingError("Response is not a json");
+        throw new ResponseParsingError(fullUrl, "Response is not a json");
       });
     }
 
@@ -51,7 +50,7 @@ export class JsonHttpClient extends HttpClient {
       try {
         finalResponseJson = this.validateResponseSchema(config.responseSchema, responseJson);
       } catch (e) {
-        throw new ResponseParsingError(e.message);
+        throw new ResponseParsingError(fullUrl, e.message);
       }
     }
 
@@ -61,9 +60,7 @@ export class JsonHttpClient extends HttpClient {
     };
   }
 
-  private validateResponseSchema<T>(responseSchema: Yup.Schema<T> | Schema<T>, response: T): T {
-    const schema = isYTS(responseSchema) ? responseSchema.toYup() : responseSchema;
-
+  private validateResponseSchema<T>(schema: Yup.Schema<T>, response: T): T {
     return schema.validateSync(toCamelCase(response), {
       stripUnknown: true,
     });

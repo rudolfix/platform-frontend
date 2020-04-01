@@ -30,7 +30,7 @@ export class BinaryHttpClient extends HttpClient {
     let binaryResponse;
     if (!config.expectsNoResponse) {
       binaryResponse = await response.blob().catch(() => {
-        throw new ResponseParsingError("Response is not a blob");
+        throw new ResponseParsingError(fullUrl, "Response is not a blob");
       });
     }
     return {

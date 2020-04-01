@@ -2,9 +2,9 @@ import { EthereumAddressWithChecksum } from "@neufund/shared";
 import { inject, injectable } from "inversify";
 import * as Yup from "yup";
 
-import { symbols } from "../../../di/symbols";
-import { SignerType } from "../../web3/PersonalWeb3";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
+import { coreModuleApi, ESignerType, IHttpClient, IHttpResponse } from "../../core/module";
+import { EJwtPermissions } from "../jwt/types";
+import { symbols } from "./symbols";
 
 export interface IChallengeEndpointResponse {
   challenge: string;
@@ -22,15 +22,15 @@ const REFRESH_JWT_PATH = "/jwt/refresh";
 @injectable()
 export class SignatureAuthApi {
   constructor(
-    @inject(symbols.jsonHttpClient) private httpClient: IHttpClient,
-    @inject(symbols.authorizedJsonHttpClient) private authorizedHttpClient: IHttpClient,
+    @inject(coreModuleApi.symbols.jsonHttpClient) private httpClient: IHttpClient,
+    @inject(symbols.authJsonHttpClient) private authorizedHttpClient: IHttpClient,
   ) {}
 
   public async challenge(
     address: EthereumAddressWithChecksum,
     salt: string,
-    signerType: SignerType,
-    permissions: Array<string> = [],
+    signerType: ESignerType,
+    permissions: EJwtPermissions[] = [],
   ): Promise<IHttpResponse<IChallengeEndpointResponse>> {
     return await this.httpClient.post<IChallengeEndpointResponse>({
       baseUrl: SIGNATURE_BASE_PATH,
@@ -50,7 +50,7 @@ export class SignatureAuthApi {
   public createJwt(
     challenge: string,
     signedChallenge: string,
-    signerType: SignerType,
+    signerType: ESignerType,
   ): Promise<ICreateJwtEndpointResponse> {
     return this.httpClient
       .post<ICreateJwtEndpointResponse>({
@@ -71,7 +71,7 @@ export class SignatureAuthApi {
   public escalateJwt(
     challenge: string,
     signedChallenge: string,
-    signerType: SignerType,
+    signerType: ESignerType,
   ): Promise<ICreateJwtEndpointResponse> {
     return this.authorizedHttpClient
       .post<ICreateJwtEndpointResponse>({

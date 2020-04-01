@@ -1,7 +1,7 @@
 import { fork, put } from "@neufund/sagas";
+import { IHttpResponse } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import { GasModelShape } from "../../lib/api/gas/GasApi";
 import { actions } from "../actions";
 import { neuTakeEvery } from "../sagasUtils";

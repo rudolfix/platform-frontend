@@ -6,7 +6,7 @@ import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 
 describe("Object storage", () => {
-  it("should store value in storage", () => {
+  it("should store value in storage", async () => {
     const expectedKey = "SOME_KEY";
     const expectedValue = "somedummyjwt";
     const storageMock = createMock(Storage, {
@@ -14,12 +14,12 @@ describe("Object storage", () => {
     });
 
     const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
-    objectStorage.set(expectedValue);
+    await objectStorage.set(expectedValue);
 
     expect(storageMock.setKey).to.be.calledWithExactly(expectedKey, JSON.stringify(expectedValue));
   });
 
-  it("should get value from storage", () => {
+  it("should get value from storage", async () => {
     const expectedKey = "SOME_KEY";
     const expectedValue = '"somedummyjwt"';
     const storageMock = createMock(Storage, {
@@ -27,31 +27,32 @@ describe("Object storage", () => {
     });
 
     const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
-    const actualValue = objectStorage.get();
+    const actualValue = await objectStorage.get();
 
     expect(actualValue).to.be.eq(JSON.parse(expectedValue));
   });
 
-  it("should get non-existent key from storage", () => {
+  it("should get non-existent key from storage", async () => {
     const expectedKey = "SOME_KEY";
     const storageMock = createMock(Storage, {
       getKey: () => null,
     });
 
     const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
-    const actualValue = objectStorage.get();
+    const actualValue = await objectStorage.get();
 
     expect(actualValue).to.be.undefined;
   });
 
-  it("should clear key from storage", () => {
+  it("should clear key from storage", async () => {
     const expectedKey = "SOME_KEY";
     const storageMock = createMock(Storage, {
       removeKey: () => undefined,
     });
 
     const objectStorage = new ObjectStorage<string>(storageMock, noopLogger, expectedKey);
-    objectStorage.clear();
+
+    await objectStorage.clear();
 
     expect(storageMock.removeKey).to.be.calledOnce;
     expect(storageMock.removeKey).to.be.calledWithExactly(expectedKey);

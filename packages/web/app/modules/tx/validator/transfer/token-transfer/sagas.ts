@@ -12,7 +12,7 @@ import { IERC223Token } from "../../../../../lib/contracts/IERC223Token";
 import { actions } from "../../../../actions";
 import { neuCall } from "../../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../../shared/tokenPrice/selectors";
-import { selectEthereumAddressWithChecksum } from "../../../../web3/selectors";
+import { selectEthereumAddress } from "../../../../web3/selectors";
 import { generateTokenWithdrawTransaction } from "../../../transactions/token-transfer/sagas";
 import { ITokenTransferDraftType } from "../../../types";
 import { EAdditionalValidationDataNotifications, EValidationState } from "../../reducer";
@@ -31,7 +31,7 @@ function* validateUserHasEnoughTokens(
   tokenAddress: EthereumAddress,
   value: string,
 ): Generator<any, any, any> {
-  const from: string = yield select(selectEthereumAddressWithChecksum);
+  const from: string = yield select(selectEthereumAddress);
   const contractInstance: IERC223Token = yield contractsService.getERC223(tokenAddress);
   const userTokenBalance: BigNumber = yield contractInstance.balanceOf(from);
 

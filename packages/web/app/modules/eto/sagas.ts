@@ -53,7 +53,7 @@ import {
   IAgreementContractAndHash,
 } from "../tx/transactions/nominee/sign-agreement/types";
 import { ETxSenderType, TAdditionalDataByType } from "../tx/types";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEthereumAddress } from "../web3/selectors";
 import { generateRandomEthereumAddress } from "../web3/utils";
 import { etoInProgressPollingDelay, etoNormalPollingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
@@ -551,7 +551,7 @@ function* loadToken(
   { contractsService }: TGlobalDependencies,
   eto: TEtoWithCompanyAndContractReadonly,
 ): Generator<any, any, any> {
-  const walletAddress: string = nonNullable(yield select(selectEthereumAddressWithChecksum));
+  const walletAddress: string = nonNullable(yield select(selectEthereumAddress));
 
   if (!isOnChain(eto)) {
     return;

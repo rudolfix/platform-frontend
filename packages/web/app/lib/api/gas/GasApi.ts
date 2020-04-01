@@ -1,16 +1,15 @@
+import { authModuleAPI, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 import * as Web3Utils from "web3-utils";
 
-import { symbols } from "../../../di/symbols";
 import * as YupTS from "../../yup-ts.unsafe";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 
 const BASE_PATH = "/api/gas/";
 const GET_GAS_PATH = "/gas";
 
 @injectable()
 export class GasApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient) {}
 
   public async getGas(): Promise<IHttpResponse<GasModelShape>> {
     const results = await this.httpClient.get<GasModelShape>({

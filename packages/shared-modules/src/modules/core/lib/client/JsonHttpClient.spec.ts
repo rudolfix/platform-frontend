@@ -8,9 +8,8 @@ import { NetworkingError, ResponseParsingError, ResponseStatusError } from "./Ht
 import { JsonHttpClient } from "./JsonHttpClient";
 
 describe("JsonHttpClient", () => {
-  const API_URL = "https://some-api.com/";
-  const backendRootMock = { url: "" };
-  const httpClient = new JsonHttpClient(backendRootMock);
+  const API_URL = "v2/api";
+  const httpClient = new JsonHttpClient("https://platform.neufund.io/");
 
   afterEach(() => {
     expect(fetchMock.done()).to.be.true;
@@ -122,7 +121,7 @@ describe("JsonHttpClient", () => {
               .required()
               .of(productSchema),
           }),
-        new ResponseParsingError("[0].quantity is a required field"),
+        new ResponseParsingError("full url", "[0].quantity is a required field"),
       );
     });
 
@@ -142,7 +141,7 @@ describe("JsonHttpClient", () => {
               .required()
               .of(productSchema),
           }),
-        new ResponseParsingError("Response is not a json"),
+        new ResponseParsingError("full url", "Response is not a json"),
       );
     });
 

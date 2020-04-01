@@ -28,12 +28,12 @@
   flex-flow: row;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   color: $neu-flamingo-red;
   img {
     width: px-to-rem(19px);
     height: px-to-rem(19px);
     margin-right: 5px;
-    margin-bottom: px-to-rem(2px);
+    margin-bottom: px-to-rem(20px);
   }
 }

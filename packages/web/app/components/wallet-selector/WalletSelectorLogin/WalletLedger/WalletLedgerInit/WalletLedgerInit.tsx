@@ -40,9 +40,12 @@ const WalletLedgerInitErrorBase: React.FunctionComponent<TLedgerErrorProps> = ({
   tryToEstablishConnectionWithLedger,
 }) => (
   <section className="text-center my-5">
-    <div data-test-id="browser-wallet-error-msg" className={cn(styles.notification, "mb-4")}>
-      <span data-test-id="ledger-wallet-error-msg" className="mr-0,ml-0">
-        <img src={notificationSign} alt="" />
+    <div
+      data-test-id="browser-wallet-error-msg"
+      className={cn(styles.notification, "mb-4 mr-3 ml-3")}
+    >
+      <img src={notificationSign} alt="" />
+      <span data-test-id="ledger-wallet-error-msg">
         <FormattedMessage id="wallet-selector.ledger.start.connection-status" />
         {getMessageTranslation(errorMessage)}
       </span>

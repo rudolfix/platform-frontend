@@ -49,11 +49,12 @@
 }
 
 .notification {
+  @include nds-body-small;
   display: flex;
   flex-flow: row;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   color: $neu-flamingo-red;
 
   img {

@@ -5,6 +5,7 @@ import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserActivityMessage } from "../../../lib/dependencies/broadcast-channel/types";
 import { STORAGE_JWT_KEY } from "../../../lib/persistence/JwtObjectStorage";
 import { USER_JWT_KEY as USER_KEY } from "../../../lib/persistence/UserStorage";
+import { STORAGE_WALLET_CONNECT_KEY } from "../../../lib/persistence/WalletConnectStorage";
 import { STORAGE_WALLET_METADATA_KEY } from "../../../lib/persistence/WalletStorage";
 import { actions } from "../../actions";
 import { EInitType } from "../../init/reducer";
@@ -43,6 +44,11 @@ export function* startRedirectChannel({
       });
     }
     if (evt.key === STORAGE_WALLET_METADATA_KEY && evt.oldValue && !evt.newValue) {
+      redirectChannel.put({
+        type: EUserAuthType.LOGOUT,
+      });
+    }
+    if (evt.key === STORAGE_WALLET_CONNECT_KEY && evt.oldValue && !evt.newValue) {
       redirectChannel.put({
         type: EUserAuthType.LOGOUT,
       });

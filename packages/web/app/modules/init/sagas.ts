@@ -2,20 +2,23 @@ import { fork, put, select } from "@neufund/sagas";
 import { isJwtExpiringLateEnough } from "@neufund/shared";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { TStoredWalletConnectData } from "../../lib/persistence/WalletConnectStorage";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { loadJwt, setJwt } from "../auth/jwt/sagas";
-import { loadUser } from "../auth/user/external/sagas";
+import { ELogoutReason } from "../auth/types";
+import { loadUser, } from "../auth/user/external/sagas";
+import {  handleLogOutUserInternal } from "../auth/user/sagas";
 import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
+import { walletConnectInit } from "../wallet-selector/wallet-connect/sagas";
 import { initWeb3ManagerEvents } from "../web3/sagas";
+import { selectWalletType } from "../web3/selectors";
+import { EWalletType } from "../web3/types";
 import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
-import { TStoredWalletConnectData } from "../../lib/persistence/WalletConnectStorage";
-import { EWalletType } from "../web3/types";
-import { selectWalletType } from "../web3/selectors";
 
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): Generator<any,void,any>  {
   try {
@@ -62,28 +65,29 @@ function* restoreUserSession({
   logger
 }: TGlobalDependencies,
   jwt:string,
-  wcSession:TStoredWalletConnectData | undefined) {
+  wcSession:TStoredWalletConnectData | undefined
+): Generator<any, void,any> {
   yield neuCall(makeSureWalletMetaDataExists);
-
   if (isJwtExpiringLateEnough(jwt)) {
     try {
       yield neuCall(setJwt, jwt);
       yield neuCall(loadUser);
       const walletType = yield select(selectWalletType);
 
-      if(walletType === EWalletType.UNKNOWN && !!wcSession){ //fixme
-        yield put(actions.walletSelector.walletConnectRestoreConnection())
-      } else if (walletType !== EWalletType.WALLET_CONNECT && !!wcSession) {
+      if(walletType === EWalletType.WALLETCONNECT && wcSession){
+        yield neuCall(walletConnectInit)
+      } else if (walletType !== EWalletType.WALLETCONNECT && wcSession) {
+        // action.auth.logout will be called automatically after change in local storage
         yield neuCall(deleteWalletConnectSession);
-      } else if(walletType === EWalletType.WALLET_CONNECT && !wcSession){
-        yield put(actions.auth.logout());
+      } else if(walletType === EWalletType.WALLETCONNECT && !wcSession){
+        yield neuCall(handleLogOutUserInternal, ELogoutReason.USER_REQUESTED);
       }
 
       yield put(actions.auth.finishSigning());
     } catch (e) {
       yield put(actions.auth.logout());
       logger.error(
-        "Cannot retrieve account. This could happen b/c account was deleted on backend",
+        `Cannot retrieve account. ${e}`,
       );
     }
   } else {
@@ -95,22 +99,16 @@ function* restoreUserSession({
 
 
 function* initApp({ logger }: TGlobalDependencies): Generator<any,void,any>  {
-    console.log("initApp")
   try {
     yield neuCall(detectUserAgent);
     const wcSession = yield neuCall(loadWalletConnectSession);
-    console.log("initApp wcSession")
     const jwt = yield* neuCall(loadJwt);
-    console.log("initApp jwt")
 
     if (jwt) {
       yield neuCall(restoreUserSession, jwt, wcSession)
     } else {
-    console.log("initApp no jwt")
       yield neuCall(deleteWalletConnectSession);
-    console.log("initApp no jwt done")
     }
-    console.log("initApp done")
     yield waitUntilSmartContractsAreInitialized();
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {

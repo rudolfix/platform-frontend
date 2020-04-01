@@ -1,4 +1,4 @@
-import { call, delay, fork, put, race, select, take,all } from "@neufund/sagas";
+import { call, delay, fork, put, race, select, take } from "@neufund/sagas";
 import { assertNever, EJwtPermissions, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
@@ -33,8 +33,7 @@ import { checkForPendingEmailVerification } from "../email/sagas";
 import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
-import { loadUser } from "./external/sagas";
-import { walletConnectStop } from "../../wallet-selector/sagas";
+import { loadUser, logoutUser } from "./external/sagas";
 
 /**
  * Waits for user to conduct activity before a
@@ -177,24 +176,17 @@ export function* setUser(
   logger.setUser({ id: user.userId, type: user.type, walletType: user.walletType });
 }
 
-function* handleLogOutUser(
+export function* handleLogOutUserInternal(
   { logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.auth.logout>,
-): Generator<any, any, any> {
-  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
-
-  yield all([
-    neuCall(walletConnectStop),
-    take(actions.auth.reset)
-  ]);
-  console.log("handleLogOutUser reset")
+  logoutType:ELogoutReason
+):Generator<any, void,any>{
+  yield neuCall(logoutUser);
   //TODO need to decide how logout is initiated (by wallet or saga); //yield neuCall(logoutUser);
 
   switch (logoutType) {
-    case ELogoutReason.USER_REQUESTED:
-      {
-        yield put(actions.routing.goHome());
-      }
+    case ELogoutReason.USER_REQUESTED: {
+      yield put(actions.routing.goHome());
+    }
       break;
     case ELogoutReason.SESSION_TIMEOUT:
       yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
@@ -212,8 +204,14 @@ function* handleLogOutUser(
   }
 
   yield put(actions.init.start(EInitType.APP_INIT));
+}
 
-  logger.setUser(null);
+export function* handleLogOutUser(
+  _ : TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.auth.logout>,
+): Generator<any, any, any> {
+  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
+  yield neuCall(handleLogOutUserInternal, logoutType)
 }
 
 export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {

@@ -1,5 +1,4 @@
 import { createActionFactory } from "@neufund/shared";
-import { EventChannel} from "@neufund/sagas";
 
 import { TMessage } from "../../components/translatedMessages/utils";
 import { browserWizardActions } from "./browser-wizard/actions";

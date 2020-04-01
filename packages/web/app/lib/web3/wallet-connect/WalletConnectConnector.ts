@@ -100,7 +100,7 @@ export class WalletConnectConnector extends EventEmitter {
 
     this.web3 = new Web3(engine);
     const web3Adapter = new Web3Adapter(this.web3);
-    const ethereumAddress = await web3Adapter.getAccountAddress();
+    const ethereumAddress = await web3Adapter.getAccountAddressWithChecksum();
     this.sessionRequestTimeout && clearSafeTimeout(this.sessionRequestTimeout);
     return new WalletConnectWallet(web3Adapter, ethereumAddress)
   };

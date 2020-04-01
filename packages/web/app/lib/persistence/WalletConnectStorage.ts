@@ -43,11 +43,11 @@ export class WalletConnectStorage {
     );
   }
 
-  public get(): TStoredWalletConnectData | undefined {
+  public get(): Promise<TStoredWalletConnectData | undefined> {
     return this.walletMetadataStorage.get();
   }
 
-  public clear(): void {
-    return this.walletMetadataStorage.clear();
+  public async clear(): Promise<void> {
+    await this.walletMetadataStorage.clear();
   }
 }

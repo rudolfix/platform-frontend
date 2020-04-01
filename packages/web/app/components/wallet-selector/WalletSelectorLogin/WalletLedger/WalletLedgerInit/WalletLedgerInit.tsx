@@ -14,11 +14,11 @@ import {
 import { appConnect } from "../../../../../store";
 import { ExternalLink } from "../../../../shared/links/index";
 import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
-import { WarningAlert } from "../../../../shared/WarningAlert";
 import { getMessageTranslation, LedgerErrorMessage } from "../../../../translatedMessages/messages";
 import { TMessage } from "../../../../translatedMessages/utils";
 import { WalletLedgerInitHeader } from "./WalletLedgerInitHeader";
 
+import notificationSign from "../../../../../assets/img/notifications/warning.svg";
 import * as styles from "./WalletLedgerInit.module.scss";
 
 interface IStateProps {
@@ -40,10 +40,13 @@ const WalletLedgerInitErrorBase: React.FunctionComponent<TLedgerErrorProps> = ({
   tryToEstablishConnectionWithLedger,
 }) => (
   <section className="text-center my-5">
-    <WarningAlert className="mb-4">
-      <FormattedMessage id="wallet-selector.ledger.start.connection-status" />
-      <span data-test-id="ledger-wallet-error-msg">{getMessageTranslation(errorMessage)}</span>
-    </WarningAlert>
+    <div data-test-id="browser-wallet-error-msg" className={cn(styles.notification, "mb-4")}>
+      <span data-test-id="ledger-wallet-error-msg" className="mr-0,ml-0">
+        <img src={notificationSign} alt="" />
+        <FormattedMessage id="wallet-selector.ledger.start.connection-status" />
+        {getMessageTranslation(errorMessage)}
+      </span>
+    </div>
 
     <Button
       onClick={tryToEstablishConnectionWithLedger}

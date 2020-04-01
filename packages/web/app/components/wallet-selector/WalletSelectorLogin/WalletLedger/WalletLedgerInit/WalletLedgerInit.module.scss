@@ -15,9 +15,25 @@
 }
 
 .drawer-button {
-  margin: 1rem 0 .5rem;
+  margin: 1rem 0 0.5rem;
   font-size: 1.25rem;
   padding: 0;
   border: 0;
   background-color: transparent;
+}
+
+.notification {
+  @include nds-body-small;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: $neu-flamingo-red;
+  img {
+    width: px-to-rem(19px);
+    height: px-to-rem(19px);
+    margin-right: 5px;
+    margin-bottom: px-to-rem(2px);
+  }
 }

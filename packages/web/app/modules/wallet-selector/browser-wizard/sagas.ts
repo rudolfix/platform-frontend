@@ -82,7 +82,8 @@ export function* browserWalletConnectAndSign({
 
     yield put(
       actions.walletSelector.setWalletRegisterData({
-        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+        showWalletSelector: false,
       }),
     );
     const browserWallet: BrowserWallet = yield browserWalletConnector.connect(
@@ -99,6 +100,7 @@ export function* browserWalletConnectAndSign({
     yield put(
       actions.walletSelector.setWalletRegisterData({
         uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
+        showWalletSelector: true,
         errorMessage,
       }),
     );

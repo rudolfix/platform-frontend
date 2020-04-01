@@ -60,6 +60,10 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
     renderComponent(LoadingIndicator),
   ),
+  branch<TBrowserWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(WalletLoading),
+  ),
   withContainer(
     withProps<TWalletBrowserBaseExternalProps, TWalletBrowserBaseExternalProps>(
       ({
@@ -77,10 +81,6 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
   ),
   branch<TBrowserWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
-    renderComponent(WalletLoading),
-  ),
-  branch<TBrowserWalletRegisterData>(
-    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
     renderComponent(WalletLoading),
   ),
   branch<TBrowserWalletRegisterData>(

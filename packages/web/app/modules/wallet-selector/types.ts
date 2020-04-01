@@ -10,7 +10,6 @@ export enum EFlowType {
 }
 
 export enum EBrowserWalletRegistrationFlowState {
-  BROWSER_WALLET_LOADING = "browserWalletLoading",
   BROWSER_WALLET_ERROR = "browserWalletError",
 }
 

@@ -52,6 +52,10 @@ export const RegisterLightWallet = compose<
         ),
     }),
   }),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(WalletLoading),
+  ),
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),

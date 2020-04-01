@@ -31,9 +31,6 @@ export const LoginBrowserWallet = compose(
       tryConnectingWithBrowserWallet: () => {
         dispatch(actions.walletSelector.tryConnectingWithBrowserWallet());
       },
-      cancelSigning: () => {
-        dispatch(actions.walletSelector.reset());
-      },
     }),
   }),
   onEnterAction({

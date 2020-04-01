@@ -92,6 +92,7 @@ export function* registerForm(
       yield put(
         actions.walletSelector.setWalletRegisterData({
           ...baseUiData,
+          showWalletSelector: true,
           uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
           initialFormValues: {
             ...initialFormValues,

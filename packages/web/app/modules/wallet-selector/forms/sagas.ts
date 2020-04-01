@@ -53,6 +53,7 @@ export function* registerForm(
     yield put(
       actions.walletSelector.setWalletRegisterData({
         uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
+        showWalletSelector: false,
       }),
     );
 
@@ -64,6 +65,7 @@ export function* registerForm(
         actions.walletSelector.setWalletRegisterData({
           uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
           errorMessage: error,
+          showWalletSelector: true,
           initialFormValues: {
             ...initialFormValues,
             email: payload.email,

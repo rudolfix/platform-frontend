@@ -1,4 +1,3 @@
-import { UsersApi } from "./../../../lib/api/users/UsersApi";
 import { call, fork, neuTakeLatestUntil, put, select, take } from "@neufund/sagas";
 import { invariant } from "@neufund/shared";
 import { includes } from "lodash";

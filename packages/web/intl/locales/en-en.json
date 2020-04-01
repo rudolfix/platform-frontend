@@ -1466,7 +1466,7 @@
   "wallet-selector.login.metamask": "Log in with MetaMask",
   "wallet-selector.neuwallet.explanation": "Join Neufund today. Setup your account in a few simple steps to start investing.",
   "wallet-selector.neuwallet.forgotten-password": "Forgotten your password? {link}",
-  "wallet-selector.neuwallet.login-instructions": "To log in to your Neufund account,<br/>wallet-selectorplease click the unique login link we emailed you<br/> when you signed up.",
+  "wallet-selector.neuwallet.login-instructions": "To log in to your Neufund account, please click the unique login link we emailed you when you signed up.",
   "wallet-selector.neuwallet.login.button": "Log in",
   "wallet-selector.neuwallet.login.placeholder": "Enter your password",
   "wallet-selector.neuwallet.login.prompt": "Welcome back {email}.{lineBreak}Enter your password to log in to Neufund.",

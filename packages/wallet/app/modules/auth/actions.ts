@@ -12,7 +12,7 @@ export const authActions = {
    */
   importNewAccount: createActionFactory(
     "AUTH_IMPORT_NEW_ACCOUNT",
-    (privateKeyOrMnemonics: string) => ({ privateKeyOrMnemonics }),
+    (privateKeyOrMnemonic: string) => ({ privateKeyOrMnemonic }),
   ),
   failedToImportNewAccount: createActionFactory("AUTH_ACCOUNT_IMPORT_FAILED"),
 

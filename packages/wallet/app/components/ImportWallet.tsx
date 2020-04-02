@@ -23,7 +23,7 @@ type TStateProps = {
 };
 
 type TDispatchProps = {
-  importExistingAccount: (privateKeyOrMnemonics: string) => void;
+  importExistingAccount: (privateKeyOrMnemonic: string) => void;
 };
 
 const ImportWalletLayout: React.FunctionComponent = ({ authState, importExistingAccount }) => {
@@ -93,8 +93,8 @@ const ImportWallet = appConnect<TStateProps, TDispatchProps>({
     authState: authModuleAPI.selectors.selectAuthState(state),
   }),
   dispatchToProps: dispatch => ({
-    importExistingAccount: (privateKeyOrMnemonics: string) =>
-      dispatch(authModuleAPI.actions.importNewAccount(privateKeyOrMnemonics)),
+    importExistingAccount: (privateKeyOrMnemonic: string) =>
+      dispatch(authModuleAPI.actions.importNewAccount(privateKeyOrMnemonic)),
   }),
 })(ImportWalletLayout);
 

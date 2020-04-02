@@ -1,4 +1,12 @@
-import { neuTakeLatest, put, fork, call, neuCall } from "@neufund/sagas";
+import {
+  takeLatest,
+  put,
+  fork,
+  call,
+  neuCall,
+  SagaGenerator,
+  TActionFromCreator,
+} from "@neufund/sagas";
 import {
   coreModuleApi,
   neuGetBindings,
@@ -11,8 +19,11 @@ import { isJwtExpiringLateEnough } from "@neufund/shared";
 
 import { walletEthModuleApi } from "../eth/module";
 import { authActions } from "./actions";
+import { InvalidImportPhraseError } from "./errors";
+import { EImportPhrase } from "./types";
+import { parseImportPhrase } from "./utils";
 
-function* createNewUser(): Generator<unknown, void> {
+function* createNewUser(): SagaGenerator<void> {
   yield* call(authModuleAPI.sagas.createJwt, []);
 
   yield* call(authModuleAPI.sagas.loadOrCreateUser, {
@@ -22,7 +33,7 @@ function* createNewUser(): Generator<unknown, void> {
   });
 }
 
-export function* trySignInExistingAccount(): Generator<any, void, any> {
+export function* trySignInExistingAccount(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
     logger: coreModuleApi.symbols.logger,
@@ -54,7 +65,7 @@ export function* trySignInExistingAccount(): Generator<any, void, any> {
   yield put(authActions.signed());
 }
 
-function* createNewAccount(): Generator<unknown, void> {
+function* createNewAccount(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
     logger: coreModuleApi.symbols.logger,
@@ -73,7 +84,44 @@ function* createNewAccount(): Generator<unknown, void> {
   }
 }
 
-function* logout(): Generator<unknown, void> {
+function* importNewAccount(
+  action: TActionFromCreator<typeof authActions.importNewAccount, typeof authActions>,
+): SagaGenerator<void> {
+  debugger;
+
+  const { ethManager, logger } = yield* neuGetBindings({
+    ethManager: walletEthModuleApi.symbols.ethManager,
+    logger: coreModuleApi.symbols.logger,
+  });
+
+  try {
+    const privateKeyOrMnemonic = action.payload.privateKeyOrMnemonic;
+    const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
+
+    switch (importPhraseType) {
+      case EImportPhrase.PRIVATE_KEY:
+        yield* call(() => ethManager.plugNewWalletFromPrivateKey(privateKeyOrMnemonic));
+
+        break;
+      case EImportPhrase.MNEMONICS:
+        yield* call(() => ethManager.plugNewWalletFromMnemonic(privateKeyOrMnemonic));
+
+        break;
+      default:
+        throw new InvalidImportPhraseError();
+    }
+
+    yield* call(createNewUser);
+
+    yield put(authActions.signed());
+  } catch (e) {
+    yield put(authActions.failedToImportNewAccount());
+
+    logger.error("Import account creation failed", e);
+  }
+}
+
+function* logout(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
     logger: coreModuleApi.symbols.logger,
@@ -93,6 +141,7 @@ function* logout(): Generator<unknown, void> {
 }
 
 export function* authSaga(): Generator<unknown, void> {
-  yield fork(neuTakeLatest, authActions.createNewAccount, createNewAccount);
-  yield fork(neuTakeLatest, authActions.logout, logout);
+  yield takeLatest(authActions.createNewAccount, createNewAccount);
+  yield takeLatest(authActions.importNewAccount, importNewAccount);
+  yield takeLatest(authActions.logout, logout);
 }

@@ -98,11 +98,13 @@ export class WalletConnectConnector extends EventEmitter {
       throw new WalletConnectSessionRejectedError("subscription failed");
     }
 
+    const meta = await this.walletConnectProvider.getMeta();
+
     this.web3 = new Web3(engine);
     const web3Adapter = new Web3Adapter(this.web3);
     const ethereumAddress = await web3Adapter.getAccountAddressWithChecksum();
     this.sessionRequestTimeout && clearSafeTimeout(this.sessionRequestTimeout);
-    return new WalletConnectWallet(web3Adapter, ethereumAddress)
+    return new WalletConnectWallet(web3Adapter, ethereumAddress, meta)
   };
 
   public disconnect = async () => {

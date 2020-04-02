@@ -20,4 +20,8 @@ export interface IEthereumNetworkConfig {
   bridgeUrl: string;
 }
 
+export enum ESignTransactionMethod {
+  ETH_SEND_TRANSACTION = "eth_sendTransaction"
+}
+
 export type TBigNumberVariants = string | BigNumber;

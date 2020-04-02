@@ -7,7 +7,8 @@ import * as Yup from "yup";
 import {
   Button,
   EButtonWidth,
-} from "../../../../../../design-system/dist/components/buttons/Button";
+  EButtonLayout,
+} from "@neufund/design-system";
 import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
 import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
 import {
@@ -115,6 +116,7 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
             disabled={!isValid}
             data-test-id="wallet-selector-register-button"
             width={EButtonWidth.BLOCK}
+            layout={EButtonLayout.PRIMARY}
           >
             {restore ? (
               <FormattedMessage id="wallet-selector.neuwallet.restore" />

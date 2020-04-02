@@ -5,11 +5,17 @@
   height: px-to-rem(40px);
   border-radius: px-to-rem(4px);
   border: solid 1px $neu-light-blue-grey-two;
-  border-width: 2px;
   background-color: $neu-white-two;
   text-align: left;
   padding: px-to-rem(16px);
   color: $neu-charcoal-grey;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px $neu-white-two inset;
+  }
 
   &::placeholder {
     color: $neu-gull-gray;
@@ -17,6 +23,7 @@
 
   &:focus {
     border-color: $neu-bitter-lemon;
+    border-width: 2px;
   }
 
   &:disabled {
@@ -26,6 +33,7 @@
 
   &:invalid,
   &[aria-invalid="true"] {
+    border-width: 2px;
     border-color: $neu-flamingo-red;
   }
 }

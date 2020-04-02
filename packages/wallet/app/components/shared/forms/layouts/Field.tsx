@@ -1,6 +1,8 @@
 import { assertNever } from "@neufund/shared";
+import { Ref } from "react";
 import * as React from "react";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import { TComponentRefType } from "../../../../utils/types";
 import { ErrorMessage } from "./ErrorMessage";
 import { HelperText } from "./HelperText";
 import { Label } from "./Label";
@@ -13,14 +15,15 @@ enum EFieldType {
 }
 
 type TInputProps =
-  | ({ type: EFieldType.INPUT } & React.ComponentProps<typeof TextInput>)
-  | ({ type: EFieldType.TEXT_AREA } & React.ComponentProps<typeof TextAreaInput>);
+  | ({ type: EFieldType.INPUT } & React.ComponentPropsWithRef<typeof TextInput>)
+  | ({ type: EFieldType.TEXT_AREA } & React.ComponentPropsWithRef<typeof TextAreaInput>);
 
 type TExternalProps = {
   label?: string;
   style?: StyleProp<ViewStyle>;
   helperText?: string;
   errorMessage?: string;
+  inputRef?: Ref<TComponentRefType<typeof TextInput>>;
 } & TInputProps;
 
 const getInput = ({ type, ...rest }: TInputProps) => {
@@ -42,6 +45,7 @@ const Field: React.FunctionComponent<TExternalProps> = ({
   label,
   errorMessage,
   helperText,
+  inputRef,
   ...inputProps
 }) => {
   const invalid = !!errorMessage;
@@ -49,7 +53,7 @@ const Field: React.FunctionComponent<TExternalProps> = ({
   return (
     <View style={[styles.field, style]}>
       {label && <Label>{label}</Label>}
-      {getInput({ invalid, ...inputProps })}
+      {getInput({ invalid, ref: inputRef, ...inputProps })}
       {errorMessage && <ErrorMessage style={styles.helperText}>{errorMessage}</ErrorMessage>}
       {helperText && !errorMessage && (
         <HelperText style={styles.helperText}>{helperText}</HelperText>

@@ -23,45 +23,41 @@ type TExternalProps = { disabled?: boolean; invalid?: boolean } & TNativeTextInp
 /**
  * A text input component that aligns with our design system
  */
-const TextInput: React.FunctionComponent<TExternalProps> = ({
-  style,
-  onFocus,
-  onBlur,
-  disabled,
-  invalid,
-  ...props
-}) => {
-  const [hasFocus, setHasFocus] = React.useState(false);
+const TextInput = React.forwardRef<NativeTextInput, TExternalProps>(
+  ({ style, onFocus, onBlur, disabled, invalid, ...props }, ref) => {
+    const [hasFocus, setHasFocus] = React.useState(false);
 
-  const handleFocus = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    setHasFocus(true);
+    const handleFocus = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      setHasFocus(true);
 
-    onFocus?.(event);
-  };
+      onFocus?.(event);
+    };
 
-  const handleBlur = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    setHasFocus(false);
+    const handleBlur = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      setHasFocus(false);
 
-    onBlur?.(event);
-  };
+      onBlur?.(event);
+    };
 
-  return (
-    <NativeTextInput
-      editable={!disabled}
-      placeholderTextColor={blueyGrey}
-      style={[
-        styles.input,
-        hasFocus && styles.inputFocused,
-        disabled && styles.inputDisabled,
-        invalid && styles.inputInvalid,
-        style,
-      ]}
-      onBlur={handleBlur}
-      onFocus={handleFocus}
-      {...props}
-    />
-  );
-};
+    return (
+      <NativeTextInput
+        ref={ref}
+        editable={!disabled}
+        placeholderTextColor={blueyGrey}
+        style={[
+          styles.input,
+          hasFocus && styles.inputFocused,
+          disabled && styles.inputDisabled,
+          invalid && styles.inputInvalid,
+          style,
+        ]}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+        {...props}
+      />
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   input: {

@@ -1,7 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
+import { appRoutes } from "../appRoutes";
 import { appConnect } from "../../store/utils";
 import { abyssalAnchorfishBlue, silverLighter2, subterraneanRiver } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
@@ -23,32 +25,39 @@ type TDispatchProps = {
 const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   createNewAccount,
   authState,
-}) => (
-  <LinearGradient colors={[subterraneanRiver, abyssalAnchorfishBlue]} style={styles.wrapper}>
-    <View style={styles.logoContainer}>
-      <Image style={styles.logo} source={logo} />
-    </View>
-    <View style={styles.container}>
-      <Headline level={EHeadlineLevel.LEVEL1} style={styles.headline}>
-        Welcome
-      </Headline>
-      <BodyText style={styles.paragraph}>
-        Join Neufund today. Setup your account to start investing.
-      </BodyText>
-      <Button
-        style={styles.createAccountButton}
-        loading={authState === EAuthState.AUTHORIZING}
-        layout={EButtonLayout.PRIMARY}
-        onPress={createNewAccount}
-      >
-        Create new account
-      </Button>
-      <Button disabled={true} layout={EButtonLayout.TEXT_DARK}>
-        I have an account
-      </Button>
-    </View>
-  </LinearGradient>
-);
+}) => {
+  const navigation = useNavigation();
+
+  return (
+    <LinearGradient colors={[subterraneanRiver, abyssalAnchorfishBlue]} style={styles.wrapper}>
+      <View style={styles.logoContainer}>
+        <Image style={styles.logo} source={logo} />
+      </View>
+      <View style={styles.container}>
+        <Headline level={EHeadlineLevel.LEVEL1} style={styles.headline}>
+          Welcome
+        </Headline>
+        <BodyText style={styles.paragraph}>
+          Join Neufund today. Setup your account to start investing.
+        </BodyText>
+        <Button
+          style={styles.createAccountButton}
+          loading={authState === EAuthState.AUTHORIZING}
+          layout={EButtonLayout.PRIMARY}
+          onPress={createNewAccount}
+        >
+          Create new account
+        </Button>
+        <Button
+          layout={EButtonLayout.TEXT_DARK}
+          onPress={() => navigation.navigate(appRoutes.importWallet)}
+        >
+          I have an account
+        </Button>
+      </View>
+    </LinearGradient>
+  );
+};
 
 const styles = StyleSheet.create({
   wrapper: {

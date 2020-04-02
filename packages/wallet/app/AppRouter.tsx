@@ -79,8 +79,20 @@ const AppAuthRouter: React.FunctionComponent = () => (
 );
 
 const AppNoAuthRouter: React.FunctionComponent = () => (
-  <NoAuthStack.Navigator headerMode="none" initialRouteName={appRoutes.landing}>
+  <NoAuthStack.Navigator
+    initialRouteName={appRoutes.landing}
+    screenOptions={({ route, navigation }) => ({
+      gestureEnabled: true,
+      cardOverlayEnabled: true,
+      headerStatusBarHeight:
+        navigation.dangerouslyGetState().routes.indexOf(route) > 0 ? 0 : undefined,
+      ...TransitionPresets.ModalPresentationIOS,
+    })}
+    mode="modal"
+    headerMode="none"
+  >
     <NoAuthStack.Screen name={appRoutes.landing} component={LandingScreen} />
+    <NoAuthStack.Screen name={appRoutes.importWallet} component={ImportWallet} />
   </NoAuthStack.Navigator>
 );
 

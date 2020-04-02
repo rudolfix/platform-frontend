@@ -1,5 +1,5 @@
 import {
-  takeLatest,
+  takeLeading,
   put,
   fork,
   call,
@@ -87,8 +87,6 @@ function* createNewAccount(): SagaGenerator<void> {
 function* importNewAccount(
   action: TActionFromCreator<typeof authActions.importNewAccount, typeof authActions>,
 ): SagaGenerator<void> {
-  debugger;
-
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
     logger: coreModuleApi.symbols.logger,
@@ -141,7 +139,7 @@ function* logout(): SagaGenerator<void> {
 }
 
 export function* authSaga(): Generator<unknown, void> {
-  yield takeLatest(authActions.createNewAccount, createNewAccount);
-  yield takeLatest(authActions.importNewAccount, importNewAccount);
-  yield takeLatest(authActions.logout, logout);
+  yield* takeLeading(authActions.createNewAccount, createNewAccount);
+  yield* takeLeading(authActions.importNewAccount, importNewAccount);
+  yield* takeLeading(authActions.logout, logout);
 }

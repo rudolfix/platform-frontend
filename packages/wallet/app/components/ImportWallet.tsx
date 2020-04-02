@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   StyleSheet,
   KeyboardAvoidingView,
-  ScrollView,
+  View,
   SafeAreaView,
   Platform,
   InteractionManager,
@@ -17,6 +17,7 @@ import { TComponentRefType } from "../utils/types";
 import { Button, EButtonLayout } from "./shared/buttons/Button";
 import { EFieldType, Field } from "./shared/forms/layouts/Field";
 import { TextAreaInput } from "./shared/forms/layouts/TextAreaInput";
+import { Screen } from "./shared/Screen";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
@@ -27,9 +28,6 @@ type TDispatchProps = {
 };
 
 const ImportWalletLayout: React.FunctionComponent = ({ authState, importExistingAccount }) => {
-  const headerHeight = useHeaderHeight();
-  const insets = useSafeArea();
-
   const inputRef = React.useCallback((ref: TComponentRefType<typeof TextAreaInput>) => {
     InteractionManager.runAfterInteractions(() => {
       if (ref) {
@@ -41,43 +39,28 @@ const ImportWalletLayout: React.FunctionComponent = ({ authState, importExisting
   const [value, setValue] = React.useState("");
 
   return (
-    <>
-      <KeyboardAvoidingView
-        testID="import-wallet"
-        behavior={Platform.OS == "ios" ? "position" : undefined}
-        contentContainerStyle={styles.wrapper}
-        keyboardVerticalOffset={headerHeight - insets.bottom}
-        style={styles.wrapper}
-      >
-        <SafeAreaView style={styles.wrapper}>
-          <ScrollView contentContainerStyle={styles.content}>
-            <Field
-              onChangeText={setValue}
-              inputRef={inputRef}
-              type={EFieldType.TEXT_AREA}
-              placeholder="Enter your Private Key or Recovery Phrase"
-              helperText="Separate your 12/24 recovery phrase words with a space."
-            />
+    <Screen contentContainerStyle={styles.content}>
+      <Field
+        onChangeText={setValue}
+        inputRef={inputRef}
+        type={EFieldType.TEXT_AREA}
+        placeholder="Enter your Private Key or Recovery Phrase"
+        helperText="Separate your 12/24 recovery phrase words with a space."
+      />
 
-            <Button
-              style={styles.importAccountButton}
-              loading={authState === EAuthState.AUTHORIZING}
-              layout={EButtonLayout.PRIMARY}
-              onPress={() => importExistingAccount(value)}
-            >
-              Import account
-            </Button>
-          </ScrollView>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
-    </>
+      <Button
+        style={styles.importAccountButton}
+        loading={authState === EAuthState.AUTHORIZING}
+        layout={EButtonLayout.PRIMARY}
+        onPress={() => importExistingAccount(value)}
+      >
+        Import account
+      </Button>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
   content: {
     ...spacingStyles.p4,
     justifyContent: "flex-end",

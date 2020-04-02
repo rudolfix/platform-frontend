@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { authModuleAPI, EAuthState } from "../modules/auth/module";
 import { appConnect } from "../store/utils";
+import { baseGray } from "../styles/colors";
 
 import { spacingStyles } from "../styles/spacings";
 import { TComponentRefType } from "../utils/types";
@@ -18,6 +19,7 @@ import { Button, EButtonLayout } from "./shared/buttons/Button";
 import { EFieldType, Field } from "./shared/forms/layouts/Field";
 import { TextAreaInput } from "./shared/forms/layouts/TextAreaInput";
 import { Screen } from "./shared/Screen";
+import { EHeadlineLevel, Headline } from "./shared/typography/Headline";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
@@ -40,6 +42,10 @@ const ImportWalletLayout: React.FunctionComponent = ({ authState, importExisting
 
   return (
     <Screen contentContainerStyle={styles.content}>
+      <Headline level={EHeadlineLevel.LEVEL2} style={styles.headline}>
+        Connect existing account
+      </Headline>
+
       <Field
         onChangeText={setValue}
         inputRef={inputRef}
@@ -61,6 +67,10 @@ const ImportWalletLayout: React.FunctionComponent = ({ authState, importExisting
 };
 
 const styles = StyleSheet.create({
+  headline: {
+    ...spacingStyles.mb4,
+    color: baseGray,
+  },
   content: {
     ...spacingStyles.p4,
     justifyContent: "flex-end",

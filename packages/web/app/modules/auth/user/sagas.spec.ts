@@ -241,7 +241,7 @@ describe("Auth - User - Integration Test", () => {
       const { email, jwt, salt, address, privateKey } = await setTestJWT(BACKEND_BASE_URL, []);
       await createUser(EUserType.INVESTOR, privateKey, undefined, 4, BACKEND_BASE_URL);
 
-      const newEmail = "mommy@love.test";
+      const newEmail = "mommy2@love.test";
 
       const walletMetaData = {
         walletType: EWalletType.LIGHT,
@@ -256,6 +256,7 @@ describe("Auth - User - Integration Test", () => {
       await apiUserService.updateUser({
         ...currentUser,
         newEmail,
+        salt,
       });
 
       await expectSaga(

@@ -11,6 +11,7 @@ import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { TEtoWithCompanyAndContract } from "../eto/types";
 import { neuCall } from "../sagasUtils";
+import { walletLoginRoutes } from "./../../components/wallet-selector/WalletSelectorLogin/wallet-routes";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
 import { walletSelectorRegisterRedirect } from "./redirects/utils";
 import { GREYP_PREVIEW_CODE, routeAction, routeInternal } from "./sagas";
@@ -421,6 +422,22 @@ export function* loginRoute(payload: RouterState): Generator<any, any, any> {
   const loginMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.login,
   });
+
+  const matchLedgerRoute = yield matchPath(payload.location.pathname, {
+    path: walletLoginRoutes.ledger,
+  });
+
+  const matchBrowserRoute = yield matchPath(payload.location.pathname, {
+    path: walletLoginRoutes.browser,
+  });
+
+  if (matchLedgerRoute) {
+    yield put(actions.walletSelector.loginWithLedger());
+  }
+
+  if (matchBrowserRoute) {
+    yield put(actions.walletSelector.browserWalletSignMessage());
+  }
 
   return yield routeAction(loginMatch, {
     notAuth: undefined,

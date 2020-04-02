@@ -14,11 +14,11 @@ import { ICreateJwtEndpointResponse } from "../../../lib/api/auth/SignatureAuthA
 import { accessWalletAndRunEffect } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
+import { ECommonWalletRegistrationFlowState } from "../../wallet-selector/types";
 import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
 import { AUTH_JWT_TIMING_THRESHOLD, AUTH_TOKEN_REFRESH_THRESHOLD } from "../constants";
 import { JwtNotAvailable, MessageSignCancelledError } from "../errors";
 import { selectJwt } from "../selectors";
-import { ECommonWalletRegistrationFlowState } from "../../wallet-selector/types";
 
 /**
  * Load to store jwt from browser storage

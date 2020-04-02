@@ -24,6 +24,7 @@ import { RecoverLightWalletBase } from "./RecoverLightWalletBase";
 export type TStateProps = {
   errorMessage: TMessage | undefined;
   initialFormValues: TLightWalletFormValues;
+  isLogin?: boolean;
 } & TCommonWalletRegisterData;
 
 export type TDispatchProps = {

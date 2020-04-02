@@ -42,10 +42,18 @@ export const obtainPathComponentsFromDerivationPath = (derivationPath: string) =
   return { basePath: matchResult[1], index: parseInt(matchResult[2], 10) };
 };
 
+/**
+ * Tests the connection of the ledger by first getting the configuration and then attempting to get a random address
+ * @param getTransport
+ */
 export const testConnection = async (getTransport: () => any): Promise<boolean> => {
   try {
     // this check will successfully detect if ledger is locked or disconnected
     await getLedgerConfig(getTransport);
+    const Transport = await getTransport();
+    const ethInstance = new Eth(Transport);
+    await ethInstance.getAddress("44'/60'/0'/0", false, false);
+    await Transport.close();
     return true;
   } catch {
     return false;

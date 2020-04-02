@@ -1,20 +1,22 @@
 import { withContainer } from "@neufund/shared";
-import { branch, compose, renderComponent } from "recompose";
+import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../../../modules/actions";
-import { selectIsMessageSigning } from "../../../../modules/wallet-selector/selectors";
+import { ELogoutReason } from "../../../../modules/auth/types";
+import { selectWalletSelectorData } from "../../../../modules/wallet-selector/selectors";
+import {
+  EBrowserWalletRegistrationFlowState,
+  ECommonWalletRegistrationFlowState,
+  TBrowserWalletRegisterData,
+} from "../../../../modules/wallet-selector/types";
 import { appConnect } from "../../../../store";
-import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { TMessage } from "../../../translatedMessages/utils";
-import { WalletLoading } from "../../shared/WalletLoading";
+import { EContentWidth } from "../../../layouts/Content";
+import { TransitionalLayout, TTransitionalLayoutProps } from "../../../layouts/Layout";
+import { LoadingIndicator } from "../../../shared/loading-indicator";
+import { BrowserWalletError } from "../../shared/browser-wallet/BrowserWalletError";
 import { RegisterBrowserWalletContainer } from "../../WalletSelectorRegister/RegisterBrowserWallet/RegisterBrowserWalletContainer";
-import { BrowserWalletErrorBase } from "../../WalletSelectorRegister/RegisterBrowserWallet/RegisterBrowserWalletError";
 
-export type TWalletBrowserProps = {
-  errorMessage?: TMessage;
-  isLoading: boolean;
-  isMessageSigning: boolean;
-};
+export type TWalletBrowserProps = {};
 
 export type TWalletBrowserDispatchProps = {
   tryConnectingWithBrowserWallet: () => void;
@@ -23,9 +25,7 @@ export type TWalletBrowserDispatchProps = {
 export const LoginBrowserWallet = compose(
   appConnect<TWalletBrowserProps, TWalletBrowserDispatchProps>({
     stateToProps: state => ({
-      errorMessage: state.walletSelector.messageSigningError as TMessage,
-      isLoading: state.walletSelector.isLoading,
-      isMessageSigning: selectIsMessageSigning(state),
+      ...selectWalletSelectorData(state),
     }),
     dispatchToProps: dispatch => ({
       tryConnectingWithBrowserWallet: () => {
@@ -33,18 +33,32 @@ export const LoginBrowserWallet = compose(
       },
     }),
   }),
-  onEnterAction({
-    actionCreator: dispatch => {
-      dispatch(actions.walletSelector.tryConnectingWithBrowserWallet());
-    },
-  }),
-  withContainer(RegisterBrowserWalletContainer),
-  branch<TWalletBrowserProps>(
-    ({ isLoading, isMessageSigning }) => isLoading || isMessageSigning,
-    renderComponent(WalletLoading),
+  branch<TBrowserWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(LoadingIndicator),
   ),
-  branch<TWalletBrowserProps>(
-    ({ errorMessage }) => errorMessage !== undefined,
-    renderComponent(BrowserWalletErrorBase),
+  withContainer(
+    withProps<TTransitionalLayoutProps, { location: { state: { logoutReason: ELogoutReason } } }>(
+      ({ location }) => ({
+        width: EContentWidth.SMALL,
+        isLoginRoute: true,
+        showLogoutReason: !!(
+          location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT
+        ),
+      }),
+    )(TransitionalLayout),
+  ),
+  withContainer(
+    withProps({
+      isLogin: true,
+    })(RegisterBrowserWalletContainer),
+  ),
+  branch<TBrowserWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+    renderComponent(LoadingIndicator),
+  ),
+  branch<TBrowserWalletRegisterData>(
+    ({ uiState }) => uiState === EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
+    renderComponent(BrowserWalletError),
   ),
 )(() => null);

@@ -32,7 +32,7 @@ export function* registerForm(
     baseUiData,
     userEmail,
   }: {
-    afterRegistrationGenerator: () => Generator<any, boolean, any> | undefined;
+    afterRegistrationGenerator: (() => Generator<any, boolean, any>) | undefined;
     expectedAction:
       | typeof actions.walletSelector.lightWalletRegisterFormData
       | typeof actions.walletSelector.browserWalletRegisterFormData;
@@ -85,6 +85,7 @@ export function* registerForm(
           },
         }),
       );
+
       if (!afterRegistrationGenerator) return;
       const result = yield* call(afterRegistrationGenerator);
       if (result) return;

@@ -1,27 +1,3 @@
-.step {
-  text-align: center;
-
-  img {
-    display: inline-block;
-  }
-}
-
-.header {
-  font-size: $bigger-font-size;
-}
-
-.ledger-browser {
-  cursor: pointer;
-}
-
-.drawer-button {
-  margin: 1rem 0 0.5rem;
-  font-size: 1.25rem;
-  padding: 0;
-  border: 0;
-  background-color: transparent;
-}
-
 .notification {
   @include nds-body-small;
   display: flex;
@@ -30,6 +6,7 @@
   justify-content: center;
   text-align: left;
   color: $neu-flamingo-red;
+
   img {
     width: px-to-rem(19px);
     height: px-to-rem(19px);

@@ -9,10 +9,14 @@ import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
 storiesOf("Wallet selector/light/login", module)
   .add("Without email set", () => (
-    <MissingEmailLightWallet goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")} />
+    <MissingEmailLightWallet
+      goToPasswordRecovery={action("GO_TO_PASSWORD_RECOVERY")}
+      shouldShowWalletSelector={true}
+    />
   ))
   .add("With valid mail set", () => (
     <LoginLightWalletComponent
+      showWalletSelector={true}
       isLoading={false}
       errorMsg={undefined}
       email="mail@neufund.org"
@@ -23,6 +27,7 @@ storiesOf("Wallet selector/light/login", module)
   ))
   .add("With password error", () => (
     <LoginLightWalletComponent
+      showWalletSelector={true}
       isLoading={false}
       errorMsg={{ messageType: "lightWalletWrongPassword" } as TMessage}
       email="mail@neufund.org"

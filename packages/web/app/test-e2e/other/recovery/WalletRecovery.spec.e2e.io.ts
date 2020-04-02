@@ -11,9 +11,9 @@ import {
   goToUserAccountSettings,
   lightWalletTypePasswordRegistration,
   lightWalletTypeRegistrationInfo,
+  logoutViaAccountMenu,
   tid,
   typeLightwalletRecoveryPhrase,
-  logoutViaAccountMenu,
 } from "../../utils/index";
 import { DEFAULT_HD_PATH } from "./../../utils/constants";
 
@@ -58,7 +58,7 @@ describe("Wallet recovery", function(): void {
     );
   });
 
-  it.only("should recover the same account twice #backup #p2", () => {
+  it("should recover the same account twice #backup #p2", () => {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";

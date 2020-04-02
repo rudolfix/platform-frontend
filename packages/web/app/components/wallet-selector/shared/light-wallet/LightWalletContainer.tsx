@@ -2,13 +2,13 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EWalletType } from "../../../../modules/web3/types";
-import { WalletChooser } from "../../shared/WalletChooser";
-import { TStateProps } from "./RegisterLightWallet";
+import { TStateProps } from "../../WalletSelectorRegister/RegisterLightWallet/RegisterLightWallet";
+import { WalletChooser } from "../WalletChooser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
-export const RegisterLightWalletContainer: React.FunctionComponent<TStateProps> = ({
-  rootPath,
+export const LightWalletContainer: React.FunctionComponent<TStateProps> = ({
+  isLogin,
   showWalletSelector,
   children,
 }) => (
@@ -23,9 +23,7 @@ export const RegisterLightWalletContainer: React.FunctionComponent<TStateProps> 
         </p>
         {children}
       </section>
-      {showWalletSelector && (
-        <WalletChooser rootPath={rootPath!} activeWallet={EWalletType.LIGHT} />
-      )}
+      {showWalletSelector && <WalletChooser isLogin={isLogin!} activeWallet={EWalletType.LIGHT} />}
     </div>
   </>
 );

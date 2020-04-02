@@ -9,6 +9,7 @@ import * as fetch from "node-fetch";
 import "reflect-metadata";
 import * as sinonChai from "sinon-chai";
 
+chai.config.truncateThreshold = 0;
 interface IGlobalWithWindow extends NodeJS.Global {
   window: Window;
   // Window object is injected later

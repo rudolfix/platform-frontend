@@ -115,7 +115,7 @@ export function* handleLightWalletError({ logger }: TGlobalDependencies, e: Erro
 export function* lightWalletLoginWatch(
   { web3Manager, lightWalletConnector, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.walletSelector.lightWalletLogin>,
-): Generator<any, any, any> {
+): Generator<any, void, any> {
   const { password } = action.payload;
 
   try {

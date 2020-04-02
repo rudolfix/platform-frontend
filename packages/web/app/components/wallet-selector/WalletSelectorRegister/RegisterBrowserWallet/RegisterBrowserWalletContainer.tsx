@@ -2,31 +2,27 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import { selectIsLoginRoute } from "../../../../modules/wallet-selector/selectors";
 import { EWalletType } from "../../../../modules/web3/types";
-import { appConnect } from "../../../../store";
 import { WalletChooser } from "../../shared/WalletChooser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 export type TWalletBrowserBaseExternalProps = {
-  rootPath?: string | undefined;
   showWalletSelector: boolean | undefined;
+  isLogin: boolean;
 };
 
-type TWalletBrowserBaseStateProps = {
-  isLoginRoute: boolean;
-};
+export type TWalletBrowserBaseProps = TWalletBrowserBaseExternalProps;
 
-export type TWalletBrowserBaseProps = TWalletBrowserBaseExternalProps &
-  TWalletBrowserBaseStateProps;
-
-export const RegisterBrowserWalletContainerComponent: React.FunctionComponent<TWalletBrowserBaseExternalProps &
-  TWalletBrowserBaseStateProps> = ({ rootPath, showWalletSelector, children, isLoginRoute }) => (
+export const RegisterBrowserWalletContainer: React.FunctionComponent<TWalletBrowserBaseExternalProps> = ({
+  showWalletSelector,
+  children,
+  isLogin,
+}) => (
   <>
     <div className={styles.wrapper} data-test-id="wallet-selector">
       <h1 className={styles.title}>
-        {isLoginRoute ? (
+        {isLogin ? (
           <FormattedMessage id="wallet-selector.login.metamask" />
         ) : (
           <FormattedMessage id="wallet-selector.sign-up.metamask" />
@@ -45,15 +41,7 @@ export const RegisterBrowserWalletContainerComponent: React.FunctionComponent<TW
           />
         </p>
       </section>
-      {showWalletSelector && (
-        <WalletChooser rootPath={rootPath!} activeWallet={EWalletType.BROWSER} />
-      )}
+      {showWalletSelector && <WalletChooser isLogin={isLogin} activeWallet={EWalletType.BROWSER} />}
     </div>
   </>
 );
-
-export const RegisterBrowserWalletContainer = appConnect<TWalletBrowserBaseStateProps>({
-  stateToProps: s => ({
-    isLoginRoute: selectIsLoginRoute(s.router),
-  }),
-})(RegisterBrowserWalletContainerComponent);

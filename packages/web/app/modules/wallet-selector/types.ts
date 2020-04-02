@@ -49,7 +49,6 @@ export type TLightWalletFormValues = {
 // TODO: Setup the types in a way where only
 export type TCommonWalletRegisterData = {
   showWalletSelector?: boolean | undefined;
-  rootPath?: string | undefined;
   initialFormValues?: TBrowserWalletFormValues | TLightWalletFormValues;
 };
 

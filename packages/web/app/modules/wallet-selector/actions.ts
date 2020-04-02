@@ -25,6 +25,7 @@ const actions = {
   registerWithLedger: createActionFactory("REGISTER_WITH_LEDGER", (userType: EUserType) => ({
     userType,
   })),
+  loginWithLedger: createActionFactory("LOGIN_WITH_LEDGER"),
   setWalletRegisterData: createActionFactory(
     "SET_WALLET_REGISTER_DATA",
     (data: TWalletRegisterData) => ({ data } as const),

@@ -7,9 +7,8 @@
   display: grid;
   grid-gap: px-to-rem(24);
   grid-auto-flow: row;
-  justify-items: center;
-
   font-size: px-to-rem(16);
+  justify-content: center;
 
   p {
     margin: 0;
@@ -63,7 +62,6 @@
     height: px-to-rem(19px);
     margin-right: 5px;
     margin-left: auto;
-    margin-bottom: px-to-rem(45px);
   }
 }
 
@@ -76,6 +74,7 @@
 .help {
   font-family: $font-family-roboto;
   font-size: px-to-rem(14);
+  text-align: center;
 }
 
 .wallet-chooser {

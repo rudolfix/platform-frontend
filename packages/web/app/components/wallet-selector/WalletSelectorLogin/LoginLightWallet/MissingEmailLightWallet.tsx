@@ -2,11 +2,15 @@ import { ButtonInline } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
+import { EWalletType } from "../../../../modules/web3/types";
+import { WalletChooser } from "../../shared/WalletChooser";
+
 import mailLink from "../../../../assets/img/login-link.svg";
 import * as styles from "./MissingEmailLightWallet.module.scss";
 
 type TExternalProps = {
   goToPasswordRecovery: () => void;
+  shouldShowWalletSelector: boolean;
 };
 
 export const MissingEmailLightWallet: React.FunctionComponent<TExternalProps> = ({
@@ -33,6 +37,7 @@ export const MissingEmailLightWallet: React.FunctionComponent<TExternalProps> = 
           }}
         />
       </p>
+      <WalletChooser isLogin={true} activeWallet={EWalletType.LIGHT} />
     </section>
   </>
 );

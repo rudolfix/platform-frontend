@@ -18,12 +18,9 @@ import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary
 import { ErrorBoundaryLayout } from "../../../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
+import { BrowserWalletError } from "../../shared/browser-wallet/BrowserWalletError";
 import { WalletLoading } from "../../shared/WalletLoading";
-import {
-  RegisterBrowserWalletContainer,
-  TWalletBrowserBaseExternalProps,
-} from "./RegisterBrowserWalletContainer";
-import { RegisterBrowserWalletError } from "./RegisterBrowserWalletError";
+import { RegisterBrowserWalletContainer } from "./RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "./RegisterBrowserWalletForm";
 
 interface IStateProps {
@@ -53,6 +50,10 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
         dispatch(actions.walletSelector.browserWalletRegisterFormData(email, tos)),
     }),
   }),
+  branch<TBrowserWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(WalletLoading),
+  ),
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),
@@ -60,20 +61,10 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
     renderComponent(LoadingIndicator),
   ),
-  branch<TBrowserWalletRegisterData>(
-    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
-    renderComponent(WalletLoading),
-  ),
   withContainer(
-    withProps<TWalletBrowserBaseExternalProps, TWalletBrowserBaseExternalProps>(
-      ({
-        rootPath,
-        showWalletSelector,
-      }: TWalletBrowserBaseExternalProps): TWalletBrowserBaseExternalProps => ({
-        rootPath,
-        showWalletSelector,
-      }),
-    )(RegisterBrowserWalletContainer),
+    withProps({
+      isLogin: false,
+    })(RegisterBrowserWalletContainer),
   ),
   branch<TBrowserWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
@@ -94,6 +85,6 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
   ),
   branch<TBrowserWalletRegisterData>(
     ({ uiState }) => uiState === EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
-    renderComponent(RegisterBrowserWalletError),
+    renderComponent(BrowserWalletError),
   ),
 )(shouldNeverHappen("RegisterBrowserWallet reached default branch"));

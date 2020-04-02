@@ -18,7 +18,7 @@ export interface ILedgerWizardState {
   isInitialConnectionInProgress: boolean;
   isConnectionEstablished: boolean;
   errorMsg?: TMessage;
-  isLoadingAddresses: boolean;
+  isLoading: boolean;
   derivationPathPrefix: string; // TODO: it can be optional, not required for advanced - false
   index: number; // TODO: it can be optional, not required for advanced - false
   numberOfAccountsPerPage: number; // TODO: it can be optional, not required for advanced - false
@@ -27,9 +27,9 @@ export interface ILedgerWizardState {
 }
 
 export const ledgerWizardInitialState: ILedgerWizardState = {
-  isInitialConnectionInProgress: false,
+  isInitialConnectionInProgress: true,
   isConnectionEstablished: false,
-  isLoadingAddresses: false,
+  isLoading: false,
   derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
   index: 0,
   numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
@@ -42,17 +42,11 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
   action,
 ): DeepReadonly<ILedgerWizardState> => {
   switch (action.type) {
-    case actions.walletSelector.ledgerTryEstablishingConnectionWithLedger.getType():
-      return {
-        ...ledgerWizardInitialState,
-        isInitialConnectionInProgress: true,
-      };
-    case "LEDGER_CONNECTION_ESTABLISHED":
+    case actions.walletSelector.ledgerLoadAccounts.getType():
+    case actions.walletSelector.ledgerFinishSettingUpLedgerConnector.getType():
       return {
         ...state,
-        isInitialConnectionInProgress: false,
-        isConnectionEstablished: true,
-        errorMsg: undefined,
+        isLoading: true,
       };
     case "LEDGER_CONNECTION_ESTABLISHED_ERROR":
       return {
@@ -66,14 +60,15 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         ...state,
         index: state.index + 1,
         accounts: [],
-        isLoadingAddresses: true,
+        isLoading: true,
+        isInitialConnectionInProgress: false,
       };
     case "LEDGER_WIZARD_ACCOUNTS_LIST_PREVIOUS_PAGE":
       return {
         ...state,
         index: state.index === 0 ? state.index : state.index - 1,
         accounts: [],
-        isLoadingAddresses: true,
+        isLoading: true,
       };
     case "SET_LEDGER_WIZARD_ACCOUNTS": {
       // There is a possibility of race condition in the app when we get account lists from ledger which is async
@@ -83,16 +78,11 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         return {
           ...state,
           accounts: action.payload.accounts,
-          isLoadingAddresses: false,
+          isLoading: false,
+          isInitialConnectionInProgress: false,
         };
       }
       break;
-    }
-    case actions.walletSelector.ledgerLoadAccounts.getType(): {
-      return {
-        ...state,
-        isLoadingAddresses: true,
-      };
     }
     case "SET_LEDGER_WIZARD_DERIVATION_PATH_PREFIX":
       return {
@@ -100,18 +90,20 @@ export const ledgerWizardReducer: AppReducer<ILedgerWizardState> = (
         derivationPathPrefix: action.payload.derivationPathPrefix,
         index: 0,
         accounts: [],
-        isLoadingAddresses: true,
+        isLoading: true,
+        isInitialConnectionInProgress: false,
       };
     case "LEDGER_WIZARD_DERIVATION_PATH_PREFIX_ERROR":
       return {
         ...state,
         derivationPathPrefix: "",
+        isInitialConnectionInProgress: false,
         accounts: [],
       };
     case "TOGGLE_LEDGER_WIZARD_ADVANCED":
       return {
         ...state,
-        isLoadingAddresses: true,
+        isLoading: true,
         advanced: !state.advanced,
       };
   }

@@ -5,10 +5,10 @@ import { EWalletType } from "../../../../../modules/web3/types";
 import { WalletChooser } from "../../../shared/WalletChooser";
 import { TStateProps } from "./RestoreLightWallet";
 
-import * as styles from "../../../shared/RegisterWalletSelector.module.scss";
+import styles from "../../../shared/RegisterWalletSelector.module.scss";
 
 export const RecoverLightWalletBase: React.FunctionComponent<TStateProps> = ({
-  rootPath,
+  isLogin,
   showWalletSelector,
   children,
 }) => (
@@ -23,9 +23,7 @@ export const RecoverLightWalletBase: React.FunctionComponent<TStateProps> = ({
         </p>
         {children}
       </section>
-      {showWalletSelector && (
-        <WalletChooser rootPath={rootPath!} activeWallet={EWalletType.LIGHT} />
-      )}
+      {showWalletSelector && <WalletChooser isLogin={isLogin!} activeWallet={EWalletType.LIGHT} />}
     </div>
   </>
 );

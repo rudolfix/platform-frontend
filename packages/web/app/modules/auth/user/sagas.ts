@@ -2,7 +2,6 @@ import { call, delay, fork, put, race, select, take } from "@neufund/sagas";
 import { assertNever, EJwtPermissions, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IUser } from "../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../lib/api/users/UsersApi";
@@ -243,23 +242,6 @@ export function mapSignInErrors(e: Error): SignInUserErrorMessage {
     return SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT;
   } else {
     return SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE;
-  }
-}
-
-export function* handleSignInUser(
-  { logger }: TGlobalDependencies,
-  userType: EUserType,
-  email?: string,
-  tos = false,
-): Generator<any, void, any> {
-  try {
-    yield neuCall(signInUser, userType, email, tos);
-  } catch (e) {
-    logger.error("User Sign in error", e);
-
-    const error = yield mapSignInErrors(e);
-
-    yield put(actions.walletSelector.messageSigningError(createMessage(error)));
   }
 }
 

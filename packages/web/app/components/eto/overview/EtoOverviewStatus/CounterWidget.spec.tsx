@@ -203,8 +203,9 @@ describe("EtoStatusManager state change", () => {
     );
 
     expect(component.find(tid("eto-overview-status-whitelisting-limit-reached")).length).to.eq(2);
-    expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(1);
+    expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(0);
     expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
+    expect(component.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.not.be.called;
 
     await clock.fakeClock.tickAsync(3000);
@@ -212,7 +213,8 @@ describe("EtoStatusManager state change", () => {
 
     expect(component.find(tid("eto-overview-status-whitelisting-limit-reached")).length).to.eq(2);
     expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(0);
-    expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(1);
+    expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
+    expect(component.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.be.calledOnceWith(props.eto.previewCode);
   });
 
@@ -251,7 +253,7 @@ describe("EtoStatusManager state change", () => {
     );
 
     expect(component.find(tid("eto-overview-status-whitelisting-suspended")).length).to.eq(2);
-    expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(1);
+    expect(component.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
     expect(actions.eto.loadEtoPreview).to.not.be.called;
 
@@ -267,7 +269,8 @@ describe("EtoStatusManager state change", () => {
       2,
     );
     expect(componentUpdated.find(tid("eto-whitelist-countdown")).length).to.eq(0);
-    expect(componentUpdated.find(tid("eto-whitelist-countdown-finished")).length).to.eq(1);
+    expect(componentUpdated.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
+    expect(componentUpdated.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.be.calledOnceWith(props.eto.previewCode);
   });
 

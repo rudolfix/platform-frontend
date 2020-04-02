@@ -11,7 +11,10 @@ import {
   selectNomineeActiveEtoPreviewCode,
 } from "../../nominee-flow/selectors";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
-import { calculateCampaignOverviewDataIssuerNominee } from "../shared/sagas";
+import {
+  calculateCampaignOverviewDataIssuerNominee,
+  performLoadEtoSideEffects,
+} from "../shared/sagas";
 import { EEtoViewType, TCampaignOverviewData } from "../shared/types";
 
 export function* loadNomineeEtoView({
@@ -43,6 +46,8 @@ export function* loadNomineeEtoView({
         calculateCampaignOverviewDataIssuerNominee,
         eto,
       );
+
+      yield* performLoadEtoSideEffects(eto);
 
       yield put(
         actions.etoView.setEtoViewData({

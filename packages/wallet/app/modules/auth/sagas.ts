@@ -1,12 +1,4 @@
-import {
-  takeLeading,
-  put,
-  fork,
-  call,
-  neuCall,
-  SagaGenerator,
-  TActionFromCreator,
-} from "@neufund/sagas";
+import { takeLeading, put, call, neuCall, SagaGenerator, TActionFromCreator } from "@neufund/sagas";
 import {
   coreModuleApi,
   neuGetBindings,
@@ -15,7 +7,11 @@ import {
   EWalletType,
   EWalletSubType,
 } from "@neufund/shared-modules";
-import { isJwtExpiringLateEnough } from "@neufund/shared";
+import {
+  isJwtExpiringLateEnough,
+  toEthereumPrivateKey,
+  toEthereumHDMnemonic,
+} from "@neufund/shared";
 
 import { walletEthModuleApi } from "../eth/module";
 import { authActions } from "./actions";
@@ -51,11 +47,11 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
 
   yield* call(() => ethManager.plugExistingWallet());
 
-  const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);
+  const jwt = yield* neuCall(authModuleAPI.sagas.loadJwt);
   // if JWT is already in the store and it's won't expire soon
   // then just feed state with the current jwt
   if (jwt && isJwtExpiringLateEnough(jwt)) {
-    yield neuCall(authModuleAPI.sagas.setJwt, jwt);
+    yield* neuCall(authModuleAPI.sagas.setJwt, jwt);
   } else {
     yield* call(authModuleAPI.sagas.createJwt, []);
   }
@@ -85,7 +81,7 @@ function* createNewAccount(): SagaGenerator<void> {
 }
 
 function* importNewAccount(
-  action: TActionFromCreator<typeof authActions.importNewAccount, typeof authActions>,
+  action: TActionFromCreator<typeof authActions, typeof authActions.importNewAccount>,
 ): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
@@ -98,11 +94,15 @@ function* importNewAccount(
 
     switch (importPhraseType) {
       case EImportPhrase.PRIVATE_KEY:
-        yield* call(() => ethManager.plugNewWalletFromPrivateKey(privateKeyOrMnemonic));
+        yield* call(() =>
+          ethManager.plugNewWalletFromPrivateKey(toEthereumPrivateKey(privateKeyOrMnemonic)),
+        );
 
         break;
       case EImportPhrase.MNEMONICS:
-        yield* call(() => ethManager.plugNewWalletFromMnemonic(privateKeyOrMnemonic));
+        yield* call(() =>
+          ethManager.plugNewWalletFromMnemonic(toEthereumHDMnemonic(privateKeyOrMnemonic)),
+        );
 
         break;
       default:

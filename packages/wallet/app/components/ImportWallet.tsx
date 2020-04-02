@@ -1,14 +1,5 @@
-import { useHeaderHeight } from "@react-navigation/stack";
-import { useSafeArea } from "react-native-safe-area-context";
 import * as React from "react";
-import {
-  StyleSheet,
-  KeyboardAvoidingView,
-  View,
-  SafeAreaView,
-  Platform,
-  InteractionManager,
-} from "react-native";
+import { StyleSheet, InteractionManager } from "react-native";
 import { authModuleAPI, EAuthState } from "../modules/auth/module";
 import { appConnect } from "../store/utils";
 import { baseGray } from "../styles/colors";
@@ -29,7 +20,10 @@ type TDispatchProps = {
   importExistingAccount: (privateKeyOrMnemonic: string) => void;
 };
 
-const ImportWalletLayout: React.FunctionComponent = ({ authState, importExistingAccount }) => {
+const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+  authState,
+  importExistingAccount,
+}) => {
   const inputRef = React.useCallback((ref: TComponentRefType<typeof TextAreaInput>) => {
     InteractionManager.runAfterInteractions(() => {
       if (ref) {

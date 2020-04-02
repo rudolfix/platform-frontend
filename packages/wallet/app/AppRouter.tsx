@@ -6,6 +6,7 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import { appRoutes, tabConfig } from "./appRoutes";
 import { LandingScreen } from "./components/landing/LandingScreen";
 import { QRCode } from "./components/QRCode";
+import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { Icon } from "./components/shared/Icon";
 import { typographyStyles } from "./styles/typography";
 import { useTheme } from "./themes/ThemeProvider";
@@ -89,10 +90,17 @@ const AppNoAuthRouter: React.FunctionComponent = () => (
       ...TransitionPresets.ModalPresentationIOS,
     })}
     mode="modal"
-    headerMode="none"
   >
-    <NoAuthStack.Screen name={appRoutes.landing} component={LandingScreen} />
-    <NoAuthStack.Screen name={appRoutes.importWallet} component={ImportWallet} />
+    <NoAuthStack.Screen
+      name={appRoutes.landing}
+      component={LandingScreen}
+      options={{ headerShown: false }}
+    />
+    <NoAuthStack.Screen
+      name={appRoutes.importWallet}
+      component={ImportWallet}
+      options={{ title: "Import", header: ModalStackHeader }}
+    />
   </NoAuthStack.Navigator>
 );
 

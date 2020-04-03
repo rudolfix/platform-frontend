@@ -8,4 +8,4 @@ import "../app/components/shared/forms/layouts/TextInput.stories";
 import "../app/components/shared/forms/layouts/TextAreaInput.stories";
 import "../app/components/shared/forms/layouts/HelperText.stories";
 import "../app/components/shared/forms/layouts/Label.stories";
-import "../app/components/shared/forms/layouts/Field.stories";
+import "../app/components/shared/forms/layouts/FieldLayout.stories";

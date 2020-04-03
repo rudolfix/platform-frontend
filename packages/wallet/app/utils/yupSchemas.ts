@@ -1,6 +1,7 @@
 // TODO: When web migrates to the newest formik move `yupSchemas` to the shared
 
 import { Primitive, Tuple } from "@neufund/shared";
+import { TestOptionsMessage } from "yup";
 import * as yup from "yup";
 import isArray from "lodash/fp/isArray";
 
@@ -38,11 +39,11 @@ export type InferTypeWithPrimitive<T> = T extends yup.Schema<infer P>
  * oneOfTypeSchema.isValidSync(100); // true
  * oneOfTypeSchema.isValidSync({ foo: "bar" }); // true
  */
-const oneOfSchema = <T extends yup.Schema<any>>(schemas: T[]) =>
+const oneOfSchema = <T extends yup.Schema<any>>(schemas: T[], message?: TestOptionsMessage) =>
   yup.mixed<InferTypeWithPrimitive<T>>().test({
     name: "oneOfSchema",
     exclusive: true,
-    message: "${path} must much one of schemas",
+    message: message ?? "${path} must much one of schemas",
     test: value => {
       // always allow undefined and null
       if (isAbsent(value)) {
@@ -128,7 +129,7 @@ const typedValue = <T>(isValid: (value: unknown) => value is T) =>
   yup.mixed<T>().test({
     name: "typedValue",
     exclusive: true,
-    message: "${path} must much one a valid typed value",
+    message: "${path} must be a valid typed value",
     test: value => {
       // always allow undefined and null
       if (isAbsent(value)) {

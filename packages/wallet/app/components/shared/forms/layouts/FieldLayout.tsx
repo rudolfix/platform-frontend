@@ -40,7 +40,7 @@ const getInput = ({ type, ...rest }: TInputProps) => {
 /**
  * A wrapper around label, input, help text and error message to just provide single top level api to be used in components
  */
-const Field: React.FunctionComponent<TExternalProps> = ({
+const FieldLayout: React.FunctionComponent<TExternalProps> = ({
   style,
   label,
   errorMessage,
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Field, EFieldType };
+export { FieldLayout, EFieldType };

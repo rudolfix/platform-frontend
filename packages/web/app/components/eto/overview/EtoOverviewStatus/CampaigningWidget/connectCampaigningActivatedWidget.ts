@@ -94,7 +94,8 @@ const connectCampaigningActivatedWidget = (
         isInvestor,
       }) => {
         const bookbuildingLimitReached =
-          investorsCount !== undefined && investorsLimit - investorsCount === 0;
+          investorsCount !== undefined ? investorsLimit - investorsCount === 0 : undefined;
+
         return {
           whitelistingState: calculateWhitelistingState({
             canEnableBookbuilding,

@@ -33,13 +33,13 @@ function* initStartSaga({ logger, ethManager }: TGlobalDependencies): Generator<
     //   "timber rely gap brown useful craft level lounge volume vote flush punch vanish casino fold cliff hollow maximum flip coast barrel copy quit globe",
     // );
 
-    yield ethManager.sendTransaction({
-      to: toEthereumAddress("0x7824e49353BD72E20B61717cf82a06a4EEE209e8"),
-      gasLimit: "0x21000",
-      gasPrice: "0x20000000000",
-      from: toEthereumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
-      value: "0x1000000000000000000",
-    });
+    // yield ethManager.sendTransaction({
+    //   to: toEthereumAddress("0x7824e49353BD72E20B61717cf82a06a4EEE209e8"),
+    //   gasLimit: "0x21000",
+    //   gasPrice: "0x20000000000",
+    //   from: toEthereumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
+    //   value: "0x1000000000000000000",
+    // });
 
     yield put(initActions.done());
   } catch (e) {

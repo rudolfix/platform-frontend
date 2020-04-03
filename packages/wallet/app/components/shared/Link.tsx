@@ -1,8 +1,8 @@
 import { XOR } from "@neufund/shared";
 import * as React from "react";
-import { StyleSheet, Text, TouchableHighlight, Linking, GestureResponderEvent } from "react-native";
+import { GestureResponderEvent, Linking, StyleSheet, Text, TouchableHighlight } from "react-native";
 
-import { baseGray, grayLighter2, transparent } from "../../styles/colors";
+import { baseGray, grayLighter2 } from "../../styles/colors";
 import { typographyStyles } from "../../styles/typography";
 
 type TouchableHighlightProps = React.ComponentProps<typeof TouchableHighlight>;
@@ -42,7 +42,7 @@ const Link: React.FunctionComponent<TExternalProps> = React.forwardRef<
       ref={ref}
       style={[styles.link]}
       activeOpacity={1}
-      underlayColor={transparent}
+      underlayColor="transparent"
       accessibilityRole="link"
       accessibilityComponentType="button"
       accessibilityTraits={props.disabled ? ["link", "disabled"] : "link"}

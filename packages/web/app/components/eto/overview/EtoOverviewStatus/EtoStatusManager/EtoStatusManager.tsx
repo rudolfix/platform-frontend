@@ -5,6 +5,7 @@ import { compose } from "recompose";
 import { selectEtoOnChainStateById } from "../../../../../modules/eto/selectors";
 import {
   EETOStateOnChain,
+  EEtoSubState,
   TEtoWithCompanyAndContractReadonly,
 } from "../../../../../modules/eto/types";
 import { isOnChain } from "../../../../../modules/eto/utils";
@@ -54,8 +55,17 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
 
   switch (timedState) {
     case EETOStateOnChain.Setup: {
+      let nextStateStartDate;
       const nextState = isEligibleToPreEto ? EETOStateOnChain.Whitelist : EETOStateOnChain.Public;
-      const nextStateStartDate = eto.contract ? eto.contract.startOfStates[nextState] : undefined;
+
+      const isNextStateStartDateSet =
+        eto.contract &&
+        (eto.subState === EEtoSubState.COUNTDOWN_TO_PRESALE ||
+          eto.subState === EEtoSubState.COUNTDOWN_TO_PUBLIC_SALE);
+
+      if (isNextStateStartDateSet) {
+        nextStateStartDate = eto.contract!.startOfStates[nextState];
+      }
 
       return (
         <CampaigningActivatedWidget

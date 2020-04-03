@@ -188,6 +188,10 @@ export function* handleLogOutUserInternal(
       yield put(actions.routing.goHome());
     }
       break;
+    case ELogoutReason.WC_PEER_DISCONNECTED: {
+      yield put(actions.routing.goHome());
+    }
+      break;
     case ELogoutReason.SESSION_TIMEOUT:
       yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
       break;

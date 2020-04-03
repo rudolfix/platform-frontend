@@ -12,6 +12,7 @@ import { actions, TActionFromCreator } from "../../actions";
 import { handleLogOutUserInternal } from "../../auth/user/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { walletSelectorConnect } from "../sagas";
+import { ELogoutReason } from "../../auth/types";
 
 function* startWalletConnectEventChannel(
   _: TGlobalDependencies,
@@ -117,11 +118,17 @@ export function* walletConnectCancelSession(
   }
 }
 
+export function* logutOnWalletDisconnect(
+  _: TGlobalDependencies
+): Generator<any, void, any> {
+  yield neuCall(handleLogOutUserInternal, ELogoutReason.WC_PEER_DISCONNECTED)
+}
+
 export function* walletConnectSagas(): Generator<any, void, any> {
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);//todo stop on route change
   yield fork(neuTakeLatest, actions.walletSelector.walletConnectRestoreConnection, walletConnectInit);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStop, walletConnectStop);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectSessionRequestTimeout, walletConnectCancelSession);
-  yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, handleLogOutUserInternal );//fixme add reason
+  yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, logutOnWalletDisconnect );//fixme add reason
   yield fork(neuTakeLatestUntil, actions.walletSelector.walletConnectStartEventListeners, actions.auth.reset, startWalletConnectEventChannel);
 }

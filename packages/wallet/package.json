@@ -49,6 +49,7 @@
     "@neufund/shared-modules": "^1.0.0",
     "@react-native-community/async-storage": "^1.8.0",
     "@react-native-community/masked-view": "^0.1.6",
+    "@react-navigation/bottom-tabs": "^5.0.1",
     "@react-navigation/native": "^5.0.1",
     "@react-navigation/stack": "^5.0.1",
     "@walletconnect/react-native": "^1.0.0-beta.47",
@@ -67,6 +68,8 @@
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.7.2",
     "react-native-screens": "^2.0.0-beta.2",
+    "react-native-svg": "^12.0.3",
+    "react-native-svg-transformer": "^0.14.3",
     "react-redux": "^6.0.0",
     "recompose": "^0.30.0",
     "reselect": "^4.0.0",
@@ -112,7 +115,8 @@
     "react-test-renderer": "16.9.0",
     "ts-jest": "^25.2.1",
     "typedoc": "^0.16.10",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "metro-config": "^0.56.0"
   },
   "workspaces": {
     "nohoist": [

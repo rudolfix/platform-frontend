@@ -99,6 +99,7 @@ function* restoreUserSession({
 
 function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
   try {
+    yield put(actions.init.startServices());
     yield neuCall(detectUserAgent);
     const wcSession = yield neuCall(loadWalletConnectSession);
     const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);

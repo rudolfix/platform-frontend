@@ -181,7 +181,6 @@ export function* handleLogOutUserInternal(
   logoutType:ELogoutReason
 ):Generator<any, void,any>{
   yield neuCall(logoutUser);
-  //TODO need to decide how logout is initiated (by wallet or saga); //yield neuCall(logoutUser);
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED: {
@@ -189,7 +188,7 @@ export function* handleLogOutUserInternal(
     }
       break;
     case ELogoutReason.WC_PEER_DISCONNECTED: {
-      yield put(actions.routing.goHome());
+      yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.WC_PEER_DISCONNECTED }));
     }
       break;
     case ELogoutReason.SESSION_TIMEOUT:
@@ -270,6 +269,6 @@ function* profileMonitor({ logger }: TGlobalDependencies): Generator<any, any, a
 export function* authUserSagas(): Generator<any, any, any> {
   yield fork(neuTakeLatest, actions.auth.logout, handleLogOutUser);
   yield fork(neuTakeEvery, actions.auth.setUser, setUser);
-  yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, waitForUserActiveOrLogout);
-  yield fork(neuTakeLatestUntil, actions.auth.setUser, actions.auth.logout, profileMonitor);
+  yield fork(neuTakeUntil, actions.auth.setUser, actions.init.stopServices, waitForUserActiveOrLogout);
+  yield fork(neuTakeLatestUntil, actions.auth.setUser, actions.init.stopServices, profileMonitor);
 }

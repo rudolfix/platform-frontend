@@ -34,6 +34,8 @@ export function* logoutUser({
   logger,
   userStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
+  yield put(actions.init.stopServices());
+
   const userWallet = yield* select(selectWalletType);
   if (userWallet === EWalletType.WALLETCONNECT){
     yield neuCall(walletConnectStop);

@@ -7,6 +7,7 @@ import { actions } from "../actions";
 export enum EAuthStatus {
   AUTHORIZED = "authorized",
   NON_AUTHORIZED = "non-authorized",
+  LOGOUT_IN_PROGRESS = "logoutInProgress"
 }
 
 export interface IAuthState {
@@ -30,6 +31,16 @@ export const authReducer: AppReducer<IAuthState> = (
       return {
         ...state,
         user: action.payload.user,
+      };
+    case actions.auth.logout.getType():
+      return {
+        ...state,
+        status: EAuthStatus.LOGOUT_IN_PROGRESS,
+      };
+    case actions.auth.logoutDone.getType():
+      return {
+        ...state,
+        status: EAuthStatus.NON_AUTHORIZED, //fixme is this necessary or there's a global state reset?
       };
     case actions.auth.finishSigning.getType():
       return {

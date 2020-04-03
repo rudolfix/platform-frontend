@@ -121,6 +121,7 @@ export function* walletConnectCancelSession(
 export function* logutOnWalletDisconnect(
   _: TGlobalDependencies
 ): Generator<any, void, any> {
+  console.log('---logutOnWalletDisconnect')
   yield neuCall(handleLogOutUserInternal, ELogoutReason.WC_PEER_DISCONNECTED)
 }
 

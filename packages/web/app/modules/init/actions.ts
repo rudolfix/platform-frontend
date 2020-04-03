@@ -9,4 +9,6 @@ export const initActions = {
     initType,
     errorMsg,
   })),
+  startServices: createActionFactory("START_SERVICES"),
+  stopServices: createActionFactory("STOP_SERVICES")
 };

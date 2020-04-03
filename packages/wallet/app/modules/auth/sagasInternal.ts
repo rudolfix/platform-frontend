@@ -13,11 +13,7 @@ function* loadOrCreateUser(): SagaGenerator<void> {
     logger: coreModuleApi.symbols.logger,
   });
 
-  logger.info("Generating new JWT token");
-
-  yield* call(authModuleAPI.sagas.createJwt, []);
-
-  logger.info("Loading or creating new user");
+  logger.info("Loading or creating new mobile app user");
 
   yield* call(authModuleAPI.sagas.loadOrCreateUser, {
     userType: EUserType.INVESTOR,

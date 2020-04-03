@@ -41,7 +41,7 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
   }
 
   // given that user may already exist just load the user from database
-  yield* call(authModuleAPI.sagas.loadOrCreateUser);
+  yield* call(loadOrCreateUser);
 
   yield put(authActions.signed());
 }
@@ -56,6 +56,10 @@ function* createNewAccount(): SagaGenerator<void> {
     logger.info("Plugging random wallet");
 
     yield* call(() => ethManager.plugNewRandomWallet());
+
+    logger.info("Generating new JWT token");
+
+    yield* call(authModuleAPI.sagas.createJwt, []);
 
     logger.info("Creating new user");
 
@@ -101,6 +105,10 @@ function* importNewAccount(
       default:
         throw new InvalidImportPhraseError();
     }
+
+    logger.info("Generating new JWT token");
+
+    yield* call(authModuleAPI.sagas.createJwt, []);
 
     logger.info("Creating or loading new user");
 

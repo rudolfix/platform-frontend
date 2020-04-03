@@ -25,6 +25,8 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
   importExistingAccount,
 }) => {
   const inputRef = React.useCallback((ref: TComponentRefType<typeof TextAreaInput>) => {
+    // focus needs to be done after all stack related animations have been finished
+    // otherwise the input got's blurred almost immediately
     InteractionManager.runAfterInteractions(() => {
       if (ref) {
         ref.focus();

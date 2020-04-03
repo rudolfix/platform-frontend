@@ -7,7 +7,6 @@ export const spacing4 = spacing2 * 3; // 24
 export const spacing5 = spacing2 * 4; // 32
 
 export const spacingStyles = StyleSheet.create({
-
   mb1: {
     marginBottom: spacing1,
   },

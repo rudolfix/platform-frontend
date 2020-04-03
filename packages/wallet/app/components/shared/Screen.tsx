@@ -19,7 +19,7 @@ const Screen: React.FunctionComponent<TExternalProps> = ({ children, style, ...p
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "position" : undefined}
         contentContainerStyle={styles.flex}
-        keyboardVerticalOffset={headerHeight - insets.bottom}
+        keyboardVerticalOffset={headerHeight + insets.top}
         style={styles.flex}
       >
         <ScrollView style={[styles.flex, style]} {...props}>

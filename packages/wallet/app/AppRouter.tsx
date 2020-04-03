@@ -4,6 +4,7 @@ import { Text } from "react-native";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 
 import { appRoutes, tabConfig } from "./appRoutes";
+import { ImportWallet } from "./components/ImportWallet";
 import { LandingScreen } from "./components/landing/LandingScreen";
 import { QRCode } from "./components/QRCode";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";

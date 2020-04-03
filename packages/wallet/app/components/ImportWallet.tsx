@@ -35,7 +35,7 @@ const validationSchema = Yup.object().shape({
 type TFormValue = Yup.InferType<typeof validationSchema>;
 
 const INITIAL_VALUES: TFormValue = {
-  phrase: "",
+  phrase: "" as any,
 };
 
 const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({

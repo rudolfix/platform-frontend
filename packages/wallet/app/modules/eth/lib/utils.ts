@@ -36,8 +36,8 @@ const isPrivateKey = (privateKey: unknown): privateKey is EthereumPrivateKey => 
  *
  * @param mnemonic - A possible mnemonic
  */
-const isMnemonic = (mnemonic: string): mnemonic is EthereumHDMnemonic => {
-  return utils.HDNode.isValidMnemonic(mnemonic);
+const isMnemonic = (mnemonic: unknown): mnemonic is EthereumHDMnemonic => {
+  return isString(mnemonic) && utils.HDNode.isValidMnemonic(mnemonic);
 };
 
 /**

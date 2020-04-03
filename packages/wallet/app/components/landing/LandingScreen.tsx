@@ -3,7 +3,7 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
-import { appRoutes } from "../appRoutes";
+import { appRoutes } from "../../appRoutes";
 import { appConnect } from "../../store/utils";
 import { abyssalAnchorfishBlue, silverLighter2, subterraneanRiver } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";

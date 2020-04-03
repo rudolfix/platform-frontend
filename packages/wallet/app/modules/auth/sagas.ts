@@ -1,12 +1,5 @@
 import { takeLeading, put, call, neuCall, SagaGenerator, TActionFromCreator } from "@neufund/sagas";
-import {
-  coreModuleApi,
-  neuGetBindings,
-  authModuleAPI,
-  EUserType,
-  EWalletType,
-  EWalletSubType,
-} from "@neufund/shared-modules";
+import { coreModuleApi, neuGetBindings, authModuleAPI } from "@neufund/shared-modules";
 import {
   isJwtExpiringLateEnough,
   toEthereumPrivateKey,
@@ -16,18 +9,9 @@ import {
 import { walletEthModuleApi } from "../eth/module";
 import { authActions } from "./actions";
 import { InvalidImportPhraseError } from "./errors";
+import { loadOrCreateUser } from "./sagasInternal";
 import { EImportPhrase } from "./types";
 import { parseImportPhrase } from "./utils";
-
-function* createNewUser(): SagaGenerator<void> {
-  yield* call(authModuleAPI.sagas.createJwt, []);
-
-  yield* call(authModuleAPI.sagas.loadOrCreateUser, {
-    userType: EUserType.INVESTOR,
-    walletType: EWalletType.MOBILE,
-    walletSubType: EWalletSubType.NEUFUND,
-  });
-}
 
 export function* trySignInExistingAccount(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
@@ -56,7 +40,8 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
     yield* call(authModuleAPI.sagas.createJwt, []);
   }
 
-  yield* call(authModuleAPI.sagas.loadUser);
+  // given that user may already exist just load the user from database
+  yield* call(authModuleAPI.sagas.loadOrCreateUser);
 
   yield put(authActions.signed());
 }
@@ -68,11 +53,17 @@ function* createNewAccount(): SagaGenerator<void> {
   });
 
   try {
+    logger.info("Plugging random wallet");
+
     yield* call(() => ethManager.plugNewRandomWallet());
 
-    yield* call(createNewUser);
+    logger.info("Creating new user");
+
+    yield* call(loadOrCreateUser);
 
     yield put(authActions.signed());
+
+    logger.info("New account created");
   } catch (e) {
     yield put(authActions.failedToCreateNewAccount());
 
@@ -92,6 +83,8 @@ function* importNewAccount(
     const privateKeyOrMnemonic = action.payload.privateKeyOrMnemonic;
     const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
 
+    logger.info(`Plugging new wallet from ${importPhraseType}`);
+
     switch (importPhraseType) {
       case EImportPhrase.PRIVATE_KEY:
         yield* call(() =>
@@ -109,9 +102,13 @@ function* importNewAccount(
         throw new InvalidImportPhraseError();
     }
 
-    yield* call(createNewUser);
+    logger.info("Creating or loading new user");
+
+    yield* call(loadOrCreateUser);
 
     yield put(authActions.signed());
+
+    logger.info("New account imported");
   } catch (e) {
     yield put(authActions.failedToImportNewAccount());
 

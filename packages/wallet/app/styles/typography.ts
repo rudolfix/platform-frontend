@@ -32,6 +32,12 @@ const typographyStyles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
   },
+  menuLabel: {
+    ...fonts.robotoRegular,
+    fontSize: 10,
+    lineHeight: 14,
+    letterSpacing: 0.3,
+  },
 });
 
 export { typographyStyles };

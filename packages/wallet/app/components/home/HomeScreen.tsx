@@ -1,13 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Text, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 
-import { appRoutes } from "../appRoutes";
-import { initActions } from "../modules/init/actions";
-import { selectInitStatus, selectTest } from "../modules/init/selectors";
-import { walletConnectModuleApi } from "../modules/wallet-connect/module";
-import { appConnect } from "../store/utils";
-import { Button, EButtonLayout } from "./shared/buttons/Button";
+import { appRoutes } from "../../appRoutes";
+import { initActions } from "../../modules/init/actions";
+import { selectInitStatus, selectTest } from "../../modules/init/selectors";
+import { walletConnectModuleApi } from "../../modules/wallet-connect/module";
+import { appConnect } from "../../store/utils";
+import { silverLighter2 } from "../../styles/colors";
+import { Button, EButtonLayout } from "../shared/buttons/Button";
 
 type TDispatchProps = {
   init: () => void;
@@ -20,7 +21,7 @@ type TStateProps = {
   walletConnectPeer: ReturnType<typeof walletConnectModuleApi.selectors.selectWalletConnectPeer>;
 };
 
-const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
+const HomeLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
   init,
   initStatus,
   test,
@@ -34,8 +35,18 @@ const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
   }, []);
 
   return (
-    <View>
-      <Text>Landing {test && test.name}</Text>
+    <SafeAreaView style={{ backgroundColor: silverLighter2, flex: 1 }}>
+      <View>
+        <Button
+          layout={EButtonLayout.PRIMARY}
+          testID="landing.go-to-qr-code-scanner"
+          onPress={() => navigation.navigate(appRoutes.qrCode)}
+        >
+          Scan QR code
+        </Button>
+      </View>
+
+      <Text>Home {test && test.name}</Text>
 
       <Text>Init status: {initStatus}</Text>
 
@@ -53,27 +64,11 @@ const LandingLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
       ) : (
         <Text>not connected</Text>
       )}
-
-      <Button
-        layout={EButtonLayout.PRIMARY}
-        testID="landing.go-to-import-your-wallet"
-        onPress={() => navigation.navigate(appRoutes.importWallet)}
-      >
-        Import your wallet
-      </Button>
-
-      <Button
-        layout={EButtonLayout.PRIMARY}
-        testID="landing.go-to-qr-code-scanner"
-        onPress={() => navigation.navigate(appRoutes.qrCode)}
-      >
-        Scan QR code
-      </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 
-const Landing = appConnect<TStateProps, TDispatchProps>({
+const HomeScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     initStatus: selectInitStatus(state),
     walletConnectPeer: walletConnectModuleApi.selectors.selectWalletConnectPeer(state),
@@ -84,6 +79,6 @@ const Landing = appConnect<TStateProps, TDispatchProps>({
     walletConnectDisconnect: (peerId: string) =>
       dispatch(walletConnectModuleApi.actions.disconnectFromPeer(peerId)),
   }),
-})(LandingLayout);
+})(HomeLayout);
 
-export { Landing };
+export { HomeScreen };

@@ -12,4 +12,4 @@ export const grayLighter1 = "#394651";
 export const silverLighter1 = "#f3f5f7";
 export const baseWhite = "#ffffff";
 export const blueyGrey = "#94a5b3";
-export const transparent = "transparent";
+export const baseIron = "#E1E1E2";

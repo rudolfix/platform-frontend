@@ -22,7 +22,7 @@ const Screen: React.FunctionComponent<TExternalProps> = ({ children, style, ...p
         keyboardVerticalOffset={headerHeight + insets.top}
         style={styles.flex}
       >
-        <ScrollView style={[styles.flex, style]} {...props}>
+        <ScrollView style={[styles.flex, style]} keyboardShouldPersistTaps="handled" {...props}>
           {children}
         </ScrollView>
       </KeyboardAvoidingView>

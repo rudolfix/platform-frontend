@@ -40,7 +40,7 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
     <View style={{ ...container, paddingTop: getTopPadding(container) + statusBarHeight }}>
       {previous && (
         <Spacer>
-          <ButtonIcon icon={EIconType.HOME} accessibilityLabel="Go back" onPress={goBack} />
+          <ButtonIcon icon={EIconType.CLOSE} accessibilityLabel="Go back" onPress={goBack} />
         </Spacer>
       )}
       <Headline
@@ -63,13 +63,14 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
 
 const styles = StyleSheet.create({
   container: {
+    ...spacingStyles.pt2,
     backgroundColor: silverLighter2,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
   },
   header: {
-    ...spacingStyles.p3,
+    ...spacingStyles.ph2,
     textAlign: "center",
     flex: 3,
   },

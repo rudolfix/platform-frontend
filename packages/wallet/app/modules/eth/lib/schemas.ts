@@ -1,3 +1,4 @@
+import { EthereumHDPath } from "@neufund/shared";
 import * as yup from "yup";
 import isString from "lodash/fp/isString";
 
@@ -26,10 +27,16 @@ const ethereumAddress = () => typedValue(isChecksumAddress);
 /**
  * A typed schema to validate hd path
  */
-const ethereumHdPath = () => typedValue(isMnemonic);
+const ethereumHdPath = () =>
+  typedValue((value: unknown): value is EthereumHDPath => isString(value));
 
 /**
- * A typed schema to validate hd path
+ * A typed schema to validate hd mnemonic
+ */
+const ethereumMnemonic = () => typedValue(isMnemonic);
+
+/**
+ * A typed schema to validate private key
  */
 const ethereumPrivateKey = () => typedValue(isPrivateKey);
 
@@ -67,4 +74,5 @@ export {
   ethereumAddressNoChecksum,
   ethereumHdPath,
   ethereumPrivateKey,
+  ethereumMnemonic,
 };

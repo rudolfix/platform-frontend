@@ -1,8 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { StyleSheet, InteractionManager } from "react-native";
 import * as Yup from "yup";
 import { authModuleAPI, EAuthState } from "../modules/auth/module";
-import { ethereumHdPath, ethereumPrivateKey } from "../modules/eth/lib/schemas";
+import { ethereumMnemonic, ethereumPrivateKey } from "../modules/eth/lib/schemas";
 import { appConnect } from "../store/utils";
 import { baseGray } from "../styles/colors";
 
@@ -27,7 +28,7 @@ type TDispatchProps = {
 
 const validationSchema = Yup.object().shape({
   phrase: oneOfSchema(
-    [ethereumPrivateKey(), ethereumHdPath()],
+    [ethereumPrivateKey(), ethereumMnemonic()],
     "Invalid Private Key or Recovery Phrase",
   ).required(),
 });
@@ -42,11 +43,14 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
   authState,
   importExistingAccount,
 }) => {
+  const navigation = useNavigation();
+
   const inputRef = React.useCallback((ref: TComponentRefType<typeof TextAreaInput>) => {
     // focus needs to be done after all stack related animations have been finished
     // otherwise the input got's blurred almost immediately
     InteractionManager.runAfterInteractions(() => {
-      if (ref) {
+      // only focus input if the view is still focused
+      if (ref && navigation.isFocused()) {
         ref.focus();
       }
     });

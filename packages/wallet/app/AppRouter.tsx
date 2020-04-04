@@ -73,7 +73,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
         component={QRCode}
         options={{
           title: "Scan QR code",
-          headerShown: true,
+          header: ModalStackHeader,
         }}
       />
     </Stack.Navigator>
@@ -100,7 +100,7 @@ const AppNoAuthRouter: React.FunctionComponent = () => (
     <NoAuthStack.Screen
       name={appRoutes.importWallet}
       component={ImportWallet}
-      options={{ title: "Import", header: ModalStackHeader }}
+      options={{ headerTitle: null, header: ModalStackHeader }}
     />
   </NoAuthStack.Navigator>
 );

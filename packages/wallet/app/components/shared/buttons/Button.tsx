@@ -13,6 +13,7 @@ import {
   silverLighter2,
   yellowDarker1,
 } from "../../../styles/colors";
+import { st } from "../../utils";
 import { LoadingIndicator } from "../LoadingIndicator";
 import { Touchable } from "../Touchable";
 import { BodyBoldText } from "../typography/BodyText";
@@ -63,12 +64,12 @@ const Button = React.forwardRef<TouchableHighlight, TExternalProps>(
     return (
       <Touchable
         ref={ref}
-        style={[
+        style={st(
           styles.buttonCommon,
           buttonStyle.button,
-          isDisabled && [styles.buttonCommonDisabled, buttonStyle.buttonDisabled],
+          [isDisabled, [styles.buttonCommonDisabled, buttonStyle.buttonDisabled]],
           style,
-        ]}
+        )}
         activeColor={yellowDarker1}
         accessibilityRole="button"
         accessibilityComponentType="button"
@@ -78,11 +79,10 @@ const Button = React.forwardRef<TouchableHighlight, TExternalProps>(
         {...props}
       >
         <BodyBoldText
-          style={[
-            styles.buttonCommonLabel,
-            buttonStyle.label,
-            isDisabled && [styles.buttonCommonDisabledLabel, buttonStyle.labelDisabled],
-          ]}
+          style={st(styles.buttonCommonLabel, buttonStyle.label, [
+            isDisabled,
+            [styles.buttonCommonDisabledLabel, buttonStyle.labelDisabled],
+          ])}
         >
           {loading ? (
             <>

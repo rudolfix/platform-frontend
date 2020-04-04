@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { baseGray, blueyGrey } from "../../../styles/colors";
+import { st } from "../../utils";
 import { EIconType, Icon } from "../Icon";
 import { LoadingIndicator } from "../LoadingIndicator";
 import { BodyBoldText } from "../typography/BodyText";
@@ -19,7 +20,7 @@ type TExternalProps = {
  * A button icon that aligns with our design system.
  */
 const ButtonIcon = React.forwardRef<TouchableOpacity, TExternalProps>(
-  ({ icon, layout, style, loading, disabled, accessibilityLabel, ...props }, ref) => {
+  ({ icon, style, loading, disabled, accessibilityLabel, ...props }, ref) => {
     const isDisabled = disabled || loading;
 
     return (
@@ -43,7 +44,7 @@ const ButtonIcon = React.forwardRef<TouchableOpacity, TExternalProps>(
         ) : (
           <Icon
             type={icon}
-            style={[styles.buttonCommonLabel, isDisabled && styles.buttonCommonDisabledLabel]}
+            style={st(styles.buttonCommonLabel, [isDisabled, styles.buttonCommonDisabledLabel])}
           />
         )}
         <BodyBoldText>

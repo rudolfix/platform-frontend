@@ -16,6 +16,7 @@ import {
 } from "../../../../styles/colors";
 import { roundness } from "../../../../styles/common";
 import { typographyStyles } from "../../../../styles/typography";
+import { st } from "../../../utils";
 
 type TNativeTextInputProps = Omit<React.ComponentProps<typeof NativeTextInput>, "editable">;
 type TExternalProps = { disabled?: boolean; invalid?: boolean } & TNativeTextInputProps;
@@ -44,13 +45,13 @@ const TextInput = React.forwardRef<NativeTextInput, TExternalProps>(
         ref={ref}
         editable={!disabled}
         placeholderTextColor={blueyGrey}
-        style={[
+        style={st(
           styles.input,
-          hasFocus && styles.inputFocused,
-          disabled && styles.inputDisabled,
-          invalid && styles.inputInvalid,
+          [hasFocus, styles.inputFocused],
+          [disabled, styles.inputDisabled],
+          [invalid, styles.inputInvalid],
           style,
-        ]}
+        )}
         onBlur={handleBlur}
         onFocus={handleFocus}
         {...props}

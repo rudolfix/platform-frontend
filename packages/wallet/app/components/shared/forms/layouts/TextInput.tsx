@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     ...typographyStyles.body,
     // there is a bug in RN where `lineHeight` to not enforce height changes
     lineHeight: 20,
+    textAlignVertical: "top",
     backgroundColor: baseWhite,
     borderColor: grayLighter4,
     borderRadius: roundness,

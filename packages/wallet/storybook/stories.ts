@@ -1,4 +1,5 @@
 import "../app/components/shared/buttons/Button.stories";
+import "../app/components/shared/buttons/ButtonIcon.stories";
 import "../app/components/shared/LineBreak.stories";
 import "../app/components/shared/Icon.stories";
 import "../app/components/shared/Link.stories";

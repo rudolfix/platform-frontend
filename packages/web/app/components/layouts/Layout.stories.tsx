@@ -1,9 +1,9 @@
+import { DeepPartial } from "@neufund/shared";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
 import { TAppGlobalState } from "../../store";
-import { DeepPartial } from "../../types";
 import { withStore } from "../../utils/react-connected-components/storeDecorator.unsafe";
 import { EContentWidth } from "./Content";
 import { LayoutComponent, TransitionalLayout } from "./Layout";

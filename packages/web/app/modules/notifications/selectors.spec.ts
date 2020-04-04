@@ -1,9 +1,9 @@
+import { DeepPartial } from "@neufund/shared";
 import { EUserType } from "@neufund/shared-modules";
 import { expect } from "chai";
 
 import { appRoutes } from "../../components/appRoutes";
 import { TAppGlobalState } from "../../store";
-import { DeepPartial } from "../../types";
 import { selectIsVisibleSecurityNotification } from "./selectors";
 
 describe("selectIsVisibleSecurityNotification", () => {

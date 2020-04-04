@@ -1,12 +1,6 @@
 import { XOR } from "@neufund/shared";
 import * as React from "react";
-import {
-  GestureResponderEvent,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-} from "react-native";
+import { GestureResponderEvent, Linking, StyleSheet, Text, TouchableHighlight } from "react-native";
 
 import { baseGray, grayLighter2 } from "../../styles/colors";
 import { typographyStyles } from "../../styles/typography";

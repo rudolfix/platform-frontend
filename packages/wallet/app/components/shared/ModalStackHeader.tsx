@@ -2,6 +2,7 @@ import { StackActions } from "@react-navigation/native";
 import { StackHeaderProps } from "@react-navigation/stack";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+
 import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { getTopPadding } from "../../styles/utils";
@@ -10,11 +11,13 @@ import { EIconType } from "./Icon";
 import { LineBreak } from "./LineBreak";
 import { EHeadlineLevel, Headline } from "./typography/Headline";
 
-const Spacer: React.FunctionComponent<React.ComponentProps<typeof View>> = ({
-  style,
-  ...props
-}) => <View style={[styles.spacer, style]} {...props} />;
+const Spacer: React.FunctionComponent = ({ ...props }) => (
+  <View style={[styles.spacer]} {...props} />
+);
 
+/**
+ * A modal stack header that aligns with our design system.
+ */
 const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
   scene,
   insets,
@@ -24,8 +27,6 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
   const { options } = scene.descriptor;
 
   const statusBarHeight = options.headerStatusBarHeight ?? insets.top;
-
-  const container = styles.container;
 
   const goBack = () => {
     if (navigation.isFocused() && navigation.canGoBack()) {
@@ -37,7 +38,9 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
   };
 
   return (
-    <View style={{ ...container, paddingTop: getTopPadding(container) + statusBarHeight }}>
+    <View
+      style={{ ...styles.container, paddingTop: getTopPadding(styles.container) + statusBarHeight }}
+    >
       {previous && (
         <Spacer>
           <ButtonIcon icon={EIconType.CLOSE} accessibilityLabel="Go back" onPress={goBack} />

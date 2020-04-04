@@ -26,7 +26,7 @@ type TDispatchProps = {
   importExistingAccount: (privateKeyOrMnemonic: string) => void;
 };
 
-const validationSchema = Yup.object().shape({
+const validationSchema = Yup.object({
   phrase: oneOfSchema(
     [ethereumPrivateKey(), ethereumMnemonic()],
     "Invalid Private Key or Recovery Phrase",
@@ -35,8 +35,8 @@ const validationSchema = Yup.object().shape({
 
 type TFormValue = Yup.InferType<typeof validationSchema>;
 
-const INITIAL_VALUES: TFormValue = {
-  phrase: "" as any,
+const INITIAL_VALUES = {
+  phrase: "" as TFormValue["phrase"],
 };
 
 const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({

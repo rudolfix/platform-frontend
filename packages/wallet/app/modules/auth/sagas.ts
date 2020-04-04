@@ -7,6 +7,7 @@ import {
 } from "@neufund/shared";
 
 import { walletEthModuleApi } from "../eth/module";
+import { notificationUIModuleApi } from "../notification-ui/module";
 import { authActions } from "./actions";
 import { InvalidImportPhraseError } from "./errors";
 import { loadOrCreateUser } from "./sagasInternal";
@@ -71,6 +72,12 @@ function* createNewAccount(): SagaGenerator<void> {
   } catch (e) {
     yield put(authActions.failedToCreateNewAccount());
 
+    yield put(
+      notificationUIModuleApi.actions.showError(
+        "New account wasn't created. If issue persist please contact support center.",
+      ),
+    );
+
     logger.error("New account creation failed", e);
   }
 }
@@ -119,6 +126,12 @@ function* importNewAccount(
     logger.info("New account imported");
   } catch (e) {
     yield put(authActions.failedToImportNewAccount());
+
+    yield put(
+      notificationUIModuleApi.actions.showError(
+        "New account wasn't imported. If issue persist please contact support center.",
+      ),
+    );
 
     logger.error("Import account creation failed", e);
   }

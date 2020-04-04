@@ -33,13 +33,16 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={logo} />
       </View>
+
       <View style={styles.container}>
         <Headline level={EHeadlineLevel.LEVEL1} style={styles.headline}>
           Welcome
         </Headline>
+
         <BodyText style={styles.paragraph}>
           Join Neufund today. Setup your account to start investing.
         </BodyText>
+
         <Button
           style={styles.createAccountButton}
           loading={authState === EAuthState.AUTHORIZING}
@@ -48,6 +51,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
         >
           Create new account
         </Button>
+
         <Button
           layout={EButtonLayout.TEXT_DARK}
           onPress={() => navigation.navigate(appRoutes.importWallet)}

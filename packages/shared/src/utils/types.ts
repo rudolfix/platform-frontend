@@ -20,6 +20,17 @@ export type TDictionaryArrayValues<T> = T extends Array<Dictionary<infer U>> ? U
 export type Primitive = string | number | boolean | undefined | null;
 
 /**
+ * Forces deeply all properties to be marked as partial (undefined)
+ */
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T[P] extends ReadonlyArray<infer Z>
+    ? ReadonlyArray<DeepPartial<Z>>
+    : DeepPartial<T[P]>;
+};
+
+/**
  * Types allowed to keep as writable
  */
 type WhitelistedWritableTypes = Date | BigNumber;

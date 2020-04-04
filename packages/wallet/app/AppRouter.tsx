@@ -100,7 +100,7 @@ const AppNoAuthRouter: React.FunctionComponent = () => (
     <NoAuthStack.Screen
       name={appRoutes.importWallet}
       component={ImportWallet}
-      options={{ headerTitle: () => null, header: ModalStackHeader }}
+      options={{ header: ModalStackHeader }}
     />
   </NoAuthStack.Navigator>
 );

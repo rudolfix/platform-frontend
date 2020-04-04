@@ -25,13 +25,6 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
 
   const statusBarHeight = options.headerStatusBarHeight ?? insets.top;
 
-  const title =
-    typeof options.headerTitle !== "function" && options.headerTitle !== undefined
-      ? options.headerTitle
-      : options.title !== undefined
-      ? options.title
-      : scene.route.name;
-
   const container = styles.container;
 
   const goBack = () => {
@@ -56,7 +49,7 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
         accessibilityRole="header"
         numberOfLines={1}
       >
-        {title}
+        {options.title}
       </Headline>
       {/* Add spacer on both sides of headline to keep it always centered */}
       {previous && (

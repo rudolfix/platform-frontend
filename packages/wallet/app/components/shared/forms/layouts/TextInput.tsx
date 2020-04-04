@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   NativeSyntheticEvent,
+  Platform,
   StyleSheet,
   TextInput as NativeTextInput,
   TextInputFocusEventData,
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   input: {
     ...typographyStyles.body,
     // there is a bug in RN where `lineHeight` to not enforce height changes
-    lineHeight: 20,
+    lineHeight: undefined,
     textAlignVertical: "top",
     backgroundColor: baseWhite,
     borderColor: grayLighter4,
@@ -72,9 +73,17 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     color: baseGray,
-    // `paddingVertical` do not work properly in multiline mode
-    paddingTop: 14,
-    paddingBottom: 14,
+    ...Platform.select({
+      default: {
+        paddingTop: 13,
+        paddingBottom: 14,
+      },
+      // android adds additional line-height so padding needs to be calculated separately
+      android: {
+        paddingTop: 13,
+        paddingBottom: 5,
+      },
+    }),
     paddingHorizontal: 16,
   },
   inputFocused: {

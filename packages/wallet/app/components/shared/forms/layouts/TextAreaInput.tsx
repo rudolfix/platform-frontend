@@ -18,6 +18,7 @@ const TextAreaInput = React.forwardRef<TRef, TExternalProps>(({ style, ...props 
 
 const styles = StyleSheet.create({
   textAreaInput: {
+    lineHeight: 24,
     minHeight: 120,
   },
 });

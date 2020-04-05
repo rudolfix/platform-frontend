@@ -56,7 +56,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
           layout={EButtonLayout.TEXT_DARK}
           onPress={() => navigation.navigate(appRoutes.importWallet)}
         >
-          I have an account
+          Import account
         </Button>
       </View>
     </LinearGradient>

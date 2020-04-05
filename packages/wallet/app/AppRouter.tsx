@@ -4,7 +4,7 @@ import { Text } from "react-native";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 
 import { appRoutes, tabConfig } from "./appRoutes";
-import { ImportWallet } from "./components/ImportWallet";
+import { ImportWalletScreen } from "./components/import-wallet/ImportWalletScreen";
 import { LandingScreen } from "./components/landing/LandingScreen";
 import { QRCode } from "./components/QRCode";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
@@ -99,7 +99,7 @@ const AppNoAuthRouter: React.FunctionComponent = () => (
     />
     <NoAuthStack.Screen
       name={appRoutes.importWallet}
-      component={ImportWallet}
+      component={ImportWalletScreen}
       options={{ header: ModalStackHeader }}
     />
   </NoAuthStack.Navigator>

@@ -2,21 +2,21 @@ import { useNavigation } from "@react-navigation/native";
 import * as React from "react";
 import { StyleSheet, InteractionManager } from "react-native";
 import * as Yup from "yup";
-import { authModuleAPI, EAuthState } from "../modules/auth/module";
-import { ethereumMnemonic, ethereumPrivateKey } from "../modules/eth/lib/schemas";
-import { appConnect } from "../store/utils";
-import { baseGray } from "../styles/colors";
+import { authModuleAPI, EAuthState } from "../../modules/auth/module";
+import { ethereumMnemonic, ethereumPrivateKey } from "../../modules/eth/lib/schemas";
+import { appConnect } from "../../store/utils";
+import { baseGray } from "../../styles/colors";
 
-import { spacingStyles } from "../styles/spacings";
-import { TComponentRefType } from "../utils/types";
-import { oneOfSchema } from "../utils/yupSchemas";
-import { Button, EButtonLayout } from "./shared/buttons/Button";
-import { Form } from "./shared/forms/fields/Form";
-import { EFieldType } from "./shared/forms/layouts/FieldLayout";
-import { Field } from "./shared/forms/fields/Field";
-import { TextAreaInput } from "./shared/forms/layouts/TextAreaInput";
-import { Screen } from "./shared/Screen";
-import { EHeadlineLevel, Headline } from "./shared/typography/Headline";
+import { spacingStyles } from "../../styles/spacings";
+import { TComponentRefType } from "../../utils/types";
+import { oneOfSchema } from "../../utils/yupSchemas";
+import { Button, EButtonLayout } from "../shared/buttons/Button";
+import { Form } from "../shared/forms/fields/Form";
+import { EFieldType } from "../shared/forms/layouts/FieldLayout";
+import { Field } from "../shared/forms/fields/Field";
+import { TextAreaInput } from "../shared/forms/layouts/TextAreaInput";
+import { Screen } from "../shared/Screen";
+import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
@@ -29,7 +29,7 @@ type TDispatchProps = {
 const validationSchema = Yup.object({
   phrase: oneOfSchema(
     [ethereumPrivateKey(), ethereumMnemonic()],
-    "Invalid Private Key or Recovery Phrase",
+    "Invalid recovery phrase or private key",
   ).required(),
 });
 
@@ -73,7 +73,7 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
               name="phrase"
               inputRef={inputRef}
               type={EFieldType.TEXT_AREA}
-              placeholder="Enter your Private Key or Recovery Phrase"
+              placeholder="Enter your recovery phrase or private key to import and connect your wallet to Neufund."
               helperText="Separate your 12/24 recovery phrase words with a space."
             />
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ImportWallet = appConnect<TStateProps, TDispatchProps>({
+const ImportWalletScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     authState: authModuleAPI.selectors.selectAuthState(state),
   }),
@@ -118,4 +118,4 @@ const ImportWallet = appConnect<TStateProps, TDispatchProps>({
   }),
 })(ImportWalletLayout);
 
-export { ImportWallet };
+export { ImportWalletScreen };

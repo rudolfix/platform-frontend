@@ -1,6 +1,5 @@
 import { EthereumAddressWithChecksum } from "@neufund/shared";
-
-import { SignerType } from "../../lib/web3/PersonalWeb3";
+import { ESignerType } from "@neufund/shared-modules";
 
 // normalized information about all possible types of personal wallets
 export enum EWalletType {
@@ -58,8 +57,8 @@ export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
 export interface IWalletConnectMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.WALLETCONNECT;
   walletSubType: EWalletSubType.UNKNOWN;
-  sendTransactionMethod: string, //todo move to enum
-  signerType: SignerType;
+  sendTransactionMethod: string; //todo move to enum
+  signerType: ESignerType;
   sessionRequestTimeout: number;
   signTimeout: number;
 }

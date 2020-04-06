@@ -14,7 +14,10 @@ import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 
-function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): Generator<any,void,any>  {
+function* initSmartcontracts({
+  web3Manager,
+  logger,
+}: TGlobalDependencies): Generator<any, void, any> {
   try {
     yield fork(neuCall, initWeb3ManagerEvents);
     yield web3Manager.initialize();
@@ -44,15 +47,15 @@ function* makeSureWalletMetaDataExists({
 }
 
 function* detectWalletConnect({
-  walletConnectStorage
-}: TGlobalDependencies):Generator<any,void,any> {
+  walletConnectStorage,
+}: TGlobalDependencies): Generator<any, void, any> {
   const walletConnectData = walletConnectStorage.get();
-  if(walletConnectData){
-    console.log("walletConnectData", walletConnectData)
+  if (walletConnectData) {
+    // TODO
   }
 }
 
-function* initApp({ logger }: TGlobalDependencies): Generator<any,void,any>  {
+function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
   try {
     yield neuCall(detectUserAgent);
     yield neuCall(detectWalletConnect);
@@ -106,7 +109,7 @@ export function* initStartSaga(
   }
 }
 
-export function* checkIfSmartcontractsInitNeeded(): Generator<any,boolean,any>  {
+export function* checkIfSmartcontractsInitNeeded(): Generator<any, boolean, any> {
   const isDoneOrInProgress: boolean = yield select(
     (s: TAppGlobalState) => s.init.smartcontractsInit.done || s.init.smartcontractsInit.inProgress,
   );
@@ -114,7 +117,7 @@ export function* checkIfSmartcontractsInitNeeded(): Generator<any,boolean,any>  
   return !isDoneOrInProgress;
 }
 
-export function* initSmartcontractsOnce(): Generator<any,void,any>  {
+export function* initSmartcontractsOnce(): Generator<any, void, any> {
   const isNeeded = yield checkIfSmartcontractsInitNeeded();
   if (!isNeeded) {
     return;

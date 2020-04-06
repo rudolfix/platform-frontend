@@ -5,11 +5,14 @@ import { getMessageTranslation } from "../../translatedMessages/messages";
 import { TMessage } from "../../translatedMessages/utils";
 
 type TErrorProps = {
-  error: TMessage,
-  walletConnectStart: () => void
-}
+  error: TMessage;
+  walletConnectStart: () => void;
+};
 
-export const WalletConnectError: React.FunctionComponent<TErrorProps> = ({ error, walletConnectStart }) =>
+export const WalletConnectError: React.FunctionComponent<TErrorProps> = ({
+  error,
+  walletConnectStart,
+}) => (
   <>
     <div>{getMessageTranslation(error)}</div>
     <Button
@@ -20,10 +23,9 @@ export const WalletConnectError: React.FunctionComponent<TErrorProps> = ({ error
     >
       retry
     </Button>
-  </>;
+  </>
+);
 
-
-export const WalletConnectContainer: React.FunctionComponent = ({ children }) =>
-  <div className="justify-content-center text-center">
-    {children}
-  </div>;
+export const WalletConnectContainer: React.FunctionComponent = ({ children }) => (
+  <div className="justify-content-center text-center">{children}</div>
+);

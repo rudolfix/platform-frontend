@@ -1,4 +1,4 @@
-import {  fork, put } from "@neufund/sagas";
+import { fork, put } from "@neufund/sagas";
 
 import { actions } from "../actions";
 import { handleSignInUser } from "../auth/user/sagas";
@@ -7,7 +7,6 @@ import { loadPreviousWallet } from "../web3/sagas";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
-  console.log("walletSelectorConnect");
   yield neuCall(handleSignInUser);
 }
 

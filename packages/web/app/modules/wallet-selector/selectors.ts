@@ -37,8 +37,9 @@ export const selectOppositeRootPath = (state: RouterState): string =>
 export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
 
-export const selectMessageSigningError = (state: TAppGlobalState): DeepReadonly<TMessage> | undefined =>
-  state.walletSelector.messageSigningError;
+export const selectMessageSigningError = (
+  state: TAppGlobalState,
+): DeepReadonly<TMessage> | undefined => state.walletSelector.messageSigningError;
 
 export const selectWalletConnectError = (state: TAppGlobalState) =>
   state.walletSelector.walletConnectError;

@@ -8,13 +8,10 @@ export const walletConnectActions = {
   walletConnectStart: createActionFactory("WALLET_CONNECT_START"),
   walletConnectSessionRequest: createActionFactory(
     "WALLET_CONNECT_SESSION_REQUEST",
-    (uri:string) => ({uri})
+    (uri: string) => ({ uri }),
   ),
   walletConnectReady: createActionFactory("WALLET_CONNECT_READY"),
   walletConnectDisconnected: createActionFactory("WALLET_CONNECT_DISCONNECTED"),
   walletConnectRejected: createActionFactory("WALLET_CONNECT_REJECTED"),
-  walletConnectError: createActionFactory(
-    "WALLET_CONNECT_ERROR",
-    (error: TMessage) => ({error})
-  ),
+  walletConnectError: createActionFactory("WALLET_CONNECT_ERROR", (error: TMessage) => ({ error })),
 };

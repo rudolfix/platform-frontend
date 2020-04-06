@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { TMockEto } from "../../../../data/etoCompanies";
-import { NEXT_FUNDING_ROUNDS } from "../../../../lib/api/eto/EtoApiUtils";
+import { getNextFundingRound } from "../../../../lib/api/eto/EtoApiUtils";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
 import { isComingSoon } from "../../../../modules/eto/utils";
 import { routingActions } from "../../../../modules/routing/actions";
@@ -25,7 +25,6 @@ import {
 } from "../../../shared/formatters/utils";
 import { VALUES } from "../../../shared/forms/fields/form-select-fields/FormSelectCountryField";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { FUNDING_ROUNDS } from "../../shared/constants";
 import { Cover } from "./Cover";
 import { EtoCardButton, EtoCardPanelButton } from "./EtoCardPanel";
 import { EtoCardStatusManager } from "./EtoCardStatusManager";
@@ -54,16 +53,6 @@ const defaultEmpty = "-";
 const getCompanyHeadquarters = (eto: TEtoWithCompanyAndContractReadonly) => {
   if (eto.company.city && eto.company.country) {
     return `${eto.company.city}, ${VALUES[eto.company.country]}`;
-  }
-
-  return undefined;
-};
-
-const getNextFundingRound = ({ company }: TEtoWithCompanyAndContractReadonly) => {
-  if (company.companyStage) {
-    const nextFundingRound = NEXT_FUNDING_ROUNDS[company.companyStage];
-
-    return nextFundingRound ? FUNDING_ROUNDS[nextFundingRound] : undefined;
   }
 
   return undefined;
@@ -129,64 +118,75 @@ const MockEtoOverviewLayout: React.FunctionComponent<TMockEtoProps &
   </EtoCardPanelButton>
 );
 
-const EtoOverviewLayoutBase: React.FunctionComponent<TEtoProps> = ({ eto }) => (
-  <>
-    <Cover
-      className={styles.cover}
-      companyBanner={{
-        alt: eto.company.brandName,
-        srcSet: {
-          "1x": eto.company.companyPreviewCardBanner,
-        },
-      }}
-      tags={eto.company.categories}
-      jurisdiction={eto.product.jurisdiction}
-    />
+const EtoOverviewLayoutBase: React.FunctionComponent<TEtoProps> = ({ eto }) => {
+  const nextFundingRound = getNextFundingRound(eto);
+  const companyHeadquarters = getCompanyHeadquarters(eto) || defaultEmpty;
+  return (
+    <>
+      <Cover
+        className={styles.cover}
+        companyBanner={{
+          alt: eto.company.brandName,
+          srcSet: {
+            "1x": eto.company.companyPreviewCardBanner,
+          },
+        }}
+        tags={eto.company.categories}
+        jurisdiction={eto.product.jurisdiction}
+      />
 
-    <ETOInvestorState className={styles.statusOfEto} eto={eto} />
+      <ETOInvestorState className={styles.statusOfEto} eto={eto} />
 
-    <section className={styles.content}>
-      <Heading titleClassName="text-truncate" decorator={false} level={2} size={EHeadingSize.HUGE}>
-        {eto.company.brandName}
-      </Heading>
+      <section className={styles.content}>
+        <Heading
+          titleClassName="text-truncate"
+          decorator={false}
+          level={2}
+          size={EHeadingSize.HUGE}
+        >
+          {eto.company.brandName}
+        </Heading>
 
-      {isComingSoon(eto.state) ? (
-        <p data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
-          {eto.company.keyQuoteFounder}
-        </p>
-      ) : (
-        <>
-          <div className={styles.groupWrapper}>
-            <div className={styles.group}>
-              <span className={styles.label}>
-                <FormattedMessage id="eto-overview-thumbnail.token-name" />
-              </span>
-              <span className={styles.value}>
-                {eto.equityTokenName} ({eto.equityTokenSymbol})
-              </span>
+        {isComingSoon(eto.state) ? (
+          <p data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
+            {eto.company.keyQuoteFounder}
+          </p>
+        ) : (
+          <>
+            <div className={styles.groupWrapper}>
+              <div className={styles.group}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto-overview-thumbnail.token-name" />
+                </span>
+                <span className={styles.value}>
+                  {eto.equityTokenName} ({eto.equityTokenSymbol})
+                </span>
+              </div>
+
+              {nextFundingRound && (
+                <div className={styles.group}>
+                  <span className={styles.label}>
+                    <FormattedMessage id="eto-overview-thumbnail.funding-round" />
+                  </span>
+                  <span className={styles.value}>{nextFundingRound}</span>
+                </div>
+              )}
+
+              <div className={styles.group}>
+                <span className={styles.label}>
+                  <FormattedMessage id="eto-overview-thumbnail.headquarters" />
+                </span>
+                <span className={styles.value}>{companyHeadquarters}</span>
+              </div>
             </div>
 
-            <div className={styles.group}>
-              <span className={styles.label}>
-                <FormattedMessage id="eto-overview-thumbnail.funding-round" />
-              </span>
-              <span className={styles.value}>{getNextFundingRound(eto) || defaultEmpty}</span>
-            </div>
-
-            <div className={styles.group}>
-              <span className={styles.label}>
-                <FormattedMessage id="eto-overview-thumbnail.headquarters" />
-              </span>
-              <span className={styles.value}>{getCompanyHeadquarters(eto) || defaultEmpty}</span>
-            </div>
-          </div>
-
-          <EtoCardStatusManager eto={eto} />
-        </>
-      )}
-    </section>
-  </>
-);
+            <EtoCardStatusManager eto={eto} />
+          </>
+        )}
+      </section>
+    </>
+  );
+};
 
 const EtoOverviewGridLayout: React.FunctionComponent<TEtoProps &
   CommonHtmlProps &

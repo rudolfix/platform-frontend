@@ -1,5 +1,6 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions, invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared";
+import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
 import { includes } from "lodash";
 
 import {
@@ -27,7 +28,6 @@ import { TAppGlobalState } from "../../../store";
 import { connectLightWallet } from "../../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../../actions";
 import { checkEmailPromise } from "../../auth/email/sagas";
-import { createJwt } from "../../auth/jwt/sagas";
 import { selectUserType } from "../../auth/selectors";
 import { loadUser, logoutUser, updateUser } from "../../auth/user/external/sagas";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
@@ -141,7 +141,7 @@ export function* lightWalletRecoverWatch(
   try {
     const userType = yield* select((state: TAppGlobalState) => selectUrlUserType(state.router));
     const walletMetadata = yield* neuCall(setupLightWalletPromise, email, password, seed);
-    yield neuCall(createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
+    yield neuCall(authModuleAPI.sagas.createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
 
     const userUpdate: IUserInput = {
       salt: walletMetadata.salt,

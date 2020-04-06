@@ -1,15 +1,15 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
 import { dummyIntl, InversifyProvider, simpleDelay } from "@neufund/shared";
-import { noopLogger } from "@neufund/shared-modules";
+import { authModuleAPI, coreModuleApi, IHttpResponse, noopLogger } from "@neufund/shared-modules";
 import { createMock, tid } from "@neufund/shared/tests";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
-import { Container } from "inversify";
+import { Container, ContainerModule } from "inversify";
 import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
-import { applyMiddleware, combineReducers, createStore, Store } from "redux";
+import { applyMiddleware, combineReducers, createStore, ReducersMapObject, Store } from "redux";
 import { SinonSpy } from "sinon";
 
 import {
@@ -18,7 +18,6 @@ import {
   TGlobalDependencies,
 } from "../app/di/setupBindings";
 import { symbols } from "../app/di/symbols";
-import { SignatureAuthApi } from "../app/lib/api/auth/SignatureAuthApi";
 import { UsersApi } from "../app/lib/api/users/UsersApi";
 import { BroadcastChannelMock } from "../app/lib/dependencies/broadcast-channel/BroadcastChannel.mock";
 import { IntlWrapper } from "../app/lib/intl/IntlWrapper";
@@ -29,7 +28,7 @@ import { ContractsService } from "../app/lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../app/lib/web3/ledger-wallet/LedgerConnector";
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager/Web3Manager.mock";
 import { rootSaga } from "../app/modules/sagas";
-import { generateRootModuleReducerMap, TAppGlobalState } from "../app/store";
+import { generateRootModuleReducerMap } from "../app/store";
 import { DeepPartial } from "../app/types";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
@@ -42,13 +41,23 @@ interface ICreateIntegrationTestsSetupOptions {
   ledgerWalletConnectorMock?: LedgerWalletConnector;
   storageMock?: Storage;
   usersApiMock?: UsersApi;
-  signatureAuthApiMock?: SignatureAuthApi;
   initialRoute?: string;
   contractsMock?: ContractsService;
 }
 
+type TReducersMapToReturnTypes<T extends ReducersMapObject<any, any>> = T extends ReducersMapObject<
+  infer S,
+  any
+>
+  ? S
+  : never;
+
+export type TAppGlobalState = TReducersMapToReturnTypes<
+  ReturnType<typeof generateRootModuleReducerMap>
+>;
+
 interface ICreateIntegrationTestsSetupOutput {
-  store: Store<TAppGlobalState>;
+  store: Store<unknown>;
   container: Container;
   dispatchSpy: SinonSpy;
   history: History;
@@ -64,10 +73,25 @@ export function createIntegrationTestsSetup(
     options.ledgerWalletConnectorMock || createMock(LedgerWalletConnector, {});
   const storageMock = options.storageMock || createMockStorage();
   const usersApiMock = options.usersApiMock || createMock(UsersApi, {});
-  const signatureAuthApiMock = options.signatureAuthApiMock || createMock(SignatureAuthApi, {});
   const contractsMock = options.contractsMock || createMock(ContractsService, {});
 
   const container = new Container();
+
+  class MockHttpClient extends coreModuleApi.utils.HttpClient {
+    protected makeFetchRequest<T>(): Promise<IHttpResponse<T>> {
+      throw Error("Not allowed in tests");
+    }
+  }
+
+  container.load(
+    new ContainerModule(bind => {
+      bind(coreModuleApi.symbols.jsonHttpClient).toConstantValue(createMock(MockHttpClient, {}));
+      bind(coreModuleApi.symbols.binaryHttpClient).toConstantValue(createMock(MockHttpClient, {}));
+      bind(authModuleAPI.symbols.authJsonHttpClient).toConstantValue(
+        createMock(MockHttpClient, {}),
+      );
+    }),
+  );
 
   container.load(setupBindings(dummyConfig));
 
@@ -81,7 +105,6 @@ export function createIntegrationTestsSetup(
   container.bind(symbols.logger).toConstantValue(noopLogger);
   container.rebind(symbols.storage).toConstantValue(storageMock);
   container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
-  container.rebind(symbols.signatureAuthApi).toConstantValue(signatureAuthApiMock);
   container.rebind(symbols.contractsService).toConstantValue(contractsMock);
 
   const context: { container: Container; deps?: TGlobalDependencies } = {
@@ -105,7 +128,24 @@ export function createIntegrationTestsSetup(
     sagaMiddleware,
   );
 
-  const rootReducer = combineReducers(generateRootModuleReducerMap(history));
+  const reducerMap = generateRootModuleReducerMap(history);
+
+  // TODO: we need to build a proper way to mock module state
+  const reducerMapWithMockModuleReducer = Object.keys(options.initialState ?? {}).reduce<object>(
+    (p, key) => {
+      if (key in reducerMap) {
+        return p;
+      }
+
+      return {
+        ...p,
+        [key]: (s = {}) => s,
+      };
+    },
+    {},
+  );
+
+  const rootReducer = combineReducers({ ...reducerMap, ...reducerMapWithMockModuleReducer });
 
   const store = createStore(rootReducer, options.initialState as any, middleware);
   context.deps = createGlobalDependencies(container);

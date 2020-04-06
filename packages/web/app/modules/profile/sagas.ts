@@ -1,5 +1,5 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared";
+import { EJwtPermissions } from "@neufund/shared-modules";
 
 import { ProfileMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";

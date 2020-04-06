@@ -28,7 +28,7 @@ import { InvalidETOStateError } from "../eto/errors";
 import { isOnChain } from "../eto/utils";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEthereumAddress } from "../web3/selectors";
 import { ITokenDisbursal } from "./types";
 import {
   convertToCalculatedContribution,
@@ -98,9 +98,7 @@ export function* loadComputedContributionFromContract(
   const minTicketEur = (eto.minTicketEur && eto.minTicketEur.toString()) || "0";
   const newInvestorContributionEurUlps = amountEuroUlps || convertToUlps(minTicketEur);
 
-  const from: ReturnType<typeof selectEthereumAddressWithChecksum> = yield select(
-    selectEthereumAddressWithChecksum,
-  );
+  const from: ReturnType<typeof selectEthereumAddress> = yield select(selectEthereumAddress);
 
   // TODO: check whether typechain bug still is not fixed
   // sorry no typechain, typechain has a bug with boolean casting

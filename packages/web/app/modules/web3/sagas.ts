@@ -1,4 +1,4 @@
-import { cancel, delay, END, eventChannel, fork, put, take, Task } from "@neufund/sagas";
+import { call, cancel, delay, END, eventChannel, fork, put, take, Task } from "@neufund/sagas";
 
 import {
   LIGHT_WALLET_PASSWORD_CACHE_TIME,
@@ -64,7 +64,7 @@ export function* cancelLocking(): Generator<any, any, any> {
 export function* loadPreviousWallet({
   walletStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
-  const storageData = walletStorage.get();
+  const storageData = yield* call(() => walletStorage.get());
 
   if (storageData) {
     yield put(actions.web3.loadPreviousWallet(storageData));

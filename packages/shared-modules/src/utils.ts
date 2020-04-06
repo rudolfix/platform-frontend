@@ -1,4 +1,4 @@
-import { neuGetContainer } from "@neufund/sagas";
+import { neuGetContainer, SagaGenerator } from "@neufund/sagas";
 import { Dictionary } from "@neufund/shared";
 import mapValues from "lodash/fp/mapValues";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
@@ -13,6 +13,8 @@ import {
 } from "./types";
 
 const createLibSymbol = <T>(name: string) => Symbol(name) as TLibSymbol<T>;
+
+const generateSharedModuleId = (id: string) => `shared:${id}`;
 
 /**
  * If react-redux connection function receive `undefined` as a `dispatchToProps` method it then pass `dispatch` method to wrapped component.
@@ -84,7 +86,7 @@ function appConnect<
 >): InferableComponentEnhancerWithProps<StateToProps & DispatchToProps, Props> {
   const { omitDispatch = false, ...connectOptions } = options;
 
-  return connect<StateToProps, DispatchToProps, Props, GlobalState | TModuleState<Module>>(
+  return connect<StateToProps, DispatchToProps, Props, GlobalState & TModuleState<Module>>(
     stateToProps,
     dispatchToProps || (getDispatchToProps(omitDispatch) as any),
     undefined,
@@ -92,12 +94,12 @@ function appConnect<
   );
 }
 
-function* neuGetBindings<B extends Dictionary<TLibSymbol<unknown>>>(
+function* neuGetBindings<B extends Dictionary<TLibSymbol<any>>>(
   bindings: B,
-): Generator<unknown, TSymbols<B>> {
+): SagaGenerator<TSymbols<B>> {
   const container = yield* neuGetContainer();
 
   return mapValues(v => container.get<TLibSymbolType<typeof v>>(v), bindings) as TSymbols<B>;
 }
 
-export { createLibSymbol, appConnect, TAppConnectOptions, neuGetBindings };
+export { createLibSymbol, appConnect, TAppConnectOptions, generateSharedModuleId, neuGetBindings };

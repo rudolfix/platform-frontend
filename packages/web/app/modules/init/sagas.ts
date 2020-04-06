@@ -1,11 +1,11 @@
-import { fork, put, select } from "@neufund/sagas";
+import { call, fork, put, select } from "@neufund/sagas";
 import { isJwtExpiringLateEnough } from "@neufund/shared";
+import { authModuleAPI } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TStoredWalletConnectData } from "../../lib/persistence/WalletConnectStorage";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
-import { loadJwt, setJwt } from "../auth/jwt/sagas";
 import { ELogoutReason } from "../auth/types";
 import { loadUser, } from "../auth/user/external/sagas";
 import {  handleLogOutUserInternal } from "../auth/user/sagas";
@@ -43,7 +43,7 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): Gene
 function* makeSureWalletMetaDataExists({
   walletStorage,
 }: TGlobalDependencies): Generator<any, void, any> {
-  const metadata = walletStorage.get();
+  const metadata = yield* call(() => walletStorage.get());
   if (metadata === undefined) {
     throw new WalletMetadataNotFoundError();
   }
@@ -70,7 +70,7 @@ function* restoreUserSession({
   yield neuCall(makeSureWalletMetaDataExists);
   if (isJwtExpiringLateEnough(jwt)) {
     try {
-      yield neuCall(setJwt, jwt);
+      yield neuCall(authModuleAPI.sagas.setJwt, jwt);
       yield neuCall(loadUser);
       const walletType = yield select(selectWalletType);
 
@@ -102,7 +102,7 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any,void,any>  {
   try {
     yield neuCall(detectUserAgent);
     const wcSession = yield neuCall(loadWalletConnectSession);
-    const jwt = yield* neuCall(loadJwt);
+    const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);
 
     if (jwt) {
       yield neuCall(restoreUserSession, jwt, wcSession)

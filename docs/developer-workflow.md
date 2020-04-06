@@ -20,11 +20,13 @@ Typically the branch must be created off of "master". For hotfix PRs, create it 
 - UI components must be accompanied by stories (Atoms/Molecules/Organisms but not Pages/Connected Components)
 
 ##### Tests
+
 - for utils, add unit tests
 - anything that modifies a user flow must be accompanied by E2E tests (the happy path, error handling path and any edge cases)
 - for a test to be considered non-flaky it must pass at least 3 times in a row.
 
 ##### Adding Types
+
 - type any sagas your PR touches. See [Saga Migration Plan](https://github.com/Neufund/platform-frontend/blob/master/docs/saga-migration-guidelines.md)
 - files named `.unsafe.tsx` may already contain types but they must be fully typed (including replacing type `any` with an appropriate type)
 
@@ -32,10 +34,15 @@ Typically the branch must be created off of "master". For hotfix PRs, create it 
 
 As for now, we don't have any strict guidelines for documentation.
 It's up for a developer to decide when to document a given part of the system of but we are trying to follow points mentioned below:
-- If the function is pretty complex first of all try to split it by smaller parts more focus parts. If that's not possible add `tsdoc` comment with a short (but comprehensive) explanation
+
+- If the function is pretty complex first of all try to split it by a smaller, more focused, parts. If that's not possible add `tsdoc` comment with a short (but comprehensive) explanation
+
 - If you need to do something unusual (for .e.g. force cast type) add a short explanation above that line
-- When adding a new package, add a README explaing what the package is about and other helpful information
-- When you add a new module (saga + reducer + selector + types + spec), add documentation explaining the module 
+
+- When adding a new package, add a README explaining what the package is about and other helpful information
+
+- When you add a new module (saga + reducer + selector + types + spec) then add documentation explaining the module. To keep consistency please use `MODULE_README_TEMPLATE`.
+
 - Add `tsdoc` comments for any utils you add or modify
 
 ### 3. Create a PR
@@ -51,6 +58,7 @@ Once done, request for dev review in the front end channel on Slack. We require 
 In case a PR involves dependency updates or if it introduces changes other devs need to be aware of (for .e.g. React update which introduces hooks) then request approval from all devs. The PR should contain external links to changelogs if there are any. Such kind of a PR must be marked with `[All devs approval required]` in the title. The idea behind this is that all devs are informed of the changes. The first dev reviewing it should must also review the code in detail. For everyone else, it's optional.
 
 For this:
+
 - the branch has to be brought up to date with master.
 - run `yarn lint:fix` to update the artifacts as well as prettify the code
 - All checks must have passed
@@ -58,6 +66,7 @@ For this:
 Note: There maybe instances where unrelated tests are failing either because they are flaky or due to an issue with the pipeline itself.
 
 Keep an eye out for change in:
+
 - Build size
 - Type coverage
 - Visual regression
@@ -82,7 +91,6 @@ Merge commit format convention:
 
 Note: You don't have to link to the PR as Github already does it.
 
-
 ### 7. Closed
 
 ###### Board status: Closed
@@ -93,7 +101,7 @@ Except for "Tech" tickets which should be pushed directly to staging.
 ## PR Labels
 
 | Label | Description                          |
-|-------|--------------------------------------|
+| ----- | ------------------------------------ |
 | TECH  | PRs that don't have to go through QA |
-| E2E   | PRs that only modify e2e tests       | 
-| QA    | PRs that are ready for QA            | 
+| E2E   | PRs that only modify e2e tests       |
+| QA    | PRs that are ready for QA            |

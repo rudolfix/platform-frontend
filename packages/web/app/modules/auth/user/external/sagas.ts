@@ -1,4 +1,4 @@
-import { put, select } from "@neufund/sagas";
+import { call, put, select } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../../lib/api/users/interfaces";
@@ -39,9 +39,9 @@ export function* logoutUser({
     yield neuCall(walletConnectStop);
   }
 
-  walletConnectStorage.clear();
-  userStorage.clear();
-  jwtStorage.clear();
+  yield* call(() => walletConnectStorage.clear());
+  yield* call(() => userStorage.clear());
+  yield* call(() => jwtStorage.clear());
   yield web3Manager.unplugPersonalWallet();
 
   yield put(actions.web3.personalWalletDisconnected());

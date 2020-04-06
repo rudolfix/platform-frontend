@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName, withProps } from "recompose";
 
 import { selectIsAuthorized, selectIsInvestor } from "../../../../../modules/auth/selectors";
-import { selectBookbuildingStatsFromList } from "../../../../../modules/bookbuilding-flow/selectors";
+import { selectBookbuildingStats } from "../../../../../modules/bookbuilding-flow/selectors";
 import {
   calculateWhitelistingState,
   EWhitelistingState,
@@ -136,7 +136,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
 const Whitelist = compose<IProps, IExternalProps>(
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => {
-      const stats = selectBookbuildingStatsFromList(state, props.eto.etoId);
+      const stats = selectBookbuildingStats(state, props.eto.etoId);
 
       return {
         pledgedAmount: stats ? stats.pledgedAmount : null,

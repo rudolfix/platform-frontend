@@ -1,15 +1,8 @@
 import { coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
-import * as cryptoRandomString from "crypto-random-string";
 import { Container, ContainerModule } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";
 import { AnalyticsApi } from "../lib/api/analytics-api/AnalyticsApi";
-import { SignatureAuthApi } from "../lib/api/auth/SignatureAuthApi";
-import { AuthorizedBinaryHttpClient } from "../lib/api/client/AuthBinaryHttpClient";
-import { AuthorizedJsonHttpClient } from "../lib/api/client/AuthJsonHttpClient";
-import { BinaryHttpClient } from "../lib/api/client/BinaryHttpClient";
-import { IHttpClient } from "../lib/api/client/IHttpClient";
-import { JsonHttpClient } from "../lib/api/client/JsonHttpClient";
 import { EtoApi } from "../lib/api/eto/EtoApi";
 import { EtoFileApi } from "../lib/api/eto/EtoFileApi";
 import { EtoNomineeApi } from "../lib/api/eto/EtoNomineeApi";
@@ -64,7 +57,6 @@ export function setupBindings(config: IConfig): ContainerModule {
   return new ContainerModule(bind => {
     // functions
 
-    bind<typeof cryptoRandomString>(symbols.cryptoRandomString).toConstantValue(cryptoRandomString);
     bind<TDetectBrowser>(symbols.detectBrowser).toConstantValue(detectBrowser);
 
     // configs
@@ -76,29 +68,7 @@ export function setupBindings(config: IConfig): ContainerModule {
 
     bind<IBackendRoot>(symbols.backendRootConfig).toConstantValue(config.backendRoot);
 
-    // classes
-
-    bind<IHttpClient>(symbols.jsonHttpClient)
-      .to(JsonHttpClient)
-      .inSingletonScope();
-
-    bind<IHttpClient>(symbols.binaryHttpClient)
-      .to(BinaryHttpClient)
-      .inSingletonScope();
-
-    bind<IHttpClient>(symbols.authorizedJsonHttpClient)
-      .to(AuthorizedJsonHttpClient)
-      .inSingletonScope();
-
-    bind<IHttpClient>(symbols.authorizedBinaryHttpClient)
-      .to(AuthorizedBinaryHttpClient)
-      .inSingletonScope();
-
     // singletons
-
-    bind<SignatureAuthApi>(symbols.signatureAuthApi)
-      .to(SignatureAuthApi)
-      .inSingletonScope();
 
     bind<VaultApi>(symbols.vaultApi)
       .to(VaultApi)
@@ -259,7 +229,6 @@ export const createGlobalDependencies = (container: Container) => ({
 
   notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
 
-  cryptoRandomString: container.get<typeof cryptoRandomString>(symbols.cryptoRandomString),
   detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
   onfidoSDK: container.get<OnfidoSDK>(symbols.onfidoSdk),
 
@@ -280,18 +249,7 @@ export const createGlobalDependencies = (container: Container) => ({
   >(symbols.documentsConfidentialityAgreementsStorage),
   userStorage: container.get<ObjectStorage<string>>(symbols.userStorage),
 
-  // network layer
-  binaryHttpClient: container.get<BinaryHttpClient>(symbols.binaryHttpClient),
-  jsonHttpClient: container.get<JsonHttpClient>(symbols.jsonHttpClient),
-  authorizedJsonHttpClient: container.get<AuthorizedJsonHttpClient>(
-    symbols.authorizedJsonHttpClient,
-  ),
-  authorizedBinaryHttpClient: container.get<AuthorizedBinaryHttpClient>(
-    symbols.authorizedBinaryHttpClient,
-  ),
-
   // apis
-  signatureAuthApi: container.get<SignatureAuthApi>(symbols.signatureAuthApi),
   apiKycService: container.get<KycApi>(symbols.apiKycService),
   apiEtoService: container.get<EtoApi>(symbols.apiEtoService),
   apiEtoPledgeService: container.get<EtoPledgeApi>(symbols.apiEtoPledgeService),

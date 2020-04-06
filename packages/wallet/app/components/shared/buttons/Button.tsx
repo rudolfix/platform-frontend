@@ -9,7 +9,6 @@ import {
   blueyGrey,
   grayLighter4,
   silverLighter1,
-  transparent,
   yellowDarker1,
 } from "../../../styles/colors";
 import { typographyStyles } from "../../../styles/typography";
@@ -106,8 +105,8 @@ const styles = StyleSheet.create({
 
   // Text button
   buttonText: {
-    borderColor: transparent,
-    backgroundColor: transparent,
+    borderColor: "transparent",
+    backgroundColor: "transparent",
   },
 });
 

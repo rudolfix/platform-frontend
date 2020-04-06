@@ -6,8 +6,7 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 export interface IHttpRequestCommon {
   url: string;
   baseUrl?: string;
-  // TODO: migrate YUPTS to shared package
-  responseSchema?: Yup.Schema<any> | any;
+  responseSchema?: Yup.Schema<any>;
   headers?: Dictionary<string>;
   body?: any;
   formData?: FormData;

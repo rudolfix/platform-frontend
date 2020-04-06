@@ -1,12 +1,15 @@
-import { clearSafeTimeout, safeSetTimeout } from "@neufund/shared";
+import { clearSafeTimeout, EthereumAddressWithChecksum, safeSetTimeout } from "@neufund/shared";
+import { ESignerType } from "@neufund/shared-modules";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
 
-import { EthereumAddress } from "../../../../../shared/dist/utils/opaque-types/types";
-import { WC_DEFAULT_SESSION_REQUEST_TIMEOUT, WC_DEFAULT_SIGN_TIMEOUT } from "../../../config/constants";
+import {
+  WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
+  WC_DEFAULT_SIGN_TIMEOUT,
+} from "../../../config/constants";
 import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
 import { WalletError } from "../errors";
-import { IPersonalWallet, SignerType } from "../PersonalWeb3";
+import { IPersonalWallet } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerTimeoutError } from "../Web3Manager/Web3Manager";
 
@@ -31,18 +34,17 @@ export class WalletConnectSessionTransactionError extends WalletError {
 export class WalletConnectWallet implements IPersonalWallet {
   constructor(
     public readonly web3Adapter: Web3Adapter,
-    public readonly ethereumAddress: EthereumAddress,
-  ) {
-  }
+    public readonly ethereumAddress: EthereumAddressWithChecksum,
+  ) {}
 
   public readonly walletType = EWalletType.WALLETCONNECT;
   public readonly walletSubType = EWalletSubType.UNKNOWN;
-  public readonly sendTransactionMethod = 'eth_sendTransaction';
-  public readonly signerType = SignerType.ETH_SIGN;
+  public readonly sendTransactionMethod = "eth_sendTransaction";
+  public readonly signerType = ESignerType.ETH_SIGN;
   public readonly singingTimeout = WC_DEFAULT_SIGN_TIMEOUT;
   public readonly sessionRequestTimeout = WC_DEFAULT_SESSION_REQUEST_TIMEOUT;
 
-  public getSignerType(): SignerType {
+  public getSignerType(): ESignerType {
     return this.signerType;
   }
 
@@ -58,17 +60,16 @@ export class WalletConnectWallet implements IPersonalWallet {
     const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
     const dataToSign = addHexPrefix(msgHash.toString("hex"));
 
-    const signingTimeoutPromise = (signingTimeout: number): Promise<string> => new Promise(
-      (_, reject) => {
+    const signingTimeoutPromise = (signingTimeout: number): Promise<string> =>
+      new Promise((_, reject) => {
         const timeout = safeSetTimeout(() => {
           clearSafeTimeout(timeout);
-          reject(new SignerTimeoutError())
-        }, signingTimeout)
-      }
-    );
+          reject(new SignerTimeoutError());
+        }, signingTimeout);
+      });
     return await Promise.race([
       this.web3Adapter.ethSign(this.ethereumAddress, dataToSign),
-      signingTimeoutPromise(this.singingTimeout)
+      signingTimeoutPromise(this.singingTimeout),
     ]);
   }
 
@@ -76,8 +77,7 @@ export class WalletConnectWallet implements IPersonalWallet {
     try {
       return await this.web3Adapter.sendTransaction(txData);
     } catch (e) {
-      console.log("walletConnect.sendTransaction error:", e);
-      throw new WalletConnectSessionTransactionError(`Could not send transaction. ${e.toString()}`)
+      throw new WalletConnectSessionTransactionError(`Could not send transaction. ${e.toString()}`);
     }
   }
 
@@ -89,8 +89,8 @@ export class WalletConnectWallet implements IPersonalWallet {
       sendTransactionMethod: this.sendTransactionMethod,
       signerType: this.signerType,
       sessionRequestTimeout: this.sessionRequestTimeout,
-      signTimeout: this.singingTimeout
-    }
+      signTimeout: this.singingTimeout,
+    };
   }
 
   public isUnlocked(): boolean {

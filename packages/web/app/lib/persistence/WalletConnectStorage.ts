@@ -6,25 +6,25 @@ import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 
 export type TPeerMeta = {
-  description:string,
-  url:string,
-  icons:string[],
-  name:string
-}
+  description: string;
+  url: string;
+  icons: string[];
+  name: string;
+};
 
 export type TStoredWalletConnectData = {
-  connected:boolean,
-  accounts:string[],
-  chainId:number,
-  bridge:string, //bridge url
-  key:string,
-  clientId:string,
-  clientMeta:TPeerMeta,
-  peerId:string,
-  peerMeta:TPeerMeta,
-  handshakeId:number,
-  handshakeTopic:number
-}
+  connected: boolean;
+  accounts: string[];
+  chainId: number;
+  bridge: string; //bridge url
+  key: string;
+  clientId: string;
+  clientMeta: TPeerMeta;
+  peerId: string;
+  peerMeta: TPeerMeta;
+  handshakeId: number;
+  handshakeTopic: number;
+};
 
 export const STORAGE_WALLET_CONNECT_KEY = "walletconnect";
 
@@ -43,11 +43,11 @@ export class WalletConnectStorage {
     );
   }
 
-  public get(): TStoredWalletConnectData | undefined {
+  public get(): Promise<TStoredWalletConnectData | undefined> {
     return this.walletMetadataStorage.get();
   }
 
-  public clear(): void {
-    return this.walletMetadataStorage.clear();
+  public async clear(): Promise<void> {
+    await this.walletMetadataStorage.clear();
   }
 }

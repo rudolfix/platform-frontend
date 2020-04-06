@@ -4,11 +4,11 @@ import { AppReducer } from "../../../store";
 import { actions } from "../../actions";
 
 export interface IWalletConnectState {
-  walletConnectError:DeepReadonly<TMessage> | undefined;
+  walletConnectError: DeepReadonly<TMessage> | undefined;
 }
 
 const walletConnectInitialState: IWalletConnectState = {
-  walletConnectError:undefined
+  walletConnectError: undefined,
 };
 
 export const walletConnectReducer: AppReducer<IWalletConnectState> = (
@@ -18,7 +18,7 @@ export const walletConnectReducer: AppReducer<IWalletConnectState> = (
   switch (action.type) {
     case actions.walletSelector.walletConnectError.getType():
       return {
-        walletConnectError: action.payload.error
+        walletConnectError: action.payload.error,
       };
   }
 

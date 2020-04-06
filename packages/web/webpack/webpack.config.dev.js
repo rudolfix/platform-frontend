@@ -47,7 +47,7 @@ module.exports = merge.smart(configCommon, {
         "media-src 'self' blob:; " +
         "img-src 'self' blob: data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net https://lipis.github.io/flag-icon-css/flags " +
         "*; " + // this should be only enabled for twitter-iframe.html
-        "connect-src 'self' https://*.neufund.io https://*.onfido.com wss://*.onfido.com wss://localhost:5021 wss://platform.neufund.io/api/wc-bridge-socket/" , // needed for hot reload, dev wallet-connect bridge
+        "connect-src 'self' https://*.neufund.io https://*.onfido.com wss://*.onfido.com wss://localhost:5021 wss://platform.neufund.io/api/wc-bridge-socket/", // needed for hot reload, dev wallet-connect bridge
     },
     proxy: generateProxyConfig(
       `http://${targetAddress}`,

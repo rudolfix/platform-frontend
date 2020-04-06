@@ -15,7 +15,7 @@ export function* loadUser({ apiUserService }: TGlobalDependencies): Generator<an
   yield neuCall(loadPreviousWallet);
   yield put(actions.auth.setUser(user));
   yield neuCall(loadKycRequestData);
-  return user
+  return user;
 }
 
 export function* updateUser(
@@ -35,7 +35,7 @@ export function* logoutUser({
   userStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
   const userWallet = yield* select(selectWalletType);
-  if (userWallet === EWalletType.WALLETCONNECT){
+  if (userWallet === EWalletType.WALLETCONNECT) {
     yield neuCall(walletConnectStop);
   }
 

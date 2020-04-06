@@ -12,7 +12,7 @@ const callGuard = (methodName: string) => (...args: any[]) => {
  * @param mockImpl - A mocked methods
  */
 function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): T {
-  const methods = clazz.prototype;
+  const methods = clazz.prototype ?? {};
 
   const allMethods = new Set<string>([
     ...Object.getOwnPropertyNames(methods),
@@ -26,10 +26,10 @@ function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): 
   allMethods.forEach(methodName => {
     const userProvidedMock = (mockImpl as any)[methodName];
 
-    if (userProvidedMock && isFunction(userProvidedMock)) {
-      mock[methodName] = jest.fn(userProvidedMock);
-    } else if ((mock[methodName] = userProvidedMock)) {
-      mock[methodName] = userProvidedMock;
+    if (userProvidedMock) {
+      mock[methodName] = isFunction(userProvidedMock)
+        ? jest.fn(userProvidedMock)
+        : userProvidedMock;
     } else {
       mock[methodName] = callGuard(methodName);
     }

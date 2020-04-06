@@ -11,7 +11,7 @@ import {
   selectIsEtherUpgradeTargetSet,
   selectIsEuroUpgradeTargetSet,
 } from "../../../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { ETokenType, ETxSenderType } from "../../types";
 
@@ -19,7 +19,7 @@ function* generateEuroUpgradeTransaction({
   contractsService,
   web3Manager,
 }: TGlobalDependencies): any {
-  const userAddress = yield select(selectEthereumAddressWithChecksum);
+  const userAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
   const migrationTarget = yield select(selectIsEuroUpgradeTargetSet);
 
@@ -51,7 +51,7 @@ function* generateEtherUpgradeTransaction({
   contractsService,
   web3Manager,
 }: TGlobalDependencies): any {
-  const userAddress: EthereumAddress = yield select(selectEthereumAddressWithChecksum);
+  const userAddress: EthereumAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
   const migrationTarget: boolean = yield select(selectIsEtherUpgradeTargetSet);
 

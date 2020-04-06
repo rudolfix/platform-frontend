@@ -1,14 +1,13 @@
+import { authModuleAPI, IHttpClient } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
-import { IHttpClient } from "../client/IHttpClient";
 import { TAnalyticsTransactionsResponse } from "./interfaces";
 
 const ANALYTICS_API_ROOT = "/api/analytics-api";
 
 @injectable()
 export class AnalyticsApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient) {}
 
   getTransactionsList(
     limit: number,

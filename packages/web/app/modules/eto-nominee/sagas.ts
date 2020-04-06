@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared";
+import { EJwtPermissions } from "@neufund/shared-modules";
 
 import {
   EEtoNomineeRequestMessages,

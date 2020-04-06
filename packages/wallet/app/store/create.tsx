@@ -11,8 +11,11 @@ import Config from "react-native-config";
 import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "../di/setupBindings";
 import { TConfig } from "../di/types";
 import { setupWalletEthModule } from "../modules/eth/module";
+import { setupNotificationUIModule } from "../modules/notification-ui/module";
 import { appReducers } from "../modules/reducers";
 import { rootSaga } from "../modules/sagas";
+import { setupSignerUIModule } from "../modules/signer-ui/module";
+import { setupWalletConnectModule } from "../modules/wallet-connect/module";
 import { TAppGlobalState } from "./types";
 import { setupStorageModule } from "../modules/storage";
 
@@ -44,6 +47,9 @@ export const createAppStore = (container: Container) => {
     setupCoreModule({ backendRootUrl: config.backendRootUrl }),
     setupStorageModule(),
     setupWalletEthModule({ rpcUrl: config.rpcUrl }),
+    setupSignerUIModule(),
+    setupNotificationUIModule(),
+    setupWalletConnectModule(),
     appModule,
   );
 };

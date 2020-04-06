@@ -8,7 +8,7 @@ import { actions, TAction } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { selectMyInvestorTicketByEtoId } from "../../../investor-portfolio/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import { ETxSenderType } from "../../types";
@@ -17,7 +17,7 @@ function* generateGetClaimTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   etoId: string,
 ): any {
-  const userAddress = yield select(selectEthereumAddressWithChecksum);
+  const userAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);

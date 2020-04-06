@@ -6,6 +6,7 @@ import {
 } from "@neufund/shared";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { utils } from "ethers";
+import { UnsignedTransaction } from "ethers/utils";
 import { interfaces } from "inversify";
 
 import { EthModuleError } from "../errors";
@@ -61,6 +62,19 @@ class EthWallet {
   }
 
   /**
+   * Signs an already hashed message
+   *
+   * @param messageHash - A hash of message (should be an ethereum prefixed message hash)
+   *
+   * @returns A signed message
+   */
+  async signMessageHash(messageHash: string): Promise<string> {
+    this.logger.info("Signing message hash");
+
+    return this.ethSecureEnclave.signDigest(this.walletMetadata.privateKeyReference, messageHash);
+  }
+
+  /**
    * Signs a message
    *
    * @param message - A message
@@ -83,7 +97,7 @@ class EthWallet {
    *
    * @returns - A signed serialized transaction
    */
-  async signTransaction(transaction: utils.UnsignedTransaction): Promise<string> {
+  async signTransaction(transaction: UnsignedTransaction): Promise<string> {
     this.logger.info("Signing transaction");
 
     const rawTx = utils.serializeTransaction(transaction);

@@ -1,7 +1,7 @@
 import { nonNullable } from "@neufund/shared";
 import { expect } from "chai";
 
-import { dummyEthereumAddress } from "../../../test/fixtures";
+import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
 import { TAppGlobalState } from "../../store";
 import {
   getDummyBrowserWalletMetadata,
@@ -42,7 +42,7 @@ describe("web3 > selectors", () => {
         previousConnectedWallet: {
           walletType: EWalletType.LIGHT,
           walletSubType: EWalletSubType.UNKNOWN,
-          address: dummyEthereumAddress,
+          address: dummyEthereumAddressWithChecksum,
           email,
           salt,
         },

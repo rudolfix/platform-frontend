@@ -1,7 +1,6 @@
+import { authModuleAPI, coreModuleApi, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
   FileDescriptionValidator,
   TFileDescription,
@@ -16,8 +15,8 @@ const UPLOAD_DOCUMENT_PATH = "/upload";
 @injectable()
 export class ImmutableStorageApi {
   constructor(
-    @inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient,
-    @inject(symbols.binaryHttpClient) private binaryHttpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient,
+    @inject(coreModuleApi.symbols.binaryHttpClient) private binaryHttpClient: IHttpClient,
   ) {}
 
   public async uploadFile(

@@ -10,8 +10,7 @@ import { selectIsAuthorized, selectUserEmail } from "./selectors";
 describe("auth > selectors", () => {
   describe("selectIsAuthorized", () => {
     it("should return true for authorized users", () => {
-      const authState: IAuthState = {
-        jwt: "eyjwt",
+      const authState: Partial<IAuthState> = {
         user: {
           userId: "user-id" as EthereumAddressWithChecksum,
           type: EUserType.INVESTOR,
@@ -19,24 +18,49 @@ describe("auth > selectors", () => {
           walletSubtype: EWalletSubType.UNKNOWN,
         },
         status: EAuthStatus.AUTHORIZED,
-        currentAgreementHash: undefined,
       };
 
-      const actualValue = selectIsAuthorized({ auth: authState } as TAppGlobalState);
+      const jwtState = {
+        token: "jwt token",
+      };
+
+      const actualValue = selectIsAuthorized({ auth: authState, jwt: jwtState } as TAppGlobalState);
 
       expect(actualValue).to.be.true;
     });
 
     it("should return false for not authorized users", () => {
       // this should only happen in the middle of auth process
-      const authState: IAuthState = {
-        jwt: "eyjwt",
+      const authState: Partial<IAuthState> = {
         user: undefined,
         status: EAuthStatus.NON_AUTHORIZED,
-        currentAgreementHash: undefined,
       };
 
-      const actualValue = selectIsAuthorized({ auth: authState } as TAppGlobalState);
+      const jwtState = {
+        token: "jwt token",
+      };
+
+      const actualValue = selectIsAuthorized({ auth: authState, jwt: jwtState } as TAppGlobalState);
+
+      expect(actualValue).to.be.false;
+    });
+
+    it("should return false when jwt token is not present", () => {
+      const authState: Partial<IAuthState> = {
+        user: {
+          userId: "user-id" as EthereumAddressWithChecksum,
+          type: EUserType.INVESTOR,
+          walletType: EWalletType.LIGHT,
+          walletSubtype: EWalletSubType.UNKNOWN,
+        },
+        status: EAuthStatus.AUTHORIZED,
+      };
+
+      const jwtState = {
+        token: undefined,
+      };
+
+      const actualValue = selectIsAuthorized({ auth: authState, jwt: jwtState } as TAppGlobalState);
 
       expect(actualValue).to.be.false;
     });
@@ -45,7 +69,6 @@ describe("auth > selectors", () => {
   describe("selectUserEmail", () => {
     it("should prefer unverified user email", () => {
       const state: IAuthState = {
-        jwt: "eyjwt",
         user: {
           userId: "user-id" as EthereumAddressWithChecksum,
           unverifiedEmail: "unverified@email.com",
@@ -65,7 +88,6 @@ describe("auth > selectors", () => {
 
     it("should return undefined when user is missing", () => {
       const state: IAuthState = {
-        jwt: "eyjwt",
         user: undefined,
         status: EAuthStatus.NON_AUTHORIZED,
         currentAgreementHash: undefined,

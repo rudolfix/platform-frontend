@@ -1,5 +1,6 @@
 import { Container } from "inversify";
 import { isMatch } from "lodash/fp";
+import { CallEffect, SagaReturnType } from "redux-saga/effects";
 
 import {
   ActionPattern,
@@ -72,18 +73,14 @@ export function* neuSpawn<R, T extends any[]>(
   const deps = yield* neuGetDeps();
   return yield (spawn as any)(saga, deps, ...args);
 }
-declare type UnwrapReturnType<R> = R extends SagaGenerator<infer RT>
-  ? RT
-  : R extends Promise<infer PromiseValue>
-  ? PromiseValue
-  : R;
 
-export function* neuCall<Args extends any[], R>(
-  fn: (deps: TGlobalDependencies, ...args: Args) => R,
-  ...args: Args
-): SagaGenerator<UnwrapReturnType<R>> {
+export function* neuCall<
+  Args extends any[],
+  FN extends (deps: TGlobalDependencies, ...args: Args) => any
+>(fn: FN, ...args: Args): SagaGenerator<SagaReturnType<FN>, CallEffect<SagaReturnType<FN>>> {
   const deps = yield* neuGetDeps();
-  return yield* call(fn as (...args: any) => R, deps, ...args);
+
+  return yield* call(fn, ...([deps, ...args] as Parameters<typeof fn>));
 }
 
 /**

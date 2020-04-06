@@ -181,7 +181,7 @@ const PortfolioReservedAssetsLayout: React.FunctionComponent<TComponentProps> = 
   <Table
     columns={prepareTableColumns(pendingAssetsTotalInvested, pendingAssetsTotalReward)}
     data={prepareTableRowData(pendingAssets)}
-    withFooter={true}
+    withFooter
   />
 );
 

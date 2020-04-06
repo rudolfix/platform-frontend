@@ -1,10 +1,9 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared";
+import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
 
 import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IHttpResponse } from "../../lib/api/client/IHttpClient";
 import {
   EEtoState,
   TCompanyEtoData,

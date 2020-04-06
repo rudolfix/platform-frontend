@@ -1,24 +1,5 @@
 import BigNumber from "bignumber.js";
 
-export interface ITxData {
-  to: string;
-  value: string;
-  data?: string;
-  from: string;
-  input?: string;
-  gas: string;
-  gasPrice: string;
-}
-
-export interface IRawTxData extends ITxData {
-  nonce: string;
-}
-
-export interface IEthereumNetworkConfig {
-  rpcUrl: string;
-  backendRpcUrl: string;
-}
-
 export type TBigNumberVariants = string | BigNumber;
 
 /**
@@ -65,9 +46,16 @@ export type TDataTestId = {
 };
 
 /**
+ * Forces a tuple type over array
+ * @example
+ * Tuple<[string, number]> // [string, number]
+ */
+export type Tuple<T = any> = [T] | T[];
+
+/**
  * Allows either T or T[]
  */
-export type TSingleOrArray<T> = T | T[];
+export type SingleOrArray<T> = T | Tuple<T>;
 
 /**
  * Forces an array to have at least one member of a given type T
@@ -148,3 +136,28 @@ export type SelectPropertyNames<T, R> = { [K in keyof T]: T[K] extends R ? K : n
  * ReturnTypeStrict<() => string> // string
  */
 export type ReturnTypeStrict<T> = T extends (...args: any) => infer R ? R : never;
+
+/**
+ * Returns a flatten return type for a given T. When T is not a function returns never
+ * @example
+ * ReturnTypeFlatten<{}> // never
+ * ReturnTypeStrict<() => string> // string
+ * ReturnTypeStrict<() => [string, boolean]> // string | boolean
+ */
+export type ReturnTypeFlatten<T> = T extends (...args: any) => infer R
+  ? R extends Tuple
+    ? R[number]
+    : R
+  : never;
+
+/**
+ * Converts union to intersection by forcing contravariant behaviour
+ *
+ * @example
+ * UnionToIntersection<{ foo: string } | { bar: number }> // { foo: string } & { bar: number }
+ */
+export type UnionToIntersection<U> = (U extends any
+? (k: U) => void
+: never) extends (k: infer I) => void
+  ? I
+  : never;

@@ -12,7 +12,7 @@ import { selectInvestorTicket } from "../../../investor-portfolio/selectors";
 import { IInvestorTicket } from "../../../investor-portfolio/types";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../shared/tokenPrice/selectors";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 import { ETxSenderType } from "../../types";
@@ -21,7 +21,7 @@ function* generateGetRefundTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   etoId: string,
 ): Generator<any, any, any> {
-  const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
+  const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
   const gasPriceWithOverhead: string = yield select(selectStandardGasPriceWithOverHead);
 
   const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(etoId);

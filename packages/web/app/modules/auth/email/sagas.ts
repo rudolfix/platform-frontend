@@ -1,4 +1,4 @@
-import { fork, put, select } from "@neufund/sagas";
+import { call, fork, put, select } from "@neufund/sagas";
 import { includes } from "lodash/fp";
 
 import {
@@ -72,11 +72,11 @@ export function* verifyUserEmail({
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);
 
-  const walletMetadata = walletStorage.get();
+  const walletMetadata = yield* call(() => walletStorage.get());
   // Update metadata email only when wallet type is LightWallet
   if (walletMetadata && walletMetadata.walletType === EWalletType.LIGHT) {
     const updatedMetadata: TStoredWalletMetadata = { ...walletMetadata, email: urlEmail };
-    walletStorage.set(updatedMetadata);
+    yield* call(() => walletStorage.set(updatedMetadata));
   }
 
   const userType = yield* select((s: TAppGlobalState) => selectUserType(s));

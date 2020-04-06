@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { selectEthereumAddressWithChecksum } from "../../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
 import { AccountAddressWithHistoryLink } from "../../shared/AccountAddress";
@@ -34,6 +34,6 @@ export const YourEthereumAddressWidgetComponent: React.FunctionComponent<IStateP
 
 export const YourEthereumAddressWidget = appConnect<IStateProps>({
   stateToProps: state => ({
-    address: selectEthereumAddressWithChecksum(state),
+    address: selectEthereumAddress(state),
   }),
 })(YourEthereumAddressWidgetComponent);

@@ -53,7 +53,7 @@ export class DocumentsConfidentialityAgreementsStorage {
       },
     };
 
-    this.documentConfidentialityAgreementStorage.set(updatedAgreements);
+    await this.documentConfidentialityAgreementStorage.set(updatedAgreements);
   }
 
   public async isAgreementAccepted(
@@ -73,13 +73,15 @@ export class DocumentsConfidentialityAgreementsStorage {
 
   private async getAndValidate(): Promise<TDocumentConfidentialityAgreements> {
     try {
-      const validated = await schema.validate(this.documentConfidentialityAgreementStorage.get());
+      const validated = await schema.validate(
+        await this.documentConfidentialityAgreementStorage.get(),
+      );
 
       return validated || {};
     } catch (e) {
       this.logger.warn("Invalid document confidentiality agreement storage schema", e);
 
-      this.documentConfidentialityAgreementStorage.clear();
+      await this.documentConfidentialityAgreementStorage.clear();
 
       return {};
     }

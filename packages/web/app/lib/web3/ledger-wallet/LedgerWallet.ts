@@ -1,9 +1,10 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { ESignerType } from "@neufund/shared-modules";
 import { addHexPrefix, toBuffer } from "ethereumjs-util";
 import * as Web3 from "web3";
 
 import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../../modules/web3/types";
-import { IPersonalWallet, SignerType } from "../PersonalWeb3";
+import { IPersonalWallet } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError, SignerTimeoutError } from "../Web3Manager/Web3Manager";
 import {
@@ -22,12 +23,12 @@ export class LedgerWallet implements IPersonalWallet {
 
   public constructor(
     public readonly web3Adapter: Web3Adapter,
-    public readonly ethereumAddress: EthereumAddress,
+    public readonly ethereumAddress: EthereumAddressWithChecksum,
     private readonly ledgerInstance: ILedgerCustomProvider | undefined,
     public readonly derivationPath: string,
   ) {}
 
-  public getSignerType = (): SignerType => SignerType.ETH_SIGN;
+  public getSignerType = (): ESignerType => ESignerType.ETH_SIGN;
 
   public testConnection = async (): Promise<boolean> => {
     if (!this.ledgerInstance) throw new LedgerNotAvailableError();

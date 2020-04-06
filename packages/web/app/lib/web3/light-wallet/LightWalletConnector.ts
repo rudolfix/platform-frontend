@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { toEthereumAddress } from "@neufund/shared";
 import { ILogger } from "@neufund/shared-modules";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
@@ -12,6 +12,7 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { symbols } from "../../../di/symbols";
 import { EWalletType } from "../../../modules/web3/types";
+import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { STIPEND_ELIGIBLE_WALLETS } from "../constants";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
@@ -43,13 +44,11 @@ export class LightWalletConnector {
   ): Promise<IPersonalWallet> => {
     try {
       this.web3Adapter = new Web3Adapter(await this.setWeb3Provider(lightWalletVault));
-      return new LightWallet(
-        this.web3Adapter,
-        addHexPrefix(lightWalletVault.walletInstance.addresses[0]) as EthereumAddress,
-        lightWalletVault,
-        email,
-        password,
+      const ethereumAddress = makeEthereumAddressChecksummed(
+        toEthereumAddress(addHexPrefix(lightWalletVault.walletInstance.addresses[0])),
       );
+
+      return new LightWallet(this.web3Adapter, ethereumAddress, lightWalletVault, email, password);
     } catch (e) {
       if (e instanceof LightError) {
         throw e;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../../modules/actions";
-import { selectEthereumAddressWithChecksum } from "../../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { AccountAddressWithHistoryLink } from "../../shared/AccountAddress";
 import { EthereumQRCode } from "../../shared/EthereumQRCode";
@@ -48,7 +48,7 @@ const DepositEthModalComponent: React.FunctionComponent<IStateProps & IDispatchP
 export const DepositEthModal = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
     isOpen: state.depositEthModal.isOpen,
-    address: selectEthereumAddressWithChecksum(state),
+    address: selectEthereumAddress(state),
   }),
   dispatchToProps: dispatch => ({
     onCancel: () => dispatch(actions.depositEthModal.hideDepositEthModal()),

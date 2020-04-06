@@ -1,7 +1,6 @@
+import { authModuleAPI, IHttpClient } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
-import { IHttpClient } from "../client/IHttpClient";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 import { TEtoProducts } from "./EtoProductsApi.interfaces";
 
@@ -13,7 +12,7 @@ const ETO_PRODUCT_TEMPLATES_PATH = "templates";
 @injectable()
 export class EtoProductApi {
   constructor(
-    @inject(symbols.authorizedJsonHttpClient) private authorizedHttpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private authorizedHttpClient: IHttpClient,
   ) {}
 
   public async getProducts(): Promise<TEtoProducts> {

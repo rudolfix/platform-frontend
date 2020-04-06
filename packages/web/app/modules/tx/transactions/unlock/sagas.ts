@@ -12,7 +12,7 @@ import {
   selectLockedEtherBalance,
   selectLockedEtherUnlockDate,
 } from "../../../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 import { UserCannotUnlockFunds } from "./errors";
@@ -27,7 +27,7 @@ function* generateUnlockEuroTransaction({
     throw new UserCannotUnlockFunds();
   }
 
-  const userAddress = yield select(selectEthereumAddressWithChecksum);
+  const userAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
   const etherNeumarksDue = yield select(selectEtherLockedNeumarksDue);
 

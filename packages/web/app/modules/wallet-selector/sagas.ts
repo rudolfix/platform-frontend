@@ -1,11 +1,4 @@
-import {
-  fork,
-  neuCall,
-  neuTakeEvery,
-  neuTakeLatestUntil,
-  put
-} from "@neufund/sagas";
-
+import { fork, neuCall, neuTakeEvery, neuTakeLatestUntil, put } from "@neufund/sagas";
 
 import { actions } from "../actions";
 import { handleSignInUser } from "../auth/user/sagas";

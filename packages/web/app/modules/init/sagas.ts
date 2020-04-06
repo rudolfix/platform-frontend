@@ -20,7 +20,10 @@ import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 
-function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): Generator<any, void, any> {
+function* initSmartcontracts({
+  web3Manager,
+  logger,
+}: TGlobalDependencies): Generator<any, void, any> {
   try {
     yield fork(neuCall, initWeb3ManagerEvents);
     yield web3Manager.initialize();
@@ -50,22 +53,21 @@ function* makeSureWalletMetaDataExists({
 }
 
 function* loadWalletConnectSession({
-  walletConnectStorage
+  walletConnectStorage,
 }: TGlobalDependencies): Generator<any, TStoredWalletConnectData | undefined, any> {
   return yield walletConnectStorage.get();
 }
 
 function* deleteWalletConnectSession({
-  walletConnectStorage
+  walletConnectStorage,
 }: TGlobalDependencies): Generator<any, void, any> {
   return yield walletConnectStorage.clear();
 }
 
-function* restoreUserSession({
-    logger
-  }: TGlobalDependencies,
+function* restoreUserSession(
+  { logger }: TGlobalDependencies,
   jwt: string,
-  wcSession: TStoredWalletConnectData | undefined
+  wcSession: TStoredWalletConnectData | undefined,
 ): Generator<any, void, any> {
   yield neuCall(makeSureWalletMetaDataExists);
   if (isJwtExpiringLateEnough(jwt)) {
@@ -75,7 +77,7 @@ function* restoreUserSession({
       const walletType = yield select(selectWalletType);
 
       if (walletType === EWalletType.WALLETCONNECT && wcSession) {
-        yield neuCall(walletConnectInit)
+        yield neuCall(walletConnectInit);
       } else if (walletType !== EWalletType.WALLETCONNECT && wcSession) {
         // action.auth.logout will be called automatically after change in local storage
         yield neuCall(deleteWalletConnectSession);
@@ -86,16 +88,13 @@ function* restoreUserSession({
       yield put(actions.auth.finishSigning());
     } catch (e) {
       yield put(actions.auth.logout());
-      logger.error(
-        `Cannot retrieve account. ${e}`,
-      );
+      logger.error(`Cannot retrieve account. ${e}`);
     }
   } else {
     yield put(actions.auth.logout());
     logger.info("JTW expiring too soon.");
   }
 }
-
 
 function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
   try {
@@ -104,7 +103,7 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
     const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);
 
     if (jwt) {
-      yield neuCall(restoreUserSession, jwt, wcSession)
+      yield neuCall(restoreUserSession, jwt, wcSession);
     } else {
       yield neuCall(deleteWalletConnectSession);
     }
@@ -174,7 +173,7 @@ export function* waitForAppInit(): Generator<any, any, any> {
   return appIsReady;
 }
 
-export const initSagas = function* (): Generator<any, void, any> {
+export const initSagas = function*(): Generator<any, void, any> {
   yield fork(neuTakeEvery, "INIT_START", initStartSaga);
   // Smart Contracts are only initialized once during the whole life cycle of the app
   yield fork(initSmartcontractsOnce);

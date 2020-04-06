@@ -178,15 +178,16 @@ export function* setUser(
 
 export function* handleLogOutUserInternal(
   { logger }: TGlobalDependencies,
-  logoutType:ELogoutReason
-):Generator<any, void,any>{
+  logoutType: ELogoutReason,
+): Generator<any, void, any> {
   yield neuCall(logoutUser);
   //TODO need to decide how logout is initiated (by wallet or saga); //yield neuCall(logoutUser);
 
   switch (logoutType) {
-    case ELogoutReason.USER_REQUESTED: {
-      yield put(actions.routing.goHome());
-    }
+    case ELogoutReason.USER_REQUESTED:
+      {
+        yield put(actions.routing.goHome());
+      }
       break;
     case ELogoutReason.SESSION_TIMEOUT:
       yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
@@ -207,11 +208,11 @@ export function* handleLogOutUserInternal(
 }
 
 export function* handleLogOutUser(
-  _ : TGlobalDependencies,
+  _: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.auth.logout>,
 ): Generator<any, any, any> {
   const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
-  yield neuCall(handleLogOutUserInternal, logoutType)
+  yield neuCall(handleLogOutUserInternal, logoutType);
 }
 
 export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {

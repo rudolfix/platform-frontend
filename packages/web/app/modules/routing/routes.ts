@@ -361,7 +361,7 @@ export function* registerRoute(payload: RouterState): Generator<any, any, any> {
 export function* loginWalletConnectRoute(payload: RouterState): Generator<any, any, any> {
   const routeMatch = yield matchPath(payload.location.pathname, {
     path: appRoutes.walletconnect,
-    exact: true
+    exact: true,
   });
   return yield routeAction(routeMatch, {
     notAuth: put(actions.walletSelector.walletConnectStart()),

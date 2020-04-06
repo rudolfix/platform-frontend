@@ -13,21 +13,18 @@ import { NullBlockTracker } from "../../api/nullBlockTracker";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
-import {
-  WalletConnectSessionRejectedError,
-  WalletConnectWallet,
-} from "./WalletConnectWallet";
+import { WalletConnectSessionRejectedError, WalletConnectWallet } from "./WalletConnectWallet";
 
 export type TWalletConnectEvents =
-  | { type: EWalletConnectEventTypes.SESSION_REQUEST, payload: { uri: string } }
+  | { type: EWalletConnectEventTypes.SESSION_REQUEST; payload: { uri: string } }
   | { type: EWalletConnectEventTypes.SESSION_REQUEST_TIMEOUT }
   | { type: EWalletConnectEventTypes.DISCONNECT }
   | { type: EWalletConnectEventTypes.REJECT }
   | { type: EWalletConnectEventTypes.CONNECT }
-  | { type: EWalletConnectEventTypes.ERROR, payload: { error: Error } }
-  | { type: EWalletConnectEventTypes.ACCOUNTS_CHANGED, payload: { account: string } }
-  | { type: EWalletConnectEventTypes.NETWORK_CHANGED, payload: { networkId: number } }
-  | { type: EWalletConnectEventTypes.CHAIN_CHANGED, payload: { chainId: number } }
+  | { type: EWalletConnectEventTypes.ERROR; payload: { error: Error } }
+  | { type: EWalletConnectEventTypes.ACCOUNTS_CHANGED; payload: { account: string } }
+  | { type: EWalletConnectEventTypes.NETWORK_CHANGED; payload: { networkId: number } }
+  | { type: EWalletConnectEventTypes.CHAIN_CHANGED; payload: { chainId: number } };
 
 export enum EWalletConnectEventTypes {
   CONNECT = "connect",
@@ -68,7 +65,7 @@ export class WalletConnectConnector extends EventEmitter {
     });
 
     this.walletConnectProvider.on("sessionRequest", this.sessionRequestHandler);
-    this.walletConnectProvider.on('connect', this.connectHandler);
+    this.walletConnectProvider.on("connect", this.connectHandler);
     this.walletConnectProvider.on("disconnect", this.disconnectHandler);
     this.walletConnectProvider.on("reject", this.rejectHandler);
     this.walletConnectProvider.on("error", this.errorHandler);
@@ -76,8 +73,8 @@ export class WalletConnectConnector extends EventEmitter {
     this.walletConnectProvider.on("chainChanged", this.chainChangedHandler);
     this.walletConnectProvider.on("networkChanged", this.networkChangedHandler);
     this.walletConnectProvider.on("open", this.openHandler); //not sure if those are used
-    this.walletConnectProvider.on("close", this.closeHandler);//not sure if those are used
-    this.walletConnectProvider.on("payload", this.payloadHandler);//not sure if those are used
+    this.walletConnectProvider.on("close", this.closeHandler); //not sure if those are used
+    this.walletConnectProvider.on("payload", this.payloadHandler); //not sure if those are used
 
     try {
       engine = new Web3ProviderEngine({ blockTracker: new NullBlockTracker() });
@@ -92,7 +89,6 @@ export class WalletConnectConnector extends EventEmitter {
       engine.start();
     } catch (e) {
       this.logger.error("could not enable wc", e);
-      console.log('could not enable wc,', e);
       await this.walletConnectProvider.cancelSession();
       this.cleanUpSession();
       throw new WalletConnectSessionRejectedError("subscription failed");
@@ -104,28 +100,26 @@ export class WalletConnectConnector extends EventEmitter {
     const web3Adapter = new Web3Adapter(this.web3);
     const ethereumAddress = await web3Adapter.getAccountAddressWithChecksum();
     this.sessionRequestTimeout && clearSafeTimeout(this.sessionRequestTimeout);
-    return new WalletConnectWallet(web3Adapter, ethereumAddress, meta)
+    return new WalletConnectWallet(web3Adapter, ethereumAddress, meta);
   };
 
   public disconnect = async () => {
-    console.log('...disconnecting')
     if (this.walletConnectProvider) {
       await this.walletConnectProvider.close();
       this.cleanUpSession();
-      return "disconnected"
+      return "disconnected";
     } else {
-      return "nothing to disconnect"
+      return "nothing to disconnect";
     }
   };
 
   public cancelSession = async () => {
-    console.log('...cancelSession')
     if (this.walletConnectProvider) {
       await this.walletConnectProvider.cancelSession();
       this.cleanUpSession();
-      return "canceled"
+      return "canceled";
     } else {
-      return "nothing to cancel"
+      return "nothing to cancel";
     }
   };
 
@@ -134,59 +128,58 @@ export class WalletConnectConnector extends EventEmitter {
       this.walletConnectProvider = undefined;
     }
     if (this.web3) {
-      this.web3 = undefined
+      this.web3 = undefined;
     }
-    if(this.sessionRequestTimeout){
+    if (this.sessionRequestTimeout) {
       clearSafeTimeout(this.sessionRequestTimeout);
     }
   };
 
   private accountsChangedHandler = (accounts: string[]) => {
-    this.emit(EWalletConnectEventTypes.ACCOUNTS_CHANGED, { accounts })
+    this.emit(EWalletConnectEventTypes.ACCOUNTS_CHANGED, { accounts });
   };
 
   private chainChangedHandler = (chainId: number) => {
-    this.emit(EWalletConnectEventTypes.CHAIN_CHANGED, { chainId })
+    this.emit(EWalletConnectEventTypes.CHAIN_CHANGED, { chainId });
   };
   private networkChangedHandler = (networkId: number) => {
-    this.emit(EWalletConnectEventTypes.NETWORK_CHANGED, { networkId })
+    this.emit(EWalletConnectEventTypes.NETWORK_CHANGED, { networkId });
   };
 
   private openHandler = () => {
-    this.emit(EWalletConnectEventTypes.OPEN)
+    this.emit(EWalletConnectEventTypes.OPEN);
   };
 
   private closeHandler = (code: number, reason: string) => {
-    this.emit(EWalletConnectEventTypes.CLOSE, { code, reason })
+    this.emit(EWalletConnectEventTypes.CLOSE, { code, reason });
   };
 
   private connectHandler = () => {
-    this.emit(EWalletConnectEventTypes.CONNECT)
+    this.emit(EWalletConnectEventTypes.CONNECT);
   };
 
   private disconnectHandler = () => {
     this.cleanUpSession();
-    this.emit(EWalletConnectEventTypes.DISCONNECT)
+    this.emit(EWalletConnectEventTypes.DISCONNECT);
   };
 
   private rejectHandler = () => {
-    this.emit(EWalletConnectEventTypes.REJECT)
+    this.emit(EWalletConnectEventTypes.REJECT);
   };
 
   private errorHandler = (error: Error) => {
-    this.emit(EWalletConnectEventTypes.ERROR, { error })
+    this.emit(EWalletConnectEventTypes.ERROR, { error });
   };
 
-  private payloadHandler = (_: any) => {
-  };
+  private payloadHandler = (_: any) => {};
 
   private sessionRequestHandler = (uri: any) => {
     this.sessionRequestTimeout = safeSetTimeout(
       this.sessionRequestTimeoutHandler,
-      WC_DEFAULT_SESSION_REQUEST_TIMEOUT
+      WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
     );
 
-    this.emit(EWalletConnectEventTypes.SESSION_REQUEST, uri)
+    this.emit(EWalletConnectEventTypes.SESSION_REQUEST, uri);
   };
 
   private sessionRequestTimeoutHandler = () => {

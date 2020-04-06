@@ -6,7 +6,10 @@ import { branch, compose, renderComponent } from "recompose";
 import { actions } from "../../../modules/actions";
 import { ELogoutReason } from "../../../modules/auth/types";
 import { TLoginRouterState } from "../../../modules/routing/types";
-import { selectMessageSigningError, selectWalletConnectError } from "../../../modules/wallet-selector/selectors";
+import {
+  selectMessageSigningError,
+  selectWalletConnectError,
+} from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
@@ -22,13 +25,13 @@ type TExternalProps = {
 } & TRouteLoginProps;
 
 type TStateProps = {
-  error: TMessage | undefined
-}
+  error: TMessage | undefined;
+};
 
 type TDispatchProps = {
   walletConnectStart: () => void;
   walletConnectStop: () => void;
-}
+};
 
 type TLocalStateProps = {
   logoutReason: ELogoutReason | undefined;
@@ -45,7 +48,7 @@ export const WalletConnect = compose<
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<TStateProps, TDispatchProps>({
     stateToProps: state => ({
-      error: selectWalletConnectError(state) || selectMessageSigningError(state)
+      error: selectWalletConnectError(state) || selectMessageSigningError(state),
     }),
     dispatchToProps: dispatch => ({
       walletConnectStart: () => dispatch(actions.walletSelector.walletConnectStart()),
@@ -53,8 +56,9 @@ export const WalletConnect = compose<
     }),
   }),
   withContainer(WalletConnectContainer),
-  branch<TStateProps>(({error}) => error === undefined,
+  branch<TStateProps>(
+    ({ error }) => error === undefined,
     renderComponent(LoadingIndicator),
-    renderComponent(WalletConnectError)
-    )
+    renderComponent(WalletConnectError),
+  ),
 )(shouldNeverHappen("WalletConnect reached default branch"));

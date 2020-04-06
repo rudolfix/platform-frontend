@@ -1,4 +1,9 @@
-import { coreModuleApi } from "@neufund/shared-modules";
+import {
+  coreModuleApi,
+  createLibSymbol,
+  IEthManager,
+  ISingleKeyStorage,
+} from "@neufund/shared-modules";
 
 export const symbols = {
   // configs
@@ -8,11 +13,6 @@ export const symbols = {
 
   // apis
   apiImmutableStorage: Symbol("apiImmutableStorage"),
-  jsonHttpClient: Symbol("jsonHttpClient"),
-  binaryHttpClient: Symbol("binaryHttpClient"),
-  authorizedJsonHttpClient: Symbol("authorizedJsonHttpClient"),
-  authorizedBinaryHttpClient: Symbol("authorizedBinaryHttpClient"),
-  signatureAuthApi: Symbol("signatureAuthApi"),
   vaultApi: Symbol("vaultApi"),
   analyticsApi: Symbol("analyticsApi"),
   usersApi: Symbol("usersApi"),
@@ -24,7 +24,6 @@ export const symbols = {
   apiEtoNomineeService: Symbol("apiEtoNomineeService"),
   fileStorageService: Symbol("fileStorageService"),
   gasApi: Symbol("gasApi"),
-  marketingEmailsApi: Symbol("marketingEmailsApi"),
 
   // contracts
   contractsService: Symbol("contractsService"),
@@ -35,7 +34,7 @@ export const symbols = {
   ledgerWalletConnector: Symbol("ledgerWalletConnector"),
   browserWalletConnector: Symbol("browserWalletConnector"),
   walletConnectConnector: Symbol("walletConnectConnector"),
-  web3Manager: Symbol("web3Manager"),
+  web3Manager: createLibSymbol<IEthManager>("web3Manager"),
   web3Factory: Symbol("web3Factory"),
   web3BatchFactory: Symbol("web3BatchFactory"),
 
@@ -44,7 +43,7 @@ export const symbols = {
   walletConnectStorage: Symbol("walletConnectStorage"),
   documentsConfidentialityAgreementsStorage: Symbol("documentsConfidentialityAgreementsStorage"),
   userStorage: Symbol("userStorage"),
-  jwtStorage: Symbol("jwtStorage"),
+  jwtStorage: createLibSymbol<ISingleKeyStorage<string>>("jwtStorage"),
 
   // utils
   notificationCenter: Symbol("notificationCenter"),
@@ -55,9 +54,6 @@ export const symbols = {
   userActivityChannel: Symbol("userActivityChannel"),
 
   intlWrapper: Symbol("intlWrapper"),
-
-  // external modules
-  cryptoRandomString: Symbol("cryptoRandomString"),
 
   // others
   richTextEditorUploadAdapter: Symbol("richTextEditorUploadAdapter"),

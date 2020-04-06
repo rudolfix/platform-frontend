@@ -1,4 +1,5 @@
 import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared";
+import { authModuleAPI } from "@neufund/shared-modules";
 import { createSelector } from "reselect";
 
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
@@ -12,10 +13,16 @@ import {
 import { selectIsLightWallet } from "../web3/selectors";
 import { EAuthStatus, IAuthState } from "./reducer";
 
-export const selectIsAuthorized = (state: TAppGlobalState): boolean =>
-  !!(state.auth.jwt && state.auth.user && state.auth.status === EAuthStatus.AUTHORIZED);
+export const selectAuthUser = (state: TAppGlobalState): IUser | undefined => state.auth.user;
 
-export const selectJwt = (state: TAppGlobalState): string | undefined => state.auth.jwt;
+export const selectAuthStatus = (state: TAppGlobalState): EAuthStatus => state.auth.status;
+
+export const selectIsAuthorized = createSelector(
+  authModuleAPI.selectors.selectJwt,
+  selectAuthUser,
+  selectAuthStatus,
+  (jwt, user, status) => !!(jwt && user && status === EAuthStatus.AUTHORIZED),
+);
 
 export const selectUserType = (state: TAppGlobalState): EUserType | undefined =>
   state.auth.user && state.auth.user.type;

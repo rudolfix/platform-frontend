@@ -40,7 +40,7 @@ export function* ensureWalletConnection(
   }: TGlobalDependencies,
   password?: string,
 ): any {
-  const metadata = walletStorage.get();
+  const metadata = yield* call(() => walletStorage.get());
 
   if (!metadata) return invariant(metadata, "User has JWT but doesn't have wallet metadata!");
 

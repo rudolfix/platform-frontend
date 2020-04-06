@@ -1,33 +1,31 @@
-import { ILogger } from "@neufund/shared-modules";
+import { ILogger, ISingleKeyStorage } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../di/symbols";
 import { Storage } from "./Storage";
 
 @injectable()
-export class ObjectStorage<T> {
+export class ObjectStorage<T> implements ISingleKeyStorage<T> {
   constructor(
     @inject(symbols.storage) private readonly storage: Storage,
     @inject(symbols.logger) private readonly logger: ILogger,
     private readonly key: string,
   ) {}
 
-  public set(value: T): void {
+  public async set(value: T): Promise<void> {
     this.logger.info(`Setting key: ${this.key} on storage`);
     this.storage.setKey(this.key, JSON.stringify(value));
   }
 
-  public get(): T | undefined {
+  public async get(): Promise<T | undefined> {
     this.logger.info(`Getting key: ${this.key} from storage`);
+
     const value = this.storage.getKey(this.key);
-    if (!value) {
-      return undefined;
-    } else {
-      return JSON.parse(value);
-    }
+
+    return value ? JSON.parse(value) : undefined;
   }
 
-  public clear(): void {
+  public async clear(): Promise<void> {
     this.logger.info(`Clearing storage for key ${this.key}`);
     this.storage.removeKey(this.key);
   }

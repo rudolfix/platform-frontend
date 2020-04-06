@@ -1,6 +1,8 @@
 import { Dictionary } from "@neufund/shared";
 
+import { FUNDING_ROUNDS } from "../../../components/eto/shared/constants";
 import { EEtoFormTypes } from "../../../modules/eto-flow/types";
+import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { EEtoState, EFundingRound } from "./EtoApi.interfaces.unsafe";
 
 export const etoFormIsReadonly = (formName: EEtoFormTypes, etoState?: EEtoState) => {
@@ -23,4 +25,14 @@ export const NEXT_FUNDING_ROUNDS: Dictionary<EFundingRound | undefined, EFunding
   [EFundingRound.E_ROUND]: EFundingRound.PRE_IPO,
   [EFundingRound.PRE_IPO]: EFundingRound.PUBLIC,
   [EFundingRound.PUBLIC]: undefined,
+};
+
+export const getNextFundingRound = ({ company }: TEtoWithCompanyAndContractReadonly) => {
+  if (company.companyStage) {
+    const nextFundingRound = NEXT_FUNDING_ROUNDS[company.companyStage];
+
+    return nextFundingRound ? FUNDING_ROUNDS[nextFundingRound] : undefined;
+  }
+
+  return undefined;
 };

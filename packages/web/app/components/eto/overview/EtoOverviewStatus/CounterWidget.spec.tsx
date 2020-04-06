@@ -37,12 +37,14 @@ const eto = {
 };
 
 const initialStateBase = {
+  jwt: {
+    token: "jwt token",
+  },
   auth: {
     user: {
       userId: "0x353d3030AF583fc0e547Da80700BbD953F330A4b",
       type: EUserType.INVESTOR,
     },
-    jwt: "blabla",
     status: EAuthStatus.AUTHORIZED,
   },
   eto,
@@ -201,8 +203,9 @@ describe("EtoStatusManager state change", () => {
     );
 
     expect(component.find(tid("eto-overview-status-whitelisting-limit-reached")).length).to.eq(2);
-    expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(1);
+    expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(0);
     expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
+    expect(component.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.not.be.called;
 
     await clock.fakeClock.tickAsync(3000);
@@ -210,7 +213,8 @@ describe("EtoStatusManager state change", () => {
 
     expect(component.find(tid("eto-overview-status-whitelisting-limit-reached")).length).to.eq(2);
     expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(0);
-    expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(1);
+    expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
+    expect(component.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.be.calledOnceWith(props.eto.previewCode);
   });
 
@@ -249,7 +253,7 @@ describe("EtoStatusManager state change", () => {
     );
 
     expect(component.find(tid("eto-overview-status-whitelisting-suspended")).length).to.eq(2);
-    expect(component.find(tid("eto-whitelist-countdown")).length).to.eq(1);
+    expect(component.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(component.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
     expect(actions.eto.loadEtoPreview).to.not.be.called;
 
@@ -265,7 +269,8 @@ describe("EtoStatusManager state change", () => {
       2,
     );
     expect(componentUpdated.find(tid("eto-whitelist-countdown")).length).to.eq(0);
-    expect(componentUpdated.find(tid("eto-whitelist-countdown-finished")).length).to.eq(1);
+    expect(componentUpdated.find(tid("eto-whitelist-countdown-finished")).length).to.eq(0);
+    expect(componentUpdated.find(tid("eto-start-date-not-set")).length).to.eq(1);
     expect(actions.eto.loadEtoPreview).to.be.calledOnceWith(props.eto.previewCode);
   });
 
@@ -304,7 +309,7 @@ describe("EtoStatusManager state change", () => {
   it("shows the countdown and then calls the final function", async () => {
     const initialState = cloneDeep(initialStateBase);
     initialState.eto.contracts[testEto.previewCode].timedState = EETOStateOnChain.Public;
-    (initialState.auth.jwt as unknown) = undefined; //set user to not authorized to be able to test the counter
+    (initialState.jwt as unknown) = undefined; //set user to not authorized to be able to test the counter
     props.eto.contract.timedState = EETOStateOnChain.Public;
 
     clock.fakeClock.setSystemTime(

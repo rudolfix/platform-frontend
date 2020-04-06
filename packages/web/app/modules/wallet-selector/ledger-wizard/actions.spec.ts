@@ -5,7 +5,7 @@ import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
+import { dummyEthereumAddressWithChecksum, dummyNetworkId } from "../../../../test/fixtures";
 import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -226,7 +226,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
 
       const expectedDerivationPath = "44'/60'/0'/2";
       const dummyMetadata: ILedgerWalletMetadata = {
-        address: dummyEthereumAddress,
+        address: dummyEthereumAddressWithChecksum,
         derivationPath: expectedDerivationPath,
         walletType: EWalletType.LEDGER,
         walletSubType: EWalletSubType.UNKNOWN,

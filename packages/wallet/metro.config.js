@@ -1,4 +1,5 @@
 const path = require("path");
+const { getDefaultConfig } = require("metro-config");
 
 const projectRoot = path.resolve(__dirname);
 const workspaceRoot = path.resolve(projectRoot, "../..");
@@ -12,19 +13,28 @@ const symlinkedModules = {
   crypto: require.resolve("react-native-crypto"),
 };
 
-module.exports = {
-  projectRoot,
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: false,
-      },
-    }),
-  },
-  // Watch also workspace root to properly resolve hoisted dependencies
-  watchFolders: [workspaceRoot],
-  resolver: {
-    extraNodeModules: symlinkedModules,
-  },
-};
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig();
+
+  return {
+    projectRoot,
+    transformer: {
+      babelTransformerPath: require.resolve("react-native-svg-transformer"),
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: false,
+        },
+      }),
+    },
+    // Watch also workspace root to properly resolve hoisted dependencies
+    watchFolders: [workspaceRoot],
+    resolver: {
+      assetExts: assetExts.filter(ext => ext !== "svg"),
+      sourceExts: [...sourceExts, "svg"],
+      extraNodeModules: symlinkedModules,
+    },
+  };
+})();

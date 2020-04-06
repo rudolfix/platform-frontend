@@ -9,14 +9,14 @@ import { actions } from "../actions";
 import { numericValuesToString } from "../contracts/utils";
 import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEthereumAddress } from "../web3/selectors";
 import { ILockedWallet, IWalletStateData } from "./reducer";
 
 const WALLET_DATA_FETCHING_INTERVAL = 12000;
 
 function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
   try {
-    const ethAddress = yield select(selectEthereumAddressWithChecksum);
+    const ethAddress = yield select(selectEthereumAddress);
     yield put(actions.gas.gasApiEnsureLoading());
     yield take(actions.gas.gasApiLoaded);
 

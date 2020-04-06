@@ -15,7 +15,7 @@ import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectEurEquivalent } from "../shared/tokenPrice/selectors";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEthereumAddress } from "../web3/selectors";
 import { TX_LIMIT } from "./constants";
 import { selectLastTransactionId, selectTimestampOfLastChange, selectTXById } from "./selectors";
 import { ETransactionStatus, ETransactionSubType, TTxHistory, TTxHistoryCommon } from "./types";
@@ -53,7 +53,7 @@ export function* mapAnalyticsApiTransactionResponse(
         selectEurEquivalent(state, neuReward, ECurrency.NEU),
       );
 
-      const address: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
+      const address: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
 
       // if funds from ICBM were used then wallet_address != address
       const isICBMInvestment = transaction.extraData.walletAddress !== address;
@@ -94,9 +94,7 @@ export function* mapAnalyticsApiTransactionResponse(
         selectEurEquivalent(state, common.amount, currency),
       );
 
-      const toAddress: EthereumAddressWithChecksum = yield select(
-        selectEthereumAddressWithChecksum,
-      );
+      const toAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
 
       tx = {
         ...common,
@@ -231,9 +229,7 @@ export function* mapAnalyticsApiTransactionResponse(
         selectEurEquivalent(state, common.amount, currency),
       );
 
-      const toAddress: EthereumAddressWithChecksum = yield select(
-        selectEthereumAddressWithChecksum,
-      );
+      const toAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
 
       tx = {
         ...common,

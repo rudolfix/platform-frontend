@@ -47,7 +47,7 @@ function* connectToURI(
       throw new InvalidWalletConnectUriError();
     }
 
-    navigate(appRoutes.landing);
+    navigate(appRoutes.home);
 
     const walletConnectManager = walletConnectManagerFactory(uri);
 

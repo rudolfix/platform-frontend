@@ -2,8 +2,6 @@
  * An interface that a storage provider has to implement.
  * Storage provider is an abstraction class that wraps a storage library e.g. AsyncStorage or SQLite,
  * and provides common interface to interact with the storage and incapsulates specific storage implementation.
- *
- * @interface  IAppStorageProvider
  */
 export interface ISecureStorageProvider {
   /**

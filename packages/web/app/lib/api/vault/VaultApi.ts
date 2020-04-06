@@ -1,9 +1,7 @@
-import { ILogger } from "@neufund/shared-modules";
+import { authModuleAPI, coreModuleApi, IHttpClient, ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../../di/symbols";
-import { AuthorizedHttpClient } from "../client/AuthHttpClient";
-import { IHttpClient } from "../client/IHttpClient";
 import { IVault, VaultValidator } from "./interfaces";
 
 const VAULT_API_ROOT = "/api/wallet";
@@ -11,8 +9,8 @@ const VAULT_API_ROOT = "/api/wallet";
 @injectable()
 export class VaultApi {
   constructor(
-    @inject(symbols.jsonHttpClient) private httpClient: IHttpClient,
-    @inject(symbols.authorizedJsonHttpClient) private authJsonHttpClient: AuthorizedHttpClient,
+    @inject(coreModuleApi.symbols.jsonHttpClient) private httpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private authJsonHttpClient: IHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 

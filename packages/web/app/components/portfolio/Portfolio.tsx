@@ -14,7 +14,7 @@ import {
   selectTokensDisbursalEurEquivTotalDisbursed,
   selectTokensDisbursalIsLoading,
 } from "../../modules/investor-portfolio/selectors";
-import { selectEthereumAddressWithChecksum } from "../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { withMetaTags } from "../../utils/withMetaTags.unsafe";
@@ -40,7 +40,7 @@ export const Portfolio = compose<TPortfolioLayoutProps, {}>(
     stateToProps: state => ({
       myAssets: selectMyAssets(state),
       pendingAssets: selectMyPendingAssets(state),
-      walletAddress: selectEthereumAddressWithChecksum(state),
+      walletAddress: selectEthereumAddress(state),
       tokensDisbursal: selectTokensDisbursal(state),
       tokenDisbursalIsLoading: selectTokensDisbursalIsLoading(state),
       tokenDisbursalError: selectTokensDisbursalError(state),

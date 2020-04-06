@@ -3,7 +3,7 @@ import { noopLogger } from "@neufund/shared-modules";
 import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 
-import { dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
+import { dummyEthereumAddressWithChecksum, dummyNetworkId } from "../../../../test/fixtures";
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -32,7 +32,7 @@ describe("Wallet selector > Browser wizard > actions", () => {
     it("should plug wallet on successful connection", async () => {
       const expectedNetworkId = dummyNetworkId;
       const dummyMetadata: IBrowserWalletMetadata = {
-        address: dummyEthereumAddress,
+        address: dummyEthereumAddressWithChecksum,
         walletType: EWalletType.BROWSER,
         walletSubType: EWalletSubType.METAMASK,
       };

@@ -696,11 +696,21 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case ValidationMessage.VALIDATION_RESTRICTED_COUNTRY:
       return <FormattedMessage id="form.field.error.restricted-country" />;
     case ValidationMessage.VALIDATION_PECENTAGE_MAX:
-      return <FormattedMessage id="form.field.error.percentage.max" values={{ ...messageData }} />;
+      return (
+        <FormattedMessage
+          id="form.field.error.percentage.max"
+          values={{ ...(messageData as { max: string }) }}
+        />
+      );
     case ValidationMessage.VALIDATION_PERCENTAGE_MIN:
-      return <FormattedMessage id="form.field.error.percentage.min" values={{ ...messageData }} />;
+      return (
+        <FormattedMessage
+          id="form.field.error.percentage.min"
+          values={{ ...(messageData as { min: string }) }}
+        />
+      );
     case ValidationMessage.VALIDATION_CURRENCY_CODE:
-      return <FormattedMessage id="form.field.error.currency-code" values={{ ...messageData }} />;
+      return <FormattedMessage id="form.field.error.currency-code" />;
     case ValidationMessage.VALIDATION_FIELDS_SHOULD_MATCH:
       return (
         <FormattedMessage

@@ -118,7 +118,7 @@ export function* walletConnectLogout({ logger }: TGlobalDependencies): Generator
 }
 
 export function* walletConnectSagas(): Generator<any, any, any> {
-  yield fork(neuTakeLatest, actions.walletSelector.walletConnectInit, walletConnectInit); //todo stop on route change
+  yield fork(neuTakeLatest, actions.walletSelector.walletConnectInit, walletConnectInit);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStop, walletConnectStop);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, walletConnectLogout);

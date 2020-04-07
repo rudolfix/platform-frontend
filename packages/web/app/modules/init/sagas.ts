@@ -51,7 +51,6 @@ function* detectWalletConnect({
 }: TGlobalDependencies): Generator<any, void, any> {
   const walletConnectData = walletConnectStorage.get();
   if (walletConnectData) {
-    // TODO
   }
 }
 

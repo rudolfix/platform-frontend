@@ -57,7 +57,7 @@ function* startWalletConnectEventChannel(
 
 export function* walletConnectInit({
   walletConnectConnector,
-}: TGlobalDependencies): Generator<any, any, any> {
+}: TGlobalDependencies): Generator<any, void, any> {
   const channel = eventChannel<TWalletConnectEvents>(emit => {
     walletConnectConnector.on(EWalletConnectEventTypes.SESSION_REQUEST, uri =>
       emit({ type: EWalletConnectEventTypes.SESSION_REQUEST, payload: { uri } }),

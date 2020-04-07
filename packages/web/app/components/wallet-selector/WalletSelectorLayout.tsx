@@ -119,7 +119,7 @@ export const WalletSelectorLayout: React.FunctionComponent<IExternalProps & TRou
               {process.env.NF_WALLET_CONNECT_ENABLED === "1" && isLoginRoute && (
                 <div className="m-3">
                   <ButtonLink data-test-id="wallet-selector-ledger" to={`${rootPath}/wc`}>
-                    WALLET CONNECT
+                    <FormattedMessage id="wallet-selector.tabs.wallet-connect-login" />
                   </ButtonLink>
                 </div>
               )}

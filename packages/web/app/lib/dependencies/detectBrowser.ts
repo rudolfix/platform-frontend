@@ -1,12 +1,15 @@
-import * as detectBrowserModule from "detect-browser";
+import { Browser, detect } from "detect-browser";
 
-export type TBrowserName = detectBrowserModule.BrowserName | "node" | "unknown";
-
-export type TDetectBrowser = () => { name: TBrowserName; version: string };
+export type TBrowserName = Browser | "node" | "unknown";
+export type TDetectBrowser = () => {
+  name: TBrowserName;
+  version: string;
+};
 
 export const detectBrowser: TDetectBrowser = () => {
-  const detectedBrowser = detectBrowserModule.detect();
-  if (detectedBrowser) {
+  const detectedBrowser = detect();
+  //bot doesn't have a version. Excluding it to simplify the interface
+  if (detectedBrowser && detectedBrowser.name !== "bot") {
     return detectedBrowser;
   }
 

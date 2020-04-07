@@ -188,9 +188,10 @@ export function* handleLogOutUserInternal(
         yield put(actions.routing.goHome());
       }
       break;
-    case ELogoutReason.WC_PEER_DISCONNECTED: {
-      yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.WC_PEER_DISCONNECTED }));
-    }
+    case ELogoutReason.WC_PEER_DISCONNECTED:
+      {
+        yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.WC_PEER_DISCONNECTED }));
+      }
       break;
     case ELogoutReason.SESSION_TIMEOUT:
       yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.SESSION_TIMEOUT }));
@@ -218,7 +219,10 @@ export function* handleLogOutUser(
   yield neuCall(handleLogOutUserInternal, logoutType);
 }
 
-export function* handleSignInUser({ logger, walletConnectConnector }: TGlobalDependencies): Generator<any, any, any> {
+export function* handleSignInUser({
+  logger,
+  walletConnectConnector,
+}: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(signInUser);
   } catch (e) {
@@ -272,6 +276,11 @@ function* profileMonitor({ logger }: TGlobalDependencies): Generator<any, any, a
 export function* authUserSagas(): Generator<any, any, any> {
   yield fork(neuTakeLatest, actions.auth.logout, handleLogOutUser);
   yield fork(neuTakeEvery, actions.auth.setUser, setUser);
-  yield fork(neuTakeUntil, actions.auth.setUser, actions.init.stopServices, waitForUserActiveOrLogout);
+  yield fork(
+    neuTakeUntil,
+    actions.auth.setUser,
+    actions.init.stopServices,
+    waitForUserActiveOrLogout,
+  );
   yield fork(neuTakeLatestUntil, actions.auth.setUser, actions.init.stopServices, profileMonitor);
 }

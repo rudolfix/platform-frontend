@@ -7,7 +7,7 @@ import { actions } from "../actions";
 export enum EAuthStatus {
   AUTHORIZED = "authorized",
   NON_AUTHORIZED = "non-authorized",
-  LOGOUT_IN_PROGRESS = "logoutInProgress"
+  LOGOUT_IN_PROGRESS = "logoutInProgress",
 }
 
 export interface IAuthState {

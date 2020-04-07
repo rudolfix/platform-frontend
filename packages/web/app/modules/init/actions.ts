@@ -10,5 +10,5 @@ export const initActions = {
     errorMsg,
   })),
   startServices: createActionFactory("START_SERVICES"),
-  stopServices: createActionFactory("STOP_SERVICES")
+  stopServices: createActionFactory("STOP_SERVICES"),
 };

@@ -12,6 +12,7 @@ export type TPeerMeta = {
   name: string;
 };
 
+// todo fix typings of walletconnect, not add them here
 export type TStoredWalletConnectData = {
   connected: boolean;
   accounts: string[];

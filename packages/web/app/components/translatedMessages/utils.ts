@@ -4,7 +4,7 @@ import { TranslatedMessageType } from "./messages";
 
 export type TMessage = DeepReadonly<{
   messageType: TranslatedMessageType;
-  messageData?: unknown;
+  messageData?: string | number | object;
 }>;
 
 export const createMessage = (messageType: TranslatedMessageType, messageData?: any): TMessage => ({

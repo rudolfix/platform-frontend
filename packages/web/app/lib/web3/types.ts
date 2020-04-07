@@ -21,7 +21,7 @@ export interface IEthereumNetworkConfig {
 }
 
 export enum ESignTransactionMethod {
-  ETH_SEND_TRANSACTION = "eth_sendTransaction"
+  ETH_SEND_TRANSACTION = "eth_sendTransaction",
 }
 
 export type TBigNumberVariants = string | BigNumber;

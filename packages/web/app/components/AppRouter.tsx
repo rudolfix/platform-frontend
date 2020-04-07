@@ -63,7 +63,7 @@ export const AppRouter: React.FunctionComponent = () => (
 
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
-    <OnlyPublicRoute path={appRoutes.walletconnect} component={WalletSelector} exact/>
+    <OnlyPublicRoute path={appRoutes.walletconnect} component={WalletSelector} exact />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.restore} component={WalletRecoverMain} />
     {process.env.NF_ISSUERS_ENABLED === "1" && [

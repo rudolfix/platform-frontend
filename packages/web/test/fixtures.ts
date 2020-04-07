@@ -39,7 +39,7 @@ export const dummyConfig: IConfig = {
   ethereumNetwork: {
     rpcUrl: "https://localhost:8080",
     backendRpcUrl: "https://localhost:8080",
-    bridgeUrl: "https://localhost:5021"
+    bridgeUrl: "https://localhost:5021",
   },
   contractsAddresses: {
     universeContractAddress: "UNIVERSE_ADDRESS",

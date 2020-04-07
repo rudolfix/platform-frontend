@@ -3,7 +3,10 @@ import { ESignerType } from "@neufund/shared-modules";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
 
-import { WC_DEFAULT_SESSION_REQUEST_TIMEOUT, WC_DEFAULT_SIGN_TIMEOUT } from "../../../config/constants";
+import {
+  WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
+  WC_DEFAULT_SIGN_TIMEOUT,
+} from "../../../config/constants";
 import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
 import { TPeerMeta } from "../../persistence/WalletConnectStorage";
 import { WalletError } from "../errors";
@@ -32,20 +35,22 @@ export class WalletConnectSessionTransactionError extends WalletError {
 
 type TWcMeta = {
   walletSubType: EWalletSubType.UNKNOWN | EWalletSubType.METAMASK | EWalletSubType.NEUFUND;
-  sendTransactionMethod: ESignTransactionMethod,
+  sendTransactionMethod: ESignTransactionMethod;
   signerType: ESignerType;
   sessionRequestTimeout: number;
   signingTimeout: number;
   supportsExplicitTimeouts: boolean;
   supportSessionPings: boolean;
   supportsRemoteKyc: boolean;
-  supportsWalletMigration: boolean
-}
+  supportsWalletMigration: boolean;
+};
 
-
-const generateWalletMetaFormPeerMeta = (peerMeta: TPeerMeta | null):TWcMeta => {
+const generateWalletMetaFormPeerMeta = (peerMeta: TPeerMeta | null): TWcMeta => {
   const walletMeta = {
-    walletSubType: EWalletSubType.UNKNOWN as EWalletSubType.UNKNOWN | EWalletSubType.METAMASK | EWalletSubType.NEUFUND,
+    walletSubType: EWalletSubType.UNKNOWN as
+      | EWalletSubType.UNKNOWN
+      | EWalletSubType.METAMASK
+      | EWalletSubType.NEUFUND,
     sendTransactionMethod: ESignTransactionMethod.ETH_SEND_TRANSACTION,
     signerType: ESignerType.ETH_SIGN,
     signingTimeout: WC_DEFAULT_SIGN_TIMEOUT,
@@ -56,10 +61,11 @@ const generateWalletMetaFormPeerMeta = (peerMeta: TPeerMeta | null):TWcMeta => {
     supportsWalletMigration: false,
   };
 
-  if (peerMeta !== null && peerMeta.name === 'Metamask') { //fixme find it out
+  if (peerMeta !== null && peerMeta.name === "Metamask") {
+    //fixme find it out
     walletMeta.walletSubType = EWalletSubType.METAMASK;
-    walletMeta.signerType = ESignerType.ETH_SIGN_TYPED_DATA
-  } else if (peerMeta !== null && peerMeta.name === 'Neufund') {
+    walletMeta.signerType = ESignerType.ETH_SIGN_TYPED_DATA;
+  } else if (peerMeta !== null && peerMeta.name === "Neufund") {
     walletMeta.walletSubType = EWalletSubType.NEUFUND;
     walletMeta.supportsExplicitTimeouts = true;
     walletMeta.supportSessionPings = true;
@@ -67,14 +73,14 @@ const generateWalletMetaFormPeerMeta = (peerMeta: TPeerMeta | null):TWcMeta => {
     walletMeta.supportsWalletMigration = true;
   }
 
-  return walletMeta
+  return walletMeta;
 };
 
 export class WalletConnectWallet implements IPersonalWallet {
   constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddressWithChecksum,
-    peerMeta: TPeerMeta | null
+    peerMeta: TPeerMeta | null,
   ) {
     this.walletMeta = generateWalletMetaFormPeerMeta(peerMeta);
   }
@@ -98,17 +104,16 @@ export class WalletConnectWallet implements IPersonalWallet {
     const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
     const dataToSign = addHexPrefix(msgHash.toString("hex"));
 
-    const signingTimeoutPromise = (signingTimeout: number): Promise<string> => new Promise(
-      (_, reject) => {
+    const signingTimeoutPromise = (signingTimeout: number): Promise<string> =>
+      new Promise((_, reject) => {
         const timeout = safeSetTimeout(() => {
           clearSafeTimeout(timeout);
-          reject(new SignerTimeoutError())
-        }, signingTimeout)
-      }
-    );
+          reject(new SignerTimeoutError());
+        }, signingTimeout);
+      });
     return await Promise.race([
       this.web3Adapter.ethSign(this.ethereumAddress, dataToSign),
-      signingTimeoutPromise(this.walletMeta.signingTimeout)
+      signingTimeoutPromise(this.walletMeta.signingTimeout),
     ]);
   }
 
@@ -116,8 +121,7 @@ export class WalletConnectWallet implements IPersonalWallet {
     try {
       return await this.web3Adapter.sendTransaction(txData);
     } catch (e) {
-      console.log("walletConnect.sendTransaction error:", e);
-      throw new WalletConnectSessionTransactionError(`Could not send transaction. ${e.toString()}`)
+      throw new WalletConnectSessionTransactionError(`Could not send transaction. ${e.toString()}`);
     }
   }
 
@@ -125,8 +129,8 @@ export class WalletConnectWallet implements IPersonalWallet {
     return {
       address: this.ethereumAddress,
       walletType: this.walletType,
-      ...this.walletMeta
-    }
+      ...this.walletMeta,
+    };
   }
 
   public isUnlocked(): boolean {

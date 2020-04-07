@@ -6,25 +6,26 @@ import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 
 export type TPeerMeta = {
-  description:string,
-  url:string,
-  icons:string[],
-  name:string
-}
+  description: string;
+  url: string;
+  icons: string[];
+  name: string;
+};
 
+// todo fix typings of walletconnect, not add them here
 export type TStoredWalletConnectData = {
-  connected:boolean,
-  accounts:string[],
-  chainId:number,
-  bridge:string, //bridge url
-  key:string,
-  clientId:string,
-  clientMeta:TPeerMeta,
-  peerId:string,
-  peerMeta:TPeerMeta,
-  handshakeId:number,
-  handshakeTopic:number
-}
+  connected: boolean;
+  accounts: string[];
+  chainId: number;
+  bridge: string; //bridge url
+  key: string;
+  clientId: string;
+  clientMeta: TPeerMeta;
+  peerId: string;
+  peerMeta: TPeerMeta;
+  handshakeId: number;
+  handshakeTopic: number;
+};
 
 export const STORAGE_WALLET_CONNECT_KEY = "walletconnect";
 

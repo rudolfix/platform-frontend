@@ -60,12 +60,12 @@ export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
 export interface IWalletConnectMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.WALLETCONNECT;
   walletSubType: EWalletSubType.UNKNOWN | EWalletSubType.METAMASK | EWalletSubType.NEUFUND;
-  sendTransactionMethod: ESignTransactionMethod,
+  sendTransactionMethod: ESignTransactionMethod;
   signerType: ESignerType;
   sessionRequestTimeout: number;
   signingTimeout: number;
   supportsExplicitTimeouts: boolean;
   supportSessionPings: boolean;
   supportsRemoteKyc: boolean;
-  supportsWalletMigration: boolean
+  supportsWalletMigration: boolean;
 }

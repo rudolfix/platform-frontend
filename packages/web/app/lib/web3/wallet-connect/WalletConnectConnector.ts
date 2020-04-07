@@ -1,5 +1,5 @@
 import { clearSafeTimeout, safeSetTimeout } from "@neufund/shared";
-import WalletConnectSubprovider from "@walletconnect/packages/providers/web3-subprovider";
+import WalletConnectSubprovider from "@walletconnect/web3-subprovider";
 import { EventEmitter } from "events";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
@@ -44,7 +44,7 @@ export enum EWalletConnectEventTypes {
 @injectable()
 export class WalletConnectConnector extends EventEmitter {
   private web3?: Web3;
-  private walletConnectProvider: WalletConnectSubprovider | undefined;
+  private walletConnectProvider: typeof WalletConnectSubprovider | undefined;
   private sessionRequestTimeout: number | undefined;
 
   public constructor(

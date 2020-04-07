@@ -7,3 +7,4 @@ intl
 e2e
 .reg
 app/lib/contracts
+app/external/unsupported-browser/modernizr-custom.js

@@ -217,11 +217,13 @@ export function* handleLogOutUser(
   yield neuCall(handleLogOutUserInternal, logoutType)
 }
 
-export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {
+export function* handleSignInUser({ logger, walletConnectConnector }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(signInUser);
   } catch (e) {
     logger.error("User Sign in error", e);
+
+    yield walletConnectConnector.disconnect();
 
     if (e instanceof SignerRejectConfirmationError) {
       yield put(

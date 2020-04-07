@@ -47,6 +47,7 @@ function* allSagas(): Generator<any, any, any> {
   yield all([
     // Sagas that should keep running even after logout
     fork(initSagas),
+    fork(routingSagas),
 
     // Sagas that should be started on initial app load
     fork(neuTakeLatest, actions.init.startServices, authSagas),
@@ -55,7 +56,6 @@ function* allSagas(): Generator<any, any, any> {
     fork(neuTakeLatest, actions.init.startServices, walletConnectSagas),
     fork(neuTakeLatest, actions.init.startServices, browserWalletSagas),
     fork(neuTakeLatest, actions.init.startServices, ledgerSagas),
-    fork(neuTakeLatest, actions.init.startServices, routingSagas),
     fork(neuTakeLatest, actions.init.startServices, tokenPriceSagas),
     fork(neuTakeLatest, actions.init.startServices, notificationModalSagas),
     // Sagas that should be restarted after logout occurs

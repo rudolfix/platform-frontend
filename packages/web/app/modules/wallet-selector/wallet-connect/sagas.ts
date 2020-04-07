@@ -1,4 +1,4 @@
-import { END, eventChannel, fork, neuTakeLatest, neuTakeLatestUntil, put, take } from "@neufund/sagas";
+import { END, eventChannel, fork, neuTakeLatest, neuTakeLatestUntil, put, take, select } from "@neufund/sagas";
 
 import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
@@ -9,18 +9,20 @@ import {
 } from "../../../lib/web3/wallet-connect/WalletConnectConnector";
 import { WalletConnectSessionRejectedError } from "../../../lib/web3/wallet-connect/WalletConnectWallet";
 import { actions, TActionFromCreator } from "../../actions";
+import { ELogoutReason } from "../../auth/types";
 import { handleLogOutUserInternal } from "../../auth/user/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { walletSelectorConnect } from "../sagas";
-import { ELogoutReason } from "../../auth/types";
+import { selectAuthStatus } from "../../auth/selectors";
+import { EAuthStatus } from "../../auth/reducer";
 
 function* startWalletConnectEventChannel(
   _: TGlobalDependencies,
-  {payload}:TActionFromCreator<typeof actions.walletSelector.walletConnectStartEventListeners>
-):Generator<any, void, any> {
+  { payload }: TActionFromCreator<typeof actions.walletSelector.walletConnectStartEventListeners>
+): Generator<any, void, any> {
   while (true) {
     const event: TWalletConnectEvents | END = yield take(payload.channel);
-    console.log("-->event received: ", event.type)
+    console.log("-->event received: ", event.type);
     switch (event.type) {
       case EWalletConnectEventTypes.SESSION_REQUEST:
         yield put(actions.walletSelector.walletConnectSessionRequest(event.payload.uri));
@@ -83,7 +85,7 @@ export const mapWalletConnectErrorsToMessages = (error: Error) => {
 };
 
 export function* walletConnectStart(
-  { web3Manager }: TGlobalDependencies
+  { web3Manager, logger }: TGlobalDependencies
 ): Generator<any, void, any> {
   try {
     const wc = yield neuCall(walletConnectInit);
@@ -92,7 +94,7 @@ export function* walletConnectStart(
   } catch (e) {
     const message = mapWalletConnectErrorsToMessages(e);
     yield put(actions.walletSelector.walletConnectError(message));
-    console.log("walletConnectStart error:",e);
+    logger.error(`walletConnectStart error: ${e}`);
   }
 }
 
@@ -121,15 +123,17 @@ export function* walletConnectCancelSession(
 export function* logutOnWalletDisconnect(
   _: TGlobalDependencies
 ): Generator<any, void, any> {
-  console.log('---logutOnWalletDisconnect')
-  yield neuCall(handleLogOutUserInternal, ELogoutReason.WC_PEER_DISCONNECTED)
+  const authStatus = yield* select(selectAuthStatus);
+  if (authStatus === EAuthStatus.AUTHORIZED) {
+    yield neuCall(handleLogOutUserInternal, ELogoutReason.WC_PEER_DISCONNECTED)
+  }
 }
 
 export function* walletConnectSagas(): Generator<any, void, any> {
-  yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);//todo stop on route change
+  yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);
   yield fork(neuTakeLatest, actions.walletSelector.walletConnectRestoreConnection, walletConnectInit);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStop, walletConnectStop);
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectSessionRequestTimeout, walletConnectCancelSession);
-  yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, logutOnWalletDisconnect );//fixme add reason
+  yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, logutOnWalletDisconnect);
   yield fork(neuTakeLatestUntil, actions.walletSelector.walletConnectStartEventListeners, actions.auth.reset, startWalletConnectEventChannel);
 }

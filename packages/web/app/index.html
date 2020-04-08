@@ -1,20 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-        <meta property="og:title" content="Neufund | Platform">
-        <meta property="og:type" content="website">
-        <meta property="og:image" content="https://neufund.org/img/social_logo.png">
-        <meta property="og:url" content="http://platform.neufund.org/">
-        <meta property="twitter:url" content="http://platform.neufund.org/">
-        <meta name="twitter:card" content="Neufund Platform">
-        <meta name="twitter:site" content="@neufundorg">
+    <meta property="og:title" content="Neufund | Platform" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://neufund.org/img/social_logo.png" />
+    <meta property="og:url" content="http://platform.neufund.org/" />
+    <meta property="twitter:url" content="http://platform.neufund.org/" />
+    <meta name="twitter:card" content="Neufund Platform" />
+    <meta name="twitter:site" content="@neufundorg" />
 
-        <title>Neufund Platform</title>
-    </head>
-    <body>
-        <div id="app"></div>
-    </body>
+    <title>Neufund Platform</title>
+
+    <link rel="stylesheet" type="text/css" href="/external/unsupported-browser-styles.css" />
+  </head>
+  <body>
+    <section class="unsupported-browser" id="unsupported-browser">
+      <header class="unsupported-browser__header">
+        <a href="/" class="unsupported-browser__header-logo">
+          <img
+            src="/external/logo_neufund_on_white.svg"
+            alt="NEUFUND"
+            class="unsupported-browser__header-logo__image"
+          />
+          <img
+            src="/external/logo_neufund_on_white_title.svg"
+            alt="NEUFUND"
+            class="unsupported-browser__header-logo__title"
+          />
+        </a>
+      </header>
+
+      <div class="unsupported-browser__body">
+        <div class="unsupported-browser__decoration"></div>
+
+        <h1 class="unsupported-browser__title">Update your browser</h1>
+
+        <p class="unsupported-browser__description">
+          It looks like you're using an outdated browser version. Please upgrade your browser, or
+          try using a different one from the list below.
+        </p>
+
+        <div class="unsupported-browser__logos">
+          <a
+            class="unsupported-browser__logo"
+            href="https://www.google.com/chrome"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="unsupported-browser__logo-image"
+              src="/external/logo-chrome.svg"
+              alt="Chrome"
+            />
+            <span class="unsupported-browser__logo-title">Chrome</span>
+          </a>
+          <a
+            class="unsupported-browser__logo"
+            href="https://www.mozilla.org/firefox"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="unsupported-browser__logo-image"
+              src="/external/logo-firefox.svg"
+              alt="Firefox"
+            />
+            <span class="unsupported-browser__logo-title">Firefox</span>
+          </a>
+          <a
+            class="unsupported-browser__logo"
+            href="https://support.apple.com/HT204416"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="unsupported-browser__logo-image"
+              src="/external/logo-safari.svg"
+              alt="Safari"
+            />
+            <span class="unsupported-browser__logo-title">Safari</span>
+          </a>
+          <a
+            class="unsupported-browser__logo unsupported-browser__logo-second-row"
+            href="https://www.opera.com/download"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="unsupported-browser__logo-image"
+              src="/external/logo-opera.svg"
+              alt="Opera"
+            />
+            <span class="unsupported-browser__logo-title">Opera</span>
+          </a>
+          <a
+            class="unsupported-browser__logo unsupported-browser__logo-second-row"
+            href="https://www.microsoft.com/edge/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img class="unsupported-browser__logo-image" src="/external/logo-edge.svg" alt="Edge" />
+            <span class="unsupported-browser__logo-title">Edge</span>
+          </a>
+        </div>
+
+        <div>
+          <span class="unsupported-browser__contact"
+            >Need help? Contact our
+            <a
+              class="unsupported-browser__customer-care"
+              href="https://support.neufund.org/support/home"
+              rel="noopener noreferrer"
+              target="_blank"
+              >Customer Care</a
+            >.</span
+          >
+        </div>
+      </div>
+
+      <footer class="unsupported-browser__footer">
+        <span class="unsupported-browser__footer-copyright"
+          >©2020 Fifth Force Liechtenstein GmbH
+        </span>
+        <a
+          href="https://neufund.org/imprint"
+          class="unsupported-browser__link"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Imprint
+        </a>
+        <a
+          href="https://neufund.org/privacy-policy"
+          class="unsupported-browser__link"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Privacy policy
+        </a>
+      </footer>
+    </section>
+
+    <div id="app"></div>
+
+    <script src="/external/modernizr-custom.js"></script>
+    <script>
+      function isBrowserSupported() {
+        for (var feature in Modernizr) {
+          var test = Modernizr[feature];
+          // we don't want cssgridlegacy but it's included with cssgrid so ignore it
+          if (typeof test === "boolean" && test === false && feature !== "cssgridlegacy") {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      if (!isBrowserSupported()) {
+        document.getElementById("app").style.display = "none";
+        document.getElementById("unsupported-browser").style.display = "flex";
+      }
+    </script>
+  </body>
 </html>

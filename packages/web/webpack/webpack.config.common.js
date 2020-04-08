@@ -17,7 +17,9 @@ module.exports = {
     publicPath: "/",
   },
   plugins: [
-    new CopyWebpackPlugin([{ from: "./app/external/*", to: "./external/", flatten: true }]),
+    new CopyWebpackPlugin([{ from: "./app/external/**/*", to: "./external", flatten: true }], {
+      copyUnmodified: true,
+    }),
     new HtmlWebpackPlugin({
       template: paths.appHtml,
       favicon: paths.favicon,

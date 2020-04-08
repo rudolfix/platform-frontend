@@ -41,7 +41,6 @@ export enum EWalletConnectEventTypes {
   SESSION_REQUEST_TIMEOUT = "sessionRequestTimeout",
 }
 
-
 @injectable()
 export class WalletConnectConnector extends EventEmitter {
   private web3?: Web3;

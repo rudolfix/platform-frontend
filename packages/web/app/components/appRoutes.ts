@@ -16,6 +16,7 @@ export const appRoutes = {
 
   registerNominee: "/nominee/register",
   login: "/login",
+  walletconnect: "/login/wc",
 
   restore: "/restore",
 

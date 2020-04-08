@@ -38,6 +38,7 @@ export const routes = [
   rootRoute,
   dashboardRoute,
   registerRoute,
+  loginWalletConnectRoute,
   loginRoute,
   restoreRoute,
   profileRoute,
@@ -351,6 +352,19 @@ export function* registerRoute(payload: RouterState): Generator<any, any, any> {
   });
   return yield routeAction(registerMatch, {
     notAuth: undefined,
+    investor: put(actions.routing.goToDashboard()),
+    issuer: put(actions.routing.goToDashboard()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
+}
+
+export function* loginWalletConnectRoute(payload: RouterState): Generator<any, any, any> {
+  const routeMatch = yield matchPath(payload.location.pathname, {
+    path: appRoutes.walletconnect,
+    exact: true,
+  });
+  return yield routeAction(routeMatch, {
+    notAuth: put(actions.walletSelector.walletConnectInit()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

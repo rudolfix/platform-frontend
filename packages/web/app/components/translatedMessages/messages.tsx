@@ -50,11 +50,17 @@ export type TranslatedMessageType =
   | EEtoNomineeRequestMessages
   | ETxValidationMessages
   | EEtoNomineeActiveEtoNotifications
-  | ENotificationText;
+  | ENotificationText
+  | WalletConnectErrorMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
   USER_ALREADY_EXISTS = "userAlreadyExists",
+}
+
+export enum WalletConnectErrorMessage {
+  WC_GENERIC_ERROR = "wcGenericError",
+  WC_SESSION_REJECTED_ERROR = "wcSessionRejectedError",
 }
 
 export enum GenericModalMessage {
@@ -690,11 +696,21 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case ValidationMessage.VALIDATION_RESTRICTED_COUNTRY:
       return <FormattedMessage id="form.field.error.restricted-country" />;
     case ValidationMessage.VALIDATION_PECENTAGE_MAX:
-      return <FormattedMessage id="form.field.error.percentage.max" values={{ ...messageData }} />;
+      return (
+        <FormattedMessage
+          id="form.field.error.percentage.max"
+          values={{ ...(messageData as { max: string }) }}
+        />
+      );
     case ValidationMessage.VALIDATION_PERCENTAGE_MIN:
-      return <FormattedMessage id="form.field.error.percentage.min" values={{ ...messageData }} />;
+      return (
+        <FormattedMessage
+          id="form.field.error.percentage.min"
+          values={{ ...(messageData as { min: string }) }}
+        />
+      );
     case ValidationMessage.VALIDATION_CURRENCY_CODE:
-      return <FormattedMessage id="form.field.error.currency-code" values={{ ...messageData }} />;
+      return <FormattedMessage id="form.field.error.currency-code" />;
     case ValidationMessage.VALIDATION_FIELDS_SHOULD_MATCH:
       return (
         <FormattedMessage
@@ -783,10 +799,20 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.complete-request" />;
     case ENotificationText.COMPLETE_UPDATE_ACCOUNT:
       return <FormattedMessage id="notifications.update-account" />;
+
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
-      return messageData!.message as TTranslatedString;
+      return (messageData as { message: TTranslatedString }).message;
 
+    case WalletConnectErrorMessage.WC_GENERIC_ERROR:
+      return (
+        <FormattedMessage
+          id="wallet-connect.generic-error"
+          values={{ error: messageData ? messageData.toString() : "" }}
+        />
+      );
+    case WalletConnectErrorMessage.WC_SESSION_REJECTED_ERROR:
+      return <FormattedMessage id="wallet-connect.session-rejected-error" />;
     default:
       return assertNever(messageType, `Message not provided for ${messageType}`);
   }

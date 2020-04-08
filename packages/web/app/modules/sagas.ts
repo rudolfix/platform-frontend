@@ -37,6 +37,7 @@ import { browserWalletSagas } from "./wallet-selector/browser-wizard/sagas";
 import { ledgerSagas } from "./wallet-selector/ledger-wizard/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
+import { walletConnectSagas } from "./wallet-selector/wallet-connect/sagas";
 import { walletSagas } from "./wallet/sagas";
 import { web3Sagas } from "./web3/sagas";
 
@@ -50,6 +51,7 @@ function* allSagas(): Generator<any, any, any> {
     fork(authSagas),
     fork(walletSelectorSagas),
     fork(lightWalletSagas),
+    fork(walletConnectSagas),
     fork(browserWalletSagas),
     fork(ledgerSagas),
     fork(routingSagas),

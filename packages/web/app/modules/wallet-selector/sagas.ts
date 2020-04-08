@@ -7,7 +7,6 @@ import { loadPreviousWallet } from "../web3/sagas";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
-
   yield neuCall(handleSignInUser);
 }
 

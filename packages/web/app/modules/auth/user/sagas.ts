@@ -182,7 +182,11 @@ function* handleLogOutUser(
 ): Generator<any, any, any> {
   const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
 
-  yield neuCall(logoutUser);
+  if (process.env.NF_WALLET_CONNECT_ENABLED === "1") {
+    yield put(actions.walletSelector.walletConnectStop());
+  } else {
+    yield neuCall(logoutUser);
+  }
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:

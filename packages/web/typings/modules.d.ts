@@ -28,3 +28,6 @@ declare module "proper-url-join/lib";
 declare module "bitcore-mnemonic";
 
 declare module "truffle-privatekey-provider";
+
+// declare module "@walletconnect";
+declare module "@walletconnect/web3-subprovider";

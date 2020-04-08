@@ -1,6 +1,8 @@
 import { RouterState } from "connected-react-router";
 
+import { DeepReadonly } from "../../../../shared/dist/utils/types";
 import { appRoutes } from "../../components/appRoutes";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 
@@ -34,3 +36,10 @@ export const selectOppositeRootPath = (state: RouterState): string =>
 
 export const selectIsMessageSigning = (state: TAppGlobalState): boolean =>
   state.walletSelector.isMessageSigning;
+
+export const selectMessageSigningError = (
+  state: TAppGlobalState,
+): DeepReadonly<TMessage> | undefined => state.walletSelector.messageSigningError;
+
+export const selectWalletConnectError = (state: TAppGlobalState) =>
+  state.walletSelector.walletConnectError;

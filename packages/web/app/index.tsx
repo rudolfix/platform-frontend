@@ -47,6 +47,8 @@ export const createAppStore = (history: History, config: IConfig, container: Con
       ],
       enhancers: [reduxLogoutReset(staticValues)],
       advancedComposeEnhancers: composeWithDevTools({
+        trace: true, //use the new redux-dev-tools trace feature
+        traceLimit: 25,
         actionsBlacklist: (process.env.REDUX_DEVTOOLS_ACTION_BLACK_LIST || "").split(","),
       }),
     },

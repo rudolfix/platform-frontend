@@ -14,7 +14,10 @@ import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 
-function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
+function* initSmartcontracts({
+  web3Manager,
+  logger,
+}: TGlobalDependencies): Generator<any, void, any> {
   try {
     yield fork(neuCall, initWeb3ManagerEvents);
     yield web3Manager.initialize();
@@ -36,17 +39,25 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any 
 
 function* makeSureWalletMetaDataExists({
   walletStorage,
-}: TGlobalDependencies): Generator<any, any, any> {
+}: TGlobalDependencies): Generator<any, void, any> {
   const metadata = yield* call(() => walletStorage.get());
   if (metadata === undefined) {
     throw new WalletMetadataNotFoundError();
   }
 }
 
-function* initApp({ logger }: TGlobalDependencies): any {
+function* detectWalletConnect({
+  walletConnectStorage,
+}: TGlobalDependencies): Generator<any, void, any> {
+  const walletConnectData = walletConnectStorage.get();
+  if (walletConnectData) {
+  }
+}
+
+function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
   try {
     yield neuCall(detectUserAgent);
-
+    yield neuCall(detectWalletConnect);
     const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);
 
     if (jwt) {
@@ -84,7 +95,7 @@ function* initApp({ logger }: TGlobalDependencies): any {
 export function* initStartSaga(
   _: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.init.start>,
-): Generator<any, any, any> {
+): Generator<any, void, any> {
   const { initType } = action.payload;
 
   switch (initType) {
@@ -97,7 +108,7 @@ export function* initStartSaga(
   }
 }
 
-export function* checkIfSmartcontractsInitNeeded(): any {
+export function* checkIfSmartcontractsInitNeeded(): Generator<any, boolean, any> {
   const isDoneOrInProgress: boolean = yield select(
     (s: TAppGlobalState) => s.init.smartcontractsInit.done || s.init.smartcontractsInit.inProgress,
   );
@@ -105,7 +116,7 @@ export function* checkIfSmartcontractsInitNeeded(): any {
   return !isDoneOrInProgress;
 }
 
-export function* initSmartcontractsOnce(): any {
+export function* initSmartcontractsOnce(): Generator<any, void, any> {
   const isNeeded = yield checkIfSmartcontractsInitNeeded();
   if (!isNeeded) {
     return;
@@ -133,7 +144,7 @@ export function* waitForAppInit(): Generator<any, any, any> {
   return appIsReady;
 }
 
-export const initSagas = function*(): Generator<any, any, any> {
+export const initSagas = function*(): Generator<any, void, any> {
   yield fork(neuTakeEvery, "INIT_START", initStartSaga);
   // Smart Contracts are only initialized once during the whole life cycle of the app
   yield fork(initSmartcontractsOnce);

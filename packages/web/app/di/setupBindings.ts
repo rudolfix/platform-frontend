@@ -32,12 +32,14 @@ import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "../lib/persistence/ObjectStorage";
 import { Storage } from "../lib/persistence/Storage";
 import { USER_JWT_KEY } from "../lib/persistence/UserStorage";
+import { WalletConnectStorage } from "../lib/persistence/WalletConnectStorage";
 import { WalletStorage } from "../lib/persistence/WalletStorage";
 import { BrowserWalletConnector } from "../lib/web3/browser-wallet/BrowserWalletConnector";
 import { ContractsService } from "../lib/web3/ContractsService";
 import { LedgerWalletConnector } from "../lib/web3/ledger-wallet/LedgerConnector";
 import { LightWalletConnector } from "../lib/web3/light-wallet/LightWalletConnector";
 import { IEthereumNetworkConfig } from "../lib/web3/types";
+import { WalletConnectConnector } from "../lib/web3/wallet-connect/WalletConnectConnector";
 import {
   web3BatchFactory,
   Web3BatchFactoryType,
@@ -106,6 +108,10 @@ export function setupBindings(config: IConfig): ContainerModule {
       .to(BrowserWalletConnector)
       .inSingletonScope();
 
+    bind<WalletConnectConnector>(symbols.walletConnectConnector)
+      .to(WalletConnectConnector)
+      .inSingletonScope();
+
     bind<Web3Manager>(symbols.web3Manager)
       .to(Web3Manager)
       .inSingletonScope();
@@ -151,6 +157,10 @@ export function setupBindings(config: IConfig): ContainerModule {
 
     bind<WalletStorage>(symbols.walletStorage)
       .to(WalletStorage)
+      .inSingletonScope();
+
+    bind<WalletConnectStorage>(symbols.walletConnectStorage)
+      .to(WalletConnectStorage)
       .inSingletonScope();
 
     bind<DocumentsConfidentialityAgreementsStorage>(
@@ -228,10 +238,12 @@ export const createGlobalDependencies = (container: Container) => ({
   lightWalletConnector: container.get<LightWalletConnector>(symbols.lightWalletConnector),
   browserWalletConnector: container.get<BrowserWalletConnector>(symbols.browserWalletConnector),
   ledgerWalletConnector: container.get<LedgerWalletConnector>(symbols.ledgerWalletConnector),
+  walletConnectConnector: container.get<WalletConnectConnector>(symbols.walletConnectConnector),
 
   // storage
   jwtStorage: container.get<ObjectStorage<string>>(symbols.jwtStorage),
   walletStorage: container.get<WalletStorage>(symbols.walletStorage),
+  walletConnectStorage: container.get<WalletConnectStorage>(symbols.walletConnectStorage),
   documentsConfidentialityAgreementsStorage: container.get<
     DocumentsConfidentialityAgreementsStorage
   >(symbols.documentsConfidentialityAgreementsStorage),

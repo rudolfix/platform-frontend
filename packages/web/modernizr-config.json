@@ -1,0 +1,31 @@
+{
+  "minify": true,
+  "options": [],
+  "feature-detects": [
+    "test/cookies",
+    "test/crypto",
+    "test/customevent",
+    "test/eventlistener",
+    "test/history",
+    "test/intl",
+    "test/json",
+    "test/queryselector",
+    "test/svg",
+    "test/templatestrings",
+    "test/css/calc",
+    "test/css/cssgrid",
+    "test/css/flexbox",
+    "test/es5/function",
+    "test/es5/object",
+    "test/es5/specification",
+    "test/es5/strictmode",
+    "test/es5/string",
+    "test/es5/syntax",
+    "test/es6/arrow",
+    "test/es6/collections",
+    "test/es6/generators",
+    "test/es6/promises",
+    "test/network/fetch",
+    "test/storage/localstorage"
+  ]
+}

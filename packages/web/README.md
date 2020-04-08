@@ -151,3 +151,17 @@ block numbers will be reset as well. Meta Mask keeps its own record of a transac
 at some point, the Meta Mask transactions index might get differ with the newly reset development
 node. To fix this issue open Meta Mask -> Settings -> Advanced and click on "Reset account". This
 will reset Meta Mask transactions index and fix the issue.
+
+## Modernizr
+
+For browser support, we are using Modernizr. The config is in `modernizr-config.json`.
+
+To generate the custom Modernizr script from the config, run:
+
+```
+yarn run modernizr
+```
+
+which generates `app/external/unsupported-browser/modernizr-custom.js`.
+
+Note: this file has been committed and needs to be rengerated only if the config changes.

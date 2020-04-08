@@ -181,7 +181,6 @@ export function* handleLogOutUserInternal(
   logoutType: ELogoutReason,
 ): Generator<any, void, any> {
   yield neuCall(logoutUser);
-  //TODO need to decide how logout is initiated (by wallet or saga); //yield neuCall(logoutUser);
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:

@@ -149,7 +149,7 @@ export function* walletConnectSagas(): Generator<any, void, any> {
     neuTakeEvery,
     actions.walletSelector.walletConnectDisconnected,
     handleLogOutUserInternal,
-  ); //fixme add reason
+  );
   yield fork(
     neuTakeLatestUntil,
     actions.walletSelector.walletConnectStartEventListeners,

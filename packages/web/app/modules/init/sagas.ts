@@ -107,7 +107,6 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
     } else {
       yield neuCall(deleteWalletConnectSession);
     }
-
     yield waitUntilSmartContractsAreInitialized();
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {

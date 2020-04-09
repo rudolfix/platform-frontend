@@ -5,6 +5,10 @@
   min-width: 320px;
 }
 
+.unsupported-browser__show {
+  display: flex;
+}
+
 .unsupported-browser__header {
   border-bottom: 1px solid #e7ebee;
   padding: 19px 24px;
@@ -145,5 +149,14 @@
 
   .unsupported-browser__footer {
     padding: 12px 30px;
+  }
+
+  .unsupported-browser__footer-copyright {
+    flex-basis: 100%;
+    order: 1;
+  }
+
+  .unsupported-browser__link:first-of-type {
+    margin-left: 0;
   }
 }

@@ -12,6 +12,6 @@
 
   if (!isBrowserSupported()) {
     document.getElementById("app").style.display = "none";
-    document.getElementById("unsupported-browser").style.display = "flex";
+    document.getElementById("unsupported-browser").className += " unsupported-browser__show";
   }
 })();

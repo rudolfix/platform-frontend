@@ -176,17 +176,19 @@ export function* setUser(
   logger.setUser({ id: user.userId, type: user.type, walletType: user.walletType });
 }
 
-function* handleLogOutUser(
+/*
+ * this is the main logout flow, to be used by app internally.
+ * in cases when logout is triggered from UI, there's a special wrapper
+ * that starts off an action - handleLogOutUser()
+ *
+ * @param logoutType - reason for logout (user-requested, due to a timeout, etc.)
+ * This gets saved in state, copied to the new app state on app reset during logout to be shown in the login UI)
+ * */
+export function* handleLogOutUserInternal(
   { logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.auth.logout>,
-): Generator<any, any, any> {
-  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
-
-  if (process.env.NF_WALLET_CONNECT_ENABLED === "1") {
-    yield put(actions.walletSelector.walletConnectStop());
-  } else {
-    yield neuCall(logoutUser);
-  }
+  logoutType: ELogoutReason,
+): Generator<any, void, any> {
+  yield neuCall(logoutUser);
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:
@@ -210,8 +212,20 @@ function* handleLogOutUser(
   }
 
   yield put(actions.init.start(EInitType.APP_INIT));
+}
 
-  logger.setUser(null);
+/*
+ * this is a wrapper for handleLogOutUserInternal() to trigger logout via an action from UI.
+ * In cases when logout is started inside sagas handleLogOutUserInternal() should be used
+ *
+ * @param action - action that has logout type in payload
+ * */
+export function* handleLogOutUser(
+  _: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.auth.logout>,
+): Generator<any, any, any> {
+  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
+  yield neuCall(handleLogOutUserInternal, logoutType);
 }
 
 export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {

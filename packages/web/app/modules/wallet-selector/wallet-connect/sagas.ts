@@ -1,4 +1,12 @@
-import { END, eventChannel, EventChannel, fork, neuTakeLatest, put, take } from "@neufund/sagas";
+import {
+  END,
+  eventChannel,
+  fork,
+  neuTakeLatest,
+  neuTakeLatestUntil,
+  put,
+  take,
+} from "@neufund/sagas";
 
 import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
@@ -8,18 +16,24 @@ import {
   TWalletConnectEvents,
 } from "../../../lib/web3/wallet-connect/WalletConnectConnector";
 import { WalletConnectSessionRejectedError } from "../../../lib/web3/wallet-connect/WalletConnectWallet";
-import { actions } from "../../actions";
+import { actions, TActionFromCreator } from "../../actions";
 import { logoutUser } from "../../auth/user/external/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
-import { mapLightWalletErrorToErrorMessage } from "../light-wizard/errors";
 import { walletSelectorConnect } from "../sagas";
 
-function* startWcActions(channel: EventChannel<TWalletConnectEvents>): Generator<any, void, any> {
+function* startWalletConnectEventChannel(
+  { logger }: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.walletSelector.walletConnectStartEventListeners>,
+): Generator<any, void, any> {
   while (true) {
-    const event: TWalletConnectEvents | END = yield take(channel);
+    const event: TWalletConnectEvents | END = yield take(payload.channel);
+    logger.info(`-->event received: ${event.type}`);
     switch (event.type) {
       case EWalletConnectEventTypes.SESSION_REQUEST:
         yield put(actions.walletSelector.walletConnectSessionRequest(event.payload.uri));
+        break;
+      case EWalletConnectEventTypes.SESSION_REQUEST_TIMEOUT:
+        yield put(actions.walletSelector.walletConnectSessionRequestTimeout());
         break;
       case EWalletConnectEventTypes.CONNECT:
         yield put(actions.walletSelector.walletConnectReady());
@@ -51,6 +65,9 @@ export function* walletConnectInit({
     walletConnectConnector.on(EWalletConnectEventTypes.CONNECT, () =>
       emit({ type: EWalletConnectEventTypes.CONNECT }),
     );
+    walletConnectConnector.on(EWalletConnectEventTypes.SESSION_REQUEST_TIMEOUT, () =>
+      emit({ type: EWalletConnectEventTypes.SESSION_REQUEST_TIMEOUT }),
+    );
     walletConnectConnector.on(EWalletConnectEventTypes.DISCONNECT, () =>
       emit({ type: EWalletConnectEventTypes.DISCONNECT }),
     );
@@ -65,8 +82,8 @@ export function* walletConnectInit({
       walletConnectConnector.removeAllListeners();
     };
   });
-  yield fork(startWcActions, channel);
-  yield* neuCall(walletConnectStart);
+  yield put(actions.walletSelector.walletConnectStartEventListeners(channel));
+  return yield walletConnectConnector.connect();
 }
 
 //todo move to utils
@@ -80,17 +97,16 @@ export const mapWalletConnectErrorsToMessages = (error: Error) => {
 
 export function* walletConnectStart({
   web3Manager,
-  walletConnectConnector,
   logger,
 }: TGlobalDependencies): Generator<any, void, any> {
   try {
-    const wc = yield walletConnectConnector.connect();
+    const wc = yield neuCall(walletConnectInit);
     yield web3Manager.plugPersonalWallet(wc);
     yield* neuCall(walletSelectorConnect);
   } catch (e) {
     const message = mapWalletConnectErrorsToMessages(e);
     yield put(actions.walletSelector.walletConnectError(message));
-    logger.error("walletConnectStart error:", e);
+    logger.error(`walletConnectStart error: ${e}`);
   }
 }
 
@@ -101,25 +117,39 @@ export function* walletConnectStop({
   try {
     yield walletConnectConnector.disconnect();
   } catch (e) {
-    logger.error("walletConnectStop error:", e);
+    logger.error(`walletConnectStop error: ${e}`);
   }
 }
 
-export function* walletConnectLogout({ logger }: TGlobalDependencies): Generator<any, void, any> {
+export function* walletConnectCancelSession({
+  walletConnectConnector,
+  logger,
+}: TGlobalDependencies): Generator<any, void, any> {
   try {
-    yield neuCall(logoutUser);
+    yield walletConnectConnector.cancelSession();
   } catch (e) {
-    logger.error("wallet connect logout error", e);
-    yield put(actions.walletSelector.reset());
-    yield put(
-      actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
-    );
+    logger.error(`walletConnectStop error: ${e}`);
   }
 }
 
-export function* walletConnectSagas(): Generator<any, any, any> {
-  yield fork(neuTakeLatest, actions.walletSelector.walletConnectInit, walletConnectInit);
+export function* walletConnectSagas(): Generator<any, void, any> {
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);
+  yield fork(
+    neuTakeLatest,
+    actions.walletSelector.walletConnectRestoreConnection,
+    walletConnectInit,
+  );
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStop, walletConnectStop);
-  yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, walletConnectLogout);
+  yield fork(
+    neuTakeEvery,
+    actions.walletSelector.walletConnectSessionRequestTimeout,
+    walletConnectCancelSession,
+  );
+  yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, logoutUser);
+  yield fork(
+    neuTakeLatestUntil,
+    actions.walletSelector.walletConnectStartEventListeners,
+    actions.auth.reset,
+    startWalletConnectEventChannel,
+  );
 }

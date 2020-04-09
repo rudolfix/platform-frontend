@@ -58,7 +58,7 @@ export const WalletConnect = compose<
   withContainer(WalletConnectContainer),
   branch<TStateProps>(
     ({ error }) => error === undefined,
-    renderComponent(WalletConnectError),
     renderComponent(LoadingIndicator),
+    renderComponent(WalletConnectError),
   ),
 )(shouldNeverHappen("WalletConnect reached default branch"));

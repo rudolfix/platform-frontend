@@ -1,8 +1,7 @@
-import { fork, put } from "@neufund/sagas";
+import { fork, neuCall, neuTakeEvery, neuTakeLatestUntil, put } from "@neufund/sagas";
 
 import { actions } from "../actions";
 import { handleSignInUser } from "../auth/user/sagas";
-import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../sagasUtils";
 import { loadPreviousWallet } from "../web3/sagas";
 
 export function* walletSelectorConnect(): Generator<any, any, any> {

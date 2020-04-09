@@ -29,7 +29,7 @@
     "lint": "yarn format && yarn tslint && yarn sasslint && yarn tsc && yarn intl:extract:check",
     "lint:fix": "yarn contract-artifacts:update && concurrently -p \"[{name}]\" -n \"TSLINT/PRETTIER,SASS/TSC/INTL\" -c \"bgYellow.bold,bgMagenta.bold\" \"yarn tslint:fix && yarn format:fix\" \"yarn sasslint && yarn tsc && yarn intl:extract\"",
     "lint:fix:staged": "concurrently -p \"[{name}]\" -n \"TSC,LINT-STAGED\" -c \"bgYellow.bold,bgMagenta.bold\" \"yarn tsc\" \"lint-staged\"",
-    "modernizr": "modernizr -c modernizr-config.json -d app/external/unsupported-browser/modernizr-custom.js",
+    "modernizr": "modernizr -c modernizr-config.json -d app/external/unsupported-browser/modernizr-custom.min.js",
     "prepare": "yarn contract-artifacts:generate",
     "sasslint": "sass-lint -c .sass-lint.yml -v -q",
     "start": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development webpack-dev-server --config ./webpack/webpack.config.dev.js",

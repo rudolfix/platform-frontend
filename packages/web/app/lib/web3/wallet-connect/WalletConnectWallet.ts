@@ -62,7 +62,7 @@ const generateWalletMetaFormPeerMeta = (peerMeta: TPeerMeta | null): TWcMeta => 
   };
 
   if (peerMeta !== null && peerMeta.name === "Metamask") {
-    //fixme find it out
+    //Todo find out what's the exact name for metamask.
     walletMeta.walletSubType = EWalletSubType.METAMASK;
     walletMeta.signerType = ESignerType.ETH_SIGN_TYPED_DATA;
   } else if (peerMeta !== null && peerMeta.name === "Neufund") {

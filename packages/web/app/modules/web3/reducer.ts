@@ -23,7 +23,7 @@ export interface IConnectedWeb3State {
 
 export type IWeb3State = IDisconnectedWeb3State | IConnectedWeb3State;
 
-export const web3InitialState: IWeb3State = {
+export const web3InitialState: IDisconnectedWeb3State = {
   connected: false,
 };
 

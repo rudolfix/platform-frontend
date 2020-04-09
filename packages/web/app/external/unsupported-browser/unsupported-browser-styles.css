@@ -153,6 +153,7 @@
   .unsupported-browser__footer {
     padding: 12px 30px;
     justify-content: center;
+    text-align: center;
   }
 
   .unsupported-browser__footer-copyright {

@@ -98,6 +98,9 @@
   background-color: #142431;
   color: #94a5b3;
   padding: 20px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .unsupported-browser__link {
@@ -149,6 +152,7 @@
 
   .unsupported-browser__footer {
     padding: 12px 30px;
+    justify-content: center;
   }
 
   .unsupported-browser__footer-copyright {

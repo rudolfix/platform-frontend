@@ -164,4 +164,6 @@ yarn run modernizr
 
 which generates `app/external/unsupported-browser/modernizr-custom.min.js`.
 
-Note: this file has been committed and needs to be regenerated only if the config changes. For more info on the other files, see the README [here](https://github.com/Neufund/platform-frontend/tree/master/packages/web/app/external/unsupported-browser).
+Note: this file has been committed and needs to be regenerated only if the config changes. For more
+info on the other files, see the README
+[here](https://github.com/Neufund/platform-frontend/tree/master/packages/web/app/external/unsupported-browser).

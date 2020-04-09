@@ -8,3 +8,4 @@ e2e
 .reg
 app/lib/contracts
 app/external/unsupported-browser/modernizr-custom.min.js
+app/external/unsupported-browser/check-browser-support.min.js

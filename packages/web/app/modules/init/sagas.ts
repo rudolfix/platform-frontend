@@ -1,12 +1,12 @@
-import { call, fork, put, select } from "@neufund/sagas";
+import { call, fork, put, SagaGenerator, select } from "@neufund/sagas";
 import { isJwtExpiringLateEnough } from "@neufund/shared";
-import { authModuleAPI } from "@neufund/shared-modules";
+import { authModuleAPI, tokenPriceModuleApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { loadUser } from "../auth/user/external/sagas";
-import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
+import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
 import { initWeb3ManagerEvents } from "../web3/sagas";
@@ -14,13 +14,20 @@ import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 
+/**
+ * Starts watching for token prices
+ */
+function* initGlobalWatchers(): SagaGenerator<void> {
+  yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
+}
+
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
   try {
     yield fork(neuCall, initWeb3ManagerEvents);
     yield web3Manager.initialize();
 
     yield neuCall(initializeContracts);
-    yield neuCall(populatePlatformTermsConstants);
+    yield neuCall(initGlobalWatchers);
 
     yield put(actions.init.done(EInitType.SMART_CONTRACTS_INIT));
   } catch (e) {

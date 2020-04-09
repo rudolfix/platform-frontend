@@ -2,7 +2,9 @@ import { DeepReadonly } from "@neufund/shared";
 import {
   appConnect as sharedAppConnect,
   setupAuthModule,
+  setupContractsModule,
   setupCoreModule,
+  setupTokenPriceModule,
   TAppConnectOptions,
   TModuleSetup,
   TModuleState,
@@ -22,7 +24,7 @@ import { IConfig } from "./config/getConfig";
 import { setupBindings } from "./di/setupBindings";
 import { symbols } from "./di/symbols";
 import { reduxLogger } from "./middlewares/redux-logger";
-import { TAction } from "./modules/actions";
+import { actions, TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
 import { appReducers } from "./modules/reducer";
 import { rootSaga } from "./modules/sagas";
@@ -61,6 +63,12 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupAuthModule({
       jwtStorageSymbol: symbols.jwtStorage,
       ethManagerSymbol: symbols.web3Manager,
+    }),
+    setupContractsModule({
+      contractsServiceSymbol: symbols.contractsService,
+    }),
+    setupTokenPriceModule({
+      refreshOnAction: actions.web3.newBlockArrived,
     }),
     appModule,
   ];

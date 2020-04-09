@@ -23,7 +23,6 @@ import { nomineeFlowReducer } from "./nominee-flow/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./person-profile-modal/reducer";
 import { profileReducer } from "./profile/reducer";
-import { tokenPriceReducer } from "./shared/tokenPrice/reducer";
 import { txHistoryReducer } from "./tx-history/reducer";
 import { txReducers } from "./tx/reducer";
 import { browserReducer } from "./user-agent/reducer";
@@ -53,7 +52,6 @@ export const appReducers = {
   kyc: kycReducer,
   profile: profileReducer,
   investorTickets: investorTicketsReducer,
-  tokenPrice: tokenPriceReducer,
   init: initReducer,
   lightWalletWizard: lightWalletWizardReducer,
   wallet: walletReducer,

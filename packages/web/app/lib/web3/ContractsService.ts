@@ -1,5 +1,5 @@
 import { EthereumAddress } from "@neufund/shared";
-import { ILogger } from "@neufund/shared-modules";
+import { IContractsService, ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -26,7 +26,7 @@ import { Universe } from "../contracts/Universe";
 import { Web3Manager } from "./Web3Manager/Web3Manager";
 
 @injectable()
-export class ContractsService {
+export class ContractsService implements IContractsService {
   private etoCommitmentCache: { [etoId: string]: ETOCommitment } = {};
   private equityTokensCache: { [equityTokenAddress: string]: IEquityToken } = {};
   private etoTermsCache: { [etoTermsId: string]: ETOTerms } = {};

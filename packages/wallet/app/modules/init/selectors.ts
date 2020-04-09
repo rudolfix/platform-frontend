@@ -1,5 +1,8 @@
-import { TAppGlobalState } from "../../store/types";
+import { StateFromReducersMapObject } from "redux";
 
-const selectInitStatus = (state: TAppGlobalState) => state.init.status;
+import { initReducersMap } from "./reducer";
+
+const selectInitStatus = (state: StateFromReducersMapObject<typeof initReducersMap>) =>
+  state.init.status;
 
 export { selectInitStatus };

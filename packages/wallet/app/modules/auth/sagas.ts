@@ -4,7 +4,9 @@ import {
   isJwtExpiringLateEnough,
   toEthereumPrivateKey,
   toEthereumHDMnemonic,
+  invariant,
 } from "@neufund/shared-utils";
+import Config from "react-native-config";
 
 import { walletEthModuleApi } from "../eth/module";
 import { notificationUIModuleApi } from "../notification-ui/module";
@@ -25,8 +27,35 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
   if (!hasExistingWallet) {
     logger.info("No existing wallet to sign in");
 
+    yield put(authActions.canCreateAccount());
+
     return;
   }
+
+  const unlockFlow = Config.NF_ACCOUNT_UNLOCK_FLOW ?? "auto";
+
+  logger.info(`Unlock flow set to ${unlockFlow}`);
+
+  switch (Config.NF_ACCOUNT_UNLOCK_FLOW) {
+    case "user_requested":
+      yield put(authActions.canUnlockAccount());
+      break;
+
+    case "auto":
+    default:
+      yield* call(signInExistingAccount);
+  }
+}
+
+function* signInExistingAccount(): SagaGenerator<void> {
+  const { ethManager } = yield* neuGetBindings({
+    ethManager: walletEthModuleApi.symbols.ethManager,
+    logger: coreModuleApi.symbols.logger,
+  });
+
+  // do not allow to start sign in without having existing wallet
+  const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
+  invariant(hasExistingWallet, "No existing wallet to sign in");
 
   yield put(authActions.signIn());
 
@@ -70,7 +99,7 @@ function* createNewAccount(): SagaGenerator<void> {
 
     logger.info("New account created");
   } catch (e) {
-    yield put(authActions.failedToCreateNewAccount());
+    yield put(authActions.failedToCreateAccount());
 
     yield put(
       notificationUIModuleApi.actions.showError(
@@ -157,7 +186,7 @@ function* logout(): SagaGenerator<void> {
 }
 
 export function* authSaga(): SagaGenerator<void> {
-  yield takeLeading(authActions.createNewAccount, createNewAccount);
+  yield takeLeading(authActions.createAccount, createNewAccount);
   yield takeLeading(authActions.importNewAccount, importNewAccount);
   yield takeLeading(authActions.logout, logout);
 }

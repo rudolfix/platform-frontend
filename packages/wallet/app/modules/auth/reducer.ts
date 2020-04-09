@@ -3,7 +3,9 @@ import { AppReducer } from "@neufund/sagas";
 import { authActions } from "./actions";
 
 export enum EAuthState {
-  NON_AUTHORIZED = "non_authorized",
+  UNKNOWN = "unknown",
+  NON_AUTHORIZED_NO_ACCOUNT = "non_authorized_no_account",
+  NON_AUTHORIZED_HAS_ACCOUNT = "non_authorized_has_account",
   AUTHORIZING = "authorizing",
   AUTHORIZED = "authorized",
 }
@@ -13,13 +15,14 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-  state: EAuthState.NON_AUTHORIZED,
+  state: EAuthState.UNKNOWN,
 };
 
 const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initialState, action) => {
   switch (action.type) {
-    case authActions.createNewAccount.getType():
+    case authActions.createAccount.getType():
     case authActions.importNewAccount.getType():
+    case authActions.unlockAccount.getType():
       return {
         ...initialState,
         state: EAuthState.AUTHORIZING,
@@ -31,14 +34,29 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
         state: EAuthState.AUTHORIZED,
       };
 
-    case authActions.failedToCreateNewAccount.getType():
-    case authActions.failedToImportNewAccount.getType():
+    case authActions.canCreateAccount.getType():
     case authActions.logout.getType():
-      return initialState;
+    case authActions.failedToCreateAccount.getType():
+    case authActions.failedToImportNewAccount.getType():
+      return {
+        ...initialState,
+        state: EAuthState.NON_AUTHORIZED_NO_ACCOUNT,
+      };
+
+    case authActions.failedToUnlockAccount.getType():
+    case authActions.canUnlockAccount.getType():
+      return {
+        ...initialState,
+        state: EAuthState.NON_AUTHORIZED_HAS_ACCOUNT,
+      };
 
     default:
       return state;
   }
 };
 
-export { authReducer };
+const authReducerMap = {
+  auth: authReducer,
+};
+
+export { authReducerMap };

@@ -4,8 +4,9 @@ export const authActions = {
   /**
    * New account creation flow
    */
-  createNewAccount: createActionFactory("AUTH_CREATE_NEW_ACCOUNT"),
-  failedToCreateNewAccount: createActionFactory("AUTH_ACCOUNT_CREATION_FAILED"),
+  canCreateAccount: createActionFactory("AUTH_CAN_CREATE_ACCOUNT"),
+  createAccount: createActionFactory("AUTH_CREATE_ACCOUNT"),
+  failedToCreateAccount: createActionFactory("AUTH_ACCOUNT_CREATION_FAILED"),
 
   /**
    * Import account flow
@@ -15,6 +16,13 @@ export const authActions = {
     (privateKeyOrMnemonic: string) => ({ privateKeyOrMnemonic }),
   ),
   failedToImportNewAccount: createActionFactory("AUTH_ACCOUNT_IMPORT_FAILED"),
+
+  /**
+   * Unlock account flow
+   */
+  canUnlockAccount: createActionFactory("AUTH_UNLOCK_CAN_UNLOCK"),
+  unlockAccount: createActionFactory("AUTH_UNLOCK_UNLOCK"),
+  failedToUnlockAccount: createActionFactory("AUTH_UNLOCK_FAILED_TO_UNLOCK"),
 
   /**
    * Logout flow

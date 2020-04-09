@@ -3,7 +3,7 @@ import { walletEthModuleApi } from "../eth/module";
 import { authActions } from "./actions";
 import { setupBindings } from "./lib/bindings";
 import { privateSymbols } from "./lib/symbols";
-import { authReducer, EAuthState } from "./reducer";
+import { authReducerMap, EAuthState } from "./reducer";
 import { authSaga, trySignInExistingAccount } from "./sagas";
 import { selectAuthState, selectUser } from "./selectors";
 
@@ -13,9 +13,7 @@ const setupAuthModule = () => {
   const authModule = {
     id: MODULE_ID,
     sagas: [authSaga],
-    reducerMap: {
-      auth: authReducer,
-    },
+    reducerMap: authReducerMap,
     libs: [setupBindings()],
     api: authModuleAPI,
   };

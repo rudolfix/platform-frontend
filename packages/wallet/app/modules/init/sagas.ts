@@ -1,5 +1,5 @@
 import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
-import { tokenPriceModuleApi } from "@neufund/shared-modules";
+import { coreModuleApi, neuGetBindings, tokenPriceModuleApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { walletContractsModuleApi } from "../contracts/module";
@@ -13,7 +13,10 @@ function* initGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
 }
 
-function* initStartSaga({ logger }: TGlobalDependencies): Generator<unknown, void> {
+function* initStartSaga(): SagaGenerator<void> {
+  const { logger } = yield* neuGetBindings({
+    logger: coreModuleApi.symbols.logger,
+  });
   try {
     yield* call(walletContractsModuleApi.sagas.initializeContracts);
     yield* call(initGlobalWatchers);

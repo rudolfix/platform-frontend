@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
-import { baseGray, blueyGrey } from "../../../styles/colors";
+import { baseGray, blueyGray } from "../../../styles/colors";
 import { st } from "../../utils";
 import { EIconType, Icon } from "../Icon";
 import { LoadingIndicator } from "../LoadingIndicator";
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     color: baseGray,
   },
   buttonCommonDisabledLabel: {
-    color: blueyGrey,
+    color: blueyGray,
   },
 });
 

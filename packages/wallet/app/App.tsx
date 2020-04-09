@@ -1,7 +1,9 @@
+import { invariant, assertNever } from "@neufund/shared";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 
-import { AppAuthRouter, AppNoAuthRouter } from "./AppRouter";
+import { AppNoAuthRouter } from "./AppNoAuthRouter";
+import { AppAuthRouter } from "./AppAuthRouter";
 import { CriticalError } from "./components/CriticalError";
 import { LoadingIndicator } from "./components/shared/LoadingIndicator";
 import { SignerModal } from "./components/signer/SignerModal";
@@ -23,6 +25,25 @@ type TDispatchProps = {
   init: () => void;
 };
 
+const getAppRouter = (authState: EAuthState) => {
+  switch (authState) {
+    case EAuthState.NON_AUTHORIZED_NO_ACCOUNT:
+    case EAuthState.NON_AUTHORIZED_HAS_ACCOUNT:
+      return <AppNoAuthRouter authState={authState} />;
+    case EAuthState.AUTHORIZED:
+      return (
+        <>
+          <AppAuthRouter />
+
+          <SignerModal />
+        </>
+      );
+    case EAuthState.AUTHORIZING:
+    default:
+      invariant(false, `Invalid auth state: ${authState}`);
+  }
+};
+
 const AppLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   init,
   authState,
@@ -42,13 +63,13 @@ const AppLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
     case EInitStatus.DONE:
       return (
         <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-          {authState === EAuthState.AUTHORIZED ? <AppAuthRouter /> : <AppNoAuthRouter />}
-
-          <SignerModal />
+          {getAppRouter(authState)}
         </NavigationContainer>
       );
     case EInitStatus.ERROR:
       return <CriticalError />;
+    default:
+      assertNever(initStatus, "Invalid init status");
   }
 };
 

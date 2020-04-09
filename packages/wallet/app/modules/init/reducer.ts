@@ -10,7 +10,7 @@ const initInitialState: TInitState = {
   status: EInitStatus.NOT_STARTER,
 };
 
-export const initReducer: AppReducer<TInitState, typeof initActions> = (
+const initReducer: AppReducer<TInitState, typeof initActions> = (
   state = initInitialState,
   action,
 ) => {
@@ -34,3 +34,9 @@ export const initReducer: AppReducer<TInitState, typeof initActions> = (
       return state;
   }
 };
+
+const initReducersMap = {
+  init: initReducer,
+};
+
+export { initReducersMap };

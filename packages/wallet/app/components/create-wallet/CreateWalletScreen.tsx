@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
 
 import { appRoutes } from "../../appRoutes";
 import { appConnect } from "../../store/utils";
-import { abyssalAnchorfishBlue, silverLighter2, subterraneanRiver } from "../../styles/colors";
+import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
+import { NeuLinearGradient } from "../shared/NeuLinearGradient";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 import { authModuleAPI, EAuthState } from "../../modules/auth/module";
@@ -19,17 +19,17 @@ type TStateProps = {
 };
 
 type TDispatchProps = {
-  createNewAccount: () => void;
+  createAccount: () => void;
 };
 
-const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
-  createNewAccount,
+const CreateWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+  createAccount,
   authState,
 }) => {
   const navigation = useNavigation();
 
   return (
-    <LinearGradient colors={[subterraneanRiver, abyssalAnchorfishBlue]} style={styles.wrapper}>
+    <NeuLinearGradient style={styles.wrapper}>
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={logo} />
       </View>
@@ -47,7 +47,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
           style={styles.createAccountButton}
           loading={authState === EAuthState.AUTHORIZING}
           layout={EButtonLayout.PRIMARY}
-          onPress={createNewAccount}
+          onPress={createAccount}
         >
           Create a new account
         </Button>
@@ -59,7 +59,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
           Import account
         </Button>
       </View>
-    </LinearGradient>
+    </NeuLinearGradient>
   );
 };
 
@@ -97,13 +97,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const LandingScreen = appConnect<TStateProps, TDispatchProps>({
+const CreateWalletScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     authState: authModuleAPI.selectors.selectAuthState(state),
   }),
   dispatchToProps: dispatch => ({
-    createNewAccount: () => dispatch(authModuleAPI.actions.createNewAccount()),
+    createAccount: () => dispatch(authModuleAPI.actions.createAccount()),
   }),
-})(LandingLayout);
+})(CreateWalletLayout);
 
-export { LandingScreen };
+export { CreateWalletScreen };

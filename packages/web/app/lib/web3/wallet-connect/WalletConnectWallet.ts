@@ -3,17 +3,13 @@ import { ESignerType } from "@neufund/shared-modules";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
 
-import {
-  WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
-  WC_DEFAULT_SIGN_TIMEOUT,
-} from "../../../config/constants";
 import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
 import { TPeerMeta } from "../../persistence/WalletConnectStorage";
 import { WalletError } from "../errors";
 import { IPersonalWallet } from "../PersonalWeb3";
-import { ESignTransactionMethod } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerTimeoutError } from "../Web3Manager/Web3Manager";
+import { generateWalletMetaFormPeerMeta, TWcMeta } from "./utils";
 
 export class WalletConnectGenericError extends WalletError {
   constructor(message: string) {
@@ -33,49 +29,6 @@ export class WalletConnectSessionTransactionError extends WalletError {
   }
 }
 
-type TWcMeta = {
-  walletSubType: EWalletSubType.UNKNOWN | EWalletSubType.METAMASK | EWalletSubType.NEUFUND;
-  sendTransactionMethod: ESignTransactionMethod;
-  signerType: ESignerType;
-  sessionRequestTimeout: number;
-  signingTimeout: number;
-  supportsExplicitTimeouts: boolean;
-  supportSessionPings: boolean;
-  supportsRemoteKyc: boolean;
-  supportsWalletMigration: boolean;
-};
-
-const generateWalletMetaFormPeerMeta = (peerMeta: TPeerMeta | null): TWcMeta => {
-  const walletMeta = {
-    walletSubType: EWalletSubType.UNKNOWN as
-      | EWalletSubType.UNKNOWN
-      | EWalletSubType.METAMASK
-      | EWalletSubType.NEUFUND,
-    sendTransactionMethod: ESignTransactionMethod.ETH_SEND_TRANSACTION,
-    signerType: ESignerType.ETH_SIGN,
-    signingTimeout: WC_DEFAULT_SIGN_TIMEOUT,
-    sessionRequestTimeout: WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
-    supportsExplicitTimeouts: false,
-    supportSessionPings: false,
-    supportsRemoteKyc: false,
-    supportsWalletMigration: false,
-  };
-
-  if (peerMeta !== null && peerMeta.name === "Metamask") {
-    //Todo find out what's the exact name for metamask.
-    walletMeta.walletSubType = EWalletSubType.METAMASK;
-    walletMeta.signerType = ESignerType.ETH_SIGN_TYPED_DATA;
-  } else if (peerMeta !== null && peerMeta.name === "Neufund") {
-    walletMeta.walletSubType = EWalletSubType.NEUFUND;
-    walletMeta.supportsExplicitTimeouts = true;
-    walletMeta.supportSessionPings = true;
-    walletMeta.supportsRemoteKyc = true;
-    walletMeta.supportsWalletMigration = true;
-  }
-
-  return walletMeta;
-};
-
 export class WalletConnectWallet implements IPersonalWallet {
   constructor(
     public readonly web3Adapter: Web3Adapter,
@@ -83,9 +36,11 @@ export class WalletConnectWallet implements IPersonalWallet {
     peerMeta: TPeerMeta | null,
   ) {
     this.walletMeta = generateWalletMetaFormPeerMeta(peerMeta);
+    this.walletSubType = this.walletMeta.walletSubType;
   }
 
-  private readonly walletType = EWalletType.WALLETCONNECT;
+  public readonly walletType = EWalletType.WALLETCONNECT;
+  public readonly walletSubType: EWalletSubType;
   private readonly walletMeta: TWcMeta;
 
   public getSignerType(): ESignerType {

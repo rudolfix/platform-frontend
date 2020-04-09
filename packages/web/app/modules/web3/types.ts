@@ -19,6 +19,11 @@ export enum EWalletSubType {
   UNKNOWN = "UNKNOWN",
 }
 
+export type TWcWalletSubtypes =
+  | EWalletSubType.UNKNOWN
+  | EWalletSubType.METAMASK
+  | EWalletSubType.NEUFUND;
+
 export type TWalletMetadata =
   | ILightWalletMetadata
   | IBrowserWalletMetadata

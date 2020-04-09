@@ -107,9 +107,6 @@ export class WalletConnectConnector extends EventEmitter {
     if (this.walletConnectProvider) {
       await this.walletConnectProvider.close();
       this.cleanUpSession();
-      return "disconnected";
-    } else {
-      return "nothing to disconnect";
     }
   };
 
@@ -117,9 +114,6 @@ export class WalletConnectConnector extends EventEmitter {
     if (this.walletConnectProvider) {
       await this.walletConnectProvider.cancelSession();
       this.cleanUpSession();
-      return "canceled";
-    } else {
-      return "nothing to cancel";
     }
   };
 
@@ -184,6 +178,7 @@ export class WalletConnectConnector extends EventEmitter {
 
   private sessionRequestTimeoutHandler = () => {
     this.sessionRequestTimeout && clearSafeTimeout(this.sessionRequestTimeout);
+    this.sessionRequestTimeout = undefined;
     this.emit(EWalletConnectEventTypes.SESSION_REQUEST_TIMEOUT);
   };
 }

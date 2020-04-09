@@ -133,7 +133,7 @@ export function* walletConnectCancelSession({
 }
 
 export function* walletConnectSagas(): Generator<any, void, any> {
-  yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart); //todo stop on route change
+  yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);
   yield fork(
     neuTakeLatest,
     actions.walletSelector.walletConnectRestoreConnection,

@@ -3,15 +3,13 @@ import { ESignerType } from "@neufund/shared-modules";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
 
-import {
-  WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
-  WC_DEFAULT_SIGN_TIMEOUT,
-} from "../../../config/constants";
 import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
+import { TPeerMeta } from "../../persistence/WalletConnectStorage";
 import { WalletError } from "../errors";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerTimeoutError } from "../Web3Manager/Web3Manager";
+import { generateWalletMetaFormPeerMeta, TWcMeta } from "./utils";
 
 export class WalletConnectGenericError extends WalletError {
   constructor(message: string) {
@@ -35,17 +33,18 @@ export class WalletConnectWallet implements IPersonalWallet {
   constructor(
     public readonly web3Adapter: Web3Adapter,
     public readonly ethereumAddress: EthereumAddressWithChecksum,
-  ) {}
+    peerMeta: TPeerMeta | null,
+  ) {
+    this.walletMeta = generateWalletMetaFormPeerMeta(peerMeta);
+    this.walletSubType = this.walletMeta.walletSubType;
+  }
 
   public readonly walletType = EWalletType.WALLETCONNECT;
-  public readonly walletSubType = EWalletSubType.UNKNOWN;
-  public readonly sendTransactionMethod = "eth_sendTransaction";
-  public readonly signerType = ESignerType.ETH_SIGN;
-  public readonly singingTimeout = WC_DEFAULT_SIGN_TIMEOUT;
-  public readonly sessionRequestTimeout = WC_DEFAULT_SESSION_REQUEST_TIMEOUT;
+  public readonly walletSubType: EWalletSubType;
+  private readonly walletMeta: TWcMeta;
 
   public getSignerType(): ESignerType {
-    return this.signerType;
+    return this.walletMeta.signerType;
   }
 
   public async testConnection(networkId: string): Promise<boolean> {
@@ -69,7 +68,7 @@ export class WalletConnectWallet implements IPersonalWallet {
       });
     return await Promise.race([
       this.web3Adapter.ethSign(this.ethereumAddress, dataToSign),
-      signingTimeoutPromise(this.singingTimeout),
+      signingTimeoutPromise(this.walletMeta.signingTimeout),
     ]);
   }
 
@@ -85,11 +84,7 @@ export class WalletConnectWallet implements IPersonalWallet {
     return {
       address: this.ethereumAddress,
       walletType: this.walletType,
-      walletSubType: this.walletSubType,
-      sendTransactionMethod: this.sendTransactionMethod,
-      signerType: this.signerType,
-      sessionRequestTimeout: this.sessionRequestTimeout,
-      signTimeout: this.singingTimeout,
+      ...this.walletMeta,
     };
   }
 

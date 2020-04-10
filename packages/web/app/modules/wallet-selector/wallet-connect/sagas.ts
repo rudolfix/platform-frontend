@@ -17,7 +17,7 @@ import {
 } from "../../../lib/web3/wallet-connect/WalletConnectConnector";
 import { WalletConnectSessionRejectedError } from "../../../lib/web3/wallet-connect/WalletConnectWallet";
 import { actions, TActionFromCreator } from "../../actions";
-import { logoutUser } from "../../auth/user/external/sagas";
+import { handleLogOutUserInternal } from "../../auth/user/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { walletSelectorConnect } from "../sagas";
 
@@ -145,7 +145,11 @@ export function* walletConnectSagas(): Generator<any, void, any> {
     actions.walletSelector.walletConnectSessionRequestTimeout,
     walletConnectCancelSession,
   );
-  yield fork(neuTakeEvery, actions.walletSelector.walletConnectDisconnected, logoutUser);
+  yield fork(
+    neuTakeEvery,
+    actions.walletSelector.walletConnectDisconnected,
+    handleLogOutUserInternal,
+  );
   yield fork(
     neuTakeLatestUntil,
     actions.walletSelector.walletConnectStartEventListeners,

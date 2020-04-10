@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { authModuleAPI, EAuthState } from "../../modules/auth/module";
 import { ethereumMnemonic, ethereumPrivateKey } from "../../modules/eth/lib/schemas";
 import { appConnect } from "../../store/utils";
-import { baseGray } from "../../styles/colors";
+import { baseGray, grayLighter2 } from "../../styles/colors";
 
 import { spacingStyles } from "../../styles/spacings";
 import { TComponentRefType } from "../../utils/types";
@@ -16,6 +16,7 @@ import { EFieldType } from "../shared/forms/layouts/FieldLayout";
 import { Field } from "../shared/forms/fields/Field";
 import { TextAreaInput } from "../shared/forms/layouts/TextAreaInput";
 import { Screen } from "../shared/Screen";
+import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 
 type TStateProps = {
@@ -58,9 +59,11 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
 
   return (
     <Screen contentContainerStyle={styles.content}>
-      <Headline level={EHeadlineLevel.LEVEL2} style={styles.headline}>
-        Connect existing account
-      </Headline>
+      <Headline level={EHeadlineLevel.LEVEL2}>Connect existing account</Headline>
+
+      <BodyText style={styles.paragraph}>
+        Enter your recovery phrase or private key to import and connect your wallet to Neufund.
+      </BodyText>
 
       <Form<TFormValue>
         validationSchema={validationSchema}
@@ -73,7 +76,6 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
               name="phrase"
               inputRef={inputRef}
               type={EFieldType.TEXT_AREA}
-              placeholder="Enter your recovery phrase or private key to import and connect your wallet to Neufund."
               helperText="Separate your 12/24 recovery phrase words with a space."
             />
 
@@ -84,7 +86,7 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
               layout={EButtonLayout.PRIMARY}
               onPress={handleSubmit}
             >
-              Import account
+              Connect account
             </Button>
           </>
         )}
@@ -94,14 +96,17 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
 };
 
 const styles = StyleSheet.create({
-  headline: {
-    ...spacingStyles.mb4,
-    color: baseGray,
-  },
   content: {
     ...spacingStyles.p4,
     justifyContent: "flex-end",
     flex: 1,
+  },
+  headline: {
+    color: baseGray,
+  },
+  paragraph: {
+    ...spacingStyles.mv4,
+    color: grayLighter2,
   },
   importAccountButton: {
     ...spacingStyles.mt2,

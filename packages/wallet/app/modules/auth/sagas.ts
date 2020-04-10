@@ -156,8 +156,8 @@ function* logout(): SagaGenerator<void> {
   }
 }
 
-export function* authSaga(): Generator<unknown, void> {
-  yield* takeLeading(authActions.createNewAccount, createNewAccount);
-  yield* takeLeading(authActions.importNewAccount, importNewAccount);
-  yield* takeLeading(authActions.logout, logout);
+export function* authSaga(): SagaGenerator<void> {
+  yield takeLeading(authActions.createNewAccount, createNewAccount);
+  yield takeLeading(authActions.importNewAccount, importNewAccount);
+  yield takeLeading(authActions.logout, logout);
 }

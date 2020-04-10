@@ -3,7 +3,7 @@ import * as React from "react";
 import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 
-import { silverLighter2 } from "../../styles/colors";
+import { baseWhite } from "../../styles/colors";
 
 type TExternalProps = React.ComponentProps<typeof ScrollView>;
 
@@ -33,7 +33,7 @@ const Screen: React.FunctionComponent<TExternalProps> = ({ children, style, ...p
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: silverLighter2,
+    backgroundColor: baseWhite,
   },
   flex: {
     flex: 1,

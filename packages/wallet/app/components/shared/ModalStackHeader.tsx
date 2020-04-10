@@ -3,7 +3,7 @@ import { StackHeaderProps } from "@react-navigation/stack";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import { silverLighter2 } from "../../styles/colors";
+import { baseWhite } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { getTopPadding } from "../../styles/utils";
 import { ButtonIcon } from "./buttons/ButtonIcon";
@@ -67,7 +67,7 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
 const styles = StyleSheet.create({
   container: {
     ...spacingStyles.pt2,
-    backgroundColor: silverLighter2,
+    backgroundColor: baseWhite,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",

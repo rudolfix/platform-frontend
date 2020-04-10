@@ -2,11 +2,18 @@ import { StyleSheet } from "react-native";
 
 export const spacing1 = 4;
 export const spacing2 = spacing1 * 2; // 8
-export const spacing3 = spacing2 * 2; // 16
-export const spacing4 = spacing2 * 3; // 24
-export const spacing5 = spacing2 * 4; // 32
+export const spacing3 = spacing1 * 3; // 12
+export const spacing4 = spacing2 * 2; // 16
+export const spacing5 = spacing2 * 3; // 24
+export const spacing6 = spacing2 * 4; // 32
+export const spacing7 = spacing5 * 2; // 48
+export const spacing8 = spacing6 * 2; // 64
 
 export const spacingStyles = StyleSheet.create({
+  // TODO: Generate all variants automatically (padding+margin full,horizontal,vertical,each side)
+  mv4: {
+    marginVertical: spacing4,
+  },
   mb1: {
     marginBottom: spacing1,
   },
@@ -16,17 +23,17 @@ export const spacingStyles = StyleSheet.create({
   mt2: {
     marginTop: spacing2,
   },
-  mb3: {
-    marginBottom: spacing3,
-  },
   mb4: {
     marginBottom: spacing4,
   },
-  p3: {
-    padding: spacing3,
+  mb5: {
+    marginBottom: spacing5,
   },
   p4: {
     padding: spacing4,
+  },
+  p5: {
+    padding: spacing5,
   },
   pt1: {
     paddingTop: spacing1,
@@ -34,13 +41,13 @@ export const spacingStyles = StyleSheet.create({
   pt2: {
     paddingTop: spacing2,
   },
-  pt3: {
-    paddingTop: spacing3,
+  pt4: {
+    paddingTop: spacing4,
   },
   ph2: {
     paddingHorizontal: spacing2,
   },
-  ph4: {
-    paddingHorizontal: spacing4,
+  ph5: {
+    paddingHorizontal: spacing5,
   },
 });

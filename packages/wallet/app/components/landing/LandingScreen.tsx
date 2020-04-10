@@ -65,7 +65,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
 
 const styles = StyleSheet.create({
   wrapper: {
-    ...spacingStyles.p4,
+    ...spacingStyles.p5,
     flex: 1,
   },
   logoContainer: {
@@ -82,13 +82,13 @@ const styles = StyleSheet.create({
     flex: 1.5,
   },
   headline: {
-    ...spacingStyles.mb3,
+    ...spacingStyles.mb4,
     textAlign: "center",
     color: silverLighter2,
   },
   paragraph: {
-    ...spacingStyles.mb3,
-    ...spacingStyles.ph4,
+    ...spacingStyles.mb4,
+    ...spacingStyles.ph5,
     textAlign: "center",
     color: silverLighter2,
   },

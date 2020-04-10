@@ -14,6 +14,7 @@ import {
   blueyGrey,
   grayLighter4,
   silverLighter1,
+  yellowDarker1,
 } from "../../../../styles/colors";
 import { roundness } from "../../../../styles/common";
 import { typographyStyles } from "../../../../styles/typography";
@@ -46,6 +47,7 @@ const TextInput = React.forwardRef<NativeTextInput, TExternalProps>(
         ref={ref}
         editable={!disabled}
         placeholderTextColor={blueyGrey}
+        selectionColor={yellowDarker1}
         style={st(
           styles.input,
           [hasFocus, styles.inputFocused],

@@ -1,4 +1,4 @@
-import { invariant } from "@neufund/shared";
+import { assertNever, nonNullable } from "@neufund/shared";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
@@ -21,7 +21,7 @@ import { KycSuccess } from "./Success";
 import { isManualVerificationEnabled } from "./utils";
 
 interface IStateProps {
-  userType?: EUserType;
+  userType: EUserType;
 }
 
 export const NormalKycRouter: React.FunctionComponent = () => (
@@ -73,12 +73,12 @@ export const KycRouterComponent: React.FunctionComponent<IStateProps> = ({ userT
     case EUserType.NOMINEE:
       return <EtoKycRouter />;
     default:
-      return invariant(false, "Unknown user type");
+      assertNever(userType, "Unknown user type");
   }
 };
 
 export const KycRouter = appConnect<IStateProps, {}>({
   stateToProps: s => ({
-    userType: selectUserType(s),
+    userType: nonNullable(selectUserType(s)),
   }),
 })(KycRouterComponent);

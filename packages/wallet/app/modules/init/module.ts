@@ -1,6 +1,7 @@
-import { setupCoreModule } from "@neufund/shared-modules";
+import { setupCoreModule, setupTokenPriceModule } from "@neufund/shared-modules";
 
 import { setupAuthModule } from "../auth/module";
+import { setupWalletContractsModule } from "../contracts/module";
 import { setupWalletEthModule } from "../eth/module";
 import { setupNotificationUIModule } from "../notification-ui/module";
 import { setupSignerUIModule } from "../signer-ui/module";
@@ -12,7 +13,7 @@ import { initSaga } from "./sagas";
 
 const MODULE_ID = "wallet:init";
 
-type TConfig = { backendRootUrl: string; rpcUrl: string };
+type TConfig = { backendRootUrl: string; rpcUrl: string; universeContractAddress: string };
 
 const setupInitModule = (config: TConfig) => {
   const initModule = {
@@ -30,6 +31,11 @@ const setupInitModule = (config: TConfig) => {
     setupNotificationUIModule(),
     setupWalletConnectModule(),
     ...setupAuthModule(),
+    ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
+    setupTokenPriceModule({
+      // TODO: When we have a proper block watching flow for mobile app provide proper refresh action
+      refreshOnAction: undefined,
+    }),
     initModule,
   ];
 };

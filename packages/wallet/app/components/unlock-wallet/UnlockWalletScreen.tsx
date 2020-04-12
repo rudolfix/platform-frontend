@@ -77,13 +77,13 @@ const styles = StyleSheet.create({
     flex: 1.5,
   },
   headline: {
-    ...spacingStyles.mb3,
+    ...spacingStyles.mb4,
     textAlign: "center",
     color: silverLighter2,
   },
   paragraph: {
-    ...spacingStyles.mb3,
-    ...spacingStyles.ph4,
+    ...spacingStyles.mb4,
+    ...spacingStyles.ph5,
     textAlign: "center",
     color: silverLighter2,
   },

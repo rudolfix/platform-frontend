@@ -19,7 +19,12 @@ import { privateSymbols } from "./symbols";
 import { EthAdapter } from "./EthAdapter";
 import { EthWallet } from "./EthWallet";
 import { EthWalletFactory } from "./EthWalletFactory";
-import { ITransactionResponse, TTransactionRequestRequired, TUnsignedTransaction } from "./types";
+import {
+  ITransactionResponse,
+  TTransactionRequestRequired,
+  TUnsignedTransaction,
+  TWalletUIMetadata,
+} from "./types";
 
 class EthManagerError extends EthModuleError {
   constructor(message: string) {
@@ -102,6 +107,14 @@ class EthManager implements IEthManager {
    */
   getBalance(address: EthereumAddress): Promise<utils.BigNumber> {
     return this.adapter.getBalance(address);
+  }
+
+  /**
+   * Returns existing wallet metadata.
+   * If no metadata found returns `undefined` which means there is not existing wallet
+   */
+  getExistingWalletMetadata(): Promise<TWalletUIMetadata | undefined> {
+    return this.ethWalletFactory.getExistingWalletMetadata();
   }
 
   /**

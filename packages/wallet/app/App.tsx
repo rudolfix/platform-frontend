@@ -1,4 +1,4 @@
-import { invariant, assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 
@@ -7,29 +7,32 @@ import { AppAuthRouter } from "./AppAuthRouter";
 import { CriticalError } from "./components/CriticalError";
 import { LoadingIndicator } from "./components/shared/LoadingIndicator";
 import { SignerModal } from "./components/signer/SignerModal";
-import { EAuthState } from "./modules/auth/module";
-import { selectAuthState } from "./modules/auth/selectors";
-import { initActions } from "./modules/init/actions";
-import { selectInitStatus } from "./modules/init/selectors";
-import { EInitStatus } from "./modules/init/types";
+import { EAuthState, authModuleAPI } from "./modules/auth/module";
+import { initModuleApi, EInitStatus } from "./modules/init/module";
 import { navigationRef } from "./routeUtils";
 import { appConnect } from "./store/utils";
 import { useTheme } from "./themes/ThemeProvider";
 
 type TStateProps = {
-  initStatus: ReturnType<typeof selectInitStatus>;
-  authState: ReturnType<typeof selectAuthState>;
+  initStatus: ReturnType<typeof initModuleApi.selectors.selectInitStatus>;
+  authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
+  authWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>;
 };
 
 type TDispatchProps = {
   init: () => void;
 };
 
-const getAppRouter = (authState: EAuthState) => {
+type TLayoutProps = TStateProps & TDispatchProps;
+
+const AppRouter: React.FunctionComponent<Pick<TLayoutProps, "authState" | "authWallet">> = ({
+  authState,
+  authWallet,
+}) => {
   switch (authState) {
-    case EAuthState.NON_AUTHORIZED_NO_ACCOUNT:
-    case EAuthState.NON_AUTHORIZED_HAS_ACCOUNT:
-      return <AppNoAuthRouter authState={authState} />;
+    case EAuthState.NOT_AUTHORIZED:
+    case EAuthState.AUTHORIZING:
+      return <AppNoAuthRouter authWallet={authWallet} />;
     case EAuthState.AUTHORIZED:
       return (
         <>
@@ -38,15 +41,15 @@ const getAppRouter = (authState: EAuthState) => {
           <SignerModal />
         </>
       );
-    case EAuthState.AUTHORIZING:
     default:
-      invariant(false, `Invalid auth state: ${authState}`);
+      assertNever(authState, "Invalid auth state");
   }
 };
 
-const AppLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+const AppLayout: React.FunctionComponent<TLayoutProps> = ({
   init,
   authState,
+  authWallet,
   initStatus,
 }) => {
   const { navigationTheme } = useTheme();
@@ -63,7 +66,7 @@ const AppLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
     case EInitStatus.DONE:
       return (
         <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-          {getAppRouter(authState)}
+          <AppRouter authState={authState} authWallet={authWallet} />
         </NavigationContainer>
       );
     case EInitStatus.ERROR:
@@ -75,11 +78,12 @@ const AppLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
 
 const App = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
-    initStatus: selectInitStatus(state),
-    authState: selectAuthState(state),
+    initStatus: initModuleApi.selectors.selectInitStatus(state),
+    authState: authModuleAPI.selectors.selectAuthState(state),
+    authWallet: authModuleAPI.selectors.selectAuthWallet(state),
   }),
   dispatchToProps: dispatch => ({
-    init: () => dispatch(initActions.start()),
+    init: () => dispatch(initModuleApi.actions.start()),
   }),
 })(AppLayout);
 

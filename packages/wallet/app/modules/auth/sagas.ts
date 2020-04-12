@@ -38,24 +38,38 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
 
   switch (Config.NF_ACCOUNT_UNLOCK_FLOW) {
     case "user_requested":
-      yield put(authActions.canUnlockAccount());
+      yield* call(allowToUnlockExistingAccount);
       break;
 
     case "auto":
     default:
       yield* call(signInExistingAccount);
+      break;
   }
+}
+
+function* allowToUnlockExistingAccount(): SagaGenerator<void> {
+  const { ethManager } = yield* neuGetBindings({
+    ethManager: walletEthModuleApi.symbols.ethManager,
+  });
+
+  const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+
+  // do not allow to unlock existing account without having existing wallet
+  invariant(walletMetadata, "No existing wallet to sign in");
+
+  yield put(authActions.canUnlockAccount(walletMetadata));
 }
 
 function* signInExistingAccount(): SagaGenerator<void> {
   const { ethManager } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
-    logger: coreModuleApi.symbols.logger,
   });
 
+  const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+
   // do not allow to start sign in without having existing wallet
-  const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
-  invariant(hasExistingWallet, "No existing wallet to sign in");
+  invariant(walletMetadata, "No existing wallet to sign in");
 
   yield put(authActions.signIn());
 
@@ -73,7 +87,7 @@ function* signInExistingAccount(): SagaGenerator<void> {
   // given that user may already exist just load the user from database
   yield* call(loadOrCreateUser);
 
-  yield put(authActions.signed());
+  yield put(authActions.signed(walletMetadata));
 }
 
 function* createNewAccount(): SagaGenerator<void> {
@@ -95,7 +109,11 @@ function* createNewAccount(): SagaGenerator<void> {
 
     yield* call(loadOrCreateUser);
 
-    yield put(authActions.signed());
+    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+    // do not allow to start sign in without having existing wallet
+    invariant(walletMetadata, "No existing wallet to sign in");
+
+    yield put(authActions.signed(walletMetadata));
 
     logger.info("New account created");
   } catch (e) {
@@ -150,7 +168,11 @@ function* importNewAccount(
 
     yield* call(loadOrCreateUser);
 
-    yield put(authActions.signed());
+    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+    // do not allow to start sign in without having existing wallet
+    invariant(walletMetadata, "No existing wallet to sign in");
+
+    yield put(authActions.signed(walletMetadata));
 
     logger.info("New account imported");
   } catch (e) {
@@ -188,5 +210,6 @@ function* logout(): SagaGenerator<void> {
 export function* authSaga(): SagaGenerator<void> {
   yield takeLeading(authActions.createAccount, createNewAccount);
   yield takeLeading(authActions.importNewAccount, importNewAccount);
+  yield takeLeading(authActions.unlockAccount, signInExistingAccount);
   yield takeLeading(authActions.logout, logout);
 }

@@ -5,7 +5,8 @@ import { setupBindings } from "./lib/bindings";
 import { privateSymbols } from "./lib/symbols";
 import { authReducerMap, EAuthState } from "./reducer";
 import { authSaga, trySignInExistingAccount } from "./sagas";
-import { selectAuthState, selectUser } from "./selectors";
+import { selectAuthState, selectAuthWallet, selectUser } from "./selectors";
+import { TAuthWalletMetadata } from "./types";
 
 const MODULE_ID = "wallet:auth";
 
@@ -31,6 +32,7 @@ const authModuleAPI = {
   actions: authActions,
   selectors: {
     selectAuthState,
+    selectAuthWallet,
     selectUser,
   },
   sagas: {
@@ -38,4 +40,4 @@ const authModuleAPI = {
   },
 };
 
-export { setupAuthModule, authModuleAPI, EAuthState };
+export { setupAuthModule, authModuleAPI, EAuthState, TAuthWalletMetadata };

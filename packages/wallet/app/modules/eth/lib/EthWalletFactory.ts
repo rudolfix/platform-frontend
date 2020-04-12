@@ -9,7 +9,7 @@ import { TSecureReference } from "./SecureStorage";
 import { privateSymbols } from "./symbols";
 import { EthSecureEnclave } from "./EthSecureEnclave";
 import { EthWallet, TEthWalletProviderType } from "./EthWallet";
-import { EWalletType } from "./types";
+import { EWalletType, TWalletUIMetadata } from "./types";
 
 class EthWalletFactoryError extends EthModuleError {
   constructor(message: string) {
@@ -61,7 +61,7 @@ class EthWalletFactory {
    * @note Make sure to check for wallet before calling `createFromExisting`.
    */
   async hasExistingWallet() {
-    this.logger.info("Check if there is existing wallet");
+    this.logger.info("Checking if there is existing wallet");
 
     // TODO: Check if it's possible to make sure whether key exists for provided key reference
     //       without triggering presence confirmation screen
@@ -70,6 +70,24 @@ class EthWalletFactory {
     this.logger.info(`Existing wallet ${isThereExistingWallet ? "found" : "not found"}`);
 
     return isThereExistingWallet;
+  }
+
+  /**
+   * Returns existing wallet metadata (without key references)
+   */
+  async getExistingWalletMetadata(): Promise<TWalletUIMetadata | undefined> {
+    this.logger.info("Getting existing wallet metadata");
+
+    const metadata = await this.walletStorage.get();
+
+    if (metadata) {
+      return {
+        name: metadata.name,
+        address: metadata.address,
+      };
+    }
+
+    return undefined;
   }
 
   /**

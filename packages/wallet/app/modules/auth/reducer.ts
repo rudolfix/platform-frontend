@@ -1,21 +1,25 @@
 import { AppReducer } from "@neufund/sagas";
 
 import { authActions } from "./actions";
+import { TAuthWalletMetadata } from "./types";
 
 export enum EAuthState {
-  UNKNOWN = "unknown",
-  NON_AUTHORIZED_NO_ACCOUNT = "non_authorized_no_account",
-  NON_AUTHORIZED_HAS_ACCOUNT = "non_authorized_has_account",
+  NOT_AUTHORIZED = "not_authorized",
   AUTHORIZING = "authorizing",
   AUTHORIZED = "authorized",
 }
 
 interface IAuthState {
   state: EAuthState;
+  /**
+   * @note wallet can be already defined for `NOT_AUTHORIZED` state given it's taken from device storage
+   */
+  wallet: undefined | TAuthWalletMetadata;
 }
 
 const initialState: IAuthState = {
-  state: EAuthState.UNKNOWN,
+  state: EAuthState.NOT_AUTHORIZED,
+  wallet: undefined,
 };
 
 const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initialState, action) => {
@@ -32,22 +36,26 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
       return {
         ...initialState,
         state: EAuthState.AUTHORIZED,
+        wallet: action.payload,
       };
 
     case authActions.canCreateAccount.getType():
     case authActions.logout.getType():
     case authActions.failedToCreateAccount.getType():
     case authActions.failedToImportNewAccount.getType():
-      return {
-        ...initialState,
-        state: EAuthState.NON_AUTHORIZED_NO_ACCOUNT,
-      };
+      return initialState;
 
-    case authActions.failedToUnlockAccount.getType():
     case authActions.canUnlockAccount.getType():
       return {
         ...initialState,
-        state: EAuthState.NON_AUTHORIZED_HAS_ACCOUNT,
+        wallet: action.payload,
+      };
+
+    case authActions.failedToUnlockAccount.getType():
+      return {
+        ...initialState,
+        // still keep current wallet in the store to show the proper UI
+        wallet: state.wallet,
       };
 
     default:

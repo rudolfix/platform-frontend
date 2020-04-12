@@ -1,4 +1,5 @@
 import { createActionFactory } from "@neufund/shared-utils";
+import { TAuthWalletMetadata } from "./types";
 
 export const authActions = {
   /**
@@ -20,7 +21,10 @@ export const authActions = {
   /**
    * Unlock account flow
    */
-  canUnlockAccount: createActionFactory("AUTH_UNLOCK_CAN_UNLOCK"),
+  canUnlockAccount: createActionFactory(
+    "AUTH_UNLOCK_CAN_UNLOCK",
+    (metadata: TAuthWalletMetadata) => ({ metadata }),
+  ),
   unlockAccount: createActionFactory("AUTH_UNLOCK_UNLOCK"),
   failedToUnlockAccount: createActionFactory("AUTH_UNLOCK_FAILED_TO_UNLOCK"),
 
@@ -33,5 +37,7 @@ export const authActions = {
    * Sign in flow
    */
   signIn: createActionFactory("AUTH_SIGN_IN"),
-  signed: createActionFactory("AUTH_NEW_ACCOUNT_SIGNED"),
+  signed: createActionFactory("AUTH_NEW_ACCOUNT_SIGNED", (metadata: TAuthWalletMetadata) => ({
+    metadata,
+  })),
 };

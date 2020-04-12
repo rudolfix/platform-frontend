@@ -10,6 +10,8 @@ import { setupWalletConnectModule } from "../wallet-connect/module";
 import { initActions } from "./actions";
 import { initReducersMap } from "./reducer";
 import { initSaga } from "./sagas";
+import { selectInitStatus } from "./selectors";
+import { EInitStatus } from "./types";
 
 const MODULE_ID = "wallet:init";
 
@@ -42,6 +44,9 @@ const setupInitModule = (config: TConfig) => {
 
 const initModuleApi = {
   actions: initActions,
+  selectors: {
+    selectInitStatus,
+  },
 };
 
-export { setupInitModule, initModuleApi };
+export { setupInitModule, initModuleApi, EInitStatus };

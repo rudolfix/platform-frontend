@@ -2,7 +2,7 @@ import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 
 import { dummyEthereumAddress } from "../../../../test/fixtures";
-import { Web3Adapter } from "../Web3Adapter";
+import { Web3Adapter } from "./../Web3Adapter";
 import { IVault, LightWallet } from "./LightWallet";
 
 describe("Light Wallet", () => {

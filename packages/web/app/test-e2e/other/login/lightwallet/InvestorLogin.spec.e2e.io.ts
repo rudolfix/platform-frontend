@@ -59,16 +59,6 @@ describe("Investor", () => {
     cy.get(tid("generic-modal-dismiss-button")).click();
   });
 
-  it("should forget light wallet details after logout #login #p2", () => {
-    registerWithLightWallet(email, password);
-
-    logoutViaAccountMenu();
-
-    cy.visit(appRoutes.login);
-
-    cy.get(tid("neuwallet-missing-email"));
-  });
-
   it("should return an error when registering with same email #login #p2", () => {
     // register once and then verify email account
     cy.visit("/register");

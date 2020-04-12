@@ -19,7 +19,7 @@ export const LedgerOnboardingContainer: React.FunctionComponent<TWalletBrowserBa
 }) => (
   <>
     <div className={styles.wrapper} data-test-id="wallet-selector">
-      <h1 className={styles.title}>
+      <h1 className={styles.title} data-test-id="wallet-selector.login.ledger">
         {isLogin ? (
           <FormattedMessage id={"wallet-selector.login.ledger"} />
         ) : (

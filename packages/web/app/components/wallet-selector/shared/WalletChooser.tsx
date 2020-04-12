@@ -22,7 +22,7 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
   const path = isLogin ? appRoutes.login : appRoutes.register;
   return (
     <>
-      <section className={styles.walletChooserContainer}>
+      <section className={styles.walletChooserContainer} data-test-id="wallet-selector">
         <p className={styles.walletChooserText}>
           <FormattedMessage id="wallet-selector.wallet-chooser" />
         </p>

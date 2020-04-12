@@ -175,7 +175,7 @@ export const assertUserInBrowserWalletLoginPage = () => {
 };
 
 export const assertUserInLedgerWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.ledger-wallet.title"));
+  cy.get(tid("wallet-selector.login.ledger"));
 };
 
 /**

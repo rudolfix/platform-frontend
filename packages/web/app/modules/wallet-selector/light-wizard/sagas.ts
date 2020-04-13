@@ -161,19 +161,20 @@ export function* connectAndRestoreLightWallet(
     registerFormDefaultValues.password,
     seed,
   );
-  yield neuCall(
-    signInUser,
-    userType,
-    registerFormDefaultValues.email,
-    registerFormDefaultValues.tos,
-  );
-  const vaultKey = yield* call(
-    getVaultKey,
-    walletMetadata.salt,
-    registerFormDefaultValues.password,
-  );
+  yield neuCall(signInUser, {
+    cleanupGenerator: function*(): Generator<any, void, any> {
+      const vaultKey = yield* call(
+        getVaultKey,
+        walletMetadata.salt,
+        registerFormDefaultValues.password,
+      );
 
-  yield vaultApi.confirm(vaultKey);
+      yield vaultApi.confirm(vaultKey);
+    },
+    userType,
+    email: registerFormDefaultValues.email,
+    tos: registerFormDefaultValues.tos,
+  });
 }
 export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void, any> {
   yield neuCall(resetWalletSelectorState);

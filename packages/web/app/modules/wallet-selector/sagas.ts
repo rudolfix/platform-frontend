@@ -20,7 +20,7 @@ export function* walletSelectorConnect(email?: string, tos = false): Generator<a
   yield put(actions.walletSelector.messageSigning());
 
   const userType = yield* select((s: TAppGlobalState) => selectUrlUserType(s.router));
-  yield neuCall(signInUser, userType, email, tos);
+  yield neuCall(signInUser, { userType, email, tos });
 }
 
 export function* walletSelectorReset(): Generator<any, any, any> {

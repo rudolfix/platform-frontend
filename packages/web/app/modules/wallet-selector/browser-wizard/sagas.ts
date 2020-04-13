@@ -43,7 +43,11 @@ export function* browserWalletConnectAndSign({
     );
 
     yield web3Manager.plugPersonalWallet(browserWallet);
-    yield neuCall(signInUser, userType, initialFormValues?.email, initialFormValues?.tos);
+    yield neuCall(signInUser, {
+      userType,
+      email: initialFormValues?.email,
+      tos: initialFormValues?.tos,
+    });
   } catch (e) {
     const errorMessage = mapBrowserWalletErrorToErrorMessage(e);
     if (errorMessage.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {

@@ -28,12 +28,11 @@ function* connectLightWalletAndSignUser(userType: EUserType): Generator<any, boo
       registerFormDefaultValues.password,
       undefined,
     );
-    yield neuCall(
-      signInUser,
+    yield neuCall(signInUser, {
       userType,
-      registerFormDefaultValues.email,
-      registerFormDefaultValues.tos,
-    );
+      email: registerFormDefaultValues.email,
+      tos: registerFormDefaultValues.tos,
+    });
     return true;
   } catch (e) {
     yield neuCall(handleLightWalletError, e);

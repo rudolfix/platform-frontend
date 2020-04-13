@@ -72,9 +72,17 @@ export function* waitForUserActiveOrLogout({
 
 export function* signInUser(
   { walletStorage, web3Manager, userStorage }: TGlobalDependencies,
-  userType: EUserType,
-  email?: string,
-  tos: boolean = false,
+  {
+    cleanupGenerator,
+    userType,
+    email,
+    tos = false,
+  }: {
+    cleanupGenerator?: () => Generator<any, void, any>;
+    userType: EUserType;
+    email?: string;
+    tos?: boolean;
+  },
 ): Generator<any, any, any> {
   try {
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS, EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
@@ -102,6 +110,10 @@ export function* signInUser(
     yield userStorage.set(REGISTRATION_LOGIN_DONE);
 
     const redirectionUrl = yield select(selectRedirectURLFromQueryString);
+
+    if (cleanupGenerator) {
+      yield cleanupGenerator();
+    }
 
     yield put(actions.auth.finishSigning());
 

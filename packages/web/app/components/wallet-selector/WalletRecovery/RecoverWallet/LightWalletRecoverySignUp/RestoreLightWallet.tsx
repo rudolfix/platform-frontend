@@ -56,6 +56,10 @@ export const RestoreLightWallet = compose<TStateProps & TDispatchProps, TExterna
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
     renderComponent(LoadingIndicator),
   ),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(WalletLoading),
+  ),
   withContainer<TWalletSelectorState>(
     compose<TWalletSelectorState, TWalletSelectorState>(
       branch<TWalletSelectorState>(

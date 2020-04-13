@@ -51,7 +51,7 @@ const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
             <Field
               name="address"
               style={styles.list}
-              type={EFieldType.SELECT_LIST}
+              type={EFieldType.SWITCHER}
               items={Object.values(fixtures).map(fixture => ({
                 id: fixture.address,
                 title: fixture.name,

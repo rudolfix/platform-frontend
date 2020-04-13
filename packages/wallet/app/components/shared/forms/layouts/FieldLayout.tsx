@@ -6,27 +6,27 @@ import { TComponentRefType } from "../../../../utils/types";
 import { ErrorMessage } from "./ErrorMessage";
 import { HelperText } from "./HelperText";
 import { Label } from "./Label";
-import { SelectList } from "./select-list/SelectList";
+import { Switcher } from "./switcher/Switcher";
 import { TextAreaInput } from "./TextAreaInput";
 import { TextInput } from "./TextInput";
 
 enum EFieldType {
   INPUT = "input",
   TEXT_AREA = "text-area",
-  SELECT_LIST = "select-list",
+  SWITCHER = "switcher",
 }
 
 type TInputProps =
   | ({ type: EFieldType.INPUT } & React.ComponentPropsWithRef<typeof TextInput>)
   | ({ type: EFieldType.TEXT_AREA } & React.ComponentPropsWithRef<typeof TextAreaInput>)
-  | ({ type: EFieldType.SELECT_LIST } & React.ComponentPropsWithRef<typeof SelectList>);
+  | ({ type: EFieldType.SWITCHER } & React.ComponentPropsWithRef<typeof Switcher>);
 
 type TExternalProps = {
   label?: string;
   style?: StyleProp<ViewStyle>;
   helperText?: string;
   errorMessage?: string;
-  inputRef?: Ref<TComponentRefType<typeof TextInput>> | Ref<TComponentRefType<typeof SelectList>>;
+  inputRef?: Ref<TComponentRefType<typeof TextInput>> | Ref<TComponentRefType<typeof Switcher>>;
 } & TInputProps;
 
 const getInput = (props: TInputProps) => {
@@ -35,8 +35,8 @@ const getInput = (props: TInputProps) => {
       return <TextInput {...props} />;
     case EFieldType.TEXT_AREA:
       return <TextAreaInput {...props} />;
-    case EFieldType.SELECT_LIST:
-      return <SelectList {...props} />;
+    case EFieldType.SWITCHER:
+      return <Switcher {...props} />;
     default:
       assertNever(props, "Invalid input type");
   }

@@ -2,7 +2,7 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import { roundness, shadowStyles } from "../../../../../styles/common";
-import { SelectListItem } from "./SelectListItem";
+import { SwitcherItem } from "./SwitcherItem";
 
 type TItem = {
   id: string;
@@ -20,7 +20,7 @@ type TExternalProps = {
   onChangeItem: (itemId: string) => void;
 } & TViewProps;
 
-const SelectList = React.forwardRef<{}, TExternalProps>(
+const Switcher = React.forwardRef<{}, TExternalProps>(
   ({ selectedItemId, items, onChangeItem, style, ...props }, ref) => {
     // TODO: Expose consistent `ref`s for all inputs ('focus', 'blur', etc)
     React.useImperativeHandle(ref, () => ({}));
@@ -32,7 +32,7 @@ const SelectList = React.forwardRef<{}, TExternalProps>(
           data={items}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <SelectListItem
+            <SwitcherItem
               onPress={() => onChangeItem(item.id)}
               isSelected={selectedItemId === item.id}
               {...item}
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { SelectList };
+export { Switcher };

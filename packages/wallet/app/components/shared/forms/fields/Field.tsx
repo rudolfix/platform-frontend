@@ -5,20 +5,20 @@ import { StyleProp, ViewStyle } from "react-native";
 
 import { TComponentRefType } from "../../../../utils/types";
 import { EFieldType, FieldLayout } from "../layouts/FieldLayout";
-import { SelectList } from "../layouts/select-list/SelectList";
+import { Switcher } from "../layouts/switcher/Switcher";
 import { TextInput } from "../layouts/TextInput";
 
 type TCustomInputProps =
   | ({ type: EFieldType.INPUT } & {})
   | ({ type: EFieldType.TEXT_AREA } & {})
-  | ({ type: EFieldType.SELECT_LIST } & Pick<React.ComponentProps<typeof SelectList>, "items">);
+  | ({ type: EFieldType.SWITCHER } & Pick<React.ComponentProps<typeof Switcher>, "items">);
 
 type TExternalProps = {
   name: string;
   label?: string;
   style?: StyleProp<ViewStyle>;
   helperText?: string;
-  inputRef?: Ref<TComponentRefType<typeof TextInput>> | Ref<TComponentRefType<typeof SelectList>>;
+  inputRef?: Ref<TComponentRefType<typeof TextInput>> | Ref<TComponentRefType<typeof Switcher>>;
 } & TCustomInputProps;
 
 /**
@@ -40,7 +40,7 @@ const Field: React.FunctionComponent<TExternalProps> = props => {
         />
       );
 
-    case EFieldType.SELECT_LIST:
+    case EFieldType.SWITCHER:
       return (
         <FieldLayout
           onChangeItem={field.onChange(props.name)}

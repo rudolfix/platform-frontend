@@ -23,7 +23,7 @@ type TItemExternalProps = {
   isSelected: boolean;
 } & Omit<TTouchableProps, "activeColor" | "children">;
 
-const SelectListItem: React.FunctionComponent<TItemExternalProps> = ({
+const SwitcherItem: React.FunctionComponent<TItemExternalProps> = ({
   id,
   title,
   subTitle,
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { SelectListItem };
+export { SwitcherItem };

@@ -8,7 +8,7 @@ import { ButtonLink } from "../../shared/buttons/ButtonLink";
 import emailIcon from "../../../assets/img/wallet_selector/email-alt.svg";
 import ledgerLogo from "../../../assets/img/wallet_selector/ledger.svg";
 import metamaskLogo from "../../../assets/img/wallet_selector/metamask.svg";
-import styles from "./RegisterWalletSelector.module.scss";
+import * as styles from "./RegisterWalletSelector.module.scss";
 
 type TWalletChooserProps = {
   isLogin: boolean;

@@ -1,11 +1,8 @@
+import { Button, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import {
-  Button,
-  EButtonLayout,
-} from "../../../../../../design-system/dist/components/buttons/Button";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { getMessageTranslation } from "../../../translatedMessages/messages";

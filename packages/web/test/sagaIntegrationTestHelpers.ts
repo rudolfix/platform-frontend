@@ -1,16 +1,20 @@
 import { EthereumAddressWithChecksum } from "@neufund/shared";
-import { noopLogger } from "@neufund/shared-modules";
-import { EJwtPermissions } from "@neufund/shared/src/utils/constants";
+import {
+  AuthJsonHttpClient,
+  authModuleAPI,
+  coreModuleApi,
+  EJwtPermissions,
+  IHttpClient,
+  JsonHttpClient,
+  noopLogger,
+} from "@neufund/shared-modules";
 import { Container } from "inversify";
 import { toChecksumAddress } from "web3-utils";
 
-import { symbols } from "../app/di/symbols";
 import { createLightWalletWithKeyPair } from "../app/test-e2e/utils/createLightWalletWithKeyPair";
 import { getJWT } from "../app/test-e2e/utils/getJWT";
 import { IBackendRoot } from "./../app/config/getConfig";
-import { AuthorizedJsonHttpClient } from "./../app/lib/api/client/AuthJsonHttpClient";
-import { IHttpClient } from "./../app/lib/api/client/IHttpClient";
-import { JsonHttpClient } from "./../app/lib/api/client/JsonHttpClient";
+import { symbols } from "./../app/di/symbols";
 import { UsersApi } from "./../app/lib/api/users/UsersApi";
 import { STORAGE_JWT_KEY } from "./../app/lib/persistence/JwtObjectStorage";
 import { ObjectStorage } from "./../app/lib/persistence/ObjectStorage";
@@ -32,18 +36,19 @@ export const BACKEND_BASE_URL = "https://platform.neufund.io";
  */
 export const setupIntegrationTestContainer = (backendUrl: string) => {
   const myContainer = new Container();
+
   myContainer
-    .bind<IHttpClient>(symbols.jsonHttpClient)
+    .bind<IHttpClient>(coreModuleApi.symbols.jsonHttpClient)
     .to(JsonHttpClient)
     .inSingletonScope();
 
   myContainer
-    .bind<IHttpClient>(symbols.authorizedJsonHttpClient)
-    .to(AuthorizedJsonHttpClient)
+    .bind<IHttpClient>(authModuleAPI.symbols.authJsonHttpClient)
+    .to(AuthJsonHttpClient)
     .inSingletonScope();
 
   myContainer
-    .bind<ObjectStorage<string>>(symbols.jwtStorage)
+    .bind<ObjectStorage<string>>(authModuleAPI.symbols.jwtStorage)
     .toDynamicValue(
       ctx =>
         new ObjectStorage<string>(
@@ -64,10 +69,12 @@ export const setupIntegrationTestContainer = (backendUrl: string) => {
   // We don't need any logging in integration tests
   myContainer.bind<any>(symbols.logger).toConstantValue(noopLogger);
 
-  myContainer.bind<IBackendRoot>(symbols.backendRootConfig).toConstantValue({ url: backendUrl });
+  myContainer
+    .bind<IBackendRoot>(coreModuleApi.symbols.backendRootUrl)
+    .toConstantValue({ url: backendUrl });
 
   const apiUserService = myContainer.get<UsersApi>(symbols.usersApi);
-  const jwtStorage = myContainer.get<ObjectStorage<string>>(symbols.jwtStorage);
+  const jwtStorage = myContainer.get<ObjectStorage<string>>(authModuleAPI.symbols.jwtStorage);
 
   return { apiUserService, jwtStorage };
 };

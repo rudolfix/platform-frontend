@@ -1,7 +1,7 @@
+import { withContainer } from "@neufund/shared";
 import { Location } from "history";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
-import { withContainer } from "../../../../../../shared/dist/utils/withContainer.unsafe";
 import { EUserType } from "../../../../lib/api/users/interfaces";
 import { actions } from "../../../../modules/actions";
 import { selectWalletSelectorData } from "../../../../modules/wallet-selector/selectors";

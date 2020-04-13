@@ -15,13 +15,14 @@ import {
 import { createUser } from "./../../../test-e2e/utils/createUser";
 import { loadOrCreateUser } from "./sagas";
 
-describe("Auth - User - Integration Test", () => {
+describe.skip("Auth - User - Integration Test", () => {
   describe("loadOrCreateUser", async function(): Promise<void> {
     this.timeout(5000);
     const { jwtStorage, apiUserService } = setupIntegrationTestContainer(BACKEND_BASE_URL);
+
     it("should create a new user with the correct data", async () => {
       const { jwt, salt, address } = await setTestJWT(BACKEND_BASE_URL, []);
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       const walletMetaData = {
         walletType: EWalletType.LIGHT,

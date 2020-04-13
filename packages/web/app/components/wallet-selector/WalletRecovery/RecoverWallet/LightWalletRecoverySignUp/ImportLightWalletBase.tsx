@@ -5,7 +5,7 @@ import { EWalletType } from "../../../../../modules/web3/types";
 import { WalletChooser } from "../../../shared/WalletChooser";
 import { TStateProps } from "./RestoreLightWallet";
 
-import styles from "../../../shared/RegisterWalletSelector.module.scss";
+import * as styles from "../../../shared/RegisterWalletSelector.module.scss";
 
 export const ImportLightWalletBase: React.FunctionComponent<TStateProps> = ({
   isLogin,

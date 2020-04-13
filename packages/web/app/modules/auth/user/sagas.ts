@@ -30,6 +30,7 @@ import {
   getCurrentAgreementHash,
   handleAcceptCurrentAgreement,
 } from "../../terms-of-service/sagas";
+import { ECommonWalletRegistrationFlowState } from "../../wallet-selector/types";
 import { EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
 import { checkForPendingEmailVerification } from "../email/sagas";
@@ -85,8 +86,15 @@ export function* signInUser(
   },
 ): Generator<any, any, any> {
   try {
-    yield neuCall(authModuleAPI.sagas.createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
-    yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS, EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
+    yield neuCall(authModuleAPI.sagas.createJwt, [
+      EJwtPermissions.SIGN_TOS,
+      EJwtPermissions.CHANGE_EMAIL_PERMISSION,
+    ]);
+    yield put(
+      actions.walletSelector.setWalletRegisterData({
+        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+      }),
+    );
     yield neuCall(loadOrCreateUser, userType, email, tos);
     if (tos) yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
@@ -98,7 +106,7 @@ export function* signInUser(
     }
 
     if (!web3Manager.personalWallet) {
-      throw new WalletNotConnectedError(web3Manager.personalWallet!);
+      throw new WalletNotConnectedError();
     }
 
     const storedWalletMetadata = {

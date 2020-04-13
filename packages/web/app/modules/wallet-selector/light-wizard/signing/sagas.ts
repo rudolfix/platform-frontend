@@ -1,5 +1,5 @@
 import { call } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared";
+import { EJwtPermissions, ESignerType } from "@neufund/shared-modules";
 import cryptoRandomString from "crypto-random-string";
 
 import { UserNotExisting } from "../../../../lib/api/users/UsersApi";
@@ -9,7 +9,6 @@ import {
   getWalletAddress,
   signMessage,
 } from "../../../../lib/web3/light-wallet/LightWalletUtils";
-import { SignerType } from "../../../../lib/web3/PersonalWeb3";
 import { getVaultKey } from "../utils";
 import { TGlobalDependencies } from "./../../../../di/setupBindings";
 import { IUser } from "./../../../../lib/api/users/interfaces";
@@ -31,14 +30,14 @@ export function* getUserMeWithSeedOnly(
   //We can't use `getSignerType` at the moment as the wallet is not plugged
   const {
     body: { challenge },
-  } = yield signatureAuthApi.challenge(address, salt, SignerType.ETH_SIGN, [
+  } = yield signatureAuthApi.challenge(address, salt, ESignerType.ETH_SIGN, [
     EJwtPermissions.CHANGE_EMAIL_PERMISSION,
   ]);
 
   const signedChallenge = yield* call(() => signMessage(DEFAULT_HD_PATH, seed, challenge));
 
   const { jwt } = yield* call(() =>
-    signatureAuthApi.createJwt(challenge, signedChallenge, SignerType.ETH_SIGN),
+    signatureAuthApi.createJwt(challenge, signedChallenge, ESignerType.ETH_SIGN),
   );
 
   try {

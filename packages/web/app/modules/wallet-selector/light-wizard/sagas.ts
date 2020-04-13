@@ -1,6 +1,5 @@
-import { call, fork, neuTakeLatestUntil, put, select, take } from "@neufund/sagas";
+import { call, fork, put, select, take } from "@neufund/sagas";
 import { invariant } from "@neufund/shared";
-import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
 import { includes } from "lodash";
 
 import {
@@ -27,7 +26,7 @@ import { loadUser, updateUser } from "../../auth/user/external/sagas";
 import { signInUser } from "../../auth/user/sagas";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { displayInfoModalSaga } from "../../generic-modal/sagas";
-import { neuCall, neuTakeEvery } from "../../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectIsUnlocked } from "../../web3/selectors";
 import { EWalletType, ILightWalletMetadata } from "../../web3/types";
 import { registerForm } from "../forms/sagas";

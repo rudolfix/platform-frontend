@@ -36,9 +36,6 @@ function* setJwt(_: TGlobalDependencies, jwt: string): SagaGenerator<void> {
   yield put(jwtActions.setJWT(jwt));
 }
 
-/**
- * Create new JWT from the authentication server.
- */
 function* createJwt(
   _: TGlobalDependencies,
   permissions: EJwtPermissions[] = [],
@@ -114,5 +111,6 @@ function* refreshJWT(): SagaGenerator<void> {
 
   logger.info("Jwt refreshed successfully");
 }
+
 
 export { createJwt, escalateJwt, refreshJWT, loadJwt, selectJwt, setJwt };

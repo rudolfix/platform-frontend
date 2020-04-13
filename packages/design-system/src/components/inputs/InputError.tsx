@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { TTranslatedString } from "../../types";
 
-import styles from "./InputError.module.scss";
+import * as styles from "./InputError.module.scss";
 
 type TErrorProps = {
   children: TTranslatedString;
@@ -11,11 +11,7 @@ type TErrorProps = {
 };
 
 const InputError: React.FunctionComponent<TErrorProps & TDataTestId> = ({ name, children }) => (
-  <p
-    className={styles.errorMessage}
-    data-test-id={`${name}-error`}
-    role="alert"
-  >
+  <p className={styles.errorMessage} data-test-id={`${name}-error`} role="alert">
     {children}
   </p>
 );

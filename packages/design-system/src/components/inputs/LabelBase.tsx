@@ -2,7 +2,7 @@ import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import styles from "./LabelBase.module.scss";
+import * as styles from "./LabelBase.module.scss";
 
 type TLabelBaseProps = {
   isOptional?: boolean;

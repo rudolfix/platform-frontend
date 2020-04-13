@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { TTranslatedString } from "../../types";
 
-import styles from "./InputDescription.module.scss";
+import * as styles from "./InputDescription.module.scss";
 
 type TDescriptionProps = {
   children: TTranslatedString;

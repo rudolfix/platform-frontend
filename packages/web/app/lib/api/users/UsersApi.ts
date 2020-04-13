@@ -1,5 +1,5 @@
 import { toEthereumAddress } from "@neufund/shared";
-import { authModuleAPI, IHttpClient, ILogger } from "@neufund/shared-modules";
+import { authModuleAPI, IAuthHttpClient, ILogger } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
@@ -41,7 +41,7 @@ const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IAuthHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 

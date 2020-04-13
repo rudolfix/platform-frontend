@@ -41,7 +41,7 @@ describe("Web3 > reducer", () => {
       wallet: {
         walletType: EWalletType.BROWSER,
         walletSubType: EWalletSubType.METAMASK,
-        address: dummyEthereumAddress,
+        address: dummyEthereumAddressWithChecksum,
         salt: undefined,
         email: undefined,
       },
@@ -71,7 +71,7 @@ describe("Web3 > reducer", () => {
       previousConnectedWallet: {
         walletType: EWalletType.BROWSER,
         walletSubType: EWalletSubType.METAMASK,
-        address: dummyEthereumAddress,
+        address: dummyEthereumAddressWithChecksum,
         salt: undefined,
         email: undefined,
       },
@@ -113,7 +113,7 @@ describe("Web3 > reducer", () => {
         wallet: {
           walletType: EWalletType.BROWSER,
           walletSubType: EWalletSubType.METAMASK,
-          address: dummyEthereumAddress,
+          address: dummyEthereumAddressWithChecksum,
           salt: undefined,
           email: undefined,
         },

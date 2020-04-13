@@ -38,7 +38,7 @@ import { KycStep } from "../shared/KycStep";
 import { Person } from "../shared/Person";
 import { AcceptedKYCDocumentTypes } from "../utils";
 
-import styles from "../shared/KYCModal.module.scss";
+import * as styles from "../shared/KYCModal.module.scss";
 
 export interface IStateProps {
   legalRepresentative?: IKycLegalRepresentative;

@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { InputBase } from "./InputBase";
 
-import styles from "./Input.module.scss";
+import * as styles from "./Input.module.scss";
 
 const Input = React.forwardRef<
   HTMLInputElement,

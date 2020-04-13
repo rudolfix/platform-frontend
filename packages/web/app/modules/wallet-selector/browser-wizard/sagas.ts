@@ -1,4 +1,4 @@
-import { fork, neuCall, neuTakeLatestUntil, put, select } from "@neufund/sagas";
+import { fork, neuCall, put, select } from "@neufund/sagas";
 
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
 import { userMayChooseWallet } from "../../../components/wallet-selector/WalletSelectorLogin/utils";
@@ -6,7 +6,7 @@ import { TGlobalDependencies } from "../../../di/setupBindings";
 import { BrowserWallet } from "../../../lib/web3/browser-wallet/BrowserWallet";
 import { actions, TActionFromCreator } from "../../actions";
 import { signInUser } from "../../auth/user/sagas";
-import { neuTakeUntil } from "../../sagasUtils";
+import { neuTakeLatestUntil, neuTakeUntil } from "../../sagasUtils";
 import { EWalletType } from "../../web3/types";
 import { registerForm } from "../forms/sagas";
 import { resetWalletSelectorState } from "../sagas";

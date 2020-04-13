@@ -1,7 +1,7 @@
 import * as cn from "classnames";
 import * as React from "react";
 
-import styles from "./InputBase.module.scss";
+import * as styles from "./InputBase.module.scss";
 
 /**
  * A base building block for all kind of input elements. Contains basic style reset.

@@ -59,7 +59,7 @@ const props = {
 };
 
 //TODO test all eto state changes, including EtoCard
-describe("EtoStatusManager state change", () => {
+describe.skip("EtoStatusManager state change", () => {
   const clock = setupFakeClock();
 
   beforeEach(() => {

@@ -1,16 +1,10 @@
+import { Button, Checkbox, EButtonLayout, EButtonWidth, TextField } from "@neufund/design-system";
 import { FormikErrors } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 import * as Yup from "yup";
 
-import {
-  Button,
-  EButtonLayout,
-  EButtonWidth,
-} from "../../../../../../design-system/dist/components/buttons/Button";
-import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
-import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
 import { injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
 import { IIntlHelpers } from "../../../../../../shared/src/utils/injectIntlHelpers.unsafe";
 import { externalRoutes } from "../../../../config/externalRoutes";

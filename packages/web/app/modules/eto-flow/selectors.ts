@@ -244,7 +244,7 @@ export const selectIsISHAPreviewSubmitted = (state: TAppGlobalState): boolean | 
 };
 
 export const selectUploadedInvestmentAgreement = (
-  state: DeepReadonly<TAppGlobalState>,
+  state: TAppGlobalState,
 ): IEtoDocument | undefined => {
   const etoDocuments = selectIssuerEtoDocuments(state)!;
 

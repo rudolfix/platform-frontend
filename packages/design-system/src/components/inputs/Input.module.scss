@@ -10,12 +10,14 @@
   padding: px-to-rem(16px);
   color: $neu-charcoal-grey;
 
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus,
-  textarea:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px $neu-white-two inset;
+  // sass-lint:disable-all
+  &:-webkit-autofill, 
+  &:-webkit-autofill:hover, 
+  &:-webkit-autofill:focus, 
+  textarea:-webkit-autofill { 
+    -webkit-box-shadow: 0 0 0 1000px $neu-white-two inset; 
   }
+  // sass-lint:enable-all
 
   &::placeholder {
     color: $neu-gull-gray;

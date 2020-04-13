@@ -38,7 +38,7 @@ import { Person } from "../shared/Person";
 import { AcceptedKYCDocumentTypes } from "../utils";
 
 import InfoIcon from "../../../assets/img/info-outline.svg";
-import styles from "../shared/KYCModal.module.scss";
+import * as styles from "../shared/KYCModal.module.scss";
 
 export interface IStateProps {
   currentValues: IKycManagingDirector | undefined;

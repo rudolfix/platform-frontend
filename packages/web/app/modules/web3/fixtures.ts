@@ -27,7 +27,7 @@ export const getDummyLedgerWalletMetadata = (): ILedgerWalletMetadata => ({
   walletType: EWalletType.LEDGER,
   walletSubType: EWalletSubType.UNKNOWN,
   derivationPath: "derivationPath",
-  address: dummyEthereumAddress,
+  address: dummyEthereumAddressWithChecksum,
   salt: undefined,
   email: undefined,
 });

@@ -32,7 +32,7 @@ export function* registerForm(
     baseUiData,
     userEmail,
   }: {
-    afterRegistrationGenerator: (() => Generator<any, boolean, any>) | undefined;
+    afterRegistrationGenerator: (() => Generator<any, unknown, any>) | undefined;
     expectedAction:
       | typeof actions.walletSelector.lightWalletRegisterFormData
       | typeof actions.walletSelector.browserWalletRegisterFormData;

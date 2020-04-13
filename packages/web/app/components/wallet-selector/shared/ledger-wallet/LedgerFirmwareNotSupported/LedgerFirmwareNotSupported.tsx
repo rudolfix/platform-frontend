@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { minimumLedgerVersion } from "../../../../../lib/web3/ledger-wallet/ledgerUtils";
 
-import styles from "./LedgerFirmwareNotSupported.module.scss";
+import * as styles from "./LedgerFirmwareNotSupported.module.scss";
 
 export const LedgerFirmwareNotSupported: React.FunctionComponent<{}> = () => (
   <div className={cn(styles.step, "mx-md-5")}>

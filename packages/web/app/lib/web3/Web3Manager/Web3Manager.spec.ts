@@ -29,7 +29,7 @@ describe("Web3Manager", () => {
         walletType: EWalletType.LEDGER,
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
-        address: dummyEthereumAddress,
+        address: dummyEthereumAddressWithChecksum,
         salt: undefined,
         email: undefined,
       }),

@@ -1,7 +1,8 @@
 import { appRoutes } from "../../../components/appRoutes";
 import { lightWalletTypePasswordAndLogin } from "../../utils/index";
 import { tid } from "../../utils/selectors";
-import { DEFAULT_PASSWORD, loginFixtureAccount } from "../../utils/userHelpers";
+import { loginFixtureAccount } from "../../utils/userHelpers";
+import { DEFAULT_PASSWORD } from "./../../utils/constants";
 
 describe("Portfolio Stats", () => {
   it("should show loading without no assets message when logged in starting from landing @dashboard #portfolio-stats #p3", () => {

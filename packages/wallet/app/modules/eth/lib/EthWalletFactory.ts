@@ -113,7 +113,7 @@ class EthWalletFactory {
    **
    * @returns A new EthWallet
    */
-  async createFromPrivateKey(privateKey: EthereumPrivateKey): Promise<EthWallet> {
+  async createFromPrivateKey(privateKey: EthereumPrivateKey, name?: string): Promise<EthWallet> {
     this.logger.info("Adding private key to the secure enclave");
 
     const privateKeyReference = await this.ethSecureEnclave.addSecret(privateKey);
@@ -122,6 +122,7 @@ class EthWalletFactory {
     const privateKeyWalletMetadata: TPrivateKeyWalletMetadata = {
       type: EWalletType.PRIVATE_KEY_WALLET,
       address,
+      name,
       privateKeyReference,
     };
 
@@ -186,7 +187,7 @@ class EthWalletFactory {
     await this.walletStorage.clear();
   }
 
-  private async createFromMnemonicReference(mnemonicReference: TSecureReference) {
+  private async createFromMnemonicReference(mnemonicReference: TSecureReference, name?: string) {
     this.logger.info(`Deriving private key for a default hd path ${DEFAULT_HD_PATH}`);
 
     const privateKeyReference = await this.ethSecureEnclave.deriveKey(
@@ -199,6 +200,7 @@ class EthWalletFactory {
     const hdWallet: THDWalletMetadata = {
       type: EWalletType.HD_WALLET,
       address,
+      name,
       mnemonicReference,
       privateKeyReference,
       derivationPath: DEFAULT_HD_PATH,

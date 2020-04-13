@@ -14,7 +14,11 @@ export const authActions = {
    */
   importNewAccount: createActionFactory(
     "AUTH_IMPORT_NEW_ACCOUNT",
-    (privateKeyOrMnemonic: string) => ({ privateKeyOrMnemonic }),
+    (privateKeyOrMnemonic: string, name?: string, forceReset?: boolean) => ({
+      privateKeyOrMnemonic,
+      name,
+      forceReset,
+    }),
   ),
   failedToImportNewAccount: createActionFactory("AUTH_ACCOUNT_IMPORT_FAILED"),
 

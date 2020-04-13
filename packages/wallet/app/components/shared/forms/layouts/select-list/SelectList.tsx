@@ -13,32 +13,35 @@ type TItem = {
 type TViewProps = React.ComponentProps<typeof View>;
 
 type TExternalProps = {
+  disabled?: boolean;
+  invalid?: boolean;
   selectedItemId: string | undefined;
   items: TItem[];
   onChangeItem: (itemId: string) => void;
 } & TViewProps;
 
-const SelectList: React.FunctionComponent<TExternalProps> = ({
-  selectedItemId,
-  items,
-  onChangeItem,
-  style,
-  ...props
-}) => (
-  <View style={[styles.container, style]} {...props}>
-    <FlatList
-      style={styles.list}
-      data={items}
-      keyExtractor={item => item.id}
-      renderItem={({ item }) => (
-        <SelectListItem
-          onPress={() => onChangeItem(item.id)}
-          isSelected={selectedItemId === item.id}
-          {...item}
+const SelectList = React.forwardRef<{}, TExternalProps>(
+  ({ selectedItemId, items, onChangeItem, style, ...props }, ref) => {
+    // TODO: Expose consistent `ref`s for all inputs ('focus', 'blur', etc)
+    React.useImperativeHandle(ref, () => ({}));
+
+    return (
+      <View style={[styles.container, style]} {...props}>
+        <FlatList
+          style={styles.list}
+          data={items}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <SelectListItem
+              onPress={() => onChangeItem(item.id)}
+              isSelected={selectedItemId === item.id}
+              {...item}
+            />
+          )}
         />
-      )}
-    />
-  </View>
+      </View>
+    );
+  },
 );
 
 const styles = StyleSheet.create({

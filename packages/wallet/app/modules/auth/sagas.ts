@@ -137,9 +137,28 @@ function* importNewAccount(
     logger: coreModuleApi.symbols.logger,
   });
 
+  const { privateKeyOrMnemonic, forceReset } = action.payload;
+
   try {
-    const privateKeyOrMnemonic = action.payload.privateKeyOrMnemonic;
     const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
+
+    const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
+
+    debugger;
+
+    // check if there is already existing wallet in storage
+    invariant(
+      !hasExistingWallet || forceReset,
+      "Existing wallet already in storage. Use `forceReset` flag to clear the storage before importing new account",
+    );
+
+    if (forceReset && hasExistingWallet) {
+      logger.info("Clearing existing wallet from storage");
+
+      // before we can delete wallet and all metadata it should be plugged by ethManager
+      yield* call(() => ethManager.plugExistingWallet());
+      yield* call(() => ethManager.unsafeDeleteWallet());
+    }
 
     logger.info(`Plugging new wallet from ${importPhraseType}`);
 

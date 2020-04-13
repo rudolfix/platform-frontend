@@ -176,7 +176,7 @@ class EthManager implements IEthManager {
   async plugNewWalletFromPrivateKey(privateKey: EthereumPrivateKey) {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
-    this.assertHasNoExistingWallet();
+    await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new wallet from private key");
 
@@ -193,7 +193,7 @@ class EthManager implements IEthManager {
   async plugNewWalletFromMnemonic(mnemonic: EthereumHDMnemonic) {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
-    this.assertHasNoExistingWallet();
+    await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new wallet from mnemonics");
 
@@ -208,7 +208,7 @@ class EthManager implements IEthManager {
   async plugNewRandomWallet() {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
-    this.assertHasNoExistingWallet();
+    await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new random wallet");
 

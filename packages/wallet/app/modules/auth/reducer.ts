@@ -36,7 +36,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
       return {
         ...initialState,
         state: EAuthState.AUTHORIZED,
-        wallet: action.payload,
+        wallet: action.payload.metadata,
       };
 
     case authActions.canCreateAccount.getType():
@@ -48,7 +48,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
     case authActions.canUnlockAccount.getType():
       return {
         ...initialState,
-        wallet: action.payload,
+        wallet: action.payload.metadata,
       };
 
     case authActions.failedToUnlockAccount.getType():

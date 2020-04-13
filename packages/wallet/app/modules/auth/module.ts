@@ -6,7 +6,7 @@ import { privateSymbols } from "./lib/symbols";
 import { authReducerMap, EAuthState } from "./reducer";
 import { authSaga, trySignInExistingAccount } from "./sagas";
 import { selectAuthState, selectAuthWallet, selectUser } from "./selectors";
-import { TAuthWalletMetadata } from "./types";
+import type { TAuthWalletMetadata } from "./types";
 
 const MODULE_ID = "wallet:auth";
 
@@ -40,4 +40,5 @@ const authModuleAPI = {
   },
 };
 
-export { setupAuthModule, authModuleAPI, EAuthState, TAuthWalletMetadata };
+export type { TAuthWalletMetadata };
+export { setupAuthModule, authModuleAPI, EAuthState };

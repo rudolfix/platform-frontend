@@ -21,7 +21,7 @@ import { selectBankAccount } from "../../../kyc/selectors";
 import { TBankAccount } from "../../../kyc/types";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectLiquidEuroTokenBalance } from "../../../wallet/selectors";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
 
@@ -29,7 +29,7 @@ function* generateNeuWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   amount: string,
 ): any {
-  const from: string = yield select(selectEthereumAddressWithChecksum);
+  const from: string = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   const txInput = contractsService.euroToken.withdrawTx(new BigNumber(amount)).getData();

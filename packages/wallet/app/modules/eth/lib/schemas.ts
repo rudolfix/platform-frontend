@@ -53,4 +53,4 @@ const WalletMetadataStorageSchema = new StorageSchema<TWalletMetadata>(
   WalletMetadataSchema,
 );
 
-export { WalletMetadataStorageSchema };
+export { WalletMetadataStorageSchema, ethereumAddress, ethereumHdPath };

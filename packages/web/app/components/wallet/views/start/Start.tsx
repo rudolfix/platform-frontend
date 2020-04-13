@@ -28,7 +28,7 @@ import {
   selectWalletError,
 } from "../../../../modules/wallet/selectors";
 import { ENEURWalletStatus } from "../../../../modules/wallet/types";
-import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { Container, EColumnSpan } from "../../../layouts/Container";
@@ -128,7 +128,7 @@ export const WalletStart = compose<React.FunctionComponent>(
   }),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      userAddress: selectEthereumAddressWithChecksum(state),
+      userAddress: selectEthereumAddress(state),
       // Wallet Related State
       isLoading: selectIsLoading(state),
       error: selectWalletError(state),

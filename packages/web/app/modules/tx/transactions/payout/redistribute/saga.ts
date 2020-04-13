@@ -11,7 +11,7 @@ import { selectStandardGasPriceWithOverHead } from "../../../../gas/selectors";
 import { ITokenDisbursal } from "../../../../investor-portfolio/types";
 import { neuCall } from "../../../../sagasUtils";
 import { getTokenAddress } from "../../../../shared/sagas";
-import { selectEthereumAddressWithChecksum } from "../../../../web3/selectors";
+import { selectEthereumAddress } from "../../../../web3/selectors";
 import { ETxSenderType } from "../../../types";
 
 // Use highest possible solidity uint256 to redistribute all disbursals for token
@@ -29,7 +29,7 @@ function* generatePayoutRedistributeTransaction(
     "Generating payout redistribution transactions is not allowed for unverified investor",
   );
 
-  const userAddress = yield select(selectEthereumAddressWithChecksum);
+  const userAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
 
   const { feeDisbursal } = contractsService;

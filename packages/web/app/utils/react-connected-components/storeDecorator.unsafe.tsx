@@ -1,29 +1,28 @@
 import { createBrowserHistory } from "history";
 import * as React from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, Reducer } from "redux";
 import configureStore, { MockStore } from "redux-mock-store";
 
 import { TAction } from "../../modules/actions";
-import { generateRootModuleReducerMap, TAppGlobalState } from "../../store";
+import { generateRootModuleReducerMap } from "../../store";
 import { DeepPartial } from "../../types";
 
 const mockStore = configureStore();
 
 const rootReducer = combineReducers(generateRootModuleReducerMap(createBrowserHistory()));
 
-export const withStore = (initialState?: DeepPartial<TAppGlobalState>) => (
+type TAppState = typeof rootReducer extends Reducer<infer S> ? S : never;
+
+export const withStore = (initialState?: DeepPartial<TAppState>) => (
   story: () => React.ReactNode,
 ): any => {
-  const store = createStore<TAppGlobalState, TAction, unknown, unknown>(
-    rootReducer,
-    initialState as any,
-  );
+  const store = createStore<TAppState, TAction, unknown, unknown>(rootReducer, initialState as any);
 
   return <ReduxProvider store={store}>{story()}</ReduxProvider>;
 };
 
-export const withMockStore = (initialState?: DeepPartial<TAppGlobalState>) => (
+export const withMockStore = (initialState: DeepPartial<TAppState> = {}) => (
   node: React.ReactNode,
 ): {
   store: MockStore;

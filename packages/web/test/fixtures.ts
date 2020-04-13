@@ -43,6 +43,9 @@ export const dummyConfig: IConfig = {
   contractsAddresses: {
     universeContractAddress: "UNIVERSE_ADDRESS",
   },
+  externalResources: {
+    etoStatisticsIframeURL: "https://test.icomonitor.io/#/eto-stats/:etoId",
+  },
   backendRoot: {
     url: "",
   },
@@ -72,6 +75,7 @@ export const testCompany: TCompanyEtoData = {
   keyCompetitors: undefined,
   keyQuoteInvestor: undefined,
   marketTraction: undefined,
+  impact: undefined,
   marketingApproach: undefined,
   problemSolved: undefined,
   riskBusinessModelDescription: undefined,

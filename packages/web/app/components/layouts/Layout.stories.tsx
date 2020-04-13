@@ -15,7 +15,6 @@ const FakeContent = () => (
 
 const authStore: DeepPartial<TAppGlobalState> = {
   auth: {
-    jwt: "asdf",
     user: {
       type: EUserType.ISSUER,
       verifiedEmail: "asfasdf@asdf.de",

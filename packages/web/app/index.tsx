@@ -7,13 +7,8 @@ import "./index.scss";
 
 import { createStore, getSagaExtension } from "@neufund/sagas";
 import { InversifyProvider } from "@neufund/shared";
-import {
-  getContextToDepsExtension,
-  getLoadContextExtension,
-  INeuModule,
-  setupCoreModule,
-} from "@neufund/shared-modules";
-import { ConnectedRouter, routerMiddleware } from "connected-react-router";
+import { getContextToDepsExtension, getLoadContextExtension } from "@neufund/shared-modules";
+import { ConnectedRouter } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
 import { Container } from "inversify";
 import * as React from "react";
@@ -25,35 +20,29 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import { App } from "./components/App";
 import { getConfig, IConfig } from "./config/getConfig";
-import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "./di/setupBindings";
-import { reduxLogger } from "./middlewares/redux-logger";
+import { createGlobalDependencies, TGlobalDependencies } from "./di/setupBindings";
 import { reduxLogoutReset } from "./middlewares/redux-logout-reset";
-import { rootSaga } from "./modules/sagas";
-import { generateRootModuleReducerMap, staticValues, TAppGlobalState } from "./store";
+import { setupAppModule, staticValues, TAppGlobalState } from "./store";
 import * as ga from "./utils/googleAnalitycs.js";
 import { IntlProviderAndInjector } from "./utils/IntlProviderAndInjector";
 import * as serviceWorker from "./utils/serviceWorker.unsafe";
 
 export const createAppStore = (history: History, config: IConfig, container: Container) => {
-  const reducerMap = generateRootModuleReducerMap(history);
-
-  const appModule: INeuModule<TAppGlobalState> = {
-    id: "app",
-    reducerMap,
-    sagas: [rootSaga],
-    libs: [setupBindings(config)],
-    middlewares: [routerMiddleware(history), reduxLogger(container)],
-  };
+  const appModule = setupAppModule({ history, config, container });
 
   const context: { container: Container; deps?: TGlobalDependencies } = {
     container,
   };
 
-  return createStore(
+  return createStore<TAppGlobalState>(
     {
       extensions: [
         getLoadContextExtension(context.container),
-        getContextToDepsExtension(appModule, createGlobalDependencies, context),
+        getContextToDepsExtension(
+          appModule[appModule.length - 1],
+          createGlobalDependencies,
+          context,
+        ),
         getSagaExtension(context),
       ],
       enhancers: [reduxLogoutReset(staticValues)],
@@ -61,8 +50,7 @@ export const createAppStore = (history: History, config: IConfig, container: Con
         actionsBlacklist: (process.env.REDUX_DEVTOOLS_ACTION_BLACK_LIST || "").split(","),
       }),
     },
-    setupCoreModule({ backendRootUrl: config.backendRoot.url }),
-    appModule,
+    ...appModule,
   );
 };
 

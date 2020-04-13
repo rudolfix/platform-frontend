@@ -1,4 +1,4 @@
-import { put } from "@neufund/sagas";
+import { call, put } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../../lib/api/users/interfaces";
@@ -29,8 +29,8 @@ export function* logoutUser({
   logger,
   userStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
-  userStorage.clear();
-  jwtStorage.clear();
+  yield* call(() => userStorage.clear());
+  yield* call(() => jwtStorage.clear());
 
   yield web3Manager.unplugPersonalWallet();
 

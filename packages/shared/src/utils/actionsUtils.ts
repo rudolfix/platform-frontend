@@ -1,4 +1,4 @@
-type StringableActionCreator<R extends string, T extends any[], P extends object> = {
+export type StringableActionCreator<R extends string, T extends any[], P extends object> = {
   (...args: T): P;
   toString(): R;
   getType(): R;

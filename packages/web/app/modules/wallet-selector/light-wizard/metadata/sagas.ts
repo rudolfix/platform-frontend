@@ -8,9 +8,12 @@ import {
   selectLightWalletFromQueryString,
   selectPreviousConnectedWallet,
 } from "../../../web3/selectors";
-import { EWalletType, ILightWalletRetrieveMetadata } from "../../../web3/types";
+import {
+  EWalletType,
+  ILightWalletMetadata,
+  ILightWalletRetrieveMetadata,
+} from "../../../web3/types";
 import { getVaultKey } from "../utils";
-import { ILightWalletMetadata } from "./../../../web3/types";
 
 export async function retrieveMetadataFromVaultAPI(
   { vaultApi }: TGlobalDependencies,
@@ -35,7 +38,7 @@ export async function retrieveMetadataFromVaultAPI(
 
 export function* getWalletMetadataByURL(
   password: string,
-): Generator<any, ILightWalletMetadata | ILightWalletRetrieveMetadata | undefined, any> {
+): Generator<unknown, ILightWalletMetadata | ILightWalletRetrieveMetadata | undefined> {
   const queryStringWalletInfo = yield* select(selectLightWalletFromQueryString);
 
   if (queryStringWalletInfo) {

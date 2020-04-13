@@ -2,6 +2,7 @@ import { ContainerModule } from "inversify";
 
 import { BinaryHttpClient } from "./client/BinaryHttpClient";
 import { IHttpClient } from "./client/IHttpClient";
+import { JsonHttpClient } from "./client/JsonHttpClient";
 import { ILogger, Logger } from "./logger/index";
 import { symbols } from "./symbols";
 
@@ -15,6 +16,10 @@ export function setupContainerModule(backendRootUrl: string): ContainerModule {
 
     bind<IHttpClient>(symbols.binaryHttpClient)
       .to(BinaryHttpClient)
+      .inSingletonScope();
+
+    bind<IHttpClient>(symbols.jsonHttpClient)
+      .to(JsonHttpClient)
       .inSingletonScope();
   });
 }

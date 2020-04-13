@@ -4,7 +4,7 @@ import { connect, FieldArray } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { CommonHtmlProps, TFormikConnect } from "../../types";
+import { CommonHtmlProps, TDataTestId, TFormikConnect } from "../../types";
 import { FormField } from "./forms";
 
 import closeIcon from "../../assets/img/inline_icons/round_close.svg";
@@ -24,7 +24,8 @@ interface ISingleMediaLinkFieldInternalProps {
 }
 
 const SingleMediaLinkField: React.FunctionComponent<ISingleMediaLinkFieldInternalProps &
-  CommonHtmlProps> = props => {
+  CommonHtmlProps &
+  TDataTestId> = props => {
   const {
     isFirstElement,
     onAddClick,
@@ -32,10 +33,11 @@ const SingleMediaLinkField: React.FunctionComponent<ISingleMediaLinkFieldInterna
     isLastElement,
     placeholder,
     blankField,
+    "data-test-id": dataTestId,
   } = props;
 
   return (
-    <div className={styles.fieldRow}>
+    <div className={styles.fieldRow} data-test-id={dataTestId}>
       <div className={styles.fieldCell}>
         {isLastElement && (
           <Button
@@ -44,6 +46,7 @@ const SingleMediaLinkField: React.FunctionComponent<ISingleMediaLinkFieldInterna
             svgIcon={plusIcon}
             iconProps={{ alt: <FormattedMessage id="common.add" /> }}
             onClick={onAddClick}
+            data-test-id="issuer.eto.media-links.add"
           />
         )}
       </div>
@@ -77,6 +80,7 @@ const SingleMediaLinkField: React.FunctionComponent<ISingleMediaLinkFieldInterna
             className="mt-2"
             svgIcon={closeIcon}
             onClick={onRemoveClick}
+            data-test-id="issuer.eto.media-links.remove"
             iconProps={{ alt: <FormattedMessage id="common.remove" /> }}
           />
         )}
@@ -127,6 +131,7 @@ class MediaLinksEditorLayout extends React.Component<IProps & TFormikConnect> {
                     isFirstElement={isFirstElement}
                     isLastElement={isLastElement}
                     key={`${name}.${index}`}
+                    data-test-id={`issuer.eto.media-links.${name}.row ${name}.${index}`}
                   />
                 );
               })

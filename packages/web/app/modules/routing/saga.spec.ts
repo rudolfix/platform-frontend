@@ -37,8 +37,10 @@ const routerAction = {
 } as LocationChangeAction;
 
 const state = {
+  jwt: {
+    token: "bla",
+  },
   auth: {
-    jwt: "bla",
     user: {
       type: EUserType.NOMINEE,
     },

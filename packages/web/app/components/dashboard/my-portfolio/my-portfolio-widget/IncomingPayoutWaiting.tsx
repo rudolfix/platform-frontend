@@ -1,25 +1,21 @@
 import * as React from "react";
-import { compose } from "recompose";
 
-import { PAYOUT_POLLING_DELAY } from "../../../../config/constants";
-import { actions } from "../../../../modules/actions";
-import {
-  selectEtherTokenIncomingPayout,
-  selectEuroTokenIncomingPayout,
-} from "../../../../modules/investor-portfolio/selectors";
-import { appConnect } from "../../../../store";
-import { withActionWatcher } from "../../../../utils/react-connected-components/withActionWatcher.unsafe";
 import { CounterLayout } from "../../../shared/Counter";
-import { IIncomingPayoutData, IncomingPayoutPendingBase } from "./IncomingPayoutPending";
+import { IncomingPayoutPendingBase } from "./IncomingPayoutPending";
 
 import * as styles from "./PayoutWidget.module.scss";
 
-export const IncomingPayoutWaitingLayout: React.FunctionComponent<IIncomingPayoutData> = ({
+type TExternalProps = {
+  etherTokenIncomingPayout: string;
+  euroTokenIncomingPayout: string;
+};
+
+export const IncomingPayoutWaitingLayout: React.FunctionComponent<TExternalProps> = ({
   etherTokenIncomingPayout,
   euroTokenIncomingPayout,
 }) => (
   <IncomingPayoutPendingBase
-    dataTestId="my-portfolio-widget-incoming-payout-waiting"
+    data-test-id="my-portfolio-widget-incoming-payout-waiting"
     etherTokenIncomingPayout={etherTokenIncomingPayout}
     euroTokenIncomingPayout={euroTokenIncomingPayout}
   >
@@ -31,19 +27,3 @@ export const IncomingPayoutWaitingLayout: React.FunctionComponent<IIncomingPayou
     />
   </IncomingPayoutPendingBase>
 );
-
-export const IncomingPayoutWaiting = compose<IIncomingPayoutData, {}>(
-  appConnect({
-    stateToProps: s => ({
-      etherTokenIncomingPayout: selectEtherTokenIncomingPayout(s),
-      euroTokenIncomingPayout: selectEuroTokenIncomingPayout(s),
-    }),
-  }),
-  withActionWatcher({
-    actionCreator: d => {
-      d(actions.investorEtoTicket.getIncomingPayoutsInBackground());
-      d(actions.investorEtoTicket.loadClaimablesInBackground());
-    },
-    interval: PAYOUT_POLLING_DELAY,
-  }),
-)(IncomingPayoutWaitingLayout);

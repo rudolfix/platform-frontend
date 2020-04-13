@@ -11,14 +11,12 @@ export enum EAuthStatus {
 
 export interface IAuthState {
   user: IUser | undefined;
-  jwt: string | undefined;
   status: EAuthStatus;
   currentAgreementHash: string | undefined;
 }
 
 const authInitialState: IAuthState = {
   user: undefined,
-  jwt: undefined,
   status: EAuthStatus.NON_AUTHORIZED,
   currentAgreementHash: undefined,
 };
@@ -32,11 +30,6 @@ export const authReducer: AppReducer<IAuthState> = (
       return {
         ...state,
         user: action.payload.user,
-      };
-    case actions.auth.setJWT.getType():
-      return {
-        ...state,
-        jwt: action.payload.jwt,
       };
     case actions.auth.finishSigning.getType():
       return {

@@ -1,16 +1,10 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import {
-  EDelayTiming,
-  EthereumAddressWithChecksum,
-  getJwtExpiryDate,
-  hasValidPermissions,
-  safeDelay,
-} from "@neufund/shared";
+import { EDelayTiming, getJwtExpiryDate, hasValidPermissions, safeDelay } from "@neufund/shared";
+import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
 
 import { calculateTimeLeft } from "../../../components/shared/utils";
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { ICreateJwtEndpointResponse } from "../../../lib/api/auth/SignatureAuthApi";
 import { accessWalletAndRunEffect } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
@@ -18,7 +12,6 @@ import { ECommonWalletRegistrationFlowState } from "../../wallet-selector/types"
 import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
 import { AUTH_JWT_TIMING_THRESHOLD, AUTH_TOKEN_REFRESH_THRESHOLD } from "../constants";
 import { JwtNotAvailable, MessageSignCancelledError } from "../errors";
-import { selectJwt } from "../selectors";
 
 /**
  * Load to store jwt from browser storage
@@ -160,12 +153,12 @@ export function* refreshJWT({
 export function* ensurePermissionsArePresentAndRunEffect(
   { logger }: TGlobalDependencies,
   effect: Generator<any, any, any>,
-  permissions: Array<string> = [],
+  permissions: Array<EJwtPermissions> = [],
   title: TMessage,
   message?: TMessage,
   inputLabel?: TMessage,
 ): Generator<any, any, any> {
-  const jwt: string = yield select(selectJwt);
+  const jwt: string = yield select(authModuleAPI.selectors.selectJwt);
 
   // check whether all permissions are present and still valid
   if (jwt && hasValidPermissions(jwt, permissions)) {
@@ -176,7 +169,7 @@ export function* ensurePermissionsArePresentAndRunEffect(
 
   // obtain a freshly signed token with missing permissions
   try {
-    const obtainJwtEffect = neuCall(escalateJwt, permissions);
+    const obtainJwtEffect = neuCall(authModuleAPI.sagas.escalateJwt, permissions);
     yield call(accessWalletAndRunEffect, obtainJwtEffect, title, message, inputLabel);
     yield effect;
   } catch (error) {
@@ -194,7 +187,7 @@ export function* ensurePermissionsArePresentAndRunEffect(
  */
 export function* handleJwtTimeout({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    const jwt: string | undefined = yield select(selectJwt);
+    const jwt: string | undefined = yield select(authModuleAPI.selectors.selectJwt);
 
     if (!jwt) {
       throw new JwtNotAvailable();
@@ -219,7 +212,7 @@ export function* handleJwtTimeout({ logger }: TGlobalDependencies): Generator<an
     // in case timeout was delayed (for e.g. hibernation), logout with session timeout message
     switch (timing) {
       case EDelayTiming.EXACT:
-        yield neuCall(refreshJWT);
+        yield neuCall(authModuleAPI.sagas.refreshJWT);
         break;
       case EDelayTiming.DELAYED:
         yield put(actions.auth.jwtTimeout());
@@ -232,5 +225,10 @@ export function* handleJwtTimeout({ logger }: TGlobalDependencies): Generator<an
 }
 
 export function* authJwtSagas(): Generator<any, any, any> {
-  yield fork(neuTakeLatestUntil, actions.auth.setJWT, actions.auth.logout, handleJwtTimeout);
+  yield fork(
+    neuTakeLatestUntil,
+    authModuleAPI.actions.setJWT,
+    actions.auth.logout,
+    handleJwtTimeout,
+  );
 }

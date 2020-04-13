@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { selectEthereumAddressWithChecksum } from "../../../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { DepositFunds } from "./DepositFunds";
 
@@ -47,7 +47,7 @@ export const DepositEthComponent: React.FunctionComponent<IProps & IStateProps> 
 export const DepositEth = compose(
   appConnect<IStateProps>({
     stateToProps: state => ({
-      ethAddress: selectEthereumAddressWithChecksum(state),
+      ethAddress: selectEthereumAddress(state),
     }),
   }),
 )(DepositEthComponent);

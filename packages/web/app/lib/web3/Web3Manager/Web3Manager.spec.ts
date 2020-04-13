@@ -4,7 +4,11 @@ import { expect } from "chai";
 import { spy } from "sinon";
 import * as Web3 from "web3";
 
-import { dummyConfig, dummyEthereumAddress, dummyNetworkId } from "../../../../test/fixtures";
+import {
+  dummyConfig,
+  dummyEthereumAddressWithChecksum,
+  dummyNetworkId,
+} from "../../../../test/fixtures";
 import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../../modules/web3/types";
 import { LedgerWallet } from "../ledger-wallet/LedgerWallet";
 import { EWeb3ManagerEvents, Web3Manager } from "./Web3Manager";
@@ -16,7 +20,7 @@ describe("Web3Manager", () => {
     const expectedDerivationPath = "44'/60'/0'/1";
     const pluggedListener = spy();
     const ledgerWalletMock = createMock(LedgerWallet, {
-      ethereumAddress: dummyEthereumAddress,
+      ethereumAddress: dummyEthereumAddressWithChecksum,
       testConnection: async () => true,
       walletType: EWalletType.LEDGER,
       walletSubType: EWalletSubType.UNKNOWN,
@@ -43,7 +47,7 @@ describe("Web3Manager", () => {
     expect(web3Manager.personalWallet).to.be.eq(ledgerWalletMock);
     expect(pluggedListener).to.be.calledWithExactly({
       metaData: {
-        address: dummyEthereumAddress,
+        address: dummyEthereumAddressWithChecksum,
         walletType: EWalletType.LEDGER,
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,

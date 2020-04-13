@@ -8,7 +8,7 @@ import { ITxData } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
-import { selectEthereumAddressWithChecksum } from "../../../web3/selectors";
+import { selectEthereumAddress } from "../../../web3/selectors";
 import { isAddressValid } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
@@ -49,9 +49,7 @@ export function* generateTokenWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
   { tokenAddress, to, valueUlps }: ITransferTokenTxGenerator,
 ): Generator<any, any, any> {
-  const from: ReturnType<typeof selectEthereumAddressWithChecksum> = yield select(
-    selectEthereumAddressWithChecksum,
-  );
+  const from: ReturnType<typeof selectEthereumAddress> = yield select(selectEthereumAddress);
 
   // Sanity checks
   if (!to || !isAddressValid(to) || !valueUlps) throw new WrongValuesError();
@@ -122,8 +120,8 @@ function* startTokenTransfer(
   try {
     const { tokenAddress, tokenImage } = action.payload;
 
-    const userAddress: ReturnType<typeof selectEthereumAddressWithChecksum> = yield select(
-      selectEthereumAddressWithChecksum,
+    const userAddress: ReturnType<typeof selectEthereumAddress> = yield select(
+      selectEthereumAddress,
     );
     const tokenContractInstance: IERC223Token = yield contractsService.getERC223(
       toEthereumAddress(tokenAddress),

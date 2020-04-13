@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 import { RouterState } from "connected-react-router";
 import { isString } from "lodash";
 import * as queryString from "query-string";
@@ -8,7 +8,6 @@ import { TAppGlobalState } from "../../store";
 import { selectRouter } from "../routing/selectors";
 import { IConnectedWeb3State, IWalletPrivateData, IWeb3State } from "./reducer";
 import { EWalletSubType, EWalletType, TWalletMetadata } from "./types";
-import { makeEthereumAddressChecksummed } from "./utils";
 
 export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {
   if (!state.connected) {
@@ -17,12 +16,8 @@ export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State
   return state;
 };
 
-export const selectEthereumAddress = (state: TAppGlobalState): EthereumAddress =>
+export const selectEthereumAddress = (state: TAppGlobalState): EthereumAddressWithChecksum =>
   state.web3.connected ? state.web3.wallet.address : state.web3.previousConnectedWallet!.address;
-
-export const selectEthereumAddressWithChecksum = createSelector(selectEthereumAddress, address =>
-  makeEthereumAddressChecksummed(address),
-);
 
 export const selectWalletPrivateData = (state: IWeb3State): IWalletPrivateData | undefined =>
   (state.connected &&

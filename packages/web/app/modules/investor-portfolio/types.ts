@@ -13,7 +13,7 @@ export interface ITokenDisbursal {
 export type TTokenDisbursalData = {
   loading: boolean;
   error: boolean;
-  data?: ITokenDisbursal[];
+  data: ITokenDisbursal[] | undefined;
 };
 
 export interface IInvestorTicket {

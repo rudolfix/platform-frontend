@@ -6,13 +6,11 @@ import { actions } from "../actions";
 
 export interface IBookbuildingFLow {
   bookbuildingStats: Dictionary<IBookBuildingStats>;
-  bookbuildingListStats: Dictionary<IBookBuildingStats>;
   pledges: Dictionary<IPledge | undefined>;
 }
 
 export const bookBuildingFlow: IBookbuildingFLow = {
   bookbuildingStats: {},
-  bookbuildingListStats: {},
   pledges: {},
 };
 
@@ -32,7 +30,7 @@ export const bookBuildingFlowReducer: AppReducer<IBookbuildingFLow> = (
     case actions.bookBuilding.setBookBuildingListStats.getType():
       return {
         ...state,
-        bookbuildingListStats: action.payload.stats,
+        bookbuildingStats: action.payload.stats,
       };
     case actions.bookBuilding.setPledge.getType():
       return {

@@ -1,5 +1,6 @@
 import { call, delay, fork, put, race, select, take } from "@neufund/sagas";
-import { assertNever, EJwtPermissions, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared";
+import { assertNever, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared";
+import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -32,7 +33,6 @@ import {
 import { EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
 import { checkForPendingEmailVerification } from "../email/sagas";
-import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
 import { loadUser, logoutUser } from "./external/sagas";
@@ -85,6 +85,7 @@ export function* signInUser(
   },
 ): Generator<any, any, any> {
   try {
+    yield neuCall(authModuleAPI.sagas.createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS, EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
     yield neuCall(loadOrCreateUser, userType, email, tos);
     if (tos) yield neuCall(handleAcceptCurrentAgreement);
@@ -104,10 +105,10 @@ export function* signInUser(
       ...web3Manager.personalWallet.getMetadata(),
       userType: walletMetadataUserType,
     };
-    walletStorage.set(storedWalletMetadata);
+    yield* call(() => walletStorage.set(storedWalletMetadata));
 
     // For other open browser pages
-    yield userStorage.set(REGISTRATION_LOGIN_DONE);
+    yield* call(() => userStorage.set(REGISTRATION_LOGIN_DONE));
 
     const redirectionUrl = yield select(selectRedirectURLFromQueryString);
 

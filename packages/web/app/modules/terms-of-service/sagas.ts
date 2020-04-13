@@ -1,5 +1,5 @@
 import { fork, put } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared";
+import { EJwtPermissions } from "@neufund/shared-modules";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { AuthMessage, ToSMessage } from "../../components/translatedMessages/messages";

@@ -1,12 +1,12 @@
-import { fork, put, select } from "@neufund/sagas";
+import { call, fork, put, SagaGenerator, select } from "@neufund/sagas";
 import { isJwtExpiringLateEnough } from "@neufund/shared";
+import { authModuleAPI, tokenPriceModuleApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
-import { loadJwt, setJwt } from "../auth/jwt/sagas";
 import { loadUser } from "../auth/user/external/sagas";
-import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
+import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
 import { initWeb3ManagerEvents } from "../web3/sagas";
@@ -14,13 +14,20 @@ import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 
+/**
+ * Starts watching for token prices
+ */
+function* initGlobalWatchers(): SagaGenerator<void> {
+  yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
+}
+
 function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any {
   try {
     yield fork(neuCall, initWeb3ManagerEvents);
     yield web3Manager.initialize();
 
     yield neuCall(initializeContracts);
-    yield neuCall(populatePlatformTermsConstants);
+    yield neuCall(initGlobalWatchers);
 
     yield put(actions.init.done(EInitType.SMART_CONTRACTS_INIT));
   } catch (e) {
@@ -37,7 +44,7 @@ function* initSmartcontracts({ web3Manager, logger }: TGlobalDependencies): any 
 function* makeSureWalletMetaDataExists({
   walletStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
-  const metadata = walletStorage.get();
+  const metadata = yield* call(() => walletStorage.get());
   if (metadata === undefined) {
     throw new WalletMetadataNotFoundError();
   }
@@ -47,13 +54,13 @@ function* initApp({ logger }: TGlobalDependencies): any {
   try {
     yield neuCall(detectUserAgent);
 
-    const jwt = yield neuCall(loadJwt);
+    const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);
 
     if (jwt) {
       yield neuCall(makeSureWalletMetaDataExists);
       if (isJwtExpiringLateEnough(jwt)) {
         try {
-          yield neuCall(setJwt, jwt);
+          yield neuCall(authModuleAPI.sagas.setJwt, jwt);
           yield neuCall(loadUser);
           yield put(actions.auth.finishSigning());
         } catch (e) {

@@ -1,5 +1,5 @@
-import { EthereumAddress, EthereumNetworkId } from "@neufund/shared";
-import { ILogger } from "@neufund/shared-modules";
+import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared";
+import { ESignerType, IEthManager, ILogger } from "@neufund/shared-modules";
 import { BigNumber } from "bignumber.js";
 import PollingBlockTracker from "eth-block-tracker";
 import { EventEmitter } from "events";
@@ -16,7 +16,7 @@ import { Web3FactoryType } from "../Web3Batch/Web3Batch";
 export const DEFAULT_UPPER_GAS_LIMIT = 2000000;
 export const DEFAULT_LOWER_GAS_LIMIT = 21000;
 export class WalletNotConnectedError extends Error {
-  constructor(public readonly wallet: IPersonalWallet) {
+  constructor() {
     super("Wallet not connected");
   }
 }
@@ -40,7 +40,7 @@ try {
 
 // singleton holding all web3 instances
 @injectable()
-export class Web3Manager extends EventEmitter {
+export class Web3Manager extends EventEmitter implements IEthManager {
   public personalWallet?: IPersonalWallet;
   public networkId!: EthereumNetworkId;
   public blockTracker!: PollingBlockTracker;
@@ -110,11 +110,35 @@ export class Web3Manager extends EventEmitter {
     this.personalWallet = undefined;
   }
 
+  async hasPluggedWallet(): Promise<boolean> {
+    return !!this.personalWallet;
+  }
+
+  async getWalletSignerType(): Promise<ESignerType> {
+    if (this.personalWallet) {
+      return this.personalWallet.getSignerType();
+    } else {
+      throw new WalletNotConnectedError();
+    }
+  }
+
+  async getWalletAddress(): Promise<EthereumAddressWithChecksum> {
+    if (this.personalWallet) {
+      return this.personalWallet.ethereumAddress;
+    } else {
+      throw new WalletNotConnectedError();
+    }
+  }
+
+  public async signMessage(message: string): Promise<string> {
+    return this.sign(message);
+  }
+
   public async sign(message: string): Promise<string> {
     if (this.personalWallet) {
       return this.personalWallet.signMessage(message);
     } else {
-      throw new Error("No wallet!");
+      throw new WalletNotConnectedError();
     }
   }
 
@@ -126,7 +150,7 @@ export class Web3Manager extends EventEmitter {
     if (this.personalWallet) {
       return this.personalWallet.sendTransaction(tx);
     } else {
-      throw new Error("No wallet!");
+      throw new WalletNotConnectedError();
     }
   }
 

@@ -5,9 +5,9 @@ import * as Web3 from "web3";
 
 import { symbols } from "../../../di/symbols";
 import { EWalletType } from "../../../modules/web3/types";
+import { STIPEND_ELIGIBLE_WALLETS } from "../constants";
 import { IEthereumNetworkConfig } from "../types";
 import { Web3Adapter } from "../Web3Adapter";
-import { STIPEND_ELIGIBLE_WALLETS } from "./../constants";
 import { LedgerError, LedgerNotAvailableError, LedgerUnknownError } from "./errors";
 import {
   connectToLedger,
@@ -66,7 +66,8 @@ export class LedgerWalletConnector {
       this.ledgerInstance = ledgerInstance;
 
       const web3Adapter = new Web3Adapter(this.web3);
-      const address = await web3Adapter.getAccountAddress();
+      const address = await web3Adapter.getAccountAddressWithChecksum();
+
       return new LedgerWallet(web3Adapter, address, this.ledgerInstance, derivationPath);
     } catch (e) {
       // we need to explicitly stop Web3 Provider engine

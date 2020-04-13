@@ -3,7 +3,7 @@ import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { providers, utils } from "ethers";
 import { interfaces } from "inversify";
 
-import { EBlockTag } from "./types";
+import { EBlockTag, ITransactionResponse } from "./types";
 
 /**
  * Layer on top of ethers provider.
@@ -81,10 +81,19 @@ class EthAdapter {
    *
    * @param signedTransaction - A singed transaction
    */
-  sendTransaction(signedTransaction: string): Promise<providers.TransactionResponse> {
+  sendTransaction(signedTransaction: string): Promise<ITransactionResponse> {
     this.logger.info(`Sending signed transaction`);
 
     return this.provider.sendTransaction(signedTransaction);
+  }
+
+  /**
+   * Returns an internal provider to be used in contracts
+   */
+  async getInternalProvider(): Promise<providers.Provider> {
+    this.logger.info(`Returning ethers provider`);
+
+    return this.provider;
   }
 }
 

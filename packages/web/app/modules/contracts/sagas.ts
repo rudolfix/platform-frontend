@@ -1,20 +1,25 @@
-import { all, put } from "@neufund/sagas";
+import { all, call, put, SagaGenerator } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
+import { neuCall } from "../sagasUtils";
 import { IPlatformTermsConstants } from "./reducer";
 
-export async function initializeContracts({
+export function* initializeContracts({
   contractsService,
-}: TGlobalDependencies): Promise<void> {
-  await contractsService.init();
+}: TGlobalDependencies): SagaGenerator<void> {
+  yield* call(() => contractsService.init());
+
+  yield* neuCall(populatePlatformTermsConstants);
 }
 
-export function* populatePlatformTermsConstants({ contractsService }: TGlobalDependencies): any {
+function* populatePlatformTermsConstants({
+  contractsService,
+}: TGlobalDependencies): SagaGenerator<void> {
   const contract = contractsService.platformTerms;
 
   // These are constants from Universe contract no need for polling
-  const terms: IPlatformTermsConstants = yield all({
+  const terms = yield* all({
     IS_ICBM_INVESTOR_WHITELISTED: contract.IS_ICBM_INVESTOR_WHITELISTED,
     PLATFORM_NEUMARK_SHARE: contract.PLATFORM_NEUMARK_SHARE,
     TOKEN_PARTICIPATION_FEE_FRACTION: contract.TOKEN_PARTICIPATION_FEE_FRACTION,
@@ -22,5 +27,6 @@ export function* populatePlatformTermsConstants({ contractsService }: TGlobalDep
     TOKEN_RATE_EXPIRES_AFTER: contract.TOKEN_RATE_EXPIRES_AFTER,
   });
 
-  yield put(actions.contracts.setPlatformTermConstants(terms));
+  // Given that typed-redux-saga won't resolve proper types for promises that's why we need to force cast
+  yield put(actions.contracts.setPlatformTermConstants(terms as IPlatformTermsConstants));
 }

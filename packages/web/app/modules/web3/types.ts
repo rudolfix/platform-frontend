@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 
 // normalized information about all possible types of personal wallets
 export enum EWalletType {
@@ -17,7 +17,7 @@ export enum EWalletSubType {
 export type TWalletMetadata = ILightWalletMetadata | IBrowserWalletMetadata | ILedgerWalletMetadata;
 
 export interface ICommonWalletMetadata {
-  address: EthereumAddress;
+  address: EthereumAddressWithChecksum;
 }
 
 export interface ILightWalletMetadata extends ICommonWalletMetadata {

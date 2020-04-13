@@ -19,22 +19,6 @@ export const EURO_DECIMALS = 0;
 export const DEFAULT_DECIMAL_PLACES = 4;
 
 /**
- * Constants for permissions
- */
-
-export enum EJwtPermissions {
-  SUBMIT_KYC_PERMISSION = "submit-kyc",
-  CHANGE_EMAIL_PERMISSION = "change-email",
-  SUBMIT_ETO_PERMISSION = "submit-eto-listing",
-  UPLOAD_IMMUTABLE_DOCUMENT = "upload-issuer-immutable-document",
-  DO_BOOK_BUILDING = "do-bookbuilding",
-  SIGN_TOS = "sign-tos",
-  ISSUER_UPDATE_NOMINEE_REQUEST = "update-nominee-request",
-  ISSUER_REMOVE_NOMINEE = "issuer-remove-nominee",
-  MANAGE_USER_WALLET = "manage-user-wallet",
-}
-
-/**
  * Useful for money related calculations
  */
 export const Q18 = new BigNumber("10").pow(ETH_DECIMALS);

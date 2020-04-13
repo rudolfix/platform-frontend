@@ -1,10 +1,9 @@
 import { Dictionary, EthereumAddress, withParams } from "@neufund/shared";
+import { authModuleAPI, coreModuleApi, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
 import { amendEtoToCompatibleFormat } from "../../../modules/eto/utils";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import {
   TBookBuildingsStatsList,
   TEtoDataWithCompany,
@@ -27,8 +26,8 @@ const NOMINEE_ETOS_PATH = "/nominees/me/etos";
 @injectable()
 export class EtoApi {
   constructor(
-    @inject(symbols.authorizedJsonHttpClient) private authorizedHttpClient: IHttpClient,
-    @inject(symbols.jsonHttpClient) private httpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private authorizedHttpClient: IHttpClient,
+    @inject(coreModuleApi.symbols.jsonHttpClient) private httpClient: IHttpClient,
   ) {}
 
   public async getEtos(): Promise<TPartialEtoSpecData[]> {

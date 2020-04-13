@@ -8,6 +8,7 @@ import {
   nonNullable,
   Q18,
 } from "@neufund/shared";
+import { contractsModuleApi } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 
@@ -23,12 +24,11 @@ import { promisify } from "../../lib/contracts/typechain-runtime";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
-import { calculateSnapshotDate } from "../contracts/utils";
 import { InvalidETOStateError } from "../eto/errors";
 import { isOnChain } from "../eto/utils";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
-import { selectEthereumAddressWithChecksum } from "../web3/selectors";
+import { selectEthereumAddress } from "../web3/selectors";
 import { ITokenDisbursal } from "./types";
 import {
   convertToCalculatedContribution,
@@ -98,9 +98,7 @@ export function* loadComputedContributionFromContract(
   const minTicketEur = (eto.minTicketEur && eto.minTicketEur.toString()) || "0";
   const newInvestorContributionEurUlps = amountEuroUlps || convertToUlps(minTicketEur);
 
-  const from: ReturnType<typeof selectEthereumAddressWithChecksum> = yield select(
-    selectEthereumAddressWithChecksum,
-  );
+  const from: ReturnType<typeof selectEthereumAddress> = yield select(selectEthereumAddress);
 
   // TODO: check whether typechain bug still is not fixed
   // sorry no typechain, typechain has a bug with boolean casting
@@ -167,7 +165,9 @@ export function* getIncomingPayouts({
       ),
     });
     // TODO: Recheck the code here
-    const snapshotDate = calculateSnapshotDate(yield neumark.currentSnapshotId);
+    const snapshotDate = contractsModuleApi.utils.calculateSnapshotDate(
+      yield neumark.currentSnapshotId,
+    );
     const euroTokenIncomingPayoutValue = addBigNumbers(
       euroTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
     );

@@ -1,5 +1,5 @@
 import { toEthereumAddress } from "@neufund/shared";
-import { ILogger } from "@neufund/shared-modules";
+import { authModuleAPI, IHttpClient, ILogger } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
@@ -8,7 +8,6 @@ import { symbols } from "../../../di/symbols";
 import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { ITxData } from "../../web3/types";
-import { IAuthHttpClient } from "./../client/AuthHttpClient";
 import {
   emailStatus,
   GasStipendValidator,
@@ -42,7 +41,7 @@ const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(symbols.authorizedJsonHttpClient) private httpClient: IAuthHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 

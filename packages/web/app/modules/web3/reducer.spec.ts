@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { dummyEthereumAddress } from "../../../test/fixtures";
+import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
 import { actions } from "../actions";
 import { web3Actions } from "./actions";
 import {
@@ -18,7 +18,7 @@ describe("Web3 > reducer", () => {
     const actionPayload = {
       type: EWalletType.BROWSER,
       subType: EWalletSubType.METAMASK,
-      ethereumAddress: dummyEthereumAddress,
+      ethereumAddress: dummyEthereumAddressWithChecksum,
       isUnlocked: true,
     };
 
@@ -27,7 +27,7 @@ describe("Web3 > reducer", () => {
       web3Actions.newPersonalWalletPlugged(
         {
           walletType: EWalletType.BROWSER,
-          address: dummyEthereumAddress,
+          address: dummyEthereumAddressWithChecksum,
           walletSubType: EWalletSubType.METAMASK,
           salt: undefined,
           email: undefined,
@@ -55,7 +55,7 @@ describe("Web3 > reducer", () => {
       connected: true,
       wallet: {
         walletType: EWalletType.BROWSER,
-        address: dummyEthereumAddress,
+        address: dummyEthereumAddressWithChecksum,
         walletSubType: EWalletSubType.METAMASK,
         salt: undefined,
         email: undefined,
@@ -97,7 +97,7 @@ describe("Web3 > reducer", () => {
         connected: true,
         wallet: {
           walletType: EWalletType.BROWSER,
-          address: dummyEthereumAddress,
+          address: dummyEthereumAddressWithChecksum,
           walletSubType: EWalletSubType.METAMASK,
           salt: undefined,
           email: undefined,

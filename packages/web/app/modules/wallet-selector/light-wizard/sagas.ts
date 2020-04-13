@@ -1,5 +1,6 @@
 import { call, fork, neuTakeLatestUntil, put, select, take } from "@neufund/sagas";
 import { invariant } from "@neufund/shared";
+import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
 import { includes } from "lodash";
 
 import {

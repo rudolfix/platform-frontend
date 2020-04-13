@@ -14,7 +14,7 @@ import {
 import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
 import { ensureEtoJurisdiction } from "../../routing/eto-view/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
-import { calculateCampaignOverviewData } from "../shared/sagas";
+import { calculateCampaignOverviewData, performLoadEtoSideEffects } from "../shared/sagas";
 import { EEtoViewType, TCampaignOverviewData, TReadyEtoViewData } from "../shared/types";
 
 function* loadNotAuthorizedEtoViewInternal(
@@ -49,6 +49,8 @@ export function* loadNotAuthorizedEtoView(
       loadEtoWithCompanyAndContract,
       payload.previewCode,
     );
+
+    yield* performLoadEtoSideEffects(eto);
 
     const etoData = yield call(loadNotAuthorizedEtoViewInternal, eto, payload.routeMatch);
     yield put(actions.etoView.setEtoViewData(etoData));

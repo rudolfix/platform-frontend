@@ -172,15 +172,16 @@ class EthManager implements IEthManager {
    * For a give privateKey saves and plugs a new wallet.
    *
    * @param privateKey - A private key
+   * @param name - A custom user defined wallet name
    */
-  async plugNewWalletFromPrivateKey(privateKey: EthereumPrivateKey) {
+  async plugNewWalletFromPrivateKey(privateKey: EthereumPrivateKey, name?: string) {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
     await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new wallet from private key");
 
-    this.wallet = await this.ethWalletFactory.createFromPrivateKey(privateKey);
+    this.wallet = await this.ethWalletFactory.createFromPrivateKey(privateKey, name);
 
     this.logger.info("New wallet from private key plugged");
   }
@@ -189,15 +190,16 @@ class EthManager implements IEthManager {
    * For a give mnemonic saves and plugs a new wallet.
    *
    * @param mnemonic - A mnemonic
+   * @param name - A custom user defined wallet name
    */
-  async plugNewWalletFromMnemonic(mnemonic: EthereumHDMnemonic) {
+  async plugNewWalletFromMnemonic(mnemonic: EthereumHDMnemonic, name?: string) {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
     await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new wallet from mnemonics");
 
-    this.wallet = await this.ethWalletFactory.createFromMnemonic(mnemonic);
+    this.wallet = await this.ethWalletFactory.createFromMnemonic(mnemonic, name);
 
     this.logger.info("New wallet from mnemonics plugged");
   }

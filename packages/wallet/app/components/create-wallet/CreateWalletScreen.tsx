@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
+import Config from "react-native-config";
 
 import { appRoutes } from "../../appRoutes";
 import { appConnect } from "../../store/utils";
@@ -44,7 +45,7 @@ const CreateWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
         </BodyText>
 
         <Button
-          style={styles.createAccountButton}
+          style={styles.button}
           loading={authState === EAuthState.AUTHORIZING}
           layout={EButtonLayout.PRIMARY}
           onPress={createAccount}
@@ -53,11 +54,21 @@ const CreateWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
         </Button>
 
         <Button
+          style={styles.button}
           layout={EButtonLayout.TEXT_DARK}
           onPress={() => navigation.navigate(appRoutes.importWallet)}
         >
           Import account
         </Button>
+
+        {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
+          <Button
+            layout={EButtonLayout.TEXT_DARK}
+            onPress={() => navigation.navigate(appRoutes.switchAccount)}
+          >
+            Import fixture
+          </Button>
+        )}
       </View>
     </NeuLinearGradient>
   );
@@ -92,7 +103,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: silverLighter2,
   },
-  createAccountButton: {
+  button: {
     ...spacingStyles.mb2,
   },
 });

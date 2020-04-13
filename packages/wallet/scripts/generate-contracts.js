@@ -35,7 +35,7 @@ async function generateFixtures() {
       value => ({
         name: value.name,
         type: value.type,
-        mnemonic: value.definition.seed,
+        privateKey: value.definition.privateKey,
         address: value.definition.address,
       }),
       artifactsFixtures,

@@ -43,7 +43,7 @@ const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
         onSubmit={values => {
           const fixture = fixtures[values.address as keyof typeof fixtures];
 
-          importExistingAccount(fixture.mnemonic!, fixture.name!);
+          importExistingAccount(fixture.privateKey!, fixture.name!);
         }}
       >
         {({ handleSubmit, isValid }) => (

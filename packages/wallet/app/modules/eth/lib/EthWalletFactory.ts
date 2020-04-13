@@ -155,12 +155,12 @@ class EthWalletFactory {
    *
    * @returns A new EthWallet
    */
-  async createFromMnemonic(mnemonic: EthereumHDMnemonic): Promise<EthWallet> {
+  async createFromMnemonic(mnemonic: EthereumHDMnemonic, name?: string): Promise<EthWallet> {
     this.logger.info("Adding mnemonic to the secure enclave");
 
     const mnemonicReference = await this.ethSecureEnclave.addSecret(mnemonic);
 
-    return this.createFromMnemonicReference(mnemonicReference);
+    return this.createFromMnemonicReference(mnemonicReference, name);
   }
 
   /**

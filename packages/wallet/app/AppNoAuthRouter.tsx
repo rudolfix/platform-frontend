@@ -1,5 +1,6 @@
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import React from "react";
+import Config from "react-native-config";
 
 import { appRoutes } from "./appRoutes";
 import { ImportWalletScreen } from "./components/import-wallet/ImportWalletScreen";
@@ -45,11 +46,13 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authWallet }
         component={ImportWalletScreen}
         options={{ header: ModalStackHeader }}
       />
-      <NoAuthStack.Screen
-        name={appRoutes.switchAccount}
-        component={SwitchAccountScreen}
-        options={{ header: ModalStackHeader, title: "Switch account" }}
-      />
+      {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
+        <NoAuthStack.Screen
+          name={appRoutes.switchAccount}
+          component={SwitchAccountScreen}
+          options={{ header: ModalStackHeader, title: "Switch account" }}
+        />
+      )}
     </NoAuthStack.Navigator>
   );
 };

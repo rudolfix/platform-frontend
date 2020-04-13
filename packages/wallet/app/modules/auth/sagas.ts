@@ -137,14 +137,12 @@ function* importNewAccount(
     logger: coreModuleApi.symbols.logger,
   });
 
-  const { privateKeyOrMnemonic, forceReset } = action.payload;
+  const { privateKeyOrMnemonic, forceReset, name } = action.payload;
 
   try {
     const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
 
     const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
-
-    debugger;
 
     // check if there is already existing wallet in storage
     invariant(
@@ -165,13 +163,13 @@ function* importNewAccount(
     switch (importPhraseType) {
       case EImportPhrase.PRIVATE_KEY:
         yield* call(() =>
-          ethManager.plugNewWalletFromPrivateKey(toEthereumPrivateKey(privateKeyOrMnemonic)),
+          ethManager.plugNewWalletFromPrivateKey(toEthereumPrivateKey(privateKeyOrMnemonic), name),
         );
 
         break;
       case EImportPhrase.MNEMONICS:
         yield* call(() =>
-          ethManager.plugNewWalletFromMnemonic(toEthereumHDMnemonic(privateKeyOrMnemonic)),
+          ethManager.plugNewWalletFromMnemonic(toEthereumHDMnemonic(privateKeyOrMnemonic), name),
         );
 
         break;

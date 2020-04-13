@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
+import Config from "react-native-config";
 
 import { appRoutes } from "../../appRoutes";
 import { appConnect } from "../../store/utils";
@@ -15,6 +16,7 @@ import logo from "../../../assets/images/logo.png";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
+  authWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>;
 };
 
 type TDispatchProps = {
@@ -24,6 +26,7 @@ type TDispatchProps = {
 const UnlockWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   unlockAccount,
   authState,
+  authWallet,
 }) => {
   const navigation = useNavigation();
 
@@ -35,7 +38,7 @@ const UnlockWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
 
       <View style={styles.container}>
         <Headline level={EHeadlineLevel.LEVEL2} style={styles.headline}>
-          Welcome back, username
+          Welcome back{authWallet?.name && `, ${authWallet?.name}`}
         </Headline>
 
         <Button
@@ -47,12 +50,14 @@ const UnlockWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
           Unlock account
         </Button>
 
-        <Button
-          layout={EButtonLayout.TEXT_DARK}
-          onPress={() => navigation.navigate(appRoutes.switchAccount)}
-        >
-          Switch account
-        </Button>
+        {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
+          <Button
+            layout={EButtonLayout.TEXT_DARK}
+            onPress={() => navigation.navigate(appRoutes.switchAccount)}
+          >
+            Switch account
+          </Button>
+        )}
       </View>
     </NeuLinearGradient>
   );
@@ -95,6 +100,7 @@ const styles = StyleSheet.create({
 const UnlockWalletScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     authState: authModuleAPI.selectors.selectAuthState(state),
+    authWallet: authModuleAPI.selectors.selectAuthWallet(state),
   }),
   dispatchToProps: dispatch => ({
     unlockAccount: () => dispatch(authModuleAPI.actions.unlockAccount()),

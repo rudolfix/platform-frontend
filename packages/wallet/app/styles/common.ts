@@ -1,4 +1,4 @@
-export const roundness = 10;
+export const roundness = 4;
 
 /**
  * App wise shadow styles generated with

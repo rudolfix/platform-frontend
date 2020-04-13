@@ -106,7 +106,7 @@ export abstract class HttpClient implements IHttpClient {
         method,
         body,
       });
-    } catch {
+    } catch (e) {
       throw new NetworkingError(fullUrl);
     }
     if (

@@ -16,13 +16,14 @@ import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layo
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { TMessage } from "../../../translatedMessages/utils";
+import { LightWalletContainer } from "../../shared/light-wallet/LightWalletContainer";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { RegisterLightWalletContainer } from "./RegisterLightWalletContainer";
 import { RegisterEnhancedLightWalletForm } from "./RegisterLightWalletForm";
 
 export type TStateProps = {
   errorMessage: TMessage | undefined;
   initialFormValues: TLightWalletFormValues;
+  isLogin?: boolean;
 } & TCommonWalletRegisterData;
 
 export type TRegisterWalletExternalProps = {
@@ -52,6 +53,10 @@ export const RegisterLightWallet = compose<
         ),
     }),
   }),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(WalletLoading),
+  ),
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),
@@ -59,7 +64,7 @@ export const RegisterLightWallet = compose<
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
     renderComponent(LoadingIndicator),
   ),
-  withContainer(RegisterLightWalletContainer),
+  withContainer(LightWalletContainer),
   branch<TLightWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
     renderComponent(RegisterEnhancedLightWalletForm),

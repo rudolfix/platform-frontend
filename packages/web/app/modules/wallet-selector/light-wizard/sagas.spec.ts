@@ -8,19 +8,12 @@ import { signInUser } from "../../auth/user/sagas";
 import { EWalletType } from "../../web3/types";
 import { walletSelectorReducer } from "../reducer";
 import { ECommonWalletRegistrationFlowState, EFlowType } from "../types";
-import { EFlowType } from "./../types";
 import { ERecoveryPhase } from "./reducer";
 import { lightWalletRestore } from "./sagas";
 import { getUserMeWithSeedOnly, setupLightWallet } from "./signing/sagas";
 
 describe("Wallet selector - Light Wallet Restore", () => {
-  const payload = {
-    email: "ilovemom@test.com",
-    password: "bass",
-    tos: true,
-  };
-
-  describe.only("lightWalletRestore", () => {
+  describe("lightWalletRestore", () => {
     const baseUiData = {
       walletType: EWalletType.LIGHT,
       flowType: EFlowType.IMPORT_WALLET,
@@ -52,11 +45,11 @@ describe("Wallet selector - Light Wallet Restore", () => {
             initialFormValues,
             flowType: EFlowType.IMPORT_WALLET,
             uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-          }),
+          } as any),
         )
         .silentRun();
     });
-    it.only("should yield the restore wallet flow with the already available email", async () => {
+    it("should yield the restore wallet flow with the already available email", async () => {
       await expectSaga(lightWalletRestore, {} as any)
         .provide([
           [matchers.call.fn(isEmailAvailablePromise), true],
@@ -73,10 +66,10 @@ describe("Wallet selector - Light Wallet Restore", () => {
         .put(
           actions.walletSelector.setWalletRegisterData({
             ...baseUiData,
-            initialFormValues: { ...initialFormValues, email: "mommyIloveyou@super.com" },
             flowType: EFlowType.RESTORE_WALLET,
+            initialFormValues: { ...initialFormValues, email: "mommyIloveyou@super.com" },
             uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
-          }),
+          } as any),
         )
         .silentRun();
     });

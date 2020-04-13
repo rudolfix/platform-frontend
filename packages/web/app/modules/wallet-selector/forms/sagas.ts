@@ -32,7 +32,7 @@ export function* registerForm(
     baseUiData,
     userEmail,
   }: {
-    afterRegistrationGenerator: () => Generator<any, boolean, any> | undefined;
+    afterRegistrationGenerator: (() => Generator<any, boolean, any>) | undefined;
     expectedAction:
       | typeof actions.walletSelector.lightWalletRegisterFormData
       | typeof actions.walletSelector.browserWalletRegisterFormData;
@@ -41,7 +41,6 @@ export function* registerForm(
     userEmail?: string;
   },
 ): Generator<any, void, any> {
-  
   yield put(
     actions.walletSelector.setWalletRegisterData({
       ...baseUiData,
@@ -54,6 +53,7 @@ export function* registerForm(
     yield put(
       actions.walletSelector.setWalletRegisterData({
         uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
+        showWalletSelector: false,
       }),
     );
 
@@ -65,6 +65,7 @@ export function* registerForm(
         actions.walletSelector.setWalletRegisterData({
           uiState: ECommonWalletRegistrationFlowState.REGISTRATION_EMAIL_VERIFICATION_ERROR,
           errorMessage: error,
+          showWalletSelector: true,
           initialFormValues: {
             ...initialFormValues,
             email: payload.email,
@@ -84,6 +85,7 @@ export function* registerForm(
           },
         }),
       );
+
       if (!afterRegistrationGenerator) return;
       const result = yield* call(afterRegistrationGenerator);
       if (result) return;
@@ -91,6 +93,7 @@ export function* registerForm(
       yield put(
         actions.walletSelector.setWalletRegisterData({
           ...baseUiData,
+          showWalletSelector: true,
           uiState: ECommonWalletRegistrationFlowState.REGISTRATION_FORM,
           initialFormValues: {
             ...initialFormValues,

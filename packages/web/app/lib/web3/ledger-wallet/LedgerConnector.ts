@@ -31,6 +31,10 @@ export class LedgerWalletConnector {
   public connect = async (): Promise<void> => {
     try {
       this.getTransport = await connectToLedger();
+      const isConnected = await this.testConnection();
+      if (!isConnected) {
+        throw new LedgerNotAvailableError();
+      }
     } catch (e) {
       if (e instanceof LedgerError) {
         throw e;

@@ -24,6 +24,7 @@ import { RecoverLightWalletBase } from "./RecoverLightWalletBase";
 export type TStateProps = {
   errorMessage: TMessage | undefined;
   initialFormValues: TLightWalletFormValues;
+  isLogin?: boolean;
 } & TCommonWalletRegisterData;
 
 export type TDispatchProps = {
@@ -54,6 +55,10 @@ export const RestoreLightWallet = compose<TStateProps & TDispatchProps, TExterna
   branch<TWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
     renderComponent(LoadingIndicator),
+  ),
+  branch<TLightWalletRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(WalletLoading),
   ),
   withContainer<TWalletSelectorState>(
     compose<TWalletSelectorState, TWalletSelectorState>(

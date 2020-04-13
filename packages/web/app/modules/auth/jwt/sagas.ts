@@ -14,6 +14,7 @@ import { ICreateJwtEndpointResponse } from "../../../lib/api/auth/SignatureAuthA
 import { accessWalletAndRunEffect } from "../../access-wallet/sagas";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
+import { ECommonWalletRegistrationFlowState } from "../../wallet-selector/types";
 import { selectEthereumAddressWithChecksum } from "../../web3/selectors";
 import { AUTH_JWT_TIMING_THRESHOLD, AUTH_TOKEN_REFRESH_THRESHOLD } from "../constants";
 import { JwtNotAvailable, MessageSignCancelledError } from "../errors";
@@ -83,6 +84,14 @@ export function* createJwt(
   logger.info("Creating jwt");
 
   const { signedChallenge, challenge, signerType } = yield neuCall(signChallenge, permissions);
+
+  // THIS IS A TEMPORARY SOLUTION
+  // Move  actions.walletSelector.setWalletRegisterData out
+  yield put(
+    actions.walletSelector.setWalletRegisterData({
+      uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    }),
+  );
 
   logger.info("Sending signed challenge back to api");
 

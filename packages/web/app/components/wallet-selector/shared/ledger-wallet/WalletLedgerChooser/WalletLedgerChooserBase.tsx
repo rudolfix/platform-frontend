@@ -6,7 +6,6 @@ import {
   DEFAULT_DERIVATION_PATH_PREFIX,
   ILedgerAccount,
 } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
-import { LoadingIndicator } from "../../../../shared/loading-indicator/index";
 import { PanelRounded } from "../../../../shared/Panel";
 import {
   EWarningAlertLayout,
@@ -54,9 +53,7 @@ export const WalletLedgerChooserBase: React.FunctionComponent<IWalletLedgerChoos
 
   let content;
 
-  if (loading) {
-    content = <LoadingIndicator />;
-  } else if (errorMessage) {
+  if (errorMessage) {
     content = (
       <WarningAlert
         className={styles.errorMessage}

@@ -38,6 +38,7 @@ import { getWalletMetadataByURL } from "./metadata/sagas";
 import { ERecoveryPhase } from "./reducer";
 import { lightWalletRegister } from "./register/sagas";
 import { getUserMeWithSeedOnly, setupLightWallet } from "./signing/sagas";
+import { getVaultKey } from "./utils";
 
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
 
@@ -114,7 +115,7 @@ export function* handleLightWalletError({ logger }: TGlobalDependencies, e: Erro
 export function* lightWalletLoginWatch(
   { web3Manager, lightWalletConnector, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.walletSelector.lightWalletLogin>,
-): Generator<any, any, any> {
+): Generator<any, void, any> {
   const { password } = action.payload;
 
   try {
@@ -142,7 +143,11 @@ export function* lightWalletLoginWatch(
   }
 }
 
-export function* connectAndRestoreLightWallet(userType: EUserType, seed: string): any {
+export function* connectAndRestoreLightWallet(
+  { vaultApi }: TGlobalDependencies,
+  userType: EUserType,
+  seed: string,
+): any {
   const registerFormDefaultValues: TLightWalletFormValues = yield select(
     selectRegisterWalletDefaultFormValues,
   );
@@ -150,18 +155,26 @@ export function* connectAndRestoreLightWallet(userType: EUserType, seed: string)
   if (!registerFormDefaultValues) {
     throw new Error("registerFormDefaultValues should be defined at this stage");
   }
-  yield* neuCall(
+  const walletMetadata = yield* neuCall(
     setupLightWallet,
     registerFormDefaultValues.email,
     registerFormDefaultValues.password,
     seed,
   );
-  yield neuCall(
-    signInUser,
+  yield neuCall(signInUser, {
+    cleanupGenerator: function*(): Generator<any, void, any> {
+      const vaultKey = yield* call(
+        getVaultKey,
+        walletMetadata.salt,
+        registerFormDefaultValues.password,
+      );
+
+      yield vaultApi.confirm(vaultKey);
+    },
     userType,
-    registerFormDefaultValues.email,
-    registerFormDefaultValues.tos,
-  );
+    email: registerFormDefaultValues.email,
+    tos: registerFormDefaultValues.tos,
+  });
 }
 export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void, any> {
   yield neuCall(resetWalletSelectorState);
@@ -192,7 +205,7 @@ export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void
     };
 
     yield neuCall(registerForm, {
-      afterRegistrationGenerator: () => connectAndRestoreLightWallet(userType, seed),
+      afterRegistrationGenerator: () => neuCall(connectAndRestoreLightWallet, userType, seed),
       expectedAction: actions.walletSelector.lightWalletRegisterFormData,
       initialFormValues,
       baseUiData: {

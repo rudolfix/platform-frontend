@@ -6,6 +6,7 @@ import * as Yup from "yup";
 
 import {
   Button,
+  EButtonLayout,
   EButtonWidth,
 } from "../../../../../../design-system/dist/components/buttons/Button";
 import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
@@ -92,6 +93,7 @@ export const BrowserWalletAskForEmailAndTosForm: React.FunctionComponent<TEmailT
           disabled={!isValid}
           data-test-id="wallet-selector-register-button"
           width={EButtonWidth.BLOCK}
+          layout={EButtonLayout.PRIMARY}
         >
           <FormattedMessage id="wallet-selector.sign-up" />
         </Button>

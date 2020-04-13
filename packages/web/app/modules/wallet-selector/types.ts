@@ -10,7 +10,6 @@ export enum EFlowType {
 }
 
 export enum EBrowserWalletRegistrationFlowState {
-  BROWSER_WALLET_LOADING = "browserWalletLoading",
   BROWSER_WALLET_ERROR = "browserWalletError",
 }
 
@@ -49,8 +48,7 @@ export type TLightWalletFormValues = {
 
 // TODO: Setup the types in a way where only
 export type TCommonWalletRegisterData = {
-  showWalletSelector?: boolean;
-  rootPath?: string;
+  showWalletSelector?: boolean | undefined;
   initialFormValues?: TBrowserWalletFormValues | TLightWalletFormValues;
 };
 

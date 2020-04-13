@@ -1,6 +1,4 @@
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { branch, compose, nest, renderComponent, withProps } from "recompose";
+import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { withContainer } from "../../../../../../shared/dist/utils/withContainer.unsafe";
 import { actions } from "../../../../modules/actions";
@@ -9,24 +7,21 @@ import {
   ECommonWalletRegistrationFlowState,
   ELedgerRegistrationFlowState,
   TBrowserWalletRegisterData,
-  TCommonWalletRegisterData,
   TLedgerRegisterData,
   TWalletRegisterData,
 } from "../../../../modules/wallet-selector/types";
 import { appConnect } from "../../../../store";
 import { EContentWidth } from "../../../layouts/Content";
-import { FullscreenProgressLayout } from "../../../layouts/FullscreenProgressLayout";
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
-import { LedgerErrorMessage } from "../../../translatedMessages/messages";
+import { DefaultLedgerError } from "../../shared/ledger-wallet/DefaultLedgerError/DefaultLedgerError";
+import { LedgerOnboardingContainer } from "../../shared/ledger-wallet/LedgerOnboardingContainer";
+import { WalletLedgerChooser } from "../../shared/ledger-wallet/WalletLedgerChooser/WalletLedgerChooser";
+import { WalletLedgerNotSupported } from "../../shared/ledger-wallet/WalletLedgerNotSupported/WalletLedgerNotSupported";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { WalletLedgerChooser } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerChooser/WalletLedgerChooser";
-import { WalletLedgerInitError } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerInit/WalletLedgerInit";
-import { WalletLedgerNotSupported } from "../../WalletSelectorLogin/WalletLedger/WalletLedgerNotSupported/WalletLedgerNotSupported";
 import { TWalletBrowserBaseProps } from "../RegisterBrowserWallet/RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "../RegisterBrowserWallet/RegisterBrowserWalletForm";
-import { RegisterLedgerBase } from "./RegisterLedgerBase";
 
 export const RegisterLedger = compose<TWalletRegisterData, {}>(
   appConnect<TWalletRegisterData>({
@@ -35,51 +30,39 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
     }),
     dispatchToProps: dispatch => ({
       submitForm: (email: string) =>
-        dispatch(actions.walletSelector.browserWalletRegisterFormData(email)),
+        dispatch(actions.walletSelector.browserWalletRegisterFormData(email, true)),
       closeAccountChooser: () => {
         dispatch(actions.walletSelector.ledgerCloseAccountChooser());
-        dispatch(
-          actions.walletSelector.ledgerConnectionEstablishedError({
-            messageType: LedgerErrorMessage.USER_CANCELLED,
-          }),
-        );
       },
+      tryToEstablishConnectionWithLedger: () => dispatch(actions.walletSelector.ledgerReconnect()),
     }),
   }),
   branch<TLedgerRegisterData>(
     ({ uiState }) => uiState === ELedgerRegistrationFlowState.LEDGER_ACCOUNT_CHOOSER,
-    renderComponent(
-      nest(
-        withProps<TContentExternalProps, { closeAccountChooser: () => void }>(
-          ({ closeAccountChooser }) => ({
-            width: EContentWidth.FULL,
-            buttonProps: {
-              buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
-              buttonAction: closeAccountChooser,
-            },
-          }),
-        )(FullscreenProgressLayout),
-        WalletLedgerChooser,
-      ),
-    ),
+    renderComponent(WalletLedgerChooser),
+  ),
+  branch<TLedgerRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+    renderComponent(LoadingIndicator),
   ),
   withContainer(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
+  ),
+  withContainer(
+    withProps<TWalletBrowserBaseProps, TWalletBrowserBaseProps>(({ showWalletSelector }) => ({
+      //MOE Check if this is needed
+      showWalletSelector,
+      isLogin: false,
+    }))(LedgerOnboardingContainer),
   ),
   branch<TWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,
     renderComponent(LoadingIndicator),
   ),
-  withContainer(
-    withProps<TWalletBrowserBaseProps, TCommonWalletRegisterData>(
-      ({ rootPath, showWalletSelector }) => ({
-        rootPath,
-        showWalletSelector,
-        isLoginRoute: false,
-      }),
-    )(RegisterLedgerBase),
+  branch<TLedgerRegisterData>(
+    ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+    renderComponent(LoadingIndicator),
   ),
-  // TODO fixme rename to browser not supported and add ledger version not supported
   branch<TLedgerRegisterData>(
     ({ uiState }) => uiState === ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED,
     renderComponent(WalletLedgerNotSupported),
@@ -103,6 +86,6 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
   ),
   branch<TLedgerRegisterData>(
     ({ uiState }) => uiState === ELedgerRegistrationFlowState.LEDGER_INIT_ERROR,
-    renderComponent(WalletLedgerInitError),
+    renderComponent(DefaultLedgerError),
   ),
 )(shouldNeverHappen("RegisterLedger reached default branch"));

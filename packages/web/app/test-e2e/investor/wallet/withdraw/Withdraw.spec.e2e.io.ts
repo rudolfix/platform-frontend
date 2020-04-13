@@ -14,17 +14,14 @@ import {
 } from "../../../utils/index";
 import { goToWallet, goToWalletWithParams } from "../../../utils/navigation";
 import { tid } from "../../../utils/selectors";
-import {
-  createAndLoginNewUser,
-  DEFAULT_PASSWORD,
-  loginFixtureAccount,
-} from "../../../utils/userHelpers";
+import { createAndLoginNewUser, loginFixtureAccount } from "../../../utils/userHelpers";
 import {
   assertWithdrawButtonIsDisabled,
   assertWithdrawFlow,
   checkTransactionWithRPCNode,
   continueWithdrawFlow,
 } from "../utils";
+import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 
 export const SimpleExchangeContract: any = require("../../../../../../../git_modules/platform-contracts-artifacts/localhost/contracts/SimpleExchange.json");
 export const EuroTokenContract: any = require("../../../../../../../git_modules/platform-contracts-artifacts/localhost/contracts/EuroToken.json");

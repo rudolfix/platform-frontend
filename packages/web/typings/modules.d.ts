@@ -28,3 +28,5 @@ declare module "proper-url-join/lib";
 declare module "bitcore-mnemonic";
 
 declare module "truffle-privatekey-provider";
+
+declare module "node-fetch";

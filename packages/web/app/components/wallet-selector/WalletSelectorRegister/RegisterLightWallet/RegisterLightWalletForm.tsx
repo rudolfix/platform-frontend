@@ -1,13 +1,10 @@
+import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
 import { FormikErrors } from "formik";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 import * as Yup from "yup";
 
-import {
-  Button,
-  EButtonWidth,
-} from "../../../../../../design-system/dist/components/buttons/Button";
 import { Checkbox } from "../../../../../../design-system/dist/components/inputs/Checkbox";
 import { TextField } from "../../../../../../design-system/dist/components/inputs/TextField";
 import {
@@ -115,6 +112,7 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
             disabled={!isValid}
             data-test-id="wallet-selector-register-button"
             width={EButtonWidth.BLOCK}
+            layout={EButtonLayout.PRIMARY}
           >
             {restore ? (
               <FormattedMessage id="wallet-selector.neuwallet.restore" />

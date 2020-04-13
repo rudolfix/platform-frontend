@@ -5,24 +5,30 @@ import {
   EButtonWidth,
   TextField,
 } from "@neufund/design-system";
-import { IIntlProps, injectIntlHelpers } from "@neufund/shared";
+import { IIntlProps, injectIntlHelpers, withContainer } from "@neufund/shared";
 import { FormikProps, useFormikContext, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { branch, compose, renderComponent } from "recompose";
+import { branch, compose, renderComponent, withProps } from "recompose";
 import * as Yup from "yup";
 
 import { actions } from "../../../../modules/actions";
+import { ELogoutReason } from "../../../../modules/auth/types";
 import {
   selectCurrentLightWalletEmail,
   selectLightWalletEmailFromQueryString,
   selectPreviousLightWalletEmail,
 } from "../../../../modules/web3/selectors";
+import { EWalletType } from "../../../../modules/web3/types";
 import { appConnect } from "../../../../store";
+import { EContentWidth } from "../../../layouts/Content";
+import { TransitionalLayout, TTransitionalLayoutProps } from "../../../layouts/Layout";
 import { FormDeprecated } from "../../../shared/forms/index";
+import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";
 import { resetWalletOnEnter } from "../../shared/reset-wallet";
+import { WalletChooser } from "../../shared/WalletChooser";
 import { WalletLoading } from "../../shared/WalletLoading";
 import { MissingEmailLightWallet } from "./MissingEmailLightWallet";
 
@@ -108,7 +114,9 @@ const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
   validationSchema: LoginValidator,
 })(LoginLightWalletForm);
 
-export const LoginLightWalletComponent: React.FunctionComponent<TProps> = props => (
+export const LoginLightWalletComponent: React.FunctionComponent<TProps & {
+  showWalletSelector: boolean;
+}> = ({ showWalletSelector, ...props }) => (
   <section className={styles.main}>
     <h1 className={styles.title}>
       <FormattedMessage id="wallet-selector.log-in" />
@@ -123,11 +131,16 @@ export const LoginLightWalletComponent: React.FunctionComponent<TProps> = props 
       />
     </p>
     <LoginEnhancedLightWalletForm {...props} />
+    <WalletChooser isLogin={true} activeWallet={EWalletType.LIGHT} />
   </section>
 );
 
-export const LoginLightWallet = compose<TProps, {}>(
-  resetWalletOnEnter(),
+export const LoginLightWallet = compose<
+  TProps & {
+    showWalletSelector: boolean;
+  },
+  {}
+>(
   appConnect<IStateProps, TDispatchProps, Required<IStateProps>>({
     stateToProps: state => ({
       email:
@@ -144,6 +157,19 @@ export const LoginLightWallet = compose<TProps, {}>(
     }),
   }),
   injectIntlHelpers,
+  resetWalletOnEnter(),
   branch<IStateProps>(({ currentEmail }) => !!currentEmail, renderComponent(WalletLoading)),
+  withContainer(
+    withProps<TTransitionalLayoutProps, { location: { state: { logoutReason: ELogoutReason } } }>(
+      ({ location }) => ({
+        width: EContentWidth.SMALL,
+        isLoginRoute: true,
+        showLogoutReason: !!(
+          location.state && location.state.logoutReason === ELogoutReason.SESSION_TIMEOUT
+        ),
+      }),
+    )(TransitionalLayout),
+  ),
   branch<IStateProps>(({ email }) => !email, renderComponent(MissingEmailLightWallet)),
-)(LoginLightWalletComponent);
+  branch<IStateProps>(({ email }) => !!email, renderComponent(LoginLightWalletComponent)),
+)(shouldNeverHappen("LoginLightWallet reached default branch"));

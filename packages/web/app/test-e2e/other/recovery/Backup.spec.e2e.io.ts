@@ -4,13 +4,13 @@ import {
   accountFixturePrivateKey,
   assertLockedAccessModal,
   confirmAccessModal,
-  DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   goToProfile,
   loginFixtureAccount,
   registerWithLightWallet,
   tid,
 } from "../../utils/index";
+import { DEFAULT_PASSWORD } from "./../../utils/constants";
 
 describe("Backup Seed and Private Key save and view", function(): void {
   it("should allow to save seed phrase #backup #p3", () => {

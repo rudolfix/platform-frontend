@@ -9,7 +9,8 @@ import { cyPromise } from "../../utils/cyPromise";
 import { checkForm, fillForm, TFormFixture, TFormFixtureExpectedValues } from "../../utils/forms";
 import { goToIssuerDashboard } from "../../utils/navigation";
 import { tid } from "../../utils/selectors";
-import { createUser, makeAuthenticatedCall } from "../../utils/userHelpers";
+import { makeAuthenticatedCall } from "../../utils/userHelpers";
+import { createUser } from "./../../utils/createUser";
 import {
   aboutFormRequired,
   aboutFormSubmit,

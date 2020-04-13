@@ -16,7 +16,7 @@ import {
 } from "../../WalletSelectorLogin/LoginBrowserWallet/LoginBrowserWallet";
 
 import notificationSign from "../../../../assets/img/notifications/warning.svg";
-import * as styles from "../../shared/RegisterWalletSelector.module.scss";
+import * as styles from "../RegisterWalletSelector.module.scss";
 
 type TBrowserWalletErrorProps = {
   errorMessage: TMessage;
@@ -44,10 +44,7 @@ export const BrowserWalletErrorBase: React.FunctionComponent<TBrowserWalletError
   </>
 );
 
-export const RegisterBrowserWalletError = compose<
-  TBrowserWalletErrorProps,
-  TBrowserWalletErrorProps
->(
+export const BrowserWalletError = compose<TBrowserWalletErrorProps, TBrowserWalletErrorProps>(
   appConnect<TWalletBrowserProps, TWalletBrowserDispatchProps>({
     dispatchToProps: dispatch => ({
       tryConnectingWithBrowserWallet: () => {

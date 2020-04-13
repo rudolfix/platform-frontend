@@ -2,7 +2,6 @@ import { call, delay, fork, put, race, select, take } from "@neufund/sagas";
 import { assertNever, EJwtPermissions, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IUser } from "../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../lib/api/users/UsersApi";
@@ -37,6 +36,7 @@ import { createJwt } from "../jwt/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
 import { loadUser, logoutUser } from "./external/sagas";
+import { getUsersNewEmailValue } from "./utils";
 
 /**
  * Waits for user to conduct activity before a
@@ -72,9 +72,17 @@ export function* waitForUserActiveOrLogout({
 
 export function* signInUser(
   { walletStorage, web3Manager, userStorage }: TGlobalDependencies,
-  userType: EUserType,
-  email?: string,
-  tos: boolean = false,
+  {
+    cleanupGenerator,
+    userType,
+    email,
+    tos = false,
+  }: {
+    cleanupGenerator?: () => Generator<any, void, any>;
+    userType: EUserType;
+    email?: string;
+    tos?: boolean;
+  },
 ): Generator<any, any, any> {
   try {
     yield neuCall(createJwt, [EJwtPermissions.SIGN_TOS, EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
@@ -103,14 +111,16 @@ export function* signInUser(
 
     const redirectionUrl = yield select(selectRedirectURLFromQueryString);
 
+    if (cleanupGenerator) {
+      yield cleanupGenerator();
+    }
+
     yield put(actions.auth.finishSigning());
 
     yield put(
       redirectionUrl ? actions.routing.push(redirectionUrl) : actions.routing.goToDashboard(),
     );
   } catch (e) {
-    debugger;
-
     yield neuCall(logoutUser);
     if (e instanceof SignerRejectConfirmationError || e instanceof SignerTimeoutError) {
       throw e;
@@ -161,22 +171,27 @@ export function* loadOrCreateUser(
 
   const userFromApi = yield* neuCall(getUsersMeFromApi);
   let user;
-
   if (userFromApi) {
-    user = email
-      ? yield* call(() => apiUserService.updateUser({ ...userFromApi, newEmail: email }))
-      : userFromApi;
+    user = yield* call(apiUserService.updateUser, {
+      ...userFromApi,
+      salt: walletMetadata.salt,
+      walletType: walletMetadata.walletType,
+      walletSubtype: walletMetadata.walletSubType,
+      newEmail: getUsersNewEmailValue(
+        userFromApi.verifiedEmail,
+        userFromApi.unverifiedEmail,
+        email,
+      ),
+    });
   } else {
-    user = yield* call(() =>
-      apiUserService.createAccount({
-        newEmail: email || walletMetadata?.email,
-        backupCodesVerified: walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
-        salt: walletMetadata?.salt,
-        type: userType,
-        walletType: walletMetadata.walletType,
-        walletSubtype: walletMetadata.walletSubType,
-      }),
-    );
+    user = yield* call(apiUserService.createAccount, {
+      newEmail: email || walletMetadata?.email,
+      backupCodesVerified: walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
+      salt: walletMetadata?.salt,
+      type: userType,
+      walletType: walletMetadata.walletType,
+      walletSubtype: walletMetadata.walletSubType,
+    });
   }
 
   if (tos) {
@@ -239,23 +254,6 @@ export function mapSignInErrors(e: Error): SignInUserErrorMessage {
     return SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT;
   } else {
     return SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE;
-  }
-}
-
-export function* handleSignInUser(
-  { logger }: TGlobalDependencies,
-  userType: EUserType,
-  email?: string,
-  tos = false,
-): Generator<any, void, any> {
-  try {
-    yield neuCall(signInUser, userType, email, tos);
-  } catch (e) {
-    logger.error("User Sign in error", e);
-
-    const error = yield mapSignInErrors(e);
-
-    yield put(actions.walletSelector.messageSigningError(createMessage(error)));
   }
 }
 

@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { floor, get } from "lodash";
+import { floor } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
 import { getRange } from "../../components/shared/formatters/FormatShortNumber";
@@ -19,11 +19,12 @@ import {
   assertIssuerDashboard,
   assertLanding,
   assertWaitForExternalPendingTransactionCount,
-  getLatestEmailByUser,
 } from "./assertions";
+import { DEFAULT_PASSWORD } from "./constants";
+import { getLatestVerifyUserEmailLink } from "./emailHelpers";
 import { goToLanding, goToWallet } from "./navigation";
 import { tid } from "./selectors";
-import { DEFAULT_PASSWORD, verifyUserEmailCall } from "./userHelpers";
+import { verifyUserEmailCall } from "./userHelpers";
 
 export const LONG_WAIT_TIME = 60000;
 
@@ -76,30 +77,6 @@ export const confirmAccessModalNoPW = () => {
 export const closeModal = () => {
   cy.get(tid("modal-close-button")).awaitedClick();
 };
-
-export const getLatestVerifyUserEmailLink = (
-  email: string,
-  attempts = 5,
-): Cypress.Chainable<string> =>
-  cy
-    .request({ url: MOCK_API_URL + `sendgrid/session/mails?to=${email}`, method: "GET" })
-    .then(r => {
-      const latestEmailByUser = getLatestEmailByUser(r, email);
-
-      const activationLink = get(latestEmailByUser, "template_vars.activation_link");
-
-      if (activationLink) {
-        // we need to replace the loginlink pointing to a remote destination
-        // with one pointing to our local instance
-        return activationLink.replace("platform.neufund.io", "localhost:9090");
-      } else {
-        expect(attempts, `Failed to find activation link for email ${email}`).to.be.gt(0);
-
-        cy.wait(1000);
-
-        return getLatestVerifyUserEmailLink(email, attempts - 1);
-      }
-    });
 
 export const verifyLatestUserEmail = (email: string) => {
   getLatestVerifyUserEmailLink(email).then(activationLink => {
@@ -338,3 +315,4 @@ export * from "./userHelpers";
 export * from "./forms";
 export * from "./offlineHelpers";
 export * from "./fixtures";
+export * from "./emailHelpers";

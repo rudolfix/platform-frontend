@@ -20,8 +20,7 @@
 }
 
 .missing-email {
-  font-family: $font-family-roboto;
-  font-size: px-to-rem(14px);
+  @include nds-body;
 }
 
 .forgotten-password {

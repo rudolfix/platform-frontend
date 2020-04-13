@@ -6,7 +6,6 @@ import {
   assertEmailPendingChange,
   confirmAccessModal,
   createAndLoginNewUser,
-  DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
   getWalletMetaData,
@@ -18,6 +17,7 @@ import {
   tid,
   verifyLatestUserEmailAccountSetup,
 } from "../../../utils/index";
+import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 
 describe("Change Email", function(): void {
   let email: string;

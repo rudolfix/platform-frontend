@@ -53,15 +53,14 @@ describe("Wallet selector form sagas", () => {
       const walletSignUpSaga = function*(): any {
         return true;
       };
+
       await expectSaga(registerForm, {} as any, {
         afterRegistrationGenerator: walletSignUpSaga,
         expectedAction: actions.walletSelector.lightWalletRegisterFormData,
         initialFormValues,
         baseUiData,
       })
-        .withReducer({ walletSelectorReducer } as any, {
-          walletSelectorReducer: walletSelectorInitialState,
-        })
+        .withReducer(walletSelectorReducer)
         .provide([[matchers.call.fn(isEmailAvailablePromise), true]])
         .take(actions.walletSelector.lightWalletRegisterFormData)
         .dispatch(
@@ -74,6 +73,7 @@ describe("Wallet selector form sagas", () => {
         .put(
           actions.walletSelector.setWalletRegisterData({
             uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
+            showWalletSelector: false,
           }),
         )
         .put(
@@ -119,6 +119,7 @@ describe("Wallet selector form sagas", () => {
         .put(
           actions.walletSelector.setWalletRegisterData({
             uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
+            showWalletSelector: false,
           }),
         )
         .put(
@@ -163,6 +164,7 @@ describe("Wallet selector form sagas", () => {
         .put(
           actions.walletSelector.setWalletRegisterData({
             uiState: ECommonWalletRegistrationFlowState.REGISTRATION_VERIFYING_EMAIL,
+            showWalletSelector: false,
           }),
         )
         .take(actions.walletSelector.lightWalletRegisterFormData)

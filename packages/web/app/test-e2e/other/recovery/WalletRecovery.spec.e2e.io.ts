@@ -5,17 +5,17 @@ import {
   assertDashboard,
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
-  DEFAULT_HD_PATH,
   generateRandomEmailAddress,
+  getLatestVerifyUserEmailLink,
   getWalletMetaData,
   goToUserAccountSettings,
-  lightWalletTypeLoginInfo,
   lightWalletTypePasswordRegistration,
   lightWalletTypeRegistrationInfo,
   logoutViaAccountMenu,
   tid,
   typeLightwalletRecoveryPhrase,
 } from "../../utils/index";
+import { DEFAULT_HD_PATH } from "./../../utils/constants";
 
 describe("Wallet recovery", function(): void {
   it("should show error modal for invalid recovery phrases #backup #p1", () => {
@@ -29,11 +29,62 @@ describe("Wallet recovery", function(): void {
     cy.get(tid("account-recovery.seed-error")).should("exist");
   });
 
-  it.only("should recover wallet from saved phrases #backup #p2", () => {
+  it("should recover wallet from saved phrases #backup #p2", () => {
     cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
       ({ seed: words, address: expectedGeneratedAddress }) => {
         const password = "strongpassword";
         const email = generateRandomEmailAddress();
+
+        cy.visit(`${appRoutes.restore}`);
+
+        typeLightwalletRecoveryPhrase(words);
+
+        lightWalletTypeRegistrationInfo(email, password);
+
+        assertDashboard();
+        assertWaitForLatestEmailSentWithSalt(email);
+
+        cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
+
+        cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
+        cy.contains(tid("my-wallet-widget-eur-token.large-value"), "0 nEUR");
+        cy.contains(tid("my-wallet-widget-eur-token.value"), "0 EUR");
+
+        goToUserAccountSettings();
+        cy.get(tid("account-address.your.ether-address.from-div")).then(value => {
+          expect(value[0].innerText.toLowerCase()).to.equal(expectedGeneratedAddress);
+        });
+      },
+    );
+  });
+
+  it("should recover the same account twice #backup #p2", () => {
+    cyPromise(() => generateRandomSeedAndAddress(DEFAULT_HD_PATH)).then(
+      ({ seed: words, address: expectedGeneratedAddress }) => {
+        const password = "strongpassword";
+        const email = generateRandomEmailAddress();
+
+        cy.visit(`${appRoutes.restore}`);
+
+        typeLightwalletRecoveryPhrase(words);
+
+        lightWalletTypeRegistrationInfo(email, password);
+
+        assertDashboard();
+        assertWaitForLatestEmailSentWithSalt(email);
+
+        cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
+
+        cy.contains(tid("my-neu-widget-neumark-balance.large-value"), "0 NEU");
+        cy.contains(tid("my-wallet-widget-eur-token.large-value"), "0 nEUR");
+        cy.contains(tid("my-wallet-widget-eur-token.value"), "0 EUR");
+
+        goToUserAccountSettings();
+        cy.get(tid("account-address.your.ether-address.from-div")).then(value => {
+          expect(value[0].innerText.toLowerCase()).to.equal(expectedGeneratedAddress);
+        });
+
+        logoutViaAccountMenu();
 
         cy.visit(`${appRoutes.restore}`);
 
@@ -91,12 +142,8 @@ describe("Wallet recovery", function(): void {
 
         typeLightwalletRecoveryPhrase(seed);
         lightWalletTypePasswordRegistration(password);
-
-        logoutViaAccountMenu();
-
-        cy.visit(appRoutes.login);
-        lightWalletTypeLoginInfo(email, password);
         assertDashboard();
+        getLatestVerifyUserEmailLink(email);
       });
     });
   });

@@ -3,24 +3,28 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { EWalletType } from "../../../../modules/web3/types";
-import { WalletChooser } from "../../shared/WalletChooser";
+import { WalletChooser } from "../WalletChooser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
 export type TWalletBrowserBaseProps = {
-  rootPath: string;
-  showWalletSelector: boolean;
+  isLogin: boolean;
+  showWalletSelector: boolean | undefined;
 };
 
-export const RegisterLedgerBase: React.FunctionComponent<TWalletBrowserBaseProps> = ({
-  rootPath,
+export const LedgerOnboardingContainer: React.FunctionComponent<TWalletBrowserBaseProps> = ({
+  isLogin,
   showWalletSelector,
   children,
 }) => (
   <>
     <div className={styles.wrapper} data-test-id="wallet-selector">
-      <h1 className={styles.title}>
-        <FormattedMessage id="wallet-selector.sign-up.ledger" />
+      <h1 className={styles.title} data-test-id="wallet-selector.login.ledger">
+        {isLogin ? (
+          <FormattedMessage id={"wallet-selector.login.ledger"} />
+        ) : (
+          <FormattedMessage id={"wallet-selector.sign-up.ledger"} />
+        )}
       </h1>
       <section className={styles.main}>
         <span className={styles.explanation}>
@@ -35,9 +39,7 @@ export const RegisterLedgerBase: React.FunctionComponent<TWalletBrowserBaseProps
           />
         </p>
       </section>
-      {showWalletSelector && (
-        <WalletChooser rootPath={rootPath} activeWallet={EWalletType.LEDGER} />
-      )}
+      {showWalletSelector && <WalletChooser isLogin={isLogin} activeWallet={EWalletType.LEDGER} />}
     </div>
   </>
 );

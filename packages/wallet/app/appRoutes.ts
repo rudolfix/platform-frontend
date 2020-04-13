@@ -6,9 +6,9 @@ import { Wallet } from "./components/Wallet";
 
 const appRoutes = {
   // unauthorized routes
-  createWallet: "CreateWallet",
-  importWallet: "ImportWallet",
-  unlockWallet: "UnlockWallet",
+  createAccount: "CreateAccount",
+  importAccount: "ImportAccount",
+  unlockAccount: "UnlockAccount",
   switchAccount: "SwitchAccount",
 
   // authorized routes

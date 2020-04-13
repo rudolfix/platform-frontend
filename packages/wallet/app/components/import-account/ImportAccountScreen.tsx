@@ -40,7 +40,7 @@ const INITIAL_VALUES = {
   phrase: "" as TFormValue["phrase"],
 };
 
-const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   authState,
   importExistingAccount,
 }) => {
@@ -115,14 +115,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const ImportWalletScreen = appConnect<TStateProps, TDispatchProps>({
+const ImportAccountScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     authState: authModuleAPI.selectors.selectAuthState(state),
   }),
   dispatchToProps: dispatch => ({
     importExistingAccount: (privateKeyOrMnemonic: string) =>
-      dispatch(authModuleAPI.actions.importNewAccount(privateKeyOrMnemonic)),
+      dispatch(authModuleAPI.actions.importAccount(privateKeyOrMnemonic)),
   }),
-})(ImportWalletLayout);
+})(ImportAccountLayout);
 
-export { ImportWalletScreen };
+export { ImportAccountScreen };

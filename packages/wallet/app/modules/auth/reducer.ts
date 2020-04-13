@@ -25,7 +25,7 @@ const initialState: IAuthState = {
 const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initialState, action) => {
   switch (action.type) {
     case authActions.createAccount.getType():
-    case authActions.importNewAccount.getType():
+    case authActions.importAccount.getType():
     case authActions.unlockAccount.getType():
       return {
         ...initialState,
@@ -44,7 +44,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
     case authActions.canCreateAccount.getType():
     case authActions.logout.getType():
     case authActions.failedToCreateAccount.getType():
-    case authActions.failedToImportNewAccount.getType():
+    case authActions.failedToImportAccount.getType():
       return initialState;
 
     case authActions.canUnlockAccount.getType():

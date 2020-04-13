@@ -3,11 +3,11 @@ import React from "react";
 import Config from "react-native-config";
 
 import { appRoutes } from "./appRoutes";
-import { ImportWalletScreen } from "./components/import-wallet/ImportWalletScreen";
-import { CreateWalletScreen } from "./components/create-wallet/CreateWalletScreen";
+import { ImportAccountScreen } from "./components/import-account/ImportAccountScreen";
+import { CreateAccountScreen } from "./components/create-account/CreateAccountScreen";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
-import { UnlockWalletScreen } from "./components/unlock-wallet/UnlockWalletScreen";
+import { UnlockAccountScreen } from "./components/unlock-account/UnlockAccountScreen";
 import { TAuthWalletMetadata } from "./modules/auth/module";
 
 const NoAuthStack = createStackNavigator();
@@ -21,7 +21,7 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authWallet }
 
   return (
     <NoAuthStack.Navigator
-      initialRouteName={hasAnAccountToUnlock ? appRoutes.unlockWallet : appRoutes.createWallet}
+      initialRouteName={hasAnAccountToUnlock ? appRoutes.unlockAccount : appRoutes.createAccount}
       screenOptions={({ route, navigation }) => ({
         gestureEnabled: true,
         cardOverlayEnabled: true,
@@ -32,18 +32,18 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authWallet }
       mode="modal"
     >
       <NoAuthStack.Screen
-        name={appRoutes.createWallet}
-        component={CreateWalletScreen}
+        name={appRoutes.createAccount}
+        component={CreateAccountScreen}
         options={{ headerShown: false }}
       />
       <NoAuthStack.Screen
-        name={appRoutes.unlockWallet}
-        component={UnlockWalletScreen}
+        name={appRoutes.unlockAccount}
+        component={UnlockAccountScreen}
         options={{ headerShown: false }}
       />
       <NoAuthStack.Screen
-        name={appRoutes.importWallet}
-        component={ImportWalletScreen}
+        name={appRoutes.importAccount}
+        component={ImportAccountScreen}
         options={{ header: ModalStackHeader }}
       />
       {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (

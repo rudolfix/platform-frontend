@@ -23,7 +23,7 @@ type TDispatchProps = {
   unlockAccount: () => void;
 };
 
-const UnlockWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   unlockAccount,
   authState,
   authWallet,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const UnlockWalletScreen = appConnect<TStateProps, TDispatchProps>({
+const UnlockAccountScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     authState: authModuleAPI.selectors.selectAuthState(state),
     authWallet: authModuleAPI.selectors.selectAuthWallet(state),
@@ -105,6 +105,6 @@ const UnlockWalletScreen = appConnect<TStateProps, TDispatchProps>({
   dispatchToProps: dispatch => ({
     unlockAccount: () => dispatch(authModuleAPI.actions.unlockAccount()),
   }),
-})(UnlockWalletLayout);
+})(UnlockAccountLayout);
 
-export { UnlockWalletScreen };
+export { UnlockAccountScreen };

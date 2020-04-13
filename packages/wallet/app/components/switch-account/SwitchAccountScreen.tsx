@@ -91,7 +91,7 @@ const SwitchAccountScreen = appConnect<TStateProps, TDispatchProps>({
   }),
   dispatchToProps: dispatch => ({
     importExistingAccount: (privateKeyOrMnemonic: string, name: string) =>
-      dispatch(authModuleAPI.actions.importNewAccount(privateKeyOrMnemonic, name, true)),
+      dispatch(authModuleAPI.actions.importAccount(privateKeyOrMnemonic, name, true)),
   }),
 })(SwitchAccountLayout);
 

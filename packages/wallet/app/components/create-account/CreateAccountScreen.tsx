@@ -23,7 +23,7 @@ type TDispatchProps = {
   createAccount: () => void;
 };
 
-const CreateWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+const CreateAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   createAccount,
   authState,
 }) => {
@@ -56,7 +56,7 @@ const CreateWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
         <Button
           style={styles.button}
           layout={EButtonLayout.TEXT_DARK}
-          onPress={() => navigation.navigate(appRoutes.importWallet)}
+          onPress={() => navigation.navigate(appRoutes.importAccount)}
         >
           Import account
         </Button>
@@ -108,13 +108,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const CreateWalletScreen = appConnect<TStateProps, TDispatchProps>({
+const CreateAccountScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
     authState: authModuleAPI.selectors.selectAuthState(state),
   }),
   dispatchToProps: dispatch => ({
     createAccount: () => dispatch(authModuleAPI.actions.createAccount()),
   }),
-})(CreateWalletLayout);
+})(CreateAccountLayout);
 
-export { CreateWalletScreen };
+export { CreateAccountScreen };

@@ -130,7 +130,7 @@ function* createNewAccount(): SagaGenerator<void> {
 }
 
 function* importNewAccount(
-  action: TActionFromCreator<typeof authActions, typeof authActions.importNewAccount>,
+  action: TActionFromCreator<typeof authActions, typeof authActions.importAccount>,
 ): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
@@ -193,7 +193,7 @@ function* importNewAccount(
 
     logger.info("New account imported");
   } catch (e) {
-    yield put(authActions.failedToImportNewAccount());
+    yield put(authActions.failedToImportAccount());
 
     yield put(
       notificationUIModuleApi.actions.showError(
@@ -226,7 +226,7 @@ function* logout(): SagaGenerator<void> {
 
 export function* authSaga(): SagaGenerator<void> {
   yield takeLeading(authActions.createAccount, createNewAccount);
-  yield takeLeading(authActions.importNewAccount, importNewAccount);
+  yield takeLeading(authActions.importAccount, importNewAccount);
   yield takeLeading(authActions.unlockAccount, signInExistingAccount);
   yield takeLeading(authActions.logout, logout);
 }

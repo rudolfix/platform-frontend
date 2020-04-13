@@ -43,7 +43,7 @@ const getInput = (props: TInputProps) => {
 };
 
 /**
- * A wrapper around label, input, help text and error message to just provide single top level api to be used in components
+ * A wrapper around label, input/select, help text and error message to just provide single top level api to be used in components
  */
 const FieldLayout: React.FunctionComponent<TExternalProps> = ({
   style,

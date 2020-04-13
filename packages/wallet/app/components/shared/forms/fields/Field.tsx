@@ -21,6 +21,9 @@ type TExternalProps = {
   inputRef?: Ref<TComponentRefType<typeof TextInput>> | Ref<TComponentRefType<typeof SelectList>>;
 } & TCustomInputProps;
 
+/**
+ * A formik wrapper around `FieldLayout` component
+ */
 const Field: React.FunctionComponent<TExternalProps> = props => {
   const [field, meta] = useField(props);
 

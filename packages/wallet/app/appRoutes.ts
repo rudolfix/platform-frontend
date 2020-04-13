@@ -1,6 +1,6 @@
 import { HomeScreen } from "./components/home/HomeScreen";
 import { Portfolio } from "./components/Portfolio";
-import { Profile } from "./components/Profile";
+import { ProfileScreen } from "./components/profile/ProfileScreen";
 import { EIconType } from "./components/shared/Icon";
 import { Wallet } from "./components/Wallet";
 
@@ -41,7 +41,7 @@ const tabConfig = [
   {
     name: "Profile",
     route: appRoutes.profile,
-    component: Profile,
+    component: ProfileScreen,
     icon: EIconType.PROFILE,
   },
 ];

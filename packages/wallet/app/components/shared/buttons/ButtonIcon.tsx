@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
   },
   buttonCommonLabel: {
     color: baseGray,
+    width: 24,
+    height: 24,
   },
   buttonCommonDisabledLabel: {
     color: blueyGray,

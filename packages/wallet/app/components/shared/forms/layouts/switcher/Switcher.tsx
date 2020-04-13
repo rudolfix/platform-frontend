@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import { roundness, shadowStyles } from "../../../../../styles/common";
 import { SwitcherItem } from "./SwitcherItem";
@@ -27,18 +27,16 @@ const Switcher = React.forwardRef<{}, TExternalProps>(
 
     return (
       <View style={[styles.container, style]} {...props}>
-        <FlatList
-          style={styles.list}
-          data={items}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
+        <ScrollView style={[styles.list]} {...props}>
+          {items.map(item => (
             <SwitcherItem
+              key={item.id}
               onPress={() => onChangeItem(item.id)}
               isSelected={selectedItemId === item.id}
               {...item}
             />
-          )}
-        />
+          ))}
+        </ScrollView>
       </View>
     );
   },

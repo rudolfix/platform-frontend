@@ -6,11 +6,15 @@ import { StyleProp, ViewStyle } from "react-native";
 import { TComponentRefType } from "../../../../utils/types";
 import { EFieldType, FieldLayout } from "../layouts/FieldLayout";
 import { Switcher } from "../layouts/switcher/Switcher";
+import { TextAreaInput } from "../layouts/TextAreaInput";
 import { TextInput } from "../layouts/TextInput";
 
 type TCustomInputProps =
-  | ({ type: EFieldType.INPUT } & {})
-  | ({ type: EFieldType.TEXT_AREA } & {})
+  | ({ type: EFieldType.INPUT } & Pick<React.ComponentProps<typeof TextInput>, "placeholder">)
+  | ({ type: EFieldType.TEXT_AREA } & Pick<
+      React.ComponentProps<typeof TextAreaInput>,
+      "placeholder"
+    >)
   | ({ type: EFieldType.SWITCHER } & Pick<React.ComponentProps<typeof Switcher>, "items">);
 
 type TExternalProps = {

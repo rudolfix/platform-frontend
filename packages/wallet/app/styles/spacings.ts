@@ -14,6 +14,9 @@ export const spacingStyles = StyleSheet.create({
   mv4: {
     marginVertical: spacing4,
   },
+  mv5: {
+    marginVertical: spacing5,
+  },
   mb1: {
     marginBottom: spacing1,
   },
@@ -28,6 +31,9 @@ export const spacingStyles = StyleSheet.create({
   },
   mb5: {
     marginBottom: spacing5,
+  },
+  mr3: {
+    marginRight: spacing3,
   },
   p4: {
     padding: spacing4,

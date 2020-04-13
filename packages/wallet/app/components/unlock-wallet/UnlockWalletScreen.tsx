@@ -49,7 +49,7 @@ const UnlockWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
 
         <Button
           layout={EButtonLayout.TEXT_DARK}
-          onPress={() => navigation.navigate(appRoutes.importWallet)}
+          onPress={() => navigation.navigate(appRoutes.switchAccount)}
         >
           Switch account
         </Button>

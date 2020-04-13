@@ -5,6 +5,7 @@ import { appRoutes } from "./appRoutes";
 import { ImportWalletScreen } from "./components/import-wallet/ImportWalletScreen";
 import { CreateWalletScreen } from "./components/create-wallet/CreateWalletScreen";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
+import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { UnlockWalletScreen } from "./components/unlock-wallet/UnlockWalletScreen";
 import { TAuthWalletMetadata } from "./modules/auth/module";
 
@@ -43,6 +44,11 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authWallet }
         name={appRoutes.importWallet}
         component={ImportWalletScreen}
         options={{ header: ModalStackHeader }}
+      />
+      <NoAuthStack.Screen
+        name={appRoutes.switchAccount}
+        component={SwitchAccountScreen}
+        options={{ header: ModalStackHeader, title: "Switch account" }}
       />
     </NoAuthStack.Navigator>
   );

@@ -34,7 +34,7 @@ const Root: React.FunctionComponent = () => {
             tabBarLabel: ({ color }: TBarProps) => (
               <Text style={{ ...typographyStyles.menuLabel, color }}>{name}</Text>
             ),
-            tabBarIcon: ({ color }: TBarProps) => <Icon color={color} type={icon} />,
+            tabBarIcon: ({ color }: TBarProps) => <Icon style={{ color }} type={icon} />,
           }}
         />
       ))}

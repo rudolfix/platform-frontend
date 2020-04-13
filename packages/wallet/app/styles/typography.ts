@@ -67,7 +67,7 @@ const typographyStyles = StyleSheet.create({
   menuLabel: {
     ...fonts.robotoRegular,
     fontSize: 10,
-    lineHeight: 14,
+    lineHeight: 16,
     letterSpacing: 0.3,
   },
 });

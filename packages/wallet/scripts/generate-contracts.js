@@ -36,6 +36,7 @@ async function generateFixtures() {
         name: value.name,
         type: value.type,
         mnemonic: value.definition.seed,
+        address: value.definition.address,
       }),
       artifactsFixtures,
     );

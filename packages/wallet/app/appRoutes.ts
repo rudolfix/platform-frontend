@@ -9,6 +9,7 @@ const appRoutes = {
   createWallet: "CreateWallet",
   importWallet: "ImportWallet",
   unlockWallet: "UnlockWallet",
+  switchAccount: "SwitchAccount",
 
   // authorized routes
   home: "Home",

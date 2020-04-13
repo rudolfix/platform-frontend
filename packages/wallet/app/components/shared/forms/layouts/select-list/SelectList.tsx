@@ -13,9 +13,9 @@ type TItem = {
 type TViewProps = React.ComponentProps<typeof View>;
 
 type TExternalProps = {
-  selectedItemId: string;
+  selectedItemId: string | undefined;
   items: TItem[];
-  onChangeItem: (item: TItem) => void;
+  onChangeItem: (itemId: string) => void;
 } & TViewProps;
 
 const SelectList: React.FunctionComponent<TExternalProps> = ({
@@ -32,7 +32,7 @@ const SelectList: React.FunctionComponent<TExternalProps> = ({
       keyExtractor={item => item.id}
       renderItem={({ item }) => (
         <SelectListItem
-          onPress={() => onChangeItem(item)}
+          onPress={() => onChangeItem(item.id)}
           isSelected={selectedItemId === item.id}
           {...item}
         />

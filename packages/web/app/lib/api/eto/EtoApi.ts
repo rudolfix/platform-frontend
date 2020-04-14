@@ -1,4 +1,4 @@
-import { Dictionary, EthereumAddress, withParams } from "@neufund/shared";
+import { Dictionary, EthereumAddress, withParams } from "@neufund/shared-utils";
 import { authModuleAPI, coreModuleApi, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 

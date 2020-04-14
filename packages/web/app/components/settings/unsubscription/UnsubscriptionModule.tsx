@@ -1,6 +1,6 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
 import { DynamicModuleLoader } from "@neufund/sagas";
-import { isEmail } from "@neufund/shared";
+import { isEmail } from "@neufund/shared-utils";
 import { marketingEmailsModuleApi, setupMarketingEmailsModule } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

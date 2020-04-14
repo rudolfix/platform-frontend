@@ -1,5 +1,5 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import {
   authModuleAPI,
   EJwtPermissions,

@@ -1,5 +1,5 @@
 import { ButtonBase } from "@neufund/design-system";
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { match, NavLink } from "react-router-dom";

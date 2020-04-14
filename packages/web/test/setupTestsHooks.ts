@@ -1,3 +1,3 @@
-import { autoUnmountEnzymeComponentsHook } from "@neufund/shared/tests";
+import { autoUnmountEnzymeComponentsHook } from "@neufund/shared-utils/tests";
 
 afterEach(autoUnmountEnzymeComponentsHook);

@@ -1,4 +1,4 @@
-import { multiplyBigNumbers } from "@neufund/shared";
+import { multiplyBigNumbers } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { confirmAccessModal, DEFAULT_PASSWORD, parseAmount, tid } from "../../utils";

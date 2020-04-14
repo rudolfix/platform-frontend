@@ -1,4 +1,4 @@
-import { isLessThanNDays } from "@neufund/shared";
+import { isLessThanNDays } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedRelative, FormattedTime } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

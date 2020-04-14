@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 
 import { ArrayWithAtLeastOneMember } from "../../../../shared/src/utils/types";
 import {

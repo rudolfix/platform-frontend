@@ -1,4 +1,4 @@
-import { SelectPropertyNames } from "@neufund/shared";
+import { SelectPropertyNames } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
 import { interfaces } from "inversify";
 import * as Web3 from "web3";

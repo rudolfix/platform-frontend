@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { assertNever, EthereumAddressWithChecksum, nonNullable } from "@neufund/shared";
+import { assertNever, EthereumAddressWithChecksum, nonNullable } from "@neufund/shared-utils";
 
 import { ipfsLinkFromHash } from "../../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";

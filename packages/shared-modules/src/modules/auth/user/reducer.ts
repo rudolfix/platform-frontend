@@ -1,5 +1,5 @@
 import { AppReducer } from "@neufund/sagas";
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { IUser } from "../lib/users/interfaces";
 import { userActions } from "./actions";

@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { BigNumber } from "bignumber.js";
 import * as LightWalletProvider from "eth-lightwallet";

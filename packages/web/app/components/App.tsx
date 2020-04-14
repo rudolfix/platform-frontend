@@ -1,4 +1,4 @@
-import { ContainerContext } from "@neufund/shared";
+import { ContainerContext } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
 import { Container } from "inversify";
 import * as React from "react";

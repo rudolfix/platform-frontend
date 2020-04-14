@@ -1,4 +1,4 @@
-import { invariant, PartialByKeys, TDataTestId } from "@neufund/shared";
+import { invariant, PartialByKeys, TDataTestId } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 

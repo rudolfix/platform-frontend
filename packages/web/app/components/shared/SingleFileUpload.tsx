@@ -1,4 +1,4 @@
-import { ArrayWithAtLeastOneMember } from "@neufund/shared";
+import { ArrayWithAtLeastOneMember } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

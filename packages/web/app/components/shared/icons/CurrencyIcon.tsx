@@ -1,5 +1,5 @@
 import { TokenIcon } from "@neufund/design-system";
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../../types";

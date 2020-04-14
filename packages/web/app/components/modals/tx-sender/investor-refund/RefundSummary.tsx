@@ -1,5 +1,5 @@
 import { ButtonArrowRight } from "@neufund/design-system";
-import { RequiredByKeys } from "@neufund/shared";
+import { RequiredByKeys } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, Container, Row } from "reactstrap";

@@ -1,4 +1,4 @@
-import { ContainerContext } from "@neufund/shared";
+import { ContainerContext } from "@neufund/shared-utils";
 import { ILogger, noopLogger } from "@neufund/shared-modules";
 import * as React from "react";
 

@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { ETH_DECIMALS, EthereumAddressWithChecksum, multiplyBigNumbers } from "@neufund/shared";
+import { ETH_DECIMALS, EthereumAddressWithChecksum, multiplyBigNumbers } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";

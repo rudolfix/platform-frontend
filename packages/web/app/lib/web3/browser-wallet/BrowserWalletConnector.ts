@@ -1,4 +1,4 @@
-import { EthereumNetworkId, promisify } from "@neufund/shared";
+import { EthereumNetworkId, promisify } from "@neufund/shared-utils";
 import { EWalletSubType } from "@neufund/shared-modules";
 import { injectable } from "inversify";
 import * as Web3 from "web3";

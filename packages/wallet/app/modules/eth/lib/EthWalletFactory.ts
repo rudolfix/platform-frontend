@@ -1,4 +1,4 @@
-import { EthereumPrivateKey, EthereumHDMnemonic, toEthereumHDPath } from "@neufund/shared";
+import { EthereumPrivateKey, EthereumHDMnemonic, toEthereumHDPath } from "@neufund/shared-utils";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 import { AppSingleKeyStorage } from "../../storage";

@@ -7,7 +7,7 @@ import {
   EWalletType,
   EWalletSubType,
 } from "@neufund/shared-modules";
-import { isJwtExpiringLateEnough } from "@neufund/shared";
+import { isJwtExpiringLateEnough } from "@neufund/shared-utils";
 
 import { walletEthModuleApi } from "../eth/module";
 import { authActions } from "./actions";

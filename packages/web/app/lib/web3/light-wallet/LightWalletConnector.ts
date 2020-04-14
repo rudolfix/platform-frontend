@@ -1,4 +1,4 @@
-import { toEthereumAddress } from "@neufund/shared";
+import { toEthereumAddress } from "@neufund/shared-utils";
 import { EWalletType, ILogger } from "@neufund/shared-modules";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";

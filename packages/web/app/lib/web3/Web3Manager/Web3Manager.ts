@@ -1,4 +1,4 @@
-import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared";
+import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared-utils";
 import { ESignerType, IEthManager, ILogger } from "@neufund/shared-modules";
 import { BigNumber } from "bignumber.js";
 import PollingBlockTracker from "eth-block-tracker";

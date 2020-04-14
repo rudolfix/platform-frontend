@@ -1,4 +1,4 @@
-import { convertToUlps, ETH_DECIMALS, multiplyBigNumbers, Q18 } from "@neufund/shared";
+import { convertToUlps, ETH_DECIMALS, multiplyBigNumbers, Q18 } from "@neufund/shared-utils";
 import { EUserType } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";

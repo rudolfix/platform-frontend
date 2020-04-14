@@ -1,4 +1,4 @@
-import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared";
+import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { authModuleAPI, EUserType, EWalletType, IUser } from "@neufund/shared-modules";
 import { createSelector } from "reselect";
 

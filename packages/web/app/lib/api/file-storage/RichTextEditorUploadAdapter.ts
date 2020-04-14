@@ -1,5 +1,5 @@
 import { IUploadAdapter, IUploadAdapterFactory, TLoader } from "@ckeditor/ckeditor5-react";
-import { toReadableBytes } from "@neufund/shared";
+import { toReadableBytes } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
 import { inject, interfaces } from "inversify";
 

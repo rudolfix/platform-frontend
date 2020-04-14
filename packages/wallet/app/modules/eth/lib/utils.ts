@@ -3,7 +3,7 @@ import {
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumHDMnemonic,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { utils } from "ethers";
 import isString from "lodash/fp/isString";
 

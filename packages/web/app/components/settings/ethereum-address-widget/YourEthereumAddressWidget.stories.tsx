@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddress } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 

@@ -1,4 +1,4 @@
-import { toCamelCase, toSnakeCase, withParams } from "@neufund/shared";
+import { toCamelCase, toSnakeCase, withParams } from "@neufund/shared-utils";
 import { isFunction } from "lodash/fp";
 
 import { etoRegisterRoutes } from "../../../components/eto/registration/routes";

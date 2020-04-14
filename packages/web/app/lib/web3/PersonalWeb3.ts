@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared";
+import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared-utils";
 import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { TxData } from "web3";
 

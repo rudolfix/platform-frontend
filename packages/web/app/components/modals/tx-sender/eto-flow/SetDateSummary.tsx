@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { nonNullable, withParams } from "@neufund/shared";
+import { nonNullable, withParams } from "@neufund/shared-utils";
 import { find } from "lodash";
 import * as moment from "moment";
 import * as React from "react";

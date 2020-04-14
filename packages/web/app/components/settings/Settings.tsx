@@ -1,4 +1,4 @@
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import { EUserType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

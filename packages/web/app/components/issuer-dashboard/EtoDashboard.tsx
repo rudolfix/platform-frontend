@@ -1,4 +1,4 @@
-import { RequiredByKeys, withContainer } from "@neufund/shared";
+import { RequiredByKeys, withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, lifecycle, renderComponent, withProps } from "recompose";

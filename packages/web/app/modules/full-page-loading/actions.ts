@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 export const fullPageLoadingActions = {
   showFullPageLoading: createActionFactory("FULL_PAGE_LOADING_SHOW"),

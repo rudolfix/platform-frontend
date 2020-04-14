@@ -1,5 +1,5 @@
 import { channel, fork, put, race, take } from "@neufund/sagas";
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import { authModuleAPI } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";

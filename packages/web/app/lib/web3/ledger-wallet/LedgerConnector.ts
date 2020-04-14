@@ -1,5 +1,5 @@
 import Eth from "@ledgerhq/hw-app-eth";
-import { EthereumNetworkId } from "@neufund/shared";
+import { EthereumNetworkId } from "@neufund/shared-utils";
 import { EWalletType } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";

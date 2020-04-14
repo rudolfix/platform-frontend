@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { RouterState } from "connected-react-router";
 import { isString } from "lodash";

@@ -1,4 +1,4 @@
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { expect } from "chai";
 

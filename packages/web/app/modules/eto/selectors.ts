@@ -1,4 +1,4 @@
-import { DataUnavailableError, DeepReadonly, nonNullable } from "@neufund/shared";
+import { DataUnavailableError, DeepReadonly, nonNullable } from "@neufund/shared-utils";
 import { EUserType } from "@neufund/shared-modules";
 import { find } from "lodash/fp";
 import createCachedSelector from "re-reselect";

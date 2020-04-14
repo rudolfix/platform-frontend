@@ -1,4 +1,4 @@
-import { Dictionary } from "@neufund/shared";
+import { Dictionary } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 import defaultTo from "lodash/defaultTo";

@@ -1,4 +1,4 @@
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

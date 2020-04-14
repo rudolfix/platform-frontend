@@ -1,4 +1,4 @@
-import { promisify, toCamelCase } from "@neufund/shared";
+import { promisify, toCamelCase } from "@neufund/shared-utils";
 import { IUser } from "@neufund/shared-modules";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";

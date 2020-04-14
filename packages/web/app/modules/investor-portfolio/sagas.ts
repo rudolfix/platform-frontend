@@ -7,7 +7,7 @@ import {
   EthereumAddress,
   nonNullable,
   Q18,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { contractsModuleApi, IUser } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";

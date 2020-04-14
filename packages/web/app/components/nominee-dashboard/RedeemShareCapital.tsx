@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { DataUnavailableError } from "@neufund/shared";
+import { DataUnavailableError } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

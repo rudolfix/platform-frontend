@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { GasModelShape } from "../../lib/api/gas/GasApi";
 import { AppReducer } from "../../store";

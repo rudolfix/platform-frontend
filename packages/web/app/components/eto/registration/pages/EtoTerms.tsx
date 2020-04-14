@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { DeepReadonly, RequiredByKeys } from "@neufund/shared";
+import { DeepReadonly, RequiredByKeys } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
 import { FormikConsumer } from "formik";
 import * as React from "react";

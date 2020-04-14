@@ -1,4 +1,4 @@
-import { convertToUlps, Q18 } from "@neufund/shared";
+import { convertToUlps, Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { expect } from "chai";
 import * as sinon from "sinon";

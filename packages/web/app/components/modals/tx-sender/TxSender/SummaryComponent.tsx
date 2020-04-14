@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { ETxSenderType } from "../../../../modules/tx/types";

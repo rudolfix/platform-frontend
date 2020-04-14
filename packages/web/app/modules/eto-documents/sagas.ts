@@ -1,5 +1,5 @@
 import { all, call, fork, put, select } from "@neufund/sagas";
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import { EJwtPermissions } from "@neufund/shared-modules";
 
 import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";

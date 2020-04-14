@@ -1,4 +1,4 @@
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { Redirect } from "react-router";
 import { branch, compose, renderComponent, setDisplayName } from "recompose";

@@ -1,4 +1,4 @@
-import { DeepReadonly, Dictionary, Overwrite } from "@neufund/shared";
+import { DeepReadonly, Dictionary, Overwrite } from "@neufund/shared-utils";
 
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EAgreementType } from "../tx/transactions/nominee/sign-agreement/types";

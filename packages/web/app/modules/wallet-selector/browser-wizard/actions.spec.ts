@@ -1,6 +1,6 @@
 import { expectSaga } from "@neufund/sagas/tests";
 import { EWalletSubType, EWalletType, noopLogger } from "@neufund/shared-modules";
-import { createMock } from "@neufund/shared/tests";
+import { createMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 
 import { dummyEthereumAddressWithChecksum, dummyNetworkId } from "../../../../test/fixtures";

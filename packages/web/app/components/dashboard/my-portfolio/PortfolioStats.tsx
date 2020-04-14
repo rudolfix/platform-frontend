@@ -5,7 +5,7 @@ import {
   nonNullable,
   OmitKeys,
   withContainer,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

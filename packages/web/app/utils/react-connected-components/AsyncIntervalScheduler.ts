@@ -1,4 +1,4 @@
-import { isPromise } from "@neufund/shared";
+import { isPromise } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
 import { interfaces } from "inversify";
 

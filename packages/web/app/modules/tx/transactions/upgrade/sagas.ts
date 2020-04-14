@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddress } from "@neufund/shared-utils";
 import { addHexPrefix } from "ethereumjs-util";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";

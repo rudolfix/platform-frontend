@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { ITxData } from "../../../lib/web3/types";
 import { createAction, createSimpleAction } from "../../actionsUtils";

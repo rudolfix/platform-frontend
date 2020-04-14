@@ -3,7 +3,7 @@ import {
   convertToUlps,
   ETH_DECIMALS,
   subtractBigNumbers,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 
 import { TAppGlobalState } from "../../../../store";

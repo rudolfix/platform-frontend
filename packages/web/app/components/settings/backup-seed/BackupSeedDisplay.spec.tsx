@@ -1,4 +1,4 @@
-import { tid } from "@neufund/shared/tests";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import { noop } from "lodash";

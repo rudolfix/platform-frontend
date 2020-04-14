@@ -1,4 +1,4 @@
-import { minutesToMs, secondsToMs } from "@neufund/shared";
+import { minutesToMs, secondsToMs } from "@neufund/shared-utils";
 import { EUserType } from "@neufund/shared-modules";
 export const AUTH_JWT_TIMING_THRESHOLD = secondsToMs(10);
 

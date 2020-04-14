@@ -1,6 +1,6 @@
-import { safeDelay } from "@neufund/shared";
+import { safeDelay } from "@neufund/shared-utils";
 import { noopLogger } from "@neufund/shared-modules";
-import { setupFakeClock } from "@neufund/shared/tests";
+import { setupFakeClock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { spy } from "sinon";
 

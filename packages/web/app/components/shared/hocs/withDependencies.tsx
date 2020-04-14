@@ -1,4 +1,4 @@
-import { ContainerContext, TContainerContext, Values } from "@neufund/shared";
+import { ContainerContext, TContainerContext, Values } from "@neufund/shared-utils";
 import { mapValues } from "lodash";
 import { fromRenderProps } from "recompose";
 

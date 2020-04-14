@@ -1,4 +1,4 @@
-import { EquityToken, EthereumAddressWithChecksum, EthereumTxHash } from "@neufund/shared";
+import { EquityToken, EthereumAddressWithChecksum, EthereumTxHash } from "@neufund/shared-utils";
 
 import * as YupTS from "../../yup-ts.unsafe";
 

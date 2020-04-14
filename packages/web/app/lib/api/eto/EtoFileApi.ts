@@ -1,4 +1,4 @@
-import { withParams } from "@neufund/shared";
+import { withParams } from "@neufund/shared-utils";
 import { authModuleAPI, IHttpClient } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 import { Dictionary } from "lodash";

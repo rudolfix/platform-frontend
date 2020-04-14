@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { ETokenType } from "../tx/types";
 import { ILockedWallet } from "../wallet/reducer";

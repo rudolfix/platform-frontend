@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";

@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { ENomineeRequestComponentState } from "../../components/nominee-dashboard/linkToIssuer/types";
 import { AppReducer } from "../../store";

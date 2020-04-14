@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { multiplyBigNumbers, Q18, subtractBigNumbers } from "@neufund/shared";
+import { multiplyBigNumbers, Q18, subtractBigNumbers } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";

@@ -1,5 +1,5 @@
 import { noopLogger } from "@neufund/shared-modules";
-import { createMock } from "@neufund/shared/tests";
+import { createMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 
 import { ObjectStorage } from "./ObjectStorage";

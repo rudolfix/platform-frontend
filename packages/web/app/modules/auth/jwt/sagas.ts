@@ -93,7 +93,7 @@ export function* authJwtSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
     authModuleAPI.actions.setJWT,
-    actions.init.stopServices,
+    authModuleAPI.actions.stopJwtExpirationWatcher,
     handleJwtTimeout,
   );
 }

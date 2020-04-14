@@ -293,8 +293,13 @@ export function* authUserSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeUntil,
     actions.auth.setUser,
-    actions.init.stopServices,
+    actions.auth.stopUserActivityWatcher,
     waitForUserActiveOrLogout,
   );
-  yield fork(neuTakeLatestUntil, actions.auth.setUser, actions.init.stopServices, profileMonitor);
+  yield fork(
+    neuTakeLatestUntil,
+    actions.auth.setUser,
+    actions.auth.stopProfileMonitor,
+    profileMonitor,
+  );
 }

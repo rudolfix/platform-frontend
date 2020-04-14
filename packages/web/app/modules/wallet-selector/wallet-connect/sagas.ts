@@ -1,4 +1,4 @@
-import { END, eventChannel, fork, neuTakeLatest, put, take } from "@neufund/sagas";
+import { END, eventChannel, fork, neuTakeLatest, put, select, take } from "@neufund/sagas";
 
 import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";

@@ -56,7 +56,8 @@ function* allSagas(): Generator<any, any, any> {
     fork(neuTakeLatest, actions.init.startServices, browserWalletSagas),
     fork(neuTakeLatest, actions.init.startServices, ledgerSagas),
     fork(neuTakeLatest, actions.init.startServices, notificationModalSagas),
-    // Sagas that should be restarted after logout occurs
+
+    // Sagas that should be restarted after logout
     fork(neuTakeUntil, actions.init.startServices, actions.init.stopServices, termsOfServiceSagas),
     fork(neuTakeUntil, actions.init.startServices, actions.init.stopServices, bankTransferFlowSaga),
     fork(neuTakeUntil, actions.init.startServices, actions.init.stopServices, txSenderSagasWatcher),

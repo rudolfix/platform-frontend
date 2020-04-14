@@ -1,4 +1,5 @@
 import { all, delay, fork, put, race, select, take } from "@neufund/sagas";
+import { EUserType } from "@neufund/shared-modules";
 import {
   convertFromUlps,
   Dictionary,
@@ -9,7 +10,6 @@ import {
   nonNullable,
   Q18,
 } from "@neufund/shared-utils";
-import { EUserType } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { LOCATION_CHANGE } from "connected-react-router";
 import { camelCase, isString } from "lodash";

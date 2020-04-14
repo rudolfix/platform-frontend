@@ -1,4 +1,3 @@
-import { DeepReadonly } from "@neufund/shared-utils";
 import {
   appConnect as sharedAppConnect,
   setupAuthModule,
@@ -9,6 +8,7 @@ import {
   TModuleSetup,
   TModuleState,
 } from "@neufund/shared-modules";
+import { DeepReadonly } from "@neufund/shared-utils";
 import {
   connectRouter,
   LocationChangeAction,

@@ -1,5 +1,5 @@
-import { ContainerContext } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
+import { ContainerContext } from "@neufund/shared-utils";
 import * as React from "react";
 import { ComponentEnhancer, nest, withProps } from "recompose";
 

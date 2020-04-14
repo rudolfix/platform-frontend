@@ -8781,10 +8781,10 @@ detect-port@^1.3.0:
     address "^1.0.1"
     debug "^2.6.0"
 
-detox@^15.2.0:
-  version "15.2.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-15.2.0.tgz#7e17e8108c7514e07bf6aad9aa1a3d2bff46c9ce"
-  integrity sha512-YpVHn8j/eSm611bFCLpLLxW+XsaeYipH+9OduJOp2RkK27rqSoW0TOZ18YaDp6GFhkb/cxRnDgkSn3d/cDJTMg==
+detox@^16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-16.2.0.tgz#f1689ed29682b3e7b199eb50ab4906ec4c38ede1"
+  integrity sha512-Wg2a+G3mPNSeDcHfT7o22hSH8m3LMQXQoqopRn0Ka5k+hWbnXtQKf0JK7DWQe4gLJKnSads7BEuZ/Q7wfFbSAw==
   dependencies:
     "@babel/core" "^7.4.5"
     bunyan "^1.8.12"

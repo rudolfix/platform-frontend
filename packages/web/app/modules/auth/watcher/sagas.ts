@@ -96,5 +96,5 @@ export function* watchTimeoutActions(): Generator<any, any, any> {
 
 export function* authWatcherSagas(): Generator<any, any, any> {
   yield fork(watchRedirectChannel);
-  yield neuTakeUntil(actions.auth.setUser, actions.init.stopServices, watchTimeoutActions);
+  yield neuTakeUntil(actions.auth.setUser, actions.auth.stopTimeoutWatcher, watchTimeoutActions);
 }

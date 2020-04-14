@@ -29,6 +29,12 @@ function* startGlobalWatchers(): SagaGenerator<void> {
 
 export function* stopGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStop());
+  yield put(actions.auth.stopProfileMonitor());
+  yield put(actions.auth.stopUserActivityWatcher());
+  yield put(actions.auth.stopTimeoutWatcher());
+  yield put(authModuleAPI.actions.stopJwtExpirationWatcher());
+  yield put(actions.txMonitor.stopTxMonitor());
+  yield put(actions.wallet.stopWalletBalanceWatcher());
 }
 
 function* initSmartcontracts({

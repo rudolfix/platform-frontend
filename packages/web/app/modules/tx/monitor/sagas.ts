@@ -212,7 +212,7 @@ function* removePendingTransaction({ logger }: TGlobalDependencies): Generator<a
 }
 
 export function* txMonitorSagas(): any {
-  yield fork(neuTakeUntil, actions.auth.setUser, actions.init.stopServices, txMonitor);
+  yield fork(neuTakeUntil, actions.auth.setUser, actions.txMonitor.stopTxMonitor, txMonitor);
   yield fork(neuTakeLatest, actions.txMonitor.monitorPendingPlatformTx, txMonitorSaga);
   yield fork(neuTakeLatest, actions.txMonitor.deletePendingTransaction, removePendingTransaction);
 }

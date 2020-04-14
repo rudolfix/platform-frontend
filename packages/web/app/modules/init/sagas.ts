@@ -1,6 +1,6 @@
-import { call, fork, put, select } from "@neufund/sagas";
+import { call, fork, put, SagaGenerator, select } from "@neufund/sagas";
 import { isJwtExpiringLateEnough } from "@neufund/shared";
-import { authModuleAPI } from "@neufund/shared-modules";
+import { authModuleAPI, tokenPriceModuleApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TStoredWalletConnectData } from "../../lib/persistence/WalletConnectStorage";
@@ -9,7 +9,7 @@ import { actions, TActionFromCreator } from "../actions";
 import { ELogoutReason } from "../auth/types";
 import { loadUser } from "../auth/user/external/sagas";
 import { handleLogOutUserInternal } from "../auth/user/sagas";
-import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
+import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
 import { walletConnectInit } from "../wallet-selector/wallet-connect/sagas";
@@ -20,6 +20,13 @@ import { WalletMetadataNotFoundError } from "./errors";
 import { EInitType } from "./reducer";
 import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 
+/**
+ * Starts watching for token prices
+ */
+function* initGlobalWatchers(): SagaGenerator<void> {
+  yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
+}
+
 function* initSmartcontracts({
   web3Manager,
   logger,
@@ -29,7 +36,6 @@ function* initSmartcontracts({
     yield web3Manager.initialize();
 
     yield neuCall(initializeContracts);
-    yield neuCall(populatePlatformTermsConstants);
 
     yield put(actions.init.done(EInitType.SMART_CONTRACTS_INIT));
   } catch (e) {
@@ -109,6 +115,7 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
       yield neuCall(deleteWalletConnectSession);
     }
     yield waitUntilSmartContractsAreInitialized();
+    yield neuCall(initGlobalWatchers);
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
     if (e instanceof WalletMetadataNotFoundError) {

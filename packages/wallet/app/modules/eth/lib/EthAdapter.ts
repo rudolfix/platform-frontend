@@ -86,6 +86,15 @@ class EthAdapter {
 
     return this.provider.sendTransaction(signedTransaction);
   }
+
+  /**
+   * Returns an internal provider to be used in contracts
+   */
+  async getInternalProvider(): Promise<providers.Provider> {
+    this.logger.info(`Returning ethers provider`);
+
+    return this.provider;
+  }
 }
 
 const ethAdapterFactory = (context: interfaces.Context) => {

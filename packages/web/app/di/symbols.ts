@@ -5,6 +5,8 @@ import {
   ISingleKeyStorage,
 } from "@neufund/shared-modules";
 
+import { ContractsService } from "../lib/web3/ContractsService";
+
 export const symbols = {
   // configs
   config: Symbol("config"),
@@ -26,7 +28,7 @@ export const symbols = {
   gasApi: Symbol("gasApi"),
 
   // contracts
-  contractsService: Symbol("contractsService"),
+  contractsService: createLibSymbol<ContractsService>("contractsService"),
 
   // wallets
   lightWalletUtil: Symbol("lightWalletUtil"),

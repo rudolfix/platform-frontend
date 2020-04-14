@@ -3,7 +3,7 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../shared/loading-indicator";
 import {
   MyWalletWidgetComponentContainer,
   MyWalletWidgetComponentLayout,
@@ -37,11 +37,7 @@ storiesOf("NDS|Molecules/Dashboard/MyWalletWidget", module)
       </MyWalletWidgetComponentContainer>
     );
   })
-  .add("default", () => (
-    <MyWalletWidgetComponentContainer {...props}>
-      <MyWalletWidgetComponentLayout {...props} />
-    </MyWalletWidgetComponentContainer>
-  ))
+  .add("default", () => <MyWalletWidgetComponentLayout {...props} />)
   .add("error", () => {
     const testData = {
       ...props,
@@ -62,9 +58,5 @@ storiesOf("NDS|Molecules/Dashboard/MyWalletWidget", module)
         isLockedWalletConnected: false,
       },
     };
-    return (
-      <MyWalletWidgetComponentContainer {...testData}>
-        <MyWalletWidgetComponentLayout {...testData} />
-      </MyWalletWidgetComponentContainer>
-    );
+    return <MyWalletWidgetComponentLayout {...testData} />;
   });

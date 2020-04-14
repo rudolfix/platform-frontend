@@ -21,7 +21,6 @@
     "tsc:unit": "tsc --project ./tsconfig.unit.json",
     "lint": "concurrently -p '[LINT:{name}]' -n 'FORMAT,TSC' -c 'bgYellow.bold,bgGreen.bold' 'yarn format' 'yarn tsc'",
     "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prepare": "echo 'Nothing to prepare for wallet yet...'",
     "test": "jest",
     "test:watch": "jest --watch",
     "e2e:build:ios-debug": "detox build --configuration ios.sim.debug",
@@ -41,7 +40,9 @@
     "storybook:ios:release": "ENVFILE=./storybook/.storybook-config react-native run-ios --configuration Release",
     "storybook:android": "ENVFILE=./storybook/.storybook-config react-native run-android",
     "storybook:android:release": "ENVFILE=./storybook/.storybook-config react-native run-android --variant release",
-    "postinstall": "patch-package"
+    "contract-artifacts:generate": "node ./scripts/generate-contracts.js",
+    "postinstall": "patch-package",
+    "prepare": "yarn contract-artifacts:generate"
   },
   "dependencies": {
     "@neufund/sagas": "^1.0.0",
@@ -53,9 +54,11 @@
     "@react-navigation/native": "^5.0.1",
     "@react-navigation/stack": "^5.0.1",
     "@walletconnect/react-native": "^1.0.0-beta.47",
+    "bignumber.js": "^5.0.0",
     "ethers": "^4.0.45",
     "eventemitter2": "^6.0.0",
     "inversify": "^4.10.0",
+    "process": "^0.11.10",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-camera": "^3.19.0",
@@ -72,10 +75,12 @@
     "react-native-svg-transformer": "^0.14.3",
     "react-redux": "^6.0.0",
     "recompose": "^0.30.0",
-    "reselect": "^4.0.0",
     "redux": "^4.0.1",
     "reflect-metadata": "^0.1.10",
+    "reselect": "^4.0.0",
+    "stream-browserify": "^2.0.2",
     "tslib": "^1.10.0",
+    "vm-browserify": "^1.1.2",
     "yup": "^0.28.1"
   },
   "devDependencies": {
@@ -108,15 +113,18 @@
     "eslint": "^6.5.1",
     "eslint-plugin-import": "^2.20.1",
     "jest": "^25.1.0",
+    "metro-config": "^0.56.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "prettier": "^1.19.1",
     "react-devtools": "^3.6.3",
     "react-native-clean-project": "^3.3.0",
     "react-test-renderer": "16.9.0",
+    "ts-generator": "^0.0.8",
     "ts-jest": "^25.2.1",
+    "typechain": "^1.0.5",
+    "typechain-target-ethers": "^1.0.4",
     "typedoc": "^0.16.10",
-    "typescript": "^3.7.3",
-    "metro-config": "^0.56.0"
+    "typescript": "^3.7.3"
   },
   "workspaces": {
     "nohoist": [

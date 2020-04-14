@@ -2,11 +2,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import React from "react";
 import { Text } from "react-native";
+import Config from "react-native-config";
 
-import { appRoutes, tabConfig } from "./appRoutes";
+import { appRoutes } from "./appRoutes";
+import { HomeScreen } from "./components/home/HomeScreen";
+import { Portfolio } from "./components/Portfolio";
+import { ProfileScreen } from "./components/profile/ProfileScreen";
 import { QRCode } from "./components/QRCode";
-import { Icon } from "./components/shared/Icon";
+import { EIconType, Icon } from "./components/shared/Icon";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
+import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
+import { Wallet } from "./components/Wallet";
 import { typographyStyles } from "./styles/typography";
 import { useTheme } from "./themes/ThemeProvider";
 
@@ -14,6 +20,33 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 type TBarProps = { color?: string };
+
+const tabConfig = [
+  {
+    name: "Home",
+    route: appRoutes.home,
+    component: HomeScreen,
+    icon: EIconType.HOME,
+  },
+  {
+    name: "Portfolio",
+    route: appRoutes.portfolio,
+    component: Portfolio,
+    icon: EIconType.PORTFOLIO,
+  },
+  {
+    name: "Wallet",
+    route: appRoutes.wallet,
+    component: Wallet,
+    icon: EIconType.WALLET,
+  },
+  {
+    name: "Profile",
+    route: appRoutes.profile,
+    component: ProfileScreen,
+    icon: EIconType.PROFILE,
+  },
+];
 
 const Root: React.FunctionComponent = () => {
   const { navigationTheme } = useTheme();
@@ -73,6 +106,13 @@ const AppAuthRouter: React.FunctionComponent = () => (
           header: ModalStackHeader,
         }}
       />
+      {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
+        <Stack.Screen
+          name={appRoutes.switchAccount}
+          component={SwitchAccountScreen}
+          options={{ header: ModalStackHeader, title: "Switch account" }}
+        />
+      )}
     </Stack.Navigator>
   </>
 );

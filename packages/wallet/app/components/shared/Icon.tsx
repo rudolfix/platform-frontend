@@ -8,6 +8,7 @@ import Home from "../../assets/home.svg";
 import Investments from "../../assets/investments.svg";
 import Profile from "../../assets/profile.svg";
 import Wallet from "../../assets/wallet.svg";
+import RightArrow from "../../assets/right-arrow.svg";
 import Close from "../../assets/close.svg";
 import Placeholder from "../../assets/placeholder.svg";
 import Share from "../../assets/share.svg";
@@ -21,6 +22,7 @@ enum EIconType {
   WALLET = "wallet",
   CLOSE = "close",
   PLACEHOLDER = "placeholder",
+  RIGHT_ARROW = "right-arrow",
   YES = "yes",
 }
 
@@ -42,6 +44,8 @@ const getIcon = (type: EIconType) => {
       return Placeholder;
     case EIconType.SHARE:
       return Share;
+    case EIconType.RIGHT_ARROW:
+      return RightArrow;
     case EIconType.YES:
       return Yes;
     default:

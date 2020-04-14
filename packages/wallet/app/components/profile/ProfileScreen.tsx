@@ -1,32 +1,68 @@
 import { nonNullable } from "@neufund/shared";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Config from "react-native-config";
 
+import { appRoutes } from "../../appRoutes";
 import { authModuleAPI } from "../../modules/auth/module";
 import { appConnect } from "../../store/utils";
 import { spacingStyles } from "../../styles/spacings";
+import { EIconType } from "../shared/Icon";
 import { Screen } from "../shared/Screen";
 import { AddressShare } from "./AddressShare";
 import { Avatar } from "./Avatar";
+import { Menu } from "./Menu";
+import { EMenuItemType } from "./MenuItem";
 
 type TStateProps = {
   authWallet: NonNullable<ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>>;
 };
 
-const ProfileLayout: React.FunctionComponent<TStateProps> = ({ authWallet }) => (
-  <Screen>
-    <Avatar name={authWallet.name ?? "Unknown"} style={styles.avatar} />
+type TMenuProps = React.ComponentProps<typeof Menu>;
 
-    <AddressShare address={authWallet.address} style={styles.addressShare} />
-  </Screen>
-);
+const ProfileLayout: React.FunctionComponent<TStateProps> = ({ authWallet }) => {
+  const navigation = useNavigation();
+
+  const items = React.useMemo(() => {
+    let items: TMenuProps["items"] = [];
+
+    if (Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost") {
+      items = items.concat([
+        {
+          id: "switch-account",
+          type: EMenuItemType.BUTTON,
+          heading: "Switch account",
+          helperText: authWallet.name,
+          icon: EIconType.WALLET,
+          onPress: () => navigation.navigate(appRoutes.switchAccount),
+        },
+      ]);
+    }
+
+    return items;
+  }, []);
+
+  return (
+    <Screen>
+      <View style={styles.menuHeader}>
+        <Avatar name={authWallet.name} />
+
+        <AddressShare address={authWallet.address} style={styles.addressShare} />
+      </View>
+
+      <Menu items={items} />
+    </Screen>
+  );
+};
 
 const styles = StyleSheet.create({
-  avatar: {
-    ...spacingStyles.m5,
+  menuHeader: {
+    ...spacingStyles.mh4,
+    ...spacingStyles.mv5,
   },
   addressShare: {
-    ...spacingStyles.m4,
+    ...spacingStyles.mt5,
   },
 });
 

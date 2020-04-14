@@ -1,0 +1,45 @@
+import { assertNever } from "@neufund/shared";
+import React from "react";
+import { ScrollView } from "react-native";
+
+import { MenuItemButton, EMenuItemType, EMenuItemPosition } from "./MenuItem";
+import type { TMenuItem } from "./MenuItem";
+
+type TScrollViewProps = React.ComponentProps<typeof ScrollView>;
+
+type TExternalProps = {
+  items: TMenuItem[];
+} & TScrollViewProps;
+
+const getItemPosition = (index: number, length: number) => {
+  switch (index) {
+    case 0:
+      return EMenuItemPosition.FIRST;
+    case length - 1:
+      return EMenuItemPosition.LAST;
+    default:
+      return EMenuItemPosition.UNKNOWN;
+  }
+};
+
+const Menu: React.FunctionComponent<TExternalProps> = ({ items, ...props }) => (
+  <ScrollView {...props}>
+    {items.map((item, index) => {
+      switch (item.type) {
+        case EMenuItemType.BUTTON:
+          return (
+            <MenuItemButton
+              key={item.id}
+              {...item}
+              position={getItemPosition(index, items.length)}
+            />
+          );
+
+        default:
+          assertNever(item.type, "Not support menu item type");
+      }
+    })}
+  </ScrollView>
+);
+
+export { Menu };

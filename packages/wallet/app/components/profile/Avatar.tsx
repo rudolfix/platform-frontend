@@ -8,7 +8,7 @@ import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 
 type TViewProps = React.ComponentProps<typeof View>;
 
-type TExternalProps = { name: string } & TViewProps;
+type TExternalProps = { name?: string } & TViewProps;
 
 const ICON_SIZE = 48;
 
@@ -17,7 +17,11 @@ const Avatar: React.FunctionComponent<TExternalProps> = ({ name, style, ...props
     <View style={styles.iconWrapper}>
       <Icon type={EIconType.PROFILE} style={styles.icon} />
     </View>
-    <Headline level={EHeadlineLevel.LEVEL3}>{name}</Headline>
+    {name && (
+      <Headline style={styles.name} level={EHeadlineLevel.LEVEL3}>
+        {name}
+      </Headline>
+    )}
   </View>
 );
 
@@ -27,7 +31,6 @@ const styles = StyleSheet.create({
   },
   iconWrapper: {
     ...spacingStyles.p3,
-    ...spacingStyles.mb3,
     backgroundColor: silverLighter1,
     borderRadius: (ICON_SIZE + spacing3 * 2) / 2,
   },
@@ -35,6 +38,9 @@ const styles = StyleSheet.create({
     color: baseGray,
     width: ICON_SIZE,
     height: ICON_SIZE,
+  },
+  name: {
+    ...spacingStyles.mt3,
   },
 });
 

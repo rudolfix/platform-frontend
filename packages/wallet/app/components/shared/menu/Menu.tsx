@@ -22,6 +22,10 @@ const getItemPosition = (index: number, length: number) => {
   }
 };
 
+/**
+ * A menu that aligns with our design system.
+ * For now only button menu item is supported
+ */
 const Menu: React.FunctionComponent<TExternalProps> = ({ items, ...props }) => (
   <ScrollView {...props}>
     {items.map((item, index) => {
@@ -42,4 +46,4 @@ const Menu: React.FunctionComponent<TExternalProps> = ({ items, ...props }) => (
   </ScrollView>
 );
 
-export { Menu };
+export { Menu, EMenuItemType };

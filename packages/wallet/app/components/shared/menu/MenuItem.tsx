@@ -1,11 +1,17 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { baseGray, baseSilver, blueyGray, grayLighter1, grayLighter4 } from "../../styles/colors";
-import { spacingStyles } from "../../styles/spacings";
-import { EIconType, Icon } from "../shared/Icon";
-import { BodyText } from "../shared/typography/BodyText";
-import { Text } from "../shared/typography/Text";
-import { st } from "../utils";
+import {
+  baseGray,
+  baseSilver,
+  blueyGray,
+  grayLighter1,
+  grayLighter4,
+} from "../../../styles/colors";
+import { spacingStyles } from "../../../styles/spacings";
+import { EIconType, Icon } from "../Icon";
+import { BodyText } from "../typography/BodyText";
+import { Text } from "../typography/Text";
+import { st } from "../../utils";
 
 enum EMenuItemPosition {
   FIRST = "first",

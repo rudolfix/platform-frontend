@@ -12,8 +12,7 @@ import { EIconType } from "../shared/Icon";
 import { Screen } from "../shared/Screen";
 import { AddressShare } from "./AddressShare";
 import { Avatar } from "./Avatar";
-import { Menu } from "./Menu";
-import { EMenuItemType } from "./MenuItem";
+import { Menu, EMenuItemType } from "../shared/menu/Menu";
 
 type TStateProps = {
   authWallet: NonNullable<ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>>;
@@ -25,10 +24,10 @@ const ProfileLayout: React.FunctionComponent<TStateProps> = ({ authWallet }) => 
   const navigation = useNavigation();
 
   const items = React.useMemo(() => {
-    let items: TMenuProps["items"] = [];
+    const defaultItems: TMenuProps["items"] = [];
 
     if (Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost") {
-      items = items.concat([
+      return defaultItems.concat([
         {
           id: "switch-account",
           type: EMenuItemType.BUTTON,
@@ -40,7 +39,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps> = ({ authWallet }) => 
       ]);
     }
 
-    return items;
+    return defaultItems;
   }, []);
 
   return (

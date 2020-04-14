@@ -23,8 +23,12 @@ import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 /**
  * Starts watching for token prices
  */
-function* initGlobalWatchers(): SagaGenerator<void> {
+function* startGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
+}
+
+export function* stopGlobalWatchers(): SagaGenerator<void> {
+  yield put(tokenPriceModuleApi.actions.watchTokenPriceStop());
 }
 
 function* initSmartcontracts({
@@ -115,7 +119,7 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
       yield neuCall(deleteWalletConnectSession);
     }
     yield waitUntilSmartContractsAreInitialized();
-    yield neuCall(initGlobalWatchers);
+    yield neuCall(startGlobalWatchers);
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
     if (e instanceof WalletMetadataNotFoundError) {

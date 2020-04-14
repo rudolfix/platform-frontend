@@ -1,5 +1,6 @@
 import { call, delay, fork, neuTakeLatestUntil, put, SagaGenerator, take } from "@neufund/sagas";
 import { Q18, StringableActionCreator } from "@neufund/shared";
+import { actions } from "@neufund/web/app/modules/actions";
 
 import { neuGetBindings } from "../../utils";
 import { contractsModuleApi } from "../contracts/module";
@@ -76,7 +77,7 @@ export function setupTokenPriceSagas(config: TSetupSagasConfig): () => SagaGener
     yield fork(
       neuTakeLatestUntil,
       tokenPriceActions.watchTokenPriceStart,
-      tokenPriceActions.watchTokenPriceStop,
+      [tokenPriceActions.watchTokenPriceStop, actions.init.stopServices],
       tokenPriceMonitor,
       config.refreshOnAction,
     );

@@ -1,6 +1,5 @@
 import { expectSaga } from "@neufund/sagas/tests";
 import { Dictionary } from "@neufund/shared-utils";
-import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { createMock } from "@neufund/shared-utils/tests";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
@@ -19,7 +18,7 @@ import { IDerivationPathToAddress } from "../../../lib/web3/ledger-wallet/types"
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
-import { ILedgerWalletMetadata } from "../../web3/types";
+import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../web3/types";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
 import {
   finishSettingUpLedgerConnector,

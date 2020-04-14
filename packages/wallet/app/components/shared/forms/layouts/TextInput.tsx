@@ -65,9 +65,7 @@ const TextInput: React.FunctionComponent<TExternalProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    ...typographyStyles.body,
-    // there is a bug in RN where `lineHeight` to not enforce height changes
-    lineHeight: 20,
+    ...typographyStyles.textInput,
     backgroundColor: baseWhite,
     borderColor: grayLighter4,
     borderRadius: roundness,

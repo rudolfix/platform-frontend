@@ -1,5 +1,4 @@
 import { call, Effect, put, race, select, take } from "@neufund/sagas";
-import { EWalletType } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 
 import { GenericErrorMessage } from "../../components/translatedMessages/messages";
@@ -23,6 +22,7 @@ import { neuCall } from "../sagasUtils";
 import { retrieveMetadataFromVaultAPI } from "../wallet-selector/light-wizard/metadata/sagas";
 import { selectWalletType } from "../web3/selectors";
 import {
+  EWalletType,
   ILedgerWalletMetadata,
   ILightWalletMetadata,
   ILightWalletRetrieveMetadata,

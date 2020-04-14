@@ -1,7 +1,11 @@
-import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
-
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
-import { IBrowserWalletMetadata, ILedgerWalletMetadata, ILightWalletMetadata } from "./types";
+import {
+  EWalletSubType,
+  EWalletType,
+  IBrowserWalletMetadata,
+  ILedgerWalletMetadata,
+  ILightWalletMetadata,
+} from "./types";
 
 export const getDummyLightWalletMetadata = (): ILightWalletMetadata => ({
   walletType: EWalletType.LIGHT,

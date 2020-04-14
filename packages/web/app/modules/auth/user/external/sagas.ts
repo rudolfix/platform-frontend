@@ -1,38 +1,40 @@
 import { call, put } from "@neufund/sagas";
-import { authModuleAPI, IUserInput } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
+import { IUser, IUserInput } from "../../../../lib/api/users/interfaces";
 import { actions } from "../../../actions";
 import { loadKycRequestData } from "../../../kyc/sagas";
 import { neuCall } from "../../../sagasUtils";
 import { loadPreviousWallet } from "../../../web3/sagas";
 
-export function* loadUser(): Generator<any, any, any> {
+export function* loadUser({ apiUserService }: TGlobalDependencies): Generator<any, any, any> {
+  const user: IUser = yield apiUserService.me();
   yield neuCall(loadPreviousWallet);
-
-  yield neuCall(authModuleAPI.sagas.loadUser);
-
+  yield put(actions.auth.setUser(user));
   yield neuCall(loadKycRequestData);
 }
 
 export function* updateUser(
-  _: TGlobalDependencies,
+  { apiUserService }: TGlobalDependencies,
   updatedUser: IUserInput,
-): Generator<unknown, void> {
-  yield* call(authModuleAPI.sagas.updateUser, updatedUser);
+): Generator<any, any, any> {
+  const user: IUser = yield apiUserService.updateUser(updatedUser);
+
+  yield put(actions.auth.setUser(user));
 }
 
 export function* logoutUser({
   web3Manager,
+  jwtStorage,
   logger,
   userStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
   yield* call(() => userStorage.clear());
-
-  yield* call(authModuleAPI.sagas.resetUser);
+  yield* call(() => jwtStorage.clear());
 
   yield web3Manager.unplugPersonalWallet();
-  yield put(actions.web3.personalWalletDisconnected());
 
+  yield put(actions.web3.personalWalletDisconnected());
+  yield put(actions.auth.reset());
   logger.info("user has been logged out");
 }

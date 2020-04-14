@@ -1,10 +1,6 @@
-import { AUTH_TOKEN_REFRESH_THRESHOLD } from "./constants";
+import * as Moment from "moment";
 
-/**
- * Converts unix timestamp to normal timestamp value
- * @param unix - An unix timestamp
- */
-const unixTimestampToTimestamp = (unix: number) => unix * 1000;
+import { AUTH_TOKEN_REFRESH_THRESHOLD } from "./constants";
 
 interface IJwt {
   exp: number;
@@ -16,11 +12,10 @@ interface IJwt {
 /**
  * Gets expiration date
  */
-export function getJwtExpiryDate(token: string): Date {
+export function getJwtExpiryDate(token: string): Moment.Moment {
   try {
     const parsedJwt = parseJwt(token);
-
-    return new Date(unixTimestampToTimestamp(parsedJwt.exp));
+    return Moment.unix(parsedJwt.exp);
   } catch (e) {
     throw new Error(`Cannot parse JWT token: ${token}`);
   }
@@ -32,9 +27,7 @@ export function getJwtExpiryDate(token: string): Date {
 export function isJwtExpiringLateEnough(token: string): boolean {
   try {
     const expirationDate = getJwtExpiryDate(token);
-
-    const expirationDiff = expirationDate.getTime() - Date.now();
-
+    const expirationDiff = expirationDate.diff(Moment(), "milliseconds");
     return expirationDiff >= AUTH_TOKEN_REFRESH_THRESHOLD;
   } catch (e) {
     throw new Error(`Cannot parse JWT token: ${token}`);

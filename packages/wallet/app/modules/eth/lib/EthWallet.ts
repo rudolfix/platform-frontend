@@ -13,7 +13,7 @@ import { EthModuleError } from "../errors";
 import { TWalletMetadata } from "./schemas";
 import { privateSymbols } from "./symbols";
 import { EthSecureEnclave } from "./EthSecureEnclave";
-import { addHexPrefix, isHdWallet } from "./utils";
+import { isHdWallet } from "./utils";
 
 class EthWalletError extends EthModuleError {
   constructor(message: string) {
@@ -84,9 +84,10 @@ class EthWallet {
   async signMessage(message: string): Promise<string> {
     this.logger.info("Signing message");
 
-    const digest = utils.hashMessage(utils.arrayify(addHexPrefix(message)));
-
-    return this.ethSecureEnclave.signDigest(this.walletMetadata.privateKeyReference, digest);
+    return this.ethSecureEnclave.signDigest(
+      this.walletMetadata.privateKeyReference,
+      utils.hashMessage(message),
+    );
   }
 
   /**

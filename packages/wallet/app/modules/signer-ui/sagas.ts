@@ -24,7 +24,7 @@ function* sign(
 
     switch (payload.signerType) {
       case ESignerType.WC_SESSION_REQUEST: {
-        const address = yield ethManager.getWalletAddress();
+        const address = yield ethManager.getPluggedWalletAddress();
         const chainId = yield ethManager.getChainId();
 
         yield put(signerUIActions.signed(payload.signerType, { address, chainId }));

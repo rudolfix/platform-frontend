@@ -1,4 +1,4 @@
-import { EWalletType, ILogger } from "@neufund/shared-modules";
+import { ILogger } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
@@ -11,6 +11,7 @@ import * as HookedWalletSubprovider from "web3-provider-engine/subproviders/hook
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { symbols } from "../../../di/symbols";
+import { EWalletType } from "../../../modules/web3/types";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
 import { STIPEND_ELIGIBLE_WALLETS } from "../constants";
 import { IPersonalWallet } from "../PersonalWeb3";

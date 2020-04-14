@@ -9,7 +9,7 @@ import { selectKycRequestStatus } from "./kyc/selectors";
  * */
 export const selectIsVerificationFullyDone = (state: TAppGlobalState) =>
   !!(
-    selectIsUserEmailVerified(state) &&
+    selectIsUserEmailVerified(state.auth) &&
     selectBackupCodesVerified(state) &&
     selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED
   );

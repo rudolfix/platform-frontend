@@ -1,16 +1,5 @@
-import {
-  EthereumAddress,
-  EthereumPrivateKey,
-  EthereumHDMnemonic,
-  EthereumAddressWithChecksum,
-} from "@neufund/shared-utils";
-import {
-  coreModuleApi,
-  ILogger,
-  TLibSymbolType,
-  IEthManager,
-  ESignerType,
-} from "@neufund/shared-modules";
+import { EthereumAddress, EthereumPrivateKey, EthereumHDMnemonic } from "@neufund/shared-utils";
+import { coreModuleApi, ILogger, TLibSymbolType } from "@neufund/shared-modules";
 import { providers, utils } from "ethers";
 import { inject, injectable } from "inversify";
 
@@ -49,7 +38,7 @@ class NoWalletToPlugError extends EthManagerError {
  * Hides all ETH related API under single instance.
  */
 @injectable()
-class EthManager implements IEthManager {
+class EthManager {
   private readonly adapter: EthAdapter;
 
   private readonly logger: ILogger;
@@ -77,7 +66,7 @@ class EthManager implements IEthManager {
    *
    * @throws NoWalletPluggedError - When wallet was not yet plugged
    */
-  getWalletAddress(): Promise<EthereumAddressWithChecksum> {
+  getPluggedWalletAddress(): Promise<EthereumAddress> {
     if (!this.wallet) {
       throw new NoWalletPluggedError();
     }
@@ -122,18 +111,6 @@ class EthManager implements IEthManager {
     if (await this.ethWalletFactory.hasExistingWallet()) {
       throw new WalletAlreadyInMemoryError();
     }
-  }
-
-  async getWalletSignerType(): Promise<ESignerType> {
-    return ESignerType.ETH_SIGN;
-  }
-
-  async hasPluggedWallet(): Promise<boolean> {
-    const hasPluggedWallet = !!this.wallet;
-
-    this.logger.info(`Wallet is ${hasPluggedWallet ? "plugged" : "not plugged"}`);
-
-    return hasPluggedWallet;
   }
 
   /**

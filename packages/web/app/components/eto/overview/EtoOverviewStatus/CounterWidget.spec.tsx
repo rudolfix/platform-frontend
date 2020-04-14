@@ -1,4 +1,3 @@
-import { EUserType } from "@neufund/shared-modules";
 import { createMount, setupFakeClock, tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { cloneDeep } from "lodash";
@@ -10,6 +9,7 @@ import {
   createIntegrationTestsSetup,
   wrapWithProviders,
 } from "../../../../../test/integrationTestUtils.unsafe";
+import { EUserType } from "../../../../lib/api/users/interfaces";
 import { actions } from "../../../../modules/actions";
 import { EAuthStatus } from "../../../../modules/auth/reducer";
 import { watchEto } from "../../../../modules/eto/sagas";
@@ -40,13 +40,11 @@ const initialStateBase = {
   jwt: {
     token: "jwt token",
   },
-  user: {
-    data: {
+  auth: {
+    user: {
       userId: "0x353d3030AF583fc0e547Da80700BbD953F330A4b",
       type: EUserType.INVESTOR,
     },
-  },
-  auth: {
     status: EAuthStatus.AUTHORIZED,
   },
   eto,

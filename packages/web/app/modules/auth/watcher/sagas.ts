@@ -1,5 +1,4 @@
 import { channel, fork, put, race, take } from "@neufund/sagas";
-import { authModuleAPI } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
@@ -91,5 +90,5 @@ export function* watchTimeoutActions(): Generator<any, any, any> {
 
 export function* authWatcherSagas(): Generator<any, any, any> {
   yield fork(watchRedirectChannel);
-  yield neuTakeUntil(authModuleAPI.actions.setUser, actions.auth.logout, watchTimeoutActions);
+  yield neuTakeUntil(actions.auth.setUser, actions.auth.logout, watchTimeoutActions);
 }

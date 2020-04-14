@@ -1,5 +1,4 @@
 import { ButtonInline } from "@neufund/design-system";
-import { EUserType } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,6 +7,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import { externalRoutes } from "../../config/externalRoutes";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { ELogoutReason } from "../../modules/auth/types";
 import { ENotificationType } from "../../modules/notifications/types";
 import { TLoginRouterState } from "../../modules/routing/types";

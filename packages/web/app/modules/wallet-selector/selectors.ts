@@ -1,7 +1,7 @@
-import { EUserType } from "@neufund/shared-modules";
 import { RouterState } from "connected-react-router";
 
 import { appRoutes } from "../../components/appRoutes";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 
 export const selectUrlUserType = (router: RouterState): EUserType => {

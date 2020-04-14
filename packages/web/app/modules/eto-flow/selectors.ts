@@ -255,7 +255,8 @@ export const selectUploadedInvestmentAgreement = (
 };
 
 export const userHasKycAndEmailVerified = (state: TAppGlobalState) =>
-  selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED && selectIsUserEmailVerified(state);
+  selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED &&
+  selectIsUserEmailVerified(state.auth);
 
 export const selectIsGeneralEtoLoading = (state: TAppGlobalState) =>
   selectIssuerEtoLoading(state) && selectEtoDocumentsLoading(state.etoDocuments);

@@ -3,11 +3,10 @@ import { ContainerModule } from "inversify";
 import { TLibSymbol, TLibSymbolType } from "../../../types";
 import { IEthManager, IHttpClient, ISingleKeyStorage } from "../../core/module";
 import { AuthModuleError } from "../errors";
-import { AuthBinaryHttpClient } from "./http/AuthBinaryHttpClient";
-import { AuthJsonHttpClient } from "./http/AuthJsonHttpClient";
-import { SignatureAuthApi } from "./signature/SignatureAuthApi";
+import { AuthBinaryHttpClient } from "./AuthBinaryHttpClient";
+import { AuthJsonHttpClient } from "./AuthJsonHttpClient";
+import { SignatureAuthApi } from "./SignatureAuthApi";
 import { symbols } from "./symbols";
-import { UsersApi } from "./users/UsersApi";
 
 type TSetupContainerConfig = {
   jwtStorageSymbol: TLibSymbol<ISingleKeyStorage<string>>;
@@ -30,10 +29,6 @@ export function setupContainerModule(config: TSetupContainerConfig): ContainerMo
   return new ContainerModule(bind => {
     bind<TLibSymbolType<typeof symbols.signatureAuthApi>>(symbols.signatureAuthApi)
       .to(SignatureAuthApi)
-      .inSingletonScope();
-
-    bind<TLibSymbolType<typeof symbols.apiUserService>>(symbols.apiUserService)
-      .to(UsersApi)
       .inSingletonScope();
 
     bind<IHttpClient>(symbols.authJsonHttpClient)

@@ -1,10 +1,6 @@
 import "react-native-gesture-handler";
 import "./app/polyfills";
 
-if (__DEV__) {
-  import("./app/devUtils");
-}
-
 import { Container } from "inversify";
 import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
@@ -14,7 +10,6 @@ import Config from "react-native-config";
 
 import { App } from "./app/App";
 import { name as appName } from "./app.json";
-import { AppContainer } from "./app/components/containers/AppContainer";
 import { createAppStore } from "./app/store/create";
 import { TAppGlobalState } from "./app/store/types";
 import { StorybookUIRoot } from "./storybook";
@@ -34,9 +29,7 @@ function startupApp(): void {
 function renderApp(store: IModuleStore<TAppGlobalState>): void {
   const Component = () => (
     <ReduxProvider store={store}>
-      <AppContainer>
-        <App />
-      </AppContainer>
+      <App />
     </ReduxProvider>
   );
 

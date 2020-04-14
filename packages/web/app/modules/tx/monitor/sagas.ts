@@ -1,27 +1,26 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { authModuleAPI } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { TPendingTxs, TxPendingWithMetadata } from "../../../lib/api/user-tx/interfaces";
+import { TPendingTxs, TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
 import { ITxData } from "../../../lib/web3/types";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
-import { TransactionCancelledError } from "../event-channel/errors";
 import { getTransactionOrThrow } from "../event-channel/sagas";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
 import { txMonitorSaga } from "../sender/sagas";
 import { typeToSchema } from "../transactions/types";
 import { ETxSenderType, TSpecificTransactionState } from "../types";
+import { TransactionCancelledError } from "./../event-channel/errors";
 import { SchemaMismatchError } from "./errors";
 import { selectPlatformPendingTransaction } from "./selectors";
 
 export function* deletePendingTransaction({
-  apiUserTxService,
+  apiUserService,
   logger,
 }: TGlobalDependencies): Generator<any, any, any> {
   const pendingTransaction: TxPendingWithMetadata | undefined = yield select(
@@ -36,12 +35,12 @@ export function* deletePendingTransaction({
 
   logger.info(`Removing pending transaction from list with hash ${txHash}`);
 
-  yield apiUserTxService.deletePendingTx(txHash);
+  yield apiUserService.deletePendingTx(txHash);
   yield put(actions.txMonitor.setPendingTxs({ pendingTransaction: undefined }));
 }
 
 export function* markTransactionAsPending(
-  { apiUserTxService }: TGlobalDependencies,
+  { apiUserService }: TGlobalDependencies,
   {
     txHash,
     type,
@@ -64,7 +63,7 @@ export function* markTransactionAsPending(
       "There is already another custom pending transaction",
     );
 
-    yield apiUserTxService.deletePendingTx(currentPending.transaction.hash);
+    yield apiUserService.deletePendingTx(currentPending.transaction.hash);
   }
 
   const transactionTimestamp = Date.now();
@@ -93,7 +92,7 @@ export function* markTransactionAsPending(
     transactionTimestamp,
   };
 
-  yield apiUserTxService.addPendingTx(pendingTransaction);
+  yield apiUserService.addPendingTx(pendingTransaction);
 
   yield put(actions.txMonitor.setPendingTxs({ pendingTransaction }));
 
@@ -113,10 +112,10 @@ export function* ensurePendingTransactionSchemaIsValid(
 }
 
 export function* updatePendingTxs({
-  apiUserTxService,
+  apiUserService,
   logger,
 }: TGlobalDependencies): Generator<any, any, any> {
-  let apiPendingTx: TPendingTxs = yield apiUserTxService.pendingTxs();
+  let apiPendingTx: TPendingTxs = yield apiUserService.pendingTxs();
 
   // check whether transaction was mined
   if (apiPendingTx.pendingTransaction) {
@@ -178,7 +177,7 @@ export function* updatePendingTxs({
       logger.warn("Found pending transaction Schema Mismatch", e);
 
       if (apiPendingTx.pendingTransaction) {
-        yield apiUserTxService.deletePendingTx(apiPendingTx.pendingTransaction.transaction.hash);
+        yield apiUserService.deletePendingTx(apiPendingTx.pendingTransaction.transaction.hash);
       }
     } else {
       throw e;
@@ -213,7 +212,7 @@ function* removePendingTransaction({ logger }: TGlobalDependencies): Generator<a
 }
 
 export function* txMonitorSagas(): any {
-  yield fork(neuTakeUntil, authModuleAPI.actions.setUser, actions.auth.logout, txMonitor);
+  yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, txMonitor);
   yield fork(neuTakeLatest, actions.txMonitor.monitorPendingPlatformTx, txMonitorSaga);
   yield fork(neuTakeLatest, actions.txMonitor.deletePendingTransaction, removePendingTransaction);
 }

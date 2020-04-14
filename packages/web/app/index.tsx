@@ -6,8 +6,8 @@ import "./components/translatedMessages/yupLocales.sideEffect";
 import "./index.scss";
 
 import { createStore, getSagaExtension } from "@neufund/sagas";
-import { InversifyProvider } from "@neufund/shared-utils";
 import { getContextToDepsExtension, getLoadContextExtension } from "@neufund/shared-modules";
+import { InversifyProvider } from "@neufund/shared-utils";
 import { ConnectedRouter } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
 import { Container } from "inversify";

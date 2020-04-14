@@ -8,47 +8,19 @@ const fonts = Platform.select({
     robotoMedium: {
       fontFamily: "Roboto-Medium",
     },
-    montserratSemiBold: {
-      fontFamily: "Montserrat-SemiBold",
-    },
   },
 });
 
-/**
- * Typography styles should match the design system typography.
- *
- * @note If there is not typography provided by the design-system then it should not be here
- *
- * @note `fontFamily`, `fontSize`, `lineHeight` and `letterSpacing` should never appear on the component level styles. A proper typography should be imported from `typographyStyles` instead.
- */
 const typographyStyles = StyleSheet.create({
-  headline1: {
-    ...fonts.montserratSemiBold,
-    fontSize: 32,
-    lineHeight: 40,
-    letterSpacing: 0.3,
-  },
-  headline2: {
-    ...fonts.montserratSemiBold,
-    fontSize: 18,
-    lineHeight: 28,
-    letterSpacing: 0.1,
-  },
-  headline3: {
-    ...fonts.robotoRegular,
-    fontSize: 16,
-    lineHeight: 32,
-    letterSpacing: 0.1,
-  },
-  bodyBold: {
+  label: {
     ...fonts.robotoMedium,
     fontSize: 16,
     lineHeight: 24,
   },
-  body: {
+  textInput: {
     ...fonts.robotoRegular,
     fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 20,
   },
   text: {
     ...fonts.robotoRegular,

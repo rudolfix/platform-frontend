@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View, Platform } from "react-native";
 
 import { roundness, shadowStyles } from "../../../../../styles/common";
-import { SwitcherItem } from "./SwitcherItem";
+import { ESwitcherItemPosition, SwitcherItem } from "./SwitcherItem";
 
 type TItem = {
   id: string;
@@ -20,6 +20,17 @@ type TExternalProps = {
   onChangeItem: (itemId: string) => void;
 } & TViewProps;
 
+const getItemPosition = (index: number, length: number) => {
+  switch (index) {
+    case 0:
+      return ESwitcherItemPosition.FIRST;
+    case length - 1:
+      return ESwitcherItemPosition.LAST;
+    default:
+      return ESwitcherItemPosition.UNKNOWN;
+  }
+};
+
 /**
  * A switcher that aligns with our design system.
  * @note `disabled` and `invalid` modes not yet implemented
@@ -32,11 +43,12 @@ const Switcher = React.forwardRef<{}, TExternalProps>(
     return (
       <View style={[styles.container, style]} {...props}>
         <ScrollView style={[styles.list]} {...props}>
-          {items.map(item => (
+          {items.map((item, index) => (
             <SwitcherItem
               key={item.id}
               onPress={() => onChangeItem(item.id)}
               isSelected={selectedItemId === item.id}
+              position={getItemPosition(index, items.length)}
               {...item}
             />
           ))}

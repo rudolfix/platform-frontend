@@ -16,11 +16,18 @@ import { BodyText } from "../../../typography/BodyText";
 
 type TTouchableProps = React.ComponentProps<typeof TouchableOpacity>;
 
+enum ESwitcherItemPosition {
+  FIRST = "first",
+  LAST = "last",
+  UNKNOWN = "UNKNOWN",
+}
+
 type TItemExternalProps = {
   id: string;
   title: string;
   subTitle?: string;
   isSelected: boolean;
+  position: ESwitcherItemPosition;
 } & Omit<TTouchableProps, "activeColor" | "children">;
 
 const SwitcherItem: React.FunctionComponent<TItemExternalProps> = ({
@@ -28,10 +35,11 @@ const SwitcherItem: React.FunctionComponent<TItemExternalProps> = ({
   title,
   subTitle,
   isSelected,
+  position,
   ...props
 }) => (
   <TouchableOpacity
-    style={st(styles.container)}
+    style={st(styles.container, [position === ESwitcherItemPosition.LAST, styles.containerLast])}
     activeOpacity={0.4}
     accessibilityRole="combobox"
     accessibilityComponentType={isSelected ? "radiobutton_checked" : "radiobutton_unchecked"}
@@ -66,6 +74,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  containerLast: {
+    borderBottomWidth: 0,
+  },
   icon: {
     ...spacingStyles.mr3,
 
@@ -88,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { SwitcherItem };
+export { SwitcherItem, ESwitcherItemPosition };

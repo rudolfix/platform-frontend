@@ -1,7 +1,7 @@
-import { EUserType } from "@neufund/shared-modules";
 import { expect } from "chai";
 
 import { appRoutes } from "../../components/appRoutes";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 import { DeepPartial } from "../../types";
 import { selectIsVisibleSecurityNotification } from "./selectors";
@@ -12,8 +12,8 @@ describe("selectIsVisibleSecurityNotification", () => {
       kyc: {
         statusLoading: true,
       },
-      user: {
-        data: {
+      auth: {
+        user: {
           type: EUserType.INVESTOR,
         },
       },
@@ -28,8 +28,8 @@ describe("selectIsVisibleSecurityNotification", () => {
   it("should return false if route is whitelisted", () => {
     const appState: DeepPartial<TAppGlobalState> = {
       kyc: {},
-      user: {
-        data: {
+      auth: {
+        user: {
           type: EUserType.INVESTOR,
         },
       },

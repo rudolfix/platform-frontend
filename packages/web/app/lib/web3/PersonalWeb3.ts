@@ -1,8 +1,8 @@
 import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared";
-import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { ESignerType } from "@neufund/shared-modules";
 import { TxData } from "web3";
 
-import { TWalletMetadata } from "../../modules/web3/types";
+import { EWalletSubType, EWalletType, TWalletMetadata } from "../../modules/web3/types";
 import { Web3Adapter } from "./Web3Adapter";
 
 export interface IPersonalWallet {

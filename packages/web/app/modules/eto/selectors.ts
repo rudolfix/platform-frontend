@@ -1,5 +1,4 @@
 import { DataUnavailableError, DeepReadonly, nonNullable } from "@neufund/shared";
-import { EUserType } from "@neufund/shared-modules";
 import { find } from "lodash/fp";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
@@ -11,6 +10,7 @@ import {
   TEtoSpecsData,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { calcShareAndTokenPrice } from "../../lib/api/eto/EtoUtils";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 import { selectUserType } from "../auth/selectors";
 import { selectIssuerEto, selectIssuerEtoWithCompanyAndContract } from "../eto-flow/selectors";

@@ -1,5 +1,4 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EUserType } from "@neufund/shared-modules";
 import { match } from "react-router";
 
 import { appRoutes } from "../../../components/appRoutes";
@@ -7,6 +6,7 @@ import { EtoMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EUserType } from "../../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../../store";
 import { EProcessState } from "../../../utils/enums/processStates";
 import { actions } from "../../actions";

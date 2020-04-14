@@ -1,8 +1,8 @@
 import { assertNever, nonNullable } from "@neufund/shared";
-import { EUserType } from "@neufund/shared-modules";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 
+import { EUserType } from "../../lib/api/users/interfaces";
 import { selectUserType } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { SwitchConnected } from "../../utils/react-connected-components/connectedRouting";

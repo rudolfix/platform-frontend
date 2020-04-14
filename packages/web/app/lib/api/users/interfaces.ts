@@ -1,14 +1,69 @@
+import { EthereumAddressWithChecksum } from "@neufund/shared";
 import * as Yup from "yup";
 
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
 import { ETxSenderType } from "../../../modules/tx/types";
+import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import * as YupTS from "../../yup-ts.unsafe";
 
 export const OOO_TRANSACTION_TYPE = "mempool";
 
+export enum EUserType {
+  INVESTOR = "investor",
+  ISSUER = "issuer",
+  NOMINEE = "nominee",
+}
+
+export interface IUser {
+  userId: EthereumAddressWithChecksum;
+  backupCodesVerified?: boolean;
+  latestAcceptedTosIpfs?: string;
+  language?: string;
+  unverifiedEmail?: string;
+  verifiedEmail?: string;
+  type: EUserType;
+  walletType: EWalletType;
+  walletSubtype: EWalletSubType;
+}
+
+export interface IEmailStatus {
+  isAvailable: boolean;
+}
+
+export interface IUserInput {
+  newEmail?: string;
+  salt?: string;
+  language?: string;
+  backupCodesVerified?: boolean;
+  type: EUserType;
+  walletType: EWalletType;
+  walletSubtype: EWalletSubType;
+}
+
+export interface IVerifyEmailUser {
+  verificationCode: string;
+}
 export const GasStipendValidator = Yup.object()
   .shape({ gasStipend: Yup.number().required() })
   .required();
+
+export const UserValidator = Yup.object()
+  .shape({
+    userId: Yup.string().required(),
+    backupCodesVerified: Yup.boolean(),
+    latestAcceptedTosIpfs: Yup.string(),
+    language: Yup.string(),
+    unverifiedEmail: Yup.string(),
+    verifiedEmail: Yup.string(),
+    type: Yup.string().oneOf(["investor", "issuer", "nominee"]),
+    walletType: Yup.string().oneOf(Object.keys(EWalletType).map(type => type.toLowerCase())),
+    walletSubtype: Yup.string().oneOf(Object.keys(EWalletSubType).map(type => type.toLowerCase())),
+  })
+  .required();
+
+export const emailStatus = Yup.object().shape({
+  isAvailable: Yup.boolean(),
+});
 
 export const TxSchema = YupTS.object({
   failedRpcError: YupTS.string().optional(),

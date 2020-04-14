@@ -17,7 +17,7 @@ export const symbols = {
   apiImmutableStorage: Symbol("apiImmutableStorage"),
   vaultApi: Symbol("vaultApi"),
   analyticsApi: Symbol("analyticsApi"),
-  usersTxApi: Symbol("usersTxApi"),
+  usersApi: Symbol("usersApi"),
   apiKycService: Symbol("apiKycService"),
   apiEtoService: Symbol("apiEtoService"),
   apiEtoPledgeService: Symbol("apiEtoPledgeService"),

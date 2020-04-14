@@ -1,8 +1,9 @@
-import { EUserType, ILogger } from "@neufund/shared-modules";
+import { ILogger } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
 import { symbols } from "../../di/symbols";
 import { TWalletMetadata } from "../../modules/web3/types";
+import { EUserType } from "../api/users/interfaces";
 import { ObjectStorage } from "./ObjectStorage";
 import { Storage } from "./Storage";
 

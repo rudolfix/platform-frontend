@@ -1,8 +1,8 @@
 import { inject, injectable } from "inversify";
 
-import { coreModuleApi, IHttpClient, ISingleKeyStorage } from "../../../core/module";
-import { symbols } from "../symbols";
+import { coreModuleApi, IHttpClient, ISingleKeyStorage } from "../../core/module";
 import { AuthHttpClient } from "./AuthHttpClient";
+import { symbols } from "./symbols";
 
 /**
  * Wraps the json http api with authorization header injection

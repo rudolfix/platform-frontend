@@ -1,11 +1,11 @@
 import { expectSaga } from "@neufund/sagas/tests";
 import { convertToUlps, divideBigNumbers, multiplyBigNumbers, Q18 } from "@neufund/shared";
-import { EUserType } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { omit } from "lodash/fp";
 import { getContext } from "redux-saga-test-plan/matchers";
 
 import { testCompany, testContract, testEto } from "../../../test/fixtures";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { loadEtos } from "./sagas";
 import { EETOStateOnChain, TEtoContractData } from "./types";
@@ -88,8 +88,8 @@ describe("loadEtos", () => {
             country: undefined,
           },
         },
-        user: {
-          data: {
+        auth: {
+          user: {
             type: EUserType.ISSUER,
           },
         },
@@ -122,8 +122,8 @@ describe("loadEtos", () => {
             country: undefined,
           },
         },
-        user: {
-          data: {
+        auth: {
+          user: {
             type: EUserType.INVESTOR,
           },
         },
@@ -191,8 +191,8 @@ describe("loadEtos", () => {
             country: undefined,
           },
         },
-        user: {
-          data: {
+        auth: {
+          user: {
             type: EUserType.INVESTOR,
           },
         },

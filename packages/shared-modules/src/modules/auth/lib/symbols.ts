@@ -1,7 +1,6 @@
 import { createLibSymbol } from "../../../utils";
 import { IEthManager, IHttpClient, ISingleKeyStorage } from "../../core/module";
-import { SignatureAuthApi } from "./signature/SignatureAuthApi";
-import { UsersApi } from "./users/UsersApi";
+import { SignatureAuthApi } from "./SignatureAuthApi";
 
 export const symbols = {
   signatureAuthApi: createLibSymbol<SignatureAuthApi>("signatureAuthApi"),
@@ -13,6 +12,4 @@ export const symbols = {
   authJsonHttpClient: createLibSymbol<IHttpClient>("authJsonHttpClient"),
 
   authBinaryHttpClient: createLibSymbol<IHttpClient>("authBinaryHttpClient"),
-
-  apiUserService: createLibSymbol<UsersApi>("apiUserService"),
 };

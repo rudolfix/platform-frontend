@@ -3,7 +3,7 @@ import { secondsToMs } from "@neufund/shared";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { TPendingTxs } from "../../../lib/api/user-tx/interfaces";
+import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { neuCall } from "../../sagasUtils";
 import { actions } from "./../../actions";
@@ -22,14 +22,14 @@ enum TRANSACTION_STATUS {
  */
 
 export function* getTransactionOrThrow(
-  { web3Manager, apiUserTxService }: TGlobalDependencies,
+  { web3Manager, apiUserService }: TGlobalDependencies,
   txHash: string,
 ): Generator<any, any, any> {
   const tx: Web3.Transaction = yield web3Manager.getTransactionByHash(txHash);
   const txReceipt: Web3.TransactionReceipt | null = yield web3Manager.getTransactionReceipt(txHash);
 
   // If the proxy transactional node fails to post the transaction
-  const pendingTx: TPendingTxs = yield apiUserTxService.pendingTxs();
+  const pendingTx: TPendingTxs = yield apiUserService.pendingTxs();
 
   if (
     pendingTx &&

@@ -46,7 +46,7 @@ const connectKycStatusWidget = () => (
   compose<IStateProps & IDispatchProps, {}>(
     appConnect<IStateProps, IDispatchProps>({
       stateToProps: state => ({
-        isUserEmailVerified: selectIsUserEmailVerified(state),
+        isUserEmailVerified: selectIsUserEmailVerified(state.auth),
         backupCodesVerified: selectBackupCodesVerified(state),
         requestStatus: selectKycRequestStatus(state),
         instantIdStatus: selectKycInstantIdStatus(state),

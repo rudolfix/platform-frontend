@@ -1,73 +1,64 @@
 import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared";
-import { authModuleAPI, EUserType, EWalletType, IUser } from "@neufund/shared-modules";
+import { authModuleAPI } from "@neufund/shared-modules";
 import { createSelector } from "reselect";
 
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
+import { EUserType, IUser } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 import {
   selectClientCountry,
   selectIsUserVerifiedOnBlockchain,
   selectKycRequestStatus,
 } from "../kyc/selectors";
-import { EAuthStatus } from "./reducer";
+import { selectIsLightWallet } from "../web3/selectors";
+import { EAuthStatus, IAuthState } from "./reducer";
 
-export const selectUser = (state: TAppGlobalState): IUser | undefined =>
-  authModuleAPI.selectors.selectUser(state);
+export const selectAuthUser = (state: TAppGlobalState): IUser | undefined => state.auth.user;
 
 export const selectAuthStatus = (state: TAppGlobalState): EAuthStatus => state.auth.status;
 
 export const selectIsAuthorized = createSelector(
   authModuleAPI.selectors.selectJwt,
-  selectUser,
+  selectAuthUser,
   selectAuthStatus,
   (jwt, user, status) => !!(jwt && user && status === EAuthStatus.AUTHORIZED),
 );
 
-export const selectUserType = createSelector(
-  selectUser,
-  (user: IUser | undefined): EUserType | undefined => user?.type,
-);
+export const selectUserType = (state: TAppGlobalState): EUserType | undefined =>
+  state.auth.user && state.auth.user.type;
 
-export const selectUserEmail = createSelector(
-  selectUser,
-  (user: IUser | undefined): string | undefined => user?.unverifiedEmail || user?.verifiedEmail,
-);
+export const selectUserEmail = (state: IAuthState): string | undefined =>
+  state.user && (state.user.unverifiedEmail || state.user.verifiedEmail);
 
-export const selectVerifiedUserEmail = createSelector(
-  selectUser,
-  (user: IUser | undefined): string | undefined => user?.verifiedEmail,
-);
+export const selectVerifiedUserEmail = (state: IAuthState): string | undefined =>
+  state.user && state.user.verifiedEmail;
 
-export const selectUnverifiedUserEmail = createSelector(
-  selectUser,
-  (user: IUser | undefined): string | undefined => user?.unverifiedEmail,
-);
+export const selectUnverifiedUserEmail = (state: TAppGlobalState): string | undefined =>
+  state.auth.user && state.auth.user.unverifiedEmail;
 
-export const selectUserId = createSelector(
-  selectUser,
-  (user: IUser | undefined): EthereumAddressWithChecksum | undefined => user?.userId,
-);
+export const selectUser = (state: TAppGlobalState): IUser | undefined => state.auth.user;
 
-export const selectBackupCodesVerified = createSelector(
-  selectUser,
-  (user: IUser | undefined): boolean =>
-    user?.backupCodesVerified || user?.walletType !== EWalletType.LIGHT,
-);
+export const selectUserId = (state: TAppGlobalState): EthereumAddressWithChecksum | undefined =>
+  state.auth.user && state.auth.user.userId;
 
-export const selectIsUserEmailVerified = (state: TAppGlobalState): boolean =>
-  !!selectVerifiedUserEmail(state);
+export const selectBackupCodesVerified = (state: TAppGlobalState): boolean =>
+  !!(state.auth.user && state.auth.user.backupCodesVerified) || !selectIsLightWallet(state.web3);
 
-export const selectIsThereUnverifiedEmail = (state: TAppGlobalState): boolean =>
-  !!selectUnverifiedUserEmail(state);
+export const selectIsUserEmailVerified = (state: IAuthState): boolean =>
+  !!state.user && !!state.user.verifiedEmail;
 
-export const selectDoesEmailExist = (state: TAppGlobalState): boolean =>
+export const selectIsThereUnverifiedEmail = (state: IAuthState): boolean =>
+  !!state.user && !!state.user.unverifiedEmail;
+
+export const selectDoesEmailExist = (state: IAuthState): boolean =>
   selectIsThereUnverifiedEmail(state) || selectIsUserEmailVerified(state);
 
 /**
  * Check if user has verified email and KYC
  */
 export const selectIsUserVerified = (state: TAppGlobalState): boolean =>
-  selectIsUserEmailVerified(state) && selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED;
+  selectIsUserEmailVerified(state.auth) &&
+  selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED;
 
 /**
  * Check if user is verified by API and Contract
@@ -116,10 +107,8 @@ export const selectIsVerifiedInvestor = createSelector(
 
 // TOS Related Selectors
 
-export const selectIsAgreementAccepted = createSelector(
-  selectUser,
-  (user: IUser | undefined): boolean => !!user?.latestAcceptedTosIpfs,
-);
+export const selectIsAgreementAccepted = (state: TAppGlobalState): boolean =>
+  Boolean(state.auth.user && state.auth.user.latestAcceptedTosIpfs);
 
 export const selectCurrentAgreementHash = (state: TAppGlobalState): string | undefined =>
   state.auth.currentAgreementHash;

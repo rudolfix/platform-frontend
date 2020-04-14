@@ -5,7 +5,7 @@
 import { Dictionary, invariant, toSnakeCase } from "@neufund/shared";
 import { inject, injectable } from "inversify";
 // top-level import is not working correctly for unit tests
-import urlJoin from "proper-url-join";
+import * as urlJoin from "proper-url-join/lib";
 
 import { symbols } from "../symbols";
 import {
@@ -113,7 +113,6 @@ export abstract class HttpClient implements IHttpClient {
     } catch {
       throw new NetworkingError(fullUrl);
     }
-
     if (
       !response.ok &&
       !HttpClient.isAllowedStatusCode(config.allowedStatusCodes, response.status)

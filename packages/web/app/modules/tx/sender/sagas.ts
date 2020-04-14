@@ -1,12 +1,11 @@
 import { call, Channel, put, race, select, take, takeLatest } from "@neufund/sagas";
-import { EWalletType } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import {
   TPendingTxs,
   TxPendingWithMetadata,
   TxWithMetadata,
-} from "../../../lib/api/user-tx/interfaces";
+} from "../../../lib/api/users/interfaces";
 import { BrowserWalletError } from "../../../lib/web3/browser-wallet/BrowserWallet";
 import { LedgerError } from "../../../lib/web3/ledger-wallet/errors";
 import { LightError } from "../../../lib/web3/light-wallet/LightWallet";
@@ -26,6 +25,7 @@ import { IGasState } from "../../gas/reducer";
 import { selectGasPrice } from "../../gas/selectors";
 import { neuCall, neuRepeatIf, neuSpawn } from "../../sagasUtils";
 import { selectWalletType } from "../../web3/selectors";
+import { EWalletType } from "../../web3/types";
 import { createWatchTxChannel } from "../event-channel/sagas";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "../event-channel/types";
 import {

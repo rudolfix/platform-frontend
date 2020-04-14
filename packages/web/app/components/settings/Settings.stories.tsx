@@ -13,9 +13,7 @@ storiesOf("SettingsWidgetsVerified", module)
   .addDecorator(
     withStore({
       ...mockedStore,
-      auth: {
-        ...mockedStore.auth,
-      },
+      auth: { ...mockedStore.auth, user: { ...mockedStore.auth!.user, backupCodesVerified: true } },
     }),
   )
   .add("Settings", () => <Settings />);

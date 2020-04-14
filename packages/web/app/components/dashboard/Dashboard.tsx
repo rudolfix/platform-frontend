@@ -52,7 +52,7 @@ export const Dashboard = compose<TDashboardProps, {}>(
   setDisplayName("Dashboard"),
   appConnect<TOnboardingStateData>({
     stateToProps: state => ({
-      emailVerified: selectIsUserEmailVerified(state),
+      emailVerified: selectIsUserEmailVerified(state.auth),
       backupCodesVerified: selectBackupCodesVerified(state),
       kycRequestStatus: selectKycRequestStatus(state),
     }),

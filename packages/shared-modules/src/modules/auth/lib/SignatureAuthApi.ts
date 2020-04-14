@@ -2,9 +2,9 @@ import { EthereumAddressWithChecksum } from "@neufund/shared";
 import { inject, injectable } from "inversify";
 import * as Yup from "yup";
 
-import { coreModuleApi, ESignerType, IHttpClient, IHttpResponse } from "../../../core/module";
-import { EJwtPermissions } from "../../jwt/types";
-import { symbols } from "../symbols";
+import { coreModuleApi, ESignerType, IHttpClient, IHttpResponse } from "../../core/module";
+import { EJwtPermissions } from "../jwt/types";
+import { symbols } from "./symbols";
 
 export interface IChallengeEndpointResponse {
   challenge: string;

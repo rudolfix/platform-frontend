@@ -1,18 +1,9 @@
-import {
-  EthereumPrivateKey,
-  EthereumAddress,
-  EthereumAddressWithChecksum,
-  EthereumHDMnemonic,
-} from "@neufund/shared";
+import { EthereumPrivateKey, EthereumAddress, EthereumHDMnemonic } from "@neufund/shared";
 import { utils } from "ethers";
 import isString from "lodash/fp/isString";
 
 import { THDWalletMetadata, TWalletMetadata } from "./schemas";
 import { EWalletType } from "./types";
-
-const addHexPrefix = (data: string) => {
-  return data.startsWith("0x") ? data : "0x" + data;
-};
 
 /**
  * Check if a give wallet is an HDWallet
@@ -59,21 +50,4 @@ const isAddress = (address: unknown): address is EthereumAddress => {
   }
 };
 
-/**
- * Check if a given address is a valid checksum address
- *
- * @param address - A possible address
- */
-const isChecksumAddress = (address: unknown): address is EthereumAddressWithChecksum => {
-  try {
-    if (isString(address)) {
-      const checksumAddress = utils.getAddress(address);
-
-      return address === checksumAddress;
-    }
-  } catch {}
-
-  return false;
-};
-
-export { isHdWallet, isPrivateKey, isMnemonic, isAddress, isChecksumAddress, addHexPrefix };
+export { isHdWallet, isPrivateKey, isMnemonic, isAddress };

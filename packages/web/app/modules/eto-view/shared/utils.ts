@@ -1,5 +1,4 @@
 import { XOR } from "@neufund/shared";
-import { EUserType } from "@neufund/shared-modules";
 
 import {
   EEtoState,
@@ -14,6 +13,7 @@ import {
   EOfferingDocumentType,
 } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
+import { EUserType } from "./../../../lib/api/users/interfaces";
 
 export const getTwitterUrl = (socialChannels: TSocialChannelsType | undefined) => {
   if (!socialChannels) {

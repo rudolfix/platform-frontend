@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
+import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 import { DeepPartial } from "../../types";
 import { withStore } from "../../utils/react-connected-components/storeDecorator.unsafe";
@@ -13,6 +14,12 @@ const FakeContent = () => (
 );
 
 const authStore: DeepPartial<TAppGlobalState> = {
+  auth: {
+    user: {
+      type: EUserType.ISSUER,
+      verifiedEmail: "asfasdf@asdf.de",
+    },
+  },
   kyc: {
     claims: {
       isVerified: true,
@@ -27,6 +34,12 @@ const authStore: DeepPartial<TAppGlobalState> = {
 };
 
 const unauthStore: DeepPartial<TAppGlobalState> = {
+  auth: {
+    user: {
+      type: EUserType.ISSUER,
+      verifiedEmail: "asfasdf@asdf.de",
+    },
+  },
   kyc: {
     claims: {
       isVerified: true,

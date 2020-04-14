@@ -1,12 +1,12 @@
 import { EthereumAddressWithChecksum } from "@neufund/shared";
-import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { ESignerType } from "@neufund/shared-modules";
 import { BigNumber } from "bignumber.js";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
 
-import { ILightWalletMetadata } from "../../../modules/web3/types";
+import { EWalletSubType, EWalletType, ILightWalletMetadata } from "../../../modules/web3/types";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IRawTxData } from "../types";
 import { Web3Adapter } from "../Web3Adapter";

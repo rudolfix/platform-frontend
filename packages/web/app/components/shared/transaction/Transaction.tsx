@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TxPendingWithMetadata } from "../../../lib/api/user-tx/interfaces";
+import { TxPendingWithMetadata } from "../../../lib/api/users/interfaces";
 import { ETxSenderType } from "../../../modules/tx/types";
 import { TDataTestId } from "../../../types";
 import { Money } from "../formatters/Money";

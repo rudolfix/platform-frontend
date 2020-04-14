@@ -1,6 +1,6 @@
 import { createActionFactory } from "@neufund/shared";
 
-import { TPendingTxs } from "../../../lib/api/user-tx/interfaces";
+import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { createAction } from "../../actionsUtils";
 
 export const txMonitorActions = {

@@ -1,5 +1,4 @@
 import { EthereumAddressWithChecksum } from "@neufund/shared";
-import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { RouterState } from "connected-react-router";
 import { isString } from "lodash";
 import * as queryString from "query-string";
@@ -8,7 +7,7 @@ import { createSelector } from "reselect";
 import { TAppGlobalState } from "../../store";
 import { selectRouter } from "../routing/selectors";
 import { IConnectedWeb3State, IWalletPrivateData, IWeb3State } from "./reducer";
-import { TWalletMetadata } from "./types";
+import { EWalletSubType, EWalletType, TWalletMetadata } from "./types";
 
 export const selectConnectedWeb3State = (state: IWeb3State): IConnectedWeb3State => {
   if (!state.connected) {

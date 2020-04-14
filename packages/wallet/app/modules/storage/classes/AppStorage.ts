@@ -61,7 +61,7 @@ class AppStorage<DataType> {
    * @param {string} key - Key to access the value.
    * @param {string} value - Value to save.
    */
-  async setItem(key: string, value: DataType): Promise<void> {
+  async setItem(key: string, value: DataType): Promise<IStorageItem<DataType>> {
     this.logger.info(`Setting a storage item for: ${key}`);
 
     // get the schema by id
@@ -96,6 +96,7 @@ class AppStorage<DataType> {
     // save data to the storage provider
     try {
       await this.provider.setItem(`${this.storageKey}:${key}`, data);
+      return storageItem;
     } catch (error) {
       throw new ApplicationStorageError(error);
     }
@@ -105,17 +106,14 @@ class AppStorage<DataType> {
    * Get item from storage.
    * @param {string} key - Key to access the value.
    */
-  async getItem(key: string): Promise<IStorageItem<DataType> | undefined> {
+  async getItem(key: string): Promise<IStorageItem<DataType> | null> {
     this.logger.info(`Getting a storage item for: ${key}`);
 
     let value;
     try {
       // get a raw json string from the storage provider
       value = await this.provider.getItem(`${this.storageKey}:${key}`);
-
-      if (!value) {
-        return undefined;
-      }
+      if (!value) return null;
     } catch (error) {
       throw new ApplicationStorageError(error);
     }

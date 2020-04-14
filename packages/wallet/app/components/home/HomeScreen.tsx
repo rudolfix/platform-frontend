@@ -1,32 +1,38 @@
-import { nonNullable } from "@neufund/shared";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView, Text, View } from "react-native";
 
 import { appRoutes } from "../../appRoutes";
-import { authModuleAPI } from "../../modules/auth/module";
+import { initActions } from "../../modules/init/actions";
+import { selectInitStatus, selectTest } from "../../modules/init/selectors";
 import { walletConnectModuleApi } from "../../modules/wallet-connect/module";
 import { appConnect } from "../../store/utils";
 import { silverLighter2 } from "../../styles/colors";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 
 type TDispatchProps = {
-  logout: () => void;
+  init: () => void;
   walletConnectDisconnect: (peerId: string) => void;
 };
 
 type TStateProps = {
-  user: NonNullable<ReturnType<typeof authModuleAPI.selectors.selectUser>>;
+  initStatus: ReturnType<typeof selectInitStatus>;
+  test: ReturnType<typeof selectTest>;
   walletConnectPeer: ReturnType<typeof walletConnectModuleApi.selectors.selectWalletConnectPeer>;
 };
 
 const HomeLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
+  init,
+  initStatus,
+  test,
   walletConnectPeer,
   walletConnectDisconnect,
-  user,
-  logout,
 }) => {
   const navigation = useNavigation();
+
+  React.useEffect(() => {
+    init();
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: silverLighter2, flex: 1 }}>
@@ -40,7 +46,9 @@ const HomeLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
         </Button>
       </View>
 
-      <Text>Address: {user.userId}</Text>
+      <Text>Home {test && test.name}</Text>
+
+      <Text>Init status: {initStatus}</Text>
 
       <Text>Wallet connect peer: </Text>
       {walletConnectPeer ? (
@@ -56,23 +64,20 @@ const HomeLayout: React.FunctionComponent<TDispatchProps & TStateProps> = ({
       ) : (
         <Text>not connected</Text>
       )}
-
-      <Button layout={EButtonLayout.TEXT} testID="dashboard.logout" onPress={logout}>
-        Logout
-      </Button>
     </SafeAreaView>
   );
 };
 
 const HomeScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({
+    initStatus: selectInitStatus(state),
     walletConnectPeer: walletConnectModuleApi.selectors.selectWalletConnectPeer(state),
-    user: nonNullable(authModuleAPI.selectors.selectUser(state)),
+    test: selectTest(state),
   }),
   dispatchToProps: dispatch => ({
+    init: () => dispatch(initActions.start()),
     walletConnectDisconnect: (peerId: string) =>
       dispatch(walletConnectModuleApi.actions.disconnectFromPeer(peerId)),
-    logout: () => dispatch(authModuleAPI.actions.logout()),
   }),
 })(HomeLayout);
 

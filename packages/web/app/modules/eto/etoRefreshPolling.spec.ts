@@ -27,8 +27,8 @@ const eto = {
 };
 
 const initialState = {
-  user: {
-    data: {
+  auth: {
+    user: {
       userId: "0x353d3030AF583fc0e547Da80700BbD953F330A4b",
     },
   },

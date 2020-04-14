@@ -1,6 +1,6 @@
 import { ETHEREUM_ZERO_ADDRESS } from "@neufund/shared";
-import { EWalletType } from "@neufund/shared-modules";
 
+import { EWalletType } from "../../../modules/web3/types";
 import { goToEtoViewById } from "../../issuer/eto/view/EtoViewUtils";
 import { sendEth } from "../../utils/ethRpcUtils";
 import {

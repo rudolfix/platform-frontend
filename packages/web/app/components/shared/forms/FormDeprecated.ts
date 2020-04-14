@@ -1,5 +1,5 @@
-import { omitProps } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
+import { omitProps } from "@neufund/shared-utils";
 // tslint:disable-next-line:import-blacklist
 import { connect as formikConnect, Form as FormikForm } from "formik";
 import * as React from "react";

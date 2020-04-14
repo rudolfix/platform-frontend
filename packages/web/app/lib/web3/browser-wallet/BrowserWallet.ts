@@ -1,5 +1,5 @@
-import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared-utils";
 import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared-utils";
 import * as hex2ascii from "hex2ascii";
 import * as Web3 from "web3";
 

@@ -1,5 +1,5 @@
-import { assertNever, ECurrency, multiplyBigNumbers } from "@neufund/shared-utils";
 import { tokenPriceModuleApi } from "@neufund/shared-modules";
+import { assertNever, ECurrency, multiplyBigNumbers } from "@neufund/shared-utils";
 
 import { TAppGlobalState } from "../../../store";
 

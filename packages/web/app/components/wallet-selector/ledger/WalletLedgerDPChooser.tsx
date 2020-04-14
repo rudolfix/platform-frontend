@@ -1,4 +1,8 @@
-import { derivationPathPrefixValidator, IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
+import {
+  derivationPathPrefixValidator,
+  IIntlProps,
+  injectIntlHelpers,
+} from "@neufund/shared-utils";
 import { debounce } from "lodash";
 import * as React from "react";
 import { Col, FormFeedback, FormGroup, Input, Row } from "reactstrap";

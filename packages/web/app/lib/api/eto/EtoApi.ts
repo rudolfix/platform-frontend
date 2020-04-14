@@ -1,5 +1,5 @@
-import { Dictionary, EthereumAddress, withParams } from "@neufund/shared-utils";
 import { authModuleAPI, coreModuleApi, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
+import { Dictionary, EthereumAddress, withParams } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 
 import { amendEtoToCompatibleFormat } from "../../../modules/eto/utils";

@@ -1,5 +1,5 @@
-import { assertNever } from "@neufund/shared-utils";
 import { EWalletSubType } from "@neufund/shared-modules";
+import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 

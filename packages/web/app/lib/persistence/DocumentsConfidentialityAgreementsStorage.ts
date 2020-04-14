@@ -1,5 +1,5 @@
-import { Dictionary } from "@neufund/shared-utils";
 import { ILogger } from "@neufund/shared-modules";
+import { Dictionary } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 import defaultTo from "lodash/defaultTo";
 import mapValues from "lodash/mapValues";

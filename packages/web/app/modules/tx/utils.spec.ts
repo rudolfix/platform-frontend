@@ -1,6 +1,7 @@
 import { expect } from "chai";
 
-import { ECurrency } from "../../../../shared/src/utils/utils";
+import { ECurrency } from "@neufund/shared-utils";
+
 import { ETransactionType } from "../../lib/api/analytics-api/interfaces";
 import { EInvestmentType } from "../investment-flow/reducer";
 import { ETxSenderType } from "./types";

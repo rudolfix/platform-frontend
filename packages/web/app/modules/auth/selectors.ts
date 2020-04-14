@@ -1,5 +1,5 @@
-import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { authModuleAPI, EUserType, EWalletType, IUser } from "@neufund/shared-modules";
+import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";

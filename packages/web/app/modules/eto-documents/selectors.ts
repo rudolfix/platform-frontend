@@ -1,5 +1,5 @@
-import { DeepReadonly } from "@neufund/shared-utils";
 import { EUserType } from "@neufund/shared-modules";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EEtoDocumentType, IEtoFilesInfo } from "../../lib/api/eto/EtoFileApi.interfaces";

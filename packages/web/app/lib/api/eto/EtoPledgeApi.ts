@@ -1,5 +1,5 @@
-import { withParams } from "@neufund/shared-utils";
 import { authModuleAPI, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
+import { withParams } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 
 import { IPledge } from "./EtoPledgeApi.interfaces.unsafe";

@@ -1,6 +1,6 @@
 import { call, Effect, put, race, select, take } from "@neufund/sagas";
-import { invariant } from "@neufund/shared-utils";
 import { EWalletType } from "@neufund/shared-modules";
+import { invariant } from "@neufund/shared-utils";
 
 import { GenericErrorMessage } from "../../components/translatedMessages/messages";
 import { TMessage } from "../../components/translatedMessages/utils";

@@ -1,5 +1,5 @@
-import { withParams } from "@neufund/shared-utils";
 import { authModuleAPI, IHttpClient } from "@neufund/shared-modules";
+import { withParams } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 
 import { ENomineeUpdateRequestStatus } from "../../../modules/nominee-flow/types";

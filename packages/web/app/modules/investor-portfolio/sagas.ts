@@ -1,4 +1,5 @@
 import { all, fork, put, select } from "@neufund/sagas";
+import { contractsModuleApi, IUser } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   convertFromUlps,
@@ -8,7 +9,6 @@ import {
   nonNullable,
   Q18,
 } from "@neufund/shared-utils";
-import { contractsModuleApi, IUser } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 

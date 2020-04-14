@@ -1,6 +1,11 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EDelayTiming, getJwtExpiryDate, hasValidPermissions, safeDelay } from "@neufund/shared-utils";
 import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
+import {
+  EDelayTiming,
+  getJwtExpiryDate,
+  hasValidPermissions,
+  safeDelay,
+} from "@neufund/shared-utils";
 
 import { calculateTimeLeft } from "../../../components/shared/utils";
 import { TMessage } from "../../../components/translatedMessages/utils";

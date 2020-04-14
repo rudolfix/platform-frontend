@@ -1,7 +1,4 @@
-import {
-  EthereumHDPath,
-  EthereumAddress, toEthereumAddress
-} from "@neufund/shared-utils";
+import { EthereumHDPath, EthereumAddress, toEthereumAddress } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import { KeyPair } from "ethers/utils/secp256k1";
 import { injectable } from "inversify";

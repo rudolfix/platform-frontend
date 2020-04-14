@@ -1,25 +1,16 @@
-import { toEthereumAddress } from "@neufund/shared";
-import { authModuleAPI, IHttpClient, ILogger } from "@neufund/shared-modules";
-import BigNumber from "bignumber.js";
-import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
-import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
-import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
-import { ITxData } from "../../web3/types";
+import { coreModuleApi, IHttpClient, ILogger } from "../../../core/module";
+import { symbols } from "../symbols";
 import {
-  emailStatus,
-  GasStipendValidator,
+  emailStatusSchema,
+  EWalletSubType,
+  EWalletType,
   IEmailStatus,
   IUser,
   IUserInput,
   IVerifyEmailUser,
-  OOO_TRANSACTION_TYPE,
-  TPendingTxs,
-  TxPendingWithMetadata,
-  TxWithMetadata,
-  UserValidator,
+  UserSchema,
 } from "./interfaces";
 
 const USER_API_ROOT = "/api/user";
@@ -41,8 +32,8 @@ const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient,
-    @inject(symbols.logger) private logger: ILogger,
+    @inject(symbols.authJsonHttpClient) private httpClient: IHttpClient,
+    @inject(coreModuleApi.symbols.logger) private logger: ILogger,
   ) {}
 
   public async createAccount(newUser?: IUserInput): Promise<IUser> {
@@ -58,7 +49,7 @@ export class UsersApi {
     const response = await this.httpClient.post<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/",
-      responseSchema: UserValidator,
+      responseSchema: UserSchema,
       body: modifiedNewUser,
       allowedStatusCodes: [409],
     });
@@ -72,7 +63,7 @@ export class UsersApi {
     const response = await this.httpClient.get<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me",
-      responseSchema: UserValidator,
+      responseSchema: UserSchema,
       allowedStatusCodes: [404],
     });
 
@@ -86,7 +77,7 @@ export class UsersApi {
     const response = await this.httpClient.get<IEmailStatus>({
       baseUrl: USER_API_ROOT,
       url: `/email/status/${userEmail}`,
-      responseSchema: emailStatus,
+      responseSchema: emailStatusSchema,
     });
     return response.body;
   }
@@ -95,7 +86,7 @@ export class UsersApi {
     const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me/email-verification",
-      responseSchema: UserValidator,
+      responseSchema: UserSchema,
       allowedStatusCodes: [404, 409],
       body: userCode,
     });
@@ -121,7 +112,7 @@ export class UsersApi {
     const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me",
-      responseSchema: UserValidator,
+      responseSchema: UserSchema,
       allowedStatusCodes: [404, 409],
       body: modifiedUpdatedUser,
     });
@@ -140,78 +131,10 @@ export class UsersApi {
     const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me/tos",
-      responseSchema: UserValidator,
+      responseSchema: UserSchema,
       allowedStatusCodes: [404, 409],
       body: { latest_accepted_tos_ipfs: agreementHash },
     });
     return ensureWalletTypesInUser(response.body);
-  }
-
-  public async pendingTxs(): Promise<TPendingTxs> {
-    const response = await this.httpClient.get<Array<TxPendingWithMetadata | TxWithMetadata>>({
-      baseUrl: USER_API_ROOT,
-      url: "/pending_transactions/me",
-    });
-    if (response.statusCode === 200) {
-      return {
-        // find transaction with payload
-        pendingTransaction: response.body.find(
-          tx => tx.transactionType !== OOO_TRANSACTION_TYPE,
-        ) as TxPendingWithMetadata,
-        // move other transactions to OOO transactions
-        oooTransactions: response.body.filter(
-          tx => tx.transactionType === OOO_TRANSACTION_TYPE,
-        ) as TxWithMetadata[],
-      };
-    }
-    throw new Error("Error while fetching pending transaction");
-  }
-
-  public async addPendingTx(tx: TxPendingWithMetadata): Promise<void> {
-    await this.httpClient.put<void>({
-      baseUrl: USER_API_ROOT,
-      url: "/pending_transactions/me",
-      body: {
-        transaction: tx.transaction,
-        transaction_type: tx.transactionType,
-        transaction_additional_data: tx.transactionAdditionalData,
-        transaction_timestamp: tx.transactionTimestamp,
-        transaction_status: tx.transactionStatus,
-        transaction_error: tx.transactionError,
-      },
-      disableManglingRequestBody: true,
-    });
-  }
-
-  public async deletePendingTx(txHash: string): Promise<void> {
-    await this.httpClient.delete<void>({
-      baseUrl: USER_API_ROOT,
-      url: `/pending_transactions/me/${txHash}`,
-    });
-  }
-
-  public async getGasStipend(txDetails: ITxData): Promise<string> {
-    const convertedTxDetails = {
-      ...txDetails,
-      to: makeEthereumAddressChecksummed(toEthereumAddress(txDetails.to)),
-      from: makeEthereumAddressChecksummed(toEthereumAddress(txDetails.from)),
-      gas: addHexPrefix(new BigNumber(txDetails.gas ? txDetails.gas.toString() : "0").toString(16)),
-      gasPrice: addHexPrefix(
-        new BigNumber(txDetails.gasPrice ? txDetails.gasPrice.toString() : "0").toString(16),
-      ),
-      value: addHexPrefix(
-        new BigNumber(txDetails.value ? txDetails.value.toString() : "0").toString(16),
-      ),
-    };
-
-    const response = await this.httpClient.post<string>({
-      baseUrl: USER_API_ROOT,
-      url: `/transaction/gas_stipend`,
-      body: convertedTxDetails,
-      responseSchema: GasStipendValidator,
-      disableManglingRequestBody: true,
-    });
-
-    return response.body;
   }
 }

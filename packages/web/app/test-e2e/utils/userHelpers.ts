@@ -1,11 +1,12 @@
 import { promisify, toCamelCase } from "@neufund/shared";
+import { IUser } from "@neufund/shared-modules";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { toChecksumAddress } from "web3-utils";
 
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
+import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/user-tx/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { assertLanding } from "./assertions";
 import { getAgreementHash } from "./getAgreementHash";

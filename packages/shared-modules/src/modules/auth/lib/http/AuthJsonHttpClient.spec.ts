@@ -2,7 +2,7 @@ import { createMock } from "@neufund/shared/tests";
 import { expect } from "chai";
 import * as fetchMock from "fetch-mock";
 
-import { ISingleKeyStorage, JsonHttpClient } from "../../core/module";
+import { ISingleKeyStorage, JsonHttpClient } from "../../../core/module";
 import { AuthJsonHttpClient } from "./AuthJsonHttpClient";
 
 const TOKEN = "1234ABCD";

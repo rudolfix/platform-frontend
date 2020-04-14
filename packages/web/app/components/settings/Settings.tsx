@@ -1,10 +1,10 @@
 import { withContainer } from "@neufund/shared";
+import { EUserType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
 import { EKycRequestStatus, EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
 import { selectKycRequestStatus, selectKycRequestType } from "../../modules/kyc/selectors";

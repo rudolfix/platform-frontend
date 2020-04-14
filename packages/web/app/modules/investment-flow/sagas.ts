@@ -1,4 +1,13 @@
-import { all, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
+import {
+  all,
+  delay,
+  put,
+  SagaGenerator,
+  select,
+  take,
+  takeEvery,
+  takeLatest,
+} from "@neufund/sagas";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -348,7 +357,7 @@ function* stop(): any {
   if (isOpen) yield put(actions.txSender.txSenderHideModal());
 }
 
-export function* investmentFlowSagas(): any {
+export function* investmentFlowSagas(): SagaGenerator<void> {
   yield takeEvery(actions.investmentFlow.submitCurrencyValue, processCurrencyValue);
   yield takeLatest(actions.investmentFlow.validateInputs, neuCall, validateAndCalculateInputs);
   yield takeEvery(actions.investmentFlow.startInvestment, start);

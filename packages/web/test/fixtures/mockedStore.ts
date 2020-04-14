@@ -1,7 +1,6 @@
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 
-import { EUserType } from "../../app/lib/api/users/interfaces";
-import { EWalletSubType, EWalletType } from "../../app/modules/web3/types";
 import { TAppGlobalState } from "../../app/store";
 import { DeepPartial } from "../../app/types";
 import { testCompany, testEto } from "../fixtures";
@@ -32,17 +31,6 @@ export const mockedStore: DeepPartial<TAppGlobalState> = {
     isUnlocked: true,
   },
   auth: {
-    user: {
-      walletSubtype: EWalletSubType.UNKNOWN,
-      walletType: EWalletType.LIGHT,
-      type: EUserType.INVESTOR,
-      unverifiedEmail: "storybook@neufund.org",
-      language: "en",
-      latestAcceptedTosIpfs: "qwerty123",
-      backupCodesVerified: false,
-      userId: "0xqwerty123",
-      verifiedEmail: "storybook@neufund.org",
-    },
     currentAgreementHash: "qwerty123",
   },
   wallet: {

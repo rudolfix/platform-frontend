@@ -6,7 +6,7 @@ import { oneOfSchema, singleValue, typedValue } from "../../../utils/yupSchemas"
 import { StorageSchema } from "../../storage";
 import { TSecureReference } from "./SecureStorage";
 import { EWalletType } from "./types";
-import { isAddress } from "./utils";
+import { isAddress, isChecksumAddress } from "./utils";
 
 /**
  * A typed schema to validate secure reference
@@ -17,7 +17,12 @@ const secureReference = () =>
 /**
  * A typed schema to validate eth address
  */
-const ethereumAddress = () => typedValue(isAddress);
+const ethereumAddressNoChecksum = () => typedValue(isAddress);
+
+/**
+ * A typed schema to validate eth address
+ */
+const ethereumAddress = () => typedValue(isChecksumAddress);
 
 /**
  * A typed schema to validate hd path
@@ -53,4 +58,4 @@ const WalletMetadataStorageSchema = new StorageSchema<TWalletMetadata>(
   WalletMetadataSchema,
 );
 
-export { WalletMetadataStorageSchema, ethereumAddress, ethereumHdPath };
+export { WalletMetadataStorageSchema, ethereumAddress, ethereumAddressNoChecksum, ethereumHdPath };

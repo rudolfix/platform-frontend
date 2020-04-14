@@ -1,9 +1,9 @@
 import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared";
-import { ESignerType } from "@neufund/shared-modules";
+import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import * as hex2ascii from "hex2ascii";
 import * as Web3 from "web3";
 
-import { EWalletSubType, EWalletType, IBrowserWalletMetadata } from "../../../modules/web3/types";
+import { IBrowserWalletMetadata } from "../../../modules/web3/types";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError } from "../Web3Manager/Web3Manager";

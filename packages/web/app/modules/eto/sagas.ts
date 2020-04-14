@@ -9,6 +9,7 @@ import {
   nonNullable,
   Q18,
 } from "@neufund/shared";
+import { EUserType } from "@neufund/shared-modules";
 import BigNumber from "bignumber.js";
 import { LOCATION_CHANGE } from "connected-react-router";
 import { camelCase, isString } from "lodash";
@@ -33,7 +34,6 @@ import {
   immutableDocumentName,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { canShowDocument } from "../../lib/api/eto/EtoFileUtils";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
@@ -476,7 +476,7 @@ function* downloadDocument(
     "Non visible documents can't be downloaded",
   );
 
-  const userId: ReturnType<typeof selectUserId> = yield select(selectUserId);
+  const userId: ReturnType<typeof selectUserId> = yield* select(selectUserId);
 
   const etoConfidentialAgreements = getDocumentsRequiredConfidentialityAgreements(eto.previewCode);
 

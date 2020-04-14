@@ -81,7 +81,7 @@ class EthWalletFactory {
    */
   async createFromExisting(): Promise<EthWallet> {
     const walletMetadata = await this.walletStorage.get();
-    if (walletMetadata === null) {
+    if (!walletMetadata) {
       throw new NoExistingWalletFoundError();
     }
 
@@ -165,7 +165,7 @@ class EthWalletFactory {
         break;
     }
 
-    await this.walletStorage.remove();
+    await this.walletStorage.clear();
   }
 
   private async createFromMnemonicReference(mnemonicReference: TSecureReference) {

@@ -204,6 +204,8 @@
     "@ledgerhq/web3-subprovider": "^4.41.1",
     "@neufund/design-system": "^1.0.0",
     "@neufund/shared": "^1.0.0",
+    "@neufund/shared-modules": "^1.0.0",
+    "@neufund/sagas": "^1.0.0",
     "@sentry/browser": "^4.3.0",
     "@types/ethereum-protocol": "^1.0.0",
     "babel-regenerator-runtime": "^6.5.0",

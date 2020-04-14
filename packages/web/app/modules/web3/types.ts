@@ -1,18 +1,5 @@
 import { EthereumAddressWithChecksum } from "@neufund/shared";
-
-// normalized information about all possible types of personal wallets
-export enum EWalletType {
-  LEDGER = "LEDGER",
-  BROWSER = "BROWSER",
-  LIGHT = "LIGHT",
-  UNKNOWN = "UNKNOWN",
-}
-export enum EWalletSubType {
-  METAMASK = "METAMASK",
-  PARITY = "PARITY",
-  GNOSIS = "GNOSIS",
-  UNKNOWN = "UNKNOWN",
-}
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 
 export type TWalletMetadata = ILightWalletMetadata | IBrowserWalletMetadata | ILedgerWalletMetadata;
 

@@ -1,4 +1,5 @@
 import { nonNullable } from "@neufund/shared";
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { expect } from "chai";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
@@ -16,7 +17,6 @@ import {
   selectLightWalletEmailFromQueryString,
   selectLightWalletFromQueryString,
 } from "./selectors";
-import { EWalletSubType, EWalletType } from "./types";
 
 describe("web3 > selectors", () => {
   const salt = "salt";

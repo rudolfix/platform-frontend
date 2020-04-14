@@ -36,7 +36,6 @@ function* initSmartcontracts({
     yield web3Manager.initialize();
 
     yield neuCall(initializeContracts);
-    yield neuCall(initGlobalWatchers);
 
     yield put(actions.init.done(EInitType.SMART_CONTRACTS_INIT));
   } catch (e) {
@@ -116,6 +115,7 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
       yield neuCall(deleteWalletConnectSession);
     }
     yield waitUntilSmartContractsAreInitialized();
+    yield neuCall(initGlobalWatchers);
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
     if (e instanceof WalletMetadataNotFoundError) {

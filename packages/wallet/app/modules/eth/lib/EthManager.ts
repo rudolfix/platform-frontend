@@ -1,6 +1,6 @@
 import { EthereumAddress, EthereumPrivateKey, EthereumHDMnemonic } from "@neufund/shared";
 import { coreModuleApi, ILogger, TLibSymbolType } from "@neufund/shared-modules";
-import { utils } from "ethers";
+import { providers, utils } from "ethers";
 import { inject, injectable } from "inversify";
 
 import { EthModuleError } from "../errors";
@@ -209,13 +209,13 @@ class EthManager {
    *
    * @throws NoWalletPluggedError - When no wallet was plugged yet
    */
-  unsafeExportWalletPrivateKey = async (): Promise<EthereumPrivateKey> => {
+  async unsafeExportWalletPrivateKey(): Promise<EthereumPrivateKey> {
     if (!this.wallet) {
       throw new NoWalletPluggedError();
     }
 
     return this.wallet.unsafeExportPrivateKey();
-  };
+  }
 
   /**
    * Exports wallet mnemonic to the UI
@@ -225,13 +225,20 @@ class EthManager {
    *
    * @throws NoWalletPluggedError - When no wallet was plugged yet
    */
-  unsafeExportWalletMnemonic = async (): Promise<EthereumHDMnemonic> => {
+  async unsafeExportWalletMnemonic(): Promise<EthereumHDMnemonic> {
     if (!this.wallet) {
       throw new NoWalletPluggedError();
     }
 
     return this.wallet.unsafeExportMnemonic();
-  };
+  }
+
+  /**
+   * Returns an internal provider to be used in contracts
+   */
+  async getInternalProvider(): Promise<providers.Provider> {
+    return this.adapter.getInternalProvider();
+  }
 
   /**
    * Signs an already hashed message with a currently plugged wallet

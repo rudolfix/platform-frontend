@@ -22,7 +22,7 @@ export const withStore = (initialState?: DeepPartial<TAppState>) => (
   return <ReduxProvider store={store}>{story()}</ReduxProvider>;
 };
 
-export const withMockStore = (initialState?: DeepPartial<TAppState>) => (
+export const withMockStore = (initialState: DeepPartial<TAppState> = {}) => (
   node: React.ReactNode,
 ): {
   store: MockStore;

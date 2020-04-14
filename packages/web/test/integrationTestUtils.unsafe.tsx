@@ -10,6 +10,7 @@ import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, combineReducers, createStore, ReducersMapObject, Store } from "redux";
+import configureStore from "redux-mock-store";
 import { SinonSpy } from "sinon";
 
 import {
@@ -64,6 +65,11 @@ interface ICreateIntegrationTestsSetupOutput {
   sagaMiddleware: SagaMiddleware<{ container: Container; deps: TGlobalDependencies }>;
 }
 
+/**
+ * @deprecated Please don't write unit tests for components as integration tests.
+ *             Just mock all selectors/external components and assert component behaviour
+ *             without spinning whole sagas under the hood
+ */
 export function createIntegrationTestsSetup(
   options: ICreateIntegrationTestsSetupOptions = {},
 ): ICreateIntegrationTestsSetupOutput {
@@ -279,3 +285,25 @@ export const submit = async (element: ReactWrapper): Promise<void> => {
     "Waiting for form to be submitted",
   );
 };
+
+const mockStore = configureStore();
+const throwOnAccessHandler = {
+  get: (_: unknown, name: string) => {
+    throw new Error(
+      `Seems that you are trying to get data from redux store (state.${name}). The best approach would be to mock selectors. Maintaining tests related on the external store shape is close to impossible.`,
+    );
+  },
+};
+const restrictedStore = new Proxy({}, throwOnAccessHandler);
+
+/**
+ * Wraps a component redux store and intl provider.
+ * Enforces that store is not accesses directly to promote `selectors` mocking
+ */
+export const wrapWithBasicProviders = (Component: React.ComponentType) => (
+  <ReduxProvider store={mockStore(restrictedStore)}>
+    <IntlProvider locale="en-en" messages={defaultTranslations}>
+      <Component />
+    </IntlProvider>
+  </ReduxProvider>
+);

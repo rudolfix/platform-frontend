@@ -1,4 +1,6 @@
-import { AppReducer } from "../../../store";
+import { AppReducer } from "@neufund/sagas";
+
+import { tokenPriceActions } from "./actions";
 
 export interface ITokenPriceState {
   loading: boolean;
@@ -18,23 +20,27 @@ const walletInitialState: ITokenPriceState = {
   loading: true,
 };
 
-export const tokenPriceReducer: AppReducer<ITokenPriceState> = (
+const tokenPriceReducer: AppReducer<ITokenPriceState, typeof tokenPriceActions> = (
   state = walletInitialState,
   action,
 ): ITokenPriceState => {
   switch (action.type) {
-    case "TOKEN_PRICE_LOAD_START":
+    case tokenPriceActions.loadTokenPriceStart.getType():
       return {
         ...state,
         loading: true,
       };
-    case "TOKEN_PRICE_SAVE":
+    case tokenPriceActions.saveTokenPrice.getType():
       return {
         ...state,
         loading: false,
-        tokenPriceData: action.payload,
+        tokenPriceData: action.payload.tokenPriceData,
       };
   }
 
   return state;
+};
+
+export const tokenPriceReducerMap = {
+  tokenPrice: tokenPriceReducer,
 };

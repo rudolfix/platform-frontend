@@ -15,6 +15,7 @@ type TExternalProps = { address: EthereumAddressWithChecksum } & TViewProps;
 
 const AddressShare: React.FunctionComponent<TExternalProps> = ({ address, style, ...props }) => {
   const onShare = async () => {
+    // TODO: Move `Share` to a module called `interactions-ui`
     await Share.share({
       message: address,
     });

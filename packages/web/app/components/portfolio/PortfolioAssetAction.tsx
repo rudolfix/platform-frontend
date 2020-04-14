@@ -3,7 +3,7 @@ import * as React from "react";
 import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { nonNullable } from "../../../../shared/dist/utils/nonNullable";
+import { nonNullable } from "@neufund/shared-utils";
 import { actions } from "../../modules/actions";
 import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";

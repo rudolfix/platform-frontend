@@ -1,4 +1,4 @@
-import { StateNotAllowedError } from "../../../../shared/src/utils/errors";
+import { StateNotAllowedError } from "@neufund/shared-utils";
 
 export const shouldNeverHappen = (reason: string) => (): never => {
   throw new StateNotAllowedError(reason);

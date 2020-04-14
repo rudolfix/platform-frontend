@@ -1,9 +1,8 @@
+import { TBigNumberVariants } from "@neufund/shared";
 import BigNumber from "bignumber.js";
-import { mapValues } from "lodash";
+import mapValues from "lodash/mapValues";
 
-import { TBigNumberVariants } from "./../../lib/web3/types";
-
-export function numericValuesToString<T extends Record<keyof T, TBigNumberVariants>>(
+export function numericValuesToString<T extends Record<string, TBigNumberVariants>>(
   entity: T,
 ): Record<keyof T, string> {
   return mapValues<T, string>(entity, e => e.toString());

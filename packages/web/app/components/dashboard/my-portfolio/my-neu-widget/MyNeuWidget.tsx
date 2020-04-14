@@ -8,15 +8,16 @@ import { externalRoutes } from "../../../../config/externalRoutes";
 import { actions } from "../../../../modules/actions";
 import {
   selectIncomingPayoutError,
+  selectIncomingPayoutEurEquiv,
   selectIsIncomingPayoutLoading,
   selectIsIncomingPayoutNotInitialized,
   selectIsIncomingPayoutPending,
   selectPayoutAvailable,
   selectTokensDisbursalError,
+  selectTokensDisbursalEurEquivTotal,
   selectTokensDisbursalIsLoading,
   selectTokensDisbursalNotInitialized,
 } from "../../../../modules/investor-portfolio/selectors";
-import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import {
   selectIsLoading,
   selectNeuBalance,
@@ -39,25 +40,32 @@ import { MyNeuWidgetPayout } from "./MyNeuWidgetPayout";
 import icon from "../../../../assets/img/neu_icon.svg";
 import * as styles from "./MyNeuWidget.module.scss";
 
-type TErrorStateProps = {
+type TStateProps = {
   isLoading: boolean;
   error: boolean;
-};
-
-type TComponentStateProps = {
   balanceNeu: string;
   balanceEur: string;
   isPayoutAvailable: boolean;
   isPayoutPending: boolean;
+  tokensDisbursalEurEquiv: string | undefined;
+  incomingPayoutEurEquiv: string;
 };
-
-type TStateProps = TErrorStateProps & TComponentStateProps;
 
 export type TDispatchProps = {
-  acceptCombinedPayout: (tokensDisbursal: ReadonlyArray<ITokenDisbursal>) => void;
+  goToPortfolio: () => void;
+  loadPayoutsData: () => void;
 };
 
-type TComponentProps = TComponentStateProps & TDispatchProps;
+type TComponentProps = {
+  balanceNeu: string;
+  balanceEur: string;
+  isPayoutAvailable: boolean;
+  isPayoutPending: boolean;
+  tokensDisbursalEurEquiv: string | undefined;
+  incomingPayoutEurEquiv: string;
+  goToPortfolio: () => void;
+  loadPayoutsData: () => void;
+};
 
 export const MyNeuWidgetLayoutWrapper: React.FunctionComponent = ({ children }) => (
   <section className={styles.wrapper}>
@@ -80,7 +88,7 @@ export const MyNeuWidgetLayout: React.FunctionComponent<TComponentProps> = props
         data-test-id="my-neu-widget-neumark-balance"
         transactionTheme={ETheme.SILVER_LIGHT}
       />
-      <MyNeuWidgetPayout />
+      <MyNeuWidgetPayout {...props} />
       {!props.isPayoutAvailable && !props.isPayoutPending && (
         <ButtonLink
           to={externalRoutes.neufundSupportWhatIsNeu}
@@ -117,6 +125,15 @@ export const MyNeuWidget = compose<TComponentProps, {}>(
       balanceEur: selectNeuBalanceEuroAmount(state),
       isPayoutPending: selectIsIncomingPayoutPending(state),
       isPayoutAvailable: selectPayoutAvailable(state),
+      tokensDisbursalEurEquiv: selectTokensDisbursalEurEquivTotal(state),
+      incomingPayoutEurEquiv: selectIncomingPayoutEurEquiv(state),
+    }),
+    dispatchToProps: dispatch => ({
+      goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),
+      loadPayoutsData: () => {
+        dispatch(actions.investorEtoTicket.getIncomingPayouts());
+        dispatch(actions.investorEtoTicket.loadClaimables());
+      },
     }),
   }),
   withContainer(MyNeuWidgetLayoutWrapper),

@@ -1,12 +1,12 @@
 import { ButtonBase } from "@neufund/design-system";
-import { invariant } from "@neufund/shared";
+import { assertNever } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { match, NavLink } from "react-router-dom";
 
 import { TDataTestId, TTranslatedString } from "../../../types";
-import { InlineIcon } from "../../shared/icons/InlineIcon";
-import { ExternalLink } from "../../shared/links/index";
+import { InlineIcon } from "../../shared/icons";
+import { ExternalLink } from "../../shared/links";
 
 import * as styles from "./MenuEntry.module.scss";
 
@@ -195,7 +195,7 @@ const MenuEntryInternal: React.FunctionComponent<TMenuEntry & IMenuInternal> = (
           <MenuEntryExternalLink {...(rest as IMenuEntryContent & IMenuLink & IMenuInternal)} />
         );
       default:
-        return invariant(false, "unknown menu entry type");
+        assertNever(type, "Unknown menu entry type");
     }
   }
 };

@@ -11,6 +11,8 @@ const symlinkedModules = {
   "@neufund/shared-modules": path.resolve(projectRoot, "../shared-modules"),
   "@neufund/sagas": path.resolve(projectRoot, "../sagas"),
   crypto: require.resolve("react-native-crypto"),
+  stream: require.resolve("stream-browserify"),
+  vm: require.resolve("vm-browserify"),
 };
 
 module.exports = (async () => {

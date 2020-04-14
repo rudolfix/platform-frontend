@@ -1,6 +1,7 @@
+import { ActionMatchingPattern } from "@redux-saga/types";
 import { Container } from "inversify";
 import { isMatch } from "lodash/fp";
-import { CallEffect, SagaReturnType } from "redux-saga/effects";
+import { CallEffect, SagaReturnType, Tail } from "redux-saga/effects";
 
 import {
   ActionPattern,
@@ -104,14 +105,22 @@ export function* neuTakeUntil(
 /**
  * Starts saga on `startAction`, cancels on `stopAction`, loops...
  */
-export function* neuTakeLatestUntil(
-  startAction: ActionPattern,
+export function* neuTakeLatestUntil<
+  P extends ActionPattern,
+  Fn extends (action: ActionMatchingPattern<P>, ...args: any[]) => any
+>(
+  startAction: P,
   stopAction: ActionPattern,
-  saga: TSagaWithDeps,
-): any {
-  yield takeLatest(startAction, function*(payload): Generator<any, any, any> {
-    yield race({
-      task: neuCall(saga, payload),
+  saga: Fn,
+  ...args: Tail<Parameters<Fn>>
+): SagaGenerator<void> {
+  yield takeLatest(startAction, function*(action: ActionMatchingPattern<P>): SagaGenerator<void> {
+    // We need to help compiler by manually joining types
+    const sagaArgsTyped = [action, ...args] as Parameters<Fn>;
+
+    yield* race({
+      // we need to help compiler here by joining params manually
+      task: call(saga, ...sagaArgsTyped),
       cancel: take(stopAction),
     });
   });

@@ -24,7 +24,6 @@ import { profileSagas } from "./profile/sagas";
 import { routingSagas } from "./routing/sagas";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
-import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
 import { termsOfServiceSagas } from "./terms-of-service-modal/sagas";
 import { txHistorySaga } from "./tx-history/sagas";
 import { txMonitorSagas } from "./tx/monitor/sagas";
@@ -56,7 +55,6 @@ function* allSagas(): Generator<any, any, any> {
     fork(neuTakeLatest, actions.init.startServices, walletConnectSagas),
     fork(neuTakeLatest, actions.init.startServices, browserWalletSagas),
     fork(neuTakeLatest, actions.init.startServices, ledgerSagas),
-    fork(neuTakeLatest, actions.init.startServices, tokenPriceSagas),
     fork(neuTakeLatest, actions.init.startServices, notificationModalSagas),
     // Sagas that should be restarted after logout occurs
     fork(neuTakeUntil, actions.init.startServices, actions.init.stopServices, termsOfServiceSagas),

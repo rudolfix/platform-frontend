@@ -1,12 +1,24 @@
-import { neuTakeLatest, put, fork, call } from "@neufund/sagas";
+import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
 import { toEthereumAddress, toEthereumPrivateKey } from "@neufund/shared";
+import { tokenPriceModuleApi } from "@neufund/shared-modules";
 import { utils } from "ethers";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { walletContractsModuleApi } from "../contracts/module";
 import { initActions } from "./actions";
+
+/**
+ * Init global watchers
+ */
+function* initGlobalWatchers(): SagaGenerator<void> {
+  yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
+}
 
 function* initStartSaga({ logger, ethManager }: TGlobalDependencies): Generator<unknown, void> {
   try {
+    yield* call(walletContractsModuleApi.sagas.initializeContracts);
+    yield* call(initGlobalWatchers);
+
     // TODO: Provide a proper init flow
 
     const balance = yield* call(() =>

@@ -1,1 +1,1 @@
-export type TConfig = { backendRootUrl: string; rpcUrl: string };
+export type TConfig = { backendRootUrl: string; rpcUrl: string; universeContractAddress: string };

@@ -27,7 +27,7 @@ const getItemPosition = (index: number, length: number) => {
  * For now only button menu item is supported
  */
 const Menu: React.FunctionComponent<TExternalProps> = ({ items, ...props }) => (
-  <ScrollView {...props}>
+  <ScrollView accessibilityRole="menu" {...props}>
     {items.map((item, index) => {
       switch (item.type) {
         case EMenuItemType.BUTTON:

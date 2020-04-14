@@ -9,7 +9,7 @@ import { actions, TActionFromCreator } from "../actions";
 import { ELogoutReason } from "../auth/types";
 import { loadUser } from "../auth/user/external/sagas";
 import { handleLogOutUserInternal } from "../auth/user/sagas";
-import { initializeContracts, populatePlatformTermsConstants } from "../contracts/sagas";
+import { initializeContracts } from "../contracts/sagas";
 import { neuCall, neuTakeEvery, neuTakeOnly } from "../sagasUtils";
 import { detectUserAgent } from "../user-agent/sagas";
 import { walletConnectInit } from "../wallet-selector/wallet-connect/sagas";
@@ -26,7 +26,6 @@ import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 function* initGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
 }
-
 
 function* initSmartcontracts({
   web3Manager,

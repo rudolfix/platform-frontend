@@ -1,12 +1,4 @@
-import {
-  END,
-  eventChannel,
-  fork,
-  neuTakeLatest,
-  neuTakeLatestUntil,
-  put,
-  take,
-} from "@neufund/sagas";
+import { END, eventChannel, fork, neuTakeLatest, put, take } from "@neufund/sagas";
 
 import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
@@ -18,7 +10,7 @@ import {
 import { WalletConnectSessionRejectedError } from "../../../lib/web3/wallet-connect/WalletConnectWallet";
 import { actions, TActionFromCreator } from "../../actions";
 import { handleLogOutUserInternal } from "../../auth/user/sagas";
-import { neuCall, neuTakeEvery } from "../../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
 import { walletSelectorConnect } from "../sagas";
 
 function* startWalletConnectEventChannel(

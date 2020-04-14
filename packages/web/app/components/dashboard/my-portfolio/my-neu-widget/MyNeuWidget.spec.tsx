@@ -14,6 +14,7 @@ import { EuroToken } from "../../../../lib/contracts/EuroToken";
 import { FeeDisbursal } from "../../../../lib/contracts/FeeDisbursal";
 import { Neumark } from "../../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../../lib/web3/ContractsService";
+import { actions } from "../../../../modules/actions";
 import { generateRootModuleReducerMap, TAppGlobalState } from "../../../../store";
 import { MyNeuWidget } from "./MyNeuWidget";
 
@@ -138,6 +139,7 @@ describe("MyNeuWidget", () => {
 
   it("shows the loading indicator", () => {
     const store = createStore(rootReducer, initialState as any);
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(MyNeuWidget, { store }));
 
     expect(component.find(tid("loading-indicator-pulse")).length).to.eq(1);
@@ -152,6 +154,7 @@ describe("MyNeuWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(MyNeuWidget, { store, container }));
 
     await clock.fakeClock.tickAsync(2000);
@@ -172,6 +175,7 @@ describe("MyNeuWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(MyNeuWidget, { store, container }));
 
     await clock.fakeClock.tickAsync(2000);
@@ -192,6 +196,7 @@ describe("MyNeuWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(MyNeuWidget, { store, container }));
     await clock.fakeClock.tickAsync(2000);
     component.update();
@@ -211,6 +216,7 @@ describe("MyNeuWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(MyNeuWidget, { store, container }));
 
     component.update();
@@ -230,7 +236,7 @@ describe("MyNeuWidget", () => {
       contractsMock,
       initialState,
     });
-
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(MyNeuWidget, { store, container }));
     component.update();
 

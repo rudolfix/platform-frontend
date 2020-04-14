@@ -15,6 +15,7 @@ import { EuroToken } from "../../../../lib/contracts/EuroToken";
 import { FeeDisbursal } from "../../../../lib/contracts/FeeDisbursal";
 import { Neumark } from "../../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../../lib/web3/ContractsService";
+import { actions } from "../../../../modules/actions";
 import { EWalletSubType, EWalletType } from "../../../../modules/web3/types";
 import { generateRootModuleReducerMap } from "../../../../store";
 import { PayoutWidget } from "./PayoutWidget";
@@ -140,6 +141,7 @@ describe("PayoutWidget", () => {
 
   it("shows the loading indicator", () => {
     const store = createStore(rootReducer, initialState as any);
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store }));
 
     expect(component.find(tid("loading-indicator-pulse")).length).to.eq(1);
@@ -154,6 +156,7 @@ describe("PayoutWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
 
     await clock.fakeClock.tickAsync(2000);
@@ -173,6 +176,7 @@ describe("PayoutWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
 
     await clock.fakeClock.tickAsync(2000);
@@ -193,6 +197,7 @@ describe("PayoutWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
     await clock.fakeClock.tickAsync(2000);
     component.update();
@@ -212,6 +217,7 @@ describe("PayoutWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
     clock.fakeClock.tick(4000);
 
@@ -227,6 +233,7 @@ describe("PayoutWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
     component.update();
     await waitForTid(component, "my-portfolio-widget-incoming-payout-pending");
@@ -240,6 +247,7 @@ describe("PayoutWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
     component.update();
 
@@ -260,6 +268,7 @@ describe("PayoutWidget", () => {
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
 
     await waitForTid(component, "my-portfolio-widget-incoming-payout-pending");
@@ -280,11 +289,11 @@ describe("PayoutWidget", () => {
     feeDisbursalMock.reMock({
       getNonClaimableDisbursals: getNonClaimableDisbursalsData,
     });
-
     const { store, container } = createIntegrationTestsSetup({
       contractsMock,
       initialState,
     });
+    store.dispatch(actions.init.startServices());
     const component = createMount(wrapWithProviders(PayoutWidget, { store, container }));
 
     await waitForTid(component, "my-portfolio-widget-incoming-payout-pending");

@@ -3,7 +3,7 @@ import {
   toEthereumPrivateKey,
   EthereumHDMnemonic,
   toEthereumHDMnemonic,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { utils } from "ethers";
 import { UnsignedTransaction } from "ethers/utils";

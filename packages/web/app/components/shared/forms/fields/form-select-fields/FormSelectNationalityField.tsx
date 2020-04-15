@@ -1,4 +1,4 @@
-import { NATIONALITIES } from "@neufund/shared";
+import { NATIONALITIES } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

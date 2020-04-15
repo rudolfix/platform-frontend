@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
-import { nonNullable, withContainer } from "@neufund/shared";
+import { nonNullable, withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";

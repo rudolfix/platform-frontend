@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { TTransferInitialValues } from "./reducer";
 import { TxUserFlowInputData, TxUserFlowTransferDetails } from "./types";

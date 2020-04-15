@@ -1,4 +1,4 @@
-import { Opaque } from "@neufund/shared";
+import { Opaque } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import AsyncStorage from "@react-native-community/async-storage";
 

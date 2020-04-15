@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { compareBigNumbers } from "@neufund/shared";
+import { compareBigNumbers } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";

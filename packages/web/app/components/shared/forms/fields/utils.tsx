@@ -1,4 +1,4 @@
-import { ArrayWithAtLeastOneMember } from "@neufund/shared";
+import { ArrayWithAtLeastOneMember } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { FormikContextType, useField, useFormikContext } from "formik";
 import { FieldMetaProps } from "formik/dist/types";

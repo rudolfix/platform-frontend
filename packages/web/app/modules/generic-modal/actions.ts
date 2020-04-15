@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { TMessage } from "../../components/translatedMessages/utils";

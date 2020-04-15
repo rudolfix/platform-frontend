@@ -1,4 +1,4 @@
-import { ECountries, EUSState } from "@neufund/shared";
+import { ECountries, EUSState } from "@neufund/shared-utils";
 import * as Yup from "yup";
 
 import { makeAllRequiredExcept } from "../../../utils/yupUtils";

@@ -1,4 +1,4 @@
-import { minutesToMs, secondsToMs } from "@neufund/shared";
+import { minutesToMs, secondsToMs } from "@neufund/shared-utils";
 
 import { EUserType } from "../lib/api/users/interfaces";
 

@@ -1,4 +1,4 @@
-import { assertNever, ECurrency, multiplyBigNumbers } from "@neufund/shared";
+import { assertNever, ECurrency, multiplyBigNumbers } from "@neufund/shared-utils";
 import { StateFromReducersMapObject } from "redux";
 
 import { ITokenPriceStateData, tokenPriceReducerMap } from "./reducer";

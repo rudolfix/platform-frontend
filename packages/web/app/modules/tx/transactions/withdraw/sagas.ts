@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { ETH_DECIMALS, toEthereumAddress } from "@neufund/shared";
+import { ETH_DECIMALS, toEthereumAddress } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { IWindowWithData } from "../../../../../test/helperTypes";

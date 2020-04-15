@@ -3,7 +3,7 @@ import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   promisify,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import * as Web3 from "web3";
 

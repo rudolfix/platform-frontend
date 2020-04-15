@@ -1,5 +1,5 @@
 import { ButtonArrowRight, EButtonLayout } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

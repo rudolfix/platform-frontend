@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { injectIntlHelpers } from "@neufund/shared";
+import { injectIntlHelpers } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

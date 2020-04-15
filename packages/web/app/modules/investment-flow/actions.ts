@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { EInvestmentErrorState, EInvestmentType } from "./reducer";

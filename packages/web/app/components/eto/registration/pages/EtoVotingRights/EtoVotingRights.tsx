@@ -6,7 +6,7 @@ import {
   MIN_RESTRICTED_ACT_VOTING_DURATION,
   MIN_VOTING_DURATION,
   MIN_VOTING_FINALIZATION_DURATION,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

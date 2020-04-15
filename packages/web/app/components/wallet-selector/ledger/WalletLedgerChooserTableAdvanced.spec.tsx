@@ -1,5 +1,5 @@
-import { Q18 } from "@neufund/shared";
-import { tid } from "@neufund/shared/tests";
+import { Q18 } from "@neufund/shared-utils";
+import { tid } from "@neufund/shared-utils/tests";
 import BigNumber from "bignumber.js";
 import { expect } from "chai";
 import { render, shallow } from "enzyme";

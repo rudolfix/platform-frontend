@@ -1,4 +1,4 @@
-import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared";
+import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 

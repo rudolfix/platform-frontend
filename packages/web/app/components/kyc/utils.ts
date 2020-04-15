@@ -1,6 +1,5 @@
-import { assertNever } from "@neufund/shared";
+import { ArrayWithAtLeastOneMember, assertNever } from "@neufund/shared-utils";
 
-import { ArrayWithAtLeastOneMember } from "../../../../shared/src/utils/types";
 import {
   EKycInstantIdProvider,
   TInstantIdNoneProvider,

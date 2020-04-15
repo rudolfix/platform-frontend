@@ -1,7 +1,7 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
-import { dummyIntl, InversifyProvider, simpleDelay } from "@neufund/shared";
 import { authModuleAPI, coreModuleApi, IHttpResponse, noopLogger } from "@neufund/shared-modules";
-import { createMock, tid } from "@neufund/shared/tests";
+import { dummyIntl, InversifyProvider, simpleDelay } from "@neufund/shared-utils";
+import { createMock, tid } from "@neufund/shared-utils/tests";
 import { ConnectedRouter, routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";

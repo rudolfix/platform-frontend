@@ -1,4 +1,4 @@
-import { toEthereumAddress } from "@neufund/shared";
+import { toEthereumAddress } from "@neufund/shared-utils";
 import { noopLogger } from "@neufund/shared-modules";
 import WalletConnectMock from "@walletconnect/react-native";
 import { EventEmitter2 } from "eventemitter2";

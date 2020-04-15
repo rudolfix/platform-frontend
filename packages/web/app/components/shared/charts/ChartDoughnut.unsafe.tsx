@@ -1,4 +1,4 @@
-import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared";
+import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { Doughnut } from "react-chartjs-2";

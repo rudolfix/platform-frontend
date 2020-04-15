@@ -1,4 +1,4 @@
-import { FormInputError, TDataTestId } from "@neufund/shared";
+import { FormInputError, TDataTestId } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { DEFAULT_DECIMAL_PLACES } from "../../../../config/constants";

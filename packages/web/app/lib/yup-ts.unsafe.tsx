@@ -1,4 +1,4 @@
-import { DeepReadonly, Dictionary } from "@neufund/shared";
+import { DeepReadonly, Dictionary } from "@neufund/shared-utils";
 import { mapValues } from "lodash";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

@@ -1,4 +1,4 @@
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import { Moment } from "moment";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

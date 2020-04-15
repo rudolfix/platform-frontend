@@ -1,4 +1,4 @@
-import { DeepReadonly, nonNullable, withContainer } from "@neufund/shared";
+import { DeepReadonly, nonNullable, withContainer } from "@neufund/shared-utils";
 import { isEmpty } from "lodash";
 import * as React from "react";
 import { Redirect } from "react-router";

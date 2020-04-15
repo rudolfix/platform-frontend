@@ -1,4 +1,4 @@
-import { Dictionary, PartialDictionary } from "@neufund/shared";
+import { Dictionary, PartialDictionary } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

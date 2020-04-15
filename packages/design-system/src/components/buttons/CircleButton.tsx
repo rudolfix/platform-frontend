@@ -1,4 +1,4 @@
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 

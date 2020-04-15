@@ -1,5 +1,5 @@
-import { EthereumAddress } from "@neufund/shared";
 import { IContractsService, ILogger } from "@neufund/shared-modules";
+import { EthereumAddress } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 

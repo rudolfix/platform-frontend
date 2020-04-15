@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 import { AppReducer } from "@neufund/sagas";
 
 import { walletConnectActions } from "./actions";

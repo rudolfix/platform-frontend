@@ -1,5 +1,5 @@
 import { ButtonArrowRight } from "@neufund/design-system";
-import { makeTid } from "@neufund/shared";
+import { makeTid } from "@neufund/shared-utils";
 import * as H from "history";
 import * as React from "react";
 

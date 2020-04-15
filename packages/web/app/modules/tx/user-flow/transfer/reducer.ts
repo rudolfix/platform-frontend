@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddress } from "@neufund/shared-utils";
 
 import { AppReducer } from "../../../../store";
 import { actions } from "../../../actions";

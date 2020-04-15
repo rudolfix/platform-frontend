@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { IUser } from "../../../lib/api/users/interfaces";
 import { ELogoutReason } from "../types";

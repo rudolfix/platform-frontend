@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared";
+import { Q18 } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";

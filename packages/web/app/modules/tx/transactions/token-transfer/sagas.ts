@@ -1,5 +1,5 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
-import { EthereumAddress, toEthereumAddress } from "@neufund/shared";
+import { EthereumAddress, toEthereumAddress } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";

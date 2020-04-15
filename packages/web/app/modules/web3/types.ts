@@ -1,5 +1,5 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { ESignerType } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { ESignTransactionMethod } from "../../lib/web3/types";
 

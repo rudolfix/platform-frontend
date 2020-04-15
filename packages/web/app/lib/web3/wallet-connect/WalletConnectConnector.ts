@@ -1,4 +1,4 @@
-import { clearSafeTimeout, safeSetTimeout } from "@neufund/shared";
+import { clearSafeTimeout, safeSetTimeout } from "@neufund/shared-utils";
 import WalletConnectSubprovider from "@walletconnect/web3-subprovider";
 import { EventEmitter } from "events";
 import { inject, injectable } from "inversify";

@@ -1,6 +1,6 @@
 import { EventChannel } from "@neufund/sagas";
+import { createActionFactory } from "@neufund/shared-utils";
 
-import { createActionFactory } from "../../../../../shared/dist/utils/actionsUtils";
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { TWalletConnectEvents } from "../../../lib/web3/wallet-connect/WalletConnectConnector";
 

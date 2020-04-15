@@ -1,5 +1,9 @@
-import { clearSafeTimeout, EthereumAddressWithChecksum, safeSetTimeout } from "@neufund/shared";
 import { ESignerType } from "@neufund/shared-modules";
+import {
+  clearSafeTimeout,
+  EthereumAddressWithChecksum,
+  safeSetTimeout,
+} from "@neufund/shared-utils";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import { TxData } from "web3";
 

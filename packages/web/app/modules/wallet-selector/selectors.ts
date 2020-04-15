@@ -1,6 +1,6 @@
+import { DeepReadonly } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
 
-import { DeepReadonly } from "../../../../shared/dist/utils/types";
 import { appRoutes } from "../../components/appRoutes";
 import { TMessage } from "../../components/translatedMessages/utils";
 import { EUserType } from "../../lib/api/users/interfaces";

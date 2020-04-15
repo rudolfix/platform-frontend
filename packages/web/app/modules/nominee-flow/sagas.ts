@@ -1,5 +1,5 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
-import { Dictionary, InvariantError, nonNullable } from "@neufund/shared";
+import { Dictionary, InvariantError, nonNullable } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { cloneDeep, isEmpty } from "lodash/fp";
 

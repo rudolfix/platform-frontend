@@ -1,4 +1,4 @@
-import { EUSState } from "@neufund/shared";
+import { EUSState } from "@neufund/shared-utils";
 
 import { TFormFixture } from "../../utils/forms";
 

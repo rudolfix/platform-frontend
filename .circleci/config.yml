@@ -29,11 +29,11 @@ jobs:
       - run: yarn workspace @neufund/web danger ci
       # Linting
       - run: yarn workspace @neufund/web lint
-      - run: yarn workspace @neufund/shared lint
+      - run: yarn workspace @neufund/shared-utils lint
       - run: yarn workspace @neufund/design-system lint
       # Unit Tests
       - run: yarn workspace @neufund/web test
-      - run: yarn workspace @neufund/shared test
+      - run: yarn workspace @neufund/shared-utils test
 
       - save_cache:
           paths:

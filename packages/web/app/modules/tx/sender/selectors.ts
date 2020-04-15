@@ -1,4 +1,4 @@
-import { multiplyBigNumbers } from "@neufund/shared";
+import { multiplyBigNumbers } from "@neufund/shared-utils";
 
 import { TAppGlobalState } from "../../../store";
 import { selectEtherPriceEur } from "../../shared/tokenPrice/selectors";

@@ -1,5 +1,5 @@
-import { dummyIntl } from "@neufund/shared";
-import { tid } from "@neufund/shared/tests";
+import { dummyIntl } from "@neufund/shared-utils";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";

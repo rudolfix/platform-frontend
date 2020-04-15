@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { GasModelShape } from "../../lib/api/gas/GasApi";
 

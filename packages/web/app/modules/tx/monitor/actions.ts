@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { createAction } from "../../actionsUtils";

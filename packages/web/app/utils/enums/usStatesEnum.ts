@@ -1,4 +1,4 @@
-import { Dictionary, EUSState } from "@neufund/shared";
+import { Dictionary, EUSState } from "@neufund/shared-utils";
 
 import { TTranslatedString } from "../../types";
 

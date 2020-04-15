@@ -1,4 +1,4 @@
-import { convertFromUlps, divideBigNumbers, multiplyBigNumbers } from "@neufund/shared";
+import { convertFromUlps, divideBigNumbers, multiplyBigNumbers } from "@neufund/shared-utils";
 
 import { TBigNumberVariants } from "../../web3/types";
 import { TPartialEtoSpecData } from "./EtoApi.interfaces.unsafe";

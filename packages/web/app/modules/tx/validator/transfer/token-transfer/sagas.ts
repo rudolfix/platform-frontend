@@ -4,7 +4,7 @@ import {
   convertToUlps,
   EthereumAddress,
   multiplyBigNumbers,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";

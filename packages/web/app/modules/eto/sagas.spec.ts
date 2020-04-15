@@ -1,5 +1,5 @@
 import { expectSaga } from "@neufund/sagas/tests";
-import { convertToUlps, divideBigNumbers, multiplyBigNumbers, Q18 } from "@neufund/shared";
+import { convertToUlps, divideBigNumbers, multiplyBigNumbers, Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { omit } from "lodash/fp";
 import { getContext } from "redux-saga-test-plan/matchers";

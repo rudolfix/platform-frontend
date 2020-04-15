@@ -1,4 +1,4 @@
-import { DeepReadonly, invariant, IPFS_PROTOCOL } from "@neufund/shared";
+import { DeepReadonly, invariant, IPFS_PROTOCOL } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

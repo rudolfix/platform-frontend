@@ -1,4 +1,4 @@
-import { makeTid } from "@neufund/shared";
+import { makeTid } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 

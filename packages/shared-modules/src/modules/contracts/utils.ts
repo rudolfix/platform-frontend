@@ -1,4 +1,4 @@
-import { TBigNumberVariants } from "@neufund/shared";
+import { TBigNumberVariants } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import mapValues from "lodash/mapValues";
 

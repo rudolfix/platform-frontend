@@ -7,7 +7,7 @@ import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   formatMoney,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
 
 import { ERoundingMode } from "../../components/shared/formatters/utils";

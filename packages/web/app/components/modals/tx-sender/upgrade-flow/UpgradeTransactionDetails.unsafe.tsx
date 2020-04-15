@@ -1,4 +1,4 @@
-import { multiplyBigNumbers } from "@neufund/shared";
+import { multiplyBigNumbers } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

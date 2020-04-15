@@ -1,4 +1,4 @@
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 

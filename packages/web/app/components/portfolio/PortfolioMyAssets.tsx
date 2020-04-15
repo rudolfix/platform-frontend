@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
-import { multiplyBigNumbers, withContainer } from "@neufund/shared";
+import { multiplyBigNumbers, withContainer } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

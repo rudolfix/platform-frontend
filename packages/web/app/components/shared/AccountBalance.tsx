@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
-import { makeTid } from "@neufund/shared";
+import { makeTid } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { TDataTestId, TTranslatedString } from "../../types";

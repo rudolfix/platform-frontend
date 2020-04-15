@@ -1,5 +1,5 @@
 import { Button } from "@neufund/design-system";
-import { isExternalUrl } from "@neufund/shared";
+import { isExternalUrl } from "@neufund/shared-utils";
 import { LocationDescriptor } from "history";
 import * as React from "react";
 import { matchPath } from "react-router";

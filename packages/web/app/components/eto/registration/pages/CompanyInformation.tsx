@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { ArrayWithAtLeastOneMember, COMPANY_TAGS_LIMIT } from "@neufund/shared";
+import { ArrayWithAtLeastOneMember, COMPANY_TAGS_LIMIT } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";

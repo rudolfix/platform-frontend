@@ -1,6 +1,6 @@
 import { call, fork, put, SagaGenerator, select } from "@neufund/sagas";
-import { isJwtExpiringLateEnough } from "@neufund/shared";
 import { authModuleAPI, tokenPriceModuleApi } from "@neufund/shared-modules";
+import { isJwtExpiringLateEnough } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { TStoredWalletConnectData } from "../../lib/persistence/WalletConnectStorage";

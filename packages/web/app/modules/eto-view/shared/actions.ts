@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
 import { etoViewInvestorActions } from "../investor/actions";

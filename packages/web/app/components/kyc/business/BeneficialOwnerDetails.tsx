@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";

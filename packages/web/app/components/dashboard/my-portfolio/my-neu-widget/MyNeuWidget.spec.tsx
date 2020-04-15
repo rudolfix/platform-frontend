@@ -1,4 +1,4 @@
-import { createMount, tid } from "@neufund/shared/tests";
+import { createMount, tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { createSandbox, SinonStub } from "sinon";

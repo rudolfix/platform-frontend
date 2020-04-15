@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
-import { InvariantError } from "@neufund/shared";
+import { InvariantError } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";

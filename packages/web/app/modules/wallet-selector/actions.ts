@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { TMessage } from "../../components/translatedMessages/utils";
 import { browserWizardActions } from "./browser-wizard/actions";

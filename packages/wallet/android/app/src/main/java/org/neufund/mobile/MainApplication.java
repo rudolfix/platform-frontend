@@ -1,4 +1,4 @@
-package org.neufund.neufundfirebasedemo;
+package org.neufund.mobile;
 
 import android.app.Application;
 import android.content.Context;

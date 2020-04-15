@@ -26,7 +26,7 @@ class FirebaseProvider implements INotificationsProvider {
   async subscribeForNotifications(): Promise<void> {
     this.logger.info("Subscribe for remote notifications");
 
-    return this.app.registerForRemoteNotifications();
+    return this.app.registerDeviceForRemoteMessages();
   }
 
   /**
@@ -36,7 +36,7 @@ class FirebaseProvider implements INotificationsProvider {
   async unsubscribeForNotifications(): Promise<void> {
     this.logger.info("Unsubscribe for remote notifications");
 
-    return this.app.unregisterForRemoteNotifications();
+    return this.app.unregisterDeviceForRemoteMessages();
   }
 
   /**

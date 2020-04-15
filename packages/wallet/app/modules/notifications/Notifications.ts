@@ -73,8 +73,7 @@ export class Notifications {
     if (this.notificationsAllowed.status === RESULTS.GRANTED) {
       try {
         await this.notificationsProvider.subscribeForNotifications();
-
-        await this.registerTokenInUserService();
+        await this.registerTokenWithBackend();
       } catch (e) {
         throw new NotificationsError(e.message);
       }
@@ -96,7 +95,6 @@ export class Notifications {
     return this.events.registerNotificationReceivedForeground(
       (notification: Notification, completion) => {
         this.logger.info("Notification received in foreground");
-
         listener(notification);
         completion(notificationShowSettings);
       },
@@ -104,13 +102,13 @@ export class Notifications {
   }
 
   /**
-   * @event onReceiveNotificationIndBackground
+   * @event onReceiveNotificationInBackground
    * Fires when notification is received in background (the application is closed).
    * @note A notification will be shown in a system specific way, e.g. locks screen, notifications screen etc.
    * @param {function} listener Callback function to call when a notification is received.
    * @param {NotificationCompletion} notificationShowSettings Settings around how to show notification, badge, sound etc.
    */
-  onReceiveNotificationIndBackground(
+  onReceiveNotificationInBackground(
     listener: (notification: Notification) => any,
     notificationShowSettings: NotificationCompletion,
   ) {
@@ -145,27 +143,24 @@ export class Notifications {
   }
 
   /**
-   * @method registerTokenInUserService
+   * @method registerTokenWithBackend
    * Register a notification provider token in a backend service.
    */
-  async registerTokenInUserService() {
+  async registerTokenWithBackend() {
     //TODO replace the mocked call to BE with a proper HTTP client. Check the ticket https://github.com/Neufund/platform-frontend/issues/4202
-    const deviceId = await this.deviceInformation.getUniqueId();
-    console.log(deviceId);
-    /*
+    this.logger.info("Try register");
     const token = await this.notificationsProvider.getRegistrationToken();
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
 
-    send request to the user service
-    */
+    this.logger.info(`Registering token: ${token} for device: ${deviceId} on platform ${platform}`);
   }
 
   /**
-   * @method unRegisterTokenInUserService
-   * Unregister a notification provider token in a backend service.
+   * @method unregisterTokenFromBackend
+   * Unregister a notification provider token in a backend service. Should be called when a new user logs in.
    */
-  async unRegisterTokenInUserService() {
+  async unregisterTokenFromBackend() {
     //TODO replace the mocked call to BE with a proper HTTP client. Check the ticket https://github.com/Neufund/platform-frontend/issues/4202
     /*
     const token = await this.notificationsProvider.getRegistrationToken();

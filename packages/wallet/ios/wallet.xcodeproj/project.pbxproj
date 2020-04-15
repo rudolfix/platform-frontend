@@ -17,7 +17,6 @@
 		BA577FB11DA5E440D4B93FF2 /* libPods-wallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F90EC4E5707298CEB599B49 /* libPods-wallet.a */; };
 		C2C8D5B1B8D14A8096C562CB /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8664C35363264F6D9A1F72B2 /* Roboto-Regular.ttf */; };
 		CDEE3ED7D2894CE8AD0C2A44 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C3B1B79A78840FBAD4EFBDB /* Roboto-Medium.ttf */; };
-		FF0E40F95C63072B055E8E94 /* libPods-wallet-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 983C75446821FAEEFBC5BFF0 /* libPods-wallet-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,8 +46,6 @@
 		1CB8445FD0BAA91A1AA7CC94 /* Pods-wallet-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-tvOS.release.xcconfig"; path = "Target Support Files/Pods-wallet-tvOS/Pods-wallet-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		4434BAB2241136A100F148AD /* wallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = wallet.entitlements; path = wallet/wallet.entitlements; sourceTree = "<group>"; };
 		44C078602420CDC000CD0C0F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* wallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* wallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C3B1B79A78840FBAD4EFBDB /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		5F4B4B4B38B6CC79E9FB1328 /* Pods-wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet.debug.xcconfig"; path = "Target Support Files/Pods-wallet/Pods-wallet.debug.xcconfig"; sourceTree = "<group>"; };
 		62DAFB620663EB496791EE56 /* Pods-wallet-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-wallet-tvOSTests/Pods-wallet-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -242,18 +239,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = X83WK44Z7M;
+						DevelopmentTeam = VATGM32JF8;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = X83WK44Z7M;
-					};
-					2D02E47A1E0B4A5D006451C7 = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-					};
-					2D02E48F1E0B4A5D006451C7 = {
-						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = VATGM32JF8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -295,21 +285,6 @@
 				44C078612420CDC000CD0C0F /* GoogleService-Info.plist in Resources */,
 				CDEE3ED7D2894CE8AD0C2A44 /* Roboto-Medium.ttf in Resources */,
 				C2C8D5B1B8D14A8096C562CB /* Roboto-Regular.ttf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E4791E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,7 +426,7 @@
 			baseConfigurationReference = B6EF6BB846AF353212229FE7 /* Pods-walletTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = X83WK44Z7M;
+				DEVELOPMENT_TEAM = VATGM32JF8;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -476,7 +451,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = X83WK44Z7M;
+				DEVELOPMENT_TEAM = VATGM32JF8;
 				INFOPLIST_FILE = walletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -501,16 +476,16 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = X83WK44Z7M;
+				DEVELOPMENT_TEAM = VATGM32JF8;
 				INFOPLIST_FILE = wallet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.neufund.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = org.neufund.mobile;
 				PRODUCT_NAME = wallet;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -526,14 +501,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VATGM32JF8;
 				INFOPLIST_FILE = wallet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.neufund.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = org.neufund.mobile;
 				PRODUCT_NAME = wallet;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";

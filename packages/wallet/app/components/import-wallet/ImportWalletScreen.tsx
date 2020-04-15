@@ -59,10 +59,11 @@ const ImportWalletLayout: React.FunctionComponent<TStateProps & TDispatchProps> 
 
   return (
     <Screen contentContainerStyle={styles.content}>
-      <Headline level={EHeadlineLevel.LEVEL2}>Connect existing account</Headline>
+      <Headline level={EHeadlineLevel.LEVEL2}>Connect an account</Headline>
 
       <BodyText style={styles.paragraph}>
-        Enter your recovery phrase or private key to import and connect your wallet to Neufund.
+        Enter your recovery phrase/private key to import and connect your Ethereum wallet to
+        Neufund.
       </BodyText>
 
       <Form<TFormValue>

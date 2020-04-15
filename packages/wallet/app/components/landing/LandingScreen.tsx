@@ -49,7 +49,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
           layout={EButtonLayout.PRIMARY}
           onPress={createNewAccount}
         >
-          Create new account
+          Create a new account
         </Button>
 
         <Button

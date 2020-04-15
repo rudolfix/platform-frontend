@@ -33,11 +33,18 @@ const isPrivateKey = (privateKey: unknown): privateKey is EthereumPrivateKey => 
 
 /**
  * Check if a given value is a valid mnemonic
+ * @note We only support 12 or 24 words mnemonics
  *
  * @param mnemonic - A possible mnemonic
  */
 const isMnemonic = (mnemonic: unknown): mnemonic is EthereumHDMnemonic => {
-  return isString(mnemonic) && utils.HDNode.isValidMnemonic(mnemonic);
+  if (isString(mnemonic) && utils.HDNode.isValidMnemonic(mnemonic)) {
+    const words = mnemonic.split(/\s/);
+
+    return words.length === 12 || words.length === 24;
+  }
+
+  return false;
 };
 
 /**

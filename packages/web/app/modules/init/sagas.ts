@@ -112,9 +112,25 @@ function* restoreUserSession(
   }
 }
 
-function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
+export function* startServices(_: TGlobalDependencies): Generator<any, void, any> {
+  yield put(actions.init.startServices());
+  yield waitUntilSmartContractsAreInitialized();
+  yield neuCall(startGlobalWatchers);
+}
+
+export function* restartServices(_: TGlobalDependencies): Generator<any, void, any> {
+  yield put(actions.init.restartServices());
+  yield neuCall(startGlobalWatchers);
+}
+
+export function* stopServices(_: TGlobalDependencies): Generator<any, void, any> {
+  yield put(actions.init.stopServices());
+  yield neuCall(stopGlobalWatchers);
+}
+
+export function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
   try {
-    yield put(actions.init.startServices());
+    yield neuCall(startServices);
     yield neuCall(detectUserAgent);
     const wcSession = yield neuCall(loadWalletConnectSession);
     const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);
@@ -124,8 +140,6 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
     } else {
       yield neuCall(deleteWalletConnectSession);
     }
-    yield waitUntilSmartContractsAreInitialized();
-    yield neuCall(startGlobalWatchers);
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
     if (e instanceof WalletMetadataNotFoundError) {

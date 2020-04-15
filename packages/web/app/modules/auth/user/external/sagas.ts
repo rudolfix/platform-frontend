@@ -3,7 +3,7 @@ import { call, put, select } from "@neufund/sagas";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IUser, IUserInput } from "../../../../lib/api/users/interfaces";
 import { actions } from "../../../actions";
-import { stopGlobalWatchers } from "../../../init/sagas";
+import { stopServices } from "../../../init/sagas";
 import { loadKycRequestData } from "../../../kyc/sagas";
 import { neuCall } from "../../../sagasUtils";
 import { walletConnectStop } from "../../../wallet-selector/wallet-connect/sagas";
@@ -35,8 +35,7 @@ export function* logoutUser({
   logger,
   userStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
-  yield neuCall(stopGlobalWatchers);
-  yield put(actions.init.stopServices());
+  yield neuCall(stopServices);
 
   const userWallet = yield* select(selectWalletType);
   if (userWallet === EWalletType.WALLETCONNECT) {

@@ -32,6 +32,7 @@ import { selectUserType } from "../../auth/selectors";
 import { loadUser, logoutUser, updateUser } from "../../auth/user/external/sagas";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { displayInfoModalSaga } from "../../generic-modal/sagas";
+import { restartServices } from "../../init/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectIsUnlocked } from "../../web3/selectors";
 import { EWalletSubType, ILightWalletMetadata } from "../../web3/types";
@@ -189,6 +190,7 @@ export function* lightWalletRecoverWatch(
     yield vaultApi.confirm(vaultKey);
 
     yield neuCall(logoutUser);
+    yield neuCall(restartServices);
 
     yield put(actions.routing.goToSuccessfulRecovery());
   } catch (e) {

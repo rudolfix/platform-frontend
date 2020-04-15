@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   },
   importAccountButton: {
     ...spacingStyles.mt2,
+    ...spacingStyles.mb2,
   },
 });
 

@@ -23,8 +23,18 @@ import { selectIsAppReady, selectIsSmartContractInitDone } from "./selectors";
 /**
  * Starts watching for token prices
  */
-function* initGlobalWatchers(): SagaGenerator<void> {
+function* startGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
+}
+
+export function* stopGlobalWatchers(): SagaGenerator<void> {
+  yield put(tokenPriceModuleApi.actions.watchTokenPriceStop());
+  yield put(actions.auth.stopProfileMonitor());
+  yield put(actions.auth.stopUserActivityWatcher());
+  yield put(actions.auth.stopTimeoutWatcher());
+  yield put(authModuleAPI.actions.stopJwtExpirationWatcher());
+  yield put(actions.txMonitor.stopTxMonitor());
+  yield put(actions.wallet.stopWalletBalanceWatcher());
 }
 
 function* initSmartcontracts({
@@ -36,7 +46,6 @@ function* initSmartcontracts({
     yield web3Manager.initialize();
 
     yield neuCall(initializeContracts);
-    yield neuCall(initGlobalWatchers);
 
     yield put(actions.init.done(EInitType.SMART_CONTRACTS_INIT));
   } catch (e) {
@@ -105,6 +114,7 @@ function* restoreUserSession(
 
 function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
   try {
+    yield put(actions.init.startServices());
     yield neuCall(detectUserAgent);
     const wcSession = yield neuCall(loadWalletConnectSession);
     const jwt = yield neuCall(authModuleAPI.sagas.loadJwt);
@@ -115,6 +125,7 @@ function* initApp({ logger }: TGlobalDependencies): Generator<any, void, any> {
       yield neuCall(deleteWalletConnectSession);
     }
     yield waitUntilSmartContractsAreInitialized();
+    yield neuCall(startGlobalWatchers);
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
     if (e instanceof WalletMetadataNotFoundError) {

@@ -1,4 +1,4 @@
-import { END, eventChannel, fork, neuTakeLatest, put, take } from "@neufund/sagas";
+import { END, eventChannel, fork, neuTakeLatest, put, select, take } from "@neufund/sagas";
 
 import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
@@ -9,6 +9,9 @@ import {
 } from "../../../lib/web3/wallet-connect/WalletConnectConnector";
 import { WalletConnectSessionRejectedError } from "../../../lib/web3/wallet-connect/WalletConnectWallet";
 import { actions, TActionFromCreator } from "../../actions";
+import { EAuthStatus } from "../../auth/reducer";
+import { selectAuthStatus } from "../../auth/selectors";
+import { ELogoutReason } from "../../auth/types";
 import { handleLogOutUserInternal } from "../../auth/user/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
 import { walletSelectorConnect } from "../sagas";
@@ -124,6 +127,13 @@ export function* walletConnectCancelSession({
   }
 }
 
+export function* logutOnWalletDisconnect(_: TGlobalDependencies): Generator<any, void, any> {
+  const authStatus = yield* select(selectAuthStatus);
+  if (authStatus === EAuthStatus.AUTHORIZED) {
+    yield neuCall(handleLogOutUserInternal, ELogoutReason.WC_PEER_DISCONNECTED);
+  }
+}
+
 export function* walletConnectSagas(): Generator<any, void, any> {
   yield fork(neuTakeEvery, actions.walletSelector.walletConnectStart, walletConnectStart);
   yield fork(
@@ -140,7 +150,7 @@ export function* walletConnectSagas(): Generator<any, void, any> {
   yield fork(
     neuTakeEvery,
     actions.walletSelector.walletConnectDisconnected,
-    handleLogOutUserInternal,
+    logutOnWalletDisconnect,
   );
   yield fork(
     neuTakeLatestUntil,

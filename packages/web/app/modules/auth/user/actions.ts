@@ -16,4 +16,6 @@ export const authUserActions = {
   userActivityTimeout: createActionFactory("AUTH_USER_TIMEOUT"),
   refreshTimer: createActionFactory("AUTH_REFRESH_TIMER"),
   reset: createActionFactory("AUTH_RESET"),
+  stopProfileMonitor: createActionFactory("STOP_PROFILE_MONITOR"),
+  stopUserActivityWatcher: createActionFactory("STOP_USER_ACTIVITY_WATCHER"),
 };

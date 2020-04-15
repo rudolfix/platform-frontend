@@ -38,6 +38,11 @@ interface ISelectTitleProps {
   walletSelectionDisabled: boolean;
 }
 
+interface ILogoutReasonProps {
+  logoutReason: ELogoutReason | undefined;
+  hideLogoutReason: () => Partial<{ logoutReason: ELogoutReason | undefined }> | undefined;
+}
+
 const SelectTitle: React.FunctionComponent<ISelectTitleProps> = ({
   isLoginRoute,
   walletSelectionDisabled,
@@ -48,6 +53,34 @@ const SelectTitle: React.FunctionComponent<ISelectTitleProps> = ({
     return <FormattedMessage id="wallet-selector.tabs.login.title" />;
   } else {
     return <FormattedMessage id="wallet-selector.tabs.register.title" />;
+  }
+};
+
+const LogoutReason: React.FunctionComponent<ILogoutReasonProps> = ({
+  logoutReason,
+  hideLogoutReason,
+}) => {
+  switch (logoutReason) {
+    case ELogoutReason.SESSION_TIMEOUT:
+      return (
+        <Notification
+          data-test-id="wallet-selector-session-timeout-notification"
+          text={<FormattedMessage id="notifications.auth-session-timeout" />}
+          type={ENotificationType.WARNING}
+          onClick={hideLogoutReason}
+        />
+      );
+    case ELogoutReason.WC_PEER_DISCONNECTED:
+      return (
+        <Notification
+          data-test-id="wallet-selector-session-timeout-notification"
+          text={<FormattedMessage id="notifications.auth-wc-peer-disconnected" />}
+          type={ENotificationType.WARNING}
+          onClick={hideLogoutReason}
+        />
+      );
+    default:
+      return null;
   }
 };
 
@@ -68,14 +101,7 @@ export const WalletSelectorLayout: React.FunctionComponent<IExternalProps & TRou
 
   return (
     <WalletSelectorContainer data-test-id="wallet-selector">
-      {logoutReason === ELogoutReason.SESSION_TIMEOUT && (
-        <Notification
-          data-test-id="wallet-selector-session-timeout-notification"
-          text={<FormattedMessage id="notifications.auth-session-timeout" />}
-          type={ENotificationType.WARNING}
-          onClick={hideLogoutReason}
-        />
-      )}
+      <LogoutReason logoutReason={logoutReason} hideLogoutReason={hideLogoutReason} />
       <Row>
         <Col tag="section" md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
           <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>

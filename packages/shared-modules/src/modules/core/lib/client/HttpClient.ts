@@ -42,8 +42,12 @@ export class HttpClientError extends Error {
 }
 
 export class ResponseParsingError extends HttpClientError {
-  constructor(instance: string) {
-    super(instance, "ResponseParsingError", "There was an error parsing the result of the server");
+  constructor(instance: string, message: string) {
+    super(
+      instance,
+      "ResponseParsingError",
+      `There was an error parsing the result of the server. ${message}`,
+    );
   }
 }
 

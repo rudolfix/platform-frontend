@@ -4,15 +4,20 @@ import {
   getLoadContextExtension,
   INeuModule,
   setupCoreModule,
+  setupTokenPriceModule,
 } from "@neufund/shared-modules";
 import { Container } from "inversify";
 import Config from "react-native-config";
 
 import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "../di/setupBindings";
 import { TConfig } from "../di/types";
+import { setupWalletContractsModule } from "../modules/contracts/module";
 import { setupWalletEthModule } from "../modules/eth/module";
+import { setupNotificationUIModule } from "../modules/notification-ui/module";
 import { appReducers } from "../modules/reducers";
 import { rootSaga } from "../modules/sagas";
+import { setupSignerUIModule } from "../modules/signer-ui/module";
+import { setupWalletConnectModule } from "../modules/wallet-connect/module";
 import { TAppGlobalState } from "./types";
 import { setupStorageModule } from "../modules/storage";
 import { setupNotificationsModule } from "../modules/notifications/module";
@@ -20,9 +25,13 @@ import { setupPermissionsModule } from "../modules/permissions/module";
 import { setupDeviceInformationModule } from "../modules/device-information/module";
 
 export const createAppStore = (container: Container) => {
+  // TODO: Take universe address from artifacts meta.json
+  const UNIVERSE_ADDRESS = "0x9bad13807cd939c7946008e3772da819bd98fa7b";
+
   const config: TConfig = {
     backendRootUrl: Config.NF_BACKEND_URL,
     rpcUrl: Config.NF_NODE_RPC_URL,
+    universeContractAddress: UNIVERSE_ADDRESS,
   };
 
   const appModule: INeuModule<TAppGlobalState> = {
@@ -36,7 +45,7 @@ export const createAppStore = (container: Container) => {
     container,
   };
 
-  return createStore(
+  return createStore<TAppGlobalState>(
     {
       extensions: [
         getLoadContextExtension(context.container),
@@ -50,6 +59,15 @@ export const createAppStore = (container: Container) => {
     setupWalletEthModule({ rpcUrl: config.rpcUrl }),
     setupPermissionsModule(),
     setupDeviceInformationModule(),
+    ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
+    setupSignerUIModule(),
+    setupNotificationUIModule(),
+    setupWalletConnectModule(),
+
+    setupTokenPriceModule({
+      // TODO: When we have a proper block watching flow for mobile app provide proper refresh action
+      refreshOnAction: undefined,
+    }),
     appModule,
   );
 };

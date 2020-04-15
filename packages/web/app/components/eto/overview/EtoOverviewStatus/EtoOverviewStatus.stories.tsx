@@ -80,7 +80,6 @@ storiesOf("ETO/EtoOverviewStatus", module)
   .addDecorator(
     withStore({
       auth: {
-        jwt: "bla",
         user: {
           type: EUserType.INVESTOR,
           verifiedEmail: "asfasdf@asfa.dd",
@@ -211,7 +210,6 @@ storiesOf("ETO/EtoOverviewStatus/whitelisting, investor limit reached", module)
   .addDecorator(
     withStore({
       auth: {
-        jwt: "bla",
         user: {
           type: EUserType.INVESTOR,
           verifiedEmail: "asfasdf@asfa.dd",

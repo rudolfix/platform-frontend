@@ -1,43 +1,26 @@
+import * as React from "react";
 import { branch, compose, renderComponent, renderNothing } from "recompose";
 
-import { actions } from "../../../../modules/actions";
-import {
-  selectIsIncomingPayoutPending,
-  selectPayoutAvailable,
-  selectTokensDisbursalEurEquivTotal,
-} from "../../../../modules/investor-portfolio/selectors";
-import { appConnect } from "../../../../store";
 import { MyNeuWidgetAvailablePayout } from "./MyNeuWidgetAvailalblePayout";
-import { MyNeuWidgetPendingPayout } from "./MyNeuWidgetPendingPayout";
+import { MyNeuWidgetPendingPayoutLayout } from "./MyNeuWidgetPendingPayout";
 
-type TStateProps = {
-  tokensDisbursalEurEquiv: string | undefined;
+type TExternalProps = {
   isPayoutAvailable: boolean;
   isPayoutPending: boolean;
-};
-
-type TDispatchProps = {
   goToPortfolio: () => void;
-};
+} & React.ComponentProps<typeof MyNeuWidgetPendingPayoutLayout> &
+  React.ComponentProps<typeof MyNeuWidgetAvailablePayout>;
 
-type TPayoutProps = TStateProps & TDispatchProps;
-
-const MyNeuWidgetPayout = compose<TPayoutProps, {}>(
-  appConnect<TStateProps, TDispatchProps>({
-    stateToProps: state => ({
-      isPayoutPending: selectIsIncomingPayoutPending(state),
-      isPayoutAvailable: selectPayoutAvailable(state),
-      tokensDisbursalEurEquiv: selectTokensDisbursalEurEquivTotal(state),
-    }),
-    dispatchToProps: dispatch => ({
-      goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),
-    }),
-  }),
-  branch<TStateProps>(
-    state => state.isPayoutAvailable,
+const MyNeuWidgetPayout = compose<TExternalProps, TExternalProps>(
+  branch<TExternalProps>(
+    props => props.isPayoutAvailable,
     renderComponent(MyNeuWidgetAvailablePayout),
   ),
-  branch<TStateProps>(state => !state.isPayoutPending && !state.isPayoutAvailable, renderNothing),
-)(MyNeuWidgetPendingPayout);
+  branch<TExternalProps>(
+    props => !props.isPayoutPending && !props.isPayoutAvailable,
+    renderNothing,
+  ),
+  branch<TExternalProps>(props => !props.isPayoutPending, renderNothing),
+)(MyNeuWidgetPendingPayoutLayout);
 
-export { MyNeuWidgetPayout, TPayoutProps };
+export { MyNeuWidgetPayout };

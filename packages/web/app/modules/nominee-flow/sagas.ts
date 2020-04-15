@@ -479,7 +479,6 @@ export function* loadNomineeEto(
   if (eto.state === EEtoState.ON_CHAIN) {
     eto.contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
   }
-
   eto.subState = yield select(selectEtoSubStateEtoEtoWithContract, eto);
   return eto;
 }
@@ -491,6 +490,7 @@ export function* loadNomineeEtos({
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
     const etos: TEtoWithCompanyAndContract[] = yield apiEtoService.loadNomineeEtos();
+    yield put(actions.bookBuilding.loadBookBuildingListStats(etos.map(eto => eto.etoId)));
 
     let getEtoDataEffects: Dictionary<Generator<any, any, any>, string> = {};
     let getEtoSpecificTaskStatusEffects: Dictionary<Generator<any, any, any>, string> = {};

@@ -1,37 +1,47 @@
 import { ISagaModule } from "@neufund/sagas";
-import { Opaque, OpaqueType, ReturnTypeStrict, Values } from "@neufund/shared";
+import {
+  Opaque,
+  OpaqueType,
+  ReturnTypeFlatten,
+  ReturnTypeStrict,
+  Tuple,
+  UnionToIntersection,
+  Values,
+} from "@neufund/shared";
 import { ContainerModule } from "inversify";
 import { ActionCreatorsMapObject } from "redux";
 
-interface INeuModule<S> extends ISagaModule<S> {
-  libs?: ContainerModule[];
-  api?: TModuleAPI;
-}
-
-type TModuleAPI = {
+type TNeuModuleAPI = {
   actions?: ActionCreatorsMapObject;
-  symbols?: Record<string, TLibSymbol<any>>;
+  symbols?: Record<string, TLibSymbol<unknown>>;
 };
 
-type TModuleSetup<O, S> = (config: O) => INeuModule<S>;
+interface INeuModule<S> extends ISagaModule<S> {
+  libs?: ContainerModule[];
+  api?: TNeuModuleAPI;
+}
 
-type TModuleApi<M extends TModuleSetup<any, any>> = ReturnTypeStrict<M>["api"] extends TModuleAPI
-  ? ReturnTypeStrict<M>["api"]
+type TModuleSetupSingle<O, S> = (config: O) => INeuModule<S>;
+type TModuleSetupWithDeps<O, S> = (config: O) => Tuple<INeuModule<S>>;
+type TModuleSetup<O, S> = TModuleSetupSingle<O, S> | TModuleSetupWithDeps<O, S>;
+
+type TModule<M extends TModuleSetup<any, any>> = ReturnTypeFlatten<M> extends INeuModule<unknown>
+  ? ReturnTypeFlatten<M>
   : never;
 
-type TModuleApiActions<M extends TModuleSetup<any, any>> = TModuleApi<
-  M
->["actions"] extends ActionCreatorsMapObject
-  ? TModuleApi<M>["actions"]
+type TModuleApi<M extends TModuleSetup<any, any>> = TModule<M>["api"] extends TNeuModuleAPI
+  ? TModule<M>["api"]
   : never;
+
+type TModuleApiActions<M extends TModuleSetup<any, any>> = TModuleApi<M>["actions"];
 
 type TModuleActions<M extends TModuleSetup<any, any>> = ReturnTypeStrict<
   Values<TModuleApiActions<M>>
 >;
 
-type TModuleState<M extends TModuleSetup<any, any>> = M extends TModuleSetup<any, infer S>
-  ? S
-  : never;
+type TModuleState<M extends TModuleSetup<any, any>> = UnionToIntersection<
+  M extends TModuleSetup<any, infer S> ? (S extends object ? S : {}) : never
+>;
 
 type TLibSymbol<K> = Opaque<K, symbol>;
 
@@ -52,5 +62,5 @@ export {
   TModuleSetup,
   TModuleActions,
   TModuleState,
-  TModuleAPI,
+  TNeuModuleAPI,
 };

@@ -1,11 +1,12 @@
-import { assertNever, multiplyBigNumbers } from "@neufund/shared";
+import { assertNever, ECurrency, multiplyBigNumbers } from "@neufund/shared";
+import { tokenPriceModuleApi } from "@neufund/shared-modules";
 
-import { ECurrency } from "../../../components/shared/formatters/utils";
 import { TAppGlobalState } from "../../../store";
-import { ITokenPriceStateData } from "./reducer";
 
-export const selectTokenPriceData = (state: TAppGlobalState): ITokenPriceStateData | undefined =>
-  state.tokenPrice.tokenPriceData;
+// TODO: When #4220 is merged we can replace all selectors with `tokenPriceModuleApi.selectors`
+
+export const selectTokenPriceData = (state: TAppGlobalState) =>
+  tokenPriceModuleApi.selectors.selectTokenPriceData(state as any);
 
 export const selectEtherPriceEur = (state: TAppGlobalState): string => {
   const data = selectTokenPriceData(state);

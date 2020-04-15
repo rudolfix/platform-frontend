@@ -50,7 +50,7 @@ const BankTransferFlowAgreement: React.FunctionComponent<Props> = ({ type }) => 
     case EBankTransferType.PURCHASE:
       return <BankTransferAgreement />;
     default:
-      return invariant(false, `Type "${type}" doesn't implement agreement flow`);
+      invariant(false, `Type "${type}" doesn't implement agreement flow`);
   }
 };
 
@@ -61,7 +61,7 @@ const BankTransferFlowSuccess: React.FunctionComponent<Props> = ({ type }) => {
     case EBankTransferType.VERIFY:
       return <BankTransferVerifySuccess />;
     default:
-      return invariant(false, `Type "${type}" doesn't implement success flow`);
+      invariant(false, `Type "${type}" doesn't implement success flow`);
   }
 };
 
@@ -72,7 +72,7 @@ const BankTransferFlowSummary: React.FunctionComponent<Props> = ({ type }) => {
     case EBankTransferType.VERIFY:
       return <BankTransferVerifySummary />;
     default:
-      return invariant(false, `Type "${type}" doesn't implement summary flow`);
+      invariant(false, `Type "${type}" doesn't implement summary flow`);
   }
 };
 

@@ -8,7 +8,7 @@ The following library patches can be found here:
 
 Formik `2.*` at the moment has a bug where not all values from `Formik` config are forwarded to the `FormikProvider`. As the end result the logic related to showing whether field is required or optional is not working properly.
 
-[#2090](https://github.com/jaredpalmer/formik/pull/2090) PR was created  to fix the bug but it was not yet merged. After the PR mentioned above is merged we can safely delete the patch (we do have e2e test covering the bug)
+[#2090](https://github.com/jaredpalmer/formik/pull/2090) PR was created to fix the bug but it was not yet merged. After the PR mentioned above is merged we can safely delete the patch (we do have e2e test covering the bug)
 
 Also please note that for formik we need to patch two files with the same changes:
 
@@ -23,10 +23,6 @@ To reduce the bundle size the patch was applied to only export English language 
 
 ### bignumber.js
 
-Bignumber typings were changed and number types were removed from almost all methods that use BigNumbers. Currently you can only use BigNumbers with `strings` or other `BigNumber` instances. 
+Bignumber typings were changed and number types were removed from almost all methods that use BigNumbers. Currently you can only use BigNumbers with `strings` or other `BigNumber` instances.
 
 This will eliminate some problems we have with initilializing BigNumbers with floating point Numbers errors.
-
-### typed-redux-saga
-
-The SagaGenerator type was exposed from typed-redux-saga

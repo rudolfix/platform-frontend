@@ -1,17 +1,33 @@
 import { DeepReadonly } from "@neufund/shared";
 import {
   appConnect as sharedAppConnect,
+  setupAuthModule,
+  setupContractsModule,
+  setupCoreModule,
+  setupTokenPriceModule,
   TAppConnectOptions,
   TModuleSetup,
+  TModuleState,
 } from "@neufund/shared-modules";
-import { connectRouter, LocationChangeAction, RouterState } from "connected-react-router";
+import {
+  connectRouter,
+  LocationChangeAction,
+  routerMiddleware,
+  RouterState,
+} from "connected-react-router";
 import { History } from "history";
+import { Container } from "inversify";
 import { InferableComponentEnhancerWithProps } from "react-redux";
-import { Reducer, ReducersMapObject } from "redux";
+import { Reducer } from "redux";
 
-import { TAction } from "./modules/actions";
+import { IConfig } from "./config/getConfig";
+import { setupBindings } from "./di/setupBindings";
+import { symbols } from "./di/symbols";
+import { reduxLogger } from "./middlewares/redux-logger";
+import { actions, TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
 import { appReducers } from "./modules/reducer";
+import { rootSaga } from "./modules/sagas";
 
 // add new external actions here
 export type AppActionTypes = DeepReadonly<TAction | LocationChangeAction>;
@@ -20,22 +36,45 @@ export type AppReducer<S> = Reducer<DeepReadonly<S>, AppActionTypes>;
 
 export type AppGlobalDispatch = (a: AppActionTypes) => void;
 
-// base on reducers we can infer type of app state
-type TReducersMapToReturnTypes<T extends ReducersMapObject<any, any>> = T extends ReducersMapObject<
-  infer S,
-  any
->
-  ? S
-  : never;
-
 export const generateRootModuleReducerMap = (history: History) => ({
   ...appReducers,
   router: connectRouter(history) as Reducer<RouterState>,
 });
 
-export type TAppGlobalState = TReducersMapToReturnTypes<
-  ReturnType<typeof generateRootModuleReducerMap>
->;
+type TAppModuleConfig = {
+  history: History;
+  config: IConfig;
+  container: Container;
+};
+
+export const setupAppModule = ({ history, config, container }: TAppModuleConfig) => {
+  const reducerMap = generateRootModuleReducerMap(history);
+
+  const appModule = {
+    id: "app",
+    reducerMap,
+    sagas: [rootSaga],
+    libs: [setupBindings(config)],
+    middlewares: [routerMiddleware(history), reduxLogger(container)],
+  };
+
+  return [
+    setupCoreModule({ backendRootUrl: config.backendRoot.url }),
+    setupAuthModule({
+      jwtStorageSymbol: symbols.jwtStorage,
+      ethManagerSymbol: symbols.web3Manager,
+    }),
+    setupContractsModule({
+      contractsServiceSymbol: symbols.contractsService,
+    }),
+    setupTokenPriceModule({
+      refreshOnAction: actions.web3.newBlockArrived,
+    }),
+    appModule,
+  ];
+};
+
+export type TAppGlobalState = TModuleState<typeof setupAppModule>;
 
 // All states that should remain even after logout
 export const staticValues = (

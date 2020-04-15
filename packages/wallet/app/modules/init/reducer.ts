@@ -1,4 +1,4 @@
-import { AppReducer } from "../../store/types";
+import { AppReducer } from "@neufund/sagas";
 import { initActions } from "./actions";
 import { EInitStatus } from "./types";
 

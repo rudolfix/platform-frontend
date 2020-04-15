@@ -1,9 +1,8 @@
 import { withParams } from "@neufund/shared";
+import { authModuleAPI, IHttpClient } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
 import { ENomineeUpdateRequestStatus } from "../../../modules/nominee-flow/types";
-import { IHttpClient } from "../client/IHttpClient";
 import { TNomineeRequestResponse } from "./EtoApi.interfaces.unsafe";
 
 const BASE_PATH = "/api/eto-listing/etos";
@@ -23,7 +22,7 @@ export class LoadNomineeRequestsError extends EtoNomineeApiError {}
 
 @injectable()
 export class EtoNomineeApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient) {}
 
   //nominee side
   public async getNomineeRequests(): Promise<TNomineeRequestResponse[]> {

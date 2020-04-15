@@ -4,9 +4,6 @@ import { TAppGlobalState } from "../../store";
 export const selectBookbuildingStats = (state: TAppGlobalState, etoId: string) =>
   state.bookBuildingFlow.bookbuildingStats[etoId];
 
-export const selectBookbuildingStatsFromList = (state: TAppGlobalState, etoId: string) =>
-  state.bookBuildingFlow.bookbuildingListStats[etoId];
-
 export const selectMyPledge = (state: TAppGlobalState, etoId: string): IPledge | undefined =>
   state.bookBuildingFlow.pledges[etoId];
 

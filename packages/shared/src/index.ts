@@ -29,3 +29,4 @@ export * from "./utils/constants";
 export * from "./utils/types";
 export * from "./utils/opaque-types";
 export * from "./utils/enums";
+export * from "./utils/utils";

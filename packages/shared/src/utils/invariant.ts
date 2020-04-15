@@ -1,12 +1,17 @@
 export class InvariantError extends Error {
-  type = "InvariantError";
+  constructor(message: string) {
+    super(`InvariantError: ${message}`);
+  }
 }
 
-export function invariant(value: any, message: string): null {
-  if (!value) {
+/**
+ * Asserts that the given condition is truthy
+ *
+ * @param condition - Either truthy or falsy value
+ * @param message - An error message
+ */
+export function invariant(condition: any, message: string): asserts condition {
+  if (!condition) {
     throw new InvariantError(message);
   }
-
-  // Useful in react component context as `undefined` is not allowed in JSX
-  return null;
 }

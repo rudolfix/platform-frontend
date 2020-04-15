@@ -27,7 +27,7 @@ export enum EWhitelistingState {
 type TcalculateWhitelistingState = {
   canEnableBookbuilding: boolean;
   whitelistingIsActive: boolean;
-  bookbuildingLimitReached: boolean;
+  bookbuildingLimitReached: boolean | undefined;
   investorsCount: number | undefined;
   investmentCalculatedValues: TEtoInvestmentCalculatedValues | undefined;
   isAuthorized: boolean;
@@ -83,7 +83,7 @@ export const calculateWhitelistingState = ({
     isAuthorized &&
     isInvestor &&
     whitelistingIsActive &&
-    investmentCalculatedValues === undefined
+    (investmentCalculatedValues === undefined || bookbuildingLimitReached === undefined)
   ) {
     return EWhitelistingState.LOADING;
   } else if (bookbuildingLimitReached) {

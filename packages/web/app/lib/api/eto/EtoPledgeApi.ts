@@ -1,8 +1,7 @@
 import { withParams } from "@neufund/shared";
+import { authModuleAPI, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import { IPledge } from "./EtoPledgeApi.interfaces.unsafe";
 
 const BASE_PATH = "/api/eto-listing/";
@@ -16,7 +15,7 @@ const myPledgePathLink = (etoId: string) => withParams(MY_PLEDGE_PATH, { etoId }
 @injectable()
 export class EtoPledgeApi {
   constructor(
-    @inject(symbols.authorizedJsonHttpClient) private authorizedHttpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private authorizedHttpClient: IHttpClient,
   ) {}
 
   public async getMyPledge(etoId: string): Promise<IHttpResponse<IPledge>> {

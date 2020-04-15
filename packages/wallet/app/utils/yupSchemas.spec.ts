@@ -1,7 +1,7 @@
 import { AssertEqual, assertType } from "@neufund/shared/tests";
 import * as yup from "yup";
 
-import { singleValue, typedValue, oneOfSchema } from "./yupSchemas";
+import { singleValue, typedValue, oneOfSchema, tupleSchema } from "./yupSchemas";
 
 type YupPrimitiveInfer<T> = T extends yup.Schema<infer T> ? T : never;
 
@@ -72,6 +72,48 @@ describe("yup custom schemas", () => {
       expect(oneOfTypeSchema.isValidSync({})).toBeFalsy();
       expect(oneOfTypeSchema.isValidSync({ bar: "foo" })).toBeFalsy();
       expect(oneOfTypeSchema.isValidSync("some string")).toBeFalsy();
+    });
+  });
+
+  describe("tupleSchema", () => {
+    it("should allow all of schema values", () => {
+      const schema1 = yup.number();
+      const schema2 = yup.object({ foo: yup.string().required() });
+      const schema3 = yup.object({ bar: yup.boolean().required() });
+
+      const schema = tupleSchema([schema1, schema2, schema3]);
+
+      // assert proper type inference
+      type Type = YupPrimitiveInfer<typeof schema>;
+      assertType<
+        AssertEqual<Type, [number, yup.InferType<typeof schema2>, yup.InferType<typeof schema3>]>
+      >(true);
+
+      expect(schema.isValidSync(undefined)).toBeTruthy();
+      expect(schema.isValidSync(null)).toBeTruthy();
+
+      expect(schema.isValidSync([100, { foo: "foo" }, { bar: false }])).toBeTruthy();
+
+      // non array values
+      expect(schema.isValidSync(100)).toBeFalsy();
+      expect(schema.isValidSync("some string")).toBeFalsy();
+      expect(schema.isValidSync({ foo: "foo" })).toBeFalsy();
+
+      // invalid array values
+      expect(schema.isValidSync([])).toBeFalsy();
+      expect(schema.isValidSync([100])).toBeFalsy();
+      expect(schema.isValidSync([100, { foo: "foo" }])).toBeFalsy();
+      expect(
+        schema.isValidSync([
+          100,
+          { foo: "foo" },
+          { bar: false },
+          100,
+          { foo: "foo" },
+          { bar: false },
+        ]),
+      ).toBeFalsy();
+      expect(schema.isValidSync([{ foo: "foo" }, 100, { bar: false }])).toBeFalsy();
     });
   });
 });

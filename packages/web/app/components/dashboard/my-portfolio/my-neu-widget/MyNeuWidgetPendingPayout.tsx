@@ -2,15 +2,8 @@ import { ButtonInline } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-import { branch, compose, renderNothing } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import { actions } from "../../../../modules/actions";
-import {
-  selectIncomingPayoutEurEquiv,
-  selectIsIncomingPayoutPending,
-} from "../../../../modules/investor-portfolio/selectors";
-import { appConnect } from "../../../../store";
 import { ButtonLink } from "../../../shared/buttons/ButtonLink";
 import { ETheme, Money } from "../../../shared/formatters/Money";
 import {
@@ -21,23 +14,16 @@ import {
 import { InlineIcon } from "../../../shared/icons/InlineIcon";
 import { TimeLeftWithSeconds } from "../../../shared/TimeLeft.unsafe";
 import { getTomorrowsDate } from "../../../shared/utils";
-import { TPayoutProps } from "./MyNeuWidgetPayout";
 
 import warningIcon from "../../../../assets/img/inline_icons/info.svg";
 import * as styles from "./MyNeuWidget.module.scss";
 
-type TStateProps = {
+type TExternalProps = {
   incomingPayoutEurEquiv: string;
-  isIncomingPayoutPending: boolean;
-};
-
-type TDispatchProps = {
   loadPayoutsData: () => void;
 };
 
-type TPendingPayoutProps = TStateProps & TDispatchProps;
-
-const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProps> = ({
+const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TExternalProps> = ({
   incomingPayoutEurEquiv,
   loadPayoutsData,
 }) => (
@@ -78,21 +64,4 @@ const MyNeuWidgetPendingPayoutLayout: React.FunctionComponent<TPendingPayoutProp
     </div>
   </section>
 );
-
-const MyNeuWidgetPendingPayout = compose<TPendingPayoutProps, TPayoutProps>(
-  appConnect<TStateProps, TDispatchProps>({
-    stateToProps: state => ({
-      incomingPayoutEurEquiv: selectIncomingPayoutEurEquiv(state),
-      isIncomingPayoutPending: selectIsIncomingPayoutPending(state),
-    }),
-    dispatchToProps: dispatch => ({
-      loadPayoutsData: () => {
-        dispatch(actions.investorEtoTicket.getIncomingPayouts());
-        dispatch(actions.investorEtoTicket.loadClaimables());
-      },
-    }),
-  }),
-  branch<TStateProps>(({ isIncomingPayoutPending }) => !isIncomingPayoutPending, renderNothing),
-)(MyNeuWidgetPendingPayoutLayout);
-
-export { MyNeuWidgetPendingPayoutLayout, MyNeuWidgetPendingPayout };
+export { MyNeuWidgetPendingPayoutLayout };

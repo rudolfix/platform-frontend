@@ -36,6 +36,10 @@ target 'wallet' do
 
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
 
+  # Pods for required permissions (see react-native-permissions for details)
+  permissions_path = '../node_modules/react-native-permissions/ios'
+
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
   target 'walletTests' do
     inherit! :search_paths

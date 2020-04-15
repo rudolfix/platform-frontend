@@ -18,7 +18,7 @@ import {
   selectNomineeInvestmentAgreementHash,
 } from "../../../../nominee-flow/selectors";
 import { neuCall, neuTakeLatest } from "../../../../sagasUtils";
-import { selectEthereumAddressWithChecksum } from "../../../../web3/selectors";
+import { selectEthereumAddress } from "../../../../web3/selectors";
 import { txSendSaga } from "../../../sender/sagas";
 import { selectTxType } from "../../../sender/selectors";
 import { ETxSenderType } from "../../../types";
@@ -75,7 +75,7 @@ function* generateNomineeSignAgreementTx(
     nomineeEto,
   );
 
-  const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
+  const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
   const gasPriceWithOverhead: string = yield select(selectStandardGasPriceWithOverHead);
 
   const txData: string = yield contract
@@ -145,7 +145,7 @@ function* generateSignNomineeInvestmentAgreementTx({
 
   const contract: ETOCommitment = yield contractsService.getETOCommitmentContract(nomineeEto.etoId);
 
-  const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddressWithChecksum);
+  const userAddress: EthereumAddressWithChecksum = yield select(selectEthereumAddress);
   const gasPriceWithOverhead: string = yield select(selectStandardGasPriceWithOverHead);
 
   const txData: string = yield contract

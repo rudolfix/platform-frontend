@@ -10,7 +10,7 @@ import {
 import { TTokenTransferAdditionalData } from "../../../../../modules/tx/transactions/token-transfer/types";
 import { TWithdrawAdditionalData } from "../../../../../modules/tx/transactions/withdraw/types";
 import { ETxSenderType } from "../../../../../modules/tx/types";
-import { selectEthereumAddressWithChecksum } from "../../../../../modules/web3/selectors";
+import { selectEthereumAddress } from "../../../../../modules/web3/selectors";
 import { appConnect } from "../../../../../store";
 import { ETxStatus } from "../../types";
 
@@ -52,7 +52,7 @@ export const transferTransaction = () =>
         additionalData: selectTxAdditionalData<
           ETxSenderType.WITHDRAW | ETxSenderType.TRANSFER_TOKENS
         >(state),
-        walletAddress: selectEthereumAddressWithChecksum(state),
+        walletAddress: selectEthereumAddress(state),
         gasCost: selectTxGasCostEthUlps(state),
         gasCostEur: selectTxGasCostEthUlps(state),
       }),

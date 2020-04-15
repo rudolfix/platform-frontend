@@ -8,7 +8,7 @@ import { privateSymbols } from "./symbols";
 import { EthAdapter } from "./EthAdapter";
 import { EthWallet } from "./EthWallet";
 import { EthWalletFactory } from "./EthWalletFactory";
-import { TTransactionRequestRequired } from "./types";
+import { ITransactionResponse, TTransactionRequestRequired, TUnsignedTransaction } from "./types";
 
 class EthManagerError extends EthModuleError {
   constructor(message: string) {
@@ -59,6 +59,29 @@ class EthManager {
     this.adapter = ethAdapterFactory(rpcUrl);
 
     this.logger.info(`EthManager initialized. Rpc URL: ${rpcUrl}`);
+  }
+
+  /**
+   * Returns the currently plugged wallet address
+   *
+   * @throws NoWalletPluggedError - When wallet was not yet plugged
+   */
+  getPluggedWalletAddress(): Promise<EthereumAddress> {
+    if (!this.wallet) {
+      throw new NoWalletPluggedError();
+    }
+
+    this.logger.info("Getting plugged wallet address");
+
+    // wraps manually into promise so the eth manager api is consistently returning promises
+    return Promise.resolve(this.wallet.walletMetadata.address);
+  }
+
+  /**
+   * Returns the ethereum node chain id
+   */
+  getChainId(): Promise<number> {
+    return this.adapter.getChainId();
   }
 
   /**
@@ -186,13 +209,13 @@ class EthManager {
    *
    * @throws NoWalletPluggedError - When no wallet was plugged yet
    */
-  unsafeExportWalletPrivateKey = async (): Promise<EthereumPrivateKey> => {
+  async unsafeExportWalletPrivateKey(): Promise<EthereumPrivateKey> {
     if (!this.wallet) {
       throw new NoWalletPluggedError();
     }
 
     return this.wallet.unsafeExportPrivateKey();
-  };
+  }
 
   /**
    * Exports wallet mnemonic to the UI
@@ -202,13 +225,35 @@ class EthManager {
    *
    * @throws NoWalletPluggedError - When no wallet was plugged yet
    */
-  unsafeExportWalletMnemonic = async (): Promise<EthereumHDMnemonic> => {
+  async unsafeExportWalletMnemonic(): Promise<EthereumHDMnemonic> {
     if (!this.wallet) {
       throw new NoWalletPluggedError();
     }
 
     return this.wallet.unsafeExportMnemonic();
-  };
+  }
+
+  /**
+   * Returns an internal provider to be used in contracts
+   */
+  async getInternalProvider(): Promise<providers.Provider> {
+    return this.adapter.getInternalProvider();
+  }
+
+  /**
+   * Signs an already hashed message with a currently plugged wallet
+   *
+   * @throws NoWalletPluggedError - When no wallet was plugged yet
+   *
+   * @param messageHash - A hash of message (should be an ethereum prefixed message hash)
+   */
+  async signMessageHash(messageHash: string): Promise<string> {
+    if (!this.wallet) {
+      throw new NoWalletPluggedError();
+    }
+
+    return this.wallet.signMessageHash(messageHash);
+  }
 
   /**
    * Signs a message with a currently plugged wallet
@@ -247,9 +292,7 @@ class EthManager {
    *
    * @param transaction - A transaction to be signed and send
    */
-  async sendTransaction(
-    transaction: TTransactionRequestRequired,
-  ): Promise<providers.TransactionResponse> {
+  async sendTransaction(transaction: TTransactionRequestRequired): Promise<ITransactionResponse> {
     const signedTx = await this.signTransaction(transaction);
 
     return this.adapter.sendTransaction(signedTx);
@@ -258,7 +301,7 @@ class EthManager {
   private async populateTransaction({
     from,
     ...rest
-  }: TTransactionRequestRequired): Promise<utils.UnsignedTransaction> {
+  }: TTransactionRequestRequired): Promise<TUnsignedTransaction> {
     this.logger.info("Populating transaction with missing data");
 
     const [to, nonce, chainId] = await Promise.all([

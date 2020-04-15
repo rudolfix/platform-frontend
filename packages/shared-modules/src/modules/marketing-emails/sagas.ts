@@ -1,6 +1,7 @@
-import { fork, neuGetContainer, neuTakeEvery, put, select } from "@neufund/sagas";
+import { fork, neuTakeEvery, put, select } from "@neufund/sagas";
 
-import { TLibSymbolType, TModuleSymbols } from "../../types";
+import { TModuleSymbols } from "../../types";
+import { neuGetBindings } from "../../utils";
 import { coreModuleApi } from "../core/module";
 import { actions } from "./actions";
 import { symbols } from "./lib/symbols";
@@ -9,11 +10,9 @@ import { selectUnsubscriptionLinkFromQueryString } from "./selectors";
 type TDependencies = TModuleSymbols<typeof coreModuleApi>;
 
 function* unsubscribeEmail({ logger }: TDependencies): Generator<any, void, any> {
-  const container = yield* neuGetContainer();
-
-  const marketingEmailsApi = container.get<TLibSymbolType<typeof symbols.marketingEmailsApi>>(
-    symbols.marketingEmailsApi,
-  );
+  const { marketingEmailsApi } = yield* neuGetBindings({
+    marketingEmailsApi: symbols.marketingEmailsApi,
+  });
 
   const unsubscribeLink = yield* select(selectUnsubscriptionLinkFromQueryString);
 

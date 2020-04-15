@@ -1,7 +1,6 @@
+import { authModuleAPI, IHttpClient, IHttpResponse } from "@neufund/shared-modules";
 import { inject, injectable } from "inversify";
 
-import { symbols } from "../../../di/symbols";
-import { IHttpClient, IHttpResponse } from "../client/IHttpClient";
 import { FileDescriptionValidator, TFileDescription, TFileType } from "./FileStorage.interfaces";
 
 const BASE_PATH = "/api/document-storage/";
@@ -11,7 +10,7 @@ export const MAX_ALLOWED_FILE_SIZE = 4000000;
 
 @injectable()
 export class FileStorageApi {
-  constructor(@inject(symbols.authorizedJsonHttpClient) private httpClient: IHttpClient) {}
+  constructor(@inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient) {}
 
   public async uploadFile(type: TFileType, file: File): Promise<TFileDescription> {
     const data = new FormData();

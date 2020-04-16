@@ -1,4 +1,4 @@
-import { promisify } from "@neufund/shared";
+import { promisify } from "@neufund/shared-utils";
 import { isValid as isMnemonicValid } from "bitcore-mnemonic";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";

@@ -1,6 +1,6 @@
 import { expectSaga } from "@neufund/sagas/tests";
-import { EthereumAddressWithChecksum, EthereumTxHash } from "@neufund/shared";
 import { noopLogger } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum, EthereumTxHash } from "@neufund/shared-utils";
 
 import { ECurrency, ENumberInputFormat } from "../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";

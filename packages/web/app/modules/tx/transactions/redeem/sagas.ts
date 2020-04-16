@@ -5,7 +5,7 @@ import {
   DeepReadonly,
   ETH_DECIMALS,
   EURO_DECIMALS,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";

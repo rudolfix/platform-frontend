@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { ipfsLinkFromHash } from "../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";

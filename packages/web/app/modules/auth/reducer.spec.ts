@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { EUserType } from "../../lib/api/users/interfaces";

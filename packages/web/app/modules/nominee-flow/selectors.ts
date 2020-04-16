@@ -1,4 +1,4 @@
-import { DataUnavailableError, objectToFilteredArray } from "@neufund/shared";
+import { DataUnavailableError, objectToFilteredArray } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
 import { IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";

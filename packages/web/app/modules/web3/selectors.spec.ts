@@ -1,4 +1,4 @@
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";

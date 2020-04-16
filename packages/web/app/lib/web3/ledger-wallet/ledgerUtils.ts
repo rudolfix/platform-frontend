@@ -1,7 +1,7 @@
 import Eth from "@ledgerhq/hw-app-eth";
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import createLedgerSubprovider from "@ledgerhq/web3-subprovider";
-import { promisify } from "@neufund/shared";
+import { promisify } from "@neufund/shared-utils";
 import * as semver from "semver";
 import * as Web3 from "web3";
 import * as Web3ProviderEngine from "web3-provider-engine";

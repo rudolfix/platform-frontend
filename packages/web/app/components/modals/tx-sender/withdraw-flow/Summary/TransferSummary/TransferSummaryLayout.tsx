@@ -1,5 +1,5 @@
 import { Button, ButtonArrowLeft, EButtonWidth } from "@neufund/design-system";
-import { addBigNumbers, RequiredByKeys, toEquityTokenSymbol } from "@neufund/shared";
+import { addBigNumbers, RequiredByKeys, toEquityTokenSymbol } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

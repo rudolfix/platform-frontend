@@ -1,4 +1,4 @@
-import { withParams } from "@neufund/shared";
+import { withParams } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { getConfig } from "../../../../../../config/getConfig";

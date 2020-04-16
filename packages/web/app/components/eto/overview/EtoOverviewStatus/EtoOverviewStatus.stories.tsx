@@ -1,4 +1,4 @@
-import { toEquityTokenSymbol } from "@neufund/shared";
+import { toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";

@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { genericModalIcons } from "../../components/modals/generic-modal/GenericModal";
 import { TMessage } from "../../components/translatedMessages/utils";

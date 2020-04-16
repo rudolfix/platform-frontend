@@ -1,4 +1,4 @@
-import { InvariantError, isZero, NEUR_ALLOWED_US_STATES } from "@neufund/shared";
+import { InvariantError, isZero, NEUR_ALLOWED_US_STATES } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

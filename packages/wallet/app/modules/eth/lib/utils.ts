@@ -1,4 +1,4 @@
-import { EthereumPrivateKey, EthereumAddress, EthereumHDMnemonic } from "@neufund/shared";
+import { EthereumPrivateKey, EthereumAddress, EthereumHDMnemonic } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import isString from "lodash/fp/isString";
 

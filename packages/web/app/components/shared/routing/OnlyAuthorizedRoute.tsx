@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
 import * as queryString from "query-string";
 import * as React from "react";

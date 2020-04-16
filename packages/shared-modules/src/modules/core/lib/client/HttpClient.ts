@@ -2,7 +2,7 @@
  * Handel's general requests
  */
 
-import { Dictionary, invariant, toSnakeCase } from "@neufund/shared";
+import { Dictionary, invariant, toSnakeCase } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 // top-level import is not working correctly for unit tests
 import * as urlJoin from "proper-url-join/lib";

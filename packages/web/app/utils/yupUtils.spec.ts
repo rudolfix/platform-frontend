@@ -1,4 +1,4 @@
-// TODO move file to design-system once it has CI
+import { AssertEqual, assertType } from "@neufund/shared-utils/tests";
 import {
   findMax,
   findMin,

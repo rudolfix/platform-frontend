@@ -1,4 +1,4 @@
-import { EthereumAddress, EthereumName } from "@neufund/shared";
+import { EthereumAddress, EthereumName } from "@neufund/shared-utils";
 import { utils } from "ethers";
 
 export enum EBlockTag {

@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";

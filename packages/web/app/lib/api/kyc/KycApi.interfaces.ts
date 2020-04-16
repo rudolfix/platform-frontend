@@ -1,5 +1,5 @@
 import { makeAllRequiredExcept } from "@neufund/design-system";
-import { ECountries, EUSState } from "@neufund/shared";
+import { ECountries, EUSState } from "@neufund/shared-utils";
 import * as Yup from "yup";
 
 import * as YupTS from "../../yup-ts.unsafe";

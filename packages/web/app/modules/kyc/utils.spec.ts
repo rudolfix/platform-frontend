@@ -1,4 +1,4 @@
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";

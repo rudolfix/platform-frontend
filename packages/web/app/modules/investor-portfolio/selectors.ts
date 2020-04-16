@@ -5,7 +5,7 @@ import {
   multiplyBigNumbers,
   Q18,
   subtractBigNumbers,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { isArray } from "lodash/fp";
 import { createSelector } from "reselect";

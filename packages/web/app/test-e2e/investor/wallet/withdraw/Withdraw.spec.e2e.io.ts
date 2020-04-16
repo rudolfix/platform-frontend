@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared";
+import { Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { generateRandomEthereumAddress } from "../../../../modules/web3/utils";

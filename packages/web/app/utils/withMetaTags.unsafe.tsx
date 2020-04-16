@@ -1,4 +1,4 @@
-import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared";
+import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 

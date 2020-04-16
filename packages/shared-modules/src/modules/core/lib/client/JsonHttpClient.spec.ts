@@ -1,4 +1,4 @@
-import { expectToBeRejected } from "@neufund/shared/tests";
+import { expectToBeRejected } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as fetchMock from "fetch-mock";
 import * as Yup from "yup";

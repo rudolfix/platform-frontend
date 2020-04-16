@@ -1,4 +1,4 @@
-import { Dictionary } from "@neufund/shared";
+import { Dictionary } from "@neufund/shared-utils";
 import React from "react";
 import { createContext } from "react";
 

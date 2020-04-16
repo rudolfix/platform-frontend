@@ -1,5 +1,6 @@
 import { call, fork, put, select, take } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
+import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
+import { invariant } from "@neufund/shared-utils";
 import { includes } from "lodash";
 
 import {

@@ -7,7 +7,7 @@
  * It supports validating response shape. Validation happens AFTER camelCasing.
  */
 
-import { Dictionary, toCamelCase } from "@neufund/shared";
+import { Dictionary, toCamelCase } from "@neufund/shared-utils";
 import { injectable } from "inversify";
 import * as Yup from "yup";
 

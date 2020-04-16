@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { actions } from "../../modules/actions";
 import { AppReducer } from "../../store";

@@ -1,5 +1,5 @@
 {
-  "name": "@neufund/shared/tests",
+  "name": "@neufund/shared-utils/tests",
   "private": true,
   "main": "../dist/tests.js"
 }

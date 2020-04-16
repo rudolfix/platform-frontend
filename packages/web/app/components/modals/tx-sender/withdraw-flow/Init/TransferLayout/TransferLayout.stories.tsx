@@ -1,4 +1,4 @@
-import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared";
+import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";

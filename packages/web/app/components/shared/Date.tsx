@@ -1,4 +1,4 @@
-import { formatDate } from "@neufund/shared";
+import { formatDate } from "@neufund/shared-utils";
 import * as React from "react";
 
 import * as styles from "./Date.module.scss";

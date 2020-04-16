@@ -1,5 +1,5 @@
 import { all, put, select } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { ECurrency } from "../../../../../components/shared/formatters/utils";

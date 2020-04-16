@@ -5,9 +5,14 @@
   min-width: 320px;
 }
 
+.unsupported-browser__show {
+  display: flex;
+}
+
 .unsupported-browser__header {
   border-bottom: 1px solid #e7ebee;
   padding: 19px 24px;
+  min-height: 64px;
 }
 
 .unsupported-browser__header-logo {
@@ -94,6 +99,10 @@
   background-color: #142431;
   color: #94a5b3;
   padding: 20px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  min-height: 64px;
 }
 
 .unsupported-browser__link {
@@ -145,5 +154,16 @@
 
   .unsupported-browser__footer {
     padding: 12px 30px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .unsupported-browser__footer-copyright {
+    flex-basis: 100%;
+    order: 1;
+  }
+
+  .unsupported-browser__link:first-of-type {
+    margin-left: 0;
   }
 }

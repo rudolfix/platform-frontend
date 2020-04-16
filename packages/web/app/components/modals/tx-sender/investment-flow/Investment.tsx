@@ -5,7 +5,7 @@ import {
   injectIntlHelpers,
   multiplyBigNumbers,
   nonNullable,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";

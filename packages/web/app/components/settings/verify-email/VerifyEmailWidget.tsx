@@ -1,5 +1,5 @@
 import { Button, ButtonArrowRight, EButtonLayout } from "@neufund/design-system";
-import { injectIntlHelpers } from "@neufund/shared";
+import { injectIntlHelpers } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";

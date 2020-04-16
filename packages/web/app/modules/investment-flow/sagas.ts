@@ -6,7 +6,7 @@ import {
   extractNumber,
   nonNullable,
   subtractBigNumbers,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { ECurrency } from "../../components/shared/formatters/utils";

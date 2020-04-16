@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { ENotificationText } from "../../components/translatedMessages/messages";
 import { AppActionTypes } from "../../store";

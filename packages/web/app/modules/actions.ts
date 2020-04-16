@@ -1,5 +1,5 @@
 import { StringableActionCreator } from "@neufund/sagas";
-import { TDictionaryValues } from "@neufund/shared";
+import { TDictionaryValues } from "@neufund/shared-utils";
 import { LocationChangeAction } from "connected-react-router";
 
 import { portfolioActions } from "../components/portfolio/actions";

@@ -8,7 +8,7 @@ import {
   multiplyBigNumbers,
   nonNullable,
   Q18,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { LOCATION_CHANGE } from "connected-react-router";
 import { camelCase, isString } from "lodash";

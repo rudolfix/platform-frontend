@@ -1,5 +1,5 @@
-import { safeDelay } from "@neufund/shared";
-import { createMount, setupFakeClock } from "@neufund/shared/tests";
+import { safeDelay } from "@neufund/shared-utils";
+import { createMount, setupFakeClock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { spy } from "sinon";

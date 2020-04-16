@@ -1,4 +1,4 @@
-import { DeepReadonly, Values } from "@neufund/shared";
+import { DeepReadonly, Values } from "@neufund/shared-utils";
 import { ActionCreatorsMapObject, AnyAction, Reducer, ReducersMapObject } from "redux";
 
 export type TReducersMapToState<T extends ReducersMapObject<object>> = T extends ReducersMapObject<

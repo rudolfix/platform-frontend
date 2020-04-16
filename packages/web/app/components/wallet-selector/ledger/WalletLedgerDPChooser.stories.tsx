@@ -1,4 +1,4 @@
-import { dummyIntl } from "@neufund/shared";
+import { dummyIntl } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 

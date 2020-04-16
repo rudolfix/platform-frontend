@@ -1,4 +1,4 @@
-import { AssertEqual, assertType } from "@neufund/shared/tests";
+import { AssertEqual, assertType } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as Yup from "yup";
 

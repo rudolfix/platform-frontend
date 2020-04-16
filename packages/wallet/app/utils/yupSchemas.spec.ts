@@ -1,4 +1,4 @@
-import { AssertEqual, assertType } from "@neufund/shared/tests";
+import { AssertEqual, assertType } from "@neufund/shared-utils/tests";
 import * as yup from "yup";
 
 import { singleValue, typedValue, oneOfSchema, tupleSchema } from "./yupSchemas";

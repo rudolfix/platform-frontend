@@ -1,4 +1,4 @@
-import { EthereumAddress, EthereumPrivateKey, EthereumHDMnemonic } from "@neufund/shared";
+import { EthereumAddress, EthereumPrivateKey, EthereumHDMnemonic } from "@neufund/shared-utils";
 import { coreModuleApi, ILogger, TLibSymbolType } from "@neufund/shared-modules";
 import { providers, utils } from "ethers";
 import { inject, injectable } from "inversify";

@@ -13,7 +13,7 @@ import {
 } from "@neufund/sagas";
 
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 
 import { appRoutes } from "../../appRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";

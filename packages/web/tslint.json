@@ -1,5 +1,5 @@
 {
-  "extends": ["@neufund/shared/tslint.json"],
+  "extends": ["@neufund/shared-utils/tslint.json"],
   "rules": {
     "import-blacklist": [true, "typed-redux-sags", "redux-saga/effects"]
   }

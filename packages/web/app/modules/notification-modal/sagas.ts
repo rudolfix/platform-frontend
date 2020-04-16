@@ -1,5 +1,5 @@
 import { fork } from "@neufund/sagas";
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions, TActionFromCreator } from "../actions";

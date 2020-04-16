@@ -1,4 +1,4 @@
-import { RequiredByKeys, withContainer } from "@neufund/shared";
+import { RequiredByKeys, withContainer } from "@neufund/shared-utils";
 import { branch, compose, renderComponent } from "recompose";
 
 import {

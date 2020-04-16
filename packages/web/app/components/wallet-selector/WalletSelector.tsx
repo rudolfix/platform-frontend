@@ -1,4 +1,4 @@
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
 import { branch, compose, renderComponent, withStateHandlers } from "recompose";

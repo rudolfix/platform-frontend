@@ -1,5 +1,5 @@
 import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
-import { toEthereumAddress, toEthereumPrivateKey } from "@neufund/shared";
+import { toEthereumAddress, toEthereumPrivateKey } from "@neufund/shared-utils";
 import { tokenPriceModuleApi } from "@neufund/shared-modules";
 import { utils } from "ethers";
 import { TGlobalDependencies } from "../../di/setupBindings";

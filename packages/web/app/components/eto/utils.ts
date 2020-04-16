@@ -1,4 +1,4 @@
-import { formatFlexiPrecision, invariant } from "@neufund/shared";
+import { formatFlexiPrecision, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { cloneDeep, flow, get, set } from "lodash";
 

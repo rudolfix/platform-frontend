@@ -1,4 +1,4 @@
-import { createActionFactory, Dictionary } from "@neufund/shared";
+import { createActionFactory, Dictionary } from "@neufund/shared-utils";
 
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoWithCompanyAndContractReadonly } from "../eto/types";

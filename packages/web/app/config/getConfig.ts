@@ -1,4 +1,4 @@
-import { isGaslessTxEnabled } from "@neufund/shared";
+import { isGaslessTxEnabled } from "@neufund/shared-utils";
 
 import { getOptionalEnv, getRequiredEnv, verifyOptionalFlagEnv } from "./configUtils";
 

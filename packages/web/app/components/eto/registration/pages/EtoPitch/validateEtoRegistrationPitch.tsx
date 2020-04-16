@@ -1,4 +1,4 @@
-import { addBigNumbers } from "@neufund/shared";
+import { addBigNumbers } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";

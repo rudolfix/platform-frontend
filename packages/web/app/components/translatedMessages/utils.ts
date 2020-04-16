@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { TDataTestId, TTranslatedString } from "../../types";
 import { TranslatedMessageType } from "./messages";

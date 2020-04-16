@@ -1,4 +1,4 @@
-import { IPFS_PROTOCOL } from "@neufund/shared";
+import { IPFS_PROTOCOL } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { hashFromIpfsLink, ipfsLinkFromHash } from "./utils";

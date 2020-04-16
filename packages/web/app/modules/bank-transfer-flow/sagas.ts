@@ -1,5 +1,5 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";

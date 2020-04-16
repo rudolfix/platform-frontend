@@ -1,4 +1,4 @@
-import { compareBigNumbers } from "@neufund/shared";
+import { compareBigNumbers } from "@neufund/shared-utils";
 
 import { TAppGlobalState } from "../../store";
 import { EValidationState } from "../tx/validator/reducer";

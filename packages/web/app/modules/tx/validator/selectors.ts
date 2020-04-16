@@ -1,4 +1,4 @@
-import { DeepReadonlyObject } from "@neufund/shared";
+import { DeepReadonlyObject } from "@neufund/shared-utils";
 
 import { TAppGlobalState } from "../../../store";
 import { IInvestmentFlowState } from "../../investment-flow/reducer";

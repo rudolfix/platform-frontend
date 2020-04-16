@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import * as Yup from "yup";
 
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";

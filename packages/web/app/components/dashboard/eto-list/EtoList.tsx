@@ -1,4 +1,4 @@
-import { RequiredByKeys } from "@neufund/shared";
+import { RequiredByKeys } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose, setDisplayName } from "recompose";
 

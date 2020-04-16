@@ -1,7 +1,7 @@
 import { delay } from "@neufund/sagas";
 import { expectSaga } from "@neufund/sagas/tests";
 import { noopLogger } from "@neufund/shared-modules";
-import { createMock } from "@neufund/shared/tests";
+import { createMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { EventEmitter } from "events";
 

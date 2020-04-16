@@ -1,4 +1,4 @@
-import { assertNever, InvariantError, nonNullable } from "@neufund/shared";
+import { assertNever, InvariantError, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { branch, compose, renderComponent, renderNothing, withProps } from "recompose";
 

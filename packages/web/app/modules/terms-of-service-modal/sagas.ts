@@ -9,6 +9,7 @@ import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
+import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 
 /**
@@ -39,10 +40,7 @@ function* handleAcceptCurrentAgreementEffect({ apiUserService }: TGlobalDependen
   yield put(actions.auth.setUser(user));
 }
 
-function* handleAcceptCurrentAgreement({
-  logger,
-  notificationCenter,
-}: TGlobalDependencies): Generator<any, any, any> {
+function* handleAcceptCurrentAgreement({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
@@ -52,7 +50,11 @@ function* handleAcceptCurrentAgreement({
       createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT),
     );
   } catch (e) {
-    notificationCenter.error(createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR),
+      ),
+    );
     logger.error("Could not accept Terms and Conditions", e);
   }
 }

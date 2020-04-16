@@ -15,6 +15,7 @@ import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
+import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { selectIsVerifyEmailRedirect } from "../../routing/selectors";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import {
@@ -36,21 +37,20 @@ import { loadUser } from "../user/external/sagas";
 /**
  * Email Verification
  */
-export function* verifyUserEmail({
-  notificationCenter,
-  walletStorage,
-}: TGlobalDependencies): Generator<any, any, any> {
+export function* verifyUserEmail({ walletStorage }: TGlobalDependencies): Generator<any, any, any> {
   const userCode = yield* select(selectActivationCodeFromQueryString);
   const urlEmail = yield* select(selectEmailFromQueryString);
   const userEmail = yield* select((s: TAppGlobalState) => selectUserEmail(s.auth));
 
   if (userCode === undefined || urlEmail === undefined) {
     yield put(actions.auth.logout());
-    yield notificationCenter.error(
-      {
-        messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED,
-      },
-      { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        {
+          messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED,
+        },
+        { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
+      ),
     );
     return;
   }
@@ -58,11 +58,13 @@ export function* verifyUserEmail({
   if (userEmail && userEmail !== urlEmail) {
     // Logout if there is different user session active
     yield put(actions.auth.logout({ logoutType: ELogoutReason.ALREADY_LOGGED_IN }));
-    yield notificationCenter.error(
-      {
-        messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED_SAME_EMAIL,
-      },
-      { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        {
+          messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED_SAME_EMAIL,
+        },
+        { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
+      ),
     );
     return;
   }
@@ -89,25 +91,39 @@ export function* verifyUserEmail({
   }
 }
 
-export async function verifyUserEmailPromise(
-  { apiUserService, notificationCenter }: TGlobalDependencies,
+export function* verifyUserEmailPromise(
+  { apiUserService }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
   verifiedEmail: string | undefined,
-): Promise<void> {
+): Generator<any, void, void> {
   if (urlEmail === verifiedEmail) {
-    notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED));
+    yield put(
+      webNotificationUIModuleApi.actions.showInfo(
+        createMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED),
+      ),
+    );
     return;
   }
   if (!userCode) return;
   try {
-    await apiUserService.verifyUserEmail(userCode);
-    notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_VERIFIED));
+    yield call(apiUserService.verifyUserEmail, userCode);
+    yield put(
+      webNotificationUIModuleApi.actions.showInfo(createMessage(AuthMessage.AUTH_EMAIL_VERIFIED)),
+    );
   } catch (e) {
     if (e instanceof EmailAlreadyExists) {
-      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS));
+      yield put(
+        webNotificationUIModuleApi.actions.showError(
+          createMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS),
+        ),
+      );
     } else {
-      notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED));
+      yield put(
+        webNotificationUIModuleApi.actions.showError(
+          createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED),
+        ),
+      );
     }
   }
 }

@@ -17,33 +17,41 @@ import {
   selectVerifiedUserEmail,
 } from "../auth/selectors";
 import { updateUser } from "../auth/user/external/sagas";
+import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 import { selectLightWalletSalt } from "../web3/selectors";
 
-function* addNewEmailEffect(
-  { notificationCenter, logger }: TGlobalDependencies,
-  email: string,
-): any {
+function* addNewEmailEffect({ logger }: TGlobalDependencies, email: string): any {
   const user = yield select((s: TAppGlobalState) => selectUser(s));
   const salt = yield select(selectLightWalletSalt);
   logger.info("New Email added");
   yield neuCall(updateUser, { ...user, new_email: email, salt: salt });
-  notificationCenter.info(createMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED), {
-    "data-test-id": "profile-email-change-success",
-  });
+  yield put(
+    webNotificationUIModuleApi.actions.showInfo(
+      createMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED),
+      {
+        "data-test-id": "profile-email-change-success",
+      },
+    ),
+  );
 }
 
-function* abortEmailUpdateEffect({ notificationCenter, logger }: TGlobalDependencies): any {
+function* abortEmailUpdateEffect({ logger }: TGlobalDependencies): any {
   const user = yield select((s: TAppGlobalState) => selectUser(s));
   const email = user.verifiedEmail;
   logger.info("Email change aborted");
   yield neuCall(updateUser, { ...user, new_email: email });
-  notificationCenter.info(createMessage(ProfileMessage.PROFILE_ABORT_UPDATE_EMAIL_SUCCESS), {
-    "data-test-id": "profile-email-change-aborted",
-  });
+  yield put(
+    webNotificationUIModuleApi.actions.showInfo(
+      createMessage(ProfileMessage.PROFILE_ABORT_UPDATE_EMAIL_SUCCESS),
+      {
+        "data-test-id": "profile-email-change-aborted",
+      },
+    ),
+  );
 }
 
-function* resendEmailEffect({ notificationCenter, logger }: TGlobalDependencies): any {
+function* resendEmailEffect({ logger }: TGlobalDependencies): any {
   const user = yield select((s: TAppGlobalState) => selectUser(s));
   const salt = yield select(selectLightWalletSalt);
   const email = user.unverifiedEmail;
@@ -51,11 +59,15 @@ function* resendEmailEffect({ notificationCenter, logger }: TGlobalDependencies)
 
   logger.info("Email resent");
   yield neuCall(updateUser, { ...user, new_email: email, salt: salt });
-  notificationCenter.info(createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT));
+  yield put(
+    webNotificationUIModuleApi.actions.showInfo(
+      createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT),
+    ),
+  );
 }
 
 export function* addNewEmail(
-  { notificationCenter, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.profile.addNewEmail>,
 ): Generator<any, any, any> {
   const email = action.payload.email;
@@ -69,16 +81,26 @@ export function* addNewEmail(
   const actualUnverifiedEmail = yield select((s: TAppGlobalState) => selectUnverifiedUserEmail(s));
 
   if (email === actualVerifiedEmail) {
-    notificationCenter.error(createMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_VERIFIED_EXISTS), {
-      "data-test-id": "profile-email-change-verified-exists",
-    });
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_VERIFIED_EXISTS),
+        {
+          "data-test-id": "profile-email-change-verified-exists",
+        },
+      ),
+    );
     return;
   }
 
   if (email === actualUnverifiedEmail) {
-    notificationCenter.error(createMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_UNVERIFIED_EXISTS), {
-      "data-test-id": "profile-email-change-unverified-exists",
-    });
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_UNVERIFIED_EXISTS),
+        {
+          "data-test-id": "profile-email-change-unverified-exists",
+        },
+      ),
+    );
     return;
   }
 
@@ -94,22 +116,28 @@ export function* addNewEmail(
     );
   } catch (e) {
     if (e instanceof EmailAlreadyExists) {
-      notificationCenter.error(createMessage(ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS), {
-        "data-test-id": "profile-email-exists",
-      });
+      yield put(
+        webNotificationUIModuleApi.actions.showError(
+          createMessage(ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS),
+          {
+            "data-test-id": "profile-email-exists",
+          },
+        ),
+      );
     } else {
       logger.error("Failed to Add new email", e);
-      notificationCenter.error(createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR));
+      yield put(
+        webNotificationUIModuleApi.actions.showError(
+          createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),
+        ),
+      );
     }
   } finally {
     yield put(actions.verifyEmail.freeVerifyEmailButton());
   }
 }
 
-export function* resendEmail({
-  notificationCenter,
-  logger,
-}: TGlobalDependencies): Generator<any, any, any> {
+export function* resendEmail({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
@@ -121,8 +149,10 @@ export function* resendEmail({
     );
   } catch (e) {
     logger.error("Failed to resend email", e);
-    notificationCenter.error(
-      createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED),
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED),
+      ),
     );
   }
 }
@@ -149,10 +179,7 @@ export function* loadSeedOrReturnToSettings({
   }
 }
 
-export function* abortEmailUpdate({
-  notificationCenter,
-  logger,
-}: TGlobalDependencies): Generator<any, any, any> {
+export function* abortEmailUpdate({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield put(actions.verifyEmail.lockVerifyEmailButton());
     yield neuCall(
@@ -165,7 +192,11 @@ export function* abortEmailUpdate({
     );
   } catch (e) {
     logger.error("Failed to cancel email change", e);
-    notificationCenter.error(createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),
+      ),
+    );
   } finally {
     yield put(actions.verifyEmail.freeVerifyEmailButton());
   }

@@ -2,7 +2,10 @@ import { all, call, delay, fork, put, select } from "@neufund/sagas";
 import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
 
 import { KycFlowMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import {
+  createMessage,
+  createNotificationMessage,
+} from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   EKycBusinessType,
@@ -23,6 +26,7 @@ import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { selectIsUserVerified, selectUser } from "../auth/selectors";
 import { displayErrorModalSaga } from "../generic-modal/sagas";
 import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
+import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import {
   deleteBeneficialOwner,
@@ -199,21 +203,25 @@ export function* submitPersonalDataSaga(
 }
 
 function* submitPersonalDataNoRedirect(
-  { notificationCenter, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycSubmitPersonalData>,
 ): Generator<any, any, any> {
   try {
     const { data } = action.payload;
     yield neuCall(submitPersonalDataSaga, data);
   } catch (e) {
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
 
     logger.error("Failed to submit KYC individual data", e);
   }
 }
 
 function* submitPersonalData(
-  { notificationCenter, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycSubmitPersonalData>,
 ): Generator<any, any, any> {
   try {
@@ -222,14 +230,18 @@ function* submitPersonalData(
 
     yield put(actions.routing.goToKYCIndividualAddress());
   } catch (e) {
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
 
     logger.error("Failed to submit KYC individual data", e);
   }
 }
 
 function* submitPersonalDataAndClose(
-  { notificationCenter, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycSubmitPersonalDataAndClose>,
 ): Generator<any, any, any> {
   try {
@@ -238,14 +250,18 @@ function* submitPersonalDataAndClose(
 
     yield put(actions.routing.goToDashboard());
   } catch (e) {
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
 
     logger.error("Failed to submit KYC individual data", e);
   }
 }
 
 function* submitPersonalAddressSaga(
-  { apiKycService, notificationCenter, logger }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   data: IKycIndividualData,
 ): Generator<any, any, any> {
   try {
@@ -255,7 +271,11 @@ function* submitPersonalAddressSaga(
 
     return true;
   } catch (e) {
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
 
     logger.error("Failed to submit KYC individual data", e);
   }
@@ -286,7 +306,7 @@ function* submitPersonalAddressAndClose(
 }
 
 function* uploadIndividualFile(
-  { apiKycService, notificationCenter, logger }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycUploadIndividualDocument>,
 ): Generator<any, any, any> {
   const { file } = action.payload;
@@ -294,11 +314,19 @@ function* uploadIndividualFile(
     yield put(actions.kyc.kycUpdateIndividualDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadIndividualDocument(file);
     yield put(actions.kyc.kycUpdateIndividualDocument(false, result.body));
-    notificationCenter.info(createMessage(KycFlowMessage.KYC_UPLOAD_SUCCESSFUL));
+    yield put(
+      webNotificationUIModuleApi.actions.showInfo(
+        createNotificationMessage(KycFlowMessage.KYC_UPLOAD_SUCCESSFUL),
+      ),
+    );
   } catch (e) {
     yield put(actions.kyc.kycUpdateIndividualDocument(false));
 
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_UPLOAD_FAILED));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_UPLOAD_FAILED),
+      ),
+    );
 
     logger.error("Failed to upload KYC individual file", e);
   }
@@ -330,10 +358,7 @@ function* submitIndividualRequestEffect({
   yield put(actions.routing.goToKYCSuccess());
 }
 
-function* submitIndividualRequest({
-  notificationCenter,
-  logger,
-}: TGlobalDependencies): Generator<any, any, any> {
+function* submitIndividualRequest({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(
       ensurePermissionsArePresentAndRunEffect,
@@ -343,7 +368,11 @@ function* submitIndividualRequest({
       createMessage(KycFlowMessage.KYC_SUBMIT_DESCRIPTION),
     );
   } catch (e) {
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_SUBMIT_FAILED),
+      ),
+    );
 
     logger.error("Failed to submit KYC individual request", e);
   }
@@ -357,7 +386,7 @@ function* submitIndividualRequest({
 
 // business data
 function* setBusinessType(
-  { apiKycService, notificationCenter, logger }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycSetBusinessType>,
 ): Generator<any, any, any> {
   try {
@@ -375,7 +404,11 @@ function* setBusinessType(
   } catch (e) {
     yield put(actions.kyc.kycUpdateBusinessData(false));
 
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
 
     logger.error("Failed to set KYC business", e);
   }
@@ -401,7 +434,7 @@ function* loadBusinessData({
 }
 
 function* submitBusinessData(
-  { apiKycService, notificationCenter, logger }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycSubmitBusinessData>,
 ): Generator<any, any, any> {
   try {
@@ -430,14 +463,18 @@ function* submitBusinessData(
   } catch (e) {
     yield put(actions.kyc.kycUpdateBusinessData(false));
 
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
 
     logger.error("Failed to submit KYC business data", e);
   }
 }
 
 function* uploadBusinessFile(
-  { apiKycService, notificationCenter, logger }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycUploadBusinessDocument>,
 ): Generator<any, any, any> {
   const { file } = action.payload;
@@ -445,11 +482,19 @@ function* uploadBusinessFile(
     yield put(actions.kyc.kycUpdateBusinessDocument(true));
     const result: IHttpResponse<IKycFileInfo> = yield apiKycService.uploadBusinessDocument(file);
     yield put(actions.kyc.kycUpdateBusinessDocument(false, result.body));
-    notificationCenter.info(createMessage(KycFlowMessage.KYC_UPLOAD_SUCCESSFUL));
+    yield put(
+      webNotificationUIModuleApi.actions.showInfo(
+        createNotificationMessage(KycFlowMessage.KYC_UPLOAD_SUCCESSFUL),
+      ),
+    );
   } catch (e) {
     yield put(actions.kyc.kycUpdateBusinessDocument(false));
 
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_UPLOAD_FAILED));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_UPLOAD_FAILED),
+      ),
+    );
 
     logger.error("Failed to upload KYC business file", e);
   }
@@ -505,7 +550,7 @@ function* loadManagingDirectorFiles({
 }
 
 function* submitAndUploadManagingDirector(
-  { apiKycService, notificationCenter, logger }: TGlobalDependencies,
+  { apiKycService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycSubmitAndUploadManagingDirector>,
 ): Generator<any, any, any> {
   const { data, file } = action.payload;
@@ -520,7 +565,11 @@ function* submitAndUploadManagingDirector(
     yield put(actions.kyc.kycUpdateManagingDirector(false, putResult.body));
   } catch (e) {
     yield put(actions.kyc.kycUpdateManagingDirector(false));
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
   }
 
   try {
@@ -530,7 +579,11 @@ function* submitAndUploadManagingDirector(
     yield put(actions.kyc.kycUpdateManagingDirectorDocument(false, uploadResult.body));
   } catch (e) {
     yield put(actions.kyc.kycUpdateManagingDirectorDocument(false));
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_UPLOAD_FAILED));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_UPLOAD_FAILED),
+      ),
+    );
     logger.error("Failed to upload KYC managing director file", e);
   }
 }
@@ -545,7 +598,7 @@ function* submitBusinessRequestEffect({
 }
 
 function* kycSubmitManagingDirector(
-  { apiKycService, notificationCenter }: TGlobalDependencies,
+  { apiKycService }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.kyc.kycSubmitManagingDirector>,
 ): Generator<any, any, any> {
   const { data } = action.payload;
@@ -559,14 +612,15 @@ function* kycSubmitManagingDirector(
     yield put(actions.kyc.kycToggleManagingDirectorModal(false));
   } catch (e) {
     yield put(actions.kyc.kycUpdateManagingDirector(false));
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_SENDING_DATA),
+      ),
+    );
   }
 }
 
-function* submitBusinessRequest({
-  notificationCenter,
-  logger,
-}: TGlobalDependencies): Generator<any, any, any> {
+function* submitBusinessRequest({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     // check whether combined value of beneficial owners percentages is less or equal 100%
     const ownerShip = yield select((s: TAppGlobalState) =>
@@ -589,7 +643,11 @@ function* submitBusinessRequest({
       createMessage(KycFlowMessage.KYC_SUBMIT_DESCRIPTION),
     );
   } catch (e) {
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_SUBMIT_FAILED));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_SUBMIT_FAILED),
+      ),
+    );
 
     logger.error("Failed to submit KYC business request", e);
   }
@@ -598,7 +656,6 @@ function* submitBusinessRequest({
 export function* loadBankAccountDetails({
   apiKycService,
   logger,
-  notificationCenter,
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
     // bank details depend on claims `hasBankAccount` flag
@@ -635,7 +692,11 @@ export function* loadBankAccountDetails({
       );
     }
   } catch (e) {
-    notificationCenter.error(createMessage(KycFlowMessage.KYC_PROBLEM_LOADING_BANK_DETAILS));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(KycFlowMessage.KYC_PROBLEM_LOADING_BANK_DETAILS),
+      ),
+    );
 
     logger.error("Error while loading kyc bank details", e);
 

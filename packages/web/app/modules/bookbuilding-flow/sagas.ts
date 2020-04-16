@@ -2,7 +2,10 @@ import { fork, put, select, take } from "@neufund/sagas";
 import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
 
 import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import {
+  createMessage,
+  createNotificationMessage,
+} from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
 import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
@@ -10,6 +13,7 @@ import { EUserType } from "../../lib/api/users/interfaces";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { selectIsUserFullyVerified, selectUserType } from "../auth/selectors";
+import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../sagasUtils";
 
 export function* saveMyPledgeEffect(
@@ -27,7 +31,7 @@ export function* saveMyPledgeEffect(
 }
 
 export function* saveMyPledge(
-  { notificationCenter, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.bookBuilding.savePledge>,
 ): Generator<any, any, any> {
   const { etoId, pledge } = action.payload;
@@ -41,8 +45,10 @@ export function* saveMyPledge(
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_DESCRIPTION),
     );
   } catch (e) {
-    notificationCenter.error(
-      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE),
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE),
+      ),
     );
     logger.error(`Failed to save pledge`, e);
   }
@@ -59,7 +65,7 @@ export function* deleteMyPledgeEffect(
 }
 
 export function* deleteMyPledge(
-  { notificationCenter, logger }: TGlobalDependencies,
+  { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.bookBuilding.deletePledge>,
 ): Generator<any, any, any> {
   const { etoId } = action.payload;
@@ -72,8 +78,10 @@ export function* deleteMyPledge(
       createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION),
     );
   } catch (e) {
-    notificationCenter.error(
-      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED),
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED),
+      ),
     );
     logger.error(`Failed to delete pledge`, e);
   }
@@ -98,7 +106,7 @@ export function* watchBookBuildingStats(
 }
 
 export function* loadBookBuildingStats(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  { apiEtoService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.bookBuilding.loadBookBuildingStats>,
 ): Generator<any, any, any> {
   try {
@@ -107,8 +115,10 @@ export function* loadBookBuildingStats(
 
     yield put(actions.bookBuilding.setBookBuildingStats(etoId, statsResponse.body));
   } catch (e) {
-    notificationCenter.error(
-      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
+      ),
     );
 
     logger.error(`Failed to load bookbuilding stats pledge`, e);
@@ -116,7 +126,7 @@ export function* loadBookBuildingStats(
 }
 
 export function* loadBookBuildingListStats(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  { apiEtoService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.bookBuilding.loadBookBuildingListStats>,
 ): Generator<any, any, any> {
   try {
@@ -128,8 +138,10 @@ export function* loadBookBuildingListStats(
 
     yield put(actions.bookBuilding.setBookBuildingListStats(statsListResponse));
   } catch (e) {
-    notificationCenter.error(
-      createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
+      ),
     );
 
     logger.error(`Failed to load bookbuilding stats pledge`, e);
@@ -137,7 +149,7 @@ export function* loadBookBuildingListStats(
 }
 
 export function* loadMyPledge(
-  { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
+  { apiEtoPledgeService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.bookBuilding.loadPledge>,
 ): Generator<any, any, any> {
   try {
@@ -156,8 +168,10 @@ export function* loadMyPledge(
     yield put(actions.bookBuilding.setPledge(etoId, pledgeResponse.body));
   } catch (e) {
     if (!(e instanceof EtoPledgeNotFound)) {
-      notificationCenter.error(
-        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE),
+      yield put(
+        webNotificationUIModuleApi.actions.showError(
+          createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE),
+        ),
       );
       logger.error("Failed to load pledge", e);
     }

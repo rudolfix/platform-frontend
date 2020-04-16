@@ -1,13 +1,14 @@
-import { fork } from "@neufund/sagas";
+import { fork, put } from "@neufund/sagas";
 import { assertNever } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions, TActionFromCreator } from "../actions";
+import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuTakeEvery } from "../sagasUtils";
 import { ENotificationModalType } from "./actions";
 
 export function* showNotification(
-  { notificationCenter }: TGlobalDependencies,
+  _: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.notificationModal.notify>,
 ): Generator<any, any, any> {
   if (action.type !== "NOTIFY") return;
@@ -16,9 +17,9 @@ export function* showNotification(
 
   switch (type) {
     case ENotificationModalType.ERROR:
-      return notificationCenter.error(message);
+      return yield put(webNotificationUIModuleApi.actions.showError(message));
     case ENotificationModalType.INFO:
-      return notificationCenter.info(message);
+      return yield put(webNotificationUIModuleApi.actions.showInfo(message));
     default:
       assertNever(type, "unknown notification type");
   }

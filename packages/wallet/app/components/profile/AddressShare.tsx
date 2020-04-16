@@ -1,12 +1,12 @@
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import React from "react";
-import { StyleSheet, TouchableOpacity, View, Share } from "react-native";
+import { StyleSheet, View, Share } from "react-native";
 
-import { baseGray, baseWhite, grayLighter1 } from "../../styles/colors";
-import { roundness, shadowStyles } from "../../styles/common";
+import { baseGray, grayLighter1 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { HelperText } from "../shared/forms/layouts/HelperText";
 import { EIconType, Icon } from "../shared/Icon";
+import { PanelTouchable } from "../shared/panel/Panel";
 import { BodyText } from "../shared/typography/BodyText";
 
 type TViewProps = React.ComponentProps<typeof View>;
@@ -22,34 +22,17 @@ const AddressShare: React.FunctionComponent<TExternalProps> = ({ address, style,
   };
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.6}
-      accessibilityRole="button"
-      accessibilityComponentType="button"
-      accessibilityTraits="button"
-      style={[styles.wrapper, style]}
-      onPress={onShare}
-      {...props}
-    >
+    <PanelTouchable onPress={onShare} {...props}>
       <View>
         <BodyText style={styles.heading}>Account wallet address</BodyText>
         <HelperText>{address}</HelperText>
       </View>
       <Icon type={EIconType.SHARE} style={styles.icon} />
-    </TouchableOpacity>
+    </PanelTouchable>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    ...shadowStyles.s2,
-    ...spacingStyles.p4,
-    borderRadius: roundness,
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    backgroundColor: baseWhite,
-  },
   heading: {
     color: grayLighter1,
   },

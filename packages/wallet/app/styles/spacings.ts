@@ -80,6 +80,9 @@ export const spacingStyles = StyleSheet.create({
   ph2: {
     paddingHorizontal: spacing2,
   },
+  ph4: {
+    paddingHorizontal: spacing4,
+  },
   pv4: {
     paddingVertical: spacing4,
   },

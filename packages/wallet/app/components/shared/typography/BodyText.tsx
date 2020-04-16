@@ -1,20 +1,60 @@
 import * as React from "react";
-import { Text } from "react-native";
+import { Animated } from "react-native";
 
 import { typographyStyles } from "../../../styles/typography";
 
-type TExternalProps = React.ComponentProps<typeof Text>;
+type TExternalProps = { sizeFactor?: Animated.Animated } & React.ComponentProps<
+  typeof Animated.Text
+>;
 
-const BodyText: React.FunctionComponent<TExternalProps> = ({ children, style, ...props }) => (
-  <Text style={[typographyStyles.body, style]} {...props}>
-    {children}
-  </Text>
-);
+const BodyText: React.FunctionComponent<TExternalProps> = ({
+  children,
+  style,
+  sizeFactor = 1,
+  ...props
+}) => {
+  const { fontSize, lineHeight, ...rest } = typographyStyles.body;
 
-const BodyBoldText: React.FunctionComponent<TExternalProps> = ({ children, style, ...props }) => (
-  <Text style={[typographyStyles.bodyBold, style]} {...props}>
-    {children}
-  </Text>
-);
+  return (
+    <Animated.Text
+      style={[
+        {
+          fontSize: Animated.multiply(fontSize, sizeFactor),
+          lineHeight: Animated.multiply(lineHeight, sizeFactor),
+        },
+        rest,
+        style,
+      ]}
+      {...props}
+    >
+      {children}
+    </Animated.Text>
+  );
+};
+
+const BodyBoldText: React.FunctionComponent<TExternalProps> = ({
+  children,
+  style,
+  sizeFactor = 1,
+  ...props
+}) => {
+  const { fontSize, lineHeight, ...rest } = typographyStyles.bodyBold;
+
+  return (
+    <Animated.Text
+      style={[
+        {
+          fontSize: Animated.multiply(fontSize, sizeFactor),
+          lineHeight: Animated.multiply(lineHeight, sizeFactor),
+        },
+        rest,
+        style,
+      ]}
+      {...props}
+    >
+      {children}
+    </Animated.Text>
+  );
+};
 
 export { BodyText, BodyBoldText };

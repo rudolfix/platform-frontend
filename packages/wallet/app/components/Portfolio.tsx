@@ -17,7 +17,7 @@ const Portfolio: React.FunctionComponent = () => {
 
   const headerMargin = valueRef.current.interpolate({
     inputRange: [0, 100],
-    outputRange: [spacing8, 10],
+    outputRange: [spacing8, 5],
     extrapolate: "clamp",
   });
 
@@ -41,7 +41,7 @@ const Portfolio: React.FunctionComponent = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <NeuLinearGradient style={styles.headerContainer} useAngle angle={260}>
+      <NeuLinearGradient style={styles.headerContainer} angle={260}>
         <SafeAreaView>
           <Animated.View
             style={[styles.header, { marginTop: headerMargin, marginBottom: headerMargin }]}
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   headerBody: {
     color: silverLighter2,
+    opacity: 0.5,
   },
   container: {
     ...spacingStyles.ph4,

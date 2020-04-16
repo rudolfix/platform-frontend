@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 export const notificationUIActions = {
   showInfo: createActionFactory("NOTIFICATION_UI_SHOW_INFO", (message: string) => ({

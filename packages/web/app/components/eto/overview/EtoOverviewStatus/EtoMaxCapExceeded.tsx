@@ -1,4 +1,4 @@
-import { divideBigNumbers } from "@neufund/shared";
+import { divideBigNumbers } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

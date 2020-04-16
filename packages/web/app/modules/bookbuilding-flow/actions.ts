@@ -1,4 +1,4 @@
-import { createActionFactory, Dictionary } from "@neufund/shared";
+import { createActionFactory, Dictionary } from "@neufund/shared-utils";
 
 import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 

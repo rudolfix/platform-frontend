@@ -1,5 +1,5 @@
 import { neuGetContainer, SagaGenerator } from "@neufund/sagas";
-import { Dictionary } from "@neufund/shared";
+import { Dictionary } from "@neufund/shared-utils";
 import mapValues from "lodash/fp/mapValues";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
 

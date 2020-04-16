@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared";
+import { Q18 } from "@neufund/shared-utils";
 
 import { generalPendingTxFixture, mismatchedPendingTxFixture } from "../../../../modules/tx/utils";
 import { assertTxErrorDialogueNoCost } from "../../../utils/assertions";

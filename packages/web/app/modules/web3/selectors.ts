@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
 import { isString } from "lodash";
 import * as queryString from "query-string";

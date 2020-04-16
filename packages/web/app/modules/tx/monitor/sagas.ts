@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import * as Web3 from "web3";

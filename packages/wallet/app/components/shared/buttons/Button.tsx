@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet, Text, TouchableHighlight } from "react-native";
 

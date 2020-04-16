@@ -1,4 +1,4 @@
-import { DeepReadonly, Dictionary } from "@neufund/shared";
+import { DeepReadonly, Dictionary } from "@neufund/shared-utils";
 
 import { AppReducer } from "../../store";
 import { actions } from "../actions";

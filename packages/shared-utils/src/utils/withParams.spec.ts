@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { withParams } from "./withParams";
 
-describe("@neufund/shared", () => {
+describe("withParams tests", () => {
   it("replace params with correct value", () => {
     const paramName = "etoId";
     const route = `eto-listing/:${paramName}`;

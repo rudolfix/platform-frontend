@@ -1,4 +1,4 @@
-import { addBigNumbers, convertToUlps, subtractBigNumbers } from "@neufund/shared";
+import { addBigNumbers, convertToUlps, subtractBigNumbers } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { EInvestmentType } from "../../../investment-flow/reducer";

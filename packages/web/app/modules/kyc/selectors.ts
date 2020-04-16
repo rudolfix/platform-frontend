@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
 import { IStateProps as IBeneficialOwnerStateProps } from "../../components/kyc/business/BeneficialOwners";

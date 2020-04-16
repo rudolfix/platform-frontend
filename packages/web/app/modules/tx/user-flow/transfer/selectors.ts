@@ -1,4 +1,4 @@
-import { EquityToken, toEquityTokenSymbol } from "@neufund/shared";
+import { EquityToken, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
 import { TAppGlobalState } from "../../../../store";

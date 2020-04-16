@@ -1,9 +1,9 @@
-## Shared
+## Shared Utils
 
 [![Project dependencies Status](https://david-dm.org/Neufund/platform-frontend/status.svg?path=packages/shared)](https://david-dm.org/Neufund/platform-frontend?path=packages/shared)
 [![Project devDependencies Status](https://david-dm.org/Neufund/platform-frontend/dev-status.svg?path=packages/shared)](https://david-dm.org/Neufund/platform-frontend?type=dev&path=packages/shared)
 
-A shared library business logic between apps
+Shared utilities between packages and apps
 
 ## Running project
 

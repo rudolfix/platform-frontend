@@ -1,4 +1,4 @@
-import { isZero } from "@neufund/shared";
+import { isZero } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 

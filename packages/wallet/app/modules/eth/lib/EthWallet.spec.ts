@@ -1,5 +1,5 @@
 import { noopLogger } from "@neufund/shared-modules";
-import { toEthereumAddress, toEthereumHDPath } from "@neufund/shared";
+import { toEthereumAddress, toEthereumHDPath } from "@neufund/shared-utils";
 
 import { createMock } from "../../../utils/testUtils.specUtils";
 import { EthSecureEnclave } from "./EthSecureEnclave";

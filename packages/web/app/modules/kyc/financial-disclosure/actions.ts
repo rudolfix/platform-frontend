@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { IKycIndividualData } from "../../../lib/api/kyc/KycApi.interfaces";
 

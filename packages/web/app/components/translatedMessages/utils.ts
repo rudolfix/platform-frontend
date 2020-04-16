@@ -1,7 +1,7 @@
 import { DeepReadonly } from "@neufund/shared-utils";
 
 import { TDataTestId, TTranslatedString } from "../../types";
-import { TranslatedMessageType } from "./messages";
+import { getMessageTranslation, TranslatedMessageType } from "./messages";
 
 export interface IMessageData extends TDataTestId {
   message?: TTranslatedString;
@@ -16,6 +16,11 @@ export const createMessage = (messageType: TranslatedMessageType, messageData?: 
   messageType,
   messageData,
 });
+
+export const createNotificationMessage = (
+  messageType: TranslatedMessageType,
+  messageData?: any,
+): TTranslatedString => getMessageTranslation(createMessage(messageType, messageData));
 
 export const formatMatchingFieldNames = (messageData: string[]) => {
   if (messageData.length < 2) {

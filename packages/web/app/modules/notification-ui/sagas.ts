@@ -21,7 +21,7 @@ function* showError(
   showErrorToast(getMessageTranslation(message), options);
 }
 
-export function* notificationUISaga(): Generator<unknown, void> {
+export function* webNotificationUISaga(): Generator<unknown, void> {
   yield fork(neuTakeLatest, notificationUIActions.showInfo, showInfo);
   yield fork(neuTakeLatest, notificationUIActions.showError, showError);
 }

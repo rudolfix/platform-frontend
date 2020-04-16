@@ -1,6 +1,6 @@
 import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
-import { Text } from "react-native";
+import { Animated } from "react-native";
 import { typographyStyles } from "../../../styles/typography";
 
 enum EHeadlineLevel {
@@ -10,8 +10,8 @@ enum EHeadlineLevel {
   LEVEL4 = 4,
 }
 
-type TNativeTextProps = React.ComponentProps<typeof Text>;
-type TExternalProps = { level: EHeadlineLevel } & TNativeTextProps;
+type TNativeTextProps = React.ComponentProps<typeof Animated.Text>;
+type TExternalProps = { level: EHeadlineLevel; sizeFactor?: Animated.Animated } & TNativeTextProps;
 
 const getStyleForHeadlineLevel = (level: EHeadlineLevel) => {
   switch (level) {
@@ -33,11 +33,26 @@ const Headline: React.FunctionComponent<TExternalProps> = ({
   children,
   level,
   style,
+  sizeFactor = 1,
   ...props
-}) => (
-  <Text style={[getStyleForHeadlineLevel(level), style]} {...props}>
-    {children}
-  </Text>
-);
+}) => {
+  const { fontSize, lineHeight, ...rest } = getStyleForHeadlineLevel(level);
+
+  return (
+    <Animated.Text
+      style={[
+        {
+          fontSize: Animated.multiply(fontSize, sizeFactor),
+          lineHeight: Animated.multiply(lineHeight, sizeFactor),
+        },
+        rest,
+        style,
+      ]}
+      {...props}
+    >
+      {children}
+    </Animated.Text>
+  );
+};
 
 export { Headline, EHeadlineLevel };

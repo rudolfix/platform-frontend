@@ -22,7 +22,7 @@ const AddressShare: React.FunctionComponent<TExternalProps> = ({ address, style,
   };
 
   return (
-    <PanelTouchable onPress={onShare} {...props}>
+    <PanelTouchable onPress={onShare} style={style} {...props}>
       <View>
         <BodyText style={styles.heading}>Account wallet address</BodyText>
         <HelperText>{address}</HelperText>

@@ -1,4 +1,4 @@
-import { notificationUIActions } from "./actions";
+import { notificationUIActions } from "@neufund/shared-modules";
 import { notificationUISaga } from "./sagas";
 
 const MODULE_ID = "wallet:notification-ui";

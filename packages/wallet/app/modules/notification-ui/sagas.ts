@@ -1,8 +1,8 @@
 import { fork, neuTakeLatest, TActionFromCreator } from "@neufund/sagas";
+import { notificationUIActions } from "@neufund/shared-modules";
 import { Alert } from "react-native";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { notificationUIActions } from "./actions";
 
 function* showInfo(
   _: TGlobalDependencies,

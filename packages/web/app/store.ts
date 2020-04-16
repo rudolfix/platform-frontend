@@ -26,6 +26,7 @@ import { symbols } from "./di/symbols";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { actions, TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
+import { setupNotificationUIModule } from "./modules/notification-ui/module";
 import { appReducers } from "./modules/reducer";
 import { rootSaga } from "./modules/sagas";
 
@@ -70,6 +71,7 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupTokenPriceModule({
       refreshOnAction: actions.web3.newBlockArrived,
     }),
+    setupNotificationUIModule(),
     appModule,
   ];
 };

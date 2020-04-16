@@ -24,8 +24,8 @@ const TOS = "tos";
 
 const validationSchema = Yup.object().shape({
   [EMAIL]: Yup.string()
-    .required()
-    .email(),
+  .required()
+  .email(),
   [PASSWORD]: Yup.string()
     .required()
     .min(8),
@@ -71,6 +71,7 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
           <TextField
             type="email"
             name={EMAIL}
+            isRequired={true}
             placeholder={intl.formatIntlMessage("wallet-selector.register.email.placeholder")}
             label={intl.formatIntlMessage("wallet-selector.register.email")}
             data-test-id="wallet-selector-register-email"
@@ -78,6 +79,7 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
           <TextField
             type="password"
             name={PASSWORD}
+            isRequired={true}
             placeholder={intl.formatIntlMessage("wallet-selector.register.password.placeholder")}
             label={intl.formatIntlMessage("wallet-selector.register.password")}
             data-test-id="wallet-selector-register-password"
@@ -86,6 +88,7 @@ export const RegisterLightWalletForm: React.FunctionComponent<TStateProps &
             <TextField
               type="password"
               name={REPEAT_PASSWORD}
+              isRequired={true}
               placeholder={intl.formatIntlMessage(
                 "wallet-selector.register.confirm-password.placeholder",
               )}

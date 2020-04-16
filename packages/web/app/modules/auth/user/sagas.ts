@@ -78,11 +78,13 @@ export function* signInUser(
     userType,
     email,
     tos = false,
+    backupCodesVerified = false,
   }: {
     cleanupGenerator?: () => Generator<any, void, any>;
     userType: EUserType;
     email?: string;
     tos?: boolean;
+    backupCodesVerified?: boolean;
   },
 ): Generator<any, any, any> {
   try {
@@ -95,7 +97,7 @@ export function* signInUser(
         uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
       }),
     );
-    yield neuCall(loadOrCreateUser, userType, email, tos);
+    yield neuCall(loadOrCreateUser, userType, email, tos, backupCodesVerified);
     if (tos) yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
 
@@ -172,12 +174,12 @@ export function* loadOrCreateUser(
   userType: EUserType,
   email?: string,
   tos: boolean = false,
+  backupCodesVerified = false,
 ): Generator<any, void, any> {
   if (!web3Manager.personalWallet) {
     throw new Error("Personal Wallet must be plugged");
   }
   const walletMetadata = web3Manager.personalWallet.getMetadata();
-
   const userFromApi = yield* neuCall(getUsersMeFromApi);
   let user;
   if (userFromApi) {
@@ -186,16 +188,14 @@ export function* loadOrCreateUser(
       salt: walletMetadata.salt,
       walletType: walletMetadata.walletType,
       walletSubtype: walletMetadata.walletSubType,
-      newEmail: getUsersNewEmailValue(
-        userFromApi.verifiedEmail,
-        userFromApi.unverifiedEmail,
-        email,
-      ),
+      newEmail: email,
+      backupCodesVerified: backupCodesVerified ? true : undefined,
     });
   } else {
     user = yield* call(apiUserService.createAccount, {
       newEmail: email || walletMetadata?.email,
-      backupCodesVerified: walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
+      backupCodesVerified:
+        backupCodesVerified || walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
       salt: walletMetadata?.salt,
       type: userType,
       walletType: walletMetadata.walletType,

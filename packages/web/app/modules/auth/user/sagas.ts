@@ -37,7 +37,6 @@ import { checkForPendingEmailVerification } from "../email/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
 import { ELogoutReason } from "../types";
 import { loadUser, logoutUser } from "./external/sagas";
-import { getUsersNewEmailValue } from "./utils";
 
 /**
  * Waits for user to conduct activity before a

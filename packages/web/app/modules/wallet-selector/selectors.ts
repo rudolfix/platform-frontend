@@ -1,4 +1,4 @@
-import { DeepReadonlyObject } from "@neufund/shared";
+import { DeepReadonlyObject } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
 import { createSelector } from "reselect";
 

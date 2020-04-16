@@ -1,3 +1,4 @@
+import { IIntlHelpers } from '@neufund/shared-utils';
 import { Button, Checkbox, EButtonLayout, EButtonWidth, TextField } from "@neufund/design-system";
 import { FormikErrors } from "formik";
 import * as React from "react";
@@ -6,7 +7,6 @@ import { compose } from "recompose";
 import * as Yup from "yup";
 
 import { injectIntlHelpers } from "../../../../../../shared/dist/utils/injectIntlHelpers.unsafe";
-import { IIntlHelpers } from "../../../../../../shared/src/utils/injectIntlHelpers.unsafe";
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { TBrowserWalletFormValues } from "../../../../modules/wallet-selector/types";
 import { Form } from "../../../shared/forms/Form";

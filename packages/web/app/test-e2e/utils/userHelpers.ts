@@ -1,8 +1,4 @@
-import { promisify, toCamelCase } from "@neufund/shared-utils";
-import * as LightWalletProvider from "eth-lightwallet";
-import * as ethSig from "eth-sig-util";
-import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
-import { toChecksumAddress } from "web3-utils";
+import { toCamelCase } from "@neufund/shared-utils";
 
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";

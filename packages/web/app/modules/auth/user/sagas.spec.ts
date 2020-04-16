@@ -1,3 +1,4 @@
+import { EthereumAddressWithChecksum } from '@neufund/shared-utils';
 import { getContext } from "@neufund/sagas";
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { toChecksumAddress } from "web3-utils";
@@ -6,7 +7,6 @@ import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../actions";
 import { loadKycRequestData } from "../../kyc/sagas";
 import { EWalletSubType, EWalletType } from "../../web3/types";
-import { EthereumAddressWithChecksum } from "./../../../../../shared/src/utils/opaque-types/types";
 import {
   BACKEND_BASE_URL,
   setTestJWT,
@@ -80,7 +80,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       await expectSaga(
         loadOrCreateUser,
@@ -135,7 +135,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       await expectSaga(
         loadOrCreateUser,
@@ -192,7 +192,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       await expectSaga(
         loadOrCreateUser,
@@ -250,7 +250,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       const currentUser = await apiUserService.me();
 

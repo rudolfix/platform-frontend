@@ -1,4 +1,4 @@
-import { trimAddress } from "@neufund/shared";
+import { trimAddress } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { CommonHtmlProps } from "../../../types";

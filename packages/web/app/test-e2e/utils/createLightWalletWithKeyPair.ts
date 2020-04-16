@@ -1,4 +1,4 @@
-import { promisify } from "@neufund/shared";
+import { promisify } from "@neufund/shared-utils";
 import * as LightWalletProvider from "eth-lightwallet";
 import { toChecksumAddress } from "web3-utils";
 

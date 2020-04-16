@@ -1,6 +1,3 @@
-import { DeepReadonly } from "@neufund/shared-utils";
-
-import { TMessage } from "../../components/translatedMessages/utils";
 import { AppReducer } from "../../store";
 import { actions } from "../actions";
 import { EWalletType } from "../web3/types";

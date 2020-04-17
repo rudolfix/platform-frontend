@@ -1,10 +1,10 @@
 import * as React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { baseGray } from "../../../../styles/colors";
 import { BodyBoldText } from "../../typography/BodyText";
 
-type TExternalProps = React.ComponentProps<typeof Text>;
+type TExternalProps = React.ComponentProps<typeof BodyBoldText>;
 
 /**
  * An label component that aligns with our design system

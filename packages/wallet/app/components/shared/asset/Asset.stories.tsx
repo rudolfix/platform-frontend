@@ -1,4 +1,4 @@
-import { toEquityTokenSymbol } from "@neufund/shared";
+import { toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react-native";
 import * as React from "react";
 import { EIconType } from "../Icon";

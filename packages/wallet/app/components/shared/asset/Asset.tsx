@@ -5,8 +5,9 @@ import { EquityToken } from "@neufund/shared";
 import { baseWhite, bluish } from "../../../styles/colors";
 import { spacingStyles } from "../../../styles/spacings";
 import { typographyStyles } from "../../../styles/typography";
+import { EIconType } from "../Icon";
 import { Panel } from "../panel/Panel";
-import { TokenIcon } from "../TokenIcon";
+import { TokenIcon, TokenImage } from "./TokenIcon";
 import { BodyBoldText } from "../typography/BodyText";
 import { HelperText } from "../forms/layouts/HelperText";
 
@@ -21,7 +22,7 @@ type TExternalProps = {
   name: string;
   balance: string;
   token: EquityToken;
-  tokenImage: string;
+  tokenImage: string | EIconType;
   analogBalance: string;
   analogToken: EquityToken;
   type: EAssetType;
@@ -45,12 +46,16 @@ const Asset: React.FunctionComponent<TExternalProps> = ({
     )}
 
     <View style={styles.iconAndName}>
-      <TokenIcon
-        style={styles.icon}
-        source={{
-          uri: tokenImage,
-        }}
-      />
+      {tokenImage in EIconType ? (
+        <TokenIcon type={tokenImage as EIconType} />
+      ) : (
+        <TokenImage
+          style={styles.icon}
+          source={{
+            uri: tokenImage,
+          }}
+        />
+      )}
       <BodyBoldText>{name}</BodyBoldText>
     </View>
     <View style={styles.balanceContainer}>

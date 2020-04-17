@@ -9,7 +9,7 @@ import { authModuleAPI } from "../../modules/auth/module";
 import { appConnect } from "../../store/utils";
 import { spacingStyles } from "../../styles/spacings";
 import { EIconType } from "../shared/Icon";
-import { Screen } from "../shared/Screen";
+import { SafeAreaScreen } from "../shared/Screen";
 import { AddressShare } from "./AddressShare";
 import { Avatar } from "./Avatar";
 import { Menu, EMenuItemType } from "../shared/menu/Menu";
@@ -43,7 +43,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps> = ({ authWallet }) => 
   }, []);
 
   return (
-    <Screen>
+    <SafeAreaScreen>
       <View style={styles.menuHeader}>
         <Avatar name={authWallet.name} />
 
@@ -51,7 +51,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps> = ({ authWallet }) => 
       </View>
 
       <Menu items={items} />
-    </Screen>
+    </SafeAreaScreen>
   );
 };
 

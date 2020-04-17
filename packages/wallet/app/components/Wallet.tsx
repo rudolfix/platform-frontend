@@ -1,12 +1,45 @@
+import { toEquityTokenSymbol } from "@neufund/shared";
 import * as React from "react";
-import { SafeAreaView, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
-const Wallet: React.FunctionComponent = () => {
-  return (
-    <SafeAreaView>
-      <Text testID="wallet">Wallet</Text>
-    </SafeAreaView>
-  );
-};
+import { spacingStyles } from "../styles/spacings";
+import { Asset, EAssetType } from "./shared/asset/Asset";
+import { HeaderScreen } from "./shared/HeaderScreen";
+import { EIconType } from "./shared/Icon";
+
+const Wallet: React.FunctionComponent = () => (
+  <HeaderScreen heading={"€0"} subHeading={"Wallet balance"} style={styles.container}>
+    <Asset
+      tokenImage={EIconType.N_EUR}
+      name="nEur"
+      token={toEquityTokenSymbol("nEUR")}
+      balance="0"
+      analogBalance="0"
+      analogToken={toEquityTokenSymbol("EUR")}
+      style={styles.asset}
+      type={EAssetType.NORMAL}
+    />
+
+    <Asset
+      tokenImage={EIconType.ETH}
+      name="Ether"
+      token={toEquityTokenSymbol("ETH")}
+      balance="0"
+      analogBalance="0"
+      analogToken={toEquityTokenSymbol("EUR")}
+      style={styles.asset}
+      type={EAssetType.NORMAL}
+    />
+  </HeaderScreen>
+);
+
+const styles = StyleSheet.create({
+  container: {
+    ...spacingStyles.ph4,
+  },
+  asset: {
+    ...spacingStyles.mb2,
+  },
+});
 
 export { Wallet };

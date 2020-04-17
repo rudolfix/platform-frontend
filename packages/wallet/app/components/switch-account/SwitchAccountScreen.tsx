@@ -10,7 +10,7 @@ import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { Field } from "../shared/forms/fields/Field";
 import { Form } from "../shared/forms/fields/Form";
 import { EFieldType } from "../shared/forms/layouts/FieldLayout";
-import { Screen } from "../shared/Screen";
+import { SafeAreaScreen } from "../shared/Screen";
 import { walletEthModuleApi } from "../../modules/eth/module";
 import fixtures from "../../lib/contracts/fixtures.json";
 
@@ -47,7 +47,7 @@ const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   importExistingAccount,
 }) => {
   return (
-    <Screen contentContainerStyle={styles.content}>
+    <SafeAreaScreen contentContainerStyle={styles.content}>
       <Form<TFormValue>
         validationSchema={validationSchema}
         initialValues={INITIAL_VALUES}
@@ -84,7 +84,7 @@ const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
           );
         }}
       </Form>
-    </Screen>
+    </SafeAreaScreen>
   );
 };
 

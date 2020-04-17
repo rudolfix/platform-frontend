@@ -46,8 +46,8 @@ const Asset: React.FunctionComponent<TExternalProps> = ({
     )}
 
     <View style={styles.iconAndName}>
-      {tokenImage in EIconType ? (
-        <TokenIcon type={tokenImage as EIconType} />
+      {Object.values<string>(EIconType).includes(tokenImage) ? (
+        <TokenIcon style={styles.icon} type={tokenImage as EIconType} />
       ) : (
         <TokenImage
           style={styles.icon}

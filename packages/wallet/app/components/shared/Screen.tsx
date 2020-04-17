@@ -1,16 +1,25 @@
 import { useHeaderHeight } from "@react-navigation/stack";
 import * as React from "react";
-import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  SafeAreaView,
+  Animated,
+  StyleSheet,
+} from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 
 import { baseWhite } from "../../styles/colors";
 
-type TExternalProps = React.ComponentProps<typeof ScrollView>;
-
 /**
  * A core screen component stacking together safe area, keyboard avoiding and scroll views
  */
-const Screen: React.FunctionComponent<TExternalProps> = ({ children, style, ...props }) => {
+const SafeAreaScreen: React.FunctionComponent<React.ComponentProps<typeof ScrollView>> = ({
+  children,
+  style,
+  ...props
+}) => {
   const headerHeight = useHeaderHeight();
   const insets = useSafeArea();
 
@@ -30,6 +39,35 @@ const Screen: React.FunctionComponent<TExternalProps> = ({ children, style, ...p
   );
 };
 
+/**
+ * A core screen component stacking together keyboard avoiding and scroll views
+ */
+const Screen: React.FunctionComponent<React.ComponentProps<typeof Animated.ScrollView>> = ({
+  children,
+  style,
+  ...props
+}) => {
+  const headerHeight = useHeaderHeight();
+  const insets = useSafeArea();
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "position" : undefined}
+      contentContainerStyle={styles.flex}
+      keyboardVerticalOffset={headerHeight + insets.top}
+      style={styles.screen}
+    >
+      <Animated.ScrollView
+        style={[styles.flex, style]}
+        keyboardShouldPersistTaps="handled"
+        {...props}
+      >
+        {children}
+      </Animated.ScrollView>
+    </KeyboardAvoidingView>
+  );
+};
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -40,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Screen };
+export { SafeAreaScreen, Screen };

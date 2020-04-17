@@ -1,4 +1,4 @@
-import { toEquityTokenSymbol } from "@neufund/shared";
+import { toEquityTokenSymbol } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet } from "react-native";
 

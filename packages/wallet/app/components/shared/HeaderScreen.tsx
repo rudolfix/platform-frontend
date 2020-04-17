@@ -1,8 +1,8 @@
 import React from "react";
 import { Animated, SafeAreaView, StyleSheet, View } from "react-native";
-import { baseWhite, silverLighter2 } from "../../styles/colors";
-import { spacing4, spacing8, spacingStyles } from "../../styles/spacings";
 
+import { baseWhite, silverLighter2 } from "../../styles/colors";
+import { spacing4, spacing8 } from "../../styles/spacings";
 import { NeuLinearGradient } from "./NeuLinearGradient";
 import { Screen } from "./Screen";
 import { BodyText } from "./typography/BodyText";

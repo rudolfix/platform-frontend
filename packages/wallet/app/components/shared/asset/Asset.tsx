@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { EquityToken } from "@neufund/shared";
+import { EquityToken } from "@neufund/shared-utils";
 
 import { baseWhite, bluish } from "../../../styles/colors";
 import { spacingStyles } from "../../../styles/spacings";

@@ -1,5 +1,5 @@
 import { expectSaga } from "@neufund/sagas/tests";
-import { noopLogger } from "@neufund/shared-modules";
+import { EWalletSubType, EWalletType, noopLogger } from "@neufund/shared-modules";
 import { createMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 
@@ -15,7 +15,7 @@ import { BrowserWalletConnector } from "../../../lib/web3/browser-wallet/Browser
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
-import { EWalletSubType, EWalletType, IBrowserWalletMetadata } from "../../web3/types";
+import { IBrowserWalletMetadata } from "../../web3/types";
 import { tryConnectingWithBrowserWallet } from "./sagas";
 
 // tslint:disable: no-object-literal-type-assertion

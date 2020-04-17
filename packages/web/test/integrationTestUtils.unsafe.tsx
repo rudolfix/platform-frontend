@@ -19,7 +19,7 @@ import {
   TGlobalDependencies,
 } from "../app/di/setupBindings";
 import { symbols } from "../app/di/symbols";
-import { UsersApi } from "../app/lib/api/users/UsersApi";
+import { UserTxApi } from "../app/lib/api/user-tx/UserTxApi";
 import { BroadcastChannelMock } from "../app/lib/dependencies/broadcast-channel/BroadcastChannel.mock";
 import { IntlWrapper } from "../app/lib/intl/IntlWrapper";
 import { Storage } from "../app/lib/persistence/Storage";
@@ -41,7 +41,7 @@ interface ICreateIntegrationTestsSetupOptions {
   browserWalletConnectorMock?: BrowserWalletConnector;
   ledgerWalletConnectorMock?: LedgerWalletConnector;
   storageMock?: Storage;
-  usersApiMock?: UsersApi;
+  usersApiMock?: UserTxApi;
   initialRoute?: string;
   contractsMock?: ContractsService;
 }
@@ -78,7 +78,7 @@ export function createIntegrationTestsSetup(
   const ledgerWalletMock =
     options.ledgerWalletConnectorMock || createMock(LedgerWalletConnector, {});
   const storageMock = options.storageMock || createMockStorage();
-  const usersApiMock = options.usersApiMock || createMock(UsersApi, {});
+  const usersApiMock = options.usersApiMock || createMock(UserTxApi, {});
   const contractsMock = options.contractsMock || createMock(ContractsService, {});
 
   const container = new Container();
@@ -110,7 +110,7 @@ export function createIntegrationTestsSetup(
     .inSingletonScope();
   container.bind(symbols.logger).toConstantValue(noopLogger);
   container.rebind(symbols.storage).toConstantValue(storageMock);
-  container.rebind(symbols.usersApi).toConstantValue(usersApiMock);
+  container.rebind(symbols.usersTxApi).toConstantValue(usersApiMock);
   container.rebind(symbols.contractsService).toConstantValue(contractsMock);
 
   const context: { container: Container; deps?: TGlobalDependencies } = {

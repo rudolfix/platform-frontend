@@ -1,4 +1,5 @@
 import { call, cancel, delay, END, eventChannel, fork, put, take, Task } from "@neufund/sagas";
+import { EWalletType } from "@neufund/shared-modules";
 
 import {
   LIGHT_WALLET_PASSWORD_CACHE_TIME,
@@ -9,7 +10,7 @@ import { LightWallet } from "../../lib/web3/light-wallet/LightWallet";
 import { EWeb3ManagerEvents } from "../../lib/web3/Web3Manager/Web3Manager";
 import { actions, TAction } from "../actions";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { EWalletType, TWalletMetadata } from "./types";
+import { TWalletMetadata } from "./types";
 
 let lockWalletTask: Task | undefined;
 

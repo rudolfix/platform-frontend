@@ -1,4 +1,5 @@
 import { all, delay, fork, put, race, select, take } from "@neufund/sagas";
+import { EUserType } from "@neufund/shared-modules";
 import {
   convertFromUlps,
   Dictionary,
@@ -33,7 +34,6 @@ import {
   immutableDocumentName,
 } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { canShowDocument } from "../../lib/api/eto/EtoFileUtils";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { EtherToken } from "../../lib/contracts/EtherToken";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
@@ -476,7 +476,7 @@ function* downloadDocument(
     "Non visible documents can't be downloaded",
   );
 
-  const userId: ReturnType<typeof selectUserId> = yield select(selectUserId);
+  const userId: ReturnType<typeof selectUserId> = yield* select(selectUserId);
 
   const etoConfidentialAgreements = getDocumentsRequiredConfidentialityAgreements(eto.previewCode);
 

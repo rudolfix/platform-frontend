@@ -1,8 +1,8 @@
 import { expectSaga } from "@neufund/sagas/tests";
+import { EUserType } from "@neufund/shared-modules";
 
 import { testEto } from "../../../../test/fixtures";
 import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { EUserType } from "../../../lib/api/users/interfaces";
 import { EProcessState } from "../../../utils/enums/processStates";
 import { actions } from "../../actions";
 import { performLoadEtoSideEffects } from "./sagas";
@@ -11,6 +11,7 @@ describe("performLoadEtoSideEffects", () => {
   it("should not load investor ticket for not logged user", () =>
     expectSaga(performLoadEtoSideEffects, testEto)
       .withState({
+        user: {},
         auth: {},
         etoView: {
           processState: EProcessState.SUCCESS,
@@ -23,8 +24,8 @@ describe("performLoadEtoSideEffects", () => {
   it("should load investor ticket for Investor user", () =>
     expectSaga(performLoadEtoSideEffects, testEto)
       .withState({
-        auth: {
-          user: {
+        user: {
+          data: {
             type: EUserType.INVESTOR,
           },
         },
@@ -39,8 +40,8 @@ describe("performLoadEtoSideEffects", () => {
   it("should not load investor ticket for Issuer user", () =>
     expectSaga(performLoadEtoSideEffects, testEto)
       .withState({
-        auth: {
-          user: {
+        user: {
+          data: {
             type: EUserType.ISSUER,
           },
         },
@@ -55,8 +56,8 @@ describe("performLoadEtoSideEffects", () => {
   it("should not load investor ticket for Nominee user", () =>
     expectSaga(performLoadEtoSideEffects, testEto)
       .withState({
-        auth: {
-          user: {
+        user: {
+          data: {
             type: EUserType.NOMINEE,
           },
         },
@@ -71,8 +72,8 @@ describe("performLoadEtoSideEffects", () => {
   it("should not load investor ticket for ETO not on chain", () =>
     expectSaga(performLoadEtoSideEffects, testEto)
       .withState({
-        auth: {
-          user: {
+        user: {
+          data: {
             type: EUserType.NOMINEE,
           },
         },

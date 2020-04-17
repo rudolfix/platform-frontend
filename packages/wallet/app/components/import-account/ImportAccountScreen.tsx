@@ -15,7 +15,7 @@ import { Form } from "../shared/forms/fields/Form";
 import { EFieldType } from "../shared/forms/layouts/FieldLayout";
 import { Field } from "../shared/forms/fields/Field";
 import { TextAreaInput } from "../shared/forms/layouts/TextAreaInput";
-import { Screen } from "../shared/Screen";
+import { SafeAreaScreen } from "../shared/Screen";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 
@@ -58,7 +58,7 @@ const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   }, []);
 
   return (
-    <Screen contentContainerStyle={styles.content}>
+    <SafeAreaScreen contentContainerStyle={styles.content}>
       <Headline level={EHeadlineLevel.LEVEL2}>Connect an account</Headline>
 
       <BodyText style={styles.paragraph}>
@@ -92,7 +92,7 @@ const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
           </>
         )}
       </Form>
-    </Screen>
+    </SafeAreaScreen>
   );
 };
 

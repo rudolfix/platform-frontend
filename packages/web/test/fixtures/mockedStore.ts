@@ -1,5 +1,5 @@
-import { DeepPartial } from "@neufund/shared";
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { DeepPartial } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TAppGlobalState } from "../../app/store";

@@ -1,4 +1,4 @@
-import { DeepPartial } from "@neufund/shared";
+import { DeepPartial } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 

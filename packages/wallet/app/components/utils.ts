@@ -1,4 +1,4 @@
-import { SingleOrArray } from "@neufund/shared";
+import { SingleOrArray } from "@neufund/shared-utils";
 import flatMap from "lodash/flatMap";
 import isObjectLike from "lodash/isObjectLike";
 import { StyleProp } from "react-native";

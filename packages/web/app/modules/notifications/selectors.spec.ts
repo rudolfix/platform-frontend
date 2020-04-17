@@ -1,5 +1,5 @@
-import { DeepPartial } from "@neufund/shared";
 import { EUserType } from "@neufund/shared-modules";
+import { DeepPartial } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { appRoutes } from "../../components/appRoutes";

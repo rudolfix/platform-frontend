@@ -1,4 +1,4 @@
-import { DeepPartial } from "@neufund/shared";
+import { DeepPartial } from "@neufund/shared-utils";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { storiesOf } from "@storybook/react-native";
 import * as React from "react";

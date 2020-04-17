@@ -1,12 +1,12 @@
 import { toEquityTokenSymbol } from "@neufund/shared";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { spacingStyles } from "../styles/spacings";
 
-import { Asset, EAssetType } from "./shared/asset/Asset";
-import { HeaderScreen } from "./shared/HeaderScreen";
+import { spacingStyles } from "../../styles/spacings";
+import { Asset, EAssetType } from "../shared/asset/Asset";
+import { HeaderScreen } from "../shared/HeaderScreen";
 
-const Portfolio: React.FunctionComponent = () => (
+const PortfolioScreen: React.FunctionComponent = () => (
   <HeaderScreen heading={"€6 500.00"} subHeading={"Portfolio balance"} style={styles.container}>
     <Asset
       tokenImage="https://documents.neufund.io/0x74180B56DD74BC56a2E9D5720F39247c55F23328/e36ee175-e8c6-4f8a-9175-1e22b0a8be53.png"
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Portfolio };
+export { PortfolioScreen };

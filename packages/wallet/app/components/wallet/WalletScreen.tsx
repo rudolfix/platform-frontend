@@ -2,12 +2,12 @@ import { toEquityTokenSymbol } from "@neufund/shared";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { spacingStyles } from "../styles/spacings";
-import { Asset, EAssetType } from "./shared/asset/Asset";
-import { HeaderScreen } from "./shared/HeaderScreen";
-import { EIconType } from "./shared/Icon";
+import { spacingStyles } from "../../styles/spacings";
+import { Asset, EAssetType } from "../shared/asset/Asset";
+import { HeaderScreen } from "../shared/HeaderScreen";
+import { EIconType } from "../shared/Icon";
 
-const Wallet: React.FunctionComponent = () => (
+const WalletScreen: React.FunctionComponent = () => (
   <HeaderScreen heading={"€0"} subHeading={"Wallet balance"} style={styles.container}>
     <Asset
       tokenImage={EIconType.N_EUR}
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Wallet };
+export { WalletScreen };

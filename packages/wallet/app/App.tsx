@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 

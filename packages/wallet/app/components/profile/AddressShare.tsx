@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View, Share } from "react-native";
 

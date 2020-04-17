@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import { useField } from "formik";
 import React, { Ref } from "react";
 import { StyleProp, ViewStyle } from "react-native";

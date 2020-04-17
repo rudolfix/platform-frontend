@@ -70,6 +70,12 @@ const typographyStyles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.3,
   },
+  menuLabelBold: {
+    ...fonts.robotoMedium,
+    fontSize: 10,
+    lineHeight: 16,
+    letterSpacing: 0.2,
+  },
 });
 
 export { typographyStyles };

@@ -59,6 +59,9 @@ export const spacingStyles = StyleSheet.create({
   mr4: {
     marginRight: spacing4,
   },
+  p1: {
+    padding: spacing1,
+  },
   p3: {
     padding: spacing3,
   },

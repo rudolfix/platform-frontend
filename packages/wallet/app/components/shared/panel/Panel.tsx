@@ -18,7 +18,7 @@ const PanelTouchable: React.FunctionComponent<React.ComponentProps<typeof Toucha
     style={[styles.wrapper, style]}
     {...props}
   >
-    {children}
+    <View style={styles.innerWrapper}>{children}</View>
   </TouchableOpacity>
 );
 
@@ -28,19 +28,24 @@ const Panel: React.FunctionComponent<React.ComponentProps<typeof View>> = ({
   ...props
 }) => (
   <View style={[styles.wrapper, style]} {...props}>
-    {children}
+    <View style={styles.innerWrapper}>{children}</View>
   </View>
 );
 
 const styles = StyleSheet.create({
   wrapper: {
     ...shadowStyles.s2,
-    ...spacingStyles.p4,
+
     borderRadius: roundness,
+    backgroundColor: baseWhite,
+  },
+  innerWrapper: {
+    ...spacingStyles.p4,
+
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    backgroundColor: baseWhite,
+    overflow: "hidden",
   },
 });
 

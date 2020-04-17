@@ -61,6 +61,8 @@ const Portfolio: React.FunctionComponent = () => {
       </NeuLinearGradient>
 
       <Animated.ScrollView
+        bounces={false}
+        overScrollMode="never"
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event([
@@ -68,10 +70,12 @@ const Portfolio: React.FunctionComponent = () => {
             nativeEvent: { contentOffset: { y: valueRef.current } },
           },
         ])}
-        style={[
+        style={{
+          marginTop: containerMargin,
+        }}
+        contentContainerStyle={[
           styles.container,
           {
-            marginTop: containerMargin,
             paddingTop: EXTRA_PADDING_FOR_OVERFLOW,
           },
         ]}

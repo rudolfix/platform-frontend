@@ -17,6 +17,9 @@ export const createMessage = (messageType: TranslatedMessageType, messageData?: 
   messageData,
 });
 
+/**
+ * Used to create message part of the payload for notification module actions
+ */
 export const createNotificationMessage = (
   messageType: TranslatedMessageType,
   messageData?: any,

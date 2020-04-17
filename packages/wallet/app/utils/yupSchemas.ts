@@ -1,6 +1,6 @@
 // TODO: When web migrates to the newest formik move `yupSchemas` to the shared
 
-import { Primitive, Tuple } from "@neufund/shared";
+import { Primitive, Tuple } from "@neufund/shared-utils";
 import { TestOptionsMessage } from "yup";
 import * as yup from "yup";
 import isArray from "lodash/fp/isArray";

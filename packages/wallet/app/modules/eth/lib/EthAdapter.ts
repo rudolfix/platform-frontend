@@ -1,4 +1,4 @@
-import { EthereumAddress, EthereumName, toEthereumAddress } from "@neufund/shared";
+import { EthereumAddress, EthereumName, toEthereumAddress } from "@neufund/shared-utils";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { providers, utils } from "ethers";
 import { interfaces } from "inversify";

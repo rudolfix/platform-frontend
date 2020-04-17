@@ -1,4 +1,4 @@
-import { convertFromUlps, EquityToken, invariant } from "@neufund/shared";
+import { convertFromUlps, EquityToken, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { DEFAULT_DECIMAL_PLACES } from "../../../config/constants";

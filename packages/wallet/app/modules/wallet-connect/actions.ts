@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 import { TWalletConnectPeer } from "./types";
 
 export const walletConnectActions = {

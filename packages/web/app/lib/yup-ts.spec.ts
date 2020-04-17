@@ -1,5 +1,5 @@
-import { DeepReadonly } from "@neufund/shared";
-import { AssertEqual } from "@neufund/shared/tests";
+import { DeepReadonly } from "@neufund/shared-utils";
+import { AssertEqual } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { NumberSchema } from "yup";
 

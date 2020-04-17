@@ -1,4 +1,4 @@
-import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared";
+import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared-utils";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
 

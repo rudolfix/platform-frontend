@@ -4,7 +4,7 @@ import {
   compareBigNumbers,
   multiplyBigNumbers,
   subtractBigNumbers,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { cloneDeep } from "lodash";
 
 import { UserHasNoFundsError } from "../../../../lib/web3/Web3Adapter";

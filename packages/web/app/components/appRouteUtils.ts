@@ -1,4 +1,4 @@
-import { withParams } from "@neufund/shared";
+import { withParams } from "@neufund/shared-utils";
 
 import { externalRoutes } from "../config/externalRoutes";
 import { appRoutes } from "./appRoutes";

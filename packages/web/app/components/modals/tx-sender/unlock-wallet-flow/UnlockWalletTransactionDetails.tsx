@@ -3,7 +3,7 @@ import {
   multiplyBigNumbers,
   PLATFORM_UNLOCK_FEE,
   PLATFORM_ZERO_FEE,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

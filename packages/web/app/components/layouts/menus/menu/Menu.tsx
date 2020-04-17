@@ -1,5 +1,5 @@
-import { assertNever } from "@neufund/shared";
 import { EUserType } from "@neufund/shared-modules";
+import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 

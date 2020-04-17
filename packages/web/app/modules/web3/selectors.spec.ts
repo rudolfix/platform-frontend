@@ -1,5 +1,5 @@
-import { nonNullable } from "@neufund/shared";
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { nonNullable } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";

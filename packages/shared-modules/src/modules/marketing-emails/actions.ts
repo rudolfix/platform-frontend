@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 export const actions = {
   unsubscribe: createActionFactory("MARKETING_EMAILS_UNSUBSCRIBE"),

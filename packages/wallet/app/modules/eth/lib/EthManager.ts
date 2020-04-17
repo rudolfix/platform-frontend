@@ -3,7 +3,7 @@ import {
   EthereumPrivateKey,
   EthereumHDMnemonic,
   EthereumAddressWithChecksum,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import {
   coreModuleApi,
   ILogger,

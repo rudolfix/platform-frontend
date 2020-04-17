@@ -1,4 +1,4 @@
-import { XOR } from "@neufund/shared";
+import { XOR } from "@neufund/shared-utils";
 import * as React from "react";
 import { GestureResponderEvent, Linking, StyleSheet, Text, TouchableHighlight } from "react-native";
 

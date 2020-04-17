@@ -1,5 +1,5 @@
-import { assertNever, nonNullable } from "@neufund/shared";
 import { EUserType } from "@neufund/shared-modules";
+import { assertNever, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 

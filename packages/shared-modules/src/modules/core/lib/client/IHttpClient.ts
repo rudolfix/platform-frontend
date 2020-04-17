@@ -1,4 +1,4 @@
-import { Dictionary, Primitive } from "@neufund/shared";
+import { Dictionary, Primitive } from "@neufund/shared-utils";
 import * as Yup from "yup";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";

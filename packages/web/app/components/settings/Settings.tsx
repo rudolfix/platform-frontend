@@ -1,5 +1,5 @@
-import { withContainer } from "@neufund/shared";
 import { EUserType } from "@neufund/shared-modules";
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";

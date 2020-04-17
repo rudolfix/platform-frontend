@@ -7,7 +7,7 @@ import {
   Tuple,
   UnionToIntersection,
   Values,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { ContainerModule } from "inversify";
 import { ActionCreatorsMapObject } from "redux";
 

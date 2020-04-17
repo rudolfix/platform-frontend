@@ -1,4 +1,4 @@
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView, Text, View } from "react-native";

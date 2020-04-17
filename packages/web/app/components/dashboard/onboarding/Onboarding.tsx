@@ -1,4 +1,4 @@
-import { DataUnavailableError, nonNullable, withContainer } from "@neufund/shared";
+import { DataUnavailableError, nonNullable, withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, withProps } from "recompose";

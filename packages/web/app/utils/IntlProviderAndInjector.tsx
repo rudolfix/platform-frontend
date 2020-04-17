@@ -1,4 +1,4 @@
-import { ContainerContext, IIntlProps, injectIntlHelpers } from "@neufund/shared";
+import { ContainerContext, IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import { Container } from "inversify";
 import * as React from "react";
 import { IntlProvider } from "react-intl";

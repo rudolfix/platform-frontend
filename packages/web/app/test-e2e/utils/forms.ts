@@ -1,4 +1,4 @@
-import { Dictionary } from "@neufund/shared";
+import { Dictionary } from "@neufund/shared-utils";
 import { findKey, forEach } from "lodash";
 
 import { confirmAccessModal, formFieldValue } from "./index";

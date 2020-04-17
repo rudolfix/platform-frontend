@@ -1,4 +1,4 @@
-import { compareBigNumbers, convertToUlps } from "@neufund/shared";
+import { compareBigNumbers, convertToUlps } from "@neufund/shared-utils";
 
 import { IWindowWithData } from "../../../test/helperTypes";
 import { ECurrency } from "../shared/formatters/utils";

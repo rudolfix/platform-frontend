@@ -4,7 +4,7 @@ import {
   isJwtExpiringLateEnough,
   toEthereumPrivateKey,
   toEthereumHDMnemonic,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 
 import { walletEthModuleApi } from "../eth/module";
 import { notificationUIModuleApi } from "../notification-ui/module";

@@ -1,5 +1,5 @@
 import { Button } from "@neufund/design-system";
-import { IIntlProps, injectIntlHelpers } from "@neufund/shared";
+import { IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";

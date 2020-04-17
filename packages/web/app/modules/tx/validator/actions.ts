@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { IDraftType } from "../types";
 import { EValidationState } from "../validator/reducer";

@@ -1,5 +1,5 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { DataUnavailableError } from "@neufund/shared";
+import { DataUnavailableError } from "@neufund/shared-utils";
 import { match } from "react-router";
 
 import { EtoMessage } from "../../../components/translatedMessages/messages";

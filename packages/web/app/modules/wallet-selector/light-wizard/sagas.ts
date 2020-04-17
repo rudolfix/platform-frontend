@@ -1,5 +1,4 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
 import {
   authModuleAPI,
   EJwtPermissions,
@@ -8,6 +7,7 @@ import {
   IUserInput,
   neuGetBindings,
 } from "@neufund/shared-modules";
+import { invariant } from "@neufund/shared-utils";
 import { includes } from "lodash";
 
 import {

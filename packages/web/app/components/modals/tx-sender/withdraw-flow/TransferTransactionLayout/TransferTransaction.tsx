@@ -1,4 +1,4 @@
-import { RequiredByKeys } from "@neufund/shared";
+import { RequiredByKeys } from "@neufund/shared-utils";
 import { branch, compose } from "recompose";
 
 import { actions } from "../../../../../modules/actions";

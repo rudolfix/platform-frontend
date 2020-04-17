@@ -1,5 +1,5 @@
-import { XOR } from "@neufund/shared";
 import { EUserType } from "@neufund/shared-modules";
+import { XOR } from "@neufund/shared-utils";
 
 import {
   EEtoState,

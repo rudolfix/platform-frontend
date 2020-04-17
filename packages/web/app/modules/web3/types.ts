@@ -1,5 +1,5 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 export type TWalletMetadata = ILightWalletMetadata | IBrowserWalletMetadata | ILedgerWalletMetadata;
 

@@ -1,4 +1,4 @@
-import { withParams } from "@neufund/shared";
+import { withParams } from "@neufund/shared-utils";
 
 import { appRoutes } from "../../../../../components/appRoutes";
 import { etherscanAddressLink } from "../../../../../components/appRouteUtils";

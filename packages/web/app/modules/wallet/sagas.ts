@@ -1,6 +1,6 @@
 import { delay, fork, put, select, take } from "@neufund/sagas";
-import { EthereumAddress } from "@neufund/shared";
 import { authModuleAPI, contractsModuleApi } from "@neufund/shared-modules";
+import { EthereumAddress } from "@neufund/shared-utils";
 import * as promiseAll from "promise-all";
 
 import { TGlobalDependencies } from "../../di/setupBindings";

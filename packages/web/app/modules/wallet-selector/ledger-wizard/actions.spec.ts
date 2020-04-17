@@ -1,7 +1,7 @@
 import { expectSaga } from "@neufund/sagas/tests";
-import { Dictionary } from "@neufund/shared";
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
-import { createMock } from "@neufund/shared/tests";
+import { Dictionary } from "@neufund/shared-utils";
+import { createMock } from "@neufund/shared-utils/tests";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";

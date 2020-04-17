@@ -1,6 +1,6 @@
 import { Button } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared";
 import { EWalletType } from "@neufund/shared-modules";
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";

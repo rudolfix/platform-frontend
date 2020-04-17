@@ -10,7 +10,7 @@ import {
   MIN_VOTING_FINALIZATION_DURATION,
   MIN_VOTING_MAJORITY_FRACTION,
   MIN_VOTING_QUORUM,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import * as React from "react";
 import { compose, setDisplayName } from "recompose";
 import * as Yup from "yup";

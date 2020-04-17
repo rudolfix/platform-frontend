@@ -1,4 +1,5 @@
 import { all, fork, put, select } from "@neufund/sagas";
+import { contractsModuleApi, IUser } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   convertFromUlps,
@@ -7,8 +8,7 @@ import {
   EthereumAddress,
   nonNullable,
   Q18,
-} from "@neufund/shared";
-import { contractsModuleApi, IUser } from "@neufund/shared-modules";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 

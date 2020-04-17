@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 import { Text } from "react-native";
 import { typographyStyles } from "../../../styles/typography";

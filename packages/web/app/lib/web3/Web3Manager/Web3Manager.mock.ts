@@ -1,4 +1,4 @@
-import { EthereumNetworkId } from "@neufund/shared";
+import { EthereumNetworkId } from "@neufund/shared-utils";
 import { injectable } from "inversify";
 
 import { Web3Adapter } from "../Web3Adapter";

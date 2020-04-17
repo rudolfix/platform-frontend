@@ -1,5 +1,5 @@
-import { promisify, toCamelCase } from "@neufund/shared";
 import { IUser } from "@neufund/shared-modules";
+import { promisify, toCamelCase } from "@neufund/shared-utils";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";

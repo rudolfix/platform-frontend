@@ -7,7 +7,7 @@ import {
   IHttpRequestCommon,
   IHttpResponse,
   ISingleKeyStorage,
-} from "../../core/module";
+} from "../../../core/module";
 
 /**
  * Wraps the general http api with authorization header injection

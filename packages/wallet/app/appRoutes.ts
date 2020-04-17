@@ -5,6 +5,8 @@ import { EIconType } from "./components/shared/Icon";
 import { Wallet } from "./components/Wallet";
 
 const appRoutes = {
+  landing: "Landing",
+  importWallet: "ImportWallet",
   home: "Home",
   portfolio: "Portfolio",
   wallet: "Wallet",

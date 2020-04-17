@@ -1,1 +1,1 @@
-declare module "proper-url-join/lib";
+declare module "proper-url-join";

@@ -1,4 +1,4 @@
-import { fork, neuTakeEvery, put, select } from "@neufund/sagas";
+import { call, fork, neuTakeEvery, put, SagaGenerator, select } from "@neufund/sagas";
 
 import { TModuleSymbols } from "../../types";
 import { neuGetBindings } from "../../utils";
@@ -9,7 +9,7 @@ import { selectUnsubscriptionLinkFromQueryString } from "./selectors";
 
 type TDependencies = TModuleSymbols<typeof coreModuleApi>;
 
-function* unsubscribeEmail({ logger }: TDependencies): Generator<any, void, any> {
+function* unsubscribeEmail({ logger }: TDependencies): SagaGenerator<void> {
   const { marketingEmailsApi } = yield* neuGetBindings({
     marketingEmailsApi: symbols.marketingEmailsApi,
   });
@@ -22,7 +22,7 @@ function* unsubscribeEmail({ logger }: TDependencies): Generator<any, void, any>
   }
 
   try {
-    yield marketingEmailsApi.unsubscribeMarketingEmails(unsubscribeLink);
+    yield* call(() => marketingEmailsApi.unsubscribeMarketingEmails(unsubscribeLink));
 
     yield put(actions.unsubscribeSuccess());
   } catch (e) {
@@ -31,8 +31,8 @@ function* unsubscribeEmail({ logger }: TDependencies): Generator<any, void, any>
   }
 }
 
-export function setupMarketingEmailsSagas(): () => Generator<any, any, any> {
-  return function*(): Generator<any, void, any> {
+export function setupMarketingEmailsSagas(): () => SagaGenerator<void> {
+  return function*(): SagaGenerator<void> {
     yield fork(neuTakeEvery, actions.unsubscribe, unsubscribeEmail);
   };
 }

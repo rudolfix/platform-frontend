@@ -1,3 +1,4 @@
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { expect } from "chai";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
@@ -10,7 +11,6 @@ import {
   web3InitialState,
   web3Reducer,
 } from "./reducer";
-import { EWalletSubType, EWalletType } from "./types";
 
 describe("Web3 > reducer", () => {
   it("should act on NEW_PERSONAL_WALLET_PLUGGED action", () => {

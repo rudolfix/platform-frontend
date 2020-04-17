@@ -1,10 +1,12 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared-modules";
+import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
 
 import { ProfileMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import {
+  createMessage,
+  createNotificationMessage,
+} from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EmailAlreadyExists } from "../../lib/api/users/UsersApi";
 import { TAppGlobalState } from "../../store";
 import { accessWalletAndRunEffect } from "../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../actions";
@@ -69,16 +71,16 @@ function* resendEmailEffect({ logger }: TGlobalDependencies): any {
 export function* addNewEmail(
   { logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.profile.addNewEmail>,
-): Generator<any, any, any> {
+): Generator<unknown, void> {
   const email = action.payload.email;
 
-  const isEmailAvailable = yield select((s: TAppGlobalState) => selectDoesEmailExist(s.auth));
+  const isEmailAvailable = yield* select(selectDoesEmailExist);
   const emailModalTitle = isEmailAvailable
     ? createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE)
     : createMessage(ProfileMessage.PROFILE_ADD_EMAIL_TITLE);
 
-  const actualVerifiedEmail = yield select((s: TAppGlobalState) => selectVerifiedUserEmail(s.auth));
-  const actualUnverifiedEmail = yield select((s: TAppGlobalState) => selectUnverifiedUserEmail(s));
+  const actualVerifiedEmail = yield* select(selectVerifiedUserEmail);
+  const actualUnverifiedEmail = yield* select(selectUnverifiedUserEmail);
 
   if (email === actualVerifiedEmail) {
     yield put(
@@ -115,10 +117,10 @@ export function* addNewEmail(
       createMessage(ProfileMessage.PROFILE_ADD_EMAIL_INPUT_LABEL),
     );
   } catch (e) {
-    if (e instanceof EmailAlreadyExists) {
+    if (e instanceof authModuleAPI.error.EmailAlreadyExists) {
       yield put(
-        webNotificationUIModuleApi.actions.showError(
-          createMessage(ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS),
+        webNotificationUIModuleApi.actions.showInfo(
+          createNotificationMessage(ProfileMessage.PROFILE_EMAIL_ALREADY_EXISTS),
           {
             "data-test-id": "profile-email-exists",
           },

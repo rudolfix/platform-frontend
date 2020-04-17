@@ -1,4 +1,10 @@
 import { call, fork, put, select } from "@neufund/sagas";
+import {
+  authModuleAPI,
+  EWalletType,
+  IVerifyEmailUser,
+  neuGetBindings,
+} from "@neufund/shared-modules";
 import { includes } from "lodash/fp";
 
 import {
@@ -6,11 +12,9 @@ import {
   UnverifiedEmailReminderModal,
 } from "../../../components/modals/unverified-email-reminder/UnverifiedEmailReminderModal";
 import { AuthMessage } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IVerifyEmailUser } from "../../../lib/api/users/interfaces";
-import { EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
 import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
@@ -23,7 +27,6 @@ import {
   selectEmailFromQueryString,
   selectWalletType,
 } from "../../web3/selectors";
-import { EWalletType } from "../../web3/types";
 import {
   selectIsAgreementAccepted,
   selectUnverifiedUserEmail,
@@ -40,7 +43,7 @@ import { loadUser } from "../user/external/sagas";
 export function* verifyUserEmail({ walletStorage }: TGlobalDependencies): Generator<any, any, any> {
   const userCode = yield* select(selectActivationCodeFromQueryString);
   const urlEmail = yield* select(selectEmailFromQueryString);
-  const userEmail = yield* select((s: TAppGlobalState) => selectUserEmail(s.auth));
+  const userEmail = yield* select(selectUserEmail);
 
   if (userCode === undefined || urlEmail === undefined) {
     yield put(actions.auth.logout());
@@ -69,7 +72,7 @@ export function* verifyUserEmail({ walletStorage }: TGlobalDependencies): Genera
     return;
   }
 
-  const verifiedEmail = yield* select((s: TAppGlobalState) => selectVerifiedUserEmail(s.auth));
+  const verifiedEmail = yield* select(selectVerifiedUserEmail);
 
   yield neuCall(verifyUserEmailPromise, userCode, urlEmail, verifiedEmail);
   yield neuCall(loadUser);
@@ -92,47 +95,56 @@ export function* verifyUserEmail({ walletStorage }: TGlobalDependencies): Genera
 }
 
 export function* verifyUserEmailPromise(
-  { apiUserService }: TGlobalDependencies,
+  _: TGlobalDependencies,
   userCode: IVerifyEmailUser,
   urlEmail: string,
   verifiedEmail: string | undefined,
-): Generator<any, void, void> {
+): Generator<unknown, void> {
+  const { apiUserService } = yield* neuGetBindings({
+    apiUserService: authModuleAPI.symbols.apiUserService,
+  });
+
   if (urlEmail === verifiedEmail) {
     yield put(
       webNotificationUIModuleApi.actions.showInfo(
-        createMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED),
+        createNotificationMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED),
       ),
     );
     return;
   }
   if (!userCode) return;
   try {
-    yield call(apiUserService.verifyUserEmail, userCode);
+    yield apiUserService.verifyUserEmail(userCode);
     yield put(
-      webNotificationUIModuleApi.actions.showInfo(createMessage(AuthMessage.AUTH_EMAIL_VERIFIED)),
+      webNotificationUIModuleApi.actions.showInfo(
+        createNotificationMessage(AuthMessage.AUTH_EMAIL_VERIFIED),
+      ),
     );
   } catch (e) {
-    if (e instanceof EmailAlreadyExists) {
+    if (e instanceof authModuleAPI.error.EmailAlreadyExists) {
       yield put(
         webNotificationUIModuleApi.actions.showError(
-          createMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS),
+          createNotificationMessage(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS),
         ),
       );
     } else {
       yield put(
         webNotificationUIModuleApi.actions.showError(
-          createMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED),
+          createNotificationMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED),
         ),
       );
     }
   }
 }
 
-export async function checkEmailPromise(
-  { apiUserService }: TGlobalDependencies,
+export function* checkEmailPromise(
+  _: TGlobalDependencies,
   email: string,
-): Promise<boolean> {
-  const emailStatus = await apiUserService.emailStatus(email);
+): Generator<unknown, boolean> {
+  const { apiUserService } = yield* neuGetBindings({
+    apiUserService: authModuleAPI.symbols.apiUserService,
+  });
+  const emailStatus = yield* call(() => apiUserService.emailStatus(email));
   return emailStatus.isAvailable;
 }
 

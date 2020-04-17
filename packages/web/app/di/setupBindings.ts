@@ -16,7 +16,7 @@ import {
 import { GasApi } from "../lib/api/gas/GasApi";
 import { ImmutableStorageApi } from "../lib/api/immutable-storage/ImmutableStorageApi";
 import { KycApi } from "../lib/api/kyc/KycApi";
-import { UsersApi } from "../lib/api/users/UsersApi";
+import { UserTxApi } from "../lib/api/user-tx/UserTxApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
 import {
   BroadcastChannel,
@@ -76,8 +76,8 @@ export function setupBindings(config: IConfig): ContainerModule {
       .to(AnalyticsApi)
       .inSingletonScope();
 
-    bind<UsersApi>(symbols.usersApi)
-      .to(UsersApi)
+    bind<UserTxApi>(symbols.usersTxApi)
+      .to(UserTxApi)
       .inSingletonScope();
 
     bind<NotificationCenter>(symbols.notificationCenter)
@@ -242,7 +242,7 @@ export const createGlobalDependencies = (container: Container) => ({
   apiEtoProductService: container.get<EtoProductApi>(symbols.apiEtoProductService),
   apiEtoFileService: container.get<EtoFileApi>(symbols.apiEtoFileService),
   apiEtoNomineeService: container.get<EtoNomineeApi>(symbols.apiEtoNomineeService),
-  apiUserService: container.get<UsersApi>(symbols.usersApi),
+  apiUserTxService: container.get<UserTxApi>(symbols.usersTxApi),
   vaultApi: container.get<VaultApi>(symbols.vaultApi),
   analyticsApi: container.get<AnalyticsApi>(symbols.analyticsApi),
   fileStorageApi: container.get<FileStorageApi>(symbols.fileStorageService),

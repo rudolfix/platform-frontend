@@ -1,7 +1,7 @@
+import { EUserType } from "@neufund/shared-modules";
 import { expect } from "chai";
 
 import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../store";
 import { DeepPartial } from "../../types";
 import { selectKycRequestStatus } from "./selectors";

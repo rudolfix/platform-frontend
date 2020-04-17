@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
+import { EJwtPermissions, EUserType, IHttpResponse } from "@neufund/shared-modules";
 
 import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages";
 import {
@@ -9,7 +9,6 @@ import {
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
 import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { EUserType } from "../../lib/api/users/interfaces";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { selectIsUserFullyVerified, selectUserType } from "../auth/selectors";

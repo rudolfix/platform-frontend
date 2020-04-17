@@ -82,7 +82,7 @@ export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction
   }
 }
 
-export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails: ITxData): any {
+export function* validateGas({ apiUserTxService }: TGlobalDependencies, txDetails: ITxData): any {
   const maxEtherUlps = yield select(selectEtherBalance);
 
   const costUlps = multiplyBigNumbers([txDetails.gasPrice, txDetails.gas]);
@@ -93,7 +93,7 @@ export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails:
     if (isGaslessTxEnabled && STIPEND_ELIGIBLE_WALLETS.includes(walletType)) {
       // @SEE https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2015.md
       // @SEE https://github.com/MetaMask/metamask-extension/issues/5101
-      const { gasStipend } = yield apiUserService.getGasStipend(txDetails);
+      const { gasStipend } = yield apiUserTxService.getGasStipend(txDetails);
       const etherUlpsWithStipend = addBigNumbers([gasStipend, maxEtherUlps]);
       const valueUlpsWithStipend = subtractBigNumbers([etherUlpsWithStipend, costUlps]);
       if (compareBigNumbers(txDetails.value, valueUlpsWithStipend) > 0) {

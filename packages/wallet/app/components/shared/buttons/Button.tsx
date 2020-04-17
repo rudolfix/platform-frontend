@@ -1,67 +1,100 @@
 import { assertNever } from "@neufund/shared-utils";
 import React from "react";
-import { StyleSheet, Text, TouchableHighlight } from "react-native";
+import { StyleSheet, TouchableHighlight } from "react-native";
 
 import {
   baseGray,
   baseWhite,
   baseYellow,
   blueyGrey,
+  grayLighter2,
   grayLighter4,
   silverLighter1,
+  silverLighter2,
   yellowDarker1,
 } from "../../../styles/colors";
-import { typographyStyles } from "../../../styles/typography";
+import { LoadingIndicator } from "../LoadingIndicator";
 import { Touchable } from "../Touchable";
+import { BodyBoldText } from "../typography/BodyText";
 
 enum EButtonLayout {
   PRIMARY = "primary",
   SECONDARY = "secondary",
   TEXT = "text",
+  TEXT_DARK = "text_dark",
 }
 
 type TTouchableProps = React.ComponentProps<typeof Touchable>;
 
-type TExternalProps = { layout: EButtonLayout } & Omit<TTouchableProps, "activeColor">;
+type TExternalProps = { layout: EButtonLayout; loading?: boolean } & Omit<
+  TTouchableProps,
+  "activeColor"
+>;
 
 const getButtonStyle = (layout: EButtonLayout) => {
   switch (layout) {
     case EButtonLayout.PRIMARY:
-      return styles.buttonPrimary;
+      return { button: styles.buttonPrimary };
     case EButtonLayout.SECONDARY:
-      return styles.buttonSecondary;
+      return { button: styles.buttonSecondary };
     case EButtonLayout.TEXT:
-      return styles.buttonText;
+      return { button: styles.buttonText, buttonDisabled: styles.buttonTextDisabled };
+    case EButtonLayout.TEXT_DARK:
+      return {
+        button: styles.buttonText,
+        buttonDisabled: styles.buttonTextDisabled,
+        label: styles.buttonTextDarkLabel,
+        labelDisabled: styles.buttonTextDarkDisabledLabel,
+      };
     default:
       assertNever(layout);
   }
 };
 
-/*
+/**
  * A button that aligns with our design system.
  */
 const Button = React.forwardRef<TouchableHighlight, TExternalProps>(
-  ({ layout, children, ...props }, ref) => {
+  ({ layout, children, style, loading, disabled, ...props }, ref) => {
+    const buttonStyle = getButtonStyle(layout);
+
+    const isDisabled = disabled || loading;
+
     return (
       <Touchable
         ref={ref}
         style={[
           styles.buttonCommon,
-          getButtonStyle(layout),
-          props.disabled && styles.buttonCommonDisabled,
+          buttonStyle.button,
+          isDisabled && [styles.buttonCommonDisabled, buttonStyle.buttonDisabled],
+          style,
         ]}
         activeColor={yellowDarker1}
         accessibilityRole="button"
         accessibilityComponentType="button"
-        accessibilityTraits={props.disabled ? ["button", "disabled"] : "button"}
-        accessibilityStates={props.disabled ? ["disabled"] : []}
+        accessibilityTraits={isDisabled ? ["button", "disabled"] : "button"}
+        accessibilityStates={isDisabled ? ["disabled"] : []}
+        disabled={isDisabled}
         {...props}
       >
-        <Text
-          style={[styles.buttonCommonLabel, props.disabled && styles.buttonCommonDisabledLabel]}
+        <BodyBoldText
+          style={[
+            styles.buttonCommonLabel,
+            buttonStyle.label,
+            isDisabled && [styles.buttonCommonDisabledLabel, buttonStyle.labelDisabled],
+          ]}
         >
-          {children}
-        </Text>
+          {loading ? (
+            <>
+              {/* We need empty spaces to force the same button size */}
+              &nbsp;
+              <LoadingIndicator />
+              &nbsp;
+            </>
+          ) : (
+            children
+          )}
+        </BodyBoldText>
       </Touchable>
     );
   },
@@ -80,7 +113,6 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   buttonCommonLabel: {
-    ...typographyStyles.label,
     color: baseGray,
   },
   buttonCommonDisabled: {
@@ -107,6 +139,18 @@ const styles = StyleSheet.create({
   buttonText: {
     borderColor: "transparent",
     backgroundColor: "transparent",
+  },
+  buttonTextDisabled: {
+    borderColor: "transparent",
+    backgroundColor: "transparent",
+  },
+
+  // Text dark button
+  buttonTextDarkLabel: {
+    color: silverLighter2,
+  },
+  buttonTextDarkDisabledLabel: {
+    color: grayLighter2,
   },
 });
 

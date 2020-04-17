@@ -1,11 +1,10 @@
-import { fork, put } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared-modules";
+import { call, fork, put } from "@neufund/sagas";
+import { authModuleAPI, EJwtPermissions, IUser, neuGetBindings } from "@neufund/shared-modules";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { AuthMessage, ToSMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
@@ -33,11 +32,16 @@ export function* getCurrentAgreementHash({
   }
 }
 
-function* handleAcceptCurrentAgreementEffect({ apiUserService }: TGlobalDependencies): any {
-  const currentAgreementHash: string = yield neuCall(getCurrentAgreementHash);
+function* handleAcceptCurrentAgreementEffect(): Generator<unknown, void> {
+  const { apiUserService } = yield* neuGetBindings({
+    apiUserService: authModuleAPI.symbols.apiUserService,
+  });
 
-  const user: IUser = yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
-  yield put(actions.auth.setUser(user));
+  const currentAgreementHash: string = yield* neuCall(getCurrentAgreementHash);
+
+  const user: IUser = yield* call(() => apiUserService.setLatestAcceptedTos(currentAgreementHash));
+
+  yield put(authModuleAPI.actions.setUser(user));
 }
 
 function* handleAcceptCurrentAgreement({ logger }: TGlobalDependencies): Generator<any, any, any> {

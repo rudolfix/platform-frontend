@@ -1,3 +1,4 @@
+import { EUserType } from "@neufund/shared-modules";
 import { expect } from "chai";
 
 import { ESocialChannelType } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
@@ -6,7 +7,6 @@ import {
   EJurisdiction,
   EOfferingDocumentType,
 } from "./../../../lib/api/eto/EtoProductsApi.interfaces";
-import { EUserType } from "./../../../lib/api/users/interfaces";
 import { TEtoWithCompanyAndContractReadonly } from "./../../eto/types";
 import {
   getTwitterData,

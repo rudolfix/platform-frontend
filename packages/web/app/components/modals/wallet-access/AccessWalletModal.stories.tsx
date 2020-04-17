@@ -1,8 +1,8 @@
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { withModalBody } from "../../../utils/react-connected-components/storybookHelpers.unsafe";
 import {
   BrowserWalletErrorMessage,

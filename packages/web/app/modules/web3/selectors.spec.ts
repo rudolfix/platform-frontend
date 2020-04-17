@@ -1,3 +1,4 @@
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import { expect } from "chai";
 
@@ -16,7 +17,6 @@ import {
   selectLightWalletEmailFromQueryString,
   selectLightWalletFromQueryString,
 } from "./selectors";
-import { EWalletSubType, EWalletType } from "./types";
 
 describe("web3 > selectors", () => {
   const salt = "salt";

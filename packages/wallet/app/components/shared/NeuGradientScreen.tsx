@@ -11,15 +11,13 @@ const NeuGradientScreen: React.FunctionComponent<TExternalProps> = ({
   style,
   contentContainerStyle,
   ...props
-}) => {
-  return (
-    <Screen statusBarStyle="light-content" {...props}>
-      <NeuLinearGradient style={[styles.gradient, contentContainerStyle, style]}>
-        {children}
-      </NeuLinearGradient>
-    </Screen>
-  );
-};
+}) => (
+  <Screen statusBarStyle="light-content" {...props}>
+    <NeuLinearGradient style={[styles.gradient, contentContainerStyle, style]}>
+      {children}
+    </NeuLinearGradient>
+  </Screen>
+);
 
 const styles = StyleSheet.create({
   gradient: {

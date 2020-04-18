@@ -1,10 +1,11 @@
 import React from "react";
-import { Animated, SafeAreaView, StyleSheet, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
+import { Animated, StyleSheet, View } from "react-native";
 
 import { baseWhite, silverLighter2 } from "../../styles/colors";
 import { spacing4, spacing8 } from "../../styles/spacings";
 import { NeuLinearGradient } from "./NeuLinearGradient";
-import { Screen } from "./Screen";
+import { SafeAreaScreen } from "./Screen";
 import { BodyText } from "./typography/BodyText";
 import { EHeadlineLevel, Headline } from "./typography/Headline";
 
@@ -14,7 +15,7 @@ const EXTRA_PADDING_FOR_OVERFLOW = 100;
 type TExternalProps = {
   heading: string;
   subHeading: string;
-} & React.ComponentProps<typeof Screen>;
+} & React.ComponentProps<typeof SafeAreaScreen>;
 
 const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
   heading,
@@ -52,7 +53,7 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
   return (
     <View style={styles.container}>
       <NeuLinearGradient angle={260}>
-        <SafeAreaView>
+        <SafeAreaView forceInset={{ top: "always" }}>
           <Animated.View
             style={[styles.header, { marginTop: headerMargin, marginBottom: headerMargin }]}
           >
@@ -70,7 +71,7 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
         </SafeAreaView>
       </NeuLinearGradient>
 
-      <Screen
+      <SafeAreaScreen
         bounces={false}
         overScrollMode="never"
         statusBarStyle="light-content"
@@ -95,7 +96,7 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
         ]}
       >
         {children}
-      </Screen>
+      </SafeAreaScreen>
     </View>
   );
 };

@@ -73,6 +73,7 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
       <Screen
         bounces={false}
         overScrollMode="never"
+        statusBarStyle="light-content"
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
         onScroll={Animated.event([

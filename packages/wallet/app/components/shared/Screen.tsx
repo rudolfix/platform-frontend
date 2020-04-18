@@ -7,19 +7,35 @@ import {
   SafeAreaView,
   Animated,
   StyleSheet,
+  StatusBar,
+  StatusBarStyle,
 } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { baseWhite } from "../../styles/colors";
 
+const useStatusBarStyle = (statusBarStyle: StatusBarStyle) =>
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle(statusBarStyle);
+    }, [statusBarStyle]),
+  );
+
+type TExternalCommonProps = { statusBarStyle?: StatusBarStyle };
+
+type TSafeAreaScreenExternalProps = TExternalCommonProps & React.ComponentProps<typeof ScrollView>;
 /**
  * A core screen component stacking together safe area, keyboard avoiding and scroll views
  */
-const SafeAreaScreen: React.FunctionComponent<React.ComponentProps<typeof ScrollView>> = ({
+const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   children,
   style,
+  statusBarStyle = "dark-content",
   ...props
 }) => {
+  useStatusBarStyle(statusBarStyle);
+
   const headerHeight = useHeaderHeight();
   const insets = useSafeArea();
 
@@ -39,14 +55,19 @@ const SafeAreaScreen: React.FunctionComponent<React.ComponentProps<typeof Scroll
   );
 };
 
+type TScreenExternalProps = TExternalCommonProps & React.ComponentProps<typeof Animated.ScrollView>;
 /**
  * A core screen component stacking together keyboard avoiding and scroll views
  */
-const Screen: React.FunctionComponent<React.ComponentProps<typeof Animated.ScrollView>> = ({
+const Screen: React.FunctionComponent<TScreenExternalProps> = ({
   children,
   style,
+  statusBarStyle = "dark-content",
+  contentContainerStyle,
   ...props
 }) => {
+  useStatusBarStyle(statusBarStyle);
+
   const headerHeight = useHeaderHeight();
   const insets = useSafeArea();
 
@@ -60,6 +81,7 @@ const Screen: React.FunctionComponent<React.ComponentProps<typeof Animated.Scrol
       <Animated.ScrollView
         style={[styles.flex, style]}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={[styles.flex, contentContainerStyle]}
         {...props}
       >
         {children}

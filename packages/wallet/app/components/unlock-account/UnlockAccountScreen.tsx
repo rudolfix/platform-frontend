@@ -8,7 +8,7 @@ import { appConnect } from "../../store/utils";
 import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
-import { NeuLinearGradient } from "../shared/NeuLinearGradient";
+import { NeuGradientScreen } from "../shared/NeuGradientScreen";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 import { authModuleAPI, EAuthState } from "../../modules/auth/module";
 
@@ -31,7 +31,7 @@ const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   const navigation = useNavigation();
 
   return (
-    <NeuLinearGradient style={styles.wrapper}>
+    <NeuGradientScreen style={styles.wrapper}>
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={logo} />
       </View>
@@ -59,14 +59,13 @@ const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
           </Button>
         )}
       </View>
-    </NeuLinearGradient>
+    </NeuGradientScreen>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     ...spacingStyles.p4,
-    flex: 1,
   },
   logoContainer: {
     alignItems: "center",

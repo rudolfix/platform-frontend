@@ -56,7 +56,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   }, []);
 
   return (
-    <SafeAreaScreen>
+    <SafeAreaScreen forceTopInset={true}>
       <View style={styles.menuHeader}>
         <Avatar name={authWallet.name} />
 

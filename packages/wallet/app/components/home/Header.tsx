@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
+import { StyleSheet, View } from "react-native";
 
 import { appRoutes } from "../../appRoutes";
 import NeufundLogo from "../../assets/neufund-logo.svg";
@@ -13,7 +14,7 @@ const Header: React.FunctionComponent = () => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView forceInset={{ top: "always" }}>
       <View style={styles.header}>
         <NeufundLogo title="Neufund" width={132} height={32} />
 

@@ -3,13 +3,12 @@ import * as React from "react";
 import {
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  SafeAreaView,
   Animated,
   StyleSheet,
   StatusBar,
   StatusBarStyle,
 } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 import { useSafeArea } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -22,9 +21,18 @@ const useStatusBarStyle = (statusBarStyle: StatusBarStyle) =>
     }, [statusBarStyle]),
   );
 
-type TExternalCommonProps = { statusBarStyle?: StatusBarStyle };
+type TExternalCommonProps = {
+  statusBarStyle?: StatusBarStyle;
+};
 
-type TSafeAreaScreenExternalProps = TExternalCommonProps & React.ComponentProps<typeof ScrollView>;
+type TSafeAreaScreenExternalProps = {
+  /**
+   * In some cases (for .e.g tab navigation screen) safe area top inset
+   * should be forced manually to avoid paddingTop jumping after onLayout rerender
+   */
+  forceTopInset?: boolean;
+} & TExternalCommonProps &
+  React.ComponentProps<typeof Animated.ScrollView>;
 /**
  * A core screen component stacking together safe area, keyboard avoiding and scroll views
  */
@@ -32,6 +40,7 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   children,
   style,
   statusBarStyle = "dark-content",
+  forceTopInset,
   ...props
 }) => {
   useStatusBarStyle(statusBarStyle);
@@ -40,16 +49,20 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   const insets = useSafeArea();
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={styles.screen} forceInset={forceTopInset ? { top: "always" } : undefined}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : undefined}
         contentContainerStyle={styles.flex}
         keyboardVerticalOffset={headerHeight + insets.top}
         style={styles.flex}
       >
-        <ScrollView style={[styles.flex, style]} keyboardShouldPersistTaps="handled" {...props}>
+        <Animated.ScrollView
+          style={[styles.flex, style]}
+          keyboardShouldPersistTaps="handled"
+          {...props}
+        >
           {children}
-        </ScrollView>
+        </Animated.ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

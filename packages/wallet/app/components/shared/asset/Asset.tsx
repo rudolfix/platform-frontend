@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { EquityToken } from "@neufund/shared-utils";
+import { EquityToken, isInEnum } from "@neufund/shared-utils";
 
 import { baseWhite, bluish } from "../../../styles/colors";
 import { spacingStyles } from "../../../styles/spacings";
@@ -38,7 +38,7 @@ const Asset: React.FunctionComponent<TExternalProps> = ({
   type,
   ...props
 }) => (
-  <Panel style={styles.container} {...props}>
+  <Panel {...props}>
     {type === EAssetType.RESERVED && (
       <View style={styles.reservedContainer}>
         <Text style={styles.reservedText}>Reserved</Text>
@@ -46,8 +46,8 @@ const Asset: React.FunctionComponent<TExternalProps> = ({
     )}
 
     <View style={styles.iconAndName}>
-      {Object.values<string>(EIconType).includes(tokenImage) ? (
-        <TokenIcon style={styles.icon} type={tokenImage as EIconType} />
+      {isInEnum(EIconType, tokenImage) ? (
+        <TokenIcon style={styles.icon} type={tokenImage} />
       ) : (
         <TokenImage
           style={styles.icon}
@@ -70,9 +70,6 @@ const Asset: React.FunctionComponent<TExternalProps> = ({
 );
 
 const styles = StyleSheet.create({
-  container: {
-    overflow: "hidden",
-  },
   iconAndName: {
     flexDirection: "row",
     alignItems: "center",
@@ -84,10 +81,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   balanceText: {
-    lineHeight: 16,
+    lineHeight: 18,
   },
   analogBalanceText: {
-    lineHeight: 12,
+    lineHeight: 14,
   },
   reservedContainer: {
     backgroundColor: bluish,

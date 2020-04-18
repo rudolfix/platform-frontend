@@ -1,15 +1,16 @@
 import React from "react";
-import SafeAreaView from "react-native-safe-area-view";
 import { Animated, StyleSheet, View } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
 
 import { baseWhite, silverLighter2 } from "../../styles/colors";
 import { spacing4, spacing8 } from "../../styles/spacings";
 import { NeuLinearGradient } from "./NeuLinearGradient";
-import { SafeAreaScreen } from "./Screen";
+import { EStatusBarStyle, SafeAreaScreen } from "./Screen";
 import { BodyText } from "./typography/BodyText";
 import { EHeadlineLevel, Headline } from "./typography/Headline";
 
-// To not cut scroll elements before we align with the container we need to have additional padding
+// To not cut scroll elements before we align with the container
+// additional padding is applied
 const EXTRA_PADDING_FOR_OVERFLOW = 100;
 
 type TExternalProps = {
@@ -74,7 +75,7 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
       <SafeAreaScreen
         bounces={false}
         overScrollMode="never"
-        statusBarStyle="light-content"
+        statusBarStyle={EStatusBarStyle.DARK_BLUEY_GRAY}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
         onScroll={Animated.event([

@@ -8,7 +8,7 @@ import { HeaderScreen } from "../shared/HeaderScreen";
 import { EIconType } from "../shared/Icon";
 
 const WalletScreen: React.FunctionComponent = () => (
-  <HeaderScreen heading={"€0"} subHeading={"Wallet balance"} style={styles.container}>
+  <HeaderScreen heading={"€0"} subHeading={"Wallet balance"}>
     <Asset
       tokenImage={EIconType.N_EUR}
       name="nEur"
@@ -34,11 +34,9 @@ const WalletScreen: React.FunctionComponent = () => (
 );
 
 const styles = StyleSheet.create({
-  container: {
-    ...spacingStyles.ph4,
-  },
   asset: {
     ...spacingStyles.mb2,
+    ...spacingStyles.mh4,
   },
 });
 

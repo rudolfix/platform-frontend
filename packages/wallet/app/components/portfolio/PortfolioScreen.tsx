@@ -7,7 +7,7 @@ import { Asset, EAssetType } from "../shared/asset/Asset";
 import { HeaderScreen } from "../shared/HeaderScreen";
 
 const PortfolioScreen: React.FunctionComponent = () => (
-  <HeaderScreen heading={"€6 500.00"} subHeading={"Portfolio balance"} style={styles.container}>
+  <HeaderScreen heading={"€6 500.00"} subHeading={"Portfolio balance"}>
     <Asset
       tokenImage="https://documents.neufund.io/0x95137084d1b6F58D177523De894293913394aA12/9066455f-e514-444d-bd4f-44e4df3f2a74.png"
       name="Nomera Tech"
@@ -36,10 +36,8 @@ const PortfolioScreen: React.FunctionComponent = () => (
 );
 
 const styles = StyleSheet.create({
-  container: {
-    ...spacingStyles.ph4,
-  },
   asset: {
+    ...spacingStyles.mh4,
     ...spacingStyles.mb2,
   },
 });

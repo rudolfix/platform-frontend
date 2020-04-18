@@ -5,7 +5,7 @@ import { EIconType } from "../Icon";
 
 import { Asset, EAssetType } from "./Asset";
 
-storiesOf("Atoms|Molecules", module)
+storiesOf("Molecules|Asset", module)
   .add("normal", () => (
     <Asset
       tokenImage={EIconType.N_EUR}

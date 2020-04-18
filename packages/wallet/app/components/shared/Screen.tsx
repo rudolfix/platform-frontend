@@ -1,28 +1,35 @@
 import { useHeaderHeight } from "@react-navigation/stack";
 import * as React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Animated,
-  StyleSheet,
-  StatusBar,
-  StatusBarStyle,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, Animated, StyleSheet, StatusBar } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { useSafeArea } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 
-import { baseWhite } from "../../styles/colors";
+import { baseWhite, darkBlueGray1 } from "../../styles/colors";
 
-const useStatusBarStyle = (statusBarStyle: StatusBarStyle) =>
+enum EStatusBarStyle {
+  WHITE = "white",
+  DARK_BLUEY_GRAY = "dark_bluey_gray",
+}
+
+const useStatusBarStyle = (statusBarStyle: EStatusBarStyle) =>
   useFocusEffect(
     React.useCallback(() => {
-      StatusBar.setBarStyle(statusBarStyle);
+      switch (statusBarStyle) {
+        case EStatusBarStyle.WHITE:
+          StatusBar.setBarStyle("dark-content");
+          StatusBar.setBackgroundColor(baseWhite);
+          break;
+        case EStatusBarStyle.DARK_BLUEY_GRAY:
+          StatusBar.setBarStyle("light-content");
+          StatusBar.setBackgroundColor(darkBlueGray1);
+          break;
+      }
     }, [statusBarStyle]),
   );
 
 type TExternalCommonProps = {
-  statusBarStyle?: StatusBarStyle;
+  statusBarStyle?: EStatusBarStyle;
 };
 
 type TSafeAreaScreenExternalProps = {
@@ -39,7 +46,7 @@ type TSafeAreaScreenExternalProps = {
 const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   children,
   style,
-  statusBarStyle = "dark-content",
+  statusBarStyle = EStatusBarStyle.WHITE,
   forceTopInset,
   ...props
 }) => {
@@ -75,7 +82,7 @@ type TScreenExternalProps = TExternalCommonProps & React.ComponentProps<typeof A
 const Screen: React.FunctionComponent<TScreenExternalProps> = ({
   children,
   style,
-  statusBarStyle = "dark-content",
+  statusBarStyle = EStatusBarStyle.WHITE,
   contentContainerStyle,
   ...props
 }) => {
@@ -113,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { SafeAreaScreen, Screen };
+export { SafeAreaScreen, Screen, EStatusBarStyle };

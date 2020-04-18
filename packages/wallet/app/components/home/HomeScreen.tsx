@@ -40,7 +40,7 @@ const HomeLayout: React.FunctionComponent<TStateProps> = () => (
         />
       </Section>
 
-      <Section heading="Wallet" subHeading="€2 318.28">
+      <Section heading="Wallet" subHeading="€2 318.28" style={styles.section}>
         <Asset
           tokenImage={EIconType.N_EUR}
           name="nEur"
@@ -70,9 +70,9 @@ const HomeLayout: React.FunctionComponent<TStateProps> = () => (
 const styles = StyleSheet.create({
   container: {
     ...spacingStyles.pv5,
-    ...spacingStyles.ph4,
   },
   section: {
+    ...spacingStyles.ph4,
     ...spacingStyles.mb4,
   },
   asset: {

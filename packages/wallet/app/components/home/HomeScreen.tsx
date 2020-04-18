@@ -1,31 +1,20 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View } from "react-native";
+import { Text } from "react-native";
 
-import { appRoutes } from "../../appRoutes";
 import { appConnect } from "../../store/utils";
-import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { SafeAreaScreen } from "../shared/Screen";
+import { Header } from "./Header";
 
 type TStateProps = {};
 
-const HomeLayout: React.FunctionComponent<TStateProps> = () => {
-  const navigation = useNavigation();
-
-  return (
+const HomeLayout: React.FunctionComponent<TStateProps> = () => (
+  <>
+    <Header />
     <SafeAreaScreen>
-      <View>
-        <Button
-          layout={EButtonLayout.PRIMARY}
-          testID="landing.go-to-qr-code-scanner"
-          onPress={() => navigation.navigate(appRoutes.qrCode)}
-        >
-          Scan QR code
-        </Button>
-      </View>
+      <Text>fdds</Text>
     </SafeAreaScreen>
-  );
-};
+  </>
+);
 
 const HomeScreen = appConnect<TStateProps>({
   stateToProps: () => ({}),

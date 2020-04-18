@@ -9,9 +9,9 @@ import { HeaderScreen } from "../shared/HeaderScreen";
 const PortfolioScreen: React.FunctionComponent = () => (
   <HeaderScreen heading={"€6 500.00"} subHeading={"Portfolio balance"} style={styles.container}>
     <Asset
-      tokenImage="https://documents.neufund.io/0x74180B56DD74BC56a2E9D5720F39247c55F23328/e36ee175-e8c6-4f8a-9175-1e22b0a8be53.png"
-      name="Fifth Force"
-      token={toEquityTokenSymbol("FFT")}
+      tokenImage="https://documents.neufund.io/0x95137084d1b6F58D177523De894293913394aA12/9066455f-e514-444d-bd4f-44e4df3f2a74.png"
+      name="Nomera Tech"
+      token={toEquityTokenSymbol("NOM")}
       balance="1000"
       analogBalance="15 000"
       analogToken={toEquityTokenSymbol("EUR")}

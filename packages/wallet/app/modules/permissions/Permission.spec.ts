@@ -11,8 +11,6 @@ describe("Permissions", () => {
 
   it("should ask for push notifications permissions", async () => {
     const notificationsAllowed = await permissions.requestNotificationsPermissions();
-    console.log(RESULTS);
-    console.log(notificationsAllowed);
     expect(notificationsAllowed.status).toBe(RESULTS.GRANTED);
   });
 });

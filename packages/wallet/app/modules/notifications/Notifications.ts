@@ -1,23 +1,23 @@
 import { inject, injectable } from "inversify";
-import { INotificationsProvider } from "./INotificationsProvider";
-import { symbols } from "./symbols";
-import { symbols as globalSymbols } from "../../di/symbols";
-import { Permissions } from "../permissions/Permissions";
-import { ILogger } from "@neufund/shared-modules";
-import { AppError } from "../../classes/AppError";
 import {
   Notification,
   NotificationResponse,
   Notifications as NotificationsHandler,
 } from "react-native-notifications";
 import { EventsRegistry } from "react-native-notifications/lib/dist/events/EventsRegistry";
-import { DeviceInformation } from "../device-information/DeviceInformation";
 import { NotificationCompletion } from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
-import { permissionsModuleApi } from "../permissions/module";
-import { setupDeviceInformationModuleApi } from "../device-information/module";
-import { NotificationsResponse, RESULTS } from "react-native-permissions";
+import { ILogger } from "@neufund/shared-modules";
 
-class NotificationsError extends AppError {
+import { INotificationsProvider } from "./INotificationsProvider";
+import { symbols } from "./symbols";
+import { symbols as globalSymbols } from "../../di/symbols";
+import { Permissions } from "../permissions/Permissions";
+import { DeviceInformation } from "../device-information/DeviceInformation";
+import { permissionsModuleApi, PERMISSION_RESULTS } from "../permissions/module";
+import { deviceInformationModuleApi } from "../device-information/module";
+import { NotificationsModuleErrror } from "./errors";
+
+class NotificationsError extends NotificationsModuleErrror {
   constructor(message: string) {
     super(message);
   }
@@ -35,21 +35,19 @@ export class Notifications {
   private readonly permissions: Permissions;
   private readonly logger: ILogger;
   private readonly deviceInformation: DeviceInformation;
-  private notificationsAllowed: NotificationsResponse | null;
   private events: EventsRegistry | null;
 
   constructor(
     @inject(symbols.notificationsProvider) notificationsProvider: INotificationsProvider,
     @inject(permissionsModuleApi.symbols.permissions) permissions: Permissions,
     @inject(globalSymbols.logger) logger: ILogger,
-    @inject(setupDeviceInformationModuleApi.symbols.deviceInformation)
+    @inject(deviceInformationModuleApi.symbols.deviceInformation)
     deviceInformation: DeviceInformation,
   ) {
     this.notificationsProvider = notificationsProvider;
     this.permissions = permissions;
     this.logger = logger;
     this.deviceInformation = deviceInformation;
-    this.notificationsAllowed = null;
     this.events = null;
 
     this.logger.info("Setup push notifications");
@@ -63,20 +61,14 @@ export class Notifications {
   async init() {
     this.logger.info("Init push notifications");
     try {
-      this.notificationsAllowed = await this.permissions.requestNotificationsPermissions();
-      this.events = NotificationsHandler.events();
-    } catch (e) {
-      throw new NotificationsError(e);
-    }
-
-    // only subscribe to notification provider if notifications are allowed
-    if (this.notificationsAllowed.status === RESULTS.GRANTED) {
-      try {
+      const notificationsAllowed = await this.permissions.requestNotificationsPermissions();
+      if (notificationsAllowed.status === PERMISSION_RESULTS.GRANTED) {
+        this.events = NotificationsHandler.events();
         await this.notificationsProvider.subscribeForNotifications();
         await this.registerTokenWithBackend();
-      } catch (e) {
-        throw new NotificationsError(e.message);
       }
+    } catch (e) {
+      throw new NotificationsError(e);
     }
   }
 
@@ -147,12 +139,13 @@ export class Notifications {
    * Register a notification provider token in a backend service.
    */
   async registerTokenWithBackend() {
-    //TODO replace the mocked call to BE with a proper HTTP client. Check the ticket https://github.com/Neufund/platform-frontend/issues/4202
+    // TODO replace the mocked call to BE with a proper HTTP client. Check the ticket https://github.com/Neufund/platform-frontend/issues/4202
     this.logger.info("Try register");
     const token = await this.notificationsProvider.getRegistrationToken();
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
 
+    // TODO:  Remove this once the connection to the user api is established here.
     this.logger.info(`Registering token: ${token} for device: ${deviceId} on platform ${platform}`);
   }
 
@@ -172,7 +165,7 @@ export class Notifications {
    * @method postLocalNotification
    * Post a local notification.
    * @param {Notification} notification A notification to send.
-   * @note Local notification never leave the device and used fow a user interaction.
+   * @note Local notifications never leave the device and are used for user interactions.
    */
   postLocalNotification(notification: Notification, id: number) {
     return NotificationsHandler.postLocalNotification(notification, id);

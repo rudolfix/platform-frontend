@@ -6,11 +6,11 @@ const MODULE_ID = "device-information";
 const setupDeviceInformationModule = () => ({
   id: MODULE_ID,
   libs: [setupBindings()],
-  api: setupDeviceInformationModuleApi,
+  api: deviceInformationModuleApi,
 });
 
-const setupDeviceInformationModuleApi = {
+const deviceInformationModuleApi = {
   symbols,
 };
 
-export { setupDeviceInformationModule, setupDeviceInformationModuleApi };
+export { setupDeviceInformationModule, deviceInformationModuleApi };

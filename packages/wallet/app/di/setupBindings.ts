@@ -6,7 +6,7 @@ import { notificationModuleApi } from "../modules/notifications/module";
 import { symbols } from "./symbols";
 import { TConfig } from "./types";
 import { permissionsModuleApi } from "../modules/permissions/module";
-import { setupDeviceInformationModuleApi } from "../modules/device-information/module";
+import { deviceInformationModuleApi } from "../modules/device-information/module";
 
 export function setupBindings(config: TConfig): ContainerModule {
   return new ContainerModule(bind => {
@@ -36,8 +36,8 @@ export const createGlobalDependencies = (container: Container) => ({
     permissionsModuleApi.symbols.permissions,
   ),
   deviceInformation: container.get<
-    TLibSymbolType<typeof setupDeviceInformationModuleApi.symbols.deviceInformation>
-  >(setupDeviceInformationModuleApi.symbols.deviceInformation),
+    TLibSymbolType<typeof deviceInformationModuleApi.symbols.deviceInformation>
+  >(deviceInformationModuleApi.symbols.deviceInformation),
 
   notifications: container.get<TLibSymbolType<typeof notificationModuleApi.symbols.notifications>>(
     notificationModuleApi.symbols.notifications,

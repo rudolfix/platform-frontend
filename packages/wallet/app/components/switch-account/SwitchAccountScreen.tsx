@@ -1,3 +1,4 @@
+import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import * as Yup from "yup";
@@ -54,7 +55,7 @@ const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
         onSubmit={values => {
           const fixture = fixtures[values.address as keyof typeof fixtures];
 
-          importExistingAccount(fixture.privateKey!, fixture.name!);
+          importExistingAccount(nonNullable(fixture.privateKey), nonNullable(fixture.name));
         }}
       >
         {({ handleSubmit, isValid, values }) => {

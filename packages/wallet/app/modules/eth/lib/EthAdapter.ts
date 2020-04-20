@@ -15,7 +15,7 @@ import { EBlockTag, ITransactionResponse } from "./types";
 class EthAdapter {
   private readonly provider: providers.Provider;
 
-  constructor(private logger: ILogger, rpcUrl: string) {
+  constructor(private readonly logger: ILogger, rpcUrl: string) {
     this.provider = new providers.JsonRpcProvider(rpcUrl);
   }
 

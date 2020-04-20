@@ -19,7 +19,7 @@ class RateOracleAdapterFactory {
  * An adapter for RateOracle to hide implementation differences between web3 and ethers generated contracts interfaces
  */
 class RateOracleAdapter implements IRateOracleAdapter {
-  constructor(private rateOracleContract: ITokenExchangeRateOracle) {}
+  constructor(private readonly rateOracleContract: ITokenExchangeRateOracle) {}
 
   address = this.rateOracleContract.address;
 

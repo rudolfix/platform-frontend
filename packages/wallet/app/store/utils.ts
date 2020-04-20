@@ -18,7 +18,7 @@ export function appConnect<
   StateToProps = {},
   DispatchToProps = {},
   Props = {},
-  Module extends TModuleSetup<any, any> | never = never
+  Module extends TModuleSetup<unknown, unknown> | never = never
 >(
   options: TAppConnectOptions<
     StateToProps,

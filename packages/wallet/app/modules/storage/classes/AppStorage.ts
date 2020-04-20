@@ -156,11 +156,7 @@ class AppStorage<DataType> {
   async removeItem(key: string): Promise<void> {
     this.logger.info(`Removing a storage item for: ${key}`);
 
-    try {
-      await this.provider.removeItem(`${this.storageKey}:${key}`);
-    } catch (error) {
-      throw error;
-    }
+    await this.provider.removeItem(`${this.storageKey}:${key}`);
   }
 
   /**
@@ -169,11 +165,7 @@ class AppStorage<DataType> {
   async clear(): Promise<void> {
     this.logger.info(`Cleaning the storage`);
 
-    try {
-      await this.provider.clear();
-    } catch (error) {
-      throw error;
-    }
+    await this.provider.clear();
   }
 }
 

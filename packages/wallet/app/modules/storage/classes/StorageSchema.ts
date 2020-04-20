@@ -45,6 +45,8 @@ export class StorageSchema<DataType> implements IStorageSchema<DataType> {
   }
 }
 
-export type TStorageSchemaDataType<T extends StorageSchema<any>> = T extends StorageSchema<infer R>
+export type TStorageSchemaDataType<T extends StorageSchema<unknown>> = T extends StorageSchema<
+  infer R
+>
   ? R
   : never;

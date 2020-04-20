@@ -1,6 +1,7 @@
 import { Opaque } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import AsyncStorage from "@react-native-community/async-storage";
+import * as Keychain from "react-native-keychain";
 
 export type TSecureReference = Opaque<"SecureReference", string>;
 
@@ -25,9 +26,12 @@ class SecureStorage {
    */
   async setSecret(secret: string): Promise<TSecureReference> {
     const reference = utils.bigNumberify(utils.randomBytes(32)).toString();
-
-    await AsyncStorage.setItem(reference, secret);
-
+    await Keychain.setGenericPassword("", secret, {
+      service: reference,
+      accessControl: Keychain.ACCESS_CONTROL.USER_PRESENCE,
+      accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+      securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE, // we might need to downgrade this to SOFTWARE, for it to work on all android phones
+    });
     return toSecureReference(reference);
   }
 
@@ -36,8 +40,19 @@ class SecureStorage {
    *
    * @param secretReference - A reference to the secret
    */
-  getSecret(secretReference: TSecureReference): Promise<string | null> {
-    return AsyncStorage.getItem(secretReference);
+  async getSecret(secretReference: TSecureReference): Promise<string | null> {
+    const result = await Keychain.getGenericPassword({ 
+      service: secretReference,
+      authenticationPrompt: {
+        "title": "Access Key",
+        "subtitle": "Allow Neufund to access your ethereum key.",
+        "description": "",
+        "cancel": "Deny"
+      }});
+    if (result) {
+      return result.password;
+    }
+    return null;
   }
 
   /**
@@ -46,7 +61,7 @@ class SecureStorage {
    * @param secretReference - A reference to the secret
    */
   async deleteSecret(secretReference: TSecureReference): Promise<void> {
-    await AsyncStorage.removeItem(secretReference);
+    await Keychain.resetGenericPassword({ service: secretReference });
   }
 }
 

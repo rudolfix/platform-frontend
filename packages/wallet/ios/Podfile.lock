@@ -243,6 +243,8 @@ PODS:
     - React
   - RNGestureHandler (1.5.6):
     - React
+  - RNKeychain (6.0.0):
+    - React
   - RNPermissions (2.0.9):
     - React
   - RNReanimated (1.7.0):
@@ -291,6 +293,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -370,6 +373,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNReanimated:
@@ -417,6 +422,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
   RNGestureHandler: 911d3b110a7a233a34c4f800e7188a84b75319c6
+  RNKeychain: bf2d7e9a0ae7a073c07770dd2aa6d11c67581733
   RNPermissions: 2f74237e97b08beda01e914301e12524ddddf5b8
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: 5e4758109c6d35f9a009ce72af873df907548020
@@ -425,4 +431,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c9122b88b4f3bb5f9059ff6674cd859db1081881
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.0

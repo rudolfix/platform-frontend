@@ -75,7 +75,7 @@ export const assertWaitForLatestEmailSentWithSalt = (
   cy.request({ url: MOCK_API_URL + `sendgrid/session/mails?to=${userEmail}`, method: "GET" }).then(
     r => {
       if (r.status === 200 && getLatestEmailByUser(r, userEmail)) {
-        const loginLink = get(getLatestEmailByUser(r, userEmail), "template_vars.login_link");
+        const loginLink = get(getLatestEmailByUser(r, userEmail), "template_vars.activation_link");
 
         expect(loginLink).to.contain("salt");
         return;

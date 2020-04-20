@@ -1,25 +1,19 @@
 module.exports = {
-  "plugins": [ "react",
-    "react-hooks", ],
-  "extends": [
+  plugins: ["react", "react-hooks"],
+  extends: [
     "./base.js",
+    "plugin:import/react",
     // "plugin:react/recommended",
     // "prettier/react",
   ],
-  "settings": {
+  settings: {
     "import/resolver": {
-      "node": {
-        "extensions":[
-          ".js",
-          ".jsx",
-          ".ts",
-          ".tsx",
-          ".d.ts"
-        ]
-      }
-    }
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx", ".d.ts"],
+      },
+    },
   },
-  "rules": {
+  rules: {
     "react/jsx-uses-vars": "error",
     "react/jsx-uses-react": "error",
     // "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
@@ -27,5 +21,5 @@ module.exports = {
     // "react/display-name": 0,
     // "react-hooks/rules-of-hooks": 2,
     // "react-hooks/exhaustive-deps": ["error", { "additionalHooks": "(useCode|useMemoOne)" }]
-  }
+  },
 };

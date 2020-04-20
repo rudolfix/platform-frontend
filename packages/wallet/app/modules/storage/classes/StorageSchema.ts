@@ -1,8 +1,8 @@
 import { Schema } from "yup";
 
+import { IStorageSchema } from "../types/IStorageSchema";
 import { ApplicationStorageError } from "./ApplicationStorageError";
 
-import { IStorageSchema } from "../types/IStorageSchema";
 
 export class NoMigrationPathError extends ApplicationStorageError {
   constructor(schemaId: string, fromVersion: number, toVersion: number) {

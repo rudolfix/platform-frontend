@@ -4,6 +4,7 @@ import {
   TModuleSetup,
 } from "@neufund/shared-modules";
 import { InferableComponentEnhancerWithProps } from "react-redux";
+
 import { TAppGlobalActions, TAppGlobalState } from "./types";
 
 /**

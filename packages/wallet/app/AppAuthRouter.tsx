@@ -5,10 +5,10 @@ import { Text } from "react-native";
 import Config from "react-native-config";
 
 import { appRoutes } from "./appRoutes";
+import { QRCode } from "./components/QRCode";
 import { HomeScreen } from "./components/home/HomeScreen";
 import { PortfolioScreen } from "./components/portfolio/PortfolioScreen";
 import { ProfileScreen } from "./components/profile/ProfileScreen";
-import { QRCode } from "./components/QRCode";
 import { EIconType, Icon } from "./components/shared/Icon";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";

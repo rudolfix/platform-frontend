@@ -4,8 +4,8 @@ import React from "react";
 import { InteractionManager } from "react-native";
 import RNBootSplash from "react-native-bootsplash";
 
-import { AppNoAuthRouter } from "./AppNoAuthRouter";
 import { AppAuthRouter } from "./AppAuthRouter";
+import { AppNoAuthRouter } from "./AppNoAuthRouter";
 import { CriticalError } from "./components/CriticalError";
 import { SignerModal } from "./components/signer/SignerModal";
 import { usePrevious } from "./hooks/usePrevious";

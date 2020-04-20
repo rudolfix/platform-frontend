@@ -3,17 +3,17 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import Config from "react-native-config";
 
+import logo from "../../../assets/images/logo.png";
 import { appRoutes } from "../../appRoutes";
+import { authModuleAPI, EAuthState } from "../../modules/auth/module";
 import { appConnect } from "../../store/utils";
 import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
-import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { NeuGradientScreen } from "../shared/NeuGradientScreen";
+import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
-import { authModuleAPI, EAuthState } from "../../modules/auth/module";
 
-import logo from "../../../assets/images/logo.png";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;

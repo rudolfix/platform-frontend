@@ -3,7 +3,7 @@ import { EthereumAddressWithChecksum, subtractBigNumbers } from "@neufund/shared
 
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { ETxHistoryMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { TransactionDetailsModal } from "../../components/wallet/transactions-history/TransactionDetailsModal";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
@@ -319,7 +319,7 @@ export function* loadTransactionsHistoryNext({
   } catch (e) {
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(ETxHistoryMessage.TX_HISTORY_FAILED_TO_LOAD_NEXT),
+        createNotificationMessage(ETxHistoryMessage.TX_HISTORY_FAILED_TO_LOAD_NEXT),
       ),
     );
 
@@ -352,7 +352,7 @@ export function* loadTransactionsHistory({
   } catch (e) {
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(ETxHistoryMessage.TX_HISTORY_FAILED_TO_LOAD),
+        createNotificationMessage(ETxHistoryMessage.TX_HISTORY_FAILED_TO_LOAD),
       ),
     );
 

@@ -172,7 +172,7 @@ export function* submitEtoDataEffect({
 
   yield put(
     webNotificationUIModuleApi.actions.showInfo(
-      createMessage(EtoDocumentsMessage.ETO_SUBMIT_SUCCESS),
+      createNotificationMessage(EtoDocumentsMessage.ETO_SUBMIT_SUCCESS),
     ),
   );
 
@@ -193,7 +193,7 @@ export function* submitEtoData({ logger }: TGlobalDependencies): Generator<any, 
     logger.error("Failed to Submit ETO data", e);
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
+        createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
       ),
     );
   }
@@ -248,7 +248,7 @@ export function* changeProductType(
 
     yield put(
       webNotificationUIModuleApi.actions.showInfo(
-        createMessage(EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL),
+        createNotificationMessage(EtoFlowMessage.ETO_TERMS_PRODUCT_CHANGE_SUCCESSFUL),
         {
           autoClose: 10000,
           "data-test-id": "eto-flow-product-changed-successfully",

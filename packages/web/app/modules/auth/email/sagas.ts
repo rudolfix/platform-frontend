@@ -49,9 +49,7 @@ export function* verifyUserEmail({ walletStorage }: TGlobalDependencies): Genera
     yield put(actions.auth.logout());
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        {
-          messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED,
-        },
+        createNotificationMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED),
         { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
       ),
     );
@@ -63,9 +61,7 @@ export function* verifyUserEmail({ walletStorage }: TGlobalDependencies): Genera
     yield put(actions.auth.logout({ logoutType: ELogoutReason.ALREADY_LOGGED_IN }));
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        {
-          messageType: AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED_SAME_EMAIL,
-        },
+        createNotificationMessage(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED_SAME_EMAIL),
         { "data-test-id": "modules.auth.sagas.verify-user-email.toast.verification-failed" },
       ),
     );

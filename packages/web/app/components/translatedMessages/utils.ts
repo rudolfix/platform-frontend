@@ -23,7 +23,11 @@ export const createMessage = (messageType: TranslatedMessageType, messageData?: 
 export const createNotificationMessage = (
   messageType: TranslatedMessageType,
   messageData?: any,
-): TTranslatedString => getMessageTranslation(createMessage(messageType, messageData));
+): TTranslatedString =>
+  getMessageTranslation({
+    messageType,
+    messageData,
+  });
 
 export const formatMatchingFieldNames = (messageData: string[]) => {
   if (messageData.length < 2) {

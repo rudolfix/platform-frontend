@@ -30,7 +30,7 @@ function* addNewEmailEffect({ logger }: TGlobalDependencies, email: string): any
   yield neuCall(updateUser, { ...user, new_email: email, salt: salt });
   yield put(
     webNotificationUIModuleApi.actions.showInfo(
-      createMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED),
+      createNotificationMessage(ProfileMessage.PROFILE_NEW_EMAIL_ADDED),
       {
         "data-test-id": "profile-email-change-success",
       },
@@ -45,7 +45,7 @@ function* abortEmailUpdateEffect({ logger }: TGlobalDependencies): any {
   yield neuCall(updateUser, { ...user, new_email: email });
   yield put(
     webNotificationUIModuleApi.actions.showInfo(
-      createMessage(ProfileMessage.PROFILE_ABORT_UPDATE_EMAIL_SUCCESS),
+      createNotificationMessage(ProfileMessage.PROFILE_ABORT_UPDATE_EMAIL_SUCCESS),
       {
         "data-test-id": "profile-email-change-aborted",
       },
@@ -63,7 +63,7 @@ function* resendEmailEffect({ logger }: TGlobalDependencies): any {
   yield neuCall(updateUser, { ...user, new_email: email, salt: salt });
   yield put(
     webNotificationUIModuleApi.actions.showInfo(
-      createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT),
+      createNotificationMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENT),
     ),
   );
 }
@@ -85,7 +85,7 @@ export function* addNewEmail(
   if (email === actualVerifiedEmail) {
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_VERIFIED_EXISTS),
+        createNotificationMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_VERIFIED_EXISTS),
         {
           "data-test-id": "profile-email-change-verified-exists",
         },
@@ -97,7 +97,7 @@ export function* addNewEmail(
   if (email === actualUnverifiedEmail) {
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_UNVERIFIED_EXISTS),
+        createNotificationMessage(ProfileMessage.PROFILE_CHANGE_EMAIL_UNVERIFIED_EXISTS),
         {
           "data-test-id": "profile-email-change-unverified-exists",
         },
@@ -130,7 +130,7 @@ export function* addNewEmail(
       logger.error("Failed to Add new email", e);
       yield put(
         webNotificationUIModuleApi.actions.showError(
-          createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),
+          createNotificationMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),
         ),
       );
     }
@@ -153,7 +153,7 @@ export function* resendEmail({ logger }: TGlobalDependencies): Generator<any, an
     logger.error("Failed to resend email", e);
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED),
+        createNotificationMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED),
       ),
     );
   }
@@ -196,7 +196,7 @@ export function* abortEmailUpdate({ logger }: TGlobalDependencies): Generator<an
     logger.error("Failed to cancel email change", e);
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),
+        createNotificationMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),
       ),
     );
   } finally {

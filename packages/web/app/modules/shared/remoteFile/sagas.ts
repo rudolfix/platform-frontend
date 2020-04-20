@@ -2,7 +2,7 @@ import { fork, put } from "@neufund/sagas";
 import { IHttpResponse } from "@neufund/shared-modules";
 
 import { RemoteFileMessage } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TFileDescription } from "../../../lib/api/file-storage/FileStorage.interfaces";
 import { TAction } from "../../actions";
@@ -21,7 +21,7 @@ function* getRemoteFile({ fileStorageApi, logger }: TGlobalDependencies, action:
     logger.error("get remote file error", e);
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(RemoteFileMessage.GET_FILES_DETAILS_ERROR),
+        createNotificationMessage(RemoteFileMessage.GET_FILES_DETAILS_ERROR),
       ),
     );
     onDone(e, undefined);

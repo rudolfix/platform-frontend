@@ -3,7 +3,10 @@ import { authModuleAPI, EJwtPermissions, IUser, neuGetBindings } from "@neufund/
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { AuthMessage, ToSMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import {
+  createMessage,
+  createNotificationMessage,
+} from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
@@ -56,7 +59,7 @@ function* handleAcceptCurrentAgreement({ logger }: TGlobalDependencies): Generat
   } catch (e) {
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR),
+        createNotificationMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR),
       ),
     );
     logger.error("Could not accept Terms and Conditions", e);

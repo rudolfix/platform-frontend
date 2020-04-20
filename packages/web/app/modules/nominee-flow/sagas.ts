@@ -10,10 +10,7 @@ import {
   ENomineeRequestErrorNotifications,
   EtoMessage,
 } from "../../components/translatedMessages/messages";
-import {
-  createMessage,
-  createNotificationMessage,
-} from "../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IssuerIdInvalid, NomineeRequestExists } from "../../lib/api/eto/EtoNomineeApi";
@@ -538,7 +535,9 @@ export function* loadNomineeEtos({
   } catch (e) {
     logger.error("Nominee ETOs could not be loaded", e);
     yield put(
-      webNotificationUIModuleApi.actions.showError(createMessage(EtoMessage.COULD_NOT_LOAD_ETOS)),
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETOS),
+      ),
     );
     yield put(actions.nomineeFlow.storeError(ENomineeFlowError.LOAD_ETOS_ERROR));
   }
@@ -583,7 +582,7 @@ export function* setActiveNomineeEto({ logger }: TGlobalDependencies): Generator
 
         yield put(
           webNotificationUIModuleApi.actions.showInfo(
-            createMessage(EEtoNomineeActiveEtoNotifications.ACTIVE_ETO_SET_SUCCESS),
+            createNotificationMessage(EEtoNomineeActiveEtoNotifications.ACTIVE_ETO_SET_SUCCESS),
           ),
         );
       } else {
@@ -597,7 +596,7 @@ export function* setActiveNomineeEto({ logger }: TGlobalDependencies): Generator
 
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(EEtoNomineeActiveEtoNotifications.ACTIVE_ETO_SET_ERROR),
+        createNotificationMessage(EEtoNomineeActiveEtoNotifications.ACTIVE_ETO_SET_ERROR),
       ),
     );
     yield put(actions.nomineeFlow.storeError(ENomineeFlowError.ACTIVE_ETO_SET_ERROR));

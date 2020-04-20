@@ -39,7 +39,7 @@ export type InferTypeWithPrimitive<T> = T extends yup.Schema<infer P>
  * oneOfTypeSchema.isValidSync(100); // true
  * oneOfTypeSchema.isValidSync({ foo: "bar" }); // true
  */
-const oneOfSchema = <T extends yup.Schema<any>>(schemas: T[], message?: TestOptionsMessage) =>
+const oneOfSchema = <T extends yup.Schema<unknown>>(schemas: T[], message?: TestOptionsMessage) =>
   yup.mixed<InferTypeWithPrimitive<T>>().test({
     name: "oneOfSchema",
     exclusive: true,
@@ -73,7 +73,7 @@ type ObjectInferTypeWithPrimitive<T extends object> = {
  * schema.isValidSync(["baz", { foo: "bar" }); // false
  * schema.isValidSync([100, 100, 100]); // false
  */
-const tupleSchema = <T extends Tuple<yup.Schema<any>>>(schemas: T) =>
+const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) =>
   yup.mixed<ObjectInferTypeWithPrimitive<T>>().test({
     name: "tupleSchema",
     exclusive: true,

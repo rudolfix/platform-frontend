@@ -1,6 +1,8 @@
 module.exports = {
   root: true,
-  extends: "@react-native-community",
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  extends: "@neufund/eslint-config/react-native",
+  "parserOptions": {
+    tsconfigRootDir: __dirname,
+    "project": ["./tsconfig.json", "./tsconfig.*.json"]
+  },
 };

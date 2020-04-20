@@ -85,12 +85,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: silverLighter2,
   },
-  paragraph: {
-    ...spacingStyles.mb4,
-    ...spacingStyles.ph5,
-    textAlign: "center",
-    color: silverLighter2,
-  },
   createAccountButton: {
     ...spacingStyles.mb2,
   },

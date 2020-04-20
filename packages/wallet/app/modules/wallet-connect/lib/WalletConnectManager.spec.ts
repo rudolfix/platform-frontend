@@ -17,6 +17,7 @@ const promisifyEvent = <T extends EWalletConnectManagerEvents>(emitter: EventEmi
     emitter.once(type, (error, payload, meta) => {
       // given that we don't have a proper typings for connected keys
       // for tests purpose we can just force cast
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       resolve({
         type,
         payload,
@@ -28,6 +29,7 @@ const promisifyEvent = <T extends EWalletConnectManagerEvents>(emitter: EventEmi
 };
 
 const mockWalletConnect = <T extends EventEmitter>(walletConnectInstance: T): T => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (WalletConnectMock as any).mockReturnValue(walletConnectInstance);
 
   return walletConnectInstance;

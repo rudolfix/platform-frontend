@@ -73,14 +73,10 @@ const isAddress = (address: unknown): address is EthereumAddress => {
  */
 const isChecksumAddress = (address: unknown): address is EthereumAddressWithChecksum => {
   try {
-    if (isString(address)) {
-      const checksumAddress = utils.getAddress(address);
-
-      return address === checksumAddress;
-    }
-  } catch {}
-
-  return false;
+    return isString(address) && address === utils.getAddress(address);
+  } catch {
+    return false;
+  }
 };
 
 export { isHdWallet, isPrivateKey, isMnemonic, isAddress, isChecksumAddress, addHexPrefix };

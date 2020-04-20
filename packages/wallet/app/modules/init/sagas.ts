@@ -31,6 +31,6 @@ function* initStartSaga(): SagaGenerator<void> {
   }
 }
 
-export function* initSaga(): Generator<any, void, any> {
+export function* initSaga(): SagaGenerator<void> {
   yield fork(neuTakeLatest, initActions.start, initStartSaga);
 }

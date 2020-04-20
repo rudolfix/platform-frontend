@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 /**
  * Clears the AsyncStorage
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (global as any).clearStorage = () => {
   AsyncStorage.clear()
     .then(() => console.log("Cleared"))

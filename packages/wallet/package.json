@@ -20,7 +20,7 @@
     "tsc:e2e": "tsc --project ./tsconfig.e2e.json",
     "tsc:unit": "tsc --project ./tsconfig.unit.json",
     "lint": "concurrently -p '[LINT:{name}]' -n 'FORMAT,TSC' -c 'bgYellow.bold,bgGreen.bold' 'yarn format' 'yarn tsc'",
-    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "e2e:build:ios-debug": "detox build --configuration ios.sim.debug",
@@ -91,7 +91,6 @@
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-decorators": "^7.8.3",
     "@babel/runtime": "^7.9.2",
-    "@react-native-community/eslint-config": "^0.0.5",
     "@storybook/addon-actions": "^5.3.13",
     "@storybook/addon-knobs": "^5.3.13",
     "@storybook/addon-links": "^5.3.13",
@@ -109,13 +108,11 @@
     "@types/redux-saga": "^0.10.5",
     "@types/reflect-metadata": "^0.1.0",
     "@types/yup": "^0.26.32",
-    "@typescript-eslint/eslint-plugin": "^2.12.0",
-    "@typescript-eslint/parser": "^2.12.0",
+    "@neufund/eslint-config": "^1.0.0",
     "babel-plugin-parameter-decorator": "^1.0.16",
     "concurrently": "^5.1.0",
     "detox": "^15.2.0",
-    "eslint": "^6.5.1",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint": "^6.8.0",
     "jest": "^25.1.0",
     "metro-config": "^0.56.0",
     "metro-react-native-babel-preset": "^0.59.0",
@@ -144,7 +141,9 @@
       "**/@types/jest",
       "**/@types/jest/**",
       "**/jest",
-      "**/jest/**"
+      "**/jest/**",
+      "**/@neufund/eslint-config",
+      "**/@neufund/eslint-config/**"
     ]
   },
   "detox": {

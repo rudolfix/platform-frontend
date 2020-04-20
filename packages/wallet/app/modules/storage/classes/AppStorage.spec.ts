@@ -69,7 +69,7 @@ describe("AppStorage", () => {
 
     await storage.setItem(key, value);
     const item = await storage.getItem(key);
-    expect(item && item.data).toEqual(value);
+    expect(item?.data).toEqual(value);
   });
 
   it("should remove data item from the storage", async () => {

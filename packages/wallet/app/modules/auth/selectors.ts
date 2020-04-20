@@ -8,6 +8,6 @@ const selectAuth = (state: StateFromReducersMapObject<typeof authReducerMap>) =>
 const selectAuthState = createSelector(selectAuth, auth => auth.state);
 const selectAuthWallet = createSelector(selectAuth, auth => auth.wallet);
 
-const selectUser = (state: any) => authModuleAPI.selectors.selectUser(state);
+const selectUser = authModuleAPI.selectors.selectUser;
 
 export { selectAuthState, selectUser, selectAuthWallet };

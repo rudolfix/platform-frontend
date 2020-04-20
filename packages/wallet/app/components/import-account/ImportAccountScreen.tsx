@@ -59,7 +59,7 @@ const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
 
   return (
     <SafeAreaScreen contentContainerStyle={styles.content}>
-      <Headline level={EHeadlineLevel.LEVEL2}>Connect an account</Headline>
+      <Headline style={styles.headline} level={EHeadlineLevel.LEVEL2}>Connect an account</Headline>
 
       <BodyText style={styles.paragraph}>
         Enter your recovery phrase/private key to import and connect your Ethereum wallet to

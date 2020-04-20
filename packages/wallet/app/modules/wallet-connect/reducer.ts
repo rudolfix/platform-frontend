@@ -32,4 +32,8 @@ const walletConnectReducer: AppReducer<IWalletConnectState, typeof walletConnect
   }
 };
 
-export { walletConnectReducer };
+const walletConnectReducerMap = {
+  walletConnect: walletConnectReducer,
+};
+
+export { walletConnectReducerMap };

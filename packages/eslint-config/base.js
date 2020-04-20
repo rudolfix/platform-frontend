@@ -6,6 +6,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
     "prettier",
     "prettier/@typescript-eslint",
   ],
@@ -49,6 +50,23 @@ module.exports = {
     "@typescript-eslint/switch-exhaustiveness-check": "error",
     "@typescript-eslint/unified-signatures": "error",
 
+    /**
+     * Import eslint rules
+     */
+    "import/order": [
+      "error",
+      {
+        groups: [
+          ["builtin", "external"],
+          ["internal", "parent", "sibling", "index"],
+        ],
+        "newlines-between": "always",
+        alphabetize: {
+          order: "asc",
+        },
+      },
+    ],
+
     // "arrow-body-style": ["error", "as-needed"],
     //
     // "constructor-super": "error",
@@ -61,7 +79,6 @@ module.exports = {
     //       "always"
     //   ],
     //
-    //   "import/no-extraneous-dependencies": "off",
     //   "import/no-internal-modules": "off",
     //   "import/order": "error",
     //

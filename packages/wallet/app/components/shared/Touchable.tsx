@@ -6,6 +6,7 @@ import {
   View,
   TouchableHighlight,
 } from "react-native";
+
 import { ANDROID_VERSION_LOLLIPOP } from "../../config/constants";
 
 type TExternalProps = React.ComponentProps<typeof TouchableWithoutFeedback> & {

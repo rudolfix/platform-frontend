@@ -5,13 +5,14 @@ import {
   toEthereumHDMnemonic,
   toEthereumHDPath,
 } from "@neufund/shared-utils";
+
 import { createMock } from "../../../utils/testUtils.specUtils";
 import { AppSingleKeyStorage } from "../../storage";
 import { EthSecureEnclave } from "./EthSecureEnclave";
 import { EthWallet } from "./EthWallet";
 import { EthWalletFactory, NoExistingWalletFoundError } from "./EthWalletFactory";
-import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
 import { toSecureReference, TSecureReference } from "./SecureStorage";
+import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
 import { EWalletType } from "./types";
 
 const hdWalletMetadata: THDWalletMetadata = {

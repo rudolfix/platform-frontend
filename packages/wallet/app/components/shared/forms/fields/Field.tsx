@@ -5,9 +5,9 @@ import { StyleProp, ViewStyle } from "react-native";
 
 import { TComponentRefType } from "../../../../utils/types";
 import { EFieldType, FieldLayout } from "../layouts/FieldLayout";
-import { Switcher } from "../layouts/switcher/Switcher";
 import { TextAreaInput } from "../layouts/TextAreaInput";
 import { TextInput } from "../layouts/TextInput";
+import { Switcher } from "../layouts/switcher/Switcher";
 
 type TCustomInputProps =
   | ({ type: EFieldType.INPUT } & Pick<React.ComponentProps<typeof TextInput>, "placeholder">)

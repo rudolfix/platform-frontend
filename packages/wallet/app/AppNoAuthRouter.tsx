@@ -3,8 +3,8 @@ import React from "react";
 import Config from "react-native-config";
 
 import { appRoutes } from "./appRoutes";
-import { ImportAccountScreen } from "./components/import-account/ImportAccountScreen";
 import { CreateAccountScreen } from "./components/create-account/CreateAccountScreen";
+import { ImportAccountScreen } from "./components/import-account/ImportAccountScreen";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { UnlockAccountScreen } from "./components/unlock-account/UnlockAccountScreen";

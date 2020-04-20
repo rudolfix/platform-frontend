@@ -1,6 +1,7 @@
 import { authModuleAPI } from "@neufund/shared-modules";
-import { createSelector } from "reselect";
 import { StateFromReducersMapObject } from "redux";
+import { createSelector } from "reselect";
+
 import { authReducerMap } from "./reducer";
 
 const selectAuth = (state: StateFromReducersMapObject<typeof authReducerMap>) => state.auth;

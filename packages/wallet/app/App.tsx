@@ -2,8 +2,8 @@ import { assertNever } from "@neufund/shared-utils";
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 
-import { AppNoAuthRouter } from "./AppNoAuthRouter";
 import { AppAuthRouter } from "./AppAuthRouter";
+import { AppNoAuthRouter } from "./AppNoAuthRouter";
 import { CriticalError } from "./components/CriticalError";
 import { LoadingIndicator } from "./components/shared/LoadingIndicator";
 import { SignerModal } from "./components/signer/SignerModal";

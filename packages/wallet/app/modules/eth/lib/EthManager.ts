@@ -1,24 +1,24 @@
 import {
-  EthereumAddress,
-  EthereumPrivateKey,
-  EthereumHDMnemonic,
-  EthereumAddressWithChecksum,
-} from "@neufund/shared-utils";
-import {
   coreModuleApi,
   ILogger,
   TLibSymbolType,
   IEthManager,
   ESignerType,
 } from "@neufund/shared-modules";
+import {
+  EthereumAddress,
+  EthereumPrivateKey,
+  EthereumHDMnemonic,
+  EthereumAddressWithChecksum,
+} from "@neufund/shared-utils";
 import { providers, utils } from "ethers";
 import { inject, injectable } from "inversify";
 
 import { EthModuleError } from "../errors";
-import { privateSymbols } from "./symbols";
 import { EthAdapter } from "./EthAdapter";
 import { EthWallet } from "./EthWallet";
 import { EthWalletFactory } from "./EthWalletFactory";
+import { privateSymbols } from "./symbols";
 import {
   ITransactionResponse,
   TTransactionRequestRequired,

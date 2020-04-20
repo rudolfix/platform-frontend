@@ -1,15 +1,15 @@
+import { EquityToken, isInEnum } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { EquityToken, isInEnum } from "@neufund/shared-utils";
 
 import { baseWhite, bluish } from "../../../styles/colors";
 import { spacingStyles } from "../../../styles/spacings";
 import { typographyStyles } from "../../../styles/typography";
 import { EIconType } from "../Icon";
-import { Panel } from "../panel/Panel";
-import { TokenIcon, TokenImage } from "./TokenIcon";
-import { BodyBoldText } from "../typography/BodyText";
 import { HelperText } from "../forms/layouts/HelperText";
+import { Panel } from "../panel/Panel";
+import { BodyBoldText } from "../typography/BodyText";
+import { TokenIcon, TokenImage } from "./TokenIcon";
 
 type TPanelProps = React.ComponentProps<typeof Panel>;
 

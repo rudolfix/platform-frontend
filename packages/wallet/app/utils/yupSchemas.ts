@@ -1,9 +1,9 @@
 // TODO: When web migrates to the newest formik move `yupSchemas` to the shared
 
 import { Primitive, Tuple } from "@neufund/shared-utils";
+import isArray from "lodash/fp/isArray";
 import { TestOptionsMessage } from "yup";
 import * as yup from "yup";
-import isArray from "lodash/fp/isArray";
 
 const isAbsent = <T>(value: T) => value === undefined || value === null;
 

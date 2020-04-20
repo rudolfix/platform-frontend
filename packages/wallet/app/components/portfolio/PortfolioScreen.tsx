@@ -3,8 +3,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { spacingStyles } from "../../styles/spacings";
-import { Asset, EAssetType } from "../shared/asset/Asset";
 import { HeaderScreen } from "../shared/HeaderScreen";
+import { Asset, EAssetType } from "../shared/asset/Asset";
 
 const PortfolioScreen: React.FunctionComponent = () => (
   <HeaderScreen heading={"€6 500.00"} subHeading={"Portfolio balance"}>

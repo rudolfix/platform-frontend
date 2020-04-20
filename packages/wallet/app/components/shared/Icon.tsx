@@ -1,3 +1,5 @@
+/* eslint-disable import/max-dependencies */
+
 import { assertNever } from "@neufund/shared-utils";
 import identity from "lodash/fp/identity";
 import pickBy from "lodash/fp/pickBy";

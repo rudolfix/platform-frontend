@@ -7,6 +7,7 @@ import "reflect-metadata";
 
 // a process shim is required from some native module polyfills to be in the global scope
 import process from "process";
+
 global.process = process;
 
 /**

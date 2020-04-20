@@ -66,60 +66,12 @@ module.exports = {
         },
       },
     ],
-
-    // "arrow-body-style": ["error", "as-needed"],
-    //
-    // "constructor-super": "error",
-    //   "curly": [
-    //       "error",
-    //       "multi-line"
-    //   ],
-    //   "eqeqeq": [
-    //       "error",
-    //       "always"
-    //   ],
-    //
-    //   "import/no-internal-modules": "off",
-    //   "import/order": "error",
-    //
-    //   "no-console": "error",
-    //   "no-constant-condition": "off",
-    //   "no-debugger": "error",
-    //   "no-duplicate-case": "error",
-    //   "no-duplicate-imports": "error",
-    //   "no-eval": "error",
-    //   "no-fallthrough": "error",
-    //   "no-invalid-regexp": "error",
-    //   "no-invalid-this": "off",
-    //   "no-redeclare": "error",
-    //   "no-regex-spaces": "error",
-    //   "no-restricted-imports": [
-    //       "error",
-    //       {
-    //           "paths": [
-    //               {
-    //                   "name": "react-intl",
-    //                   "importNames": [
-    //                       "FormattedMessage",
-    //                       "FormattedHTMLMessage"
-    //                   ]
-    //               }
-    //           ]
-    //       }
-    //   ],
-    //   "no-sequences": "error",
-    //   "no-shadow": [
-    //       "error",
-    //       {
-    //           "hoist": "never"
-    //       }
-    //   ],
-    //   "no-sparse-arrays": "error",
-    //   "no-template-curly-in-string": "error",
-    //   "no-throw-literal": "error",
-    //   "no-var": "error",
-    //   "prefer-object-spread": "error",
-    //   "radix": "error",
-    //   "use-isnan": "error",
+    "import/no-useless-path-segments": "error",
+    "import/first": "error",
+    "import/no-duplicates": "error",
+    "import/newline-after-import": "error",
+    "import/max-dependencies": ["error", { max: 16 }],
+    "import/no-named-default": "error",
+    "import/no-default-export": "error",
   },
 };

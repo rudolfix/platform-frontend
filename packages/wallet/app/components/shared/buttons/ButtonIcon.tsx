@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
-import { baseGray, blueyGray } from "../../../styles/colors";
+import { baseGray, blueyGray, transparent } from "../../../styles/colors";
 import { st } from "../../utils";
 import { EIconType, Icon } from "../Icon";
 import { LoadingIndicator } from "../LoadingIndicator";
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: "transparent",
+    borderColor: transparent,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

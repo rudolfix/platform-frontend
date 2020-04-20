@@ -1,32 +1,11 @@
 import { useHeaderHeight } from "@react-navigation/stack";
 import * as React from "react";
-import { KeyboardAvoidingView, Platform, Animated, StyleSheet, StatusBar } from "react-native";
+import { KeyboardAvoidingView, Platform, Animated, StyleSheet } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 import { useSafeArea } from "react-native-safe-area-context";
-import { useFocusEffect } from "@react-navigation/native";
 
-import { baseWhite, darkBlueGray1 } from "../../styles/colors";
-
-enum EStatusBarStyle {
-  WHITE = "white",
-  DARK_BLUEY_GRAY = "dark_bluey_gray",
-}
-
-const useStatusBarStyle = (statusBarStyle: EStatusBarStyle) =>
-  useFocusEffect(
-    React.useCallback(() => {
-      switch (statusBarStyle) {
-        case EStatusBarStyle.WHITE:
-          StatusBar.setBarStyle("dark-content");
-          StatusBar.setBackgroundColor(baseWhite);
-          break;
-        case EStatusBarStyle.DARK_BLUEY_GRAY:
-          StatusBar.setBarStyle("light-content");
-          StatusBar.setBackgroundColor(darkBlueGray1);
-          break;
-      }
-    }, [statusBarStyle]),
-  );
+import { baseWhite } from "../../styles/colors";
+import { EStatusBarStyle, useStatusBarStyle } from "./hooks/useStatusBarStyle";
 
 type TExternalCommonProps = {
   statusBarStyle?: EStatusBarStyle;

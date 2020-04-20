@@ -20,7 +20,7 @@ const Header: React.FunctionComponent = () => {
         <NeufundLogo title="Neufund" width={132} height={32} />
 
         <ButtonIcon
-          icon={EIconType.PLACEHOLDER}
+          icon={EIconType.QR_CODE}
           accessibilityLabel="Scan QR code"
           testID="home.header.go-to-qr-code-scanner"
           onPress={() => navigation.navigate(appRoutes.qrCode)}
@@ -32,7 +32,8 @@ const Header: React.FunctionComponent = () => {
 
 const styles = StyleSheet.create({
   header: {
-    ...spacingStyles.ph4,
+    ...spacingStyles.pl4,
+    ...spacingStyles.pr2,
 
     flexDirection: "row",
     justifyContent: "space-between",

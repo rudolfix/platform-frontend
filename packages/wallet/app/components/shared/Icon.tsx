@@ -15,6 +15,7 @@ import Close from "../../assets/close.svg";
 import Placeholder from "../../assets/placeholder.svg";
 import Share from "../../assets/share.svg";
 import Yes from "../../assets/yes.svg";
+import QrCode from "../../assets/qr-code.svg";
 
 enum EIconType {
   HOME = "home",
@@ -28,6 +29,7 @@ enum EIconType {
   YES = "yes",
   N_EUR = "n-eur",
   ETH = "eth",
+  QR_CODE = "qr-code",
 }
 
 const pickByIdentity = pickBy(identity);
@@ -56,6 +58,8 @@ const getIcon = (type: EIconType) => {
       return Eth;
     case EIconType.N_EUR:
       return NEur;
+    case EIconType.QR_CODE:
+      return QrCode;
     default:
       assertNever(type, `Invalid icon type ${type}`);
   }

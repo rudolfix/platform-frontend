@@ -95,4 +95,10 @@ export const spacingStyles = StyleSheet.create({
   ph5: {
     paddingHorizontal: spacing5,
   },
+  pl4: {
+    paddingLeft: spacing4,
+  },
+  pr2: {
+    paddingRight: spacing2,
+  },
 });

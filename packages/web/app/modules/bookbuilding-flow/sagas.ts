@@ -116,7 +116,7 @@ export function* loadBookBuildingStats(
   } catch (e) {
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
+        createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
       ),
     );
 
@@ -139,7 +139,7 @@ export function* loadBookBuildingListStats(
   } catch (e) {
     yield put(
       webNotificationUIModuleApi.actions.showError(
-        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
+        createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS),
       ),
     );
 

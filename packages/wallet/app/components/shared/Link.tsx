@@ -1,3 +1,5 @@
+/* eslint-disable react-native-a11y/has-valid-accessibility-traits, react-native-a11y/has-valid-accessibility-states */
+
 import { XOR } from "@neufund/shared-utils";
 import * as React from "react";
 import { GestureResponderEvent, Linking, StyleSheet, Text, TouchableHighlight } from "react-native";
@@ -44,7 +46,6 @@ const Link: React.FunctionComponent<TExternalProps> = React.forwardRef<
       style={[styles.link]}
       activeOpacity={1}
       underlayColor="transparent"
-      accessibilityRole="link"
       accessibilityComponentType="button"
       accessibilityTraits={props.disabled ? ["link", "disabled"] : "link"}
       accessibilityStates={props.disabled ? ["disabled"] : []}

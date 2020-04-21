@@ -53,7 +53,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
     }
 
     return defaultItems;
-  }, []);
+  }, [authWallet, navigation]);
 
   return (
     <SafeAreaScreen forceTopInset={true}>

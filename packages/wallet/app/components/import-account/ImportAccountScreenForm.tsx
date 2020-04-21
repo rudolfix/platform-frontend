@@ -38,16 +38,19 @@ const ImportAccountScreenForm: React.FunctionComponent<TExternalProps> = ({
 }) => {
   const navigation = useNavigation();
 
-  const inputRef = React.useCallback((ref: TComponentRefType<typeof TextAreaInput>) => {
-    // focus needs to be done after all stack related animations have been finished
-    // otherwise the input got's blurred almost immediately
-    InteractionManager.runAfterInteractions(() => {
-      // only focus input if the view is still focused
-      if (ref && navigation.isFocused()) {
-        ref.focus();
-      }
-    });
-  }, []);
+  const inputRef = React.useCallback(
+    (ref: TComponentRefType<typeof TextAreaInput>) => {
+      // focus needs to be done after all stack related animations have been finished
+      // otherwise the input got's blurred almost immediately
+      InteractionManager.runAfterInteractions(() => {
+        // only focus input if the view is still focused
+        if (ref && navigation.isFocused()) {
+          ref.focus();
+        }
+      });
+    },
+    [navigation],
+  );
 
   return (
     <Form<TFormValue>

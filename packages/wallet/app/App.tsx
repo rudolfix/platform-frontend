@@ -59,7 +59,7 @@ const AppLayout: React.FunctionComponent<TLayoutProps> = ({
 
   React.useEffect(() => {
     init();
-  }, []);
+  }, [init]);
 
   React.useEffect(() => {
     if (previousInitStatus === EInitStatus.IN_PROGRESS) {

@@ -10,7 +10,6 @@ import { spacingStyles } from "../../styles/spacings";
 import { EIconType } from "../shared/Icon";
 import { ButtonIcon } from "../shared/buttons/ButtonIcon";
 
-
 const Header: React.FunctionComponent = () => {
   const navigation = useNavigation();
 
@@ -22,6 +21,7 @@ const Header: React.FunctionComponent = () => {
         <ButtonIcon
           icon={EIconType.QR_CODE}
           accessibilityLabel="Scan QR code"
+          accessibilityHint="Opens a qr code scanner"
           testID="home.header.go-to-qr-code-scanner"
           onPress={() => navigation.navigate(appRoutes.qrCode)}
         />

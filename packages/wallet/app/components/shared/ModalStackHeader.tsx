@@ -43,7 +43,12 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
     >
       {previous && (
         <Spacer>
-          <ButtonIcon icon={EIconType.CLOSE} accessibilityLabel="Go back" onPress={goBack} />
+          <ButtonIcon
+            icon={EIconType.CLOSE}
+            accessibilityLabel="Go back"
+            accessibilityHint="Returns to the previous screen"
+            onPress={goBack}
+          />
         </Spacer>
       )}
       <Headline

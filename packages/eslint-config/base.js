@@ -38,9 +38,6 @@ module.exports = {
     "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
     "@typescript-eslint/no-unnecessary-qualifier": "error",
     "@typescript-eslint/no-unnecessary-type-arguments": "error",
-    // TODO: Enable when Stack provides a proper navigation
-    // "@typescript-eslint/no-unsafe-member-access": "error",
-    // "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/prefer-as-const": "error",
     "@typescript-eslint/prefer-function-type": "error",
     "@typescript-eslint/prefer-optional-chain": "error",

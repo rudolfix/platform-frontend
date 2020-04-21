@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ["./react", "plugin:import/react-native"],
+  extends: [
+    "./react",
+    "plugin:import/react-native",
+    "plugin:react-native-a11y/all",
+  ],
   plugins: ["react-native"],
   settings: {
     "import/resolver": {

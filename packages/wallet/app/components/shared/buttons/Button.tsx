@@ -1,3 +1,5 @@
+/* eslint-disable react-native-a11y/has-valid-accessibility-traits, react-native-a11y/has-valid-accessibility-states */
+
 import { assertNever } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet, TouchableHighlight } from "react-native";
@@ -72,7 +74,6 @@ const Button = React.forwardRef<TouchableHighlight, TExternalProps>(
           style,
         )}
         activeColor={yellowDarker1}
-        accessibilityRole="button"
         accessibilityComponentType="button"
         accessibilityTraits={isDisabled ? ["button", "disabled"] : "button"}
         accessibilityStates={isDisabled ? ["disabled"] : []}

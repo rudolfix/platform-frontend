@@ -14,7 +14,6 @@ import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 
-
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
 };
@@ -32,7 +31,7 @@ const CreateAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   return (
     <NeuGradientScreen style={styles.wrapper}>
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={logo} />
+        <Image accessibilityIgnoresInvertColors={true} style={styles.logo} source={logo} />
       </View>
 
       <View style={styles.container}>

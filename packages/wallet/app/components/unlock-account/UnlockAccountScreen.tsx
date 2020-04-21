@@ -13,7 +13,6 @@ import { NeuGradientScreen } from "../shared/NeuGradientScreen";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 
-
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
   authWallet: ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>;
@@ -33,7 +32,7 @@ const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   return (
     <NeuGradientScreen style={styles.wrapper}>
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={logo} />
+        <Image style={styles.logo} source={logo} accessibilityIgnoresInvertColors={true} />
       </View>
 
       <View style={styles.container}>

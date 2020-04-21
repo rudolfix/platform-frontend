@@ -12,7 +12,6 @@ const PanelTouchable: React.FunctionComponent<React.ComponentProps<typeof Toucha
 }) => (
   <TouchableOpacity
     activeOpacity={0.6}
-    accessibilityRole="button"
     accessibilityComponentType="button"
     accessibilityTraits="button"
     style={[styles.wrapper, style]}

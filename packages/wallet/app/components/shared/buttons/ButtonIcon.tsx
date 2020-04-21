@@ -1,3 +1,5 @@
+/* eslint-disable react-native-a11y/has-valid-accessibility-traits, react-native-a11y/has-valid-accessibility-states */
+
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
@@ -20,7 +22,7 @@ type TExternalProps = {
  * A button icon that aligns with our design system.
  */
 const ButtonIcon = React.forwardRef<TouchableOpacity, TExternalProps>(
-  ({ icon, style, loading, disabled, accessibilityLabel, ...props }, ref) => {
+  ({ icon, style, loading, disabled, accessibilityLabel, accessibilityHint, ...props }, ref) => {
     const isDisabled = disabled || loading;
 
     return (
@@ -28,11 +30,11 @@ const ButtonIcon = React.forwardRef<TouchableOpacity, TExternalProps>(
         ref={ref}
         activeOpacity={0.4}
         style={[styles.buttonCommon, style]}
-        accessibilityRole="button"
         accessibilityComponentType="button"
         accessibilityTraits={isDisabled ? ["button", "disabled"] : "button"}
         accessibilityStates={isDisabled ? ["disabled"] : []}
         accessibilityLabel={accessibilityLabel}
+        accessibilityHint={accessibilityHint}
         disabled={isDisabled}
         {...props}
       >

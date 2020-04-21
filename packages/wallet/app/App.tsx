@@ -56,7 +56,7 @@ const AppLayout: React.FunctionComponent<TLayoutProps> = ({
 
   React.useEffect(() => {
     init();
-  }, []);
+  }, [init]);
 
   switch (initStatus) {
     case EInitStatus.NOT_STARTER:

@@ -1,4 +1,3 @@
-import { EthereumAddressWithChecksum } from '@neufund/shared-utils';
 import { getContext } from "@neufund/sagas";
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";

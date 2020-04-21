@@ -1,4 +1,3 @@
-import { IIntlHelpers } from '@neufund/shared-utils';
 import { Button, Checkbox, EButtonLayout, EButtonWidth, TextField } from "@neufund/design-system";
 import { IIntlHelpers, injectIntlHelpers } from "@neufund/shared-utils";
 import { FormikErrors } from "formik";

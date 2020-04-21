@@ -21,8 +21,8 @@ const TOS = "tos";
 
 const validationSchema = Yup.object().shape({
   [EMAIL]: Yup.string()
-  .required()
-  .email(),
+    .required()
+    .email(),
   [PASSWORD]: Yup.string()
     .required()
     .min(8),

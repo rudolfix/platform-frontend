@@ -1,6 +1,6 @@
 import { AppReducer } from "@neufund/sagas";
 
-import { signerUIActions } from "./actions";
+import { SIGN_ACTION_TYPE, SIGNED_ACTION_TYPE, signerUIActions } from "./actions";
 import { TSignerRequestData } from "./types";
 
 export enum ESignerUIState {
@@ -23,13 +23,13 @@ const signerUIReducer: AppReducer<ISignerUIState, typeof signerUIActions> = (
   action,
 ): ISignerUIState => {
   switch (action.type) {
-    case signerUIActions.sign.getType():
+    case SIGN_ACTION_TYPE:
       return {
         state: ESignerUIState.SIGNING,
         data: action.payload.data,
       };
 
-    case signerUIActions.signed.getType():
+    case SIGNED_ACTION_TYPE:
     case signerUIActions.denied.getType():
       return initialState;
 

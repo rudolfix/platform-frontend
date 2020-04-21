@@ -1,5 +1,10 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
-import { EthereumPrivateKey, EthereumHDMnemonic, toEthereumHDPath } from "@neufund/shared-utils";
+import {
+  EthereumPrivateKey,
+  EthereumHDMnemonic,
+  toEthereumHDPath,
+  assertNever,
+} from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 
 import { AppSingleKeyStorage } from "../../storage";
@@ -182,6 +187,8 @@ class EthWalletFactory {
       case EWalletType.PRIVATE_KEY_WALLET:
         await this.ethSecureEnclave.unsafeDeleteSecret(walletMetadata.privateKeyReference);
         break;
+      default:
+        assertNever(walletMetadata);
     }
 
     await this.walletStorage.clear();

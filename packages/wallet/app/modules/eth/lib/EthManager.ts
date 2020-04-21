@@ -6,7 +6,6 @@ import {
   ESignerType,
 } from "@neufund/shared-modules";
 import {
-  EthereumAddress,
   EthereumPrivateKey,
   EthereumHDMnemonic,
   EthereumAddressWithChecksum,
@@ -105,7 +104,7 @@ class EthManager implements IEthManager {
    *
    * @param address - An ethereum address
    */
-  getBalance(address: EthereumAddress): Promise<utils.BigNumber> {
+  getBalance(address: EthereumAddressWithChecksum): Promise<utils.BigNumber> {
     return this.adapter.getBalance(address);
   }
 
@@ -336,20 +335,22 @@ class EthManager implements IEthManager {
     return this.adapter.sendTransaction(signedTx);
   }
 
-  private async populateTransaction({
-    from,
-    ...rest
-  }: TTransactionRequestRequired): Promise<TUnsignedTransaction> {
+  private async populateTransaction(
+    transaction: TTransactionRequestRequired,
+  ): Promise<TUnsignedTransaction> {
     this.logger.info("Populating transaction with missing data");
 
+    const from = await this.getWalletAddress();
+
     const [to, nonce, chainId] = await Promise.all([
-      this.adapter.resolveName(rest.to),
+      this.adapter.resolveName(transaction.to),
       this.adapter.getTransactionCountFromPending(from),
       this.adapter.getChainId(),
     ]);
 
     return {
-      ...rest,
+      ...transaction,
+      from,
       to,
       nonce,
       chainId,

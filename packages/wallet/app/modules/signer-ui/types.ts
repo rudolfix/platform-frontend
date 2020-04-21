@@ -1,6 +1,6 @@
-import { EthereumAddress } from "@neufund/shared-utils";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
-import { TUnsignedTransaction } from "../eth/lib/types";
+import { TTransactionRequestRequired } from "../eth/lib/types";
 
 enum ESignerType {
   WC_SESSION_REQUEST = "wc_session_request",
@@ -12,16 +12,15 @@ type TWCSessionRequestPayload = {
   peerId: string;
   peerName: string;
   peerUrl: string;
-  id: number;
 };
 
 type TWCSessionResponsePayload = {
-  address: EthereumAddress;
+  address: EthereumAddressWithChecksum;
   chainId: number;
 };
 
 type TSignRequestPayload = {
-  data: string;
+  digest: string;
 };
 
 type TSignResponsePayload = {
@@ -29,13 +28,11 @@ type TSignResponsePayload = {
 };
 
 type TSendTransactionRequestPayload = {
-  transaction: TUnsignedTransaction;
-  id: string;
+  transaction: TTransactionRequestRequired;
 };
 
 type TSendTransactionResponsePayload = {
   transactionHash: string;
-  id: string;
 };
 
 export type TSignerRequestData = {

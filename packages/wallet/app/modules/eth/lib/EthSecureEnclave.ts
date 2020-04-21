@@ -83,7 +83,7 @@ class EthSecureEnclave {
    * @returns A reference to the secret
    */
   async addSecret(secret: string): Promise<TSecureReference> {
-    return await this.secureStorage.setSecret(secret);
+    return this.secureStorage.setSecret(secret);
   }
 
   /**

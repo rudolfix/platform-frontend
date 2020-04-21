@@ -1,5 +1,9 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
-import { EthereumAddress, EthereumName, toEthereumAddress } from "@neufund/shared-utils";
+import {
+  EthereumAddressWithChecksum,
+  EthereumName,
+  toEthereumChecksumAddress,
+} from "@neufund/shared-utils";
 import { providers, utils } from "ethers";
 import { interfaces } from "inversify";
 
@@ -26,10 +30,12 @@ class EthAdapter {
    *
    * @returns An ETH address
    */
-  resolveName(addressOrName: EthereumAddress | EthereumName): Promise<EthereumAddress> {
+  resolveName(
+    addressOrName: EthereumAddressWithChecksum | EthereumName,
+  ): Promise<EthereumAddressWithChecksum> {
     this.logger.info(`Resolving a name for ${addressOrName}`);
 
-    return this.provider.resolveName(addressOrName).then(toEthereumAddress);
+    return this.provider.resolveName(addressOrName).then(toEthereumChecksumAddress);
   }
 
   /**
@@ -48,7 +54,7 @@ class EthAdapter {
    *
    * @param addressOrName - An ethereum address or ENS name
    */
-  getBalance(addressOrName: EthereumAddress | EthereumName): Promise<utils.BigNumber> {
+  getBalance(addressOrName: EthereumAddressWithChecksum | EthereumName): Promise<utils.BigNumber> {
     this.logger.info(`Resolving a balance for ${addressOrName}`);
 
     return this.provider.getBalance(addressOrName);
@@ -59,7 +65,9 @@ class EthAdapter {
    *
    * @param addressOrName - An ethereum address or ENS name
    */
-  getTransactionCountFromLatest(addressOrName: EthereumAddress | EthereumName): Promise<number> {
+  getTransactionCountFromLatest(
+    addressOrName: EthereumAddressWithChecksum | EthereumName,
+  ): Promise<number> {
     this.logger.info(`Getting a transaction count from latest for ${addressOrName}`);
 
     return this.provider.getTransactionCount(addressOrName, EBlockTag.LATEST);
@@ -70,7 +78,9 @@ class EthAdapter {
    *
    * @param addressOrName - An ethereum address or ENS name
    */
-  getTransactionCountFromPending(addressOrName: EthereumAddress | EthereumName): Promise<number> {
+  getTransactionCountFromPending(
+    addressOrName: EthereumAddressWithChecksum | EthereumName,
+  ): Promise<number> {
     this.logger.info(`Getting a transaction count from pending for ${addressOrName}`);
 
     return this.provider.getTransactionCount(addressOrName, EBlockTag.PENDING);

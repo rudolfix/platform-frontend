@@ -1,5 +1,9 @@
 import { Input } from "@neufund/design-system";
-import { derivationPathPrefixValidator, IIntlProps, injectIntlHelpers } from "@neufund/shared";
+import {
+  derivationPathPrefixValidator,
+  IIntlProps,
+  injectIntlHelpers,
+} from "@neufund/shared-utils";
 import { debounce } from "lodash";
 import * as React from "react";
 

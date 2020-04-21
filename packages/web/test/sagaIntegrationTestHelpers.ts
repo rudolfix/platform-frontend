@@ -1,4 +1,3 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
 import {
   AuthJsonHttpClient,
   authModuleAPI,
@@ -8,6 +7,7 @@ import {
   JsonHttpClient,
   noopLogger,
 } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { Container } from "inversify";
 import { toChecksumAddress } from "web3-utils";
 

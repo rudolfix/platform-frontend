@@ -1,4 +1,5 @@
-import { DeepReadonly } from "../../../../shared/dist/utils/types";
+import { DeepReadonly } from "@neufund/shared-utils";
+
 import { TMessage } from "../../components/translatedMessages/utils";
 import { EWalletType } from "../web3/types";
 

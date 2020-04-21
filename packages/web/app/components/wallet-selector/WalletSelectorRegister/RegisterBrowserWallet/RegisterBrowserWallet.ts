@@ -1,4 +1,4 @@
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import { Location } from "history";
 import { branch, compose, renderComponent, withProps } from "recompose";
 

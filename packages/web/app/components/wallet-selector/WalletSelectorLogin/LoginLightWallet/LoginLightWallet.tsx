@@ -5,7 +5,7 @@ import {
   EButtonWidth,
   TextField,
 } from "@neufund/design-system";
-import { IIntlProps, injectIntlHelpers, withContainer } from "@neufund/shared";
+import { IIntlProps, injectIntlHelpers, withContainer } from "@neufund/shared-utils";
 import { FormikProps, useFormikContext, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";

@@ -1,4 +1,4 @@
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { branch, compose, renderComponent, withProps } from "recompose";

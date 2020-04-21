@@ -1,12 +1,12 @@
 import { getContext } from "@neufund/sagas";
 import { expectSaga, matchers } from "@neufund/sagas/tests";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { toChecksumAddress } from "web3-utils";
 
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { actions } from "../../actions";
 import { loadKycRequestData } from "../../kyc/sagas";
 import { EWalletSubType, EWalletType } from "../../web3/types";
-import { EthereumAddressWithChecksum } from "./../../../../../shared/src/utils/opaque-types/types";
 import {
   BACKEND_BASE_URL,
   setTestJWT,

@@ -20,9 +20,11 @@ class RateOracleAdapterFactory {
  * An adapter for RateOracle to hide implementation differences between web3 and ethers generated contracts interfaces
  */
 class RateOracleAdapter implements IRateOracleAdapter {
-  constructor(private readonly rateOracleContract: ITokenExchangeRateOracle) {}
+  readonly address: string;
 
-  address = this.rateOracleContract.address;
+  constructor(private readonly rateOracleContract: ITokenExchangeRateOracle) {
+    this.address = this.rateOracleContract.address;
+  }
 
   async getExchangeRates(
     numeratorTokens: string[],

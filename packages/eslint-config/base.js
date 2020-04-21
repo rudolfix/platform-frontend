@@ -32,9 +32,33 @@ module.exports = {
     "no-constructor-return": "error",
     "no-extend-native": "error",
     "no-extra-bind": "error",
-    "no-extra-label": "error",
+    "no-floating-decimal": "error",
+    "no-invalid-this": "error",
+    "no-iterator": "error",
+    "no-labels": "error",
+    "no-lone-blocks": "error",
+    "no-loop-func": "error",
+    "no-new": "error",
+    "no-new-func": "error",
+    "no-new-wrappers": "error",
+    "no-octal-escape": "error",
+    "no-param-reassign": "error",
+    "no-proto": "error",
+    "no-implicit-globals": "error",
     "no-return-assign": "error",
     "no-return-await": "error",
+    "no-script-url": "error",
+    "no-self-compare": "error",
+    "no-sequences": "error",
+    "no-unmodified-loop-condition": "error",
+    "no-useless-call": "error",
+    "no-useless-concat": "error",
+    "no-void": "error",
+    "prefer-promise-reject-errors": "error",
+    "prefer-regex-literals": "error",
+    radix: "error",
+    "wrap-iife": "error",
+    yoda: "error",
 
     "@typescript-eslint/array-type": ["error", { default: "array-simple" }],
     "@typescript-eslint/consistent-type-assertions": [
@@ -59,6 +83,20 @@ module.exports = {
     "@typescript-eslint/require-array-sort-compare": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
     "@typescript-eslint/unified-signatures": "error",
+    "@typescript-eslint/no-dupe-class-members": "error",
+    "@typescript-eslint/no-empty-function": "error",
+    "@typescript-eslint/no-unused-expressions": "error",
+    "@typescript-eslint/no-useless-constructor": "error",
+    "@typescript-eslint/no-magic-numbers": [
+      "error",
+      {
+        // 0 is often used to access first element of an array
+        ignore: [0],
+        ignoreEnums: true,
+        ignoreNumericLiteralTypes: true,
+        ignoreReadonlyClassProperties: true,
+      },
+    ],
 
     /**
      * Import eslint rules
@@ -84,4 +122,12 @@ module.exports = {
     "import/no-named-default": "error",
     "import/no-default-export": "error",
   },
+  overrides: [
+    {
+      files: ["**/*.stories.*", "**/*.spec.*", "**/e2e/**"],
+      rules: {
+        "@typescript-eslint/no-magic-numbers": "off",
+      },
+    },
+  ],
 };

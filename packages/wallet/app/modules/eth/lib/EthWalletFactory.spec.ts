@@ -133,7 +133,7 @@ describe("EthWalletFactory", () => {
           return Promise.resolve(toSecureReference(length.toString()));
         },
         getAddress: (secretReference: TSecureReference) => {
-          if (secretStorage[parseInt(secretReference)]) {
+          if (secretStorage[parseInt(secretReference, 10)]) {
             return Promise.resolve(privateKeyWalletMetadata.address);
           }
 
@@ -179,7 +179,7 @@ describe("EthWalletFactory", () => {
           return Promise.resolve(toSecureReference(length.toString()));
         },
         getAddress: (secretReference: TSecureReference) => {
-          if (secretStorage[parseInt(secretReference)]) {
+          if (secretStorage[parseInt(secretReference, 10)]) {
             return Promise.resolve(hdWalletMetadata.address);
           }
 
@@ -230,7 +230,7 @@ describe("EthWalletFactory", () => {
           return Promise.resolve(toSecureReference(length.toString()));
         },
         getAddress: (secretReference: TSecureReference) => {
-          if (secretStorage[parseInt(secretReference)]) {
+          if (secretStorage[parseInt(secretReference, 10)]) {
             return Promise.resolve(hdWalletMetadata.address);
           }
 

@@ -174,6 +174,7 @@ export function* connectAndRestoreLightWallet(
     userType,
     email: registerFormDefaultValues.email,
     tos: registerFormDefaultValues.tos,
+    backupCodesVerified: true,
   });
 }
 export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void, any> {

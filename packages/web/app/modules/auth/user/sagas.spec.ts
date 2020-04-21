@@ -1,3 +1,4 @@
+import { EthereumAddressWithChecksum } from '@neufund/shared-utils';
 import { getContext } from "@neufund/sagas";
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
@@ -80,7 +81,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       await expectSaga(
         loadOrCreateUser,
@@ -135,7 +136,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       await expectSaga(
         loadOrCreateUser,
@@ -192,7 +193,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       await expectSaga(
         loadOrCreateUser,
@@ -250,7 +251,7 @@ describe.skip("Auth - User - Integration Test", () => {
         salt,
         email,
       };
-      jwtStorage.set(jwt);
+      await jwtStorage.set(jwt);
 
       const currentUser = await apiUserService.me();
 

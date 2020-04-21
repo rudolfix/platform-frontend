@@ -36,6 +36,7 @@ enum EIconType {
 
 const pickByIdentity = pickBy(identity);
 
+// eslint-disable-next-line complexity
 const getIcon = (type: EIconType) => {
   switch (type) {
     case EIconType.HOME:

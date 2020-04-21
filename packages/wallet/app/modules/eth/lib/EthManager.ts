@@ -350,7 +350,6 @@ class EthManager implements IEthManager {
 
     return {
       ...transaction,
-      from,
       to,
       nonce,
       chainId,

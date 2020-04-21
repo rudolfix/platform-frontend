@@ -309,7 +309,7 @@ describe("WalletConnectManager", () => {
       });
     });
 
-    it("should approve eth_sendTransaction method", async done => {
+    it("should strip unknown properties and approve eth_sendTransaction method", async done => {
       const { mockInstance, walletConnectManager } = await approveSession(new ApproveRequestMock());
 
       const transactionHash = "tx hash";
@@ -322,11 +322,17 @@ describe("WalletConnectManager", () => {
         data: "0x",
       };
 
+      const transactionFromRpc = {
+        ...transaction,
+        foo: "bar",
+        quiz: "baz",
+      };
+
       const validEthSignJsonRpc = {
         id: 1,
         jsonrpc: "2.0",
         method: "eth_sendTransaction",
-        params: [transaction],
+        params: [transactionFromRpc],
       };
 
       setTimeout(() => {

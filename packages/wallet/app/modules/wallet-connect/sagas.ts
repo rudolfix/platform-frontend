@@ -55,10 +55,13 @@ function* connectToURI(
     const session = yield* call(() => walletConnectManager.createSession());
 
     yield put(
-      signerUIModuleApi.actions.sign(ESignerType.WC_SESSION_REQUEST, {
-        peerId: session.peer.id,
-        peerName: session.peer.meta.name,
-        peerUrl: session.peer.meta.url,
+      signerUIModuleApi.actions.sign({
+        type: ESignerType.WC_SESSION_REQUEST,
+        data: {
+          peerId: session.peer.id,
+          peerName: session.peer.meta.name,
+          peerUrl: session.peer.meta.url,
+        },
       }),
     );
 
@@ -157,7 +160,12 @@ function* connectWalletConnectEvents(wcManager: WalletConnectManager): Generator
 
     switch (managerEvent.type) {
       case EWalletConnectManagerEvents.SIGN_MESSAGE: {
-        yield put(signerUIModuleApi.actions.sign(ESignerType.SIGN_MESSAGE, managerEvent.payload));
+        yield put(
+          signerUIModuleApi.actions.sign({
+            type: ESignerType.SIGN_MESSAGE,
+            data: managerEvent.payload,
+          }),
+        );
 
         const { approved, denied } = yield* race({
           approved: take(signerUIModuleApi.actions.signed),
@@ -177,7 +185,10 @@ function* connectWalletConnectEvents(wcManager: WalletConnectManager): Generator
 
       case EWalletConnectManagerEvents.SEND_TRANSACTION: {
         yield put(
-          signerUIModuleApi.actions.sign(ESignerType.SEND_TRANSACTION, managerEvent.payload),
+          signerUIModuleApi.actions.sign({
+            type: ESignerType.SEND_TRANSACTION,
+            data: managerEvent.payload,
+          }),
         );
 
         const { approved, denied } = yield* race({

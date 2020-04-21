@@ -62,6 +62,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
       <Text>Wallet connect peer: </Text>
       {walletConnectPeer ? (
         <>
+          {/* eslint-disable-next-line @typescript-eslint/no-magic-numbers */}
           <Text>{JSON.stringify(walletConnectPeer, undefined, 2)}</Text>
           <Button
             layout={EButtonLayout.PRIMARY}

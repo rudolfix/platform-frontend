@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 import { StyleSheet } from "react-native";
 
 export const spacing1 = 4;

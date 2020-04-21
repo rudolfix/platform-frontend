@@ -177,7 +177,8 @@ class EthSecureEnclave {
    */
   async createRandomMnemonic(): Promise<TSecureReference> {
     // 32 bytes equals to 24 words
-    const bytes = utils.randomBytes(32);
+    const BYTES_IN_WORDS = 32;
+    const bytes = utils.randomBytes(BYTES_IN_WORDS);
 
     const randomMnemonic = utils.HDNode.entropyToMnemonic(bytes);
 

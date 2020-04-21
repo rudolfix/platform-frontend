@@ -1,79 +1,14 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import React from "react";
-import { Text } from "react-native";
 import Config from "react-native-config";
 
+import { AppAuthRouterTabs } from "./AppAuthRouterTabs";
 import { appRoutes } from "./appRoutes";
 import { QRCode } from "./components/QRCode";
-import { HomeScreen } from "./components/home/HomeScreen";
-import { PortfolioScreen } from "./components/portfolio/PortfolioScreen";
-import { ProfileScreen } from "./components/profile/ProfileScreen";
-import { EIconType, Icon } from "./components/shared/Icon";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
-import { WalletScreen } from "./components/wallet/WalletScreen";
-import { typographyStyles } from "./styles/typography";
-import { useTheme } from "./themes/ThemeProvider";
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-type TBarProps = { color?: string };
-
-const tabConfig = [
-  {
-    name: "Home",
-    route: appRoutes.home,
-    component: HomeScreen,
-    icon: EIconType.HOME,
-  },
-  {
-    name: "Portfolio",
-    route: appRoutes.portfolio,
-    component: PortfolioScreen,
-    icon: EIconType.PORTFOLIO,
-  },
-  {
-    name: "Wallet",
-    route: appRoutes.wallet,
-    component: WalletScreen,
-    icon: EIconType.WALLET,
-  },
-  {
-    name: "Profile",
-    route: appRoutes.profile,
-    component: ProfileScreen,
-    icon: EIconType.PROFILE,
-  },
-];
-
-const Root: React.FunctionComponent = () => {
-  const { navigationTheme } = useTheme();
-
-  return (
-    <Tab.Navigator
-      initialRouteName={appRoutes.home}
-      tabBarOptions={{
-        inactiveTintColor: navigationTheme.colors.text,
-      }}
-    >
-      {tabConfig.map(({ route, name, component, icon }) => (
-        <Tab.Screen
-          key={route}
-          name={name}
-          component={component}
-          options={{
-            tabBarLabel: ({ color }: TBarProps) => (
-              <Text style={{ ...typographyStyles.menuLabel, color }}>{name}</Text>
-            ),
-            tabBarIcon: ({ color }: TBarProps) => <Icon style={{ color }} type={icon} />,
-          }}
-        />
-      ))}
-    </Tab.Navigator>
-  );
-};
 
 const AppAuthRouter: React.FunctionComponent = () => (
   <>
@@ -92,7 +27,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
     >
       <Stack.Screen
         name={appRoutes.home}
-        component={Root}
+        component={AppAuthRouterTabs}
         options={{
           title: "Back",
           headerShown: false,

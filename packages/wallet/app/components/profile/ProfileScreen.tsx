@@ -1,20 +1,18 @@
 import { nonNullable } from "@neufund/shared-utils";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text } from "react-native";
 import Config from "react-native-config";
 
 import { appRoutes } from "../../appRoutes";
 import { authModuleAPI } from "../../modules/auth/module";
 import { walletConnectModuleApi } from "../../modules/wallet-connect/module";
 import { appConnect } from "../../store/utils";
-import { spacingStyles } from "../../styles/spacings";
 import { EIconType } from "../shared/Icon";
 import { SafeAreaScreen } from "../shared/Screen";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { Menu, EMenuItemType } from "../shared/menu/Menu";
-import { AddressShare } from "./AddressShare";
-import { Avatar } from "./Avatar";
+import { Header } from "./header/Header";
 
 type TStateProps = {
   authWallet: NonNullable<ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>>;
@@ -57,11 +55,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
 
   return (
     <SafeAreaScreen forceTopInset={true}>
-      <View style={styles.menuHeader}>
-        <Avatar name={authWallet.name} />
-
-        <AddressShare address={authWallet.address} style={styles.addressShare} />
-      </View>
+      <Header name={authWallet.name} address={authWallet.address} />
 
       <Menu items={items} />
 
@@ -86,16 +80,6 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
     </SafeAreaScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  menuHeader: {
-    ...spacingStyles.mh4,
-    ...spacingStyles.mv5,
-  },
-  addressShare: {
-    ...spacingStyles.mt5,
-  },
-});
 
 const ProfileScreen = appConnect<TStateProps, TDispatchProps>({
   stateToProps: state => ({

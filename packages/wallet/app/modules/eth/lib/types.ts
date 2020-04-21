@@ -18,7 +18,6 @@ export type TTransactionRequestRequired = {
 
 export type TUnsignedTransaction = {
   to: EthereumAddressWithChecksum;
-  from: EthereumAddressWithChecksum;
   nonce: number;
   gasLimit: string;
   gasPrice: string;

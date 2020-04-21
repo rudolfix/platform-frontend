@@ -47,4 +47,32 @@ export type TSignerResponseData = {
   [ESignerType.SEND_TRANSACTION]: TSendTransactionResponsePayload;
 };
 
+export type TSignerSignPayload =
+  | {
+      type: ESignerType.SEND_TRANSACTION;
+      data: TSignerRequestData[ESignerType.SEND_TRANSACTION];
+    }
+  | {
+      type: ESignerType.SIGN_MESSAGE;
+      data: TSignerRequestData[ESignerType.SIGN_MESSAGE];
+    }
+  | {
+      type: ESignerType.WC_SESSION_REQUEST;
+      data: TSignerRequestData[ESignerType.WC_SESSION_REQUEST];
+    };
+
+export type TSignerSignedPayload =
+  | {
+      type: ESignerType.SEND_TRANSACTION;
+      data: TSignerResponseData[ESignerType.SEND_TRANSACTION];
+    }
+  | {
+      type: ESignerType.SIGN_MESSAGE;
+      data: TSignerResponseData[ESignerType.SIGN_MESSAGE];
+    }
+  | {
+      type: ESignerType.WC_SESSION_REQUEST;
+      data: TSignerResponseData[ESignerType.WC_SESSION_REQUEST];
+    };
+
 export { ESignerType };

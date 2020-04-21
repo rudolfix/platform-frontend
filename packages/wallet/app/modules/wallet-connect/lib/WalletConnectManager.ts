@@ -1,5 +1,5 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddress } from "@neufund/shared-utils";
 import { interfaces } from "inversify";
 import WalletConnect from "@walletconnect/react-native";
 import { IClientMeta } from "@walletconnect/types";

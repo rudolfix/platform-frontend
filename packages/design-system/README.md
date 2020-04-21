@@ -1,6 +1,6 @@
-# Neufund Web Components
+# Neufund Design System
 
-Components for the Neufund Design System.
+UI components, icons and styles for the Neufund Design System.
 
 ## Usage
 

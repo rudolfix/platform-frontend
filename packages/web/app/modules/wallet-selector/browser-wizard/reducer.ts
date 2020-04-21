@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../store";

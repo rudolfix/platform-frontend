@@ -1,3 +1,3 @@
 {
-  "extends": ["@neufund/shared/tslint.json"]
+  "extends": ["@neufund/shared-utils/tslint.json"]
 }

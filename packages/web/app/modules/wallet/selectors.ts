@@ -5,7 +5,7 @@ import {
   multiplyBigNumbers,
   NEUR_ALLOWED_US_STATES,
   subtractBigNumbers,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { createSelector } from "reselect";
 import * as Web3Utils from "web3-utils";

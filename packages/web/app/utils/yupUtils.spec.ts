@@ -1,4 +1,4 @@
-// TODO move file to design-system once it has CI
+// TODO move file to design-system once it has testing setup
 import {
   findMax,
   findMin,
@@ -7,7 +7,7 @@ import {
   makeAllRequired,
   pickSchemaValues,
 } from "@neufund/design-system";
-import { AssertEqual, assertType } from "@neufund/shared/tests";
+import { AssertEqual, assertType } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as Yup from "yup";
 

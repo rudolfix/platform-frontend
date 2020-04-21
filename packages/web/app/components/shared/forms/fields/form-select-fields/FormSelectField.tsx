@@ -1,5 +1,5 @@
 import { useFieldMeta } from "@neufund/design-system";
-import { Dictionary, TDataTestId } from "@neufund/shared";
+import { Dictionary, TDataTestId } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { Field, FieldProps } from "formik";
 import { map } from "lodash";

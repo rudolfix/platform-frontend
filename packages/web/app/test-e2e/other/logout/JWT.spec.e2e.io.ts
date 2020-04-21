@@ -1,4 +1,4 @@
-import { getJwtExpiryDate } from "@neufund/shared";
+import { getJwtExpiryDate } from "@neufund/shared-utils";
 
 import {
   AUTH_INACTIVITY_THRESHOLD,

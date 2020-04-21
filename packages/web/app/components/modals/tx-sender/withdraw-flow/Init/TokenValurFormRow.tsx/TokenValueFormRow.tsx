@@ -1,4 +1,4 @@
-import { EquityToken } from "@neufund/shared";
+import { EquityToken } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { FormikErrors, FormikTouched } from "formik";
 import * as React from "react";

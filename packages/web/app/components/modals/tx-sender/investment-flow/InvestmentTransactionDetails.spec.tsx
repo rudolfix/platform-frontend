@@ -1,5 +1,5 @@
-import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared";
-import { tid } from "@neufund/shared/tests";
+import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";

@@ -1,5 +1,5 @@
 import { call, fork, put, select, take } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import { includes } from "lodash";
 
 import {

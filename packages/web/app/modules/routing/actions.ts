@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 import { goBack, push } from "connected-react-router";
 import { LocationDescriptorObject, Path } from "history";
 

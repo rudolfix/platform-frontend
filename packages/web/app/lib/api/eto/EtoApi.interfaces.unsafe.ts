@@ -21,7 +21,7 @@ import {
   MIN_VOTING_QUORUM,
   NEW_SHARES_TO_ISSUE_IN_FIXED_SLOTS,
   NEW_SHARES_TO_ISSUE_IN_WHITELIST,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { NumberSchema, StringSchema } from "yup";
 
 import { ECurrency } from "../../../components/shared/formatters/utils";

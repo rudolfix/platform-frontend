@@ -1,4 +1,4 @@
-import { Tuple } from "@neufund/shared";
+import { Tuple } from "@neufund/shared-utils";
 import * as yup from "yup";
 
 import { singleValue, tupleSchema } from "../../../utils/yupSchemas";

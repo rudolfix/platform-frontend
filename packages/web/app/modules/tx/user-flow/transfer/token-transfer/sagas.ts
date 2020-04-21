@@ -1,5 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
-import { convertFromUlps } from "@neufund/shared";
+import { convertFromUlps } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { actions, TActionFromCreator } from "../../../../actions";

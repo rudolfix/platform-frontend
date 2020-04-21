@@ -10,9 +10,12 @@ A monorepo of Neufund frontend.
 
 ## packages
 
-- [web](./packages/web) - web UI deployed on `platform.neufund.org`
-- [shared](./packages/shared) - shared business logic
-- more coming soon...
+ - [web](./packages/web) - web UI deployed on `platform.neufund.org`
+ - [design-system](./packages/design-system) - shared UI components, icons and styles for the web
+ - [wallet](./packages/wallet) - mobile wallet app for iOS & Android
+ - [shared-utils](./packages/shared-utils) - shared utilities
+ - [shared-modules](./packages/shared-modules) - shared business logic
+ - [sagas](./packages/sagas) - saga effects and utilities
 
 ## scripts
 

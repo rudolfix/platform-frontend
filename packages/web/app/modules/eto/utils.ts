@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum, Overwrite } from "@neufund/shared";
+import { EthereumAddressWithChecksum, Overwrite } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import {

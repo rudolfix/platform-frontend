@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 import { match } from "react-router";
 
 import { TEtoViewByIdMatch, TEtoViewByPreviewCodeMatch } from "../../routing/types";

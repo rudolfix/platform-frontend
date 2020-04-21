@@ -1,5 +1,5 @@
-import { toEthereumAddress } from "@neufund/shared";
 import { ILogger } from "@neufund/shared-modules";
+import { toEthereumAddress } from "@neufund/shared-utils";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";

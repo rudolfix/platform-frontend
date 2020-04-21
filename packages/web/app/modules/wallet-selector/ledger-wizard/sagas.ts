@@ -1,5 +1,5 @@
 import { call, fork, neuCall, put, race, select, take } from "@neufund/sagas";
-import { toEthereumAddress } from "@neufund/shared";
+import { toEthereumAddress } from "@neufund/shared-utils";
 import { toPairs, zip } from "lodash";
 
 import { tripleZip } from "../../../../typings/modifications";

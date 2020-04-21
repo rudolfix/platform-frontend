@@ -1,4 +1,4 @@
-import { EquityToken } from "@neufund/shared";
+import { EquityToken } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { DataRow } from "../../../../shared/DataRow";

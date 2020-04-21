@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { AppReducer } from "../../../store";

@@ -1,4 +1,4 @@
-import { ETH_DECIMALS, formatMoney } from "@neufund/shared";
+import { ETH_DECIMALS, formatMoney } from "@neufund/shared-utils";
 
 import { TBigNumberVariants } from "../../lib/web3/types";
 import { ECurrency, ENumberInputFormat, ERoundingMode } from "./formatters/utils";

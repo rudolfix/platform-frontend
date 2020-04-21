@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@neufund/sagas": "^1.0.0",
-    "@neufund/shared": "^1.0.0",
+    "@neufund/shared-utils": "^1.0.0",
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/mocha": "^5.2.6",
@@ -51,7 +51,7 @@
   },
   "peerDependencies": {
     "@neufund/sagas": "^1.0.0",
-    "@neufund/shared": "^1.0.0",
+    "@neufund/shared-utils": "^1.0.0",
     "bignumber.js": "^5.0.0",
     "redux": "^4.0.5",
     "tslib": "^1.10.0",

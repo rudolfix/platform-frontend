@@ -4,7 +4,7 @@ import {
   getValidationSchema,
   isRequired,
 } from "@neufund/design-system";
-import { ArrayWithAtLeastOneMember } from "@neufund/shared";
+import { ArrayWithAtLeastOneMember } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { FormikContextType, useField } from "formik";
 import * as React from "react";

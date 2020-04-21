@@ -1,5 +1,5 @@
 import { AppReducer } from "@neufund/sagas";
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { jwtActions } from "./actions";
 

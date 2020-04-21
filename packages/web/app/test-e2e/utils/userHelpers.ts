@@ -1,4 +1,4 @@
-import { toCamelCase } from "@neufund/shared";
+import { toCamelCase } from "@neufund/shared-utils";
 
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";

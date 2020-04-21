@@ -3,7 +3,7 @@ import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   toEquityTokenSymbol,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { createStore, Store } from "redux";
 
 import { ECurrency } from "../app/components/shared/formatters/utils";

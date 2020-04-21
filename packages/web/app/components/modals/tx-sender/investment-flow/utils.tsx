@@ -1,4 +1,4 @@
-import { assertNever, Dictionary, divideBigNumbers } from "@neufund/shared";
+import { assertNever, Dictionary, divideBigNumbers } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 import * as React from "react";

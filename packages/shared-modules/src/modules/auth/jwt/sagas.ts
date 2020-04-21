@@ -112,5 +112,4 @@ function* refreshJWT(): SagaGenerator<void> {
   logger.info("Jwt refreshed successfully");
 }
 
-
 export { createJwt, escalateJwt, refreshJWT, loadJwt, selectJwt, setJwt };

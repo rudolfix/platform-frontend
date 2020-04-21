@@ -4192,6 +4192,11 @@
   resolved "https://registry.yarnpkg.com/@types/lolex/-/lolex-5.1.0.tgz#11b4c4756c007306d0feeaf2f08f88350c635d2b"
   integrity sha512-hCQ2dOEQUw1LwofdIpMMGGqENd5p5ANzvcTe1nXTjcQL84r7tcLXFJlBgi0Ggz0f7BLmE2epf0C5Q07iq2gV0g==
 
+"@types/memory-cache@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@types/memory-cache/-/memory-cache-0.2.1.tgz#00caf5d737e4acc100f5b98152c635edabdb00d7"
+  integrity sha512-6rmz3bMqJNkj0HIN3AMhOfRN+JhnxxTULeBkwgilfnspjABtKG6ig8mbIzkOjtmiRw+WG1B56z+BO6htGz3IBw==
+
 "@types/minimatch@*", "@types/minimatch@3.0.3", "@types/minimatch@^3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -16239,6 +16244,11 @@ memoizerific@^1.11.3:
   integrity sha1-fIekZGREwy11Q4VwkF8tvRsagFo=
   dependencies:
     map-or-similar "^1.5.0"
+
+memory-cache@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/memory-cache/-/memory-cache-0.2.0.tgz#7890b01d52c00c8ebc9d533e1f8eb17e3034871a"
+  integrity sha1-eJCwHVLADI68nVM+H46xfjA0hxo=
 
 memory-fs@^0.4.0, memory-fs@^0.4.1:
   version "0.4.1"

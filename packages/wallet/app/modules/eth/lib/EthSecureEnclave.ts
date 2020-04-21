@@ -12,6 +12,7 @@ import { SecureStorage, TSecureReference } from "./SecureStorage";
 import { isMnemonic, isPrivateKey } from "./utils";
 import { deviceInformationModuleApi } from "../../device-information/module";
 import { DeviceInformation } from "../../device-information/DeviceInformation";
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 
 class EthSecureEnclaveError extends EthModuleError {
   constructor(message: string) {
@@ -51,11 +52,14 @@ class FailedToDerivePrivateKey extends EthSecureEnclaveError {
 @injectable()
 class EthSecureEnclave {
   private readonly secureStorage: SecureStorage;
+  private readonly logger: ILogger;
 
   constructor(
+    @inject(coreModuleApi.symbols.logger) logger: ILogger,
     @inject(deviceInformationModuleApi.symbols.deviceInformation)
     deviceInformation: DeviceInformation,
   ) {
+    this.logger = logger;
     const useAsyncStorageFallback = deviceInformation.isEmulator && __DEV__;
     this.secureStorage = new SecureStorage(useAsyncStorageFallback);
   }
@@ -70,6 +74,7 @@ class EthSecureEnclave {
    * @returns A secret value saved under the provided reference
    */
   unsafeGetSecret(reference: TSecureReference): Promise<string | null> {
+    this.logger.info("GET SECRET" + reference);
     return this.secureStorage.getSecret(reference);
   }
 
@@ -78,6 +83,7 @@ class EthSecureEnclave {
    * @param reference - A reference to the secret
    */
   async unsafeDeleteSecret(reference: TSecureReference): Promise<void> {
+    this.logger.info("DELETE SECRET");
     await this.secureStorage.deleteSecret(reference);
   }
 
@@ -89,6 +95,7 @@ class EthSecureEnclave {
    * @returns A reference to the secret
    */
   async addSecret(secret: string): Promise<TSecureReference> {
+    this.logger.info("ADD SECRET");
     return await this.secureStorage.setSecret(secret);
   }
 
@@ -102,6 +109,7 @@ class EthSecureEnclave {
    *
    */
   async getAddress(reference: TSecureReference): Promise<EthereumAddressWithChecksum> {
+    this.logger.info("GET ADDRESS");
     const secret = await this.unsafeGetSecret(reference);
 
     if (secret === null) {

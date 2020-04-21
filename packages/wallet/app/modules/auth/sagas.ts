@@ -61,6 +61,35 @@ function* allowToUnlockExistingAccount(): SagaGenerator<void> {
   yield put(authActions.canUnlockAccount(walletMetadata));
 }
 
+function* signInExistingAccount(): SagaGenerator<void> {
+  const { ethManager } = yield* neuGetBindings({
+    ethManager: walletEthModuleApi.symbols.ethManager,
+  });
+
+  const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+
+  // do not allow to start sign in without having existing wallet
+  invariant(walletMetadata, "No existing wallet to sign in");
+
+  yield put(authActions.signIn());
+
+  yield* call(() => ethManager.plugExistingWallet());
+
+  const jwt = yield* neuCall(authModuleAPI.sagas.loadJwt);
+  // if JWT is already in the store and it's won't expire soon
+  // then just feed state with the current jwt
+  if (jwt && isJwtExpiringLateEnough(jwt)) {
+    yield* neuCall(authModuleAPI.sagas.setJwt, jwt);
+  } else {
+    yield* call(authModuleAPI.sagas.createJwt, []);
+  }
+
+  // given that user may already exist just load the user from database
+  yield* call(loadOrCreateUser);
+
+  yield put(authActions.signed(walletMetadata));
+}
+
 function* createNewAccount(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,

@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 // TODO: When web migrates to the newest formik move `yupSchemas` to the shared
 
 import { Primitive, Tuple } from "@neufund/shared-utils";

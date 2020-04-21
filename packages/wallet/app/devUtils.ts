@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * A utils method useful for developer and debugging
  *

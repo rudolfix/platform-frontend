@@ -3,7 +3,6 @@ import { Schema } from "yup";
 import { IStorageSchema } from "../types/IStorageSchema";
 import { ApplicationStorageError } from "./ApplicationStorageError";
 
-
 export class NoMigrationPathError extends ApplicationStorageError {
   constructor(schemaId: string, fromVersion: number, toVersion: number) {
     super(
@@ -29,7 +28,7 @@ export class StorageSchema<DataType> implements IStorageSchema<DataType> {
    * returns boolean promise
    */
   async validate(data: DataType): Promise<DataType> {
-    return await this.schema.validate(data);
+    return this.schema.validate(data);
   }
 
   /**

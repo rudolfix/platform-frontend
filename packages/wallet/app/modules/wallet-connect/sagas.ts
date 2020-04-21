@@ -54,7 +54,13 @@ function* connectToURI(
 
     const session = yield* call(() => walletConnectManager.createSession());
 
-    yield put(signerUIModuleApi.actions.sign(ESignerType.WC_SESSION_REQUEST, session));
+    yield put(
+      signerUIModuleApi.actions.sign(ESignerType.WC_SESSION_REQUEST, {
+        peerId: session.peer.id,
+        peerName: session.peer.meta.name,
+        peerUrl: session.peer.meta.url,
+      }),
+    );
 
     const { approved, denied } = yield* race({
       approved: take(signerUIModuleApi.actions.signed),

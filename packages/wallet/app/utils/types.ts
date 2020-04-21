@@ -1,7 +1,8 @@
 import * as React from "react";
 
 export type TComponentRefType<
-  T extends React.ComponentType<unknown>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  T extends React.ComponentType<any>
 > = T extends React.ComponentType<{
   ref?: React.Ref<infer P>;
 }>

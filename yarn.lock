@@ -1149,7 +1149,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.4.5", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.9.2":
   version "7.9.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.2.tgz#d90df0583a3a252f09aaa619665367bae518db06"
   integrity sha512-NE2DtOdufG7R5vnfQUTehdTfNycfUANEtCa9PssN9O/xmTzP4E08UI797ixaei6hBEVL9BI/PsdJS5x7mWoB9Q==
@@ -4965,14 +4965,6 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
-aria-query@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-3.0.0.tgz#65b3fcc1ca1155a8c9ae64d6eee297f15d5133cc"
-  integrity sha1-ZbP8wcoRVajJrmTW7uKX8V1RM8w=
-  dependencies:
-    ast-types-flow "0.0.7"
-    commander "^2.11.0"
-
 arr-diff@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-1.1.0.tgz#687c32758163588fef7de7b36fabe495eb1a399a"
@@ -5203,7 +5195,7 @@ assign-symbols@^1.0.0:
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
   integrity sha1-WWZ/QfrdTyDMvCu5a41Pf3jsA2c=
 
-ast-types-flow@0.0.7, ast-types-flow@^0.0.7:
+ast-types-flow@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ast-types-flow/-/ast-types-flow-0.0.7.tgz#f70b735c6bca1a5c9c22d982c3e39e7feba3bdad"
   integrity sha1-9wtzXGvKGlycItmCw+Oef+ujva0=
@@ -5364,11 +5356,6 @@ axios@0.19.0:
   dependencies:
     follow-redirects "1.5.10"
     is-buffer "^2.0.2"
-
-axobject-query@^2.0.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-2.1.2.tgz#2bdffc0371e643e5f03ba99065d5179b9ca79799"
-  integrity sha512-ICt34ZmrVt8UQnvPl6TVyDTkmhXmAyAT4Jh5ugfGUX4MOrZ+U/ZY6/sdylRw3qGNr9Ub5AJsaHeDMzNLehRdOQ==
 
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -7805,7 +7792,7 @@ commander@2.9.0:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-commander@^2.10.0, commander@^2.11.0, commander@^2.12.1, commander@^2.14.1, commander@^2.15.0, commander@^2.18.0, commander@^2.19.0, commander@^2.20.0, commander@^2.8.1, commander@^2.9.0, commander@~2.20.3:
+commander@^2.10.0, commander@^2.12.1, commander@^2.14.1, commander@^2.15.0, commander@^2.18.0, commander@^2.19.0, commander@^2.20.0, commander@^2.8.1, commander@^2.9.0, commander@~2.20.3:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
@@ -8606,11 +8593,6 @@ d@1:
   integrity sha1-dUu1v+VUUdpppYuU1F9MWwRi1Y8=
   dependencies:
     es5-ext "^0.10.9"
-
-damerau-levenshtein@^1.0.4:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.6.tgz#143c1641cb3d85c60c32329e26899adea8701791"
-  integrity sha512-JVrozIeElnj3QzfUIt8tB8YMluBJom4Vw9qTPpjGYQ9fYlB3D/rb6OordUxf3xeFB35LKWs0xqcO5U6ySvBtug==
 
 danger@^9.2.10:
   version "9.2.10"
@@ -9442,7 +9424,7 @@ elliptic@^6.0.0, elliptic@^6.2.3, elliptic@^6.4.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emoji-regex@^7.0.1, emoji-regex@^7.0.2:
+emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
   integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
@@ -9896,21 +9878,6 @@ eslint-plugin-import@^2.20.2:
     object.values "^1.1.0"
     read-pkg-up "^2.0.0"
     resolve "^1.12.0"
-
-eslint-plugin-jsx-a11y@^6.2.3:
-  version "6.2.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.2.3.tgz#b872a09d5de51af70a97db1eea7dc933043708aa"
-  integrity sha512-CawzfGt9w83tyuVekn0GDPU9ytYtxyxyFZ3aSWROmnRRFQFT2BiPJd7jvRdzNDi6oLWaS2asMeYSNMjWTV4eNg==
-  dependencies:
-    "@babel/runtime" "^7.4.5"
-    aria-query "^3.0.0"
-    array-includes "^3.0.3"
-    ast-types-flow "^0.0.7"
-    axobject-query "^2.0.2"
-    damerau-levenshtein "^1.0.4"
-    emoji-regex "^7.0.2"
-    has "^1.0.3"
-    jsx-ast-utils "^2.2.1"
 
 eslint-plugin-react-hooks@^3.0.0:
   version "3.0.0"
@@ -14742,7 +14709,7 @@ jstimezonedetect@^1.0.6:
   resolved "https://registry.yarnpkg.com/jstimezonedetect/-/jstimezonedetect-1.0.6.tgz#60d31fbacdbf57af71b064887ee040f1595adb52"
   integrity sha1-YNMfus2/V69xsGSIfuBA8Vla21I=
 
-jsx-ast-utils@^2.2.1, jsx-ast-utils@^2.2.3:
+jsx-ast-utils@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.2.3.tgz#8a9364e402448a3ce7f14d357738310d9248054f"
   integrity sha512-EdIHFMm+1BPynpKOpdPqiOsvnIrInRGJD7bzPZdPkjitQEqpdpUuFpq4T0npZFKTiB3RhWFdGN+oqOJIdhDhQA==

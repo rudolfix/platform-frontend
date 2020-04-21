@@ -24,6 +24,17 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": "off",
 
     complexity: ["error", { max: 10 }],
+    "no-await-in-loop": "error",
+    "no-console": "error",
+    "no-template-curly-in-string": "error",
+    "require-atomic-updates": "error",
+    "default-case": "error",
+    "no-constructor-return": "error",
+    "no-extend-native": "error",
+    "no-extra-bind": "error",
+    "no-extra-label": "error",
+    "no-return-assign": "error",
+    "no-return-await": "error",
 
     "@typescript-eslint/array-type": ["error", { default: "array-simple" }],
     "@typescript-eslint/consistent-type-assertions": [

@@ -18,20 +18,32 @@ const toSecureReference = (reference: string) => reference as TSecureReference;
  *           that's why it should be created manually when needed and never connected
  *           to DI container to prevent harmful access and data leakage
  */
+
 class SecureStorage {
   /**
    * Saves the secret in secure storage and returns a reference to the secret
+   * Falls back to async storage on emulators in dev builds
    *
    * @param secret - A secret to secure
    */
+  private readonly useAsyncStorageFallback: boolean;
+
+  constructor(useAsyncStorageFallback: boolean) {
+    this.useAsyncStorageFallback = useAsyncStorageFallback && __DEV__; // extra safe dev check :)
+  }
+
   async setSecret(secret: string): Promise<TSecureReference> {
     const reference = utils.bigNumberify(utils.randomBytes(32)).toString();
-    await Keychain.setGenericPassword("", secret, {
-      service: reference,
-      accessControl: Keychain.ACCESS_CONTROL.USER_PRESENCE,
-      accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
-      securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE, // we might need to downgrade this to SOFTWARE, for it to work on all android phones
-    });
+    if (this.useAsyncStorageFallback) {
+      await AsyncStorage.setItem(reference, secret);
+    } else {
+      await Keychain.setGenericPassword("", secret, {
+        service: reference,
+        accessControl: Keychain.ACCESS_CONTROL.USER_PRESENCE,
+        accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+        securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE, // we might need to downgrade this to SOFTWARE, for it to work on all android phones
+      });
+    }
     return toSecureReference(reference);
   }
 
@@ -41,14 +53,18 @@ class SecureStorage {
    * @param secretReference - A reference to the secret
    */
   async getSecret(secretReference: TSecureReference): Promise<string | null> {
-    const result = await Keychain.getGenericPassword({ 
+    if (this.useAsyncStorageFallback) {
+      return AsyncStorage.getItem(secretReference);
+    }
+    const result = await Keychain.getGenericPassword({
       service: secretReference,
       authenticationPrompt: {
-        "title": "Access Key",
-        "subtitle": "Allow Neufund to access your ethereum key.",
-        "description": "",
-        "cancel": "Deny"
-      }});
+        title: "Access Key",
+        subtitle: "Allow Neufund to access your ethereum key.",
+        description: "",
+        cancel: "Deny",
+      },
+    });
     if (result) {
       return result.password;
     }
@@ -61,7 +77,11 @@ class SecureStorage {
    * @param secretReference - A reference to the secret
    */
   async deleteSecret(secretReference: TSecureReference): Promise<void> {
-    await Keychain.resetGenericPassword({ service: secretReference });
+    if (this.useAsyncStorageFallback) {
+      await AsyncStorage.removeItem(secretReference);
+    } else {
+      await Keychain.resetGenericPassword({ service: secretReference });
+    }
   }
 }
 

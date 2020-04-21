@@ -5,11 +5,13 @@ import {
 } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import { KeyPair } from "ethers/utils/secp256k1";
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
 
 import { EthModuleError } from "../errors";
 import { SecureStorage, TSecureReference } from "./SecureStorage";
 import { isMnemonic, isPrivateKey } from "./utils";
+import { deviceInformationModuleApi } from "../../device-information/module";
+import { DeviceInformation } from "../../device-information/DeviceInformation";
 
 class EthSecureEnclaveError extends EthModuleError {
   constructor(message: string) {
@@ -50,8 +52,12 @@ class FailedToDerivePrivateKey extends EthSecureEnclaveError {
 class EthSecureEnclave {
   private readonly secureStorage: SecureStorage;
 
-  constructor() {
-    this.secureStorage = new SecureStorage();
+  constructor(
+    @inject(deviceInformationModuleApi.symbols.deviceInformation)
+    deviceInformation: DeviceInformation,
+  ) {
+    const useAsyncStorageFallback = deviceInformation.isEmulator && __DEV__;
+    this.secureStorage = new SecureStorage(useAsyncStorageFallback);
   }
 
   /**

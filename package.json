@@ -9,8 +9,8 @@
   "scripts": {
     "lint": "wsrun lint",
     "test": "wsrun test",
-    "update-artifacts": "git submodule update --init --recursive",
-    "prepare": "yarn update-artifacts && wsrun --stages prepare",
+    "update-submodules": "git submodule update --init --recursive",
+    "prepare": "yarn update-submodules && wsrun --stages prepare",
     "deduplicate": "yarn-deduplicate",
     "postinstall": "patch-package"
   },

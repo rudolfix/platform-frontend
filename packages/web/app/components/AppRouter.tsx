@@ -28,6 +28,7 @@ import { EtoSecretProtectedWalletSelector } from "./shared/routing/SecretProtect
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
+import { WalletConnect } from "./wallet-selector/wallet-connect/WalletConnect";
 import { WalletRecoverMain } from "./wallet-selector/wallet-recover/WalletRecoverMain";
 import { WalletSelector } from "./wallet-selector/WalletSelector";
 import { Wallet } from "./wallet/Wallet";
@@ -44,28 +45,30 @@ export const AppRouter: React.FunctionComponent = () => (
     <Route path={appRoutes.etoPublicViewById} component={EtoViewMain} />
     <Route path={appRoutes.etoIssuerView} component={EtoViewMain} />
     <Route path={appRoutes.etoIssuerViewStats} component={EtoViewMain} />
-
     <Route
       path={appRoutes.etoWidgetView}
       render={({ match }) => <EtoWidgetView previewCode={match.params.previewCode} />}
       exact
     />
-
     <Route path={appRoutes.unsubscriptionSuccess} render={() => <UnsubscriptionSuccess />} exact />
-
     <Route
       path={appRoutes.unsubscription}
       render={({ match }) => <Unsubscription email={match.params.email} />}
       exact
     />
-
     {/* routes that are available for not logged in users */}
-
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.register} component={WalletSelector} />
-    <OnlyPublicRoute path={appRoutes.walletconnect} component={WalletSelector} exact />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelector} />
     <OnlyPublicRoute path={appRoutes.restore} component={WalletRecoverMain} />
+    {process.env.NF_WALLET_CONNECT_ENABLED === "1" && (
+      <OnlyPublicRoute
+        path={`${appRoutes.walletconnect}${process.env.NF_WALLET_CONNECT_LINK}`}
+        component={WalletConnect}
+        exact
+      />
+    )}
+    ,
     {process.env.NF_ISSUERS_ENABLED === "1" && [
       <OnlyPublicRoute
         key={appRoutes.etoLanding}
@@ -105,7 +108,6 @@ export const AppRouter: React.FunctionComponent = () => (
         component={() => <Redirect to={appRoutes.restore} />}
       />,
     ]}
-
     {/* only investors routes */}
     {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
       <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
@@ -115,10 +117,8 @@ export const AppRouter: React.FunctionComponent = () => (
       path={appRoutes.walletUnlock}
       investorComponent={UnlockWalletFundsFromLink}
     />
-
     {/* only issuer routes */}
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />
-
     {/* issuer AND nominee routes */}
     <OnlyAuthorizedRoute
       path={appRoutes.documents}
@@ -126,7 +126,6 @@ export const AppRouter: React.FunctionComponent = () => (
       nomineeComponent={NomineeDocuments}
       exact
     />
-
     {/* common routes for both investors and issuers and nominees */}
     <OnlyAuthorizedRoute
       path={appRoutes.wallet}
@@ -167,7 +166,6 @@ export const AppRouter: React.FunctionComponent = () => (
       issuerComponent={Kyc}
       nomineeComponent={Kyc}
     />
-
     {/*Routes used only in E2E tests*/}
     {process.env.NF_CYPRESS_RUN === "1" && [
       <Route

@@ -265,7 +265,8 @@
     "tslib": "^1.9.3",
     "tweetnacl": "^1.0.0",
     "tweetnacl-util": "^0.15.0",
-    "@walletconnect/web3-subprovider": "https://github.com/Neufund/walletconnect-monorepo/packages/providers/web3-subprovider",
+    "@walletconnect/web3-subprovider": "file:./../../git_modules/walletconnect-monorepo/packages/providers/web3-subprovider",
+
     "web3": "0.20.2",
     "web3-provider-engine": "^15.0.4",
     "web3-utils": "^1.2.4",

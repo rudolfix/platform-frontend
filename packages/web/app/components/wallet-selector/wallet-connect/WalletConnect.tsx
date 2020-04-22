@@ -1,6 +1,10 @@
 import { withContainer } from "@neufund/shared-utils";
+import * as cn from "classnames";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
 import { StaticContext } from "react-router";
 import { RouteComponentProps } from "react-router-dom";
+import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../modules/actions";
@@ -11,12 +15,16 @@ import {
   selectWalletConnectError,
 } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
+import { TransitionalLayout } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../shared/NeverComponent";
 import { TMessage } from "../../translatedMessages/utils";
-import { WalletConnectContainer, WalletConnectError } from "./WalletConnectLayout";
+import { WalletSelectorContainer } from "../WalletSelectorContainer";
+import { WalletConnectError } from "./WalletConnectLayout";
+
+import * as styles from "../WalletSelectorLayout.module.scss";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -41,6 +49,19 @@ type TLocalStateHandlersProps = {
   hideLogoutReason: () => Partial<TLocalStateProps> | undefined;
 };
 
+const WalletConnectLayout: React.FunctionComponent = ({ children }) => (
+  <WalletSelectorContainer data-test-id="wallet-selector">
+    <Row>
+      <Col tag="section" md={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+        <h1 className={cn(styles.walletChooserTitle, "my-4", "text-center")}>
+          <FormattedMessage id="wallet-selector.tabs.wallet-connect-login" />
+        </h1>
+      </Col>
+    </Row>
+    <section className="mt-4">{children}</section>
+  </WalletSelectorContainer>
+);
+
 export const WalletConnect = compose<
   TExternalProps & TStateProps & TDispatchProps & TLocalStateHandlersProps & TLocalStateProps,
   {}
@@ -55,7 +76,8 @@ export const WalletConnect = compose<
       walletConnectStop: () => dispatch(actions.walletSelector.walletConnectStop()),
     }),
   }),
-  withContainer(WalletConnectContainer),
+  withContainer(TransitionalLayout),
+  withContainer(WalletConnectLayout),
   branch<TStateProps>(
     ({ error }) => error === undefined,
     renderComponent(LoadingIndicator),

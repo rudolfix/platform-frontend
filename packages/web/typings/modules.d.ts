@@ -29,5 +29,5 @@ declare module "bitcore-mnemonic";
 
 declare module "truffle-privatekey-provider";
 
-declare module "@walletconnect";
-// declare module "@walletconnect/web3-subprovider";
+// declare module "@walletconnect";
+declare module "@walletconnect/web3-subprovider";

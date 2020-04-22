@@ -27,11 +27,11 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
+import { WalletConnect } from "./wallet-selector/wallet-connect/WalletConnect";
 import { WalletRecovery } from "./wallet-selector/WalletRecovery/WalletRecovery";
 import { WalletSelectorLogin } from "./wallet-selector/WalletSelectorLogin/WalletSelectorLogin";
 import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister/WalletSelectorRegister";
 import { Wallet } from "./wallet/Wallet";
-import { WalletConnect } from "./wallet-selector/wallet-connect/WalletConnect";
 
 export const AppRouter: React.FunctionComponent = () => (
   <SwitchConnected>
@@ -66,8 +66,8 @@ export const AppRouter: React.FunctionComponent = () => (
         component={WalletConnect}
         exact
       />
-    )},
-    {/* only investors routes */}
+    )}
+    ,{/* only investors routes */}
     {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
       <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
     )}

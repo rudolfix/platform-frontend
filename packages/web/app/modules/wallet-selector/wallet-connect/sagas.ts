@@ -1,4 +1,4 @@
-import { END, eventChannel, fork, neuTakeLatest, put, select, take } from "@neufund/sagas";
+import { call, END, eventChannel, fork, neuTakeLatest, put, select, take } from "@neufund/sagas";
 
 import { WalletConnectErrorMessage } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
@@ -97,7 +97,7 @@ export function* walletConnectStart({
   try {
     const wc = yield neuCall(walletConnectInit);
     yield web3Manager.plugPersonalWallet(wc);
-    yield* neuCall(walletSelectorConnect);
+    yield* call(walletSelectorConnect, undefined, undefined);
   } catch (e) {
     const message = mapWalletConnectErrorsToMessages(e);
     yield put(actions.walletSelector.walletConnectError(message));

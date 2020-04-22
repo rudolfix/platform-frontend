@@ -1,4 +1,5 @@
-import { withContainer } from "@neufund/shared-utils";
+import { Button, EButtonLayout } from "@neufund/design-system";
+import { TDataTestId, withContainer } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -20,11 +21,10 @@ import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.un
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../shared/NeverComponent";
+import { getMessageTranslation } from "../../translatedMessages/messages";
 import { TMessage } from "../../translatedMessages/utils";
-import { WalletSelectorContainer } from "../WalletSelectorContainer";
-import { WalletConnectError } from "./WalletConnectLayout";
 
-import * as styles from "../WalletSelectorLayout.module.scss";
+import * as styles from "./WalletConnect.module.scss";
 
 type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
 
@@ -48,6 +48,37 @@ type TLocalStateProps = {
 type TLocalStateHandlersProps = {
   hideLogoutReason: () => Partial<TLocalStateProps> | undefined;
 };
+
+type TErrorProps = {
+  error: TMessage;
+  walletConnectStart: () => void;
+};
+
+export const WalletConnectError: React.FunctionComponent<TErrorProps> = ({
+  error,
+  walletConnectStart,
+}) => (
+  <>
+    <div>{getMessageTranslation(error)}</div>
+    <Button
+      layout={EButtonLayout.PRIMARY}
+      type="button"
+      onClick={walletConnectStart}
+      data-test-id="eto-flow-start-bookbuilding"
+    >
+      retry
+    </Button>
+  </>
+);
+
+export const WalletSelectorContainer: React.FunctionComponent<TDataTestId> = ({
+  children,
+  "data-test-id": dataTestId,
+}) => (
+  <div data-test-id={dataTestId} className={styles.walletSelectorContainer}>
+    {children}
+  </div>
+);
 
 const WalletConnectLayout: React.FunctionComponent = ({ children }) => (
   <WalletSelectorContainer data-test-id="wallet-selector">

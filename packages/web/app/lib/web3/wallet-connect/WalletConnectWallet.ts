@@ -88,6 +88,8 @@ export class WalletConnectWallet implements IPersonalWallet {
     return {
       address: this.ethereumAddress,
       walletType: this.walletType,
+      salt: undefined,
+      email: undefined,
       ...this.walletMeta,
     };
   }

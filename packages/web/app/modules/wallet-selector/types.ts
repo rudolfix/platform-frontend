@@ -112,5 +112,6 @@ export type TWalletSelectorState = {
   //backwards compatibility only
   isMessageSigning: boolean;
   messageSigningError: DeepReadonly<TMessage> | undefined;
+  walletConnectError: DeepReadonly<TMessage> | undefined;
   isLoading: boolean;
 };

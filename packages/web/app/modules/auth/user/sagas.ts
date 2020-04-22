@@ -131,8 +131,6 @@ export function* signInUser(
       redirectionUrl ? actions.routing.push(redirectionUrl) : actions.routing.goToDashboard(),
     );
   } catch (e) {
-    //fixme
-    yield walletConnectConnector.disconnect();
     yield neuCall(logoutUser);
     if (e instanceof SignerRejectConfirmationError || e instanceof SignerTimeoutError) {
       throw e;

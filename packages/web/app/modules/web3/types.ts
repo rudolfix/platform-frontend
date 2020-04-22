@@ -77,4 +77,6 @@ export interface IWalletConnectMetadata extends ICommonWalletMetadata {
   supportSessionPings: boolean;
   supportsRemoteKyc: boolean;
   supportsWalletMigration: boolean;
+  salt: undefined;
+  email: undefined;
 }

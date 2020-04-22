@@ -1,4 +1,4 @@
-import { fork, neuCall, neuTakeEvery,neuTakeLatestUntil, put, select } from "@neufund/sagas";
+import { fork, neuCall, neuTakeEvery, put, select } from "@neufund/sagas";
 
 import { TAppGlobalState } from "../../store";
 import { actions } from "../actions";

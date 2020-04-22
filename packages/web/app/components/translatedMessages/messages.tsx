@@ -823,8 +823,7 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case WalletConnectErrorMessage.WC_SESSION_REJECTED_ERROR:
       return <FormattedMessage id="wallet-connect.session-rejected-error" />;
 
-
-      // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
+    // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
       return (messageData as { message: TTranslatedString }).message;
 

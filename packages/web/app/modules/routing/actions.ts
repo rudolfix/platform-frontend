@@ -6,7 +6,6 @@ import { appRoutes } from "../../components/appRoutes";
 import { etoPublicViewByIdLink, etoPublicViewLink } from "../../components/appRouteUtils";
 import { kycRoutes } from "../../components/kyc/routes";
 import { profileRoutes } from "../../components/settings/routes";
-import { recoverRoutes } from "../../components/wallet-selector/wallet-recover/router/recoverRoutes";
 import { walletRoutes } from "../../components/wallet/routes";
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { TLoginRouterState } from "./types";
@@ -50,12 +49,16 @@ export const routingActions = {
 
   // registration
   goToRegister: () => push(appRoutes.register),
+  goToRegisterBrowserWallet: () => push(appRoutes.registerWithBrowserWallet),
+  goToLightWalletRegister: () => push(appRoutes.registerWithLightWallet),
+  goToIssuerLightWalletRegister: () => push(appRoutes.registerIssuerWithLightWallet),
+  goToNomineeLightWalletRegister: () => push(appRoutes.registerNomineeWithLightWallet),
 
   // login
   goToLogin: (state: TLoginRouterState) => push(appRoutes.login, state),
+  goToLoginWithBrowserWalet: () => push(appRoutes.loginBrowserWallet),
 
-  // Successful password recovery
-  goToSuccessfulRecovery: () => push(recoverRoutes.success),
+  goToPasswordRecovery: () => push(appRoutes.restore),
 
   // wallet
   goToWallet: () => push(appRoutes.wallet),
@@ -79,4 +82,12 @@ export const routingActions = {
   // other...
   // TODO: Replace with a dedicated 404 page
   goTo404: () => push(appRoutes.root),
+
+  /* Regular Actions */
+  setBrowserAutoRedirect: createActionFactory(
+    "ROUTING_SET_BROWSER_AUTO_REDIRECT",
+    (hasRedirectedToBrowserAlready: boolean) => ({
+      hasRedirectedToBrowserAlready,
+    }),
+  ),
 };

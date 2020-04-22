@@ -1,10 +1,10 @@
 import { LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME } from "../../../config/constants";
 import { backupLightWalletSeed } from "../../utils/backupLightWalletSeed";
+import { DEFAULT_PASSWORD } from "../../utils/constants";
 import {
   accountFixturePrivateKey,
   assertLockedAccessModal,
   confirmAccessModal,
-  DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   goToProfile,
   loginFixtureAccount,

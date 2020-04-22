@@ -4,7 +4,7 @@ import * as React from "react";
 import { InlineIcon } from "../../shared/icons/InlineIcon";
 
 import arrow from "../../../assets/img/inline_icons/link_arrow.svg";
-import styles from "./Person.module.scss";
+import * as styles from "./Person.module.scss";
 
 interface IProps {
   onClick: () => void;

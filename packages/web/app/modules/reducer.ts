@@ -23,6 +23,7 @@ import { nomineeFlowReducer } from "./nominee-flow/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./person-profile-modal/reducer";
 import { profileReducer } from "./profile/reducer";
+import { routingReducer } from "./routing/reducer";
 import { txHistoryReducer } from "./tx-history/reducer";
 import { txReducers } from "./tx/reducer";
 import { browserReducer } from "./user-agent/reducer";
@@ -73,4 +74,5 @@ export const appReducers = {
   immutableStorage: immutableStorageReducer,
   nomineeFlow: nomineeFlowReducer,
   fullPageLoading: fullPageLoadingReducer,
+  routing: routingReducer,
 };

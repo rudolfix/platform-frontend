@@ -2,20 +2,28 @@
   @include nds-helper-text;
 
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
+  flex-flow: row;
   align-items: center;
-  width: 100%;
-  padding: 0 1.5rem;
-  color: $neu-flamingo-red;
+  justify-content: center;
   text-align: center;
+  color: $neu-flamingo-red;
 
   .icon {
     @include rect(20px);
-
-    margin: auto;
-    color: $neu-flamingo-red;
-    vertical-align: text-bottom;
     display: block;
+    margin-right: 5px;
+    margin-left: auto;
+    margin-bottom: px-to-rem(45px);
+  }
+
+  &.inline {
+    .icon {
+      display: inline-block;
+      margin-right: px-to-rem(8px);
+    }
+  }
+
+  &.big {
+    @include nds-body-small;
   }
 }

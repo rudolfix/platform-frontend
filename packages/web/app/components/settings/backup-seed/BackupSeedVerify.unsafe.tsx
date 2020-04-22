@@ -1,4 +1,4 @@
-import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
+import { Button, EButtonLayout, EIconPosition, VirtualizedSelect } from "@neufund/design-system";
 import * as cn from "classnames";
 import { range } from "lodash";
 import * as React from "react";
@@ -6,7 +6,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TElementRef } from "../../../types";
 import { englishMnemonics } from "../../../utils/englishMnemonics";
-import { VirtualizedSelect } from "../../shared/forms/fields/VirtualizedSelect";
 import { WarningAlert } from "../../shared/WarningAlert";
 
 import arrowLeft from "../../../assets/img/inline_icons/arrow_left.svg";

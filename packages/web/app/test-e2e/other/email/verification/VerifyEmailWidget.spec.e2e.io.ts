@@ -5,7 +5,6 @@ import {
   assertVerifyEmailWidgetIsInNoEmailState,
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
-  confirmAccessModal,
   fillForm,
   generateRandomEmailAddress,
   goToProfile,
@@ -36,10 +35,6 @@ describe("Verify Email Widget", () => {
     cy.get(tid("verify-email-widget-form-email-input")).type(secondEmail);
     cy.get(tid("verify-email-widget-form-submit")).awaitedClick();
 
-    confirmAccessModal();
-
-    // Email server takes time before getting the request
-    cy.wait(3000);
     verifyLatestUserEmailAccountSetup(secondEmail);
 
     assertDashboard();
@@ -71,8 +66,6 @@ describe("Verify Email Widget", () => {
       email: newEmail,
       "verify-email-widget-form-submit": { type: "submit" },
     });
-
-    confirmAccessModal();
 
     assertEmailPendingChange(email, newEmail);
 

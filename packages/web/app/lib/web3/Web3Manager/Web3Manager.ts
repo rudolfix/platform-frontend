@@ -77,6 +77,7 @@ export class Web3Manager extends EventEmitter implements IEthManager {
 
     this.blockTracker = new PollingBlockTracker({
       provider: this.internalWeb3Adapter.web3.currentProvider,
+      setSkipCacheFlag: false,
     });
     this.blockTracker.on("latest", blockNumber => {
       this.emit(EWeb3ManagerEvents.NEW_BLOCK_ARRIVED, {

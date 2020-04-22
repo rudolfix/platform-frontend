@@ -96,3 +96,5 @@ describe("startRouteBasedSagas", () => {
       .run();
   });
 });
+
+// TODO: we need to add a redirect case to the tests.

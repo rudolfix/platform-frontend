@@ -1,3 +1,4 @@
+import { useFieldMeta } from "@neufund/design-system";
 import * as cn from "classnames";
 import { Field, FieldProps } from "formik";
 import * as React from "react";
@@ -8,7 +9,6 @@ import { Avatar } from "../../Avatar";
 import { generateErrorId } from "../layouts/FormError";
 import { FormFieldError } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
-import { useFieldMeta } from "./utils";
 
 import * as styles from "./FormFieldColorful.module.scss";
 

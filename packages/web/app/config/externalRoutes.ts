@@ -25,4 +25,6 @@ export const externalRoutes = {
   accreditationHelpSecond:
     "https://www.ecfr.gov/cgi-bin/retrieveECFR?gp=&SID=8edfd12967d69c024485029d968ee737&r=SECTION&n=17y3.0.1.1.12.0.46.176",
   neufundCommunity: `${neufundOrg}/community`,
+  metamaskSupportLink: "https://metamask.zendesk.com/hc/en-us",
+  ledgerSupportLink: "https://support.ledger.com/hc/en-us",
 };

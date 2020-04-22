@@ -26,3 +26,11 @@ To reduce the bundle size the patch was applied to only export English language 
 Bignumber typings were changed and number types were removed from almost all methods that use BigNumbers. Currently you can only use BigNumbers with `strings` or other `BigNumber` instances.
 
 This will eliminate some problems we have with initilializing BigNumbers with floating point Numbers errors.
+
+### typed-redux-saga
+
+The SagaGenerator type was exposed from typed-redux-saga
+
+### Yup
+
+The email validator was changed to fit the WC3 regex as we started having issues with invalid emails see [issue](https://github.com/Neufund/platform-frontend/pull/4101#issuecomment-598787045)

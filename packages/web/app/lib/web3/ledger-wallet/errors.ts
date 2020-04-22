@@ -8,6 +8,9 @@ export class LedgerInvalidDerivationPathError extends LedgerError {}
 export class LedgerTimeoutError extends LedgerError {}
 export class LedgerUnknownError extends LedgerError {}
 
+export class LedgerUIError extends Error {}
+export class LedgerUserCancelledError extends LedgerUIError {}
+
 export function parseLedgerError(error: any): LedgerError {
   if (error.message && error.message === "Invalid status 6985") {
     return new LedgerConfirmationRejectedError();

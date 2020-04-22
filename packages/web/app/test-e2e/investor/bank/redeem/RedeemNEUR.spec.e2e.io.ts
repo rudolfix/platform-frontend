@@ -34,6 +34,8 @@ describe("Redeem", function(): void {
 
       // start redeem flow
       cy.get(tid("wallet-balance.neur.redeem-button")).click();
+      // The test is very flaky on fast machines
+      cy.wait(500);
     });
 
     it("should not allow to use value below 5 NEur #banking #p3 #flaky", () => {

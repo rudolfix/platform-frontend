@@ -3,6 +3,7 @@ import { multiplyBigNumbers, Q18, subtractBigNumbers } from "@neufund/shared-uti
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
+import { ITxData } from "../../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../../actions";
 import { neuCall, neuDebounce } from "../../../../sagasUtils";
 import { selectLiquidEtherBalance } from "../../../../wallet/selectors";
@@ -12,7 +13,6 @@ import { ETxSenderType } from "../../../types";
 import { SmartContractDoesNotAcceptEtherError } from "../../../validator/transfer/withdraw/errors";
 import { isAddressValidAcceptsEther } from "../../../validator/transfer/withdraw/sagas";
 import { toFormValue } from "../utils";
-import { ITxData } from "./../../../../../lib/web3/types";
 
 export function* getMaxWithdrawAmount(to: string | undefined): Generator<any, any, any> {
   const maxEtherUlps: string = yield select(selectLiquidEtherBalance);

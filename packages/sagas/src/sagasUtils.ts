@@ -110,7 +110,7 @@ export function* neuTakeLatestUntil<
   Fn extends (action: ActionMatchingPattern<P>, ...args: any[]) => any
 >(
   startAction: P,
-  stopAction: ActionPattern,
+  stopAction: ActionPattern | string,
   saga: Fn,
   ...args: Tail<Parameters<Fn>>
 ): SagaGenerator<void> {

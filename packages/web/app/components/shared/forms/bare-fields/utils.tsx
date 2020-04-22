@@ -1,9 +1,10 @@
+import { applyCharactersLimit } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormGroup } from "reactstrap";
 
 import { TTranslatedString } from "../../../../types";
-import { applyCharactersLimit, withCountedCharacters } from "../fields/utils";
+import { withCountedCharacters } from "../fields/utils";
 import { FormError } from "../layouts/FormError";
 import { FormLabel } from "../layouts/FormLabel";
 

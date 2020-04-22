@@ -25,7 +25,7 @@ const KycStepComponent: React.FunctionComponent<TProps & TDataTestId> = ({
 }) => (
   <>
     <span className={styles.step} data-test-id={dataTestId}>
-      <FormattedMessage id="shared.kyc.step" values={{ step, allSteps }} />
+      <FormattedMessage id="shared.step" values={{ step, allSteps }} />
     </span>
     <h1 className={styles.title}>{title}</h1>
     <p className={styles.description}>{description}</p>

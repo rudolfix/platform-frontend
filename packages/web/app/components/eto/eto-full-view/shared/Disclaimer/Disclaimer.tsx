@@ -4,7 +4,7 @@ import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { Container, EColumnSpan, EContainerType } from "../../../../layouts/Container";
 import { Panel } from "../../../../shared/Panel";
 
-import styles from "./Disclaimer.module.scss";
+import * as styles from "./Disclaimer.module.scss";
 
 export const Disclaimer = () => (
   <Container

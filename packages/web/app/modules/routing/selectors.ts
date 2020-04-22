@@ -57,3 +57,6 @@ export const selectWalletTypeFromQueryString = createSelector(
     }
   },
 );
+
+export const selectHasRedirectedToBrowserAlready = (state: TAppGlobalState) =>
+  state.routing.hasRedirectedToBrowserAlready;

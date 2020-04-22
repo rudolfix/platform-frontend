@@ -4,7 +4,10 @@ import { jwtReducerMap } from "./jwt/reducer";
 import { createJwt, escalateJwt, loadJwt, refreshJWT, setJwt } from "./jwt/sagas";
 import * as jwtSelectors from "./jwt/selectors";
 import { EJwtPermissions } from "./jwt/types";
+import { AuthHttpClient, IAuthHttpClient } from "./lib/AuthHttpClient";
+import { AuthJsonHttpClient } from "./lib/AuthJsonHttpClient";
 import { setupContainerModule } from "./lib/bindings";
+import { SignatureAuthApi } from "./lib/SignatureAuthApi";
 import { symbols } from "./lib/symbols";
 
 const MODULE_ID = generateSharedModuleId("auth");
@@ -39,4 +42,12 @@ const authModuleAPI = {
   },
 };
 
-export { setupAuthModule, authModuleAPI, EJwtPermissions };
+export {
+  setupAuthModule,
+  authModuleAPI,
+  EJwtPermissions,
+  AuthHttpClient,
+  IAuthHttpClient,
+  AuthJsonHttpClient,
+  SignatureAuthApi,
+};

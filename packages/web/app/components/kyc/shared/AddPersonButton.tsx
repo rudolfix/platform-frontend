@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 
 import plusIcon from "../../../assets/img/inline_icons/round_plus.svg";
-import styles from "./AddPersonButton.module.scss";
+import * as styles from "./AddPersonButton.module.scss";
 
 interface IProps {
   children: React.ReactNode;

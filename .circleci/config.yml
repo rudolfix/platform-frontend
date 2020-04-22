@@ -55,6 +55,7 @@ jobs:
 
     steps:
       - checkout
+      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -76,6 +77,7 @@ jobs:
 
     steps:
       - checkout
+      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -122,6 +124,7 @@ jobs:
 
     steps:
       - checkout
+      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -136,6 +139,7 @@ jobs:
 
     steps:
       - checkout
+      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -150,6 +154,7 @@ jobs:
 
     steps:
       - checkout
+      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -168,6 +173,7 @@ jobs:
 
     steps:
       - checkout
+      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}

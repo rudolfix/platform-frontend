@@ -1,3 +1,4 @@
+import { useFieldMeta } from "@neufund/design-system";
 import { Field, FieldProps } from "formik";
 import * as React from "react";
 import { FormGroup, Input } from "reactstrap";
@@ -6,7 +7,6 @@ import { TDataTestId, TTranslatedString } from "../../../../types";
 import { generateErrorId } from "../layouts/FormError";
 import { FormFieldError } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
-import { useFieldMeta } from "./utils";
 
 import * as styles from "./FormFieldDate.module.scss";
 

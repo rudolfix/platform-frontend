@@ -1,11 +1,7 @@
-import { find, get } from "lodash";
+import { find } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
-import {
-  walletLoginRoutes,
-  walletRegisterRoutes,
-} from "../../components/wallet-selector/walletRoutes";
-import { MOCK_API_URL } from "../config";
+import { walletLoginRoutes } from "../../components/wallet-selector/WalletSelectorLogin/wallet-routes";
 import { getIsUserVerifiedOnBlockchain } from "./ethRpcUtils";
 import { tid } from "./selectors";
 import { getPendingTransactions } from "./userHelpers";
@@ -39,7 +35,7 @@ export const assertLanding = () => {
 
 export const assertRegister = () => {
   cy.get(tid("wallet-selector")).should("exist");
-  cy.url().should("contain", walletRegisterRoutes.light);
+  cy.url().should("contain", appRoutes.registerWithLightWallet);
 };
 
 export const assertLogin = () => {
@@ -63,27 +59,6 @@ export const assertProfile = () => {
 };
 
 export const getLatestEmailByUser = (r: any, email: string) => find(r.body, ["to", email]);
-
-export const assertWaitForLatestEmailSentWithSalt = (
-  userEmail: string,
-  timeout: number = 20000,
-) => {
-  expect(timeout, `Email not received in ${timeout} ms`).to.be.gt(0);
-
-  cy.wait(1000);
-
-  cy.request({ url: MOCK_API_URL + `sendgrid/session/mails?to=${userEmail}`, method: "GET" }).then(
-    r => {
-      if (r.status === 200 && getLatestEmailByUser(r, userEmail)) {
-        const loginLink = get(getLatestEmailByUser(r, userEmail), "template_vars.activation_link");
-
-        expect(loginLink).to.contain("salt");
-        return;
-      }
-      assertWaitForLatestEmailSentWithSalt(userEmail, timeout - 1000);
-    },
-  );
-};
 
 export const assertVerifyEmailWidgetIsInUnverifiedEmailState = (shouldNotExist?: boolean) => {
   cy.get(tid("profile.verify-email-widget.unverified-email-state")).should(
@@ -183,7 +158,7 @@ export const assertEmailChangeAbort = (email: string): void => {
 };
 
 export const assertUserInLightWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.login-light-wallet.title"));
+  cy.get(tid("modals.wallet-selector.login-light-wallet"));
 };
 
 export const assertUserInLightWalletRegisterPage = () => {
@@ -196,11 +171,11 @@ export const assertUserInRecoveryPage = () => {
 };
 
 export const assertUserInBrowserWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.wallet-browser.title"));
+  cy.get(tid("browser-wallet-error-msg"));
 };
 
 export const assertUserInLedgerWalletLoginPage = () => {
-  cy.get(tid("modals.wallet-selector.ledger-wallet.title"));
+  cy.get(tid("wallet-selector.login.ledger"));
 };
 
 /**

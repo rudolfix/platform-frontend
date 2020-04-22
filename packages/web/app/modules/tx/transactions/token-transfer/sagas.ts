@@ -16,8 +16,8 @@ import {
   selectUserFlowTokenData,
   selectUserFlowTxDetails,
 } from "../../user-flow/transfer/selectors";
+import { TxUserFlowTransferDetails } from "../../user-flow/transfer/types";
 import { WrongValuesError } from "../errors";
-import { TxUserFlowTransferDetails } from "./../../user-flow/transfer/types";
 import { TTokenTransferAdditionalData } from "./types";
 
 export interface ITransferTokenTxGenerator {

@@ -1,49 +1,107 @@
-import { fork, put, select } from "@neufund/sagas";
+import { fork, neuCall, put, select } from "@neufund/sagas";
 
 import { BrowserWalletErrorMessage } from "../../../components/translatedMessages/messages";
+import { userMayChooseWallet } from "../../../components/wallet-selector/WalletSelectorLogin/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
+import { BrowserWallet } from "../../../lib/web3/browser-wallet/BrowserWallet";
+import { actions, TActionFromCreator } from "../../actions";
+import { signInUser } from "../../auth/user/sagas";
+import { neuTakeLatestUntil, neuTakeUntil } from "../../sagasUtils";
+import { EWalletType } from "../../web3/types";
+import { registerForm } from "../forms/sagas";
+import { resetWalletSelectorState } from "../sagas";
+import { selectRegisterWalletDefaultFormValues, selectUrlUserType } from "../selectors";
 import {
-  BrowserWallet,
-  BrowserWalletAccountApprovalRejectedError,
-} from "../../../lib/web3/browser-wallet/BrowserWallet";
-import { TAppGlobalState } from "../../../store";
-import { actions } from "../../actions";
-import { neuTakeUntil } from "../../sagasUtils";
+  EBrowserWalletRegistrationFlowState,
+  ECommonWalletRegistrationFlowState,
+  EFlowType,
+  TBrowserWalletFormValues,
+} from "../types";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 
-export function* tryConnectingWithBrowserWallet({
+/**
+ * @generator connects a browser wallet and signs in the user once the browser wallet is connected
+ */
+export function* browserWalletConnectAndSign({
   browserWalletConnector,
   web3Manager,
   logger,
-}: TGlobalDependencies): any {
-  const state: TAppGlobalState = yield select();
+}: TGlobalDependencies): Generator<any, void, any> {
+  const initialFormValues = yield* select(selectRegisterWalletDefaultFormValues);
+  try {
+    const userType = yield* select(selectUrlUserType);
 
-  if (!state.browserWalletWizardState.approvalRejected) {
-    try {
-      const browserWallet: BrowserWallet = yield browserWalletConnector.connect(
-        web3Manager.networkId,
-      );
-      yield web3Manager.plugPersonalWallet(browserWallet);
-      yield put(actions.walletSelector.connected());
-    } catch (e) {
-      if (e instanceof BrowserWalletAccountApprovalRejectedError) {
-        yield put(actions.walletSelector.browserWalletAccountApprovalRejectedError());
-      } else {
-        const error = mapBrowserWalletErrorToErrorMessage(e);
-        yield put(actions.walletSelector.browserWalletConnectionError(error));
-        if (error.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {
-          logger.error("Error while trying to connect with browser wallet", e);
-        }
-      }
+    yield put(
+      actions.walletSelector.setWalletRegisterData({
+        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+        showWalletSelector: false,
+      }),
+    );
+    const browserWallet: BrowserWallet = yield browserWalletConnector.connect(
+      web3Manager.networkId,
+    );
+
+    yield web3Manager.plugPersonalWallet(browserWallet);
+    yield neuCall(signInUser, {
+      userType,
+      email: initialFormValues?.email,
+      tos: initialFormValues?.tos,
+    });
+  } catch (e) {
+    const errorMessage = mapBrowserWalletErrorToErrorMessage(e);
+    if (errorMessage.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {
+      logger.error("Error while trying to connect with browser wallet", e);
     }
+    yield put(
+      actions.walletSelector.setWalletRegisterData({
+        uiState: EBrowserWalletRegistrationFlowState.BROWSER_WALLET_ERROR,
+        showWalletSelector: true,
+        errorMessage,
+      }),
+    );
   }
+}
+
+export function* browserWalletRegister(
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.walletSelector.registerWithBrowserWallet>,
+): Generator<any, void, any> {
+  const userType = payload.userType;
+
+  const baseUiData = {
+    walletType: EWalletType.BROWSER,
+    showWalletSelector: userMayChooseWallet(userType),
+    rootPath: "/register",
+    flowType: EFlowType.REGISTER,
+  };
+  const initialFormValues: TBrowserWalletFormValues = {
+    email: "",
+    tos: false,
+  };
+  yield neuCall(resetWalletSelectorState);
+  yield neuCall(registerForm, {
+    afterRegistrationGenerator: function*(): Generator<any, boolean, any> {
+      yield neuCall(browserWalletConnectAndSign);
+      return true;
+    },
+    expectedAction: actions.walletSelector.browserWalletRegisterFormData,
+    initialFormValues,
+    baseUiData,
+  });
 }
 
 export function* browserWalletSagas(): Generator<any, any, any> {
   yield fork(
+    neuTakeLatestUntil,
+    actions.walletSelector.registerWithBrowserWallet,
+    "@@router/LOCATION_CHANGE",
+    browserWalletRegister,
+  );
+
+  yield fork(
     neuTakeUntil,
-    "BROWSER_WALLET_TRY_CONNECTING",
-    actions.walletSelector.reset,
-    tryConnectingWithBrowserWallet,
+    actions.walletSelector.browserWalletSignMessage,
+    "@@router/LOCATION_CHANGE",
+    browserWalletConnectAndSign,
   );
 }

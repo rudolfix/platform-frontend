@@ -1,0 +1,10 @@
+.error-message {
+  @include nds-input-label-small;
+
+  color: $neu-flamingo-red;
+  text-transform: none;
+  // sass-lint:disable-all
+  margin-top: px-to-rem(4px) !important; 
+  // sass-lint:enable-all
+  text-align: left;
+}

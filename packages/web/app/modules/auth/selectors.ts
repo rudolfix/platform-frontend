@@ -109,6 +109,3 @@ export const selectIsVerifiedInvestor = createSelector(
 
 export const selectIsAgreementAccepted = (state: TAppGlobalState): boolean =>
   Boolean(state.auth.user && state.auth.user.latestAcceptedTosIpfs);
-
-export const selectCurrentAgreementHash = (state: TAppGlobalState): string | undefined =>
-  state.auth.currentAgreementHash;

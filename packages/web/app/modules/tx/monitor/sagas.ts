@@ -10,12 +10,12 @@ import { ITxData } from "../../../lib/web3/types";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
+import { TransactionCancelledError } from "../event-channel/errors";
 import { getTransactionOrThrow } from "../event-channel/sagas";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
 import { txMonitorSaga } from "../sender/sagas";
 import { typeToSchema } from "../transactions/types";
 import { ETxSenderType, TSpecificTransactionState } from "../types";
-import { TransactionCancelledError } from "./../event-channel/errors";
 import { SchemaMismatchError } from "./errors";
 import { selectPlatformPendingTransaction } from "./selectors";
 

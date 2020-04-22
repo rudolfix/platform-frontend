@@ -22,7 +22,8 @@
     "resolveJsonModule": true,
     "strict": true,
     "target": "esnext",
-    "types": ["react-native"]
+    "types": ["react-native"],
+    "skipLibCheck": true
   },
   "typedocOptions": {
     "mode": "modules",

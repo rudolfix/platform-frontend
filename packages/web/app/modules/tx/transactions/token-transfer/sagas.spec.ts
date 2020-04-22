@@ -14,6 +14,7 @@ describe("Token Transfer Sagas", () => {
     web3: {
       connected: false,
       previousConnectedWallet: getDummyLightWalletMetadata(),
+      web3Available: true,
     },
     gas: {
       gasPrice: { standard: "1000", fast: "0", fastest: "0", safeLow: "0" },

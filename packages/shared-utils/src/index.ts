@@ -11,6 +11,7 @@ export * from "./utils/transformObjectKeys";
 export * from "./utils/withParams";
 export * from "./utils/withContainer.unsafe";
 export * from "./utils/InversifyProvider";
+export * from "./utils/address-utils";
 export * from "./utils/toReadableBytes";
 export * from "./utils/tidUtils";
 export * from "./utils/safeTimers";

@@ -4,7 +4,7 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IdentityRegistry } from "../../../../lib/contracts/IdentityRegistry";
 import { deserializeClaims } from "../../../kyc/utils";
 import { isAddressValid } from "../../../web3/utils";
-import { EAdditionalValidationDataNotifications } from "./../reducer";
+import { EAdditionalValidationDataNotifications } from "../reducer";
 
 export function* txProcessAddressValidations(
   { web3Manager, contractsService }: TGlobalDependencies,

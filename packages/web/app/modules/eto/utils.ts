@@ -267,7 +267,7 @@ export const getEtoNextStateStartDate = (eto: TEtoWithCompanyAndContractReadonly
 export const etoIsInOfferState = (onChainState: EETOStateOnChain | undefined) =>
   [
     EETOStateOnChain.Setup,
+    EETOStateOnChain.Whitelist,
     EETOStateOnChain.Public,
     EETOStateOnChain.Signing,
-    EETOStateOnChain.Whitelist,
   ].some(offerState => offerState === onChainState);

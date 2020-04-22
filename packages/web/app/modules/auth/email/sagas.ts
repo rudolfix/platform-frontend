@@ -96,7 +96,6 @@ export async function verifyUserEmailPromise(
   verifiedEmail: string | undefined,
 ): Promise<void> {
   if (urlEmail === verifiedEmail) {
-    notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED));
     return;
   }
   if (!userCode) return;
@@ -112,7 +111,7 @@ export async function verifyUserEmailPromise(
   }
 }
 
-export async function checkEmailPromise(
+export async function isEmailAvailablePromise(
   { apiUserService }: TGlobalDependencies,
   email: string,
 ): Promise<boolean> {

@@ -4,6 +4,10 @@
 
 A monorepo of Neufund frontend.
 
+## backend API definitions
+
+[Neufund API](https://github.com/Neufund/platform-backend/blob/master/deploy/README.md)
+
 ## packages
 
  - [web](./packages/web) - web UI deployed on `platform.neufund.org`

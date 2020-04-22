@@ -12,6 +12,7 @@ import * as styles from "./FullscreenProgressLayout.module.scss";
 type TInitialProps = {
   progress?: number;
   buttonProps?: TButtonProps;
+  wrapperClass?: string;
 };
 
 type TButtonProps = {
@@ -76,23 +77,26 @@ const FullscreenProgressLayout: React.FunctionComponent<TDataTestId &
   "data-test-id": dataTestId,
   progress = 0,
   buttonProps,
+  wrapperClass,
   ...contentProps
 }) => {
   const progressCtx = useProgress(progress);
   const buttonCtx = useActionButton(buttonProps);
 
   return (
-    <LayoutWrapper data-test-id={dataTestId}>
+    <LayoutWrapper data-test-id={dataTestId} className={wrapperClass}>
       <FullscreenProgressContext.Provider value={progressCtx}>
         <FullscreenButtonContext.Provider value={buttonCtx}>
           <HeaderFullscreen
             buttonAction={buttonCtx.buttonProps && buttonCtx.buttonProps.buttonAction}
             buttonText={buttonCtx.buttonProps && buttonCtx.buttonProps.buttonText}
           />
-          <ProgressBarSimple
-            className={styles.progress}
-            progress={progressCtx.progress.toString()}
-          />
+          {!!progress && (
+            <ProgressBarSimple
+              className={styles.progress}
+              progress={progressCtx.progress.toString()}
+            />
+          )}
           <Content {...contentProps}>{children}</Content>
         </FullscreenButtonContext.Provider>
       </FullscreenProgressContext.Provider>

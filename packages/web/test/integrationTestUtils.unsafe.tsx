@@ -34,6 +34,11 @@ import { DeepPartial } from "../app/types";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
 
+/**
+ * @deprecated
+ * This is a legacy setup for integration tests.
+ */
+
 const defaultTranslations = require("../intl/locales/en-en.json");
 
 interface ICreateIntegrationTestsSetupOptions {

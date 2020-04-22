@@ -1,8 +1,8 @@
+import { applyCharactersLimit, useFieldMeta } from "@neufund/design-system";
 import { Field, FieldProps } from "formik";
 import * as React from "react";
 
 import { InputLayout } from "../layouts/InputLayout";
-import { applyCharactersLimit, useFieldMeta } from "./utils";
 
 type TExternalProps = {
   customValidation?: (value: string | undefined) => string | Function | Promise<void> | undefined;

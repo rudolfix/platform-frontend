@@ -7,13 +7,13 @@ export enum ENotificationModalType {
   INFO = "info",
 }
 
-interface INotificationModalActionPayload {
+interface INotificationData {
   type: ENotificationModalType;
   message: TMessage;
 }
 
 export const notificationModalActions = {
-  notify: createActionFactory("NOTIFY", ({ type, message }: INotificationModalActionPayload) => ({
+  notify: createActionFactory("NOTIFY", ({ type, message }: INotificationData) => ({
     type,
     message,
   })),

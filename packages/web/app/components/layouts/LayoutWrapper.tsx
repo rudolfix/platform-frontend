@@ -1,14 +1,16 @@
+import * as cn from "classnames";
 import * as React from "react";
 
-import { TDataTestId } from "../../types";
+import { CommonHtmlProps, TDataTestId } from "../../types";
 
 import * as styles from "./LayoutWrapper.module.scss";
 
-const LayoutWrapper: React.FunctionComponent<TDataTestId> = ({
+const LayoutWrapper: React.FunctionComponent<TDataTestId & CommonHtmlProps> = ({
   children,
   "data-test-id": dataTestId,
+  className,
 }) => (
-  <div className={styles.layout} data-test-id={dataTestId}>
+  <div className={cn(styles.layout, className)} data-test-id={dataTestId}>
     {children}
   </div>
 );

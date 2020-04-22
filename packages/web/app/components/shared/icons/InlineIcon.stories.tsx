@@ -25,12 +25,6 @@ import browser_icon from "../../../assets/img/wallet_selector/browser_icon.svg";
 import check_metamask from "../../../assets/img/wallet_selector/check_metamask.svg";
 import enter_password from "../../../assets/img/wallet_selector/enter_password.svg";
 import ledger_confirm from "../../../assets/img/wallet_selector/ledger_confirm.svg";
-import ledger_login_step_1 from "../../../assets/img/wallet_selector/ledger_login_step_1.svg";
-import ledger_login_step_2 from "../../../assets/img/wallet_selector/ledger_login_step_2.svg";
-import ledger_login_step_3 from "../../../assets/img/wallet_selector/ledger_login_step_3.svg";
-import ledger_login_step_4 from "../../../assets/img/wallet_selector/ledger_login_step_4.svg";
-import ledger_login_step_5 from "../../../assets/img/wallet_selector/ledger_login_step_5.svg";
-import ledger_login_step_6 from "../../../assets/img/wallet_selector/ledger_login_step_6.svg";
 import lock_icon from "../../../assets/img/wallet_selector/lock_icon.svg";
 import logo_chrome from "../../../assets/img/wallet_selector/logo_chrome.svg";
 import logo_firefox from "../../../assets/img/wallet_selector/logo_firefox.svg";
@@ -78,12 +72,6 @@ storiesOf("Icons", module)
       {[
         browser_icon,
         ledger_confirm,
-        ledger_login_step_1,
-        ledger_login_step_2,
-        ledger_login_step_3,
-        ledger_login_step_4,
-        ledger_login_step_5,
-        ledger_login_step_6,
         lock_icon,
         logo_chrome,
         logo_firefox,

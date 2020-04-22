@@ -30,6 +30,8 @@ describe("Web3Manager", () => {
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
         address: dummyEthereumAddressWithChecksum,
+        salt: undefined,
+        email: undefined,
       }),
       isUnlocked: () => true,
     });
@@ -49,6 +51,8 @@ describe("Web3Manager", () => {
         walletType: EWalletType.LEDGER,
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
+        salt: undefined,
+        email: undefined,
       },
       isUnlocked: true,
     });

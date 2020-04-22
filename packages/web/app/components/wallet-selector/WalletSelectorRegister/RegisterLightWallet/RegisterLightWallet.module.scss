@@ -1,0 +1,71 @@
+.wrapper {
+  width: 320px;
+  margin: 0 auto;
+}
+
+.main {
+  display: grid;
+  grid-gap: px-to-rem(24);
+  grid-auto-flow: row;
+  justify-items: center;
+
+  font-size: px-to-rem(16);
+
+  p {
+    margin: 0;
+  }
+}
+
+.title {
+  color: $neu-charcoal-grey;
+  text-align: center;
+  margin: {
+    top: px-to-rem(12px);
+    bottom: px-to-rem(20px);
+  }
+}
+
+.explanation {
+  font-family: $headings-font-family;
+  font-size: px-to-rem(16);
+  line-height: 1.5;
+  color: $neu-shuttle-gray;
+  margin: 0;
+  text-align: center;
+}
+
+.note {
+  @include font-button-small;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  grid-gap: px-to-rem(24);
+  grid-auto-flow: row;
+}
+
+.notification {
+  display: flex;
+  flex-flow: row;
+  align-items: baseline;
+  justify-content: center;
+  text-align: center;
+  color: $neu-flamingo-red;
+
+  img {
+    display: block;
+    width: px-to-rem(19px);
+    height: px-to-rem(19px);
+    margin-right: 5px;
+    margin-left: auto;
+  }
+}
+
+.loading-indicator {
+  margin: px-to-rem(24);
+}
+
+.help {
+  font-size: px-to-rem(14);
+}

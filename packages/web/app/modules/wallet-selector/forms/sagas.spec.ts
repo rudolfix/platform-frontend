@@ -33,6 +33,7 @@ describe("Wallet selector form sagas", () => {
   const expectedFinalState = {
     isMessageSigning: false,
     messageSigningError: undefined,
+    walletConnectError: undefined,
     isLoading: false,
     walletType: "LIGHT",
     uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,

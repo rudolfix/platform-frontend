@@ -1,4 +1,6 @@
 import { toEthereumHDPath } from "@neufund/shared-utils";
+import { noopLogger } from "@neufund/shared-modules";
+
 import {
   EthSecureEnclave,
   FailedToDerivePrivateKey,
@@ -8,6 +10,9 @@ import {
 } from "./EthSecureEnclave";
 import { toSecureReference } from "./SecureStorage";
 import { isMnemonic } from "./utils";
+import { createMock } from "../../../utils/testUtils.specUtils";
+import { DeviceInformation } from "../../device-information/DeviceInformation";
+import { getInternetCredentials } from "./__mocks__/react-native-keychain";
 
 describe("EthSecureEnclave (with SecureStorage)", () => {
   const messageHash = "0xc7595adb6684bd03eb6ee54f10b0224e4bcfdaa5d393187583eb1777ae169d80";
@@ -18,7 +23,11 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
   const expectedSignedMessage =
     "0x56caed36f96b601d64bc33a79be32da86e5c1119bc22e6d8c6d78c0cb6d127dc457a2186965186506100bb7172dbbffec437d9bd024e93782da03ca44e726c2d1b";
 
-  const secureEnclave = new EthSecureEnclave();
+  const deviceInformation = createMock(DeviceInformation, {
+    isEmulator: () => Promise.resolve(false),
+  });
+
+  const secureEnclave = new EthSecureEnclave(noopLogger, deviceInformation);
 
   describe("message signing flow", () => {
     it("should sign a digest with a given private key reference", async () => {
@@ -27,6 +36,15 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
       const signedMessage = await secureEnclave.signDigest(privateKeyReference, messageHash);
 
       expect(signedMessage).toBe(expectedSignedMessage);
+
+      // expect private key to be in keychain
+      const retrievedPrivateKey = await getInternetCredentials(privateKeyReference);
+
+      if (retrievedPrivateKey) {
+        expect(retrievedPrivateKey.password).toBe(privateKey);
+      } else {
+        throw Error("Keychain should return value.");
+      }
     });
 
     it("should throw an error when no secret found", async () => {
@@ -167,6 +185,9 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
       const receivedSecret = await secureEnclave.unsafeGetSecret(mnemonicKeyReference);
 
       expect(receivedSecret).toBeNull();
+
+      const retrievedKeyChainEntry = await getInternetCredentials(mnemonicKeyReference);
+      expect(retrievedKeyChainEntry).toBeNull();
     });
 
     it("should not throw even when a reference is invalid", async () => {

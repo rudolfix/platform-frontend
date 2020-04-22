@@ -51,8 +51,9 @@ class FailedToDerivePrivateKey extends EthSecureEnclaveError {
  */
 @injectable()
 class EthSecureEnclave {
-  private readonly secureStorage: SecureStorage;
+  private secureStorage: SecureStorage | null = null;
   private readonly logger: ILogger;
+  private readonly deviceInformation: DeviceInformation;
 
   constructor(
     @inject(coreModuleApi.symbols.logger) logger: ILogger,
@@ -60,12 +61,24 @@ class EthSecureEnclave {
     deviceInformation: DeviceInformation,
   ) {
     this.logger = logger;
-    const useAsyncStorageFallback = deviceInformation.isEmulator && __DEV__;
-    this.secureStorage = new SecureStorage(useAsyncStorageFallback);
+    this.deviceInformation = deviceInformation;
   }
 
   /**
-   * Get's the secret from the SecureStorage.
+   * Gets or creates the secures storage
+   */
+  async getStorage(): Promise<SecureStorage> {
+    if (this.secureStorage) {
+      return this.secureStorage;
+    }
+    const useAsyncStorageFallback = __DEV__ && (await this.deviceInformation.isEmulator());
+    const storage = new SecureStorage(useAsyncStorageFallback);
+    this.secureStorage = storage;
+    return storage;
+  }
+
+  /**
+   * Gets the secret from the SecureStorage.
    *
    * @note This operation is unsafe as it exposes secret to the device memory
    *
@@ -73,9 +86,10 @@ class EthSecureEnclave {
    *
    * @returns A secret value saved under the provided reference
    */
-  unsafeGetSecret(reference: TSecureReference): Promise<string | null> {
-    this.logger.info("GET SECRET" + reference);
-    return this.secureStorage.getSecret(reference);
+  async unsafeGetSecret(reference: TSecureReference): Promise<string | null> {
+    this.logger.info(`Retrieving secret for ref ${reference.substring(0, 4)}`);
+    const storage = await this.getStorage();
+    return await storage.getSecret(reference);
   }
 
   /**
@@ -83,8 +97,9 @@ class EthSecureEnclave {
    * @param reference - A reference to the secret
    */
   async unsafeDeleteSecret(reference: TSecureReference): Promise<void> {
-    this.logger.info("DELETE SECRET");
-    await this.secureStorage.deleteSecret(reference);
+    this.logger.info(`Deleting secret for ref ${reference.substring(0, 4)}`);
+    const storage = await this.getStorage();
+    await storage.deleteSecret(reference);
   }
 
   /**
@@ -95,8 +110,10 @@ class EthSecureEnclave {
    * @returns A reference to the secret
    */
   async addSecret(secret: string): Promise<TSecureReference> {
-    this.logger.info("ADD SECRET");
-    return await this.secureStorage.setSecret(secret);
+    const storage = await this.getStorage();
+    const reference = await storage.setSecret(secret);
+    this.logger.info(`Added secret for ref ${reference.substring(0, 4)}`);
+    return reference;
   }
 
   /**
@@ -109,7 +126,7 @@ class EthSecureEnclave {
    *
    */
   async getAddress(reference: TSecureReference): Promise<EthereumAddressWithChecksum> {
-    this.logger.info("GET ADDRESS");
+    this.logger.info(`Getting address for ref ${reference.substring(0, 4)}`);
     const secret = await this.unsafeGetSecret(reference);
 
     if (secret === null) {

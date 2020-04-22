@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.wallet">
+  package="org.neufund.mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
 
     <uses-permission android:name="android.permission.VIBRATE"/>
 

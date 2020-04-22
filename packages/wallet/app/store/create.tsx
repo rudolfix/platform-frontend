@@ -20,6 +20,9 @@ import { setupSignerUIModule } from "../modules/signer-ui/module";
 import { setupWalletConnectModule } from "../modules/wallet-connect/module";
 import { TAppGlobalState } from "./types";
 import { setupStorageModule } from "../modules/storage";
+import { setupNotificationsModule } from "../modules/notifications/module";
+import { setupPermissionsModule } from "../modules/permissions/module";
+import { setupDeviceInformationModule } from "../modules/device-information/module";
 
 export const createAppStore = (container: Container) => {
   // TODO: Take universe address from artifacts meta.json
@@ -52,7 +55,10 @@ export const createAppStore = (container: Container) => {
     },
     setupCoreModule({ backendRootUrl: config.backendRootUrl }),
     setupStorageModule(),
+    setupNotificationsModule(),
     setupWalletEthModule({ rpcUrl: config.rpcUrl }),
+    setupPermissionsModule(),
+    setupDeviceInformationModule(),
     ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
     setupSignerUIModule(),
     setupNotificationUIModule(),

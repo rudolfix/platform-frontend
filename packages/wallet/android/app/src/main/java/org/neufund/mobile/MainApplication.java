@@ -1,4 +1,4 @@
-package com.wallet;
+package org.neufund.mobile;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,6 +9,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.wix.reactnativenotifications.RNNotificationsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -25,6 +26,9 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+
+          // Push notifications packages
+          packages.add(new RNNotificationsPackage(MainApplication.this));
           return packages;
         }
 

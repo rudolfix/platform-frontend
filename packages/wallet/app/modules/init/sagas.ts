@@ -2,7 +2,6 @@ import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
 import { toEthereumAddress, toEthereumPrivateKey } from "@neufund/shared-utils";
 import { tokenPriceModuleApi } from "@neufund/shared-modules";
 import { utils } from "ethers";
-
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { walletContractsModuleApi } from "../contracts/module";
 import { initActions } from "./actions";
@@ -14,7 +13,11 @@ function* initGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
 }
 
-function* initStartSaga({ logger, ethManager }: TGlobalDependencies): Generator<unknown, void> {
+function* initStartSaga({
+  logger,
+  ethManager,
+  notifications,
+}: TGlobalDependencies): Generator<any, void, any> {
   try {
     yield* call(walletContractsModuleApi.sagas.initializeContracts);
     yield* call(initGlobalWatchers);
@@ -52,6 +55,17 @@ function* initStartSaga({ logger, ethManager }: TGlobalDependencies): Generator<
     //   from: toEthereumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
     //   value: "0x1000000000000000000",
     // });
+
+    // init push notifications
+    yield notifications.init();
+
+    // subscribe for notifications test
+    notifications.onReceivedNotificationInForeground(
+      notification => {
+        console.log("------event work--------", notification);
+      },
+      { alert: true, sound: true, badge: false },
+    );
 
     yield put(initActions.done());
   } catch (e) {

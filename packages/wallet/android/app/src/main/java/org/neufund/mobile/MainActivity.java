@@ -1,4 +1,4 @@
-package com.wallet;
+package org.neufund.mobile;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

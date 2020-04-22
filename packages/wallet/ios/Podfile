@@ -1,5 +1,6 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+permissions_path = '../node_modules/react-native-permissions/ios'
 
 target 'wallet' do
   # Pods for wallet
@@ -29,10 +30,11 @@ target 'wallet' do
   pod 'ReactCommon/jscallinvoker', :path => "../node_modules/react-native/ReactCommon"
   pod 'ReactCommon/turbomodule/core', :path => "../node_modules/react-native/ReactCommon"
   pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
-
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
 
   # Pods for required permissions (see react-native-permissions for details)
   permissions_path = '../node_modules/react-native-permissions/ios'
@@ -47,12 +49,4 @@ target 'wallet' do
   use_native_modules!
 end
 
-target 'wallet-tvOS' do
-  # Pods for wallet-tvOS
 
-  target 'wallet-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end

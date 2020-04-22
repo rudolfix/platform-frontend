@@ -71,6 +71,8 @@ export class LedgerWallet implements IPersonalWallet {
     walletType: EWalletType.LEDGER,
     walletSubType: EWalletSubType.UNKNOWN,
     derivationPath: this.derivationPath,
+    salt: undefined,
+    email: undefined,
   });
 
   public sendTransaction = async (data: Web3.TxData): Promise<string> => {

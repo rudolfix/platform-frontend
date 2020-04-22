@@ -51,6 +51,6 @@ const GenerateStory: React.FunctionComponent<TGenerateStoryProps> = ({ layout })
   </>
 );
 
-storiesOf("NDS|Atoms/CircleButton", module)
-  .add("secondary", () => <GenerateStory layout={ECircleButtonLayout.SECONDARY} />)
-  .add("danger", () => <GenerateStory layout={ECircleButtonLayout.DANGER} />);
+storiesOf("NDS|Atoms/Button", module)
+  .add("CircleButton - secondary", () => <GenerateStory layout={ECircleButtonLayout.SECONDARY} />)
+  .add("CircleButton - danger", () => <GenerateStory layout={ECircleButtonLayout.DANGER} />);

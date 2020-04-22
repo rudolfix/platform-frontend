@@ -1,26 +1,37 @@
-import { fork, put } from "@neufund/sagas";
+import { fork, neuCall, neuTakeEvery, put, select } from "@neufund/sagas";
 
+import { TAppGlobalState } from "../../store";
 import { actions } from "../actions";
-import { handleSignInUser } from "../auth/user/sagas";
-import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../sagasUtils";
+import { signInUser } from "../auth/user/sagas";
 import { loadPreviousWallet } from "../web3/sagas";
+import { EWalletType } from "../web3/types";
+import { walletSelectorInitialState } from "./reducer";
+import { selectUrlUserType } from "./selectors";
+import { EFlowType } from "./types";
 
-export function* walletSelectorConnect(): Generator<any, any, any> {
+export type TBaseUiData = {
+  flowType: EFlowType;
+  walletType: EWalletType;
+  showWalletSelector: boolean;
+  rootPath: string;
+};
+
+export function* walletSelectorConnect(email?: string, tos = false): Generator<any, any, any> {
   yield put(actions.walletSelector.messageSigning());
 
-  yield neuCall(handleSignInUser);
+  const userType = yield* select((s: TAppGlobalState) => selectUrlUserType(s.router));
+  yield neuCall(signInUser, { userType, email, tos });
 }
 
 export function* walletSelectorReset(): Generator<any, any, any> {
   yield neuCall(loadPreviousWallet);
 }
 
+export function* resetWalletSelectorState(): Generator<any, void, any> {
+  yield put(actions.walletSelector.reset());
+  yield put(actions.walletSelector.setWalletRegisterData(walletSelectorInitialState));
+}
+
 export function* walletSelectorSagas(): Generator<any, any, any> {
-  yield fork(
-    neuTakeLatestUntil,
-    actions.walletSelector.connected,
-    actions.walletSelector.reset,
-    walletSelectorConnect,
-  );
   yield fork(neuTakeEvery, actions.walletSelector.reset, walletSelectorReset);
 }

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { EOfferingDocumentType } from "./../../../../lib/api/eto/EtoProductsApi.interfaces";
+import { EOfferingDocumentType } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { EDocumentType, getApprovedDocumentButtonType } from "./utils";
 
 describe("getApprovedDocumentTitle", () => {

@@ -1,5 +1,4 @@
-import { call, fork, put, select } from "@neufund/sagas";
-import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
+import { call, fork, put, select, take } from "@neufund/sagas";
 import { invariant } from "@neufund/shared-utils";
 import { includes } from "lodash";
 
@@ -12,72 +11,36 @@ import {
 import { createMessage } from "../../../components/translatedMessages/utils";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IUser, IUserInput } from "../../../lib/api/users/interfaces";
-import { EmailAlreadyExists, UserNotExisting } from "../../../lib/api/users/UsersApi";
+import { EUserType, IUser } from "../../../lib/api/users/interfaces";
+import { EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
 import {
   LightError,
   LightWallet,
   LightWalletLocked,
 } from "../../../lib/web3/light-wallet/LightWallet";
-import {
-  createLightWalletVault,
-  deserializeLightWalletVault,
-} from "../../../lib/web3/light-wallet/LightWalletUtils";
-import { IPersonalWallet } from "../../../lib/web3/PersonalWeb3";
 import { TAppGlobalState } from "../../../store";
 import { connectLightWallet } from "../../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../../actions";
-import { checkEmailPromise } from "../../auth/email/sagas";
 import { selectUserType } from "../../auth/selectors";
-import { loadUser, logoutUser, updateUser } from "../../auth/user/external/sagas";
+import { loadUser, updateUser } from "../../auth/user/external/sagas";
+import { signInUser } from "../../auth/user/sagas";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { displayInfoModalSaga } from "../../generic-modal/sagas";
-import { neuCall, neuTakeEvery } from "../../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectIsUnlocked } from "../../web3/selectors";
-import { EWalletSubType, ILightWalletMetadata } from "../../web3/types";
-import { selectUrlUserType } from "../selectors";
+import { EWalletType, ILightWalletMetadata } from "../../web3/types";
+import { registerForm } from "../forms/sagas";
+import { resetWalletSelectorState, walletSelectorConnect } from "../sagas";
+import { selectRegisterWalletDefaultFormValues } from "../selectors";
+import { EFlowType, TLightWalletFormValues } from "../types";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getWalletMetadataByURL } from "./metadata/sagas";
+import { ERecoveryPhase } from "./reducer";
+import { lightWalletRegister } from "./register/sagas";
+import { getUserMeWithSeedOnly, setupLightWallet } from "./signing/sagas";
 import { getVaultKey } from "./utils";
 
 export const DEFAULT_HD_PATH = "m/44'/60'/0'";
-
-export async function setupLightWalletPromise(
-  { vaultApi, lightWalletConnector, web3Manager, logger }: TGlobalDependencies,
-  email: string,
-  password: string,
-  seed?: string,
-): Promise<ILightWalletMetadata> {
-  try {
-    const lightWalletVault = await createLightWalletVault({
-      password,
-      hdPathString: DEFAULT_HD_PATH,
-      recoverSeed: seed,
-    });
-    const walletInstance = await deserializeLightWalletVault(
-      lightWalletVault.walletInstance,
-      lightWalletVault.salt,
-    );
-
-    const vaultKey = await getVaultKey(lightWalletVault.salt, password);
-    await vaultApi.store(vaultKey, lightWalletVault.walletInstance);
-
-    const lightWallet = await lightWalletConnector.connect(
-      {
-        walletInstance,
-        salt: lightWalletVault.salt,
-      },
-      email,
-      password,
-    );
-
-    await web3Manager.plugPersonalWallet(lightWallet);
-    return lightWallet.getMetadata() as ILightWalletMetadata;
-  } catch (e) {
-    logger.warn("Error while trying to connect with light wallet: ", e);
-    throw e;
-  }
-}
 
 export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
@@ -132,94 +95,7 @@ export function* loadSeedFromWalletWatch({
   }
 }
 
-export function* lightWalletRecoverWatch(
-  { lightWalletConnector, web3Manager, apiUserService, vaultApi }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.walletSelector.lightWalletRecover>,
-): Generator<any, any, any> {
-  const { password, email, seed } = action.payload;
-
-  try {
-    const userType = yield* select((state: TAppGlobalState) => selectUrlUserType(state.router));
-    const walletMetadata = yield* neuCall(setupLightWalletPromise, email, password, seed);
-    yield neuCall(authModuleAPI.sagas.createJwt, [EJwtPermissions.CHANGE_EMAIL_PERMISSION]);
-
-    const userUpdate: IUserInput = {
-      salt: walletMetadata.salt,
-      backupCodesVerified: true,
-      type: userType,
-      walletType: walletMetadata.walletType,
-      walletSubtype: EWalletSubType.UNKNOWN,
-    };
-
-    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
-
-    try {
-      const user = yield* call(() => apiUserService.me());
-
-      if (isEmailAvailable) {
-        userUpdate.newEmail = walletMetadata.email;
-      } else if (user.verifiedEmail !== email.toLowerCase()) {
-        yield neuCall(handleLightWalletError, new EmailAlreadyExists());
-        return;
-      }
-
-      yield apiUserService.updateUser(userUpdate);
-    } catch (e) {
-      if (e instanceof UserNotExisting) {
-        if (!isEmailAvailable) {
-          yield neuCall(handleLightWalletError, new EmailAlreadyExists());
-          return;
-        }
-        userUpdate.newEmail = walletMetadata.email;
-        yield apiUserService.createAccount(userUpdate);
-      } else {
-        yield neuCall(handleLightWalletError, e);
-        return;
-      }
-    }
-
-    const wallet: IPersonalWallet = yield connectLightWallet(
-      lightWalletConnector,
-      walletMetadata,
-      password,
-    );
-    yield web3Manager.plugPersonalWallet(wallet);
-
-    const vaultKey = yield* call(getVaultKey, walletMetadata.salt, password);
-    yield vaultApi.confirm(vaultKey);
-
-    yield neuCall(logoutUser);
-
-    yield put(actions.routing.goToSuccessfulRecovery());
-  } catch (e) {
-    yield neuCall(handleLightWalletError, e);
-  }
-}
-
-export function* lightWalletRegisterWatch(
-  _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.walletSelector.lightWalletRegister>,
-): Generator<any, any, any> {
-  const { password, email } = action.payload;
-
-  try {
-    const isEmailAvailable = yield neuCall(checkEmailPromise, email);
-
-    if (!isEmailAvailable) {
-      yield neuCall(handleLightWalletError, new EmailAlreadyExists());
-      return;
-    }
-
-    yield neuCall(setupLightWalletPromise, email, password);
-    yield put(actions.walletSelector.connected());
-  } catch (e) {
-    yield neuCall(handleLightWalletError, e);
-  }
-}
-
-function* handleLightWalletError({ logger }: TGlobalDependencies, e: Error): any {
-  yield put(actions.walletSelector.reset());
-
+export function* handleLightWalletError({ logger }: TGlobalDependencies, e: Error): any {
   let error;
 
   if (e instanceof EmailAlreadyExists) {
@@ -239,7 +115,7 @@ function* handleLightWalletError({ logger }: TGlobalDependencies, e: Error): any
 export function* lightWalletLoginWatch(
   { web3Manager, lightWalletConnector, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.walletSelector.lightWalletLogin>,
-): Generator<any, any, any> {
+): Generator<any, void, any> {
   const { password } = action.payload;
 
   try {
@@ -250,11 +126,14 @@ export function* lightWalletLoginWatch(
       return;
     }
 
-    const wallet = yield* connectLightWallet(lightWalletConnector, walletMetadata as any, password);
-    // TODO-UPDATE-SAGAS: FIX THIS ANOMALY
+    const wallet = yield* connectLightWallet(
+      lightWalletConnector,
+      walletMetadata as ILightWalletMetadata,
+      password,
+    );
 
     yield web3Manager.plugPersonalWallet(wallet);
-    yield put(actions.walletSelector.connected());
+    yield walletSelectorConnect();
   } catch (e) {
     logger.error("Light Wallet login error", e);
     yield put(actions.walletSelector.reset());
@@ -264,10 +143,99 @@ export function* lightWalletLoginWatch(
   }
 }
 
+export function* connectAndRestoreLightWallet(
+  { vaultApi }: TGlobalDependencies,
+  userType: EUserType,
+  seed: string,
+): any {
+  const registerFormDefaultValues: TLightWalletFormValues = yield select(
+    selectRegisterWalletDefaultFormValues,
+  );
+
+  if (!registerFormDefaultValues) {
+    throw new Error("registerFormDefaultValues should be defined at this stage");
+  }
+  const walletMetadata = yield* neuCall(
+    setupLightWallet,
+    registerFormDefaultValues.email,
+    registerFormDefaultValues.password,
+    seed,
+  );
+  yield neuCall(signInUser, {
+    cleanupGenerator: function*(): Generator<any, void, any> {
+      const vaultKey = yield* call(
+        getVaultKey,
+        walletMetadata.salt,
+        registerFormDefaultValues.password,
+      );
+
+      yield vaultApi.confirm(vaultKey);
+    },
+    userType,
+    email: registerFormDefaultValues.email,
+    tos: registerFormDefaultValues.tos,
+    backupCodesVerified: true,
+  });
+}
+export function* lightWalletRestore(_: TGlobalDependencies): Generator<any, void, any> {
+  yield neuCall(resetWalletSelectorState);
+  const baseUiData = {
+    walletType: EWalletType.LIGHT,
+    flowType: EFlowType.RESTORE_WALLET,
+    showWalletSelector: false,
+    rootPath: "/restore",
+  };
+
+  const {
+    payload: { seed },
+  } = yield take(actions.walletSelector.submitSeed);
+  yield put(actions.walletSelector.setRecoveryPhase(ERecoveryPhase.FORM_ENTRY_COMPONENT));
+
+  try {
+    const user = yield* neuCall(getUserMeWithSeedOnly, seed);
+
+    const userEmail = user?.verifiedEmail || user?.unverifiedEmail || "";
+    const userType = user?.type || EUserType.INVESTOR;
+    const flowType = user ? EFlowType.RESTORE_WALLET : EFlowType.IMPORT_WALLET;
+
+    const initialFormValues = {
+      email: userEmail,
+      password: "",
+      repeatPassword: "",
+      tos: false,
+    };
+
+    yield neuCall(registerForm, {
+      afterRegistrationGenerator: () => neuCall(connectAndRestoreLightWallet, userType, seed),
+      expectedAction: actions.walletSelector.lightWalletRegisterFormData,
+      initialFormValues,
+      baseUiData: {
+        ...baseUiData,
+        flowType,
+      },
+      userEmail,
+    });
+  } catch (e) {
+    yield neuCall(resetWalletSelectorState);
+    yield neuCall(handleLightWalletError, e);
+    yield put(actions.walletSelector.setRecoveryPhase(ERecoveryPhase.SEED_ENTRY_COMPONENT));
+  }
+}
+
 export function* lightWalletSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.walletSelector.lightWalletLogin, lightWalletLoginWatch);
-  yield fork(neuTakeEvery, actions.walletSelector.lightWalletRegister, lightWalletRegisterWatch);
   yield fork(neuTakeEvery, actions.walletSelector.lightWalletBackedUp, lightWalletBackupWatch);
-  yield fork(neuTakeEvery, actions.walletSelector.lightWalletRecover, lightWalletRecoverWatch);
   yield fork(neuTakeEvery, "WEB3_FETCH_SEED", loadSeedFromWalletWatch);
+  yield fork(
+    neuTakeLatestUntil,
+    actions.walletSelector.restoreLightWallet,
+    "@@router/LOCATION_CHANGE",
+    lightWalletRestore,
+  );
+  yield fork(
+    neuTakeLatestUntil,
+    actions.walletSelector.registerWithLightWallet,
+    "@@router/LOCATION_CHANGE",
+    lightWalletRegister,
+  );
 }

@@ -19,7 +19,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       accounts: [],
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 1,
-      isLoadingAddresses: false,
+      isLoading: false,
       numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
       advanced: false,
     };
@@ -28,7 +28,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
 
     expect(newState).to.be.deep.eq({
       ...state,
-      isLoadingAddresses: true,
+      isLoading: true,
     });
   });
 
@@ -44,7 +44,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       accounts: [],
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 1,
-      isLoadingAddresses: true,
+      isLoading: true,
       numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
       advanced: false,
     });
@@ -57,7 +57,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       accounts: [],
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 1,
-      isLoadingAddresses: true,
+      isLoading: true,
       numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
       advanced: false,
     };
@@ -73,7 +73,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       accounts: [],
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 0,
-      isLoadingAddresses: true,
+      isLoading: true,
       numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
       advanced: false,
     });
@@ -86,7 +86,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       accounts: [],
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 0,
-      isLoadingAddresses: true,
+      isLoading: true,
       numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
       advanced: false,
     };
@@ -102,7 +102,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       accounts: [],
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       index: 0,
-      isLoadingAddresses: true,
+      isLoading: true,
       numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
       advanced: false,
     });
@@ -125,7 +125,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
           { address: "0x67", balanceETH: "123", balanceNEU: "0", derivationPath: "44/60" },
         ],
         index: 0,
-        isLoadingAddresses: false,
+        isLoading: false,
         derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
         numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
         advanced: false,
@@ -160,31 +160,10 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
 
       expect(newState).to.be.deep.eq({
         ...initialState,
-        isLoadingAddresses: false,
+        isLoading: false,
+        isInitialConnectionInProgress: false,
         accounts: newAccounts,
       });
-    });
-  });
-
-  it("should act on LEDGER_CONNECTION_ESTABLISHED action", () => {
-    const action = actions.walletSelector.ledgerConnectionEstablished();
-    const initialState = {
-      ...ledgerWizardInitialState,
-      errorMsg: createMessage(LedgerErrorMessage.GENERIC_ERROR),
-    };
-
-    const newState = ledgerWizardReducer(initialState, action);
-
-    expect(newState).to.be.deep.eq({
-      isInitialConnectionInProgress: false,
-      isConnectionEstablished: true,
-      errorMsg: undefined,
-      accounts: [],
-      index: 0,
-      isLoadingAddresses: false,
-      derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
-      numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
-      advanced: false,
     });
   });
 
@@ -200,7 +179,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
       errorMsg: expectedErrorMsg,
       accounts: [],
       index: 0,
-      isLoadingAddresses: false,
+      isLoading: false,
       derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
       numberOfAccountsPerPage: DEFAULT_LEDGER_ACCOUNTS_PER_PAGE,
       advanced: false,
@@ -217,7 +196,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     expect(newState).to.be.deep.eq({
       isInitialConnectionInProgress: false,
       isConnectionEstablished: false,
-      isLoadingAddresses: true,
+      isLoading: true,
       accounts: [],
       index: 0,
       derivationPathPrefix: newDerivationPath,
@@ -235,7 +214,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
     expect(newState).to.be.deep.eq({
       isInitialConnectionInProgress: false,
       isConnectionEstablished: false,
-      isLoadingAddresses: false,
+      isLoading: false,
       accounts: [],
       index: 0,
       derivationPathPrefix: "",
@@ -253,7 +232,7 @@ describe("Wallet selector > Ledger wizard > reducer", () => {
 
     expect(newState).to.be.deep.eq({
       ...state,
-      isLoadingAddresses: true,
+      isLoading: true,
       advanced: true,
     });
   });

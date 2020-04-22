@@ -40,10 +40,14 @@ export interface ILightWalletRetrieveMetadata {
 export interface IBrowserWalletMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.BROWSER;
   walletSubType: EWalletSubType;
+  salt: undefined;
+  email: undefined;
 }
 
 export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.LEDGER;
   walletSubType: EWalletSubType.UNKNOWN;
   derivationPath: string;
+  salt: undefined;
+  email: undefined;
 }

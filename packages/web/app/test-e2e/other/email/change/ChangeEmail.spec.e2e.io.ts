@@ -1,3 +1,4 @@
+import { DEFAULT_PASSWORD } from "../../../utils/constants";
 import { fillForm } from "../../../utils/forms";
 import {
   assertDashboard,
@@ -6,7 +7,6 @@ import {
   assertEmailPendingChange,
   confirmAccessModal,
   createAndLoginNewUser,
-  DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   getLatestVerifyUserEmailLink,
   getWalletMetaData,
@@ -42,8 +42,6 @@ describe("Change Email", function(): void {
       email: email,
       "verify-email-widget-form-submit": { type: "submit" },
     });
-
-    confirmAccessModal();
 
     // assert if error message has popped in
     cy.get(tid("profile-email-exists")).should("exist");

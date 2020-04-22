@@ -3,17 +3,16 @@ import { authModuleAPI, EJwtPermissions } from "@neufund/shared-modules";
 import { assertNever, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared-utils";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { EUserType, IUser } from "../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../lib/api/users/UsersApi";
 import { EUserActivityMessage } from "../../../lib/dependencies/broadcast-channel/types";
 import { REGISTRATION_LOGIN_DONE } from "../../../lib/persistence/UserStorage";
-import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import {
   SignerRejectConfirmationError,
   SignerTimeoutError,
   SignerUnknownError,
+  WalletNotConnectedError,
 } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
@@ -27,8 +26,12 @@ import {
   neuTakeLatestUntil,
   neuTakeUntil,
 } from "../../sagasUtils";
-import { selectUrlUserType } from "../../wallet-selector/selectors";
-import { EWalletSubType, EWalletType } from "../../web3/types";
+import {
+  getCurrentAgreementHash,
+  handleAcceptCurrentAgreement,
+} from "../../terms-of-service/sagas";
+import { ECommonWalletRegistrationFlowState } from "../../wallet-selector/types";
+import { EWalletType } from "../../web3/types";
 import { AUTH_INACTIVITY_THRESHOLD } from "../constants";
 import { checkForPendingEmailVerification } from "../email/sagas";
 import { selectIsThereUnverifiedEmail, selectUserType } from "../selectors";
@@ -67,26 +70,49 @@ export function* waitForUserActiveOrLogout({
   }
 }
 
-export function* signInUser({
-  walletStorage,
-  web3Manager,
-  userStorage,
-}: TGlobalDependencies): Generator<any, any, any> {
+export function* signInUser(
+  { walletStorage, web3Manager, userStorage }: TGlobalDependencies,
+  {
+    cleanupGenerator,
+    userType,
+    email,
+    tos = false,
+    backupCodesVerified = false,
+  }: {
+    cleanupGenerator?: () => Generator<any, void, any>;
+    userType: EUserType;
+    email?: string;
+    tos?: boolean;
+    backupCodesVerified?: boolean;
+  },
+): Generator<any, any, any> {
   try {
-    // we will try to create with user type from URL but it could happen that account already exists and has different user type
-    const probableUserType: EUserType = yield select((s: TAppGlobalState) =>
-      selectUrlUserType(s.router),
+    yield neuCall(authModuleAPI.sagas.createJwt, [
+      EJwtPermissions.SIGN_TOS,
+      EJwtPermissions.CHANGE_EMAIL_PERMISSION,
+    ]);
+    yield put(
+      actions.walletSelector.setWalletRegisterData({
+        uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_LOADING,
+      }),
     );
-
-    yield neuCall(authModuleAPI.sagas.createJwt, [EJwtPermissions.SIGN_TOS]); // by default we have the sign-tos permission, as this is the first thing a user will have to do after signup
-    yield call(loadOrCreateUser, probableUserType);
+    yield neuCall(loadOrCreateUser, userType, email, tos, backupCodesVerified);
+    if (tos) yield neuCall(handleAcceptCurrentAgreement);
     yield call(checkForPendingEmailVerification);
 
-    const userType: EUserType = yield select(selectUserType);
-    const storedWalletMetadata: TStoredWalletMetadata = {
-      // tslint:disable-next-line
-      ...web3Manager.personalWallet!.getMetadata(),
-      userType,
+    const walletMetadataUserType = yield* select(selectUserType);
+
+    if (!walletMetadataUserType) {
+      throw new Error("User must be defined at this moment");
+    }
+
+    if (!web3Manager.personalWallet) {
+      throw new WalletNotConnectedError();
+    }
+
+    const storedWalletMetadata = {
+      ...web3Manager.personalWallet.getMetadata(),
+      userType: walletMetadataUserType,
     };
     yield* call(() => walletStorage.set(storedWalletMetadata));
 
@@ -95,14 +121,17 @@ export function* signInUser({
 
     const redirectionUrl = yield select(selectRedirectURLFromQueryString);
 
+    if (cleanupGenerator) {
+      yield cleanupGenerator();
+    }
+
     yield put(actions.auth.finishSigning());
 
-    if (redirectionUrl) {
-      yield put(actions.routing.push(redirectionUrl));
-    } else {
-      yield put(actions.routing.goToDashboard());
-    }
+    yield put(
+      redirectionUrl ? actions.routing.push(redirectionUrl) : actions.routing.goToDashboard(),
+    );
   } catch (e) {
+    yield neuCall(logoutUser);
     if (e instanceof SignerRejectConfirmationError || e instanceof SignerTimeoutError) {
       throw e;
     } else {
@@ -111,61 +140,76 @@ export function* signInUser({
   }
 }
 
-export function* loadOrCreateUser(userType: EUserType): Generator<any, any, any> {
-  const user: IUser = yield neuCall(loadOrCreateUserPromise, userType);
+/**
+ * A wrapper around UsersApi me method
+ *
+ * @returns IUser if the user exists and undefined if the user doesn't exist
+ *
+ * @note This is used when `UserNotExisting` is expected to happen and relying on catch as
+ * a regular flow disrupts the linear flow of the saga
+ *
+ * @see loadOrCreateUser
+ */
+function* getUsersMeFromApi({
+  apiUserService,
+}: TGlobalDependencies): Generator<any, IUser | undefined, any> {
+  try {
+    const user = yield* call(() => apiUserService.me());
+    return user;
+  } catch (error) {
+    if (error instanceof UserNotExisting) {
+      return undefined;
+    } else {
+      throw error;
+    }
+  }
+}
+
+/**
+ * @generator create or load the user depending on the response coming from `usersApi/me` method
+ */
+export function* loadOrCreateUser(
+  { apiUserService, web3Manager }: TGlobalDependencies,
+  userType: EUserType,
+  email?: string,
+  tos: boolean = false,
+  backupCodesVerified = false,
+): Generator<any, void, any> {
+  if (!web3Manager.personalWallet) {
+    throw new Error("Personal Wallet must be plugged");
+  }
+  const walletMetadata = web3Manager.personalWallet.getMetadata();
+  const userFromApi = yield* neuCall(getUsersMeFromApi);
+  let user;
+  if (userFromApi) {
+    user = yield* call(apiUserService.updateUser, {
+      ...userFromApi,
+      salt: walletMetadata.salt,
+      walletType: walletMetadata.walletType,
+      walletSubtype: walletMetadata.walletSubType,
+      newEmail: email,
+      backupCodesVerified: backupCodesVerified ? true : undefined,
+    });
+  } else {
+    user = yield* call(apiUserService.createAccount, {
+      newEmail: email || walletMetadata?.email,
+      backupCodesVerified:
+        backupCodesVerified || walletMetadata?.walletType === EWalletType.LIGHT ? false : true,
+      salt: walletMetadata?.salt,
+      type: userType,
+      walletType: walletMetadata.walletType,
+      walletSubtype: walletMetadata.walletSubType,
+    });
+  }
+
+  if (tos) {
+    const currentAgreementHash = yield* neuCall(getCurrentAgreementHash);
+    yield apiUserService.setLatestAcceptedTos(currentAgreementHash);
+  }
 
   yield put(actions.auth.setUser(user));
 
   yield neuCall(loadKycRequestData);
-}
-
-export async function loadOrCreateUserPromise(
-  { apiUserService, web3Manager }: TGlobalDependencies,
-  userType: EUserType,
-): Promise<IUser> {
-  // tslint:disable-next-line
-  const walletMetadata = web3Manager.personalWallet!.getMetadata();
-
-  try {
-    const user = await apiUserService.me();
-    if (
-      user.walletType === walletMetadata.walletType &&
-      user.walletSubtype === walletMetadata.walletSubType
-    ) {
-      return user;
-    }
-    // if wallet type changed send correct wallet type to the backend
-    return await apiUserService.updateUser({
-      ...user,
-      walletType: walletMetadata.walletType,
-      walletSubtype: walletMetadata.walletSubType,
-    });
-  } catch (e) {
-    if (!(e instanceof UserNotExisting)) {
-      throw e;
-    }
-  }
-  // for light wallet we need to send slightly different request
-  if (walletMetadata && walletMetadata.walletType === EWalletType.LIGHT) {
-    return apiUserService.createAccount({
-      newEmail: walletMetadata.email,
-      salt: walletMetadata.salt,
-      backupCodesVerified: false,
-      type: userType,
-      walletType: walletMetadata.walletType,
-      walletSubtype: EWalletSubType.UNKNOWN,
-    });
-  } else {
-    return apiUserService.createAccount({
-      backupCodesVerified: true,
-      type: userType,
-      walletType: walletMetadata.walletType,
-      walletSubtype:
-        walletMetadata.walletType === EWalletType.BROWSER
-          ? walletMetadata.walletSubType
-          : EWalletSubType.UNKNOWN,
-    });
-  }
 }
 
 export function* setUser(
@@ -210,31 +254,14 @@ function* handleLogOutUser(
   logger.setUser(null);
 }
 
-export function* handleSignInUser({ logger }: TGlobalDependencies): Generator<any, any, any> {
-  try {
-    yield neuCall(signInUser);
-  } catch (e) {
-    logger.error("User Sign in error", e);
-
-    if (e instanceof SignerRejectConfirmationError) {
-      yield put(
-        actions.walletSelector.messageSigningError(
-          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED),
-        ),
-      );
-    } else if (e instanceof SignerTimeoutError) {
-      yield put(
-        actions.walletSelector.messageSigningError(
-          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT),
-        ),
-      );
-    } else {
-      yield put(
-        actions.walletSelector.messageSigningError(
-          createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE),
-        ),
-      );
-    }
+export function mapSignInErrors(e: Error): SignInUserErrorMessage {
+  // fixme move to utils
+  if (e instanceof SignerRejectConfirmationError) {
+    return SignInUserErrorMessage.MESSAGE_SIGNING_REJECTED;
+  } else if (e instanceof SignerTimeoutError) {
+    return SignInUserErrorMessage.MESSAGE_SIGNING_TIMEOUT;
+  } else {
+    return SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE;
   }
 }
 

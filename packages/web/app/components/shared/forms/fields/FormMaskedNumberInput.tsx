@@ -1,10 +1,10 @@
+import { useFieldMeta } from "@neufund/design-system";
 import { XOR } from "@neufund/shared-utils";
 import { Field, FieldProps } from "formik";
 import * as React from "react";
 
 import { ENumberInputFormat, ENumberOutputFormat, TValueFormat } from "../../formatters/utils";
 import { MaskedNumberInputLayout } from "../layouts/MaskedNumberInputLayout";
-import { useFieldMeta } from "./utils";
 
 interface ICommonProps {
   ignoreTouched?: boolean;

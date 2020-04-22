@@ -1,4 +1,5 @@
-import { coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
+import { authModuleAPI, coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
+import { SignatureAuthApi } from "@neufund/shared-modules/dist/modules/auth/lib/SignatureAuthApi";
 import { Container, ContainerModule } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";
@@ -255,6 +256,9 @@ export const createGlobalDependencies = (container: Container) => ({
   userActivityChannel: container.get<BroadcastChannel<UserActivityChannelMessage>>(
     symbols.userActivityChannel,
   ),
+
+  // THIS IS TEMPORARY AS A QUICK SOLUTION
+  signatureAuthApi: container.get<SignatureAuthApi>(authModuleAPI.symbols.signatureAuthApi),
 });
 
 export type TGlobalDependencies = ReturnType<typeof createGlobalDependencies>;

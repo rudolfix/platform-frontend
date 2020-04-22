@@ -50,7 +50,8 @@ export type TranslatedMessageType =
   | EEtoNomineeRequestMessages
   | ETxValidationMessages
   | EEtoNomineeActiveEtoNotifications
-  | ENotificationText;
+  | ENotificationText
+  | ELightWalletRestoreMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -59,6 +60,11 @@ export enum GenericErrorMessage {
 
 export enum GenericModalMessage {
   ERROR_TITLE = "errorTitle",
+}
+
+export enum ELightWalletRestoreMessage {
+  LIGHT_WALLET_RESTORE_SUCCESS_TITLE = "LightWalletRestoreSuccessTitle",
+  LIGHT_WALLET_RESTORE_SUCCESS_TEXT = "LightWalletRestoreSuccessText",
 }
 
 export enum SignInUserErrorMessage {
@@ -81,6 +87,7 @@ export enum LedgerErrorMessage {
   GENERIC_ERROR = "ledgerGenericError",
   NOT_SUPPORTED = "ledgerNotSupported",
   CONTRACT_DISABLED = "ledgerContractDataDisabled",
+  USER_CANCELLED = "ledgerConnectionCancelledByUser",
 }
 
 export enum LightWalletErrorMessage {
@@ -390,6 +397,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="error-message.ledger.contract-disabled" />;
     case LedgerErrorMessage.GENERIC_ERROR:
       return <FormattedMessage id="error-message.ledger.generic-error" />;
+    case LedgerErrorMessage.USER_CANCELLED:
+      return <FormattedMessage id="error-message.ledger.user-cancelled" />;
 
     case LightWalletErrorMessage.WRONG_PASSWORD_SALT:
       return <FormattedMessage id="error-message.light-wallet.wrong-password-salt" />;
@@ -783,6 +792,12 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.complete-request" />;
     case ENotificationText.COMPLETE_UPDATE_ACCOUNT:
       return <FormattedMessage id="notifications.update-account" />;
+
+    case ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE:
+      return <FormattedMessage id="account-recovery.success.title" />;
+    case ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT:
+      return <FormattedMessage id="account-recovery.success.text" />;
+
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
       return messageData!.message as TTranslatedString;

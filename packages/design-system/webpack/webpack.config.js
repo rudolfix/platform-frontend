@@ -106,6 +106,15 @@ const webpackConfig = (env, argv = {}) => {
               ],
             },
             {
+              test: /\.css$/,
+              use: [
+                MiniCssExtractPlugin.loader,
+                {
+                  loader: "css-loader",
+                },
+              ],
+            },
+            {
               test: /\.(tsx?)$/,
               use: [
                 {

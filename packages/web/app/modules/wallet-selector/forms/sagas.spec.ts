@@ -6,8 +6,7 @@ import { actions } from "../../actions";
 import { isEmailAvailablePromise } from "../../auth/email/sagas";
 import { EWalletType } from "../../web3/types";
 import { walletSelectorInitialState, walletSelectorReducer } from "../reducer";
-import { ECommonWalletRegistrationFlowState } from "../types";
-import { EFlowType } from "./../types";
+import { ECommonWalletRegistrationFlowState, EFlowType } from "../types";
 import { registerForm } from "./sagas";
 
 describe("Wallet selector form sagas", () => {

@@ -1,5 +1,6 @@
 import { appRoutes } from "../../../components/appRoutes";
 import { generateRandomSeedAndAddress } from "../../obsolete/generateRandomSeedAndAddress";
+import { DEFAULT_HD_PATH } from "../../utils/constants";
 import { cyPromise } from "../../utils/cyPromise";
 import {
   assertDashboard,
@@ -15,7 +16,6 @@ import {
   tid,
   typeLightwalletRecoveryPhrase,
 } from "../../utils/index";
-import { DEFAULT_HD_PATH } from "./../../utils/constants";
 
 describe("Wallet recovery", function(): void {
   it("should show error modal for invalid recovery phrases #backup #p1", () => {

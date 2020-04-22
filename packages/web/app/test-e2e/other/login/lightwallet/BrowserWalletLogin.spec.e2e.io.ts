@@ -2,6 +2,9 @@ import PrivateKeyProvider from "truffle-privatekey-provider";
 
 import { remove0x } from "../../../../modules/web3/utils";
 import { NODE_ADDRESS } from "../../../config";
+import { stubChallengeApiRequest } from "../../../utils/apiStubs";
+import { assertDashboard } from "../../../utils/assertions";
+import { generateRandomPrivateKey } from "../../../utils/e2eWeb3Utils";
 import {
   accountFixtureAddress,
   accountFixturePrivateKey,
@@ -12,9 +15,6 @@ import {
   tid,
 } from "../../../utils/index";
 import { goToLanding } from "../../../utils/navigation";
-import { stubChallengeApiRequest } from "./../../../utils/apiStubs";
-import { assertDashboard } from "./../../../utils/assertions";
-import { generateRandomPrivateKey } from "./../../../utils/e2eWeb3Utils";
 
 const ISSUER_SETUP = "ISSUER_SETUP";
 

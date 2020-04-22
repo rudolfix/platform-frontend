@@ -2,8 +2,8 @@ import { multiplyBigNumbers } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { confirmAccessModal, parseAmount, tid } from "../../utils";
+import { DEFAULT_PASSWORD } from "../../utils/constants";
 import { getBalanceRpc, getTransactionByHashRpc } from "../../utils/ethRpcUtils";
-import { DEFAULT_PASSWORD } from "./../../utils/constants";
 
 const Q18 = new BigNumber("10").pow(18);
 

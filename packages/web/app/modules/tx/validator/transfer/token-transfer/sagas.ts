@@ -9,21 +9,21 @@ import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { IERC223Token } from "../../../../../lib/contracts/IERC223Token";
+import { ITxData } from "../../../../../lib/web3/types";
 import { actions } from "../../../../actions";
 import { neuCall } from "../../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../../shared/tokenPrice/selectors";
 import { selectEthereumAddress } from "../../../../web3/selectors";
+import { WrongValuesError } from "../../../transactions/errors";
 import { generateTokenWithdrawTransaction } from "../../../transactions/token-transfer/sagas";
 import { ITokenTransferDraftType } from "../../../types";
+import { selectUserFlowTokenAddress } from "../../../user-flow/transfer/selectors";
 import { EAdditionalValidationDataNotifications, EValidationState } from "../../reducer";
 import {
   mapErrorToTransferTxError,
   prepareTransferValidation,
   runInitialValidations,
 } from "../sagas";
-import { ITxData } from "./../../../../../lib/web3/types";
-import { WrongValuesError } from "./../../../transactions/errors";
-import { selectUserFlowTokenAddress } from "./../../../user-flow/transfer/selectors";
 import { UserHasNotEnoughTokensError } from "./errors";
 
 function* validateUserHasEnoughTokens(

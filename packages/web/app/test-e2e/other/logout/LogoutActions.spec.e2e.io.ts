@@ -1,3 +1,4 @@
+import { JWT_KEY, NF_USER_KEY, WALLET_STORAGE_KEY } from "../../utils/constants";
 import { cyPromise } from "../../utils/cyPromise";
 import {
   assertDashboard,
@@ -9,7 +10,6 @@ import {
 } from "../../utils/index";
 import { createAndLoginNewUser, getJwtToken, getWalletMetaData } from "../../utils/userHelpers";
 import { keepSessionActive } from "../utils";
-import { JWT_KEY, NF_USER_KEY, WALLET_STORAGE_KEY } from "./../../utils/constants";
 
 const REGISTRATION_LOGIN_DONE = "logged_in";
 const AUTH_INACTIVITY_THRESHOLD = 300000;

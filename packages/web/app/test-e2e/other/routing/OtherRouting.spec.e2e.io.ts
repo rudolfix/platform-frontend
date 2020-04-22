@@ -1,6 +1,7 @@
 import { appRoutes } from "../../../components/appRoutes";
 import { kycRoutes } from "../../../components/kyc/routes";
 import { NODE_ADDRESS } from "../../config";
+import { DEFAULT_PASSWORD } from "../../utils/constants";
 import {
   assertDashboard,
   generateRandomEmailAddress,
@@ -8,7 +9,6 @@ import {
   registerWithLightWalletIssuer,
 } from "../../utils/index";
 import { createAndLoginNewUser } from "../../utils/userHelpers";
-import { DEFAULT_PASSWORD } from "./../../utils/constants";
 
 describe("Other routing", () => {
   it("should redirect to dashboard for unsupported routes #routing #p3", () => {

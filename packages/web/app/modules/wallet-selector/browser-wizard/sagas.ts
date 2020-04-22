@@ -10,14 +10,13 @@ import { neuTakeLatestUntil, neuTakeUntil } from "../../sagasUtils";
 import { EWalletType } from "../../web3/types";
 import { registerForm } from "../forms/sagas";
 import { resetWalletSelectorState } from "../sagas";
-import { selectRegisterWalletDefaultFormValues } from "../selectors";
+import { selectRegisterWalletDefaultFormValues, selectUrlUserType } from "../selectors";
 import {
   EBrowserWalletRegistrationFlowState,
   ECommonWalletRegistrationFlowState,
   EFlowType,
   TBrowserWalletFormValues,
 } from "../types";
-import { selectUrlUserType } from "./../selectors";
 import { mapBrowserWalletErrorToErrorMessage } from "./errors";
 
 /**

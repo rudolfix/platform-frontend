@@ -3,7 +3,7 @@ import { put, select } from "@neufund/sagas";
 import { actions } from "../../actions";
 import { neuCall } from "../../sagasUtils";
 import { detectWeb3 } from "../../wallet-selector/browser-wizard/operations/sagas";
-import { selectHasRedirectedToBrowserAlready } from "./../selectors";
+import { selectHasRedirectedToBrowserAlready } from "../selectors";
 
 /**
  * @generator special routing generator that gets triggered when the router hits register/light

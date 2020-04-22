@@ -1,3 +1,4 @@
+import { DEFAULT_PASSWORD } from "../../../utils/constants";
 import { fillForm } from "../../../utils/forms";
 import {
   assertDashboard,
@@ -17,7 +18,6 @@ import {
   tid,
   verifyLatestUserEmailAccountSetup,
 } from "../../../utils/index";
-import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 
 describe("Change Email", function(): void {
   let email: string;

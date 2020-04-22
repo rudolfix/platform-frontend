@@ -3,6 +3,7 @@ import BigNumber from "bignumber.js";
 
 import { generateRandomEthereumAddress } from "../../../../modules/web3/utils";
 import { assertTxErrorDialogueNoCost } from "../../../utils/assertions";
+import { DEFAULT_PASSWORD } from "../../../utils/constants";
 import { getBalanceRpc, sendEth } from "../../../utils/ethRpcUtils";
 import { fillForm } from "../../../utils/forms";
 import {
@@ -21,7 +22,6 @@ import {
   checkTransactionWithRPCNode,
   continueWithdrawFlow,
 } from "../utils";
-import { DEFAULT_PASSWORD } from "./../../../utils/constants";
 
 export const SimpleExchangeContract: any = require("../../../../../../../git_modules/platform-contracts-artifacts/localhost/contracts/SimpleExchange.json");
 export const EuroTokenContract: any = require("../../../../../../../git_modules/platform-contracts-artifacts/localhost/contracts/EuroToken.json");

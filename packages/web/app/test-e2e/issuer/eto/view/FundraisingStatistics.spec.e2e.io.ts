@@ -1,9 +1,9 @@
 import { withParams } from "@neufund/shared-utils";
 
+import { etoPublicViewByIdLinkLegacy } from "../../../../components/appRouteUtils";
 import { externalRoutes } from "../../../../config/externalRoutes";
 import { etoFixtureAddressByName, tid } from "../../../utils/index";
 import { loginFixtureAccount } from "../../../utils/userHelpers";
-import { etoPublicViewByIdLinkLegacy } from "./../../../../components/appRouteUtils";
 import { goToEtoViewById } from "./EtoViewUtils";
 
 const assertFundraisingStatisticsTab = (etoId: string) => {

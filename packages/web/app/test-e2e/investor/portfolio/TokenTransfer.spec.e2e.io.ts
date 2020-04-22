@@ -1,10 +1,10 @@
+import { DEFAULT_PASSWORD } from "../../utils/constants";
 import { getTokenBalance } from "../../utils/ethRpcUtils";
 import { confirmAccessModal, etoFixtureAddressByName, etoFixtureByName } from "../../utils/index";
 import { goToPortfolio } from "../../utils/navigation";
 import { tid } from "../../utils/selectors";
 import { createAndLoginNewUser, loginFixtureAccount } from "../../utils/userHelpers";
 import { assertWithdrawButtonIsDisabled, typeWithdrawForm } from "../wallet/utils";
-import { DEFAULT_PASSWORD } from "./../../utils/constants";
 
 describe("Token Transfer", () => {
   // todo: generate random address for new wallet

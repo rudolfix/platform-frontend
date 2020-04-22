@@ -2,6 +2,8 @@ import { call } from "@neufund/sagas";
 import { EJwtPermissions, ESignerType } from "@neufund/shared-modules";
 import cryptoRandomString from "crypto-random-string";
 
+import { TGlobalDependencies } from "../../../../di/setupBindings";
+import { IUser } from "../../../../lib/api/users/interfaces";
 import { UserNotExisting } from "../../../../lib/api/users/UsersApi";
 import {
   createLightWalletVault,
@@ -9,11 +11,9 @@ import {
   getWalletAddress,
   signMessage,
 } from "../../../../lib/web3/light-wallet/LightWalletUtils";
+import { ILightWalletMetadata } from "../../../web3/types";
+import { DEFAULT_HD_PATH } from "../sagas";
 import { getVaultKey } from "../utils";
-import { TGlobalDependencies } from "./../../../../di/setupBindings";
-import { IUser } from "./../../../../lib/api/users/interfaces";
-import { ILightWalletMetadata } from "./../../../web3/types";
-import { DEFAULT_HD_PATH } from "./../sagas";
 
 /**
  * Signs a challange and returns a user object without logging the user in

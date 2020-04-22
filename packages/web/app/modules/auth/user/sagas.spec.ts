@@ -3,16 +3,16 @@ import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { toChecksumAddress } from "web3-utils";
 
-import { EUserType } from "../../../lib/api/users/interfaces";
-import { actions } from "../../actions";
-import { loadKycRequestData } from "../../kyc/sagas";
-import { EWalletSubType, EWalletType } from "../../web3/types";
 import {
   BACKEND_BASE_URL,
   setTestJWT,
   setupIntegrationTestContainer,
-} from "./../../../../test/sagaIntegrationTestHelpers";
-import { createUser } from "./../../../test-e2e/utils/createUser";
+} from "../../../../test/sagaIntegrationTestHelpers";
+import { EUserType } from "../../../lib/api/users/interfaces";
+import { createUser } from "../../../test-e2e/utils/createUser";
+import { actions } from "../../actions";
+import { loadKycRequestData } from "../../kyc/sagas";
+import { EWalletSubType, EWalletType } from "../../web3/types";
 import { loadOrCreateUser } from "./sagas";
 
 describe.skip("Auth - User - Integration Test", () => {

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { isAddressValid } from "../../modules/web3/utils";
-import { DEFAULT_HD_PATH } from "./../utils/constants";
+import { DEFAULT_HD_PATH } from "../utils/constants";
 import { generateRandomSeedAndAddress } from "./generateRandomSeedAndAddress";
 
 describe("generateRandomSeedAndAddress", () => {

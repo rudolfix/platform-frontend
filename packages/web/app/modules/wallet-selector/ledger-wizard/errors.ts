@@ -4,9 +4,9 @@ import {
   LedgerContractsDisabledError,
   LedgerLockedError,
   LedgerNotSupportedVersionError,
+  LedgerUserCancelledError,
 } from "../../../lib/web3/ledger-wallet/errors";
-import { LedgerUserCancelledError } from "./../../../lib/web3/ledger-wallet/errors";
-import { SignerRejectConfirmationError } from "./../../../lib/web3/Web3Manager/Web3Manager";
+import { SignerRejectConfirmationError } from "../../../lib/web3/Web3Manager/Web3Manager";
 
 export function mapLedgerErrorToErrorMessage(error: Error): TMessage {
   let messageType = LedgerErrorMessage.GENERIC_ERROR;

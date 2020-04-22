@@ -32,7 +32,7 @@ import { EWalletType, ILightWalletMetadata } from "../../web3/types";
 import { registerForm } from "../forms/sagas";
 import { resetWalletSelectorState, walletSelectorConnect } from "../sagas";
 import { selectRegisterWalletDefaultFormValues } from "../selectors";
-import { EFlowType, TLightWalletFormValues } from "./../types";
+import { EFlowType, TLightWalletFormValues } from "../types";
 import { mapLightWalletErrorToErrorMessage } from "./errors";
 import { getWalletMetadataByURL } from "./metadata/sagas";
 import { ERecoveryPhase } from "./reducer";

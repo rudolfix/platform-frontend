@@ -5,6 +5,7 @@ import { toPairs, zip } from "lodash";
 import { tripleZip } from "../../../../typings/modifications";
 import { userMayChooseWallet } from "../../../components/wallet-selector/WalletSelectorLogin/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
+import { LedgerUserCancelledError } from "../../../lib/web3/ledger-wallet/errors";
 import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
 import { neuTakeLatestUntil } from "../../sagasUtils";
@@ -19,7 +20,6 @@ import {
   ELedgerRegistrationFlowState,
   TBrowserWalletFormValues,
 } from "../types";
-import { LedgerUserCancelledError } from "./../../../lib/web3/ledger-wallet/errors";
 import { mapLedgerErrorToErrorMessage } from "./errors";
 import { ledgerUiSagas } from "./ui/sagas";
 

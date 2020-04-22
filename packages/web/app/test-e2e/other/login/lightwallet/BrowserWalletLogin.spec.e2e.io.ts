@@ -23,8 +23,10 @@ const ISSUER_SETUP_NODE_PROVIDER = new PrivateKeyProvider(
   NODE_ADDRESS,
 );
 
-const NEW_INVESTOR_NODE_PROVIDER = () =>
-  new PrivateKeyProvider(remove0x(generateRandomPrivateKey()), NODE_ADDRESS);
+const NEW_INVESTOR_NODE_PROVIDER = new PrivateKeyProvider(
+  remove0x(generateRandomPrivateKey()),
+  NODE_ADDRESS,
+);
 
 const ISSUER_SETUP_MAIN_NODE_PROVIDER = new PrivateKeyProvider(
   remove0x(accountFixturePrivateKey(ISSUER_SETUP)),
@@ -33,8 +35,7 @@ const ISSUER_SETUP_MAIN_NODE_PROVIDER = new PrivateKeyProvider(
 describe("Ethereum Routing", () => {
   it("should register as issuer with browser wallet #browserWallet #p3", () => {
     goToLanding();
-    const test = NEW_INVESTOR_NODE_PROVIDER();
-    ethereumProvider(test);
+    ethereumProvider(NEW_INVESTOR_NODE_PROVIDER);
     cy.get(tid("Header-register")).click();
 
     cy.get(tid("wallet-selector-register-email")).type(generateRandomEmailAddress());
@@ -49,7 +50,9 @@ describe("Ethereum Routing", () => {
     cy.get(tid("account-address.your.ether-address.from-div"))
       .invoke("text")
       .then(value => {
-        expect(((value as unknown) as string).toLowerCase()).to.equal(test.address.toLowerCase());
+        expect(((value as unknown) as string).toLowerCase()).to.equal(
+          NEW_INVESTOR_NODE_PROVIDER.address.toLowerCase(),
+        );
       });
   });
 
@@ -59,11 +62,9 @@ describe("Ethereum Routing", () => {
     ethereumProvider(ISSUER_SETUP_NODE_PROVIDER);
 
     cy.get(tid("Header-login")).click();
-
     cy.get(tid("wallet-selector-browser")).click();
 
     assertIssuerDashboard();
-
     goToWallet();
 
     cy.get(tid("account-address.your.ether-address.from-div"))
@@ -78,18 +79,15 @@ describe("Ethereum Routing", () => {
     stubChallengeApiRequest({}, 405);
     goToLanding();
 
-    ethereumProvider(NEW_INVESTOR_NODE_PROVIDER());
+    ethereumProvider(NEW_INVESTOR_NODE_PROVIDER);
 
     cy.get(tid("Header-login")).click();
 
     cy.get(tid("wallet-selector-browser")).click();
-
     cy.get(tid("browser-wallet-error-msg")).should("exist");
 
     cy.get(tid("browser-wallet-init.try-again")).click();
-
     cy.get(tid("loading-indicator-pulse")).should("exist");
-
     cy.get(tid("browser-wallet-error-msg")).should("exist");
   });
 
@@ -99,15 +97,12 @@ describe("Ethereum Routing", () => {
     ethereumProvider(ISSUER_SETUP_MAIN_NODE_PROVIDER);
 
     cy.get(tid("Header-login")).click();
-
     cy.get(tid("wallet-selector-browser")).click();
-
     cy.get(tid("browser-wallet-error-msg")).should("exist");
 
     ethereumProvider(ISSUER_SETUP_NODE_PROVIDER);
 
     cy.get(tid("browser-wallet-init.try-again")).click();
-
     assertIssuerDashboard();
   });
 
@@ -118,9 +113,7 @@ describe("Ethereum Routing", () => {
       goToLanding();
 
       cy.get(tid("Header-login")).click();
-
       cy.get(tid("wallet-selector-browser")).click();
-
       cy.get(tid("browser-wallet-error-msg")).should("exist");
     });
   });

@@ -1,5 +1,9 @@
 import { ESignerType } from "@neufund/shared-modules";
-import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared-utils";
+import {
+  EthereumAddressWithChecksum,
+  EthereumNetworkId,
+  toEthereumAddress,
+} from "@neufund/shared-utils";
 import * as hex2ascii from "hex2ascii";
 import * as Web3 from "web3";
 
@@ -56,15 +60,23 @@ export class BrowserWallet implements IPersonalWallet {
 
   public signMessage = async (data: string): Promise<string> => {
     try {
+      // 'truffle-private-key` provider uses an old version of `web3-provider-engine`
+      // WalletSubprovider that requires address to be lower cased manually
+      // see: https://github.com/MetaMask/web3-provider-engine/issues/294
+      const address =
+        process.env.NF_CYPRESS_RUN === "1"
+          ? toEthereumAddress(this.ethereumAddress.toLowerCase())
+          : this.ethereumAddress;
+
       if (this.walletSubType === EWalletSubType.METAMASK) {
         const typedDataDecoded = JSON.parse(hex2ascii(data));
         // We can await as signTypedData function already awaits inside for result of RPC call.
-        return await this.web3Adapter.signTypedData(this.ethereumAddress, typedDataDecoded);
+        return await this.web3Adapter.signTypedData(address, typedDataDecoded);
       } else if (this.walletSubType === EWalletSubType.GNOSIS) {
         const typedDataDecoded = hex2ascii(data);
-        return await this.web3Adapter.walletSignTypedData(this.ethereumAddress, typedDataDecoded);
+        return await this.web3Adapter.walletSignTypedData(address, typedDataDecoded);
       } else {
-        return await this.web3Adapter.ethSign(this.ethereumAddress, "0x" + data);
+        return await this.web3Adapter.ethSign(address, "0x" + data);
       }
     } catch (e) {
       const error = parseBrowserWalletError(e);

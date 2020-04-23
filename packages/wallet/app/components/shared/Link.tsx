@@ -4,6 +4,7 @@ import { GestureResponderEvent, Linking, StyleSheet, Text, TouchableHighlight } 
 
 import { baseGray, grayLighter2 } from "../../styles/colors";
 import { typographyStyles } from "../../styles/typography";
+import { st } from "../utils";
 
 type TouchableHighlightProps = React.ComponentProps<typeof TouchableHighlight>;
 type TExternalProps = XOR<{ url: string }, { onPress: (event: GestureResponderEvent) => void }> &
@@ -52,7 +53,7 @@ const Link: React.FunctionComponent<TExternalProps> = React.forwardRef<
       onHideUnderlay={onHideUnderlay}
       {...props}
     >
-      <Text style={[styles.linkText, isActive && styles.linkActiveText]}>{children}</Text>
+      <Text style={st(styles.linkText, [isActive, styles.linkActiveText])}>{children}</Text>
     </TouchableHighlight>
   );
 });
@@ -63,8 +64,8 @@ const styles = StyleSheet.create({
   },
   linkText: {
     ...typographyStyles.text,
-    color: grayLighter2,
     textDecorationLine: "underline",
+    color: grayLighter2,
   },
   linkActiveText: {
     color: baseGray,

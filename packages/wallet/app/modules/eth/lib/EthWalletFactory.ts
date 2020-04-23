@@ -26,7 +26,7 @@ class NoExistingWalletFoundError extends EthWalletFactoryError {
 /**
  * Default HD path used in lightwallet
  */
-const DEFAULT_HD_PATH = toEthereumHDPath("m/44'/60'/0'");
+const DEFAULT_HD_PATH = toEthereumHDPath("m/44'/60'/0'/0");
 
 /**
  * Abstracts the way wallet is created.

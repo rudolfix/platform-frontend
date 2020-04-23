@@ -8,6 +8,15 @@ export const authActions = {
   failedToCreateNewAccount: createActionFactory("AUTH_ACCOUNT_CREATION_FAILED"),
 
   /**
+   * Import account flow
+   */
+  importNewAccount: createActionFactory(
+    "AUTH_IMPORT_NEW_ACCOUNT",
+    (privateKeyOrMnemonic: string) => ({ privateKeyOrMnemonic }),
+  ),
+  failedToImportNewAccount: createActionFactory("AUTH_ACCOUNT_IMPORT_FAILED"),
+
+  /**
    * Logout flow
    */
   logout: createActionFactory("AUTH_LOGOUT"),

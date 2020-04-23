@@ -1,6 +1,6 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
 import { authModuleAPI, coreModuleApi, IHttpResponse, noopLogger } from "@neufund/shared-modules";
-import { dummyIntl, simpleDelay } from "@neufund/shared-utils";
+import { DeepPartial, dummyIntl, simpleDelay } from "@neufund/shared-utils";
 import { createMock, tid } from "@neufund/shared-utils/tests";
 import { routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
@@ -29,7 +29,6 @@ import { LedgerWalletConnector } from "../app/lib/web3/ledger-wallet/LedgerConne
 import { Web3ManagerMock } from "../app/lib/web3/Web3Manager/Web3Manager.mock";
 import { rootSaga } from "../app/modules/sagas";
 import { generateRootModuleReducerMap } from "../app/store";
-import { DeepPartial } from "../app/types";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
 

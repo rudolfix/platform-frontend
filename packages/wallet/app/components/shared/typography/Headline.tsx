@@ -5,8 +5,9 @@ import { typographyStyles } from "../../../styles/typography";
 
 enum EHeadlineLevel {
   LEVEL1 = 1,
-  LEVEL2 = 1,
-  LEVEL3 = 1,
+  LEVEL2 = 2,
+  LEVEL3 = 3,
+  LEVEL4 = 4,
 }
 
 type TNativeTextProps = React.ComponentProps<typeof Text>;
@@ -20,6 +21,8 @@ const getStyleForHeadlineLevel = (level: EHeadlineLevel) => {
       return typographyStyles.headline2;
     case EHeadlineLevel.LEVEL3:
       return typographyStyles.headline3;
+    case EHeadlineLevel.LEVEL4:
+      return typographyStyles.headline4;
 
     default:
       assertNever(level, "Invalid headline level");

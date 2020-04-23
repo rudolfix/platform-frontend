@@ -6,7 +6,7 @@ import { oneOfSchema, singleValue, typedValue } from "../../../utils/yupSchemas"
 import { StorageSchema } from "../../storage";
 import { TSecureReference } from "./SecureStorage";
 import { EWalletType } from "./types";
-import { isAddress, isChecksumAddress } from "./utils";
+import { isAddress, isChecksumAddress, isMnemonic, isPrivateKey } from "./utils";
 
 /**
  * A typed schema to validate secure reference
@@ -29,6 +29,16 @@ const ethereumAddress = () => typedValue(isChecksumAddress);
  */
 const ethereumHdPath = () =>
   typedValue((value: unknown): value is EthereumHDPath => isString(value));
+
+/**
+ * A typed schema to validate hd mnemonic
+ */
+const ethereumMnemonic = () => typedValue(isMnemonic);
+
+/**
+ * A typed schema to validate private key
+ */
+const ethereumPrivateKey = () => typedValue(isPrivateKey);
 
 const HDWalletMetadataSchema = yup.object({
   type: singleValue<EWalletType.HD_WALLET>(EWalletType.HD_WALLET).required(),
@@ -58,4 +68,11 @@ const WalletMetadataStorageSchema = new StorageSchema<TWalletMetadata>(
   WalletMetadataSchema,
 );
 
-export { WalletMetadataStorageSchema, ethereumAddress, ethereumAddressNoChecksum, ethereumHdPath };
+export {
+  WalletMetadataStorageSchema,
+  ethereumAddress,
+  ethereumAddressNoChecksum,
+  ethereumHdPath,
+  ethereumPrivateKey,
+  ethereumMnemonic,
+};

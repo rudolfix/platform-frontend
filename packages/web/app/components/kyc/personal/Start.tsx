@@ -24,6 +24,7 @@ import {
 import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import { convert, removeInvalidDate } from "../../eto/utils";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -96,7 +97,10 @@ const KYCForm: React.FunctionComponent<TProps> = ({
         allSteps={TOTAL_STEPS_PERSONAL_KYC}
         title={<FormattedMessage id="kyc.personal.details.title" />}
         description={<FormattedMessage id="kyc.personal.details.description" />}
-        buttonAction={() => props.submitAndClose(values)}
+        buttonAction={() => {
+          const converted = convert(submitAndCloseConversionSpec)(values);
+          return props.submitAndClose(converted);
+        }}
         data-test-id="kyc.individual-start"
       />
       <FormDeprecated>
@@ -231,6 +235,10 @@ const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualD
     props.props.submitForm(values);
   },
 })(KYCForm);
+
+const submitAndCloseConversionSpec = {
+  birthDate: removeInvalidDate(),
+};
 
 export const KYCPersonalStart = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({

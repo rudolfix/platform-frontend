@@ -57,7 +57,7 @@ export const CheckYourICBMWalletWidgetComponent: React.FunctionComponent<IExtern
 
           {/* TODO: Move validation to yup schema */}
           <Button
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             iconPosition={EIconPosition.ICON_AFTER}
             svgIcon={arrowRight}
             type="submit"

@@ -39,7 +39,7 @@ const JurisdicitonDisclaimerModalLayout: React.FunctionComponent<IExternalProps 
     </ButtonArrowRight>
     <ButtonArrowRight
       onClick={confirm}
-      layout={EButtonLayout.GHOST}
+      layout={EButtonLayout.LINK}
       data-test-id="jurisdiction-disclaimer-modal.confirm"
     >
       <FormattedMessage id="form.select.no-i-am-not" />

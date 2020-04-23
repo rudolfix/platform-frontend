@@ -13,7 +13,7 @@ interface IProps {
 
 export const Person: React.FunctionComponent<IProps> = ({ onClick, name }) => (
   <Button
-    layout={EButtonLayout.OUTLINE}
+    layout={EButtonLayout.SECONDARY}
     className={styles.card}
     width={EButtonWidth.BLOCK}
     size={EButtonSize.HUGE}

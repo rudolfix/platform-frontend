@@ -93,7 +93,7 @@ export const MyNeuWidgetLayout: React.FunctionComponent<TComponentProps> = props
         <ButtonLink
           to={externalRoutes.neufundSupportWhatIsNeu}
           target="_blank"
-          layout={EButtonLayout.OUTLINE}
+          layout={EButtonLayout.SECONDARY}
           data-test-id="my-neu-widget-support-link"
           className={styles.button}
         >

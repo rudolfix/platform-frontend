@@ -153,7 +153,7 @@ const EtoRegistrationPitchComponent = ({
     </Section>
     <Section className={styles.buttonSection}>
       <Button
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         type="submit"
         isLoading={savingData}
         data-test-id="eto-registration-product-vision-submit"

@@ -59,7 +59,7 @@ export const UploadInvestmentAgreementLayout: React.FunctionComponent<Omit<
         <FormattedMessage id="download-agreement-widget.download-investment-summary" />
       </Button>
       <ButtonLink
-        layout={EButtonLayout.SECONDARY}
+        layout={EButtonLayout.PRIMARY}
         to={appRoutes.documents}
         component={Button}
         data-test-id="dashboard-upload-signed-isha-widget.upload-signed-isha"

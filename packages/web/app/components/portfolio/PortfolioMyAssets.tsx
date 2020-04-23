@@ -206,7 +206,7 @@ const prepareTableRowData = (
           <>
             <Button
               onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
-              layout={EButtonLayout.OUTLINE}
+              layout={EButtonLayout.SECONDARY}
               data-test-id={`modals.portfolio.portfolio-assets.download-agreements-${etoId}`}
               className="mr-3"
             >

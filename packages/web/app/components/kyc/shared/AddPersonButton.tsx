@@ -24,7 +24,7 @@ export const AddPersonButton: React.FunctionComponent<IProps> = ({
   <Button
     className={styles.addButton}
     data-test-id={dataTestId}
-    layout={EButtonLayout.OUTLINE}
+    layout={EButtonLayout.SECONDARY}
     width={EButtonWidth.BLOCK}
     size={EButtonSize.HUGE}
     iconPosition={EIconPosition.ICON_BEFORE}

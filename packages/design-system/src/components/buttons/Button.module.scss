@@ -42,7 +42,7 @@
     }
   }
 
-  &--outline {
+  &--secondary {
     border: px-to-rem(1px) solid $neu-light-blue-grey-two;
     background: $neu-white-two;
 
@@ -61,29 +61,7 @@
     }
   }
 
-  &--secondary {
-    border: px-to-rem(1px) solid $neu-very-light-blue;
-    background: $neu-very-light-blue;
-
-    &:not(:disabled) {
-      &:hover {
-        background: transparent;
-        border-color: $neu-bitter-lemon;
-      }
-
-      &:active,
-      &#{$button}--is-active {
-        border-color: $neu-bitter-lemon;
-        background: $neu-bitter-lemon;
-      }
-    }
-
-    &:disabled {
-      background: $neu-light-blue-grey-two;
-    }
-  }
-
-  &--ghost {
+  &--link {
     &:not(:disabled) {
       &:hover,
       &:active,
@@ -129,7 +107,7 @@
     padding-right: px-to-rem(14px);
     min-width: auto;
 
-    &#{$button}--ghost {
+    &#{$button}--link {
       &:hover {
         &:not(:disabled) {
           background: transparent;

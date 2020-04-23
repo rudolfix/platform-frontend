@@ -46,7 +46,7 @@ const BookBuildingActiveWidget: React.FunctionComponent<TExternalProps> = ({
 
     <div className="m-auto">
       <Button
-        layout={EButtonLayout.SECONDARY}
+        layout={EButtonLayout.PRIMARY}
         type="button"
         onClick={() => stopBookBuilding(etoId)}
         data-test-id="eto-flow-start-bookbuilding"

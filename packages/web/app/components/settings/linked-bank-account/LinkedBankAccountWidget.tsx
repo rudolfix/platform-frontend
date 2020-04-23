@@ -36,7 +36,7 @@ const LinkAccount: React.FunctionComponent<IComponentProps> = ({
       onClick={verifyBankAccount}
       disabled={neurStatus !== ENEURWalletStatus.ENABLED}
       data-test-id="linked-bank-account-widget.link-account"
-      layout={EButtonLayout.GHOST}
+      layout={EButtonLayout.LINK}
       size={EButtonSize.SMALL}
       iconPosition={EIconPosition.ICON_AFTER}
       svgIcon={arrowRight}

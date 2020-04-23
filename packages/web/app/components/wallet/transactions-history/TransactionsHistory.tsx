@@ -105,7 +105,7 @@ const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProp
     {transactionsHistoryPaginated.canLoadMore && (
       <Button
         data-test-id="transactions-history-load-more"
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.LINK}
         isLoading={transactionsHistoryPaginated.isLoading}
         onClick={loadTxHistoryNext}
       >

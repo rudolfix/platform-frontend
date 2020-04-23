@@ -39,7 +39,7 @@ const DocumentConfidentialityAgreementModalLayout: React.FunctionComponent<IExte
     <div className={styles.buttonBlock}>
       <Button
         onClick={closeModal}
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         data-test-id="eto.document-confidentiality-agreement-modal.deny"
       >
         <FormattedMessage id="eto.document-confidentiality-agreement-modal.deny" />

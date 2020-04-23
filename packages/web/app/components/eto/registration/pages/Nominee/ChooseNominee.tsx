@@ -50,7 +50,7 @@ const FullButtonBlock: React.FunctionComponent<IFullButtonBlockProps & IDispatch
       <FormattedMessage id="eto.form.section.eto-nominee.nominee-request.accept" />
     </Button>
     <Button
-      layout={EButtonLayout.OUTLINE}
+      layout={EButtonLayout.SECONDARY}
       onClick={() => rejectNominee(nomineeId)}
       data-test-id="eto-nominee-reject"
     >

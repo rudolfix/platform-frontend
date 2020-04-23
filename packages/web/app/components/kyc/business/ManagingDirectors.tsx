@@ -94,7 +94,11 @@ const ManagingDirectorDetails: React.FunctionComponent<FormikProps<IKycBusinessD
       }
       footer={
         <ModalFooter>
-          <Button layout={EButtonLayout.OUTLINE} onClick={onClose} className={styles.cancelButton}>
+          <Button
+            layout={EButtonLayout.SECONDARY}
+            onClick={onClose}
+            className={styles.cancelButton}
+          >
             <FormattedMessage id="form.button.cancel" />
           </Button>
 

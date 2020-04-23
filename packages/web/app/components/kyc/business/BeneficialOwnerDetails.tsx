@@ -242,7 +242,7 @@ const BeneficialOwnerDetailsLayout: React.FunctionComponent<FormikProps<IKycBene
             <Button
               className={cn("float-left", styles.deleteButton)}
               svgIcon={deleteIcon}
-              layout={EButtonLayout.GHOST}
+              layout={EButtonLayout.LINK}
               iconPosition={EIconPosition.ICON_BEFORE}
               onClick={onDelete}
             >
@@ -251,7 +251,7 @@ const BeneficialOwnerDetailsLayout: React.FunctionComponent<FormikProps<IKycBene
           )}
           <div>
             <Button
-              layout={EButtonLayout.OUTLINE}
+              layout={EButtonLayout.SECONDARY}
               onClick={onClose}
               className={styles.cancelButton}
             >

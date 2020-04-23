@@ -131,7 +131,7 @@ const ActionButton = ({
   if (requestStatus === EKycRequestStatus.ACCEPTED) {
     return (
       <Button
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.LINK}
         iconPosition={EIconPosition.ICON_AFTER}
         svgIcon={arrowRight}
         onClick={onGoToDashboard}
@@ -146,7 +146,7 @@ const ActionButton = ({
     return (
       <Button
         id="start-kyc-process"
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.LINK}
         iconPosition={EIconPosition.ICON_AFTER}
         svgIcon={arrowRight}
         onClick={onGoToKycHome}
@@ -161,7 +161,7 @@ const ActionButton = ({
   if (requestStatus === EKycRequestStatus.PENDING) {
     return (
       <Button
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.LINK}
         iconPosition={EIconPosition.ICON_AFTER}
         svgIcon={arrowRight}
         onClick={onGoToKycHome}

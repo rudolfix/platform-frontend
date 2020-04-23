@@ -15,7 +15,7 @@ storiesOf("molecules|KYC/KycModal", module).add("default", () => (
     footer={
       <ModalFooter>
         <ButtonGroup className="float-right">
-          <Button layout={EButtonLayout.OUTLINE} onClick={action("CLOSE")}>
+          <Button layout={EButtonLayout.SECONDARY} onClick={action("CLOSE")}>
             <FormattedMessage id="form.button.cancel" />
           </Button>
 

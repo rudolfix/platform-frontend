@@ -15,9 +15,8 @@ enum EIconPosition {
 
 enum EButtonLayout {
   PRIMARY = styles.buttonPrimary,
-  OUTLINE = styles.buttonOutline,
   SECONDARY = styles.buttonSecondary,
-  GHOST = styles.buttonGhost,
+  LINK = styles.buttonLink,
 }
 
 enum EButtonSize {
@@ -88,7 +87,7 @@ type TButtonProps = {
 const Button = React.forwardRef<HTMLButtonElement, TButtonProps>(
   (
     {
-      layout = EButtonLayout.OUTLINE,
+      layout = EButtonLayout.SECONDARY,
       size = EButtonSize.NORMAL,
       width = EButtonWidth.NORMAL,
       className,

@@ -67,7 +67,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
         <div className={styles.fieldCell}>
           {isLastElement && !disabled && (
             <Button
-              layout={EButtonLayout.GHOST}
+              layout={EButtonLayout.LINK}
               svgIcon={plusIcon}
               onClick={addField}
               iconProps={{ alt: <FormattedMessage id="common.add" /> }}
@@ -110,7 +110,7 @@ class KeyValueCompoundFieldBase extends React.Component<IProps & IInternalProps 
         <div className={styles.fieldCell}>
           {!isFirstElement && !disabled && (
             <Button
-              layout={EButtonLayout.GHOST}
+              layout={EButtonLayout.LINK}
               svgIcon={closeIcon}
               onClick={removeField}
               iconProps={{ alt: <FormattedMessage id="common.remove" /> }}

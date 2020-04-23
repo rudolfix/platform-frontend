@@ -107,7 +107,7 @@ const EtoRegistrationMediaComponent = ({ savingData, stateValues, saveData }: IP
     </Section>
     <Section className={styles.buttonSection}>
       <Button
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         type="submit"
         isLoading={savingData}
         data-test-id="eto-registration-media-submit"

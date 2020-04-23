@@ -72,7 +72,7 @@ const RequestStateInfo: React.FunctionComponent<TExternalProps> = props => {
   const settingsButton = (
     <div className="p-4 text-center">
       <Button
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.LINK}
         iconPosition={EIconPosition.ICON_BEFORE}
         svgIcon={arrowLeft}
         onClick={props.goToProfile}

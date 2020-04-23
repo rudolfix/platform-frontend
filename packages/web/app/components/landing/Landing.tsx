@@ -73,7 +73,7 @@ const LandingLayout: React.FunctionComponent = () => (
           </ButtonLink>
           <ButtonLink
             iconPosition={EIconPosition.ICON_AFTER}
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             size={EButtonSize.HUGE}
             svgIcon={arrowRight}
             target={"_blank"}

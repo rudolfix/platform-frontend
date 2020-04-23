@@ -23,7 +23,7 @@ export const FooterButtons: React.FunctionComponent<TProps> = ({
 }) => (
   <ButtonGroup className={styles.buttons}>
     <Button
-      layout={EButtonLayout.OUTLINE}
+      layout={EButtonLayout.SECONDARY}
       size={EButtonSize.NORMAL}
       className={styles.button}
       data-test-id={backButtonId}

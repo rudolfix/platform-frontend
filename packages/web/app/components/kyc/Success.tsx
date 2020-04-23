@@ -53,7 +53,7 @@ const KycSuccessLayout: React.FunctionComponent<IStateProps & IDispatchProps> = 
         <FormattedMessage id="kyc.success.go-to-dashboard" />
       </Button>
       <Button
-        layout={EButtonLayout.GHOST}
+        layout={EButtonLayout.LINK}
         size={EButtonSize.HUGE}
         className={styles.button}
         data-test-id="kyc-success-go-to-additional-documents"

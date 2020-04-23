@@ -91,7 +91,7 @@ const prepareRows = (
     ),
     actions: (
       <Button
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         data-test-id="button-select"
         onClick={() => handleAddressChosen(account)}
       >

@@ -221,7 +221,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
       <div className={styles.swiperMain}>
         {showArrows && (
           <Button
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             svgIcon={prevIcon}
             iconProps={{
               alt: <FormattedMessage id="people-swiper-widget.prev" />,
@@ -286,7 +286,7 @@ class PeopleSwiperWidgeLayout extends React.PureComponent<IOwnProps & IDispatchP
 
         {showArrows && (
           <Button
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             svgIcon={nextIcon}
             iconProps={{
               alt: <FormattedMessage id="people-swiper-widget.next" />,

@@ -72,7 +72,7 @@ const SignNomineeAgreementSummaryLayout: React.FunctionComponent<TComponentProps
       )}
     </p>
     <DocumentButton
-      layout={EButtonLayout.OUTLINE}
+      layout={EButtonLayout.SECONDARY}
       onClick={() =>
         downloadImmutableFile(
           {

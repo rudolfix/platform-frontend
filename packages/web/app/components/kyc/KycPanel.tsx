@@ -58,7 +58,7 @@ export const KycPanel: React.FunctionComponent<IPropsKycPanel & TDataTestId> = (
       <footer className={styles.footer}>
         <ButtonLink
           to={backLink}
-          layout={EButtonLayout.GHOST}
+          layout={EButtonLayout.LINK}
           iconPosition={EIconPosition.ICON_BEFORE}
           svgIcon={arrowLeft}
         >

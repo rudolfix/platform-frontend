@@ -42,7 +42,7 @@ export const BackupSeedIntro: React.FunctionComponent<IBackupSeedIntroProps> = (
       <FormattedMessage id="settings.backup-seed-intro.read-instructions" />
     </Button>
     <Button
-      layout={EButtonLayout.GHOST}
+      layout={EButtonLayout.LINK}
       iconPosition={EIconPosition.ICON_BEFORE}
       svgIcon={arrowLeft}
       onClick={onBack}

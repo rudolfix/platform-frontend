@@ -401,7 +401,7 @@ const EtoRegistrationTermsLayout: React.FunctionComponent<IProps> = props => {
       {!props.readonly && (
         <Section className={styles.buttonSection}>
           <Button
-            layout={EButtonLayout.OUTLINE}
+            layout={EButtonLayout.SECONDARY}
             type="submit"
             isLoading={props.savingData}
             data-test-id="eto-registration-eto-terms-submit"

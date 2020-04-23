@@ -23,7 +23,7 @@ const BookBuildingNotActiveWidget: React.FunctionComponent<TExternalProps> = ({
   >
     <div className="m-auto">
       <Button
-        layout={EButtonLayout.SECONDARY}
+        layout={EButtonLayout.PRIMARY}
         type="button"
         onClick={() => startBookBuilding(etoId)}
         data-test-id="eto-flow-start-bookbuilding"

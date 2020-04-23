@@ -86,14 +86,14 @@ const SetEmailFormLayout = injectIntlHelpers<IEnhancedFormProps & FormikProps<IF
       <div className={styles.buttonWrapper}>
         <Button
           data-test-id="verify-email-widget-form-cancel"
-          layout={EButtonLayout.GHOST}
+          layout={EButtonLayout.LINK}
           onClick={props.revertCancelEmail}
         >
           <FormattedMessage id="form.button.cancel" />
         </Button>
         <Button
           type="submit"
-          layout={EButtonLayout.GHOST}
+          layout={EButtonLayout.LINK}
           disabled={!isValid(props) || props.isLocked}
           data-test-id="verify-email-widget-form-submit"
         >
@@ -147,7 +147,7 @@ const UnverifiedEmail: React.FunctionComponent<IUnverifiedEmailWidgetProps & TDa
       <FormattedMessage id="account-setup.verify-email-widget.change-email" />
     </Button>
     {unverifiedEmail && (
-      <Button layout={EButtonLayout.OUTLINE} onClick={resendEmail} data-test-id="resend-link">
+      <Button layout={EButtonLayout.SECONDARY} onClick={resendEmail} data-test-id="resend-link">
         <FormattedMessage id="account-setup.verify-email-widget.resend-link" />
       </Button>
     )}

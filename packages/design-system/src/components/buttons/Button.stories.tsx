@@ -39,13 +39,8 @@ const GenerateStory: React.FunctionComponent<TGenerateStoryProps & TButtonProps>
         </Button>
       </Wrapper>
       <Wrapper>
-        <Button layout={EButtonLayout.OUTLINE} {...props}>
-          Outline
-        </Button>
-      </Wrapper>
-      <Wrapper>
-        <Button layout={EButtonLayout.GHOST} {...props}>
-          Ghost
+        <Button layout={EButtonLayout.LINK} {...props}>
+          Link
         </Button>
       </Wrapper>
       <br />

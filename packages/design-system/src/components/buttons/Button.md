@@ -20,17 +20,17 @@ import {
 
 ## Props
 
-| Prop Name    | Type          | One of                                   | Default Value         |
-| ------------ | ------------- | ---------------------------------------- | --------------------- |
-| layout       | EButtonLayout | PRIMARY \| SECONDARY \| OUTLINE \| GHOST | EButtonLayout.OUTLINE |
-| size         | EButtonSize   | NORMAL \| SMALL \| HUGE \| DYNAMIC       | EButtonSize.NORMAL    |
-| width        | EButtonWidth  | NORMAL \| BLOCK \| NO_PADDING            | EButtonWidth.NORMAL   |
-| onClick      | function      |                                          |                       |
-| className    | string        |                                          |                       |
-| children\*   | ReactElement  |                                          |                       |
-| disabled     | boolean       |                                          |                       |
-| svgIcon      | string        |                                          |                       |
-| iconPosition | EIconPosition | ICON_BEFORE                              | ICON_AFTER            |  |
-| iconProps    | object        |                                          |                       |
-| type         | string        |                                          |                       |
-| isLoading    | boolean       |                                          |                       |
+| Prop Name    | Type          | One of                             | Default Value           |
+| ------------ | ------------- | ---------------------------------- | ----------------------- |
+| layout       | EButtonLayout | PRIMARY \| SECONDARY \| LINK       | EButtonLayout.SECONDARY |
+| size         | EButtonSize   | NORMAL \| SMALL \| HUGE \| DYNAMIC | EButtonSize.NORMAL      |
+| width        | EButtonWidth  | NORMAL \| BLOCK \| NO_PADDING      | EButtonWidth.NORMAL     |
+| onClick      | function      |                                    |                         |
+| className    | string        |                                    |                         |
+| children\*   | ReactElement  |                                    |                         |
+| disabled     | boolean       |                                    |                         |
+| svgIcon      | string        |                                    |                         |
+| iconPosition | EIconPosition | ICON_BEFORE                        | ICON_AFTER              |  |
+| iconProps    | object        |                                    |                         |
+| type         | string        |                                    |                         |
+| isLoading    | boolean       |                                    |                         |

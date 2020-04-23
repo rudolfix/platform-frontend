@@ -100,7 +100,7 @@ const Individual: React.FunctionComponent<IIndividual> = ({
       <FormHighlightGroup>
         {canRemove && (
           <Button
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             iconProps={{
               alt: <FormattedMessage id="common.remove" />,
             }}
@@ -147,7 +147,7 @@ const Individual: React.FunctionComponent<IIndividual> = ({
       </FormHighlightGroup>
       <div>
         <Button
-          layout={EButtonLayout.GHOST}
+          layout={EButtonLayout.LINK}
           iconProps={{
             alt: <FormattedMessage id="button-icon.up" />,
           }}
@@ -156,7 +156,7 @@ const Individual: React.FunctionComponent<IIndividual> = ({
           svgIcon={upIcon}
         />
         <Button
-          layout={EButtonLayout.GHOST}
+          layout={EButtonLayout.LINK}
           onClick={() => swap(index, index + 1)}
           disabled={index === length - 1}
           svgIcon={downIcon}
@@ -225,7 +225,7 @@ class KeyIndividualsGroupLayout extends React.Component<IKeyIndividualsGroup & T
               <Button
                 data-test-id={`key-individuals-group-button-${name}`}
                 iconPosition={EIconPosition.ICON_BEFORE}
-                layout={EButtonLayout.GHOST}
+                layout={EButtonLayout.LINK}
                 svgIcon={plusIcon}
                 onClick={() => arrayHelpers.push(getBlankMember())}
               >
@@ -282,7 +282,7 @@ const EtoRegistrationKeyIndividualsComponent = (props: IProps) => (
     </Section>
     <Section className={styles.buttonSection}>
       <Button
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         type="submit"
         isLoading={props.savingData}
         data-test-id="eto-registration-key-individuals-submit"

@@ -49,7 +49,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<TExternalProps &
       );
     case EETOStateOnChain.Signing:
       return (
-        <Button layout={EButtonLayout.OUTLINE} disabled>
+        <Button layout={EButtonLayout.SECONDARY} disabled>
           <FormattedMessage id="portfolio.section.reserved-assets.wait-for-update" />
         </Button>
       );

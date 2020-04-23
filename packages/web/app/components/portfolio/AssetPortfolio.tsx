@@ -102,7 +102,7 @@ const prepareTableRowData = (
           disabled={!isVerifiedInvestor}
           data-test-id="asset-portfolio.payout.redistribute-payout"
           onClick={() => redistributePayout(disbursal)}
-          layout={EButtonLayout.OUTLINE}
+          layout={EButtonLayout.SECONDARY}
           className="mr-3"
         >
           <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />

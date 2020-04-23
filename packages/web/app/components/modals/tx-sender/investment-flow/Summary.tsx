@@ -65,7 +65,7 @@ const InvestmentSummaryComponent: React.FunctionComponent<IProps> = ({
     ) : (
       <div className="text-center">
         <Button
-          layout={EButtonLayout.OUTLINE}
+          layout={EButtonLayout.SECONDARY}
           type="button"
           onClick={onAccept}
           data-test-id="invest-modal-summary-confirm-button"
@@ -73,7 +73,7 @@ const InvestmentSummaryComponent: React.FunctionComponent<IProps> = ({
           <FormattedMessage id="investment-flow.confirm" />
         </Button>
         <Button
-          layout={EButtonLayout.GHOST}
+          layout={EButtonLayout.LINK}
           type="button"
           onClick={onChange}
           data-test-id="invest-modal-summary-change-button"

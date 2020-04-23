@@ -41,7 +41,7 @@ const SingleMediaLinkField: React.FunctionComponent<ISingleMediaLinkFieldInterna
       <div className={styles.fieldCell}>
         {isLastElement && (
           <Button
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             className="mt-2"
             svgIcon={plusIcon}
             iconProps={{ alt: <FormattedMessage id="common.add" /> }}
@@ -76,7 +76,7 @@ const SingleMediaLinkField: React.FunctionComponent<ISingleMediaLinkFieldInterna
       <div className={styles.fieldCell}>
         {!isFirstElement && (
           <Button
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             className="mt-2"
             svgIcon={closeIcon}
             onClick={onRemoveClick}

@@ -39,7 +39,7 @@ const LogoFullScreen = () => (
 const LoginButton: React.FunctionComponent = () => (
   <ButtonLink
     className={styles.button}
-    layout={EButtonLayout.OUTLINE}
+    layout={EButtonLayout.SECONDARY}
     data-test-id="Header-login"
     to={walletLoginRoutes.light}
     size={EButtonSize.DYNAMIC}

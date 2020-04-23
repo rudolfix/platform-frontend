@@ -68,7 +68,7 @@ export const FinancialDisclosure: React.FunctionComponent<FormikProps<IKycIndivi
 
         <ButtonGroup className={styles.buttons}>
           <Button
-            layout={EButtonLayout.OUTLINE}
+            layout={EButtonLayout.SECONDARY}
             size={EButtonSize.HUGE}
             className={styles.button}
             data-test-id="kyc-personal-financial-disclosure-go-back"

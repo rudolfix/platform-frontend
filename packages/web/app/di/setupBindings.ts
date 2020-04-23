@@ -1,5 +1,9 @@
-import { authModuleAPI, coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
-import { SignatureAuthApi } from "@neufund/shared-modules/dist/modules/auth/lib/SignatureAuthApi";
+import {
+  authModuleAPI,
+  coreModuleApi,
+  SignatureAuthApi,
+  TLibSymbolType,
+} from "@neufund/shared-modules";
 import { Container, ContainerModule } from "inversify";
 
 import { IBackendRoot, IConfig } from "../config/getConfig";

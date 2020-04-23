@@ -62,7 +62,10 @@ export const etoActions = {
   ),
   setEto: createActionFactory(
     "ETO_SET_ETO",
-    ({ eto, company }: { eto: TEtoSpecsData; company?: TCompanyEtoData }) => ({ eto, company }),
+    ({ eto, company }: { eto: TEtoSpecsData; company?: TCompanyEtoData }) => ({
+      eto,
+      company,
+    }),
   ),
   setEtosDisplayOrder: createActionFactory("ETO_SET_DISPLAY_ORDER", (order: string[]) => ({
     order,

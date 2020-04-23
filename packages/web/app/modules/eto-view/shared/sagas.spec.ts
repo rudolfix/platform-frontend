@@ -12,6 +12,7 @@ describe("performLoadEtoSideEffects", () => {
     expectSaga(performLoadEtoSideEffects, testEto)
       .withState({
         auth: {},
+        eto: {},
         etoView: {
           processState: EProcessState.SUCCESS,
           eto: testEto,
@@ -28,6 +29,7 @@ describe("performLoadEtoSideEffects", () => {
             type: EUserType.INVESTOR,
           },
         },
+        eto: {},
         etoView: {
           processState: EProcessState.SUCCESS,
           eto: testEto,
@@ -44,6 +46,7 @@ describe("performLoadEtoSideEffects", () => {
             type: EUserType.ISSUER,
           },
         },
+        eto: {},
         etoView: {
           processState: EProcessState.SUCCESS,
           eto: testEto,
@@ -60,6 +63,7 @@ describe("performLoadEtoSideEffects", () => {
             type: EUserType.NOMINEE,
           },
         },
+        eto: {},
         etoView: {
           processState: EProcessState.SUCCESS,
           eto: testEto,
@@ -76,6 +80,7 @@ describe("performLoadEtoSideEffects", () => {
             type: EUserType.NOMINEE,
           },
         },
+        eto: {},
         etoView: {
           processState: EProcessState.SUCCESS,
           eto: {

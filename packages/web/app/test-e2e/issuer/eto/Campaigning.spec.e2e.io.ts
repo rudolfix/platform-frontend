@@ -1,11 +1,5 @@
 import { etoPublicViewByIdLinkLegacy, etoPublicViewLink } from "../../../components/appRouteUtils";
-import { formatThousands } from "../../../components/shared/formatters/utils";
-import { fillForm } from "../../utils/forms";
-import {
-  confirmAccessModal,
-  etoFixtureAddressByName,
-  goToIssuerDashboard,
-} from "../../utils/index";
+import { etoFixtureAddressByName, goToIssuerDashboard } from "../../utils/index";
 import { tid } from "../../utils/selectors";
 import {
   createAndLoginNewUser,
@@ -14,29 +8,7 @@ import {
   logout,
   makeAuthenticatedCall,
 } from "../../utils/userHelpers";
-
-const submitBookBuilding = (
-  amount: string,
-  consentToRevealEmail: boolean,
-  shouldConfirmModal: boolean = true,
-) => {
-  fillForm({
-    amount,
-    consentToRevealEmail: {
-      type: "toggle",
-      checked: consentToRevealEmail,
-    },
-    "eto-bookbuilding-commit": {
-      type: "submit",
-    },
-  });
-
-  if (shouldConfirmModal) {
-    confirmAccessModal();
-  }
-
-  cy.get(tid("campaigning-your-commitment")).contains(`${formatThousands(amount)} EUR`);
-};
+import { submitBookBuilding } from "./utils";
 
 const changeBookBuilding = () => cy.get(tid("campaigning-your-commitment-change")).click();
 

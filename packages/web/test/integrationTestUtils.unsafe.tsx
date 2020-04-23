@@ -1,8 +1,8 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
 import { authModuleAPI, coreModuleApi, IHttpResponse, noopLogger } from "@neufund/shared-modules";
-import { dummyIntl, InversifyProvider, simpleDelay } from "@neufund/shared-utils";
+import { dummyIntl, simpleDelay } from "@neufund/shared-utils";
 import { createMock, tid } from "@neufund/shared-utils/tests";
-import { ConnectedRouter, routerMiddleware } from "connected-react-router";
+import { routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
 import { Container, ContainerModule } from "inversify";
@@ -160,7 +160,6 @@ export function createIntegrationTestsSetup(
 
   const store = createStore(rootReducer, options.initialState as any, middleware);
   context.deps = createGlobalDependencies(container);
-
   sagaMiddleware.run(rootSaga);
 
   return {
@@ -228,42 +227,6 @@ export async function waitUntilDoesntThrow(
       `Timeout while waiting for '${errorMsg}'. Original error: ${lastError && lastError.message}`,
     );
   }
-}
-
-interface ICreateProviderContext {
-  container?: Container;
-  store?: Store<any>;
-  history?: History;
-}
-
-export function wrapWithProviders(
-  Component: React.ComponentType,
-  context: ICreateProviderContext = {},
-): React.ReactElement {
-  // avoid creating store and container if they were provided
-  let setup: ICreateIntegrationTestsSetupOutput | null = null;
-  if (!context.store || !context.container) {
-    setup = createIntegrationTestsSetup();
-  }
-
-  const {
-    store = setup!.store,
-    container = setup!.container,
-    history = createMemoryHistory(),
-  } = context;
-
-  return (
-    <ReduxProvider store={store}>
-      <ConnectedRouter history={history}>
-        <InversifyProvider container={container}>
-          {/* if we experience slow dows related to this we can switch to injecting dummy intl impl*/}
-          <IntlProvider locale="en-en" messages={defaultTranslations}>
-            <Component />
-          </IntlProvider>
-        </InversifyProvider>
-      </ConnectedRouter>
-    </ReduxProvider>
-  );
 }
 
 export function wrapWithIntl(component: React.ReactElement): React.ReactElement<any> {

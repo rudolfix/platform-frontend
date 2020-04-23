@@ -40,6 +40,11 @@ export const bookBuildingFlowReducer: AppReducer<IBookbuildingFLow> = (
           [action.payload.etoId]: action.payload.pledge,
         },
       };
+    case actions.bookBuilding.setPledges.getType():
+      return {
+        ...state,
+        pledges: action.payload.pledges,
+      };
   }
   return state;
 };

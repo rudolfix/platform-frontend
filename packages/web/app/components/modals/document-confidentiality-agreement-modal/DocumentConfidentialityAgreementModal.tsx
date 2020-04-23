@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { Message } from "../../modals/message/Message";
+import { Message } from "../message/Message";
 
 import tosImg from "../../../assets/img/tos.jpg";
 import * as styles from "./DocumentConfidentialityAgreementModal.module.scss";

@@ -1,6 +1,10 @@
 import { createActionFactory, Dictionary } from "@neufund/shared-utils";
 
-import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
+import {
+  IBookBuildingStats,
+  IPledge,
+  IPledges,
+} from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 
 export const bookBuildingFlowActions = {
   loadBookBuildingStats: createActionFactory("LOAD_BOOKBUILDING_FLOW_STATS", (etoId: string) => ({
@@ -20,7 +24,10 @@ export const bookBuildingFlowActions = {
     "SET_BOOKBUILDING_LIST_FLOW_STATS",
     (stats: Dictionary<IBookBuildingStats>) => ({ stats }),
   ),
-  loadPledge: createActionFactory("LOAD_PLEDGE", (etoId: string) => ({ etoId })),
+  loadPledgeForEto: createActionFactory("LOAD_PLEDGE_FOR_ETO", (etoId: string) => ({
+    etoId,
+  })),
+  loadAllPledges: createActionFactory("LOAD_ALL_PLEDGES"),
   savePledge: createActionFactory("SAVE_PLEDGE", (etoId: string, pledge: IPledge) => ({
     etoId,
     pledge,
@@ -29,6 +36,9 @@ export const bookBuildingFlowActions = {
   setPledge: createActionFactory("SET_PLEDGE", (etoId: string, pledge?: IPledge) => ({
     etoId,
     pledge,
+  })),
+  setPledges: createActionFactory("SET_PLEDGES", (pledges: IPledges) => ({
+    pledges,
   })),
   bookBuildingStartWatch: createActionFactory("WATCH_BOOKBUILDING_FLOW_STATS", (etoId: string) => ({
     etoId,

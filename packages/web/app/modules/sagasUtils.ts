@@ -97,6 +97,22 @@ export function* neuTakeLatestUntil(
 }
 
 /**
+ * Starts saga on `startAction`, cancels on `stopAction`, loops...
+ */
+export function* neuTakeEveryUntil(
+  startAction: ActionPattern,
+  stopAction: ActionPattern,
+  saga: TSagaWithDeps,
+): any {
+  yield takeEvery(startAction, function*(payload): Generator<any, any, any> {
+    yield race({
+      task: neuCall(saga, payload),
+      cancel: take(stopAction),
+    });
+  });
+}
+
+/**
  *  Awaits an Action with specific payload.
  *  You can pass only a part of the payload that you want to match.
  */

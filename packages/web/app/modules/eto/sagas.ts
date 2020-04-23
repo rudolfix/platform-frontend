@@ -1,4 +1,4 @@
-import { all, delay, fork, put, race, select, take } from "@neufund/sagas";
+import { all, fork, put, race, select, take } from "@neufund/sagas";
 import {
   convertFromUlps,
   Dictionary,
@@ -43,9 +43,9 @@ import { TAppGlobalState } from "../../store";
 import { TTranslatedString } from "../../types";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified, selectUserId, selectUserType } from "../auth/selectors";
-import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuilding-flow/utils";
+import { shouldLoadBookbuildingStats } from "../bookbuilding-flow/utils";
 import { selectClientJurisdiction } from "../kyc/selectors";
-import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
+import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectTxAdditionalData, selectTxType } from "../tx/sender/selectors";
 import { getAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/sagas";
 import {
@@ -55,15 +55,13 @@ import {
 import { ETxSenderType, TAdditionalDataByType } from "../tx/types";
 import { selectEthereumAddress } from "../web3/selectors";
 import { generateRandomEthereumAddress } from "../web3/utils";
-import { etoInProgressPollingDelay, etoNormalPollingDelay } from "./constants";
 import { InvalidETOStateError } from "./errors";
+import { watchEtosSetActionSaga } from "./sagas/watchEtosSetActionSaga";
 import {
   selectEtoById,
-  selectEtoOnChainNextStateStartDate,
   selectEtoOnChainStateById,
   selectEtoSubStateEtoEtoWithContract,
   selectFilteredEtosByRestrictedJurisdictions,
-  selectInvestorEtoWithCompanyAndContract,
 } from "./selectors";
 import {
   EEtoAgreementStatus,
@@ -93,7 +91,6 @@ function* loadEtoPreview(
 
     if (action.payload.widgetView) {
       yield put(actions.eto.setEtoWidgetError());
-
       return;
     }
 
@@ -164,11 +161,7 @@ function* loadAdditionalEtoData(
     selectEtoOnChainStateById(state, eto.etoId),
   );
 
-  if (shouldLoadPledgeData(eto.state, onChainState)) {
-    yield put(actions.bookBuilding.loadPledge(eto.etoId));
-  }
-
-  if (shouldLoadBookbuildingStats(onChainState)) {
+  if (shouldLoadBookbuildingStats(eto.state, onChainState)) {
     eto.isBookbuilding
       ? yield put(actions.bookBuilding.bookBuildingStartWatch(eto.etoId))
       : yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
@@ -273,104 +266,9 @@ export function* loadEtoContract(
   return { ...eto, contract };
 }
 
-function* watchEtoSetAction(
-  _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.eto.setEto>,
-): any {
-  const previewCode = action.payload.eto.previewCode;
-
-  yield neuFork(watchEto, previewCode);
-}
-
-function* watchEtosSetAction(
-  _: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.eto.setEtos>,
-): any {
-  yield all(map(eto => neuFork(watchEto, eto.previewCode), action.payload.etos));
-}
-
-const etoNextStateCount: Dictionary<number | undefined> = {};
-
-function* calculateNextStateDelay({ logger }: TGlobalDependencies, previewCode: string): any {
-  const nextStartDate: Date | undefined = yield select((state: TAppGlobalState) =>
-    selectEtoOnChainNextStateStartDate(state, previewCode),
-  );
-
-  if (nextStartDate) {
-    const timeToNextState = nextStartDate.getTime() - Date.now();
-
-    if (timeToNextState > 0) {
-      etoNextStateCount[previewCode] = undefined;
-      // add small delay to start date to avoid fetching eto in same state
-      return timeToNextState + 2000;
-    }
-
-    // if timeToNextState is negative then user and ethereum clock are not in sync
-    // in that case poll eto 1 minute with intervals of 2seconds and then 4 minutes more with 5 seconds interval
-    // if after that state time is still negative log warning message
-    const nextStateWatchCount = etoNextStateCount[previewCode];
-    if (nextStateWatchCount === undefined) {
-      etoNextStateCount[previewCode] = 1;
-      return 2000;
-    }
-
-    if (nextStateWatchCount < 30) {
-      etoNextStateCount[previewCode] = nextStateWatchCount + 1;
-      return 2000;
-    }
-
-    if (nextStateWatchCount >= 30 && nextStateWatchCount < 78) {
-      etoNextStateCount[previewCode] = nextStateWatchCount + 1;
-      return 5000;
-    }
-
-    logger.warn(
-      "ETO next state polling failed.",
-      new Error("User and ethereum clocks are not in sync"),
-      { etoPreviewCode: previewCode },
-    );
-  }
-
-  return undefined;
-}
-
-export function* delayEtoRefresh(
-  _: TGlobalDependencies,
-  eto: TEtoWithCompanyAndContractReadonly,
-): Generator<any, any, any> {
-  const strategies: Dictionary<any> = {
-    default: delay(etoNormalPollingDelay),
-  };
-
-  if (eto.state === EEtoState.ON_CHAIN) {
-    if ([EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(eto.contract!.timedState)) {
-      strategies.inProgress = delay(etoInProgressPollingDelay);
-    }
-
-    const nextStateDelay: number = yield neuCall(calculateNextStateDelay, eto.previewCode);
-    // Do not schedule update if it's later than normal polling
-    // otherwise it's possible to overflow max timeout limit
-    // see https://stackoverflow.com/questions/3468607/why-does-settimeout-break-for-large-millisecond-delay-values
-    if (nextStateDelay && nextStateDelay < etoNormalPollingDelay) {
-      strategies.nextState = delay(nextStateDelay);
-    }
-  }
-
-  yield race(strategies);
-}
-
-export function* watchEto(_: TGlobalDependencies, previewCode: string): any {
-  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: TAppGlobalState) =>
-    selectInvestorEtoWithCompanyAndContract(state, previewCode),
-  );
-
-  while (true) {
-    yield neuCall(delayEtoRefresh, eto);
-    yield put(actions.eto.loadEtoPreview(eto.previewCode));
-  }
-}
-
 export function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
+  yield put(actions.bookBuilding.loadAllPledges());
+
   try {
     const etos: TEtoDataWithCompany[] = yield apiEtoService.getEtos();
     const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
@@ -873,8 +771,7 @@ export function* etoSagas(): Generator<any, any, any> {
     issuerFlowLoadInvestmentAgreement,
   );
 
-  yield fork(neuTakeUntil, actions.eto.setEto, LOCATION_CHANGE, watchEtoSetAction);
-  yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetAction);
+  yield fork(neuTakeUntil, actions.eto.setEtos, LOCATION_CHANGE, watchEtosSetActionSaga);
 
   // Update  eto and token data on successfully mined transaction
   yield fork(neuTakeEvery, actions.txSender.txSenderTxMined, updateEtoAndTokenData);

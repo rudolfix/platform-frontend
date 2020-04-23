@@ -19,10 +19,6 @@ export const etoViewActions = {
     }),
   ),
   reloadEtoView: createActionFactory("ETO_RELOAD_ETO_DATA"),
-  watchEtoView: createActionFactory(
-    "ETO_VIEW_WATCH_ETO",
-    (eto: TEtoWithCompanyAndContractReadonly) => ({ eto }),
-  ),
   setEtoError: createActionFactory("ETO_VIEW_SET_ETO_ERROR"),
   ...etoViewNotAuthActions,
   ...etoViewInvestorActions,

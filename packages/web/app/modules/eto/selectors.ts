@@ -169,7 +169,6 @@ export const selectEtoOnChainState = (
   previewCode: string,
 ): EETOStateOnChain | undefined => {
   const contract = state.eto.contracts[previewCode];
-
   return contract && contract.timedState;
 };
 
@@ -178,7 +177,6 @@ export const selectEtoStartOfStates = (
   previewCode: string,
 ): TEtoStartOfStates | undefined => {
   const contract = state.eto.contracts[previewCode];
-
   return contract && contract.startOfStates;
 };
 
@@ -187,7 +185,6 @@ export const selectEtoOnChainNextStateStartDate = (
   previewCode: string,
 ): Date | undefined => {
   const eto = selectInvestorEtoWithCompanyAndContract(state, previewCode);
-
   return getEtoNextStateStartDate(eto);
 };
 
@@ -199,7 +196,6 @@ export const selectEtoOnChainStateById = (
   etoId: string,
 ): EETOStateOnChain | undefined => {
   const code = selectEtoPreviewCode(state, etoId);
-
   return code ? selectEtoOnChainState(state, code) : undefined;
 };
 

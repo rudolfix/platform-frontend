@@ -30,11 +30,15 @@ const typographyStyles = StyleSheet.create({
   },
   headline2: {
     ...fonts.montserratSemiBold,
-    fontSize: 18,
-    lineHeight: 28,
-    letterSpacing: 0.1,
+    fontSize: 24,
+    lineHeight: 32,
   },
   headline3: {
+    ...fonts.montserratSemiBold,
+    fontSize: 17,
+    lineHeight: 24,
+  },
+  headline4: {
     ...fonts.robotoRegular,
     fontSize: 16,
     lineHeight: 32,

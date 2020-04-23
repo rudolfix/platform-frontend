@@ -1,8 +1,8 @@
 import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { DeepPartial } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TAppGlobalState } from "../../app/store";
-import { DeepPartial } from "../../app/types";
 import { testCompany, testEto } from "../fixtures";
 
 export const mockedStore: DeepPartial<TAppGlobalState> = {

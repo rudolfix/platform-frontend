@@ -5,12 +5,14 @@ import Home from "../../assets/home.svg";
 import Investments from "../../assets/investments.svg";
 import Profile from "../../assets/profile.svg";
 import Wallet from "../../assets/wallet.svg";
+import Close from "../../assets/close.svg";
 
 enum EIconType {
   HOME = "home",
   PORTFOLIO = "portf",
   PROFILE = "profile",
   WALLET = "wallet",
+  CLOSE = "close",
 }
 
 const getIcon = (type: EIconType) => {
@@ -23,6 +25,8 @@ const getIcon = (type: EIconType) => {
       return Profile;
     case EIconType.WALLET:
       return Wallet;
+    case EIconType.CLOSE:
+      return Close;
     default:
       assertNever(type, `Invalid icon type ${type}`);
   }

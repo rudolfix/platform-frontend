@@ -21,7 +21,7 @@ jobs:
     steps:
       # Download and cache dependencies
       - checkout
-      - run: yarn update-submodules
+
       # Installation
       - run: yarn --frozen-lockfile
       # Confirm Artifact Version
@@ -55,7 +55,6 @@ jobs:
 
     steps:
       - checkout
-      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -77,7 +76,6 @@ jobs:
 
     steps:
       - checkout
-      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -124,7 +122,6 @@ jobs:
 
     steps:
       - checkout
-      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -139,7 +136,6 @@ jobs:
 
     steps:
       - checkout
-      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -154,7 +150,6 @@ jobs:
 
     steps:
       - checkout
-      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -173,7 +168,6 @@ jobs:
 
     steps:
       - checkout
-      - run: yarn update-submodules
       - restore_cache:
           keys:
             - v33-deps-{{ checksum "package.json" }}
@@ -191,7 +185,6 @@ jobs:
     steps:
       # Download and cache dependencies
       - checkout
-      - run: yarn update-submodules
       # Installation
       - run: yarn --frozen-lockfile
       # Linting

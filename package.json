@@ -10,8 +10,9 @@
     "lint": "wsrun lint",
     "test": "wsrun test",
     "update-submodules": "git submodule update --init --recursive",
-    "prepare": "yarn update-submodules && wsrun --stages prepare",
+    "prepare": "wsrun --stages prepare",
     "deduplicate": "yarn-deduplicate",
+    "preinstall": "yarn update-submodules",
     "postinstall": "patch-package"
   },
   "devDependencies": {

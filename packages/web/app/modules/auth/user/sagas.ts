@@ -220,18 +220,29 @@ export function* setUser(
   logger.setUser({ id: user.userId, type: user.type, walletType: user.walletType });
 }
 
-function* handleLogOutUser(
+/*
+ * this is the main logout flow, to be used by app internally.
+ * in cases when logout is triggered from UI, there's a special wrapper
+ * that starts off an action - handleLogOutUser()
+ *
+ * @param logoutType - reason for logout (user-requested, due to a timeout, etc.)
+ * This gets saved in state, copied to the new app state on app reset during logout to be shown in the login UI)
+ * */
+export function* handleLogOutUserInternal(
   { logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.auth.logout>,
-): Generator<any, any, any> {
-  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
-
+  logoutType: ELogoutReason,
+): Generator<any, void, any> {
   yield neuCall(logoutUser);
 
   switch (logoutType) {
     case ELogoutReason.USER_REQUESTED:
       {
         yield put(actions.routing.goHome());
+      }
+      break;
+    case ELogoutReason.WC_PEER_DISCONNECTED:
+      {
+        yield put(actions.routing.goToLogin({ logoutReason: ELogoutReason.WC_PEER_DISCONNECTED }));
       }
       break;
     case ELogoutReason.SESSION_TIMEOUT:
@@ -250,8 +261,20 @@ function* handleLogOutUser(
   }
 
   yield put(actions.init.start(EInitType.APP_INIT));
+}
 
-  logger.setUser(null);
+/*
+ * this is a wrapper for handleLogOutUserInternal() to trigger logout via an action from UI.
+ * In cases when logout is started inside sagas handleLogOutUserInternal() should be used
+ *
+ * @param action - action that has logout type in payload
+ * */
+export function* handleLogOutUser(
+  _: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.auth.logout>,
+): Generator<any, any, any> {
+  const { logoutType = ELogoutReason.USER_REQUESTED } = action.payload;
+  yield neuCall(handleLogOutUserInternal, logoutType);
 }
 
 export function mapSignInErrors(e: Error): SignInUserErrorMessage {
@@ -289,6 +312,16 @@ function* profileMonitor({ logger }: TGlobalDependencies): Generator<any, any, a
 export function* authUserSagas(): Generator<any, any, any> {
   yield fork(neuTakeLatest, actions.auth.logout, handleLogOutUser);
   yield fork(neuTakeEvery, actions.auth.setUser, setUser);
-  yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, waitForUserActiveOrLogout);
-  yield fork(neuTakeLatestUntil, actions.auth.setUser, actions.auth.logout, profileMonitor);
+  yield fork(
+    neuTakeUntil,
+    actions.auth.setUser,
+    actions.auth.stopUserActivityWatcher,
+    waitForUserActiveOrLogout,
+  );
+  yield fork(
+    neuTakeLatestUntil,
+    actions.auth.setUser,
+    actions.auth.stopProfileMonitor,
+    profileMonitor,
+  );
 }

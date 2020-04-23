@@ -17,6 +17,11 @@ export interface IRawTxData extends ITxData {
 export interface IEthereumNetworkConfig {
   rpcUrl: string;
   backendRpcUrl: string;
+  bridgeUrl: string;
+}
+
+export enum ESignTransactionMethod {
+  ETH_SEND_TRANSACTION = "eth_sendTransaction",
 }
 
 export type TBigNumberVariants = string | BigNumber;

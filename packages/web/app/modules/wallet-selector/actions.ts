@@ -6,6 +6,7 @@ import { browserWizardActions } from "./browser-wizard/actions";
 import { ledgerWizardActions } from "./ledger-wizard/actions";
 import { lightWizardActions } from "./light-wizard/actions";
 import { TWalletRegisterData } from "./types";
+import { walletConnectActions } from "./wallet-connect/actions";
 
 const actions = {
   reset: createActionFactory("WALLET_SELECTOR_RESET"),
@@ -53,5 +54,6 @@ export const walletSelectorActions = {
   ...browserWizardActions,
   ...ledgerWizardActions,
   ...lightWizardActions,
+  ...walletConnectActions,
   ...actions,
 };

@@ -27,6 +27,7 @@ export const appRoutes = {
 
   login: "/login",
   loginBrowserWallet: "/login/browser",
+  walletconnect: "/wc",
 
   restore: "/restore",
 

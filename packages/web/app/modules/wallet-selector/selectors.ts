@@ -1,4 +1,4 @@
-import { DeepReadonlyObject } from "@neufund/shared-utils";
+import { DeepReadonly, DeepReadonlyObject } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
 import { createSelector } from "reselect";
 
@@ -72,3 +72,10 @@ export const selectRegisterWalletDefaultFormValues = (
   state.walletSelector.uiState !== ECommonWalletRegistrationFlowState.NOT_STARTED
     ? state.walletSelector.initialFormValues
     : undefined;
+
+export const selectMessageSigningError = (
+  state: TAppGlobalState,
+): DeepReadonly<TMessage> | undefined => state.walletSelector.messageSigningError;
+
+export const selectWalletConnectError = (state: TAppGlobalState) =>
+  state.walletSelector.walletConnectError;

@@ -46,6 +46,7 @@ export const routes = [
   registerWithLightWalletRoute,
   registerWithBrowserWalletRoute,
   registerWithLedgerRoute,
+  loginWalletConnectRoute,
   loginRoute,
   restoreRoute,
   profileRoute,
@@ -412,6 +413,23 @@ export function* registerWithLedgerRoute(payload: RouterState): Generator<any, a
   });
   return yield routeAction(routeMatch, {
     notAuth: put(actions.walletSelector.registerWithLedger(EUserType.INVESTOR)),
+    investor: put(actions.routing.goToDashboard()),
+    issuer: put(actions.routing.goToDashboard()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
+}
+
+export function* loginWalletConnectRoute(payload: RouterState): Generator<any, any, any> {
+  const routeMatch = yield matchPath(payload.location.pathname, {
+    path: `${appRoutes.walletconnect}${process.env.NF_WALLET_CONNECT_LINK}`,
+    exact: true,
+  });
+  return yield routeAction(routeMatch, {
+    notAuth: put(
+      process.env.NF_WALLET_CONNECT_ENABLED === "1"
+        ? actions.walletSelector.walletConnectStart()
+        : actions.routing.goHome(),
+    ),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

@@ -27,6 +27,7 @@ import { OnlyPublicRoute } from "./shared/routing/OnlyPublicRoute";
 import { TestCriticalError } from "./testing/critical-error/TestCriticalError";
 import { e2eRoutes } from "./testing/e2eRoutes";
 import { EmbeddedWidget } from "./testing/embeded-widget/TestEmbededWidget";
+import { WalletConnect } from "./wallet-selector/wallet-connect/WalletConnect";
 import { WalletRecovery } from "./wallet-selector/WalletRecovery/WalletRecovery";
 import { WalletSelectorLogin } from "./wallet-selector/WalletSelectorLogin/WalletSelectorLogin";
 import { WalletSelectorRegister } from "./wallet-selector/WalletSelectorRegister/WalletSelectorRegister";
@@ -59,7 +60,14 @@ export const AppRouter: React.FunctionComponent = () => (
     <OnlyPublicRoute path={appRoutes.root} component={Landing} exact />
     <OnlyPublicRoute path={appRoutes.login} component={WalletSelectorLogin} />
     <OnlyPublicRoute path={appRoutes.restore} component={WalletRecovery} />,
-    {/* only investors routes */}
+    {process.env.NF_WALLET_CONNECT_ENABLED === "1" && (
+      <OnlyPublicRoute
+        path={`${appRoutes.walletconnect}${process.env.NF_WALLET_CONNECT_LINK}`}
+        component={WalletConnect}
+        exact
+      />
+    )}
+    ,{/* only investors routes */}
     {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
       <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
     )}

@@ -30,3 +30,5 @@ declare module "bitcore-mnemonic";
 declare module "truffle-privatekey-provider";
 
 declare module "node-fetch";
+
+declare module "@walletconnect/web3-subprovider";

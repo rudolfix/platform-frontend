@@ -11,7 +11,7 @@ export const reduxLogoutReset = (
 ) => {
   const enhanceReducer = (state: S | undefined, action: A) => {
     switch (action.type) {
-      case actions.auth.logout.getType(): {
+      case actions.auth.logoutDone.getType(): {
         // Need to force cast as `any` due to the way `StoreEnhancer` type is defined
         // (there is not access to provide specific store type)
         return reducer(staticValues(state as any) as any, action);

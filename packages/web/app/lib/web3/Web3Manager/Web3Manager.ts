@@ -159,11 +159,11 @@ export class Web3Manager extends EventEmitter implements IEthManager {
   }
 
   public async getTransactionByHash(txHash: string): Promise<Web3.Transaction> {
-    return this.internalTxWeb3Adapter.getTransactionByHash(txHash);
+    return this.internalTxWeb3Adapter.getTransactionByHash(txHash); //wc internalWeb3Adapter
   }
 
   public async getTransactionReceipt(txHash: string): Promise<Web3.TransactionReceipt | null> {
-    return this.internalTxWeb3Adapter.getTransactionReceipt(txHash);
+    return this.internalTxWeb3Adapter.getTransactionReceipt(txHash); ////wc internalWeb3Adapter
   }
 
   public async getBlockNumber(): Promise<number> {

@@ -9,4 +9,7 @@ export const initActions = {
     initType,
     errorMsg,
   })),
+  startServices: createActionFactory("START_SERVICES"),
+  restartServices: createActionFactory("RESTART_SERVICES"),
+  stopServices: createActionFactory("STOP_SERVICES"),
 };

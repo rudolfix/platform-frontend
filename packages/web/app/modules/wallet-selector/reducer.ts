@@ -11,6 +11,7 @@ import {
 export const walletSelectorInitialState: TWalletSelectorState & TWalletRegisterData = {
   isMessageSigning: false,
   messageSigningError: undefined,
+  walletConnectError: undefined,
   isLoading: false,
 
   walletType: EWalletType.LIGHT,
@@ -36,6 +37,7 @@ export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletReg
         flowType: state.flowType,
         isMessageSigning: true,
         messageSigningError: undefined,
+        walletConnectError: undefined,
         isLoading: false,
         walletType: state.walletType,
         uiState: ECommonWalletRegistrationFlowState.NOT_STARTED,
@@ -46,6 +48,7 @@ export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletReg
         flowType: state.flowType,
         isMessageSigning: false,
         messageSigningError: action.payload.errorMsg,
+        walletConnectError: undefined,
         isLoading: false,
         walletType: state.walletType,
         uiState: ECommonWalletRegistrationFlowState.NOT_STARTED,
@@ -67,6 +70,13 @@ export const walletSelectorReducer: AppReducer<TWalletSelectorState & TWalletReg
       return {
         ...state,
         ...action.payload.data,
+      };
+    case actions.walletSelector.walletConnectError.getType():
+      return {
+        ...state,
+        isMessageSigning: false,
+        messageSigningError: undefined,
+        walletConnectError: action.payload.error,
       };
   }
 

@@ -1,3 +1,7 @@
 import { notificationUIActions } from "./actions";
 
-export { notificationUIActions };
+const notificationUIModuleApi = {
+  actions: notificationUIActions,
+};
+
+export { notificationUIModuleApi };

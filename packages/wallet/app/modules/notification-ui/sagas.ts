@@ -1,22 +1,20 @@
 import { fork, neuTakeLatest, TActionFromCreator } from "@neufund/sagas";
-import { notificationUIActions } from "@neufund/shared-modules";
+import { notificationUIModuleApi } from "@neufund/shared-modules";
 import { Alert } from "react-native";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 
+const actions = notificationUIModuleApi.actions;
+
 function* showInfo(
   _: TGlobalDependencies,
   action:
-    | TActionFromCreator<typeof notificationUIActions, typeof notificationUIActions.showInfo>
-    | TActionFromCreator<typeof notificationUIActions, typeof notificationUIActions.showError>,
+    | TActionFromCreator<typeof actions, typeof actions.showInfo>
+    | TActionFromCreator<typeof actions, typeof actions.showError>,
 ): Generator<unknown, void> {
-  Alert.alert(action.payload.message);
+  Alert.alert(action.payload.message as string);
 }
 
 export function* notificationUISaga(): Generator<unknown, void> {
-  yield fork(
-    neuTakeLatest,
-    [notificationUIActions.showInfo, notificationUIActions.showError],
-    showInfo,
-  );
+  yield fork(neuTakeLatest, [actions.showInfo, actions.showError], showInfo);
 }

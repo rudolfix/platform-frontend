@@ -1,4 +1,4 @@
-import { notificationUIActions } from "@neufund/shared-modules";
+import { notificationUIModuleApi } from "@neufund/shared-modules";
 
 import { webNotificationUISaga } from "./sagas";
 
@@ -10,8 +10,5 @@ const setupWebNotificationUIModule = () => ({
   api: webNotificationUIModuleApi,
 });
 
-const webNotificationUIModuleApi = {
-  actions: notificationUIActions,
-};
-
+const webNotificationUIModuleApi = notificationUIModuleApi;
 export { setupWebNotificationUIModule, webNotificationUIModuleApi };

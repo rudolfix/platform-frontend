@@ -1,27 +1,30 @@
-import { fork, neuTakeLatest, TActionFromCreator } from "@neufund/sagas";
-import { notificationUIActions } from "@neufund/shared-modules";
+import { fork, neuTakeLatest, SagaGenerator, TActionFromCreator } from "@neufund/sagas";
+import { notificationUIModuleApi } from "@neufund/shared-modules";
 
 import { showErrorToast, showInfoToast } from "../../components/shared/Toast";
 import { getMessageTranslation } from "../../components/translatedMessages/messages";
+import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
+
+const actions = notificationUIModuleApi.actions;
 
 function* showInfo(
   _: TGlobalDependencies,
-  action: TActionFromCreator<typeof notificationUIActions, typeof notificationUIActions.showInfo>,
-): Generator<unknown, void> {
+  action: TActionFromCreator<typeof actions, typeof actions.showInfo>,
+): SagaGenerator<void> {
   const { message, options } = action.payload;
-  showInfoToast(getMessageTranslation(message), options);
+  showInfoToast(getMessageTranslation(message as TMessage), options);
 }
 
 function* showError(
   _: TGlobalDependencies,
-  action: TActionFromCreator<typeof notificationUIActions, typeof notificationUIActions.showError>,
-): Generator<unknown, void> {
+  action: TActionFromCreator<typeof actions, typeof actions.showError>,
+): SagaGenerator<void> {
   const { message, options } = action.payload;
-  showErrorToast(getMessageTranslation(message), options);
+  showErrorToast(getMessageTranslation(message as TMessage), options);
 }
 
-export function* webNotificationUISaga(): Generator<unknown, void> {
-  yield fork(neuTakeLatest, notificationUIActions.showInfo, showInfo);
-  yield fork(neuTakeLatest, notificationUIActions.showError, showError);
+export function* webNotificationUISaga(): SagaGenerator<void> {
+  yield fork(neuTakeLatest, actions.showInfo, showInfo);
+  yield fork(neuTakeLatest, actions.showError, showError);
 }

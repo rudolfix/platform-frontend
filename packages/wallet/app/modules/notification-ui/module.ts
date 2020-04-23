@@ -1,4 +1,4 @@
-import { notificationUIActions } from "@neufund/shared-modules";
+import { notificationUIModuleApi } from "@neufund/shared-modules";
 import { notificationUISaga } from "./sagas";
 
 const MODULE_ID = "wallet:notification-ui";
@@ -8,9 +8,5 @@ const setupNotificationUIModule = () => ({
   sagas: [notificationUISaga],
   api: notificationUIModuleApi,
 });
-
-const notificationUIModuleApi = {
-  actions: notificationUIActions,
-};
 
 export { setupNotificationUIModule, notificationUIModuleApi };

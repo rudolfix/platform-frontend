@@ -1,6 +1,6 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-const payloadCreator = (message: any, options?: any) => ({
+const payloadCreator = (message: unknown, options?: any) => ({
   message,
   options,
 });

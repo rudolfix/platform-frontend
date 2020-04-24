@@ -6,7 +6,7 @@ const url = require("url");
 
 const { getArtifactsMeta } = require("../scripts/getArtifacts");
 
-module.exports = function loadAppEnv(processEnv) {
+module.exports = function loadAppEnv() {
   const universeAddressExists = !!process.env.NF_UNIVERSE_CONTRACT_ADDRESS;
   const envs = dotenv.load({ path: join(__dirname, "../.env") }).parsed;
 

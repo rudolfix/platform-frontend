@@ -1,6 +1,6 @@
 import { isGaslessTxEnabled } from "@neufund/shared-utils";
 
-import { getOptionalEnv, getRequiredEnv, verifyOptionalFlagEnv } from "./configUtils";
+import { getRequiredEnv, verifyOptionalFlagEnv } from "./configUtils";
 
 export interface IBackendRoot {
   url: string;
@@ -21,25 +21,29 @@ export interface IConfig {
   isMochaRunning?: boolean;
 }
 
-export function getConfig(env: NodeJS.ProcessEnv): IConfig {
-  verifyFeatureFlags(env);
+export function getConfig(): IConfig {
+  verifyFeatureFlags();
+
   return {
     ethereumNetwork: {
-      rpcUrl: getRequiredEnv(env, "NF_RPC_PROVIDER"),
+      rpcUrl: getRequiredEnv(process.env.NF_RPC_PROVIDER, "NF_RPC_PROVIDER"),
       // Falls back to the regular settings when NF_TRANSACTIONAL_RPC_PROVIDER is not provided
       backendRpcUrl: isGaslessTxEnabled
-        ? getRequiredEnv(env, "NF_TRANSACTIONAL_RPC_PROVIDER")
-        : getRequiredEnv(env, "NF_RPC_PROVIDER"),
-      bridgeUrl: getRequiredEnv(env, "NF_BRIDGE_URL"),
+        ? getRequiredEnv(process.env.NF_TRANSACTIONAL_RPC_PROVIDER, "NF_TRANSACTIONAL_RPC_PROVIDER")
+        : getRequiredEnv(process.env.NF_RPC_PROVIDER, "NF_RPC_PROVIDER"),
+      bridgeUrl: getRequiredEnv(process.env.NF_BRIDGE_URL, "NF_BRIDGE_URL"),
     },
     contractsAddresses: {
-      universeContractAddress: getRequiredEnv(env, "NF_UNIVERSE_CONTRACT_ADDRESS"),
+      universeContractAddress: getRequiredEnv(
+        process.env.NF_UNIVERSE_CONTRACT_ADDRESS,
+        "NF_UNIVERSE_CONTRACT_ADDRESS",
+      ),
     },
     externalResources: {
-      etoStatisticsIframeURL: getRequiredEnv(env, "NF_ETO_STATS_URL"),
+      etoStatisticsIframeURL: getRequiredEnv(process.env.NF_ETO_STATS_URL, "NF_ETO_STATS_URL"),
     },
     backendRoot: {
-      url: getOptionalEnv(env, "NF_BACKEND_ROOT") || "",
+      url: process.env.NF_BACKEND_ROOT || "",
     },
   };
 }
@@ -47,6 +51,9 @@ export function getConfig(env: NodeJS.ProcessEnv): IConfig {
 /**
  * We do not store feature flags inside the config. We just verify them here and they are accessed directly via process.env to allow easy build optimization.
  */
-function verifyFeatureFlags(env: NodeJS.ProcessEnv): void {
-  verifyOptionalFlagEnv(env, "NF_FEATURE_EMAIL_CHANGE_ENABLED");
+function verifyFeatureFlags(): void {
+  verifyOptionalFlagEnv(
+    process.env.NF_FEATURE_EMAIL_CHANGE_ENABLED,
+    "NF_FEATURE_EMAIL_CHANGE_ENABLED",
+  );
 }

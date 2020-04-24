@@ -8,7 +8,7 @@ const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
 const loadAppEnv = require("./loadAppEnv");
 
-const applicationEnv = loadAppEnv(process.env);
+const applicationEnv = loadAppEnv();
 
 if (process.env.NF_VM_CONNECT) {
   console.assert(
@@ -25,6 +25,7 @@ const targetAddress = process.env.NF_VM_CONNECT
 
 module.exports = merge.smart(configCommon, {
   mode: "development",
+  devtool: "cheap-module-source-map",
   devServer: {
     contentBase: paths.dist,
     // provide `NF_SERVE_ON_NETWORK` to expose app to the local network (useful for cross device testing)

@@ -6,8 +6,11 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
 const paths = require("./paths");
 const { peerDependencies } = require("../package");
+
+const isCircleCI = () => process.env.CI === "true" && process.env.CIRCLECI === "true";
 
 const webpackConfig = (env, argv = {}) => {
   const analyzerMode = argv.analyze || "disabled";
@@ -43,7 +46,18 @@ const webpackConfig = (env, argv = {}) => {
     ],
     optimization: {
       minimizer: [
-        new TerserPlugin(),
+        new TerserPlugin({
+          // CircleCI doesn't provide real available CPU's
+          // see: https://github.com/webpack-contrib/terser-webpack-plugin/issues/202
+          parallel: isCircleCI() ? 2 : true,
+          terserOptions: {
+            output: {
+              // do not preserve any kind of comments in the final bundle
+              comments: false,
+            },
+          },
+          sourceMap: true,
+        }),
         new OptimizeCSSAssetsPlugin(),
         new webpack.HashedModuleIdsPlugin(),
       ],

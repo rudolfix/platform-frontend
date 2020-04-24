@@ -79,7 +79,7 @@ function renderApp(
 }
 
 function startupApp(history: History): { store: Store<TAppGlobalState>; container: Container } {
-  const config = getConfig(process.env);
+  const config = getConfig();
 
   const container = new Container();
 

@@ -1,13 +1,10 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { createAction, createSimpleAction } from "../../actionsUtils";
 import { ILedgerAccount } from "./reducer";
 
 export const ledgerWizardActions = {
-  ledgerTryEstablishingConnectionWithLedger: () =>
-    createSimpleAction("LEDGER_TRY_ESTABLISHING_CONNECTION"),
-
   ledgerLoadAccounts: createActionFactory("LEDGER_LOAD_ACCOUNTS"),
 
   ledgerSetDerivationPathPrefix: (derivationPathPrefix: string) =>
@@ -28,8 +25,6 @@ export const ledgerWizardActions = {
 
   ledgerWizardAccountsListPreviousPage: () =>
     createSimpleAction("LEDGER_WIZARD_ACCOUNTS_LIST_PREVIOUS_PAGE"),
-
-  ledgerConnectionEstablished: () => createSimpleAction("LEDGER_CONNECTION_ESTABLISHED"),
 
   ledgerConnectionEstablishedError: (errorMsg: TMessage) =>
     createAction("LEDGER_CONNECTION_ESTABLISHED_ERROR", { errorMsg }),

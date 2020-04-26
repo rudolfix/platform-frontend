@@ -18,7 +18,7 @@ const ActionButton: React.FunctionComponent<THeaderFullscreenProps & CommonHtmlP
   className,
 }) => (
   <Button
-    layout={EButtonLayout.GHOST}
+    layout={EButtonLayout.LINK}
     className={className}
     svgIcon={close}
     iconPosition={EIconPosition.ICON_AFTER}

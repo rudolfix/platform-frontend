@@ -1,0 +1,11 @@
+.step {
+  text-align: center;
+
+  img {
+    display: inline-block;
+  }
+
+  p {
+    @include nds-body-small;
+  }
+}

@@ -25,7 +25,7 @@ const CopyToClipboardButton: React.FunctionComponent<IProps & TDataTestId & Comm
   return (
     <Button
       className={className}
-      layout={EButtonLayout.GHOST}
+      layout={EButtonLayout.LINK}
       svgIcon={clipboardIcon}
       width={EButtonWidth.NO_PADDING}
       iconProps={{

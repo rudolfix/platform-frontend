@@ -1,4 +1,4 @@
-import { toEthereumHDPath } from "@neufund/shared";
+import { toEthereumHDPath } from "@neufund/shared-utils";
 import {
   EthSecureEnclave,
   FailedToDerivePrivateKey,

@@ -1,15 +1,10 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
-import { TDataTestId, TTranslatedString } from "../../types";
 import { TranslatedMessageType } from "./messages";
-
-export interface IMessageData extends TDataTestId {
-  message?: TTranslatedString;
-}
 
 export type TMessage = DeepReadonly<{
   messageType: TranslatedMessageType;
-  messageData?: IMessageData;
+  messageData?: string | number | object;
 }>;
 
 export const createMessage = (messageType: TranslatedMessageType, messageData?: any): TMessage => ({

@@ -1,12 +1,12 @@
 import { delay, fork, put, select, take } from "@neufund/sagas";
-import { EthereumAddress } from "@neufund/shared";
+import { contractsModuleApi } from "@neufund/shared-modules";
+import { EthereumAddress } from "@neufund/shared-utils";
 import * as promiseAll from "promise-all";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ICBMLockedAccount } from "../../lib/contracts/ICBMLockedAccount";
 import { LockedAccount } from "../../lib/contracts/LockedAccount";
 import { actions } from "../actions";
-import { numericValuesToString } from "../contracts/utils";
 import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
 import { neuCall, neuTakeEvery, neuTakeUntil } from "../sagasUtils";
 import { selectEthereumAddress } from "../web3/selectors";
@@ -35,7 +35,7 @@ async function loadICBMWallet(
 ): Promise<ILockedWallet> {
   if (lockedAccount) {
     const balance = await lockedAccount.balanceOf(ethAddress);
-    return numericValuesToString({
+    return contractsModuleApi.utils.numericValuesToString({
       LockedBalance: balance[0],
       neumarksDue: balance[1],
       unlockDate: balance[2],
@@ -64,7 +64,7 @@ export async function loadWalletDataAsync(
       euroTokenUpgradeTarget: contractsService.icbmEuroLock.currentMigrationTarget,
     })),
     neumarkAddress: contractsService.neumark.address,
-    ...numericValuesToString(
+    ...contractsModuleApi.utils.numericValuesToString(
       await promiseAll({
         etherTokenBalance: contractsService.etherToken.balanceOf(ethAddress),
         euroTokenBalance: contractsService.euroToken.balanceOf(ethAddress),
@@ -86,5 +86,9 @@ function* walletBalanceWatcher(): any {
 
 export function* walletSagas(): any {
   yield fork(neuTakeEvery, "WALLET_LOAD_WALLET_DATA", loadWalletDataSaga);
-  yield neuTakeUntil(actions.auth.setUser, actions.auth.logout, walletBalanceWatcher);
+  yield neuTakeUntil(
+    actions.auth.setUser,
+    actions.wallet.stopWalletBalanceWatcher,
+    walletBalanceWatcher,
+  );
 }

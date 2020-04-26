@@ -39,7 +39,7 @@ const InvestmentStatusWidget: React.FunctionComponent<IInvestmentStatsProps> = (
 
   const totalInvestors = eto.contract.totalInvestment.totalInvestors;
   return (
-    <section className={cn(size)}>
+    <section className={cn(size)} data-test-id="investment-status-widget">
       <div className={styles.row}>
         <span className={styles.funded}>
           <InvestmentProgressPercentage eto={eto} />

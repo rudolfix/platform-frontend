@@ -1,16 +1,9 @@
-import { isZero } from "@neufund/shared";
-import * as moment from "moment";
+import { isZero } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { compose, withProps } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import { actions } from "../../../../modules/actions";
-import {
-  selectEtherTokenIncomingPayout,
-  selectEuroTokenIncomingPayout,
-} from "../../../../modules/investor-portfolio/selectors";
-import { appConnect } from "../../../../store";
+import { TDataTestId } from "../../../../types";
 import { Counter } from "../../../shared/Counter";
 import { ETheme, Money } from "../../../shared/formatters/Money";
 import {
@@ -21,24 +14,22 @@ import {
 
 import * as styles from "./PayoutWidget.module.scss";
 
-export interface IIncomingPayoutData {
+type TExternalProps = {
   etherTokenIncomingPayout: string;
   euroTokenIncomingPayout: string;
-  dataTestId?: string;
-}
-
-type TDispatchProps = {
   loadPayoutsData: () => void;
-};
-
-type TEndDate = {
   endDate: Date;
 };
 
-export const IncomingPayoutPendingBase: React.FunctionComponent<IIncomingPayoutData> = ({
+type TIncomingPayoutPendingBaseProps = {
+  etherTokenIncomingPayout: string;
+  euroTokenIncomingPayout: string;
+} & TDataTestId;
+
+export const IncomingPayoutPendingBase: React.FunctionComponent<TIncomingPayoutPendingBaseProps> = ({
   euroTokenIncomingPayout,
   etherTokenIncomingPayout,
-  dataTestId,
+  ["data-test-id"]: dataTestId,
   children,
 }) => (
   <div className={styles.main} data-test-id={dataTestId}>
@@ -86,11 +77,14 @@ export const IncomingPayoutPendingBase: React.FunctionComponent<IIncomingPayoutD
   </div>
 );
 
-export const IncomingPayoutPendingLayout: React.FunctionComponent<IIncomingPayoutData &
-  TDispatchProps &
-  TEndDate> = ({ endDate, loadPayoutsData, etherTokenIncomingPayout, euroTokenIncomingPayout }) => (
+export const IncomingPayoutPendingLayout: React.FunctionComponent<TExternalProps> = ({
+  endDate,
+  loadPayoutsData,
+  etherTokenIncomingPayout,
+  euroTokenIncomingPayout,
+}) => (
   <IncomingPayoutPendingBase
-    dataTestId="my-portfolio-widget-incoming-payout-pending"
+    data-test-id="my-portfolio-widget-incoming-payout-pending"
     etherTokenIncomingPayout={etherTokenIncomingPayout}
     euroTokenIncomingPayout={euroTokenIncomingPayout}
   >
@@ -102,25 +96,3 @@ export const IncomingPayoutPendingLayout: React.FunctionComponent<IIncomingPayou
     />
   </IncomingPayoutPendingBase>
 );
-
-export const IncomingPayoutPending = compose<IIncomingPayoutData & TDispatchProps & TEndDate, {}>(
-  appConnect({
-    stateToProps: s => ({
-      etherTokenIncomingPayout: selectEtherTokenIncomingPayout(s),
-      euroTokenIncomingPayout: selectEuroTokenIncomingPayout(s),
-    }),
-    dispatchToProps: d => ({
-      loadPayoutsData: () => {
-        d(actions.investorEtoTicket.getIncomingPayouts());
-        d(actions.investorEtoTicket.loadClaimables());
-      },
-    }),
-  }),
-  withProps<TEndDate, IIncomingPayoutData>({
-    endDate: moment()
-      .utc()
-      .add(1, "day")
-      .startOf("day")
-      .toDate(),
-  }),
-)(IncomingPayoutPendingLayout);

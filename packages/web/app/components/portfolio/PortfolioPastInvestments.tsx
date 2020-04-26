@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
-import { nonNullable, withContainer } from "@neufund/shared";
+import { nonNullable, withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -126,7 +126,7 @@ const prepareTableRowData = (
         actions: (
           <Button
             onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
-            layout={EButtonLayout.OUTLINE}
+            layout={EButtonLayout.SECONDARY}
             data-test-id={`modals.portfolio.portfolio-past-investments.download-agreements-${etoId}`}
             className="mr-3"
           >

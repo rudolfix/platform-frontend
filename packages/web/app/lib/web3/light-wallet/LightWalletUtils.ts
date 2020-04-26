@@ -1,8 +1,11 @@
-import { promisify } from "@neufund/shared";
+import { promisify } from "@neufund/shared-utils";
 import { isValid as isMnemonicValid } from "bitcore-mnemonic";
 import * as LightWalletProvider from "eth-lightwallet";
+import * as ethSig from "eth-sig-util";
+import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import * as nacl from "tweetnacl";
 import * as naclUtil from "tweetnacl-util";
+import * as Web3Utils from "web3-utils";
 
 import { ICreateVault } from "./LightWallet";
 
@@ -41,7 +44,7 @@ export const createLightWalletVault = async ({
   hdPathString,
   recoverSeed,
   customSalt,
-}: ICreateVault): Promise<{ walletInstance: string; salt: string }> => {
+}: ICreateVault): Promise<{ serializedLightWallet: string; salt: string }> => {
   try {
     const create = promisify<ILightWalletInstance>(LightWalletProvider.keystore.createVault);
     //256bit strength generates a 24 word mnemonic
@@ -56,12 +59,12 @@ export const createLightWalletVault = async ({
       seedPhrase: seed,
       hdPathString,
       salt,
-    }).catch(() => {
-      throw new LightWalletWrongMnemonic();
+    }).catch(e => {
+      throw new LightWalletWrongMnemonic(e);
     });
     const unlockedWallet = await getWalletKey(lightWalletInstance, password);
     lightWalletInstance.generateNewAddress(unlockedWallet, 1);
-    return { walletInstance: lightWalletInstance.serialize(), salt };
+    return { serializedLightWallet: lightWalletInstance.serialize(), salt };
   } catch (e) {
     if (e instanceof LightWalletWrongMnemonic) throw new LightWalletWrongMnemonic();
     throw new LightCreationError();
@@ -140,6 +143,49 @@ export const testWalletPassword = async (
   return lightWalletInstance.isDerivedKeyCorrect(key);
 };
 
+/**
+ * A utility method that signs messages from a hd path and seed
+ *
+ * @param data a string that represents the data that is required to sign
+ *
+ * @note this method creates a temporary lightwallet that will be used only for the signing the message
+ * The light wallet is discarded later on
+ */
+export const signMessage = async (
+  hdPathString: string,
+  recoverSeed: string,
+  data: string,
+): Promise<string> => {
+  const customSalt: string = LightWalletProvider.keystore.generateSalt(32);
+  const password = LightWalletProvider.keystore.generateSalt(32);
+
+  const { serializedLightWallet: walletInstance } = await createLightWalletVault({
+    password,
+    hdPathString,
+    recoverSeed,
+    customSalt,
+  });
+
+  const deserializedInstance = await deserializeLightWalletVault(walletInstance, customSalt);
+  const addresses = deserializedInstance.getAddresses();
+  const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(data)));
+  const rawSignedMsg = await LightWalletProvider.signing.signMsgHash(
+    deserializedInstance,
+    await getWalletKey(deserializedInstance, password),
+    msgHash.toString("hex"),
+    addresses[0],
+  );
+
+  return ethSig.concatSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
+};
+
+/**
+ * a method that returns a wallets private key
+ * @param lightWalletInstance an already initialized lightwallet instance
+ *
+ * @param password a string that decrypts the instance
+ */
+
 export const getWalletPrivKey = async (
   lightWalletInstance: ILightWalletInstance,
   password: string,
@@ -154,6 +200,29 @@ export const getWalletPrivKey = async (
       lightWalletInstance.addresses[0],
       await keyFromPassword(password),
     );
+  } catch (e) {
+    throw new LightWrongPasswordSaltError();
+  }
+};
+
+/** a method that returns the first ethereum address from a seed and a derivation path */
+export const getWalletAddress = async (
+  recoverSeed: string,
+  hdPathString: string,
+): Promise<string> => {
+  try {
+    // Take first address only
+    const customSalt: string = LightWalletProvider.keystore.generateSalt(32);
+    const password = LightWalletProvider.keystore.generateSalt(32);
+
+    const { serializedLightWallet: walletInstance } = await createLightWalletVault({
+      password,
+      hdPathString,
+      recoverSeed,
+      customSalt,
+    });
+    const deserializedVault = await deserializeLightWalletVault(walletInstance, customSalt);
+    return Web3Utils.toChecksumAddress(`0x${deserializedVault.addresses[0]}`);
   } catch (e) {
     throw new LightWrongPasswordSaltError();
   }

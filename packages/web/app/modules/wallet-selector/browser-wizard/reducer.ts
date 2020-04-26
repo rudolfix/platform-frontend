@@ -1,7 +1,8 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { TMessage } from "../../../components/translatedMessages/utils";
 import { AppReducer } from "../../../store";
+import { actions } from "../../actions";
 
 export interface IBrowserWalletWizardState {
   errorMsg: DeepReadonly<TMessage> | undefined;
@@ -15,23 +16,24 @@ export const browserWalletWizardInitialState: IBrowserWalletWizardState = {
   approvalRejected: false,
 };
 
+// TODO merge this to walletSelector reducer
 export const browserWalletWizardReducer: AppReducer<IBrowserWalletWizardState> = (
   state = browserWalletWizardInitialState,
   action,
 ): IBrowserWalletWizardState => {
   switch (action.type) {
-    case "BROWSER_WALLET_TRY_CONNECTING":
+    case actions.walletSelector.tryConnectingWithBrowserWallet.getType():
       return {
         ...browserWalletWizardInitialState,
         isLoading: true,
       };
-    case "BROWSER_WALLET_CONNECTION_ERROR":
+    case actions.walletSelector.browserWalletConnectionError.getType():
       return {
         ...state,
         errorMsg: action.payload.errorMsg,
         isLoading: false,
       };
-    case "BROWSER_WALLET_APPROVAL_REJECTED":
+    case actions.walletSelector.browserWalletAccountApprovalRejectedError.getType():
       return {
         ...state,
         isLoading: false,

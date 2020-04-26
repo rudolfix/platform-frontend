@@ -1,3 +1,4 @@
+import { select } from "@neufund/sagas";
 import BigNumber from "bignumber.js";
 import { TestContext, TestOptions } from "yup";
 
@@ -11,6 +12,8 @@ import {
   EEtoState,
   TEtoInvestmentCalculatedValues,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { EUserType } from "../../lib/api/users/interfaces";
+import { selectIsUserFullyVerified, selectUserType } from "../auth/selectors";
 import { EETOStateOnChain } from "../eto/types";
 
 // TODO: remove state machine duplication! EEtoSubState has same role
@@ -44,17 +47,12 @@ export const isPledgeAboveMinimum = (minPledge: number): TestOptions => ({
   },
 });
 
-export const shouldLoadPledgeData = (
+export const shouldLoadBookbuildingStats = (
   etoState: EEtoState,
-  onChainState?: EETOStateOnChain,
+  onChainState: EETOStateOnChain | undefined,
 ): boolean =>
-  !!(
-    [EEtoState.LISTED, EEtoState.PROSPECTUS_APPROVED, EEtoState.ON_CHAIN].indexOf(etoState) >= 0 &&
-    (onChainState === undefined || onChainState < EETOStateOnChain.Claim)
-  );
-
-export const shouldLoadBookbuildingStats = (onChainState: EETOStateOnChain | undefined): boolean =>
-  onChainState === EETOStateOnChain.Setup || onChainState === EETOStateOnChain.Whitelist;
+  [EEtoState.LISTED, EEtoState.PROSPECTUS_APPROVED, EEtoState.ON_CHAIN].indexOf(etoState) >= 0 &&
+  (onChainState === undefined || onChainState < EETOStateOnChain.Claim);
 
 export const isPledgeNotAboveMaximum = (maxPledge?: number): TestOptions => ({
   name: "minAmount",
@@ -110,3 +108,9 @@ export const calculateWhitelistingState = ({
     return EWhitelistingState.NOT_ACTIVE;
   }
 };
+
+export function* canLoadPledges(): Generator<any, boolean, void> {
+  const userType = yield* select(selectUserType);
+  const isVerified = yield* select(selectIsUserFullyVerified);
+  return !(userType !== EUserType.INVESTOR || !isVerified);
+}

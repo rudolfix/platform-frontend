@@ -1,4 +1,4 @@
-import { TDataTestId } from "@neufund/shared";
+import { TDataTestId } from "@neufund/shared-utils";
 import * as React from "react";
 import { Link } from "react-router-dom";
 

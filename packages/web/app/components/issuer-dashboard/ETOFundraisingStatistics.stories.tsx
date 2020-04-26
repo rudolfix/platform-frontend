@@ -1,4 +1,4 @@
-import { convertToUlps } from "@neufund/shared";
+import { convertToUlps } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 

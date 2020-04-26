@@ -1,5 +1,5 @@
 import { StringableActionCreator } from "@neufund/sagas";
-import { TDictionaryValues } from "@neufund/shared";
+import { TDictionaryValues } from "@neufund/shared-utils";
 import { LocationChangeAction } from "connected-react-router";
 
 import { portfolioActions } from "../components/portfolio/actions";
@@ -31,8 +31,7 @@ import { profileActions } from "./profile/actions";
 import { routingActions } from "./routing/actions";
 import { formSingleFileUploadActions } from "./shared/formSingleFileUpload/actions";
 import { remoteFileActions } from "./shared/remoteFile/actions";
-import { tokenPriceActions } from "./shared/tokenPrice/actions";
-import { tosModalActions } from "./terms-of-service-modal/actions";
+import { tosModalActions } from "./terms-of-service/actions";
 import { txHistoryActions } from "./tx-history/actions";
 import { txActions } from "./tx/actions";
 import { userAgentActions } from "./user-agent/actions";
@@ -52,7 +51,6 @@ export const actions = {
   verifyEmail: verifyEmailActions,
   genericModal: genericModalActions,
   accessWallet: accessWalletActions,
-  tokenPrice: tokenPriceActions,
   txHistory: txHistoryActions,
   init: initActions,
   kyc: kycActions,

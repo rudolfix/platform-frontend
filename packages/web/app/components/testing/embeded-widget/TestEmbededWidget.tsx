@@ -32,7 +32,7 @@ const EmbeddedWidgetLayout: React.FunctionComponent<IStateProps> = ({ eto, widge
 );
 
 const EmbeddedWidget = compose<IStateProps, IRouterParams>(
-  appConnect<IStateProps, {}, IRouterParams & IRouterParams>({
+  appConnect<IStateProps, {}, IRouterParams>({
     stateToProps: (state, props) => ({
       eto: selectInvestorEtoWithCompanyAndContract(state, props.previewCode),
       widgetError: selectEtoWidgetError(state.eto),

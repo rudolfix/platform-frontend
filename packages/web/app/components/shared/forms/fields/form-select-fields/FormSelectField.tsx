@@ -1,4 +1,5 @@
-import { Dictionary, TDataTestId } from "@neufund/shared";
+import { useFieldMeta } from "@neufund/design-system";
+import { Dictionary, TDataTestId } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { Field, FieldProps } from "formik";
 import { map } from "lodash";
@@ -9,7 +10,6 @@ import { TTranslatedString } from "../../../../../types";
 import { generateErrorId } from "../../layouts/FormError";
 import { FormFieldError } from "../FormFieldError";
 import { FormFieldLabel } from "../FormFieldLabel";
-import { useFieldMeta } from "../utils";
 
 import * as sharedStyles from "../FormStyles.module.scss";
 import * as styles from "./FormSelectField.module.scss";

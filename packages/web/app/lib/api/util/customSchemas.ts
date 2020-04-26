@@ -1,4 +1,4 @@
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import { includes } from "lodash";
 import * as moment from "moment";
 import * as Yup from "yup";
@@ -12,8 +12,8 @@ import { createMessage } from "../../../components/translatedMessages/utils";
 /**
  * Date schema
  */
-const DATE_SCHEME = "YYYY-M-D";
-const parse = (s: string) => moment(s, DATE_SCHEME, true);
+export const DATE_SCHEME = "YYYY-M-D";
+export const parseStringToMomentDate = (s: string) => moment(s, DATE_SCHEME, true);
 
 export const currencyCodeSchema = (v: Yup.StringSchema) =>
   v.matches(/^[A-Z]{3}$/, {
@@ -24,17 +24,20 @@ export const currencyCodeSchema = (v: Yup.StringSchema) =>
 
 export const dateSchema = (v: Yup.StringSchema) =>
   v
-    .transform((_value: unknown, originalValue: string): string => {
-      const date = parse(originalValue);
+    .transform((_value: unknown, originalValue: string): string | undefined => {
+      if (originalValue === undefined) {
+        return undefined;
+      }
+      const date = parseStringToMomentDate(originalValue);
       if (!date.isValid()) {
-        return "";
+        return undefined;
       }
       return date.format(DATE_SCHEME);
     })
     .test(
       "is-valid",
       getMessageTranslation(createMessage(ValidationMessage.VALIDATION_INVALID_DATE)),
-      s => parse(s).isValid(),
+      s => (s !== undefined ? parseStringToMomentDate(s).isValid() : true),
     );
 
 export const date = dateSchema(Yup.string());
@@ -44,16 +47,24 @@ export const personBirthDate = date
     "is-old-enough",
     getMessageTranslation(createMessage(ValidationMessage.VALIDATION_MIN_AGE)),
     s => {
-      const d = parse(s);
-      return d.isValid() && d.isBefore(moment().subtract(18, "years"));
+      if (s === undefined) {
+        return true;
+      } else {
+        const d = parseStringToMomentDate(s);
+        return d.isValid() && d.isBefore(moment().subtract(18, "years"));
+      }
     },
   )
   .test(
     "is-young-enough",
     getMessageTranslation(createMessage(ValidationMessage.VALIDATION_MAX_AGE)),
     s => {
-      const d = parse(s);
-      return d.isValid() && d.isAfter(moment().subtract(125, "years"));
+      if (s === undefined) {
+        return true;
+      } else {
+        const d = parseStringToMomentDate(s);
+        return d.isValid() && d.isAfter(moment().subtract(125, "years"));
+      }
     },
   );
 
@@ -61,7 +72,7 @@ export const foundingDate = date.test(
   "is-old-enough",
   getMessageTranslation(createMessage(ValidationMessage.VALIDATION_DATE_IN_THE_FUTURE)),
   s => {
-    const d = parse(s);
+    const d = parseStringToMomentDate(s);
     return d.isValid() && d.isBefore(moment());
   },
 );

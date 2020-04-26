@@ -1,4 +1,4 @@
-import { nonNullable } from "@neufund/shared";
+import { nonNullable } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
@@ -29,6 +29,7 @@ describe("web3 > selectors", () => {
         connected: true,
         isUnlocked: false,
         wallet: getDummyLightWalletMetadata(),
+        web3Available: true,
       };
 
       const isLightWallet = selectIsLightWallet(state);
@@ -46,6 +47,7 @@ describe("web3 > selectors", () => {
           email,
           salt,
         },
+        web3Available: true,
       };
 
       const isLightWallet = selectIsLightWallet(state);
@@ -60,6 +62,7 @@ describe("web3 > selectors", () => {
         connected: true,
         isUnlocked: false,
         wallet: getDummyLedgerWalletMetadata(),
+        web3Available: true,
       };
       const appState = { web3: state } as TAppGlobalState;
       const isExternalWallet = selectIsExternalWallet(appState);
@@ -72,6 +75,7 @@ describe("web3 > selectors", () => {
         connected: true,
         isUnlocked: false,
         wallet: getDummyBrowserWalletMetadata(),
+        web3Available: true,
       };
       const appState = { web3: state } as TAppGlobalState;
 
@@ -85,6 +89,7 @@ describe("web3 > selectors", () => {
         connected: true,
         isUnlocked: false,
         wallet: getDummyLightWalletMetadata(),
+        web3Available: true,
       };
       const appState = { web3: state } as TAppGlobalState;
 

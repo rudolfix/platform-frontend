@@ -1,12 +1,12 @@
 import { appRoutes } from "../../../components/appRoutes";
 import { kycRoutes } from "../../../components/kyc/routes";
 import { NODE_ADDRESS } from "../../config";
+import { DEFAULT_PASSWORD } from "../../utils/constants";
 import {
   assertDashboard,
-  DEFAULT_PASSWORD,
   generateRandomEmailAddress,
   goToDashboard,
-  registerWithLightWallet,
+  registerWithLightWalletIssuer,
 } from "../../utils/index";
 import { createAndLoginNewUser } from "../../utils/userHelpers";
 
@@ -24,7 +24,7 @@ describe("Other routing", () => {
   });
 
   it("should redirect from locked routes to Profile if user's email is not verified yet #routing #p3", () => {
-    registerWithLightWallet(generateRandomEmailAddress(), DEFAULT_PASSWORD, true);
+    registerWithLightWalletIssuer(generateRandomEmailAddress(), DEFAULT_PASSWORD);
 
     cy.visit(kycRoutes.start);
     cy.url().should("contain", appRoutes.profile);

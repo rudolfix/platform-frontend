@@ -1,5 +1,5 @@
 import { noopLogger } from "@neufund/shared-modules";
-import { createMock } from "@neufund/shared/tests";
+import { createMock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { spy } from "sinon";
 import * as Web3 from "web3";
@@ -30,6 +30,8 @@ describe("Web3Manager", () => {
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
         address: dummyEthereumAddressWithChecksum,
+        salt: undefined,
+        email: undefined,
       }),
       isUnlocked: () => true,
     });
@@ -49,6 +51,8 @@ describe("Web3Manager", () => {
         walletType: EWalletType.LEDGER,
         walletSubType: EWalletSubType.UNKNOWN,
         derivationPath: expectedDerivationPath,
+        salt: undefined,
+        email: undefined,
       },
       isUnlocked: true,
     });

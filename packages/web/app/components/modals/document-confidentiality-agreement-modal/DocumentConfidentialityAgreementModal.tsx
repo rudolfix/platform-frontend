@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
-import { Message } from "../../modals/message/Message";
+import { Message } from "../message/Message";
 
 import tosImg from "../../../assets/img/tos.jpg";
 import * as styles from "./DocumentConfidentialityAgreementModal.module.scss";
@@ -39,7 +39,7 @@ const DocumentConfidentialityAgreementModalLayout: React.FunctionComponent<IExte
     <div className={styles.buttonBlock}>
       <Button
         onClick={closeModal}
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         data-test-id="eto.document-confidentiality-agreement-modal.deny"
       >
         <FormattedMessage id="eto.document-confidentiality-agreement-modal.deny" />

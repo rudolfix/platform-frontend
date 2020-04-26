@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
-import { multiplyBigNumbers, withContainer } from "@neufund/shared";
+import { multiplyBigNumbers, withContainer } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -206,7 +206,7 @@ const prepareTableRowData = (
           <>
             <Button
               onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
-              layout={EButtonLayout.OUTLINE}
+              layout={EButtonLayout.SECONDARY}
               data-test-id={`modals.portfolio.portfolio-assets.download-agreements-${etoId}`}
               className="mr-3"
             >

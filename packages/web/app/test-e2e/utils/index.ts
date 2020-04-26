@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { floor, get } from "lodash";
+import { floor } from "lodash";
 
 import { appRoutes } from "../../components/appRoutes";
 import { getRange } from "../../components/shared/formatters/FormatShortNumber";
@@ -19,11 +19,12 @@ import {
   assertIssuerDashboard,
   assertLanding,
   assertWaitForExternalPendingTransactionCount,
-  getLatestEmailByUser,
 } from "./assertions";
+import { DEFAULT_PASSWORD } from "./constants";
+import { getLatestVerifyUserEmailLink } from "./emailHelpers";
 import { goToLanding, goToWallet } from "./navigation";
 import { tid } from "./selectors";
-import { DEFAULT_PASSWORD, verifyUserEmailCall } from "./userHelpers";
+import { verifyUserEmailCall } from "./userHelpers";
 
 export const LONG_WAIT_TIME = 60000;
 
@@ -39,41 +40,26 @@ export const clearEmailServer = () => {
   cy.request({ url: MOCK_API_URL + "sendgrid/session/mails", method: "DELETE" });
 };
 
-export const registerWithLightWalletETO = (
-  email: string,
-  password: string,
-  acceptTos: boolean = true,
-) => {
+export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 
   lightWalletTypeRegistrationInfo(email, password);
-  if (acceptTos) acceptTOS();
+  cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
 };
 
-export const registerWithLightWalletNominee = (
-  email: string,
-  password: string,
-  acceptTos: boolean = true,
-) => {
+export const registerWithLightWalletNominee = (email: string, password: string) => {
   cy.visit("nominee/register");
 
   lightWalletTypeRegistrationInfo(email, password);
-  if (acceptTos) acceptTOS();
+  cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
 };
 
 export const typeLightwalletRecoveryPhrase = (words: string[]) => {
-  for (let batch = 0; batch < words.length / 4; batch++) {
-    for (let index = 0; index < 4; index++) {
-      cy.get(`${tid(`seed-recovery-word-${batch * 4 + index}`)} input`)
-        .type(words[batch * 4 + index], { force: true, timeout: 20 })
-        .type("{enter}", { force: true });
-    }
-
-    if (batch + 1 < words.length / 4) {
-      cy.get(tid("btn-next")).awaitedClick();
-    }
-  }
-
+  words.forEach((word: string, index: number) => {
+    cy.get(`${tid(`seed-recovery-word-${index}`)} input`)
+      .type(word, { force: true, timeout: 20 })
+      .type("{enter}", { force: true });
+  });
   cy.get(tid("btn-send")).awaitedClick();
 };
 
@@ -92,30 +78,6 @@ export const closeModal = () => {
   cy.get(tid("modal-close-button")).awaitedClick();
 };
 
-export const getLatestVerifyUserEmailLink = (
-  email: string,
-  attempts = 5,
-): Cypress.Chainable<string> =>
-  cy
-    .request({ url: MOCK_API_URL + `sendgrid/session/mails?to=${email}`, method: "GET" })
-    .then(r => {
-      const latestEmailByUser = getLatestEmailByUser(r, email);
-
-      const activationLink = get(latestEmailByUser, "template_vars.activation_link");
-
-      if (activationLink) {
-        // we need to replace the loginlink pointing to a remote destination
-        // with one pointing to our local instance
-        return activationLink.replace("platform.neufund.io", "localhost:9090");
-      } else {
-        expect(attempts, `Failed to find activation link for email ${email}`).to.be.gt(0);
-
-        cy.wait(1000);
-
-        return getLatestVerifyUserEmailLink(email, attempts - 1);
-      }
-    });
-
 export const verifyLatestUserEmail = (email: string) => {
   getLatestVerifyUserEmailLink(email).then(activationLink => {
     cy.visit(activationLink);
@@ -133,23 +95,21 @@ export const verifyLatestUserEmailWithAPI = (email: string) => {
   getLatestVerifyUserEmailLink(email).then(verifyUserEmailCall);
 };
 
-export const registerWithLightWallet = (
-  email: string,
-  password: string,
-  asIssuer: boolean = false,
-) => {
-  cy.visit(asIssuer ? appRoutes.registerIssuer : appRoutes.register);
+export const registerWithLightWallet = (email: string, password: string) => {
+  cy.visit(appRoutes.register);
 
-  cy.get(tid("wallet-selector-light")).awaitedClick();
   lightWalletTypeRegistrationInfo(email, password);
 
-  acceptTOS();
+  cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
+  assertDashboard();
+};
 
-  if (asIssuer) {
-    assertIssuerDashboard();
-  } else {
-    assertDashboard();
-  }
+export const registerWithLightWalletIssuer = (email: string, password: string) => {
+  cy.visit(appRoutes.registerIssuer);
+
+  lightWalletTypeRegistrationInfo(email, password);
+
+  assertIssuerDashboard();
 };
 
 export const ethereumProvider = (provider: any) =>
@@ -165,7 +125,6 @@ export const registerWithBrowserWalletAndLogin = (privateKeyProvider: any) => {
 
   cy.get(tid("wallet-selector-browser")).click();
 
-  cy.get(tid("signing.browser-wallet.sign-prompt")).should("exist");
   acceptTOS();
 };
 
@@ -179,14 +138,18 @@ export const acceptTOS = () => {
 };
 
 export const lightWalletTypeRegistrationInfo = (email: string, password: string) => {
-  cy.get(tid("wallet-selector-register-email")).type(email);
+  cy.get(tid("wallet-selector-register-email"))
+    .type("{selectall}{backspace}")
+    .type(email);
+  lightWalletTypePasswordRegistration(password);
+};
+
+export const lightWalletTypePasswordRegistration = (password: string) => {
   cy.get(tid("wallet-selector-register-password")).type(password);
   cy.get(tid("wallet-selector-register-confirm-password")).type(password);
+  cy.get(tid("wallet-selector-register-tos")).click();
 
-  cy.get(tid("wallet-selector-register-button"))
-    .should("be.enabled")
-    .awaitedClick()
-    .should("be.disabled");
+  cy.get(tid("wallet-selector-register-button")).click();
 };
 
 export const logoutViaAccountMenu = () => {
@@ -218,7 +181,6 @@ export const lightWalletTypeLoginInfo = (email: string, password: string) => {
 
 export const loginWithLightWallet = (email: string, password: string) => {
   cy.get(tid("Header-login")).awaitedClick();
-  cy.get(tid("wallet-selector-light")).awaitedClick();
 
   lightWalletTypeLoginInfo(email, password);
 };
@@ -353,3 +315,4 @@ export * from "./userHelpers";
 export * from "./forms";
 export * from "./offlineHelpers";
 export * from "./fixtures";
+export * from "./emailHelpers";

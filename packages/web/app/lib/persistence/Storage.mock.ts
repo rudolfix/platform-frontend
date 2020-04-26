@@ -1,4 +1,4 @@
-import { createMock } from "@neufund/shared/tests";
+import { createMock } from "@neufund/shared-utils/tests";
 
 import { Storage } from "./Storage";
 

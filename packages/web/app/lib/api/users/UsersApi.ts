@@ -1,5 +1,5 @@
-import { toEthereumAddress } from "@neufund/shared";
-import { authModuleAPI, IHttpClient, ILogger } from "@neufund/shared-modules";
+import { authModuleAPI, IAuthHttpClient, ILogger } from "@neufund/shared-modules";
+import { toEthereumAddress } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import { inject, injectable } from "inversify";
@@ -41,11 +41,11 @@ const ensureWalletTypesInUser = (userApiResponse: IUser): IUser => ({
 @injectable()
 export class UsersApi {
   constructor(
-    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IHttpClient,
+    @inject(authModuleAPI.symbols.authJsonHttpClient) private httpClient: IAuthHttpClient,
     @inject(symbols.logger) private logger: ILogger,
   ) {}
 
-  public async createAccount(newUser?: IUserInput): Promise<IUser> {
+  public createAccount = async (newUser?: IUserInput): Promise<IUser> => {
     this.logger.info("Creating account");
     // Backend expects walletType and walletSubType values as lower case
     const modifiedNewUser = newUser
@@ -66,9 +66,37 @@ export class UsersApi {
       throw new EmailAlreadyExists();
     }
     return ensureWalletTypesInUser(response.body);
-  }
+  };
 
-  public async me(): Promise<IUser> {
+  /** An API call similar to me that uses JWT as a prop instead of the conventional JWT from local storage
+   *
+   *  @note This method should only be used only when you want to access the users/me endpoint before the
+   *  user signs in
+   **/
+
+  public meWithJWT = async (jwt: string): Promise<IUser> => {
+    const response = await this.httpClient.get<IUser>(
+      {
+        baseUrl: USER_API_ROOT,
+        url: "/user/me",
+        responseSchema: UserValidator,
+        allowedStatusCodes: [404],
+      },
+      jwt,
+    );
+
+    if (response.statusCode === 404) {
+      throw new UserNotExisting();
+    }
+    return ensureWalletTypesInUser(response.body);
+  };
+
+  /**
+   * An API method that gets the user information
+   *
+   * @note When in doubt always use this method instead of `meWithJWT`
+   **/
+  public me = async (): Promise<IUser> => {
     const response = await this.httpClient.get<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me",
@@ -80,18 +108,18 @@ export class UsersApi {
       throw new UserNotExisting();
     }
     return ensureWalletTypesInUser(response.body);
-  }
+  };
 
-  public async emailStatus(userEmail: string): Promise<any> {
+  public emailStatus = async (userEmail: string): Promise<any> => {
     const response = await this.httpClient.get<IEmailStatus>({
       baseUrl: USER_API_ROOT,
       url: `/email/status/${userEmail}`,
       responseSchema: emailStatus,
     });
     return response.body;
-  }
+  };
 
-  public async verifyUserEmail(userCode: IVerifyEmailUser): Promise<IUser> {
+  public verifyUserEmail = async (userCode: IVerifyEmailUser): Promise<IUser> => {
     const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me/email-verification",
@@ -108,9 +136,9 @@ export class UsersApi {
     }
 
     return ensureWalletTypesInUser(response.body);
-  }
+  };
 
-  public async updateUser(updatedUser: IUserInput): Promise<IUser> {
+  public updateUser = async (updatedUser: IUserInput): Promise<IUser> => {
     const modifiedUpdatedUser = updatedUser
       ? {
           ...updatedUser,
@@ -134,9 +162,9 @@ export class UsersApi {
     }
 
     return ensureWalletTypesInUser(response.body);
-  }
+  };
 
-  public async setLatestAcceptedTos(agreementHash: string): Promise<IUser> {
+  public setLatestAcceptedTos = async (agreementHash: string): Promise<IUser> => {
     const response = await this.httpClient.put<IUser>({
       baseUrl: USER_API_ROOT,
       url: "/user/me/tos",
@@ -145,9 +173,9 @@ export class UsersApi {
       body: { latest_accepted_tos_ipfs: agreementHash },
     });
     return ensureWalletTypesInUser(response.body);
-  }
+  };
 
-  public async pendingTxs(): Promise<TPendingTxs> {
+  public pendingTxs = async (): Promise<TPendingTxs> => {
     const response = await this.httpClient.get<Array<TxPendingWithMetadata | TxWithMetadata>>({
       baseUrl: USER_API_ROOT,
       url: "/pending_transactions/me",
@@ -165,9 +193,9 @@ export class UsersApi {
       };
     }
     throw new Error("Error while fetching pending transaction");
-  }
+  };
 
-  public async addPendingTx(tx: TxPendingWithMetadata): Promise<void> {
+  public addPendingTx = async (tx: TxPendingWithMetadata): Promise<void> => {
     await this.httpClient.put<void>({
       baseUrl: USER_API_ROOT,
       url: "/pending_transactions/me",
@@ -181,16 +209,16 @@ export class UsersApi {
       },
       disableManglingRequestBody: true,
     });
-  }
+  };
 
-  public async deletePendingTx(txHash: string): Promise<void> {
+  public deletePendingTx = async (txHash: string): Promise<void> => {
     await this.httpClient.delete<void>({
       baseUrl: USER_API_ROOT,
       url: `/pending_transactions/me/${txHash}`,
     });
-  }
+  };
 
-  public async getGasStipend(txDetails: ITxData): Promise<string> {
+  public getGasStipend = async (txDetails: ITxData): Promise<string> => {
     const convertedTxDetails = {
       ...txDetails,
       to: makeEthereumAddressChecksummed(toEthereumAddress(txDetails.to)),
@@ -213,5 +241,5 @@ export class UsersApi {
     });
 
     return response.body;
-  }
+  };
 }

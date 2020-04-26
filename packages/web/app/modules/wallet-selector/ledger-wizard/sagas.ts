@@ -1,32 +1,137 @@
-import { call, fork, put, select } from "@neufund/sagas";
-import { toEthereumAddress } from "@neufund/shared";
+import { call, fork, neuCall, put, race, select, take } from "@neufund/sagas";
+import { toEthereumAddress } from "@neufund/shared-utils";
 import { toPairs, zip } from "lodash";
 
 import { tripleZip } from "../../../../typings/modifications";
+import { userMayChooseWallet } from "../../../components/wallet-selector/WalletSelectorLogin/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
+import { LedgerUserCancelledError } from "../../../lib/web3/ledger-wallet/errors";
 import { TAppGlobalState } from "../../../store";
-import { actions, TAction, TActionFromCreator } from "../../actions";
-import { neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
+import { actions, TActionFromCreator } from "../../actions";
+import { neuTakeLatestUntil } from "../../sagasUtils";
+import { isSupportingLedger } from "../../user-agent/reducer";
+import { EWalletType } from "../../web3/types";
+import { registerForm } from "../forms/sagas";
+import { resetWalletSelectorState, walletSelectorConnect } from "../sagas";
+import { selectRegisterWalletDefaultFormValues } from "../selectors";
+import {
+  ECommonWalletRegistrationFlowState,
+  EFlowType,
+  ELedgerRegistrationFlowState,
+  TBrowserWalletFormValues,
+} from "../types";
 import { mapLedgerErrorToErrorMessage } from "./errors";
+import { ledgerUiSagas } from "./ui/sagas";
 
 export const LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS = ["44'/60'/0'/0", "44'/60'/0'/0/0"]; // TODO this should be taken from config
 
-export function* tryEstablishingConnectionWithLedger({
-  ledgerWalletConnector,
-}: TGlobalDependencies): Generator<any, any, any> {
-  try {
-    yield ledgerWalletConnector.connect();
+export function* ledgerRegister(
+  _: TGlobalDependencies,
+  { payload }: TActionFromCreator<typeof actions.walletSelector.registerWithLedger>,
+): Generator<any, void, any> {
+  yield neuCall(resetWalletSelectorState);
+  const userType = payload.userType;
 
-    yield put(actions.walletSelector.ledgerConnectionEstablished());
-  } catch (e) {
+  const baseUiData = {
+    walletType: EWalletType.LEDGER,
+    showWalletSelector: userMayChooseWallet(userType),
+    rootPath: "/register",
+    flowType: EFlowType.REGISTER,
+  };
+  const initialFormValues: TBrowserWalletFormValues = {
+    email: "",
+    tos: false,
+  };
+  const ledgerIsSupported = yield* select(isSupportingLedger);
+  if (!ledgerIsSupported) {
     yield put(
-      actions.walletSelector.ledgerConnectionEstablishedError(mapLedgerErrorToErrorMessage(e)),
+      actions.walletSelector.setWalletRegisterData({
+        uiState: ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED,
+        showWalletSelector: true,
+      }),
     );
+    return;
+  }
+  yield neuCall(registerForm, {
+    afterRegistrationGenerator: undefined,
+    expectedAction: actions.walletSelector.browserWalletRegisterFormData,
+    initialFormValues,
+    baseUiData,
+  });
+  yield* neuCall(ledgerLogin);
+}
+
+export function* ledgerLogin({
+  ledgerWalletConnector,
+  web3Manager,
+}: TGlobalDependencies): Generator<any, void, any> {
+  const formValues = yield* select(selectRegisterWalletDefaultFormValues);
+
+  const ledgerIsSupported = yield* select(isSupportingLedger);
+  if (!ledgerIsSupported) {
+    yield put(
+      actions.walletSelector.setWalletRegisterData({
+        uiState: ELedgerRegistrationFlowState.LEDGER_NOT_SUPPORTED,
+        showWalletSelector: true,
+      }),
+    );
+    return;
+  }
+
+  while (true) {
+    try {
+      yield put(
+        actions.walletSelector.setWalletRegisterData({
+          uiState: ELedgerRegistrationFlowState.LEDGER_INIT,
+          showWalletSelector: true,
+        }),
+      );
+
+      yield ledgerWalletConnector.connect();
+      yield neuCall(loadLedgerAccountsEffect);
+
+      yield put(
+        actions.walletSelector.setWalletRegisterData({
+          uiState: ELedgerRegistrationFlowState.LEDGER_ACCOUNT_CHOOSER,
+        }),
+      );
+      const { success, cancel } = yield race({
+        success: take(actions.walletSelector.ledgerFinishSettingUpLedgerConnector),
+        cancel: take(actions.walletSelector.ledgerCloseAccountChooser),
+      });
+
+      yield put(
+        actions.walletSelector.setWalletRegisterData({
+          uiState: ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,
+          showWalletSelector: false,
+        }),
+      );
+
+      if (cancel) {
+        throw new LedgerUserCancelledError();
+      }
+
+      const ledgerWallet = yield* call(
+        ledgerWalletConnector.finishConnecting,
+        success?.payload.derivationPath,
+        web3Manager.networkId,
+      );
+      yield web3Manager.plugPersonalWallet(ledgerWallet);
+      yield walletSelectorConnect(formValues?.email, formValues?.tos);
+    } catch (e) {
+      yield put(
+        actions.walletSelector.setWalletRegisterData({
+          errorMessage: mapLedgerErrorToErrorMessage(e),
+          uiState: ELedgerRegistrationFlowState.LEDGER_INIT_ERROR,
+          showWalletSelector: true,
+        }),
+      );
+    }
+    yield take(actions.walletSelector.ledgerReconnect);
   }
 }
 
-export function* loadLedgerAccounts({
+export function* loadLedgerAccountsEffect({
   ledgerWalletConnector,
   web3Manager,
   contractsService,
@@ -38,39 +143,42 @@ export function* loadLedgerAccounts({
     numberOfAccountsPerPage,
     derivationPathPrefix,
   } = state.ledgerWizardState;
+  const derivationPathToAddressMap = advanced
+    ? yield ledgerWalletConnector.getMultipleAccountsFromDerivationPrefix(
+        derivationPathPrefix,
+        index,
+        numberOfAccountsPerPage,
+      )
+    : yield ledgerWalletConnector.getMultipleAccounts(LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS);
 
+  const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map(pair => ({
+    derivationPath: pair[0],
+    address: toEthereumAddress(pair[1]),
+  }));
+
+  const balancesETH: string[] = yield Promise.all(
+    derivationPathsArray.map(dp => web3Manager.getBalance(dp.address).then(bn => bn.toString())),
+  );
+
+  const balancesNEU: string[] = yield Promise.all(
+    derivationPathsArray.map(dp =>
+      contractsService.neumark.balanceOf(dp.address).then(bn => bn.toString()),
+    ),
+  );
+
+  const accounts = (zip as tripleZip)(derivationPathsArray, balancesETH, balancesNEU).map(
+    ([dp, balanceETH, balanceNEU]) => ({
+      ...dp,
+      balanceETH: balanceETH,
+      balanceNEU: balanceNEU,
+    }),
+  );
+  yield put(actions.walletSelector.setLedgerAccounts(accounts, derivationPathPrefix));
+}
+
+export function* loadLedgerAccounts(_: TGlobalDependencies): Generator<any, any, any> {
   try {
-    const derivationPathToAddressMap = advanced
-      ? yield ledgerWalletConnector.getMultipleAccountsFromDerivationPrefix(
-          derivationPathPrefix,
-          index,
-          numberOfAccountsPerPage,
-        )
-      : yield ledgerWalletConnector.getMultipleAccounts(LEDGER_WIZARD_SIMPLE_DERIVATION_PATHS);
-
-    const derivationPathsArray = toPairs<string>(derivationPathToAddressMap).map(pair => ({
-      derivationPath: pair[0],
-      address: toEthereumAddress(pair[1]),
-    }));
-
-    const balancesETH: string[] = yield Promise.all(
-      derivationPathsArray.map(dp => web3Manager.getBalance(dp.address).then(bn => bn.toString())),
-    );
-
-    const balancesNEU: string[] = yield Promise.all(
-      derivationPathsArray.map(dp =>
-        contractsService.neumark.balanceOf(dp.address).then(bn => bn.toString()),
-      ),
-    );
-
-    const accounts = (zip as tripleZip)(derivationPathsArray, balancesETH, balancesNEU).map(
-      ([dp, balanceETH, balanceNEU]) => ({
-        ...dp,
-        balanceETH: balanceETH,
-        balanceNEU: balanceNEU,
-      }),
-    );
-    yield put(actions.walletSelector.setLedgerAccounts(accounts, derivationPathPrefix));
+    yield neuCall(loadLedgerAccountsEffect);
   } catch (e) {
     yield put(
       actions.walletSelector.ledgerConnectionEstablishedError(mapLedgerErrorToErrorMessage(e)),
@@ -78,57 +186,18 @@ export function* loadLedgerAccounts({
   }
 }
 
-export function* setDerivationPathPrefix(_: TGlobalDependencies, action: TAction): any {
-  if (action.type !== "LEDGER_SET_DERIVATION_PATH_PREFIX") return;
-  const state: TAppGlobalState = yield select();
-  const currDp = state.ledgerWizardState.derivationPathPrefix;
-  const { derivationPathPrefix } = action.payload;
-
-  if (currDp !== derivationPathPrefix) {
-    yield put(actions.walletSelector.setLedgerWizardDerivationPathPrefix(derivationPathPrefix));
-    yield put(actions.walletSelector.ledgerLoadAccounts());
-  }
-}
-
-export function* goToNextPageAndLoadData(): any {
-  yield put(actions.walletSelector.ledgerWizardAccountsListNextPage());
-  yield put(actions.walletSelector.ledgerLoadAccounts());
-}
-
-export function* goToPreviousPageAndLoadData(): any {
-  yield put(actions.walletSelector.ledgerWizardAccountsListPreviousPage());
-  yield put(actions.walletSelector.ledgerLoadAccounts());
-}
-
-export function* finishSettingUpLedgerConnector(
-  { ledgerWalletConnector, web3Manager }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.walletSelector.ledgerFinishSettingUpLedgerConnector>,
-): Generator<any, any, any> {
-  try {
-    const ledgerWallet = yield* call(
-      ledgerWalletConnector.finishConnecting,
-      action.payload.derivationPath,
-      web3Manager.networkId,
-    );
-
-    yield web3Manager.plugPersonalWallet(ledgerWallet);
-
-    yield put(actions.walletSelector.connected());
-  } catch (e) {
-    yield put(
-      actions.walletSelector.ledgerConnectionEstablishedError(
-        mapLedgerErrorToErrorMessage(new LedgerNotAvailableError()),
-      ),
-    );
-  }
-}
-
 export function* ledgerSagas(): Generator<any, any, any> {
   yield fork(
     neuTakeLatestUntil,
-    "LEDGER_TRY_ESTABLISHING_CONNECTION",
-    actions.walletSelector.reset,
-    tryEstablishingConnectionWithLedger,
+    actions.walletSelector.loginWithLedger,
+    "@@router/LOCATION_CHANGE",
+    ledgerLogin,
+  );
+  yield fork(
+    neuTakeLatestUntil,
+    actions.walletSelector.registerWithLedger,
+    "@@router/LOCATION_CHANGE",
+    ledgerRegister,
   );
   yield fork(
     neuTakeLatestUntil,
@@ -136,13 +205,5 @@ export function* ledgerSagas(): Generator<any, any, any> {
     actions.walletSelector.reset,
     loadLedgerAccounts,
   );
-  yield fork(neuTakeEvery, "LEDGER_SET_DERIVATION_PATH_PREFIX", setDerivationPathPrefix);
-  yield fork(neuTakeEvery, "LEDGER_GO_TO_NEXT_PAGE_AND_LOAD_DATA", goToNextPageAndLoadData);
-  yield fork(neuTakeEvery, "LEDGER_GO_TO_PREVIOUS_PAGE_AND_LOAD_DATA", goToPreviousPageAndLoadData);
-  yield fork(
-    neuTakeLatestUntil,
-    actions.walletSelector.ledgerFinishSettingUpLedgerConnector,
-    actions.walletSelector.reset,
-    finishSettingUpLedgerConnector,
-  );
+  yield fork(ledgerUiSagas);
 }

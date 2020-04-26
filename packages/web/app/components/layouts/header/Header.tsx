@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { appRoutes } from "../../appRoutes";
 import { ButtonLink } from "../../shared/buttons/ButtonLink";
-import { walletLoginRoutes, walletRegisterRoutes } from "../../wallet-selector/walletRoutes";
+import { walletLoginRoutes } from "../../wallet-selector/WalletSelectorLogin/wallet-routes";
 import { Menu } from "../menus/menu/Menu";
 import { MobileMenu } from "../menus/mobileMenu/MobileMenu";
 import { MyAccountMenu } from "../menus/MyAccountMenu";
@@ -39,7 +39,7 @@ const LogoFullScreen = () => (
 const LoginButton: React.FunctionComponent = () => (
   <ButtonLink
     className={styles.button}
-    layout={EButtonLayout.OUTLINE}
+    layout={EButtonLayout.SECONDARY}
     data-test-id="Header-login"
     to={walletLoginRoutes.light}
     size={EButtonSize.DYNAMIC}
@@ -53,7 +53,7 @@ const GetStartedButton: React.FunctionComponent<{ isLoginPage?: boolean }> = ({ 
     className={styles.button}
     layout={EButtonLayout.PRIMARY}
     data-test-id="Header-register"
-    to={walletRegisterRoutes.light}
+    to={appRoutes.registerWithLightWallet}
     size={EButtonSize.DYNAMIC}
   >
     {isLoginPage ? (
@@ -86,7 +86,6 @@ const HeaderTransitional: React.FunctionComponent<{ isLoginRoute: boolean }> = (
       </>
     ) : (
       <>
-        {" "}
         <span className={styles.helperText}>
           <FormattedMessage id="header.already-have-an-account" />
         </span>

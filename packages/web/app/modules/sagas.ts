@@ -1,4 +1,4 @@
-import { all, call, fork, getContext } from "@neufund/sagas";
+import { all, call, fork, getContext, neuTakeLatest, neuTakeUntil } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../di/setupBindings";
 import { actions } from "./actions";
@@ -22,11 +22,9 @@ import { nomineeFlowSagas } from "./nominee-flow/sagas";
 import { notificationModalSagas } from "./notification-modal/sagas";
 import { profileSagas } from "./profile/sagas";
 import { routingSagas } from "./routing/sagas";
-import { neuRestartIf } from "./sagasUtils";
 import { formSingleFileUploadSagas } from "./shared/formSingleFileUpload/sagas";
 import { remoteFileSagas } from "./shared/remoteFile/sagas";
-import { tokenPriceSagas } from "./shared/tokenPrice/sagas";
-import { termsOfServiceSagas } from "./terms-of-service-modal/sagas";
+import { termsOfServiceSagas } from "./terms-of-service/sagas";
 import { txHistorySaga } from "./tx-history/sagas";
 import { txMonitorSagas } from "./tx/monitor/sagas";
 import { txSenderSagasWatcher } from "./tx/sender/sagas";
@@ -37,6 +35,7 @@ import { browserWalletSagas } from "./wallet-selector/browser-wizard/sagas";
 import { ledgerSagas } from "./wallet-selector/ledger-wizard/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
+import { walletConnectSagas } from "./wallet-selector/wallet-connect/sagas";
 import { walletSagas } from "./wallet/sagas";
 import { web3Sagas } from "./web3/sagas";
 
@@ -47,42 +46,180 @@ function* allSagas(): Generator<any, any, any> {
   yield all([
     // Sagas that should keep running even after logout
     fork(initSagas),
-    fork(authSagas),
-    fork(walletSelectorSagas),
-    fork(lightWalletSagas),
-    fork(browserWalletSagas),
-    fork(ledgerSagas),
     fork(routingSagas),
-    fork(tokenPriceSagas),
-    fork(notificationModalSagas),
-    // Sagas that should be restarted immediately when logout occurs
-    fork(neuRestartIf, actions.auth.logout, termsOfServiceSagas),
-    fork(neuRestartIf, actions.auth.logout, bankTransferFlowSaga),
-    fork(neuRestartIf, actions.auth.logout, txSenderSagasWatcher),
-    fork(neuRestartIf, actions.auth.logout, txUserFlowSagasWatcher),
-    fork(neuRestartIf, actions.auth.logout, kycSagas),
-    fork(neuRestartIf, actions.auth.logout, investorTicketsSagas),
-    fork(neuRestartIf, actions.auth.logout, profileSagas),
-    fork(neuRestartIf, actions.auth.logout, web3Sagas),
-    fork(neuRestartIf, actions.auth.logout, walletSagas),
-    fork(neuRestartIf, actions.auth.logout, icbmWalletGetDataSagas),
-    fork(neuRestartIf, actions.auth.logout, etoFlowSagas),
-    fork(neuRestartIf, actions.auth.logout, etoViewSagas),
-    fork(neuRestartIf, actions.auth.logout, immutableFileSagas),
-    fork(neuRestartIf, actions.auth.logout, etoSagas),
-    fork(neuRestartIf, actions.auth.logout, etoNomineeSagas),
-    fork(neuRestartIf, actions.auth.logout, bookBuildingFlowSagas),
-    fork(neuRestartIf, actions.auth.logout, formSingleFileUploadSagas),
-    fork(neuRestartIf, actions.auth.logout, remoteFileSagas),
-    fork(neuRestartIf, actions.auth.logout, txValidatorSagasWatcher),
-    fork(neuRestartIf, actions.auth.logout, txTransactionsSagasWatcher),
-    fork(neuRestartIf, actions.auth.logout, gasApiSagas),
-    fork(neuRestartIf, actions.auth.logout, etoDocumentsSagas),
-    fork(neuRestartIf, actions.auth.logout, txMonitorSagas),
-    fork(neuRestartIf, actions.auth.logout, investmentFlowSagas),
-    fork(neuRestartIf, actions.auth.logout, txHistorySaga),
-    fork(neuRestartIf, actions.auth.logout, nomineeFlowSagas),
-    fork(neuRestartIf, actions.auth.logout, marketingUnsubscribeView),
+
+    // Sagas that should be started on initial app load
+    fork(neuTakeLatest, actions.init.startServices, authSagas),
+    fork(neuTakeLatest, actions.init.startServices, walletSelectorSagas),
+    fork(neuTakeLatest, actions.init.startServices, lightWalletSagas),
+    fork(neuTakeLatest, actions.init.startServices, walletConnectSagas),
+    fork(neuTakeLatest, actions.init.startServices, browserWalletSagas),
+    fork(neuTakeLatest, actions.init.startServices, ledgerSagas),
+    fork(neuTakeLatest, actions.init.startServices, notificationModalSagas),
+
+    // Sagas that should be restarted after logout
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      termsOfServiceSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      bankTransferFlowSaga,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      txSenderSagasWatcher,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      txUserFlowSagasWatcher,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      kycSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      investorTicketsSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      profileSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      web3Sagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      walletSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      icbmWalletGetDataSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      etoFlowSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      etoViewSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      immutableFileSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      etoSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      etoNomineeSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      bookBuildingFlowSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      formSingleFileUploadSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      remoteFileSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      txValidatorSagasWatcher,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      txTransactionsSagasWatcher,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      gasApiSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      etoDocumentsSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      txMonitorSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      investmentFlowSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      txHistorySaga,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      nomineeFlowSagas,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      marketingUnsubscribeView,
+    ),
   ]);
 }
 

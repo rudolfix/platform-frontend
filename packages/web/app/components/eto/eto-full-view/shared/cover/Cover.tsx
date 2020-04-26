@@ -1,5 +1,5 @@
 import { Image, ISrcSet } from "@neufund/design-system";
-import { COMPANY_TAGS_LIMIT } from "@neufund/shared";
+import { COMPANY_TAGS_LIMIT } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 

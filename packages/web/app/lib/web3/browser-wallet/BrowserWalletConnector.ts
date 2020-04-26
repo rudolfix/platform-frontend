@@ -1,4 +1,4 @@
-import { EthereumNetworkId, promisify } from "@neufund/shared";
+import { EthereumNetworkId, promisify } from "@neufund/shared-utils";
 import { injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -16,22 +16,39 @@ import {
   BrowserWalletUnknownError,
 } from "./BrowserWallet";
 
+type Web3Provider = Web3.Provider & {
+  enable: () => Promise<void>;
+};
+
+type TWeb3Provider = {
+  injectedWeb3Provider: Web3Provider | undefined;
+  isLatestMetaMask: boolean;
+};
+
 @injectable()
 export class BrowserWalletConnector {
   dataApprovalPending = false;
-  public connect = async (networkId: EthereumNetworkId): Promise<BrowserWallet> => {
-    let newMetamask = true;
-    let injectedWeb3Provider;
+
+  public detectWeb3 = (): TWeb3Provider => {
     if (typeof (window as any).ethereum !== "undefined") {
-      injectedWeb3Provider = (window as any).ethereum;
-    } else {
-      newMetamask = false;
+      const injectedWeb3Provider = (window as any).ethereum;
+      return { injectedWeb3Provider, isLatestMetaMask: true };
+    } else if (typeof (window as any).web3 !== "undefined") {
       const injectedWeb3 = (window as any).web3;
-      if (typeof injectedWeb3 === "undefined") {
-        throw new BrowserWalletMissingError();
-      }
-      injectedWeb3Provider = injectedWeb3.currentProvider;
+      const injectedWeb3Provider = injectedWeb3.currentProvider;
+      return { injectedWeb3Provider, isLatestMetaMask: false };
+    } else {
+      return { injectedWeb3Provider: undefined, isLatestMetaMask: false };
     }
+  };
+
+  public connect = async (networkId: EthereumNetworkId): Promise<BrowserWallet> => {
+    const { isLatestMetaMask, injectedWeb3Provider } = this.detectWeb3();
+
+    if (injectedWeb3Provider === undefined) {
+      throw new BrowserWalletMissingError();
+    }
+
     const newWeb3 = new Web3(injectedWeb3Provider);
     const web3Adapter = new Web3Adapter(newWeb3);
     // check for mismatched networkIds
@@ -41,7 +58,7 @@ export class BrowserWalletConnector {
     }
     // TODO: this ugly code will be straighten when we drop suport for outdated Metamask versions - see github issue 1702
     if (!(await web3Adapter.getAccountAddress())) {
-      if (newMetamask) {
+      if (isLatestMetaMask) {
         if (this.dataApprovalPending) {
           throw new BrowserWalletAccountApprovalPendingError();
         } else {

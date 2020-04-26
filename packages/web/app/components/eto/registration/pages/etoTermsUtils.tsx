@@ -1,4 +1,4 @@
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 

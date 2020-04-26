@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { DAY } from "@neufund/shared";
+import { DAY } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
@@ -46,7 +46,7 @@ const BookBuildingActiveWidget: React.FunctionComponent<TExternalProps> = ({
 
     <div className="m-auto">
       <Button
-        layout={EButtonLayout.SECONDARY}
+        layout={EButtonLayout.PRIMARY}
         type="button"
         onClick={() => stopBookBuilding(etoId)}
         data-test-id="eto-flow-start-bookbuilding"

@@ -1,4 +1,5 @@
 import { all, fork, put, select } from "@neufund/sagas";
+import { contractsModuleApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   convertFromUlps,
@@ -7,7 +8,7 @@ import {
   EthereumAddress,
   nonNullable,
   Q18,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 
@@ -23,7 +24,6 @@ import { promisify } from "../../lib/contracts/typechain-runtime";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { selectUser, selectUserId } from "../auth/selectors";
-import { calculateSnapshotDate } from "../contracts/utils";
 import { InvalidETOStateError } from "../eto/errors";
 import { isOnChain } from "../eto/utils";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
@@ -165,7 +165,9 @@ export function* getIncomingPayouts({
       ),
     });
     // TODO: Recheck the code here
-    const snapshotDate = calculateSnapshotDate(yield neumark.currentSnapshotId);
+    const snapshotDate = contractsModuleApi.utils.calculateSnapshotDate(
+      yield neumark.currentSnapshotId,
+    );
     const euroTokenIncomingPayoutValue = addBigNumbers(
       euroTokenIncomingPayout.map((v: BigNumber[]) => v[1]),
     );

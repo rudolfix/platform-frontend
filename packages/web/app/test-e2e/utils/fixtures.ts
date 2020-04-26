@@ -1,4 +1,4 @@
-import { EthereumAddress } from "@neufund/shared";
+import { EthereumAddress } from "@neufund/shared-utils";
 
 import { makeEthereumAddressChecksummed } from "../../modules/web3/utils";
 

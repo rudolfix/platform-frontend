@@ -56,10 +56,10 @@ export function* loadInvestorEtoView(
     );
 
     yield* performLoadEtoSideEffects(eto);
+    yield put(actions.bookBuilding.loadPledgeForEto(eto.etoId));
 
     const etoData = yield call(loadInvestorEtoViewInternal, eto, routeMatch);
     yield put(actions.etoView.setEtoViewData(etoData));
-    yield put(actions.etoView.watchEtoView(eto));
   } catch (e) {
     logger.error("Could not load eto by preview code", e);
     notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW));
@@ -81,10 +81,10 @@ export function* loadInvestorEtoViewById(
     );
 
     yield* performLoadEtoSideEffects(eto);
+    yield put(actions.bookBuilding.loadPledgeForEto(eto.etoId));
 
     const etoData = yield call(loadInvestorEtoViewInternal, eto, routeMatch);
     yield put(actions.etoView.setEtoViewData(etoData));
-    yield put(actions.etoView.watchEtoView(eto));
   } catch (e) {
     logger.error("Could not load eto", e);
     notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO));

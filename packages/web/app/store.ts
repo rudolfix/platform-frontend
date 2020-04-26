@@ -1,12 +1,14 @@
-import { DeepReadonly } from "@neufund/shared";
 import {
   appConnect as sharedAppConnect,
   setupAuthModule,
+  setupContractsModule,
   setupCoreModule,
+  setupTokenPriceModule,
   TAppConnectOptions,
   TModuleSetup,
   TModuleState,
 } from "@neufund/shared-modules";
+import { DeepReadonly } from "@neufund/shared-utils";
 import {
   connectRouter,
   LocationChangeAction,
@@ -22,10 +24,11 @@ import { IConfig } from "./config/getConfig";
 import { setupBindings } from "./di/setupBindings";
 import { symbols } from "./di/symbols";
 import { reduxLogger } from "./middlewares/redux-logger";
-import { TAction } from "./modules/actions";
+import { actions, TAction } from "./modules/actions";
 import { initInitialState } from "./modules/init/reducer";
 import { appReducers } from "./modules/reducer";
 import { rootSaga } from "./modules/sagas";
+import { IDisconnectedWeb3State, web3InitialState } from "./modules/web3/reducer";
 
 // add new external actions here
 export type AppActionTypes = DeepReadonly<TAction | LocationChangeAction>;
@@ -62,11 +65,25 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
       jwtStorageSymbol: symbols.jwtStorage,
       ethManagerSymbol: symbols.web3Manager,
     }),
+    setupContractsModule({
+      contractsServiceSymbol: symbols.contractsService,
+    }),
+    setupTokenPriceModule({
+      refreshOnAction: actions.web3.newBlockArrived,
+    }),
     appModule,
   ];
 };
 
 export type TAppGlobalState = TModuleState<typeof setupAppModule>;
+
+const createInitialWeb3State = (state: TAppGlobalState) => {
+  const web3State = { ...web3InitialState };
+  if (state.web3 && (state.web3 as IDisconnectedWeb3State).previousConnectedWallet) {
+    web3State.previousConnectedWallet = (state.web3 as IDisconnectedWeb3State).previousConnectedWallet;
+  }
+  return web3State;
+};
 
 // All states that should remain even after logout
 export const staticValues = (
@@ -78,6 +95,7 @@ export const staticValues = (
       // TODO: Think about the state and where smart contracts should be
       contracts: state.contracts,
       init: { ...initInitialState, smartcontractsInit: state.init.smartcontractsInit },
+      web3: createInitialWeb3State(state),
     };
   }
 

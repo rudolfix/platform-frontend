@@ -1,4 +1,4 @@
-import { Dictionary } from "@neufund/shared";
+import { Dictionary } from "@neufund/shared-utils";
 
 import { EtoStateToCamelcase } from "./EtoApi.interfaces.unsafe";
 

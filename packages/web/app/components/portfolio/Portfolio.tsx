@@ -1,4 +1,4 @@
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import { compose } from "recompose";
 
 import { actions } from "../../modules/actions";

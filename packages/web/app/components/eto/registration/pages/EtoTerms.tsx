@@ -1,6 +1,6 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { DeepReadonly, RequiredByKeys } from "@neufund/shared";
 import { ILogger } from "@neufund/shared-modules";
+import { DeepReadonly, RequiredByKeys } from "@neufund/shared-utils";
 import { FormikConsumer } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -401,7 +401,7 @@ const EtoRegistrationTermsLayout: React.FunctionComponent<IProps> = props => {
       {!props.readonly && (
         <Section className={styles.buttonSection}>
           <Button
-            layout={EButtonLayout.OUTLINE}
+            layout={EButtonLayout.SECONDARY}
             type="submit"
             isLoading={props.savingData}
             data-test-id="eto-registration-eto-terms-submit"

@@ -1,4 +1,4 @@
-import { IIntlHelpers } from "@neufund/shared"
+import { IIntlHelpers } from "@neufund/shared-utils"
 
 export class IntlWrapper {
   public intl!: IIntlHelpers;

@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { TWalletMetadata } from "../../../modules/web3/types";
 import { EUserType } from "./interfaces";

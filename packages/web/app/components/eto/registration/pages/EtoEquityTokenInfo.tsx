@@ -92,7 +92,7 @@ const EtoEquityTokenInfoComponent: React.FunctionComponent<IProps> = ({
     {!readonly && (
       <Section className={styles.buttonSection}>
         <Button
-          layout={EButtonLayout.OUTLINE}
+          layout={EButtonLayout.SECONDARY}
           type="submit"
           isLoading={savingData}
           data-test-id="eto-registration-token-info-submit"

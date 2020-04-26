@@ -7,7 +7,7 @@ import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   formatMoney,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
 
 import { ERoundingMode } from "../../components/shared/formatters/utils";
@@ -20,6 +20,11 @@ export function makeEthereumAddressChecksummed(
 }
 
 export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);
+
+/**
+ * @method generateRandomPrivateKey
+ * Generates random private key
+ */
 export const generateRandomPrivateKey = () => randomHex(32);
 
 // remove 0x prefix from private key

@@ -1,5 +1,5 @@
-import { DeepWritable } from "@neufund/shared";
-import { tid } from "@neufund/shared/tests";
+import { DeepWritable } from "@neufund/shared-utils";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { render } from "enzyme";
 import { cloneDeep } from "lodash";

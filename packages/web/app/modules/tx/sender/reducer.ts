@@ -1,4 +1,4 @@
-import { Overwrite } from "@neufund/shared";
+import { Overwrite } from "@neufund/shared-utils";
 
 import { ITxData } from "../../../lib/web3/types";
 import { AppReducer } from "../../../store";

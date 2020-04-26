@@ -6,7 +6,7 @@ const { getArtifactsMeta, getArtifactsPath } = require("./getArtifacts");
 const loadAppEnv = require("../webpack/loadAppEnv");
 const { getArtifactsRelativePath } = require("./getArtifacts");
 
-loadAppEnv(process.env);
+loadAppEnv();
 
 const artifactsVersion = process.env.NF_CONTRACT_ARTIFACTS_VERSION || "localhost";
 

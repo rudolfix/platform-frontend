@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
-import { makeTid } from "@neufund/shared";
+import { makeTid } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { TDataTestId, TTranslatedString } from "../../types";
@@ -43,7 +43,7 @@ export const AccountBalance: React.FunctionComponent<IProps &
         actions.map(({ onClick, disabled, name, "data-test-id": actionDataTestId }, i) => (
           <Button
             key={i}
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             size={EButtonSize.SMALL}
             className={styles.button}
             iconPosition={EIconPosition.ICON_AFTER}

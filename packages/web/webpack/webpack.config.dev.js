@@ -8,7 +8,7 @@ const configCommon = require("./webpack.config.common");
 const paths = require("./paths");
 const loadAppEnv = require("./loadAppEnv");
 
-const applicationEnv = loadAppEnv(process.env);
+const applicationEnv = loadAppEnv();
 
 if (process.env.NF_VM_CONNECT) {
   console.assert(
@@ -25,6 +25,7 @@ const targetAddress = process.env.NF_VM_CONNECT
 
 module.exports = merge.smart(configCommon, {
   mode: "development",
+  devtool: "cheap-module-source-map",
   devServer: {
     contentBase: paths.dist,
     // provide `NF_SERVE_ON_NETWORK` to expose app to the local network (useful for cross device testing)
@@ -47,7 +48,7 @@ module.exports = merge.smart(configCommon, {
         "media-src 'self' blob:; " +
         "img-src 'self' blob: data: documents.neufund.io documents.neufund.net www.google-analytics.com stats.g.doubleclick.net https://lipis.github.io/flag-icon-css/flags " +
         "*; " + // this should be only enabled for twitter-iframe.html
-        "connect-src 'self' https://*.neufund.io https://*.onfido.com wss://*.onfido.com wss://localhost:9090", // needed for hot reload
+        "connect-src 'self' https://*.neufund.io https://*.onfido.com wss://*.onfido.com wss://localhost:5021 wss://platform.neufund.io/api/wc-bridge-socket/", // needed for hot reload, dev wallet-connect bridge
     },
     proxy: generateProxyConfig(
       `http://${targetAddress}`,

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FormattedHTMLMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { selectIsAuthorized } from "../../modules/auth/selectors";
@@ -11,10 +12,13 @@ import { DownloadTokenAgreementModal } from "../modals/download-token-agreements
 import { IcbmWalletBalanceModal } from "../modals/icbm-wallet-balance-modal/IcbmWalletBalanceModal";
 import { TxSenderModal } from "../modals/tx-sender/TxSender/TxSender";
 import { NotificationWidget } from "../shared/notification-widget/NotificationWidget";
+import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../shared/WarningAlert";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { HeaderAuthorized, HeaderTransitional, HeaderUnauthorized } from "./header/Header";
 import { LayoutWrapper } from "./LayoutWrapper";
+
+import * as styles from "./Layout.module.scss";
 
 interface IStateProps {
   userIsAuthorized: boolean;
@@ -24,8 +28,9 @@ interface ILayoutUnauthProps {
   hideHeaderCtaButtons?: boolean;
 }
 
-type TTransitionalLayoutProps = {
+type TTransitionalLayoutProps = TContentExternalProps & {
   isLoginRoute: boolean;
+  showLogoutReason: boolean;
 } & ILayoutUnauthProps;
 
 type TContentExternalProps = React.ComponentProps<typeof Content>;
@@ -87,11 +92,24 @@ const Layout = compose<IStateProps, TDataTestId & TContentExternalProps & ILayou
   }),
 )(LayoutComponent);
 
-const TransitionalLayout: React.FunctionComponent<TDataTestId &
-  TContentExternalProps &
-  TTransitionalLayoutProps> = ({ children, "data-test-id": dataTestId, ...contentProps }) => (
-  <LayoutWrapper data-test-id={dataTestId}>
+const TransitionalLayout: React.FunctionComponent<TDataTestId & TTransitionalLayoutProps> = ({
+  children,
+  "data-test-id": dataTestId,
+  showLogoutReason,
+  ...contentProps
+}) => (
+  <LayoutWrapper data-test-id={dataTestId} className={styles.layoutTransitional}>
     <HeaderTransitional isLoginRoute={contentProps.isLoginRoute} />
+    {showLogoutReason && (
+      <WarningAlert
+        className={styles.logoutNotification}
+        size={EWarningAlertSize.BIG}
+        layout={EWarningAlertLayout.INLINE}
+        data-test-id="wallet-selector-session-timeout-notification"
+      >
+        <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />
+      </WarningAlert>
+    )}
     <Content {...contentProps}>{children}</Content>
     <Footer />
   </LayoutWrapper>
@@ -105,4 +123,5 @@ export {
   LayoutUnauthorized,
   ILayoutUnauthProps,
   TContentExternalProps,
+  TTransitionalLayoutProps,
 };

@@ -1,12 +1,12 @@
 import { buffers, call, channel, Channel, delay, put, race, take } from "@neufund/sagas";
-import { secondsToMs } from "@neufund/shared";
+import { secondsToMs } from "@neufund/shared-utils";
 import * as Web3 from "web3";
 
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { TPendingTxs } from "../../../lib/api/users/interfaces";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
+import { actions } from "../../actions";
 import { neuCall } from "../../sagasUtils";
-import { actions } from "./../../actions";
 import { TransactionCancelledError } from "./errors";
 import { EEventEmitterChannelEvents, TEventEmitterChannelEvents } from "./types";
 import { isTransactionMined } from "./utils";

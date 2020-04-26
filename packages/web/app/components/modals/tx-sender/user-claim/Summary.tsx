@@ -81,7 +81,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
                 <Button
                   className={styles.icon}
                   svgIcon={iconDownload}
-                  layout={EButtonLayout.GHOST}
+                  layout={EButtonLayout.LINK}
                   iconProps={{
                     alt: <FormattedMessage id="common.download" />,
                   }}
@@ -123,7 +123,7 @@ export const UserClaimSummaryComponent: React.FunctionComponent<TComponentProps>
               }
               value={
                 <Button
-                  layout={EButtonLayout.GHOST}
+                  layout={EButtonLayout.LINK}
                   width={EButtonWidth.NO_PADDING}
                   iconProps={{
                     alt: <FormattedMessage id="common.download" />,

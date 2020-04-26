@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared";
+import { Q18 } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { getUnlockedWalletEtherAmountAfterFee } from "./utils";

@@ -1,4 +1,4 @@
-import { createActionFactory, Dictionary } from "@neufund/shared";
+import { createActionFactory, Dictionary } from "@neufund/shared-utils";
 
 import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EEtoDocumentType, IEtoDocument } from "../../lib/api/eto/EtoFileApi.interfaces";
@@ -62,7 +62,10 @@ export const etoActions = {
   ),
   setEto: createActionFactory(
     "ETO_SET_ETO",
-    ({ eto, company }: { eto: TEtoSpecsData; company?: TCompanyEtoData }) => ({ eto, company }),
+    ({ eto, company }: { eto: TEtoSpecsData; company?: TCompanyEtoData }) => ({
+      eto,
+      company,
+    }),
   ),
   setEtosDisplayOrder: createActionFactory("ETO_SET_DISPLAY_ORDER", (order: string[]) => ({
     order,

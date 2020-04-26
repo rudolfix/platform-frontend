@@ -6,7 +6,7 @@ const url = require("url");
 
 const { getArtifactsMeta } = require("../scripts/getArtifacts");
 
-module.exports = function loadAppEnv(processEnv) {
+module.exports = function loadAppEnv() {
   const universeAddressExists = !!process.env.NF_UNIVERSE_CONTRACT_ADDRESS;
   const envs = dotenv.load({ path: join(__dirname, "../.env") }).parsed;
 
@@ -36,12 +36,6 @@ module.exports = function loadAppEnv(processEnv) {
       console.error("not overriding NF_UNIVERSE_CONTRACT_ADDRESS");
     }
   }
-  // if we want to serve local dev build on the network
-  // we need to inject our local ip in the NF_RPC_PROVIDER
-  if (!!process.env.NF_SERVE_ON_NETWORK) {
-    const rpcProviderUrl = new url.URL(process.env.NF_RPC_PROVIDER);
-    rpcProviderUrl.hostname = process.env.NF_SERVE_ON_NETWORK;
-    allEnvs.NF_RPC_PROVIDER = rpcProviderUrl.toString();
-  }
+
   return mapValues(allEnvs, JSON.stringify);
 };

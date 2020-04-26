@@ -1,5 +1,5 @@
 import { TBrowserName } from "../../lib/dependencies/detectBrowser";
-import { AppReducer } from "../../store";
+import { AppReducer, TAppGlobalState } from "../../store";
 
 export interface IUserAgentState {
   name: TBrowserName;
@@ -26,6 +26,6 @@ export const browserReducer: AppReducer<IUserAgentState> = (
   return state;
 };
 
-export function isSupportingLedger(state: IUserAgentState): boolean {
-  return !state.name || state.name === "chrome";
+export function isSupportingLedger(state: TAppGlobalState): boolean {
+  return !state.browser.name || state.browser.name === "chrome";
 }

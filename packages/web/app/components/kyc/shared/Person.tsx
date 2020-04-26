@@ -4,7 +4,7 @@ import * as React from "react";
 import { InlineIcon } from "../../shared/icons/InlineIcon";
 
 import arrow from "../../../assets/img/inline_icons/link_arrow.svg";
-import styles from "./Person.module.scss";
+import * as styles from "./Person.module.scss";
 
 interface IProps {
   onClick: () => void;
@@ -13,7 +13,7 @@ interface IProps {
 
 export const Person: React.FunctionComponent<IProps> = ({ onClick, name }) => (
   <Button
-    layout={EButtonLayout.OUTLINE}
+    layout={EButtonLayout.SECONDARY}
     className={styles.card}
     width={EButtonWidth.BLOCK}
     size={EButtonSize.HUGE}

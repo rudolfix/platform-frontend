@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { invariant } from "@neufund/shared";
+import { invariant } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { addHexPrefix } from "ethereumjs-util";
 import * as Web3 from "web3";
@@ -10,12 +10,12 @@ import { ITxData } from "../../../lib/web3/types";
 import { OutOfGasError, RevertedTransactionError } from "../../../lib/web3/Web3Adapter";
 import { actions } from "../../actions";
 import { neuCall, neuTakeLatest, neuTakeUntil } from "../../sagasUtils";
+import { TransactionCancelledError } from "../event-channel/errors";
 import { getTransactionOrThrow } from "../event-channel/sagas";
 import { ETransactionErrorType, ETxSenderState } from "../sender/reducer";
 import { txMonitorSaga } from "../sender/sagas";
 import { typeToSchema } from "../transactions/types";
 import { ETxSenderType, TSpecificTransactionState } from "../types";
-import { TransactionCancelledError } from "./../event-channel/errors";
 import { SchemaMismatchError } from "./errors";
 import { selectPlatformPendingTransaction } from "./selectors";
 
@@ -212,7 +212,7 @@ function* removePendingTransaction({ logger }: TGlobalDependencies): Generator<a
 }
 
 export function* txMonitorSagas(): any {
-  yield fork(neuTakeUntil, actions.auth.setUser, actions.auth.logout, txMonitor);
+  yield fork(neuTakeUntil, actions.auth.setUser, actions.txMonitor.stopTxMonitor, txMonitor);
   yield fork(neuTakeLatest, actions.txMonitor.monitorPendingPlatformTx, txMonitorSaga);
   yield fork(neuTakeLatest, actions.txMonitor.deletePendingTransaction, removePendingTransaction);
 }

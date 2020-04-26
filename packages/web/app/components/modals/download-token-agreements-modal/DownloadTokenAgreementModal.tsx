@@ -85,7 +85,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                     value={
                       <Button
                         className={styles.icon}
-                        layout={EButtonLayout.GHOST}
+                        layout={EButtonLayout.LINK}
                         svgIcon={iconDownload}
                         width={EButtonWidth.NO_PADDING}
                         iconProps={{
@@ -130,7 +130,7 @@ const DownloadTokenAgreementModalComponent: React.FunctionComponent<IComponentPr
                       <Button
                         className={styles.icon}
                         svgIcon={iconDownload}
-                        layout={EButtonLayout.GHOST}
+                        layout={EButtonLayout.LINK}
                         width={EButtonWidth.NO_PADDING}
                         iconProps={{
                           alt: <FormattedMessage id="common.download" />,

@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { ETH_DECIMALS, toEthereumAddress } from "@neufund/shared";
+import { ETH_DECIMALS, toEthereumAddress } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { IWindowWithData } from "../../../../../test/helperTypes";
@@ -18,11 +18,14 @@ import { selectEthereumAddress } from "../../../web3/selectors";
 import { isAddressValid } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { ETxSenderType } from "../../types";
-import { selectUserFlowTxDetails, selectUserFlowTxInput } from "../../user-flow/transfer/selectors";
+import {
+  selectUserFlowTokenData,
+  selectUserFlowTxDetails,
+  selectUserFlowTxInput,
+} from "../../user-flow/transfer/selectors";
 import { TxUserFlowInputData, TxUserFlowTransferDetails } from "../../user-flow/transfer/types";
 import { calculateGasLimitWithOverhead, EMPTY_DATA } from "../../utils";
 import { WrongValuesError } from "../errors";
-import { selectUserFlowTokenData } from "./../../user-flow/transfer/selectors";
 import { TWithdrawAdditionalData } from "./types";
 
 import ethImage from "../../../../assets/img/eth_icon.svg";

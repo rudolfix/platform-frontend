@@ -1,4 +1,4 @@
-import { ECountries, minutesToMs } from "@neufund/shared";
+import { ECountries, minutesToMs } from "@neufund/shared-utils";
 
 import { EJurisdiction } from "../../lib/api/eto/EtoProductsApi.interfaces";
 

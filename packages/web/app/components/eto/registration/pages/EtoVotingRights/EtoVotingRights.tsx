@@ -6,7 +6,7 @@ import {
   MIN_RESTRICTED_ACT_VOTING_DURATION,
   MIN_VOTING_DURATION,
   MIN_VOTING_FINALIZATION_DURATION,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -358,7 +358,7 @@ const EtoVotingRightsComponent: React.FunctionComponent<TExternalProps &
       {!readonly && currentNomineeId && (
         <Section className={styles.buttonSection}>
           <Button
-            layout={EButtonLayout.OUTLINE}
+            layout={EButtonLayout.SECONDARY}
             type="submit"
             isLoading={savingData}
             data-test-id="eto-registration-voting-rights-submit"

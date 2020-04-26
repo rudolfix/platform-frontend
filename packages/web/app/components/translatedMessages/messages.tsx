@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
@@ -50,15 +50,27 @@ export type TranslatedMessageType =
   | EEtoNomineeRequestMessages
   | ETxValidationMessages
   | EEtoNomineeActiveEtoNotifications
-  | ENotificationText;
+  | ENotificationText
+  | ELightWalletRestoreMessage
+  | WalletConnectErrorMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
   USER_ALREADY_EXISTS = "userAlreadyExists",
 }
 
+export enum WalletConnectErrorMessage {
+  WC_GENERIC_ERROR = "wcGenericError",
+  WC_SESSION_REJECTED_ERROR = "wcSessionRejectedError",
+}
+
 export enum GenericModalMessage {
   ERROR_TITLE = "errorTitle",
+}
+
+export enum ELightWalletRestoreMessage {
+  LIGHT_WALLET_RESTORE_SUCCESS_TITLE = "LightWalletRestoreSuccessTitle",
+  LIGHT_WALLET_RESTORE_SUCCESS_TEXT = "LightWalletRestoreSuccessText",
 }
 
 export enum SignInUserErrorMessage {
@@ -81,6 +93,7 @@ export enum LedgerErrorMessage {
   GENERIC_ERROR = "ledgerGenericError",
   NOT_SUPPORTED = "ledgerNotSupported",
   CONTRACT_DISABLED = "ledgerContractDataDisabled",
+  USER_CANCELLED = "ledgerConnectionCancelledByUser",
 }
 
 export enum LightWalletErrorMessage {
@@ -390,6 +403,8 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="error-message.ledger.contract-disabled" />;
     case LedgerErrorMessage.GENERIC_ERROR:
       return <FormattedMessage id="error-message.ledger.generic-error" />;
+    case LedgerErrorMessage.USER_CANCELLED:
+      return <FormattedMessage id="error-message.ledger.user-cancelled" />;
 
     case LightWalletErrorMessage.WRONG_PASSWORD_SALT:
       return <FormattedMessage id="error-message.light-wallet.wrong-password-salt" />;
@@ -690,11 +705,21 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case ValidationMessage.VALIDATION_RESTRICTED_COUNTRY:
       return <FormattedMessage id="form.field.error.restricted-country" />;
     case ValidationMessage.VALIDATION_PECENTAGE_MAX:
-      return <FormattedMessage id="form.field.error.percentage.max" values={{ ...messageData }} />;
+      return (
+        <FormattedMessage
+          id="form.field.error.percentage.max"
+          values={{ ...(messageData as { max: string }) }}
+        />
+      );
     case ValidationMessage.VALIDATION_PERCENTAGE_MIN:
-      return <FormattedMessage id="form.field.error.percentage.min" values={{ ...messageData }} />;
+      return (
+        <FormattedMessage
+          id="form.field.error.percentage.min"
+          values={{ ...(messageData as { min: string }) }}
+        />
+      );
     case ValidationMessage.VALIDATION_CURRENCY_CODE:
-      return <FormattedMessage id="form.field.error.currency-code" values={{ ...messageData }} />;
+      return <FormattedMessage id="form.field.error.currency-code" />;
     case ValidationMessage.VALIDATION_FIELDS_SHOULD_MATCH:
       return (
         <FormattedMessage
@@ -783,9 +808,24 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       return <FormattedMessage id="notifications.complete-request" />;
     case ENotificationText.COMPLETE_UPDATE_ACCOUNT:
       return <FormattedMessage id="notifications.update-account" />;
+
+    case ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TITLE:
+      return <FormattedMessage id="account-recovery.success.title" />;
+    case ELightWalletRestoreMessage.LIGHT_WALLET_RESTORE_SUCCESS_TEXT:
+      return <FormattedMessage id="account-recovery.success.text" />;
+    case WalletConnectErrorMessage.WC_GENERIC_ERROR:
+      return (
+        <FormattedMessage
+          id="wallet-connect.generic-error"
+          values={{ error: messageData ? messageData.toString() : "" }}
+        />
+      );
+    case WalletConnectErrorMessage.WC_SESSION_REJECTED_ERROR:
+      return <FormattedMessage id="wallet-connect.session-rejected-error" />;
+
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:
-      return messageData!.message as TTranslatedString;
+      return (messageData as { message: TTranslatedString }).message;
 
     default:
       return assertNever(messageType, `Message not provided for ${messageType}`);

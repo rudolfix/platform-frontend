@@ -1,5 +1,5 @@
 import Eth from "@ledgerhq/hw-app-eth";
-import { EthereumNetworkId } from "@neufund/shared";
+import { EthereumNetworkId } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -31,6 +31,10 @@ export class LedgerWalletConnector {
   public connect = async (): Promise<void> => {
     try {
       this.getTransport = await connectToLedger();
+      const isConnected = await this.testConnection();
+      if (!isConnected) {
+        throw new LedgerNotAvailableError();
+      }
     } catch (e) {
       if (e instanceof LedgerError) {
         throw e;

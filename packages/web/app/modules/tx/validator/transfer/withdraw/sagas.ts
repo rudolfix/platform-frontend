@@ -1,7 +1,8 @@
 import { put, select } from "@neufund/sagas";
-import { addBigNumbers, convertToUlps, multiplyBigNumbers } from "@neufund/shared";
+import { addBigNumbers, convertToUlps, multiplyBigNumbers } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
+import { ITxData } from "../../../../../lib/web3/types";
 import { UserHasNoFundsError } from "../../../../../lib/web3/Web3Adapter";
 import { actions } from "../../../../actions";
 import { neuCall } from "../../../../sagasUtils";
@@ -17,7 +18,6 @@ import {
   runInitialValidations,
   shouldPassSmartContractAcceptEtherTest,
 } from "../sagas";
-import { ITxData } from "./../../../../../lib/web3/types";
 import { SmartContractDoesNotAcceptEtherError } from "./errors";
 
 export function* txValidateWithdraw(userInput: IWithdrawDraftType): Generator<any, any, any> {

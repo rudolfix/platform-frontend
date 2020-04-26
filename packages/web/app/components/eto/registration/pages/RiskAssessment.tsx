@@ -103,7 +103,7 @@ const EtoRegistrationRiskAssessmentComponent = (props: IProps) => (
     </Section>
     <Section className={styles.buttonSection}>
       <Button
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         type="submit"
         isLoading={props.savingData}
         data-test-id="eto-registration-risk-submit"

@@ -1,5 +1,5 @@
 import { ButtonArrowRight, EButtonLayout } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -39,7 +39,7 @@ const JurisdicitonDisclaimerModalLayout: React.FunctionComponent<IExternalProps 
     </ButtonArrowRight>
     <ButtonArrowRight
       onClick={confirm}
-      layout={EButtonLayout.GHOST}
+      layout={EButtonLayout.LINK}
       data-test-id="jurisdiction-disclaimer-modal.confirm"
     >
       <FormattedMessage id="form.select.no-i-am-not" />

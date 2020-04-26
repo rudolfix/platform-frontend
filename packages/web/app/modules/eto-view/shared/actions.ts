@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
 import { etoViewInvestorActions } from "../investor/actions";
@@ -19,10 +19,6 @@ export const etoViewActions = {
     }),
   ),
   reloadEtoView: createActionFactory("ETO_RELOAD_ETO_DATA"),
-  watchEtoView: createActionFactory(
-    "ETO_VIEW_WATCH_ETO",
-    (eto: TEtoWithCompanyAndContractReadonly) => ({ eto }),
-  ),
   setEtoError: createActionFactory("ETO_VIEW_SET_ETO_ERROR"),
   ...etoViewNotAuthActions,
   ...etoViewInvestorActions,

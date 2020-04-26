@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EButtonSize, EButtonWidth } from "@neufund/design-system";
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -54,6 +54,7 @@ export const UnverifiedEmailReminderModal: React.ComponentType<TModalProps> = ({
       size={EButtonSize.NORMAL}
       width={EButtonWidth.NORMAL}
       onClick={closeModal}
+      data-test-id="unverified-email-reminder-modal-ok-button"
     >
       <FormattedMessage id="checkUnverifiedEmailModal.button-text" />
     </Button>

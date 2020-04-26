@@ -11,11 +11,23 @@ export const appRoutes = {
   root: "/",
 
   register: "/register",
+  registerWithLightWallet: "/register/light",
+  registerWithBrowserWallet: "/register/browser",
+  registerWithLedger: "/register/ledger",
 
   registerIssuer: "/eto/register",
+  registerIssuerWithLightWallet: "/eto/register/light",
+  registerIssuerWithBrowserWallet: "/eto/register/browser",
+  registerIssuerWithLedger: "/eto/register/ledger",
 
   registerNominee: "/nominee/register",
+  registerNomineeWithLightWallet: "/nominee/register/light",
+  registerNomineeWithBrowserWallet: "/nominee/register/browser",
+  registerNomineeWithLedger: "/nominee/register/ledger",
+
   login: "/login",
+  loginBrowserWallet: "/login/browser",
+  walletconnect: "/wc",
 
   restore: "/restore",
 

@@ -62,7 +62,7 @@ export const EtoFormProgressWidget: React.FunctionComponent<IProps &
                 to={{
                   pathname: to,
                 }}
-                layout={EButtonLayout.GHOST}
+                layout={EButtonLayout.LINK}
                 iconPosition={EIconPosition.ICON_AFTER}
                 svgIcon={arrowRightIcon}
                 disabled={disabled}

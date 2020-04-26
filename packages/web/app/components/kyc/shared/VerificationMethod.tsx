@@ -39,7 +39,7 @@ export const VerificationMethod: React.FunctionComponent<TProps & TDataTestId> =
     )}
 
     <Button
-      layout={EButtonLayout.OUTLINE}
+      layout={EButtonLayout.SECONDARY}
       className={styles.card}
       onClick={onClick}
       disabled={disabled}

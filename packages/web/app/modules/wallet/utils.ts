@@ -1,4 +1,4 @@
-import { PLATFORM_UNLOCK_FEE } from "@neufund/shared";
+import { PLATFORM_UNLOCK_FEE } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 export const getUnlockedWalletEtherAmountAfterFee = (

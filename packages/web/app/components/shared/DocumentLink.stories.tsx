@@ -19,7 +19,7 @@ storiesOf("Document/DocumentLink", module)
 storiesOf("Document/DocumentButton", module)
   .add("default", () => <DocumentButton title="my document template" onClick={action("onClick")} />)
   .add("with layout", () => (
-    <DocumentButton layout={EButtonLayout.OUTLINE} title="my document template" />
+    <DocumentButton layout={EButtonLayout.SECONDARY} title="my document template" />
   ))
   .add("custom icon", () => (
     <DocumentButton

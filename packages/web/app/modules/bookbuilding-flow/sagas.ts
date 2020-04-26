@@ -1,16 +1,19 @@
-import { fork, put, select, take } from "@neufund/sagas";
+import { call, delay, fork, put, select, take } from "@neufund/sagas";
 import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
 
 import { BookbuildingFlowMessage } from "../../components/translatedMessages/messages";
 import { createMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EtoPledgeNotFound } from "../../lib/api/eto/EtoPledgeApi";
+import { EtoPledgeNotFound, EtoPledgesNotFound } from "../../lib/api/eto/EtoPledgeApi";
 import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
-import { EUserType } from "../../lib/api/users/interfaces";
+import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
-import { selectIsUserFullyVerified, selectUserType } from "../auth/selectors";
+import { etoNormalPollingDelay } from "../eto/constants";
+import { selectEtoById, selectEtoOnChainStateById } from "../eto/selectors";
+import { EETOStateOnChain } from "../eto/types";
 import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../sagasUtils";
+import { canLoadPledges, shouldLoadBookbuildingStats } from "./utils";
 
 export function* saveMyPledgeEffect(
   { apiEtoPledgeService }: TGlobalDependencies,
@@ -136,24 +139,27 @@ export function* loadBookBuildingListStats(
   }
 }
 
-export function* loadMyPledge(
+export function* loadPledgeForEto(
   { apiEtoPledgeService, notificationCenter, logger }: TGlobalDependencies,
-  action: TActionFromCreator<typeof actions.bookBuilding.loadPledge>,
+  action: TActionFromCreator<typeof actions.bookBuilding.loadPledgeForEto>,
 ): Generator<any, any, any> {
   try {
     const { etoId } = action.payload;
+    const canLoadPledgesResult = yield* call(canLoadPledges);
 
-    const userType: ReturnType<typeof selectUserType> = yield select(selectUserType);
-    const isVerified: ReturnType<typeof selectIsUserFullyVerified> = yield select(
-      selectIsUserFullyVerified,
-    );
+    if (canLoadPledgesResult) {
+      const eto = yield* select((state: TAppGlobalState) => selectEtoById(state, etoId));
+      const onChainState: EETOStateOnChain | undefined = yield* select((state: TAppGlobalState) =>
+        selectEtoOnChainStateById(state, etoId),
+      );
 
-    if (userType !== EUserType.INVESTOR || !isVerified) return;
-
-    yield put(actions.bookBuilding.loadBookBuildingStats(etoId));
-
-    const pledgeResponse: IHttpResponse<IPledge> = yield apiEtoPledgeService.getMyPledge(etoId);
-    yield put(actions.bookBuilding.setPledge(etoId, pledgeResponse.body));
+      if (eto && shouldLoadBookbuildingStats(eto.state, onChainState)) {
+        const pledgeResponse: IHttpResponse<IPledge> = yield apiEtoPledgeService.getPledgeForEto(
+          etoId,
+        );
+        yield put(actions.bookBuilding.setPledge(etoId, pledgeResponse.body));
+      }
+    }
   } catch (e) {
     if (!(e instanceof EtoPledgeNotFound)) {
       notificationCenter.error(
@@ -161,6 +167,35 @@ export function* loadMyPledge(
       );
       logger.error("Failed to load pledge", e);
     }
+  }
+}
+
+export function* loadAllMyPledges({
+  apiEtoPledgeService,
+  notificationCenter,
+  logger,
+}: TGlobalDependencies): Generator<any, void, any> {
+  try {
+    const canLoadPledgesResult = yield* call(canLoadPledges);
+
+    if (canLoadPledgesResult) {
+      const pledges = yield* call(() => apiEtoPledgeService.getAllMyPledges());
+      yield put(actions.bookBuilding.setPledges(pledges));
+    }
+  } catch (e) {
+    if (!(e instanceof EtoPledgesNotFound)) {
+      notificationCenter.error(
+        createMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE),
+      );
+      logger.error("Failed to load pledges", e);
+    }
+  }
+}
+
+export function* watchPledges(): Generator<any, void, void> {
+  while (true) {
+    yield delay(etoNormalPollingDelay);
+    yield put(actions.bookBuilding.loadAllPledges());
   }
 }
 
@@ -177,7 +212,9 @@ export function* bookBuildingFlowSagas(): Generator<any, any, any> {
     actions.bookBuilding.loadBookBuildingListStats,
     loadBookBuildingListStats,
   );
-  yield fork(neuTakeEvery, actions.bookBuilding.loadPledge, loadMyPledge);
+  yield fork(neuTakeEvery, actions.bookBuilding.loadPledgeForEto, loadPledgeForEto);
+  yield fork(neuTakeEvery, actions.bookBuilding.loadAllPledges, loadAllMyPledges);
   yield fork(neuTakeEvery, actions.bookBuilding.savePledge, saveMyPledge);
   yield fork(neuTakeEvery, actions.bookBuilding.deletePledge, deleteMyPledge);
+  yield fork(watchPledges);
 }

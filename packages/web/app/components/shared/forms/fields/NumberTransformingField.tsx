@@ -1,3 +1,4 @@
+import { useFieldMeta } from "@neufund/design-system";
 import * as cn from "classnames";
 import { FastField, FieldProps, FieldValidator } from "formik";
 import * as React from "react";
@@ -8,7 +9,6 @@ import { convertToPrecision } from "../../../eto/utils";
 import { generateErrorId } from "../layouts/FormError";
 import { FormFieldError } from "./FormFieldError";
 import { FormFieldLabel } from "./FormFieldLabel";
-import { useFieldMeta } from "./utils";
 
 import * as styles from "./FormStyles.module.scss";
 

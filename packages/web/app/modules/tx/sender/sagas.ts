@@ -350,7 +350,6 @@ function* cleanUpTxSender(): Generator<any, any, any> {
 }
 
 function* updateRelatedValues(): Generator<any, any, any> {
-  yield put(actions.eto.loadEtos());
   yield put(actions.wallet.loadWalletData());
 }
 

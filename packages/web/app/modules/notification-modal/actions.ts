@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { TMessage } from "../../components/translatedMessages/utils";
 
@@ -7,13 +7,13 @@ export enum ENotificationModalType {
   INFO = "info",
 }
 
-interface IBla {
+interface INotificationData {
   type: ENotificationModalType;
   message: TMessage;
 }
 
 export const notificationModalActions = {
-  notify: createActionFactory("NOTIFY", ({ type, message }: IBla) => ({
+  notify: createActionFactory("NOTIFY", ({ type, message }: INotificationData) => ({
     type,
     message,
   })),

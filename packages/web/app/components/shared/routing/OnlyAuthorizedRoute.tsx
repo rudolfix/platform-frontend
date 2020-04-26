@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
 import * as queryString from "query-string";
 import * as React from "react";
@@ -11,7 +11,7 @@ import { selectWalletTypeFromQueryString } from "../../../modules/routing/select
 import { EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { appRoutes } from "../../appRoutes";
-import { walletLoginRoutes } from "../../wallet-selector/walletRoutes";
+import { walletLoginRoutes } from "../../wallet-selector/WalletSelectorLogin/wallet-routes";
 
 interface IStateProps {
   isAuthorized: boolean;

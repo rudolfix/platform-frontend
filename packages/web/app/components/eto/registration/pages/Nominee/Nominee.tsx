@@ -50,7 +50,7 @@ const NomineeChosenLayout: React.FunctionComponent<ILayoutProps> = ({
     {!readonly && (
       <Button
         className={styles.button}
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         data-test-id="delete-nominee-request"
         onClick={deleteNomineeRequest}
       >

@@ -1,5 +1,5 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
 import { ESignerType } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
@@ -27,21 +27,6 @@ export interface ICreateVault {
 export interface IVault {
   walletInstance: any;
   salt: string;
-}
-
-export interface ILightWallet {
-  addresses: Array<string>;
-  encHdRootPriv: object;
-  encPrivKeys: object;
-  encSeed: object;
-  hdIndex: number;
-  hdPathString: string;
-  salt: string;
-  version: number;
-  getSeed: (walletKey: object) => string;
-  signTransaction: (txParams: object) => void;
-  getAddresses: () => Array<string>;
-  exportPrivateKey: (address: string, walletKey: object) => string;
 }
 
 export class LightError extends Error {}

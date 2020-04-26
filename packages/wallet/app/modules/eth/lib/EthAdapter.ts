@@ -1,4 +1,4 @@
-import { EthereumAddress, EthereumName, toEthereumAddress } from "@neufund/shared";
+import { EthereumAddress, EthereumName, toEthereumAddress } from "@neufund/shared-utils";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { providers, utils } from "ethers";
 import { interfaces } from "inversify";
@@ -85,6 +85,15 @@ class EthAdapter {
     this.logger.info(`Sending signed transaction`);
 
     return this.provider.sendTransaction(signedTransaction);
+  }
+
+  /**
+   * Returns an internal provider to be used in contracts
+   */
+  async getInternalProvider(): Promise<providers.Provider> {
+    this.logger.info(`Returning ethers provider`);
+
+    return this.provider;
   }
 }
 

@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { ButtonBase } from "./ButtonBase";
 
-storiesOf("NDS|Atoms/ButtonBase", module).add("default", () => (
+storiesOf("NDS|Atoms/Button", module).add("ButtonBase", () => (
   <>
     <ButtonBase>Normal</ButtonBase>
     <br />

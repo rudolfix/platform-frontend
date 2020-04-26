@@ -1,9 +1,9 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { nonNullable } from "../../../../shared/dist/utils/nonNullable";
 import { actions } from "../../modules/actions";
 import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
@@ -49,7 +49,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<TExternalProps &
       );
     case EETOStateOnChain.Signing:
       return (
-        <Button layout={EButtonLayout.OUTLINE} disabled>
+        <Button layout={EButtonLayout.SECONDARY} disabled>
           <FormattedMessage id="portfolio.section.reserved-assets.wait-for-update" />
         </Button>
       );

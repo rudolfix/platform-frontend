@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
-import { DAY } from "@neufund/shared";
+import { DAY } from "@neufund/shared-utils";
 import * as moment from "moment";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -164,7 +164,7 @@ const DateChooserOpen = ({
           <FormattedMessage id="eto.settings.cancel-change-eto-start-date" />
         </Button>
         <Button
-          layout={EButtonLayout.SECONDARY}
+          layout={EButtonLayout.PRIMARY}
           width={EButtonWidth.NO_PADDING}
           onClick={uploadDate}
           disabled={!(newDateIsSet && newDateIsValid(newEtoDate))}
@@ -185,7 +185,7 @@ const DateChooserClosed = ({
   <>
     <ChangeDateCountdown etoDate={etoDate} minOffsetPeriodInMinutes={minOffsetPeriodInMinutes} />
     <Button
-      layout={EButtonLayout.SECONDARY}
+      layout={EButtonLayout.PRIMARY}
       className="m-auto"
       onClick={openDatePicker}
       data-test-id="eto-settings-start-date-open-date-picker"
@@ -269,7 +269,7 @@ class DateChooser extends React.PureComponent<IDateChooserProps, IDateChooserSta
               <FormattedMessage id="eto.settings.changing-eto-start-date-not-possible" />
             </p>
             <Button
-              layout={EButtonLayout.SECONDARY}
+              layout={EButtonLayout.PRIMARY}
               className="m-auto"
               data-test-id="eto-settings-start-date-open-date-picker"
               disabled={true}

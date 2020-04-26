@@ -1,5 +1,5 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { DataUnavailableError } from "@neufund/shared";
+import { DataUnavailableError } from "@neufund/shared-utils";
 import { match } from "react-router";
 
 import { EtoMessage } from "../../../components/translatedMessages/messages";
@@ -71,7 +71,6 @@ export function* loadIssuerEtoView(
           etoViewType,
         }),
       );
-      yield put(actions.etoView.watchEtoView(eto));
     } else {
       throw new Error("could not load issuer eto");
     }
@@ -93,11 +92,11 @@ export function* loadIssuerEtoPreview(
       payload.previewCode,
     );
     yield* etoFlowBackwardsCompat(eto);
+    yield put(actions.bookBuilding.loadPledgeForEto(eto.etoId));
 
     if (eto) {
       const etoData = yield call(loadIssuerPreviewEtoViewInternal, eto, payload.routeMatch);
       yield put(actions.etoView.setEtoViewData(etoData));
-      yield put(actions.etoView.watchEtoView(eto));
     } else {
       throw new DataUnavailableError("Could not load eto");
     }
@@ -118,11 +117,11 @@ export function* loadIssuerPreviewByIdEtoView(
       payload.etoId,
     );
     yield* etoFlowBackwardsCompat(eto);
+    yield put(actions.bookBuilding.loadPledgeForEto(eto.etoId));
 
     if (eto) {
       const etoData = yield call(loadIssuerPreviewEtoViewInternal, eto, payload.routeMatch);
       yield put(actions.etoView.setEtoViewData(etoData));
-      yield put(actions.etoView.watchEtoView(eto));
     } else {
       throw new DataUnavailableError("Could not load eto");
     }

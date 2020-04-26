@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
-import { assertNever, nonNullable } from "@neufund/shared";
+import { assertNever, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
@@ -252,7 +252,7 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
 
       <ButtonGroup className={styles.buttons}>
         <Button
-          layout={EButtonLayout.OUTLINE}
+          layout={EButtonLayout.SECONDARY}
           size={EButtonSize.HUGE}
           className={styles.button}
           data-test-id="kyc-personal-verification-go-back"
@@ -264,7 +264,7 @@ export const KycPersonalDocumentVerificationComponent: React.FunctionComponent<I
         {isManualVerificationEnabled() && (
           <Button
             disabled={currentProvider !== NONE_KYC_INSTANTID_PROVIDER}
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             size={EButtonSize.HUGE}
             className={styles.button}
             data-test-id="kyc-go-to-manual-verification"

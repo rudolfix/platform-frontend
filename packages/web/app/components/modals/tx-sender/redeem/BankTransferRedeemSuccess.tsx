@@ -51,7 +51,7 @@ const BankTransferRedeemSuccessComponent: React.FunctionComponent<IComponentProp
 
     <ButtonArrowRight
       onClick={goToWallet}
-      layout={EButtonLayout.GHOST}
+      layout={EButtonLayout.LINK}
       data-test-id="bank-transfer.redeem.success.go-to-wallet"
     >
       <FormattedMessage id="bank-transfer.redeem.success.go-to-wallet" />

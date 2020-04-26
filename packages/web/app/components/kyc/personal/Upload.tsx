@@ -56,7 +56,7 @@ export const KYCUploadComponent: React.FunctionComponent<TComponentProps> = prop
 
     <ButtonGroup className={styles.buttons}>
       <Button
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         size={EButtonSize.HUGE}
         className={styles.button}
         data-test-id="kyc-personal-start-go-back"

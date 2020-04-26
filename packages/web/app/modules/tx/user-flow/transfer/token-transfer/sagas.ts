@@ -1,12 +1,12 @@
 import { fork, put, select } from "@neufund/sagas";
-import { convertFromUlps } from "@neufund/shared";
+import { convertFromUlps } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { actions, TActionFromCreator } from "../../../../actions";
 import { neuDebounce } from "../../../../sagasUtils";
 import { ETxSenderType } from "../../../types";
+import { selectUserFlowTokenDecimals, selectUserFlowUserBalance } from "../selectors";
 import { toFormValue } from "../utils";
-import { selectUserFlowTokenDecimals, selectUserFlowUserBalance } from "./../selectors";
 
 function* detectMaxWithdraw(
   _: TGlobalDependencies,

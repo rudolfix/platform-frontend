@@ -1,4 +1,4 @@
-import { Dictionary } from "@neufund/shared";
+import { Dictionary } from "@neufund/shared-utils";
 
 import { FUNDING_ROUNDS } from "../../../components/eto/shared/constants";
 import { EEtoFormTypes } from "../../../modules/eto-flow/types";

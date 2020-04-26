@@ -1,5 +1,5 @@
 import { ButtonGroup, EButtonLayout, EButtonSize, EIconPosition } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -73,7 +73,7 @@ const LandingLayout: React.FunctionComponent = () => (
           </ButtonLink>
           <ButtonLink
             iconPosition={EIconPosition.ICON_AFTER}
-            layout={EButtonLayout.GHOST}
+            layout={EButtonLayout.LINK}
             size={EButtonSize.HUGE}
             svgIcon={arrowRight}
             target={"_blank"}

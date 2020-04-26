@@ -1,4 +1,4 @@
-import { withParams } from "@neufund/shared";
+import { withParams } from "@neufund/shared-utils";
 import * as React from "react";
 
 import { getConfig } from "../../../../../../config/getConfig";
@@ -7,7 +7,7 @@ import { LoadingIndicatorHexagon } from "../../../../../shared/loading-indicator
 import * as styles from "./EtoViewFundraisingStatistics.module.scss";
 
 const EtoViewFundraisingStatistics: React.FunctionComponent<{ etoId: string }> = ({ etoId }) => {
-  const { externalResources } = getConfig(process.env);
+  const { externalResources } = getConfig();
   let statsUrl = withParams(externalResources.etoStatisticsIframeURL, { etoId });
 
   if (process.env.NF_USE_FAKE_ETO_STATS === "1") {

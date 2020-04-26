@@ -1,84 +1,28 @@
 import { expectSaga } from "@neufund/sagas/tests";
-import { Dictionary } from "@neufund/shared";
-import { createMock } from "@neufund/shared/tests";
+import { Dictionary } from "@neufund/shared-utils";
+import { createMock } from "@neufund/shared-utils/tests";
 import { BigNumber } from "bignumber.js";
 import { expect } from "chai";
 import { spy } from "sinon";
 
-import { dummyEthereumAddressWithChecksum, dummyNetworkId } from "../../../../test/fixtures";
-import { LedgerErrorMessage } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { Neumark } from "../../../lib/contracts/Neumark";
 import { ContractsService } from "../../../lib/web3/ContractsService";
-import { LedgerNotAvailableError } from "../../../lib/web3/ledger-wallet/errors";
 import { LedgerWalletConnector } from "../../../lib/web3/ledger-wallet/LedgerConnector";
-import { LedgerWallet } from "../../../lib/web3/ledger-wallet/LedgerWallet";
 import { IDerivationPathToAddress } from "../../../lib/web3/ledger-wallet/types";
 import { Web3Manager } from "../../../lib/web3/Web3Manager/Web3Manager";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
-import { EWalletSubType, EWalletType, ILedgerWalletMetadata } from "../../web3/types";
 import { DEFAULT_DERIVATION_PATH_PREFIX } from "./reducer";
+import { loadLedgerAccountsEffect } from "./sagas";
 import {
-  finishSettingUpLedgerConnector,
   goToNextPageAndLoadData,
   goToPreviousPageAndLoadData,
-  loadLedgerAccounts,
   setDerivationPathPrefix,
-  tryEstablishingConnectionWithLedger,
-} from "./sagas";
+} from "./ui/sagas";
 
 describe("Wallet selector > Ledger wizard > actions", () => {
-  describe("tryEstablishingConnectionWithLedger", () => {
-    it("should try establishing connection", async () => {
-      const expectedNetworkId = dummyNetworkId;
-
-      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-        connect: async () => {},
-      });
-      const web3ManagerMock = createMock(Web3Manager, {
-        networkId: expectedNetworkId,
-      });
-
-      await expectSaga(tryEstablishingConnectionWithLedger, {
-        ledgerWalletConnector: ledgerWalletConnectorMock as any,
-        web3Manager: web3ManagerMock as any,
-      } as TGlobalDependencies)
-        .put(actions.walletSelector.ledgerConnectionEstablished())
-        .run();
-
-      expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly();
-    });
-
-    it("should send error action on error", async () => {
-      const expectedNetworkId = dummyNetworkId;
-
-      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-        connect: async () => {
-          throw new LedgerNotAvailableError();
-        },
-      });
-      const web3ManagerMock = createMock(Web3Manager, {
-        networkId: expectedNetworkId,
-      });
-
-      await expectSaga(tryEstablishingConnectionWithLedger, {
-        ledgerWalletConnector: ledgerWalletConnectorMock as any,
-        web3Manager: web3ManagerMock as any,
-      } as TGlobalDependencies)
-        .put(
-          actions.walletSelector.ledgerConnectionEstablishedError(
-            createMessage(LedgerErrorMessage.GENERIC_ERROR),
-          ),
-        )
-        .run();
-
-      expect(ledgerWalletConnectorMock.connect).to.be.calledWithExactly();
-    });
-  });
-
-  describe("loadLedgerAccountsAction", () => {
+  describe("loadLedgerAccountsEffect", () => {
     it("should load accounts from ledger connector", async () => {
       const dummyState: Partial<TAppGlobalState> = {
         ledgerWizardState: {
@@ -87,7 +31,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
           numberOfAccountsPerPage: 10,
           derivationPathPrefix: "44'/60'/0'/",
           accounts: [],
-          isLoadingAddresses: false,
+          isLoading: false,
           isConnectionEstablished: true,
           advanced: true,
         },
@@ -121,7 +65,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         }),
       });
 
-      await expectSaga(loadLedgerAccounts, {
+      await expectSaga(loadLedgerAccountsEffect, {
         ledgerWalletConnector: ledgerWalletConnectorMock as any,
         web3Manager: web3ManagerMock as any,
         contractsService: contractsMock as any,
@@ -191,7 +135,7 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         numberOfAccountsPerPage: 10,
         derivationPathPrefix: DEFAULT_DERIVATION_PATH_PREFIX,
         accounts: [],
-        isLoadingAddresses: false,
+        isLoading: false,
         isConnectionEstablished: true,
         advanced: false,
       },
@@ -218,48 +162,5 @@ describe("Wallet selector > Ledger wizard > actions", () => {
         .put(actions.walletSelector.ledgerLoadAccounts())
         .put(actions.walletSelector.setLedgerWizardDerivationPathPrefix(newDP))
         .run());
-  });
-
-  describe("finishSettingUpLedgerConnectorAction", () => {
-    it("should work when ledger wallet is connected", async () => {
-      const expectedNetworkId = dummyNetworkId;
-
-      const expectedDerivationPath = "44'/60'/0'/2";
-      const dummyMetadata: ILedgerWalletMetadata = {
-        address: dummyEthereumAddressWithChecksum,
-        derivationPath: expectedDerivationPath,
-        walletType: EWalletType.LEDGER,
-        walletSubType: EWalletSubType.UNKNOWN,
-      };
-
-      const ledgerWalletMock = createMock(LedgerWallet, {
-        getMetadata: (): ILedgerWalletMetadata => dummyMetadata,
-      });
-      const ledgerWalletConnectorMock = createMock(LedgerWalletConnector, {
-        finishConnecting: async () => ledgerWalletMock,
-      });
-
-      const web3ManagerMock = createMock(Web3Manager, {
-        plugPersonalWallet: async () => {},
-        networkId: expectedNetworkId,
-      });
-
-      await expectSaga(
-        finishSettingUpLedgerConnector,
-        {
-          ledgerWalletConnector: ledgerWalletConnectorMock as any,
-          web3Manager: web3ManagerMock as any,
-        } as TGlobalDependencies,
-        actions.walletSelector.ledgerFinishSettingUpLedgerConnector(expectedDerivationPath),
-      )
-        .put(actions.walletSelector.connected())
-        .run();
-
-      expect(ledgerWalletConnectorMock.finishConnecting).to.be.calledWithExactly(
-        expectedDerivationPath,
-        expectedNetworkId,
-      );
-      expect(web3ManagerMock.plugPersonalWallet).to.be.calledWithExactly(ledgerWalletMock);
-    });
   });
 });

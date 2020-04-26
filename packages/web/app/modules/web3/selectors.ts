@@ -1,4 +1,4 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { RouterState } from "connected-react-router";
 import { isString } from "lodash";
 import * as queryString from "query-string";
@@ -74,6 +74,9 @@ export const selectPreviousLightWalletEmail = (state: IWeb3State): string | unde
     state.previousConnectedWallet.walletType === EWalletType.LIGHT &&
     state.previousConnectedWallet.email) ||
   undefined;
+
+export const selectCurrentLightWalletEmail = (state: IWeb3State): string | undefined =>
+  (state.connected && state.wallet?.email) || undefined;
 
 export const selectPreviousLightWalletSalt = (state: TAppGlobalState): string | undefined =>
   (!state.web3.connected &&
@@ -168,3 +171,5 @@ export const selectEmailFromQueryString = createSelector(selectRouter, (state: R
 
   return getEmailFromQueryString(state.location.search);
 });
+
+export const selectIsWeb3Available = (state: TAppGlobalState) => state.web3.web3Available;

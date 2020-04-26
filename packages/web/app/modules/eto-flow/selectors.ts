@@ -1,4 +1,4 @@
-import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared";
+import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared-utils";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
@@ -244,7 +244,7 @@ export const selectIsISHAPreviewSubmitted = (state: TAppGlobalState): boolean | 
 };
 
 export const selectUploadedInvestmentAgreement = (
-  state: DeepReadonly<TAppGlobalState>,
+  state: TAppGlobalState,
 ): IEtoDocument | undefined => {
   const etoDocuments = selectIssuerEtoDocuments(state)!;
 

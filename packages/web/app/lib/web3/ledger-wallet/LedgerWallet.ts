@@ -1,5 +1,5 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
 import { ESignerType } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { addHexPrefix, toBuffer } from "ethereumjs-util";
 import * as Web3 from "web3";
 
@@ -71,6 +71,8 @@ export class LedgerWallet implements IPersonalWallet {
     walletType: EWalletType.LEDGER,
     walletSubType: EWalletSubType.UNKNOWN,
     derivationPath: this.derivationPath,
+    salt: undefined,
+    email: undefined,
   });
 
   public sendTransaction = async (data: Web3.TxData): Promise<string> => {

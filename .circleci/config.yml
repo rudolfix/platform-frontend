@@ -3,12 +3,12 @@ version: 2.1
 executors:
   docker:
     docker:
-      - image: circleci/node:11.14.0
+      - image: circleci/node:12.16.2
     working_directory: /home/circleci/app
 
   docker-browsers:
     docker:
-      - image: circleci/node:11.14.0-browsers
+      - image: circleci/node:12.16.2-browsers
     working_directory: /home/circleci/app
 
 jobs:
@@ -21,6 +21,7 @@ jobs:
     steps:
       # Download and cache dependencies
       - checkout
+
       # Installation
       - run: yarn --frozen-lockfile
       # Confirm Artifact Version
@@ -29,11 +30,11 @@ jobs:
       - run: yarn workspace @neufund/web danger ci
       # Linting
       - run: yarn workspace @neufund/web lint
-      - run: yarn workspace @neufund/shared lint
+      - run: yarn workspace @neufund/shared-utils lint
       - run: yarn workspace @neufund/design-system lint
       # Unit Tests
       - run: yarn workspace @neufund/web test
-      - run: yarn workspace @neufund/shared test
+      - run: yarn workspace @neufund/shared-utils test
 
       - save_cache:
           paths:

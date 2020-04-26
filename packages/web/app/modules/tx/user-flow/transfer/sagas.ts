@@ -1,8 +1,8 @@
 import { put, select, take, takeLatest } from "@neufund/sagas";
 
 import { actions } from "../../../actions";
+import { EValidationState } from "../../validator/reducer";
 import { selectTxValidationState } from "../../validator/selectors";
-import { EValidationState } from "./../../validator/reducer";
 
 export function* userFlowAcceptForm(): Generator<any, any, any> {
   // This assumes that the user clicked submit

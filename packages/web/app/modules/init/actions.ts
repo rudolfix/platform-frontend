@@ -1,4 +1,4 @@
-import { createActionFactory } from "@neufund/shared";
+import { createActionFactory } from "@neufund/shared-utils";
 
 import { EInitType } from "./reducer";
 
@@ -9,4 +9,7 @@ export const initActions = {
     initType,
     errorMsg,
   })),
+  startServices: createActionFactory("START_SERVICES"),
+  restartServices: createActionFactory("RESTART_SERVICES"),
+  stopServices: createActionFactory("STOP_SERVICES"),
 };

@@ -139,7 +139,7 @@ const EtoRegistrationLegalInformationComponent: React.FunctionComponent<TCompone
     <Section className={styles.buttonSection}>
       <Button
         type="submit"
-        layout={EButtonLayout.OUTLINE}
+        layout={EButtonLayout.SECONDARY}
         isLoading={savingData}
         data-test-id="eto-registration-legal-information-submit"
       >

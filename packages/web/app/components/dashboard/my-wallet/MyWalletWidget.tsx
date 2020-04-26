@@ -5,7 +5,6 @@ import {
   EButtonWidth,
   TokenIcon,
 } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -73,7 +72,7 @@ export const MyWalletWidgetComponentLayout: React.FunctionComponent<TComponentPr
   } = props.data!;
 
   return (
-    <>
+    <MyWalletWidgetComponentContainer {...props}>
       <DataRowSeparated
         caption={
           <>
@@ -139,7 +138,7 @@ export const MyWalletWidgetComponentLayout: React.FunctionComponent<TComponentPr
       >
         <FormattedMessage id="dashboard.my-wallet.manage-wallet" />
       </Button>
-    </>
+    </MyWalletWidgetComponentContainer>
   );
 };
 
@@ -199,7 +198,6 @@ export const MyWalletWidget = compose<TComponentProps, CommonHtmlProps>(
       goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),
     }),
   }),
-  withContainer(MyWalletWidgetComponentContainer),
   branch<TStateProps>(state => state.isLoading, renderComponent(LoadingIndicator)),
   branch<TStateProps>(state => state.hasError, renderComponent(MyWalletWidgetError)),
 )(MyWalletWidgetComponentLayout);

@@ -1,8 +1,12 @@
-import { EthereumAddressWithChecksum } from "@neufund/shared";
+import { ESignerType } from "@neufund/shared-modules";
+import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
+
+import { ESignTransactionMethod } from "../../lib/web3/types";
 
 // normalized information about all possible types of personal wallets
 export enum EWalletType {
   LEDGER = "LEDGER",
+  WALLETCONNECT = "WALLETCONNECT",
   BROWSER = "BROWSER",
   LIGHT = "LIGHT",
   UNKNOWN = "UNKNOWN",
@@ -11,10 +15,20 @@ export enum EWalletSubType {
   METAMASK = "METAMASK",
   PARITY = "PARITY",
   GNOSIS = "GNOSIS",
+  NEUFUND = "NEUFUND",
   UNKNOWN = "UNKNOWN",
 }
 
-export type TWalletMetadata = ILightWalletMetadata | IBrowserWalletMetadata | ILedgerWalletMetadata;
+export type TWcWalletSubtypes =
+  | EWalletSubType.UNKNOWN
+  | EWalletSubType.METAMASK
+  | EWalletSubType.NEUFUND;
+
+export type TWalletMetadata =
+  | ILightWalletMetadata
+  | IBrowserWalletMetadata
+  | ILedgerWalletMetadata
+  | IWalletConnectMetadata;
 
 export interface ICommonWalletMetadata {
   address: EthereumAddressWithChecksum;
@@ -40,10 +54,29 @@ export interface ILightWalletRetrieveMetadata {
 export interface IBrowserWalletMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.BROWSER;
   walletSubType: EWalletSubType;
+  salt: undefined;
+  email: undefined;
 }
 
 export interface ILedgerWalletMetadata extends ICommonWalletMetadata {
   walletType: EWalletType.LEDGER;
   walletSubType: EWalletSubType.UNKNOWN;
   derivationPath: string;
+  salt: undefined;
+  email: undefined;
+}
+
+export interface IWalletConnectMetadata extends ICommonWalletMetadata {
+  walletType: EWalletType.WALLETCONNECT;
+  walletSubType: EWalletSubType.UNKNOWN | EWalletSubType.METAMASK | EWalletSubType.NEUFUND;
+  sendTransactionMethod: ESignTransactionMethod;
+  signerType: ESignerType;
+  sessionRequestTimeout: number;
+  signingTimeout: number;
+  supportsExplicitTimeouts: boolean;
+  supportSessionPings: boolean;
+  supportsRemoteKyc: boolean;
+  supportsWalletMigration: boolean;
+  salt: undefined;
+  email: undefined;
 }

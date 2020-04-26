@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";
@@ -24,6 +24,7 @@ import {
 import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
+import { convert, removeInvalidDate } from "../../eto/utils";
 import {
   BOOL_FALSE_KEY,
   BOOL_TRUE_KEY,
@@ -96,7 +97,10 @@ const KYCForm: React.FunctionComponent<TProps> = ({
         allSteps={TOTAL_STEPS_PERSONAL_KYC}
         title={<FormattedMessage id="kyc.personal.details.title" />}
         description={<FormattedMessage id="kyc.personal.details.description" />}
-        buttonAction={() => props.submitAndClose(values)}
+        buttonAction={() => {
+          const converted = convert(submitAndCloseConversionSpec)(values);
+          return props.submitAndClose(converted);
+        }}
         data-test-id="kyc.individual-start"
       />
       <FormDeprecated>
@@ -195,7 +199,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
         />
         <ButtonGroup className={styles.buttons}>
           <Button
-            layout={EButtonLayout.OUTLINE}
+            layout={EButtonLayout.SECONDARY}
             size={EButtonSize.HUGE}
             className={styles.button}
             data-test-id="kyc-personal-start-go-back"
@@ -231,6 +235,10 @@ const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualD
     props.props.submitForm(values);
   },
 })(KYCForm);
+
+const submitAndCloseConversionSpec = {
+  birthDate: removeInvalidDate(),
+};
 
 export const KYCPersonalStart = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({

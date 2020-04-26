@@ -1,8 +1,8 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
-import { dummyIntl, InversifyProvider, simpleDelay } from "@neufund/shared";
 import { authModuleAPI, coreModuleApi, IHttpResponse, noopLogger } from "@neufund/shared-modules";
-import { createMock, tid } from "@neufund/shared/tests";
-import { ConnectedRouter, routerMiddleware } from "connected-react-router";
+import { dummyIntl, simpleDelay } from "@neufund/shared-utils";
+import { createMock, tid } from "@neufund/shared-utils/tests";
+import { routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
 import { createMemoryHistory, History } from "history";
 import { Container, ContainerModule } from "inversify";
@@ -10,6 +10,7 @@ import * as React from "react";
 import { IntlProvider } from "react-intl";
 import { Provider as ReduxProvider } from "react-redux";
 import { applyMiddleware, combineReducers, createStore, ReducersMapObject, Store } from "redux";
+import configureStore from "redux-mock-store";
 import { SinonSpy } from "sinon";
 
 import {
@@ -32,6 +33,11 @@ import { generateRootModuleReducerMap } from "../app/store";
 import { DeepPartial } from "../app/types";
 import { dummyConfig } from "./fixtures";
 import { createSpyMiddleware } from "./reduxSpyMiddleware";
+
+/**
+ * @deprecated
+ * This is a legacy setup for integration tests.
+ */
 
 const defaultTranslations = require("../intl/locales/en-en.json");
 
@@ -64,6 +70,11 @@ interface ICreateIntegrationTestsSetupOutput {
   sagaMiddleware: SagaMiddleware<{ container: Container; deps: TGlobalDependencies }>;
 }
 
+/**
+ * @deprecated Please don't write unit tests for components as integration tests.
+ *             Just mock all selectors/external components and assert component behaviour
+ *             without spinning whole sagas under the hood
+ */
 export function createIntegrationTestsSetup(
   options: ICreateIntegrationTestsSetupOptions = {},
 ): ICreateIntegrationTestsSetupOutput {
@@ -149,7 +160,6 @@ export function createIntegrationTestsSetup(
 
   const store = createStore(rootReducer, options.initialState as any, middleware);
   context.deps = createGlobalDependencies(container);
-
   sagaMiddleware.run(rootSaga);
 
   return {
@@ -219,42 +229,6 @@ export async function waitUntilDoesntThrow(
   }
 }
 
-interface ICreateProviderContext {
-  container?: Container;
-  store?: Store<any>;
-  history?: History;
-}
-
-export function wrapWithProviders(
-  Component: React.ComponentType,
-  context: ICreateProviderContext = {},
-): React.ReactElement {
-  // avoid creating store and container if they were provided
-  let setup: ICreateIntegrationTestsSetupOutput | null = null;
-  if (!context.store || !context.container) {
-    setup = createIntegrationTestsSetup();
-  }
-
-  const {
-    store = setup!.store,
-    container = setup!.container,
-    history = createMemoryHistory(),
-  } = context;
-
-  return (
-    <ReduxProvider store={store}>
-      <ConnectedRouter history={history}>
-        <InversifyProvider container={container}>
-          {/* if we experience slow dows related to this we can switch to injecting dummy intl impl*/}
-          <IntlProvider locale="en-en" messages={defaultTranslations}>
-            <Component />
-          </IntlProvider>
-        </InversifyProvider>
-      </ConnectedRouter>
-    </ReduxProvider>
-  );
-}
-
 export function wrapWithIntl(component: React.ReactElement): React.ReactElement<any> {
   return (
     <IntlProvider locale="en-en" messages={defaultTranslations}>
@@ -279,3 +253,25 @@ export const submit = async (element: ReactWrapper): Promise<void> => {
     "Waiting for form to be submitted",
   );
 };
+
+const mockStore = configureStore();
+const throwOnAccessHandler = {
+  get: (_: unknown, name: string) => {
+    throw new Error(
+      `Seems that you are trying to get data from redux store (state.${name}). The best approach would be to mock selectors. Maintaining tests related on the external store shape is close to impossible.`,
+    );
+  },
+};
+const restrictedStore = new Proxy({}, throwOnAccessHandler);
+
+/**
+ * Wraps a component redux store and intl provider.
+ * Enforces that store is not accesses directly to promote `selectors` mocking
+ */
+export const wrapWithBasicProviders = (Component: React.ComponentType) => (
+  <ReduxProvider store={mockStore(restrictedStore)}>
+    <IntlProvider locale="en-en" messages={defaultTranslations}>
+      <Component />
+    </IntlProvider>
+  </ReduxProvider>
+);

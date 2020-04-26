@@ -1,8 +1,9 @@
-import { Q18 } from "@neufund/shared";
+import { Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { generateRandomEthereumAddress } from "../../../../modules/web3/utils";
 import { assertTxErrorDialogueNoCost } from "../../../utils/assertions";
+import { DEFAULT_PASSWORD } from "../../../utils/constants";
 import { getBalanceRpc, sendEth } from "../../../utils/ethRpcUtils";
 import { fillForm } from "../../../utils/forms";
 import {
@@ -14,11 +15,7 @@ import {
 } from "../../../utils/index";
 import { goToWallet, goToWalletWithParams } from "../../../utils/navigation";
 import { tid } from "../../../utils/selectors";
-import {
-  createAndLoginNewUser,
-  DEFAULT_PASSWORD,
-  loginFixtureAccount,
-} from "../../../utils/userHelpers";
+import { createAndLoginNewUser, loginFixtureAccount } from "../../../utils/userHelpers";
 import {
   assertWithdrawButtonIsDisabled,
   assertWithdrawFlow,

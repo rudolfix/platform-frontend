@@ -96,3 +96,35 @@ export const goToPortfolioWithRequiredPayoutAmountSet = (requiredPayoutAmount?: 
   });
   assertPortfolio();
 };
+
+export const goToLoginWithMockedWeb3 = () => {
+  cy.visit("/login", {
+    onBeforeLoad(win: IWindowWithData): void {
+      win.ethereum = {};
+    },
+  });
+};
+
+export const goToLoginLightWalletWithMockedWeb3 = () => {
+  cy.visit("/login/light", {
+    onBeforeLoad(win: IWindowWithData): void {
+      win.ethereum = {};
+    },
+  });
+};
+
+export const goToRegisterWithMockedWeb3 = () => {
+  cy.visit("/register", {
+    onBeforeLoad(win: IWindowWithData): void {
+      win.ethereum = {};
+    },
+  });
+};
+
+export const goToRegisterLightWalletWithMockedWeb3 = () => {
+  cy.visit("/register/light", {
+    onBeforeLoad(win: IWindowWithData): void {
+      win.ethereum = {};
+    },
+  });
+};

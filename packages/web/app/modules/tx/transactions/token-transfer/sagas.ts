@@ -1,5 +1,5 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
-import { EthereumAddress, toEthereumAddress } from "@neufund/shared";
+import { EthereumAddress, toEthereumAddress } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
@@ -16,8 +16,8 @@ import {
   selectUserFlowTokenData,
   selectUserFlowTxDetails,
 } from "../../user-flow/transfer/selectors";
+import { TxUserFlowTransferDetails } from "../../user-flow/transfer/types";
 import { WrongValuesError } from "../errors";
-import { TxUserFlowTransferDetails } from "./../../user-flow/transfer/types";
 import { TTokenTransferAdditionalData } from "./types";
 
 export interface ITransferTokenTxGenerator {

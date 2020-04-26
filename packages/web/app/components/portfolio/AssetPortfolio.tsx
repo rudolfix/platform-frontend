@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, Table } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared";
+import { withContainer } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -102,7 +102,7 @@ const prepareTableRowData = (
           disabled={!isVerifiedInvestor}
           data-test-id="asset-portfolio.payout.redistribute-payout"
           onClick={() => redistributePayout(disbursal)}
-          layout={EButtonLayout.OUTLINE}
+          layout={EButtonLayout.SECONDARY}
           className="mr-3"
         >
           <FormattedMessage id="portfolio.asset.payouts-from-neu.redistribute-payout" />

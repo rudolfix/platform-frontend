@@ -1,4 +1,4 @@
-import { convertToUlps } from "@neufund/shared";
+import { convertToUlps } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { calcInvestmentAmount, calcShareAndTokenPrice, calculateTarget } from "./EtoUtils";

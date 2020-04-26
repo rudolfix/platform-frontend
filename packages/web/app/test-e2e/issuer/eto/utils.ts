@@ -1,4 +1,7 @@
+import { formatThousands } from "../../../components/shared/formatters/utils";
 import { getJwtToken } from "../../utils";
+import { fillForm } from "../../utils/forms";
+import { confirmAccessModal, tid } from "../../utils/index";
 
 const COMPANIES_ME_PATH = "/api/eto-listing/companies/me";
 const ETOS_ME_PATH = "/api/eto-listing/etos/me";
@@ -321,4 +324,27 @@ export const pushEtoDataToAPI = () => {
       whitelist_duration_days: 5,
     },
   });
+};
+
+export const submitBookBuilding = (
+  amount: string,
+  consentToRevealEmail: boolean,
+  shouldConfirmModal: boolean = true,
+) => {
+  fillForm({
+    amount,
+    consentToRevealEmail: {
+      type: "toggle",
+      checked: consentToRevealEmail,
+    },
+    "eto-bookbuilding-commit": {
+      type: "submit",
+    },
+  });
+
+  if (shouldConfirmModal) {
+    confirmAccessModal();
+  }
+
+  cy.get(tid("campaigning-your-commitment")).contains(`${formatThousands(amount)} EUR`);
 };

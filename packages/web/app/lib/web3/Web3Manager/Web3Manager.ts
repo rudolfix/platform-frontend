@@ -1,5 +1,9 @@
-import { EthereumAddress, EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared";
 import { ESignerType, IEthManager, ILogger } from "@neufund/shared-modules";
+import {
+  EthereumAddress,
+  EthereumAddressWithChecksum,
+  EthereumNetworkId,
+} from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import PollingBlockTracker from "eth-block-tracker";
 import { EventEmitter } from "events";
@@ -73,6 +77,7 @@ export class Web3Manager extends EventEmitter implements IEthManager {
 
     this.blockTracker = new PollingBlockTracker({
       provider: this.internalWeb3Adapter.web3.currentProvider,
+      setSkipCacheFlag: false,
     });
     this.blockTracker.on("latest", blockNumber => {
       this.emit(EWeb3ManagerEvents.NEW_BLOCK_ARRIVED, {
@@ -154,11 +159,11 @@ export class Web3Manager extends EventEmitter implements IEthManager {
   }
 
   public async getTransactionByHash(txHash: string): Promise<Web3.Transaction> {
-    return this.internalTxWeb3Adapter.getTransactionByHash(txHash);
+    return this.internalTxWeb3Adapter.getTransactionByHash(txHash); //wc internalWeb3Adapter
   }
 
   public async getTransactionReceipt(txHash: string): Promise<Web3.TransactionReceipt | null> {
-    return this.internalTxWeb3Adapter.getTransactionReceipt(txHash);
+    return this.internalTxWeb3Adapter.getTransactionReceipt(txHash); ////wc internalWeb3Adapter
   }
 
   public async getBlockNumber(): Promise<number> {

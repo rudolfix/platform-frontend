@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared";
+import { assertNever } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 
@@ -7,8 +7,8 @@ import { Container, EColumnSpan, EContainerType } from "../../layouts/Container"
 import { InlineIcon } from "../icons/InlineIcon";
 import { LoadingIndicatorHexagon } from "./LoadingIndicatorHexagon";
 
-import loadingSpinner from "./../../../assets/img/inline_icons/loading_spinner.svg";
-import spinning from "./../../../assets/img/inline_icons/spinner.svg";
+import loadingSpinner from "../../../assets/img/inline_icons/loading_spinner.svg";
+import spinning from "../../../assets/img/inline_icons/spinner.svg";
 import * as styles from "./LoadingIndicator.module.scss";
 
 export enum ELoadingIndicator {

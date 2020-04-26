@@ -1,4 +1,5 @@
-import { call, fork, put, select } from "@neufund/sagas";
+import { call, fork, neuFork, neuTakeOnly, put, race, select } from "@neufund/sagas";
+import { LOCATION_CHANGE } from "connected-react-router";
 import { match } from "react-router";
 
 import { appRoutes } from "../../../components/appRoutes";
@@ -9,17 +10,22 @@ import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EUserType } from "../../../lib/api/users/interfaces";
 import { TAppGlobalState } from "../../../store";
 import { EProcessState } from "../../../utils/enums/processStates";
-import { actions } from "../../actions";
+import { actions, TActionFromCreator } from "../../actions";
 import { selectUserType } from "../../auth/selectors";
-import { shouldLoadPledgeData } from "../../bookbuilding-flow/utils";
-import { delayEtoRefresh, loadEtoWithCompanyAndContract } from "../../eto/sagas";
+import { shouldLoadBookbuildingStats } from "../../bookbuilding-flow/utils";
+import { loadEtoWithCompanyAndContract } from "../../eto/sagas";
+import { getEtoRefreshStrategies, raceStrategies } from "../../eto/sagas/watchEtosSetActionSaga";
+import {
+  selectEtoOnChainStateById,
+  selectInvestorEtoWithCompanyAndContract,
+} from "../../eto/selectors";
 import {
   EETOStateOnChain,
   EEtoSubState,
   TEtoWithCompanyAndContractReadonly,
 } from "../../eto/types";
 import { TEtoViewByPreviewCodeMatch } from "../../routing/types";
-import { neuCall, neuTakeLatest, neuTakeLatestUntil } from "../../sagasUtils";
+import { neuCall, neuTakeEveryUntil, neuTakeLatest } from "../../sagasUtils";
 import { etoViewInvestorSagas } from "../investor/sagas";
 import { etoViewIssuerSagas } from "../issuer/sagas";
 import { etoViewNomineeSagas } from "../nominee/sagas";
@@ -141,31 +147,18 @@ export function* saveEto(eto: TEtoWithCompanyAndContractReadonly): Generator<any
   yield put(actions.eto.setEto({ eto, company: eto.company }));
 }
 
-export function* saveUsersPledge(
-  eto: TEtoWithCompanyAndContractReadonly,
-): Generator<any, void, any> {
-  const onChainState = eto.contract && eto.contract.timedState;
-
-  if (shouldLoadPledgeData(eto.state, onChainState)) {
-    yield put(actions.bookBuilding.loadPledge(eto.etoId));
-  }
-}
-
-export function* saveBookbuildingStats(
-  eto: TEtoWithCompanyAndContractReadonly,
-): Generator<any, void, any> {
-  if (eto.subState === EEtoSubState.WHITELISTING && eto.isBookbuilding) {
-    yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
-  }
-}
-
 export function* etoFlowBackwardsCompat(
   eto: TEtoWithCompanyAndContractReadonly,
 ): Generator<any, void, any> {
   // save various pieces of data for backwards compatibility with other flows, e.g. investment
   yield call(saveEto, eto);
-  yield call(saveUsersPledge, eto);
-  yield call(saveBookbuildingStats, eto);
+  const onChainState: EETOStateOnChain | undefined = yield select((state: TAppGlobalState) =>
+    selectEtoOnChainStateById(state, eto.etoId),
+  );
+
+  if (shouldLoadBookbuildingStats(eto.state, onChainState)) {
+    yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
+  }
 }
 
 export function* reloadEtoView({
@@ -213,14 +206,27 @@ export function* performLoadEtoSideEffects(
   }
 }
 
-export function* etoViewWatcher(
+export function* etoViewDelay(
   _: TGlobalDependencies,
-  eto: TEtoWithCompanyAndContractReadonly,
+  previewCode: string,
 ): Generator<any, void, any> {
-  while (true) {
-    yield neuCall(delayEtoRefresh, eto);
-    yield put(actions.etoView.reloadEtoView());
-  }
+  const eto: TEtoWithCompanyAndContractReadonly = yield select((state: TAppGlobalState) =>
+    selectInvestorEtoWithCompanyAndContract(state, previewCode),
+  );
+  const strategies = yield* neuCall(getEtoRefreshStrategies, eto);
+  yield race(raceStrategies(strategies));
+  yield put(actions.etoView.reloadEtoView());
+}
+
+function* watchSetEtoViewAction(
+  _: TGlobalDependencies,
+  action: TActionFromCreator<typeof actions.etoView.setEtoViewData>,
+): Generator<any, void, any> {
+  const previewCode = action.payload.etoData.eto.previewCode;
+  yield race({
+    wait: neuFork(etoViewDelay, previewCode),
+    cancel: neuTakeOnly(actions.etoView.setEtoViewData, { etoData: { eto: { previewCode } } }),
+  });
 }
 
 export function* etoViewSagas(): Generator<any, void, any> {
@@ -230,9 +236,9 @@ export function* etoViewSagas(): Generator<any, void, any> {
   yield* etoViewNomineeSagas();
   yield fork(neuTakeLatest, actions.etoView.reloadEtoView, reloadEtoView);
   yield fork(
-    neuTakeLatestUntil,
-    actions.etoView.watchEtoView,
-    "@@router/LOCATION_CHANGE",
-    etoViewWatcher,
+    neuTakeEveryUntil,
+    actions.etoView.setEtoViewData,
+    LOCATION_CHANGE,
+    watchSetEtoViewAction,
   );
 }

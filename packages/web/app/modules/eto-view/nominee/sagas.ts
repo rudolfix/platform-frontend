@@ -48,6 +48,7 @@ export function* loadNomineeEtoView({
       );
 
       yield* performLoadEtoSideEffects(eto);
+      yield put(actions.bookBuilding.loadPledgeForEto(eto.etoId));
 
       yield put(
         actions.etoView.setEtoViewData({
@@ -57,7 +58,6 @@ export function* loadNomineeEtoView({
           etoViewType,
         }),
       );
-      yield put(actions.etoView.watchEtoView(eto));
     }
   } catch (e) {
     logger.error("Could not load nominee eto", e);

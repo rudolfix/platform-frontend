@@ -3,7 +3,7 @@ import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   toEquityTokenSymbol,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { createStore, Store } from "redux";
 
 import { ECurrency } from "../app/components/shared/formatters/utils";
@@ -39,6 +39,7 @@ export const dummyConfig: IConfig = {
   ethereumNetwork: {
     rpcUrl: "https://localhost:8080",
     backendRpcUrl: "https://localhost:8080",
+    bridgeUrl: "https://localhost:5021",
   },
   contractsAddresses: {
     universeContractAddress: "UNIVERSE_ADDRESS",

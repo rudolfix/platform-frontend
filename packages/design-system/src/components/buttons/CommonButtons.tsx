@@ -13,7 +13,7 @@ type TButtonArrowProps = Omit<TButtonProps, "svgIcon" | "iconPosition">;
 const ButtonArrowRight: React.FunctionComponent<TButtonArrowProps> = props => (
   <Button
     {...props}
-    layout={EButtonLayout.GHOST}
+    layout={EButtonLayout.LINK}
     iconPosition={EIconPosition.ICON_AFTER}
     svgIcon={ArrowRightIcon}
   />
@@ -22,7 +22,7 @@ const ButtonArrowRight: React.FunctionComponent<TButtonArrowProps> = props => (
 const ButtonArrowLeft: React.FunctionComponent<TButtonArrowProps> = props => (
   <Button
     {...props}
-    layout={EButtonLayout.GHOST}
+    layout={EButtonLayout.LINK}
     iconPosition={EIconPosition.ICON_BEFORE}
     svgIcon={ArrowLeftIcon}
   />
@@ -33,7 +33,7 @@ const ButtonClose: React.FunctionComponent<Omit<TButtonProps, "svgIcon">> = ({
   ...props
 }) => (
   <Button
-    layout={EButtonLayout.GHOST}
+    layout={EButtonLayout.LINK}
     width={EButtonWidth.NO_PADDING}
     svgIcon={CloseIcon}
     iconProps={iconProps}

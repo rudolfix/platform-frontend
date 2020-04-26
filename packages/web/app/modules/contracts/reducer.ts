@@ -1,4 +1,4 @@
-import { DeepReadonly } from "@neufund/shared";
+import { DeepReadonly } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 
 import { AppReducer } from "../../store";

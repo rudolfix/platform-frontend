@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";
@@ -138,7 +138,7 @@ const KYCForm: React.FunctionComponent<TProps> = ({
 
         <ButtonGroup className={styles.buttons}>
           <Button
-            layout={EButtonLayout.OUTLINE}
+            layout={EButtonLayout.SECONDARY}
             size={EButtonSize.HUGE}
             className={styles.button}
             data-test-id="kyc-personal-address-go-back"

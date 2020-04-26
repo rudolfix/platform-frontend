@@ -1,6 +1,6 @@
 import { expectSaga, matchers } from "@neufund/sagas/tests";
-import { toEthereumAddress } from "@neufund/shared";
-import { createMock } from "@neufund/shared/tests";
+import { toEthereumAddress } from "@neufund/shared-utils";
+import { createMock } from "@neufund/shared-utils/tests";
 
 import { EtherToken } from "../../../../lib/contracts/EtherToken";
 import { IERC223Token } from "../../../../lib/contracts/IERC223Token";
@@ -14,6 +14,7 @@ describe("Token Transfer Sagas", () => {
     web3: {
       connected: false,
       previousConnectedWallet: getDummyLightWalletMetadata(),
+      web3Available: true,
     },
     gas: {
       gasPrice: { standard: "1000", fast: "0", fastest: "0", safeLow: "0" },

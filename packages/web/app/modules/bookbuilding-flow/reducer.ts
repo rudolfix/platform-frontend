@@ -1,4 +1,4 @@
-import { DeepReadonly, Dictionary } from "@neufund/shared";
+import { DeepReadonly, Dictionary } from "@neufund/shared-utils";
 
 import { IBookBuildingStats, IPledge } from "../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { AppReducer } from "../../store";
@@ -39,6 +39,11 @@ export const bookBuildingFlowReducer: AppReducer<IBookbuildingFLow> = (
           ...state.pledges,
           [action.payload.etoId]: action.payload.pledge,
         },
+      };
+    case actions.bookBuilding.setPledges.getType():
+      return {
+        ...state,
+        pledges: action.payload.pledges,
       };
   }
   return state;

@@ -1,4 +1,4 @@
-import { invariant, PartialByKeys, TDataTestId } from "@neufund/shared";
+import { invariant, PartialByKeys, TDataTestId } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 
@@ -15,9 +15,8 @@ enum EIconPosition {
 
 enum EButtonLayout {
   PRIMARY = styles.buttonPrimary,
-  OUTLINE = styles.buttonOutline,
   SECONDARY = styles.buttonSecondary,
-  GHOST = styles.buttonGhost,
+  LINK = styles.buttonLink,
 }
 
 enum EButtonSize {
@@ -88,7 +87,7 @@ type TButtonProps = {
 const Button = React.forwardRef<HTMLButtonElement, TButtonProps>(
   (
     {
-      layout = EButtonLayout.OUTLINE,
+      layout = EButtonLayout.SECONDARY,
       size = EButtonSize.NORMAL,
       width = EButtonWidth.NORMAL,
       className,
@@ -102,7 +101,7 @@ const Button = React.forwardRef<HTMLButtonElement, TButtonProps>(
   ) => {
     const withIconOnly = children === undefined;
 
-    if (process.env.NODE_ENV === "development" || process.env.NF_CYPRESS_RUN === "1") {
+    if (process.env.NODE_ENV === "development") {
       invariant(
         !(svgIcon === undefined && withIconOnly),
         "Either `svgIcon` or `children` should be provided to a button",

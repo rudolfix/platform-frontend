@@ -5,7 +5,7 @@ import {
   injectIntlHelpers,
   multiplyBigNumbers,
   nonNullable,
-} from "@neufund/shared";
+} from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
@@ -429,7 +429,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
           <Row className="justify-content-center mb-0">
             <Button
               onClick={sendTransaction}
-              layout={EButtonLayout.OUTLINE}
+              layout={EButtonLayout.SECONDARY}
               type="submit"
               disabled={!readyToInvest}
               data-test-id="invest-modal-invest-now-button"

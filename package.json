@@ -4,14 +4,15 @@
     "packages/*"
   ],
   "engines": {
-    "node": ">=10.0.0 <12.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
     "lint": "wsrun lint",
     "test": "wsrun test",
-    "update-artifacts": "git submodule update --init --recursive",
-    "prepare": "yarn update-artifacts && wsrun --stages prepare",
+    "update-submodules": "git submodule update --init --recursive",
+    "prepare": "wsrun --stages prepare",
     "deduplicate": "yarn-deduplicate",
+    "preinstall": "yarn update-submodules",
     "postinstall": "patch-package"
   },
   "devDependencies": {

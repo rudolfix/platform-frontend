@@ -1,4 +1,4 @@
-import { createMount, setupFakeClock, tid } from "@neufund/shared/tests";
+import { createMount, setupFakeClock, tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { render, shallow } from "enzyme";
 import * as React from "react";

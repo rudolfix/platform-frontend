@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";
@@ -38,7 +38,7 @@ import { KycStep } from "../shared/KycStep";
 import { Person } from "../shared/Person";
 import { AcceptedKYCDocumentTypes } from "../utils";
 
-import styles from "../shared/KYCModal.module.scss";
+import * as styles from "../shared/KYCModal.module.scss";
 
 export interface IStateProps {
   legalRepresentative?: IKycLegalRepresentative;
@@ -91,7 +91,11 @@ const LegalRepresentativeDetails: React.FunctionComponent<FormikProps<IKycLegalR
       onClose={onClose}
       footer={
         <ModalFooter>
-          <Button layout={EButtonLayout.OUTLINE} onClick={onClose} className={styles.cancelButton}>
+          <Button
+            layout={EButtonLayout.SECONDARY}
+            onClick={onClose}
+            className={styles.cancelButton}
+          >
             <FormattedMessage id="form.button.cancel" />
           </Button>
 

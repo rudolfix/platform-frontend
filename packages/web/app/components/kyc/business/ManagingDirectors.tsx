@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { ECountries } from "@neufund/shared";
+import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";
@@ -38,7 +38,7 @@ import { Person } from "../shared/Person";
 import { AcceptedKYCDocumentTypes } from "../utils";
 
 import InfoIcon from "../../../assets/img/info-outline.svg";
-import styles from "../shared/KYCModal.module.scss";
+import * as styles from "../shared/KYCModal.module.scss";
 
 export interface IStateProps {
   currentValues: IKycManagingDirector | undefined;
@@ -94,7 +94,11 @@ const ManagingDirectorDetails: React.FunctionComponent<FormikProps<IKycBusinessD
       }
       footer={
         <ModalFooter>
-          <Button layout={EButtonLayout.OUTLINE} onClick={onClose} className={styles.cancelButton}>
+          <Button
+            layout={EButtonLayout.SECONDARY}
+            onClick={onClose}
+            className={styles.cancelButton}
+          >
             <FormattedMessage id="form.button.cancel" />
           </Button>
 

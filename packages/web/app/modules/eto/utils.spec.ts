@@ -1,4 +1,4 @@
-import { convertToUlps } from "@neufund/shared";
+import { convertToUlps } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { testEto } from "../../../test/fixtures";

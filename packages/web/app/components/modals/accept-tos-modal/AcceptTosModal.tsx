@@ -38,7 +38,7 @@ export const AcceptTosModalComponent: React.FunctionComponent<IStateProps & IDis
         <FormattedMessage id="common.links.terms-of-use" values={{ href: externalRoutes.tos }} />
       </ExternalLink>
       <div className={styles.buttonBlock}>
-        <Button onClick={onLogout} layout={EButtonLayout.OUTLINE}>
+        <Button onClick={onLogout} layout={EButtonLayout.SECONDARY}>
           <FormattedMessage id="settings.modal.accept-tos.logout-button" />
         </Button>
         <Button

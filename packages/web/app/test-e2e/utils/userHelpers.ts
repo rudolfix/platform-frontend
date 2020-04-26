@@ -1,21 +1,23 @@
-import { promisify, toCamelCase } from "@neufund/shared";
-import * as LightWalletProvider from "eth-lightwallet";
-import * as ethSig from "eth-sig-util";
-import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
-import { toChecksumAddress } from "web3-utils";
+import { toCamelCase } from "@neufund/shared-utils";
 
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { assertLanding } from "./assertions";
+import {
+  DEFAULT_PASSWORD,
+  JWT_KEY,
+  TKycType,
+  VAULT_API_ROOT,
+  WALLET_STORAGE_KEY,
+} from "./constants";
+import { createLightWalletWithKeyPair } from "./createLightWalletWithKeyPair";
+import { createUser, TUserType } from "./createUser";
 import { getAgreementHash } from "./getAgreementHash";
+import { getJWT } from "./getJWT";
 import { accountFixtureByName, removePendingExternalTransaction } from "./index";
 import { tid } from "./selectors";
-
-const VAULT_API_ROOT = "/api/wallet";
-export const WALLET_STORAGE_KEY = "NF_WALLET_METADATA";
-export const JWT_KEY = "NF_JWT";
-export const NF_USER_KEY = "NF_USER";
+import { wrappedFetch } from "./wrappedFetch";
 
 export const generateRandomEmailAddress = () =>
   `${Math.random()
@@ -24,8 +26,6 @@ export const generateRandomEmailAddress = () =>
 
 export const getJwtToken = () => JSON.parse(localStorage.getItem(JWT_KEY)!);
 export const getWalletMetaData = () => JSON.parse(localStorage.getItem(WALLET_STORAGE_KEY)!);
-
-type TKycType = "business" | "individual";
 
 type TCreateAndLoginParams = {
   type: TUserType;
@@ -149,145 +149,6 @@ export const loginFixtureAccount = (
     hdPath,
     ...params,
   });
-};
-
-/**
- * Create a light wallet with a given seed
- * @param seed
- */
-export const DEFAULT_PASSWORD = "strongpassword";
-export const DEFAULT_HD_PATH = "m/44'/60'/0'";
-export const createLightWalletWithKeyPair = async (
-  seed?: string,
-  hdPathString: string = DEFAULT_HD_PATH,
-) => {
-  // promisify some stuff
-  const create = promisify<any>(LightWalletProvider.keystore.createVault);
-
-  // create a new wallet
-  const entropyStrength = 256;
-  seed = seed ? seed : LightWalletProvider.keystore.generateRandomSeed(undefined, entropyStrength);
-  const salt = LightWalletProvider.keystore.generateSalt(32);
-  const lightWalletInstance = await create({
-    password: DEFAULT_PASSWORD,
-    seedPhrase: seed,
-    hdPathString,
-    salt,
-  });
-
-  // create keypair
-  const keyFromPassword = promisify<any>(
-    lightWalletInstance.keyFromPassword.bind(lightWalletInstance),
-  );
-  const walletKey: any = await keyFromPassword(DEFAULT_PASSWORD);
-  lightWalletInstance.generateNewAddress(walletKey, 1);
-  let address = lightWalletInstance.getAddresses()[0];
-  address = toChecksumAddress(address);
-  const privateKey = lightWalletInstance.exportPrivateKey(address, walletKey);
-
-  return { lightWalletInstance, salt, address, privateKey, walletKey };
-};
-
-/**
- * Create a user object with the dev services
- * User will have an accepted email address as well as
- * an accepted kyc, if requested
- */
-const CREATE_USER_PATH = "/api/external-services-mock/e2e-tests/user/";
-
-type TUserType = "investor" | "issuer" | "nominee";
-
-export const createUser = (
-  userType: TUserType,
-  privateKey?: string,
-  kyc?: TKycType,
-  timeoutInSeconds?: number,
-) => {
-  let path = `${CREATE_USER_PATH}?user_type=${userType}`;
-
-  if (kyc) {
-    path += `&kyc=${kyc}`;
-  }
-
-  if (privateKey) {
-    path += `&private_key=0x${privateKey}`;
-  }
-
-  if (timeoutInSeconds) {
-    path += `&max_verification_wait=${timeoutInSeconds}`;
-  }
-
-  return wrappedFetch(path, {
-    method: "POST",
-  }).then(r => r.json());
-};
-
-/**
- * A wrapper around fetch that throws when the response is an error status
- * @See https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
- */
-const wrappedFetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> =>
-  fetch(input, init).then(response => {
-    cy.log("request URL:", input);
-    cy.log("response status code:", response.status);
-    if (response.ok) return response;
-    throw new Error(response.statusText);
-  });
-
-/**
- * Get a jwt from the server
- * This could maybe be replaced by a called to the mockservices
- */
-const CHALLENGE_PATH = "/api/signature/jwt/challenge";
-const JWT_PATH = "/api/signature/jwt/create";
-
-export const getJWT = async (
-  address: string,
-  lightWalletInstance: any,
-  walletKey: any,
-  permissions: string[] = [],
-): Promise<string> => {
-  // first get a challenge
-  const headers = {
-    "Content-Type": "application/json",
-  };
-  const challenge_body = {
-    address,
-    salt: "4abc08069f8c6d26becd80fe96fbeaf4d17b84cdbe7071a8197ab5370bb85876",
-    signer_type: "eth_sign",
-    permissions: ["sign-tos", ...permissions],
-  };
-  const ch_response = await wrappedFetch(CHALLENGE_PATH, {
-    headers,
-    method: "POST",
-    body: JSON.stringify(challenge_body),
-  });
-  const ch_result = await ch_response.json();
-  const challenge = ch_result.challenge;
-
-  // now sign it...
-  const msgHash = hashPersonalMessage(toBuffer(addHexPrefix(challenge)));
-  const rawSignedMsg = await LightWalletProvider.signing.signMsgHash(
-    lightWalletInstance,
-    walletKey,
-    msgHash.toString("hex"),
-    address,
-  );
-
-  // ... and request the jwt
-  const signedChallenge = ethSig.concatSig(rawSignedMsg.v, rawSignedMsg.r, rawSignedMsg.s);
-  const signed_body = {
-    challenge,
-    response: signedChallenge,
-    signer_type: "eth_sign",
-  };
-  const sig_response = await wrappedFetch(JWT_PATH, {
-    headers,
-    method: "POST",
-    body: JSON.stringify(signed_body),
-  });
-  const sig_result = await sig_response.json();
-  return sig_result.jwt;
 };
 
 const USER_PATH = "/api/user/user/me";

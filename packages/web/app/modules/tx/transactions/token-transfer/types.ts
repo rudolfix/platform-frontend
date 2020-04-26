@@ -1,4 +1,4 @@
-import { EquityToken } from "@neufund/shared";
+import { EquityToken } from "@neufund/shared-utils";
 
 import * as YupTS from "../../../../lib/yup-ts.unsafe";
 

@@ -1,4 +1,5 @@
-import { EquityToken } from "../../../../../../shared/dist/utils/opaque-types/types";
+import { EquityToken } from "@neufund/shared-utils";
+
 import * as YupTS from "../../../../lib/yup-ts.unsafe";
 
 export const WithdrawAdditionalDataSchema = YupTS.object({

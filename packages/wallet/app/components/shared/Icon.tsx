@@ -7,6 +7,7 @@ import * as React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 
 import Close from "../../assets/close.svg";
+import Device from "../../assets/device.svg";
 import Home from "../../assets/home.svg";
 import Investments from "../../assets/investments.svg";
 import Placeholder from "../../assets/placeholder.svg";
@@ -18,7 +19,6 @@ import Eth from "../../assets/tokens/eth.svg";
 import NEur from "../../assets/tokens/n-eur.svg";
 import Wallet from "../../assets/wallet.svg";
 import Yes from "../../assets/yes.svg";
-import Device from "../../assets/device.svg";
 
 enum EIconType {
   HOME = "home",

@@ -2,8 +2,8 @@ import { StackActions } from "@react-navigation/native";
 import { StackHeaderProps } from "@react-navigation/stack";
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { black } from "../../../styles/colors";
 
+import { black } from "../../../styles/colors";
 import { spacingStyles } from "../../../styles/spacings";
 import { getTopPadding } from "../../../styles/utils";
 import { EIconType } from "../Icon";

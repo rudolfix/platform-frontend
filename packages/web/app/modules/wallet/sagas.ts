@@ -21,6 +21,7 @@ function* loadWalletDataSaga({ logger }: TGlobalDependencies): any {
     yield take(actions.gas.gasApiLoaded);
 
     const state: IWalletStateData = yield neuCall(loadWalletDataAsync, ethAddress);
+
     yield put(actions.wallet.saveWalletData(state));
     logger.info("Wallet Loaded");
   } catch (e) {

@@ -1,3 +1,5 @@
+import { compareBigNumbers } from "@neufund/shared-utils";
+
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { EInvestmentType } from "./reducer";
 
@@ -11,3 +13,5 @@ export const getCurrencyByInvestmentType = (type: EInvestmentType) => {
       return ECurrency.ETH;
   }
 };
+
+export const hasBalance = (balance: string) => compareBigNumbers(balance, "0") > 0;

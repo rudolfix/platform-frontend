@@ -39,6 +39,7 @@ import {
   selectInvestmentType,
   selectIsInvestmentInputValidated,
   selectIsReadyToInvest,
+  selectWallets,
 } from "../../../../modules/investment-flow/selectors";
 import {
   selectCalculatedEtoTicketSizesUlpsById,
@@ -75,7 +76,6 @@ import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 import {
-  createWallets,
   EInvestmentCurrency,
   formatMinMaxTickets,
   getInputErrorMessage,
@@ -86,7 +86,7 @@ import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
   eto: TEtoWithCompanyAndContractTypeChecked;
-  wallets: WalletSelectionData[];
+  wallets: readonly WalletSelectionData[];
   euroValue: string;
   ethValue: string;
   etherPriceEur: string;
@@ -466,7 +466,7 @@ export const InvestmentSelection = compose<IProps, {}>(
         txValidationState: selectTxValidationState(state),
         gasCostEth: selectTxGasCostEthUlps(state),
         investmentType: nonNullable(selectInvestmentType(state)),
-        wallets: createWallets(state),
+        wallets: selectWallets(state),
         neuReward: selectNeuRewardUlpsByEtoId(state, etoId),
         equityTokenCount: selectEquityTokenCountByEtoId(state, etoId),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),

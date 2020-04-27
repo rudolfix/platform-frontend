@@ -18,6 +18,7 @@ import Eth from "../../assets/tokens/eth.svg";
 import NEur from "../../assets/tokens/n-eur.svg";
 import Wallet from "../../assets/wallet.svg";
 import Yes from "../../assets/yes.svg";
+import Device from "../../assets/device.svg";
 
 enum EIconType {
   HOME = "home",
@@ -32,6 +33,7 @@ enum EIconType {
   N_EUR = "n-eur",
   ETH = "eth",
   QR_CODE = "qr-code",
+  DEVICE = "device",
 }
 
 const pickByIdentity = pickBy(identity);
@@ -63,6 +65,8 @@ const getIcon = (type: EIconType) => {
       return NEur;
     case EIconType.QR_CODE:
       return QrCode;
+    case EIconType.DEVICE:
+      return Device;
     default:
       assertNever(type, `Invalid icon type ${type}`);
   }

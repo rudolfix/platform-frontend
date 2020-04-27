@@ -25,6 +25,7 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
 
   const deviceInformation = createMock(DeviceInformation, {
     isEmulator: () => Promise.resolve(false),
+    getPlatform: () => "ios",
   });
 
   const secureEnclave = new EthSecureEnclave(noopLogger, deviceInformation);

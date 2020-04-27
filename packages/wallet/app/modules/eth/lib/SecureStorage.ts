@@ -29,10 +29,12 @@ class SecureStorage {
    * @param secret - A secret to secure
    */
   private readonly useAsyncStorageFallback: boolean;
+  private readonly useBiometry: boolean;
   private readonly localCache: CacheClass<string, string>;
 
-  constructor(useAsyncStorageFallback: boolean) {
+  constructor(useAsyncStorageFallback: boolean, useBiometry: boolean) {
     this.useAsyncStorageFallback = useAsyncStorageFallback && __DEV__; // extra safe dev check :)
+    this.useBiometry = useBiometry;
     this.localCache = new Cache();
   }
 
@@ -46,8 +48,10 @@ class SecureStorage {
 
     // keychain implementation
     else {
-      await Keychain.setInternetCredentials(reference, "", secret, {
-        accessControl: Keychain.ACCESS_CONTROL.USER_PRESENCE,
+      await Keychain.setInternetCredentials(reference, "NOT_USED", secret, {
+        accessControl: this.useBiometry
+          ? Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET
+          : Keychain.ACCESS_CONTROL.DEVICE_PASSCODE,
         accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
         securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE,
       });
@@ -78,7 +82,7 @@ class SecureStorage {
     const result = await Keychain.getInternetCredentials(reference, {
       authenticationPrompt: {
         title: "Access Key",
-        subtitle: "Allow Neufund to access your ethereum key.",
+        subtitle: "Allow Neufund to manage your ethereum key.",
         description: "",
         cancel: "Deny",
       },

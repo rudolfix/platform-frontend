@@ -3,7 +3,8 @@ import { Dictionary } from "@neufund/shared-utils";
 const store: Dictionary<any> = {};
 
 const ACCESS_CONTROL = {
-  USER_PRESENCE: "USER_PRESENCE",
+  BIOMETRY_CURRENT_SET: "BIOMETRY_CURRENT_SET",
+  DEVICE_PASSCODE: "DEVICE_PASSCODE",
 };
 
 const ACCESSIBLE = {

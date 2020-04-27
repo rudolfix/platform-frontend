@@ -71,10 +71,18 @@ class EthSecureEnclave {
     if (this.secureStorage) {
       return this.secureStorage;
     }
-    const useAsyncStorageFallback = __DEV__ && (await this.deviceInformation.isEmulator());
-    const storage = new SecureStorage(useAsyncStorageFallback);
-    this.secureStorage = storage;
-    return storage;
+    const platform = this.deviceInformation.getPlatform();
+    // on the iOS simulator we have to simulate the storage, real devices and the android emulator
+    // can emulate this
+    const useAsyncStorageFallback =
+      __DEV__ && (await this.deviceInformation.isEmulator()) && platform == "ios";
+    // on android we can't use biometry at this moment, as there is a bug in react-native-keychain which
+    // prevents it from working with the android face recognition. Once this is solved, biometry should
+    // always be used.
+    // https://github.com/oblador/react-native-keychain/issues/318
+    const useBiometry = platform != "android";
+    this.secureStorage = new SecureStorage(useAsyncStorageFallback, useBiometry);
+    return this.secureStorage;
   }
 
   /**

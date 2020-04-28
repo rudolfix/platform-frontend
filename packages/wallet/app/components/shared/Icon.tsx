@@ -10,6 +10,7 @@ import Close from "../../assets/close.svg";
 import Device from "../../assets/device.svg";
 import Home from "../../assets/home.svg";
 import Investments from "../../assets/investments.svg";
+import Logout from "../../assets/logout.svg";
 import Placeholder from "../../assets/placeholder.svg";
 import Profile from "../../assets/profile.svg";
 import QrCode from "../../assets/qr-code.svg";
@@ -34,6 +35,7 @@ enum EIconType {
   ETH = "eth",
   QR_CODE = "qr-code",
   DEVICE = "device",
+  LOGOUT = "logout",
 }
 
 const pickByIdentity = pickBy(identity);
@@ -67,6 +69,8 @@ const getIcon = (type: EIconType) => {
       return QrCode;
     case EIconType.DEVICE:
       return Device;
+    case EIconType.LOGOUT:
+      return Logout;
     default:
       assertNever(type, `Invalid icon type ${type}`);
   }

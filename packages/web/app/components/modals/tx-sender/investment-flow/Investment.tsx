@@ -1,6 +1,7 @@
 import { Button, ButtonInline, EButtonLayout } from "@neufund/design-system";
 import {
   addBigNumbers,
+  compareBigNumbers,
   IIntlProps,
   injectIntlHelpers,
   multiplyBigNumbers,
@@ -168,6 +169,15 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
     this.props.investEntireBalance();
   };
 
+  walletHasFunds = () => {
+    const selectedWallet = this.props.wallets.find(
+      (wallet: WalletSelectionData) => wallet.type === this.props.investmentType,
+    );
+    return selectedWallet !== undefined
+      ? compareBigNumbers(selectedWallet.balanceEur, "0") > 0
+      : false;
+  };
+
   render(): React.ReactNode {
     const {
       changeInvestmentType,
@@ -292,15 +302,17 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                   </div>
                 </>
               )}
-              <small>
-                <ButtonInline
-                  className={cn(styles.investAll, "text-right")}
-                  data-test-id="invest-modal-full-balance-btn"
-                  onClick={this.investEntireBalance}
-                >
-                  <FormattedMessage id="investment-flow.invest-entire-balance" />
-                </ButtonInline>
-              </small>
+              {this.walletHasFunds() && (
+                <small>
+                  <ButtonInline
+                    className={cn(styles.investAll, "text-right")}
+                    data-test-id="invest-modal-full-balance-btn"
+                    onClick={this.investEntireBalance}
+                  >
+                    <FormattedMessage id="investment-flow.invest-entire-balance" />
+                  </ButtonInline>
+                </small>
+              )}
             </Col>
           </Row>
         </Container>

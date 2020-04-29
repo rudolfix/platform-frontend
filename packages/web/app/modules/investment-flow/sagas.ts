@@ -135,8 +135,13 @@ function* investEntireBalance(): any {
     case EInvestmentType.Eth:
       const gasCostEth = selectTxGasCostEthUlps(state);
       balance = selectLiquidEtherBalance(state);
-      balance = subtractBigNumbers([balance, gasCostEth]);
-      yield computeAndSetCurrencies(balance, ECurrency.ETH);
+      const balanceWithoutGas = subtractBigNumbers([balance, gasCostEth]);
+
+      if (compareBigNumbers(balanceWithoutGas, "0") >= 0) {
+        yield computeAndSetCurrencies(balanceWithoutGas, ECurrency.ETH);
+      } else {
+        yield computeAndSetCurrencies(balance, ECurrency.ETH);
+      }
       break;
   }
 
@@ -209,7 +214,11 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   const eto = selectEtoById(state, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
 
-  if (value && eto) {
+  if (compareBigNumbers(value, "0") < 0) {
+    return yield put(
+      actions.investmentFlow.setErrorState(EInvestmentErrorState.ExceedsWalletBalance),
+    );
+  } else if (value && eto) {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
     if (etoContract) {
       const isICBM = selectIsICBMInvestment(state);

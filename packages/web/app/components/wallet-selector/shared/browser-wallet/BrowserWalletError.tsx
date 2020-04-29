@@ -27,7 +27,7 @@ export const BrowserWalletErrorBase: React.FunctionComponent<TBrowserWalletError
   <>
     <div data-test-id="browser-wallet-error-msg" className={styles.notification}>
       <img src={notificationSign} alt="" />
-      <span> {getMessageTranslation(errorMessage)} </span>
+      <span>{getMessageTranslation(errorMessage)}</span>
     </div>
 
     <Button

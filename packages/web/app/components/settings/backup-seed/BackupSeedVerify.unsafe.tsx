@@ -104,7 +104,10 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
   isValid = (): boolean => this.state.verificationWords.every(word => !!word.isValid);
 
   generateSelect = (wordOnPageNumber: number): React.ReactNode => (
-    <div data-test-id={`backup-seed-verify-word-${wordOnPageNumber}`}>
+    <div
+      className={cn(styles.selectWrapper, this.getValidationStyle(wordOnPageNumber))}
+      data-test-id={`backup-seed-verify-word-${wordOnPageNumber}`}
+    >
       <VirtualizedSelect
         options={wordsOptions}
         simpleValue
@@ -119,7 +122,6 @@ class BackupSeedVerify extends React.Component<IBackupSeedVerifyProps, IBackupSe
         onChange={this.updateValueFactory(wordOnPageNumber)}
         placeholder={<FormattedMessage id="settings.backup-seed-verify.enter-word" />}
         noResultsText={<FormattedMessage id="settings.backup-seed-verify.no-matching-words" />}
-        className={this.getValidationStyle(wordOnPageNumber)}
       />
     </div>
   );

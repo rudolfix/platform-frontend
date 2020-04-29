@@ -16,11 +16,13 @@ import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layo
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { DefaultLedgerError } from "../../shared/ledger-wallet/DefaultLedgerError/DefaultLedgerError";
-import { LedgerOnboardingContainer } from "../../shared/ledger-wallet/LedgerOnboardingContainer";
+import {
+  LedgerOnboardingContainer,
+  TLedgerContainerBaseProps,
+} from "../../shared/ledger-wallet/LedgerOnboardingContainer";
 import { WalletLedgerChooser } from "../../shared/ledger-wallet/WalletLedgerChooser/WalletLedgerChooser";
 import { WalletLedgerNotSupported } from "../../shared/ledger-wallet/WalletLedgerNotSupported/WalletLedgerNotSupported";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { TWalletBrowserBaseProps } from "../RegisterBrowserWallet/RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "../RegisterBrowserWallet/RegisterBrowserWalletForm";
 
 export const RegisterLedger = compose<TWalletRegisterData, {}>(
@@ -49,11 +51,12 @@ export const RegisterLedger = compose<TWalletRegisterData, {}>(
     withProps<TContentExternalProps, {}>({ width: EContentWidth.SMALL })(TransitionalLayout),
   ),
   withContainer(
-    withProps<TWalletBrowserBaseProps, TWalletBrowserBaseProps>(({ showWalletSelector }) => ({
-      //MOE Check if this is needed
-      showWalletSelector,
-      isLogin: false,
-    }))(LedgerOnboardingContainer),
+    withProps<TLedgerContainerBaseProps, { showWalletSelector: boolean | undefined }>(
+      ({ showWalletSelector }) => ({
+        showWalletSelector,
+        isLogin: false,
+      }),
+    )(LedgerOnboardingContainer),
   ),
   branch<TWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.NOT_STARTED,

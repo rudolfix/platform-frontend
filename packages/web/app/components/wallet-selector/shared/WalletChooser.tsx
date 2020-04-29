@@ -28,20 +28,32 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
         </p>
         <div className={styles.walletChooserButtons}>
           {activeWallet !== EWalletType.LIGHT && (
-            <ButtonLink data-test-id="wallet-selector-light" to={`${path}/light`}>
+            <ButtonLink
+              data-test-id="wallet-selector-light"
+              to={`${path}/light`}
+              className={styles.walletButton}
+            >
               <img src={emailIcon} alt="" className={styles.img} />
               <FormattedMessage id="wallet-selector.lightwallet" />
             </ButtonLink>
           )}
 
           {activeWallet !== EWalletType.BROWSER && (
-            <ButtonLink data-test-id="wallet-selector-browser" to={`${path}/browser`}>
+            <ButtonLink
+              data-test-id="wallet-selector-browser"
+              to={`${path}/browser`}
+              className={styles.walletButton}
+            >
               <img src={metamaskLogo} alt="" className={styles.img} />
               <FormattedMessage id="wallet-selector.browser-wallet" />
             </ButtonLink>
           )}
           {activeWallet !== EWalletType.LEDGER && (
-            <ButtonLink data-test-id="wallet-selector-ledger" to={`${path}/ledger`}>
+            <ButtonLink
+              data-test-id="wallet-selector-ledger"
+              to={`${path}/ledger`}
+              className={styles.walletButton}
+            >
               <img src={ledgerLogo} alt="" className={styles.img} />
               <FormattedMessage id="wallet-selector.ledger" />
             </ButtonLink>

@@ -1440,6 +1440,7 @@
   "wallet-connect.session-rejected-error": "Could not establish a session, please try again",
   "wallet-selector.browser-wallet": "MetaMask",
   "wallet-selector.browser-wallet-provide-signature": "Please provide your signature on MetaMask to connect to Neufund.",
+  "wallet-selector.browser-wallet-sign-up": "Connect your MetaMask wallet and sign up for a new Neufund account.",
   "wallet-selector.browser-wallet.help": "Need help using MetaMask? <a href={metamaskSupportLink} target=\"_blank\">Learn more</a>",
   "wallet-selector.ledger": "Ledger Nano",
   "wallet-selector.ledger-not-supported": "Your browser does not support NeuKey. For security reasons we require a recent version of: {chromeDownloadLink}",

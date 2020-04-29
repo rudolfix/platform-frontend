@@ -93,18 +93,18 @@ const LoginLightWalletForm: React.FunctionComponent<TProps & FormikProps<IFormVa
         <FormattedMessage id="wallet-selector.neuwallet.login.button" />
       </Button>
 
-      <p className={styles.forgottenPassword}>
+      <section>
         <FormattedMessage
           id="wallet-selector.neuwallet.forgotten-password"
           values={{
             link: (
-              <ButtonInline onClick={props.goToPasswordRecovery}>
+              <ButtonInline onClick={props.goToPasswordRecovery} className="mt-n1">
                 <FormattedMessage id="wallet-selector.neuwallet.recover-password" />
               </ButtonInline>
             ),
           }}
         />
-      </p>
+      </section>
     </FormDeprecated>
   );
 };
@@ -117,22 +117,24 @@ const LoginEnhancedLightWalletForm = withFormik<TProps, IFormValues>({
 export const LoginLightWalletComponent: React.FunctionComponent<TProps & {
   showWalletSelector: boolean;
 }> = ({ showWalletSelector, ...props }) => (
-  <section className={styles.main}>
+  <>
     <h1 className={styles.title}>
       <FormattedMessage id="wallet-selector.log-in" />
     </h1>
-    <p data-test-id="modals.wallet-selector.login-light-wallet">
-      <FormattedMessage
-        id="wallet-selector.neuwallet.login.prompt"
-        values={{
-          email: <u data-test-id="light-wallet-login-with-email-email-field">{props.email}</u>,
-          lineBreak: <br />,
-        }}
-      />
-    </p>
-    <LoginEnhancedLightWalletForm {...props} />
+    <section className={styles.main}>
+      <section data-test-id="modals.wallet-selector.login-light-wallet">
+        <FormattedMessage
+          id="wallet-selector.neuwallet.login.prompt"
+          values={{
+            email: <u data-test-id="light-wallet-login-with-email-email-field">{props.email}</u>,
+            lineBreak: <br />,
+          }}
+        />
+      </section>
+      <LoginEnhancedLightWalletForm {...props} />
+    </section>
     <WalletChooser isLogin={true} activeWallet={EWalletType.LIGHT} />
-  </section>
+  </>
 );
 
 export const LoginLightWallet = compose<

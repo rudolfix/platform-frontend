@@ -14,7 +14,10 @@ import { EContentWidth } from "../../../layouts/Content";
 import { TransitionalLayout, TTransitionalLayoutProps } from "../../../layouts/Layout";
 import { LoadingIndicator } from "../../../shared/loading-indicator";
 import { BrowserWalletError } from "../../shared/browser-wallet/BrowserWalletError";
-import { RegisterBrowserWalletContainer } from "../../WalletSelectorRegister/RegisterBrowserWallet/RegisterBrowserWalletContainer";
+import {
+  RegisterBrowserWalletContainer,
+  TWalletBrowserBaseExternalProps,
+} from "../../WalletSelectorRegister/RegisterBrowserWallet/RegisterBrowserWalletContainer";
 
 export type TWalletBrowserProps = {};
 
@@ -49,9 +52,13 @@ export const LoginBrowserWallet = compose(
     )(TransitionalLayout),
   ),
   withContainer(
-    withProps({
+    withProps<
+      Omit<TWalletBrowserBaseExternalProps, "showWalletSelector">,
+      { uiState: ECommonWalletRegistrationFlowState }
+    >(({ uiState }) => ({
       isLogin: true,
-    })(RegisterBrowserWalletContainer),
+      uiState,
+    }))(RegisterBrowserWalletContainer),
   ),
   branch<TBrowserWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING,

@@ -23,8 +23,7 @@ export const selectInvestmentEtoId = (state: TAppGlobalState) => state.investmen
 export const selectIsInvestmentInputValidated = (state: TAppGlobalState) =>
   state.investmentFlow.isValidatedInput;
 
-export const selectInvestmentActiveTypes = (state: TAppGlobalState) =>
-  state.investmentFlow.activeInvestmentTypes;
+export const selectWallets = (state: TAppGlobalState) => state.investmentFlow.wallets;
 
 // Derived Values
 

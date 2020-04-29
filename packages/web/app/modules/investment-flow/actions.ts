@@ -1,5 +1,6 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
+import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { EInvestmentErrorState, EInvestmentType } from "./reducer";
 
@@ -34,8 +35,8 @@ export const investmentFlowActions = {
     "INVESTMENT_FLOW_SET_IS_INPUT_VALIDATED",
     (isValidated: boolean) => ({ isValidated }),
   ),
-  setActiveInvestmentTypes: createActionFactory(
-    "INVESTMENT_FLOW_SET_ACTIVE_INVESTMENT_TYPES",
-    (activeInvestmentTypes: EInvestmentType[]) => ({ activeInvestmentTypes }),
+  setWallets: createActionFactory(
+    "INVESTMENT_FLOW_SET_WALLETS",
+    (wallets: WalletSelectionData[]) => ({ wallets }),
   ),
 };

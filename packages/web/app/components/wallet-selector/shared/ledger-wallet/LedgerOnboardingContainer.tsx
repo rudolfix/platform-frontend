@@ -7,12 +7,12 @@ import { WalletChooser } from "../WalletChooser";
 
 import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 
-export type TWalletBrowserBaseProps = {
+export type TLedgerContainerBaseProps = {
   isLogin: boolean;
   showWalletSelector: boolean | undefined;
 };
 
-export const LedgerOnboardingContainer: React.FunctionComponent<TWalletBrowserBaseProps> = ({
+export const LedgerOnboardingContainer: React.FunctionComponent<TLedgerContainerBaseProps> = ({
   isLogin,
   showWalletSelector,
   children,
@@ -31,13 +31,13 @@ export const LedgerOnboardingContainer: React.FunctionComponent<TWalletBrowserBa
           <FormattedMessage id="wallet-selector.ledger.provide-signature" />
         </span>
         {children}
-        <p className={styles.help}>
+        <section className={styles.help}>
           <FormattedHTMLMessage
             tagName="span"
             id="wallet-selector.ledger.help"
             values={{ ledgerSupportLink: externalRoutes.ledgerSupportLink }}
           />
-        </p>
+        </section>
       </section>
       {showWalletSelector && <WalletChooser isLogin={isLogin} activeWallet={EWalletType.LEDGER} />}
     </div>

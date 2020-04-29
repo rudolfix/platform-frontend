@@ -1,6 +1,7 @@
 import { Button, ButtonInline, EButtonLayout } from "@neufund/design-system";
 import {
   addBigNumbers,
+  compareBigNumbers,
   IIntlProps,
   injectIntlHelpers,
   multiplyBigNumbers,
@@ -39,6 +40,7 @@ import {
   selectInvestmentType,
   selectIsInvestmentInputValidated,
   selectIsReadyToInvest,
+  selectWallets,
 } from "../../../../modules/investment-flow/selectors";
 import {
   selectCalculatedEtoTicketSizesUlpsById,
@@ -75,7 +77,6 @@ import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 import {
-  createWallets,
   EInvestmentCurrency,
   formatMinMaxTickets,
   getInputErrorMessage,
@@ -86,7 +87,7 @@ import * as styles from "./Investment.module.scss";
 
 interface IStateProps {
   eto: TEtoWithCompanyAndContractTypeChecked;
-  wallets: WalletSelectionData[];
+  wallets: readonly WalletSelectionData[];
   euroValue: string;
   ethValue: string;
   etherPriceEur: string;
@@ -166,6 +167,15 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
   investEntireBalance = () => {
     this.setError(false);
     this.props.investEntireBalance();
+  };
+
+  walletHasFunds = () => {
+    const selectedWallet = this.props.wallets.find(
+      (wallet: WalletSelectionData) => wallet.type === this.props.investmentType,
+    );
+    return selectedWallet !== undefined
+      ? compareBigNumbers(selectedWallet.balanceEur, "0") > 0
+      : false;
   };
 
   render(): React.ReactNode {
@@ -292,15 +302,17 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                   </div>
                 </>
               )}
-              <small>
-                <ButtonInline
-                  className={cn(styles.investAll, "text-right")}
-                  data-test-id="invest-modal-full-balance-btn"
-                  onClick={this.investEntireBalance}
-                >
-                  <FormattedMessage id="investment-flow.invest-entire-balance" />
-                </ButtonInline>
-              </small>
+              {this.walletHasFunds() && (
+                <small>
+                  <ButtonInline
+                    className={cn(styles.investAll, "text-right")}
+                    data-test-id="invest-modal-full-balance-btn"
+                    onClick={this.investEntireBalance}
+                  >
+                    <FormattedMessage id="investment-flow.invest-entire-balance" />
+                  </ButtonInline>
+                </small>
+              )}
             </Col>
           </Row>
         </Container>
@@ -466,7 +478,7 @@ export const InvestmentSelection = compose<IProps, {}>(
         txValidationState: selectTxValidationState(state),
         gasCostEth: selectTxGasCostEthUlps(state),
         investmentType: nonNullable(selectInvestmentType(state)),
-        wallets: createWallets(state),
+        wallets: selectWallets(state),
         neuReward: selectNeuRewardUlpsByEtoId(state, etoId),
         equityTokenCount: selectEquityTokenCountByEtoId(state, etoId),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),

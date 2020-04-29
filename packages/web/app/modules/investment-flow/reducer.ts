@@ -1,5 +1,6 @@
 import { DeepReadonly } from "@neufund/shared-utils";
 
+import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { AppReducer } from "../../store";
 import { actions } from "../actions";
 
@@ -21,8 +22,8 @@ export interface IInvestmentFlowState {
   etoId: string;
   euroValueUlps: string;
   ethValueUlps: string;
-  investmentType?: EInvestmentType;
-  activeInvestmentTypes: EInvestmentType[];
+  investmentType: EInvestmentType | undefined;
+  wallets: WalletSelectionData[];
   errorState?: EInvestmentErrorState;
   isValidatedInput: boolean;
 }
@@ -32,7 +33,7 @@ export const investmentFlowInitialState: IInvestmentFlowState = {
   euroValueUlps: "",
   ethValueUlps: "",
   investmentType: EInvestmentType.Eth,
-  activeInvestmentTypes: [],
+  wallets: [],
   isValidatedInput: false,
 };
 
@@ -47,7 +48,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
       return {
         ...investmentFlowInitialState,
         etoId: state.etoId,
-        activeInvestmentTypes: state.activeInvestmentTypes,
+        wallets: state.wallets,
         investmentType: action.payload.type,
       };
     case actions.investmentFlow.setEtoId.getType():
@@ -75,10 +76,10 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
         ...state,
         isValidatedInput: action.payload.isValidated,
       };
-    case actions.investmentFlow.setActiveInvestmentTypes.getType():
+    case actions.investmentFlow.setWallets.getType():
       return {
         ...state,
-        ...action.payload,
+        wallets: action.payload.wallets,
       };
   }
 

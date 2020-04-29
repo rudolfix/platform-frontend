@@ -1,4 +1,4 @@
-import { all, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
+import { all, call, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -9,6 +9,7 @@ import {
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
+import { WalletSelectionData } from "../../components/modals/tx-sender/investment-flow/InvestmentTypeSelector";
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
@@ -35,9 +36,14 @@ import { INVESTMENT_GAS_AMOUNT } from "../tx/transactions/investment/sagas";
 import { ETxSenderType } from "../tx/types";
 import { txValidateSaga } from "../tx/validator/sagas";
 import {
+  selectICBMLockedEtherBalance,
+  selectICBMLockedEtherBalanceEuroAmount,
+  selectICBMLockedEuroTokenBalance,
   selectLiquidEtherBalance,
+  selectLiquidEtherBalanceEuroAmount,
   selectLiquidEuroTokenBalance,
   selectLockedEtherBalance,
+  selectLockedEtherBalanceEuroAmount,
   selectLockedEuroTokenBalance,
   selectNEURStatus,
   selectWalletData,
@@ -50,8 +56,9 @@ import {
   selectInvestmentEurValueUlps,
   selectInvestmentType,
   selectIsICBMInvestment,
+  selectWallets,
 } from "./selectors";
-import { getCurrencyByInvestmentType } from "./utils";
+import { getCurrencyByInvestmentType, hasBalance } from "./utils";
 
 function* processCurrencyValue(
   action: TActionFromCreator<typeof actions.investmentFlow.submitCurrencyValue>,
@@ -128,8 +135,13 @@ function* investEntireBalance(): any {
     case EInvestmentType.Eth:
       const gasCostEth = selectTxGasCostEthUlps(state);
       balance = selectLiquidEtherBalance(state);
-      balance = subtractBigNumbers([balance, gasCostEth]);
-      yield computeAndSetCurrencies(balance, ECurrency.ETH);
+      const balanceWithoutGas = subtractBigNumbers([balance, gasCostEth]);
+
+      if (compareBigNumbers(balanceWithoutGas, "0") >= 0) {
+        yield computeAndSetCurrencies(balanceWithoutGas, ECurrency.ETH);
+      } else {
+        yield computeAndSetCurrencies(balance, ECurrency.ETH);
+      }
       break;
   }
 
@@ -202,7 +214,11 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   const eto = selectEtoById(state, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
 
-  if (value && eto) {
+  if (compareBigNumbers(value, "0") < 0) {
+    return yield put(
+      actions.investmentFlow.setErrorState(EInvestmentErrorState.ExceedsWalletBalance),
+    );
+  } else if (value && eto) {
     const etoContract: ETOCommitment = yield contractsService.getETOCommitmentContract(eto.etoId);
     if (etoContract) {
       const isICBM = selectIsICBMInvestment(state);
@@ -256,7 +272,9 @@ function* start(
   yield put(actions.txTransactions.startInvestment(etoId));
 
   yield take("TX_SENDER_SHOW_MODAL");
-  yield getActiveInvestmentTypes();
+  yield createWallets();
+  yield selectInitialInvestmentType();
+
   yield resetTxDataAndValidations();
 }
 
@@ -264,39 +282,120 @@ export function* onInvestmentTxModalHide(): any {
   yield put(actions.investmentFlow.resetInvestment());
 }
 
-function* getActiveInvestmentTypes(): Generator<any, any, any> {
+function* createWallets(): Generator<any, void, any> {
+  const walletData = yield* call(getInvestmentWalletData);
+  yield put(actions.investmentFlow.setWallets(walletData));
+}
+
+function* selectInitialInvestmentType(): Generator<any, void, any> {
+  const wallets = yield* select(selectWallets);
+  yield put(actions.investmentFlow.selectInvestmentType(wallets[0]?.type));
+}
+
+function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> {
   const state: TAppGlobalState = yield select();
-  const etoId = selectInvestmentEtoId(state);
-  const etoOnChainState = selectEtoOnChainStateById(state, etoId);
-  const neurStatus = selectNEURStatus(state);
+  const etoId = yield* select(selectInvestmentEtoId);
+  const etoOnChainState = yield* select(selectEtoOnChainStateById, etoId);
 
-  let activeTypes: EInvestmentType[] = [EInvestmentType.Eth];
-
-  // if neur is not restricted because of the us state
-  if (neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
-    activeTypes.unshift(EInvestmentType.NEur);
-  }
+  const activeTypes: WalletSelectionData[] = [];
 
   // no regular investment if not whitelisted in pre eto
-  if (etoOnChainState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) {
-    activeTypes = [];
+  if (
+    (etoOnChainState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) ||
+    etoOnChainState !== EETOStateOnChain.Whitelist
+  ) {
+    //eth wallet
+    const liquidEthBalance = yield* select(selectLiquidEtherBalance);
+
+    if (hasBalance(liquidEthBalance)) {
+      const liquidEthEurBalance = yield* select(selectLiquidEtherBalanceEuroAmount);
+      activeTypes.push({
+        balanceEth: liquidEthBalance,
+        balanceEur: liquidEthEurBalance,
+        type: EInvestmentType.Eth,
+        name: "ETH Balance",
+        enabled: true,
+      });
+    }
+
+    //neur wallet
+    // only if neur is not restricted because of the us state
+    const neurStatus = yield* select(selectNEURStatus);
+    const balanceNEur = yield* select(selectLiquidEuroTokenBalance);
+
+    if (hasBalance(balanceNEur) && neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
+      activeTypes.push({
+        balanceNEuro: balanceNEur,
+        balanceEur: balanceNEur,
+        type: EInvestmentType.NEur,
+        name: "nEUR Balance",
+        enabled: true,
+      });
+    }
   }
 
-  // only ICBM investment if balance available
-  if (compareBigNumbers(selectLockedEuroTokenBalance(state), "0") > 0) {
-    activeTypes.unshift(EInvestmentType.ICBMnEuro);
-  }
-  if (compareBigNumbers(selectLockedEtherBalance(state), "0") > 0) {
-    activeTypes.unshift(EInvestmentType.ICBMEth);
+  //eth icbm
+  // ICBM investment is active only if unlocked balance available
+  const icbmBalanceEth = yield* select(selectLockedEtherBalance);
+  const lockedIcbmBalanceEth = yield* select(selectICBMLockedEtherBalance);
+
+  const hasIcbmEthBalance = hasBalance(icbmBalanceEth);
+  const hasLockedIcbmEthBalance = hasBalance(lockedIcbmBalanceEth);
+
+  if (hasIcbmEthBalance || hasLockedIcbmEthBalance) {
+    const lockedEthEurBalance = yield* select(selectLockedEtherBalanceEuroAmount);
+    const lockedIcbmEthEurBalance = yield* select(selectICBMLockedEtherBalanceEuroAmount);
+
+    activeTypes.push({
+      type: EInvestmentType.ICBMEth,
+      name: "ICBM Balance",
+      balanceEth: icbmBalanceEth,
+      balanceEur: lockedEthEurBalance,
+      icbmBalanceEth: lockedIcbmBalanceEth,
+      icbmBalanceEur: lockedIcbmEthEurBalance,
+      enabled: hasIcbmEthBalance,
+    });
   }
 
-  yield put(actions.investmentFlow.setActiveInvestmentTypes(activeTypes));
+  //eur icbm
+  // ICBM investment is active only if unlocked balance available
+  const icbmEuroBalance = yield* select(selectLockedEuroTokenBalance);
+  const lockedIcbmEuroBalance = yield* select(selectICBMLockedEuroTokenBalance);
 
-  // guarantee that current type is inside active types.
-  const currentType = selectInvestmentType(state);
-  if (currentType && !activeTypes.includes(currentType)) {
-    yield put(actions.investmentFlow.selectInvestmentType(activeTypes[0]));
+  const hasIcbmEuroBalance = hasBalance(icbmEuroBalance);
+  const hasLockedIcbmEuroBalance = hasBalance(lockedIcbmEuroBalance);
+
+  if (hasIcbmEuroBalance || hasLockedIcbmEuroBalance) {
+    activeTypes.push({
+      type: EInvestmentType.ICBMnEuro,
+      name: "ICBM Balance",
+      balanceNEuro: icbmEuroBalance,
+      balanceEur: icbmEuroBalance,
+      icbmBalanceNEuro: lockedIcbmEuroBalance,
+      icbmBalanceEur: lockedIcbmEuroBalance,
+      enabled: hasIcbmEuroBalance,
+    });
   }
+
+  //this is a workaround for users with no funds
+  // until we redesign the investment flow
+  if (activeTypes.length === 0) {
+    activeTypes.push({
+      balanceEth: "0",
+      balanceEur: "0",
+      type: EInvestmentType.Eth,
+      name: "ETH Balance",
+      enabled: true,
+    });
+    activeTypes.push({
+      balanceNEuro: "0",
+      balanceEur: "0",
+      type: EInvestmentType.NEur,
+      name: "nEUR Balance",
+      enabled: true,
+    });
+  }
+  return activeTypes;
 }
 
 function* recalculateCurrencies(): any {

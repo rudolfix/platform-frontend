@@ -13,9 +13,7 @@
 .word {
   border: 1px solid $neu-light-blue-grey-two;
   border-radius: 4px;
-
-  display: flex;
-  flex-flow: row nowrap;
+  position: relative;
 
   &:focus,
   &:focus-within {
@@ -25,7 +23,11 @@
 }
 
 .word-number {
-  height: 30px;
+  width: 30px;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  position: absolute;
   padding-left: 5px;
   display: flex;
   align-items: center;
@@ -34,12 +36,24 @@
   font-size: px-to-rem(14);
 
   background-color: $neu-white-two;
-  border-radius: 4px;
+  border-radius: 4px 0 0 4px;
 }
 
 .select {
-  height: 32px;
-  flex-grow: 1;
+  right: 1px;
+  position: absolute;
+  border-radius: 0 4px 4px 0;
+  bottom: 1px;
+  top: 1px;
+  left: 30px;
+}
+
+:global(.Select-control) {
+  height: px-to-rem(28px);
+}
+
+:global(.Select-menu-outer) {
+  margin-top: px-to-rem(1px);
 }
 
 .button {
@@ -66,7 +80,6 @@
     height: px-to-rem(15px);
   }
 }
-
 
 .line {
   height: 1px;

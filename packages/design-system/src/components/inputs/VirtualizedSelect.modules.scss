@@ -6,7 +6,7 @@
 // sass-lint:disable-all
 
 .Select-control {
-  box-sizing: content-box!important;
+  box-sizing: content-box !important;
   height: 30px;
 
   display: flex;
@@ -14,8 +14,12 @@
   border: none;
 }
 
+.Select-control:hover {
+  box-shadow: none;
+}
+
 .Select-multi-value-wrapper {
-  box-sizing: content-box!important;
+  box-sizing: content-box !important;
   height: 30px;
   display: flex;
   flex-flow: row;
@@ -26,7 +30,7 @@
 }
 
 .Select-clear-zone {
-  box-sizing: content-box!important;
+  box-sizing: content-box !important;
   height: 30px;
 
   display: flex;
@@ -36,7 +40,7 @@
 }
 
 .Select-arrow-zone {
-  box-sizing: content-box!important;
+  box-sizing: content-box !important;
   height: 30px;
   padding-top: 4px;
   display: flex;
@@ -54,7 +58,7 @@
 .Select-value {
   display: flex;
   align-items: center;
-  padding-left: 0!important;
+  padding-left: 0 !important;
 
   &:focus {
     outline: none;
@@ -76,7 +80,7 @@
   height: 30px;
 
   input {
-    box-sizing: content-box!important;
+    box-sizing: content-box !important;
     height: 30px;
     line-height: initial;
     padding: 0;
@@ -86,6 +90,6 @@
 .Select.is-pseudo-focused,
 .Select.is-focused:not(.is-open) > .Select-control {
   outline: none;
-  border: none!important;
+  border: none !important;
   box-shadow: none;
 }

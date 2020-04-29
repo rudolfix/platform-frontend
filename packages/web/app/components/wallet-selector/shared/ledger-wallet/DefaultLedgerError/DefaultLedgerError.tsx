@@ -18,7 +18,7 @@ export const DefaultLedgerError: React.FunctionComponent<TLedgerErrorProps> = ({
   errorMessage,
   tryToEstablishConnectionWithLedger,
 }) => (
-  <section className="text-center my-5">
+  <section className="text-center">
     <div
       data-test-id="browser-wallet-error-msg"
       className={cn(styles.notification, "mb-4 mr-3 ml-3")}

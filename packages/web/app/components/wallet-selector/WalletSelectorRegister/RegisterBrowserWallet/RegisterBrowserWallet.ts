@@ -20,7 +20,10 @@ import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndic
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { BrowserWalletError } from "../../shared/browser-wallet/BrowserWalletError";
 import { WalletLoading } from "../../shared/WalletLoading";
-import { RegisterBrowserWalletContainer } from "./RegisterBrowserWalletContainer";
+import {
+  RegisterBrowserWalletContainer,
+  TWalletBrowserBaseExternalProps,
+} from "./RegisterBrowserWalletContainer";
 import { BrowserWalletAskForEmailAndTos } from "./RegisterBrowserWalletForm";
 
 interface IStateProps {
@@ -62,9 +65,13 @@ export const RegisterBrowserWallet = compose<IStateProps & IDispatchProps & TAdd
     renderComponent(LoadingIndicator),
   ),
   withContainer(
-    withProps({
+    withProps<
+      Omit<TWalletBrowserBaseExternalProps, "showWalletSelector">,
+      { uiState: ECommonWalletRegistrationFlowState }
+    >(({ uiState }) => ({
       isLogin: false,
-    })(RegisterBrowserWalletContainer),
+      uiState,
+    }))(RegisterBrowserWalletContainer),
   ),
   branch<TBrowserWalletRegisterData>(
     ({ uiState }) => uiState === ECommonWalletRegistrationFlowState.REGISTRATION_FORM,

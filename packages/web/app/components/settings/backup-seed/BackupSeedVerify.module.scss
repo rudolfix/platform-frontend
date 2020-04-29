@@ -1,10 +1,10 @@
 .verification-block {
-  @include media-breakpoint-up (sm) {
+  @include media-breakpoint-up(sm) {
     grid-template: auto / repeat(2, 1fr);
     margin-top: 3rem;
   }
 
-  @include media-breakpoint-up (lg) {
+  @include media-breakpoint-up(lg) {
     grid-template: auto / repeat(4, 1fr);
   }
 
@@ -20,15 +20,20 @@
   min-width: 10rem;
 }
 
-// sass-lint:disable no-important
-.invalid {
-  :global(.Select-control) {
-    border-color: $neu-bright-orange !important;
-  }
+:global(.Select-value-label) {
+  padding-left: 10px;
 }
 
-.valid {
-  :global(.Select-control) {
+// sass-lint:disable no-important
+.select-wrapper {
+  border: 1px solid $neu-light-blue-grey-two;
+  border-radius: 4px;
+
+  &.invalid {
+    border-color: $neu-bright-orange !important;
+  }
+
+  &.valid {
     border-color: $neu-seaweed !important;
   }
 }

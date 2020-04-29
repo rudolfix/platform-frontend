@@ -40,7 +40,7 @@ interface IInEuroWallet extends IWalletBase {
 export type WalletSelectionData = IEthWallet | IInEuroWallet;
 
 interface IProps {
-  wallets: WalletSelectionData[];
+  wallets: readonly WalletSelectionData[];
   currentType?: EInvestmentType;
   onSelect: (type: EInvestmentType) => void;
   startUpgradeFlow: (token: ETokenType) => void;

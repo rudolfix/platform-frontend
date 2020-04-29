@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
+import { ECommonWalletRegistrationFlowState } from "../../../../modules/wallet-selector/types";
 import { EWalletType } from "../../../../modules/web3/types";
 import { WalletChooser } from "../../shared/WalletChooser";
 
@@ -10,6 +11,7 @@ import * as styles from "../../shared/RegisterWalletSelector.module.scss";
 export type TWalletBrowserBaseExternalProps = {
   showWalletSelector: boolean | undefined;
   isLogin: boolean;
+  uiState: ECommonWalletRegistrationFlowState;
 };
 
 export type TWalletBrowserBaseProps = TWalletBrowserBaseExternalProps;
@@ -17,6 +19,7 @@ export type TWalletBrowserBaseProps = TWalletBrowserBaseExternalProps;
 export const RegisterBrowserWalletContainer: React.FunctionComponent<TWalletBrowserBaseExternalProps> = ({
   showWalletSelector,
   children,
+  uiState,
   isLogin,
 }) => (
   <>
@@ -30,16 +33,20 @@ export const RegisterBrowserWalletContainer: React.FunctionComponent<TWalletBrow
       </h1>
       <section className={styles.main}>
         <span className={styles.explanation}>
-          <FormattedMessage id="wallet-selector.browser-wallet-provide-signature" />
+          {isLogin || uiState === ECommonWalletRegistrationFlowState.REGISTRATION_WALLET_SIGNING ? (
+            <FormattedMessage id="wallet-selector.browser-wallet-provide-signature" />
+          ) : (
+            <FormattedMessage id="wallet-selector.browser-wallet-sign-up" />
+          )}
         </span>
         {children}
-        <p className={styles.help}>
+        <section className={styles.help}>
           <FormattedHTMLMessage
             tagName="span"
             id="wallet-selector.browser-wallet.help"
             values={{ metamaskSupportLink: externalRoutes.metamaskSupportLink }}
           />
-        </p>
+        </section>
       </section>
       {showWalletSelector && <WalletChooser isLogin={isLogin} activeWallet={EWalletType.BROWSER} />}
     </div>

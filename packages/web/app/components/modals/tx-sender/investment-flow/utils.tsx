@@ -1,4 +1,4 @@
-import { assertNever, Dictionary, divideBigNumbers } from "@neufund/shared-utils";
+import { assertNever, divideBigNumbers } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 import * as React from "react";
@@ -9,20 +9,7 @@ import {
   EInvestmentErrorState,
   EInvestmentType,
 } from "../../../../modules/investment-flow/reducer";
-import { selectInvestmentActiveTypes } from "../../../../modules/investment-flow/selectors";
 import { EValidationState } from "../../../../modules/tx/validator/reducer";
-import {
-  selectICBMLockedEtherBalance,
-  selectICBMLockedEtherBalanceEuroAmount,
-  selectICBMLockedEuroTokenBalance,
-  selectLiquidEtherBalance,
-  selectLiquidEtherBalanceEuroAmount,
-  selectLiquidEuroTokenBalance,
-  selectLockedEtherBalance,
-  selectLockedEtherBalanceEuroAmount,
-  selectLockedEuroTokenBalance,
-} from "../../../../modules/wallet/selectors";
-import { TAppGlobalState } from "../../../../store";
 import { TTranslatedString } from "../../../../types";
 import { Money } from "../../../shared/formatters/Money";
 import {
@@ -35,7 +22,6 @@ import {
   selectDecimalPlaces,
   toFixedPrecision,
 } from "../../../shared/formatters/utils";
-import { WalletSelectionData } from "./InvestmentTypeSelector";
 
 export enum EInvestmentCurrency {
   ETH = ECurrency.ETH,
@@ -55,67 +41,8 @@ export const getInvestmentCurrency = (investmentType: EInvestmentType) => {
   }
 };
 
-function isICBMWallet(type: EInvestmentType): boolean {
+export function isICBMWallet(type: EInvestmentType): boolean {
   return includes(type, [EInvestmentType.ICBMnEuro, EInvestmentType.ICBMEth]);
-}
-
-export function createWallets(state: TAppGlobalState): WalletSelectionData[] {
-  const icbmNeuro = selectLockedEuroTokenBalance(state);
-  const balanceNEur = selectLiquidEuroTokenBalance(state);
-  const lockedBalanceNEur = selectICBMLockedEuroTokenBalance(state);
-  const liquidEthBalance = selectLiquidEtherBalance(state);
-  const balanceEth = selectLockedEtherBalance(state);
-  const icbmBalanceEth = selectICBMLockedEtherBalance(state);
-
-  const wallets: Dictionary<WalletSelectionData> = {
-    [EInvestmentType.Eth]: {
-      balanceEth: liquidEthBalance,
-      balanceEur: selectLiquidEtherBalanceEuroAmount(state),
-      type: EInvestmentType.Eth,
-      name: "ETH Balance",
-      enabled: false,
-      hasFunds: liquidEthBalance !== "0",
-    },
-    [EInvestmentType.NEur]: {
-      balanceNEuro: balanceNEur,
-      balanceEur: balanceNEur,
-      type: EInvestmentType.NEur,
-      name: "nEUR Balance",
-      enabled: false,
-      hasFunds: balanceNEur !== "0",
-    },
-    [EInvestmentType.ICBMnEuro]: {
-      type: EInvestmentType.ICBMnEuro,
-      name: "ICBM Balance",
-      balanceNEuro: icbmNeuro,
-      balanceEur: icbmNeuro,
-      icbmBalanceNEuro: lockedBalanceNEur,
-      icbmBalanceEur: lockedBalanceNEur,
-      hasFunds: lockedBalanceNEur !== "0" || icbmNeuro !== "0",
-      enabled: false,
-    },
-    [EInvestmentType.ICBMEth]: {
-      type: EInvestmentType.ICBMEth,
-      name: "ICBM Balance",
-      balanceEth: balanceEth,
-      balanceEur: selectLockedEtherBalanceEuroAmount(state),
-      icbmBalanceEth: icbmBalanceEth,
-      icbmBalanceEur: selectICBMLockedEtherBalanceEuroAmount(state),
-      hasFunds: icbmBalanceEth !== "0" || balanceEth !== "0",
-      enabled: false,
-    },
-  };
-
-  const walletsList = Object.keys(wallets);
-  const enabledWallets = selectInvestmentActiveTypes(state);
-
-  return (
-    walletsList
-      .map(w => ({ ...wallets[w], enabled: enabledWallets.some(v => v === w) }))
-      .filter(w => w.hasFunds)
-      // filter not enabled wallets that are not ICBM in current investment flow
-      .filter(w => isICBMWallet(w.type) || w.enabled)
-  );
 }
 
 export function getInputErrorMessage(

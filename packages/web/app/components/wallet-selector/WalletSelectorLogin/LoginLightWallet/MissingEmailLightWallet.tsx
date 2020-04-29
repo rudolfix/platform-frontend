@@ -25,18 +25,18 @@ export const MissingEmailLightWallet: React.FunctionComponent<TExternalProps> = 
       <p className={styles.missingEmail} data-test-id="neuwallet-missing-email">
         <FormattedHTMLMessage id="wallet-selector.neuwallet.login-instructions" tagName="span" />
       </p>
-      <p className={styles.forgottenPassword}>
+      <section className={styles.forgottenPassword}>
         <FormattedMessage
           id="wallet-selector.neuwallet.forgotten-password"
           values={{
             link: (
-              <ButtonInline onClick={goToPasswordRecovery}>
+              <ButtonInline onClick={goToPasswordRecovery} className="mt-n1">
                 <FormattedMessage id="wallet-selector.neuwallet.recover-password" />
               </ButtonInline>
             ),
           }}
         />
-      </p>
+      </section>
       <WalletChooser isLogin={true} activeWallet={EWalletType.LIGHT} />
     </section>
   </>

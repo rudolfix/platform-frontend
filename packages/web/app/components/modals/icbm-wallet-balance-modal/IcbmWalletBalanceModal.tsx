@@ -2,6 +2,7 @@ import * as React from "react";
 import { compose } from "recompose";
 
 import { actions } from "../../../modules/actions";
+import { selectIsUserVerified } from "../../../modules/auth/selectors";
 import {
   IWalletMigrationData,
   TWalletMigrationSteps,
@@ -16,7 +17,6 @@ import {
   selectWalletMigrationCurrentStep,
   selectWalletMigrationData,
 } from "../../../modules/icbm-wallet-balance-modal/selectors";
-import { selectIsVerificationFullyDone } from "../../../modules/selectors";
 import { ETokenType } from "../../../modules/tx/types";
 import {
   selectIsEtherUpgradeTargetSet,
@@ -119,7 +119,7 @@ const IcbmWalletBalanceModal = compose<IStateProps & IDispatchProps, {}>(
       ethAddress: selectIcbmWalletEthAddress(state),
       neumarksDue: selectEtherNeumarksDueIcbmModal(state),
       etherBalance: selectEtherBalanceIcbmModal(state),
-      isVerificationFullyDone: selectIsVerificationFullyDone(state),
+      isVerificationFullyDone: selectIsUserVerified(state),
       walletMigrationData: selectWalletMigrationData(state.icbmWalletBalanceModal),
       lockedWalletConnected: selectLockedWalletConnected(state),
       currentMigrationStep: selectWalletMigrationCurrentStep(state),

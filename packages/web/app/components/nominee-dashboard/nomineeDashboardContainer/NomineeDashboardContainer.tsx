@@ -1,9 +1,9 @@
 import * as React from "react";
 import { compose } from "recompose";
 
+import { selectIsUserVerified } from "../../../modules/auth/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectActiveNomineeEto } from "../../../modules/nominee-flow/selectors";
-import { selectIsVerificationFullyDone } from "../../../modules/selectors";
 import { appConnect } from "../../../store";
 import { AccountSetupContainer } from "./AccountSetupContainer";
 import { LinkedNomineeDashboardContainer } from "./LinkedNomineeDashboardContainer";
@@ -32,7 +32,7 @@ const NomineeDashboardContainer = compose<IStateProps, {}>(
   appConnect<IStateProps>({
     stateToProps: state => ({
       nomineeEto: selectActiveNomineeEto(state),
-      verificationIsComplete: selectIsVerificationFullyDone(state),
+      verificationIsComplete: selectIsUserVerified(state),
     }),
   }),
 )(NomineeDashboardContainerBase);

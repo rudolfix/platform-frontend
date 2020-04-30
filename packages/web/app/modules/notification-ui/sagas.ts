@@ -2,9 +2,8 @@ import { fork, neuTakeLatest, SagaGenerator, TActionFromCreator } from "@neufund
 import { notificationUIModuleApi } from "@neufund/shared-modules";
 
 import { showErrorToast, showInfoToast } from "../../components/shared/Toast";
-import { getMessageTranslation } from "../../components/translatedMessages/messages";
-import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
+import { TTranslatedString } from "../../types";
 
 const actions = notificationUIModuleApi.actions;
 
@@ -13,7 +12,7 @@ function* showInfo(
   action: TActionFromCreator<typeof actions, typeof actions.showInfo>,
 ): SagaGenerator<void> {
   const { message, options } = action.payload;
-  showInfoToast(getMessageTranslation(message as TMessage), options);
+  showInfoToast(message as TTranslatedString, options);
 }
 
 function* showError(
@@ -21,7 +20,7 @@ function* showError(
   action: TActionFromCreator<typeof actions, typeof actions.showError>,
 ): SagaGenerator<void> {
   const { message, options } = action.payload;
-  showErrorToast(getMessageTranslation(message as TMessage), options);
+  showErrorToast(message as TTranslatedString, options);
 }
 
 export function* webNotificationUISaga(): SagaGenerator<void> {

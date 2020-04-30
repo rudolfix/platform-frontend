@@ -20,7 +20,7 @@ import { getInvestorDocumentTitles, hashFromIpfsLink } from "../../components/do
 import { DocumentConfidentialityAgreementModal } from "../../components/modals/document-confidentiality-agreement-modal/DocumentConfidentialityAgreementModal";
 import { JurisdictionDisclaimerModal } from "../../components/modals/jurisdiction-disclaimer-modal/JurisdictionDisclaimerModal";
 import { EtoMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import {
   EEtoState,
@@ -45,6 +45,7 @@ import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadBookbuildingStats, shouldLoadPledgeData } from "../bookbuilding-flow/utils";
 import { selectClientJurisdiction } from "../kyc/selectors";
+import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuFork, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectTxAdditionalData, selectTxType } from "../tx/sender/selectors";
 import { getAgreementContractAndHash } from "../tx/transactions/nominee/sign-agreement/sagas";
@@ -80,7 +81,7 @@ import {
 } from "./utils";
 
 function* loadEtoPreview(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  { apiEtoService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadEtoPreview>,
 ): any {
   const previewCode = action.payload.previewCode;
@@ -97,7 +98,11 @@ function* loadEtoPreview(
       return;
     }
 
-    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW),
+      ),
+    );
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -108,7 +113,7 @@ function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
 }
 
 function* loadEto(
-  { apiEtoService, notificationCenter, logger }: TGlobalDependencies,
+  { apiEtoService, logger }: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.eto.loadEto>,
 ): any {
   const etoId = action.payload.etoId;
@@ -125,7 +130,11 @@ function* loadEto(
       return;
     }
 
-    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETO));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO),
+      ),
+    );
     yield put(actions.routing.goToDashboard());
   }
 }
@@ -370,7 +379,7 @@ export function* watchEto(_: TGlobalDependencies, previewCode: string): any {
   }
 }
 
-export function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobalDependencies): any {
+export function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
   try {
     const etos: TEtoDataWithCompany[] = yield apiEtoService.getEtos();
     const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
@@ -421,7 +430,11 @@ export function* loadEtos({ apiEtoService, logger, notificationCenter }: TGlobal
   } catch (e) {
     logger.error("ETOs could not be loaded", e);
 
-    notificationCenter.error(createMessage(EtoMessage.COULD_NOT_LOAD_ETOS));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETOS),
+      ),
+    );
 
     // set empty display order to remove loading indicator
     yield put(actions.eto.setEtosDisplayOrder([]));

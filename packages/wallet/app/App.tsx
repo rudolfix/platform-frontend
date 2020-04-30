@@ -1,10 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
+import { InteractionManager } from "react-native";
+import RNBootSplash from "react-native-bootsplash";
 
 import { AppAuthRouter, AppNoAuthRouter } from "./AppRouter";
 import { CriticalError } from "./components/CriticalError";
-import { LoadingIndicator } from "./components/shared/LoadingIndicator";
 import { SignerModal } from "./components/signer/SignerModal";
+import { usePrevious } from "./hooks/usePrevious";
 import { EAuthState } from "./modules/auth/module";
 import { selectAuthState } from "./modules/auth/selectors";
 import { initActions } from "./modules/init/actions";
@@ -29,16 +31,27 @@ const AppLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   initStatus,
 }) => {
   const { navigationTheme } = useTheme();
+  const previousInitStatus = usePrevious(initStatus);
 
   React.useEffect(() => {
     init();
   }, []);
 
+  React.useEffect(() => {
+    if (previousInitStatus === EInitStatus.IN_PROGRESS) {
+      // wait for all interactions to finish before showing app
+      // otherwise for a moment a white screen will appear for a user
+      InteractionManager.runAfterInteractions(() => {
+        RNBootSplash.hide();
+      });
+    }
+  }, [previousInitStatus]);
+
   switch (initStatus) {
     case EInitStatus.NOT_STARTER:
     case EInitStatus.IN_PROGRESS:
-      // TODO: Replace with splash screen when ready
-      return <LoadingIndicator />;
+      // We still show launch screen while init is in progress
+      return null;
     case EInitStatus.DONE:
       return (
         <NavigationContainer ref={navigationRef} theme={navigationTheme}>

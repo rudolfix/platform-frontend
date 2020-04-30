@@ -301,7 +301,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
 
   // no regular investment if not whitelisted in pre eto
   if (
-    (etoOnChainState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) ||
+    (etoOnChainState === EETOStateOnChain.Whitelist && selectIsWhitelisted(state, etoId)) ||
     etoOnChainState !== EETOStateOnChain.Whitelist
   ) {
     //eth wallet

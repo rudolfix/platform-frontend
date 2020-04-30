@@ -214,7 +214,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   const eto = selectEtoById(state, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
 
-  if (compareBigNumbers(value, "0") < 0) {
+  if (value && compareBigNumbers(value, "0") < 0) {
     return yield put(
       actions.investmentFlow.setErrorState(EInvestmentErrorState.ExceedsWalletBalance),
     );

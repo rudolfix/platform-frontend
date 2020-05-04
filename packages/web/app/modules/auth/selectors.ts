@@ -58,6 +58,7 @@ export const selectDoesEmailExist = (state: IAuthState): boolean =>
  */
 export const selectIsUserVerified = (state: TAppGlobalState): boolean =>
   selectIsUserEmailVerified(state.auth) &&
+  selectBackupCodesVerified(state) &&
   selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED;
 
 /**

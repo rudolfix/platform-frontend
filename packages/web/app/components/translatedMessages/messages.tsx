@@ -62,6 +62,7 @@ export enum GenericErrorMessage {
 export enum WalletConnectErrorMessage {
   WC_GENERIC_ERROR = "wcGenericError",
   WC_SESSION_REJECTED_ERROR = "wcSessionRejectedError",
+  WC_SESSION_INVALID_CHAIN_ID = "wcSessionInvalidChainId",
 }
 
 export enum GenericModalMessage {
@@ -822,6 +823,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
       );
     case WalletConnectErrorMessage.WC_SESSION_REJECTED_ERROR:
       return <FormattedMessage id="wallet-connect.session-rejected-error" />;
+
+    case WalletConnectErrorMessage.WC_SESSION_INVALID_CHAIN_ID:
+      return <FormattedMessage id="wallet-connect.session-invalid-chain-id" />;
 
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:

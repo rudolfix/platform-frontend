@@ -11,8 +11,20 @@ export const spacing8 = spacing6 * 2; // 64
 
 export const spacingStyles = StyleSheet.create({
   // TODO: Generate all variants automatically (padding+margin full,horizontal,vertical,each side)
+  m4: {
+    margin: spacing4,
+  },
+  m5: {
+    margin: spacing5,
+  },
+  mh4: {
+    marginHorizontal: spacing4,
+  },
   mv4: {
     marginVertical: spacing4,
+  },
+  mv5: {
+    marginVertical: spacing5,
   },
   mb1: {
     marginBottom: spacing1,
@@ -23,11 +35,32 @@ export const spacingStyles = StyleSheet.create({
   mt2: {
     marginTop: spacing2,
   },
+  mt3: {
+    marginTop: spacing3,
+  },
+  mb3: {
+    marginBottom: spacing3,
+  },
   mb4: {
     marginBottom: spacing4,
   },
   mb5: {
     marginBottom: spacing5,
+  },
+  mt5: {
+    marginTop: spacing5,
+  },
+  ml3: {
+    marginLeft: spacing3,
+  },
+  mr3: {
+    marginRight: spacing3,
+  },
+  mr4: {
+    marginRight: spacing4,
+  },
+  p3: {
+    padding: spacing3,
   },
   p4: {
     padding: spacing4,
@@ -46,6 +79,9 @@ export const spacingStyles = StyleSheet.create({
   },
   ph2: {
     paddingHorizontal: spacing2,
+  },
+  pv4: {
+    paddingVertical: spacing4,
   },
   ph5: {
     paddingHorizontal: spacing5,

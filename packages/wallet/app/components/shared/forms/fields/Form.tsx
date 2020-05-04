@@ -3,6 +3,10 @@ import * as React from "react";
 
 export type TFormProps<Values = {}> = FormikConfig<Values>;
 
+/**
+ * Wraps formik usage under single component.
+ * Will make it easier to add custom form behaviour (for eg. scroll to first invalid)
+ */
 const Form = <Values extends {}>({
   children,
   initialValues,

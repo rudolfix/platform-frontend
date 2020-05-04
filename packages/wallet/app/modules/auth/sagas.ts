@@ -4,7 +4,9 @@ import {
   isJwtExpiringLateEnough,
   toEthereumPrivateKey,
   toEthereumHDMnemonic,
+  invariant,
 } from "@neufund/shared-utils";
+import Config from "react-native-config";
 
 import { walletEthModuleApi } from "../eth/module";
 import { notificationUIModuleApi } from "../notification-ui/module";
@@ -25,8 +27,49 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
   if (!hasExistingWallet) {
     logger.info("No existing wallet to sign in");
 
+    yield put(authActions.canCreateAccount());
+
     return;
   }
+
+  const unlockFlow = Config.NF_ACCOUNT_UNLOCK_FLOW ?? "auto";
+
+  logger.info(`Unlock flow set to ${unlockFlow}`);
+
+  switch (Config.NF_ACCOUNT_UNLOCK_FLOW) {
+    case "user_requested":
+      yield* call(allowToUnlockExistingAccount);
+      break;
+
+    case "auto":
+    default:
+      yield* call(signInExistingAccount);
+      break;
+  }
+}
+
+function* allowToUnlockExistingAccount(): SagaGenerator<void> {
+  const { ethManager } = yield* neuGetBindings({
+    ethManager: walletEthModuleApi.symbols.ethManager,
+  });
+
+  const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+
+  // do not allow to unlock existing account without having existing wallet
+  invariant(walletMetadata, "No existing wallet to sign in");
+
+  yield put(authActions.canUnlockAccount(walletMetadata));
+}
+
+function* signInExistingAccount(): SagaGenerator<void> {
+  const { ethManager } = yield* neuGetBindings({
+    ethManager: walletEthModuleApi.symbols.ethManager,
+  });
+
+  const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+
+  // do not allow to start sign in without having existing wallet
+  invariant(walletMetadata, "No existing wallet to sign in");
 
   yield put(authActions.signIn());
 
@@ -44,7 +87,7 @@ export function* trySignInExistingAccount(): SagaGenerator<void> {
   // given that user may already exist just load the user from database
   yield* call(loadOrCreateUser);
 
-  yield put(authActions.signed());
+  yield put(authActions.signed(walletMetadata));
 }
 
 function* createNewAccount(): SagaGenerator<void> {
@@ -66,11 +109,15 @@ function* createNewAccount(): SagaGenerator<void> {
 
     yield* call(loadOrCreateUser);
 
-    yield put(authActions.signed());
+    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+    // do not allow to start sign in without having existing wallet
+    invariant(walletMetadata, "No existing wallet to sign in");
+
+    yield put(authActions.signed(walletMetadata));
 
     logger.info("New account created");
   } catch (e) {
-    yield put(authActions.failedToCreateNewAccount());
+    yield put(authActions.failedToCreateAccount());
 
     yield put(
       notificationUIModuleApi.actions.showError(
@@ -83,29 +130,46 @@ function* createNewAccount(): SagaGenerator<void> {
 }
 
 function* importNewAccount(
-  action: TActionFromCreator<typeof authActions, typeof authActions.importNewAccount>,
+  action: TActionFromCreator<typeof authActions, typeof authActions.importAccount>,
 ): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
     logger: coreModuleApi.symbols.logger,
   });
 
+  const { privateKeyOrMnemonic, forceReset, name } = action.payload;
+
   try {
-    const privateKeyOrMnemonic = action.payload.privateKeyOrMnemonic;
     const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
+
+    const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
+
+    // check if there is already existing wallet in storage
+    invariant(
+      !hasExistingWallet || forceReset,
+      "Existing wallet already in storage. Use `forceReset` flag to clear the storage before importing new account",
+    );
+
+    if (forceReset && hasExistingWallet) {
+      logger.info("Clearing existing wallet from storage");
+
+      // before we can delete wallet and all metadata it should be plugged by ethManager
+      yield* call(() => ethManager.plugExistingWallet());
+      yield* call(() => ethManager.unsafeDeleteWallet());
+    }
 
     logger.info(`Plugging new wallet from ${importPhraseType}`);
 
     switch (importPhraseType) {
       case EImportPhrase.PRIVATE_KEY:
         yield* call(() =>
-          ethManager.plugNewWalletFromPrivateKey(toEthereumPrivateKey(privateKeyOrMnemonic)),
+          ethManager.plugNewWalletFromPrivateKey(toEthereumPrivateKey(privateKeyOrMnemonic), name),
         );
 
         break;
       case EImportPhrase.MNEMONICS:
         yield* call(() =>
-          ethManager.plugNewWalletFromMnemonic(toEthereumHDMnemonic(privateKeyOrMnemonic)),
+          ethManager.plugNewWalletFromMnemonic(toEthereumHDMnemonic(privateKeyOrMnemonic), name),
         );
 
         break;
@@ -121,11 +185,15 @@ function* importNewAccount(
 
     yield* call(loadOrCreateUser);
 
-    yield put(authActions.signed());
+    const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
+    // do not allow to start sign in without having existing wallet
+    invariant(walletMetadata, "No existing wallet to sign in");
+
+    yield put(authActions.signed(walletMetadata));
 
     logger.info("New account imported");
   } catch (e) {
-    yield put(authActions.failedToImportNewAccount());
+    yield put(authActions.failedToImportAccount());
 
     yield put(
       notificationUIModuleApi.actions.showError(
@@ -157,7 +225,8 @@ function* logout(): SagaGenerator<void> {
 }
 
 export function* authSaga(): SagaGenerator<void> {
-  yield takeLeading(authActions.createNewAccount, createNewAccount);
-  yield takeLeading(authActions.importNewAccount, importNewAccount);
+  yield takeLeading(authActions.createAccount, createNewAccount);
+  yield takeLeading(authActions.importAccount, importNewAccount);
+  yield takeLeading(authActions.unlockAccount, signInExistingAccount);
   yield takeLeading(authActions.logout, logout);
 }

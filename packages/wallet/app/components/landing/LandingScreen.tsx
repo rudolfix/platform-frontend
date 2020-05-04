@@ -1,13 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import Config from "react-native-config";
 
 import { appRoutes } from "../../appRoutes";
 import { appConnect } from "../../store/utils";
-import { abyssalAnchorfishBlue, silverLighter2, subterraneanRiver } from "../../styles/colors";
+import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
+import { NeuLinearGradient } from "../shared/NeuLinearGradient";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 import { authModuleAPI, EAuthState } from "../../modules/auth/module";
@@ -19,17 +20,17 @@ type TStateProps = {
 };
 
 type TDispatchProps = {
-  createNewAccount: () => void;
+  createAccount: () => void;
 };
 
 const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
-  createNewAccount,
+  createAccount,
   authState,
 }) => {
   const navigation = useNavigation();
 
   return (
-    <LinearGradient colors={[subterraneanRiver, abyssalAnchorfishBlue]} style={styles.wrapper}>
+    <NeuLinearGradient style={styles.wrapper}>
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={logo} />
       </View>
@@ -44,22 +45,32 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
         </BodyText>
 
         <Button
-          style={styles.createAccountButton}
+          style={styles.button}
           loading={authState === EAuthState.AUTHORIZING}
           layout={EButtonLayout.PRIMARY}
-          onPress={createNewAccount}
+          onPress={createAccount}
         >
           Create a new account
         </Button>
 
         <Button
+          style={styles.button}
           layout={EButtonLayout.TEXT_DARK}
-          onPress={() => navigation.navigate(appRoutes.importWallet)}
+          onPress={() => navigation.navigate(appRoutes.importAccount)}
         >
           Import account
         </Button>
+
+        {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
+          <Button
+            layout={EButtonLayout.TEXT_DARK}
+            onPress={() => navigation.navigate(appRoutes.switchAccount)}
+          >
+            Import fixture
+          </Button>
+        )}
       </View>
-    </LinearGradient>
+    </NeuLinearGradient>
   );
 };
 
@@ -87,12 +98,12 @@ const styles = StyleSheet.create({
     color: silverLighter2,
   },
   paragraph: {
-    ...spacingStyles.mb4,
+    ...spacingStyles.mb5,
     ...spacingStyles.ph5,
     textAlign: "center",
     color: silverLighter2,
   },
-  createAccountButton: {
+  button: {
     ...spacingStyles.mb2,
   },
 });
@@ -102,7 +113,7 @@ const LandingScreen = appConnect<TStateProps, TDispatchProps>({
     authState: authModuleAPI.selectors.selectAuthState(state),
   }),
   dispatchToProps: dispatch => ({
-    createNewAccount: () => dispatch(authModuleAPI.actions.createNewAccount()),
+    createAccount: () => dispatch(authModuleAPI.actions.createAccount()),
   }),
 })(LandingLayout);
 

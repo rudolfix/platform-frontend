@@ -1,4 +1,4 @@
-import { EthereumAddress, EthereumName } from "@neufund/shared-utils";
+import { EthereumAddress, EthereumAddressWithChecksum, EthereumName } from "@neufund/shared-utils";
 import { utils } from "ethers";
 
 export enum EBlockTag {
@@ -41,3 +41,14 @@ export enum EWalletType {
   HD_WALLET = "HD_WALLET",
   PRIVATE_KEY_WALLET = "PRIVATE_KEY_WALLET",
 }
+
+/**
+ * A reduced version of Eth wallet metadata to have only what we need to show on UI during
+ */
+export type TWalletUIMetadata = {
+  /**
+   * `name` represent a user defined custom wallet name (now only stores fixture name)
+   */
+  name: string | undefined;
+  address: EthereumAddressWithChecksum;
+};

@@ -37,7 +37,7 @@ interface IStateProps {
   neumarksDue: string;
   isLoading: boolean;
   walletMigrationData?: ReadonlyArray<IWalletMigrationData>;
-  isVerificationFullyDone: boolean;
+  isUserVerified: boolean;
   lockedWalletConnected: boolean;
   currentMigrationStep: TWalletMigrationSteps;
   isEtherMigrationTargetSet: boolean;
@@ -62,7 +62,7 @@ type IProps = IStateProps &
 
 export const IcbmWalletBalanceComponentInner: React.FunctionComponent<IProps> = ({
   onGotoWallet,
-  isVerificationFullyDone,
+  isUserVerified,
   walletMigrationData,
   ethAddress,
   neumarksDue,
@@ -95,7 +95,7 @@ export const IcbmWalletBalanceComponentInner: React.FunctionComponent<IProps> = 
     ) : (
       <BalanceModal
         startMigration={startWalletMigration}
-        isVerificationFullyDone={isVerificationFullyDone && isEtherMigrationTargetSet}
+        isUserVerified={isUserVerified && isEtherMigrationTargetSet}
         ethAddress={ethAddress}
         neumarksDue={neumarksDue}
         etherBalance={etherBalance}
@@ -119,7 +119,7 @@ const IcbmWalletBalanceModal = compose<IStateProps & IDispatchProps, {}>(
       ethAddress: selectIcbmWalletEthAddress(state),
       neumarksDue: selectEtherNeumarksDueIcbmModal(state),
       etherBalance: selectEtherBalanceIcbmModal(state),
-      isVerificationFullyDone: selectIsUserVerified(state),
+      isUserVerified: selectIsUserVerified(state),
       walletMigrationData: selectWalletMigrationData(state.icbmWalletBalanceModal),
       lockedWalletConnected: selectLockedWalletConnected(state),
       currentMigrationStep: selectWalletMigrationCurrentStep(state),

@@ -14,20 +14,25 @@ executors:
       - image: circleci/node:12.16.2-browsers
     working_directory: /home/circleci/app
 
-jobs:
-  ## General jobs
+commands:
   notify_slack:
-    executor: docker
-
+    description: "Notifies slack about the job failure on master or production branches"
     steps:
       - slack/status:
           fail_only: true
+          only_for_branches: master,production
 
+jobs:
   ## Web package related jobs
 
+  # install and lint is taken as one job to remove required time for downloading cache
   web_install-lint-test:
-    # install and lint is taken as one job to remove required time for downloading cache
     executor: docker
+
+    parameters:
+      check-artifacts:
+        type: boolean
+        default: true
 
     steps:
       # Download and cache dependencies
@@ -35,10 +40,15 @@ jobs:
 
       # Installation
       - run: yarn --frozen-lockfile
+
       # Confirm Artifact Version
-      - run: yarn workspace @neufund/web contract-artifacts:check
+      - when:
+          condition: <<parameters.check-artifacts>>
+          steps:
+            - run: yarn workspace @neufund/web contract-artifacts:check
+
       # Danger
-      - run: yarn workspace @neufund/web danger ci
+      - run: yarn workspace @neufund/web danger ci --failOnErrors
       # Linting
       - run: yarn workspace @neufund/design-system lint
       - run: yarn workspace @neufund/sagas lint
@@ -59,7 +69,31 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci/app/packages/web
           paths:
-            - ./e2e-test-tags
+            - ./e2e/e2e-test-tags
+
+      - notify_slack
+
+  web_build:
+    executor: docker
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v33-deps-{{ checksum "package.json" }}
+            - v33-deps-
+
+      - run: yarn --frozen-lockfile
+      - run:
+          command: yarn workspace @neufund/web build:prod:e2e
+          no_output_timeout: 10m
+      # If build takes more than 10mins then fail
+      - persist_to_workspace:
+          root: /home/circleci/app
+          paths:
+            - ./
+
+      - notify_slack
 
   web_build-docker-test-e2e:
     executor: docker-browsers
@@ -84,25 +118,7 @@ jobs:
       - run:
           command: yarn workspace @neufund/web test:e2e:chrome
 
-  web_build:
-    executor: docker
-
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v33-deps-{{ checksum "package.json" }}
-            - v33-deps-
-
-      - run: yarn --frozen-lockfile
-      - run:
-          command: yarn workspace @neufund/web build:prod:e2e
-          no_output_timeout: 10m
-      # If build takes more than 10mins then fail
-      - persist_to_workspace:
-          root: /home/circleci/app
-          paths:
-            - ./
+      - notify_slack
 
   web_test-e2e:
     machine:
@@ -130,6 +146,8 @@ jobs:
           command: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web test:e2e
           no_output_timeout: 30m
 
+      - notify_slack
+
   web_codechecks:
     executor: docker
 
@@ -144,6 +162,8 @@ jobs:
       - run: yarn workspace @neufund/web build:commit-deployment
       - run: yarn workspace @neufund/web codechecks
 
+      - notify_slack
+
   web_codechecks-vis-reg:
     executor: docker-browsers
 
@@ -157,6 +177,8 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn workspace @neufund/web storybook:screenshots
       - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
+
+      - notify_slack
 
   web_codechecks-e2e-vis-reg:
     executor: docker-browsers
@@ -176,6 +198,8 @@ jobs:
           command: yarn workspace @neufund/web test:e2e:vis-reg
       - run: yarn workspace @neufund/web codechecks ./codechecks-e2e-vis-reg.ts
 
+      - notify_slack
+
   deploy-storybook:
     executor: docker
 
@@ -188,6 +212,8 @@ jobs:
 
       - run: yarn --frozen-lockfile
       - run: yarn storybook-to-ghpages --script=storybook:build --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN --packages packages
+
+      - notify_slack
 
   ## Mobile package related jobs
 
@@ -204,6 +230,8 @@ jobs:
       - run: yarn workspace @neufund/wallet lint
       # Unit Tests
       - run: yarn workspace @neufund/wallet test
+
+      - notify_slack
 
 workflows:
   version: 2
@@ -234,7 +262,7 @@ workflows:
     jobs:
       - mobile_install-lint-test
 
-  nightly:
+  nightly-web:
     triggers:
       - schedule:
           cron: "0 5 * * *"
@@ -245,9 +273,9 @@ workflows:
                 - production
 
     jobs:
-      # web jobs
+      - web_install-lint-test:
+          check-artifacts: false
 
-      - web_install-lint-test
       - web_build-docker-test-e2e:
           requires:
             - web_install-lint-test
@@ -268,19 +296,19 @@ workflows:
           requires:
             - web_build
 
-      # mobile jobs
+  nightly-mobile:
+    triggers:
+      - schedule:
+          cron: "0 5 * * *"
+          filters:
+            branches:
+              only:
+                - master
+                - production
+
+    jobs:
       - mobile_install-lint-test
 
-      - notify_slack:
-          requires:
-            - web_install-lint-test
-            - web_build-docker-test-e2e
-            - web_build
-            - web_test-e2e
-            - web_codechecks
-            - web_codechecks-vis-reg
-            - web_codechecks-e2e-vis-reg
-            - mobile_install-lint-test
 
   deploy-storybook:
     jobs:

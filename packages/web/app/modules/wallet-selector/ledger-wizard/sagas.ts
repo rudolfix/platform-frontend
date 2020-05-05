@@ -176,10 +176,11 @@ export function* loadLedgerAccountsEffect({
   yield put(actions.walletSelector.setLedgerAccounts(accounts, derivationPathPrefix));
 }
 
-export function* loadLedgerAccounts(_: TGlobalDependencies): Generator<any, any, any> {
+export function* loadLedgerAccounts({ logger }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(loadLedgerAccountsEffect);
   } catch (e) {
+    logger.error("Failed to load ledger accounts", e);
     yield put(
       actions.walletSelector.ledgerConnectionEstablishedError(mapLedgerErrorToErrorMessage(e)),
     );

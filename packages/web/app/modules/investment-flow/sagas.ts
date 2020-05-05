@@ -214,7 +214,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
   const eto = selectEtoById(state, state.investmentFlow.etoId);
   const value = state.investmentFlow.euroValueUlps;
 
-  if (compareBigNumbers(value, "0") < 0) {
+  if (value && compareBigNumbers(value, "0") < 0) {
     return yield put(
       actions.investmentFlow.setErrorState(EInvestmentErrorState.ExceedsWalletBalance),
     );
@@ -301,7 +301,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
 
   // no regular investment if not whitelisted in pre eto
   if (
-    (etoOnChainState === EETOStateOnChain.Whitelist && !selectIsWhitelisted(state, etoId)) ||
+    (etoOnChainState === EETOStateOnChain.Whitelist && selectIsWhitelisted(state, etoId)) ||
     etoOnChainState !== EETOStateOnChain.Whitelist
   ) {
     //eth wallet

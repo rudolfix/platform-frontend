@@ -18,7 +18,7 @@ import {
   ECommonWalletRegistrationFlowState,
   EFlowType,
   ELedgerRegistrationFlowState,
-  TBrowserWalletFormValues,
+  TGenericWalletFormValues,
 } from "../types";
 import { mapLedgerErrorToErrorMessage } from "./errors";
 import { ledgerUiSagas } from "./ui/sagas";
@@ -38,7 +38,7 @@ export function* ledgerRegister(
     rootPath: "/register",
     flowType: EFlowType.REGISTER,
   };
-  const initialFormValues: TBrowserWalletFormValues = {
+  const initialFormValues: TGenericWalletFormValues = {
     email: "",
     tos: false,
   };
@@ -54,7 +54,7 @@ export function* ledgerRegister(
   }
   yield neuCall(registerForm, {
     afterRegistrationGenerator: undefined,
-    expectedAction: actions.walletSelector.browserWalletRegisterFormData,
+    expectedAction: actions.walletSelector.genericWalletRegisterFormData,
     initialFormValues,
     baseUiData,
   });

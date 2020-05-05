@@ -1,4 +1,5 @@
 {
+  "account-recovery.import-wallet.description": "Complete the form to restore your account.",
   "account-recovery.seed-check.description": "Enter your recovery phrase to change your password and/or to recover an account you've lost access to.",
   "account-recovery.seed-check.help": "Need help? <a href={helpUrl} target=\"_blank\">Visit Customer Care</a>",
   "account-recovery.seed-check.title": "Account recovery",
@@ -185,7 +186,7 @@
   "error-message.browser-wallet.generic-error": "Web3 wallet not available",
   "error-message.browser-wallet.wallet-connected-to-wrong-network": "Please connect your wallet to the \"Main Ethereum Network\" by selecting from the \"Networks\" drop-down menu in MetaMask.",
   "error-message.browser-wallet.wallet-locked": "Your wallet seems to be locked — we can't access any accounts",
-  "error-message.browser-wallet.wallet-not-enabled": "Please check if the MetaMask extension is enabled in your browser. We were unable to detect any wallet.",
+  "error-message.browser-wallet.wallet-not-enabled": "Please check if the MetaMask extension is enabled in your browser and refresh the page. We were unable to detect any wallet.",
   "error-message.eth-address-validation.illegal-character": "characters after \"0x\" can only include letters a—f, A—F and numbers",
   "error-message.eth-address-validation.invalid-prefix": "A valid ETH address can only begin with a \"0x\"",
   "error-message.eth-address-validation.max-length-exceeded": "A valid ETH address can only have 40 characters after \"0x\"",

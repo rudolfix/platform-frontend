@@ -15,7 +15,7 @@ const Header: React.FunctionComponent = () => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView forceInset={{ top: "always" }}>
+    <SafeAreaView forceInset={{ top: "always", bottom: "never" }}>
       <View style={styles.header}>
         <NeufundLogo title="Neufund" width={132} height={32} />
 

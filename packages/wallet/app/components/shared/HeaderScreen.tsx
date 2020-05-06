@@ -54,7 +54,7 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
   return (
     <View style={styles.container}>
       <NeuLinearGradient angle={260}>
-        <SafeAreaView forceInset={{ top: "always" }}>
+        <SafeAreaView forceInset={{ top: "always", bottom: "never" }}>
           <Animated.View
             style={[styles.header, { marginTop: headerMargin, marginBottom: headerMargin }]}
           >

@@ -38,7 +38,7 @@ const Asset: React.FunctionComponent<TExternalProps> = ({
   type,
   ...props
 }) => (
-  <Panel {...props}>
+  <Panel contentContainerStyle={styles.panelContent} {...props}>
     {type === EAssetType.RESERVED && (
       <View style={styles.reservedContainer}>
         <Text style={styles.reservedText}>Reserved</Text>
@@ -70,6 +70,11 @@ const Asset: React.FunctionComponent<TExternalProps> = ({
 );
 
 const styles = StyleSheet.create({
+  panelContent: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
   iconAndName: {
     flexDirection: "row",
     alignItems: "center",

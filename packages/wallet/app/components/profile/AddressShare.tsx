@@ -22,10 +22,17 @@ const AddressShare: React.FunctionComponent<TExternalProps> = ({ address, style,
   };
 
   return (
-    <PanelTouchable onPress={onShare} style={style} {...props}>
-      <View>
-        <BodyText style={styles.heading}>Account wallet address</BodyText>
-        <HelperText>{address}</HelperText>
+    <PanelTouchable
+      onPress={onShare}
+      style={style}
+      contentContainerStyle={styles.panelContent}
+      {...props}
+    >
+      <View style={styles.wrapper}>
+        <BodyText numberOfLines={1} style={styles.heading}>
+          Account wallet address
+        </BodyText>
+        <HelperText numberOfLines={1}>{address}</HelperText>
       </View>
       <Icon type={EIconType.SHARE} style={styles.icon} />
     </PanelTouchable>
@@ -33,6 +40,14 @@ const AddressShare: React.FunctionComponent<TExternalProps> = ({ address, style,
 };
 
 const styles = StyleSheet.create({
+  panelContent: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  wrapper: {
+    flexShrink: 1,
+  },
   heading: {
     color: grayLighter1,
   },

@@ -17,6 +17,7 @@ import {
 import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
 import { EInitType } from "../../init/reducer";
+import { restartServices } from "../../init/sagas";
 import { loadKycRequestData } from "../../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../../routing/selectors";
 import {
@@ -131,6 +132,7 @@ export function* signInUser(
     );
   } catch (e) {
     yield neuCall(logoutUser);
+    yield neuCall(restartServices);
     if (e instanceof SignerRejectConfirmationError || e instanceof SignerTimeoutError) {
       throw e;
     } else {

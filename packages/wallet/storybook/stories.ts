@@ -3,6 +3,8 @@ import "../app/components/shared/buttons/ButtonIcon.stories";
 import "../app/components/shared/LineBreak.stories";
 import "../app/components/shared/Icon.stories";
 import "../app/components/shared/Link.stories";
+import "../app/components/shared/asset/Asset.stories";
+import "../app/components/shared/panel/Panel.stories";
 import "../app/components/shared/Touchable.stories";
 import "../app/components/shared/LoadingIndicator.stories";
 import "../app/components/shared/ModalStackHeader.stories";

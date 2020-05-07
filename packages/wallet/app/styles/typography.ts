@@ -35,13 +35,13 @@ const typographyStyles = StyleSheet.create({
   },
   headline3: {
     ...fonts.montserratSemiBold,
-    fontSize: 17,
-    lineHeight: 24,
+    fontSize: 18,
+    lineHeight: 28,
   },
   headline4: {
-    ...fonts.robotoRegular,
+    ...fonts.montserratSemiBold,
     fontSize: 16,
-    lineHeight: 32,
+    lineHeight: 24,
     letterSpacing: 0.1,
   },
   bodyBold: {
@@ -69,6 +69,12 @@ const typographyStyles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 16,
     letterSpacing: 0.3,
+  },
+  menuLabelBold: {
+    ...fonts.robotoMedium,
+    fontSize: 10,
+    lineHeight: 16,
+    letterSpacing: 0.2,
   },
 });
 

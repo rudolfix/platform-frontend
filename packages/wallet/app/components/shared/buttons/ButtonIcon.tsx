@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 12,
     paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 7,
+    paddingRight: 7,
   },
   buttonCommonLabel: {
     color: baseGray,

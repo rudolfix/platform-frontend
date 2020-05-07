@@ -4,6 +4,8 @@ import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import pickBy from "lodash/fp/pickBy";
 import identity from "lodash/fp/identity";
 
+import Eth from "../../assets/tokens/eth.svg";
+import NEur from "../../assets/tokens/n-eur.svg";
 import Home from "../../assets/home.svg";
 import Investments from "../../assets/investments.svg";
 import Profile from "../../assets/profile.svg";
@@ -13,6 +15,7 @@ import Close from "../../assets/close.svg";
 import Placeholder from "../../assets/placeholder.svg";
 import Share from "../../assets/share.svg";
 import Yes from "../../assets/yes.svg";
+import QrCode from "../../assets/qr-code.svg";
 
 enum EIconType {
   HOME = "home",
@@ -24,6 +27,9 @@ enum EIconType {
   PLACEHOLDER = "placeholder",
   RIGHT_ARROW = "right-arrow",
   YES = "yes",
+  N_EUR = "n-eur",
+  ETH = "eth",
+  QR_CODE = "qr-code",
 }
 
 const pickByIdentity = pickBy(identity);
@@ -48,6 +54,12 @@ const getIcon = (type: EIconType) => {
       return RightArrow;
     case EIconType.YES:
       return Yes;
+    case EIconType.ETH:
+      return Eth;
+    case EIconType.N_EUR:
+      return NEur;
+    case EIconType.QR_CODE:
+      return QrCode;
     default:
       assertNever(type, `Invalid icon type ${type}`);
   }

@@ -6,13 +6,13 @@ import Config from "react-native-config";
 
 import { appRoutes } from "./appRoutes";
 import { HomeScreen } from "./components/home/HomeScreen";
-import { Portfolio } from "./components/Portfolio";
+import { PortfolioScreen } from "./components/portfolio/PortfolioScreen";
 import { ProfileScreen } from "./components/profile/ProfileScreen";
 import { QRCode } from "./components/QRCode";
 import { EIconType, Icon } from "./components/shared/Icon";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
-import { Wallet } from "./components/Wallet";
+import { WalletScreen } from "./components/wallet/WalletScreen";
 import { typographyStyles } from "./styles/typography";
 import { useTheme } from "./themes/ThemeProvider";
 
@@ -31,13 +31,13 @@ const tabConfig = [
   {
     name: "Portfolio",
     route: appRoutes.portfolio,
-    component: Portfolio,
+    component: PortfolioScreen,
     icon: EIconType.PORTFOLIO,
   },
   {
     name: "Wallet",
     route: appRoutes.wallet,
-    component: Wallet,
+    component: WalletScreen,
     icon: EIconType.WALLET,
   },
   {

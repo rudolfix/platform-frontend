@@ -18,7 +18,7 @@ const Avatar: React.FunctionComponent<TExternalProps> = ({ name, style, ...props
       <Icon type={EIconType.PROFILE} style={styles.icon} />
     </View>
     {name && (
-      <Headline style={styles.name} level={EHeadlineLevel.LEVEL3}>
+      <Headline numberOfLines={1} style={styles.name} level={EHeadlineLevel.LEVEL3}>
         {name}
       </Headline>
     )}

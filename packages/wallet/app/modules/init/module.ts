@@ -7,6 +7,7 @@ import { setupNotificationUIModule } from "../notification-ui/module";
 import { setupSignerUIModule } from "../signer-ui/module";
 import { setupStorageModule } from "../storage";
 import { setupWalletConnectModule } from "../wallet-connect/module";
+import { setupDeviceInformationModule } from "../device-information/module";
 import { initActions } from "./actions";
 import { initReducersMap } from "./reducer";
 import { initSaga } from "./sagas";
@@ -32,6 +33,7 @@ const setupInitModule = (config: TConfig) => {
     setupSignerUIModule(),
     setupNotificationUIModule(),
     setupWalletConnectModule(),
+    setupDeviceInformationModule(),
     ...setupAuthModule(),
     ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
     setupTokenPriceModule({

@@ -14,9 +14,22 @@ import { Form } from "../shared/forms/fields/Form";
 import { EFieldType } from "../shared/forms/layouts/FieldLayout";
 import { TextAreaInput } from "../shared/forms/layouts/TextAreaInput";
 
+const ethereumPrivateKeyUISchema = walletEthModuleApi.utils
+  .ethereumPrivateKey()
+  .transform(value => {
+    // Some tools generate private key without hex prefix
+    // to allow importing such invalid private keys
+    // add hex prefix manually if it doesn't exist
+    if (!value.startsWith("0x")) {
+      return "0x" + value;
+    }
+
+    return value;
+  });
+
 const validationSchema = Yup.object({
   phrase: oneOfSchema(
-    [walletEthModuleApi.utils.ethereumPrivateKey(), walletEthModuleApi.utils.ethereumMnemonic()],
+    [ethereumPrivateKeyUISchema, walletEthModuleApi.utils.ethereumMnemonic()],
     "Invalid recovery phrase or private key",
   ).required(),
 });
@@ -56,7 +69,10 @@ const ImportAccountScreenForm: React.FunctionComponent<TExternalProps> = ({
     <Form<TFormValue>
       validationSchema={validationSchema}
       initialValues={INITIAL_VALUES}
-      onSubmit={values => importExistingAccount(values.phrase)}
+      onSubmit={values => {
+        const { phrase } = validationSchema.cast(values);
+        importExistingAccount(phrase);
+      }}
     >
       {({ handleSubmit, isValid }) => (
         <>

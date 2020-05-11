@@ -13,7 +13,7 @@ import {
   silverLighter2,
   yellowDarker1,
 } from "styles/colors";
-import { st } from "utils";
+import { st } from "components/utils";
 import { LoadingIndicator } from "../LoadingIndicator";
 import { Touchable } from "../Touchable";
 import { BodyBoldText } from "../typography/BodyText";

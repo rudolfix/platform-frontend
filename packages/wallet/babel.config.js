@@ -10,6 +10,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js", ".ios.js", ".android.js"],
         alias: {
           assets: "./app/assets",
+          components: "./app/components",
           modules: "./app/modules",
           store: "./app/store",
           styles: "./app/styles",

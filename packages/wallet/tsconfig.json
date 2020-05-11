@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": "./",
+    "baseUrl": "./app",
     "checkJs": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -19,11 +19,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "assets": ["./app/assets"],
-      "modules": ["./app/modules"],
-      "store": ["./app/store"],
-      "styles": ["./app/styles"],
-      "utils": ["./app/utils"]
+      "assets": ["./assets"],
+      "components": ["./components"],
+      "modules": ["./modules"],
+      "store": ["./store"],
+      "styles": ["./styles"],
+      "themes": ["./themes"],
+      "utils": ["./utils"]
     },
     "resolveJsonModule": true,
     "strict": true,

@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from "react-native";
 import Config from "react-native-config";
 
 import { appRoutes } from "../../appRoutes";
-import { appConnect } from "../../store/utils";
+import { appConnect } from "store/utils";
 import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { Button, EButtonLayout } from "../shared/buttons/Button";

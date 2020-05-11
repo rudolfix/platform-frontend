@@ -15,8 +15,8 @@ import Config from "react-native-config";
 import { App } from "./app/App";
 import { name as appName } from "./app.json";
 import { AppContainer } from "./app/components/containers/AppContainer";
-import { createAppStore } from "./app/store/create";
-import { TAppGlobalState } from "./app/store/types";
+import { createAppStore } from "store/create";
+import { TAppGlobalState } from "store/types";
 import { StorybookUIRoot } from "./storybook";
 
 function startupStorybookApp(): void {

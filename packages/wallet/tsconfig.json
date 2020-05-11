@@ -19,7 +19,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "assets": ["app/components/assets"]
+      "assets": ["./app/assets"],
+      "modules": ["./app/modules"],
+      "store": ["./app/store"]
     },
     "resolveJsonModule": true,
     "strict": true,

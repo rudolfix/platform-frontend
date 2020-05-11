@@ -12,7 +12,7 @@ import { usePrevious } from "./hooks/usePrevious";
 import { EAuthState, authModuleAPI } from "modules/auth/module";
 import { initModuleApi, EInitStatus } from "modules/init/module";
 import { navigationRef } from "./routeUtils";
-import { appConnect } from "./store/utils";
+import { appConnect } from "store/utils";
 import { useTheme } from "./themes/ThemeProvider";
 
 type TStateProps = {

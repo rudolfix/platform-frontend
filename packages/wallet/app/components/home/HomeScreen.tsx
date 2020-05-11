@@ -2,7 +2,7 @@ import { toEquityTokenSymbol } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { appConnect } from "../../store/utils";
+import { appConnect } from "store/utils";
 import { spacingStyles } from "../../styles/spacings";
 import { Asset, EAssetType } from "../shared/asset/Asset";
 import { EIconType } from "../shared/Icon";

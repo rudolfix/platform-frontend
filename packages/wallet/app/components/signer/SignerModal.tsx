@@ -7,7 +7,7 @@ import {
   setupSignerUIModule,
   signerUIModuleApi,
 } from "modules/signer-ui/module";
-import { appConnect } from "../../store/utils";
+import { appConnect } from "store/utils";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 
 type TStateProps = {

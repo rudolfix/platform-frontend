@@ -6,10 +6,12 @@ module.exports = {
     [
       "module-resolver",
       {
-        cwd: "babelrc",
+        root: ['./app'],
         extensions: [".ts", ".tsx", ".js", ".ios.js", ".android.js"],
         alias: {
-          "assets": "./app/components/assets",
+          "assets": "./app/assets",
+          "modules": "./app/modules",
+          "store": "./app/store",
         },
       },
     ],

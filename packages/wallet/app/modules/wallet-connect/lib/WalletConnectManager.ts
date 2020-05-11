@@ -21,7 +21,11 @@ import {
   WalletConnectEthSignJSONRPCSchema,
   WalletConnectSessionJSONRPCSchema,
 } from "./schemas";
-import { EWalletConnectManagerEvents, ExtractWalletConnectManagerEmitData, TWalletConnectUri } from "./types";
+import {
+  EWalletConnectManagerEvents,
+  ExtractWalletConnectManagerEmitData,
+  TWalletConnectUri,
+} from "./types";
 
 class WalletConnectManagerError extends WalletConnectModuleError {
   constructor(message: string) {

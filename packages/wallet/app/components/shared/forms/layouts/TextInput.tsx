@@ -1,3 +1,4 @@
+import { st } from "components/utils";
 import * as React from "react";
 import {
   NativeSyntheticEvent,
@@ -15,10 +16,9 @@ import {
   grayLighter4,
   silverLighter1,
   yellowDarker1,
-} from "../../../../styles/colors";
-import { roundness } from "../../../../styles/common";
-import { typographyStyles } from "../../../../styles/typography";
-import { st } from "../../../utils";
+} from "styles/colors";
+import { roundness } from "styles/common";
+import { typographyStyles } from "styles/typography";
 
 type TNativeTextInputProps = Omit<React.ComponentProps<typeof NativeTextInput>, "editable">;
 type TExternalProps = { disabled?: boolean; invalid?: boolean } & TNativeTextInputProps;

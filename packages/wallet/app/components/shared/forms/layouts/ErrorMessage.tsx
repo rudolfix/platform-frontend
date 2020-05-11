@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text } from "react-native";
 
-import { baseRed } from "../../../../styles/colors";
+import { baseRed } from "styles/colors";
 import { HelperText } from "./HelperText";
 
 type TExternalProps = React.ComponentProps<typeof Text>;

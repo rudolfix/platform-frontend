@@ -1,4 +1,10 @@
-import { coreModuleApi, ESignerType, IEthManager, ILogger, TLibSymbolType } from "@neufund/shared-modules";
+import {
+  coreModuleApi,
+  ESignerType,
+  IEthManager,
+  ILogger,
+  TLibSymbolType,
+} from "@neufund/shared-modules";
 import {
   EthereumAddress,
   EthereumAddressWithChecksum,
@@ -13,7 +19,12 @@ import { EthAdapter } from "./EthAdapter";
 import { EthWallet } from "./EthWallet";
 import { EthWalletFactory } from "./EthWalletFactory";
 import { privateSymbols } from "./symbols";
-import { ITransactionResponse, TTransactionRequestRequired, TUnsignedTransaction, TWalletUIMetadata } from "./types";
+import {
+  ITransactionResponse,
+  TTransactionRequestRequired,
+  TUnsignedTransaction,
+  TWalletUIMetadata,
+} from "./types";
 
 class EthManagerError extends EthModuleError {
   constructor(message: string) {

@@ -6,7 +6,11 @@ import { EventEmitter } from "events";
 import { EWalletConnectManagerEvents, TWalletConnectManagerEmit } from "./types";
 
 import { toWalletConnectUri } from "./utils";
-import { InvalidJSONRPCPayloadError, InvalidRPCMethodError, WalletConnectManager } from "./WalletConnectManager";
+import {
+  InvalidJSONRPCPayloadError,
+  InvalidRPCMethodError,
+  WalletConnectManager,
+} from "./WalletConnectManager";
 
 const promisifyEvent = <T extends EWalletConnectManagerEvents>(emitter: EventEmitter2, type: T) => {
   return new Promise<Extract<TWalletConnectManagerEmit, { type: T }>>(resolve => {

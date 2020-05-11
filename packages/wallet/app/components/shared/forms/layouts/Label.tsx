@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { baseGray } from "../../../../styles/colors";
+import { baseGray } from "styles/colors";
 import { BodyBoldText } from "../../typography/BodyText";
 
 type TExternalProps = React.ComponentProps<typeof BodyBoldText>;

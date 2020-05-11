@@ -5,9 +5,9 @@ import * as Yup from "yup";
 import { authModuleAPI, EAuthState } from "modules/auth/module";
 import { ethereumMnemonic, ethereumPrivateKey } from "modules/eth/lib/schemas";
 import { appConnect } from "store/utils";
-import { baseGray, grayLighter2 } from "../../styles/colors";
+import { baseGray, grayLighter2 } from "styles/colors";
 
-import { spacingStyles } from "../../styles/spacings";
+import { spacingStyles } from "styles/spacings";
 import { TComponentRefType } from "../../utils/types";
 import { oneOfSchema } from "../../utils/yupSchemas";
 import { Button, EButtonLayout } from "../shared/buttons/Button";

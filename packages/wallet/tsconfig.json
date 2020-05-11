@@ -21,7 +21,8 @@
     "paths": {
       "assets": ["./app/assets"],
       "modules": ["./app/modules"],
-      "store": ["./app/store"]
+      "store": ["./app/store"],
+      "styles": ["./app/styles"]
     },
     "resolveJsonModule": true,
     "strict": true,

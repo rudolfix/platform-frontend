@@ -6,8 +6,8 @@ import {
   blueyGray,
   grayLighter1,
   grayLighter4,
-} from "../../../styles/colors";
-import { spacingStyles } from "../../../styles/spacings";
+} from "styles/colors";
+import { spacingStyles } from "styles/spacings";
 import { EIconType, Icon } from "../Icon";
 import { BodyText } from "../typography/BodyText";
 import { Text } from "../typography/Text";

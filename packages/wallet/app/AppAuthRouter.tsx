@@ -13,7 +13,7 @@ import { EIconType, Icon } from "./components/shared/Icon";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { WalletScreen } from "./components/wallet/WalletScreen";
-import { typographyStyles } from "./styles/typography";
+import { typographyStyles } from "styles/typography";
 import { useTheme } from "./themes/ThemeProvider";
 
 const Stack = createStackNavigator();

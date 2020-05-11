@@ -2,8 +2,8 @@ import { XOR } from "@neufund/shared-utils";
 import * as React from "react";
 import { GestureResponderEvent, Linking, StyleSheet, Text, TouchableHighlight } from "react-native";
 
-import { baseGray, grayLighter2 } from "../../styles/colors";
-import { typographyStyles } from "../../styles/typography";
+import { baseGray, grayLighter2 } from "styles/colors";
+import { typographyStyles } from "styles/typography";
 import { st } from "../utils";
 
 type TouchableHighlightProps = React.ComponentProps<typeof TouchableHighlight>;

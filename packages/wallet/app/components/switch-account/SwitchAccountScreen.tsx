@@ -5,7 +5,7 @@ import Fuse from "fuse.js";
 import { authModuleAPI, EAuthState } from "modules/auth/module";
 import { appConnect } from "store/utils";
 
-import { spacingStyles } from "../../styles/spacings";
+import { spacingStyles } from "styles/spacings";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { Field } from "../shared/forms/fields/Field";
 import { Form } from "../shared/forms/fields/Form";

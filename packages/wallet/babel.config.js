@@ -12,6 +12,7 @@ module.exports = {
           "assets": "./app/assets",
           "modules": "./app/modules",
           "store": "./app/store",
+          "styles": "./app/styles",
         },
       },
     ],

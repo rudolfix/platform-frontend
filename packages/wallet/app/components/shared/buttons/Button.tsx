@@ -12,7 +12,7 @@ import {
   silverLighter1,
   silverLighter2,
   yellowDarker1,
-} from "../../../styles/colors";
+} from "styles/colors";
 import { st } from "../../utils";
 import { LoadingIndicator } from "../LoadingIndicator";
 import { Touchable } from "../Touchable";

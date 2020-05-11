@@ -8,7 +8,7 @@ import { appRoutes } from "../../appRoutes";
 import { authModuleAPI } from "modules/auth/module";
 import { walletConnectModuleApi } from "modules/wallet-connect/module";
 import { appConnect } from "store/utils";
-import { spacingStyles } from "../../styles/spacings";
+import { spacingStyles } from "styles/spacings";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { EIconType } from "../shared/Icon";
 import { SafeAreaScreen } from "../shared/Screen";

@@ -16,7 +16,7 @@ import {
   silverLighter2,
   darkBlueGray2,
   darkBlueGray1,
-} from "../../styles/colors";
+} from "styles/colors";
 import { IColorSystem } from "../types";
 
 const lightColorSystem: IColorSystem = {

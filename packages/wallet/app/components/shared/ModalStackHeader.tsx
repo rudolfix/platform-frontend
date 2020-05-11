@@ -3,9 +3,9 @@ import { StackHeaderProps } from "@react-navigation/stack";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import { baseWhite } from "../../styles/colors";
-import { spacingStyles } from "../../styles/spacings";
-import { getTopPadding } from "../../styles/utils";
+import { baseWhite } from "styles/colors";
+import { spacingStyles } from "styles/spacings";
+import { getTopPadding } from "styles/utils";
 import { ButtonIcon } from "./buttons/ButtonIcon";
 import { EIconType } from "./Icon";
 import { LineBreak } from "./LineBreak";

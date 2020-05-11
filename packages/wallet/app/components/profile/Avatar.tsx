@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { baseGray, silverLighter1 } from "../../styles/colors";
-import { spacing3, spacingStyles } from "../../styles/spacings";
+import { baseGray, silverLighter1 } from "styles/colors";
+import { spacing3, spacingStyles } from "styles/spacings";
 import { EIconType, Icon } from "../shared/Icon";
 
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";

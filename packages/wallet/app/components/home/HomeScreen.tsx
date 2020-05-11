@@ -7,6 +7,7 @@ import { spacingStyles } from "../../styles/spacings";
 import { Asset, EAssetType } from "../shared/asset/Asset";
 import { EIconType } from "../shared/Icon";
 import { SafeAreaScreen } from "../shared/Screen";
+import { EtoCard } from "./EtoCard";
 import { Header } from "./Header";
 import { Section } from "./Section";
 
@@ -63,6 +64,58 @@ const HomeLayout: React.FunctionComponent<TStateProps> = () => (
           type={EAssetType.NORMAL}
         />
       </Section>
+
+      <Section heading="Investment Opportunities" style={styles.section}>
+        <EtoCard
+          etoState="Coming Soon"
+          companyName="the nu company"
+          style={styles.etoCard}
+          companyThumbnail={require("../../assets/images/nucao.png")}
+          categories={["Impact", "Food"]}
+        />
+        <EtoCard
+          etoState="Proceeds Payout"
+          companyName="Grey (GRP)"
+          style={styles.etoCard}
+          companyThumbnail={require("../../assets/images/greyp.png")}
+          categories={["Light Electric Vehicles", "Smart Mobility"]}
+        />
+        <EtoCard
+          etoState="Proceeds Payout"
+          companyName="Neufund (FTH)"
+          style={styles.etoCard}
+          companyThumbnail={require("../../assets/images/nucao.png")}
+          categories={["Technology", "Blockchain"]}
+        />
+        <EtoCard
+          etoState="Proceeds Payout"
+          companyName="Emuflux Motors"
+          style={styles.etoCard}
+          companyThumbnail={require("../../assets/images/emfluxmotors.png")}
+          categories={["Mobility", "India"]}
+        />
+        <EtoCard
+          etoState="Coming Soon"
+          companyName="My Swoop"
+          style={styles.etoCard}
+          companyThumbnail={require("../../assets/images/myswooop.png")}
+          categories={["Re-commerce", "Germany"]}
+        />
+        <EtoCard
+          etoState="Coming Soon"
+          companyName="Ngrave"
+          style={styles.etoCard}
+          companyThumbnail={require("../../assets/images/ngrave.png")}
+          categories={["Blockchain", "Belgium"]}
+        />
+        <EtoCard
+          etoState="Success"
+          companyName="NEUFUND ICBM Capital Raise"
+          style={styles.etoCard}
+          companyThumbnail={require("../../assets/images/nucao.png")}
+          categories={["Technology", "Blockchain"]}
+        />
+      </Section>
     </SafeAreaScreen>
   </>
 );
@@ -77,6 +130,9 @@ const styles = StyleSheet.create({
   },
   asset: {
     ...spacingStyles.mb2,
+  },
+  etoCard: {
+    ...spacingStyles.mb4,
   },
 });
 

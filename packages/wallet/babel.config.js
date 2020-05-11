@@ -6,14 +6,15 @@ module.exports = {
     [
       "module-resolver",
       {
-        root: ['./app'],
+        root: ["./app"],
         extensions: [".ts", ".tsx", ".js", ".ios.js", ".android.js"],
         alias: {
-          "assets": "./app/assets",
-          "modules": "./app/modules",
-          "store": "./app/store",
-          "styles": "./app/styles",
-          "utils": "./app/utils",
+          assets: "./app/assets",
+          modules: "./app/modules",
+          store: "./app/store",
+          styles: "./app/styles",
+          themes: "./app/themes",
+          utils: "./app/utils",
         },
       },
     ],

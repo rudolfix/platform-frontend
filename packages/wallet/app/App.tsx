@@ -1,19 +1,19 @@
 import { assertNever } from "@neufund/shared-utils";
 import { NavigationContainer } from "@react-navigation/native";
+import { authModuleAPI, EAuthState } from "modules/auth/module";
+import { EInitStatus, initModuleApi } from "modules/init/module";
 import React from "react";
 import { InteractionManager } from "react-native";
 import RNBootSplash from "react-native-bootsplash";
+import { appConnect } from "store/utils";
+import { useTheme } from "themes/ThemeProvider";
 
-import { AppNoAuthRouter } from "./AppNoAuthRouter";
 import { AppAuthRouter } from "./AppAuthRouter";
+import { AppNoAuthRouter } from "./AppNoAuthRouter";
 import { CriticalError } from "./components/CriticalError";
 import { SignerModal } from "./components/signer/SignerModal";
 import { usePrevious } from "./hooks/usePrevious";
-import { EAuthState, authModuleAPI } from "modules/auth/module";
-import { initModuleApi, EInitStatus } from "modules/init/module";
 import { navigationRef } from "./routeUtils";
-import { appConnect } from "store/utils";
-import { useTheme } from "./themes/ThemeProvider";
 
 type TStateProps = {
   initStatus: ReturnType<typeof initModuleApi.selectors.selectInitStatus>;

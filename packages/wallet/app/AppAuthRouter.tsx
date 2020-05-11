@@ -3,6 +3,8 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import React from "react";
 import { Text } from "react-native";
 import Config from "react-native-config";
+import { typographyStyles } from "styles/typography";
+import { useTheme } from "themes/ThemeProvider";
 
 import { appRoutes } from "./appRoutes";
 import { HomeScreen } from "./components/home/HomeScreen";
@@ -13,8 +15,6 @@ import { EIconType, Icon } from "./components/shared/Icon";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { WalletScreen } from "./components/wallet/WalletScreen";
-import { typographyStyles } from "styles/typography";
-import { useTheme } from "./themes/ThemeProvider";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

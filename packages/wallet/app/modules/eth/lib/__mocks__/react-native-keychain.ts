@@ -33,6 +33,10 @@ async function getInternetCredentials(server: string) {
   return Promise.resolve(result);
 }
 
+async function hasInternetCredentials(server: string) {
+  return Promise.resolve(!!store[server]);
+}
+
 export {
   ACCESS_CONTROL,
   ACCESSIBLE,
@@ -40,4 +44,5 @@ export {
   setInternetCredentials,
   resetInternetCredentials,
   getInternetCredentials,
+  hasInternetCredentials,
 };

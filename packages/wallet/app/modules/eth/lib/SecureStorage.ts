@@ -6,7 +6,7 @@ import * as Keychain from "react-native-keychain";
 
 export type TSecureReference = Opaque<"SecureReference", string>;
 
-const toSecureReference = (reference: string) => reference as TSecureReference;
+export const toSecureReference = (reference: string) => reference as TSecureReference;
 const CACHE_TIMEOUT = 10000; // 10 seconds
 
 /**
@@ -21,64 +21,140 @@ const CACHE_TIMEOUT = 10000; // 10 seconds
  *           to DI container to prevent harmful access and data leakage
  */
 
-class SecureStorage {
+export interface ISecureStorage {
   /**
    * Saves the secret in secure storage and returns a reference to the secret
    * Falls back to async storage on emulators in dev builds
    *
    * @param secret - A secret to secure
    */
-  private readonly useAsyncStorageFallback: boolean;
-  private readonly useBiometry: boolean;
-  private readonly localCache: CacheClass<string, string>;
-
-  constructor(useAsyncStorageFallback: boolean, useBiometry: boolean) {
-    this.useAsyncStorageFallback = useAsyncStorageFallback && __DEV__; // extra safe dev check :)
-    this.useBiometry = useBiometry;
-    this.localCache = new Cache();
-  }
-
-  async setSecret(secret: string): Promise<TSecureReference> {
-    const reference = utils.bigNumberify(utils.randomBytes(32)).toString();
-
-    // dev implementation
-    if (this.useAsyncStorageFallback) {
-      await AsyncStorage.setItem(reference, secret);
-    }
-
-    // keychain implementation
-    else {
-      await Keychain.setInternetCredentials(reference, "NOT_USED", secret, {
-        accessControl: this.useBiometry
-          ? Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET
-          : Keychain.ACCESS_CONTROL.DEVICE_PASSCODE,
-        accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
-        securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE,
-      });
-    }
-
-    // save in cache and return
-    this.localCache.put(reference, secret, CACHE_TIMEOUT);
-    return toSecureReference(reference);
-  }
+  setSecret(secret: string): Promise<TSecureReference>;
 
   /**
    * For a give reference returns the secret from the secret storage
    *
    * @param reference - A reference to the secret
    */
+  getSecret(reference: TSecureReference): Promise<string | null>;
+
+  /**
+   * For a give reference checks wether a secret exists
+   *
+   * @param reference - A reference to the secret
+   */
+  hasSecret(reference: TSecureReference): Promise<boolean>;
+
+  /**
+   * For a give reference deletes the secret from the secret storage
+   *
+   * @param reference - A reference to the secret
+   */
+  deleteSecret(reference: TSecureReference): Promise<void>;
+}
+
+/**
+ *
+ * Base implementation with caching layer
+ *
+ */
+abstract class BaseSecureStorage implements ISecureStorage {
+  private readonly localCache: CacheClass<string, string>;
+
+  constructor() {
+    this.localCache = new Cache();
+  }
+
+  async setSecret(secret: string): Promise<TSecureReference> {
+    const reference = utils.bigNumberify(utils.randomBytes(32)).toString();
+    this.setSecretInternal(reference, secret);
+    this.localCache.put(reference, secret, CACHE_TIMEOUT);
+    return toSecureReference(reference);
+  }
+  abstract async setSecretInternal(reference: string, secret: string): Promise<void>;
+
   async getSecret(reference: TSecureReference): Promise<string | null> {
     // check for cached values
     if (this.localCache.get(reference)) {
       return this.localCache.get(reference);
     }
-
-    // dev implementation
-    if (this.useAsyncStorageFallback) {
-      return AsyncStorage.getItem(reference);
+    const result = await this.getSecretInternal(reference);
+    if (result) {
+      this.localCache.put(reference, result, CACHE_TIMEOUT);
     }
+    return result;
+  }
+  abstract async getSecretInternal(reference: string): Promise<string | null>;
 
-    // keychain implementation
+  async hasSecret(reference: TSecureReference): Promise<boolean> {
+    if (this.localCache.get(reference)) {
+      return true;
+    }
+    return this.hasSecretInternal(reference);
+  }
+  abstract async hasSecretInternal(reference: TSecureReference): Promise<boolean>;
+
+  async deleteSecret(reference: TSecureReference): Promise<void> {
+    this.localCache.del(reference);
+    await this.deleteSecretInternal(reference);
+  }
+  abstract async deleteSecretInternal(reference: TSecureReference): Promise<void>;
+}
+
+/**
+ *
+ * Implementation based on async storage, strictly for Emulator / Simulator use
+ *
+ */
+export class AsyncSecureStorage extends BaseSecureStorage {
+  constructor() {
+    super();
+    // guard against using async storge on non dev environments
+    if (!__DEV__) {
+      throw new Error("Trying to use AsyncSecureStorage in Production environment!");
+    }
+  }
+
+  async setSecretInternal(reference: string, secret: string): Promise<void> {
+    await AsyncStorage.setItem(reference, secret);
+  }
+
+  async getSecretInternal(reference: string): Promise<string | null> {
+    return AsyncStorage.getItem(reference);
+  }
+
+  async hasSecretInternal(reference: TSecureReference): Promise<boolean> {
+    return !!(await AsyncStorage.getItem(reference));
+  }
+
+  async deleteSecretInternal(reference: TSecureReference): Promise<void> {
+    await AsyncStorage.removeItem(reference);
+  }
+}
+
+/**
+ *
+ * Implementation based on keychain, for use on devices and production
+ *
+ */
+export class KeychainSecureStorage extends BaseSecureStorage {
+  private readonly useBiometry: boolean;
+
+  constructor(useBiometry: boolean) {
+    super();
+    this.useBiometry = useBiometry;
+  }
+
+  async setSecretInternal(reference: string, secret: string): Promise<void> {
+    await Keychain.setInternetCredentials(reference, "NOT_USED", secret, {
+      accessControl: this.useBiometry
+        ? Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET
+        : Keychain.ACCESS_CONTROL.DEVICE_PASSCODE,
+      accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
+      securityLevel: Keychain.SECURITY_LEVEL.SECURE_HARDWARE,
+    });
+  }
+
+  async getSecretInternal(reference: string): Promise<string | null> {
     const result = await Keychain.getInternetCredentials(reference, {
       authenticationPrompt: {
         title: "Access Key",
@@ -87,44 +163,17 @@ class SecureStorage {
         cancel: "Deny",
       },
     });
-
-    // return
     if (result) {
-      this.localCache.put(reference, result.password, CACHE_TIMEOUT);
       return result.password;
     }
-
     return null;
   }
 
-  /**
-   * For a give reference checks wether a secret exists
-   *
-   * @param reference - A reference to the secret
-   */
-  async hasSecret(reference: TSecureReference): Promise<boolean> {
-    if (this.localCache.get(reference)) {
-      return true;
-    }
-    if (this.useAsyncStorageFallback) {
-      return !!AsyncStorage.getItem(reference);
-    }
+  async hasSecretInternal(reference: TSecureReference): Promise<boolean> {
     return !!(await Keychain.hasInternetCredentials(reference));
   }
 
-  /**
-   * For a give reference deletes the secret from the secret storage
-   *
-   * @param reference - A reference to the secret
-   */
-  async deleteSecret(reference: TSecureReference): Promise<void> {
-    this.localCache.del(reference);
-    if (this.useAsyncStorageFallback) {
-      await AsyncStorage.removeItem(reference);
-    } else {
-      await Keychain.resetInternetCredentials(reference);
-    }
+  async deleteSecretInternal(reference: TSecureReference): Promise<void> {
+    await Keychain.resetInternetCredentials(reference);
   }
 }
-
-export { SecureStorage, toSecureReference };

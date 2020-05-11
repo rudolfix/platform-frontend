@@ -8,7 +8,12 @@ import { KeyPair } from "ethers/utils/secp256k1";
 import { injectable, inject } from "inversify";
 
 import { EthModuleError } from "../errors";
-import { SecureStorage, TSecureReference } from "./SecureStorage";
+import {
+  ISecureStorage,
+  TSecureReference,
+  AsyncSecureStorage,
+  KeychainSecureStorage,
+} from "./SecureStorage";
 import { isMnemonic, isPrivateKey } from "./utils";
 import { deviceInformationModuleApi } from "../../device-information/module";
 import { DeviceInformation } from "../../device-information/DeviceInformation";
@@ -51,7 +56,7 @@ class FailedToDerivePrivateKey extends EthSecureEnclaveError {
  */
 @injectable()
 class EthSecureEnclave {
-  private secureStorage: SecureStorage | null = null;
+  private secureStorage: ISecureStorage | null = null;
   private readonly logger: ILogger;
   private readonly deviceInformation: DeviceInformation;
 
@@ -67,7 +72,7 @@ class EthSecureEnclave {
   /**
    * Gets or creates the secures storage
    */
-  async getStorage(): Promise<SecureStorage> {
+  async getStorage(): Promise<ISecureStorage> {
     if (this.secureStorage) {
       return this.secureStorage;
     }
@@ -76,12 +81,17 @@ class EthSecureEnclave {
     // can emulate this
     const useAsyncStorageFallback =
       __DEV__ && (await this.deviceInformation.isEmulator()) && platform == "ios";
-    // on android we can't use biometry at this moment, as there is a bug in react-native-keychain which
-    // prevents it from working with the android face recognition. Once this is solved, biometry should
-    // always be used.
-    // https://github.com/oblador/react-native-keychain/issues/318
-    const useBiometry = platform != "android";
-    this.secureStorage = new SecureStorage(useAsyncStorageFallback, useBiometry);
+
+    if (useAsyncStorageFallback) {
+      this.secureStorage = new AsyncSecureStorage();
+    } else {
+      // on android we can't use biometry at this moment, as there is a bug in react-native-keychain which
+      // prevents it from working with the android face recognition. Once this is solved, biometry should
+      // always be used.
+      // https://github.com/oblador/react-native-keychain/issues/318
+      const useBiometry = platform != "android";
+      this.secureStorage = new KeychainSecureStorage(useBiometry);
+    }
     return this.secureStorage;
   }
 
@@ -97,7 +107,7 @@ class EthSecureEnclave {
   async unsafeGetSecret(reference: TSecureReference): Promise<string | null> {
     this.logger.info(`Retrieving secret for ref ${reference.substring(0, 4)}`);
     const storage = await this.getStorage();
-    return await storage.getSecret(reference);
+    return storage.getSecret(reference);
   }
 
   /**

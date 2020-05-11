@@ -12,7 +12,7 @@ import { NeuGradientScreen } from "../shared/NeuGradientScreen";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
 import { authModuleAPI, EAuthState } from "modules/auth/module";
 
-import logo from "../../../assets/images/logo.png";
+import logo from "assets/images/logo.png";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;

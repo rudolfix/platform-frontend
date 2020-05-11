@@ -9,7 +9,7 @@ import { spacingStyles } from "../../styles/spacings";
 import { ButtonIcon } from "../shared/buttons/ButtonIcon";
 import { EIconType } from "../shared/Icon";
 
-import NeufundLogo from "../../assets/neufund-logo.svg";
+import NeufundLogo from "assets/neufund-logo.svg";
 
 const Header: React.FunctionComponent = () => {
   const navigation = useNavigation();

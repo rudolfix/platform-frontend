@@ -5,7 +5,7 @@ import WalletConnect from "@walletconnect/react-native";
 import { IClientMeta } from "@walletconnect/types";
 import { EventEmitter2 } from "eventemitter2";
 
-import { unwrapPromise } from "../../../utils/promiseUtils";
+import { unwrapPromise } from "utils/promiseUtils";
 import { WalletConnectModuleError } from "../errors";
 import { TWalletConnectPeer } from "../types";
 import {

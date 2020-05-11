@@ -3,7 +3,7 @@ import { useField } from "formik";
 import React, { Ref } from "react";
 import { StyleProp, ViewStyle } from "react-native";
 
-import { TComponentRefType } from "../../../../utils/types";
+import { TComponentRefType } from "utils/types";
 import { EFieldType, FieldLayout } from "../layouts/FieldLayout";
 import { Switcher } from "../layouts/switcher/Switcher";
 import { TextAreaInput } from "../layouts/TextAreaInput";

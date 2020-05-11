@@ -2,7 +2,7 @@ import { EthereumHDPath } from "@neufund/shared-utils";
 import * as yup from "yup";
 import isString from "lodash/fp/isString";
 
-import { oneOfSchema, singleValue, typedValue } from "../../../utils/yupSchemas";
+import { oneOfSchema, singleValue, typedValue } from "utils/yupSchemas";
 import { StorageSchema } from "../../storage";
 import { TSecureReference } from "./SecureStorage";
 import { EWalletType } from "./types";

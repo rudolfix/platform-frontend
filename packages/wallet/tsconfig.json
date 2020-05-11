@@ -22,7 +22,8 @@
       "assets": ["./app/assets"],
       "modules": ["./app/modules"],
       "store": ["./app/store"],
-      "styles": ["./app/styles"]
+      "styles": ["./app/styles"],
+      "utils": ["./app/utils"]
     },
     "resolveJsonModule": true,
     "strict": true,

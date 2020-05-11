@@ -8,8 +8,8 @@ import { appConnect } from "store/utils";
 import { baseGray, grayLighter2 } from "styles/colors";
 
 import { spacingStyles } from "styles/spacings";
-import { TComponentRefType } from "../../utils/types";
-import { oneOfSchema } from "../../utils/yupSchemas";
+import { TComponentRefType } from "utils/types";
+import { oneOfSchema } from "utils/yupSchemas";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { Form } from "../shared/forms/fields/Form";
 import { EFieldType } from "../shared/forms/layouts/FieldLayout";

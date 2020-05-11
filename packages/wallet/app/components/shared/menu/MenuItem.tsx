@@ -11,7 +11,7 @@ import { spacingStyles } from "styles/spacings";
 import { EIconType, Icon } from "../Icon";
 import { BodyText } from "../typography/BodyText";
 import { Text } from "../typography/Text";
-import { st } from "../../utils";
+import { st } from "utils";
 
 enum EMenuItemPosition {
   FIRST = "first",

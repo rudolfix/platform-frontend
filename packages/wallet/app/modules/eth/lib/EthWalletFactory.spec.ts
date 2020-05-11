@@ -5,7 +5,7 @@ import {
   toEthereumHDMnemonic,
   toEthereumHDPath,
 } from "@neufund/shared-utils";
-import { createMock } from "../../../utils/testUtils.specUtils";
+import { createMock } from "utils/testUtils.specUtils";
 import { AppSingleKeyStorage } from "../../storage";
 import { EthSecureEnclave } from "./EthSecureEnclave";
 import { EthWallet } from "./EthWallet";

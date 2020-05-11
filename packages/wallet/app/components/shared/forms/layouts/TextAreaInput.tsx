@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { TComponentRefType } from "../../../../utils/types";
+import { TComponentRefType } from "utils/types";
 
 import { TextInput } from "./TextInput";
 

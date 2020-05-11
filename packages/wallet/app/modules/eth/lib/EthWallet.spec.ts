@@ -3,12 +3,7 @@ import { toEthereumChecksumAddress, toEthereumHDPath } from "@neufund/shared-uti
 
 import { createMock } from "utils/testUtils.specUtils";
 import { EthSecureEnclave } from "./EthSecureEnclave";
-import {
-  EthWallet,
-  NoMnemonicFoundError,
-  NoPrivateKeyFoundError,
-  NotAnHDWalletError,
-} from "./EthWallet";
+import { EthWallet, NoMnemonicFoundError, NoPrivateKeyFoundError, NotAnHDWalletError } from "./EthWallet";
 import { toSecureReference } from "./SecureStorage";
 import { EWalletType } from "./types";
 

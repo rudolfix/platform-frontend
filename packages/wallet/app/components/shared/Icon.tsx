@@ -7,6 +7,7 @@ import Profile from "assets/profile.svg";
 import QrCode from "assets/qr-code.svg";
 import RightArrow from "assets/right-arrow.svg";
 import Share from "assets/share.svg";
+
 import Eth from "assets/tokens/eth.svg";
 import NEur from "assets/tokens/n-eur.svg";
 import Wallet from "assets/wallet.svg";

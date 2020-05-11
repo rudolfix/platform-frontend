@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text } from "react-native";
-import { blueyGray } from "styles/colors";
-import { typographyStyles } from "styles/typography";
+import { blueyGray } from "../../../../styles/colors";
+import { typographyStyles } from "../../../../styles/typography";
 
 type TExternalProps = React.ComponentProps<typeof Text>;
 

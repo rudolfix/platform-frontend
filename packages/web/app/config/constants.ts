@@ -8,7 +8,6 @@ export const AUTH_INACTIVITY_THRESHOLD =
   process.env.NF_CYPRESS_RUN === "1" ? minutesToMs(5) : minutesToMs(10);
 export const INACTIVITY_THROTTLE_THRESHOLD = secondsToMs(5);
 
-export const LIGHT_WALLET_PASSWORD_CACHE_TIME = 1000 * 10;
 // If running in cypress wait for a short time
 export const LIGHT_WALLET_PRIVATE_DATA_CACHE_TIME =
   process.env.NF_CYPRESS_RUN === "1" ? 1000 * 60 : 1000 * 60 * 3;

@@ -112,4 +112,7 @@ export class BrowserWallet implements IPersonalWallet {
   public isUnlocked = (): boolean => true;
 
   public unplug = () => Promise.resolve();
+
+  // browser wallet is by default unlocked
+  public unlock = (_: string) => Promise.reject();
 }

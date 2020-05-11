@@ -29,7 +29,6 @@ export const mockedStore: DeepPartial<TAppGlobalState> = {
       walletType: EWalletType.LIGHT,
       walletSubType: EWalletSubType.UNKNOWN,
     },
-    isUnlocked: true,
   },
   auth: {
     user: {

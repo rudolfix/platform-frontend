@@ -6,12 +6,11 @@ import { TMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { BrowserWalletConnector } from "../../lib/web3/browser-wallet/BrowserWalletConnector";
 import { LedgerWalletConnector } from "../../lib/web3/ledger-wallet/LedgerConnector";
-import { LightWallet, LightWalletWrongPassword } from "../../lib/web3/light-wallet/LightWallet";
+import { LightWallet } from "../../lib/web3/light-wallet/LightWallet";
 import { LightWalletConnector } from "../../lib/web3/light-wallet/LightWalletConnector";
 import {
   deserializeLightWalletVault,
   ILightWalletInstance,
-  testWalletPassword,
 } from "../../lib/web3/light-wallet/LightWalletUtils";
 import { IPersonalWallet } from "../../lib/web3/PersonalWeb3";
 import { WalletConnectConnector } from "../../lib/web3/wallet-connect/WalletConnectConnector";
@@ -42,16 +41,7 @@ export function* ensureWalletConnection(
   }: TGlobalDependencies,
   password?: string,
 ): Generator<any, IPersonalWallet, any> {
-  let wallet: IPersonalWallet | undefined;
-  const hasWallet = yield web3Manager.hasPluggedWallet();
-  if (hasWallet) {
-    wallet = web3Manager.personalWallet!;
-    // we must unplug old instance of LIGHT wallet to have instance with password
-    if (wallet.walletType === EWalletType.LIGHT) {
-      yield web3Manager.unplugPersonalWallet();
-      wallet = undefined;
-    }
-  }
+  let wallet = web3Manager.personalWallet;
   if (!wallet) {
     const metadata = yield* call(() => walletStorage.get());
     invariant(metadata, "User has JWT but doesn't have wallet metadata!");
@@ -86,8 +76,14 @@ export function* ensureWalletConnection(
       throw new MismatchedWalletAddressError(metadata.address, wallet!.ethereumAddress);
     }
   }
+  invariant(wallet, "Must have wallet plugged");
 
-  return wallet!;
+  if (!wallet.isUnlocked()) {
+    invariant(password, "Light Wallet user without a password");
+    yield wallet.unlock(password);
+  }
+
+  return wallet;
 }
 
 async function connectLedger(
@@ -120,7 +116,7 @@ export function* connectLightWallet(
     metadata.salt,
     metadata.email,
   );
-  const walletInstance: ILightWalletInstance = yield deserializeLightWalletVault(
+  const walletInstance: ILightWalletInstance = deserializeLightWalletVault(
     walletVault.vault,
     metadata.salt,
   );
@@ -131,12 +127,8 @@ export function* connectLightWallet(
       salt: metadata.salt,
     },
     metadata.email,
-    password,
   );
-  const isValidPassword: boolean = yield testWalletPassword(wallet.vault.walletInstance, password);
-  if (!isValidPassword) {
-    throw new LightWalletWrongPassword();
-  }
+
   return wallet;
 }
 

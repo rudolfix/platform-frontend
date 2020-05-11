@@ -75,7 +75,7 @@ export function* setupLightWallet(
       recoverSeed: seed,
     });
 
-    const walletInstance = yield* call(deserializeLightWalletVault, serializedLightWallet, salt);
+    const walletInstance = deserializeLightWalletVault(serializedLightWallet, salt);
 
     const vaultKey = yield* call(getVaultKey, salt, password);
     yield vaultApi.store(vaultKey, serializedLightWallet);
@@ -86,9 +86,9 @@ export function* setupLightWallet(
         salt,
       },
       email,
-      password,
     );
 
+    yield lightWallet.unlock(password);
     yield web3Manager.plugPersonalWallet(lightWallet);
     return lightWallet.getMetadata() as ILightWalletMetadata;
   } catch (e) {

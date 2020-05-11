@@ -34,21 +34,14 @@ export class LightWalletConnector {
     @inject(symbols.logger)
     public readonly logger: ILogger,
   ) {}
-  public passwordProvider(): any {
-    return "";
-  }
-  public connect = async (
-    lightWalletVault: IVault,
-    email: string,
-    password?: string,
-  ): Promise<IPersonalWallet> => {
+
+  public connect = async (lightWalletVault: IVault, email: string): Promise<IPersonalWallet> => {
     try {
       this.web3Adapter = new Web3Adapter(await this.setWeb3Provider(lightWalletVault));
       const ethereumAddress = makeEthereumAddressChecksummed(
         toEthereumAddress(addHexPrefix(lightWalletVault.walletInstance.addresses[0])),
       );
-
-      return new LightWallet(this.web3Adapter, ethereumAddress, lightWalletVault, email, password);
+      return new LightWallet(this.web3Adapter, ethereumAddress, lightWalletVault, email);
     } catch (e) {
       if (e instanceof LightError) {
         throw e;
@@ -59,8 +52,8 @@ export class LightWalletConnector {
   };
   private setWeb3Provider = async (lightWalletVault: IVault): Promise<any> => {
     let engine: any;
-    lightWalletVault.walletInstance.passwordProvider = (callback: any) =>
-      callback(null, this.passwordProvider());
+    // disable internal password provider
+    lightWalletVault.walletInstance.passwordProvider = (callback: any) => callback(new Error());
     try {
       // hooked-wallet-subprovider required methods were manually implemented
       const web3Provider = new HookedWalletSubprovider({

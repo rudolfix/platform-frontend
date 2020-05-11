@@ -95,4 +95,7 @@ export class LedgerWallet implements IPersonalWallet {
   public isUnlocked = (): boolean => true;
 
   public unplug = () => Promise.resolve();
+
+  // ledger wallet is by default unlocked
+  public unlock = (_: string) => Promise.reject();
 }

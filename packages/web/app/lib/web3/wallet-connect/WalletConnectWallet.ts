@@ -115,6 +115,8 @@ export class WalletConnectWallet implements IPersonalWallet {
     return true;
   }
 
+  public unlock = (_: string) => Promise.reject();
+
   public async unplug(): Promise<void> {
     if (this.walletConnect) {
       try {

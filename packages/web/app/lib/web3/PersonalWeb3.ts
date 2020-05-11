@@ -29,4 +29,7 @@ export interface IPersonalWallet {
   // unplugs wallet from provider ie. ending wallet connect session
   // called on user logout by web3 manager
   unplug(): Promise<void>;
+
+  // unlocks wallet which gives access to private key
+  unlock(passsword: string): Promise<void>;
 }

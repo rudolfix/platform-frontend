@@ -66,8 +66,6 @@ export const selectCurrentLightWalletSalt = (state: TAppGlobalState): string | u
     state.web3.wallet.salt) ||
   undefined;
 
-export const selectIsUnlocked = (state: IWeb3State): boolean => state.connected && state.isUnlocked;
-
 export const selectPreviousLightWalletEmail = (state: IWeb3State): string | undefined =>
   (!state.connected &&
     state.previousConnectedWallet &&

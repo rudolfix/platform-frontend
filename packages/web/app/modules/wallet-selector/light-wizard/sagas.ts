@@ -27,7 +27,6 @@ import { signInUser } from "../../auth/user/sagas";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
 import { displayInfoModalSaga } from "../../generic-modal/sagas";
 import { neuCall, neuTakeEvery, neuTakeLatestUntil } from "../../sagasUtils";
-import { selectIsUnlocked } from "../../web3/selectors";
 import { EWalletType, ILightWalletMetadata } from "../../web3/types";
 import { registerForm } from "../forms/sagas";
 import { resetWalletSelectorState, walletSelectorConnect } from "../sagas";
@@ -74,7 +73,7 @@ export function* loadSeedFromWalletWatch({
   web3Manager,
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
-    const isUnlocked = yield* select((s: TAppGlobalState) => selectIsUnlocked(s.web3));
+    const isUnlocked = web3Manager.personalWallet!.isUnlocked();
 
     if (!isUnlocked) {
       yield put(
@@ -131,7 +130,7 @@ export function* lightWalletLoginWatch(
       walletMetadata as ILightWalletMetadata,
       password,
     );
-
+    yield wallet.unlock(password);
     yield web3Manager.plugPersonalWallet(wallet);
     yield walletSelectorConnect();
   } catch (e) {

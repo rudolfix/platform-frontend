@@ -27,7 +27,6 @@ describe("web3 > selectors", () => {
     it("should work with connected wallet", () => {
       const state: IWeb3State = {
         connected: true,
-        isUnlocked: false,
         wallet: getDummyLightWalletMetadata(),
         web3Available: true,
       };
@@ -60,7 +59,6 @@ describe("web3 > selectors", () => {
     it("should return true for Ledger wallet", () => {
       const state: IWeb3State = {
         connected: true,
-        isUnlocked: false,
         wallet: getDummyLedgerWalletMetadata(),
         web3Available: true,
       };
@@ -73,7 +71,6 @@ describe("web3 > selectors", () => {
     it("should return true for Browser wallet", () => {
       const state: IWeb3State = {
         connected: true,
-        isUnlocked: false,
         wallet: getDummyBrowserWalletMetadata(),
         web3Available: true,
       };
@@ -87,7 +84,6 @@ describe("web3 > selectors", () => {
     it("should return false for Light wallet", () => {
       const state: IWeb3State = {
         connected: true,
-        isUnlocked: false,
         wallet: getDummyLightWalletMetadata(),
         web3Available: true,
       };

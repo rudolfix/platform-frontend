@@ -1,6 +1,6 @@
-import { setupContractsModule } from "@neufund/shared-modules";
 import { setupBindings } from "./lib/bindings";
 import { symbols } from "./lib/symbols";
+import { setupContractsModule } from "@neufund/shared-modules";
 
 import { initializeContracts } from "./sagas";
 

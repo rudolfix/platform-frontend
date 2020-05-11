@@ -1,4 +1,4 @@
-import { TModuleActions, TModuleState } from "@neufund/shared-modules";
+import { TModuleState, TModuleActions } from "@neufund/shared-modules";
 
 import { setupInitModule } from "modules/init/module";
 

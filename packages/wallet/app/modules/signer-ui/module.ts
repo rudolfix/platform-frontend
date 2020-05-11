@@ -1,5 +1,5 @@
 import { signerUIActions } from "./actions";
-import { ESignerUIState, signerUIReducer } from "./reducer";
+import { signerUIReducer, ESignerUIState } from "./reducer";
 import { signedUISaga } from "./sagas";
 import { selectSignerUIData, selectSignerUIState } from "./selectors";
 

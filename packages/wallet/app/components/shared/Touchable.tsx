@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Platform, TouchableHighlight, TouchableNativeFeedback, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Platform,
+  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
+  View,
+  TouchableHighlight,
+} from "react-native";
 import { ANDROID_VERSION_LOLLIPOP } from "../../config/constants";
 
 type TExternalProps = React.ComponentProps<typeof TouchableWithoutFeedback> & {

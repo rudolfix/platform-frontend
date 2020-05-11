@@ -1,4 +1,4 @@
-import { isAddress, isChecksumAddress, isMnemonic, isPrivateKey } from "./utils";
+import { isAddress, isPrivateKey, isMnemonic, isChecksumAddress } from "./utils";
 
 const EMPTY_STRING = "";
 

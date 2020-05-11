@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { Icon } from "../Icon";
 
 type TImageProps = React.ComponentProps<typeof Image>;

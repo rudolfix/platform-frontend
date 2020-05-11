@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, Platform } from "react-native";
 
 import { roundness, shadowStyles } from "../../../../../styles/common";
 import { ESwitcherItemPosition, SwitcherItem } from "./SwitcherItem";

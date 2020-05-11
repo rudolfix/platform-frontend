@@ -1,7 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { baseGray, baseSilver, baseWhite, blueyGray, grayLighter4 } from "../../../../../styles/colors";
+import {
+  baseGray,
+  baseSilver,
+  baseWhite,
+  blueyGray,
+  grayLighter4,
+} from "../../../../../styles/colors";
 import { spacingStyles } from "../../../../../styles/spacings";
 import { typographyStyles } from "../../../../../styles/typography";
 import { st } from "../../../../utils";

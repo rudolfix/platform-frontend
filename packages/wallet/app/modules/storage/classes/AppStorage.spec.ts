@@ -1,9 +1,10 @@
-import { ILogger, noopLogger } from "@neufund/shared-modules";
 import * as yup from "yup";
+import { ILogger, noopLogger } from "@neufund/shared-modules";
 
 import { AppStorage } from "./AppStorage";
 import { AsyncStorageProvider } from "./AsyncStorageProvider";
 import { StorageSchema } from "./StorageSchema";
+import { StorageItem } from "./StorageItem";
 
 describe("AppStorage", () => {
   const PersonSchema = yup.object().shape({

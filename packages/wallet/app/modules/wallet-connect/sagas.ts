@@ -1,22 +1,21 @@
 import {
-  call,
-  cancel,
-  cancelled,
-  fork,
-  neuCall,
   neuTakeLatest,
-  neuTakeOnly,
   put,
-  race,
-  TActionFromCreator,
+  fork,
   take,
+  race,
+  cancel,
+  call,
+  neuTakeOnly,
+  neuCall,
+  cancelled,
+  TActionFromCreator,
 } from "@neufund/sagas";
 
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
 
 import { appRoutes } from "../../appRoutes";
-import { navigate } from "../../routeUtils";
 import { notificationUIModuleApi } from "../notification-ui/module";
 import { signerUIModuleApi } from "../signer-ui/module";
 import { ESignerType } from "../signer-ui/types";
@@ -26,6 +25,7 @@ import { privateSymbols } from "./lib/symbols";
 import { EWalletConnectManagerEvents, TWalletConnectManagerEmit } from "./lib/types";
 import { InvalidWalletConnectUriError, isValidWalletConnectUri } from "./lib/utils";
 import { WalletConnectManager } from "./lib/WalletConnectManager";
+import { navigate } from "../../routeUtils";
 
 // TODO: Remove when we get rid of saga `deps` in neu wrappers
 type TGlobalDependencies = unknown;

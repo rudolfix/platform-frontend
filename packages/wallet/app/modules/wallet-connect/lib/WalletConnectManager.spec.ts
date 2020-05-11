@@ -1,12 +1,16 @@
-import { noopLogger } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
+import { noopLogger } from "@neufund/shared-modules";
 import WalletConnectMock from "@walletconnect/react-native";
 import { EventEmitter2 } from "eventemitter2";
 import { EventEmitter } from "events";
 import { EWalletConnectManagerEvents, TWalletConnectManagerEmit } from "./types";
 
 import { toWalletConnectUri } from "./utils";
-import { InvalidJSONRPCPayloadError, InvalidRPCMethodError, WalletConnectManager } from "./WalletConnectManager";
+import {
+  InvalidJSONRPCPayloadError,
+  InvalidRPCMethodError,
+  WalletConnectManager,
+} from "./WalletConnectManager";
 
 const promisifyEvent = <T extends EWalletConnectManagerEvents>(emitter: EventEmitter2, type: T) => {
   return new Promise<Extract<TWalletConnectManagerEmit, { type: T }>>(resolve => {

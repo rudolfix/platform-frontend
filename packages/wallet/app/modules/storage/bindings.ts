@@ -1,11 +1,11 @@
-import { coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
 import { ContainerModule } from "inversify";
 import * as yup from "yup";
+import { coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
 import { AppStorage } from "./classes/AppStorage";
 
 import { AsyncStorageProvider } from "./classes/AsyncStorageProvider";
-import { StorageSchema } from "./classes/StorageSchema";
 import { symbols } from "./symbols";
+import { StorageSchema } from "./classes/StorageSchema";
 
 // TODO: this is a dummy mock. Replace with real storage. e.g. WalletStorage
 const PersonSchema = yup.object().shape({

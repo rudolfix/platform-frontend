@@ -1,19 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
+import * as React from "react";
+import { StyleSheet, InteractionManager } from "react-native";
+import * as Yup from "yup";
 import { authModuleAPI, EAuthState } from "modules/auth/module";
 import { ethereumMnemonic, ethereumPrivateKey } from "modules/eth/lib/schemas";
-import * as React from "react";
-import { InteractionManager, StyleSheet } from "react-native";
 import { appConnect } from "store/utils";
 import { baseGray, grayLighter2 } from "styles/colors";
 
 import { spacingStyles } from "styles/spacings";
 import { TComponentRefType } from "utils/types";
 import { oneOfSchema } from "utils/yupSchemas";
-import * as Yup from "yup";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
-import { Field } from "../shared/forms/fields/Field";
 import { Form } from "../shared/forms/fields/Form";
 import { EFieldType } from "../shared/forms/layouts/FieldLayout";
+import { Field } from "../shared/forms/fields/Field";
 import { TextAreaInput } from "../shared/forms/layouts/TextAreaInput";
 import { SafeAreaScreen } from "../shared/Screen";
 import { BodyText } from "../shared/typography/BodyText";

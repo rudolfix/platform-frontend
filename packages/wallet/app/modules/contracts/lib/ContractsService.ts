@@ -5,14 +5,13 @@ import {
   IRateOracleAdapter,
   TLibSymbolType,
 } from "@neufund/shared-modules";
-import { providers, Signer } from "ethers";
+import { Signer, providers } from "ethers";
 import { inject, injectable } from "inversify";
 
 import { EtherToken } from "../../../lib/contracts/EtherToken";
 import { EtherTokenFactory } from "../../../lib/contracts/EtherTokenFactory";
 import { EuroToken } from "../../../lib/contracts/EuroToken";
 import { EuroTokenFactory } from "../../../lib/contracts/EuroTokenFactory";
-import * as knownInterfaces from "../../../lib/contracts/knownInterfaces.json";
 import { Neumark } from "../../../lib/contracts/Neumark";
 import { NeumarkFactory } from "../../../lib/contracts/NeumarkFactory";
 import { Universe } from "../../../lib/contracts/Universe";
@@ -20,6 +19,7 @@ import { UniverseFactory } from "../../../lib/contracts/UniverseFactory";
 import { walletEthModuleApi } from "../../eth/module";
 import { RateOracleAdapterFactory } from "./RateOracleAdapter";
 import { privateSymbols } from "./symbols";
+import * as knownInterfaces from "../../../lib/contracts/knownInterfaces.json";
 
 /**
  * Initiates neufund smart contracts instances

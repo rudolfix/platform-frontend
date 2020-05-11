@@ -1,5 +1,5 @@
-import { NavigationContainerRef } from "@react-navigation/native";
 import * as React from "react";
+import { NavigationContainerRef } from "@react-navigation/native";
 
 const navigationRef = React.createRef<NavigationContainerRef>();
 

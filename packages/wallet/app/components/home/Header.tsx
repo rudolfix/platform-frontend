@@ -1,15 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
-import { baseSilver } from "styles/colors";
-import { spacingStyles } from "styles/spacings";
+import { StyleSheet, View } from "react-native";
 
 import { appRoutes } from "../../appRoutes";
-
-import NeufundLogo from "../../assets/neufund-logo.svg";
+import { baseSilver } from "styles/colors";
+import { spacingStyles } from "styles/spacings";
 import { ButtonIcon } from "../shared/buttons/ButtonIcon";
 import { EIconType } from "../shared/Icon";
+
+import NeufundLogo from "../../assets/neufund-logo.svg";
 
 const Header: React.FunctionComponent = () => {
   const navigation = useNavigation();

@@ -1,5 +1,5 @@
-import { AppReducer } from "@neufund/sagas";
 import { DeepReadonly } from "@neufund/shared-utils";
+import { AppReducer } from "@neufund/sagas";
 
 import { walletConnectActions } from "./actions";
 import { TWalletConnectPeer } from "./types";

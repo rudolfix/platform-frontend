@@ -1,8 +1,8 @@
 import { useHeaderHeight } from "@react-navigation/stack";
 import * as React from "react";
-import { Animated, KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
-import { useSafeArea } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, Animated, StyleSheet } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import { baseWhite } from "styles/colors";
 import { EStatusBarStyle, useStatusBarStyle } from "./hooks/useStatusBarStyle";

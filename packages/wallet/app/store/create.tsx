@@ -1,9 +1,9 @@
 import { createStore, getSagaExtension } from "@neufund/sagas";
 import { getLoadContextExtension } from "@neufund/shared-modules";
 import { Container } from "inversify";
+import Config from "react-native-config";
 
 import { setupInitModule } from "modules/init/module";
-import Config from "react-native-config";
 import { TAppGlobalState } from "./types";
 
 export const createAppStore = (container: Container) => {

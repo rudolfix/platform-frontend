@@ -1,9 +1,9 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { EthereumAddress } from "@neufund/shared-utils";
+import { interfaces } from "inversify";
 import WalletConnect from "@walletconnect/react-native";
 import { IClientMeta } from "@walletconnect/types";
 import { EventEmitter2 } from "eventemitter2";
-import { interfaces } from "inversify";
 
 import { unwrapPromise } from "utils/promiseUtils";
 import { WalletConnectModuleError } from "../errors";
@@ -21,7 +21,11 @@ import {
   WalletConnectEthSignJSONRPCSchema,
   WalletConnectSessionJSONRPCSchema,
 } from "./schemas";
-import { EWalletConnectManagerEvents, ExtractWalletConnectManagerEmitData, TWalletConnectUri } from "./types";
+import {
+  EWalletConnectManagerEvents,
+  ExtractWalletConnectManagerEmitData,
+  TWalletConnectUri,
+} from "./types";
 
 class WalletConnectManagerError extends WalletConnectModuleError {
   constructor(message: string) {

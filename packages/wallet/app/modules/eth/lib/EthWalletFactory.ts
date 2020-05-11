@@ -1,14 +1,14 @@
+import { EthereumPrivateKey, EthereumHDMnemonic, toEthereumHDPath } from "@neufund/shared-utils";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
-import { EthereumHDMnemonic, EthereumPrivateKey, toEthereumHDPath } from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
 import { AppSingleKeyStorage } from "../../storage";
 
 import { EthModuleError } from "../errors";
-import { EthSecureEnclave } from "./EthSecureEnclave";
-import { EthWallet, TEthWalletProviderType } from "./EthWallet";
 import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
 import { TSecureReference } from "./SecureStorage";
 import { privateSymbols } from "./symbols";
+import { EthSecureEnclave } from "./EthSecureEnclave";
+import { EthWallet, TEthWalletProviderType } from "./EthWallet";
 import { EWalletType, TWalletUIMetadata } from "./types";
 
 class EthWalletFactoryError extends EthModuleError {

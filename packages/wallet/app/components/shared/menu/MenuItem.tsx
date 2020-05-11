@@ -1,4 +1,3 @@
-import { st } from "components/utils";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { baseGray, baseSilver, blueyGray, grayLighter1, grayLighter4 } from "styles/colors";
@@ -6,6 +5,7 @@ import { spacingStyles } from "styles/spacings";
 import { EIconType, Icon } from "../Icon";
 import { BodyText } from "../typography/BodyText";
 import { Text } from "../typography/Text";
+import { st } from "components/utils";
 
 enum EMenuItemPosition {
   FIRST = "first",

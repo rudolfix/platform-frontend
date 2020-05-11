@@ -1,5 +1,5 @@
-import { storiesOf } from "@storybook/react-native";
 import * as React from "react";
+import { storiesOf } from "@storybook/react-native";
 import { View } from "react-native";
 
 import { LineBreak } from "../../LineBreak";

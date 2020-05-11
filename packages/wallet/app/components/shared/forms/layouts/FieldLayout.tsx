@@ -1,6 +1,6 @@
 import { assertNever } from "@neufund/shared-utils";
-import * as React from "react";
 import { Ref } from "react";
+import * as React from "react";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { TComponentRefType } from "utils/types";
 import { ErrorMessage } from "./ErrorMessage";

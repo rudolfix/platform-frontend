@@ -1,5 +1,4 @@
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
-import { TAuthWalletMetadata } from "modules/auth/module";
 import React from "react";
 import Config from "react-native-config";
 
@@ -9,6 +8,7 @@ import { LandingScreen } from "./components/landing/LandingScreen";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { UnlockAccountScreen } from "./components/unlock-account/UnlockAccountScreen";
+import { TAuthWalletMetadata } from "modules/auth/module";
 
 const NoAuthStack = createStackNavigator();
 

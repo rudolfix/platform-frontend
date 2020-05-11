@@ -1,4 +1,8 @@
-import { InvalidWalletConnectUriError, isValidWalletConnectUri, parseWalletConnectUri } from "./utils";
+import {
+  InvalidWalletConnectUriError,
+  isValidWalletConnectUri,
+  parseWalletConnectUri,
+} from "./utils";
 
 const invalidUris = [
   "invalid:f2b44876-7cbf-4a04-ac82-909525d647d2@1?bridge=https%3A%2F%2Fplatform.neufund.io%2Fapi%2Fwc-bridge-socket%2F&key=d3d0c3ab280886cd52c52051ec2b809e0139f36bab07abaad742bd9abe0e61a2",

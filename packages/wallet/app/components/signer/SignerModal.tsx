@@ -6,7 +6,7 @@ import {
   ESignerUIState,
   setupSignerUIModule,
   signerUIModuleApi,
-} from "../../modules/signer-ui/module";
+} from "modules/signer-ui/module";
 import { appConnect } from "../../store/utils";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 

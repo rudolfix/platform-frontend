@@ -11,7 +11,7 @@ import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { NeuGradientScreen } from "../shared/NeuGradientScreen";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
-import { authModuleAPI, EAuthState } from "../../modules/auth/module";
+import { authModuleAPI, EAuthState } from "modules/auth/module";
 
 import logo from "../../../assets/images/logo.png";
 

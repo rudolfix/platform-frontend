@@ -8,7 +8,7 @@ import { LandingScreen } from "./components/landing/LandingScreen";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { UnlockAccountScreen } from "./components/unlock-account/UnlockAccountScreen";
-import { TAuthWalletMetadata } from "./modules/auth/module";
+import { TAuthWalletMetadata } from "modules/auth/module";
 
 const NoAuthStack = createStackNavigator();
 

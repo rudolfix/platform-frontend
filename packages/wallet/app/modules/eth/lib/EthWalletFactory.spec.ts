@@ -1,9 +1,9 @@
 import { noopLogger } from "@neufund/shared-modules";
 import {
-  toEthereumPrivateKey,
   toEthereumChecksumAddress,
   toEthereumHDMnemonic,
   toEthereumHDPath,
+  toEthereumPrivateKey,
 } from "@neufund/shared-utils";
 import { createMock } from "utils/testUtils.specUtils";
 import { AppSingleKeyStorage } from "../../storage";

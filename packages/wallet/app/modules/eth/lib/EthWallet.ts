@@ -1,18 +1,18 @@
-import {
-  EthereumPrivateKey,
-  toEthereumPrivateKey,
-  EthereumHDMnemonic,
-  toEthereumHDMnemonic,
-} from "@neufund/shared-utils";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+import {
+  EthereumHDMnemonic,
+  EthereumPrivateKey,
+  toEthereumHDMnemonic,
+  toEthereumPrivateKey,
+} from "@neufund/shared-utils";
 import { utils } from "ethers";
 import { UnsignedTransaction } from "ethers/utils";
 import { interfaces } from "inversify";
 
 import { EthModuleError } from "../errors";
+import { EthSecureEnclave } from "./EthSecureEnclave";
 import { TWalletMetadata } from "./schemas";
 import { privateSymbols } from "./symbols";
-import { EthSecureEnclave } from "./EthSecureEnclave";
 import { addHexPrefix, isHdWallet } from "./utils";
 
 class EthWalletError extends EthModuleError {

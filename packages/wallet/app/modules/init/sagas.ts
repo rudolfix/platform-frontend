@@ -1,8 +1,8 @@
-import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
+import { call, fork, neuTakeLatest, put, SagaGenerator } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, tokenPriceModuleApi } from "@neufund/shared-modules";
+import { authModuleAPI } from "../auth/module";
 
 import { walletContractsModuleApi } from "../contracts/module";
-import { authModuleAPI } from "../auth/module";
 import { initActions } from "./actions";
 
 /**

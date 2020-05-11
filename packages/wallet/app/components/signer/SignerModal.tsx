@@ -1,8 +1,7 @@
+import { ESignerUIState, setupSignerUIModule, signerUIModuleApi } from "modules/signer-ui/module";
 import * as React from "react";
 import { Modal, Text, View } from "react-native";
 import { compose } from "recompose";
-
-import { ESignerUIState, setupSignerUIModule, signerUIModuleApi } from "modules/signer-ui/module";
 import { appConnect } from "store/utils";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 

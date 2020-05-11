@@ -1,8 +1,4 @@
-import {
-  appConnect as sharedAppConnect,
-  TAppConnectOptions,
-  TModuleSetup,
-} from "@neufund/shared-modules";
+import { appConnect as sharedAppConnect, TAppConnectOptions, TModuleSetup } from "@neufund/shared-modules";
 import { InferableComponentEnhancerWithProps } from "react-redux";
 import { TAppGlobalActions, TAppGlobalState } from "./types";
 

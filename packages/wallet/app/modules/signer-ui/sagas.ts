@@ -1,4 +1,4 @@
-import { fork, neuTakeLatest, put, take, call, TActionFromCreator } from "@neufund/sagas";
+import { call, fork, neuTakeLatest, put, TActionFromCreator, take } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 
 import { ITransactionResponse } from "../eth/lib/types";

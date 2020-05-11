@@ -2,8 +2,8 @@
 
 import { Primitive, Tuple } from "@neufund/shared-utils";
 import isArray from "lodash/fp/isArray";
-import { TestOptionsMessage } from "yup";
 import * as yup from "yup";
+import { TestOptionsMessage } from "yup";
 
 const isAbsent = <T>(value: T) => value === undefined || value === null;
 

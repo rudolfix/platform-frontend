@@ -1,4 +1,4 @@
-import { IRequiredParamsResult, IQueryParamsResult, IParseURIResult } from "@walletconnect/types";
+import { IParseURIResult, IQueryParamsResult, IRequiredParamsResult } from "@walletconnect/types";
 import { parseQueryString } from "@walletconnect/utils";
 
 import { WalletConnectModuleError } from "../errors";

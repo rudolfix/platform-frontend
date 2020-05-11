@@ -1,19 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
+
+import logo from "assets/images/logo.png";
+import { authModuleAPI, EAuthState } from "modules/auth/module";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import Config from "react-native-config";
-
-import { appRoutes } from "../../appRoutes";
 import { appConnect } from "store/utils";
 import { silverLighter2 } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
+
+import { appRoutes } from "../../appRoutes";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { NeuGradientScreen } from "../shared/NeuGradientScreen";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
-import { authModuleAPI, EAuthState } from "modules/auth/module";
-
-import logo from "assets/images/logo.png";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;

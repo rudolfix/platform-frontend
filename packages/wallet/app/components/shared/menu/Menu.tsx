@@ -2,8 +2,7 @@ import { assertNever } from "@neufund/shared-utils";
 import React from "react";
 import { ScrollView } from "react-native";
 
-import { MenuItemButton, EMenuItemType, EMenuItemPosition } from "./MenuItem";
-import type { TMenuItem } from "./MenuItem";
+import { EMenuItemPosition, EMenuItemType, MenuItemButton, TMenuItem } from "./MenuItem";
 
 type TScrollViewProps = React.ComponentProps<typeof ScrollView>;
 

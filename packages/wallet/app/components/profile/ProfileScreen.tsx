@@ -1,20 +1,20 @@
 import { nonNullable } from "@neufund/shared-utils";
 import { useNavigation } from "@react-navigation/native";
+import { authModuleAPI } from "modules/auth/module";
+import { walletConnectModuleApi } from "modules/wallet-connect/module";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Config from "react-native-config";
-
-import { appRoutes } from "../../appRoutes";
-import { authModuleAPI } from "modules/auth/module";
-import { walletConnectModuleApi } from "modules/wallet-connect/module";
 import { appConnect } from "store/utils";
 import { spacingStyles } from "styles/spacings";
+
+import { appRoutes } from "../../appRoutes";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { EIconType } from "../shared/Icon";
+import { EMenuItemType, Menu } from "../shared/menu/Menu";
 import { SafeAreaScreen } from "../shared/Screen";
 import { AddressShare } from "./AddressShare";
 import { Avatar } from "./Avatar";
-import { Menu, EMenuItemType } from "../shared/menu/Menu";
 
 type TStateProps = {
   authWallet: NonNullable<ReturnType<typeof authModuleAPI.selectors.selectAuthWallet>>;

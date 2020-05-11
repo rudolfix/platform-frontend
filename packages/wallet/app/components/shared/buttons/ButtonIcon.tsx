@@ -1,8 +1,8 @@
+import { st } from "components/utils";
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { baseGray, blueyGray } from "styles/colors";
-import { st } from "components/utils";
 import { EIconType, Icon } from "../Icon";
 import { LoadingIndicator } from "../LoadingIndicator";
 import { BodyBoldText } from "../typography/BodyText";

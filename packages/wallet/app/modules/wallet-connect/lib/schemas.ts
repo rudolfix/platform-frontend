@@ -1,7 +1,7 @@
 import { Tuple } from "@neufund/shared-utils";
-import * as yup from "yup";
 
 import { singleValue, tupleSchema } from "utils/yupSchemas";
+import * as yup from "yup";
 import { walletEthModuleApi } from "../../eth/module";
 
 export const getJSONRPCSchema = <T extends string, U extends Tuple>(

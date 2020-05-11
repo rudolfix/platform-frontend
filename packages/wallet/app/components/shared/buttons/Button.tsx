@@ -1,4 +1,5 @@
 import { assertNever } from "@neufund/shared-utils";
+import { st } from "components/utils";
 import React from "react";
 import { StyleSheet, TouchableHighlight } from "react-native";
 
@@ -13,7 +14,6 @@ import {
   silverLighter2,
   yellowDarker1,
 } from "styles/colors";
-import { st } from "components/utils";
 import { LoadingIndicator } from "../LoadingIndicator";
 import { Touchable } from "../Touchable";
 import { BodyBoldText } from "../typography/BodyText";

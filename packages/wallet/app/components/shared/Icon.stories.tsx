@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react-native";
 import * as React from "react";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 
-import { Icon, EIconType } from "./Icon";
+import { EIconType, Icon } from "./Icon";
 
 const iconColor = "black";
 

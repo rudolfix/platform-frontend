@@ -1,8 +1,8 @@
 import {
-  EthereumPrivateKey,
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumHDMnemonic,
+  EthereumPrivateKey,
 } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import isString from "lodash/fp/isString";

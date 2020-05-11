@@ -1,6 +1,6 @@
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import React from "react";
-import { StyleSheet, View, Share } from "react-native";
+import { Share, StyleSheet, View } from "react-native";
 
 import { baseGray, grayLighter1 } from "styles/colors";
 import { spacingStyles } from "styles/spacings";

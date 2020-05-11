@@ -3,12 +3,16 @@ import { EJwtPermissions } from "@neufund/shared-modules";
 
 import { hashFromIpfsLink } from "../../components/documents/utils";
 import { AuthMessage, ToSMessage } from "../../components/translatedMessages/messages";
-import { createMessage } from "../../components/translatedMessages/utils";
+import {
+  createMessage,
+  createNotificationMessage,
+} from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { IUser } from "../../lib/api/users/interfaces";
 import { actions } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { waitUntilSmartContractsAreInitialized } from "../init/sagas";
+import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
 
 /**
@@ -41,7 +45,6 @@ function* handleAcceptCurrentAgreementEffect({ apiUserService }: TGlobalDependen
 
 export function* handleAcceptCurrentAgreement({
   logger,
-  notificationCenter,
 }: TGlobalDependencies): Generator<any, any, any> {
   try {
     yield neuCall(
@@ -52,7 +55,11 @@ export function* handleAcceptCurrentAgreement({
       createMessage(ToSMessage.TOS_ACCEPT_PERMISSION_TEXT),
     );
   } catch (e) {
-    notificationCenter.error(createMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR));
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR),
+      ),
+    );
     logger.error("Could not accept Terms and Conditions", e);
   }
 }

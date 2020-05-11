@@ -239,8 +239,6 @@ export const createGlobalDependencies = (container: Container) => ({
     coreModuleApi.symbols.logger,
   ),
 
-  notificationCenter: container.get<NotificationCenter>(symbols.notificationCenter),
-
   detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
   onfidoSDK: container.get<OnfidoSDK>(symbols.onfidoSdk),
 

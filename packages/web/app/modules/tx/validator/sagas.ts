@@ -9,13 +9,14 @@ import {
 import BigNumber from "bignumber.js";
 
 import { ETxValidationMessages } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { STIPEND_ELIGIBLE_WALLETS } from "../../../lib/web3/constants";
 import { ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
 import { TAppGlobalState } from "../../../store";
 import { actions, TAction } from "../../actions";
+import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectEtherBalance } from "../../wallet/selectors";
 import { selectWalletType } from "../../web3/selectors";
@@ -51,10 +52,7 @@ export function* txValidateInvestment(): Generator<any, any, any> {
   }
 }
 
-export function* txValidateSaga(
-  { logger, notificationCenter }: TGlobalDependencies,
-  action: TAction,
-): any {
+export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction): any {
   if (action.type !== actions.txValidator.validateDraft.getType()) return;
   try {
     let validationGenerator: any;
@@ -74,8 +72,10 @@ export function* txValidateSaga(
     return txDetails;
   } catch (e) {
     logger.error("Something was wrong during TX validation", e);
-    yield notificationCenter.error(
-      createMessage(ETxValidationMessages.TX_VALIDATION_UNKNOWN_ERROR),
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(ETxValidationMessages.TX_VALIDATION_UNKNOWN_ERROR),
+      ),
     );
     // In case of unknown error break the flow and hide modal
     yield put(actions.txSender.txSenderHideModal());

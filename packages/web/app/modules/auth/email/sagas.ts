@@ -1,4 +1,4 @@
-import { call, fork, put, select } from "@neufund/sagas";
+import { call, fork, put, SagaGenerator, select } from "@neufund/sagas";
 import { includes } from "lodash/fp";
 
 import {
@@ -6,7 +6,7 @@ import {
   UnverifiedEmailReminderModal,
 } from "../../../components/modals/unverified-email-reminder/UnverifiedEmailReminderModal";
 import { AuthMessage } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { IVerifyEmailUser } from "../../../lib/api/users/interfaces";
@@ -15,6 +15,7 @@ import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
 import { userHasKycAndEmailVerified } from "../../eto-flow/selectors";
+import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { selectIsVerifyEmailRedirect } from "../../routing/selectors";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectActivationCodeFromQueryString, selectWalletType } from "../../web3/selectors";
@@ -32,7 +33,6 @@ import { loadUser } from "../user/external/sagas";
  */
 export function* processVerifyEmailLink({
   walletStorage,
-  notificationCenter,
 }: TGlobalDependencies): Generator<any, any, any> {
   const walletMetadata = (yield* call(() => walletStorage.get()))!;
   const unverifiedEmail = yield* select((s: TAppGlobalState) => selectUnverifiedUserEmail(s.auth));
@@ -63,7 +63,11 @@ export function* processVerifyEmailLink({
   } else {
     // in case of other wallets say e-mail is already activated
     if (unverifiedEmail === undefined) {
-      yield notificationCenter.error(createMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED));
+      yield put(
+        webNotificationUIModuleApi.actions.showError(
+          createNotificationMessage(AuthMessage.AUTH_EMAIL_ALREADY_VERIFIED),
+        ),
+      );
       yield* goHome();
       return;
     }
@@ -85,26 +89,31 @@ export function* processVerifyEmailLink({
   yield* goHome();
 }
 
-async function verifyUserEmailPromise(
-  { apiUserService, notificationCenter }: TGlobalDependencies,
+export function* verifyUserEmailPromise(
+  { apiUserService }: TGlobalDependencies,
   userCode: IVerifyEmailUser,
-): Promise<boolean> {
+): SagaGenerator<boolean> {
   try {
-    await apiUserService.verifyUserEmail(userCode);
-    await notificationCenter.info(createMessage(AuthMessage.AUTH_EMAIL_VERIFIED));
+    yield* call(apiUserService.verifyUserEmail, userCode);
+    yield put(
+      webNotificationUIModuleApi.actions.showInfo(
+        createNotificationMessage(AuthMessage.AUTH_EMAIL_VERIFIED),
+      ),
+    );
   } catch (e) {
-    const toast = (message: AuthMessage) =>
-      notificationCenter.error(createMessage(message), {
+    const getNotificationAction = (message: AuthMessage) =>
+      webNotificationUIModuleApi.actions.showError(createNotificationMessage(message), {
         "data-test-id": `modules.auth.sagas.verify-user-email.toast.verification-failed-${message}`,
       });
 
     if (e instanceof EmailAlreadyExists) {
-      await toast(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS);
+      yield put(getNotificationAction(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS));
     } else if (e instanceof EmailActivationCodeMismatch) {
-      await toast(AuthMessage.AUTH_EMAIL_VERIFICATION_CODE_MISMATCH);
+      yield put(getNotificationAction(AuthMessage.AUTH_EMAIL_VERIFICATION_CODE_MISMATCH));
     } else {
-      await toast(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED);
+      yield put(getNotificationAction(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED));
     }
+
     return false;
   }
 

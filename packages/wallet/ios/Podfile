@@ -39,6 +39,8 @@ target 'wallet' do
 
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'walletTests' do
     inherit! :search_paths
     # Pods for testing

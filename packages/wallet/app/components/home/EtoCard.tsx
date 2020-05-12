@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import { baseGray, baseGreen, baseWhite } from "../../styles/colors";
 import { roundness } from "../../styles/common";
 import { spacing2, spacingStyles } from "../../styles/spacings";
@@ -8,35 +8,38 @@ import { HelperText } from "../shared/forms/layouts/HelperText";
 import { Panel } from "../shared/panel/Panel";
 import { BodyBoldText } from "../shared/typography/BodyText";
 
-const EtoCard = ({ categories, companyThumbnail, companyName, etoState, ...props }) => (
-  <Panel
-    {...props}
-    style={[styles.panel, props.style]}
-    contentContainerStyle={styles.panelContentContainer}
-  >
-    <View style={styles.companyThumbnailWrapper}>
-      <Image source={companyThumbnail} style={styles.companyThumbnail} />
+const EtoCard = ({ categories, companyThumbnail, companyName, etoState, onPress, ...props }) => (
+  <TouchableHighlight onPress={onPress}>
+    <Panel
+      {...props}
+      style={[styles.panel, props.style]}
+      contentContainerStyle={styles.panelContentContainer}
+      onPress={onPress}
+    >
+      <View style={styles.companyThumbnailWrapper}>
+        <Image source={companyThumbnail} style={styles.companyThumbnail} />
 
-      <View style={styles.categories}>
-        {categories.map(category => (
-          <Text key={category} style={styles.category}>
-            {category}
-          </Text>
-        ))}
-      </View>
-    </View>
-
-    <View style={styles.body}>
-      <View style={styles.stateRow}>
-        <View style={styles.stateIndicator} />
-        <HelperText style={styles.stateName}>{etoState}</HelperText>
+        <View style={styles.categories}>
+          {categories.map(category => (
+            <Text key={category} style={styles.category}>
+              {category}
+            </Text>
+          ))}
+        </View>
       </View>
 
-      <View>
-        <BodyBoldText style={styles.companyName}>{companyName}</BodyBoldText>
+      <View style={styles.body}>
+        <View style={styles.stateRow}>
+          <View style={styles.stateIndicator} />
+          <HelperText style={styles.stateName}>{etoState}</HelperText>
+        </View>
+
+        <View>
+          <BodyBoldText style={styles.companyName}>{companyName}</BodyBoldText>
+        </View>
       </View>
-    </View>
-  </Panel>
+    </Panel>
+  </TouchableHighlight>
 );
 
 const styles = StyleSheet.create({

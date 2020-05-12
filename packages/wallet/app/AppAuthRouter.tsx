@@ -13,6 +13,7 @@ import { EIconType, Icon } from "./components/shared/Icon";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { WalletScreen } from "./components/wallet/WalletScreen";
+import { WebView } from "./components/webview/WebView";
 import { typographyStyles } from "./styles/typography";
 import { useTheme } from "./themes/ThemeProvider";
 
@@ -113,6 +114,13 @@ const AppAuthRouter: React.FunctionComponent = () => (
           options={{ header: ModalStackHeader, title: "Switch account" }}
         />
       )}
+      <Stack.Screen
+        name={appRoutes.webView}
+        component={WebView}
+        options={{
+          header: ModalStackHeader,
+        }}
+      />
     </Stack.Navigator>
   </>
 );

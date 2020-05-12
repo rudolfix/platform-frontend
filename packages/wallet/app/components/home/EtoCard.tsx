@@ -1,16 +1,38 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from "react-native";
 import { baseGray, baseGreen, baseWhite } from "../../styles/colors";
 import { roundness } from "../../styles/common";
 import { spacing2, spacingStyles } from "../../styles/spacings";
 import { typographyStyles } from "../../styles/typography";
 import { HelperText } from "../shared/forms/layouts/HelperText";
-import { Panel } from "../shared/panel/Panel";
+import { Panel, PanelTouchable } from "../shared/panel/Panel";
 import { BodyBoldText } from "../shared/typography/BodyText";
 
-const EtoCard = ({ categories, companyThumbnail, companyName, etoState, onPress, ...props }) => (
+type TEtoCardProps = {
+  categories: Array<string>;
+  companyThumbnail: ImageSourcePropType;
+  companyName: string;
+  etoState: string;
+  onPress: () => void;
+};
+
+const EtoCard: React.FunctionComponent<TEtoCardProps & React.ComponentProps<typeof Panel>> = ({
+  categories,
+  companyThumbnail,
+  companyName,
+  etoState,
+  onPress,
+  ...props
+}) => (
   <TouchableHighlight onPress={onPress}>
-    <Panel
+    <PanelTouchable
       {...props}
       style={[styles.panel, props.style]}
       contentContainerStyle={styles.panelContentContainer}
@@ -38,7 +60,7 @@ const EtoCard = ({ categories, companyThumbnail, companyName, etoState, onPress,
           <BodyBoldText style={styles.companyName}>{companyName}</BodyBoldText>
         </View>
       </View>
-    </Panel>
+    </PanelTouchable>
   </TouchableHighlight>
 );
 

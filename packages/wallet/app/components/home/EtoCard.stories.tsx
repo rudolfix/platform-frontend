@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react-native";
 import * as React from "react";
 import { View } from "react-native";
+import { action } from "@storybook/addon-actions";
 
 import { EtoCard } from "./EtoCard";
 
@@ -12,5 +13,6 @@ storiesOf("Molecules", module)
       companyName="the nu company (NU+)"
       companyThumbnail={require("../../assets/images/nucao.png")}
       categories={["Impact", "Food"]}
+      onPress={action("onPress")}
     />
   ));

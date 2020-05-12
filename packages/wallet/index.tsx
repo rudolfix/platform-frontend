@@ -11,6 +11,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { AppRegistry } from "react-native";
 import { IModuleStore } from "@neufund/sagas";
 import Config from "react-native-config";
+import RNBootSplash from "react-native-bootsplash";
 
 import { App } from "./app/App";
 import { name as appName } from "./app.json";
@@ -20,6 +21,7 @@ import { TAppGlobalState } from "./app/store/types";
 import { StorybookUIRoot } from "./storybook";
 
 function startupStorybookApp(): void {
+  RNBootSplash.hide();
   AppRegistry.registerComponent(appName, () => StorybookUIRoot);
 }
 

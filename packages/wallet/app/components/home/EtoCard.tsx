@@ -9,7 +9,11 @@ import { Panel } from "../shared/panel/Panel";
 import { BodyBoldText } from "../shared/typography/BodyText";
 
 const EtoCard = ({ categories, companyThumbnail, companyName, etoState, ...props }) => (
-  <Panel {...props} contentContainerStyle={[styles.panel, props.style]}>
+  <Panel
+    {...props}
+    style={[styles.panel, props.style]}
+    contentContainerStyle={styles.panelContentContainer}
+  >
     <View style={styles.companyThumbnailWrapper}>
       <Image source={companyThumbnail} style={styles.companyThumbnail} />
 
@@ -23,8 +27,8 @@ const EtoCard = ({ categories, companyThumbnail, companyName, etoState, ...props
     </View>
 
     <View style={styles.body}>
-      <View style={styles.statusRow}>
-        <View style={styles.statusIndicator} />
+      <View style={styles.stateRow}>
+        <View style={styles.stateIndicator} />
         <HelperText style={styles.stateName}>{etoState}</HelperText>
       </View>
 
@@ -39,24 +43,52 @@ const styles = StyleSheet.create({
   panel: {
     padding: 0,
   },
-  panelContent: {
-    justifyContent: "space-between",
-    alignItems: "center",
+  panelContentContainer: {
+    padding: 0,
+  },
+  companyThumbnail: {
+    width: "100%",
+    borderRadius: roundness,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    height: 237,
+    overflow: "hidden",
+  },
+  categories: {
+    position: "absolute",
+    display: "flex",
     flexDirection: "row",
+    justifyContent: "flex-end",
+    bottom: spacing2,
+    left: spacing2,
+    right: spacing2,
+  },
+  category: {
+    ...typographyStyles.helperText,
+    backgroundColor: baseGray,
+    borderRadius: 10,
+    color: baseWhite,
+    ...spacingStyles.ph2,
+    height: 20,
+    ...spacingStyles.ml2,
+    alignItems: "center",
+    lineHeight: 18,
+    overflow: "hidden",
   },
   body: {
     ...spacingStyles.p4,
   },
-  statusRow: {
+  stateRow: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    ...spacingStyles.mb2,
   },
   stateName: {
     marginLeft: 6,
     textTransform: "uppercase",
   },
-  statusIndicator: {
+  stateIndicator: {
     width: 8,
     height: 8,
     backgroundColor: baseGreen,
@@ -64,30 +96,6 @@ const styles = StyleSheet.create({
   },
   companyThumbnailWrapper: {
     position: "relative",
-  },
-  companyThumbnail: {
-    width: "100%",
-    borderRadius: roundness,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-  categories: {
-    position: "absolute",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-end",
-    bottom: spacing2,
-    left: 0,
-    right: spacing2,
-    backgroundColor: 'red'
-  },
-  category: {
-    ...typographyStyles.helperText,
-    backgroundColor: baseGray,
-    borderRadius: 10,
-    color: baseWhite,
-    ...spacingStyles.p2,
-    ...spacingStyles.mr2,
   },
   companyName: {
     ...typographyStyles.headline3,

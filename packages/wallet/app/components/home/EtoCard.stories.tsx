@@ -6,7 +6,9 @@ import { action } from "@storybook/addon-actions";
 import { EtoCard } from "./EtoCard";
 
 storiesOf("Molecules", module)
-  .addDecorator((story: () => React.ReactNode) => <View style={{ padding: 20 }}>{story()}</View>)
+  .addDecorator((story: () => React.ReactNode) => (
+    <View style={{ paddingVertical: 50, paddingHorizontal: 20 }}>{story()}</View>
+  ))
   .add("EtoCard", () => (
     <EtoCard
       etoState="Coming Soon"

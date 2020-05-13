@@ -3,9 +3,9 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 
 import { spacingStyles } from "../../styles/spacings";
-import { Asset, EAssetType } from "../shared/asset/Asset";
 import { HeaderScreen } from "../shared/HeaderScreen";
 import { EIconType } from "../shared/Icon";
+import { Asset, EAssetType } from "../shared/asset/Asset";
 
 const WalletScreen: React.FunctionComponent = () => (
   <HeaderScreen heading={"€0"} subHeading={"Wallet balance"}>

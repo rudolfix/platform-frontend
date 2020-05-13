@@ -1,4 +1,5 @@
 import { setupAuthModule as setupSharedAuthModule } from "@neufund/shared-modules";
+
 import { walletEthModuleApi } from "../eth/module";
 import { authActions } from "./actions";
 import { setupBindings } from "./lib/bindings";

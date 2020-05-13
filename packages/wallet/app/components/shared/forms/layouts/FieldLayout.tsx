@@ -2,13 +2,14 @@ import { assertNever } from "@neufund/shared-utils";
 import { Ref } from "react";
 import * as React from "react";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+
 import { TComponentRefType } from "../../../../utils/types";
 import { ErrorMessage } from "./ErrorMessage";
 import { HelperText } from "./HelperText";
 import { Label } from "./Label";
-import { Switcher } from "./switcher/Switcher";
 import { TextAreaInput } from "./TextAreaInput";
 import { TextInput } from "./TextInput";
+import { Switcher } from "./switcher/Switcher";
 
 enum EFieldType {
   INPUT = "input",

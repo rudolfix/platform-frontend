@@ -1,7 +1,8 @@
-import { inject, injectable } from "inversify";
-import messaging, { FirebaseMessagingTypes } from "@react-native-firebase/messaging";
-import { INotificationsProvider } from "./INotificationsProvider";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+import messaging, { FirebaseMessagingTypes } from "@react-native-firebase/messaging";
+import { inject, injectable } from "inversify";
+
+import { INotificationsProvider } from "./INotificationsProvider";
 
 /**
  * @class FirebaseProvider

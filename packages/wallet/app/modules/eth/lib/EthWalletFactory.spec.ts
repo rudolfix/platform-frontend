@@ -5,13 +5,14 @@ import {
   toEthereumHDMnemonic,
   toEthereumHDPath,
 } from "@neufund/shared-utils";
+
 import { createMock } from "../../../utils/testUtils.specUtils";
 import { AppSingleKeyStorage } from "../../storage";
 import { EthSecureEnclave } from "./EthSecureEnclave";
 import { EthWallet } from "./EthWallet";
 import { EthWalletFactory, NoExistingWalletFoundError } from "./EthWalletFactory";
-import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
 import { toSecureReference, TSecureReference } from "./SecureStorage";
+import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
 import { EWalletType } from "./types";
 
 const hdWalletMetadata: THDWalletMetadata = {
@@ -132,7 +133,7 @@ describe("EthWalletFactory", () => {
           return Promise.resolve(toSecureReference(length.toString()));
         },
         getAddress: (secretReference: TSecureReference) => {
-          if (secretStorage[parseInt(secretReference)]) {
+          if (secretStorage[parseInt(secretReference, 10)]) {
             return Promise.resolve(privateKeyWalletMetadata.address);
           }
 
@@ -178,7 +179,7 @@ describe("EthWalletFactory", () => {
           return Promise.resolve(toSecureReference(length.toString()));
         },
         getAddress: (secretReference: TSecureReference) => {
-          if (secretStorage[parseInt(secretReference)]) {
+          if (secretStorage[parseInt(secretReference, 10)]) {
             return Promise.resolve(hdWalletMetadata.address);
           }
 
@@ -229,7 +230,7 @@ describe("EthWalletFactory", () => {
           return Promise.resolve(toSecureReference(length.toString()));
         },
         getAddress: (secretReference: TSecureReference) => {
-          if (secretStorage[parseInt(secretReference)]) {
+          if (secretStorage[parseInt(secretReference, 10)]) {
             return Promise.resolve(hdWalletMetadata.address);
           }
 

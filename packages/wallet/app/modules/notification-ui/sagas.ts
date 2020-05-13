@@ -1,4 +1,4 @@
-import { fork, neuTakeLatest, TActionFromCreator } from "@neufund/sagas";
+import { fork, neuTakeLatest, SagaGenerator, TActionFromCreator } from "@neufund/sagas";
 import { notificationUIModuleApi } from "@neufund/shared-modules";
 import { Alert } from "react-native";
 
@@ -12,10 +12,10 @@ function* showInfo(
   action:
     | TActionFromCreator<typeof actions, typeof actions.showInfo>
     | TActionFromCreator<typeof actions, typeof actions.showError>,
-): Generator<unknown, void> {
+): SagaGenerator<void> {
   Alert.alert(action.payload.message as string);
 }
 
-export function* notificationUISaga(): Generator<unknown, void> {
+export function* notificationUISaga(): SagaGenerator<void> {
   yield fork(neuTakeLatest, [actions.showInfo, actions.showError], showInfo);
 }

@@ -2,15 +2,16 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import React from "react";
 import Config from "react-native-config";
 
-import { appRoutes } from "./appRoutes";
+import { EAppRoutes } from "./appRoutes";
 import { ImportAccountScreen } from "./components/import-account/ImportAccountScreen";
 import { LandingScreen } from "./components/landing/LandingScreen";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
 import { UnlockAccountScreen } from "./components/unlock-account/UnlockAccountScreen";
 import { TAuthWalletMetadata } from "./modules/auth/module";
+import { RootStackParamList } from "./routeUtils";
 
-const NoAuthStack = createStackNavigator();
+const NoAuthStack = createStackNavigator<RootStackParamList>();
 
 type TExternalProps = {
   authWallet: undefined | TAuthWalletMetadata;
@@ -21,7 +22,7 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authWallet }
 
   return (
     <NoAuthStack.Navigator
-      initialRouteName={hasAnAccountToUnlock ? appRoutes.unlockAccount : appRoutes.landing}
+      initialRouteName={hasAnAccountToUnlock ? EAppRoutes.unlockAccount : EAppRoutes.landing}
       screenOptions={({ route, navigation }) => ({
         ...TransitionPresets.ModalPresentationIOS,
         gestureEnabled: true,
@@ -32,23 +33,23 @@ const AppNoAuthRouter: React.FunctionComponent<TExternalProps> = ({ authWallet }
       mode="modal"
     >
       <NoAuthStack.Screen
-        name={appRoutes.landing}
+        name={EAppRoutes.landing}
         component={LandingScreen}
         options={{ headerShown: false }}
       />
       <NoAuthStack.Screen
-        name={appRoutes.unlockAccount}
+        name={EAppRoutes.unlockAccount}
         component={UnlockAccountScreen}
         options={{ headerShown: false }}
       />
       <NoAuthStack.Screen
-        name={appRoutes.importAccount}
+        name={EAppRoutes.importAccount}
         component={ImportAccountScreen}
         options={{ header: ModalStackHeader }}
       />
       {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
         <NoAuthStack.Screen
-          name={appRoutes.switchAccount}
+          name={EAppRoutes.switchAccount}
           component={SwitchAccountScreen}
           options={{ header: ModalStackHeader, title: "Switch account" }}
         />

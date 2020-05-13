@@ -2,8 +2,11 @@ import { setupCoreModule, setupTokenPriceModule } from "@neufund/shared-modules"
 
 import { setupAuthModule } from "../auth/module";
 import { setupWalletContractsModule } from "../contracts/module";
+import { setupDeviceInformationModule } from "../device-information/module";
 import { setupWalletEthModule } from "../eth/module";
 import { setupNotificationUIModule } from "../notification-ui/module";
+import { setupNotificationsModule } from "../notifications/module";
+import { setupPermissionsModule } from "../permissions/module";
 import { setupSignerUIModule } from "../signer-ui/module";
 import { setupStorageModule } from "../storage";
 import { setupWalletConnectModule } from "../wallet-connect/module";
@@ -12,9 +15,6 @@ import { initReducersMap } from "./reducer";
 import { initSaga } from "./sagas";
 import { selectInitStatus } from "./selectors";
 import { EInitStatus } from "./types";
-import { setupNotificationsModule } from "../notifications/module";
-import { setupPermissionsModule } from "../permissions/module";
-import { setupDeviceInformationModule } from "../device-information/module";
 
 const MODULE_ID = "wallet:init";
 

@@ -1,6 +1,6 @@
 import { Opaque } from "@neufund/shared-utils";
-import { utils } from "ethers";
 import AsyncStorage from "@react-native-community/async-storage";
+import { utils } from "ethers";
 
 export type TSecureReference = Opaque<"SecureReference", string>;
 
@@ -24,6 +24,7 @@ class SecureStorage {
    * @param secret - A secret to secure
    */
   async setSecret(secret: string): Promise<TSecureReference> {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const reference = utils.bigNumberify(utils.randomBytes(32)).toString();
 
     await AsyncStorage.setItem(reference, secret);

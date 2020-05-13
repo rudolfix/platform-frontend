@@ -1,18 +1,19 @@
+import { nonNullable } from "@neufund/shared-utils";
+import Fuse from "fuse.js";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import * as Yup from "yup";
-import Fuse from "fuse.js";
-import { authModuleAPI, EAuthState } from "../../modules/auth/module";
-import { appConnect } from "../../store/utils";
 
+import fixtures from "../../lib/contracts/fixtures.json";
+import { authModuleAPI, EAuthState } from "../../modules/auth/module";
+import { walletEthModuleApi } from "../../modules/eth/module";
+import { appConnect } from "../../store/utils";
 import { spacingStyles } from "../../styles/spacings";
+import { SafeAreaScreen } from "../shared/Screen";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { Field } from "../shared/forms/fields/Field";
 import { Form } from "../shared/forms/fields/Form";
 import { EFieldType } from "../shared/forms/layouts/FieldLayout";
-import { SafeAreaScreen } from "../shared/Screen";
-import { walletEthModuleApi } from "../../modules/eth/module";
-import fixtures from "../../lib/contracts/fixtures.json";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
@@ -54,7 +55,7 @@ const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
         onSubmit={values => {
           const fixture = fixtures[values.address as keyof typeof fixtures];
 
-          importExistingAccount(fixture.privateKey!, fixture.name!);
+          importExistingAccount(nonNullable(fixture.privateKey), nonNullable(fixture.name));
         }}
       >
         {({ handleSubmit, isValid, values }) => {

@@ -1,7 +1,8 @@
 import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, tokenPriceModuleApi } from "@neufund/shared-modules";
-import { walletContractsModuleApi } from "../contracts/module";
+
 import { authModuleAPI } from "../auth/module";
+import { walletContractsModuleApi } from "../contracts/module";
 import { notificationModuleApi } from "../notifications/module";
 import { initActions } from "./actions";
 
@@ -30,7 +31,7 @@ function* initStartSaga(): SagaGenerator<void> {
     // subscribe for notifications test
     notifications.onReceivedNotificationInForeground(
       notification => {
-        console.log("------event work--------", notification);
+        logger.info("------event work--------", notification);
       },
       { alert: true, sound: true, badge: false },
     );
@@ -43,6 +44,6 @@ function* initStartSaga(): SagaGenerator<void> {
   }
 }
 
-export function* initSaga(): Generator<any, void, any> {
+export function* initSaga(): SagaGenerator<void> {
   yield fork(neuTakeLatest, initActions.start, initStartSaga);
 }

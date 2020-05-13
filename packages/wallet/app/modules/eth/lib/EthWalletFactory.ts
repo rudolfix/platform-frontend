@@ -1,14 +1,19 @@
-import { EthereumPrivateKey, EthereumHDMnemonic, toEthereumHDPath } from "@neufund/shared-utils";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+import {
+  EthereumPrivateKey,
+  EthereumHDMnemonic,
+  toEthereumHDPath,
+  assertNever,
+} from "@neufund/shared-utils";
 import { inject, injectable } from "inversify";
-import { AppSingleKeyStorage } from "../../storage";
 
+import { AppSingleKeyStorage } from "../../storage";
 import { EthModuleError } from "../errors";
-import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
-import { TSecureReference } from "./SecureStorage";
-import { privateSymbols } from "./symbols";
 import { EthSecureEnclave } from "./EthSecureEnclave";
 import { EthWallet, TEthWalletProviderType } from "./EthWallet";
+import { TSecureReference } from "./SecureStorage";
+import { THDWalletMetadata, TPrivateKeyWalletMetadata, TWalletMetadata } from "./schemas";
+import { privateSymbols } from "./symbols";
 import { EWalletType, TWalletUIMetadata } from "./types";
 
 class EthWalletFactoryError extends EthModuleError {
@@ -182,6 +187,8 @@ class EthWalletFactory {
       case EWalletType.PRIVATE_KEY_WALLET:
         await this.ethSecureEnclave.unsafeDeleteSecret(walletMetadata.privateKeyReference);
         break;
+      default:
+        assertNever(walletMetadata);
     }
 
     await this.walletStorage.clear();

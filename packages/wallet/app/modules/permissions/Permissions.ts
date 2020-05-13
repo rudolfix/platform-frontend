@@ -1,6 +1,6 @@
-import { NotificationsResponse, requestNotifications } from "react-native-permissions";
-import { inject, injectable } from "inversify";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+import { inject, injectable } from "inversify";
+import { NotificationsResponse, requestNotifications } from "react-native-permissions";
 
 /**
  * @class Permissions

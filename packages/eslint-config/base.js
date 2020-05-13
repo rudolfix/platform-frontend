@@ -118,7 +118,6 @@ module.exports = {
     "import/first": "error",
     "import/no-duplicates": "error",
     "import/newline-after-import": "error",
-    "import/max-dependencies": ["error", { max: 15 }],
     "import/no-named-default": "error",
     "import/no-default-export": "error",
   },

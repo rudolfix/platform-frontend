@@ -1,5 +1,3 @@
-/* eslint-disable react-native-a11y/has-valid-accessibility-traits, react-native-a11y/has-valid-accessibility-component-type, react-native-a11y/has-valid-accessibility-states */
-
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -43,9 +41,10 @@ const SwitcherItem: React.FunctionComponent<TItemExternalProps> = ({
   <TouchableOpacity
     style={st(styles.container, [position === ESwitcherItemPosition.LAST, styles.containerLast])}
     activeOpacity={0.4}
-    accessibilityComponentType={isSelected ? "radiobutton_checked" : "radiobutton_unchecked"}
-    accessibilityTraits={isSelected ? ["button", "selected"] : "button"}
-    accessibilityStates={isSelected ? ["selected"] : []}
+    accessibilityRole="checkbox"
+    // double negate accessibilityState
+    // https://github.com/FormidableLabs/eslint-plugin-react-native-a11y/issues/84
+    accessibilityState={{ checked: !!isSelected }}
     {...props}
   >
     <>

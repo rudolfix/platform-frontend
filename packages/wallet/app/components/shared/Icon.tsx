@@ -34,36 +34,28 @@ enum EIconType {
 
 const pickByIdentity = pickBy(identity);
 
-// eslint-disable-next-line complexity
+const icons = {
+  [EIconType.CLOSE]: Close,
+  [EIconType.ETH]: Eth,
+  [EIconType.HOME]: Home,
+  [EIconType.PORTFOLIO]: Investments,
+  [EIconType.N_EUR]: NEur,
+  [EIconType.PLACEHOLDER]: Placeholder,
+  [EIconType.PROFILE]: Profile,
+  [EIconType.QR_CODE]: QrCode,
+  [EIconType.RIGHT_ARROW]: RightArrow,
+  [EIconType.SHARE]: Share,
+  [EIconType.WALLET]: Wallet,
+  [EIconType.YES]: Yes,
+};
+
 const getIcon = (type: EIconType) => {
-  switch (type) {
-    case EIconType.HOME:
-      return Home;
-    case EIconType.PORTFOLIO:
-      return Investments;
-    case EIconType.PROFILE:
-      return Profile;
-    case EIconType.WALLET:
-      return Wallet;
-    case EIconType.CLOSE:
-      return Close;
-    case EIconType.PLACEHOLDER:
-      return Placeholder;
-    case EIconType.SHARE:
-      return Share;
-    case EIconType.RIGHT_ARROW:
-      return RightArrow;
-    case EIconType.YES:
-      return Yes;
-    case EIconType.ETH:
-      return Eth;
-    case EIconType.N_EUR:
-      return NEur;
-    case EIconType.QR_CODE:
-      return QrCode;
-    default:
-      assertNever(type, `Invalid icon type ${type}`);
+  const icon = icons[type];
+  if (!icon) {
+    assertNever(type, `Invalid icon type ${type}`);
   }
+
+  return icon;
 };
 
 type TSvgIconProps = React.ComponentProps<ReturnType<typeof getIcon>>;

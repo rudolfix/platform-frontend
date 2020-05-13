@@ -1,7 +1,7 @@
 import { createLibSymbol } from "@neufund/shared-modules";
 
-import { TJWT } from "./schemas";
 import { AppSingleKeyStorage } from "../../storage";
+import { TJWT } from "./schemas";
 
 export const symbols = {};
 

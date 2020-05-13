@@ -1,4 +1,5 @@
 import { createActionFactory } from "@neufund/shared-utils";
+
 import { TAuthWalletMetadata } from "./types";
 
 export const authActions = {

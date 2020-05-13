@@ -10,6 +10,10 @@ import isString from "lodash/fp/isString";
 import { THDWalletMetadata, TWalletMetadata } from "./schemas";
 import { EWalletType } from "./types";
 
+const PRIVATE_KEY_LENGTH = 66;
+const SHORT_MNEMONICS_WORDS_COUNT = 12;
+const LONG_MNEMONICS_WORDS_COUNT = 24;
+
 const addHexPrefix = (data: string) => {
   return data.startsWith("0x") ? data : "0x" + data;
 };
@@ -28,7 +32,11 @@ const isHdWallet = (wallet: TWalletMetadata): wallet is THDWalletMetadata =>
  * @param privateKey - A possible private key
  */
 const isPrivateKey = (privateKey: unknown): privateKey is EthereumPrivateKey => {
-  return isString(privateKey) && !!privateKey.match(/^0x[0-9a-f]*$/i) && privateKey.length === 66;
+  return (
+    isString(privateKey) &&
+    !!privateKey.match(/^0x[0-9a-f]*$/i) &&
+    privateKey.length === PRIVATE_KEY_LENGTH
+  );
 };
 
 /**
@@ -41,7 +49,9 @@ const isMnemonic = (mnemonic: unknown): mnemonic is EthereumHDMnemonic => {
   if (isString(mnemonic) && utils.HDNode.isValidMnemonic(mnemonic)) {
     const words = mnemonic.split(/\s/);
 
-    return words.length === 12 || words.length === 24;
+    return (
+      words.length === SHORT_MNEMONICS_WORDS_COUNT || words.length === LONG_MNEMONICS_WORDS_COUNT
+    );
   }
 
   return false;
@@ -73,14 +83,10 @@ const isAddress = (address: unknown): address is EthereumAddress => {
  */
 const isChecksumAddress = (address: unknown): address is EthereumAddressWithChecksum => {
   try {
-    if (isString(address)) {
-      const checksumAddress = utils.getAddress(address);
-
-      return address === checksumAddress;
-    }
-  } catch {}
-
-  return false;
+    return isString(address) && address === utils.getAddress(address);
+  } catch {
+    return false;
+  }
 };
 
 export { isHdWallet, isPrivateKey, isMnemonic, isAddress, isChecksumAddress, addHexPrefix };

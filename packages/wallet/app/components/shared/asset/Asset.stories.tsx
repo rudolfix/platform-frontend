@@ -1,8 +1,8 @@
 import { toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react-native";
 import * as React from "react";
-import { EIconType } from "../Icon";
 
+import { EIconType } from "../Icon";
 import { Asset, EAssetType } from "./Asset";
 
 storiesOf("Molecules|Asset", module)

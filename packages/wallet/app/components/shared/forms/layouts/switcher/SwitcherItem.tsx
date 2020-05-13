@@ -41,10 +41,10 @@ const SwitcherItem: React.FunctionComponent<TItemExternalProps> = ({
   <TouchableOpacity
     style={st(styles.container, [position === ESwitcherItemPosition.LAST, styles.containerLast])}
     activeOpacity={0.4}
-    accessibilityRole="combobox"
-    accessibilityComponentType={isSelected ? "radiobutton_checked" : "radiobutton_unchecked"}
-    accessibilityTraits={isSelected ? ["button", "selected"] : "button"}
-    accessibilityStates={isSelected ? ["selected"] : []}
+    accessibilityRole="checkbox"
+    // double negate accessibilityState
+    // https://github.com/FormidableLabs/eslint-plugin-react-native-a11y/issues/84
+    accessibilityState={{ checked: !!isSelected }}
     {...props}
   >
     <>

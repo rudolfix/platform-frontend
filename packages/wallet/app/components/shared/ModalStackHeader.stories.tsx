@@ -1,9 +1,9 @@
 import { DeepPartial } from "@neufund/shared-utils";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { storiesOf } from "@storybook/react-native";
-import * as React from "react";
-import set from "lodash/set";
 import cloneDeep from "lodash/cloneDeep";
+import set from "lodash/set";
+import * as React from "react";
 
 import { ModalStackHeader } from "./ModalStackHeader";
 

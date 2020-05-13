@@ -6,9 +6,9 @@ import { StyleSheet, View } from "react-native";
 import { baseWhite } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
 import { getTopPadding } from "../../styles/utils";
-import { ButtonIcon } from "./buttons/ButtonIcon";
 import { EIconType } from "./Icon";
 import { LineBreak } from "./LineBreak";
+import { ButtonIcon } from "./buttons/ButtonIcon";
 import { EHeadlineLevel, Headline } from "./typography/Headline";
 
 const Spacer: React.FunctionComponent = ({ ...props }) => (
@@ -43,7 +43,12 @@ const ModalStackHeader: React.FunctionComponent<StackHeaderProps> = ({
     >
       {previous && (
         <Spacer>
-          <ButtonIcon icon={EIconType.CLOSE} accessibilityLabel="Go back" onPress={goBack} />
+          <ButtonIcon
+            icon={EIconType.CLOSE}
+            accessibilityLabel="Go back"
+            accessibilityHint="Returns to the previous screen"
+            onPress={goBack}
+          />
         </Spacer>
       )}
       <Headline

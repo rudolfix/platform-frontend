@@ -22,6 +22,7 @@ const initialState: IAuthState = {
   wallet: undefined,
 };
 
+// eslint-disable-next-line complexity
 const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initialState, action) => {
   switch (action.type) {
     case authActions.createAccount.getType():

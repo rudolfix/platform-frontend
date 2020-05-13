@@ -3,17 +3,18 @@ import React from "react";
 import Config from "react-native-config";
 
 import { AppAuthRouterTabs } from "./AppAuthRouterTabs";
-import { appRoutes } from "./appRoutes";
+import { EAppRoutes } from "./appRoutes";
 import { QRCode } from "./components/QRCode";
 import { ModalStackHeader } from "./components/shared/ModalStackHeader";
 import { SwitchAccountScreen } from "./components/switch-account/SwitchAccountScreen";
+import { RootStackParamList } from "./routeUtils";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const AppAuthRouter: React.FunctionComponent = () => (
   <>
     <Stack.Navigator
-      initialRouteName={appRoutes.home}
+      initialRouteName={EAppRoutes.home}
       screenOptions={({ route, navigation }) => ({
         ...TransitionPresets.ModalPresentationIOS,
         gestureEnabled: true,
@@ -26,7 +27,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
       headerMode="screen"
     >
       <Stack.Screen
-        name={appRoutes.home}
+        name={EAppRoutes.home}
         component={AppAuthRouterTabs}
         options={{
           title: "Back",
@@ -34,7 +35,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
         }}
       />
       <Stack.Screen
-        name={appRoutes.qrCode}
+        name={EAppRoutes.qrCode}
         component={QRCode}
         options={{
           title: "Scan QR code",
@@ -43,7 +44,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
       />
       {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
         <Stack.Screen
-          name={appRoutes.switchAccount}
+          name={EAppRoutes.switchAccount}
           component={SwitchAccountScreen}
           options={{ header: ModalStackHeader, title: "Switch account" }}
         />

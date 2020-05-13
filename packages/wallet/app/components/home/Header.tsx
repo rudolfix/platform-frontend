@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
-import { appRoutes } from "../../appRoutes";
+import { EAppRoutes } from "../../appRoutes";
 import NeufundLogo from "../../assets/neufund-logo.svg";
 import { baseSilver } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
@@ -23,7 +23,7 @@ const Header: React.FunctionComponent = () => {
           accessibilityLabel="Scan QR code"
           accessibilityHint="Opens a qr code scanner"
           testID="home.header.go-to-qr-code-scanner"
-          onPress={() => navigation.navigate(appRoutes.qrCode)}
+          onPress={() => navigation.navigate(EAppRoutes.qrCode)}
         />
       </View>
     </SafeAreaView>

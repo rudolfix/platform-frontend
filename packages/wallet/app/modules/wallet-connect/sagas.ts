@@ -14,7 +14,7 @@ import {
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
 
-import { appRoutes } from "../../appRoutes";
+import { EAppRoutes } from "../../appRoutes";
 import { navigate } from "../../routeUtils";
 import { notificationUIModuleApi } from "../notification-ui/module";
 import { signerUIModuleApi } from "../signer-ui/module";
@@ -48,7 +48,7 @@ function* connectToURI(
       throw new InvalidWalletConnectUriError();
     }
 
-    navigate(appRoutes.home);
+    navigate(EAppRoutes.home);
 
     const walletConnectManager = walletConnectManagerFactory(uri);
 

@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from "react-native";
 import Config from "react-native-config";
 
 import logo from "../../../assets/images/logo.png";
-import { appRoutes } from "../../appRoutes";
+import { EAppRoutes } from "../../appRoutes";
 import { authModuleAPI, EAuthState } from "../../modules/auth/module";
 import { appConnect } from "../../store/utils";
 import { silverLighter2 } from "../../styles/colors";
@@ -52,7 +52,7 @@ const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
         {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
           <Button
             layout={EButtonLayout.TEXT_DARK}
-            onPress={() => navigation.navigate(appRoutes.switchAccount)}
+            onPress={() => navigation.navigate(EAppRoutes.switchAccount)}
           >
             Switch account
           </Button>

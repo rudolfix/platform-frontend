@@ -4,7 +4,7 @@ import React from "react";
 import { Text } from "react-native";
 import Config from "react-native-config";
 
-import { appRoutes } from "../../appRoutes";
+import { EAppRoutes } from "../../appRoutes";
 import { authModuleAPI } from "../../modules/auth/module";
 import { walletConnectModuleApi } from "../../modules/wallet-connect/module";
 import { appConnect } from "../../store/utils";
@@ -45,7 +45,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
           heading: "Switch account",
           helperText: authWallet.name,
           icon: EIconType.WALLET,
-          onPress: () => navigation.navigate(appRoutes.switchAccount),
+          onPress: () => navigation.navigate(EAppRoutes.switchAccount),
         },
       ]);
     }

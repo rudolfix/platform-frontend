@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { Text } from "react-native";
 
-import { appRoutes } from "./appRoutes";
+import { EAppRoutes } from "./appRoutes";
 import { HomeScreen } from "./components/home/HomeScreen";
 import { PortfolioScreen } from "./components/portfolio/PortfolioScreen";
 import { ProfileScreen } from "./components/profile/ProfileScreen";
@@ -18,25 +18,25 @@ type TBarProps = { color?: string };
 const tabConfig = [
   {
     name: "Home",
-    route: appRoutes.home,
+    route: EAppRoutes.home,
     component: HomeScreen,
     icon: EIconType.HOME,
   },
   {
     name: "Portfolio",
-    route: appRoutes.portfolio,
+    route: EAppRoutes.portfolio,
     component: PortfolioScreen,
     icon: EIconType.PORTFOLIO,
   },
   {
     name: "Wallet",
-    route: appRoutes.wallet,
+    route: EAppRoutes.wallet,
     component: WalletScreen,
     icon: EIconType.WALLET,
   },
   {
     name: "Profile",
-    route: appRoutes.profile,
+    route: EAppRoutes.profile,
     component: ProfileScreen,
     icon: EIconType.PROFILE,
   },
@@ -47,7 +47,7 @@ const AppAuthRouterTabs: React.FunctionComponent = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={appRoutes.home}
+      initialRouteName={EAppRoutes.home}
       tabBarOptions={{
         inactiveTintColor: navigationTheme.colors.text,
       }}

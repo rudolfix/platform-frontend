@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared-utils";
+import { InvariantError } from "@neufund/shared-utils";
 import identity from "lodash/fp/identity";
 import pickBy from "lodash/fp/pickBy";
 import * as React from "react";
@@ -52,7 +52,7 @@ const icons = {
 const getIcon = (type: EIconType) => {
   const icon = icons[type];
   if (!icon) {
-    assertNever(type, `Invalid icon type ${type}`);
+    throw new InvariantError(`Invalid icon type ${type}`);
   }
 
   return icon;

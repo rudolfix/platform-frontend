@@ -6,6 +6,7 @@ import {
 import { utils } from "ethers";
 import { KeyPair } from "ethers/utils/secp256k1";
 import { injectable, inject } from "inversify";
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 
 import { EthModuleError } from "../errors";
 import {
@@ -17,7 +18,6 @@ import {
 import { isMnemonic, isPrivateKey } from "./utils";
 import { deviceInformationModuleApi } from "../../device-information/module";
 import { DeviceInformation } from "../../device-information/DeviceInformation";
-import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 
 class EthSecureEnclaveError extends EthModuleError {
   constructor(message: string) {
@@ -76,20 +76,25 @@ class EthSecureEnclave {
     if (this.secureStorage) {
       return this.secureStorage;
     }
+
     const platform = this.deviceInformation.getPlatform();
     // on the iOS simulator we have to simulate the storage, real devices and the android emulator
     // can emulate this
     const useAsyncStorageFallback =
-      __DEV__ && (await this.deviceInformation.isEmulator()) && platform == "ios";
+      __DEV__ && (await this.deviceInformation.isEmulator()) && platform === "ios";
 
     if (useAsyncStorageFallback) {
+      this.logger.info("Creating a non secure async storage");
+
       this.secureStorage = new AsyncSecureStorage();
     } else {
+      this.logger.info("Creating a secure storage");
+
       // on android we can't use biometry at this moment, as there is a bug in react-native-keychain which
       // prevents it from working with the android face recognition. Once this is solved, biometry should
       // always be used.
       // https://github.com/oblador/react-native-keychain/issues/318
-      const useBiometry = platform != "android";
+      const useBiometry = platform !== "android";
       this.secureStorage = new KeychainSecureStorage(useBiometry);
     }
     return this.secureStorage;

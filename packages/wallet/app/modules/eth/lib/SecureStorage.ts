@@ -1,13 +1,14 @@
 import { Opaque } from "@neufund/shared-utils";
 import { utils } from "ethers";
-import { Cache, CacheClass } from "memory-cache";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Keychain from "react-native-keychain";
+
+import { CACHE_TIMEOUT } from "./constants";
+import { CacheClass, Cache } from "../../../utils/memoryCache";
 
 export type TSecureReference = Opaque<"SecureReference", string>;
 
 export const toSecureReference = (reference: string) => reference as TSecureReference;
-const CACHE_TIMEOUT = 10000; // 10 seconds
 
 /**
  * An encrypted secure storage

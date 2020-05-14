@@ -10,7 +10,7 @@ module.exports = {
       "error",
       {
         // 0 is often used to access first element of an array
-        ignore: [0, 1, 2],
+        ignore: [0, 1, 2, 4, 10],
         ignoreEnums: true,
         ignoreNumericLiteralTypes: true,
         ignoreReadonlyClassProperties: true,

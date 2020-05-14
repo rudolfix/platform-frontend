@@ -1,5 +1,6 @@
 import { Dictionary } from "@neufund/shared-utils";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const store: Dictionary<any> = {};
 
 const ACCESS_CONTROL = {
@@ -24,6 +25,7 @@ async function setInternetCredentials(server: string, name: string, password: st
 }
 
 async function resetInternetCredentials(server: string) {
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   delete store[server];
   return Promise.resolve(null);
 }

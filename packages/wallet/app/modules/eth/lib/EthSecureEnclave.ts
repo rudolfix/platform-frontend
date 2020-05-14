@@ -1,3 +1,4 @@
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import {
   EthereumHDPath,
   EthereumAddressWithChecksum,
@@ -6,8 +7,9 @@ import {
 import { utils } from "ethers";
 import { KeyPair } from "ethers/utils/secp256k1";
 import { injectable, inject } from "inversify";
-import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 
+import { DeviceInformation } from "../../device-information/DeviceInformation";
+import { deviceInformationModuleApi } from "../../device-information/module";
 import { EthModuleError } from "../errors";
 import {
   ISecureStorage,
@@ -16,8 +18,6 @@ import {
   KeychainSecureStorage,
 } from "./SecureStorage";
 import { isMnemonic, isPrivateKey } from "./utils";
-import { deviceInformationModuleApi } from "../../device-information/module";
-import { DeviceInformation } from "../../device-information/DeviceInformation";
 
 class EthSecureEnclaveError extends EthModuleError {
   constructor(message: string) {

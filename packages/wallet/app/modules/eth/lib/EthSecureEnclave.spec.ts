@@ -1,6 +1,8 @@
-import { toEthereumHDPath } from "@neufund/shared-utils";
 import { noopLogger } from "@neufund/shared-modules";
+import { toEthereumHDPath } from "@neufund/shared-utils";
 
+import { createMock } from "../../../utils/testUtils.specUtils";
+import { DeviceInformation } from "../../device-information/DeviceInformation";
 import {
   EthSecureEnclave,
   FailedToDerivePrivateKey,
@@ -9,10 +11,8 @@ import {
   SecretNotAPrivateKeyError,
 } from "./EthSecureEnclave";
 import { toSecureReference } from "./SecureStorage";
-import { isMnemonic } from "./utils";
-import { createMock } from "../../../utils/testUtils.specUtils";
-import { DeviceInformation } from "../../device-information/DeviceInformation";
 import { getInternetCredentials } from "./__mocks__/react-native-keychain";
+import { isMnemonic } from "./utils";
 
 describe("EthSecureEnclave (with SecureStorage)", () => {
   const messageHash = "0xc7595adb6684bd03eb6ee54f10b0224e4bcfdaa5d393187583eb1777ae169d80";

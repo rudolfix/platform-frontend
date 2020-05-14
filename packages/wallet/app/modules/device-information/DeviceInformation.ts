@@ -1,7 +1,7 @@
-import { getUniqueId, isEmulator } from "react-native-device-info";
-import { Platform, PlatformOSType } from "react-native";
-import { inject, injectable } from "inversify";
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+import { inject, injectable } from "inversify";
+import { Platform, PlatformOSType } from "react-native";
+import { getUniqueId, isEmulator } from "react-native-device-info";
 
 /**
  * @class DeviceInformation

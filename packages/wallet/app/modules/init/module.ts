@@ -2,6 +2,7 @@ import { setupCoreModule, setupTokenPriceModule } from "@neufund/shared-modules"
 
 import { setupAuthModule } from "../auth/module";
 import { setupWalletContractsModule } from "../contracts/module";
+import { setupDeviceInformationModule } from "../device-information/module";
 import { setupWalletEthModule } from "../eth/module";
 import { setupNotificationUIModule } from "../notification-ui/module";
 import { setupSignerUIModule } from "../signer-ui/module";
@@ -32,6 +33,7 @@ const setupInitModule = (config: TConfig) => {
     setupSignerUIModule(),
     setupNotificationUIModule(),
     setupWalletConnectModule(),
+    setupDeviceInformationModule(),
     ...setupAuthModule(),
     ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
     setupTokenPriceModule({

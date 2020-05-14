@@ -121,7 +121,7 @@ function* createNewAccount(): SagaGenerator<void> {
 
     yield put(
       notificationUIModuleApi.actions.showError(
-        "New account wasn't created. If issue persist please contact support center.",
+        "New account wasn't created. If this issue persists, please contact support center.",
       ),
     );
 
@@ -197,7 +197,7 @@ function* importNewAccount(
 
     yield put(
       notificationUIModuleApi.actions.showError(
-        "New account wasn't imported. If issue persist please contact support center.",
+        "New account wasn't imported. If this issue persists, please contact support center.",
       ),
     );
 

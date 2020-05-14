@@ -3,16 +3,15 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import Config from "react-native-config";
 
-import { appRoutes } from "../../appRoutes";
+import logo from "../../../assets/images/logo.png";
+import { EAppRoutes } from "../../appRoutes";
+import { authModuleAPI, EAuthState } from "../../modules/auth/module";
 import { appConnect } from "../../store/utils";
 import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
-import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { NeuGradientScreen } from "../shared/NeuGradientScreen";
+import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
-import { authModuleAPI, EAuthState } from "../../modules/auth/module";
-
-import logo from "../../../assets/images/logo.png";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
@@ -33,7 +32,7 @@ const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   return (
     <NeuGradientScreen style={styles.wrapper}>
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={logo} />
+        <Image style={styles.logo} source={logo} accessibilityIgnoresInvertColors={true} />
       </View>
 
       <View style={styles.container}>
@@ -53,7 +52,7 @@ const UnlockAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
         {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
           <Button
             layout={EButtonLayout.TEXT_DARK}
-            onPress={() => navigation.navigate(appRoutes.switchAccount)}
+            onPress={() => navigation.navigate(EAppRoutes.switchAccount)}
           >
             Switch account
           </Button>
@@ -82,12 +81,6 @@ const styles = StyleSheet.create({
   },
   headline: {
     ...spacingStyles.mb4,
-    textAlign: "center",
-    color: silverLighter2,
-  },
-  paragraph: {
-    ...spacingStyles.mb4,
-    ...spacingStyles.ph5,
     textAlign: "center",
     color: silverLighter2,
   },

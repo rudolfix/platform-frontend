@@ -1,5 +1,6 @@
 import { coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
 import { ContainerModule } from "inversify";
+
 import { AppSingleKeyStorage, storageModuleApi } from "../../storage";
 import { JWT_KEY } from "./constants";
 import { JWTStorageSchema } from "./schemas";

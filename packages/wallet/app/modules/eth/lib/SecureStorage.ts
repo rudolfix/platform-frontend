@@ -1,7 +1,7 @@
 import { Opaque } from "@neufund/shared-utils";
-import { utils } from "ethers";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Keychain from "react-native-keychain";
+import { utils } from "ethers";
 
 import { CACHE_TIMEOUT } from "./constants";
 import { CacheClass, Cache } from "../../../utils/memoryCache";
@@ -66,6 +66,7 @@ abstract class BaseSecureStorage implements ISecureStorage {
   }
 
   async setSecret(secret: string): Promise<TSecureReference> {
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const reference = utils.bigNumberify(utils.randomBytes(32)).toString();
     this.setSecretInternal(reference, secret);
     this.localCache.put(reference, secret, CACHE_TIMEOUT);

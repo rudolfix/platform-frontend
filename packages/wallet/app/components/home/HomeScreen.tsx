@@ -4,9 +4,9 @@ import { StyleSheet } from "react-native";
 
 import { appConnect } from "../../store/utils";
 import { spacingStyles } from "../../styles/spacings";
-import { Asset, EAssetType } from "../shared/asset/Asset";
 import { EIconType } from "../shared/Icon";
 import { SafeAreaScreen } from "../shared/Screen";
+import { Asset, EAssetType } from "../shared/asset/Asset";
 import { Header } from "./Header";
 import { Section } from "./Section";
 

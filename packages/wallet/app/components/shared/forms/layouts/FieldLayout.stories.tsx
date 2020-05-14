@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions";
-import * as React from "react";
 import { storiesOf } from "@storybook/react-native";
+import * as React from "react";
 
 import { EFieldType, FieldLayout } from "./FieldLayout";
 import { switcherItemsWithTitleAndSubTitle } from "./switcher/Switcher.stories";

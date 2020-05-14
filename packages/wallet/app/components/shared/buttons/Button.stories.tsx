@@ -4,7 +4,6 @@ import * as React from "react";
 import { View } from "react-native";
 
 import { LineBreak } from "../LineBreak";
-
 import { Button, EButtonLayout } from "./Button";
 
 storiesOf("Atoms|Button", module)

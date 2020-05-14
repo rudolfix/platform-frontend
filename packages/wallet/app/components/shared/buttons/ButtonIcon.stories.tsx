@@ -15,6 +15,7 @@ storiesOf("Atoms|ButtonIcon", module)
         icon={EIconType.HOME}
         onPress={action("onPress")}
         accessibilityLabel="Go to Home"
+        accessibilityHint="Returns back to the main screen"
       />
 
       <LineBreak />
@@ -24,6 +25,7 @@ storiesOf("Atoms|ButtonIcon", module)
         disabled={true}
         onPress={action("onPress")}
         accessibilityLabel="Go to Home"
+        accessibilityHint="Returns back to the main screen"
       />
 
       <LineBreak />
@@ -33,6 +35,7 @@ storiesOf("Atoms|ButtonIcon", module)
         loading={true}
         onPress={action("onPress")}
         accessibilityLabel="Go to Home"
+        accessibilityHint="Returns back to the main screen"
       />
     </>
   ));

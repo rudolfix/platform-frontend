@@ -5,12 +5,13 @@ import { StyleProp } from "react-native";
 
 type Style = StyleProp<unknown>;
 
+type StyleOrArrayOfStyles = Style | [unknown, SingleOrArray<Style>];
 /**
  * A helpful react-native style util to work with conditional styling
  *
  * @todo It should be possible to type it better in the future
  */
-const st = (...styles: (Style | [unknown, SingleOrArray<Style>])[]): object[] =>
+const st = (...styles: StyleOrArrayOfStyles[]): object[] =>
   flatMap(styles, style => {
     // remember to check also if first item is of primitive type
     if (Array.isArray(style) && !isObjectLike(style[0])) {

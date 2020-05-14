@@ -1,21 +1,21 @@
-import { assertNever } from "@neufund/shared-utils";
+import { InvariantError } from "@neufund/shared-utils";
+import identity from "lodash/fp/identity";
+import pickBy from "lodash/fp/pickBy";
 import * as React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
-import pickBy from "lodash/fp/pickBy";
-import identity from "lodash/fp/identity";
 
-import Eth from "../../assets/tokens/eth.svg";
-import NEur from "../../assets/tokens/n-eur.svg";
+import Close from "../../assets/close.svg";
 import Home from "../../assets/home.svg";
 import Investments from "../../assets/investments.svg";
-import Profile from "../../assets/profile.svg";
-import Wallet from "../../assets/wallet.svg";
-import RightArrow from "../../assets/right-arrow.svg";
-import Close from "../../assets/close.svg";
 import Placeholder from "../../assets/placeholder.svg";
-import Share from "../../assets/share.svg";
-import Yes from "../../assets/yes.svg";
+import Profile from "../../assets/profile.svg";
 import QrCode from "../../assets/qr-code.svg";
+import RightArrow from "../../assets/right-arrow.svg";
+import Share from "../../assets/share.svg";
+import Eth from "../../assets/tokens/eth.svg";
+import NEur from "../../assets/tokens/n-eur.svg";
+import Wallet from "../../assets/wallet.svg";
+import Yes from "../../assets/yes.svg";
 
 enum EIconType {
   HOME = "home",
@@ -34,35 +34,28 @@ enum EIconType {
 
 const pickByIdentity = pickBy(identity);
 
+const icons = {
+  [EIconType.CLOSE]: Close,
+  [EIconType.ETH]: Eth,
+  [EIconType.HOME]: Home,
+  [EIconType.PORTFOLIO]: Investments,
+  [EIconType.N_EUR]: NEur,
+  [EIconType.PLACEHOLDER]: Placeholder,
+  [EIconType.PROFILE]: Profile,
+  [EIconType.QR_CODE]: QrCode,
+  [EIconType.RIGHT_ARROW]: RightArrow,
+  [EIconType.SHARE]: Share,
+  [EIconType.WALLET]: Wallet,
+  [EIconType.YES]: Yes,
+};
+
 const getIcon = (type: EIconType) => {
-  switch (type) {
-    case EIconType.HOME:
-      return Home;
-    case EIconType.PORTFOLIO:
-      return Investments;
-    case EIconType.PROFILE:
-      return Profile;
-    case EIconType.WALLET:
-      return Wallet;
-    case EIconType.CLOSE:
-      return Close;
-    case EIconType.PLACEHOLDER:
-      return Placeholder;
-    case EIconType.SHARE:
-      return Share;
-    case EIconType.RIGHT_ARROW:
-      return RightArrow;
-    case EIconType.YES:
-      return Yes;
-    case EIconType.ETH:
-      return Eth;
-    case EIconType.N_EUR:
-      return NEur;
-    case EIconType.QR_CODE:
-      return QrCode;
-    default:
-      assertNever(type, `Invalid icon type ${type}`);
+  const icon = icons[type];
+  if (!icon) {
+    throw new InvariantError(`Invalid icon type ${type}`);
   }
+
+  return icon;
 };
 
 type TSvgIconProps = React.ComponentProps<ReturnType<typeof getIcon>>;

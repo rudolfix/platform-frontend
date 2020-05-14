@@ -45,9 +45,9 @@ const Link: React.FunctionComponent<TExternalProps> = React.forwardRef<
       activeOpacity={1}
       underlayColor="transparent"
       accessibilityRole="link"
-      accessibilityComponentType="button"
-      accessibilityTraits={props.disabled ? ["link", "disabled"] : "link"}
-      accessibilityStates={props.disabled ? ["disabled"] : []}
+      // double negate accessibilityState
+      // https://github.com/FormidableLabs/eslint-plugin-react-native-a11y/issues/84
+      accessibilityState={{ disabled: !!props.disabled }}
       onPress={onPressHandler}
       onShowUnderlay={onShowUnderlay}
       onHideUnderlay={onHideUnderlay}

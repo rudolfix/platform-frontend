@@ -11,6 +11,7 @@ import {
   grayLighter4,
   silverLighter1,
   silverLighter2,
+  transparent,
   yellowDarker1,
 } from "../../../styles/colors";
 import { st } from "../../utils";
@@ -72,9 +73,7 @@ const Button = React.forwardRef<TouchableHighlight, TExternalProps>(
         )}
         activeColor={yellowDarker1}
         accessibilityRole="button"
-        accessibilityComponentType="button"
-        accessibilityTraits={isDisabled ? ["button", "disabled"] : "button"}
-        accessibilityStates={isDisabled ? ["disabled"] : []}
+        accessibilityState={{ disabled: isDisabled }}
         disabled={isDisabled}
         {...props}
       >
@@ -137,12 +136,12 @@ const styles = StyleSheet.create({
 
   // Text button
   buttonText: {
-    borderColor: "transparent",
-    backgroundColor: "transparent",
+    borderColor: transparent,
+    backgroundColor: transparent,
   },
   buttonTextDisabled: {
-    borderColor: "transparent",
-    backgroundColor: "transparent",
+    borderColor: transparent,
+    backgroundColor: transparent,
   },
 
   // Text dark button

@@ -17,7 +17,7 @@ const Screen: React.FunctionComponent<TExternalProps> = ({ children, style, ...p
   return (
     <SafeAreaView style={styles.screen}>
       <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "position" : undefined}
+        behavior={Platform.OS == "ios" ? "padding" : undefined}
         contentContainerStyle={styles.flex}
         keyboardVerticalOffset={headerHeight + insets.top}
         style={styles.flex}

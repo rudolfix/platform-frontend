@@ -1,11 +1,13 @@
 import { fork, neuTakeLatest, put, take, call, TActionFromCreator } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 
-import { TGlobalDependencies } from "../../di/setupBindings";
 import { ITransactionResponse } from "../eth/lib/types";
 import { walletEthModuleApi } from "../eth/module";
 import { signerUIActions } from "./actions";
 import { ESignerType } from "./types";
+
+// TODO: Remove when we get rid of saga `deps` in neu wrappers
+type TGlobalDependencies = unknown;
 
 function* sign(
   _: TGlobalDependencies,

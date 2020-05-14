@@ -1,8 +1,8 @@
 import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
-import { tokenPriceModuleApi } from "@neufund/shared-modules";
-import { TGlobalDependencies } from "../../di/setupBindings";
+import { coreModuleApi, neuGetBindings, tokenPriceModuleApi } from "@neufund/shared-modules";
 import { walletContractsModuleApi } from "../contracts/module";
 import { authModuleAPI } from "../auth/module";
+import { notificationModuleApi } from "../notifications/module";
 import { initActions } from "./actions";
 
 /**
@@ -12,7 +12,11 @@ function* initGlobalWatchers(): SagaGenerator<void> {
   yield put(tokenPriceModuleApi.actions.watchTokenPriceStart());
 }
 
-function* initStartSaga({ logger, notifications }: TGlobalDependencies): Generator<unknown, void> {
+function* initStartSaga(): SagaGenerator<void> {
+  const { logger, notifications } = yield* neuGetBindings({
+    logger: coreModuleApi.symbols.logger,
+    notifications: notificationModuleApi.symbols.notifications,
+  });
   try {
     yield* call(walletContractsModuleApi.sagas.initializeContracts);
     yield* call(initGlobalWatchers);
@@ -21,7 +25,7 @@ function* initStartSaga({ logger, notifications }: TGlobalDependencies): Generat
     yield* call(authModuleAPI.sagas.trySignInExistingAccount);
 
     // init push notifications
-    yield notifications.init();
+    yield* call(() => notifications.init());
 
     // subscribe for notifications test
     notifications.onReceivedNotificationInForeground(

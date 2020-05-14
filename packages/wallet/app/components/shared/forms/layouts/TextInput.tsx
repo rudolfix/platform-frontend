@@ -11,7 +11,7 @@ import {
   baseGray,
   baseRed,
   baseWhite,
-  blueyGrey,
+  blueyGray,
   grayLighter4,
   silverLighter1,
   yellowDarker1,
@@ -46,7 +46,7 @@ const TextInput = React.forwardRef<NativeTextInput, TExternalProps>(
       <NativeTextInput
         ref={ref}
         editable={!disabled}
-        placeholderTextColor={blueyGrey}
+        placeholderTextColor={blueyGray}
         selectionColor={yellowDarker1}
         style={st(
           styles.input,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   inputDisabled: {
     backgroundColor: silverLighter1,
-    color: blueyGrey,
+    color: blueyGray,
   },
   inputInvalid: {
     borderColor: baseRed,

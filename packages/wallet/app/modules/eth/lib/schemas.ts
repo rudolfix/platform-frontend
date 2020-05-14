@@ -43,6 +43,7 @@ const ethereumPrivateKey = () => typedValue(isPrivateKey);
 const HDWalletMetadataSchema = yup.object({
   type: singleValue<EWalletType.HD_WALLET>(EWalletType.HD_WALLET).required(),
   address: ethereumAddress().required(),
+  name: yup.string().notRequired(),
   derivationPath: ethereumHdPath().required(),
   mnemonicReference: secureReference().required(),
   privateKeyReference: secureReference().required(),
@@ -51,6 +52,7 @@ const HDWalletMetadataSchema = yup.object({
 const PrivateKeyWalletMetadataSchema = yup.object({
   type: singleValue<EWalletType.PRIVATE_KEY_WALLET>(EWalletType.PRIVATE_KEY_WALLET).required(),
   address: ethereumAddress().required(),
+  name: yup.string().notRequired(),
   privateKeyReference: secureReference().required(),
 });
 

@@ -1,8 +1,7 @@
 import { inject, injectable } from "inversify";
 import messaging, { FirebaseMessagingTypes } from "@react-native-firebase/messaging";
 import { INotificationsProvider } from "./INotificationsProvider";
-import { symbols as globalSymbols } from "../../di/symbols";
-import { ILogger } from "@neufund/shared-modules";
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 
 /**
  * @class FirebaseProvider
@@ -14,7 +13,7 @@ class FirebaseProvider implements INotificationsProvider {
   private readonly app: FirebaseMessagingTypes.Module;
   private readonly logger: ILogger;
 
-  constructor(@inject(globalSymbols.logger) logger: ILogger) {
+  constructor(@inject(coreModuleApi.symbols.logger) logger: ILogger) {
     this.app = messaging();
     this.logger = logger;
   }

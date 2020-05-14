@@ -2,9 +2,10 @@ import { fork, neuTakeLatest, TActionFromCreator } from "@neufund/sagas";
 import { notificationUIModuleApi } from "@neufund/shared-modules";
 import { Alert } from "react-native";
 
-import { TGlobalDependencies } from "../../di/setupBindings";
-
 const actions = notificationUIModuleApi.actions;
+
+// TODO: Remove when we get rid of saga `deps` in neu wrappers
+type TGlobalDependencies = unknown;
 
 function* showInfo(
   _: TGlobalDependencies,

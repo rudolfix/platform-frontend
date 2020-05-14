@@ -6,7 +6,7 @@ import {
   baseGray,
   baseWhite,
   baseYellow,
-  blueyGrey,
+  blueyGray,
   grayLighter2,
   grayLighter4,
   silverLighter1,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: silverLighter1,
   },
   buttonCommonDisabledLabel: {
-    color: blueyGrey,
+    color: blueyGray,
   },
 
   // Primary button

@@ -16,7 +16,6 @@ import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
 
 import { appRoutes } from "../../appRoutes";
-import { TGlobalDependencies } from "../../di/setupBindings";
 import { notificationUIModuleApi } from "../notification-ui/module";
 import { signerUIModuleApi } from "../signer-ui/module";
 import { ESignerType } from "../signer-ui/types";
@@ -27,6 +26,9 @@ import { EWalletConnectManagerEvents, TWalletConnectManagerEmit } from "./lib/ty
 import { InvalidWalletConnectUriError, isValidWalletConnectUri } from "./lib/utils";
 import { WalletConnectManager } from "./lib/WalletConnectManager";
 import { navigate } from "../../routeUtils";
+
+// TODO: Remove when we get rid of saga `deps` in neu wrappers
+type TGlobalDependencies = unknown;
 
 function* connectToURI(
   _: TGlobalDependencies,

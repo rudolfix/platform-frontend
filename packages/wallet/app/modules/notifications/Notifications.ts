@@ -6,11 +6,10 @@ import {
 } from "react-native-notifications";
 import { EventsRegistry } from "react-native-notifications/lib/dist/events/EventsRegistry";
 import { NotificationCompletion } from "react-native-notifications/lib/dist/interfaces/NotificationCompletion";
-import { ILogger } from "@neufund/shared-modules";
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 
 import { INotificationsProvider } from "./INotificationsProvider";
 import { symbols } from "./symbols";
-import { symbols as globalSymbols } from "../../di/symbols";
 import { Permissions } from "../permissions/Permissions";
 import { DeviceInformation } from "../device-information/DeviceInformation";
 import { permissionsModuleApi, PERMISSION_RESULTS } from "../permissions/module";
@@ -40,7 +39,7 @@ export class Notifications {
   constructor(
     @inject(symbols.notificationsProvider) notificationsProvider: INotificationsProvider,
     @inject(permissionsModuleApi.symbols.permissions) permissions: Permissions,
-    @inject(globalSymbols.logger) logger: ILogger,
+    @inject(coreModuleApi.symbols.logger) logger: ILogger,
     @inject(deviceInformationModuleApi.symbols.deviceInformation)
     deviceInformation: DeviceInformation,
   ) {

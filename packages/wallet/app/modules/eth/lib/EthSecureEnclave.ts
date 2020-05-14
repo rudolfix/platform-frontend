@@ -1,4 +1,8 @@
-import { EthereumHDPath, EthereumAddress, toEthereumAddress } from "@neufund/shared-utils";
+import {
+  EthereumHDPath,
+  EthereumAddressWithChecksum,
+  toEthereumChecksumAddress,
+} from "@neufund/shared-utils";
 import { utils } from "ethers";
 import { KeyPair } from "ethers/utils/secp256k1";
 import { injectable } from "inversify";
@@ -91,7 +95,7 @@ class EthSecureEnclave {
    * @param reference - Secret reference to the private key
    *
    */
-  async getAddress(reference: TSecureReference): Promise<EthereumAddress> {
+  async getAddress(reference: TSecureReference): Promise<EthereumAddressWithChecksum> {
     const secret = await this.unsafeGetSecret(reference);
 
     if (secret === null) {
@@ -102,7 +106,7 @@ class EthSecureEnclave {
       throw new SecretNotAPrivateKeyError();
     }
 
-    return toEthereumAddress(utils.computeAddress(secret));
+    return toEthereumChecksumAddress(utils.computeAddress(secret));
   }
 
   /**

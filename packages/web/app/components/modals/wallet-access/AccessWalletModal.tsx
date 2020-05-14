@@ -1,4 +1,5 @@
 import { Button, Image, ISrcSet } from "@neufund/design-system";
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -6,7 +7,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { selectIsAccessWalletModalOpen } from "../../../modules/access-wallet/selectors";
 import { actions } from "../../../modules/actions";
 import { selectWalletSubType, selectWalletType } from "../../../modules/web3/selectors";
-import { EWalletSubType, EWalletType } from "../../../modules/web3/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
 import { WarningAlert } from "../../shared/WarningAlert";

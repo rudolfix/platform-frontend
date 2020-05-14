@@ -7,7 +7,7 @@ import {
   IHttpRequestCommon,
   IHttpResponse,
   ISingleKeyStorage,
-} from "../../core/module";
+} from "../../../core/module";
 
 export interface IAuthHttpClient extends IHttpClient {
   get<T>(config: IHttpGetRequest, jwt?: string): Promise<IHttpResponse<T>>;

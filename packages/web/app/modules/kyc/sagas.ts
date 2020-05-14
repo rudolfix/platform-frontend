@@ -1,5 +1,5 @@
 import { all, call, delay, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
+import { EJwtPermissions, IHttpResponse, IUser } from "@neufund/shared-modules";
 
 import { KycFlowMessage } from "../../components/translatedMessages/messages";
 import {
@@ -18,7 +18,6 @@ import {
   TKycBankAccount,
   TKycStatus,
 } from "../../lib/api/kyc/KycApi.interfaces";
-import { IUser } from "../../lib/api/users/interfaces";
 import { IdentityRegistry } from "../../lib/contracts/IdentityRegistry";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";

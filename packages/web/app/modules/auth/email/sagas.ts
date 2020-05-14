@@ -1,4 +1,10 @@
 import { call, fork, put, SagaGenerator, select } from "@neufund/sagas";
+import {
+  authModuleAPI,
+  EWalletType,
+  IVerifyEmailUser,
+  neuGetBindings,
+} from "@neufund/shared-modules";
 import { includes } from "lodash/fp";
 
 import {
@@ -9,8 +15,6 @@ import { AuthMessage } from "../../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../../config/constants";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { IVerifyEmailUser } from "../../../lib/api/users/interfaces";
-import { EmailActivationCodeMismatch, EmailAlreadyExists } from "../../../lib/api/users/UsersApi";
 import { TStoredWalletMetadata } from "../../../lib/persistence/WalletStorage";
 import { TAppGlobalState } from "../../../store";
 import { actions } from "../../actions";
@@ -19,7 +23,6 @@ import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { selectIsVerifyEmailRedirect } from "../../routing/selectors";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectActivationCodeFromQueryString, selectWalletType } from "../../web3/selectors";
-import { EWalletType } from "../../web3/types";
 import {
   selectIsAgreementAccepted,
   selectUnverifiedUserEmail,
@@ -35,7 +38,7 @@ export function* processVerifyEmailLink({
   walletStorage,
 }: TGlobalDependencies): Generator<any, any, any> {
   const walletMetadata = (yield* call(() => walletStorage.get()))!;
-  const unverifiedEmail = yield* select((s: TAppGlobalState) => selectUnverifiedUserEmail(s.auth));
+  const unverifiedEmail = yield* select(selectUnverifiedUserEmail);
   // we ignore everything in the activation link except the code. e-mails may be spoofed or mangled by mail clients
   const userCode = (yield* select(selectActivationCodeFromQueryString))!;
 
@@ -82,7 +85,7 @@ export function* processVerifyEmailLink({
   yield neuCall(loadUser);
   // Update metadata email only when wallet type is LightWallet
   if (walletMetadata.walletType === EWalletType.LIGHT) {
-    const verifiedEmail = yield* select((s: TAppGlobalState) => selectVerifiedUserEmail(s.auth));
+    const verifiedEmail = yield* select(selectVerifiedUserEmail);
     const updatedMetadata: TStoredWalletMetadata = { ...walletMetadata, email: verifiedEmail! };
     yield* call(() => walletStorage.set(updatedMetadata));
   }
@@ -90,9 +93,13 @@ export function* processVerifyEmailLink({
 }
 
 export function* verifyUserEmailPromise(
-  { apiUserService }: TGlobalDependencies,
+  _: TGlobalDependencies,
   userCode: IVerifyEmailUser,
 ): SagaGenerator<boolean> {
+  const { apiUserService } = yield* neuGetBindings({
+    apiUserService: authModuleAPI.symbols.apiUserService,
+  });
+
   try {
     yield* call(apiUserService.verifyUserEmail, userCode);
     yield put(
@@ -106,9 +113,9 @@ export function* verifyUserEmailPromise(
         "data-test-id": `modules.auth.sagas.verify-user-email.toast.verification-failed-${message}`,
       });
 
-    if (e instanceof EmailAlreadyExists) {
+    if (e instanceof authModuleAPI.error.EmailAlreadyExists) {
       yield put(getNotificationAction(AuthMessage.AUTH_EMAIL_ALREADY_EXISTS));
-    } else if (e instanceof EmailActivationCodeMismatch) {
+    } else if (e instanceof authModuleAPI.error.EmailActivationCodeMismatch) {
       yield put(getNotificationAction(AuthMessage.AUTH_EMAIL_VERIFICATION_CODE_MISMATCH));
     } else {
       yield put(getNotificationAction(AuthMessage.AUTH_EMAIL_VERIFICATION_FAILED));
@@ -120,17 +127,22 @@ export function* verifyUserEmailPromise(
   return true;
 }
 
-export async function isEmailAvailablePromise(
-  { apiUserService }: TGlobalDependencies,
+export function* isEmailAvailablePromise(
+  _: TGlobalDependencies,
   email: string,
-): Promise<boolean> {
-  const emailStatus = await apiUserService.emailStatus(email);
+): SagaGenerator<boolean> {
+  const { apiUserService } = yield* neuGetBindings({
+    apiUserService: authModuleAPI.symbols.apiUserService,
+  });
+
+  const emailStatus = yield* call(() => apiUserService.emailStatus(email));
+
   return emailStatus.isAvailable;
 }
 
 export function* checkForPendingEmailVerification(): Generator<any, void, any> {
   const tosAccepted = yield* select(selectIsAgreementAccepted);
-  const unverifiedEmail = yield* select((s: TAppGlobalState) => selectUnverifiedUserEmail(s.auth));
+  const unverifiedEmail = yield* select(selectUnverifiedUserEmail);
 
   // this is a workaround for #3942 (see QA's comment).
   // this can be done in a much nicer way after implementing route-based saga approach

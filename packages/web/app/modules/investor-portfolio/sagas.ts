@@ -1,5 +1,5 @@
 import { all, fork, put, select } from "@neufund/sagas";
-import { contractsModuleApi } from "@neufund/shared-modules";
+import { contractsModuleApi, IUser } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   convertFromUlps,
@@ -17,7 +17,6 @@ import { InvestorPortfolioMessage } from "../../components/translatedMessages/me
 import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { EEtoState, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IUser } from "../../lib/api/users/interfaces";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { promisify } from "../../lib/contracts/typechain-runtime";

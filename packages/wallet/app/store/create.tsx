@@ -12,6 +12,7 @@ import Config from "react-native-config";
 import { createGlobalDependencies, setupBindings, TGlobalDependencies } from "../di/setupBindings";
 import { TConfig } from "../di/types";
 import { setupWalletContractsModule } from "../modules/contracts/module";
+import { setupAuthModule } from "../modules/auth/module";
 import { setupWalletEthModule } from "../modules/eth/module";
 import { setupNotificationUIModule } from "../modules/notification-ui/module";
 import { appReducers } from "../modules/reducers";
@@ -63,11 +64,11 @@ export const createAppStore = (container: Container) => {
     setupSignerUIModule(),
     setupNotificationUIModule(),
     setupWalletConnectModule(),
-
     setupTokenPriceModule({
       // TODO: When we have a proper block watching flow for mobile app provide proper refresh action
       refreshOnAction: undefined,
     }),
+    ...setupAuthModule(),
     appModule,
   );
 };

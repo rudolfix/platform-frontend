@@ -1,3 +1,4 @@
+import { EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import { expect } from "chai";
 
@@ -16,7 +17,6 @@ import {
   selectLightWalletEmailFromQueryString,
   selectLightWalletFromQueryString,
 } from "./selectors";
-import { EWalletSubType, EWalletType } from "./types";
 
 describe("web3 > selectors", () => {
   const salt = "salt";
@@ -25,19 +25,19 @@ describe("web3 > selectors", () => {
 
   describe("selectIsLightWallet", () => {
     it("should work with connected wallet", () => {
-      const state: IWeb3State = {
+      const web3State: IWeb3State = {
         connected: true,
         wallet: getDummyLightWalletMetadata(),
         web3Available: true,
       };
 
-      const isLightWallet = selectIsLightWallet(state);
+      const isLightWallet = selectIsLightWallet({ web3: web3State } as TAppGlobalState);
 
       expect(isLightWallet).to.be.true;
     });
 
     it("should work with not connected wallet", () => {
-      const state: IWeb3State = {
+      const web3State: IWeb3State = {
         connected: false,
         previousConnectedWallet: {
           walletType: EWalletType.LIGHT,
@@ -49,7 +49,7 @@ describe("web3 > selectors", () => {
         web3Available: true,
       };
 
-      const isLightWallet = selectIsLightWallet(state);
+      const isLightWallet = selectIsLightWallet({ web3: web3State } as TAppGlobalState);
 
       expect(isLightWallet).to.be.true;
     });

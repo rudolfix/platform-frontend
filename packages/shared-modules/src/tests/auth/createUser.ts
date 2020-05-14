@@ -1,7 +1,8 @@
+import { wrappedFetch } from "../wrapperFetch";
 import { TKycType } from "./constants";
-import { wrappedFetch } from "./wrappedFetch";
 
 const CREATE_USER_PATH = "/api/external-services-mock/e2e-tests/user/";
+
 /**
  * Create a user object with the dev services
  * User will have an accepted email address as well as

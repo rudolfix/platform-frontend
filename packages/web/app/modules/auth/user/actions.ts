@@ -1,6 +1,5 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { IUser } from "../../../lib/api/users/interfaces";
 import { ELogoutReason } from "../types";
 
 type TLogoutActionOptions = {
@@ -8,7 +7,6 @@ type TLogoutActionOptions = {
 };
 
 export const authUserActions = {
-  setUser: createActionFactory("AUTH_SET_USER", (user: IUser) => ({ user })),
   finishSigning: createActionFactory("AUTH_FINISH_SIGNING"),
   logout: createActionFactory("AUTH_LOGOUT", (options: TLogoutActionOptions = {}) => options),
   logoutDone: createActionFactory("AUTH_LOGOUT_DONE"),

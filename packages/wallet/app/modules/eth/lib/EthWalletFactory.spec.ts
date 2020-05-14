@@ -1,7 +1,7 @@
 import { noopLogger } from "@neufund/shared-modules";
 import {
   toEthereumPrivateKey,
-  toEthereumAddress,
+  toEthereumChecksumAddress,
   toEthereumHDMnemonic,
   toEthereumHDPath,
 } from "@neufund/shared-utils";
@@ -16,7 +16,7 @@ import { EWalletType } from "./types";
 
 const hdWalletMetadata: THDWalletMetadata = {
   type: EWalletType.HD_WALLET,
-  address: toEthereumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
+  address: toEthereumChecksumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
   mnemonicReference: toSecureReference("0"),
   privateKeyReference: toSecureReference("1"),
   derivationPath: toEthereumHDPath("m/44'/60'/0'"),
@@ -24,7 +24,7 @@ const hdWalletMetadata: THDWalletMetadata = {
 
 const privateKeyWalletMetadata: TPrivateKeyWalletMetadata = {
   type: EWalletType.PRIVATE_KEY_WALLET,
-  address: toEthereumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
+  address: toEthereumChecksumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
   privateKeyReference: toSecureReference("0"),
 };
 
@@ -37,7 +37,7 @@ describe("EthWalletFactory", () => {
       const walletStorageMock = createMock<AppSingleKeyStorage<TWalletMetadata>>(
         AppSingleKeyStorage,
         {
-          get: () => Promise.resolve(null),
+          get: () => Promise.resolve(undefined),
         },
       );
 
@@ -79,7 +79,7 @@ describe("EthWalletFactory", () => {
       const walletStorageMock = createMock<AppSingleKeyStorage<TWalletMetadata>>(
         AppSingleKeyStorage,
         {
-          get: () => Promise.resolve(null),
+          get: () => Promise.resolve(undefined),
         },
       );
 
@@ -275,7 +275,7 @@ describe("EthWalletFactory", () => {
       const walletStorageMock = createMock<AppSingleKeyStorage<TWalletMetadata>>(
         AppSingleKeyStorage,
         {
-          remove: jest.fn(),
+          clear: jest.fn(),
         },
       );
 
@@ -298,7 +298,7 @@ describe("EthWalletFactory", () => {
       expect(ethSecureEnclaveMock.unsafeDeleteSecret).toBeCalledWith(
         hdWalletMetadata.mnemonicReference,
       );
-      expect(walletStorageMock.remove).toBeCalledWith();
+      expect(walletStorageMock.clear).toBeCalledWith();
     });
 
     it("should delete existing private key wallet", async () => {
@@ -306,7 +306,7 @@ describe("EthWalletFactory", () => {
         unsafeDeleteSecret: jest.fn(),
       });
       const walletStorage = createMock<AppSingleKeyStorage<TWalletMetadata>>(AppSingleKeyStorage, {
-        remove: jest.fn(),
+        clear: jest.fn(),
       });
 
       const ethWallet = createMock(EthWallet, {
@@ -325,7 +325,7 @@ describe("EthWalletFactory", () => {
       expect(ethSecureEnclaveMock.unsafeDeleteSecret).toBeCalledWith(
         privateKeyWalletMetadata.privateKeyReference,
       );
-      expect(walletStorage.remove).toBeCalledWith();
+      expect(walletStorage.clear).toBeCalledWith();
     });
   });
 });

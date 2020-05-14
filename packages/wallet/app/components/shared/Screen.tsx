@@ -37,7 +37,7 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   return (
     <SafeAreaView style={styles.screen} forceInset={forceTopInset ? { top: "always" } : undefined}>
       <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
         contentContainerStyle={styles.flex}
         keyboardVerticalOffset={headerHeight + insets.top}
         style={styles.flex}
@@ -72,7 +72,7 @@ const Screen: React.FunctionComponent<TScreenExternalProps> = ({
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "position" : undefined}
+      behavior={Platform.OS === "ios" ? "position" : undefined}
       contentContainerStyle={styles.flex}
       keyboardVerticalOffset={headerHeight + insets.top}
       style={styles.screen}

@@ -60,8 +60,8 @@ export class Notifications {
   async init() {
     this.logger.info("Init push notifications");
     try {
-      const notificationsAllowed = await this.permissions.requestNotificationsPermissions();
-      if (notificationsAllowed.status === PERMISSION_RESULTS.GRANTED) {
+      const notificationPermissions = await this.permissions.requestNotificationsPermissions();
+      if (notificationPermissions.status === PERMISSION_RESULTS.GRANTED) {
         this.events = NotificationsHandler.events();
         await this.notificationsProvider.subscribeForNotifications();
         await this.registerTokenWithBackend();

@@ -6,13 +6,15 @@ import {
   baseGray,
   baseWhite,
   baseYellow,
-  blueyGrey,
+  blueyGray,
   grayLighter2,
   grayLighter4,
   silverLighter1,
   silverLighter2,
+  transparent,
   yellowDarker1,
 } from "../../../styles/colors";
+import { st } from "../../utils";
 import { LoadingIndicator } from "../LoadingIndicator";
 import { Touchable } from "../Touchable";
 import { BodyBoldText } from "../typography/BodyText";
@@ -63,26 +65,23 @@ const Button = React.forwardRef<TouchableHighlight, TExternalProps>(
     return (
       <Touchable
         ref={ref}
-        style={[
+        style={st(
           styles.buttonCommon,
           buttonStyle.button,
-          isDisabled && [styles.buttonCommonDisabled, buttonStyle.buttonDisabled],
+          [isDisabled, [styles.buttonCommonDisabled, buttonStyle.buttonDisabled]],
           style,
-        ]}
+        )}
         activeColor={yellowDarker1}
         accessibilityRole="button"
-        accessibilityComponentType="button"
-        accessibilityTraits={isDisabled ? ["button", "disabled"] : "button"}
-        accessibilityStates={isDisabled ? ["disabled"] : []}
+        accessibilityState={{ disabled: isDisabled }}
         disabled={isDisabled}
         {...props}
       >
         <BodyBoldText
-          style={[
-            styles.buttonCommonLabel,
-            buttonStyle.label,
-            isDisabled && [styles.buttonCommonDisabledLabel, buttonStyle.labelDisabled],
-          ]}
+          style={st(styles.buttonCommonLabel, buttonStyle.label, [
+            isDisabled,
+            [styles.buttonCommonDisabledLabel, buttonStyle.labelDisabled],
+          ])}
         >
           {loading ? (
             <>
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: silverLighter1,
   },
   buttonCommonDisabledLabel: {
-    color: blueyGrey,
+    color: blueyGray,
   },
 
   // Primary button
@@ -137,12 +136,12 @@ const styles = StyleSheet.create({
 
   // Text button
   buttonText: {
-    borderColor: "transparent",
-    backgroundColor: "transparent",
+    borderColor: transparent,
+    backgroundColor: transparent,
   },
   buttonTextDisabled: {
-    borderColor: "transparent",
-    backgroundColor: "transparent",
+    borderColor: transparent,
+    backgroundColor: transparent,
   },
 
   // Text dark button

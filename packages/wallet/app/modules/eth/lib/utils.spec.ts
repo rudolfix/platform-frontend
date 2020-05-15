@@ -98,10 +98,11 @@ describe("utils", () => {
       });
     });
 
-    it("should return true for an invalid mnemonics", async () => {
+    it("should return false for an invalid mnemonics", async () => {
       const mnemonics = [
         "flat range capital party car this hero receive clown patch online index",
         "pool hockey win moral spike wine renew space frequent early boost carry federal unlock rent code topic nature business elite vivid setup stand mosquito foo",
+        "one two three",
         EMPTY_STRING,
       ];
 

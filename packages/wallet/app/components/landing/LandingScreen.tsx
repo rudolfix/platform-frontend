@@ -1,59 +1,81 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import Config from "react-native-config";
 
+import logo from "../../../assets/images/logo.png";
+import { EAppRoutes } from "../../appRoutes";
+import { authModuleAPI, EAuthState } from "../../modules/auth/module";
 import { appConnect } from "../../store/utils";
-import { abyssalAnchorfishBlue, silverLighter2, subterraneanRiver } from "../../styles/colors";
+import { silverLighter2 } from "../../styles/colors";
 import { spacingStyles } from "../../styles/spacings";
+import { NeuGradientScreen } from "../shared/NeuGradientScreen";
 import { Button, EButtonLayout } from "../shared/buttons/Button";
 import { BodyText } from "../shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "../shared/typography/Headline";
-import { authModuleAPI, EAuthState } from "../../modules/auth/module";
-
-import logo from "../../../assets/images/logo.png";
 
 type TStateProps = {
   authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
 };
 
 type TDispatchProps = {
-  createNewAccount: () => void;
+  createAccount: () => void;
 };
 
 const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
-  createNewAccount,
+  createAccount,
   authState,
-}) => (
-  <LinearGradient colors={[subterraneanRiver, abyssalAnchorfishBlue]} style={styles.wrapper}>
-    <View style={styles.logoContainer}>
-      <Image style={styles.logo} source={logo} />
-    </View>
-    <View style={styles.container}>
-      <Headline level={EHeadlineLevel.LEVEL1} style={styles.headline}>
-        Welcome
-      </Headline>
-      <BodyText style={styles.paragraph}>
-        Join Neufund today. Setup your account to start investing.
-      </BodyText>
-      <Button
-        style={styles.createAccountButton}
-        loading={authState === EAuthState.AUTHORIZING}
-        layout={EButtonLayout.PRIMARY}
-        onPress={createNewAccount}
-      >
-        Create new account
-      </Button>
-      <Button disabled={true} layout={EButtonLayout.TEXT_DARK}>
-        I have an account
-      </Button>
-    </View>
-  </LinearGradient>
-);
+}) => {
+  const navigation = useNavigation();
+
+  return (
+    <NeuGradientScreen style={styles.wrapper}>
+      <View style={styles.logoContainer}>
+        <Image accessibilityIgnoresInvertColors={true} style={styles.logo} source={logo} />
+      </View>
+
+      <View style={styles.container}>
+        <Headline level={EHeadlineLevel.LEVEL1} style={styles.headline}>
+          Welcome
+        </Headline>
+
+        <BodyText style={styles.paragraph}>
+          Join Neufund today. Setup your account to start investing.
+        </BodyText>
+
+        <Button
+          style={styles.button}
+          loading={authState === EAuthState.AUTHORIZING}
+          layout={EButtonLayout.PRIMARY}
+          onPress={createAccount}
+        >
+          Create a new account
+        </Button>
+
+        <Button
+          style={styles.button}
+          layout={EButtonLayout.TEXT_DARK}
+          onPress={() => navigation.navigate(EAppRoutes.importAccount)}
+        >
+          Import account
+        </Button>
+
+        {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
+          <Button
+            layout={EButtonLayout.TEXT_DARK}
+            onPress={() => navigation.navigate(EAppRoutes.switchAccount)}
+          >
+            Import fixture
+          </Button>
+        )}
+      </View>
+    </NeuGradientScreen>
+  );
+};
 
 const styles = StyleSheet.create({
   wrapper: {
-    ...spacingStyles.p4,
-    flex: 1,
+    ...spacingStyles.p5,
   },
   logoContainer: {
     alignItems: "center",
@@ -69,17 +91,17 @@ const styles = StyleSheet.create({
     flex: 1.5,
   },
   headline: {
-    ...spacingStyles.mb3,
+    ...spacingStyles.mb4,
     textAlign: "center",
     color: silverLighter2,
   },
   paragraph: {
-    ...spacingStyles.mb3,
-    ...spacingStyles.ph4,
+    ...spacingStyles.mb5,
+    ...spacingStyles.ph5,
     textAlign: "center",
     color: silverLighter2,
   },
-  createAccountButton: {
+  button: {
     ...spacingStyles.mb2,
   },
 });
@@ -89,7 +111,7 @@ const LandingScreen = appConnect<TStateProps, TDispatchProps>({
     authState: authModuleAPI.selectors.selectAuthState(state),
   }),
   dispatchToProps: dispatch => ({
-    createNewAccount: () => dispatch(authModuleAPI.actions.createNewAccount()),
+    createAccount: () => dispatch(authModuleAPI.actions.createAccount()),
   }),
 })(LandingLayout);
 

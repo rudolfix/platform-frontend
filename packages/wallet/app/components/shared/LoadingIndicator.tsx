@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Animated, Easing, StyleSheet } from "react-native";
-import { darkBlueGrey } from "../../styles/colors";
+
+import { darkBlueGray2 } from "../../styles/colors";
 
 type TExternalProps = React.ComponentProps<typeof Animated.View>;
 
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     height: INDICATOR_SIZE,
     width: INDICATOR_SIZE,
     borderRadius: INDICATOR_SIZE / 2,
-    backgroundColor: darkBlueGrey,
+    backgroundColor: darkBlueGray2,
   },
 });
 

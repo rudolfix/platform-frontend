@@ -24,7 +24,7 @@ describe("EthWallet", () => {
     address: toEthereumChecksumAddress("0x429123b08DF32b0006fd1F3b0Ef893A8993802f3"),
     mnemonicReference: toSecureReference("0"),
     privateKeyReference: toSecureReference("1"),
-    derivationPath: toEthereumHDPath("m/44'/60'/0'"),
+    derivationPath: toEthereumHDPath("m/44'/60'/0'/0"),
   } as const;
 
   describe("signMessageHash", () => {

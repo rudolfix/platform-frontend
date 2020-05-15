@@ -1,26 +1,37 @@
 import { AppReducer } from "@neufund/sagas";
 
 import { authActions } from "./actions";
+import { TAuthWalletMetadata } from "./types";
 
 export enum EAuthState {
-  NON_AUTHORIZED = "non_authorized",
+  NOT_AUTHORIZED = "not_authorized",
   AUTHORIZING = "authorizing",
   AUTHORIZED = "authorized",
 }
 
 interface IAuthState {
   state: EAuthState;
+  /**
+   * @note wallet can be already defined for `NOT_AUTHORIZED` state given it's taken from device storage
+   */
+  wallet: undefined | TAuthWalletMetadata;
 }
 
 const initialState: IAuthState = {
-  state: EAuthState.NON_AUTHORIZED,
+  state: EAuthState.NOT_AUTHORIZED,
+  wallet: undefined,
 };
 
+// eslint-disable-next-line complexity
 const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initialState, action) => {
   switch (action.type) {
-    case authActions.createNewAccount.getType():
+    case authActions.createAccount.getType():
+    case authActions.importAccount.getType():
+    case authActions.unlockAccount.getType():
       return {
         ...initialState,
+        // still keep current wallet in the store to show the proper UI
+        wallet: state.wallet,
         state: EAuthState.AUTHORIZING,
       };
 
@@ -28,15 +39,35 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
       return {
         ...initialState,
         state: EAuthState.AUTHORIZED,
+        wallet: action.payload.metadata,
       };
 
-    case authActions.failedToCreateNewAccount.getType():
+    case authActions.canCreateAccount.getType():
     case authActions.logout.getType():
+    case authActions.failedToCreateAccount.getType():
+    case authActions.failedToImportAccount.getType():
       return initialState;
+
+    case authActions.canUnlockAccount.getType():
+      return {
+        ...initialState,
+        wallet: action.payload.metadata,
+      };
+
+    case authActions.failedToUnlockAccount.getType():
+      return {
+        ...initialState,
+        // still keep current wallet in the store to show the proper UI
+        wallet: state.wallet,
+      };
 
     default:
       return state;
   }
 };
 
-export { authReducer };
+const authReducerMap = {
+  auth: authReducer,
+};
+
+export { authReducerMap };

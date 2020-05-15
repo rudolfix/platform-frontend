@@ -1,25 +1,29 @@
 import {
-  EthereumAddress,
-  EthereumPrivateKey,
-  EthereumHDMnemonic,
-  EthereumAddressWithChecksum,
-} from "@neufund/shared-utils";
-import {
   coreModuleApi,
   ILogger,
   TLibSymbolType,
   IEthManager,
   ESignerType,
 } from "@neufund/shared-modules";
+import {
+  EthereumPrivateKey,
+  EthereumHDMnemonic,
+  EthereumAddressWithChecksum,
+} from "@neufund/shared-utils";
 import { providers, utils } from "ethers";
 import { inject, injectable } from "inversify";
 
 import { EthModuleError } from "../errors";
-import { privateSymbols } from "./symbols";
 import { EthAdapter } from "./EthAdapter";
 import { EthWallet } from "./EthWallet";
 import { EthWalletFactory } from "./EthWalletFactory";
-import { ITransactionResponse, TTransactionRequestRequired, TUnsignedTransaction } from "./types";
+import { privateSymbols } from "./symbols";
+import {
+  ITransactionResponse,
+  TTransactionRequestRequired,
+  TUnsignedTransaction,
+  TWalletUIMetadata,
+} from "./types";
 
 class EthManagerError extends EthModuleError {
   constructor(message: string) {
@@ -100,8 +104,16 @@ class EthManager implements IEthManager {
    *
    * @param address - An ethereum address
    */
-  getBalance(address: EthereumAddress): Promise<utils.BigNumber> {
+  getBalance(address: EthereumAddressWithChecksum): Promise<utils.BigNumber> {
     return this.adapter.getBalance(address);
+  }
+
+  /**
+   * Returns existing wallet metadata.
+   * If no metadata found returns `undefined` which means there is not existing wallet
+   */
+  getExistingWalletMetadata(): Promise<TWalletUIMetadata | undefined> {
+    return this.ethWalletFactory.getExistingWalletMetadata();
   }
 
   /**
@@ -159,15 +171,16 @@ class EthManager implements IEthManager {
    * For a give privateKey saves and plugs a new wallet.
    *
    * @param privateKey - A private key
+   * @param name - A custom user defined wallet name
    */
-  async plugNewWalletFromPrivateKey(privateKey: EthereumPrivateKey) {
+  async plugNewWalletFromPrivateKey(privateKey: EthereumPrivateKey, name?: string) {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
-    this.assertHasNoExistingWallet();
+    await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new wallet from private key");
 
-    this.wallet = await this.ethWalletFactory.createFromPrivateKey(privateKey);
+    this.wallet = await this.ethWalletFactory.createFromPrivateKey(privateKey, name);
 
     this.logger.info("New wallet from private key plugged");
   }
@@ -176,15 +189,16 @@ class EthManager implements IEthManager {
    * For a give mnemonic saves and plugs a new wallet.
    *
    * @param mnemonic - A mnemonic
+   * @param name - A custom user defined wallet name
    */
-  async plugNewWalletFromMnemonic(mnemonic: EthereumHDMnemonic) {
+  async plugNewWalletFromMnemonic(mnemonic: EthereumHDMnemonic, name?: string) {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
-    this.assertHasNoExistingWallet();
+    await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new wallet from mnemonics");
 
-    this.wallet = await this.ethWalletFactory.createFromMnemonic(mnemonic);
+    this.wallet = await this.ethWalletFactory.createFromMnemonic(mnemonic, name);
 
     this.logger.info("New wallet from mnemonics plugged");
   }
@@ -195,7 +209,7 @@ class EthManager implements IEthManager {
   async plugNewRandomWallet() {
     // do not allow pinning new wallet if there is existing one
     // removing wallet should be a completely separate process with own presence confirmation
-    this.assertHasNoExistingWallet();
+    await this.assertHasNoExistingWallet();
 
     this.logger.info("Plugging a new random wallet");
 
@@ -321,20 +335,21 @@ class EthManager implements IEthManager {
     return this.adapter.sendTransaction(signedTx);
   }
 
-  private async populateTransaction({
-    from,
-    ...rest
-  }: TTransactionRequestRequired): Promise<TUnsignedTransaction> {
+  private async populateTransaction(
+    transaction: TTransactionRequestRequired,
+  ): Promise<TUnsignedTransaction> {
     this.logger.info("Populating transaction with missing data");
 
+    const from = await this.getWalletAddress();
+
     const [to, nonce, chainId] = await Promise.all([
-      this.adapter.resolveName(rest.to),
+      this.adapter.resolveName(transaction.to),
       this.adapter.getTransactionCountFromPending(from),
       this.adapter.getChainId(),
     ]);
 
     return {
-      ...rest,
+      ...transaction,
       to,
       nonce,
       chainId,

@@ -2,14 +2,15 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { ETokenType, ETxSenderType } from "../../../../modules/tx/types";
+import { ETxType } from "../../../../lib/web3/types";
+import { ETokenType } from "../../../../modules/tx/types";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { TxPendingLayout } from "./TxPending";
 
 const txData: React.ComponentProps<typeof TxPendingLayout> = {
   blockId: 4623487932,
   txHash: "af908098b968d7564564362c51836",
-  type: ETxSenderType.UPGRADE,
+  type: ETxType.UPGRADE,
   additionalData: {
     tokenType: ETokenType.ETHER,
   },

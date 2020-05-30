@@ -6,7 +6,7 @@ import BigNumber from "bignumber.js";
 import { IWindowWithData } from "../../../../../test/helperTypes";
 import { ECurrency } from "../../../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { DEFAULT_UPPER_GAS_LIMIT } from "../../../../lib/web3/Web3Manager/Web3Manager";
 import { actions } from "../../../actions";
 import { neuTakeLatest } from "../../../sagasUtils";
@@ -14,7 +14,6 @@ import { selectEthereumAddress } from "../../../web3/selectors";
 import { isAddressValid } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
-import { ETxSenderType } from "../../types";
 import {
   selectUserFlowTokenData,
   selectUserFlowTxDetails,
@@ -128,7 +127,7 @@ function* ethWithdrawFlow(_: TGlobalDependencies): Generator<any, any, any> {
     tokenDecimals: tokenData.tokenDecimals,
   };
 
-  yield put(actions.txSender.txSenderContinueToSummary<ETxSenderType.WITHDRAW>(additionalData));
+  yield put(actions.txSender.txSenderContinueToSummary<ETxType.WITHDRAW>(additionalData));
 }
 
 function* withdrawSaga({
@@ -149,7 +148,7 @@ function* withdrawSaga({
       }),
     );
     yield txSendSaga({
-      type: ETxSenderType.WITHDRAW,
+      type: ETxType.WITHDRAW,
       transactionFlowGenerator: ethWithdrawFlow,
     });
 

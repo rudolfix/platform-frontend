@@ -4,8 +4,8 @@ import { BigNumber } from "bignumber.js";
 import * as LightWalletProvider from "eth-lightwallet";
 import * as ethSig from "eth-sig-util";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
-import { TxData } from "web3";
 
+import { ITxData } from "../../../lib/web3/types";
 import { ILightWalletMetadata } from "../../../modules/web3/types";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IRawTxData } from "../types";
@@ -85,7 +85,7 @@ export class LightWallet implements IPersonalWallet {
       }
     });
 
-  public sendTransaction = async (txData: TxData): Promise<string> =>
+  public sendTransaction = async (txData: ITxData): Promise<string> =>
     this.withPasswordLock(async () => {
       const nonce = await this.web3Adapter.getTransactionCount(txData.from);
 

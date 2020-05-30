@@ -14,7 +14,7 @@ import { WalletSelectionData } from "../../components/modals/tx-sender/investmen
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { ITxData } from "../../lib/web3/types";
+import { ETxType, ITxData } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import {
@@ -37,7 +37,6 @@ import {
   selectTxSenderModalOpened,
 } from "../tx/sender/selectors";
 import { INVESTMENT_GAS_AMOUNT } from "../tx/transactions/investment/sagas";
-import { ETxSenderType } from "../tx/types";
 import { txValidateSaga } from "../tx/validator/sagas";
 import { selectNEURStatus } from "../wallet/selectors";
 import { ENEURWalletStatus } from "../wallet/types";
@@ -231,7 +230,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
       const txData: ITxData = yield neuCall(
         txValidateSaga,
-        actions.txValidator.validateDraft({ type: ETxSenderType.INVEST }),
+        actions.txValidator.validateDraft({ type: ETxType.INVEST }),
       );
       yield put(actions.txSender.setTransactionData(txData));
 

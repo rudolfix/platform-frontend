@@ -4,14 +4,14 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import {
   selectTxAdditionalData,
   selectTxDetails,
   selectTxTimestamp,
 } from "../../../../modules/tx/sender/selectors";
-import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx/types";
+import { TSpecificTransactionState } from "../../../../modules/tx/types";
 import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { EthereumIcon } from "../../../shared/ethereum";
@@ -76,8 +76,8 @@ const TxDefaultPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = p
 
 const TxPendingLayout: React.FunctionComponent<TTxPendingLayoutProps> = props => {
   switch (props.type) {
-    case ETxSenderType.WITHDRAW:
-    case ETxSenderType.TRANSFER_TOKENS:
+    case ETxType.WITHDRAW:
+    case ETxType.TRANSFER_TOKENS:
       return (
         <TransferPending
           txHash={props.txHash}

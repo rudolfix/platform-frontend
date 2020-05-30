@@ -4,13 +4,13 @@ import { EthereumAddress } from "@neufund/shared-utils";
 import { addHexPrefix } from "ethereumjs-util";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions, TAction } from "../../../actions";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
-import { ETokenType, ETxSenderType } from "../../types";
+import { ETokenType } from "../../types";
 
 function* generateEuroUpgradeTransaction({
   contractsService,
@@ -84,7 +84,7 @@ function* upgradeTransactionFlow(_: TGlobalDependencies, tokenType: ETokenType):
   const generatedTxDetails: ITxData = yield neuCall(transactionGenerator);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
   yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.UPGRADE>({
+    actions.txSender.txSenderContinueToSummary<ETxType.UPGRADE>({
       tokenType,
     }),
   );
@@ -96,7 +96,7 @@ function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): Generat
 
     const tokenType = action.payload;
     const params: ITxSendParams = {
-      type: ETxSenderType.UPGRADE,
+      type: ETxType.UPGRADE,
       transactionFlowGenerator: upgradeTransactionFlow,
       extraParam: tokenType,
     };

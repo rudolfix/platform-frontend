@@ -39,6 +39,7 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETOTerms } from "../../lib/contracts/ETOTerms";
 import { EuroToken } from "../../lib/contracts/EuroToken";
 import { ITokenController } from "../../lib/contracts/ITokenController";
+import { ETxType } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { TTranslatedString } from "../../types";
 import { actions, TActionFromCreator } from "../actions";
@@ -53,7 +54,7 @@ import {
   EAgreementType,
   IAgreementContractAndHash,
 } from "../tx/transactions/nominee/sign-agreement/types";
-import { ETxSenderType, TAdditionalDataByType } from "../tx/types";
+import { TAdditionalDataByType } from "../tx/types";
 import { selectEthereumAddress } from "../web3/selectors";
 import { generateRandomEthereumAddress } from "../web3/utils";
 import { InvalidETOStateError } from "./errors";
@@ -545,11 +546,11 @@ function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any,
   const txType = yield select(selectTxType);
 
   // Return if transaction type is not Claim or Refund
-  if (txType !== ETxSenderType.USER_CLAIM && txType !== ETxSenderType.INVESTOR_REFUND) {
+  if (txType !== ETxType.USER_CLAIM && txType !== ETxType.INVESTOR_REFUND) {
     return;
   }
 
-  const additionalData: TAdditionalDataByType<ETxSenderType.USER_CLAIM> = yield select(
+  const additionalData: TAdditionalDataByType<ETxType.USER_CLAIM> = yield select(
     selectTxAdditionalData,
   );
 

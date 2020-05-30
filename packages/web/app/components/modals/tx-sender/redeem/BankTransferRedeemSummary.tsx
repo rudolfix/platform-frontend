@@ -4,10 +4,10 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 import { compose } from "recompose";
 
+import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TNEurRedeemAdditionalDetails } from "../../../../modules/tx/transactions/redeem/types";
-import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { BankTransferRedeemDetails } from "./BankTransferRedeemDetails";
@@ -50,7 +50,7 @@ const BankTransferRedeemSummaryLayout: React.FunctionComponent<IComponentProps> 
 const BankTransferRedeemSummary = compose<IComponentProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      additionalData: selectTxAdditionalData<ETxSenderType.NEUR_REDEEM>(state)!,
+      additionalData: selectTxAdditionalData<ETxType.NEUR_REDEEM>(state)!,
     }),
     dispatchToProps: dispatch => ({
       confirm: () => dispatch(actions.txSender.txSenderAccept()),

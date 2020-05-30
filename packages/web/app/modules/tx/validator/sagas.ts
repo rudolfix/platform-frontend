@@ -13,7 +13,7 @@ import { ETxValidationMessages } from "../../../components/translatedMessages/me
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { STIPEND_ELIGIBLE_WALLETS } from "../../../lib/web3/constants";
-import { ITxData } from "../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
 import { TAppGlobalState } from "../../../store";
 import { actions, TAction } from "../../actions";
@@ -22,7 +22,6 @@ import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
 import { selectWalletType } from "../../web3/selectors";
 import { generateInvestmentTransaction } from "../transactions/investment/sagas";
 import { selectMaximumInvestment } from "../transactions/investment/selectors";
-import { ETxSenderType } from "../types";
 import { EValidationState } from "./reducer";
 import { selectInvestmentFLow } from "./selectors";
 import { txValidateTokenTransfer } from "./transfer/token-transfer/sagas";
@@ -57,13 +56,13 @@ export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction
   try {
     let validationGenerator: any;
     switch (action.payload.type) {
-      case ETxSenderType.WITHDRAW:
+      case ETxType.WITHDRAW:
         validationGenerator = txValidateWithdraw(action.payload);
         break;
-      case ETxSenderType.TRANSFER_TOKENS:
+      case ETxType.TRANSFER_TOKENS:
         validationGenerator = txValidateTokenTransfer(action.payload);
         break;
-      case ETxSenderType.INVEST:
+      case ETxType.INVEST:
         validationGenerator = txValidateInvestment();
         break;
     }

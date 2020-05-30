@@ -2,10 +2,10 @@ import { ButtonArrowRight, EButtonLayout } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TNEurRedeemAdditionalDetails } from "../../../../modules/tx/transactions/redeem/types";
-import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { Message } from "../../message/Message";
 import { TxHashAndBlock } from "../shared/TxHashAndBlock";
@@ -61,7 +61,7 @@ const BankTransferRedeemSuccessComponent: React.FunctionComponent<IComponentProp
 
 const BankTransferRedeemSuccess = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
-    additionalData: selectTxAdditionalData<ETxSenderType.NEUR_REDEEM>(state)!,
+    additionalData: selectTxAdditionalData<ETxType.NEUR_REDEEM>(state)!,
   }),
   dispatchToProps: dispatch => ({
     goToWallet: () => dispatch(actions.routing.goToWallet()),

@@ -10,7 +10,7 @@ import {
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../actions";
 import { EBankTransferType } from "../../../bank-transfer-flow/reducer";
 import {
@@ -23,7 +23,6 @@ import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
-import { ETxSenderType } from "../../types";
 
 function* generateNeuWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
@@ -89,9 +88,7 @@ function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
     },
   };
 
-  yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.NEUR_REDEEM>(additionalDetails),
-  );
+  yield put(actions.txSender.txSenderContinueToSummary<ETxType.NEUR_REDEEM>(additionalDetails));
 }
 
 function* neurRedeemSaga({ logger }: TGlobalDependencies): Generator<any, any, any> {
@@ -104,7 +101,7 @@ function* neurRedeemSaga({ logger }: TGlobalDependencies): Generator<any, any, a
 
   try {
     yield txSendSaga({
-      type: ETxSenderType.NEUR_REDEEM,
+      type: ETxType.NEUR_REDEEM,
       transactionFlowGenerator: startNEuroRedeemGenerator,
     });
 

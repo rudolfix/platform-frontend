@@ -2,7 +2,7 @@ import { fork, put, select } from "@neufund/sagas";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TAction } from "../../../actions";
 import { selectMyInvestorTicketByEtoId } from "../../../investor-portfolio/selectors";
@@ -10,7 +10,6 @@ import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead, selectTxGasCostEthUlps } from "../../sender/selectors";
-import { ETxSenderType } from "../../types";
 
 function* generateGetClaimTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
@@ -51,7 +50,7 @@ function* startClaimGenerator(_: TGlobalDependencies, etoId: string): any {
   const tokenDecimals = 0;
 
   yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.USER_CLAIM>({
+    actions.txSender.txSenderContinueToSummary<ETxType.USER_CLAIM>({
       etoId,
       costUlps,
       tokenDecimals,
@@ -71,7 +70,7 @@ function* userClaimSaga(
   const etoId = action.payload;
   try {
     yield txSendSaga({
-      type: ETxSenderType.USER_CLAIM,
+      type: ETxType.USER_CLAIM,
       transactionFlowGenerator: startClaimGenerator,
       extraParam: etoId,
     });

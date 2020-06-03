@@ -9,6 +9,7 @@ import { TInvestmentAdditionalData } from "../../../../modules/tx/transactions/i
 import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
 import { ConfettiEthereum } from "../../../shared/ethereum";
+import { EtherscanTxLink } from "../../../shared/links";
 import { Message } from "../../message/Message";
 import { InvestmentTransactionDetails } from "./InvestmentTransactionDetails";
 
@@ -27,13 +28,24 @@ interface IDispatchProps {
 
 const InvestmentSuccessComponent: React.FunctionComponent<IProps &
   IStateProps &
-  IDispatchProps> = ({ additionalData, goToPortfolio, txTimestamp }) => (
+  IDispatchProps> = ({ additionalData, goToPortfolio, txTimestamp, txHash }) => (
   <Message
     data-test-id="investment-flow.success.title"
     image={<ConfettiEthereum className="mb-3" />}
     title={<FormattedMessage id="investment-flow.success.title" />}
     titleClassName="text-success"
-    text={<FormattedMessage id="investment-flow.success.congratulation-text" />}
+    text={
+      <FormattedMessage
+        id="investment-flow.success.congratulation-text"
+        values={{
+          etherscan: (
+            <EtherscanTxLink txHash={txHash}>
+              <FormattedMessage id="common.text.etherscan" />
+            </EtherscanTxLink>
+          ),
+        }}
+      />
+    }
   >
     <InvestmentTransactionDetails
       additionalData={additionalData}

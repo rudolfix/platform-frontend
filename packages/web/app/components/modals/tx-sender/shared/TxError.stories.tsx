@@ -84,7 +84,4 @@ storiesOf("TxError", module)
     }),
   )
   .add("default", () => <TxErrorLayout {...investTxData} />)
-  .add("default with genericError", () => (
-    <TxErrorLayout {...{ ...investTxData, error: ETransactionErrorType.UNKNOWN_ERROR }} />
-  ))
   .add("withdraw transaction error", () => <TxErrorLayout {...txData} />);

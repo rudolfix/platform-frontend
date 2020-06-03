@@ -8,7 +8,7 @@ import {
   selectTxDetails,
   selectTxTimestamp,
 } from "../../../../modules/tx/sender/selectors";
-import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx/types";
+import { TSpecificTransactionState } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { EthereumIcon } from "../../../shared/ethereum";
 import { Message } from "../../message/Message";
@@ -36,22 +36,6 @@ type TTxPendingLayoutProps = {
   txTimestamp?: number;
 } & TSpecificTransactionState;
 
-type TTxSuccessTitleProps = { type: TSpecificTransactionState["type"] };
-
-const TxSuccessText: React.FunctionComponent<TTxSuccessTitleProps> = ({ type }) => {
-  switch (type) {
-    case ETxSenderType.INVESTOR_REFUND:
-      return <FormattedMessage id="tx-sender.tx-success.refund-description" />;
-    default:
-      return (
-        <FormattedMessage
-          id="tx-sender.tx-success.description"
-          values={{ transaction: <TxName type={type} /> }}
-        />
-      );
-  }
-};
-
 const TxSuccessLayout: React.FunctionComponent<TTxPendingLayoutProps> = props => (
   <Message
     data-test-id="modals.shared.tx-success.modal"
@@ -63,7 +47,12 @@ const TxSuccessLayout: React.FunctionComponent<TTxPendingLayoutProps> = props =>
       />
     }
     titleClassName="text-success"
-    text={<TxSuccessText type={props.type} />}
+    text={
+      <FormattedMessage
+        id="tx-sender.tx-success.description"
+        values={{ transaction: <TxName type={props.type} /> }}
+      />
+    }
   >
     <TxDetails className="mb-3" {...props} />
 

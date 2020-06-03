@@ -1,4 +1,12 @@
-import { takeLeading, put, call, neuCall, SagaGenerator, TActionFromCreator } from "@neufund/sagas";
+import {
+  takeLeading,
+  put,
+  call,
+  neuCall,
+  SagaGenerator,
+  TActionFromCreator,
+  take,
+} from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, authModuleAPI } from "@neufund/shared-modules";
 import {
   isJwtExpiringLateEnough,
@@ -138,26 +146,17 @@ function* importNewAccount(
     logger: coreModuleApi.symbols.logger,
   });
 
-  const { privateKeyOrMnemonic, forceReset, name } = action.payload;
+  const { privateKeyOrMnemonic, name } = action.payload;
 
   try {
-    const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
-
     const hasExistingWallet = yield* call(() => ethManager.hasExistingWallet());
 
-    // check if there is already existing wallet in storage
-    invariant(
-      !hasExistingWallet || forceReset,
-      "Existing wallet already in storage. Use `forceReset` flag to clear the storage before importing new account",
-    );
-
-    if (forceReset && hasExistingWallet) {
+    if (hasExistingWallet) {
       logger.info("Clearing existing wallet from storage");
-
-      // before we can delete wallet and all metadata it should be plugged by ethManager
-      yield* call(() => ethManager.plugExistingWallet());
       yield* call(() => ethManager.unsafeDeleteWallet());
     }
+
+    const importPhraseType = parseImportPhrase(privateKeyOrMnemonic);
 
     logger.info(`Plugging new wallet from ${importPhraseType}`);
 
@@ -166,24 +165,22 @@ function* importNewAccount(
         yield* call(() =>
           ethManager.plugNewWalletFromPrivateKey(toEthereumPrivateKey(privateKeyOrMnemonic), name),
         );
-
         break;
+
       case EImportPhrase.MNEMONICS:
         yield* call(() =>
           ethManager.plugNewWalletFromMnemonic(toEthereumHDMnemonic(privateKeyOrMnemonic), name),
         );
-
         break;
+
       default:
         throw new InvalidImportPhraseError();
     }
 
     logger.info("Generating new JWT token");
-
     yield* call(authModuleAPI.sagas.createJwt, []);
 
     logger.info("Creating or loading new user");
-
     yield* call(loadOrCreateUser);
 
     const walletMetadata = yield* call(() => ethManager.getExistingWalletMetadata());
@@ -206,6 +203,17 @@ function* importNewAccount(
   }
 }
 
+function* switchAccount(
+  action: TActionFromCreator<typeof authActions, typeof authActions.switchAccount>,
+): SagaGenerator<void> {
+  const { privateKeyOrMnemonic, name } = action.payload;
+
+  yield put(authActions.logout());
+  yield* take(authActions.logoutDone);
+
+  yield put(authActions.importAccount(privateKeyOrMnemonic, name));
+}
+
 function* logout(): SagaGenerator<void> {
   const { ethManager, logger } = yield* neuGetBindings({
     ethManager: walletEthModuleApi.symbols.ethManager,
@@ -216,8 +224,9 @@ function* logout(): SagaGenerator<void> {
     logger.info("Logging out user");
 
     yield* call(authModuleAPI.sagas.resetUser);
-
     yield* call(() => ethManager.unsafeDeleteWallet());
+
+    yield put(authActions.logoutDone());
   } catch (e) {
     logger.error("Failed to logout user", e);
 
@@ -228,6 +237,7 @@ function* logout(): SagaGenerator<void> {
 export function* authSaga(): SagaGenerator<void> {
   yield takeLeading(authActions.createAccount, createNewAccount);
   yield takeLeading(authActions.importAccount, importNewAccount);
+  yield takeLeading(authActions.switchAccount, switchAccount);
   yield takeLeading(authActions.unlockAccount, signInExistingAccount);
   yield takeLeading(authActions.logout, logout);
 }

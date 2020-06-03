@@ -1,9 +1,14 @@
-import { neuTakeLatest, put, fork, call, SagaGenerator } from "@neufund/sagas";
+import { neuTakeLatest, put, fork, call, SagaGenerator, select } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, tokenPriceModuleApi } from "@neufund/shared-modules";
 
+import { authActions } from "modules/auth/actions";
 import { authModuleAPI } from "modules/auth/module";
 import { walletContractsModuleApi } from "modules/contracts/module";
 import { notificationModuleApi } from "modules/notifications/module";
+import { walletConnectActions } from "modules/wallet-connect/actions";
+import { walletConnectModuleApi } from "modules/wallet-connect/module";
+
+import { TAppGlobalState } from "store/types";
 
 import { initActions } from "./actions";
 
@@ -51,6 +56,22 @@ function* initStartSaga(): SagaGenerator<void> {
   }
 }
 
+function* initAuthSigned(): SagaGenerator<void> {
+  yield* call(walletConnectModuleApi.sagas.tryToConnectExistingSession);
+}
+
+function* initAuthLogoutDone(): SagaGenerator<void> {
+  const peer = yield* select((state: TAppGlobalState) =>
+    walletConnectModuleApi.selectors.selectWalletConnectPeer(state),
+  );
+
+  if (peer) {
+    yield put(walletConnectActions.disconnectFromPeerSilent(peer.id));
+  }
+}
+
 export function* initSaga(): SagaGenerator<void> {
   yield fork(neuTakeLatest, initActions.start, initStartSaga);
+  yield fork(neuTakeLatest, authActions.signed, initAuthSigned);
+  yield fork(neuTakeLatest, authActions.logoutDone, initAuthLogoutDone);
 }

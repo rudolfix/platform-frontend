@@ -12,7 +12,6 @@ function loadStories() {
 	require('../app/components/shared/LineBreak.stories');
 	require('../app/components/shared/Link.stories');
 	require('../app/components/shared/LoadingIndicator.stories');
-	require('../app/components/shared/ModalStackHeader.stories');
 	require('../app/components/shared/Touchable.stories');
 	require('../app/components/shared/asset/Asset.stories');
 	require('../app/components/shared/buttons/Button.stories');
@@ -24,6 +23,8 @@ function loadStories() {
 	require('../app/components/shared/forms/layouts/TextInput.stories');
 	require('../app/components/shared/forms/layouts/switcher/Switcher.stories');
 	require('../app/components/shared/menu/Menu.stories');
+	require('../app/components/shared/modal-header/ModalStackHeaderLevel1.stories');
+	require('../app/components/shared/modal-header/ModalStackHeaderLevel2.stories');
 	require('../app/components/shared/panel/Panel.stories');
 	require('../app/components/shared/typography/MenuLabel.stories');
 	require('../app/components/shared/typography/Text.stories');
@@ -39,7 +40,6 @@ const stories = [
 	'../app/components/shared/LineBreak.stories',
 	'../app/components/shared/Link.stories',
 	'../app/components/shared/LoadingIndicator.stories',
-	'../app/components/shared/ModalStackHeader.stories',
 	'../app/components/shared/Touchable.stories',
 	'../app/components/shared/asset/Asset.stories',
 	'../app/components/shared/buttons/Button.stories',
@@ -51,6 +51,8 @@ const stories = [
 	'../app/components/shared/forms/layouts/TextInput.stories',
 	'../app/components/shared/forms/layouts/switcher/Switcher.stories',
 	'../app/components/shared/menu/Menu.stories',
+	'../app/components/shared/modal-header/ModalStackHeaderLevel1.stories',
+	'../app/components/shared/modal-header/ModalStackHeaderLevel2.stories',
 	'../app/components/shared/panel/Panel.stories',
 	'../app/components/shared/typography/MenuLabel.stories',
 	'../app/components/shared/typography/Text.stories',

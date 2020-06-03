@@ -10,7 +10,7 @@ const switcherItemsWithTitleAndHelptext = [
   {
     id: "switch-account",
     heading: "Switch account",
-    type: EMenuItemType.BUTTON,
+    type: EMenuItemType.NAVIGATION,
     onPress: action("onPress"),
     icon: EIconType.WALLET,
     helpText: "0x429123b08DF32b0006fd1F3b0Ef893A8993802f3",
@@ -21,7 +21,6 @@ const switcherItemsWithTitleAndHelptext = [
     type: EMenuItemType.BUTTON,
     onPress: action("onPress"),
     icon: EIconType.PLACEHOLDER,
-    helpText: "This will cleanup your storage",
   },
 ];
 
@@ -29,7 +28,7 @@ const switcherItemsWithTitle = [
   {
     id: "switch-account",
     heading: "Switch account",
-    type: EMenuItemType.BUTTON,
+    type: EMenuItemType.NAVIGATION,
     onPress: action("onPress"),
     icon: EIconType.PLACEHOLDER,
   },

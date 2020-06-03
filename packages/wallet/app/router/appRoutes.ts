@@ -3,7 +3,8 @@ enum EAppRoutes {
   landing = "Landing",
   importAccount = "ImportAccount",
   unlockAccount = "UnlockAccount",
-  switchAccount = "SwitchAccount",
+  importFixture = "ImportFixtureAccount",
+  walletConnectSession = "WalletConnectSession",
 
   // authorized routes
   home = "Home",
@@ -12,6 +13,7 @@ enum EAppRoutes {
   profile = "Profile",
   qrCode = "QRCode",
   webView = "WebView",
+  switchToFixture = "SwitchToFixture",
 }
 
 export { EAppRoutes };

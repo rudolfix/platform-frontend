@@ -10,6 +10,4 @@ scripts
 /storybook/storyLoader.js
 
 // TODO: Remove when eslint gets support for typescript `import type { ... } from '...'`
-app/components/shared/menu/Menu.tsx
-app/components/shared/menu/MenuItem.tsx
 app/modules/auth/module.ts

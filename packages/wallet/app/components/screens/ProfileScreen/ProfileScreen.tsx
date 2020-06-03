@@ -1,11 +1,9 @@
 import { nonNullable } from "@neufund/shared-utils";
 import React from "react";
-import { Text } from "react-native";
 import Config from "react-native-config";
 
 import { EIconType } from "components/shared/Icon";
 import { SafeAreaScreen } from "components/shared/Screen";
-import { Button, EButtonLayout } from "components/shared/buttons/Button";
 import { Menu, EMenuItemType } from "components/shared/menu/Menu";
 
 import { authModuleAPI } from "modules/auth/module";
@@ -16,6 +14,8 @@ import { useNavigationTyped } from "router/routeUtils";
 
 import { appConnect } from "store/utils";
 
+import { baseRed } from "styles/colors";
+
 import { Header } from "./Header/Header";
 
 type TStateProps = {
@@ -25,7 +25,6 @@ type TStateProps = {
 
 type TDispatchProps = {
   logout: () => void;
-  walletConnectDisconnect: (peerId: string) => void;
 };
 
 type TMenuProps = React.ComponentProps<typeof Menu>;
@@ -33,55 +32,52 @@ type TMenuProps = React.ComponentProps<typeof Menu>;
 const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   authWallet,
   walletConnectPeer,
-  walletConnectDisconnect,
   logout,
 }) => {
   const navigation = useNavigationTyped();
 
   const items = React.useMemo(() => {
-    const defaultItems: TMenuProps["items"] = [];
+    const defaultItems: TMenuProps["items"] = [
+      {
+        id: "wallet-connect-session",
+        type: EMenuItemType.NAVIGATION,
+        heading: "Neufund Web",
+        helperText: walletConnectPeer ? "Connected" : "Not connected",
+        icon: EIconType.DEVICE,
+        onPress: () => navigation.navigate(EAppRoutes.walletConnectSession),
+      },
+    ];
 
+    // Switch account and logout are only useful with localhost artifacts
     if (Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost") {
-      return defaultItems.concat([
+      defaultItems.push(
         {
           id: "switch-account",
-          type: EMenuItemType.BUTTON,
+          type: EMenuItemType.NAVIGATION,
           heading: "Switch account",
           helperText: authWallet.name,
           icon: EIconType.WALLET,
-          onPress: () => navigation.navigate(EAppRoutes.switchAccount),
+          onPress: () => navigation.navigate(EAppRoutes.switchToFixture),
         },
-      ]);
+        {
+          id: "logout-account",
+          type: EMenuItemType.BUTTON,
+          heading: "Logout",
+          icon: EIconType.LOGOUT,
+          onPress: logout,
+          color: baseRed,
+        },
+      );
     }
 
     return defaultItems;
-  }, [authWallet, navigation]);
+  }, [authWallet, navigation, walletConnectPeer, logout]);
 
   return (
     <SafeAreaScreen forceTopInset>
       <Header name={authWallet.name} address={authWallet.address} />
 
       <Menu items={items} />
-
-      <Text>Wallet connect peer: </Text>
-      {walletConnectPeer ? (
-        <>
-          {/* eslint-disable-next-line @typescript-eslint/no-magic-numbers */}
-          <Text>{JSON.stringify(walletConnectPeer, undefined, 2)}</Text>
-          <Button
-            layout={EButtonLayout.PRIMARY}
-            onPress={() => walletConnectDisconnect(walletConnectPeer.id)}
-          >
-            Disconnect
-          </Button>
-        </>
-      ) : (
-        <Text>not connected</Text>
-      )}
-
-      <Button layout={EButtonLayout.TEXT} testID="dashboard.logout" onPress={logout}>
-        Logout
-      </Button>
     </SafeAreaScreen>
   );
 };
@@ -92,8 +88,6 @@ const ProfileScreen = appConnect<TStateProps, TDispatchProps>({
     walletConnectPeer: walletConnectModuleApi.selectors.selectWalletConnectPeer(state),
   }),
   dispatchToProps: dispatch => ({
-    walletConnectDisconnect: (peerId: string) =>
-      dispatch(walletConnectModuleApi.actions.disconnectFromPeer(peerId)),
     logout: () => dispatch(authModuleAPI.actions.logout()),
   }),
 })(ProfileLayout);

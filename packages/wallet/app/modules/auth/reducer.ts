@@ -43,7 +43,7 @@ const authReducer: AppReducer<IAuthState, typeof authActions> = (state = initial
       };
 
     case authActions.canCreateAccount.getType():
-    case authActions.logout.getType():
+    case authActions.logoutDone.getType():
     case authActions.failedToCreateAccount.getType():
     case authActions.failedToImportAccount.getType():
       return initialState;

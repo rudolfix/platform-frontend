@@ -18,12 +18,14 @@ export type RootStackParamList = {
   [EAppRoutes.landing]: undefined;
   [EAppRoutes.importAccount]: undefined;
   [EAppRoutes.unlockAccount]: undefined;
-  [EAppRoutes.switchAccount]: undefined;
+  [EAppRoutes.importFixture]: undefined;
+  [EAppRoutes.switchToFixture]: undefined;
   [EAppRoutes.home]: undefined;
   [EAppRoutes.portfolio]: undefined;
   [EAppRoutes.wallet]: undefined;
   [EAppRoutes.profile]: undefined;
   [EAppRoutes.qrCode]: undefined;
+  [EAppRoutes.walletConnectSession]: undefined;
   [EAppRoutes.webView]: { uri: string };
 };
 

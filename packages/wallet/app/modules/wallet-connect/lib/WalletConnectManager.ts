@@ -1,281 +1,76 @@
 import { coreModuleApi, ILogger } from "@neufund/shared-modules";
-import { EthereumAddress } from "@neufund/shared-utils";
-import WalletConnect from "@walletconnect/react-native";
-import { IClientMeta } from "@walletconnect/types";
-import { EventEmitter2 } from "eventemitter2";
-import { interfaces } from "inversify";
+import { invariant } from "@neufund/shared-utils";
+import { inject, injectable } from "inversify";
 
-import { WalletConnectModuleError } from "modules/wallet-connect/errors";
-import { TWalletConnectPeer } from "modules/wallet-connect/types";
+import { AppSingleKeyStorage } from "modules/storage";
 
-import { unwrapPromise } from "utils/promiseUtils";
-
-import {
-  CALL_REQUEST_EVENT,
-  DISCONNECT_EVENT,
-  ETH_SEND_TRANSACTION_RPC_METHOD,
-  ETH_SIGN_RPC_METHOD,
-  SESSION_REQUEST_EVENT,
-  walletConnectClientMeta,
-} from "./constants";
-import {
-  WalletConnectEthSendTransactionJSONRPCSchema,
-  WalletConnectEthSignJSONRPCSchema,
-  WalletConnectSessionJSONRPCSchema,
-} from "./schemas";
-import {
-  EWalletConnectManagerEvents,
-  ExtractWalletConnectManagerEmitData,
-  TWalletConnectUri,
-} from "./types";
-import { parseRPCPayload } from "./utils";
-
-class WalletConnectManagerError extends WalletConnectModuleError {
-  constructor(message: string) {
-    super(`WalletConnectManager: ${message}`);
-  }
-}
-
-class InvalidRPCMethodError extends WalletConnectManagerError {
-  constructor(method: string) {
-    super(`Invalid RPC method received (${method})`);
-  }
-}
-
-class NoPeerMetaError extends WalletConnectManagerError {
-  constructor() {
-    super("No peer meta provided");
-  }
-}
-
-class InvalidJSONRPCPayloadError extends WalletConnectManagerError {
-  constructor(method: string) {
-    super(`Invalid json rpc payload received for ${method}`);
-  }
-}
-
-type TSessionDetails = {
-  peer: TWalletConnectPeer;
-  approveSession: (chainId: number, address: EthereumAddress) => void;
-  rejectSession: () => void;
-};
+import { TSessionDetails, WalletConnectAdapter } from "./WalletConnectAdapter";
+import { TWalletSession } from "./schemas";
+import { privateSymbols } from "./symbols";
+import { EWalletConnectAdapterEvents, TWalletConnectUri } from "./types";
 
 /**
- * Wraps wallet connect class to simplify interface and to provide type safety
- *
- * @internal EthWallet should only be used as a factory and never exposed to DI container
+ * Controls the creation of wallet connect instances
  */
-class WalletConnectManager extends EventEmitter2 {
+@injectable()
+class WalletConnectManager {
   private readonly logger: ILogger;
+  private readonly sessionStorage: AppSingleKeyStorage<TWalletSession>;
 
-  private readonly walletConnect: WalletConnect;
-
-  constructor(uri: TWalletConnectUri, logger: ILogger) {
-    super();
-
+  constructor(
+    @inject(coreModuleApi.symbols.logger) logger: ILogger,
+    @inject(privateSymbols.walletConnectSessionStorage)
+    sessionStorage: AppSingleKeyStorage<TWalletSession>,
+  ) {
     this.logger = logger;
+    this.sessionStorage = sessionStorage;
+  }
 
-    this.walletConnect = new WalletConnect(
+  private subscribeToConnectionEvents(adapter: WalletConnectAdapter) {
+    adapter.on(EWalletConnectAdapterEvents.CONNECTED, async () => {
+      await this.sessionStorage.set(adapter.getSession());
+    });
+
+    adapter.on(EWalletConnectAdapterEvents.DISCONNECTED, async () => {
+      await this.sessionStorage.clear();
+    });
+  }
+
+  async hasExistingSession(): Promise<boolean> {
+    return !!(await this.sessionStorage.get());
+  }
+
+  async useExistingSession(): Promise<WalletConnectAdapter> {
+    const sessionStorageItem = await this.sessionStorage.getStorageItem();
+    invariant(sessionStorageItem, "No session in the storage");
+
+    const adapter = new WalletConnectAdapter(
       {
-        uri,
+        session: sessionStorageItem.data,
+        connectedAt: sessionStorageItem.metadata.created,
       },
-      {
-        clientMeta: walletConnectClientMeta,
-      },
+      this.logger,
     );
-  }
 
-  /**
-   * Gets connected peer id
-   */
-  getPeerId(): string {
-    return this.walletConnect.peerId;
-  }
-
-  /**
-   * Gets currently connected peer metadata
-   *
-   * @throws NoPeerMetaError - When no metadata found
-   */
-  getPeerMeta(): IClientMeta {
-    if (!this.walletConnect.peerMeta) {
-      throw new NoPeerMetaError();
-    }
-
-    return this.walletConnect.peerMeta;
+    this.subscribeToConnectionEvents(adapter);
+    return adapter;
   }
 
   /**
    * Starts a handshake process between to peers
-   *
    * @returns A session details object with meta functions to approve or reject session request
    */
-  async createSession(): Promise<TSessionDetails> {
-    await this.walletConnect.createSession();
+  async createSession(uri: TWalletConnectUri): Promise<TSessionDetails> {
+    const walletConnectAdapter = new WalletConnectAdapter(
+      {
+        uri,
+      },
+      this.logger,
+    );
 
-    return new Promise((resolve, reject) => {
-      this.walletConnect.on(SESSION_REQUEST_EVENT, async (error, payload) => {
-        if (error) {
-          reject(error);
-
-          return;
-        }
-
-        try {
-          const parsedPayload = parseRPCPayload(WalletConnectSessionJSONRPCSchema, payload);
-
-          const peerData = parsedPayload.params[0];
-
-          const peer: TWalletConnectPeer = {
-            id: peerData.peerId,
-            meta: peerData.peerMeta,
-          };
-
-          const approveSession = (chainId: number, address: EthereumAddress) => {
-            this.walletConnect.approveSession({
-              chainId,
-              accounts: [address],
-            });
-
-            this.initializeListeners();
-          };
-
-          const rejectSession = () => {
-            this.walletConnect.rejectSession();
-          };
-
-          resolve({
-            peer,
-            approveSession,
-            rejectSession,
-          });
-        } catch {
-          reject(new InvalidJSONRPCPayloadError(SESSION_REQUEST_EVENT));
-
-          return;
-        }
-      });
-    });
-  }
-
-  /**
-   * Disconnects currently active session
-   */
-  async disconnectSession() {
-    this.logger.info(`Disconnecting wallet connect session with peer ${this.getPeerId()}`);
-
-    await this.walletConnect.killSession();
-  }
-
-  private initializeListeners() {
-    this.walletConnect.on(CALL_REQUEST_EVENT, async (error, payload) => {
-      if (error) {
-        this.logger.error("Wallet connect call request error", error);
-
-        return;
-      }
-
-      switch (payload.method) {
-        case ETH_SIGN_RPC_METHOD:
-          try {
-            const parsedPayload = parseRPCPayload(WalletConnectEthSignJSONRPCSchema, payload);
-
-            await this.handleCallSigningRequest(
-              EWalletConnectManagerEvents.SIGN_MESSAGE,
-              parsedPayload.id,
-              {
-                digest: parsedPayload.params[1],
-              },
-            );
-          } catch (e) {
-            this.handleCallSigningError(payload.id, new InvalidJSONRPCPayloadError(payload.method));
-          }
-          break;
-
-        case ETH_SEND_TRANSACTION_RPC_METHOD:
-          try {
-            const parsedPayload = parseRPCPayload(
-              WalletConnectEthSendTransactionJSONRPCSchema,
-              payload,
-            );
-
-            await this.handleCallSigningRequest(
-              EWalletConnectManagerEvents.SEND_TRANSACTION,
-              parsedPayload.id,
-              {
-                transaction: parsedPayload.params[0],
-              },
-            );
-          } catch (e) {
-            this.handleCallSigningError(payload.id, new InvalidJSONRPCPayloadError(payload.method));
-          }
-          break;
-
-        default:
-          this.handleCallSigningError(payload.id, new InvalidRPCMethodError(payload.method));
-          break;
-      }
-    });
-
-    this.walletConnect.on(DISCONNECT_EVENT, () => {
-      this.emit(EWalletConnectManagerEvents.DISCONNECT, undefined, undefined, undefined);
-    });
-  }
-
-  private handleCallSigningError(id: number, error: Error) {
-    this.logger.error("Wallet connect call signing error", error);
-
-    this.walletConnect.rejectRequest({
-      id,
-      error: error ?? new Error("Request rejected"),
-    });
-  }
-
-  private async handleCallSigningRequest<
-    T extends
-      | EWalletConnectManagerEvents.SIGN_MESSAGE
-      | EWalletConnectManagerEvents.SEND_TRANSACTION
-  >(type: T, id: number, payload: ExtractWalletConnectManagerEmitData<T, "payload">) {
-    const {
-      promise: signRequest,
-      resolve: approveRequest,
-      reject: rejectRequest,
-    } = unwrapPromise();
-
-    this.emit(type, undefined, payload, {
-      approveRequest,
-      rejectRequest,
-    });
-
-    try {
-      const result = await signRequest;
-
-      this.walletConnect.approveRequest({
-        id,
-        result,
-      });
-    } catch (error) {
-      this.walletConnect.rejectRequest({
-        id,
-        error: error ?? new Error("Request rejected"),
-      });
-    }
+    this.subscribeToConnectionEvents(walletConnectAdapter);
+    return walletConnectAdapter.connect();
   }
 }
 
-const walletConnectManagerFactory = (context: interfaces.Context) => {
-  const logger = context.container.get<ILogger>(coreModuleApi.symbols.logger);
-
-  return (uri: TWalletConnectUri) => new WalletConnectManager(uri, logger);
-};
-
-export type TWalletConnectManagerFactoryType = ReturnType<typeof walletConnectManagerFactory>;
-
-export {
-  walletConnectManagerFactory,
-  WalletConnectManager,
-  NoPeerMetaError,
-  WalletConnectManagerError,
-  InvalidRPCMethodError,
-  InvalidJSONRPCPayloadError,
-};
+export { WalletConnectManager };

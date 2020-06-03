@@ -12,19 +12,14 @@ import { EFieldType } from "components/shared/forms/layouts/FieldLayout";
 
 import fixtures from "lib/contracts/fixtures.json";
 
-import { authModuleAPI, EAuthState } from "modules/auth/module";
+import { EAuthState } from "modules/auth/module";
 import { walletEthModuleApi } from "modules/eth/module";
-
-import { appConnect } from "store/utils";
 
 import { spacingStyles } from "styles/spacings";
 
-type TStateProps = {
-  authState: ReturnType<typeof authModuleAPI.selectors.selectAuthState>;
-};
-
-type TDispatchProps = {
-  importExistingAccount: (privateKeyOrMnemonic: string, name: string) => void;
+type TExternalProps = {
+  authState: EAuthState;
+  changeAccount: (privateKeyOrMnemonic: string, name: string) => void;
 };
 
 const validationSchema = Yup.object({
@@ -47,9 +42,9 @@ const UIFixtures = Object.values(fixtures).map(fixture => ({
 
 const fuse = new Fuse(UIFixtures, { keys: ["id", "title"], shouldSort: false, threshold: 0.4 });
 
-const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+const FixturesSwitcher: React.FunctionComponent<TExternalProps> = ({
   authState,
-  importExistingAccount,
+  changeAccount,
 }) => {
   return (
     <SafeAreaScreen contentContainerStyle={styles.content}>
@@ -59,7 +54,7 @@ const SwitchAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
         onSubmit={values => {
           const fixture = fixtures[values.address as keyof typeof fixtures];
 
-          importExistingAccount(nonNullable(fixture.privateKey), nonNullable(fixture.name));
+          changeAccount(nonNullable(fixture.privateKey), nonNullable(fixture.name));
         }}
       >
         {({ handleSubmit, isValid, values }) => {
@@ -105,14 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const SwitchAccountScreen = appConnect<TStateProps, TDispatchProps>({
-  stateToProps: state => ({
-    authState: authModuleAPI.selectors.selectAuthState(state),
-  }),
-  dispatchToProps: dispatch => ({
-    importExistingAccount: (privateKeyOrMnemonic: string, name: string) =>
-      dispatch(authModuleAPI.actions.importAccount(privateKeyOrMnemonic, name, true)),
-  }),
-})(SwitchAccountLayout);
-
-export { SwitchAccountScreen };
+export { FixturesSwitcher };

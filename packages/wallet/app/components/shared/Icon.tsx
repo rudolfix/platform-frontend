@@ -4,8 +4,10 @@ import * as React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 
 import Close from "assets/close.svg";
+import Device from "assets/device.svg";
 import Home from "assets/home.svg";
 import Investments from "assets/investments.svg";
+import Logout from "assets/logout.svg";
 import Pending from "assets/pending.svg";
 import Placeholder from "assets/placeholder.svg";
 import Profile from "assets/profile.svg";
@@ -30,6 +32,8 @@ enum EIconType {
   N_EUR = "n-eur",
   ETH = "eth",
   QR_CODE = "qr-code",
+  DEVICE = "device",
+  LOGOUT = "logout",
   PENDING = "pending",
 }
 
@@ -37,8 +41,11 @@ const pickByIdentity = pickBy(identity);
 
 const icons: Record<EIconType, typeof Close> = {
   [EIconType.CLOSE]: Close,
+  [EIconType.DEVICE]: Device,
   [EIconType.ETH]: Eth,
   [EIconType.HOME]: Home,
+  [EIconType.PORTFOLIO]: Investments,
+  [EIconType.LOGOUT]: Logout,
   [EIconType.N_EUR]: NEur,
   [EIconType.PENDING]: Pending,
   [EIconType.PLACEHOLDER]: Placeholder,

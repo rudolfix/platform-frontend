@@ -31,7 +31,7 @@ function* sign(
         break;
       }
       case ESignerType.SIGN_MESSAGE: {
-        const signedData = yield* call(() => ethManager.signMessageHash(payload.data.digest));
+        const signedData = yield* call(() => ethManager.signMessage(payload.data.digest));
 
         yield put(signerUIActions.signed({ type: payload.type, data: { signedData } }));
 

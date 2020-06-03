@@ -68,7 +68,7 @@ const LandingLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
         {Config.NF_CONTRACT_ARTIFACTS_VERSION === "localhost" && (
           <Button
             layout={EButtonLayout.TEXT_DARK}
-            onPress={() => navigation.navigate(EAppRoutes.switchAccount)}
+            onPress={() => navigation.navigate(EAppRoutes.importFixture)}
           >
             Import fixture
           </Button>

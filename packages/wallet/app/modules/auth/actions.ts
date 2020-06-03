@@ -15,13 +15,23 @@ export const authActions = {
    */
   importAccount: createActionFactory(
     "AUTH_IMPORT_ACCOUNT",
-    (privateKeyOrMnemonic: string, name?: string, forceReset?: boolean) => ({
+    (privateKeyOrMnemonic: string, name?: string) => ({
       privateKeyOrMnemonic,
       name,
-      forceReset,
     }),
   ),
   failedToImportAccount: createActionFactory("AUTH_ACCOUNT_IMPORT_FAILED"),
+
+  /**
+   * Switch account flow
+   */
+  switchAccount: createActionFactory(
+    "AUTH_SWITCH_ACCOUNT",
+    (privateKeyOrMnemonic: string, name?: string) => ({
+      privateKeyOrMnemonic,
+      name,
+    }),
+  ),
 
   /**
    * Unlock account flow
@@ -37,6 +47,7 @@ export const authActions = {
    * Logout flow
    */
   logout: createActionFactory("AUTH_LOGOUT"),
+  logoutDone: createActionFactory("AUTH_LOGOUT_DONE"),
 
   /**
    * Sign in flow

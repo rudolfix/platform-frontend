@@ -1,6 +1,6 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
@@ -14,7 +14,6 @@ import {
 } from "../../../../modules/tx/sender/selectors";
 import { TSpecificTransactionState } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
-import { ExternalLink } from "../../../shared/links/ExternalLink";
 import { Message } from "../../message/Message";
 import { TxDetails } from "../TxDetails.unsafe";
 import { TxName } from "../TxName";
@@ -71,14 +70,11 @@ const getErrorMessageByType = (type?: ETransactionErrorType) => {
       return <FormattedMessage id="modal.txsender.error-message.ledger-contracts-disabled" />;
     default:
       return (
-        <FormattedMessage
+        <FormattedHTMLMessage
+          tagName="span"
           id="modal.shared.signing-message.transaction-error.text"
           values={{
-            supportDesk: (
-              <ExternalLink href={externalRoutes.neufundSupportHome}>
-                <FormattedMessage id="support-desk.link.text" />
-              </ExternalLink>
-            ),
+            supportDeskLink: externalRoutes.neufundSupportHome,
           }}
         />
       );

@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import {
   selectTxAdditionalData,
   selectTxDetails,
@@ -36,6 +36,22 @@ type TTxPendingLayoutProps = {
   txTimestamp?: number;
 } & TSpecificTransactionState;
 
+type TTxSuccessTitleProps = { type: TSpecificTransactionState["type"] };
+
+const TxSuccessText: React.FunctionComponent<TTxSuccessTitleProps> = ({ type }) => {
+  switch (type) {
+    case ETxType.INVESTOR_REFUND:
+      return <FormattedMessage id="tx-sender.tx-success.refund-description" />;
+    default:
+      return (
+        <FormattedMessage
+          id="tx-sender.tx-success.description"
+          values={{ transaction: <TxName type={type} /> }}
+        />
+      );
+  }
+};
+
 const TxSuccessLayout: React.FunctionComponent<TTxPendingLayoutProps> = props => (
   <Message
     data-test-id="modals.shared.tx-success.modal"
@@ -47,12 +63,7 @@ const TxSuccessLayout: React.FunctionComponent<TTxPendingLayoutProps> = props =>
       />
     }
     titleClassName="text-success"
-    text={
-      <FormattedMessage
-        id="tx-sender.tx-success.description"
-        values={{ transaction: <TxName type={props.type} /> }}
-      />
-    }
+    text={<TxSuccessText type={props.type} />}
   >
     <TxDetails className="mb-3" {...props} />
 

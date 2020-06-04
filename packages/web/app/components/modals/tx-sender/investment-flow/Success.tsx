@@ -2,14 +2,13 @@ import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TInvestmentAdditionalData } from "../../../../modules/tx/transactions/investment/types";
-import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
 import { ConfettiEthereum } from "../../../shared/ethereum";
-import { EtherscanTxLink } from "../../../shared/links";
 import { Message } from "../../message/Message";
 import { InvestmentTransactionDetails } from "./InvestmentTransactionDetails";
 
@@ -28,24 +27,13 @@ interface IDispatchProps {
 
 const InvestmentSuccessComponent: React.FunctionComponent<IProps &
   IStateProps &
-  IDispatchProps> = ({ additionalData, goToPortfolio, txTimestamp, txHash }) => (
+  IDispatchProps> = ({ additionalData, goToPortfolio, txTimestamp }) => (
   <Message
     data-test-id="investment-flow.success.title"
     image={<ConfettiEthereum className="mb-3" />}
     title={<FormattedMessage id="investment-flow.success.title" />}
     titleClassName="text-success"
-    text={
-      <FormattedMessage
-        id="investment-flow.success.congratulation-text"
-        values={{
-          etherscan: (
-            <EtherscanTxLink txHash={txHash}>
-              <FormattedMessage id="common.text.etherscan" />
-            </EtherscanTxLink>
-          ),
-        }}
-      />
-    }
+    text={<FormattedMessage id="investment-flow.success.congratulation-text" />}
   >
     <InvestmentTransactionDetails
       additionalData={additionalData}
@@ -64,7 +52,7 @@ const InvestmentSuccessComponent: React.FunctionComponent<IProps &
 
 const InvestmentSuccess = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
-    additionalData: selectTxAdditionalData<ETxSenderType.INVEST>(state)!,
+    additionalData: selectTxAdditionalData<ETxType.INVEST>(state)!,
   }),
   dispatchToProps: dispatch => ({
     goToPortfolio: () => {

@@ -1,19 +1,20 @@
+import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import {
   EthereumPrivateKey,
   toEthereumPrivateKey,
   EthereumHDMnemonic,
   toEthereumHDMnemonic,
 } from "@neufund/shared-utils";
-import { coreModuleApi, ILogger } from "@neufund/shared-modules";
 import { utils } from "ethers";
 import { UnsignedTransaction } from "ethers/utils";
 import { interfaces } from "inversify";
 
-import { EthModuleError } from "../errors";
+import { EthModuleError } from "modules/eth/errors";
+
+import { EthSecureEnclave } from "./EthSecureEnclave";
 import { TWalletMetadata } from "./schemas";
 import { privateSymbols } from "./symbols";
-import { EthSecureEnclave } from "./EthSecureEnclave";
-import { isHdWallet } from "./utils";
+import { addHexPrefix, isHdWallet } from "./utils";
 
 class EthWalletError extends EthModuleError {
   constructor(message: string) {
@@ -84,10 +85,9 @@ class EthWallet {
   async signMessage(message: string): Promise<string> {
     this.logger.info("Signing message");
 
-    return this.ethSecureEnclave.signDigest(
-      this.walletMetadata.privateKeyReference,
-      utils.hashMessage(message),
-    );
+    const digest = utils.hashMessage(utils.arrayify(addHexPrefix(message)));
+
+    return this.ethSecureEnclave.signDigest(this.walletMetadata.privateKeyReference, digest);
   }
 
   /**

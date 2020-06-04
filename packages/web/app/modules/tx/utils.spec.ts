@@ -1,9 +1,9 @@
+import { ETransactionType } from "@neufund/shared-modules";
 import { ECurrency } from "@neufund/shared-utils";
 import { expect } from "chai";
 
-import { ETransactionType } from "../../lib/api/analytics-api/interfaces";
+import { ETxType } from "../../lib/web3/types";
 import { EInvestmentType } from "../investment-flow/reducer";
-import { ETxSenderType } from "./types";
 import {
   generalPendingTxFixture,
   getPendingTransactionAmount,
@@ -23,7 +23,7 @@ describe("Pending transaction type", () => {
   });
 
   it("returns eto_invest for investment operation", () => {
-    pendingTransaction.transactionType = ETxSenderType.INVEST;
+    pendingTransaction.transactionType = ETxType.INVEST;
     expect(getPendingTransactionType(pendingTransaction)).to.eq(ETransactionType.ETO_INVESTMENT);
   });
 });
@@ -36,7 +36,7 @@ describe("Pending transaction currency", () => {
   });
 
   it("returns token symbol when it is set", () => {
-    pendingTransaction.transactionType = ETxSenderType.INVEST;
+    pendingTransaction.transactionType = ETxType.INVEST;
     expect(getPendingTransactionCurrency(pendingTransaction)).to.eq(
       pendingTransaction.transactionAdditionalData.tokenSymbol,
     );
@@ -44,7 +44,7 @@ describe("Pending transaction currency", () => {
 
   it("returns neur for redeem", () => {
     delete pendingTransaction.transactionAdditionalData.tokenSymbol;
-    pendingTransaction.transactionType = ETxSenderType.NEUR_REDEEM;
+    pendingTransaction.transactionType = ETxType.NEUR_REDEEM;
     expect(getPendingTransactionCurrency(pendingTransaction)).to.eq(ECurrency.EUR_TOKEN);
   });
 });

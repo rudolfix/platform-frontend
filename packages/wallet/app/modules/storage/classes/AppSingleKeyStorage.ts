@@ -1,24 +1,23 @@
-import { inject, injectable } from "inversify";
-import { coreModuleApi, ILogger } from "@neufund/shared-modules";
+import { ILogger, ISingleKeyStorage } from "@neufund/shared-modules";
 
-import { IStorageItem } from "../types/IStorageItem";
-import { IStorageSchema } from "../types/IStorageSchema";
+import { IStorageItem } from "modules/storage/types/IStorageItem";
+import { IStorageSchema } from "modules/storage/types/IStorageSchema";
+
 import { AppStorage } from "./AppStorage";
-import { symbols } from "../symbols";
 import { AsyncStorageProvider } from "./AsyncStorageProvider";
 
 /**
  * A class representing a single key application storage
  * @class  AppStorage
+ * @todo Provide a factory to create single key storage so there is no need to manually provide logger and provider every time (allow to override provider)
  */
-@injectable()
-class AppSingleKeyStorage<DataType> {
+class AppSingleKeyStorage<DataType> implements ISingleKeyStorage<DataType> {
   protected storage: AppStorage<DataType>;
   protected key: string;
 
   constructor(
-    @inject(symbols.appStorageProvider) provider: AsyncStorageProvider,
-    @inject(coreModuleApi.symbols.logger) logger: ILogger,
+    provider: AsyncStorageProvider,
+    logger: ILogger,
     storageKey: string,
     schema: IStorageSchema<DataType>,
   ) {
@@ -26,21 +25,21 @@ class AppSingleKeyStorage<DataType> {
     this.key = storageKey;
   }
 
-  async set(value: DataType): Promise<IStorageItem<DataType>> {
-    return this.storage.setItem(this.key, value);
+  async set(value: DataType): Promise<void> {
+    await this.storage.setItem(this.key, value);
   }
 
-  async getStorageItem(): Promise<IStorageItem<DataType> | null> {
+  async getStorageItem(): Promise<IStorageItem<DataType> | undefined> {
     return this.storage.getItem(this.key);
   }
 
-  async get(): Promise<DataType | null> {
+  async get(): Promise<DataType | undefined> {
     const storageItem = await this.getStorageItem();
 
-    return storageItem ? storageItem.data : null;
+    return storageItem ? storageItem.data : undefined;
   }
 
-  async remove(): Promise<void> {
+  async clear(): Promise<void> {
     await this.storage.removeItem(this.key);
   }
 }

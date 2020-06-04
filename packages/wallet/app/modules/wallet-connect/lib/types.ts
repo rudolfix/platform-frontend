@@ -1,17 +1,26 @@
-import { Opaque } from "@neufund/shared-utils";
-import { TTransactionSchema } from "./schemas";
+import { Opaque, XOR } from "@neufund/shared-utils";
+
+import { TTransactionSchema, TWalletSession } from "./schemas";
 
 export type TWalletConnectUri = Opaque<"WalletConnectUri", string>;
 
-export enum EWalletConnectManagerEvents {
+export type IWalletConnectOptions = XOR<
+  {
+    uri: TWalletConnectUri;
+  },
+  { session: TWalletSession; connectedAt: number }
+>;
+
+export enum EWalletConnectAdapterEvents {
   SIGN_MESSAGE = "sign_message",
   SEND_TRANSACTION = "send_transaction",
-  DISCONNECT = "disconnect",
+  DISCONNECTED = "disconnected",
+  CONNECTED = "connected",
 }
 
-export type TWalletConnectManagerEmit =
+export type TWalletConnectAdapterEmit =
   | {
-      type: EWalletConnectManagerEvents.SIGN_MESSAGE;
+      type: EWalletConnectAdapterEvents.SIGN_MESSAGE;
       payload: {
         digest: string;
       };
@@ -22,7 +31,7 @@ export type TWalletConnectManagerEmit =
       error: undefined;
     }
   | {
-      type: EWalletConnectManagerEvents.SEND_TRANSACTION;
+      type: EWalletConnectAdapterEvents.SEND_TRANSACTION;
       payload: {
         transaction: TTransactionSchema;
       };
@@ -33,13 +42,19 @@ export type TWalletConnectManagerEmit =
       error: undefined;
     }
   | {
-      type: EWalletConnectManagerEvents.DISCONNECT;
+      type: EWalletConnectAdapterEvents.DISCONNECTED;
+      payload: undefined;
+      meta: undefined;
+      error: undefined;
+    }
+  | {
+      type: EWalletConnectAdapterEvents.CONNECTED;
       payload: undefined;
       meta: undefined;
       error: undefined;
     };
 
-export type ExtractWalletConnectManagerEmitData<
-  T extends EWalletConnectManagerEvents,
+export type ExtractWalletConnectAdapterEmitData<
+  T extends EWalletConnectAdapterEvents,
   F extends string
-> = Extract<TWalletConnectManagerEmit, { type: T }> extends { [k in F]: infer E } ? E : never;
+> = Extract<TWalletConnectAdapterEmit, { type: T }> extends { [k in F]: infer E } ? E : never;

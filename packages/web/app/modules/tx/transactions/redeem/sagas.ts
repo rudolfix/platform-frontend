@@ -1,4 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
+import { walletApi } from "@neufund/shared-modules";
 import {
   compareBigNumbers,
   convertToUlps,
@@ -9,21 +10,19 @@ import {
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions } from "../../../actions";
 import { EBankTransferType } from "../../../bank-transfer-flow/reducer";
 import {
   selectBankFeeUlps,
   selectIsBankAccountVerified,
 } from "../../../bank-transfer-flow/selectors";
-import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { selectBankAccount } from "../../../kyc/selectors";
 import { TBankAccount } from "../../../kyc/types";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
-import { selectLiquidEuroTokenBalance } from "../../../wallet/selectors";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
-import { ETxSenderType } from "../../types";
+import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 
 function* generateNeuWithdrawTransaction(
   { contractsService, web3Manager }: TGlobalDependencies,
@@ -51,7 +50,7 @@ function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
   const txDataFromUser = action.payload.txDraftData;
   const selectedAmount = txDataFromUser.value;
 
-  const nEURBalanceUlps = yield select(selectLiquidEuroTokenBalance);
+  const nEURBalanceUlps = yield select(walletApi.selectors.selectLiquidEuroTokenBalance);
 
   const nEURBalance = new BigNumber(nEURBalanceUlps)
     .div(new BigNumber("10").pow(ETH_DECIMALS))
@@ -89,9 +88,7 @@ function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
     },
   };
 
-  yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.NEUR_REDEEM>(additionalDetails),
-  );
+  yield put(actions.txSender.txSenderContinueToSummary<ETxType.NEUR_REDEEM>(additionalDetails));
 }
 
 function* neurRedeemSaga({ logger }: TGlobalDependencies): Generator<any, any, any> {
@@ -104,7 +101,7 @@ function* neurRedeemSaga({ logger }: TGlobalDependencies): Generator<any, any, a
 
   try {
     yield txSendSaga({
-      type: ETxSenderType.NEUR_REDEEM,
+      type: ETxType.NEUR_REDEEM,
       transactionFlowGenerator: startNEuroRedeemGenerator,
     });
 

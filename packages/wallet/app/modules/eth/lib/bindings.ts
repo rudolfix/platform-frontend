@@ -1,12 +1,14 @@
 import { coreModuleApi, TLibSymbolType } from "@neufund/shared-modules";
 import { ContainerModule } from "inversify";
-import { AppSingleKeyStorage, storageModuleApi } from "../../storage";
-import { WALLET_METADATA_KEY } from "./constants";
+
+import { AppSingleKeyStorage, storageModuleApi } from "modules/storage";
+
 import { ethAdapterFactory } from "./EthAdapter";
 import { EthManager } from "./EthManager";
 import { EthSecureEnclave } from "./EthSecureEnclave";
 import { ethWalletProvider } from "./EthWallet";
 import { EthWalletFactory } from "./EthWalletFactory";
+import { WALLET_METADATA_KEY } from "./constants";
 import { WalletMetadataStorageSchema } from "./schemas";
 import { privateSymbols, symbols } from "./symbols";
 

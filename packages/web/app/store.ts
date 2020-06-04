@@ -3,7 +3,9 @@ import {
   setupAuthModule,
   setupContractsModule,
   setupCoreModule,
+  setupGasModule,
   setupTokenPriceModule,
+  setupWalletModule,
   TAppConnectOptions,
   TModuleSetup,
   TModuleState,
@@ -25,9 +27,11 @@ import { setupBindings } from "./di/setupBindings";
 import { symbols } from "./di/symbols";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { actions, TAction } from "./modules/actions";
-import { initInitialState } from "./modules/init/reducer";
+import { waitUntilSmartContractsAreInitialized } from "./modules/init/sagas";
+import { setupWebNotificationUIModule } from "./modules/notification-ui/module";
 import { appReducers } from "./modules/reducer";
 import { rootSaga } from "./modules/sagas";
+import { setupWebTxHistoryModule } from "./modules/tx-history/module";
 import { IDisconnectedWeb3State, web3InitialState } from "./modules/web3/reducer";
 
 // add new external actions here
@@ -71,6 +75,12 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupTokenPriceModule({
       refreshOnAction: actions.web3.newBlockArrived,
     }),
+    ...setupWalletModule({ waitUntilSmartContractsAreInitialized }),
+    ...setupWebTxHistoryModule({
+      refreshOnAction: actions.web3.newBlockArrived,
+    }),
+    setupGasModule(),
+    setupWebNotificationUIModule(),
     appModule,
   ];
 };
@@ -92,9 +102,9 @@ export const staticValues = (
   if (state) {
     return {
       router: state.router,
-      // TODO: Think about the state and where smart contracts should be
       contracts: state.contracts,
-      init: { ...initInitialState, smartcontractsInit: state.init.smartcontractsInit },
+      walletSelector: state.walletSelector,
+      init: state.init,
       web3: createInitialWeb3State(state),
       browser: state.browser,
     };

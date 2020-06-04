@@ -4,10 +4,10 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 
+import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TRedistributePayoutAdditionalData } from "../../../../modules/tx/transactions/payout/redistribute/types";
-import { ETxSenderType } from "../../../../modules/tx/types";
 import { selectEthereumAddress } from "../../../../modules/web3/selectors";
 import { appConnect } from "../../../../store";
 import { commitmentStatusLink } from "../../../appRouteUtils";
@@ -59,7 +59,7 @@ const InvestorRedistributePayoutSummaryLayout: React.FunctionComponent<TComponen
 const InvestorRedistributePayoutSummary = appConnect<IStateProps, IDispatchProps, {}>({
   stateToProps: state => ({
     walletAddress: selectEthereumAddress(state),
-    additionalData: selectTxAdditionalData<ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT>(state)!,
+    additionalData: selectTxAdditionalData<ETxType.INVESTOR_REDISTRIBUTE_PAYOUT>(state)!,
   }),
   dispatchToProps: d => ({
     onAccept: () => d(actions.txSender.txSenderAccept()),

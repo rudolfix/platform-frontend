@@ -1,7 +1,15 @@
+import { IUser } from "@neufund/shared-modules";
+import {
+  createLightWalletWithKeyPair,
+  createUser,
+  getJWT,
+  TUserType,
+  wrappedFetch,
+} from "@neufund/shared-modules/tests";
 import { toCamelCase } from "@neufund/shared-utils";
 
 import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { IUser, OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users/interfaces";
+import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { assertLanding } from "./assertions";
 import {
@@ -11,13 +19,9 @@ import {
   VAULT_API_ROOT,
   WALLET_STORAGE_KEY,
 } from "./constants";
-import { createLightWalletWithKeyPair } from "./createLightWalletWithKeyPair";
-import { createUser, TUserType } from "./createUser";
 import { getAgreementHash } from "./getAgreementHash";
-import { getJWT } from "./getJWT";
 import { accountFixtureByName, removePendingExternalTransaction } from "./index";
 import { tid } from "./selectors";
-import { wrappedFetch } from "./wrappedFetch";
 
 export const generateRandomEmailAddress = () =>
   `${Math.random()
@@ -69,7 +73,7 @@ export const createAndLoginNewUser = ({
       address,
       privateKey,
       walletKey,
-    } = await createLightWalletWithKeyPair(seed, hdPath);
+    } = await createLightWalletWithKeyPair(DEFAULT_PASSWORD, seed, hdPath);
 
     // set wallet data on local storage
     ls.setItem(
@@ -352,14 +356,14 @@ export interface IHttpPartialResponse<T> {
 
 export const getEto = (etoID: string): Cypress.Chainable<TEtoDataWithCompany> => {
   if (!etoID) {
-    throw new Error("Cannot fetch undefined value please check if the fixtures are in sync");
+    throw new Error("Cannot fetch undefined value. Please check if the fixtures are in sync");
   }
 
   return cy
     .request({ url: ETOS_PATH, method: "GET" })
     .then((etos: IHttpPartialResponse<TEtoDataWithCompany>) => {
       if (!etos.body) {
-        throw new Error(`There is no body response from ${ETOS_PATH} ping backend about this`);
+        throw new Error(`There is no body response from ${ETOS_PATH}. Ping backend about this :)`);
       }
 
       const result: TEtoDataWithCompany[] = toCamelCase(etos.body).filter(
@@ -368,7 +372,7 @@ export const getEto = (etoID: string): Cypress.Chainable<TEtoDataWithCompany> =>
 
       if (result.length === 0) {
         throw new Error(
-          "Something is wrong with the fixtures, this sometimes happens due to users changing fixtures from the platform. ",
+          `Something is wrong with the fixtures. This sometimes happens due to users changing fixtures from the platform. The fixture ID I was looking for is ${etoID}. Api response was: ${etos.body}`,
         );
       }
       // If there is more than one eto just return the first one

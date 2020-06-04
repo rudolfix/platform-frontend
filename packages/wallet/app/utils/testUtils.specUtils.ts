@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import isFunction from "lodash/fp/isFunction";
 
 const callGuard = (methodName: string) => (...args: any[]) => {
@@ -21,7 +23,7 @@ function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): 
 
   allMethods.delete("constructor");
 
-  let mock: any = {};
+  const mock: any = {};
 
   allMethods.forEach(methodName => {
     const userProvidedMock = (mockImpl as any)[methodName];
@@ -38,4 +40,27 @@ function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): 
   return mock;
 }
 
-export { createMock };
+const RealDate = global.Date;
+
+const mockDate = (mockedDate: Date) => {
+  global.Date = class extends Date {
+    constructor(value?: number | string | Date) {
+      if (value) {
+        super(value);
+      } else {
+        // eslint-disable-next-line no-constructor-return
+        return mockedDate;
+      }
+    }
+
+    static now = () => mockedDate.valueOf();
+  } as DateConstructor;
+
+  return {
+    reset: () => {
+      global.Date = RealDate;
+    },
+  };
+};
+
+export { createMock, mockDate };

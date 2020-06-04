@@ -1,4 +1,5 @@
-import { EThemeVariant, ITheme } from "../types";
+import { EThemeVariant, ITheme } from "themes/types";
+
 import { lightColorSystem } from "./colorSystem";
 
 const navigationTheme = {
@@ -7,7 +8,7 @@ const navigationTheme = {
     primary: lightColorSystem.base.gray,
     background: lightColorSystem.base.white,
     card: lightColorSystem.base.white,
-    text: lightColorSystem.accent.blueGray,
+    text: lightColorSystem.base.blueGray,
     border: lightColorSystem.base.iron,
   },
 };

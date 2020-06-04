@@ -4,14 +4,13 @@ import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IERC223Token } from "../../../../lib/contracts/IERC223Token";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";
-import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { isAddressValid } from "../../../web3/utils";
 import { txSendSaga } from "../../sender/sagas";
-import { ETxSenderType } from "../../types";
+import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 import {
   selectUserFlowTokenData,
   selectUserFlowTxDetails,
@@ -108,9 +107,7 @@ function* tokenTransferFlowGenerator(_: TGlobalDependencies): Generator<any, any
     tokenDecimals: tokenData.tokenDecimals,
   };
 
-  yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.TRANSFER_TOKENS>(additionalData),
-  );
+  yield put(actions.txSender.txSenderContinueToSummary<ETxType.TRANSFER_TOKENS>(additionalData));
 }
 
 function* startTokenTransfer(
@@ -147,7 +144,7 @@ function* startTokenTransfer(
       }),
     );
     yield txSendSaga({
-      type: ETxSenderType.TRANSFER_TOKENS,
+      type: ETxType.TRANSFER_TOKENS,
       transactionFlowGenerator: tokenTransferFlowGenerator,
     });
 

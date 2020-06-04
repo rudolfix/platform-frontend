@@ -1,8 +1,9 @@
-import * as React from "react";
 import { storiesOf } from "@storybook/react-native";
+import * as React from "react";
 import { View } from "react-native";
 
-import { LineBreak } from "../../LineBreak";
+import { LineBreak } from "components/shared/LineBreak";
+
 import { TextInput } from "./TextInput";
 
 storiesOf("Atoms|TextInput", module).add("default", () => (
@@ -11,7 +12,7 @@ storiesOf("Atoms|TextInput", module).add("default", () => (
 
     <LineBreak />
 
-    <TextInput autoFocus={true} placeholder="Type here..." />
+    <TextInput autoFocus placeholder="Type here..." />
 
     <LineBreak />
 
@@ -19,10 +20,10 @@ storiesOf("Atoms|TextInput", module).add("default", () => (
 
     <LineBreak />
 
-    <TextInput disabled={true} defaultValue="Hello world" />
+    <TextInput disabled defaultValue="Hello world" />
 
     <LineBreak />
 
-    <TextInput invalid={true} defaultValue="Hello world" />
+    <TextInput invalid defaultValue="Hello world" />
   </View>
 ));

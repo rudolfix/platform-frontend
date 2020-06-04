@@ -1,5 +1,18 @@
 @import "../../shared/Panel.module";
 
+@keyframes rotation {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin transaction-list-cell {
+  border-bottom: 1px solid $neu-silver;
+  padding: px-to-rem(18) 0;
+}
+
+$vertical-margin: px-to-rem(18);
+
 .wrapper {
   @include remove-panel-padding;
 
@@ -15,4 +28,96 @@
   &--in {
     font-weight: bold;
   }
+}
+
+.transaction-list {
+  display: grid;
+  grid-template: px-to-rem(72) / auto;
+  grid-auto-rows: px-to-rem(72);
+}
+
+.transaction-list-item {
+  display: grid;
+  grid-template: 100% / px-to-rem(68) 1fr 1fr;
+  margin: 0;
+  padding: 0;
+
+  &:last-of-type * {
+    border-bottom: 0;
+  }
+}
+
+.pending-transaction-item {
+  background-color: $neu-pale-grey-three;
+}
+
+.pending-transaction-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: px-to-rem(60);
+  height: px-to-rem(24);
+
+  background-color: $neu-dark-blue;
+  border-radius: 4px;
+  margin: auto 0 auto .5rem;
+
+  font-size: px-to-rem(12);
+  color: $neu-white;
+}
+
+.transaction-logo {
+  width: px-to-rem(22.5);
+  margin: $vertical-margin 1rem $vertical-margin px-to-rem(20);
+  align-self: center;
+}
+
+.transaction-data {
+  @include transaction-list-cell;
+
+  height: 100%;
+  align-self: flex-start;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+.signing-transaction {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+
+.transaction-amount {
+  @include transaction-list-cell;
+  @include nds-body-small;
+
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-end;
+  align-self: flex-end;
+
+  padding-right: px-to-rem(20);
+
+  font-weight: 500;
+  color: $neu-charcoal-grey;
+  line-height: 1.4;
+}
+
+.euro-equivalent {
+  font-size: px-to-rem(12);
+  font-weight: 400;
+  color: $neu-gull-gray;
+}
+
+.pending-transaction-icon {
+  animation: rotation 1s linear 0s infinite;
+}
+
+.no-transactions {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1rem;
 }

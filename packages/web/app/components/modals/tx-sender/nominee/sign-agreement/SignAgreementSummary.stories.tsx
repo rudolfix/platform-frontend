@@ -3,8 +3,8 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testCompany, testContract, testEto } from "../../../../../../test/fixtures";
+import { ETxType } from "../../../../../lib/web3/types";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
-import { ETxSenderType } from "../../../../../modules/tx/types";
 import { withModalBody } from "../../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { SignNomineeAgreementSummaryLayout } from "./SignAgreementSummary";
 
@@ -20,7 +20,7 @@ storiesOf("NomineeAgreements/Summary", module)
     <SignNomineeAgreementSummaryLayout
       document={eto.templates.companyTokenHolderAgreement}
       nomineeEto={eto}
-      txType={ETxSenderType.NOMINEE_THA_SIGN}
+      txType={ETxType.NOMINEE_THA_SIGN}
       downloadImmutableFile={action("DOWNLOAD")}
       onAccept={action("ACCEPT")}
     />
@@ -29,7 +29,7 @@ storiesOf("NomineeAgreements/Summary", module)
     <SignNomineeAgreementSummaryLayout
       document={eto.templates.reservationAndAcquisitionAgreement}
       nomineeEto={eto}
-      txType={ETxSenderType.NOMINEE_RAAA_SIGN}
+      txType={ETxType.NOMINEE_RAAA_SIGN}
       downloadImmutableFile={action("DOWNLOAD")}
       onAccept={action("ACCEPT")}
     />

@@ -1,73 +1,48 @@
 import { XOR } from "@neufund/shared-utils";
 import * as React from "react";
-import { GestureResponderEvent, Linking, StyleSheet, Text, TouchableHighlight } from "react-native";
+import { GestureResponderEvent, Linking, StyleSheet, Text } from "react-native";
 
-import { baseGray, grayLighter2 } from "../../styles/colors";
-import { typographyStyles } from "../../styles/typography";
+import { st } from "components/utils";
 
-type TouchableHighlightProps = React.ComponentProps<typeof TouchableHighlight>;
+type TextProps = React.ComponentProps<typeof Text>;
+
 type TExternalProps = XOR<{ url: string }, { onPress: (event: GestureResponderEvent) => void }> &
-  Omit<TouchableHighlightProps, "onPress">;
+  Omit<TextProps, "onPress">;
 
 /**
  * An `a` tag alternative for the react-native.
  * Supports either `url` or `onPress` props for handling user interactions.
  */
-const Link: React.FunctionComponent<TExternalProps> = React.forwardRef<
-  TouchableHighlight,
-  TExternalProps
->(({ url, onPress, children, ...props }, ref) => {
-  const [isActive, setIsActive] = React.useState(false);
+const Link: React.FunctionComponent<TExternalProps> = React.forwardRef<Text, TExternalProps>(
+  ({ url, onPress, children, ...props }, ref) => {
+    const onPressHandler = async (e: GestureResponderEvent) => {
+      if (url) {
+        await Linking.openURL(url);
+      }
 
-  const onPressHandler = async (e: GestureResponderEvent) => {
-    if (url) {
-      await Linking.openURL(url);
-    }
+      if (onPress) {
+        onPress(e);
+      }
+    };
 
-    if (onPress) {
-      onPress(e);
-    }
-  };
-
-  const onShowUnderlay = () => {
-    setIsActive(true);
-  };
-
-  const onHideUnderlay = () => {
-    setIsActive(false);
-  };
-
-  return (
-    <TouchableHighlight
-      ref={ref}
-      style={[styles.link]}
-      activeOpacity={1}
-      underlayColor="transparent"
-      accessibilityRole="link"
-      accessibilityComponentType="button"
-      accessibilityTraits={props.disabled ? ["link", "disabled"] : "link"}
-      accessibilityStates={props.disabled ? ["disabled"] : []}
-      onPress={onPressHandler}
-      onShowUnderlay={onShowUnderlay}
-      onHideUnderlay={onHideUnderlay}
-      {...props}
-    >
-      <Text style={[styles.linkText, isActive && styles.linkActiveText]}>{children}</Text>
-    </TouchableHighlight>
-  );
-});
+    return (
+      <Text
+        ref={ref}
+        accessibilityComponentType="button"
+        accessibilityTraits="link"
+        onPress={onPressHandler}
+        style={st(styles.link)}
+        {...props}
+      >
+        {children}
+      </Text>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   link: {
-    alignSelf: "flex-start",
-  },
-  linkText: {
-    ...typographyStyles.text,
-    color: grayLighter2,
     textDecorationLine: "underline",
-  },
-  linkActiveText: {
-    color: baseGray,
   },
 });
 

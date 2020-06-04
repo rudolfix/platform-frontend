@@ -4,15 +4,14 @@ import BigNumber from "bignumber.js";
 
 import { ECurrency } from "../../../../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { ITxData } from "../../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../../lib/web3/types";
 import { actions } from "../../../../actions";
 import { selectIsVerifiedInvestor } from "../../../../auth/selectors";
-import { selectStandardGasPriceWithOverHead } from "../../../../gas/selectors";
 import { ITokenDisbursal } from "../../../../investor-portfolio/types";
 import { neuCall } from "../../../../sagasUtils";
 import { getTokenAddress } from "../../../../shared/sagas";
 import { selectEthereumAddress } from "../../../../web3/selectors";
-import { ETxSenderType } from "../../../types";
+import { selectStandardGasPriceWithOverHead } from "../../../sender/selectors";
 
 // Use highest possible solidity uint256 to redistribute all disbursals for token
 // see https://github.com/Neufund/platform-contracts/blob/59e88f6881bf5adbced8462f1925496467ea4c18/contracts/FeeDisbursal/FeeDisbursal.sol#L164
@@ -71,7 +70,7 @@ export function* startInvestorPayoutRedistributionGenerator(
   );
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
   yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.INVESTOR_REDISTRIBUTE_PAYOUT>({
+    actions.txSender.txSenderContinueToSummary<ETxType.INVESTOR_REDISTRIBUTE_PAYOUT>({
       tokenDisbursals,
     }),
   );

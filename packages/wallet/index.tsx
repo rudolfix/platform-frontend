@@ -1,21 +1,22 @@
 import "react-native-gesture-handler";
 import "./app/polyfills";
 
+import { IModuleStore } from "@neufund/sagas";
 import { Container } from "inversify";
 import React from "react";
-import { Provider as ReduxProvider } from "react-redux";
 import { AppRegistry } from "react-native";
-import { IModuleStore } from "@neufund/sagas";
 import Config from "react-native-config";
+import DevMenu from "react-native-dev-menu";
 
-import { App } from "./app/App";
 import { name as appName } from "./app.json";
+import { App } from "./app/App";
+import { AppContainer } from "./app/components/containers/AppContainer";
 import { createAppStore } from "./app/store/create";
 import { TAppGlobalState } from "./app/store/types";
-import { StorybookUIRoot } from "./storybook";
+import { Storybook } from "./storybook";
 
-function startupStorybookApp(): void {
-  AppRegistry.registerComponent(appName, () => StorybookUIRoot);
+if (__DEV__) {
+  import("./app/devUtils");
 }
 
 function startupApp(): void {
@@ -27,17 +28,28 @@ function startupApp(): void {
 }
 
 function renderApp(store: IModuleStore<TAppGlobalState>): void {
-  const Component = () => (
-    <ReduxProvider store={store}>
-      <App />
-    </ReduxProvider>
-  );
+  const Component = () => {
+    const [isStorybookUI, setStorybookUI] = React.useState(Config.STORYBOOK_RUN === "1");
+
+    React.useEffect(() => {
+      // If it's a storybook mode do not allow toggling
+      if (__DEV__ && Config.STORYBOOK_RUN !== "1") {
+        DevMenu.addItem("Toggle Storybook", () => setStorybookUI(isStUI => !isStUI));
+      }
+    }, []);
+
+    if (isStorybookUI) {
+      return <Storybook />;
+    }
+
+    return (
+      <AppContainer store={store}>
+        <App />
+      </AppContainer>
+    );
+  };
 
   AppRegistry.registerComponent(appName, () => Component);
 }
 
-if (Config.STORYBOOK_RUN === "1") {
-  startupStorybookApp();
-} else {
-  startupApp();
-}
+startupApp();

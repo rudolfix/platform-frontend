@@ -4,7 +4,7 @@ import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { ipfsLinkFromHash } from "../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
 import { etoFlowActions } from "../../../eto-flow/actions";
@@ -15,11 +15,10 @@ import {
   selectPreEtoStartDate,
 } from "../../../eto-flow/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
-import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
-import { ETxSenderType } from "../../types";
+import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
 
 function* generateSetStartDateTransaction({
   contractsService,
@@ -107,7 +106,7 @@ function* etoSetDateGenerator(_: TGlobalDependencies): any {
   const newStartDate: Date = yield select(selectNewPreEtoStartDate);
 
   yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.ETO_SET_DATE>({
+    actions.txSender.txSenderContinueToSummary<ETxType.ETO_SET_DATE>({
       newStartDate: newStartDate.getTime(),
     }),
   );
@@ -120,7 +119,7 @@ function* etoSignInvestmentAgreementGenerator(
   const generatedTxDetails = yield neuCall(generateSignInvestmentAgreementTx, extraParam);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
   yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.SIGN_INVESTMENT_AGREEMENT>(undefined),
+    actions.txSender.txSenderContinueToSummary<ETxType.SIGN_INVESTMENT_AGREEMENT>(undefined),
   );
 }
 
@@ -129,7 +128,7 @@ function* etoSetDateSaga({ logger }: TGlobalDependencies): Generator<any, any, a
     yield put(actions.etoFlow.setEtoDateStart());
 
     yield txSendSaga({
-      type: ETxSenderType.ETO_SET_DATE,
+      type: ETxType.ETO_SET_DATE,
       transactionFlowGenerator: etoSetDateGenerator,
     });
     logger.info("Setting ETO date successful");
@@ -145,7 +144,7 @@ function* etoSignInvestmentAgreementSaga(
 ): Generator<any, any, any> {
   try {
     yield txSendSaga({
-      type: ETxSenderType.SIGN_INVESTMENT_AGREEMENT,
+      type: ETxType.SIGN_INVESTMENT_AGREEMENT,
       transactionFlowGenerator: etoSignInvestmentAgreementGenerator,
       extraParam: action.payload,
     });

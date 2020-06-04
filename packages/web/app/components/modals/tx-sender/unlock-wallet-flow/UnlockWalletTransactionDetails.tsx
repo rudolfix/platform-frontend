@@ -1,3 +1,4 @@
+import { walletApi } from "@neufund/shared-modules";
 import {
   getCurrentUTCTimestamp,
   multiplyBigNumbers,
@@ -9,8 +10,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, lifecycle, withState } from "recompose";
 
-import { ETxSenderType } from "../../../../modules/tx/types";
-import { getUnlockedWalletEtherAmountAfterFee } from "../../../../modules/wallet/utils";
+import { ETxType } from "../../../../lib/web3/types";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
@@ -23,7 +23,7 @@ import { TimestampRow } from "../shared/TimestampRow";
 import { TransactionDetailsComponent } from "../types";
 
 export type TTxPendingProps = React.ComponentProps<
-  TransactionDetailsComponent<ETxSenderType.UNLOCK_FUNDS>
+  TransactionDetailsComponent<ETxType.UNLOCK_FUNDS>
 >;
 
 interface IAdditionalProps {
@@ -105,7 +105,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
 
 const UnlockWalletTransactionDetails = compose<
   TTxPendingProps & IAdditionalProps,
-  React.ComponentProps<TransactionDetailsComponent<ETxSenderType.UNLOCK_FUNDS>>
+  React.ComponentProps<TransactionDetailsComponent<ETxType.UNLOCK_FUNDS>>
 >(
   withState("returnedEther", "updateReturnedFunds", 0),
   withState("unlockFee", "updateUnlockFee", PLATFORM_UNLOCK_FEE * 100),
@@ -114,7 +114,7 @@ const UnlockWalletTransactionDetails = compose<
       const { updateReturnedFunds, additionalData, updateUnlockFee } = this.props;
       const { lockedEtherUnlockDate, lockedEtherBalance } = additionalData;
       setInterval(() => {
-        const amountAfterFee = getUnlockedWalletEtherAmountAfterFee(
+        const amountAfterFee = walletApi.utils.getUnlockedWalletEtherAmountAfterFee(
           new BigNumber(lockedEtherBalance),
           // TODO: Remove with https://github.com/Neufund/platform-frontend/issues/2156
           lockedEtherUnlockDate,

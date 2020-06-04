@@ -1,8 +1,8 @@
-import { ESignerType } from "@neufund/shared-modules";
+import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum, EthereumNetworkId } from "@neufund/shared-utils";
-import { TxData } from "web3";
 
-import { EWalletSubType, EWalletType, TWalletMetadata } from "../../modules/web3/types";
+import { TWalletMetadata } from "../../modules/web3/types";
+import { ITxData, ITxMetadata } from "./types";
 import { Web3Adapter } from "./Web3Adapter";
 
 export interface IPersonalWallet {
@@ -20,7 +20,8 @@ export interface IPersonalWallet {
   // sign message with the best available method for a given wallet
   signMessage(data: string): Promise<string>;
 
-  sendTransaction(txData: TxData): Promise<string>;
+  // sign and send transaction with optional metadata
+  sendTransaction(txData: ITxData, metadata: ITxMetadata): Promise<string>;
 
   getMetadata(): TWalletMetadata;
 
@@ -29,4 +30,7 @@ export interface IPersonalWallet {
   // unplugs wallet from provider ie. ending wallet connect session
   // called on user logout by web3 manager
   unplug(): Promise<void>;
+
+  // unlocks wallet which gives access to private key
+  unlock(passsword: string): Promise<void>;
 }

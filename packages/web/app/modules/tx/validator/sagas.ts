@@ -1,4 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
+import { walletApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -9,19 +10,18 @@ import {
 import BigNumber from "bignumber.js";
 
 import { ETxValidationMessages } from "../../../components/translatedMessages/messages";
-import { createMessage } from "../../../components/translatedMessages/utils";
+import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { STIPEND_ELIGIBLE_WALLETS } from "../../../lib/web3/constants";
-import { ITxData } from "../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../lib/web3/types";
 import { NotEnoughEtherForGasError } from "../../../lib/web3/Web3Adapter";
 import { TAppGlobalState } from "../../../store";
 import { actions, TAction } from "../../actions";
+import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { neuCall, neuTakeLatestUntil } from "../../sagasUtils";
-import { selectEtherBalance } from "../../wallet/selectors";
 import { selectWalletType } from "../../web3/selectors";
 import { generateInvestmentTransaction } from "../transactions/investment/sagas";
 import { selectMaximumInvestment } from "../transactions/investment/selectors";
-import { ETxSenderType } from "../types";
 import { EValidationState } from "./reducer";
 import { selectInvestmentFLow } from "./selectors";
 import { txValidateTokenTransfer } from "./transfer/token-transfer/sagas";
@@ -51,21 +51,18 @@ export function* txValidateInvestment(): Generator<any, any, any> {
   }
 }
 
-export function* txValidateSaga(
-  { logger, notificationCenter }: TGlobalDependencies,
-  action: TAction,
-): any {
+export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction): any {
   if (action.type !== actions.txValidator.validateDraft.getType()) return;
   try {
     let validationGenerator: any;
     switch (action.payload.type) {
-      case ETxSenderType.WITHDRAW:
+      case ETxType.WITHDRAW:
         validationGenerator = txValidateWithdraw(action.payload);
         break;
-      case ETxSenderType.TRANSFER_TOKENS:
+      case ETxType.TRANSFER_TOKENS:
         validationGenerator = txValidateTokenTransfer(action.payload);
         break;
-      case ETxSenderType.INVEST:
+      case ETxType.INVEST:
         validationGenerator = txValidateInvestment();
         break;
     }
@@ -74,16 +71,18 @@ export function* txValidateSaga(
     return txDetails;
   } catch (e) {
     logger.error("Something was wrong during TX validation", e);
-    yield notificationCenter.error(
-      createMessage(ETxValidationMessages.TX_VALIDATION_UNKNOWN_ERROR),
+    yield put(
+      webNotificationUIModuleApi.actions.showError(
+        createNotificationMessage(ETxValidationMessages.TX_VALIDATION_UNKNOWN_ERROR),
+      ),
     );
     // In case of unknown error break the flow and hide modal
     yield put(actions.txSender.txSenderHideModal());
   }
 }
 
-export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails: ITxData): any {
-  const maxEtherUlps = yield select(selectEtherBalance);
+export function* validateGas({ apiUserTxService }: TGlobalDependencies, txDetails: ITxData): any {
+  const maxEtherUlps = yield select(walletApi.selectors.selectEtherBalance);
 
   const costUlps = multiplyBigNumbers([txDetails.gasPrice, txDetails.gas]);
   const valueUlps = subtractBigNumbers([maxEtherUlps, costUlps]);
@@ -93,7 +92,7 @@ export function* validateGas({ apiUserService }: TGlobalDependencies, txDetails:
     if (isGaslessTxEnabled && STIPEND_ELIGIBLE_WALLETS.includes(walletType)) {
       // @SEE https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2015.md
       // @SEE https://github.com/MetaMask/metamask-extension/issues/5101
-      const { gasStipend } = yield apiUserService.getGasStipend(txDetails);
+      const { gasStipend } = yield apiUserTxService.getGasStipend(txDetails);
       const etherUlpsWithStipend = addBigNumbers([gasStipend, maxEtherUlps]);
       const valueUlpsWithStipend = subtractBigNumbers([etherUlpsWithStipend, costUlps]);
       if (compareBigNumbers(txDetails.value, valueUlpsWithStipend) > 0) {

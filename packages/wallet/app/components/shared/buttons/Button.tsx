@@ -1,67 +1,104 @@
 import { assertNever } from "@neufund/shared-utils";
 import React from "react";
-import { StyleSheet, Text, TouchableHighlight } from "react-native";
+import { StyleSheet, TouchableHighlight } from "react-native";
+
+import { LoadingIndicator } from "components/shared/LoadingIndicator";
+import { Touchable } from "components/shared/Touchable";
+import { BodyBoldText } from "components/shared/typography/BodyText";
+import { st } from "components/utils";
 
 import {
   baseGray,
   baseWhite,
   baseYellow,
-  blueyGrey,
+  blueyGray,
+  grayLighter2,
   grayLighter4,
   silverLighter1,
+  silverLighter2,
+  transparent,
   yellowDarker1,
-} from "../../../styles/colors";
-import { typographyStyles } from "../../../styles/typography";
-import { Touchable } from "../Touchable";
+} from "styles/colors";
 
 enum EButtonLayout {
   PRIMARY = "primary",
   SECONDARY = "secondary",
   TEXT = "text",
+  TEXT_DARK = "text_dark",
 }
 
 type TTouchableProps = React.ComponentProps<typeof Touchable>;
+type TBodyBoldTextProps = React.ComponentProps<typeof BodyBoldText>;
 
-type TExternalProps = { layout: EButtonLayout } & Omit<TTouchableProps, "activeColor">;
+type TExternalProps = {
+  layout: EButtonLayout;
+  loading?: boolean;
+  contentStyle?: TBodyBoldTextProps["style"];
+} & Omit<TTouchableProps, "activeColor">;
 
 const getButtonStyle = (layout: EButtonLayout) => {
   switch (layout) {
     case EButtonLayout.PRIMARY:
-      return styles.buttonPrimary;
+      return { button: styles.buttonPrimary };
     case EButtonLayout.SECONDARY:
-      return styles.buttonSecondary;
+      return { button: styles.buttonSecondary };
     case EButtonLayout.TEXT:
-      return styles.buttonText;
+      return { button: styles.buttonText, buttonDisabled: styles.buttonTextDisabled };
+    case EButtonLayout.TEXT_DARK:
+      return {
+        button: styles.buttonText,
+        buttonDisabled: styles.buttonTextDisabled,
+        label: styles.buttonTextDarkLabel,
+        labelDisabled: styles.buttonTextDarkDisabledLabel,
+      };
     default:
       assertNever(layout);
   }
 };
 
-/*
+/**
  * A button that aligns with our design system.
  */
 const Button = React.forwardRef<TouchableHighlight, TExternalProps>(
-  ({ layout, children, ...props }, ref) => {
+  ({ layout, children, style, loading, disabled, contentStyle, ...props }, ref) => {
+    const buttonStyle = getButtonStyle(layout);
+
+    const isDisabled = disabled || loading;
+
     return (
       <Touchable
         ref={ref}
-        style={[
+        style={st(
           styles.buttonCommon,
-          getButtonStyle(layout),
-          props.disabled && styles.buttonCommonDisabled,
-        ]}
+          buttonStyle.button,
+          [isDisabled, [styles.buttonCommonDisabled, buttonStyle.buttonDisabled]],
+          style,
+        )}
         activeColor={yellowDarker1}
         accessibilityRole="button"
-        accessibilityComponentType="button"
-        accessibilityTraits={props.disabled ? ["button", "disabled"] : "button"}
-        accessibilityStates={props.disabled ? ["disabled"] : []}
+        accessibilityState={{ disabled: isDisabled }}
+        disabled={isDisabled}
         {...props}
       >
-        <Text
-          style={[styles.buttonCommonLabel, props.disabled && styles.buttonCommonDisabledLabel]}
+        <BodyBoldText
+          style={st(
+            styles.buttonCommonLabel,
+            buttonStyle.label,
+            [isDisabled, [styles.buttonCommonDisabledLabel, buttonStyle.labelDisabled]],
+            contentStyle,
+          )}
         >
-          {children}
-        </Text>
+          {loading ? (
+            <>
+              {/* We need empty spaces to force the same button size */}
+              &nbsp;
+              <LoadingIndicator />
+              &nbsp;
+            </>
+          ) : (
+            children
+          )}
+        </BodyBoldText>
       </Touchable>
     );
   },
@@ -80,7 +117,6 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   buttonCommonLabel: {
-    ...typographyStyles.label,
     color: baseGray,
   },
   buttonCommonDisabled: {
@@ -88,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: silverLighter1,
   },
   buttonCommonDisabledLabel: {
-    color: blueyGrey,
+    color: blueyGray,
   },
 
   // Primary button
@@ -105,8 +141,20 @@ const styles = StyleSheet.create({
 
   // Text button
   buttonText: {
-    borderColor: "transparent",
-    backgroundColor: "transparent",
+    borderColor: transparent,
+    backgroundColor: transparent,
+  },
+  buttonTextDisabled: {
+    borderColor: transparent,
+    backgroundColor: transparent,
+  },
+
+  // Text dark button
+  buttonTextDarkLabel: {
+    color: silverLighter2,
+  },
+  buttonTextDarkDisabledLabel: {
+    color: grayLighter2,
   },
 });
 

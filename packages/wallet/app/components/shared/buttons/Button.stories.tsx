@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react-native";
 import * as React from "react";
 import { View } from "react-native";
 
-import { LineBreak } from "../LineBreak";
+import { LineBreak } from "components/shared/LineBreak";
 
 import { Button, EButtonLayout } from "./Button";
 
@@ -17,8 +17,14 @@ storiesOf("Atoms|Button", module)
 
       <LineBreak />
 
-      <Button layout={EButtonLayout.PRIMARY} disabled={true} onPress={action("onPress")}>
+      <Button layout={EButtonLayout.PRIMARY} disabled onPress={action("onPress")}>
         Disabled
+      </Button>
+
+      <LineBreak />
+
+      <Button layout={EButtonLayout.PRIMARY} loading onPress={action("onPress")}>
+        Default
       </Button>
     </>
   ))
@@ -30,8 +36,14 @@ storiesOf("Atoms|Button", module)
 
       <LineBreak />
 
-      <Button layout={EButtonLayout.SECONDARY} disabled={true} onPress={action("onPress")}>
+      <Button layout={EButtonLayout.SECONDARY} disabled onPress={action("onPress")}>
         Disabled
+      </Button>
+
+      <LineBreak />
+
+      <Button layout={EButtonLayout.SECONDARY} loading onPress={action("onPress")}>
+        Default
       </Button>
     </>
   ))
@@ -43,8 +55,33 @@ storiesOf("Atoms|Button", module)
 
       <LineBreak />
 
-      <Button layout={EButtonLayout.TEXT} disabled={true} onPress={action("onPress")}>
+      <Button layout={EButtonLayout.TEXT} disabled onPress={action("onPress")}>
         Disabled
+      </Button>
+
+      <LineBreak />
+
+      <Button layout={EButtonLayout.TEXT} loading onPress={action("onPress")}>
+        Default
+      </Button>
+    </>
+  ))
+  .add("text dark", () => (
+    <>
+      <Button layout={EButtonLayout.TEXT_DARK} onPress={action("onPress")}>
+        Default
+      </Button>
+
+      <LineBreak />
+
+      <Button layout={EButtonLayout.TEXT_DARK} disabled onPress={action("onPress")}>
+        Disabled
+      </Button>
+
+      <LineBreak />
+
+      <Button layout={EButtonLayout.TEXT_DARK} loading onPress={action("onPress")}>
+        Default
       </Button>
     </>
   ));

@@ -1,13 +1,13 @@
-import { ESignerType } from "@neufund/shared-modules";
+import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   toEthereumAddress,
 } from "@neufund/shared-utils";
 import * as hex2ascii from "hex2ascii";
-import * as Web3 from "web3";
 
-import { EWalletSubType, EWalletType, IBrowserWalletMetadata } from "../../../modules/web3/types";
+import { ITxData } from "../../../lib/web3/types";
+import { IBrowserWalletMetadata } from "../../../modules/web3/types";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
 import { SignerRejectConfirmationError } from "../Web3Manager/Web3Manager";
@@ -88,9 +88,9 @@ export class BrowserWallet implements IPersonalWallet {
     }
   };
 
-  public sendTransaction = async (data: Web3.TxData): Promise<string> => {
+  public sendTransaction = async (txData: ITxData): Promise<string> => {
     try {
-      return await this.web3Adapter.sendTransaction(data);
+      return await this.web3Adapter.sendTransaction(txData);
     } catch (e) {
       const error = parseBrowserWalletError(e);
       if (error instanceof BrowserWalletConfirmationRejectedError) {
@@ -112,4 +112,7 @@ export class BrowserWallet implements IPersonalWallet {
   public isUnlocked = (): boolean => true;
 
   public unplug = () => Promise.resolve();
+
+  // browser wallet is by default unlocked
+  public unlock = (_: string) => Promise.reject();
 }

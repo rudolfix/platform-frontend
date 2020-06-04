@@ -1,3 +1,4 @@
+import { EWalletSubType } from "@neufund/shared-modules";
 import { minutesToMs } from "@neufund/shared-utils";
 import { IClientMeta } from "@walletconnect/types";
 
@@ -6,7 +7,6 @@ import {
   WC_DEFAULT_SESSION_REQUEST_TIMEOUT,
   WC_DEFAULT_SIGN_TIMEOUT,
 } from "../../../config/constants";
-import { EWalletSubType } from "../../../modules/web3/types";
 import { ESignTransactionMethod } from "../types";
 
 export type TWcMeta = {
@@ -52,6 +52,8 @@ export const generateWalletMetaFormPeerMeta = (clientMeta: IClientMeta | null): 
     } else if (name.includes("neufund")) {
       walletMeta.walletSubType = EWalletSubType.NEUFUND;
       walletMeta.signerType = ESignerType.ETH_SIGN;
+      // TODO: Turn on after support for `eth_sendTypedTransaction` is implemented on the wallet side
+      // walletMeta.sendTransactionMethod = ESignTransactionMethod.ETH_SEND_TYPED_TRANSACTION;
       walletMeta.signingTimeout = minutesToMs(2);
       walletMeta.expectsEthSignDigest = false;
       walletMeta.supportsExplicitTimeouts = true;

@@ -1,8 +1,10 @@
 import { Tuple } from "@neufund/shared-utils";
 import * as yup from "yup";
 
-import { singleValue, tupleSchema } from "../../../utils/yupSchemas";
-import { walletEthModuleApi } from "../../eth/module";
+import { walletEthModuleApi } from "modules/eth/module";
+import { StorageSchema } from "modules/storage";
+
+import { singleValue, tupleSchema } from "utils/yupSchemas";
 
 export const getJSONRPCSchema = <T extends string, U extends Tuple>(
   method: T,
@@ -34,6 +36,8 @@ const SessionPeerSchema = yup.object({
   peerMeta: SessionPeerMetaSchema.required(),
 });
 
+export type TPeerMeta = yup.InferType<typeof SessionPeerMetaSchema>;
+
 export const WalletConnectSessionJSONRPCSchema = getJSONRPCSchema(
   "session_request" as const,
   tupleSchema([SessionPeerSchema.required()]).required(),
@@ -60,4 +64,26 @@ export type TTransactionSchema = yup.InferType<typeof TransactionSchema>;
 export const WalletConnectEthSendTransactionJSONRPCSchema = getJSONRPCSchema(
   "eth_sendTransaction" as const,
   tupleSchema([TransactionSchema.required()]).required(),
+);
+
+const WalletSessionSchema = yup.object({
+  connected: yup.boolean().required(),
+  accounts: yup.array(yup.string().required()).required(),
+  chainId: yup.number().required(),
+  bridge: yup.string().required(),
+  key: yup.string().required(),
+  clientId: yup.string().required(),
+  clientMeta: SessionPeerMetaSchema.nullable(),
+  peerId: yup.string().required(),
+  peerMeta: SessionPeerMetaSchema.nullable(),
+  handshakeId: yup.number().required(),
+  handshakeTopic: yup.string().required(),
+});
+
+export type TWalletSession = yup.InferType<typeof WalletSessionSchema>;
+
+export const WalletSessionStorageSchema = new StorageSchema<TWalletSession>(
+  1,
+  "WalletSessionSchema",
+  WalletSessionSchema,
 );

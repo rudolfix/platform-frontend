@@ -2,10 +2,10 @@ import { ButtonArrowRight } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
+import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TAcceptPayoutAdditionalData } from "../../../../modules/tx/transactions/payout/accept/types";
-import { ETxSenderType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { ConfettiEthereum } from "../../../shared/ethereum";
 import { Message } from "../../message/Message";
@@ -49,7 +49,7 @@ const InvestorAcceptPayoutSuccessLayout: React.FunctionComponent<IProps> = ({
 
 const InvestorAcceptPayoutSuccess = appConnect<IStateProps, IDispatchProps>({
   stateToProps: state => ({
-    additionalData: selectTxAdditionalData<ETxSenderType.INVESTOR_ACCEPT_PAYOUT>(state)!,
+    additionalData: selectTxAdditionalData<ETxType.INVESTOR_ACCEPT_PAYOUT>(state)!,
   }),
   dispatchToProps: dispatch => ({
     goToWallet: () => dispatch(actions.routing.goToWallet()),

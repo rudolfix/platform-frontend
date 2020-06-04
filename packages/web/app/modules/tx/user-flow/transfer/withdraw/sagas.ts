@@ -1,21 +1,20 @@
 import { fork, put, select } from "@neufund/sagas";
+import { walletApi } from "@neufund/shared-modules";
 import { multiplyBigNumbers, Q18, subtractBigNumbers } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { ITxData } from "../../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../../actions";
 import { neuCall, neuDebounce } from "../../../../sagasUtils";
-import { selectLiquidEtherBalance } from "../../../../wallet/selectors";
 import { generateRandomEthereumAddress, isAddressValid } from "../../../../web3/utils";
 import { generateEthWithdrawTransaction } from "../../../transactions/withdraw/sagas";
-import { ETxSenderType } from "../../../types";
 import { SmartContractDoesNotAcceptEtherError } from "../../../validator/transfer/withdraw/errors";
 import { isAddressValidAcceptsEther } from "../../../validator/transfer/withdraw/sagas";
 import { toFormValue } from "../utils";
 
 export function* getMaxWithdrawAmount(to: string | undefined): Generator<any, any, any> {
-  const maxEtherUlps: string = yield select(selectLiquidEtherBalance);
+  const maxEtherUlps: string = yield select(walletApi.selectors.selectLiquidEtherBalance);
 
   const txDetails: ITxData = yield neuCall(generateEthWithdrawTransaction, {
     to: to || generateRandomEthereumAddress(),
@@ -39,7 +38,7 @@ export function* detectMaxWithdraw(
 
   let modifiedValue = value;
 
-  const maxAvailEther = yield select(selectLiquidEtherBalance);
+  const maxAvailEther = yield select(walletApi.selectors.selectLiquidEtherBalance);
   const fixedEther = toFormValue(maxAvailEther);
 
   const modifiedTo = isAddressValid(to) ? to : generateRandomEthereumAddress();
@@ -55,7 +54,7 @@ export function* detectMaxWithdraw(
     }
   }
   yield put(
-    actions.txValidator.validateDraft({ to, value: modifiedValue, type: ETxSenderType.WITHDRAW }),
+    actions.txValidator.validateDraft({ to, value: modifiedValue, type: ETxType.WITHDRAW }),
   );
   yield put(
     actions.txUserFlowTransfer.setTxUserFlowInputData({

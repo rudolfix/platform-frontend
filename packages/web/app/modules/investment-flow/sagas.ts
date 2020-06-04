@@ -1,4 +1,5 @@
 import { all, call, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
+import { walletApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -13,7 +14,7 @@ import { WalletSelectionData } from "../../components/modals/tx-sender/investmen
 import { ECurrency } from "../../components/shared/formatters/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
-import { ITxData } from "../../lib/web3/types";
+import { ETxType, ITxData } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import {
@@ -22,7 +23,6 @@ import {
   selectEtoWithCompanyAndContractById,
 } from "../eto/selectors";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
-import { selectStandardGasPriceWithOverHead } from "../gas/selectors";
 import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
 import {
   selectCalculatedContribution,
@@ -31,23 +31,14 @@ import {
 } from "../investor-portfolio/selectors";
 import { neuCall } from "../sagasUtils";
 import { selectEtherPriceEur, selectEurPriceEther } from "../shared/tokenPrice/selectors";
-import { selectTxGasCostEthUlps, selectTxSenderModalOpened } from "../tx/sender/selectors";
-import { INVESTMENT_GAS_AMOUNT } from "../tx/transactions/investment/sagas";
-import { ETxSenderType } from "../tx/types";
-import { txValidateSaga } from "../tx/validator/sagas";
 import {
-  selectICBMLockedEtherBalance,
-  selectICBMLockedEtherBalanceEuroAmount,
-  selectICBMLockedEuroTokenBalance,
-  selectLiquidEtherBalance,
-  selectLiquidEtherBalanceEuroAmount,
-  selectLiquidEuroTokenBalance,
-  selectLockedEtherBalance,
-  selectLockedEtherBalanceEuroAmount,
-  selectLockedEuroTokenBalance,
-  selectNEURStatus,
-  selectWalletData,
-} from "../wallet/selectors";
+  selectStandardGasPriceWithOverHead,
+  selectTxGasCostEthUlps,
+  selectTxSenderModalOpened,
+} from "../tx/sender/selectors";
+import { INVESTMENT_GAS_AMOUNT } from "../tx/transactions/investment/sagas";
+import { txValidateSaga } from "../tx/validator/sagas";
+import { selectNEURStatus } from "../wallet/selectors";
 import { ENEURWalletStatus } from "../wallet/types";
 import { EInvestmentErrorState, EInvestmentType } from "./reducer";
 import {
@@ -118,23 +109,23 @@ function* investEntireBalance(): any {
   let balance = "";
   switch (type) {
     case EInvestmentType.ICBMEth:
-      balance = selectLockedEtherBalance(state);
+      balance = walletApi.selectors.selectLockedEtherBalance(state);
       yield computeAndSetCurrencies(balance, ECurrency.ETH);
       break;
 
     case EInvestmentType.ICBMnEuro:
-      balance = selectLockedEuroTokenBalance(state);
+      balance = walletApi.selectors.selectLockedEuroTokenBalance(state);
       yield computeAndSetCurrencies(balance, ECurrency.EUR_TOKEN);
       break;
 
     case EInvestmentType.NEur:
-      balance = selectLiquidEuroTokenBalance(state);
+      balance = walletApi.selectors.selectLiquidEuroTokenBalance(state);
       yield computeAndSetCurrencies(balance, ECurrency.EUR_TOKEN);
       break;
 
     case EInvestmentType.Eth:
       const gasCostEth = selectTxGasCostEthUlps(state);
-      balance = selectLiquidEtherBalance(state);
+      balance = walletApi.selectors.selectLiquidEtherBalance(state);
       const balanceWithoutGas = subtractBigNumbers([balance, gasCostEth]);
 
       if (compareBigNumbers(balanceWithoutGas, "0") >= 0) {
@@ -156,7 +147,7 @@ function validateInvestment(state: TAppGlobalState): EInvestmentErrorState | und
   const euroValue = investmentFlow.euroValueUlps;
   const etherValue = investmentFlow.ethValueUlps;
 
-  const wallet = selectWalletData(state);
+  const wallet = walletApi.selectors.selectWalletData(state);
 
   const contribs = selectCalculatedContribution(state, investmentFlow.etoId);
   const ticketSizes = selectCalculatedEtoTicketSizesUlpsById(state, investmentFlow.etoId);
@@ -166,26 +157,29 @@ function validateInvestment(state: TAppGlobalState): EInvestmentErrorState | und
   if (investmentFlow.investmentType === EInvestmentType.Eth) {
     const gasPrice = selectTxGasCostEthUlps(state);
     if (
-      compareBigNumbers(addBigNumbers([etherValue, gasPrice]), selectLiquidEtherBalance(state)) > 0
+      compareBigNumbers(
+        addBigNumbers([etherValue, gasPrice]),
+        walletApi.selectors.selectLiquidEtherBalance(state),
+      ) > 0
     ) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
   if (investmentFlow.investmentType === EInvestmentType.ICBMnEuro) {
-    if (compareBigNumbers(euroValue, selectLockedEuroTokenBalance(state)) > 0) {
+    if (compareBigNumbers(euroValue, walletApi.selectors.selectLockedEuroTokenBalance(state)) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
   if (investmentFlow.investmentType === EInvestmentType.NEur) {
-    if (compareBigNumbers(euroValue, selectLiquidEuroTokenBalance(state)) > 0) {
+    if (compareBigNumbers(euroValue, walletApi.selectors.selectLiquidEuroTokenBalance(state)) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
 
   if (investmentFlow.investmentType === EInvestmentType.ICBMEth) {
-    if (compareBigNumbers(etherValue, selectLockedEtherBalance(state)) > 0) {
+    if (compareBigNumbers(etherValue, walletApi.selectors.selectLockedEtherBalance(state)) > 0) {
       return EInvestmentErrorState.ExceedsWalletBalance;
     }
   }
@@ -236,7 +230,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
       const txData: ITxData = yield neuCall(
         txValidateSaga,
-        actions.txValidator.validateDraft({ type: ETxSenderType.INVEST }),
+        actions.txValidator.validateDraft({ type: ETxType.INVEST }),
       );
       yield put(actions.txSender.setTransactionData(txData));
 
@@ -305,10 +299,12 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
     etoOnChainState !== EETOStateOnChain.Whitelist
   ) {
     //eth wallet
-    const liquidEthBalance = yield* select(selectLiquidEtherBalance);
+    const liquidEthBalance = yield* select(walletApi.selectors.selectLiquidEtherBalance);
 
     if (hasBalance(liquidEthBalance)) {
-      const liquidEthEurBalance = yield* select(selectLiquidEtherBalanceEuroAmount);
+      const liquidEthEurBalance = yield* select(
+        walletApi.selectors.selectLiquidEtherBalanceEuroAmount,
+      );
       activeTypes.push({
         balanceEth: liquidEthBalance,
         balanceEur: liquidEthEurBalance,
@@ -321,7 +317,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
     //neur wallet
     // only if neur is not restricted because of the us state
     const neurStatus = yield* select(selectNEURStatus);
-    const balanceNEur = yield* select(selectLiquidEuroTokenBalance);
+    const balanceNEur = yield* select(walletApi.selectors.selectLiquidEuroTokenBalance);
 
     if (hasBalance(balanceNEur) && neurStatus !== ENEURWalletStatus.DISABLED_RESTRICTED_US_STATE) {
       activeTypes.push({
@@ -336,15 +332,19 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
 
   //eth icbm
   // ICBM investment is active only if unlocked balance available
-  const icbmBalanceEth = yield* select(selectLockedEtherBalance);
-  const lockedIcbmBalanceEth = yield* select(selectICBMLockedEtherBalance);
+  const icbmBalanceEth = yield* select(walletApi.selectors.selectLockedEtherBalance);
+  const lockedIcbmBalanceEth = yield* select(walletApi.selectors.selectICBMLockedEtherBalance);
 
   const hasIcbmEthBalance = hasBalance(icbmBalanceEth);
   const hasLockedIcbmEthBalance = hasBalance(lockedIcbmBalanceEth);
 
   if (hasIcbmEthBalance || hasLockedIcbmEthBalance) {
-    const lockedEthEurBalance = yield* select(selectLockedEtherBalanceEuroAmount);
-    const lockedIcbmEthEurBalance = yield* select(selectICBMLockedEtherBalanceEuroAmount);
+    const lockedEthEurBalance = yield* select(
+      walletApi.selectors.selectLockedEtherBalanceEuroAmount,
+    );
+    const lockedIcbmEthEurBalance = yield* select(
+      walletApi.selectors.selectICBMLockedEtherBalanceEuroAmount,
+    );
 
     activeTypes.push({
       type: EInvestmentType.ICBMEth,
@@ -359,8 +359,8 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
 
   //eur icbm
   // ICBM investment is active only if unlocked balance available
-  const icbmEuroBalance = yield* select(selectLockedEuroTokenBalance);
-  const lockedIcbmEuroBalance = yield* select(selectICBMLockedEuroTokenBalance);
+  const icbmEuroBalance = yield* select(walletApi.selectors.selectLockedEuroTokenBalance);
+  const lockedIcbmEuroBalance = yield* select(walletApi.selectors.selectICBMLockedEuroTokenBalance);
 
   const hasIcbmEuroBalance = hasBalance(icbmEuroBalance);
   const hasLockedIcbmEuroBalance = hasBalance(lockedIcbmEuroBalance);

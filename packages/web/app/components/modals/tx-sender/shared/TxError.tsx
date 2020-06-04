@@ -1,20 +1,19 @@
 import * as cn from "classnames";
 import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
+import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import { Tx } from "../../../../lib/api/users/interfaces";
-import { ITxData } from "../../../../lib/web3/types";
+import { TxPendingData } from "../../../../lib/api/users-tx/interfaces";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { ETransactionErrorType } from "../../../../modules/tx/sender/reducer";
 import {
   selectTxAdditionalData,
   selectTxDetails,
   selectTxTimestamp,
 } from "../../../../modules/tx/sender/selectors";
-import { ETxSenderType, TSpecificTransactionState } from "../../../../modules/tx/types";
+import { TSpecificTransactionState } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
-import { ExternalLink } from "../../../shared/links/ExternalLink";
 import { Message } from "../../message/Message";
 import { TxDetails } from "../TxDetails.unsafe";
 import { TxName } from "../TxName";
@@ -31,7 +30,7 @@ export interface IStateProps {
 }
 
 interface IProps {
-  type: ETxSenderType;
+  type: ETxType;
   error?: ETransactionErrorType;
   blockId?: number;
   txHash: string;
@@ -71,21 +70,18 @@ const getErrorMessageByType = (type?: ETransactionErrorType) => {
       return <FormattedMessage id="modal.txsender.error-message.ledger-contracts-disabled" />;
     default:
       return (
-        <FormattedMessage
+        <FormattedHTMLMessage
+          tagName="span"
           id="modal.shared.signing-message.transaction-error.text"
           values={{
-            supportDesk: (
-              <ExternalLink href={externalRoutes.neufundSupportHome}>
-                <FormattedMessage id="support-desk.link.text" />
-              </ExternalLink>
-            ),
+            supportDeskLink: externalRoutes.neufundSupportHome,
           }}
         />
       );
   }
 };
 
-const getErrorTitleByType = (type: ETxSenderType, error?: ETransactionErrorType) => {
+const getErrorTitleByType = (type: ETxType, error?: ETransactionErrorType) => {
   switch (error) {
     case ETransactionErrorType.NOT_ENOUGH_NEUMARKS_TO_UNLOCK:
       return (
@@ -102,7 +98,7 @@ const getErrorTitleByType = (type: ETxSenderType, error?: ETransactionErrorType)
 };
 
 type TTxErrorLayoutProps = {
-  txData?: Tx;
+  txData?: TxPendingData;
   error?: ETransactionErrorType;
   blockId?: number;
   txHash: string;
@@ -125,7 +121,7 @@ const TxErrorDefaultLayout: React.FunctionComponent<TTxErrorLayoutProps> = props
 
 const TxErrorLayout: React.FunctionComponent<TTxErrorLayoutProps> = props => {
   switch (props.type) {
-    case ETxSenderType.WITHDRAW:
+    case ETxType.WITHDRAW:
       return (
         <TransferError txHash={props.txHash} txTimestamp={props.txTimestamp} error={props.error} />
       );

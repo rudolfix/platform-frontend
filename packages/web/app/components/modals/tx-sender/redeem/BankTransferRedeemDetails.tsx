@@ -1,14 +1,14 @@
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ETxSenderType } from "../../../../modules/tx/types";
+import { ETxType } from "../../../../lib/web3/types";
 import { Money } from "../../../shared/formatters/Money";
 import {
   ECurrency,
   ENumberInputFormat,
   ENumberOutputFormat,
 } from "../../../shared/formatters/utils";
-import { BankNumber } from "../../../wallet/BankAccount";
+import { BankNumber } from "../../../wallet/bank-account/BankAccount";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -16,7 +16,7 @@ import { TransactionDetailsComponent } from "../types";
 import { CalculatedFee } from "./CalculatedFee";
 import { TotalRedeemed } from "./TotalRedeemed";
 
-const BankTransferRedeemDetails: TransactionDetailsComponent<ETxSenderType.NEUR_REDEEM> = ({
+const BankTransferRedeemDetails: TransactionDetailsComponent<ETxType.NEUR_REDEEM> = ({
   additionalData,
   className,
   txTimestamp,

@@ -1,11 +1,11 @@
-import { DeepReadonly } from "@neufund/shared-utils";
 import { AppReducer } from "@neufund/sagas";
+import { DeepReadonly } from "@neufund/shared-utils";
 
 import { walletConnectActions } from "./actions";
-import { TWalletConnectPeer } from "./types";
+import { TWalletConnectPeerWithConnectTimestamp } from "./types";
 
 interface IWalletConnectState {
-  connectedPeer: TWalletConnectPeer | undefined;
+  connectedPeer: TWalletConnectPeerWithConnectTimestamp | undefined;
 }
 
 const initialState: IWalletConnectState = {
@@ -32,4 +32,8 @@ const walletConnectReducer: AppReducer<IWalletConnectState, typeof walletConnect
   }
 };
 
-export { walletConnectReducer };
+const walletConnectReducerMap = {
+  walletConnect: walletConnectReducer,
+};
+
+export { walletConnectReducerMap };

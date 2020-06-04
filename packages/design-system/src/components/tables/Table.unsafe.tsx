@@ -1,3 +1,4 @@
+import { CommonHtmlProps } from "@neufund/web/app/types";
 import * as React from "react";
 import {
   Column,
@@ -15,6 +16,7 @@ type TExternalProps = {
   data: Array<any>;
   withFooter?: boolean;
   customFooter?: React.ReactElement;
+  CustomHeader?: React.FunctionComponent;
 };
 
 type TTableHeaderProps = {
@@ -74,7 +76,7 @@ const TableFooter: React.FunctionComponent<TTableFooterProps> = ({ footerGroups 
   </tfoot>
 );
 
-const Table: React.FunctionComponent<TExternalProps> = ({
+const Table: React.FunctionComponent<TExternalProps & CommonHtmlProps> = ({
   columns,
   data,
   withFooter,
@@ -91,7 +93,6 @@ const Table: React.FunctionComponent<TExternalProps> = ({
     columns,
     data,
   });
-
   return (
     <div className={styles.container}>
       <table className={styles.table} {...getTableProps()}>

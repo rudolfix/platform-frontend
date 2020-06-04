@@ -1,11 +1,12 @@
-import { ESignerType } from "@neufund/shared-modules";
-import { EthereumAddressWithChecksum, safeSetTimeout } from "@neufund/shared-utils";
+import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
+import { assertNever, EthereumAddressWithChecksum, safeSetTimeout } from "@neufund/shared-utils";
 import { IClientMeta, IConnector } from "@walletconnect/types";
+import { parseTransactionData } from "@walletconnect/utils";
 import { addHexPrefix, hashPersonalMessage, toBuffer } from "ethereumjs-util";
 import * as hex2ascii from "hex2ascii";
-import { TxData } from "web3";
 
-import { EWalletSubType, EWalletType, IWalletConnectMetadata } from "../../../modules/web3/types";
+import { ESignTransactionMethod, ITxData, ITxMetadata } from "../../../lib/web3/types";
+import { IWalletConnectMetadata } from "../../../modules/web3/types";
 import { WalletError } from "../errors";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { Web3Adapter } from "../Web3Adapter";
@@ -89,16 +90,24 @@ export class WalletConnectWallet implements IPersonalWallet {
     return Promise.race([sign, this.signingTimeoutPromise(this.walletMeta.signingTimeout)]);
   }
 
-  public async sendTransaction(txData: TxData): Promise<string> {
-    const signingTimeoutPromise = (signingTimeout: number): Promise<string> =>
-      new Promise((_, reject) => {
-        safeSetTimeout(() => {
-          reject(new SignerTimeoutError());
-        }, signingTimeout);
-      });
+  public async sendTransaction(txData: ITxData, metadata: ITxMetadata): Promise<string> {
+    let send: Promise<string>;
+    switch (this.walletMeta.sendTransactionMethod) {
+      case ESignTransactionMethod.ETH_SEND_TRANSACTION:
+        send = this.web3Adapter.sendTransaction(txData);
+        break;
+      case ESignTransactionMethod.ETH_SEND_TYPED_TRANSACTION:
+        const parsedTx = parseTransactionData(txData);
+        send = this.walletConnect.sendCustomRequest({
+          method: "eth_sendTypedTransaction",
+          params: [parsedTx, metadata],
+        });
+        break;
+      default:
+        assertNever(this.walletMeta.sendTransactionMethod);
+    }
 
-    const sign = this.web3Adapter.sendTransaction(txData);
-    return Promise.race([sign, signingTimeoutPromise(this.walletMeta.signingTimeout)]);
+    return Promise.race([send, this.signingTimeoutPromise(this.walletMeta.signingTimeout)]);
   }
 
   public getMetadata(): IWalletConnectMetadata {
@@ -114,6 +123,8 @@ export class WalletConnectWallet implements IPersonalWallet {
   public isUnlocked(): boolean {
     return true;
   }
+
+  public unlock = (_: string) => Promise.reject();
 
   public async unplug(): Promise<void> {
     if (this.walletConnect) {

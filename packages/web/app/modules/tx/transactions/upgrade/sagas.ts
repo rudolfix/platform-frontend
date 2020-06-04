@@ -1,19 +1,16 @@
 import { fork, put, select } from "@neufund/sagas";
+import { walletApi } from "@neufund/shared-modules";
 import { EthereumAddress } from "@neufund/shared-utils";
 import { addHexPrefix } from "ethereumjs-util";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
-import { ITxData } from "../../../../lib/web3/types";
+import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions, TAction } from "../../../actions";
-import { selectStandardGasPriceWithOverHead } from "../../../gas/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
-import {
-  selectIsEtherUpgradeTargetSet,
-  selectIsEuroUpgradeTargetSet,
-} from "../../../wallet/selectors";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
-import { ETokenType, ETxSenderType } from "../../types";
+import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
+import { ETokenType } from "../../types";
 
 function* generateEuroUpgradeTransaction({
   contractsService,
@@ -21,7 +18,7 @@ function* generateEuroUpgradeTransaction({
 }: TGlobalDependencies): any {
   const userAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
-  const migrationTarget = yield select(selectIsEuroUpgradeTargetSet);
+  const migrationTarget = yield select(walletApi.selectors.selectIsEuroUpgradeTargetSet);
 
   if (!migrationTarget) {
     throw new Error();
@@ -53,7 +50,7 @@ function* generateEtherUpgradeTransaction({
 }: TGlobalDependencies): any {
   const userAddress: EthereumAddress = yield select(selectEthereumAddress);
   const gasPriceWithOverhead = yield select(selectStandardGasPriceWithOverHead);
-  const migrationTarget: boolean = yield select(selectIsEtherUpgradeTargetSet);
+  const migrationTarget: boolean = yield select(walletApi.selectors.selectIsEtherUpgradeTargetSet);
 
   if (!migrationTarget) {
     throw new Error();
@@ -87,7 +84,7 @@ function* upgradeTransactionFlow(_: TGlobalDependencies, tokenType: ETokenType):
   const generatedTxDetails: ITxData = yield neuCall(transactionGenerator);
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
   yield put(
-    actions.txSender.txSenderContinueToSummary<ETxSenderType.UPGRADE>({
+    actions.txSender.txSenderContinueToSummary<ETxType.UPGRADE>({
       tokenType,
     }),
   );
@@ -99,12 +96,12 @@ function* upgradeSaga({ logger }: TGlobalDependencies, action: TAction): Generat
 
     const tokenType = action.payload;
     const params: ITxSendParams = {
-      type: ETxSenderType.UPGRADE,
+      type: ETxType.UPGRADE,
       transactionFlowGenerator: upgradeTransactionFlow,
       extraParam: tokenType,
     };
     yield txSendSaga(params);
-
+    yield put(actions.txTransactions.upgradeSuccessful(tokenType));
     logger.info("Upgrading successful");
   } catch (e) {
     logger.info("Upgrading cancelled", e);

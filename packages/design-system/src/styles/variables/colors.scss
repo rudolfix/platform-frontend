@@ -36,7 +36,7 @@ $new-gray-two: #d8e0eb;
 
 $neu-bitter-lemon: #c6d30d;
 $neu-bright-orange: #ff6d00;
-$neu-white: #efefef;
+$neu-very-light-grey: #efefef;
 $neu-seaweed: #20e06e;
 $neu-seaweed-bg: rgba($neu-seaweed, .1);
 $neu-base-green: #21ce5b;
@@ -58,7 +58,7 @@ $neu-light-blue-grey: #d8e0eb;
 $neu-light-blue-grey-two: #cfd7dd;
 $neu-red: #ed0000;
 $neu-flamingo-red: #ec5c39;
-$neu-white-two: #fff;
+$neu-white: #fff;
 $neu-blue: #4a90e2;
 $neu-science-blue: #0070e0;
 $neu-charcoal-grey2: #394651;
@@ -66,6 +66,8 @@ $neu-shuttle-gray: #556877;
 $neu-gull-gray: #94a5b3;
 $neu-very-light-blue: #e7ebee;
 $neu-base-blue: #122cab;
+$neu-dark-blue: #2f8bbc;
+
 
 // Override colors that are used to generate classes like .text-warning, .bg-warning, .alert-warning and others
 // see https://getbootstrap.com/docs/4.0/getting-started/theming/#maps-and-loops

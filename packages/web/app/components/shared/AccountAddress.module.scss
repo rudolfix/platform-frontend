@@ -1,3 +1,13 @@
+@mixin address {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  align-self: center;
+
+  // force to not overflow
+  max-width: 100%;
+}
+
 .account-address-with-history-link {
   align-items: center;
   display: inline-flex;
@@ -40,11 +50,53 @@
   font-size: 16px;
 
   .address {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    @include address;
+  }
+}
 
-    // force to not overflow
-    max-width: 100%;
+
+.wallet-address {
+  display: grid;
+  grid-template: 3rem auto / 1fr;
+
+  grid-row-gap: 8px;
+  grid-auto-flow: row;
+  align-items: center;
+
+  .address-wrapper {
+    display: grid;
+    grid-template: auto / auto 1fr auto;
+    grid-column-gap: 10px;
+
+    align-items: center;
+
+    background-color: $neu-pale-grey-three;
+    padding: px-to-rem(12);
+    border-radius: 4px;
+  }
+
+  .address {
+    @include address;
+    @include nds-body-small;
+
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+
+    span {
+      border: 0;
+      margin: auto 0;
+      max-width: 100%;
+    }
+  }
+
+  .avatar {
+    width: px-to-rem(24);
+    height: px-to-rem(24);
+  }
+
+  .history-link {
+    @include nds-helper-text;
+    color: $neu-shuttle-gray;
   }
 }

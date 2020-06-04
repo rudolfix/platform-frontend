@@ -37,6 +37,7 @@ import { userAgentActions } from "./user-agent/actions";
 import { verifyEmailActions } from "./verify-email-widget/actions";
 import { videoModalActions } from "./video-modal/actions";
 import { walletSelectorActions } from "./wallet-selector/actions";
+import { walletViewActions } from "./wallet-view/actions";
 import { web3Actions } from "./web3/actions";
 
 /** You should add new actions also here (with a namespace).*/
@@ -65,6 +66,7 @@ export const actions = {
   etoDocuments: etoDocumentsActions,
   etoNominee: etoNomineeActions,
   etoView: etoViewActions,
+  walletView: walletViewActions,
   eto: etoActions,
   bookBuilding: bookBuildingFlowActions,
   formSingleFileUpload: formSingleFileUploadActions,

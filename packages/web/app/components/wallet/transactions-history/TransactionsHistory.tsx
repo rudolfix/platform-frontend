@@ -1,8 +1,6 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { ETransactionDirection, txHistoryApi } from "@neufund/shared-modules";
-import * as cn from "classnames";
+import { txHistoryApi } from "@neufund/shared-modules";
 import * as React from "react";
-import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
@@ -10,14 +8,10 @@ import { selectPlatformMiningTransaction } from "../../../modules/tx/monitor/sel
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
-import { PendingTransactionImage } from "../../layouts/header/PendingTransactionStatus";
-import { ETheme, Money } from "../../shared/formatters/Money";
-import { ENumberOutputFormat } from "../../shared/formatters/utils";
-import { Heading } from "../../shared/Heading";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
-import { Panel } from "../../shared/Panel";
-import { ENewTableTheme, NewTableRow, Table } from "../../shared/table";
-import { Transaction, TransactionData, TransactionName } from "../../shared/transaction";
+import { PanelRounded } from "../../shared/Panel";
+import { PendingTransaction } from "./PendingTransaction";
+import { Transaction } from "./Transaction";
 
 import * as styles from "./TransactionsHistory.module.scss";
 
@@ -31,74 +25,37 @@ type TDispatchProps = {
   showTransactionDetails: (id: string) => void;
 };
 
-const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+export const NoTransactions = () => (
+  <PanelRounded className={styles.noTransactions}>
+    <FormattedMessage id="wallet.tx-list.no-transaction" />
+  </PanelRounded>
+);
+
+export const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   transactionsHistoryPaginated,
   loadTxHistoryNext,
-  showTransactionDetails,
   pendingTransaction,
+  showTransactionDetails,
 }) => (
-  <Panel>
-    {pendingTransaction && (
-      <div className={styles.pendingTransactionWrapper}>
-        <Transaction
-          data-test-id="pending-transactions.transaction-mining"
-          icon={<PendingTransactionImage />}
-          transaction={pendingTransaction}
-        />
-      </div>
-    )}
-    {transactionsHistoryPaginated.transactions && (
-      <div className={styles.wrapper}>
-        <Table
-          aria-describedby="transactions-history-heading"
-          titles={[
-            <FormattedMessage id="wallet.tx-list.transaction" />,
-            <FormattedMessage id="wallet.tx-list.amount" />,
-          ]}
-          titlesVisuallyHidden={true}
-          placeholder={<FormattedMessage id="wallet.tx-list.placeholder" />}
-          theme={ENewTableTheme.NORMAL}
-        >
-          {transactionsHistoryPaginated.transactions.map(transaction => {
-            const isIncomeTransaction =
-              transaction.transactionDirection === ETransactionDirection.IN;
+  <PanelRounded>
+    {(transactionsHistoryPaginated.transactions || pendingTransaction) && (
+      <li className={styles.transactionList} data-test-id="transactions-history">
+        {pendingTransaction && (
+          <PendingTransaction
+            data-test-id="pending-transactions.transaction-mining"
+            transaction={pendingTransaction}
+          />
+        )}
 
-            return (
-              <NewTableRow
-                key={transaction.id}
-                onClick={() => showTransactionDetails(transaction.id)}
-                data-test-id={`transactions-history-row transactions-history-${transaction.txHash.slice(
-                  0,
-                  10,
-                )}`}
-              >
-                <TransactionData
-                  top={<TransactionName transaction={transaction} />}
-                  bottom={
-                    <FormattedDate
-                      value={transaction.date}
-                      year="numeric"
-                      month="long"
-                      day="2-digit"
-                    />
-                  }
-                />
-                <>
-                  {!isIncomeTransaction && "-"}
-                  <Money
-                    className={cn(styles.amount, { [styles.amountIn]: isIncomeTransaction })}
-                    inputFormat={transaction.amountFormat}
-                    outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                    theme={isIncomeTransaction ? ETheme.GREEN : undefined}
-                    value={transaction.amount}
-                    valueType={transaction.currency}
-                  />
-                </>
-              </NewTableRow>
-            );
-          })}
-        </Table>
-      </div>
+        {transactionsHistoryPaginated.transactions &&
+          transactionsHistoryPaginated.transactions.map(transaction => (
+            <Transaction
+              key={transaction.id}
+              transaction={transaction}
+              showTransactionDetails={showTransactionDetails}
+            />
+          ))}
+      </li>
     )}
     {transactionsHistoryPaginated.canLoadMore && (
       <Button
@@ -110,10 +67,10 @@ const TransactionListLayout: React.FunctionComponent<TStateProps & TDispatchProp
         <FormattedMessage id="wallet.tx-list.load-more" />
       </Button>
     )}
-  </Panel>
+  </PanelRounded>
 );
 
-const TransactionsList = compose<TStateProps & TDispatchProps, {}>(
+const TransactionsHistory = compose<TStateProps & TDispatchProps, {}>(
   onEnterAction({
     actionCreator: dispatch => {
       dispatch(txHistoryApi.actions.loadTransactions());
@@ -141,16 +98,13 @@ const TransactionsList = compose<TStateProps & TDispatchProps, {}>(
       props.transactionsHistoryPaginated.isLoading,
     renderComponent(LoadingIndicator),
   ),
+  branch<TStateProps>(
+    props =>
+      props.transactionsHistoryPaginated.transactions !== undefined &&
+      props.transactionsHistoryPaginated.transactions.length === 0 &&
+      props.pendingTransaction === null,
+    renderComponent(NoTransactions),
+  ),
 )(TransactionListLayout);
-
-const TransactionsHistory: React.FunctionComponent = () => (
-  <>
-    <Heading id="transactions-history-heading" level={2} decorator={false}>
-      <FormattedMessage id="wallet.tx-list.heading" />
-    </Heading>
-
-    <TransactionsList />
-  </>
-);
 
 export { TransactionsHistory };

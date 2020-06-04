@@ -356,14 +356,14 @@ export interface IHttpPartialResponse<T> {
 
 export const getEto = (etoID: string): Cypress.Chainable<TEtoDataWithCompany> => {
   if (!etoID) {
-    throw new Error("Cannot fetch undefined value please check if the fixtures are in sync");
+    throw new Error("Cannot fetch undefined value. Please check if the fixtures are in sync");
   }
 
   return cy
     .request({ url: ETOS_PATH, method: "GET" })
     .then((etos: IHttpPartialResponse<TEtoDataWithCompany>) => {
       if (!etos.body) {
-        throw new Error(`There is no body response from ${ETOS_PATH} ping backend about this`);
+        throw new Error(`There is no body response from ${ETOS_PATH}. Ping backend about this :)`);
       }
 
       const result: TEtoDataWithCompany[] = toCamelCase(etos.body).filter(
@@ -372,7 +372,7 @@ export const getEto = (etoID: string): Cypress.Chainable<TEtoDataWithCompany> =>
 
       if (result.length === 0) {
         throw new Error(
-          "Something is wrong with the fixtures, this sometimes happens due to users changing fixtures from the platform. ",
+          `Something is wrong with the fixtures. This sometimes happens due to users changing fixtures from the platform. The fixture ID I was looking for is ${etoID}. Api response was: ${etos.body}`,
         );
       }
       // If there is more than one eto just return the first one

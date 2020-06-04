@@ -5,7 +5,7 @@
   height: px-to-rem(40px);
   border-radius: px-to-rem(4px);
   border: solid 1px $neu-light-blue-grey-two;
-  background-color: $neu-white-two;
+  background-color: $neu-white;
   text-align: left;
   padding: px-to-rem(17px);
   color: $neu-charcoal-grey;
@@ -15,7 +15,7 @@
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   textarea:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px $neu-white-two inset;
+    -webkit-box-shadow: 0 0 0 1000px $neu-white inset;
   }
   // sass-lint:enable-all
 

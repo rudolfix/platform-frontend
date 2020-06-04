@@ -34,6 +34,7 @@ import { ledgerSagas } from "./wallet-selector/ledger-wizard/sagas";
 import { lightWalletSagas } from "./wallet-selector/light-wizard/sagas";
 import { walletSelectorSagas } from "./wallet-selector/sagas";
 import { walletConnectSagas } from "./wallet-selector/wallet-connect/sagas";
+import { walletViewSagas } from "./wallet-view/sagas";
 import { web3Sagas } from "./web3/sagas";
 
 /**
@@ -198,6 +199,12 @@ function* allSagas(): Generator<any, any, any> {
       [actions.init.startServices, actions.init.restartServices],
       actions.init.stopServices,
       marketingUnsubscribeView,
+    ),
+    fork(
+      neuTakeUntil,
+      [actions.init.startServices, actions.init.restartServices],
+      actions.init.stopServices,
+      walletViewSagas,
     ),
   ]);
 }

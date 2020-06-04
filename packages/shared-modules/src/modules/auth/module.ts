@@ -25,7 +25,7 @@ import {
   UserNotExisting,
 } from "./lib/users/UsersApi";
 import { userActions } from "./user/actions";
-import { userReducerMap } from "./user/reducer";
+import { IUserState, userReducerMap } from "./user/reducer";
 import { authUserSagas, loadOrCreateUser, loadUser, resetUser, updateUser } from "./user/sagas";
 import * as userSelectors from "./user/selectors";
 
@@ -51,6 +51,7 @@ const authModuleAPI = {
     ...jwtActions,
     ...userActions,
   },
+  reducer: reducerMap,
   symbols,
   selectors: {
     ...jwtSelectors,
@@ -88,6 +89,7 @@ export {
   EWalletSubType,
   EUserType,
   IUser,
+  IUserState,
   IEmailStatus,
   IUserInput,
   IVerifyEmailUser,

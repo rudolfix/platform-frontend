@@ -1,7 +1,8 @@
 import { signerUIActions } from "./actions";
 import { ESignerUIState, signerUIReducerMap } from "./reducer";
 import { signedUISaga } from "./sagas";
-import { selectSignerUIData, selectSignerUIState } from "./selectors";
+import { selectSignerUIRequest, selectSignerUIState } from "./selectors";
+import { ESignerType } from "./types";
 
 const MODULE_ID = "wallet:signer-ui";
 
@@ -15,9 +16,9 @@ const setupSignerUIModule = () => ({
 const signerUIModuleApi = {
   actions: signerUIActions,
   selectors: {
-    selectSignerUIData,
+    selectSignerUIRequest,
     selectSignerUIState,
   },
 };
 
-export { setupSignerUIModule, signerUIModuleApi, ESignerUIState };
+export { setupSignerUIModule, signerUIModuleApi, ESignerUIState, ESignerType };

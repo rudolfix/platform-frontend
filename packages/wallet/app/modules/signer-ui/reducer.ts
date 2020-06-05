@@ -1,7 +1,7 @@
 import { AppReducer } from "@neufund/sagas";
 
 import { signerUIActions } from "./actions";
-import { TSignerRequestData } from "./types";
+import { TSignerSignPayload } from "./types";
 
 export enum ESignerUIState {
   IDLE = "idle",
@@ -10,12 +10,12 @@ export enum ESignerUIState {
 
 interface ISignerUIState {
   state: ESignerUIState;
-  data: TSignerRequestData[keyof TSignerRequestData] | undefined;
+  request: TSignerSignPayload | undefined;
 }
 
 const initialState: ISignerUIState = {
   state: ESignerUIState.IDLE,
-  data: undefined,
+  request: undefined,
 };
 
 const signerUIReducer: AppReducer<ISignerUIState, typeof signerUIActions> = (
@@ -26,7 +26,7 @@ const signerUIReducer: AppReducer<ISignerUIState, typeof signerUIActions> = (
     case signerUIActions.sign.getType():
       return {
         state: ESignerUIState.SIGNING,
-        data: action.payload.data,
+        request: action.payload,
       };
 
     case signerUIActions.signed.getType():

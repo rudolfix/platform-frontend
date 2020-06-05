@@ -7,6 +7,6 @@ const selectSignerUI = (state: StateFromReducersMapObject<typeof signerUIReducer
   state.signerUI;
 
 const selectSignerUIState = createSelector(selectSignerUI, signerUi => signerUi.state);
-const selectSignerUIData = createSelector(selectSignerUI, signerUi => signerUi.data);
+const selectSignerUIRequest = createSelector(selectSignerUI, signerUi => signerUi.request);
 
-export { selectSignerUIState, selectSignerUIData };
+export { selectSignerUIState, selectSignerUIRequest };

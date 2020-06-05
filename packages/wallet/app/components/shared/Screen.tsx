@@ -20,6 +20,7 @@ type TSafeAreaScreenExternalProps = {
   forceTopInset?: boolean;
 } & TExternalCommonProps &
   React.ComponentProps<typeof Animated.ScrollView>;
+
 /**
  * A core screen component stacking together safe area, keyboard avoiding and scroll views
  */

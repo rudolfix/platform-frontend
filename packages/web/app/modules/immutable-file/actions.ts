@@ -6,9 +6,10 @@ import { IImmutableFileId } from "../../lib/api/immutable-storage/ImmutableStora
 export const immutableStorageActions = {
   downloadImmutableFile: createActionFactory(
     "IMMUTABLE_STORAGE_DOWNLOAD_FILE",
-    (immutableFileId: IImmutableFileId, fileName: TMessage | string) => ({
+    (immutableFileId: IImmutableFileId, fileName: TMessage | string, isProtected = false) => ({
       immutableFileId,
       fileName,
+      isProtected,
     }),
   ),
   downloadDocumentStarted: createActionFactory(

@@ -1,10 +1,11 @@
 .button-inline {
+  color: $link-color;
   text-decoration: underline;
-  line-height: 1;
 
   &:hover,
   &:focus,
   &.is-active {
+    color: $link-hover-color;
     text-decoration: none;
   }
 }

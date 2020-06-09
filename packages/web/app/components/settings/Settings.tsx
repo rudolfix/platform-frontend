@@ -24,8 +24,6 @@ import { LinkedBankAccountWidget } from "./linked-bank-account/LinkedBankAccount
 import { PersonalAccountDetails } from "./personal-account-details/PersonalAccountDetails";
 import { SettingsWidgets } from "./settings-widget/SettingsWidgets";
 
-import * as layoutStyles from "../layouts/WidgetGrid.module.scss";
-
 interface IStateProps {
   isLightWallet: boolean;
   isIcbmWalletConnected: boolean;
@@ -50,7 +48,7 @@ export const SettingsComponent: React.FunctionComponent<IStateProps> = ({
   const isIndividual = kycRequestType === EKycRequestType.INDIVIDUAL;
 
   return (
-    <WidgetGrid className={layoutStyles.layoutOffset} data-test-id="eto-profile">
+    <WidgetGrid data-test-id="eto-profile">
       <Container columnSpan={EColumnSpan.THREE_COL}>
         <DashboardHeading
           title={<FormattedMessage id="settings.security-settings.title" />}

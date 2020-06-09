@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { FullscreenProgressLayout } from "./FullscreenProgressLayout";
+import { FullscreenProgressLayoutComponent } from "./FullscreenProgressLayout";
 
 const buttonProps = {
   buttonText: "Lorem ipsum",
@@ -10,15 +10,27 @@ const buttonProps = {
 };
 
 storiesOf("Templates|Layouts/FullscreenProgressLayout", module)
-  .add("default", () => <FullscreenProgressLayout>Dummy content</FullscreenProgressLayout>)
+  .add("default", () => (
+    <FullscreenProgressLayoutComponent userIsAuthorized={true}>
+      Dummy content
+    </FullscreenProgressLayoutComponent>
+  ))
   .add("default with progress", () => (
-    <FullscreenProgressLayout progress={50}>Dummy content</FullscreenProgressLayout>
+    <FullscreenProgressLayoutComponent userIsAuthorized={true} progress={50}>
+      Dummy content
+    </FullscreenProgressLayoutComponent>
   ))
   .add("with action", () => (
-    <FullscreenProgressLayout buttonProps={buttonProps}>Dummy content</FullscreenProgressLayout>
+    <FullscreenProgressLayoutComponent userIsAuthorized={true} buttonProps={buttonProps}>
+      Dummy content
+    </FullscreenProgressLayoutComponent>
   ))
   .add("with action and progress", () => (
-    <FullscreenProgressLayout progress={50} buttonProps={buttonProps}>
+    <FullscreenProgressLayoutComponent
+      userIsAuthorized={true}
+      progress={50}
+      buttonProps={buttonProps}
+    >
       Dummy content
-    </FullscreenProgressLayout>
+    </FullscreenProgressLayoutComponent>
   ));

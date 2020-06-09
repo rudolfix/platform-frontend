@@ -1,0 +1,17 @@
+.heading {
+  margin-bottom: map-get($spacers, 4);
+  color: $black;
+}
+
+.section {
+  @include nds-body-small;
+
+  color: $neu-shuttle-gray;
+  margin-bottom: map-get($spacers, 4);
+
+  .section-heading {
+    color: $neu-charcoal-grey;
+    text-transform: uppercase;
+    margin-bottom: map-get($spacers, 3);
+  }
+}

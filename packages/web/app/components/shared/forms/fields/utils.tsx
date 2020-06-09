@@ -152,7 +152,7 @@ export const isWysiwyg = <T extends unknown>(validationSchema: Schema<T>, name: 
   }
 };
 
-const mapMimeTypeToExtension = (mimeType: EMimeType): string => {
+export const mapMimeTypeToExtension = (mimeType: EMimeType): string => {
   const mime2Extension: { [key: string]: string } = {
     [EMimeType.PDF]: "pdf",
     [EMimeType.JPEG]: "jpeg",

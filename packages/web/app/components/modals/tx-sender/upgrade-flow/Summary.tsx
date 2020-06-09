@@ -11,7 +11,7 @@ import { ETokenType } from "../../../../modules/tx/types";
 import { appConnect } from "../../../../store";
 import { DocumentButton } from "../../../shared/DocumentLink";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
-import { UpgradeTransactionDetails } from "./UpgradeTransactionDetails.unsafe";
+import { UpgradeTransactionDetails } from "./UpgradeTransactionDetails";
 
 interface IStateProps {
   txData: Readonly<ITxData>;
@@ -19,7 +19,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  onAccept: () => any;
+  onAccept: () => void;
   downloadICBMAgreement?: (tokenType: ETokenType) => void;
 }
 

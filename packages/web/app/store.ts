@@ -31,6 +31,7 @@ import { waitUntilSmartContractsAreInitialized } from "./modules/init/sagas";
 import { setupWebNotificationUIModule } from "./modules/notification-ui/module";
 import { appReducers } from "./modules/reducer";
 import { rootSaga } from "./modules/sagas";
+import { setupShareholderResolutionsVotingModule } from "./modules/shareholder-resolutions-voting/module";
 import { setupWebTxHistoryModule } from "./modules/tx-history/module";
 import { IDisconnectedWeb3State, web3InitialState } from "./modules/web3/reducer";
 
@@ -81,6 +82,7 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     }),
     setupGasModule(),
     setupWebNotificationUIModule(),
+    setupShareholderResolutionsVotingModule(),
     appModule,
   ];
 };

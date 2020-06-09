@@ -4,6 +4,8 @@ export const appRoutes = {
   greypWithJurisdiction: "/:jurisdiction/greyp",
   //--------------------------------//
 
+  proposal: "/governance/proposal/:proposalId",
+
   verify: "/email-verify",
   icbmMigration: "/migrate",
   walletUnlock: "/wallet-unlock-etherlock",

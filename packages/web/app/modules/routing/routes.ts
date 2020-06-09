@@ -1,4 +1,4 @@
-import { put } from "@neufund/sagas";
+import { call, put } from "@neufund/sagas";
 import { EUserType } from "@neufund/shared-modules";
 import { RouterState } from "connected-react-router";
 import { Location } from "history";
@@ -11,6 +11,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 import { TEtoWithCompanyAndContract } from "../eto/types";
 import { neuCall } from "../sagasUtils";
+import { shareholderResolutionsVotingModuleApi } from "../shareholder-resolutions-voting/module";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
 import { walletSelectorRegisterRedirect } from "./redirects/utils";
 import { GREYP_PREVIEW_CODE, routeAction, routeInternal } from "./sagas";
@@ -19,6 +20,7 @@ import {
   TEtoPublicViewLegacyRouteMatch,
   TEtoViewByIdMatch,
   TEtoViewByPreviewCodeMatch,
+  TShareholderResolutionsVotingRoute,
 } from "./types";
 
 export const routes = [
@@ -75,6 +77,8 @@ export const routes = [
   registerNomineeWithLedgerRoute,
   loginNomineeRoute,
   restoreNomineeRoute,
+
+  proposalsRoute,
 
   //---test routes
   testEtoWidgetViewRoute,
@@ -750,4 +754,26 @@ export function* fallbackRedirect(_: RouterState): Generator<any, any, any> {
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
+}
+
+export function* proposalsRoute(payload: RouterState): Generator<any, any, any> {
+  const match = yield* call(() =>
+    matchPath<TShareholderResolutionsVotingRoute>(payload.location.pathname, {
+      path: appRoutes.proposal,
+      exact: true,
+    }),
+  );
+
+  if (match !== null) {
+    return yield routeInternal({
+      notAuth: undefined,
+      investor: put(
+        shareholderResolutionsVotingModuleApi.actions.loadShareholderResolutionVoting(
+          match.params.proposalId,
+        ),
+      ),
+      issuer: undefined,
+      nominee: undefined,
+    });
+  }
 }

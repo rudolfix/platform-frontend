@@ -15,6 +15,10 @@ import {
 import { NeurRedeemAdditionalDataSchema, TNeurRedeemAdditionalData } from "./redeem/types";
 import { InvestorRefundAdditionalData, InvestorRefundAdditionalSchema } from "./refund/types";
 import {
+  ShareholderResolutionVoteAdditionalDataSchema,
+  TShareholderResolutionVoteAdditionalData,
+} from "./shareholder-resolution-vote/types";
+import {
   TokenTransferAdditionalData,
   TokenTransferAdditionalDataSchema,
   TTokenTransferAdditionalData,
@@ -39,6 +43,7 @@ export const typeToSchema: Record<ETxType, Schema<unknown>> = {
   [ETxType.NOMINEE_ISHA_SIGN]: TokenAgreementContractSchema,
   [ETxType.NOMINEE_RAAA_SIGN]: TokenAgreementContractSchema,
   [ETxType.NOMINEE_THA_SIGN]: TokenAgreementContractSchema,
+  [ETxType.SHAREHOLDER_RESOLUTIONS_VOTE]: ShareholderResolutionVoteAdditionalDataSchema,
 };
 export type TTransactionAdditionalData =
   | TInvestmentAdditionalDataYTS
@@ -52,4 +57,5 @@ export type TTransactionAdditionalData =
   | TokenTransferAdditionalData
   | TUnlockAdditionalDataYTS
   | TEtoSetDateAdditionalDataSchema
-  | InvestorRefundAdditionalData;
+  | InvestorRefundAdditionalData
+  | TShareholderResolutionVoteAdditionalData;

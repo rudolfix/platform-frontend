@@ -82,7 +82,7 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci/app/packages/web
           paths:
-            - ./e2e/e2e-test-tags
+            - ./
 
       - notify-slack
 
@@ -258,7 +258,7 @@ workflows:
             - web_build
       - web_codechecks:
           requires:
-            - web_install-lint-test
+            - web_build
       - web_codechecks-vis-reg:
           requires:
             - web_install-lint-test

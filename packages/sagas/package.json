@@ -16,7 +16,8 @@
     "start": "tsc --watch",
     "tsc": "tsc --noEmit",
     "tslint": "tslint --project ./tsconfig.json --format stylish",
-    "tslint:fix": "yarn tslint --fix"
+    "tslint:fix": "yarn tslint --fix",
+    "test:browser": "NF_MOCHA_RUN=1 TS_NODE_PROJECT=tsconfig.spec.json TS_NODE_IGNORE='node_modules\\/(?!@neufund)' mocha --inline-diffs --require ts-node/register/transpile-only  --require ./setupTests.ts './src/*.spec.@(js|ts)'"
   },
   "devDependencies": {
     "@redux-saga/types": "^1.1.0",
@@ -28,7 +29,10 @@
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.7.3",
     "typestrict": "^1.0.2",
-    "@neufund/shared-utils": "^1.0.0"
+    "@neufund/shared-utils": "^1.0.0",
+    "mocha": "^6.0.2",
+    "sinon": "^7.3.1",
+    "sinon-chai": "^3.2.0"
   },
   "peerDependencies": {
     "tslib": "^1.10.0",

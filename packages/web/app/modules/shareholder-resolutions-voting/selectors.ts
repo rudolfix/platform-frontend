@@ -35,7 +35,7 @@ export const selectProposalEto = (proposalId: string) => (state: TAppGlobalState
   const proposal = selectProposalById(proposalId)(state);
 
   if (etos && proposal) {
-    return etos.find(eto => eto.companyId === proposal.votingLegalRep);
+    return etos.find(eto => eto.companyId === proposal.companyId);
   }
 
   return undefined;

@@ -20,7 +20,6 @@ export enum EProposalState {
 
 export interface IProposalDetails {
   state: EProposalState;
-  votingLegalRep: EthereumAddressWithChecksum;
   tokenAddress: EthereumAddressWithChecksum;
   title: string;
   ipfsHash: string;
@@ -36,6 +35,7 @@ export interface IProposalTally {
 }
 
 type TProposalExtras = {
+  companyId: EthereumAddressWithChecksum;
   tally: IProposalTally;
   id: string;
   votingContractAddress: EthereumAddressWithChecksum;

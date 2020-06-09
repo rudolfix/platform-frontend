@@ -12,6 +12,7 @@ import {
   EthereumAddressWithChecksum,
   isZero,
   nonNullable,
+  toEthereumAddress,
   toEthereumChecksumAddress,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
@@ -22,6 +23,7 @@ import { symbols } from "../../di/symbols";
 import { actions as globalActions } from "../actions";
 import { selectUserId } from "../auth/selectors";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
+import { makeEthereumAddressChecksummed } from "../web3/utils";
 import { actions } from "./actions";
 import {
   ProposalNotFoundError,
@@ -86,21 +88,27 @@ export function* loadShareholderResolution(
       throw new ProposalStateNotSupportedError(proposalDetails.state);
     }
 
-    const { proposalTallyRaw, voteStateRaw } = yield* all({
+    const { proposalTallyRaw, voteStateRaw, equityToken } = yield* all({
       proposalTallyRaw: call([contractsService.votingCenter, "tally"], proposalId),
       voteStateRaw: call(
         [contractsService.votingCenter, "getVote"],
         proposalId,
         shareholderAddress,
       ),
+      equityToken: call([contractsService, "getEquityToken"], proposalDetails.tokenAddress),
     });
 
     const proposalTally = convertToProposalTally(proposalTallyRaw);
 
     const voteState = convertToShareholderVoteResolution(voteStateRaw);
 
+    const companyId = makeEthereumAddressChecksummed(
+      toEthereumAddress(yield* call(() => equityToken.companyLegalRepresentative)),
+    );
+
     const proposal: TProposal = {
       ...proposalDetails,
+      companyId,
       id: proposalId,
       votingContractAddress: toEthereumChecksumAddress(contractsService.votingCenter.address),
       tally: proposalTally,

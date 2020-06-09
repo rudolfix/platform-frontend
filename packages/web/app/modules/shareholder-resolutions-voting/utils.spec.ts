@@ -18,7 +18,6 @@ describe("convertToProposalDetails", () => {
     state: 1,
     title: "General Meeting 2020 Resolution",
     tokenAddress: "0xe39629B8e3e6F42F95EfF73Ab13001fa63529F60",
-    votingLegalRep: "0x95137084d1b6F58D177523De894293913394aA12",
   };
 
   const rawProposal: Parameters<typeof convertToProposalDetails>[0] = [

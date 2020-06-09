@@ -4,6 +4,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+	require('../app/components/modals/SignerModal/SignerModal.stories');
 	require('../app/components/screens/HomeScreen/EtoCard.stories');
 	require('../app/components/screens/WalletScreen/TransactionSection/PendingTransaction.stories');
 	require('../app/components/screens/WalletScreen/TransactionSection/SuccessfulTransaction.stories');
@@ -25,13 +26,16 @@ function loadStories() {
 	require('../app/components/shared/menu/Menu.stories');
 	require('../app/components/shared/modal-header/ModalStackHeaderLevel1.stories');
 	require('../app/components/shared/modal-header/ModalStackHeaderLevel2.stories');
+	require('../app/components/shared/modals/BottomSheetModal.stories');
 	require('../app/components/shared/panel/Panel.stories');
+	require('../app/components/shared/typography/BoldText.stories');
 	require('../app/components/shared/typography/MenuLabel.stories');
 	require('../app/components/shared/typography/Text.stories');
 	require('../app/components/shared/typography/Typography.stories');
 }
 
 const stories = [
+	'../app/components/modals/SignerModal/SignerModal.stories',
 	'../app/components/screens/HomeScreen/EtoCard.stories',
 	'../app/components/screens/WalletScreen/TransactionSection/PendingTransaction.stories',
 	'../app/components/screens/WalletScreen/TransactionSection/SuccessfulTransaction.stories',
@@ -53,7 +57,9 @@ const stories = [
 	'../app/components/shared/menu/Menu.stories',
 	'../app/components/shared/modal-header/ModalStackHeaderLevel1.stories',
 	'../app/components/shared/modal-header/ModalStackHeaderLevel2.stories',
+	'../app/components/shared/modals/BottomSheetModal.stories',
 	'../app/components/shared/panel/Panel.stories',
+	'../app/components/shared/typography/BoldText.stories',
 	'../app/components/shared/typography/MenuLabel.stories',
 	'../app/components/shared/typography/Text.stories',
 	'../app/components/shared/typography/Typography.stories'

@@ -1,10 +1,13 @@
 const neufundSupport = "https://support.neufund.org/support";
 const neufundOrg = "https://neufund.org";
 
+const etherscanAddress = "https://etherscan.io/address/:address";
+
 export const externalRoutes = {
   neufundSupport,
   neufundSupportHome: `${neufundSupport}/home`,
   neufundSupportWhatIsNeu: `${neufundSupport}/solutions/articles/36000060355-what-is-neumark-`,
+  neufundSupportVotingGuide: `${neufundSupport}/solutions/articles/36000229673`,
   neufundInvest: `${neufundOrg}/invest`,
   issueEto: `${neufundOrg}/issue`,
   commitmentStatus: "https://commit.neufund.org/commit/status?address=:walletAddress",
@@ -14,7 +17,8 @@ export const externalRoutes = {
   quintessenceLanding: "https://quintessence.global/",
   quintessenseTermsOfUse: "https://quintessence.global/assets/files/terms-of-use.pdf",
   ledgerSupport: "https://support.ledger.com/hc/en-us/articles/360002731113-Update-device-firmware",
-  etherscanAddress: "https://etherscan.io/address/:address",
+  etherscanAddress,
+  etherscanAddressReadContract: `${etherscanAddress}#readContract`,
   etherscanTransaction: "https://etherscan.io/tx/:txHash",
   imprint: "https://neufund.org/imprint",
   tos: "https://neufund.org/terms-of-use",

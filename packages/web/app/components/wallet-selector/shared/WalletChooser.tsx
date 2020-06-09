@@ -20,6 +20,7 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
   activeWallet,
 }) => {
   const path = isLogin ? appRoutes.login : appRoutes.register;
+  const locationSearch = isLogin ? window.location.search : "";
   return (
     <>
       <section className={styles.walletChooserContainer} data-test-id="wallet-selector">
@@ -30,7 +31,7 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
           {activeWallet !== EWalletType.LIGHT && (
             <ButtonLink
               data-test-id="wallet-selector-light"
-              to={`${path}/light`}
+              to={`${path}/light${locationSearch}`}
               className={styles.walletButton}
             >
               <img src={emailIcon} alt="" className={styles.img} />
@@ -41,7 +42,7 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
           {activeWallet !== EWalletType.BROWSER && (
             <ButtonLink
               data-test-id="wallet-selector-browser"
-              to={`${path}/browser`}
+              to={`${path}/browser${locationSearch}`}
               className={styles.walletButton}
             >
               <img src={metamaskLogo} alt="" className={styles.img} />
@@ -51,7 +52,7 @@ export const WalletChooser: React.FunctionComponent<TWalletChooserProps> = ({
           {activeWallet !== EWalletType.LEDGER && (
             <ButtonLink
               data-test-id="wallet-selector-ledger"
-              to={`${path}/ledger`}
+              to={`${path}/ledger${locationSearch}`}
               className={styles.walletButton}
             >
               <img src={ledgerLogo} alt="" className={styles.img} />

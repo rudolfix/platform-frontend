@@ -12,9 +12,9 @@
  * isInEnum(ECurrency, "eth") // true
  * isInEnum(ECurrency, "foo") // false
  */
-const isInEnum = <T extends string, TEnumValue extends string>(
+const isInEnum = <T extends string, TEnumValue extends string | number>(
   enumVariable: { [key in T]: TEnumValue },
-  value: string,
+  value: string | number,
 ): value is TEnumValue => Object.values(enumVariable).includes(value);
 
 export { isInEnum };

@@ -1,0 +1,11 @@
+.container {
+  @include media-breakpoint-up(md) {
+    grid-gap: map-get($spacers, 5);
+  }
+}
+
+.vote-details-container {
+  @include media-breakpoint-up(md) {
+    grid-row-gap: map-get($spacers, 4);
+  }
+}

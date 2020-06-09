@@ -6,9 +6,15 @@ import { CopyToClipboardButton } from "./CopyToClipboardButton";
 
 import * as styles from "./DataRow.module.scss";
 
+enum EDataRowSize {
+  SMALL = styles.smallSize,
+  NORMAL = styles.normalSize,
+}
+
 interface IDataRowProps {
-  caption?: React.ReactNode;
   value: React.ReactNode;
+  caption?: React.ReactNode;
+  size?: EDataRowSize;
   clipboardCopyValue?: string;
   noOverflow?: boolean;
 }
@@ -23,14 +29,13 @@ const DataRow: React.FunctionComponent<IDataRowProps & CommonHtmlProps & TDataTe
   "data-test-id": dataTestId,
   className,
   noOverflow,
+  size = EDataRowSize.NORMAL,
 }) => (
-  <section className={cn(styles.section, className)}>
-    <span>{caption}</span>
-    <span className={cn(styles.copyToClipboard, { [styles.value]: !noOverflow })}>
+  <section className={cn(styles.section, size, className)}>
+    <span className={styles.caption}>{caption}</span>
+    <span className={cn(styles.value, { [styles.noOverflow]: !noOverflow })}>
       <span data-test-id={dataTestId}>{value}</span>
-      {clipboardCopyValue && (
-        <CopyToClipboardButton className={"ml-2"} value={clipboardCopyValue} />
-      )}
+      {clipboardCopyValue && <CopyToClipboardButton className="ml-2" value={clipboardCopyValue} />}
     </span>
   </section>
 );
@@ -40,4 +45,4 @@ const DataRowSeparated: React.FunctionComponent<IDataRowProps & CommonHtmlProps 
   ...props
 }) => <DataRow className={cn(styles.separated, className)} {...props} />;
 
-export { DataRow, DataRowSeparated, DataRowSeparator };
+export { DataRow, DataRowSeparated, DataRowSeparator, EDataRowSize };

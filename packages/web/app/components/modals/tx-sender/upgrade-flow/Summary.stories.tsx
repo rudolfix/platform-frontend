@@ -4,7 +4,7 @@ import * as React from "react";
 import { ITxData } from "../../../../lib/web3/types";
 import { ETokenType } from "../../../../modules/tx/types";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
-import { UpgradeSummaryComponent } from "./Summary.unsafe";
+import { UpgradeSummaryComponent } from "./Summary";
 
 const txData: ITxData = {
   to: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",

@@ -7,3 +7,4 @@ export type TEtoViewByIdMatch = { jurisdiction: EJurisdiction; etoId: string };
 export type TEtoIssuerPreviewMatch = { previewCode: string };
 export type TEtoPublicViewLegacyRouteMatch = { preveiwCode: string };
 export type TEtoPublicViewByIdLegacyRoute = { etoId: string };
+export type TShareholderResolutionsVotingRoute = { proposalId: string };

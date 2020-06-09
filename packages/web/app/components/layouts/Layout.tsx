@@ -5,18 +5,12 @@ import { compose } from "recompose";
 import { selectIsAuthorized } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { TDataTestId } from "../../types";
-import { AcceptTosModal } from "../modals/accept-tos-modal/AcceptTosModal";
-import { BankTransferFlowModal } from "../modals/bank-transfer-flow/BankTransferFlow";
-import { DepositEthModal } from "../modals/deposit-eth/DepositEthModal";
-import { DownloadTokenAgreementModal } from "../modals/download-token-agreements-modal/DownloadTokenAgreementModal";
-import { IcbmWalletBalanceModal } from "../modals/icbm-wallet-balance-modal/IcbmWalletBalanceModal";
-import { TxSenderModal } from "../modals/tx-sender/TxSender/TxSender";
 import { NotificationWidget } from "../shared/notification-widget/NotificationWidget";
 import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../shared/WarningAlert";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { HeaderAuthorized, HeaderTransitional, HeaderUnauthorized } from "./header/Header";
-import { LayoutWrapper } from "./LayoutWrapper";
+import { LayoutContainer } from "./LayoutContainer";
 
 import * as styles from "./Layout.module.scss";
 
@@ -57,12 +51,6 @@ const LayoutAuthorized: React.FunctionComponent<TContentExternalProps> = ({
       {children}
     </Content>
     <Footer />
-    <AcceptTosModal />
-    <DepositEthModal />
-    <TxSenderModal />
-    <IcbmWalletBalanceModal />
-    <BankTransferFlowModal />
-    <DownloadTokenAgreementModal />
   </>
 );
 
@@ -75,13 +63,13 @@ const LayoutComponent: React.FunctionComponent<IStateProps &
   "data-test-id": dataTestId,
   ...contentProps
 }) => (
-  <LayoutWrapper data-test-id={dataTestId}>
+  <LayoutContainer data-test-id={dataTestId} userIsAuthorized={userIsAuthorized}>
     {userIsAuthorized ? (
       <LayoutAuthorized {...contentProps}>{children}</LayoutAuthorized>
     ) : (
       <LayoutUnauthorized {...contentProps}>{children}</LayoutUnauthorized>
     )}
-  </LayoutWrapper>
+  </LayoutContainer>
 );
 
 const Layout = compose<IStateProps, TDataTestId & TContentExternalProps & ILayoutUnauthProps>(
@@ -98,7 +86,11 @@ const TransitionalLayout: React.FunctionComponent<TDataTestId & TTransitionalLay
   showLogoutReason,
   ...contentProps
 }) => (
-  <LayoutWrapper data-test-id={dataTestId} className={styles.layoutTransitional}>
+  <LayoutContainer
+    data-test-id={dataTestId}
+    className={styles.layoutTransitional}
+    userIsAuthorized={false}
+  >
     <HeaderTransitional isLoginRoute={contentProps.isLoginRoute} />
     {showLogoutReason && (
       <WarningAlert
@@ -112,7 +104,7 @@ const TransitionalLayout: React.FunctionComponent<TDataTestId & TTransitionalLay
     )}
     <Content {...contentProps}>{children}</Content>
     <Footer />
-  </LayoutWrapper>
+  </LayoutContainer>
 );
 
 export {

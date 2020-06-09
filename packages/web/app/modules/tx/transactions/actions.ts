@@ -44,5 +44,12 @@ export const txTransactionsActions = {
       tokenImage,
     }),
   ),
+  startShareholderResolutionVote: createActionFactory(
+    "TRANSACTION_START_SHAREHOLDER_RESOLUTION_VOTE",
+    (proposalId: string, voteInFavor: boolean) => ({
+      proposalId,
+      voteInFavor,
+    }),
+  ),
   // Add here new custom sagas that represent flows
 };

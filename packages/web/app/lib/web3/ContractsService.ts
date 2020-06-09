@@ -19,6 +19,7 @@ import { IEquityToken } from "../contracts/IEquityToken";
 import { IERC223Token } from "../contracts/IERC223Token";
 import { ITokenController } from "../contracts/ITokenController";
 import { ITokenExchangeRateOracle } from "../contracts/ITokenExchangeRateOracle";
+import { IVotingCenter } from "../contracts/IVotingCenter";
 import * as knownInterfaces from "../contracts/knownInterfaces.json";
 import { LockedAccount } from "../contracts/LockedAccount";
 import { Neumark } from "../contracts/Neumark";
@@ -49,6 +50,7 @@ export class ContractsService implements IContractsService {
   public feeDisbursal!: FeeDisbursal;
   public platformTerms!: PlatformTerms;
   public rateOracle!: ITokenExchangeRateOracle;
+  public votingCenter!: IVotingCenter;
 
   public balanceOf!: (address: EthereumAddressWithChecksum) => Promise<BigNumber>;
 
@@ -90,6 +92,7 @@ export class ContractsService implements IContractsService {
       identityRegistryAddress,
       platformTermsAddress,
       feeDisbursalAddress,
+      votingCenterAddress,
     ] = await this.universeContract.getManySingletons([
       knownInterfaces.neumark,
       knownInterfaces.euroLock,
@@ -103,6 +106,7 @@ export class ContractsService implements IContractsService {
       knownInterfaces.identityRegistry,
       knownInterfaces.platformTerms,
       knownInterfaces.feeDisbursal,
+      knownInterfaces.votingCenter,
     ]);
 
     [
@@ -118,6 +122,7 @@ export class ContractsService implements IContractsService {
       this.euroTokenController,
       this.etherToken,
       this.feeDisbursal,
+      this.votingCenter,
     ] = await Promise.all<any>([
       create(Neumark, this.web3, neumarkAddress),
       create(LockedAccount, this.web3, euroLockAddress),
@@ -131,6 +136,7 @@ export class ContractsService implements IContractsService {
       create(EuroTokenController, this.web3, euroTokenControllerAddress),
       create(EtherToken, this.web3, etherTokenAddress),
       create(FeeDisbursal, this.web3, feeDisbursalAddress),
+      create(IVotingCenter, this.web3, votingCenterAddress),
     ]);
 
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");

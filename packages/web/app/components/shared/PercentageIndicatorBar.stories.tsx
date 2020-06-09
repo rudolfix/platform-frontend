@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { PercentageIndicatorBar } from "./PercentageIndicatorBar";
 
-storiesOf("PercentageIndicator (Progress)", module)
+storiesOf("PercentageIndicatorBar (Progress)", module)
   .add("progress: 100%", () => <PercentageIndicatorBar percent={100} />)
   .add("progress: 77%", () => <PercentageIndicatorBar percent={77} />)
   .add("progress: 5%", () => <PercentageIndicatorBar percent={5} />)

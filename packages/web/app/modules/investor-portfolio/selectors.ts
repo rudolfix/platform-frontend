@@ -26,6 +26,7 @@ import {
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
 import { isOnChain } from "../eto/utils";
 import { selectEtherPriceEur } from "../shared/tokenPrice/selectors";
+import { MIMIMUM_RETAIL_TICKET_EUR_ULPS } from "./constants";
 import {
   ICalculatedContribution,
   IInvestorTicket,
@@ -34,11 +35,7 @@ import {
   TETOWithTokenData,
   TTokensPersonalDiscount,
 } from "./types";
-import {
-  getRequiredIncomingAmount,
-  isPastInvestment,
-  MIMIMUM_RETAIL_TICKET_EUR_ULPS,
-} from "./utils";
+import { getRequiredIncomingAmount, isPastInvestment } from "./utils";
 
 const selectInvestorTicketsState = (state: TAppGlobalState) => state.investorTickets;
 

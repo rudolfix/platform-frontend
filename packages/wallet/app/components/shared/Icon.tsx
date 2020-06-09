@@ -3,6 +3,7 @@ import pickBy from "lodash/fp/pickBy";
 import * as React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 
+import Backup from "assets/backup.svg";
 import Close from "assets/close.svg";
 import Device from "assets/device.svg";
 import Home from "assets/home.svg";
@@ -32,6 +33,7 @@ enum EIconType {
   N_EUR = "n-eur",
   ETH = "eth",
   QR_CODE = "qr-code",
+  BACKUP = "backup",
   DEVICE = "device",
   LOGOUT = "logout",
   PENDING = "pending",
@@ -40,6 +42,7 @@ enum EIconType {
 const pickByIdentity = pickBy(identity);
 
 const icons: Record<EIconType, typeof Close> = {
+  [EIconType.BACKUP]: Backup,
   [EIconType.CLOSE]: Close,
   [EIconType.DEVICE]: Device,
   [EIconType.ETH]: Eth,

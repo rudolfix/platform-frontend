@@ -3,6 +3,7 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import { InteractionManager } from "react-native";
 import RNBootSplash from "react-native-bootsplash";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import "./rn-addons";
 import { loadStories } from "./storyLoader";
@@ -31,7 +32,9 @@ const Storybook: React.FunctionComponent = () => {
 
   return (
     <IntlProvider locale="en-gb">
-      <StorybookUIRoot />
+      <SafeAreaProvider>
+        <StorybookUIRoot />
+      </SafeAreaProvider>
     </IntlProvider>
   );
 };

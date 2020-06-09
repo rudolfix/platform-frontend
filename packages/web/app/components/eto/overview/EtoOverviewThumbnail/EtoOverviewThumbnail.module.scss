@@ -1,6 +1,8 @@
+@import "../../../shared/Panel.module";
+
 .cover {
-  margin: -$padding;
-  width: calc(100% + 2 * #{$padding});
+  @include remove-panel-padding;
+
   margin-bottom: auto;
 }
 
@@ -48,5 +50,3 @@
   margin-top: auto;
   margin-bottom: auto;
 }
-
-

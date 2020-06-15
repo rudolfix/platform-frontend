@@ -21,6 +21,11 @@ export function isLessThanOrEqualToZero(value: TBigNumberVariants): boolean {
   return bigNumberValue.lessThanOrEqualTo("0");
 }
 
+/**
+ * Multiplies a given value by 100
+ */
+export const toPercentage = (value: TBigNumberVariants) => multiplyBigNumbers([value, "100"]);
+
 export const convertFromUlps = (value: TBigNumberVariants, decimals = 18) =>
   new BigNumber(value).div(new BigNumber("10").pow(decimals));
 

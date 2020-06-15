@@ -6,6 +6,7 @@ import { symbols } from "../../../../di/symbols";
 import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";
 import { selectUserId } from "../../../auth/selectors";
+import { shareholderResolutionsVotingViewModuleApi } from "../../../shareholder-resolutions-voting-view/module";
 import { shareholderResolutionsVotingModuleApi } from "../../../shareholder-resolutions-voting/module";
 import { ITxSendParams, txSendSaga } from "../../sender/sagas";
 import { selectStandardGasPriceWithOverHead } from "../../sender/selectors";
@@ -106,7 +107,7 @@ function* shareholderResolutionVote({
     logger.error("Shareholder resolution vote failed", e);
   } finally {
     yield put(
-      shareholderResolutionsVotingModuleApi.actions.loadShareholderResolutionVoting(
+      shareholderResolutionsVotingViewModuleApi.actions.refreshInvestorShareholderResolutionVotingView(
         payload.proposalId,
       ),
     );

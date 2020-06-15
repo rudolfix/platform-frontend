@@ -4,8 +4,11 @@ import { expect } from "chai";
 import { set } from "lodash";
 
 import {
-  calculateParticipation,
-  calculateShareholderParticipation,
+  calculateAbstainedParticipationPercentage,
+  calculateAgainstParticipationPercentage,
+  calculateInFavorParticipationPercentage,
+  calculateParticipationPercentage,
+  calculateShareholderParticipationPercentage,
   convertToProposalDetails,
 } from "./utils";
 
@@ -51,17 +54,55 @@ describe("convertToProposalDetails", () => {
   });
 });
 
-describe("calculateParticipation", () => {
+describe("calculateParticipationPercentage", () => {
   it("should properly calculate proposal participation", () => {
     const proposalWithJustTally = {
       tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
     };
 
-    expect(calculateParticipation(proposalWithJustTally)).to.equal("0.045623582766439909");
+    expect(calculateParticipationPercentage(proposalWithJustTally)).to.equal(
+      "0.045623582766439909",
+    );
   });
 });
 
-describe("calculateShareholderParticipation", () => {
+describe("calculateInFavorParticipationPercentage", () => {
+  it("should properly calculate proposal in favor participation", () => {
+    const proposalWithJustTally = {
+      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+    };
+
+    expect(calculateInFavorParticipationPercentage(proposalWithJustTally)).to.equal(
+      "0.030415721844293273",
+    );
+  });
+});
+
+describe("calculateAgainstParticipationPercentage", () => {
+  it("should properly calculate proposal against participation", () => {
+    const proposalWithJustTally = {
+      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+    };
+
+    expect(calculateAgainstParticipationPercentage(proposalWithJustTally)).to.equal(
+      "0.015207860922146636",
+    );
+  });
+});
+
+describe("calculateAbstainedParticipationPercentage", () => {
+  it("should properly calculate proposal abstained participation", () => {
+    const proposalWithJustTally = {
+      tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
+    };
+
+    expect(calculateAbstainedParticipationPercentage(proposalWithJustTally)).to.equal(
+      "99.954376417233560091",
+    );
+  });
+});
+
+describe("calculateShareholderParticipationPercentage", () => {
   it("should properly calculate proposal participation", () => {
     const proposalWithJustTally = {
       tally: { against: "2012", inFavor: "4024", tokenVotingPower: "13230000" },
@@ -74,8 +115,8 @@ describe("calculateShareholderParticipation", () => {
       votingPower: "2012",
     };
 
-    expect(calculateShareholderParticipation(shareholderVote, proposalWithJustTally)).to.equal(
-      "0.015207860922146636",
-    );
+    expect(
+      calculateShareholderParticipationPercentage(shareholderVote, proposalWithJustTally),
+    ).to.equal("0.015207860922146636");
   });
 });

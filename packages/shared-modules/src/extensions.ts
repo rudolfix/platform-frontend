@@ -11,12 +11,12 @@ import { INeuModule } from "./types";
  * @returns A configuration object you can later pass to store `extensions`
  */
 const getLoadContextExtension = (container: Container): IExtension => ({
-  onModuleAdded: (module: INeuModule<unknown>) => {
+  onModuleAdded: (module: INeuModule<any, any>) => {
     if (module.libs) {
       container.load(...module.libs);
     }
   },
-  onModuleRemoved: (module: INeuModule<unknown>) => {
+  onModuleRemoved: (module: INeuModule<any, any>) => {
     if (module.libs) {
       container.unload(...module.libs);
     }
@@ -32,19 +32,19 @@ const getLoadContextExtension = (container: Container): IExtension => ({
  * @param context - redux-saga context object
  */
 const getContextToDepsExtension = <T extends {}>(
-  rootModule: INeuModule<unknown>,
+  rootModule: INeuModule<any, any>,
   createGlobalDeps: (container: Container) => T,
   context: {
     container: Container;
     deps?: T;
   },
 ): IExtension => ({
-  onModuleAdded: (module: INeuModule<unknown>) => {
+  onModuleAdded: (module: INeuModule<any, any>) => {
     if (module.id === rootModule.id) {
       context.deps = createGlobalDeps(context.container);
     }
   },
-  onModuleRemoved: (module: INeuModule<unknown>) => {
+  onModuleRemoved: (module: INeuModule<any, any>) => {
     if (module.id === rootModule.id) {
       throw new Error(
         `Root module "${rootModule.id}" loaded into the sagas "deps" context should never be removed`,

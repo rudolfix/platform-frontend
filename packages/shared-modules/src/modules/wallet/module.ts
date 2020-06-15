@@ -33,4 +33,4 @@ const walletApi = {
   },
 };
 
-export { setupWalletModule, walletApi, ILockedWallet, IWalletStateData };
+export { setupWalletModule, walletReducerMap, walletApi, ILockedWallet, IWalletStateData };

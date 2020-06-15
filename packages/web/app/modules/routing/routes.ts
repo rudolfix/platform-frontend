@@ -11,7 +11,7 @@ import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 import { TEtoWithCompanyAndContract } from "../eto/types";
 import { neuCall } from "../sagasUtils";
-import { shareholderResolutionsVotingModuleApi } from "../shareholder-resolutions-voting/module";
+import { shareholderResolutionsVotingViewModuleApi } from "../shareholder-resolutions-voting-view/module";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
 import { walletSelectorRegisterRedirect } from "./redirects/utils";
 import { GREYP_PREVIEW_CODE, routeAction, routeInternal } from "./sagas";
@@ -768,11 +768,15 @@ export function* proposalsRoute(payload: RouterState): Generator<any, any, any> 
     return yield routeInternal({
       notAuth: undefined,
       investor: put(
-        shareholderResolutionsVotingModuleApi.actions.loadShareholderResolutionVoting(
+        shareholderResolutionsVotingViewModuleApi.actions.loadInvestorShareholderResolutionVotingView(
           match.params.proposalId,
         ),
       ),
-      issuer: undefined,
+      issuer: put(
+        shareholderResolutionsVotingViewModuleApi.actions.loadIssuerShareholderResolutionVotingView(
+          match.params.proposalId,
+        ),
+      ),
       nominee: undefined,
     });
   }

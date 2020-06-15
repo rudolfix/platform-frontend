@@ -1,25 +1,48 @@
-import { actions } from "./actions";
+import {
+  ProposalNotFoundError,
+  ProposalStateNotSupportedError,
+  ShareholderHasNoAccessToProposalError,
+} from "./errors";
 import { shareholderResolutionsVotingMap } from "./reducer";
-import { shareholderResolutionsVotingSagas } from "./sagas";
+import { loadInvestorShareholderResolution, loadIssuerShareholderResolution } from "./sagas";
 import * as selectors from "./selectors";
-import { IShareholderVote, TProposal } from "./types";
-import { calculateParticipation, calculateShareholderParticipation } from "./utils";
+import { EProposalState, IShareholderVote, TProposal } from "./types";
+import {
+  calculateAbstainedParticipationPercentage,
+  calculateAbstainedParticipationTokens,
+  calculateAgainstParticipationPercentage,
+  calculateInFavorParticipationPercentage,
+  calculateParticipationPercentage,
+  calculateShareholderParticipationPercentage,
+} from "./utils";
 
 const MODULE_ID = "web:shareholder-resolutions-voting";
 
 const setupShareholderResolutionsVotingModule = () => ({
   id: MODULE_ID,
-  sagas: [shareholderResolutionsVotingSagas],
+  sagas: [],
   reducerMap: shareholderResolutionsVotingMap,
   api: shareholderResolutionsVotingModuleApi,
 });
 
 const shareholderResolutionsVotingModuleApi = {
-  actions,
   selectors,
+  sagas: {
+    loadIssuerShareholderResolution,
+    loadInvestorShareholderResolution,
+  },
   utils: {
-    calculateParticipation,
-    calculateShareholderParticipation,
+    calculateParticipationPercentage,
+    calculateInFavorParticipationPercentage,
+    calculateShareholderParticipationPercentage,
+    calculateAbstainedParticipationPercentage,
+    calculateAgainstParticipationPercentage,
+    calculateAbstainedParticipationTokens,
+  },
+  errors: {
+    ProposalNotFoundError,
+    ShareholderHasNoAccessToProposalError,
+    ProposalStateNotSupportedError,
   },
 };
 
@@ -28,4 +51,5 @@ export {
   shareholderResolutionsVotingModuleApi,
   IShareholderVote,
   TProposal,
+  EProposalState,
 };

@@ -126,7 +126,12 @@ export const AppRouter: React.FunctionComponent = () => (
       issuerComponent={Kyc}
       nomineeComponent={Kyc}
     />
-    <OnlyAuthorizedRoute path={appRoutes.proposal} investorComponent={Proposal} exact />
+    <OnlyAuthorizedRoute
+      path={appRoutes.proposal}
+      investorComponent={Proposal}
+      issuerComponent={Proposal}
+      exact
+    />
     {/*Routes used only in E2E tests*/}
     {process.env.NF_CYPRESS_RUN === "1" && [
       <Route

@@ -3,8 +3,9 @@ import {
   divideBigNumbers,
   invariant,
   isInEnum,
-  multiplyBigNumbers,
+  subtractBigNumbers,
   toEthereumAddress,
+  toPercentage,
   unixTimestampToTimestamp,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
@@ -115,13 +116,32 @@ export const convertToShareholderVoteResolution = (
   return stateAsNumber;
 };
 
-export const calculateParticipation = ({ tally }: Pick<TProposal, "tally">) =>
-  multiplyBigNumbers([
+export const calculateParticipationPercentage = ({ tally }: Pick<TProposal, "tally">) =>
+  toPercentage(
     divideBigNumbers(addBigNumbers([tally.inFavor, tally.against]), tally.tokenVotingPower),
+  );
+
+export const calculateInFavorParticipationPercentage = ({ tally }: Pick<TProposal, "tally">) =>
+  toPercentage(divideBigNumbers(tally.inFavor, tally.tokenVotingPower));
+
+export const calculateAgainstParticipationPercentage = ({ tally }: Pick<TProposal, "tally">) =>
+  toPercentage(divideBigNumbers(tally.against, tally.tokenVotingPower));
+
+export const calculateAbstainedParticipationPercentage = ({ tally }: Pick<TProposal, "tally">) =>
+  subtractBigNumbers([
     "100",
+    addBigNumbers([
+      calculateInFavorParticipationPercentage({ tally }),
+      calculateAgainstParticipationPercentage({ tally }),
+    ]),
   ]);
 
-export const calculateShareholderParticipation = (
+export const calculateAbstainedParticipationTokens = ({ tally }: Pick<TProposal, "tally">) => {
+  const currentParticipation = addBigNumbers([tally.inFavor, tally.against]);
+  return subtractBigNumbers([tally.tokenVotingPower, currentParticipation]);
+};
+
+export const calculateShareholderParticipationPercentage = (
   { votingPower }: IShareholderVote,
   { tally }: Pick<TProposal, "tally">,
-) => multiplyBigNumbers([divideBigNumbers(votingPower, tally.tokenVotingPower), "100"]);
+) => toPercentage(divideBigNumbers(votingPower, tally.tokenVotingPower));

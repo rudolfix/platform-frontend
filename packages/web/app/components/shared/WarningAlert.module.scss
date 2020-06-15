@@ -8,7 +8,7 @@
 
   .icon {
     @include rect(20px);
-
+    align-self: baseline;
     margin-right: .6em;
   }
 

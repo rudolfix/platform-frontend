@@ -164,9 +164,15 @@ export function* connectWallet(): Generator<any, any, any> {
         throw e;
       } else {
         yield take(actions.accessWallet.tryToAccessWalletAgain);
+        yield put(actions.accessWallet.clearSigningError());
       }
     }
   }
+}
+
+function* performModalActions(effect: Effect | Generator<any, any, any>): Generator<any, any, any> {
+  yield call(connectWallet);
+  return yield effect;
 }
 
 export function* accessWalletAndRunEffect(
@@ -180,21 +186,22 @@ export function* accessWalletAndRunEffect(
   if (isSigning) {
     throw new Error("Signing already in progress");
   }
+
   yield put(actions.accessWallet.showAccessWalletModal(title, message, inputLabel));
-  // do required operation, or finish in case cancel button was hit
-  const { cancel } = yield race({
-    result: call(connectWallet),
-    cancel: take(actions.accessWallet.hideAccessWalletModal),
-  });
 
-  // if the cancel action was called
-  // throw here
-  if (cancel) {
-    throw new MessageSignCancelledError("Wallet access has been cancelled");
+  try {
+    const { cancel, result } = yield race({
+      result: performModalActions(effect),
+      cancel: take(actions.accessWallet.hideAccessWalletModal),
+    });
+
+    if (cancel) {
+      throw new MessageSignCancelledError("Wallet access has been cancelled");
+    } else {
+      return result;
+    }
+  } finally {
+    //make sure to close the modal in any case
+    yield put(actions.accessWallet.hideAccessWalletModal());
   }
-
-  // always hide the current modal
-  yield put(actions.accessWallet.hideAccessWalletModal());
-
-  return yield effect;
 }

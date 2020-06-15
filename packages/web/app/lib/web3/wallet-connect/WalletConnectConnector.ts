@@ -83,6 +83,7 @@ export class WalletConnectConnector extends EventEmitter {
       // there no way to usubscribe from walletConnector events
       const session = this.walletConnector.session;
 
+      //TODO add an .env variable to be able to test locally
       // check chain id
       if (parseInt(this.web3Manager.networkId, 10) !== session.chainId) {
         throw new WalletConnectChainIdError(session.chainId);

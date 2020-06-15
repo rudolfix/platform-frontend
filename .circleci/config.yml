@@ -177,8 +177,8 @@ jobs:
           keys:
             - yarn-packages-v1-{{ checksum "yarn.lock" }}
 
-      - run: yarn workspace @neufund/web build:commit-deployment
-      - run: yarn workspace @neufund/web codechecks
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web build:commit-deployment
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web codechecks
 
       - notify-slack
 

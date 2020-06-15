@@ -28,7 +28,7 @@ import * as styles from "./ProposalShareholderVoteWidget.module.scss";
 type TExternalProps = {
   proposal: TProposal;
   shareholderVote: IShareholderVote;
-  eto: TEtoWithCompanyAndContract;
+  eto: Pick<TEtoWithCompanyAndContract, "equityTokenSymbol">;
   voteYes: () => void;
   voteNo: () => void;
 };
@@ -40,7 +40,7 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
   proposal,
   eto,
 }) => {
-  const shareholderParticipation = shareholderResolutionsVotingModuleApi.utils.calculateShareholderParticipation(
+  const shareholderParticipationPercentage = shareholderResolutionsVotingModuleApi.utils.calculateShareholderParticipationPercentage(
     shareholderVote,
     proposal,
   );
@@ -69,7 +69,7 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
             percentageAllTokens: (
               <MoneyWithLessThan
                 className={cn(styles.highlight)}
-                value={shareholderParticipation}
+                value={shareholderParticipationPercentage}
                 inputFormat={ENumberInputFormat.FLOAT}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 valueType={ENumberFormat.PERCENTAGE}
@@ -101,7 +101,7 @@ const ProposalShareholderVoteResult: React.FunctionComponent<TExternalProps> = (
   proposal,
   eto,
 }) => {
-  const shareholderParticipation = shareholderResolutionsVotingModuleApi.utils.calculateShareholderParticipation(
+  const shareholderParticipation = shareholderResolutionsVotingModuleApi.utils.calculateShareholderParticipationPercentage(
     shareholderVote,
     proposal,
   );

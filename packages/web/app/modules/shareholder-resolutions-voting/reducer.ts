@@ -4,17 +4,17 @@ import { DeepReadonly } from "@neufund/shared-utils";
 import { actions } from "./actions";
 import { IShareholderVote, TProposal } from "./types";
 
-export interface IShareholderResolutionsVotingState {
+interface IShareholderResolutionsVotingState {
   shareholdersVotes: Record<string, IShareholderVote[] | undefined>;
   proposals: Record<string, TProposal | undefined>;
 }
 
-export const shareholderResolutionsVotingInitialState: IShareholderResolutionsVotingState = {
+const shareholderResolutionsVotingInitialState: IShareholderResolutionsVotingState = {
   proposals: {},
   shareholdersVotes: {},
 };
 
-export const shareholderResolutionsVotingReducer: AppReducer<
+const shareholderResolutionsVotingReducer: AppReducer<
   IShareholderResolutionsVotingState,
   typeof actions
 > = (
@@ -22,22 +22,30 @@ export const shareholderResolutionsVotingReducer: AppReducer<
   action,
 ): DeepReadonly<IShareholderResolutionsVotingState> => {
   switch (action.type) {
-    case actions.setShareholderResolutionVoting.getType():
-      const { proposal, shareholderVote } = action.payload;
+    case actions.setShareholderResolutionVotingProposalShareholderVote.getType(): {
+      const { proposalId, shareholderVote } = action.payload;
 
       const currentShareholderVotes = state.shareholdersVotes[shareholderVote.address] ?? [];
 
       return {
         ...state,
-        proposals: { ...state.proposals, [proposal.id]: proposal },
         shareholdersVotes: {
           ...state.shareholdersVotes,
           [shareholderVote.address]: currentShareholderVotes
-            .filter(sV => sV.proposalId !== proposal.id)
+            .filter(sV => sV.proposalId !== proposalId)
             .concat(shareholderVote),
         },
       };
+    }
 
+    case actions.setShareholderResolutionVotingProposal.getType(): {
+      const { proposal } = action.payload;
+
+      return {
+        ...state,
+        proposals: { ...state.proposals, [proposal.id]: proposal },
+      };
+    }
     default:
       return state;
   }
@@ -47,4 +55,9 @@ const shareholderResolutionsVotingMap = {
   shareholderResolutionsVoting: shareholderResolutionsVotingReducer,
 };
 
-export { shareholderResolutionsVotingMap };
+export {
+  shareholderResolutionsVotingMap,
+  shareholderResolutionsVotingReducer,
+  shareholderResolutionsVotingInitialState,
+  IShareholderResolutionsVotingState,
+};

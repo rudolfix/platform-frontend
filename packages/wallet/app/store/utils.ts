@@ -19,7 +19,8 @@ export function appConnect<
   StateToProps = {},
   DispatchToProps = {},
   Props = {},
-  Module extends TModuleSetup<unknown, unknown> | never = never
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Module extends TModuleSetup<any, any, any> | never = never
 >(
   options: TAppConnectOptions<
     StateToProps,

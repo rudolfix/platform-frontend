@@ -5,6 +5,7 @@ import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
+import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { TProposal } from "../../../modules/shareholder-resolutions-voting/types";
@@ -19,7 +20,8 @@ import * as styles from "./ProposalDetails.module.scss";
 
 type TExternalProps = {
   proposal: TProposal;
-  eto: TEtoWithCompanyAndContract;
+  eto: Pick<TEtoWithCompanyAndContract, "equityTokenName" | "nomineeDisplayName">;
+  company: Pick<TCompanyEtoData, "name">;
   downloadDocument: (
     immutableFileId: IImmutableFileId,
     fileName: string,
@@ -33,6 +35,7 @@ const ProposalDetails: React.FunctionComponent<TExternalProps> = ({
   downloadDocument,
   pendingDownloads,
   eto,
+  company,
 }) => (
   <>
     <Heading level={2} decorator={false} className={cn(styles.heading)}>
@@ -47,7 +50,7 @@ const ProposalDetails: React.FunctionComponent<TExternalProps> = ({
       <p>
         <FormattedMessage
           id="governance.proposal.details.description.paragraph1"
-          values={{ companyName: eto.company.name, equityTokenName: eto.equityTokenName }}
+          values={{ companyName: company.name, equityTokenName: eto.equityTokenName }}
         />
       </p>
       <p>
@@ -126,9 +129,13 @@ const ProposalDetails: React.FunctionComponent<TExternalProps> = ({
           id="governance.proposal.details.voting-procedure.paragraph3"
           values={{
             link: (
-              <ExternalLink
-                href={etherscanAddressReadContractLink(proposal.votingContractAddress)}
-              />
+              <>
+                <br />
+                <ExternalLink
+                  className="text-break"
+                  href={etherscanAddressReadContractLink(proposal.votingContractAddress)}
+                />
+              </>
             ),
           }}
         />

@@ -183,30 +183,62 @@ jobs:
       - notify-slack
 
   web_codechecks-vis-reg:
-    executor: docker-browsers
+    machine:
+      enabled: true
+      image: ubuntu-1604:201903-01
+      docker_layer_caching: true
+
+    environment:
+      COMPOSE_INTERACTIVE_NO_CLI: 1
+
+    working_directory: /home/circleci/app
 
     steps:
-      - checkout-and-install
+      - attach_workspace:
+          at: /home/circleci/app
 
-      - run: yarn workspace @neufund/web storybook:screenshots
-      - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
+      - run: ./.circleci/install-yarn.sh
+
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-v1-{{ checksum "yarn.lock" }}
+
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web storybook:screenshots
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
 
       - notify-slack
 
   web_codechecks-e2e-vis-reg:
-    executor: docker-browsers
+    machine:
+      enabled: true
+      image: ubuntu-1604:201903-01
+      docker_layer_caching: true
+
+    environment:
+      COMPOSE_INTERACTIVE_NO_CLI: 1
+
+    working_directory: /home/circleci/app
 
     steps:
-      - checkout-and-install
+      - attach_workspace:
+          at: /home/circleci/app
+
+      - run: ./.circleci/install-yarn.sh
+
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-v1-{{ checksum "yarn.lock" }}
 
       - run:
-          command: yarn workspace @neufund/web build:prod:e2e:io
+          command: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web build:prod:e2e:io
           no_output_timeout: 10m
 
       - run:
-          command: yarn workspace @neufund/web test:e2e:vis-reg
+          command: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web test:e2e:vis-reg
 
-      - run: yarn workspace @neufund/web codechecks ./codechecks-e2e-vis-reg.ts
+      - run: source /opt/circleci/.nvm/nvm.sh && yarn workspace @neufund/web codechecks ./codechecks-e2e-vis-reg.ts
 
       - notify-slack
 
@@ -261,10 +293,10 @@ workflows:
             - web_build
       - web_codechecks-vis-reg:
           requires:
-            - web_install-lint-test
+            - web_build
       - web_codechecks-e2e-vis-reg:
           requires:
-            - web_install-lint-test
+            - web_build
 
   mobile:
     jobs:

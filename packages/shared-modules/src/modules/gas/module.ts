@@ -24,4 +24,4 @@ const gasApi = {
   selectors,
 };
 
-export { setupGasModule, gasApi, IGasState };
+export { setupGasModule, gasApi, IGasState, gasReducerMap };

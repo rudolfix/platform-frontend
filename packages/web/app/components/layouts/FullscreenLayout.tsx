@@ -1,3 +1,4 @@
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 
@@ -53,22 +54,11 @@ const FullscreenLayoutComponent: React.FunctionComponent<TStateProps &
   TDataTestId &
   TContentExternalProps &
   THeaderFullscreenProps &
-  TInitialProps> = ({
-  children,
-  buttonProps,
-  wrapperClass,
-  userIsAuthorized,
-  "data-test-id": dataTestId,
-  ...contentProps
-}) => {
+  TInitialProps> = ({ children, buttonProps, wrapperClass, ...contentProps }) => {
   const buttonCtx = useActionButton(buttonProps);
 
   return (
-    <LayoutContainer
-      data-test-id={dataTestId}
-      className={wrapperClass}
-      userIsAuthorized={userIsAuthorized}
-    >
+    <>
       <FullscreenButtonContext.Provider value={buttonCtx}>
         <HeaderFullscreen
           buttonAction={buttonCtx.buttonProps?.buttonAction}
@@ -77,7 +67,7 @@ const FullscreenLayoutComponent: React.FunctionComponent<TStateProps &
 
         <Content {...contentProps}>{children}</Content>
       </FullscreenButtonContext.Provider>
-    </LayoutContainer>
+    </>
   );
 };
 
@@ -90,6 +80,17 @@ const FullscreenLayout = compose<
       userIsAuthorized: selectIsAuthorized(state),
     }),
   }),
+  withContainer<TDataTestId & TInitialProps & TStateProps>(
+    ({ "data-test-id": dataTestId, userIsAuthorized, wrapperClass, children }) => (
+      <LayoutContainer
+        data-test-id={dataTestId}
+        className={wrapperClass}
+        userIsAuthorized={userIsAuthorized}
+      >
+        {children}
+      </LayoutContainer>
+    ),
+  ),
 )(FullscreenLayoutComponent);
 
 export { FullscreenLayout, FullscreenButtonContext, FullscreenLayoutComponent };

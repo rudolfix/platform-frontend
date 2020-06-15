@@ -21,4 +21,4 @@ const tokenPriceModuleApi = {
   selectors,
 };
 
-export { setupTokenPriceModule, tokenPriceModuleApi };
+export { setupTokenPriceModule, tokenPriceModuleApi, tokenPriceReducerMap };

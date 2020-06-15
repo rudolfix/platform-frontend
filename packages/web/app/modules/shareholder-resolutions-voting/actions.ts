@@ -3,13 +3,12 @@ import { createActionFactory } from "@neufund/shared-utils";
 import { IShareholderVote, TProposal } from "./types";
 
 export const actions = {
-  loadShareholderResolutionVoting: createActionFactory(
-    "SHAREHOLDER_RESOLUTION_VOTING_LOAD",
-    (proposalId: string) => ({ proposalId }),
+  setShareholderResolutionVotingProposal: createActionFactory(
+    "SHAREHOLDER_RESOLUTION_VOTING_PROPOSAL_SET",
+    (proposal: TProposal) => ({ proposal }),
   ),
-
-  setShareholderResolutionVoting: createActionFactory(
-    "SHAREHOLDER_RESOLUTION_VOTING_SET",
-    (proposal: TProposal, shareholderVote: IShareholderVote) => ({ proposal, shareholderVote }),
+  setShareholderResolutionVotingProposalShareholderVote: createActionFactory(
+    "SHAREHOLDER_RESOLUTION_VOTING_SHAREHOLDER_VOTE_SET",
+    (proposalId: string, shareholderVote: IShareholderVote) => ({ proposalId, shareholderVote }),
   ),
 };

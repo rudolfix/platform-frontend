@@ -12,7 +12,7 @@ import {
 } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { appConnect } from "../../../../../store";
 import { EContentWidth } from "../../../../layouts/Content";
-import { FullscreenProgressLayout } from "../../../../layouts/FullscreenProgressLayout";
+import { FullscreenLayout } from "../../../../layouts/FullscreenLayout";
 import {
   IWalletLedgerChooserDispatchProps,
   IWalletLedgerChooserStateProps,
@@ -61,7 +61,7 @@ export const WalletLedgerChooser = compose<
     }),
   }),
   withContainer<TDispatchProps>(({ closeAccountChooser, ...props }) => (
-    <FullscreenProgressLayout
+    <FullscreenLayout
       width={EContentWidth.FULL}
       buttonProps={{
         buttonText: <FormattedMessage id="account-recovery.step.cancel" />,

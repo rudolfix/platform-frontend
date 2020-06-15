@@ -6,7 +6,7 @@ import { selectIsAuthorized } from "../../modules/auth/selectors";
 import { appConnect } from "../../store";
 import { TDataTestId } from "../../types";
 import { NotificationWidget } from "../shared/notification-widget/NotificationWidget";
-import { EWarningAlertLayout, EWarningAlertSize, WarningAlert } from "../shared/WarningAlert";
+import { EWarningAlertSize, WarningAlert } from "../shared/WarningAlert";
 import { Content } from "./Content";
 import { Footer } from "./Footer";
 import { HeaderAuthorized, HeaderTransitional, HeaderUnauthorized } from "./header/Header";
@@ -96,7 +96,6 @@ const TransitionalLayout: React.FunctionComponent<TDataTestId & TTransitionalLay
       <WarningAlert
         className={styles.logoutNotification}
         size={EWarningAlertSize.BIG}
-        layout={EWarningAlertLayout.INLINE}
         data-test-id="wallet-selector-session-timeout-notification"
       >
         <FormattedHTMLMessage tagName="span" id="notifications.auth-session-timeout" />

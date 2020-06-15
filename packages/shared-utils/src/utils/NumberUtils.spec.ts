@@ -6,6 +6,7 @@ import {
   isLessThanOrEqualToZero,
   isZero,
   normalize,
+  toPercentage,
 } from "./NumberUtils";
 
 describe("convertToUlps", () => {
@@ -44,6 +45,14 @@ describe("isZero", () => {
 describe("isLessThanOrEqualToZero", () => {
   it("should correctly recognize zeros and negative values", () => {
     expect(isLessThanOrEqualToZero("000000000000000000")).to.be.true;
+    expect(isLessThanOrEqualToZero("-364458900000000000")).to.be.true;
+    expect(isLessThanOrEqualToZero("364458900000000000")).to.be.false;
+  });
+});
+
+describe("toPercentage", () => {
+  it("should correctly convert fraction to percentage", () => {
+    expect(toPercentage("0.1312")).to.eq("13.12");
     expect(isLessThanOrEqualToZero("-364458900000000000")).to.be.true;
     expect(isLessThanOrEqualToZero("364458900000000000")).to.be.false;
   });

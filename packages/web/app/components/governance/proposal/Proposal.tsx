@@ -1,142 +1,45 @@
-import { invariant, nonNullable, withContainer } from "@neufund/shared-utils";
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { RouteComponentProps } from "react-router-dom";
 import { branch, compose, renderComponent } from "recompose";
 
-import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectUserId } from "../../../modules/auth/selectors";
-import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
-import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import { TShareholderResolutionsVotingRoute } from "../../../modules/routing/types";
 import {
-  IShareholderVote,
-  shareholderResolutionsVotingModuleApi,
-  TProposal,
-} from "../../../modules/shareholder-resolutions-voting/module";
+  EShareholderResolutionProposalViewType,
+  shareholderResolutionsVotingViewModuleApi,
+} from "../../../modules/shareholder-resolutions-voting-view/module";
 import { appConnect } from "../../../store";
-import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
-import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
+import { EProcessState } from "../../../utils/enums/processStates";
 import { EContentWidth } from "../../layouts/Content";
 import { FullscreenLayout } from "../../layouts/FullscreenLayout";
-import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoadingIndicator } from "../../shared/loading-indicator";
-import { ProposalDetails } from "./ProposalDetails";
-import { ProposalShareholderVoteWidget } from "./ProposalShareholderVoteWidget";
-import { ProposalVotingDetails } from "./ProposalVotingDetails";
+import { shouldNeverHappen } from "../../shared/NeverComponent";
+import { ProposalInvestor } from "./ProposalInvestor";
+import { ProposalIssuer } from "./ProposalIssuer";
 
-import * as styles from "./Proposal.module.scss";
-
-interface IStateProps {
-  proposal: TProposal | undefined;
-  shareholderVote: IShareholderVote | undefined;
-  eto: TEtoWithCompanyAndContract | undefined;
-  pendingDownloads: Record<string, boolean | undefined>;
-}
+type TStateProps = ReturnType<
+  typeof shareholderResolutionsVotingViewModuleApi.selectors.selectProposalViewState
+>;
 
 interface IDispatchProps {
-  downloadDocument: (
-    immutableFileId: IImmutableFileId,
-    fileName: string,
-    isProtected: boolean,
-  ) => void;
   closeProposalsPage: () => void;
-  voteYes: () => void;
-  voteNo: () => void;
 }
 
-type IProposalsProps = IStateProps & IDispatchProps;
-
-const ProposalsLayout: React.FunctionComponent<IProposalsProps> = ({
-  proposal,
-  shareholderVote,
-  eto,
-  voteYes,
-  voteNo,
-  downloadDocument,
-  pendingDownloads,
-}) => {
-  invariant(proposal, "Proposal not defined");
-  invariant(eto, "Proposal ETO not defined");
-  invariant(shareholderVote, "Shareholder vote not defined");
-
-  return (
-    <WidgetGrid className={styles.container}>
-      <Container columnSpan={EColumnSpan.TWO_COL} type={EContainerType.CONTAINER}>
-        <ProposalDetails
-          proposal={proposal}
-          eto={eto}
-          downloadDocument={downloadDocument}
-          pendingDownloads={pendingDownloads}
-        />
-      </Container>
-
-      <Container
-        className={styles.voteDetailsContainer}
-        columnSpan={EColumnSpan.ONE_COL}
-        type={EContainerType.GRID}
-      >
-        <ProposalShareholderVoteWidget
-          proposal={proposal}
-          shareholderVote={shareholderVote}
-          voteYes={voteYes}
-          voteNo={voteNo}
-          eto={eto}
-        />
-
-        <ProposalVotingDetails proposal={proposal} />
-      </Container>
-    </WidgetGrid>
-  );
-};
-
 export const Proposal = compose<
-  IStateProps & IDispatchProps,
+  TStateProps & IDispatchProps,
   RouteComponentProps<TShareholderResolutionsVotingRoute>
 >(
   createErrorBoundary(ErrorBoundaryLayout),
-  appConnect<IStateProps, IDispatchProps, RouteComponentProps<TShareholderResolutionsVotingRoute>>({
-    stateToProps: (state, props) => {
-      const { proposalId } = props.match.params;
-
-      const shareholderAddress = nonNullable(selectUserId(state));
-
-      const proposal = shareholderResolutionsVotingModuleApi.selectors.selectProposalById(
-        proposalId,
-      )(state);
-      return {
-        proposal,
-        shareholderVote: shareholderResolutionsVotingModuleApi.selectors.selectShareholderProposalVote(
-          shareholderAddress,
-          proposalId,
-        )(state),
-        eto: shareholderResolutionsVotingModuleApi.selectors.selectProposalEto(proposalId)(state),
-        pendingDownloads: selectPendingDownloads(state),
-      };
-    },
-    dispatchToProps: (dispatch, props) => {
-      const { proposalId } = props.match.params;
-
-      return {
-        closeProposalsPage: () => dispatch(actions.routing.goToDashboard()),
-        downloadDocument: (
-          immutableFileId: IImmutableFileId,
-          fileName: string,
-          isProtected: boolean,
-        ) => {
-          dispatch(
-            actions.immutableStorage.downloadImmutableFile(immutableFileId, fileName, isProtected),
-          );
-        },
-        voteYes: () =>
-          dispatch(actions.txTransactions.startShareholderResolutionVote(proposalId, true)),
-        voteNo: () =>
-          dispatch(actions.txTransactions.startShareholderResolutionVote(proposalId, false)),
-      };
-    },
+  appConnect<TStateProps, IDispatchProps, RouteComponentProps<TShareholderResolutionsVotingRoute>>({
+    stateToProps: state =>
+      shareholderResolutionsVotingViewModuleApi.selectors.selectProposalViewState(state),
+    dispatchToProps: dispatch => ({
+      closeProposalsPage: () => dispatch(actions.routing.goToDashboard()),
+    }),
   }),
   withContainer<IDispatchProps>(({ closeProposalsPage, ...props }) => (
     <FullscreenLayout
@@ -148,11 +51,21 @@ export const Proposal = compose<
       {...props}
     />
   )),
-  branch<IStateProps>(
-    props => !props.proposal || !props.shareholderVote || !props.eto,
+  branch<TStateProps>(
+    ({ processState }) =>
+      [EProcessState.NOT_STARTED, EProcessState.IN_PROGRESS].includes(processState),
     renderComponent(LoadingIndicator),
   ),
-  withMetaTags<IStateProps>(({ proposal }, intl) => ({
-    title: intl.formatIntlMessage("governance.proposal.title", { proposalTitle: proposal?.title }),
-  })),
-)(ProposalsLayout);
+  branch<TStateProps>(
+    ({ processState }) => processState === EProcessState.ERROR,
+    renderComponent(ErrorBoundaryLayout),
+  ),
+  branch<TStateProps>(
+    ({ viewType }) => viewType === EShareholderResolutionProposalViewType.VIEW_INVESTOR,
+    renderComponent<TStateProps>(({ proposalId }) => <ProposalInvestor proposalId={proposalId} />),
+  ),
+  branch<TStateProps>(
+    ({ viewType }) => viewType === EShareholderResolutionProposalViewType.VIEW_ISSUER,
+    renderComponent(ProposalIssuer),
+  ),
+)(shouldNeverHappen("Proposal branched to default branch"));

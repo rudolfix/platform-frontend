@@ -1,3 +1,4 @@
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 
@@ -94,11 +95,7 @@ const FullscreenProgressLayoutComponent: React.FunctionComponent<TStateProps &
   const buttonCtx = useActionButton(buttonProps);
 
   return (
-    <LayoutContainer
-      data-test-id={dataTestId}
-      className={wrapperClass}
-      userIsAuthorized={userIsAuthorized}
-    >
+    <>
       <FullscreenProgressContext.Provider value={progressCtx}>
         <FullscreenButtonContext.Provider value={buttonCtx}>
           <HeaderFullscreen
@@ -114,7 +111,7 @@ const FullscreenProgressLayoutComponent: React.FunctionComponent<TStateProps &
           <Content {...contentProps}>{children}</Content>
         </FullscreenButtonContext.Provider>
       </FullscreenProgressContext.Provider>
-    </LayoutContainer>
+    </>
   );
 };
 
@@ -127,6 +124,17 @@ const FullscreenProgressLayout = compose<
       userIsAuthorized: selectIsAuthorized(state),
     }),
   }),
+  withContainer<TDataTestId & TInitialProps & TStateProps>(
+    ({ "data-test-id": dataTestId, userIsAuthorized, wrapperClass, children }) => (
+      <LayoutContainer
+        data-test-id={dataTestId}
+        className={wrapperClass}
+        userIsAuthorized={userIsAuthorized}
+      >
+        {children}
+      </LayoutContainer>
+    ),
+  ),
 )(FullscreenLayoutComponent);
 
 export {

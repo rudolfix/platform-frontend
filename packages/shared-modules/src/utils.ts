@@ -30,7 +30,8 @@ type TCustomOptions = {
   omitDispatch?: boolean;
 };
 
-type TModuleStateOrNever<T extends TModuleSetup<any, any> | never> = T extends TModuleSetup<
+type TModuleStateOrNever<T extends TModuleSetup<any, any, any> | never> = T extends TModuleSetup<
+  any,
   any,
   any
 >
@@ -38,8 +39,8 @@ type TModuleStateOrNever<T extends TModuleSetup<any, any> | never> = T extends T
   : never;
 
 type TModuleActionsOrNever<
-  Module extends TModuleSetup<any, any> | never
-> = Module extends TModuleSetup<any, any> ? TModuleActions<Module> : never;
+  Module extends TModuleSetup<any, any, any> | never
+> = Module extends TModuleSetup<any, any, any> ? TModuleActions<Module> : never;
 
 type TAppConnectOptions<
   State,
@@ -47,7 +48,7 @@ type TAppConnectOptions<
   Props,
   GlobalActions,
   GlobalState,
-  Module extends TModuleSetup<any, any> | never
+  Module extends TModuleSetup<any, any, any> | never
 > = {
   stateToProps?: (state: GlobalState | TModuleStateOrNever<Module>, ownProps: Props) => State;
   dispatchToProps?: (
@@ -71,7 +72,7 @@ function appConnect<
   Props = {},
   GlobalActions = {},
   GlobalState = {},
-  Module extends TModuleSetup<any, any> | never = never
+  Module extends TModuleSetup<any, any, any> | never = never
 >({
   stateToProps,
   dispatchToProps,

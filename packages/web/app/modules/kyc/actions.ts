@@ -41,7 +41,6 @@ export const kycActions = {
   /**
    * Contract Claims
    */
-  kycLoadClaims: createActionFactory("KYC_LOAD_CLAIMS"),
   kycSetClaims: createActionFactory("KYC_SET_CLAIMS", (claims: TClaims) => ({ claims })),
 
   /**

@@ -659,7 +659,7 @@ export function* loadBankAccountDetails({
   try {
     // bank details depend on claims `hasBankAccount` flag
     // so to have consistent ui we need to reload claims
-    yield put(actions.kyc.kycLoadClaims());
+    yield neuCall(loadIdentityClaim);
 
     const isVerified: boolean = yield select(selectIsUserVerified);
 
@@ -784,8 +784,6 @@ export function* kycSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.kyc.kycSubmitBusinessRequest, submitBusinessRequest);
 
   yield fork(neuTakeEvery, actions.kyc.loadBankAccountDetails, loadBankAccountDetails);
-
-  yield fork(neuTakeEvery, actions.kyc.kycLoadClaims, loadIdentityClaim);
 
   yield fork(
     neuTakeUntil,

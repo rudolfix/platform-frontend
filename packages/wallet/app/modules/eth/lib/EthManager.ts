@@ -137,16 +137,16 @@ class EthManager implements IEthManager {
     }
   }
 
-  async getWalletSignerType(): Promise<ESignerType> {
-    return ESignerType.ETH_SIGN;
+  getWalletSignerType(): Promise<ESignerType> {
+    return Promise.resolve(ESignerType.ETH_SIGN);
   }
 
-  async hasPluggedWallet(): Promise<boolean> {
+  hasPluggedWallet(): Promise<boolean> {
     const hasPluggedWallet = !!this.wallet;
 
     this.logger.info(`Wallet is ${hasPluggedWallet ? "plugged" : "not plugged"}`);
 
-    return hasPluggedWallet;
+    return Promise.resolve(hasPluggedWallet);
   }
 
   /**

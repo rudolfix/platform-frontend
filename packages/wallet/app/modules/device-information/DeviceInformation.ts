@@ -25,10 +25,10 @@ export class DeviceInformation {
    * Android: "dd96dec43fb81c97"
    * @returns {string} Unique device identifier
    */
-  getUniqueId(): string {
+  getUniqueId(): Promise<string> {
     this.logger.info("Get the device ID");
 
-    return getUniqueId();
+    return Promise.resolve(getUniqueId());
   }
 
   /**

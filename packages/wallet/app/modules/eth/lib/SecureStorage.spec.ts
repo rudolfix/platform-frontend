@@ -4,6 +4,10 @@ import { ISecureStorage, AsyncSecureStorage, KeychainSecureStorage } from "./Sec
  * Write some  basic tests to ensure the used caching lib works the way we expect
  */
 describe("SecureStorage", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
   describe("Test async secure storage", () => {
     const storage: ISecureStorage = new AsyncSecureStorage();
 
@@ -70,7 +74,6 @@ describe("SecureStorage", () => {
 
   it("Should save read and delete values with caches cleared", async () => {
     const storage: ISecureStorage = new KeychainSecureStorage(true);
-    jest.useFakeTimers();
 
     const value1 = "value1";
     const value2 = "value2";

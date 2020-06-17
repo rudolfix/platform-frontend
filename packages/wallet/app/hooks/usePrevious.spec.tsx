@@ -15,7 +15,7 @@ const TestComponent: React.FunctionComponent<TExternalProps> = ({ value }) => {
 };
 
 describe("usePrevious", () => {
-  it("should render previous prop value", async () => {
+  it("should render previous prop value", () => {
     const { getByTestId, rerender } = render(<TestComponent value="foo" />);
 
     expect(getNodeText(getByTestId("value"))).toEqual("undefined");

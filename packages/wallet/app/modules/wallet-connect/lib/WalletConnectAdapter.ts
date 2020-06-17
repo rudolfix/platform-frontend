@@ -206,7 +206,7 @@ class WalletConnectAdapter extends EventEmitter2 {
    */
   async connect(): Promise<TSessionDetails> {
     return new Promise((resolve, reject) => {
-      const callback = async (error: Error | null, payload: unknown | null) => {
+      const callback = (error: Error | null, payload: unknown | null) => {
         if (error) {
           reject(error);
           return;

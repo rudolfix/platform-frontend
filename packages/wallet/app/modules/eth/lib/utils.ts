@@ -34,7 +34,7 @@ const isHdWallet = (wallet: TWalletMetadata): wallet is THDWalletMetadata =>
 const isPrivateKey = (privateKey: unknown): privateKey is EthereumPrivateKey => {
   return (
     isString(privateKey) &&
-    !!privateKey.match(/^0x[0-9a-f]*$/i) &&
+    !!/^0x[0-9a-f]*$/i.exec(privateKey) &&
     privateKey.length === PRIVATE_KEY_LENGTH
   );
 };

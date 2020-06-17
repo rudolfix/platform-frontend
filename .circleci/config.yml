@@ -217,7 +217,7 @@ jobs:
       # Linting
       - run: yarn workspace @neufund/wallet lint
       # Unit Tests
-      - run: yarn workspace @neufund/wallet test
+      - run: yarn workspace @neufund/wallet test:ci
 
       - notify-slack
 

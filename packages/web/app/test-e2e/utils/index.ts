@@ -36,10 +36,6 @@ export const letterKeepDotRegExPattern = /[^0-9.]/gi;
 
 export const charRegExPattern = /[^a-z0-9]/gi;
 
-export const clearEmailServer = () => {
-  cy.request({ url: MOCK_API_URL + "sendgrid/session/mails", method: "DELETE" });
-};
-
 export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 
@@ -249,7 +245,7 @@ export const getWalletNEurAmount = (navigate: boolean = true) => {
 
 export const addPendingExternalTransaction = (address: string) => {
   cy.request({
-    url: MOCK_API_URL + "parity/additional_addresses/",
+    url: MOCK_API_URL + "node_mock/additional_addresses/",
     method: "PUT",
     body: [address],
   }).then(() => assertWaitForExternalPendingTransactionCount(1));
@@ -258,7 +254,7 @@ export const addPendingExternalTransaction = (address: string) => {
 export const removePendingExternalTransaction = () => {
   // to clean external pending tx list send empty array
   cy.request({
-    url: MOCK_API_URL + "parity/additional_addresses/",
+    url: MOCK_API_URL + "node_mock/additional_addresses/",
     method: "PUT",
     body: [],
   }).then(() => assertWaitForExternalPendingTransactionCount(0));

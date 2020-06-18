@@ -94,7 +94,7 @@ describe("Auth - User - Integration Test", () => {
         .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
         .toConstantValue(getMockJwtStorage(jwt));
 
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 4, BACKEND_BASE_URL);
+      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -140,7 +140,7 @@ describe("Auth - User - Integration Test", () => {
         .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
         .toConstantValue(getMockJwtStorage(jwt));
 
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 4, BACKEND_BASE_URL);
+      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -201,7 +201,7 @@ describe("Auth - User - Integration Test", () => {
         BACKEND_BASE_URL,
         [],
       );
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 4, BACKEND_BASE_URL);
+      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
 
       container
         .bind<TLibSymbolType<typeof jwtStorageSymbol>>(jwtStorageSymbol)
@@ -272,7 +272,7 @@ describe("Auth - User - Integration Test", () => {
         TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
       >(authModuleAPI.symbols.apiUserService);
 
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 4, BACKEND_BASE_URL);
+      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
 
       const walletMetadata = {
         walletType: EWalletType.LIGHT,
@@ -334,7 +334,7 @@ describe("Auth - User - Integration Test", () => {
         TLibSymbolType<typeof authModuleAPI.symbols.apiUserService>
       >(authModuleAPI.symbols.apiUserService);
 
-      await createUser(EUserType.INVESTOR, privateKey, undefined, 4, BACKEND_BASE_URL);
+      await createUser(EUserType.INVESTOR, privateKey, undefined, 10, BACKEND_BASE_URL);
 
       const newEmail = "mommy2@love.test";
       const walletMetadata = {

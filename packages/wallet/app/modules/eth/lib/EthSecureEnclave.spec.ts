@@ -17,6 +17,10 @@ import { getInternetCredentials } from "./__mocks__/react-native-keychain";
 import { isMnemonic } from "./utils";
 
 describe("EthSecureEnclave (with SecureStorage)", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
   const messageHash = "0xc7595adb6684bd03eb6ee54f10b0224e4bcfdaa5d393187583eb1777ae169d80";
   const privateKey = "0xc8f0b2c1a527e9c69495341ed9eb4ba51943abd1f35bed2e08fa29895ad902e2";
   const mnemonic =

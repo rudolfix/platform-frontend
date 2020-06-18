@@ -68,7 +68,7 @@ export const createAndSetNominee = () =>
   cyPromise(async () => {
     const [etoId, nominee] = await Promise.all([
       getIssuerEtoId(),
-      createUser("nominee", undefined, "business"),
+      createUser("nominee", undefined, "business", 10),
     ]);
 
     setEtoNominee(etoId, nominee.address);

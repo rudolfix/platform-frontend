@@ -11,6 +11,7 @@ import { UnlockWalletFundsFromLink } from "./edge-cases/UnlockWalletFundsFromLin
 import { EtoViewMain } from "./eto/eto-full-view/EtoViewMain";
 import { EtoWidgetView } from "./eto/EtoWidgetView";
 import { EtoRegister } from "./eto/registration/Start";
+import { Proposal } from "./governance/proposal/Proposal";
 import { EtoDashboard } from "./issuer-dashboard/EtoDashboard";
 import { Kyc } from "./kyc/Kyc";
 import { Landing } from "./landing/Landing";
@@ -124,6 +125,12 @@ export const AppRouter: React.FunctionComponent = () => (
       investorComponent={Kyc}
       issuerComponent={Kyc}
       nomineeComponent={Kyc}
+    />
+    <OnlyAuthorizedRoute
+      path={appRoutes.proposal}
+      investorComponent={Proposal}
+      issuerComponent={Proposal}
+      exact
     />
     {/*Routes used only in E2E tests*/}
     {process.env.NF_CYPRESS_RUN === "1" && [

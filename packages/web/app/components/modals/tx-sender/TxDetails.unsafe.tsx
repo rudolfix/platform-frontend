@@ -10,8 +10,9 @@ import { AcceptTransactionDetails } from "./investor-payout/AcceptTransactionDet
 import { RedistributeTransactionDetails } from "./investor-payout/RedistributeTransactionDetails";
 import { RefundTransactionDetails } from "./investor-refund/RefundDetails";
 import { BankTransferRedeemDetails } from "./redeem/BankTransferRedeemDetails";
+import { ShareholderResolutionVoteDetails } from "./shareholder-resolution-vote-flow/ShareholderResolutionVoteDetails";
 import { UnlockWalletTransactionDetails } from "./unlock-wallet-flow/UnlockWalletTransactionDetails";
-import { UpgradeTransactionDetails } from "./upgrade-flow/UpgradeTransactionDetails.unsafe";
+import { UpgradeTransactionDetails } from "./upgrade-flow/UpgradeTransactionDetails";
 import { ClaimTransactionDetails } from "./user-claim/ClaimTransactionDetails";
 
 type IProps = {
@@ -32,9 +33,6 @@ const TxDetails: React.FunctionComponent<IProps & CommonHtmlProps> = props => {
 
   const type = props.type;
   switch (type) {
-    case ETxType.WITHDRAW:
-    case ETxType.TRANSFER_TOKENS:
-      return null;
     case ETxType.INVESTOR_ACCEPT_PAYOUT:
       return <AcceptTransactionDetails {...propsAsAny} />;
     case ETxType.USER_CLAIM:
@@ -51,10 +49,14 @@ const TxDetails: React.FunctionComponent<IProps & CommonHtmlProps> = props => {
       return <InvestmentTransactionDetails {...propsAsAny} />;
     case ETxType.NEUR_REDEEM:
       return <BankTransferRedeemDetails {...propsAsAny} />;
-    case ETxType.SIGN_INVESTMENT_AGREEMENT:
-      return null;
     case ETxType.INVESTOR_REFUND:
       return <RefundTransactionDetails {...propsAsAny} />;
+    case ETxType.SHAREHOLDER_RESOLUTIONS_VOTE:
+      return <ShareholderResolutionVoteDetails {...propsAsAny} />;
+
+    case ETxType.WITHDRAW:
+    case ETxType.TRANSFER_TOKENS:
+    case ETxType.SIGN_INVESTMENT_AGREEMENT:
     case ETxType.NOMINEE_THA_SIGN:
     case ETxType.NOMINEE_RAAA_SIGN:
     case ETxType.NOMINEE_ISHA_SIGN:

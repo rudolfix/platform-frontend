@@ -3,16 +3,16 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { Panel, PanelRounded } from "./Panel";
+import { EPanelPadding, Panel, PanelGray, PanelRounded } from "./Panel";
 
 import icon from "../../assets/img/notifications/warning.svg";
 
 const lorem =
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, eveniet reiciendis minus aperiam numquam vero at placeat, officia, porro similique voluptatem dolores provident labore dolorem temporibus veniam sapiente nihil quibusdam.";
 
-storiesOf("Basic UI/Panel", module)
+storiesOf("Atoms|Panel", module)
   .add("default", () => <Panel>{lorem}</Panel>)
-  .add("narrow", () => <Panel narrow={true}>{lorem}</Panel>)
+  .add("narrow", () => <Panel padding={EPanelPadding.NARROW}>{lorem}</Panel>)
   .add("with header text", () => <Panel headerText="Sample header text">{lorem}</Panel>)
   .add("with header text and icon", () => (
     <Panel headerText="Sample header text" icon={icon}>
@@ -27,4 +27,5 @@ storiesOf("Basic UI/Panel", module)
       {lorem}
     </Panel>
   ))
-  .add("rounded", () => <PanelRounded>{lorem}</PanelRounded>);
+  .add("rounded", () => <PanelRounded>{lorem}</PanelRounded>)
+  .add("gray", () => <PanelGray>{lorem}</PanelGray>);

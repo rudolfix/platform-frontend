@@ -8,6 +8,7 @@ import { TAcceptPayoutAdditionalData } from "./transactions/payout/accept/types"
 import { TRedistributePayoutAdditionalData } from "./transactions/payout/redistribute/types";
 import { TNEurRedeemAdditionalDetails } from "./transactions/redeem/types";
 import { TRefundAdditionalData } from "./transactions/refund/types";
+import { TShareholderResolutionVoteAdditionalData } from "./transactions/shareholder-resolution-vote/types";
 import { TTokenTransferAdditionalData } from "./transactions/token-transfer/types";
 import { TUnlockAdditionalData } from "./transactions/unlock/types";
 import { TUpgradeAdditionalData } from "./transactions/upgrade/types";
@@ -61,8 +62,6 @@ type TTxSenderRedistributePayoutState = ITxTypeWithData<
 
 type TTxSenderNEurRedeemState = ITxTypeWithData<ETxType.NEUR_REDEEM, TNEurRedeemAdditionalDetails>;
 
-export type TTxSenderNEurRedeemInitialValues = { initialAmount?: string };
-
 type TTxSenderUnlockState = ITxTypeWithData<ETxType.UNLOCK_FUNDS, TUnlockAdditionalData>;
 
 type TTxSenderUpgradeState = ITxTypeWithData<ETxType.UPGRADE, TUpgradeAdditionalData>;
@@ -80,6 +79,11 @@ type TTxSenderNomineeSignRAAAState = ITxTypeWithData<ETxType.NOMINEE_RAAA_SIGN, 
 
 type TTxSenderNomineeSignISHAState = ITxTypeWithData<ETxType.NOMINEE_ISHA_SIGN, undefined>;
 
+type TTxSenderShareholderResolutionVote = ITxTypeWithData<
+  ETxType.SHAREHOLDER_RESOLUTIONS_VOTE,
+  TShareholderResolutionVoteAdditionalData
+>;
+
 export type TSpecificTransactionState =
   | TTxSenderSignInvestmentAgreementState
   | TTxSenderUpgradeState
@@ -95,7 +99,8 @@ export type TSpecificTransactionState =
   | TTxSenderNomineeSignTHAState
   | TTxSenderNomineeSignRAAAState
   | TTxSenderTokenTransferState
-  | TTxSenderNomineeSignISHAState;
+  | TTxSenderNomineeSignISHAState
+  | TTxSenderShareholderResolutionVote;
 
 export type TAdditionalDataByType<T extends ETxType> = Extract<
   TSpecificTransactionState,
@@ -115,11 +120,4 @@ export type TPendingTransactionType =
 export enum ETokenType {
   ETHER = "ETHER",
   EURO = "EURO",
-}
-
-export interface IAdditionalValidationData {
-  isAccepted?: boolean;
-  inputValue?: string;
-  inputValueEuro?: string;
-  maximumAvailableEther?: string;
 }

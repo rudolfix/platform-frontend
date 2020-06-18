@@ -18,6 +18,9 @@ export const commitmentStatusLink = (walletAddress: string) =>
 export const etherscanAddressLink = (address: string) =>
   withParams(externalRoutes.etherscanAddress, { address });
 
+export const etherscanAddressReadContractLink = (address: string) =>
+  withParams(externalRoutes.etherscanAddressReadContract, { address });
+
 export const etherscanTxLink = (txHash: string) =>
   withParams(externalRoutes.etherscanTransaction, { txHash });
 

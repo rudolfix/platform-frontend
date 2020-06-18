@@ -11,8 +11,9 @@ import { RefundSummary } from "../investor-refund/RefundSummary";
 import { SignNomineeAgreementSummary } from "../nominee/sign-agreement/SignAgreementSummary";
 import { SignNomineeISHASummary } from "../nominee/sign-isha/SignISHASummary";
 import { BankTransferRedeemSummary } from "../redeem/BankTransferRedeemSummary";
+import { ShareholderResolutionVoteSummary } from "../shareholder-resolution-vote-flow/ShareholderResolutionVoteSummary";
 import { UnlockWalletSummary } from "../unlock-wallet-flow/Summary.unsafe";
-import { UpgradeSummary } from "../upgrade-flow/Summary.unsafe";
+import { UpgradeSummary } from "../upgrade-flow/Summary";
 import { UserClaimSummary } from "../user-claim/Summary";
 import { TransferSummary } from "../withdraw-flow/Summary/TransferSummary/TransferSummary";
 
@@ -45,6 +46,8 @@ const SummaryComponent: React.FunctionComponent<TExternalProps> = ({ type }) => 
       return <SignNomineeAgreementSummary />;
     case ETxType.NOMINEE_ISHA_SIGN:
       return <SignNomineeISHASummary />;
+    case ETxType.SHAREHOLDER_RESOLUTIONS_VOTE:
+      return <ShareholderResolutionVoteSummary />;
     case ETxType.TRANSFER_TOKENS:
     case ETxType.WITHDRAW:
       return <TransferSummary />;

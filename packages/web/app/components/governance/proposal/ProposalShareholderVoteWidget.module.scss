@@ -1,0 +1,20 @@
+@include media-breakpoint-up(lg) {
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+
+    .button {
+      flex-grow: 1;
+    }
+  }
+}
+
+.message {
+  @include nds-body-small;
+
+  color: $neu-shuttle-gray;
+
+  .highlight {
+    color: $neu-charcoal-grey;
+  }
+}

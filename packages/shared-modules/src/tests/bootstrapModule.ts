@@ -1,7 +1,12 @@
 import { createStore, getSagaExtension, SagaMiddleware } from "@neufund/sagas";
-import { expectSaga as expectSagaNative, matchers } from "@neufund/sagas/tests";
+import {
+  expectSaga as expectSagaNative,
+  matchers,
+  providers,
+  SagaType,
+} from "@neufund/sagas/tests";
 import { Container } from "inversify";
-import { SagaType } from "redux-saga-test-plan";
+import { coalesceProviders } from "redux-saga-test-plan/lib/expectSaga/providers/helpers";
 
 import { getLoadContextExtension } from "../extensions";
 import { INeuModule } from "../types";
@@ -18,7 +23,7 @@ import { INeuModule } from "../types";
  * @returns .expectSaga - Allows to tests individual sagas without triggering store side effects
  * @returns .runSaga - Runs the given saga and all related side effects (for .e.g store modifications based on module reducers)
  */
-const bootstrapModule = <T extends INeuModule<unknown>[]>(modules: T) => {
+const bootstrapModule = <T extends INeuModule<any, any>[]>(modules: T) => {
   const container = new Container();
 
   const sagaExtension = getSagaExtension({ container });
@@ -31,10 +36,37 @@ const bootstrapModule = <T extends INeuModule<unknown>[]>(modules: T) => {
     ...modules,
   );
 
-  const expectSaga = <S extends SagaType>(generator: S, ...sagaArgs: Parameters<S>) =>
-    expectSagaNative(generator, ...sagaArgs)
-      .withState(store.getState())
-      .provide([[matchers.getContext("container"), container]]);
+  const expectSaga = <S extends SagaType>(generator: S, ...sagaArgs: Parameters<S>) => {
+    const saga = expectSagaNative(generator, ...sagaArgs);
+
+    const buildInProviders = coalesceProviders([[matchers.getContext("container"), container]]);
+
+    const originalProvider = saga.provide;
+
+    // Given that providers always overwrite existing providers to keep `container` always available though context
+    // we need to patch original provider
+    saga.provide = (
+      newProviders:
+        | providers.EffectProviders
+        | (providers.EffectProviders | providers.StaticProvider)[],
+    ) => {
+      const coalescedNewProviders = Array.isArray(newProviders)
+        ? coalesceProviders(newProviders)
+        : newProviders;
+
+      const pr = {
+        ...coalescedNewProviders,
+        getContext: providers.composeProviders(
+          buildInProviders.getContext,
+          coalescedNewProviders.getContext,
+        ),
+      };
+
+      return originalProvider(pr);
+    };
+
+    return saga.withState(store.getState()).provide(buildInProviders);
+  };
 
   return {
     getState: store.getState,

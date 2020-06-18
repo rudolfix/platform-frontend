@@ -105,7 +105,7 @@ function* loadEtoPreview(
   }
 }
 
-function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
+export function* fetchEto({ apiEtoService }: TGlobalDependencies, etoId: string): any {
   const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
   yield neuCall(loadAdditionalEtoData, eto);
 }

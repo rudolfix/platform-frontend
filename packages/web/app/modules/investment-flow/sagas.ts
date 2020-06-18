@@ -51,7 +51,7 @@ import {
 } from "./selectors";
 import { getCurrencyByInvestmentType, hasBalance } from "./utils";
 
-function* processCurrencyValue(
+export function* processCurrencyValue(
   action: TActionFromCreator<typeof actions.investmentFlow.submitCurrencyValue>,
 ): Generator<any, any, any> {
   const state: TAppGlobalState = yield select();
@@ -67,12 +67,12 @@ function* processCurrencyValue(
   if (compareBigNumbers(oldVal || "0", value || "0") === 0) return;
 
   yield put(actions.investmentFlow.setIsInputValidated(false));
-  yield computeAndSetCurrencies(value, curr);
+  yield call(computeAndSetCurrencies, value, curr);
   // dispatch in order to debounce, instead of calling directly
   yield put(actions.investmentFlow.validateInputs());
 }
 
-function* computeAndSetCurrencies(value: string, currency: ECurrency): any {
+export function* computeAndSetCurrencies(value: string, currency: ECurrency): any {
   const state: TAppGlobalState = yield select();
   const etherPriceEur = selectEtherPriceEur(state);
   const eurPriceEther = selectEurPriceEther(state);
@@ -100,7 +100,7 @@ function* computeAndSetCurrencies(value: string, currency: ECurrency): any {
   }
 }
 
-function* investEntireBalance(): any {
+export function* investEntireBalance(): any {
   yield setTransactionWithPresetGas();
   const state: TAppGlobalState = yield select();
 
@@ -110,28 +110,28 @@ function* investEntireBalance(): any {
   switch (type) {
     case EInvestmentType.ICBMEth:
       balance = walletApi.selectors.selectLockedEtherBalance(state);
-      yield computeAndSetCurrencies(balance, ECurrency.ETH);
+      yield call(computeAndSetCurrencies, balance, ECurrency.ETH);
       break;
 
     case EInvestmentType.ICBMnEuro:
       balance = walletApi.selectors.selectLockedEuroTokenBalance(state);
-      yield computeAndSetCurrencies(balance, ECurrency.EUR_TOKEN);
+      yield call(computeAndSetCurrencies, balance, ECurrency.EUR_TOKEN);
       break;
 
     case EInvestmentType.NEur:
       balance = walletApi.selectors.selectLiquidEuroTokenBalance(state);
-      yield computeAndSetCurrencies(balance, ECurrency.EUR_TOKEN);
+      yield call(computeAndSetCurrencies, balance, ECurrency.EUR_TOKEN);
       break;
 
     case EInvestmentType.Eth:
       const gasCostEth = selectTxGasCostEthUlps(state);
       balance = walletApi.selectors.selectLiquidEtherBalance(state);
-      const balanceWithoutGas = subtractBigNumbers([balance, gasCostEth]);
 
+      const balanceWithoutGas = subtractBigNumbers([balance, gasCostEth]);
       if (compareBigNumbers(balanceWithoutGas, "0") >= 0) {
-        yield computeAndSetCurrencies(balanceWithoutGas, ECurrency.ETH);
+        yield call(computeAndSetCurrencies, balanceWithoutGas, ECurrency.ETH);
       } else {
-        yield computeAndSetCurrencies(balance, ECurrency.ETH);
+        yield call(computeAndSetCurrencies, balance, ECurrency.ETH);
       }
       break;
   }
@@ -244,9 +244,9 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 function* start(
   action: TActionFromCreator<typeof actions.investmentFlow.startInvestment>,
 ): Generator<any, any, any> {
-  const etoId = action.payload.etoId;
+  const { etoId } = action.payload;
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
-    yield select((state: TAppGlobalState) => selectEtoWithCompanyAndContractById(state, etoId)),
+    yield* select((state: TAppGlobalState) => selectEtoWithCompanyAndContractById(state, etoId)),
   );
 
   yield put(actions.investmentFlow.resetInvestment());
@@ -281,7 +281,7 @@ function* createWallets(): Generator<any, void, any> {
   yield put(actions.investmentFlow.setWallets(walletData));
 }
 
-function* selectInitialInvestmentType(): Generator<any, void, any> {
+export function* selectInitialInvestmentType(): Generator<any, void, any> {
   const wallets = yield* select(selectWallets);
   yield put(actions.investmentFlow.selectInvestmentType(wallets[0]?.type));
 }
@@ -398,7 +398,7 @@ function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> 
   return activeTypes;
 }
 
-function* recalculateCurrencies(): any {
+export function* recalculateCurrencies(): any {
   yield delay(100); // wait for new token price to be available
   const s: TAppGlobalState = yield select();
   const type = selectInvestmentType(s);
@@ -412,9 +412,9 @@ function* recalculateCurrencies(): any {
   const eurVal = selectInvestmentEurValueUlps(s);
 
   if (curr === ECurrency.ETH && ethVal) {
-    yield computeAndSetCurrencies(ethVal, curr);
+    yield call(computeAndSetCurrencies, ethVal, curr);
   } else if (eurVal) {
-    yield computeAndSetCurrencies(eurVal, curr);
+    yield call(computeAndSetCurrencies, eurVal, curr);
   }
 }
 

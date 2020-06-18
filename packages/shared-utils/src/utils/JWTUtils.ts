@@ -4,7 +4,7 @@ import { AUTH_TOKEN_REFRESH_THRESHOLD } from "./constants";
  * Converts unix timestamp to normal timestamp value
  * @param unix - An unix timestamp
  */
-const unixTimestampToTimestamp = (unix: number) => unix * 1000;
+export const unixTimestampToTimestamp = (unix: number) => unix * 1000;
 
 interface IJwt {
   exp: number;

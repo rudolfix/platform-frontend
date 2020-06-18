@@ -52,7 +52,8 @@ export type TranslatedMessageType =
   | EEtoNomineeActiveEtoNotifications
   | ENotificationText
   | ELightWalletRestoreMessage
-  | WalletConnectErrorMessage;
+  | WalletConnectErrorMessage
+  | EVotingErrorMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -63,6 +64,13 @@ export enum WalletConnectErrorMessage {
   WC_GENERIC_ERROR = "wcGenericError",
   WC_SESSION_REJECTED_ERROR = "wcSessionRejectedError",
   WC_SESSION_INVALID_CHAIN_ID = "wcSessionInvalidChainId",
+}
+
+export enum EVotingErrorMessage {
+  UNKNOWN_PROPOSAL = "unknownProposal",
+  UNSUPPORTED_PROPOSAL_STATE = "unsupportedProposalState",
+  CANNOT_VOTE = "cannotVote",
+  FAILED_TO_LOAD_PROPOSAL = "failedToLoadProposal",
 }
 
 export enum GenericModalMessage {
@@ -821,6 +829,18 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
 
     case WalletConnectErrorMessage.WC_SESSION_INVALID_CHAIN_ID:
       return <FormattedMessage id="wallet-connect.session-invalid-chain-id" />;
+
+    case EVotingErrorMessage.UNKNOWN_PROPOSAL:
+      return <FormattedMessage id="voting.unknown-proposal" />;
+
+    case EVotingErrorMessage.UNSUPPORTED_PROPOSAL_STATE:
+      return <FormattedMessage id="voting.unsupported-proposal-state" />;
+
+    case EVotingErrorMessage.CANNOT_VOTE:
+      return <FormattedMessage id="voting.cannot-vote" />;
+
+    case EVotingErrorMessage.FAILED_TO_LOAD_PROPOSAL:
+      return <FormattedMessage id="voting.failed-to-load-proposal" />;
 
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:

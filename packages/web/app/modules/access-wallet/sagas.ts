@@ -16,7 +16,6 @@ import {
 import { IPersonalWallet } from "../../lib/web3/PersonalWeb3";
 import { WalletConnectConnector } from "../../lib/web3/wallet-connect/WalletConnectConnector";
 import { SignerError, Web3Manager } from "../../lib/web3/Web3Manager/Web3Manager";
-import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
 import { neuCall } from "../sagasUtils";
@@ -28,7 +27,7 @@ import {
   ILightWalletRetrieveMetadata,
 } from "../web3/types";
 import { mapSignMessageErrorToErrorMessage, MismatchedWalletAddressError } from "./errors";
-import { selectIsSigning } from "./reducer";
+import { selectIsAccessWalletModalOpen } from "./selectors";
 
 export function* ensureWalletConnection(
   {
@@ -48,19 +47,19 @@ export function* ensureWalletConnection(
 
     switch (metadata.walletType) {
       case EWalletType.LEDGER:
-        wallet = yield connectLedger(ledgerWalletConnector, web3Manager, metadata);
+        wallet = yield call(connectLedger, ledgerWalletConnector, web3Manager, metadata);
         break;
       case EWalletType.BROWSER:
-        wallet = yield connectBrowser(browserWalletConnector, web3Manager);
+        wallet = yield call(connectBrowserWallet, browserWalletConnector, web3Manager);
         break;
       case EWalletType.LIGHT:
         invariant(password, "Light Wallet user without a password");
-        wallet = yield connectLightWallet(lightWalletConnector, metadata, password);
+        wallet = yield call(connectLightWallet, lightWalletConnector, metadata, password);
         break;
       case EWalletType.WALLETCONNECT:
         // TODO: having a side effect in wallet selector is not nice, should we wire those events in AppInit?
         yield put(actions.walletSelector.walletConnectInit());
-        wallet = yield connectWalletConnect(walletConnectConnector);
+        wallet = yield call(connectWalletConnect, walletConnectConnector);
         break;
       default:
         assertNever(metadata, "Wallet type unrecognized");
@@ -86,23 +85,24 @@ export function* ensureWalletConnection(
   return wallet;
 }
 
-async function connectLedger(
+export function* connectLedger(
   ledgerWalletConnector: LedgerWalletConnector,
   web3Manager: Web3Manager,
   metadata: ILedgerWalletMetadata,
-): Promise<IPersonalWallet> {
-  await ledgerWalletConnector.connect();
-  return await ledgerWalletConnector.finishConnecting(
+): Generator<any, IPersonalWallet, any> {
+  yield* call(ledgerWalletConnector.connect);
+  return yield* call(
+    ledgerWalletConnector.finishConnecting,
     metadata.derivationPath,
     web3Manager.networkId,
   );
 }
 
-async function connectBrowser(
+export function* connectBrowserWallet(
   browserWalletConnector: BrowserWalletConnector,
   web3Manager: Web3Manager,
-): Promise<IPersonalWallet> {
-  return await browserWalletConnector.connect(web3Manager.networkId);
+): Generator<any, IPersonalWallet, any> {
+  return yield* call(browserWalletConnector.connect, web3Manager.networkId);
 }
 
 export function* connectLightWallet(
@@ -116,7 +116,8 @@ export function* connectLightWallet(
     metadata.salt,
     metadata.email,
   );
-  const walletInstance: ILightWalletInstance = deserializeLightWalletVault(
+  const walletInstance: ILightWalletInstance = yield call(
+    deserializeLightWalletVault,
     walletVault.vault,
     metadata.salt,
   );
@@ -132,18 +133,16 @@ export function* connectLightWallet(
   return wallet;
 }
 
-async function connectWalletConnect(
+export function* connectWalletConnect(
   walletConnectConnector: WalletConnectConnector,
-): Promise<IPersonalWallet> {
-  return walletConnectConnector.connect();
+): Generator<any, IPersonalWallet, any> {
+  return yield walletConnectConnector.connect();
 }
 
 export function* connectWallet(): Generator<any, any, any> {
   while (true) {
     try {
-      const walletType: EWalletType | undefined = yield select((state: TAppGlobalState) =>
-        selectWalletType(state),
-      );
+      const walletType = yield* select(selectWalletType);
 
       if (walletType === EWalletType.LIGHT) {
         const { payload }: TActionFromCreator<typeof actions.accessWallet.accept> = yield take(
@@ -152,7 +151,7 @@ export function* connectWallet(): Generator<any, any, any> {
 
         yield neuCall(ensureWalletConnection, payload.password);
       } else {
-        // Password is undefined if its Metamask or Ledger
+        // Password is undefined if it's Metamask or Ledger
         yield neuCall(ensureWalletConnection);
       }
 
@@ -165,9 +164,15 @@ export function* connectWallet(): Generator<any, any, any> {
         throw e;
       } else {
         yield take(actions.accessWallet.tryToAccessWalletAgain);
+        yield put(actions.accessWallet.clearSigningError());
       }
     }
   }
+}
+
+function* performModalActions(effect: Effect | Generator<any, any, any>): Generator<any, any, any> {
+  yield call(connectWallet);
+  return yield effect;
 }
 
 export function* accessWalletAndRunEffect(
@@ -177,25 +182,26 @@ export function* accessWalletAndRunEffect(
   inputLabel?: TMessage,
 ): Generator<any, any, any> {
   // guard against multiple modals
-  const isSigning: boolean = yield select((s: TAppGlobalState) => selectIsSigning(s.accessWallet));
+  const isSigning = yield* select(selectIsAccessWalletModalOpen);
   if (isSigning) {
     throw new Error("Signing already in progress");
   }
+
   yield put(actions.accessWallet.showAccessWalletModal(title, message, inputLabel));
-  // do required operation, or finish in case cancel button was hit
-  const { cancel } = yield race({
-    result: call(connectWallet),
-    cancel: take("HIDE_ACCESS_WALLET_MODAL"),
-  });
 
-  // if the cancel action was called
-  // throw here
-  if (cancel) {
-    throw new MessageSignCancelledError("Cancelled");
+  try {
+    const { cancel, result } = yield race({
+      result: performModalActions(effect),
+      cancel: take(actions.accessWallet.hideAccessWalletModal),
+    });
+
+    if (cancel) {
+      throw new MessageSignCancelledError("Wallet access has been cancelled");
+    } else {
+      return result;
+    }
+  } finally {
+    //make sure to close the modal in any case
+    yield put(actions.accessWallet.hideAccessWalletModal());
   }
-
-  // always hide the current modal
-  yield put(actions.accessWallet.hideAccessWalletModal());
-
-  return yield effect;
 }

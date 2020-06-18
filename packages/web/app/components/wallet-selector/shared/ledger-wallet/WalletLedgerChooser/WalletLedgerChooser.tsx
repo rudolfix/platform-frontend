@@ -1,7 +1,7 @@
 import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
-import { compose, withProps } from "recompose";
+import { compose } from "recompose";
 
 import { actions } from "../../../../../modules/actions";
 import { DEFAULT_DERIVATION_PATH_SUB_PREFIX_1 } from "../../../../../modules/wallet-selector/ledger-wizard/constants";
@@ -12,19 +12,22 @@ import {
 } from "../../../../../modules/wallet-selector/ledger-wizard/reducer";
 import { appConnect } from "../../../../../store";
 import { EContentWidth } from "../../../../layouts/Content";
-import { FullscreenProgressLayout } from "../../../../layouts/FullscreenProgressLayout";
-import { TContentExternalProps } from "../../../../layouts/Layout";
+import { FullscreenLayout } from "../../../../layouts/FullscreenLayout";
 import {
   IWalletLedgerChooserDispatchProps,
   IWalletLedgerChooserStateProps,
   WalletLedgerChooserBase,
 } from "./WalletLedgerChooserBase";
 
+type TDispatchProps = {
+  closeAccountChooser: () => void;
+};
+
 export const WalletLedgerChooser = compose<
   IWalletLedgerChooserStateProps & IWalletLedgerChooserDispatchProps,
   IWalletLedgerChooserStateProps & IWalletLedgerChooserDispatchProps
 >(
-  appConnect<IWalletLedgerChooserStateProps, IWalletLedgerChooserDispatchProps>({
+  appConnect<IWalletLedgerChooserStateProps, IWalletLedgerChooserDispatchProps & TDispatchProps>({
     stateToProps: state => ({
       loading: state.ledgerWizardState.isLoading,
       accounts: state.ledgerWizardState.accounts,
@@ -57,16 +60,14 @@ export const WalletLedgerChooser = compose<
       },
     }),
   }),
-
-  withContainer(
-    withProps<TContentExternalProps, { closeAccountChooser: () => void }>(
-      ({ closeAccountChooser }) => ({
-        width: EContentWidth.FULL,
-        buttonProps: {
-          buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
-          buttonAction: closeAccountChooser,
-        },
-      }),
-    )(FullscreenProgressLayout),
-  ),
+  withContainer<TDispatchProps>(({ closeAccountChooser, ...props }) => (
+    <FullscreenLayout
+      width={EContentWidth.FULL}
+      buttonProps={{
+        buttonText: <FormattedMessage id="account-recovery.step.cancel" />,
+        buttonAction: closeAccountChooser,
+      }}
+      {...props}
+    />
+  )),
 )(WalletLedgerChooserBase);

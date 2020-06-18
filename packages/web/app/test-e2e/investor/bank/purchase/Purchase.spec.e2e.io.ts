@@ -1,5 +1,5 @@
 import { fillForm } from "../../../utils/forms";
-import { assertWallet, clearEmailServer, goToProfile, goToWallet } from "../../../utils/index";
+import { assertWallet, goToProfile, goToWallet } from "../../../utils/index";
 import { tid } from "../../../utils/selectors";
 import { loginFixtureAccount } from "../../../utils/userHelpers";
 import { assertBankAccountDetails } from "../assertions";
@@ -46,10 +46,6 @@ function assertBankTransferFlow({
 }
 
 describe("Purchase", () => {
-  beforeEach(() => {
-    clearEmailServer();
-  });
-
   it("should start purchase without agreement approval when bank account is verified #banking #p3", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC_DUP");
     goToWallet();

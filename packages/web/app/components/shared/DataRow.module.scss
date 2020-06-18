@@ -1,26 +1,49 @@
 .section {
-  @include nds-body;
-
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
+
+  &.small-size {
+    @include nds-body-small;
+
+    margin-bottom: px-to-rem(8px);
+  }
+
+  &.normal-size {
+    @include nds-body;
+
+    margin-bottom: px-to-rem(16px);
+  }
+
+  .caption {
+    color: $neu-shuttle-gray;
+  }
 
   .value {
-    overflow-wrap: break-word;
-    overflow-y: auto;
-    text-align: right;
+    color: $neu-charcoal-grey;
+
+    &.no-overflow {
+      overflow-wrap: break-word;
+      overflow-y: auto;
+      text-align: right;
+    }
   }
 }
 
 .separated {
-  padding-bottom: px-to-rem(16px);
-  margin-bottom: px-to-rem(16px);
   align-items: center;
   vertical-align: top;
   border-bottom: solid 1px $neu-light-blue-grey-two;
+
+  &.small-size {
+    padding-bottom: px-to-rem(8px);
+  }
+
+  &.normal-size {
+    padding-bottom: px-to-rem(16px);
+  }
 }
 
 .separator {
-  margin: 1.5rem 0;
+  margin: px-to-rem(16px) 0;
   border-color: $neu-gull-gray;
 }

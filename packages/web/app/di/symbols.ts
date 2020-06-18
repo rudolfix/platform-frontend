@@ -1,11 +1,7 @@
-import {
-  coreModuleApi,
-  createLibSymbol,
-  IEthManager,
-  ISingleKeyStorage,
-} from "@neufund/shared-modules";
+import { coreModuleApi, createLibSymbol, ISingleKeyStorage } from "@neufund/shared-modules";
 
 import { ContractsService } from "../lib/web3/ContractsService";
+import { Web3Manager } from "../lib/web3/Web3Manager/Web3Manager";
 
 export const symbols = {
   // configs
@@ -34,7 +30,7 @@ export const symbols = {
   ledgerWalletConnector: Symbol("ledgerWalletConnector"),
   browserWalletConnector: Symbol("browserWalletConnector"),
   walletConnectConnector: Symbol("walletConnectConnector"),
-  web3Manager: createLibSymbol<IEthManager>("web3Manager"),
+  web3Manager: createLibSymbol<Web3Manager>("web3Manager"),
   web3Factory: Symbol("web3Factory"),
   web3BatchFactory: Symbol("web3BatchFactory"),
 

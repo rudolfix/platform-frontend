@@ -100,10 +100,10 @@ class EthAdapter {
   /**
    * Returns an internal provider to be used in contracts
    */
-  async getInternalProvider(): Promise<providers.Provider> {
+  getInternalProvider(): Promise<providers.Provider> {
     this.logger.info(`Returning ethers provider`);
 
-    return this.provider;
+    return Promise.resolve(this.provider);
   }
 }
 

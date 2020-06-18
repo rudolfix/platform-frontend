@@ -12,25 +12,18 @@ export enum EWarningAlertSize {
   BIG = styles.big,
 }
 
-export enum EWarningAlertLayout {
-  DEFAULT,
-  INLINE = styles.inline,
-}
-
 interface IWarningAlertProps {
   className?: string;
   size?: EWarningAlertSize;
-  layout?: EWarningAlertLayout;
 }
 
 export const WarningAlert: React.FunctionComponent<IWarningAlertProps & TDataTestId> = ({
   children,
   className,
   size = EWarningAlertSize.NORMAL,
-  layout = EWarningAlertLayout.DEFAULT,
   "data-test-id": dataTestId,
 }) => (
-  <div className={cn(styles.warningAlert, size, layout, className)} data-test-id={dataTestId}>
+  <div className={cn(styles.warningAlert, size, className)} data-test-id={dataTestId}>
     <InlineIcon svgIcon={warningIcon} className={styles.icon} />
     <span>{children}</span>
   </div>

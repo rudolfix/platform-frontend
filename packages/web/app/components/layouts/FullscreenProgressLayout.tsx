@@ -1,13 +1,22 @@
+import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
+import { compose } from "recompose";
 
+import { selectIsAuthorized } from "../../modules/auth/selectors";
+import { appConnect } from "../../store";
 import { TDataTestId, TTranslatedString } from "../../types";
 import { ProgressBarSimple } from "../shared/ProgressBarSimple";
 import { Content } from "./Content";
+import { FullscreenLayoutComponent } from "./FullscreenLayout";
 import { HeaderFullscreen, THeaderFullscreenProps } from "./header/HeaderFullscreen";
 import { TContentExternalProps } from "./Layout";
-import { LayoutWrapper } from "./LayoutWrapper";
+import { LayoutContainer } from "./LayoutContainer";
 
 import * as styles from "./FullscreenProgressLayout.module.scss";
+
+type TStateProps = {
+  userIsAuthorized: boolean;
+};
 
 type TInitialProps = {
   progress?: number;
@@ -69,22 +78,24 @@ const useActionButton = (initialProps?: TButtonProps): TButtonContext => {
   return { buttonProps, setCurrentButtonProps };
 };
 
-const FullscreenProgressLayout: React.FunctionComponent<TDataTestId &
+const FullscreenProgressLayoutComponent: React.FunctionComponent<TStateProps &
+  TDataTestId &
   TContentExternalProps &
   THeaderFullscreenProps &
   TInitialProps> = ({
   children,
-  "data-test-id": dataTestId,
-  progress = 0,
   buttonProps,
   wrapperClass,
+  userIsAuthorized,
+  progress = 0,
+  "data-test-id": dataTestId,
   ...contentProps
 }) => {
   const progressCtx = useProgress(progress);
   const buttonCtx = useActionButton(buttonProps);
 
   return (
-    <LayoutWrapper data-test-id={dataTestId} className={wrapperClass}>
+    <>
       <FullscreenProgressContext.Provider value={progressCtx}>
         <FullscreenButtonContext.Provider value={buttonCtx}>
           <HeaderFullscreen
@@ -100,11 +111,34 @@ const FullscreenProgressLayout: React.FunctionComponent<TDataTestId &
           <Content {...contentProps}>{children}</Content>
         </FullscreenButtonContext.Provider>
       </FullscreenProgressContext.Provider>
-    </LayoutWrapper>
+    </>
   );
 };
 
+const FullscreenProgressLayout = compose<
+  TStateProps,
+  TDataTestId & TContentExternalProps & THeaderFullscreenProps & TInitialProps
+>(
+  appConnect<TStateProps>({
+    stateToProps: state => ({
+      userIsAuthorized: selectIsAuthorized(state),
+    }),
+  }),
+  withContainer<TDataTestId & TInitialProps & TStateProps>(
+    ({ "data-test-id": dataTestId, userIsAuthorized, wrapperClass, children }) => (
+      <LayoutContainer
+        data-test-id={dataTestId}
+        className={wrapperClass}
+        userIsAuthorized={userIsAuthorized}
+      >
+        {children}
+      </LayoutContainer>
+    ),
+  ),
+)(FullscreenLayoutComponent);
+
 export {
+  FullscreenProgressLayoutComponent,
   FullscreenProgressLayout,
   FullscreenProgressContext,
   calculateStepProgress,

@@ -7,6 +7,7 @@ import {
   EthereumAddressWithChecksum,
   EthereumNetworkId,
   formatMoney,
+  toEthereumChecksumAddress,
 } from "@neufund/shared-utils";
 import { isAddress, randomHex, toChecksumAddress } from "web3-utils";
 
@@ -16,7 +17,7 @@ import { TBigNumberVariants } from "../../lib/web3/types";
 export function makeEthereumAddressChecksummed(
   ethereumAddress: EthereumAddress,
 ): EthereumAddressWithChecksum {
-  return toChecksumAddress(ethereumAddress) as EthereumAddressWithChecksum;
+  return toEthereumChecksumAddress(toChecksumAddress(ethereumAddress));
 }
 
 export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);

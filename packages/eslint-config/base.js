@@ -6,6 +6,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/typescript",
     "prettier",
     "prettier/@typescript-eslint"
@@ -125,7 +126,8 @@ module.exports = {
     {
       files: ["**/*.stories.*", "**/*.spec.*", "**/e2e/**"],
       rules: {
-        "@typescript-eslint/no-magic-numbers": "off"
+        "@typescript-eslint/no-magic-numbers": "off",
+        "@typescript-eslint/unbound-method": "off"
       }
     }
   ]

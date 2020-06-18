@@ -62,17 +62,21 @@ export interface ISecureStorage {
 abstract class BaseSecureStorage implements ISecureStorage {
   private readonly localCache: CacheClass<string, string>;
 
-  constructor() {
+  protected constructor() {
     this.localCache = new Cache();
   }
 
   async setSecret(secret: string): Promise<TSecureReference> {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const reference = utils.bigNumberify(utils.randomBytes(32)).toString();
-    this.setSecretInternal(reference, secret);
+
+    await this.setSecretInternal(reference, secret);
+
     this.localCache.put(reference, secret, CACHE_TIMEOUT);
+
     return toSecureReference(reference);
   }
+
   abstract async setSecretInternal(reference: string, secret: string): Promise<void>;
 
   async getSecret(reference: TSecureReference): Promise<string | null> {

@@ -12,7 +12,7 @@ export interface ISignMessageModalState {
   inputLabel?: DeepReadonly<TMessage>;
 }
 
-const initialState: ISignMessageModalState = {
+export const initialState: ISignMessageModalState = {
   isModalOpen: false,
 };
 
@@ -50,5 +50,3 @@ export const accessWalletReducer: AppReducer<ISignMessageModalState> = (
 
   return state;
 };
-
-export const selectIsSigning = (state: ISignMessageModalState): boolean => state.isModalOpen;

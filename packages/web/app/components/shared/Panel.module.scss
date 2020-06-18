@@ -1,7 +1,11 @@
+$narrow-padding: px-to-rem(10px);
+$normal-padding: px-to-rem(20px);
+$normal-padding-deprecated: px-to-rem(25px);
+
 // TODO: Maybe it's possible to somehow provide which margins should be reset
 @mixin remove-panel-padding($narrow: false) {
-  margin: if($narrow, -$narrow-padding, -$padding);
-  width: calc(100% + 2 * #{if($narrow, $narrow-padding, $padding)});
+  margin: if($narrow, -$narrow-padding, -$normal-padding-deprecated);
+  width: calc(100% + 2 * #{if($narrow, $narrow-padding, $normal-padding-deprecated)});
 }
 
 .panel {
@@ -10,8 +14,12 @@
   align-items: stretch;
   grid-auto-rows: 1fr auto;
 
-  &.narrow {
+  &.narrow-padding {
     padding: $narrow-padding;
+  }
+
+  &.normal-padding {
+    padding: $normal-padding;
   }
 }
 
@@ -27,13 +35,15 @@
 
 .default-panel {
   box-shadow: $shadow-bottom-black;
-  padding: $padding;
+
+  &.normal-padding {
+    padding: $normal-padding-deprecated;
+  }
 }
 
 .rounded {
   border-radius: px-to-rem(4px);
   border: solid 1px $neu-light-blue-grey-two;
-  box-shadow: none;
   overflow: hidden;
 
   .header {
@@ -44,4 +54,10 @@
     margin-bottom: px-to-rem(24px);
     border-bottom: solid 1px $neu-light-blue-grey-two;
   }
+}
+
+.gray {
+  border-radius: px-to-rem(4px);
+  background: $neu-pale-grey-three;
+  overflow: hidden;
 }

@@ -96,7 +96,7 @@ export const createAndLoginNewUser = ({
 
     if (!skipCreatingNewUser) {
       // create a user object on the backend
-      await createUser(type, privateKey, kyc, 4);
+      await createUser(type, privateKey, kyc, 10);
     }
 
     if (!skipBackupCodesVerification) {

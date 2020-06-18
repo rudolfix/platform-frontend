@@ -36,10 +36,6 @@ export const letterKeepDotRegExPattern = /[^0-9.]/gi;
 
 export const charRegExPattern = /[^a-z0-9]/gi;
 
-export const clearEmailServer = () => {
-  cy.request({ url: MOCK_API_URL + "sendgrid/session/mails", method: "DELETE" });
-};
-
 export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
 

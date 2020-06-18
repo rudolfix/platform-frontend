@@ -45,7 +45,9 @@ describe("Wallet Withdraw", () => {
     goToWallet();
   });
   describe("checks:", () => {
-    it("should show gas reserve message #wallet #withdraw #p3", () => {
+    // THIS TEST IS SKIPPED BECAUSE THE GAS PRICE API ON IO IS CONNECTED TO REAL PRICES
+    // THE TEST IS UNSTABLE AS SOMETIMES THE VALUES REFLECTED CANNOT BE CORRECT
+    it.skip("should show gas reserve message #wallet #withdraw #p3", () => {
       continueWithdrawFlow(testAddress, new BigNumber(testValue).mul("5").toString());
 
       cy.get(tid("modals.tx-sender.withdraw-flow.withdraw-component.will-empty-wallet")).should(

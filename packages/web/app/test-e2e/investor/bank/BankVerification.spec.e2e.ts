@@ -1,5 +1,5 @@
 import { fillForm } from "../../utils/forms";
-import { assertWallet, clearEmailServer, goToProfile, goToWallet } from "../../utils/index";
+import { assertWallet, goToProfile, goToWallet } from "../../utils/index";
 import { tid } from "../../utils/selectors";
 import { createAndLoginNewUser, loginFixtureAccount } from "../../utils/userHelpers";
 
@@ -47,10 +47,6 @@ function assertBankTransferFlow({
 }
 
 describe("Bank Verification", () => {
-  beforeEach(() => {
-    clearEmailServer();
-  });
-
   it("should start new verification process from wallet #banking #p3", () => {
     loginFixtureAccount("INV_ETH_EUR_ICBM_M_HAS_KYC_DUP");
     goToWallet();

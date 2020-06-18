@@ -5,6 +5,7 @@ const etherscanAddress = "https://etherscan.io/address/:address";
 
 export const externalRoutes = {
   neufundSupport,
+  neufundSupportNewTicket: `${neufundSupport}/tickets/new`,
   neufundSupportHome: `${neufundSupport}/home`,
   neufundSupportWhatIsNeu: `${neufundSupport}/solutions/articles/36000060355-what-is-neumark-`,
   neufundSupportVotingGuide: `${neufundSupport}/solutions/articles/36000229673`,
@@ -31,4 +32,5 @@ export const externalRoutes = {
   neufundCommunity: `${neufundOrg}/community`,
   metamaskSupportLink: "https://metamask.zendesk.com/hc/en-us",
   ledgerSupportLink: "https://support.ledger.com/hc/en-us",
+  walletConnectLandingPage: "https://walletconnect.org/",
 };

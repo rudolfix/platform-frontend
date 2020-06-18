@@ -1,25 +1,50 @@
-.wallet-chooser-title {
-  font-family: $headings-font-family;
-  font-size: .825rem;
-  font-weight: 800;
+.beta-label {
+  @include nds-label;
+
+  color: $neu-white;
+  letter-spacing: 0;
   text-transform: uppercase;
-}
+  line-height: 1;
 
-.wallet-chooser-buttons {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  align-items: center;
+  height: 1rem;
+  padding: 0 1rem;
+  border-radius: 8px;
+  background-color: $neu-dark-blue;
+  justify-self: flex-start;
 }
 
+.description {
+  @include nds-body;
 
+  margin-bottom: px-to-rem(8);
+}
 
-.wallet-selector-container {
-  @include media-breakpoint-up(sm) {
-    box-shadow: $shadow;
-    border-top: px-to-rem(3px) solid $neu-piss-yellow;
-    margin-top: px-to-rem(100px);
-  }
+.error {
+  justify-self: flex-start;
+  margin-bottom: px-to-rem(8);
+}
 
-  padding: 1.5rem;
-  background-color: $neu-white;
+.button {
+  justify-self: flex-start;
+}
+
+.button-icon {
+  max-width: px-to-rem(20);
+  margin-right: .5rem;
+}
+
+.divider {
+  background-color: $neu-light-blue-grey-two;
+  height: 1px;
+  width: 100%;
+
+  margin-top: 1rem;
+}
+
+.beta-testing-message {
+  @include nds-body-small;
+
+  color: $neu-shuttle-gray;
 }

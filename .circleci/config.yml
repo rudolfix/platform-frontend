@@ -33,18 +33,6 @@ commands:
           keys:
             - yarn-packages-v1-{{ checksum "yarn.lock" }}
 
-      - run:
-          name: Install Dependencies
-          command: yarn install --frozen-lockfile
-
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-v1-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-            - ~/.cache/Cypress
-
-
 jobs:
   ## Web package related jobs
 
@@ -61,7 +49,23 @@ jobs:
     executor: docker
 
     steps:
-      - checkout-and-install
+      - checkout
+
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-v1-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - ~/.cache/Cypress
 
       # Danger
       - run: yarn workspace @neufund/web danger ci --failOnErrors

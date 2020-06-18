@@ -6,12 +6,12 @@ orbs:
 executors:
   docker:
     docker:
-      - image: circleci/node:12.16.2
+      - image: circleci/node:12.18.0
     working_directory: /home/circleci/app
 
   docker-browsers:
     docker:
-      - image: circleci/node:12.16.2-browsers
+      - image: circleci/node:12.18.0-browsers
     working_directory: /home/circleci/app
 
 commands:

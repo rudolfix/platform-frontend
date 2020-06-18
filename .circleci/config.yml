@@ -84,9 +84,9 @@ jobs:
       - run: yarn workspace @neufund/shared-utils test
 
       - persist_to_workspace:
-          root: /home/circleci/app/packages/web
+          root: /home/circleci/app/
           paths:
-            - ./e2e/e2e-test-tags
+            - ./
 
       - notify-slack
 

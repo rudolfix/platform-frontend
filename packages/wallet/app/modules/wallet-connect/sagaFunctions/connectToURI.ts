@@ -69,6 +69,6 @@ export function* connectToURI(
     yield put(
       notificationUIModuleApi.actions.showInfo("Failed to start session with wallet connect"),
     );
-    logger.error(`${MODULE_ID}: Failed to connect to a new URI`, e);
+    logger.error(e, `${MODULE_ID}: Failed to connect to a new URI`);
   }
 }

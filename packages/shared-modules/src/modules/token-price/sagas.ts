@@ -56,7 +56,7 @@ function* tokenPriceMonitor(
 
       yield put(tokenPriceActions.saveTokenPrice(tokenPriceData));
     } catch (e) {
-      logger.error("Token Price Oracle Failed", e);
+      logger.error(e, "Token Price Oracle Failed");
     }
 
     if (refreshOnAction) {

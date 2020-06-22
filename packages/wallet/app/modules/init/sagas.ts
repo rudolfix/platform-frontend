@@ -52,7 +52,7 @@ function* initStartSaga(): SagaGenerator<void> {
   } catch (e) {
     yield put(initActions.error(e?.message ?? "Unknown error"));
 
-    logger.error("App init error", e);
+    logger.error(e, "App init error");
   }
 }
 

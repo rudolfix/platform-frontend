@@ -53,7 +53,7 @@ export function* saveMyPledge(
         createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE),
       ),
     );
-    logger.error(`Failed to save pledge`, e);
+    logger.error(e, `Failed to save pledge`);
   }
 }
 
@@ -86,7 +86,7 @@ export function* deleteMyPledge(
         createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED),
       ),
     );
-    logger.error(`Failed to delete pledge`, e);
+    logger.error(e, `Failed to delete pledge`);
   }
 }
 
@@ -102,7 +102,7 @@ export function* watchBookBuildingStats(
         actions.bookBuilding.loadBookBuildingStats(action.payload.etoId),
       );
     } catch (e) {
-      logger.error("Error getting bookbuilding stats", e);
+      logger.error(e, "Error getting bookbuilding stats");
     }
     yield take(actions.web3.newBlockArrived.getType());
   }
@@ -126,7 +126,7 @@ export function* loadBookBuildingStats(
       ),
     );
 
-    logger.error(`Failed to load bookbuilding stats pledge`, e);
+    logger.error(e, `Failed to load bookbuilding stats pledge`);
   }
 }
 
@@ -160,7 +160,7 @@ export function* loadBookBuildingListStats(
       ),
     );
 
-    logger.error(`Failed to load bookbuilding stats pledge`, e);
+    logger.error(e, `Failed to load bookbuilding stats pledge`);
   }
 }
 
@@ -192,7 +192,7 @@ export function* loadPledgeForEto(
           createNotificationMessage(BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE),
         ),
       );
-      logger.error("Failed to load pledge", e);
+      logger.error(e, "Failed to load pledge");
     }
   }
 }
@@ -216,7 +216,7 @@ export function* loadAllMyPledges({
         ),
       );
 
-      logger.error("Failed to load pledges", e);
+      logger.error(e, "Failed to load pledges");
     }
   }
 }

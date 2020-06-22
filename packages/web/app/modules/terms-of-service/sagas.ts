@@ -30,7 +30,7 @@ export function* getCurrentAgreementHash({
     let currentAgreementHash = result[2] as string;
     return hashFromIpfsLink(currentAgreementHash);
   } catch (e) {
-    logger.error("Could not load current agreement", e);
+    logger.error(e, "Could not load current agreement");
     throw e;
   }
 }
@@ -64,7 +64,7 @@ export function* handleAcceptCurrentAgreement({
         createNotificationMessage(AuthMessage.AUTH_TOC_ACCEPT_ERROR),
       ),
     );
-    logger.error("Could not accept Terms and Conditions", e);
+    logger.error(e, "Could not accept Terms and Conditions");
   }
 }
 

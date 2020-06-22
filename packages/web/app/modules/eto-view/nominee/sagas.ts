@@ -58,7 +58,7 @@ export function* loadNomineeEtoView({ logger }: TGlobalDependencies): Generator<
       );
     }
   } catch (e) {
-    logger.error("Could not load nominee eto", e);
+    logger.error(e, "Could not load nominee eto");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW),

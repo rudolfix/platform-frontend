@@ -5,7 +5,7 @@ export const isLevelAllowed = (loglevel: TLogLevels) => {
     return true;
   }
 
-  const priority: TLogLevels[] = ["fatal", "error", "warn", "debug", "verbose", "info"];
+  const priority: TLogLevels[] = ["fatal", "error", "warn", "debug", "info"];
 
   const allowedLogLevel = process.env.NF_LOG_LEVEL as TLogLevels;
 

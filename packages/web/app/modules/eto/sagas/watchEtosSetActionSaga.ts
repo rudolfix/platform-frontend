@@ -50,11 +50,9 @@ export function* calculateNextStateDelay(
       return 5000;
     }
 
-    logger.warn(
-      "ETO next state polling failed.",
-      new Error("User and ethereum clocks are not in sync"),
-      { etoPreviewCode: eto.previewCode },
-    );
+    logger.warn("User and ethereum clocks are not in sync. ETO next state polling failed.", {
+      etoPreviewCode: eto.previewCode,
+    });
   }
 
   return undefined;

@@ -31,7 +31,7 @@ export function* etoGetNomineeRequests({
 
     yield put(actions.etoNominee.storeNomineeRequests(nomineeRequestsConverted));
   } catch (e) {
-    logger.error("Failed to load Nominee requests", e);
+    logger.error(e, "Failed to load Nominee requests");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EEtoNomineeRequestNotifications.GENERIC_NETWORK_ERROR),
@@ -49,7 +49,7 @@ export function* etoNomineeRequestsWatcher({
     try {
       yield neuCall(etoGetNomineeRequests);
     } catch (e) {
-      logger.error("Error getting nominee requests", e);
+      logger.error(e, "Error getting nominee requests");
     }
 
     yield take(actions.web3.newBlockArrived.getType());
@@ -105,7 +105,7 @@ export function* etoUpdateNomineeRequestEffect(
       yield put(actions.etoFlow.loadIssuerEto());
     }
   } catch (e) {
-    logger.error("Failed to update nominee request", e);
+    logger.error(e, "Failed to update nominee request");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EEtoNomineeRequestNotifications.UPDATE_NOMINEE_REQUEST_ERROR),
@@ -148,7 +148,9 @@ export function* etoDeleteNomineeRequestEffect({
       ),
     );
   } catch (e) {
-    logger.error(`Error while trying to delete nominee request with nominee id ${nomineeId}`);
+    logger.error(
+      new Error(`Error while trying to delete nominee request with nominee id ${nomineeId}`),
+    );
   }
 }
 

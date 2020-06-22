@@ -184,7 +184,7 @@ export function* reloadEtoView({ logger }: TGlobalDependencies): Generator<any, 
 
     yield put(actions.etoView.setEtoViewData(etoData));
   } catch (e) {
-    logger.error("Could not reload eto by preview code", e);
+    logger.error(e, "Could not reload eto by preview code");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW),

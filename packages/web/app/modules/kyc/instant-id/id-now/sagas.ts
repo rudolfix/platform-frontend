@@ -17,7 +17,7 @@ function* startIdNow({ apiKycService, logger }: TGlobalDependencies): Generator<
 
     yield put(actions.kyc.kycLoadStatusAndData());
   } catch (e) {
-    logger.error("KYC instant id-now failed to start", e);
+    logger.error(e, "KYC instant id-now failed to start");
 
     yield put(
       webNotificationUIModuleApi.actions.showError(

@@ -70,7 +70,7 @@ export function* txValidateSaga({ logger }: TGlobalDependencies, action: TAction
     const txDetails = yield validationGenerator;
     return txDetails;
   } catch (e) {
-    logger.error("Something was wrong during TX validation", e);
+    logger.error(e, "Something was wrong during TX validation");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(ETxValidationMessages.TX_VALIDATION_UNKNOWN_ERROR),

@@ -97,7 +97,7 @@ function* startOnfidoRequest({ logger }: TGlobalDependencies): Generator<any, an
 
     yield neuCall(handleOnfidoSdkEvents);
   } catch (e) {
-    logger.error("Failed to start onfido request", e);
+    logger.error(e, "Failed to start onfido request");
 
     yield put(actions.kyc.startOnfidoRequestError(e));
   }

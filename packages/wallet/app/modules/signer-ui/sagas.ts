@@ -59,7 +59,7 @@ function* sign(
         assertNever(payload);
     }
   } catch (e) {
-    logger.error(`Failed to sign ${payload.type}`, e);
+    logger.error(e, `Failed to sign ${payload.type}`);
 
     // in case of an error deny signing request
     // TODO: handle signing error on UI

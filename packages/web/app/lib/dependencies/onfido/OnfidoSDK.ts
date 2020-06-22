@@ -50,7 +50,7 @@ export class OnfidoSDK extends EventEmitter {
 
       this.emit(EOnfidoSDKEvents.COMPLETED);
     } catch (e) {
-      this.logger.error("Onfido sdk completing failed", e);
+      this.logger.error(e, "Onfido sdk completing failed");
 
       this.emit(EOnfidoSDKEvents.FAILED);
     }
@@ -68,7 +68,7 @@ export class OnfidoSDK extends EventEmitter {
 
       this.emit(EOnfidoSDKEvents.DISCARDED);
     } catch (e) {
-      this.logger.error("Onfido sdk closing modal failed", e);
+      this.logger.error(e, "Onfido sdk closing modal failed");
 
       this.emit(EOnfidoSDKEvents.FAILED);
     }
@@ -105,7 +105,7 @@ export class OnfidoSDK extends EventEmitter {
 
       this.logger.info("Onfido SDK initialized");
     } catch (e) {
-      this.logger.error("Failed to initialize Onfido SDK", e);
+      this.logger.error(e, "Failed to initialize Onfido SDK");
 
       throw new OnfidoSDKInitError();
     }
@@ -128,7 +128,7 @@ export class OnfidoSDK extends EventEmitter {
 
       this.logger.info("Onfido SDK Removed");
     } catch (e) {
-      this.logger.error("Failed to tear down Onfido SDK", e);
+      this.logger.error(e, "Failed to tear down Onfido SDK");
 
       throw new OnfidoSDKTearDownError();
     } finally {

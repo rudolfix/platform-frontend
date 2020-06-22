@@ -150,7 +150,7 @@ function* txSendProcess(
   } catch (error) {
     const errorType = getTxSenderErrorType(error);
 
-    logger.error(`Error while processing transaction`, error, { errorType, transactionType });
+    logger.error(error, "Error while processing transaction", { errorType, transactionType });
 
     yield put(actions.txSender.txSenderError(errorType));
   }
@@ -314,7 +314,7 @@ function* watchTxSubSaga(
          */
 
         case EEventEmitterChannelEvents.ERROR:
-          logger.error("Error while tx watching: ", result.error, { txHash });
+          logger.error(result.error, "Error while tx watching: ", { txHash });
           break;
 
         /**
@@ -322,17 +322,21 @@ function* watchTxSubSaga(
          */
 
         case EEventEmitterChannelEvents.CANCELLED:
-          logger.warn("Error Transaction was cancelled from transactional node: ", result.error, {
+          logger.warn("Error Transaction was cancelled from transactional node", {
+            error: result.error,
             txHash,
           });
           return yield put(actions.txSender.txSenderError(ETransactionErrorType.TX_WAS_REJECTED));
 
         case EEventEmitterChannelEvents.OUT_OF_GAS:
-          logger.warn("Error Transaction out of gas: ", result.error, { txHash });
+          logger.warn("Error Transaction out of gas", { error: result.error, txHash });
           return yield put(actions.txSender.txSenderError(ETransactionErrorType.OUT_OF_GAS));
 
         case EEventEmitterChannelEvents.REVERTED_TRANSACTION:
-          logger.warn("Error Transaction Reverted: ", result.error, { txHash });
+          logger.warn("Error Transaction Reverted", {
+            error: result.error,
+            txHash,
+          });
           return yield put(actions.txSender.txSenderError(ETransactionErrorType.REVERTED_TX));
       }
     }

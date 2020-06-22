@@ -51,7 +51,7 @@ export function* loadInvestorTickets(
 
     yield;
   } catch (e) {
-    logger.error("Could not load investor tickets", e);
+    logger.error(e, "Could not load investor tickets");
   }
 }
 
@@ -135,7 +135,7 @@ export function* loadClaimables({ contractsService, logger }: TGlobalDependencie
   } catch (error) {
     yield put(actions.investorEtoTicket.setTokensDisbursalError());
 
-    logger.error("Failed to load claimables", error);
+    logger.error(error, "Failed to load claimables");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(
@@ -183,7 +183,7 @@ export function* getIncomingPayouts({ contractsService, logger }: TGlobalDepende
       yield put(actions.investorEtoTicket.resetIncomingPayouts());
     }
   } catch (error) {
-    logger.error("Failed to load incoming payouts", error);
+    logger.error(error, "Failed to load incoming payouts");
     yield put(actions.investorEtoTicket.setIncomingPayoutsError());
     yield put(
       webNotificationUIModuleApi.actions.showError(

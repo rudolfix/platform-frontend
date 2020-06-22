@@ -132,7 +132,7 @@ export function* connectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<v
     }
   } catch (e) {
     // in case of unknown error stop session
-    logger.error(`${MODULE_ID}: Event watcher failed.`, e);
+    logger.error(e, `${MODULE_ID}: Event watcher failed.`);
   } finally {
     if (yield cancelled()) {
       // if connectEvents saga gets cancelled then stop session

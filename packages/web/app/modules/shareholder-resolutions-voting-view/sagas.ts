@@ -36,6 +36,10 @@ export function* loadInvestorShareholderResolution(
         yield put(
           webNotificationUIModuleApi.actions.showError(
             createNotificationMessage(EVotingErrorMessage.UNKNOWN_PROPOSAL),
+            {
+              ["data-test-id"]:
+                "modules.shareholder-resolutions-voting-view.sagas.toast.unknown-proposal",
+            },
           ),
         );
         return;
@@ -44,6 +48,10 @@ export function* loadInvestorShareholderResolution(
         yield put(
           webNotificationUIModuleApi.actions.showError(
             createNotificationMessage(EVotingErrorMessage.CANNOT_VOTE),
+            {
+              ["data-test-id"]:
+                "modules.shareholder-resolutions-voting-view.sagas.toast.no-access-to-proposal",
+            },
           ),
         );
         return;
@@ -91,6 +99,10 @@ export function* loadIssuerShareholderResolution(
         yield put(
           webNotificationUIModuleApi.actions.showError(
             createNotificationMessage(EVotingErrorMessage.UNKNOWN_PROPOSAL),
+            {
+              ["data-test-id"]:
+                "modules.shareholder-resolutions-voting-view.sagas.toast.unknown-proposal",
+            },
           ),
         );
         return;

@@ -3,7 +3,7 @@ import { kycRoutes } from "../../../components/kyc/routes";
 import { NODE_ADDRESS } from "../../config";
 import { DEFAULT_PASSWORD } from "../../utils/constants";
 import {
-  assertDashboard,
+  assertInvestorDashboard,
   generateRandomEmailAddress,
   goToDashboard,
   registerWithLightWalletIssuer,
@@ -15,11 +15,11 @@ describe("Other routing", () => {
     createAndLoginNewUser({ type: "investor" }).then(() => {
       // redirect from root
       cy.visit("/");
-      assertDashboard();
+      assertInvestorDashboard();
 
       // redirect from unknown url
       cy.visit("/unknown-url");
-      assertDashboard();
+      assertInvestorDashboard();
     });
   });
 

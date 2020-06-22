@@ -1,7 +1,7 @@
 import {
-  assertDashboard,
   assertEmailChangeFlow,
   assertEmailPendingChange,
+  assertInvestorDashboard,
   assertVerifyEmailWidgetIsInNoEmailState,
   assertVerifyEmailWidgetIsInUnverifiedEmailState,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
@@ -26,7 +26,7 @@ describe("Verify Email Widget", () => {
     const password = "strongpassword";
 
     registerWithLightWallet(firstEmail, password);
-    assertDashboard();
+    assertInvestorDashboard();
 
     goToUserAccountSettings();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();
@@ -39,7 +39,7 @@ describe("Verify Email Widget", () => {
 
     confirmAccessModal();
     verifyLatestUserEmailAccountSetup(secondEmail);
-    assertDashboard();
+    assertInvestorDashboard();
 
     goToProfile();
     assertVerifyEmailWidgetIsInVerfiedEmailState();
@@ -52,7 +52,7 @@ describe("Verify Email Widget", () => {
     const password = "strongpassword";
 
     registerWithLightWallet(email, password);
-    assertDashboard();
+    assertInvestorDashboard();
 
     goToUserAccountSettings();
     assertVerifyEmailWidgetIsInUnverifiedEmailState();

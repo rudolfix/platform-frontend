@@ -71,6 +71,7 @@ const ProposalVotingBasicDetails: React.FunctionComponent<TExternalProps> = ({
             inputFormat={ENumberInputFormat.FLOAT}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
             valueType={ENumberFormat.PERCENTAGE}
+            data-test-id="governance.proposal.voting-details.participation-percentage"
           />
         }
       />
@@ -85,6 +86,7 @@ const ProposalVotingBasicDetails: React.FunctionComponent<TExternalProps> = ({
             inputFormat={ENumberInputFormat.FLOAT}
             outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
             valueType={ENumberFormat.PERCENTAGE}
+            data-test-id="governance.proposal.voting-details.quorum"
           />
         }
       />

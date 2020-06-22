@@ -1,5 +1,5 @@
 import { etoPublicViewByIdLinkLegacy } from "../../../../components/appRouteUtils";
-import { assertDashboard, etoFixtureAddressByName, tid } from "../../../utils/index";
+import { assertInvestorDashboard, etoFixtureAddressByName, tid } from "../../../utils/index";
 import { createAndLoginNewUser } from "../../../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
 
@@ -40,7 +40,7 @@ describe("Eto Unapproved Investor View", function(): void {
 
       cy.get(tid("jurisdiction-disclaimer-modal.deny")).click();
 
-      assertDashboard();
+      assertInvestorDashboard();
     });
   });
 });

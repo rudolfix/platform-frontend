@@ -3,7 +3,7 @@ import { generateRandomSeedAndAddress } from "../../obsolete/generateRandomSeedA
 import { DEFAULT_HD_PATH } from "../../utils/constants";
 import { cyPromise } from "../../utils/cyPromise";
 import {
-  assertDashboard,
+  assertInvestorDashboard,
   assertWaitForLatestEmailSentWithSalt,
   createAndLoginNewUser,
   generateRandomEmailAddress,
@@ -41,7 +41,7 @@ describe("Wallet recovery", function(): void {
 
         lightWalletTypeRegistrationInfo(email, password);
 
-        assertDashboard();
+        assertInvestorDashboard();
         assertWaitForLatestEmailSentWithSalt(email);
 
         cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
@@ -70,7 +70,7 @@ describe("Wallet recovery", function(): void {
 
         lightWalletTypeRegistrationInfo(email, password);
 
-        assertDashboard();
+        assertInvestorDashboard();
         assertWaitForLatestEmailSentWithSalt(email);
 
         cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
@@ -92,7 +92,7 @@ describe("Wallet recovery", function(): void {
 
         lightWalletTypeRegistrationInfo(email, password);
 
-        assertDashboard();
+        assertInvestorDashboard();
         assertWaitForLatestEmailSentWithSalt(email);
 
         cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
@@ -142,7 +142,7 @@ describe("Wallet recovery", function(): void {
 
         typeLightwalletRecoveryPhrase(seed);
         lightWalletTypePasswordRegistration(password);
-        assertDashboard();
+        assertInvestorDashboard();
         getLatestVerifyUserEmailLink(email);
       });
     });
@@ -167,7 +167,7 @@ describe("Wallet recovery", function(): void {
           lightWalletTypeRegistrationInfo(email, password);
           cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
           cy.visit("/");
-          assertDashboard();
+          assertInvestorDashboard();
         }
       });
     });

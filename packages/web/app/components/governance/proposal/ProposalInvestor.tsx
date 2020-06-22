@@ -58,7 +58,7 @@ const ProposalInvestorLayout: React.FunctionComponent<IProposalsProps> = ({
   invariant(shareholderVote, "Shareholder vote not defined");
 
   return (
-    <WidgetGrid className={styles.container}>
+    <WidgetGrid className={styles.container} data-test-id="governance.investor-proposal">
       <Container columnSpan={EColumnSpan.TWO_COL} type={EContainerType.CONTAINER}>
         <ProposalDetails
           proposal={proposal}

@@ -1,7 +1,7 @@
 import { appRoutes } from "../../../../components/appRoutes";
 import { stubChallengeApiRequest } from "../../../utils/apiStubs";
 import {
-  assertDashboard,
+  assertInvestorDashboard,
   assertLogin,
   assertProfile,
   assertVerifyEmailWidgetIsInVerfiedEmailState,
@@ -66,7 +66,7 @@ describe("Investor", () => {
     // register once and then verify email account
     cy.visit("/register");
     lightWalletTypeRegistrationInfo(email, password);
-    assertDashboard();
+    assertInvestorDashboard();
     verifyLatestUserEmailAccountSetup(email);
     logoutViaAccountMenu();
     cy.clearLocalStorage();
@@ -106,7 +106,7 @@ describe("Investor", () => {
 
   it("should kepp user logged in on invalid access code and silence toaster when verified #login #p3", () => {
     registerWithLightWallet(email, password);
-    assertDashboard();
+    assertInvestorDashboard();
 
     getLatestVerifyUserEmailLink(email).then(activationLink => {
       logoutViaAccountMenu();
@@ -115,7 +115,7 @@ describe("Investor", () => {
       const newEmail = generateRandomEmailAddress();
       registerWithLightWallet(newEmail, password);
 
-      assertDashboard();
+      assertInvestorDashboard();
 
       // try to activate previous user when second one is logged in
       cy.visit(activationLink);
@@ -130,7 +130,7 @@ describe("Investor", () => {
       // activate user B
       getLatestVerifyUserEmailLink(newEmail).then(activationLinkB => {
         cy.visit(activationLinkB);
-        assertDashboard();
+        assertInvestorDashboard();
         goToProfile();
         assertProfile();
         // email should be verified
@@ -143,9 +143,9 @@ describe("Investor", () => {
         cy.get(tid("light-wallet-login-with-email-email-field")).contains(newEmail);
         cy.get(tid("light-wallet-login-with-email-password-field")).type(password);
         cy.get(tid("wallet-selector-nuewallet.login-button")).click();
-        assertDashboard();
+        assertInvestorDashboard();
         cy.visit(activationLinkB);
-        assertDashboard();
+        assertInvestorDashboard();
         cy.get(tidStartsWith("modules.auth.sagas.verify-user-email.toast.verification-failed"), {
           timeout: 2000,
         }).should("not.exist");

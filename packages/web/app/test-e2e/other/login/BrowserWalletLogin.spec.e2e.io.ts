@@ -3,7 +3,7 @@ import PrivateKeyProvider from "truffle-privatekey-provider";
 import { makeEthereumAddressChecksummed, remove0x } from "../../../modules/web3/utils";
 import { NODE_ADDRESS } from "../../config";
 import { stubChallengeApiRequest } from "../../utils/apiStubs";
-import { assertDashboard } from "../../utils/assertions";
+import { assertInvestorDashboard } from "../../utils/assertions";
 import { generateRandomPrivateKey } from "../../utils/e2eWeb3Utils";
 import {
   accountFixturePrivateKey,
@@ -42,7 +42,7 @@ describe("Ethereum Routing", () => {
     cy.get(tid("wallet-selector-register-button")).click();
     cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
 
-    assertDashboard();
+    assertInvestorDashboard();
 
     goToWallet();
 

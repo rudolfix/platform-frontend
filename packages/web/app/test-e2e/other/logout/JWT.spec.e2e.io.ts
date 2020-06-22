@@ -5,7 +5,7 @@ import {
   AUTH_JWT_TIMING_THRESHOLD,
   AUTH_TOKEN_REFRESH_THRESHOLD,
 } from "../../../modules/auth/constants";
-import { assertDashboard, assertLogin } from "../../utils/assertions";
+import { assertInvestorDashboard, assertLogin } from "../../utils/assertions";
 import { cyPromise } from "../../utils/cyPromise";
 import { fillForm } from "../../utils/forms";
 import {
@@ -124,7 +124,7 @@ describe("JWT Refreshing and Escalation", () => {
         cy.tick(AUTH_INACTIVITY_THRESHOLD / 2);
         now += AUTH_INACTIVITY_THRESHOLD / 2;
 
-        assertDashboard();
+        assertInvestorDashboard();
 
         cy.tick(AUTH_INACTIVITY_THRESHOLD);
         now += AUTH_INACTIVITY_THRESHOLD;
@@ -155,7 +155,7 @@ describe("JWT Refreshing and Escalation", () => {
         cy.clock(now).then(clock => {
           clock.tick(AUTH_INACTIVITY_THRESHOLD / 2);
 
-          assertDashboard();
+          assertInvestorDashboard();
 
           clock.tick(AUTH_INACTIVITY_THRESHOLD);
 

@@ -4,7 +4,7 @@ import { generateRandomPrivateKey, remove0x } from "../../../modules/web3/utils"
 import { NODE_ADDRESS } from "../../config";
 import { backupLightWalletSeedFromAccountSetupDashboard } from "../../utils/backupLightWalletSeed";
 import {
-  assertDashboard,
+  assertInvestorDashboard,
   confirmAccessModal,
   ethereumProvider,
   registerWithBrowserWalletAndLogin,
@@ -45,7 +45,7 @@ describe("Onboarding", () => {
     const privateKeyProvider = new PrivateKeyProvider(remove0x(privateKey), NODE_ADDRESS);
 
     registerWithBrowserWalletAndLogin(privateKeyProvider);
-    assertDashboard();
+    assertInvestorDashboard();
 
     cy.get(tid("onboarding")).should("exist");
 

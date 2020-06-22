@@ -46,7 +46,10 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
   );
 
   return (
-    <PanelGray type={EContainerType.CONTAINER}>
+    <PanelGray
+      type={EContainerType.CONTAINER}
+      data-test-id="governance.proposal.shareholder-vote-widget.vote"
+    >
       <Heading level={6} decorator={false} className="text-uppercase mb-2">
         <FormattedMessage id="governance.proposal.vote.heading" />
       </Heading>
@@ -64,6 +67,7 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
                 valueType={eto.equityTokenSymbol}
                 currencySymbol={ECurrencySymbol.NONE}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                data-test-id="governance.proposal.shareholder-vote-widget.number-of-tokens"
               />
             ),
             percentageAllTokens: (
@@ -73,6 +77,7 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
                 inputFormat={ENumberInputFormat.FLOAT}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 valueType={ENumberFormat.PERCENTAGE}
+                data-test-id="governance.proposal.shareholder-vote-widget.percentage-of-tokens"
               />
             ),
           }}
@@ -83,12 +88,17 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
         <Button
           className={styles.button}
           layout={EButtonLayout.PRIMARY}
-          data-test-id="kyc-personal-financial-disclosure-go-back"
           onClick={voteYes}
+          data-test-id="governance.proposal.shareholder-vote-widget.vote-in-favor"
         >
           <FormattedMessage id="governance.proposal.vote.vote-yes" />
         </Button>
-        <Button className={styles.button} layout={EButtonLayout.SECONDARY} onClick={voteNo}>
+        <Button
+          className={styles.button}
+          layout={EButtonLayout.SECONDARY}
+          onClick={voteNo}
+          data-test-id="governance.proposal.shareholder-vote-widget.vote-against"
+        >
           <FormattedMessage id="governance.proposal.vote.vote-no" />
         </Button>
       </ButtonGroup>
@@ -107,13 +117,16 @@ const ProposalShareholderVoteResult: React.FunctionComponent<TExternalProps> = (
   );
 
   return (
-    <PanelGray>
+    <PanelGray data-test-id="governance.proposal.shareholder-vote-widget.vote-details">
       <p className={cn(styles.message, "mb-0")}>
         <FormattedMessage
           id="governance.proposal.vote-result.paragraph"
           values={{
             vote: (
-              <span className={cn(styles.highlight)}>
+              <span
+                className={cn(styles.highlight)}
+                data-test-id="governance.proposal.shareholder-vote-widget.vote"
+              >
                 “
                 <FormatBoolean
                   value={shareholderVote.state !== EShareholderVoteResolution.Against}
@@ -130,6 +143,7 @@ const ProposalShareholderVoteResult: React.FunctionComponent<TExternalProps> = (
                 valueType={eto.equityTokenSymbol}
                 currencySymbol={ECurrencySymbol.NONE}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+                data-test-id="governance.proposal.shareholder-vote-widget.number-of-tokens"
               />
             ),
             percentageAllTokens: (
@@ -139,6 +153,7 @@ const ProposalShareholderVoteResult: React.FunctionComponent<TExternalProps> = (
                 inputFormat={ENumberInputFormat.FLOAT}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 valueType={ENumberFormat.PERCENTAGE}
+                data-test-id="governance.proposal.shareholder-vote-widget.percentage-of-tokens"
               />
             ),
           }}

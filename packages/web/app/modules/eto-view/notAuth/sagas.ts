@@ -60,7 +60,7 @@ export function* loadNotAuthorizedEtoView(
     const etoData = yield call(loadNotAuthorizedEtoViewInternal, eto, payload.routeMatch);
     yield put(actions.etoView.setEtoViewData(etoData));
   } catch (e) {
-    logger.error("Could not load eto by preview code", e);
+    logger.error(e, "Could not load eto by preview code");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW),
@@ -84,7 +84,7 @@ export function* loadNotAuthorizedEtoViewById(
     const etoData = yield call(loadNotAuthorizedEtoViewInternal, eto, payload.routeMatch);
     yield put(actions.etoView.setEtoViewData(etoData));
   } catch (e) {
-    logger.error("Could not load eto by preview code", e);
+    logger.error(e, "Could not load eto by preview code");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO),

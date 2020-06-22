@@ -134,7 +134,7 @@ function* createNewAccount(): SagaGenerator<void> {
       ),
     );
 
-    logger.error("New account creation failed", e);
+    logger.error(e, "New account creation failed");
   }
 }
 
@@ -199,7 +199,7 @@ function* importNewAccount(
       ),
     );
 
-    logger.error("Import account creation failed", e);
+    logger.error(e, "Import account creation failed");
   }
 }
 
@@ -228,7 +228,7 @@ function* logout(): SagaGenerator<void> {
 
     yield put(authActions.logoutDone());
   } catch (e) {
-    logger.error("Failed to logout user", e);
+    logger.error(e, "Failed to logout user");
 
     // TODO: Force to cleanup keychain state to not store any kind of user data even in case of error
   }

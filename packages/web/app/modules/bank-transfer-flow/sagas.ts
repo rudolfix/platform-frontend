@@ -61,7 +61,7 @@ function* start(
       ),
     );
 
-    logger.error(`Failed to start bank transfer flow`, e);
+    logger.error(e, `Failed to start bank transfer flow`);
   }
 }
 
@@ -108,7 +108,7 @@ export function* completeBankTransfer({ apiKycService, logger }: TGlobalDependen
     // TODO: replace by correct amount when implemented
     yield apiKycService.nEurPurchaseRequest("1", reference);
   } catch (e) {
-    logger.error(`Not able to complete bank transfer`, e);
+    logger.error(e, `Not able to complete bank transfer`);
   }
 }
 

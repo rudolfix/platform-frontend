@@ -24,7 +24,7 @@ class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
 
   componentDidCatch(error: Error, errorInfo: object): void {
     if (this.logger) {
-      this.logger.fatal("A critical error occurred", error, errorInfo);
+      this.logger.fatal(error, "A critical error occurred", errorInfo);
     }
     this.setState({ hasError: true });
   }

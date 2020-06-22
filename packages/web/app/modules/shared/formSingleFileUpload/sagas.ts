@@ -17,7 +17,7 @@ function* singleFileUpload({ fileStorageApi, logger }: TGlobalDependencies, acti
 
     onDone(undefined, fileData.url);
   } catch (e) {
-    logger.error("Error while uploading single file", e);
+    logger.error(e, "Error while uploading single file");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(FileUploadMessage.FILE_UPLOAD_ERROR),

@@ -57,7 +57,7 @@ export function* loadInvestorShareholderResolution(
         return;
 
       default:
-        logger.error(`Failed generate shareholder resolutions voting for ${proposalId}`, e);
+        logger.error(e, `Failed generate shareholder resolutions voting for ${proposalId}`);
 
         yield put(actions.setShareholderResolutionVotingViewState(EProcessState.ERROR));
 
@@ -104,7 +104,7 @@ export function* loadIssuerShareholderResolution(
         return;
 
       default:
-        logger.error(`Failed generate shareholder resolutions voting for ${proposalId}`, e);
+        logger.error(e, `Failed generate shareholder resolutions voting for ${proposalId}`);
 
         yield put(actions.setShareholderResolutionVotingViewState(EProcessState.ERROR));
 

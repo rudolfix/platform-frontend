@@ -59,7 +59,7 @@ export function* lightWalletBackupWatch({ logger }: TGlobalDependencies): Genera
       yield put(actions.routing.goToProfile());
     }
   } catch (e) {
-    logger.error("Light Wallet Backup Error", e);
+    logger.error(e, "Light Wallet Backup Error");
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
     );
@@ -85,7 +85,7 @@ export function* loadSeedFromWalletWatch({
     const { seed, privateKey } = yield* call(lightWallet.getWalletPrivateData);
     yield put(actions.web3.loadWalletPrivateDataToState(seed, privateKey));
   } catch (e) {
-    logger.error("Load seed from wallet failed", e);
+    logger.error(e, "Load seed from wallet failed");
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),
     );
@@ -98,7 +98,7 @@ export function* handleLightWalletError({ logger }: TGlobalDependencies, e: Erro
   if (e instanceof authModuleAPI.error.EmailAlreadyExists) {
     error = createMessage(GenericErrorMessage.USER_ALREADY_EXISTS);
   } else if (e instanceof LightError) {
-    logger.error("Light wallet recovery/register error", e);
+    logger.error(e, "Light wallet recovery/register error");
     error = mapLightWalletErrorToErrorMessage(e);
   } else {
     error = createMessage(SignInUserErrorMessage.MESSAGE_SIGNING_SERVER_CONNECTION_FAILURE);
@@ -132,7 +132,7 @@ export function* lightWalletLoginWatch(
     yield web3Manager.plugPersonalWallet(wallet);
     yield walletSelectorConnect();
   } catch (e) {
-    logger.error("Light Wallet login error", e);
+    logger.error(e, "Light Wallet login error");
     yield put(actions.walletSelector.reset());
     yield put(
       actions.walletSelector.lightWalletConnectionError(mapLightWalletErrorToErrorMessage(e)),

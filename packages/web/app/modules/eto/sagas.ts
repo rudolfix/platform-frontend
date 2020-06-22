@@ -89,7 +89,7 @@ function* loadEtoPreview(
     const eto: TEtoSpecsData = yield apiEtoService.getEtoPreview(previewCode);
     yield neuCall(loadAdditionalEtoData, eto);
   } catch (e) {
-    logger.error("Could not load eto by preview code", e);
+    logger.error(e, "Could not load eto by preview code");
 
     if (action.payload.widgetView) {
       yield put(actions.eto.setEtoWidgetError());
@@ -120,7 +120,7 @@ function* loadEto(
     const eto: TEtoSpecsData = yield apiEtoService.getEto(etoId);
     yield neuCall(loadAdditionalEtoData, eto);
   } catch (e) {
-    logger.error("Could not load eto by id", e);
+    logger.error(e, "Could not load eto by id");
 
     if (action.payload.widgetView) {
       yield put(actions.eto.setEtoWidgetError());
@@ -218,7 +218,7 @@ export function* getEtoContract(
   state: EEtoState,
 ): Generator<any, any, any> {
   if (state !== EEtoState.ON_CHAIN) {
-    logger.error("Invalid eto state", new InvalidETOStateError(state, EEtoState.ON_CHAIN), {
+    logger.error(new InvalidETOStateError(state, EEtoState.ON_CHAIN), "Invalid eto state", {
       etoId: etoId,
     });
     return;
@@ -259,7 +259,7 @@ export function* getEtoContract(
       startOfStates: convertToStateStartDate(startOfStatesRaw),
     };
   } catch (e) {
-    logger.error("ETO contract data could not be loaded", e, { etoId: etoId });
+    logger.error(e, "ETO contract data could not be loaded", { etoId: etoId });
 
     // rethrow original error so it can be handled by caller saga
     throw e;
@@ -327,7 +327,7 @@ export function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
     yield put(actions.eto.setEtos({ etos: etosByPreviewCode, companies }));
     yield put(actions.eto.setEtosDisplayOrder(order));
   } catch (e) {
-    logger.error("ETOs could not be loaded", e);
+    logger.error(e, "ETOs could not be loaded");
 
     yield put(
       webNotificationUIModuleApi.actions.showError(
@@ -557,7 +557,7 @@ function* updateEtoAndTokenData({ logger }: TGlobalDependencies): Generator<any,
   try {
     yield neuCall(fetchEto, additionalData.etoId);
   } catch (e) {
-    logger.error("Could not load eto by id", e);
+    logger.error(e, "Could not load eto by id");
   }
 }
 
@@ -641,7 +641,7 @@ function* loadAgreementStatus(
 
     return EEtoAgreementStatus.NOT_DONE;
   } catch (e) {
-    logger.error(`Could not fetch ${agreementType} document status`, e);
+    logger.error(e, `Could not fetch ${agreementType} document status`);
     return EEtoAgreementStatus.ERROR;
   }
 }
@@ -662,7 +662,7 @@ function* loadISHAStatus(
 
     return EEtoAgreementStatus.NOT_DONE;
   } catch (e) {
-    logger.error(`Could not fetch ISHA document status`, e);
+    logger.error(e, `Could not fetch ISHA document status`);
     return EEtoAgreementStatus.ERROR;
   }
 }

@@ -8,7 +8,7 @@ import {
   withScope,
 } from "@sentry/browser";
 
-import { ErrorArgs, ILogger, LogArg, TUser } from "./ILogger";
+import { ILogger, TUser } from "./ILogger";
 import { hashBlacklistedQueryParams } from "./utils";
 
 /**
@@ -39,59 +39,47 @@ export class SentryLogger implements ILogger {
     });
   }
 
-  info(...args: LogArg[][]): void {
+  info(message: string, data?: object): void {
     addBreadcrumb({
       category: "logger",
-      data: { ...args },
+      data: { message, data },
       level: Severity.Info,
     });
   }
 
-  verbose(...args: LogArg[][]): void {
+  debug(message: string, data?: object): void {
     addBreadcrumb({
       category: "logger",
-      data: { ...args },
-      level: Severity.Log,
-    });
-  }
-
-  debug(...args: LogArg[][]): void {
-    addBreadcrumb({
-      category: "logger",
-      data: { ...args },
+      data: { message, data },
       level: Severity.Debug,
     });
   }
 
-  warn(...args: ErrorArgs[]): void {
+  warn(message: string, data?: object): void {
     withScope(scope => {
       addBreadcrumb({
+        data,
         category: "logger",
-        data: { ...args.filter(arg => !(arg instanceof Error)) },
         level: Severity.Warning,
       });
 
       scope.setLevel(Severity.Warning);
 
-      const error = args.find(arg => arg instanceof Error);
-
-      captureException(error);
+      captureException(new Error(message));
     });
   }
 
-  error(...args: ErrorArgs[]): void {
+  error(error: Error, message?: string, data?: object): void {
     addBreadcrumb({
       category: "logger",
-      data: { ...args.filter(arg => !(arg instanceof Error)) },
+      data: { message, data },
       level: Severity.Error,
     });
-
-    const error = args.find(arg => arg instanceof Error);
 
     captureException(error);
   }
 
-  fatal(message: string, error: Error, data?: object): void {
+  fatal(error: Error, message?: string, data?: object): void {
     // tslint:disable-next-line
     console.error(message, error, data);
 

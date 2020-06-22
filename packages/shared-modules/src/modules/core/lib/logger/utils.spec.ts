@@ -4,13 +4,13 @@ import { hashBlacklistedQueryParams, isLevelAllowed } from "./utils";
 
 describe("isLevelAllowed", () => {
   it("should return correct boolean", () => {
-    process.env.NF_LOG_LEVEL = "verbose";
+    process.env.NF_LOG_LEVEL = "warn";
 
     // level with higher priority
     expect(isLevelAllowed("fatal")).to.be.true;
 
     // the same priority
-    expect(isLevelAllowed("verbose")).to.be.true;
+    expect(isLevelAllowed("warn")).to.be.true;
 
     // level with lower priority
     expect(isLevelAllowed("info")).to.be.false;

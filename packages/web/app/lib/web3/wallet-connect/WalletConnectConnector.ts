@@ -108,7 +108,7 @@ export class WalletConnectConnector extends EventEmitter {
         session.peerMeta,
       );
     } catch (e) {
-      this.logger.error("could not enable wc", e);
+      this.logger.error(e, "could not enable wc");
       await this.cancelSession();
       if (e instanceof WalletError) {
         throw e;

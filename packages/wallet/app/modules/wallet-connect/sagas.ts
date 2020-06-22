@@ -24,7 +24,7 @@ export function* tryToConnectExistingSession(): SagaGenerator<void> {
       logger.info(`${MODULE_ID}: No existing wallet connect session found, doing nothing.`);
     }
   } catch (e) {
-    logger.error(`${MODULE_ID}: tryToConnectExistingSession failed`, e);
+    logger.error(e, `${MODULE_ID}: tryToConnectExistingSession failed`);
   }
 }
 

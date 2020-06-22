@@ -62,7 +62,7 @@ export function* loadInvestorEtoView(
     const etoData = yield call(loadInvestorEtoViewInternal, eto, routeMatch);
     yield put(actions.etoView.setEtoViewData(etoData));
   } catch (e) {
-    logger.error("Could not load eto by preview code", e);
+    logger.error(e, "Could not load eto by preview code");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW),
@@ -91,7 +91,7 @@ export function* loadInvestorEtoViewById(
     const etoData = yield call(loadInvestorEtoViewInternal, eto, routeMatch);
     yield put(actions.etoView.setEtoViewData(etoData));
   } catch (e) {
-    logger.error("Could not load eto", e);
+    logger.error(e, "Could not load eto");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO),

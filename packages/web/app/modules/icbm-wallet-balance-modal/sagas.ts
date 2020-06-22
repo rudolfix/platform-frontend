@@ -81,7 +81,7 @@ function* loadIcbmWalletMigrationTransactionSaga({
 
     yield put(actions.icbmWalletBalanceModal.loadIcbmMigrationData(walletMigrationData));
   } catch (e) {
-    logger.error("Error: ", e);
+    logger.error(e, "Error: ");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(IcbmWalletMessage.ICBM_ERROR_RUNNING_MIGRATION_TOOL),
@@ -115,7 +115,7 @@ function* loadIcbmWalletMigrationSaga({ logger, contractsService }: TGlobalDepen
     yield neuCall(loadIcbmWalletMigrationTransactionSaga);
   } catch (e) {
     yield put(actions.icbmWalletBalanceModal.hideIcbmWalletBalanceModal());
-    logger.error("Load ICBM migration wallet", e);
+    logger.error(e, "Load ICBM migration wallet");
     // todo: all texts to text resources
     if (e instanceof NoIcbmWalletError) {
       yield put(
@@ -204,7 +204,7 @@ function* downloadICBMWalletAgreement(
       ".pdf",
     );
   } catch (e) {
-    logger.error("Failed to download ICBM wallet agreement", e);
+    logger.error(e, "Failed to download ICBM wallet agreement");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(IcbmWalletMessage.ICBM_FAILED_TO_DOWNLOAD_AGREEMENT),

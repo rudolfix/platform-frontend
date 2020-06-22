@@ -266,8 +266,6 @@ workflows:
             branches:
               only:
                 - master
-                - production
-
     jobs:
       - web_install-lint-test
 

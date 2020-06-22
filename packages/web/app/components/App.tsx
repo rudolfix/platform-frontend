@@ -53,7 +53,7 @@ class AppComponent extends React.Component<IStateProps & IDispatchProps, IState>
   componentDidCatch(error: Error, errorInfo: object): void {
     this.setState({ renderingError: error });
 
-    this.logger.fatal("Fatal app error", error, errorInfo);
+    this.logger.fatal(error, "Fatal app error", errorInfo);
   }
 
   render(): React.ReactNode {

@@ -180,9 +180,7 @@ export function* handleLogOutUserInternal(
       break;
     case ELogoutReason.ALREADY_LOGGED_IN:
       logger.warn(
-        new Error(
-          "Seems like there is already active session. Please check the reason as this may be a potential bug.",
-        ),
+        "Seems like there is already active session. Please check the reason as this may be a potential bug.",
       );
       // no action is required
       break;
@@ -235,7 +233,7 @@ function* profileMonitor({ logger }: TGlobalDependencies): Generator<any, any, a
 
     yield neuCall(loadUser);
   } catch (e) {
-    logger.error("Error getting profile data", e);
+    logger.error(e, "Error getting profile data");
   }
 }
 

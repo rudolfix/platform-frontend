@@ -125,9 +125,7 @@ export function* updatePendingTxs({
     const txHash = pendingTransaction.transaction.hash;
 
     if (pendingTransaction.transactionStatus === undefined) {
-      logger.warn(
-        new Error(`Transaction status is not defined for pending transaction with hash ${txHash}.`),
-      );
+      logger.warn(`Transaction status is not defined for pending transaction with hash ${txHash}.`);
     }
 
     try {
@@ -152,7 +150,7 @@ export function* updatePendingTxs({
       } else if (error instanceof OutOfGasError) {
         transactionError = ETransactionErrorType.NOT_ENOUGH_ETHER_FOR_GAS;
       } else {
-        logger.error("Unknown Pending Tx Error from 'updatePendingTxs'", error);
+        logger.error(error, "Unknown Pending Tx Error from 'updatePendingTxs'");
       }
 
       apiPendingTx = {
@@ -193,7 +191,7 @@ function* txMonitor({ logger }: TGlobalDependencies): Generator<any, any, any> {
     try {
       yield neuCall(updatePendingTxs);
     } catch (e) {
-      logger.error("Error getting pending txs", e);
+      logger.error(e, "Error getting pending txs");
     }
 
     yield take(actions.web3.newBlockArrived.getType());

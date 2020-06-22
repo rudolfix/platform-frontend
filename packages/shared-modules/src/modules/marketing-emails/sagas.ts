@@ -17,7 +17,7 @@ function* unsubscribeEmail({ logger }: TDependencies): Generator<any, void, any>
   const unsubscribeLink = yield* select(selectUnsubscriptionLinkFromQueryString);
 
   if (!unsubscribeLink) {
-    logger.error("Unsubscribe marketing emails link is empty");
+    logger.warn("Unsubscribe marketing emails link is empty");
     return;
   }
 
@@ -26,7 +26,7 @@ function* unsubscribeEmail({ logger }: TDependencies): Generator<any, void, any>
 
     yield put(actions.unsubscribeSuccess());
   } catch (e) {
-    logger.error("Failed to unsubscribe from marketing emails", e);
+    logger.error(e, "Failed to unsubscribe from marketing emails");
     yield put(actions.unsubscribeFailure());
   }
 }

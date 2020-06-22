@@ -17,7 +17,7 @@ export function* loadLegalRepresentative({
     const result: IHttpResponse<IKycLegalRepresentative> = yield apiKycService.getLegalRepresentative();
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
   } catch (e) {
-    logger.error("Failed to load KYC representative", e);
+    logger.error(e, "Failed to load KYC representative");
 
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
   }
@@ -44,7 +44,7 @@ export function* submitLegalRepresentative(
     yield put(actions.kyc.kycUpdateLegalRepresentative(false, result.body));
     yield put(actions.kyc.toggleLegalRepresentativeModal(false));
   } catch (e) {
-    logger.error("Failed to submit KYC legal representative", e);
+    logger.error(e, "Failed to submit KYC legal representative");
 
     yield put(actions.kyc.kycUpdateLegalRepresentative(false));
     yield put(
@@ -67,7 +67,7 @@ export function* uploadLegalRepresentativeFile(
     );
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false, result.body));
   } catch (e) {
-    logger.error("Failed to upload KYC legal representative file", e);
+    logger.error(e, "Failed to upload KYC legal representative file");
 
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocument(false));
 
@@ -88,7 +88,7 @@ export function* loadLegalRepresentativeFiles({
     const result: IHttpResponse<IKycFileInfo[]> = yield apiKycService.getLegalRepresentativeDocuments();
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocuments(false, result.body));
   } catch (e) {
-    logger.error("Failed to load KYC legal representative file", e);
+    logger.error(e, "Failed to load KYC legal representative file");
 
     yield put(actions.kyc.kycUpdateLegalRepresentativeDocuments(false));
   }

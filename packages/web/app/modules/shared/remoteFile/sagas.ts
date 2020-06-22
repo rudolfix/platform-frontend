@@ -18,7 +18,7 @@ function* getRemoteFile({ fileStorageApi, logger }: TGlobalDependencies, action:
 
     onDone(undefined, fileData.body);
   } catch (e) {
-    logger.error("get remote file error", e);
+    logger.error(e, "get remote file error");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(RemoteFileMessage.GET_FILES_DETAILS_ERROR),

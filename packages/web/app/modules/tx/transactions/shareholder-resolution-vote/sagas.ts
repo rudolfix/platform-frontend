@@ -104,7 +104,7 @@ function* shareholderResolutionVote({
     yield txSendSaga(params);
     logger.info("Shareholder resolution vote successful");
   } catch (e) {
-    logger.error("Shareholder resolution vote failed", e);
+    logger.error(e, "Shareholder resolution vote failed");
   } finally {
     yield put(
       shareholderResolutionsVotingViewModuleApi.actions.refreshInvestorShareholderResolutionVotingView(

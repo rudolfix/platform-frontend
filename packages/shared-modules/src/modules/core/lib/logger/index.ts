@@ -8,7 +8,6 @@ import { isLevelAllowed } from "./utils";
 const noopLogger: ILogger = {
   setUser: () => {},
   info: () => {},
-  verbose: () => {},
   debug: () => {},
   warn: () => {},
   error: () => {},
@@ -44,39 +43,33 @@ class Logger implements ILogger {
     }
   }
 
-  info(...args: LogArg[]): void {
+  info(...args: LogArg): void {
     if (isLevelAllowed("info")) {
       this.logger.info(...args);
     }
   }
 
-  verbose(...args: LogArg[]): void {
-    if (isLevelAllowed("verbose")) {
-      this.logger.verbose(...args);
-    }
-  }
-
-  debug(...args: LogArg[]): void {
+  debug(...args: LogArg): void {
     if (isLevelAllowed("debug")) {
       this.logger.debug(...args);
     }
   }
 
-  warn(...args: ErrorArgs[]): void {
+  warn(...args: LogArg): void {
     if (isLevelAllowed("warn")) {
       this.logger.warn(...args);
     }
   }
 
-  error(...args: ErrorArgs[]): void {
+  error(...args: ErrorArgs): void {
     if (isLevelAllowed("error")) {
       this.logger.error(...args);
     }
   }
 
-  fatal(message: string, error: Error, data?: object): void {
+  fatal(...args: ErrorArgs): void {
     if (isLevelAllowed("fatal")) {
-      this.logger.fatal(message, error, data);
+      this.logger.fatal(...args);
     }
   }
 }

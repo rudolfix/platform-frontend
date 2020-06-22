@@ -4,9 +4,9 @@ const { getDefaultConfig } = require("metro-config");
 const projectRoot = path.resolve(__dirname);
 const workspaceRoot = path.resolve(projectRoot, "../..");
 
-// All linked packages used in the react-native should be linked here
-// otherwise metro is not able to resolve the modules paths
-const symlinkedModules = {
+const extraNodeModules = {
+  // All linked packages used in the react-native should be linked here
+  // otherwise metro is not able to resolve the modules paths
   "@neufund/shared-utils": path.resolve(projectRoot, "../shared"),
   "@neufund/shared-modules": path.resolve(projectRoot, "../shared-modules"),
   "@neufund/sagas": path.resolve(projectRoot, "../sagas"),
@@ -36,7 +36,7 @@ module.exports = (async () => {
     resolver: {
       assetExts: assetExts.filter(ext => ext !== "svg"),
       sourceExts: [...sourceExts, "svg"],
-      extraNodeModules: symlinkedModules,
+      extraNodeModules,
     },
   };
 })();

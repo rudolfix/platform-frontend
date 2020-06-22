@@ -21,3 +21,10 @@ https://github.com/solkaz/ts-detox-example/issues/2 get's fixed.
 
 We need to patch typings given there is not way to force no hoist in transitive dependency, and we
 end up with invalid typings for `hoist-non-react-statics`.
+
+### @react-native-community/cli-platform-android
+
+Temporary patches gradle script to be aware of process working directory (see
+https://github.com/react-native-community/cli/issues/838). I see that new release handles cwd in a
+new way therefore after `react-native-cli` update please check if patch can be removed. In general
+if `App Center` `Android` build is green then we can assume it was fixed.

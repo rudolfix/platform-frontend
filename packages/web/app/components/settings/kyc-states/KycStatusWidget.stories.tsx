@@ -1,12 +1,8 @@
+import { EKycInstantIdStatus, EKycRequestStatus, EKycRequestType } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import {
-  EKycInstantIdStatus,
-  EKycRequestStatus,
-  EKycRequestType,
-} from "../../../lib/api/kyc/KycApi.interfaces";
 import { KycStatusWidgetBase } from "./KycStatusWidget";
 
 const commonProps = {

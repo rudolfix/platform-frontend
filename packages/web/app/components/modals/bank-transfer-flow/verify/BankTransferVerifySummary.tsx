@@ -1,16 +1,15 @@
 import { ButtonArrowRight } from "@neufund/design-system";
+import { kycApi, KycBankQuintessenceBankAccount } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 import { compose } from "recompose";
 
-import { KycBankQuintessenceBankAccount } from "../../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../../modules/actions";
 import {
   selectBankTransferFlowReference,
   selectBankTransferMinAmount,
 } from "../../../../modules/bank-transfer-flow/selectors";
-import { selectQuintessenceBankAccount } from "../../../../modules/kyc/selectors";
 import { appConnect } from "../../../../store";
 import { Money } from "../../../shared/formatters/Money";
 import {
@@ -111,7 +110,7 @@ const BankTransferVerifySummaryLayout: React.FunctionComponent<IProps> = ({
 const BankTransferVerifySummary = compose<IProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
-      const quintessenceBankAccount = selectQuintessenceBankAccount(state);
+      const quintessenceBankAccount = kycApi.selectors.selectQuintessenceBankAccount(state);
 
       if (!quintessenceBankAccount) {
         throw new Error("Quintessence bank account can't be undefined");

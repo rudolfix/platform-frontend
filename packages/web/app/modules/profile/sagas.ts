@@ -12,12 +12,7 @@ import { accessWalletAndRunEffect } from "../access-wallet/sagas";
 import { actions, TActionFromCreator } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
-import {
-  selectDoesEmailExist,
-  selectUnverifiedUserEmail,
-  selectUser,
-  selectVerifiedUserEmail,
-} from "../auth/selectors";
+import { selectDoesEmailExist, selectUnverifiedUserEmail, selectUser } from "../auth/selectors";
 import { updateUser } from "../auth/user/external/sagas";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
@@ -79,7 +74,7 @@ export function* addNewEmail(
     ? createMessage(ProfileMessage.PROFILE_UPDATE_EMAIL_TITLE)
     : createMessage(ProfileMessage.PROFILE_ADD_EMAIL_TITLE);
 
-  const actualVerifiedEmail = yield select(selectVerifiedUserEmail);
+  const actualVerifiedEmail = yield select(authModuleAPI.selectors.selectVerifiedUserEmail);
   const actualUnverifiedEmail = yield select(selectUnverifiedUserEmail);
 
   if (email === actualVerifiedEmail) {

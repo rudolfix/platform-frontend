@@ -6,6 +6,7 @@ import {
   ILockedAccountAdapter,
   ILogger,
   IRateOracleAdapter,
+  IIdentityRegistryAdapter,
   TLibSymbolType,
 } from "@neufund/shared-modules";
 import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
@@ -21,6 +22,7 @@ import { walletEthModuleApi } from "modules/eth/module";
 
 import { ERC20TokenAdapterFactory } from "./ERC20TokenAdapter";
 import { ICBMLockedAccountAdapterFactory } from "./ICBMLockedAccountAdapter";
+import { IdentityRegistryAdapterFactory } from "./IdentityRegistryAdapter";
 import { LockedAccountAdapterFactory } from "./LockedAccountAdapter";
 import { RateOracleAdapterFactory } from "./RateOracleAdapter";
 import { privateSymbols } from "./symbols";
@@ -43,6 +45,8 @@ export class ContractsService implements IContractsService {
   public etherLock!: ILockedAccountAdapter;
   public icbmEuroLock!: IICBMLockedAccountAdapter;
   public icbmEtherLock!: IICBMLockedAccountAdapter;
+
+  public identityRegistry!: IIdentityRegistryAdapter;
 
   public rateOracle!: IRateOracleAdapter;
 
@@ -83,6 +87,7 @@ export class ContractsService implements IContractsService {
       icbmEuroLockAddress,
       icbmEtherLockAddress,
       tokenExchangeRateOracleAddress,
+      identityRegistryAddress,
     ] = await this.universe.getManySingletons([
       // tokens
       knownInterfaces.neumark,
@@ -93,6 +98,7 @@ export class ContractsService implements IContractsService {
       knownInterfaces.icbmEuroLock,
       knownInterfaces.icbmEtherLock,
       knownInterfaces.tokenExchangeRateOracle,
+      knownInterfaces.identityRegistry,
     ]);
 
     [
@@ -104,6 +110,7 @@ export class ContractsService implements IContractsService {
       this.icbmEuroLock,
       this.icbmEtherLock,
       this.rateOracle,
+      this.identityRegistry,
     ] = await Promise.all([
       create(ERC20TokenAdapterFactory, neumarkAddress, provider),
       create(ERC20TokenAdapterFactory, euroTokenAddress, provider),
@@ -113,6 +120,7 @@ export class ContractsService implements IContractsService {
       create(ICBMLockedAccountAdapterFactory, icbmEuroLockAddress, provider),
       create(ICBMLockedAccountAdapterFactory, icbmEtherLockAddress, provider),
       create(RateOracleAdapterFactory, tokenExchangeRateOracleAddress, provider),
+      create(IdentityRegistryAdapterFactory, identityRegistryAddress, provider),
     ]);
 
     this.logger.info("Initializing contracts via UNIVERSE is DONE.");

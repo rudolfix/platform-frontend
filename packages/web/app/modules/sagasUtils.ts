@@ -22,7 +22,7 @@ import { TActionPayload, TPattern } from "./actions";
 type TSagaWithDeps = (deps: TGlobalDependencies, ...args: any[]) => any;
 type TSagaWithDepsAndArgs<R, T extends any[]> = (deps: TGlobalDependencies, ...args: T) => R;
 
-function* neuGetContext(): Generator<any, TGlobalDependencies, any> {
+export function* neuGetContext(): Generator<any, TGlobalDependencies, any> {
   const deps: unknown = yield getContext("deps");
   return deps as TGlobalDependencies;
 }

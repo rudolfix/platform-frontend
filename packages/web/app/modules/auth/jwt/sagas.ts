@@ -21,7 +21,7 @@ import { JwtNotAvailable, MessageSignCancelledError } from "../errors";
  * If needed permissions are not present/valid will escalate permissions with authentication server
  */
 export function* ensurePermissionsArePresentAndRunEffect(
-  { logger }: TGlobalDependencies,
+  deps: TGlobalDependencies,
   effect: Generator<any, any, any>,
   permissions: Array<EJwtPermissions> = [],
   title: TMessage,
@@ -44,7 +44,7 @@ export function* ensurePermissionsArePresentAndRunEffect(
     yield effect;
   } catch (error) {
     if (error instanceof MessageSignCancelledError) {
-      logger.info("Signing Cancelled");
+      deps.logger.info("Signing Cancelled");
     } else {
       throw error;
     }

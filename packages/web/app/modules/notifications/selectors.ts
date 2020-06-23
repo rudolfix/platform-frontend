@@ -1,9 +1,9 @@
+import { EKycRequestStatus, kycApi } from "@neufund/shared-modules";
 import { includes, some } from "lodash";
 import { createSelector } from "reselect";
 
 import { appRoutes } from "../../components/appRoutes";
 import { USERS_WITH_ACCOUNT_SETUP } from "../../config/constants";
-import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { TAppGlobalState } from "../../store";
 import {
   selectBackupCodesVerified,
@@ -11,7 +11,6 @@ import {
   selectIsUserEmailVerified,
   selectUserType,
 } from "../auth/selectors";
-import { selectKycIsLoading, selectKycRequestStatus } from "../kyc/selectors";
 import { settingsNotificationInvestor, settingsNotificationIssuer } from "./reducer";
 import { INotification } from "./types";
 
@@ -19,7 +18,7 @@ export const selectNotifications = (state: TAppGlobalState): ReadonlyArray<INoti
   state.notifications.notifications;
 
 export const selectIsActionRequiredSettings = (state: TAppGlobalState): boolean => {
-  if (selectKycIsLoading(state)) {
+  if (kycApi.selectors.selectKycIsLoading(state)) {
     return false;
   }
   return (
@@ -27,7 +26,7 @@ export const selectIsActionRequiredSettings = (state: TAppGlobalState): boolean 
     !selectBackupCodesVerified(state) ||
     !includes(
       [EKycRequestStatus.OUTSOURCED, EKycRequestStatus.PENDING, EKycRequestStatus.ACCEPTED],
-      selectKycRequestStatus(state),
+      kycApi.selectors.selectKycRequestStatus(state),
     )
   );
 };

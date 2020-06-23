@@ -1,7 +1,7 @@
+import { EKycRequestType } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
 import { AcceptedKYCDocumentTypes } from "../kyc/utils";
 import { MultiFileUpload } from "./MultiFileUpload";
 

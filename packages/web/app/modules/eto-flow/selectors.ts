@@ -1,3 +1,4 @@
+import { authModuleAPI, EKycRequestStatus, kycApi } from "@neufund/shared-modules";
 import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared-utils";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
@@ -18,9 +19,7 @@ import {
   EProductName,
   TEtoProduct,
 } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { TAppGlobalState } from "../../store";
-import { selectIsUserEmailVerified } from "../auth/selectors";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
 import { selectAgreementsStatus, selectEtoContract, selectEtoSubState } from "../eto/selectors";
 import {
@@ -30,7 +29,6 @@ import {
   TOfferingAgreementsStatus,
 } from "../eto/types";
 import { isOnChain } from "../eto/utils";
-import { selectKycRequestStatus } from "../kyc/selectors";
 import { EAgreementType } from "../tx/transactions/nominee/sign-agreement/types";
 import { IEtoFlowState } from "./types";
 import { isValidEtoStartDate, sortProducts } from "./utils";
@@ -255,7 +253,8 @@ export const selectUploadedInvestmentAgreement = (
 };
 
 export const userHasKycAndEmailVerified = (state: TAppGlobalState) =>
-  selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED && selectIsUserEmailVerified(state);
+  kycApi.selectors.selectKycRequestStatus(state) === EKycRequestStatus.ACCEPTED &&
+  authModuleAPI.selectors.selectIsUserEmailVerified(state);
 
 export const selectIsGeneralEtoLoading = (state: TAppGlobalState) =>
   selectIssuerEtoLoading(state) && selectEtoDocumentsLoading(state.etoDocuments);

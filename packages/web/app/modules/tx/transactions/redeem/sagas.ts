@@ -1,5 +1,5 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import { kycApi, TBankAccount, walletApi } from "@neufund/shared-modules";
 import {
   compareBigNumbers,
   convertToUlps,
@@ -17,8 +17,6 @@ import {
   selectBankFeeUlps,
   selectIsBankAccountVerified,
 } from "../../../bank-transfer-flow/selectors";
-import { selectBankAccount } from "../../../kyc/selectors";
-import { TBankAccount } from "../../../kyc/types";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEthereumAddress } from "../../../web3/selectors";
 import { txSendSaga } from "../../sender/sagas";
@@ -70,7 +68,7 @@ function* startNEuroRedeemGenerator(_: TGlobalDependencies): any {
 
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
-  const bankAccount: DeepReadonly<TBankAccount> = yield select(selectBankAccount);
+  const bankAccount: DeepReadonly<TBankAccount> = yield select(kycApi.selectors.selectBankAccount);
   if (!bankAccount.hasBankAccount) {
     throw new Error("During redeem process user should have bank account");
   }

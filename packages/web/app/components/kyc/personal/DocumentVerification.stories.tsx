@@ -1,9 +1,9 @@
+import { EKycInstantIdProvider, EKycRequestStatus } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EKycInstantIdProvider, EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
-import { OnfidoSDK } from "../../../lib/dependencies/onfido/OnfidoSDK";
+import { OnfidoSDK } from "../../../modules/instant-id/lib/onfido/OnfidoSDK";
 import { NONE_KYC_INSTANTID_PROVIDER } from "../utils";
 import { KycPersonalDocumentVerificationComponent } from "./DocumentVerification";
 

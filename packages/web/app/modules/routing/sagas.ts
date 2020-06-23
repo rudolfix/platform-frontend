@@ -1,5 +1,5 @@
-import { Effect, fork, put, select } from "@neufund/sagas";
-import { EUserType } from "@neufund/shared-modules";
+import { Effect, fork, put, SagaGenerator, select } from "@neufund/sagas";
+import { EUserType, routingModuleApi } from "@neufund/shared-modules";
 import { LocationChangeAction, RouterState } from "connected-react-router";
 import { match } from "react-router";
 
@@ -24,7 +24,7 @@ export const GREYP_PREVIEW_CODE = "e2b6949e-951d-4e99-ac11-534fdad86a80";
 function* openInNewWindowSaga(
   _: TGlobalDependencies,
   action: TActionFromCreator<typeof actions.routing.openInNewWindow>,
-): Generator<any, any, any> {
+): SagaGenerator<void> {
   const { path } = action.payload;
 
   //Open the popup and set the opener and referrer policy instruction
@@ -110,7 +110,65 @@ export function* routeAction<P>(
   }
 }
 
-export function* routingSagas(): Generator<unknown, void> {
+/**
+ * Forward routes from shared modules
+ */
+export function* sharedRoutes(): Generator<unknown, void> {
+  // default routes
+  yield fork(neuTakeEvery, routingModuleApi.actions.goToDashboard, function*(): SagaGenerator<
+    void
+  > {
+    yield put(actions.routing.goToDashboard());
+  });
+  yield fork(neuTakeEvery, routingModuleApi.actions.goHome, function*(): SagaGenerator<void> {
+    yield put(actions.routing.goHome());
+  });
+  yield fork(neuTakeEvery, routingModuleApi.actions.goBack, function*(): SagaGenerator<void> {
+    yield put(actions.routing.goBack());
+  });
+  // kyc routes
+  yield fork(
+    neuTakeEvery,
+    routingModuleApi.actions.goToKYCIndividualAddress,
+    function*(): SagaGenerator<void> {
+      yield put(actions.routing.goToKYCIndividualAddress());
+    },
+  );
+  yield fork(
+    neuTakeEvery,
+    routingModuleApi.actions.goToKYCIndividualFinancialDisclosure,
+    function*(): SagaGenerator<void> {
+      yield put(actions.routing.goToKYCIndividualFinancialDisclosure());
+    },
+  );
+  yield fork(neuTakeEvery, routingModuleApi.actions.goToKYCSuccess, function*(): SagaGenerator<
+    void
+  > {
+    yield put(actions.routing.goToKYCSuccess());
+  });
+  yield fork(neuTakeEvery, routingModuleApi.actions.goToKYCBusinessData, function*(): SagaGenerator<
+    void
+  > {
+    yield put(actions.routing.goToKYCBusinessData());
+  });
+  yield fork(
+    neuTakeEvery,
+    routingModuleApi.actions.goToKYCManagingDirectors,
+    function*(): SagaGenerator<void> {
+      yield put(actions.routing.goToKYCManagingDirectors());
+    },
+  );
+  yield fork(
+    neuTakeEvery,
+    routingModuleApi.actions.goToKYCIndividualDocumentVerification,
+    function*(): SagaGenerator<void> {
+      yield put(actions.routing.goToKYCIndividualDocumentVerification());
+    },
+  );
+}
+
+export function* routingSagas(): SagaGenerator<void> {
   yield fork(neuTakeEvery, actions.routing.openInNewWindow, openInNewWindowSaga);
   yield fork(neuTakeEvery, "@@router/LOCATION_CHANGE", startRouteBasedSagas);
+  yield fork(sharedRoutes);
 }

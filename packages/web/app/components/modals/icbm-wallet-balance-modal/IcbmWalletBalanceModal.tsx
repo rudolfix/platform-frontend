@@ -1,9 +1,8 @@
-import { walletApi } from "@neufund/shared-modules";
+import { kycApi, walletApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { compose } from "recompose";
 
 import { actions } from "../../../modules/actions";
-import { selectIsUserVerified } from "../../../modules/auth/selectors";
 import {
   IWalletMigrationData,
   TWalletMigrationSteps,
@@ -116,7 +115,7 @@ const IcbmWalletBalanceModal = compose<IStateProps & IDispatchProps, {}>(
       ethAddress: selectIcbmWalletEthAddress(state),
       neumarksDue: selectEtherNeumarksDueIcbmModal(state),
       etherBalance: selectEtherBalanceIcbmModal(state),
-      isUserVerified: selectIsUserVerified(state),
+      isUserVerified: kycApi.selectors.selectIsUserVerified(state),
       walletMigrationData: selectWalletMigrationData(state.icbmWalletBalanceModal),
       lockedWalletConnected: walletApi.selectors.selectLockedWalletConnected(state),
       currentMigrationStep: selectWalletMigrationCurrentStep(state),

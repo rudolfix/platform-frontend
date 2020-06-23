@@ -1,9 +1,9 @@
+import { EKycRequestType, IKycFileInfo } from "@neufund/shared-modules";
 import { ArrayWithAtLeastOneMember } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { EKycRequestType, IKycFileInfo } from "../../lib/api/kyc/KycApi.interfaces";
 import { Dropzone } from "./Dropzone";
 import { TAcceptedFileType } from "./forms/fields/utils";
 import { ResponsiveImage } from "./ResponsiveImage";

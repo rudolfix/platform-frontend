@@ -1,9 +1,8 @@
+import { kycApi, TBankAccount, TClaims } from "@neufund/shared-modules";
 import { DeepReadonly } from "@neufund/shared-utils";
 import { createSelector } from "reselect";
 
 import { TAppGlobalState } from "../../store";
-import { selectBankAccount, selectClaims } from "../kyc/selectors";
-import { TBankAccount, TClaims } from "../kyc/types";
 import { EBankTransferFlowState } from "./reducer";
 
 export const selectBankTransferFlow = (state: TAppGlobalState) => state.bankTransferFLow;
@@ -60,7 +59,7 @@ export const selectIsBankAccountVerified = createSelector<
   DeepReadonly<TBankAccount> | undefined,
   TClaims | undefined,
   boolean
->(selectBankAccount, selectClaims, (bankAccount, claims) => {
+>(kycApi.selectors.selectBankAccount, kycApi.selectors.selectClaims, (bankAccount, claims) => {
   // claims and bankAccount can be undefined while loading
   if (claims && bankAccount) {
     return bankAccount.hasBankAccount && claims.hasBankAccount;

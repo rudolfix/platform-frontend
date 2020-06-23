@@ -1,5 +1,5 @@
 import { all, fork, put, race, select, take } from "@neufund/sagas";
-import { EUserType } from "@neufund/shared-modules";
+import { EUserType, kycApi } from "@neufund/shared-modules";
 import {
   convertFromUlps,
   Dictionary,
@@ -45,7 +45,6 @@ import { TTranslatedString } from "../../types";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified, selectUserId, selectUserType } from "../auth/selectors";
 import { shouldLoadBookbuildingStats } from "../bookbuilding-flow/utils";
-import { selectClientJurisdiction } from "../kyc/selectors";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery, neuTakeLatest, neuTakeUntil } from "../sagasUtils";
 import { selectTxAdditionalData, selectTxType } from "../tx/sender/selectors";
@@ -281,7 +280,9 @@ export function* loadEtos({ apiEtoService, logger }: TGlobalDependencies): any {
 
   try {
     const etos: TEtoDataWithCompany[] = yield apiEtoService.getEtos();
-    const jurisdiction: string | undefined = yield select(selectClientJurisdiction);
+    const jurisdiction: string | undefined = yield select(
+      kycApi.selectors.selectClientJurisdiction,
+    );
 
     yield put(actions.bookBuilding.loadBookBuildingListStats(etos.map(eto => eto.etoId)));
 
@@ -570,8 +571,8 @@ export function* verifyEtoAccess(
   // @See https://github.com/Neufund/platform-frontend/issues/2789#issuecomment-489084892
   if (isRestrictedEto(eto)) {
     if (userIsFullyVerified) {
-      const jurisdiction: ReturnType<typeof selectClientJurisdiction> = yield select(
-        selectClientJurisdiction,
+      const jurisdiction: ReturnType<typeof kycApi.selectors.selectClientJurisdiction> = yield select(
+        kycApi.selectors.selectClientJurisdiction,
       );
 
       if (jurisdiction === undefined) {

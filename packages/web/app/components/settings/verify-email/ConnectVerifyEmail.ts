@@ -1,3 +1,4 @@
+import { authModuleAPI } from "@neufund/shared-modules";
 import * as React from "react";
 import { compose } from "recompose";
 
@@ -6,7 +7,6 @@ import {
   selectIsThereUnverifiedEmail,
   selectIsUserEmailVerified,
   selectUnverifiedUserEmail,
-  selectVerifiedUserEmail,
 } from "../../../modules/auth/selectors";
 import { selectIsCancelEmail } from "../../../modules/profile/reducer";
 import { selectIsConnectedButtonLocked } from "../../../modules/verify-email-widget/reducer";
@@ -38,7 +38,7 @@ const connectVerifyEmailComponent = <T extends {}>(
         isUserEmailVerified: selectIsUserEmailVerified(s),
         isThereUnverifiedEmail: selectIsThereUnverifiedEmail(s),
         isEmailTemporaryCancelled: selectIsCancelEmail(s.profile),
-        verifiedEmail: selectVerifiedUserEmail(s),
+        verifiedEmail: authModuleAPI.selectors.selectVerifiedUserEmail(s),
         unverifiedEmail: selectUnverifiedUserEmail(s),
         isLocked: selectIsConnectedButtonLocked(s.verifyEmailWidgetState),
       }),

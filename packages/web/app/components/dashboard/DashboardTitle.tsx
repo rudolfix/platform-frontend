@@ -1,8 +1,8 @@
+import { kycApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
-import { selectIndividualData } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 
 import * as styles from "./Dashboard.module.scss";
@@ -32,7 +32,7 @@ export const DashboardTitleLarge: React.FunctionComponent = () => (
 export const DashboardTitle = compose<IDashboardTitleProps, {}>(
   appConnect<IDashboardTitleProps>({
     stateToProps: state => ({
-      firstName: selectIndividualData(state)?.firstName,
+      firstName: kycApi.selectors.selectIndividualData(state)?.firstName,
     }),
   }),
   branch<IDashboardTitleProps>(

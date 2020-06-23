@@ -1,9 +1,8 @@
+import { EKycRequestType, kycApi } from "@neufund/shared-modules";
 import { ECountries, NEUR_ALLOWED_US_STATES } from "@neufund/shared-utils";
 
-import { EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
 import { TAppGlobalState } from "../../store";
 import { selectIsUserFullyVerified } from "../auth/selectors";
-import { selectIndividualAddress, selectKycRequestType } from "../kyc/selectors";
 import { ENEURWalletStatus } from "./types";
 
 // TODO: Move to shared wallet module when user status is moved to shared
@@ -14,8 +13,8 @@ export const selectNEURStatus = (state: TAppGlobalState): ENEURWalletStatus => {
     return ENEURWalletStatus.DISABLED_NON_VERIFIED;
   }
 
-  const kycType = selectKycRequestType(state);
-  const address = selectIndividualAddress(state);
+  const kycType = kycApi.selectors.selectKycRequestType(state);
+  const address = kycApi.selectors.selectIndividualAddress(state);
 
   // In case it's Individual request and country is US we need to apply additional checks
   if (

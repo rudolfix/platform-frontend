@@ -2,6 +2,7 @@ import { EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 
 import { IERC20TokenAdapter } from "./IERC20TokenAdapter";
+import { IIdentityRegistryAdapter } from "./IIdentityRegistryAdapter";
 import { IICBMLockedAccountAdapter, ILockedAccountAdapter } from "./ILockedAccountAdapter";
 import { IRateOracleAdapter } from "./IRateOracleAdapter";
 
@@ -29,6 +30,11 @@ interface IContractsService {
   icbmEtherLock: IICBMLockedAccountAdapter;
   euroLock: ILockedAccountAdapter;
   etherLock: ILockedAccountAdapter;
+
+  /**
+   * Identity
+   */
+  identityRegistry: IIdentityRegistryAdapter;
 
   /**
    * Services

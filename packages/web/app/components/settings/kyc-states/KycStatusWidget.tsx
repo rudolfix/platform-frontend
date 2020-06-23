@@ -1,4 +1,5 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
+import { EKycInstantIdStatus, EKycRequestStatus, EKycRequestType } from "@neufund/shared-modules";
 import { InvariantError } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
@@ -7,11 +8,6 @@ import { Col, Row } from "reactstrap";
 import { compose } from "recompose";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import {
-  EKycInstantIdStatus,
-  EKycRequestStatus,
-  EKycRequestType,
-} from "../../../lib/api/kyc/KycApi.interfaces";
 import { THocProps } from "../../../types";
 import { EColumnSpan } from "../../layouts/Container";
 import { LoadingIndicator } from "../../shared/loading-indicator";

@@ -1,8 +1,8 @@
+import { EKycRequestStatus, EKycRequestType } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EKycRequestStatus, EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { AccountSetupBackupSeedComponent } from "../../settings/backup-seed/AccountSetupBackupSeedComponent";
 import { SetEmailComponent } from "../../settings/verify-email/AccountSetupVerifyEmailComponent";
 import { AccountSetupKycComponent } from "./AccountSetupKycComponent";

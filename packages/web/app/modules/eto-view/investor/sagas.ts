@@ -1,4 +1,5 @@
 import { call, fork, put, select } from "@neufund/sagas";
+import { kycApi } from "@neufund/shared-modules";
 import { match } from "react-router";
 
 import { EtoMessage } from "../../../components/translatedMessages/messages";
@@ -12,7 +13,6 @@ import {
   verifyEtoAccess,
 } from "../../eto/sagas";
 import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
-import { selectIsUserVerifiedOnBlockchain } from "../../kyc/selectors";
 import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { ensureEtoJurisdiction } from "../../routing/eto-view/sagas";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
@@ -25,7 +25,7 @@ function* loadInvestorEtoViewInternal(
 ): Generator<any, TReadyEtoViewData, any> {
   yield call(ensureEtoJurisdiction, eto.product.jurisdiction, routeMatch.params.jurisdiction);
 
-  const userIsFullyVerified = yield select(selectIsUserVerifiedOnBlockchain);
+  const userIsFullyVerified = yield select(kycApi.selectors.selectIsUserVerifiedOnBlockchain);
 
   yield neuCall(verifyEtoAccess, eto, userIsFullyVerified);
 

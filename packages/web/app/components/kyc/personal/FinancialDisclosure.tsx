@@ -1,16 +1,16 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import {
+  IKycIndividualData,
+  kycApi,
+  KycPersonalDataSchemaWithFinancialDisclosureRequired,
+} from "@neufund/shared-modules";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import {
-  IKycIndividualData,
-  KycPersonalDataSchemaWithFinancialDisclosureRequired,
-} from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectIndividualData } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import {
@@ -111,7 +111,7 @@ const FinancialDisclosureForm = withFormik<IStateProps & IDispatchProps, IKycInd
 export const KYCFinancialDisclosure = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      currentValues: selectIndividualData(state),
+      currentValues: kycApi.selectors.selectIndividualData(state),
     }),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCIndividualAddress()),

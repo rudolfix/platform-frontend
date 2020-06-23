@@ -1,4 +1,11 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import {
+  IKycBusinessData,
+  IKycFileInfo,
+  IKycManagingDirector,
+  kycApi,
+  KycManagingDirectorSchema,
+} from "@neufund/shared-modules";
 import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
@@ -7,14 +14,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, ModalFooter, Row } from "reactstrap";
 import { compose } from "recompose";
 
-import {
-  IKycBusinessData,
-  IKycFileInfo,
-  IKycManagingDirector,
-  KycManagingDirectorSchema,
-} from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectManagingDirector } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import {
@@ -303,7 +303,7 @@ export const ManagingDirectorsComponent: React.FunctionComponent<IProps> = ({
 
 export const ManagingDirectors = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: state => selectManagingDirector(state),
+    stateToProps: state => kycApi.selectors.selectManagingDirector(state),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCBusinessData()),
       onContinue: () => dispatch(actions.routing.goToKYCBeneficialOwners()),

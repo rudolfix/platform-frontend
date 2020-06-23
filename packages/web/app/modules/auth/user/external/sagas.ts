@@ -1,10 +1,9 @@
 import { call, put, SagaGenerator } from "@neufund/sagas";
-import { authModuleAPI, IUserInput } from "@neufund/shared-modules";
+import { authModuleAPI, IUserInput, kycApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { actions } from "../../../actions";
 import { stopServices } from "../../../init/sagas";
-import { loadKycRequestData } from "../../../kyc/sagas";
 import { neuCall } from "../../../sagasUtils";
 import { loadPreviousWallet } from "../../../web3/sagas";
 
@@ -17,7 +16,7 @@ export function* loadUser(): SagaGenerator<void> {
 
   yield* call(authModuleAPI.sagas.loadUser);
 
-  yield* neuCall(loadKycRequestData);
+  yield* neuCall(kycApi.sagas.loadKycRequestData);
 }
 
 export function* logoutUser({

@@ -1,3 +1,4 @@
+import { kycApi, TBankAccount } from "@neufund/shared-modules";
 import { DeepReadonly } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
@@ -5,8 +6,6 @@ import { compose } from "recompose";
 import { actions } from "../../../modules/actions";
 import { EBankTransferType } from "../../../modules/bank-transfer-flow/reducer";
 import { selectIsBankAccountVerified } from "../../../modules/bank-transfer-flow/selectors";
-import { selectBankAccount } from "../../../modules/kyc/selectors";
-import { TBankAccount } from "../../../modules/kyc/types";
 import { selectNEURStatus } from "../../../modules/wallet/selectors";
 import { ENEURWalletStatus } from "../../../modules/wallet/types";
 import { appConnect } from "../../../store";
@@ -33,7 +32,7 @@ const connectLinkBankAccountComponent = () => <T extends {}>(
     }),
     appConnect<IStateProps, IDispatchProps, T>({
       stateToProps: state => ({
-        bankAccount: selectBankAccount(state),
+        bankAccount: kycApi.selectors.selectBankAccount(state),
         isBankAccountVerified: selectIsBankAccountVerified(state),
         neurStatus: selectNEURStatus(state),
       }),

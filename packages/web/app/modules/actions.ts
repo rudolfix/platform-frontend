@@ -1,5 +1,5 @@
 import { StringableActionCreator } from "@neufund/sagas";
-import { gasApi, txHistoryApi, walletApi } from "@neufund/shared-modules";
+import { gasApi, kycApi, txHistoryApi, walletApi } from "@neufund/shared-modules";
 import { TDictionaryValues } from "@neufund/shared-utils";
 import { LocationChangeAction } from "connected-react-router";
 
@@ -20,9 +20,9 @@ import { genericModalActions } from "./generic-modal/actions";
 import { icbmWalletBalanceModalActions } from "./icbm-wallet-balance-modal/actions";
 import { immutableStorageActions } from "./immutable-file/actions";
 import { initActions } from "./init/actions";
+import { instantIdApi } from "./instant-id/module";
 import { investmentFlowActions } from "./investment-flow/actions";
 import { investorEtoTicketActions } from "./investor-portfolio/actions";
-import { kycActions } from "./kyc/actions";
 import { nomineeFlowActions } from "./nominee-flow/actions";
 import { notificationModalActions } from "./notification-modal/actions";
 import { notificationActions } from "./notifications/actions";
@@ -43,6 +43,7 @@ import { web3Actions } from "./web3/actions";
 /** You should add new actions also here (with a namespace).*/
 export const actions = {
   ...txActions,
+  instantId: instantIdApi.actions,
   txHistory: txHistoryApi.actions,
   bankTransferFlow: bankTransferFLowActions,
   contracts: contractsActions,
@@ -52,7 +53,7 @@ export const actions = {
   genericModal: genericModalActions,
   accessWallet: accessWalletActions,
   init: initActions,
-  kyc: kycActions,
+  kyc: kycApi.actions,
   routing: routingActions,
   walletSelector: walletSelectorActions,
   web3: web3Actions,

@@ -208,7 +208,7 @@ export const selectNomineeActiveEtoCompanyName = (state: TAppGlobalState) => {
   return previewCode && selectNomineeCompanyName(state, previewCode);
 };
 
-export const selectClaimStateDeadlineTimestamp = (state: TAppGlobalState) => {
+export const selectClaimstateDeadlineTimestamp = (state: TAppGlobalState) => {
   const previewCode = selectNomineeActiveEtoPreviewCode(state);
   const startOfClaimState =
     previewCode && selectStartOfOnchainState(state, previewCode, EETOStateOnChain.Claim);

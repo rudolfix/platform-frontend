@@ -1,12 +1,8 @@
+import { EKycRequestType, IKycFileInfo, kycApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { compose } from "redux";
 
-import { EKycRequestType, IKycFileInfo } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import {
-  selectBusinessFilesUploading,
-  selectIndividualFilesUploading,
-} from "../../../modules/kyc/selectors";
 import { AppActionTypes, appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
@@ -67,8 +63,8 @@ export const KYCAddDocuments = compose<React.FunctionComponent<IOwnProps>>(
         EKycUploadType.US_ACCREDITATION,
         EKycUploadType.PROOF_OF_ADDRESS,
       ].includes(ownProps.uploadType)
-        ? selectIndividualFilesUploading(state)
-        : selectBusinessFilesUploading(state),
+        ? kycApi.selectors.selectIndividualFilesUploading(state)
+        : kycApi.selectors.selectBusinessFilesUploading(state),
       title: "",
     }),
     dispatchToProps: (dispatch, ownProps) => ({

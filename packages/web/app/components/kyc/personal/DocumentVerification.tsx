@@ -1,25 +1,20 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import {
+  EKycInstantIdProvider,
+  EKycRequestStatus,
+  kycApi,
+  TInstantIdNoneProvider,
+} from "@neufund/shared-modules";
 import { assertNever, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { symbols } from "../../../di/symbols";
-import {
-  EKycInstantIdProvider,
-  EKycRequestStatus,
-  TInstantIdNoneProvider,
-} from "../../../lib/api/kyc/KycApi.interfaces";
-import { OnfidoSDK } from "../../../lib/dependencies/onfido/OnfidoSDK";
 import { actions } from "../../../modules/actions";
-import { selectKycIdNowRedirectUrl } from "../../../modules/kyc/instant-id/id-now/selectors";
-import { selectKycOnfidoRequestStartError } from "../../../modules/kyc/instant-id/onfido/selectors";
-import {
-  selectKycInstantIdProvider,
-  selectKycRecommendedInstantIdProvider,
-  selectKycRequestStatus,
-  selectKycSupportedInstantIdProviders,
-} from "../../../modules/kyc/selectors";
+import { selectKycIdNowRedirectUrl } from "../../../modules/instant-id/id-now/selectors";
+import { OnfidoSDK } from "../../../modules/instant-id/lib/onfido/OnfidoSDK";
+import { instantIdApi } from "../../../modules/instant-id/module";
+import { selectKycOnfidoRequestStartError } from "../../../modules/instant-id/onfido/selectors";
 import { ENotificationType } from "../../../modules/notifications/types";
 import { appConnect } from "../../../store";
 import { TTranslatedString } from "../../../types";
@@ -284,25 +279,29 @@ export const KycPersonalDocumentVerification = compose<
 >(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      supportedInstantIdProviders: nonNullable(selectKycSupportedInstantIdProviders(state)),
-      recommendedInstantIdProvider: nonNullable(selectKycRecommendedInstantIdProvider(state)),
-      currentProvider: selectKycInstantIdProvider(state),
-      requestStatus: selectKycRequestStatus(state),
+      supportedInstantIdProviders: nonNullable(
+        kycApi.selectors.selectKycSupportedInstantIdProviders(state),
+      ),
+      recommendedInstantIdProvider: nonNullable(
+        kycApi.selectors.selectKycRecommendedInstantIdProvider(state),
+      ),
+      currentProvider: kycApi.selectors.selectKycInstantIdProvider(state),
+      requestStatus: kycApi.selectors.selectKycRequestStatus(state),
       idNowRedirectUrl: selectKycIdNowRedirectUrl(state),
       onfidoRequestStartError: selectKycOnfidoRequestStartError(state),
     }),
     dispatchToProps: dispatch => ({
-      onStartIdNow: () => dispatch(actions.kyc.startIdNowRequest()),
-      onStartOnfido: () => dispatch(actions.kyc.startOnfidoRequest()),
+      onStartIdNow: () => dispatch(instantIdApi.actions.startIdNowRequest()),
+      onStartOnfido: () => dispatch(instantIdApi.actions.startOnfidoRequest()),
       onManualVerification: () => dispatch(actions.routing.goToKYCIndividualUpload()),
       goBack: () => dispatch(actions.routing.goToKYCIndividualFinancialDisclosure()),
       goToDashboard: () => dispatch(actions.routing.goToDashboard()),
     }),
   }),
-  withDependencies<TDependenciesProps>({ onfidoSdk: symbols.onfidoSdk }),
+  withDependencies<TDependenciesProps>({ onfidoSdk: instantIdApi.symbols.onfidoSDK }),
   onLeaveAction({
     actionCreator: d => {
-      d(actions.kyc.stopOnfidoRequest());
+      d(instantIdApi.actions.stopOnfidoRequest());
     },
   }),
 )(KycPersonalDocumentVerificationComponent);

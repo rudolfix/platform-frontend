@@ -1,3 +1,10 @@
+import {
+  EKycRequestType,
+  IKycBusinessData,
+  IKycFileInfo,
+  kycApi,
+  KycBusinessDataSchema,
+} from "@neufund/shared-modules";
 import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
@@ -6,14 +13,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { compose } from "recompose";
 
-import {
-  EKycRequestType,
-  IKycBusinessData,
-  IKycFileInfo,
-  KycBusinessDataSchema,
-} from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectBusinessData } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import {
@@ -164,7 +164,7 @@ const KYCEnhancedForm = withFormik<IProps, IKycBusinessData>({
 
 export const KycBusinessData = compose<IProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: state => selectBusinessData(state),
+    stateToProps: state => kycApi.selectors.selectBusinessData(state),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCHome()),
       onContinue: (values: IKycBusinessData) => dispatch(actions.kyc.kycSubmitBusinessData(values)),

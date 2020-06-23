@@ -5,11 +5,11 @@ import {
   EButtonSize,
   InlineIcon,
 } from "@neufund/design-system";
+import { KycBankVerifiedBankAccount } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../config/externalRoutes";
-import { KycBankVerifiedBankAccount } from "../../lib/api/kyc/KycApi.interfaces";
 import { Container, EColumnSpan } from "../layouts/Container";
 import { BankAccountDetails } from "./bank-account/BankAccount";
 

@@ -1,12 +1,10 @@
 import { all, call, fork, put, select, take } from "@neufund/sagas";
-import { tokenPriceModuleApi, walletApi } from "@neufund/shared-modules";
+import { kycApi, tokenPriceModuleApi, walletApi } from "@neufund/shared-modules";
 import { addBigNumbers, compareBigNumbers } from "@neufund/shared-utils";
 
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
 import { selectIsUserFullyVerified } from "../auth/selectors";
-import { loadBankAccountDetails } from "../kyc/sagas";
-import { selectBankAccount } from "../kyc/selectors";
 import { neuCall, neuTakeUntil } from "../sagasUtils";
 import { selectNEURStatus } from "../wallet/selectors";
 import { ENEURWalletStatus } from "../wallet/types";
@@ -88,11 +86,14 @@ export function* populateWalletData(): Generator<any, TBasicBalanceData[], any> 
 
 export function* loadWalletView(): Generator<any, void, any> {
   try {
-    yield all([neuCall(walletApi.sagas.loadWalletDataSaga), neuCall(loadBankAccountDetails)]);
+    yield all([
+      neuCall(walletApi.sagas.loadWalletDataSaga),
+      neuCall(kycApi.sagas.loadBankAccountDetails),
+    ]);
 
     const userIsFullyVerified = yield* select(selectIsUserFullyVerified);
     const userAddress = yield* select(selectEthereumAddress);
-    const bankAccount = yield* select(selectBankAccount);
+    const bankAccount = yield* select(kycApi.selectors.selectBankAccount);
 
     const balanceData = (yield* call(populateWalletData)).filter(
       (balance: TBasicBalanceData) => isMainBalance(balance) || hasFunds(balance),

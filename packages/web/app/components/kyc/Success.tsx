@@ -1,11 +1,10 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { EKycRequestType, kycApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectKycRequestType } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { withHeaderButton } from "../../utils/react-connected-components/withHeaderButton";
 import { withProgress } from "../../utils/react-connected-components/withProgress";
@@ -72,7 +71,7 @@ const KycSuccessLayout: React.FunctionComponent<IStateProps & IDispatchProps> = 
 const KycSuccess = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      requestType: selectKycRequestType(state),
+      requestType: kycApi.selectors.selectKycRequestType(state),
     }),
     dispatchToProps: dispatch => ({
       goToPersonalAddAdditional: () => dispatch(actions.routing.goToKYCIndividualUpload()),

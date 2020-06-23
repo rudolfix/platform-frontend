@@ -15,7 +15,6 @@ import { immutableFileSagas } from "./immutable-file/sagas";
 import { initSagas } from "./init/sagas";
 import { investmentFlowSagas } from "./investment-flow/sagas";
 import { investorTicketsSagas } from "./investor-portfolio/sagas";
-import { kycSagas } from "./kyc/sagas";
 import { marketingUnsubscribeView } from "./marketing-unsubscribe-view/sagas";
 import { nomineeFlowSagas } from "./nominee-flow/sagas";
 import { notificationModalSagas } from "./notification-modal/sagas";
@@ -79,12 +78,6 @@ function* allSagas(): Generator<any, any, any> {
       [actions.init.startServices, actions.init.restartServices],
       actions.init.stopServices,
       txUserFlowSagasWatcher,
-    ),
-    fork(
-      neuTakeUntil,
-      [actions.init.startServices, actions.init.restartServices],
-      actions.init.stopServices,
-      kycSagas,
     ),
     fork(
       neuTakeUntil,

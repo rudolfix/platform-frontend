@@ -1,8 +1,8 @@
 import { all } from "@neufund/sagas";
+import { kycApi } from "@neufund/shared-modules";
 
 import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { IdentityRegistry } from "../../../../lib/contracts/IdentityRegistry";
-import { deserializeClaims } from "../../../kyc/utils";
 import { isAddressValid } from "../../../web3/utils";
 import { EAdditionalValidationDataNotifications } from "../reducer";
 
@@ -24,7 +24,7 @@ export function* txProcessAddressValidations(
     isSmartContract: yield web3Manager.isSmartContract(address),
   });
 
-  const deserializedClaims = deserializeClaims(claims);
+  const deserializedClaims = kycApi.utils.deserializeClaims(claims);
   const newAddress = transactionsCount === 0;
 
   let notifications: EAdditionalValidationDataNotifications[] = [];

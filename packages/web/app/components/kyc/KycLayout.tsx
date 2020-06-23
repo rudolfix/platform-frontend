@@ -1,12 +1,8 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
+import { EKycInstantIdStatus, EKycRequestStatus, EKycRequestType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import {
-  EKycInstantIdStatus,
-  EKycRequestStatus,
-  EKycRequestType,
-} from "../../lib/api/kyc/KycApi.interfaces";
 import { KycPanel } from "./KycPanel";
 import { KycSubmitedRouter } from "./KycSubmitedRouter";
 import { KycRouter } from "./Router";

@@ -1,11 +1,10 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { EKycRequestType, IKycFileInfo, kycApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { EKycRequestType, IKycFileInfo } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectIndividualFilesUploading } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { MultiFileUpload } from "../../shared/MultiFileUpload";
@@ -83,7 +82,7 @@ export const KYCPersonalUpload = compose<React.FunctionComponent>(
     stateToProps: state => ({
       files: state.kyc.individualFiles,
       filesLoading: !!state.kyc.individualFilesLoading,
-      filesUploading: selectIndividualFilesUploading(state),
+      filesUploading: kycApi.selectors.selectIndividualFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       onDone: () => dispatch(actions.kyc.kycSubmitIndividualRequest()),

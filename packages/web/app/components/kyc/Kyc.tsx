@@ -1,22 +1,17 @@
+import {
+  EKycInstantIdStatus,
+  EKycRequestStatus,
+  EKycRequestType,
+  kycApi,
+} from "@neufund/shared-modules";
 import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { Redirect } from "react-router";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
-import {
-  EKycInstantIdStatus,
-  EKycRequestStatus,
-  EKycRequestType,
-} from "../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { selectIsUserEmailVerified } from "../../modules/auth/selectors";
-import { selectKycIdNowRedirectUrl } from "../../modules/kyc/instant-id/id-now/selectors";
-import {
-  selectIsKycFlowBlockedByRegion,
-  selectKycInstantIdStatus,
-  selectKycRequestStatus,
-  selectKycRequestType,
-} from "../../modules/kyc/selectors";
+import { instantIdApi } from "../../modules/instant-id/module";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { appRoutes } from "../appRoutes";
@@ -46,12 +41,12 @@ const Kyc = compose<IStateProps & IDispatchProps, {}>(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      requestStatus: selectKycRequestStatus(state),
-      instantIdStatus: selectKycInstantIdStatus(state),
-      idNowRedirectUrl: selectKycIdNowRedirectUrl(state),
-      requestType: selectKycRequestType(state),
+      requestStatus: kycApi.selectors.selectKycRequestStatus(state),
+      instantIdStatus: kycApi.selectors.selectKycInstantIdStatus(state),
+      idNowRedirectUrl: instantIdApi.selectors.selectKycIdNowRedirectUrl(state),
+      requestType: kycApi.selectors.selectKycRequestType(state),
       hasVerifiedEmail: selectIsUserEmailVerified(state),
-      isKycFlowBlockedByRegion: selectIsKycFlowBlockedByRegion(state),
+      isKycFlowBlockedByRegion: kycApi.selectors.selectIsKycFlowBlockedByRegion(state),
     }),
     dispatchToProps: dispatch => ({
       goToProfile: () => dispatch(actions.routing.goToProfile()),

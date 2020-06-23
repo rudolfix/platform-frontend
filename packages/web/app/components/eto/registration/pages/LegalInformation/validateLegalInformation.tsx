@@ -1,10 +1,10 @@
+import { customSchemas } from "@neufund/shared-modules";
 import { MIN_COMPANY_SHARE_CAPITAL } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
 import { EtoLegalInformationType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { currencyCodeSchema, dateSchema } from "../../../../../lib/api/util/customSchemas";
 import { convertAndValidatePipeline } from "../../../../shared/forms/utils";
 import {
   convert,
@@ -45,7 +45,7 @@ const validator = Yup.object().shape({
   country: Yup.string().required(),
   vatNumber: Yup.string(),
   registrationNumber: Yup.string().required(),
-  foundingDate: dateSchema(Yup.string()).required(), //todo write a normal method with Yup.addMethod
+  foundingDate: customSchemas.dateSchema(Yup.string()).required(), //todo write a normal method with Yup.addMethod
   numberOfEmployees: Yup.string(),
   companyStage: Yup.string(),
   numberOfFounders: Yup.number(),
@@ -53,7 +53,7 @@ const validator = Yup.object().shape({
   companyShareCapital: Yup.number()
     .min(MIN_COMPANY_SHARE_CAPITAL)
     .required(),
-  shareCapitalCurrencyCode: currencyCodeSchema(Yup.string()), //todo write an extension method with Yup.addMethod
+  shareCapitalCurrencyCode: customSchemas.currencyCodeSchema(Yup.string()), //todo write an extension method with Yup.addMethod
   shareholders: Yup.array()
     .of(ShareholdersListValidator)
     .required(<FormattedMessage id="form.field.error.array.at-least-one-entry-required" />)

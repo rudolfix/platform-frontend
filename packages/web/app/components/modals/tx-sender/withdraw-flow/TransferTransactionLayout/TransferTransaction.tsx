@@ -7,6 +7,7 @@ import { ETransactionErrorType } from "../../../../../modules/tx/sender/reducer"
 import {
   selectTxAdditionalData,
   selectTxGasCostEthUlps,
+  selectTxGasCostEurUlps,
 } from "../../../../../modules/tx/sender/selectors";
 import { TTokenTransferAdditionalData } from "../../../../../modules/tx/transactions/token-transfer/types";
 import { TWithdrawAdditionalData } from "../../../../../modules/tx/transactions/withdraw/types";
@@ -52,7 +53,7 @@ export const transferTransaction = () =>
         additionalData: selectTxAdditionalData<ETxType.WITHDRAW | ETxType.TRANSFER_TOKENS>(state),
         walletAddress: selectEthereumAddress(state),
         gasCost: selectTxGasCostEthUlps(state),
-        gasCostEur: selectTxGasCostEthUlps(state),
+        gasCostEur: selectTxGasCostEurUlps(state),
       }),
       dispatchToProps: d => ({
         onClick: () => d(actions.txSender.txSenderHideModal()),

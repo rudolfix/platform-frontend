@@ -506,7 +506,6 @@ export const InvestmentSelection = compose<IProps, {}>(
     ({ ethValue, etoTicketSizes, gasCostEth, etherPriceEur, eurPriceEther, investmentType }) => {
       const gasCostEthWithFallback = !ethValue ? "0" : gasCostEth;
       const gasCostEuro = multiplyBigNumbers([gasCostEthWithFallback, etherPriceEur]);
-
       // TODO: do not cast minTicketEur/maxTicketEur to FLOAT as then we loose precision
       const minTicketEur =
         (etoTicketSizes &&

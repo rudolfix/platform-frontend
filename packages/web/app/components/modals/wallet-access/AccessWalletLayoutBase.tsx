@@ -64,7 +64,7 @@ export const AccessWalletLayoutBase: React.FunctionComponent<TAccessWalletLayout
   errorMessage,
   tryToAccessWalletAgain,
 }) => (
-  <>
+  <div className={styles.accessWalletWrapper}>
     {logo && <AccessWalletModalLogo logo={logo} />}
     {title && <h1 className={styles.title}>{title}</h1>}
     {message && <p>{message}</p>}
@@ -77,5 +77,5 @@ export const AccessWalletLayoutBase: React.FunctionComponent<TAccessWalletLayout
     ) : (
       <LoadingIndicator className={styles.loadingIndicator} />
     )}
-  </>
+  </div>
 );

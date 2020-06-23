@@ -13,6 +13,8 @@ import { SuccessComponent } from "./SuccessComponent";
 import { SummaryComponent } from "./SummaryComponent";
 import { TxSenderProps } from "./types";
 
+import * as styles from "../../wallet-access/AccessWalletModal.module.scss";
+
 const TxSenderBody: React.FunctionComponent<TxSenderProps> = ({
   state,
   blockId,
@@ -39,10 +41,9 @@ const TxSenderBody: React.FunctionComponent<TxSenderProps> = ({
 
     case ETxSenderState.ACCESSING_WALLET:
       return (
-        <AccessWallet
-          title={<FormattedMessage id="modals.tx-sender.confirm-title" />}
-          message={<FormattedMessage id="modals.tx-sender.confirm-description" />}
-        />
+        <div className={styles.accessWalletWrapper}>
+          <AccessWallet title={<FormattedMessage id="modals.tx-sender.confirm-title" />} />
+        </div>
       );
 
     case ETxSenderState.SIGNING:

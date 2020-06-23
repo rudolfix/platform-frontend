@@ -10,6 +10,7 @@ export const externalRoutes = {
   neufundSupportWhatIsNeu: `${neufundSupport}/solutions/articles/36000060355-what-is-neumark-`,
   neufundSupportVotingGuide: `${neufundSupport}/solutions/articles/36000229673`,
   neufundInvest: `${neufundOrg}/invest`,
+  neufundBlogChangeIsComing: "https://blog.neufund.org/change-is-coming-8f5bcf4b2303",
   issueEto: `${neufundOrg}/issue`,
   commitmentStatus: "https://commit.neufund.org/commit/status?address=:walletAddress",
   icoMonitorEto: "https://icomonitor.io/#/:etoId",

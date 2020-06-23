@@ -39,7 +39,7 @@ describe("access-wallet actions", () => {
   });
 
   describe("hideAccessWalletModal", () => {
-    it("sets isModalOpen to false, leaves the rest intact", () => {
+    it("reverts to initial state", () => {
       const action = actions.accessWallet.hideAccessWalletModal();
       const oldState = {
         isModalOpen: true,
@@ -53,10 +53,6 @@ describe("access-wallet actions", () => {
 
       expect(newState).to.be.deep.eq({
         isModalOpen: false,
-        errorMessage: undefined,
-        modalTitle: title,
-        modalMessage: message,
-        inputLabel: inputLabel,
       });
     });
   });

@@ -7,6 +7,7 @@ import {
   InvariantError,
   toEthereumHDPath,
 } from "@neufund/shared-utils";
+import { combineReducers } from "redux";
 
 import { dummyEthereumAddressWithChecksum } from "../../../test/fixtures";
 import {
@@ -25,6 +26,7 @@ import { actions } from "../actions";
 import { MessageSignCancelledError } from "../auth/errors";
 import { retrieveMetadataFromVaultAPI } from "../wallet-selector/light-wizard/metadata/sagas";
 import { MismatchedWalletAddressError } from "./errors";
+import { accessWalletReducer, initialState } from "./reducer";
 import {
   accessWalletAndRunEffect,
   connectBrowserWallet,
@@ -562,32 +564,29 @@ describe("accessWallet sagas", () => {
         .run();
     });
 
-    it("shows modal, runs connectWallet(), hides modal", async () => {
+    it("shows modal, runs connectWallet(), hides modal, restores initial modal state", async () => {
       const state = {
-        accessWallet: {
-          isModalOpen: false,
-        },
+        accessWallet: initialState,
       };
 
       await expectSaga(accessWalletAndRunEffect, testEffect(), title, message, inputLabel)
-        .withState(state)
+        .withReducer(combineReducers({ accessWallet: accessWalletReducer }) as any, state)
         .provide([[matchers.call(connectWallet), undefined]])
         .put(actions.accessWallet.showAccessWalletModal(title, message, inputLabel))
         .call(connectWallet)
         .put(actions.accessWallet.hideAccessWalletModal())
+        .hasFinalState(state)
         .returns("effect_return")
         .run();
     });
 
-    it("throws on closing wallet access modal", async () => {
+    it("throws on closing wallet access modal, restores initial modal state", async () => {
       const state = {
-        accessWallet: {
-          isModalOpen: false,
-        },
+        accessWallet: initialState,
       };
 
       await expectSaga(accessWalletAndRunEffect, testEffect(), title, message, inputLabel)
-        .withState(state)
+        .withReducer(combineReducers({ accessWallet: accessWalletReducer }) as any, state)
         .provide([
           [matchers.call(connectWallet), undefined],
           [
@@ -601,6 +600,7 @@ describe("accessWallet sagas", () => {
         .put(actions.accessWallet.showAccessWalletModal(title, message, inputLabel))
         .take(actions.accessWallet.hideAccessWalletModal)
         .throws(new MessageSignCancelledError("Wallet access has been cancelled"))
+        .hasFinalState(state)
         .not.returns("effect_return")
         .run();
     });

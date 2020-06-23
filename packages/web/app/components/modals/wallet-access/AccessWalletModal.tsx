@@ -18,12 +18,7 @@ interface IModalDispatchProps {
 
 const AccessWalletModalComponent: React.FunctionComponent<IModalStateProps &
   IModalDispatchProps> = props => (
-  <Modal
-    isOpen={props.isOpen}
-    onClose={props.onCancel}
-    className={styles.main}
-    bodyClass={styles.modalBody}
-  >
+  <Modal isOpen={props.isOpen} onClose={props.onCancel} className={styles.main}>
     <AccessWallet />
   </Modal>
 );

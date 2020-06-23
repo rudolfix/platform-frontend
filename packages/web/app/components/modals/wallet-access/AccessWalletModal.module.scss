@@ -13,16 +13,10 @@ $modal-border-radius: 4px;
   }
 }
 
-.modal-body {
-  @include media-breakpoint-up(sm) {
-    padding: 0 2.5rem 1rem;
-  }
-
+.access-wallet-wrapper {
   display: flex;
   flex-flow: column;
   align-items: center;
-  border-radius: $modal-border-radius;
-
 }
 
 .wallet-logo-wrapper {

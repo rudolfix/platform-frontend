@@ -2,10 +2,9 @@ import { DeepPartial } from "@neufund/shared-utils";
 import { createBrowserHistory } from "history";
 import * as React from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import { combineReducers, createStore, Reducer } from "redux";
+import { combineReducers, Reducer } from "redux";
 import configureStore, { MockStore } from "redux-mock-store";
 
-import { TAction } from "../../modules/actions";
 import { generateRootModuleReducerMap } from "../../store";
 
 const mockStore = configureStore();
@@ -17,8 +16,7 @@ type TAppState = typeof rootReducer extends Reducer<infer S> ? S : never;
 export const withStore = (initialState?: DeepPartial<TAppState>) => (
   story: () => React.ReactNode,
 ): any => {
-  const store = createStore<TAppState, TAction, unknown, unknown>(rootReducer, initialState as any);
-
+  const store = mockStore(initialState);
   return <ReduxProvider store={store}>{story()}</ReduxProvider>;
 };
 

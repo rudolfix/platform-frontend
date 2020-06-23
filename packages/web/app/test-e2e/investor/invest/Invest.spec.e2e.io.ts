@@ -1,5 +1,5 @@
 import { goToEtoViewById } from "../../issuer/eto/view/EtoViewUtils";
-import { assertDashboard } from "../../utils/assertions";
+import { assertInvestorDashboard } from "../../utils/assertions";
 import { etoFixtureAddressByName, goToDashboard } from "../../utils/index";
 import { tid } from "../../utils/selectors";
 import { loginFixtureAccount } from "../../utils/userHelpers";
@@ -18,7 +18,7 @@ describe("Invest", () => {
 
     cy.get(tid("investment-widget.us-investor-message.go-to-dashboard")).click();
 
-    assertDashboard();
+    assertInvestorDashboard();
   });
 
   it("should start wallet upgrade from investment column #investment #p3", () => {

@@ -44,7 +44,7 @@ export function* loadIssuerEto({
 
     yield put(actions.etoFlow.setEto({ eto, company }));
   } catch (e) {
-    logger.error("Failed to load Issuer ETO", e);
+    logger.error(e, "Failed to load Issuer ETO");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoFlowMessage.ETO_LOAD_FAILED),
@@ -79,7 +79,7 @@ export function* changeBookBuildingStatus(
       message,
     );
   } catch (e) {
-    logger.error("Failed to change book-building status", e);
+    logger.error(e, "Failed to change book-building status");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
@@ -109,7 +109,7 @@ export function* downloadBookBuildingStats({
         ),
       ),
     );
-    logger.error(`Failed to load bookbuilding stats pledge`, e);
+    logger.error(e, `Failed to load bookbuilding stats pledge`);
   }
 }
 
@@ -124,7 +124,7 @@ export function* saveCompany(
 
     yield put(actions.routing.goToDashboard());
   } catch (e) {
-    logger.error("Failed to save company", e);
+    logger.error(e, "Failed to save company");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
@@ -154,7 +154,7 @@ export function* saveEto(
 
     yield put(actions.routing.goToDashboard());
   } catch (e) {
-    logger.error("Failed to save ETO", e);
+    logger.error(e, "Failed to save ETO");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
@@ -190,7 +190,7 @@ export function* submitEtoData({ logger }: TGlobalDependencies): Generator<any, 
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION), //eto.modal.submit-description
     );
   } catch (e) {
-    logger.error("Failed to Submit ETO data", e);
+    logger.error(e, "Failed to Submit ETO data");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),
@@ -225,7 +225,7 @@ export function* loadProducts({
 
     yield put(actions.etoFlow.setProducts(products));
   } catch (e) {
-    logger.error("Failed to load eto products", e);
+    logger.error(e, "Failed to load eto products");
 
     yield put(
       webNotificationUIModuleApi.actions.showError(
@@ -256,7 +256,7 @@ export function* changeProductType(
       ),
     );
   } catch (e) {
-    logger.error("Failed to change eto product", e);
+    logger.error(e, "Failed to change eto product");
 
     yield put(
       webNotificationUIModuleApi.actions.showError(
@@ -291,7 +291,7 @@ export function* publishEtoData({ logger }: TGlobalDependencies): Generator<any,
       createMessage(EtoDocumentsMessage.ETO_DOCUMENTS_SUBMIT_ETO_DESCRIPTION),
     );
   } catch (e) {
-    logger.error("Failed to Submit ETO data", e);
+    logger.error(e, "Failed to Submit ETO data");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_SEND_ETO_DATA),

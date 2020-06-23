@@ -122,7 +122,7 @@ export function* generateInvestmentTransaction(
   return { ...transaction, gas };
 }
 
-function* investmentFlowGenerator({ logger }: TGlobalDependencies): Generator<any, any, any> {
+function* investmentFlowGenerator(): Generator<any, any, any> {
   yield take(actions.txSender.txSenderAcceptDraft);
 
   const etoId: string = yield select(selectInvestmentEtoId);
@@ -146,7 +146,6 @@ function* investmentFlowGenerator({ logger }: TGlobalDependencies): Generator<an
   const tokenDecimals = 18;
 
   if (!eto.investmentCalculatedValues) {
-    logger.error("ETO investment calculated values are empty");
     throw new Error("ETO investment calculated values are empty");
   }
 

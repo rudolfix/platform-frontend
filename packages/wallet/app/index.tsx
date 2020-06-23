@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import "./app/polyfills";
+import "./polyfills";
 
 import { IModuleStore } from "@neufund/sagas";
 import { Container } from "inversify";
@@ -8,15 +8,17 @@ import { AppRegistry } from "react-native";
 import Config from "react-native-config";
 import DevMenu from "react-native-dev-menu";
 
-import { name as appName } from "./app.json";
-import { App } from "./app/App";
-import { AppContainer } from "./app/components/containers/AppContainer";
-import { createAppStore } from "./app/store/create";
-import { TAppGlobalState } from "./app/store/types";
-import { Storybook } from "./storybook";
+// eslint-disable-next-line import/no-relative-parent-imports
+import { name as appName } from "../app.json";
+// eslint-disable-next-line import/no-relative-parent-imports
+import { Storybook } from "../storybook";
+import { App } from "./App";
+import { AppContainer } from "./components/containers/AppContainer";
+import { createAppStore } from "./store/create";
+import { TAppGlobalState } from "./store/types";
 
 if (__DEV__) {
-  import("./app/devUtils");
+  import("./devUtils");
 }
 
 function startupApp(): void {
@@ -52,4 +54,4 @@ function renderApp(store: IModuleStore<TAppGlobalState>): void {
   AppRegistry.registerComponent(appName, () => Component);
 }
 
-startupApp();
+export { startupApp };

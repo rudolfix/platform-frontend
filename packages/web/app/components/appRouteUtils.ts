@@ -30,6 +30,9 @@ export const etoPublicViewByIdLink = (etoId: string, jurisdiction: string) =>
 export const etoWidgetViewLink = (previewCode: string) =>
   withParams(appRoutes.etoWidgetView, { previewCode });
 
+export const governanceProposalLink = (proposalId: string) =>
+  withParams(appRoutes.proposal, { proposalId });
+
 // Use only in tests
 export const etoPublicViewByIdLinkLegacy = (etoId: string) =>
   withParams(appRoutes.etoPublicViewByIdLegacyRoute, { etoId });

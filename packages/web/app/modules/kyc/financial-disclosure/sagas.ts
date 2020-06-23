@@ -28,6 +28,6 @@ export function* submitFinancialDisclosure(
       ),
     );
 
-    logger.error("Failed to submit KYC individual data", e);
+    logger.error(e, "Failed to submit KYC individual data");
   }
 }

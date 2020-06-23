@@ -7,5 +7,5 @@ export const wrappedFetch = async (input: RequestInfo, init?: RequestInit): Prom
     if (response.ok) {
       return response;
     }
-    throw new Error(response.statusText);
+    throw new Error(`${response.statusText}, status is ${response.status}`);
   });

@@ -1,5 +1,5 @@
 import { expectSaga } from "@neufund/sagas/tests";
-import { EUserType } from "@neufund/shared-modules";
+import { EUserType, noopLogger } from "@neufund/shared-modules";
 import { LocationChangeAction } from "connected-react-router";
 import { getContext } from "redux-saga-test-plan/matchers";
 
@@ -11,10 +11,7 @@ import { startRouteBasedSagas } from "./sagas";
 
 const globalDependencies = {
   //todo write out the full context, move to utils
-  logger: {
-    info: (_: string) => {},
-    error: (_: string) => {},
-  },
+  logger: noopLogger,
   apiEtoService: {
     getEtoPreview: (_: string) => {},
     getEto: (_: string) => {},

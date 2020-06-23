@@ -428,11 +428,8 @@ export function* loginWalletConnectRoute(payload: RouterState): Generator<any, a
     exact: true,
   });
   return yield routeAction(routeMatch, {
-    notAuth: put(
-      process.env.NF_WALLET_CONNECT_ENABLED === "1"
-        ? actions.walletSelector.walletConnectStart()
-        : actions.routing.goHome(),
-    ),
+    notAuth:
+      process.env.NF_WALLET_CONNECT_ENABLED === "1" ? undefined : put(actions.routing.goHome()),
     investor: put(actions.routing.goToDashboard()),
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),

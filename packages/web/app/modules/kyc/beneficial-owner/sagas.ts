@@ -34,7 +34,7 @@ export function* loadBeneficialOwners({
   } catch (e) {
     yield put(actions.kyc.kycUpdateBeneficialOwners(false));
 
-    logger.error("Failed to load KYC beneficial owners", e);
+    logger.error(e, "Failed to load KYC beneficial owners");
   }
 }
 
@@ -68,7 +68,7 @@ export function* updateBeneficialOwner(
       ),
     );
 
-    logger.error("Failed to submit KYC beneficial owner", e);
+    logger.error(e, "Failed to submit KYC beneficial owner");
   }
 }
 
@@ -91,7 +91,7 @@ export function* deleteBeneficialOwner(
       ),
     );
 
-    logger.error("Failed to delete KYC beneficial owner", e);
+    logger.error(e, "Failed to delete KYC beneficial owner");
   }
 }
 
@@ -135,7 +135,7 @@ export function* uploadBeneficialOwnerFile(
       ),
     );
 
-    logger.error("Failed to upload KYC beneficial owner file", e);
+    logger.error(e, "Failed to upload KYC beneficial owner file");
   }
 }
 
@@ -161,7 +161,7 @@ export function* loadBeneficialOwnerFiles(
   } catch (e) {
     yield put(actions.kyc.kycUpdateBeneficialOwnerDocuments(boid, false));
 
-    logger.error("Failed to load KYC beneficial owner file", e);
+    logger.error(e, "Failed to load KYC beneficial owner file");
   }
 }
 

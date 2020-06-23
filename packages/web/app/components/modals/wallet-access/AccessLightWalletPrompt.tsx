@@ -6,6 +6,8 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { TTranslatedString } from "../../../types";
 import { FormDeprecated, FormField } from "../../shared/forms";
 
+import * as styles from "./AccessWalletModal.module.scss";
+
 interface IStateProps {
   inputLabel?: TTranslatedString;
 }
@@ -21,36 +23,32 @@ export interface IFormValues {
   password: string;
 }
 
-const AccessLightWalletForm = (formikBag: FormikProps<IFormValues> & IProps) => (
-  <FormDeprecated className="mb-0">
-    <div className="ml-sm-5 mr-sm-5">
-      <FormField
-        type="password"
-        placeholder="Password"
-        name="password"
-        data-test-id="access-light-wallet-password-input"
-      />
-    </div>
-    <div className="mt-3">
-      <Button
-        type="submit"
-        layout={EButtonLayout.LINK}
-        disabled={!formikBag.values.password}
-        data-test-id="access-light-wallet-confirm"
-      >
-        <FormattedMessage id="modal.light-wallet.button.accept" />
-      </Button>
-    </div>
+const AccessLightWalletForm = ({ values, inputLabel }: FormikProps<IFormValues> & IProps) => (
+  <FormDeprecated
+    className={styles.accessLightWalletForm}
+    data-test-id="access-light-wallet-locked"
+  >
+    <p className={styles.accessLightWalletFormLabel}>
+      {inputLabel || <FormattedMessage id="modal.light-wallet.message" />}
+    </p>
+    <FormField
+      type="password"
+      placeholder="Password"
+      name="password"
+      data-test-id="access-light-wallet-password-input"
+    />
+    <Button
+      type="submit"
+      layout={EButtonLayout.PRIMARY}
+      disabled={!values.password}
+      data-test-id="access-light-wallet-confirm"
+      className={styles.accessLightWalletFormButton}
+    >
+      <FormattedMessage id="modal.light-wallet.button.accept" />
+    </Button>
   </FormDeprecated>
 );
 
-const EnhancedForm = withFormik<IProps, IFormValues>({
+export const AccessLightWalletPrompt = withFormik<IProps, IFormValues>({
   handleSubmit: (values, { props }) => props.onAccept(values.password),
 })(AccessLightWalletForm);
-
-export const AccessLightWalletPrompt: React.FunctionComponent<IProps> = props => (
-  <div data-test-id="access-light-wallet-locked">
-    <p>{props.inputLabel || <FormattedMessage id="modal.light-wallet.message" />}</p>
-    <EnhancedForm {...props} />
-  </div>
-);

@@ -62,7 +62,7 @@ export function* loadKycStatus({
 
     yield put(actions.kyc.setStatus(kycStatus));
   } catch (e) {
-    logger.error("Error while getting KYC status", e);
+    logger.error(e, "Error while getting KYC status");
 
     yield put(actions.kyc.setStatusError(e.message));
 
@@ -90,7 +90,7 @@ export function* loadClientData({ logger }: TGlobalDependencies): Generator<any,
         logger.info(`Kyc type is ${kycStatusType} therefore omitting loading kyc data`);
     }
   } catch (e) {
-    logger.error("Error while loading client kyc data", e);
+    logger.error(e, "Error while loading client kyc data");
 
     // we are not able to provide meaningful user experience in case of missing client data
     // rethrow the error to be catched by the root saga and show fallback UI
@@ -122,7 +122,7 @@ function* kycStatusRefreshSaga({ logger }: TGlobalDependencies): Generator<any, 
     if (status === EKycRequestStatus.PENDING || status === EKycRequestStatus.OUTSOURCED) {
       yield neuCall(loadClientData);
       yield neuCall(loadIdentityClaim);
-      logger.info("KYC refreshed", status, requestType);
+      logger.info("KYC refreshed", { status, requestType });
     }
 
     yield delay(kycWidgetWatchDelay);
@@ -156,7 +156,7 @@ function* loadIdentityClaim({
 
     yield put(actions.kyc.kycSetClaims(deserializeClaims(claims)));
   } catch (e) {
-    logger.error("Error while loading kyc identity claims", e);
+    logger.error(e, "Error while loading kyc identity claims");
 
     // we are not able to provide meaningful user experience in case of missing identity data
     // rethrow the error to be catched by the root saga and show fallback UI
@@ -177,7 +177,7 @@ function* loadIndividualData({
     yield put(actions.kyc.kycUpdateIndividualData(false, result.body));
   } catch (e) {
     if (e.status !== 404) {
-      logger.error("Failed to load KYC individual data", e);
+      logger.error(e, "Failed to load KYC individual data");
     }
 
     yield put(actions.kyc.kycUpdateIndividualData(false));
@@ -215,7 +215,7 @@ function* submitPersonalDataNoRedirect(
       ),
     );
 
-    logger.error("Failed to submit KYC individual data", e);
+    logger.error(e, "Failed to submit KYC individual data");
   }
 }
 
@@ -235,7 +235,7 @@ function* submitPersonalData(
       ),
     );
 
-    logger.error("Failed to submit KYC individual data", e);
+    logger.error(e, "Failed to submit KYC individual data");
   }
 }
 
@@ -255,7 +255,7 @@ function* submitPersonalDataAndClose(
       ),
     );
 
-    logger.error("Failed to submit KYC individual data", e);
+    logger.error(e, "Failed to submit KYC individual data");
   }
 }
 
@@ -276,7 +276,7 @@ function* submitPersonalAddressSaga(
       ),
     );
 
-    logger.error("Failed to submit KYC individual data", e);
+    logger.error(e, "Failed to submit KYC individual data");
   }
 }
 
@@ -327,7 +327,7 @@ function* uploadIndividualFile(
       ),
     );
 
-    logger.error("Failed to upload KYC individual file", e);
+    logger.error(e, "Failed to upload KYC individual file");
   }
 }
 
@@ -343,7 +343,7 @@ function* loadIndividualFiles({
     yield put(actions.kyc.kycUpdateIndividualDocuments(false));
 
     if (e.status !== 404) {
-      logger.error("Failed to load KYC individual files", e);
+      logger.error(e, "Failed to load KYC individual files");
     }
   }
 }
@@ -373,7 +373,7 @@ function* submitIndividualRequest({ logger }: TGlobalDependencies): Generator<an
       ),
     );
 
-    logger.error("Failed to submit KYC individual request", e);
+    logger.error(e, "Failed to submit KYC individual request");
   }
 }
 
@@ -409,7 +409,7 @@ function* setBusinessType(
       ),
     );
 
-    logger.error("Failed to set KYC business", e);
+    logger.error(e, "Failed to set KYC business");
   }
 }
 
@@ -425,7 +425,7 @@ function* loadBusinessData({
     yield put(actions.kyc.kycUpdateBusinessData(false, result.body));
   } catch (e) {
     if (e.status !== 404) {
-      logger.error("Failed to load KYC business data", e);
+      logger.error(e, "Failed to load KYC business data");
     }
 
     yield put(actions.kyc.kycUpdateBusinessData(false));
@@ -468,7 +468,7 @@ function* submitBusinessData(
       ),
     );
 
-    logger.error("Failed to submit KYC business data", e);
+    logger.error(e, "Failed to submit KYC business data");
   }
 }
 
@@ -495,7 +495,7 @@ function* uploadBusinessFile(
       ),
     );
 
-    logger.error("Failed to upload KYC business file", e);
+    logger.error(e, "Failed to upload KYC business file");
   }
 }
 
@@ -511,7 +511,7 @@ function* loadBusinessFiles({
     yield put(actions.kyc.kycUpdateBusinessDocuments(false));
 
     if (e.status !== 404) {
-      logger.error("Failed to load KYC business files", e);
+      logger.error(e, "Failed to load KYC business files");
     }
   }
 }
@@ -527,7 +527,7 @@ function* loadManagingDirectorsData({
     yield put(actions.kyc.kycUpdateManagingDirector(false, result.body));
   } catch (e) {
     yield put(actions.kyc.kycUpdateManagingDirector(false));
-    logger.error("Failed to load KYC managing director", e);
+    logger.error(e, "Failed to load KYC managing director");
   }
 }
 
@@ -543,7 +543,7 @@ function* loadManagingDirectorFiles({
     yield put(actions.kyc.kycUpdateManagingDirectorDocuments(false));
 
     if (e.status !== 404) {
-      logger.error("Failed to load KYC managing director files", e);
+      logger.error(e, "Failed to load KYC managing director files");
     }
   }
 }
@@ -583,7 +583,7 @@ function* submitAndUploadManagingDirector(
         createNotificationMessage(KycFlowMessage.KYC_UPLOAD_FAILED),
       ),
     );
-    logger.error("Failed to upload KYC managing director file", e);
+    logger.error(e, "Failed to upload KYC managing director file");
   }
 }
 
@@ -648,7 +648,7 @@ function* submitBusinessRequest({ logger }: TGlobalDependencies): Generator<any,
       ),
     );
 
-    logger.error("Failed to submit KYC business request", e);
+    logger.error(e, "Failed to submit KYC business request");
   }
 }
 
@@ -659,7 +659,7 @@ export function* loadBankAccountDetails({
   try {
     // bank details depend on claims `hasBankAccount` flag
     // so to have consistent ui we need to reload claims
-    yield put(actions.kyc.kycLoadClaims());
+    yield neuCall(loadIdentityClaim);
 
     const isVerified: boolean = yield select(selectIsUserVerified);
 
@@ -697,7 +697,7 @@ export function* loadBankAccountDetails({
       ),
     );
 
-    logger.error("Error while loading kyc bank details", e);
+    logger.error(e, "Error while loading kyc bank details");
 
     yield put(
       actions.kyc.setBankAccountDetails({
@@ -784,8 +784,6 @@ export function* kycSagas(): Generator<any, any, any> {
   yield fork(neuTakeEvery, actions.kyc.kycSubmitBusinessRequest, submitBusinessRequest);
 
   yield fork(neuTakeEvery, actions.kyc.loadBankAccountDetails, loadBankAccountDetails);
-
-  yield fork(neuTakeEvery, actions.kyc.kycLoadClaims, loadIdentityClaim);
 
   yield fork(
     neuTakeUntil,

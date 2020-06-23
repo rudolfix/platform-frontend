@@ -34,7 +34,7 @@ export const ShareholderResolutionVoteSummaryLayout: React.FunctionComponent<TCo
     <ShareholderResolutionVoteDetails additionalData={additionalData} className="mb-4" />
 
     <section className="text-center">
-      <Button onClick={onAccept}>
+      <Button onClick={onAccept} data-test-id="tx.shareholder-resolution-vote.summary.confirm">
         <FormattedMessage id="general-flow.confirm" />
       </Button>
     </section>

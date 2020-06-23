@@ -8,16 +8,15 @@ import {
   BrowserWalletErrorMessage,
   getMessageTranslation,
   MismatchedWalletAddressErrorMessage,
-  ProfileMessage,
 } from "../../translatedMessages/messages";
 import { createMessage } from "../../translatedMessages/utils";
-import { AccessWalletContainerComponent } from "./AccessWalletModal";
+import { AccessWalletLayout } from "./AccessWallet";
+
+import * as styles from "./AccessWalletModal.module.scss";
 
 const props = {
-  title: getMessageTranslation(createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_TITLE)),
-  message: getMessageTranslation(
-    createMessage(ProfileMessage.PROFILE_ACCESS_RECOVERY_PHRASE_DESCRIPTION),
-  ),
+  title: "Action that must be accepted by user",
+  message: "Description and additional info about the action required",
   errorMsg: undefined,
   onAccept: action("onAccept"),
   tryToAccessWalletAgain: action("tryToAccessWalletAgain"),
@@ -26,19 +25,26 @@ const props = {
 };
 
 storiesOf("AccessWalletModal", module)
-  .addDecorator(withModalBody())
-  .add("lightwallet", () => <AccessWalletContainerComponent {...props} />)
+  .addDecorator(withModalBody(styles.main, styles.modalBody))
+  .add("lightwallet", () => <AccessWalletLayout {...props} />)
   .add("lightwallet with changed label and empty message", () => (
-    <AccessWalletContainerComponent {...props} inputLabel={"This is changed label"} message={""} />
+    <AccessWalletLayout {...props} inputLabel={"This is changed label"} message={""} />
   ))
-  .add("metamask", () => (
-    <AccessWalletContainerComponent
+  .add("browser: metamask", () => (
+    <AccessWalletLayout
       {...props}
       walletType={EWalletType.BROWSER}
       walletSubType={EWalletSubType.METAMASK}
     />
   ))
-  .add("metamask with error", () => {
+  .add("browser: gnosis", () => (
+    <AccessWalletLayout
+      {...props}
+      walletType={EWalletType.BROWSER}
+      walletSubType={EWalletSubType.GNOSIS}
+    />
+  ))
+  .add("browser: metamask with error", () => {
     const data = {
       ...props,
       errorMessage: getMessageTranslation(
@@ -46,16 +52,14 @@ storiesOf("AccessWalletModal", module)
       ),
     };
     return (
-      <AccessWalletContainerComponent
+      <AccessWalletLayout
         {...data}
         walletType={EWalletType.BROWSER}
         walletSubType={EWalletSubType.METAMASK}
       />
     );
   })
-  .add("ledger", () => (
-    <AccessWalletContainerComponent {...props} walletType={EWalletType.LEDGER} />
-  ))
+  .add("ledger", () => <AccessWalletLayout {...props} walletType={EWalletType.LEDGER} />)
   .add("ledger with error", () => {
     const testData = {
       ...props,
@@ -66,5 +70,15 @@ storiesOf("AccessWalletModal", module)
         }),
       ),
     };
-    return <AccessWalletContainerComponent {...testData} walletType={EWalletType.LEDGER} />;
-  });
+    return <AccessWalletLayout {...testData} walletType={EWalletType.LEDGER} />;
+  })
+  .add("walletConnect: Neufund", () => (
+    <AccessWalletLayout
+      {...props}
+      walletType={EWalletType.WALLETCONNECT}
+      walletSubType={EWalletSubType.NEUFUND}
+    />
+  ))
+  .add("walletConnect: unknown", () => (
+    <AccessWalletLayout {...props} walletType={EWalletType.WALLETCONNECT} />
+  ));

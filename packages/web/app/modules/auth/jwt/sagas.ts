@@ -89,7 +89,7 @@ export function* handleJwtTimeout({ logger }: TGlobalDependencies): Generator<an
         break;
     }
   } catch (e) {
-    logger.error("Failed to handle jwt timeout", e);
+    logger.error(e, "Failed to handle jwt timeout");
     throw e;
   }
 }

@@ -76,7 +76,7 @@ class WalletConnectAdapter extends EventEmitter2 {
   }
 
   private handleCallSigningError(id: number, error: Error) {
-    this.logger.error("Wallet connect call signing error", error);
+    this.logger.error(error, "Wallet connect call signing error");
 
     this.walletConnect.rejectRequest({
       id,
@@ -118,7 +118,7 @@ class WalletConnectAdapter extends EventEmitter2 {
   private initializeListeners() {
     this.walletConnect.on(CALL_REQUEST_EVENT, async (error, payload) => {
       if (error) {
-        this.logger.error("Wallet connect call request error", error);
+        this.logger.error(error, "Wallet connect call request error");
         return;
       }
 
@@ -206,7 +206,7 @@ class WalletConnectAdapter extends EventEmitter2 {
    */
   async connect(): Promise<TSessionDetails> {
     return new Promise((resolve, reject) => {
-      const callback = async (error: Error | null, payload: unknown | null) => {
+      const callback = (error: Error | null, payload: unknown | null) => {
         if (error) {
           reject(error);
           return;

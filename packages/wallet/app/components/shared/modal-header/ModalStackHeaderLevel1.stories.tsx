@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+
 import { DeepPartial } from "@neufund/shared-utils";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { storiesOf } from "@storybook/react-native";

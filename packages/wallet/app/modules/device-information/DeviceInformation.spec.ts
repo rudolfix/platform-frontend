@@ -11,8 +11,8 @@ describe("DeviceInformation", () => {
     deviceInformation = new DeviceInformation(noopLogger);
   });
 
-  it("should return device ID", () => {
-    const testDeviceId = deviceInformation.getUniqueId();
+  it("should return device ID", async () => {
+    const testDeviceId = await deviceInformation.getUniqueId();
 
     expect(testDeviceId).toBe(deviceId);
   });

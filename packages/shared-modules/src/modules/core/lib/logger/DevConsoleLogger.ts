@@ -1,4 +1,4 @@
-import { ErrorArgs, ILogger, LogArg, TUser } from "./ILogger";
+import { ILogger, TUser } from "./ILogger";
 
 export class DevConsoleLogger implements ILogger {
   setUser(user: TUser | null): void {
@@ -9,32 +9,27 @@ export class DevConsoleLogger implements ILogger {
     }
   }
 
-  info(...args: LogArg[]): void {
+  info(message: string, data?: object): void {
     // tslint:disable-next-line
-    console.info(...args);
+    console.info(message, data);
   }
 
-  verbose(...args: LogArg[]): void {
+  debug(message: string, data?: object): void {
     // tslint:disable-next-line
-    console.log(...args);
+    console.info(message, data);
   }
 
-  debug(...args: LogArg[]): void {
+  warn(message: string, data?: object): void {
     // tslint:disable-next-line
-    console.log(...args);
+    console.error(message, data);
   }
 
-  warn(...args: ErrorArgs[]): void {
+  error(error: Error, message?: string, data?: object): void {
     // tslint:disable-next-line
-    console.warn(...args);
+    console.error(message, error, data);
   }
 
-  error(...args: ErrorArgs[]): void {
-    // tslint:disable-next-line
-    console.error(...args);
-  }
-
-  fatal(message: string, error: Error, data?: object): void {
+  fatal(error: Error, message?: string, data?: object): void {
     // tslint:disable-next-line
     console.error(message, error, data);
   }

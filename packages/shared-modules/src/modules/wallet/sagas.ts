@@ -47,7 +47,7 @@ export function* loadWalletDataSaga(_: TGlobalDependencies): Generator<any, any,
     logger.info("Wallet Loaded");
   } catch (e) {
     yield put(walletActions.loadWalletDataError("Error while loading wallet data."));
-    logger.error("Error while loading wallet data: ", e);
+    logger.error(e, "Error while loading wallet data: ");
   }
 }
 

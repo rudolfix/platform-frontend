@@ -2,7 +2,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
-import { AccessWalletContainer } from "../../wallet-access/AccessWalletModal";
+import { AccessWallet } from "../../wallet-access/AccessWallet";
 import { LoadingMessage } from "../shared/LoadingMessage";
 import { SigningMessage } from "../shared/SigningMessage";
 import { TxError } from "../shared/TxError";
@@ -39,7 +39,7 @@ const TxSenderBody: React.FunctionComponent<TxSenderProps> = ({
 
     case ETxSenderState.ACCESSING_WALLET:
       return (
-        <AccessWalletContainer
+        <AccessWallet
           title={<FormattedMessage id="modals.tx-sender.confirm-title" />}
           message={<FormattedMessage id="modals.tx-sender.confirm-description" />}
         />

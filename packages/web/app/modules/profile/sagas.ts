@@ -127,7 +127,7 @@ export function* addNewEmail(
         ),
       );
     } else {
-      logger.error("Failed to Add new email", e);
+      logger.error(e, "Failed to Add new email");
       yield put(
         webNotificationUIModuleApi.actions.showError(
           createNotificationMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),
@@ -150,7 +150,7 @@ export function* resendEmail({ logger }: TGlobalDependencies): Generator<any, an
       createMessage(ProfileMessage.PROFILE_RESEND_EMAIL_LINK_CONFIRMATION_LABEL),
     );
   } catch (e) {
-    logger.error("Failed to resend email", e);
+    logger.error(e, "Failed to resend email");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(ProfileMessage.PROFILE_EMAIL_VERIFICATION_SENDING_FAILED),
@@ -175,7 +175,7 @@ export function* loadSeedOrReturnToSettings({
     if (error instanceof MessageSignCancelledError) {
       logger.info("Signing Cancelled");
     } else {
-      logger.error("Failed to load seed", error);
+      logger.error(error, "Failed to load seed");
     }
     yield put(actions.routing.goToProfile());
   }
@@ -193,7 +193,7 @@ export function* abortEmailUpdate({ logger }: TGlobalDependencies): Generator<an
       createMessage(ProfileMessage.PROFILE_ADD_EMAIL_INPUT_LABEL),
     );
   } catch (e) {
-    logger.error("Failed to cancel email change", e);
+    logger.error(e, "Failed to cancel email change");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(ProfileMessage.PROFILE_ADD_EMAIL_ERROR),

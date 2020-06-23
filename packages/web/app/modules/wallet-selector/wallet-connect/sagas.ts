@@ -109,7 +109,7 @@ export function* walletConnectStart({
   } catch (e) {
     const message = mapWalletConnectErrorsToMessages(e);
     yield put(actions.walletSelector.walletConnectError(message));
-    logger.error(`walletConnectStart error: ${e}`);
+    logger.error(e, "walletConnectStart error");
   }
 }
 
@@ -120,7 +120,7 @@ export function* walletConnectStop({
   try {
     yield walletConnectConnector.cancelSession();
   } catch (e) {
-    logger.error(`walletConnectStop error: ${e}`);
+    logger.error(e, "walletConnectStop error");
   }
 }
 

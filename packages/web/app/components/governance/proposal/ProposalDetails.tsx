@@ -68,6 +68,7 @@ const ProposalDetails: React.FunctionComponent<TExternalProps> = ({
       </p>
 
       <ButtonInline
+        data-test-id="governance.proposal.details.download-proposal"
         disabled={pendingDownloads[proposal.ipfsHash]}
         onClick={() =>
           downloadDocument(

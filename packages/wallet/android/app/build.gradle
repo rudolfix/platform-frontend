@@ -1,6 +1,8 @@
 apply plugin: "com.android.application"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
+import org.apache.commons.codec.binary.Base64
+import java.nio.file.Paths
 import com.android.build.OutputFile
 
 /**
@@ -77,7 +79,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.tsx",
+    entryFile: "index.js",
     enableHermes: false,  // clean and rebuild if changing
 ]
 
@@ -218,6 +220,32 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+task generateGoogleServicesFromEnv(type:Exec) {
+    String NF_ANDROID_FIREBASE_JSON = project.env.get('NF_ANDROID_FIREBASE_JSON')
+
+    if (NF_ANDROID_FIREBASE_JSON == null) {
+      throw new GradleException('NF_ANDROID_FIREBASE_JSON env variable not provided')
+    }
+
+    byte[] encodedString = Base64.decodeBase64(NF_ANDROID_FIREBASE_JSON);
+
+    String googleServicesJsonPath = Paths.get(projectDir.path, 'google-services.json')
+
+    try {
+        File f = new File(googleServicesJsonPath)
+        FileOutputStream out = new FileOutputStream(f)
+
+        out.write(encodedString)
+
+        println 'google-services.json generated'
+    } catch(Exception ex) {
+        throw new GradleException('Failed to generate google-services.json')
+    } finally {
+        out.close()
+    }
+}
+
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 

@@ -1,15 +1,83 @@
+$modal-border-radius: 4px;
+
+.main {
+  max-width: px-to-rem(650) !important; // sass-lint:disable-line no-important //overriding reactstrap modal css
+
+  & > div {
+    border: 0;
+    border-radius: 1rem;
+  }
+
+  & > div > section {
+    border-radius: $modal-border-radius;
+  }
+}
+
+.modal-body {
+  @include media-breakpoint-up(sm) {
+    padding: 0 2.5rem 1rem;
+  }
+
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  border-radius: $modal-border-radius;
+
+}
+
+.wallet-logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: px-to-rem(72);
+  height: px-to-rem(72);
+  background-color: $neu-pale-grey-three;
+  border-radius: px-to-rem(36);
+  padding: 1rem;
+}
+
+.wallet-logo {
+  width: 100%;
+}
+
+
 .info {
-  color: $gray6;
+  @include nds-body-small;
 }
 
 .title {
-  @include media-breakpoint-up (sm) {
-    font-size: 2.5rem;
-  }
-
+  @include nds-headline-4;
+  margin: px-to-rem(24px) 0 px-to-rem(16);
   font-size: 1.5rem;
+}
 
-  & + div {
-    margin-top: px-to-rem(38px);
+.loading-indicator {
+  margin: 3rem auto calc(3rem - #{px-to-rem(25)});
+}
+
+.error-message {
+  @include media-breakpoint-up(sm) {
+    margin: px-to-rem(24) px-to-rem(64) 0;
   }
+
+  margin: px-to-rem(24) 0 0;
+  color: $neu-base-red;
+  align-content: baseline;
+}
+
+.try-again-buttun {
+  margin-top: px-to-rem(16);
+}
+
+.access-light-wallet-form {
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 1rem;
+  width: 100%;
+}
+
+.access-light-wallet-form-label,
+.access-light-wallet-form-button {
+  justify-self: center;
 }

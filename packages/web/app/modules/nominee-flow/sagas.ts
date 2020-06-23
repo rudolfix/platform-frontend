@@ -131,7 +131,7 @@ export function* initNomineeEtoSpecificTasks(
 
     return nomineeEtoSpecificTasks;
   } catch (e) {
-    logger.error("error in initNomineeTasks", e);
+    logger.error(e, "error in initNomineeTasks");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(ENomineeRequestErrorNotifications.FETCH_NOMINEE_DATA_ERROR),
@@ -410,7 +410,7 @@ export function* loadNomineeRequests({
       ),
     );
 
-    logger.error("Error while loading nominee requests", e);
+    logger.error(e, "Error while loading nominee requests");
   }
 }
 
@@ -431,7 +431,7 @@ export function* createNomineeRequest(
     );
   } catch (e) {
     if (e instanceof IssuerIdInvalid) {
-      logger.error("Failed to create nominee request, issuer id is invalid", e);
+      logger.error(e, "Failed to create nominee request, issuer id is invalid");
       yield put(
         actions.nomineeFlow.storeNomineeRequestError(
           action.payload.issuerId,
@@ -444,7 +444,7 @@ export function* createNomineeRequest(
         ),
       );
     } else if (e instanceof NomineeRequestExists) {
-      logger.error(`Nominee request to issuerId ${action.payload.issuerId} already exists`, e);
+      logger.error(e, `Nominee request to issuerId ${action.payload.issuerId} already exists`);
       yield put(
         actions.nomineeFlow.storeNomineeRequestError(
           action.payload.issuerId,
@@ -457,7 +457,7 @@ export function* createNomineeRequest(
         ),
       );
     } else {
-      logger.error("Failed to create nominee request", e);
+      logger.error(e, "Failed to create nominee request");
       yield put(
         actions.nomineeFlow.storeNomineeRequestError(
           action.payload.issuerId,
@@ -534,7 +534,7 @@ export function* loadNomineeEtos({
       put(actions.nomineeFlow.setNomineeEtoSpecificTasksStatus(result.etoSpecificTaskStatus)),
     ]);
   } catch (e) {
-    logger.error("Nominee ETOs could not be loaded", e);
+    logger.error(e, "Nominee ETOs could not be loaded");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETOS),
@@ -593,7 +593,7 @@ export function* setActiveNomineeEto({ logger }: TGlobalDependencies): Generator
       }
     }
   } catch (e) {
-    logger.fatal("Could not set active eto", e);
+    logger.fatal(e, "Could not set active eto");
 
     yield put(
       webNotificationUIModuleApi.actions.showError(

@@ -47,7 +47,7 @@ export class TooltipBase extends React.Component<IProps & TooltipProps, IState> 
     // prevents a reactstrap tooltip bug where target dom node is not found
 
     // tslint:disable-next-line:no-console
-    this.logger.error("Fatal tooltip error", error, info);
+    this.logger.error(error, "Fatal tooltip error", info);
     // trigger a rerender to update current dom
     // this prevents errors where the id in the target dom node has changed dynamically
     this.setState({ tooltipOpen: this.state.tooltipOpen });

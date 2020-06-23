@@ -72,7 +72,7 @@ export function* generateDocumentFromTemplate(
 
     yield call(downloadLink, generatedDocument, document.name, ".doc");
   } catch (e) {
-    logger.error("Failed to generate ETO template", e);
+    logger.error(e, "Failed to generate ETO template");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE),
@@ -117,7 +117,7 @@ export function* generateDocumentFromTemplateByEtoId(
     });
     yield call(downloadLink, generatedDocument, document.name, extension);
   } catch (e) {
-    logger.error("Failed to generate ETO template", e);
+    logger.error(e, "Failed to generate ETO template");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(IpfsMessage.IPFS_FAILED_TO_DOWNLOAD_IPFS_FILE),
@@ -141,7 +141,7 @@ export function* downloadDocumentStart(
     });
     yield call(downloadLink, downloadedDocument, matchingDocument.name, "");
   } catch (e) {
-    logger.error("Download document by type failed", e);
+    logger.error(e, "Download document by type failed");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FAILED_TO_DOWNLOAD_FILE),
@@ -179,7 +179,7 @@ export function* loadEtoFilesInfo({
       }),
     );
   } catch (e) {
-    logger.error("Load ETO data failed", e);
+    logger.error(e, "Load ETO data failed");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(
@@ -231,7 +231,9 @@ function* removeEtoFileEffect(
       ),
     );
   } else {
-    logger.error("Could not remove, missing ETO document", documentType);
+    logger.error(new Error("Could not remove, missing ETO document"), undefined, {
+      documentType,
+    });
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_REMOVE_FAILED),
@@ -263,7 +265,7 @@ function* uploadEtoFile(
         ),
       );
     } else {
-      logger.error("Failed to send ETO data", e);
+      logger.error(e, "Failed to send ETO data");
       yield put(
         webNotificationUIModuleApi.actions.showError(
           createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED),
@@ -309,7 +311,7 @@ function* removeEtoFile(
         ),
       );
     } else {
-      logger.error("Failed to remove ETO file data", e);
+      logger.error(e, "Failed to remove ETO file data");
       yield put(
         webNotificationUIModuleApi.actions.showError(
           createNotificationMessage(EtoDocumentsMessage.ETO_DOCUMENTS_FILE_UPLOAD_FAILED),

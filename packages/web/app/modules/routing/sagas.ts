@@ -68,7 +68,7 @@ export function* router(
     }
     return;
   } catch (e) {
-    logger.error("error in routing saga", e);
+    logger.error(e, "error in routing saga");
     yield put(actions.routing.goHome());
   }
 }

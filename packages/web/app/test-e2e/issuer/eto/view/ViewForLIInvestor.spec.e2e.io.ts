@@ -3,7 +3,7 @@ import {
   etoPublicViewByIdLinkLegacy,
 } from "../../../../components/appRouteUtils";
 import { EJurisdiction } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import { assertDashboard } from "../../../utils/assertions";
+import { assertInvestorDashboard } from "../../../utils/assertions";
 import { etoFixtureAddressByName } from "../../../utils/index";
 import { loginFixtureAccount } from "../../../utils/userHelpers";
 import { assertEtoView } from "./EtoViewUtils";
@@ -21,7 +21,7 @@ describe("Eto LI Investor View", () => {
 
     it("should not allow link with wrong jurisdiction #eto #p3", () => {
       cy.visit(etoPublicViewByIdLink(ETO_ID, EJurisdiction.GERMANY));
-      assertDashboard();
+      assertInvestorDashboard();
     });
   });
 
@@ -31,7 +31,7 @@ describe("Eto LI Investor View", () => {
     it("should not allow to visit #eto #p3", () => {
       cy.visit(etoPublicViewByIdLinkLegacy(ETO_ID));
 
-      assertDashboard();
+      assertInvestorDashboard();
     });
   });
 });

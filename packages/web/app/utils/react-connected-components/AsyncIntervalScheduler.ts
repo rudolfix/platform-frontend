@@ -42,7 +42,7 @@ export class AsyncIntervalScheduler {
           await response;
         }
       } catch (e) {
-        this.logger.error("Uncaught error in AsyncIntervalScheduler: ", e);
+        this.logger.error(e, "Uncaught error in AsyncIntervalScheduler: ");
       }
 
       this.schedule();

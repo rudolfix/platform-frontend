@@ -15,7 +15,7 @@ function* ensureGasApiDataSaga(): SagaGenerator<void> {
     const gasValue = yield* call(() => gasApi.getGas());
     yield put(gasActions.gasApiLoaded({ data: gasValue.body }));
   } catch (e) {
-    logger.error("Error while loading GAS api data.", e);
+    logger.error(e, "Error while loading GAS api data.");
     yield put(gasActions.gasApiLoaded({ error: e }));
   }
 }

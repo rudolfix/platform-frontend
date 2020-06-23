@@ -35,7 +35,7 @@ export function* downloadFile(
 
     yield call(downloadLink, downloadedFile, action.payload.fileName, extension);
   } catch (e) {
-    logger.error("Failed to download file from IPFS", e);
+    logger.error(e, "Failed to download file from IPFS");
 
     yield put(
       webNotificationUIModuleApi.actions.showError(

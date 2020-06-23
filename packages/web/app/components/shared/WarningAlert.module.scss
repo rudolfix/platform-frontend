@@ -4,11 +4,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $neu-flamingo-red;
+  color: $neu-base-red;
 
   .icon {
     @include rect(20px);
-
+    align-self: baseline;
     margin-right: .6em;
   }
 

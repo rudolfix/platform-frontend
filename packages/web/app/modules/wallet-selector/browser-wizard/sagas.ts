@@ -50,7 +50,7 @@ export function* browserWalletConnectAndSign({
   } catch (e) {
     const errorMessage = mapBrowserWalletErrorToErrorMessage(e);
     if (errorMessage.messageType === BrowserWalletErrorMessage.GENERIC_ERROR) {
-      logger.error("Error while trying to connect with browser wallet", e);
+      logger.error(e, "Error while trying to connect with browser wallet");
     }
     yield put(
       actions.walletSelector.setWalletRegisterData({

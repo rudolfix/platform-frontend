@@ -1,4 +1,4 @@
-import { callWithCount, takeWithCount, throwError } from "@neufund/sagas";
+import { callWithCount, delay, takeWithCount, throwError } from "@neufund/sagas";
 import { expectSaga, matchers, providers } from "@neufund/sagas/tests";
 import { ESignerType, EWalletSubType, EWalletType } from "@neufund/shared-modules";
 import {
@@ -542,6 +542,7 @@ describe("accessWallet sagas", () => {
 
   describe("accessWalletAndRunEffect", async () => {
     function* testEffect(): Generator<any, string, any> {
+      yield delay(1);
       return "effect_return";
     }
 
@@ -588,6 +589,7 @@ describe("accessWallet sagas", () => {
       await expectSaga(accessWalletAndRunEffect, testEffect(), title, message, inputLabel)
         .withState(state)
         .provide([
+          [matchers.call(connectWallet), undefined],
           [
             matchers.take(actions.accessWallet.hideAccessWalletModal),
             {
@@ -599,7 +601,6 @@ describe("accessWallet sagas", () => {
         .put(actions.accessWallet.showAccessWalletModal(title, message, inputLabel))
         .take(actions.accessWallet.hideAccessWalletModal)
         .throws(new MessageSignCancelledError("Wallet access has been cancelled"))
-        .not.put(actions.accessWallet.hideAccessWalletModal())
         .not.returns("effect_return")
         .run();
     });

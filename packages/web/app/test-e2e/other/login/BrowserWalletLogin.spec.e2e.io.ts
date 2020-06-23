@@ -1,20 +1,19 @@
 import PrivateKeyProvider from "truffle-privatekey-provider";
 
-import { remove0x } from "../../../../modules/web3/utils";
-import { NODE_ADDRESS } from "../../../config";
-import { stubChallengeApiRequest } from "../../../utils/apiStubs";
-import { assertDashboard } from "../../../utils/assertions";
-import { generateRandomPrivateKey } from "../../../utils/e2eWeb3Utils";
+import { makeEthereumAddressChecksummed, remove0x } from "../../../modules/web3/utils";
+import { NODE_ADDRESS } from "../../config";
+import { stubChallengeApiRequest } from "../../utils/apiStubs";
+import { assertInvestorDashboard } from "../../utils/assertions";
+import { generateRandomPrivateKey } from "../../utils/e2eWeb3Utils";
 import {
-  accountFixtureAddress,
   accountFixturePrivateKey,
   assertIssuerDashboard,
   ethereumProvider,
   generateRandomEmailAddress,
   goToWallet,
   tid,
-} from "../../../utils/index";
-import { goToLanding } from "../../../utils/navigation";
+} from "../../utils/index";
+import { goToLanding } from "../../utils/navigation";
 
 const ISSUER_SETUP = "ISSUER_SETUP";
 
@@ -33,7 +32,7 @@ const ISSUER_SETUP_MAIN_NODE_PROVIDER = new PrivateKeyProvider(
   "https://mainnet.infura.io/v3/ddfed355869142b09396d38dfe4c886d",
 );
 describe("Ethereum Routing", () => {
-  it("should register as issuer with browser wallet #browserWallet #p3", () => {
+  it("should register as issuer with browser wallet #browserWallet #p2", () => {
     goToLanding();
     ethereumProvider(NEW_INVESTOR_NODE_PROVIDER);
     cy.get(tid("Header-register")).click();
@@ -43,20 +42,17 @@ describe("Ethereum Routing", () => {
     cy.get(tid("wallet-selector-register-button")).click();
     cy.get(tid("unverified-email-reminder-modal-ok-button")).click();
 
-    assertDashboard();
+    assertInvestorDashboard();
 
     goToWallet();
 
-    cy.get(tid("account-address.your.ether-address.from-div"))
-      .invoke("text")
-      .then(value => {
-        expect(((value as unknown) as string).toLowerCase()).to.equal(
-          NEW_INVESTOR_NODE_PROVIDER.address.toLowerCase(),
-        );
-      });
+    cy.get(tid("account-address.your.ether-address.from-div.trigger")).should(
+      "have.text",
+      makeEthereumAddressChecksummed(NEW_INVESTOR_NODE_PROVIDER.address),
+    );
   });
 
-  it("should login as issuer with browser wallet #browserWallet #p3", () => {
+  it("should login as issuer with browser wallet #browserWallet #p2", () => {
     goToLanding();
 
     ethereumProvider(ISSUER_SETUP_NODE_PROVIDER);
@@ -67,11 +63,10 @@ describe("Ethereum Routing", () => {
     assertIssuerDashboard();
     goToWallet();
 
-    cy.get(tid("account-address.your.ether-address.from-div"))
-      .invoke("text")
-      .then(value => {
-        expect(value).to.equal(accountFixtureAddress(ISSUER_SETUP));
-      });
+    cy.get(tid("account-address.your.ether-address.from-div.trigger")).should(
+      "have.text",
+      makeEthereumAddressChecksummed(ISSUER_SETUP_NODE_PROVIDER.address),
+    );
   });
 
   it("should work on retry after exception #browserWallet #p3", () => {

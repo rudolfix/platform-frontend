@@ -76,7 +76,7 @@ export function* loadIssuerEtoView(
       throw new Error("could not load issuer eto");
     }
   } catch (e) {
-    logger.error("Could not load eto", e);
+    logger.error(e, "Could not load eto");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO),
@@ -106,7 +106,7 @@ export function* loadIssuerEtoPreview(
       throw new DataUnavailableError("Could not load eto");
     }
   } catch (e) {
-    logger.error("Could not load eto by preview code", e);
+    logger.error(e, "Could not load eto by preview code");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO_PREVIEW),
@@ -135,7 +135,7 @@ export function* loadIssuerPreviewByIdEtoView(
       throw new DataUnavailableError("Could not load eto");
     }
   } catch (e) {
-    logger.error("Could not load eto", e);
+    logger.error(e, "Could not load eto");
     yield put(
       webNotificationUIModuleApi.actions.showError(
         createNotificationMessage(EtoMessage.COULD_NOT_LOAD_ETO),

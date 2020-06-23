@@ -15,7 +15,7 @@ export class VaultApi {
   ) {}
 
   public async store(key: string, serializedVault: string): Promise<void> {
-    this.logger.info("Storing vault with Key: ", key);
+    this.logger.info(`Storing vault with Key: ${key}`);
 
     await this.httpClient.post<string>({
       baseUrl: VAULT_API_ROOT,
@@ -26,7 +26,7 @@ export class VaultApi {
   }
 
   public async retrieve(key: string): Promise<string> {
-    this.logger.info("Retrieving vault with Key: ", key);
+    this.logger.info(`Retrieving vault with Key: ${key}`);
 
     const response = await this.httpClient.get<IVault>({
       baseUrl: VAULT_API_ROOT,
@@ -38,7 +38,7 @@ export class VaultApi {
   }
 
   public async confirm(key: string): Promise<number> {
-    this.logger.info("confirming vault with Key: ", key);
+    this.logger.info(`confirming vault with Key: ${key}`);
 
     const response = await this.authJsonHttpClient.put<void>({
       baseUrl: VAULT_API_ROOT,

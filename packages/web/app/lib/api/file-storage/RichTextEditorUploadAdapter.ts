@@ -28,7 +28,7 @@ export class RichTextEditorUploadAdapter implements IUploadAdapter {
       const { url } = await this.fileStorageApi.uploadFile("image", file);
       return { default: url };
     } catch (e) {
-      this.logger.error("Could not upload file for rich text editor", e);
+      this.logger.error(e, "Could not upload file for rich text editor");
       return Promise.reject(`Couldn't upload file: ${file.name}.`);
     }
   }

@@ -1,7 +1,7 @@
 import { JWT_KEY, NF_USER_KEY, WALLET_STORAGE_KEY } from "../../utils/constants";
 import { cyPromise } from "../../utils/cyPromise";
 import {
-  assertDashboard,
+  assertInvestorDashboard,
   assertLanding,
   assertLogin,
   goToDashboard,
@@ -48,7 +48,7 @@ describe("Login/Logout", () => {
         const now = Date.now();
         cy.clock(now).then(clock => {
           clock.tick(AUTH_INACTIVITY_THRESHOLD / 2);
-          assertDashboard();
+          assertInvestorDashboard();
           clock.tick(AUTH_INACTIVITY_THRESHOLD);
           assertLogin();
         });
@@ -69,7 +69,7 @@ describe("Login/Logout", () => {
             return cy.get(tid("authorized-layout-wallet-button")).trigger("mouseleave");
           }).then(() => {
             clock.tick(AUTH_INACTIVITY_THRESHOLD / 2);
-            assertDashboard();
+            assertInvestorDashboard();
           });
         });
       });
@@ -87,7 +87,7 @@ describe("Login/Logout", () => {
 
         keepSessionActive(AUTH_INACTIVITY_THRESHOLD * 1.5);
 
-        assertDashboard();
+        assertInvestorDashboard();
       });
     });
   });
@@ -119,7 +119,7 @@ describe("Login/Logout", () => {
           setKeyFromStorageWithEvents(Window, WALLET_STORAGE_KEY, JSON.stringify(walletData));
           setKeyFromStorageWithEvents(Window, JWT_KEY, JSON.stringify(jwt));
           setKeyFromStorageWithEvents(Window, NF_USER_KEY, JSON.stringify(REGISTRATION_LOGIN_DONE));
-          assertDashboard();
+          assertInvestorDashboard();
         });
       });
     });

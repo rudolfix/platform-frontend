@@ -15,7 +15,7 @@ import {
 } from "../../components/shared/formatters/utils";
 import { MOCK_API_URL } from "../config";
 import {
-  assertDashboard,
+  assertInvestorDashboard,
   assertIssuerDashboard,
   assertLanding,
   assertWaitForExternalPendingTransactionCount,
@@ -35,10 +35,6 @@ export const letterRegExPattern = /[^0-9]/gi;
 export const letterKeepDotRegExPattern = /[^0-9.]/gi;
 
 export const charRegExPattern = /[^a-z0-9]/gi;
-
-export const clearEmailServer = () => {
-  cy.request({ url: MOCK_API_URL + "sendgrid/session/mails", method: "DELETE" });
-};
 
 export const registerWithLightWalletETO = (email: string, password: string) => {
   cy.visit("eto/register/light");
@@ -101,7 +97,7 @@ export const registerWithLightWallet = (email: string, password: string) => {
   lightWalletTypeRegistrationInfo(email, password);
 
   cy.get(tid("unverified-email-reminder-modal-ok-button")).awaitedClick();
-  assertDashboard();
+  assertInvestorDashboard();
 };
 
 export const registerWithLightWalletIssuer = (email: string, password: string) => {

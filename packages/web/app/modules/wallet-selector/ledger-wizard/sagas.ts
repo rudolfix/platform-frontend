@@ -180,7 +180,7 @@ export function* loadLedgerAccounts({ logger }: TGlobalDependencies): Generator<
   try {
     yield neuCall(loadLedgerAccountsEffect);
   } catch (e) {
-    logger.error("Failed to load ledger accounts", e);
+    logger.error(e, "Failed to load ledger accounts");
     yield put(
       actions.walletSelector.ledgerConnectionEstablishedError(mapLedgerErrorToErrorMessage(e)),
     );

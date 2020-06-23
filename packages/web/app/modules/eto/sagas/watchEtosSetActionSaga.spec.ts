@@ -1,3 +1,4 @@
+import { noopLogger } from "@neufund/shared-modules";
 import { minutesToMs } from "@neufund/shared-utils";
 import { setupFakeClock } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
@@ -10,10 +11,7 @@ import { calculateNextStateDelay, getEtoRefreshStrategies } from "./watchEtosSet
 
 const globalDependencies = {
   //todo write out the full context, move to utils
-  logger: {
-    info: (_: string) => {},
-    error: (_: string) => {},
-  },
+  logger: noopLogger,
 } as TGlobalDependencies;
 
 const eto = {

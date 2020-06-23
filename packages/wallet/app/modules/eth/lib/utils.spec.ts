@@ -4,7 +4,7 @@ const EMPTY_STRING = "";
 
 describe("utils", () => {
   describe("isPrivateKey", () => {
-    it("should return true for a valid private key", async () => {
+    it("should return true for a valid private key", () => {
       const privateKeys = ["0x79177f5833b64c8fdcc9862f5a779b8ff0e1853bf6e9e4748898d4b6de7e8c93"];
 
       privateKeys.forEach(privateKey => {
@@ -12,7 +12,7 @@ describe("utils", () => {
       });
     });
 
-    it("should return false for an invalid private key", async () => {
+    it("should return false for an invalid private key", () => {
       const privateKeys = [
         "79177f5833b64c8fdcc9862f5a779b8ff0e1853bf6e9e4748898d4b6de7e8c93",
         "0xF79177f5833b64c8fdcc9862f5a779b8ff0e1853bf6e9e4748898d4b6de7e8c93",
@@ -27,7 +27,7 @@ describe("utils", () => {
   });
 
   describe("isAddress", () => {
-    it("should return true for a valid address", async () => {
+    it("should return true for a valid address", () => {
       const addresses = [
         // checksummed
         "0x30fD2af22459B61F5bdfdDcaeF9BFaD6AcBF9fDC",
@@ -42,7 +42,7 @@ describe("utils", () => {
       });
     });
 
-    it("should return false for an invalid address", async () => {
+    it("should return false for an invalid address", () => {
       const addresses = [
         // mixed case
         "0x30Fd2AF22459B61F5bDFDDCAEF9BFAD6aCBF9FDc",
@@ -57,7 +57,7 @@ describe("utils", () => {
   });
 
   describe("isChecksumAddress", () => {
-    it("should return true for a valid address", async () => {
+    it("should return true for a valid address", () => {
       const addresses = [
         // checksummed
         "0x30fD2af22459B61F5bdfdDcaeF9BFaD6AcBF9fDC",
@@ -68,7 +68,7 @@ describe("utils", () => {
       });
     });
 
-    it("should return false for an invalid address", async () => {
+    it("should return false for an invalid address", () => {
       const addresses = [
         // lower case
         "0x30fd2af22459b61f5bdfddcaef9bfad6acbf9fdc",
@@ -87,7 +87,7 @@ describe("utils", () => {
   });
 
   describe("isMnemonic", () => {
-    it("should return true for a valid mnemonics", async () => {
+    it("should return true for a valid mnemonics", () => {
       const mnemonics = [
         "sword grace service smile staff weather fog husband slush diary silent artwork orbit wedding twelve mammal lamp position sorry weird foot record wide pioneer",
         "flat range capital party must this hero receive clown patch online index",
@@ -98,7 +98,7 @@ describe("utils", () => {
       });
     });
 
-    it("should return false for an invalid mnemonics", async () => {
+    it("should return false for an invalid mnemonics", () => {
       const mnemonics = [
         "flat range capital party car this hero receive clown patch online index",
         "pool hockey win moral spike wine renew space frequent early boost carry federal unlock rent code topic nature business elite vivid setup stand mosquito foo",

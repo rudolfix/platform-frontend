@@ -302,7 +302,7 @@ export function* mapAnalyticsApiTransactionResponse(
       const { logger } = yield* neuGetBindings({
         logger: coreModuleApi.symbols.logger,
       });
-      logger.warn(new Error(`Transaction with unknown type received ${transaction.type}`));
+      logger.warn(`Transaction with unknown type received ${transaction.type}`);
   }
 
   return tx;
@@ -349,7 +349,7 @@ export function* loadTransactionsHistoryNext(_: TGlobalDependencies): Generator<
       ),
     );
 
-    logger.error("Error while loading next page of transaction history", e);
+    logger.error(e, "Error while loading next page of transaction history");
   }
 }
 
@@ -384,7 +384,7 @@ export function* loadTransactionsHistory(_: TGlobalDependencies): Generator<any,
       ),
     );
 
-    logger.error("Error while loading transaction history", e);
+    logger.error(e, "Error while loading transaction history");
 
     yield put(txHistoryActions.setTransactions([], undefined, undefined));
   }
@@ -445,7 +445,7 @@ export function* watchTransactions(
       }
     } catch (e) {
       // Log error and continue looping
-      logger.error("Failed to watch for analytics transaction", e);
+      logger.error(e, "Failed to watch for analytics transaction");
     }
   }
 }

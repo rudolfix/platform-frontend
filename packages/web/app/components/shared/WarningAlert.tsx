@@ -4,7 +4,7 @@ import * as React from "react";
 import { TDataTestId } from "../../types";
 import { InlineIcon } from "./icons/InlineIcon";
 
-import warningIcon from "../../assets/img/inline_icons/warning-circle--solid.svg";
+import warningIcon from "../../assets/img/inline_icons/alert.svg";
 import * as styles from "./WarningAlert.module.scss";
 
 export enum EWarningAlertSize {

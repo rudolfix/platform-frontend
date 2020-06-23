@@ -51,7 +51,7 @@ function* initSmartcontracts({
         "Error while connecting with Ethereum blockchain",
       ),
     );
-    logger.error("Smart Contract Init Error", e);
+    logger.error(e, "Smart Contract Init Error");
   }
 }
 
@@ -87,7 +87,7 @@ function* restoreUserSession(
       yield put(actions.auth.finishSigning());
     } catch (e) {
       yield put(actions.auth.logout());
-      logger.error(`Cannot retrieve account. ${e}`);
+      logger.error(e, "Cannot retrieve account.");
     }
   } else {
     yield put(actions.auth.logout());
@@ -125,11 +125,11 @@ export function* initApp({ logger }: TGlobalDependencies): Generator<any, void, 
     yield put(actions.init.done(EInitType.APP_INIT));
   } catch (e) {
     if (e instanceof WalletMetadataNotFoundError) {
-      logger.error("User has JWT but no Wallet Metadata", e);
+      logger.error(e, "User has JWT but no Wallet Metadata");
       yield put(actions.auth.logout());
     } else {
       yield put(actions.init.error(EInitType.APP_INIT, e.message || "Unknown error"));
-      logger.error("App init error", e);
+      logger.error(e, "App init error");
     }
   }
 }

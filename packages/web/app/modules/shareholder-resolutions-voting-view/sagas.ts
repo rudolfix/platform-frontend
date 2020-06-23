@@ -36,6 +36,10 @@ export function* loadInvestorShareholderResolution(
         yield put(
           webNotificationUIModuleApi.actions.showError(
             createNotificationMessage(EVotingErrorMessage.UNKNOWN_PROPOSAL),
+            {
+              ["data-test-id"]:
+                "modules.shareholder-resolutions-voting-view.sagas.toast.unknown-proposal",
+            },
           ),
         );
         return;
@@ -44,6 +48,10 @@ export function* loadInvestorShareholderResolution(
         yield put(
           webNotificationUIModuleApi.actions.showError(
             createNotificationMessage(EVotingErrorMessage.CANNOT_VOTE),
+            {
+              ["data-test-id"]:
+                "modules.shareholder-resolutions-voting-view.sagas.toast.no-access-to-proposal",
+            },
           ),
         );
         return;
@@ -57,7 +65,7 @@ export function* loadInvestorShareholderResolution(
         return;
 
       default:
-        logger.error(`Failed generate shareholder resolutions voting for ${proposalId}`, e);
+        logger.error(e, `Failed generate shareholder resolutions voting for ${proposalId}`);
 
         yield put(actions.setShareholderResolutionVotingViewState(EProcessState.ERROR));
 
@@ -91,6 +99,10 @@ export function* loadIssuerShareholderResolution(
         yield put(
           webNotificationUIModuleApi.actions.showError(
             createNotificationMessage(EVotingErrorMessage.UNKNOWN_PROPOSAL),
+            {
+              ["data-test-id"]:
+                "modules.shareholder-resolutions-voting-view.sagas.toast.unknown-proposal",
+            },
           ),
         );
         return;
@@ -104,7 +116,7 @@ export function* loadIssuerShareholderResolution(
         return;
 
       default:
-        logger.error(`Failed generate shareholder resolutions voting for ${proposalId}`, e);
+        logger.error(e, `Failed generate shareholder resolutions voting for ${proposalId}`);
 
         yield put(actions.setShareholderResolutionVotingViewState(EProcessState.ERROR));
 

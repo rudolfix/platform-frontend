@@ -45,7 +45,7 @@ const ProposalIssuerLayout: React.FunctionComponent<IProposalsProps> = ({
   invariant(eto, "Proposal ETO not defined");
 
   return (
-    <WidgetGrid className={styles.container}>
+    <WidgetGrid className={styles.container} data-test-id="governance.issuer-proposal">
       <Container columnSpan={EColumnSpan.TWO_COL} type={EContainerType.CONTAINER}>
         <ProposalDetails
           proposal={proposal}

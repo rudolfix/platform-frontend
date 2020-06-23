@@ -985,7 +985,6 @@
   "modals.shared.tx-status-label.error": "Cancelled",
   "modals.shared.tx-status-label.pending": "Pending",
   "modals.shared.tx-status-label.success": "Success",
-  "modals.tx-sender.confirm-description": "Please confirm that you would like to accept this transaction",
   "modals.tx-sender.confirm-title": "Accept transaction",
   "modals.tx-sender.user-claim-summary.download-confirmation": "I have downloaded the above agreements",
   "modals.tx-sender.user-claim.title": "Claim",

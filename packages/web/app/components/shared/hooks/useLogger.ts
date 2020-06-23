@@ -8,7 +8,7 @@ const useLogger = () => {
   const container = React.useContext(ContainerContext);
 
   // For storybook return noop logger as container is not connected with stories
-  if (process.env.STORYBOOK_RUN === "1") {
+  if (process.env.STORYBOOK_RUN === "1" || process.env.NODE_ENV === "development") {
     return noopLogger;
   }
 

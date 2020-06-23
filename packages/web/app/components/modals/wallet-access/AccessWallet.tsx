@@ -64,7 +64,7 @@ export const AccessWalletLayout: React.FunctionComponent<TComponentProps> = ({
   switch (walletType) {
     case EWalletType.LIGHT:
       return (
-        <>
+        <div className={styles.accessWalletWrapper}>
           <AccessWalletModalLogo logo={lockIcon} />
           {title && <h1 className={styles.title}>{title}</h1>}
           {message && <p>{message}</p>}
@@ -78,7 +78,7 @@ export const AccessWalletLayout: React.FunctionComponent<TComponentProps> = ({
               {errorMessage}
             </WarningAlert>
           )}
-        </>
+        </div>
       );
     case EWalletType.LEDGER:
       return (

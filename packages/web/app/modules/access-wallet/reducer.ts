@@ -31,10 +31,7 @@ export const accessWalletReducer: AppReducer<ISignMessageModalState> = (
         inputLabel: action.payload.inputLabel,
       };
     case actions.accessWallet.hideAccessWalletModal.getType():
-      return {
-        ...state,
-        isModalOpen: false,
-      };
+      return initialState;
     case actions.accessWallet.signingError.getType():
       return {
         ...state,

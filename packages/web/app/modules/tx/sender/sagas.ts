@@ -237,7 +237,7 @@ function* sendTxSubSaga({ web3Manager }: TGlobalDependencies): any {
     }
 
     if (
-      (error.code === -32000 && error.message === "intrinsic gas too low") ||
+      error.code === -32000 ||
       (error.code === -32010 &&
         error.message.startsWith("Transaction gas is too low. There is not enough")) ||
       (error.code === -32010 && error.message.startsWith("exceeds current gas limit"))

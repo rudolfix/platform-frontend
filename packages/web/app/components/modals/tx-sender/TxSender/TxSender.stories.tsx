@@ -1,4 +1,4 @@
-import { EUserType, EWalletType } from "@neufund/shared-modules";
+import { EKycRequestStatus, EUserType, EWalletType } from "@neufund/shared-modules";
 import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
@@ -11,7 +11,6 @@ import {
   testContract,
   testEto,
 } from "../../../../../test/fixtures";
-import { EKycRequestStatus } from "../../../../lib/api/kyc/KycApi.interfaces";
 import { ETxType } from "../../../../lib/web3/types";
 import { EETOStateOnChain } from "../../../../modules/eto/types";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";

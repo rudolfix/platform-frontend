@@ -14,7 +14,7 @@ import { symbols } from "../../../di/symbols";
 import { calculateGasLimitWithOverhead, encodeTransaction } from "../../../modules/tx/utils";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig, ITxData, ITxMetadata } from "../types";
-import { Web3Adapter } from "../Web3Adapter";
+import { Web3Adapter, NotEnoughEtherForGasError } from "../Web3Adapter";
 import { Web3FactoryType } from "../Web3Batch/Web3Batch";
 
 export const DEFAULT_UPPER_GAS_LIMIT = 2000000;
@@ -194,22 +194,28 @@ export class Web3Manager extends EventEmitter implements IEthManager {
   }
 
   public async estimateGasWithOverhead(txData: Partial<Web3.TxData>): Promise<string> {
-    const gas = await this.estimateGas(txData);
-    // There is Smart Contract Attack Vector that extreme high gas amounts
-    if (gas < DEFAULT_LOWER_GAS_LIMIT || gas > DEFAULT_UPPER_GAS_LIMIT) {
-      this.logger.error(
-        new Error(
-          `Transaction with very hight/low gas limit VALUE: "${gas.toString()} TX DATA: ${JSON.stringify(
-            txData,
-          )}`,
-        ),
-      );
-      // No need for overhead in this case
-      return DEFAULT_UPPER_GAS_LIMIT.toString();
+    try {
+      const gas = await this.estimateGas(txData);
+      // There is Smart Contract Attack Vector that extreme high gas amounts
+      if (gas < DEFAULT_LOWER_GAS_LIMIT || gas > DEFAULT_UPPER_GAS_LIMIT) {
+        this.logger.error(
+          new Error(
+            `Transaction with very hight/low gas limit VALUE: "${gas.toString()} TX DATA: ${JSON.stringify(
+              txData,
+            )}`,
+          ),
+        );
+        // No need for overhead in this case
+        return DEFAULT_UPPER_GAS_LIMIT.toString();
+      }
+      // If gas is 21000 it means its a regular transaction
+      return gas === DEFAULT_LOWER_GAS_LIMIT
+        ? gas.toString()
+        : calculateGasLimitWithOverhead(gas.toString());
+    } catch (e) {
+      if (e.message.includes("gas required exceeds allowance")) {
+        throw new NotEnoughEtherForGasError("gas required exceeds allowance");
+      } else throw e;
     }
-    // If gas is 21000 it means its a regular transaction
-    return gas === DEFAULT_LOWER_GAS_LIMIT
-      ? gas.toString()
-      : calculateGasLimitWithOverhead(gas.toString());
   }
 }

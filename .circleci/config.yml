@@ -52,7 +52,7 @@ jobs:
     executor: docker
 
     steps:
-      - checkout-and-install
+      - checkout
 
       - run: yarn workspace @neufund/web contract-artifacts:check
 
@@ -90,7 +90,7 @@ jobs:
     executor: docker
 
     steps:
-      - checkout-and-install
+      - checkout
 
       - run:
           command: yarn workspace @neufund/web build:prod:e2e
@@ -159,7 +159,7 @@ jobs:
     executor: docker
 
     steps:
-      - checkout-and-install
+      - checkout
 
       - run: yarn workspace @neufund/web build:commit-deployment
       - run: yarn workspace @neufund/web codechecks
@@ -170,7 +170,7 @@ jobs:
     executor: docker-browsers
 
     steps:
-      - checkout-and-install
+      - checkout
 
       - run: yarn workspace @neufund/web storybook:screenshots
       - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
@@ -181,7 +181,7 @@ jobs:
     executor: docker-browsers
 
     steps:
-      - checkout-and-install
+      - checkout
 
       - run:
           command: yarn workspace @neufund/web build:prod:e2e:io
@@ -198,7 +198,7 @@ jobs:
     executor: docker
 
     steps:
-      - checkout-and-install
+      - checkout
 
       - run: yarn storybook-to-ghpages --script=storybook:build --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN --packages packages
 

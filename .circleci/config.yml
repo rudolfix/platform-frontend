@@ -115,7 +115,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci/app/packages/web
 
-      - run: yarn --frozen-lockfile
+      - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn workspace @neufund/web show:tags
       - run:
           command: yarn workspace @neufund/web build:prod:e2e:io

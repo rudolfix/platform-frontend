@@ -54,6 +54,8 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web danger ci --failOnErrors
+      - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn workspace @neufund/web contract-artifacts:check
 
   # install and lint is taken as one job to remove required time for downloading cache
@@ -92,6 +94,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web danger ci --failOnErrors
       - run: yarn workspace @neufund/web install --frozen-lockfile
       - run:
           command: yarn workspace @neufund/web build:prod:e2e
@@ -116,6 +119,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci/app/packages/web
 
+      - run: yarn workspace @neufund/web danger ci --failOnErrors
       - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn workspace @neufund/web show:tags
       - run:
@@ -162,6 +166,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web danger ci --failOnErrors
       - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn workspace @neufund/web build:commit-deployment
       - run: yarn workspace @neufund/web codechecks
@@ -174,6 +179,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web danger ci --failOnErrors
       - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn workspace @neufund/web storybook:screenshots
       - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
@@ -186,6 +192,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web danger ci --failOnErrors
       - run: yarn workspace @neufund/web install --frozen-lockfile
       - run:
           command: yarn workspace @neufund/web build:prod:e2e:io
@@ -203,7 +210,8 @@ jobs:
 
     steps:
       - checkout
-      
+
+      - run: yarn workspace @neufund/web danger ci --failOnErrors     
       - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn storybook-to-ghpages --script=storybook:build --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN --packages packages
 

@@ -110,7 +110,7 @@ jobs:
     parallelism: 4
 
     steps:
-      - checkout-and-install
+      - checkout
 
       - attach_workspace:
           at: /home/circleci/app/packages/web

@@ -92,6 +92,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web install --frozen-lockfile
       - run:
           command: yarn workspace @neufund/web build:prod:e2e
           # If build takes more than 30mins then fail
@@ -161,6 +162,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn workspace @neufund/web build:commit-deployment
       - run: yarn workspace @neufund/web codechecks
 
@@ -172,6 +174,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn workspace @neufund/web storybook:screenshots
       - run: yarn workspace @neufund/web codechecks ./codechecks-vis-reg.ts
 
@@ -183,6 +186,7 @@ jobs:
     steps:
       - checkout
 
+      - run: yarn workspace @neufund/web install --frozen-lockfile
       - run:
           command: yarn workspace @neufund/web build:prod:e2e:io
           no_output_timeout: 10m
@@ -199,7 +203,8 @@ jobs:
 
     steps:
       - checkout
-
+      
+      - run: yarn workspace @neufund/web install --frozen-lockfile
       - run: yarn storybook-to-ghpages --script=storybook:build --ci --host-token-env-variable=DANGER_GITHUB_API_TOKEN --packages packages
 
       - notify-slack

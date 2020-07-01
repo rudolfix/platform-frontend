@@ -113,6 +113,7 @@ export const TextField: React.FunctionComponent<TFieldProps &
                 <button
                   type="button"
                   className={styles.adornment}
+                  data-test-id={`${dataTestId}.adornment`}
                   onClick={() => setUnmaskPassword(!unmaskPassword)}
                 >
                   <InlineIcon

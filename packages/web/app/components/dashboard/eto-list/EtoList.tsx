@@ -8,7 +8,6 @@ import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { EtoOverviewThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtoOverviewThumbnail";
-import { EtosComingSoonThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtosComingSoonThumbnail";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { ELoadingIndicator, LoadingIndicator } from "../../shared/loading-indicator";
 
@@ -50,8 +49,6 @@ const EtoListThumbnails: React.FunctionComponent<TListProps & TExternalProps> = 
         shouldOpenInNewWindow={shouldOpenInNewWindow}
       />
     ))}
-
-    {etos.length + mockedEtos.length < 4 && <EtosComingSoonThumbnail />}
   </Container>
 );
 

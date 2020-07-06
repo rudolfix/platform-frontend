@@ -6,10 +6,10 @@ import { actions } from "../../actions";
 export function walletSelectorRegisterRedirect(userType: EUserType): CallHistoryMethodAction {
   switch (userType) {
     case EUserType.INVESTOR:
-      return actions.routing.goToLightWalletRegister();
+      return actions.routing.redirectToLightWalletRegister();
     case EUserType.ISSUER:
-      return actions.routing.goToIssuerLightWalletRegister();
+      return actions.routing.redirectToIssuerLightWalletRegister();
     case EUserType.NOMINEE:
-      return actions.routing.goToNomineeLightWalletRegister();
+      return actions.routing.redirectToNomineeLightWalletRegister();
   }
 }

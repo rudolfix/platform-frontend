@@ -383,7 +383,7 @@ export function* registerWithLightWalletRoute(payload: RouterState): Generator<a
 
   return yield redirectIfBrowserWalletExists(
     routeAction(routeMatch, {
-      notAuth: put(actions.routing.goToRegisterBrowserWallet()),
+      notAuth: put(actions.routing.redirectToRegisterBrowserWallet()),
       investor: put(actions.routing.goToDashboard()),
       issuer: put(actions.routing.goToDashboard()),
       nominee: put(actions.routing.goToDashboard()),

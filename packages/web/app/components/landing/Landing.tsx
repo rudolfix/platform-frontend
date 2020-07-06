@@ -20,8 +20,8 @@ import fish from "../../assets/img/neufund_landing_visual.png";
 import * as styles from "./Landing.module.scss";
 
 const LandingLayout: React.FunctionComponent = () => (
-  <section className={styles.landing} data-test-id="landing-page">
-    <Content>
+  <>
+    <Content className={styles.landing} data-test-id="landing-page">
       <WidgetGrid>
         <Container columnSpan={EColumnSpan.ONE_AND_HALF_COL} type={EContainerType.GRID}>
           <div className={styles.neon} />
@@ -41,13 +41,6 @@ const LandingLayout: React.FunctionComponent = () => (
             >
               <FormattedMessage id="common.text.read-more" />
             </ButtonLink>
-            <ButtonLink
-              layout={EButtonLayout.SECONDARY}
-              size={EButtonSize.NORMAL}
-              to={appRoutes.register}
-            >
-              <FormattedMessage id="wallet-selector.register" />
-            </ButtonLink>
           </div>
         </Container>
 
@@ -64,7 +57,18 @@ const LandingLayout: React.FunctionComponent = () => (
         <EtoList mockedEtos={etoMockCompanies} shouldOpenInNewWindow={true} />
       </section>
     </Content>
-  </section>
+    <section className={styles.stayTuned}>
+      <h1 className={styles.header}>
+        <FormattedMessage id="platform.landing.stay-tuned.title" />
+      </h1>
+      <p className={styles.stayTunedDescription}>
+        <FormattedMessage id="platform.landing.stay-tuned.description" />
+      </p>
+      <ButtonLink layout={EButtonLayout.PRIMARY} size={EButtonSize.NORMAL} to={appRoutes.register}>
+        <FormattedMessage id="platform.landing.sign-up" />
+      </ButtonLink>
+    </section>
+  </>
 );
 
 const Landing = compose(

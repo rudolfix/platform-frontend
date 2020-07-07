@@ -1,5 +1,5 @@
 import { call, delay, fork, put, race, SagaGenerator, select, take } from "@neufund/sagas";
-import { authModuleAPI, EJwtPermissions, EUserType } from "@neufund/shared-modules";
+import { authModuleAPI, EJwtPermissions, EUserType, kycApi } from "@neufund/shared-modules";
 import { assertNever, minutesToMs, safeDelay, secondsToMs } from "@neufund/shared-utils";
 
 import { SignInUserErrorMessage } from "../../../components/translatedMessages/messages";
@@ -16,7 +16,6 @@ import { TAppGlobalState } from "../../../store";
 import { actions, TActionFromCreator } from "../../actions";
 import { EInitType } from "../../init/reducer";
 import { restartServices } from "../../init/sagas";
-import { loadKycRequestData } from "../../kyc/sagas";
 import { selectRedirectURLFromQueryString } from "../../routing/selectors";
 import { neuCall, neuTakeLatest, neuTakeLatestUntil, neuTakeUntil } from "../../sagasUtils";
 import { handleAcceptCurrentAgreement } from "../../terms-of-service/sagas";
@@ -104,7 +103,7 @@ export function* signInUser(
       yield* neuCall(handleAcceptCurrentAgreement);
     }
 
-    yield* neuCall(loadKycRequestData);
+    yield* neuCall(kycApi.sagas.loadKycRequestData);
 
     yield* call(checkForPendingEmailVerification);
 

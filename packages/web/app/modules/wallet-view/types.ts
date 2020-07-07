@@ -1,8 +1,8 @@
 import { TTranslatedString } from "@neufund/design-system";
+import { TBankAccount } from "@neufund/shared-modules";
 import { ECurrency, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 
 import { EProcessState } from "../../utils/enums/processStates";
-import { TBankAccount } from "../kyc/types";
 
 export type TBasicBalanceData = {
   name: EBalanceViewType;

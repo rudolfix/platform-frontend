@@ -1,8 +1,8 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { EKycRequestType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { TDataTestId } from "../../../types";
 import { Container, EColumnSpan } from "../../layouts/Container";
 import { InlineIcon } from "../../shared/icons/InlineIcon";

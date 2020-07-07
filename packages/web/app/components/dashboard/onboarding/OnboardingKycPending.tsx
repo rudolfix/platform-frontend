@@ -1,11 +1,10 @@
+import { EKycRequestStatus, EKycRequestType, kycApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { EKycRequestStatus, EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { kycStatusToTranslationMessage } from "../../../modules/kyc/utils";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
 import { getMessageTranslation } from "../../translatedMessages/messages";
@@ -26,7 +25,7 @@ const OnboardingKycPendingBase: React.FunctionComponent<IKycPendingProps> = ({
     <h1 className={styles.titleLarge}>
       <FormattedMessage id="account-setup.pending-kyc.title" />
       <span className={styles.status}>
-        {getMessageTranslation(kycStatusToTranslationMessage(kycRequestStatus))}
+        {getMessageTranslation(kycApi.utils.kycStatusToTranslationMessage(kycRequestStatus))}
       </span>
     </h1>
     <p>
@@ -56,7 +55,7 @@ const OnboardingKycRejectedBase: React.FunctionComponent<Omit<
     <h1 className={styles.titleLarge}>
       <FormattedMessage id="account-setup.pending-kyc.title" />
       <span className={styles.status}>
-        {getMessageTranslation(kycStatusToTranslationMessage(kycRequestStatus))}
+        {getMessageTranslation(kycApi.utils.kycStatusToTranslationMessage(kycRequestStatus))}
       </span>
     </h1>
     <p>

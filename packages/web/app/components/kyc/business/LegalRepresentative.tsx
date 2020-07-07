@@ -1,4 +1,12 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import {
+  IKycBeneficialOwner,
+  IKycFileInfo,
+  IKycIndividualData,
+  IKycLegalRepresentative,
+  kycApi,
+  KycLegalRepresentativeSchema,
+} from "@neufund/shared-modules";
 import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
@@ -7,15 +15,7 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, ModalFooter, Row } from "reactstrap";
 import { compose } from "recompose";
 
-import {
-  IKycBeneficialOwner,
-  IKycFileInfo,
-  IKycIndividualData,
-  IKycLegalRepresentative,
-  KycLegalRepresentativeSchema,
-} from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import { selectLegalRepresentative } from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import {
@@ -294,7 +294,7 @@ export const KycLegalRepresentativeLayout: React.FunctionComponent<IProps> = ({
 
 export const KycLegalRepresentative = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: state => selectLegalRepresentative(state),
+    stateToProps: state => kycApi.selectors.selectLegalRepresentative(state),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadLegalRepresentativeDocument(file)),
       onContinue: () => dispatch(actions.kyc.kycSubmitBusinessRequest()),

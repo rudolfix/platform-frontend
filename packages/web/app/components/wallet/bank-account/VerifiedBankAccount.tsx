@@ -1,4 +1,5 @@
 import { ButtonInline } from "@neufund/design-system";
+import { kycApi, TBankAccount } from "@neufund/shared-modules";
 import { DeepReadonly } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
@@ -7,8 +8,6 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { selectIsUserFullyVerified } from "../../../modules/auth/selectors";
 import { selectIsBankAccountVerified } from "../../../modules/bank-transfer-flow/selectors";
-import { selectBankAccount, selectIsBankAccountLoading } from "../../../modules/kyc/selectors";
-import { TBankAccount } from "../../../modules/kyc/types";
 import { appConnect } from "../../../store";
 import { CommonHtmlProps } from "../../../types";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
@@ -73,8 +72,8 @@ const VerifiedBankAccountComponent: React.FunctionComponent<IComponentProps> = (
 const VerifiedBankAccount = compose<IComponentProps, IExternalProps & CommonHtmlProps>(
   appConnect<IStateProps>({
     stateToProps: state => ({
-      bankAccount: selectBankAccount(state),
-      isBankAccountLoading: selectIsBankAccountLoading(state),
+      bankAccount: kycApi.selectors.selectBankAccount(state),
+      isBankAccountLoading: kycApi.selectors.selectIsBankAccountLoading(state),
       isVerified: selectIsBankAccountVerified(state),
       isUserFullyVerified: selectIsUserFullyVerified(state),
     }),

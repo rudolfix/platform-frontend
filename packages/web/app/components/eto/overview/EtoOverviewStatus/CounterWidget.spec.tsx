@@ -1,4 +1,4 @@
-import { EUserType } from "@neufund/shared-modules";
+import { EUserType, kycApi } from "@neufund/shared-modules";
 import { createMount, setupFakeClock, tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as React from "react";
@@ -12,7 +12,6 @@ import * as bookBuildingFlowSelectors from "../../../../modules/bookbuilding-flo
 import * as etoSelectors from "../../../../modules/eto/selectors";
 import { EETOStateOnChain } from "../../../../modules/eto/types";
 import * as investmentPortfolioSelectors from "../../../../modules/investor-portfolio/selectors";
-import * as kycSelectors from "../../../../modules/kyc/selectors";
 import * as buttonLink from "../../../shared/buttons/ButtonLink";
 import { EtoStatusManager } from "./EtoStatusManager/EtoStatusManager";
 
@@ -80,7 +79,7 @@ describe("EtoStatusManager state change", () => {
       selectIsUserEmailVerified: stub(authModuleSelectors, "selectIsUserEmailVerified").returns(
         true,
       ),
-      selectKycStatus: stub(kycSelectors, "selectKycStatus").returns(true),
+      selectKycStatus: stub(kycApi.selectors, "selectKycStatus").returns(true),
       selectInvestorCount: stub(bookBuildingFlowSelectors, "selectInvestorCount").returns(
         undefined,
       ),
@@ -89,10 +88,10 @@ describe("EtoStatusManager state change", () => {
       ),
       selectMyPledge: stub(bookBuildingFlowSelectors, "selectMyPledge").returns(undefined),
       selectIsUserVerifiedOnBlockchain: stub(
-        kycSelectors,
+        kycApi.selectors,
         "selectIsUserVerifiedOnBlockchain",
       ).returns(false),
-      selectClientCountry: stub(kycSelectors, "selectClientCountry").returns(undefined),
+      selectClientCountry: stub(kycApi.selectors, "selectClientCountry").returns(undefined),
       selectEto: stub(etoSelectors, "selectEto").returns(eto),
       selectEtoContract: stub(etoSelectors, "selectEtoContract").returns(contract),
       selectCompany: stub(etoSelectors, "selectCompany").returns(testCompany),

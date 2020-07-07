@@ -1,4 +1,5 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
+import { TKycBankTransferPurpose } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
@@ -6,7 +7,6 @@ import { hashFromIpfsLink } from "../../components/documents/utils";
 import { BankTransferFlowMessage } from "../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { TKycBankTransferPurpose } from "../../lib/api/kyc/KycApi.interfaces";
 import { actions, TActionFromCreator } from "../actions";
 import { selectIsUserFullyVerified } from "../auth/selectors";
 import { webNotificationUIModuleApi } from "../notification-ui/module";

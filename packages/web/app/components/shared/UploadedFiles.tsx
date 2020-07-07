@@ -1,7 +1,6 @@
+import { IKycFileInfo } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
-
-import { IKycFileInfo } from "../../lib/api/kyc/KycApi.interfaces";
 
 import * as styles from "./UploadedFiles.module.scss";
 

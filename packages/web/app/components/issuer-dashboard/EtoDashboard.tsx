@@ -1,3 +1,4 @@
+import { authModuleAPI, EKycRequestStatus, kycApi } from "@neufund/shared-modules";
 import { RequiredByKeys, withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -9,9 +10,8 @@ import {
   EEtoState,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { EKycRequestStatus } from "../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../modules/actions";
-import { selectBackupCodesVerified, selectVerifiedUserEmail } from "../../modules/auth/selectors";
+import { selectBackupCodesVerified } from "../../modules/auth/selectors";
 import {
   selectAreAgreementsSignedByNominee,
   selectCombinedEtoCompanyData,
@@ -32,7 +32,6 @@ import {
 } from "../../modules/eto-flow/utils";
 import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
 import { isOnChain } from "../../modules/eto/utils";
-import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
@@ -314,11 +313,11 @@ const EtoDashboard = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayout),
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: s => ({
-      verifiedEmail: selectVerifiedUserEmail(s),
+      verifiedEmail: authModuleAPI.selectors.selectVerifiedUserEmail(s),
       backupCodesVerified: selectBackupCodesVerified(s),
       isLightWallet: selectIsLightWallet(s),
       userHasKycAndEmailVerified: userHasKycAndEmailVerified(s),
-      requestStatus: selectKycRequestStatus(s),
+      requestStatus: kycApi.selectors.selectKycRequestStatus(s),
       eto: selectIssuerEtoWithCompanyAndContract(s),
       isTermSheetSubmitted: selectIsTermSheetSubmitted(s),
       isOfferingDocumentSubmitted: selectIsOfferingDocumentSubmitted(s),

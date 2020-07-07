@@ -1,6 +1,7 @@
 import {
   authModuleAPI,
   coreModuleApi,
+  kycApi,
   SignatureAuthApi,
   TLibSymbolType,
 } from "@neufund/shared-modules";
@@ -18,7 +19,6 @@ import {
   TRichTextEditorUploadAdapterFactoryType,
 } from "../lib/api/file-storage/RichTextEditorUploadAdapter";
 import { ImmutableStorageApi } from "../lib/api/immutable-storage/ImmutableStorageApi";
-import { KycApi } from "../lib/api/kyc/KycApi";
 import { UsersTxApi } from "../lib/api/users-tx/UsersTxApi";
 import { VaultApi } from "../lib/api/vault/VaultApi";
 import {
@@ -28,7 +28,6 @@ import {
 import { UserActivityChannelMessage } from "../lib/dependencies/broadcast-channel/types";
 import { detectBrowser, TDetectBrowser } from "../lib/dependencies/detectBrowser";
 import { NotificationCenter } from "../lib/dependencies/NotificationCenter";
-import { OnfidoSDK } from "../lib/dependencies/onfido/OnfidoSDK";
 import { IntlWrapper } from "../lib/intl/IntlWrapper";
 import { DocumentsConfidentialityAgreementsStorage } from "../lib/persistence/DocumentsConfidentialityAgreementsStorage";
 import { STORAGE_JWT_KEY } from "../lib/persistence/JwtObjectStorage";
@@ -85,10 +84,6 @@ export function setupBindings(config: IConfig): ContainerModule {
       .to(NotificationCenter)
       .inSingletonScope();
 
-    bind<OnfidoSDK>(symbols.onfidoSdk)
-      .to(OnfidoSDK)
-      .inSingletonScope();
-
     // web3 & blockchain
 
     bind(symbols.contractsService)
@@ -113,10 +108,6 @@ export function setupBindings(config: IConfig): ContainerModule {
 
     bind<Web3Manager>(symbols.web3Manager)
       .to(Web3Manager)
-      .inSingletonScope();
-
-    bind<KycApi>(symbols.apiKycService)
-      .to(KycApi)
       .inSingletonScope();
 
     bind<EtoApi>(symbols.apiEtoService)
@@ -229,8 +220,9 @@ export const createGlobalDependencies = (container: Container) => ({
     coreModuleApi.symbols.logger,
   ),
 
+  apiKycService: container.get<TLibSymbolType<typeof kycApi.symbols.kycApi>>(kycApi.symbols.kycApi),
+
   detectBrowser: container.get<TDetectBrowser>(symbols.detectBrowser),
-  onfidoSDK: container.get<OnfidoSDK>(symbols.onfidoSdk),
 
   // blockchain & wallets
   contractsService: container.get<ContractsService>(symbols.contractsService),
@@ -250,7 +242,6 @@ export const createGlobalDependencies = (container: Container) => ({
   userStorage: container.get<ObjectStorage<string>>(symbols.userStorage),
 
   // apis
-  apiKycService: container.get<KycApi>(symbols.apiKycService),
   apiEtoService: container.get<EtoApi>(symbols.apiEtoService),
   apiEtoPledgeService: container.get<EtoPledgeApi>(symbols.apiEtoPledgeService),
   apiEtoProductService: container.get<EtoProductApi>(symbols.apiEtoProductService),

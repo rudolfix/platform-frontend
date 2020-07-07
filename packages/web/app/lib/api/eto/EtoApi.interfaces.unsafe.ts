@@ -1,3 +1,4 @@
+import { customSchemas } from "@neufund/shared-modules";
 import {
   DeepPartial,
   DeepReadonly,
@@ -32,7 +33,6 @@ import {
 } from "../../../components/translatedMessages/messages";
 import { createMessage } from "../../../components/translatedMessages/utils";
 import * as YupTS from "../../yup-ts.unsafe";
-import { currencyCodeSchema, dateSchema, percentage } from "../util/customSchemas";
 import { TEtoDocumentTemplates } from "./EtoFileApi.interfaces";
 import { IBookBuildingStats } from "./EtoPledgeApi.interfaces.unsafe";
 import { TEtoProduct } from "./EtoProductsApi.interfaces";
@@ -41,7 +41,7 @@ import { TEtoProduct } from "./EtoProductsApi.interfaces";
  *  only deals with "/companies/me"
  */
 
-export const CurrencyCodeType = YupTS.string().enhance(currencyCodeSchema);
+export const CurrencyCodeType = YupTS.string().enhance(customSchemas.currencyCodeSchema);
 
 const EtoFounderType = YupTS.object({
   fullName: YupTS.string(),
@@ -56,7 +56,7 @@ const EtoCapitalListType = YupTS.object({
   description: YupTS.string().optional(),
   percent: YupTS.number()
     .optional()
-    .enhance(() => percentage),
+    .enhance(() => customSchemas.percentage),
 }).optional();
 
 export const EtoCompanyInformationType = YupTS.object({
@@ -190,7 +190,7 @@ export const EtoLegalInformationType = YupTS.object({
   country: YupTS.string(),
   vatNumber: YupTS.string().optional(),
   registrationNumber: YupTS.string(),
-  foundingDate: YupTS.string().enhance((v: StringSchema) => dateSchema(v)),
+  foundingDate: YupTS.string().enhance((v: StringSchema) => customSchemas.dateSchema(v)),
   numberOfEmployees: YupTS.string().optional(),
   companyStage: YupTS.string<EFundingRound>().optional(),
   numberOfFounders: YupTS.number().optional(),

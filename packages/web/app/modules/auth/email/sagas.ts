@@ -23,12 +23,7 @@ import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { selectIsVerifyEmailRedirect } from "../../routing/selectors";
 import { neuCall, neuTakeEvery } from "../../sagasUtils";
 import { selectActivationCodeFromQueryString, selectWalletType } from "../../web3/selectors";
-import {
-  selectIsAgreementAccepted,
-  selectUnverifiedUserEmail,
-  selectUserType,
-  selectVerifiedUserEmail,
-} from "../selectors";
+import { selectIsAgreementAccepted, selectUnverifiedUserEmail, selectUserType } from "../selectors";
 import { loadUser } from "../user/external/sagas";
 
 /**
@@ -85,7 +80,7 @@ export function* processVerifyEmailLink({
   yield neuCall(loadUser);
   // Update metadata email only when wallet type is LightWallet
   if (walletMetadata.walletType === EWalletType.LIGHT) {
-    const verifiedEmail = yield* select(selectVerifiedUserEmail);
+    const verifiedEmail = yield* select(authModuleAPI.selectors.selectVerifiedUserEmail);
     const updatedMetadata: TStoredWalletMetadata = { ...walletMetadata, email: verifiedEmail! };
     yield* call(() => walletStorage.set(updatedMetadata));
   }

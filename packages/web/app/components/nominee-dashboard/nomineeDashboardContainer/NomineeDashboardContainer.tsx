@@ -1,7 +1,7 @@
+import { kycApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { compose } from "recompose";
 
-import { selectIsUserVerified } from "../../../modules/auth/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectActiveNomineeEto } from "../../../modules/nominee-flow/selectors";
 import { appConnect } from "../../../store";
@@ -32,7 +32,7 @@ const NomineeDashboardContainer = compose<IStateProps, {}>(
   appConnect<IStateProps>({
     stateToProps: state => ({
       nomineeEto: selectActiveNomineeEto(state),
-      verificationIsComplete: selectIsUserVerified(state),
+      verificationIsComplete: kycApi.selectors.selectIsUserVerified(state),
     }),
   }),
 )(NomineeDashboardContainerBase);

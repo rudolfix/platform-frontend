@@ -1,10 +1,10 @@
 import { all, call, fork, put, select, take } from "@neufund/sagas";
+import { kycApi } from "@neufund/shared-modules";
 
 import { EtoMessage } from "../../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
 import { actions } from "../../actions";
-import { selectIsUserVerifiedOnBlockchain } from "../../kyc/selectors";
 import { loadActiveNomineeEto } from "../../nominee-flow/sagas";
 import {
   selectActiveNomineeEto,
@@ -38,7 +38,7 @@ export function* loadNomineeEtoView({ logger }: TGlobalDependencies): Generator<
     const eto = yield select(selectActiveNomineeEto);
 
     if (eto) {
-      const userIsFullyVerified = yield select(selectIsUserVerifiedOnBlockchain);
+      const userIsFullyVerified = yield select(kycApi.selectors.selectIsUserVerifiedOnBlockchain);
       const etoViewType = EEtoViewType.ETO_VIEW_NOT_AUTHORIZED;
       const campaignOverviewData: TCampaignOverviewData = yield call(
         calculateCampaignOverviewDataIssuerNominee,

@@ -1,5 +1,5 @@
 import { all, fork, put, select, take } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import { kycApi, walletApi } from "@neufund/shared-modules";
 import { Dictionary, InvariantError, nonNullable } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { cloneDeep, isEmpty } from "lodash/fp";
@@ -28,7 +28,6 @@ import {
 import { selectEtoSubStateEtoEtoWithContract } from "../eto/selectors";
 import { EEtoAgreementStatus, EETOStateOnChain, TEtoWithCompanyAndContract } from "../eto/types";
 import { isOnChain } from "../eto/utils";
-import { loadBankAccountDetails } from "../kyc/sagas";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import {
   neuCall,
@@ -152,7 +151,7 @@ export function* getDataAndInitNomineeTasks(_: TGlobalDependencies): Generator<a
   } else {
     nomineeTasksStatus[ENomineeTask.ACCOUNT_SETUP] = ENomineeTaskStatus.DONE;
 
-    yield all([neuCall(loadBankAccountDetails), neuCall(loadNomineeEtos)]);
+    yield all([neuCall(kycApi.sagas.loadBankAccountDetails), neuCall(loadNomineeEtos)]);
 
     const {
       bankAccountIsVerified,

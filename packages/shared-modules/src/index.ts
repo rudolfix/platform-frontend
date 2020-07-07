@@ -7,9 +7,13 @@ export * from "./modules/token-price/module";
 export * from "./modules/tx-history/module";
 export * from "./modules/wallet/module";
 export * from "./modules/gas/module";
+export * from "./modules/kyc/module";
+export * from "./modules/routing/module";
 
 export * from "./types";
 export * from "./extensions";
 export * from "./utils";
 
-export * from "./lib/yup-ts.unsafe";
+export * from "./lib/yup/yup-ts.unsafe";
+import * as customSchemas from "./lib/yup/custom-schemas";
+export { customSchemas };

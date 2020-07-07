@@ -1,5 +1,5 @@
 import { createActionFactory } from "@neufund/shared-utils";
-import { goBack, push } from "connected-react-router";
+import { goBack, push, replace } from "connected-react-router";
 import { LocationDescriptorObject, Path } from "history";
 
 import { appRoutes } from "../../components/appRoutes";
@@ -52,6 +52,11 @@ export const routingActions = {
   goToLightWalletRegister: () => push(appRoutes.registerWithLightWallet),
   goToIssuerLightWalletRegister: () => push(appRoutes.registerIssuerWithLightWallet),
   goToNomineeLightWalletRegister: () => push(appRoutes.registerNomineeWithLightWallet),
+
+  redirectToRegisterBrowserWallet: () => replace(appRoutes.registerWithBrowserWallet),
+  redirectToLightWalletRegister: () => replace(appRoutes.registerWithLightWallet),
+  redirectToIssuerLightWalletRegister: () => replace(appRoutes.registerIssuerWithLightWallet),
+  redirectToNomineeLightWalletRegister: () => replace(appRoutes.registerNomineeWithLightWallet),
 
   // login
   goToLogin: (state: TLoginRouterState) => push(appRoutes.login, state),

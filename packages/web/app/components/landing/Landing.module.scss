@@ -73,3 +73,20 @@
 
   padding-top: px-to-rem(24);
 }
+
+.stay-tuned {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  margin-top: px-to-rem(142);
+  padding: px-to-rem(155) 1rem px-to-rem(143);
+  background-color: $neu-pale-grey-three;
+}
+
+.stay-tuned-description {
+  @include font-headline-small-roboto;
+
+  color: $neu-shuttle-gray;
+  margin: px-to-rem(28) auto px-to-rem(31);
+}

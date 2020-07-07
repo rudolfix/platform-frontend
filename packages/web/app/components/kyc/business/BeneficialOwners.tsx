@@ -1,18 +1,17 @@
-import * as React from "react";
-import { FormattedMessage } from "react-intl-phraseapp";
-import { compose } from "recompose";
-
 import {
+  EBeneficialOwnerType,
   IKycBeneficialOwner,
   IKYCBeneficialOwnerBusiness,
   IKYCBeneficialOwnerPerson,
   IKycFileInfo,
   IKycManagingDirector,
-} from "../../../lib/api/kyc/KycApi.interfaces";
+  kycApi,
+} from "@neufund/shared-modules";
+import * as React from "react";
+import { FormattedMessage } from "react-intl-phraseapp";
+import { compose } from "recompose";
+
 import { actions } from "../../../modules/actions";
-import { selectBeneficialOwner } from "../../../modules/kyc/selectors";
-import { EBeneficialOwnerType } from "../../../modules/kyc/types";
-import { getBeneficialOwnerType, validateBeneficiaryOwner } from "../../../modules/kyc/utils";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { AddPersonButton } from "../shared/AddPersonButton";
@@ -70,7 +69,7 @@ export const KYCBeneficialOwnersComponent: React.FunctionComponent<TProps> = ({
     !beneficialOwners ||
     loadingAll ||
     !beneficialOwners.every(owner =>
-      validateBeneficiaryOwner(getBeneficialOwnerType(owner), owner),
+      kycApi.utils.validateBeneficiaryOwner(kycApi.utils.getBeneficialOwnerType(owner), owner),
     );
 
   return (
@@ -115,7 +114,7 @@ export const KYCBeneficialOwnersComponent: React.FunctionComponent<TProps> = ({
         />
 
         <BeneficialOwnerDetails
-          type={editingOwner ? getBeneficialOwnerType(editingOwner) : type}
+          type={editingOwner ? kycApi.utils.getBeneficialOwnerType(editingOwner) : type}
           setType={setType}
           show={showModal}
           onClose={() => toggleModal(false)}
@@ -135,7 +134,7 @@ export const KYCBeneficialOwnersComponent: React.FunctionComponent<TProps> = ({
 
 export const KYCBeneficialOwners = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
-    stateToProps: state => selectBeneficialOwner(state),
+    stateToProps: state => kycApi.selectors.selectBeneficialOwner(state),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCManagingDirectors()),
       onContinue: () => dispatch(actions.routing.goToKYCLegalRepresentative()),

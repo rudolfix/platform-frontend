@@ -1,4 +1,12 @@
 import { Button, EButtonLayout, EIconPosition } from "@neufund/design-system";
+import {
+  EBeneficialOwnerType,
+  IKycBeneficialOwner,
+  IKycFileInfo,
+  IKycManagingDirector,
+  kycApi,
+  KycBeneficialOwnerSchema,
+} from "@neufund/shared-modules";
 import { ECountries } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import { FormikProps, withFormik } from "formik";
@@ -7,18 +15,6 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { Col, ModalFooter, Row } from "reactstrap";
 
-import {
-  IKycBeneficialOwner,
-  IKycFileInfo,
-  IKycManagingDirector,
-  KycBeneficialOwnerSchema,
-} from "../../../lib/api/kyc/KycApi.interfaces";
-import { EBeneficialOwnerType } from "../../../modules/kyc/types";
-import {
-  getBeneficialOwnerCountry,
-  getBeneficialOwnerId,
-  validateBeneficiaryOwner,
-} from "../../../modules/kyc/utils";
 import {
   ECheckboxLayout,
   FormDeprecated,
@@ -214,7 +210,7 @@ const BeneficialOwnerDetailsLayout: React.FunctionComponent<FormikProps<IKycBene
   type,
   setType,
 }) => {
-  const isFormValid = validateBeneficiaryOwner(type, values);
+  const isFormValid = kycApi.utils.validateBeneficiaryOwner(type, values);
   const saveDisabled =
     !isFormValid || files.length === 0 || filesUploading || filesLoading || loading;
 
@@ -225,7 +221,7 @@ const BeneficialOwnerDetailsLayout: React.FunctionComponent<FormikProps<IKycBene
       isHighIncome: false,
     },
   });
-  const isSaved = !!(currentValues && getBeneficialOwnerId(currentValues));
+  const isSaved = !!(currentValues && kycApi.utils.getBeneficialOwnerId(currentValues));
 
   return (
     <KYCModal
@@ -296,9 +292,9 @@ const BeneficialOwnerDetailsLayout: React.FunctionComponent<FormikProps<IKycBene
           />
         </div>
         {type === EBeneficialOwnerType.PERSON ? (
-          <PersonFields country={getBeneficialOwnerCountry(values)} />
+          <PersonFields country={kycApi.utils.getBeneficialOwnerCountry(values)} />
         ) : (
-          <BusinessFields country={getBeneficialOwnerCountry(values)} />
+          <BusinessFields country={kycApi.utils.getBeneficialOwnerCountry(values)} />
         )}
         <MultiFileUpload
           uploadType={EKycUploadType.PROOF_OF_ADDRESS_AND_IDENTITY}

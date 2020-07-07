@@ -1,11 +1,15 @@
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import {
   authModuleAPI,
+  EKycInstantIdProvider,
+  EKycRequestStatus,
+  EKycRequestType,
   EUserType,
   EWalletSubType,
   EWalletType,
   IUserState,
   IWalletStateData,
+  kycApi,
   tokenPriceModuleApi,
   walletApi,
 } from "@neufund/shared-modules";
@@ -13,15 +17,8 @@ import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { combineReducers } from "redux";
 import { getContext } from "redux-saga-test-plan/matchers";
 
-import {
-  EKycInstantIdProvider,
-  EKycRequestStatus,
-  EKycRequestType,
-} from "../../lib/api/kyc/KycApi.interfaces";
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
-import { IKycState, kycReducer } from "../kyc/reducer";
-import { loadBankAccountDetails } from "../kyc/sagas";
 import { IConnectedWeb3State, web3Reducer } from "../web3/reducer";
 import { loadWalletView, populateWalletData } from "./sagas";
 import { EBalanceViewType } from "./types";
@@ -193,7 +190,7 @@ const kyc = ({
     country: "DE",
     birthDate: "2000-1-1",
   },
-} as unknown) as IKycState;
+} as unknown) as ReturnType<typeof kycApi.reducerMap.kyc>;
 
 const web3 = {
   connected: true,
@@ -213,7 +210,7 @@ describe("Wallet View", () => {
           combineReducers({
             tokenPrice: tokenPriceModuleApi.reducer.tokenPrice,
             user: authModuleAPI.reducer.user,
-            kyc: kycReducer,
+            kyc: kycApi.reducerMap.kyc,
             wallet: walletApi.reducer.wallet,
             web3: web3Reducer,
           }),
@@ -234,7 +231,7 @@ describe("Wallet View", () => {
           combineReducers({
             tokenPrice: tokenPriceModuleApi.reducer.tokenPrice,
             user: authModuleAPI.reducer.user,
-            kyc: kycReducer,
+            kyc: kycApi.reducerMap.kyc,
             wallet: walletApi.reducer.wallet,
             web3: web3Reducer,
           }),
@@ -338,7 +335,7 @@ describe("Wallet View", () => {
         .provide([
           [getContext("deps"), context],
           [matchers.call.fn(walletApi.sagas.loadWalletDataSaga), undefined],
-          [matchers.call.fn(loadBankAccountDetails), undefined],
+          [matchers.call.fn(kycApi.sagas.loadBankAccountDetails), undefined],
           [matchers.call.fn(populateWalletData), walletData],
         ])
         .put(

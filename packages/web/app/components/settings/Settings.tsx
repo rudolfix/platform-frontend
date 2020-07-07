@@ -1,13 +1,17 @@
-import { EUserType, walletApi } from "@neufund/shared-modules";
+import {
+  EKycRequestStatus,
+  EKycRequestType,
+  EUserType,
+  kycApi,
+  walletApi,
+} from "@neufund/shared-modules";
 import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { EKycRequestStatus, EKycRequestType } from "../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../modules/actions";
 import { selectUserType } from "../../modules/auth/selectors";
-import { selectKycRequestStatus, selectKycRequestType } from "../../modules/kyc/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
@@ -87,8 +91,8 @@ export const Settings = compose<React.FunctionComponent>(
     stateToProps: state => ({
       isLightWallet: selectIsLightWallet(state),
       userType: selectUserType(state),
-      kycRequestStatus: selectKycRequestStatus(state),
-      kycRequestType: selectKycRequestType(state),
+      kycRequestStatus: kycApi.selectors.selectKycRequestStatus(state),
+      kycRequestType: kycApi.selectors.selectKycRequestType(state),
       isIcbmWalletConnected: walletApi.selectors.selectIcbmWalletConnected(state.wallet),
       isLockedWalletConnected: walletApi.selectors.selectLockedWalletConnected(state),
     }),

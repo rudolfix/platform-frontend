@@ -7,7 +7,7 @@ import { compose } from "recompose";
 
 import { actions } from "../../modules/actions";
 import {
-  selectClaimStateDeadlineTimestamp,
+  selectClaimstateDeadlineTimestamp,
   selectNomineeActiveEtoCompanyName,
 } from "../../modules/nominee-flow/selectors";
 import { appConnect } from "../../store";
@@ -49,7 +49,7 @@ const AcceptISHA = compose<TStateProps & TDispatchProps, {}>(
   appConnect<TStateProps, TDispatchProps>({
     stateToProps: state => ({
       companyName: nonNullable(selectNomineeActiveEtoCompanyName(state)),
-      deadlineTimestamp: nonNullable(selectClaimStateDeadlineTimestamp(state)),
+      deadlineTimestamp: nonNullable(selectClaimstateDeadlineTimestamp(state)),
     }),
     dispatchToProps: dispatch => ({
       sign: () => dispatch(actions.txTransactions.startNomineeISHASign()),

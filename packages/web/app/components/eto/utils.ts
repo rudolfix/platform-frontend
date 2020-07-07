@@ -1,9 +1,9 @@
+import { customSchemas } from "@neufund/shared-modules";
 import { formatFlexiPrecision, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { cloneDeep, flow, get, set } from "lodash";
 
 import { TCompanyEtoData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { parseStringToMomentDate } from "../../lib/api/util/customSchemas";
 import { TShareholder } from "./eto-full-view/shared/campaign-overview/legal-information-widget/LegalInformationWidget";
 
 const HUNDRED_PERCENT = new BigNumber("100");
@@ -209,7 +209,7 @@ export const removeInvalidDate = () => (data: string | undefined) => {
   if (data === undefined) {
     return data;
   } else {
-    return parseStringToMomentDate(data).isValid() ? data : undefined;
+    return customSchemas.parseStringToMomentDate(data).isValid() ? data : undefined;
   }
 };
 

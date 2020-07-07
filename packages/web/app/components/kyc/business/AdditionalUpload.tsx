@@ -1,9 +1,9 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { EKycRequestType } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { EKycRequestType } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";

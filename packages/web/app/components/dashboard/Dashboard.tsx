@@ -1,10 +1,10 @@
+import { kycApi } from "@neufund/shared-modules";
 import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, setDisplayName, withProps } from "recompose";
 
 import { selectBackupCodesVerified, selectIsUserEmailVerified } from "../../modules/auth/selectors";
-import { selectKycRequestStatus } from "../../modules/kyc/selectors";
 import { appConnect } from "../../store";
 import { TDataTestId } from "../../types";
 import { Container, EColumnSpan } from "../layouts/Container";
@@ -54,7 +54,7 @@ export const Dashboard = compose<TDashboardProps, {}>(
     stateToProps: state => ({
       emailVerified: selectIsUserEmailVerified(state),
       backupCodesVerified: selectBackupCodesVerified(state),
-      kycRequestStatus: selectKycRequestStatus(state),
+      kycRequestStatus: kycApi.selectors.selectKycRequestStatus(state),
     }),
   }),
   withProps<{ shouldShowOnboarding: boolean }, TOnboardingStateData>(props => ({

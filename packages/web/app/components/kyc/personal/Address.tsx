@@ -1,4 +1,9 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import {
+  IKycIndividualData,
+  kycApi,
+  KycPersonalAddressSchemaRequired,
+} from "@neufund/shared-modules";
 import { ECountries } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import { defaultTo } from "lodash/fp";
@@ -7,20 +12,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { Col, Row } from "reactstrap";
 import { branch, compose, renderComponent } from "recompose";
 
-import {
-  IKycIndividualData,
-  KycPersonalAddressSchemaRequired,
-} from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import {
-  selectIndividualData,
-  selectIndividualDataLoading,
-  selectIndividualFiles,
-  selectIndividualFilesLoading,
-  selectIndividualFilesUploading,
-  selectIsSavingKycForm,
-  selectKycUploadedFiles,
-} from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import {
@@ -41,9 +33,9 @@ interface IStateProps {
   currentValues?: IKycIndividualData;
   loadingData: boolean;
   isSavingForm: boolean;
-  uploadedFiles: ReturnType<typeof selectKycUploadedFiles>;
-  uploadedFilesLoading: ReturnType<typeof selectIndividualFilesLoading>;
-  individualFilesUploading: ReturnType<typeof selectIndividualFilesUploading>;
+  uploadedFiles: ReturnType<typeof kycApi.selectors.selectKycUploadedFiles>;
+  uploadedFilesLoading: ReturnType<typeof kycApi.selectors.selectIndividualFilesLoading>;
+  individualFilesUploading: ReturnType<typeof kycApi.selectors.selectIndividualFilesUploading>;
 }
 
 interface IDispatchProps {
@@ -178,12 +170,12 @@ const KYCEnhancedForm = withFormik<IStateProps & IDispatchProps, IKycIndividualD
 export const KYCPersonalAddress = compose<IStateProps & IDispatchProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      currentValues: selectIndividualData(state),
-      loadingData: selectIndividualDataLoading(state),
-      isSavingForm: selectIsSavingKycForm(state),
-      uploadedFiles: selectIndividualFiles(state),
-      uploadedFilesLoading: selectIndividualFilesLoading(state),
-      individualFilesUploading: selectIndividualFilesUploading(state),
+      currentValues: kycApi.selectors.selectIndividualData(state),
+      loadingData: kycApi.selectors.selectIndividualDataLoading(state),
+      isSavingForm: kycApi.selectors.selectIsSavingKycForm(state),
+      uploadedFiles: kycApi.selectors.selectIndividualFiles(state),
+      uploadedFilesLoading: kycApi.selectors.selectIndividualFilesLoading(state),
+      individualFilesUploading: kycApi.selectors.selectIndividualFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       goBack: () => dispatch(actions.routing.goToKYCIndividualStart()),

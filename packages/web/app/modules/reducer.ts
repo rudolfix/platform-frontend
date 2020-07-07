@@ -17,7 +17,6 @@ import { immutableStorageReducer } from "./immutable-file/reducer";
 import { initReducer } from "./init/reducer";
 import { investmentFlowReducer } from "./investment-flow/reducer";
 import { investorTicketsReducer } from "./investor-portfolio/reducer";
-import { kycReducer } from "./kyc/reducer";
 import { nomineeFlowReducer } from "./nominee-flow/reducer";
 import { notificationsReducer } from "./notifications/reducer";
 import { personProfileModalReducer } from "./person-profile-modal/reducer";
@@ -49,7 +48,6 @@ export const appReducers = {
   auth: authReducer,
   genericModal: genericModalReducer,
   accessWallet: accessWalletReducer,
-  kyc: kycReducer,
   profile: profileReducer,
   investorTickets: investorTicketsReducer,
   init: initReducer,

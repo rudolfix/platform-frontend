@@ -4,6 +4,7 @@ import {
   setupContractsModule,
   setupCoreModule,
   setupGasModule,
+  setupKycModule,
   setupTokenPriceModule,
   setupWalletModule,
   TAppConnectOptions,
@@ -27,7 +28,10 @@ import { setupBindings } from "./di/setupBindings";
 import { symbols } from "./di/symbols";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { actions, TAction } from "./modules/actions";
+import { ensurePermissionsArePresentAndRunEffect } from "./modules/auth/jwt/sagas";
+import { displayErrorModalSaga } from "./modules/generic-modal/sagas";
 import { waitUntilSmartContractsAreInitialized } from "./modules/init/sagas";
+import { setupInstantIdModule } from "./modules/instant-id/module";
 import { setupWebNotificationUIModule } from "./modules/notification-ui/module";
 import { appReducers } from "./modules/reducer";
 import { rootSaga } from "./modules/sagas";
@@ -80,9 +84,15 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     ...setupWebTxHistoryModule({
       refreshOnAction: actions.web3.newBlockArrived,
     }),
+    setupInstantIdModule(),
     setupGasModule(),
     setupWebNotificationUIModule(),
     ...setupShareholderResolutionsVotingViewModule(),
+    ...setupKycModule({
+      ensurePermissionsArePresentAndRunEffect,
+      displayErrorModalSaga,
+      waitUntilSmartContractsAreInitialized,
+    }),
     appModule,
   ];
 };

@@ -1,3 +1,4 @@
+import { customSchemas } from "@neufund/shared-modules";
 import { addBigNumbers } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,7 +8,6 @@ import {
   EtoPitchType,
   TPartialCompanyEtoData,
 } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { percentage } from "../../../../../lib/api/util/customSchemas";
 import {
   convertAndValidatePipeline,
   replaceValidatorWith,
@@ -31,12 +31,12 @@ type TEtoCapitalList = {
 };
 
 const EtoCapitalListRequired = Yup.object<TEtoCapitalList>().shape({
-  percent: percentage.required(),
+  percent: customSchemas.percentage.required(),
   description: Yup.string().required(),
 });
 
 const EtoCapitalListNotRequired = Yup.object<TEtoCapitalList>().shape({
-  percent: percentage.notRequired(),
+  percent: customSchemas.percentage.notRequired(),
   description: Yup.string().notRequired(),
 });
 

@@ -1,15 +1,10 @@
 import { Button, ButtonGroup, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { IKycFileInfo, kycApi } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
 
-import { IKycFileInfo } from "../../../lib/api/kyc/KycApi.interfaces";
 import { actions } from "../../../modules/actions";
-import {
-  selectIndividualFiles,
-  selectIndividualFilesLoading,
-  selectIndividualFilesUploading,
-} from "../../../modules/kyc/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { withProgress } from "../../../utils/react-connected-components/withProgress";
@@ -59,9 +54,9 @@ export const KYCAdditionalUploadLayout: React.FunctionComponent<IStateProps &
 export const KYCAdditionalUpload = compose<React.FunctionComponent>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => ({
-      files: selectIndividualFiles(state),
-      filesLoading: selectIndividualFilesLoading(state),
-      filesUploading: selectIndividualFilesUploading(state),
+      files: kycApi.selectors.selectIndividualFiles(state),
+      filesLoading: kycApi.selectors.selectIndividualFilesLoading(state),
+      filesUploading: kycApi.selectors.selectIndividualFilesUploading(state),
     }),
     dispatchToProps: dispatch => ({
       onDropFile: (file: File) => dispatch(actions.kyc.kycUploadIndividualDocument(file)),

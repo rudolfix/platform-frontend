@@ -53,5 +53,4 @@ export const symbols = {
 
   // others
   richTextEditorUploadAdapter: Symbol("richTextEditorUploadAdapter"),
-  onfidoSdk: Symbol("onfidoSdk"),
 };

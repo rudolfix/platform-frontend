@@ -1,14 +1,13 @@
+import { EKycRequestStatus, kycApi } from "@neufund/shared-modules";
 import { DataUnavailableError, nonNullable, withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
-import { EKycRequestStatus } from "../../../lib/api/kyc/KycApi.interfaces";
 import {
   selectBackupCodesVerified,
   selectIsUserEmailVerified,
 } from "../../../modules/auth/selectors";
-import { selectKycRequestStatus, selectKycRequestType } from "../../../modules/kyc/selectors";
 import { selectWalletType } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { EColumnSpan } from "../../layouts/Container";
@@ -51,9 +50,9 @@ export const Onboarding = compose<TAccountSetupSteps, {}>(
     stateToProps: state => ({
       emailVerified: selectIsUserEmailVerified(state),
       backupCodesVerified: selectBackupCodesVerified(state),
-      kycRequestStatus: nonNullable(selectKycRequestStatus(state)),
+      kycRequestStatus: nonNullable(kycApi.selectors.selectKycRequestStatus(state)),
       walletType: nonNullable(selectWalletType(state)),
-      kycRequestType: selectKycRequestType(state),
+      kycRequestType: kycApi.selectors.selectKycRequestType(state),
     }),
   }),
   branch<TOnboardingInitData>(

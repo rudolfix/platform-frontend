@@ -1,5 +1,5 @@
 import { call, fork, put } from "@neufund/sagas";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 import { EtoMessage } from "../../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";

@@ -1,7 +1,6 @@
 import { createLocation, Location } from "history";
 import * as React from "react";
-import { Redirect, Route, StaticContext } from "react-router";
-import { RouteComponentProps } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps } from "react-router-dom";
 import { compose, withProps } from "recompose";
 
 import { TLoginRouterState } from "../../../modules/routing/types";
@@ -15,7 +14,7 @@ import { LoginLightWallet } from "./LoginLightWallet/LoginLightWallet";
 import { getRedirectionUrl } from "./utils";
 import { LoginWalletLedger } from "./WalletLedger/LoginWalletLedger";
 
-type TRouteLoginProps = RouteComponentProps<unknown, StaticContext, TLoginRouterState>;
+type TRouteLoginProps = RouteComponentProps<unknown, never, TLoginRouterState>;
 
 interface IStateProps {
   rootPath: string;

@@ -1,5 +1,4 @@
 import { Table, TokenDetails } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
@@ -25,6 +24,7 @@ import {
   ERoundingMode,
 } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
+import { withContainer } from "../shared/hocs/withContainer";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
 import { PanelRounded } from "../shared/Panel";
 import { Tooltip } from "../shared/tooltips/Tooltip";

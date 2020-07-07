@@ -1,5 +1,6 @@
-import { neuGetContainer, SagaGenerator } from "@neufund/sagas";
+import { getContext, SagaGenerator } from "@neufund/sagas";
 import { Dictionary } from "@neufund/shared-utils";
+import { Container } from "inversify";
 import { mapValues } from "lodash/fp";
 import { connect, InferableComponentEnhancerWithProps, Options } from "react-redux";
 
@@ -95,6 +96,11 @@ function appConnect<
   );
 }
 
+function* neuGetContainer(): Generator<any, Container, any> {
+  const container: unknown = yield getContext("container");
+  return container as Container;
+}
+
 function* neuGetBindings<B extends Dictionary<TLibSymbol<any>>>(
   bindings: B,
 ): SagaGenerator<TSymbols<B>> {
@@ -103,4 +109,11 @@ function* neuGetBindings<B extends Dictionary<TLibSymbol<any>>>(
   return mapValues(v => container.get<TLibSymbolType<typeof v>>(v), bindings) as TSymbols<B>;
 }
 
-export { createLibSymbol, appConnect, TAppConnectOptions, generateSharedModuleId, neuGetBindings };
+export {
+  createLibSymbol,
+  appConnect,
+  TAppConnectOptions,
+  generateSharedModuleId,
+  neuGetBindings,
+  neuGetContainer,
+};

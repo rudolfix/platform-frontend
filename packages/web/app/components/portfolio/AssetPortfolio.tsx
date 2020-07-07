@@ -1,5 +1,4 @@
 import { Button, EButtonLayout, Table } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -20,6 +19,7 @@ import {
   selectUnits,
 } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
+import { withContainer } from "../shared/hocs/withContainer";
 import { CurrencyIcon } from "../shared/icons/CurrencyIcon";
 import { ExternalLink } from "../shared/links/ExternalLink";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";

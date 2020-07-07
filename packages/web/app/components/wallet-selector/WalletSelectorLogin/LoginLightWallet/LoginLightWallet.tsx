@@ -6,7 +6,6 @@ import {
   TextField,
 } from "@neufund/design-system";
 import { EWalletType } from "@neufund/shared-modules";
-import { IIntlProps, injectIntlHelpers, withContainer } from "@neufund/shared-utils";
 import { FormikProps, useFormikContext, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -24,6 +23,8 @@ import { appConnect } from "../../../../store";
 import { EContentWidth } from "../../../layouts/Content";
 import { TransitionalLayout, TTransitionalLayoutProps } from "../../../layouts/Layout";
 import { FormDeprecated } from "../../../shared/forms/index";
+import { IIntlProps, injectIntlHelpers } from "../../../shared/hocs/injectIntlHelpers.unsafe";
+import { withContainer } from "../../../shared/hocs/withContainer";
 import { shouldNeverHappen } from "../../../shared/NeverComponent";
 import { getMessageTranslation } from "../../../translatedMessages/messages";
 import { TMessage } from "../../../translatedMessages/utils";

@@ -1,5 +1,5 @@
 import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
-import { nonNullable, withContainer } from "@neufund/shared-utils";
+import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -20,6 +20,7 @@ import {
   EPriceFormat,
 } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
+import { withContainer } from "../shared/hocs/withContainer";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
 import { PanelRounded } from "../shared/Panel";
 import { Tooltip } from "../shared/tooltips/Tooltip";

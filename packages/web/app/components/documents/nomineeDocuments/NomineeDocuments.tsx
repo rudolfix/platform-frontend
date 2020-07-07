@@ -1,6 +1,5 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import { branch, compose, renderComponent, setDisplayName } from "recompose";
 
 import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
@@ -14,7 +13,7 @@ import {
   selectNomineeFlowHasError,
 } from "../../../modules/nominee-flow/selectors";
 import { appConnect } from "../../../store";
-import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
+import { withMetaTags } from "../../../utils/withMetaTags";
 import { appRoutes } from "../../appRoutes";
 import { Layout } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
@@ -22,6 +21,7 @@ import {
   ErrorBoundaryComponent,
   ErrorBoundaryLayout,
 } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { NomineeDocumentsLayout } from "./NomineeDocumentsLayout";
 

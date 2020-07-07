@@ -1,7 +1,7 @@
 import { Effect, fork, put, SagaGenerator, select } from "@neufund/sagas";
 import { EUserType, routingModuleApi } from "@neufund/shared-modules";
 import { LocationChangeAction, RouterState } from "connected-react-router";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions, TActionFromCreator } from "../actions";

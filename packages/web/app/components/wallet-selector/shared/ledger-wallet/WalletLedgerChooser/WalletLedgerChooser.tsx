@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl";
 import { compose } from "recompose";
@@ -13,6 +12,7 @@ import {
 import { appConnect } from "../../../../../store";
 import { EContentWidth } from "../../../../layouts/Content";
 import { FullscreenLayout } from "../../../../layouts/FullscreenLayout";
+import { withContainer } from "../../../../shared/hocs/withContainer";
 import {
   IWalletLedgerChooserDispatchProps,
   IWalletLedgerChooserStateProps,

@@ -1,5 +1,4 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { injectIntlHelpers } from "@neufund/shared-utils";
 import { FormikProps, withFormik } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -8,6 +7,7 @@ import * as Yup from "yup";
 
 import { TDataTestId } from "../../../types";
 import { FormDeprecated, FormField } from "../../shared/forms/index";
+import { injectIntlHelpers } from "../../shared/hocs/injectIntlHelpers.unsafe";
 import { connectVerifyEmailComponent } from "./ConnectVerifyEmail";
 
 import * as styles from "./AccountSetupVerifyEmailComponent.module.scss";

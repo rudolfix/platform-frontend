@@ -1,4 +1,3 @@
-import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { Doughnut } from "react-chartjs-2";
@@ -6,6 +5,7 @@ import { compose } from "redux";
 
 import { DEFAULT_CHART_COLOR } from "../../eto/shared/constants";
 import { OTHERS_NAME } from "../../eto/utils";
+import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "../hocs/injectIntlHelpers.unsafe";
 import { ChartLegend } from "./ChartLegend";
 
 import * as styles from "./ChartDoughnut.module.scss";

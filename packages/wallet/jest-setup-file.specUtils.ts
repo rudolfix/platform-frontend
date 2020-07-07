@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unassigned-import
 import "./app/polyfills";
 
 // Mock react-native animation helpers to get rid of `useNativeDriver` unknown module warnings

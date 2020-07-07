@@ -1,9 +1,9 @@
 import { ILogger } from "@neufund/shared-modules";
-import { ContainerContext } from "@neufund/shared-utils";
 import * as React from "react";
 import { ComponentEnhancer, nest, withProps } from "recompose";
 
 import { symbols } from "../../../di/symbols";
+import { ContainerContext } from "../InversifyProvider";
 
 interface IErrorBoundaryState {
   hasError: boolean;

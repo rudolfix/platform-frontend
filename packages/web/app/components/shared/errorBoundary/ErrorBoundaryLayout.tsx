@@ -1,9 +1,9 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { Layout } from "../../layouts/Layout";
+import { withContainer } from "../hocs/withContainer";
 
 import * as styles from "./ErrorBoundary.module.scss";
 

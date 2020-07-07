@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-unassigned-import
 import "react-native-gesture-handler";
+// eslint-disable-next-line import/no-unassigned-import
 import "./polyfills";
 
 import { IModuleStore } from "@neufund/sagas";

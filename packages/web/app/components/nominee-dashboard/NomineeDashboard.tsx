@@ -1,4 +1,4 @@
-import { RequiredByKeys, withContainer } from "@neufund/shared-utils";
+import { RequiredByKeys } from "@neufund/shared-utils";
 import { branch, compose, renderComponent } from "recompose";
 
 import {
@@ -10,6 +10,7 @@ import { ENomineeEtoSpecificTask, ENomineeTask } from "../../modules/nominee-flo
 import { appConnect } from "../../store";
 import { Layout } from "../layouts/Layout";
 import { ErrorBoundaryComponent } from "../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../shared/hocs/withContainer";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
 import { NomineeDashboardTasks } from "./NomineeDashboardTasks";
 

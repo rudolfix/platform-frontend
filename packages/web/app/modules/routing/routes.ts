@@ -2,7 +2,7 @@ import { call, put } from "@neufund/sagas";
 import { EUserType } from "@neufund/shared-modules";
 import { RouterState } from "connected-react-router";
 import { Location } from "history";
-import { matchPath } from "react-router";
+import { matchPath } from "react-router-dom";
 
 import { appRoutes } from "../../components/appRoutes";
 import { profileRoutes } from "../../components/settings/routes";

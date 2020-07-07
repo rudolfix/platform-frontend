@@ -1,4 +1,4 @@
-import { put } from "@redux-saga/core/effects";
+import { put } from "@neufund/sagas";
 
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../actions";

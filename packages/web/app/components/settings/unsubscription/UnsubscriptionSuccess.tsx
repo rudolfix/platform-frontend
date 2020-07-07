@@ -1,5 +1,4 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
@@ -11,6 +10,7 @@ import { Layout } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../../shared/Heading";
+import { withContainer } from "../../shared/hocs/withContainer";
 
 import * as styles from "./UnsubscriptionModule.module.scss";
 

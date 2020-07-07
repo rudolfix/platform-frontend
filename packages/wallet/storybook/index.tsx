@@ -5,6 +5,7 @@ import { InteractionManager } from "react-native";
 import RNBootSplash from "react-native-bootsplash";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+// eslint-disable-next-line import/no-unassigned-import
 import "./rn-addons";
 import { loadStories } from "./storyLoader";
 

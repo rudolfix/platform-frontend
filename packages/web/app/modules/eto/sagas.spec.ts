@@ -1,9 +1,8 @@
-import { expectSaga } from "@neufund/sagas/tests";
+import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { EUserType } from "@neufund/shared-modules";
 import { convertToUlps, divideBigNumbers, multiplyBigNumbers, Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { omit } from "lodash/fp";
-import { getContext } from "redux-saga-test-plan/matchers";
 
 import { testCompany, testContract, testEto } from "../../../test/fixtures";
 import { actions } from "../actions";
@@ -81,7 +80,7 @@ const etosByPreviewCode = {
 describe("loadEtos", () => {
   it("should work", () => {
     expectSaga(loadEtos, globalDependencies)
-      .provide([[getContext("deps"), globalDependencies]])
+      .provide([[matchers.getContext("deps"), globalDependencies]])
       .withState({
         kyc: {
           individualData: {
@@ -116,7 +115,7 @@ describe("loadEtos", () => {
 
   it("should load investor ticket for investor", () => {
     expectSaga(loadEtos, globalDependencies)
-      .provide([[getContext("deps"), globalDependencies]])
+      .provide([[matchers.getContext("deps"), globalDependencies]])
       .withState({
         kyc: {
           individualData: {
@@ -186,7 +185,7 @@ describe("loadEtos", () => {
     };
 
     expectSaga(loadEtos, deps)
-      .provide([[getContext("deps"), deps]])
+      .provide([[matchers.getContext("deps"), deps]])
       .withState({
         kyc: {
           individualData: {

@@ -1,6 +1,6 @@
 import { Button, EButtonLayout, Table, TokenDetails } from "@neufund/design-system";
 import { walletApi } from "@neufund/shared-modules";
-import { multiplyBigNumbers, withContainer } from "@neufund/shared-utils";
+import { multiplyBigNumbers } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -26,6 +26,7 @@ import {
   EPriceFormat,
 } from "../shared/formatters/utils";
 import { Heading } from "../shared/Heading";
+import { withContainer } from "../shared/hocs/withContainer";
 import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
 import { PanelRounded } from "../shared/Panel";
 import { Tooltip } from "../shared/tooltips/Tooltip";

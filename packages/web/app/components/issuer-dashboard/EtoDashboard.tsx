@@ -1,5 +1,5 @@
 import { authModuleAPI, EKycRequestStatus, kycApi } from "@neufund/shared-modules";
-import { RequiredByKeys, withContainer } from "@neufund/shared-utils";
+import { RequiredByKeys } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, lifecycle, renderComponent, withProps } from "recompose";
@@ -48,6 +48,7 @@ import {
   ETOIssuerState,
 } from "../shared/eto-state/ETOState";
 import { Heading } from "../shared/Heading";
+import { withContainer } from "../shared/hocs/withContainer";
 import { LoadingIndicator } from "../shared/loading-indicator/index";
 import { Tooltip } from "../shared/tooltips/Tooltip";
 import { BookBuildingWidget } from "./bookBuildingWidget/BookBuildingWidget";

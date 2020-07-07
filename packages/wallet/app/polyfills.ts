@@ -3,9 +3,11 @@
 /**
  * Provides a proper runtime type information extensively used in inversify DI container
  */
+// eslint-disable-next-line import/no-unassigned-import
 import "reflect-metadata";
 
 // a process shim is required from some native module polyfills to be in the global scope
+// eslint-disable-next-line import/no-nodejs-modules
 import process from "process";
 
 global.process = process;

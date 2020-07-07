@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 
@@ -14,6 +13,7 @@ import {
   selectIsEligibleToPreEto,
 } from "../../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../../store";
+import { withContainer } from "../../../../shared/hocs/withContainer";
 import { CampaigningActivatedWidget } from "../CampaigningWidget/CampaigningActivatedWidget";
 import { ClaimWidget } from "../ClaimRefundWidget/ClaimWidget";
 import { RefundWidget } from "../ClaimRefundWidget/RefundWidget";

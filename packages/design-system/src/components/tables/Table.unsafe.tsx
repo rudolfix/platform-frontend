@@ -1,4 +1,3 @@
-import { CommonHtmlProps } from "@neufund/web/app/types";
 import * as React from "react";
 import {
   Column,
@@ -8,6 +7,8 @@ import {
   TableBodyProps,
   useTable,
 } from "react-table";
+
+import { CommonHtmlProps } from "../../types";
 
 import * as styles from "./Table.module.scss";
 

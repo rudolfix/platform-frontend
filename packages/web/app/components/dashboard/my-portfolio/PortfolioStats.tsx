@@ -1,11 +1,5 @@
 import { Button, EButtonLayout, EButtonWidth, TokenIcon } from "@neufund/design-system";
-import {
-  convertToUlps,
-  multiplyBigNumbers,
-  nonNullable,
-  OmitKeys,
-  withContainer,
-} from "@neufund/shared-utils";
+import { convertToUlps, multiplyBigNumbers, nonNullable, OmitKeys } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -23,6 +17,7 @@ import { appConnect } from "../../../store";
 import { DataRowSeparated } from "../../shared/DataRow";
 import { Money } from "../../shared/formatters/Money";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
+import { withContainer } from "../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ESize } from "../../shared/transaction/TransactionData";

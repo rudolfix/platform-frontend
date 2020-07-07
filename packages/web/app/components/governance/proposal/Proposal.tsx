@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { RouteComponentProps } from "react-router-dom";
@@ -16,6 +15,7 @@ import { EContentWidth } from "../../layouts/Content";
 import { FullscreenLayout } from "../../layouts/FullscreenLayout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { shouldNeverHappen } from "../../shared/NeverComponent";
 import { ProposalInvestor } from "./ProposalInvestor";

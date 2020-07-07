@@ -1,9 +1,10 @@
 import { walletApi } from "@neufund/shared-modules";
-import { createMount, tid } from "@neufund/shared-utils/tests";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { createSandbox, SinonStub } from "sinon";
 
+import { createMount } from "../../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
 import * as investorPortfolio from "../../../../modules/investor-portfolio/selectors";
 import * as buttonLink from "../../../shared/buttons/ButtonLink";

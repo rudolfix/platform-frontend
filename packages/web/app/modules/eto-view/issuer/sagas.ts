@@ -1,6 +1,6 @@
 import { call, fork, put, select } from "@neufund/sagas";
 import { DataUnavailableError } from "@neufund/shared-utils";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 import { EtoMessage } from "../../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";

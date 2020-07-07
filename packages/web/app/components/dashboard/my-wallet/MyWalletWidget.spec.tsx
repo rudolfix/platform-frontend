@@ -1,9 +1,10 @@
-import { createMount, tid } from "@neufund/shared-utils/tests";
+import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import noop from "lodash/noop";
 import * as React from "react";
 
+import { createMount } from "../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../test/integrationTestUtils.unsafe";
 import { MyWalletWidgetComponentLayout } from "./MyWalletWidget";
 

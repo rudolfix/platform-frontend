@@ -8,6 +8,7 @@ import { InlineIcon } from "../../icons/index";
 import { TimeLeft } from "../../TimeLeft.unsafe";
 import { utcTime } from "../../utils";
 
+// tslint:disable-next-line:no-submodule-imports
 import "react-datetime/css/react-datetime.css";
 import iconCalendar from "../../../../assets/img/inline_icons/calendar.svg";
 import * as styles from "./DatePickerLayout.module.scss";

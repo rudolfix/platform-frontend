@@ -1,4 +1,3 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { withProps } from "recompose";
 import { compose } from "redux";
@@ -8,6 +7,7 @@ import { FullscreenProgressLayout } from "../../layouts/FullscreenProgressLayout
 import { TContentExternalProps } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../shared/hocs/withContainer";
 
 const RecoverWalletComponent = React.lazy(() =>
   import("./RecoverWallet/RecoverWallet").then(imp => ({ default: imp.RecoverWallet })),

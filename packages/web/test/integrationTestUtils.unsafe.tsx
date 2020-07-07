@@ -1,6 +1,6 @@
 import { createSagaMiddleware, SagaMiddleware } from "@neufund/sagas";
 import { authModuleAPI, coreModuleApi, IHttpResponse, noopLogger } from "@neufund/shared-modules";
-import { DeepPartial, dummyIntl, simpleDelay } from "@neufund/shared-utils";
+import { DeepPartial, simpleDelay } from "@neufund/shared-utils";
 import { createMock, tid } from "@neufund/shared-utils/tests";
 import { routerMiddleware } from "connected-react-router";
 import { ReactWrapper } from "enzyme";
@@ -13,6 +13,7 @@ import { applyMiddleware, combineReducers, createStore, ReducersMapObject, Store
 import configureStore from "redux-mock-store";
 import { SinonSpy } from "sinon";
 
+import { dummyIntl } from "../app/components/shared/hocs/injectIntlHelpers.fixtures";
 import {
   createGlobalDependencies,
   setupBindings,

@@ -1,5 +1,5 @@
 import { createActionFactory } from "@neufund/shared-utils";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TEtoViewByIdMatch } from "../../routing/types";

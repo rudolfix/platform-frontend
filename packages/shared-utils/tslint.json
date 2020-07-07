@@ -14,7 +14,7 @@
     "ban-comma-operator": true,
     "no-duplicate-switch-case": true,
     "no-duplicate-imports": true,
-    "no-implicit-dependencies": false,
+    "no-implicit-dependencies": [true, "dev"],
     "no-constant-condition": false,
     "no-empty-character-class": true,
     "no-extra-boolean-cast": true,
@@ -67,7 +67,7 @@
       }
     ],
     "no-commented-code": true,
-    "no-submodule-imports": false,
+    "no-submodule-imports": [true, "lodash"],
     "no-use-before-declare": false,
     "no-useless-cast": false,
     "restrict-plus-operands": false,

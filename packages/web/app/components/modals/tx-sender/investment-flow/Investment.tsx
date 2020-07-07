@@ -2,8 +2,6 @@ import { Button, ButtonInline, EButtonLayout } from "@neufund/design-system";
 import {
   addBigNumbers,
   compareBigNumbers,
-  IIntlProps,
-  injectIntlHelpers,
   multiplyBigNumbers,
   nonNullable,
 } from "@neufund/shared-utils";
@@ -74,6 +72,7 @@ import {
 } from "../../../shared/formatters/utils";
 import { MaskedNumberInput } from "../../../shared/forms";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
+import { IIntlProps, injectIntlHelpers } from "../../../shared/hocs/injectIntlHelpers.unsafe";
 import { InvestmentPriceInfo } from "./InvestmentPriceInfo";
 import { InvestmentTypeSelector, WalletSelectionData } from "./InvestmentTypeSelector";
 import {

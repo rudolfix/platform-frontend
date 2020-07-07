@@ -115,12 +115,19 @@ module.exports = {
         }
       }
     ],
-    "import/no-useless-path-segments": "error",
+    "import/export": "error",
     "import/first": "error",
-    "import/no-duplicates": "error",
     "import/newline-after-import": "error",
+    "import/no-absolute-path": "error",
+    "import/no-default-export": "error",
+    "import/no-duplicates": "error",
+    "import/no-extraneous-dependencies": "error",
+    "import/no-mutable-exports": "error",
     "import/no-named-default": "error",
-    "import/no-default-export": "error"
+    "import/no-nodejs-modules": "error",
+    "import/no-unassigned-import": "error",
+    "import/no-unused-modules": "error",
+    "import/no-useless-path-segments": "error"
   },
   overrides: [
     {

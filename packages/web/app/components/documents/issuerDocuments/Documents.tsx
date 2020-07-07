@@ -1,7 +1,7 @@
-import { DeepReadonly, nonNullable, withContainer } from "@neufund/shared-utils";
+import { DeepReadonly, nonNullable } from "@neufund/shared-utils";
 import { isEmpty } from "lodash";
 import * as React from "react";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import { branch, compose, renderComponent, setDisplayName } from "recompose";
 
 import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
@@ -32,11 +32,12 @@ import { selectPendingDownloads } from "../../../modules/immutable-file/selector
 import { selectAreTherePendingTxs } from "../../../modules/tx/monitor/selectors";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
-import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
+import { withMetaTags } from "../../../utils/withMetaTags";
 import { appRoutes } from "../../appRoutes";
 import { Layout } from "../../layouts/Layout";
 import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../shared/loading-indicator/index";
 import { DocumentsLayout } from "./DocumentsLayout";
 

@@ -1,12 +1,12 @@
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 
 import { TEtoViewData } from "../../../../modules/eto-view/shared/types";
-import { withMetaTags } from "../../../../utils/withMetaTags.unsafe";
+import { withMetaTags } from "../../../../utils/withMetaTags";
 import { Layout } from "../../../layouts/Layout";
 import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../../../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../../../shared/hocs/withContainer";
 
 export const initEtoViewLayoutIssuer = (WrappedComponent: React.ComponentType<TEtoViewData>) =>
   compose<TEtoViewData, TEtoViewData>(

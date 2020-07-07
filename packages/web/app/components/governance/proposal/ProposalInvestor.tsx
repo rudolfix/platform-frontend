@@ -12,7 +12,7 @@ import {
   TProposal,
 } from "../../../modules/shareholder-resolutions-voting/module";
 import { appConnect } from "../../../store";
-import { withMetaTags } from "../../../utils/withMetaTags.unsafe";
+import { withMetaTags } from "../../../utils/withMetaTags";
 import { Container, EColumnSpan, EContainerType } from "../../layouts/Container";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
 import { ProposalDetails } from "./ProposalDetails";

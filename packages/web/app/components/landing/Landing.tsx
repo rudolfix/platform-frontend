@@ -1,5 +1,4 @@
 import { EButtonLayout, EButtonSize } from "@neufund/design-system";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
@@ -15,6 +14,7 @@ import { WidgetGrid } from "../layouts/WidgetGrid";
 import { ButtonLink } from "../shared/buttons/ButtonLink";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../shared/hocs/withContainer";
 
 import fish from "../../assets/img/neufund_landing_visual.png";
 import * as styles from "./Landing.module.scss";

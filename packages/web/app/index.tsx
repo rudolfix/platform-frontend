@@ -7,7 +7,6 @@ import "./index.scss";
 
 import { createStore, getSagaExtension } from "@neufund/sagas";
 import { getContextToDepsExtension, getLoadContextExtension } from "@neufund/shared-modules";
-import { InversifyProvider } from "@neufund/shared-utils";
 import { ConnectedRouter } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
 import { Container } from "inversify";
@@ -19,6 +18,7 @@ import { Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { App } from "./components/App";
+import { InversifyProvider } from "./components/shared/InversifyProvider";
 import { getConfig, IConfig } from "./config/getConfig";
 import { createGlobalDependencies, TGlobalDependencies } from "./di/setupBindings";
 import { reduxLogoutReset } from "./middlewares/redux-logout-reset";

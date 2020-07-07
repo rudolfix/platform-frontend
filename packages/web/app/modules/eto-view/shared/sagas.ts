@@ -1,7 +1,7 @@
 import { call, fork, neuFork, neuTakeOnly, put, race, select } from "@neufund/sagas";
 import { EUserType } from "@neufund/shared-modules";
 import { LOCATION_CHANGE } from "connected-react-router";
-import { match } from "react-router";
+import { match } from "react-router-dom";
 
 import { appRoutes } from "../../../components/appRoutes";
 import { EtoMessage } from "../../../components/translatedMessages/messages";

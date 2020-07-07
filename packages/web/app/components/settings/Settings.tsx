@@ -5,7 +5,6 @@ import {
   kycApi,
   walletApi,
 } from "@neufund/shared-modules";
-import { withContainer } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "redux";
@@ -15,13 +14,14 @@ import { selectUserType } from "../../modules/auth/selectors";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
-import { withMetaTags } from "../../utils/withMetaTags.unsafe";
+import { withMetaTags } from "../../utils/withMetaTags";
 import { Container, EColumnSpan } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
 import { DashboardHeading } from "../shared/DashboardHeading";
 import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
+import { withContainer } from "../shared/hocs/withContainer";
 import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";
 import { CheckYourICBMWalletWidget } from "./icbm-wallet-widget/CheckYourICBMWalletWidget";
 import { LinkedBankAccountWidget } from "./linked-bank-account/LinkedBankAccountWidget";

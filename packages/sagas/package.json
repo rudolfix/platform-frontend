@@ -25,6 +25,7 @@
     "redux-saga-test-plan": "^4.0.0-rc.3",
     "ts-node": "6.2.0",
     "tslib": "^1.10.0",
+    "chai": "^4.2.0",
     "tslint": "^5.14.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.7.3",
@@ -36,6 +37,8 @@
   },
   "peerDependencies": {
     "tslib": "^1.10.0",
+    "redux": "^4.0.5",
+    "lodash": "^4.17.11",
     "@neufund/shared-utils": "^1.0.0"
   },
   "dependencies": {

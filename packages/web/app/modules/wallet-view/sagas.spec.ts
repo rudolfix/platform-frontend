@@ -15,7 +15,6 @@ import {
 } from "@neufund/shared-modules";
 import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { combineReducers } from "redux";
-import { getContext } from "redux-saga-test-plan/matchers";
 
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
@@ -333,7 +332,7 @@ describe("Wallet View", () => {
           },
         })
         .provide([
-          [getContext("deps"), context],
+          [matchers.getContext("deps"), context],
           [matchers.call.fn(walletApi.sagas.loadWalletDataSaga), undefined],
           [matchers.call.fn(kycApi.sagas.loadBankAccountDetails), undefined],
           [matchers.call.fn(populateWalletData), walletData],

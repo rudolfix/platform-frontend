@@ -1,6 +1,11 @@
-import { IIntlHelpers, IIntlProps, injectIntlHelpers } from "@neufund/shared-utils";
 import * as React from "react";
 import { Helmet } from "react-helmet";
+
+import {
+  IIntlHelpers,
+  IIntlProps,
+  injectIntlHelpers,
+} from "../components/shared/hocs/injectIntlHelpers.unsafe";
 
 type TMetaTags = {
   title: string;
@@ -9,8 +14,8 @@ type TMetaTags = {
 const withMetaTags = <T extends {}>(getMetaTags: (props: T, intl: IIntlHelpers) => TMetaTags) => (
   Wrapper: React.ComponentType<T>,
 ) =>
-  injectIntlHelpers<T>(({ intl, ...props }: IIntlProps & any) => {
-    const { title } = getMetaTags(props, intl);
+  injectIntlHelpers<T>((props: IIntlProps & T) => {
+    const { title } = getMetaTags(props, props.intl);
 
     return (
       <>
@@ -20,7 +25,7 @@ const withMetaTags = <T extends {}>(getMetaTags: (props: T, intl: IIntlHelpers) 
     );
   });
 
-const withRootMetaTag = () => (Wrapper: React.ComponentType<any>) => (props: any) => (
+const withRootMetaTag = <T extends {}>() => (Wrapper: React.ComponentType<T>) => (props: T) => (
   <>
     <Helmet title="Neufund Platform" />
 

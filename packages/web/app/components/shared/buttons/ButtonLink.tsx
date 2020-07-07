@@ -2,7 +2,7 @@ import { Button } from "@neufund/design-system";
 import { isExternalUrl } from "@neufund/shared-utils";
 import { LocationDescriptor } from "history";
 import * as React from "react";
-import { matchPath } from "react-router";
+import { matchPath } from "react-router-dom";
 import { compose, mapProps, setDisplayName } from "recompose";
 
 import { routingActions } from "../../../modules/routing/actions";

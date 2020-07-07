@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { RouteComponentProps, withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { TTranslatedString } from "../../../types";

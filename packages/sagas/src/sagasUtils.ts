@@ -1,5 +1,4 @@
 import { ActionMatchingPattern } from "@redux-saga/types";
-import { Container } from "inversify";
 import { isMatch } from "lodash/fp";
 import { CallEffect, SagaReturnType, Tail } from "redux-saga/effects";
 
@@ -38,11 +37,6 @@ type TSagaWithDepsAndArgs<R, T extends any[]> = (deps: TGlobalDependencies, ...a
 function* neuGetDeps(): Generator<any, TGlobalDependencies, any> {
   const deps: unknown = yield getContext("deps");
   return deps as TGlobalDependencies;
-}
-
-export function* neuGetContainer(): Generator<any, Container, any> {
-  const container: unknown = yield getContext("container");
-  return container as Container;
 }
 
 export function* neuTakeLatest(type: ActionPattern, saga: TSagaWithDeps): Generator<any, any, any> {

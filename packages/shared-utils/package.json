@@ -50,6 +50,7 @@
     "bignumber.js": "^5.0.0",
     "react-intl": "^2.4.0",
     "react-intl-phraseapp": "^0.2.4",
+    "lodash": "^4.17.11",
     "recompose": "^0.30.0",
     "tslib": "^1.10.0"
   },

@@ -1,9 +1,10 @@
 import { EUserType, kycApi } from "@neufund/shared-modules";
-import { createMount, setupFakeClock, tid } from "@neufund/shared-utils/tests";
+import { setupFakeClock, tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import * as React from "react";
 import { createSandbox, SinonStub } from "sinon";
 
+import { createMount } from "../../../../../test/createMount";
 import { testCompany, testContract, testEto } from "../../../../../test/fixtures";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
 import { EAuthStatus } from "../../../../modules/auth/reducer";

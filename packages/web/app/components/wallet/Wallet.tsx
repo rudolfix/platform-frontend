@@ -1,4 +1,4 @@
-import { DeepReadonly, withContainer } from "@neufund/shared-utils";
+import { DeepReadonly } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, renderComponent, withProps } from "recompose";
@@ -19,6 +19,7 @@ import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { WalletAddress } from "../shared/AccountAddress";
 import { ErrorBoundaryComponent } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../shared/Heading";
+import { withContainer } from "../shared/hocs/withContainer";
 import { LoadingIndicatorContainer } from "../shared/loading-indicator";
 import { ECustomTooltipTextPosition, Tooltip } from "../shared/tooltips";
 import { BalanceList } from "./BalanceList";

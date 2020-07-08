@@ -14,6 +14,7 @@ stub(hoocs, "withActionWatcher").callsFake(() => (Component: React.ComponentType
 import { createMount } from "../../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
 import * as investorPortfolio from "../../../../modules/investor-portfolio/selectors";
+import * as walletSelectors from "../../../../modules/wallet-selector/selectors";
 import * as buttonLink from "../../../shared/buttons/ButtonLink";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { IncomingPayoutPendingBase } from "./IncomingPayoutPending";
@@ -27,6 +28,8 @@ describe("PayoutWidget", () => {
     stub(buttonLink, "ButtonLink").callsFake((props: any) => (
       <div data-test-id={props["data-test-id"]} />
     ));
+
+    stubs.selectRouterState = stub(walletSelectors, "selectRouterState").returns({ location: {} });
 
     stubs.selectEtherTokenIncomingPayout = stub(
       investorPortfolio,

@@ -1,3 +1,4 @@
+import { WholeEurShort } from "@neufund/design-system";
 import { assertNever } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -11,13 +12,7 @@ import {
 } from "../../../../../modules/bookbuilding-flow/utils";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  EAbbreviatedNumberOutputFormat,
-  ECurrency,
-  ENumberInputFormat,
-} from "../../../../shared/formatters/utils";
-import { LoadingIndicator } from "../../../../shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../../../shared/loading-indicator";
 import { GreyInfo, Info } from "../Info";
 import { WhitelistStatus } from "./WhitelistStatus";
 
@@ -83,12 +78,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
               id="eto-overview-thumbnail.whitelist.committed-amount"
               values={{
                 pledgedAmount: (
-                  <Money
-                    value={pledgedAmount ? pledgedAmount.toString() : null}
-                    inputFormat={ENumberInputFormat.FLOAT}
-                    valueType={ECurrency.EUR}
-                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-                  />
+                  <WholeEurShort value={pledgedAmount ? pledgedAmount.toString() : null} />
                 ),
               }}
             />
@@ -114,12 +104,7 @@ const WhitelistLayout: React.FunctionComponent<IProps> = ({
               id="eto-overview-thumbnail.whitelist.committed-amount"
               values={{
                 pledgedAmount: (
-                  <Money
-                    value={pledgedAmount ? pledgedAmount.toString() : null}
-                    inputFormat={ENumberInputFormat.FLOAT}
-                    valueType={ECurrency.EUR}
-                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-                  />
+                  <WholeEurShort value={pledgedAmount ? pledgedAmount.toString() : null} />
                 ),
               }}
             />

@@ -1,4 +1,9 @@
-import { DeepPartial, EthereumAddressWithChecksum, Overwrite } from "@neufund/shared-utils";
+import {
+  convertFromUlps,
+  DeepPartial,
+  EthereumAddressWithChecksum,
+  Overwrite,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import {
@@ -40,7 +45,7 @@ export const convertToEtoTotalInvestment = (
   euroTokenBalance: BigNumber,
   etherTokenBalance: BigNumber,
 ): IEtoTotalInvestment => ({
-  totalEquivEurUlps: totalEquivEurUlps.toString(),
+  totalEquivEur: convertFromUlps(totalEquivEurUlps.toString()).toString(),
   totalTokensInt: totalTokensInt.toString(),
   totalInvestors: totalInvestors.toString(),
   euroTokenBalance: euroTokenBalance.toString(),
@@ -222,13 +227,13 @@ export const getEtoEurMinTarget = (eto: TEtoWithCompanyAndContractReadonly) => {
     const { minimumNewSharesToIssue, equityTokensPerShare } = eto;
 
     const totalTokensInt = isOnChain(eto) ? eto.contract.totalInvestment.totalTokensInt : "0";
-    const totalEquivEurUlps = isOnChain(eto) ? eto.contract.totalInvestment.totalEquivEurUlps : "0";
+    const totalEquivEur = isOnChain(eto) ? eto.contract.totalInvestment.totalEquivEur : "0";
 
     return calculateTarget(
       minimumNewSharesToIssue.toString(),
       equityTokensPerShare.toString(),
       totalTokensInt,
-      totalEquivEurUlps,
+      totalEquivEur,
     );
   }
 
@@ -238,13 +243,13 @@ export const getEtoEurMinTarget = (eto: TEtoWithCompanyAndContractReadonly) => {
 export const getEtoEurMaxTarget = (eto: TEtoWithCompanyAndContractReadonly) => {
   if (isOnChain(eto)) {
     const { newSharesToIssue, equityTokensPerShare } = eto;
-    const { totalTokensInt, totalEquivEurUlps } = eto.contract.totalInvestment;
+    const { totalTokensInt, totalEquivEur } = eto.contract.totalInvestment;
 
     return calculateTarget(
       newSharesToIssue.toString(),
       equityTokensPerShare.toString(),
       totalTokensInt,
-      totalEquivEurUlps,
+      totalEquivEur,
     );
   }
 

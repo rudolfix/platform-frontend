@@ -1,4 +1,4 @@
-import { etoFixtureAddressByName, loginFixtureAccount, tid } from "../../utils/index";
+import { etoFixtureAddressByName, loginFixtureAccount, tid } from "../../utils";
 import { startInvestmentFlow } from "./utils";
 
 describe("Investment modal token price", () => {

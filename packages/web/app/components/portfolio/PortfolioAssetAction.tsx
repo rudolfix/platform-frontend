@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { nonNullable } from "@neufund/shared-utils";
+import { ENumberInputFormat, ENumberOutputFormat, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -10,7 +10,6 @@ import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modu
 import { getInvestmentCalculatedPercentage } from "../../modules/eto/utils";
 import { appConnect } from "../../store";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
-import { ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 
 type TExternalProps = {
   state: EETOStateOnChain;
@@ -68,7 +67,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<TExternalProps &
               <strong>
                 <FormatNumber
                   value={currentInvestmentProgressPercentage}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                   outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                   decimalPlaces={2}
                 />

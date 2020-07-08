@@ -1,4 +1,4 @@
-import { ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
+import { convertFromUlps, ETH_DECIMALS, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
@@ -23,7 +23,7 @@ const data = {
     },
     investmentType: EInvestmentType.NEur,
     investmentEth: "12345678900000000000",
-    investmentEur: "12345678900000000000000",
+    investmentEur: convertFromUlps("12345678900000000000000").toString(),
     gasCostEth: "2000000000000000",
     equityTokens: "500",
     estimatedReward: "40000000000000000000",

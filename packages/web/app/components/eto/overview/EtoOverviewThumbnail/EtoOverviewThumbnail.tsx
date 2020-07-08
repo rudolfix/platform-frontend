@@ -1,3 +1,4 @@
+import { WholeEurShort } from "@neufund/design-system";
 import { XOR } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -17,13 +18,7 @@ import {
   ETOInvestorState,
   SuccessEtoState,
 } from "../../../shared/eto-state/ETOState";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  EAbbreviatedNumberOutputFormat,
-  ECurrency,
-  ENumberInputFormat,
-} from "../../../shared/formatters/utils";
-import { VALUES } from "../../../shared/forms/fields/form-select-fields/FormSelectCountryField";
+import { VALUES } from "../../../shared/forms";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { Cover } from "./Cover";
 import { EtoCardButton, EtoCardPanelButton } from "./EtoCardPanel";
@@ -101,14 +96,7 @@ const MockEtoOverviewLayout: React.FunctionComponent<TMockEtoProps &
             <FormattedMessage
               id="eto-overview-thumbnail.success.raised-amount"
               values={{
-                totalAmount: (
-                  <Money
-                    value={mockedEto.totalAmount}
-                    inputFormat={ENumberInputFormat.ULPS}
-                    valueType={ECurrency.EUR}
-                    outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
-                  />
-                ),
+                totalAmount: <WholeEurShort value={mockedEto.totalAmount} />,
               }}
             />
           }

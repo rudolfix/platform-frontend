@@ -1,16 +1,11 @@
+import { WholeEur } from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { appRoutes } from "../../../../appRoutes";
-import { ButtonLink } from "../../../../shared/buttons/ButtonLink";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
+import { ButtonLink } from "../../../../shared/buttons";
 import { Tooltip } from "../../../../shared/tooltips";
 import { CampaigningActivatedInvestorApprovedWidget } from "./CampaigningActivatedInvestorApprovedWidget";
 
@@ -68,12 +63,7 @@ export const WhitelistingActive: React.FunctionComponent<TWhitelistingActiveProp
           <FormattedMessage id="shared-component.eto-overview.amount-backed" />
         </span>
         <span className={styles.value} data-test-id="eto-bookbuilding-amount-backed">
-          <Money
-            value={pledgedAmount ? pledgedAmount.toString() : undefined}
-            valueType={ECurrency.EUR}
-            inputFormat={ENumberInputFormat.FLOAT}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
+          <WholeEur value={pledgedAmount ? pledgedAmount.toString() : undefined} />
         </span>
       </div>
       <div className={cn(styles.group, styles.groupNoPadding)}>

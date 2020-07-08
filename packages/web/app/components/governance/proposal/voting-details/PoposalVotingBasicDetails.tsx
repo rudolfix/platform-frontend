@@ -1,16 +1,10 @@
+import { Percentage } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedDate, FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TProposal } from "../../../../modules/shareholder-resolutions-voting/module";
 import { DataRow, DataRowSeparated, EDataRowSize } from "../../../shared/DataRow";
-import { Money } from "../../../shared/formatters/Money";
-import { MoneyWithLessThan } from "../../../shared/formatters/MoneyWithLessThan";
-import {
-  ENumberFormat,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
 import { Heading } from "../../../shared/Heading";
 import { EtherscanAddressLink } from "../../../shared/links";
 
@@ -66,11 +60,8 @@ const ProposalVotingBasicDetails: React.FunctionComponent<TExternalProps> = ({
         size={EDataRowSize.SMALL}
         caption={<FormattedMessage id="governance.proposal.vote.statistics.participation" />}
         value={
-          <MoneyWithLessThan
+          <Percentage
             value={participationPercentage}
-            inputFormat={ENumberInputFormat.FLOAT}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ENumberFormat.PERCENTAGE}
             data-test-id="governance.proposal.voting-details.participation-percentage"
           />
         }
@@ -81,11 +72,8 @@ const ProposalVotingBasicDetails: React.FunctionComponent<TExternalProps> = ({
         caption={<FormattedMessage id="governance.proposal.vote.statistics.absolute-majority" />}
         className="mb-0"
         value={
-          <Money
+          <Percentage
             value={proposal.quorum}
-            inputFormat={ENumberInputFormat.FLOAT}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ENumberFormat.PERCENTAGE}
             data-test-id="governance.proposal.voting-details.quorum"
           />
         }

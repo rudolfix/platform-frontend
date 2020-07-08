@@ -9,13 +9,18 @@ import { BigNumber } from "bignumber.js";
 
 import { TAppGlobalState } from "../../../../store";
 import { EInvestmentType } from "../../../investment-flow/reducer";
+import {
+  selectInvestmentEthValueUlps,
+  selectInvestmentEurValue,
+  selectInvestmentType,
+} from "../../../investment-flow/selectors";
 import { selectTxGasCostEthUlps } from "../../sender/selectors";
 
 export const selectWalletBalance = (state: TAppGlobalState): string => {
-  const investmentState = state.investmentFlow;
+  const investmentType = selectInvestmentType(state);
 
   // Select wallet balance based on investment type
-  switch (investmentState.investmentType) {
+  switch (investmentType) {
     case EInvestmentType.Eth:
       // For ETH wallet estimated gas price have to be subtracted before
       const gasCostEth = selectTxGasCostEthUlps(state);
@@ -47,17 +52,16 @@ export const isEther = (investmentType: EInvestmentType | undefined) => {
 
 export const selectMaximumInvestment = (state: TAppGlobalState): string => {
   // Select investment state
-  const investmentState = state.investmentFlow;
-  const investmentType = investmentState.investmentType;
+  const investmentType = selectInvestmentType(state);
 
   // Select both ETH and EURO input values from state
-  const selectedEthAmountUlps = investmentState.ethValueUlps || "0";
-  const selectedEuroAmountUlps = investmentState.euroValueUlps || "0";
+  const selectedEthAmountUlps = selectInvestmentEthValueUlps(state) || "0";
+  const selectedEuroAmount = selectInvestmentEurValue(state) || "0";
 
   // Select which input value should be used;
   const selectedAmountUlps = isEther(investmentType)
     ? selectedEthAmountUlps
-    : selectedEuroAmountUlps;
+    : convertToUlps(selectedEuroAmount);
 
   // Select wallet balance based of investment type
   const walletBalanceUlps = selectWalletBalance(state);

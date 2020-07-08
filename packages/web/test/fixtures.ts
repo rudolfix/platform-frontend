@@ -1,4 +1,6 @@
 import {
+  convertFromUlps,
+  ECurrency,
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumNetworkId,
@@ -6,7 +8,6 @@ import {
 } from "@neufund/shared-utils";
 import { createStore, Store } from "redux";
 
-import { ECurrency } from "../app/components/shared/formatters/utils";
 import { IConfig } from "../app/config/getConfig";
 import {
   EEtoMarketingDataVisibleInPreview,
@@ -608,7 +609,7 @@ export const etoDocuments: TEtoDocumentTemplates = {
 export const testContract = {
   timedState: EETOStateOnChain.Signing,
   totalInvestment: {
-    totalEquivEurUlps: "3.240447910281246044e+24",
+    totalEquivEur: convertFromUlps("3.240447910281246044e+24").toString(),
     totalTokensInt: "10010705",
     totalInvestors: "3",
     euroTokenBalance: "3.2374649e+24",

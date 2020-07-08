@@ -109,7 +109,7 @@ const EtoStatusComponentChooser: React.FunctionComponent<IStateProps & IExternal
           etoId={eto.etoId}
           tokenName={eto.equityTokenName || ""}
           totalInvestors={eto.contract!.totalInvestment.totalInvestors}
-          totalEquivEurUlps={eto.contract!.totalInvestment.totalEquivEurUlps}
+          totalEquivEur={eto.contract!.totalInvestment.totalEquivEur}
           timedState={timedState}
         />
       );

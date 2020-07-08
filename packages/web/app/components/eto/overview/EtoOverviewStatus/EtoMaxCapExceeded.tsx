@@ -1,4 +1,10 @@
-import { divideBigNumbers } from "@neufund/shared-utils";
+import { Eth, EurToken } from "@neufund/design-system";
+import {
+  convertToUlps,
+  divideBigNumbers,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+} from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -12,12 +18,6 @@ import {
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
 import { InvestmentProgress } from "../../shared/InvestmentProgress";
 import { CounterWidget } from "./CounterWidget";
 import { SuccessMessage } from "./Message";
@@ -67,11 +67,11 @@ const EtoMaxCapExceededComponent: React.FunctionComponent<IExternalProps &
       </div>
       <div className={styles.header}>
         <div>
-          <Money
-            value={divideBigNumbers(eto.contract!.totalInvestment.totalEquivEurUlps, etherPriceEur)}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.ETH}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+          <Eth
+            value={divideBigNumbers(
+              convertToUlps(eto.contract!.totalInvestment.totalEquivEur),
+              etherPriceEur,
+            )}
           />
         </div>
         <div>
@@ -83,7 +83,7 @@ const EtoMaxCapExceededComponent: React.FunctionComponent<IExternalProps &
                 <FormatNumber
                   value={eto.contract!.totalInvestment.totalInvestors}
                   outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                 />
               ),
             }}
@@ -92,12 +92,7 @@ const EtoMaxCapExceededComponent: React.FunctionComponent<IExternalProps &
       </div>
       <div className={styles.header}>
         <div>
-          <Money
-            value={eto.contract!.totalInvestment.totalTokensInt}
-            inputFormat={ENumberInputFormat.FLOAT}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.EUR_TOKEN}
-          />
+          <EurToken value={convertToUlps(eto.contract!.totalInvestment.totalTokensInt)} />
         </div>
         <div className={cn(styles.capReached, "text-uppercase")}>
           <FormattedMessage id="shared-component.eto-overview.max-cap-reached" />

@@ -1,20 +1,14 @@
-import { Button } from "@neufund/design-system";
+import { Button, Eur } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 import { SuccessMessage } from "../Message";
 import { withCanClaimToken } from "./withCanClaimToken";
 
 interface IExternalProps {
   tokenName: string;
   totalInvestors: string | undefined;
-  totalEquivEurUlps: string;
+  totalEquivEur: string;
   canClaimToken: boolean;
   etoId: string;
   onClaim: (etoId: string) => void;
@@ -23,7 +17,7 @@ interface IExternalProps {
 const ClaimWidgetLayout: React.FunctionComponent<IExternalProps> = ({
   tokenName,
   totalInvestors,
-  totalEquivEurUlps,
+  totalEquivEur,
   canClaimToken,
   etoId,
   onClaim,
@@ -36,14 +30,7 @@ const ClaimWidgetLayout: React.FunctionComponent<IExternalProps> = ({
           <FormattedMessage
             id="shared-component.eto-overview.success.summary"
             values={{
-              totalAmount: (
-                <Money
-                  value={totalEquivEurUlps}
-                  inputFormat={ENumberInputFormat.ULPS}
-                  valueType={ECurrency.EUR}
-                  outputFormat={ENumberOutputFormat.FULL}
-                />
-              ),
+              totalAmount: <Eur value={totalEquivEur} />,
               totalInvestors,
             }}
           />
@@ -51,14 +38,7 @@ const ClaimWidgetLayout: React.FunctionComponent<IExternalProps> = ({
           <FormattedMessage
             id="shared-component.eto-overview.success.summary-no-investors-count"
             values={{
-              totalAmount: (
-                <Money
-                  value={totalEquivEurUlps}
-                  inputFormat={ENumberInputFormat.ULPS}
-                  valueType={ECurrency.EUR}
-                  outputFormat={ENumberOutputFormat.FULL}
-                />
-              ),
+              totalAmount: <Eur value={totalEquivEur} />,
             }}
           />
         )

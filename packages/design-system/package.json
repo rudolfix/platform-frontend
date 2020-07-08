@@ -27,6 +27,7 @@
     "tslint:fix": "yarn tslint --fix"
   },
   "devDependencies": {
+    "bignumber.js": "^5.0.0",
     "@neufund/shared-utils": "^1.0.0",
     "@storybook/addon-a11y": "^5.3.7",
     "@storybook/addon-actions": "^5.3.8",
@@ -67,6 +68,7 @@
     "yup": "^0.26.7"
   },
   "peerDependencies": {
+    "bignumber.js": "^5.0.0",
     "@neufund/shared-utils": "^1.0.0",
     "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",

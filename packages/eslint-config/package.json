@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "lint": "echo Nothing to lint",
     "prepare": "echo Nothing to prepare"
   },
   "dependencies": {

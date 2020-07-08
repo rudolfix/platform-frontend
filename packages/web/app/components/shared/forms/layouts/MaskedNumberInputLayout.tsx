@@ -1,22 +1,23 @@
-import { FormInputError, TDataTestId } from "@neufund/shared-utils";
-import * as React from "react";
-
-import { DEFAULT_DECIMAL_PLACES } from "../../../../config/constants";
-import { TTranslatedString } from "../../../../types";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
   ERoundingMode,
   formatNumber,
+  FormInputError,
   isEmptyValue,
   isValidNumber,
   parseInputToNumber,
   selectDecimalPlaces,
   selectUnits,
   stripNumberFormatting,
+  TDataTestId,
   toFixedPrecision,
   TValueFormat,
-} from "../../formatters/utils";
+} from "@neufund/shared-utils";
+import * as React from "react";
+
+import { DEFAULT_DECIMAL_PLACES } from "../../../../config/constants";
+import { TTranslatedString } from "../../../../types";
 import { EInputSize, EInputTheme, InputLayout } from "./InputLayout";
 
 interface IProps {
@@ -65,7 +66,7 @@ export class MaskedNumberInputLayout extends React.Component<IProps & TDataTestI
       return toFixedPrecision({
         value,
         roundingMode: ERoundingMode.DOWN,
-        inputFormat: ENumberInputFormat.FLOAT,
+        inputFormat: ENumberInputFormat.DECIMAL,
         outputFormat: this.props.outputFormat,
         decimalPlaces: this.decimals,
       });

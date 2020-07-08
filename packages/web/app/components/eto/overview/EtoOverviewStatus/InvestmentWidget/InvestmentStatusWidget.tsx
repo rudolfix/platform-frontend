@@ -1,3 +1,5 @@
+import { Eur } from "@neufund/design-system";
+import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,12 +9,6 @@ import { InvalidETOStateError } from "../../../../../modules/eto/errors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { isOnChain } from "../../../../../modules/eto/utils";
 import { FormatNumber } from "../../../../shared/formatters/FormatNumber";
-import { Money } from "../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 import { InvestmentProgress } from "../../../shared/InvestmentProgress";
 import { InvestmentProgressPercentage } from "../../InvestmentProgressPercentage";
 import { InvestmentTarget } from "./InvestmentTarget";
@@ -53,7 +49,7 @@ const InvestmentStatusWidget: React.FunctionComponent<IInvestmentStatsProps> = (
                   data-test-id="investment-widget-investors-invested"
                   value={totalInvestors}
                   outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                 />
               ),
             }}
@@ -67,12 +63,9 @@ const InvestmentStatusWidget: React.FunctionComponent<IInvestmentStatsProps> = (
             id="shared-component.eto-overview.investment-stats.total-amount-raised"
             values={{
               amountRaised: (
-                <Money
+                <Eur
                   data-test-id="investment-widget-total-nEur-invested"
-                  value={eto.contract.totalInvestment.totalEquivEurUlps}
-                  inputFormat={ENumberInputFormat.ULPS}
-                  valueType={ECurrency.EUR}
-                  outputFormat={ENumberOutputFormat.FULL}
+                  value={eto.contract.totalInvestment.totalEquivEur}
                 />
               ),
             }}

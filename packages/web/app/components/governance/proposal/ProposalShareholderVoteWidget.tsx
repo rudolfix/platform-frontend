@@ -1,4 +1,11 @@
-import { Button, ButtonGroup, EButtonGroupSize, EButtonLayout } from "@neufund/design-system";
+import {
+  Button,
+  ButtonGroup,
+  EButtonGroupSize,
+  EButtonLayout,
+  Percentage,
+} from "@neufund/design-system";
+import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -14,12 +21,6 @@ import {
 import { EContainerType } from "../../layouts/Container";
 import { FormatBoolean } from "../../shared/formatters/FormatBoolean";
 import { ECurrencySymbol, Money } from "../../shared/formatters/Money";
-import { MoneyWithLessThan } from "../../shared/formatters/MoneyWithLessThan";
-import {
-  ENumberFormat,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../shared/formatters/utils";
 import { Heading } from "../../shared/Heading";
 import { PanelGray } from "../../shared/Panel";
 
@@ -62,7 +63,7 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
               <Money
                 className={cn(styles.highlight)}
                 // TODO: Get input format from token precision
-                inputFormat={ENumberInputFormat.FLOAT}
+                inputFormat={ENumberInputFormat.DECIMAL}
                 value={shareholderVote.votingPower}
                 valueType={eto.equityTokenSymbol}
                 currencySymbol={ECurrencySymbol.NONE}
@@ -71,12 +72,9 @@ const ProposalShareholderVote: React.FunctionComponent<TExternalProps> = ({
               />
             ),
             percentageAllTokens: (
-              <MoneyWithLessThan
+              <Percentage
                 className={cn(styles.highlight)}
                 value={shareholderParticipationPercentage}
-                inputFormat={ENumberInputFormat.FLOAT}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                valueType={ENumberFormat.PERCENTAGE}
                 data-test-id="governance.proposal.shareholder-vote-widget.percentage-of-tokens"
               />
             ),
@@ -138,7 +136,7 @@ const ProposalShareholderVoteResult: React.FunctionComponent<TExternalProps> = (
               <Money
                 className={cn(styles.highlight)}
                 // TODO: Get input format from token precision
-                inputFormat={ENumberInputFormat.FLOAT}
+                inputFormat={ENumberInputFormat.DECIMAL}
                 value={shareholderVote.votingPower}
                 valueType={eto.equityTokenSymbol}
                 currencySymbol={ECurrencySymbol.NONE}
@@ -147,12 +145,9 @@ const ProposalShareholderVoteResult: React.FunctionComponent<TExternalProps> = (
               />
             ),
             percentageAllTokens: (
-              <MoneyWithLessThan
+              <Percentage
                 className={cn(styles.highlight)}
                 value={shareholderParticipation}
-                inputFormat={ENumberInputFormat.FLOAT}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                valueType={ENumberFormat.PERCENTAGE}
                 data-test-id="governance.proposal.shareholder-vote-widget.percentage-of-tokens"
               />
             ),

@@ -1,4 +1,4 @@
-import { convertToUlps, toEquityTokenSymbol } from "@neufund/shared-utils";
+import { convertFromUlps, convertToUlps, toEquityTokenSymbol } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
@@ -38,9 +38,9 @@ const txData: React.ComponentProps<typeof TxErrorLayout> = {
   additionalData: {
     to: "0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359",
     amount: "5500000000000000000",
-    amountEur: "5500000000000000000",
+    amountEur: convertFromUlps("5500000000000000000").toString(),
     total: "313131232312331212",
-    totalEur: "313131232312331212",
+    totalEur: convertFromUlps("313131232312331212").toString(),
     tokenSymbol: toEquityTokenSymbol("QTT"),
     tokenImage: tokenIcon,
     tokenDecimals: 18,
@@ -69,7 +69,7 @@ const investTxData: React.ComponentProps<typeof TxErrorLayout> = {
     etherPriceEur: "2542.22",
     gasCostEth: convertToUlps("0.124"),
     investmentEth: convertToUlps("120"),
-    investmentEur: convertToUlps("22506"),
+    investmentEur: "22506",
     isIcbm: false,
   },
   ...baseTxData,

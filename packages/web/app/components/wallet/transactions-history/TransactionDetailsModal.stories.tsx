@@ -5,6 +5,8 @@ import {
   ETransactionType,
 } from "@neufund/shared-modules";
 import {
+  ECurrency,
+  ENumberInputFormat,
   EthereumAddressWithChecksum,
   EthereumTxHash,
   toEquityTokenSymbol,
@@ -14,7 +16,6 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { withModalBody } from "../../../utils/react-connected-components/storybookHelpers.unsafe";
-import { ECurrency, ENumberInputFormat } from "../../shared/formatters/utils";
 import { TransactionDetailsModal } from "./TransactionDetailsModal";
 
 import tokenIcon from "../../../assets/img/token_icon.svg";
@@ -69,7 +70,7 @@ storiesOf("Templates|TransacionDetailsModal", module)
       closeModal={action("closeModal")}
       transaction={{
         amount: "1000",
-        amountFormat: ENumberInputFormat.FLOAT,
+        amountFormat: ENumberInputFormat.DECIMAL,
         currency: toEquityTokenSymbol("QTT"),
         etoId: "0xed1Dc67d0505019122bcf4E318bB750cb6FeF3de" as EthereumAddressWithChecksum,
         fromAddress: "0xfA1Af2E251ee739F83e14d7daCfd77B3d0E930b7" as EthereumAddressWithChecksum,
@@ -102,7 +103,7 @@ storiesOf("Templates|TransacionDetailsModal", module)
       closeModal={action("closeModal")}
       transaction={{
         amount: "10460320",
-        amountFormat: ENumberInputFormat.FLOAT,
+        amountFormat: ENumberInputFormat.DECIMAL,
         currency: toEquityTokenSymbol("QTT"),
         etoId: "0xed1Dc67d0505019122bcf4E318bB750cb6FeF3de" as EthereumAddressWithChecksum,
         icon: tokenIcon,
@@ -189,7 +190,7 @@ storiesOf("Templates|TransacionDetailsModal", module)
         companyName: "Fifth Force",
         currency: ECurrency.ETH,
         equityTokenAmount: "10000000",
-        equityTokenAmountFormat: ENumberInputFormat.FLOAT,
+        equityTokenAmountFormat: ENumberInputFormat.DECIMAL,
         equityTokenCurrency: toEquityTokenSymbol("QTT"),
         equityTokenIcon: tokenIcon,
         etoId: "0xed1Dc67d0505019122bcf4E318bB750cb6FeF3de" as EthereumAddressWithChecksum,
@@ -215,7 +216,7 @@ storiesOf("Templates|TransacionDetailsModal", module)
         companyName: "Fifth Force",
         currency: ECurrency.ETH,
         equityTokenAmount: "10000000",
-        equityTokenAmountFormat: ENumberInputFormat.FLOAT,
+        equityTokenAmountFormat: ENumberInputFormat.DECIMAL,
         equityTokenCurrency: toEquityTokenSymbol("QTT"),
         equityTokenIcon: tokenIcon,
         etoId: "0xed1Dc67d0505019122bcf4E318bB750cb6FeF3de" as EthereumAddressWithChecksum,
@@ -241,7 +242,7 @@ storiesOf("Templates|TransacionDetailsModal", module)
         companyName: "Fifth Force",
         currency: ECurrency.ETH,
         equityTokenAmount: "10000000",
-        equityTokenAmountFormat: ENumberInputFormat.FLOAT,
+        equityTokenAmountFormat: ENumberInputFormat.DECIMAL,
         equityTokenCurrency: toEquityTokenSymbol("QTT"),
         equityTokenIcon: tokenIcon,
         etoId: "0xed1Dc67d0505019122bcf4E318bB750cb6FeF3de" as EthereumAddressWithChecksum,

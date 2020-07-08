@@ -1,11 +1,11 @@
 import { InlineIcon } from "@neufund/design-system";
 import { ETransactionDirection, TTxHistory } from "@neufund/shared-modules";
+import { ECurrency, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 
 import { ETheme, Money } from "../../shared/formatters/Money";
-import { ECurrency, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { EInlineIconFill } from "../../shared/icons";
 import { TransactionData, TransactionName } from "../../shared/transaction";
 

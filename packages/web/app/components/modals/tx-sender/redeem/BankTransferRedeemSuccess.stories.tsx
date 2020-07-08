@@ -1,4 +1,3 @@
-import { Q18 } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
@@ -17,7 +16,7 @@ const props = {
   txHash: "0xdb3c43a0cfc4e221ecb52655eab3c3b88ba521a",
   additionalData: {
     amount: "20.50",
-    bankFee: Q18.mul("0.005").toString(),
+    bankFee: "0.005",
     bankAccount: {
       bankName: "mBank",
       accountNumberLast4: "1234",

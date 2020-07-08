@@ -1,3 +1,8 @@
+import {
+  EAbbreviatedNumberOutputFormat,
+  ECurrency,
+  ENumberInputFormat,
+} from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -6,11 +11,6 @@ import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/et
 import { getEtoEurMaxTarget, getEtoEurMinTarget } from "../../../../../../modules/eto/utils";
 import { Entry } from "../../../../../shared/Entry";
 import { MoneyRange } from "../../../../../shared/formatters/MoneyRange";
-import {
-  EAbbreviatedNumberOutputFormat,
-  ECurrency,
-  ENumberInputFormat,
-} from "../../../../../shared/formatters/utils";
 import { Tooltip } from "../../../../../shared/tooltips/Tooltip";
 import { ECustomTooltipTextPosition } from "../../../../../shared/tooltips/TooltipBase";
 import { ToBeAnnounced } from "../../../../shared/ToBeAnnouncedTooltip";
@@ -45,7 +45,7 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
       <MoneyRange
         valueFrom={minInvestmentAmount ? minInvestmentAmount.toString() : undefined}
         valueUpto={maxInvestmentAmount ? maxInvestmentAmount.toString() : undefined}
-        inputFormat={ENumberInputFormat.FLOAT}
+        inputFormat={ENumberInputFormat.DECIMAL}
         valueType={ECurrency.EUR}
         outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
         defaultValue={<ToBeAnnounced />}
@@ -62,7 +62,7 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
                   <MoneyRange
                     valueFrom={minTargetAmount ? minTargetAmount.toString() : undefined}
                     valueUpto={maxTargetAmount ? maxTargetAmount.toString() : undefined}
-                    inputFormat={ENumberInputFormat.FLOAT}
+                    inputFormat={ENumberInputFormat.DECIMAL}
                     valueType={ECurrency.EUR}
                     outputFormat={EAbbreviatedNumberOutputFormat.SHORT}
                   />

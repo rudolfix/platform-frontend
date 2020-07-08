@@ -1,3 +1,4 @@
+import { convertFromUlps } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -14,7 +15,7 @@ const detailsData = {
     bankName: "ING",
   },
   referenceCode: "NF AGHGCmR3u2SuxdyNPIksxTyAhKM REF 123456789011",
-  minAmount: "123456781234567812345678",
+  minAmount: convertFromUlps("123456781234567812345678").toString(),
   continueToSuccess: action("continueToSuccess"),
 };
 

@@ -1,10 +1,10 @@
-import { Button, EButtonLayout, EButtonSize } from "@neufund/design-system";
+import { Button, EButtonLayout, EButtonSize, Eur } from "@neufund/design-system";
+import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 
 import { EBalanceActionLevel, TBalance, TBalanceAction } from "../../modules/wallet-view/types";
 import { Money } from "../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { useCycleFocus } from "../shared/hooks/useCycleFocus";
 import { ECustomTooltipTextPosition, Tooltip } from "../shared/tooltips";
 
@@ -101,13 +101,7 @@ export const Balance: React.FunctionComponent<TBalance> = balance => {
         />
         <span className={styles.euroEquivalent}>
           {"≈"}
-          <Money
-            value={euroEquivalentAmount}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.EUR}
-            data-test-id={`${dataTestId}-euro-equivalent`}
-          />
+          <Eur value={euroEquivalentAmount} data-test-id={`${dataTestId}-euro-equivalent`} />
         </span>
       </div>
       {!!balance.walletActions.length && <BalanceActions {...balance} />}

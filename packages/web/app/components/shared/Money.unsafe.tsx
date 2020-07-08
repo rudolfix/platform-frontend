@@ -1,7 +1,12 @@
-import { ETH_DECIMALS, formatMoney } from "@neufund/shared-utils";
+import {
+  ECurrency,
+  ENumberInputFormat,
+  ERoundingMode,
+  ETH_DECIMALS,
+  formatMoney,
+} from "@neufund/shared-utils";
 
 import { TBigNumberVariants } from "../../lib/web3/types";
-import { ECurrency, ENumberInputFormat, ERoundingMode } from "./formatters/utils";
 
 const selectDecimalPlaces = (currency: ECurrency, isPrice?: boolean): number => {
   if (isPrice) {
@@ -25,7 +30,7 @@ function getFormatDecimals(format: ENumberInputFormat): number {
   switch (format) {
     case ENumberInputFormat.ULPS:
       return ETH_DECIMALS;
-    case ENumberInputFormat.FLOAT:
+    case ENumberInputFormat.DECIMAL:
       return 0;
     default:
       throw new Error("Unsupported money format");

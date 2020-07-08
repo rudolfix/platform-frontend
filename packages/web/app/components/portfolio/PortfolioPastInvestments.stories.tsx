@@ -1,3 +1,4 @@
+import { convertFromUlps } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -6,7 +7,7 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { testEto } from "../../../test/fixtures";
 import { EETOStateOnChain } from "../../modules/eto/types";
 import { IInvestorTicket, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import {
   PastInvestmentsContainer,
@@ -21,11 +22,11 @@ const eto = {
     timedState: EETOStateOnChain.Payout,
   },
   investorTicket: {
-    equivEurUlps: "738464183130318387747",
+    equivEur: convertFromUlps("738464183130318387747").toString(),
     rewardNmkUlps: "0",
     equityTokenInt: "2280",
-    sharesInt: "228000000000000000",
-    tokenPrice: "323887799618560696",
+    shares: convertFromUlps("228000000000000000").toString(),
+    tokenPrice: convertFromUlps("323887799618560696").toString(),
     neuRate: "0",
     amountEth: "4716210000000000000",
     amountEurUlps: "0",

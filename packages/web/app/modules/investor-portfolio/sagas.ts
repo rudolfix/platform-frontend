@@ -5,6 +5,7 @@ import {
   convertFromUlps,
   convertToUlps,
   DataUnavailableError,
+  ECurrency,
   EthereumAddress,
   nonNullable,
   Q18,
@@ -12,7 +13,6 @@ import {
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 
-import { ECurrency } from "../../components/shared/formatters/utils";
 import { InvestorPortfolioMessage } from "../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
@@ -212,21 +212,23 @@ export function* loadPersonalTokenDiscount(
   const whitelistTicketRaw = yield etoTerms.whitelistTicket(userId);
   const whitelistTicket = convertToWhitelistTicket(whitelistTicketRaw);
 
-  const whitelistDiscountFrac = Q18.mul("1").minus(whitelistTicket.fullTokenPriceFrac);
+  const whitelistDiscount = Q18.minus(whitelistTicket.fullTokenPriceFrac);
 
-  let discountTokenPriceUlps: BigNumber = new BigNumber("0");
+  let discountTokenPrice: BigNumber = new BigNumber("0");
   // only check for price when we have discount
   if (whitelistTicket.isWhitelisted) {
-    discountTokenPriceUlps = yield etoTerms.calculatePriceFraction(
-      Q18.minus(whitelistDiscountFrac),
+    discountTokenPrice = convertFromUlps(
+      yield etoTerms.calculatePriceFraction(Q18.minus(whitelistDiscount)),
     );
   }
 
   yield put(
     actions.investorEtoTicket.setTokenPersonalDiscount(eto.etoId, {
-      whitelistDiscountAmountEurUlps: whitelistTicket.whitelistDiscountAmountEurUlps.toString(),
-      whitelistDiscountFrac: convertFromUlps(whitelistDiscountFrac).toNumber(),
-      whitelistDiscountUlps: discountTokenPriceUlps.toString(),
+      whitelistDiscountAmountEur: convertFromUlps(
+        whitelistTicket.whitelistDiscountAmountEurUlps.toString(),
+      ).toString(),
+      whitelistDiscount: convertFromUlps(whitelistDiscount).toString(),
+      discountedTokenPrice: discountTokenPrice.toString(),
     }),
   );
 }

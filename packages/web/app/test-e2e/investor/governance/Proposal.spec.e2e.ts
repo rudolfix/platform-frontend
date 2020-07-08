@@ -85,7 +85,7 @@ describe("Post investment voting", () => {
     );
     cy.get(tid("governance.proposal.shareholder-vote-widget.percentage-of-tokens")).should(
       "have.text",
-      "44.05 %",
+      "44.05%",
     );
   });
 

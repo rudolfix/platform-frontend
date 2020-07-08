@@ -810,7 +810,7 @@
   "investment-flow.title": "Investment",
   "investment-flow.token-price-info.general-discount": "You'll invest at a token price of {discountTokenPrice} which includes a {discountTokenPricePercentage} discount.",
   "investment-flow.token-price-info.no-discount": "You'll invest at a token price of {tokenPriceEur}.",
-  "investment-flow.token-price-info.personal-discount": "Up to {whitelistDiscountAmountLeft}, you'll invest at a token price of {whitelistDiscount} which includes a {whitelistDiscountPercentage} discount.",
+  "investment-flow.token-price-info.personal-discount": "Up to {whitelistDiscountAmountLeft}, you'll invest at a token price of {discountedTokenPrice} which includes a {whitelistDiscountPercentage} discount.",
   "investment-flow.token-price-info.personal-discount.general-discount": "Above that amount you'll invest at a token price of {discountTokenPrice} which includes a {discountTokenPricePercentage} discount.",
   "investment-flow.token-price-info.personal-discount.no-discount": "Above that amount you'll invest at a token price of {tokenPriceEur}.",
   "investment-flow.total": "Total",

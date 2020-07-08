@@ -1,6 +1,11 @@
 import { put, select } from "@neufund/sagas";
 import { walletApi } from "@neufund/shared-modules";
-import { addBigNumbers, convertToUlps, multiplyBigNumbers } from "@neufund/shared-utils";
+import {
+  addBigNumbers,
+  convertFromUlps,
+  convertToUlps,
+  multiplyBigNumbers,
+} from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { ITxData } from "../../../../../lib/web3/types";
@@ -53,7 +58,7 @@ export function* txValidateWithdraw(userInput: IWithdrawDraftType): Generator<an
 
     const euroPrice = yield* select(selectEtherPriceEur);
 
-    const valueFromUserEuro = multiplyBigNumbers([euroPrice, valueUlps]);
+    const valueFromUserEuroUlps = multiplyBigNumbers([euroPrice, valueUlps]);
     const transactionCost = multiplyBigNumbers([
       generatedTxDetails.gasPrice,
       generatedTxDetails.gas,
@@ -63,7 +68,7 @@ export function* txValidateWithdraw(userInput: IWithdrawDraftType): Generator<an
     yield put(
       actions.txUserFlowTransfer.setTxUserFlowData({
         inputValue: valueUlps,
-        inputValueEuro: valueFromUserEuro,
+        inputValueEuro: convertFromUlps(valueFromUserEuroUlps).toString(),
         inputTo: isAddressValid ? userInput.to : "0x",
         totalValue: totalValue,
         totalValueEur: multiplyBigNumbers([totalValue, euroPrice]),

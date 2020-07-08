@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
+import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   EETOStateOnChain,
   TEtoWithCompanyAndContractReadonly,
@@ -26,9 +27,10 @@ const eto = {
     totalInvestment: {
       totalInvestors: "123",
       totalTokensInt: "34520",
-      totalEquivEurUlps: "12345",
+      totalEquivEur: "12345",
     },
   },
+  state: EEtoState.ON_CHAIN,
 } as TEtoWithCompanyAndContractReadonly;
 
 storiesOf("ETO/MaxCapExceededWidget", module)

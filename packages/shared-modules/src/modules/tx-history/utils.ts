@@ -34,7 +34,7 @@ const getDecimalsFormat = (
 
   switch (metadata.tokenDecimals) {
     case 0:
-      return ENumberInputFormat.FLOAT;
+      return ENumberInputFormat.DECIMAL;
     case 18:
       return ENumberInputFormat.ULPS;
     default:

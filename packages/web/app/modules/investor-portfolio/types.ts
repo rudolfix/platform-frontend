@@ -1,4 +1,5 @@
-import { ECurrency } from "../../components/shared/formatters/utils";
+import { ECurrency } from "@neufund/shared-utils";
+
 import { IEtoTokenData, TEtoWithCompanyAndContractReadonly } from "../eto/types";
 
 export interface ITokenDisbursal {
@@ -17,10 +18,10 @@ export type TTokenDisbursalData = {
 };
 
 export interface IInvestorTicket {
-  equivEurUlps: string;
+  equivEur: string;
   rewardNmkUlps: string;
   equityTokenInt: string;
-  sharesInt: string;
+  shares: string;
   tokenPrice: string;
   neuRate: string;
   amountEth: string;
@@ -40,18 +41,18 @@ export interface ICalculatedContribution {
 }
 
 export interface IWhitelistTicket {
-  whitelistDiscountAmountEurUlps: string;
-  whitelistDiscountFrac: number;
+  whitelistDiscountAmountEur: string;
+  whitelistDiscount: string;
 }
 
 export type TTokensPersonalDiscount = IWhitelistTicket & {
-  whitelistDiscountUlps: string;
+  discountedTokenPrice: string;
 };
 
 export interface IPersonalDiscount {
   whitelistDiscountAmountLeft: string;
-  whitelistDiscountUlps: string;
-  whitelistDiscountFrac: number;
+  discountedTokenPrice: string;
+  whitelistDiscount: string;
 }
 
 export type TETOWithInvestorTicket = TEtoWithCompanyAndContractReadonly & {

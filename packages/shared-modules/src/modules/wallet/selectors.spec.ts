@@ -1,4 +1,4 @@
-import { Q18 } from "@neufund/shared-utils";
+import { convertFromUlps, Q18 } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import {
@@ -92,10 +92,12 @@ describe("Wallet > selectors", () => {
     );
 
     expect(selectTotalEuroBalance(fullStateMock)).to.be.eq(
-      totalEther
-        .mul("10")
-        .add(totalEuro)
-        .toString(),
+      convertFromUlps(
+        totalEther
+          .mul("10")
+          .add(totalEuro)
+          .toString(),
+      ).toString(),
     );
 
     expect(selectNeuBalance(fullStateMock)).to.eq(Q18.mul("1000").toString());

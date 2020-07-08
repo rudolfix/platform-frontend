@@ -1,17 +1,11 @@
-import { convertFromUlps, isZero } from "@neufund/shared-utils";
+import { EquityTokenPriceEuro, Eur, Percentage } from "@neufund/design-system";
+import { isZero } from "@neufund/shared-utils";
+import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EETOStateOnChain, IEtoTokenGeneralDiscounts } from "../../../../modules/eto/types";
 import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-} from "../../../shared/formatters/utils";
-import { Percentage } from "../../../shared/Percentage";
 
 interface IExternalProps {
   onChainState: EETOStateOnChain;
@@ -28,27 +22,22 @@ const PersonalWhitelistDiscountMessage: React.FunctionComponent<Pick<
     id="investment-flow.token-price-info.personal-discount"
     values={{
       whitelistDiscountAmountLeft: (
-        <Money
+        <Eur
           data-test-id="investment-flow.token-price.personal-discount.amount-left"
           value={etoTokenPersonalDiscount.whitelistDiscountAmountLeft}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.EUR}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP}
         />
       ),
-      whitelistDiscount: (
-        <Money
+      discountedTokenPrice: (
+        <EquityTokenPriceEuro
           data-test-id="investment-flow.token-price.personal-discount.price"
-          value={etoTokenPersonalDiscount.whitelistDiscountUlps}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-          outputFormat={ENumberOutputFormat.FULL}
+          value={etoTokenPersonalDiscount.discountedTokenPrice}
         />
       ),
       whitelistDiscountPercentage: (
-        <Percentage data-test-id="investment-flow.token-price.personal-discount.discount">
-          {etoTokenPersonalDiscount.whitelistDiscountFrac}
-        </Percentage>
+        <Percentage
+          data-test-id="investment-flow.token-price.personal-discount.discount"
+          value={(Number(etoTokenPersonalDiscount.whitelistDiscount) * 100).toString()}
+        />
       ),
     }}
   />
@@ -62,18 +51,16 @@ const PersonalWhitelistDiscountGeneralDiscountMessage: React.FunctionComponent<P
     id="investment-flow.token-price-info.personal-discount.general-discount"
     values={{
       discountTokenPrice: (
-        <Money
+        <EquityTokenPriceEuro
           data-test-id="investment-flow.token-price.personal-discount.general-discount.price"
-          value={etoTokenGeneralDiscounts.whitelistDiscountUlps}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+          value={etoTokenGeneralDiscounts.discountedTokenPrice}
         />
       ),
       discountTokenPricePercentage: (
-        <Percentage data-test-id="investment-flow.token-price.personal-discount.general-discount.discount">
-          {etoTokenGeneralDiscounts.whitelistDiscountFrac}
-        </Percentage>
+        <Percentage
+          data-test-id="investment-flow.token-price.personal-discount.general-discount.discount"
+          value={(Number(etoTokenGeneralDiscounts.whitelistDiscount) * 100).toString()}
+        />
       ),
     }}
   />
@@ -86,14 +73,7 @@ const PersonalWhitelistDiscountNoGeneralDiscountMessage: React.FunctionComponent
   <FormattedMessage
     id="investment-flow.token-price-info.personal-discount.no-discount"
     values={{
-      tokenPriceEur: (
-        <Money
-          value={etoTokenStandardPrice.toString()}
-          inputFormat={ENumberInputFormat.FLOAT}
-          valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-          outputFormat={ENumberOutputFormat.FULL}
-        />
-      ),
+      tokenPriceEur: <EquityTokenPriceEuro value={etoTokenStandardPrice.toString()} />,
     }}
   />
 );
@@ -106,18 +86,16 @@ const GeneralWhitelistDiscountMessage: React.FunctionComponent<Pick<
     id="investment-flow.token-price-info.general-discount"
     values={{
       discountTokenPrice: (
-        <Money
+        <EquityTokenPriceEuro
           data-test-id="investment-flow.token-price.whitelist-discount.price"
-          value={etoTokenGeneralDiscounts.whitelistDiscountUlps}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
+          value={etoTokenGeneralDiscounts.discountedTokenPrice}
         />
       ),
       discountTokenPricePercentage: (
-        <Percentage data-test-id="investment-flow.token-price.whitelist-discount.discount">
-          {etoTokenGeneralDiscounts.whitelistDiscountFrac}
-        </Percentage>
+        <Percentage
+          data-test-id="investment-flow.token-price.whitelist-discount.discount"
+          value={(Number(etoTokenGeneralDiscounts.whitelistDiscount) * 100).toString()}
+        />
       ),
     }}
   />
@@ -130,16 +108,9 @@ const GeneralPublicDiscountMessage: React.FunctionComponent<Pick<
   <FormattedMessage
     id="investment-flow.token-price-info.general-discount"
     values={{
-      discountTokenPrice: (
-        <Money
-          value={etoTokenGeneralDiscounts.publicDiscountUlps}
-          inputFormat={ENumberInputFormat.ULPS}
-          valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        />
-      ),
+      discountTokenPrice: <EquityTokenPriceEuro value={etoTokenGeneralDiscounts.publicDiscount} />,
       discountTokenPricePercentage: (
-        <Percentage>{etoTokenGeneralDiscounts.publicDiscountFrac}</Percentage>
+        <Percentage value={Number(etoTokenGeneralDiscounts.publicDiscountFrac * 100).toString()} />
       ),
     }}
   />
@@ -152,12 +123,9 @@ const NoDiscountMessage: React.FunctionComponent<Pick<IExternalProps, "etoTokenS
     id="investment-flow.token-price-info.no-discount"
     values={{
       tokenPriceEur: (
-        <Money
+        <EquityTokenPriceEuro
           data-test-id="investment-flow.token-price.no-discount.price"
           value={etoTokenStandardPrice.toString()}
-          inputFormat={ENumberInputFormat.FLOAT}
-          valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-          outputFormat={ENumberOutputFormat.FULL}
         />
       ),
     }}
@@ -173,12 +141,10 @@ const InvestmentPriceInfo: React.FunctionComponent<IExternalProps> = ({
   switch (onChainState) {
     case EETOStateOnChain.Whitelist: {
       // do not show personal discount if the amount left is less than 1 cent
-      const isTherePersonalWhitelistDiscount = convertFromUlps(
+      const isTherePersonalWhitelistDiscount = new BigNumber(
         etoTokenPersonalDiscount.whitelistDiscountAmountLeft,
       ).greaterThanOrEqualTo("0.01");
-      const isThereGeneralWhitelistDiscount = !isZero(
-        etoTokenGeneralDiscounts.whitelistDiscountFrac.toString(),
-      );
+      const isThereGeneralWhitelistDiscount = !isZero(etoTokenGeneralDiscounts.whitelistDiscount);
 
       if (isTherePersonalWhitelistDiscount) {
         return (

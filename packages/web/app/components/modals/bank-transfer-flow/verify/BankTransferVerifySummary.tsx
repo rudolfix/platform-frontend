@@ -1,4 +1,4 @@
-import { ButtonArrowRight } from "@neufund/design-system";
+import { ButtonArrowRight, Eur } from "@neufund/design-system";
 import { kycApi, KycBankQuintessenceBankAccount } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
@@ -11,12 +11,6 @@ import {
   selectBankTransferMinAmount,
 } from "../../../../modules/bank-transfer-flow/selectors";
 import { appConnect } from "../../../../store";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { InfoList } from "../../tx-sender/shared/InfoList";
 import { InfoRow } from "../../tx-sender/shared/InfoRow";
@@ -52,14 +46,7 @@ const BankTransferVerifySummaryLayout: React.FunctionComponent<IProps> = ({
       <InfoRow
         data-test-id="bank-transfer.summary.amount"
         caption={<FormattedMessage id="bank-transfer.verify.summary.min-amount" />}
-        value={
-          <Money
-            value={minAmount}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
-        }
+        value={<Eur value={minAmount} />}
       />
       <InfoRow
         caption={<FormattedMessage id="bank-transfer.summary.purchase-price.caption" />}

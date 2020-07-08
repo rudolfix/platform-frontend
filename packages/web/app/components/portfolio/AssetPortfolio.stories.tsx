@@ -1,9 +1,8 @@
-import { convertToUlps } from "@neufund/shared-utils";
+import { convertFromUlps, ECurrency } from "@neufund/shared-utils";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { ITokenDisbursal } from "../../modules/investor-portfolio/types";
-import { ECurrency } from "../shared/formatters/utils";
 import { AssetPortfolio } from "./AssetPortfolio";
 
 const tokensDisbursal: readonly ITokenDisbursal[] = [
@@ -12,7 +11,7 @@ const tokensDisbursal: readonly ITokenDisbursal[] = [
     amountToBeClaimed: "214741398295153194461",
     totalDisbursedAmount: "2.912595230000000001e+23",
     tokenDecimals: 18,
-    amountEquivEur: "214741398295153194461",
+    amountEquivEur: convertFromUlps("214741398295153194461").toString(),
     timeToFirstDisbursalRecycle: 1708571924000,
   },
   {
@@ -20,7 +19,7 @@ const tokensDisbursal: readonly ITokenDisbursal[] = [
     amountToBeClaimed: "122247102125993321",
     totalDisbursedAmount: "165807026200000000000",
     tokenDecimals: 18,
-    amountEquivEur: "20454385127721202469.72",
+    amountEquivEur: convertFromUlps("20454385127721202469.72").toString(),
     timeToFirstDisbursalRecycle: 1708571924000,
   },
 ];
@@ -32,8 +31,8 @@ storiesOf("Portfolio/AssetPortfolio", module)
       isVerifiedInvestor={true}
       tokenDisbursalIsLoading={false}
       tokenDisbursalError={false}
-      tokensDisbursalEurEquivTotal={convertToUlps("239.95")}
-      tokensDisbursalEurEquivTotalDisbursed={convertToUlps("332635.65")}
+      tokensDisbursalEurEquivTotal={"239.95"}
+      tokensDisbursalEurEquivTotalDisbursed={"332635.65"}
     />
   ))
   .add("loading", () => (
@@ -42,8 +41,8 @@ storiesOf("Portfolio/AssetPortfolio", module)
       isVerifiedInvestor={true}
       tokenDisbursalIsLoading={true}
       tokenDisbursalError={false}
-      tokensDisbursalEurEquivTotal={convertToUlps("239.95")}
-      tokensDisbursalEurEquivTotalDisbursed={convertToUlps("332635.65")}
+      tokensDisbursalEurEquivTotal={"239.95"}
+      tokensDisbursalEurEquivTotalDisbursed={"332635.65"}
     />
   ))
   .add("with error", () => (
@@ -52,8 +51,8 @@ storiesOf("Portfolio/AssetPortfolio", module)
       isVerifiedInvestor={true}
       tokenDisbursalIsLoading={false}
       tokenDisbursalError={true}
-      tokensDisbursalEurEquivTotal={convertToUlps("239.95")}
-      tokensDisbursalEurEquivTotalDisbursed={convertToUlps("332635.65")}
+      tokensDisbursalEurEquivTotal={"239.95"}
+      tokensDisbursalEurEquivTotalDisbursed={"332635.65"}
     />
   ))
   .add("no payouts", () => (
@@ -62,7 +61,7 @@ storiesOf("Portfolio/AssetPortfolio", module)
       isVerifiedInvestor={true}
       tokenDisbursalIsLoading={false}
       tokenDisbursalError={false}
-      tokensDisbursalEurEquivTotal={convertToUlps("239.95")}
-      tokensDisbursalEurEquivTotalDisbursed={convertToUlps("332635.65")}
+      tokensDisbursalEurEquivTotal={"239.95"}
+      tokensDisbursalEurEquivTotalDisbursed={"332635.65"}
     />
   ));

@@ -37,7 +37,7 @@
     "start:remote:vm": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_VM_CONNECT=1 webpack-dev-server --config ./webpack/webpack.config.dev.js",
     "start:remote:serve-on-network": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_SERVE_ON_NETWORK=$(eval network private_ip) webpack-dev-server --config ./webpack/webpack.config.dev-remote.js",
     "start:translate": "(cp -n ./app/config/.env.example .env || true) && NODE_ENV=development && NF_ENABLE_TRANSLATE_OVERLAY=1 webpack-dev-server --config ./webpack/webpack.config.translate.js",
-    "storybook": "(cp -n ./app/config/.env.storybook .env || true) && start-storybook -p 9001 -c .storybook -s ./app/assets",
+    "storybook": "(cp -n ./app/config/.env.storybook .env || true) && start-storybook -p 9001 -c .storybook -s ./app/assets --quiet",
     "storybook:build": "(cp -n ./app/config/.env.storybook .env || true) && build-storybook -c .storybook -s ./app/assets",
     "storybook:deploy-ghpages": "storybook-to-ghpages --script=storybook:build --out=storybook-static",
     "storybook:screenshots": "storycap --serverTimeout 200000 --serverCmd \"yarn storybook\" --parallel 8 http://localhost:9001",

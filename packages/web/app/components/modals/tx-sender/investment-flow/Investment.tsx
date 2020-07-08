@@ -1,11 +1,28 @@
-import { Button, ButtonInline, EButtonLayout } from "@neufund/design-system";
+import {
+  Button,
+  ButtonInline,
+  EButtonLayout,
+  Eth,
+  Eur,
+  EurToken,
+  Neu,
+} from "@neufund/design-system";
 import {
   addBigNumbers,
   compareBigNumbers,
+  convertFromUlps,
+  convertToUlps,
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  ERoundingMode,
+  formatNumber,
+  formatThousands,
   multiplyBigNumbers,
   nonNullable,
+  selectDecimalPlaces,
+  TBigNumberVariants,
 } from "@neufund/shared-utils";
-import { BigNumber } from "bignumber.js";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -34,7 +51,7 @@ import {
   selectInvestmentErrorState,
   selectInvestmentEthValueUlps,
   selectInvestmentEtoId,
-  selectInvestmentEurValueUlps,
+  selectInvestmentEurValue,
   selectInvestmentType,
   selectIsInvestmentInputValidated,
   selectIsReadyToInvest,
@@ -60,16 +77,6 @@ import { isValidFormNumber } from "../../../../modules/tx/validator/transfer/uti
 import { appConnect } from "../../../../store";
 import { appRoutes } from "../../../appRoutes";
 import { InfoAlert } from "../../../shared/Alerts";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  ERoundingMode,
-  formatNumber,
-  formatThousands,
-  selectDecimalPlaces,
-} from "../../../shared/formatters/utils";
 import { MaskedNumberInput } from "../../../shared/forms";
 import { EHeadingSize, Heading } from "../../../shared/Heading";
 import { IIntlProps, injectIntlHelpers } from "../../../shared/hocs/injectIntlHelpers.unsafe";
@@ -101,8 +108,8 @@ interface IStateProps {
   showTokens: boolean;
   hasPreviouslyInvested?: boolean;
   etoTicketSizes?: {
-    minTicketEurUlps: BigNumber;
-    maxTicketEurUlps: BigNumber;
+    minTicketEurUlps: TBigNumberVariants;
+    maxTicketEurUlps: TBigNumberVariants;
   };
   etoTokenGeneralDiscounts: IEtoTokenGeneralDiscounts;
   etoTokenPersonalDiscount: IPersonalDiscount;
@@ -203,6 +210,8 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
       etoTokenStandardPrice,
     } = this.props;
     const error = this.getError();
+    const euroValueUlps = convertToUlps(euroValue || "0");
+
     return (
       <section data-test-id="modals.investment.modal">
         <Container className={styles.container} fluid>
@@ -246,7 +255,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                 <MaskedNumberInput
                   wrapperClassName="mb-0"
                   name="euroValue"
-                  value={this.props.euroValue}
+                  value={euroValueUlps}
                   storageFormat={ENumberInputFormat.ULPS}
                   valueType={ECurrency.EUR_TOKEN}
                   outputFormat={ENumberOutputFormat.FULL}
@@ -275,7 +284,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                       "investment-flow.min-ticket-size",
                     )} ${formatNumber({
                       value: minTicketEth,
-                      inputFormat: ENumberInputFormat.FLOAT,
+                      inputFormat: ENumberInputFormat.DECIMAL,
                       outputFormat: ENumberOutputFormat.FULL,
                       decimalPlaces: selectDecimalPlaces(ECurrency.ETH, ENumberOutputFormat.FULL),
                       roundingMode: ERoundingMode.UP,
@@ -288,15 +297,12 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                   />
                   <div className={styles.helpText}>
                     {"≈ "}
-                    <Money
+                    <Eur
                       value={
-                        isValidFormNumber(this.props.euroValue)
-                          ? this.props.euroValue
+                        isValidFormNumber(euroValue)
+                          ? euroValue
                           : "0" /* Show 0 if form is invalid */
                       }
-                      inputFormat={ENumberInputFormat.ULPS}
-                      valueType={ECurrency.EUR}
-                      outputFormat={ENumberOutputFormat.FULL}
                     />
                   </div>
                 </>
@@ -346,15 +352,7 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                     <FormattedMessage id="investment-flow.estimated-neu-tokens" />
                   </Label>
                   <InfoAlert data-test-id="invest-modal.est-neu-tokens">
-                    {(showTokens && !error && neuReward && (
-                      <Money
-                        value={neuReward}
-                        inputFormat={ENumberInputFormat.ULPS}
-                        valueType={ECurrency.NEU}
-                        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                      />
-                    )) ||
-                      "\xA0"}
+                    {(showTokens && !error && neuReward && <Neu value={neuReward} />) || "\xA0"}
                   </InfoAlert>
                 </FormGroup>
               </Col>
@@ -381,22 +379,10 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                 <div>
                   + <FormattedMessage id="investment-flow.estimated-gas-cost" />:{" "}
                   <span className="text-warning" data-test-id="invest-modal-gas-cost">
-                    <Money
-                      value={gasCostEth}
-                      inputFormat={ENumberInputFormat.ULPS}
-                      outputFormat={ENumberOutputFormat.FULL}
-                      valueType={ECurrency.ETH}
-                      roundingMode={ERoundingMode.UP}
-                    />
+                    <Eth value={gasCostEth} />
                     <span className={styles.helpText}>
                       {" ≈ "}
-                      <Money
-                        value={gasCostEuro}
-                        inputFormat={ENumberInputFormat.ULPS}
-                        outputFormat={ENumberOutputFormat.FULL}
-                        valueType={ECurrency.EUR}
-                        roundingMode={ERoundingMode.UP}
-                      />
+                      <Eur value={gasCostEuro} />
                     </span>
                   </span>
                 </div>
@@ -405,29 +391,19 @@ export class InvestmentSelectionComponent extends React.Component<IProps, IState
                 <FormattedMessage id="investment-flow.total" />:{" "}
                 <span className="text-warning" data-test-id="invest-modal-total-cost">
                   {investmentCurrency === EInvestmentCurrency.EUR_TOKEN && (
-                    <Money
-                      value={this.calculateTotalCostIfValid(gasCostEuro, euroValue)}
-                      inputFormat={ENumberInputFormat.ULPS}
-                      valueType={ECurrency.EUR}
-                      outputFormat={ENumberOutputFormat.FULL}
+                    <EurToken
+                      value={this.calculateTotalCostIfValid(
+                        convertToUlps(gasCostEuro),
+                        euroValueUlps,
+                      )}
                     />
                   )}
                   {investmentCurrency === EInvestmentCurrency.ETH && (
                     <>
-                      <Money
-                        value={this.calculateTotalCostIfValid(gasCostEth, ethValue)}
-                        inputFormat={ENumberInputFormat.ULPS}
-                        outputFormat={ENumberOutputFormat.FULL}
-                        valueType={ECurrency.ETH}
-                      />
+                      <Eth value={this.calculateTotalCostIfValid(gasCostEth, ethValue)} />
                       <span className={styles.helpText}>
                         {" ≈ "}
-                        <Money
-                          value={this.calculateTotalCostIfValid(gasCostEuro, euroValue)}
-                          inputFormat={ENumberInputFormat.ULPS}
-                          valueType={ECurrency.EUR}
-                          outputFormat={ENumberOutputFormat.FULL}
-                        />
+                        <Eur value={this.calculateTotalCostIfValid(gasCostEuro, euroValue)} />
                       </span>
                     </>
                   )}
@@ -465,7 +441,7 @@ export const InvestmentSelection = compose<IProps, {}>(
         throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
       }
 
-      const eur = selectInvestmentEurValueUlps(state);
+      const eur = selectInvestmentEurValue(state);
 
       return {
         eto,
@@ -504,7 +480,9 @@ export const InvestmentSelection = compose<IProps, {}>(
   withProps<IWithProps, IStateProps>(
     ({ ethValue, etoTicketSizes, gasCostEth, etherPriceEur, eurPriceEther, investmentType }) => {
       const gasCostEthWithFallback = !ethValue ? "0" : gasCostEth;
-      const gasCostEuro = multiplyBigNumbers([gasCostEthWithFallback, etherPriceEur]);
+      const gasCostEuro = convertFromUlps(
+        multiplyBigNumbers([gasCostEthWithFallback, etherPriceEur]),
+      ).toString();
       // TODO: do not cast minTicketEur/maxTicketEur to FLOAT as then we loose precision
       const minTicketEur =
         (etoTicketSizes &&
@@ -517,6 +495,7 @@ export const InvestmentSelection = compose<IProps, {}>(
           formatMinMaxTickets(etoTicketSizes.maxTicketEurUlps, ERoundingMode.DOWN)) ||
         "0";
       const investmentCurrency = getInvestmentCurrency(investmentType);
+
       return {
         minTicketEur,
         maxTicketEur,

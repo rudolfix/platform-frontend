@@ -1,4 +1,3 @@
-import { convertToUlps } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -8,7 +7,7 @@ import { BankTransferVerifyInfoLayout } from "./BankTransferVerifyAgreement";
 
 const props = {
   goToAgreement: action("goToAgreement"),
-  minEuroUlps: convertToUlps("1"),
+  minEuro: "1",
 };
 
 storiesOf("BankTransferVerifyAgreement", module)

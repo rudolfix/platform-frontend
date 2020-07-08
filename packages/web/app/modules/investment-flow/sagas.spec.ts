@@ -1,6 +1,6 @@
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { gasReducerMap, tokenPriceReducerMap, walletReducerMap } from "@neufund/shared-modules";
-import { ECurrency } from "@neufund/shared-utils";
+import { convertFromUlps, convertToUlps, ECurrency } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 import { combineReducers } from "redux";
 import { stub } from "sinon";
@@ -23,7 +23,7 @@ describe("Investment-flow - Integration Test", () => {
           investmentFlow: {
             ethValueUlps: "99",
             etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-            euroValueUlps: "",
+            euroValue: "",
             investmentType: EInvestmentType.Eth,
             isValidatedInput: false,
             wallets: [],
@@ -40,14 +40,14 @@ describe("Investment-flow - Integration Test", () => {
           investmentFlow: {
             ethValueUlps: "",
             etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-            euroValueUlps: "99",
+            euroValue: "99",
             investmentType: EInvestmentType.NEur,
             isValidatedInput: false,
             wallets: [],
           },
         })
         .provide([[matchers.call.fn(computeAndSetCurrencies), undefined]])
-        .call(computeAndSetCurrencies, "99", ECurrency.EUR_TOKEN)
+        .call(computeAndSetCurrencies, convertToUlps("99").toString(), ECurrency.EUR_TOKEN)
         .run();
     });
 
@@ -57,7 +57,7 @@ describe("Investment-flow - Integration Test", () => {
           investmentFlow: {
             ethValueUlps: "",
             etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-            euroValueUlps: "",
+            euroValue: "",
             investmentType: EInvestmentType.NEur,
             isValidatedInput: false,
             wallets: [],
@@ -75,7 +75,7 @@ describe("Investment-flow - Integration Test", () => {
           investmentFlow: {
             ethValueUlps: "",
             etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-            euroValueUlps: "",
+            euroValue: "",
             investmentType: undefined,
             isValidatedInput: false,
             wallets: [],
@@ -99,7 +99,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.Eth,
               isValidatedInput: false,
               wallets: [],
@@ -122,7 +122,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.Eth,
               isValidatedInput: false,
               wallets: [],
@@ -133,9 +133,10 @@ describe("Investment-flow - Integration Test", () => {
           },
         )
         .put(actions.investmentFlow.setEthValue("1"))
-        .put(actions.investmentFlow.setEurValue("2"))
+        .put(actions.investmentFlow.setEurValue(convertFromUlps("2").toString()))
         .run();
     });
+
     it("should currencies when currency is Euro", async () => {
       await expectSaga(computeAndSetCurrencies, "1", ECurrency.EUR_TOKEN)
         .withReducer(
@@ -147,7 +148,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.Eth,
               isValidatedInput: false,
               wallets: [],
@@ -158,7 +159,7 @@ describe("Investment-flow - Integration Test", () => {
           },
         )
         .put(actions.investmentFlow.setEthValue("2"))
-        .put(actions.investmentFlow.setEurValue("1"))
+        .put(actions.investmentFlow.setEurValue(convertFromUlps("1").toString()))
         .run();
     });
   });
@@ -178,7 +179,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "1000000000000000000",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "1000000000000000000",
+              euroValue: "1000000000000000000",
               investmentType: EInvestmentType.Eth,
               isValidatedInput: false,
               wallets: [],
@@ -203,7 +204,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "1000000000000000000",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "1000000000000000000",
+              euroValue: "1000000000000000000",
               investmentType: EInvestmentType.Eth,
               isValidatedInput: false,
               wallets: [],
@@ -232,7 +233,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.NEur,
               isValidatedInput: false,
               wallets: [],
@@ -259,7 +260,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.ICBMEth,
               isValidatedInput: false,
               wallets: [],
@@ -286,7 +287,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.ICBMnEuro,
               isValidatedInput: false,
               wallets: [],
@@ -314,7 +315,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.Eth,
               isValidatedInput: false,
               wallets: [],
@@ -345,7 +346,7 @@ describe("Investment-flow - Integration Test", () => {
             investmentFlow: {
               ethValueUlps: "99",
               etoId: "0x2754523CE7C78FeD60F742b0Bc8A8F9fa323bB4C",
-              euroValueUlps: "",
+              euroValue: "",
               investmentType: EInvestmentType.Eth,
               isValidatedInput: false,
               wallets: [],

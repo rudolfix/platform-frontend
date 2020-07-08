@@ -1,3 +1,5 @@
+import { Percentage } from "@neufund/design-system";
+import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -6,12 +8,6 @@ import { shareholderResolutionsVotingModuleApi } from "../../../../modules/share
 import { TProposal } from "../../../../modules/shareholder-resolutions-voting/types";
 import { DataRow, DataRowSeparated, EDataRowSize } from "../../../shared/DataRow";
 import { Money } from "../../../shared/formatters/Money";
-import { MoneyWithLessThan } from "../../../shared/formatters/MoneyWithLessThan";
-import {
-  ENumberFormat,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
 import { Heading } from "../../../shared/Heading";
 import { EPanelPadding, PanelRounded } from "../../../shared/Panel";
 import { ProposalVotingBasicDetails } from "./PoposalVotingBasicDetails";
@@ -66,17 +62,11 @@ const ProposalVotingBreakdown: React.FunctionComponent<TExternalProps> = ({ prop
           caption={<FormattedMessage id="governance.proposal.vote.breakdown.in-favor" />}
           value={
             <>
-              <MoneyWithLessThan
-                value={inFavorParticipationPercentage}
-                inputFormat={ENumberInputFormat.FLOAT}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                valueType={ENumberFormat.PERCENTAGE}
-              />{" "}
-              (
+              <Percentage value={inFavorParticipationPercentage} /> (
               <Money
                 value={proposal.tally.inFavor}
                 // TODO: Get input format from token precision
-                inputFormat={ENumberInputFormat.FLOAT}
+                inputFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 valueType={eto.equityTokenSymbol}
               />
@@ -90,17 +80,11 @@ const ProposalVotingBreakdown: React.FunctionComponent<TExternalProps> = ({ prop
           caption={<FormattedMessage id="governance.proposal.vote.breakdown.against" />}
           value={
             <>
-              <MoneyWithLessThan
-                value={againstParticipationPercentage}
-                inputFormat={ENumberInputFormat.FLOAT}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                valueType={ENumberFormat.PERCENTAGE}
-              />{" "}
-              (
+              <Percentage value={againstParticipationPercentage} /> (
               <Money
                 value={proposal.tally.against}
                 // TODO: Get input format from token precision
-                inputFormat={ENumberInputFormat.FLOAT}
+                inputFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 valueType={eto.equityTokenSymbol}
               />
@@ -114,17 +98,11 @@ const ProposalVotingBreakdown: React.FunctionComponent<TExternalProps> = ({ prop
           caption={<FormattedMessage id="governance.proposal.vote.breakdown.abstained" />}
           value={
             <>
-              <MoneyWithLessThan
-                value={abstainedParticipationPercentage}
-                inputFormat={ENumberInputFormat.FLOAT}
-                outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-                valueType={ENumberFormat.PERCENTAGE}
-              />{" "}
-              (
+              <Percentage value={abstainedParticipationPercentage} /> (
               <Money
                 value={abstainedParticipationTokens}
                 // TODO: Get input format from token precision
-                inputFormat={ENumberInputFormat.FLOAT}
+                inputFormat={ENumberInputFormat.DECIMAL}
                 outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
                 valueType={eto.equityTokenSymbol}
               />
@@ -141,7 +119,7 @@ const ProposalVotingBreakdown: React.FunctionComponent<TExternalProps> = ({ prop
             <Money
               value={proposal.tally.tokenVotingPower}
               // TODO: Get input format from token precision
-              inputFormat={ENumberInputFormat.FLOAT}
+              inputFormat={ENumberInputFormat.DECIMAL}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
               valueType={eto.equityTokenSymbol}
             />

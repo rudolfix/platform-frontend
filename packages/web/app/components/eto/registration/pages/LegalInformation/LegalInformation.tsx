@@ -1,13 +1,9 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { EtoLegalInformationType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../shared/formatters/utils";
 import { ArrayOfKeyValueFields } from "../../../../shared/forms/fields/FormCategoryDistribution";
 import {
   FormField,
@@ -95,7 +91,7 @@ const EtoRegistrationLegalInformationComponent: React.FunctionComponent<TCompone
       />
       <FormMaskedNumberInput
         name="numberOfFounders"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         label={<FormattedMessage id="eto.form.legal-information.number-of-founders" />}
       />
@@ -106,7 +102,7 @@ const EtoRegistrationLegalInformationComponent: React.FunctionComponent<TCompone
       />
       <FormMaskedNumberInput
         name="lastFundingSizeEur"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.FULL}
         valueType={ECurrency.EUR}
         showUnits={true}
@@ -114,7 +110,7 @@ const EtoRegistrationLegalInformationComponent: React.FunctionComponent<TCompone
       />
       <FormMaskedNumberInput
         name="companyShareCapital"
-        storageFormat={ENumberInputFormat.FLOAT}
+        storageFormat={ENumberInputFormat.DECIMAL}
         outputFormat={ENumberOutputFormat.INTEGER}
         valueType={undefined}
         label={<FormattedMessage id="eto.form.legal-information.amount-of-share-capital" />}

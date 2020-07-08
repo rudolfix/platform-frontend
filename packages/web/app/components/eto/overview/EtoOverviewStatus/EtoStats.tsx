@@ -1,3 +1,5 @@
+import { EquityTokenPriceEuro, WholeEur } from "@neufund/design-system";
+import { ENumberFormat, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -11,15 +13,7 @@ import {
   selectShouldShowWhitelistDiscount,
 } from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
-import { Money } from "../../../shared/formatters/Money";
 import { MoneyRange } from "../../../shared/formatters/MoneyRange";
-import {
-  ECurrency,
-  ENumberFormat,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-  EPriceFormat,
-} from "../../../shared/formatters/utils";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../shared/ToBeAnnouncedTooltip";
 
 import * as styles from "./EtoOverviewStatus.module.scss";
@@ -60,11 +54,8 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <FormattedMessage id="shared-component.eto-overview-status.pre-money-valuation" />
         </span>
         <span className={styles.value}>
-          <Money
+          <WholeEur
             value={eto.preMoneyValuationEur ? eto.preMoneyValuationEur.toString() : undefined}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.INTEGER}
             defaultValue={<ToBeAnnouncedTooltip />}
             data-test-id="eto-overview.stats.pre-money-valuation"
           />
@@ -75,11 +66,8 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <FormattedMessage id="shared-component.eto-overview-status.target-investment-amount" />
         </span>
         <span className={styles.value}>
-          <Money
+          <WholeEur
             value={eurMinTarget}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.INTEGER}
             defaultValue={<ToBeAnnounced />}
             data-test-id="eto-overview.stats.target-investment-amount"
           />
@@ -93,7 +81,7 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <MoneyRange
             valueFrom={shouldShowComputedCap ? computedMinCapPercent.toString() : ""}
             valueUpto={shouldShowComputedCap ? computedMaxCapPercent.toString() : ""}
-            inputFormat={ENumberInputFormat.FLOAT}
+            inputFormat={ENumberInputFormat.DECIMAL}
             outputFormat={ENumberOutputFormat.FULL}
             valueType={ENumberFormat.PERCENTAGE}
             defaultValue={<ToBeAnnounced />}
@@ -106,11 +94,8 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
           <FormattedMessage id="shared-component.eto-overview-status.equity-token-price" />
         </span>
         <span className={styles.value}>
-          <Money
+          <EquityTokenPriceEuro
             value={tokenPrice ? tokenPrice.toString() : undefined}
-            inputFormat={ENumberInputFormat.FLOAT}
-            valueType={EPriceFormat.EQUITY_TOKEN_PRICE_EURO}
-            outputFormat={ENumberOutputFormat.FULL}
             defaultValue={<ToBeAnnounced />}
             data-test-id="eto-overview.stats.equity-token-price"
           />

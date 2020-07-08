@@ -1,8 +1,6 @@
+import { Eur } from "@neufund/design-system";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-
-import { ECurrencySymbol, Money } from "../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 
 import * as styles from "./Wallet.module.scss";
 
@@ -19,13 +17,7 @@ export const BalanceTotal: React.FunctionComponent<TCommonBalanceProps> = ({
     </div>
     <span className={styles.totalBalance}>
       €
-      <Money
-        currencySymbol={ECurrencySymbol.NONE}
-        inputFormat={ENumberInputFormat.ULPS}
-        outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        value={totalBalanceEuro}
-        valueType={ECurrency.EUR}
-      />
+      <Eur noSymbol value={totalBalanceEuro} />
     </span>
   </>
 );

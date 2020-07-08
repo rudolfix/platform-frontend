@@ -1,4 +1,12 @@
-import { Button, EButtonLayout, EButtonSize, EButtonWidth } from "@neufund/design-system";
+import {
+  Button,
+  EButtonLayout,
+  EButtonSize,
+  EButtonWidth,
+  Eth,
+  Eur,
+  EurToken,
+} from "@neufund/design-system";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -7,13 +15,7 @@ import { Col, FormGroup } from "reactstrap";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { getCurrencyByInvestmentType } from "../../../../modules/investment-flow/utils";
 import { ETokenType } from "../../../../modules/tx/types";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
-import { CurrencyIcon } from "../../../shared/icons/CurrencyIcon";
+import { CurrencyIcon } from "../../../shared/icons";
 
 import * as styles from "./InvestmentTypeSelector.module.scss";
 
@@ -60,20 +62,9 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
     case EInvestmentType.Eth:
       return (
         <>
-          <Money
-            valueType={ECurrency.ETH}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            value={wallet.enabled ? wallet.balanceEth : wallet.icbmBalanceEth}
-          />
+          <Eth value={wallet.enabled ? wallet.balanceEth : wallet.icbmBalanceEth} />
           <div className={styles.balanceEur}>
-            ={" "}
-            <Money
-              inputFormat={ENumberInputFormat.ULPS}
-              valueType={ECurrency.EUR}
-              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-              value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur}
-            />
+            = <Eur value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur} />
           </div>
         </>
       );
@@ -82,20 +73,9 @@ const WalletBalanceValues: React.FunctionComponent<WalletSelectionData> = wallet
     case EInvestmentType.ICBMnEuro:
       return (
         <>
-          <Money
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-            valueType={ECurrency.EUR_TOKEN}
-            value={wallet.enabled ? wallet.balanceNEuro : wallet.icbmBalanceNEuro}
-          />
+          <EurToken value={wallet.enabled ? wallet.balanceNEuro : wallet.icbmBalanceNEuro} />
           <div className={styles.balanceEur}>
-            ={" "}
-            <Money
-              valueType={ECurrency.EUR}
-              inputFormat={ENumberInputFormat.ULPS}
-              outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-              value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur}
-            />
+            = <Eur value={wallet.enabled ? wallet.balanceEur : wallet.icbmBalanceEur} />
           </div>
         </>
       );

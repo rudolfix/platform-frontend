@@ -5,7 +5,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { combineReducers, Reducer } from "redux";
 import configureStore, { MockStore } from "redux-mock-store";
 
-import { generateRootModuleReducerMap } from "../../store";
+import { generateRootModuleReducerMap, TAppGlobalState } from "../../store";
 
 const mockStore = configureStore();
 
@@ -13,7 +13,7 @@ const rootReducer = combineReducers(generateRootModuleReducerMap(createBrowserHi
 
 type TAppState = typeof rootReducer extends Reducer<infer S> ? S : never;
 
-export const withStore = (initialState?: DeepPartial<TAppState>) => (
+export const withStore = (initialState?: DeepPartial<TAppGlobalState>) => (
   story: () => React.ReactNode,
 ): any => {
   const store = mockStore(initialState);

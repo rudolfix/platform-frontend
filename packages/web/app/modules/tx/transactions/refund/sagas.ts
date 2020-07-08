@@ -1,5 +1,6 @@
 import { fork, put, select } from "@neufund/sagas";
 import {
+  convertFromUlps,
   ETH_DECIMALS,
   EthereumAddressWithChecksum,
   multiplyBigNumbers,
@@ -61,14 +62,14 @@ function* startRefundGenerator(_: TGlobalDependencies, etoId: string): Generator
   );
   const ethPrice: string = yield select(selectEtherPriceEur);
   const costUlps: string = yield select(selectTxGasCostEthUlps);
-  const costEurUlps = multiplyBigNumbers([ethPrice, costUlps]);
+  const costEur = multiplyBigNumbers([ethPrice, convertFromUlps(costUlps).toString()]);
   const tokenDecimals = ETH_DECIMALS;
 
   yield put(
     actions.txSender.txSenderContinueToSummary<ETxType.INVESTOR_REFUND>({
       etoId,
       costUlps,
-      costEurUlps,
+      costEur,
       tokenDecimals,
       tokenName: etoData.equityTokenName,
       tokenSymbol: etoData.equityTokenSymbol,

@@ -4,9 +4,11 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { testEto } from "../../../test/fixtures";
+import { mockedStore } from "../../../test/fixtures/mockedStore";
 import { EETOStateOnChain } from "../../modules/eto/types";
 import { IInvestorTicket, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
+import { withStore } from "../../utils/react-connected-components/storeDecorator.unsafe";
+import { LoadingIndicator } from "../shared/loading-indicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import {
   PortfolioReservedAssetsContainer,
@@ -21,10 +23,10 @@ const eto = {
     timedState: EETOStateOnChain.Payout,
   },
   investorTicket: {
-    equivEurUlps: convertToUlps("738.46"),
+    equivEur: "738.46",
     rewardNmkUlps: convertToUlps("1234.2212"),
     equityTokenInt: "2280",
-    tokenPrice: convertToUlps("0.373"),
+    tokenPrice: "0.373",
   } as IInvestorTicket,
 } as TETOWithInvestorTicket;
 
@@ -34,7 +36,7 @@ const secondEto = {
   equityTokenSymbol: "STR",
   investorTicket: {
     ...eto.investorTicket,
-    equivEurUlps: convertToUlps("12452.46"),
+    equivEur: "12452.46",
     equityTokenInt: "123422",
     rewardNmkUlps: convertToUlps("4537.235"),
   },
@@ -42,7 +44,7 @@ const secondEto = {
 
 const reservedAssetsData = {
   pendingAssets: [eto, secondEto],
-  pendingAssetsTotalInvested: convertToUlps("10436170.73"),
+  pendingAssetsTotalInvested: "10436170.73",
   pendingAssetsTotalQuantity: "21830965",
   pendingAssetsAveragePrice: "0.3730",
   pendingAssetsTotalReward: convertToUlps("31875101.3922"),
@@ -50,6 +52,7 @@ const reservedAssetsData = {
 };
 
 storiesOf("Portfolio/PortfolioReservedAssets", module)
+  .addDecorator(withStore(mockedStore))
   .add("default", () => (
     <PortfolioReservedAssetsContainer>
       <PortfolioReservedAssetsLayout {...reservedAssetsData} />

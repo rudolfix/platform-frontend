@@ -1,15 +1,10 @@
+import { Percentage } from "@neufund/design-system";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { getInvestmentCalculatedPercentage } from "../../../modules/eto/utils";
-import { Money } from "../../shared/formatters/Money";
-import {
-  ENumberFormat,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../shared/formatters/utils";
 
 type TExternalProps = {
   eto: TEtoWithCompanyAndContractReadonly;
@@ -22,12 +17,9 @@ const InvestmentProgressPercentage: React.FunctionComponent<TExternalProps> = ({
       id="shared-component.eto-overview.investment-stats.funded-percentage"
       values={{
         funded: (
-          <Money
+          <Percentage
             data-test-id="investment-widget-funded-percentage"
             value={currentInvestmentProgressPercentage}
-            inputFormat={ENumberInputFormat.FLOAT}
-            outputFormat={ENumberOutputFormat.FULL}
-            valueType={ENumberFormat.PERCENTAGE}
           />
         ),
       }}

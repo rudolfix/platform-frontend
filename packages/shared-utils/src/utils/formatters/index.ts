@@ -1,79 +1,39 @@
-import { convertFromUlps, EquityToken, invariant } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
+import { ceil, findLast, floor, round } from "lodash";
 
-import { DEFAULT_DECIMAL_PLACES } from "../../../config/constants";
-import { TBigNumberVariants } from "../../../lib/web3/types";
+import { DEFAULT_DECIMAL_PLACES } from "../constants";
+import { invariant } from "../invariant";
+import { convertFromUlps } from "../NumberUtils";
+import {
+  EAbbreviatedNumberOutputFormat,
+  ECurrency,
+  ENumberFormat,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EPriceFormat,
+  ERoundingMode,
+  ESpecialNumber,
+  IFormatNumber,
+  IFormatShortNumber,
+  IToFixedPrecision,
+  THumanReadableFormat,
+  TValueFormat,
+} from "./types";
+import { getBigNumberRoundingMode } from "./utils.unsafe";
 
-export enum ERoundingMode {
-  UP = "up",
-  DOWN = "down",
-  HALF_UP = "half_up",
-  HALF_DOWN = "half_down",
-}
-
-export enum ENumberInputFormat {
-  ULPS = "ulps",
-  FLOAT = "float",
-}
-
-export enum ECurrency {
-  NEU = "neu",
-  EUR = "eur",
-  EUR_TOKEN = "eur_t",
-  ETH = "eth",
-}
-
-export enum ENumberFormat {
-  PERCENTAGE = "percentage",
-}
-
-export enum EPriceFormat {
-  EQUITY_TOKEN_PRICE_ETH = "equityTokenPriceEth",
-  EQUITY_TOKEN_PRICE_EURO = "equityTokenPriceEuro",
-  EQUITY_TOKEN_PRICE_EUR_TOKEN = "equityTokenPriceEuroToken",
-  SHARE_PRICE = "sharePrice",
-}
-
-export enum ENumberOutputFormat {
-  INTEGER = "integer",
-  ONLY_NONZERO_DECIMALS = "onlyNonzeroDecimals", // see removeZeroDecimals unit test
-  FULL = "full",
-  ONLY_NONZERO_DECIMALS_ROUND_UP = "onlyNonzeroDecimalsRoundUp", // see removeZeroDecimals unit test
-  FULL_ROUND_UP = "fullRoundUp",
-}
-
-export enum EAbbreviatedNumberOutputFormat {
-  LONG = "long",
-  SHORT = "short",
-}
-
-export type THumanReadableFormat = ENumberOutputFormat | EAbbreviatedNumberOutputFormat;
-
-export enum ESpecialNumber {
-  UNLIMITED = "unlimited",
-}
-
-export type TValueFormat = ECurrency | EPriceFormat | ENumberFormat | EquityToken;
-
-interface IToFixedPrecision {
-  value: TBigNumberVariants;
-  roundingMode?: ERoundingMode;
-  inputFormat?: ENumberInputFormat;
-  decimalPlaces: number | undefined;
-  isPrice?: boolean;
-  outputFormat?: THumanReadableFormat;
-  decimals?: number;
-}
-
-interface IFormatNumber {
-  value: TBigNumberVariants;
-  roundingMode?: ERoundingMode;
-  inputFormat?: ENumberInputFormat;
-  decimalPlaces?: number;
-  isPrice?: boolean;
-  outputFormat?: THumanReadableFormat;
-  decimals?: number;
-}
+export {
+  EAbbreviatedNumberOutputFormat,
+  ECurrency,
+  ESpecialNumber,
+  ENumberFormat,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  EPriceFormat,
+  ERoundingMode,
+  IToFixedPrecision,
+  THumanReadableFormat,
+  TValueFormat,
+};
 
 export const selectDecimalPlaces = (
   valueType: TValueFormat,
@@ -129,33 +89,6 @@ export const removeZeroDecimals = (value: string): string => {
   }
 };
 
-//TODO sorry for any. Bignumber doesn't expose RoundingMode so there's no easy solution for it
-function getBigNumberRoundingMode(
-  roundingMode: ERoundingMode,
-  outputFormat: THumanReadableFormat = ENumberOutputFormat.FULL,
-): any {
-  if (
-    outputFormat === ENumberOutputFormat.FULL_ROUND_UP ||
-    outputFormat === ENumberOutputFormat.ONLY_NONZERO_DECIMALS_ROUND_UP
-  ) {
-    return BigNumber.ROUND_UP;
-  } else if (outputFormat === ENumberOutputFormat.INTEGER) {
-    return BigNumber.ROUND_HALF_DOWN;
-  } else {
-    switch (roundingMode) {
-      case ERoundingMode.DOWN:
-        return BigNumber.ROUND_DOWN;
-      case ERoundingMode.HALF_DOWN:
-        return BigNumber.ROUND_HALF_DOWN;
-      case ERoundingMode.HALF_UP:
-        return BigNumber.ROUND_HALF_UP;
-      case ERoundingMode.UP:
-      default:
-        return BigNumber.ROUND_UP;
-    }
-  }
-}
-
 export const toFixedPrecision = ({
   value,
   roundingMode = ERoundingMode.UP,
@@ -186,6 +119,87 @@ export const toFixedPrecision = ({
  * since 99% of input vals is from the store so it should be in the right format already,
  * and user input should handle this on its own before calling this fn
  * */
+export const getShortNumberRoundingFn = (roundingMode: ERoundingMode) => {
+  switch (roundingMode) {
+    case ERoundingMode.DOWN:
+      return floor;
+    case ERoundingMode.UP:
+      return ceil;
+    case ERoundingMode.HALF_UP:
+    case ERoundingMode.HALF_DOWN:
+    default:
+      return round;
+  }
+};
+
+enum ERangeKey {
+  THOUSAND = "thousand",
+  MILLION = "million",
+}
+
+// TODO use formatted message
+export const translationKeys = {
+  [ERangeKey.MILLION]: {
+    [EAbbreviatedNumberOutputFormat.LONG]: "million",
+    [EAbbreviatedNumberOutputFormat.SHORT]: "M",
+  },
+  [ERangeKey.THOUSAND]: {
+    [EAbbreviatedNumberOutputFormat.LONG]: "thousand",
+    [EAbbreviatedNumberOutputFormat.SHORT]: "k",
+  },
+};
+
+type TRangeDescriptor = {
+  divider: number;
+  key: ERangeKey;
+};
+
+const ranges: TRangeDescriptor[] = [
+  { divider: 1e3, key: ERangeKey.THOUSAND },
+  { divider: 1e6, key: ERangeKey.MILLION },
+];
+
+export function getRange(number: number, divider?: number): TRangeDescriptor | undefined {
+  if (divider) {
+    return ranges.find(range => range.divider === divider);
+  }
+
+  return findLast(ranges, range => number / range.divider >= 1);
+}
+
+/**
+ * Formats number for SHORT & LONG
+ */
+export const formatShortNumber = ({
+  value,
+  roundingMode,
+  inputFormat,
+  decimalPlaces,
+  outputFormat,
+  decimals,
+  divider,
+}: IFormatShortNumber): string => {
+  const number = parseFloat(
+    toFixedPrecision({ value, roundingMode, inputFormat, decimalPlaces, outputFormat, decimals }),
+  );
+
+  const range = getRange(number, divider);
+  if (range) {
+    const roundingFn = getShortNumberRoundingFn(roundingMode);
+    const shortValue = roundingFn(number / range.divider, 1).toString();
+
+    const translation = (translationKeys[range.key] as {
+      [key in THumanReadableFormat]: string;
+    })[outputFormat];
+
+    return `${shortValue}${
+      outputFormat === EAbbreviatedNumberOutputFormat.LONG ? " " : ""
+    }${translation}`;
+  }
+
+  return number.toString();
+};
+
 /* SHORT and LONG formats are not handled by this fn, it's the job of the FormatShortNumber components */
 export const formatNumber = ({
   value,

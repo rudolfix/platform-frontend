@@ -6,7 +6,7 @@ export type TRefundAdditionalData = {
   amountEth: string;
   amountEurUlps: string;
   costUlps: string;
-  costEurUlps: string;
+  costEur: string;
   companyName: string;
   tokenDecimals: number;
 };
@@ -18,7 +18,7 @@ export const InvestorRefundAdditionalSchema = YupTS.object({
   amountEth: YupTS.string(),
   amountEurUlps: YupTS.string(),
   costUlps: YupTS.string(),
-  costEurUlps: YupTS.string(),
+  costEur: YupTS.string(),
   companyName: YupTS.string(),
   tokenDecimals: YupTS.number(),
 });

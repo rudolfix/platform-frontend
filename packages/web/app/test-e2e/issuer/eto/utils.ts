@@ -1,4 +1,5 @@
-import { formatThousands } from "../../../components/shared/formatters/utils";
+import { formatThousands } from "@neufund/shared-utils";
+
 import { getJwtToken } from "../../utils";
 import { fillForm } from "../../utils/forms";
 import { confirmAccessModal, tid } from "../../utils/index";

@@ -1,3 +1,4 @@
+import { ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -7,7 +8,6 @@ import { TxPendingWithMetadata } from "../../../lib/api/users-tx/interfaces";
 import { ETxType } from "../../../lib/web3/types";
 import { TDataTestId } from "../../../types";
 import { Money } from "../../shared/formatters/Money";
-import { ENumberOutputFormat } from "../../shared/formatters/utils";
 import { TransactionData, TransactionName } from "../../shared/transaction";
 
 import txPending from "../../../assets/img/Pending.svg";

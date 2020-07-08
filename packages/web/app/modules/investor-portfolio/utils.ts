@@ -1,10 +1,15 @@
 import { EUserType } from "@neufund/shared-modules";
-import { convertToUlps, ETH_DECIMALS, multiplyBigNumbers, Q18 } from "@neufund/shared-utils";
+import {
+  convertFromUlps,
+  convertToUlps,
+  ECurrency,
+  ETH_DECIMALS,
+  multiplyBigNumbers,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 
 import { IWindowWithData } from "../../../test/helperTypes";
-import { ECurrency } from "../../components/shared/formatters/utils";
 import { EETOStateOnChain } from "../eto/types";
 import {
   EUserRefundStatus,
@@ -62,10 +67,10 @@ export const convertToInvestorTicket = ([
   boolean,
   boolean,
 ]): IInvestorTicket => ({
-  equivEurUlps: equivEurUlps.toString(),
+  equivEur: convertFromUlps(equivEurUlps).toString(),
   rewardNmkUlps: rewardNmkUlps.toString(),
   equityTokenInt: equityTokenInt.toString(),
-  sharesInt: sharesInt.toString(),
+  shares: convertFromUlps(sharesInt.toString()).toString(),
   tokenPrice: tokenPrice.toString(),
   neuRate: neuRate.toString(),
   amountEth: amountEth.toString(),
@@ -88,10 +93,11 @@ export const convertToTokenDisbursal = (
   amountToBeClaimed: amountToBeClaimed.toString(),
   totalDisbursedAmount: totalDisbursedAmount.toString(),
   tokenDecimals: ETH_DECIMALS,
-  amountEquivEur:
+  amountEquivEur: convertFromUlps(
     token === ECurrency.ETH
       ? multiplyBigNumbers([amountToBeClaimed.toString(), etherPrice])
       : amountToBeClaimed.toString(),
+  ).toString(),
   // convert seconds timestamp to milliseconds
   timeToFirstDisbursalRecycle: timeToFirstDisbursalRecycle.mul("1000").toNumber(),
 });
@@ -106,14 +112,13 @@ export const convertToWhitelistTicket = ([
   fullTokenPriceFrac,
 });
 
-export const getTokenPrice = (equityTokenInt: string, equivEurUlps: string): string => {
-  const equivEurUlpsBn = new BigNumber(equivEurUlps);
-  if (equivEurUlpsBn.isZero()) {
+export const getTokenPrice = (equityTokenInt: string, equivEur: string): string => {
+  const equivEurBn = new BigNumber(equivEur);
+  if (equivEurBn.isZero()) {
     return "0";
   }
 
-  const equityToken = Q18.mul(equityTokenInt);
-  return equivEurUlpsBn.div(equityToken).toString();
+  return equivEurBn.div(equityTokenInt).toString();
 };
 
 export const getRequiredIncomingAmount = (token: ECurrency) => {

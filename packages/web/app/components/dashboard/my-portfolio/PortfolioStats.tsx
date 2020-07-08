@@ -1,5 +1,13 @@
-import { Button, EButtonLayout, EButtonWidth, TokenIcon } from "@neufund/design-system";
-import { convertToUlps, multiplyBigNumbers, nonNullable, OmitKeys } from "@neufund/shared-utils";
+import { Button, EButtonLayout, EButtonWidth, Eur, TokenIcon } from "@neufund/design-system";
+import {
+  convertFromUlps,
+  ECurrency,
+  ENumberInputFormat,
+  ENumberOutputFormat,
+  multiplyBigNumbers,
+  nonNullable,
+  OmitKeys,
+} from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -15,10 +23,8 @@ import {
 import { TETOWithTokenData } from "../../../modules/investor-portfolio/types";
 import { appConnect } from "../../../store";
 import { DataRowSeparated } from "../../shared/DataRow";
-import { Money } from "../../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../../shared/formatters/utils";
 import { withContainer } from "../../shared/hocs/withContainer";
-import { LoadingIndicator } from "../../shared/loading-indicator/LoadingIndicator";
+import { LoadingIndicator } from "../../shared/loading-indicator";
 import { MoneySuiteWidget } from "../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ESize } from "../../shared/transaction/TransactionData";
 import { WarningAlert } from "../../shared/WarningAlert";
@@ -52,16 +58,7 @@ const PortfolioStatsLayoutContainer: React.FunctionComponent<Pick<
           <FormattedMessage id="dashboard.portfolio-stats.title" />
         </h4>
       }
-      value={
-        myAssetsEurEquivTotal && (
-          <Money
-            value={myAssetsEurEquivTotal}
-            inputFormat={ENumberInputFormat.ULPS}
-            valueType={ECurrency.EUR}
-            outputFormat={ENumberOutputFormat.FULL}
-          />
-        )
-      }
+      value={myAssetsEurEquivTotal && <Eur value={myAssetsEurEquivTotal} />}
     />
     {children}
   </section>
@@ -119,11 +116,20 @@ const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<
             <MoneySuiteWidget
               outputFormat={ENumberOutputFormat.FULL}
               currency={eto.equityTokenSymbol}
-              largeNumber={convertToUlps(eto.tokenData.balance)}
-              value={multiplyBigNumbers([eto.tokenData.tokenPrice, eto.tokenData.balance])}
+              largeNumber={convertFromUlps(
+                eto.tokenData.balanceUlps,
+                eto.tokenData.balanceDecimals,
+              ).toString()}
+              value={multiplyBigNumbers([
+                eto.tokenData.tokenPrice,
+                convertFromUlps(
+                  eto.tokenData.balanceUlps,
+                  eto.tokenData.balanceDecimals,
+                ).toString(),
+              ])}
               currencyTotal={ECurrency.EUR}
               size={ESize.MEDIUM}
-              inputFormat={ENumberInputFormat.ULPS}
+              inputFormat={ENumberInputFormat.DECIMAL}
             />
           }
         />

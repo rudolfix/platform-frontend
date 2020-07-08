@@ -14,7 +14,7 @@ import { onInvestmentTxModalHide } from "../../../investment-flow/sagas";
 import {
   selectInvestmentEthValueUlps,
   selectInvestmentEtoId,
-  selectInvestmentEurValueUlps,
+  selectInvestmentEurValue,
   selectInvestmentType,
   selectIsICBMInvestment,
 } from "../../../investment-flow/selectors";
@@ -131,7 +131,7 @@ function* investmentFlowGenerator(): Generator<any, any, any> {
   );
 
   const investmentEth: string = yield select(selectInvestmentEthValueUlps);
-  const investmentEur: string = yield select(selectInvestmentEurValueUlps);
+  const investmentEur: string = yield select(selectInvestmentEurValue);
   const gasCostEth: string = yield select(selectTxGasCostEthUlps);
   const equityTokens: string = yield select((state: TAppGlobalState) =>
     selectEquityTokenCountByEtoId(state, etoId),

@@ -1,7 +1,6 @@
 import { fork, put, select } from "@neufund/sagas";
 import { walletApi } from "@neufund/shared-modules";
-import { multiplyBigNumbers, Q18, subtractBigNumbers } from "@neufund/shared-utils";
-import BigNumber from "bignumber.js";
+import { convertFromUlps, multiplyBigNumbers, subtractBigNumbers } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { ETxType, ITxData } from "../../../../../lib/web3/types";
@@ -23,8 +22,7 @@ export function* getMaxWithdrawAmount(to: string | undefined): Generator<any, an
 
   const costUlps = multiplyBigNumbers([txDetails.gasPrice, txDetails.gas]);
   const valueUlps = subtractBigNumbers([maxEtherUlps, costUlps]);
-
-  const maximumAvailableEther = new BigNumber(valueUlps).div(Q18).toString();
+  const maximumAvailableEther = convertFromUlps(valueUlps).toString();
   return maximumAvailableEther;
 }
 

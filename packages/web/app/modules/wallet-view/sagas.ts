@@ -1,6 +1,6 @@
 import { all, call, fork, put, select, take } from "@neufund/sagas";
 import { kycApi, tokenPriceModuleApi, walletApi } from "@neufund/shared-modules";
-import { addBigNumbers, compareBigNumbers } from "@neufund/shared-utils";
+import { addBigNumbers, compareBigNumbers, convertFromUlps } from "@neufund/shared-utils";
 
 import { EProcessState } from "../../utils/enums/processStates";
 import { actions } from "../actions";
@@ -81,7 +81,12 @@ export function* populateWalletData(): Generator<any, TBasicBalanceData[], any> 
       amount: lockedIcbmNeuroWalletData.amount,
       euroEquivalentAmount: lockedIcbmNeuroWalletData.euroEquivalentAmount,
     },
-  ];
+  ].map(item => ({
+    ...item,
+    euroEquivalentAmount: item.hasFunds
+      ? convertFromUlps(item.euroEquivalentAmount).toString()
+      : item.euroEquivalentAmount,
+  }));
 }
 
 export function* loadWalletView(): Generator<any, void, any> {

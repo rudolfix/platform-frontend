@@ -3,7 +3,8 @@ import {
   ENumberInputFormat,
   ERoundingMode,
   toFixedPrecision,
-} from "../../../../components/shared/formatters/utils";
+} from "@neufund/shared-utils";
+
 import { selectDecimalPlaces } from "../../../../components/shared/Money.unsafe";
 
 export const toFormValue = (amountUlps: string, decimals?: number) =>

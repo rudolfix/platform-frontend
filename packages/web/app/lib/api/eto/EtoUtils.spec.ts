@@ -1,4 +1,3 @@
-import { convertToUlps } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { calcInvestmentAmount, calcShareAndTokenPrice, calculateTarget } from "./EtoUtils";
@@ -190,8 +189,8 @@ describe("EtoUtils", () => {
 
   describe("calculateTarget", () => {
     it("should calculate", () => {
-      expect(calculateTarget("10000", "50", "5000", convertToUlps("25000"))).to.eq("2500000");
-      expect(calculateTarget("10000", "20", "1250", convertToUlps("1520000"))).to.eq("243200000");
+      expect(calculateTarget("10000", "50", "5000", "25000")).to.eq("2500000");
+      expect(calculateTarget("10000", "20", "1250", "1520000")).to.eq("243200000");
     });
   });
 });

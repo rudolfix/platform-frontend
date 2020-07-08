@@ -1,13 +1,9 @@
+import { Eur } from "@neufund/design-system";
+import { ENumberInputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { ETxType } from "../../../../lib/web3/types";
-import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
 import { BankNumber } from "../../../wallet/bank-account/BankAccount";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
@@ -34,11 +30,9 @@ const BankTransferRedeemDetails: TransactionDetailsComponent<ETxType.NEUR_REDEEM
     <InfoRow
       caption={<FormattedMessage id="bank-transfer.redeem.summary.return-amount" />}
       value={
-        <Money
-          inputFormat={ENumberInputFormat.FLOAT}
+        <Eur
+          inputFormat={ENumberInputFormat.DECIMAL}
           value={additionalData.amount}
-          valueType={ECurrency.EUR}
-          outputFormat={ENumberOutputFormat.FULL}
           data-test-id={"bank-transfer.redeem-summary.return-amount"}
         />
       }

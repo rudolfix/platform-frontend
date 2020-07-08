@@ -19,21 +19,21 @@ export enum EBankTransferType {
 export interface IBankTransferState {
   state: EBankTransferFlowState;
   type: EBankTransferType | undefined;
-  minEuroUlps: string;
+  minEuro: string;
   reference: string;
-  bankFeeUlps: string;
+  bankFee: string;
   redeem?: {
-    minEuroUlps: string;
-    bankFeeUlps: string;
+    minEuro: string;
+    bankFee: string;
   };
 }
 
 export const bankTransferInitialState: IBankTransferState = {
   state: EBankTransferFlowState.UNINITIALIZED,
   type: undefined,
-  minEuroUlps: "",
+  minEuro: "",
   reference: "",
-  bankFeeUlps: "",
+  bankFee: "",
 };
 
 export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
@@ -52,7 +52,7 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
       return {
         ...state,
         reference: action.payload.reference,
-        minEuroUlps: action.payload.minEuroUlps,
+        minEuro: action.payload.minEuro,
         type: action.payload.type,
       };
 
@@ -76,8 +76,8 @@ export const bankTransferFlowReducer: AppReducer<IBankTransferState> = (
       return {
         ...state,
         redeem: {
-          minEuroUlps: action.payload.redeemMinEuroUlps,
-          bankFeeUlps: action.payload.redeemBankFeeUlps,
+          minEuro: action.payload.redeemMinEuro,
+          bankFee: action.payload.redeemBankFee,
         },
       };
 

@@ -13,7 +13,7 @@ import {
   tokenPriceModuleApi,
   walletApi,
 } from "@neufund/shared-modules";
-import { ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
+import { convertFromUlps, ECountries, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import { combineReducers } from "redux";
 
 import { EProcessState } from "../../utils/enums/processStates";
@@ -66,13 +66,13 @@ const walletData = [
     name: EBalanceViewType.ETH,
     hasFunds: true,
     amount: "386635441865000003000",
-    euroEquivalentAmount: "7.185643883006235505906790797322021e+22",
+    euroEquivalentAmount: convertFromUlps("7.185643883006235505906790797322021e+22").toString(),
   },
   {
     name: EBalanceViewType.NEUR,
     hasFunds: true,
     amount: "87654",
-    euroEquivalentAmount: "87654",
+    euroEquivalentAmount: convertFromUlps("87654").toString(),
   },
   {
     name: EBalanceViewType.ICBM_ETH,
@@ -90,7 +90,7 @@ const walletData = [
     name: EBalanceViewType.LOCKED_ICBM_ETH,
     hasFunds: true,
     amount: "23456",
-    euroEquivalentAmount: "4359312.27894635108192",
+    euroEquivalentAmount: convertFromUlps("4359312.27894635108192").toString(),
   },
   {
     name: EBalanceViewType.LOCKED_ICBM_NEUR,
@@ -140,7 +140,7 @@ const tokenPrice = {
   loading: false,
   tokenPriceData: {
     etherPriceEur: "185.85062580774007",
-    neuPriceEur: "0.14549197443137551",
+    neuPriceEur: convertFromUlps("0.14549197443137551").toString(),
     eurPriceEther: "0.00538066522861476",
     priceOutdated: false,
   },
@@ -293,19 +293,21 @@ describe("Wallet View", () => {
           name: EBalanceViewType.ETH,
           hasFunds: true,
           amount: "386635441865000003000",
-          euroEquivalentAmount: "7.185643883006235505906790797322021e+22",
+          euroEquivalentAmount: convertFromUlps(
+            "7.185643883006235505906790797322021e+22",
+          ).toString(),
         },
         {
           name: EBalanceViewType.NEUR,
           hasFunds: true,
           amount: "87654",
-          euroEquivalentAmount: "87654",
+          euroEquivalentAmount: convertFromUlps("87654").toString(),
         },
         {
           name: EBalanceViewType.LOCKED_ICBM_ETH,
           hasFunds: true,
           amount: "23456",
-          euroEquivalentAmount: "4359312.27894635108192",
+          euroEquivalentAmount: convertFromUlps("4359312.27894635108192").toString(),
         },
       ];
 
@@ -342,7 +344,9 @@ describe("Wallet View", () => {
             userIsFullyVerified: true,
             userAddress: ethAddress,
             balanceData: resultBalanceData,
-            totalBalanceEuro: "7.185643883006235950603418691957129192e+22",
+            totalBalanceEuro: convertFromUlps(
+              "7.185643883006235950603418691957129192e+22",
+            ).toString(),
             bankAccount: bankAccount,
             processState: EProcessState.SUCCESS,
           }),

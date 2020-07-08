@@ -13,6 +13,8 @@ import * as bookBuildingFlowSelectors from "../../../../modules/bookbuilding-flo
 import * as etoSelectors from "../../../../modules/eto/selectors";
 import { EETOStateOnChain } from "../../../../modules/eto/types";
 import * as investmentPortfolioSelectors from "../../../../modules/investor-portfolio/selectors";
+import * as routingSelectors from "../../../../modules/routing/selectors";
+import * as walletSelectors from "../../../../modules/wallet-selector/selectors";
 import * as buttonLink from "../../../shared/buttons/ButtonLink";
 import { EtoStatusManager } from "./EtoStatusManager/EtoStatusManager";
 
@@ -100,6 +102,8 @@ describe("EtoStatusManager state change", () => {
         etoSelectors,
         "selectEtoOnChainNextStateStartDate",
       ).returns(undefined),
+      selectRouter: stub(routingSelectors, "selectRouter").returns({ location: {} }),
+      selectRouterState: stub(walletSelectors, "selectRouterState").returns({ location: {} }),
     };
   });
 

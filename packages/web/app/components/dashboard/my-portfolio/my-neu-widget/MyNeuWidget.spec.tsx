@@ -1,13 +1,12 @@
 import { walletApi } from "@neufund/shared-modules";
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
-import * as React from "react";
 import { createSandbox, SinonStub } from "sinon";
 
 import { createMount } from "../../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
 import * as investorPortfolio from "../../../../modules/investor-portfolio/selectors";
-import * as buttonLink from "../../../shared/buttons/ButtonLink";
+import * as walletSelectors from "../../../../modules/wallet-selector/selectors";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
 
@@ -17,11 +16,6 @@ describe("MyNeuWidget", () => {
   let stubs: Record<string, SinonStub>;
 
   beforeEach(() => {
-    // stub button link as it uses store under the hood
-    stub(buttonLink, "ButtonLink").callsFake((props: any) => (
-      <div data-test-id={props["data-test-id"]} />
-    ));
-
     stubs = {
       selectIsLoading: stub(walletApi.selectors, "selectIsLoading").returns(undefined),
       selectNeuBalance: stub(walletApi.selectors, "selectNeuBalance").returns(undefined),
@@ -64,6 +58,9 @@ describe("MyNeuWidget", () => {
         investorPortfolio,
         "selectTokensDisbursalNotInitialized",
       ).returns(undefined),
+      selectRouterState: stub(walletSelectors, "selectRouterState").returns({
+        location: { pathname: "/" },
+      }),
     };
   });
 
@@ -92,10 +89,7 @@ describe("MyNeuWidget", () => {
     stubs.selectPayoutAvailable.returns(false);
 
     const component = createMount(wrapWithBasicProviders(MyNeuWidget));
-
-    expect(
-      component.find(tid("my-neu-widget-support-link")).find(buttonLink.ButtonLink).length,
-    ).to.eq(1);
+    expect(component.find("ButtonLink" + tid("my-neu-widget-support-link")).length).to.eq(1);
   });
 
   it("shows the available payouts component", () => {

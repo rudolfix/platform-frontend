@@ -16,7 +16,7 @@ import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/t
 import { appConnect } from "../../../../../store";
 import { appRoutes } from "../../../../appRoutes";
 import { etoPublicViewLink } from "../../../../appRouteUtils";
-import { ButtonLink } from "../../../../shared/buttons/ButtonLink";
+import { ButtonLink } from "../../../../shared/buttons";
 import { EndTimeWidget } from "../../shared/EndTimeWidget";
 import { InvestmentStatusWidget } from "./InvestmentStatusWidget";
 import { USInvestorMessage } from "./USInvestorMessage";

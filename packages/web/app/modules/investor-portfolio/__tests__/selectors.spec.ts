@@ -1,4 +1,4 @@
-import { convertToUlps, Q18 } from "@neufund/shared-utils";
+import { convertFromUlps, convertToUlps, Q18 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { expect } from "chai";
 import * as sinon from "sinon";
@@ -9,6 +9,7 @@ import * as etoSelectors from "../../eto/selectors";
 import { IInvestorTicketsState } from "../reducer";
 import * as investorTicketSelectors from "../selectors";
 import { ITokenDisbursal } from "../types";
+import { getTokenPrice } from "../utils";
 
 describe("investor-portfolio > selectors", () => {
   describe("selectCalculatedEtoTicketSizesById", () => {
@@ -69,7 +70,7 @@ describe("investor-portfolio > selectors", () => {
 
     it("returns reduces amount by investor ticket", () => {
       (investorTicketSelectors.selectInvestorTicket as sinon.SinonStub).returns({
-        equivEurUlps: new BigNumber("25").mul(Q18),
+        equivEur: convertFromUlps(new BigNumber("25").mul(Q18)),
       });
       (investorTicketSelectors.selectCalculatedContribution as sinon.SinonStub).returns({
         minTicketEurUlps: new BigNumber("50").mul(Q18),
@@ -84,7 +85,7 @@ describe("investor-portfolio > selectors", () => {
 
     it("returns at least ticket size", () => {
       (investorTicketSelectors.selectInvestorTicket as sinon.SinonStub).returns({
-        equivEurUlps: new BigNumber("30").mul(Q18),
+        equivEur: convertFromUlps(new BigNumber("30").mul(Q18)),
       });
       let result = selectCalculatedEtoTicketSizesUlpsById(state, etoId);
       expect(result).to.deep.equal({
@@ -93,7 +94,7 @@ describe("investor-portfolio > selectors", () => {
       });
 
       (investorTicketSelectors.selectInvestorTicket as sinon.SinonStub).returns({
-        equivEurUlps: new BigNumber("3000").mul(Q18),
+        equivEur: convertFromUlps(new BigNumber("3000").mul(Q18)),
       });
       result = selectCalculatedEtoTicketSizesUlpsById(state, etoId);
       expect(result).to.deep.equal({
@@ -245,6 +246,13 @@ describe("investor-portfolio > selectors", () => {
 
       expect(data).to.be.lengthOf(1);
       expect(data).to.contain(euroTokendDisbursal);
+    });
+  });
+
+  describe("getTokenPrice", () => {
+    it("returns token price", () => {
+      expect(getTokenPrice("2280", "738.46")).to.eq("0.32388596491228070175");
+      expect(getTokenPrice("2280", "0")).to.eq("0");
     });
   });
 });

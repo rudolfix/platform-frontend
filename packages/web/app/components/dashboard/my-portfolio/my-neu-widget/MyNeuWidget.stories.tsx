@@ -3,10 +3,7 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import {
-  ELoadingIndicator,
-  LoadingIndicator,
-} from "../../../shared/loading-indicator/LoadingIndicator";
+import { ELoadingIndicator, LoadingIndicator } from "../../../shared/loading-indicator";
 import { MyNeuWidgetLayout, MyNeuWidgetLayoutWrapper } from "./MyNeuWidget";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";
 
@@ -18,8 +15,8 @@ storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
         isPayoutPending={false}
         balanceNeu={convertToUlps("1234")}
         balanceEur={convertToUlps("1234")}
-        tokensDisbursalEurEquiv={convertToUlps("1234")}
-        incomingPayoutEurEquiv={convertToUlps("1234")}
+        tokensDisbursalEurEquiv={"1234"}
+        incomingPayoutEurEquiv={"1234"}
         goToPortfolio={action("goToPortfolio")}
         loadPayoutsData={action("loadPayoutsData")}
       />
@@ -32,8 +29,8 @@ storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
         isPayoutPending={false}
         balanceNeu={convertToUlps("1234")}
         balanceEur={convertToUlps("1234")}
-        tokensDisbursalEurEquiv={convertToUlps("1234")}
-        incomingPayoutEurEquiv={convertToUlps("1234")}
+        tokensDisbursalEurEquiv={"1234"}
+        incomingPayoutEurEquiv={"1234"}
         goToPortfolio={action("goToPortfolio")}
         loadPayoutsData={action("loadPayoutsData")}
       />
@@ -46,8 +43,8 @@ storiesOf("NDS|Molecules/Dashboard/MyNeuWidget", module)
         isPayoutPending={true}
         balanceNeu={convertToUlps("1234")}
         balanceEur={convertToUlps("1234")}
-        tokensDisbursalEurEquiv={convertToUlps("1234")}
-        incomingPayoutEurEquiv={convertToUlps("1234")}
+        tokensDisbursalEurEquiv={"1234"}
+        incomingPayoutEurEquiv={"1234"}
         goToPortfolio={action("goToPortfolio")}
         loadPayoutsData={action("loadPayoutsData")}
       />

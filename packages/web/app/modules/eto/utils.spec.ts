@@ -1,4 +1,3 @@
-import { convertToUlps } from "@neufund/shared-utils";
 import { expect } from "chai";
 
 import { testEto } from "../../../test/fixtures";
@@ -29,9 +28,9 @@ const mockEto = (
         totalTokensInt: totalTokensInt
           ? totalTokensInt
           : testEto.contract!.totalInvestment.totalTokensInt,
-        totalEquivEurUlps: totalEquivEur
-          ? convertToUlps(totalEquivEur)
-          : testEto.contract!.totalInvestment.totalEquivEurUlps,
+        totalEquivEur: totalEquivEur
+          ? totalEquivEur
+          : testEto.contract!.totalInvestment.totalEquivEur,
       },
     },
     equityTokensPerShare: equityTokensPerShare

@@ -1,10 +1,10 @@
 import { ETransactionType, TExtractTxHistoryFromType } from "@neufund/shared-modules";
+import { ECurrency } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { etoPublicViewByIdLinkLegacy } from "../../../appRouteUtils";
 import { DataRow, DataRowSeparator } from "../../../shared/DataRow";
-import { ECurrency } from "../../../shared/formatters/utils";
 import { getIconForCurrency } from "../../../shared/icons/CurrencyIcon";
 import { EtherscanAddressLink } from "../../../shared/links/EtherscanLink";
 import { ExternalLink } from "../../../shared/links/ExternalLink";

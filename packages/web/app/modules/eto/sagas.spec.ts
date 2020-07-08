@@ -1,6 +1,12 @@
 import { expectSaga, matchers } from "@neufund/sagas/tests";
 import { EUserType } from "@neufund/shared-modules";
-import { convertToUlps, divideBigNumbers, multiplyBigNumbers, Q18 } from "@neufund/shared-utils";
+import {
+  convertFromUlps,
+  convertToUlps,
+  divideBigNumbers,
+  multiplyBigNumbers,
+  Q18,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { omit } from "lodash/fp";
 
@@ -10,7 +16,8 @@ import { loadEtos } from "./sagas";
 import { EETOStateOnChain, TEtoContractData } from "./types";
 
 const tokenData = {
-  balance: new BigNumber("123"),
+  balanceUlps: new BigNumber("123"),
+  balanceDecimals: 0,
   tokensPerShare: new BigNumber("1"),
   totalCompanyShares: new BigNumber("112"),
   companyValuationEurUlps: new BigNumber("123"),
@@ -19,7 +26,7 @@ const tokenData = {
 const commitmentContractData = {
   timedState: new BigNumber(testContract.timedState.toString()),
   totalInvestment: () => [
-    new BigNumber(testContract.totalInvestment.totalEquivEurUlps.toString()),
+    new BigNumber(convertToUlps(testContract.totalInvestment.totalEquivEur.toString())),
     new BigNumber(testContract.totalInvestment.totalTokensInt.toString()),
     new BigNumber(testContract.totalInvestment.totalInvestors.toString()),
   ],
@@ -49,7 +56,8 @@ const globalDependencies = {
   },
   contractsService: {
     getEquityToken: (_: string) => ({
-      balanceOf: (_1: string) => tokenData.balance,
+      balanceOf: (_1: string) => tokenData.balanceUlps,
+      decimals: tokenData.balanceDecimals,
       tokensPerShare: tokenData.tokensPerShare,
       tokenController: "",
       shareNominalValueUlps: new BigNumber("123"),
@@ -168,17 +176,20 @@ describe("loadEtos", () => {
     };
 
     const tokenDataProcessed = {
-      balance: tokenData.balance.toString(),
+      balanceUlps: tokenData.balanceUlps.toString(),
+      balanceDecimals: tokenData.balanceDecimals,
       tokensPerShare: tokenData.tokensPerShare.toString(),
       companyValuationEurUlps: tokenData.companyValuationEurUlps.toString(),
       totalCompanyShares: convertToUlps(tokenData.totalCompanyShares).toString(),
-      tokenPrice: new BigNumber(
-        divideBigNumbers(
+      tokenPrice: convertFromUlps(
+        new BigNumber(
           divideBigNumbers(
-            multiplyBigNumbers([tokenData.companyValuationEurUlps, new BigNumber("123")]),
-            tokenData.totalCompanyShares.mul(Q18),
+            divideBigNumbers(
+              multiplyBigNumbers([tokenData.companyValuationEurUlps, new BigNumber("123")]),
+              tokenData.totalCompanyShares.mul(Q18),
+            ),
+            tokenData.tokensPerShare,
           ),
-          tokenData.tokensPerShare,
         ),
       ).toString(),
       canTransferToken: true,

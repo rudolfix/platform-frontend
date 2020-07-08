@@ -1,9 +1,9 @@
 import { select } from "@neufund/sagas";
 import { EUserType } from "@neufund/shared-modules";
+import { isValidNumber } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { TestContext, TestOptions } from "yup";
 
-import { isValidNumber } from "../../components/shared/formatters/utils";
 import {
   getMessageTranslation,
   ValidationMessage,

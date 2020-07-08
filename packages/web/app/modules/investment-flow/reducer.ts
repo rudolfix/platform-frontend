@@ -20,7 +20,7 @@ export enum EInvestmentErrorState {
 
 export interface IInvestmentFlowState {
   etoId: string;
-  euroValueUlps: string;
+  euroValue: string;
   ethValueUlps: string;
   investmentType: EInvestmentType | undefined;
   wallets: WalletSelectionData[];
@@ -30,7 +30,7 @@ export interface IInvestmentFlowState {
 
 export const investmentFlowInitialState: IInvestmentFlowState = {
   etoId: "",
-  euroValueUlps: "",
+  euroValue: "",
   ethValueUlps: "",
   investmentType: EInvestmentType.Eth,
   wallets: [],
@@ -69,7 +69,7 @@ export const investmentFlowReducer: AppReducer<IInvestmentFlowState> = (
     case actions.investmentFlow.setEurValue.getType():
       return {
         ...state,
-        euroValueUlps: action.payload.value,
+        euroValue: action.payload.value,
       };
     case actions.investmentFlow.setIsInputValidated.getType():
       return {

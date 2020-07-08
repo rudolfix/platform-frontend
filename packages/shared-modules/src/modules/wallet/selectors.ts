@@ -1,4 +1,9 @@
-import { addBigNumbers, ETHEREUM_ZERO_ADDRESS, multiplyBigNumbers } from "@neufund/shared-utils";
+import {
+  addBigNumbers,
+  convertFromUlps,
+  ETHEREUM_ZERO_ADDRESS,
+  multiplyBigNumbers,
+} from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { createSelector } from "reselect";
 import * as Web3Utils from "web3-utils";
@@ -21,7 +26,8 @@ export const selectNeuBalance = (state: TWalletModuleState): string =>
 export const selectNeuBalanceEurEquiv = createSelector(
   selectNeuBalance,
   selectNeuPriceEur,
-  (neuBalance, neuPriceEur) => multiplyBigNumbers([neuBalance, neuPriceEur]),
+  (neuBalance, neuPriceEur) =>
+    convertFromUlps(multiplyBigNumbers([neuBalance, neuPriceEur])).toString(),
 );
 
 export const selectNeumarkAddress = (state: TWalletModuleState): string =>
@@ -146,11 +152,13 @@ export const selectTotalEuroTokenBalance = (state: TWalletModuleState) =>
     selectICBMLockedEuroTokenBalance(state),
   ]);
 export const selectTotalEuroBalance = (state: TWalletModuleState) =>
-  addBigNumbers([
-    selectLiquidEuroTotalAmount(state),
-    selectLockedEuroTotalAmount(state),
-    selectICBMLockedEuroTotalAmount(state),
-  ]);
+  convertFromUlps(
+    addBigNumbers([
+      selectLiquidEuroTotalAmount(state),
+      selectLockedEuroTotalAmount(state),
+      selectICBMLockedEuroTotalAmount(state),
+    ]),
+  ).toString();
 
 export const selectEtherLockedNeumarksDue = (state: TWalletModuleState): string =>
   (state.wallet.data &&

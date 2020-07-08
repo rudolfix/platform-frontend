@@ -1,4 +1,5 @@
-import { divideBigNumbers, multiplyBigNumbers } from "@neufund/shared-utils";
+import { Eth, Eur, EurToken, WholeEur } from "@neufund/design-system";
+import { convertFromUlps, divideBigNumbers, multiplyBigNumbers } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
@@ -10,8 +11,6 @@ import { isOnChain } from "../../modules/eto/utils";
 import { selectEtherPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../store";
 import { DashboardWidget } from "../shared/dashboard-widget/DashboardWidget";
-import { Money } from "../shared/formatters/Money";
-import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "../shared/formatters/utils";
 import { IPanelProps } from "../shared/Panel";
 
 import * as styles from "./ETOFundraisingStatistics.module.scss";
@@ -25,8 +24,8 @@ interface IStateProps {
 }
 
 interface IWithProps {
-  etherTokenEurEquivUlps: string;
-  averageInvestmentEurUlps: string;
+  etherTokenEurEquiv: string;
+  averageInvestmentEur: string;
 }
 
 type IProps = IExternalProps & IPanelProps & IWithProps;
@@ -34,15 +33,15 @@ type IProps = IExternalProps & IPanelProps & IWithProps;
 const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
   eto,
   columnSpan,
-  etherTokenEurEquivUlps,
-  averageInvestmentEurUlps,
+  etherTokenEurEquiv,
+  averageInvestmentEur,
 }) => {
   if (!isOnChain(eto)) {
     throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
   }
 
   const {
-    totalEquivEurUlps,
+    totalEquivEur,
     etherTokenBalance,
     euroTokenBalance,
     totalInvestors,
@@ -58,48 +57,23 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.total-investment" />
         </span>
-        <Money
-          value={totalEquivEurUlps}
-          valueType={ECurrency.EUR}
-          inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        />
+        <WholeEur value={totalEquivEur} />
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.eth-investment" />
         </span>
         <span>
-          <Money
-            value={etherTokenBalance}
-            valueType={ECurrency.ETH}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
+          <Eth value={etherTokenBalance} />
           {" ≈ "}
-          <Money
-            value={etherTokenEurEquivUlps}
-            valueType={ECurrency.EUR}
-            inputFormat={ENumberInputFormat.ULPS}
-            outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-          />
+          <Eur value={etherTokenEurEquiv} />
         </span>
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.neur-investment" />
         </span>
-        <Money
-          value={euroTokenBalance}
-          valueType={ECurrency.EUR_TOKEN}
-          inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        />
+        <EurToken value={euroTokenBalance} />
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.average-investment-value" />
         </span>
-        <Money
-          value={averageInvestmentEurUlps}
-          valueType={ECurrency.EUR}
-          inputFormat={ENumberInputFormat.ULPS}
-          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-        />
+        <Eur value={averageInvestmentEur} />
         <span className={styles.label}>
           <FormattedMessage id="settings.fundraising-statistics.total-investors" />
         </span>
@@ -122,12 +96,14 @@ const ETOFundraisingStatistics = compose<IProps, IExternalProps & IPanelProps>(
     }
 
     return {
-      etherTokenEurEquivUlps: multiplyBigNumbers([
-        props.eto.contract.totalInvestment.etherTokenBalance,
-        props.etherPriceEur,
-      ]),
-      averageInvestmentEurUlps: divideBigNumbers(
-        props.eto.contract.totalInvestment.totalEquivEurUlps,
+      etherTokenEurEquiv: convertFromUlps(
+        multiplyBigNumbers([
+          props.eto.contract.totalInvestment.etherTokenBalance,
+          props.etherPriceEur,
+        ]),
+      ).toString(),
+      averageInvestmentEur: divideBigNumbers(
+        props.eto.contract.totalInvestment.totalEquivEur,
         props.eto.contract.totalInvestment.totalInvestors,
       ),
     };

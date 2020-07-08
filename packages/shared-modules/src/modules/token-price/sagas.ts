@@ -1,5 +1,5 @@
 import { call, delay, fork, neuTakeLatestUntil, put, SagaGenerator, take } from "@neufund/sagas";
-import { Q18, StringableActionCreator } from "@neufund/shared-utils";
+import { convertFromUlps, StringableActionCreator } from "@neufund/shared-utils";
 
 import { neuGetBindings } from "../../utils";
 import { contractsModuleApi } from "../contracts/module";
@@ -30,9 +30,9 @@ export function* loadTokenPriceDataAsync(): SagaGenerator<ITokenPriceStateData> 
       .then(r =>
         Object.assign(
           contractsModuleApi.utils.numericValuesToString({
-            etherPriceEur: r[0][0].div(Q18),
-            neuPriceEur: r[0][1].div(Q18),
-            eurPriceEther: r[0][2].div(Q18),
+            etherPriceEur: convertFromUlps(r[0][0].toString()).toString(),
+            neuPriceEur: convertFromUlps(r[0][1].toString()).toString(),
+            eurPriceEther: convertFromUlps(r[0][2].toString()).toString(),
           }),
           { priceOutdated: false },
         ),

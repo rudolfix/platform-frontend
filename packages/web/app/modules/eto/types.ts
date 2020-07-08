@@ -4,7 +4,7 @@ import { TCompanyEtoData, TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfa
 import { EAgreementType } from "../tx/transactions/nominee/sign-agreement/types";
 
 export interface IEtoTotalInvestment {
-  totalEquivEurUlps: string;
+  totalEquivEur: string;
   totalTokensInt: string;
   totalInvestors: string;
   euroTokenBalance: string;
@@ -47,7 +47,8 @@ export type TEtoWithCompanyAndContractTypeChecked = Overwrite<
 >;
 
 export interface IEtoTokenData {
-  balance: string;
+  balanceUlps: string;
+  balanceDecimals: number;
   tokensPerShare: string;
   totalCompanyShares: string;
   companyValuationEurUlps: string;
@@ -56,10 +57,10 @@ export interface IEtoTokenData {
 }
 
 export interface IEtoTokenGeneralDiscounts {
-  whitelistDiscountFrac: number;
-  whitelistDiscountUlps: string;
+  whitelistDiscount: string;
+  discountedTokenPrice: string;
   publicDiscountFrac: number;
-  publicDiscountUlps: string;
+  publicDiscount: string;
 }
 
 export enum EEtoSubState {

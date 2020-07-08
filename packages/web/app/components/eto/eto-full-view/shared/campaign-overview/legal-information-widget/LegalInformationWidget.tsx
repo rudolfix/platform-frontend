@@ -1,3 +1,5 @@
+import { WholeEur } from "@neufund/design-system";
+import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
@@ -7,12 +9,6 @@ import { ChartDoughnutLazy } from "../../../../../shared/charts/ChartDoughnutLaz
 import { generateColor } from "../../../../../shared/charts/utils";
 import { DashboardHeading } from "../../../../../shared/DashboardHeading";
 import { FormatNumber } from "../../../../../shared/formatters/FormatNumber";
-import { Money } from "../../../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../../../shared/formatters/utils";
 import { Panel } from "../../../../../shared/Panel";
 import { CHART_COLORS, FUNDING_ROUNDS } from "../../../../shared/constants";
 import { generateShareholders } from "../../../../utils";
@@ -84,7 +80,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
                 <FormatNumber
                   value={companyData.numberOfFounders.toString()}
                   outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                 />
               </span>
             </div>
@@ -111,12 +107,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
                 <FormattedMessage id="eto.public-view.legal-information.last-funding-amount" />
               </span>
               <span className={styles.value}>
-                <Money
-                  value={companyData.lastFundingSizeEur.toString()}
-                  inputFormat={ENumberInputFormat.FLOAT}
-                  valueType={ECurrency.EUR}
-                  outputFormat={ENumberOutputFormat.INTEGER}
-                />
+                <WholeEur value={companyData.lastFundingSizeEur.toString()} />
               </span>
             </div>
           )}
@@ -129,7 +120,7 @@ export const LegalInformationWidget: React.FunctionComponent<IProps> = ({
                 <FormatNumber
                   value={companyData.companyShareCapital.toString()}
                   outputFormat={ENumberOutputFormat.INTEGER}
-                  inputFormat={ENumberInputFormat.FLOAT}
+                  inputFormat={ENumberInputFormat.DECIMAL}
                 />
                 {` ${companyData.shareCapitalCurrencyCode}`}
               </span>

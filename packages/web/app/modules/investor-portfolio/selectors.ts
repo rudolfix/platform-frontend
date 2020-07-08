@@ -2,9 +2,11 @@ import { walletApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
+  convertFromUlps,
+  convertToUlps,
+  ECurrency,
   isZero,
   multiplyBigNumbers,
-  Q18,
   subtractBigNumbers,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
@@ -12,7 +14,6 @@ import { isArray } from "lodash/fp";
 import { createSelector } from "reselect";
 
 import { shouldShowToken } from "../../components/portfolio/utils";
-import { ECurrency } from "../../components/shared/formatters/utils";
 import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TAppGlobalState } from "../../store";
 import { selectMyPledge } from "../bookbuilding-flow/selectors";
@@ -55,7 +56,7 @@ export const selectHasInvestorTicket = (state: TAppGlobalState, etoId: string) =
 
   if (investmentTicket) {
     // equivEurUlps is set to zero when investor didn't invest
-    return !new BigNumber(investmentTicket.equivEurUlps).isZero();
+    return !new BigNumber(investmentTicket.equivEur).isZero();
   }
 
   return false;
@@ -108,7 +109,7 @@ export const selectMyPendingAssets = (
 
 export const selectMyPendingAssetsInvestedTotal = createSelector(selectMyPendingAssets, myAssets =>
   myAssets
-    ? addBigNumbers(myAssets.map(({ investorTicket }) => investorTicket.equivEurUlps))
+    ? addBigNumbers(myAssets.map(({ investorTicket }) => investorTicket.equivEur))
     : undefined,
 );
 
@@ -172,21 +173,25 @@ export const selectCalculatedEtoTicketSizesUlpsById = (state: TAppGlobalState, e
   // todo: check if contrib is ever undefined and simplify this condition
   let min =
     (contrib && new BigNumber(contrib.minTicketEurUlps)) ||
-    (eto && Q18.mul(eto.minTicketEur.toString() || zero));
+    (eto && new BigNumber(convertToUlps(eto.minTicketEur.toString() || zero).toString()));
   let max =
     (contrib && new BigNumber(contrib.maxTicketEurUlps)) ||
-    (eto && eto.maxTicketEur && Q18.mul(eto.maxTicketEur.toString() || zero));
+    (eto &&
+      eto.maxTicketEur &&
+      new BigNumber(convertToUlps(eto.maxTicketEur.toString() || zero).toString()));
 
   if (min && max) {
     if (eto && investorTicket) {
+      const equivEurUlps = convertToUlps(investorTicket.equivEur).toString();
+
       // todo: replace with price taken from smart contract
       const tokenPrice = eto.investmentCalculatedValues!.sharePrice / eto.equityTokensPerShare;
-      max = BigNumber.max(max.sub(investorTicket.equivEurUlps), "0");
+      max = BigNumber.max(max.sub(equivEurUlps), "0");
       // when already invested, you can invest less than minimum ticket however we set this value
       // to more than just one token: we have official retail min ticket at 10 EUR so use it
       min = BigNumber.max(
-        min.sub(investorTicket.equivEurUlps),
-        Q18.mul(tokenPrice.toString()),
+        min.sub(equivEurUlps),
+        convertToUlps(tokenPrice.toString()).toString(),
         MIMIMUM_RETAIL_TICKET_EUR_ULPS,
       );
       // however it cannot be more than max
@@ -269,13 +274,15 @@ export const selectTokensDisbursalEurEquivTotalDisbursed = createSelector(
   selectEtherPriceEur,
   (tokensDisbursal, etherPriceEur) => {
     if (tokensDisbursal) {
-      return addBigNumbers(
-        [...tokensDisbursal].map(t =>
-          t.token === ECurrency.ETH
-            ? multiplyBigNumbers([t.totalDisbursedAmount, etherPriceEur])
-            : t.totalDisbursedAmount,
+      return convertFromUlps(
+        addBigNumbers(
+          [...tokensDisbursal].map(t =>
+            t.token === ECurrency.ETH
+              ? multiplyBigNumbers([t.totalDisbursedAmount, etherPriceEur])
+              : t.totalDisbursedAmount,
+          ),
         ),
-      );
+      ).toString();
     }
 
     return undefined;
@@ -297,7 +304,7 @@ export const selectMyAssetsWithTokenData = (
         ...asset,
         tokenData: selectTokenData(state.eto, asset.previewCode)!,
       }))
-      .filter(asset => asset.tokenData && !new BigNumber(asset.tokenData.balance).isZero());
+      .filter(asset => asset.tokenData && !new BigNumber(asset.tokenData.balanceUlps).isZero());
   }
 
   return undefined;
@@ -307,7 +314,17 @@ export const selectMyAssetsEurEquivTotal = createSelector(selectMyAssetsWithToke
   if (myAssets && myAssets.length > 0) {
     return myAssets
       .map(asset => asset.tokenData)
-      .reduce((p, c) => addBigNumbers([p, multiplyBigNumbers([c.balance, c.tokenPrice])]), "0");
+      .reduce(
+        (myAssetsEurEquivTotal, tokenData) =>
+          addBigNumbers([
+            myAssetsEurEquivTotal,
+            multiplyBigNumbers([
+              convertFromUlps(tokenData.balanceUlps, tokenData.balanceDecimals),
+              tokenData.tokenPrice,
+            ]),
+          ]),
+        "0",
+      );
   }
 
   return undefined;
@@ -378,10 +395,12 @@ export const selectIncomingPayoutEurEquiv = createSelector(
   selectEuroTokenIncomingPayout,
   selectEtherPriceEur,
   (etherTokenIncomingPayout, euroTokenIncomingPayout, etherPriceEur) =>
-    addBigNumbers([
-      euroTokenIncomingPayout,
-      multiplyBigNumbers([etherTokenIncomingPayout, etherPriceEur]),
-    ]),
+    convertFromUlps(
+      addBigNumbers([
+        euroTokenIncomingPayout,
+        multiplyBigNumbers([etherTokenIncomingPayout, etherPriceEur]),
+      ]).toString(),
+    ).toString(),
 );
 
 export const selectPastInvestments = (
@@ -426,14 +445,14 @@ export const selectPersonalDiscount = createSelector(
   (investorTicket, tokenPersonalDiscount) => {
     if (investorTicket && tokenPersonalDiscount) {
       const whitelistDiscountAmountLeft = subtractBigNumbers([
-        tokenPersonalDiscount.whitelistDiscountAmountEurUlps,
-        investorTicket.equivEurUlps,
+        tokenPersonalDiscount.whitelistDiscountAmountEur,
+        investorTicket.equivEur.toString(),
       ]);
 
       return {
         whitelistDiscountAmountLeft,
-        whitelistDiscountUlps: tokenPersonalDiscount.whitelistDiscountUlps,
-        whitelistDiscountFrac: tokenPersonalDiscount.whitelistDiscountFrac,
+        discountedTokenPrice: tokenPersonalDiscount.discountedTokenPrice,
+        whitelistDiscount: tokenPersonalDiscount.whitelistDiscount,
       };
     }
 

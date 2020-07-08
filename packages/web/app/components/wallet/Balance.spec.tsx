@@ -1,3 +1,4 @@
+import { convertFromUlps } from "@neufund/shared-utils";
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { mount } from "enzyme";
@@ -26,7 +27,7 @@ const ethEmpty = {
 const ethNotEmpty = {
   name: EBalanceViewType.ETH,
   amount: "25054421780000000",
-  euroEquivalentAmount: "352678976500000000",
+  euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const neuroEmpty = {
@@ -37,38 +38,38 @@ const neuroEmpty = {
 
 const neuroNotEmpty = {
   name: EBalanceViewType.NEUR,
-  amount: "25054421780000000",
-  euroEquivalentAmount: "352678976500000000",
+  amount: "25054421780000000".toString(),
+  euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const neuroRestricted = {
   name: EBalanceViewType.RESTRICTED_NEUR,
   amount: "25054421780000000",
-  euroEquivalentAmount: "352678976500000000",
+  euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const icbmEth = {
   name: EBalanceViewType.ICBM_ETH,
   amount: "25054421780000000",
-  euroEquivalentAmount: "352678976500000000",
+  euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const icbmNeuro = {
   name: EBalanceViewType.ICBM_NEUR,
   amount: "25054421780000000",
-  euroEquivalentAmount: "352678976500000000",
+  euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const lockedIcbmEth = {
   name: EBalanceViewType.LOCKED_ICBM_ETH,
   amount: "25054421780000000",
-  euroEquivalentAmount: "352678976500000000",
+  euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 const lockedIcbmNeuro = {
   name: EBalanceViewType.LOCKED_ICBM_NEUR,
   amount: "25054421780000000",
-  euroEquivalentAmount: "352678976500000000",
+  euroEquivalentAmount: convertFromUlps("352678976500000000").toString(),
 };
 
 describe("<Balance />", () => {

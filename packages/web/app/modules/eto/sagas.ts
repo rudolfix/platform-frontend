@@ -474,8 +474,9 @@ function* loadToken(
 
   const equityToken = yield contractsService.getEquityToken(equityTokenAddress);
 
-  const { balance, tokensPerShare, tokenController } = yield all({
-    balance: equityToken.balanceOf(walletAddress),
+  const { balanceUlps, balanceDecimals, tokensPerShare, tokenController } = yield all({
+    balanceUlps: equityToken.balanceOf(walletAddress),
+    balanceDecimals: equityToken.decimals,
     tokensPerShare: equityToken.tokensPerShare,
     tokenController: equityToken.tokenController,
   });
@@ -522,11 +523,12 @@ function* loadToken(
   );
 
   const tokenData = {
-    balance: balance.toString(),
+    balanceUlps: balanceUlps.toString(),
+    balanceDecimals: balanceDecimals,
     tokensPerShare: tokensPerShare.toString(),
     totalCompanyShares: shareCapital.toString(),
     companyValuationEurUlps: companyValuationEurUlps.toString(),
-    tokenPrice: tokenPrice.toString(),
+    tokenPrice: convertFromUlps(tokenPrice.toString()).toString(),
     canTransferToken,
   };
 
@@ -762,10 +764,10 @@ export function* loadEtoGeneralTokenDiscounts(
 
   yield put(
     actions.eto.setTokenGeneralDiscounts(eto.etoId, {
-      whitelistDiscountFrac: convertFromUlps(whitelistDiscountFrac).toNumber(),
-      whitelistDiscountUlps: whitelistDiscountUlps.toString(),
+      whitelistDiscount: convertFromUlps(whitelistDiscountFrac).toString(),
+      discountedTokenPrice: convertFromUlps(whitelistDiscountUlps).toString(),
       publicDiscountFrac: convertFromUlps(publicDiscountFrac).toNumber(),
-      publicDiscountUlps: publicDiscountUlps.toString(),
+      publicDiscount: convertFromUlps(publicDiscountUlps).toString(),
     }),
   );
 }

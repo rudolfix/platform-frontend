@@ -1,5 +1,6 @@
 import { EButtonLayout } from "@neufund/design-system";
 import { walletApi } from "@neufund/shared-modules";
+import { ECurrency } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
@@ -20,13 +21,9 @@ import {
 } from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
-import { ButtonLink } from "../../../shared/buttons/ButtonLink";
-import { ECurrency } from "../../../shared/formatters/utils";
+import { ButtonLink } from "../../../shared/buttons";
 import { withContainer } from "../../../shared/hocs/withContainer";
-import {
-  ELoadingIndicator,
-  LoadingIndicator,
-} from "../../../shared/loading-indicator/LoadingIndicator";
+import { ELoadingIndicator, LoadingIndicator } from "../../../shared/loading-indicator";
 import { MoneySuiteWidget } from "../../../shared/MoneySuiteWidget/MoneySuiteWidget";
 import { ETheme } from "../../../shared/transaction/TransactionData";
 import { MyNeuWidgetError } from "./MyNeuWidgetError";

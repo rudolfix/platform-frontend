@@ -9,13 +9,19 @@ describe("Signup", () => {
     cy.visit("/");
 
     cy.get(tid("Header-register")).click();
-    //how do I click on eye symbol?
 
     cy.get("#email").type(email);
     cy.get("#password").type(password);
     cy.get("#repeatPassword").type(password);
 
-    //why the tid?
+    cy.get(tid("wallet-selector-register-password")).find("[type='password']").should('be.visible') 
+    cy.get(tid("wallet-selector-register-password")).find("[type='text']").should('not.be.visible')
+
+    cy.get(tid("wallet-selector-register-password.adornment")).click();
+    
+    cy.get(tid("wallet-selector-register-password")).find("[type='password']").should('not.be.visible')
+    cy.get(tid("wallet-selector-register-password")).find("[type='text']").should('be.visible') 
+
     cy.get(tid("wallet-selector-register-tos")).click();
 
     cy.get(tid("wallet-selector-register-button")).click();

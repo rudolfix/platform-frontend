@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-assignment */
 
 import { noopLogger } from "@neufund/shared-modules";
 import { EventEmitter2 } from "eventemitter2";

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { noopLogger } from "@neufund/shared-modules";
 import { toEthereumAddress } from "@neufund/shared-utils";
 import WalletConnectMock from "@walletconnect/react-native";

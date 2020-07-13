@@ -4,7 +4,6 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/typescript",
@@ -19,10 +18,10 @@ module.exports = {
   rules: {
     // turn off some recommended options that don't align with our styleguide
     "require-yield": "off",
-    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
 
     complexity: ["error", { max: 10 }],
     "no-await-in-loop": "error",
@@ -87,6 +86,16 @@ module.exports = {
     "@typescript-eslint/no-dupe-class-members": "error",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-unused-expressions": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        caughtErrors: "all",
+        args: "all",
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_"
+      }
+    ],
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/no-magic-numbers": [
       "error",
@@ -96,6 +105,12 @@ module.exports = {
         ignoreEnums: true,
         ignoreNumericLiteralTypes: true,
         ignoreReadonlyClassProperties: true
+      }
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false
       }
     ],
 

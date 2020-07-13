@@ -1,6 +1,19 @@
 const tsConfig = require("./tsconfig.json");
+const config = require("@neufund/eslint-config");
+
+/**
+ * Plugin and parser resolution has been updated in ESLint 7.0 therefore it's not longer compatible
+ * with out monorepo given typescript version is not in sync in monorepo
+ * @see https://eslint.org/docs/user-guide/migrating-to-7.0.0#plugin-resolution-has-been-updated
+ */
+const eslint7Patch = {
+  parser: config.parser,
+  plugins: config.plugins,
+};
 
 module.exports = {
+  ...eslint7Patch,
+
   root: true,
   extends: "@neufund/eslint-config/react-native",
   parserOptions: {
@@ -44,6 +57,8 @@ module.exports = {
       files: ["**/*.stories.*", "**/*.spec.*", "**/e2e/**"],
       rules: {
         "@typescript-eslint/no-magic-numbers": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
       },
     },
   ],

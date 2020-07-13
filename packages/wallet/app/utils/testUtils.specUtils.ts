@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return */
 
 import isFunction from "lodash/fp/isFunction";
 import { set } from "mockdate";
@@ -15,7 +15,7 @@ const setupTimeTravel = () => {
 };
 
 const callGuard = (methodName: string) => (...args: any[]) => {
-  throw new Error(`Unexpected call to method: '${methodName}' with args: ${args}`);
+  throw new Error(`Unexpected call to method: '${methodName}' with args: ${args.toString()}`);
 };
 
 /**

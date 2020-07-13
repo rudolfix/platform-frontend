@@ -1,3 +1,5 @@
+// TODO: Fix unsafe assignment and unsafe member access
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access */
 import { call, put, race, TActionFromCreator, take } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
 

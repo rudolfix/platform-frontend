@@ -3,7 +3,6 @@ import * as yup from "yup";
 
 import { AppStorage } from "./AppStorage";
 import { AsyncStorageProvider } from "./AsyncStorageProvider";
-import { StorageItem } from "./StorageItem";
 import { StorageSchema } from "./StorageSchema";
 
 describe("AppStorage", () => {
@@ -21,11 +20,11 @@ describe("AppStorage", () => {
 
   const personSchema = new StorageSchema(1, "PersonSchema", PersonSchema);
 
-  beforeEach(() => {
+  beforeEach(async () => {
     storageProvider = new AsyncStorageProvider();
     logger = noopLogger;
     storage = new AppStorage(storageProvider, logger, testKey, personSchema);
-    storage.clear();
+    await storage.clear();
   });
 
   it("should return storage nameSpace", () => {

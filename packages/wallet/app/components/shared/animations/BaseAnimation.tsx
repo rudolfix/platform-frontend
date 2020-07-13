@@ -1,3 +1,4 @@
+import { UnknownObject } from "@neufund/shared-utils";
 import * as React from "react";
 import { Animated } from "react-native";
 
@@ -27,7 +28,7 @@ type TUIState = {
  * 1. UI is not rendered on screen when it's not active
  * 2. children (under memoizedChildren key) is memoized during fade transaction so the content is there even when the app state is already cleared
  */
-class BaseAnimation<T extends object> extends React.Component<TExternalProps<T>, TUIState> {
+class BaseAnimation<T extends UnknownObject> extends React.Component<TExternalProps<T>, TUIState> {
   state: TUIState = {
     animationProgress: new Animated.Value(0),
     isRendered: false,

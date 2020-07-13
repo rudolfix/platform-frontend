@@ -192,3 +192,11 @@ export type UnionToIntersection<U> = (U extends any
 : never) extends (k: infer I) => void
   ? I
   : never;
+
+/**
+ * Specifies an object with unknown keys
+ *
+ * Useful when you don't care about exact props passed to the component.
+ * @note Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+ */
+export type UnknownObject = Record<string, unknown>;

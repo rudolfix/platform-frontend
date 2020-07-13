@@ -23,6 +23,7 @@ const AppAuthRouter: React.FunctionComponent = () => (
         ...TransitionPresets.ModalPresentationIOS,
         gestureEnabled: true,
         cardOverlayEnabled: true,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         headerStatusBarHeight: navigation.dangerouslyGetState().routes.includes(route)
           ? 0
           : undefined,

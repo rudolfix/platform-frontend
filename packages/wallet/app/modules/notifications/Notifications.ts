@@ -145,8 +145,10 @@ export class Notifications {
     const deviceId = await this.deviceInformation.getUniqueId();
     const platform = this.deviceInformation.getPlatform();
 
-    // TODO:  Remove this once the connection to the user api is established here.
-    this.logger.info(`Registering token: ${token} for device: ${deviceId} on platform ${platform}`);
+    // TODO: Remove this once the connection to the user api is established here.
+    this.logger.info(
+      `Registering token: ${token ?? "Unknown"} for device: ${deviceId} on platform ${platform}`,
+    );
   }
 
   /**

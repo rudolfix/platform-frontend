@@ -11,13 +11,17 @@ type StyleOrArrayOfStyles = Style | [unknown, SingleOrArray<Style>];
  *
  * @todo It should be possible to type it better in the future
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 const st = (...styles: StyleOrArrayOfStyles[]): object[] =>
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   flatMap(styles, style => {
     // remember to check also if first item is of primitive type
     if (Array.isArray(style) && !isObjectLike(style[0])) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return style[0] ? style[1] : [];
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return style;
   });
 

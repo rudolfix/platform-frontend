@@ -69,6 +69,7 @@ const AppLayout: React.FunctionComponent<TLayoutProps> = ({
     if (previousInitStatus === EInitStatus.IN_PROGRESS) {
       // wait for all interactions to finish before showing app
       // otherwise for a moment a white screen will appear for a user
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       InteractionManager.runAfterInteractions(() => {
         RNBootSplash.hide();
       });

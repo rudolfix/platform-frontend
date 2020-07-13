@@ -1,3 +1,4 @@
+import { UnknownObject } from "@neufund/shared-utils";
 import React from "react";
 import { compose } from "recompose";
 
@@ -15,8 +16,8 @@ const QRCodeLayout: React.FunctionComponent<TDispatchProps> = ({ processURI }) =
   <QRCodeScanner onRead={processURI} />
 );
 
-const QRCode = compose<TDispatchProps, {}>(
-  appConnect<{}, TDispatchProps>({
+const QRCode = compose<TDispatchProps, UnknownObject>(
+  appConnect<UnknownObject, TDispatchProps>({
     dispatchToProps: dispatch => ({
       processURI: uri => dispatch(walletConnectActions.connectToPeer(uri)),
     }),

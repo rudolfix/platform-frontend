@@ -36,7 +36,7 @@ const getItemPosition = (index: number, length: number) => {
  * A switcher that aligns with our design system.
  * @note `disabled` and `invalid` modes not yet implemented
  */
-const Switcher = React.forwardRef<{}, TExternalProps>(
+const Switcher = React.forwardRef<unknown, TExternalProps>(
   ({ selectedItemId, items, onChangeItem, style, ...props }, ref) => {
     // TODO: Expose consistent `ref`s for all inputs ('focus', 'blur', etc)
     React.useImperativeHandle(ref, () => ({}));

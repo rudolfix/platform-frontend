@@ -20,6 +20,7 @@ import { createAppStore } from "./store/create";
 import { TAppGlobalState } from "./store/types";
 
 if (__DEV__) {
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   import("./devUtils");
 }
 

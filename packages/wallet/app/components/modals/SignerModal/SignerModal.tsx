@@ -1,4 +1,4 @@
-import { assertNever } from "@neufund/shared-utils";
+import { assertNever, UnknownObject } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose } from "recompose";
 
@@ -55,8 +55,8 @@ const SignerModalLayout: React.FunctionComponent<TStateProps & TDispatchProps> =
   );
 };
 
-const SignerModal = compose<TStateProps & TDispatchProps, {}>(
-  appConnect<TStateProps, TDispatchProps, {}, typeof setupSignerUIModule>({
+const SignerModal = compose<TStateProps & TDispatchProps, UnknownObject>(
+  appConnect<TStateProps, TDispatchProps, UnknownObject, typeof setupSignerUIModule>({
     stateToProps: state => ({
       state: signerUIModuleApi.selectors.selectSignerUIState(state),
       request: signerUIModuleApi.selectors.selectSignerUIRequest(state),

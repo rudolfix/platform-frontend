@@ -3,6 +3,7 @@ import {
   EthereumHDPath,
   EthereumAddressWithChecksum,
   toEthereumChecksumAddress,
+  assertError,
 } from "@neufund/shared-utils";
 import { utils } from "ethers";
 import { KeyPair } from "ethers/utils/secp256k1";
@@ -45,7 +46,7 @@ class SecretNotAMnemonicError extends EthSecureEnclaveError {
 }
 
 class FailedToDerivePrivateKey extends EthSecureEnclaveError {
-  constructor(derivationPath: EthereumHDPath) {
+  constructor(derivationPath: EthereumHDPath, public reason?: Error) {
     super(`Failed to derive private key for a path ${derivationPath}`);
   }
 }
@@ -193,7 +194,9 @@ class EthSecureEnclave {
       const hdNode = utils.HDNode.fromMnemonic(secret).derivePath(derivationPath);
       return this.addSecret(hdNode.privateKey);
     } catch (e) {
-      throw new FailedToDerivePrivateKey(derivationPath);
+      assertError(e);
+
+      throw new FailedToDerivePrivateKey(derivationPath, e);
     }
   }
 

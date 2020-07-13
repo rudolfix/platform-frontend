@@ -1,4 +1,4 @@
-import { toEquityTokenSymbol } from "@neufund/shared-utils";
+import { toEquityTokenSymbol, UnknownObject } from "@neufund/shared-utils";
 import React from "react";
 import { StyleSheet } from "react-native";
 
@@ -25,7 +25,7 @@ import { EtoCard } from "./EtoCard";
 import { Header } from "./Header";
 import { Section } from "./Section";
 
-type TStateProps = {};
+type TStateProps = UnknownObject;
 
 const HomeLayout: React.FunctionComponent<TStateProps> = () => {
   const navigation = useNavigationTyped();

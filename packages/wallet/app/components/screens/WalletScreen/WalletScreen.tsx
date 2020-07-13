@@ -29,9 +29,10 @@ const WalletScreen: React.FunctionComponent = () => {
         options,
         cancelButtonIndex,
       },
-      async buttonIndex => {
+      buttonIndex => {
         if (buttonIndex === options.indexOf(viewOnEtherscan)) {
-          await Linking.openURL(etherscanTxLink(txHash));
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          Linking.openURL(etherscanTxLink(txHash));
         }
       },
     );

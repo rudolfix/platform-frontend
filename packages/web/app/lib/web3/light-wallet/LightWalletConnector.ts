@@ -12,6 +12,7 @@ import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
 import { symbols } from "../../../di/symbols";
 import { makeEthereumAddressChecksummed } from "../../../modules/web3/utils";
+import { NullBlockTracker } from "../../api/nullBlockTracker";
 import { STIPEND_ELIGIBLE_WALLETS } from "../constants";
 import { IPersonalWallet } from "../PersonalWeb3";
 import { IEthereumNetworkConfig } from "../types";
@@ -79,7 +80,7 @@ export class LightWalletConnector {
           return;
         },
       });
-      engine = new Web3ProviderEngine();
+      engine = new Web3ProviderEngine({ blockTracker: new NullBlockTracker() });
       engine.addProvider(web3Provider);
       engine.addProvider(
         new RpcSubprovider({
@@ -89,8 +90,9 @@ export class LightWalletConnector {
         }),
       );
       engine.start();
-      // stop immediately to not poll for new block which does not have any use
-      // todo: implement null block provider and pass it in opts.blockTracker
+      // we now have NullBlockTracker but without start/stop() lightWallet hangs
+      // looks like a bug in web3-provieder-engine
+      // todo: find out why
       engine.stop();
       return new Web3(engine);
     } catch (e) {

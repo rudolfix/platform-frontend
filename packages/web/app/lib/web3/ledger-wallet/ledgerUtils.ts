@@ -8,6 +8,7 @@ import * as Web3ProviderEngine from "web3-provider-engine";
 // tslint:disable-next-line
 import * as RpcSubprovider from "web3-provider-engine/subproviders/rpc";
 
+import { NullBlockTracker } from "../../api/nullBlockTracker";
 import {
   LedgerContractsDisabledError,
   LedgerNotAvailableError,
@@ -81,7 +82,7 @@ export const createWeb3WithLedgerProvider = async (
   getTransport: () => any,
   derivationPath: string,
 ): Promise<ILedgerOutput> => {
-  const engine = new Web3ProviderEngine();
+  const engine = new Web3ProviderEngine({ blockTracker: new NullBlockTracker() });
 
   const ledgerProvider = createLedgerSubprovider(getTransport, {
     networkId,
@@ -94,8 +95,10 @@ export const createWeb3WithLedgerProvider = async (
     }),
   );
   engine.start();
-  // stop immediately to not poll for new block which does not have any use
-  // todo: implement null block provider and pass it in opts.blockTracker
+  // we now have NullBlockTracker but without start/stop() ledger
+  // hangs on trying to retrieve accounts (getAccountAddressWithChecksum())
+  // looks like a bug in web3-provieder-engine
+  // todo: find out why
   engine.stop();
   const promisifiedLedgerProvider: IPromisifiedHookedWalletSubProvider = {
     approveMessage: promisify<string>(ledgerProvider.approveMessage),

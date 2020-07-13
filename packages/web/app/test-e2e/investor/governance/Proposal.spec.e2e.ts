@@ -63,7 +63,7 @@ describe("Post investment voting", () => {
     assertInvestorDashboard();
   });
 
-  it("should snow proposal voting widget details #governance #p3", () => {
+  it("should show proposal voting widget details #governance #p3", () => {
     loginFixtureAccount("INV_ICBM_ETH_M_HAS_KYC");
 
     goToInvestorProposal(PROPOSAL_ID);

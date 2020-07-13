@@ -2,6 +2,7 @@ import { compose } from "recompose";
 
 import { userHasKycAndEmailVerified } from "../../../modules/eto-flow/selectors";
 import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
+import { selectGovernanceVisible } from "../../../modules/governance/selectors";
 import { selectActiveNomineeEto } from "../../../modules/nominee-flow/selectors";
 import { appConnect } from "../../../store";
 import { accountMenuData, menuSeparatorData } from "./MenuData";
@@ -10,6 +11,7 @@ import { IMenuDataByUserType, IMobileMenuExternalProps } from "./mobileMenu/Mobi
 
 interface IIssuerMenuProps {
   userHasKycAndVerifiedEmail: boolean;
+  enableGovernanceTab: boolean;
 }
 
 interface INomineeMenuProps {
@@ -36,6 +38,7 @@ const connectIssuerMenu = <T extends {}>(
     appConnect<IIssuerMenuProps, {}, T>({
       stateToProps: state => ({
         userHasKycAndVerifiedEmail: userHasKycAndEmailVerified(state),
+        enableGovernanceTab: selectGovernanceVisible(state),
       }),
     }),
   )(WrappedComponent);

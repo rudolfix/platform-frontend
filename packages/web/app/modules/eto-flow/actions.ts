@@ -10,6 +10,7 @@ import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { TEtoWithCompanyAndContractReadonly } from "../eto/types";
 
 export const etoFlowActions = {
+  loadIssuerView: createActionFactory("ETO_FLOW_LOAD_ISSUER_VIEW"),
   loadIssuerEto: createActionFactory("ETO_FLOW_LOAD_ISSUER_ETO"),
   loadDataStop: createActionFactory("ETO_FLOW_LOAD_DATA_STOP"),
   loadProducts: createActionFactory("ETO_FLOW_LOAD_PRODUCTS"),

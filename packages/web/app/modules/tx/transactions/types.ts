@@ -2,6 +2,7 @@ import { ETxType } from "../../../lib/web3/types";
 import { Schema } from "../../../lib/yup-ts.unsafe";
 import { TUserClaimAdditionalData, UserClaimAdditionalDataSchema } from "./claim/types";
 import { EtoSetDateAdditionalDataSchema, TEtoSetDateAdditionalDataSchema } from "./eto-flow/types";
+import { ExecuteResolutionAdditionalDataSchema } from "./governance/types";
 import {
   InvestmentAdditionalDataSchema,
   InvestorSignAgreementSchema,
@@ -44,6 +45,7 @@ export const typeToSchema: Record<ETxType, Schema<unknown>> = {
   [ETxType.NOMINEE_RAAA_SIGN]: TokenAgreementContractSchema,
   [ETxType.NOMINEE_THA_SIGN]: TokenAgreementContractSchema,
   [ETxType.SHAREHOLDER_RESOLUTIONS_VOTE]: ShareholderResolutionVoteAdditionalDataSchema,
+  [ETxType.EXECUTE_RESOLUTION]: ExecuteResolutionAdditionalDataSchema,
 };
 export type TTransactionAdditionalData =
   | TInvestmentAdditionalDataYTS

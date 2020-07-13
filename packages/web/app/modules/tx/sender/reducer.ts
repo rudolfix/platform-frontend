@@ -2,8 +2,8 @@ import { Overwrite } from "@neufund/shared-utils";
 
 import { ITxData } from "../../../lib/web3/types";
 import { AppReducer } from "../../../store";
-import { actions } from "../../actions";
 import { ITxTypeWithData, TSpecificTransactionState } from "../types";
+import { txSenderActions as actions } from "./actions";
 
 export enum ETransactionErrorType {
   // Flow Specific Errors
@@ -146,12 +146,12 @@ export const txSenderReducer: AppReducer<ITxSenderState> = (
         ...state,
         state: ETxSenderState.INIT,
       };
-    case actions.txSender.setTimestamp.getType():
+    case actions.setTimestamp.getType():
       return {
         ...state,
         txTimestamp: action.payload.txTimestamp,
       };
-    case actions.txSender.txSenderClearTransactionData.getType():
+    case actions.txSenderClearTransactionData.getType():
       return {
         ...state,
         txDetails: undefined,

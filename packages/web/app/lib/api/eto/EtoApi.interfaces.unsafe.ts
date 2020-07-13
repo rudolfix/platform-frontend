@@ -511,6 +511,7 @@ interface IAdditionalEtoType {
   product: TEtoProduct;
   nomineeDisplayName?: string;
   hasDividendRights?: boolean;
+  equityTokenContractAddress: string;
 }
 
 export type TBookbuildingStatsType = {

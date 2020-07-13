@@ -5,10 +5,9 @@ import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
 import { Dropzone } from "./Dropzone";
-import { TAcceptedFileType } from "./forms/fields/utils";
+import { TAcceptedFileType } from "./forms";
 import { ResponsiveImage } from "./ResponsiveImage";
-import { Tooltip } from "./tooltips/Tooltip";
-import { ECustomTooltipTextPosition } from "./tooltips/TooltipBase";
+import { ECustomTooltipTextPosition, Tooltip } from "./tooltips";
 import { UploadedFiles } from "./UploadedFiles";
 
 import documentBothSidesImage from "../../assets/img/document-both-side.jpg";
@@ -16,6 +15,10 @@ import documentBothSidesImage2x from "../../assets/img/document-both-side@2x.jpg
 import documentBothSidesImage3x from "../../assets/img/document-both-side@3x.jpg";
 import InfoIcon from "../../assets/img/info-outline.svg";
 import * as styles from "./MultiFileUpload.module.scss";
+
+export enum EUploadType {
+  SINGLE = "single",
+}
 
 export enum EKycUploadType {
   US_ACCREDITATION = "us_accreditation",
@@ -25,27 +28,31 @@ export enum EKycUploadType {
 }
 
 interface IProps {
-  uploadType: EKycRequestType | EKycUploadType;
+  uploadType: EKycRequestType | EKycUploadType | EUploadType;
   acceptedFiles: ArrayWithAtLeastOneMember<TAcceptedFileType>;
   filesUploading: boolean;
   onDropFile: (file: File) => void;
   layout?: "horizontal" | "vertical";
   files?: ReadonlyArray<IKycFileInfo>;
   "data-test-id"?: string;
+  className?: string;
+  dropZoneWrapperClass?: string;
 }
 
-const selectTitle = (uploadType: EKycRequestType | EKycUploadType) => {
+const selectTitle = (uploadType: EKycRequestType | EKycUploadType | EUploadType) => {
   switch (uploadType) {
     case EKycUploadType.US_ACCREDITATION:
       return <FormattedMessage id="shared-component.multi-file-upload-accreditation.title" />;
     case EKycUploadType.PROOF_OF_ADDRESS:
       return <FormattedMessage id="shared-component.multi-file-upload-proof-of-address.title" />;
+    case EUploadType.SINGLE:
+      return <FormattedMessage id="shared-component.multi-file-upload-single.title" />;
     default:
       return <FormattedMessage id="shared-component.multi-file-upload.title" />;
   }
 };
 
-const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
+export const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   acceptedFiles,
   filesUploading,
   files,
@@ -53,6 +60,7 @@ const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
   onDropFile,
   uploadType,
   "data-test-id": dataTestId,
+  dropZoneWrapperClass,
   ...props
 }) => {
   const onDrop = (accepted: File[]) => accepted.forEach(onDropFile);
@@ -61,7 +69,7 @@ const MultiFileUploadComponent: React.FunctionComponent<IProps> = ({
     <div className={cn(styles.multiFileUpload, layout)} data-test-id={dataTestId}>
       <p className={styles.uploadTitle}>{selectTitle(uploadType)}</p>
       <div className={styles.uploadContainer}>
-        <div className={styles.dropzoneWrapper}>
+        <div className={cn(styles.dropzoneWrapper, dropZoneWrapperClass)}>
           <Dropzone
             data-test-id="multi-file-upload-dropzone"
             accept={acceptedFiles}
@@ -92,7 +100,7 @@ MultiFileUploadComponent.defaultProps = {
 };
 
 const MultiFileUploadInfo: React.FunctionComponent<{
-  uploadType: EKycRequestType | EKycUploadType;
+  uploadType: EKycRequestType | EKycUploadType | EUploadType;
 }> = ({ uploadType }) => {
   switch (uploadType) {
     case EKycRequestType.BUSINESS:
@@ -178,7 +186,7 @@ const MultiFileUploadInfo: React.FunctionComponent<{
 };
 
 export const MultiFileUploadGuide: React.FunctionComponent<{
-  uploadType: EKycRequestType | EKycUploadType;
+  uploadType: EKycRequestType | EKycUploadType | EUploadType;
 }> = ({ uploadType }) => {
   switch (uploadType) {
     case EKycRequestType.INDIVIDUAL:

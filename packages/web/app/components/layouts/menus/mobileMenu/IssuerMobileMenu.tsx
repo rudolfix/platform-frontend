@@ -10,7 +10,7 @@ export const IssuerMobileMenuBase = compose<
   IIssuerMenuProps & IMobileMenuExternalProps
 >(
   withProps<IMenuDataByUserType, IIssuerMenuProps>(props => ({
-    menuDataByUserType: issuerMenuData(props.userHasKycAndVerifiedEmail),
+    menuDataByUserType: issuerMenuData(props.userHasKycAndVerifiedEmail, props.enableGovernanceTab),
   })),
 )(MobileMenuInternal);
 

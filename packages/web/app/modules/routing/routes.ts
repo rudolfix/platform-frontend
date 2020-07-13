@@ -10,6 +10,7 @@ import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
 import { TEtoWithCompanyAndContract } from "../eto/types";
+import { governanceModuleApi } from "../governance/module";
 import { neuCall } from "../sagasUtils";
 import { shareholderResolutionsVotingViewModuleApi } from "../shareholder-resolutions-voting-view/module";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
@@ -78,6 +79,8 @@ export const routes = [
   loginNomineeRoute,
   restoreNomineeRoute,
 
+  governanceRoute,
+  governanceGeneralInformationRoute,
   proposalsRoute,
 
   //---test routes
@@ -233,7 +236,7 @@ export function* walletRoute(payload: RouterState): Generator<any, any, any> {
   return yield routeAction(walletMatch, {
     notAuth: undefined,
     investor: put(actions.walletView.loadWalletView()),
-    issuer: put(actions.walletView.loadWalletView()),
+    issuer: [put(actions.etoFlow.loadIssuerView()), put(actions.walletView.loadWalletView())],
     nominee: put(actions.walletView.loadWalletView()),
   });
 }
@@ -245,7 +248,7 @@ export function* documentsRoute(payload: RouterState): Generator<any, any, any> 
   return yield routeAction(documentsMatch, {
     notAuth: undefined,
     investor: undefined,
-    issuer: undefined,
+    issuer: put(actions.etoFlow.loadIssuerView()),
     nominee: put(actions.nomineeFlow.nomineeDocumentsView()),
   });
 }
@@ -258,7 +261,7 @@ export function* dashboardRoute(payload: RouterState): Generator<any, any, any> 
   return yield routeAction(dashboardMatch, {
     notAuth: undefined,
     investor: undefined,
-    issuer: undefined,
+    issuer: put(actions.etoFlow.loadIssuerStep()),
     nominee: put(actions.nomineeFlow.nomineeDashboardView()),
   });
 }
@@ -295,7 +298,7 @@ export function* profileRoute(payload: RouterState): Generator<any, any, any> {
   return yield routeAction(profileMatch, {
     notAuth: undefined,
     investor: undefined,
-    issuer: undefined,
+    issuer: put(actions.etoFlow.loadIssuerView()),
     nominee: undefined,
   });
 }
@@ -751,6 +754,42 @@ export function* fallbackRedirect(_: RouterState): Generator<any, any, any> {
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
+}
+
+export function* governanceRoute(payload: RouterState): Generator<any, any, any> {
+  const match = yield* call(() =>
+    matchPath(payload.location.pathname, {
+      path: appRoutes.governance,
+      exact: true,
+    }),
+  );
+
+  if (match !== null) {
+    return yield routeInternal({
+      notAuth: undefined,
+      investor: undefined,
+      issuer: put(actions.etoFlow.loadIssuerView()),
+      nominee: undefined,
+    });
+  }
+}
+
+export function* governanceGeneralInformationRoute(payload: RouterState): Generator<any, any, any> {
+  const match = yield* call(() =>
+    matchPath(payload.location.pathname, {
+      path: appRoutes.governanceGeneralInformation,
+      exact: true,
+    }),
+  );
+
+  if (match !== null) {
+    return yield routeInternal({
+      notAuth: undefined,
+      investor: undefined,
+      issuer: put(governanceModuleApi.actions.loadGeneralInformationView()),
+      nominee: undefined,
+    });
+  }
 }
 
 export function* proposalsRoute(payload: RouterState): Generator<any, any, any> {

@@ -4,8 +4,6 @@ export const appRoutes = {
   greypWithJurisdiction: "/:jurisdiction/greyp",
   //--------------------------------//
 
-  proposal: "/governance/proposal/:proposalId",
-
   verify: "/email-verify",
   icbmMigration: "/migrate",
   walletUnlock: "/wallet-unlock-etherlock",
@@ -45,6 +43,17 @@ export const appRoutes = {
   wallet: "/wallet",
   dashboard: "/dashboard",
   documents: "/documents",
+
+  governance: "/governance",
+  governanceOverview: "/governance/overview",
+  governanceGeneralInformation: "/governance/general-information",
+  governanceCapTable: "/governance/cap-table",
+  governanceDividends: "/governance/dividends",
+  governanceTokenManagement: "/governance/token-management",
+  governanceEsop: "/governance/esop",
+  governanceExit: "/governance/exit",
+  proposal: "/governance/proposal/:proposalId",
+
   profile: "/profile",
   demo: "/demo",
   eto: "/eto",

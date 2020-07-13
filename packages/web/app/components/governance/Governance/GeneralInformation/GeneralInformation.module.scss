@@ -1,0 +1,68 @@
+.title-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.file-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.file-list-item {
+  height: px-to-rem(64px);
+  display: flex;
+  flex-flow: row;
+  border: px-to-rem(1px) solid $neu-light-blue-grey-two;
+  border-bottom: 0;
+  padding: px-to-rem(12px) px-to-rem(20px);
+  align-items: center;
+
+  &:last-child {
+    border-bottom: px-to-rem(1px) solid $neu-light-blue-grey-two;
+  }
+}
+
+.file-icon {
+  padding: px-to-rem(6px);
+  background-color: $neu-pale-grey-three;
+  border-radius: 50%;
+}
+
+.file-details {
+  display: flex;
+  flex-flow: column;
+  flex-basis: 90%;
+  margin-left: px-to-rem(12px);
+}
+
+.file-name {
+  @include font-headline-small;
+  color: $neu-charcoal-grey;
+}
+
+.caption {
+  @include nds-helper-text;
+  color: $text-gray;
+}
+
+.file-action {
+  align-self: center;
+  white-space: nowrap;
+  color: $neu-dark-blue;
+  cursor: pointer;
+}
+
+.empty-message {
+  background-color: $neu-pale-grey-three;
+  height: px-to-rem(308px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-message-text {
+  color: $neu-shuttle-gray;
+  font-size: px-to-rem(20px);
+  font-family: $font-family-roboto;
+  font-weight: normal;
+}

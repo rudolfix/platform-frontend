@@ -672,6 +672,7 @@ export const testEto: TEtoWithCompanyAndContractReadonly = {
   equityTokenSymbol: toEquityTokenSymbol("QTT"),
   equityTokensPerShare: 10000,
   etoId: "0xfaDa8f267C054f469b52Ccbeb08250ACAAeE65dc" as EthereumAddressWithChecksum,
+  equityTokenContractAddress: "0x84A89a974273bD6C99DB2A2Dcd07C97e8C3E295f",
   existingShareCapital: 40976,
   shareCapitalCurrencyCode: "EUR",
   newShareNominalValue: 1,

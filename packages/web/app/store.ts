@@ -30,6 +30,7 @@ import { reduxLogger } from "./middlewares/redux-logger";
 import { actions, TAction } from "./modules/actions";
 import { ensurePermissionsArePresentAndRunEffect } from "./modules/auth/jwt/sagas";
 import { displayErrorModalSaga } from "./modules/generic-modal/sagas";
+import { setupGovernanceModule } from "./modules/governance/module";
 import { waitUntilSmartContractsAreInitialized } from "./modules/init/sagas";
 import { setupInstantIdModule } from "./modules/instant-id/module";
 import { setupWebNotificationUIModule } from "./modules/notification-ui/module";
@@ -88,6 +89,7 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupGasModule(),
     setupWebNotificationUIModule(),
     ...setupShareholderResolutionsVotingViewModule(),
+    setupGovernanceModule(),
     ...setupKycModule({
       ensurePermissionsArePresentAndRunEffect,
       displayErrorModalSaga,

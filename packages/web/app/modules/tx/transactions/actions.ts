@@ -51,5 +51,9 @@ export const txTransactionsActions = {
       voteInFavor,
     }),
   ),
+  startPublishResolutionUpdate: createActionFactory(
+    "TRANSACTION_START_PUBLISH_RESOLUTION_UPDATE",
+    (title: string) => ({ title }),
+  ),
   // Add here new custom sagas that represent flows
 };

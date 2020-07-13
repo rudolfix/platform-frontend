@@ -2,7 +2,7 @@ import { authModuleAPI, EKycRequestStatus, kycApi } from "@neufund/shared-module
 import { RequiredByKeys } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
-import { branch, lifecycle, renderComponent, withProps } from "recompose";
+import { branch, renderComponent, withProps } from "recompose";
 import { compose } from "redux";
 
 import {
@@ -10,7 +10,6 @@ import {
   EEtoState,
 } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
-import { actions } from "../../modules/actions";
 import { selectBackupCodesVerified } from "../../modules/auth/selectors";
 import {
   selectAreAgreementsSignedByNominee,
@@ -34,7 +33,6 @@ import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modu
 import { isOnChain } from "../../modules/eto/utils";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
-import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
@@ -49,8 +47,8 @@ import {
 } from "../shared/eto-state/ETOState";
 import { Heading } from "../shared/Heading";
 import { withContainer } from "../shared/hocs/withContainer";
-import { LoadingIndicator } from "../shared/loading-indicator/index";
-import { Tooltip } from "../shared/tooltips/Tooltip";
+import { LoadingIndicator } from "../shared/loading-indicator";
+import { Tooltip } from "../shared/tooltips";
 import { BookBuildingWidget } from "./bookBuildingWidget/BookBuildingWidget";
 import { ChooseEtoStartDateWidget } from "./chooseEtoStartDateWidget/ChooseEtoStartDateWidget";
 import { DashboardStep } from "./dashboardStep/DashboardStep";
@@ -104,10 +102,6 @@ type TVerificationSection = Omit<
   | "preEtoStartDate"
 > &
   Omit<RequiredByKeys<IComputedProps, "etoStep">, "isVerificationSectionDone">;
-
-interface IDispatchProps {
-  initEtoView: () => void;
-}
 
 const SubmitDashBoardSection: React.FunctionComponent<{
   isTermSheetSubmitted?: boolean;
@@ -312,7 +306,7 @@ const EtoDashboardLayout: React.FunctionComponent<Omit<
 
 const EtoDashboard = compose<React.FunctionComponent>(
   createErrorBoundary(ErrorBoundaryLayout),
-  appConnect<IStateProps, IDispatchProps>({
+  appConnect<IStateProps>({
     stateToProps: s => ({
       verifiedEmail: authModuleAPI.selectors.selectVerifiedUserEmail(s),
       backupCodesVerified: selectBackupCodesVerified(s),
@@ -329,25 +323,6 @@ const EtoDashboard = compose<React.FunctionComponent>(
       areAgreementsSignedByNominee: selectAreAgreementsSignedByNominee(s),
       preEtoStartDate: selectPreEtoStartDateFromContract(s),
     }),
-    dispatchToProps: dispatch => ({
-      initEtoView: () => {
-        dispatch(actions.etoFlow.loadIssuerStep());
-      },
-    }),
-  }),
-  onEnterAction<IStateProps & IDispatchProps>({
-    actionCreator: (_, props) => {
-      if (props.userHasKycAndEmailVerified) {
-        props.initEtoView();
-      }
-    },
-  }),
-  lifecycle<IStateProps & IDispatchProps, {}>({
-    componentDidUpdate(nextProps: IStateProps & IDispatchProps): void {
-      if (this.props.userHasKycAndEmailVerified !== nextProps.userHasKycAndEmailVerified) {
-        this.props.initEtoView();
-      }
-    },
   }),
   withContainer(Layout),
   withProps<IComputedProps, IStateProps>(props => {
@@ -381,29 +356,31 @@ const EtoDashboard = compose<React.FunctionComponent>(
       !(shouldViewSubmissionSection && props.isTermSheetSubmitted) &&
       props.isMarketingDataVisibleInPreview === EEtoMarketingDataVisibleInPreview.NOT_VISIBLE;
 
+    const etoStep = props.eto
+      ? selectEtoStep({
+          isVerificationSectionDone,
+          shouldViewEtoSettings,
+          isVotingRightsFilledWithAllRequired,
+          isEtoTermsFilledWithAllRequired,
+          isInvestmentFilledWithAllRequired,
+          etoState: props.eto.state,
+          etoOnChainState: isOnChain(props.eto) ? props.eto.contract.timedState : undefined,
+          isMarketingDataVisibleInPreview: props.isMarketingDataVisibleInPreview,
+          isTermSheetSubmitted: props.isTermSheetSubmitted,
+          isOfferingDocumentSubmitted: props.isOfferingDocumentSubmitted,
+          isISHASubmitted: props.isISHASubmitted,
+          isNomineeLinked: !!props.eto.nominee,
+          areAgreementsSignedByNominee: props.areAgreementsSignedByNominee,
+          preEtoStartDate: props.preEtoStartDate,
+        })
+      : EEtoStep.VERIFICATION;
+
     return {
       isVerificationSectionDone,
       shouldViewEtoSettings,
       shouldViewSubmissionSection,
       shouldViewMarketingSubmissionSection,
-      etoStep: props.eto
-        ? selectEtoStep({
-            isVerificationSectionDone,
-            shouldViewEtoSettings,
-            isVotingRightsFilledWithAllRequired,
-            isEtoTermsFilledWithAllRequired,
-            isInvestmentFilledWithAllRequired,
-            etoState: props.eto.state,
-            etoOnChainState: isOnChain(props.eto) ? props.eto.contract.timedState : undefined,
-            isMarketingDataVisibleInPreview: props.isMarketingDataVisibleInPreview,
-            isTermSheetSubmitted: props.isTermSheetSubmitted,
-            isOfferingDocumentSubmitted: props.isOfferingDocumentSubmitted,
-            isISHASubmitted: props.isISHASubmitted,
-            isNomineeLinked: !!props.eto.nominee,
-            areAgreementsSignedByNominee: props.areAgreementsSignedByNominee,
-            preEtoStartDate: props.preEtoStartDate,
-          })
-        : EEtoStep.VERIFICATION,
+      etoStep,
     };
   }),
   branch<IComputedProps>(props => props.etoStep === undefined, renderComponent(LoadingIndicator)),

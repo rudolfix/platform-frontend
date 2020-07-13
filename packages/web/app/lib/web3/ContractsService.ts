@@ -18,6 +18,7 @@ import { IdentityRegistry } from "../contracts/IdentityRegistry";
 import { IEquityToken } from "../contracts/IEquityToken";
 import { IERC223Token } from "../contracts/IERC223Token";
 import { ITokenController } from "../contracts/ITokenController";
+import { ITokenControllerHook } from "../contracts/ITokenControllerHook";
 import { ITokenExchangeRateOracle } from "../contracts/ITokenExchangeRateOracle";
 import { IVotingCenter } from "../contracts/IVotingCenter";
 import * as knownInterfaces from "../contracts/knownInterfaces.json";
@@ -191,6 +192,10 @@ export class ContractsService implements IContractsService {
     const contract = await create(ITokenController, this.web3, controllerAddress);
     this.tokenControllerCache[controllerAddress] = contract;
     return contract;
+  }
+
+  async getTokenControllerHook(equityTokenContractAddress: string): Promise<ITokenControllerHook> {
+    return await create(ITokenControllerHook, this.web3, equityTokenContractAddress);
   }
 }
 

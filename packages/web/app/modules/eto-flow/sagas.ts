@@ -27,6 +27,7 @@ import {
   selectIssuerEtoWithCompanyAndContract,
   selectNewPreEtoStartDate,
   selectPreEtoStartDateFromContract,
+  userHasKycAndEmailVerified,
 } from "./selectors";
 import { bookBuildingStatsToCsvString, createCsvDataUri, downloadFile } from "./utils";
 
@@ -122,6 +123,7 @@ export function* saveCompany(
 
     yield apiEtoService.putCompany({ ...currentIssuerCompany, ...action.payload.company });
 
+    yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error(e, "Failed to save company");
@@ -152,6 +154,7 @@ export function* saveEto(
       ...action.payload.eto,
     });
 
+    yield put(actions.etoFlow.loadIssuerEto());
     yield put(actions.routing.goToDashboard());
   } catch (e) {
     logger.error(e, "Failed to save ETO");
@@ -316,7 +319,18 @@ export function* loadIssuerStep(): Generator<any, any, any> {
   yield put(actions.kyc.kycLoadIndividualDocumentList());
 }
 
+/**
+ * Loads eto to check governance tab visibility
+ */
+export function* loadIssuerView(): Generator<any, any, any> {
+  const userKycAndEmailVerified = yield* select(userHasKycAndEmailVerified);
+  if (userKycAndEmailVerified) {
+    yield neuCall(loadIssuerEto);
+  }
+}
+
 export function* etoFlowSagas(): any {
+  yield fork(neuTakeEvery, etoFlowActions.loadIssuerView, loadIssuerView);
   yield fork(neuTakeEvery, etoFlowActions.loadIssuerEto, loadIssuerEto);
   yield fork(neuTakeEvery, etoFlowActions.saveCompanyStart, saveCompany);
   yield fork(neuTakeEvery, etoFlowActions.saveEtoStart, saveEto);

@@ -17,6 +17,7 @@ import { etoViewActions } from "./eto-view/shared/actions";
 import { etoActions } from "./eto/actions";
 import { fullPageLoadingActions } from "./full-page-loading/actions";
 import { genericModalActions } from "./generic-modal/actions";
+import { governanceModuleApi } from "./governance/module";
 import { icbmWalletBalanceModalActions } from "./icbm-wallet-balance-modal/actions";
 import { immutableStorageActions } from "./immutable-file/actions";
 import { initActions } from "./init/actions";
@@ -82,6 +83,7 @@ export const actions = {
   portfolio: portfolioActions,
   nomineeFlow: nomineeFlowActions,
   fullPageLoading: fullPageLoadingActions,
+  governance: governanceModuleApi.actions,
 };
 
 /**

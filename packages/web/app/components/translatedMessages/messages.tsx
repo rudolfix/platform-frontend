@@ -57,7 +57,8 @@ export type TranslatedMessageType =
   | ENotificationText
   | ELightWalletRestoreMessage
   | WalletConnectErrorMessage
-  | EVotingErrorMessage;
+  | EVotingErrorMessage
+  | EGovernanceErrorMessage;
 
 export enum GenericErrorMessage {
   GENERIC_ERROR = "genericError",
@@ -326,6 +327,10 @@ export enum ENotificationText {
 
 export enum TestMessage {
   TEST_MESSAGE = "testMessage",
+}
+
+export enum EGovernanceErrorMessage {
+  CONTRACT_VERSION_NOT_SUPPORTED = "contractVersionNotSupported",
 }
 
 const getMessageTranslation = ({ messageType, messageData }: TMessage): TTranslatedString => {
@@ -816,6 +821,9 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
 
     case EVotingErrorMessage.FAILED_TO_LOAD_PROPOSAL:
       return <FormattedMessage id="voting.failed-to-load-proposal" />;
+
+    case EGovernanceErrorMessage.CONTRACT_VERSION_NOT_SUPPORTED:
+      return <FormattedMessage id="modules.governance.contract-version-not-supported" />;
 
     // NEVER DO THIS! This is only for tests, so that we don't bloat locales.json with test strings!
     case TestMessage.TEST_MESSAGE:

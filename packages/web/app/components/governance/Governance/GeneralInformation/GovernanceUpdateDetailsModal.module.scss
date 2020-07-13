@@ -1,0 +1,43 @@
+.title {
+  @include nds-headline-4;
+  margin-bottom: 0;
+}
+
+.caption {
+  @include nds-body-small;
+  color: $neu-shuttle-gray;
+}
+
+.message {
+  @include font-headline-small-roboto;
+}
+
+.download {
+  @include nds-input-label;
+  color: $neu-charcoal-grey;
+  margin-bottom: px-to-rem(8px);
+}
+
+.size {
+  @include nds-body-small;
+  color: $text-gray;
+}
+
+.body {
+  display: grid;
+  grid-gap: px-to-rem(24px);
+  padding-left: px-to-rem(39px);
+  padding-right: px-to-rem(39px);
+  padding-bottom: px-to-rem(23px);
+}
+
+.download-row {
+  display: flex;
+}
+
+.download-icon {
+  width: px-to-rem(24px);
+  height: px-to-rem(24px);
+  padding: px-to-rem(5px);
+  margin-right: px-to-rem(8px);
+}

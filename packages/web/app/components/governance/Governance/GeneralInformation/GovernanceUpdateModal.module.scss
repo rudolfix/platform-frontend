@@ -1,0 +1,68 @@
+.title {
+  @include nds-headline-4;
+  margin-bottom: 0;
+}
+
+.modal {
+  box-shadow: none;
+}
+
+.modal-body {
+  @include media-breakpoint-down(sm) {
+    padding-left: px-to-rem(12px);
+    padding-right: px-to-rem(12px);
+  }
+
+  padding-left: px-to-rem(55px);
+  padding-right: px-to-rem(55px);
+  display: grid;
+  grid-gap: 16px;
+}
+
+.save-as-draft {
+  margin-right: px-to-rem(16px);
+}
+
+.drop-zone-wrapper,
+.drop-zone {
+  width: 100%;
+}
+
+.after-upload-message {
+  @include nds-body-small;
+  background-color: $neu-pale-grey-three;
+  border: 1px solid $neu-light-blue-grey-two;
+  padding: px-to-rem(24px);
+  color: $neu-shuttle-gray;
+  line-height: px-to-rem(20px);
+  margin-bottom: 0;
+}
+
+.field-title {
+  @include nds-input-label;
+  margin-bottom: 0;
+}
+
+.uploaded-file {
+  @include nds-body-small;
+  color: $neu-charcoal-grey;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.delete-button {
+  width: px-to-rem(24px);
+  height: px-to-rem(24px);
+
+  & path {
+    stroke: $neu-flamingo-red;
+    fill: $neu-white;
+  }
+}
+
+.multi-file-upload-layout {
+  p {
+    margin-bottom: 0;
+  }
+}

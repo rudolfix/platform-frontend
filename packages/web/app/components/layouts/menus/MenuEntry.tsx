@@ -114,6 +114,7 @@ export const MenuEntryDisabled: React.FunctionComponent<IMenuEntryDisabled &
         : cn(styles.dropdownMenuItem, styles.dropdownMenuItemDisabled)
     }
     data-test-id={dataTestId}
+    aria-disabled
   >
     <MenuEntryContent
       menuRenderingType={menuRenderingType}

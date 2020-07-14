@@ -13,6 +13,7 @@ import { TEtoWithCompanyAndContract } from "../eto/types";
 import { governanceModuleApi } from "../governance/module";
 import { neuCall } from "../sagasUtils";
 import { shareholderResolutionsVotingViewModuleApi } from "../shareholder-resolutions-voting-view/module";
+import { portfolioDetailsRoute, portfolioRoute } from "./portfolio.RouteEffects";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
 import { walletSelectorRegisterRedirect } from "./redirects/utils";
 import { GREYP_PREVIEW_CODE, routeAction, routeInternal } from "./sagas";
@@ -21,7 +22,7 @@ import {
   TEtoPublicViewLegacyRouteMatch,
   TEtoViewByIdMatch,
   TEtoViewByPreviewCodeMatch,
-  TShareholderResolutionsVotingRoute,
+  TShareholderResolutionsVotingRoute
 } from "./types";
 
 export const routes = [
@@ -54,7 +55,10 @@ export const routes = [
   profileRoute,
   etoRegister,
   etoWidgetViewRoute,
+
   portfolioRoute,
+  portfolioDetailsRoute,
+
   icbmMigrationRoute,
   walletUnlockRoute,
   walletRoute,
@@ -190,18 +194,6 @@ export function* etoWidgetViewRoute(payload: RouterState): Generator<any, any, a
     investor: undefined,
     issuer: undefined,
     nominee: undefined,
-  });
-}
-
-export function* portfolioRoute(payload: RouterState): Generator<any, any, any> {
-  const portfolioMatch = yield matchPath(payload.location.pathname, {
-    path: appRoutes.portfolio,
-  });
-  return yield routeAction(portfolioMatch, {
-    notAuth: undefined,
-    investor: undefined,
-    issuer: put(actions.routing.goToDashboard()),
-    nominee: put(actions.routing.goToDashboard()),
   });
 }
 

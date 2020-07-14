@@ -61,6 +61,7 @@ export const appRoutes = {
   etoRegister: "/eto/registration",
 
   portfolio: "/portfolio",
+  portfolioDetails: "/portfolio/:tokenName",
 
   unsubscription: "/unsubscription/:email",
   unsubscriptionSuccess: "/unsubscription/success",

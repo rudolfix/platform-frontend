@@ -9,6 +9,9 @@ export const etoPublicViewLink = (previewCode: string, jurisdiction: string) =>
     jurisdiction,
   });
 
+export const portfolioDetailsLink = (tokenName: string) =>
+  withParams(appRoutes.portfolioDetails, { tokenName });
+
 export const icoMonitorEtoLink = (etoId: string) =>
   withParams(externalRoutes.icoMonitorEto, { etoId });
 

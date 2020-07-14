@@ -20,7 +20,7 @@ import {
 import { TETOWithTokenData } from "../../modules/investor-portfolio/types";
 import { selectNeuPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../store";
-import { etoPublicViewLink } from "../appRouteUtils";
+import { etoPublicViewLink, portfolioDetailsLink } from "../appRouteUtils";
 import { Container } from "../layouts/Container";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
 import { Heading } from "../shared/Heading";
@@ -137,59 +137,64 @@ const prepareTableRowData = (
         tokenData,
         equityTokenSymbol,
         contract,
-      }) => ({
-        tokenInfo: (
-          <TokenDetails
-            etoLink={etoPublicViewLink(previewCode, product.jurisdiction)}
-            equityTokenName={equityTokenName}
-            equityTokenSymbol={equityTokenSymbol}
-            equityTokenImage={equityTokenImage}
-            data-test-id={`portfolio-my-assets-token-${etoId}`}
-          />
-        ),
+      }) => {
+        const toEtoPublicView = etoPublicViewLink(previewCode, product.jurisdiction);
+        const toPortfolioDetails = portfolioDetailsLink(equityTokenName);
 
-        quantity: (
-          <span data-test-id={`portfolio-my-assets-token-balance-${etoId}`}>
-            <FormatNumber
-              value={tokenData.balanceUlps}
-              inputFormat={ENumberInputFormat.DECIMAL}
-              outputFormat={ENumberOutputFormat.INTEGER}
+        return {
+          tokenInfo: (
+            <TokenDetails
+              etoLink={toPortfolioDetails}
+              equityTokenName={equityTokenName}
+              equityTokenSymbol={equityTokenSymbol}
+              equityTokenImage={equityTokenImage}
+              data-test-id={`portfolio-my-assets-token-${etoId}`}
             />
-          </span>
-        ),
+          ),
 
-        value: (
-          <Eur
-            value={multiplyBigNumbers([
-              tokenData.tokenPrice,
-              convertFromUlps(tokenData.balanceUlps, tokenData.balanceDecimals),
-            ])}
-          />
-        ),
+          quantity: (
+            <span data-test-id={`portfolio-my-assets-token-balance-${etoId}`}>
+              <FormatNumber
+                value={tokenData.balanceUlps}
+                inputFormat={ENumberInputFormat.DECIMAL}
+                outputFormat={ENumberOutputFormat.INTEGER}
+              />
+            </span>
+          ),
 
-        currentPrice: <Eur value={tokenData.tokenPrice} />,
-        actions: (
-          <>
-            <Button
-              onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
-              layout={EButtonLayout.SECONDARY}
-              data-test-id={`modals.portfolio.portfolio-assets.download-agreements-${etoId}`}
-              className="mr-3"
-            >
-              <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
-            </Button>
-            <Button
-              disabled={!tokenData.canTransferToken}
-              data-test-id={`modals.portfolio.portfolio-assets.send-token-${etoId}`}
-              className="text-center"
-              onClick={() => startTokenTransfer(contract!.equityTokenAddress, equityTokenImage)}
-              layout={EButtonLayout.PRIMARY}
-            >
-              <FormattedMessage id="portfolio.section.my-assets.send" />
-            </Button>
-          </>
-        ),
-      }),
+          value: (
+            <Eur
+              value={multiplyBigNumbers([
+                tokenData.tokenPrice,
+                convertFromUlps(tokenData.balanceUlps, tokenData.balanceDecimals),
+              ])}
+            />
+          ),
+
+          currentPrice: <Eur value={tokenData.tokenPrice} />,
+          actions: (
+            <>
+              <Button
+                onClick={() => showDownloadAgreementModal(etoId, isRetailEto)}
+                layout={EButtonLayout.SECONDARY}
+                data-test-id={`modals.portfolio.portfolio-assets.download-agreements-${etoId}`}
+                className="mr-3"
+              >
+                <FormattedMessage id="portfolio.section.my-assets.download-agreements" />
+              </Button>
+              <Button
+                disabled={!tokenData.canTransferToken}
+                data-test-id={`modals.portfolio.portfolio-assets.send-token-${etoId}`}
+                className="text-center"
+                onClick={() => startTokenTransfer(contract!.equityTokenAddress, equityTokenImage)}
+                layout={EButtonLayout.PRIMARY}
+              >
+                <FormattedMessage id="portfolio.section.my-assets.send" />
+              </Button>
+            </>
+          ),
+        };
+      },
     );
 
   return [...myNeu, ...assets];

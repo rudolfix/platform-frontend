@@ -18,6 +18,7 @@ import { Kyc } from "./kyc/Kyc";
 import { Landing } from "./landing/Landing";
 import { NomineeDashboard } from "./nominee-dashboard/NomineeDashboard";
 import { Portfolio } from "./portfolio/Portfolio";
+import { PortfolioDetails } from "./portfolio/PortfolioDetails/PortfolioDetails";
 import { BackupSeed } from "./settings/backup-seed/BackupSeed";
 import { EmailVerify } from "./settings/EmailVerify";
 import { profileRoutes } from "./settings/routes";
@@ -71,8 +72,13 @@ export const AppRouter: React.FunctionComponent = () => (
     )}
     ,{/* only investors routes */}
     {process.env.NF_PORTFOLIO_PAGE_VISIBLE === "1" && (
-      <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} />
+      <OnlyAuthorizedRoute path={appRoutes.portfolio} investorComponent={Portfolio} exact />
     )}
+    <OnlyAuthorizedRoute
+      path={appRoutes.portfolioDetails}
+      investorComponent={PortfolioDetails}
+      exact
+    />
     <OnlyAuthorizedRoute path={appRoutes.icbmMigration} investorComponent={MigrationFromLink} />
     <OnlyAuthorizedRoute
       path={appRoutes.walletUnlock}

@@ -1,5 +1,5 @@
 import { EWalletSubType } from "@neufund/shared-modules";
-import { EthereumNetworkId, promisify } from "@neufund/shared-utils";
+import { EthereumNetworkId } from "@neufund/shared-utils";
 import { injectable } from "inversify";
 import * as Web3 from "web3";
 
@@ -56,6 +56,7 @@ export class BrowserWalletConnector {
     if (networkId !== personalWeb3NetworkId) {
       throw new BrowserWalletMismatchedNetworkError(networkId, personalWeb3NetworkId);
     }
+
     // TODO: this ugly code will be straighten when we drop suport for outdated Metamask versions - see github issue 1702
     if (!(await web3Adapter.getAccountAddress())) {
       if (isLatestMetaMask) {
@@ -86,19 +87,19 @@ export class BrowserWalletConnector {
 
     return new BrowserWallet(web3Adapter, walletType, ethereumAddress);
   };
+
   private getBrowserWalletType = async (web3: Web3): Promise<EWalletSubType> => {
-    const nodeIdString = await promisify<string>(web3.version.getNode)();
-    const matchNodeIdString = nodeIdString.toLowerCase();
-    // safe will yield to metamask so order does not matter
-    if ((web3.currentProvider as any).isSafe === true) {
-      return EWalletSubType.GNOSIS;
-    }
-    if (matchNodeIdString.includes("metamask")) {
+    const currentProvider = web3.currentProvider as any;
+
+    if (currentProvider.isMetaMask) {
       return EWalletSubType.METAMASK;
     }
-    if (matchNodeIdString.includes("parity")) {
-      return EWalletSubType.PARITY;
+
+    // safe will yield to metamask so order does not matter
+    if (currentProvider.isSafe === true) {
+      return EWalletSubType.GNOSIS;
     }
+
     return EWalletSubType.UNKNOWN;
   };
 }

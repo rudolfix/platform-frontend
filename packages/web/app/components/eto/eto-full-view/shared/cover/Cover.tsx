@@ -1,9 +1,9 @@
 import { Image, ISrcSet } from "@neufund/design-system";
+import { EJurisdiction } from "@neufund/shared-modules";
 import { COMPANY_TAGS_LIMIT } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 
-import { EJurisdiction } from "../../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TTranslatedString } from "../../../../../types";
 import { Container, EColumnSpan, EContainerType } from "../../../../layouts/Container";
 import { Tag } from "../../../../shared/Tag";

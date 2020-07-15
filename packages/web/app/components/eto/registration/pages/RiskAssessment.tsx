@@ -1,20 +1,20 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import {
+  EEtoFormTypes,
+  EtoRiskAssessmentType,
+  TPartialCompanyEtoData,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import {
-  EtoRiskAssessmentType,
-  TPartialCompanyEtoData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
 import {
   selectIssuerCompany,
   selectIssuerEtoLoading,
   selectIssuerEtoSaving,
 } from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../store";
 import { FormFieldBoolean, FormTextArea } from "../../../shared/forms";
 import { EtoFormBase } from "../EtoFormBase";

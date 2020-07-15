@@ -1,9 +1,9 @@
 import { EButtonLayout, EIconPosition } from "@neufund/design-system";
+import { ITokenDisbursal } from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import { appRoutes } from "../../../appRoutes";
 import { ButtonLink } from "../../../shared/buttons";
 import { ETheme } from "../../../shared/formatters/Money";

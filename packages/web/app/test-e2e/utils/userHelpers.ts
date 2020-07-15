@@ -1,4 +1,4 @@
-import { IUser } from "@neufund/shared-modules";
+import { IUser, TEtoDataWithCompany } from "@neufund/shared-modules";
 import {
   createLightWalletWithKeyPair,
   createUser,
@@ -8,7 +8,6 @@ import {
 } from "@neufund/shared-modules/tests";
 import { toCamelCase } from "@neufund/shared-utils";
 
-import { TEtoDataWithCompany } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { OOO_TRANSACTION_TYPE, TxPendingWithMetadata } from "../../lib/api/users-tx/interfaces";
 import { getVaultKey } from "../../modules/wallet-selector/light-wizard/utils";
 import { assertLanding } from "./assertions";

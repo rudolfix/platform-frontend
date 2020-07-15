@@ -1,4 +1,9 @@
-import { EKycRequestStatus, EUserType, EWalletType } from "@neufund/shared-modules";
+import {
+  EETOStateOnChain,
+  EKycRequestStatus,
+  EUserType,
+  EWalletType,
+} from "@neufund/shared-modules";
 import {
   convertFromUlps,
   DeepPartial,
@@ -16,7 +21,6 @@ import {
   testEto,
 } from "../../../../../test/fixtures";
 import { ETxType } from "../../../../lib/web3/types";
-import { EETOStateOnChain } from "../../../../modules/eto/types";
 import { EInvestmentType } from "../../../../modules/investment-flow/reducer";
 import { ETxSenderState } from "../../../../modules/tx/sender/reducer";
 import { EValidationState } from "../../../../modules/tx/validator/reducer";
@@ -218,7 +222,7 @@ const baseStore = {
       },
     },
   },
-  bookBuildingFlow: {
+  bookbuilding: {
     pledges: {},
   },
   investmentFlow: {
@@ -234,7 +238,7 @@ const baseStore = {
       priceOutdated: false,
     },
   },
-  investorTickets: {
+  investorPortfolio: {
     calculatedContributions: {},
     initialCalculatedContributions: {},
     investorEtoTickets: {

@@ -1,5 +1,10 @@
 import { Eth, EurToken } from "@neufund/design-system";
 import {
+  EETOStateOnChain,
+  etoModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import {
   convertToUlps,
   divideBigNumbers,
   ENumberInputFormat,
@@ -10,11 +15,6 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
 
-import { selectEtoOnChainStateById } from "../../../../modules/eto/selectors";
-import {
-  EETOStateOnChain,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../../../modules/eto/types";
 import { selectEtherPriceEur } from "../../../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../../../store";
 import { FormatNumber } from "../../../shared/formatters/FormatNumber";
@@ -106,7 +106,9 @@ const EtoMaxCapExceededWidget = compose<IExternalProps & IStateProps & IWithProp
   appConnect<IStateProps, {}, IExternalProps>({
     stateToProps: (state, props) => ({
       etherPriceEur: selectEtherPriceEur(state),
-      isPreEto: selectEtoOnChainStateById(state, props.eto.etoId) === EETOStateOnChain.Whitelist,
+      isPreEto:
+        etoModuleApi.selectors.selectEtoOnChainStateById(state, props.eto.etoId) ===
+        EETOStateOnChain.Whitelist,
     }),
   }),
   withProps<IWithProps, IStateProps & IExternalProps>(({ eto }) => {

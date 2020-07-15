@@ -1,4 +1,4 @@
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 
 export const ShareholderResolutionVoteAdditionalDataSchema = YupTS.object({
   voteInFavor: YupTS.boolean(),
@@ -6,6 +6,6 @@ export const ShareholderResolutionVoteAdditionalDataSchema = YupTS.object({
   proposalTitle: YupTS.string(),
 });
 
-export type TShareholderResolutionVoteAdditionalData = YupTS.TypeOf<
+export type TShareholderResolutionVoteAdditionalData = TypeOfYTS<
   typeof ShareholderResolutionVoteAdditionalDataSchema
 >;

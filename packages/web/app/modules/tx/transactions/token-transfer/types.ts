@@ -1,6 +1,5 @@
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 import { EquityToken } from "@neufund/shared-utils";
-
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
 
 export type TTokenTransferAdditionalData = {
   to: string;
@@ -22,4 +21,4 @@ export const TokenTransferAdditionalDataSchema = YupTS.object({
   tokenDecimals: YupTS.number(),
 });
 
-export type TokenTransferAdditionalData = YupTS.TypeOf<typeof TokenTransferAdditionalDataSchema>;
+export type TokenTransferAdditionalData = TypeOfYTS<typeof TokenTransferAdditionalDataSchema>;

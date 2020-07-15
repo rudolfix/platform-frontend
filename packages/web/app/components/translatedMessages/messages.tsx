@@ -1,8 +1,10 @@
 import { Eur, WholeEur } from "@neufund/design-system";
 import {
+  BookbuildingMessage,
   EKycRequestStatusTranslation,
   ETxHistoryMessage,
   EWalletSubType,
+  InvestorPortfolioMessage,
   KycFlowMessage,
 } from "@neufund/shared-modules";
 import { assertNever } from "@neufund/shared-utils";
@@ -19,6 +21,7 @@ interface ITranslationValues {
 
 export type TranslatedMessageType =
   | EtoFlowMessage
+  | BookbuildingMessage
   | BankTransferFlowMessage
   | GenericErrorMessage
   | GenericModalMessage
@@ -31,7 +34,6 @@ export type TranslatedMessageType =
   | MismatchedWalletAddressErrorMessage
   | BackupRecoveryMessage
   | ToSMessage
-  | BookbuildingFlowMessage
   | EtoDocumentsMessage
   | KycFlowMessage
   | AuthMessage
@@ -143,22 +145,6 @@ export enum ToSMessage {
 
 export enum BankTransferFlowMessage {
   BANK_TRANSFER_FLOW_ERROR = "bankTransferFlowError",
-}
-
-export enum BookbuildingFlowMessage {
-  PLEDGE_FLOW_CONFIRM_PLEDGE = "pledgeFlowConfirmPledge",
-  PLEDGE_FLOW_PLEDGE_DESCRIPTION = "pledgeFlowPledgeDescription",
-  PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE = "pledgeFlowFailedToSavePledge",
-  PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL = "pledgeFlowConfirmPledgeRemoval",
-  PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION = "pledgeFlowConfirmPledgeRemovalDescription",
-  PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED = "pledgeFlowPledgeRemovalFailed",
-  PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS = "pledgeFlowFailedToGetBookbuildingStats",
-  PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE = "pledgeFlowFailedToLoadPledge",
-}
-
-export enum InvestorPortfolioMessage {
-  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES = "investorPortfolioFailedToLoadClaimables",
-  INVESTOR_PORTFOLIO_FAILED_TO_LOAD_INCOMING_PAYOUTS = "investorPortfolioFailedToLoadIncomingPayouts",
 }
 
 export enum EtoFlowMessage {
@@ -442,23 +428,23 @@ const getMessageTranslation = ({ messageType, messageData }: TMessage): TTransla
     case ToSMessage.TOS_ACCEPT_PERMISSION_TEXT:
       return <FormattedMessage id="settings.modal.accept-tos.permission.text" />;
 
-    case BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE:
+    case BookbuildingMessage.PLEDGE_FLOW_CONFIRM_PLEDGE:
       return <FormattedMessage id="eto.overview.permission-modal.confirm-pledge" />;
-    case BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_DESCRIPTION:
+    case BookbuildingMessage.PLEDGE_FLOW_PLEDGE_DESCRIPTION:
       return <FormattedMessage id="eto.overview.permission-modal.confirm-pledge-description" />;
-    case BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE:
+    case BookbuildingMessage.PLEDGE_FLOW_FAILED_TO_SAVE_PLEDGE:
       return <FormattedMessage id="eto.overview.error-notification.failed-to-save-pledge" />;
-    case BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL:
+    case BookbuildingMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL:
       return <FormattedMessage id="eto.overview.permission-modal.confirm-pledge-removal" />;
-    case BookbuildingFlowMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION:
+    case BookbuildingMessage.PLEDGE_FLOW_CONFIRM_PLEDGE_REMOVAL_DESCRIPTION:
       return (
         <FormattedMessage id="eto.overview.permission-modal.confirm-pledge-description-removal" />
       );
-    case BookbuildingFlowMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED:
+    case BookbuildingMessage.PLEDGE_FLOW_PLEDGE_REMOVAL_FAILED:
       return <FormattedMessage id="eto.overview.error-notification.failed-to-delete-pledge" />;
-    case BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS:
+    case BookbuildingMessage.PLEDGE_FLOW_FAILED_TO_GET_BOOKBUILDING_STATS:
       return <FormattedMessage id="eto.overview.error-notification.failed-to-bookbuilding-stats" />;
-    case BookbuildingFlowMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE:
+    case BookbuildingMessage.PLEDGE_FLOW_FAILED_TO_LOAD_PLEDGE:
       return <FormattedMessage id="eto.overview.error-notification.failed-to-load-pledge" />;
 
     case EtoDocumentsMessage.ETO_DOCUMENTS_CONFIRM_UPLOAD_DOCUMENT_TITLE:

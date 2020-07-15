@@ -1,7 +1,7 @@
+import { EEtoDocumentType } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 
-import { EEtoDocumentType } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { DropFileEventHandler, Dropzone } from "../../shared/Dropzone";
 
 import * as styles from "./EtoAddDocument.module.scss";

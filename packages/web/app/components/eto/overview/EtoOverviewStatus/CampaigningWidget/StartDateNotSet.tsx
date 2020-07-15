@@ -1,7 +1,7 @@
+import { EETOStateOnChain } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EETOStateOnChain } from "../../../../../modules/eto/types";
 import { generalStateToName } from "../../../../shared/eto-state/ETOState";
 
 type TExternalProps = { nextState: EETOStateOnChain };

@@ -1,4 +1,9 @@
 import {
+  etoModuleApi,
+  TEtoInvestmentCalculatedValues,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import {
   EAbbreviatedNumberOutputFormat,
   ECurrency,
   ENumberInputFormat,
@@ -6,9 +11,6 @@ import {
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoInvestmentCalculatedValues } from "../../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/eto/types";
-import { getEtoEurMaxTarget, getEtoEurMinTarget } from "../../../../../../modules/eto/utils";
 import { Entry } from "../../../../../shared/Entry";
 import { MoneyRange } from "../../../../../shared/formatters/MoneyRange";
 import { Tooltip } from "../../../../../shared/tooltips/Tooltip";
@@ -77,8 +79,8 @@ const InvestmentAmountRange: React.FunctionComponent<TRangeProps> = ({
 };
 
 const InvestmentAmount: React.FunctionComponent<TExternalProps> = ({ eto }) => {
-  const minTarget = getEtoEurMinTarget(eto);
-  const maxTarget = getEtoEurMaxTarget(eto);
+  const minTarget = etoModuleApi.utils.getEtoEurMinTarget(eto);
+  const maxTarget = etoModuleApi.utils.getEtoEurMaxTarget(eto);
 
   return (
     <Entry

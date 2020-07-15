@@ -1,5 +1,6 @@
+import { SchemaYTS } from "@neufund/shared-modules";
+
 import { ETxType } from "../../../lib/web3/types";
-import { Schema } from "../../../lib/yup-ts.unsafe";
 import { TUserClaimAdditionalData, UserClaimAdditionalDataSchema } from "./claim/types";
 import { EtoSetDateAdditionalDataSchema, TEtoSetDateAdditionalDataSchema } from "./eto-flow/types";
 import { ExecuteResolutionAdditionalDataSchema } from "./governance/types";
@@ -28,7 +29,7 @@ import { TUnlockAdditionalDataYTS, UnlockAdditionalDataSchema } from "./unlock/t
 import { TUpgradeAdditionalDataYTS, UpgradeAdditionalDataSchema } from "./upgrade/types";
 import { TWithdrawAdditionalData, WithdrawAdditionalDataSchema } from "./withdraw/types";
 
-export const typeToSchema: Record<ETxType, Schema<unknown>> = {
+export const typeToSchema: Record<ETxType, SchemaYTS<unknown>> = {
   [ETxType.INVEST]: InvestmentAdditionalDataSchema,
   [ETxType.USER_CLAIM]: UserClaimAdditionalDataSchema,
   [ETxType.INVESTOR_REDISTRIBUTE_PAYOUT]: InvestorAcceptPayoutAdditionalDataSchema,

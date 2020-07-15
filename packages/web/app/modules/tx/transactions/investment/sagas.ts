@@ -1,5 +1,10 @@
 import { fork, put, select, take } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import {
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+  walletApi,
+} from "@neufund/shared-modules";
 import { compareBigNumbers } from "@neufund/shared-utils";
 import { BigNumber } from "bignumber.js";
 
@@ -7,8 +12,6 @@ import { TGlobalDependencies } from "../../../../di/setupBindings";
 import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
-import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../eto/types";
 import { EInvestmentType } from "../../../investment-flow/reducer";
 import { onInvestmentTxModalHide } from "../../../investment-flow/sagas";
 import {
@@ -18,10 +21,6 @@ import {
   selectInvestmentType,
   selectIsICBMInvestment,
 } from "../../../investment-flow/selectors";
-import {
-  selectEquityTokenCountByEtoId,
-  selectNeuRewardUlpsByEtoId,
-} from "../../../investor-portfolio/selectors";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../shared/tokenPrice/selectors";
 import { selectEthereumAddress } from "../../../web3/selectors";
@@ -127,17 +126,17 @@ function* investmentFlowGenerator(): Generator<any, any, any> {
 
   const etoId: string = yield select(selectInvestmentEtoId);
   const eto: TEtoWithCompanyAndContractReadonly = yield select((state: TAppGlobalState) =>
-    selectEtoWithCompanyAndContractById(state, etoId),
+    etoModuleApi.selectors.selectEtoWithCompanyAndContractById(state, etoId),
   );
 
   const investmentEth: string = yield select(selectInvestmentEthValueUlps);
   const investmentEur: string = yield select(selectInvestmentEurValue);
   const gasCostEth: string = yield select(selectTxGasCostEthUlps);
   const equityTokens: string = yield select((state: TAppGlobalState) =>
-    selectEquityTokenCountByEtoId(state, etoId),
+    investorPortfolioModuleApi.selectors.selectEquityTokenCountByEtoId(state, etoId),
   );
   const estimatedReward: string = yield select((state: TAppGlobalState) =>
-    selectNeuRewardUlpsByEtoId(state, etoId),
+    investorPortfolioModuleApi.selectors.selectNeuRewardUlpsByEtoId(state, etoId),
   );
 
   const etherPriceEur: string = yield select(selectEtherPriceEur);

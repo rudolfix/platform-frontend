@@ -1,15 +1,15 @@
+import {
+  EETOStateOnChain,
+  etoModuleApi,
+  TEtoWithCompanyAndContract,
+  TEtoWithCompanyAndContractReadonly,
+  TNomineeRequestResponse,
+} from "@neufund/shared-modules";
 import { isString } from "lodash/fp";
 import * as queryString from "query-string";
 
 import { ENomineeRequestStatusTranslation } from "../../components/translatedMessages/messages";
 import { createMessage, TMessage } from "../../components/translatedMessages/utils";
-import { TNomineeRequestResponse } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EETOStateOnChain,
-  TEtoWithCompanyAndContract,
-  TEtoWithCompanyAndContractReadonly,
-} from "../eto/types";
-import { isOnChain } from "../eto/utils";
 import { lazyLoadIpfsOnlyHash } from "./lazy";
 import {
   ENomineeEtoSpecificTask,
@@ -100,12 +100,13 @@ export const nomineeIsEligibleToSignTHAOrRAA = (
   nomineeEto: TEtoWithCompanyAndContractReadonly | undefined,
 ) =>
   !!nomineeEto &&
-  isOnChain(nomineeEto) &&
+  etoModuleApi.utils.isOnChain(nomineeEto) &&
   nomineeEto.contract.timedState === EETOStateOnChain.Setup &&
   nomineeEto.contract.startOfStates[EETOStateOnChain.Whitelist] === undefined;
 
 export const nomineeIsEligibleToSignISHA = (nomineeEto: TEtoWithCompanyAndContractReadonly) =>
-  isOnChain(nomineeEto) && nomineeEto.contract.timedState === EETOStateOnChain.Signing;
+  etoModuleApi.utils.isOnChain(nomineeEto) &&
+  nomineeEto.contract.timedState === EETOStateOnChain.Signing;
 
 export type TGetNomineeTaskStepData = {
   activeEtoPreviewCode: string | undefined;

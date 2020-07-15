@@ -1,12 +1,12 @@
 import { fork, put, select } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import { generateRandomEthereumAddress, walletApi } from "@neufund/shared-modules";
 import { convertFromUlps, multiplyBigNumbers, subtractBigNumbers } from "@neufund/shared-utils";
 
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
 import { ETxType, ITxData } from "../../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../../actions";
 import { neuCall, neuDebounce } from "../../../../sagasUtils";
-import { generateRandomEthereumAddress, isAddressValid } from "../../../../web3/utils";
+import { isAddressValid } from "../../../../web3/utils";
 import { generateEthWithdrawTransaction } from "../../../transactions/withdraw/sagas";
 import { SmartContractDoesNotAcceptEtherError } from "../../../validator/transfer/withdraw/errors";
 import { isAddressValidAcceptsEther } from "../../../validator/transfer/withdraw/sagas";

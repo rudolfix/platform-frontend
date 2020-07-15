@@ -1,4 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { TPartialEtoSpecData } from "@neufund/shared-modules";
 import {
   ENumberInputFormat,
   ENumberOutputFormat,
@@ -12,7 +13,6 @@ import {
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TPartialEtoSpecData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { FormFieldLabel } from "../../../../shared/forms/fields/FormFieldLabel";
 import { FormStaticRadioButton } from "../../../../shared/forms/fields/FormStaticRadioButton";
 import {

@@ -1,8 +1,8 @@
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 import * as Yup from "yup";
 
 import { ETxType } from "../../../lib/web3/types";
 import { ETransactionErrorType, ETxSenderState } from "../../../modules/tx/sender/reducer";
-import * as YupTS from "../../yup-ts.unsafe";
 
 export const OOO_TRANSACTION_TYPE = "mempool";
 
@@ -47,9 +47,9 @@ const PendingTxsSchema = YupTS.object({
   oooTransactions: YupTS.array(TxPendingExternalSchema),
 });
 
-export type TxPendingData = YupTS.TypeOf<typeof TxPendingDataSchema>;
-export type TxPendingExternal = YupTS.TypeOf<typeof TxPendingExternalSchema>;
-export type TxPendingWithMetadata = YupTS.TypeOf<typeof TxPendingWithMetadataSchema> & {
+export type TxPendingData = TypeOfYTS<typeof TxPendingDataSchema>;
+export type TxPendingExternal = TypeOfYTS<typeof TxPendingExternalSchema>;
+export type TxPendingWithMetadata = TypeOfYTS<typeof TxPendingWithMetadataSchema> & {
   transactionAdditionalData?: any;
 };
-export type TPendingTxs = YupTS.TypeOf<typeof PendingTxsSchema>;
+export type TPendingTxs = TypeOfYTS<typeof PendingTxsSchema>;

@@ -1,8 +1,7 @@
-import { kycApi } from "@neufund/shared-modules";
+import { kycApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as React from "react";
 import { compose } from "recompose";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectActiveNomineeEto } from "../../../modules/nominee-flow/selectors";
 import { appConnect } from "../../../store";
 import { AccountSetupContainer } from "./AccountSetupContainer";

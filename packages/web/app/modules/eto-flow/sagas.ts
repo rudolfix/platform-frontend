@@ -1,5 +1,14 @@
 import { call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions, IHttpResponse } from "@neufund/shared-modules";
+import {
+  EEtoState,
+  EJwtPermissions,
+  etoModuleApi,
+  IHttpResponse,
+  InvalidETOStateError,
+  TCompanyEtoData,
+  TEtoProducts,
+  TEtoSpecsData,
+} from "@neufund/shared-modules";
 
 import { EtoDocumentsMessage, EtoFlowMessage } from "../../components/translatedMessages/messages";
 import {
@@ -7,17 +16,9 @@ import {
   createNotificationMessage,
 } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import {
-  EEtoState,
-  TCompanyEtoData,
-  TEtoSpecsData,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { TEtoProducts } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
-import { InvalidETOStateError } from "../eto/errors";
-import { loadEtoContract } from "../eto/sagas";
 import { selectActiveNomineeEto } from "../nominee-flow/selectors";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery, neuTakeLatest } from "../sagasUtils";
@@ -40,7 +41,7 @@ export function* loadIssuerEto({
     const eto: TEtoSpecsData = yield apiEtoService.getMyEto();
 
     if (eto.state === EEtoState.ON_CHAIN) {
-      yield neuCall(loadEtoContract, eto);
+      yield neuCall(etoModuleApi.sagas.loadEtoContract, eto);
     }
 
     yield put(actions.etoFlow.setEto({ eto, company }));

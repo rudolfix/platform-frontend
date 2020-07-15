@@ -1,3 +1,4 @@
+import { TModuleState } from "../../types";
 import { generateSharedModuleId } from "../../utils";
 import { tokenPriceActions } from "./actions";
 import { tokenPriceReducerMap } from "./reducer";
@@ -22,3 +23,6 @@ const tokenPriceModuleApi = {
 };
 
 export { setupTokenPriceModule, tokenPriceModuleApi, tokenPriceReducerMap };
+
+export type TPureTokenPriceModuleState = TModuleState<typeof setupTokenPriceModule>;
+export type TTokenPriceModuleState = TPureTokenPriceModuleState;

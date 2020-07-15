@@ -1,3 +1,4 @@
+import { EETOStateOnChain, IInvestorTicket, TETOWithInvestorTicket } from "@neufund/shared-modules";
 import { convertFromUlps } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
@@ -5,9 +6,7 @@ import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { testEto } from "../../../test/fixtures";
-import { EETOStateOnChain } from "../../modules/eto/types";
-import { IInvestorTicket, TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { LoadingIndicator } from "../shared/loading-indicator";
+import { LoadingIndicator } from "../shared/loading-indicator/LoadingIndicator";
 import { WarningAlert } from "../shared/WarningAlert";
 import {
   PastInvestmentsContainer,

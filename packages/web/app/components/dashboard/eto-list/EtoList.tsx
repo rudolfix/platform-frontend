@@ -1,10 +1,9 @@
+import { etoModuleApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { RequiredByKeys } from "@neufund/shared-utils";
 import * as React from "react";
 import { compose, setDisplayName } from "recompose";
 
 import { actions } from "../../../modules/actions";
-import { selectEtos } from "../../../modules/eto/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { EtoOverviewThumbnail } from "../../eto/overview/EtoOverviewThumbnail/EtoOverviewThumbnail";
@@ -81,7 +80,7 @@ const EtoList = compose<IStateProps & TExternalProps, TExternalProps>(
   }),
   appConnect<IStateProps>({
     stateToProps: state => ({
-      etos: selectEtos(state),
+      etos: etoModuleApi.selectors.selectEtos(state),
     }),
   }),
 )(EtoListLayout);

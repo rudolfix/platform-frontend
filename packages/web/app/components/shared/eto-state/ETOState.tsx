@@ -1,15 +1,15 @@
+import {
+  EEtoState,
+  EETOStateOnChain,
+  EEtoSubState,
+  etoModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { Dictionary, PartialDictionary } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EETOStateOnChain,
-  EEtoSubState,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../../modules/eto/types";
-import { isComingSoon, isOnChain } from "../../../modules/eto/utils";
 import { CommonHtmlProps, TTranslatedString } from "../../../types";
 
 import * as styles from "./ETOState.module.scss";
@@ -101,7 +101,7 @@ const getState = (
 ): EETOStateOnChain | EEtoState | EEtoSubState => {
   if (eto.subState) {
     return eto.subState;
-  } else if (isOnChain(eto)) {
+  } else if (etoModuleApi.utils.isOnChain(eto)) {
     return eto.contract.timedState;
   } else {
     return eto.state;
@@ -143,7 +143,7 @@ const ETOIssuerState: React.FunctionComponent<IExternalProps &
   layout = EProjectStatusLayout.NORMAL,
 }) => {
   const state = getState(eto);
-  const timedState = isOnChain(eto) ? eto.contract.timedState : undefined;
+  const timedState = etoModuleApi.utils.isOnChain(eto) ? eto.contract.timedState : undefined;
 
   return (
     <div
@@ -163,7 +163,7 @@ const ETOInvestorState: React.FunctionComponent<IExternalProps &
   size = EProjectStatusSize.MEDIUM,
   layout = EProjectStatusLayout.NORMAL,
 }) => {
-  if (isComingSoon(eto.state)) {
+  if (etoModuleApi.utils.isComingSoon(eto.state)) {
     return <ComingSoonEtoState />;
   }
 

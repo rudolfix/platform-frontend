@@ -1,5 +1,5 @@
 import { call, put } from "@neufund/sagas";
-import { EUserType } from "@neufund/shared-modules";
+import { EUserType, TEtoWithCompanyAndContract } from "@neufund/shared-modules";
 import { RouterState } from "connected-react-router";
 import { Location } from "history";
 import { matchPath } from "react-router-dom";
@@ -9,7 +9,6 @@ import { profileRoutes } from "../../components/settings/routes";
 import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
-import { TEtoWithCompanyAndContract } from "../eto/types";
 import { governanceModuleApi } from "../governance/module";
 import { neuCall } from "../sagasUtils";
 import { shareholderResolutionsVotingViewModuleApi } from "../shareholder-resolutions-voting-view/module";

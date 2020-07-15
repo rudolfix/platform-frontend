@@ -1,5 +1,4 @@
-import { EtoEquityTokenInfoType } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
+import { EtoEquityTokenInfoType, TypeOfYTS, YupTS } from "@neufund/shared-modules";
 
 const InvestmentAdditionalDataEtoSchema = YupTS.object({
   etoId: YupTS.string(),
@@ -23,5 +22,5 @@ export const InvestmentAdditionalDataSchema = YupTS.object({
 });
 export const InvestorSignAgreementSchema = YupTS.object({});
 
-export type TInvestmentAdditionalData = YupTS.TypeOf<typeof InvestmentAdditionalDataSchema>;
+export type TInvestmentAdditionalData = TypeOfYTS<typeof InvestmentAdditionalDataSchema>;
 export type TInvestmentAdditionalDataYTS = typeof InvestmentAdditionalDataSchema;

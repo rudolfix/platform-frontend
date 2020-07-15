@@ -1,8 +1,8 @@
+import { TCompanyEtoData } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
-import { TCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
 import { selectIssuerCompany } from "../../../../modules/eto-flow/selectors";
 import { governanceModuleApi } from "../../../../modules/governance/module";

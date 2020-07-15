@@ -1,4 +1,5 @@
 import { Button, EButtonLayout, EurToken } from "@neufund/design-system";
+import { EETOStateOnChain } from "@neufund/shared-modules";
 import { DataUnavailableError } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
@@ -7,7 +8,6 @@ import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { actions } from "../../modules/actions";
 import { selectStartOfOnchainState } from "../../modules/eto/selectors";
-import { EETOStateOnChain } from "../../modules/eto/types";
 import {
   selectActiveNomineeEto,
   selectCapitalIncrease,

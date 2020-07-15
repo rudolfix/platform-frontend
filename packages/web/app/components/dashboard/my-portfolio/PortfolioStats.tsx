@@ -1,5 +1,10 @@
 import { Button, EButtonLayout, EButtonWidth, Eur, TokenIcon } from "@neufund/design-system";
 import {
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TETOWithTokenData,
+} from "@neufund/shared-modules";
+import {
   convertFromUlps,
   ECurrency,
   ENumberInputFormat,
@@ -15,12 +20,6 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../../modules/actions";
 import { selectIsVerifiedInvestor } from "../../../modules/auth/selectors";
-import { selectEtosError, selectTokensLoading } from "../../../modules/eto/selectors";
-import {
-  selectMyAssetsEurEquivTotal,
-  selectMyAssetsWithTokenData,
-} from "../../../modules/investor-portfolio/selectors";
-import { TETOWithTokenData } from "../../../modules/investor-portfolio/types";
 import { appConnect } from "../../../store";
 import { DataRowSeparated } from "../../shared/DataRow";
 import { withContainer } from "../../shared/hocs/withContainer";
@@ -153,11 +152,13 @@ const PortfolioStatsLayout: React.FunctionComponent<OmitKeys<
 const PortfolioStats = compose<TPortfolioStatsProps, {}>(
   appConnect<TStateProps, TDispatchProps, {}>({
     stateToProps: state => ({
-      myAssets: selectMyAssetsWithTokenData(state),
-      myAssetsEurEquivTotal: selectMyAssetsEurEquivTotal(state),
-      hasError: selectEtosError(state),
+      myAssets: investorPortfolioModuleApi.selectors.selectMyAssetsWithTokenData(state),
+      myAssetsEurEquivTotal: investorPortfolioModuleApi.selectors.selectMyAssetsEurEquivTotal(
+        state,
+      ),
+      hasError: etoModuleApi.selectors.selectEtosError(state),
       isVerifiedInvestor: selectIsVerifiedInvestor(state),
-      isLoading: selectTokensLoading(state),
+      isLoading: etoModuleApi.selectors.selectTokensLoading(state),
     }),
     dispatchToProps: dispatch => ({
       goToPortfolio: () => dispatch(actions.routing.goToPortfolio()),

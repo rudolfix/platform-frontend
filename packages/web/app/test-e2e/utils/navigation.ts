@@ -1,4 +1,6 @@
-import { IWindowData, IWindowWithData } from "../../../test/helperTypes";
+import { ITestSettings } from "@neufund/shared-modules";
+
+import { IWindowWithData } from "../../../test/helperTypes";
 import { appRoutes } from "../../components/appRoutes";
 import { assertIssuerEtoView } from "../issuer/eto/view/EtoViewUtils";
 import {
@@ -43,7 +45,7 @@ export const goToDashboardWithRequiredPayoutAmountSet = (
   }
 };
 
-export const goToWalletWithParams = (params: IWindowData = {}) => {
+export const goToWalletWithParams = (params: ITestSettings = {}) => {
   cy.visit("/wallet", {
     onBeforeLoad(win: IWindowWithData): void {
       for (let [key, value] of Object.entries(params)) {

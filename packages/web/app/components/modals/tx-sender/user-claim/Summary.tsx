@@ -1,20 +1,20 @@
 import { Button, EButtonLayout, EButtonWidth } from "@neufund/design-system";
+import {
+  EEtoDocumentType,
+  IEtoDocument,
+  immutableDocumentName,
+  investorPortfolioModuleApi,
+  TETOWithInvestorTicket,
+} from "@neufund/shared-modules";
 import { map } from "lodash/fp";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Container } from "reactstrap";
 
-import {
-  EEtoDocumentType,
-  IEtoDocument,
-  immutableDocumentName,
-} from "../../../../lib/api/eto/EtoFileApi.interfaces";
 import { IImmutableFileId } from "../../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { ETxType } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import { selectPendingDownloads } from "../../../../modules/immutable-file/selectors";
-import { selectMyInvestorTicketByEtoId } from "../../../../modules/investor-portfolio/selectors";
-import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
 import { selectTxAdditionalData } from "../../../../modules/tx/sender/selectors";
 import { TClaimAdditionalData } from "../../../../modules/tx/transactions/claim/types";
 import { appConnect } from "../../../../store";
@@ -153,7 +153,10 @@ export const UserClaimSummary = appConnect<IStateProps, IDispatchProps, {}>({
 
     return {
       additionalData,
-      etoData: selectMyInvestorTicketByEtoId(state, additionalData.etoId)!,
+      etoData: investorPortfolioModuleApi.selectors.selectMyInvestorTicketByEtoId(
+        state,
+        additionalData.etoId,
+      )!,
       pendingDownloads: selectPendingDownloads(state),
     };
   },

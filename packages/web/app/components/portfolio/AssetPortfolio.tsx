@@ -1,4 +1,5 @@
 import { Button, EButtonLayout, Eur, Table } from "@neufund/design-system";
+import { ITokenDisbursal } from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat, selectUnits } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
@@ -8,7 +9,6 @@ import { branch, compose, renderComponent } from "recompose";
 
 import { externalRoutes } from "../../config/externalRoutes";
 import { actions } from "../../modules/actions";
-import { ITokenDisbursal } from "../../modules/investor-portfolio/types";
 import { appConnect } from "../../store";
 import { Container } from "../layouts/Container";
 import { MoneyWithLessThan } from "../shared/formatters/MoneyWithLessThan";

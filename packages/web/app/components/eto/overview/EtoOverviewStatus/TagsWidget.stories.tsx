@@ -1,10 +1,9 @@
+import { EOfferingDocumentType, IEtoDocument } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { testEto } from "../../../../../test/fixtures";
-import { IEtoDocument } from "../../../../lib/api/eto/EtoFileApi.interfaces";
-import { EOfferingDocumentType } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
 import { TagsWidgetLayout } from "./TagsWidget";
 
 import * as styles from "./EtoOverviewStatus.module.scss";

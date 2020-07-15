@@ -1,13 +1,15 @@
 import { WholeEurShort } from "@neufund/design-system";
+import {
+  etoModuleApi,
+  getNextFundingRound,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { XOR } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { TMockEto } from "../../../../data/etoCompanies";
-import { getNextFundingRound } from "../../../../lib/api/eto/EtoApiUtils";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
-import { isComingSoon } from "../../../../modules/eto/utils";
 import { routingActions } from "../../../../modules/routing/actions";
 import { appConnect } from "../../../../store";
 import { CommonHtmlProps } from "../../../../types";
@@ -135,7 +137,7 @@ const EtoOverviewLayoutBase: React.FunctionComponent<TEtoProps> = ({ eto }) => {
           {eto.company.brandName}
         </Heading>
 
-        {isComingSoon(eto.state) ? (
+        {etoModuleApi.utils.isComingSoon(eto.state) ? (
           <p data-test-id="eto-overview-status-founders-quote" className={styles.quote}>
             {eto.company.keyQuoteFounder}
           </p>

@@ -1,5 +1,5 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
-import { kycApi } from "@neufund/shared-modules";
+import { etoModuleApi, kycApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { invariant } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
@@ -11,8 +11,6 @@ import {
   selectIsInvestor,
   selectIsUSInvestor,
 } from "../../../../../modules/auth/selectors";
-import { selectEtoOnChainNextStateStartDate } from "../../../../../modules/eto/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
 import { appRoutes } from "../../../../appRoutes";
 import { etoPublicViewLink } from "../../../../appRouteUtils";
@@ -120,7 +118,10 @@ const InvestmentWidget = compose<TInvestWidgetProps, IExternalProps>(
       isAllowedToInvest: kycApi.selectors.selectIsUserVerifiedOnBlockchain(state),
       isInvestor: selectIsInvestor(state),
       isUsInvestor: selectIsUSInvestor(state),
-      nextStateDate: selectEtoOnChainNextStateStartDate(state, props.eto.previewCode),
+      nextStateDate: etoModuleApi.selectors.selectEtoOnChainNextStateStartDate(
+        state,
+        props.eto.previewCode,
+      ),
     }),
     dispatchToProps: (dispatch, props) => ({
       startInvestmentFlow: () => dispatch(actions.investmentFlow.startInvestment(props.eto.etoId)),

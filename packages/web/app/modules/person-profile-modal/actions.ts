@@ -1,4 +1,5 @@
-import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TSocialChannelsType } from "@neufund/shared-modules";
+
 import { TTranslatedString } from "../../types";
 import { createAction, createSimpleAction } from "../actionsUtils";
 

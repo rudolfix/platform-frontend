@@ -1,16 +1,14 @@
 import { Eur, Neu, Table, TokenDetails } from "@neufund/design-system";
+import {
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TETOWithInvestorTicket,
+} from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
-import { isOnChain } from "../../modules/eto/utils";
-import {
-  selectMyPendingAssetsInvestedTotal,
-  selectMyPendingAssetsRewardTotal,
-} from "../../modules/investor-portfolio/selectors";
-import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { getTokenPrice } from "../../modules/investor-portfolio/utils";
 import { appConnect } from "../../store";
 import { etoPublicViewLink } from "../appRouteUtils";
 import { Container } from "../layouts/Container";
@@ -77,7 +75,7 @@ const prepareTableColumns = (
 
 const prepareTableRowData = (pendingAssets: TETOWithInvestorTicket[]) =>
   pendingAssets.map(({ investorTicket, ...eto }) => {
-    if (!isOnChain(eto)) {
+    if (!etoModuleApi.utils.isOnChain(eto)) {
       throw new Error(`${eto.etoId} should be on chain`);
     }
     const timedState = eto.contract.timedState;
@@ -110,7 +108,10 @@ const prepareTableRowData = (pendingAssets: TETOWithInvestorTicket[]) =>
       ),
       price: (
         <Eur
-          value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEur)}
+          value={investorPortfolioModuleApi.utils.getTokenPrice(
+            investorTicket.equityTokenInt,
+            investorTicket.equivEur,
+          )}
           data-test-id="portfolio-reserved-token-price"
         />
       ),
@@ -161,8 +162,12 @@ const PortfolioReservedAssetsLayout: React.FunctionComponent<TComponentProps> = 
 const PortfolioReservedAssets = compose<TComponentProps, TExternalProps>(
   appConnect<TStateProps, {}, {}>({
     stateToProps: state => ({
-      pendingAssetsTotalInvested: selectMyPendingAssetsInvestedTotal(state),
-      pendingAssetsTotalReward: selectMyPendingAssetsRewardTotal(state),
+      pendingAssetsTotalInvested: investorPortfolioModuleApi.selectors.selectMyPendingAssetsInvestedTotal(
+        state,
+      ),
+      pendingAssetsTotalReward: investorPortfolioModuleApi.selectors.selectMyPendingAssetsRewardTotal(
+        state,
+      ),
     }),
   }),
   withContainer(PortfolioReservedAssetsContainer),

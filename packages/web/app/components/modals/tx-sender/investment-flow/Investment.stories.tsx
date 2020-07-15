@@ -1,3 +1,4 @@
+import { EETOStateOnChain, TEtoWithCompanyAndContractTypeChecked } from "@neufund/shared-modules";
 import { convertFromUlps } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
@@ -5,10 +6,6 @@ import { Formik } from "formik";
 import * as React from "react";
 
 import { testEto } from "../../../../../test/fixtures";
-import {
-  EETOStateOnChain,
-  TEtoWithCompanyAndContractTypeChecked,
-} from "../../../../modules/eto/types";
 import {
   EInvestmentErrorState,
   EInvestmentType,

@@ -1,9 +1,12 @@
+import {
+  EOfferingDocumentType,
+  IEtoDocument,
+  immutableDocumentName,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import { IEtoDocument, immutableDocumentName } from "../../lib/api/eto/EtoFileApi.interfaces";
-import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { IImmutableFileId } from "../../lib/api/immutable-storage/ImmutableStorage.interfaces";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";

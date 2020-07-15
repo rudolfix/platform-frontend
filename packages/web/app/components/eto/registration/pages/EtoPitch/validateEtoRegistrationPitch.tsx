@@ -1,13 +1,9 @@
-import { customSchemas } from "@neufund/shared-modules";
+import { customSchemas, EtoPitchType, TPartialCompanyEtoData } from "@neufund/shared-modules";
 import { addBigNumbers } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import * as Yup from "yup";
 
-import {
-  EtoPitchType,
-  TPartialCompanyEtoData,
-} from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
   convertAndValidatePipeline,
   replaceValidatorWith,

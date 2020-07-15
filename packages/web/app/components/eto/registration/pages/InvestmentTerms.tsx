@@ -1,5 +1,15 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
 import {
+  calcCapFraction,
+  calcInvestmentAmount,
+  calcNumberOfTokens,
+  calcShareAndTokenPrice,
+  EEtoFormTypes,
+  etoFormIsReadonly,
+  EtoInvestmentTermsType,
+  TEtoSpecsData,
+} from "@neufund/shared-modules";
+import {
   ECurrency,
   ENumberFormat,
   ENumberInputFormat,
@@ -18,17 +28,6 @@ import { Col, Row } from "reactstrap";
 import { branch, renderNothing, setDisplayName } from "recompose";
 import { compose } from "redux";
 
-import {
-  EtoInvestmentTermsType,
-  TEtoSpecsData,
-} from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { etoFormIsReadonly } from "../../../../lib/api/eto/EtoApiUtils";
-import {
-  calcCapFraction,
-  calcInvestmentAmount,
-  calcNumberOfTokens,
-  calcShareAndTokenPrice,
-} from "../../../../lib/api/eto/EtoUtils";
 import { TBigNumberVariants } from "../../../../lib/web3/types";
 import { actions } from "../../../../modules/actions";
 import {
@@ -37,7 +36,6 @@ import {
   selectIssuerEtoSaving,
   selectIssuerEtoState,
 } from "../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../modules/eto-flow/types";
 import { etoInvestmentTermsProgressOptions } from "../../../../modules/eto-flow/utils";
 import { appConnect } from "../../../../store";
 import { TTranslatedString } from "../../../../types";

@@ -1,9 +1,9 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import { EtoLegalInformationType, FUNDING_ROUNDS } from "@neufund/shared-modules";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EtoLegalInformationType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { ArrayOfKeyValueFields } from "../../../../shared/forms/fields/FormCategoryDistribution";
 import {
   FormField,
@@ -15,7 +15,6 @@ import {
   FormSelectField,
   FormTextArea,
 } from "../../../../shared/forms/index";
-import { FUNDING_ROUNDS } from "../../../shared/constants";
 import { EtoFormBase } from "../../EtoFormBase";
 import { Section } from "../../Shared";
 import { connectEtoRegistrationLegalInformation, TComponentProps } from "./connectLegalInformation";

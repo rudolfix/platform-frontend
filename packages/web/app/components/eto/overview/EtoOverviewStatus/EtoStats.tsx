@@ -1,17 +1,16 @@
 import { EquityTokenPriceEuro, WholeEur } from "@neufund/design-system";
+import {
+  calcCapFraction,
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { ENumberFormat, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { calcCapFraction } from "../../../../lib/api/eto/EtoUtils";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
-import { getEtoEurMinTarget } from "../../../../modules/eto/utils";
-import {
-  selectShouldShowPublicDiscount,
-  selectShouldShowWhitelistDiscount,
-} from "../../../../modules/investor-portfolio/selectors";
 import { appConnect } from "../../../../store";
 import { MoneyRange } from "../../../shared/formatters/MoneyRange";
 import { ToBeAnnounced, ToBeAnnouncedTooltip } from "../../shared/ToBeAnnouncedTooltip";
@@ -39,7 +38,7 @@ const EtoStatsLayout: React.FunctionComponent<IStateProps & IExternalProps> = ({
   computedMinCapPercent,
 }) => {
   const shouldShowComputedCap = eto.newSharesToIssue && eto.minimumNewSharesToIssue;
-  const eurMinTarget = getEtoEurMinTarget(eto);
+  const eurMinTarget = etoModuleApi.utils.getEtoEurMinTarget(eto);
 
   return (
     <div className={cn(styles.etoStatsWrapper, styles.groupWrapper)}>
@@ -130,8 +129,14 @@ export const EtoStats = compose<IStateProps & IExternalProps, IExternalProps>(
     stateToProps: (state, props) => {
       const etoData = props.eto;
 
-      const showWhitelistDiscount = selectShouldShowWhitelistDiscount(state, etoData);
-      const showPublicDiscount = selectShouldShowPublicDiscount(state, etoData);
+      const showWhitelistDiscount = investorPortfolioModuleApi.selectors.selectShouldShowWhitelistDiscount(
+        state,
+        etoData,
+      );
+      const showPublicDiscount = investorPortfolioModuleApi.selectors.selectShouldShowPublicDiscount(
+        state,
+        etoData,
+      );
 
       let tokenPrice;
       if (etoData.investmentCalculatedValues) {

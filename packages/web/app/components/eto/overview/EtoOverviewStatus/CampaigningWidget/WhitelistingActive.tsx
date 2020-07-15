@@ -1,9 +1,9 @@
 import { WholeEur } from "@neufund/design-system";
+import { IPledge } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 
-import { IPledge } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { appRoutes } from "../../../../appRoutes";
 import { ButtonLink } from "../../../../shared/buttons";
 import { Tooltip } from "../../../../shared/tooltips";

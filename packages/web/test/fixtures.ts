@@ -1,4 +1,24 @@
 import {
+  EAssetType,
+  EEtoDocumentLanguage,
+  EEtoDocumentType,
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+  EETOStateOnChain,
+  EFundingRound,
+  EJurisdiction,
+  EOfferingDocumentSubtype,
+  EOfferingDocumentType,
+  EProductName,
+  ESocialChannelType,
+  ETagAlongVotingRule,
+  IEtoFilesInfo,
+  TCompanyEtoData,
+  TEtoDocumentTemplates,
+  TEtoFormType,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import {
   convertFromUlps,
   ECurrency,
   EthereumAddress,
@@ -9,29 +29,6 @@ import {
 import { createStore, Store } from "redux";
 
 import { IConfig } from "../app/config/getConfig";
-import {
-  EEtoMarketingDataVisibleInPreview,
-  EEtoState,
-  EFundingRound,
-  ESocialChannelType,
-  ETagAlongVotingRule,
-  TCompanyEtoData,
-} from "../app/lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EEtoDocumentLanguage,
-  EEtoDocumentType,
-  IEtoFilesInfo,
-  TEtoDocumentTemplates,
-  TEtoFormType,
-} from "../app/lib/api/eto/EtoFileApi.interfaces";
-import {
-  EAssetType,
-  EJurisdiction,
-  EOfferingDocumentSubtype,
-  EOfferingDocumentType,
-  EProductName,
-} from "../app/lib/api/eto/EtoProductsApi.interfaces";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../app/modules/eto/types";
 
 import companyBanner from "./assets/company-banner.png";
 import companyPreviewCardBanner from "./assets/company-preview-banner.png";

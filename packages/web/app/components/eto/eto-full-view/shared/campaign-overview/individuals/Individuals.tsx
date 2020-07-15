@@ -1,7 +1,7 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../../modules/eto/types";
 import { Container, EColumnSpan, EContainerType } from "../../../../../layouts/Container";
 import { DashboardHeading } from "../../../../../shared/DashboardHeading";
 import { Panel } from "../../../../../shared/Panel";

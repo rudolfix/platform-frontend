@@ -3,7 +3,6 @@ import {
   convertToUlps,
   ERoundingMode,
   ETH_DECIMALS,
-  ETHEREUM_ADDRESS_LENGTH,
   EthereumAddress,
   EthereumAddressWithChecksum,
   EthereumNetworkId,
@@ -19,8 +18,6 @@ export function makeEthereumAddressChecksummed(
 ): EthereumAddressWithChecksum {
   return toEthereumChecksumAddress(toChecksumAddress(ethereumAddress));
 }
-
-export const generateRandomEthereumAddress = () => randomHex(ETHEREUM_ADDRESS_LENGTH / 2);
 
 /**
  * @method generateRandomPrivateKey

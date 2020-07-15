@@ -1,16 +1,20 @@
 import { fork, put, select } from "@neufund/sagas";
+import {
+  EAgreementType,
+  EEtoState,
+  EETOStateOnChain,
+  etoModuleApi,
+  InvalidETOStateError,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { assertNever, EthereumAddressWithChecksum, nonNullable } from "@neufund/shared-utils";
 
 import { ipfsLinkFromHash } from "../../../../../components/documents/utils";
 import { TGlobalDependencies } from "../../../../../di/setupBindings";
-import { EEtoState } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { ETOCommitment } from "../../../../../lib/contracts/ETOCommitment";
 import { ETxType, ITxData } from "../../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../../store";
 import { actions } from "../../../../actions";
-import { InvalidETOStateError } from "../../../../eto/errors";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../../../eto/types";
-import { isOnChain } from "../../../../eto/utils";
 import {
   selectActiveNomineeEto,
   selectNomineeActiveEtoPreviewCode,
@@ -20,14 +24,14 @@ import { neuCall, neuTakeLatest } from "../../../../sagasUtils";
 import { selectEthereumAddress } from "../../../../web3/selectors";
 import { txSendSaga } from "../../../sender/sagas";
 import { selectStandardGasPriceWithOverHead, selectTxType } from "../../../sender/selectors";
-import { EAgreementType, IAgreementContractAndHash } from "./types";
+import { IAgreementContractAndHash } from "./types";
 
 export function* getAgreementContractAndHash(
   { contractsService }: TGlobalDependencies,
   agreementType: EAgreementType,
   eto: TEtoWithCompanyAndContractReadonly,
 ): Generator<any, any, any> {
-  if (!isOnChain(eto)) {
+  if (!etoModuleApi.utils.isOnChain(eto)) {
     throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
   }
 
@@ -129,7 +133,10 @@ function* generateSignNomineeInvestmentAgreementTx({
   );
 
   // Only allowed in `Signing` on chain state
-  if (!isOnChain(nomineeEto) || nomineeEto.contract.timedState !== EETOStateOnChain.Signing) {
+  if (
+    !etoModuleApi.utils.isOnChain(nomineeEto) ||
+    nomineeEto.contract.timedState !== EETOStateOnChain.Signing
+  ) {
     throw new InvalidETOStateError(nomineeEto.state, EEtoState.ON_CHAIN);
   }
 

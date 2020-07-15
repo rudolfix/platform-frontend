@@ -1,4 +1,4 @@
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 export type TRefundAdditionalData = {
   etoId: string;
   tokenName: string;
@@ -23,4 +23,4 @@ export const InvestorRefundAdditionalSchema = YupTS.object({
   tokenDecimals: YupTS.number(),
 });
 
-export type InvestorRefundAdditionalData = YupTS.TypeOf<typeof InvestorRefundAdditionalSchema>;
+export type InvestorRefundAdditionalData = TypeOfYTS<typeof InvestorRefundAdditionalSchema>;

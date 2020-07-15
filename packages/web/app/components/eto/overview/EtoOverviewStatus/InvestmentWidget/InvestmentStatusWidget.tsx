@@ -1,13 +1,15 @@
 import { Eur } from "@neufund/design-system";
+import {
+  EEtoState,
+  etoModuleApi,
+  InvalidETOStateError,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EEtoState } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { InvalidETOStateError } from "../../../../../modules/eto/errors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
-import { isOnChain } from "../../../../../modules/eto/utils";
 import { FormatNumber } from "../../../../shared/formatters/FormatNumber";
 import { InvestmentProgress } from "../../../shared/InvestmentProgress";
 import { InvestmentProgressPercentage } from "../../InvestmentProgressPercentage";
@@ -29,7 +31,7 @@ const InvestmentStatusWidget: React.FunctionComponent<IInvestmentStatsProps> = (
   eto,
   size = EInvestmentStatusSize.NORMAL,
 }) => {
-  if (!isOnChain(eto)) {
+  if (!etoModuleApi.utils.isOnChain(eto)) {
     throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
   }
 

@@ -1,35 +1,30 @@
-import { authModuleAPI, EKycRequestStatus, kycApi } from "@neufund/shared-modules";
+import {
+  authModuleAPI,
+  EAgreementType,
+  EEtoAgreementStatus,
+  EEtoDocumentType,
+  EEtoState,
+  EETOStateOnChain,
+  EKycRequestStatus,
+  EOfferingDocumentType,
+  EProductName,
+  etoModuleApi,
+  IEtoDocument,
+  ignoredTemplates,
+  kycApi,
+  TCompanyEtoData,
+  TEtoDocumentTemplates,
+  TEtoProduct,
+  TEtoSpecsData,
+  TEtoWithCompanyAndContractReadonly,
+  TOfferingAgreementsStatus,
+} from "@neufund/shared-modules";
 import { DeepReadonly, nonNullable, objectToFilteredArray } from "@neufund/shared-utils";
 import { find, some } from "lodash";
 import { createSelector } from "reselect";
 
-import {
-  EEtoState,
-  TCompanyEtoData,
-  TEtoSpecsData,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EEtoDocumentType,
-  IEtoDocument,
-  TEtoDocumentTemplates,
-} from "../../lib/api/eto/EtoFileApi.interfaces";
-import { ignoredTemplates } from "../../lib/api/eto/EtoFileUtils";
-import {
-  EOfferingDocumentType,
-  EProductName,
-  TEtoProduct,
-} from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { TAppGlobalState } from "../../store";
 import { selectEtoDocumentsLoading } from "../eto-documents/selectors";
-import { selectAgreementsStatus, selectEtoContract, selectEtoSubState } from "../eto/selectors";
-import {
-  EEtoAgreementStatus,
-  EETOStateOnChain,
-  TEtoWithCompanyAndContractReadonly,
-  TOfferingAgreementsStatus,
-} from "../eto/types";
-import { isOnChain } from "../eto/utils";
-import { EAgreementType } from "../tx/transactions/nominee/sign-agreement/types";
 import { IEtoFlowState } from "./types";
 import { isValidEtoStartDate, sortProducts } from "./utils";
 
@@ -67,9 +62,11 @@ export const selectIssuerCompany = createSelector(
 const selectIssuerEtoWithCompanyAndContractInternal = createSelector(
   // forward eto param to combiner
   (_: TAppGlobalState, eto: TEtoSpecsData) => eto,
-  (state: TAppGlobalState, eto: TEtoSpecsData) => selectEtoContract(state, eto.previewCode),
+  (state: TAppGlobalState, eto: TEtoSpecsData) =>
+    etoModuleApi.selectors.selectEtoContract(state, eto.previewCode),
   (state: TAppGlobalState) => nonNullable(selectIssuerCompany(state)),
-  (state: TAppGlobalState, eto: TEtoSpecsData) => selectEtoSubState(state, eto),
+  (state: TAppGlobalState, eto: TEtoSpecsData) =>
+    etoModuleApi.selectors.selectEtoSubState(state, eto),
   (eto, contract, company, subState) => ({
     ...eto,
     contract,
@@ -264,7 +261,7 @@ export const selectNewPreEtoStartDate = (state: TAppGlobalState) => state.etoIss
 export const selectPreEtoStartDateFromContract = (state: TAppGlobalState) => {
   const eto = selectIssuerEtoWithCompanyAndContract(state);
 
-  if (eto && isOnChain(eto)) {
+  if (eto && etoModuleApi.utils.isOnChain(eto)) {
     return eto.contract.startOfStates[EETOStateOnChain.Whitelist];
   }
 
@@ -274,7 +271,7 @@ export const selectPreEtoStartDateFromContract = (state: TAppGlobalState) => {
 export const selectIssuerEtoOnChainState = (state: TAppGlobalState) => {
   const eto = selectIssuerEtoWithCompanyAndContract(state);
 
-  if (eto && isOnChain(eto)) {
+  if (eto && etoModuleApi.utils.isOnChain(eto)) {
     return eto.contract.timedState;
   }
 
@@ -337,7 +334,7 @@ export const selectIssuerEtoAgreementsStatus = (
   const previewCode = selectIssuerEtoPreviewCode(state);
 
   if (previewCode !== undefined) {
-    return selectAgreementsStatus(state, previewCode);
+    return etoModuleApi.selectors.selectAgreementsStatus(state, previewCode);
   }
 
   return undefined;
@@ -360,7 +357,7 @@ export const selectAreAgreementsSignedByNominee = createSelector(
 export const selectIssuerEtoNextStateStartDate = createSelector(
   selectIssuerEtoWithCompanyAndContract,
   eto => {
-    if (eto && isOnChain(eto)) {
+    if (eto && etoModuleApi.utils.isOnChain(eto)) {
       const nextState: EETOStateOnChain | undefined = eto.contract.timedState + 1;
 
       if (nextState) {

@@ -1,7 +1,7 @@
+import { TETOWithInvestorTicket } from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { TETOWithInvestorTicket } from "../../../../modules/investor-portfolio/types";
 import { withModalBody } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { UserClaimSummaryComponent } from "./Summary";
 

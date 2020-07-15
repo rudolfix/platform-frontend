@@ -1,9 +1,9 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent, renderNothing } from "recompose";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import {
   selectActiveNomineeEto,
   selectLinkToIssuerNextState,

@@ -1,9 +1,8 @@
 import { call, put, select, takeLatest } from "@neufund/sagas";
-import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
+import { coreModuleApi, neuGetBindings, TEtoSpecsData } from "@neufund/shared-modules";
 import * as cryptoRandomString from "crypto-random-string";
 
 import { symbols } from "../../../../di/symbols";
-import { TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IControllerGovernance } from "../../../../lib/contracts/IControllerGovernance";
 import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { actions, TActionFromCreator } from "../../../actions";

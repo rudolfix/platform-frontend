@@ -10,16 +10,16 @@ type TModuleConfig = {
 const MODULE_ID = "web:tx-history";
 
 const setupWebTxHistoryModule = (config: TModuleConfig) => {
-  const parentModules = setupTxHistoryModule(config);
+  const parentModule = setupTxHistoryModule(config);
 
   const webTxHistoryModule = {
     id: MODULE_ID,
     api: txHistoryApi,
     sagas: [setupTXHistorySagas()],
-    reducerMap: parentModules[1].reducerMap,
+    reducerMap: parentModule.reducerMap,
   };
 
-  return [...parentModules, webTxHistoryModule];
+  return [parentModule, webTxHistoryModule];
 };
 
 export { setupWebTxHistoryModule, txHistoryApi };

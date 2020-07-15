@@ -1,7 +1,5 @@
-import { sortBy } from "lodash/fp";
-import * as Yup from "yup";
-
 import {
+  EProductName,
   EtoCompanyInformationType,
   EtoEquityTokenInfoType,
   EtoInvestmentTermsType,
@@ -14,8 +12,10 @@ import {
   EtoVotingRightsType,
   getEtoTermsSchema,
   TBookbuildingStatsType,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { EProductName, TEtoProduct } from "../../lib/api/eto/EtoProductsApi.interfaces";
+  TEtoProduct,
+} from "@neufund/shared-modules";
+import { sortBy } from "lodash/fp";
+import * as Yup from "yup";
 
 function getErrorsNumber(validator: Yup.Schema<any>, data?: any): number {
   try {

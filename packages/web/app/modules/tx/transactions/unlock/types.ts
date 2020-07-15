@@ -1,4 +1,4 @@
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 
 export type TUnlockAdditionalData = {
   etherNeumarksDue: string;
@@ -12,4 +12,4 @@ export const UnlockAdditionalDataSchema = YupTS.object({
   lockedEtherBalance: YupTS.string(),
 });
 
-export type TUnlockAdditionalDataYTS = YupTS.TypeOf<typeof UnlockAdditionalDataSchema>;
+export type TUnlockAdditionalDataYTS = TypeOfYTS<typeof UnlockAdditionalDataSchema>;

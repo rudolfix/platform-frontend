@@ -1,20 +1,19 @@
 import { ButtonArrowRight } from "@neufund/design-system";
+import {
+  etoModuleApi,
+  IEtoDocument,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, renderComponent, renderNothing } from "recompose";
 import { compose } from "redux";
 
-import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectIssuerEtoWithCompanyAndContract,
   selectUploadedInvestmentAgreement,
 } from "../../../modules/eto-flow/selectors";
-import {
-  selectInvestmentAgreementLoading,
-  selectSignedInvestmentAgreementHash,
-} from "../../../modules/eto/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appConnect } from "../../../store";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { investmentAgreementNotSigned } from "../../documents/utils";
@@ -117,11 +116,14 @@ export const SignInvestmentAgreement = compose<React.FunctionComponent<IExternal
         return {
           eto,
           uploadedAgreement,
-          signedInvestmentAgreementUrlLoading: selectInvestmentAgreementLoading(
+          signedInvestmentAgreementUrlLoading: etoModuleApi.selectors.selectInvestmentAgreementLoading(
             state,
             eto.previewCode,
           ),
-          signedInvestmentAgreementUrl: selectSignedInvestmentAgreementHash(state, eto.previewCode),
+          signedInvestmentAgreementUrl: etoModuleApi.selectors.selectSignedInvestmentAgreementHash(
+            state,
+            eto.previewCode,
+          ),
         };
       } else {
         return null;

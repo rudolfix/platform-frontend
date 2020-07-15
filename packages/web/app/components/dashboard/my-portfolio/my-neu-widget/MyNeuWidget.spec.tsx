@@ -1,11 +1,10 @@
-import { walletApi } from "@neufund/shared-modules";
+import { investorPortfolioModuleApi, walletApi } from "@neufund/shared-modules";
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
 import { createSandbox, SinonStub } from "sinon";
 
 import { createMount } from "../../../../../test/createMount";
 import { wrapWithBasicProviders } from "../../../../../test/integrationTestUtils.unsafe";
-import * as investorPortfolio from "../../../../modules/investor-portfolio/selectors";
 import * as walletSelectors from "../../../../modules/wallet-selector/selectors";
 import { WarningAlert } from "../../../shared/WarningAlert";
 import { MyNeuWidget } from "./MyNeuWidget";
@@ -24,38 +23,44 @@ describe("MyNeuWidget", () => {
       ),
       selectWalletError: stub(walletApi.selectors, "selectWalletError").returns(undefined),
 
-      selectIncomingPayoutError: stub(investorPortfolio, "selectIncomingPayoutError").returns(
-        undefined,
-      ),
-      selectIncomingPayoutEurEquiv: stub(investorPortfolio, "selectIncomingPayoutEurEquiv").returns(
-        "0",
-      ),
+      selectIncomingPayoutError: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectIncomingPayoutError",
+      ).returns(undefined),
+      selectIncomingPayoutEurEquiv: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectIncomingPayoutEurEquiv",
+      ).returns("0"),
       selectIsIncomingPayoutLoading: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectIsIncomingPayoutLoading",
       ).returns(undefined),
       selectIsIncomingPayoutNotInitialized: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectIsIncomingPayoutNotInitialized",
       ).returns(undefined),
       selectIsIncomingPayoutPending: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectIsIncomingPayoutPending",
       ).returns(undefined),
-      selectPayoutAvailable: stub(investorPortfolio, "selectPayoutAvailable").returns(undefined),
-      selectTokensDisbursalError: stub(investorPortfolio, "selectTokensDisbursalError").returns(
-        undefined,
-      ),
+      selectPayoutAvailable: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectPayoutAvailable",
+      ).returns(undefined),
+      selectTokensDisbursalError: stub(
+        investorPortfolioModuleApi.selectors,
+        "selectTokensDisbursalError",
+      ).returns(undefined),
       selectTokensDisbursalEurEquivTotal: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectTokensDisbursalEurEquivTotal",
       ).returns(""),
       selectTokensDisbursalIsLoading: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectTokensDisbursalIsLoading",
       ).returns(undefined),
       selectTokensDisbursalNotInitialized: stub(
-        investorPortfolio,
+        investorPortfolioModuleApi.selectors,
         "selectTokensDisbursalNotInitialized",
       ).returns(undefined),
       selectRouterState: stub(walletSelectors, "selectRouterState").returns({

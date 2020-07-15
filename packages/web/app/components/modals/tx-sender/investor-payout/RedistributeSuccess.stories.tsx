@@ -1,10 +1,10 @@
+import { ITokenDisbursal } from "@neufund/shared-modules";
 import { ECurrency, ETH_DECIMALS } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
-import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
 import {
   withMockedDate,
   withModalBody,

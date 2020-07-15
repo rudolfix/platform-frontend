@@ -1,15 +1,20 @@
-import { authModuleAPI, EKycRequestStatus, kycApi } from "@neufund/shared-modules";
+import {
+  authModuleAPI,
+  EEtoMarketingDataVisibleInPreview,
+  EEtoState,
+  EETOStateOnChain,
+  EKycRequestStatus,
+  EOfferingDocumentType,
+  etoModuleApi,
+  kycApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { RequiredByKeys } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { branch, renderComponent, withProps } from "recompose";
 import { compose } from "redux";
 
-import {
-  EEtoMarketingDataVisibleInPreview,
-  EEtoState,
-} from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { EOfferingDocumentType } from "../../lib/api/eto/EtoProductsApi.interfaces";
 import { selectBackupCodesVerified } from "../../modules/auth/selectors";
 import {
   selectAreAgreementsSignedByNominee,
@@ -29,8 +34,6 @@ import {
   calculateMarketingEtoData,
   calculateVotingRightsEtoData,
 } from "../../modules/eto-flow/utils";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
-import { isOnChain } from "../../modules/eto/utils";
 import { selectIsLightWallet } from "../../modules/web3/selectors";
 import { appConnect } from "../../store";
 import { Container, EColumnSpan, EContainerType } from "../layouts/Container";
@@ -139,7 +142,7 @@ const EtoDashboardStateViewComponent: React.FunctionComponent<IEtoStateRender> =
   );
 
   const shouldDisplayStatistics =
-    isOnChain(eto) &&
+    etoModuleApi.utils.isOnChain(eto) &&
     [EETOStateOnChain.Whitelist, EETOStateOnChain.Public].includes(eto.contract.timedState);
 
   switch (eto.state) {
@@ -364,7 +367,9 @@ const EtoDashboard = compose<React.FunctionComponent>(
           isEtoTermsFilledWithAllRequired,
           isInvestmentFilledWithAllRequired,
           etoState: props.eto.state,
-          etoOnChainState: isOnChain(props.eto) ? props.eto.contract.timedState : undefined,
+          etoOnChainState: etoModuleApi.utils.isOnChain(props.eto)
+            ? props.eto.contract.timedState
+            : undefined,
           isMarketingDataVisibleInPreview: props.isMarketingDataVisibleInPreview,
           isTermSheetSubmitted: props.isTermSheetSubmitted,
           isOfferingDocumentSubmitted: props.isOfferingDocumentSubmitted,

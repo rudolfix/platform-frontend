@@ -1,8 +1,8 @@
+import { EEtoDocumentType } from "@neufund/shared-modules";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EEtoDocumentType } from "../../lib/api/eto/EtoFileApi.interfaces";
 import { Document, DocumentTile } from "./Document";
 import { DocumentUploadableTile } from "./DocumentUploadable";
 

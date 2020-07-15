@@ -1,6 +1,6 @@
 import { put } from "@neufund/sagas";
+import { EJurisdiction } from "@neufund/shared-modules";
 
-import { EJurisdiction } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../actions";
 
 export function* ensureEtoJurisdiction(

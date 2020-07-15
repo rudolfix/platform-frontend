@@ -1,11 +1,14 @@
+import {
+  EEtoState,
+  EETOStateOnChain,
+  etoModuleApi,
+  InvalidETOStateError,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { InvalidETOStateError } from "../../modules/eto/errors";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
-import { isOnChain } from "../../modules/eto/utils";
 import { DashboardWidget } from "../shared/dashboard-widget/DashboardWidget";
 import { IPanelProps } from "../shared/Panel";
 import { TimeLeftWithUTC } from "../shared/TimeLeftWithUTC";
@@ -51,7 +54,7 @@ const ETOFundraisingPublicCounterWidget: React.FunctionComponent<IFundraisingPro
 );
 
 const ETOFundraisingCounterWidget: React.FunctionComponent<TProps> = ({ eto, columnSpan }) => {
-  if (!isOnChain(eto)) {
+  if (!etoModuleApi.utils.isOnChain(eto)) {
     throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
   }
 

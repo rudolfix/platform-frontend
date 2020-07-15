@@ -1,6 +1,5 @@
+import { EEtoDocumentType, TEtoDocumentTemplates } from "@neufund/shared-modules";
 import { curry } from "lodash/fp";
-
-import { EEtoDocumentType, TEtoDocumentTemplates } from "../../lib/api/eto/EtoFileApi.interfaces";
 
 const getDocumentByType = curry(
   (documents: TEtoDocumentTemplates, documentType: EEtoDocumentType) =>

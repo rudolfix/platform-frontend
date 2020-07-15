@@ -1,13 +1,12 @@
 import { ButtonInline } from "@neufund/design-system";
+import { TCompanyEtoData, TEtoWithCompanyAndContract } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { TCompanyEtoData } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IImmutableFileId } from "../../../lib/api/immutable-storage/ImmutableStorage.interfaces";
-import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { TProposal } from "../../../modules/shareholder-resolutions-voting/types";
 import { etherscanAddressReadContractLink } from "../../appRouteUtils";
 import { EMimeType, mapMimeTypeToExtension } from "../../shared/forms";

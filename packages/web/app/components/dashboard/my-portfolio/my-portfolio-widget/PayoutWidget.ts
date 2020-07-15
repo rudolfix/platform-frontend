@@ -1,24 +1,9 @@
+import { investorPortfolioModuleApi, ITokenDisbursal } from "@neufund/shared-modules";
 import * as moment from "moment";
 import { branch, compose, renderComponent, withProps } from "recompose";
 
 import { PAYOUT_POLLING_DELAY } from "../../../../config/constants";
 import { actions } from "../../../../modules/actions";
-import {
-  selectEtherTokenIncomingPayout,
-  selectEuroTokenIncomingPayout,
-  selectIncomingPayoutError,
-  selectIncomingPayoutSnapshotDate,
-  selectIsIncomingPayoutLoading,
-  selectIsIncomingPayoutNotInitialized,
-  selectIsIncomingPayoutPending,
-  selectPayoutAvailable,
-  selectTokensDisbursal,
-  selectTokensDisbursalError,
-  selectTokensDisbursalIsLoading,
-  selectTokensDisbursalNotInitialized,
-} from "../../../../modules/investor-portfolio/selectors";
-import { ITokenDisbursal } from "../../../../modules/investor-portfolio/types";
-import { snapshotIsActual } from "../../../../modules/investor-portfolio/utils";
 import { appConnect } from "../../../../store";
 import { onEnterAction } from "../../../../utils/react-connected-components/OnEnterAction";
 import { withActionWatcher } from "../../../../utils/react-connected-components/withActionWatcher.unsafe";
@@ -84,21 +69,29 @@ export const PayoutWidget = compose<TStateProps & TDispatchProps, {}>(
   }),
   appConnect<TStateProps, TDispatchProps>({
     stateToProps: s => {
-      const snapshotDate = selectIncomingPayoutSnapshotDate(s);
+      const snapshotDate = investorPortfolioModuleApi.selectors.selectIncomingPayoutSnapshotDate(s);
 
       return {
         isLoading:
-          selectIsIncomingPayoutNotInitialized(s) ||
-          selectTokensDisbursalNotInitialized(s) ||
-          selectIsIncomingPayoutLoading(s) ||
-          selectTokensDisbursalIsLoading(s),
-        error: selectIncomingPayoutError(s) || selectTokensDisbursalError(s),
-        pendingPayout: selectIsIncomingPayoutPending(s),
-        availablePayout: selectPayoutAvailable(s),
-        snapshotIsActual: !!snapshotDate && snapshotIsActual(snapshotDate, new Date()),
-        etherTokenIncomingPayout: selectEtherTokenIncomingPayout(s),
-        euroTokenIncomingPayout: selectEuroTokenIncomingPayout(s),
-        tokensDisbursal: selectTokensDisbursal(s),
+          investorPortfolioModuleApi.selectors.selectIsIncomingPayoutNotInitialized(s) ||
+          investorPortfolioModuleApi.selectors.selectTokensDisbursalNotInitialized(s) ||
+          investorPortfolioModuleApi.selectors.selectIsIncomingPayoutLoading(s) ||
+          investorPortfolioModuleApi.selectors.selectTokensDisbursalIsLoading(s),
+        error:
+          investorPortfolioModuleApi.selectors.selectIncomingPayoutError(s) ||
+          investorPortfolioModuleApi.selectors.selectTokensDisbursalError(s),
+        pendingPayout: investorPortfolioModuleApi.selectors.selectIsIncomingPayoutPending(s),
+        availablePayout: investorPortfolioModuleApi.selectors.selectPayoutAvailable(s),
+        snapshotIsActual:
+          !!snapshotDate &&
+          investorPortfolioModuleApi.utils.snapshotIsActual(snapshotDate, new Date()),
+        etherTokenIncomingPayout: investorPortfolioModuleApi.selectors.selectEtherTokenIncomingPayout(
+          s,
+        ),
+        euroTokenIncomingPayout: investorPortfolioModuleApi.selectors.selectEuroTokenIncomingPayout(
+          s,
+        ),
+        tokensDisbursal: investorPortfolioModuleApi.selectors.selectTokensDisbursal(s),
       };
     },
     dispatchToProps: d => ({

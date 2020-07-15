@@ -1,6 +1,3 @@
-import { TModuleState } from "../../types";
-import { setupWalletModule } from "./module";
-
 export interface IWalletState {
   loading: boolean;
   error: string | undefined;
@@ -30,5 +27,3 @@ export interface IWalletStateData {
   // TODO: Remove once
   neumarkAddress: string;
 }
-
-export type TWalletModuleState = TModuleState<typeof setupWalletModule>;

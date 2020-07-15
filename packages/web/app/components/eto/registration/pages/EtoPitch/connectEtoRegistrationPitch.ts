@@ -1,14 +1,13 @@
+import { EEtoFormTypes, TPartialCompanyEtoData } from "@neufund/shared-modules";
 import { FormikValues } from "formik";
 import { compose, setDisplayName, withProps } from "recompose";
 
-import { TPartialCompanyEtoData } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../../modules/actions";
 import {
   selectIssuerCompany,
   selectIssuerEtoLoading,
   selectIssuerEtoSaving,
 } from "../../../../../modules/eto-flow/selectors";
-import { EEtoFormTypes } from "../../../../../modules/eto-flow/types";
 import { appConnect } from "../../../../../store";
 import { convert } from "../../../utils";
 import { fromFormState, toFormState } from "./etoRegistrationPitchFormStateConverters";

@@ -1,10 +1,9 @@
 import { WholeEur } from "@neufund/design-system";
+import { etoModuleApi, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
-import { getEtoEurMinTarget } from "../../../../../modules/eto/utils";
 import { ECustomTooltipTextPosition, Tooltip } from "../../../../shared/tooltips";
 
 type TExternalProps = {
@@ -12,7 +11,7 @@ type TExternalProps = {
 };
 
 const InvestmentTarget: React.FunctionComponent<TExternalProps> = ({ eto }) => {
-  const target = getEtoEurMinTarget(eto);
+  const target = etoModuleApi.utils.getEtoEurMinTarget(eto);
   const { investmentCalculatedValues } = eto;
   const { minInvestmentAmount } = nonNullable(investmentCalculatedValues);
 

@@ -1,12 +1,11 @@
 import { all, call, fork, put, SagaGenerator, select, take } from "@neufund/sagas";
-import { coreModuleApi, neuGetBindings } from "@neufund/shared-modules";
+import { coreModuleApi, neuGetBindings, TEtoSpecsData } from "@neufund/shared-modules";
 import { secondsToMs } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 
 import { EGovernanceErrorMessage } from "../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../components/translatedMessages/utils";
 import { symbols } from "../../di/symbols";
-import { TEtoSpecsData } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IControllerGovernance } from "../../lib/contracts/IControllerGovernance";
 import { ITokenControllerHook } from "../../lib/contracts/ITokenControllerHook";
 import { actions as globalActions, TActionFromCreator } from "../actions";

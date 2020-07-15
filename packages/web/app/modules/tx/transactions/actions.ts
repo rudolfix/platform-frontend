@@ -1,7 +1,7 @@
+import { ITokenDisbursal } from "@neufund/shared-modules";
 import { createActionFactory } from "@neufund/shared-utils";
 
 import { createAction, createSimpleAction } from "../../actionsUtils";
-import { ITokenDisbursal } from "../../investor-portfolio/types";
 import { ETokenType } from "../types";
 
 export const txTransactionsActions = {

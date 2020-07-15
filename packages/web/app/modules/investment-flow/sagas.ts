@@ -1,5 +1,11 @@
 import { all, call, delay, put, select, take, takeEvery, takeLatest } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import {
+  EETOStateOnChain,
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+  walletApi,
+} from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -18,18 +24,6 @@ import { ETOCommitment } from "../../lib/contracts/ETOCommitment";
 import { ETxType, ITxData } from "../../lib/web3/types";
 import { TAppGlobalState } from "../../store";
 import { actions, TActionFromCreator } from "../actions";
-import {
-  selectEtoById,
-  selectEtoOnChainStateById,
-  selectEtoWithCompanyAndContractById,
-} from "../eto/selectors";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../eto/types";
-import { loadComputedContributionFromContract } from "../investor-portfolio/sagas";
-import {
-  selectCalculatedContribution,
-  selectCalculatedEtoTicketSizesUlpsById,
-  selectIsWhitelisted,
-} from "../investor-portfolio/selectors";
 import { neuCall } from "../sagasUtils";
 import { selectEtherPriceEur, selectEurPriceEther } from "../shared/tokenPrice/selectors";
 import {
@@ -159,9 +153,14 @@ function validateInvestment(state: TAppGlobalState): EInvestmentErrorState | und
 
   const wallet = walletApi.selectors.selectWalletData(state);
 
-  const etoId = selectInvestmentEtoId(state);
-  const contribs = selectCalculatedContribution(state, etoId);
-  const ticketSizes = selectCalculatedEtoTicketSizesUlpsById(state, etoId);
+  const contribs = investorPortfolioModuleApi.selectors.selectCalculatedContribution(
+    state,
+    investmentFlow.etoId,
+  );
+  const ticketSizes = investorPortfolioModuleApi.selectors.selectCalculatedEtoTicketSizesUlpsById(
+    state,
+    investmentFlow.etoId,
+  );
 
   if (!contribs || !euroValue || !wallet || !ticketSizes) return;
 
@@ -216,7 +215,7 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
 
   yield put(actions.investmentFlow.setErrorState());
   let state: TAppGlobalState = yield select();
-  const eto = selectEtoById(state, state.investmentFlow.etoId);
+  const eto = etoModuleApi.selectors.selectEtoById(state, state.investmentFlow.etoId);
   const eurValue = selectInvestmentEurValue(state);
   const value = eurValue ? convertToUlps(eurValue).toString() : eurValue;
 
@@ -229,7 +228,12 @@ function* validateAndCalculateInputs({ contractsService }: TGlobalDependencies):
     if (etoContract) {
       const isICBM = selectIsICBMInvestment(state);
 
-      const contribution = yield neuCall(loadComputedContributionFromContract, eto, value, isICBM);
+      const contribution = yield neuCall(
+        investorPortfolioModuleApi.sagas.loadComputedContributionFromContract,
+        eto,
+        value,
+        isICBM,
+      );
 
       yield put(actions.investorEtoTicket.setCalculatedContribution(eto.etoId, contribution));
 
@@ -258,7 +262,9 @@ function* start(
 ): Generator<any, any, any> {
   const { etoId } = action.payload;
   const eto: TEtoWithCompanyAndContractReadonly = nonNullable(
-    yield* select((state: TAppGlobalState) => selectEtoWithCompanyAndContractById(state, etoId)),
+    yield* select((state: TAppGlobalState) =>
+      etoModuleApi.selectors.selectEtoWithCompanyAndContractById(state, etoId),
+    ),
   );
 
   yield put(actions.investmentFlow.resetInvestment());
@@ -301,13 +307,14 @@ export function* selectInitialInvestmentType(): Generator<any, void, any> {
 function* getInvestmentWalletData(): Generator<any, WalletSelectionData[], any> {
   const state: TAppGlobalState = yield select();
   const etoId = yield* select(selectInvestmentEtoId);
-  const etoOnChainState = yield* select(selectEtoOnChainStateById, etoId);
+  const etoOnChainState = yield* select(etoModuleApi.selectors.selectEtoOnChainStateById, etoId);
 
   const activeTypes: WalletSelectionData[] = [];
 
   // no regular investment if not whitelisted in pre eto
   if (
-    (etoOnChainState === EETOStateOnChain.Whitelist && selectIsWhitelisted(state, etoId)) ||
+    (etoOnChainState === EETOStateOnChain.Whitelist &&
+      investorPortfolioModuleApi.selectors.selectIsWhitelisted(state, etoId)) ||
     etoOnChainState !== EETOStateOnChain.Whitelist
   ) {
     //eth wallet

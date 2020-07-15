@@ -1,5 +1,5 @@
 import { put, select } from "@neufund/sagas";
-import { walletApi } from "@neufund/shared-modules";
+import { generateRandomEthereumAddress, walletApi } from "@neufund/shared-modules";
 import {
   addBigNumbers,
   compareBigNumbers,
@@ -11,7 +11,7 @@ import { cloneDeep } from "lodash";
 import { NotEnoughEtherForGasError, UserHasNoFundsError } from "../../../../lib/web3/Web3Adapter";
 import { actions } from "../../../actions";
 import { neuCall } from "../../../sagasUtils";
-import { generateRandomEthereumAddress, isAddressValid } from "../../../web3/utils";
+import { isAddressValid } from "../../../web3/utils";
 import { ITokenTransferDraftType, IWithdrawDraftType } from "../../types";
 import { MINIMUM_ETH_RESERVE_GAS_UNITS } from "../../utils";
 import { txProcessAddressValidations } from "../address/sagas";

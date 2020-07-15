@@ -1,7 +1,7 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { XOR } from "@neufund/shared-utils";
 
 import { EProcessState } from "../../../utils/enums/processStates";
-import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
 
 export type TSocialChannel = {
   url: string | undefined;

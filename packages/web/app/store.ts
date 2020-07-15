@@ -1,9 +1,11 @@
 import {
   appConnect as sharedAppConnect,
   setupAuthModule,
+  setupBookbuildingModule,
   setupContractsModule,
   setupCoreModule,
   setupGasModule,
+  setupInvestorPortfolioModule,
   setupKycModule,
   setupTokenPriceModule,
   setupWalletModule,
@@ -29,6 +31,7 @@ import { symbols } from "./di/symbols";
 import { reduxLogger } from "./middlewares/redux-logger";
 import { actions, TAction } from "./modules/actions";
 import { ensurePermissionsArePresentAndRunEffect } from "./modules/auth/jwt/sagas";
+import { setupWebEtoModule } from "./modules/eto/module";
 import { displayErrorModalSaga } from "./modules/generic-modal/sagas";
 import { setupGovernanceModule } from "./modules/governance/module";
 import { waitUntilSmartContractsAreInitialized } from "./modules/init/sagas";
@@ -81,7 +84,7 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupTokenPriceModule({
       refreshOnAction: actions.web3.newBlockArrived,
     }),
-    ...setupWalletModule({ waitUntilSmartContractsAreInitialized }),
+    setupWalletModule({ waitUntilSmartContractsAreInitialized }),
     ...setupWebTxHistoryModule({
       refreshOnAction: actions.web3.newBlockArrived,
     }),
@@ -90,11 +93,17 @@ export const setupAppModule = ({ history, config, container }: TAppModuleConfig)
     setupWebNotificationUIModule(),
     ...setupShareholderResolutionsVotingViewModule(),
     setupGovernanceModule(),
-    ...setupKycModule({
+    setupKycModule({
       ensurePermissionsArePresentAndRunEffect,
       displayErrorModalSaga,
       waitUntilSmartContractsAreInitialized,
     }),
+    ...setupWebEtoModule(),
+    setupBookbuildingModule({
+      ensurePermissionsArePresentAndRunEffect,
+      refreshOnAction: actions.web3.newBlockArrived,
+    }),
+    setupInvestorPortfolioModule(),
     appModule,
   ];
 };

@@ -1,4 +1,5 @@
-import { TEtoSpecsData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
+import { TEtoSpecsData } from "@neufund/shared-modules";
+
 import { etoFixtureAddressByName, shouldDownloadDocument, tid } from "../../../utils/index";
 import { createAndLoginNewUser, getEto, loginFixtureAccount } from "../../../utils/userHelpers";
 import { goToEtoViewById } from "./EtoViewUtils";

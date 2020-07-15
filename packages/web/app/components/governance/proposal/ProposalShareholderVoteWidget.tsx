@@ -5,13 +5,13 @@ import {
   EButtonLayout,
   Percentage,
 } from "@neufund/design-system";
+import { TEtoWithCompanyAndContract } from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
-import { TEtoWithCompanyAndContract } from "../../../modules/eto/types";
 import { shareholderResolutionsVotingModuleApi } from "../../../modules/shareholder-resolutions-voting/module";
 import {
   EShareholderVoteResolution,

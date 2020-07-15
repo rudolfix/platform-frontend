@@ -1,13 +1,15 @@
 import { Button, EButtonLayout } from "@neufund/design-system";
+import {
+  EETOStateOnChain,
+  etoModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedRelative } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { actions } from "../../modules/actions";
-import { selectEtoWithCompanyAndContractById } from "../../modules/eto/selectors";
-import { EETOStateOnChain, TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
-import { getInvestmentCalculatedPercentage } from "../../modules/eto/utils";
 import { appConnect } from "../../store";
 import { FormatNumber } from "../shared/formatters/FormatNumber";
 
@@ -56,7 +58,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<TExternalProps &
     case EETOStateOnChain.Public:
     case EETOStateOnChain.Whitelist:
       const currentInvestmentProgressPercentage = nonNullable(
-        getInvestmentCalculatedPercentage(eto),
+        etoModuleApi.utils.getInvestmentCalculatedPercentage(eto),
       );
 
       return (
@@ -92,7 +94,7 @@ const PortfolioAssetActionComponent: React.FunctionComponent<TExternalProps &
 
 const PortfolioAssetAction = appConnect<IStateProps, IDispatchProps, TExternalProps>({
   stateToProps: (state, props) => ({
-    eto: selectEtoWithCompanyAndContractById(state, props.etoId)!,
+    eto: etoModuleApi.selectors.selectEtoWithCompanyAndContractById(state, props.etoId)!,
   }),
   dispatchToProps: dispatch => ({
     onClaim: (etoId: string) => dispatch(actions.txTransactions.startUserClaim(etoId)),

@@ -1,4 +1,5 @@
 import { Button, EButtonLayout, Eur, Neu, Table, TokenDetails } from "@neufund/design-system";
+import { investorPortfolioModuleApi, TETOWithInvestorTicket } from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat, nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
@@ -6,8 +7,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
-import { TETOWithInvestorTicket } from "../../modules/investor-portfolio/types";
-import { getTokenPrice } from "../../modules/investor-portfolio/utils";
 import { appConnect } from "../../store";
 import { etoPublicViewLink } from "../appRouteUtils";
 import { Container } from "../layouts/Container";
@@ -94,7 +93,10 @@ const prepareTableRowData = (
         ),
         price: (
           <Eur
-            value={getTokenPrice(investorTicket.equityTokenInt, investorTicket.equivEur)}
+            value={investorPortfolioModuleApi.utils.getTokenPrice(
+              investorTicket.equityTokenInt,
+              investorTicket.equivEur,
+            )}
             data-test-id="past-investments-token-price"
           />
         ),

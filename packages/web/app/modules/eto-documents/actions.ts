@@ -1,10 +1,5 @@
+import { EEtoDocumentType, IEtoDocument, IEtoFilesInfo } from "@neufund/shared-modules";
 import { createActionFactory } from "@neufund/shared-utils";
-
-import {
-  EEtoDocumentType,
-  IEtoDocument,
-  IEtoFilesInfo,
-} from "../../lib/api/eto/EtoFileApi.interfaces";
 
 export const etoDocumentsActions = {
   loadFileDataStart: createActionFactory("ETO_DOCUMENTS_LOAD_FILE_DATA_START"),

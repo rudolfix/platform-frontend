@@ -1,4 +1,4 @@
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 
 export const ITokenDisbursalSchema = YupTS.object({
   token: YupTS.string(),
@@ -12,6 +12,6 @@ export const InvestorAcceptPayoutAdditionalDataSchema = YupTS.object({
   tokensDisbursals: YupTS.array(ITokenDisbursalSchema),
 });
 
-export type TInvestorAcceptPayoutAdditionalData = YupTS.TypeOf<
+export type TInvestorAcceptPayoutAdditionalData = TypeOfYTS<
   typeof InvestorAcceptPayoutAdditionalDataSchema
 >;

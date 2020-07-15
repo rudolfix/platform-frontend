@@ -1,6 +1,7 @@
 import { convertFromUlps, Q18 } from "@neufund/shared-utils";
 import { expect } from "chai";
 
+import { TWalletModuleState } from "./module";
 import {
   selectICBMLockedEuroTotalAmount,
   selectLiquidEuroTotalAmount,
@@ -12,7 +13,6 @@ import {
   selectTotalEuroBalance,
   selectTotalEuroTokenBalance,
 } from "./selectors";
-import { TWalletModuleState } from "./types";
 
 describe("Wallet > selectors", () => {
   const etherLockedBalance = Q18.mul("23.11");

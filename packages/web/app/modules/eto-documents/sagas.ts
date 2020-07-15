@@ -1,5 +1,13 @@
 import { all, call, fork, put, select } from "@neufund/sagas";
-import { EJwtPermissions } from "@neufund/shared-modules";
+import {
+  EEtoDocumentType,
+  EEtoState,
+  EJwtPermissions,
+  FileAlreadyExists,
+  TEtoDocumentTemplates,
+  TEtoWithCompanyAndContractReadonly,
+  TStateInfo,
+} from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 
 import { EtoDocumentsMessage, IpfsMessage } from "../../components/translatedMessages/messages";
@@ -8,13 +16,6 @@ import {
   createNotificationMessage,
 } from "../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../di/setupBindings";
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { FileAlreadyExists } from "../../lib/api/eto/EtoFileApi";
-import {
-  EEtoDocumentType,
-  TEtoDocumentTemplates,
-  TStateInfo,
-} from "../../lib/api/eto/EtoFileApi.interfaces";
 import { actions, TActionFromCreator } from "../actions";
 import { ensurePermissionsArePresentAndRunEffect } from "../auth/jwt/sagas";
 import { loadIssuerEto } from "../eto-flow/sagas";
@@ -24,7 +25,6 @@ import {
   selectIssuerEtoId,
   selectIssuerEtoProduct,
 } from "../eto-flow/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../eto/types";
 import { downloadLink } from "../immutable-file/utils";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuCall, neuTakeEvery } from "../sagasUtils";

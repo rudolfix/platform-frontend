@@ -1,10 +1,10 @@
 import { ButtonArrowRight, ButtonInline } from "@neufund/design-system";
+import { TypeOfYTS, YupTS } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { externalRoutes } from "../../../../config/externalRoutes";
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import { appConnect } from "../../../../store";
 import { ECheckboxLayout, Form, FormFieldBoolean } from "../../../shared/forms/index";
@@ -23,7 +23,7 @@ const AgreementScheme = YupTS.object({
   nEurTosApproved: YupTS.onlyTrue(),
 });
 
-type TAgreementForm = YupTS.TypeOf<typeof AgreementScheme>;
+type TAgreementForm = TypeOfYTS<typeof AgreementScheme>;
 
 const BankTransferVerifyAgreementLayout: React.FunctionComponent<IProps> = ({
   goToSummary,

@@ -1,3 +1,4 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import { DeepWritable } from "@neufund/shared-utils";
 import { tid } from "@neufund/shared-utils/tests";
 import { expect } from "chai";
@@ -7,7 +8,6 @@ import * as React from "react";
 
 import { testEto } from "../../../../../../test/fixtures";
 import { wrapWithIntl } from "../../../../../../test/integrationTestUtils.unsafe";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../../modules/eto/types";
 import { InvestmentLayout } from "./InvestmentStatus";
 
 describe("InvestmentStatus", () => {

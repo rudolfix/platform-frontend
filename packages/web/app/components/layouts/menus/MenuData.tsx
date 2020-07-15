@@ -1,8 +1,8 @@
+import { TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
 import { externalRoutes } from "../../../config/externalRoutes";
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { appRoutes } from "../../appRoutes";
 import { EMenuEntryType, TMenuEntry } from "./MenuEntry";
 

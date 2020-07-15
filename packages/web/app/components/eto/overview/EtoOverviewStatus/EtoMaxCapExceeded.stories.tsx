@@ -1,11 +1,11 @@
+import {
+  EEtoState,
+  EETOStateOnChain,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EETOStateOnChain,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../../../modules/eto/types";
 import { withMockedDate } from "../../../../utils/react-connected-components/storybookHelpers.unsafe";
 import { EtoMaxCapExceededComponent } from "./EtoMaxCapExceeded";
 

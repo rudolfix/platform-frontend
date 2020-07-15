@@ -1,14 +1,14 @@
 import { Eur } from "@neufund/design-system";
+import {
+  EETOStateOnChain,
+  etoModuleApi,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
-import { selectEtoOnChainNextStateStartDate } from "../../../../../modules/eto/selectors";
-import {
-  EETOStateOnChain,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../../../../modules/eto/types";
 import { appConnect } from "../../../../../store";
 import { FormatNumber } from "../../../../shared/formatters/FormatNumber";
 import { InvestmentProgress } from "../../../shared/InvestmentProgress";
@@ -63,7 +63,10 @@ const InvestmentLayout: React.FunctionComponent<TInvestWidgetProps> = ({ eto }) 
 const InvestmentStatus = compose<TInvestWidgetProps, IInvestmentWidgetProps>(
   appConnect<IInvestmentWidgetStateProps, {}, IInvestmentWidgetProps>({
     stateToProps: (state, props) => ({
-      nextStateDate: selectEtoOnChainNextStateStartDate(state, props.eto.previewCode),
+      nextStateDate: etoModuleApi.selectors.selectEtoOnChainNextStateStartDate(
+        state,
+        props.eto.previewCode,
+      ),
     }),
   }),
 )(InvestmentLayout);

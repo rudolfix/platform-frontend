@@ -1,9 +1,9 @@
+import { TSocialChannelsType } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import { connect, FieldArray, getIn } from "formik";
 import { get, isEqual } from "lodash/fp";
 import * as React from "react";
 
-import { TSocialChannelsType } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { CommonHtmlProps, TFormikConnect } from "../../types";
 import { FormField } from "./forms";
 import { InlineIcon } from "./icons";

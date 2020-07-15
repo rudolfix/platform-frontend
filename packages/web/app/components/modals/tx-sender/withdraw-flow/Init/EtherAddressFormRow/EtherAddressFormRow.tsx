@@ -1,9 +1,9 @@
+import { YupTS } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import { FormikErrors, FormikValues } from "formik";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import * as YupTS from "../../../../../../lib/yup-ts.unsafe";
 import { ETH_ADDRESS_SIZE } from "../../../../../../modules/tx/utils";
 import { isAddressValid } from "../../../../../../modules/web3/utils";
 import { DataRow } from "../../../../../shared/DataRow";

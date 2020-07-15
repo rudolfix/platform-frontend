@@ -1,10 +1,3 @@
-export interface IWindowData {
-  payoutRequiredAmount?: string;
-  disableNotAcceptingEtherCheck?: boolean;
-  forceLowGas?: boolean;
-  forceStandardGas?: boolean;
-  nfISHAConfidentialityAgreementsRequirements?: string;
-  ethereum?: object;
-}
+import { ITestSettings } from "@neufund/shared-modules";
 
-export type IWindowWithData = IWindowData & Window;
+export type IWindowWithData = ITestSettings & Window;

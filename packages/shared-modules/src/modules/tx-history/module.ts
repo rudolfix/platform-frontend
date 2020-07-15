@@ -1,6 +1,6 @@
 import { TModuleState } from "../../types";
 import { generateSharedModuleId } from "../../utils";
-import { setupTokenPriceModule } from "../token-price/module";
+import { TPureTokenPriceModuleState } from "../token-price/module";
 import { txHistoryActions } from "./actions";
 import { setupContainerModule } from "./bindings";
 import { txHistoryReducerMap } from "./reducer";
@@ -31,7 +31,7 @@ const setupTxHistoryModule = (config: Config) => {
     reducerMap: txHistoryReducerMap,
   };
 
-  return [setupTokenPriceModule({ refreshOnAction: undefined }), module];
+  return module;
 };
 
 const txHistoryApi = {
@@ -41,4 +41,5 @@ const txHistoryApi = {
 
 export { setupTxHistoryModule, txHistoryApi };
 
-export type TTxHistoryModuleState = TModuleState<typeof setupTxHistoryModule>;
+export type TPureTxHistoryModuleState = TModuleState<typeof setupTxHistoryModule>;
+export type TTxHistoryModuleState = TPureTxHistoryModuleState & TPureTokenPriceModuleState;

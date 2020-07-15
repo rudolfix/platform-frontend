@@ -1,11 +1,13 @@
 import { EquityTokenPriceEuro, Eur, Percentage } from "@neufund/design-system";
+import {
+  EETOStateOnChain,
+  IEtoTokenGeneralDiscounts,
+  IPersonalDiscount,
+} from "@neufund/shared-modules";
 import { isZero } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
-
-import { EETOStateOnChain, IEtoTokenGeneralDiscounts } from "../../../../modules/eto/types";
-import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
 
 interface IExternalProps {
   onChainState: EETOStateOnChain;

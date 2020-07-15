@@ -1,12 +1,13 @@
-import { EUserType } from "@neufund/shared-modules";
-import { expect } from "chai";
-
-import { EEtoState, ESocialChannelType } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import {
+  EEtoState,
   EJurisdiction,
   EOfferingDocumentType,
-} from "../../../lib/api/eto/EtoProductsApi.interfaces";
-import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
+  ESocialChannelType,
+  EUserType,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
+import { expect } from "chai";
+
 import {
   getTwitterData,
   getTwitterUrl,

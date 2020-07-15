@@ -99,6 +99,22 @@ export function* neuTakeUntil(
 /**
  * Starts saga on `startAction`, cancels on `stopAction`, loops...
  */
+export function* neuTakeEveryUntil(
+  startAction: ActionPattern,
+  stopAction: ActionPattern,
+  saga: TSagaWithDeps,
+): any {
+  yield takeEvery(startAction, function*(payload): Generator<any, any, any> {
+    yield race({
+      task: neuCall(saga, payload),
+      cancel: take(stopAction),
+    });
+  });
+}
+
+/**
+ * Starts saga on `startAction`, cancels on `stopAction`, loops...
+ */
 export function* neuTakeLatestUntil<
   P extends ActionPattern,
   Fn extends (action: ActionMatchingPattern<P>, ...args: any[]) => any

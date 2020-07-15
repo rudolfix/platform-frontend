@@ -1,8 +1,8 @@
+import { TSocialChannelsType } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TSocialChannelsType } from "../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TEtoViewData } from "../../../../../modules/eto-view/shared/types";
 import { Container, EColumnSpan, EContainerType } from "../../../../layouts/Container";
 import { DashboardHeading } from "../../../../shared/DashboardHeading";

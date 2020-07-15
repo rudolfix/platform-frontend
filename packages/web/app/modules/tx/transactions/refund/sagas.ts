@@ -1,4 +1,5 @@
 import { fork, put, select } from "@neufund/sagas";
+import { etoModuleApi, IInvestorTicket, investorPortfolioModuleApi } from "@neufund/shared-modules";
 import {
   convertFromUlps,
   ETH_DECIMALS,
@@ -11,9 +12,6 @@ import { ETOCommitment } from "../../../../lib/contracts/ETOCommitment";
 import { ETxType, ITxData } from "../../../../lib/web3/types";
 import { TAppGlobalState } from "../../../../store";
 import { actions, TActionFromCreator } from "../../../actions";
-import { selectEtoWithCompanyAndContractById } from "../../../eto/selectors";
-import { selectInvestorTicket } from "../../../investor-portfolio/selectors";
-import { IInvestorTicket } from "../../../investor-portfolio/types";
 import { neuCall, neuTakeLatest } from "../../../sagasUtils";
 import { selectEtherPriceEur } from "../../../shared/tokenPrice/selectors";
 import { selectEthereumAddress } from "../../../web3/selectors";
@@ -55,10 +53,10 @@ function* startRefundGenerator(_: TGlobalDependencies, etoId: string): Generator
   yield put(actions.txSender.setTransactionData(generatedTxDetails));
 
   const etoData = yield select((state: TAppGlobalState) =>
-    selectEtoWithCompanyAndContractById(state, etoId),
+    etoModuleApi.selectors.selectEtoWithCompanyAndContractById(state, etoId),
   );
   const investorTicket: IInvestorTicket = yield select((state: TAppGlobalState) =>
-    selectInvestorTicket(state, etoId),
+    investorPortfolioModuleApi.selectors.selectInvestorTicket(state, etoId),
   );
   const ethPrice: string = yield select(selectEtherPriceEur);
   const costUlps: string = yield select(selectTxGasCostEthUlps);

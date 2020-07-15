@@ -1,10 +1,9 @@
+import { EJurisdiction, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { Link } from "react-router-dom";
 
-import { EJurisdiction } from "../../../../lib/api/eto/EtoProductsApi.interfaces";
-import { TEtoWithCompanyAndContractReadonly } from "../../../../modules/eto/types";
 import { CommonHtmlProps } from "../../../../types";
 import { etoPublicViewLink } from "../../../appRouteUtils";
 import { Container, EColumnSpan } from "../../../layouts/Container";

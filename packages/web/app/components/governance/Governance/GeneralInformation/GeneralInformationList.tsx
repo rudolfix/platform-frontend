@@ -1,10 +1,10 @@
 import { Button, EButtonLayout, EButtonSize, EButtonWidth } from "@neufund/design-system";
+import { TCompanyEtoData } from "@neufund/shared-modules";
 import { nonNullable } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedDate } from "react-intl";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TCompanyEtoData } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { IResolution } from "../../../../modules/governance/types";
 import { governanceActionToLabel } from "../../../../modules/governance/utils";
 import { Container } from "../../../layouts/Container";

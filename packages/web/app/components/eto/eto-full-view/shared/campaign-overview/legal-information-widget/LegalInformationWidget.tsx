@@ -1,16 +1,16 @@
 import { WholeEur } from "@neufund/design-system";
+import { FUNDING_ROUNDS, TCompanyEtoData } from "@neufund/shared-modules";
 import { ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { TCompanyEtoData } from "../../../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { Container, EColumnSpan } from "../../../../../layouts/Container";
 import { ChartDoughnutLazy } from "../../../../../shared/charts/ChartDoughnutLazy";
 import { generateColor } from "../../../../../shared/charts/utils";
 import { DashboardHeading } from "../../../../../shared/DashboardHeading";
 import { FormatNumber } from "../../../../../shared/formatters/FormatNumber";
 import { Panel } from "../../../../../shared/Panel";
-import { CHART_COLORS, FUNDING_ROUNDS } from "../../../../shared/constants";
+import { CHART_COLORS } from "../../../../shared/constants";
 import { generateShareholders } from "../../../../utils";
 
 import * as styles from "./LegalInformationWidget.module.scss";

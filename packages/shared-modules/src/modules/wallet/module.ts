@@ -1,5 +1,6 @@
+import { TModuleState } from "../../types";
 import { generateSharedModuleId } from "../../utils";
-import { setupTokenPriceModule } from "../token-price/module";
+import { TPureTokenPriceModuleState } from "../token-price/module";
 import { walletActions } from "./actions";
 import { walletReducerMap } from "./reducer";
 import { loadWalletDataAsync, loadWalletDataSaga, setupWalletSagas } from "./sagas";
@@ -19,7 +20,7 @@ const setupWalletModule = (config: Config) => {
     reducerMap: walletReducerMap,
   };
 
-  return [setupTokenPriceModule({ refreshOnAction: undefined }), module];
+  return module;
 };
 
 const walletApi = {
@@ -34,3 +35,6 @@ const walletApi = {
 };
 
 export { setupWalletModule, walletReducerMap, walletApi, ILockedWallet, IWalletStateData };
+
+export type TPureWalletModuleState = TModuleState<typeof setupWalletModule>;
+export type TWalletModuleState = TPureWalletModuleState & TPureTokenPriceModuleState;

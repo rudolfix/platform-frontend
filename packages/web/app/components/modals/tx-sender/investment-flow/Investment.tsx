@@ -8,6 +8,15 @@ import {
   Neu,
 } from "@neufund/design-system";
 import {
+  EEtoState,
+  etoModuleApi,
+  IEtoTokenGeneralDiscounts,
+  InvalidETOStateError,
+  investorPortfolioModuleApi,
+  IPersonalDiscount,
+  TEtoWithCompanyAndContractTypeChecked,
+} from "@neufund/shared-modules";
+import {
   addBigNumbers,
   compareBigNumbers,
   convertFromUlps,
@@ -30,19 +39,7 @@ import { Link } from "react-router-dom";
 import { Col, Container, FormGroup, Label, Row } from "reactstrap";
 import { compose, withProps } from "recompose";
 
-import { EEtoState } from "../../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { actions } from "../../../../modules/actions";
-import { InvalidETOStateError } from "../../../../modules/eto/errors";
-import {
-  selectEtoTokenGeneralDiscounts,
-  selectEtoTokenStandardPrice,
-  selectEtoWithCompanyAndContractById,
-} from "../../../../modules/eto/selectors";
-import {
-  IEtoTokenGeneralDiscounts,
-  TEtoWithCompanyAndContractTypeChecked,
-} from "../../../../modules/eto/types";
-import { isOnChain } from "../../../../modules/eto/utils";
 import {
   EInvestmentErrorState,
   EInvestmentType,
@@ -57,14 +54,6 @@ import {
   selectIsReadyToInvest,
   selectWallets,
 } from "../../../../modules/investment-flow/selectors";
-import {
-  selectCalculatedEtoTicketSizesUlpsById,
-  selectEquityTokenCountByEtoId,
-  selectHasInvestorTicket,
-  selectNeuRewardUlpsByEtoId,
-  selectPersonalDiscount,
-} from "../../../../modules/investor-portfolio/selectors";
-import { IPersonalDiscount } from "../../../../modules/investor-portfolio/types";
 import {
   selectEtherPriceEur,
   selectEurPriceEther,
@@ -435,9 +424,11 @@ export const InvestmentSelection = compose<IProps, {}>(
   appConnect<IStateProps, IDispatchProps>({
     stateToProps: state => {
       const etoId = selectInvestmentEtoId(state);
-      const eto = nonNullable(selectEtoWithCompanyAndContractById(state, etoId));
+      const eto = nonNullable(
+        etoModuleApi.selectors.selectEtoWithCompanyAndContractById(state, etoId),
+      );
 
-      if (!isOnChain(eto)) {
+      if (!etoModuleApi.utils.isOnChain(eto)) {
         throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
       }
 
@@ -454,15 +445,30 @@ export const InvestmentSelection = compose<IProps, {}>(
         gasCostEth: selectTxGasCostEthUlps(state),
         investmentType: nonNullable(selectInvestmentType(state)),
         wallets: selectWallets(state),
-        neuReward: selectNeuRewardUlpsByEtoId(state, etoId),
-        equityTokenCount: selectEquityTokenCountByEtoId(state, etoId),
+        neuReward: investorPortfolioModuleApi.selectors.selectNeuRewardUlpsByEtoId(state, etoId),
+        equityTokenCount: investorPortfolioModuleApi.selectors.selectEquityTokenCountByEtoId(
+          state,
+          etoId,
+        ),
         showTokens: !!(eur && selectIsInvestmentInputValidated(state)),
         readyToInvest: selectIsReadyToInvest(state),
-        etoTicketSizes: selectCalculatedEtoTicketSizesUlpsById(state, etoId),
-        hasPreviouslyInvested: selectHasInvestorTicket(state, etoId),
-        etoTokenGeneralDiscounts: nonNullable(selectEtoTokenGeneralDiscounts(state, etoId)),
-        etoTokenPersonalDiscount: nonNullable(selectPersonalDiscount(state, etoId)),
-        etoTokenStandardPrice: nonNullable(selectEtoTokenStandardPrice(state, eto.previewCode)),
+        etoTicketSizes: investorPortfolioModuleApi.selectors.selectCalculatedEtoTicketSizesUlpsById(
+          state,
+          etoId,
+        ),
+        hasPreviouslyInvested: investorPortfolioModuleApi.selectors.selectHasInvestorTicket(
+          state,
+          etoId,
+        ),
+        etoTokenGeneralDiscounts: nonNullable(
+          etoModuleApi.selectors.selectEtoTokenGeneralDiscounts(state, etoId),
+        ),
+        etoTokenPersonalDiscount: nonNullable(
+          investorPortfolioModuleApi.selectors.selectPersonalDiscount(state, etoId),
+        ),
+        etoTokenStandardPrice: nonNullable(
+          etoModuleApi.selectors.selectEtoTokenStandardPrice(state, eto.previewCode),
+        ),
       };
     },
     dispatchToProps: dispatch => ({

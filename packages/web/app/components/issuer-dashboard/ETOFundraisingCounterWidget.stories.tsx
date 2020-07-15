@@ -1,13 +1,13 @@
+import {
+  EETOStateOnChain,
+  TEtoContractData,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { storiesOf } from "@storybook/react";
 import * as moment from "moment";
 import * as React from "react";
 
 import { testEto } from "../../../test/fixtures";
-import {
-  EETOStateOnChain,
-  TEtoContractData,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../modules/eto/types";
 import { withMockedDate } from "../../utils/react-connected-components/storybookHelpers.unsafe";
 import { ETOFundraisingCounterWidget } from "./ETOFundraisingCounterWidget";
 

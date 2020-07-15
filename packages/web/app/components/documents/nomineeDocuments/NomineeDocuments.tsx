@@ -1,11 +1,10 @@
+import { IEtoDocument, TEtoWithCompanyAndContractReadonly } from "@neufund/shared-modules";
 import * as React from "react";
 import { Redirect } from "react-router-dom";
 import { branch, compose, renderComponent, setDisplayName } from "recompose";
 
-import { IEtoDocument } from "../../../lib/api/eto/EtoFileApi.interfaces";
 import { actions } from "../../../modules/actions";
 import { selectIsUserFullyVerified } from "../../../modules/auth/selectors";
-import { TEtoWithCompanyAndContractReadonly } from "../../../modules/eto/types";
 import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import {
   selectActiveNomineeEto,

@@ -26,6 +26,7 @@ import { LockedAccount } from "../contracts/LockedAccount";
 import { Neumark } from "../contracts/Neumark";
 import { PlatformTerms } from "../contracts/PlatformTerms";
 import { Universe } from "../contracts/Universe";
+import { PatchedETOCommitment } from "./patched-contracts/ETOCommitment";
 import { Web3Manager } from "./Web3Manager/Web3Manager";
 
 @injectable()
@@ -146,7 +147,7 @@ export class ContractsService implements IContractsService {
   async getETOCommitmentContract(etoId: string): Promise<ETOCommitment> {
     if (this.etoCommitmentCache[etoId]) return this.etoCommitmentCache[etoId];
 
-    const contract = await create(ETOCommitment, this.web3, etoId);
+    const contract = await create(PatchedETOCommitment, this.web3, etoId);
     this.etoCommitmentCache[etoId] = contract;
     return contract;
   }

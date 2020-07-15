@@ -1,10 +1,10 @@
 import { Button, EButtonSize, EButtonWidth, WholeEur } from "@neufund/design-system";
+import { generateCampaigningValidation } from "@neufund/shared-modules";
 import { ECurrency, ENumberInputFormat, ENumberOutputFormat } from "@neufund/shared-utils";
 import * as cn from "classnames";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { generateCampaigningValidation } from "../../../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { CheckboxLayout, EInputSize, Form, FormMaskedNumberInput } from "../../../../shared/forms";
 import { Tooltip } from "../../../../shared/tooltips";
 

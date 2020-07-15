@@ -1,19 +1,16 @@
-import { EUserType } from "@neufund/shared-modules";
-import { XOR } from "@neufund/shared-utils";
-
 import {
   EEtoState,
-  ESocialChannelType,
-  TCompanyEtoData,
-  TEtoMediaData,
-  TSocialChannelsType,
-  TSocialChannelType,
-} from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
   EJurisdiction,
   EOfferingDocumentType,
-} from "../../../lib/api/eto/EtoProductsApi.interfaces";
-import { TEtoWithCompanyAndContractReadonly } from "../../eto/types";
+  ESocialChannelType,
+  EUserType,
+  TCompanyEtoData,
+  TEtoMediaData,
+  TEtoWithCompanyAndContractReadonly,
+  TSocialChannelsType,
+  TSocialChannelType,
+} from "@neufund/shared-modules";
+import { XOR } from "@neufund/shared-utils";
 
 export const getTwitterUrl = (socialChannels: TSocialChannelsType | undefined) => {
   if (!socialChannels) {

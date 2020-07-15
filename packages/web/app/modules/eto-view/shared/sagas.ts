@@ -1,5 +1,13 @@
 import { call, fork, neuFork, neuTakeOnly, put, race, select } from "@neufund/sagas";
-import { EUserType } from "@neufund/shared-modules";
+import {
+  bookbuildingModuleApi,
+  EEtoState,
+  EETOStateOnChain,
+  EEtoSubState,
+  etoModuleApi,
+  EUserType,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { LOCATION_CHANGE } from "connected-react-router";
 import { match } from "react-router-dom";
 
@@ -7,23 +15,10 @@ import { appRoutes } from "../../../components/appRoutes";
 import { EtoMessage } from "../../../components/translatedMessages/messages";
 import { createNotificationMessage } from "../../../components/translatedMessages/utils";
 import { TGlobalDependencies } from "../../../di/setupBindings";
-import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
 import { TAppGlobalState } from "../../../store";
 import { EProcessState } from "../../../utils/enums/processStates";
 import { actions, TActionFromCreator } from "../../actions";
 import { selectUserType } from "../../auth/selectors";
-import { shouldLoadBookbuildingStats } from "../../bookbuilding-flow/utils";
-import { loadEtoWithCompanyAndContract } from "../../eto/sagas";
-import { getEtoRefreshStrategies, raceStrategies } from "../../eto/sagas/watchEtosSetActionSaga";
-import {
-  selectEtoOnChainStateById,
-  selectInvestorEtoWithCompanyAndContract,
-} from "../../eto/selectors";
-import {
-  EETOStateOnChain,
-  EEtoSubState,
-  TEtoWithCompanyAndContractReadonly,
-} from "../../eto/types";
 import { webNotificationUIModuleApi } from "../../notification-ui/module";
 import { TEtoViewByPreviewCodeMatch } from "../../routing/types";
 import { neuCall, neuTakeEveryUntil, neuTakeLatest } from "../../sagasUtils";
@@ -154,10 +149,10 @@ export function* etoFlowBackwardsCompat(
   // save various pieces of data for backwards compatibility with other flows, e.g. investment
   yield call(saveEto, eto);
   const onChainState: EETOStateOnChain | undefined = yield select((state: TAppGlobalState) =>
-    selectEtoOnChainStateById(state, eto.etoId),
+    etoModuleApi.selectors.selectEtoOnChainStateById(state, eto.etoId),
   );
 
-  if (shouldLoadBookbuildingStats(eto.state, onChainState)) {
+  if (bookbuildingModuleApi.utils.shouldLoadBookbuildingStats(eto.state, onChainState)) {
     yield put(actions.bookBuilding.loadBookBuildingStats(eto.etoId));
   }
 }
@@ -171,7 +166,7 @@ export function* reloadEtoView({ logger }: TGlobalDependencies): Generator<any, 
     }
 
     const eto: TEtoWithCompanyAndContractReadonly = yield neuCall(
-      loadEtoWithCompanyAndContract,
+      etoModuleApi.sagas.loadEtoWithCompanyAndContract,
       oldEtoViewData.eto.previewCode,
     );
 
@@ -213,10 +208,10 @@ export function* etoViewDelay(
   previewCode: string,
 ): Generator<any, void, any> {
   const eto: TEtoWithCompanyAndContractReadonly = yield select((state: TAppGlobalState) =>
-    selectInvestorEtoWithCompanyAndContract(state, previewCode),
+    etoModuleApi.selectors.selectInvestorEtoWithCompanyAndContract(state, previewCode),
   );
-  const strategies = yield* neuCall(getEtoRefreshStrategies, eto);
-  yield race(raceStrategies(strategies));
+  const strategies = yield* neuCall(etoModuleApi.sagas.getEtoRefreshStrategies, eto);
+  yield race(etoModuleApi.sagas.raceStrategies(strategies));
   yield put(actions.etoView.reloadEtoView());
 }
 

@@ -1,5 +1,6 @@
 import { coreModuleApi, createLibSymbol, ISingleKeyStorage } from "@neufund/shared-modules";
 
+import { DocumentsConfidentialityAgreementsStorage } from "../lib/persistence/DocumentsConfidentialityAgreementsStorage";
 import { ContractsService } from "../lib/web3/ContractsService";
 import { Web3Manager } from "../lib/web3/Web3Manager/Web3Manager";
 
@@ -37,7 +38,9 @@ export const symbols = {
   // storages
   walletStorage: Symbol("walletStorage"),
   walletConnectStorage: Symbol("walletConnectStorage"),
-  documentsConfidentialityAgreementsStorage: Symbol("documentsConfidentialityAgreementsStorage"),
+  documentsConfidentialityAgreementsStorage: createLibSymbol<
+    DocumentsConfidentialityAgreementsStorage
+  >("documentsConfidentialityAgreementsStorage"),
   userStorage: Symbol("userStorage"),
   jwtStorage: createLibSymbol<ISingleKeyStorage<string>>("jwtStorage"),
 

@@ -9,7 +9,7 @@ class RateOracleAdapterFactory {
   static connect(
     address: string,
     signerOrProvider: Signer | providers.Provider,
-  ): RateOracleAdapter {
+  ): IRateOracleAdapter {
     return new RateOracleAdapter(
       ITokenExchangeRateOracleFactory.connect(address, signerOrProvider),
     );

@@ -1,5 +1,5 @@
 import { ButtonArrowRight, ButtonInline } from "@neufund/design-system";
-import { walletApi } from "@neufund/shared-modules";
+import { walletApi, YupTS } from "@neufund/shared-modules";
 import {
   ECurrency,
   ENumberInputFormat,
@@ -15,7 +15,6 @@ import { FormattedHTMLMessage, FormattedMessage } from "react-intl-phraseapp";
 import { compose } from "recompose";
 
 import { ITxData } from "../../../../lib/web3/types";
-import * as YupTS from "../../../../lib/yup-ts.unsafe";
 import { actions } from "../../../../modules/actions";
 import { EBankTransferType } from "../../../../modules/bank-transfer-flow/reducer";
 import {

@@ -1,7 +1,6 @@
 import { TModuleState } from "../../types";
-import { createLibSymbol, generateSharedModuleId } from "../../utils";
-import { setupAuthModule } from "../auth/module";
-import { IEthManager, ISingleKeyStorage } from "../core/module";
+import { generateSharedModuleId } from "../../utils";
+import { TAuthModuleState } from "../auth/module";
 import { kycActions } from "./actions";
 import { setupContainerModule } from "./bindings";
 import { kycReducerMap } from "./reducer";
@@ -26,13 +25,7 @@ const setupKycModule = (config: Config) => {
     reducerMap: kycReducerMap,
   };
 
-  return [
-    setupAuthModule({
-      jwtStorageSymbol: createLibSymbol<ISingleKeyStorage<string>>("jwtStorage"),
-      ethManagerSymbol: createLibSymbol<IEthManager>("ethStorage"),
-    }),
-    module,
-  ];
+  return module;
 };
 
 const kycApi = {
@@ -46,4 +39,5 @@ const kycApi = {
 
 export { setupKycModule, kycApi };
 
-export type TKycModuleState = TModuleState<typeof setupKycModule>;
+export type TPureKycModuleState = TModuleState<typeof setupKycModule>;
+export type TKycModuleState = TPureKycModuleState & TAuthModuleState;

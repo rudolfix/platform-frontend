@@ -1,7 +1,7 @@
+import { IBookBuildingStats } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { IBookBuildingStats } from "../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { EColumnSpan } from "../../layouts/Container";
 import { DashboardWidget } from "../../shared/dashboard-widget/DashboardWidget";
 import { BookBuildingStats } from "./BookBuildingStats";

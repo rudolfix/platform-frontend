@@ -1,17 +1,18 @@
+import {
+  EEtoDocumentType,
+  EEtoState,
+  EETOStateOnChain,
+  EOfferingDocumentType,
+  IEtoDocument,
+  IEtoFilesInfo,
+  TEtoDocumentTemplates,
+} from "@neufund/shared-modules";
 import { DeepReadonly, nonNullable } from "@neufund/shared-utils";
 import { isEmpty } from "lodash";
 import * as React from "react";
 import { Redirect } from "react-router-dom";
 import { branch, compose, renderComponent, setDisplayName } from "recompose";
 
-import { EEtoState } from "../../../lib/api/eto/EtoApi.interfaces.unsafe";
-import {
-  EEtoDocumentType,
-  IEtoDocument,
-  IEtoFilesInfo,
-  TEtoDocumentTemplates,
-} from "../../../lib/api/eto/EtoFileApi.interfaces";
-import { EOfferingDocumentType } from "../../../lib/api/eto/EtoProductsApi.interfaces";
 import { actions } from "../../../modules/actions";
 import {
   selectEtoDocumentData,
@@ -27,7 +28,6 @@ import {
   selectIssuerEtoState,
   userHasKycAndEmailVerified,
 } from "../../../modules/eto-flow/selectors";
-import { EETOStateOnChain } from "../../../modules/eto/types";
 import { selectPendingDownloads } from "../../../modules/immutable-file/selectors";
 import { selectAreTherePendingTxs } from "../../../modules/tx/monitor/selectors";
 import { appConnect } from "../../../store";

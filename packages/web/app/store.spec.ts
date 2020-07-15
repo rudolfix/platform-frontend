@@ -122,7 +122,7 @@ describe("Store", () => {
         showBeneficialOwnerModal: false,
       },
       profile: { isEmailTemporaryCancelled: false },
-      investorTickets: {
+      investorPortfolio: {
         calculatedContributions: {},
         initialCalculatedContributions: {},
         investorEtoTickets: {},

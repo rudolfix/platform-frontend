@@ -1,13 +1,15 @@
 import { Eth, Eur, EurToken, WholeEur } from "@neufund/design-system";
+import {
+  EEtoState,
+  etoModuleApi,
+  InvalidETOStateError,
+  TEtoWithCompanyAndContractReadonly,
+} from "@neufund/shared-modules";
 import { convertFromUlps, divideBigNumbers, multiplyBigNumbers } from "@neufund/shared-utils";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 import { compose, withProps } from "recompose";
 
-import { EEtoState } from "../../lib/api/eto/EtoApi.interfaces.unsafe";
-import { InvalidETOStateError } from "../../modules/eto/errors";
-import { TEtoWithCompanyAndContractReadonly } from "../../modules/eto/types";
-import { isOnChain } from "../../modules/eto/utils";
 import { selectEtherPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../store";
 import { DashboardWidget } from "../shared/dashboard-widget/DashboardWidget";
@@ -36,7 +38,7 @@ const ETOFundraisingStatisticsLayout: React.ComponentType<IProps> = ({
   etherTokenEurEquiv,
   averageInvestmentEur,
 }) => {
-  if (!isOnChain(eto)) {
+  if (!etoModuleApi.utils.isOnChain(eto)) {
     throw new InvalidETOStateError(eto.state, EEtoState.ON_CHAIN);
   }
 
@@ -91,7 +93,7 @@ const ETOFundraisingStatistics = compose<IProps, IExternalProps & IPanelProps>(
     }),
   }),
   withProps<IWithProps, IProps & IStateProps>(props => {
-    if (!isOnChain(props.eto)) {
+    if (!etoModuleApi.utils.isOnChain(props.eto)) {
       throw new InvalidETOStateError(props.eto.state, EEtoState.ON_CHAIN);
     }
 

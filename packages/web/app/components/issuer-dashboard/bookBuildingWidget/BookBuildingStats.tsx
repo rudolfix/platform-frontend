@@ -1,8 +1,8 @@
 import { WholeEur } from "@neufund/design-system";
+import { IBookBuildingStats } from "@neufund/shared-modules";
 import * as React from "react";
 import { FormattedMessage } from "react-intl-phraseapp";
 
-import { IBookBuildingStats } from "../../../lib/api/eto/EtoPledgeApi.interfaces.unsafe";
 import { Document } from "../../shared/Document";
 import { DocumentButton } from "../../shared/DocumentLink";
 

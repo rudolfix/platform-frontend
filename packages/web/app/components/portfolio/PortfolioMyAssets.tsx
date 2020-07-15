@@ -1,5 +1,10 @@
 import { Button, EButtonLayout, Eur, Table, TokenDetails } from "@neufund/design-system";
-import { walletApi } from "@neufund/shared-modules";
+import {
+  etoModuleApi,
+  investorPortfolioModuleApi,
+  TETOWithTokenData,
+  walletApi,
+} from "@neufund/shared-modules";
 import {
   convertFromUlps,
   ENumberInputFormat,
@@ -12,12 +17,6 @@ import { FormattedMessage } from "react-intl-phraseapp";
 import { branch, compose, renderComponent } from "recompose";
 
 import { actions } from "../../modules/actions";
-import { selectEtosError } from "../../modules/eto/selectors";
-import {
-  selectMyAssetsEurEquivTotalWithNeu,
-  selectMyAssetsWithTokenData,
-} from "../../modules/investor-portfolio/selectors";
-import { TETOWithTokenData } from "../../modules/investor-portfolio/types";
 import { selectNeuPriceEur } from "../../modules/shared/tokenPrice/selectors";
 import { appConnect } from "../../store";
 import { etoPublicViewLink } from "../appRouteUtils";
@@ -251,9 +250,9 @@ const PortfolioMyAssets = compose<TComponentProps, IExternalProps>(
       neuPrice: selectNeuPriceEur(state),
       neumarkAddress: walletApi.selectors.selectNeumarkAddress(state),
       neuValue: walletApi.selectors.selectNeuBalanceEurEquiv(state),
-      myAssets: selectMyAssetsWithTokenData(state)!,
-      hasError: selectEtosError(state),
-      totalEurEquiv: selectMyAssetsEurEquivTotalWithNeu(state),
+      myAssets: investorPortfolioModuleApi.selectors.selectMyAssetsWithTokenData(state)!,
+      hasError: etoModuleApi.selectors.selectEtosError(state),
+      totalEurEquiv: investorPortfolioModuleApi.selectors.selectMyAssetsEurEquivTotalWithNeu(state),
     }),
     dispatchToProps: dispatch => ({
       startTokenTransfer: (tokenAddress: string, tokenImage: string) =>

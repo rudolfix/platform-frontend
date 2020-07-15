@@ -8,6 +8,10 @@ export * from "./modules/tx-history/module";
 export * from "./modules/wallet/module";
 export * from "./modules/gas/module";
 export * from "./modules/kyc/module";
+export * from "./modules/investor-portfolio/module";
+export * from "./modules/bookbuilding/module";
+export * from "./modules/eto/module";
+
 export * from "./modules/routing/module";
 
 export * from "./types";

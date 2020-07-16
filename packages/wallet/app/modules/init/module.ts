@@ -1,4 +1,4 @@
-import { setupCoreModule, setupTokenPriceModule } from "@neufund/shared-modules";
+import { setupCoreModule, setupGasModule, setupTokenPriceModule } from "@neufund/shared-modules";
 
 import { setupAuthModule } from "modules/auth/module";
 import { setupWalletContractsModule } from "modules/contracts/module";
@@ -41,6 +41,7 @@ const setupInitModule = (config: TConfig) => {
     setupSignerUIModule(),
     setupNotificationUIModule(),
     setupWalletConnectModule(),
+    setupGasModule(),
     setupTokenPriceModule({
       // TODO: When we have a proper block watching flow for mobile app provide proper refresh action
       refreshOnAction: undefined,

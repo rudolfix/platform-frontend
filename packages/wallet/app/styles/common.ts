@@ -6,6 +6,9 @@ export const roundness = 4;
  */
 export const shadowStyles = {
   s2: {
+    // background color is required for shadow to take effect
+    backgroundColor: "white",
+
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

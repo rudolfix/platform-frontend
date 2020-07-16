@@ -4,7 +4,7 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 import * as Yup from "yup";
 
-import { SafeAreaScreen } from "components/shared/Screen";
+import { EStatusBarStyle, SafeAreaScreen } from "components/shared/Screen";
 import { Button, EButtonLayout } from "components/shared/buttons/Button";
 import { Field } from "components/shared/forms/fields/Field";
 import { Form } from "components/shared/forms/fields/Form";
@@ -47,7 +47,7 @@ const FixturesSwitcher: React.FunctionComponent<TExternalProps> = ({
   changeAccount,
 }) => {
   return (
-    <SafeAreaScreen contentContainerStyle={styles.content}>
+    <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
       <Form<TFormValue>
         validationSchema={validationSchema}
         initialValues={INITIAL_VALUES}

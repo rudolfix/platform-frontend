@@ -2,17 +2,17 @@
  * Adapter type conversion helpers
  */
 import { BigNumber } from "bignumber.js";
-import { BigNumber as BigNumberEther } from "ethers/utils";
+import { utils } from "ethers";
 
-function bnToBne(number: BigNumber): BigNumberEther {
-  return new BigNumberEther(number.toString());
+function bnToBne(number: BigNumber): utils.BigNumber {
+  return new utils.BigNumber(number.toString());
 }
 
-function bneToBn(number: BigNumberEther): BigNumber {
+function bneToBn(number: utils.BigNumber): BigNumber {
   return new BigNumber(number.toString());
 }
 
-function bneToBnArray2d(input: BigNumberEther[][]): BigNumber[][] {
+function bneToBnArray2d(input: utils.BigNumber[][]): BigNumber[][] {
   return input.map(bnArray => bnArray.map(bneToBn));
 }
 

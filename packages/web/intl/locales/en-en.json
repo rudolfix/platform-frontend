@@ -181,7 +181,7 @@
   "download-agreement-widget.success-title": "WITHDRAW YOUR FUNDS",
   "download-agreement-widget.wait-for-nominee-to-sign": "Waiting for Nominee to confirm your signature",
   "download-agreement-widget.wait-for-nominee-to-sign-text": "Nominee was informed that you signed Investment Agreement on-chain. Nominee will review signed document, verify its content and signatures and then confirm on-chain. Please wait...",
-  "error-boundary.main-error-message": "An error occured",
+  "error-boundary.main-error-message": "An error occurred",
   "error-boundary.widget-error-message": "There was an error while loading this widget",
   "error-message.browser-wallet.account-approval-pending": "Please check MetaMask to confirm this action.",
   "error-message.browser-wallet.account-approval-rejected": "You need to approve access to your wallet in order to use our platform",

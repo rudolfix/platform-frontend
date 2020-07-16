@@ -49,6 +49,7 @@ module.exports = {
     "no-return-await": "error",
     "no-script-url": "error",
     "no-self-compare": "error",
+    "no-shadow": "error",
     "no-sequences": "error",
     "no-unmodified-loop-condition": "error",
     "no-useless-call": "error",
@@ -149,7 +150,8 @@ module.exports = {
       files: ["**/*.stories.*", "**/*.spec.*", "**/e2e/**"],
       rules: {
         "@typescript-eslint/no-magic-numbers": "off",
-        "@typescript-eslint/unbound-method": "off"
+        "@typescript-eslint/unbound-method": "off",
+        "import/no-nodejs-modules": "off"
       }
     }
   ]

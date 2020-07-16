@@ -7,6 +7,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // eslint-disable-next-line import/no-unassigned-import
 import "./rn-addons";
+// eslint-disable-next-line import/no-relative-parent-imports
+import languageEn from "../app/locales/en-en.json";
 import { loadStories } from "./storyLoader";
 
 // load stories from dynamically generated file
@@ -33,7 +35,7 @@ const Storybook: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <IntlProvider locale="en-gb">
+    <IntlProvider locale="en-gb" messages={languageEn}>
       <SafeAreaProvider>
         <StorybookUIRoot />
       </SafeAreaProvider>

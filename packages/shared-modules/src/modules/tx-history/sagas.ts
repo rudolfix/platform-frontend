@@ -3,12 +3,12 @@ import {
   delay,
   fork,
   neuCall,
-  neuTakeLatest,
   neuTakeLatestUntil,
   put,
   SagaGenerator,
   select,
   take,
+  takeLatest,
 } from "@neufund/sagas";
 import { ECurrency, StringableActionCreator, subtractBigNumbers } from "@neufund/shared-utils";
 
@@ -319,7 +319,7 @@ export function* mapAnalyticsApiTransactionsResponse(
   return txHistoryTransactions.filter(Boolean);
 }
 
-export function* loadTransactionsHistoryNext(_: TGlobalDependencies): Generator<any, any, any> {
+export function* loadTransactionsHistoryNext(): Generator<any, any, any> {
   const { logger, analyticsApi } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     analyticsApi: symbols.analyticsApi,
@@ -353,7 +353,7 @@ export function* loadTransactionsHistoryNext(_: TGlobalDependencies): Generator<
   }
 }
 
-export function* loadTransactionsHistory(_: TGlobalDependencies): Generator<any, any, any> {
+export function* loadTransactionsHistory(): Generator<any, any, any> {
   const { logger, analyticsApi } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     analyticsApi: symbols.analyticsApi,
@@ -455,9 +455,10 @@ type TSetupSagasConfig = {
 };
 
 export function setupTXHistorySagas(config: TSetupSagasConfig): () => SagaGenerator<void> {
-  return function* txHistorySaga(): SagaGenerator<any, any> {
-    yield fork(neuTakeLatest, txHistoryActions.loadTransactions, loadTransactionsHistory);
-    yield fork(neuTakeLatest, txHistoryActions.loadNextTransactions, loadTransactionsHistoryNext);
+  return function* txHistorySaga(): SagaGenerator<void> {
+    yield takeLatest(txHistoryActions.loadTransactions, loadTransactionsHistory);
+    yield takeLatest(txHistoryActions.loadNextTransactions, loadTransactionsHistoryNext);
+
     yield fork(
       neuTakeLatestUntil,
       txHistoryActions.startWatchingForNewTransactions,

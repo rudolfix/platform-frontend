@@ -25,7 +25,7 @@ import { TTranslatedString } from "../../../types";
 import { onEnterAction } from "../../../utils/react-connected-components/OnEnterAction";
 import { onLeaveAction } from "../../../utils/react-connected-components/OnLeaveAction";
 import { EColumnSpan } from "../../layouts/Container";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 import { LoadingIndicator } from "../../shared/loading-indicator";
 import { Panel } from "../../shared/Panel";

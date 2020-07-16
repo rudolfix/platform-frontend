@@ -2,11 +2,12 @@ import React from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import SafeAreaView from "react-native-safe-area-view";
 
+import { EStatusBarStyle, useStatusBarStyle } from "components/shared/hooks/useStatusBarStyle";
+
 import { baseWhite, silverLighter2 } from "styles/colors";
 import { spacing1, spacing4, spacing8 } from "styles/spacings";
 
 import { NeuLinearGradient } from "./NeuLinearGradient";
-import { EStatusBarStyle, SafeAreaScreen } from "./Screen";
 import { BodyText } from "./typography/BodyText";
 import { EHeadlineLevel, Headline } from "./typography/Headline";
 
@@ -20,16 +21,16 @@ const HEADING_FONT_SIZE_MAX_SCALE = 0.5;
 const HEADING_BODY_FONT_SIZE_MAX_SCALE = 0.75;
 
 type TExternalProps = {
-  heading: string;
-  subHeading: string;
-} & React.ComponentProps<typeof SafeAreaScreen>;
+  blurHeadings?: boolean;
+  heading: React.ReactNode;
+  subHeading: React.ReactNode;
+  children: (props: React.ComponentProps<typeof Animated.ScrollView>) => React.ReactNode;
+};
 
 const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
   heading,
   subHeading,
   children,
-  contentContainerStyle,
-  style,
 }) => {
   const valueRef = React.useRef(new Animated.Value(0));
 
@@ -57,6 +58,25 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
     extrapolate: "clamp",
   });
 
+  const screenProps = {
+    bounces: false,
+    showsVerticalScrollIndicator: false,
+    scrollEventThrottle: 16,
+    onScroll: Animated.event([
+      {
+        nativeEvent: { contentOffset: { y: valueRef.current } },
+      },
+    ]),
+    style: {
+      marginTop: containerMargin,
+    },
+    contentContainerStyle: {
+      paddingTop: EXTRA_PADDING_FOR_OVERFLOW,
+    },
+  };
+
+  useStatusBarStyle(EStatusBarStyle.DARK_BLUEY_GRAY);
+
   return (
     <View style={styles.container}>
       <NeuLinearGradient angle={260}>
@@ -78,32 +98,10 @@ const HeaderScreen: React.FunctionComponent<TExternalProps> = ({
         </SafeAreaView>
       </NeuLinearGradient>
 
-      <SafeAreaScreen
-        bounces={false}
-        overScrollMode="never"
-        statusBarStyle={EStatusBarStyle.DARK_BLUEY_GRAY}
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
-        onScroll={Animated.event([
-          {
-            nativeEvent: { contentOffset: { y: valueRef.current } },
-          },
-        ])}
-        style={[
-          style,
-          {
-            marginTop: containerMargin,
-          },
-        ]}
-        contentContainerStyle={[
-          contentContainerStyle,
-          {
-            paddingTop: EXTRA_PADDING_FOR_OVERFLOW,
-          },
-        ]}
-      >
-        {children}
-      </SafeAreaScreen>
+      {/* top inset is already applied by header */}
+      <SafeAreaView style={styles.container} forceInset={{ top: "never" }}>
+        {children(screenProps)}
+      </SafeAreaView>
     </View>
   );
 };

@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { TokenIcon, TokenImage };
+export { TokenIcon, TokenImage, TOKEN_ICON_SIZE };

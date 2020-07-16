@@ -1,3 +1,4 @@
+import { ECurrency } from "@neufund/shared-utils";
 import React from "react";
 import { FormattedDate } from "react-intl";
 import {
@@ -15,29 +16,21 @@ import { HelperText } from "components/shared/typography/HelperText";
 import { Text, TextBold } from "components/shared/typography/Text";
 import { st } from "components/utils";
 
+import { ETransactionDirection, TTxHistory } from "modules/wallet-screen/module";
+
 import { baseGray, baseGreen, baseSilver, blueyGray } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
 
 import { Badge, EBadgeType } from "./Badge";
 import { IconSpacer } from "./IconSpacer";
-import { ETransactionDirection, TTransaction } from "./types";
+import { getTransactionName } from "./getTransactionName";
 
 type TExternalProps = {
+  transaction: TTxHistory;
   onPress: (event: GestureResponderEvent) => void;
-} & TTransaction;
+};
 
-const PendingTransaction: React.FunctionComponent<TExternalProps> = ({
-  name,
-  timestamp,
-  value,
-  valueToken,
-  valueDecimals,
-  valueEquivalent,
-  valueEquivalentToken,
-  valueEquivalentDecimals,
-  direction,
-  onPress,
-}) => {
+const PendingTransaction: React.FunctionComponent<TExternalProps> = ({ transaction, onPress }) => {
   const progressRef = React.useRef(new Animated.Value(0));
 
   React.useEffect(() => {
@@ -60,6 +53,8 @@ const PendingTransaction: React.FunctionComponent<TExternalProps> = ({
     outputRange: ["0deg", "360deg"],
   });
 
+  const isIncomeTransaction = transaction.transactionDirection === ETransactionDirection.IN;
+
   return (
     <TouchableOpacity
       style={st(styles.container)}
@@ -76,12 +71,17 @@ const PendingTransaction: React.FunctionComponent<TExternalProps> = ({
         <View style={st(styles.wrapper)}>
           <View>
             <Text style={styles.name} numberOfLines={1}>
-              {name}
+              {getTransactionName(transaction)}
             </Text>
 
             <View style={styles.dateAndBadgeWrapper}>
               <HelperText style={styles.date} numberOfLines={1}>
-                <FormattedDate value={timestamp} year="numeric" month="short" day="numeric" />
+                <FormattedDate
+                  value={transaction.date}
+                  year="numeric"
+                  month="short"
+                  day="numeric"
+                />
               </HelperText>
               <Badge type={EBadgeType.PENDING}>Pending</Badge>
             </View>
@@ -90,23 +90,23 @@ const PendingTransaction: React.FunctionComponent<TExternalProps> = ({
           <View>
             <TextBold
               style={st(
-                [direction === ETransactionDirection.IN, styles.valueIn],
-                [direction === ETransactionDirection.OUT, styles.valueOut],
+                [isIncomeTransaction, styles.valueIn],
+                [!isIncomeTransaction, styles.valueOut],
               )}
               numberOfLines={1}
             >
-              {direction === ETransactionDirection.OUT && <>&minus;</>}
-              <Money currency={valueToken} value={value} decimalPlaces={valueDecimals} />
+              {!isIncomeTransaction && <>&minus;</>}
+              <Money
+                currency={transaction.currency}
+                value={transaction.amount}
+                decimalPlaces={18}
+              />
             </TextBold>
 
-            {valueEquivalent && valueEquivalentToken && valueEquivalentDecimals && (
+            {"amountEur" in transaction && (
               <HelperText style={styles.valueEquivalent} numberOfLines={1}>
-                &asymp;&nbsp;
-                <Money
-                  currency={valueEquivalentToken}
-                  value={valueEquivalent}
-                  decimalPlaces={valueEquivalentDecimals}
-                />
+                &asymp;{" "}
+                <Money currency={ECurrency.EUR} value={transaction.amountEur} decimalPlaces={18} />
               </HelperText>
             )}
           </View>

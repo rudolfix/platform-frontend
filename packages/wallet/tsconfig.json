@@ -23,11 +23,13 @@
       "classes/*": ["app/classes/*"],
       "components/*": ["app/components/*"],
       "config/*": ["app/config/*"],
+      "hooks/*": ["app/hooks/*"],
       "lib/*": ["app/lib/*"],
       "modules/*": ["app/modules/*"],
       "router/*": ["app/router/*"],
       "store/*": ["app/store/*"],
       "styles/*": ["app/styles/*"],
+      "test-utils/*": ["app/test-utils/*"],
       "themes/*": ["app/themes/*"],
       "utils/*": ["app/utils/*"]
     },

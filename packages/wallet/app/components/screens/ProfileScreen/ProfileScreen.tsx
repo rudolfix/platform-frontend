@@ -3,7 +3,7 @@ import React from "react";
 import Config from "react-native-config";
 
 import { EIconType } from "components/shared/Icon";
-import { SafeAreaScreen } from "components/shared/Screen";
+import { EStatusBarStyle, SafeAreaScreen } from "components/shared/Screen";
 import { Menu, EMenuItemType } from "components/shared/menu/Menu";
 
 import { authModuleAPI } from "modules/auth/module";
@@ -74,7 +74,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   }, [authWallet, navigation, walletConnectPeer, logout]);
 
   return (
-    <SafeAreaScreen forceTopInset>
+    <SafeAreaScreen forceTopInset statusBarStyle={EStatusBarStyle.WHITE}>
       <Header name={authWallet.name} address={authWallet.address} />
 
       <Menu items={items} />

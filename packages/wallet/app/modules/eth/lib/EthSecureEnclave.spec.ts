@@ -124,7 +124,7 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
         randomMnemonicsReferences.map(reference => secureEnclave.unsafeGetSecret(reference)),
       );
 
-      expect(mnemonics.every(mnemonic => mnemonic !== null && isMnemonic(mnemonic))).toBeTruthy();
+      expect(mnemonics.every(mn => mn !== null && isMnemonic(mn))).toBeTruthy();
       // every mnemonic should be a random new one
       expect(mnemonics.length).toBe(new Set(mnemonics).size);
     });

@@ -13,7 +13,7 @@ import {
 import { appConnect } from "../../../../store";
 import { EContentWidth } from "../../../layouts/Content";
 import { TContentExternalProps, TransitionalLayout } from "../../../layouts/Layout";
-import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../../shared/errorBoundary/ErrorBoundaryLayout";
 import { withContainer } from "../../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../../shared/loading-indicator/LoadingIndicator";

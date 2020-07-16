@@ -16,6 +16,7 @@ import QrCode from "assets/qr-code.svg";
 import RightArrow from "assets/right-arrow.svg";
 import Share from "assets/share.svg";
 import Eth from "assets/tokens/eth.svg";
+import Icbm from "assets/tokens/icbm.svg";
 import NEur from "assets/tokens/n-eur.svg";
 import Wallet from "assets/wallet.svg";
 import Yes from "assets/yes.svg";
@@ -31,6 +32,7 @@ enum EIconType {
   RIGHT_ARROW = "right-arrow",
   YES = "yes",
   N_EUR = "n-eur",
+  ICBM = "icbm",
   ETH = "eth",
   QR_CODE = "qr-code",
   BACKUP = "backup",
@@ -50,6 +52,7 @@ const icons: Record<EIconType, typeof Close> = {
   [EIconType.PORTFOLIO]: Investments,
   [EIconType.LOGOUT]: Logout,
   [EIconType.N_EUR]: NEur,
+  [EIconType.ICBM]: Icbm,
   [EIconType.PENDING]: Pending,
   [EIconType.PLACEHOLDER]: Placeholder,
   [EIconType.PORTFOLIO]: Investments,

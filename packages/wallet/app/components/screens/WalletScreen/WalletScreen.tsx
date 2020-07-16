@@ -1,91 +1,70 @@
-import { useActionSheet } from "@expo/react-native-action-sheet";
-import { EthereumTxHash, toEquityTokenSymbol, toEthereumTxHash } from "@neufund/shared-utils";
-import * as React from "react";
-import { Linking, StyleSheet } from "react-native";
+import { txHistoryApi } from "@neufund/shared-modules";
+import { assertNever, UnknownObject } from "@neufund/shared-utils";
+import React from "react";
+import { LayoutAnimation } from "react-native";
+import { compose } from "recompose";
 
-import { HeaderScreen } from "components/shared/HeaderScreen";
-import { EIconType } from "components/shared/Icon";
-import { Asset, EAssetType } from "components/shared/asset/Asset";
+import { ErrorBoundaryScreen } from "components/screens/ErrorBoundaryScreen/ErrorBoundaryScreen";
+import { createErrorBoundary } from "components/shared/error-boundary/ErrorBoundary";
+import { onLifecycle } from "components/shared/hocs/onLifecycle";
 
-import { etherscanTxLink } from "config/externalRoutes";
+import { usePrevious } from "hooks/usePrevious";
 
-import { spacingStyles } from "styles/spacings";
+import { EViewState, walletViewModuleApi } from "modules/wallet-screen/module";
 
-import { TransactionSection } from "./TransactionSection/TransactionsSection";
-import { MOCK_TRANSACTIONS } from "./constants";
+import { appConnect } from "store/utils";
 
-const WalletScreen: React.FunctionComponent = () => {
-  const { showActionSheetWithOptions } = useActionSheet();
+import { WalletScreenLayout, WalletScreenLayoutSkeleton } from "./WalletScreenLayout";
 
-  const showActionSheet = (txHash: EthereumTxHash) => {
-    const viewOnEtherscan = "View on Etherscan";
-    const cancel = "Cancel";
+type TStateProps = ReturnType<typeof walletViewModuleApi.selectors.selectWalletViewData>;
 
-    const options = [viewOnEtherscan, cancel];
-    const cancelButtonIndex = options.indexOf(cancel);
-
-    showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex,
-      },
-      buttonIndex => {
-        if (buttonIndex === options.indexOf(viewOnEtherscan)) {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          Linking.openURL(etherscanTxLink(txHash));
-        }
-      },
-    );
-  };
-
-  return (
-    <HeaderScreen heading={"€0"} subHeading={"Wallet balance"}>
-      <Asset
-        tokenImage={EIconType.N_EUR}
-        name="nEUR"
-        token={toEquityTokenSymbol("nEUR")}
-        balance="0"
-        analogBalance="0"
-        analogToken={toEquityTokenSymbol("EUR")}
-        style={styles.asset}
-        type={EAssetType.NORMAL}
-      />
-
-      <Asset
-        tokenImage={EIconType.ETH}
-        name="Ether"
-        token={toEquityTokenSymbol("ETH")}
-        balance="0"
-        analogBalance="0"
-        analogToken={toEquityTokenSymbol("EUR")}
-        style={styles.asset}
-        type={EAssetType.NORMAL}
-      />
-
-      <TransactionSection
-        style={styles.transactions}
-        transactions={MOCK_TRANSACTIONS.map(transaction => ({
-          ...transaction,
-          onPress: () =>
-            showActionSheet(
-              toEthereumTxHash(
-                "0x438db1cd907cef39635aa97bdbd8f036b9dcd41805401826c22131bf055a754b",
-              ),
-            ),
-        }))}
-      />
-    </HeaderScreen>
-  );
+type TDispatchProps = {
+  loadTxHistoryNext: () => void;
 };
 
-const styles = StyleSheet.create({
-  asset: {
-    ...spacingStyles.mb2,
-    ...spacingStyles.mh4,
-  },
-  transactions: {
-    ...spacingStyles.mt4,
-  },
-});
+const WalletScreenSwitch: React.FunctionComponent<TStateProps & TDispatchProps> = ({
+  viewState,
+  ...rest
+}) => {
+  const previousViewState = usePrevious(viewState);
 
-export { WalletScreen };
+  React.useLayoutEffect(() => {
+    if (previousViewState === EViewState.LOADING && viewState === EViewState.READY) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+    }
+  }, [viewState, previousViewState]);
+
+  switch (viewState) {
+    case EViewState.INITIAL:
+    case EViewState.LOADING:
+      return <WalletScreenLayoutSkeleton />;
+
+    case EViewState.READY:
+    case EViewState.REFRESHING:
+      return <WalletScreenLayout {...rest} />;
+
+    case EViewState.ERROR:
+      return <ErrorBoundaryScreen />;
+
+    default:
+      assertNever(viewState);
+  }
+};
+
+export const WalletScreen = compose<TStateProps & TDispatchProps, UnknownObject>(
+  createErrorBoundary(ErrorBoundaryScreen),
+  appConnect<TStateProps, TDispatchProps>({
+    stateToProps: state => {
+      return walletViewModuleApi.selectors.selectWalletViewData(state);
+    },
+    dispatchToProps: dispatch => ({
+      loadTxHistoryNext: () => {
+        dispatch(txHistoryApi.actions.loadNextTransactions());
+      },
+    }),
+  }),
+  onLifecycle({
+    onMount: dispatch => dispatch(walletViewModuleApi.actions.loadWalletView()),
+    onFocus: dispatch => dispatch(walletViewModuleApi.actions.refreshWalletView()),
+  }),
+)(WalletScreenSwitch);

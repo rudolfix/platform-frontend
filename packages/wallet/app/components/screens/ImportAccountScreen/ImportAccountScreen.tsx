@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { SafeAreaScreen } from "components/shared/Screen";
+import { EStatusBarStyle, SafeAreaScreen } from "components/shared/Screen";
 import { BodyText } from "components/shared/typography/BodyText";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 
@@ -27,7 +27,7 @@ const ImportAccountLayout: React.FunctionComponent<TStateProps & TDispatchProps>
   importExistingAccount,
 }) => {
   return (
-    <SafeAreaScreen contentContainerStyle={styles.content}>
+    <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
       <Headline style={styles.headline} level={EHeadlineLevel.LEVEL2}>
         Connect an account
       </Headline>

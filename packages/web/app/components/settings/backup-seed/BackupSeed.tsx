@@ -7,7 +7,7 @@ import { IWalletPrivateData } from "../../../modules/web3/reducer";
 import { selectWalletPrivateData } from "../../../modules/web3/selectors";
 import { appConnect } from "../../../store";
 import { Layout } from "../../layouts/Layout";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { withContainer } from "../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../shared/loading-indicator";

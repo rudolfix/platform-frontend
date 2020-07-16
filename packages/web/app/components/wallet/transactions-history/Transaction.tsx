@@ -55,17 +55,17 @@ export const Transaction: React.FunctionComponent<TTransactionProps> = ({
             valueType={transaction.currency}
           />
         </span>
-        {(transaction as TTxHistory & { amountEur: string }).amountEur ? (
+        {"amountEur" in transaction && (
           <span className={styles.euroEquivalent}>
             {"≈"}
             <Money
               inputFormat={transaction.amountFormat}
               outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
-              value={(transaction as TTxHistory & { amountEur: string }).amountEur}
+              value={transaction.amountEur}
               valueType={ECurrency.EUR}
             />
           </span>
-        ) : null}
+        )}
       </div>
     </ul>
   );

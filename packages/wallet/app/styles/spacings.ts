@@ -70,6 +70,9 @@ export const spacingStyles = StyleSheet.create({
   ml4: {
     marginLeft: spacing4,
   },
+  ml5: {
+    marginLeft: spacing5,
+  },
   mr1: {
     marginRight: spacing1,
   },

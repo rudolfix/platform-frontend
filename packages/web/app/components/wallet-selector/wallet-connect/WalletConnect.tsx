@@ -14,7 +14,7 @@ import { Container, EColumnSpan } from "../../layouts/Container";
 import { EContentWidth } from "../../layouts/Content";
 import { Layout, TContentExternalProps } from "../../layouts/Layout";
 import { WidgetGrid } from "../../layouts/WidgetGrid";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../../shared/Heading";
 import { withContainer } from "../../shared/hocs/withContainer";

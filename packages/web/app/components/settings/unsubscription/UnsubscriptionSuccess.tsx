@@ -7,7 +7,7 @@ import { actions } from "../../../modules/actions";
 import { appConnect } from "../../../store";
 import { EContentWidth } from "../../layouts/Content";
 import { Layout } from "../../layouts/Layout";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { Heading } from "../../shared/Heading";
 import { withContainer } from "../../shared/hocs/withContainer";

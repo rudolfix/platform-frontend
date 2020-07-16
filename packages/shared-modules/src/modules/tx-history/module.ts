@@ -4,7 +4,7 @@ import { TPureTokenPriceModuleState } from "../token-price/module";
 import { txHistoryActions } from "./actions";
 import { setupContainerModule } from "./bindings";
 import { txHistoryReducerMap } from "./reducer";
-import { setupTXHistorySagas } from "./sagas";
+import { loadTransactionsHistory, setupTXHistorySagas } from "./sagas";
 import * as selectors from "./selectors";
 
 export {
@@ -37,6 +37,9 @@ const setupTxHistoryModule = (config: Config) => {
 const txHistoryApi = {
   actions: txHistoryActions,
   selectors,
+  sagas: {
+    loadTransactionsHistory,
+  },
 };
 
 export { setupTxHistoryModule, txHistoryApi };

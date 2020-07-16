@@ -25,7 +25,7 @@ import {
   DashboardLoadingWidget,
   DashboardWidget,
 } from "../../shared/dashboard-widget/DashboardWidget";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 import { DatePickerLayout, FormError } from "../../shared/forms";
 import { TimeLeft } from "../../shared/TimeLeft.unsafe";

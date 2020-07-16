@@ -8,11 +8,14 @@ import { baseWhite, darkBlueGray1 } from "styles/colors";
 enum EStatusBarStyle {
   WHITE = "white",
   DARK_BLUEY_GRAY = "dark_bluey_gray",
+  INHERIT = "inherit",
 }
 
 type TStatusBarOptions = { style: StatusBarStyle; backgroundColor: string };
 
-const getStatusBarEffectOptions = (statusBarStyle: EStatusBarStyle): TStatusBarOptions => {
+const getStatusBarEffectOptions = (
+  statusBarStyle: Exclude<EStatusBarStyle, EStatusBarStyle.INHERIT>,
+): TStatusBarOptions => {
   switch (statusBarStyle) {
     case EStatusBarStyle.WHITE:
       return {
@@ -35,6 +38,10 @@ const getStatusBarEffectOptions = (statusBarStyle: EStatusBarStyle): TStatusBarO
 const useStatusBarStyle = (statusBarStyle: EStatusBarStyle) =>
   useFocusEffect(
     React.useCallback(() => {
+      if (statusBarStyle === EStatusBarStyle.INHERIT) {
+        return;
+      }
+
       const { backgroundColor, style } = getStatusBarEffectOptions(statusBarStyle);
 
       StatusBar.setBarStyle(style);

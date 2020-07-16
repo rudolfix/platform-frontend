@@ -35,7 +35,7 @@ import { onEnterAction } from "../../../utils/react-connected-components/OnEnter
 import { withMetaTags } from "../../../utils/withMetaTags";
 import { appRoutes } from "../../appRoutes";
 import { Layout } from "../../layouts/Layout";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { withContainer } from "../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../shared/loading-indicator/index";

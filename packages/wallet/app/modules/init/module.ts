@@ -4,12 +4,14 @@ import { setupAuthModule } from "modules/auth/module";
 import { setupWalletContractsModule } from "modules/contracts/module";
 import { setupDeviceInformationModule } from "modules/device-information/module";
 import { setupWalletEthModule } from "modules/eth/module";
+import { setupHomeViewModule } from "modules/home-screen/module";
 import { setupNotificationUIModule } from "modules/notification-ui/module";
 import { setupNotificationsModule } from "modules/notifications/module";
 import { setupPermissionsModule } from "modules/permissions/module";
 import { setupSignerUIModule } from "modules/signer-ui/module";
 import { setupStorageModule } from "modules/storage";
 import { setupWalletConnectModule } from "modules/wallet-connect/module";
+import { setupWalletViewModule } from "modules/wallet-screen/module";
 
 import { initActions } from "./actions";
 import { initReducersMap } from "./reducer";
@@ -44,6 +46,8 @@ const setupInitModule = (config: TConfig) => {
       refreshOnAction: undefined,
     }),
     ...setupAuthModule(),
+    ...setupWalletViewModule(),
+    ...setupHomeViewModule(),
     ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
     initModule,
   ];

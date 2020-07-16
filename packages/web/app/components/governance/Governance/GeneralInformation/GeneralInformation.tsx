@@ -9,7 +9,7 @@ import { governanceModuleApi } from "../../../../modules/governance/module";
 import { IResolution } from "../../../../modules/governance/types";
 import { appConnect } from "../../../../store";
 import { Container } from "../../../layouts/Container";
-import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../../shared/errorBoundary/ErrorBoundaryLayout";
 import { withContainer } from "../../../shared/hocs/withContainer";
 import { LoadingIndicator } from "../../../shared/loading-indicator";

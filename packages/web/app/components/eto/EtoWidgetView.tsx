@@ -8,7 +8,7 @@ import { branch, compose, renderComponent } from "recompose";
 import { actions } from "../../modules/actions";
 import { appConnect } from "../../store";
 import { onEnterAction } from "../../utils/react-connected-components/OnEnterAction";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { LoadingIndicator } from "../shared/loading-indicator";
 import { EtoOverviewStatus } from "./overview/EtoOverviewStatus/EtoOverviewStatus";
 

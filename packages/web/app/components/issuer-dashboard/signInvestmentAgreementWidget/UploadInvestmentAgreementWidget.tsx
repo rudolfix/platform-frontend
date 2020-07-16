@@ -18,7 +18,7 @@ import {
   DashboardCenteredWidget,
   DashboardLinkWidget,
 } from "../../shared/dashboard-widget/DashboardWidget";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryPanel } from "../../shared/errorBoundary/ErrorBoundaryPanel";
 import { SignInvestmentAgreement } from "./SignInvestmentAgreement";
 

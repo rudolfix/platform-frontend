@@ -15,7 +15,7 @@ import { appConnect } from "../../../store";
 import { withMetaTags } from "../../../utils/withMetaTags";
 import { appRoutes } from "../../appRoutes";
 import { Layout } from "../../layouts/Layout";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import {
   ErrorBoundaryComponent,
   ErrorBoundaryLayout,

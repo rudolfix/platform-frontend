@@ -7,6 +7,9 @@ import { Store } from "redux";
 
 import { ThemeProvider } from "themes/ThemeProvider";
 
+// eslint-disable-next-line import/no-relative-parent-imports
+import languageEn from "../../locales/en-en.json";
+
 type TExternalProps = {
   store: Store;
 };
@@ -14,7 +17,7 @@ type TExternalProps = {
 const AppContainer: React.FunctionComponent<TExternalProps> = ({ children, store }) => (
   <ReduxProvider store={store}>
     <ThemeProvider>
-      <IntlProvider locale="en-gb">
+      <IntlProvider locale="en-gb" messages={languageEn}>
         <ActionSheetProvider>
           <SafeAreaProvider>{children}</SafeAreaProvider>
         </ActionSheetProvider>

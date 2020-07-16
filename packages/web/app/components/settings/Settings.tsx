@@ -19,7 +19,7 @@ import { Container, EColumnSpan } from "../layouts/Container";
 import { Layout } from "../layouts/Layout";
 import { WidgetGrid } from "../layouts/WidgetGrid";
 import { DashboardHeading } from "../shared/DashboardHeading";
-import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../shared/errorBoundary/ErrorBoundaryLayout";
 import { withContainer } from "../shared/hocs/withContainer";
 import { YourEthereumAddressWidget } from "./ethereum-address-widget/YourEthereumAddressWidget";

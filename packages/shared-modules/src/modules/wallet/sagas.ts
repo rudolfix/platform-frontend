@@ -23,7 +23,7 @@ import { ILockedWallet, IWalletStateData } from "./types";
 
 type TGlobalDependencies = unknown;
 
-export function* loadWalletDataSaga(_: TGlobalDependencies): Generator<any, any, any> {
+export function* loadWalletDataSaga(): Generator<any, any, any> {
   const { logger, contractsService } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     contractsService: contractsModuleApi.symbols.contractsService,

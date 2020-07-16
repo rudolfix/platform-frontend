@@ -1,20 +1,23 @@
 import { ILogger } from "@neufund/shared-modules";
 import * as React from "react";
-import { ComponentEnhancer, nest, withProps } from "recompose";
 
 import { symbols } from "../../../di/symbols";
 import { ContainerContext } from "../InversifyProvider";
+
+interface IExternalProps {
+  layout: React.ComponentType;
+}
 
 interface IErrorBoundaryState {
   hasError: boolean;
 }
 
-class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
+class ErrorBoundary extends React.Component<IExternalProps, IErrorBoundaryState> {
   static contextType = ContainerContext;
 
   logger: ILogger | null;
 
-  constructor(props: any, container: React.ContextType<typeof ContainerContext>) {
+  constructor(props: IExternalProps, container: React.ContextType<typeof ContainerContext>) {
     super(props);
 
     this.state = { hasError: false };
@@ -38,9 +41,12 @@ class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
   }
 }
 
-const createErrorBoundary = (
-  layout: React.ReactNode,
-): ComponentEnhancer<any, any> => WrappedComponent =>
-  nest(withProps({ layout })(ErrorBoundary), WrappedComponent);
+const createErrorBoundary = (layout: React.ComponentType) => <T extends {}>(
+  WrappedComponent: React.ComponentType<T>,
+) => (props: T) => (
+  <ErrorBoundary layout={layout}>
+    <WrappedComponent {...props} />
+  </ErrorBoundary>
+);
 
 export { createErrorBoundary, ErrorBoundary };

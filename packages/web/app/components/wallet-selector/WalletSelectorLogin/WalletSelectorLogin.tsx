@@ -7,7 +7,7 @@ import { TLoginRouterState } from "../../../modules/routing/types";
 import { selectRootPath } from "../../../modules/wallet-selector/selectors";
 import { appConnect } from "../../../store";
 import { SwitchConnected } from "../../../utils/react-connected-components/connectedRouting";
-import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary.unsafe";
+import { createErrorBoundary } from "../../shared/errorBoundary/ErrorBoundary";
 import { ErrorBoundaryLayout } from "../../shared/errorBoundary/ErrorBoundaryLayout";
 import { LoginBrowserWallet } from "./LoginBrowserWallet/LoginBrowserWallet";
 import { LoginLightWallet } from "./LoginLightWallet/LoginLightWallet";

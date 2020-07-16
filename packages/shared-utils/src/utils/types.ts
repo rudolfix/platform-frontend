@@ -66,7 +66,7 @@ export type Tuple<T = any> = [T] | T[];
 /**
  * Allows either T or T[]
  */
-export type SingleOrArray<T> = T | Tuple<T>;
+export type SingleOrArray<T> = T | T[];
 
 /**
  * Forces an array to have at least one member of a given type T

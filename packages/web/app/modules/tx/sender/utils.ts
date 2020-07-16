@@ -9,7 +9,7 @@ import {
   UnknownEthNodeError,
 } from "../../../lib/web3/Web3Adapter";
 import { SignerRejectConfirmationError } from "../../../lib/web3/Web3Manager/Web3Manager";
-import { UserCannotUnlockFunds } from "../transactions/unlock/errors";
+import { UserCannotUnlockFunds, UserMissingNeumarks } from "../transactions/unlock/errors";
 import { ETransactionErrorType } from "./reducer";
 
 export function getTxSenderErrorType(error: Error): ETransactionErrorType {
@@ -31,8 +31,10 @@ export function getTxSenderErrorType(error: Error): ETransactionErrorType {
     return ETransactionErrorType.TX_WAS_REJECTED;
   } else if (error instanceof LedgerContractsDisabledError) {
     return ETransactionErrorType.LEDGER_CONTRACTS_DISABLED;
-  } else if (error instanceof UserCannotUnlockFunds) {
+  } else if (error instanceof UserMissingNeumarks) {
     return ETransactionErrorType.NOT_ENOUGH_NEUMARKS_TO_UNLOCK;
+  } else if (error instanceof UserCannotUnlockFunds) {
+    return ETransactionErrorType.USER_DOESNT_HAVE_LOCKED_WALLET;
   } else {
     return ETransactionErrorType.UNKNOWN_ERROR;
   }

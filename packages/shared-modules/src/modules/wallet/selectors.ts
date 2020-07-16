@@ -75,10 +75,22 @@ export const selectLockedEtherBalance = (state: TWalletModuleState) =>
     state.wallet.data.etherTokenLockedWallet.LockedBalance) ||
   "0";
 
+export const selectLockedEuroBalance = (state: TWalletModuleState) =>
+  (state.wallet.data &&
+    state.wallet.data.euroTokenLockedWallet &&
+    state.wallet.data.euroTokenLockedWallet.LockedBalance) ||
+  "0";
+
 export const selectLockedEtherUnlockDate = (state: TWalletModuleState) =>
   (state.wallet.data &&
     state.wallet.data.etherTokenLockedWallet &&
     state.wallet.data.etherTokenLockedWallet.unlockDate) ||
+  "0";
+
+export const selectLockedEuroUnlockDate = (state: TWalletModuleState) =>
+  (state.wallet.data &&
+    state.wallet.data.euroTokenLockedWallet &&
+    state.wallet.data.euroTokenLockedWallet.unlockDate) ||
   "0";
 
 export const selectLockedEtherBalanceEuroAmount = (state: TWalletModuleState) =>
@@ -96,6 +108,11 @@ export const selectLockedEuroTotalAmount = (state: TWalletModuleState) =>
 export const selectEtherLockedWalletHasFunds = createSelector(
   selectLockedEtherBalance,
   etherLockedBalance => etherLockedBalance !== "0",
+);
+
+export const selectEuroLockedWalletHasFunds = createSelector(
+  selectLockedEuroBalance,
+  euroLockedBalance => euroLockedBalance !== "0",
 );
 
 export const selectLockedWalletHasFunds = (state: TWalletModuleState): boolean =>

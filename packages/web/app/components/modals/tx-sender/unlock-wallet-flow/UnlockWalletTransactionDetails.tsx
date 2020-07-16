@@ -1,6 +1,7 @@
-import { Eth, Neu } from "@neufund/design-system";
+import { Eth, EurToken, Neu } from "@neufund/design-system";
 import { walletApi } from "@neufund/shared-modules";
 import {
+  ECurrency,
   getCurrentUTCTimestamp,
   multiplyBigNumbers,
   PLATFORM_UNLOCK_FEE,
@@ -22,9 +23,9 @@ export type TTxPendingProps = React.ComponentProps<
 >;
 
 interface IAdditionalProps {
-  returnedEther: BigNumber;
+  returnedAmount: BigNumber;
   unlockFee: number;
-  updateReturnedFunds: (returnedEther: BigNumber) => void;
+  updateReturnedFunds: (returnedAmount: BigNumber) => void;
   updateUnlockFee: (unlockFee: number) => void;
 }
 
@@ -32,7 +33,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
   IAdditionalProps> = ({
   txData,
   additionalData,
-  returnedEther,
+  returnedAmount,
   className,
   txTimestamp,
   unlockFee,
@@ -40,11 +41,17 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
   <InfoList className={className}>
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.eth-committed" />}
-      value={<Eth value={additionalData.lockedEtherBalance} />}
+      value={
+        additionalData.currencyType === ECurrency.ETH ? (
+          <Eth value={additionalData.lockedWalletBalance} />
+        ) : (
+          <EurToken value={additionalData.lockedWalletBalance} />
+        )
+      }
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
-      value={<Neu value={additionalData.etherNeumarksDue} />}
+      value={<Neu value={additionalData.neumarksDue} />}
     />
     <InfoRow
       caption={
@@ -59,7 +66,13 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.amount-returned" />}
-      value={<Eth value={returnedEther} />}
+      value={
+        additionalData.currencyType === ECurrency.ETH ? (
+          <Eth value={returnedAmount} />
+        ) : (
+          <EurToken value={returnedAmount} />
+        )
+      }
     />
     <InfoRow
       caption={<FormattedMessage id="unlock-funds-flow.transaction-cost" />}
@@ -74,20 +87,20 @@ const UnlockWalletTransactionDetails = compose<
   TTxPendingProps & IAdditionalProps,
   React.ComponentProps<TransactionDetailsComponent<ETxType.UNLOCK_FUNDS>>
 >(
-  withState("returnedEther", "updateReturnedFunds", 0),
+  withState("returnedAmount", "updateReturnedFunds", 0),
   withState("unlockFee", "updateUnlockFee", PLATFORM_UNLOCK_FEE * 100),
   lifecycle<TTxPendingProps & IAdditionalProps, {}>({
     componentDidMount(): void {
       const { updateReturnedFunds, additionalData, updateUnlockFee } = this.props;
-      const { lockedEtherUnlockDate, lockedEtherBalance } = additionalData;
+      const { lockedWalletUnlockDate, lockedWalletBalance } = additionalData;
       setInterval(() => {
         const amountAfterFee = walletApi.utils.getUnlockedWalletEtherAmountAfterFee(
-          new BigNumber(lockedEtherBalance),
+          new BigNumber(lockedWalletBalance),
           // TODO: Remove with https://github.com/Neufund/platform-frontend/issues/2156
-          lockedEtherUnlockDate,
+          lockedWalletUnlockDate,
           getCurrentUTCTimestamp(),
         );
-        if (amountAfterFee.toString() === lockedEtherBalance) {
+        if (amountAfterFee.toString() === lockedWalletBalance) {
           updateUnlockFee(PLATFORM_ZERO_FEE);
         }
         updateReturnedFunds(amountAfterFee);

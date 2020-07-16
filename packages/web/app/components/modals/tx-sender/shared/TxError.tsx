@@ -42,6 +42,8 @@ const getErrorMessageByType = (type?: ETransactionErrorType) => {
       return (
         <FormattedMessage id="modal.txsender.error-message.error-not-enough-neu-to-unlock.message" />
       );
+    case ETransactionErrorType.USER_DOESNT_HAVE_LOCKED_WALLET:
+      return <FormattedMessage id="modal.txsender.error-message.error-no-locked-wallet.message" />;
     case ETransactionErrorType.ERROR_WHILE_WATCHING_TX:
       return <FormattedMessage id="modal.txsender.error-message.error-while-watching-tx" />;
     case ETransactionErrorType.FAILED_TO_GENERATE_TX:
@@ -84,9 +86,8 @@ const getErrorMessageByType = (type?: ETransactionErrorType) => {
 const getErrorTitleByType = (type: ETxType, error?: ETransactionErrorType) => {
   switch (error) {
     case ETransactionErrorType.NOT_ENOUGH_NEUMARKS_TO_UNLOCK:
-      return (
-        <FormattedMessage id="modal.txsender.error-message.error-not-enough-neu-to-unlock.title" />
-      );
+    case ETransactionErrorType.USER_DOESNT_HAVE_LOCKED_WALLET:
+      return <FormattedMessage id="modal.txsender.error-message.unlock-error.title" />;
     default:
       return (
         <FormattedMessage

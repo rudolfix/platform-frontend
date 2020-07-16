@@ -55,7 +55,8 @@ export const routes = [
   etoWidgetViewRoute,
   portfolioRoute,
   icbmMigrationRoute,
-  walletUnlockRoute,
+  etherWalletUnlockRoute,
+  euroWalletUnlockRoute,
   walletRoute,
   verifyEmailRoute,
   seedBackupRoute,
@@ -216,11 +217,23 @@ export function* icbmMigrationRoute(payload: RouterState): Generator<any, any, a
   });
 }
 
-export function* walletUnlockRoute(payload: RouterState): Generator<any, any, any> {
-  const walletUnlockMatch = yield matchPath(payload.location.pathname, {
-    path: appRoutes.walletUnlock,
+export function* etherWalletUnlockRoute(payload: RouterState): Generator<any, any, any> {
+  const etherWalletUnlockMatch = yield matchPath(payload.location.pathname, {
+    path: appRoutes.etherWalletUnlock,
   });
-  return yield routeAction(walletUnlockMatch, {
+  return yield routeAction(etherWalletUnlockMatch, {
+    notAuth: undefined,
+    investor: undefined,
+    issuer: put(actions.routing.goToDashboard()),
+    nominee: put(actions.routing.goToDashboard()),
+  });
+}
+
+export function* euroWalletUnlockRoute(payload: RouterState): Generator<any, any, any> {
+  const euroWalletUnlockMatch = yield matchPath(payload.location.pathname, {
+    path: appRoutes.euroWalletUnlock,
+  });
+  return yield routeAction(euroWalletUnlockMatch, {
     notAuth: undefined,
     investor: undefined,
     issuer: put(actions.routing.goToDashboard()),

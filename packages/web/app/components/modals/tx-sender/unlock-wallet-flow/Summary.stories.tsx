@@ -1,3 +1,4 @@
+import { ECurrency } from "@neufund/shared-utils";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
@@ -21,9 +22,10 @@ storiesOf("Unlock Wallet Summary", module)
       onAccept={action("Accept Summary")}
       txData={txData}
       additionalData={{
-        lockedEtherBalance: "5500000000000000000",
-        lockedEtherUnlockDate: "120000000000000000",
-        etherNeumarksDue: "5500000000000000000",
+        currencyType: ECurrency.ETH,
+        lockedWalletBalance: "5500000000000000000",
+        lockedWalletUnlockDate: "120000000000000000",
+        neumarksDue: "5500000000000000000",
       }}
     />
   ));

@@ -7,6 +7,7 @@ import { Dashboard } from "./dashboard/Dashboard";
 import { Documents } from "./documents/issuerDocuments/Documents";
 import { NomineeDocuments } from "./documents/nomineeDocuments/NomineeDocuments";
 import { MigrationFromLink } from "./edge-cases/MigrationFromLink";
+import { UnlockEuroWalletFundsFromLink } from "./edge-cases/UnlockEuroWalletFundsFromLink";
 import { UnlockWalletFundsFromLink } from "./edge-cases/UnlockWalletFundsFromLink";
 import { EtoViewMain } from "./eto/eto-full-view/EtoViewMain";
 import { EtoWidgetView } from "./eto/EtoWidgetView";
@@ -74,8 +75,12 @@ export const AppRouter: React.FunctionComponent = () => (
     )}
     <OnlyAuthorizedRoute path={appRoutes.icbmMigration} investorComponent={MigrationFromLink} />
     <OnlyAuthorizedRoute
-      path={appRoutes.walletUnlock}
+      path={appRoutes.etherWalletUnlock}
       investorComponent={UnlockWalletFundsFromLink}
+    />
+    <OnlyAuthorizedRoute
+      path={appRoutes.euroWalletUnlock}
+      investorComponent={UnlockEuroWalletFundsFromLink}
     />
     {/* only issuer routes */}
     <OnlyAuthorizedRoute path={appRoutes.etoRegister} issuerComponent={EtoRegister} />

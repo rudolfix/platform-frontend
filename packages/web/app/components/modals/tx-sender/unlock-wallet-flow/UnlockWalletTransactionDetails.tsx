@@ -1,5 +1,6 @@
 import { walletApi } from "@neufund/shared-modules";
 import {
+  ECurrency,
   getCurrentUTCTimestamp,
   multiplyBigNumbers,
   PLATFORM_UNLOCK_FEE,
@@ -12,11 +13,7 @@ import { compose, lifecycle, withState } from "recompose";
 
 import { ETxType } from "../../../../lib/web3/types";
 import { Money } from "../../../shared/formatters/Money";
-import {
-  ECurrency,
-  ENumberInputFormat,
-  ENumberOutputFormat,
-} from "../../../shared/formatters/utils";
+import { ENumberInputFormat, ENumberOutputFormat } from "../../../shared/formatters/utils";
 import { InfoList } from "../shared/InfoList";
 import { InfoRow } from "../shared/InfoRow";
 import { TimestampRow } from "../shared/TimestampRow";
@@ -27,9 +24,9 @@ export type TTxPendingProps = React.ComponentProps<
 >;
 
 interface IAdditionalProps {
-  returnedEther: BigNumber;
+  returnedAmount: BigNumber;
   unlockFee: number;
-  updateReturnedFunds: (returnedEther: BigNumber) => void;
+  updateReturnedFunds: (returnedAmount: BigNumber) => void;
   updateUnlockFee: (unlockFee: number) => void;
 }
 
@@ -37,7 +34,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
   IAdditionalProps> = ({
   txData,
   additionalData,
-  returnedEther,
+  returnedAmount,
   className,
   txTimestamp,
   unlockFee,
@@ -47,10 +44,12 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
       caption={<FormattedMessage id="unlock-funds-flow.eth-committed" />}
       value={
         <Money
-          value={additionalData.lockedEtherBalance}
+          value={additionalData.lockedWalletBalance}
           inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.ETH}
-          outputFormat={ENumberOutputFormat.FULL}
+          valueType={
+            additionalData.currencyType === ECurrency.ETH ? ECurrency.ETH : ECurrency.EUR_TOKEN
+          }
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         />
       }
     />
@@ -58,7 +57,7 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
       caption={<FormattedMessage id="unlock-funds-flow.neumarks-due" />}
       value={
         <Money
-          value={additionalData.etherNeumarksDue}
+          value={additionalData.neumarksDue}
           inputFormat={ENumberInputFormat.ULPS}
           valueType={ECurrency.NEU}
           outputFormat={ENumberOutputFormat.FULL}
@@ -80,10 +79,12 @@ const UnlockWalletTransactionDetailsLayout: React.FunctionComponent<TTxPendingPr
       caption={<FormattedMessage id="unlock-funds-flow.amount-returned" />}
       value={
         <Money
-          value={returnedEther}
+          value={returnedAmount}
           inputFormat={ENumberInputFormat.ULPS}
-          valueType={ECurrency.ETH}
-          outputFormat={ENumberOutputFormat.FULL}
+          valueType={
+            additionalData.currencyType === ECurrency.ETH ? ECurrency.ETH : ECurrency.EUR_TOKEN
+          }
+          outputFormat={ENumberOutputFormat.ONLY_NONZERO_DECIMALS}
         />
       }
     />
@@ -107,20 +108,20 @@ const UnlockWalletTransactionDetails = compose<
   TTxPendingProps & IAdditionalProps,
   React.ComponentProps<TransactionDetailsComponent<ETxType.UNLOCK_FUNDS>>
 >(
-  withState("returnedEther", "updateReturnedFunds", 0),
+  withState("returnedAmount", "updateReturnedFunds", 0),
   withState("unlockFee", "updateUnlockFee", PLATFORM_UNLOCK_FEE * 100),
   lifecycle<TTxPendingProps & IAdditionalProps, {}>({
     componentDidMount(): void {
       const { updateReturnedFunds, additionalData, updateUnlockFee } = this.props;
-      const { lockedEtherUnlockDate, lockedEtherBalance } = additionalData;
+      const { lockedWalletUnlockDate, lockedWalletBalance } = additionalData;
       setInterval(() => {
         const amountAfterFee = walletApi.utils.getUnlockedWalletEtherAmountAfterFee(
-          new BigNumber(lockedEtherBalance),
+          new BigNumber(lockedWalletBalance),
           // TODO: Remove with https://github.com/Neufund/platform-frontend/issues/2156
-          lockedEtherUnlockDate,
+          lockedWalletUnlockDate,
           getCurrentUTCTimestamp(),
         );
-        if (amountAfterFee.toString() === lockedEtherBalance) {
+        if (amountAfterFee.toString() === lockedWalletBalance) {
           updateUnlockFee(PLATFORM_ZERO_FEE);
         }
         updateReturnedFunds(amountAfterFee);

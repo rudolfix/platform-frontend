@@ -8,6 +8,7 @@ import { ITxTypeWithData, TSpecificTransactionState } from "../types";
 export enum ETransactionErrorType {
   // Flow Specific Errors
   NOT_ENOUGH_NEUMARKS_TO_UNLOCK = "not_enough_neumarks_to_unlock",
+  USER_DOESNT_HAVE_LOCKED_WALLET = "user_doesnt_have_locked_wallet",
   // General Errors
   NOT_ENOUGH_ETHER_FOR_GAS = "not_enough_ether_for_gas",
   FAILED_TO_GENERATE_TX = "failed_to_generate_tx",

@@ -1,5 +1,11 @@
+.wrapper {
+  width: px-to-rem(256px);
+  margin-right: px-to-rem(64px);
+}
+
 .nav-list {
   list-style: none;
+  padding: 0;
 }
 
 .nav-item {

@@ -8,7 +8,7 @@ import { actions, TActionFromCreator } from "../actions";
 import { selectIsAuthorized, selectUserType } from "../auth/selectors";
 import { waitForAppInit } from "../init/sagas";
 import { neuCall, neuTakeEvery } from "../sagasUtils";
-import { routes } from "./routes";
+import { routeEffects } from "./routeEffects";
 
 type TRouteActions = {
   // "undefined" is for backwards compatibility,
@@ -60,8 +60,8 @@ export function* router(
   payload: RouterState,
 ): Generator<any, any, any> {
   try {
-    for (const route of routes) {
-      const routeMatch = yield route(payload);
+    for (const effect of routeEffects) {
+      const routeMatch = yield effect(payload);
       if (routeMatch) {
         return;
       }

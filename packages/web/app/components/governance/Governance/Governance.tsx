@@ -11,6 +11,7 @@ import { withContainer } from "../../shared/hocs/withContainer";
 import { GeneralInformation } from "./GeneralInformation/GeneralInformation";
 import { GovernanceContainer } from "./GovernanceContainer";
 import { GovernanceNavigationMenu } from "./GovernanceNavigationMenu";
+import { GovernanceOverview } from "./GovernanceOverview/GovernanceOverview";
 
 export const GovernanceBase = () => (
   <>
@@ -21,14 +22,13 @@ export const GovernanceBase = () => (
     </Container>
 
     <Container columnSpan={EColumnSpan.THREE_COL} type={EContainerType.INHERIT_GRID}>
-      <Container columnSpan={EColumnSpan.ONE_COL}>
-        <GovernanceNavigationMenu />
-      </Container>
+      <GovernanceNavigationMenu />
 
       <Container columnSpan={EColumnSpan.TWO_COL}>
         <SwitchConnected>
+          <Route path={appRoutes.governanceOverview} component={GovernanceOverview} />
           <Route path={appRoutes.governanceGeneralInformation} component={GeneralInformation} />
-          <Redirect to={appRoutes.governanceGeneralInformation} />
+          <Redirect to={appRoutes.governanceOverview} />
         </SwitchConnected>
       </Container>
     </Container>

@@ -101,4 +101,4 @@ export const appRoutes = {
    * @deprecated Route with eto jurisdiction should be used instead. This is only for backward compatibility.
    */
   etoPublicViewLegacyRoute: "/eto/view/:previewCode",
-};
+} as const;

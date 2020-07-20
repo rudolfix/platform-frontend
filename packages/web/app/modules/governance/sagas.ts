@@ -1,4 +1,4 @@
-import { all, call, fork, put, SagaGenerator, select, take } from "@neufund/sagas";
+import { all, call, fork, neuCall, put, SagaGenerator, select, take } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, TEtoSpecsData } from "@neufund/shared-modules";
 import { secondsToMs } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
@@ -10,6 +10,7 @@ import { IControllerGovernance } from "../../lib/contracts/IControllerGovernance
 import { ITokenControllerHook } from "../../lib/contracts/ITokenControllerHook";
 import { actions as globalActions, TActionFromCreator } from "../actions";
 import { etoFlowActions } from "../eto-flow/actions";
+import { loadIssuerEto } from "../eto-flow/sagas";
 import { selectIssuerEto } from "../eto-flow/selectors";
 import { webNotificationUIModuleApi } from "../notification-ui/module";
 import { neuTakeLatest } from "../sagasUtils";
@@ -81,6 +82,7 @@ export function* loadGeneralInformationView(): Generator<any, void, any> {
 
   let eto = yield select(selectIssuerEto);
   if (!eto) {
+    yield neuCall(loadIssuerEto);
     // wait for eto to load
     yield take(actions.setGovernanceVisibility);
 

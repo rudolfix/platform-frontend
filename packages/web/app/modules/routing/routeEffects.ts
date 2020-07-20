@@ -9,9 +9,13 @@ import { profileRoutes } from "../../components/settings/routes";
 import { e2eRoutes } from "../../components/testing/e2eRoutes";
 import { TGlobalDependencies } from "../../di/setupBindings";
 import { actions } from "../actions";
-import { governanceModuleApi } from "../governance/module";
 import { neuCall } from "../sagasUtils";
 import { shareholderResolutionsVotingViewModuleApi } from "../shareholder-resolutions-voting-view/module";
+import {
+  governanceGeneralInformationRoute,
+  governanceOverviewRoute,
+  governanceRoute,
+} from "./governance.routeEffects";
 import { redirectToBrowserWallet as redirectIfBrowserWalletExists } from "./redirects/sagas";
 import { walletSelectorRegisterRedirect } from "./redirects/utils";
 import { GREYP_PREVIEW_CODE, routeAction, routeInternal } from "./sagas";
@@ -23,7 +27,7 @@ import {
   TShareholderResolutionsVotingRoute,
 } from "./types";
 
-export const routes = [
+export const routeEffects = [
   // most routes here are stubbed until we move them all to sagas
   // and provide a meaningful action on match
 
@@ -80,6 +84,7 @@ export const routes = [
   restoreNomineeRoute,
 
   governanceRoute,
+  governanceOverviewRoute,
   governanceGeneralInformationRoute,
   proposalsRoute,
 
@@ -766,42 +771,6 @@ export function* fallbackRedirect(_: RouterState): Generator<any, any, any> {
     issuer: put(actions.routing.goToDashboard()),
     nominee: put(actions.routing.goToDashboard()),
   });
-}
-
-export function* governanceRoute(payload: RouterState): Generator<any, any, any> {
-  const match = yield* call(() =>
-    matchPath(payload.location.pathname, {
-      path: appRoutes.governance,
-      exact: true,
-    }),
-  );
-
-  if (match !== null) {
-    return yield routeInternal({
-      notAuth: undefined,
-      investor: undefined,
-      issuer: put(actions.etoFlow.loadIssuerView()),
-      nominee: undefined,
-    });
-  }
-}
-
-export function* governanceGeneralInformationRoute(payload: RouterState): Generator<any, any, any> {
-  const match = yield* call(() =>
-    matchPath(payload.location.pathname, {
-      path: appRoutes.governanceGeneralInformation,
-      exact: true,
-    }),
-  );
-
-  if (match !== null) {
-    return yield routeInternal({
-      notAuth: undefined,
-      investor: undefined,
-      issuer: put(governanceModuleApi.actions.loadGeneralInformationView()),
-      nominee: undefined,
-    });
-  }
 }
 
 export function* proposalsRoute(payload: RouterState): Generator<any, any, any> {

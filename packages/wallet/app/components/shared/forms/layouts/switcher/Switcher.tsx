@@ -1,7 +1,9 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Platform } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import { roundness, shadowStyles } from "styles/common";
+
+import { EPlatform, Platform } from "utils/Platform";
 
 import { ESwitcherItemPosition, SwitcherItem } from "./SwitcherItem";
 
@@ -72,7 +74,7 @@ const styles = StyleSheet.create(
         borderRadius: roundness,
       },
     },
-    android: {
+    [EPlatform.Android]: {
       container: {
         ...shadowStyles.s2,
 

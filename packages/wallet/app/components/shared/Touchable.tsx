@@ -1,20 +1,19 @@
 import * as React from "react";
 import {
-  Platform,
+  TouchableHighlight,
   TouchableNativeFeedback,
   TouchableWithoutFeedback,
   View,
-  TouchableHighlight,
 } from "react-native";
 
-import { ANDROID_VERSION_LOLLIPOP } from "config/constants";
+import { isAndroidLollipopOrHigher } from "utils/Platform";
 
 type TExternalProps = React.ComponentProps<typeof TouchableWithoutFeedback> & {
   activeColor: string;
   children: React.ReactNode;
 };
 
-const isRippleSupported = Platform.OS === "android" && Platform.Version >= ANDROID_VERSION_LOLLIPOP;
+const isRippleSupported = isAndroidLollipopOrHigher;
 
 /**
  * A wrapper for components that should respond to touches.

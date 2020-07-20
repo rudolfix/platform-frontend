@@ -8,6 +8,7 @@ import Close from "assets/close.svg";
 import Device from "assets/device.svg";
 import Home from "assets/home.svg";
 import Investments from "assets/investments.svg";
+import Lock from "assets/lock.svg";
 import Logout from "assets/logout.svg";
 import Pending from "assets/pending.svg";
 import Placeholder from "assets/placeholder.svg";
@@ -39,6 +40,7 @@ enum EIconType {
   DEVICE = "device",
   LOGOUT = "logout",
   PENDING = "pending",
+  LOCK = "lock",
 }
 
 const pickByIdentity = pickBy(identity);
@@ -62,6 +64,7 @@ const icons: Record<EIconType, typeof Close> = {
   [EIconType.SHARE]: Share,
   [EIconType.WALLET]: Wallet,
   [EIconType.YES]: Yes,
+  [EIconType.LOCK]: Lock,
 };
 
 type TSvgIconProps = React.ComponentProps<typeof Close>;

@@ -1,8 +1,11 @@
-import { Opaque } from "@neufund/shared-utils";
+import { assertError, assertNever, Opaque } from "@neufund/shared-utils";
 import AsyncStorage from "@react-native-community/async-storage";
 import { utils } from "ethers";
 import * as Keychain from "react-native-keychain";
 
+import { SecureStorageAccessCancelled, SecureStorageUnknownError } from "modules/eth/lib/errors";
+
+import { EPlatform, Platform } from "utils/Platform";
 import { CacheClass, Cache } from "utils/memoryCache";
 
 import { CACHE_TIMEOUT } from "./constants";
@@ -162,18 +165,40 @@ export class KeychainSecureStorage extends BaseSecureStorage {
   }
 
   async getSecretInternal(reference: string): Promise<string | null> {
-    const result = await Keychain.getInternetCredentials(reference, {
-      authenticationPrompt: {
-        title: "Access Key",
-        subtitle: "Allow Neufund to manage your ethereum key.",
-        description: "",
-        cancel: "Deny",
-      },
-    });
-    if (result) {
-      return result.password;
+    try {
+      const result = await Keychain.getInternetCredentials(reference, {
+        authenticationPrompt: {
+          title: "Access Key",
+          subtitle: "Allow Neufund to manage your ethereum key.",
+          description: "",
+          cancel: "Deny",
+        },
+      });
+
+      if (result) {
+        return result.password;
+      }
+
+      return null;
+    } catch (e) {
+      assertError(e);
+
+      switch (Platform.OS) {
+        case EPlatform.IOS:
+          if (e.message === "User canceled the operation.") {
+            throw new SecureStorageAccessCancelled();
+          }
+          break;
+        case EPlatform.Android:
+          throw new Error("Not yet supported");
+          break;
+
+        default:
+          assertNever(Platform);
+      }
+
+      throw new SecureStorageUnknownError(e.message);
     }
-    return null;
   }
 
   async hasSecretInternal(reference: TSecureReference): Promise<boolean> {

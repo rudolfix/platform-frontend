@@ -1,5 +1,7 @@
 import { utils as ethersUtils } from "ethers";
 
+import { SecureStorageAccessCancelled, SecureStorageUnknownError } from "modules/eth/lib/errors";
+
 import { setupBindings } from "./lib/bindings";
 import {
   ethereumAddress,
@@ -36,6 +38,10 @@ const setupWalletEthModule = (config: TEthModuleConfig) => ({
 const walletEthModuleApi = {
   symbols,
   utils,
+  errors: {
+    SecureStorageAccessCancelled,
+    SecureStorageUnknownError,
+  },
 };
 
 export { setupWalletEthModule, walletEthModuleApi };

@@ -1,10 +1,12 @@
 import { useHeaderHeight } from "@react-navigation/stack";
 import * as React from "react";
-import { KeyboardAvoidingView, Platform, Animated, StyleSheet } from "react-native";
+import { Animated, KeyboardAvoidingView, StyleSheet } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { baseWhite } from "styles/colors";
+
+import { isIOS } from "utils/Platform";
 
 import { EStatusBarStyle, useStatusBarStyle } from "./hooks/useStatusBarStyle";
 
@@ -42,7 +44,7 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   return (
     <SafeAreaView style={styles.screen} forceInset={forceTopInset ? { top: "always" } : undefined}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={isIOS ? "padding" : undefined}
         keyboardVerticalOffset={headerHeight + insets.top}
         style={styles.container}
       >
@@ -81,7 +83,7 @@ const Screen: React.FunctionComponent<TScreenExternalProps> = ({
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "position" : undefined}
+      behavior={isIOS ? "position" : undefined}
       contentContainerStyle={styles.container}
       keyboardVerticalOffset={headerHeight + insets.top}
       style={styles.screen}

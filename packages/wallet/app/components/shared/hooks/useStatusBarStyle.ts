@@ -1,9 +1,11 @@
 import { assertNever } from "@neufund/shared-utils";
 import { useFocusEffect } from "@react-navigation/native";
 import * as React from "react";
-import { Platform, StatusBar, StatusBarStyle } from "react-native";
+import { StatusBar, StatusBarStyle } from "react-native";
 
 import { baseWhite, darkBlueGray1 } from "styles/colors";
+
+import { isAndroid } from "utils/Platform";
 
 enum EStatusBarStyle {
   WHITE = "white",
@@ -46,7 +48,7 @@ const useStatusBarStyle = (statusBarStyle: EStatusBarStyle) =>
 
       StatusBar.setBarStyle(style);
 
-      if (Platform.OS === "android") {
+      if (isAndroid) {
         StatusBar.setBackgroundColor(backgroundColor);
       }
     }, [statusBarStyle]),

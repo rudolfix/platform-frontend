@@ -3,6 +3,7 @@ import * as React from "react";
 import { View } from "react-native";
 
 import { BodyBoldText, BodyText } from "./BodyText";
+import { CodeText } from "./CodeText";
 import { EHeadlineLevel, Headline } from "./Headline";
 import { HelperText } from "./HelperText";
 import { Text } from "./Text";
@@ -18,6 +19,7 @@ storiesOf("Atoms|Typography", module)
       <Headline level={EHeadlineLevel.LEVEL4}>Headline 4</Headline>
       <BodyText>Body text</BodyText>
       <Text>Text</Text>
-      <HelperText>helper Text</HelperText>
+      <HelperText>Helper Text</HelperText>
+      <CodeText>Code Text</CodeText>
     </>
   ));

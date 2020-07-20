@@ -21,6 +21,19 @@ module.exports = {
     project: ["./tsconfig.json", "./tsconfig.*.json"],
   },
   rules: {
+    "no-restricted-imports": [
+      "error",
+      {
+        paths: [
+          {
+            name: "react-native",
+            importNames: ["Platform"],
+            message: `Please use Platform from "utils/Platform" instead to have better type-safety.`,
+          },
+        ],
+      },
+    ],
+
     "@typescript-eslint/no-magic-numbers": [
       "error",
       {

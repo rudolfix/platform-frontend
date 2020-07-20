@@ -39,6 +39,13 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   const items = React.useMemo(() => {
     const defaultItems: TMenuProps["items"] = [
       {
+        id: "account-backup",
+        type: EMenuItemType.NAVIGATION,
+        heading: "Account backup",
+        icon: EIconType.LOCK,
+        onPress: () => navigation.navigate(EAppRoutes.accountBackup),
+      },
+      {
         id: "wallet-connect-session",
         type: EMenuItemType.NAVIGATION,
         heading: "Neufund Web",

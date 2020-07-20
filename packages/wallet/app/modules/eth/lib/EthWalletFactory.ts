@@ -90,6 +90,7 @@ class EthWalletFactory {
       return {
         name: metadata.name,
         address: metadata.address,
+        type: metadata.type,
       };
     }
 

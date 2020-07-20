@@ -18,6 +18,12 @@ const callGuard = (methodName: string) => (...args: any[]) => {
   throw new Error(`Unexpected call to method: '${methodName}' with args: ${args.toString()}`);
 };
 
+type TMOCK<T> = {
+  [P in keyof T]: T[P] extends (...args: any) => any
+    ? jest.Mock<ReturnType<T[P]>, Parameters<T[P]>>
+    : T[P];
+};
+
 /**
  * A jest util to mock class methods.
  * Useful to mock partially class and be confident that all other class methods are never used.
@@ -25,7 +31,12 @@ const callGuard = (methodName: string) => (...args: any[]) => {
  * @param clazz - A class to mock
  * @param mockImpl - A mocked methods
  */
-function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): T {
+function createMock<T>(
+  clazz: new (...args: any[]) => T,
+  mockImpl: Partial<T>,
+): T & {
+  MOCK: TMOCK<T>;
+} {
   const methods = clazz.prototype ?? {};
 
   const allMethods = new Set<string>([
@@ -45,11 +56,11 @@ function createMock<T>(clazz: new (...args: any[]) => T, mockImpl: Partial<T>): 
         ? jest.fn(userProvidedMock)
         : userProvidedMock;
     } else {
-      mock[methodName] = callGuard(methodName);
+      mock[methodName] = jest.fn(callGuard(methodName));
     }
   });
 
-  return mock;
+  return { ...mock, MOCK: mock };
 }
 
 const RealDate = global.Date;

@@ -14,6 +14,7 @@ enum EAppRoutes {
   qrCode = "QRCode",
   webView = "WebView",
   switchToFixture = "SwitchToFixture",
+  accountBackup = "AccountBackup",
 }
 
 export { EAppRoutes };

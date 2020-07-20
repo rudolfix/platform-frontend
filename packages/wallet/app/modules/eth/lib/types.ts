@@ -49,4 +49,5 @@ export type TWalletUIMetadata = {
    */
   name: string | undefined;
   address: EthereumAddressWithChecksum;
+  type: EWalletType;
 };

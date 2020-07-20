@@ -29,10 +29,10 @@ function startupApp(): void {
 
   const store = createAppStore(container);
 
-  renderApp(store);
+  renderApp(store, container);
 }
 
-function renderApp(store: IModuleStore<TAppGlobalState>): void {
+function renderApp(store: IModuleStore<TAppGlobalState>, container: Container): void {
   const Component = () => {
     const [isStorybookUI, setStorybookUI] = React.useState(Config.STORYBOOK_RUN === "1");
 
@@ -48,7 +48,7 @@ function renderApp(store: IModuleStore<TAppGlobalState>): void {
     }
 
     return (
-      <AppContainer store={store}>
+      <AppContainer store={store} container={container}>
         <App />
       </AppContainer>
     );

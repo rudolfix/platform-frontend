@@ -1,7 +1,6 @@
 import { createMock } from "utils/testUtils.specUtils";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const WalletConnect = jest.requireActual<new (...args: any[]) => any>(
+const WalletConnect = jest.requireActual<new (...args: unknown[]) => unknown>(
   "@walletconnect/react-native",
 );
 

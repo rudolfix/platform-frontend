@@ -3,6 +3,7 @@ import { toEthereumHDPath } from "@neufund/shared-utils";
 
 import { DeviceInformation } from "modules/device-information/DeviceInformation";
 
+import { EPlatform } from "utils/Platform";
 import { createMock } from "utils/testUtils.specUtils";
 
 import {
@@ -31,7 +32,7 @@ describe("EthSecureEnclave (with SecureStorage)", () => {
 
   const deviceInformation = createMock(DeviceInformation, {
     isEmulator: () => Promise.resolve(false),
-    getPlatform: () => "ios",
+    getPlatform: () => EPlatform.IOS,
   });
 
   const secureEnclave = new EthSecureEnclave(noopLogger, deviceInformation);

@@ -233,7 +233,7 @@
     "inversify": "^4.10.0",
     "ipfs-only-hash": "2.0.1",
     "jstimezonedetect": "^1.0.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "moment": "^2.21.0",
     "onfido-sdk-ui": "^5.5.0",
     "promise-all": "^1.0.0",

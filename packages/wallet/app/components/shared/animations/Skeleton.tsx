@@ -1,5 +1,13 @@
 import * as React from "react";
-import { Animated, Easing, StyleSheet, useWindowDimensions, View, ViewStyle } from "react-native";
+import {
+  Animated,
+  Easing,
+  LayoutChangeEvent,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  ViewStyle,
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import { grayLighter4, silverLighter1 } from "styles/colors";
@@ -29,16 +37,19 @@ const Skeleton: React.FunctionComponent<TExternalProps> = ({
   style,
   ...props
 }) => {
-  const [position, setPosition] = React.useState({ x: 0, y: 0, height: 0, width: 0 });
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const [size, setSize] = React.useState({ height: 0, width: 0 });
 
   const { width: windowWidth } = useWindowDimensions();
 
   const viewRef = React.useRef<View>(null);
 
-  const measurePosition = React.useCallback(() => {
+  const measurePosition = React.useCallback(({ nativeEvent }: LayoutChangeEvent) => {
+    setSize({ width: nativeEvent.layout.width, height: nativeEvent.layout.height });
+
     if (viewRef.current) {
-      viewRef.current.measure((_fx, _fy, width, height, px, py) => {
-        setPosition({ width, height, x: px, y: py });
+      viewRef.current.measure((_fx, _fy, _width, _height, px, py) => {
+        setPosition({ x: px, y: py });
       });
     }
   }, []);
@@ -56,12 +67,7 @@ const Skeleton: React.FunctionComponent<TExternalProps> = ({
 
   return (
     <View
-      style={[
-        style,
-        props,
-        styles.skeleton,
-        { borderRadius: (position.width + position.height) / 2 },
-      ]}
+      style={[style, props, styles.skeleton, { borderRadius: (size.width + size.height) / 2 }]}
       ref={viewRef}
       onLayout={measurePosition}
     >

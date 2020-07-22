@@ -11,6 +11,7 @@ import { grayLighter2 } from "styles/colors";
 import { spacingStyles } from "styles/spacings";
 
 import { ItemSeparatorComponent } from "./ItemSeparatorComponent";
+import { getTxUniqueId } from "./utils";
 
 type TFlatList = React.ComponentProps<typeof Animated.FlatList>;
 
@@ -32,9 +33,9 @@ const Transactions: React.FunctionComponent<TExternalProps> = ({
 }) => (
   <Animated.FlatList
     ItemSeparatorComponent={({ leadingItem }: TSeparatorProps) =>
-      leadingItem.kind !== ETransactionKind.PENDING ? ItemSeparatorComponent : null
+      leadingItem.kind !== ETransactionKind.PENDING ? <ItemSeparatorComponent /> : null
     }
-    keyExtractor={(item: TTransaction) => item.txHash}
+    keyExtractor={getTxUniqueId}
     onEndReachedThreshold={0.15}
     ListEmptyComponent={ListEmptyComponent}
     renderItem={({ item }: { item: TTransaction }) => {

@@ -12,7 +12,6 @@ import {
   InvalidWalletConnectUriError,
   isValidWalletConnectUri,
 } from "modules/wallet-connect/lib/utils";
-import { MODULE_ID } from "modules/wallet-connect/module";
 
 import { EAppRoutes } from "router/appRoutes";
 import { navigate } from "router/routeUtils";
@@ -65,12 +64,12 @@ export function* connectToURI(
 
     if (denied) {
       session.rejectSession();
-      logger.info(`${MODULE_ID}: Session rejected`);
+      logger.info(`Wallet connect session rejected`);
     }
   } catch (e) {
     yield put(
       notificationUIModuleApi.actions.showInfo("Failed to start session with wallet connect"),
     );
-    logger.error(e, `${MODULE_ID}: Failed to connect to a new URI`);
+    logger.error(e, `Failed to connect to a new URI`);
   }
 }

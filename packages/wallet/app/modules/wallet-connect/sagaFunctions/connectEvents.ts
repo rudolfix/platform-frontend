@@ -24,7 +24,6 @@ import {
   EWalletConnectAdapterEvents,
   TWalletConnectAdapterEmit,
 } from "modules/wallet-connect/lib/types";
-import { MODULE_ID } from "modules/wallet-connect/module";
 
 function* watchWalletConnectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<void> {
   const channel = reduxify<TWalletConnectAdapterEmit>(wcAdapter);
@@ -126,7 +125,7 @@ export function* connectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<v
     });
 
     logger.info(
-      `${MODULE_ID}: Event watcher ended because: ` + Object.keys(result).filter(key => key)[0],
+      `Wallet connect event watcher ended because: ` + Object.keys(result).filter(key => key)[0],
     );
 
     if (result.disconnectFromPeerSilent) {
@@ -134,15 +133,15 @@ export function* connectEvents(wcAdapter: WalletConnectAdapter): SagaGenerator<v
     }
   } catch (e) {
     // in case of unknown error stop session
-    logger.error(e, `${MODULE_ID}: Event watcher failed.`);
+    logger.error(e, `Wallet connect event watcher failed.`);
   } finally {
     if (yield cancelled()) {
       // if connectEvents saga gets cancelled then stop session
-      logger.info(`${MODULE_ID}: Event watcher was cancelled.`);
+      logger.info(`Wallet connect event watcher was cancelled.`);
     }
 
     yield* call(() => wcAdapter.disconnectSession());
-    logger.info(`${MODULE_ID}: Session with peer ${peerId} ended`);
+    logger.info(`Wallet connect session with peer ${peerId} ended`);
     yield put(walletConnectActions.disconnectedFromPeer(peerId));
 
     if (!silentDisconnect) {

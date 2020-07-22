@@ -37,7 +37,11 @@ type TExternalProps = {
 const Container: React.FunctionComponent = ({ children }) => (
   <>
     <Header />
-    <SafeAreaScreen style={styles.container} statusBarStyle={EStatusBarStyle.WHITE}>
+    <SafeAreaScreen
+      style={styles.container}
+      statusBarStyle={EStatusBarStyle.WHITE}
+      topInset={false}
+    >
       {children}
     </SafeAreaScreen>
   </>

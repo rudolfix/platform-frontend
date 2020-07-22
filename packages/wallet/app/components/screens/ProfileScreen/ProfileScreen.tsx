@@ -81,7 +81,7 @@ const ProfileLayout: React.FunctionComponent<TStateProps & TDispatchProps> = ({
   }, [authWallet, navigation, walletConnectPeer, logout]);
 
   return (
-    <SafeAreaScreen forceTopInset statusBarStyle={EStatusBarStyle.WHITE}>
+    <SafeAreaScreen topInset statusBarStyle={EStatusBarStyle.WHITE}>
       <Header name={authWallet.name} address={authWallet.address} />
 
       <Menu items={items} />

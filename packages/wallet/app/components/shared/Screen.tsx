@@ -19,7 +19,7 @@ type TSafeAreaScreenExternalProps = {
    * In some cases (for .e.g tab navigation screen) safe area top inset
    * should be forced manually to avoid paddingTop jumping after onLayout rerender
    */
-  forceTopInset?: boolean;
+  topInset?: boolean;
 } & TExternalCommonProps &
   React.ComponentProps<typeof Animated.ScrollView>;
 
@@ -29,7 +29,7 @@ type TSafeAreaScreenExternalProps = {
 const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   children,
   statusBarStyle = EStatusBarStyle.INHERIT,
-  forceTopInset,
+  topInset,
   bounces,
   overScrollMode,
   ...props
@@ -42,7 +42,10 @@ const SafeAreaScreen: React.FunctionComponent<TSafeAreaScreenExternalProps> = ({
   const scrollMode = overScrollMode ?? (bounces ? "never" : undefined);
 
   return (
-    <SafeAreaView style={styles.screen} forceInset={forceTopInset ? { top: "always" } : undefined}>
+    <SafeAreaView
+      style={styles.screen}
+      forceInset={topInset !== undefined ? { top: topInset ? "always" : "never" } : undefined}
+    >
       <KeyboardAvoidingView
         behavior={isIOS ? "padding" : undefined}
         keyboardVerticalOffset={headerHeight + insets.top}

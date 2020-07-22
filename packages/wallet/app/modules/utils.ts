@@ -14,8 +14,8 @@ type TReduxifyAction = {
  *
  * @param eventEmitter - A class that extends EventEmitter2
  */
-const reduxify = <T extends TReduxifyAction>(eventEmitter: EventEmitter2) => {
-  return eventChannel<T>(emitter => {
+const reduxify = <T extends TReduxifyAction>(eventEmitter: EventEmitter2) =>
+  eventChannel<T>(emitter => {
     const listener = (
       type: string | string[],
       error?: Error,
@@ -32,6 +32,5 @@ const reduxify = <T extends TReduxifyAction>(eventEmitter: EventEmitter2) => {
 
     return () => eventEmitter.offAny(listener);
   });
-};
 
 export { reduxify };

@@ -115,8 +115,8 @@ const tupleSchemaTest = <T extends Tuple<yup.Schema<unknown>>>(schemas: T, value
  * schema.isValidSync(["baz", { foo: "bar" }); // false
  * schema.isValidSync([100, 100, 100]); // false
  */
-const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) => {
-  return yup
+const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) =>
+  yup
     .mixed<ObjectInferTypeWithPrimitive<T>>()
     .test({
       name: "tupleSchema",
@@ -136,7 +136,6 @@ const tupleSchema = <T extends Tuple<yup.Schema<unknown>>>(schemas: T) => {
         return transform(schema, values[i]);
       });
     });
-};
 
 /**
  * A schema that support just single value by reference equality.

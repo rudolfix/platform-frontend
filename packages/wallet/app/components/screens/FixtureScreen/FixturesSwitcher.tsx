@@ -45,48 +45,46 @@ const fuse = new Fuse(UIFixtures, { keys: ["id", "title"], shouldSort: false, th
 const FixturesSwitcher: React.FunctionComponent<TExternalProps> = ({
   authState,
   changeAccount,
-}) => {
-  return (
-    <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
-      <Form<TFormValue>
-        validationSchema={validationSchema}
-        initialValues={INITIAL_VALUES}
-        onSubmit={values => {
-          const fixture = fixtures[values.address as keyof typeof fixtures];
+}) => (
+  <SafeAreaScreen contentContainerStyle={styles.content} statusBarStyle={EStatusBarStyle.WHITE}>
+    <Form<TFormValue>
+      validationSchema={validationSchema}
+      initialValues={INITIAL_VALUES}
+      onSubmit={values => {
+        const fixture = fixtures[values.address as keyof typeof fixtures];
 
-          changeAccount(nonNullable(fixture.privateKey), nonNullable(fixture.name));
-        }}
-      >
-        {({ handleSubmit, isValid, values }) => {
-          const items = values.filter
-            ? fuse.search(values.filter).map(result => result.item)
-            : UIFixtures;
+        changeAccount(nonNullable(fixture.privateKey), nonNullable(fixture.name));
+      }}
+    >
+      {({ handleSubmit, isValid, values }) => {
+        const items = values.filter
+          ? fuse.search(values.filter).map(result => result.item)
+          : UIFixtures;
 
-          return (
-            <>
-              <Field
-                name="filter"
-                type={EFieldType.INPUT}
-                placeholder="Filter by name or address..."
-              />
+        return (
+          <>
+            <Field
+              name="filter"
+              type={EFieldType.INPUT}
+              placeholder="Filter by name or address..."
+            />
 
-              <Field name="address" style={styles.list} type={EFieldType.SWITCHER} items={items} />
+            <Field name="address" style={styles.list} type={EFieldType.SWITCHER} items={items} />
 
-              <Button
-                disabled={!isValid}
-                loading={authState === EAuthState.AUTHORIZING}
-                layout={EButtonLayout.PRIMARY}
-                onPress={handleSubmit}
-              >
-                Connect account
-              </Button>
-            </>
-          );
-        }}
-      </Form>
-    </SafeAreaScreen>
-  );
-};
+            <Button
+              disabled={!isValid}
+              loading={authState === EAuthState.AUTHORIZING}
+              layout={EButtonLayout.PRIMARY}
+              onPress={handleSubmit}
+            >
+              Connect account
+            </Button>
+          </>
+        );
+      }}
+    </Form>
+  </SafeAreaScreen>
+);
 
 const styles = StyleSheet.create({
   content: {

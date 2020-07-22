@@ -54,9 +54,7 @@ const WalletScreenSwitch: React.FunctionComponent<TStateProps & TDispatchProps> 
 export const WalletScreen = compose<TStateProps & TDispatchProps, UnknownObject>(
   createErrorBoundary(ErrorBoundaryScreen),
   appConnect<TStateProps, TDispatchProps>({
-    stateToProps: state => {
-      return walletViewModuleApi.selectors.selectWalletViewData(state);
-    },
+    stateToProps: state => walletViewModuleApi.selectors.selectWalletViewData(state),
     dispatchToProps: dispatch => ({
       loadTxHistoryNext: () => {
         dispatch(txHistoryApi.actions.loadNextTransactions());

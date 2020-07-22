@@ -10,12 +10,10 @@ const themes: Dictionary<ITheme> = {
 
 const ThemeContext = createContext(themes.light);
 
-const ThemeProvider: React.FunctionComponent = ({ children }) => {
-  return <ThemeContext.Provider value={themes.light}>{children}</ThemeContext.Provider>;
-};
+const ThemeProvider: React.FunctionComponent = ({ children }) => (
+  <ThemeContext.Provider value={themes.light}>{children}</ThemeContext.Provider>
+);
 
-const useTheme = () => {
-  return React.useContext(ThemeContext);
-};
+const useTheme = () => React.useContext(ThemeContext);
 
 export { ThemeProvider, useTheme };

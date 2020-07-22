@@ -68,21 +68,19 @@ const Data: React.FunctionComponent<TExternalProps> = ({ data, allowedTypes, onT
   );
 };
 
-const AccountBackupScreenLayout: React.FunctionComponent<TExternalProps> = props => {
-  return (
-    <SafeAreaScreen contentContainerStyle={styles.content} testID="account-backup-screen.layout">
-      <BodyText style={styles.text}>
-        If you lose access to your device, the only way to restore your funds and account is with
-        your recovery phrase or private key.
-        <LineBreak />
-        <LineBreak />
-        Please write down and store it in a safe place.
-      </BodyText>
+const AccountBackupScreenLayout: React.FunctionComponent<TExternalProps> = props => (
+  <SafeAreaScreen contentContainerStyle={styles.content} testID="account-backup-screen.layout">
+    <BodyText style={styles.text}>
+      If you lose access to your device, the only way to restore your funds and account is with your
+      recovery phrase or private key.
+      <LineBreak />
+      <LineBreak />
+      Please write down and store it in a safe place.
+    </BodyText>
 
-      <Data {...props} />
-    </SafeAreaScreen>
-  );
-};
+    <Data {...props} />
+  </SafeAreaScreen>
+);
 
 const styles = StyleSheet.create({
   content: {

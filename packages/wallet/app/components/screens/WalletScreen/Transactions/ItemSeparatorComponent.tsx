@@ -5,14 +5,12 @@ import { baseSilver } from "styles/colors";
 
 import { IconSpacer } from "./IconSpacer";
 
-const ItemSeparatorComponent: React.FunctionComponent = () => {
-  return (
-    <View style={styles.separator}>
-      <IconSpacer />
-      <View style={styles.separatorLine} />
-    </View>
-  );
-};
+const ItemSeparatorComponent: React.FunctionComponent = () => (
+  <View style={styles.separator}>
+    <IconSpacer />
+    <View style={styles.separatorLine} />
+  </View>
+);
 
 const styles = StyleSheet.create({
   separator: {

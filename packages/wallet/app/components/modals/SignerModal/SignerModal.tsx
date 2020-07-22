@@ -47,13 +47,11 @@ const SignerModalLayout: React.FunctionComponent<TStateProps & TDispatchProps> =
   request,
   approve,
   reject,
-}) => {
-  return (
-    <BottomSheetModal isVisible={state !== ESignerUIState.IDLE} onDismiss={reject}>
-      {request && <Signer request={request} approve={approve} reject={reject} />}
-    </BottomSheetModal>
-  );
-};
+}) => (
+  <BottomSheetModal isVisible={state !== ESignerUIState.IDLE} onDismiss={reject}>
+    {request && <Signer request={request} approve={approve} reject={reject} />}
+  </BottomSheetModal>
+);
 
 const SignerModal = compose<TStateProps & TDispatchProps, UnknownObject>(
   appConnect<TStateProps, TDispatchProps, UnknownObject, typeof setupSignerUIModule>({

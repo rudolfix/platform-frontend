@@ -48,9 +48,7 @@ const HomeScreenSwitch: React.FunctionComponent<TStateProps> = ({ viewState, ...
 export const HomeScreen = compose<TStateProps, UnknownObject>(
   createErrorBoundary(ErrorBoundaryScreen),
   appConnect<TStateProps>({
-    stateToProps: state => {
-      return homeViewModuleApi.selectors.selectHomeViewData(state);
-    },
+    stateToProps: state => homeViewModuleApi.selectors.selectHomeViewData(state),
   }),
   onLifecycle({
     onMount: dispatch => dispatch(homeViewModuleApi.actions.loadHomeView()),

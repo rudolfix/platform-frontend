@@ -23,6 +23,8 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
 
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-parens": ["error", "as-needed"],
     complexity: ["error", { max: 10 }],
     "no-await-in-loop": "error",
     "no-console": "error",
@@ -55,6 +57,10 @@ module.exports = {
     "no-useless-call": "error",
     "no-useless-concat": "error",
     "no-void": "error",
+    "prefer-arrow-callback": [
+      "error",
+      { allowNamedFunctions: true, allowUnboundThis: false }
+    ],
     "prefer-promise-reject-errors": "error",
     "prefer-regex-literals": "error",
     radix: "error",

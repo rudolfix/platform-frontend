@@ -4,8 +4,8 @@ import { createStore } from "redux";
 
 const emptyReducer = () => ({});
 
-const MockReduxProvider: React.FunctionComponent = ({ children }) => {
-  return <ReduxProvider store={createStore(emptyReducer)}>{children}</ReduxProvider>;
-};
+const MockReduxProvider: React.FunctionComponent = ({ children }) => (
+  <ReduxProvider store={createStore(emptyReducer)}>{children}</ReduxProvider>
+);
 
 export { MockReduxProvider };

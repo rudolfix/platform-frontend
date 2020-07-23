@@ -1,58 +1,41 @@
+/* eslint-disable @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires */
 // eslint-disable-next-line import/no-unassigned-import
 import "react-native-gesture-handler";
 // eslint-disable-next-line import/no-unassigned-import
 import "./polyfills";
-
 import { IModuleStore } from "@neufund/sagas";
 import { Container } from "inversify";
 import React from "react";
 import { AppRegistry } from "react-native";
-import Config from "react-native-config";
-import DevMenu from "react-native-dev-menu";
+
+import { createAppStore } from "store/create";
+import { TAppGlobalState } from "store/types";
 
 // eslint-disable-next-line import/no-relative-parent-imports
 import { name as appName } from "../app.json";
-// eslint-disable-next-line import/no-relative-parent-imports
-import { Storybook } from "../storybook";
-import { App } from "./App";
-import { AppContainer } from "./components/containers/AppContainer";
-import { createAppStore } from "./store/create";
-import { TAppGlobalState } from "./store/types";
-
-if (__DEV__) {
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  import("./devUtils");
-}
 
 function startupApp(): void {
   const container = new Container();
 
   const store = createAppStore(container);
 
-  renderApp(store, container);
-}
+  let getComponent: (
+    store: IModuleStore<TAppGlobalState>,
+    container: Container,
+  ) => React.ComponentType;
 
-function renderApp(store: IModuleStore<TAppGlobalState>, container: Container): void {
-  const Component = () => {
-    const [isStorybookUI, setStorybookUI] = React.useState(Config.STORYBOOK_RUN === "1");
+  // there is no support for import tree-shaking in metro-bundler
+  // that's why we use dynamic `require` to let me minifier remove unused code
+  // see https://github.com/facebook/metro/issues/227
+  if (__DEV__) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+    getComponent = require("./index.dev").getComponent;
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+    getComponent = require("./index.prod").getComponent;
+  }
 
-    React.useEffect(() => {
-      // If it's a storybook mode do not allow toggling
-      if (__DEV__ && Config.STORYBOOK_RUN !== "1") {
-        DevMenu.addItem("Toggle Storybook", () => setStorybookUI(isStUI => !isStUI));
-      }
-    }, []);
-
-    if (isStorybookUI) {
-      return <Storybook />;
-    }
-
-    return (
-      <AppContainer store={store} container={container}>
-        <App />
-      </AppContainer>
-    );
-  };
+  const Component: React.ComponentType = getComponent(store, container);
 
   AppRegistry.registerComponent(appName, () => Component);
 }

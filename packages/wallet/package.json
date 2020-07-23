@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "bundle-analyzer": "npx react-native-bundle-visualizer",
     "clean:manual": "react-native clean-project",
     "clean": "react-native clean-project-auto",
     "install-pods": "cd ios && pod install && cd ..",

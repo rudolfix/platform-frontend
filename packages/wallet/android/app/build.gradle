@@ -158,15 +158,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        production {
+          storeFile file('production.keystore.p12')
+          storePassword System.getenv("NF_WALLET_ANDROID_PRODUCTION_KEYSTORE_PASS")
+          keyAlias 'prodKey'
+          keyPassword System.getenv("NF_WALLET_ANDROID_PRODUCTION_KEYSTORE_PASS")
+        }
     }
     buildTypes {
         debug {
+            // applicationIdSuffix ".debug"
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            def sigConfigName = System.getenv("NF_WALLET_ANDROID_RELEASE_SIGCONFIG_NAME") ?: "debug"
+            signingConfig signingConfigs[sigConfigName]
             minifyEnabled enableProguardInReleaseBuilds
             proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
         }

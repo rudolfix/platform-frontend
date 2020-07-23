@@ -5006,14 +5006,6 @@
     "@walletconnect/types" "^1.0.0-beta.47"
     "@walletconnect/utils" "^1.0.0-beta.47"
 
-"@walletconnect/core@^1.0.0-beta.47":
-  version "1.0.0-beta.70"
-  resolved "https://gitpkg.now.sh/Neufund/walletconnect-monorepo/packages/clients/core?705f7fdc98ea2c1484cc0bbd175ee4c7e7530091#dc479b3605eba8caff406f161c5fbcb256a0733c"
-  dependencies:
-    "@walletconnect/socket-transport" "^1.0.0-beta.70"
-    "@walletconnect/types" "^1.0.0-beta.70"
-    "@walletconnect/utils" "^1.0.0-beta.70"
-
 "@walletconnect/core@^1.0.0-beta.87":
   version "1.0.0-beta.87"
   resolved "https://registry.yarnpkg.com/@walletconnect/core/-/core-1.0.0-beta.87.tgz#c2cc40add0ab0efd130d950985df321311e965c5"
@@ -5065,10 +5057,6 @@
     "@walletconnect/types" "^1.0.0-beta.87"
     ws "7.2.1"
 
-"@walletconnect/types@^1.0.0-beta.47", "@walletconnect/types@^1.0.0-beta.70":
-  version "1.0.0-beta.70"
-  resolved "https://gitpkg.now.sh/Neufund/walletconnect-monorepo/packages/helpers/types?705f7fdc98ea2c1484cc0bbd175ee4c7e7530091#6dcbcaf9c8798ac90e3925666d6f5b0ac42f63ec"
-
 "@walletconnect/types@^1.0.0-beta.75":
   version "1.0.0-next.0"
   resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-1.0.0-next.0.tgz#21d5e493dba4f23ef8cc398a92f326aedb4291bd"
@@ -5078,17 +5066,6 @@
   version "1.0.0-beta.87"
   resolved "https://registry.yarnpkg.com/@walletconnect/types/-/types-1.0.0-beta.87.tgz#d13d773a87253c847c72950117f5de86bcd82923"
   integrity sha512-X12OIUrvnvvhRgL8ffdBu3VtMDuszG8HLdDkCX0PKaQYdLE7VZAIv/I1ZeR6RMxJIQ1cWRQkq71rKL32I84Yew==
-
-"@walletconnect/utils@^1.0.0-beta.47", "@walletconnect/utils@^1.0.0-beta.70":
-  version "1.0.0-beta.70"
-  resolved "https://gitpkg.now.sh/Neufund/walletconnect-monorepo/packages/helpers/utils?705f7fdc98ea2c1484cc0bbd175ee4c7e7530091#d4d1fa4d43a736e6f6e6ad659cde672c6e01d30f"
-  dependencies:
-    "@ethersproject/address" "5.0.0-beta.134"
-    "@ethersproject/bytes" "5.0.0-beta.136"
-    "@ethersproject/strings" "5.0.0-beta.136"
-    "@walletconnect/types" "^1.0.0-beta.70"
-    bignumber.js "9.0.0"
-    detect-browser "4.8.0"
 
 "@walletconnect/utils@^1.0.0-beta.87":
   version "1.0.0-beta.87"

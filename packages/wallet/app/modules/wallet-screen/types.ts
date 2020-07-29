@@ -1,11 +1,11 @@
 import { txHistoryApi, TModuleState } from "@neufund/shared-modules";
 import { ECurrency } from "@neufund/shared-utils";
 
-import { setupWalletViewModule } from "modules/wallet-screen/module";
+import { setupWalletScreenModule } from "modules/wallet-screen/module";
 
 import { TToken } from "utils/types";
 
-export type TWalletViewModuleState = TModuleState<typeof setupWalletViewModule>;
+export type TWalletScreenModuleState = TModuleState<typeof setupWalletScreenModule>;
 
 export enum EBalanceViewType {
   ETH = "balanceTypeEth",
@@ -21,13 +21,5 @@ export type TBalance = {
   amount: TToken<ECurrency.EUR_TOKEN | ECurrency.ETH>;
   euroEquivalentAmount: TToken<ECurrency.EUR>;
 };
-
-export enum EViewState {
-  INITIAL = "initial",
-  LOADING = "loading",
-  REFRESHING = "refreshing",
-  READY = "ready",
-  ERROR = "error",
-}
 
 export type TxHistoryPaginated = ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>;

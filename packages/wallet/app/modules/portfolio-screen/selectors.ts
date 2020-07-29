@@ -16,9 +16,10 @@ import { EScreenState } from "modules/types";
 
 import { createToken } from "utils/createToken";
 
-import { THomeScreenState, EBalanceViewType, TBalance, TAsset } from "./types";
+import { TPortfolioScreenModuleState, TAsset } from "./types";
 
-const selectHomeScreenState = (state: THomeScreenState) => state.homeScreen.screenState;
+const selectPortfolioScreenState = (state: TPortfolioScreenModuleState) =>
+  state.portfolioScreen.screenState;
 
 const selectNeuBalance = createSelector(walletApi.selectors.selectNeuBalance, neuBalance =>
   createToken(ECurrency.NEU, neuBalance, ETH_DECIMALS),
@@ -29,7 +30,7 @@ const selectNeuBalanceEur = createSelector(
   neuBalance => createToken(ECurrency.EUR, neuBalance, ETH_DECIMALS),
 );
 
-const selectTotalPortfolioBalanceEur = createSelector(
+const selectTotalBalanceEur = createSelector(
   investorPortfolioModuleApi.selectors.selectMyAssetsEurEquivTotalWithNeu,
   investorPortfolioModuleApi.selectors.selectMyPendingAssetsInvestedTotal,
   (myAssetsTotalEur = "0", myPendingAssetsTotalEEur = "0") =>
@@ -40,36 +41,23 @@ const selectTotalPortfolioBalanceEur = createSelector(
     ),
 );
 
-const selectWalletTotalBalanceInEur = createSelector(
-  walletApi.selectors.selectTotalEuroBalance,
-  totalEurBalance => createToken(ECurrency.EUR, totalEurBalance, EURO_DECIMALS),
+const selectPendingAssets = createSelector(
+  investorPortfolioModuleApi.selectors.selectMyPendingAssets,
+  assets =>
+    assets?.map(asset => ({
+      id: asset.etoId,
+      token: createToken(
+        toEquityTokenSymbol(asset.equityTokenSymbol),
+        asset.investorTicket.equityTokenInt,
+        EURO_DECIMALS,
+      ),
+      analogToken: createToken(ECurrency.EUR, asset.investorTicket.equivEur, EURO_DECIMALS),
+      tokenImage: asset.equityTokenImage,
+      tokenName: asset.equityTokenName,
+    })),
 );
 
-/**
- * Groups all liquid/locked/icbm locked balances into single value for ETH and EUR
- */
-const selectWalletGroupedBalances = createSelector(
-  // eth
-  walletApi.selectors.selectTotalEtherBalance,
-  walletApi.selectors.selectTotalEtherBalanceEuroAmount,
-
-  // nEuro
-  walletApi.selectors.selectTotalEuroTokenBalance,
-  (ethBalance, ethEuroBalance, nEurBalance): TBalance[] => [
-    {
-      type: EBalanceViewType.ETH,
-      amount: createToken(ECurrency.ETH, ethBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, ethEuroBalance, ETH_DECIMALS),
-    },
-    {
-      type: EBalanceViewType.NEUR,
-      amount: createToken(ECurrency.EUR_TOKEN, nEurBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, nEurBalance, ETH_DECIMALS),
-    },
-  ],
-);
-
-const selectPortfolioAssets = createSelector(
+const selectAssets = createSelector(
   investorPortfolioModuleApi.selectors.selectMyAssetsWithTokenData,
   assets =>
     assets?.map<TAsset>(asset => ({
@@ -92,23 +80,14 @@ const selectPortfolioAssets = createSelector(
     })),
 );
 
-const selectHomeScreenData = createSelector(
-  selectWalletGroupedBalances,
-  selectWalletTotalBalanceInEur,
-  selectPortfolioAssets,
+const selectPortfolioScreenData = createSelector(
+  selectAssets,
+  selectPendingAssets,
   selectNeuBalance,
   selectNeuBalanceEur,
-  selectTotalPortfolioBalanceEur,
-  selectHomeScreenState,
-  (
-    balances,
-    totalBalanceInEur,
-    portfolioAssets,
-    neuBalance,
-    neuBalanceEur,
-    totalPortfolioBalanceEur,
-    screenState,
-  ) => {
+  selectTotalBalanceEur,
+  selectPortfolioScreenState,
+  (assets, pendingAssets, neuBalance, neuBalanceEur, totalBalanceEur, screenState) => {
     switch (screenState) {
       case EScreenState.LOADING:
       case EScreenState.INITIAL:
@@ -119,19 +98,18 @@ const selectHomeScreenData = createSelector(
       case EScreenState.REFRESHING:
       case EScreenState.READY:
         return {
-          balances,
-          totalBalanceInEur,
-          portfolioAssets: nonNullable(portfolioAssets),
+          assets: nonNullable(assets),
+          pendingAssets: nonNullable(pendingAssets),
           neuBalance,
           neuBalanceEur,
-          totalPortfolioBalanceEur,
+          totalBalanceEur,
           screenState,
         };
 
       default:
-        assertNever(screenState, `Invalid screen state received`);
+        assertNever(screenState, `Invalid view state received`);
     }
   },
 );
 
-export { selectHomeScreenData };
+export { selectPortfolioScreenData };

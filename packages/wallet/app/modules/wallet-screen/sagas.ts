@@ -1,34 +1,34 @@
 import { call, SagaGenerator, takeLatest, put, all } from "@neufund/sagas";
 import { coreModuleApi, neuGetBindings, walletApi, txHistoryApi } from "@neufund/shared-modules";
 
-import { EViewState } from "modules/wallet-screen/types";
+import { EScreenState } from "modules/types";
 
 import { actions } from "./actions";
 
-function* getWalletViewData(
-  loadingState: EViewState.LOADING | EViewState.REFRESHING,
+function* getWalletScreenData(
+  loadingState: EScreenState.LOADING | EScreenState.REFRESHING,
 ): SagaGenerator<void> {
   const { logger } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
   });
 
   try {
-    yield put(actions.setWalletViewState(loadingState));
+    yield put(actions.setWalletScreenState(loadingState));
 
     yield* all([
       call(walletApi.sagas.loadWalletDataSaga),
       call(txHistoryApi.sagas.loadTransactionsHistory),
     ]);
 
-    yield put(actions.setWalletViewState(EViewState.READY));
+    yield put(actions.setWalletScreenState(EScreenState.READY));
   } catch (e) {
     logger.error(e, "Failed to load wallet view");
 
-    yield put(actions.setWalletViewState(EViewState.ERROR));
+    yield put(actions.setWalletScreenState(EScreenState.ERROR));
   }
 }
 
-export function* walletViewSagas(): SagaGenerator<void> {
-  yield takeLatest(actions.loadWalletView, getWalletViewData, EViewState.LOADING);
-  yield takeLatest(actions.refreshWalletView, getWalletViewData, EViewState.REFRESHING);
+export function* walletScreenSagas(): SagaGenerator<void> {
+  yield takeLatest(actions.loadWalletScreen, getWalletScreenData, EScreenState.LOADING);
+  yield takeLatest(actions.refreshWalletScreen, getWalletScreenData, EScreenState.REFRESHING);
 }

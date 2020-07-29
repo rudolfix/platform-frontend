@@ -1,11 +1,11 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { EViewState } from "./types";
+import { EScreenState } from "modules/types";
 
 export const actions = {
-  loadHomeView: createActionFactory("HOME_VIEW_LOAD"),
-  refreshHomeView: createActionFactory("HOME_VIEW_REFRESH"),
-  setHomeViewState: createActionFactory("HOME_VIEW_SET_STATE", (viewState: EViewState) => ({
-    viewState,
+  loadHomeScreen: createActionFactory("HOME_SCREEN_LOAD"),
+  refreshHomeScreen: createActionFactory("HOME_SCREEN_REFRESH"),
+  setHomeScreenState: createActionFactory("HOME_SCREEN_SET_STATE", (screenState: EScreenState) => ({
+    screenState,
   })),
 };

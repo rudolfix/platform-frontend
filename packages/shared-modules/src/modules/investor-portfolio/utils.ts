@@ -82,12 +82,7 @@ export const convertToInvestorTicket = ([
 
 export const convertToTokenDisbursal = (
   token: ECurrency,
-  [amountToBeClaimed, totalDisbursedAmount, timeToFirstDisbursalRecycle]: [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-  ],
+  [amountToBeClaimed, totalDisbursedAmount, timeToFirstDisbursalRecycle]: BigNumber[],
   etherPrice: string,
 ): ITokenDisbursal => ({
   token,

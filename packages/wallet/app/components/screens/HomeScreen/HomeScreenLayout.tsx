@@ -1,6 +1,6 @@
-import { ECurrency, toEquityTokenSymbol } from "@neufund/shared-utils";
+import { ECurrency, isZero } from "@neufund/shared-utils";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 import emfluxmotorsBanner from "assets/images/emfluxmotors.png";
 import greypBanner from "assets/images/greyp.png";
@@ -11,57 +11,55 @@ import ngraveBanner from "assets/images/ngrave.png";
 import nuCaoBanner from "assets/images/nucao.png";
 
 import { createBalanceUiData } from "components/screens/WalletScreen/utils";
+import { EIconType } from "components/shared/Icon";
 import { Money } from "components/shared/Money";
-import { EStatusBarStyle, SafeAreaScreen } from "components/shared/Screen";
-import { Asset, AssetSkeleton, EAssetType } from "components/shared/asset/Asset";
+import { Asset, EAssetType } from "components/shared/asset/Asset";
 
 import { TBalance } from "modules/home-screen/module";
+import { TAsset } from "modules/portfolio-screen/types";
 
 import { EAppRoutes } from "router/appRoutes";
 import { useNavigationTyped } from "router/routeUtils";
 
 import { spacingStyles } from "styles/spacings";
 
-import { createToken } from "utils/createToken";
 import { TToken } from "utils/types";
 
 import { EtoCard } from "./EtoCard";
-import { Header } from "./Header";
+import { HomeScreenLayoutContainer } from "./HomeScreenLayoutContainer";
 import { Section } from "./Section";
+
+/**
+ * Specifies the maximum amount of portfolio items shown
+ */
+const PORTFOLIO_ASSETS_COUNT = 2;
 
 type TExternalProps = {
   balances: TBalance[];
   totalBalanceInEur: TToken<ECurrency.EUR>;
+  portfolioAssets: TAsset[];
+  neuBalance: TToken<ECurrency.NEU>;
+  neuBalanceEur: TToken<ECurrency.EUR>;
+  totalPortfolioBalanceEur: TToken<ECurrency.EUR>;
 };
-
-const Container: React.FunctionComponent = ({ children }) => (
-  <>
-    <Header />
-    <SafeAreaScreen
-      style={styles.container}
-      statusBarStyle={EStatusBarStyle.WHITE}
-      topInset={false}
-    >
-      {children}
-    </SafeAreaScreen>
-  </>
-);
-
-const HomeScreenLayoutSkeleton: React.FunctionComponent = () => (
-  <Container>
-    <View style={styles.section}>
-      {/* eslint-disable-next-line @typescript-eslint/no-magic-numbers */}
-      {[1, 0.6, 0.3, 0.1].map((opacity, i) => (
-        <AssetSkeleton style={[styles.asset, { opacity }]} key={i} />
-      ))}
-    </View>
-  </Container>
-);
 
 const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
   balances,
   totalBalanceInEur,
+  portfolioAssets: allPortfolioAssets,
+  neuBalance,
+  neuBalanceEur,
+  totalPortfolioBalanceEur,
 }) => {
+  const myPortfolioAssets = allPortfolioAssets.filter(asset => !isZero(asset.token.value));
+
+  // in case user do not own assets show all available assets
+  // in case user own just Neu token show just Neu token
+  const portfolioAssets =
+    myPortfolioAssets.length > 0 || !isZero(neuBalance.value)
+      ? myPortfolioAssets
+      : allPortfolioAssets;
+
   const navigation = useNavigationTyped();
 
   const onEtoCardPress = (uri: string) => {
@@ -71,21 +69,35 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
   const formattedBalances = React.useMemo(() => balances.map(createBalanceUiData), [balances]);
 
   return (
-    <Container>
-      <Section heading="Portfolio" subHeading="€6 500.00" style={styles.section}>
+    <HomeScreenLayoutContainer>
+      <Section
+        heading="Portfolio"
+        subHeading={
+          <Money
+            value={totalPortfolioBalanceEur.value}
+            currency={totalPortfolioBalanceEur.type}
+            decimalPlaces={totalPortfolioBalanceEur.precision}
+          />
+        }
+        style={styles.section}
+      >
+        {portfolioAssets.slice(0, PORTFOLIO_ASSETS_COUNT).map(asset => (
+          <Asset
+            key={asset.id}
+            icon={asset.tokenImage}
+            name={asset.tokenName}
+            token={asset.token}
+            analogToken={asset.analogToken}
+            style={styles.asset}
+            type={EAssetType.NORMAL}
+          />
+        ))}
+
         <Asset
-          icon="https://documents.neufund.io/0x95137084d1b6F58D177523De894293913394aA12/9066455f-e514-444d-bd4f-44e4df3f2a74.png"
-          token={createToken(toEquityTokenSymbol("NOM"), "100", 0)}
-          name="Nomera Tech"
-          analogToken={createToken(ECurrency.EUR, "1000", 0)}
-          style={styles.asset}
-          type={EAssetType.NORMAL}
-        />
-        <Asset
-          icon="https://documents.neufund.io/0x74180B56DD74BC56a2E9D5720F39247c55F23328/e36ee175-e8c6-4f8a-9175-1e22b0a8be53.png"
-          name="Fifth Force"
-          token={createToken(toEquityTokenSymbol("FFT"), "1000", 0)}
-          analogToken={createToken(ECurrency.EUR, "1000", 0)}
+          icon={EIconType.NEU}
+          name="Neumark"
+          token={neuBalance}
+          analogToken={neuBalanceEur}
           style={styles.asset}
           type={EAssetType.NORMAL}
         />
@@ -185,14 +197,11 @@ const HomeScreenLayout: React.FunctionComponent<TExternalProps> = ({
           onPress={() => onEtoCardPress("https://commit.neufund.org/")}
         />
       </Section>
-    </Container>
+    </HomeScreenLayoutContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    ...spacingStyles.pv5,
-  },
   section: {
     ...spacingStyles.ph4,
     ...spacingStyles.mb4,
@@ -205,4 +214,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { HomeScreenLayout, HomeScreenLayoutSkeleton };
+export { HomeScreenLayout, styles };

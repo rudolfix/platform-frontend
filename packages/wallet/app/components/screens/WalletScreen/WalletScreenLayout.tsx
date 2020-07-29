@@ -7,8 +7,7 @@ import { createBalanceUiData } from "components/screens/WalletScreen/utils";
 import { HeaderScreen } from "components/shared/HeaderScreen";
 import { INDICATOR_SIZE, LoadingIndicator } from "components/shared/LoadingIndicator";
 import { Money } from "components/shared/Money";
-import { Screen } from "components/shared/Screen";
-import { Asset, AssetSkeleton, EAssetType } from "components/shared/asset/Asset";
+import { Asset, EAssetType } from "components/shared/asset/Asset";
 import { EHeadlineLevel, Headline } from "components/shared/typography/Headline";
 import { st } from "components/utils";
 
@@ -29,19 +28,6 @@ type TExternalProps = {
   loadTxHistoryNext: () => void;
   totalBalanceInEur: TToken<ECurrency.EUR>;
 };
-
-const WalletScreenLayoutSkeleton: React.FunctionComponent = () => (
-  <HeaderScreen heading={""} subHeading={""}>
-    {screenProps => (
-      <Screen {...screenProps}>
-        {/* eslint-disable-next-line @typescript-eslint/no-magic-numbers */}
-        {[1, 0.6, 0.3, 0.1].map((opacity, i) => (
-          <AssetSkeleton style={[styles.asset, { opacity }]} key={i} />
-        ))}
-      </Screen>
-    )}
-  </HeaderScreen>
-);
 
 const WalletScreenLayout: React.FunctionComponent<TExternalProps> = ({
   transactionsHistoryPaginated,
@@ -152,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { WalletScreenLayout, WalletScreenLayoutSkeleton };
+export { WalletScreenLayout, styles };

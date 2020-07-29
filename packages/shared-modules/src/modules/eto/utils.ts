@@ -1,9 +1,4 @@
-import {
-  convertFromUlps,
-  DeepPartial,
-  EthereumAddressWithChecksum,
-  Overwrite,
-} from "@neufund/shared-utils";
+import { convertFromUlps, EthereumAddressWithChecksum } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { includes } from "lodash/fp";
 
@@ -11,7 +6,9 @@ import { EJurisdiction } from "../kyc/module";
 import {
   EEtoMarketingDataVisibleInPreview,
   EEtoState,
+  TEtoDataWithCompany,
   TEtoSpecsData,
+  TPartialEtoSpecData,
 } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
 import {
   calculateCurrentInvestmentProgressPercentage,
@@ -24,6 +21,7 @@ import {
   TEtoContractData,
   TEtoStartOfStates,
   TEtoWithCompanyAndContractReadonly,
+  TEtoWithContract,
 } from "./types";
 
 export { canShowDocument } from "./lib/http/eto-api/EtoFileUtils";
@@ -31,19 +29,18 @@ export { canShowDocument } from "./lib/http/eto-api/EtoFileUtils";
 export const isPastInvestment = (etoState: EETOStateOnChain) =>
   includes(etoState, [EETOStateOnChain.Payout, EETOStateOnChain.Refund, EETOStateOnChain.Claim]);
 
-export const amendEtoToCompatibleFormat = (
-  eto: DeepPartial<TEtoSpecsData>,
-): DeepPartial<TEtoSpecsData> =>
-  eto && {
-    ...eto,
-    product: {
-      ...eto.product,
-      jurisdiction:
-        eto.product &&
-        eto.product.jurisdiction &&
-        (eto.product.jurisdiction.toUpperCase() as EJurisdiction),
-    },
-  };
+export const amendEtoToCompatibleFormat = <T extends TPartialEtoSpecData | TEtoDataWithCompany>(
+  eto: T,
+): T => ({
+  ...eto,
+  product: {
+    ...eto.product,
+    jurisdiction:
+      eto.product &&
+      eto.product.jurisdiction &&
+      (eto.product.jurisdiction.toUpperCase() as EJurisdiction),
+  },
+});
 
 export const convertToEtoTotalInvestment = (
   [totalEquivEurUlps, totalTokensInt, totalInvestors]: [BigNumber, BigNumber, BigNumber],
@@ -65,9 +62,7 @@ const convertToDate = (startOf: BigNumber): Date | undefined => {
   return new Date(startOf.mul("1000").toNumber());
 };
 
-export const convertToStateStartDate = (
-  startOfStates: [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
-): TEtoStartOfStates => {
+export const convertToStateStartDate = (startOfStates: BigNumber[]): TEtoStartOfStates => {
   const [
     startOfSetup,
     startOfWhitelist,
@@ -89,12 +84,9 @@ export const convertToStateStartDate = (
   };
 };
 
-export function isOnChain(
-  eto: TEtoWithCompanyAndContractReadonly,
-): eto is Overwrite<
-  TEtoWithCompanyAndContractReadonly,
-  { contract: Exclude<TEtoWithCompanyAndContractReadonly["contract"], undefined> }
-> {
+export function isOnChain<T extends TEtoWithContract>(
+  eto: T,
+): eto is T & { contract: Exclude<T["contract"], undefined> } {
   return eto.state === EEtoState.ON_CHAIN && eto.contract !== undefined;
 }
 

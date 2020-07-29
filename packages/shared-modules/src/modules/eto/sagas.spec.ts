@@ -110,7 +110,7 @@ describe("loadEtos", () => {
     .toConstantValue(globalDependencies.contractsService);
 
   it("should work", async () => {
-    await expectSaga(loadEtos, globalDependencies)
+    await expectSaga(loadEtos)
       .withState({
         kyc: {
           individualData: {
@@ -144,7 +144,7 @@ describe("loadEtos", () => {
   });
 
   it("should load investor ticket for investor", () => {
-    expectSaga(loadEtos, globalDependencies)
+    expectSaga(loadEtos)
       .provide([[matchers.getContext("deps"), globalDependencies]])
       .withState({
         kyc: {
@@ -220,7 +220,7 @@ describe("loadEtos", () => {
       canTransferToken: true,
     };
 
-    expectSaga(loadEtos, globalDependencies)
+    expectSaga(loadEtos)
       .withState({
         kyc: {
           individualData: {

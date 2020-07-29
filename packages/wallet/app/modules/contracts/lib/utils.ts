@@ -5,7 +5,9 @@ import { BigNumber } from "bignumber.js";
 import { utils } from "ethers";
 
 function bnToBne(number: BigNumber): utils.BigNumber {
-  return new utils.BigNumber(number.toString());
+  // note that bn.js do not support scientific notation
+  // therefore we need to force decimals in `toString`
+  return new utils.BigNumber(number.toString(10));
 }
 
 function bneToBn(number: utils.BigNumber): BigNumber {

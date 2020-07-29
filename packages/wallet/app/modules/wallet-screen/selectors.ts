@@ -6,37 +6,13 @@ import { hasFunds, isMainBalance } from "modules/wallet-screen/utils";
 
 import { createToken } from "utils/createToken";
 
-import { EBalanceViewType, TBalance, TWalletViewModuleState } from "./types";
+import { EBalanceViewType, TBalance, TWalletScreenModuleState } from "./types";
 
-const selectWalletViewState = (state: TWalletViewModuleState) => state.walletView.viewState;
+const selectWalletScreenState = (state: TWalletScreenModuleState) => state.walletScreen.screenState;
 
 const selectWalletTotalBalanceInEur = createSelector(
   walletApi.selectors.selectTotalEuroBalance,
   totalEurBalance => createToken(ECurrency.EUR, totalEurBalance, EURO_DECIMALS),
-);
-
-/**
- * Groups all liquid/locked/icbm locked balances into single value for ETH and EUR
- */
-const selectWalletGroupedBalances = createSelector(
-  // eth
-  walletApi.selectors.selectTotalEtherBalance,
-  walletApi.selectors.selectTotalEtherBalanceEuroAmount,
-
-  // nEuro
-  walletApi.selectors.selectTotalEuroTokenBalance,
-  (ethBalance, ethEuroBalance, nEurBalance): TBalance[] => [
-    {
-      type: EBalanceViewType.ETH,
-      amount: createToken(ECurrency.ETH, ethBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, ethEuroBalance, ETH_DECIMALS),
-    },
-    {
-      type: EBalanceViewType.NEUR,
-      amount: createToken(ECurrency.EUR_TOKEN, nEurBalance, ETH_DECIMALS),
-      euroEquivalentAmount: createToken(ECurrency.EUR, nEurBalance, ETH_DECIMALS),
-    },
-  ],
 );
 
 const selectWalletBalances = createSelector(
@@ -104,22 +80,17 @@ const selectWalletBalances = createSelector(
   ],
 );
 
-const selectWalletViewData = createSelector(
+const selectWalletScreenData = createSelector(
   selectWalletBalances,
   txHistoryApi.selectors.selectTxHistoryPaginated,
   selectWalletTotalBalanceInEur,
-  selectWalletViewState,
-  (balances, transactionsHistoryPaginated, totalBalanceInEur, viewState) => ({
-    viewState,
+  selectWalletScreenState,
+  (balances, transactionsHistoryPaginated, totalBalanceInEur, screenState) => ({
+    screenState,
     transactionsHistoryPaginated,
     totalBalanceInEur,
     balances: balances.filter(balance => isMainBalance(balance) || hasFunds(balance)),
   }),
 );
 
-export {
-  selectWalletViewData,
-  selectWalletBalances,
-  selectWalletGroupedBalances,
-  selectWalletTotalBalanceInEur,
-};
+export { selectWalletScreenData, selectWalletBalances, selectWalletTotalBalanceInEur };

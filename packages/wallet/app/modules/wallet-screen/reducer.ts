@@ -1,15 +1,16 @@
 import { AppReducer } from "@neufund/sagas";
 import { DeepReadonly } from "@neufund/shared-utils";
 
+import { EScreenState } from "modules/types";
+
 import { actions } from "./actions";
-import { EViewState } from "./types";
 
 interface IState {
-  viewState: EViewState;
+  screenState: EScreenState;
 }
 
 const initialState: IState = {
-  viewState: EViewState.INITIAL,
+  screenState: EScreenState.INITIAL,
 };
 
 export const reducer: AppReducer<IState, typeof actions> = (
@@ -17,12 +18,12 @@ export const reducer: AppReducer<IState, typeof actions> = (
   action,
 ): DeepReadonly<IState> => {
   switch (action.type) {
-    case actions.setWalletViewState.getType(): {
-      const { viewState } = action.payload;
+    case actions.setWalletScreenState.getType(): {
+      const { screenState } = action.payload;
 
       return {
         ...state,
-        viewState: viewState,
+        screenState,
       };
     }
 
@@ -31,8 +32,8 @@ export const reducer: AppReducer<IState, typeof actions> = (
   }
 };
 
-const walletViewMap = {
-  walletView: reducer,
+const walletScreenMap = {
+  walletScreen: reducer,
 };
 
-export { walletViewMap };
+export { walletScreenMap };

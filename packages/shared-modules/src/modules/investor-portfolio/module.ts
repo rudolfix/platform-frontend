@@ -7,7 +7,11 @@ import { TPureTokenPriceModuleState } from "../token-price/module";
 import { TPureWalletModuleState } from "../wallet/module";
 import { investorPortfolioActions } from "./actions";
 import { investorPortfolioReducerMap } from "./reducer";
-import * as sagas from "./sagas";
+import {
+  loadClaimables,
+  loadComputedContributionFromContract,
+  setupInvestorPortfolioSagas,
+} from "./sagas";
 import * as selectors from "./selectors";
 import * as utils from "./utils";
 
@@ -18,7 +22,7 @@ const setupInvestorPortfolioModule = () => {
     id: MODULE_ID,
     api: investorPortfolioModuleApi,
     libs: [],
-    sagas: [sagas.setupInvestorPortfolioSagas()],
+    sagas: [setupInvestorPortfolioSagas()],
     reducerMap: investorPortfolioReducerMap,
   };
 
@@ -30,7 +34,8 @@ const investorPortfolioModuleApi = {
   selectors,
   utils,
   sagas: {
-    loadComputedContributionFromContract: sagas.loadComputedContributionFromContract,
+    loadComputedContributionFromContract,
+    loadClaimables,
   },
 };
 

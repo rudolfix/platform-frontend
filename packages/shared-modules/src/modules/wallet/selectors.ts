@@ -22,8 +22,11 @@ export const selectNeuBalanceEuroAmount = (state: TWalletModuleState): string =>
   multiplyBigNumbers([selectNeuPriceEur(state), selectNeuBalance(state)]);
 
 export const selectNeuBalance = (state: TWalletModuleState): string =>
-  (state.wallet.data && state.wallet.data.neuBalance) || "0";
+  state.wallet.data?.neuBalance ?? "0";
 
+/**
+ * @deprecated Please use `selectNeuBalanceEuroAmount` and convert to proper decimals on formatters level
+ */
 export const selectNeuBalanceEurEquiv = createSelector(
   selectNeuBalance,
   selectNeuPriceEur,

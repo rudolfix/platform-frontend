@@ -19,6 +19,7 @@ import Share from "assets/share.svg";
 import Eth from "assets/tokens/eth.svg";
 import Icbm from "assets/tokens/icbm.svg";
 import NEur from "assets/tokens/n-eur.svg";
+import Neu from "assets/tokens/neu.svg";
 import Wallet from "assets/wallet.svg";
 import Yes from "assets/yes.svg";
 
@@ -41,6 +42,7 @@ enum EIconType {
   LOGOUT = "logout",
   PENDING = "pending",
   LOCK = "lock",
+  NEU = "neu",
 }
 
 const pickByIdentity = pickBy(identity);
@@ -65,6 +67,7 @@ const icons: Record<EIconType, typeof Close> = {
   [EIconType.WALLET]: Wallet,
   [EIconType.YES]: Yes,
   [EIconType.LOCK]: Lock,
+  [EIconType.NEU]: Neu,
 };
 
 type TSvgIconProps = React.ComponentProps<typeof Close>;

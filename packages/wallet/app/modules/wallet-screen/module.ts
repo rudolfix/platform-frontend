@@ -9,10 +9,10 @@ import {
 } from "@neufund/shared-modules";
 
 import { actions } from "./actions";
-import { walletViewMap } from "./reducer";
-import { walletViewSagas } from "./sagas";
+import { walletScreenMap } from "./reducer";
+import { walletScreenSagas } from "./sagas";
 import * as selectors from "./selectors";
-import { EViewState, TBalance, EBalanceViewType, TxHistoryPaginated } from "./types";
+import { TBalance, EBalanceViewType, TxHistoryPaginated } from "./types";
 import { hasFunds, isMainBalance } from "./utils";
 
 const MODULE_ID = "wallet:wallet-screen";
@@ -20,12 +20,12 @@ const MODULE_ID = "wallet:wallet-screen";
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 function* waitUntilSmartContractsAreInitialized(): SagaGenerator<void> {}
 
-const setupWalletViewModule = () => {
+const setupWalletScreenModule = () => {
   const viewModule = {
     id: MODULE_ID,
-    sagas: [walletViewSagas],
-    reducerMap: walletViewMap,
-    api: walletViewModuleApi,
+    sagas: [walletScreenSagas],
+    reducerMap: walletScreenMap,
+    api: walletScreenModuleApi,
   };
 
   return [
@@ -39,7 +39,7 @@ const setupWalletViewModule = () => {
   ];
 };
 
-const walletViewModuleApi = {
+const walletScreenModuleApi = {
   actions,
   selectors,
   utils: {
@@ -50,9 +50,8 @@ const walletViewModuleApi = {
 
 export type { TBalance, TxHistoryPaginated, TTxHistory };
 export {
-  setupWalletViewModule,
-  walletViewModuleApi,
-  EViewState,
+  setupWalletScreenModule,
+  walletScreenModuleApi,
   EBalanceViewType,
   ETransactionDirection,
   ETransactionType,

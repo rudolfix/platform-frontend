@@ -1,17 +1,27 @@
-import { setupCoreModule, setupGasModule, setupTokenPriceModule } from "@neufund/shared-modules";
+import {
+  setupCoreModule,
+  setupEtoModule,
+  setupTokenPriceModule,
+  setupInvestorPortfolioModule,
+  setupKycModule,
+  setupBookbuildingModule,
+  setupWalletModule,
+  setupGasModule,
+} from "@neufund/shared-modules";
 
 import { setupAuthModule } from "modules/auth/module";
 import { setupWalletContractsModule } from "modules/contracts/module";
 import { setupDeviceInformationModule } from "modules/device-information/module";
 import { setupWalletEthModule } from "modules/eth/module";
-import { setupHomeViewModule } from "modules/home-screen/module";
+import { setupHomeScreenModule } from "modules/home-screen/module";
 import { setupNotificationUIModule } from "modules/notification-ui/module";
 import { setupNotificationsModule } from "modules/notifications/module";
 import { setupPermissionsModule } from "modules/permissions/module";
+import { setupPortfolioScreenModule } from "modules/portfolio-screen/module";
 import { setupSignerUIModule } from "modules/signer-ui/module";
 import { setupStorageModule } from "modules/storage";
 import { setupWalletConnectModule } from "modules/wallet-connect/module";
-import { setupWalletViewModule } from "modules/wallet-screen/module";
+import { setupWalletScreenModule } from "modules/wallet-screen/module";
 
 import { initActions } from "./actions";
 import { initReducersMap } from "./reducer";
@@ -23,6 +33,15 @@ const MODULE_ID = "wallet:init";
 
 type TConfig = { backendRootUrl: string; rpcUrl: string; universeContractAddress: string };
 
+const ensurePermissionsArePresentAndRunEffect = function* () {
+  throw new Error("Not implemented");
+};
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const waitUntilSmartContractsAreInitialized = function* () {};
+const displayErrorModalSaga = function* () {
+  throw new Error("Not implemented");
+};
+
 const setupInitModule = (config: TConfig) => {
   const initModule = {
     id: MODULE_ID,
@@ -32,6 +51,9 @@ const setupInitModule = (config: TConfig) => {
   };
 
   return [
+    /**
+     * Shared modules
+     */
     setupCoreModule({ backendRootUrl: config.backendRootUrl }),
     setupStorageModule(),
     setupNotificationsModule(),
@@ -46,10 +68,32 @@ const setupInitModule = (config: TConfig) => {
       // TODO: When we have a proper block watching flow for mobile app provide proper refresh action
       refreshOnAction: undefined,
     }),
-    ...setupAuthModule(),
-    ...setupWalletViewModule(),
-    ...setupHomeViewModule(),
+    setupKycModule({
+      ensurePermissionsArePresentAndRunEffect,
+      displayErrorModalSaga,
+      waitUntilSmartContractsAreInitialized,
+    }),
     ...setupWalletContractsModule({ universeContractAddress: config.universeContractAddress }),
+    ...setupAuthModule(),
+    setupEtoModule(),
+    setupBookbuildingModule({
+      ensurePermissionsArePresentAndRunEffect,
+      refreshOnAction: undefined,
+    }),
+    setupInvestorPortfolioModule(),
+    setupWalletModule({
+      waitUntilSmartContractsAreInitialized,
+    }),
+    /**
+     * Screen modules
+     */
+    ...setupWalletScreenModule(),
+    ...setupHomeScreenModule(),
+    ...setupPortfolioScreenModule(),
+
+    /**
+     * Root module
+     */
     initModule,
   ];
 };

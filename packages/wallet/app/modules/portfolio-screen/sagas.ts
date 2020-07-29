@@ -1,9 +1,9 @@
-import { call, SagaGenerator, takeLatest, put, all } from "@neufund/sagas";
+import { SagaGenerator, takeLatest, put, call, all } from "@neufund/sagas";
 import {
   coreModuleApi,
+  neuGetBindings,
   etoModuleApi,
   investorPortfolioModuleApi,
-  neuGetBindings,
   walletApi,
 } from "@neufund/shared-modules";
 
@@ -11,7 +11,7 @@ import { EScreenState } from "modules/types";
 
 import { actions } from "./actions";
 
-function* getHomeScreenData(
+function* getScreenData(
   loadingState: EScreenState.LOADING | EScreenState.REFRESHING,
 ): SagaGenerator<void> {
   const { logger } = yield* neuGetBindings({
@@ -19,7 +19,7 @@ function* getHomeScreenData(
   });
 
   try {
-    yield put(actions.setHomeScreenState(loadingState));
+    yield put(actions.setPortfolioScreenState(loadingState));
 
     yield* all([
       call(etoModuleApi.sagas.loadEtos),
@@ -27,15 +27,15 @@ function* getHomeScreenData(
       call(walletApi.sagas.loadWalletDataSaga),
     ]);
 
-    yield put(actions.setHomeScreenState(EScreenState.READY));
+    yield put(actions.setPortfolioScreenState(EScreenState.READY));
   } catch (e) {
     logger.error(e, "Failed to load home view");
 
-    yield put(actions.setHomeScreenState(EScreenState.ERROR));
+    yield put(actions.setPortfolioScreenState(EScreenState.ERROR));
   }
 }
 
-export function* homeScreenSagas(): SagaGenerator<void> {
-  yield takeLatest(actions.loadHomeScreen, getHomeScreenData, EScreenState.LOADING);
-  yield takeLatest(actions.refreshHomeScreen, getHomeScreenData, EScreenState.REFRESHING);
+export function* portfolioScreenSagas(): SagaGenerator<void> {
+  yield takeLatest(actions.loadPortfolioScreen, getScreenData, EScreenState.LOADING);
+  yield takeLatest(actions.refreshPortfolioScreen, getScreenData, EScreenState.REFRESHING);
 }

@@ -1,4 +1,4 @@
-import { all, fork, put, select, take } from "@neufund/sagas";
+import { all, call, fork, put, select, take } from "@neufund/sagas";
 import {
   EAgreementType,
   EEtoAgreementStatus,
@@ -491,7 +491,7 @@ export function* loadNomineeEto(
   eto: TEtoWithCompanyAndContract,
 ): Generator<any, any, any> {
   if (eto.state === EEtoState.ON_CHAIN) {
-    eto.contract = yield neuCall(etoModuleApi.sagas.getEtoContract, eto.etoId, eto.state);
+    eto.contract = yield call(etoModuleApi.sagas.getEtoContract, eto.etoId, eto.state);
   }
   eto.subState = yield select(etoModuleApi.selectors.selectEtoSubStateEtoEtoWithContract, eto);
   return eto;

@@ -519,7 +519,8 @@ export type TEtoSpecsData = TEtoTermsType &
     investmentCalculatedValues?: TEtoInvestmentCalculatedValues;
   } & IAdditionalEtoType;
 
-/*General Interfaces */
+/* General Interfaces */
+// TODO: Get rid of TPartial* given they are not fully correct and introduce state based discriminated union
 export type TPartialEtoSpecData = DeepPartial<TEtoSpecsData>;
 export type TPartialCompanyEtoData = DeepPartial<TCompanyEtoData>;
 

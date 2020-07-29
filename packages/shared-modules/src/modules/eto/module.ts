@@ -8,7 +8,19 @@ import { TPureWalletModuleState } from "../wallet/module";
 import { etoActions } from "./actions";
 import { setupContainerModule } from "./bindings";
 import { etoReducerMap } from "./reducer";
-import * as sagas from "./sagas";
+import {
+  getEtoContract,
+  getEtoRefreshStrategies,
+  loadAdditionalEtoData,
+  loadCapitalIncrease,
+  loadEtoContract,
+  loadEtos,
+  loadEtoWithCompanyAndContract,
+  loadEtoWithCompanyAndContractById,
+  loadInvestmentAgreement,
+  raceStrategies,
+  setupEtoSagas,
+} from "./sagas";
 import * as selectors from "./selectors";
 import { symbols } from "./symbols";
 import * as utils from "./utils";
@@ -20,7 +32,7 @@ const setupEtoModule = () => {
     id: MODULE_ID,
     api: etoModuleApi,
     libs: [setupContainerModule()],
-    sagas: [sagas.setupEtoSagas()],
+    sagas: [setupEtoSagas()],
     reducerMap: etoReducerMap,
   };
 
@@ -33,15 +45,16 @@ const etoModuleApi = {
   symbols,
   utils,
   sagas: {
-    loadAdditionalEtoData: sagas.loadAdditionalEtoData,
-    loadEtoContract: sagas.loadEtoContract,
-    loadEtoWithCompanyAndContract: sagas.loadEtoWithCompanyAndContract,
-    loadEtoWithCompanyAndContractById: sagas.loadEtoWithCompanyAndContractById,
-    getEtoRefreshStrategies: sagas.getEtoRefreshStrategies,
-    raceStrategies: sagas.raceStrategies,
-    loadInvestmentAgreement: sagas.loadInvestmentAgreement,
-    loadCapitalIncrease: sagas.loadCapitalIncrease,
-    getEtoContract: sagas.getEtoContract,
+    loadAdditionalEtoData,
+    loadEtoContract,
+    loadEtoWithCompanyAndContract,
+    loadEtoWithCompanyAndContractById,
+    getEtoRefreshStrategies,
+    raceStrategies,
+    loadInvestmentAgreement,
+    loadCapitalIncrease,
+    getEtoContract,
+    loadEtos,
   },
 };
 

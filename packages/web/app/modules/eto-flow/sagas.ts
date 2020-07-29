@@ -41,7 +41,7 @@ export function* loadIssuerEto({
     const eto: TEtoSpecsData = yield apiEtoService.getMyEto();
 
     if (eto.state === EEtoState.ON_CHAIN) {
-      yield neuCall(etoModuleApi.sagas.loadEtoContract, eto);
+      yield call(etoModuleApi.sagas.loadEtoContract, eto);
     }
 
     yield put(actions.etoFlow.setEto({ eto, company }));

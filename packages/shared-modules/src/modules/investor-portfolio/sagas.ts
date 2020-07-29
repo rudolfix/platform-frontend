@@ -1,5 +1,6 @@
 import {
   all,
+  call,
   fork,
   neuCall,
   neuTakeEvery,
@@ -8,6 +9,7 @@ import {
   SagaGenerator,
   select,
   TActionFromCreator,
+  takeEvery,
 } from "@neufund/sagas";
 import {
   addBigNumbers,
@@ -18,13 +20,14 @@ import {
   EthereumAddress,
   nonNullable,
   Q18,
+  toEthereumAddress,
 } from "@neufund/shared-utils";
 import BigNumber from "bignumber.js";
 import { filter, map } from "lodash/fp";
 
 import { createMessage } from "../../messages";
 import { neuGetBindings } from "../../utils";
-import { authModuleAPI, IUser } from "../auth/module";
+import { authModuleAPI } from "../auth/module";
 import { contractsModuleApi, IETOCommitmentAdapter, IETOTermsAdapter } from "../contracts/module";
 import { coreModuleApi } from "../core/module";
 import { InvalidETOStateError } from "../eto/errors";
@@ -34,7 +37,6 @@ import { notificationUIModuleApi } from "../notification-ui/module";
 import { tokenPriceModuleApi } from "../token-price/module";
 import { investorPortfolioActions } from "./actions";
 import { InvestorPortfolioMessage } from "./messages";
-import { TInvestorPortfolioModuleState } from "./module";
 import { ITokenDisbursal } from "./types";
 import {
   convertToCalculatedContribution,
@@ -135,28 +137,31 @@ export function* loadComputedContributionFromContract(
   return convertToCalculatedContribution(contributionRaw);
 }
 
-export function* loadClaimables(_: TGlobalDependencies): any {
+export function* loadClaimables(): SagaGenerator<void> {
   const { logger, contractsService } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     contractsService: contractsModuleApi.symbols.contractsService,
   });
-  const user: IUser = yield select((state: TInvestorPortfolioModuleState) =>
-    authModuleAPI.selectors.selectUser(state),
-  );
+
+  const user = nonNullable(yield* select(authModuleAPI.selectors.selectUser));
+
   const { feeDisbursal, euroToken, etherToken, neumark } = contractsService;
-  const etherPrice = yield select(tokenPriceModuleApi.selectors.selectEtherPriceEur);
+  const etherPrice = yield* select(tokenPriceModuleApi.selectors.selectEtherPriceEur);
 
   const tokens: [ECurrency, EthereumAddress][] = [
-    [ECurrency.EUR_TOKEN, euroToken.address as EthereumAddress],
-    [ECurrency.ETH, etherToken.address as EthereumAddress],
+    [ECurrency.EUR_TOKEN, toEthereumAddress(euroToken.address)],
+    [ECurrency.ETH, toEthereumAddress(etherToken.address)],
   ];
+
   try {
-    const tokensDisbursalRaw = yield feeDisbursal.claimableMutipleByToken(
+    const tokensDisbursalRaw = yield* call(
+      [feeDisbursal, "claimableMutipleByToken"],
       tokens.map(([, address]) => address),
       neumark.address,
       user.userId,
     );
-    const tokensDisbursal: ITokenDisbursal[] = yield tokens.map(([token], i) =>
+
+    const tokensDisbursal: ITokenDisbursal[] = tokens.map(([token], i) =>
       // claimableMultipeByToken preserves tokens order so it's safe to get exact response by index
       convertToTokenDisbursal(token, tokensDisbursalRaw[i], etherPrice),
     );
@@ -166,6 +171,7 @@ export function* loadClaimables(_: TGlobalDependencies): any {
     yield put(investorPortfolioActions.setTokensDisbursalError());
 
     logger.error(error, "Failed to load claimables");
+
     yield put(
       notificationUIModuleApi.actions.showError(
         createMessage(InvestorPortfolioMessage.INVESTOR_PORTFOLIO_FAILED_TO_LOAD_CLAIMABLES),
@@ -281,8 +287,7 @@ export function setupInvestorPortfolioSagas(): () => SagaGenerator<void> {
       loadPersonalTokenDiscount,
     );
 
-    yield fork(
-      neuTakeEvery,
+    yield takeEvery(
       [
         investorPortfolioActions.loadClaimables,
         investorPortfolioActions.loadClaimablesInBackground,

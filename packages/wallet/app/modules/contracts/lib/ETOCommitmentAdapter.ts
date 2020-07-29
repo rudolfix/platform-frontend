@@ -5,7 +5,7 @@ import { BigNumber } from "bignumber.js";
 import { providers, Signer } from "ethers";
 
 import { ETOCommitment } from "lib/contracts/ETOCommitment";
-import { IETOCommitmentFactory } from "lib/contracts/IETOCommitmentFactory";
+import { ETOCommitmentFactory } from "lib/contracts/ETOCommitmentFactory";
 
 import { converters } from "./utils";
 
@@ -14,9 +14,7 @@ class ETOCommitmentAdapterFactory {
     address: string,
     signerOrProvider: Signer | providers.Provider,
   ): IETOCommitmentAdapter {
-    return new ETOCommitmentAdapter(
-      (IETOCommitmentFactory.connect(address, signerOrProvider) as unknown) as ETOCommitment,
-    );
+    return new ETOCommitmentAdapter(ETOCommitmentFactory.connect(address, signerOrProvider));
   }
 }
 
@@ -124,6 +122,7 @@ class ETOCommitmentAdapter implements IETOCommitmentAdapter {
       fromIcbmWallet,
       converters.bnToBne(newInvestorContributionEurUlps),
     );
+
     return [
       result[0],
       result[1],

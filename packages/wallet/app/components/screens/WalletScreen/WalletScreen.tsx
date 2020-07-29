@@ -10,51 +10,53 @@ import { onLifecycle } from "components/shared/hocs/onLifecycle";
 
 import { usePrevious } from "hooks/usePrevious";
 
-import { EViewState, walletViewModuleApi } from "modules/wallet-screen/module";
+import { EScreenState } from "modules/types";
+import { walletScreenModuleApi } from "modules/wallet-screen/module";
 
 import { appConnect } from "store/utils";
 
-import { WalletScreenLayout, WalletScreenLayoutSkeleton } from "./WalletScreenLayout";
+import { WalletScreenLayout } from "./WalletScreenLayout";
+import { WalletScreenLayoutSkeleton } from "./WalletScreenSkeleton";
 
-type TStateProps = ReturnType<typeof walletViewModuleApi.selectors.selectWalletViewData>;
+type TStateProps = ReturnType<typeof walletScreenModuleApi.selectors.selectWalletScreenData>;
 
 type TDispatchProps = {
   loadTxHistoryNext: () => void;
 };
 
 const WalletScreenSwitch: React.FunctionComponent<TStateProps & TDispatchProps> = ({
-  viewState,
+  screenState,
   ...rest
 }) => {
-  const previousViewState = usePrevious(viewState);
+  const previousViewState = usePrevious(screenState);
 
   React.useLayoutEffect(() => {
-    if (previousViewState === EViewState.LOADING && viewState === EViewState.READY) {
+    if (previousViewState === EScreenState.LOADING && screenState === EScreenState.READY) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     }
-  }, [viewState, previousViewState]);
+  }, [screenState, previousViewState]);
 
-  switch (viewState) {
-    case EViewState.INITIAL:
-    case EViewState.LOADING:
+  switch (screenState) {
+    case EScreenState.INITIAL:
+    case EScreenState.LOADING:
       return <WalletScreenLayoutSkeleton />;
 
-    case EViewState.READY:
-    case EViewState.REFRESHING:
+    case EScreenState.READY:
+    case EScreenState.REFRESHING:
       return <WalletScreenLayout {...rest} />;
 
-    case EViewState.ERROR:
+    case EScreenState.ERROR:
       return <ErrorBoundaryScreen />;
 
     default:
-      assertNever(viewState);
+      assertNever(screenState);
   }
 };
 
 export const WalletScreen = compose<TStateProps & TDispatchProps, UnknownObject>(
   createErrorBoundary(ErrorBoundaryScreen),
   appConnect<TStateProps, TDispatchProps>({
-    stateToProps: state => walletViewModuleApi.selectors.selectWalletViewData(state),
+    stateToProps: state => walletScreenModuleApi.selectors.selectWalletScreenData(state),
     dispatchToProps: dispatch => ({
       loadTxHistoryNext: () => {
         dispatch(txHistoryApi.actions.loadNextTransactions());
@@ -62,7 +64,7 @@ export const WalletScreen = compose<TStateProps & TDispatchProps, UnknownObject>
     }),
   }),
   onLifecycle({
-    onMount: dispatch => dispatch(walletViewModuleApi.actions.loadWalletView()),
-    onFocus: dispatch => dispatch(walletViewModuleApi.actions.refreshWalletView()),
+    onMount: dispatch => dispatch(walletScreenModuleApi.actions.loadWalletScreen()),
+    onFocus: dispatch => dispatch(walletScreenModuleApi.actions.refreshWalletScreen()),
   }),
 )(WalletScreenSwitch);

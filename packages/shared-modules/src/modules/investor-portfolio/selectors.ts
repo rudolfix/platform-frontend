@@ -86,11 +86,11 @@ export const selectMyAssets = (
   const etos = selectEtos(state);
 
   if (etos) {
-    return etos.filter(
-      eto =>
-        eto.contract &&
+    return etos
+      .filter(isOnChain)
+      .filter(eto =>
         [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(eto.contract.timedState),
-    );
+      );
   }
 
   return undefined;
@@ -318,14 +318,23 @@ export const selectPayoutAvailable = (state: TInvestorPortfolioModuleState) => {
 export const selectMyAssetsWithTokenData = (
   state: TInvestorPortfolioModuleState,
 ): TETOWithTokenData[] | undefined => {
-  const myAsssets = selectMyAssets(state);
-  if (myAsssets) {
-    return myAsssets
-      .map((asset: TEtoWithCompanyAndContractReadonly) => ({
-        ...asset,
-        tokenData: selectTokenData(state.eto, asset.previewCode)!,
-      }))
-      .filter(asset => asset.tokenData && !new BigNumber(asset.tokenData.balanceUlps).isZero());
+  const myAssets = selectMyAssets(state);
+
+  if (myAssets) {
+    return myAssets.flatMap((asset: TEtoWithCompanyAndContractReadonly) => {
+      const tokenData = selectTokenData(state.eto, asset.previewCode);
+
+      if (tokenData) {
+        return [
+          {
+            ...asset,
+            tokenData,
+          },
+        ];
+      }
+
+      return [];
+    });
   }
 
   return undefined;
@@ -354,8 +363,7 @@ export const selectMyAssetsEurEquivTotal = createSelector(selectMyAssetsWithToke
 export const selectMyAssetsEurEquivTotalWithNeu = createSelector(
   selectMyAssetsEurEquivTotal,
   walletApi.selectors.selectNeuBalanceEurEquiv,
-  (myAssetsEurEquivTotal, neuValue) =>
-    myAssetsEurEquivTotal ? addBigNumbers([myAssetsEurEquivTotal, neuValue]) : neuValue,
+  (myAssetsEurEquivTotal = "0", neuValue = "0") => addBigNumbers([myAssetsEurEquivTotal, neuValue]),
 );
 
 export const selectIsIncomingPayoutLoading = (state: TInvestorPortfolioModuleState): boolean =>

@@ -1,5 +1,6 @@
 import {
   all,
+  call,
   fork,
   neuCall,
   neuTakeEvery,
@@ -9,6 +10,7 @@ import {
   SagaGenerator,
   select,
   TActionFromCreator,
+  takeEvery,
 } from "@neufund/sagas";
 import {
   convertFromUlps,
@@ -47,7 +49,7 @@ import {
   TEtoSpecsData,
 } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
 import { EtoMessage } from "./messages";
-import { TEtoModuleState } from "./module";
+import { TEtoContractData, TEtoModuleState } from "./module";
 import { watchEtosSetActionSaga } from "./sagas/watchEtosSetActionSaga";
 import {
   selectEtoOnChainStateById,
@@ -59,6 +61,7 @@ import {
   EETOStateOnChain,
   TEtoWithCompanyAndContract,
   TEtoWithCompanyAndContractReadonly,
+  TEtoWithContract,
 } from "./types";
 import { convertToEtoTotalInvestment, convertToStateStartDate, isOnChain } from "./utils";
 export * from "./sagas/watchEtosSetActionSaga";
@@ -145,7 +148,8 @@ export function* loadAdditionalEtoData(
       yield put(investorPortfolioModuleApi.actions.loadEtoInvestorTicket(eto));
     }
 
-    const etoWithContract: TEtoWithCompanyAndContractReadonly = yield neuCall(loadEtoContract, eto);
+    const etoWithContract: TEtoWithCompanyAndContractReadonly = yield call(loadEtoContract, eto);
+
     if (
       etoWithContract.contract &&
       [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(
@@ -153,7 +157,7 @@ export function* loadAdditionalEtoData(
       ) &&
       userType === EUserType.INVESTOR
     ) {
-      yield neuCall(loadToken, etoWithContract);
+      yield call(loadToken, etoWithContract);
     }
   }
 
@@ -183,7 +187,7 @@ export function* loadEtoWithCompanyAndContract(
   eto.company = yield apiEtoService.getCompanyById(eto.companyId);
 
   if (eto.state === EEtoState.ON_CHAIN) {
-    eto.contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
+    eto.contract = yield call(getEtoContract, eto.etoId, eto.state);
   }
 
   eto.subState = yield select(selectEtoSubStateEtoEtoWithContract, eto);
@@ -201,37 +205,31 @@ export function* loadEtoWithCompanyAndContractById(
   eto.company = yield apiEtoService.getCompanyById(eto.companyId);
 
   if (eto.state === EEtoState.ON_CHAIN) {
-    eto.contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
+    eto.contract = yield call(getEtoContract, eto.etoId, eto.state);
   }
 
   eto.subState = yield select(selectEtoSubStateEtoEtoWithContract, eto);
   return eto;
 }
 
-export function* getEtoContract(
-  _: TGlobalDependencies,
-  etoId: string,
-  state: EEtoState,
-): Generator<any, any, any> {
+export function* getEtoContract(etoId: string, state: EEtoState): SagaGenerator<TEtoContractData> {
   const { logger, contractsService } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     contractsService: contractsModuleApi.symbols.contractsService,
   });
+
   if (state !== EEtoState.ON_CHAIN) {
-    logger.error(new InvalidETOStateError(state, EEtoState.ON_CHAIN), "Invalid eto state", {
-      etoId: etoId,
-    });
-    return;
+    throw new InvalidETOStateError(state, EEtoState.ON_CHAIN);
   }
+
   try {
-    const etoContract: IETOCommitmentAdapter = yield contractsService.getETOCommitmentContract(
-      etoId,
-    );
+    const etoContract = yield* call([contractsService, "getETOCommitmentContract"], etoId);
+
     const etherTokenContract: IERC20TokenAdapter = contractsService.etherToken;
     const euroTokenContract: IERC20TokenAdapter = contractsService.euroToken;
 
     // fetch eto contracts state with 'all' to improve performance
-    const [
+    const {
       etherTokenBalance,
       euroTokenBalance,
       timedStateRaw,
@@ -239,15 +237,15 @@ export function* getEtoContract(
       startOfStatesRaw,
       equityTokenAddress,
       etoTermsAddress,
-    ] = yield all([
-      etherTokenContract.balanceOf(etoContract.address),
-      euroTokenContract.balanceOf(etoContract.address),
-      etoContract.timedState,
-      etoContract.totalInvestment(),
-      etoContract.startOfStates,
-      etoContract.equityToken,
-      etoContract.etoTerms,
-    ]);
+    } = yield* all({
+      etherTokenBalance: call([etherTokenContract, "balanceOf"], etoContract.address),
+      euroTokenBalance: call([euroTokenContract, "balanceOf"], etoContract.address),
+      timedStateRaw: call(() => etoContract.timedState),
+      totalInvestmentRaw: call([etoContract, "totalInvestment"]),
+      startOfStatesRaw: call(() => etoContract.startOfStates),
+      equityTokenAddress: call(() => etoContract.equityToken),
+      etoTermsAddress: call(() => etoContract.etoTerms),
+    });
 
     return {
       equityTokenAddress,
@@ -268,39 +266,33 @@ export function* getEtoContract(
   }
 }
 
-export function* loadEtoContract(
-  _: TGlobalDependencies,
-  eto: TEtoSpecsData,
-): Generator<any, any, any> {
-  const contract = yield neuCall(getEtoContract, eto.etoId, eto.state);
+export function* loadEtoContract(eto: TEtoSpecsData): SagaGenerator<TEtoWithContract> {
+  const contract = yield* call(getEtoContract, eto.etoId, eto.state);
+
   yield put(etoActions.setEtoDataFromContract(eto.previewCode, contract));
 
   return { ...eto, contract };
 }
 
-export function* loadEtos(_: TGlobalDependencies): any {
+export function* loadEtos(): SagaGenerator<void> {
   const { logger, apiEtoService } = yield* neuGetBindings({
     logger: coreModuleApi.symbols.logger,
     apiEtoService: symbols.etoApi,
   });
   yield put(bookbuildingModuleApi.actions.loadAllPledges());
   try {
-    const etos: TEtoDataWithCompany[] = yield apiEtoService.getEtos();
-    const jurisdiction: string | undefined = yield select(
-      kycApi.selectors.selectClientJurisdiction,
-    );
+    const etos = yield* call([apiEtoService, "getEtos"]);
+
+    const jurisdiction = yield* select(kycApi.selectors.selectClientJurisdiction);
 
     yield put(bookbuildingModuleApi.actions.loadBookBuildingListStats(etos.map(eto => eto.etoId)));
 
-    const etosWithContract: TEtoWithCompanyAndContractReadonly[] = yield all(
-      etos
-        .filter(eto => eto.state === EEtoState.ON_CHAIN)
-        .map(eto => neuCall(loadEtoContract, eto)),
+    const etosWithContract = yield* all(
+      etos.filter(eto => eto.state === EEtoState.ON_CHAIN).map(eto => call(loadEtoContract, eto)),
     );
 
-    const filteredEtosByJurisdictionRestrictions: TEtoDataWithCompany[] = yield select(
-      (state: TEtoModuleState) =>
-        selectFilteredEtosByRestrictedJurisdictions(state, etos, jurisdiction),
+    const filteredEtosByJurisdictionRestrictions = yield* select((state: TEtoModuleState) =>
+      selectFilteredEtosByRestrictedJurisdictions(state, etos, jurisdiction),
     );
 
     const order = filteredEtosByJurisdictionRestrictions.map(eto => eto.previewCode);
@@ -318,7 +310,7 @@ export function* loadEtos(_: TGlobalDependencies): any {
     )(filteredEtosByJurisdictionRestrictions);
 
     // load investor tickets
-    const userType: EUserType | undefined = yield select((state: TEtoModuleState) =>
+    const userType: EUserType | undefined = yield* select((state: TEtoModuleState) =>
       authModuleAPI.selectors.selectUserType(state),
     );
 
@@ -331,7 +323,7 @@ export function* loadEtos(_: TGlobalDependencies): any {
           [EETOStateOnChain.Payout, EETOStateOnChain.Claim].includes(eto.contract.timedState),
       );
 
-      yield loadTokens(myAssets);
+      yield* call(loadTokens, myAssets);
     }
 
     yield put(etoActions.setEtos({ etos: etosByPreviewCode, companies }));
@@ -349,10 +341,7 @@ export function* loadEtos(_: TGlobalDependencies): any {
   }
 }
 
-function* loadToken(
-  _: TGlobalDependencies,
-  eto: TEtoWithCompanyAndContractReadonly,
-): Generator<any, any, any> {
+function* loadToken(eto: TEtoWithContract): Generator<any, any, any> {
   const { contractsService } = yield* neuGetBindings({
     contractsService: contractsModuleApi.symbols.contractsService,
   });
@@ -429,12 +418,12 @@ function* loadToken(
   yield put(etoActions.setTokenData(eto.previewCode, tokenData));
 }
 
-function* loadTokens(etos: TEtoWithCompanyAndContractReadonly[]): Generator<any, any, any> {
+function* loadTokens(etos: TEtoWithContract[]): Generator<any, any, any> {
   if (!etos) {
     return;
   }
 
-  yield all(etos.map((eto: TEtoWithCompanyAndContractReadonly) => neuCall(loadToken, eto)));
+  yield all(etos.map(eto => call(loadToken, eto)));
 
   yield put(etoActions.setTokensLoadingDone());
 }
@@ -535,7 +524,7 @@ export function setupEtoSagas(): () => SagaGenerator<void> {
   return function* etoSagas(): Generator<any, any, any> {
     yield fork(neuTakeEvery, etoActions.loadEtoPreview, loadEtoPreview);
     yield fork(neuTakeEvery, etoActions.loadEto, loadEto);
-    yield fork(neuTakeEvery, etoActions.loadEtos, loadEtos);
+    yield takeEvery(etoActions.loadEtos, loadEtos);
     yield fork(neuTakeLatest, etoActions.loadTokenTerms, loadEtoGeneralTokenDiscounts);
 
     yield fork(

@@ -4,37 +4,34 @@ import {
   ETransactionStatus,
 } from "@neufund/shared-modules";
 
-import { setupWalletViewModule, TBalance } from "modules/wallet-screen/module";
-
 import { actions } from "./actions";
-import { homeViewReducerMap } from "./reducer";
-import { homeViewSagas } from "./sagas";
+import { homeScreenReducerMap } from "./reducer";
+import { homeScreenSagas } from "./sagas";
 import * as selectors from "./selectors";
-import { EViewState } from "./types";
+import { TBalance } from "./types";
 
-const MODULE_ID = "wallet:home-view";
+const MODULE_ID = "wallet:home-screen";
 
-const setupHomeViewModule = () => {
+const setupHomeScreenModule = () => {
   const viewModule = {
     id: MODULE_ID,
-    sagas: [homeViewSagas],
-    reducerMap: homeViewReducerMap,
-    api: homeViewModuleApi,
+    sagas: [homeScreenSagas],
+    reducerMap: homeScreenReducerMap,
+    api: homeScreenModuleApi,
   };
 
-  return [...setupWalletViewModule(), viewModule];
+  return [viewModule];
 };
 
-const homeViewModuleApi = {
+const homeScreenModuleApi = {
   actions,
   selectors,
 };
 
 export type { TBalance };
 export {
-  setupHomeViewModule,
-  homeViewModuleApi,
-  EViewState,
+  setupHomeScreenModule,
+  homeScreenModuleApi,
   ETransactionDirection,
   ETransactionType,
   ETransactionStatus,

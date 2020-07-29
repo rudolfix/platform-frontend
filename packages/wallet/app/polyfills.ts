@@ -22,3 +22,7 @@ if (typeof (global as any).atob === "undefined") {
   (global as any).atob = (b64Encoded: string) =>
     new Buffer(b64Encoded, "base64").toString("binary");
 }
+
+// crypto is loaded first, so it can populate global.crypto
+// eslint-disable-next-line @typescript-eslint/no-require-imports, import/no-nodejs-modules, import/no-unassigned-import
+require("crypto");

@@ -4,54 +4,53 @@ import { LayoutAnimation } from "react-native";
 import { compose } from "recompose";
 
 import { ErrorBoundaryScreen } from "components/screens/ErrorBoundaryScreen/ErrorBoundaryScreen";
-import {
-  HomeScreenLayout,
-  HomeScreenLayoutSkeleton,
-} from "components/screens/HomeScreen/HomeScreenLayout";
+import { HomeScreenLayout } from "components/screens/HomeScreen/HomeScreenLayout";
+import { HomeScreenLayoutSkeleton } from "components/screens/HomeScreen/HomeScreenLayoutSkeleton";
 import { createErrorBoundary } from "components/shared/error-boundary/ErrorBoundary";
 import { onLifecycle } from "components/shared/hocs/onLifecycle";
 
 import { usePrevious } from "hooks/usePrevious";
 
-import { homeViewModuleApi, EViewState } from "modules/home-screen/module";
+import { homeScreenModuleApi } from "modules/home-screen/module";
+import { EScreenState } from "modules/types";
 
 import { appConnect } from "store/utils";
 
-type TStateProps = ReturnType<typeof homeViewModuleApi.selectors.selectHomeViewData>;
+type TStateProps = ReturnType<typeof homeScreenModuleApi.selectors.selectHomeScreenData>;
 
-const HomeScreenSwitch: React.FunctionComponent<TStateProps> = ({ viewState, ...rest }) => {
-  const previousViewState = usePrevious(viewState);
+const HomeScreenSwitch: React.FunctionComponent<TStateProps> = props => {
+  const previousViewState = usePrevious(props.screenState);
 
   React.useLayoutEffect(() => {
-    if (previousViewState === EViewState.LOADING && viewState === EViewState.READY) {
+    if (previousViewState === EScreenState.LOADING && props.screenState === EScreenState.READY) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     }
-  }, [viewState, previousViewState]);
+  }, [props.screenState, previousViewState]);
 
-  switch (viewState) {
-    case EViewState.INITIAL:
-    case EViewState.LOADING:
+  switch (props.screenState) {
+    case EScreenState.INITIAL:
+    case EScreenState.LOADING:
       return <HomeScreenLayoutSkeleton />;
 
-    case EViewState.READY:
-    case EViewState.REFRESHING:
-      return <HomeScreenLayout {...rest} />;
+    case EScreenState.READY:
+    case EScreenState.REFRESHING:
+      return <HomeScreenLayout {...props} />;
 
-    case EViewState.ERROR:
+    case EScreenState.ERROR:
       return <ErrorBoundaryScreen />;
 
     default:
-      assertNever(viewState);
+      assertNever(props);
   }
 };
 
 export const HomeScreen = compose<TStateProps, UnknownObject>(
   createErrorBoundary(ErrorBoundaryScreen),
   appConnect<TStateProps>({
-    stateToProps: state => homeViewModuleApi.selectors.selectHomeViewData(state),
+    stateToProps: state => homeScreenModuleApi.selectors.selectHomeScreenData(state),
   }),
   onLifecycle({
-    onMount: dispatch => dispatch(homeViewModuleApi.actions.loadHomeView()),
-    onFocus: dispatch => dispatch(homeViewModuleApi.actions.refreshHomeView()),
+    onMount: dispatch => dispatch(homeScreenModuleApi.actions.loadHomeScreen()),
+    onFocus: dispatch => dispatch(homeScreenModuleApi.actions.refreshHomeScreen()),
   }),
 )(HomeScreenSwitch);

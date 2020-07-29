@@ -1,15 +1,30 @@
-import { txHistoryApi, TModuleState } from "@neufund/shared-modules";
+import { TModuleState } from "@neufund/shared-modules";
+import { ECurrency, EquityToken } from "@neufund/shared-utils";
 
-import { setupHomeViewModule } from "modules/home-screen/module";
+import { EIconType } from "components/shared/Icon";
 
-export type TWalletViewModuleState = TModuleState<typeof setupHomeViewModule>;
+import { setupHomeScreenModule } from "modules/home-screen/module";
 
-export enum EViewState {
-  INITIAL = "initial",
-  LOADING = "loading",
-  REFRESHING = "refreshing",
-  READY = "ready",
-  ERROR = "error",
+import { TToken } from "utils/types";
+
+export type THomeScreenState = TModuleState<typeof setupHomeScreenModule>;
+
+export enum EBalanceViewType {
+  ETH = "balanceTypeEth",
+  NEUR = "balanceTypeNeur",
 }
 
-export type TxHistoryPaginated = ReturnType<typeof txHistoryApi.selectors.selectTxHistoryPaginated>;
+export type TBalance = {
+  type: EBalanceViewType;
+  amount: TToken<ECurrency.EUR_TOKEN | ECurrency.ETH>;
+  euroEquivalentAmount: TToken<ECurrency.EUR>;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type TAsset<T extends EquityToken = any, AT extends ECurrency = any> = {
+  id: string;
+  token: TToken<T>;
+  analogToken: TToken<AT>;
+  tokenImage: string | EIconType;
+  tokenName: string;
+};

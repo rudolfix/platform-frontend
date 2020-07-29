@@ -1,11 +1,14 @@
 import { createActionFactory } from "@neufund/shared-utils";
 
-import { EViewState } from "./types";
+import { EScreenState } from "modules/types";
 
 export const actions = {
-  loadWalletView: createActionFactory("WALLET_VIEW_LOAD"),
-  refreshWalletView: createActionFactory("WALLET_VIEW_REFRESH"),
-  setWalletViewState: createActionFactory("WALLET_VIEW_SET_STATE", (viewState: EViewState) => ({
-    viewState,
-  })),
+  loadWalletScreen: createActionFactory("WALLET_SCREEN_LOAD"),
+  refreshWalletScreen: createActionFactory("WALLET_SCREEN_REFRESH"),
+  setWalletScreenState: createActionFactory(
+    "WALLET_SCREEN_SET_STATE",
+    (screenState: EScreenState) => ({
+      screenState,
+    }),
+  ),
 };

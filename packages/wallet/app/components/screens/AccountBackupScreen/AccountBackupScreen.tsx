@@ -5,14 +5,14 @@ import { compose } from "recompose";
 import { AccountBackupScreenLayout } from "components/screens/AccountBackupScreen/AccountBackupScreenLayout";
 import { EWalletUIType, TWalletUI } from "components/screens/AccountBackupScreen/types";
 
+import { withProtectSensitive } from "hocs/withProtectSensitive";
+
 import { useSymbol } from "hooks/useSymbol";
 
 import { EWalletType } from "modules/eth/lib/types";
 import { walletEthModuleApi } from "modules/eth/module";
 
 import { useNavigationTyped } from "router/routeUtils";
-
-import { withProtectSensitive } from "hocs/withProtectSensitive";
 
 enum EUIStatus {
   LOADING = "loading",

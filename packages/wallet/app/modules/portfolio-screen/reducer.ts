@@ -18,7 +18,7 @@ export const reducer: AppReducer<IState, typeof actions> = (
   action,
 ): DeepReadonly<IState> => {
   switch (action.type) {
-    case actions.setHomeScreenState.getType(): {
+    case actions.setPortfolioScreenState.getType(): {
       const { screenState } = action.payload;
 
       return {
@@ -32,8 +32,8 @@ export const reducer: AppReducer<IState, typeof actions> = (
   }
 };
 
-const homeScreenReducerMap = {
-  homeScreen: reducer,
+const portfolioScreenReducerMap = {
+  portfolioScreen: reducer,
 };
 
-export { homeScreenReducerMap };
+export { portfolioScreenReducerMap };

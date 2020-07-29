@@ -31,9 +31,9 @@ export class EtoApi {
     @inject(coreModuleApi.symbols.jsonHttpClient) private httpClient: IHttpClient,
   ) {}
 
-  public async getEtos(): Promise<TPartialEtoSpecData[]> {
-    return await this.httpClient
-      .get<TPartialEtoSpecData[]>({
+  public async getEtos(): Promise<TEtoDataWithCompany[]> {
+    return this.httpClient
+      .get<TEtoDataWithCompany[]>({
         baseUrl: BASE_PATH,
         url: ETOS_PATH,
       })

@@ -1,4 +1,4 @@
-import { DeepReadonly, Dictionary, Overwrite } from "@neufund/shared-utils";
+import { DeepReadonly, Dictionary } from "@neufund/shared-utils";
 
 import { TCompanyEtoData, TEtoSpecsData } from "./lib/http/eto-api/EtoApi.interfaces.unsafe";
 
@@ -55,19 +55,21 @@ export type TEtoContractData = {
   etoTermsAddress: string;
 };
 
-export type TEtoWithCompanyAndContract = TEtoSpecsData & {
+export type TEtoWithContract = TEtoSpecsData & {
   // contract is undefined when ETO is not on blockchain
   contract: TEtoContractData | undefined;
+};
+
+export type TEtoWithCompanyAndContract = TEtoWithContract & {
   company: TCompanyEtoData;
   subState: EEtoSubState | undefined;
 };
 
 export type TEtoWithCompanyAndContractReadonly = DeepReadonly<TEtoWithCompanyAndContract>;
 
-export type TEtoWithCompanyAndContractTypeChecked = Overwrite<
-  TEtoWithCompanyAndContractReadonly,
-  { contract: Exclude<TEtoWithCompanyAndContractReadonly["contract"], undefined> }
->;
+export type TEtoWithCompanyAndContractTypeChecked = TEtoWithCompanyAndContractReadonly & {
+  contract: Exclude<TEtoWithCompanyAndContractReadonly["contract"], undefined>;
+};
 
 export interface IEtoTokenData {
   balanceUlps: string;
